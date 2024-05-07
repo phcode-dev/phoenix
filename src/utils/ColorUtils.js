@@ -49,7 +49,7 @@ define(function (require, exports, module) {
         "paleturquoise", "palevioletred", "papayawhip", "peachpuff", "peru", "pink", "plum", "powderblue",
         "purple", "rebeccapurple", "red", "rosybrown", "royalblue", "saddlebrown", "salmon", "sandybrown",
         "seagreen", "seashell", "sienna", "silver", "skyblue", "slateblue", "slategray", "slategrey",
-        "snow", "springgreen", "steelblue", "tan", "teal", "thistle", "tomato", "transparent",
+        "snow", "springgreen", "steelblue", "tan", "teal", "thistle", "tomato",
         "turquoise", "violet", "wheat", "white", "whitesmoke", "yellow", "yellowgreen", "black",
         "silver", "gray", "white", "maroon", "red", "purple", "fuchsia", "green", "lime", "olive",
         "yellow", "navy", "blue", "teal", "aqua"];
@@ -72,7 +72,8 @@ define(function (require, exports, module) {
      * @return {jQuery} jQuery object with the correct class and/or style applied
      */
     function formatColorHint($hintObj, color) {
-        if (color) {
+        const nonColors= ["transparent", "currentColor"];
+        if (color && !nonColors.includes(color)) {
             $hintObj.prepend($("<span>")
                 .addClass("color-swatch")
                 .css("backgroundColor", color));
