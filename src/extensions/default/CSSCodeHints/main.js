@@ -34,6 +34,7 @@ define(function (require, exports, module) {
         Strings             = brackets.getModule("strings"),
         KeyEvent            = brackets.getModule("utils/KeyEvent"),
         LiveDevelopment     = brackets.getModule("LiveDevelopment/main"),
+        Metrics             = brackets.getModule("utils/Metrics"),
         CSSProperties       = require("text!CSSProperties.json"),
         properties          = JSON.parse(CSSProperties);
 
@@ -419,6 +420,7 @@ define(function (require, exports, module) {
             event.keyCode === KeyEvent.DOM_VK_PAGE_DOWN)){
             return;
         }
+        Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "cssHint", "preview");
         const $hintItem = $highlightedEl.find(".brackets-css-hints");
         const highligtedValue = $highlightedEl.find(".brackets-css-hints").data("val");
         if(!highligtedValue || !$hintItem.is(":visible")){
@@ -525,8 +527,9 @@ define(function (require, exports, module) {
 
         if(isLiveHighlight) {
             // this is via user press up and down arrows when code hints is visible
-            if(this.info.context !== CSSUtils.PROP_VALUE) {
+            if(this.info.context !== CSSUtils.PROP_VALUE && !hint.endsWith("; ")) {
                 // we only do live hints for css property values. else UX is jarring.
+                // property full statements hints like "display: flex;" will be live previewed tho
                 return keepHints;
             }
             if(!this.editor.hasSelection()){
