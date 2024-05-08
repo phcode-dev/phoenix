@@ -963,12 +963,35 @@ define(function (require, exports, module) {
                 {"label":"abx","matchGoodness":100,"sourceIndex":2},
                 {"label":"f:ab","matchGoodness":100,"sourceIndex":0},
                 {"label":"zy","matchGoodness":100,"sourceIndex":1}];
+            const matchResult_ab = {
+                ratio:  [{"label":"abx","matchGoodness":80,"sourceIndex":2},{"label":"f:ab","matchGoodness":67,"sourceIndex":0},{"label":"zy","matchGoodness":0,"sourceIndex":1}],
+                partial_ratio: [{"label":"f:ab","matchGoodness":100,"sourceIndex":0},{"label":"abx","matchGoodness":100,"sourceIndex":2},{"label":"zy","matchGoodness":0,"sourceIndex":1}],
+                token_sort_ratio:  [{"label":"abx","matchGoodness":80,"sourceIndex":2},{"label":"f:ab","matchGoodness":67,"sourceIndex":0},{"label":"zy","matchGoodness":0,"sourceIndex":1}],
+                token_set_ratio: [{"label":"f:ab","matchGoodness":100,"sourceIndex":0},{"label":"abx","matchGoodness":80,"sourceIndex":2},{"label":"zy","matchGoodness":0,"sourceIndex":1}],
+                token_similarity_sort_ratio: [{"label":"abx","matchGoodness":80,"sourceIndex":2},{"label":"f:ab","matchGoodness":67,"sourceIndex":0},{"label":"zy","matchGoodness":0,"sourceIndex":1}],
+                distance: [{"label":"f:ab","matchGoodness":2,"sourceIndex":0},{"label":"zy","matchGoodness":2,"sourceIndex":1},{"label":"abx","matchGoodness":1,"sourceIndex":2}],
+                "code-hints": [
+                    {"label":"abx","matchGoodness":80,"sourceIndex":2,
+                        "stringRanges":[{"text":"ab","matched":true},
+                            {"text":"x","matched":false}]
+                    },{"label":"f:ab","matchGoodness":67,"sourceIndex":0,
+                        "stringRanges":[{"text":"f:","matched":false},
+                            {"text":"ab","matched":true}]}]
+            };
+
             for(let i=0; i<scorers.length; i++){
                 it(`should empty query return all choices for ${scorers[i]}`, function () {
                     const results = StringMatch.rankMatchingStrings("", choices, {
                         scorer: scorers[i]
                     });
                     expect(results).toEql(emptyQueryResult);
+                });
+
+                it(`should valid query return matched choices for ${scorers[i]}`, function () {
+                    const results = StringMatch.rankMatchingStrings("ab", choices, {
+                        scorer: scorers[i]
+                    });
+                    expect(results).toEql(matchResult_ab[scorers[i]]);
                 });
 
                 it(`should boost prefixes have no effect with empty queries for ${scorers[i]}`, function () {
@@ -979,12 +1002,77 @@ define(function (require, exports, module) {
                     expect(results).toEql(emptyQueryResult);
                 });
 
+                it(`should boost prefixes for ${scorers[i]}`, function () {
+                    let results = StringMatch.rankMatchingStrings("ab", ["aby", "abx"], {
+                        scorer: scorers[i]
+                    });
+                    // we now take the top result and make the non-top result top with boost prefix.
+                    const boostPrefixVal = results[1].label;
+                    results = StringMatch.rankMatchingStrings("ab", choices, {
+                        scorer: scorers[i],
+                        boostPrefixList: [boostPrefixVal]
+                    });
+                    expect(results[0].label).toEql(boostPrefixVal);
+                });
+
+                it(`should boost multiple boost prefixes for ${scorers[i]}`, function () {
+                    if(scorers[i] === "distance"){
+                        // prefix boosting with distance is not tested for now. maybe add tests later
+                        return;
+                    }
+                    const choices1 = ["aby", "abx", "zay", "zky"];
+                    let results = StringMatch.rankMatchingStrings("ab", choices1, {
+                        scorer: scorers[i]
+                    });
+                    // we now take the top result and make the non-top result top with boost prefix.
+                    const boostPrefixVal1 = results[1].label;
+                    results = StringMatch.rankMatchingStrings("z", choices1, {
+                        scorer: scorers[i]
+                    });
+                    const boostPrefixVal2 = results[1].label;
+                    results = StringMatch.rankMatchingStrings("ab", choices1, {
+                        scorer: scorers[i],
+                        boostPrefixList: [boostPrefixVal1, boostPrefixVal2]
+                    });
+                    expect(results[0].label).toEql(boostPrefixVal1);
+                    results = StringMatch.rankMatchingStrings("z", choices1, {
+                        scorer: scorers[i],
+                        boostPrefixList: [boostPrefixVal1, boostPrefixVal2]
+                    });
+                    expect(results[0].label).toEql(boostPrefixVal2);
+                });
+
                 it(`should limit work with empty queries for ${scorers[i]}`, function () {
                     const results = StringMatch.rankMatchingStrings("", choices, {
                         scorer: scorers[i],
                         limit: 2
                     });
                     expect(results).toEql(emptyQueryResult.slice(0, 2));
+                });
+
+                it(`should limit work with queries for ${scorers[i]}`, function () {
+                    const choices1 = ["aby", "abx", "zay", "zky"];
+                    const results = StringMatch.rankMatchingStrings("a", choices1, {
+                        scorer: scorers[i],
+                        limit: 1
+                    });
+                    expect(results.length).toEql(1);
+                });
+
+                it(`should score cutoff work with queries for ${scorers[i]}`, function () {
+                    const choices1 = ["aby", "abx", "zay", "zky"];
+                    let results = StringMatch.rankMatchingStrings("a", choices1, {
+                        scorer: scorers[i]
+                    });
+                    const allCutoffs = results.map(result => result.matchGoodness);
+                    const cutoff = allCutoffs[1]; // median maybe
+                    results = StringMatch.rankMatchingStrings("a", choices1, {
+                        scorer: scorers[i],
+                        cutoff
+                    });
+                    for(let result of results) {
+                        expect(result.matchGoodness).toBeGreaterThanOrEqual(cutoff);
+                    }
                 });
             }
         });
