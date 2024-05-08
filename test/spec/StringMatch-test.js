@@ -950,7 +950,8 @@ define(function (require, exports, module) {
         describe("rankMatchingStrings", function () {
             const scorers = Object.values(StringMatch.RANK_MATCH_SCORER);
             const query = "ab",
-                choices = ["f:ab", "zy", "abx"];
+                choices = ["f:ab", "zy", "abx"],
+                compiledChoices = StringMatch.compileForRankMatcher(choices);
             it("should rank strings without options", function () {
                 const results = StringMatch.rankMatchingStrings(query, choices);
                 expect(results).toEql( [
@@ -979,102 +980,117 @@ define(function (require, exports, module) {
                             {"text":"ab","matched":true}]}]
             };
 
-            for(let i=0; i<scorers.length; i++){
-                it(`should empty query return all choices for ${scorers[i]}`, function () {
-                    const results = StringMatch.rankMatchingStrings("", choices, {
-                        scorer: scorers[i]
+            function _runChoiceTest(compiled) {
+                for(let i=0; i<scorers.length; i++){
+                    it(`should empty query return all choices for ${scorers[i]} compiled: ${compiled}`, function () {
+                        const results = StringMatch.rankMatchingStrings("",
+                            compiled? compiledChoices : choices, {
+                            scorer: scorers[i]
+                        });
+                        expect(results).toEql(emptyQueryResult);
                     });
-                    expect(results).toEql(emptyQueryResult);
-                });
 
-                it(`should valid query return matched choices for ${scorers[i]}`, function () {
-                    const results = StringMatch.rankMatchingStrings("ab", choices, {
-                        scorer: scorers[i]
+                    it(`should valid query return matched choices for ${scorers[i]} compiled: ${compiled}`, function () {
+                        const results = StringMatch.rankMatchingStrings("ab",
+                            compiled ? compiledChoices : choices, {
+                            scorer: scorers[i]
+                        });
+                        expect(results).toEql(matchResult_ab[scorers[i]]);
                     });
-                    expect(results).toEql(matchResult_ab[scorers[i]]);
-                });
 
-                it(`should boost prefixes have no effect with empty queries for ${scorers[i]}`, function () {
-                    const results = StringMatch.rankMatchingStrings("", choices, {
-                        scorer: scorers[i],
-                        boostPrefixList: ["f:ab"]
+                    it(`should boost prefixes have no effect with empty queries for ${scorers[i]} compiled: ${compiled}`, function () {
+                        const results = StringMatch.rankMatchingStrings("",
+                            compiled? compiledChoices : choices, {
+                            scorer: scorers[i],
+                            boostPrefixList: ["f:ab"]
+                        });
+                        expect(results).toEql(emptyQueryResult);
                     });
-                    expect(results).toEql(emptyQueryResult);
-                });
 
-                it(`should boost prefixes for ${scorers[i]}`, function () {
-                    let results = StringMatch.rankMatchingStrings("ab", ["aby", "abx"], {
-                        scorer: scorers[i]
+                    it(`should boost prefixes for ${scorers[i]} compiled: ${compiled}`, function () {
+                        const choice1 = compiled ? StringMatch.compileForRankMatcher(["aby", "abx"]) : ["aby", "abx"];
+                        let results = StringMatch.rankMatchingStrings("ab", choice1, {
+                            scorer: scorers[i]
+                        });
+                        // we now take the top result and make the non-top result top with boost prefix.
+                        const boostPrefixVal = results[1].label;
+                        results = StringMatch.rankMatchingStrings("ab", choice1, {
+                            scorer: scorers[i],
+                            boostPrefixList: [boostPrefixVal]
+                        });
+                        expect(results[0].label).toEql(boostPrefixVal);
                     });
-                    // we now take the top result and make the non-top result top with boost prefix.
-                    const boostPrefixVal = results[1].label;
-                    results = StringMatch.rankMatchingStrings("ab", choices, {
-                        scorer: scorers[i],
-                        boostPrefixList: [boostPrefixVal]
-                    });
-                    expect(results[0].label).toEql(boostPrefixVal);
-                });
 
-                it(`should boost multiple boost prefixes for ${scorers[i]}`, function () {
-                    if(scorers[i] === "distance"){
-                        // prefix boosting with distance is not tested for now. maybe add tests later
-                        return;
-                    }
-                    const choices1 = ["aby", "abx", "zay", "zky"];
-                    let results = StringMatch.rankMatchingStrings("ab", choices1, {
-                        scorer: scorers[i]
+                    it(`should boost multiple boost prefixes for ${scorers[i]} compiled: ${compiled}`, function () {
+                        if(scorers[i] === "distance"){
+                            // prefix boosting with distance is not tested for now. maybe add tests later
+                            return;
+                        }
+                        const choices1 = compiled ?
+                            StringMatch.compileForRankMatcher(["aby", "abx", "zay", "zky"]):
+                            ["aby", "abx", "zay", "zky"];
+                        let results = StringMatch.rankMatchingStrings("ab", choices1, {
+                            scorer: scorers[i]
+                        });
+                        // we now take the top result and make the non-top result top with boost prefix.
+                        const boostPrefixVal1 = results[1].label;
+                        results = StringMatch.rankMatchingStrings("z", choices1, {
+                            scorer: scorers[i]
+                        });
+                        const boostPrefixVal2 = results[1].label;
+                        results = StringMatch.rankMatchingStrings("ab", choices1, {
+                            scorer: scorers[i],
+                            boostPrefixList: [boostPrefixVal1, boostPrefixVal2]
+                        });
+                        expect(results[0].label).toEql(boostPrefixVal1);
+                        results = StringMatch.rankMatchingStrings("z", choices1, {
+                            scorer: scorers[i],
+                            boostPrefixList: [boostPrefixVal1, boostPrefixVal2]
+                        });
+                        expect(results[0].label).toEql(boostPrefixVal2);
                     });
-                    // we now take the top result and make the non-top result top with boost prefix.
-                    const boostPrefixVal1 = results[1].label;
-                    results = StringMatch.rankMatchingStrings("z", choices1, {
-                        scorer: scorers[i]
-                    });
-                    const boostPrefixVal2 = results[1].label;
-                    results = StringMatch.rankMatchingStrings("ab", choices1, {
-                        scorer: scorers[i],
-                        boostPrefixList: [boostPrefixVal1, boostPrefixVal2]
-                    });
-                    expect(results[0].label).toEql(boostPrefixVal1);
-                    results = StringMatch.rankMatchingStrings("z", choices1, {
-                        scorer: scorers[i],
-                        boostPrefixList: [boostPrefixVal1, boostPrefixVal2]
-                    });
-                    expect(results[0].label).toEql(boostPrefixVal2);
-                });
 
-                it(`should limit work with empty queries for ${scorers[i]}`, function () {
-                    const results = StringMatch.rankMatchingStrings("", choices, {
-                        scorer: scorers[i],
-                        limit: 2
+                    it(`should limit work with empty queries for ${scorers[i]} compiled: ${compiled}`, function () {
+                        const results = StringMatch.rankMatchingStrings("",
+                            compiled? compiledChoices : choices, {
+                            scorer: scorers[i],
+                            limit: 2
+                        });
+                        expect(results).toEql(emptyQueryResult.slice(0, 2));
                     });
-                    expect(results).toEql(emptyQueryResult.slice(0, 2));
-                });
 
-                it(`should limit work with queries for ${scorers[i]}`, function () {
-                    const choices1 = ["aby", "abx", "zay", "zky"];
-                    const results = StringMatch.rankMatchingStrings("a", choices1, {
-                        scorer: scorers[i],
-                        limit: 1
+                    it(`should limit work with queries for ${scorers[i]} compiled: ${compiled}`, function () {
+                        const choices1 = compiled ?
+                            StringMatch.compileForRankMatcher(["aby", "abx", "zay", "zky"]):
+                            ["aby", "abx", "zay", "zky"];
+                        const results = StringMatch.rankMatchingStrings("a", choices1, {
+                            scorer: scorers[i],
+                            limit: 1
+                        });
+                        expect(results.length).toEql(1);
                     });
-                    expect(results.length).toEql(1);
-                });
 
-                it(`should score cutoff work with queries for ${scorers[i]}`, function () {
-                    const choices1 = ["aby", "abx", "zay", "zky"];
-                    let results = StringMatch.rankMatchingStrings("a", choices1, {
-                        scorer: scorers[i]
+                    it(`should score cutoff work with queries for ${scorers[i]} compiled: ${compiled}`, function () {
+                        const choices1 = compiled ?
+                            StringMatch.compileForRankMatcher(["aby", "abx", "zay", "zky"]):
+                            ["aby", "abx", "zay", "zky"];
+                        let results = StringMatch.rankMatchingStrings("a", choices1, {
+                            scorer: scorers[i]
+                        });
+                        const allCutoffs = results.map(result => result.matchGoodness);
+                        const cutoff = allCutoffs[1]; // median maybe
+                        results = StringMatch.rankMatchingStrings("a", choices1, {
+                            scorer: scorers[i],
+                            cutoff
+                        });
+                        for(let result of results) {
+                            expect(result.matchGoodness).toBeGreaterThanOrEqual(cutoff);
+                        }
                     });
-                    const allCutoffs = results.map(result => result.matchGoodness);
-                    const cutoff = allCutoffs[1]; // median maybe
-                    results = StringMatch.rankMatchingStrings("a", choices1, {
-                        scorer: scorers[i],
-                        cutoff
-                    });
-                    for(let result of results) {
-                        expect(result.matchGoodness).toBeGreaterThanOrEqual(cutoff);
-                    }
-                });
+                }
             }
+            _runChoiceTest();
+            _runChoiceTest(true);
         });
     });
 });
