@@ -994,6 +994,13 @@ define(function (require, exports, module) {
             return [];
         }
 
+        if(choices.compiledChoices) {
+            // recreate the filtered choice
+            filteredChoices = {
+                compiledChoices: filteredChoices
+            };
+        }
+
         let results = rankMatchingStrings(query, filteredChoices, {
             scorer: RANK_MATCH_SCORER.RATIO,
             cutoff: 0,
