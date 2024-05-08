@@ -946,5 +946,47 @@ define(function (require, exports, module) {
                 }, true);
             });
         });
+
+        describe("rankMatchingStrings", function () {
+            const scorers = Object.values(StringMatch.RANK_MATCH_SCORER);
+            const query = "ab",
+                choices = ["f:ab", "zy", "abx"];
+            it("should rank strings without options", function () {
+                const results = StringMatch.rankMatchingStrings(query, choices);
+                expect(results).toEql( [
+                    {"label":"abx","matchGoodness":80,"sourceIndex":2},
+                    {"label":"f:ab","matchGoodness":67,"sourceIndex":0},
+                    {"label":"zy","matchGoodness":0,"sourceIndex":1}]);
+            });
+
+            const emptyQueryResult = [
+                {"label":"abx","matchGoodness":100,"sourceIndex":2},
+                {"label":"f:ab","matchGoodness":100,"sourceIndex":0},
+                {"label":"zy","matchGoodness":100,"sourceIndex":1}];
+            for(let i=0; i<scorers.length; i++){
+                it(`should empty query return all choices for ${scorers[i]}`, function () {
+                    const results = StringMatch.rankMatchingStrings("", choices, {
+                        scorer: scorers[i]
+                    });
+                    expect(results).toEql(emptyQueryResult);
+                });
+
+                it(`should boost prefixes have no effect with empty queries for ${scorers[i]}`, function () {
+                    const results = StringMatch.rankMatchingStrings("", choices, {
+                        scorer: scorers[i],
+                        boostPrefixList: ["f:ab"]
+                    });
+                    expect(results).toEql(emptyQueryResult);
+                });
+
+                it(`should limit work with empty queries for ${scorers[i]}`, function () {
+                    const results = StringMatch.rankMatchingStrings("", choices, {
+                        scorer: scorers[i],
+                        limit: 2
+                    });
+                    expect(results).toEql(emptyQueryResult.slice(0, 2));
+                });
+            }
+        });
     });
 });
