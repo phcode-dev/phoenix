@@ -769,10 +769,59 @@ define(function (require, exports, module) {
     };
 
     /**
+     * Compiles the given `choices` array to be used in rankMatchingStrings() for improved performance
+     * if you are using the same choices array repeatedly. For one of cases, this compilation is
+     * not necessary and probably will add more time to process.
+     *
+     * @param {Array<string>} choices - An array containing the choices to be compiled.
+     * @returns {{compiledChoices: Array<{model:string}>}}
+     */
+    function compileForRankMatcher(choices) {
+        const compiledChoices = [];
+        let choice;
+        for (let i=0; i<choices.length; i++) {
+            choice = choices[i];
+            compiledChoices.push({
+                i, // we store the index in source choices list too.
+                model: choice,
+                proc_sorted: fuzzball.process_and_sort(fuzzball.full_process(choice))
+            });
+        }
+        return {
+            compiledChoices
+        };
+    }
+
+    function _matchForEmptyQuery(choices, options) {
+        // everything is a 100% match if nothing is specified
+        let choiceArray = [];
+        if(!choices.compiledChoices){ // this is a string array
+            for (let i=0; i<choices.length; i++) {
+                choiceArray.push({i, model: choices[i]});
+            }
+        } else {
+            choiceArray = choices.compiledChoices;
+        }
+        choiceArray = [...choiceArray].sort((a, b) => a.model.localeCompare(b.model));
+        const searchResults = [];
+        for(let i=0; i<choiceArray.length; i++) {
+            if(options.limit && i>= options.limit){
+                break;
+            }
+            let result = new SearchResult(choiceArray[i].model);
+            result.matchGoodness = 100;
+            result.sourceIndex = choiceArray[i].i;
+            searchResults.push(result);
+        }
+        return searchResults;
+    }
+
+    /**
      * Ranks the matching strings based on the query.
      *
      * @param {string} query - The query string to match against.
-     * @param {Array<string>} choices - The list of strings to rank.
+     * @param {Array<string> | Object} choices - The list of strings to rank or a compiled choices
+     *         list obtained by executing compileForRankMatcher().
      * @param {{scorer: string}|{}} options - Additional options for ranking.
      * @param {string} options.scorer - The scoring algorithm to use.
      *          one of StringMatch.RANK_MATCH_SCORER.* constants
@@ -792,28 +841,25 @@ define(function (require, exports, module) {
 
         let searchResults = [];
         if(!query) {
-            // everything is a 100% match if nothing is specified
-            choices = [...choices].sort(); // we still need to sort, not in-place, so cloning
-            for(let i=0; i<choices.length; i++) {
-                if(options.limit && i>= options.limit){
-                    break;
-                }
-                let result = new SearchResult(choices[i]);
-                result.matchGoodness = 100;
-                result.sourceIndex = i;
-                searchResults.push(result);
-            }
-            return searchResults;
+            return _matchForEmptyQuery(choices, options);
         }
 
         if(options.scorer === RANK_MATCH_SCORER.CODE_HINTS) {
             return _rankCodeHints(query, choices, options);
         }
-
-        const rankedResult = fuzzball.extract(query, choices, {
+        const fuzzballOptions = {
             scorer: fuzzball[options.scorer],
             limit: options.limit
-        });
+        };
+        let fuzzQuery = query;
+        let fuzzChoices = choices;
+        if(choices.compiledChoices) {
+            fuzzChoices = choices.compiledChoices;
+            fuzzballOptions.processor = choice => choice.model;
+            fuzzQuery = fuzzball.full_process(query);
+        }
+
+        const rankedResult = fuzzball.extract(fuzzQuery, fuzzChoices, fuzzballOptions);
         // "pointer", ["pointer: none;", "cursor: pointer;", "pointer-events: none;"]
         // sample output is of the form:
         //   [choice, score, index in original array] eg:
@@ -825,7 +871,8 @@ define(function (require, exports, module) {
             if(score < options.cutoff) {
                 continue;
             }
-            let result = new SearchResult(rankResult[0]);
+            const resultValue = rankResult[0].model ? rankResult[0].model : rankResult[0];
+            let result = new SearchResult(resultValue);
             result.matchGoodness = rankResult[1];
             result.sourceIndex = rankResult[2];
             searchResults.push(result);
@@ -921,20 +968,30 @@ define(function (require, exports, module) {
     }
 
     function _rankCodeHints(query, choices, options) {
-        query = query || "";
-        let filteredChoices = [];
-        let filteredIndices;
+        // this function is not optimized for readability and mostly optimized for
+        // fast execution. So this is a bit more complex than I like.
         if(!query){
-            filteredChoices = choices;
-        } else {
-            filteredIndices = [];
-            const queryLower = query.toLowerCase();
-            choices.forEach((choice, index) => {
-                if (choice.toLowerCase().includes(queryLower)) {
-                    filteredChoices.push(choice);
-                    filteredIndices.push(index);
-                }
-            });
+            return _matchForEmptyQuery(choices, options);
+        }
+        let filteredChoices = [];
+        let filteredIndices = [];
+        const queryLower = query.toLowerCase();
+        let choiceVal;
+        let choiceSourceArray = choices;
+        if(choices.compiledChoices) {
+            choiceSourceArray = choices.compiledChoices;
+        }
+        choiceSourceArray.forEach((choice, index) => {
+            // if we got a compiled choice, it will have model prop which is the choice value else,
+            // choice itself is the value string
+            choiceVal = choice.model || choice;
+            if (choiceVal.toLowerCase().includes(queryLower)) {
+                filteredChoices.push(choice);
+                filteredIndices.push(index);
+            }
+        });
+        if(!filteredChoices.length){
+            return [];
         }
 
         let results = rankMatchingStrings(query, filteredChoices, {
@@ -942,10 +999,15 @@ define(function (require, exports, module) {
             cutoff: 0,
             limit: options.limit
         });
+        let result, choiceAtSource;
         if(filteredIndices){
             for(let i=0; i<results.length; i++) {
-                const result = results[i];
+                result = results[i];
                 result.sourceIndex = filteredIndices[result.sourceIndex];
+                choiceAtSource = choiceSourceArray[result.sourceIndex];
+                if(choiceAtSource.model){ // this was a compiled choice list that was passed in
+                    result.sourceIndex =  choiceAtSource.i;
+                }
                 // now find the matching segments.
                 result.stringRanges = _computeMatchingRanges(query, result.label);
             }
@@ -1213,5 +1275,6 @@ define(function (require, exports, module) {
     exports.multiFieldSort          = multiFieldSort;
     exports.StringMatcher           = StringMatcher;
     exports.rankMatchingStrings     = rankMatchingStrings;
+    exports.compileForRankMatcher   = compileForRankMatcher;
     exports.RANK_MATCH_SCORER = RANK_MATCH_SCORER;
 });
