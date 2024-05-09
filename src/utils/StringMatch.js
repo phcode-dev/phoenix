@@ -805,10 +805,14 @@ define(function (require, exports, module) {
             for (let i=0; i<choices.length; i++) {
                 choiceArray.push({i, model: choices[i]});
             }
+            choiceArray = [...choiceArray].sort((a, b) => a.model.localeCompare(b.model));
         } else {
-            choiceArray = choices.compiledChoices;
+            if(!choices.compiledChoicesSorted) {
+                choices.compiledChoicesSorted = [...choices.compiledChoices]
+                    .sort((a, b) => a.model.localeCompare(b.model));
+            }
+            choiceArray = choices.compiledChoicesSorted;
         }
-        choiceArray = [...choiceArray].sort((a, b) => a.model.localeCompare(b.model));
         const searchResults = [];
         for(let i=0; i<choiceArray.length; i++) {
             if(options.limit && i>= options.limit){
@@ -834,6 +838,7 @@ define(function (require, exports, module) {
      * @param {number} options.cutoff - The scoring cutoff below which results are
      *          treated as no match. default is 0.
      * @param {number} options.limit - The maximum number of results to return. Default is all.
+     * @param {boolean} options.excludeStringRanges - If set to true, string ranges won't be included in result
      * @param {Array[string]} options.boostPrefixList - Will rank matching items in the choices to top
      *          if query starts with the array. EG: on typing b, we have to show background-color
      *          to top. So we pass in ["background-color"] as boost prefix option along with other
@@ -881,7 +886,9 @@ define(function (require, exports, module) {
             let result = new SearchResult(resultValue);
             result.matchGoodness = rankResult[1];
             result.sourceIndex = rankResult[2];
-            result.stringRanges = _computeMatchingRanges(query, resultValue);
+            if(!options.excludeStringRanges) {
+                result.stringRanges = _computeMatchingRanges(query, resultValue);
+            }
             searchResults.push(result);
         }
         if(choices.boostPrefixListLower && options.boostPrefixList) {
@@ -1019,7 +1026,18 @@ define(function (require, exports, module) {
         return [...orderedPrefixResults, ...resultsWithoutPrefix];
     }
 
-    function _lowPassSimilarityTest(choiceValLower, queryLower) {
+    /**
+     * Computationally very expensive!!: checks weather query is contained in the given choice with or without
+     * hyphens- and _underscores
+     * Eg: query "bgcol" should match choice "bg-col"
+     *
+     * @param {string} choiceValLower - The lowercase choice value to test.
+     * @param {string} queryLower - The lowercase query to test against.
+     * @returns {boolean} - True if the choice value includes a continuous alphanumeric substring
+     *                      after stripping any symbols and matching the query, false otherwise.
+     * @private
+     */
+    function _hyphenatedOrSimilar(choiceValLower, queryLower) {
         // tests for any continuous alphanumeric substrings after stripping any symbols
         // Eg, query bgcol should match bg_col, bg-col, etc...
         const strippedQuery = queryLower.replace(/[_-]/g, ""); // strip _ and -
@@ -1045,7 +1063,7 @@ define(function (require, exports, module) {
             // if we got a compiled choice, it will have model prop which is the choice value else,
             // choice itself is the value string
             choiceValLower = (choice.model || choice).toLowerCase();
-            if (choiceValLower.includes(queryLower) || _lowPassSimilarityTest(choiceValLower, queryLower)) {
+            if (choiceValLower.includes(queryLower) /*_lowPassSimilarityTest(choiceValLower, queryLower)*/) {
                 filteredChoices.push(choice);
                 filteredIndices.push(index);
             }
@@ -1062,23 +1080,36 @@ define(function (require, exports, module) {
             };
         }
 
+        // the rank matcher is very faster than our filtration for low pass similarity, so we execute the
+        // rank matcher without limits, then execute _lowPassSimilarityTest on the result till options.limit
+        // results are found.
         let results = rankMatchingStrings(query, filteredChoices, {
             scorer: RANK_MATCH_SCORER.RATIO,
             cutoff: options.cutoff,
-            limit: options.limit,
-            boostPrefixList: options.boostPrefixList
+            boostPrefixList: options.boostPrefixList,
+            excludeStringRanges: true
         });
         let choiceAtSource;
+        const finalResults = [];
         if(filteredIndices){
             for(const result of results) {
+                if(finalResults.length >= options.limit) {
+                    break;
+                }
+                if(!_hyphenatedOrSimilar(result.label.toLowerCase(), queryLower)) {
+                    // not similar strings for code hints purposes.
+                    continue;
+                }
                 result.sourceIndex = filteredIndices[result.sourceIndex];
                 choiceAtSource = choiceSourceArray[result.sourceIndex];
                 if(choiceAtSource.model){ // this was a compiled choice list that was passed in
                     result.sourceIndex =  choiceAtSource.i;
                 }
+                result.stringRanges = _computeMatchingRanges(query, result.label);
+                finalResults.push(result);
             }
         }
-        return results;
+        return finalResults;
     }
 
     /*

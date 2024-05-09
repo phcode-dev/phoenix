@@ -63,8 +63,7 @@ define(function (require, exports, module) {
 
     // Context of the last request for hints: either CSSUtils.PROP_NAME,
     // CSSUtils.PROP_VALUE or null.
-    var lastContext,
-        stringMatcherOptions = { preferPrefixMatches: true };
+    var lastContext;
 
     /**
      * @constructor
@@ -243,7 +242,7 @@ define(function (require, exports, module) {
             }
         }
         computedPropertyKeys = Object.keys(computedProperties);
-        compiledPropertyKeys = StringMatch.compileForRankMatcher(computedPropertyKeys);
+        compiledPropertyKeys = StringMatch.compileForRankMatcher(computedPropertyKeys, BOOSTED_PROPERTIES);
     }
 
     /**
@@ -363,8 +362,7 @@ define(function (require, exports, module) {
 
             result = StringMatch.rankMatchingStrings(needle, compiledPropertyKeys, {
                 scorer: StringMatch.RANK_MATCH_SCORER.CODE_HINTS,
-                limit: MAX_CSS_HINTS,
-                boostPrefixList: BOOSTED_PROPERTIES
+                limit: MAX_CSS_HINTS
             });
 
             for(let resultItem of result) {
