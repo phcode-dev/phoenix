@@ -1095,6 +1095,39 @@ define(function (require, exports, module) {
             _runChoiceTest(true);
             _runChoiceTest(false, true);
             _runChoiceTest(true, true);
+
+            it("should rank strings with acceptable performance", function () {
+                const searchChoices = Object.keys(window.Strings);
+                // we search with half the string content
+                const searchQueries = searchChoices
+                    .map(choice => choice.slice(0, choice.length/2))
+                    .slice(0, 50); // we execute 100 test queries
+                const compiledchoices = StringMatch.compileForRankMatcher(Object.keys(window.Strings));
+                // To test performance of the algorithm only and not the cpu power, we do a simple
+                // includes scan to baseline the current cpu power first and then compare
+                // it to the rank matcher performance.
+                let startTimeSimplePass = Date.now();
+                for(let i=0; i<130; i++){
+                    for(let query of searchQueries) {
+                        const results = searchChoices.filter(choice =>choice.includes(query));
+                        expect(results.length >= 1).toBeTrue();
+                    }
+                }
+                let timeTakenSimplePass = (Date.now() - startTimeSimplePass);
+
+                let startTime = Date.now();
+                for(let query of searchQueries) {
+                    const results = StringMatch.rankMatchingStrings(query, compiledchoices);
+                    expect(results.length >= 1).toBeTrue();
+                }
+                let timeTakenRanker = (Date.now() - startTime);
+                // when this was written both times were quite similar in chrome/firefox- about 300ms
+                // in safari, the timeTakenSimplePass was alwas about 2x more than timeTakenRanker. So we take safety
+                // margin of larger time should be less than 3x of smaller time. If you see this test break, try to
+                // stick to the above timings or performance.
+                expect(Math.max(timeTakenSimplePass, timeTakenRanker) <
+                    (Math.min(timeTakenSimplePass, timeTakenRanker) * 3)).toBeTrue();
+            }, 5000);
         });
     });
 });
