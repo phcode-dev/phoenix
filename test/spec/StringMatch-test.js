@@ -954,10 +954,12 @@ define(function (require, exports, module) {
                 compiledChoices = StringMatch.compileForRankMatcher(choices);
             it("should rank strings without options", function () {
                 const results = StringMatch.rankMatchingStrings(query, choices);
-                expect(results).toEql( [
-                    {"label":"abx","matchGoodness":80,"sourceIndex":2},
-                    {"label":"f:ab","matchGoodness":67,"sourceIndex":0},
-                    {"label":"zy","matchGoodness":0,"sourceIndex":1}]);
+                expect(results).toEql(  [
+                    {"label":"abx","matchGoodness":80,"sourceIndex":2,
+                        "stringRanges":[{"text":"ab","matched":true},{"text":"x","matched":false}]},
+                    {"label":"f:ab","matchGoodness":67,"sourceIndex":0,
+                        "stringRanges":[{"text":"f:","matched":false},{"text":"ab","matched":true}]},
+                    {"label":"zy","matchGoodness":0,"sourceIndex":1,"stringRanges":null}]);
             });
 
             const emptyQueryResult = [
@@ -965,12 +967,12 @@ define(function (require, exports, module) {
                 {"label":"f:ab","matchGoodness":100,"sourceIndex":0},
                 {"label":"zy","matchGoodness":100,"sourceIndex":1}];
             const matchResult_ab = {
-                ratio:  [{"label":"abx","matchGoodness":80,"sourceIndex":2},{"label":"f:ab","matchGoodness":67,"sourceIndex":0},{"label":"zy","matchGoodness":0,"sourceIndex":1}],
-                partial_ratio: [{"label":"f:ab","matchGoodness":100,"sourceIndex":0},{"label":"abx","matchGoodness":100,"sourceIndex":2},{"label":"zy","matchGoodness":0,"sourceIndex":1}],
-                token_sort_ratio:  [{"label":"abx","matchGoodness":80,"sourceIndex":2},{"label":"f:ab","matchGoodness":67,"sourceIndex":0},{"label":"zy","matchGoodness":0,"sourceIndex":1}],
-                token_set_ratio: [{"label":"f:ab","matchGoodness":100,"sourceIndex":0},{"label":"abx","matchGoodness":80,"sourceIndex":2},{"label":"zy","matchGoodness":0,"sourceIndex":1}],
-                token_similarity_sort_ratio: [{"label":"abx","matchGoodness":80,"sourceIndex":2},{"label":"f:ab","matchGoodness":67,"sourceIndex":0},{"label":"zy","matchGoodness":0,"sourceIndex":1}],
-                distance: [{"label":"f:ab","matchGoodness":2,"sourceIndex":0},{"label":"zy","matchGoodness":2,"sourceIndex":1},{"label":"abx","matchGoodness":1,"sourceIndex":2}],
+                ratio: [{"label":"abx","matchGoodness":80,"sourceIndex":2,"stringRanges":[{"text":"ab","matched":true},{"text":"x","matched":false}]},{"label":"f:ab","matchGoodness":67,"sourceIndex":0,"stringRanges":[{"text":"f:","matched":false},{"text":"ab","matched":true}]},{"label":"zy","matchGoodness":0,"sourceIndex":1,"stringRanges":null}],
+                partial_ratio: [{"label":"f:ab","matchGoodness":100,"sourceIndex":0,"stringRanges":[{"text":"f:","matched":false},{"text":"ab","matched":true}]},{"label":"abx","matchGoodness":100,"sourceIndex":2,"stringRanges":[{"text":"ab","matched":true},{"text":"x","matched":false}]},{"label":"zy","matchGoodness":0,"sourceIndex":1,"stringRanges":null}],
+                token_sort_ratio:  [{"label":"abx","matchGoodness":80,"sourceIndex":2,"stringRanges":[{"text":"ab","matched":true},{"text":"x","matched":false}]},{"label":"f:ab","matchGoodness":67,"sourceIndex":0,"stringRanges":[{"text":"f:","matched":false},{"text":"ab","matched":true}]},{"label":"zy","matchGoodness":0,"sourceIndex":1,"stringRanges":null}],
+                token_set_ratio: [{"label":"f:ab","matchGoodness":100,"sourceIndex":0,"stringRanges":[{"text":"f:","matched":false},{"text":"ab","matched":true}]},{"label":"abx","matchGoodness":80,"sourceIndex":2,"stringRanges":[{"text":"ab","matched":true},{"text":"x","matched":false}]},{"label":"zy","matchGoodness":0,"sourceIndex":1,"stringRanges":null}],
+                token_similarity_sort_ratio: [{"label":"abx","matchGoodness":80,"sourceIndex":2,"stringRanges":[{"text":"ab","matched":true},{"text":"x","matched":false}]},{"label":"f:ab","matchGoodness":67,"sourceIndex":0,"stringRanges":[{"text":"f:","matched":false},{"text":"ab","matched":true}]},{"label":"zy","matchGoodness":0,"sourceIndex":1,"stringRanges":null}],
+                distance: [{"label":"f:ab","matchGoodness":2,"sourceIndex":0,"stringRanges":[{"text":"f:","matched":false},{"text":"ab","matched":true}]},{"label":"zy","matchGoodness":2,"sourceIndex":1,"stringRanges":null},{"label":"abx","matchGoodness":1,"sourceIndex":2,"stringRanges":[{"text":"ab","matched":true},{"text":"x","matched":false}]}],
                 "code-hints": [
                     {"label":"abx","matchGoodness":80,"sourceIndex":2,
                         "stringRanges":[{"text":"ab","matched":true},
@@ -1089,7 +1091,7 @@ define(function (require, exports, module) {
                     });
                 }
             }
-            _runChoiceTest();
+            _runChoiceTest(false);
             _runChoiceTest(true);
         });
     });
