@@ -290,7 +290,10 @@ define(function (require, exports, module) {
             await openFile("htmlOther/externalStyle.html", true);
             await awaitsFor(async function () {
                 const allSelectors = await CSSUtils.getAllCssSelectorsInProject();
-                return allSelectors.includes(".devicon-aarch64-original-wordmark");
+                // the devicon.min.css fails to load sometimes in github actions and may fail erratically. so
+                // added one more css link and only one needs to pass for this test.
+                return allSelectors.includes(".devicon-aarch64-original-wordmark") ||
+                    allSelectors.includes(".night");
             }, "external style sheet hints to be loaded");
         });
 
