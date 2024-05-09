@@ -774,9 +774,13 @@ define(function (require, exports, module) {
      * not necessary and probably will add more time to process.
      *
      * @param {Array<string>} choices - An array containing the choices to be compiled.
+     * @param {Array[string]} [boostPrefixList] - Optional, Will rank matching items in the choices to top
+     *          if query starts with the array. EG: on typing b, we have to show background-color
+     *          to top. So we pass in ["background-color"] as boost prefix option along with other
+     *          css properties that we want to boost.
      * @returns {{compiledChoices: Array<{model:string}>}}
      */
-    function compileForRankMatcher(choices) {
+    function compileForRankMatcher(choices, boostPrefixList) {
         const compiledChoices = [];
         let choice;
         for (let i=0; i<choices.length; i++) {
@@ -788,7 +792,9 @@ define(function (require, exports, module) {
             });
         }
         return {
-            compiledChoices
+            compiledChoices,
+            boostPrefixListLower: boostPrefixList ?
+                boostPrefixList.map(prefix => prefix.toLowerCase()) : null
         };
     }
 
@@ -875,19 +881,65 @@ define(function (require, exports, module) {
             let result = new SearchResult(resultValue);
             result.matchGoodness = rankResult[1];
             result.sourceIndex = rankResult[2];
+            result.stringRanges = _computeMatchingRanges(query, resultValue);
             searchResults.push(result);
         }
+        if(choices.boostPrefixListLower && options.boostPrefixList) {
+            throw new Error("Cannot specify options.boostPrefixList, it's already in the compiled choices");
+        }
+        let boostPrefixListLower = choices.boostPrefixListLower;
         if(options.boostPrefixList) {
-            searchResults = _boostPrefixList(searchResults, query, options.boostPrefixList);
+            boostPrefixListLower = options.boostPrefixList.map(prefix => prefix.toLowerCase());
+        }
+        if(boostPrefixListLower) {
+            searchResults = _boostPrefixList(searchResults, query.toLowerCase(), boostPrefixListLower);
         }
         return searchResults;
     }
 
-    function _computeMatchingRanges(query, searchString) {
-        let index = searchString.indexOf(query);
+    function _maybeHyphenatedSegments(query, searchString) {
+        // an exact match was not found. but maybe there are hyphenated segments. Eg.
+        // `borderroundcolor` should match `<border>-backg<round>-<color>`.
+        // const searchWithoutHyphens = searchString.replaceAll(/[-_]/g, "");
+        // todo implement
+        return null;
+    }
+
+    /**
+     * Computes matching ranges within a search string based on the provided query.
+     *
+     * @param {string} query - The query to find in the search string.
+     * @param {string} searchString - The string to find the query in.
+     *
+     * @returns {Array<{text: string, matched: boolean}>} An array of objects, where each object represents
+     *          a part of the search string. Each object has two properties: 'text' and 'matched'.
+     *          'text' is a segment of the search string, and 'matched' is a boolean indicating whether
+     *           that segment matches the query.
+     *
+     * @example // Let's assume that we have the following parameters:
+     * // query = 'color'
+     * // searchString = 'background-color: blue;'
+     * // Then, the _computeMatchingRanges() should return the following:
+     * //    [
+     * //      {
+     * //          text: 'background-', matched: false
+     * //      },
+     * //      {
+     * //          text: 'color', matched: true
+     * //      },
+     * //      {
+     * //          text: ': blue;', matched: false
+     * //      },
+     * //   ]
+     * @private
+     */
+    function _computeMatchingRanges(query= "", searchString = "") {
+        let index = searchString.toLowerCase().indexOf(query.toLowerCase());
 
         if (index === -1) {
-            return null;
+            // an exact match was not found. but maybe there are hyphenated segments. Eg.
+            // `roundcolor` should match `backg<round>-<color>`.
+            return _maybeHyphenatedSegments(query, searchString);
         }
         // now we have to find segment that matches the given query. Eg:
         // Eg: background-color: blue;
@@ -904,10 +956,10 @@ define(function (require, exports, module) {
             // query = backgou , can be split into 2 parts <backgro>und-color: blue;
             // match is at beginning
             return [{
-                text: searchString.substr(0, query.length),
+                text: searchString.slice(0, query.length),
                 matched: true
             }, {
-                text: searchString.substr(query.length),
+                text: searchString.slice(query.length),
                 matched: false
             }];
         }
@@ -915,42 +967,42 @@ define(function (require, exports, module) {
             // query = blue; , can be split into 2 parts: background-color: <blue;>
             // match is at the end
             return [{
-                text: searchString.substr(0, index),
+                text: searchString.slice(0, index),
                 matched: false
             }, {
-                text: searchString.substr(index),
+                text: searchString.slice(index),
                 matched: true
             }];
         }
         // query = color , can be split into 3 parts: background-<color>: blue;
         // middle match
         return [{
-            text: searchString.substr(0, index),
+            text: searchString.slice(0, index),
             matched: false
         }, {
             text: searchString.substring(index, index + query.length),
             matched: true
         }, {
-            text: searchString.substr(index +  query.length),
+            text: searchString.slice(index +  query.length),
             matched: false
         }];
     }
 
-    function _boostPrefixList(result, query, prefixList) {
-        if(!prefixList){
+    function _boostPrefixList(result, queryLower, prefixListLower) {
+        if(!prefixListLower){
             return result;
         }
-        const filteredPrefixMap = {};
-        for(let prefix of prefixList){
-            if(prefix.startsWith(query)){
-                filteredPrefixMap[prefix] = true;
+        const filteredPrefixMapLower = {};
+        for(let prefixLower of prefixListLower){
+            if(prefixLower.startsWith(queryLower)){
+                filteredPrefixMapLower[prefixLower] = true;
             }
         }
         const resultsWithoutPrefix = [], resultsWithPrefix = {};
-        for(let i=0; i<result.length; i++) {
-            const resultItem = result[i];
-            if(filteredPrefixMap[resultItem.label]) { // if result matches one of the prefix
-                resultsWithPrefix[resultItem.label] = resultItem;
+        for(const resultItem of result) {
+            const resultItemLabelLower = resultItem.label.toLowerCase();
+            if(filteredPrefixMapLower[resultItemLabelLower]) { // if result matches one of the prefix
+                resultsWithPrefix[resultItemLabelLower] = resultItem;
                 resultItem.matchGoodness = 100; // boosted match
             } else {
                 resultsWithoutPrefix.push(resultItem);
@@ -959,12 +1011,20 @@ define(function (require, exports, module) {
         // we have to maintain the ordering of the items in prefix list in
         // items in the result.
         const orderedPrefixResults = [];
-        for(let prefixItem of prefixList) {
-            if(resultsWithPrefix[prefixItem]){
-                orderedPrefixResults.push(resultsWithPrefix[prefixItem]);
+        for(let prefixItemLower of prefixListLower) {
+            if(resultsWithPrefix[prefixItemLower]){
+                orderedPrefixResults.push(resultsWithPrefix[prefixItemLower]);
             }
         }
         return [...orderedPrefixResults, ...resultsWithoutPrefix];
+    }
+
+    function _lowPassSimilarityTest(choiceValLower, queryLower) {
+        // tests for any continuous alphanumeric substrings after stripping any symbols
+        // Eg, query bgcol should match bg_col, bg-col, etc...
+        const strippedQuery = queryLower.replace(/[_-]/g, ""); // strip _ and -
+        const strippedChoice = choiceValLower.replace(/[_-]/g, ""); // strip _ and -
+        return strippedChoice.includes(strippedQuery);
     }
 
     function _rankCodeHints(query, choices, options) {
@@ -976,7 +1036,7 @@ define(function (require, exports, module) {
         let filteredChoices = [];
         let filteredIndices = [];
         const queryLower = query.toLowerCase();
-        let choiceVal;
+        let choiceValLower;
         let choiceSourceArray = choices;
         if(choices.compiledChoices) {
             choiceSourceArray = choices.compiledChoices;
@@ -984,8 +1044,8 @@ define(function (require, exports, module) {
         choiceSourceArray.forEach((choice, index) => {
             // if we got a compiled choice, it will have model prop which is the choice value else,
             // choice itself is the value string
-            choiceVal = choice.model || choice;
-            if (choiceVal.toLowerCase().includes(queryLower)) {
+            choiceValLower = (choice.model || choice).toLowerCase();
+            if (choiceValLower.includes(queryLower) || _lowPassSimilarityTest(choiceValLower, queryLower)) {
                 filteredChoices.push(choice);
                 filteredIndices.push(index);
             }
@@ -995,32 +1055,28 @@ define(function (require, exports, module) {
         }
 
         if(choices.compiledChoices) {
-            // recreate the filtered choice
+            // recreate the filtered compiled choice if it's a compiled choice object
             filteredChoices = {
-                compiledChoices: filteredChoices
+                compiledChoices: filteredChoices,
+                boostPrefixListLower: choices.boostPrefixListLower
             };
         }
 
         let results = rankMatchingStrings(query, filteredChoices, {
             scorer: RANK_MATCH_SCORER.RATIO,
-            cutoff: 0,
-            limit: options.limit
+            cutoff: options.cutoff,
+            limit: options.limit,
+            boostPrefixList: options.boostPrefixList
         });
-        let result, choiceAtSource;
+        let choiceAtSource;
         if(filteredIndices){
-            for(let i=0; i<results.length; i++) {
-                result = results[i];
+            for(const result of results) {
                 result.sourceIndex = filteredIndices[result.sourceIndex];
                 choiceAtSource = choiceSourceArray[result.sourceIndex];
                 if(choiceAtSource.model){ // this was a compiled choice list that was passed in
                     result.sourceIndex =  choiceAtSource.i;
                 }
-                // now find the matching segments.
-                result.stringRanges = _computeMatchingRanges(query, result.label);
             }
-        }
-        if(options.boostPrefixList) {
-            results = _boostPrefixList(results, query, options.boostPrefixList);
         }
         return results;
     }
