@@ -29,7 +29,6 @@
 import initVFS from "./init_vfs.js";
 import ERR_CODES from "./errno.js";
 import { LRUCache } from '../thirdparty/no-minify/lru-cache.js';
-import * as fuzzball from '../thirdparty/no-minify/fuzzball.esm.min.js';
 
 initVFS();
 
@@ -99,7 +98,6 @@ async function openURLInPhoenixWindow(url, {
 
 Phoenix.libs = {
     LRUCache,
-    fuzzball,
     iconv: fs.utils.iconv,
     picomatch: fs.utils.picomatch
 };

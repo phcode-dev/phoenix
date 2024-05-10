@@ -101,7 +101,6 @@
         "cross-env": "^7.0.3",
         "devicon": "^2.15.1",
         "file-saver": "^2.0.5",
-        "fuzzball": "^2.1.2",
         "idb-keyval": "^6.2.1",
         "jshint": "^2.13.5",
         "jszip": "^3.8.0",

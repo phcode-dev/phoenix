@@ -127,10 +127,6 @@ let copyThirdPartyLibs = series(
     // jsHint
     copyFiles.bind(copyFiles, ['node_modules/jshint/dist/jshint.js'], 'src/thirdparty'),
     copyLicence.bind(copyLicence, 'node_modules/jshint/LICENSE', 'jshint'),
-    // fuzzball string matcher
-    copyFiles.bind(copyFiles, ['node_modules/fuzzball/dist/esm/fuzzball.esm.min.js',
-        "node_modules/fuzzball/dist/esm/fuzzball.esm.min.d.ts"], 'src/thirdparty/no-minify/'),
-    copyLicence.bind(copyLicence, 'node_modules/fuzzball/LICENSE.md', 'fuzzball'),
     // underscore
     copyFiles.bind(copyFiles, ['node_modules/underscore/underscore-min.js'], 'src/thirdparty'),
     copyLicence.bind(copyLicence, 'node_modules/underscore/LICENSE', 'underscore'),
