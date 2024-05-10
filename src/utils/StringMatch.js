@@ -737,186 +737,14 @@ define(function (require, exports, module) {
         return result;
     }
 
-    // see scoring explanation at https://www.npmjs.com/package/fuzzball
-    const RANK_MATCH_SCORER = {
-        // ratio // "!" Stripped and lowercased in pre-processing by default
-        // ("this is a test", "This is a test!"); -> 100
-        RATIO: "ratio",
-        //Highest scoring substring of the longer string vs. the shorter string.
-        // ("test", "testing") -> 100, substring of 2nd is a perfect match of the first
-        PARTIAL_RATIO: "partial_ratio",
-        // Tokenized, sorted, and then recombined before scoring.
-        // ("fuzzy wuzzy was a bear", "wuzzy fuzzy was a bear") -> 100
-        TOKEN_SORT_RATIO: "token_sort_ratio",
-        // Highest of 3 scores comparing the set intersection,
-        // intersection + difference 1 to 2, and intersection + difference 2 to 1.
-        // Eg. token_set_ratio("fuzzy was a bear", "fuzzy fuzzy was a bear") -> 100
-        // but token_sort_ratio("fuzzy was a bear", "fuzzy fuzzy was a bear") -> 84
-        TOKEN_SET_RATIO: "token_set_ratio",
-        // Instead of sorting alphabetically, tokens will be sorted by similarity to the smaller set.
-        // Useful if the matching token may have a different first letter, but performs a bit slower.
-        // Eg. token_similarity_sort_ratio('apple cup zebrah horse foo', 'zapple cub horse bebrah bar')
-        //         68
-        // But,token_sort_ratio('apple cup zebrah horse foo', 'zapple cub horse bebrah bar')
-        //         58
-        //      token_set_ratio('apple cup zebrah horse foo', 'zapple cub horse bebrah bar')
-        //         61
-        TOKEN_SIMILARITY_SORT_RATIO: "token_similarity_sort_ratio",
-        // Unmodified Levenshtein distance without any additional ratio calculations.
-        // distance("fuzzy was a bear", "fozzy was a bear") -> 1
-        DISTANCE: "distance",
-        CODE_HINTS: "code-hints"
-    };
-
     /**
-     * Compiles the given `choices` array to be used in rankMatchingStrings() for improved performance
-     * if you are using the same choices array repeatedly. For one of cases, this compilation is
-     * not necessary and probably will add more time to process.
-     *
-     * @param {Array<string>} choices - An array containing the choices to be compiled.
-     * @param {Array[string]} [boostPrefixList] - Optional, Will rank matching items in the choices to top
-     *          if query starts with the array. EG: on typing b, we have to show background-color
-     *          to top. So we pass in ["background-color"] as boost prefix option along with other
-     *          css properties that we want to boost.
-     * @returns {{compiledChoices: Array<{model:string}>}}
-     */
-    function compileForRankMatcher(choices, boostPrefixList) {
-        const compiledChoices = [];
-        let choice;
-        for (let i=0; i<choices.length; i++) {
-            choice = choices[i];
-            compiledChoices.push({
-                i, // we store the index in source choices list too.
-                model: choice,
-                proc_sorted: fuzzball.process_and_sort(fuzzball.full_process(choice))
-            });
-        }
-        return {
-            compiledChoices,
-            boostPrefixListLower: boostPrefixList ?
-                boostPrefixList.map(prefix => prefix.toLowerCase()) : null
-        };
-    }
-
-    function _matchForEmptyQuery(choices, options) {
-        // everything is a 100% match if nothing is specified
-        let choiceArray = [];
-        if(!choices.compiledChoices){ // this is a string array
-            for (let i=0; i<choices.length; i++) {
-                choiceArray.push({i, model: choices[i]});
-            }
-            choiceArray = [...choiceArray].sort((a, b) => a.model.localeCompare(b.model));
-        } else {
-            if(!choices.compiledChoicesSorted) {
-                choices.compiledChoicesSorted = [...choices.compiledChoices]
-                    .sort((a, b) => a.model.localeCompare(b.model));
-            }
-            choiceArray = choices.compiledChoicesSorted;
-        }
-        const searchResults = [];
-        for(let i=0; i<choiceArray.length; i++) {
-            if(options.limit && i>= options.limit){
-                break;
-            }
-            let result = new SearchResult(choiceArray[i].model);
-            result.matchGoodness = 100;
-            result.sourceIndex = choiceArray[i].i;
-            searchResults.push(result);
-        }
-        return searchResults;
-    }
-
-    /**
-     * Ranks the matching strings based on the query.
-     *
-     * @param {string} query - The query string to match against.
-     * @param {Array<string> | Object} choices - The list of strings to rank or a compiled choices
-     *         list obtained by executing compileForRankMatcher().
-     * @param {{scorer: string}|{}} options - Additional options for ranking.
-     * @param {string} options.scorer - The scoring algorithm to use.
-     *          one of StringMatch.RANK_MATCH_SCORER.* constants
-     * @param {number} options.cutoff - The scoring cutoff below which results are
-     *          treated as no match. default is 0.
-     * @param {number} options.limit - The maximum number of results to return. Default is all.
-     * @param {boolean} options.excludeStringRanges - If set to true, string ranges won't be included in result
-     * @param {Array[string]} options.boostPrefixList - Will rank matching items in the choices to top
-     *          if query starts with the array. EG: on typing b, we have to show background-color
-     *          to top. So we pass in ["background-color"] as boost prefix option along with other
-     *          css properties that we want to boost.
-     * @return {Array[SearchResult]} - The best matching string ranking, sorted by top ranked
-     */
-    function rankMatchingStrings(query, choices, options) {
-        options = options || {};
-        options.scorer = options.scorer || RANK_MATCH_SCORER.RATIO;
-        options.cutoff = options.cutoff === undefined ? 0: options.cutoff;
-
-        let searchResults = [];
-        if(!query) {
-            return _matchForEmptyQuery(choices, options);
-        }
-
-        if(options.scorer === RANK_MATCH_SCORER.CODE_HINTS) {
-            return _rankCodeHints(query, choices, options);
-        }
-        const fuzzballOptions = {
-            scorer: fuzzball[options.scorer],
-            limit: options.limit
-        };
-        let fuzzQuery = query;
-        let fuzzChoices = choices;
-        if(choices.compiledChoices) {
-            fuzzChoices = choices.compiledChoices;
-            fuzzballOptions.processor = choice => choice.model;
-            fuzzQuery = fuzzball.full_process(query);
-        }
-
-        const rankedResult = fuzzball.extract(fuzzQuery, fuzzChoices, fuzzballOptions);
-        // "pointer", ["pointer: none;", "cursor: pointer;", "pointer-events: none;"]
-        // sample output is of the form:
-        //   [choice, score, index in original array] eg:
-        // [ ["pointer: none;", 74, 0],
-        //   ["cursor: pointer;", 67, 1],
-        //   [ "pointer-events: none;", 54, 2] ]
-        for(let rankResult of rankedResult) {
-            const score = rankResult[1];
-            if(score < options.cutoff) {
-                continue;
-            }
-            const resultValue = rankResult[0].model ? rankResult[0].model : rankResult[0];
-            let result = new SearchResult(resultValue);
-            result.matchGoodness = rankResult[1];
-            result.sourceIndex = rankResult[2];
-            if(!options.excludeStringRanges) {
-                result.stringRanges = _computeMatchingRanges(query, resultValue);
-            }
-            searchResults.push(result);
-        }
-        if(choices.boostPrefixListLower && options.boostPrefixList) {
-            throw new Error("Cannot specify options.boostPrefixList, it's already in the compiled choices");
-        }
-        let boostPrefixListLower = choices.boostPrefixListLower;
-        if(options.boostPrefixList) {
-            boostPrefixListLower = options.boostPrefixList.map(prefix => prefix.toLowerCase());
-        }
-        if(boostPrefixListLower) {
-            searchResults = _boostPrefixList(searchResults, query.toLowerCase(), boostPrefixListLower);
-        }
-        return searchResults;
-    }
-
-    function _maybeHyphenatedSegments(query, searchString) {
-        // an exact match was not found. but maybe there are hyphenated segments. Eg.
-        // `borderroundcolor` should match `<border>-backg<round>-<color>`.
-        // const searchWithoutHyphens = searchString.replaceAll(/[-_]/g, "");
-        // todo implement
-        return null;
-    }
-
-    /**
-     * Computes matching ranges within a search string based on the provided query.
+     * Computes matching ranges within a search string based on the provided query. By default, only contiguous
+     * ranges are included/supported.
      *
      * @param {string} query - The query to find in the search string.
      * @param {string} searchString - The string to find the query in.
+     * @param {boolean} includeNonContiguous - if set, will only include non-contiguous results.
+     *          ie: `seg<Gontinous>IsAllowed` and `non<contig>uous<Segments>Allowe<d>`. Not supported for now.
      *
      * @returns {Array<{text: string, matched: boolean}>} An array of objects, where each object represents
      *          a part of the search string. Each object has two properties: 'text' and 'matched'.
@@ -940,13 +768,16 @@ define(function (require, exports, module) {
      * //   ]
      * @private
      */
-    function _computeMatchingRanges(query= "", searchString = "") {
+    function _computeMatchingRanges(query= "", searchString = "", includeNonContiguous) {
         let index = searchString.toLowerCase().indexOf(query.toLowerCase());
 
+        if(includeNonContiguous){
+            console.error("includeNonContiguous option is not supported in _computeMatchingRanges");
+        }
         if (index === -1) {
             // an exact match was not found. but maybe there are hyphenated segments. Eg.
             // `roundcolor` should match `backg<round>-<color>`.
-            return _maybeHyphenatedSegments(query, searchString);
+            return null; // add support later
         }
         // now we have to find segment that matches the given query. Eg:
         // Eg: background-color: blue;
@@ -995,121 +826,76 @@ define(function (require, exports, module) {
         }];
     }
 
-    function _boostPrefixList(result, queryLower, prefixListLower) {
+    /**
+     * Computes the most relevant ordering for code hints
+     * @param {Array<>} result
+     * @param query
+     * @param {Array[string]} [prefixListLower] - Optional array of result values,
+     *          Will rank matching items in the choices to top
+     *          if query starts with the array. EG: on typing b, we have to show background-color
+     *          to top. So we pass in ["background-color"] as boost prefix List option along with other
+     *          css properties that we want to boost in the results.
+     * @param {number} [maxResults] - Optional maximum number of results to include in results
+     * @param {boolean} onlyContiguous - is set, will only include contiguous results.
+     *          ie: test-<bac>kcol is ok, test-<ba>ck<c>ol is not
+     * @returns {*|*[]}
+     */
+    function _codeHintsRelevanceSort(result, query, prefixListLower, maxResults, onlyContiguous) {
+        const queryLower = query.toLowerCase();
         if(!prefixListLower){
             return result;
         }
+        prefixListLower = prefixListLower.map(prefix => prefix.toLowerCase());
         const filteredPrefixMapLower = {};
         for(let prefixLower of prefixListLower){
             if(prefixLower.startsWith(queryLower)){
                 filteredPrefixMapLower[prefixLower] = true;
             }
         }
-        const resultsWithoutPrefix = [], resultsWithPrefix = {};
+        const contiguousResults = [], // Eg: background-<color> , when searching color
+            disjointResults = [], // Eg: <ba>ckground-<co>lor , when searching baco
+            resultsWithPrefix = {}; // Eg: <backgro>und-color , when searching backgro
         for(const resultItem of result) {
             const resultItemLabelLower = resultItem.label.toLowerCase();
             if(filteredPrefixMapLower[resultItemLabelLower]) { // if result matches one of the prefix
                 resultsWithPrefix[resultItemLabelLower] = resultItem;
-                resultItem.matchGoodness = 100; // boosted match
+                resultItem.matchGoodness = +Number.MAX_VALUE; // boosted match
+            } else if(resultItemLabelLower.includes(queryLower)){
+                contiguousResults.push(resultItem);
+                resultItem.matchGoodness = +Number.MAX_VALUE; // boosted match
             } else {
-                resultsWithoutPrefix.push(resultItem);
+                disjointResults.push(resultItem);
+            }
+            if(maxResults && resultsWithPrefix.length === maxResults) {
+                break; // we don't need to go any further
             }
         }
         // we have to maintain the ordering of the items in prefix list in
         // items in the result.
-        const orderedPrefixResults = [];
+        const orderedResults = [];
         for(let prefixItemLower of prefixListLower) {
             if(resultsWithPrefix[prefixItemLower]){
-                orderedPrefixResults.push(resultsWithPrefix[prefixItemLower]);
+                orderedResults.push(resultsWithPrefix[prefixItemLower]);
             }
         }
-        return [...orderedPrefixResults, ...resultsWithoutPrefix];
-    }
-
-    /**
-     * Computationally very expensive!!: checks weather query is contained in the given choice with or without
-     * hyphens- and _underscores
-     * Eg: query "bgcol" should match choice "bg-col"
-     *
-     * @param {string} choiceValLower - The lowercase choice value to test.
-     * @param {string} queryLower - The lowercase query to test against.
-     * @returns {boolean} - True if the choice value includes a continuous alphanumeric substring
-     *                      after stripping any symbols and matching the query, false otherwise.
-     * @private
-     */
-    function _hyphenatedOrSimilar(choiceValLower, queryLower) {
-        // tests for any continuous alphanumeric substrings after stripping any symbols
-        // Eg, query bgcol should match bg_col, bg-col, etc...
-        const strippedQuery = queryLower.replace(/[_-]/g, ""); // strip _ and -
-        const strippedChoice = choiceValLower.replace(/[_-]/g, ""); // strip _ and -
-        return strippedChoice.includes(strippedQuery);
-    }
-
-    function _rankCodeHints(query, choices, options) {
-        // this function is not optimized for readability and mostly optimized for
-        // fast execution. So this is a bit more complex than I like.
-        if(!query){
-            return _matchForEmptyQuery(choices, options);
-        }
-        let filteredChoices = [];
-        let filteredIndices = [];
-        const queryLower = query.toLowerCase();
-        let choiceValLower;
-        let choiceSourceArray = choices;
-        if(choices.compiledChoices) {
-            choiceSourceArray = choices.compiledChoices;
-        }
-        choiceSourceArray.forEach((choice, index) => {
-            // if we got a compiled choice, it will have model prop which is the choice value else,
-            // choice itself is the value string
-            choiceValLower = (choice.model || choice).toLowerCase();
-            if (choiceValLower.includes(queryLower) /*_lowPassSimilarityTest(choiceValLower, queryLower)*/) {
-                filteredChoices.push(choice);
-                filteredIndices.push(index);
+        let totalResultCount = orderedResults.length;
+        for(let contiguousResult of contiguousResults) {
+            if(maxResults && totalResultCount >= maxResults) {
+                break;
             }
-        });
-        if(!filteredChoices.length){
-            return [];
+            orderedResults.push(contiguousResult);
         }
-
-        if(choices.compiledChoices) {
-            // recreate the filtered compiled choice if it's a compiled choice object
-            filteredChoices = {
-                compiledChoices: filteredChoices,
-                boostPrefixListLower: choices.boostPrefixListLower
-            };
+        if(onlyContiguous) {
+            return orderedResults;
         }
-
-        // the rank matcher is very faster than our filtration for low pass similarity, so we execute the
-        // rank matcher without limits, then execute _lowPassSimilarityTest on the result till options.limit
-        // results are found.
-        let results = rankMatchingStrings(query, filteredChoices, {
-            scorer: RANK_MATCH_SCORER.RATIO,
-            cutoff: options.cutoff,
-            boostPrefixList: options.boostPrefixList,
-            excludeStringRanges: true
-        });
-        let choiceAtSource;
-        const finalResults = [];
-        if(filteredIndices){
-            for(const result of results) {
-                if(finalResults.length >= options.limit) {
-                    break;
-                }
-                if(!_hyphenatedOrSimilar(result.label.toLowerCase(), queryLower)) {
-                    // not similar strings for code hints purposes.
-                    continue;
-                }
-                result.sourceIndex = filteredIndices[result.sourceIndex];
-                choiceAtSource = choiceSourceArray[result.sourceIndex];
-                if(choiceAtSource.model){ // this was a compiled choice list that was passed in
-                    result.sourceIndex =  choiceAtSource.i;
-                }
-                result.stringRanges = _computeMatchingRanges(query, result.label);
-                finalResults.push(result);
+        for(let disjointResult of disjointResults) {
+            if(maxResults && totalResultCount >= maxResults) {
+                break;
             }
+            orderedResults.push(disjointResult);
         }
-        return finalResults;
+
+        return orderedResults;
     }
 
     /*
@@ -1272,6 +1058,45 @@ define(function (require, exports, module) {
         multiFieldSort(searchResults, { matchGoodness: 0, label: 1 });
     }
 
+    const codeHintsMatcherOptions = { preferPrefixMatches: true };
+    /**
+     * Retrieves the matching code hints based on the given query and choices array.
+     *
+     * @param {string} query - The search query to match against choices.
+     * @param {Array<string>} choices - The list of possible code hints.
+     * @param {object} options - An optional object to specify additional search options.
+     * @param {number} options.limit - Maximum number of results to return
+     * @param {Array<string>} options.boostPrefixList -Optional, Will rank matching items in the choices to top
+     *          if query starts with the array. EG: on typing b, we have to show background-color
+     *          to top. So we pass in ["background-color"] as boost prefix option along with other
+     *          css properties that we want to boost.
+     * @param {boolean} options.onlyContiguous - is set, will only include contiguous results.
+     *          ie: test-<bac>kcol is ok, test-<ba>ck<c>ol is not
+     * @return {Array<string>} - An array of matching code hints.
+     */
+    function codeHintsSort(query, choices, options) {
+        let choice;
+        let results = [];
+        for(let i=0; i<choices.length; i++) {
+            choice = choices[i];
+            const result = stringMatch(choice, query, codeHintsMatcherOptions);
+            if (result) {
+                result.sourceIndex = i;
+                results.push(result);
+            }
+        }
+        basicMatchSort(results);
+        results = _codeHintsRelevanceSort(results, query, options.boostPrefixList || [],
+            options.limit, options.onlyContiguous);
+        for(let result of results) {
+            const ranges = _computeMatchingRanges(query, result.label);
+            if(ranges){
+                result.stringRanges = ranges;
+            }
+        }
+        return results;
+    }
+
     /**
      * A StringMatcher provides an interface to the stringMatch function with built-in
      * caching. You should use a StringMatcher for the lifetime of queries over a
@@ -1367,8 +1192,6 @@ define(function (require, exports, module) {
     exports.stringMatch             = stringMatch;
     exports.basicMatchSort          = basicMatchSort;
     exports.multiFieldSort          = multiFieldSort;
+    exports.codeHintsSort           = codeHintsSort;
     exports.StringMatcher           = StringMatcher;
-    exports.rankMatchingStrings     = rankMatchingStrings;
-    exports.compileForRankMatcher   = compileForRankMatcher;
-    exports.RANK_MATCH_SCORER = RANK_MATCH_SCORER;
 });

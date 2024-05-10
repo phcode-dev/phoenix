@@ -41,8 +41,11 @@ define(function (require, exports, module) {
     require("./css-lint");
 
     const BOOSTED_PROPERTIES = [
-        "display", "position", "margin", "padding", "width", "height",
-        "background", "background-color", "color",
+        "display", "position",
+        "margin", "margin-bottom", "margin-left", "margin-right", "margin-top",
+        "padding", "padding-bottom", "padding-left", "padding-right", "padding-top",
+        "width", "height",
+        "background-color", "background", "color",
         "font-size", "font-family",
         "text-align",
         "line-height",
@@ -53,9 +56,9 @@ define(function (require, exports, module) {
         "z-index",
         "flex", "grid"
     ];
-    const MAX_CSS_HINTS = 250;
+    const MAX_CSS_HINTS = 50;
     const cssWideKeywords = ['initial', 'inherit', 'unset', 'var()', 'calc()'];
-    let computedProperties, computedPropertyKeys, compiledPropertyKeys;
+    let computedProperties, computedPropertyKeys;
 
     PreferencesManager.definePreference("codehint.CssPropHints", "boolean", true, {
         description: Strings.DESCRIPTION_CSS_PROP_HINTS
@@ -197,7 +200,7 @@ define(function (require, exports, module) {
             }
 
             if (isColorSwatch) {
-                $hintObj = ColorUtils.formatColorHint($hintObj, token.label || token.value);
+                $hintObj = ColorUtils.formatColorHint($hintObj, token.color || token.label || token.value);
             }
             if(token.MDN_URL) {
                 const $mdn = $(`<a class="css-code-hint-info" style="text-decoration: none;"
@@ -242,7 +245,6 @@ define(function (require, exports, module) {
             }
         }
         computedPropertyKeys = Object.keys(computedProperties);
-        compiledPropertyKeys = StringMatch.compileForRankMatcher(computedPropertyKeys, BOOSTED_PROPERTIES);
     }
 
     /**
@@ -331,9 +333,11 @@ define(function (require, exports, module) {
             valueArray = $.map(valueArray, function (pvalue) {
                 return pvalue.text || pvalue;
             });
-            result = StringMatch.rankMatchingStrings(valueNeedle, valueArray, {
-                scorer: StringMatch.RANK_MATCH_SCORER.CODE_HINTS,
-                limit: MAX_CSS_HINTS
+
+            result = StringMatch.codeHintsSort(valueNeedle, valueArray, {
+                limit: MAX_CSS_HINTS,
+                onlyContiguous: isColorSwatch // for color swatches, when searching for `ora` we should
+                // only hint <ora>nge and not <o>lived<ra>b (green shade)
             });
 
             return {
@@ -360,9 +364,10 @@ define(function (require, exports, module) {
                 _computeProperties();
             }
 
-            result = StringMatch.rankMatchingStrings(needle, compiledPropertyKeys, {
-                scorer: StringMatch.RANK_MATCH_SCORER.CODE_HINTS,
-                limit: MAX_CSS_HINTS
+
+            result = StringMatch.codeHintsSort(needle, computedPropertyKeys, {
+                limit: MAX_CSS_HINTS,
+                boostPrefixList: BOOSTED_PROPERTIES
             });
 
             for(let resultItem of result) {
