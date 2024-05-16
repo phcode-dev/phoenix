@@ -947,187 +947,89 @@ define(function (require, exports, module) {
             });
         });
 
-        describe("rankMatchingStrings", function () {
-            const scorers = Object.values(StringMatch.RANK_MATCH_SCORER);
+        describe("codeHintsSort", function () {
             const query = "ab",
-                choices = ["f:ab", "zy", "abx"],
-                compiledChoices = StringMatch.compileForRankMatcher(choices);
+                choices = ["f:ab", "zy", "abx"];
+            const testResult = JSON.parse(require("text!./StringMatch-test-data.json"));
             it("should rank strings without options", function () {
-                const results = StringMatch.rankMatchingStrings(query, choices);
-                expect(results).toEql(  [
-                    {"label":"abx","matchGoodness":80,"sourceIndex":2,
-                        "stringRanges":[{"text":"ab","matched":true},{"text":"x","matched":false}]},
-                    {"label":"f:ab","matchGoodness":67,"sourceIndex":0,
-                        "stringRanges":[{"text":"f:","matched":false},{"text":"ab","matched":true}]},
-                    {"label":"zy","matchGoodness":0,"sourceIndex":1,"stringRanges":null}]);
+                const results = StringMatch.codeHintsSort(query, choices);
+                expect(results).toEql(testResult.query_ab);
             });
 
-            const emptyQueryResult = [
-                {"label":"abx","matchGoodness":100,"sourceIndex":2},
-                {"label":"f:ab","matchGoodness":100,"sourceIndex":0},
-                {"label":"zy","matchGoodness":100,"sourceIndex":1}];
-            const matchResult_ab = {
-                ratio: [{"label":"abx","matchGoodness":80,"sourceIndex":2,"stringRanges":[{"text":"ab","matched":true},{"text":"x","matched":false}]},{"label":"f:ab","matchGoodness":67,"sourceIndex":0,"stringRanges":[{"text":"f:","matched":false},{"text":"ab","matched":true}]},{"label":"zy","matchGoodness":0,"sourceIndex":1,"stringRanges":null}],
-                partial_ratio: [{"label":"f:ab","matchGoodness":100,"sourceIndex":0,"stringRanges":[{"text":"f:","matched":false},{"text":"ab","matched":true}]},{"label":"abx","matchGoodness":100,"sourceIndex":2,"stringRanges":[{"text":"ab","matched":true},{"text":"x","matched":false}]},{"label":"zy","matchGoodness":0,"sourceIndex":1,"stringRanges":null}],
-                token_sort_ratio:  [{"label":"abx","matchGoodness":80,"sourceIndex":2,"stringRanges":[{"text":"ab","matched":true},{"text":"x","matched":false}]},{"label":"f:ab","matchGoodness":67,"sourceIndex":0,"stringRanges":[{"text":"f:","matched":false},{"text":"ab","matched":true}]},{"label":"zy","matchGoodness":0,"sourceIndex":1,"stringRanges":null}],
-                token_set_ratio: [{"label":"f:ab","matchGoodness":100,"sourceIndex":0,"stringRanges":[{"text":"f:","matched":false},{"text":"ab","matched":true}]},{"label":"abx","matchGoodness":80,"sourceIndex":2,"stringRanges":[{"text":"ab","matched":true},{"text":"x","matched":false}]},{"label":"zy","matchGoodness":0,"sourceIndex":1,"stringRanges":null}],
-                token_similarity_sort_ratio: [{"label":"abx","matchGoodness":80,"sourceIndex":2,"stringRanges":[{"text":"ab","matched":true},{"text":"x","matched":false}]},{"label":"f:ab","matchGoodness":67,"sourceIndex":0,"stringRanges":[{"text":"f:","matched":false},{"text":"ab","matched":true}]},{"label":"zy","matchGoodness":0,"sourceIndex":1,"stringRanges":null}],
-                distance: [{"label":"f:ab","matchGoodness":2,"sourceIndex":0,"stringRanges":[{"text":"f:","matched":false},{"text":"ab","matched":true}]},{"label":"zy","matchGoodness":2,"sourceIndex":1,"stringRanges":null},{"label":"abx","matchGoodness":1,"sourceIndex":2,"stringRanges":[{"text":"ab","matched":true},{"text":"x","matched":false}]}],
-                "code-hints": [
-                    {"label":"abx","matchGoodness":80,"sourceIndex":2,
-                        "stringRanges":[{"text":"ab","matched":true},
-                            {"text":"x","matched":false}]
-                    },{"label":"f:ab","matchGoodness":67,"sourceIndex":0,
-                        "stringRanges":[{"text":"f:","matched":false},
-                            {"text":"ab","matched":true}]}]
-            };
+            function _runChoiceTest(upperCaseTest) {
+                it(`should empty query return all choices for upperCase: ${upperCaseTest}`, function () {
+                    const results = StringMatch.codeHintsSort("", choices);
+                    expect(results).toEql(testResult.query_empty);
+                });
 
-            function _runChoiceTest(compiled, upperCaseTest) {
-                for(let i=0; i<scorers.length; i++){
-                    it(`should empty query return all choices for ${scorers[i]} compiled: ${compiled}, upperCase: ${upperCaseTest}`, function () {
-                        const results = StringMatch.rankMatchingStrings("",
-                            compiled? compiledChoices : choices, {
-                            scorer: scorers[i]
-                        });
-                        expect(results).toEql(emptyQueryResult);
-                    });
+                it(`should valid query return matched choices for upperCase: ${upperCaseTest}`, function () {
+                    const results = StringMatch.codeHintsSort(upperCaseTest ? "Ab" : "ab", choices);
+                    expect(results).toEql(testResult.result_ab);
+                });
 
-                    it(`should valid query return matched choices for ${scorers[i]} compiled: ${compiled} upperCase: ${upperCaseTest}`, function () {
-                        const results = StringMatch.rankMatchingStrings(upperCaseTest ? "Ab" : "ab",
-                            compiled ? compiledChoices : choices, {
-                            scorer: scorers[i]
-                        });
-                        expect(results).toEql(matchResult_ab[scorers[i]]);
+                it(`should boosted prefixes come first with empty queries for upperCase: ${upperCaseTest}`, function () {
+                    const results = StringMatch.codeHintsSort("", choices, {
+                        boostPrefixList: ["zy"]
                     });
+                    expect(results).toEql(testResult.result_boost_zy);
+                });
 
-                    it(`should boost prefixes have no effect with empty queries for ${scorers[i]} compiled: ${compiled} upperCase: ${upperCaseTest}`, function () {
-                        const results = StringMatch.rankMatchingStrings("",
-                            compiled? compiledChoices : choices, {
-                            scorer: scorers[i],
-                            boostPrefixList: ["f:ab"]
-                        });
-                        expect(results).toEql(emptyQueryResult);
+                it(`should boost prefixes for upperCase: ${upperCaseTest}`, function () {
+                    const choice1 = ["aby", "abx"];
+                    let results = StringMatch.codeHintsSort(upperCaseTest ? "Ab" : "ab", choice1);
+                    // we now take the top result and make the non-top result top with boost prefix.
+                    const boostPrefixVal = results[1].label;
+                    results = StringMatch.codeHintsSort(upperCaseTest ? "Ab" : "ab", choice1, {
+                        boostPrefixList: [boostPrefixVal]
                     });
+                    expect(results[0].label).toEql(boostPrefixVal);
+                });
 
-                    it(`should boost prefixes for ${scorers[i]} compiled: ${compiled} upperCase: ${upperCaseTest}`, function () {
-                        const choice1 = compiled ? StringMatch.compileForRankMatcher(["aby", "abx"]) : ["aby", "abx"];
-                        let results = StringMatch.rankMatchingStrings(upperCaseTest ? "Ab" : "ab", choice1, {
-                            scorer: scorers[i]
-                        });
-                        // we now take the top result and make the non-top result top with boost prefix.
-                        const boostPrefixVal = results[1].label;
-                        results = StringMatch.rankMatchingStrings(upperCaseTest ? "Ab" : "ab", choice1, {
-                            scorer: scorers[i],
-                            boostPrefixList: [boostPrefixVal]
-                        });
-                        expect(results[0].label).toEql(boostPrefixVal);
+                it(`should boost multiple boost prefixes for upperCase: ${upperCaseTest}`, function () {
+                    const choices1 = ["aby", "abx", "zay", "zky"];
+                    let results = StringMatch.codeHintsSort(upperCaseTest ? "Ab" : "ab", choices1);
+                    // we now take the top result and make the non-top result top with boost prefix.
+                    const boostPrefixVal1 = results[1].label;
+                    results = StringMatch.codeHintsSort(upperCaseTest ? "Z" : "z", choices1);
+                    const boostPrefixVal2 = results[1].label;
+                    results = StringMatch.codeHintsSort(upperCaseTest ? "Ab" : "ab", choices1, {
+                        boostPrefixList: [boostPrefixVal1, boostPrefixVal2]
                     });
+                    expect(results[0].label).toEql(boostPrefixVal1);
+                    results = StringMatch.codeHintsSort(upperCaseTest ? "Z" : "z", choices1, {
+                        boostPrefixList: [boostPrefixVal1, boostPrefixVal2]
+                    });
+                    expect(results[0].label).toEql(boostPrefixVal2);
+                });
 
-                    it(`should boost multiple boost prefixes for ${scorers[i]} compiled: ${compiled} upperCase: ${upperCaseTest}`, function () {
-                        if(scorers[i] === "distance"){
-                            // prefix boosting with distance is not tested for now. maybe add tests later
-                            return;
-                        }
-                        const choices1 = compiled ?
-                            StringMatch.compileForRankMatcher(["aby", "abx", "zay", "zky"]):
-                            ["aby", "abx", "zay", "zky"];
-                        let results = StringMatch.rankMatchingStrings(upperCaseTest ? "Ab" : "ab", choices1, {
-                            scorer: scorers[i]
-                        });
-                        // we now take the top result and make the non-top result top with boost prefix.
-                        const boostPrefixVal1 = results[1].label;
-                        results = StringMatch.rankMatchingStrings(upperCaseTest ? "Z" : "z", choices1, {
-                            scorer: scorers[i]
-                        });
-                        const boostPrefixVal2 = results[1].label;
-                        results = StringMatch.rankMatchingStrings(upperCaseTest ? "Ab" : "ab", choices1, {
-                            scorer: scorers[i],
-                            boostPrefixList: [boostPrefixVal1, boostPrefixVal2]
-                        });
-                        expect(results[0].label).toEql(boostPrefixVal1);
-                        results = StringMatch.rankMatchingStrings(upperCaseTest ? "Z" : "z", choices1, {
-                            scorer: scorers[i],
-                            boostPrefixList: [boostPrefixVal1, boostPrefixVal2]
-                        });
-                        expect(results[0].label).toEql(boostPrefixVal2);
+                it(`should limit work with empty queries for upperCase: ${upperCaseTest}`, function () {
+                    const results = StringMatch.codeHintsSort("", choices, {
+                        limit: 2
                     });
+                    expect(results).toEql(testResult.query_empty.slice(0, 2));
+                });
 
-                    it(`should limit work with empty queries for ${scorers[i]} compiled: ${compiled} upperCase: ${upperCaseTest}`, function () {
-                        const results = StringMatch.rankMatchingStrings("",
-                            compiled? compiledChoices : choices, {
-                            scorer: scorers[i],
-                            limit: 2
-                        });
-                        expect(results).toEql(emptyQueryResult.slice(0, 2));
+                it(`should limit work with queries for upperCase: ${upperCaseTest}`, function () {
+                    const choices1 = ["aby", "abx", "zay", "zky"];
+                    const results = StringMatch.codeHintsSort(upperCaseTest ? "A" : "a", choices1, {
+                        limit: 1
                     });
+                    expect(results.length).toEql(1);
+                });
 
-                    it(`should limit work with queries for ${scorers[i]} compiled: ${compiled} upperCase: ${upperCaseTest}`, function () {
-                        const choices1 = compiled ?
-                            StringMatch.compileForRankMatcher(["aby", "abx", "zay", "zky"]):
-                            ["aby", "abx", "zay", "zky"];
-                        const results = StringMatch.rankMatchingStrings(upperCaseTest ? "A" : "a", choices1, {
-                            scorer: scorers[i],
-                            limit: 1
-                        });
-                        expect(results.length).toEql(1);
-                    });
+                it(`should onlyContiguous work with queries for upperCase: ${upperCaseTest}`, function () {
+                    const choices1 = ["aby", "abx", "zayb", "zky"];
+                    let results = StringMatch.codeHintsSort(upperCaseTest ? "Ab" : "ab", choices1);
+                    expect(results.length).toBe(3);
 
-                    it(`should score cutoff work with queries for ${scorers[i]} compiled: ${compiled} upperCase: ${upperCaseTest}`, function () {
-                        const choices1 = compiled ?
-                            StringMatch.compileForRankMatcher(["aby", "abx", "zay", "zky"]):
-                            ["aby", "abx", "zay", "zky"];
-                        let results = StringMatch.rankMatchingStrings(upperCaseTest ? "A" : "a", choices1, {
-                            scorer: scorers[i]
-                        });
-                        const allCutoffs = results.map(result => result.matchGoodness);
-                        const cutoff = allCutoffs[1]; // median maybe
-                        results = StringMatch.rankMatchingStrings(upperCaseTest ? "A" : "a", choices1, {
-                            scorer: scorers[i],
-                            cutoff
-                        });
-                        for(let result of results) {
-                            expect(result.matchGoodness).toBeGreaterThanOrEqual(cutoff);
-                        }
+                    results = StringMatch.codeHintsSort(upperCaseTest ? "Ab" : "ab", choices1, {
+                        onlyContiguous: true
                     });
-                }
+                    expect(results.length).toBe(2);
+                });
             }
             _runChoiceTest(false);
             _runChoiceTest(true);
-            _runChoiceTest(false, true);
-            _runChoiceTest(true, true);
-
-            it("should rank strings with acceptable performance", function () {
-                const searchChoices = Object.keys(window.Strings);
-                // we search with half the string content
-                const searchQueries = searchChoices
-                    .map(choice => choice.slice(0, choice.length/2))
-                    .slice(0, 50); // we execute 100 test queries
-                const compiledchoices = StringMatch.compileForRankMatcher(Object.keys(window.Strings));
-                // To test performance of the algorithm only and not the cpu power, we do a simple
-                // includes scan to baseline the current cpu power first and then compare
-                // it to the rank matcher performance.
-                let startTimeSimplePass = Date.now();
-                for(let i=0; i<130; i++){
-                    for(let query of searchQueries) {
-                        const results = searchChoices.filter(choice =>choice.includes(query));
-                        expect(results.length >= 1).toBeTrue();
-                    }
-                }
-                let timeTakenSimplePass = (Date.now() - startTimeSimplePass);
-
-                let startTime = Date.now();
-                for(let query of searchQueries) {
-                    const results = StringMatch.rankMatchingStrings(query, compiledchoices);
-                    expect(results.length >= 1).toBeTrue();
-                }
-                let timeTakenRanker = (Date.now() - startTime);
-                // when this was written both times were quite similar in chrome/firefox- about 300ms
-                // in safari, the timeTakenSimplePass was alwas about 2x more than timeTakenRanker. So we take safety
-                // margin of larger time should be less than 3x of smaller time. If you see this test break, try to
-                // stick to the above timings or performance.
-                expect(Math.max(timeTakenSimplePass, timeTakenRanker) <
-                    (Math.min(timeTakenSimplePass, timeTakenRanker) * 3)).toBeTrue();
-            }, 5000);
         });
     });
 });

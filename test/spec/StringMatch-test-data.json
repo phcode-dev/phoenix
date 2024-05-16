@@ -1,0 +1,100 @@
+{
+  "query_ab": [
+    {
+      "label": "abx",
+      "matchGoodness": 1.7976931348623157e+308,
+      "stringRanges": [
+        {
+          "text": "ab",
+          "matched": true
+        },
+        {
+          "text": "x",
+          "matched": false
+        }
+      ],
+      "sourceIndex": 2
+    },
+    {
+      "label": "f:ab",
+      "stringRanges": [
+        {
+          "text": "f:",
+          "matched": false
+        },
+        {
+          "text": "ab",
+          "matched": true
+        }
+      ],
+      "matchGoodness": 1.7976931348623157e+308,
+      "sourceIndex": 0
+    }
+  ],
+  "query_empty": [
+    {
+      "label": "abx",
+      "matchGoodness": 1.7976931348623157e+308,
+      "sourceIndex": 2
+    },
+    {
+      "label": "f:ab",
+      "matchGoodness": 1.7976931348623157e+308,
+      "sourceIndex": 0
+    },
+    {
+      "label": "zy",
+      "matchGoodness": 1.7976931348623157e+308,
+      "sourceIndex": 1
+    }
+  ],
+  "result_ab": [
+    {
+      "label": "abx",
+      "matchGoodness": 1.7976931348623157e+308,
+      "stringRanges": [
+        {
+          "text": "ab",
+          "matched": true
+        },
+        {
+          "text": "x",
+          "matched": false
+        }
+      ],
+      "sourceIndex": 2
+    },
+    {
+      "label": "f:ab",
+      "stringRanges": [
+        {
+          "text": "f:",
+          "matched": false
+        },
+        {
+          "text": "ab",
+          "matched": true
+        }
+      ],
+      "matchGoodness": 1.7976931348623157e+308,
+      "sourceIndex": 0
+    }
+  ],
+  "result_boost_zy": [
+    {
+      "label": "zy",
+      "matchGoodness": 1.7976931348623157e+308,
+      "sourceIndex": 1
+    },
+    {
+      "label": "abx",
+      "matchGoodness": 1.7976931348623157e+308,
+      "sourceIndex": 2
+    },
+    {
+      "label": "f:ab",
+      "matchGoodness": 1.7976931348623157e+308,
+      "sourceIndex": 0
+    }
+  ]
+}

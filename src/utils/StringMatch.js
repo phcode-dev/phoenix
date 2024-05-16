@@ -900,11 +900,12 @@ define(function (require, exports, module) {
         }
         let totalResultCount = orderedResults.length;
         function _mergeResults(resultArray) {
-            for(let result of resultArray) {
+            for(let resultItem of resultArray) {
                 if(maxResults && totalResultCount >= maxResults) {
                     break;
                 }
-                orderedResults.push(result);
+                orderedResults.push(resultItem);
+                totalResultCount++;
             }
         }
 
@@ -1086,7 +1087,7 @@ define(function (require, exports, module) {
      *
      * @param {string} query - The search query to match against choices.
      * @param {Array<string>} choices - The list of possible code hints.
-     * @param {object} options - An optional object to specify additional search options.
+     * @param {object} [options] - An optional object to specify additional search options.
      * @param {number} options.limit - Maximum number of results to return
      * @param {Array<string>} options.boostPrefixList -Optional, Will rank matching items in the choices to top
      *          if query starts with the array. EG: on typing b, we have to show background-color
@@ -1099,17 +1100,24 @@ define(function (require, exports, module) {
     function codeHintsSort(query, choices, options) {
         let choice;
         let results = [];
+        options = options || {};
         for(let i=0; i<choices.length; i++) {
             choice = choices[i];
             const result = stringMatch(choice, query, codeHintsMatcherOptions);
             if (result) {
                 result.sourceIndex = i;
+                if(!query){
+                    delete result.stringRanges; // for empty query like "", we dont want to show any string ranges
+                }
                 results.push(result);
             }
         }
         basicMatchSort(results);
         results = _codeHintsRelevanceSort(results, query, options.boostPrefixList || [],
             options.limit, options.onlyContiguous);
+        if(!query){
+            return results;
+        }
         for(let result of results) {
             const ranges = _computeMatchingRanges(query, result.label);
             if(ranges){
