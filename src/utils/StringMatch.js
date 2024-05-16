@@ -24,9 +24,7 @@
 define(function (require, exports, module) {
 
 
-    const _ = require("thirdparty/lodash"),
-        // https://www.npmjs.com/package/fuzzball string matching lib
-        fuzzball = Phoenix.libs.fuzzball;
+    const _ = require("thirdparty/lodash");
 
     /*
      * Performs matching that is useful for QuickOpen and similar searches.
@@ -852,13 +850,34 @@ define(function (require, exports, module) {
                 filteredPrefixMapLower[prefixLower] = true;
             }
         }
-        const contiguousResults = [], // Eg: background-<color> , when searching color
-            disjointResults = [], // Eg: <ba>ckground-<co>lor , when searching baco
-            resultsWithPrefix = {}; // Eg: <backgro>und-color , when searching backgro
+        // Eg: <backgro>und-color , when searching backgro and if `background color` is in prefixListLower
+        const resultsWithPrefix = {},
+            // following arrays are populated for choices not in prefixListLower
+            // Eg: <color>-background , when searching color, the first position full match ranks higher
+            startingWithResults = [],
+            // Eg: background-<color>; , when searching color, will be ranked after matches at beginning position.
+            endingWithResults = [],
+            contiguousResults = [], // Eg: background-<color>-border , when searching color, internal position
+            disjointResults = []; // Eg: <ba>ckground-<co>lor , when searching baco
+        let resultItemLabelLower, fullMatchStartIndex, fullMatchIndexFromEnd;
         for(const resultItem of result) {
-            const resultItemLabelLower = resultItem.label.toLowerCase();
+            resultItemLabelLower = resultItem.label.toLowerCase();
+            fullMatchStartIndex = resultItemLabelLower.indexOf(queryLower);
+            fullMatchIndexFromEnd = -1;
+            if(fullMatchStartIndex !== -1){
+                // Eg: `back-<color>` : fullMatchIndexFromEnd = 0 and for `back-<color>;` it is 1
+                fullMatchIndexFromEnd = resultItemLabelLower.length - (fullMatchStartIndex + queryLower + 1);
+            }
             if(filteredPrefixMapLower[resultItemLabelLower]) { // if result matches one of the prefix
                 resultsWithPrefix[resultItemLabelLower] = resultItem;
+                resultItem.matchGoodness = +Number.MAX_VALUE; // boosted match
+            } else if(fullMatchStartIndex === 0){
+                // the result starts with the query string and is therefore given the highest priority
+                startingWithResults.push(resultItem);
+                resultItem.matchGoodness = +Number.MAX_VALUE; // boosted match
+            } else if(fullMatchIndexFromEnd === 0 || fullMatchIndexFromEnd === 1){
+                // Eg: `back-<color>` : fullMatchIndexFromEnd = 0 and for `back-<color>;` it is 1
+                endingWithResults.push(resultItem);
                 resultItem.matchGoodness = +Number.MAX_VALUE; // boosted match
             } else if(resultItemLabelLower.includes(queryLower)){
                 contiguousResults.push(resultItem);
@@ -873,27 +892,30 @@ define(function (require, exports, module) {
         // we have to maintain the ordering of the items in prefix list in
         // items in the result.
         const orderedResults = [];
+        // first merge the boosted prefixes
         for(let prefixItemLower of prefixListLower) {
             if(resultsWithPrefix[prefixItemLower]){
                 orderedResults.push(resultsWithPrefix[prefixItemLower]);
             }
         }
         let totalResultCount = orderedResults.length;
-        for(let contiguousResult of contiguousResults) {
-            if(maxResults && totalResultCount >= maxResults) {
-                break;
+        function _mergeResults(resultArray) {
+            for(let result of resultArray) {
+                if(maxResults && totalResultCount >= maxResults) {
+                    break;
+                }
+                orderedResults.push(result);
             }
-            orderedResults.push(contiguousResult);
         }
+
+        // now add the results in order.
+        _mergeResults(startingWithResults);
+        _mergeResults(endingWithResults);
+        _mergeResults(contiguousResults);
         if(onlyContiguous) {
             return orderedResults;
         }
-        for(let disjointResult of disjointResults) {
-            if(maxResults && totalResultCount >= maxResults) {
-                break;
-            }
-            orderedResults.push(disjointResult);
-        }
+        _mergeResults(disjointResults);
 
         return orderedResults;
     }
