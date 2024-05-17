@@ -261,10 +261,17 @@ define(function (require, exports, module) {
                 expect(testDocument.getLine(13)).toBe(" display: block");
             });
 
+            it("should insert full prop-value hint", function () {
+                testDocument.replaceRange(";", { line: 12, ch: 5 });
+                testEditor.setCursorPos({ line: 13, ch: 5 });   // cursor after 'display: '
+                selectHint(CSSCodeHints.cssPropHintProvider, "display: block;");
+                expect(testDocument.getLine(13)).toBe(" display: block;: "); // the : comes from existing location
+            });
+
             it("should insert prop-name directly after semicolon", function () {
                 testEditor.setCursorPos({ line: 10, ch: 19 });   // cursor after red;
-                selectHint(CSSCodeHints.cssPropHintProvider, "align-content");
-                expect(testDocument.getLine(10)).toBe(" border-color: red;align-content: ");
+                selectHint(CSSCodeHints.cssPropHintProvider, "display");
+                expect(testDocument.getLine(10)).toBe(" border-color: red;display: ");
             });
 
             it("should insert nothing but the closure(semicolon) if prop-value is fully written", function () {
@@ -277,9 +284,9 @@ define(function (require, exports, module) {
 
             it("should insert prop-name before an existing one", function () {
                 testEditor.setCursorPos({ line: 10, ch: 1 });   // cursor before border-color:
-                selectHint(CSSCodeHints.cssPropHintProvider, "float");
-                expect(testDocument.getLine(10)).toBe(" float:  border-color: red;");
-                expectCursorAt({ line: 10, ch: 8 });
+                selectHint(CSSCodeHints.cssPropHintProvider, "margin");
+                expect(testDocument.getLine(10)).toBe(" margin:  border-color: red;");
+                expectCursorAt({ line: 10, ch: 9 });
             });
 
             it("should insert prop-name before an existing one when invoked with an implicit character", function () {
