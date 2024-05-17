@@ -31,6 +31,8 @@ define({
     "MOVING": "Moving {0}",
     "COPYING": "Copying {0}",
     "DELETING": "Deleting {0}",
+    "DELETE_TO_TRASH": "Moving {0} to Trash",
+    "DELETE_TO_RECYCLE_BIN": "Moving {0} to Recycle Bin",
     "RENAMING": "Renaming",
     "STORED_IN_YOUR_BROWSER": "Stored in Your Browser",
     "SUPPORT_US_OPEN_COLLECTIVE": "Support us on GitHub Sponsors",
