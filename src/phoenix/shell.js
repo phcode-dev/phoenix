@@ -347,6 +347,26 @@ Phoenix.app = {
         }
         return fullOrRelativeVFSPath;
     },
+    canMoveToTrash: function(fullVFSPath) {
+        if(!Phoenix.isNativeApp || !fullVFSPath || !fullVFSPath.startsWith(Phoenix.VFS.getTauriDir())){
+            // only tauri paths can be moved to trash
+            return false;
+        }
+        return true;
+    },
+    moveToTrash: async function(fullVFSPath) {
+        if(!Phoenix.isNativeApp){
+            throw new Error("moveToTrash is not supported in browsers");
+        }
+        if(!fullVFSPath){
+            throw new Error("Please specify a path to move to trash");
+        }
+        if(!fullVFSPath.startsWith(Phoenix.VFS.getTauriDir())) {
+            throw new Error("moveToTrash only works with tauri paths, but got: "+ fullVFSPath);
+        }
+        const platformPath = Phoenix.fs.getTauriPlatformPath(fullVFSPath);
+        return window.__TAURI__.invoke('_move_to_trash', { deletePath: platformPath });
+    },
     setWindowTitle: async function (title) {
         window.document.title = title;
         if(Phoenix.isNativeApp) {
