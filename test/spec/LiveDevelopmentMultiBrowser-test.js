@@ -536,12 +536,12 @@ define(function (require, exports, module) {
             await awaitsFor(function () {
                 return editor.getSelectedText() === "indianred";
             }, "expected live hints to update selection to indianred");
-            await _waitForLivePreviewElementColor("testId", "rgb(205, 92, 92)"); // indian red
+            await _waitForLivePreviewElementColor("testId2", "rgb(205, 92, 92)"); // indian red
             SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DOWN, "keydown", testWindow.document.body);
             await awaitsFor(function () {
                 return editor.getSelectedText() === "mediumvioletred";
             }, "expected live hints to update selection to mediumvioletred");
-            await _waitForLivePreviewElementColor("testId", "rgb(199, 21, 133)");
+            await _waitForLivePreviewElementColor("testId2", "rgb(199, 21, 133)");
             return initialHistoryLength;
         }
 
@@ -578,6 +578,74 @@ define(function (require, exports, module) {
             }, "to restore the text to old state");
             // check if we have the new value
             expect(editor.getToken().string).toBe("mediumvioletred");
+
+            // the undo history should be just one above
+            expect(editor.getHistory().done.length).toBe(expectedHistoryLength +3);
+            await endPreviewSession();
+        }, 30000);
+
+        async function _livePreviewCodeHintsCSS() {
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["inline-style.html"]),
+                "SpecRunnerUtils.openProjectFiles inline-style.html");
+
+            await waitsForLiveDevelopmentToOpen();
+
+            await awaitsFor(()=> LiveDevMultiBrowser.status === LiveDevMultiBrowser.STATUS_ACTIVE,
+                "status active");
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.css"]),
+                "simple1.css");
+
+            await _openCodeHints({line: 3, ch: 8}, ["antiquewhite"]);
+
+            let editor = EditorManager.getActiveEditor();
+            const initialHistoryLength = editor.getHistory().done.length;
+            SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DOWN, "keydown", testWindow.document.body);
+            await awaitsFor(function () {
+                return editor.getSelectedText() === "antiquewhite";
+            }, "expected live hints to update selection to antiquewhite");
+            await _waitForLivePreviewElementColor("testId", "rgb(250, 235, 215)"); // antiquewhite
+            SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DOWN, "keydown", testWindow.document.body);
+            await awaitsFor(function () {
+                return editor.getSelectedText() === "aqua";
+            }, "expected live hints to update selection to aqua");
+            await _waitForLivePreviewElementColor("testId", "rgb(0, 255, 255)"); //aqua
+            return initialHistoryLength;
+        }
+
+        it("should Live preview push css code hints selection changes to browser(linked css)", async function () {
+            const expectedHistoryLength = await _livePreviewCodeHintsCSS();
+            let editor = EditorManager.getActiveEditor();
+
+            // now dismiss with escape
+            SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", testWindow.document.body);
+            await awaitsFor(function () {
+                return !testWindow.$(".codehint-menu").is(":visible");
+            }, "codehints to be hidden");
+            await awaitsFor(function () {
+                return editor.getSelectedText() === "";
+            }, "to restore the text to old state");
+            expect(editor.getToken().string).toBe(" ");
+
+            // the undo history should be same as when we started
+            expect(editor.getHistory().done.length).toBe(expectedHistoryLength);
+            await endPreviewSession();
+        }, 30000);
+
+        it("should Live preview push css code hints selection changes to browser and commit(linked css)", async function () {
+            const expectedHistoryLength = await _livePreviewCodeHintsCSS();
+            let editor = EditorManager.getActiveEditor();
+
+            // now dismiss with escape
+            SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_RETURN, "keydown", testWindow.document.body);
+            await awaitsFor(function () {
+                return !testWindow.$(".codehint-menu").is(":visible");
+            }, "codehints to be hidden");
+            await awaitsFor(function () {
+                return editor.getSelectedText() === "";
+            }, "to restore the text to old state");
+            // check if we have the new value
+            expect(editor.getToken().string).toBe("aqua");
 
             // the undo history should be just one above
             expect(editor.getHistory().done.length).toBe(expectedHistoryLength +3);
