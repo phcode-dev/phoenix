@@ -32,6 +32,9 @@ define(function (require, exports, module) {
         NewFileContentManager = brackets.getModule("features/NewFileContentManager"),
         CSSUtils            = brackets.getModule("language/CSSUtils"),
         StringMatch         = brackets.getModule("utils/StringMatch"),
+        LiveDevelopment     = brackets.getModule("LiveDevelopment/main"),
+        KeyEvent            = brackets.getModule("utils/KeyEvent"),
+        Metrics             = brackets.getModule("utils/Metrics"),
         HTMLTags            = require("text!HtmlTags.json"),
         HTMLAttributes      = require("text!HtmlAttributes.json"),
         HTMLTemplate        = require("text!template.html"),
@@ -228,7 +231,7 @@ define(function (require, exports, module) {
             hints = hints.splice(0, MAX_CLASS_HINTS);
         }
         return hints.map(function (token) {
-            let $hintObj = $("<span>").addClass("brackets-html-hints brackets-hints");
+            let $hintObj = $(`<span data-val='${token.label || token.value || token.text}'></span>`).addClass("brackets-html-hints brackets-hints");
 
             // highlight the matched portion of each hint
             if (token.stringRanges) {
@@ -334,6 +337,62 @@ define(function (require, exports, module) {
                 this.exclusion = null;
             }
         }
+    };
+
+    const HISTORY_PREFIX = "Live_hint_CSS";
+    let hintSessionId = 0, isInLiveHighlightSession = false;
+
+    AttrHints.prototype.onClose = function () {
+        if(isInLiveHighlightSession) {
+            this.editor.restoreHistoryPoint(`${HISTORY_PREFIX}${hintSessionId}`);
+            isInLiveHighlightSession = false;
+        }
+        hintSessionId++;
+    };
+
+    AttrHints.prototype.onHighlight = function ($highlightedEl, _$descriptionElem, reason) {
+        if(!reason){
+            console.error("OnHighlight called without reason, should never happen!");
+            hintSessionId++;
+            return;
+        }
+        const tokenType = this.tagInfo.position.tokenType;
+        const currentLivePreviewDetails = LiveDevelopment.getLivePreviewDetails();
+        if(!(currentLivePreviewDetails && currentLivePreviewDetails.liveDocument)
+            || !(tokenType === HTMLUtils.ATTR_VALUE && this.tagInfo.attr.name === "class")) {
+            // live hints only for live previewed page on class attribute values
+            return;
+        }
+        const currentlyEditedFile = this.editor.document.file.fullPath;
+        const livePreviewedFile = currentLivePreviewDetails.liveDocument.doc.file.fullPath;
+        if(currentlyEditedFile !== livePreviewedFile) {
+            // file is not current html file being live previewed. we dont show hints in the case
+            return;
+        }
+        if(reason.source === CodeHintManager.SELECTION_REASON.SESSION_START){
+            hintSessionId++;
+            this.editor.createHistoryRestorePoint(`${HISTORY_PREFIX}${hintSessionId}`);
+            return;
+        }
+        if(reason.source !== CodeHintManager.SELECTION_REASON.KEYBOARD_NAV){
+            return;
+        }
+        const event = reason.event;
+        if(!(event.keyCode === KeyEvent.DOM_VK_UP ||
+            event.keyCode === KeyEvent.DOM_VK_DOWN ||
+            event.keyCode === KeyEvent.DOM_VK_PAGE_UP ||
+            event.keyCode === KeyEvent.DOM_VK_PAGE_DOWN)){
+            return;
+        }
+        Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "htmlClassHint", "preview");
+        const $hintItem = $highlightedEl.find(".brackets-html-hints");
+        const highligtedValue = $highlightedEl.find(".brackets-html-hints").data("val");
+        if(!highligtedValue || !$hintItem.is(":visible")){
+            return;
+        }
+        isInLiveHighlightSession = true;
+        this.editor.restoreHistoryPoint(`${HISTORY_PREFIX}${hintSessionId}`);
+        this.insertHint($highlightedEl.find(".brackets-html-hints"), true);
     };
 
     /**
@@ -524,14 +583,14 @@ define(function (require, exports, module) {
     /**
      * Inserts a given HTML attribute hint into the current editor context.
      *
-     * @param {string} hint
+     * @param {string} completion
      * The hint to be inserted into the editor context.
      *
      * @return {boolean}
      * Indicates whether the manager should follow hint insertion with an
      * additional explicit hint request.
      */
-    AttrHints.prototype.insertHint = function (completion) {
+    AttrHints.prototype.insertHint = function (completion, isLiveHighlight) {
         var cursor = this.editor.getCursorPos(),
             start = {line: -1, ch: -1},
             end = {line: -1, ch: -1},
@@ -601,6 +660,28 @@ define(function (require, exports, module) {
         end.line = start.line = cursor.line;
         start.ch = cursor.ch - offset;
         end.ch = start.ch + charCount;
+
+        if(isLiveHighlight) {
+            // this is via user press up and down arrows when code hints is visible
+            if(!this.editor.hasSelection()){
+                this.editor.setSelection(start, end);
+            }
+            this.editor.replaceSelection(completion, 'around', "liveHints");
+            return true;
+        }
+
+        // this is commit flow
+        if(isInLiveHighlightSession) {
+            // end previous highlight session.
+            isInLiveHighlightSession = false;
+            hintSessionId++;
+        }
+
+        if(this.editor.hasSelection()){
+            // this is when user commits in a live selection
+            this.editor.replaceSelection(completion, 'end');
+            return true;
+        }
 
         if (shouldReplace) {
             if (start.ch !== end.ch) {

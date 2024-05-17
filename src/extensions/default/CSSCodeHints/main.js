@@ -182,7 +182,7 @@ define(function (require, exports, module) {
             hints = hints.splice(0, MAX_CSS_HINTS);
         }
         return hints.map(function (token) {
-            var $hintObj = $(`<span data-val='${token.label || token.value}'></span>`).addClass("brackets-css-hints brackets-hints");
+            var $hintObj = $(`<span data-val='${token.label || token.value || token.text}'></span>`).addClass("brackets-css-hints brackets-hints");
 
             // highlight the matched portion of each hint
             if (token.stringRanges) {
@@ -387,11 +387,12 @@ define(function (require, exports, module) {
         return null;
     };
 
+    const HISTORY_PREFIX = "Live_hint_";
     let hintSessionId = 0, isInLiveHighlightSession = false;
 
     CssPropHints.prototype.onClose = function () {
         if(isInLiveHighlightSession) {
-            this.editor.restoreHistoryPoint(`Live_hint_${hintSessionId}`);
+            this.editor.restoreHistoryPoint(`${HISTORY_PREFIX}${hintSessionId}`);
             isInLiveHighlightSession = false;
         }
         hintSessionId++;
@@ -421,7 +422,7 @@ define(function (require, exports, module) {
         }
         if(reason.source === CodeHintManager.SELECTION_REASON.SESSION_START){
             hintSessionId++;
-            this.editor.createHistoryRestorePoint(`Live_hint_${hintSessionId}`);
+            this.editor.createHistoryRestorePoint(`${HISTORY_PREFIX}${hintSessionId}`);
             return;
         }
         if(reason.source !== CodeHintManager.SELECTION_REASON.KEYBOARD_NAV){
@@ -441,7 +442,7 @@ define(function (require, exports, module) {
             return;
         }
         isInLiveHighlightSession = true;
-        this.editor.restoreHistoryPoint(`Live_hint_${hintSessionId}`);
+        this.editor.restoreHistoryPoint(`${HISTORY_PREFIX}${hintSessionId}`);
         this.insertHint($highlightedEl.find(".brackets-css-hints"), true);
     };
 
