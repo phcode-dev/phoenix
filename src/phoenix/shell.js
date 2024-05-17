@@ -365,7 +365,7 @@ Phoenix.app = {
             throw new Error("moveToTrash only works with tauri paths, but got: "+ fullVFSPath);
         }
         const platformPath = Phoenix.fs.getTauriPlatformPath(fullVFSPath);
-        return window.__TAURI__.invoke('_move_to_trash', { deletePath: platformPath });
+        return window.__TAURI__.invoke('move_to_trash', { deletePath: platformPath });
     },
     setWindowTitle: async function (title) {
         window.document.title = title;

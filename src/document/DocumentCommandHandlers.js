@@ -1894,6 +1894,7 @@ define(function (require, exports, module) {
                 if (id === Dialogs.DIALOG_BTN_OK) {
                     if(Phoenix.isNativeApp && canMoveToTrash) {
                         Phoenix.app.moveToTrash(entry.fullPath);
+                        return;
                     }
                     ProjectManager.deleteItem(entry);
                 }
