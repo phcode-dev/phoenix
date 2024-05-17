@@ -1358,6 +1358,35 @@ define(function (require, exports, module) {
         return actionCreator.startCreating(baseDir, initialName, isFolder);
     }
 
+    function moveToTrash(entry) {
+        const result = new $.Deferred();
+        const canMoveToTrash = Phoenix.app.canMoveToTrash(entry.fullPath);
+        if(!canMoveToTrash){
+            console.error("Only tauri paths can be moved to trash, but got", entry.fullPath);
+            result.reject(FileSystemError.NOT_SUPPORTED);
+            return result.promise();
+        }
+        let name = _getProjectDisplayNameOrPath(entry.fullPath);
+        const messageTemplate = Phoenix.platform === "win" ?
+            Strings.DELETE_TO_RECYCLE_BIN : Strings.DELETE_TO_TRASH;
+        let message = StringUtils.format(messageTemplate, name);
+        setProjectBusy(true, message);
+        Phoenix.app.moveToTrash(entry.fullPath)
+            .then(()=>{
+                DocumentManager.notifyPathDeleted(entry.fullPath);
+                let parent = window.path.dirname(entry.fullPath);
+                _updateModelWithChange(parent);
+                result.resolve();
+            }).catch(err=>{
+                _showErrorDialog(ERR_TYPE_DELETE, entry.isDirectory, FileUtils.getFileErrorString(err), entry.fullPath);
+                result.reject(err);
+            }).finally(()=>{
+                setProjectBusy(false, message);
+            });
+
+        return result.promise();
+    }
+
     /**
      * Delete file or directore from project
      * @param {!(File|Directory)} entry File or Directory to delete
@@ -2165,6 +2194,7 @@ define(function (require, exports, module) {
     exports.createNewItem                 = createNewItem;
     exports.renameItemInline              = renameItemInline;
     exports.deleteItem                    = deleteItem;
+    exports.moveToTrash                   = moveToTrash;
     exports.forceFinishRename             = forceFinishRename;
     exports.showInTree                    = showInTree;
     exports.shouldShowFileNameInTree      = ProjectModel._shouldShowName;

@@ -1893,7 +1893,7 @@ define(function (require, exports, module) {
             .done(function (id) {
                 if (id === Dialogs.DIALOG_BTN_OK) {
                     if(Phoenix.isNativeApp && canMoveToTrash) {
-                        Phoenix.app.moveToTrash(entry.fullPath);
+                        ProjectManager.moveToTrash(entry);
                         return;
                     }
                     ProjectManager.deleteItem(entry);
