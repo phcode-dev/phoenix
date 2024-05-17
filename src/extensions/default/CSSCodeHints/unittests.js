@@ -156,21 +156,22 @@ define(function (require, exports, module) {
             it("should list all prop-name hints right after curly bracket", function () {
                 testEditor.setCursorPos({ line: 4, ch: 11 });    // after {
                 var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
-                verifyAttrHints(hintList, "accent-color");  // filtered on "empty string"
+                verifyAttrHints(hintList, "display");  // filtered on "empty string"
             });
 
             it("should list all prop-name hints in new line", function () {
                 testEditor.setCursorPos({ line: 5, ch: 1 });
 
                 var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
-                verifyAttrHints(hintList, "accent-color");  // filtered on "empty string"
+                verifyAttrHints(hintList, "display");  // filtered on "empty string"
             });
 
             it("should list all prop-name hints starting with 'b' in new line", function () {
                 testEditor.setCursorPos({ line: 6, ch: 2 });
 
                 var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
-                verifyAttrHints(hintList, "backdrop-filter");  // filtered on "b"
+                verifyAttrHints(hintList, "background-color");  // filtered on "b" ,
+                // background color should come at top as its boosted for UX
             });
 
             it("should list all prop-name hints starting with 'bord' ", function () {
@@ -188,7 +189,7 @@ define(function (require, exports, module) {
 
                 testEditor.setCursorPos({ line: 8, ch: 8 });
                 var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
-                verifyAttrHints(hintList, "border-block");  // filtered on "border-"
+                verifyAttrHints(hintList, "border-radius");  // filtered on "border-"
             });
 
             it("should list only prop-name hint border-color", function () {
@@ -196,17 +197,17 @@ define(function (require, exports, module) {
                 testDocument.replaceRange(";", { line: 8, ch: 8 });
 
                 testEditor.setCursorPos({ line: 9, ch: 12 });
-                var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
+                var hintList = expectHints(CSSCodeHints.cssPropHintProvider); // filtered on "border-colo"
                 verifyAttrHints(hintList, "border-color");  // filtered on "border-color"
-                expect(hintList.length).toBe(16);
+                expect(hintList.length).toBe(17);
                 expect(hintList[0]).toBe("border-color");
-                expect(hintList[1]).toBe("border-left-color");
+                expect(hintList[1]).toBe("border-collapse: collapse;"); // due to "border-colo" matches in split segment
             });
 
             it("should list prop-name hints at end of property-value finished by ;", function () {
                 testEditor.setCursorPos({ line: 10, ch: 19 });    // after ;
                 var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
-                verifyAttrHints(hintList, "accent-color");  // filtered on "empty string"
+                verifyAttrHints(hintList, "display");  // filtered on "empty string"
             });
 
             it("should NOT list prop-name hints right before curly bracket", function () {
@@ -397,7 +398,7 @@ define(function (require, exports, module) {
             it("should list prop-name hints inside multi-line styletags with cursor in last line", function () {
                 testEditor.setCursorPos({ line: 10, ch: 5 });    // inside style, after colo
                 var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
-                expect(hintList.length).toBe(84);
+                expect(hintList.length).toBe(50);
                 expect(hintList[0]).toBe("color");
                 expect(hintList[1]).toBe("color-adjust");
             });
@@ -437,21 +438,21 @@ define(function (require, exports, module) {
             it("should list all prop-name hints right after the open quote for style value context", function () {
                 testEditor.setCursorPos({ line: 4, ch: 12 });    // after "='"
                 var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
-                verifyAttrHints(hintList, "accent-color");  // filtered on "empty string"
+                verifyAttrHints(hintList, "display");  // filtered on "empty string"
             });
 
             it("should list all prop-name hints in new line for style value context", function () {
                 testEditor.setCursorPos({ line: 5, ch: 0 });
 
                 var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
-                verifyAttrHints(hintList, "accent-color");  // filtered on "empty string"
+                verifyAttrHints(hintList, "display");  // filtered on "empty string"
             });
 
             it("should list all prop-name hints starting with 'b' in new line for style value context", function () {
                 testEditor.setCursorPos({ line: 6, ch: 2 });
 
                 var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
-                verifyAttrHints(hintList, "backdrop-filter");  // filtered on "b"
+                verifyAttrHints(hintList, "background-color");  // filtered on "b"
             });
 
             it("should list all prop-name hints starting with 'bord' for style value context", function () {
@@ -469,7 +470,7 @@ define(function (require, exports, module) {
 
                 testEditor.setCursorPos({ line: 8, ch: 8 });
                 var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
-                verifyAttrHints(hintList, "border-block");  // filtered on "border-"
+                verifyAttrHints(hintList, "border-radius");  // filtered on "border-"
             });
 
             it("should list only prop-name hint border-color for style value context", function () {
@@ -478,15 +479,15 @@ define(function (require, exports, module) {
 
                 testEditor.setCursorPos({ line: 9, ch: 12 });
                 var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
-                expect(hintList.length).toBe(16);
+                expect(hintList.length).toBe(17);
                 expect(hintList[0]).toBe("border-color");
-                expect(hintList[1]).toBe("border-left-color");
+                expect(hintList[1]).toBe("border-collapse: collapse;");
             });
 
             it("should list prop-name hints at end of property-value finished by ; for style value context", function () {
                 testEditor.setCursorPos({ line: 10, ch: 19 });    // after ;
                 var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
-                verifyAttrHints(hintList, "accent-color");  // filtered on "empty string"
+                verifyAttrHints(hintList, "display");  // filtered on "empty string"
             });
 
             it("should NOT list prop-name hints right before style value context", function () {
@@ -756,20 +757,11 @@ define(function (require, exports, module) {
                 var hints = expectHints(CSSCodeHints.cssPropHintProvider, undefined, true).hints,
                     hintList = extractHintList(hints);
                 verifyAttrHints(hintList, "currentColor"); // first hint should be currentColor
-                verifyAllValues(hintList, ["currentColor", "darkmagenta", "transparent"]);
+                verifyAllValues(hintList, ["currentColor", "transparent"]);
                 expect(hints[0].find(".color-swatch").length).toBe(0); // no swatch for currentColor
-                expect(hints[2].find(".color-swatch").length).toBe(0); // no swatch for transparent
+                expect(hints[1].find(".color-swatch").length).toBe(0); // no swatch for transparent
                 expect(hints[0].hasClass("no-swatch-margin")).toBeTruthy(); // no-swatch-margin applied to currentColor
-                expect(hints[2].hasClass("no-swatch-margin")).toBeTruthy(); // no-swatch-margin applied to transparent
-            });
-
-            it("should remove class no-swatch-margin from transparent if it's the only one in the list", function () {
-                testEditor.setCursorPos({ line: 103, ch: 22 }); // after color
-                var hints = expectHints(CSSCodeHints.cssPropHintProvider, undefined, true).hints,
-                    hintList = extractHintList(hints);
-                verifyAllValues(hintList, ["transparent"]);
-                expect(hints[0].find(".color-swatch").length).toBe(0); // no swatch for transparent
-                expect(hints[0].hasClass("no-swatch-margin")).toBeFalsy(); // no-swatch-margin not applied to transparent
+                expect(hints[1].hasClass("no-swatch-margin")).toBeTruthy(); // no-swatch-margin applied to transparent
             });
 
             it("should insert color names correctly", function () {

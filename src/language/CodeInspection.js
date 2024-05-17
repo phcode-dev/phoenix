@@ -555,6 +555,9 @@ define(function (require, exports, module) {
      * @param {?string} providerName name of the provider that is requesting a run
      */
     function run() {
+        if(!problemsPanel){
+            return;
+        }
         if (!_enabled) {
             _hasErrors = false;
             _currentPromise = null;
