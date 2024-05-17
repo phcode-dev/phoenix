@@ -112,7 +112,7 @@ define(function (require, exports, module) {
         removeContentProvider = _providerRegistrationHandler.removeProvider.bind(_providerRegistrationHandler);
 
     function _getContent(results, providerInfos) {
-        console.log(results, providerInfos);
+        console.log("New File content: ", results, "Providers", providerInfos);
         for(let i=0; i< results.length; i++){
             // providers are already sorted in descending priority order
             let result = results[i];
