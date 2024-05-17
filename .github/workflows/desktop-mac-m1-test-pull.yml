@@ -27,6 +27,8 @@ jobs:
           npm run release:dev
 
       - name: Download phoenix desktop and build test runner
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           cd ..
           git clone https://github.com/phcode-dev/phoenix-desktop.git
