@@ -667,7 +667,7 @@ define(function (require, exports, module) {
             );
         }
 
-        async function _livePreviewCodeHintsHTMLCSSClass(onlyOnce) {
+        async function _livePreviewCodeHintsHTMLCSSClass(onlyOnce, position = {line: 15, ch: 24}) {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["inline-style.html"]),
                 "SpecRunnerUtils.openProjectFiles inline-style.html");
 
@@ -676,62 +676,85 @@ define(function (require, exports, module) {
             await awaitsFor(()=> LiveDevMultiBrowser.status === LiveDevMultiBrowser.STATUS_ACTIVE,
                 "status active");
 
-            await _openCodeHints({line: 15, ch: 24}, ["testClass2", "testClass"]);
+            await _openCodeHints(position, ["testClass2", "testClass"]);
 
             let editor = EditorManager.getActiveEditor();
             const initialHistoryLength = editor.getHistory().done.length;
+            const $ = testWindow.$;
+            let initialSelectedCodeHint = $($(".code-hints-list-item .highlight .brackets-html-hints")).text();
             SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DOWN, "keydown", testWindow.document.body);
             await awaitsFor(function () {
-                return editor.getSelectedText() === "testClass2";
-            }, "expected live hints to update selection to testClass2");
-            await _waitForLivePreviewElementClass("testId", "testClass2");
+                let newSelectedCodeHint = $($(".code-hints-list-item .highlight .brackets-html-hints")).text();
+                return newSelectedCodeHint !== initialSelectedCodeHint &&
+                    editor.getSelectedText() === newSelectedCodeHint;
+            }, "expected live hints to update selection to next code hint");
+            let newSelectedCodeHint = $($(".code-hints-list-item .highlight .brackets-html-hints")).text();
+            await _waitForLivePreviewElementClass("testId", newSelectedCodeHint);
             if(onlyOnce){
                 return initialHistoryLength;
             }
             SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DOWN, "keydown", testWindow.document.body);
             await awaitsFor(function () {
-                return editor.getSelectedText() === "testClass";
-            }, "expected live hints to update selection to testClass");
-            await _waitForLivePreviewElementClass("testId", "testClass");
+                let newSelectedCodeHint2 = $($(".code-hints-list-item .highlight .brackets-html-hints")).text();
+                return newSelectedCodeHint !== newSelectedCodeHint2 &&
+                    editor.getSelectedText() === newSelectedCodeHint2;
+            }, "expected live hints to update selection");
+            let newSelectedCodeHint2 = $($(".code-hints-list-item .highlight .brackets-html-hints")).text();
+            await _waitForLivePreviewElementClass("testId", newSelectedCodeHint2);
             return initialHistoryLength;
         }
 
-        it("should Live preview push html css class code hints selection changes to browser", async function () {
-            const expectedHistoryLength = await _livePreviewCodeHintsHTMLCSSClass();
+        async function _testAtPos(pos, endKey = KeyEvent.DOM_VK_ESCAPE, onlyOnce = false,
+            additionalHistoryLengthExpected = 0) {
+            const expectedHistoryLength = await _livePreviewCodeHintsHTMLCSSClass(onlyOnce, pos);
             let editor = EditorManager.getActiveEditor();
 
             // now dismiss with escape
-            SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", testWindow.document.body);
+            const $ = testWindow.$;
+            let selectedCodeHint = $($(".code-hints-list-item .highlight .brackets-html-hints")).text();
+            expect(selectedCodeHint).toBeDefined();
+            SpecRunnerUtils.simulateKeyEvent(endKey, "keydown", testWindow.document.body);
             await awaitsFor(function () {
                 return !testWindow.$(".codehint-menu").is(":visible");
             }, "codehints to be hidden");
             await awaitsFor(function () {
                 return editor.getSelectedText() === "";
             }, "to restore the text to old state");
-            expect(editor.getToken().string).toBe('"testClass"');
 
-            // the undo history should be same as when we started
-            expect(editor.getHistory().done.length).toBe(expectedHistoryLength);
+            // the undo history should be what we expect
+            expect(editor.getHistory().done.length).toBe(expectedHistoryLength + additionalHistoryLengthExpected);
+            return selectedCodeHint;
+        }
+
+        it("should Live preview push html css class code hints selection changes to browser", async function () {
+            //<p id="testId" class="t<cursor>estClass ">Brackets is awesome!</p>
+            await _testAtPos({line: 15, ch: 24});
+            let editor = EditorManager.getActiveEditor();
+            expect(editor.getToken().string).toBe('"testClass "');
+            await endPreviewSession();
+        }, 30000);
+
+        it("should Live preview push html css class code hints on empty input selection changes to browser", async function () {
+            //<p id="testId" class="testClass <cursor>">Brackets is awesome!</p>
+            await _testAtPos({line: 15, ch: 32});
+            let editor = EditorManager.getActiveEditor();
+            expect(editor.getToken().string).toBe('"testClass "');
             await endPreviewSession();
         }, 30000);
 
         it("should Live preview push html css class code hints selection changes to browser and commit", async function () {
-            const expectedHistoryLength = await _livePreviewCodeHintsHTMLCSSClass(true);
+            //<p id="testId" class="t<cursor>estClass ">Brackets is awesome!</p>
+            await _testAtPos({line: 15, ch: 24}, KeyEvent.DOM_VK_RETURN, true, 3);
             let editor = EditorManager.getActiveEditor();
+            expect(editor.getToken().string).toBe('"testClass2 "');
+            await endPreviewSession();
+        }, 30000);
 
-            // now dismiss with escape
-            SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_RETURN, "keydown", testWindow.document.body);
-            await awaitsFor(function () {
-                return !testWindow.$(".codehint-menu").is(":visible");
-            }, "codehints to be hidden");
-            await awaitsFor(function () {
-                return editor.getSelectedText() === "";
-            }, "to restore the text to old state");
-            // check if we have the new value
-            expect(editor.getToken().string).toBe('"testClass2"');
-
-            // the undo history should be just one above
-            expect(editor.getHistory().done.length).toBe(expectedHistoryLength +3);
+        it("should Live preview push html css class code hints on empty input selection changes to browser and commit", async function () {
+            //<p id="testId" class="testClass <cursor>">Brackets is awesome!</p>
+            const selectedHint = await _testAtPos({line: 15, ch: 32},  KeyEvent.DOM_VK_RETURN, true, 2);
+            let editor = EditorManager.getActiveEditor();
+            expect(editor.getToken().string).toBe(`"testClass ${selectedHint}"`);
             await endPreviewSession();
         }, 30000);
 
