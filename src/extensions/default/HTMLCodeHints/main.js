@@ -664,6 +664,11 @@ define(function (require, exports, module) {
         if(isLiveHighlight) {
             // this is via user press up and down arrows when code hints is visible
             if(!this.editor.hasSelection()){
+                const initialOffset = this.tagInfo.position.offset;
+                textAfterCursor = this.tagInfo.attr.value.substr(initialOffset);
+                let firstSegment = textAfterCursor.split(" ");
+                firstSegment = firstSegment[0]; // "name"
+                end.ch = end.ch + firstSegment.length;
                 this.editor.setSelection(start, end);
             }
             this.editor.replaceSelection(completion, 'around', "liveHints");
