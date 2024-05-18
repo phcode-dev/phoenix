@@ -652,6 +652,89 @@ define(function (require, exports, module) {
             await endPreviewSession();
         }, 30000);
 
+        async function _waitForLivePreviewElementClass(elementID, classExpected) {
+            let result;
+            await awaitsFor(
+                async function isColorChanged() {
+                    const response = await LiveDevProtocol.evaluate(
+                        `document.getElementById('${elementID}').classList.contains('${classExpected}')`);
+                    result = JSON.parse(response.result||"");
+                    return result === true;
+                },
+                `element #${elementID} to have class ${classExpected}`,
+                5000,
+                50
+            );
+        }
+
+        async function _livePreviewCodeHintsHTMLCSSClass(onlyOnce) {
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["inline-style.html"]),
+                "SpecRunnerUtils.openProjectFiles inline-style.html");
+
+            await waitsForLiveDevelopmentToOpen();
+
+            await awaitsFor(()=> LiveDevMultiBrowser.status === LiveDevMultiBrowser.STATUS_ACTIVE,
+                "status active");
+
+            await _openCodeHints({line: 15, ch: 24}, ["testClass2", "testClass"]);
+
+            let editor = EditorManager.getActiveEditor();
+            const initialHistoryLength = editor.getHistory().done.length;
+            SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DOWN, "keydown", testWindow.document.body);
+            await awaitsFor(function () {
+                return editor.getSelectedText() === "testClass2";
+            }, "expected live hints to update selection to testClass2");
+            await _waitForLivePreviewElementClass("testId", "testClass2");
+            if(onlyOnce){
+                return initialHistoryLength;
+            }
+            SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DOWN, "keydown", testWindow.document.body);
+            await awaitsFor(function () {
+                return editor.getSelectedText() === "testClass";
+            }, "expected live hints to update selection to testClass");
+            await _waitForLivePreviewElementClass("testId", "testClass");
+            return initialHistoryLength;
+        }
+
+        it("should Live preview push html css class code hints selection changes to browser", async function () {
+            const expectedHistoryLength = await _livePreviewCodeHintsHTMLCSSClass();
+            let editor = EditorManager.getActiveEditor();
+
+            // now dismiss with escape
+            SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", testWindow.document.body);
+            await awaitsFor(function () {
+                return !testWindow.$(".codehint-menu").is(":visible");
+            }, "codehints to be hidden");
+            await awaitsFor(function () {
+                return editor.getSelectedText() === "";
+            }, "to restore the text to old state");
+            expect(editor.getToken().string).toBe('"testClass"');
+
+            // the undo history should be same as when we started
+            expect(editor.getHistory().done.length).toBe(expectedHistoryLength);
+            await endPreviewSession();
+        }, 30000);
+
+        it("should Live preview push html css class code hints selection changes to browser and commit", async function () {
+            const expectedHistoryLength = await _livePreviewCodeHintsHTMLCSSClass(true);
+            let editor = EditorManager.getActiveEditor();
+
+            // now dismiss with escape
+            SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_RETURN, "keydown", testWindow.document.body);
+            await awaitsFor(function () {
+                return !testWindow.$(".codehint-menu").is(":visible");
+            }, "codehints to be hidden");
+            await awaitsFor(function () {
+                return editor.getSelectedText() === "";
+            }, "to restore the text to old state");
+            // check if we have the new value
+            expect(editor.getToken().string).toBe('"testClass2"');
+
+            // the undo history should be just one above
+            expect(editor.getHistory().done.length).toBe(expectedHistoryLength +3);
+            await endPreviewSession();
+        }, 30000);
+
         it("should Live preview work even if we switch html files", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
                 "SpecRunnerUtils.openProjectFiles simple1.html");
