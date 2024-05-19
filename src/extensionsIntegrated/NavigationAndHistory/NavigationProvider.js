@@ -42,8 +42,9 @@ define(function (require, exports, module) {
     var KeyboardPrefs = JSON.parse(require("text!./keyboard.json"));
 
     // Command constants for navigation history
-    var NAVIGATION_JUMP_BACK      = "navigation.jump.back",
-        NAVIGATION_JUMP_FWD       = "navigation.jump.fwd";
+    const NAVIGATION_JUMP_BACK      = "navigation.jump.back",
+        NAVIGATION_JUMP_FWD       = "navigation.jump.fwd",
+        _NAVIGATION_RESET_FOR_TESTS       = "navigation.jump.reset.tests";
 
     // The latency time to capture an explicit cursor movement as a navigation frame
     var MAX_NAV_FRAMES_COUNT = 50;
@@ -130,7 +131,9 @@ define(function (require, exports, module) {
             fileEntry.exists(function (err, exists) {
                 if (!err && exists) {
                     // Additional check to handle external modification and mutation of the doc text affecting markers
-                    if (fileEntry._hash !== entry._hash) {
+                    if(entry.nonEditorView){
+                        deferred.resolve(); // no markers, file exists, valid
+                    } else if (fileEntry._hash !== entry._hash) {
                         deferred.reject();
                     } else if (!entry._validateMarkers()) {
                         deferred.reject();
@@ -440,6 +443,7 @@ define(function (require, exports, module) {
     * Command handler to navigate backward
     */
     function _navigateBack(skipCurrentFile) {
+        let deferred = new $.Deferred();
         let navFrame = jumpBackwardStack.pop();
         let currentEditNavFrame = _getCurrentEditNavFrame();
 
@@ -463,21 +467,25 @@ define(function (require, exports, module) {
                 CommandManager.execute(NAVIGATION_JUMP_BACK);
             }).always(function () {
                 _validateNavigationCmds();
+                deferred.resolve();
             });
         } else {
             jumpBackwardStack.push(currentEditNavFrame);
+            deferred.resolve();
         }
+        return deferred.promise();
     }
 
    /**
     * Command handler to navigate forward
     */
     function _navigateForward(skipCurrentFile) {
+        let deferred = new $.Deferred();
         let navFrame = jumpForwardStack.pop();
         let currentEditNavFrame = _getCurrentEditNavFrame();
 
         if (!navFrame) {
-            return;
+            return new $.Deferred().resolve().promise();
         }
 
         // Check if the poped frame is the current active frame or doesn't have any valid marker information
@@ -501,8 +509,12 @@ define(function (require, exports, module) {
                 CommandManager.execute(NAVIGATION_JUMP_FWD);
             }).always(function () {
                 _validateNavigationCmds();
+                deferred.resolve();
             });
+        } else {
+            deferred.resolve();
         }
+       return deferred.promise();
     }
 
    /**
@@ -522,6 +534,9 @@ define(function (require, exports, module) {
     function _initNavigationCommands() {
         CommandManager.register(Strings.CMD_NAVIGATE_BACKWARD, NAVIGATION_JUMP_BACK, _navigateBack);
         CommandManager.register(Strings.CMD_NAVIGATE_FORWARD, NAVIGATION_JUMP_FWD, _navigateForward);
+        if(Phoenix.isTestWindow){
+            CommandManager.register("reset nav forward and back for tests", _NAVIGATION_RESET_FOR_TESTS, _clearStacks);
+        }
         commandJumpBack = CommandManager.get(NAVIGATION_JUMP_BACK);
         commandJumpFwd = CommandManager.get(NAVIGATION_JUMP_FWD);
         commandJumpBack.setEnabled(false);
@@ -589,6 +604,7 @@ define(function (require, exports, module) {
     function _clearStacks() {
         jumpBackwardStack = [];
         jumpForwardStack = [];
+        _validateNavigationCmds();
     }
 
     /**
@@ -634,12 +650,15 @@ define(function (require, exports, module) {
         }
     }
 
-    function _currentFileChanged(_evt, currentFile, currentPane) {
+    function _currentFileChanged(_evt) {
+        if(jumpInProgress) {
+            return;
+        }
         // We may not always have an active editor to navigate, For Eg: image/video or other custom views
         // have its onw non-editor views. This section is to handle those cases.
         const activeFullEditor = EditorManager.getCurrentFullEditor();
         if(activeFullEditor){
-            return;
+            return; // this is a text file with codemirror editor, this is handled by _handleActiveEditorChange
         }
         const currentEditNavFrame = _getCurrentEditNavFrame();
         let lastBack = jumpBackwardStack.pop();
@@ -648,6 +667,7 @@ define(function (require, exports, module) {
             jumpBackwardStack.push(lastBack);
         }
         jumpBackwardStack.push(currentEditNavFrame);
+        jumpForwardStack = [];
         _validateNavigationCmds();
     }
 

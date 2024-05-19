@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, beforeAll, afterAll, awaitsForDone, beforeEach, awaits, awaitsFor */
+/*global describe, it, expect, beforeAll, afterAll, awaitsForDone, beforeEach, awaits, awaitsFor, path */
 
 define(function (require, exports, module) {
     // Recommended to avoid reloading the integration test window Phoenix instance for each test.
@@ -245,5 +245,118 @@ define(function (require, exports, module) {
         //     }, "waiting for restore notification", 5000);
         //     await closeSession();
         // }, 1000000);
+    });
+    describe("integration:Navigation back/forward integration tests", function () {
+
+        const testProjectPath = SpecRunnerUtils.getTestPath("/spec/quickview-extn-test-files");
+        const NAVIGATION_JUMP_BACK      = "navigation.jump.back",
+            NAVIGATION_JUMP_FWD       = "navigation.jump.fwd",
+            _NAVIGATION_RESET_FOR_TESTS       = "navigation.jump.reset.tests";
+
+        let FileViewController,     // loaded from brackets.test
+            CommandManager,
+            Commands,
+            testWindow,
+            MainViewManager,
+            brackets,
+            $;
+
+        beforeAll(async function () {
+            testWindow = await SpecRunnerUtils.createTestWindowAndRun();
+            brackets            = testWindow.brackets;
+            $                   = testWindow.$;
+            FileViewController  = brackets.test.FileViewController;
+            CommandManager      = brackets.test.CommandManager;
+            Commands            = brackets.test.Commands;
+            MainViewManager     = brackets.test.MainViewManager;
+        }, 30000);
+
+        beforeEach(async ()=>{
+            await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE_ALL, { _forceClose: true }),
+                "closing all file");
+            await SpecRunnerUtils.closeTestWindow();
+            await SpecRunnerUtils.loadProjectInTestWindow(testProjectPath);
+        });
+
+        afterAll(async function () {
+            FileViewController  = null;
+            testWindow = null;
+            brackets = null;
+            $ = null;
+            MainViewManager = null;
+            Commands = null;
+            CommandManager = null;
+            await SpecRunnerUtils.closeTestWindow();
+        }, 30000);
+
+        async function openFile(relativePath) {
+            await awaitsForDone(
+                FileViewController.openAndSelectDocument(
+                    path.join(testProjectPath, relativePath),
+                    FileViewController.PROJECT_MANAGER
+                ));
+        }
+
+        async function _expectNavButton(backDisabled, fwdDisabled, message) {
+            await awaitsFor(()=>{
+                const navBackDisabledState = $("#navBackButton").hasClass("nav-back-btn-disabled");
+                const navFwdDisabledState = $("#navForwardButton").hasClass("nav-forward-btn-disabled");
+                return navBackDisabledState === backDisabled && navFwdDisabledState === fwdDisabled;
+            }, message || "For the nav buttons state to be updated");
+            expect($("#navBackButton").hasClass("nav-back-btn-disabled")).toBe(backDisabled);
+            expect($("#navForwardButton").hasClass("nav-forward-btn-disabled")).toBe(fwdDisabled);
+        }
+
+        async function _validateActiveFile(relativePath) {
+            await awaitsFor(()=>{
+                return MainViewManager.getCurrentlyViewedFile().fullPath === path.join(testProjectPath, relativePath);
+            }, "Active file to be " + relativePath);
+        }
+
+        async function navigateBack() {
+            await awaitsForDone(CommandManager.execute(NAVIGATION_JUMP_BACK), "To navigate back");
+        }
+
+        async function navigateForward() {
+            await awaitsForDone(CommandManager.execute(NAVIGATION_JUMP_FWD), "To navigate forward");
+        }
+        async function navigateResetStack() {
+            await awaitsForDone(CommandManager.execute(_NAVIGATION_RESET_FOR_TESTS), "reset nav stacks");
+        }
+
+        async function _validateNavForFiles(file1, file2, file3) {
+            await openFile("img/update_large_icon.svg"); // we open this just to have the first file back button
+            // on first time, because of a race condition, the back button may(enabled but does nothing) or
+            // may not be enabled. we cant test for this, so we just open a random file as control
+            await openFile(file1);
+            await openFile(file2);
+            await _expectNavButton(false, true, "nav back only enabled");
+            await navigateBack();
+            await _validateActiveFile(file1);
+            await _expectNavButton(false, false, "both enabled");
+            await navigateForward();
+            await _validateActiveFile(file2);
+            await _expectNavButton(false, true, "nav back only enabled");
+            await navigateBack();
+            await _validateActiveFile(file1);
+            await _expectNavButton(false, false, "both enabled");
+            await openFile(file3);
+            await _expectNavButton(false, true, "nav forward disabled due to new file open");
+        }
+        
+        it("Should navigate back and forward between text files", async function () {
+            await navigateResetStack();
+            await _validateNavForFiles("test.css", "test.html", "test.js");
+        }, 15000);
+
+        it("Should navigate back and forward between image files", async function () {
+            await navigateResetStack();
+            await _validateNavForFiles("img/Color.png", "img/grabber_color-well.png", "img/throbber.gif");
+        }, 15000);
+
+        it("Should navigate back and forward between image and text files", async function () {
+            await navigateResetStack();
+            await _validateNavForFiles("test.css", "img/grabber_color-well.png", "test.js");
+        }, 15000);
     });
 });
