@@ -74,7 +74,9 @@ define(function (require, exports, module) {
         const result = new $.Deferred();
 
         file.read({bypassCache: bypassCache}, function (err, data, _encoding, stat) {
-            if (!err) {
+            if(typeof data !== "string"){
+                result.reject(FileSystemError.UNSUPPORTED_ENCODING);
+            } else if (!err) {
                 result.resolve(data, stat.mtime);
             } else {
                 result.reject(err);
