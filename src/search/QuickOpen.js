@@ -40,6 +40,7 @@ define(function (require, exports, module) {
         Commands            = require("command/Commands"),
         ProjectManager      = require("project/ProjectManager"),
         LanguageManager     = require("language/LanguageManager"),
+        FileSystemError     = require("filesystem/FileSystemError"),
         ModalBar            = require("widgets/ModalBar").ModalBar,
         QuickSearchField    = require("search/QuickSearchField").QuickSearchField,
         StringMatch         = require("utils/StringMatch"),
@@ -863,7 +864,9 @@ define(function (require, exports, module) {
             .done(function (oldDoc) {
                 oldDoc.off("languageChanged.quickFindDefinition");
             }).fail(function (err) {
-                console.error(err);
+                if(err !== FileSystemError.UNSUPPORTED_ENCODING) {
+                    console.error(err);
+                }
             });
     });
 
