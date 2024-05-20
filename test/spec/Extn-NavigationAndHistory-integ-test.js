@@ -358,5 +358,17 @@ define(function (require, exports, module) {
             await navigateResetStack();
             await _validateNavForFiles("test.css", "img/grabber_color-well.png", "test.js");
         }, 15000);
+
+        it("Should navigate back and forward even after all files closed", async function () {
+            await navigateResetStack();
+            await _validateNavForFiles("test.css", "test.html", "test.js");
+
+            await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE_ALL, { _forceClose: true }),
+                "closing all files");
+            await _expectNavButton(false, true, "nav back only enabled");
+            await navigateBack();
+            await _validateActiveFile("test.js");
+            await _expectNavButton(false, true, "nav back only enabled");
+        }, 15000);
     });
 });
