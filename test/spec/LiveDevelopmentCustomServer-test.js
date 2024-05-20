@@ -917,6 +917,34 @@ define(function (require, exports, module) {
             await endPreviewSession();
         }, 30000);
 
+        it("should custom server banner appear on SSR files only if live preview panel is open", async function () {
+            const testPath = await SpecRunnerUtils.getTempTestDirectory(
+                "/spec/LiveDevelopment-MultiBrowser-test-files", true);
+            await SpecRunnerUtils.loadProjectInTestWindow(testPath);
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "open simple1.html");
+            await waitsForLiveDevelopmentToOpen();
+
+            // now close the live preview panel by clicking on live preview extension icon
+            let livePreviewBtn = testWindow.$(testWindow.document.getElementById("toolbar-go-live"));
+            livePreviewBtn.click();
+            expect(WorkspaceManager.isPanelVisible('live-preview-panel')).toBeFalse();
+            const serverFile =  `php.php`;
+            await _createAnOpenFile(testPath, serverFile);
+            await awaits(50);
+            // the banner should not be shown
+            expect(testWindow.$(".live-preview-settings").is(":visible")).toBeFalse();
+
+            // now bring back the live preview panel, the banner should become visible
+            livePreviewBtn.click();
+            expect(WorkspaceManager.isPanelVisible('live-preview-panel')).toBeTrue();
+            await _forBannerAppear(serverFile);
+            testWindow.$(".close-icon").click();
+            await _forBannerClose(serverFile);
+
+            await endPreviewSession();
+        }, 30000);
+
         it("should custom server banner close on project switch", async function () {
             const testPath = await SpecRunnerUtils.getTempTestDirectory(
                 "/spec/LiveDevelopment-MultiBrowser-test-files", true);
