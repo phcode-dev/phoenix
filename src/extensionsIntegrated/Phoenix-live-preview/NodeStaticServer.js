@@ -588,13 +588,22 @@ define(function (require, exports, module) {
 
     function _getExternalPreviewURL(fullPath) {
         if(utils.isHTMLFile(fullPath)) {
-            return getNoPreviewURL(Strings.DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED,
-                Strings.DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED_DETAILS);
+            return {
+                url: getNoPreviewURL(Strings.DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED,
+                    Strings.DESCRIPTION_LIVEDEV_PREVIEW_RESTRICTED_DETAILS),
+                isNoPreview: true
+            };
         }
         if(!utils.isPreviewableFile(fullPath)){
-            return getNoPreviewURL();
+            return {
+                url: getNoPreviewURL(),
+                isNoPreview: true
+            };
         }
-        return `${staticServerURL}externalProject/${path.basename(fullPath)}`;
+        return {
+            url: `${staticServerURL}externalProject/${path.basename(fullPath)}`,
+            isNoPreview: false
+        };
     }
 
     function getTabPopoutURL(url) {
@@ -635,8 +644,10 @@ define(function (require, exports, module) {
                 let fullPath = currentFile.fullPath;
                 if(!ProjectManager.isWithinProject(fullPath)){
                     // external project file. Use secure external preview link.
+                    const preview = _getExternalPreviewURL(fullPath);
                     resolve({
-                        URL: _getExternalPreviewURL(fullPath),
+                        URL: preview.url,
+                        isNoPreview: preview.isNoPreview,
                         filePath: fullPath,
                         fullPath: fullPath,
                         isMarkdownFile: utils.isMarkdownFile(fullPath),
