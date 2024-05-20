@@ -428,7 +428,7 @@ define(function (require, exports, module) {
     function _getCurrentEditNavFrame() {
         const currentFullEditor = EditorManager.getCurrentFullEditor();
         const currentlyViewedFile = MainViewManager.getCurrentlyViewedFile();
-        let currentEditNavFrame;
+        let currentEditNavFrame = null;
         if(currentFullEditor){
             currentEditNavFrame = new NavigationFrame(EditorManager.getCurrentFullEditor(),
                 {ranges: EditorManager.getCurrentFullEditor()._codeMirror.listSelections()});
@@ -450,10 +450,10 @@ define(function (require, exports, module) {
         // Check if the poped frame is the current active frame or doesn't have any valid marker information
         // if true, jump again
         while (navFrame && navFrame === currentEditNavFrame
-        ||(navFrame && navFrame.filePath === currentEditNavFrame.filePath
+        ||(navFrame && currentEditNavFrame && navFrame.filePath === currentEditNavFrame.filePath
             && _isSimilarSelection(navFrame.selections, currentEditNavFrame.selections)
             && _isSimilarBookmarks(navFrame.bookMarkIds, currentEditNavFrame.bookMarkIds))
-        ||(skipCurrentFile && navFrame && navFrame.filePath === currentEditNavFrame.filePath)) {
+        ||(skipCurrentFile && navFrame && currentEditNavFrame && navFrame.filePath === currentEditNavFrame.filePath)) {
             navFrame = jumpBackwardStack.pop();
         }
 
@@ -461,7 +461,9 @@ define(function (require, exports, module) {
             // We will check for the file existence now, if it doesn't exist we will jump back again
             // but discard the popped frame as invalid.
             _validateFrame(navFrame).done(function () {
-                jumpForwardStack.push(currentEditNavFrame);
+                if(currentEditNavFrame) {
+                    jumpForwardStack.push(currentEditNavFrame);
+                }
                 navFrame.goTo();
             }).fail(function () {
                 CommandManager.execute(NAVIGATION_JUMP_BACK);
@@ -470,7 +472,9 @@ define(function (require, exports, module) {
                 deferred.resolve();
             });
         } else {
-            jumpBackwardStack.push(currentEditNavFrame);
+            if(currentEditNavFrame){
+                jumpBackwardStack.push(currentEditNavFrame);
+            }
             deferred.resolve();
         }
         return deferred.promise();
@@ -491,10 +495,10 @@ define(function (require, exports, module) {
         // Check if the poped frame is the current active frame or doesn't have any valid marker information
         // if true, jump again
         while (navFrame === currentEditNavFrame
-        ||(navFrame && navFrame.filePath === currentEditNavFrame.filePath
+        ||(navFrame && currentEditNavFrame && navFrame.filePath === currentEditNavFrame.filePath
             && _isSimilarSelection(navFrame.selections ,currentEditNavFrame.selections)
             && _isSimilarBookmarks(navFrame.bookMarkIds, currentEditNavFrame.bookMarkIds))
-        ||(skipCurrentFile && navFrame && navFrame.filePath === currentEditNavFrame.filePath)) {
+        ||(skipCurrentFile && navFrame && currentEditNavFrame && navFrame.filePath === currentEditNavFrame.filePath)) {
             navFrame = jumpForwardStack.pop();
         }
 
@@ -502,7 +506,9 @@ define(function (require, exports, module) {
             // We will check for the file existence now, if it doesn't exist we will jump back again
             // but discard the popped frame as invalid.
             _validateFrame(navFrame).done(function () {
-                jumpBackwardStack.push(currentEditNavFrame);
+                if(currentEditNavFrame){
+                    jumpBackwardStack.push(currentEditNavFrame);
+                }
                 navFrame.goTo();
             }).fail(function () {
                 _validateNavigationCmds();
@@ -666,7 +672,9 @@ define(function (require, exports, module) {
             // make sure that we don't push in duplicates
             jumpBackwardStack.push(lastBack);
         }
-        jumpBackwardStack.push(currentEditNavFrame);
+        if(currentEditNavFrame) {
+            jumpBackwardStack.push(currentEditNavFrame);
+        }
         jumpForwardStack = [];
         _validateNavigationCmds();
     }
