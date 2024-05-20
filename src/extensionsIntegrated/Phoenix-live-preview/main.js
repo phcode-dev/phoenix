@@ -589,16 +589,6 @@ define(function (require, exports, module) {
             _togglePinUrl();
         }
         $iframe.attr('src', StaticServer.getNoPreviewURL());
-        if(!panelShownAtStartup && !isBrowser){
-            // we dont do this in browser as the virtual server may not yet be started on app start
-            // project open and a 404 page will briefly flash in the browser!
-            const currentDocument = DocumentManager.getCurrentDocument();
-            const currentFile = currentDocument? currentDocument.file : ProjectManager.getSelectedItem();
-            const isPreviewable = currentFile ? utils.isPreviewableFile(currentFile.fullPath) : false;
-            if(isPreviewable){
-                _setPanelVisibility(true);
-            }
-        }
         if(!panel.isVisible()){
             return;
         }
@@ -661,10 +651,14 @@ define(function (require, exports, module) {
         }
         if(changedFile && (utils.isPreviewableFile(fullPath) ||
             utils.isServerRenderedFile(fullPath))){
-            if(!panelShownAtStartup){
-                _setPanelVisibility(true);
-            }
             _loadPreview();
+            if(!panelShownAtStartup){
+                let previewDetails = await StaticServer.getPreviewDetails();
+                if(previewDetails && !previewDetails.isNoPreview) {
+                    _setPanelVisibility(true);
+                    _loadPreview();
+                }
+            }
         }
     }
 
@@ -748,6 +742,8 @@ define(function (require, exports, module) {
             return;
         }
         panelShownAtStartup = !LivePreviewSettings.shouldShowLivePreviewAtStartup();
+        Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "atStart",
+            LivePreviewSettings.shouldShowLivePreviewAtStartup() ? "show" : "hide");
         _createExtensionPanel();
         StaticServer.init();
         LiveDevServerManager.registerServer({ create: _createStaticServer }, 5);
