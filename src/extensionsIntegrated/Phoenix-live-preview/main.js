@@ -250,6 +250,7 @@ define(function (require, exports, module) {
             $icon.toggleClass("active");
             panel.show();
             _loadPreview(true);
+            _showCustomServerBannerIfNeeded();
         } else {
             $icon.toggleClass("active");
             _blankIframe();
@@ -688,9 +689,18 @@ define(function (require, exports, module) {
         }
     }
 
+    function _showCustomServerBannerIfNeeded() {
+        const editor = EditorManager.getActiveEditor();
+        if(!editor || !_shouldShowCustomServerBar(editor.document.file.fullPath)){
+            return;
+        }
+        _showCustomServerBar();
+    }
+
     function _shouldShowCustomServerBar(fullPath) {
         const isBannerAck = StateManager.get(STATE_CUSTOM_SERVER_BANNER_ACK, StateManager.PROJECT_CONTEXT);
-        if(isBannerAck || LivePreviewSettings.isUsingCustomServer()){
+        let panelVisible = panel && panel.isVisible();
+        if(isBannerAck || LivePreviewSettings.isUsingCustomServer() || !panelVisible){
             return false;
         }
         return utils.isServerRenderedFile(fullPath);
