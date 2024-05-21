@@ -221,7 +221,10 @@ function initCodeEditor() {
     };
     document.getElementById("defaultProjectButton").onclick = function() {
         Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "main.Click", "default-project");
-        openProject(newProjectExtension.getWelcomeProjectPath());
+        newProjectExtension.setupStartupProject()
+            .then(()=>{
+                openProject(newProjectExtension.getWelcomeProjectPath());
+            }).catch(console.error);
     };
 
     const banner = document.getElementById("download-phcode-banner");

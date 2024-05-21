@@ -77,7 +77,11 @@ define(function (require, exports, module) {
      * Add a project to the stored list of recent projects, up to MAX_PROJECTS.
      */
     function add() {
-        var root = FileUtils.stripTrailingSlash(ProjectManager.getProjectRoot().fullPath),
+        const projectToAdd = ProjectManager.getProjectRoot().fullPath;
+        if(projectToAdd === ProjectManager.getPlaceholderProjectPath()){
+            return;
+        }
+        var root = FileUtils.stripTrailingSlash(projectToAdd),
             recentProjects = getRecentProjects(),
             index = recentProjects.indexOf(root);
 

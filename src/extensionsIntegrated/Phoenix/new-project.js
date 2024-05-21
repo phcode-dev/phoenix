@@ -59,6 +59,9 @@ define(function (require, exports, module) {
         if(window.testEnvironment){
             return;
         }
+        if(newProjectDialogueObj && newProjectDialogueObj.isVisible()){
+            return;
+        }
         let templateVars = {
             Strings: Strings,
             newProjectURL: `${window.Phoenix.baseURL}assets/new-project/code-editor.html`
@@ -117,6 +120,14 @@ define(function (require, exports, module) {
         }
         return true;
     }
+
+    function projectOpened() {
+        if(ProjectManager.getProjectRoot().fullPath === ProjectManager.getPlaceholderProjectPath()){
+            _showNewProjectDialogue();
+        }
+    }
+
+    ProjectManager.on(ProjectManager.EVENT_AFTER_PROJECT_OPEN, projectOpened);
 
     function init() {
         _addMenuEntries();
@@ -388,6 +399,7 @@ define(function (require, exports, module) {
     exports.showFolderSelect = showFolderSelect;
     exports.showErrorDialogue = showErrorDialogue;
     exports.setupExploreProject = defaultProjects.setupExploreProject;
+    exports.setupStartupProject = defaultProjects.setupStartupProject;
     exports.alreadyExists = window.Phoenix.VFS.existsAsync;
     exports.Metrics = Metrics;
     exports.EVENT_NEW_PROJECT_DIALOGUE_CLOSED = "newProjectDlgClosed";
