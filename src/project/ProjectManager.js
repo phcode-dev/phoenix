@@ -742,8 +742,8 @@ define(function (require, exports, module) {
         return ProjectModel._ensureTrailingSlash(Phoenix.VFS.getDefaultProjectDir());
     }
 
-    function _getPlaceholderProjectPath() {
-        return "/no_project_loaded";
+    function getPlaceholderProjectPath() {
+        return "/no_project_loaded/";
     }
 
     function getExploreProjectPath() {
@@ -1151,7 +1151,8 @@ define(function (require, exports, module) {
         });
     }
 
-    function _loadWelcomeProject(welcomeProjectPath) {
+    function _loadWelcomeProject() {
+        const welcomeProjectPath = getWelcomeProjectPath();
         const result = new $.Deferred();
         const rootEntry = FileSystem.getDirectoryForPath(welcomeProjectPath);
         function _loadRootEntry() {
@@ -1159,28 +1160,34 @@ define(function (require, exports, module) {
                 .done(result.resolve)
                 .fail(result.reject);
         }
+        function _loadPlaceholderProject() {
+            // default project could not be created. As a last ditch effort to continue boot, we will
+            // use a vfs path `/no_project_loaded` to continue boot.
+            Phoenix.VFS.ensureExistsDir(getPlaceholderProjectPath(), (placeHolderErr)=>{
+                if(placeHolderErr){
+                    window.logger.reportError(placeHolderErr, "Error creating /no_project_loaded");
+                    alert("Unrecoverable error, startup project could not be created.");
+                    return;
+                }
+                const placeholderProject = FileSystem.getDirectoryForPath(getPlaceholderProjectPath());
+                _loadExistingProject(placeholderProject)
+                    .done(result.resolve)
+                    .fail(result.reject);
+            });
+        }
         rootEntry.exists(function (err, exists) {
             if (exists) {
                 _loadRootEntry();
             } else {
-                // create the welcome project
+                // create the welcome project only on first boot in desktop builds. The user may delete the phoenix
+                // project directory as he doesn't want phoenix folders in his documents. we should respect that.
+                if(Phoenix.isNativeApp && !Phoenix.firstBoot) {
+                    _loadPlaceholderProject();
+                    return;
+                }
                 _createDefaultProject()
                     .then(_loadRootEntry)
-                    .catch(()=>{
-                        // default project could not be created. As a last ditch effort to continue boot, we will
-                        // use a vfs path `/no_project_loaded` to continue boot.
-                        Phoenix.VFS.ensureExistsDir(_getPlaceholderProjectPath(), (placeHolderErr)=>{
-                            if(placeHolderErr){
-                                window.logger.reportError(placeHolderErr, "Error creating /no_project_loaded");
-                                alert("Unrecoverable error, startup project could not be created.");
-                                return;
-                            }
-                            const placeholderProject = FileSystem.getDirectoryForPath(_getPlaceholderProjectPath());
-                            _loadExistingProject(placeholderProject)
-                                .done(result.resolve)
-                                .fail(result.reject);
-                        });
-                    });
+                    .catch(_loadPlaceholderProject);
             }
         });
         return result.promise();
@@ -1255,7 +1262,7 @@ define(function (require, exports, module) {
         }
         if(rootPath === getWelcomeProjectPath()) {
             // welcome project path is always guaranteed to be present!
-            return _loadWelcomeProject(rootPath);
+            return _loadWelcomeProject();
         }
         return _loadProjectInternal(rootPath);
     }
@@ -2220,6 +2227,7 @@ define(function (require, exports, module) {
     exports.getStartupProjectPath         = getStartupProjectPath;
     exports.getProjectRelativePath        = getProjectRelativePath;
     exports.getWelcomeProjectPath         = getWelcomeProjectPath;
+    exports.getPlaceholderProjectPath     = getPlaceholderProjectPath;
     exports.getExploreProjectPath         = getExploreProjectPath;
     exports.getLocalProjectsPath          = getLocalProjectsPath;
     exports.isWelcomeProjectPath          = isWelcomeProjectPath;

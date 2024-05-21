@@ -246,6 +246,16 @@ define(function (require, exports, module) {
     };
 
     /**
+     * Determines whether the dialog is currently shown. Note that even if other dialogs occlude this dialog when
+     * multiple dialogs are shown, this will still return true.
+     *
+     * @returns {boolean} true if the dialog is visible, false otherwise.
+     */
+    Dialog.prototype.isVisible = function () {
+        return this._$dlg.is(":visible");
+    };
+
+    /**
      * The dialog promise
      * @type {$.Promise}
      */
