@@ -2189,6 +2189,9 @@ define(function (require, exports, module) {
         Phoenix.app.setSingleInstanceCLIArgsHandler(_singleInstanceHandler);
         _openFilesPassedInFromCLI()
             .finally(()=>{
+                // in mac, this is not exactly correct. This event will get triggered on startup, but mac will only
+                // raise events in the background and there is no way for us to know when the mac open with events
+                // come. Use this event carefully in mac.
                 ProjectManager.trigger(ProjectManager.EVENT_AFTER_STARTUP_FILES_LOADED);
             });
     });
