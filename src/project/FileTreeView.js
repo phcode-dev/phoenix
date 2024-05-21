@@ -37,12 +37,7 @@ define(function (require, exports, module) {
         LanguageManager   = require("language/LanguageManager"),
         FileTreeViewModel = require("project/FileTreeViewModel"),
         ViewUtils         = require("utils/ViewUtils"),
-        KeyEvent          = require("utils/KeyEvent"),
-        EventDispatcher     = require("utils/EventDispatcher");
-
-    EventDispatcher.makeEventDispatcher(exports);
-
-    const EVENT_FILE_NODE_CLICKED_IN_TREE = "fileNodeClickedInTree";
+        KeyEvent          = require("utils/KeyEvent");
 
     var DOM = Preact.DOM;
 
@@ -588,7 +583,6 @@ define(function (require, exports, module) {
             }
             this.props.actions.setSelected(this.myPath(), doNotOpen);
             this.render();
-            exports.trigger(EVENT_FILE_NODE_CLICKED_IN_TREE);
         },
 
         /**
@@ -1337,6 +1331,4 @@ define(function (require, exports, module) {
     exports.addClassesProvider = addClassesProvider;
     exports.render = render;
 
-    // private events
-    exports._EVENT_FILE_NODE_CLICKED_IN_TREE = EVENT_FILE_NODE_CLICKED_IN_TREE;
 });

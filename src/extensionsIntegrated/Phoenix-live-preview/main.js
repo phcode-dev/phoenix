@@ -789,20 +789,14 @@ define(function (require, exports, module) {
         let fileChangeListenerStartDelay = 0;
         if(Phoenix.isNativeApp && Phoenix.platform === "mac") {
             // in mac, if we do the `open with Phoenix Code` from finder, then, the open with events come as events
-            // after app start. This causes a problem where if we opens a txt file with open with, and and html file was
+            // after app start. This causes a problem where if we open a txt file with open with, and an html file was
             // open previously, then currentFileChange listener will see the html file at first and open the live
             // preview panel, and immediately, the txt file event will be sent by os resulting in a no preview page.
             // we should not show a no preview page for opening txt / non-previewable files. So, we dont attach the
-            // change listener in macos for a few seconds, and attach the listener if the user explicitly clicks on a
-            // file.
-            fileChangeListenerStartDelay = 500;
-            ProjectManager.on(ProjectManager.EVENT_FILE_CLICKED_SIDEBAR, ()=>{
-                MainViewManager.off("currentFileChange", _currentFileChanged);
-                MainViewManager.on("currentFileChange", _currentFileChanged);
-            });
+            // change listener in macos for a second to give some time for the os event to reach.
+            fileChangeListenerStartDelay = 600;
         }
         setTimeout(()=>{
-            MainViewManager.off("currentFileChange", _currentFileChanged);
             MainViewManager.on("currentFileChange", _currentFileChanged);
             if(Phoenix.isNativeApp && Phoenix.platform === "mac" && MainViewManager.getCurrentlyViewedFile()) {
                 _currentFileChanged(null, MainViewManager.getCurrentlyViewedFile());
