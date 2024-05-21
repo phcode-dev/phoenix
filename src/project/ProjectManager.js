@@ -793,53 +793,6 @@ define(function (require, exports, module) {
     }
 
     /**
-     * After failing to load a project, this function determines which project path to fallback to.
-     * @return {$.Promise} Promise that resolves to a project path {string}
-     */
-    function _getFallbackProjectPath() {
-        var fallbackPaths = [],
-            recentProjects = PreferencesManager.getViewState("recentProjects") || [],
-            deferred = new $.Deferred();
-
-        // Build ordered fallback path array
-        if (recentProjects.length > 1) {
-            // *Most* recent project is the one that just failed to load, so use second most recent
-            fallbackPaths.push(recentProjects[1]);
-        }
-
-        // Next is Getting Started project
-        fallbackPaths.push(getWelcomeProjectPath());
-
-        // Helper func for Async.firstSequentially()
-        function processItem(path) {
-            var deferred = new $.Deferred(),
-                fileEntry = FileSystem.getDirectoryForPath(path);
-
-            fileEntry.exists(function (err, exists) {
-                if (!err && exists) {
-                    deferred.resolve();
-                } else {
-                    deferred.reject();
-                }
-            });
-
-            return deferred.promise();
-        }
-
-        // Find first path that exists
-        Async.firstSequentially(fallbackPaths, processItem)
-            .done(function (fallbackPath) {
-                deferred.resolve(fallbackPath);
-            })
-            .fail(function () {
-                // Last resort is Brackets source folder which is guaranteed to exist
-                deferred.resolve(FileUtils.getNativeBracketsDirectoryPath());
-            });
-
-        return deferred.promise();
-    }
-
-    /**
      * @deprecated use getStartupProjectPath instead. Can be removed anytime after 2-Apr-2023.
      * Initial project path is stored in prefs, which defaults to the welcome project on
      * first launch.
@@ -1251,17 +1204,11 @@ define(function (require, exports, module) {
                         // which is now partially torn down (see #6574).
                         model.projectRoot = null;
 
-                        // The project folder stored in preference doesn't exist, so load the default
-                        // project directory.
-                        // TODO (issue #267): When Brackets supports having no project directory
-                        // defined this code will need to change
-                        _getFallbackProjectPath().done(function (path) {
-                            _loadProject(path).always(function () {
-                                // Make sure not to reject the original deferred until the fallback
-                                // project is loaded, so we don't violate expectations that there is always
-                                // a current project before continuing after _loadProject().
-                                result.reject();
-                            });
+                        _loadProject(getWelcomeProjectPath()).always(function () {
+                            // Make sure not to reject the original deferred until the fallback
+                            // project is loaded, so we don't violate expectations that there is always
+                            // a current project before continuing after _loadProject().
+                            result.reject();
                         });
                     });
             }
