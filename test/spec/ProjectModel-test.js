@@ -264,24 +264,6 @@ define(function (require, exports, module) {
             });
         });
 
-        describe("_getWelcomeProjectPath", function () {
-            it("returns the initial directory if there's no sample URL", function () {
-                expect(ProjectModel._getWelcomeProjectPath(undefined, "/Brackets/")).toBe("/Brackets/");
-            });
-
-            it("returns the correct sample directory", function () {
-                expect(ProjectModel._getWelcomeProjectPath("root/GettingStarted/", "/Brackets/")).toBe(
-                    "/Brackets/samples/root/GettingStarted/"
-                );
-            });
-
-            it("ensures there's a trailing slash for backwards compatibility", function () {
-                expect(ProjectModel._getWelcomeProjectPath("root/GettingStarted", "/Brackets/")).toBe(
-                    "/Brackets/samples/root/GettingStarted/"
-                );
-            });
-        });
-
         describe("_addWelcomeProjectPath", function () {
             it("adds the path to a new array", function () {
                 var currentProjects = ["GettingStarted"];

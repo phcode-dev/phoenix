@@ -1462,25 +1462,6 @@ define(function (require, exports, module) {
     /**
      * @private
      *
-     * Returns the full path to the welcome project, which we open on first launch.
-     *
-     * @param {string} sampleUrl URL for getting started project
-     * @param {string} initialPath Path to Brackets directory (see {@link FileUtils::#getNativeBracketsDirectoryPath})
-     * @return {!string} fullPath reference
-     */
-    function _getWelcomeProjectPath(sampleUrl, initialPath) {
-        if (sampleUrl) {
-            // Back up one more folder. The samples folder is assumed to be at the same level as
-            // the src folder, and the sampleUrl is relative to the samples folder.
-            initialPath = initialPath.substr(0, initialPath.lastIndexOf("/")) + "/samples/" + sampleUrl;
-        }
-
-        return _ensureTrailingSlash(initialPath); // paths above weren't canonical
-    }
-
-    /**
-     * @private
-     *
      * Adds the path to the list of welcome projects we've ever seen, if not on the list already.
      *
      * @param {string} path Path to possibly add
@@ -1527,7 +1508,6 @@ define(function (require, exports, module) {
     }
 
     // private APIs
-    exports._getWelcomeProjectPath  = _getWelcomeProjectPath;
     exports._addWelcomeProjectPath  = _addWelcomeProjectPath;
     exports._isWelcomeProjectPath   = _isWelcomeProjectPath;
     exports._ensureTrailingSlash    = _ensureTrailingSlash;

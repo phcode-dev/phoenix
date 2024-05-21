@@ -95,6 +95,17 @@ function _setupVFS(fsLib, pathLib){
                 });
             });
         },
+        ensureExistsDirAsync: async function (path) {
+            return new Promise((resolve, reject)=>{
+                Phoenix.VFS.ensureExistsDir(path, (err) =>{
+                    if(err){
+                        reject(err);
+                    } else {
+                        resolve();
+                    }
+                });
+            });
+        },
         /**
          * Converts a phoenix virtual serving url to absolute path in file system or null
          * http://localhost:8000/src/phoenix/vfs/fs/app/extensions/user/themesforbrackets/requirejs-config.json
@@ -127,17 +138,6 @@ function _setupVFS(fsLib, pathLib){
             }
             return window.fsServerUrl.slice(0, -1) + fullPath;
         },
-        ensureExistsDirAsync: async function (path) {
-            return new Promise((resolve, reject)=>{
-                Phoenix.VFS.ensureExistsDir(path, (err) =>{
-                    if(err){
-                        reject(err);
-                    } else {
-                        resolve();
-                    }
-                });
-            });
-        },
         exists: function (path, cb) {
             fs.stat(path, function (err, stats){
                 if (stats && !err) {
@@ -161,41 +161,6 @@ function _setupVFS(fsLib, pathLib){
     Phoenix.path = pathLib;
 
     return Phoenix.VFS;
-}
-
-const _SAMPLE_HTML = `<!DOCTYPE html>
-<html>
-    <head>
-        <title>Phoenix Editor for the web</title>
-    </head>
- 
-    <body>
-        <h1>Welcome to Phoenix</h1>
-        <p> Modern, Open-source, IDE For The Web.</p>
-    </body>
-</html>`;
-
-// always resolves even if error
-function _tryCreateDefaultProject() {
-    // Create phoenix app dirs
-    // Create Phoenix default project if it doesnt exist
-    return new Promise((resolve)=>{
-        let projectDir = Phoenix.VFS.getDefaultProjectDir();
-        Phoenix.VFS.exists(projectDir, (exists)=>{
-            if(!exists){
-                Phoenix.VFS.ensureExistsDir(projectDir, (err)=>{
-                    if(err){
-                        logger.reportError(err, "Error creating default project");
-                    }
-                    let indexFile = Phoenix.VFS.path.normalize(`${projectDir}/index.html`);
-                    Phoenix.VFS.fs.writeFile(indexFile, _SAMPLE_HTML, 'utf8', ()=>{});
-                    resolve();
-                });
-                return;
-            }
-            resolve();
-        });
-    });
 }
 
 async function setupAppSupportAndExtensionsDir() {
@@ -240,7 +205,6 @@ async function setupDocumentsDir() {
         userProjectsDir = documentsDIR;
     }
     await Phoenix.VFS.ensureExistsDirAsync(documentsDIR);
-    await _tryCreateDefaultProject();
     console.log("Documents dir setup done");
 }
 

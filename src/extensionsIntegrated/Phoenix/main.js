@@ -32,8 +32,6 @@ define(function (require, exports, module) {
         Strings      = require("strings"),
         Dialogs      = require("widgets/Dialogs"),
         NotificationUI  = require("widgets/NotificationUI"),
-        FileSystem  = require("filesystem/FileSystem"),
-        FileViewController  = require("project/FileViewController"),
         DefaultDialogs = require("widgets/DefaultDialogs");
 
     const PERSIST_STORAGE_DIALOG_DELAY_SECS = 60000;
