@@ -21,7 +21,7 @@
 
 // jshint ignore: start
 /*jslint regexp: true */
-/*globals logger, Phoenix, path*/
+/*globals logger, jsPromise, path*/
 
 define(function (require, exports, module) {
 
@@ -1661,7 +1661,7 @@ define(function (require, exports, module) {
 
     async function _tryToOpenFile(absOrRelativePath, cwdIfRelativePath) {
         try{
-            let fileToOpen = absOrRelativePath;
+            let fileToOpen;
             if(cwdIfRelativePath){
                 fileToOpen = window.path.join(Phoenix.VFS.getTauriVirtualPath(cwdIfRelativePath), absOrRelativePath);
             } else {
@@ -1669,7 +1669,7 @@ define(function (require, exports, module) {
             }
             let isFile = await _fileExists(fileToOpen);
             if(isFile){
-                FileViewController.openFileAndAddToWorkingSet(fileToOpen);
+                await jsPromise(FileViewController.openFileAndAddToWorkingSet(fileToOpen));
                 return true;
             }
         } catch (e) {
@@ -2187,7 +2187,10 @@ define(function (require, exports, module) {
         }
         firstProjectOpenHandled = true;
         Phoenix.app.setSingleInstanceCLIArgsHandler(_singleInstanceHandler);
-        _openFilesPassedInFromCLI();
+        _openFilesPassedInFromCLI()
+            .finally(()=>{
+                ProjectManager.trigger(ProjectManager.EVENT_AFTER_STARTUP_FILES_LOADED);
+            });
     });
 
     // Exported for unit testing only
