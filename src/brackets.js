@@ -426,11 +426,7 @@ define(function (require, exports, module) {
         }
 
         // Browser-hosted version may also have different CSS (e.g. since '#titlebar' is shown)
-        if (brackets.inBrowser) {
-            $body.addClass("in-browser");
-        } else {
-            $body.addClass("in-appshell");
-        }
+        $body.addClass("in-appshell");
 
         $('#toolbar-extension-manager').prop('title', Strings.EXTENSION_MANAGER_TITLE);
         $('#update-notification').prop('title', Strings.UPDATE_NOTIFICATION_TOOLTIP);

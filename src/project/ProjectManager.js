@@ -1115,6 +1115,77 @@ define(function (require, exports, module) {
             });
     }
 
+    function _loadProjectInternal(rootPath) {
+        const result = new $.Deferred();
+        const rootEntry = FileSystem.getDirectoryForPath(rootPath);
+        rootEntry.exists(function (err, exists) {
+            if (exists) {
+                var projectRootChanged = (!model.projectRoot || !rootEntry) ||
+                    model.projectRoot.fullPath !== rootEntry.fullPath;
+
+                // Success!
+                var perfTimerName = PerfUtils.markStart("Load Project: " + rootPath);
+
+                _projectWarnedForTooManyFiles = false;
+
+                _setProjectRoot(rootEntry).always(function () {
+                    model.setBaseUrl(PreferencesManager.getViewState("project.baseUrl", PreferencesManager.STATE_PROJECT_CONTEXT) || "");
+
+                    if (projectRootChanged) {
+                        _reloadProjectPreferencesScope();
+                        PreferencesManager._setCurrentFile(rootPath);
+                    }
+                    _watchProjectRoot(rootPath);
+
+                    // If this is the most current welcome project, record it. In future launches, we want
+                    // to substitute the latest welcome project from the current build instead of using an
+                    // outdated one (when loading recent projects or the last opened project).
+                    if (rootPath === getWelcomeProjectPath()) {
+                        addWelcomeProjectPath(rootPath);
+                    }
+
+                    if (projectRootChanged) {
+                        // Allow asynchronous event handlers to finish before resolving result by collecting promises from them
+                        exports.trigger(EVENT_PROJECT_OPEN, model.projectRoot);
+                        result.resolve();
+                        exports.trigger(EVENT_AFTER_PROJECT_OPEN, model.projectRoot);
+                    } else {
+                        exports.trigger(EVENT_PROJECT_REFRESH, model.projectRoot);
+                        result.resolve();
+                    }
+                    let projectLoadTime = PerfUtils.addMeasurement(perfTimerName);
+                    Metrics.valueEvent(Metrics.EVENT_TYPE.PERFORMANCE, "projectLoad",
+                        "timeMs", Number(projectLoadTime));
+                });
+            } else {
+                console.error("error loading project");
+                exports.trigger(EVENT_PROJECT_OPEN_FAILED, rootPath);
+                _showErrorDialog(ERR_TYPE_LOADING_PROJECT_NATIVE, true, err || FileSystemError.NOT_FOUND, rootPath)
+                    .done(function () {
+                        // Reset _projectRoot to null so that the following _loadProject call won't
+                        // run the 'beforeProjectClose' event a second time on the original project,
+                        // which is now partially torn down (see #6574).
+                        model.projectRoot = null;
+
+                        // The project folder stored in preference doesn't exist, so load the default
+                        // project directory.
+                        // TODO (issue #267): When Brackets supports having no project directory
+                        // defined this code will need to change
+                        _getFallbackProjectPath().done(function (path) {
+                            _loadProject(path).always(function () {
+                                // Make sure not to reject the original deferred until the fallback
+                                // project is loaded, so we don't violate expectations that there is always
+                                // a current project before continuing after _loadProject().
+                                result.reject();
+                            });
+                        });
+                    });
+            }
+        });
+
+        return result.promise();
+    }
+
     /**
      * Loads the given folder as a project. Does NOT prompt about any unsaved changes - use openProject()
      * instead to check for unsaved changes and (optionally) let the user choose the folder to open.
@@ -1126,8 +1197,6 @@ define(function (require, exports, module) {
      *  fails to load.
      */
     function _loadProject(rootPath) {
-        var result = new $.Deferred(),
-            startLoad = new $.Deferred();
 
         Metrics.valueEvent(Metrics.EVENT_TYPE.PROJECT, "Load",
             isWelcomeProjectPath(rootPath) ? "default":"other", 1);
@@ -1155,81 +1224,8 @@ define(function (require, exports, module) {
             exports.trigger(EVENT_PROJECT_CLOSE, model.projectRoot);
         }
 
-        startLoad.resolve();
-
-        startLoad.done(function () {
-            // Populate file tree as long as we aren't running in the browser
-            if (!brackets.inBrowser) {
-                // Point at a real folder structure on local disk
-                var rootEntry = FileSystem.getDirectoryForPath(rootPath);
-                rootEntry.exists(function (err, exists) {
-                    if (exists) {
-                        var projectRootChanged = (!model.projectRoot || !rootEntry) ||
-                            model.projectRoot.fullPath !== rootEntry.fullPath;
-
-                        // Success!
-                        var perfTimerName = PerfUtils.markStart("Load Project: " + rootPath);
-
-                        _projectWarnedForTooManyFiles = false;
-
-                        _setProjectRoot(rootEntry).always(function () {
-                            model.setBaseUrl(PreferencesManager.getViewState("project.baseUrl", PreferencesManager.STATE_PROJECT_CONTEXT) || "");
-
-                            if (projectRootChanged) {
-                                _reloadProjectPreferencesScope();
-                                PreferencesManager._setCurrentFile(rootPath);
-                            }
-                            _watchProjectRoot(rootPath);
-
-                            // If this is the most current welcome project, record it. In future launches, we want
-                            // to substitute the latest welcome project from the current build instead of using an
-                            // outdated one (when loading recent projects or the last opened project).
-                            if (rootPath === getWelcomeProjectPath()) {
-                                addWelcomeProjectPath(rootPath);
-                            }
-
-                            if (projectRootChanged) {
-                                // Allow asynchronous event handlers to finish before resolving result by collecting promises from them
-                                exports.trigger(EVENT_PROJECT_OPEN, model.projectRoot);
-                                result.resolve();
-                                exports.trigger(EVENT_AFTER_PROJECT_OPEN, model.projectRoot);
-                            } else {
-                                exports.trigger(EVENT_PROJECT_REFRESH, model.projectRoot);
-                                result.resolve();
-                            }
-                            let projectLoadTime = PerfUtils.addMeasurement(perfTimerName);
-                            Metrics.valueEvent(Metrics.EVENT_TYPE.PERFORMANCE, "projectLoad",
-                                "timeMs", Number(projectLoadTime));
-                        });
-                    } else {
-                        console.error("error loading project");
-                        exports.trigger(EVENT_PROJECT_OPEN_FAILED, rootPath);
-                        _showErrorDialog(ERR_TYPE_LOADING_PROJECT_NATIVE, true, err || FileSystemError.NOT_FOUND, rootPath)
-                            .done(function () {
-                                // Reset _projectRoot to null so that the following _loadProject call won't
-                                // run the 'beforeProjectClose' event a second time on the original project,
-                                // which is now partially torn down (see #6574).
-                                model.projectRoot = null;
-
-                                // The project folder stored in preference doesn't exist, so load the default
-                                // project directory.
-                                // TODO (issue #267): When Brackets supports having no project directory
-                                // defined this code will need to change
-                                _getFallbackProjectPath().done(function (path) {
-                                    _loadProject(path).always(function () {
-                                        // Make sure not to reject the original deferred until the fallback
-                                        // project is loaded, so we don't violate expectations that there is always
-                                        // a current project before continuing after _loadProject().
-                                        result.reject();
-                                    });
-                                });
-                            });
-                    }
-                });
-            }
-        });
-
-        return result.promise();
+        // Point at a real folder structure on local disk
+        return _loadProjectInternal(rootPath);
     }
 
     /**
