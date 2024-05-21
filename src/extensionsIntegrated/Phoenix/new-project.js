@@ -41,6 +41,7 @@ define(function (require, exports, module) {
         createProjectDialogue = require("text!./html/create-project-dialogue.html"),
         replaceProjectDialogue = require("text!./html/replace-project-dialogue.html"),
         replaceKeepProjectDialogue = require("text!./html/replace-keep-project-dialogue.html"),
+        defaultProjects   = require("./default-projects"),
         guidedTour = require("./guided-tour");
 
     EventDispatcher.makeEventDispatcher(exports);
@@ -386,6 +387,7 @@ define(function (require, exports, module) {
     exports.downloadAndOpenProject = downloadAndOpenProject;
     exports.showFolderSelect = showFolderSelect;
     exports.showErrorDialogue = showErrorDialogue;
+    exports.setupExploreProject = defaultProjects.setupExploreProject;
     exports.alreadyExists = window.Phoenix.VFS.existsAsync;
     exports.Metrics = Metrics;
     exports.EVENT_NEW_PROJECT_DIALOGUE_CLOSED = "newProjectDlgClosed";

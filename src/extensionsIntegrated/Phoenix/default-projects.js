@@ -45,7 +45,7 @@ define(function (require, exports, module) {
             });
         });
     }
-    async function _setupExploreProject() {
+    async function setupExploreProject() {
         let exploreProjectPath = ProjectManager.getExploreProjectPath();
         let exists = await Phoenix.VFS.existsAsync(exploreProjectPath);
         if(!exists){
@@ -54,10 +54,18 @@ define(function (require, exports, module) {
         }
     }
 
+    exports.setupExploreProject = setupExploreProject;
+
     exports.init = async function () {
         if(Phoenix.firstBoot){
             _setupStartupProject();
         }
-        _setupExploreProject();
+        if(!Phoenix.isNativeApp) {
+            // in browsers, we do this as the user wont see the explore project in documents folder anyway and will
+            // help in improved ux of fast project open. In desktop, we got complaint that users document dir is getting
+            // polluted with unwanted projects, so we dont do this on desktop and only create this when user explicitly
+            // clicks to open explore project.
+            setupExploreProject();
+        }
     };
 });

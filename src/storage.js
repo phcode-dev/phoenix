@@ -141,7 +141,7 @@ import {set, entries, createStore} from './thirdparty/idb-keyval.js';
      */
     function getItem(key) {
         let cachedResult = cache[key];
-        if(cachedResult){
+        if(cachedResult && cachedResult.v){
             return JSON.parse(cachedResult.v);
         }
         // once we load the db dump from file, we dont ever touch the storage apis again for
@@ -322,11 +322,26 @@ import {set, entries, createStore} from './thirdparty/idb-keyval.js';
         }
     }
 
+    /**
+     * Very expensive call!!! Ensures that on next reboot, the database will be in the state when this function
+     * was executed. `flushDB` API only works in the case of proper exit, ie, if phoenix crashes in between, the db
+     * contents may not be written to disc. This call will guarentee write to disk at this instant.
+     * @returns {Promise<void>}
+     */
+    async function persistDBForReboot() {
+        if(isDesktop) {
+            // since node connector web socket messages are queued, sending this message will only execute after all
+            // outstanding messages are sent to node with web socket.
+            await storageNodeConnector.execPeer("dumpDBToFile");
+        }
+    }
+
     const PhStore = {
         getItem,
         setItem,
         removeItem,
         flushDB,
+        persistDBForReboot,
         watchExternalChanges,
         unwatchExternalChanges,
         storageReadyPromise,
