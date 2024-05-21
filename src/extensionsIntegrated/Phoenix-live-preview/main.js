@@ -575,8 +575,8 @@ define(function (require, exports, module) {
         }
     }
 
-    let startupFilesLoadHandled = false;
-    async function _projectOpened(_evt) {
+    let startupFilesLoadHandled = false, livePreviewStartCalled = false;
+    async function _projectOpened() {
         customLivePreviewBannerShown = false;
         $panel.find(".live-preview-custom-banner").addClass("forced-hidden");
         _openReadmeMDIfFirstTime();
@@ -590,8 +590,35 @@ define(function (require, exports, module) {
             _togglePinUrl();
         }
         $iframe.attr('src', StaticServer.getNoPreviewURL());
-        if(ProjectManager.isStartupFilesLoaded()){
+        livePreviewStartCalled = true;
+        if(!panelShownAtStartup && !isBrowser && ProjectManager.isStartupFilesLoaded()){
+            // we dont do this in browser as the virtual server may not yet be started on app start
+            // project open and a 404 page will briefly flash in the browser!
+            // this mainly applies when phoenix is started with a preview file already open in previous exit
             startupFilesLoadHandled = true;
+            const currentDocument = DocumentManager.getCurrentDocument();
+            const currentFile = currentDocument? currentDocument.file : ProjectManager.getSelectedItem();
+            const isPreviewable = currentFile ? utils.isPreviewableFile(currentFile.fullPath) : false;
+            if(isPreviewable){
+                _setPanelVisibility(true);
+            }
+        }
+        if(!panel.isVisible()){
+            return;
+        }
+        _loadPreview(true);
+    }
+
+    function _startupFilesLoaded() {
+        if(startupFilesLoadHandled) {
+            return;
+            // we have to use this handled flag as there is no ordering of EVENT_AFTER_STARTUP_FILES_LOADED
+            // and EVENT_PROJECT_OPEN. if _projectOpened has already shown the live preview panel when it saw that
+            // ProjectManager.isStartupFilesLoaded() is true, we should not call project opened again at boot.
+        }
+        if(!livePreviewStartCalled){
+            _projectOpened();
+            return;
         }
         if(!panelShownAtStartup && !isBrowser && ProjectManager.isStartupFilesLoaded()){
             // we dont do this in browser as the virtual server may not yet be started on app start
@@ -604,10 +631,6 @@ define(function (require, exports, module) {
                 _setPanelVisibility(true);
             }
         }
-        if(!panel.isVisible()){
-            return;
-        }
-        _loadPreview(true);
     }
 
     function _projectClosed() {
@@ -767,14 +790,7 @@ define(function (require, exports, module) {
         ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, _projectOpened);
         ProjectManager.on(ProjectManager.EVENT_PROJECT_CLOSE, _projectClosed);
         EditorManager.on("activeEditorChange", _activeDocChanged);
-        ProjectManager.on(ProjectManager.EVENT_AFTER_STARTUP_FILES_LOADED, ()=>{
-            if(!startupFilesLoadHandled){
-                // we have to use this handled flag as there is no ordering of EVENT_AFTER_STARTUP_FILES_LOADED
-                // and EVENT_PROJECT_OPEN. if _projectOpened has already shown the live preview panel when it saw that
-                // ProjectManager.isStartupFilesLoaded() is true, we should not call project opened again at boot.
-                _projectOpened();
-            }
-        });
+        ProjectManager.on(ProjectManager.EVENT_AFTER_STARTUP_FILES_LOADED, _startupFilesLoaded);
         CommandManager.register(Strings.CMD_LIVE_FILE_PREVIEW,  Commands.FILE_LIVE_FILE_PREVIEW, function () {
             _toggleVisibilityOnClick();
         });
