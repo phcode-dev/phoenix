@@ -43,7 +43,12 @@ define(function (require, exports, module) {
         paneListTemplate      = require("text!htmlContent/working-set.html"),
         Strings               = require("strings"),
         _                     = require("thirdparty/lodash"),
-        Mustache              = require("thirdparty/mustache/mustache");
+        Mustache              = require("thirdparty/mustache/mustache"),
+        EventDispatcher     = require("utils/EventDispatcher");
+
+    EventDispatcher.makeEventDispatcher(exports);
+
+    const EVENT_FILE_NODE_CLICKED_WORKING_SET = "fileNodeClickedWorkingSet";
 
     /**
      * Open view dictionary
@@ -276,6 +281,7 @@ define(function (require, exports, module) {
 
         // The mouse down handler pretty much handles everything
         $el.mousedown(function (e) {
+            exports.trigger(EVENT_FILE_NODE_CLICKED_WORKING_SET);
             var scrollDir = 0,
                 dragged = false,
                 startPageY = e.pageY,
@@ -1581,4 +1587,7 @@ define(function (require, exports, module) {
     // API to be used only by default extensions
     exports.useIconProviders              = useIconProviders;
     exports.useClassProviders               = useClassProviders;
+
+    // private events
+    exports._EVENT_FILE_NODE_CLICKED_WORKING_SET = EVENT_FILE_NODE_CLICKED_WORKING_SET;
 });

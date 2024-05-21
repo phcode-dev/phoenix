@@ -93,7 +93,8 @@ define(function (require, exports, module) {
         EVENT_PROJECT_REFRESH = "projectRefresh",
         EVENT_CONTENT_CHANGED = "contentChanged",
         EVENT_PROJECT_FILE_CHANGED = "projectFileChanged",
-        EVENT_PROJECT_FILE_RENAMED = "projectFileRenamed";
+        EVENT_PROJECT_FILE_RENAMED = "projectFileRenamed",
+        EVENT_FILE_CLICKED_SIDEBAR = "fileClickedSidebar";
 
     EventDispatcher.setLeakThresholdForEvent(EVENT_PROJECT_OPEN, 25);
 
@@ -2215,6 +2216,14 @@ define(function (require, exports, module) {
         _renderTree(true);
     }
 
+    FileTreeView.on(FileTreeView._EVENT_FILE_NODE_CLICKED_IN_TREE, ()=>{
+        exports.trigger(EVENT_FILE_CLICKED_SIDEBAR);
+    });
+
+    WorkingSetView.on(WorkingSetView._EVENT_FILE_NODE_CLICKED_WORKING_SET, ()=>{
+        exports.trigger(EVENT_FILE_CLICKED_SIDEBAR);
+    });
+
 
     // Private API helpful in testing
     exports._actionCreator                = actionCreator;
@@ -2272,4 +2281,5 @@ define(function (require, exports, module) {
     exports.EVENT_PROJECT_FILE_CHANGED = EVENT_PROJECT_FILE_CHANGED;
     exports.EVENT_PROJECT_FILE_RENAMED = EVENT_PROJECT_FILE_RENAMED;
     exports.EVENT_PROJECT_OPEN_FAILED = EVENT_PROJECT_OPEN_FAILED;
+    exports.EVENT_FILE_CLICKED_SIDEBAR = EVENT_FILE_CLICKED_SIDEBAR;
 });
