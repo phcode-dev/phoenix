@@ -85,6 +85,11 @@ define(function (require, exports, module) {
         EVENT_PROJECT_OPEN_FAILED = "projectFileOpenFailed",
         EVENT_PROJECT_OPEN = "projectOpen",
         EVENT_AFTER_PROJECT_OPEN = "afterProjectOpen",
+        // on boot, we load files that have been passed in from os either with `open with` from os file explorer or
+        // as cli from terminal. EVENT_AFTER_STARTUP_FILES_LOADED is trigerred after those files have been loaded.
+        // Note that this may be trigerred before any extensions get loaded, so always a good idea to check for
+        // isStartupFilesLoaded()
+        EVENT_AFTER_STARTUP_FILES_LOADED = "startupFilesLoaded",
         EVENT_PROJECT_REFRESH = "projectRefresh",
         EVENT_CONTENT_CHANGED = "contentChanged",
         EVENT_PROJECT_FILE_CHANGED = "projectFileChanged",
@@ -2018,6 +2023,14 @@ define(function (require, exports, module) {
         _flagProjectExitedSafely(getProjectRoot().fullPath);
         _unwatchProjectRoot();
     });
+    let startupFilesLoaded = false;
+    exports.on(EVENT_AFTER_STARTUP_FILES_LOADED, ()=>{
+        startupFilesLoaded = true;
+    });
+
+    function isStartupFilesLoaded() {
+        return startupFilesLoaded;
+    }
 
     // Due to circular dependencies, not safe to call on() directly for other modules' events
     EventDispatcher.on_duringInit(FileViewController, "documentSelectionFocusChange", _documentSelectionFocusChange);
@@ -2246,12 +2259,14 @@ define(function (require, exports, module) {
     exports.addClassesProvider            = addClassesProvider;
     exports.rerenderTree                  = rerenderTree;
     exports.setProjectBusy                = setProjectBusy;
+    exports.isStartupFilesLoaded          = isStartupFilesLoaded;
 
     // public events
     exports.EVENT_PROJECT_BEFORE_CLOSE = EVENT_PROJECT_BEFORE_CLOSE;
     exports.EVENT_PROJECT_CLOSE = EVENT_PROJECT_CLOSE;
     exports.EVENT_PROJECT_OPEN = EVENT_PROJECT_OPEN;
     exports.EVENT_AFTER_PROJECT_OPEN = EVENT_AFTER_PROJECT_OPEN;
+    exports.EVENT_AFTER_STARTUP_FILES_LOADED = EVENT_AFTER_STARTUP_FILES_LOADED;
     exports.EVENT_PROJECT_REFRESH = EVENT_PROJECT_REFRESH;
     exports.EVENT_CONTENT_CHANGED = EVENT_CONTENT_CHANGED;
     exports.EVENT_PROJECT_FILE_CHANGED = EVENT_PROJECT_FILE_CHANGED;
