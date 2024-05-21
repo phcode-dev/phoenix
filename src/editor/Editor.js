@@ -1548,7 +1548,7 @@ define(function (require, exports, module) {
             // If we found a number, and it is withing the original max digit count, return the result
             if (left !== right && digitCount !== maxDigitsOverflow) {
                 const text = str.substring(left, right);
-                if(text !== "."){
+                if(text !== "." && text !== "-"){
                     return {
                         text: str.substring(left, right),
                         startPos: {line: pos.line, ch: token.start + left},

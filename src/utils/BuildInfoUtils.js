@@ -37,33 +37,29 @@ define(function (require, exports, module) {
      * and loads the SHA from that file in turn.
      */
     function _loadSHA(path, callback) {
-        var result = new $.Deferred();
+        const result = new $.Deferred();
 
-        if (brackets.inBrowser) {
+        // HEAD contains a SHA in detached-head mode; otherwise it contains a relative path
+        // to a file in /refs which in turn contains the SHA
+        const file = FileSystem.getFileForPath(path);
+        FileUtils.readAsText(file).done(function (text) {
+            if (text.indexOf("ref: ") === 0) {
+                // e.g. "ref: refs/heads/branchname"
+                const basePath    = path.substr(0, path.lastIndexOf("/")),
+                    refRelPath  = text.substr(5).trim(),
+                    branch      = text.substr(16).trim();
+
+                _loadSHA(basePath + "/" + refRelPath, callback).done(function (data) {
+                    result.resolve({ branch: branch, sha: data.sha.trim() });
+                }).fail(function () {
+                    result.resolve({ branch: branch });
+                });
+            } else {
+                result.resolve({ sha: text });
+            }
+        }).fail(function () {
             result.reject();
-        } else {
-            // HEAD contains a SHA in detached-head mode; otherwise it contains a relative path
-            // to a file in /refs which in turn contains the SHA
-            var file = FileSystem.getFileForPath(path);
-            FileUtils.readAsText(file).done(function (text) {
-                if (text.indexOf("ref: ") === 0) {
-                    // e.g. "ref: refs/heads/branchname"
-                    var basePath    = path.substr(0, path.lastIndexOf("/")),
-                        refRelPath  = text.substr(5).trim(),
-                        branch      = text.substr(16).trim();
-
-                    _loadSHA(basePath + "/" + refRelPath, callback).done(function (data) {
-                        result.resolve({ branch: branch, sha: data.sha.trim() });
-                    }).fail(function () {
-                        result.resolve({ branch: branch });
-                    });
-                } else {
-                    result.resolve({ sha: text });
-                }
-            }).fail(function () {
-                result.reject();
-            });
-        }
+        });
 
         return result.promise();
     }
