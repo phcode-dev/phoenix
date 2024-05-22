@@ -1370,12 +1370,24 @@ define(function (require, exports, module) {
         const cm = this._codeMirror;
         const self = this;
         cm.operation(function () {
-            let newHistory = self.getHistory();
+            let newHistory = self.getHistory(), historyLength;
             let lastHistoryItem = newHistory.done && newHistory.done.length
                 && history.done[history.done.length -1];
             while(lastHistoryItem && lastHistoryItem.restorePointName !== restorePointName) {
+                newHistory = self.getHistory();
+                historyLength = newHistory?.done?.length;
                 cm.undoSelection();
                 newHistory = self.getHistory();
+                if(historyLength === newHistory?.done?.length) {
+                    // undo selection didnt do anything, try undo
+                    cm.undo();
+                    newHistory = self.getHistory();
+                    if(historyLength === newHistory?.done?.length) {
+                        // we cant undo, and this will go into an infinite loop if we continue.
+                        console.error("Could not undo history to restore snapshot!");
+                        break;
+                    }
+                }
                 lastHistoryItem = newHistory.done && newHistory.done.length
                     && newHistory.done[newHistory.done.length -1];
             }
