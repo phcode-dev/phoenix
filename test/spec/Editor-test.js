@@ -2467,5 +2467,59 @@ define(function (require, exports, module) {
                 expect(mark.length).toBe(0);
             });
         });
+        describe("Editor History undo redo", function () {
+
+            beforeEach(function () {
+                let jsContent = "const x=10;\n" +
+                    "function print(val){\n" +
+                    " console.log(val);\n" +
+                    "}\n" +
+                    "print(x);\n" +
+                    "let str=`multi\n" +
+                    "line`;";
+                createTestEditor(jsContent, langNames.javascript.mode);
+            });
+
+            it("should be able to get history", function () {
+                expect(myEditor.getHistory().done.length).toBe(1);
+                expect(myEditor.getHistory().undone.length).toBe(0);
+                myEditor.setSelection({line: 0, ch: 0}, {line: 0, ch: 5});
+                myEditor.replaceSelection("hello", "around");
+                expect(myEditor.getHistory().done.length).toBe(4);
+                expect(myEditor.getHistory().undone.length).toBe(0);
+            });
+
+            it("should be able to create a history restore point and restore to that point", function () {
+                expect(myEditor.getHistory().done.length).toBe(1);
+                expect(myEditor.getHistory().undone.length).toBe(0);
+                myEditor.createHistoryRestorePoint("restore1");
+                myEditor.setSelection({line: 0, ch: 0}, {line: 0, ch: 5});
+                myEditor.replaceSelection("hello", "around");
+                expect(myEditor.getHistory().done.length).toBe(4);
+                expect(myEditor.getHistory().undone.length).toBe(0);
+                myEditor.restoreHistoryPoint("restore1");
+                expect(myEditor.getHistory().done.length).toBe(1);
+                expect(myEditor.getHistory().undone.length).toBe(4);
+            });
+
+            it("should be able to set and restore multiple history points", function () {
+                expect(myEditor.getHistory().done.length).toBe(1);
+                expect(myEditor.getHistory().undone.length).toBe(0);
+                myEditor.setSelection({line: 0, ch: 0}, {line: 0, ch: 5});
+                myEditor.createHistoryRestorePoint("selectionRestore");
+                myEditor.replaceSelection("hello", "around");
+                expect(myEditor.getHistory().done.length).toBe(4);
+                myEditor.createHistoryRestorePoint("editRestore");
+                myEditor.replaceSelection("anotherEdit", "around");
+                expect(myEditor.getHistory().done.length).toBe(6);
+                expect(myEditor.getHistory().undone.length).toBe(0);
+                expect(myEditor.getSelectedText()).toBe("anotherEdit");
+                // now restore one by one
+                myEditor.restoreHistoryPoint("editRestore");
+                expect(myEditor.getSelectedText()).toBe("hello");
+                myEditor.restoreHistoryPoint("selectionRestore");
+                expect(myEditor.getSelectedText()).toBe("const");
+            });
+        });
     });
 });
