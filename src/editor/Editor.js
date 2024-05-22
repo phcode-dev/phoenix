@@ -1344,6 +1344,10 @@ define(function (require, exports, module) {
         if(history.done && history.done.length) {
             history.done[history.done.length -1].restorePointName = restorePointName;
         }
+        // the current history event should be ‘closed’, meaning it can't be combined with further changes
+        // (rapid typing or deleting events are typically combined) as we need to effectively snapshot this history
+        // point at this time.
+        this._codeMirror.changeGeneration(true);
     };
 
     Editor.prototype.restoreHistoryPoint = function (restorePointName) {
