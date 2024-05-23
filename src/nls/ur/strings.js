@@ -796,7 +796,7 @@ define({
   "DESCRIPTION_HIGHLIGHT_MATCHES_WORDS_ONLY": "صرف اس وقت نمایاں کریں جب انتخاب مکمل ٹوکن ہو۔",
   "DESCRIPTION_INSERT_HINT_ON_TAB": "ٹیب پر فی الحال منتخب کوڈ اشارہ داخل کرنے کے لئے درست",
   "DESCRIPTION_NO_HINTS_ON_DOT": "خود بخود جے ایس کوڈ کے اشارے نہ دکھانا درست ہے جب . ٹائپ کیا جاتا ہے",
-  "DESCRIPTION_JSHINT_OPTIONS": "JSHint کے لیے پہلے سے طے شدہ اختیارات کے ساتھ ایک آبجیکٹ۔ براہ کرم تمام دستیاب JSHint اختیارات کے لیے درج ذیل یو آر ایل دیکھیں: https://jshint.com/docs/options/",
+  "DESCRIPTION_JSHINT_DISABLE": "مسائل کے پینل میں JSHints linter کو غیر فعال کرنے کے لیے درست",
   "DESCRIPTION_LANGUAGE": "زبان کی مخصوص ترتیبات",
   "DESCRIPTION_LANGUAGE_FILE_EXTENSIONS": "فائل ایکسٹینشن سے لے کر زبان کے نام تک اضافی میپنگ",
   "DESCRIPTION_LANGUAGE_FILE_NAMES": "فائل کے نام سے زبان کے نام تک اضافی میپنگ",

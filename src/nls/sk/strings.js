@@ -796,7 +796,7 @@ define({
   "DESCRIPTION_HIGHLIGHT_MATCHES_WORDS_ONLY": "Zvýraznite len vtedy, keď je výber úplný token",
   "DESCRIPTION_INSERT_HINT_ON_TAB": "true na vloženie aktuálne vybratej rady pre kód na kartu",
   "DESCRIPTION_NO_HINTS_ON_DOT": "true, aby sa automaticky nezobrazovali rady pre kód JS, keď . je napísaný",
-  "DESCRIPTION_JSHINT_OPTIONS": "Objekt s predvolenými voľbami pre JSHint. Všetky dostupné možnosti JSHint nájdete na nasledujúcej adrese URL: https://jshint.com/docs/options/",
+  "DESCRIPTION_JSHINT_DISABLE": "true na vypnutie JSHints linter na paneli problémov",
   "DESCRIPTION_LANGUAGE": "Nastavenia špecifické pre jazyk",
   "DESCRIPTION_LANGUAGE_FILE_EXTENSIONS": "Ďalšie mapovania z prípony súboru na názov jazyka",
   "DESCRIPTION_LANGUAGE_FILE_NAMES": "Ďalšie mapovania z názvu súboru na názov jazyka",

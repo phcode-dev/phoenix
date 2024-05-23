@@ -796,7 +796,7 @@ define({
   "DESCRIPTION_HIGHLIGHT_MATCHES_WORDS_ONLY": "Осветяване само когато избраното е завършен елемент/символ",
   "DESCRIPTION_INSERT_HINT_ON_TAB": "Задайте true за използване на текущо избраната подсказка при натискане на клавиша Tab",
   "DESCRIPTION_NO_HINTS_ON_DOT": "Задайте true за изключване на автоматичните подсказки в код на JavaScript при въвеждане на точка (.)",
-  "DESCRIPTION_JSHINT_OPTIONS": "Обект с опциите по подразбиране за JSHint. Моля, вижте следния URL адрес за всички налични JSHint опции: https://jshint.com/docs/options/",
+  "DESCRIPTION_JSHINT_DISABLE": "true за деактивиране на JSHints linter в панела с проблеми",
   "DESCRIPTION_LANGUAGE": "Настройки според езика",
   "DESCRIPTION_LANGUAGE_FILE_EXTENSIONS": "Допълнителни съответствия между файлово разширение и име на език",
   "DESCRIPTION_LANGUAGE_FILE_NAMES": "Допълнителни съответствия между файлово име и име на език",

@@ -776,7 +776,7 @@
   "DESCRIPTION_HIGHLIGHT_MATCHES_WORDS_ONLY": "Επισημάνετε μόνο όταν η επιλογή είναι ένα πλήρες διακριτικό",
   "DESCRIPTION_INSERT_HINT_ON_TAB": "true για να εισαγάγετε την υπόδειξη κώδικα που έχετε επιλέξει στην καρτέλα",
   "DESCRIPTION_NO_HINTS_ON_DOT": "true to not εμφανίζει αυτόματα υποδείξεις κώδικα JS όταν . είναι δακτυλογραφημένο",
-  "DESCRIPTION_JSHINT_OPTIONS": "Ένα αντικείμενο με τις προεπιλεγμένες επιλογές για JSHint. Δείτε την παρακάτω διεύθυνση URL για όλες τις διαθέσιμες επιλογές JSHint: https://jshint.com/docs/options/",
+  "DESCRIPTION_JSHINT_DISABLE": "αληθές για να απενεργοποιήσετε το JSHints linter στον πίνακα προβλημάτων",
   "DESCRIPTION_LANGUAGE": "Ρυθμίσεις συγκεκριμένης γλώσσας",
   "DESCRIPTION_LANGUAGE_FILE_EXTENSIONS": "Πρόσθετες αντιστοιχίσεις από την επέκταση αρχείου στο όνομα γλώσσας",
   "DESCRIPTION_LANGUAGE_FILE_NAMES": "Πρόσθετες αντιστοιχίσεις από όνομα αρχείου σε όνομα γλώσσας",

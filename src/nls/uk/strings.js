@@ -796,7 +796,7 @@ define({
   "DESCRIPTION_HIGHLIGHT_MATCHES_WORDS_ONLY": "Виділіть лише тоді, коли виділено повний маркер",
   "DESCRIPTION_INSERT_HINT_ON_TAB": "true, щоб вставити вибрану підказку коду на вкладці",
   "DESCRIPTION_NO_HINTS_ON_DOT": "true, щоб автоматично не показувати підказки коду JS, коли . набирається",
-  "DESCRIPTION_JSHINT_OPTIONS": "Об’єкт із стандартними параметрами для JSHint. Усі доступні параметри JSHint див. за такою URL-адресою: https://jshint.com/docs/options/",
+  "DESCRIPTION_JSHINT_DISABLE": "true, щоб вимкнути JSHints linter на панелі проблем",
   "DESCRIPTION_LANGUAGE": "Спеціальні налаштування мови",
   "DESCRIPTION_LANGUAGE_FILE_EXTENSIONS": "Додаткові зіставлення розширення файлу з назвою мови",
   "DESCRIPTION_LANGUAGE_FILE_NAMES": "Додаткові зіставлення імені файлу з назвою мови",

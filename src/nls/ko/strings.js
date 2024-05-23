@@ -796,7 +796,7 @@ define({
   "DESCRIPTION_HIGHLIGHT_MATCHES_WORDS_ONLY": "선택 항목이 완전한 토큰인 경우에만 강조",
   "DESCRIPTION_INSERT_HINT_ON_TAB": "탭에서 현재 선택한 코드 힌트를 삽입하려면 true",
   "DESCRIPTION_NO_HINTS_ON_DOT": ". 입력 시 JS 코드 힌트를 자동으로 표시하지 않으려면 true",
-  "DESCRIPTION_JSHINT_OPTIONS": "JSHint에 대한 기본 옵션이 있는 개체입니다. 사용 가능한 모든 JSHint 옵션에 대해서는 다음 URL을 참조하십시오. https://jshint.com/docs/options/",
+  "DESCRIPTION_JSHINT_DISABLE": "문제 패널에서 JSHints linter를 비활성화하려면 true입니다.",
   "DESCRIPTION_LANGUAGE": "언어 별 설정",
   "DESCRIPTION_LANGUAGE_FILE_EXTENSIONS": "파일 확장자를 통해 언어 이름 매핑",
   "DESCRIPTION_LANGUAGE_FILE_NAMES": "파일 이름을 통해 언어 이름 매핑",

@@ -796,7 +796,7 @@ define({
   "DESCRIPTION_HIGHLIGHT_MATCHES_WORDS_ONLY": "Выделять только в том случае, если выбор является полным токеном",
   "DESCRIPTION_INSERT_HINT_ON_TAB": "Значение true, чтобы вставить текущую выбранную подсказку кода на вкладке",
   "DESCRIPTION_NO_HINTS_ON_DOT": "Значение true , чтобы автоматически не отображать подсказки кода JS, когда . набирается",
-  "DESCRIPTION_JSHINT_OPTIONS": "Объект с параметрами по умолчанию для JSHint. См. следующий URL-адрес для всех доступных параметров JSHint: https://jshint.com/docs/options/",
+  "DESCRIPTION_JSHINT_DISABLE": "true, чтобы отключить линтер JSHints на панели проблем",
   "DESCRIPTION_LANGUAGE": "Языковые настройки",
   "DESCRIPTION_LANGUAGE_FILE_EXTENSIONS": "Дополнительные сопоставления расширения файла с названием языка",
   "DESCRIPTION_LANGUAGE_FILE_NAMES": "Дополнительные сопоставления имени файла с названием языка",

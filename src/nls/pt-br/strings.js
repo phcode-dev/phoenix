@@ -796,7 +796,7 @@ define({
   "DESCRIPTION_HIGHLIGHT_MATCHES_WORDS_ONLY": "Destaque somente quando um símbolo selecionado estiver completo",
   "DESCRIPTION_INSERT_HINT_ON_TAB": "verdadeiro (true) para inserir a sugestão de código ao pressionar tab",
   "DESCRIPTION_NO_HINTS_ON_DOT": "verdadeiro (true) para não mostrar automaticamente dicas para JS quando  . for digitado",
-  "DESCRIPTION_JSHINT_OPTIONS": "Um objeto com as opções padrão para JSHint. Consulte o seguinte URL para todas as opções JSHint disponíveis: https://jshint.com/docs/options/",
+  "DESCRIPTION_JSHINT_DISABLE": "true para desabilitar o linter JSHints no painel de problemas",
   "DESCRIPTION_LANGUAGE": "Configurações específicas de linguagem",
   "DESCRIPTION_LANGUAGE_FILE_EXTENSIONS": "Mapeamentos adicionais de uma extensão arquivo ao nome da linguagem",
   "DESCRIPTION_LANGUAGE_FILE_NAMES": "Mapeamentos adicionais de um nome de arquivo ao nome da linguagem",

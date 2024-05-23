@@ -776,7 +776,7 @@
   "DESCRIPTION_HIGHLIGHT_MATCHES_WORDS_ONLY": "仅在选区为完整符号时高亮",
   "DESCRIPTION_INSERT_HINT_ON_TAB": "值为真时，插入在标签页上选择的代码",
   "DESCRIPTION_NO_HINTS_ON_DOT": "值为真时，不再在输入 . 符号后自动显示 JS 代码提示",
-  "DESCRIPTION_JSHINT_OPTIONS": "具有 JSHint 的默认选项的对象。请查看以下 URL 了解所有可用的 JSHint 选项：https://jshint.com/docs/options/",
+  "DESCRIPTION_JSHINT_DISABLE": "true 表示在问题面板中禁用 JSHints linter",
   "DESCRIPTION_LANGUAGE": "语言特定设置",
   "DESCRIPTION_LANGUAGE_FILE_EXTENSIONS": "扩展名到语言名的附加映射",
   "DESCRIPTION_LANGUAGE_FILE_NAMES": "文件名到语言名的附加映射",

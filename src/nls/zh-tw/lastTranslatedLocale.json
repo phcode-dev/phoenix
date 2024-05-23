@@ -776,7 +776,7 @@
   "DESCRIPTION_HIGHLIGHT_MATCHES_WORDS_ONLY": "只在選到完整字符時才突顯其他符合字串",
   "DESCRIPTION_INSERT_HINT_ON_TAB": "true 代表按 Tab 鍵也能插入選取的程式碼提示",
   "DESCRIPTION_NO_HINTS_ON_DOT": "true 代表輸入 . 時不要自動顯示 JS 程式碼提示",
-  "DESCRIPTION_JSHINT_OPTIONS": "具有 JSHint 的默認選項的對象。請查看以下 URL 了解所有可用的 JSHint 選項：https://jshint.com/docs/options/",
+  "DESCRIPTION_JSHINT_DISABLE": "true 則在問題面板中停用 JSHints linter",
   "DESCRIPTION_LANGUAGE": "語言相關設定",
   "DESCRIPTION_LANGUAGE_FILE_EXTENSIONS": "副檔與程式語言名稱的額外對應",
   "DESCRIPTION_LANGUAGE_FILE_NAMES": "檔名與程式語言名稱的額外對應",

@@ -796,7 +796,7 @@ define({
   "DESCRIPTION_HIGHLIGHT_MATCHES_WORDS_ONLY": "選択内容が完全なトークンの場合のみハイライト表示",
   "DESCRIPTION_INSERT_HINT_ON_TAB": "タブで現在選択しているコードヒントを挿入するには true",
   "DESCRIPTION_NO_HINTS_ON_DOT": ". の入力時に JS コードヒントを自動表示しない場合は true",
-  "DESCRIPTION_JSHINT_OPTIONS": "JSHint のデフォルト オプションを持つオブジェクト。利用可能なすべての JSHint オプションについては、次の URL を参照してください: https://jshint.com/docs/options/",
+  "DESCRIPTION_JSHINT_DISABLE": "問題パネルで JSHints リンターを無効にするには true にします",
   "DESCRIPTION_LANGUAGE": "言語固有の設定",
   "DESCRIPTION_LANGUAGE_FILE_EXTENSIONS": "ファイル拡張子から言語名への追加のマッピング",
   "DESCRIPTION_LANGUAGE_FILE_NAMES": "ファイル名から言語名への追加のマッピング",

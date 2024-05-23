@@ -776,7 +776,7 @@
   "DESCRIPTION_HIGHLIGHT_MATCHES_WORDS_ONLY": "Fremhæv kun, når valget er et komplet token",
   "DESCRIPTION_INSERT_HINT_ON_TAB": "sand for at indsætte det aktuelt valgte kodetip på fanen",
   "DESCRIPTION_NO_HINTS_ON_DOT": "sand til ikke automatisk at vise JS-kodetip, når . er skrevet",
-  "DESCRIPTION_JSHINT_OPTIONS": "Et objekt med standardindstillingerne for JSHint. Se venligst følgende URL for alle tilgængelige JSHint-indstillinger: https://jshint.com/docs/options/",
+  "DESCRIPTION_JSHINT_DISABLE": "sandt at deaktivere JSHints linter i problempanelet",
   "DESCRIPTION_LANGUAGE": "Sprogspecifikke indstillinger",
   "DESCRIPTION_LANGUAGE_FILE_EXTENSIONS": "Yderligere tilknytninger fra filtypenavn til sprognavn",
   "DESCRIPTION_LANGUAGE_FILE_NAMES": "Yderligere tilknytninger fra filnavn til sprognavn",

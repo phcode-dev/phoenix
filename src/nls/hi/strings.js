@@ -796,7 +796,7 @@ define({
   "DESCRIPTION_HIGHLIGHT_MATCHES_WORDS_ONLY": "केवल तभी हाइलाइट करें जब चयन एक पूर्ण टोकन हो",
   "DESCRIPTION_INSERT_HINT_ON_TAB": "टैब पर वर्तमान में चयनित कोड संकेत सम्मिलित करने के लिए सही है",
   "DESCRIPTION_NO_HINTS_ON_DOT": "जेएस कोड संकेत स्वचालित रूप से नहीं दिखाने के लिए सही है जब . टाइप किया गया है",
-  "DESCRIPTION_JSHINT_OPTIONS": "JSHint के लिए डिफ़ॉल्ट विकल्पों वाला एक ऑब्जेक्ट। कृपया सभी उपलब्ध JSHint विकल्पों के लिए निम्न URL देखें: https://jshint.com/docs/options/",
+  "DESCRIPTION_JSHINT_DISABLE": "समस्या पैनल में JSHints लिंटर को अक्षम करने के लिए true दबाएं",
   "DESCRIPTION_LANGUAGE": "भाषा विशिष्ट सेटिंग्स",
   "DESCRIPTION_LANGUAGE_FILE_EXTENSIONS": "फ़ाइल एक्सटेंशन से भाषा के नाम पर अतिरिक्त मैपिंग",
   "DESCRIPTION_LANGUAGE_FILE_NAMES": "फ़ाइल नाम से भाषा के नाम पर अतिरिक्त मैपिंग",

@@ -776,7 +776,7 @@
   "DESCRIPTION_HIGHLIGHT_MATCHES_WORDS_ONLY": "Highlight only when selection is a complete token",
   "DESCRIPTION_INSERT_HINT_ON_TAB": "true to insert the currently selected code hint on tab",
   "DESCRIPTION_NO_HINTS_ON_DOT": "true to not automatically show JS code hints when . is typed",
-  "DESCRIPTION_JSHINT_OPTIONS": "An object with the default options for JSHint. Please see the following URL for all available JSHint Options: https://jshint.com/docs/options/",
+  "DESCRIPTION_JSHINT_DISABLE": "true to disable JSHints linter in problems panel",
   "DESCRIPTION_LANGUAGE": "Language specific settings",
   "DESCRIPTION_LANGUAGE_FILE_EXTENSIONS": "Additional mappings from file extension to language name",
   "DESCRIPTION_LANGUAGE_FILE_NAMES": "Additional mappings from file name to language name",

@@ -796,7 +796,7 @@ define({
   "DESCRIPTION_HIGHLIGHT_MATCHES_WORDS_ONLY": "Resaltar sólo cuando la selección es una cadena completa",
   "DESCRIPTION_INSERT_HINT_ON_TAB": "true para insertar la sugerencia de código al presionar tab",
   "DESCRIPTION_NO_HINTS_ON_DOT": "true para no mostrar sugerencias de código automáticamente en JS cuando \".\" es tipeado",
-  "DESCRIPTION_JSHINT_OPTIONS": "Un objeto con las opciones predeterminadas para JSHint. Consulte la siguiente URL para ver todas las opciones de JSHint disponibles: https://jshint.com/docs/options/",
+  "DESCRIPTION_JSHINT_DISABLE": "true para deshabilitar JSHints linter en el panel de problemas",
   "DESCRIPTION_LANGUAGE": "Preferencias específicas de un lenguaje",
   "DESCRIPTION_LANGUAGE_FILE_EXTENSIONS": "Asignaciones adicionales de extensión de archivo a nombre del lenguaje",
   "DESCRIPTION_LANGUAGE_FILE_NAMES": "Asignaciones adicionales de nombre de archivo a nombre del lenguaje",

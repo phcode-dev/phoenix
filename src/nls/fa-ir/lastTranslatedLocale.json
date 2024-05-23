@@ -776,7 +776,7 @@
   "DESCRIPTION_HIGHLIGHT_MATCHES_WORDS_ONLY": "فقط زمانی برجسته کنید که انتخاب یک نشانه کامل باشد",
   "DESCRIPTION_INSERT_HINT_ON_TAB": "درست است برای درج اشاره کد فعلی انتخاب شده در برگه",
   "DESCRIPTION_NO_HINTS_ON_DOT": "درست است تا به طور خودکار نکات کد JS نشان داده نشود. تایپ شده است",
-  "DESCRIPTION_JSHINT_OPTIONS": "یک شی با گزینه های پیش فرض برای JSHint. لطفاً URL زیر را برای همه گزینه های JSHint موجود مشاهده کنید: https://jshint.com/docs/options/",
+  "DESCRIPTION_JSHINT_DISABLE": "درست است برای غیرفعال کردن JSHints linter در پانل مشکلات",
   "DESCRIPTION_LANGUAGE": "تنظیمات خاص زبان",
   "DESCRIPTION_LANGUAGE_FILE_EXTENSIONS": "نگاشت های اضافی از پسوند فایل تا نام زبان",
   "DESCRIPTION_LANGUAGE_FILE_NAMES": "نگاشت های اضافی از نام فایل به نام زبان",

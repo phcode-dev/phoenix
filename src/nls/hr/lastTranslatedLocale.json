@@ -776,7 +776,7 @@
   "DESCRIPTION_HIGHLIGHT_MATCHES_WORDS_ONLY": "Označite samo kada je odabir potpun token",
   "DESCRIPTION_INSERT_HINT_ON_TAB": "true za umetanje trenutno odabranog savjeta koda na kartici",
   "DESCRIPTION_NO_HINTS_ON_DOT": "vrijedi da se automatski ne prikazuju savjeti JS koda kada . je ukucano",
-  "DESCRIPTION_JSHINT_OPTIONS": "Objekt sa zadanim opcijama za JSHint. Pogledajte sljedeći URL za sve dostupne JSHint opcije: https://jshint.com/docs/options/",
+  "DESCRIPTION_JSHINT_DISABLE": "true za onemogućavanje JSHints lintera na ploči problema",
   "DESCRIPTION_LANGUAGE": "Postavke specifične za jezik",
   "DESCRIPTION_LANGUAGE_FILE_EXTENSIONS": "Dodatna mapiranja iz ekstenzije datoteke u naziv jezika",
   "DESCRIPTION_LANGUAGE_FILE_NAMES": "Dodatna preslikavanja naziva datoteke u naziv jezika",
