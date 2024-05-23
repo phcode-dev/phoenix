@@ -776,7 +776,7 @@
   "DESCRIPTION_HIGHLIGHT_MATCHES_WORDS_ONLY": "ظلل فقط عندما يكون التحديد رمزًا كاملاً",
   "DESCRIPTION_INSERT_HINT_ON_TAB": "صحيح لإدراج تلميح التعليمات البرمجية المحدد حاليًا في علامة التبويب",
   "DESCRIPTION_NO_HINTS_ON_DOT": "صحيح لعدم إظهار تلميحات التعليمات البرمجية لـ JS تلقائيًا عندما. هو مكتوب",
-  "DESCRIPTION_JSHINT_OPTIONS": "كائن بالخيارات الافتراضية لـ JSHint. يرجى الاطلاع على عنوان URL التالي لجميع خيارات JSHint المتاحة: https://jshint.com/docs/options/",
+  "DESCRIPTION_JSHINT_DISABLE": "صحيح لتعطيل JSHints linter في لوحة المشاكل",
   "DESCRIPTION_LANGUAGE": "إعدادات اللغة الخاصة",
   "DESCRIPTION_LANGUAGE_FILE_EXTENSIONS": "تعيينات إضافية من امتداد الملف إلى اسم اللغة",
   "DESCRIPTION_LANGUAGE_FILE_NAMES": "تعيينات إضافية من اسم الملف إلى اسم اللغة",

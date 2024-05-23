@@ -776,7 +776,7 @@
   "DESCRIPTION_HIGHLIGHT_MATCHES_WORDS_ONLY": "Korosta vain, kun valinta on kokonainen ilmaus",
   "DESCRIPTION_INSERT_HINT_ON_TAB": "true: lisää parhaillaan valittu koodivihje, kun painetaan sarkainnäppäintä",
   "DESCRIPTION_NO_HINTS_ON_DOT": "true: älä näytä JS-koodivihjeitä automaattisesti, kun . kirjoitetaan",
-  "DESCRIPTION_JSHINT_OPTIONS": "Objekti, jolla on JSHint-oletusasetukset. Katso kaikki käytettävissä olevat JSHint-asetukset seuraavasta URL-osoitteesta: https://jshint.com/docs/options/",
+  "DESCRIPTION_JSHINT_DISABLE": "true poistaaksesi JSHints-linterin käytöstä ongelmapaneelissa",
   "DESCRIPTION_LANGUAGE": "Kielikohtaiset asetukset",
   "DESCRIPTION_LANGUAGE_FILE_EXTENSIONS": "Ylimääräiset liitokset tiedostopäätteestä kielen nimeen",
   "DESCRIPTION_LANGUAGE_FILE_NAMES": "Ylimääräiset liitokset tiedostonimestä kielen nimeen",

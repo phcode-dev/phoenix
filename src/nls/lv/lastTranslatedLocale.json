@@ -776,7 +776,7 @@
   "DESCRIPTION_HIGHLIGHT_MATCHES_WORDS_ONLY": "Izcelt tikai tad, kad izvēlētais ir pilna tekstvienība",
   "DESCRIPTION_INSERT_HINT_ON_TAB": "vērtība true, lai ievietotu pašlaik izvēlēto koda ieteikumu cilnē",
   "DESCRIPTION_NO_HINTS_ON_DOT": "vērtība true, lai automātiski nerādītu JS koda ieteikumus, ierakstot .",
-  "DESCRIPTION_JSHINT_OPTIONS": "Objekts ar noklusējuma opcijām JSHint. Lūdzu, skatiet šo URL, lai uzzinātu visas pieejamās JSHint opcijas: https://jshint.com/docs/options/",
+  "DESCRIPTION_JSHINT_DISABLE": "taisnība, lai problēmu panelī atspējotu JSHints linteri",
   "DESCRIPTION_LANGUAGE": "Specifiski valodas iestatījumi",
   "DESCRIPTION_LANGUAGE_FILE_EXTENSIONS": "Papildu kartēšana no datnes paplašinājuma uz valodas nosaukumu",
   "DESCRIPTION_LANGUAGE_FILE_NAMES": "Papildu kartēšana no datnes nosaukuma uz valodas nosaukumu",

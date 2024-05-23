@@ -796,7 +796,7 @@ define({
   "DESCRIPTION_HIGHLIGHT_MATCHES_WORDS_ONLY": "Sorot hanya jika pilihan adalah token lengkap",
   "DESCRIPTION_INSERT_HINT_ON_TAB": "benar untuk memasukkan petunjuk kode yang saat ini dipilih pada tab",
   "DESCRIPTION_NO_HINTS_ON_DOT": "benar untuk tidak secara otomatis menampilkan petunjuk kode JS ketika . diketik",
-  "DESCRIPTION_JSHINT_OPTIONS": "Objek dengan opsi default untuk JSHint. Silakan lihat URL berikut untuk semua Opsi JSHint yang tersedia: https://jshint.com/docs/options/",
+  "DESCRIPTION_JSHINT_DISABLE": "true untuk menonaktifkan linter JSHints di panel masalah",
   "DESCRIPTION_LANGUAGE": "Pengaturan khusus bahasa",
   "DESCRIPTION_LANGUAGE_FILE_EXTENSIONS": "Pemetaan tambahan dari ekstensi file ke nama bahasa",
   "DESCRIPTION_LANGUAGE_FILE_NAMES": "Pemetaan tambahan dari nama file ke nama bahasa",

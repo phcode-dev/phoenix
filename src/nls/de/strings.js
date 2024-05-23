@@ -796,7 +796,7 @@ define({
   "DESCRIPTION_HIGHLIGHT_MATCHES_WORDS_ONLY": "Nur hervorheben, wenn die Auswahl ein komplettes Wort umfasst",
   "DESCRIPTION_INSERT_HINT_ON_TAB": "Aktiviert das Akzeptieren eines Code Hints mithilfe der Tab-Taste",
   "DESCRIPTION_NO_HINTS_ON_DOT": "Deaktiviert das automatische Anzeigen der JavaScript Code Hints, sobald . eingegeben wird",
-  "DESCRIPTION_JSHINT_OPTIONS": "Ein Objekt mit den Standardoptionen für JSHint. Unter der folgenden URL finden Sie alle verfügbaren JSHint-Optionen: https://jshint.com/docs/options/",
+  "DESCRIPTION_JSHINT_DISABLE": "true, um den JSHints-Linter im Problemfenster zu deaktivieren",
   "DESCRIPTION_LANGUAGE": "Sprachspezifische Einstellungen",
   "DESCRIPTION_LANGUAGE_FILE_EXTENSIONS": "Zusätzliche Zuordnungen von Dateierweiterung zu Programmiersprache",
   "DESCRIPTION_LANGUAGE_FILE_NAMES": "Zusätzliche Zuordnungen von Dateiname zu Programmiersprache",

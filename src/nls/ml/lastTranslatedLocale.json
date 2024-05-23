@@ -776,7 +776,7 @@
   "DESCRIPTION_HIGHLIGHT_MATCHES_WORDS_ONLY": "തിരഞ്ഞെടുക്കൽ പൂർണ്ണമായ ടോക്കൺ ആയിരിക്കുമ്പോൾ മാത്രം ഹൈലൈറ്റ് ചെയ്യുക",
   "DESCRIPTION_INSERT_HINT_ON_TAB": "ടാബിൽ നിലവിൽ തിരഞ്ഞെടുത്ത കോഡ് സൂചന ചേർക്കാൻ ശരിയാണ്",
   "DESCRIPTION_NO_HINTS_ON_DOT": "എപ്പോൾ JS കോഡ് സൂചനകൾ യാന്ത്രികമായി കാണിക്കില്ല എന്നത് ശരിയാണ്. എന്ന് ടൈപ്പ് ചെയ്തിട്ടുണ്ട്",
-  "DESCRIPTION_JSHINT_OPTIONS": "JSHint-നുള്ള ഡിഫോൾട്ട് ഓപ്ഷനുകളുള്ള ഒരു ഒബ്ജക്റ്റ്. ലഭ്യമായ എല്ലാ JSHint ഓപ്‌ഷനുകൾക്കുമായി ദയവായി ഇനിപ്പറയുന്ന URL കാണുക: https://jshint.com/docs/options/",
+  "DESCRIPTION_JSHINT_DISABLE": "പ്രശ്‌ന പാനലിൽ JSHints ലിൻ്റർ പ്രവർത്തനരഹിതമാക്കുന്നത് ശരിയാണ്",
   "DESCRIPTION_LANGUAGE": "ഭാഷാ നിർദ്ദിഷ്ട ക്രമീകരണങ്ങൾ",
   "DESCRIPTION_LANGUAGE_FILE_EXTENSIONS": "ഫയൽ എക്സ്റ്റൻഷൻ മുതൽ ഭാഷയുടെ പേര് വരെയുള്ള അധിക മാപ്പിംഗുകൾ",
   "DESCRIPTION_LANGUAGE_FILE_NAMES": "ഫയലിന്റെ പേര് മുതൽ ഭാഷയുടെ പേര് വരെയുള്ള അധിക മാപ്പിംഗുകൾ",

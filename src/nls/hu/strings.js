@@ -796,7 +796,7 @@ define({
   "DESCRIPTION_HIGHLIGHT_MATCHES_WORDS_ONLY": "Csak akkor emelje ki, ha a kijelölés teljes token",
   "DESCRIPTION_INSERT_HINT_ON_TAB": "true (igaz) az aktuálisan kiválasztott kód tipp beszúrásához a lapon",
   "DESCRIPTION_NO_HINTS_ON_DOT": "igaz, hogy ne jelenítse meg automatikusan a JS-kód tippeket, ha . be van gépelve",
-  "DESCRIPTION_JSHINT_OPTIONS": "Egy objektum a JSHint alapértelmezett beállításaival. Kérjük, tekintse meg a következő URL-t az összes elérhető JSHint-beállításhoz: https://jshint.com/docs/options/",
+  "DESCRIPTION_JSHINT_DISABLE": "igaz a JSHints linter letiltásához a problémapanelen",
   "DESCRIPTION_LANGUAGE": "Nyelvspecifikus beállítások",
   "DESCRIPTION_LANGUAGE_FILE_EXTENSIONS": "További leképezések a fájlkiterjesztéstől a nyelvnévhez",
   "DESCRIPTION_LANGUAGE_FILE_NAMES": "További leképezések a fájlnévtől a nyelvnévhez",

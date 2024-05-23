@@ -776,7 +776,7 @@
   "DESCRIPTION_HIGHLIGHT_MATCHES_WORDS_ONLY": "Evidențiați numai atunci când selecția este un simbol complet",
   "DESCRIPTION_INSERT_HINT_ON_TAB": "true pentru a insera indicația codului selectat curent în filă",
   "DESCRIPTION_NO_HINTS_ON_DOT": "adevărat pentru a nu afișa automat indicii de cod JS când . este tastat",
-  "DESCRIPTION_JSHINT_OPTIONS": "Un obiect cu opțiunile implicite pentru JSHint. Consultați următoarea adresă URL pentru toate opțiunile JSHint disponibile: https://jshint.com/docs/options/",
+  "DESCRIPTION_JSHINT_DISABLE": "true pentru a dezactiva JSHints linter în panoul de probleme",
   "DESCRIPTION_LANGUAGE": "Setări specifice limbii",
   "DESCRIPTION_LANGUAGE_FILE_EXTENSIONS": "Mapări suplimentare de la extensia fișierului la numele limbii",
   "DESCRIPTION_LANGUAGE_FILE_NAMES": "Mapări suplimentare de la numele fișierului la numele limbii",

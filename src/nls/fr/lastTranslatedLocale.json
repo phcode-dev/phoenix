@@ -776,7 +776,7 @@
   "DESCRIPTION_HIGHLIGHT_MATCHES_WORDS_ONLY": "Surligner uniquement quand la sélection est un paramètre complet",
   "DESCRIPTION_INSERT_HINT_ON_TAB": "vrai pour insérer l’indicateur de code sélectionné avec la touche Tabulation",
   "DESCRIPTION_NO_HINTS_ON_DOT": "vrai pour que les indicateurs de code JS ne s’affichent pas automatiquement quand l’utilisateur tape un point (.)",
-  "DESCRIPTION_JSHINT_OPTIONS": "Un objet avec les options par défaut pour JSHint. Veuillez consulter l'URL suivante pour toutes les options JSHint disponibles : https://jshint.com/docs/options/",
+  "DESCRIPTION_JSHINT_DISABLE": "true pour désactiver le linter JSHints dans le panneau des problèmes",
   "DESCRIPTION_LANGUAGE": "Paramètres spécifiques à la langue",
   "DESCRIPTION_LANGUAGE_FILE_EXTENSIONS": "Mappages supplémentaires entre extension de fichier et nom de langue",
   "DESCRIPTION_LANGUAGE_FILE_NAMES": "Mappages supplémentaires entre nom de fichier et nom de langue",

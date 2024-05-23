@@ -776,7 +776,7 @@
   "DESCRIPTION_HIGHLIGHT_MATCHES_WORDS_ONLY": "Zvýraznit pouze pokud je výběr kompletním výrazem",
   "DESCRIPTION_INSERT_HINT_ON_TAB": "true k vložení aktuálně vybrané nápovědy při tabulátoru",
   "DESCRIPTION_NO_HINTS_ON_DOT": "true k zamezení automatického zobrazení nápověd JS kódu, jestliže je napsaná .",
-  "DESCRIPTION_JSHINT_OPTIONS": "Objekt s výchozími možnostmi pro JSHint. Všechny dostupné možnosti JSHint naleznete na následující adrese URL: https://jshint.com/docs/options/",
+  "DESCRIPTION_JSHINT_DISABLE": "true pro deaktivaci JSHints linter v panelu problémů",
   "DESCRIPTION_LANGUAGE": "Vlastní nastavení jazyků",
   "DESCRIPTION_LANGUAGE_FILE_EXTENSIONS": "Dodatečná mapování z přípony souboru na jméno jazyka",
   "DESCRIPTION_LANGUAGE_FILE_NAMES": "Dodatečná mapování z názvu souboru na jméno jazyka",

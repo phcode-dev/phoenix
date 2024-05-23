@@ -796,7 +796,7 @@ define({
   "DESCRIPTION_HIGHLIGHT_MATCHES_WORDS_ONLY": "Evidenziare solo quando la selezione è un token completo",
   "DESCRIPTION_INSERT_HINT_ON_TAB": "true per inserire il codice suggerimento suggerito alla pressione del tasto TAB",
   "DESCRIPTION_NO_HINTS_ON_DOT": "true per non mostrare automaticamente i suggerimenti del codice JavaScript quando viene digitato '.'",
-  "DESCRIPTION_JSHINT_OPTIONS": "Un oggetto con le opzioni predefinite per JSHint. Consulta il seguente URL per tutte le opzioni JSHint disponibili: https://jshint.com/docs/options/",
+  "DESCRIPTION_JSHINT_DISABLE": "true per disabilitare il linter di JSHints nel pannello dei problemi",
   "DESCRIPTION_LANGUAGE": "Impostazioni specifiche dei linguaggi",
   "DESCRIPTION_LANGUAGE_FILE_EXTENSIONS": "Ulteriori mappature dei linguaggi corrispondenti alle estensioni",
   "DESCRIPTION_LANGUAGE_FILE_NAMES": "Ulteriori mappature dei linguaggi corrispondenti ai nomi dei file",

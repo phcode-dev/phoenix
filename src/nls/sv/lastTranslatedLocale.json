@@ -776,7 +776,7 @@
   "DESCRIPTION_HIGHLIGHT_MATCHES_WORDS_ONLY": "Markera endast när valet är en fullständig token",
   "DESCRIPTION_INSERT_HINT_ON_TAB": "sant för att infoga det för närvarande valda kodtipset på fliken",
   "DESCRIPTION_NO_HINTS_ON_DOT": "sant för att inte automatiskt visa JS-kodtips när . är maskinskrivet",
-  "DESCRIPTION_JSHINT_OPTIONS": "Ett objekt med standardalternativen för JSHint. Se följande URL för alla tillgängliga JSHint-alternativ: https://jshint.com/docs/options/",
+  "DESCRIPTION_JSHINT_DISABLE": "sant för att inaktivera JSHints linter i problempanelen",
   "DESCRIPTION_LANGUAGE": "Språkspecifika inställningar",
   "DESCRIPTION_LANGUAGE_FILE_EXTENSIONS": "Ytterligare mappningar från filtillägg till språknamn",
   "DESCRIPTION_LANGUAGE_FILE_NAMES": "Ytterligare mappningar från filnamn till språknamn",

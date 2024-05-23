@@ -796,7 +796,7 @@ define({
   "DESCRIPTION_HIGHLIGHT_MATCHES_WORDS_ONLY": "Yalnızca seçim tam bir belirteç olduğunda vurgulayın",
   "DESCRIPTION_INSERT_HINT_ON_TAB": "o anda seçili kod ipucunu sekmeye eklemek için true .",
   "DESCRIPTION_NO_HINTS_ON_DOT": "JS kodu ipuçlarını otomatik olarak göstermemek için true . yazıldı",
-  "DESCRIPTION_JSHINT_OPTIONS": "JSHint için varsayılan seçeneklere sahip bir nesne. Lütfen mevcut tüm JSHint Seçenekleri için aşağıdaki URL'ye bakın: https://jshint.com/docs/options/",
+  "DESCRIPTION_JSHINT_DISABLE": "sorunlar panelinde JSHints linter'ı devre dışı bırakmak için true",
   "DESCRIPTION_LANGUAGE": "Dile özel ayarlar",
   "DESCRIPTION_LANGUAGE_FILE_EXTENSIONS": "Dosya uzantısından dil adına ek eşlemeler",
   "DESCRIPTION_LANGUAGE_FILE_NAMES": "Dosya adından dil adına ek eşlemeler",

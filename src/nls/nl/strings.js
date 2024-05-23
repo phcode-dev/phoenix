@@ -796,7 +796,7 @@ define({
   "DESCRIPTION_HIGHLIGHT_MATCHES_WORDS_ONLY": "Alleen markeren als de selectie een volledige token is",
   "DESCRIPTION_INSERT_HINT_ON_TAB": "true om de momenteel geselecteerde codehint op tab in te voegen",
   "DESCRIPTION_NO_HINTS_ON_DOT": "true om JS-codehints niet automatisch weer te geven wanneer . is getypt",
-  "DESCRIPTION_JSHINT_OPTIONS": "Een object met de standaardopties voor JSHint. Zie de volgende URL voor alle beschikbare JSHint-opties: https://jshint.com/docs/options/",
+  "DESCRIPTION_JSHINT_DISABLE": "true om JSHints-linter in het problemenpaneel uit te schakelen",
   "DESCRIPTION_LANGUAGE": "Taalspecifieke instellingen",
   "DESCRIPTION_LANGUAGE_FILE_EXTENSIONS": "Extra toewijzingen van bestandsextensie naar taalnaam",
   "DESCRIPTION_LANGUAGE_FILE_NAMES": "Extra toewijzingen van bestandsnaam naar taalnaam",
