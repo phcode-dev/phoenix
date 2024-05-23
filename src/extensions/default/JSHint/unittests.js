@@ -19,16 +19,15 @@
  *
  */
 
-/*global describe, it, expect, beforeAll, afterAll, awaitsForDone, awaits */
+/*global describe, it, expect, beforeAll, afterAll, awaitsForDone, awaits, awaitsFor */
 
 define(function (require, exports, module) {
 
 
     var SpecRunnerUtils = brackets.getModule("spec/SpecRunnerUtils");
 
-    describe("extension:JSHint", function () {
-        var testFolder = SpecRunnerUtils.getTestPath("/spec/Extension-test-project-files/"),
-            testProjectsFolder = SpecRunnerUtils.getTestPath("/spec/JSHintExtensionTest-files/"),
+    describe("integration:JSHint", function () {
+        let testProjectsFolder = SpecRunnerUtils.getTestPath("/spec/JSHintExtensionTest-files/"),
             testWindow,
             $,
             CodeInspection;
@@ -43,8 +42,8 @@ define(function (require, exports, module) {
             $ = testWindow.$;
             CodeInspection = testWindow.brackets.test.CodeInspection;
             CodeInspection.toggleEnabled(true);
-
-            await SpecRunnerUtils.loadProjectInTestWindow(testFolder);
+            await awaitsFor(()=>testWindow._JsHintExtensionReadyToIntegTest,
+                "JsHint extension to be loaded", 10000);
         }, 30000);
 
         afterAll(async function () {
@@ -54,62 +53,71 @@ define(function (require, exports, module) {
         }, 30000);
 
         it("status icon should toggle Errors panel when errors present", async function () {
-            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["errors.js"]), "open test file");
-            await awaits(100);
-
-            expect($("#problems-panel").is(":visible")).toBe(true);
-
-            toggleJSLintResults();
-            expect($("#problems-panel").is(":visible")).toBe(false);
+            await SpecRunnerUtils.loadProjectInTestWindow(testProjectsFolder + "valid-config-error");
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["es8.js"]), "open test file with error");
+            await awaitsFor(()=>{
+                return $("#problems-panel").is(":visible");
+            }, "Problems panel to be visible");
 
             toggleJSLintResults();
-            expect($("#problems-panel").is(":visible")).toBe(true);//JSHintExtensionTest-files
+            await awaitsFor(()=>{
+                return !$("#problems-panel").is(":visible");
+            }, "Problems panel to be hidden");
+
+            toggleJSLintResults();
+            await awaitsFor(()=>{
+                return $("#problems-panel").is(":visible");
+            }, "Problems panel to be visible");
         });
 
         it("should show errors if invalid .jshintrc detected", async function () {
             await SpecRunnerUtils.loadProjectInTestWindow(testProjectsFolder + "invalid-config");
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["no-errors.js"]), "open test file");
-            await awaits(100);
-
-            expect($("#problems-panel").is(":visible")).toBe(true);
+            await awaitsFor(()=>{
+                return $("#problems-panel").is(":visible");
+            }, "Problems panel to be visible");
         });
 
         it("should load valid es6 .jshintrc in project", async function () {
             await SpecRunnerUtils.loadProjectInTestWindow(testProjectsFolder + "valid-config-es6");
             // es6 file should have no errors in problems panel
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["es6.js"]), "open test file es6.js");
-            await awaits(100);
 
-            expect($("#problems-panel").is(":visible")).toBe(false);
+            await awaits(100);
+            await awaitsFor(()=>{
+                return !$("#problems-panel").is(":visible");
+            }, "Problems panel to be hidden");
 
             // using es8 async feature in es6 jshint mode should have errors in problems panel
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["es8.js"]), "open test file es8.js");
-            await awaits(100);
-
-            expect($("#problems-panel").is(":visible")).toBe(true);
+            await awaitsFor(()=>{
+                return $("#problems-panel").is(":visible");
+            }, "Problems panel to be visible");
         });
 
         it("should extend valid es6 .jshintrc in project", async function () {
             await SpecRunnerUtils.loadProjectInTestWindow(testProjectsFolder + "valid-config-es6-extend");
             // es6 file should have no errors in problems panel
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["es6.js"]), "open test file es6.js");
-            await awaits(100);
 
-            expect($("#problems-panel").is(":visible")).toBe(false);
+            await awaits(100);
+            await awaitsFor(()=>{
+                return !$("#problems-panel").is(":visible");
+            }, "Problems panel to be hidden");
 
             // using es8 async feature in es6 jshint mode should have errors in problems panel
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["es8.js"]), "open test file es8.js");
-            await awaits(100);
-
-            expect($("#problems-panel").is(":visible")).toBe(true);
+            await awaitsFor(()=>{
+                return $("#problems-panel").is(":visible");
+            }, "Problems panel to be visible");
         });
 
         it("should show errors if invalid .jshintrc extend file detected", async function () {
             await SpecRunnerUtils.loadProjectInTestWindow(testProjectsFolder + "invalid-config-extend");
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["no-errors.js"]), "open test file");
-            await awaits(100);
-
-            expect($("#problems-panel").is(":visible")).toBe(true);
+            await awaitsFor(()=>{
+                return $("#problems-panel").is(":visible");
+            }, "Problems panel to be visible");
         });
     });
 });

@@ -1,0 +1,9 @@
+{
+  "esversion": 11,
+  "browser": true,
+  "node": true,
+  "jquery": true,
+  "rhino": false,
+  "jasmine": true,
+  "devel": false
+}

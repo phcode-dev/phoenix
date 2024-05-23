@@ -32,4 +32,5 @@ importScripts(`${Phoenix.baseURL}thirdparty/jshint.js`);
     }
 
     WorkerComm.setExecHandler("jsHint", jsHint);
+    WorkerComm.triggerPeer("JsHint_extension_Loaded", {});
 }());
