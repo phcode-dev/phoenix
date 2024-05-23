@@ -40,6 +40,11 @@ define(function (require, exports, module) {
         FileSystem         = brackets.getModule("filesystem/FileSystem"),
         IndexingWorker     = brackets.getModule("worker/IndexingWorker");
 
+    if(Phoenix.isTestWindow) {
+        IndexingWorker.on("JsHint_extension_Loaded", ()=>{
+            window._JsHintExtensionReadyToIntegTest = true;
+        });
+    }
     IndexingWorker.loadScriptInWorker(`${module.uri}/../worker/jshint-helper.js`);
 
     let prefs = PreferencesManager.getExtensionPrefs("jshint"),
@@ -173,7 +178,7 @@ define(function (require, exports, module) {
                 // jslints -> cli.js -> loadConfig -> if (config['extends'])...
                 // https://jshint.com/docs/cli/ > Special Options
                 if (config.extends) {
-                    let extendFile = FileSystem.getFileForPath(dir + config.extends);
+                    let extendFile = FileSystem.getFileForPath(path.join(dir, config.extends));
                     _readConfig(extendFile.parentPath, extendFile.name).then(baseConfigResult=>{
                         delete config.extends;
                         let mergedConfig = $.extend({}, baseConfigResult, config);
@@ -182,7 +187,9 @@ define(function (require, exports, module) {
                         }
                         resolve(mergedConfig);
                     }).catch(()=>{
-                        reject("Error parsing JSHint config file: " + Phoenix.app.getDisplayPath(extendFile.fullPath));
+                        let extendDisplayPath = ProjectManager.makeProjectRelativeIfPossible(extendFile.fullPath);
+                        extendDisplayPath = Phoenix.app.getDisplayPath(extendDisplayPath);
+                        reject("Error parsing JSHint config file: " + extendDisplayPath);
                     });
                 }
                 else {
