@@ -21,6 +21,8 @@
 
 // Parts of this file is adapted from https://github.com/cfjedimaster/brackets-jshint
 
+/*global path*/
+
 /**
  * Provides JSLint results via the core linting extension point
  */
@@ -29,8 +31,10 @@ define(function (require, exports, module) {
     // Load dependent modules
     const _                = brackets.getModule("thirdparty/lodash"),
         CodeInspection     = brackets.getModule("language/CodeInspection"),
+        FileSystemError    = brackets.getModule("filesystem/FileSystemError"),
         AppInit            = brackets.getModule("utils/AppInit"),
         PreferencesManager = brackets.getModule("preferences/PreferencesManager"),
+        DocumentManager    = brackets.getModule("document/DocumentManager"),
         Strings            = brackets.getModule("strings"),
         ProjectManager     = brackets.getModule("project/ProjectManager"),
         FileSystem         = brackets.getModule("filesystem/FileSystem"),
@@ -149,21 +153,19 @@ define(function (require, exports, module) {
     function _readConfig(dir, configFileName) {
         return new Promise((resolve, reject)=>{
             configFileName = configFileName || CONFIG_FILE_NAME;
-            let file = FileSystem.getFileForPath(dir + configFileName);
-            file.read(function (err, content) {
-                if (err) {
-                    resolve(null); // no config file is a valid case. we just resolve with null
-                    return;
-                }
+            const configFilePath = path.join(dir, configFileName);
+            let displayPath = ProjectManager.makeProjectRelativeIfPossible(configFilePath);
+            displayPath = Phoenix.app.getDisplayPath(displayPath);
+            DocumentManager.getDocumentForPath(configFilePath).done(function (configDoc) {
                 let config;
+                const content = configDoc.getText();
                 try {
                     config = JSON.parse(removeComments(content));
-                    console.log("JSHint: loaded config file for project " + file.fullPath);
+                    console.log("JSHint: loaded config file for project " + configFilePath);
                 } catch (e) {
-                    console.log("JSHint: error parsing " + file.fullPath);
+                    console.log("JSHint: error parsing " + configFilePath);
                     // just log and return as this is an expected failure for us while the user edits code
-                    reject("Error parsing JSHint config file:    "
-                        + ProjectManager.getProjectRelativePath(file.fullPath));
+                    reject("Error parsing JSHint config file:    " + displayPath);
                     return;
                 }
                 // Load any base config defined by "extends".
@@ -180,13 +182,19 @@ define(function (require, exports, module) {
                         }
                         resolve(mergedConfig);
                     }).catch(()=>{
-                        reject("Error parsing JSHint config file:    "
-                            + ProjectManager.getProjectRelativePath(extendFile.name));
+                        reject("Error parsing JSHint config file: " + Phoenix.app.getDisplayPath(extendFile.fullPath));
                     });
                 }
                 else {
                     resolve(config);
                 }
+            }).fail((err)=>{
+                if(err === FileSystemError.NOT_FOUND){
+                    resolve(null); // no config file is a valid case. we just resolve with null
+                    return;
+                }
+                console.error("Error reading JSHint Config File", configFilePath, err);
+                reject("Error reading JSHint Config File", displayPath);
             });
         });
     }
