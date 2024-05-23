@@ -46,6 +46,8 @@ define(function (require, exports, module) {
         projectSpecificOptions = null,
         jsHintConfigFileErrorMessage = null;
 
+    const PREFS_JSHINT_DISABLED = "disabled";
+
     // We don't provide default options in the preferences as preferences will try to mixin default options with
     // user defined options leading to unexpected results. Either we take user defined options or default, no mixin.
     let DEFAULT_OPTIONS = {
@@ -58,8 +60,8 @@ define(function (require, exports, module) {
         "devel": false
     };
 
-    prefs.definePreference("options", "object", {}, {
-        description: Strings.DESCRIPTION_JSHINT_OPTIONS
+    prefs.definePreference(PREFS_JSHINT_DISABLED, "boolean", false, {
+        description: Strings.DESCRIPTION_JSHINT_DISABLE
     }).on("change", function () {
         CodeInspection.requestRun(Strings.JSHINT_NAME);
     });
@@ -86,9 +88,7 @@ define(function (require, exports, module) {
             // If a line contains only whitespace (here spaces or tabs), remove the whitespace
             text = text.replace(/^[ \t]+$/gm, "");
 
-            let userPrefOptions = _.isEmpty(prefs.get("options")) ? DEFAULT_OPTIONS : prefs.get("options");
-
-            let options = projectSpecificOptions || userPrefOptions;
+            let options = projectSpecificOptions || DEFAULT_OPTIONS;
 
             IndexingWorker.execPeer("jsHint", {
                 text,
@@ -230,6 +230,7 @@ define(function (require, exports, module) {
             _reloadOptions();
         } else if(_isFileInArray(configFilePath, removed)){
             projectSpecificOptions = null;
+            jsHintConfigFileErrorMessage = null;
         }
     }
 
@@ -244,7 +245,8 @@ define(function (require, exports, module) {
         name: Strings.JSHINT_NAME,
         scanFileAsync: lintOneFile,
         canInspect: function (fullPath) {
-            return fullPath && !fullPath.endsWith(".min.js");
+            return !prefs.get(PREFS_JSHINT_DISABLED) && (projectSpecificOptions || jsHintConfigFileErrorMessage)
+                && fullPath && !fullPath.endsWith(".min.js");
         }
     });
 });
