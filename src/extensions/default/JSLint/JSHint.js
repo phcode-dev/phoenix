@@ -45,7 +45,7 @@ define(function (require, exports, module) {
             window._JsHintExtensionReadyToIntegTest = true;
         });
     }
-    IndexingWorker.loadScriptInWorker(`${module.uri}/../worker/jshint-helper.js`);
+    IndexingWorker.loadScriptInWorker(`${module.uri}/../worker/jslint-helper.js`);
 
     let prefs = PreferencesManager.getExtensionPrefs("jshint"),
         projectSpecificOptions = null,
@@ -218,6 +218,10 @@ define(function (require, exports, module) {
         });
     }
 
+    function isJSHintConfigActive() {
+        return !!(jsHintConfigFileErrorMessage || projectSpecificOptions);
+    }
+
     function _isFileInArray(fileToCheck, fileArray){
         if(!fileArray){
             return false;
@@ -256,4 +260,6 @@ define(function (require, exports, module) {
                 && fullPath && !fullPath.endsWith(".min.js");
         }
     });
+
+    exports.isJSHintConfigActive = isJSHintConfigActive;
 });
