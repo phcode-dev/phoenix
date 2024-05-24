@@ -256,8 +256,7 @@ define(function (require, exports, module) {
         name: Strings.JSHINT_NAME,
         scanFileAsync: lintOneFile,
         canInspect: function (fullPath) {
-            return !prefs.get(PREFS_JSHINT_DISABLED) && (projectSpecificOptions || jsHintConfigFileErrorMessage)
-                && fullPath && !fullPath.endsWith(".min.js");
+            return !prefs.get(PREFS_JSHINT_DISABLED) && fullPath && !fullPath.endsWith(".min.js");
         }
     });
 
