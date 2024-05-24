@@ -289,6 +289,10 @@ a, img {
     border-bottom: 1px solid @bc-panel-border;
     box-shadow: 0 1px 3px @bc-shadow-small;
     font-size: @menu-item-font-size;
+    border-top: 1px solid @border-title-bar;
+    .dark & {
+        border-top: none;
+    }
 
     // Make sure the bottom box-shadow goes above the editor (position: relative needed to start a new stacking group)
     position: relative;
