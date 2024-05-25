@@ -391,6 +391,7 @@ define(function (require, exports, module) {
             return;
         }
         isInLiveHighlightSession = true;
+        this.editor._dontDismissPopupOnScroll();
         this.editor.restoreHistoryPoint(`${HISTORY_PREFIX}${hintSessionId}`);
         this.insertHint($highlightedEl.find(".brackets-html-hints"), true);
     };
