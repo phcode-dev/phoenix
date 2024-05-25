@@ -202,7 +202,7 @@ define(function (require, exports, module) {
             // If self editor is visible, close all dropdowns on scroll.
             // (We don't want to do self if we're just scrolling in a non-visible editor
             // in response to some document change event.)
-            if (self.isFullyVisible()) {
+            if (!self._shouldNotDismissPopupsOnScroll && self.isFullyVisible()) {
                 Menus.closeAll();
             }
 
@@ -245,6 +245,29 @@ define(function (require, exports, module) {
     }
 
     /**
+     * will not dismiss any popups on scrolling the editor till the given timout
+     * @param {number} [timeoutMs]
+     * @private
+     */
+    function _dontDismissPopupOnScroll(timeoutMs = 500) {
+        // eslint-disable-next-line no-invalid-this
+        const self = this;
+        // on live code hints, when the user is selecting code hints using arrow keys, the text in the editor changes.
+        // If the text that is being changed falls beyond the editor border(Eg: end of a long line that is part occluded
+        // by live preview panel), then cm will scroll the editor horizontally to show the changed text. On scrolling,
+        // all popups are usually dismissed(see scroll event handler in this file), but that should happen if we
+        // are live code hinting. So we do this.
+        if(self._shouldNotDismissPopupsOnScroll){
+            clearTimeout(self._shouldNotDismissPopupsOnScroll);
+        }
+        self._shouldNotDismissPopupsOnScroll = setTimeout(()=>{
+            // we only wait for 500 ms after the user pressed up or down arrow key, after which its any scroll will
+            // dismiss all popups. This is os that user may scroll the text using mouse which should dismiss popups.
+            self._shouldNotDismissPopupsOnScroll = false;
+        }, timeoutMs);
+    }
+
+    /**
      * add required helpers to editor
      * @param Editor
      */
@@ -256,6 +279,7 @@ define(function (require, exports, module) {
         Editor.prototype._handleDocumentDeleted = _handleDocumentDeleted;
         Editor.prototype._handleDocumentLanguageChanged = _handleDocumentLanguageChanged;
         Editor.prototype._installEditorListeners = _installEditorListeners;
+        Editor.prototype._dontDismissPopupOnScroll = _dontDismissPopupOnScroll;
     }
 
     exports.addHelpers =addHelpers;
