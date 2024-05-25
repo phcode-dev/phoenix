@@ -6,6 +6,16 @@ We are continuously adding features every week to improve the life of web develo
 <a href="https://github.com/phcode-dev/phoenix/releases" target="_blank">Check out our release page!</a>
 
 Here's a list of top features recently added to Phoenix:
+
+## Live CSS class and Style Code Hints
+
+`Added on May, 2024`
+
+Interactively edit CSS styles and classes using the up/down arrow keys in code hints. This is available in
+CSS files and inline CSS styles/class names in HTML files. This provides an instant boost to your HTML and CSS workflows.
+
+![classLiveHints](https://github.com/phcode-dev/phoenix/assets/5336369/502c8751-5269-4c34-9178-5ad08f8ad837)
+
 <h2><a target="_blank" href="https://docs.phcode.dev/docs/Features/live-preview-settings/">Custom Live Preview Servers</a></h2>
 
 `Added on April, 2024`
