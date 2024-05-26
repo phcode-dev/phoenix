@@ -155,12 +155,14 @@ define(function (require, exports, module) {
 
     // HELP
     exports.HELP_HOW_TO_USE_BRACKETS    = "help.howToUseBrackets";      // HelpCommandHandlers.js       _handleLinkMenuItem()
+    exports.HELP_DOCS                   = "help.docs";                  // HelpCommandHandlers.js       _handleLinkMenuItem()
     exports.HELP_SUPPORT                = "help.support";               // HelpCommandHandlers.js       _handleLinkMenuItem()
     exports.HELP_SUGGEST                = "help.suggest";               // HelpCommandHandlers.js       _handleLinkMenuItem()
     exports.HELP_RELEASE_NOTES          = "help.releaseNotes";          // HelpCommandHandlers.js       _handleLinkMenuItem()
     exports.HELP_GET_INVOLVED           = "help.getInvolved";           // HelpCommandHandlers.js       _handleLinkMenuItem()
     exports.HELP_SHOW_EXT_FOLDER        = "help.showExtensionsFolder";  // HelpCommandHandlers.js       _handleShowExtensionsFolder()
     exports.HELP_HOMEPAGE               = "help.homepage";              // HelpCommandHandlers.js       _handleLinkMenuItem()
+    exports.HELP_YOUTUBE                = "help.youtube";               // HelpCommandHandlers.js       _handleLinkMenuItem()
     exports.HELP_TWITTER                = "help.twitter";               // HelpCommandHandlers.js       _handleLinkMenuItem()
     exports.HELP_TOGGLE_SHORTCUTS_PANEL = "help.toggleShortcuts";       // shortcuts integrated extension
     exports.HELP_CHECK_UPDATES          = "help.checkUpdates";          // shortcuts integrated extension

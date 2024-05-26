@@ -330,7 +330,7 @@
     "file.rename":  [
         "Shift-F2"
     ],
-    "help.support": [
+    "help.docs": [
         "Shift-F1"
     ],
     "recentProjects.toggle": [
