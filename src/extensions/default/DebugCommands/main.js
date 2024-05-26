@@ -838,7 +838,7 @@ define(function (require, exports, module) {
     _updateLogToConsoleMenuItemChecked();
 
     const helpMenu = Menus.getMenu(Menus.AppMenuBar.HELP_MENU);
-    helpMenu.addMenuItem(DEBUG_SWITCH_LANGUAGE, "", Menus.BEFORE, Commands.HELP_TWITTER);
+    helpMenu.addMenuItem(DEBUG_SWITCH_LANGUAGE, "", Menus.BEFORE, Commands.HELP_YOUTUBE);
     helpMenu.addMenuDivider(Menus.AFTER, DEBUG_SWITCH_LANGUAGE);
 
     const fileMenu = Menus.getMenu(Menus.AppMenuBar.FILE_MENU);
