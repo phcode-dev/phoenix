@@ -292,8 +292,10 @@ define(function (require, exports, module) {
                     <div id='quick-view-color-swatch' data-for-test='${previewCSS}' class='color-swatch'
                         style='background: ${previewCSS}'>
                     </div>
-                    <i class="fa fa-edit" style="color: ${previewCSS}; margin-top:5px;"></i>
-                    <span style="color: ${previewCSS}; margin-top:5px;">${Strings.EDIT}</span>
+                    <span style="${gradientMatch.match? "display: none;": ""}">
+                        <i class="fa fa-edit" style="color: ${previewCSS}; margin-top:5px;"></i>
+                        <span style="color: ${previewCSS}; margin-top:5px;">${Strings.EDIT}</span>
+                    </span>
                 </div>`);
                 preview.click(function () {
                     if(gradientMatch.match) {
