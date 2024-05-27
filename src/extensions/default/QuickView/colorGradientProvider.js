@@ -288,9 +288,13 @@ define(function (require, exports, module) {
                 //          (used by unit tests) to match so normalize the css for both
                 let tooltip = gradientMatch.match ? "" : Strings.TOOLTIP_CLICK_TO_EDIT_COLOR;
                 previewCSS = normalizeGradientExpressionForQuickview(ensureHexFormat(previewCSS));
-                let preview = $(`<div id='quick-view-color-swatch' data-for-test='${previewCSS}' class='color-swatch'
-                        style='background: ${previewCSS}' title="${tooltip}">
-                        </div>`);
+                let preview = $(`<div title="${tooltip}">
+                    <div id='quick-view-color-swatch' data-for-test='${previewCSS}' class='color-swatch'
+                        style='background: ${previewCSS}'>
+                    </div>
+                    <i class="fa fa-edit" style="color: ${previewCSS}; margin-top:5px;"></i>
+                    <span style="color: ${previewCSS}; margin-top:5px;">${Strings.EDIT}</span>
+                </div>`);
                 preview.click(function () {
                     if(gradientMatch.match) {
                         return;
