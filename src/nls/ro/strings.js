@@ -717,6 +717,7 @@ define({
   "COLOR_EDITOR_0X_BUTTON_TIP": "Format Hex (0x).",
   "COLOR_EDITOR_USED_COLOR_TIP_SINGULAR": "{0} (folosită {1} dată)",
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} (folosită {1} ori)",
+  "EDIT": "Editare",
   "CMD_JUMPTO_DEFINITION": "Sari la definiție",
   "CMD_SHOW_PARAMETER_HINT": "Arată sugestia parametrului",
   "NO_ARGUMENTS": "<niciun parametru>",

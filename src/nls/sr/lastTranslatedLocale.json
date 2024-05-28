@@ -697,6 +697,7 @@
   "COLOR_EDITOR_0X_BUTTON_TIP": "Хек (0к) формат",
   "COLOR_EDITOR_USED_COLOR_TIP_SINGULAR": "{0} (Коришћена {1} пут)",
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} (Коришћена {1} пута)",
+  "EDIT": "Уреди",
   "CMD_JUMPTO_DEFINITION": "Скочи на дефиницију",
   "CMD_SHOW_PARAMETER_HINT": "Пружи малу помоћ око параметра",
   "NO_ARGUMENTS": "<без параметара>",

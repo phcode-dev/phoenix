@@ -697,6 +697,7 @@
   "COLOR_EDITOR_0X_BUTTON_TIP": "16 進数 (0x) 形式",
   "COLOR_EDITOR_USED_COLOR_TIP_SINGULAR": "{0} ({1} 回使用)",
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} ({1} 回使用)",
+  "EDIT": "編集",
   "CMD_JUMPTO_DEFINITION": "定義にジャンプ",
   "CMD_SHOW_PARAMETER_HINT": "パラメーターヒントを表示",
   "NO_ARGUMENTS": "<パラメーターがありません>",

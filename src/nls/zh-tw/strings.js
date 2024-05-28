@@ -717,6 +717,7 @@ define({
   "COLOR_EDITOR_0X_BUTTON_TIP": "十六進制 (0x) 格式",
   "COLOR_EDITOR_USED_COLOR_TIP_SINGULAR": "{0} (用了 {1} 次)",
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} (用了 {1} 次)",
+  "EDIT": "編輯",
   "CMD_JUMPTO_DEFINITION": "跳到定義位置",
   "CMD_SHOW_PARAMETER_HINT": "顯示參數提示",
   "NO_ARGUMENTS": "<沒有參數>",

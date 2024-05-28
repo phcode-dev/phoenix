@@ -717,6 +717,7 @@ define({
   "COLOR_EDITOR_0X_BUTTON_TIP": "Hex (0x) format",
   "COLOR_EDITOR_USED_COLOR_TIP_SINGULAR": "{0} (Korištena {1} put)",
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} (Korištena {1} puta)",
+  "EDIT": "Uredi",
   "CMD_JUMPTO_DEFINITION": "Skoči na definiciju",
   "CMD_SHOW_PARAMETER_HINT": "Pokaži naznake (hintove) parametara",
   "NO_ARGUMENTS": "<bez parametara>",

@@ -717,6 +717,7 @@ define({
   "COLOR_EDITOR_0X_BUTTON_TIP": "Format hexadécimal (0x)",
   "COLOR_EDITOR_USED_COLOR_TIP_SINGULAR": "{0} (utilisé {1} fois)",
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} (utilisé {1} fois)",
+  "EDIT": "Modifier",
   "CMD_JUMPTO_DEFINITION": "Accéder à la définition",
   "CMD_SHOW_PARAMETER_HINT": "Afficher l’indicateur de paramètre",
   "NO_ARGUMENTS": "<aucun paramètre>",

@@ -717,6 +717,7 @@ define({
   "COLOR_EDITOR_0X_BUTTON_TIP": "Hex (0x) formāts",
   "COLOR_EDITOR_USED_COLOR_TIP_SINGULAR": "{0} (lietots {1} reizi)",
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} (lietots {1} reizes)",
+  "EDIT": "Rediģēt",
   "CMD_JUMPTO_DEFINITION": "Pārlēkt uz definīciju",
   "CMD_SHOW_PARAMETER_HINT": "Rādīt parametru ieteikumus",
   "NO_ARGUMENTS": "<nav argumentu>",

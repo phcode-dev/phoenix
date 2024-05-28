@@ -697,6 +697,7 @@
   "COLOR_EDITOR_0X_BUTTON_TIP": "十六进制 (0x) 格式",
   "COLOR_EDITOR_USED_COLOR_TIP_SINGULAR": "{0} (使用 {1} 次)",
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} (使用 {1} 次)",
+  "EDIT": "编辑",
   "CMD_JUMPTO_DEFINITION": "跳转到源代码定义处",
   "CMD_SHOW_PARAMETER_HINT": "显示参数提示",
   "NO_ARGUMENTS": "<无相应参数>",

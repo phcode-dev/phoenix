@@ -717,6 +717,7 @@ define({
   "COLOR_EDITOR_0X_BUTTON_TIP": "Hex (0x) formátum",
   "COLOR_EDITOR_USED_COLOR_TIP_SINGULAR": "{0} ({1}-szer használva)",
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} ({1}-szer használva)",
+  "EDIT": "Szerkesztés",
   "CMD_JUMPTO_DEFINITION": "Ugrás a Definícióhoz",
   "CMD_SHOW_PARAMETER_HINT": "Paraméter tipp megjelenítése",
   "NO_ARGUMENTS": "<nincs paraméter>",

@@ -717,6 +717,7 @@ define({
   "COLOR_EDITOR_0X_BUTTON_TIP": "हेक्स (0x) प्रारूप",
   "COLOR_EDITOR_USED_COLOR_TIP_SINGULAR": "{0} (प्रयुक्त {1} बार)",
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} ({1} बार प्रयुक्त)",
+  "EDIT": "संपादन करना",
   "CMD_JUMPTO_DEFINITION": "परिभाषा पर जाएं",
   "CMD_SHOW_PARAMETER_HINT": "पैरामीटर संकेत दिखाएँ",
   "NO_ARGUMENTS": "<कोई पैरामीटर नहीं>",

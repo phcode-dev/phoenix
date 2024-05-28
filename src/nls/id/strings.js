@@ -717,6 +717,7 @@ define({
   "COLOR_EDITOR_0X_BUTTON_TIP": "Format Hex (0x)",
   "COLOR_EDITOR_USED_COLOR_TIP_SINGULAR": "{0} (Digunakan {1} kali)",
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} (Digunakan {1} kali)",
+  "EDIT": "Edit",
   "CMD_JUMPTO_DEFINITION": "Lompat ke Definisi",
   "CMD_SHOW_PARAMETER_HINT": "Tampilkan Petunjuk Parameter",
   "NO_ARGUMENTS": "<tidak ada parameter>",
