@@ -697,6 +697,7 @@
   "COLOR_EDITOR_0X_BUTTON_TIP": "16진수(0x) 형식",
   "COLOR_EDITOR_USED_COLOR_TIP_SINGULAR": "{0} ({1}시간 사용)",
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} ({1}시간 사용)",
+  "EDIT": "편집",
   "CMD_JUMPTO_DEFINITION": "정의로 이동",
   "CMD_SHOW_PARAMETER_HINT": "파라메터 정보를 표시",
   "NO_ARGUMENTS": "<매개변수가 없습니다>",

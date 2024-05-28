@@ -717,6 +717,7 @@ define({
   "COLOR_EDITOR_0X_BUTTON_TIP": "Hex (0x) ‑muoto",
   "COLOR_EDITOR_USED_COLOR_TIP_SINGULAR": "{0} (käytetty {1} kerran)",
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} (käytetty {1} kertaa)",
+  "EDIT": "Muokkaa",
   "CMD_JUMPTO_DEFINITION": "Siirry määrittelyyn",
   "CMD_SHOW_PARAMETER_HINT": "Näytä parametrivihje",
   "NO_ARGUMENTS": "<ei parametreja>",

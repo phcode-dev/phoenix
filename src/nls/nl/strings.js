@@ -717,6 +717,7 @@ define({
   "COLOR_EDITOR_0X_BUTTON_TIP": "Hex (0x) formaat",
   "COLOR_EDITOR_USED_COLOR_TIP_SINGULAR": "{0} ({1} keer gebruikt)",
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} ({1} keer gebruikt)",
+  "EDIT": "Bewerken",
   "CMD_JUMPTO_DEFINITION": "Ga naar definitie",
   "CMD_SHOW_PARAMETER_HINT": "Toon parameter hint",
   "NO_ARGUMENTS": "<geen parameters>",

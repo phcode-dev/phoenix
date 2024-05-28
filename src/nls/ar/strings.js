@@ -717,6 +717,7 @@ define({
   "COLOR_EDITOR_0X_BUTTON_TIP": "تنسيق Hex (0x)",
   "COLOR_EDITOR_USED_COLOR_TIP_SINGULAR": "{0} (مستخدمة {1} مرة)",
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} (مستخدم {1} مرة)",
+  "EDIT": "يحرر",
   "CMD_JUMPTO_DEFINITION": "انتقل إلى التعريف",
   "CMD_SHOW_PARAMETER_HINT": "إظهار تلميح المعلمة",
   "NO_ARGUMENTS": "<لا توجد معلمات>",

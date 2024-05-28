@@ -697,6 +697,7 @@
   "COLOR_EDITOR_0X_BUTTON_TIP": "Μορφή Hex (0x).",
   "COLOR_EDITOR_USED_COLOR_TIP_SINGULAR": "{0} (Χρησιμοποιήθηκε {1} φορά)",
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} (Χρησιμοποιήθηκε {1} φορές)",
+  "EDIT": "Επεξεργασία",
   "CMD_JUMPTO_DEFINITION": "Πήγαινε στον Ορισμό",
   "CMD_SHOW_PARAMETER_HINT": "Προβολή Υποδείξεων Παραμέτρων",
   "NO_ARGUMENTS": "<χωρίς παραμέτρους>",

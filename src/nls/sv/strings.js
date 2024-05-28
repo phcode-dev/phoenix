@@ -717,6 +717,7 @@ define({
   "COLOR_EDITOR_0X_BUTTON_TIP": "Hex (0x)-format",
   "COLOR_EDITOR_USED_COLOR_TIP_SINGULAR": "{0} (använd {1} gång)",
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} (använd {1} gånger)",
+  "EDIT": "Redigera",
   "CMD_JUMPTO_DEFINITION": "Gå till definition",
   "CMD_SHOW_PARAMETER_HINT": "Visa parameterförslag",
   "NO_ARGUMENTS": "<inga parametrar>",

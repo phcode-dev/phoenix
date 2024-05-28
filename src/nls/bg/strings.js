@@ -717,6 +717,7 @@ define({
   "COLOR_EDITOR_0X_BUTTON_TIP": "Шестнадесетичен (0x) формат",
   "COLOR_EDITOR_USED_COLOR_TIP_SINGULAR": "{0} (използван {1} път)",
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} (използван {1} пъти)",
+  "EDIT": "Редактиране",
   "CMD_JUMPTO_DEFINITION": "Към определението",
   "CMD_SHOW_PARAMETER_HINT": "Показване на подсказката за параметрите",
   "NO_ARGUMENTS": "<няма параметри>",

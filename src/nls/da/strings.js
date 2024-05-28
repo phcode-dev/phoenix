@@ -717,6 +717,7 @@ define({
   "COLOR_EDITOR_0X_BUTTON_TIP": "Hex (0x)-format",
   "COLOR_EDITOR_USED_COLOR_TIP_SINGULAR": "{0} (Brugt {1} gang)",
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} (Brugt {1} gange)",
+  "EDIT": "Redigér",
   "CMD_JUMPTO_DEFINITION": "Hop til definition",
   "CMD_SHOW_PARAMETER_HINT": "Vis parameterhjælp",
   "NO_ARGUMENTS": "<ingen parametre>",

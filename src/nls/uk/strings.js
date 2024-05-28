@@ -717,6 +717,7 @@ define({
   "COLOR_EDITOR_0X_BUTTON_TIP": "Шістнадцятковий (0x) формат",
   "COLOR_EDITOR_USED_COLOR_TIP_SINGULAR": "{0} (використано {1} раз)",
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} (використано {1} разів)",
+  "EDIT": "Змінити",
   "CMD_JUMPTO_DEFINITION": "Перейти до оголошення",
   "CMD_SHOW_PARAMETER_HINT": "Показувати підсвічування параметрів функції",
   "NO_ARGUMENTS": "<параметри відсутні>",

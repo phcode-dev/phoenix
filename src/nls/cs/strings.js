@@ -717,6 +717,7 @@ define({
   "COLOR_EDITOR_0X_BUTTON_TIP": "Hexadecimální (0x) formát",
   "COLOR_EDITOR_USED_COLOR_TIP_SINGULAR": "{0} (použito {1} krát)",
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} (použito {1} krát)",
+  "EDIT": "Úpravy",
   "CMD_JUMPTO_DEFINITION": "Přejít na definici",
   "CMD_SHOW_PARAMETER_HINT": "Zobrazit nápovědu parametru",
   "NO_ARGUMENTS": "<žádné parametry>",

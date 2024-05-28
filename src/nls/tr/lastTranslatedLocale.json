@@ -697,6 +697,7 @@
   "COLOR_EDITOR_0X_BUTTON_TIP": "Onaltılı (0x) Biçimi",
   "COLOR_EDITOR_USED_COLOR_TIP_SINGULAR": "{0} ({1} kez kullanıldı)",
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} ({1} kez kullanıldı)",
+  "EDIT": "Düzenle",
   "CMD_JUMPTO_DEFINITION": "Tanıma Atla",
   "CMD_SHOW_PARAMETER_HINT": "Parametre İpuçlarını Göster",
   "NO_ARGUMENTS": "<parametre yok>",

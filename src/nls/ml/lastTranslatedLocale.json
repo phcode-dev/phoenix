@@ -697,6 +697,7 @@
   "COLOR_EDITOR_0X_BUTTON_TIP": "ഹെക്സ് (0x) ഫോർമാറ്റ്",
   "COLOR_EDITOR_USED_COLOR_TIP_SINGULAR": "{0} ({1} തവണ ഉപയോഗിച്ചു)",
   "COLOR_EDITOR_USED_COLOR_TIP_PLURAL": "{0} ({1} തവണ ഉപയോഗിച്ചു)",
+  "EDIT": "എഡിറ്റ് ചെയ്യുക",
   "CMD_JUMPTO_DEFINITION": "നിർവചനത്തിലേക്ക് പോകുക",
   "CMD_SHOW_PARAMETER_HINT": "പാരാമീറ്റർ സൂചന കാണിക്കുക",
   "NO_ARGUMENTS": "<പാരാമീറ്ററുകളൊന്നുമില്ല>",
