@@ -1073,6 +1073,10 @@ define(function (require, exports, module) {
                     setTimeout(()=>{
                         fileOpenPromise = FileViewController
                             .openAndSelectDocument(path, FileViewController.PROJECT_MANAGER);
+                        // always configure editor after file is opened
+                        fileOpenPromise.always(function () {
+                            _configureEditorAndResolve();
+                        });
                     }, 100); // this is in a timeout as the file tree may not have updated yet after save as
                     // file created, and we wait for the file watcher events to get triggered so that the file
                     // selection is updated.
@@ -1085,12 +1089,11 @@ define(function (require, exports, module) {
 
                     // Add new file to workingset, and ensure we now redraw (even if index hasn't changed)
                     fileOpenPromise = handleFileAddToWorkingSetAndOpen({fullPath: path, paneId: info.paneId, index: info.index, forceRedraw: true});
+                    // always configure editor after file is opened
+                    fileOpenPromise.always(function () {
+                        _configureEditorAndResolve();
+                    });
                 }
-
-                // always configure editor after file is opened
-                fileOpenPromise.always(function () {
-                    _configureEditorAndResolve();
-                });
             }
 
             // Same name as before - just do a regular Save
