@@ -19,7 +19,7 @@
  *
  */
 
-/*global appshell, Phoenix*/
+/*global appshell, path*/
 /*eslint-env es6*/
 // jshint ignore: start
 
@@ -330,7 +330,23 @@ define(function (require, exports, module) {
      * @param {function(?string, string=)} callback
      */
     function showSaveDialog(title, initialPath, proposedNewFilename, callback) {
-        appshell.fs.showSaveDialog(title, initialPath, proposedNewFilename, _wrap(callback));
+        if(Phoenix.isNativeApp){
+            const wrappedCallback = _wrap(callback);
+            appshell.fs.showSaveDialog({
+                title,
+                defaultPath: Phoenix.fs.getTauriPlatformPath(path.join(initialPath, proposedNewFilename || ""))
+                // no filter option for now filters: undefined
+            }).then(fileSavePath => {
+                if(!fileSavePath) {
+                    wrappedCallback(FileSystemError.NOT_READABLE);
+                    return;
+                }
+                wrappedCallback(null, fileSavePath);
+            }).catch(wrappedCallback);
+            return;
+        }
+        console.error("showSaveDialog is not yet supported in web browsers...");
+        callback(FileSystemError.NOT_SUPPORTED);
     }
 
     function _createStatObject(stats, realPath) {
