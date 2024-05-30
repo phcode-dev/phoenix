@@ -1070,8 +1070,12 @@ define(function (require, exports, module) {
 
                 if (FileViewController.getFileSelectionFocus() === FileViewController.PROJECT_MANAGER) {
                     // If selection is in the tree, leave workingset unchanged - even if orig file is in the list
-                    fileOpenPromise = FileViewController
-                        .openAndSelectDocument(path, FileViewController.PROJECT_MANAGER);
+                    setTimeout(()=>{
+                        fileOpenPromise = FileViewController
+                            .openAndSelectDocument(path, FileViewController.PROJECT_MANAGER);
+                    }, 100); // this is in a timeout as the file tree may not have updated yet after save as
+                    // file created, and we wait for the file watcher events to get triggered so that the file
+                    // selection is updated.
                 } else {
                     // If selection is in workingset, replace orig item in place with the new file
                     var info = MainViewManager.findInAllWorkingSets(doc.file.fullPath).shift();

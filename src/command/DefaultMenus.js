@@ -122,11 +122,15 @@ define(function (require, exports, module) {
         menu.addMenuDivider();
         menu.addMenuItem(Commands.FILE_SAVE);
         menu.addMenuItem(Commands.FILE_SAVE_ALL);
+        if(Phoenix.isNativeApp){
+            menu.addMenuItem(Commands.FILE_SAVE_AS);
+            // save as is not yet supported in browser as in our vfs implements only open folder, so vfs needs to
+            // be changed. Also, we dont know how the ux for save as will be in virtual paths.
+        }
         menu.addMenuItem(Commands.FILE_DUPLICATE_FILE);
         menu.addMenuItem(Commands.FILE_DOWNLOAD_PROJECT, undefined, undefined, undefined, {
             hideWhenCommandDisabled: true
         });
-        // menu.addMenuItem(Commands.FILE_SAVE_AS); not yet available in phoenix
         // menu.addMenuItem(Commands.FILE_PROJECT_SETTINGS); not yet available in phoenix
         menu.addMenuDivider();
         menu.addMenuItem(Commands.FILE_EXTENSION_MANAGER);
