@@ -292,7 +292,7 @@
             try {
                 if(!execHandlerFn){
                     console.error(`${env}: Unknown exec function received: ${JSON.stringify(data)}`);
-                    response.err = `"Unknown exec function received" ${data}`;
+                    response.err = `"Unknown exec function received" ${data.exec}`;
                 } else {
                     response.response = execHandlerFn(data.params);
                     if(response.response instanceof Promise){
