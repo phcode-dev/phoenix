@@ -39,6 +39,8 @@ define(function (require, exports, module) {
         CLOSE_BRACKETS    = "closeBrackets",
         AUTO_HIDE_SEARCH  = "autoHideSearch";
 
+    let currentMaxLineLength = 120;
+
     const PREFERENCES_EDITOR_RULERS = "editor.rulers",
         PREFERENCES_EDITOR_RULER_COLORS = "editor.rulerColors",
         PREFERENCES_EDITOR_RULERS_ENABLED = "editor.rulersEnabled";
@@ -165,11 +167,21 @@ define(function (require, exports, module) {
             _createRulers(newActiveEditor);
         });
         PreferencesManager.on("change", PREFERENCES_EDITOR_RULERS_ENABLED, _resetRulers);
-        PreferencesManager.on("change", PREFERENCES_EDITOR_RULERS, _resetRulers);
+        PreferencesManager.on("change", PREFERENCES_EDITOR_RULERS, ()=>{
+            const rulerColumns = PreferencesManager.get(PREFERENCES_EDITOR_RULERS) || [];
+            currentMaxLineLength = rulerColumns.length ? Math.max(...rulerColumns) : 120;
+            _resetRulers();
+        });
         PreferencesManager.on("change", PREFERENCES_EDITOR_RULER_COLORS, _resetRulers);
         ThemeManager.on(ThemeManager.EVENT_THEME_CHANGE, _handleThemeChange);
         _resetRulers();
     }
 
+    function getMaxLineLength() {
+        return currentMaxLineLength;
+    }
+
     AppInit.appReady(_init);
+
+    exports.getMaxLineLength = getMaxLineLength;
 });

@@ -213,6 +213,7 @@ define(function (require, exports, module) {
     require("thirdparty/lodash");
     require("thirdparty/jszip");
     require("editor/CodeHintManager");
+    require("editor/EditorOptionHandlers");
     require("utils/Global");
     require("command/Menus");
     require("utils/NodeDomain");
