@@ -57,7 +57,7 @@ define(function (require, exports, module) {
 
     const prefs = PreferencesManager.getExtensionPrefs("beautify");
     prefs.definePreference("options", "object", {
-        printWidth: 80,
+        printWidth: 120,
         semi: true,
         trailingComma: "none",
         singleQuote: false,
@@ -71,7 +71,7 @@ define(function (require, exports, module) {
             printWidth: {
                 type: "number",
                 description: Strings.BEAUTIFY_OPTION_PRINT_WIDTH,
-                initial: 80
+                initial: 120
             },
             semi: {
                 type: "boolean",
