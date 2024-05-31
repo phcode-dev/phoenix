@@ -27,6 +27,7 @@ define(function (require, exports, module) {
     let SpecRunnerUtils = brackets.getModule("spec/SpecRunnerUtils"),
         Editor = brackets.getModule("editor/Editor").Editor,
         FileUtils = brackets.getModule('file/FileUtils'),
+        PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
         BeautificationManager = brackets.getModule("features/BeautificationManager");
 
     const PLATFORM_LINE_ENDINGS = (FileUtils.getPlatformLineEndings() === 'CRLF' ? "\r\n" : "\n");
@@ -35,6 +36,7 @@ define(function (require, exports, module) {
 
     const jsFile = require("text!../../../../test/spec/prettier-test-files/js/test.js"),
         jsPrettyFile = require("text!../../../../test/spec/prettier-test-files/js/test-pretty.js"),
+        jsPrettyRulerFile = require("text!../../../../test/spec/prettier-test-files/js/test-pretty-ruler.js"),
         jsPrettySelection = require("text!../../../../test/spec/prettier-test-files/js/test-pretty-selection.js"),
         jsPrettySelectionOffset = require("text!../../../../test/spec/prettier-test-files/js/test-pretty-selection-offset.js"),
         jsPrettySingleSpace = require("text!../../../../test/spec/prettier-test-files/js/test-pretty-single-space.js"),
@@ -79,6 +81,34 @@ define(function (require, exports, module) {
                 createMockEditor(jsFile, "javascript", "/test.js");
                 await BeautificationManager.beautifyEditor(testEditor);
                 expect(testEditor.document.getText(true)).toBe(jsPrettyFile);
+            });
+
+            it("should use line max length from editor rulers by default", async function () {
+                const PREFERENCES_EDITOR_RULERS = "editor.rulers";
+                PreferencesManager.set(PREFERENCES_EDITOR_RULERS, [10, 20]);
+                createMockEditor(jsFile, "javascript", "/test.js");
+                await BeautificationManager.beautifyEditor(testEditor);
+                expect(testEditor.document.getText(true)).toBe(jsPrettyRulerFile);
+                PreferencesManager.set(PREFERENCES_EDITOR_RULERS, [120]); // restore default
+            });
+
+            it("should prioritise line max length from prettier options above editor rulers", async function () {
+                // here we set prettier options to 20 line width and ruler options to 120 chars. the prettier override
+                // should take preference above ruler config
+                const PREFERENCES_EDITOR_RULERS = "editor.rulers";
+                PreferencesManager.set(PREFERENCES_EDITOR_RULERS, [120]);
+                createMockEditor(jsFile, "javascript", "/test.js");
+                await BeautificationManager.beautifyEditor(testEditor);
+                expect(testEditor.document.getText(true)).toBe(jsPrettyFile);
+                // now override the prettier prefs
+                const extPrefs = PreferencesManager.getExtensionPrefs("beautify");
+                const originalPrefs = structuredClone(extPrefs.get("options"));
+                const newPrefs = structuredClone(originalPrefs);
+                newPrefs.printWidth = 20;
+                extPrefs.set("options", newPrefs);
+                await BeautificationManager.beautifyEditor(testEditor);
+                expect(testEditor.document.getText(true)).toBe(jsPrettyRulerFile);
+                extPrefs.set("options", originalPrefs);
             });
 
             it("should beautify editor respect space options for js", async function () {

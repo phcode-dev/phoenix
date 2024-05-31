@@ -53,11 +53,11 @@ define(function (require, exports, module) {
         BeautificationManager = brackets.getModule("features/BeautificationManager"),
         PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
         Editor = brackets.getModule("editor/Editor").Editor,
+        EditorOptionHandlers = brackets.getModule("editor/EditorOptionHandlers"),
         ExtensionsWorker = brackets.getModule("worker/ExtensionsWorker");
 
     const prefs = PreferencesManager.getExtensionPrefs("beautify");
     prefs.definePreference("options", "object", {
-        printWidth: 120,
         semi: true,
         trailingComma: "none",
         singleQuote: false,
@@ -226,14 +226,16 @@ define(function (require, exports, module) {
                 return;
             }
 
-            let options = prefs.get("options");
+            let options = _clone(prefs.get("options"));
             let indentWithTabs = Editor.getUseTabChar(filepath);
+            const printWidth = options.printWidth || EditorOptionHandlers.getMaxLineLength();
             options._usePlugin = parsersForLanguage[languageId];
             Object.assign(options, {
                 parser: parsersForLanguage[languageId],
                 tabWidth: indentWithTabs ? Editor.getTabSize() : Editor.getSpaceUnits(),
                 useTabs: indentWithTabs,
                 filepath: filepath,
+                printWidth: printWidth,
                 endOfLine: "lf" // codemirror always does lf and only crlf before disk write in windows.
             });
             let prettierParams ={
