@@ -159,6 +159,35 @@ if (window.location.search.indexOf("testEnvironment") > -1) {
     });
 }
 
+function _unregisterServiceWorkers() {
+    return new Promise(resolve =>{
+        if ('serviceWorker' in navigator) {
+            console.warn("Recovering boot: unregistering all service workers...");
+            navigator.serviceWorker.getRegistrations().then((registrations) => {
+                const unregisterPromises = [];
+                for (let registration of registrations) {
+                    console.warn("Recovering boot: unregistering", registration.scope);
+                    unregisterPromises.push(registration.unregister());
+                }
+                Promise.allSettled(unregisterPromises)
+                    .catch(console.error)
+                    .then(()=>{
+                        console.warn("Recovering boot: Success, unregistered all service workers!");
+                        resolve();
+                    });
+            }).catch(err=>{
+                console.error("Error getting service worker registrations for boot recovery!!!", err);
+                window.logger && window.logger.reportError(err,
+                    'Critical error Recovering boot, while resetting service worker registrations');
+                // wait for 2 more seconds for the error to be reported to bugsnag before reloading page.
+                setTimeout(resolve, 2000);
+            });
+        } else {
+            resolve();
+        }
+    });
+}
+
 define(function (require) {
 
 
@@ -176,9 +205,12 @@ define(function (require) {
             if(window._resetCacheIfNeeded){
                 window._resetCacheIfNeeded(true)
                     .finally(()=>{
-                        // wait for 3 seconds for bugsnag to send report.
+                        // wait for 3 seconds for bugsnag to send report and service workers to be active.
                         setTimeout(()=>{
-                            location.reload();
+                            _unregisterServiceWorkers()
+                                .then(()=>{
+                                    location.reload();
+                                });
                         }, 3000);
                     });
             } else {
