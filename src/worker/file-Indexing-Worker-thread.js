@@ -258,7 +258,11 @@ function addFilesToCache(updateObject) {
         return (changedFilesAlreadyInList.indexOf(path) === -1) ? true : false;
     }
     newFiles = changedFilesAlreadyInList.filter(isNotAlreadyInList);
-    files.push.apply(files, newFiles);
+    if(!files){
+        console.error("file indexing worker: addFilesToCache called before initCache!!!");
+        files = [];
+    }
+    files.push(...newFiles);
 }
 
 /**
