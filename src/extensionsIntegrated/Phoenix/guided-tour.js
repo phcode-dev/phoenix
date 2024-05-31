@@ -277,10 +277,10 @@ define(function (require, exports, module) {
             }
             let surveyJSON = await fetch(surveyLinksURL);
             surveyJSON = await surveyJSON.json();
-            if(Phoenix.isNativeApp && surveyJSON.desktop) {
+            if(!Phoenix.isNativeApp && surveyJSON.browser) {
                 surveyJSON = {
-                    newUser: surveyJSON.desktop.newUser || surveyJSON.newUser,
-                    powerUser: surveyJSON.desktop.powerUser || surveyJSON.powerUser
+                    newUser: surveyJSON.browser.newUser || surveyJSON.newUser,
+                    powerUser: surveyJSON.browser.powerUser || surveyJSON.powerUser
                 };
             }
             surveyJSON.newUser && _showGeneralSurvey(surveyJSON.newUser);
