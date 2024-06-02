@@ -162,7 +162,7 @@ define(function (require, exports, module) {
                 // was actually done. We have a version number mismatch of 0.0.1 between phoenix-desktop and phoenix
                 // repo, and that means that this can get triggered on statup on development builds. Wont happen in
                 // actual pipeline generated build tho.
-                console.log("Updates applied, waiting for app restart: ", phoenixBinaryVersion, phoenixLoadedAppVersion);
+                console.log("Updates applied, waiting for app restart:", phoenixBinaryVersion, phoenixLoadedAppVersion);
                 updateDetails.updatePendingRestart = true;
                 PreferencesManager.setViewState(KEY_UPDATE_AVAILABLE, true);
             } else {
@@ -172,6 +172,7 @@ define(function (require, exports, module) {
             showOrHideUpdateIcon();
         } catch (e) {
             console.error("Error getting update metadata", e);
+            logger.reportError(e, `Error getting app update metadata`);
             updateFailed = true;
             Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'fail', "Unknown"+Phoenix.platform);
         }
@@ -217,37 +218,7 @@ define(function (require, exports, module) {
         return [updateLater, updateOnExit];
     }
 
-    async function checkForUpdates(isAutoUpdate) {
-        showOrHideUpdateIcon();
-        if(updateTask){
-            $("#status-tasks .btn-dropdown").click();
-            return;
-        }
-        const updateDetails = await getUpdateDetails(); // this will also show update icon if update present
-        if(updateFailed) {
-            Dialogs.showInfoDialog(Strings.UPDATE_FAILED_TITLE, Strings.UPDATE_FAILED_MESSAGE);
-            return;
-        }
-        if(updatePendingRestart || updateDetails.updatePendingRestart){
-            if(!isAutoUpdate){
-                Dialogs.showInfoDialog(Strings.UPDATE_READY_RESTART_TITLE, Strings.UPDATE_READY_RESTART_MESSAGE);
-                // the dialog will only be shown in explicit check for updates, else its annoying that this comes
-                // up at every new window create from app.
-            }
-            return;
-        }
-        if(!updateDetails.shouldUpdate){
-            (!isAutoUpdate) && Dialogs.showInfoDialog(Strings.UPDATE_NOT_AVAILABLE_TITLE, Strings.UPDATE_UP_TO_DATE);
-            return;
-        }
-        const autoUpdateEnabled = PreferencesManager.get(PREFS_AUTO_UPDATE);
-        if(isAutoUpdate && !autoUpdateEnabled){
-            // the update icon is lit at this time for the user to hint that an update is available
-            // but, we don't show the dialog if auto update is off.
-            return;
-        }
-
-        const isUpgradableLoc = await isUpgradableLocation();
+    async function _updateWithConfirmDialog(isUpgradableLoc, updateDetails) {
         const buttons = _getButtons(isUpgradableLoc);
         let markdownHtml = marked.parse(updateDetails.releaseNotesMarkdown || "");
         Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'dialog', "shown"+Phoenix.platform);
@@ -269,6 +240,50 @@ define(function (require, exports, module) {
                     doUpdate(updateDetails.downloadURL);
                 }
             });
+    }
+
+    async function checkForUpdates(isAutoUpdate) {
+        showOrHideUpdateIcon();
+        if(!navigator.onLine) {
+            return;
+        }
+        if(updateTask){
+            $("#status-tasks .btn-dropdown").click();
+            return;
+        }
+        const updateDetails = await getUpdateDetails(); // this will also show update icon if update present
+        if(updateFailed) {
+            if(!isAutoUpdate) {
+                // we dont show auto update errors to user
+                Dialogs.showInfoDialog(Strings.UPDATE_FAILED_TITLE, Strings.UPDATE_FAILED_MESSAGE);
+            }
+            return;
+        }
+        if(updatePendingRestart || updateDetails.updatePendingRestart){
+            if(!isAutoUpdate){
+                Dialogs.showInfoDialog(Strings.UPDATE_READY_RESTART_TITLE, Strings.UPDATE_READY_RESTART_MESSAGE);
+                // the dialog will only be shown in explicit check for updates, else its annoying that this comes
+                // up at every new window create from app.
+            }
+            return;
+        }
+        if(!updateDetails.shouldUpdate){
+            (!isAutoUpdate) && Dialogs.showInfoDialog(Strings.UPDATE_NOT_AVAILABLE_TITLE, Strings.UPDATE_UP_TO_DATE);
+            return;
+        }
+        const autoUpdateEnabled = PreferencesManager.get(PREFS_AUTO_UPDATE);
+        if(isAutoUpdate && !autoUpdateEnabled){
+            // the update icon is lit at this time for the user to hint that an update is available
+            // but, we don't show the dialog if auto update is off.
+            return;
+        }
+        const isUpgradableLoc = await isUpgradableLocation();
+        if(!isUpgradableLoc || !isAutoUpdate) {
+            _updateWithConfirmDialog(isUpgradableLoc, updateDetails);
+        } else if(!updaterWindow) {
+            Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'auto', "silent"+Phoenix.platform);
+            doUpdate(updateDetails.downloadURL);
+        }
     }
 
     const UPDATE_COMMANDS = {
