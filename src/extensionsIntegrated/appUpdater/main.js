@@ -46,6 +46,7 @@ define(function (require, exports, module) {
 
     const TAURI_UPDATER_WINDOW_LABEL = "updater",
         KEY_LAST_UPDATE_CHECK_TIME = "PH_LAST_UPDATE_CHECK_TIME",
+        KEY_LAST_UPDATE_DESCRIPTION = "PH_LAST_UPDATE_DESCRIPTION",
         KEY_UPDATE_AVAILABLE = "PH_UPDATE_AVAILABLE";
 
     const PREFS_AUTO_UPDATE = "autoUpdate";
@@ -292,6 +293,10 @@ define(function (require, exports, module) {
             _updateWithConfirmDialog(isUpgradableLoc, updateDetails);
         } else if(!updaterWindow) {
             Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'auto', "silent"+Phoenix.platform);
+            PreferencesManager.setViewState(KEY_LAST_UPDATE_DESCRIPTION, {
+                releaseNotesMarkdown: updateDetails.releaseNotesMarkdown,
+                updateVersion: updateDetails.updateVersion
+            });
             doUpdate(updateDetails.downloadURL);
         }
     }
@@ -598,6 +603,13 @@ define(function (require, exports, module) {
         });
         showOrHideUpdateIcon();
         _refreshUpdateStatus();
+        const lastUpdateDetails = PreferencesManager.getViewState(KEY_LAST_UPDATE_DESCRIPTION);
+        if(lastUpdateDetails && (lastUpdateDetails.updateVersion === Phoenix.metadata.apiVersion)) {
+            let markdownHtml = marked.parse(lastUpdateDetails.releaseNotesMarkdown || "");
+            Dialogs.showInfoDialog(Strings.UPDATE_WHATS_NEW, markdownHtml);
+            PreferencesManager.setViewState(KEY_LAST_UPDATE_DESCRIPTION, null);
+            PreferencesManager.setViewState(KEY_UPDATE_AVAILABLE, false);
+        }
         // check for updates at boot
         let lastUpdateCheckTime = PreferencesManager.getViewState(KEY_LAST_UPDATE_CHECK_TIME);
         const currentTime = Date.now();
