@@ -441,5 +441,38 @@ define(function (require, exports, module) {
             expect(testWindow.$("#status-tasks .spinner").hasClass("spinner-success")).toBeFalse();
             task.close();
         });
+
+        it(`Should task be able to not show task spinner on create`, async function(){
+            const task = TaskManager.addNewTask("title", "message", null, {
+                noSpinnerNotification: true
+            });
+            expect(testWindow.$("#status-tasks .spinner").is(":visible")).toBeFalse();
+            task.setFailed();
+            expect(testWindow.$("#status-tasks .spinner").hasClass("spinner-failure")).toBeFalse();
+            expect(testWindow.$("#status-tasks .spinner").is(":visible")).toBeFalse();
+            task.setSucceded();
+            expect(testWindow.$("#status-tasks .spinner").hasClass("spinner-success")).toBeFalse();
+            expect(testWindow.$("#status-tasks .spinner").is(":visible")).toBeFalse();
+            task.setProgressPercent(10);
+            expect(testWindow.$("#status-tasks .spinner").hasClass("spinner-failure")).toBeFalse();
+            expect(testWindow.$("#status-tasks .spinner").is(":visible")).toBeFalse();
+            task.close();
+        });
+
+        it(`Should task be able to flash task spinner even if no spinner specified`, async function(){
+            const task = TaskManager.addNewTask("title", "message", null, {
+                noSpinnerNotification: true
+            });
+            expect(testWindow.$("#status-tasks .spinner").is(":visible")).toBeFalse();
+            task.flashSpinnerForAttention();
+            expect(testWindow.$("#status-tasks .spinner").is(":visible")).toBeTrue();
+            task.setSucceded();
+            // even though the task succeeded, since task has `noSpinnerNotification` specified, the success-spinner
+            // will not be shown. Instead, the normal blue spinner displayed by `flashSpinnerForAttention`
+            // is still visible till the spinner hide timer is hit.
+            expect(testWindow.$("#status-tasks .spinner").is(":visible")).toBeTrue();
+            expect(testWindow.$("#status-tasks .spinner").hasClass("spinner-success")).toBeFalse();
+            task.close();
+        });
     });
 });
