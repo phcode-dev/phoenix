@@ -13,7 +13,7 @@ tasks in list and renders. IF the active tasks has already  been notified, it wo
 
 ### Parameters
 
-*   `newTaskAdded`  
+*   `showNormalSpinnerIfNone`  
 
 ## TaskObject
 
@@ -41,6 +41,7 @@ Type: [Object][1]
 *   `hidePauseIcon` **function (): void** Hides the pause icon.
 *   `showRestartIcon` **function ([string][2]): void** Shows the restart (retry) icon with an optional tooltip message.
 *   `hideRestartIcon` **function (): void** Hides the restart (retry) icon.
+*   `flashSpinnerForAttention` **function (): void** briefly flashes the task spinner icon for attention.
 
 ## addNewTask
 
@@ -53,7 +54,7 @@ directly from the UI in the status bar.
 *   `taskTitle` **[string][2]** The title of the task. This is a mandatory parameter and is displayed in the UI.
 *   `message` **[string][2]** A message or status associated with the task. Displayed as additional information in the UI.
 *   `iconHTML` **[string][2]?** Optional HTML string for the task's icon. Used to visually represent the task in the UI. (optional, default `null`)
-*   `options` **[Object][1]?** Optional settings and callbacks for the task. (optional, default `{onPauseClick:null,onPlayClick:null,onStopClick:null,onRetryClick:null,onSelect:null,progressPercent:null}`)
+*   `options` **[Object][1]?** Optional settings and callbacks for the task. (optional, default `{onPauseClick:null,onPlayClick:null,onStopClick:null,onRetryClick:null,onSelect:null,progressPercent:null,noSpinnerNotification:false}`)
 
     *   `options.onPauseClick` **[Function][5]?** Callback function triggered when the pause button is clicked.
     *   `options.onPlayClick` **[Function][5]?** Callback function triggered when the play button is clicked.
@@ -61,6 +62,8 @@ directly from the UI in the status bar.
     *   `options.onRetryClick` **[Function][5]?** Callback function triggered when the retry button is clicked.
     *   `options.onSelect` **[Function][5]?** Callback function triggered when the task is selected from the dropdown.
     *   `options.progressPercent` **[number][3]?** Initial progress percentage of the task.
+    *   `options.noSpinnerNotification` **[boolean][4]?** If set to true, will not show the task spinners for this task.
+        This can be used for silent background tasks where user attention is not needed.
 
 ### Examples
 
