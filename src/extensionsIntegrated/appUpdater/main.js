@@ -37,6 +37,7 @@ define(function (require, exports, module) {
         Strings     = require("strings"),
         marked = require('thirdparty/marked.min'),
         semver = require("thirdparty/semver.browser"),
+        NotificationUI = require("widgets/NotificationUI"),
         TaskManager = require("features/TaskManager"),
         StringUtils         = require("utils/StringUtils"),
         NativeApp           = require("utils/NativeApp"),
@@ -48,6 +49,7 @@ define(function (require, exports, module) {
         KEY_UPDATE_AVAILABLE = "PH_UPDATE_AVAILABLE";
 
     const PREFS_AUTO_UPDATE = "autoUpdate";
+    let isAutoUpdateFlow = true;
 
     function showOrHideUpdateIcon() {
         if(!updaterWindow){
@@ -56,17 +58,23 @@ define(function (require, exports, module) {
         if(updaterWindow && !updateTask) {
             updateTask = TaskManager.addNewTask(Strings.UPDATING_APP, Strings.UPDATING_APP_MESSAGE,
                 `<i class="fa-solid fa-cogs"></i>`, {
+                    noSpinnerNotification: isAutoUpdateFlow, // for auto updates, don't get user attention with spinner
                     onSelect: function () {
                         if(updatePendingRestart){
-                            Dialogs.showInfoDialog(Strings.UPDATE_READY_RESTART_TITLE, Strings.UPDATE_READY_RESTART_MESSAGE);
+                            Dialogs.showInfoDialog(Strings.UPDATE_READY_RESTART_TITLE,
+                                Strings.UPDATE_READY_RESTART_INSTALL_MESSAGE);
                         } else if(updateFailed){
                             Dialogs.showInfoDialog(Strings.UPDATE_FAILED_TITLE, Strings.UPDATE_FAILED_MESSAGE);
-                        }else {
+                        } else {
                             Dialogs.showInfoDialog(Strings.UPDATING_APP, Strings.UPDATING_APP_DIALOG_MESSAGE);
                         }
                     }
                 });
-            updateTask.show();
+            if(!isAutoUpdateFlow) {
+                updateTask.show();
+            } else {
+                updateTask.flashSpinnerForAttention();
+            }
         }
         let updateAvailable = PreferencesManager.getViewState(KEY_UPDATE_AVAILABLE);
         if(updateAvailable){
@@ -243,6 +251,7 @@ define(function (require, exports, module) {
     }
 
     async function checkForUpdates(isAutoUpdate) {
+        isAutoUpdateFlow = isAutoUpdate;
         showOrHideUpdateIcon();
         if(!navigator.onLine) {
             return;
@@ -261,7 +270,8 @@ define(function (require, exports, module) {
         }
         if(updatePendingRestart || updateDetails.updatePendingRestart){
             if(!isAutoUpdate){
-                Dialogs.showInfoDialog(Strings.UPDATE_READY_RESTART_TITLE, Strings.UPDATE_READY_RESTART_MESSAGE);
+                Dialogs.showInfoDialog(Strings.UPDATE_READY_RESTART_TITLE,
+                    Strings.UPDATE_READY_RESTART_INSTALL_MESSAGE);
                 // the dialog will only be shown in explicit check for updates, else its annoying that this comes
                 // up at every new window create from app.
             }
@@ -302,8 +312,7 @@ define(function (require, exports, module) {
         DOWNLOADING: "DOWNLOADING",
         INSTALLER_DOWNLOADED: "INSTALLER_DOWNLOADED",
         FAILED: "FAILED",
-        FAILED_UNKNOWN_OS: "FAILED_UNKNOWN_OS",
-        INSTALLED: "INSTALLED"
+        FAILED_UNKNOWN_OS: "FAILED_UNKNOWN_OS"
     };
 
     function _sendUpdateCommand(command, data) {
@@ -536,14 +545,6 @@ define(function (require, exports, module) {
                     updateTask.setFailed();
                     updateTask.setMessage(Strings.UPDATE_FAILED_TITLE);
                     Dialogs.showInfoDialog(Strings.UPDATE_FAILED_TITLE, Strings.UPDATE_FAILED_MESSAGE);
-                } else if(data === UPDATE_STATUS.INSTALLED && !updateInstalledDialogShown){
-                    updateInstalledDialogShown = true;
-                    Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'done', Phoenix.platform);
-                    updatePendingRestart = true;
-                    updateTask.setSucceded();
-                    updateTask.setTitle(Strings.UPDATE_DONE);
-                    updateTask.setMessage(Strings.UPDATE_RESTART);
-                    Dialogs.showInfoDialog(Strings.UPDATE_READY_RESTART_TITLE, Strings.UPDATE_READY_RESTART_MESSAGE);
                 } else if(data === UPDATE_STATUS.INSTALLER_DOWNLOADED){
                     Metrics.countEvent(Metrics.EVENT_TYPE.UPDATES, 'downloaded', Phoenix.platform);
                     updatePendingRestart = true;
@@ -551,7 +552,11 @@ define(function (require, exports, module) {
                     updateTask.setTitle(Strings.UPDATE_DONE);
                     updateTask.setMessage(Strings.UPDATE_RESTART_INSTALL);
                     if(!updateInstalledDialogShown){
-                        Dialogs.showInfoDialog(Strings.UPDATE_READY_RESTART_TITLE, Strings.UPDATE_READY_RESTART_INSTALL_MESSAGE);
+                        NotificationUI.createToastFromTemplate(Strings.UPDATE_READY_RESTART_TITLE,
+                            `<div>${Strings.UPDATE_READY_RESTART_INSTALL_MESSAGE}</div>`, {
+                                toastStyle: NotificationUI.NOTIFICATION_STYLES_CSS_CLASS.SUCCESS,
+                                dismissOnClick: true
+                            });
                         updateInstalledDialogShown = true;
                     }
                     _sendUpdateCommand(UPDATE_COMMANDS.GET_INSTALLER_LOCATION);

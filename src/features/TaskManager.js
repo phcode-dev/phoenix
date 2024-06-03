@@ -93,7 +93,7 @@ define(function (require, exports, module) {
      * determines what the spinner icon to show(green-for success), red-fail, blue normal based on the active
      * tasks in list and renders. IF the active tasks has already  been notified, it wont notify again.
      */
-    function renderSpinnerIcon(newTaskAdded) {
+    function renderSpinnerIcon(showNormalSpinnerIfNone) {
         let unackSuccessTaskFound = false;
         if(currentSpinnerType && currentSpinnerType !== SPINNER_NORMAL) {
             // there is a success/fail spinner visible, clean it. For the normal spinner, it will be
@@ -116,7 +116,7 @@ define(function (require, exports, module) {
 
         // for normal spinner, we dont show anything as its only shown briefly till SPINNER_HIDE_TIME
         // which was already handled, except when newTaskAdded
-        if(newTaskAdded) {
+        if(showNormalSpinnerIfNone) {
             _showSpinnerIcon(SPINNER_NORMAL);
         }
     }
@@ -137,6 +137,7 @@ define(function (require, exports, module) {
             exports.taskSelect = taskSelect;
             exports.SPINNER_HIDE_TIME = SPINNER_HIDE_TIME;
         }
+        hideSpinnerIcon();
     }
     function _renderItem(item, index) {
         if(item === Strings.STATUSBAR_TASKS_UNKNOWN_EXTENSION_TASK){
@@ -326,6 +327,7 @@ define(function (require, exports, module) {
      * @property {function(): void} hidePauseIcon - Hides the pause icon.
      * @property {function(string): void} showRestartIcon - Shows the restart (retry) icon with an optional tooltip message.
      * @property {function(): void} hideRestartIcon - Hides the restart (retry) icon.
+     * @property {function(): void} flashSpinnerForAttention - briefly flashes the task spinner icon for attention.
      */
 
     /**
@@ -343,6 +345,8 @@ define(function (require, exports, module) {
      * @param {Function} [options.onRetryClick] - Callback function triggered when the retry button is clicked.
      * @param {Function} [options.onSelect] - Callback function triggered when the task is selected from the dropdown.
      * @param {number} [options.progressPercent] - Initial progress percentage of the task.
+     * @param {boolean} [options.noSpinnerNotification] - If set to true, will not show the task spinners for this task.
+     *         This can be used for silent background tasks where user attention is not needed.
      * @returns {TaskObject} Returns a task object with methods for updating the task's state and UI representation,
      * such as `setProgressPercent`, `setMessage`, `setSucceeded`, `setFailed`, and control visibility methods
      * like `showStopIcon`, `hideStopIcon`, etc.
@@ -378,7 +382,8 @@ define(function (require, exports, module) {
         onStopClick: null,
         onRetryClick: null,
         onSelect: null,
-        progressPercent: null
+        progressPercent: null,
+        noSpinnerNotification: false
     }) {
         if(!taskTitle){
             throw new Error("taskTitle is required to call addNewTask");
@@ -399,8 +404,10 @@ define(function (require, exports, module) {
             _percent: options && options.progressPercent,
             _completedStatus: STATUS_INCOMPLETE,
             _iconHTML: iconHTML,
-            _spinnerIconAck: false // This is set when the user has seen the spinner icon spinning and clicked to see
-            // weather the task succeeded or failed.
+            _noSpinnerNotification: options && options.noSpinnerNotification,
+            _spinnerIconAck: options ? !!options.noSpinnerNotification : false
+            // Spinner ack is set when the user has seen the spinner icon spinning and clicked to see
+            // weather the task succeeded or failed. Some tasks may want to be silent by setting noSpinnerNotification.
         };
         function close() {
             delete taskList[task._id];
@@ -451,7 +458,9 @@ define(function (require, exports, module) {
         function setFailed(){
             task._completedStatus = STATUS_FAIL;
             _renderProgressbar(task);
-            task._spinnerIconAck= false;
+            if(!task._noSpinnerNotification){
+                task._spinnerIconAck= false;
+            }
             renderSpinnerIcon();
         }
         function isFailed(){
@@ -460,7 +469,9 @@ define(function (require, exports, module) {
         function setSucceeded(){
             task._completedStatus = STATUS_SUCCESS;
             _renderProgressbar(task);
-            task._spinnerIconAck= false;
+            if(!task._noSpinnerNotification){
+                task._spinnerIconAck= false;
+            }
             renderSpinnerIcon();
         }
         function isSucceeded(){
@@ -499,6 +510,9 @@ define(function (require, exports, module) {
             task._showRestartIcon = null;
             _renderPlayIcons(task);
         }
+        function flashSpinnerForAttention() {
+            renderSpinnerIcon(true);
+        }
 
         task.show = show;
         task.close = close;
@@ -521,10 +535,15 @@ define(function (require, exports, module) {
         task.hidePauseIcon = hidePauseIcon;
         task.showRestartIcon = showRestartIcon;
         task.hideRestartIcon = hideRestartIcon;
+        task.flashSpinnerForAttention = flashSpinnerForAttention;
         taskList[task._id] = task;
         EventDispatcher.makeEventDispatcher(task);
         _showOrHideStatusBarIfNeeded();
-        renderSpinnerIcon(true);
+        if(!task._noSpinnerNotification){
+            renderSpinnerIcon(true);
+        } else {
+            renderSpinnerIcon();
+        }
         return task;
     }
 
