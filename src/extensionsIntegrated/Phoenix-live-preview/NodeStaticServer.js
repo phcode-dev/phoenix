@@ -607,15 +607,22 @@ define(function (require, exports, module) {
     }
 
     function getTabPopoutURL(url) {
-        let openURL = new URL(url);
-        // we tag all externally opened urls with query string parameter phcodeLivePreview="true" to address
-        // #LIVE_PREVIEW_TAB_NAVIGATION_RACE_FIX
-        openURL.searchParams.set(PHCODE_LIVE_PREVIEW_QUERY_PARAM, "true");
-        if(_staticServerInstance && utils.isHTMLFile(openURL.pathname) && url.startsWith(_staticServerInstance.getBaseUrl())){
-            // this is a live preview html with in built navigation, so we can sever it as is.
-            return openURL.href;
+        let urlToOpen = url;
+        try{
+            let openURL = new URL(url);
+            // we tag all externally opened urls with query string parameter phcodeLivePreview="true" to address
+            // #LIVE_PREVIEW_TAB_NAVIGATION_RACE_FIX
+            openURL.searchParams.set(PHCODE_LIVE_PREVIEW_QUERY_PARAM, "true");
+            if(_staticServerInstance && utils.isHTMLFile(openURL.pathname)
+                && url.startsWith(_staticServerInstance.getBaseUrl())){
+                // this is a live preview html with in built navigation, so we can sever it as is.
+                return openURL.href;
+            }
+            urlToOpen = openURL.href;
+        } catch (e) {
+            console.error("Error getting tab popout url", e);
         }
-        return _getPageLoaderURL(openURL.href);
+        return _getPageLoaderURL(urlToOpen);
     }
 
     function hasActiveLivePreviews() {

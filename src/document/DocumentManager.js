@@ -343,8 +343,8 @@ define(function (require, exports, module) {
         var result = new $.Deferred(),
             promise = result.promise();
 
-            // return null in case of untitled documents
-        if (fullPath.indexOf(_untitledDocumentPath) === 0) {
+        // return null in case of untitled documents or cannot resolve file name
+        if ((!fullPath && !fileObj) || (fullPath && fullPath.indexOf(_untitledDocumentPath) === 0)) {
             result.resolve(null);
             return promise;
         }
