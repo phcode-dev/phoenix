@@ -609,6 +609,10 @@ define(function (require, exports, module) {
             Dialogs.showInfoDialog(Strings.UPDATE_WHATS_NEW, markdownHtml);
             PreferencesManager.setViewState(KEY_LAST_UPDATE_DESCRIPTION, null);
             PreferencesManager.setViewState(KEY_UPDATE_AVAILABLE, false);
+            // hide the update available icon as we are showing what's new dialog. In edge cases, there can be an update
+            // at this time if the user opened phcode after an update, but a new update was just published or the user
+            // didn't open phcode after last update, which a new update was published.
+            $("#update-notification").addClass("forced-hidden");
         }
         // check for updates at boot
         let lastUpdateCheckTime = PreferencesManager.getViewState(KEY_LAST_UPDATE_CHECK_TIME);
