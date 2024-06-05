@@ -3,6 +3,7 @@ const { exec, execFile } = require('child_process');
 const fs = require('fs');
 const fsPromise = require('fs').promises;
 const path = require('path');
+const {lintFile} = require("./ESLint/service");
 let openModule, open; // dynamic import when needed
 
 async function _importOpen() {
@@ -145,10 +146,15 @@ async function _npmInstallInFolder({moduleNativeDir}) {
     });
 }
 
+async function ESLintFile({text, fullFilePath, projectFullPath}) {
+    return lintFile(text, fullFilePath, projectFullPath);
+}
+
 exports.getURLContent = getURLContent;
 exports.setLocaleStrings = setLocaleStrings;
 exports.getPhoenixBinaryVersion = getPhoenixBinaryVersion;
 exports.getLinuxOSFlavorName = getLinuxOSFlavorName;
 exports.openUrlInBrowser = openUrlInBrowser;
+exports.ESLintFile = ESLintFile;
 exports._loadNodeExtensionModule = _loadNodeExtensionModule;
 exports._npmInstallInFolder = _npmInstallInFolder;

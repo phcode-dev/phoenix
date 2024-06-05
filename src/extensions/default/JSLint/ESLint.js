@@ -38,21 +38,18 @@ define(function (require, exports, module) {
         Strings            = brackets.getModule("strings"),
         ProjectManager     = brackets.getModule("project/ProjectManager"),
         FileSystem         = brackets.getModule("filesystem/FileSystem"),
-        IndexingWorker     = brackets.getModule("worker/IndexingWorker"),
-        ESLint = require("./ESLint");
+        NodeUtils          = brackets.getModule("utils/NodeUtils"),
+        IndexingWorker     = brackets.getModule("worker/IndexingWorker");
 
-    if(Phoenix.isTestWindow) {
-        IndexingWorker.on("JsHint_extension_Loaded", ()=>{
-            window._JsHintExtensionReadyToIntegTest = true;
-        });
-    }
-    IndexingWorker.loadScriptInWorker(`${module.uri}/../worker/jslint-helper.js`);
-
-    let prefs = PreferencesManager.getExtensionPrefs("jshint"),
+    let prefs = PreferencesManager.getExtensionPrefs("ESLint"),
         projectSpecificOptions = null,
-        jsHintConfigFileErrorMessage = null;
+        esLintConfigFileErrorMessage = null;
 
-    const PREFS_JSHINT_DISABLED = "disabled";
+    const ESLINT_ERROR_MODULE_LOAD_FAILED = "ESLINT_MODULE_LOAD_FAILED",
+        ESLINT_ERROR_MODULE_NOT_FOUND = "ESLINT_MODULE_NOT_FOUND",
+        ESLINT_ERROR_LINT_FAILED = "ESLINT_LINT_FAILED";
+
+    const PREFS_ESLINT_DISABLED = "disabled";
 
     // We don't provide default options in the preferences as preferences will try to mixin default options with
     // user defined options leading to unexpected results. Either we take user defined options or default, no mixin.
@@ -66,55 +63,78 @@ define(function (require, exports, module) {
         "devel": false
     };
 
-    prefs.definePreference(PREFS_JSHINT_DISABLED, "boolean", false, {
-        description: Strings.DESCRIPTION_JSHINT_DISABLE
+    prefs.definePreference(PREFS_ESLINT_DISABLED, "boolean", false, {
+        description: Strings.DESCRIPTION_ESLINT_DISABLE
     }).on("change", function () {
-        CodeInspection.requestRun(Strings.JSHINT_NAME);
+        CodeInspection.requestRun(Strings.ESLINT_NAME);
     });
 
-    function _getLinterConfigFileErrorMsg() {
+    function _getLintError(errorCode) {
+        let errorMessage = Strings.DESCRIPTION_ESLINT_FAILED;
+        switch (errorCode) {
+        case ESLINT_ERROR_LINT_FAILED:
+            errorMessage = Strings.DESCRIPTION_ESLINT_FAILED; break;
+        case ESLINT_ERROR_MODULE_NOT_FOUND:
+            errorMessage = Strings.DESCRIPTION_ESLINT_NOT_FOUND; break;
+        case ESLINT_ERROR_MODULE_LOAD_FAILED:
+            errorMessage = Strings.DESCRIPTION_ESLINT_LOAD_FAILED; break;
+        }
         return [{
             // JSLint returns 1-based line/col numbers
             pos: { line: -1, ch: 0 },
-            message: jsHintConfigFileErrorMessage,
+            message: errorMessage,
             type: CodeInspection.Type.ERROR
         }];
+    }
+
+    function _getErrorClass(severity) {
+        switch(severity) {
+        case 1: return CodeInspection.Type.WARNING;
+        case 2: return CodeInspection.Type.ERROR;
+        default:
+            console.error("Unknown ESLint severity!!!", severity);
+            return CodeInspection.Type.META;
+        }
+    }
+
+    function _0Based(index, defaultVal) {
+        if(index === 0){
+            return 0;
+        }
+        if(!index) {
+            return defaultVal;
+        }
+        return index - 1;
     }
 
     /**
      * Run JSLint on the current document. Reports results to the main UI. Displays
      * a gold star when no errors are found.
      */
-    async function lintOneFile(text, _fullPath) {
+    async function lintOneFile(text, fullPath) {
         return new Promise((resolve)=>{
-            if(jsHintConfigFileErrorMessage){
-                resolve({ errors: _getLinterConfigFileErrorMsg() });
-                return;
-            }
-            // If a line contains only whitespace (here spaces or tabs), remove the whitespace
-            text = text.replace(/^[ \t]+$/gm, "");
-
-            let options = projectSpecificOptions || DEFAULT_OPTIONS;
-
-            IndexingWorker.execPeer("jsHint", {
-                text,
-                options
-            }).then(jsHintErrors =>{
-                if (!jsHintErrors.lintResult && jsHintErrors.errors.length) {
-                    let errors = jsHintErrors.errors;
+            NodeUtils.ESLintFile(text, fullPath, ProjectManager.getProjectRoot().fullPath).then(esLintResult =>{
+                if (esLintResult.result && esLintResult.result.messages && esLintResult.result.messages.length) {
+                    let errors = esLintResult.result.messages;
 
                     errors = errors.map(function (lintError) {
                         return {
-                            // JSLint returns 1-based line/col numbers
-                            pos: { line: lintError.line - 1, ch: lintError.character },
-                            message: `${lintError.reason} jshint (${lintError.code})`,
-                            type: CodeInspection.Type.ERROR
+                            pos: { line: _0Based(lintError.line), ch: _0Based(lintError.column)},
+                            endPos: {
+                                line: _0Based(lintError.endLine, lintError.line),
+                                ch: _0Based(lintError.endColumn, lintError.column)
+                            },
+                            message: `${lintError.message} ESLint (${lintError.ruleId})`,
+                            type: _getErrorClass(lintError.severity)
                         };
                     });
-
                     resolve({ errors: errors });
+                } else if(esLintResult.isError) {
+                    resolve({ errors: _getLintError(esLintResult.errorCode) });
+                } else {
+                    console.error("ESLint Unknown result", esLintResult);
+                    resolve();
                 }
-                resolve();
             });
         });
     }
@@ -212,15 +232,16 @@ define(function (require, exports, module) {
         _readConfig(ProjectManager.getProjectRoot().fullPath, CONFIG_FILE_NAME).then((config)=>{
             projectSpecificOptions = config;
             CodeInspection.requestRun(Strings.JSHINT_NAME);
-            jsHintConfigFileErrorMessage = null;
+            esLintConfigFileErrorMessage = null;
         }).catch((err)=>{
-            jsHintConfigFileErrorMessage = err;
+            esLintConfigFileErrorMessage = err;
             CodeInspection.requestRun(Strings.JSHINT_NAME);
         });
     }
 
-    function isJSHintConfigActive() {
-        return !!(jsHintConfigFileErrorMessage || projectSpecificOptions);
+    function isESLintConfigActive() {
+        return true;
+        // return !!(esLintConfigFileErrorMessage || projectSpecificOptions); todo
     }
 
     function _isFileInArray(fileToCheck, fileArray){
@@ -242,7 +263,7 @@ define(function (require, exports, module) {
             _reloadOptions();
         } else if(_isFileInArray(configFilePath, removed)){
             projectSpecificOptions = null;
-            jsHintConfigFileErrorMessage = null;
+            esLintConfigFileErrorMessage = null;
         }
     }
 
@@ -254,13 +275,13 @@ define(function (require, exports, module) {
 
     // Register for JS files
     CodeInspection.register("javascript", {
-        name: Strings.JSHINT_NAME,
+        name: Strings.ESLINT_NAME,
         scanFileAsync: lintOneFile,
         canInspect: function (fullPath) {
-            return !prefs.get(PREFS_JSHINT_DISABLED) && fullPath && !fullPath.endsWith(".min.js")
-                && (isJSHintConfigActive() || !ESLint.isESLintConfigActive()); //jshint is default only if eslint is not
+            return !prefs.get(PREFS_ESLINT_DISABLED) && fullPath && !fullPath.endsWith(".min.js")
+                && isESLintConfigActive(); // in browsers, jshint is default if no linter present
         }
     });
 
-    exports.isJSHintConfigActive = isJSHintConfigActive;
+    exports.isESLintConfigActive = isESLintConfigActive;
 });

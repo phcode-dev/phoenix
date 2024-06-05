@@ -92,6 +92,17 @@ define(function (require, exports, module) {
         return utilsConnector.execPeer("_npmInstallInFolder", {moduleNativeDir});
     }
 
+    async function ESLintFile(text, fullFilePath, projectFullPath) {
+        if(!Phoenix.isNativeApp) {
+            throw new Error("ESLintFile not available in browser");
+        }
+        return utilsConnector.execPeer("ESLintFile", {
+            text,
+            fullFilePath: window.fs.getTauriPlatformPath(fullFilePath),
+            projectFullPath: window.fs.getTauriPlatformPath(projectFullPath)
+        });
+    }
+
     if(NodeConnector.isNodeAvailable()) {
         // todo we need to update the strings if a user extension adds its translations. Since we dont support
         // node extensions for now, should consider when we support node extensions.
@@ -107,6 +118,7 @@ define(function (require, exports, module) {
     exports.getPhoenixBinaryVersion = getPhoenixBinaryVersion;
     exports.getLinuxOSFlavorName = getLinuxOSFlavorName;
     exports.openUrlInBrowser = openUrlInBrowser;
+    exports.ESLintFile = ESLintFile;
     exports.isNodeReady = NodeConnector.isNodeReady;
 
     window.NodeUtils = exports;
