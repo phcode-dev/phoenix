@@ -42,8 +42,8 @@ define(function (require, exports, module) {
         IndexingWorker     = brackets.getModule("worker/IndexingWorker");
 
     let prefs = PreferencesManager.getExtensionPrefs("ESLint"),
-        projectSpecificOptions = null,
-        esLintConfigFileErrorMessage = null;
+        esLintEnabled = false,
+        projectSpecificOptions = null;
 
     const ESLINT_ERROR_MODULE_LOAD_FAILED = "ESLINT_MODULE_LOAD_FAILED",
         ESLINT_ERROR_MODULE_NOT_FOUND = "ESLINT_MODULE_NOT_FOUND",
@@ -75,7 +75,7 @@ define(function (require, exports, module) {
         case ESLINT_ERROR_LINT_FAILED:
             errorMessage = Strings.DESCRIPTION_ESLINT_FAILED; break;
         case ESLINT_ERROR_MODULE_NOT_FOUND:
-            errorMessage = Strings.DESCRIPTION_ESLINT_NOT_FOUND; break;
+            errorMessage = Strings.DESCRIPTION_ESLINT_DO_NPM_INSTALL; break;
         case ESLINT_ERROR_MODULE_LOAD_FAILED:
             errorMessage = Strings.DESCRIPTION_ESLINT_LOAD_FAILED; break;
         }
@@ -131,7 +131,7 @@ define(function (require, exports, module) {
                     resolve({ errors: errors });
                 } else if(esLintResult.isError) {
                     resolve({ errors: _getLintError(esLintResult.errorCode) });
-                } else {
+                } else if(!esLintResult.result){
                     console.error("ESLint Unknown result", esLintResult);
                     resolve();
                 }
@@ -143,105 +143,50 @@ define(function (require, exports, module) {
      * @private
      * @type {string}
      */
-    const CONFIG_FILE_NAME = ".jshintrc";
+    const PACKAGE_JSON = "package.json";
 
     /**
-     * Removes JavaScript comments from a string by replacing
-     * everything between block comments and everything after
-     * single-line comments in a non-greedy way.
-     *
-     * English version of the regex:
-     *   match '/*'
-     *   then match zero or more instances of any character (incl. \n)
-     *   except for instances of '* /' (without a space, obv.)
-     *   then match '* /' (again, without a space)
-     *
-     * @param {string} str a string with potential JavaScript comments.
-     * @returns {string} a string without JavaScript comments.
-     */
-    function removeComments(str) {
-        str = str || "";
-
-        str = str.replace(/\/\*(?:(?!\*\/)[\s\S])*\*\//g, "");
-        str = str.replace(/\/\/[^\n\r]*/g, ""); // Everything after '//'
-
-        return str;
-    }
-
-    /**
-     * Reads configuration file in the specified directory. Returns a promise for configuration object.
-     *
-     * @param {string} dir absolute path to a directory.
-     * @param {string} configFileName name of the configuration file (optional)
+     * Reads package.json and see if eslint is in dependencies or dev dependencies
      *
      * @returns {Promise} a promise to return configuration object.
      */
-    function _readConfig(dir, configFileName) {
-        return new Promise((resolve, reject)=>{
-            configFileName = configFileName || CONFIG_FILE_NAME;
-            const configFilePath = path.join(dir, configFileName);
-            let displayPath = ProjectManager.makeProjectRelativeIfPossible(configFilePath);
-            displayPath = Phoenix.app.getDisplayPath(displayPath);
+    function _isESLintProject() {
+        return new Promise((resolve)=>{
+            const configFilePath = path.join(ProjectManager.getProjectRoot().fullPath, PACKAGE_JSON);
             DocumentManager.getDocumentForPath(configFilePath).done(function (configDoc) {
-                let config;
                 const content = configDoc.getText();
                 try {
-                    config = JSON.parse(removeComments(content));
-                    console.log("JSHint: loaded config file for project " + configFilePath);
-                } catch (e) {
-                    console.log("JSHint: error parsing " + configFilePath);
-                    // just log and return as this is an expected failure for us while the user edits code
-                    reject("Error parsing JSHint config file:    " + displayPath);
-                    return;
-                }
-                // Load any base config defined by "extends".
-                // The same functionality as in
-                // jslints -> cli.js -> loadConfig -> if (config['extends'])...
-                // https://jshint.com/docs/cli/ > Special Options
-                if (config.extends) {
-                    let extendFile = FileSystem.getFileForPath(path.join(dir, config.extends));
-                    _readConfig(extendFile.parentPath, extendFile.name).then(baseConfigResult=>{
-                        delete config.extends;
-                        let mergedConfig = $.extend({}, baseConfigResult, config);
-                        if (config.globals) {
-                            delete config.globals;
-                        }
-                        resolve(mergedConfig);
-                    }).catch(()=>{
-                        let extendDisplayPath = ProjectManager.makeProjectRelativeIfPossible(extendFile.fullPath);
-                        extendDisplayPath = Phoenix.app.getDisplayPath(extendDisplayPath);
-                        reject("Error parsing JSHint config file: " + extendDisplayPath);
-                    });
-                }
-                else {
-                    resolve(config);
+                    const config = JSON.parse(content);
+                    resolve(config && (
+                        (config.devDependencies && config.devDependencies.eslint) ||
+                        (config.dependencies && config.dependencies.eslint)
+                    ));
+                } catch (err) {
+                    console.error(`ESLint Error parsing ${PACKAGE_JSON}`, configFilePath, err);
+                    resolve(false);
                 }
             }).fail((err)=>{
-                if(err === FileSystemError.NOT_FOUND){
-                    resolve(null); // no config file is a valid case. we just resolve with null
-                    return;
+                if(err !== FileSystemError.NOT_FOUND){
+                    console.error(`ESLint Error reading ${PACKAGE_JSON}`, configFilePath, err);
                 }
-                console.error("Error reading JSHint Config File", configFilePath, err);
-                reject("Error reading JSHint Config File", displayPath);
+                resolve(false);
             });
         });
     }
 
     function _reloadOptions() {
         projectSpecificOptions = null;
-        _readConfig(ProjectManager.getProjectRoot().fullPath, CONFIG_FILE_NAME).then((config)=>{
-            projectSpecificOptions = config;
-            CodeInspection.requestRun(Strings.JSHINT_NAME);
-            esLintConfigFileErrorMessage = null;
-        }).catch((err)=>{
-            esLintConfigFileErrorMessage = err;
-            CodeInspection.requestRun(Strings.JSHINT_NAME);
+        _isESLintProject(ProjectManager.getProjectRoot().fullPath).then((shouldESLintEnable)=>{
+            esLintEnabled = shouldESLintEnable;
+            CodeInspection.requestRun(Strings.ESLINT_NAME);
+        }).catch(()=>{
+            esLintEnabled = false;
+            CodeInspection.requestRun(Strings.ESLINT_NAME);
         });
     }
 
-    function isESLintConfigActive() {
-        return true;
-        // return !!(esLintConfigFileErrorMessage || projectSpecificOptions); todo
+    function isESLintActive() {
+        return esLintEnabled;
     }
 
     function _isFileInArray(fileToCheck, fileArray){
@@ -257,13 +202,12 @@ define(function (require, exports, module) {
     }
 
     function _projectFileChanged(_evt, entry, added, removed) {
-        let configFilePath = FileSystem.getFileForPath(ProjectManager.getProjectRoot().fullPath + CONFIG_FILE_NAME);
+        let configFilePath = FileSystem.getFileForPath(ProjectManager.getProjectRoot().fullPath + PACKAGE_JSON);
         if(entry && entry.fullPath === configFilePath.fullPath
             || _isFileInArray(configFilePath, added)){
             _reloadOptions();
         } else if(_isFileInArray(configFilePath, removed)){
             projectSpecificOptions = null;
-            esLintConfigFileErrorMessage = null;
         }
     }
 
@@ -278,10 +222,9 @@ define(function (require, exports, module) {
         name: Strings.ESLINT_NAME,
         scanFileAsync: lintOneFile,
         canInspect: function (fullPath) {
-            return !prefs.get(PREFS_ESLINT_DISABLED) && fullPath && !fullPath.endsWith(".min.js")
-                && isESLintConfigActive(); // in browsers, jshint is default if no linter present
+            return !prefs.get(PREFS_ESLINT_DISABLED) && fullPath && !fullPath.endsWith(".min.js") && isESLintActive();
         }
     });
 
-    exports.isESLintConfigActive = isESLintConfigActive;
+    exports.isESLintActive = isESLintActive;
 });

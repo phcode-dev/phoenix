@@ -177,6 +177,9 @@ html, body {
 
 .editor-text-fragment-warn.editor-text-fragment-warn.editor-text-fragment-warn{
     border-bottom:2px dotted @warn-underline-text;
+    .dark &{
+        border-bottom:2px dotted @dark-warn-underline-text;
+    }
     display: inline-block;
     position: relative;
 }
@@ -185,6 +188,9 @@ html, body {
     content: '';
     width: 100%;
     border-bottom:2px dotted @warn-underline-text;
+    .dark &{
+        border-bottom:2px dotted @dark-warn-underline-text;
+    }
     position: absolute;
     display:block;
     bottom: -3px;
