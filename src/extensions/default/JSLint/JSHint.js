@@ -39,7 +39,7 @@ define(function (require, exports, module) {
         ProjectManager     = brackets.getModule("project/ProjectManager"),
         FileSystem         = brackets.getModule("filesystem/FileSystem"),
         IndexingWorker     = brackets.getModule("worker/IndexingWorker"),
-        ESLint = require("./ESLint");
+        ESLint       = require("./ESLint");
 
     if(Phoenix.isTestWindow) {
         IndexingWorker.on("JsHint_extension_Loaded", ()=>{
@@ -258,7 +258,9 @@ define(function (require, exports, module) {
         scanFileAsync: lintOneFile,
         canInspect: function (fullPath) {
             return !prefs.get(PREFS_JSHINT_DISABLED) && fullPath && !fullPath.endsWith(".min.js")
-                && isJSHintConfigActive();
+                && (isJSHintConfigActive() || !ESLint.isESLintActive());
+            // if there is no linter, then we use jsHint as the default linter as it works in browser and native apps.
+            // remove ESLint.isESLintActive() once we add typescript language service that supports browser.
         }
     });
 
