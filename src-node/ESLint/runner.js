@@ -2,7 +2,8 @@ const readline = require('readline');
 const path = require('path');
 const fsPromises = require('fs').promises;
 const {ESLINT_ERROR_LINT_FAILED, ESLINT_ERROR_MODULE_LOAD_FAILED, ESLINT_ERROR_MODULE_NOT_FOUND,
-    OPERATION_LINT_TEXT, OPERATION_QUIT, OPERATION_RESPONSE}
+    OPERATION_LINT_TEXT, OPERATION_QUIT, OPERATION_RESPONSE, OPERATION_GET_LOADED_VERSION
+}
     = require("./constants");
 
 if (!process.argv[2]) {
@@ -34,38 +35,20 @@ async function checkExists(directoryPath, isDir = true) {
 }
 
 // Dynamically require the ESLint module
-let ESLintModule;
-// if the user changed his eslint version while we were caching an old eslint version, we need to update.
-// Function to observe version changes in ESLint
-async function observeVersionChanges() {
-    try {
-        const packageJsonPath = path.join(ESLintModulePath, 'package.json');
-        const packageJson = await fsPromises.readFile(packageJsonPath, 'utf8');
-        const packageData = JSON.parse(packageJson);
-        const currentEsLintModuleVersion = packageData.version;
-
-        if (ESLintModule && currentEsLintModuleVersion && ESLintModule.version !== currentEsLintModuleVersion) {
-            console.error('ESLint runner: ESLint version has changed. Requesting restart with new version...');
-            process.exit(0);
-        }
-    } catch (error) {
-        console.error('ESLint runner: Error reading ESLint version:', error.message);
-    }
-}
+let ESLintCached;
 
 async function getESLintModule() {
-    if(ESLintModule){
-        observeVersionChanges();
-        return ESLintModule;
+    if(ESLintCached){
+        return ESLintCached;
     }
     try{
         const directoryExists = await checkExists(ESLintModulePath);
         if(!directoryExists){
             return null;
         }
-        const {ESLint} = require(ESLintModulePath);
-        ESLintModule = ESLint;
-        return ESLint;
+        const ESLintModule = require(ESLintModulePath);
+        ESLintCached = ESLintModule.ESLint;
+        return ESLintCached;
     } catch (e) {
         console.error("ESLint runner: failed to load ESLintModule");
     }
@@ -115,7 +98,8 @@ async function lintTextWithPath(text, fullFilePath) {
 if(lintFilePath) {
     const text = fs.readFileSync(lintFilePath, { encoding: 'utf8' });
     lintTextWithPath(text, lintFilePath)
-        .then(console.log);
+        .then(console.log)
+        .catch(console.error);
 }
 
 const rl = readline.createInterface({
@@ -149,6 +133,12 @@ rl.on('line', (input) => {
                 });
         } else if(eslintRequest.operation === OPERATION_QUIT) {
             process.exit(0);
+        } else if(eslintRequest.operation === OPERATION_GET_LOADED_VERSION) {
+            sendToPHNode({
+                operation: OPERATION_RESPONSE,
+                requestID: eslintRequest.requestID,
+                esLintVersion: ESLintCached && ESLintCached.version
+            });
         } else {
             console.error("ESLint runner: Unknown operation: ", eslintRequest);
         }

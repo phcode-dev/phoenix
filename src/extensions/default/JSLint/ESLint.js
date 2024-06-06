@@ -29,39 +29,27 @@
 define(function (require, exports, module) {
 
     // Load dependent modules
-    const _                = brackets.getModule("thirdparty/lodash"),
-        CodeInspection     = brackets.getModule("language/CodeInspection"),
+    const CodeInspection     = brackets.getModule("language/CodeInspection"),
         FileSystemError    = brackets.getModule("filesystem/FileSystemError"),
         AppInit            = brackets.getModule("utils/AppInit"),
         PreferencesManager = brackets.getModule("preferences/PreferencesManager"),
         DocumentManager    = brackets.getModule("document/DocumentManager"),
         Strings            = brackets.getModule("strings"),
+        StringUtils        = brackets.getModule("utils/StringUtils"),
         ProjectManager     = brackets.getModule("project/ProjectManager"),
         FileSystem         = brackets.getModule("filesystem/FileSystem"),
-        NodeUtils          = brackets.getModule("utils/NodeUtils"),
-        IndexingWorker     = brackets.getModule("worker/IndexingWorker");
+        NodeUtils          = brackets.getModule("utils/NodeUtils");
 
     let prefs = PreferencesManager.getExtensionPrefs("ESLint"),
-        esLintEnabled = false,
-        projectSpecificOptions = null;
+        useESLintFromProject = false;
 
     const ESLINT_ERROR_MODULE_LOAD_FAILED = "ESLINT_MODULE_LOAD_FAILED",
         ESLINT_ERROR_MODULE_NOT_FOUND = "ESLINT_MODULE_NOT_FOUND",
         ESLINT_ERROR_LINT_FAILED = "ESLINT_LINT_FAILED";
 
-    const PREFS_ESLINT_DISABLED = "disabled";
+    const ESLINT_ONLY_IN_NATIVE_APP = "ESLINT_ERROR_ONLY_IN_NATIVE_APP";
 
-    // We don't provide default options in the preferences as preferences will try to mixin default options with
-    // user defined options leading to unexpected results. Either we take user defined options or default, no mixin.
-    let DEFAULT_OPTIONS = {
-        "esversion": 11,
-        "browser": true,
-        "node": true,
-        "jquery": true,
-        "rhino": false, // false here means read-only global property
-        "jasmine": true,
-        "devel": false
-    };
+    const PREFS_ESLINT_DISABLED = "disabled";
 
     prefs.definePreference(PREFS_ESLINT_DISABLED, "boolean", false, {
         description: Strings.DESCRIPTION_ESLINT_DISABLE
@@ -69,11 +57,13 @@ define(function (require, exports, module) {
         CodeInspection.requestRun(Strings.ESLINT_NAME);
     });
 
-    function _getLintError(errorCode) {
+    function _getLintError(errorCode, message) {
         let errorMessage = Strings.DESCRIPTION_ESLINT_FAILED;
         switch (errorCode) {
         case ESLINT_ERROR_LINT_FAILED:
-            errorMessage = Strings.DESCRIPTION_ESLINT_FAILED; break;
+            errorMessage = StringUtils.format(Strings.DESCRIPTION_ESLINT_FAILED, message? message : "Unknown"); break;
+        case ESLINT_ONLY_IN_NATIVE_APP:
+            errorMessage = Strings.DESCRIPTION_ESLINT_USE_NATIVE_APP; break;
         case ESLINT_ERROR_MODULE_NOT_FOUND:
             errorMessage = Strings.DESCRIPTION_ESLINT_DO_NPM_INSTALL; break;
         case ESLINT_ERROR_MODULE_LOAD_FAILED:
@@ -82,7 +72,7 @@ define(function (require, exports, module) {
         return [{
             // JSLint returns 1-based line/col numbers
             pos: { line: -1, ch: 0 },
-            message: errorMessage,
+            htmlMessage: errorMessage,
             type: CodeInspection.Type.ERROR
         }];
     }
@@ -107,32 +97,39 @@ define(function (require, exports, module) {
         return index - 1;
     }
 
+    function _getErrors(resultArray) {
+        return resultArray.map(function (lintError) {
+            return {
+                pos: { line: _0Based(lintError.line), ch: _0Based(lintError.column)},
+                endPos: {
+                    line: _0Based(lintError.endLine, lintError.line),
+                    ch: _0Based(lintError.endColumn, lintError.column)
+                },
+                message: `${lintError.message} ESLint (${lintError.ruleId})`,
+                type: _getErrorClass(lintError.severity)
+            };
+        });
+    }
+
     /**
      * Run JSLint on the current document. Reports results to the main UI. Displays
      * a gold star when no errors are found.
      */
     async function lintOneFile(text, fullPath) {
         return new Promise((resolve)=>{
+            if(!Phoenix.isNativeApp) {
+                resolve({ errors: _getLintError(ESLINT_ONLY_IN_NATIVE_APP) });
+                return;
+            }
             NodeUtils.ESLintFile(text, fullPath, ProjectManager.getProjectRoot().fullPath).then(esLintResult =>{
                 if (esLintResult.result && esLintResult.result.messages && esLintResult.result.messages.length) {
-                    let errors = esLintResult.result.messages;
-
-                    errors = errors.map(function (lintError) {
-                        return {
-                            pos: { line: _0Based(lintError.line), ch: _0Based(lintError.column)},
-                            endPos: {
-                                line: _0Based(lintError.endLine, lintError.line),
-                                ch: _0Based(lintError.endColumn, lintError.column)
-                            },
-                            message: `${lintError.message} ESLint (${lintError.ruleId})`,
-                            type: _getErrorClass(lintError.severity)
-                        };
-                    });
-                    resolve({ errors: errors });
+                    resolve({ errors: _getErrors(esLintResult.result.messages) });
                 } else if(esLintResult.isError) {
-                    resolve({ errors: _getLintError(esLintResult.errorCode) });
-                } else if(!esLintResult.result){
-                    console.error("ESLint Unknown result", esLintResult);
+                    resolve({ errors: _getLintError(esLintResult.errorCode, esLintResult.errorMessage) });
+                } else {
+                    if(!esLintResult.result){
+                        console.error("ESLint Unknown result", esLintResult);
+                    }
                     resolve();
                 }
             });
@@ -175,18 +172,13 @@ define(function (require, exports, module) {
     }
 
     function _reloadOptions() {
-        projectSpecificOptions = null;
         _isESLintProject(ProjectManager.getProjectRoot().fullPath).then((shouldESLintEnable)=>{
-            esLintEnabled = shouldESLintEnable;
+            useESLintFromProject = shouldESLintEnable;
             CodeInspection.requestRun(Strings.ESLINT_NAME);
         }).catch(()=>{
-            esLintEnabled = false;
+            useESLintFromProject = false;
             CodeInspection.requestRun(Strings.ESLINT_NAME);
         });
-    }
-
-    function isESLintActive() {
-        return esLintEnabled;
     }
 
     function _isFileInArray(fileToCheck, fileArray){
@@ -204,16 +196,23 @@ define(function (require, exports, module) {
     function _projectFileChanged(_evt, entry, added, removed) {
         let configFilePath = FileSystem.getFileForPath(ProjectManager.getProjectRoot().fullPath + PACKAGE_JSON);
         if(entry && entry.fullPath === configFilePath.fullPath
-            || _isFileInArray(configFilePath, added)){
+            || _isFileInArray(configFilePath, added) || _isFileInArray(configFilePath, removed)){
             _reloadOptions();
-        } else if(_isFileInArray(configFilePath, removed)){
-            projectSpecificOptions = null;
         }
     }
 
     AppInit.appReady(function () {
         ProjectManager.on(ProjectManager.EVENT_PROJECT_FILE_CHANGED, _projectFileChanged);
-        ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, _reloadOptions);
+        ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, function () {
+            _reloadOptions();
+            if(!Phoenix.isNativeApp) {
+                return;
+            }
+            NodeUtils.ESLintFile("console.log();", "a.js", ProjectManager.getProjectRoot().fullPath)
+                .catch(e=>{
+                    console.error(`Error warming up ESLint service`, e);
+                });
+        });
         _reloadOptions();
     });
 
@@ -222,9 +221,14 @@ define(function (require, exports, module) {
         name: Strings.ESLINT_NAME,
         scanFileAsync: lintOneFile,
         canInspect: function (fullPath) {
-            return !prefs.get(PREFS_ESLINT_DISABLED) && fullPath && !fullPath.endsWith(".min.js") && isESLintActive();
+            return !prefs.get(PREFS_ESLINT_DISABLED) && fullPath && !fullPath.endsWith(".min.js")
+                && useESLintFromProject;
         }
     });
+
+    function isESLintActive() {
+        return useESLintFromProject && Phoenix.isNativeApp;
+    }
 
     exports.isESLintActive = isESLintActive;
 });

@@ -18,7 +18,7 @@
  *
  */
 
-/*global Phoenix, WorkerComm, JSHINT*/
+/*global WorkerComm, JSHINT*/
 
 importScripts(`${Phoenix.baseURL}thirdparty/jshint.js`);
 
