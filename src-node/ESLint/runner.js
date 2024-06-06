@@ -1,5 +1,6 @@
 const readline = require('readline');
 const path = require('path');
+const { fileURLToPath } = require('url');
 const fsPromises = require('fs').promises;
 const {ESLINT_ERROR_LINT_FAILED, ESLINT_ERROR_MODULE_LOAD_FAILED, ESLINT_ERROR_MODULE_NOT_FOUND,
     OPERATION_LINT_TEXT, OPERATION_QUIT, OPERATION_RESPONSE, OPERATION_GET_LOADED_VERSION
@@ -35,7 +36,7 @@ async function checkExists(directoryPath, isDir = true) {
 }
 
 // Dynamically require the ESLint module
-let ESLintCached;
+let ESLintCached, configFileError;
 
 async function getESLintModule() {
     if(ESLintCached){
@@ -48,9 +49,10 @@ async function getESLintModule() {
         }
         const ESLintModule = require(ESLintModulePath);
         ESLintCached = ESLintModule.ESLint;
+        configFileError = null;
         return ESLintCached;
     } catch (e) {
-        console.error("ESLint runner: failed to load ESLintModule");
+        console.error("ESLint runner: failed to load ESLintModule", e);
     }
     return null;
 }
@@ -72,7 +74,8 @@ async function lintTextWithPath(text, fullFilePath) {
         const directoryExists = await checkExists(ESLintModulePath);
         return {
             isError: true,
-            errorCode: directoryExists ? ESLINT_ERROR_MODULE_LOAD_FAILED : ESLINT_ERROR_MODULE_NOT_FOUND
+            errorCode: directoryExists ? ESLINT_ERROR_MODULE_LOAD_FAILED : ESLINT_ERROR_MODULE_NOT_FOUND,
+            configFileError
         };
     }
 
@@ -95,11 +98,62 @@ async function lintTextWithPath(text, fullFilePath) {
     };
 }
 
+const ESLINT_CONFIG_JS_FILE_NAMES = [
+    // eslint 9
+    "eslint.config.js",
+    "eslint.config.mjs",
+    "eslint.config.cjs",
+    // legacy
+    ".eslintrc.js",
+    ".eslintrc.cjs"
+];
+
+function getTopmostStackFileName(error, nameOnly) {
+    let fileName = null;
+    try{
+        if (error.stack) {
+            const stackLines = error.stack.split('\n');
+            for (let i=0; i<stackLines.length; i++) {
+                const topmostStackLine = stackLines[i];
+
+                // Extract the file name using a regular expression
+                const match = topmostStackLine.match(/\((.*):\d+:\d+\)/);
+                if (match) {
+                    fileName = match[1];
+                    break;
+                } else {
+                    // In case the format is different, try another pattern
+                    const alternativeMatch = topmostStackLine.match(/at (.*):\d+:\d+/);
+                    if (alternativeMatch) {
+                        fileName = alternativeMatch[1];
+                        break;
+                    }
+                }
+            }
+        }
+        if(fileName && fileName.startsWith("file://")) {
+            fileName = fileURLToPath(fileName);
+        }
+        // now convert the full path to name
+        if(nameOnly){
+            fileName = path.basename(fileName);
+        }
+    } catch (e) {
+        console.error("Error getting topmost stack file", e);
+    }
+
+    return fileName;
+}
+
 if(lintFilePath) {
     const text = fs.readFileSync(lintFilePath, { encoding: 'utf8' });
     lintTextWithPath(text, lintFilePath)
         .then(console.log)
-        .catch(console.error);
+        .catch(err=>{
+            console.error(err);
+            const topmostFileName = getTopmostStackFileName(err);
+            console.log('Topmost stack file name:', topmostFileName);
+        });
 }
 
 const rl = readline.createInterface({
@@ -123,11 +177,16 @@ rl.on('line', (input) => {
                     sendToPHNode(result);
                 }).catch(err=>{
                     console.error("ESlint Runner error:", err);
+                    const errorCausedFile = getTopmostStackFileName(err, true);
+                    let errorMessage = err.message || "";
+                    if(errorCausedFile && ESLINT_CONFIG_JS_FILE_NAMES.includes(errorCausedFile)){
+                        errorMessage = `${getTopmostStackFileName(err)}: ${errorMessage}`;
+                    }
                     sendToPHNode({
                         operation: OPERATION_RESPONSE,
                         requestID: eslintRequest.requestID,
                         isError: true,
-                        errorMessage: err.message,
+                        errorMessage: errorMessage,
                         errorCode: ESLINT_ERROR_LINT_FAILED
                     });
                 });
