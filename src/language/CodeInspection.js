@@ -900,7 +900,7 @@ define(function (require, exports, module) {
             .on("click", "tr", function (e) {
                 if ($(e.target).hasClass('table-copy-err-button')) {
                     // Retrieve the message from the data attribute of the clicked element
-                    const message = $(e.target).data('message');
+                    const message = $(e.target).parent().parent().find(".line-text").text();
                     message && Phoenix.app.copyToClipboard(message);
                 }
                 if ($selectedRow) {
