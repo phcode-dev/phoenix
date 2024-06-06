@@ -258,7 +258,7 @@ define(function (require, exports, module) {
         scanFileAsync: lintOneFile,
         canInspect: function (fullPath) {
             return !prefs.get(PREFS_JSHINT_DISABLED) && fullPath && !fullPath.endsWith(".min.js")
-                && (isJSHintConfigActive() || !ESLint.isESLintConfigActive()); //jshint is default only if eslint is not
+                && isJSHintConfigActive();
         }
     });
 

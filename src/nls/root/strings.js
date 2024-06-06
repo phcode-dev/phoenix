@@ -959,7 +959,7 @@ define({
     "DESCRIPTION_ESLINT_DISABLE": "true to disable ESLint linter in problems panel",
     "DESCRIPTION_ESLINT_FAILED": "ESLint Failed due to an unknown reason. {APP_NAME} supports only ESLint versions above 6.",
     "DESCRIPTION_ESLINT_LOAD_FAILED": "Failed to load ESLint for this project. {APP_NAME} supports only ESLint versions above 6.",
-    "DESCRIPTION_ESLINT_NOT_FOUND": "Please run `npm install` on your project to enable ESLint",
+    "DESCRIPTION_ESLINT_DO_NPM_INSTALL": "Please run `npm install` on your project to enable ESLint",
     "DESCRIPTION_LANGUAGE": "Language specific settings",
     "DESCRIPTION_LANGUAGE_FILE_EXTENSIONS": "Additional mappings from file extension to language name",
     "DESCRIPTION_LANGUAGE_FILE_NAMES": "Additional mappings from file name to language name",
