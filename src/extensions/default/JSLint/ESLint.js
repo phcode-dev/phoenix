@@ -64,7 +64,7 @@ define(function (require, exports, module) {
         let errorMessage = Strings.DESCRIPTION_ESLINT_FAILED;
         switch (errorCode) {
         case ESLINT_ERROR_LINT_FAILED:
-            errorMessage = StringUtils.format(Strings.DESCRIPTION_ESLINT_FAILED, message? message : "Unknown"); break;
+            errorMessage = StringUtils.format(Strings.DESCRIPTION_ESLINT_FAILED, message || "Unknown"); break;
         case ESLINT_ONLY_IN_NATIVE_APP:
             errorMessage = Strings.DESCRIPTION_ESLINT_USE_NATIVE_APP; break;
         case ESLINT_ERROR_MODULE_NOT_FOUND:
@@ -179,7 +179,7 @@ define(function (require, exports, module) {
 
     function _reloadOptions() {
         esLintServiceFailed = false;
-        _isESLintProject(ProjectManager.getProjectRoot().fullPath).then((shouldESLintEnable)=>{
+        _isESLintProject().then((shouldESLintEnable)=>{
             useESLintFromProject = shouldESLintEnable;
             CodeInspection.requestRun(Strings.ESLINT_NAME);
         }).catch(()=>{

@@ -3,11 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
   "scripts": {},
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "eslint": "6.0.0"
+    "eslint": "7.0.0"
   }
 }
