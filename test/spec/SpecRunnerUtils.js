@@ -971,6 +971,7 @@ define(function (require, exports, module) {
      * @return {$.Promise} A promise resolved when the file is written or rejected when an error occurs.
      */
     function createTextFile(path, text, fileSystem) {
+        fileSystem = fileSystem || _getFileSystem();
         var deferred = new $.Deferred(),
             file = fileSystem.getFileForPath(path),
             options = {
