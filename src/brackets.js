@@ -273,6 +273,7 @@ define(function (require, exports, module) {
             Menus: require("command/Menus"),
             MultiRangeInlineEditor: require("editor/MultiRangeInlineEditor").MultiRangeInlineEditor,
             NativeApp: require("utils/NativeApp"),
+            NodeUtils: require("utils/NodeUtils"),
             PerfUtils: require("utils/PerfUtils"),
             PreferencesManager: require("preferences/PreferencesManager"),
             ProjectManager: require("project/ProjectManager"),
