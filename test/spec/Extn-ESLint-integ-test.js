@@ -126,10 +126,10 @@ define(function (require, exports, module) {
 
         it("should show JSHint in desktop app if ESLint load failed for project", async function () {
             await _openSimpleES6Project();
-            await _fileSwitcherroForESLintFailDetection();
-            await awaitsFor(()=>{
+            await awaitsFor(async ()=>{
+                await _fileSwitcherroForESLintFailDetection();
                 return $("#problems-panel").text().includes(Strings.DESCRIPTION_ESLINT_DO_NPM_INSTALL);
-            }, "ESLint error to be shown");
+            }, "ESLint error to be shown", 3000, 300);
             await awaitsFor(()=>{
                 return $("#problems-panel").text().includes(JSHintErrorES6Error_js);
             }, "JShint error to be shown");
@@ -158,10 +158,10 @@ define(function (require, exports, module) {
 
             it("should show ESLint and JSHint in desktop app for es6 project or below", async function () {
                 await _loadAndValidateES6Project();
-                await _fileSwitcherroForESLintFailDetection();
-                await awaitsFor(()=>{
+                await awaitsFor(async ()=>{
+                    await _fileSwitcherroForESLintFailDetection();
                     return $("#problems-panel").text().includes(JSHintErrorES6Error_js);
-                }, "JShint error to be shown");
+                }, "JShint error to be shown", 3000, 300);
             }, 5000);
         });
 
