@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, beforeAll, afterAll, awaitsForDone, awaits, awaitsFor */
+/*global describe, it, expect, beforeAll, afterAll, awaitsForDone, awaits, awaitsFor, path, jsPromise */
 
 define(function (require, exports, module) {
 
@@ -33,7 +33,8 @@ define(function (require, exports, module) {
             testWindow,
             $,
             CodeInspection,
-            NodeUtils;
+            NodeUtils,
+            FileSystem;
 
         beforeAll(async function () {
             testWindow = await SpecRunnerUtils.createTestWindowAndRun();
@@ -41,6 +42,7 @@ define(function (require, exports, module) {
             $ = testWindow.$;
             CodeInspection = testWindow.brackets.test.CodeInspection;
             NodeUtils = testWindow.brackets.test.NodeUtils;
+            FileSystem = testWindow.brackets.test.FileSystem;
             CodeInspection.toggleEnabled(true);
             await awaitsFor(()=>testWindow._JsHintExtensionReadyToIntegTest,
                 "JsHint extension to be loaded", 10000);
@@ -51,6 +53,7 @@ define(function (require, exports, module) {
             $             = null;
             NodeUtils     = null;
             CodeInspection  = null;
+            FileSystem = null;
             await SpecRunnerUtils.closeTestWindow();
         }, 30000);
 
@@ -217,6 +220,94 @@ define(function (require, exports, module) {
                 await _loadAndValidateES8Project();
                 await awaits(100); // give some time so that jshint has time to complete if there is any.
                 expect($("#problems-panel").text().includes("JSHint")).toBeFalse();
+            }, 5000);
+        });
+
+        describe("ES Latest module project", function () {
+            let esLatestProjectPath, configPath;
+            const CONFIG_FILE_NAME = "eslint.config.js";
+            const MODULE_CONFIG_TEXT = `export default [
+                {
+                    rules: {
+                        semi: "error",
+                        "prefer-const": "error"
+                    }
+                }
+            ];`, MODULE_CONFIG_TEXT_EQ_RULE = `export default [
+                {
+                    rules: {
+                        semi: "error",
+                        "prefer-const": "error",
+                        "eqeqeq": "warn"
+                    }
+                }
+            ];`, COMMON_JS_CONFIG_TEXT = `// eslint.config.js
+            module.exports = [
+                {
+                    rules: {
+                        semi: "error",
+                        "prefer-const": "error"
+                    }
+                }
+            ];`;
+
+            beforeAll(async function () {
+                esLatestProjectPath = await _createTempProject("es_latest_no_config");
+                configPath = path.join(esLatestProjectPath, CONFIG_FILE_NAME);
+                await _npmInstallInFolder(esLatestProjectPath);
+                await SpecRunnerUtils.loadProjectInTestWindow(esLatestProjectPath);
+            }, 30000);
+
+            let initDone = false;
+            async function _loadAndValidateESLatestProject() {
+                if(initDone){
+                    return;
+                }
+                await _openProjectFile("error.js");
+                await _waitForProblemsPanelVisible(true);
+                await awaitsFor(()=>{
+                    return $("#problems-panel").text().includes(
+                        "ESLint Failed (Could not find config file.). Make sure the project contains valid"
+                    );
+                }, "ESLint v8 error to be shown");
+
+                // this Project is of type="module", so loading a common js eslint config should show an error
+                await jsPromise(SpecRunnerUtils.createTextFile(configPath, COMMON_JS_CONFIG_TEXT, FileSystem));
+                await _openProjectFile(CONFIG_FILE_NAME);
+                await _openProjectFile("error.js");
+                await awaitsFor(()=>{
+                    return $("#problems-panel").text().includes(
+                        "eslint.config.js: module is not defined in ES module scope"
+                    );
+                }, "using a requirejs config in es-module error");
+
+                // now write the es module config and eslint should now work
+                await jsPromise(SpecRunnerUtils.createTextFile(configPath, MODULE_CONFIG_TEXT, FileSystem));
+                await _openProjectFile(CONFIG_FILE_NAME);
+                await _openProjectFile("error.js");
+                await awaitsFor(()=>{
+                    return $("#problems-panel").text().includes(
+                        "Missing semicolon. ESLint (semi)"
+                    );
+                }, "eslint valid errors to be shown");
+                initDone = true;
+            }
+
+            it("should ESLint Latest work as expected", async function () {
+                await _loadAndValidateESLatestProject();
+            }, 5000);
+
+            it("should be able to change eslint rules config file after its loaded", async function () {
+                await _loadAndValidateESLatestProject();
+                // now change the current es module config and eslint should load the new rules
+                await jsPromise(SpecRunnerUtils.createTextFile(configPath, MODULE_CONFIG_TEXT_EQ_RULE, FileSystem));
+                await _openProjectFile(CONFIG_FILE_NAME);
+                await _openProjectFile("error.js");
+                await awaitsFor(()=>{
+                    return $("#problems-panel").text().includes(
+                        "Expected '===' and instead saw '=='. ESLint (eqeqeq)"
+                    );
+                }, "eslint new eq rule added to be honored in lint");
             }, 5000);
         });
 
