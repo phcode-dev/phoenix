@@ -51,6 +51,9 @@ define(function (require, exports, module) {
 
     const PREFS_ESLINT_DISABLED = "disabled";
 
+    // this is set to true if the service itself is not active/failed to start.
+    let esLintServiceFailed = false;
+
     prefs.definePreference(PREFS_ESLINT_DISABLED, "boolean", false, {
         description: Strings.DESCRIPTION_ESLINT_DISABLE
     }).on("change", function () {
@@ -123,10 +126,13 @@ define(function (require, exports, module) {
             }
             NodeUtils.ESLintFile(text, fullPath, ProjectManager.getProjectRoot().fullPath).then(esLintResult =>{
                 if (esLintResult.result && esLintResult.result.messages && esLintResult.result.messages.length) {
+                    esLintServiceFailed = false;
                     resolve({ errors: _getErrors(esLintResult.result.messages) });
                 } else if(esLintResult.isError) {
+                    esLintServiceFailed = true;
                     resolve({ errors: _getLintError(esLintResult.errorCode, esLintResult.errorMessage) });
                 } else {
+                    esLintServiceFailed = false;
                     if(!esLintResult.result){
                         console.error("ESLint Unknown result", esLintResult);
                     }
@@ -172,6 +178,7 @@ define(function (require, exports, module) {
     }
 
     function _reloadOptions() {
+        esLintServiceFailed = false;
         _isESLintProject(ProjectManager.getProjectRoot().fullPath).then((shouldESLintEnable)=>{
             useESLintFromProject = shouldESLintEnable;
             CodeInspection.requestRun(Strings.ESLINT_NAME);
@@ -227,7 +234,7 @@ define(function (require, exports, module) {
     });
 
     function isESLintActive() {
-        return useESLintFromProject && Phoenix.isNativeApp;
+        return useESLintFromProject && Phoenix.isNativeApp && !esLintServiceFailed;
     }
 
     exports.isESLintActive = isESLintActive;
