@@ -310,7 +310,5 @@ define(function (require, exports, module) {
                 }, "eslint new eq rule added to be honored in lint");
             }, 5000);
         });
-
-        // todo eslint module test for es9
     });
 });
