@@ -55,7 +55,8 @@ define(function (require, exports, module) {
         }, 30000);
 
         const JSHintErrorES6Error_js = "Missing semicolon. jshint (W033)",
-            ESLintErrorES7Error_js = "Parsing error: Unexpected token ; ESLint (null)";
+            ESLintErrorES7Error_js = "Parsing error: Unexpected token ; ESLint (null)",
+            ESLintErrorES8Error_js = "Expected '===' and instead saw '=='. ESLint (eqeqeq)";
 
         async function _createTempProject(esLintSpecSubFolder) {
             return await SpecRunnerUtils.getTempTestDirectory(testRootSpec + esLintSpecSubFolder);
@@ -187,9 +188,38 @@ define(function (require, exports, module) {
                 await awaitsFor(()=>{
                     return $("#problems-panel").text().includes(JSHintErrorES6Error_js);
                 }, "JShint error to be shown");
+                expect($("#problems-panel").text().includes("JSHint")).toBeTrue();
+            }, 5000);
+        });
+
+        describe("ES8 module project", function () {
+            let es7ProjectPath;
+
+            beforeAll(async function () {
+                es7ProjectPath = await _createTempProject("es8_module");
+                await _npmInstallInFolder(es7ProjectPath);
+                await SpecRunnerUtils.loadProjectInTestWindow(es7ProjectPath);
+            }, 30000);
+
+            async function _loadAndValidateES8Project() {
+                await _openProjectFile("error.js");
+                await _waitForProblemsPanelVisible(true);
+                await awaitsFor(()=>{
+                    return $("#problems-panel").text().includes(ESLintErrorES8Error_js);
+                }, "ESLint v8 error to be shown");
+            }
+
+            it("should ESLint v8 work as expected", async function () {
+                await _loadAndValidateES8Project();
             }, 5000);
 
-            // todo eslint module test
+            it("should not show JSHint in desktop app if ESLint is active", async function () {
+                await _loadAndValidateES8Project();
+                await awaits(100); // give some time so that jshint has time to complete if there is any.
+                expect($("#problems-panel").text().includes("JSHint")).toBeFalse();
+            }, 5000);
         });
+
+        // todo eslint module test for es9
     });
 });
