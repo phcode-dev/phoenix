@@ -120,6 +120,8 @@ define(function (require, exports, module) {
     require("spec/Extn-RemoteFileAdapter-integ-test");
     require("spec/Extn-NavigationAndHistory-integ-test");
     require("spec/Extn-RecentProjects-integ-test");
+    require("spec/Extn-JSHint-integ-test");
+    require("spec/Extn-ESLint-integ-test");
     // extension integration tests
     require("spec/Extn-CSSCodeHints-integ-test");
     // Node Tests
