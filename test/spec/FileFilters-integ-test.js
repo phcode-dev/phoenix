@@ -302,7 +302,12 @@ define(function (require, exports, module) {
             it("should search in files", async function () {
                 await openSearchBar();
                 _setSearchInFiles("*.css");
-                await executeCleanSearch("{1}");
+                await awaitsFor(async ()=>{
+                    await executeCleanSearch("{1}");
+                    return FindInFiles.searchModel.results[testPath + "/test1.css"];
+                    // we have to do this in a loop as we were seeing intermittent failures in GitHub actions
+                }, "Search to get correct results", 7000, 300);
+
                 expect(FindInFiles.searchModel.results[testPath + "/test1.css"]).toBeTruthy();
                 expect(FindInFiles.searchModel.results[testPath + "/test1.html"]).toBeFalsy();
                 await closeSearchBar();
