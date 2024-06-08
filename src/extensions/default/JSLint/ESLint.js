@@ -102,6 +102,16 @@ define(function (require, exports, module) {
 
     function _getErrors(resultArray) {
         return resultArray.map(function (lintError) {
+            let fix = null;
+            if(lintError.fix && lintError.fix.range && typeof lintError.fix.text === "string") {
+                fix = {
+                    replaceText: lintError.fix.text,
+                    rangeOffset: {
+                        start: lintError.fix.range[0],
+                        end: lintError.fix.range[1]
+                    }
+                };
+            }
             return {
                 pos: { line: _0Based(lintError.line), ch: _0Based(lintError.column)},
                 endPos: {
@@ -109,7 +119,8 @@ define(function (require, exports, module) {
                     ch: _0Based(lintError.endColumn, lintError.column)
                 },
                 message: `${lintError.message} ESLint (${lintError.ruleId})`,
-                type: _getErrorClass(lintError.severity)
+                type: _getErrorClass(lintError.severity),
+                fix: fix
             };
         });
     }

@@ -1168,6 +1168,7 @@ define(function (require, exports, module) {
      * @param {Object} [options] - When given, it should be  one of the predefined `Editor.MARK_OPTION_UNDERLINE*` or
      * it should be an object that may contain the following configuration options:
      *
+     * @param {string} [options.metadata] - If you want to store any metadata object with the mark, use this.
      * @param {string} [options.className] -Assigns a CSS class to the marked stretch of text.
      * @param {string} [options.css] -A string of CSS to be applied to the covered text. For example "color: #fe3".
      * @param {string} [options.startStyle] -Can be used to specify an extra CSS class to be applied to the leftmost
@@ -1226,6 +1227,7 @@ define(function (require, exports, module) {
     Editor.prototype.markText = function (markType, cursorFrom, cursorTo, options) {
         let newMark = this._codeMirror.markText(cursorFrom, cursorTo, options);
         newMark.markType = markType;
+        newMark.metadata = options && options.metadata;
         return newMark;
     };
 

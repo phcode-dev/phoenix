@@ -43,6 +43,7 @@ define(function (require, exports, module) {
         CommandManager          = require("command/CommandManager"),
         DocumentManager         = require("document/DocumentManager"),
         EditorManager           = require("editor/EditorManager"),
+        Dialogs                 = require("widgets/Dialogs"),
         Editor                  = require("editor/Editor").Editor,
         MainViewManager         = require("view/MainViewManager"),
         LanguageManager         = require("language/LanguageManager"),
@@ -60,6 +61,8 @@ define(function (require, exports, module) {
 
     const CODE_INSPECTION_GUTTER_PRIORITY      = 500,
         CODE_INSPECTION_GUTTER = "code-inspection-gutter";
+
+    const EDIT_ORIGIN_LINT_FIX = "lint_fix";
 
     const INDICATOR_ID = "status-inspection";
 
@@ -504,20 +507,35 @@ define(function (require, exports, module) {
         });
     }
 
+    let fixIDCounter = 1;
+    let documentFixes = new Map(), lastDocumentScanTimeStamp;
+    function _registerNewFix(editor, fix) {
+        if(!editor || !fix || !fix.rangeOffset) {
+            return null;
+        }
+        if(editor.document.lastChangeTimestamp !== lastDocumentScanTimeStamp){
+            // the document changed from the last time the fixes where registered, we have to
+            // invalidate all existing fixes in that case.
+            lastDocumentScanTimeStamp = editor.document.lastChangeTimestamp;
+            documentFixes.clear();
+        }
+        fixIDCounter++;
+        documentFixes.set(`${fixIDCounter}`, fix);
+        return fixIDCounter;
+    }
 
     /**
      * Adds gutter icons and squiggly lines under err/warn/info to editor after lint.
+     * also updates  the passed in resultProviderEntries with fixes that can be applied.
      * @param resultProviderEntries
      * @private
      */
-    function _updateEditorMarks(resultProviderEntries) {
+    function _updateEditorMarksAndFixResults(resultProviderEntries) {
         let editor = EditorManager.getCurrentFullEditor();
         if(!(editor && resultProviderEntries && resultProviderEntries.length)) {
             return;
         }
         editor.operation(function () {
-            editor.clearAllMarks(CODE_MARK_TYPE_INSPECTOR);
-            editor.clearGutter(CODE_INSPECTION_GUTTER);
             editor.off("viewportChange.codeInspection");
             editor.on("viewportChange.codeInspection", _editorVieportChangeHandler);
             let gutterErrorMessages = {};
@@ -532,11 +550,16 @@ define(function (require, exports, module) {
                     // add squiggly lines
                     if (_shouldMarkTokenAtPosition(editor, error)) {
                         let mark;
+                        const markOptions = _getMarkOptions(error);
+                        const fixID = _registerNewFix(editor, error.fix);
+                        if(fixID) {
+                            markOptions.metadata = fixID;
+                            error.fix.id = fixID;
+                        }
                         if(error.endPos){
-                            mark = editor.markText(CODE_MARK_TYPE_INSPECTOR, error.pos, error.endPos,
-                                _getMarkOptions(error));
+                            mark = editor.markText(CODE_MARK_TYPE_INSPECTOR, error.pos, error.endPos, markOptions);
                         } else {
-                            mark = editor.markToken(CODE_MARK_TYPE_INSPECTOR, error.pos, _getMarkOptions(error));
+                            mark = editor.markToken(CODE_MARK_TYPE_INSPECTOR, error.pos, markOptions);
                         }
                         mark.type = error.type;
                         mark.message = error.message;
@@ -547,6 +570,7 @@ define(function (require, exports, module) {
         });
     }
 
+    let linterHadRun = false;
     /**
      * Run inspector applicable to current document. Updates status bar indicator and refreshes error list in
      * bottom panel. Does not run if inspection is disabled or if a providerName is given and does not
@@ -574,6 +598,14 @@ define(function (require, exports, module) {
             return !provider.canInspect || provider.canInspect(currentDoc.file.fullPath);
         });
 
+        let editor = EditorManager.getCurrentFullEditor();
+        if(editor){
+            lastDocumentScanTimeStamp = editor.document.lastChangeTimestamp;
+            documentFixes.clear();
+            editor.clearAllMarks(CODE_MARK_TYPE_INSPECTOR);
+            editor.clearGutter(CODE_INSPECTION_GUTTER);
+        }
+
         if (providerList && providerList.length) {
             var numProblems = 0;
             var aborted = false;
@@ -584,7 +616,7 @@ define(function (require, exports, module) {
 
             // run all the providers registered for this file type
             (_currentPromise = inspectFile(currentDoc.file, providerList)).then(function (results) {
-                _updateEditorMarks(results);
+                _updateEditorMarksAndFixResults(results);
                 // check if promise has not changed while inspectFile was running
                 if (this !== _currentPromise) {
                     return;
@@ -675,6 +707,7 @@ define(function (require, exports, module) {
             // No provider for current file
             _hasErrors = false;
             _currentPromise = null;
+            updatePanelTitleAndStatusBar(0, [], false);
             if(problemsPanel){
                 problemsPanel.hide();
             }
@@ -708,9 +741,18 @@ define(function (require, exports, module) {
      * @param {{name:string, scanFileAsync:?function(string, string):!{$.Promise},
      *         scanFile:?function(string, string):?{errors:!Array, aborted:boolean}}} provider
      *
-     * Each error is: { pos:{line,ch}, endPos:?{line,ch}, message:string, type:?Type }
+     * Each error is: { pos:{line,ch}, endPos:?{line,ch}, message:string, htmlMessage:string, type:?Type ,
+     *                     fix: { // an optional fix, if present will show the fix button
+     *                     replace: "text to replace the offset given below",
+     *                     rangeOffset: {
+     *                         start: number,
+     *                         end: number
+     *                     }}}
      * If type is unspecified, Type.WARNING is assumed.
      * If no errors found, return either null or an object with a zero-length `errors` array.
+     * `message` will be printed as text as is. This is needed when the error text contains HTML that may be
+     * mis interpreted as html to display. If you want to display html, pass in `htmlMessage`. Both can be used
+     * at the same time, in which case both will be displayed.
      */
     function register(languageId, provider) {
         if (!_providers[languageId]) {
@@ -898,11 +940,35 @@ define(function (require, exports, module) {
         var $selectedRow;
         $problemsPanelTable = $problemsPanel.find(".table-container")
             .on("click", "tr", function (e) {
-                if ($(e.target).hasClass('table-copy-err-button')) {
+                if ($(e.target).hasClass('ph-copy-problem')) {
                     // Retrieve the message from the data attribute of the clicked element
                     const message = $(e.target).parent().parent().find(".line-text").text();
                     message && Phoenix.app.copyToClipboard(message);
+                    e.preventDefault();
+                    e.stopPropagation();
+                    MainViewManager.focusActivePane();
+                    return;
                 }
+                if ($(e.target).hasClass('ph-fix-problem')) {
+                    // Retrieve the message from the data attribute of the clicked element
+                    const fixid = "" + $(e.target).data("fixid");
+                    const fixDetails = documentFixes.get(fixid);
+                    const editor = EditorManager.getCurrentFullEditor();
+                    if(!editor || !fixDetails || editor.document.lastChangeTimestamp !== lastDocumentScanTimeStamp) {
+                        Dialogs.showErrorDialog(Strings.CANNOT_FIX_TITLE, Strings.CANNOT_FIX_MESSAGE);
+                    } else {
+                        const from = editor.posFromIndex(fixDetails.rangeOffset.start),
+                            to =  editor.posFromIndex(fixDetails.rangeOffset.end);
+                        editor.setSelection(from, to, true, Editor.BOUNDARY_BULLSEYE, EDIT_ORIGIN_LINT_FIX);
+                        editor.replaceSelection(fixDetails.replaceText, "around");
+                    }
+                    e.preventDefault();
+                    e.stopPropagation();
+                    MainViewManager.focusActivePane();
+                    run();
+                    return;
+                }
+
                 if ($selectedRow) {
                     $selectedRow.removeClass("selected");
                 }
