@@ -19,7 +19,7 @@
  *
  */
 
-/*global jsPromise*/
+/*global jsPromise, path*/
 
 /**
  * Manages linters and other code inspections on a per-language basis. Provides a UI and status indicator for
@@ -347,8 +347,9 @@ define(function (require, exports, module) {
      * @param {Number} numProblems - total number of problems across all providers
      * @param {Array.<{name:string, scanFileAsync:?function(string, string):!{$.Promise}, scanFile:?function(string, string):Object}>} providersReportingProblems - providers that reported problems
      * @param {boolean} aborted - true if any provider returned a result with the 'aborted' flag set
+     * @param fileName
      */
-    function updatePanelTitleAndStatusBar(numProblems, providersReportingProblems, aborted) {
+    function updatePanelTitleAndStatusBar(numProblems, providersReportingProblems, aborted, fileName) {
         var message, tooltip;
 
         if (providersReportingProblems.length === 1) {
@@ -357,13 +358,14 @@ define(function (require, exports, module) {
             $problemsPanelTable.find("tr").removeClass("forced-hidden");
 
             if (numProblems === 1 && !aborted) {
-                message = StringUtils.format(Strings.SINGLE_ERROR, providersReportingProblems[0].name);
+                message = StringUtils.format(Strings.SINGLE_ERROR, providersReportingProblems[0].name, fileName);
             } else {
                 if (aborted) {
                     numProblems += "+";
                 }
 
-                message = StringUtils.format(Strings.MULTIPLE_ERRORS, providersReportingProblems[0].name, numProblems);
+                message = StringUtils.format(Strings.MULTIPLE_ERRORS, providersReportingProblems[0].name, numProblems,
+                    fileName);
             }
         } else if (providersReportingProblems.length > 1) {
             $problemsPanelTable.find(".inspector-section").show();
@@ -372,7 +374,7 @@ define(function (require, exports, module) {
                 numProblems += "+";
             }
 
-            message = StringUtils.format(Strings.ERRORS_PANEL_TITLE_MULTIPLE, numProblems);
+            message = StringUtils.format(Strings.ERRORS_PANEL_TITLE_MULTIPLE, numProblems, fileName);
         } else {
             return;
         }
@@ -570,7 +572,8 @@ define(function (require, exports, module) {
         });
     }
 
-    let linterHadRun = false;
+    const scrollPositionMap = new Map();
+
     /**
      * Run inspector applicable to current document. Updates status bar indicator and refreshes error list in
      * bottom panel. Does not run if inspection is disabled or if a providerName is given and does not
@@ -598,21 +601,22 @@ define(function (require, exports, module) {
             return !provider.canInspect || provider.canInspect(currentDoc.file.fullPath);
         });
 
-        let editor = EditorManager.getCurrentFullEditor();
+        let editor = EditorManager.getCurrentFullEditor(), fullFilePath;
         if(editor){
             lastDocumentScanTimeStamp = editor.document.lastChangeTimestamp;
             documentFixes.clear();
             editor.clearAllMarks(CODE_MARK_TYPE_INSPECTOR);
             editor.clearGutter(CODE_INSPECTION_GUTTER);
+            fullFilePath = editor.document.file.fullPath;
         }
 
         if (providerList && providerList.length) {
-            var numProblems = 0;
-            var aborted = false;
-            var allErrors = [];
-            var html;
-            var providersReportingProblems = [];
-            $problemsPanelTable.empty();
+            let numProblems = 0,
+                aborted = false,
+                allErrors = [],
+                html,
+                providersReportingProblems = [];
+            scrollPositionMap.set($problemsPanelTable.lintFilePath || fullFilePath, $problemsPanelTable.scrollTop());
 
             // run all the providers registered for this file type
             (_currentPromise = inspectFile(currentDoc.file, providerList)).then(function (results) {
@@ -688,16 +692,19 @@ define(function (require, exports, module) {
                 // Update results table
                 html = Mustache.render(ResultsTemplate, {Strings: Strings, reportList: allErrors});
 
+                const scrollPosition = scrollPositionMap.get(fullFilePath) || 0;
+                $problemsPanelTable.lintFilePath = fullFilePath;
                 $problemsPanelTable
                     .empty()
                     .append(html)
-                    .scrollTop(0);  // otherwise scroll pos from previous contents is remembered
+                    .scrollTop(scrollPosition);  // otherwise scroll pos from previous contents is remembered
 
                 if (!_collapsed) {
                     problemsPanel.show();
                 }
 
-                updatePanelTitleAndStatusBar(numProblems, providersReportingProblems, aborted);
+                updatePanelTitleAndStatusBar(numProblems, providersReportingProblems, aborted,
+                    path.basename(fullFilePath));
                 setGotoEnabled(true);
 
                 PerfUtils.addMeasurement(perfTimerDOM);
@@ -707,7 +714,8 @@ define(function (require, exports, module) {
             // No provider for current file
             _hasErrors = false;
             _currentPromise = null;
-            updatePanelTitleAndStatusBar(0, [], false);
+            updatePanelTitleAndStatusBar(0, [], false,
+                fullFilePath ? path.basename(fullFilePath) : Strings.ERRORS_NO_FILE);
             if(problemsPanel){
                 problemsPanel.hide();
             }
@@ -845,6 +853,21 @@ define(function (require, exports, module) {
         // run immediately
         run();
     }
+
+    let lastRunTime;
+    $(window.document).on("mousemove", ()=>{
+        const editor = EditorManager.getCurrentFullEditor();
+        if(!editor || editor.document.lastChangeTimestamp === lastDocumentScanTimeStamp) {
+            return;
+        }
+        const currentTime = Date.now();
+        if(lastRunTime && (currentTime - lastRunTime) < 1000) {
+            // we dont run the linter on mouse operations more than 1 times a second.
+            return;
+        }
+        lastRunTime = currentTime;
+        run();
+    });
 
     /**
      * Toggle the collapsed state for the panel. This explicitly collapses the panel (as opposed to

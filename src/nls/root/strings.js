@@ -409,9 +409,10 @@ define({
     "STATUSBAR_TASKS_RESTART": "Restart",
 
     // CodeInspection: errors/warnings
-    "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Problems",
-    "SINGLE_ERROR": "1 {0} Problem",
-    "MULTIPLE_ERRORS": "{1} {0} Problems",
+    "ERRORS_NO_FILE": "No File Open",
+    "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Problems - {1}",
+    "SINGLE_ERROR": "1 {0} Problem - {1}",
+    "MULTIPLE_ERRORS": "{1} {0} Problems - {2}",
     "NO_ERRORS": "No {0} problems found - good job!",
     "NO_ERRORS_MULTIPLE_PROVIDER": "No problems found - good job!",
     "LINT_DISABLED": "Linting is disabled",
