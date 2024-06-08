@@ -418,6 +418,10 @@ define({
     "NO_LINT_AVAILABLE": "No linter available for {0}",
     "NOTHING_TO_LINT": "Nothing to lint",
     "COPY_ERROR": "Copy Error Message",
+    "FIX_ERROR": "Fix Problem",
+    "FIX": "Fix",
+    "CANNOT_FIX_TITLE": "Failed to Apply Fix",
+    "CANNOT_FIX_MESSAGE": "The document has been modified since the fix was prepared. Please try again.",
     "LINTER_TIMED_OUT": "{0} has timed out after waiting for {1} ms",
     "LINTER_FAILED": "{0} terminated with error: {1}",
 

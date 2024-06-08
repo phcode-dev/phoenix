@@ -7,6 +7,10 @@
                 <input type="hidden" value="{{providerName}}" />
                 {{providerName}} ({{results.length}})
             </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
         </tr>
         {{#results}}
         <tr class="{{display}} inspector-line">
@@ -16,10 +20,18 @@
             </td>
             <td class="line-text">{{message}}{{{htmlMessage}}}</td>
             <td>
-                <button class="btn btn-mini table-copy-err-button" title="{{Strings.COPY_ERROR}}"
+                <button class="btn btn-mini table-copy-err-button ph-copy-problem" title="{{Strings.COPY_ERROR}}"
                         data-message="{{message}}">
-                    <i class="fa-solid fa-copy"></i>
+                    <i class="fa-solid fa-copy ph-copy-problem"></i>
                 </button>
+            </td>
+            <td>
+                {{#fix.id}}
+                <button class="btn btn-mini table-fix-err-button ph-fix-problem" title="{{Strings.FIX_ERROR}}"
+                        data-fixid="{{fix.id}}">
+                    {{Strings.FIX}}
+                </button>
+                {{/fix.id}}
             </td>
             <td class="line-snippet">{{codeSnippet}}</td>
         </tr>

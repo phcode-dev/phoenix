@@ -160,73 +160,42 @@ html, body {
 // selectors like .warning or .info. Even if error, warning, and info are used on the same div in any order,
 // the style for .error.error will take precedence due to its higher specificity.
 .editor-text-fragment-error.editor-text-fragment-error.editor-text-fragment-error.editor-text-fragment-error{
-    border-bottom:2px dotted @error-underline-text;
-    display: inline-block;
-    position: relative;
+    text-decoration-style: wavy;
+    text-decoration-line: underline;
+    text-decoration-skip-ink: none;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+    text-decoration-color: @error-underline-text;
 }
 
-.editor-text-fragment-error.editor-text-fragment-error.editor-text-fragment-error.editor-text-fragment-error:after{
-    content: '';
-    width: 100%;
-    border-bottom:2px dotted @error-underline-text;
-    position: absolute;
-    display:block;
-    bottom: -3px;
-    left: 2px;
-}
-
-.editor-text-fragment-warn.editor-text-fragment-warn.editor-text-fragment-warn{
-    border-bottom:2px dotted @warn-underline-text;
+.editor-text-fragment-warn.editor-text-fragment-warn.editor-text-fragment-warn {
+    text-decoration-style: wavy;
+    text-decoration-line: underline;
+    text-decoration-skip-ink: none;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+    text-decoration-color: @warn-underline-text;
     .dark &{
-        border-bottom:2px dotted @dark-warn-underline-text;
+        text-decoration-color: @dark-warn-underline-text;
     }
-    display: inline-block;
-    position: relative;
 }
 
-.editor-text-fragment-warn.editor-text-fragment-warn.editor-text-fragment-warn:after{
-    content: '';
-    width: 100%;
-    border-bottom:2px dotted @warn-underline-text;
-    .dark &{
-        border-bottom:2px dotted @dark-warn-underline-text;
-    }
-    position: absolute;
-    display:block;
-    bottom: -3px;
-    left: 2px;
+.editor-text-fragment-spell-error.editor-text-fragment-spell-error {
+    text-decoration-style: wavy;
+    text-decoration-line: underline;
+    text-decoration-skip-ink: none;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+    text-decoration-color: @spell-underline-text;
 }
 
-.editor-text-fragment-info{
-    border-bottom:2px dotted @info-underline-text;
-    display: inline-block;
-    position: relative;
-}
-
-.editor-text-fragment-info:after{
-    content: '';
-    width: 100%;
-    border-bottom:2px dotted @info-underline-text;
-    position: absolute;
-    display:block;
-    bottom: -3px;
-    left: 2px;
-}
-
-.editor-text-fragment-spell-error.editor-text-fragment-spell-error{
-    border-bottom:2px dotted @spell-underline-text;
-    display: inline-block;
-    position: relative;
-}
-
-.editor-text-fragment-spell-error.editor-text-fragment-spell-error:after{
-    content: '';
-    width: 100%;
-    border-bottom:2px dotted @spell-underline-text;
-    position: absolute;
-    display:block;
-    bottom: -3px;
-    left: 2px;
+.editor-text-fragment-info {
+    text-decoration-style: wavy;
+    text-decoration-line: underline;
+    text-decoration-skip-ink: none;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+    text-decoration-color: @info-underline-text;
 }
 
 .hidden-element{
@@ -3005,7 +2974,6 @@ textarea.exclusions-editor {
 
     .table-copy-err-button {
         visibility: hidden;
-        cursor: pointer;
         margin: 0 0 0 0;
     }
 
