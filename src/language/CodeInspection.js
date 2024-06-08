@@ -605,8 +605,6 @@ define(function (require, exports, module) {
         if(editor){
             lastDocumentScanTimeStamp = editor.document.lastChangeTimestamp;
             documentFixes.clear();
-            editor.clearAllMarks(CODE_MARK_TYPE_INSPECTOR);
-            editor.clearGutter(CODE_INSPECTION_GUTTER);
             fullFilePath = editor.document.file.fullPath;
         }
 
@@ -620,6 +618,8 @@ define(function (require, exports, module) {
 
             // run all the providers registered for this file type
             (_currentPromise = inspectFile(currentDoc.file, providerList)).then(function (results) {
+                editor.clearAllMarks(CODE_MARK_TYPE_INSPECTOR);
+                editor.clearGutter(CODE_INSPECTION_GUTTER);
                 _updateEditorMarksAndFixResults(results);
                 // check if promise has not changed while inspectFile was running
                 if (this !== _currentPromise) {
