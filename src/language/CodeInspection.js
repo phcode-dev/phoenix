@@ -119,6 +119,8 @@ define(function (require, exports, module) {
      */
     var $problemsPanel;
 
+    let $fixAllBtn;
+
     /**
      * @private the panelView
      * @type {Panel}
@@ -350,6 +352,7 @@ define(function (require, exports, module) {
      * @param fileName
      */
     function updatePanelTitleAndStatusBar(numProblems, providersReportingProblems, aborted, fileName) {
+        $fixAllBtn.addClass("forced-hidden");
         var message, tooltip;
 
         if (providersReportingProblems.length === 1) {
@@ -358,14 +361,20 @@ define(function (require, exports, module) {
             $problemsPanelTable.find("tr").removeClass("forced-hidden");
 
             if (numProblems === 1 && !aborted) {
-                message = StringUtils.format(Strings.SINGLE_ERROR, providersReportingProblems[0].name, fileName);
+                message = documentFixes.size ?
+                    StringUtils.format(Strings.SINGLE_ERROR_FIXABLE, providersReportingProblems[0].name,
+                        documentFixes.size, fileName):
+                    StringUtils.format(Strings.SINGLE_ERROR, providersReportingProblems[0].name, fileName);
             } else {
                 if (aborted) {
                     numProblems += "+";
                 }
 
-                message = StringUtils.format(Strings.MULTIPLE_ERRORS, providersReportingProblems[0].name, numProblems,
-                    fileName);
+                message = documentFixes.size ?
+                    StringUtils.format(Strings.MULTIPLE_ERRORS_FIXABLE, numProblems,
+                        providersReportingProblems[0].name, documentFixes.size, fileName):
+                    StringUtils.format(Strings.MULTIPLE_ERRORS, numProblems,
+                        providersReportingProblems[0].name, fileName);
             }
         } else if (providersReportingProblems.length > 1) {
             $problemsPanelTable.find(".inspector-section").show();
@@ -374,7 +383,10 @@ define(function (require, exports, module) {
                 numProblems += "+";
             }
 
-            message = StringUtils.format(Strings.ERRORS_PANEL_TITLE_MULTIPLE, numProblems, fileName);
+            message = documentFixes.size ?
+                StringUtils.format(Strings.ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE, numProblems,
+                    documentFixes.size, fileName):
+                StringUtils.format(Strings.ERRORS_PANEL_TITLE_MULTIPLE, numProblems, fileName);
         } else {
             return;
         }
@@ -386,6 +398,7 @@ define(function (require, exports, module) {
             tooltip = StringUtils.format(Strings.STATUSBAR_CODE_INSPECTION_TOOLTIP_WITH_FIX,
                 documentFixes.size, message);
             iconType =  "inspection-repair";
+            $fixAllBtn.removeClass("forced-hidden");
         }
 
         StatusBar.updateIndicator(INDICATOR_ID, true, iconType, tooltip);
@@ -1006,7 +1019,31 @@ define(function (require, exports, module) {
         MainViewManager.focusActivePane();
         run();
     }
-    
+
+    function _fixAllProblems() {
+        const editor = EditorManager.getCurrentFullEditor();
+        if(!editor || editor.document.lastChangeTimestamp !== lastDocumentScanTimeStamp) {
+            Dialogs.showErrorDialog(Strings.CANNOT_FIX_TITLE, Strings.CANNOT_FIX_MESSAGE);
+            return;
+        }
+        if(!documentFixes.size){
+            return;
+        }
+        const replacements = [];
+        for(let fixDetails of documentFixes.values()){
+            replacements.push({
+                from: editor.posFromIndex(fixDetails.rangeOffset.start),
+                to: editor.posFromIndex(fixDetails.rangeOffset.end),
+                text: fixDetails.replaceText
+            });
+        }
+        editor.replaceMultipleRanges(replacements, EDIT_ORIGIN_LINT_FIX);
+        const finalCursor = replacements[replacements.length - 1].from;
+        editor.setCursorPos(finalCursor.line, finalCursor.ch);
+        MainViewManager.focusActivePane();
+        run();
+    }
+
     // Initialize items dependent on HTML DOM
     AppInit.htmlReady(function () {
         Editor.registerGutter(CODE_INSPECTION_GUTTER, CODE_INSPECTION_GUTTER_PRIORITY);
@@ -1014,6 +1051,8 @@ define(function (require, exports, module) {
         var panelHtml = Mustache.render(PanelTemplate, Strings);
         problemsPanel = WorkspaceManager.createBottomPanel("errors", $(panelHtml), 100);
         $problemsPanel = $("#problems-panel");
+        $fixAllBtn = $problemsPanel.find(".problems-fix-all-btn");
+        $fixAllBtn.click(_fixAllProblems);
 
         function checkSelectionInsideElement(range, element) {
             if(!range || range.endOffset === range.startOffset) {

@@ -1475,6 +1475,18 @@ define(function (require, exports, module) {
     };
 
     /**
+     * Replaces the content of multiple selections with the strings in the array. The length of the given
+     * array should be the same as the number of active selections.
+     * @param {Array<string>} replacement the text array to replace the current selections with
+     * @param {string} [select] The optional select argument can be used to change selection. Passing "around"
+     * will cause the new text to be selected, passing "start" will collapse the selection to the start
+     * of the inserted text.
+     */
+    Editor.prototype.replaceSelections = function (replacement, select) {
+        this._codeMirror.replaceSelections(replacement, select);
+    };
+
+    /**
      * Replace the part of the document between from and to with the given string.
      * @param {string} replacement the text to replace the current selection
      * @param {{line:number, ch:number}} from the strat position to replace
@@ -1486,6 +1498,40 @@ define(function (require, exports, module) {
      */
     Editor.prototype.replaceRange = function (replacement, from, to, origin) {
         this._codeMirror.replaceRange(replacement, from, to, origin);
+    };
+
+
+    /**
+     * Replaces multiple ranges in the editor with the specified texts.
+     *
+     * @method
+     * @param {Array} ranges - An array of range objects, each containing `from`, `to`, and `text` properties.
+     * @param {Object} ranges[].from - The start position of the range to be replaced. It should have `line` and `ch` properties.
+     * @param {Object} ranges[].to - The end position of the range to be replaced. It should have `line` and `ch` properties.
+     * @param {string} ranges[].text - The text to replace the specified range.
+     * @param {string} [origin] - An optional origin identifier to be associated with the changes.
+     * @example
+     * editor.replaceMultipleRanges([
+     *   { from: { line: 0, ch: 0 }, to: { line: 0, ch: 5 }, text: 'Hello' },
+     *   { from: { line: 1, ch: 0 }, to: { line: 1, ch: 4 }, text: 'World' }
+     * ], 'exampleOrigin');
+     */
+    Editor.prototype.replaceMultipleRanges = function (ranges, origin) {
+        // Sort ranges in descending order by start position so that they dont step over each other
+        let self = this;
+        self.operation(()=>{
+            ranges.sort((a, b) => {
+                if (a.from.line === b.from.line) {
+                    return b.from.ch - a.from.ch;
+                }
+                return b.from.line - a.from.line;
+            });
+
+            // Replace each range with its corresponding replacement text
+            ranges.forEach(range => {
+                self.replaceRange(range.text, range.from, range.to, origin);
+            });
+        });
     };
 
     /**
