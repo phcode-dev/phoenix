@@ -2885,7 +2885,7 @@ textarea.exclusions-editor {
     cursor: default;
     width: 13px;
 
-    &.inspection-errors {
+    &.inspection-errors, &.inspection-repair {
         cursor: pointer;
     }
 }
@@ -2898,11 +2898,15 @@ textarea.exclusions-editor {
     background: url(images/topcoat-warning-15.svg) 9px 5px no-repeat;
 }
 
-.inspection-errors:hover {
+.inspection-repair {
+    background: url(images/topcoat-repair-15.svg) 9px 5px no-repeat;
+}
+
+.inspection-errors:hover, .inspection-repair:hover {
     background-color: rgba(0, 0, 0, 0.03);
 }
 
-.inspection-errors:active {
+.inspection-errors:active, .inspection-repair:active {
     background-color: rgba(0, 0, 0, 0.05);
 }
 

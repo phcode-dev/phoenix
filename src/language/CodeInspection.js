@@ -381,7 +381,14 @@ define(function (require, exports, module) {
 
         $problemsPanel.find(".title").text(message);
         tooltip = StringUtils.format(Strings.STATUSBAR_CODE_INSPECTION_TOOLTIP, message);
-        StatusBar.updateIndicator(INDICATOR_ID, true, "inspection-errors", tooltip);
+        let iconType = "inspection-errors";
+        if(documentFixes.size){
+            tooltip = StringUtils.format(Strings.STATUSBAR_CODE_INSPECTION_TOOLTIP_WITH_FIX,
+                documentFixes.size, message);
+            iconType =  "inspection-repair";
+        }
+
+        StatusBar.updateIndicator(INDICATOR_ID, true, iconType, tooltip);
     }
 
     function _getMarkOptions(error){
@@ -503,6 +510,8 @@ define(function (require, exports, module) {
             let codeInspectionMarks = editor.findMarksAt(pos, CODE_MARK_TYPE_INSPECTOR) || [];
             let $hoverMessage = $(`<div class="code-inspection-item"></div>`);
             let $problemView, quickViewPresent;
+            let startPos = {line: pos.line, ch: token.start},
+                endPos = {line: pos.line, ch: token.end};
             for(let mark of codeInspectionMarks){
                 quickViewPresent = true;
                 const fixID = `${mark.metadata}`;
@@ -525,11 +534,24 @@ define(function (require, exports, module) {
                     toggleCollapsed(false);
                     _scrollToTableLine(pos.line);
                 });
+                const markPos = mark.find();
+                if(markPos.from && markPos.from.line < startPos.line){
+                    startPos.line = markPos.from.line;
+                }
+                if(markPos.from && markPos.from.ch < startPos.ch){
+                    startPos.ch = markPos.from.ch;
+                }
+                if(markPos.to && markPos.to.line > endPos.line){
+                    endPos.line = markPos.to.line;
+                }
+                if(markPos.to && markPos.to.ch > endPos.ch){
+                    endPos.ch = markPos.to.ch;
+                }
             }
             if(quickViewPresent){
                 resolve({
-                    start: {line: pos.line, ch: token.start}, // tod this should not be of the token
-                    end: {line: pos.line, ch: token.end},
+                    start: startPos,
+                    end: endPos,
                     content: $hoverMessage
                 });
                 return;
