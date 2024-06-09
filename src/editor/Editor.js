@@ -1313,10 +1313,24 @@ define(function (require, exports, module) {
      * @param {string} [markType] - Optional, if given will only delete marks of that type. Else delete everything.
      */
     Editor.prototype.clearAllMarks = function (markType) {
-        let marks = this.getAllMarks(markType);
-        for(let mark of marks){
-            mark.clear();
-        }
+        const self = this;
+        self._codeMirror.operation(function () {
+            let marks = self.getAllMarks(markType);
+            for(let mark of marks){
+                mark.clear();
+            }
+        });
+    };
+
+    /**
+     * Checks if two positions in the editor are the same.
+     *
+     * @param {{line: number, ch: number}} position1 - cursor position
+     * @param {{line: number, ch: number}} position2 - cursor position
+     * @returns {boolean} True if both positions are the same, false otherwise.
+     */
+    Editor.prototype.isSamePosition = function (position1, position2){
+        return position1.line === position2.line && position1.ch === position2.ch;
     };
 
     /**
