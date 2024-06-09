@@ -396,6 +396,7 @@ define({
     "STATUSBAR_INSOVR_TOOLTIP": "Click to toggle cursor between Insert (INS) and Overwrite (OVR) modes",
     "STATUSBAR_LANG_TOOLTIP": "Click to change file type",
     "STATUSBAR_CODE_INSPECTION_TOOLTIP": "{0}. Click to toggle report panel.",
+    "STATUSBAR_CODE_INSPECTION_TOOLTIP_WITH_FIX": "{0} Problem fixable. {1}. Click to toggle report panel.",
     "STATUSBAR_DEFAULT_LANG": "(default)",
     "STATUSBAR_SET_DEFAULT_LANG": "Set as Default for .{0} Files",
     "STATUSBAR_ENCODING_TOOLTIP": "Select the encoding",
