@@ -1137,19 +1137,44 @@ define(function (require, exports, module) {
         return this._codeMirror.operation(execFn);
     };
 
-    const MARK_OPTION_UNDERLINE_ERROR = {
+    function getMarkOptionUnderlineError() {
+        return {
             className: "editor-text-fragment-error"
-        }, MARK_OPTION_UNDERLINE_WARN = {
+        };
+    }
+
+    function getMarkOptionUnderlineWarn() {
+        return {
             className: "editor-text-fragment-warn"
-        }, MARK_OPTION_UNDERLINE_INFO = {
+        };
+    }
+
+    function getMarkOptionUnderlineInfo() {
+        return {
             className: "editor-text-fragment-info"
-        }, MARK_OPTION_UNDERLINE_SPELLCHECK = {
+        };
+    }
+
+    function getMarkOptionUnderlineSpellcheck() {
+        return {
             className: "editor-text-fragment-spell-error"
-        }, MARK_OPTION_HYPERLINK_TEXT = {
+        };
+    }
+
+    function getMarkOptionHyperlinkText() {
+        return {
             className: "editor-text-fragment-hover"
-        }, MARK_OPTION_MATCHING_REFS = {
+        };
+    }
+
+    function getMarkOptionMatchingRefs() {
+        return {
             className: "editor-text-fragment-matching-refs"
-        }, MARK_OPTION_RENAME_OUTLINE ={
+        };
+    }
+
+    function getMarkOptionRenameOutline() {
+        return {
             className: "editor-text-rename-outline",
             startStyle: "editor-text-rename-outline-left",
             endStyle: "editor-text-rename-outline-right",
@@ -1157,6 +1182,18 @@ define(function (require, exports, module) {
             inclusiveLeft: true,
             inclusiveRight: true
         };
+    }
+
+    /**
+     * Mark options to use with API with Editor.markText or Editor.markToken.
+     */
+    Editor.getMarkOptionUnderlineError = getMarkOptionUnderlineError;
+    Editor.getMarkOptionUnderlineWarn = getMarkOptionUnderlineWarn;
+    Editor.getMarkOptionUnderlineInfo = getMarkOptionUnderlineInfo;
+    Editor.getMarkOptionUnderlineSpellcheck = getMarkOptionUnderlineSpellcheck;
+    Editor.getMarkOptionHyperlinkText = getMarkOptionHyperlinkText;
+    Editor.getMarkOptionMatchingRefs = getMarkOptionMatchingRefs;
+    Editor.getMarkOptionRenameOutline = getMarkOptionRenameOutline;
 
     /**
      * Can be used to mark a range of text with a specific CSS class name. cursorFrom and cursorTo should be {line, ch}
@@ -2590,17 +2627,6 @@ define(function (require, exports, module) {
 
     Editor.LINE_NUMBER_GUTTER_PRIORITY = LINE_NUMBER_GUTTER_PRIORITY;
     Editor.CODE_FOLDING_GUTTER_PRIORITY = CODE_FOLDING_GUTTER_PRIORITY;
-
-    /**
-     * Mark options to use with API with Editor.markText or Editor.markToken.
-     */
-    Editor.MARK_OPTION_UNDERLINE_ERROR = MARK_OPTION_UNDERLINE_ERROR;
-    Editor.MARK_OPTION_UNDERLINE_WARN = MARK_OPTION_UNDERLINE_WARN;
-    Editor.MARK_OPTION_UNDERLINE_INFO = MARK_OPTION_UNDERLINE_INFO;
-    Editor.MARK_OPTION_UNDERLINE_SPELLCHECK = MARK_OPTION_UNDERLINE_SPELLCHECK;
-    Editor.MARK_OPTION_HYPERLINK_TEXT = MARK_OPTION_HYPERLINK_TEXT;
-    Editor.MARK_OPTION_MATCHING_REFS = MARK_OPTION_MATCHING_REFS;
-    Editor.MARK_OPTION_RENAME_OUTLINE = MARK_OPTION_RENAME_OUTLINE;
 
     /**
      * Each Editor instance object dispatches the following events:

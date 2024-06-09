@@ -103,7 +103,7 @@ define(function (require, exports, module) {
             _clearHoverMarkers(editor);
             let jumpToDefProvider = _getJumpToDefProvider(editor, pos);
             if(jumpToDefProvider){
-                editor.markToken(JUMP_TO_DEF_MARKER, pos, Editor.MARK_OPTION_HYPERLINK_TEXT);
+                editor.markToken(JUMP_TO_DEF_MARKER, pos, Editor.getMarkOptionHyperlinkText());
                 editor.hoverMarksPresent = true;
             }
         }

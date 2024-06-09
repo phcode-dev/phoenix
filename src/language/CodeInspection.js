@@ -386,9 +386,9 @@ define(function (require, exports, module) {
 
     function _getMarkOptions(error){
         switch (error.type) {
-        case Type.ERROR: return Editor.MARK_OPTION_UNDERLINE_ERROR;
-        case Type.WARNING: return Editor.MARK_OPTION_UNDERLINE_WARN;
-        case Type.META: return Editor.MARK_OPTION_UNDERLINE_INFO;
+        case Type.ERROR: return Editor.getMarkOptionUnderlineError();
+        case Type.WARNING: return Editor.getMarkOptionUnderlineWarn();
+        case Type.META: return Editor.getMarkOptionUnderlineInfo();
         }
     }
 
@@ -490,18 +490,47 @@ define(function (require, exports, module) {
         _populateDummyGutterElements(editor, from, to);
     }
 
+    function _scrollToTableLine(lineNumber) {
+        const $lineElement = $problemsPanelTable.find('td.line-number[data-line="' + lineNumber + '"]');
+        if ($lineElement.length) {
+            $lineElement[0].scrollIntoView({ behavior: 'instant', block: 'start' });
+        }
+    }
+
+
     function getQuickView(editor, pos, token, line) {
         return new Promise((resolve, reject)=>{
             let codeInspectionMarks = editor.findMarksAt(pos, CODE_MARK_TYPE_INSPECTOR) || [];
-            let hoverMessage = '';
+            let $hoverMessage = $(`<div class="code-inspection-item"></div>`);
+            let $problemView, quickViewPresent;
             for(let mark of codeInspectionMarks){
-                hoverMessage = `${hoverMessage}${mark.message}<br/>`;
+                quickViewPresent = true;
+                const fixID = `${mark.metadata}`;
+                if(documentFixes.get(fixID)){
+                    $problemView = $(`<div>
+                        <button class="btn btn-mini primary fix-problem-btn" style="margin-right: 5px;">Fix</button>
+                        ${mark.message}<br/>
+                    </div>`);
+                    $problemView.find(".fix-problem-btn").click(()=>{
+                        _scrollToTableLine(pos.line);
+                        _fixProblem(fixID);
+                    });
+                    $hoverMessage.append($problemView);
+                } else {
+                    $problemView = $(`<div>${mark.message}<br/></div>`);
+                    $hoverMessage.append($problemView);
+                }
+                // eslint-disable-next-line no-loop-func
+                $problemView.click(function () {
+                    toggleCollapsed(false);
+                    _scrollToTableLine(pos.line);
+                });
             }
-            if(hoverMessage){
+            if(quickViewPresent){
                 resolve({
-                    start: {line: pos.line, ch: token.start},
+                    start: {line: pos.line, ch: token.start}, // tod this should not be of the token
                     end: {line: pos.line, ch: token.end},
-                    content: `<div class="code-inspection-item">${hoverMessage}</div>`
+                    content: $hoverMessage
                 });
                 return;
             }
@@ -941,6 +970,21 @@ define(function (require, exports, module) {
         description: Strings.DESCRIPTION_USE_PREFERED_ONLY
     });
 
+    function _fixProblem(fixID) {
+        const fixDetails = documentFixes.get(fixID);
+        const editor = EditorManager.getCurrentFullEditor();
+        if(!editor || !fixDetails || editor.document.lastChangeTimestamp !== lastDocumentScanTimeStamp) {
+            Dialogs.showErrorDialog(Strings.CANNOT_FIX_TITLE, Strings.CANNOT_FIX_MESSAGE);
+        } else {
+            const from = editor.posFromIndex(fixDetails.rangeOffset.start),
+                to =  editor.posFromIndex(fixDetails.rangeOffset.end);
+            editor.setSelection(from, to, true, Editor.BOUNDARY_BULLSEYE, EDIT_ORIGIN_LINT_FIX);
+            editor.replaceSelection(fixDetails.replaceText, "around");
+        }
+        MainViewManager.focusActivePane();
+        run();
+    }
+    
     // Initialize items dependent on HTML DOM
     AppInit.htmlReady(function () {
         Editor.registerGutter(CODE_INSPECTION_GUTTER, CODE_INSPECTION_GUTTER_PRIORITY);
@@ -974,21 +1018,9 @@ define(function (require, exports, module) {
                 }
                 if ($(e.target).hasClass('ph-fix-problem')) {
                     // Retrieve the message from the data attribute of the clicked element
-                    const fixid = "" + $(e.target).data("fixid");
-                    const fixDetails = documentFixes.get(fixid);
-                    const editor = EditorManager.getCurrentFullEditor();
-                    if(!editor || !fixDetails || editor.document.lastChangeTimestamp !== lastDocumentScanTimeStamp) {
-                        Dialogs.showErrorDialog(Strings.CANNOT_FIX_TITLE, Strings.CANNOT_FIX_MESSAGE);
-                    } else {
-                        const from = editor.posFromIndex(fixDetails.rangeOffset.start),
-                            to =  editor.posFromIndex(fixDetails.rangeOffset.end);
-                        editor.setSelection(from, to, true, Editor.BOUNDARY_BULLSEYE, EDIT_ORIGIN_LINT_FIX);
-                        editor.replaceSelection(fixDetails.replaceText, "around");
-                    }
+                    _fixProblem("" + $(e.target).data("fixid"));
                     e.preventDefault();
                     e.stopPropagation();
-                    MainViewManager.focusActivePane();
-                    run();
                     return;
                 }
 
