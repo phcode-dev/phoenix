@@ -154,7 +154,7 @@ define(function (require, exports, module) {
             let selections = currentEditor.getSelections();
             if(selections.length > 1 ){
                 let primary = currentEditor.getSelection();
-                currentEditor.markText(MARK_TYPE_RENAME, primary.start, primary.end, Editor.MARK_OPTION_RENAME_OUTLINE);
+                currentEditor.markText(MARK_TYPE_RENAME, primary.start, primary.end, Editor.getMarkOptionRenameOutline());
                 currentEditor.off(Editor.EVENT_BEFORE_SELECTION_CHANGE + ".renameVar");
                 currentEditor.off(Editor.EVENT_CURSOR_ACTIVITY + ".renameVar");
                 currentEditor.off(Editor.EVENT_KEY_DOWN + ".renameVar");

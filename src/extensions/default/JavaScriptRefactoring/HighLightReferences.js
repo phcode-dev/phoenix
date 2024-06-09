@@ -75,7 +75,7 @@ define(function (require, exports, module) {
         editor.operation(function () {
             for(let ref of refsResp.references.refs){
                 if(editor.document.file.fullPath.endsWith(ref.file)){
-                    editor.markText(HIGHLIGHT_REFS_MARKER, ref.start, ref.end, Editor.MARK_OPTION_MATCHING_REFS);
+                    editor.markText(HIGHLIGHT_REFS_MARKER, ref.start, ref.end, Editor.getMarkOptionMatchingRefs());
                 }
             }
         });
