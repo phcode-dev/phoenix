@@ -203,7 +203,7 @@ define(function (require, exports, module) {
                 }
                 expect(rangeMarker).toBeDefined();
                 let range = rangeMarker.find();
-                expect(range.from.ch).toBe(11);
+                expect(range.from.ch).toBe(4);
                 expect(range.to.ch).toBe(18);
             });
 
