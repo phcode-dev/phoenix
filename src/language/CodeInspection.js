@@ -395,8 +395,6 @@ define(function (require, exports, module) {
         tooltip = StringUtils.format(Strings.STATUSBAR_CODE_INSPECTION_TOOLTIP, message);
         let iconType = "inspection-errors";
         if(documentFixes.size){
-            tooltip = StringUtils.format(Strings.STATUSBAR_CODE_INSPECTION_TOOLTIP_WITH_FIX,
-                documentFixes.size, message);
             iconType =  "inspection-repair";
             $fixAllBtn.removeClass("forced-hidden");
         }
