@@ -558,7 +558,7 @@ define(function (require, exports, module) {
                             markOptions.metadata = fixID;
                             error.fix.id = fixID;
                         }
-                        if(error.endPos){
+                        if(error.endPos && !editor.isSamePosition(error.pos, error.endPos)) {
                             mark = editor.markText(CODE_MARK_TYPE_INSPECTOR, error.pos, error.endPos, markOptions);
                         } else {
                             mark = editor.markToken(CODE_MARK_TYPE_INSPECTOR, error.pos, markOptions);
