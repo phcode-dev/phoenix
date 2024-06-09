@@ -412,8 +412,11 @@ define({
     // CodeInspection: errors/warnings
     "ERRORS_NO_FILE": "No File Open",
     "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Problems - {1}",
+    "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} Problems, {1} Fixable - {2}",
     "SINGLE_ERROR": "1 {0} Problem - {1}",
-    "MULTIPLE_ERRORS": "{1} {0} Problems - {2}",
+    "SINGLE_ERROR_FIXABLE": "1 {0} Problem, {1} Fixable - {2}",
+    "MULTIPLE_ERRORS": "{0} {1} Problems - {2}",
+    "MULTIPLE_ERRORS_FIXABLE": "{0} {1} Problems, {2} Fixable - {3}",
     "NO_ERRORS": "No {0} problems found - good job!",
     "NO_ERRORS_MULTIPLE_PROVIDER": "No problems found - good job!",
     "LINT_DISABLED": "Linting is disabled",
