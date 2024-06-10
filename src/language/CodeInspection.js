@@ -1157,6 +1157,14 @@ define(function (require, exports, module) {
         }, ["all"]);
     });
 
+    AppInit.appReady(function () {
+        // on boot the linter is not somehow showing the lint editor underlines at first time. So we trigger a run
+        // after 2 seconds
+        if(!Phoenix.isTestWindow) {
+            setTimeout(run, 2000);
+        }
+    });
+
     // Testing
     exports._unregisterAll          = _unregisterAll;
     exports._PREF_ASYNC_TIMEOUT     = PREF_ASYNC_TIMEOUT;
