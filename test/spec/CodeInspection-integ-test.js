@@ -805,7 +805,7 @@ define(function (require, exports, module) {
 
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles(["errors.js"]), "open test file", 5000);
 
-                var $inspectorSections = $(".inspector-section td");
+                var $inspectorSections = $(".inspector-section");
                 expect($inspectorSections.length).toEqual(2);
                 expect($inspectorSections[0].innerHTML.lastIndexOf("javascript linter 1 (1)")).not.toBe(-1);
                 expect($inspectorSections[1].innerHTML.lastIndexOf("javascript linter 2 (1)")).not.toBe(-1);
@@ -842,7 +842,7 @@ define(function (require, exports, module) {
 
                 expect($("#problems-panel").is(":visible")).toBe(true);
 
-                var $inspectorSections = $(".inspector-section td");
+                var $inspectorSections = $(".inspector-section");
                 expect($inspectorSections.length).toEqual(2);
                 expect($inspectorSections[0].innerHTML.indexOf("javascript linter 1 (1)")).not.toBe(-1);
                 expect($inspectorSections[1].innerHTML.indexOf("javascript linter 4 (1)")).not.toBe(-1);
@@ -875,13 +875,13 @@ define(function (require, exports, module) {
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles(["errors.js"]), "open test file");
 
                 var $problemPanelTitle = $("#problems-panel .title").text();
-                expect($problemPanelTitle).toBe(StringUtils.format(Strings.SINGLE_ERROR, "JavaScript Linter"));
+                expect($problemPanelTitle).toBe(StringUtils.format(Strings.SINGLE_ERROR, "JavaScript Linter", "errors.js"));
 
                 var $statusBar = $("#status-inspection");
                 expect($statusBar.is(":visible")).toBe(true);
 
                 var tooltip = $statusBar.attr("title");
-                var expectedTooltip = buildTooltip(StringUtils.format(Strings.SINGLE_ERROR, "JavaScript Linter"), 1);
+                var expectedTooltip = buildTooltip(StringUtils.format(Strings.SINGLE_ERROR, "JavaScript Linter", "errors.js"), 1);
                 expect(tooltip).toBe(expectedTooltip);
             });
 
@@ -907,13 +907,13 @@ define(function (require, exports, module) {
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles(["errors.js"]), "open test file");
 
                 var $problemPanelTitle = $("#problems-panel .title").text();
-                expect($problemPanelTitle).toBe(StringUtils.format(Strings.MULTIPLE_ERRORS, "JavaScript Linter", 2));
+                expect($problemPanelTitle).toBe(StringUtils.format(Strings.MULTIPLE_ERRORS, 2, "JavaScript Linter", "errors.js"));
 
                 var $statusBar = $("#status-inspection");
                 expect($statusBar.is(":visible")).toBe(true);
 
                 var tooltip = $statusBar.attr("title");
-                var expectedTooltip = buildTooltip(StringUtils.format(Strings.MULTIPLE_ERRORS, "JavaScript Linter", 2), 2);
+                var expectedTooltip = buildTooltip(StringUtils.format(Strings.MULTIPLE_ERRORS, 2, "JavaScript Linter", "errors.js"), 2);
                 expect(tooltip).toBe(expectedTooltip);
             });
 
@@ -928,14 +928,14 @@ define(function (require, exports, module) {
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles(["errors.js"]), "open test file");
 
                 var $problemPanelTitle = $("#problems-panel .title").text();
-                expect($problemPanelTitle).toBe(StringUtils.format(Strings.ERRORS_PANEL_TITLE_MULTIPLE, 2));
+                expect($problemPanelTitle).toBe(StringUtils.format(Strings.ERRORS_PANEL_TITLE_MULTIPLE, 2, "errors.js"));
 
                 var $statusBar = $("#status-inspection");
                 expect($statusBar.is(":visible")).toBe(true);
 
                 var tooltip = $statusBar.attr("title");
                 // tooltip will contain + in the title if the inspection was aborted
-                var expectedTooltip = buildTooltip(StringUtils.format(Strings.ERRORS_PANEL_TITLE_MULTIPLE, 2), 2);
+                var expectedTooltip = buildTooltip(StringUtils.format(Strings.ERRORS_PANEL_TITLE_MULTIPLE, 2, "errors.js"), 2);
                 expect(tooltip).toBe(expectedTooltip);
             });
 
@@ -1035,13 +1035,13 @@ define(function (require, exports, module) {
 
                 await awaits(100);
                 var $problemPanelTitle = $("#problems-panel .title").text();
-                expect($problemPanelTitle).toBe(StringUtils.format(Strings.ERRORS_PANEL_TITLE_MULTIPLE, 2));
+                expect($problemPanelTitle).toBe(StringUtils.format(Strings.ERRORS_PANEL_TITLE_MULTIPLE, 2, "errors.js"));
 
                 var $statusBar = $("#status-inspection");
                 expect($statusBar.is(":visible")).toBe(true);
 
                 var tooltip = $statusBar.attr("title");
-                var expectedTooltip = buildTooltip(StringUtils.format(Strings.ERRORS_PANEL_TITLE_MULTIPLE, 2), 2);
+                var expectedTooltip = buildTooltip(StringUtils.format(Strings.ERRORS_PANEL_TITLE_MULTIPLE, 2, "errors.js"), 2);
                 expect(tooltip).toBe(expectedTooltip);
             });
 
@@ -1071,7 +1071,7 @@ define(function (require, exports, module) {
                 expect($problemsPanel.is(":visible")).toBe(true);
 
                 var $problemsPanelTitle = $("#problems-panel .title").text();
-                expect($problemsPanelTitle).toBe(StringUtils.format(Strings.SINGLE_ERROR, "SlowAsyncLinter"));
+                expect($problemsPanelTitle).toBe(StringUtils.format(Strings.SINGLE_ERROR, "SlowAsyncLinter", "errors.js"));
 
                 var $problemsReported = $("#problems-panel .bottom-panel-table .line-text");
                 expect($problemsReported.length).toBe(1);
@@ -1101,7 +1101,7 @@ define(function (require, exports, module) {
                 expect($problemsPanel.is(":visible")).toBe(true);
 
                 var $problemsPanelTitle = $("#problems-panel .title").text();
-                expect($problemsPanelTitle).toBe(StringUtils.format(Strings.SINGLE_ERROR, providerName));
+                expect($problemsPanelTitle).toBe(StringUtils.format(Strings.SINGLE_ERROR, providerName, "errors.js"));
 
                 var $problemsReported = $("#problems-panel .bottom-panel-table .line-text");
                 expect($problemsReported.length).toBe(1);
@@ -1127,7 +1127,7 @@ define(function (require, exports, module) {
                 expect($problemsPanel.is(":visible")).toBe(true);
 
                 var $problemsPanelTitle = $("#problems-panel .title").text();
-                expect($problemsPanelTitle).toBe(StringUtils.format(Strings.SINGLE_ERROR, providerName));
+                expect($problemsPanelTitle).toBe(StringUtils.format(Strings.SINGLE_ERROR, providerName, "errors.js"));
 
                 var $problemsReported = $("#problems-panel .bottom-panel-table .line-text");
                 expect($problemsReported.length).toBe(1);
