@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, beforeAll, afterAll, awaitsForDone, awaits, awaitsFor, path, jsPromise */
+/*global describe, it, expect, beforeAll, afterAll, beforeEach, awaitsForDone, awaits, awaitsFor, path, jsPromise */
 
 define(function (require, exports, module) {
 
@@ -33,6 +33,9 @@ define(function (require, exports, module) {
             testWindow,
             $,
             CodeInspection,
+            CommandManager,
+            Commands,
+            EditorManager,
             NodeUtils,
             FileSystem;
 
@@ -42,7 +45,10 @@ define(function (require, exports, module) {
             $ = testWindow.$;
             CodeInspection = testWindow.brackets.test.CodeInspection;
             NodeUtils = testWindow.brackets.test.NodeUtils;
+            EditorManager = testWindow.brackets.test.EditorManager;
             FileSystem = testWindow.brackets.test.FileSystem;
+            CommandManager = testWindow.brackets.test.CommandManager;
+            Commands = testWindow.brackets.test.Commands;
             CodeInspection.toggleEnabled(true);
             await awaitsFor(()=>testWindow._JsHintExtensionReadyToIntegTest,
                 "JsHint extension to be loaded", 10000);
@@ -54,6 +60,9 @@ define(function (require, exports, module) {
             NodeUtils     = null;
             CodeInspection  = null;
             FileSystem = null;
+            EditorManager = null;
+            CommandManager = null;
+            Commands = null;
             await SpecRunnerUtils.closeTestWindow();
         }, 30000);
 
@@ -308,6 +317,90 @@ define(function (require, exports, module) {
                         "Expected '===' and instead saw '=='. ESLint (eqeqeq)"
                     );
                 }, "eslint new eq rule added to be honored in lint");
+            }, 5000);
+        });
+
+        describe("ESLint v9 with fixes project", function () {
+            let esLatestProjectPath, originalErrorFile;
+
+            beforeAll(async function () {
+                esLatestProjectPath = await _createTempProject("es9_with_fixes");
+                await _npmInstallInFolder(esLatestProjectPath);
+                await SpecRunnerUtils.loadProjectInTestWindow(esLatestProjectPath);
+                await _openProjectFile("error.js");
+                const editor = EditorManager.getCurrentFullEditor();
+                originalErrorFile = editor.document.getText();
+            }, 30000);
+
+            beforeEach(async function () {
+                await jsPromise(SpecRunnerUtils.createTextFile(path.join(esLatestProjectPath, "error.js"),
+                    originalErrorFile, FileSystem));
+                await testWindow.closeAllFiles();
+            });
+
+            async function _openAndVerifyInitial() {
+                await _openProjectFile("error.js");
+                await _waitForProblemsPanelVisible(true);
+                await awaitsFor(()=>{
+                    return $("#problems-panel").find(".ph-fix-problem").length === 2;
+                }, "There should be 2 fix problem button in the panel");
+            }
+
+            async function _triggerLint() {
+                await _openProjectFile("package.json");
+                await _openProjectFile("error.js");
+            }
+
+            it("should ESLint v9 show fix buttons", async function () {
+                await _openAndVerifyInitial();
+            }, 5000);
+
+            it("should be able to fix 1 error", async function () {
+                await _openAndVerifyInitial();
+                // click on fix : Expected indentation of 4 spaces but found 9. ESLint (indent)
+                $($("#problems-panel").find(".ph-fix-problem")[0]).click();
+                await awaitsFor(()=>{
+                    return $("#problems-panel").find(".ph-fix-problem").length === 1;
+                }, "only 1 problem should remain");
+
+                // it should select the edited text
+                const editor = EditorManager.getCurrentFullEditor();
+                expect(editor.getSelectedText()).toBe("    ");
+                const selection = editor.getSelection();
+                expect(selection.start).toEql({line: 3, ch: 0, sticky: null});
+                expect(selection.end).toEql({line: 3, ch: 4, sticky: null});
+
+                // undo should work
+                await awaitsForDone(CommandManager.execute(Commands.EDIT_UNDO), "undo");
+                expect(editor.getSelectedText()).toBe("        ");
+                await _triggerLint();
+                await awaitsFor(()=>{
+                    return $("#problems-panel").find(".ph-fix-problem").length === 2;
+                }, "2 problem should be there");
+            }, 5000);
+
+            it("should be able to fix all errors", async function () {
+                await _openAndVerifyInitial();
+                const editor = EditorManager.getCurrentFullEditor();
+                editor.setCursorPos(0, 0); // resent any saved selections from previous run
+                // click on fix : Expected indentation of 4 spaces but found 9. ESLint (indent)
+                $($("#problems-panel").find(".problems-fix-all-btn")).click();
+                await awaitsFor(()=>{
+                    return $("#problems-panel").find(".ph-fix-problem").length === 0;
+                }, "no problems should remain as all is now fixed");
+
+                // fixing multiple should place the cursor on first fix
+                expect(editor.hasSelection()).toBeFalse();
+                expect(editor.getCursorPos()).toEql({line: 3, ch: 0, sticky: null});
+
+                await awaitsForDone(CommandManager.execute(Commands.EDIT_UNDO), "undo");
+                expect(editor.hasSelection()).toBeFalse();
+                expect(editor.getSelections().length).toBe(1); // no multi cursor on undo
+
+                await _triggerLint();
+                await awaitsFor(()=>{
+                    return $("#problems-panel").find(".ph-fix-problem").length === 2;
+                }, "2 problem should be there");
             }, 5000);
         });
     });
