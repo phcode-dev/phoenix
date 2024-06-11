@@ -220,7 +220,7 @@ define(function (require, exports, module) {
             await _openProjectFile(fileName);
         }
 
-        it("should fix by clicking fix button in quick view", async function () {
+        it("should fix by clicking fix button in quick view and undo", async function () {
             await _openProjectFile("testFix.vbs");
 
             expect($("#problems-panel").is(":visible")).toBeTrue();
@@ -241,7 +241,30 @@ define(function (require, exports, module) {
             expect($("#problems-panel .ph-fix-problem").length).toBe(5); // 5 fix buttons should be there
         });
 
-        // todo fix all, fix all undo,
+        it("should fix all by clicking fix all button and undo", async function () {
+            await _openProjectFile("testFix.vbs");
+            const editor = EditorManager.getActiveEditor();
+            editor.setCursorPos(1, 1);
+
+            expect($("#problems-panel").is(":visible")).toBeTrue();
+            expect($("#problems-panel .ph-fix-problem").length).toBe(5); // 5 fix buttons should be there
+
+            // fix all
+            $($("#problems-panel").find(".problems-fix-all-btn")).click();
+            expect($("#problems-panel .ph-fix-problem").length).toBe(0); // 0 fix button as all fixed
+
+            // fixing multiple should place the cursor on first fix
+            expect(editor.hasSelection()).toBeFalse();
+            expect(editor.getCursorPos()).toEql({line: 10, ch: 12, sticky: null});
+
+            await awaitsForDone(CommandManager.execute(Commands.EDIT_UNDO), "undo");
+            expect(editor.hasSelection()).toBeFalse();
+            expect(editor.getSelections().length).toBe(1); // no multi cursor on undo
+
+            await _triggerLint("testFix.vbs");
+            expect($("#problems-panel .ph-fix-problem").length).toBe(5); // 5 fix buttons should be there
+        });
+
         // todo invalid fixes test, doc changed after fix dialog
 
     });
