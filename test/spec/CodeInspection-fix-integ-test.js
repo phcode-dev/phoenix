@@ -287,6 +287,41 @@ define(function (require, exports, module) {
             expect($("#problems-panel .ph-fix-problem").length).toBe(5); // 5 fix buttons should be there
         });
 
+        async function _validateCannotFix(fixAll) {
+            await _openProjectFile("testFix.vbs");
+            const editor = EditorManager.getActiveEditor();
+            editor.setCursorPos(1, 1);
+
+            expect($("#problems-panel").is(":visible")).toBeTrue();
+            expect($("#problems-panel .ph-fix-problem").length).toBe(5); // 5 fix buttons should be there
+
+            // now change doc to invalidate all fixes
+            editor.replaceRange("hello", {line:0, ch: 0}, {line:1, ch: 0});
+
+            // fix error should raise an error dialog
+            if(fixAll){
+                $($("#problems-panel").find(".problems-fix-all-btn")).click();
+            } else {
+                $($("#problems-panel").find(".ph-fix-problem")[0]).click();
+            }
+
+            // fixing multiple should place the cursor on first fix
+            await SpecRunnerUtils.waitForModalDialog();
+            const dialogText = $(".error-dialog").text();
+            expect(dialogText.includes(Strings.CANNOT_FIX_TITLE)).toBeTrue();
+            expect(dialogText.includes(Strings.CANNOT_FIX_MESSAGE)).toBeTrue();
+
+            await SpecRunnerUtils.clickDialogButton();
+        }
+
+        it("should not be able to fix 1 error if document changed in between lint", async function () {
+            await _validateCannotFix();
+        });
+
+        it("should not be able to fix all error if document changed in between lint", async function () {
+            await _validateCannotFix(true);
+        });
+
         // todo invalid fixes test, doc changed after fix dialog
 
     });
