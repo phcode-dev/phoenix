@@ -50,6 +50,8 @@ define(function (require, exports, module) {
             };
         }
 
+        let invalidFix;
+
         function scanFile(text, fullPath) {
             const currentEditor = EditorManager.getActiveEditor();
             if(currentEditor.document.file.fullPath !== fullPath) {
@@ -72,7 +74,7 @@ define(function (require, exports, module) {
 
                     if (line.includes('this line a fixable error')) {
                         const wordPosition = findWordPosition(line, 'fixable');
-                        error.fix = {
+                        error.fix = invalidFix ? invalidFix : {
                             replaceText: "no",
                             rangeOffset: {
                                 start: currentEditor.indexFromPos({line: lineNumber, ch: wordPosition.start}),
@@ -88,11 +90,10 @@ define(function (require, exports, module) {
             return {errors};
         }
 
-        let linterCount = 0;
+        let linterName = "vbscript mock linter";
         function createVBScriptInspector() {
-            linterCount++;
             const provider = {
-                name: "vbscript mock linter" + linterCount,
+                name: linterName,
                 scanFile
             };
 
@@ -120,6 +121,7 @@ define(function (require, exports, module) {
 
         afterEach(async function () {
             await testWindow.closeAllFiles();
+            invalidFix = null;
         });
 
         afterAll(async function () {
@@ -287,7 +289,7 @@ define(function (require, exports, module) {
             expect($("#problems-panel .ph-fix-problem").length).toBe(5); // 5 fix buttons should be there
         });
 
-        async function _validateCannotFix(fixAll) {
+        async function _validateCannotFix(fixAll, message=Strings.CANNOT_FIX_MESSAGE) {
             await _openProjectFile("testFix.vbs");
             const editor = EditorManager.getActiveEditor();
             editor.setCursorPos(1, 1);
@@ -309,7 +311,7 @@ define(function (require, exports, module) {
             await SpecRunnerUtils.waitForModalDialog();
             const dialogText = $(".error-dialog").text();
             expect(dialogText.includes(Strings.CANNOT_FIX_TITLE)).toBeTrue();
-            expect(dialogText.includes(Strings.CANNOT_FIX_MESSAGE)).toBeTrue();
+            expect(dialogText.includes(message)).toBeTrue();
 
             await SpecRunnerUtils.clickDialogButton();
         }
@@ -322,7 +324,53 @@ define(function (require, exports, module) {
             await _validateCannotFix(true);
         });
 
-        // todo invalid fixes test, doc changed after fix dialog
+        async function _validateNoFixableErrors() {
+            await _openProjectFile("testFix.vbs");
+            const editor = EditorManager.getActiveEditor();
+            editor.setCursorPos(1, 1);
 
+            expect($("#problems-panel").is(":visible")).toBeTrue();
+            expect($("#problems-panel .ph-fix-problem").length).toBe(0); // 5 fix buttons should be there
+        }
+
+        it("should not be able to fix if invalid fix supplied", async function () {
+            invalidFix = {
+                replaceText: "no",
+                rangeOffset: {
+                    start: -1,
+                    end: -1
+                }
+            };
+            await _validateNoFixableErrors();
+        });
+
+        it("should not be able to fix if invalid fix supplied 2", async function () {
+            invalidFix = {
+                replaceText: "no",
+                rangeOffset: {
+                    end: 999999
+                }
+            };
+            await _validateNoFixableErrors();
+        });
+
+        it("should not be able to fix if invalid fix supplied 3", async function () {
+            invalidFix = {
+                replaceText: "no",
+                rangeOffset: {}
+            };
+            await _validateNoFixableErrors();
+        });
+
+        it("should not be able to fix if invalid fix supplied 4", async function () {
+            invalidFix = {
+                replaceText: {}, // only text can be provided here
+                rangeOffset: { // range valid but not text
+                    start: 2,
+                    end: 5
+                }
+            };
+            await _validateNoFixableErrors();
+        });
     });
 });
