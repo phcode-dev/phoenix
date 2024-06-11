@@ -575,7 +575,7 @@ define(function (require, exports, module) {
 
     let fixIDCounter = 1;
     let documentFixes = new Map(), lastDocumentScanTimeStamp;
-    function _registerNewFix(editor, fix, providerName) {
+    function _registerNewFix(editor, fix, providerName, maxOffset) {
         if(!editor || !fix || !fix.rangeOffset) {
             return null;
         }
@@ -584,6 +584,9 @@ define(function (require, exports, module) {
             // invalidate all existing fixes in that case.
             lastDocumentScanTimeStamp = editor.document.lastChangeTimestamp;
             documentFixes.clear();
+        }
+        if(_isInvalidFix(fix, maxOffset)){
+            return null;
         }
         fixIDCounter++;
         fix.providerName = providerName;
@@ -602,6 +605,7 @@ define(function (require, exports, module) {
         if(!(editor && resultProviderEntries && resultProviderEntries.length)) {
             return;
         }
+        const maxOffset = editor.document.getText().length;
         editor.operation(function () {
             editor.off("viewportChange.codeInspection");
             editor.on("viewportChange.codeInspection", _editorVieportChangeHandler);
@@ -618,7 +622,7 @@ define(function (require, exports, module) {
                     if (_shouldMarkTokenAtPosition(editor, error)) {
                         let mark;
                         const markOptions = _getMarkOptions(error);
-                        const fixID = _registerNewFix(editor, error.fix, resultProvider.provider.name);
+                        const fixID = _registerNewFix(editor, error.fix, resultProvider.provider.name, maxOffset);
                         if(fixID) {
                             markOptions.metadata = fixID;
                             error.fix.id = fixID;
@@ -1009,16 +1013,21 @@ define(function (require, exports, module) {
         description: Strings.DESCRIPTION_USE_PREFERED_ONLY
     });
 
+    function _isInvalidFix(fixDetails, maxOffset) {
+        return (!_.isNumber(fixDetails.rangeOffset.start) || !_.isNumber(fixDetails.rangeOffset.end) ||
+            fixDetails.rangeOffset.start < 0 || fixDetails.rangeOffset.end < 0 ||
+            fixDetails.rangeOffset.start > maxOffset || fixDetails.rangeOffset.end > maxOffset ||
+            typeof fixDetails.replaceText !== "string");
+    }
+
     function _fixProblem(fixID) {
         const fixDetails = documentFixes.get(fixID);
         const editor = EditorManager.getCurrentFullEditor();
         const maxOffset = editor.document.getText().length;
-        if(fixDetails.rangeOffset.start < 0 || fixDetails.rangeOffset.end < 0 ||
-            fixDetails.rangeOffset.start > maxOffset || fixDetails.rangeOffset.end > maxOffset ){
-            Dialogs.showErrorDialog(Strings.CANNOT_FIX_TITLE,
-                StringUtils.format(Strings.CANNOT_FIX_INVALID_MESSAGE, fixDetails.providerName));
-        } else if(!editor || !fixDetails || editor.document.lastChangeTimestamp !== lastDocumentScanTimeStamp) {
+        if(!editor || !fixDetails || editor.document.lastChangeTimestamp !== lastDocumentScanTimeStamp) {
             Dialogs.showErrorDialog(Strings.CANNOT_FIX_TITLE, Strings.CANNOT_FIX_MESSAGE);
+        } else if(_isInvalidFix(fixDetails, maxOffset)){
+            console.error("Invalid fix:", fixDetails); // this should never happen as we filter the fix while inserting
         } else {
             const from = editor.posFromIndex(fixDetails.rangeOffset.start),
                 to =  editor.posFromIndex(fixDetails.rangeOffset.end);
@@ -1039,7 +1048,11 @@ define(function (require, exports, module) {
             return;
         }
         const replacements = [];
+        const maxOffset = editor.document.getText().length;
         for(let fixDetails of documentFixes.values()){
+            if(_isInvalidFix(fixDetails, maxOffset)){
+                console.error("Invalid fix:", fixDetails); // this should never happen
+            }
             replacements.push({
                 from: editor.posFromIndex(fixDetails.rangeOffset.start),
                 to: editor.posFromIndex(fixDetails.rangeOffset.end),

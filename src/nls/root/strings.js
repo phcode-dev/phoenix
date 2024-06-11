@@ -425,8 +425,8 @@ define({
     "FIX_ERROR": "Fix Problem",
     "FIX": "Fix",
     "CANNOT_FIX_TITLE": "Failed to Apply Fix",
+    "CANNOT_FIX_SOME_TITLE": "Failed to Apply Some Fixes",
     "CANNOT_FIX_MESSAGE": "The document has been modified since the fix was prepared. Please try again.",
-    "CANNOT_FIX_INVALID_MESSAGE": "Invalid Fix supplied by {0}",
     "LINTER_TIMED_OUT": "{0} has timed out after waiting for {1} ms",
     "LINTER_FAILED": "{0} terminated with error: {1}",
 
