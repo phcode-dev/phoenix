@@ -81,6 +81,7 @@ define(function (require, exports, module) {
     require("spec/ViewUtils-test");
     require("spec/XMLUtils-test");
     require("spec/CodeInspection-integ-test");
+    require("spec/CodeInspection-fix-integ-test");
     require("spec/CodeHint-integ-test");
     require("spec/CSSInlineEdit-integ-test");
     require("spec/DocumentCommandHandlers-integ-test");
