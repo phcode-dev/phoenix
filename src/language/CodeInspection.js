@@ -508,11 +508,13 @@ define(function (require, exports, module) {
         _populateDummyGutterElements(editor, from, to);
     }
 
-    function _scrollToTableLine(lineNumber) {
+    function scrollToProblem(lineNumber) {
         const $lineElement = $problemsPanelTable.find('td.line-number[data-line="' + lineNumber + '"]');
         if ($lineElement.length) {
             $lineElement[0].scrollIntoView({ behavior: 'instant', block: 'start' });
+            return true;
         }
+        return false;
     }
 
 
@@ -532,7 +534,7 @@ define(function (require, exports, module) {
                         ${mark.message}<br/>
                     </div>`);
                     $problemView.find(".fix-problem-btn").click(()=>{
-                        _scrollToTableLine(pos.line);
+                        scrollToProblem(pos.line);
                         _fixProblem(fixID);
                     });
                     $hoverMessage.append($problemView);
@@ -543,7 +545,7 @@ define(function (require, exports, module) {
                 // eslint-disable-next-line no-loop-func
                 $problemView.click(function () {
                     toggleCollapsed(false);
-                    _scrollToTableLine(pos.line);
+                    scrollToProblem(pos.line);
                 });
                 const markPos = mark.find();
                 if(markPos.from && markPos.from.line < startPos.line){
@@ -754,12 +756,10 @@ define(function (require, exports, module) {
                 // Update results table
                 html = Mustache.render(ResultsTemplate, {Strings: Strings, reportList: allErrors});
 
-                const scrollPosition = scrollPositionMap.get(fullFilePath) || 0;
                 $problemsPanelTable.lintFilePath = fullFilePath;
                 $problemsPanelTable
                     .empty()
-                    .append(html)
-                    .scrollTop(scrollPosition);  // otherwise scroll pos from previous contents is remembered
+                    .append(html);  // otherwise scroll pos from previous contents is remembered
 
                 if (!_collapsed) {
                     problemsPanel.show();
@@ -769,6 +769,8 @@ define(function (require, exports, module) {
                     path.basename(fullFilePath));
                 setGotoEnabled(true);
 
+                const scrollPosition = scrollPositionMap.get(fullFilePath) || 0;
+                $problemsPanelTable.scrollTop(scrollPosition);
                 PerfUtils.addMeasurement(perfTimerDOM);
             });
 
@@ -1180,4 +1182,5 @@ define(function (require, exports, module) {
     exports.requestRun                  = run;
     exports.getProvidersForPath         = getProvidersForPath;
     exports.getProviderIDsForLanguage   = getProviderIDsForLanguage;
+    exports.scrollToProblem             = scrollToProblem;
 });
