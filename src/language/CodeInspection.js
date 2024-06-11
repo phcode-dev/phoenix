@@ -921,6 +921,9 @@ define(function (require, exports, module) {
 
     let lastRunTime;
     $(window.document).on("mousemove", ()=>{
+        if(Phoenix.isTestWindow){
+            return;
+        }
         const editor = EditorManager.getCurrentFullEditor();
         if(!editor || editor.document.lastChangeTimestamp === lastDocumentScanTimeStamp) {
             return;
@@ -1011,7 +1014,7 @@ define(function (require, exports, module) {
         const editor = EditorManager.getCurrentFullEditor();
         const maxOffset = editor.document.getText().length;
         if(fixDetails.rangeOffset.start < 0 || fixDetails.rangeOffset.end < 0 ||
-            fixDetails.rangeOffset.start > maxOffset || fixDetails.rangeOffset.end < maxOffset ){
+            fixDetails.rangeOffset.start > maxOffset || fixDetails.rangeOffset.end > maxOffset ){
             Dialogs.showErrorDialog(Strings.CANNOT_FIX_TITLE,
                 StringUtils.format(Strings.CANNOT_FIX_INVALID_MESSAGE, fixDetails.providerName));
         } else if(!editor || !fixDetails || editor.document.lastChangeTimestamp !== lastDocumentScanTimeStamp) {

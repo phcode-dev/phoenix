@@ -73,7 +73,7 @@ define(function (require, exports, module) {
                     if (line.includes('this line a fixable error')) {
                         const wordPosition = findWordPosition(line, 'fixable');
                         error.fix = {
-                            replaceText: "",
+                            replaceText: "no",
                             rangeOffset: {
                                 start: currentEditor.indexFromPos({line: lineNumber, ch: wordPosition.start}),
                                 end: currentEditor.indexFromPos({line: lineNumber, ch: wordPosition.end})
@@ -180,7 +180,68 @@ define(function (require, exports, module) {
             CodeInspection.scrollToProblem(40);
         });
 
-        // todo fix one, fix all, fix one undo, fix all undo, quick view error click, quick view fix click
+        it("should show quick view over problem", async function () {
+            await _openProjectFile("testFix.vbs");
+
+            expect($("#problems-panel").is(":visible")).toBeTrue();
+
+            const $popup = await SpecRunnerUtils.showQuickViewAtPos(2, 3);
+            expect($popup.is(":visible")).toBeTrue();
+            expect($popup.text().includes("this line an error")).toBeTrue();
+            SpecRunnerUtils.dismissQuickView($popup);
+        });
+
+        async function _validateScroll(lineNumber) {
+            CodeInspection.scrollToProblem(lineNumber);
+            const expectedScrollTop = $(".table-container").scrollTop();
+            $(".table-container").scrollTop(0);
+
+            const $popup = await SpecRunnerUtils.showQuickViewAtPos(lineNumber, 3);
+            expect($popup.is(":visible")).toBeTrue();
+            $popup.find(".code-inspection-item div").click();
+            expect($(".table-container").scrollTop()).toBe(expectedScrollTop);
+            SpecRunnerUtils.dismissQuickView($popup);
+        }
+
+        it("should clicking on quick view scroll to the editor", async function () {
+            await _openProjectFile("testFix.vbs");
+
+            expect($("#problems-panel").is(":visible")).toBeTrue();
+            await  _validateScroll(64);
+
+            await _openProjectFile("testNoFix.vbs");
+
+            expect($("#problems-panel").is(":visible")).toBeTrue();
+            await  _validateScroll(57);
+        });
+
+        async function _triggerLint(fileName) {
+            await _openProjectFile("no-errors.js");
+            await _openProjectFile(fileName);
+        }
+
+        it("should fix by clicking fix button in quick view", async function () {
+            await _openProjectFile("testFix.vbs");
+
+            expect($("#problems-panel").is(":visible")).toBeTrue();
+            const $popup = await SpecRunnerUtils.showQuickViewAtPos(64, 3);
+            expect($popup.is(":visible")).toBeTrue();
+            expect($("#problems-panel .ph-fix-problem").length).toBe(5); // 5 fix buttons should be there
+            $popup.find(".code-inspection-item button").click();
+            expect($("#problems-panel .ph-fix-problem").length).toBe(4); // 4 fix buttons as one is fixed
+            SpecRunnerUtils.dismissQuickView($popup);
+
+            const editor = EditorManager.getActiveEditor();
+            expect(editor.getSelectedText()).toBe("no");
+
+            // undo should work
+            await awaitsForDone(CommandManager.execute(Commands.EDIT_UNDO), "undo");
+            expect(editor.getSelectedText()).toBe("fixable");
+            await _triggerLint("testFix.vbs");
+            expect($("#problems-panel .ph-fix-problem").length).toBe(5); // 5 fix buttons should be there
+        });
+
+        // todo fix all, fix all undo,
         // todo invalid fixes test, doc changed after fix dialog
 
     });
