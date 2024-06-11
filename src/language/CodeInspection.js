@@ -575,7 +575,7 @@ define(function (require, exports, module) {
 
     let fixIDCounter = 1;
     let documentFixes = new Map(), lastDocumentScanTimeStamp;
-    function _registerNewFix(editor, fix) {
+    function _registerNewFix(editor, fix, providerName) {
         if(!editor || !fix || !fix.rangeOffset) {
             return null;
         }
@@ -586,6 +586,7 @@ define(function (require, exports, module) {
             documentFixes.clear();
         }
         fixIDCounter++;
+        fix.providerName = providerName;
         documentFixes.set(`${fixIDCounter}`, fix);
         return fixIDCounter;
     }
@@ -617,7 +618,7 @@ define(function (require, exports, module) {
                     if (_shouldMarkTokenAtPosition(editor, error)) {
                         let mark;
                         const markOptions = _getMarkOptions(error);
-                        const fixID = _registerNewFix(editor, error.fix);
+                        const fixID = _registerNewFix(editor, error.fix, resultProvider.provider.name);
                         if(fixID) {
                             markOptions.metadata = fixID;
                             error.fix.id = fixID;
@@ -1008,7 +1009,12 @@ define(function (require, exports, module) {
     function _fixProblem(fixID) {
         const fixDetails = documentFixes.get(fixID);
         const editor = EditorManager.getCurrentFullEditor();
-        if(!editor || !fixDetails || editor.document.lastChangeTimestamp !== lastDocumentScanTimeStamp) {
+        const maxOffset = editor.document.getText().length;
+        if(fixDetails.rangeOffset.start < 0 || fixDetails.rangeOffset.end < 0 ||
+            fixDetails.rangeOffset.start > maxOffset || fixDetails.rangeOffset.end < maxOffset ){
+            Dialogs.showErrorDialog(Strings.CANNOT_FIX_TITLE,
+                StringUtils.format(Strings.CANNOT_FIX_INVALID_MESSAGE, fixDetails.providerName));
+        } else if(!editor || !fixDetails || editor.document.lastChangeTimestamp !== lastDocumentScanTimeStamp) {
             Dialogs.showErrorDialog(Strings.CANNOT_FIX_TITLE, Strings.CANNOT_FIX_MESSAGE);
         } else {
             const from = editor.posFromIndex(fixDetails.rangeOffset.start),
