@@ -265,6 +265,28 @@ define(function (require, exports, module) {
             expect($("#problems-panel .ph-fix-problem").length).toBe(5); // 5 fix buttons should be there
         });
 
+        it("should fix one error by clicking fix button and undo", async function () {
+            await _openProjectFile("testFix.vbs");
+            const editor = EditorManager.getActiveEditor();
+            editor.setCursorPos(1, 1);
+
+            expect($("#problems-panel").is(":visible")).toBeTrue();
+            expect($("#problems-panel .ph-fix-problem").length).toBe(5); // 5 fix buttons should be there
+
+            // fix first error
+            $($("#problems-panel").find(".ph-fix-problem")[0]).click();
+            expect($("#problems-panel .ph-fix-problem").length).toBe(4);
+
+            // fixing multiple should place the cursor on first fix
+            expect(editor.getSelectedText()).toBe("no");
+
+            // undo should work
+            await awaitsForDone(CommandManager.execute(Commands.EDIT_UNDO), "undo");
+            expect(editor.getSelectedText()).toBe("fixable");
+            await _triggerLint("testFix.vbs");
+            expect($("#problems-panel .ph-fix-problem").length).toBe(5); // 5 fix buttons should be there
+        });
+
         // todo invalid fixes test, doc changed after fix dialog
 
     });
