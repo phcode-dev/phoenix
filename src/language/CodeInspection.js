@@ -512,9 +512,9 @@ define(function (require, exports, module) {
         const $lineElement = $problemsPanelTable.find('td.line-number[data-line="' + lineNumber + '"]');
         if ($lineElement.length) {
             $lineElement[0].scrollIntoView({ behavior: 'instant', block: 'start' });
-            return true;
+            return $($lineElement[0]).parent();
         }
-        return false;
+        return null;
     }
 
 
@@ -1136,7 +1136,10 @@ define(function (require, exports, module) {
             .on("click", "tr", function (e) {
                 if ($(e.target).hasClass('ph-copy-problem')) {
                     // Retrieve the message from the data attribute of the clicked element
-                    const message = $(e.target).parent().parent().find(".line-text").text();
+                    let message = $(e.target).parent().parent().find(".line-text").text();
+                    if(!message){
+                        message = $(e.target).parent().parent().parent().find(".line-text").text();
+                    }
                     message && Phoenix.app.copyToClipboard(message);
                     e.preventDefault();
                     e.stopPropagation();

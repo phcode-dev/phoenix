@@ -115,6 +115,8 @@ define(function (require, exports, module) {
             }
         }
 
+        let savedCopyFn;
+
         beforeAll(async function () {
             testWindow = await SpecRunnerUtils.createTestWindowAndRun({forceReload: true});
             // Load module instances from brackets.test
@@ -127,13 +129,14 @@ define(function (require, exports, module) {
             CodeInspection = brackets.test.CodeInspection;
             PreferencesManager = brackets.test.PreferencesManager;
             CodeInspection.toggleEnabled(true);
-
             await SpecRunnerUtils.loadProjectInTestWindow(testFolder);
+            savedCopyFn = testWindow.Phoenix.app.copyToClipboard;
         }, 30000);
 
         beforeEach(function () {
             // this is to make the tests run faster
             prefs.set(CodeInspection._PREF_ASYNC_TIMEOUT, 500);
+            testWindow.Phoenix.app.copyToClipboard = savedCopyFn;
         });
 
         afterEach(function () {
@@ -141,6 +144,7 @@ define(function (require, exports, module) {
         });
 
         afterAll(async function () {
+            testWindow.Phoenix.app.copyToClipboard = savedCopyFn;
             testWindow    = null;
             $             = null;
             brackets      = null;
@@ -1077,6 +1081,25 @@ define(function (require, exports, module) {
 
                 CommandManager.execute(Commands.NAVIGATE_GOTO_FIRST_PROBLEM);
                 expect(fixPos(EditorManager.getActiveEditor().getCursorPos())).toEqual(fixPos({line: 1, ch: 3}));
+            });
+
+            it("should be able to copy problem message", async function () {
+                const codeInspector = createCodeInspector("javascript linter", failLintResult());
+                CodeInspection.register("javascript", codeInspector);
+
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["errors.js"]), "open test file");
+
+                const $problemLine = CodeInspection.scrollToProblem(1);
+                let copiedVal;
+                testWindow.Phoenix.app.copyToClipboard = function (val) {
+                    copiedVal = val;
+                };
+                const $copyBtnElems = $problemLine.find(".ph-copy-problem");
+                for(let i=0; i<$copyBtnElems.length; i++) {
+                    copiedVal = null;
+                    $copyBtnElems[i].click();
+                    expect(copiedVal).toBe("Some errors here and there");
+                }
             });
 
             it("should Go to First Error with errors from two providers", async function () {
