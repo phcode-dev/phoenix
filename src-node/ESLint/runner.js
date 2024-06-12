@@ -67,6 +67,16 @@ async function getESLinter() {
     // when caching, make sure that a new eslint object is created when any of the eslint config file changes!!!.
 }
 
+async function _getConfigDetails(eslinter, filePath) {
+    try{
+        const config = await eslinter.calculateConfigForFile(filePath);
+        return JSON.parse(JSON.stringify(config)); // ensure that this is stringify able
+    } catch (e) {
+        console.error("Failed to compute config", e);
+        return null;
+    }
+}
+
 async function lintTextWithPath(text, fullFilePath) {
     // Create an ESLint instance
     const eslinter = await getESLinter();
@@ -94,7 +104,8 @@ async function lintTextWithPath(text, fullFilePath) {
     // Return the results as an array
     delete result.source;
     return {
-        result
+        result,
+        config: await _getConfigDetails(eslinter, fullFilePath)
     };
 }
 

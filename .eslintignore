@@ -22,5 +22,5 @@ test/temp/**
 test/thirdparty/**
 test/**/node_modules/**/*.js
 test/virtual-server-test.js
-
+test/spec/ESLintExtensionTest-files
 

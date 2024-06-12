@@ -68,7 +68,8 @@ define(function (require, exports, module) {
 
         const JSHintErrorES6Error_js = "Missing semicolon. jshint (W033)",
             ESLintErrorES7Error_js = "Parsing error: Unexpected token ; ESLint (null)",
-            ESLintErrorES8Error_js = "Expected '===' and instead saw '=='. ESLint (eqeqeq)";
+            ESLintErrorES8Error_js = "Expected '===' and instead saw '=='. ESLint (eqeqeq)",
+            ESLintReactError_js = "'element' is assigned a value but never used. ESLint (no-unused-vars)";
 
         async function _createTempProject(esLintSpecSubFolder) {
             return await SpecRunnerUtils.getTempTestDirectory(testRootSpec + esLintSpecSubFolder);
@@ -204,6 +205,27 @@ define(function (require, exports, module) {
             }, 5000);
         });
 
+        describe("ES8 with react js support project", function () { // this should cover es7 too
+            let reactProjectPath;
+
+            beforeAll(async function () {
+                reactProjectPath = await _createTempProject("es8_react_jsx");
+                await _npmInstallInFolder(reactProjectPath);
+                await SpecRunnerUtils.loadProjectInTestWindow(reactProjectPath);
+            }, 30000);
+
+            it("should ESLint jsx reactjs in v8 work as expected", async function () {
+                await _openProjectFile("react.jsx");
+                await _waitForProblemsPanelVisible(true);
+                await awaitsFor(()=>{
+                    return $("#problems-panel").text().includes(ESLintReactError_js);
+                }, "ESLint jsx error to be shown");
+            }, 5000);
+        });
+
+        // we should have an es9 test too as above, but es9 currently doesnt support jsx
+        // https://github.com/facebook/react/pull/28773  do when available.
+
         describe("ES8 module project", function () {
             let es7ProjectPath;
 
@@ -223,6 +245,13 @@ define(function (require, exports, module) {
 
             it("should ESLint v8 work as expected", async function () {
                 await _loadAndValidateES8Project();
+            }, 5000);
+
+            it("should not lint jsx file as ESLint v8 is not configured for react lint", async function () {
+                await _openProjectFile("react.jsx");
+                await awaits(100); // Just wait for some time to prevent any false linter runs
+                await _waitForProblemsPanelVisible(false);
+                expect($("#status-inspection").hasClass("inspection-disabled")).toBeTrue();
             }, 5000);
 
             it("should not show JSHint in desktop app if ESLint is active", async function () {
