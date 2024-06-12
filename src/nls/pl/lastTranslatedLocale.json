@@ -317,6 +317,7 @@
   "FIX_ERROR": "Naprawić problem",
   "FIX": "Naprawić",
   "CANNOT_FIX_TITLE": "Nie udało się zastosować poprawki",
+  "CANNOT_FIX_SOME_TITLE": "Nie udało się zastosować niektórych poprawek",
   "CANNOT_FIX_MESSAGE": "Dokument został zmodyfikowany od czasu przygotowania poprawki. Proszę spróbuj ponownie.",
   "LINTER_TIMED_OUT": "{0} przekroczył limit czasu, czekał {1} ms",
   "LINTER_FAILED": "{0} zakończył z błędem: {1}",

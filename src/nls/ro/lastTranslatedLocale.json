@@ -317,6 +317,7 @@
   "FIX_ERROR": "Rezolva problema",
   "FIX": "Fix",
   "CANNOT_FIX_TITLE": "Nu s-a aplicat remedierea",
+  "CANNOT_FIX_SOME_TITLE": "Nu s-au aplicat unele remedieri",
   "CANNOT_FIX_MESSAGE": "Documentul a fost modificat de când a fost pregătită remedierea. Vă rugăm să încercați din nou.",
   "LINTER_TIMED_OUT": "Timp de așteptare depășit pentru {0} după o întârziere de {1} ms",
   "LINTER_FAILED": "{0} finisat cu eroarea: {1}",

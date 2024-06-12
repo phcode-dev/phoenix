@@ -317,6 +317,7 @@
   "FIX_ERROR": "Løs problem",
   "FIX": "Rette op",
   "CANNOT_FIX_TITLE": "Kunne ikke anvende rettelse",
+  "CANNOT_FIX_SOME_TITLE": "Kunne ikke anvende nogle rettelser",
   "CANNOT_FIX_MESSAGE": "Dokumentet er blevet ændret, siden rettelsen blev udarbejdet. Prøv igen.",
   "LINTER_TIMED_OUT": "{0} har opgivet at vente efter {1} ms",
   "LINTER_FAILED": "{0} afsluttede med fejl: {1}",

@@ -337,6 +337,7 @@ define({
   "FIX_ERROR": "解决问题",
   "FIX": "使固定",
   "CANNOT_FIX_TITLE": "无法应用修复",
+  "CANNOT_FIX_SOME_TITLE": "无法应用某些修复",
   "CANNOT_FIX_MESSAGE": "自修复准备就绪后，文档已被修改。请重试。",
   "LINTER_TIMED_OUT": "{0} 等待 {1} ms 后超时",
   "LINTER_FAILED": "{0} 已终止，错误：{1}",

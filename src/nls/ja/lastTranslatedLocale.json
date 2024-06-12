@@ -317,6 +317,7 @@
   "FIX_ERROR": "問題を解決する",
   "FIX": "修理",
   "CANNOT_FIX_TITLE": "修正を適用できませんでした",
+  "CANNOT_FIX_SOME_TITLE": "いくつかの修正を適用できませんでした",
   "CANNOT_FIX_MESSAGE": "修正の準備以降にドキュメントが変更されています。もう一度お試しください。",
   "LINTER_TIMED_OUT": "{0} は {1} ミリ秒待機した後でタイムアウトしました",
   "LINTER_FAILED": "{0} は次のエラーにより終了しました : {1}",

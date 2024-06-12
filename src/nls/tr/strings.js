@@ -337,6 +337,7 @@ define({
   "FIX_ERROR": "Sorunu çözmek",
   "FIX": "Düzeltmek",
   "CANNOT_FIX_TITLE": "Düzeltme Uygulanamadı",
+  "CANNOT_FIX_SOME_TITLE": "Bazı Düzeltmeler Uygulanamadı",
   "CANNOT_FIX_MESSAGE": "Düzeltmenin hazırlanmasından bu yana belge değiştirildi. Lütfen tekrar deneyin.",
   "LINTER_TIMED_OUT": "{0}, {1} ms bekledikten sonra zaman aşımına uğradı",
   "LINTER_FAILED": "{0} şu hatayla sonlandırıldı: {1}",

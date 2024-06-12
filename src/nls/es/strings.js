@@ -337,6 +337,7 @@ define({
   "FIX_ERROR": "Arreglar problema",
   "FIX": "Arreglar",
   "CANNOT_FIX_TITLE": "No se pudo aplicar la corrección",
+  "CANNOT_FIX_SOME_TITLE": "No se pudieron aplicar algunas correcciones",
   "CANNOT_FIX_MESSAGE": "El documento ha sido modificado desde que se preparó la solución. Inténtalo de nuevo.",
   "LINTER_TIMED_OUT": "{0} ha agotado el tiempo después de esperar {1} ms",
   "LINTER_FAILED": "{0} terminó con error: {1}",

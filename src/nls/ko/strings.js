@@ -337,6 +337,7 @@ define({
   "FIX_ERROR": "문제 해결",
   "FIX": "고치다",
   "CANNOT_FIX_TITLE": "수정 사항을 적용하지 못했습니다.",
+  "CANNOT_FIX_SOME_TITLE": "일부 수정 사항을 적용하지 못했습니다.",
   "CANNOT_FIX_MESSAGE": "수정 사항이 준비된 이후 문서가 수정되었습니다. 다시 시도해 주세요.",
   "LINTER_TIMED_OUT": "{0} 검사기가 {1}ms 대기 후 타임아웃 되었습니다",
   "LINTER_FAILED": "{0} 검사기가 에러때문에 종료되었습니다: {1}",

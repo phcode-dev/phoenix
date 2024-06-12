@@ -337,6 +337,7 @@ define({
   "FIX_ERROR": "Oldd meg a problémát",
   "FIX": "Fix",
   "CANNOT_FIX_TITLE": "Nem sikerült a javítás alkalmazása",
+  "CANNOT_FIX_SOME_TITLE": "Egyes javítások alkalmazása nem sikerült",
   "CANNOT_FIX_MESSAGE": "A dokumentumot a javítás elkészítése óta módosították. Kérlek próbáld újra.",
   "LINTER_TIMED_OUT": "A(z) {0} {1} ms várakozás után időtúllépést ért el",
   "LINTER_FAILED": "A(z) {0} hibával leállt: {1}",

@@ -317,6 +317,7 @@
   "FIX_ERROR": "Fixa problem",
   "FIX": "Fixera",
   "CANNOT_FIX_TITLE": "Det gick inte att tillämpa korrigering",
+  "CANNOT_FIX_SOME_TITLE": "Det gick inte att tillämpa vissa korrigeringar",
   "CANNOT_FIX_MESSAGE": "Dokumentet har ändrats sedan korrigeringen förbereddes. Var god försök igen.",
   "LINTER_TIMED_OUT": "{0} har avbrutits efter att ha väntat {1} ms",
   "LINTER_FAILED": "{0} avbröts efter ett fel: {1}",

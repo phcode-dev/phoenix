@@ -317,6 +317,7 @@
   "FIX_ERROR": "Risolvi il problema",
   "FIX": "Aggiustare",
   "CANNOT_FIX_TITLE": "Impossibile applicare la correzione",
+  "CANNOT_FIX_SOME_TITLE": "Impossibile applicare alcune correzioni",
   "CANNOT_FIX_MESSAGE": "Il documento è stato modificato da quando è stata preparata la correzione. Per favore riprova.",
   "LINTER_TIMED_OUT": "{0} è scaduto dopo aver atteso per {1} ms",
   "LINTER_FAILED": "{0} terminato con errore: {1}",

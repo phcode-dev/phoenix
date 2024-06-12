@@ -317,6 +317,7 @@
   "FIX_ERROR": "Correction d'un problème",
   "FIX": "Réparer",
   "CANNOT_FIX_TITLE": "Échec de l'application du correctif",
+  "CANNOT_FIX_SOME_TITLE": "Échec de l'application de certains correctifs",
   "CANNOT_FIX_MESSAGE": "Le document a été modifié depuis la préparation du correctif. Veuillez réessayer.",
   "LINTER_TIMED_OUT": "Délai dépassé pour {0} après une attente de {1} ms",
   "LINTER_FAILED": "{0} arrêté avec l’erreur suivante : {1}",

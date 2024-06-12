@@ -317,6 +317,7 @@
   "FIX_ERROR": "Opravte problém",
   "FIX": "Opraviť",
   "CANNOT_FIX_TITLE": "Nepodarilo sa použiť opravu",
+  "CANNOT_FIX_SOME_TITLE": "Nepodarilo sa použiť niektoré opravy",
   "CANNOT_FIX_MESSAGE": "Dokument bol od prípravy opravy upravený. Prosím skúste znova.",
   "LINTER_TIMED_OUT": "{0} vypršal po čakaní {1} ms",
   "LINTER_FAILED": "{0} ukončené s chybou: {1}",

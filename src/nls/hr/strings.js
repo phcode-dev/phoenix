@@ -337,6 +337,7 @@ define({
   "FIX_ERROR": "Popravi problem",
   "FIX": "Popraviti",
   "CANNOT_FIX_TITLE": "Primjena popravka nije uspjela",
+  "CANNOT_FIX_SOME_TITLE": "Primjena nekih popravaka nije uspjela",
   "CANNOT_FIX_MESSAGE": "Dokument je izmijenjen otkad je popravak pripremljen. Molim te pokušaj ponovno.",
   "LINTER_TIMED_OUT": "{0} je isteklo nakon čekanja od {1} ms",
   "LINTER_FAILED": "{0} prekinuto s pogreškom: {1}",

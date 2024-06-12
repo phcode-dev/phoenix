@@ -317,6 +317,7 @@
   "FIX_ERROR": "解決問題",
   "FIX": "使固定",
   "CANNOT_FIX_TITLE": "無法套用修復",
+  "CANNOT_FIX_SOME_TITLE": "無法套用某些修復",
   "CANNOT_FIX_MESSAGE": "自修復程序準備好以來，該文件已被修改。請再試一次。",
   "LINTER_TIMED_OUT": "{0} 等了 {1} 毫秒後逾時",
   "LINTER_FAILED": "{0} 已終止，錯誤: {1}",
