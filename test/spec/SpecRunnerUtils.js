@@ -726,6 +726,14 @@ define(function (require, exports, module) {
         return _testWindow;
     }
 
+    async function parkProject(closeAll) {
+        if(closeAll){
+            _testWindow.brackets.test.MainViewManager._closeAll(_testWindow.brackets.test.MainViewManager.ALL_PANES);
+        }
+        await window.Phoenix.VFS.ensureExistsDirAsync("/test/parked");
+        await loadProjectInTestWindow("/test/parked");
+    }
+
     async function closeTestWindow(force, blankTestWindow) {
         //we need to mark the documents as not dirty before we close
         //or the window will stay open prompting to save
@@ -1507,8 +1515,9 @@ define(function (require, exports, module) {
     exports.removeTempDirectory             = removeTempDirectory;
     exports.setUnitTestReporter             = setUnitTestReporter;
     exports.resizeEditor                    = resizeEditor;
-    exports.editorHasCursorPosition            = editorHasCursorPosition;
+    exports.editorHasCursorPosition         = editorHasCursorPosition;
     exports.showQuickViewAtPos              = showQuickViewAtPos;
-    exports.dismissQuickView              = dismissQuickView;
+    exports.dismissQuickView                = dismissQuickView;
+    exports.parkProject                     = parkProject;
     exports.jsPromise                       = jsPromise;
 });
