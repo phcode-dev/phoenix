@@ -135,6 +135,7 @@ define(function (require, exports, module) {
         }
 
         it("should show JSHint in desktop app if ESLint load failed for project", async function () {
+            await SpecRunnerUtils.parkProject();
             await _openSimpleES6Project();
             await awaitsFor(async ()=>{
                 await _fileSwitcherroForESLintFailDetection();
