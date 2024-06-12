@@ -1108,6 +1108,48 @@ define(function (require, exports, module) {
                 expect(fixPos(EditorManager.getActiveEditor().getCursorPos())).toEqual(fixPos({line: 1, ch: 3}));
             });
 
+            it("should not show providers that returns isIgnored", async function () {
+                var codeInspector1 = createCodeInspector("javascript linter x", {
+                    isIgnored: true
+                });
+                const linterName = "javascript linter y";
+                var codeInspector2 = createCodeInspector(linterName, {
+                    errors: [
+                        {
+                            pos: { line: 0, ch: 2 },
+                            message: "Different error",
+                            type: CodeInspection.Type.WARNING
+                        }
+                    ]
+                });
+                CodeInspection.register("javascript", codeInspector1);
+                CodeInspection.register("javascript", codeInspector2);
+
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["errors.js"]), "open test file");
+
+                const $problemPanelTitle = $("#problems-panel .title").text();
+                expect($problemPanelTitle).toBe(StringUtils.format(Strings.SINGLE_ERROR, linterName, "errors.js"));
+
+                var $statusBar = $("#status-inspection");
+                expect($statusBar.is(":visible")).toBe(true);
+            });
+
+            it("should not show no error if all isIgnored", async function () {
+                var codeInspector1 = createCodeInspector("javascript linter x", {
+                    isIgnored: true
+                });
+                const linterName = "javascript linter y";
+                var codeInspector2 = createCodeInspector(linterName, {
+                    isIgnored: true
+                });
+                CodeInspection.register("javascript", codeInspector1);
+                CodeInspection.register("javascript", codeInspector2);
+
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["errors.js"]), "open test file");
+
+                expect($("#status-inspection").hasClass("inspection-disabled")).toBeTrue();
+            });
+
             it("should handle missing or negative line numbers gracefully (https://github.com/adobe/brackets/issues/6441)", async function () {
                 var codeInspector1 = createCodeInspector("NoLineNumberLinter", {
                     errors: [
