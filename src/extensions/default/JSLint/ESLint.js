@@ -142,6 +142,8 @@ define(function (require, exports, module) {
                 } else if(esLintResult.isError) {
                     esLintServiceFailed = true;
                     resolve({ errors: _getLintError(esLintResult.errorCode, esLintResult.errorMessage) });
+                } else if(esLintResult.isPathIgnored) {
+                    resolve({isIgnored: true});
                 } else {
                     esLintServiceFailed = false;
                     if(!esLintResult.result){
@@ -234,15 +236,18 @@ define(function (require, exports, module) {
         _reloadOptions();
     });
 
-    // Register for JS files
-    CodeInspection.register("javascript", {
+    const esLintProvider = {
         name: Strings.ESLINT_NAME,
         scanFileAsync: lintOneFile,
         canInspect: function (fullPath) {
             return !prefs.get(PREFS_ESLINT_DISABLED) && fullPath && !fullPath.endsWith(".min.js")
                 && useESLintFromProject;
         }
-    });
+    };
+
+    // Register for JS files
+    CodeInspection.register("javascript", esLintProvider);
+    CodeInspection.register("jsx", esLintProvider);
 
     function isESLintActive() {
         return useESLintFromProject && Phoenix.isNativeApp && !esLintServiceFailed;
