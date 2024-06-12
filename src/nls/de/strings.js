@@ -337,6 +337,7 @@ define({
   "FIX_ERROR": "Problem lösen",
   "FIX": "Fix",
   "CANNOT_FIX_TITLE": "Fix konnte nicht angewendet werden",
+  "CANNOT_FIX_SOME_TITLE": "Einige Korrekturen konnten nicht angewendet werden",
   "CANNOT_FIX_MESSAGE": "Das Dokument wurde seit der Vorbereitung des Fixes geändert. Bitte versuchen Sie es erneut.",
   "LINTER_TIMED_OUT": "{0} hat die Zeitbegrenzung von {1} ms überschritten",
   "LINTER_FAILED": "{0} hat mit einer Fehlermeldung abgebrochen: {1}",

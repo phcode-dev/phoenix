@@ -317,6 +317,7 @@
   "FIX_ERROR": "Novērst problēmu",
   "FIX": "Labot",
   "CANNOT_FIX_TITLE": "Neizdevās lietot labojumu",
+  "CANNOT_FIX_SOME_TITLE": "Neizdevās lietot dažus labojumus",
   "CANNOT_FIX_MESSAGE": "Kopš labojuma sagatavošanas dokuments ir mainīts. Lūdzu mēģiniet vēlreiz.",
   "LINTER_TIMED_OUT": "{0} iestājās taimauts pēc {1} ms ilgas gaidīšanas",
   "LINTER_FAILED": "{0} beidzās ar kļūdu: {1}",

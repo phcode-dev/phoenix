@@ -317,6 +317,7 @@
   "FIX_ERROR": "Probleem oplossen",
   "FIX": "Repareren",
   "CANNOT_FIX_TITLE": "Kan oplossing niet toepassen",
+  "CANNOT_FIX_SOME_TITLE": "Het is niet gelukt om bepaalde oplossingen toe te passen",
   "CANNOT_FIX_MESSAGE": "Het document is gewijzigd sinds de oplossing werd voorbereid. Probeer het opnieuw.",
   "LINTER_TIMED_OUT": "{0} is gestopt na wachten voor {1} ms",
   "LINTER_FAILED": "{0} is gestopt met fout: {1}",

@@ -317,6 +317,7 @@
   "FIX_ERROR": "Perbaiki Masalah",
   "FIX": "Memperbaiki",
   "CANNOT_FIX_TITLE": "Gagal Menerapkan Perbaikan",
+  "CANNOT_FIX_SOME_TITLE": "Gagal Menerapkan Beberapa Perbaikan",
   "CANNOT_FIX_MESSAGE": "Dokumen telah diubah sejak perbaikan disiapkan. Silakan coba lagi.",
   "LINTER_TIMED_OUT": "{0} telah habis waktunya setelah menunggu selama {1} ms",
   "LINTER_FAILED": "{0} dihentikan dengan kesalahan: {1}",
