@@ -163,13 +163,19 @@ define(function (require, exports, module) {
             let displayPath = ProjectManager.makeProjectRelativeIfPossible(configFilePath);
             displayPath = Phoenix.app.getDisplayPath(displayPath);
             DocumentManager.getDocumentForPath(configFilePath).done(function (configDoc) {
+                if (!ProjectManager.isWithinProject(configFilePath)) {
+                    // this is a rare race condition where the user switches project between the get document call.
+                    // Eg. in integ tests.
+                    reject(`JSHint Project changed while scanning ${configFilePath}`);
+                    return;
+                }
                 let config;
                 const content = configDoc.getText();
                 try {
                     config = JSON.parse(removeComments(content));
                     console.log("JSHint: loaded config file for project " + configFilePath);
                 } catch (e) {
-                    console.log("JSHint: error parsing " + configFilePath);
+                    console.log("JSHint: error parsing " + configFilePath, content, e);
                     // just log and return as this is an expected failure for us while the user edits code
                     reject("Error parsing JSHint config file:    " + displayPath);
                     return;
@@ -209,11 +215,20 @@ define(function (require, exports, module) {
 
     function _reloadOptions() {
         projectSpecificOptions = null;
-        _readConfig(ProjectManager.getProjectRoot().fullPath, CONFIG_FILE_NAME).then((config)=>{
+        const scanningProjectPath = ProjectManager.getProjectRoot().fullPath;
+        _readConfig(scanningProjectPath, CONFIG_FILE_NAME).then((config)=>{
+            if(scanningProjectPath !== ProjectManager.getProjectRoot().fullPath){
+                // this is a rare race condition where the user switches project between the get document call.
+                // Eg. in integ tests. do nothing as another scan for the new project will be in progress.
+                return;
+            }
             projectSpecificOptions = config;
             CodeInspection.requestRun(Strings.JSHINT_NAME);
             jsHintConfigFileErrorMessage = null;
         }).catch((err)=>{
+            if(scanningProjectPath !== ProjectManager.getProjectRoot().fullPath){
+                return;
+            }
             jsHintConfigFileErrorMessage = err;
             CodeInspection.requestRun(Strings.JSHINT_NAME);
         });

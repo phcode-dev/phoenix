@@ -744,4 +744,8 @@ define(function (require, exports, module) {
     // Handle Language change events
     LanguageManager.on("languageAdded", _handleLanguageAdded);
     LanguageManager.on("languageModified", _handleLanguageModified);
+
+    if(location.origin === "http://localhost:8000"){
+        window.DocumentManager = exports; // this is for quick editor queries during development in browser console
+    }
 });
