@@ -3,6 +3,7 @@
 const { test, expect } = require("@playwright/test");
 
 const testEnv = process.env.TEST_ENV || "unit";
+const isTestWindowGitHubActions = process.env.GITHUB_ACTIONS ? "yes" : "no";
 if(!process.env.TEST_ENV){
     console.log("Test environment TEST_ENV not provided. Defaulting to execute unit tests only.");
 }
@@ -42,5 +43,5 @@ async function execTests(page, url) {
 }
 
 test(`Execute ${testEnv} tests`, async ({ page}) => {
-    await execTests(page, `${baseURL}?spec=all&category=${testEnv}&playwrightTests=true`);
+    await execTests(page, `${baseURL}?spec=all&category=${testEnv}&isTestWindowGitHubActions=${isTestWindowGitHubActions}&playwrightTests=true`);
 });
