@@ -223,8 +223,8 @@ define(function (require, exports, module) {
                 return;
             }
             projectSpecificOptions = config;
-            CodeInspection.requestRun(Strings.JSHINT_NAME);
             jsHintConfigFileErrorMessage = null;
+            CodeInspection.requestRun(Strings.JSHINT_NAME);
         }).catch((err)=>{
             if(scanningProjectPath !== ProjectManager.getProjectRoot().fullPath){
                 return;
