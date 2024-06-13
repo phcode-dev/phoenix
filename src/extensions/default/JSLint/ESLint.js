@@ -183,9 +183,15 @@ define(function (require, exports, module) {
      * @returns {Promise} a promise to return configuration object.
      */
     function _isESLintProject() {
-        return new Promise((resolve)=>{
+        return new Promise((resolve, reject)=>{
             const configFilePath = path.join(ProjectManager.getProjectRoot().fullPath, PACKAGE_JSON);
             DocumentManager.getDocumentForPath(configFilePath).done(function (configDoc) {
+                if (!ProjectManager.isWithinProject(configFilePath)) {
+                    // this is a rare race condition where the user switches project between the get document call.
+                    // Eg. in integ tests.
+                    reject(`ESLint Project changed while scanning ${configFilePath}`);
+                    return;
+                }
                 const content = configDoc.getText();
                 try {
                     const config = JSON.parse(content);
@@ -208,10 +214,19 @@ define(function (require, exports, module) {
 
     function _reloadOptions() {
         esLintServiceFailed = false;
+        const scanningProjectPath = ProjectManager.getProjectRoot().fullPath;
         _isESLintProject().then((shouldESLintEnable)=>{
+            if(scanningProjectPath !== ProjectManager.getProjectRoot().fullPath){
+                // this is a rare race condition where the user switches project between the get document call.
+                // Eg. in integ tests. do nothing as another scan for the new project will be in progress.
+                return;
+            }
             useESLintFromProject = shouldESLintEnable;
             CodeInspection.requestRun(Strings.ESLINT_NAME);
         }).catch(()=>{
+            if(scanningProjectPath !== ProjectManager.getProjectRoot().fullPath){
+                return;
+            }
             useESLintFromProject = false;
             CodeInspection.requestRun(Strings.ESLINT_NAME);
         });
