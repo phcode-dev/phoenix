@@ -528,8 +528,8 @@ define(function (require, exports, module) {
                 expect(marks[0].className).toBe("editor-text-fragment-warn");
             });
 
-            it("should show warning gutter icon on line in editor", async function () {
-                let codeInspector = createCodeInspector("javascript linter", failLintResult());
+            async function _testWarningIcon(lintResult, expectedClass) {
+                let codeInspector = createCodeInspector("javascript linter", lintResult);
                 CodeInspection.register("javascript", codeInspector);
 
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles(["errors.js"]), "open test file", 5000);
@@ -538,7 +538,37 @@ define(function (require, exports, module) {
                 let marks = EditorManager.getActiveEditor().getGutterMarker(1, CodeInspection.CODE_INSPECTION_GUTTER);
                 expect(marks.title).toBe('\nSome errors here and there at column: 4');
                 marks = $(marks);
-                expect(marks.find('span').hasClass('line-icon-problem_type_warning')).toBeTrue();
+                expect(marks.find('span').hasClass(expectedClass)).toBeTrue();
+                return marks;
+            }
+
+            it("should show warning gutter icon on line in editor", async function () {
+                await _testWarningIcon(failLintResult(), 'line-icon-problem_type_warning');
+            });
+
+            it("should show fix icon in gutter for warning on line in editor", async function () {
+                const marks = await _testWarningIcon(failLintResult(true), 'line-icon-problem_type_warning');
+                expect(marks.find('span').hasClass('fa-wrench')).toBeTrue();
+                const $problemLineInPanel = CodeInspection.scrollToProblem(1);
+                expect($problemLineInPanel.find("i").hasClass("fa-wrench")).toBeTrue();
+            });
+
+            it("should show fix icon in gutter for error on line in editor", async function () {
+                const errorResult = failLintResult(true);
+                errorResult.errors[0].type = CodeInspection.Type.ERROR;
+                const marks = await _testWarningIcon(errorResult, 'line-icon-problem_type_error');
+                expect(marks.find('span').hasClass('fa-wrench')).toBeTrue();
+                const $problemLineInPanel = CodeInspection.scrollToProblem(1);
+                expect($problemLineInPanel.find("i").hasClass("fa-wrench")).toBeTrue();
+            });
+
+            it("should show fix icon in gutter and panel for info on line in editor", async function () {
+                const errorResult = failLintResult(true);
+                errorResult.errors[0].type = CodeInspection.Type.META;
+                const marks = await _testWarningIcon(errorResult, 'line-icon-problem_type_info');
+                expect(marks.find('span').hasClass('fa-wrench')).toBeTrue();
+                const $problemLineInPanel = CodeInspection.scrollToProblem(1);
+                expect($problemLineInPanel.find("i").hasClass("fa-wrench")).toBeTrue();
             });
 
             it("should not show codeinspection gutter on unsupported languages", async function () {

@@ -780,7 +780,7 @@ define(function (require, exports, module) {
                                 numProblems++;
                             }
 
-                            error.iconClass = _getIconClassForType(error.type);
+                            error.iconClass = _getIconClassForType(error.type, error.fix && error.fix.id);
 
                             // Hide the errors when the provider is collapsed.
                             error.display = isExpanded ? "" : "forced-hidden";
