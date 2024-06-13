@@ -163,6 +163,10 @@ define(function (require, exports, module) {
         }
 
         it("should remember scroll positions", async function () {
+            if(Phoenix.isTestWindowGitHubActions && Phoenix.platform === "win" && Phoenix.isNativeApp){
+                // scroll test doesn't work in GitHub actions in windows desktop apps.
+                return;
+            }
             await _openProjectFile("testFix.vbs");
 
             expect($("#problems-panel").is(":visible")).toBeTrue();

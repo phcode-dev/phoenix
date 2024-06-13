@@ -150,11 +150,16 @@ async function ESLintFile({text, fullFilePath, projectFullPath}) {
     return lintFile(text, fullFilePath, projectFullPath);
 }
 
+async function getEnvironmentVariable(varName) {
+    return process.env[varName];
+}
+
 exports.getURLContent = getURLContent;
 exports.setLocaleStrings = setLocaleStrings;
 exports.getPhoenixBinaryVersion = getPhoenixBinaryVersion;
 exports.getLinuxOSFlavorName = getLinuxOSFlavorName;
 exports.openUrlInBrowser = openUrlInBrowser;
+exports.getEnvironmentVariable = getEnvironmentVariable;
 exports.ESLintFile = ESLintFile;
 exports._loadNodeExtensionModule = _loadNodeExtensionModule;
 exports._npmInstallInFolder = _npmInstallInFolder;

@@ -92,6 +92,13 @@ define(function (require, exports, module) {
         return utilsConnector.execPeer("_npmInstallInFolder", {moduleNativeDir});
     }
 
+    async function getEnvironmentVariable(varName) {
+        if(!Phoenix.isNativeApp) {
+            throw new Error("getEnvironmentVariable not available in browser");
+        }
+        return utilsConnector.execPeer("getEnvironmentVariable", varName);
+    }
+
     async function ESLintFile(text, fullFilePath, projectFullPath) {
         if(!Phoenix.isNativeApp) {
             throw new Error("ESLintFile not available in browser");
@@ -109,6 +116,25 @@ define(function (require, exports, module) {
         _updateNodeLocaleStrings();
     }
 
+    try {
+        if(Phoenix.isTestWindow) {
+            if(Phoenix.isNativeApp) {
+                async function _setIsTestWindowGitHubActions() {
+                    const actionsEnv = await utilsConnector.execPeer("getEnvironmentVariable", "GITHUB_ACTIONS");
+                    Phoenix.isTestWindowGitHubActions = !!actionsEnv;
+                }
+                _setIsTestWindowGitHubActions().catch(e=>{
+                    console.error("Error setting Phoenix.isTestWindowGitHubActions", e);
+                });
+            } else {
+                const urlSearchParams = new window.URLSearchParams(window.location.search || "");
+                Phoenix.isTestWindowGitHubActions = urlSearchParams.get("isTestWindowGitHubActions") === "yes";
+            }
+        }
+    } catch (e) {
+        console.error("Error setting Phoenix.isTestWindowGitHubActions", e);
+    }
+
     // private apis
     exports._loadNodeExtensionModule = _loadNodeExtensionModule;
     exports._npmInstallInFolder = _npmInstallInFolder;
@@ -119,6 +145,7 @@ define(function (require, exports, module) {
     exports.getLinuxOSFlavorName = getLinuxOSFlavorName;
     exports.openUrlInBrowser = openUrlInBrowser;
     exports.ESLintFile = ESLintFile;
+    exports.getEnvironmentVariable = getEnvironmentVariable;
     exports.isNodeReady = NodeConnector.isNodeReady;
 
     window.NodeUtils = exports;
