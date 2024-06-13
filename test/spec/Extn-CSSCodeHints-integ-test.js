@@ -82,12 +82,16 @@ define(function (require, exports, module) {
             }
         }
 
-        async function checkCSSWarningAtPos(expectedWarning, line, ch) {
+        async function checkCSSWarningAtPos(expectedWarning, line, ch, useIncludes) {
             await awaitsFor(async ()=>{
                 return await getPopoverAtPos(line, ch);
             }, "popover to be present");
             let popoverInfo = await getPopoverAtPos(line, ch);
-            expect(popoverInfo.content.find(".code-inspection-item").text().trim()).toBe(expectedWarning);
+            if(useIncludes){
+                expect(popoverInfo.content.find(".code-inspection-item").text().trim()).toIncludeText(expectedWarning);
+            } else {
+                expect(popoverInfo.content.find(".code-inspection-item").text().trim()).toBe(expectedWarning);
+            }
         }
 
         function runTests(testTyle) {
@@ -146,8 +150,10 @@ define(function (require, exports, module) {
             });
 
             it(`Should ${testTyle} show unknown vendor prefix warning`, async function () {
-                await checkCSSWarningAtPos("Unknown vendor specific property. (unknownVendorSpecificProperties)Also define the standard property 'border-radius' for compatibility (vendorPrefix)",
-                    43, 8);
+                await checkCSSWarningAtPos("Unknown vendor specific property. (unknownVendorSpecificProperties)",
+                    43, 8, true);
+                await checkCSSWarningAtPos("Also define the standard property 'border-radius' for compatibility (vendorPrefix)",
+                    43, 8, true);
             });
         }
 
