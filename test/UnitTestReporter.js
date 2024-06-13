@@ -351,6 +351,20 @@ define(function (require, exports, module) {
                         return result;
                     }
                 };
+            }, toIncludeText: function() {
+                return {
+                    compare: function(actual, expected) {
+                        const pass = actual.includes(expected);
+                        const message = pass ?
+                            `Expected "${actual}" to include text "${expected}"` :
+                            `Expected "${actual}" to include text "${expected}", but it did not`;
+
+                        return {
+                            pass: pass,
+                            message: message
+                        };
+                    }
+                };
             }
         });
     }

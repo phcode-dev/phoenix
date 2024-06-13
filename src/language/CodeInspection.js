@@ -76,12 +76,20 @@ define(function (require, exports, module) {
         META: "meta"
     };
 
-    function _getIconClassForType(type) {
+    function _getIconClassForType(type, isFixable) {
         switch (type) {
-        case Type.ERROR: return "line-icon-problem_type_error fa-solid fa-times-circle";
-        case Type.WARNING: return "line-icon-problem_type_warning fa-solid fa-exclamation-triangle";
-        case Type.META: return "line-icon-problem_type_info fa-solid fa-info-circle";
-        default: return "line-icon-problem_type_info fa-solid fa-info-circle";
+        case Type.ERROR: return isFixable ?
+            "line-icon-problem_type_error fa-solid fa-wrench":
+            "line-icon-problem_type_error fa-solid fa-times-circle";
+        case Type.WARNING: return isFixable ?
+            "line-icon-problem_type_warning fa-solid fa-wrench":
+            "line-icon-problem_type_warning fa-solid fa-exclamation-triangle";
+        case Type.META: return isFixable ?
+            "line-icon-problem_type_info fa-solid fa-wrench":
+            "line-icon-problem_type_info fa-solid fa-info-circle";
+        default: return isFixable ?
+            "line-icon-problem_type_info fa-solid fa-wrench":
+            "line-icon-problem_type_info fa-solid fa-info-circle";
         }
     }
 
@@ -434,9 +442,10 @@ define(function (require, exports, module) {
      * @param ch - the character position of the error
      * @param type - The type of the marker. This is a string that can be one of the error types
      * @param message - The message that will be displayed when you hover over the marker.
+     * @param isFixable - true if we need to use the fix icon
      * @returns A DOM element.
      */
-    function _createMarkerElement(editor, line, ch, type, message) {
+    function _createMarkerElement(editor, line, ch, type, message, isFixable) {
         let $marker = $('<div><span>')
             .attr('title', message)
             .addClass(CODE_INSPECTION_GUTTER);
@@ -444,7 +453,7 @@ define(function (require, exports, module) {
             editor.setCursorPos(line, ch);
         });
         $marker.find('span')
-            .addClass(_getIconClassForType(type))
+            .addClass(_getIconClassForType(type, isFixable))
             .addClass("brackets-inspection-gutter-marker")
             .html('&nbsp;');
         return $marker[0];
@@ -477,7 +486,11 @@ define(function (require, exports, module) {
         for(let lineno of Object.keys(gutterErrorMessages)){
             // We mark the line with the Highest priority icon. (Eg. error icon if same line has warnings and info)
             let highestPriorityMarkTypeSeen = Type.META;
+            let fixableMarkFound = false;
             let gutterMessage = gutterErrorMessages[lineno].reduce((prev, current)=>{
+                if(current.fixable || prev.fixable){
+                    fixableMarkFound = true;
+                }
                 if(_getMarkTypePriority(current.type) > _getMarkTypePriority(highestPriorityMarkTypeSeen)){
                     highestPriorityMarkTypeSeen = current.type;
                 }
@@ -486,7 +499,7 @@ define(function (require, exports, module) {
             let line = gutterErrorMessages[lineno][0].line,
                 ch = gutterErrorMessages[lineno][0].ch,
                 message = gutterMessage.message;
-            let marker = _createMarkerElement(editor, line, ch, highestPriorityMarkTypeSeen, message);
+            let marker = _createMarkerElement(editor, line, ch, highestPriorityMarkTypeSeen, message, fixableMarkFound);
             editor.setGutterMarker(line, CODE_INSPECTION_GUTTER, marker);
         }
         _populateDummyGutterElements(editor, 0, editor.getLastVisibleLine());
@@ -531,7 +544,8 @@ define(function (require, exports, module) {
                 if(documentFixes.get(fixID)){
                     $problemView = $(`<div>
                         <button class="btn btn-mini primary fix-problem-btn" style="margin-right: 5px;">Fix</button>
-                        ${mark.message}<br/>
+                        <a style="cursor:pointer;">${mark.message}</a>
+                        <br/>
                     </div>`);
                     $problemView.find(".fix-problem-btn").click(()=>{
                         scrollToProblem(pos.line);
@@ -539,7 +553,9 @@ define(function (require, exports, module) {
                     });
                     $hoverMessage.append($problemView);
                 } else {
-                    $problemView = $(`<div>${mark.message}<br/></div>`);
+                    $problemView = $(`<div>
+                        <a style="cursor: pointer">${mark.message}</a>
+                        <br/></div>`);
                     $hoverMessage.append($problemView);
                 }
                 // eslint-disable-next-line no-loop-func
@@ -615,9 +631,7 @@ define(function (require, exports, module) {
                 for (let error of errors) {
                     let line = error.pos.line || 0;
                     let ch = error.pos.ch || 0;
-                    let gutterMessage = gutterErrorMessages[line] || [];
-                    gutterMessage.push({message: error.message, type: error.type, line, ch});
-                    gutterErrorMessages[line] = gutterMessage;
+                    let fixable = false;
                     // add squiggly lines
                     if (_shouldMarkTokenAtPosition(editor, error)) {
                         let mark;
@@ -626,6 +640,7 @@ define(function (require, exports, module) {
                         if(fixID) {
                             markOptions.metadata = fixID;
                             error.fix.id = fixID;
+                            fixable = true;
                         }
                         if(error.endPos && !editor.isSamePosition(error.pos, error.endPos)) {
                             mark = editor.markText(CODE_MARK_TYPE_INSPECTOR, error.pos, error.endPos, markOptions);
@@ -635,6 +650,9 @@ define(function (require, exports, module) {
                         mark.type = error.type;
                         mark.message = error.message;
                     }
+                    let gutterMessage = gutterErrorMessages[line] || [];
+                    gutterMessage.push({message: error.message, type: error.type, fixable, line, ch});
+                    gutterErrorMessages[line] = gutterMessage;
                 }
             }
             _updateGutterMarks(editor, gutterErrorMessages);
