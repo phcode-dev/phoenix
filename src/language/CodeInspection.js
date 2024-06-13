@@ -543,7 +543,8 @@ define(function (require, exports, module) {
                 const fixID = `${mark.metadata}`;
                 if(documentFixes.get(fixID)){
                     $problemView = $(`<div>
-                        <button class="btn btn-mini primary fix-problem-btn" style="margin-right: 5px;">Fix</button>
+                        <i class="${_getIconClassForType(mark.type, mark.isFixable)}" style="margin-right: 3px;"></i>
+                        <button class="btn btn-mini fix-problem-btn" style="margin-right: 5px;">Fix</button>
                         <a style="cursor:pointer;">${mark.message}</a>
                         <br/>
                     </div>`);
@@ -554,6 +555,7 @@ define(function (require, exports, module) {
                     $hoverMessage.append($problemView);
                 } else {
                     $problemView = $(`<div>
+                        <i class="${_getIconClassForType(mark.type, mark.isFixable)}" style="margin-right: 5px;"></i>
                         <a style="cursor: pointer">${mark.message}</a>
                         <br/></div>`);
                     $hoverMessage.append($problemView);
@@ -639,6 +641,7 @@ define(function (require, exports, module) {
                         const fixID = _registerNewFix(editor, error.fix, resultProvider.provider.name, maxOffset);
                         if(fixID) {
                             markOptions.metadata = fixID;
+                            markOptions.isFixable = true;
                             error.fix.id = fixID;
                             fixable = true;
                         }
