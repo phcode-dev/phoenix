@@ -47,7 +47,7 @@ define(function (require, exports, module) {
             window._JsHintExtensionReadyToIntegTest = true;
         });
     }
-    IndexingWorker.loadScriptInWorker(`${module.uri}/../worker/jslint-helper.js`);
+    IndexingWorker.loadScriptInWorker(`${module.uri}/../worker/web-lint-helper.js`);
 
     let prefs = PreferencesManager.getExtensionPrefs("jshint"),
         projectSpecificOptions = null,
