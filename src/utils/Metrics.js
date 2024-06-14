@@ -113,7 +113,8 @@ define(function (require, exports, module) {
         NEW_PROJECT: "new-project",
         ERROR: "error",
         USER: "user",
-        NODEJS: "node"
+        NODEJS: "node",
+        LINT: "lint"
     };
 
     /**
@@ -385,6 +386,16 @@ define(function (require, exports, module) {
         }
     }
 
+    /**
+     * Logs the performance time taken for a specific action.
+     *
+     * @param {string} action - The key representing the action being measured (e.g., 'startupTime').
+     * @param {number} durationMs - The duration of the action in milliseconds.
+     */
+    function logPerformanceTime(action, durationMs) {
+        valueEvent(EVENT_TYPE.PERFORMANCE, "ms", action, Number(durationMs));
+    }
+
     // Define public API
     exports.init               = init;
     exports.setDisabled        = setDisabled;
@@ -393,6 +404,7 @@ define(function (require, exports, module) {
     exports.clearAuditData     = clearAuditData;
     exports.countEvent         = countEvent;
     exports.valueEvent         = valueEvent;
+    exports.logPerformanceTime = logPerformanceTime;
     exports.flushMetrics       = flushMetrics;
     exports.EVENT_TYPE = EVENT_TYPE;
     exports.AUDIT_TYPE_COUNT = AUDIT_TYPE_COUNT;
