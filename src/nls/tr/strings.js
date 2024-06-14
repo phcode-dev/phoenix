@@ -322,6 +322,7 @@ define({
   "STATUSBAR_TASKS_STOP": "Durmak",
   "STATUSBAR_TASKS_RESTART": "Tekrar başlat",
   "ERRORS_NO_FILE": "Dosya Açık Değil",
+  "ERRORS_CLICK_TO_VIEW_PROBLEM": "Sorunu görüntülemek için tıklayın",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Sorunlar - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} Sorun, {1} Düzeltilebilir - {2}",
   "SINGLE_ERROR": "1 {0} Sorun - {1}",

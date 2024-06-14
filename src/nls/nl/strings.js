@@ -322,6 +322,7 @@ define({
   "STATUSBAR_TASKS_STOP": "Stop",
   "STATUSBAR_TASKS_RESTART": "Herstarten",
   "ERRORS_NO_FILE": "Geen bestand geopend",
+  "ERRORS_CLICK_TO_VIEW_PROBLEM": "Klik om het probleem te bekijken",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Problemen - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} Problemen, {1} op te lossen - {2}",
   "SINGLE_ERROR": "1 {0} Probleem - {1}",

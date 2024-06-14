@@ -302,6 +302,7 @@
   "STATUSBAR_TASKS_STOP": "멈추다",
   "STATUSBAR_TASKS_RESTART": "재시작",
   "ERRORS_NO_FILE": "열린 파일 없음",
+  "ERRORS_CLICK_TO_VIEW_PROBLEM": "문제를 보려면 클릭하세요.",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} 문제 - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} 문제, {1} 해결 가능 - {2}",
   "SINGLE_ERROR": "1 {0} 문제 - {1}",

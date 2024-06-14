@@ -322,6 +322,7 @@ define({
   "STATUSBAR_TASKS_STOP": "Berhenti",
   "STATUSBAR_TASKS_RESTART": "Mengulang kembali",
   "ERRORS_NO_FILE": "Tidak Ada File yang Terbuka",
+  "ERRORS_CLICK_TO_VIEW_PROBLEM": "Klik untuk melihat masalah",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Masalah - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} Masalah, {1} Dapat Diperbaiki - {2}",
   "SINGLE_ERROR": "1 {0} Masalah - {1}",

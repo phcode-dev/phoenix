@@ -322,6 +322,7 @@ define({
   "STATUSBAR_TASKS_STOP": "Останавливаться",
   "STATUSBAR_TASKS_RESTART": "Перезапуск",
   "ERRORS_NO_FILE": "Ни один файл не открыт",
+  "ERRORS_CLICK_TO_VIEW_PROBLEM": "Нажмите, чтобы просмотреть проблему",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Проблемы – {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} Проблемы, {1} решаемые – {2}",
   "SINGLE_ERROR": "1 {0} Проблема – {1}",

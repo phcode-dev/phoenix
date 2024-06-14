@@ -322,6 +322,7 @@ define({
   "STATUSBAR_TASKS_STOP": "قف",
   "STATUSBAR_TASKS_RESTART": "إعادة تشغيل",
   "ERRORS_NO_FILE": "لا يوجد ملف مفتوح",
+  "ERRORS_CLICK_TO_VIEW_PROBLEM": "انقر لعرض المشكلة",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} المشاكل - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} المشاكل، {1} قابلة للإصلاح - {2}",
   "SINGLE_ERROR": "1 {0} مشكلة - {1}",

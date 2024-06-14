@@ -322,6 +322,7 @@ define({
   "STATUSBAR_TASKS_STOP": "停止",
   "STATUSBAR_TASKS_RESTART": "重新开始",
   "ERRORS_NO_FILE": "没有打开文件",
+  "ERRORS_CLICK_TO_VIEW_PROBLEM": "点击查看问题",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} 问题 - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} 个问题，{1} 可修复 - {2}",
   "SINGLE_ERROR": "1 {0} 问题 - {1}",
