@@ -410,7 +410,6 @@ define({
 
     // CodeInspection: errors/warnings
     "ERRORS_NO_FILE": "No File Open",
-    "ERRORS_CLICK_TO_VIEW_PROBLEM": "Click to view problem",
     "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Problems - {1}",
     "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} Problems, {1} Fixable - {2}",
     "SINGLE_ERROR": "1 {0} Problem - {1}",
