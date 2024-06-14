@@ -57,7 +57,8 @@ define(function (require, exports, module) {
         PanelTemplate           = require("text!htmlContent/problems-panel.html"),
         ResultsTemplate         = require("text!htmlContent/problems-panel-table.html"),
         Mustache                = require("thirdparty/mustache/mustache"),
-        QuickViewManager        = require("features/QuickViewManager");
+        QuickViewManager  = require("features/QuickViewManager"),
+        Metrics           = require("utils/Metrics");
 
     const CODE_INSPECTION_GUTTER_PRIORITY      = 500,
         CODE_INSPECTION_GUTTER = "code-inspection-gutter";
@@ -549,6 +550,7 @@ define(function (require, exports, module) {
                         <br/>
                     </div>`);
                     $problemView.find(".fix-problem-btn").click(()=>{
+                        Metrics.countEvent(Metrics.EVENT_TYPE.LINT, "fixClick", "quickView");
                         scrollToProblem(pos.line);
                         _fixProblem(fixID);
                     });
@@ -580,6 +582,7 @@ define(function (require, exports, module) {
                 }
             }
             if(quickViewPresent){
+                Metrics.countEvent(Metrics.EVENT_TYPE.LINT, "quickView", "shown");
                 resolve({
                     start: startPos,
                     end: endPos,
@@ -1090,8 +1093,10 @@ define(function (require, exports, module) {
         const editor = EditorManager.getCurrentFullEditor();
         const maxOffset = editor.document.getText().length;
         if(!editor || !fixDetails || editor.document.lastChangeTimestamp !== lastDocumentScanTimeStamp) {
+            Metrics.countEvent(Metrics.EVENT_TYPE.LINT, "fixFail", "dialogShown");
             Dialogs.showErrorDialog(Strings.CANNOT_FIX_TITLE, Strings.CANNOT_FIX_MESSAGE);
         } else if(_isInvalidFix(fixDetails, maxOffset)){
+            Metrics.countEvent(Metrics.EVENT_TYPE.LINT, "fixFail", "invalid");
             console.error("Invalid fix:", fixDetails); // this should never happen as we filter the fix while inserting
         } else {
             const from = editor.posFromIndex(fixDetails.rangeOffset.start),
@@ -1139,7 +1144,10 @@ define(function (require, exports, module) {
         problemsPanel = WorkspaceManager.createBottomPanel("errors", $(panelHtml), 100);
         $problemsPanel = $("#problems-panel");
         $fixAllBtn = $problemsPanel.find(".problems-fix-all-btn");
-        $fixAllBtn.click(_fixAllProblems);
+        $fixAllBtn.click(()=>{
+            Metrics.countEvent(Metrics.EVENT_TYPE.LINT, "fixAllClick", "panel");
+            _fixAllProblems();
+        });
 
         function checkSelectionInsideElement(range, element) {
             if(!range || range.endOffset === range.startOffset) {
@@ -1169,6 +1177,7 @@ define(function (require, exports, module) {
                 }
                 if ($(e.target).hasClass('ph-fix-problem')) {
                     // Retrieve the message from the data attribute of the clicked element
+                    Metrics.countEvent(Metrics.EVENT_TYPE.LINT, "fixClick", "panel");
                     _fixProblem("" + $(e.target).data("fixid"));
                     e.preventDefault();
                     e.stopPropagation();

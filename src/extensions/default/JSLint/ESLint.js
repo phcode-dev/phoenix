@@ -29,7 +29,7 @@
 define(function (require, exports, module) {
 
     // Load dependent modules
-    const CodeInspection     = brackets.getModule("language/CodeInspection"),
+    const CodeInspection   = brackets.getModule("language/CodeInspection"),
         FileSystemError    = brackets.getModule("filesystem/FileSystemError"),
         AppInit            = brackets.getModule("utils/AppInit"),
         PreferencesManager = brackets.getModule("preferences/PreferencesManager"),
@@ -39,7 +39,8 @@ define(function (require, exports, module) {
         ProjectManager     = brackets.getModule("project/ProjectManager"),
         FileSystem         = brackets.getModule("filesystem/FileSystem"),
         LanguageManager    = brackets.getModule("language/LanguageManager"),
-        NodeUtils          = brackets.getModule("utils/NodeUtils");
+        NodeUtils          = brackets.getModule("utils/NodeUtils"),
+        Metrics            = brackets.getModule("utils/Metrics");
 
     let prefs = PreferencesManager.getExtensionPrefs("ESLint"),
         useESLintFromProject = false;
@@ -148,7 +149,9 @@ define(function (require, exports, module) {
                 resolve({ errors: _getLintError(ESLINT_ONLY_IN_NATIVE_APP) });
                 return;
             }
+            const startTime = Date.now();
             NodeUtils.ESLintFile(text, fullPath, ProjectManager.getProjectRoot().fullPath).then(esLintResult =>{
+                Metrics.logPerformanceTime("ESLint", Date.now() - startTime);
                 const language = LanguageManager.getLanguageForPath(fullPath).getId();
                 if(language === "jsx" && !_isEslintSupportsJSX(esLintResult.config)){
                     resolve({isIgnored: true});
@@ -221,12 +224,17 @@ define(function (require, exports, module) {
                 // Eg. in integ tests. do nothing as another scan for the new project will be in progress.
                 return;
             }
+            if(shouldESLintEnable) {
+                Metrics.countEvent(Metrics.EVENT_TYPE.LINT, "eslint", "config");
+            }
             useESLintFromProject = shouldESLintEnable;
             CodeInspection.requestRun(Strings.ESLINT_NAME);
-        }).catch(()=>{
+        }).catch((err)=>{
+            console.error(`ESLint reload options error: ${err}`);
             if(scanningProjectPath !== ProjectManager.getProjectRoot().fullPath){
                 return;
             }
+            Metrics.countEvent(Metrics.EVENT_TYPE.LINT, "eslintErr", "project");
             useESLintFromProject = false;
             CodeInspection.requestRun(Strings.ESLINT_NAME);
         });

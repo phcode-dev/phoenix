@@ -39,6 +39,7 @@ define(function (require, exports, module) {
         ProjectManager     = brackets.getModule("project/ProjectManager"),
         FileSystem         = brackets.getModule("filesystem/FileSystem"),
         IndexingWorker     = brackets.getModule("worker/IndexingWorker"),
+        Metrics            = brackets.getModule("utils/Metrics"),
         ESLint       = require("./ESLint");
 
     if(Phoenix.isTestWindow) {
@@ -96,10 +97,12 @@ define(function (require, exports, module) {
 
             let options = projectSpecificOptions || DEFAULT_OPTIONS;
 
+            const startTime = Date.now();
             IndexingWorker.execPeer("jsHint", {
                 text,
                 options
             }).then(jsHintErrors =>{
+                Metrics.logPerformanceTime("JSHint", Date.now() - startTime);
                 if (!jsHintErrors.lintResult && jsHintErrors.errors.length) {
                     let errors = jsHintErrors.errors;
 
@@ -222,6 +225,9 @@ define(function (require, exports, module) {
                 // Eg. in integ tests. do nothing as another scan for the new project will be in progress.
                 return;
             }
+            if(config) {
+                Metrics.countEvent(Metrics.EVENT_TYPE.LINT, "jsHint", "config");
+            }
             projectSpecificOptions = config;
             jsHintConfigFileErrorMessage = null;
             CodeInspection.requestRun(Strings.JSHINT_NAME);
@@ -229,6 +235,7 @@ define(function (require, exports, module) {
             if(scanningProjectPath !== ProjectManager.getProjectRoot().fullPath){
                 return;
             }
+            Metrics.countEvent(Metrics.EVENT_TYPE.LINT, "jsHintErr", "project");
             jsHintConfigFileErrorMessage = err;
             CodeInspection.requestRun(Strings.JSHINT_NAME);
         });
