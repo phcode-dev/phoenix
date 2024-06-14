@@ -302,6 +302,7 @@
   "STATUSBAR_TASKS_STOP": "Stop",
   "STATUSBAR_TASKS_RESTART": "Repornire",
   "ERRORS_NO_FILE": "Niciun fișier deschis",
+  "ERRORS_CLICK_TO_VIEW_PROBLEM": "Faceți clic pentru a vedea problema",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Probleme - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} Probleme, {1} Remediabil - {2}",
   "SINGLE_ERROR": "1 {0} Problemă - {1}",

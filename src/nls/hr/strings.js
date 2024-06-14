@@ -322,6 +322,7 @@ define({
   "STATUSBAR_TASKS_STOP": "Stop",
   "STATUSBAR_TASKS_RESTART": "Ponovno pokretanje",
   "ERRORS_NO_FILE": "Nema otvorene datoteke",
+  "ERRORS_CLICK_TO_VIEW_PROBLEM": "Kliknite za pregled problema",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Problemi - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} Problemi, {1} Popravljivi - {2}",
   "SINGLE_ERROR": "1 {0} problem - {1}",

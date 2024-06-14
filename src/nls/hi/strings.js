@@ -322,6 +322,7 @@ define({
   "STATUSBAR_TASKS_STOP": "रुकना",
   "STATUSBAR_TASKS_RESTART": "पुनः आरंभ करें",
   "ERRORS_NO_FILE": "कोई फ़ाइल नहीं खुली",
+  "ERRORS_CLICK_TO_VIEW_PROBLEM": "समस्या देखने के लिए क्लिक करें",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} समस्याएं - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} समस्याएं, {1} समाधान योग्य - {2}",
   "SINGLE_ERROR": "1 {0} समस्या - {1}",

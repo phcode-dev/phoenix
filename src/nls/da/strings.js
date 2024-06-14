@@ -322,6 +322,7 @@ define({
   "STATUSBAR_TASKS_STOP": "Hold op",
   "STATUSBAR_TASKS_RESTART": "Genstart",
   "ERRORS_NO_FILE": "Ingen fil åben",
+  "ERRORS_CLICK_TO_VIEW_PROBLEM": "Klik for at se problemet",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Problemer - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} Problemer, {1} Kan løses - {2}",
   "SINGLE_ERROR": "1 {0} Problem - {1}",

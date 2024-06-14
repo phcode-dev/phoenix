@@ -322,6 +322,7 @@ define({
   "STATUSBAR_TASKS_STOP": "رک جاؤ",
   "STATUSBAR_TASKS_RESTART": "دوبارہ شروع کریں",
   "ERRORS_NO_FILE": "کوئی فائل نہیں کھلی۔",
+  "ERRORS_CLICK_TO_VIEW_PROBLEM": "مسئلہ دیکھنے کے لیے کلک کریں۔",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} مسائل - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} مسائل، {1} قابل حل - {2}",
   "SINGLE_ERROR": "1 {0} مسئلہ - {1}",

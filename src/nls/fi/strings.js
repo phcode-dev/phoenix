@@ -322,6 +322,7 @@ define({
   "STATUSBAR_TASKS_STOP": "Lopettaa",
   "STATUSBAR_TASKS_RESTART": "Uudelleenkäynnistää",
   "ERRORS_NO_FILE": "Ei tiedostoa auki",
+  "ERRORS_CLICK_TO_VIEW_PROBLEM": "Napsauta nähdäksesi ongelman",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} ongelmat - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} Ongelmia, {1} Korjattavissa - {2}",
   "SINGLE_ERROR": "1 {0} Ongelma - {1}",

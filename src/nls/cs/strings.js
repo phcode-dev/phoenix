@@ -322,6 +322,7 @@ define({
   "STATUSBAR_TASKS_STOP": "Stop",
   "STATUSBAR_TASKS_RESTART": "Restartujte",
   "ERRORS_NO_FILE": "Žádný soubor otevřen",
+  "ERRORS_CLICK_TO_VIEW_PROBLEM": "Kliknutím zobrazíte problém",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Problémy – {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} Problémy, {1} Opravitelné – {2}",
   "SINGLE_ERROR": "1 Problém {0} – {1}",
