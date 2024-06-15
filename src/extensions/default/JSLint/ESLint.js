@@ -114,6 +114,8 @@ define(function (require, exports, module) {
                     }
                 };
             }
+            // todo , the results have a set of suggestion suggestions which we can display to user as a set of
+            //  suggestions for a line.
             return {
                 pos: { line: _0Based(lintError.line), ch: _0Based(lintError.column)},
                 endPos: {

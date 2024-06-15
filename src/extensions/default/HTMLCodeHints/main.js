@@ -40,6 +40,8 @@ define(function (require, exports, module) {
         HTMLTemplate        = require("text!template.html"),
         XHTMLTemplate       = require("text!template.xhtml");
 
+    require("./html-lint");
+
     let tags,
         attributes;
 

@@ -477,7 +477,7 @@ define(function (require, exports, module) {
                     let html = Mustache.render(markdownHTMLTemplate, templateVars);
                     resolve({
                         contents: html,
-                        headers: {'Content-Type': 'text/html'},
+                        headers: {'Content-Type': 'text/html; charset=UTF-8'},
                         path: fullPath
                     });
                 })
@@ -627,6 +627,12 @@ define(function (require, exports, module) {
                     // headers: {'Content-Type': 'text/html'} // optional headers
                     response.type = 'REQUEST_RESPONSE';
                     response.requestID = requestID;
+                    if(typeof response.contents === "string"){
+                        // https://github.com/orgs/phcode-dev/discussions/1676
+                        response.headers = {
+                            'Content-Type': 'text/html;charset=UTF-8'
+                        };
+                    }
                     messageToLivePreviewTabs(response);
                 })
                 .catch(console.error);

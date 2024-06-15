@@ -85,6 +85,15 @@ Metrics.valueEvent(Metrics.EVENT_TYPE.PERFORMANCE, "startupTime", "ms", 200);
 Send all pending metrics, useful before app quit.
 Will never throw Error.
 
+## logPerformanceTime
+
+Logs the performance time taken for a specific action.
+
+### Parameters
+
+*   `action` **[string][4]** The key representing the action being measured (e.g., 'startupTime').
+*   `durationMs` **[number][5]** The duration of the action in milliseconds.
+
 [1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
 [2]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function

@@ -448,10 +448,12 @@ define(function (require, exports, module) {
      */
     function _createMarkerElement(editor, line, ch, type, message, isFixable) {
         let $marker = $('<div><span>')
-            .attr('title', message)
+            .attr('title', (message || "").trim())
             .addClass(CODE_INSPECTION_GUTTER);
         $marker.click(function (){
             editor.setCursorPos(line, ch);
+            toggleCollapsed(false);
+            scrollToProblem(line);
         });
         $marker.find('span')
             .addClass(_getIconClassForType(type, isFixable))
@@ -536,17 +538,20 @@ define(function (require, exports, module) {
         return new Promise((resolve, reject)=>{
             let codeInspectionMarks = editor.findMarksAt(pos, CODE_MARK_TYPE_INSPECTOR) || [];
             let $hoverMessage = $(`<div class="code-inspection-item"></div>`);
-            let $problemView, quickViewPresent;
+            let quickViewPresent;
             let startPos = {line: pos.line, ch: token.start},
                 endPos = {line: pos.line, ch: token.end};
             for(let mark of codeInspectionMarks){
+                let $problemView;
                 quickViewPresent = true;
                 const fixID = `${mark.metadata}`;
+                let errorMessageHTML = `<a style="cursor:pointer;color: unset;">${_.escape(mark.message)}</a>`;
                 if(documentFixes.get(fixID)){
                     $problemView = $(`<div>
-                        <i class="${_getIconClassForType(mark.type, mark.isFixable)}" style="margin-right: 3px;"></i>
+                        <i title="${Strings.CLICK_VIEW_PROBLEM}" style="margin-right: 3px;cursor: pointer;"
+                            class="${_getIconClassForType(mark.type, mark.isFixable)}"></i>
                         <button class="btn btn-mini fix-problem-btn" style="margin-right: 5px;">Fix</button>
-                        <a style="cursor:pointer;">${mark.message}</a>
+                        ${errorMessageHTML}
                         <br/>
                     </div>`);
                     $problemView.find(".fix-problem-btn").click(()=>{
@@ -557,13 +562,19 @@ define(function (require, exports, module) {
                     $hoverMessage.append($problemView);
                 } else {
                     $problemView = $(`<div>
-                        <i class="${_getIconClassForType(mark.type, mark.isFixable)}" style="margin-right: 5px;"></i>
-                        <a style="cursor: pointer">${mark.message}</a>
+                        <i title="${Strings.CLICK_VIEW_PROBLEM}" style="margin-right: 5px; cursor: pointer;"
+                            class="${_getIconClassForType(mark.type, mark.isFixable)}"></i>
+                        ${errorMessageHTML}
                         <br/></div>`);
                     $hoverMessage.append($problemView);
                 }
-                // eslint-disable-next-line no-loop-func
                 $problemView.click(function () {
+                    const selection = window.getSelection();
+                    if(selection && selection.rangeCount > 0 && !selection.isCollapsed) {
+                        // the user may be trying to select text from the error in quick view, in which case we
+                        // shouldnt open the problems panel
+                        return;
+                    }
                     toggleCollapsed(false);
                     scrollToProblem(pos.line);
                 });
