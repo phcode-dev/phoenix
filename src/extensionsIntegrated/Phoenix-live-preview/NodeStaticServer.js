@@ -408,9 +408,17 @@ define(function (require, exports, module) {
                 }
             }
 
+            let headers;
+            if(path.endsWith(".htm") || path.endsWith(".html") || path.endsWith(".xhtml") || path.endsWith(".php")) {
+                headers = {
+                    'Content-Type': 'text/html;charset=UTF-8'
+                };
+            }
+
             resolve({
                 path,
-                textContents: contents
+                textContents: contents,
+                headers
             });
         });
     };

@@ -164,7 +164,7 @@ define(function (require, exports, module) {
             configFileName = configFileName || CONFIG_FILE_NAME;
             const configFilePath = path.join(dir, configFileName);
             let displayPath = ProjectManager.makeProjectRelativeIfPossible(configFilePath);
-            displayPath = Phoenix.app.getDisplayPath(displayPath);
+            displayPath = ProjectManager.getProjectRelativeOrDisplayPath(displayPath);
             DocumentManager.getDocumentForPath(configFilePath).done(function (configDoc) {
                 if (!ProjectManager.isWithinProject(configFilePath)) {
                     // this is a rare race condition where the user switches project between the get document call.
@@ -198,7 +198,7 @@ define(function (require, exports, module) {
                         resolve(mergedConfig);
                     }).catch(()=>{
                         let extendDisplayPath = ProjectManager.makeProjectRelativeIfPossible(extendFile.fullPath);
-                        extendDisplayPath = Phoenix.app.getDisplayPath(extendDisplayPath);
+                        extendDisplayPath = ProjectManager.getProjectRelativeOrDisplayPath(extendDisplayPath);
                         reject("Error parsing JSHint config file: " + extendDisplayPath);
                     });
                 }

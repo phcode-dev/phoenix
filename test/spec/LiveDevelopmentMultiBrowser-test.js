@@ -209,7 +209,8 @@ define(function (require, exports, module) {
             liveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
             await awaitsFor(
                 function relatedDocsReceived() {
-                    return (Object.getOwnPropertyNames(liveDoc.getRelated().scripts).length > 0);
+                    return (Object.getOwnPropertyNames(liveDoc.getRelated().scripts).length > 0) &&
+                        liveDoc.isRelated(testFolder + "/import1.css");
                 },
                 "relatedDocuments.done.received",
                 10000
@@ -233,6 +234,28 @@ define(function (require, exports, module) {
                 10000
             );
             expect(liveDoc.isRelated(testFolder + "/simple1.js")).toBeTruthy();
+            await endPreviewSession();
+        }, 30000);
+
+        it("should render partial arabic html with correct utf-8 encoding", async function () {
+            // https://github.com/orgs/phcode-dev/discussions/1676
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["arabicPartial.html"]),
+                "SpecRunnerUtils.openProjectFiles arabicPartial.html");
+            await waitsForLiveDevelopmentToOpen();
+
+            let result;
+            await awaitsFor(
+                function isArabicTextProperlyRendered() {
+                    LiveDevProtocol.evaluate(`document.getElementById('arabic-text').textContent`)
+                        .done((response)=>{
+                            result = JSON.parse(response.result||"");
+                        });
+                    return result === " 1 يناير 2021 بواسطة ";
+                },
+                `arabic text to be read correctly`,
+                5000,
+                50
+            );
             await endPreviewSession();
         }, 30000);
 
@@ -371,7 +394,7 @@ define(function (require, exports, module) {
                         });
                     return result === verifyText;
                 },
-                "relatedDocuments.done.received",
+                `relatedDocuments.done.received verifying ${verifyID} to have ${verifyText}`,
                 5000,
                 50
             );
