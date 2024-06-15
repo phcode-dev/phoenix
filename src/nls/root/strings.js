@@ -970,6 +970,7 @@ define({
     "DESCRIPTION_NO_HINTS_ON_DOT": "true to not automatically show JS code hints when . is typed",
     "DESCRIPTION_JSHINT_DISABLE": "true to disable JSHints linter in problems panel",
     "DESCRIPTION_ESLINT_DISABLE": "true to disable ESLint linter in problems panel",
+    "DESCRIPTION_HTML_LINT_DISABLE": "true to disable HTML linter in problems panel",
     "DESCRIPTION_ESLINT_FAILED": "ESLint Failed ({0}). Make sure the project contains valid <a href='https://eslint.org/docs/latest/use/configure/configuration-files'>Configuration Files</a>",
     "DESCRIPTION_ESLINT_USE_NATIVE_APP": "ESLint is only available in the Desktop app. Download it from <a href='https://phcode.io'>phcode.io</a>",
     "DESCRIPTION_ESLINT_LOAD_FAILED": "Failed to load ESLint for this project. {APP_NAME} supports only ESLint versions above 7.",

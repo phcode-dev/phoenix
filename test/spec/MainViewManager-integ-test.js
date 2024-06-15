@@ -34,6 +34,7 @@ define(function (require, exports, module) {
         Dialogs,                 // loaded from brackets.test
         DefaultDialogs,
         WorkspaceManager,
+        PreferencesManager,
         Menus,
         SpecRunnerUtils          = require("spec/SpecRunnerUtils"),
         KeyEvent                 = require("utils/KeyEvent");
@@ -58,6 +59,7 @@ define(function (require, exports, module) {
             DocumentManager         = testWindow.brackets.test.DocumentManager;
             EditorManager           = testWindow.brackets.test.EditorManager;
             DefaultDialogs          = testWindow.brackets.test.DefaultDialogs;
+            PreferencesManager      = testWindow.brackets.test.PreferencesManager;
             MainViewManager         = testWindow.brackets.test.MainViewManager;
             ProjectManager          = testWindow.brackets.test.ProjectManager;
             WorkspaceManager        = testWindow.brackets.test.WorkspaceManager;
@@ -71,6 +73,12 @@ define(function (require, exports, module) {
         beforeAll(async function () {
             testWindow = await SpecRunnerUtils.createTestWindowAndRun({forceReload: true});
             await _init();
+            // we have to disable html lint here as html lint panel interferes with the panel view tests,
+            // which was created before we added html lint. Since we only test the panel functionality, not having html
+            // lint won't impact test correctness.
+            const prefs = PreferencesManager.getExtensionPrefs("HTMLLint");
+            const PREFS_HTML_LINT_DISABLED = "disabled";
+            prefs.set(PREFS_HTML_LINT_DISABLED, true);
         }, 30000);
 
         afterAll(async function () {
@@ -83,6 +91,7 @@ define(function (require, exports, module) {
             EditorManager           = null;
             ProjectManager          = null;
             FileSystem              = null;
+            PreferencesManager      = null;
             await SpecRunnerUtils.closeTestWindow();
         }, 30000);
 

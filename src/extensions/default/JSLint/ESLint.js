@@ -269,6 +269,8 @@ define(function (require, exports, module) {
             if(!Phoenix.isNativeApp) {
                 return;
             }
+            // just do a dummy eslint to warm up/load the eslint runner service for the project and dispose old service
+            // on project switch.
             NodeUtils.ESLintFile("console.log();", "a.js", ProjectManager.getProjectRoot().fullPath)
                 .catch(e=>{
                     console.error(`Error warming up ESLint service`, e);

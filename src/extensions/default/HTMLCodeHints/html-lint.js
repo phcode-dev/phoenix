@@ -31,9 +31,19 @@ define(function (require, exports, module) {
         Strings            = brackets.getModule("strings"),
         EditorManager      = brackets.getModule("editor/EditorManager"),
         ProjectManager     = brackets.getModule("project/ProjectManager"),
+        PreferencesManager = brackets.getModule("preferences/PreferencesManager"),
         IndexingWorker     = brackets.getModule("worker/IndexingWorker");
 
     IndexingWorker.loadScriptInWorker(`${module.uri}/../worker/html-worker.js`);
+
+    const prefs = PreferencesManager.getExtensionPrefs("HTMLLint");
+    const PREFS_HTML_LINT_DISABLED = "disabled";
+
+    prefs.definePreference(PREFS_HTML_LINT_DISABLED, "boolean", false, {
+        description: Strings.DESCRIPTION_HTML_LINT_DISABLE
+    }).on("change", function () {
+        CodeInspection.requestRun(Strings.HTML_LINT_NAME);
+    });
 
     function getTypeFromSeverity(sev) {
         // https://html-validate.org/guide/api/getting-started.html
@@ -82,7 +92,7 @@ define(function (require, exports, module) {
         name: Strings.HTML_LINT_NAME,
         scanFileAsync: lintOneFile,
         canInspect: function (_fullPath) {
-            return true; // no restrictions for now
+            return !prefs.get(PREFS_HTML_LINT_DISABLED);
         }
     });
 });
