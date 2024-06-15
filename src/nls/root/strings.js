@@ -429,6 +429,7 @@ define({
     "CANNOT_FIX_MESSAGE": "The document has been modified since the fix was prepared. Please try again.",
     "LINTER_TIMED_OUT": "{0} has timed out after waiting for {1} ms",
     "LINTER_FAILED": "{0} terminated with error: {1}",
+    "CLICK_VIEW_PROBLEM": "Click to view problem in panel",
 
     /**
      * Command Name Constants
@@ -900,7 +901,10 @@ define({
     "ESLINT_NAME": "ESLint",
 
     // extension css code hints
-    "CSS_LINT_NAME": "{0} Lint",
+    "CSS_LINT_NAME": "{0}",
+
+    // html lint
+    "HTML_LINT_NAME": "HTML",
 
     // Features/QuickView and quick view extensions
     "CMD_ENABLE_QUICK_VIEW": "Quick View on Hover",
