@@ -116,10 +116,6 @@ function _serveData(getContentAPIToUse, req, res) {
                 ...defaultHeaders,
                 ...customHeaders
             };
-            if(data.textContents && !mergedHeaders['Content-Type'].includes('charset=UTF-8')) {
-                // https://github.com/orgs/phcode-dev/discussions/1676
-                mergedHeaders['Content-Type'] = `${mergedHeaders['Content-Type']};charset=UTF-8`;
-            }
             res.writeHead(200, mergedHeaders);
             if(data.textContents) {
                 res.end(data.textContents);

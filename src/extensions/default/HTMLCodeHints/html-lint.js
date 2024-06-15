@@ -30,6 +30,7 @@ define(function (require, exports, module) {
     const CodeInspection   = brackets.getModule("language/CodeInspection"),
         Strings            = brackets.getModule("strings"),
         EditorManager      = brackets.getModule("editor/EditorManager"),
+        ProjectManager     = brackets.getModule("project/ProjectManager"),
         IndexingWorker     = brackets.getModule("worker/IndexingWorker");
 
     IndexingWorker.loadScriptInWorker(`${module.uri}/../worker/html-worker.js`);
@@ -53,9 +54,10 @@ define(function (require, exports, module) {
                 text,
                 filePath: fullPath
             }).then(lintResult =>{
-                const editor = EditorManager.getActiveEditor();
+                const editor = EditorManager.getCurrentFullEditor();
                 if(!editor || editor.document.file.fullPath !== fullPath) {
-                    reject(new Error("Lint failed as  "+ Phoenix.app.getDisplayLocation(fullPath) + " is not active."));
+                    reject(new Error("Lint failed as  "+ ProjectManager.getProjectRelativeOrDisplayPath(fullPath)
+                        + " is not active."));
                     return;
                 }
                 if (lintResult && lintResult.length) {

@@ -536,7 +536,7 @@ define(function (require, exports, module) {
 
                 expect($("#problems-panel").is(":visible")).toBe(true);
                 let marks = EditorManager.getActiveEditor().getGutterMarker(1, CodeInspection.CODE_INSPECTION_GUTTER);
-                expect(marks.title).toBe('\nSome errors here and there at column: 4');
+                expect(marks.title).toBe('Some errors here and there at column: 4');
                 marks = $(marks);
                 expect(marks.find('span').hasClass(expectedClass)).toBeTrue();
                 return marks;

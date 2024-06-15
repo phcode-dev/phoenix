@@ -581,6 +581,19 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Gets a generally displayable path that can be shown to the user in most cases.
+     * Gets the project relative path if possible. If paths is not in project, then if its a platform path(Eg. in tauri)
+     * it will return the full platform path. If not, then it will return a mount relative path for fs access mount
+     * folders opened in the bowser. at last, falling back to vfs path. This should only be used for display purposes
+     * as this path will be changed by phcode depending on the situation in the future.
+     * @param fullPath
+     * @returns {string}
+     */
+    function getProjectRelativeOrDisplayPath(fullPath) {
+        return Phoenix.app.getDisplayPath(makeProjectRelativeIfPossible(fullPath));
+    }
+
+    /**
      * Returns the root folder of the currently loaded project, or null if no project is open (during
      * startup, or running outside of app shell).
      * @return {Directory}
@@ -2239,6 +2252,7 @@ define(function (require, exports, module) {
     exports.getInitialProjectPath         = getInitialProjectPath;
     exports.getStartupProjectPath         = getStartupProjectPath;
     exports.getProjectRelativePath        = getProjectRelativePath;
+    exports.getProjectRelativeOrDisplayPath = getProjectRelativeOrDisplayPath;
     exports.getWelcomeProjectPath         = getWelcomeProjectPath;
     exports.getPlaceholderProjectPath     = getPlaceholderProjectPath;
     exports.getExploreProjectPath         = getExploreProjectPath;
