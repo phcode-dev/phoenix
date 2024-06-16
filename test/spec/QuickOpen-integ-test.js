@@ -31,7 +31,7 @@ define(function (require, exports, module) {
     describe("mainview:QuickOpen", function () {
 
         var testPath = SpecRunnerUtils.getTestPath("/spec/QuickOpen-test-files");
-        var brackets, testWindow, test$, executeCommand, EditorManager, DocumentManager;
+        var brackets, testWindow, test$, executeCommand, EditorManager, DocumentManager, PreferencesManager;
 
         beforeEach(async function () {
 
@@ -41,6 +41,13 @@ define(function (require, exports, module) {
             executeCommand = testWindow.executeCommand;
             EditorManager = brackets.test.EditorManager;
             DocumentManager = brackets.test.DocumentManager;
+            PreferencesManager = brackets.test.PreferencesManager;
+            // we have to disable html lint here as html lint panel interferes with the panel view tests,
+            // which was created before we added html lint. Since we only test the panel functionality, not having html
+            // lint won't impact test correctness.
+            const prefs = PreferencesManager.getExtensionPrefs("HTMLLint");
+            const PREFS_HTML_LINT_DISABLED = "disabled";
+            prefs.set(PREFS_HTML_LINT_DISABLED, true);
         }, 30000);
 
         afterEach(async function () {
