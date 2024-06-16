@@ -22,9 +22,42 @@
 
 (function () {
     let htmlValidator = HTMLLanguageService.createHTMLValidator({
-          extends: ["html-validate:standard"]
-        });
+        extends: ["html-validate:standard"]
+    });
+
+    let isUsingCustomConfig = false, currentConfigID;
+
+    function setupValidator(config, configID) {
+        try{
+            if(!config && isUsingCustomConfig) {
+                // reset the config
+                htmlValidator = HTMLLanguageService.createHTMLValidator({
+                    extends: ["html-validate:standard"]
+                });
+                isUsingCustomConfig = false;
+                currentConfigID = null;
+            } else if(config && currentConfigID !== configID) {
+                htmlValidator = HTMLLanguageService.createHTMLValidator(config);
+                isUsingCustomConfig = true;
+                currentConfigID = configID;
+            }
+            return null;
+        } catch (e) {
+            return e.message;
+        }
+    }
+
     async function htmlLint(params) {
+        let errorMessage = setupValidator(params.config, params.configID);
+        if(errorMessage) {
+            return [{
+                start: 0,
+                end: 0,
+                severity: 2, // 1 warning and 2 is error
+                message: "Invalid config file `.htmlvalidate.json`"+ errorMessage,
+                ruleId: "INVALID_CONFIG"
+            }];
+        }
         const validatorResult = await htmlValidator.validateString(params.text, params.filePath);
         if(!validatorResult || !validatorResult.results || !validatorResult.results.length){
             return [];
@@ -48,5 +81,14 @@
         return errors;
     }
 
+    async function updateHTMLLintConfig(params) {
+        if(params.config){
+            console.error("HTML Lint worker updateHTMLLintConfig received null config", params);
+            return;
+        }
+        htmlValidator = HTMLLanguageService.createHTMLValidator(params.config);
+    }
+
     WorkerComm.setExecHandler("htmlLint", htmlLint);
+    WorkerComm.setExecHandler("updateHTMLLintConfig", updateHTMLLintConfig);
 }());

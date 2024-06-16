@@ -92,8 +92,12 @@ define(function (require, exports, module) {
         EVENT_AFTER_STARTUP_FILES_LOADED = "startupFilesLoaded",
         EVENT_PROJECT_REFRESH = "projectRefresh",
         EVENT_CONTENT_CHANGED = "contentChanged",
+        // This will capture all file/folder changes in projects except renames. If you want to track renames,
+        // use EVENT_PROJECT_PATH_CHANGED_OR_RENAMED to track all changes or EVENT_PROJECT_FILE_RENAMED too.
         EVENT_PROJECT_FILE_CHANGED = "projectFileChanged",
-        EVENT_PROJECT_FILE_RENAMED = "projectFileRenamed";
+        EVENT_PROJECT_FILE_RENAMED = "projectFileRenamed",
+        // the path changed event differs in the sense that all events returned by this will be a path.
+        EVENT_PROJECT_PATH_CHANGED_OR_RENAMED = "projectPathChanged";
 
     EventDispatcher.setLeakThresholdForEvent(EVENT_PROJECT_OPEN, 25);
 
@@ -2021,6 +2025,32 @@ define(function (require, exports, module) {
         return !unsafeExit;
     }
 
+    function _entryToPathArray(entryArray) {
+        if(!entryArray || !entryArray.length) {
+            return [];
+        }
+        return entryArray.map(entry => path.normalize(entry.fullPath));
+    }
+
+    exports.on(EVENT_PROJECT_FILE_CHANGED, (_evt, entry, addedInProject, removedInProject)=>{
+        exports.trigger(EVENT_PROJECT_PATH_CHANGED_OR_RENAMED, entry && path.normalize(entry.fullPath),
+            _entryToPathArray(addedInProject), _entryToPathArray(removedInProject));
+    });
+    exports.on(EVENT_PROJECT_FILE_RENAMED, (_evt, oldPath, newPath)=>{
+        oldPath = path.normalize(oldPath);
+        newPath = path.normalize(newPath);
+        if(oldPath === newPath){
+            return; // no change
+        }
+        const oldParent = path.dirname(oldPath), newParent = path.dirname(newPath);
+        if(oldParent === newParent) {
+            exports.trigger(EVENT_PROJECT_PATH_CHANGED_OR_RENAMED, newParent, [newPath], [oldPath]);
+        } else {
+            exports.trigger(EVENT_PROJECT_PATH_CHANGED_OR_RENAMED, oldParent, [], [oldPath]);
+            exports.trigger(EVENT_PROJECT_PATH_CHANGED_OR_RENAMED, newParent, [newPath], []);
+        }
+    });
+
     exports.on(EVENT_PROJECT_OPEN, (_evt, projectRoot)=>{
         _reloadProjectPreferencesScope();
         _saveProjectPath();
@@ -2285,5 +2315,6 @@ define(function (require, exports, module) {
     exports.EVENT_CONTENT_CHANGED = EVENT_CONTENT_CHANGED;
     exports.EVENT_PROJECT_FILE_CHANGED = EVENT_PROJECT_FILE_CHANGED;
     exports.EVENT_PROJECT_FILE_RENAMED = EVENT_PROJECT_FILE_RENAMED;
+    exports.EVENT_PROJECT_PATH_CHANGED_OR_RENAMED = EVENT_PROJECT_PATH_CHANGED_OR_RENAMED;
     exports.EVENT_PROJECT_OPEN_FAILED = EVENT_PROJECT_OPEN_FAILED;
 });

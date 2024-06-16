@@ -898,6 +898,8 @@ define({
 
     // extensions/default/JSLint
     "JSHINT_NAME": "JSHint",
+    "JSHINT_CONFIG_ERROR": "Error reading JSHint config file: {0}",
+    "JSHINT_CONFIG_JSON_ERROR": "Error: JSHint config file `{0}` is not valid JSON",
     "ESLINT_NAME": "ESLint",
 
     // extension css code hints
@@ -905,6 +907,8 @@ define({
 
     // html lint
     "HTML_LINT_NAME": "HTML",
+    "HTML_LINT_CONFIG_JSON_ERROR": "Error: HTML Validator config file `{0}` is not valid JSON",
+    "HTML_LINT_CONFIG_UNSUPPORTED": "Error: Unsupported config format `{0}`. Use JSON config `.htmlvalidate.json`",
 
     // Features/QuickView and quick view extensions
     "CMD_ENABLE_QUICK_VIEW": "Quick View on Hover",

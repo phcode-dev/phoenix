@@ -236,7 +236,7 @@ define(function (require, exports, module) {
             if(scanningProjectPath !== ProjectManager.getProjectRoot().fullPath){
                 return;
             }
-            Metrics.countEvent(Metrics.EVENT_TYPE.LINT, "eslintErr", "project");
+            Metrics.countEvent(Metrics.EVENT_TYPE.LINT, "eslintConfig", "error");
             useESLintFromProject = false;
             CodeInspection.requestRun(Strings.ESLINT_NAME);
         });
