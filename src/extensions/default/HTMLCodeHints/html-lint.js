@@ -31,8 +31,6 @@ define(function (require, exports, module) {
         AppInit            = brackets.getModule("utils/AppInit"),
         Strings            = brackets.getModule("strings"),
         StringUtils        = brackets.getModule("utils/StringUtils"),
-        FileSystemError    = brackets.getModule("filesystem/FileSystemError"),
-        DocumentManager    = brackets.getModule("document/DocumentManager"),
         EditorManager      = brackets.getModule("editor/EditorManager"),
         ProjectManager     = brackets.getModule("project/ProjectManager"),
         PreferencesManager = brackets.getModule("preferences/PreferencesManager"),
@@ -169,7 +167,7 @@ define(function (require, exports, module) {
         configErrorMessage = null;
         const scanningProjectPath = ProjectManager.getProjectRoot().fullPath;
         configID++;
-        _readConfig(scanningProjectPath, CONFIG_FILE_NAME).then((config)=>{
+        _readConfig(scanningProjectPath).then((config)=>{
             configID++;
             if(scanningProjectPath !== ProjectManager.getProjectRoot().fullPath){
                 // this is a rare race condition where the user switches project between the get document call.
