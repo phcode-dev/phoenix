@@ -728,6 +728,25 @@ define(function (require, exports, module) {
         //     ]);
         // }, 10000);
 
+        describe("Project file/folder watch events", function () {
+            let changedPath, addedSet, removedSet;
+            function _recorderFn(_evt, _changedPath, _addedSet, _removedSet) {
+                changedPath= _changedPath;
+                addedSet = _addedSet;
+                removedSet = _removedSet;
+            }
+            beforeAll(async function () {
+                ProjectManager.on(ProjectManager.EVENT_PROJECT_CHANGED_OR_RENAMED_PATH, _recorderFn);
+            });
+            afterAll(async function () {
+                ProjectManager.off(ProjectManager.EVENT_PROJECT_CHANGED_OR_RENAMED_PATH, _recorderFn);
+            });
+
+            it("should download project command work", async function () {
+
+            });
+        });
+
         describe("Project, file and folder download", function () {
             if(Phoenix.isNativeApp) {
                 it("Not tested: download project is not present desktop local file system", async function () {});

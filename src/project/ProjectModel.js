@@ -1383,9 +1383,12 @@ define(function (require, exports, module) {
         }
 
         if (added) {
-            changes.added = added.map(function (entry) {
-                return self.makeProjectRelativeIfPossible(entry.fullPath);
-            });
+            changes.added = added
+                .filter(function(entry) {
+                    return _shouldShowName(entry.name);
+                }).map(function (entry) {
+                    return self.makeProjectRelativeIfPossible(entry.fullPath);
+                });
         }
 
         if (removed) {
