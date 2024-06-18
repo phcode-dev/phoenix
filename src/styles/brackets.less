@@ -160,42 +160,22 @@ html, body {
 // selectors like .warning or .info. Even if error, warning, and info are used on the same div in any order,
 // the style for .error.error will take precedence due to its higher specificity.
 .editor-text-fragment-error.editor-text-fragment-error.editor-text-fragment-error.editor-text-fragment-error{
-    text-decoration-style: wavy;
-    text-decoration-line: underline;
-    text-decoration-skip-ink: none;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 1px;
-    text-decoration-color: @error-underline-text;
+    background: url('images/wavy-error.svg') repeat-x bottom left;
 }
 
 .editor-text-fragment-warn.editor-text-fragment-warn.editor-text-fragment-warn {
-    text-decoration-style: wavy;
-    text-decoration-line: underline;
-    text-decoration-skip-ink: none;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 1px;
-    text-decoration-color: @warn-underline-text;
+    background: url('images/wavy-warn.svg') repeat-x bottom left;
     .dark &{
-        text-decoration-color: @dark-warn-underline-text;
+        background: url('images/wavy-warn-dark.svg') repeat-x bottom left;
     }
 }
 
 .editor-text-fragment-spell-error.editor-text-fragment-spell-error {
-    text-decoration-style: wavy;
-    text-decoration-line: underline;
-    text-decoration-skip-ink: none;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 1px;
-    text-decoration-color: @spell-underline-text;
+    background: url('images/wavy-spell-error.svg') repeat-x bottom left;
 }
 
 .editor-text-fragment-info {
-    text-decoration-style: wavy;
-    text-decoration-line: underline;
-    text-decoration-skip-ink: none;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 1px;
-    text-decoration-color: @info-underline-text;
+    background: url('images/wavy-info.svg') repeat-x bottom left;
 }
 
 .hidden-element{
@@ -2002,7 +1982,10 @@ a, img {
 }
 
 .quick-view-highlight {
-    background-color: rgba(200, 200, 150, 0.4);
+    background-color: rgba(200, 200, 150, 0.4) !important;
+    .dark &{
+        background-color: rgba(150, 150, 50, 0.3) !important;
+    }
 }
 
 // selection view
