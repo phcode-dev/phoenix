@@ -97,7 +97,7 @@ define(function (require, exports, module) {
         EVENT_PROJECT_FILE_CHANGED = "projectFileChanged",
         EVENT_PROJECT_FILE_RENAMED = "projectFileRenamed",
         // the path changed event differs in the sense that all events returned by this will be a path.
-        EVENT_PROJECT_PATH_CHANGED_OR_RENAMED = "projectPathChanged";
+        EVENT_PROJECT_CHANGED_OR_RENAMED_PATH = "projectChangedPath";
 
     EventDispatcher.setLeakThresholdForEvent(EVENT_PROJECT_OPEN, 25);
 
@@ -2025,16 +2025,25 @@ define(function (require, exports, module) {
         return !unsafeExit;
     }
 
-    function _entryToPathArray(entryArray) {
-        if(!entryArray || !entryArray.length) {
-            return [];
+    function _entryToPathSet(entryArray) {
+        if (!entryArray || !entryArray.length) {
+            return new Set();
         }
-        return entryArray.map(entry => path.normalize(entry.fullPath));
+        return new Set(entryArray.map(entry => path.normalize(entry.fullPath)));
     }
 
     exports.on(EVENT_PROJECT_FILE_CHANGED, (_evt, entry, addedInProject, removedInProject)=>{
-        exports.trigger(EVENT_PROJECT_PATH_CHANGED_OR_RENAMED, entry && path.normalize(entry.fullPath),
-            _entryToPathArray(addedInProject), _entryToPathArray(removedInProject));
+        if(!entry && !addedInProject && !removedInProject){
+            // when clearing the cached files forcefully, empty change events may get trigerred, in which case ignore.
+            return;
+        }
+        const addedSet = _entryToPathSet(addedInProject);
+        const removedSet = _entryToPathSet(removedInProject);
+        if(!entry && !addedSet.size && !removedSet.size){
+            return;
+        }
+        exports.trigger(EVENT_PROJECT_CHANGED_OR_RENAMED_PATH, entry && path.normalize(entry.fullPath),
+            addedSet, removedSet);
     });
     exports.on(EVENT_PROJECT_FILE_RENAMED, (_evt, oldPath, newPath)=>{
         oldPath = path.normalize(oldPath);
@@ -2044,10 +2053,10 @@ define(function (require, exports, module) {
         }
         const oldParent = path.dirname(oldPath), newParent = path.dirname(newPath);
         if(oldParent === newParent) {
-            exports.trigger(EVENT_PROJECT_PATH_CHANGED_OR_RENAMED, newParent, [newPath], [oldPath]);
+            exports.trigger(EVENT_PROJECT_CHANGED_OR_RENAMED_PATH, newParent, new Set([newPath]), new Set([oldPath]));
         } else {
-            exports.trigger(EVENT_PROJECT_PATH_CHANGED_OR_RENAMED, oldParent, [], [oldPath]);
-            exports.trigger(EVENT_PROJECT_PATH_CHANGED_OR_RENAMED, newParent, [newPath], []);
+            exports.trigger(EVENT_PROJECT_CHANGED_OR_RENAMED_PATH, oldParent, new Set(), new Set([oldPath]));
+            exports.trigger(EVENT_PROJECT_CHANGED_OR_RENAMED_PATH, newParent, new Set([newPath]), new Set());
         }
     });
 
@@ -2315,6 +2324,6 @@ define(function (require, exports, module) {
     exports.EVENT_CONTENT_CHANGED = EVENT_CONTENT_CHANGED;
     exports.EVENT_PROJECT_FILE_CHANGED = EVENT_PROJECT_FILE_CHANGED;
     exports.EVENT_PROJECT_FILE_RENAMED = EVENT_PROJECT_FILE_RENAMED;
-    exports.EVENT_PROJECT_PATH_CHANGED_OR_RENAMED = EVENT_PROJECT_PATH_CHANGED_OR_RENAMED;
+    exports.EVENT_PROJECT_CHANGED_OR_RENAMED_PATH = EVENT_PROJECT_CHANGED_OR_RENAMED_PATH;
     exports.EVENT_PROJECT_OPEN_FAILED = EVENT_PROJECT_OPEN_FAILED;
 });

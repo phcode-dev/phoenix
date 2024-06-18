@@ -140,6 +140,17 @@ define(function (require, exports, module) {
         }.bind(this));
     };
 
+    function _insertIfNotPresent(addedList, file) {
+        if(!addedList || !addedList.length) {
+            return [file];
+        }
+        const foundEntry = addedList.find(entry => entry.fullPath === file.fullPath);
+        if(!foundEntry){
+            addedList.push(file);
+        }
+        return addedList;
+    }
+
     /**
      * Write a file.
      *
@@ -179,11 +190,11 @@ define(function (require, exports, module) {
                 this._clearCachedData();
                 try {
                     callback(err);
-                    return;
                 } finally {
                     // Always unblock external change events
                     this._fileSystem._endChange();
                 }
+                return;
             }
 
             // Always store the hash
@@ -205,6 +216,7 @@ define(function (require, exports, module) {
                         if (parent._isWatched()) {
                             // If the write succeeded and the parent directory is watched,
                             // fire a synthetic change event
+                            added = _insertIfNotPresent(added, this);
                             this._fileSystem._fireChangeEvent(parent, added, removed);
 
                         }

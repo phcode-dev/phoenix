@@ -19,7 +19,7 @@
  *
  */
 
-/* global path*/
+/* global path, fs*/
 
 /**
  * Provides JSLint results via the core linting extension point
@@ -40,6 +40,11 @@ define(function (require, exports, module) {
         FileSystem         = brackets.getModule("filesystem/FileSystem"),
         IndexingWorker     = brackets.getModule("worker/IndexingWorker");
 
+    if(Phoenix.isTestWindow) {
+        IndexingWorker.on("html_lint_extension_Loaded", ()=>{
+            window._htmlLintExtensionReadyToIntegTest = true;
+        });
+    }
     IndexingWorker.loadScriptInWorker(`${module.uri}/../worker/html-worker.js`);
 
     const prefs = PreferencesManager.getExtensionPrefs("HTMLLint");
@@ -117,26 +122,26 @@ define(function (require, exports, module) {
         return new Promise((resolve, reject)=>{
             const configFilePath = path.join(dir, CONFIG_FILE_NAME);
             let displayPath = ProjectManager.getProjectRelativeOrDisplayPath(configFilePath);
-            DocumentManager.getDocumentForPath(configFilePath).done(function (configDoc) {
-                let config;
-                const content = configDoc.getText();
-                try {
-                    config = JSON.parse(content);
-                    console.log("html-lint: loaded config file for project " + configFilePath);
-                } catch (e) {
-                    console.log("html-lint: error parsing " + configFilePath, content, e);
-                    // just log and return as this is an expected failure for us while the user edits code
-                    reject(StringUtils.format(Strings.HTML_LINT_CONFIG_JSON_ERROR, displayPath));
-                    return;
-                }
-                resolve(config);
-            }).fail((err)=>{
-                if(err === FileSystemError.NOT_FOUND){
+            // directly reading from fs as we are still getting deleted file from document manager read.
+            fs.readFile(configFilePath, 'utf8', function (err, content) {
+                if (err && fs.ERR_CODES.ENOENT === err.code) {
                     resolve(null); // no config file is a valid case. we just resolve with null
-                    return;
+                } else if(err){
+                    console.error("Error reading JSHint Config File", configFilePath, err);
+                    reject("Error reading JSHint Config File", displayPath);
+                } else {
+                    let config;
+                    try {
+                        config = JSON.parse(content);
+                        console.log("html-lint: loaded config file for project " + configFilePath);
+                    } catch (e) {
+                        console.log("html-lint: error parsing " + configFilePath, content, e);
+                        // just log and return as this is an expected failure for us while the user edits code
+                        reject(StringUtils.format(Strings.HTML_LINT_CONFIG_JSON_ERROR, displayPath));
+                        return;
+                    }
+                    resolve(config);
                 }
-                console.error("Error reading JSHint Config File", configFilePath, err);
-                reject("Error reading JSHint Config File", displayPath);
             });
         });
     }
@@ -191,29 +196,34 @@ define(function (require, exports, module) {
         });
     }
 
-    function _isFileInArray(pathToMatch, filePathArray){
-        if(!filePathArray){
-            return false;
+    let projectConfigPaths;
+    function _getConfigPaths() {
+        if(!projectConfigPaths){
+            projectConfigPaths=[
+                path.join(ProjectManager.getProjectRoot().fullPath, CONFIG_FILE_NAME),
+                ...UNSUPPORTED_CONFIG_FILES.map(fileName=>
+                    path.join(ProjectManager.getProjectRoot().fullPath, fileName))
+            ];
         }
-        for(let filePath of filePathArray){
-            if(filePath === pathToMatch){
-                return true;
-            }
-        }
-        return false;
+        return projectConfigPaths;
     }
 
-    function _projectFileChanged(_evt, changedPath, added, removed) {
-        let configFilePath = path.join(ProjectManager.getProjectRoot().fullPath, CONFIG_FILE_NAME);
-        if(changedPath=== configFilePath
-            || _isFileInArray(configFilePath, added) || _isFileInArray(configFilePath, removed)){
-            _reloadOptions();
+    function _projectFileChanged(_evt, changedPath, addedSet, removedSet) {
+        const configPaths = _getConfigPaths();
+        for(let configPath of configPaths) {
+            if(changedPath=== configPath || addedSet.has(configPath) || removedSet.has(configPath)){
+                _reloadOptions();
+                return;
+            }
         }
     }
 
     AppInit.appReady(function () {
-        ProjectManager.on(ProjectManager.EVENT_PROJECT_PATH_CHANGED_OR_RENAMED, _projectFileChanged);
-        ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, _reloadOptions);
+        ProjectManager.on(ProjectManager.EVENT_PROJECT_CHANGED_OR_RENAMED_PATH, _projectFileChanged);
+        ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, ()=>{
+            projectConfigPaths = null;
+            _reloadOptions();
+        });
         _reloadOptions();
     });
 

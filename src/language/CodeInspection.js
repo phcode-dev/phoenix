@@ -547,11 +547,14 @@ define(function (require, exports, module) {
                 const fixID = `${mark.metadata}`;
                 let errorMessageHTML = `<a style="cursor:pointer;color: unset;">${_.escape(mark.message)}</a>`;
                 if(documentFixes.get(fixID)){
-                    $problemView = $(`<div>
+                    $problemView = $(`<div class="code-inspection-quick-view-item">
                         <i title="${Strings.CLICK_VIEW_PROBLEM}" style="margin-right: 3px;cursor: pointer;"
                             class="${_getIconClassForType(mark.type, mark.isFixable)}"></i>
-                        <button class="btn btn-mini fix-problem-btn" style="margin-right: 5px;">Fix</button>
+                        <button class="btn btn-mini fix-problem-btn" style="margin-right: 5px;">${Strings.FIX}</button>
                         ${errorMessageHTML}
+                        <button class="btn btn-mini copy-qv-error-text-btn" title="${Strings.COPY_ERROR}">
+                            <i class="fas fa-copy copy-qv-error-text-btn"></i>
+                        </button>
                         <br/>
                     </div>`);
                     $problemView.find(".fix-problem-btn").click(()=>{
@@ -561,10 +564,13 @@ define(function (require, exports, module) {
                     });
                     $hoverMessage.append($problemView);
                 } else {
-                    $problemView = $(`<div>
+                    $problemView = $(`<div class="code-inspection-quick-view-item">
                         <i title="${Strings.CLICK_VIEW_PROBLEM}" style="margin-right: 5px; cursor: pointer;"
                             class="${_getIconClassForType(mark.type, mark.isFixable)}"></i>
                         ${errorMessageHTML}
+                        <button class="btn btn-mini copy-qv-error-text-btn" title="${Strings.COPY_ERROR}">
+                            <i class="fas fa-copy copy-qv-error-text-btn"></i>
+                        </button>
                         <br/></div>`);
                     $hoverMessage.append($problemView);
                 }
@@ -577,6 +583,11 @@ define(function (require, exports, module) {
                     }
                     toggleCollapsed(false);
                     scrollToProblem(pos.line);
+                });
+                $problemView.find(".copy-qv-error-text-btn").click(function (evt) {
+                    evt.preventDefault();
+                    evt.stopPropagation();
+                    Phoenix.app.copyToClipboard(mark.message);
                 });
                 const markPos = mark.find();
                 if(markPos.from && markPos.from.line < startPos.line){

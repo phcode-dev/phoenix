@@ -77,8 +77,8 @@ define(function (require, exports, module) {
             await SpecRunnerUtils.closeTestWindow();
         }, 30000);
 
-        afterEach(function () {
-            testWindow.closeAllFiles();
+        afterEach(async function () {
+            await testWindow.closeAllFiles();
         });
 
         function invokeCodeHints() {

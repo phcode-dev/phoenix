@@ -30,7 +30,8 @@ define(function (require, exports, module) {
         Strings          = require("strings");
 
     describe("integration: Code Inspection Fixes", function () {
-        var testFolder,
+        let testFolder,
+            savedCopyFn,
             testWindow,
             $,
             brackets,
@@ -117,14 +118,17 @@ define(function (require, exports, module) {
             CodeInspection.toggleEnabled(true);
             testFolder = await SpecRunnerUtils.getTempTestDirectory("/spec/CodeInspection-test-files/");
             await SpecRunnerUtils.loadProjectInTestWindow(testFolder);
+            savedCopyFn = testWindow.Phoenix.app.copyToClipboard;
         }, 30000);
 
         afterEach(async function () {
             await testWindow.closeAllFiles();
             invalidFix = null;
+            testWindow.Phoenix.app.copyToClipboard = savedCopyFn;
         });
 
         afterAll(async function () {
+            testWindow.Phoenix.app.copyToClipboard = savedCopyFn;
             testWindow    = null;
             await SpecRunnerUtils.closeTestWindow();
         }, 30000);
@@ -194,6 +198,28 @@ define(function (require, exports, module) {
             const $popup = await SpecRunnerUtils.showQuickViewAtPos(2, 3);
             expect($popup.is(":visible")).toBeTrue();
             expect($popup.text().includes("this line an error")).toBeTrue();
+            SpecRunnerUtils.dismissQuickView($popup);
+        });
+
+        it("should be able to copy problem message from quick view", async function () {
+            await _openProjectFile("testFix.vbs");
+
+            expect($("#problems-panel").is(":visible")).toBeTrue();
+
+            const $popup = await SpecRunnerUtils.showQuickViewAtPos(2, 3);
+            expect($popup.is(":visible")).toBeTrue();
+            expect($popup.text().includes("this line an error")).toBeTrue();
+            let copiedVal;
+            testWindow.Phoenix.app.copyToClipboard = function (val) {
+                copiedVal = val;
+            };
+            const $copyBtnElems = $popup.find(".copy-qv-error-text-btn");
+            expect($copyBtnElems.length >= 1).toBeTrue();
+            for(let i=0; i<$copyBtnElems.length; i++) {
+                copiedVal = null;
+                $copyBtnElems[i].click();
+                expect(copiedVal).toBe("this line an error");
+            }
             SpecRunnerUtils.dismissQuickView($popup);
         });
 

@@ -96,7 +96,7 @@ define(function (require, exports, module) {
         }, 30000);
 
         afterAll(async function () {
-            testWindow.closeAllFiles();
+            await testWindow.closeAllFiles();
             await closeTestWindow();
         }, 30000);
 

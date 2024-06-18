@@ -139,8 +139,8 @@ define(function (require, exports, module) {
             testWindow.Phoenix.app.copyToClipboard = savedCopyFn;
         });
 
-        afterEach(function () {
-            testWindow.closeAllFiles();
+        afterEach(async function () {
+            await testWindow.closeAllFiles();
         });
 
         afterAll(async function () {
@@ -1125,6 +1125,7 @@ define(function (require, exports, module) {
                     copiedVal = val;
                 };
                 const $copyBtnElems = $problemLine.find(".ph-copy-problem");
+                expect($copyBtnElems.length >= 1).toBeTrue();
                 for(let i=0; i<$copyBtnElems.length; i++) {
                     copiedVal = null;
                     $copyBtnElems[i].click();

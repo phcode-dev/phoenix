@@ -10,11 +10,6 @@ Copyright (c) Microsoft
 MIT License
 Copyright (c) 2017 Chai.js Assertion Library
 
-## html-validate
-MIT License
-Copyright (c) 2017 David Sveningsson <ext@sidvind.com>
-https://html-validate.org/
-
 ## test/thirparty/mocha
 (The MIT License)
 Copyright (c) 2011-2022 OpenJS Foundation and contributors, https://openjsf.org
