@@ -24,6 +24,7 @@
     let htmlValidator = HTMLLanguageService.createHTMLValidator({
         extends: ["html-validate:standard"]
     });
+    WorkerComm.triggerPeer("html_lint_extension_Loaded", {});
 
     let isUsingCustomConfig = false, currentConfigID;
 

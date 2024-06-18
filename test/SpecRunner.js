@@ -98,32 +98,50 @@ function jsPromise(jqueryOrJSPromise) {
 }
 window.deferredToPromise = jsPromise;
 
-function _timeoutPromise(promise, ms, timeoutMessage = '') {
-    const timeout = new Promise((_, reject) => {
-        setTimeout(() => {
-            reject(new Error(timeoutMessage || `Promise timed out after ${ms}ms`));
-        }, ms);
-    });
-
-    return Promise.race([promise, timeout]);
-}
-
 /**
  * global test util to wait for a polling result.
  * @param pollFn return true or a promise that resolves to true of false to indicate success and break waiting.
- * @param _message - unused
+ * @param {string|function}_timeoutMessageOrMessageFn - helpful string message or an async function returning a string
+ *  message to show in case of time out.
  * @param timeoutms - max timeout to wait for. if not given, will wait for 2 seconds
  * @param pollInterval in millis, default poll interval is 10ms
  * @returns {*}
  */
-function awaitsFor(pollFn, _message, timeoutms = 2000, pollInterval = 10){
-    if(typeof  _message === "number"){
-        timeoutms = _message;
+function awaitsFor(pollFn, _timeoutMessageOrMessageFn, timeoutms = 2000, pollInterval = 10){
+    if(typeof  _timeoutMessageOrMessageFn === "number"){
+        timeoutms = _timeoutMessageOrMessageFn;
         pollInterval = timeoutms;
     }
     if(!(typeof  timeoutms === "number" && typeof  pollInterval === "number")){
-        throw new Error("awaitsFor: invalid parameters when awaiting for " + _message);
+        throw new Error("awaitsFor: invalid parameters when awaiting for " + _timeoutMessageOrMessageFn);
     }
+
+    async function _getExpectMessage(_timeoutMessageOrMessageFn) {
+        try{
+            if(typeof _timeoutMessageOrMessageFn === "function") {
+                _timeoutMessageOrMessageFn = _timeoutMessageOrMessageFn();
+                if(_timeoutMessageOrMessageFn instanceof Promise){
+                    _timeoutMessageOrMessageFn = await _timeoutMessageOrMessageFn;
+                }
+            }
+        } catch (e) {
+            console.error("Error executing expected message function:", e);
+            _timeoutMessageOrMessageFn = "Error executing expected message function:" + e.stack;
+        }
+        return _timeoutMessageOrMessageFn;
+    }
+
+    function _timeoutPromise(promise, ms) {
+        const timeout = new Promise((_, reject) => {
+            setTimeout(async () => {
+                _timeoutMessageOrMessageFn = await _getExpectMessage(_timeoutMessageOrMessageFn);
+                reject(new Error(_timeoutMessageOrMessageFn || `Promise timed out after ${ms}ms`));
+            }, ms);
+        });
+
+        return Promise.race([promise, timeout]);
+    }
+
     return new Promise((resolve, reject)=>{
         let startTime = Date.now(),
             lapsedTime;
@@ -135,7 +153,7 @@ function awaitsFor(pollFn, _message, timeoutms = 2000, pollInterval = 10){
                 if (Object.prototype.toString.call(result) === "[object Promise]") {
                     // we cant simply check for result instanceof Promise as the Promise may be returned from an iframe.
                     // and iframe has a different instance of Promise than this spec runner.
-                    result = await _timeoutPromise(result, timeoutms, "awaitsFor timed out waiting for "+ _message);
+                    result = await _timeoutPromise(result, timeoutms, _timeoutMessageOrMessageFn);
                 }
 
                 if (result) {
@@ -144,8 +162,9 @@ function awaitsFor(pollFn, _message, timeoutms = 2000, pollInterval = 10){
                 }
                 lapsedTime = Date.now() - startTime;
                 if(lapsedTime>timeoutms){
-                    globalTestRunnerErrorToConsole("awaitsFor timed out waiting for", _message);
-                    reject("awaitsFor timed out waiting for - " + _message);
+                    _timeoutMessageOrMessageFn = await _getExpectMessage(_timeoutMessageOrMessageFn);
+                    globalTestRunnerErrorToConsole("awaitsFor timed out waiting for", _timeoutMessageOrMessageFn);
+                    reject("awaitsFor timed out waiting for - " + _timeoutMessageOrMessageFn);
                     return;
                 }
                 setTimeout(pollingFn, pollInterval);

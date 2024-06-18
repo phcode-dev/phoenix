@@ -71,8 +71,8 @@ define(function (require, exports, module) {
             await SpecRunnerUtils.removeTempDirectory();
         }, 30000);
 
-        afterEach(function () {
-            testWindow.closeAllFiles();
+        afterEach(async function () {
+            await testWindow.closeAllFiles();
         });
 
         async function waitForDialog() {

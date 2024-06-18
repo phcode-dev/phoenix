@@ -66,8 +66,8 @@ define(function (require, exports, module) {
             testWindow = null;
         }, 30000);
 
-        afterEach(function () {
-            testWindow.closeAllFiles();
+        afterEach(async function () {
+            await testWindow.closeAllFiles();
             expect(DocumentManager.getAllOpenDocuments().length).toBe(0);
             DocumentModule.off(".docTest");
         });
