@@ -160,10 +160,12 @@ html, body {
 // selectors like .warning or .info. Even if error, warning, and info are used on the same div in any order,
 // the style for .error.error will take precedence due to its higher specificity.
 .editor-text-fragment-error.editor-text-fragment-error.editor-text-fragment-error.editor-text-fragment-error{
+    padding-bottom: 1px;
     background: url('images/wavy-error.svg') repeat-x bottom left;
 }
 
 .editor-text-fragment-warn.editor-text-fragment-warn.editor-text-fragment-warn {
+    padding-bottom: 1px;
     background: url('images/wavy-warn.svg') repeat-x bottom left;
     .dark &{
         background: url('images/wavy-warn-dark.svg') repeat-x bottom left;
@@ -171,10 +173,12 @@ html, body {
 }
 
 .editor-text-fragment-spell-error.editor-text-fragment-spell-error {
+    padding-bottom: 1px;
     background: url('images/wavy-spell-error.svg') repeat-x bottom left;
 }
 
 .editor-text-fragment-info {
+    padding-bottom: 1px;
     background: url('images/wavy-info.svg') repeat-x bottom left;
 }
 
