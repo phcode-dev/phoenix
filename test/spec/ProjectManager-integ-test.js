@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, afterEach, awaitsFor, awaitsForDone, beforeAll, afterAll, awaits, jsPromise */
+/*global describe, it, expect, afterEach, awaitsFor, awaitsForDone, beforeEach, beforeAll, afterAll, awaits, jsPromise */
 
 define(function (require, exports, module) {
 
@@ -738,12 +738,88 @@ define(function (require, exports, module) {
             beforeAll(async function () {
                 ProjectManager.on(ProjectManager.EVENT_PROJECT_CHANGED_OR_RENAMED_PATH, _recorderFn);
             });
+            beforeEach(async function () {
+                changedPath = addedSet = removedSet = null;
+            });
             afterAll(async function () {
                 ProjectManager.off(ProjectManager.EVENT_PROJECT_CHANGED_OR_RENAMED_PATH, _recorderFn);
             });
 
-            it("should download project command work", async function () {
+            it("should creating new file and deleting raise added and removed event", async function () {
+                const createFilePath = `${tempDir}/test_add.txt`;
+                await jsPromise(SpecRunnerUtils.createTextFile(createFilePath, "hello", FileSystem));
+                await awaitsFor(()=>{
+                    return addedSet && addedSet.has(createFilePath);
+                }, ()=>`added files [${addedSet&& Array.from(addedSet)}] to have ${createFilePath}`);
+                changedPath = addedSet = removedSet = null;
+                await SpecRunnerUtils.deletePathAsync(createFilePath, true, FileSystem);
+                await awaitsFor(()=>{
+                    return removedSet && removedSet.has(createFilePath);
+                }, ()=>`removed files [${removedSet&& Array.from(removedSet)}] to have ${createFilePath}`);
+            });
 
+            it("should writing on an existing file raise change event", async function () {
+                const createFilePath = `${tempDir}/test_add.txt`;
+                await jsPromise(SpecRunnerUtils.createTextFile(createFilePath, "hello", FileSystem));
+                await awaitsFor(()=>{
+                    return addedSet && addedSet.has(createFilePath);
+                }, ()=>`added files [${addedSet&& Array.from(addedSet)}] to have ${createFilePath}`);
+                changedPath = addedSet = removedSet = null;
+                await jsPromise(SpecRunnerUtils.createTextFile(createFilePath, "changed", FileSystem));
+                await awaitsFor(()=>{
+                    return changedPath === createFilePath;
+                }, ()=>`removed files [${removedSet&& Array.from(removedSet)}] to have ${createFilePath}`);
+                await SpecRunnerUtils.deletePathAsync(createFilePath, true, FileSystem);
+                await awaitsFor(()=>{
+                    return removedSet && removedSet.has(createFilePath);
+                }, ()=>`removed files [${removedSet&& Array.from(removedSet)}] to have ${createFilePath}`);
+            });
+
+            it("should creating new directory and deleting raise added and removed event", async function () {
+                const createDirPath = `${tempDir}/newDir_event_test`;
+                await SpecRunnerUtils.ensureExistsDirAsync(createDirPath, "hello", FileSystem);
+                await awaitsFor(()=>{
+                    return addedSet && addedSet.has(createDirPath);
+                }, ()=>`added dir [${addedSet&& Array.from(addedSet)}] to have ${createDirPath}`);
+                changedPath = addedSet = removedSet = null;
+                await SpecRunnerUtils.deletePathAsync(createDirPath, true, FileSystem);
+                await awaitsFor(()=>{
+                    return removedSet && removedSet.has(createDirPath);
+                }, ()=>`removed dir [${removedSet&& Array.from(removedSet)}] to have ${createDirPath}`);
+            });
+
+            it("should renaming file in same dir raise added and removed event", async function () {
+                const createFilePath = `${tempDir}/test_add1.txt`;
+                const renamedFilePath = `${tempDir}/rename_1.txt`;
+                await jsPromise(SpecRunnerUtils.createTextFile(createFilePath, "hello", FileSystem));
+                await awaitsFor(()=>{
+                    return addedSet && addedSet.has(createFilePath);
+                }, ()=>`added files [${addedSet&& Array.from(addedSet)}] to have ${createFilePath}`);
+                changedPath = addedSet = removedSet = null;
+                await jsPromise(SpecRunnerUtils.rename(createFilePath, renamedFilePath));
+                await awaitsFor(()=>{
+                    return removedSet && removedSet.has(createFilePath) && addedSet && addedSet.has(renamedFilePath);
+                }, ()=>
+                    `removed files [${removedSet&& Array.from(removedSet)}] to have ${createFilePath}` +
+                    `added files [${addedSet&& Array.from(addedSet)}] to have ${renamedFilePath}`);
+                await SpecRunnerUtils.deletePathAsync(renamedFilePath, true, FileSystem);
+            });
+
+            it("should renaming dir in same dir raise added and removed event", async function () {
+                const createDirPath = `${tempDir}/dir_event_Rename`;
+                const renamedDirPath = `${tempDir}/dir_event_Rename_done`;
+                await SpecRunnerUtils.ensureExistsDirAsync(createDirPath, "hello", FileSystem);
+                await awaitsFor(()=>{
+                    return addedSet && addedSet.has(createDirPath);
+                }, ()=>`added dir [${addedSet&& Array.from(addedSet)}] to have ${createDirPath}`);
+                changedPath = addedSet = removedSet = null;
+                await jsPromise(SpecRunnerUtils.rename(createDirPath, renamedDirPath));
+                await awaitsFor(()=>{
+                    return removedSet && removedSet.has(createDirPath) && addedSet && addedSet.has(renamedDirPath);
+                }, ()=>
+                    `removed dir [${removedSet&& Array.from(removedSet)}] to have ${createDirPath}` +
+                    `added dir [${addedSet&& Array.from(addedSet)}] to have ${renamedDirPath}`);
+                await SpecRunnerUtils.deletePathAsync(renamedDirPath, true, FileSystem);
             });
         });
 
