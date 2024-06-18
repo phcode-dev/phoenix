@@ -225,11 +225,13 @@ define(function (require, exports, module) {
         _reloadOptions();
     });
 
-    CodeInspection.register("html", {
+    const registration = {
         name: Strings.HTML_LINT_NAME,
         scanFileAsync: lintOneFile,
         canInspect: function (_fullPath) {
             return !prefs.get(PREFS_HTML_LINT_DISABLED);
         }
-    });
+    };
+    CodeInspection.register("html", registration);
+    CodeInspection.register("php", registration);
 });
