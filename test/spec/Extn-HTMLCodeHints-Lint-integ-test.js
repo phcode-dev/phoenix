@@ -24,11 +24,12 @@
 define(function (require, exports, module) {
 
 
-    var SpecRunnerUtils = require("spec/SpecRunnerUtils");
+    const SpecRunnerUtils = require("spec/SpecRunnerUtils"),
+        simple1_html = require("text!spec/LiveDevelopment-MultiBrowser-test-files/simple1.html"),
+        test_php = require("text!spec/LiveDevelopment-MultiBrowser-test-files/htmlOther/test.php");
 
     describe("integration:HTML Lint", function () {
         let testProjectsFolder,
-            Strings     = require("strings"),
             testWindow,
             $,
             CodeInspection,
@@ -177,5 +178,22 @@ define(function (require, exports, module) {
             await SpecRunnerUtils.deletePathAsync(invalidNameJSON, true, FileSystem);
             await SpecRunnerUtils.deletePathAsync(validNameJSON, true, FileSystem);
         }, 6000);
+
+        const testExtensions = [".htm", ".xhtml", ".jsp", ".asp", ".aspx", ".php"];
+        for(let testExtension of testExtensions) {
+            // eslint-disable-next-line no-loop-func
+            it(`should show html lint error in ${testExtension} files`, async function () {
+                const testFile = "test_"+testExtension;
+                const content = testExtension === ".php" ? simple1_html : test_php;
+                await jsPromise(SpecRunnerUtils.createTextFile(testProjectsFolder + testFile, content, FileSystem));
+
+                await awaitsFor(async ()=>{
+                    await _siwtchFilesTo(testFile);
+                    return $("#problems-panel").is(":visible") && $("#problems-panel").text().includes(
+                        "<html> is missing required \"lang\" attribute (element-required-attributes)");
+                }, "html lint error for "+testFile);
+                await SpecRunnerUtils.deletePathAsync(testProjectsFolder + testFile, true, FileSystem);
+            }, 5000);
+        }
     });
 });
