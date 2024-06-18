@@ -37,7 +37,6 @@ define(function (require, exports, module) {
         Strings            = brackets.getModule("strings"),
         StringUtils        = brackets.getModule("utils/StringUtils"),
         ProjectManager     = brackets.getModule("project/ProjectManager"),
-        FileSystem         = brackets.getModule("filesystem/FileSystem"),
         LanguageManager    = brackets.getModule("language/LanguageManager"),
         NodeUtils          = brackets.getModule("utils/NodeUtils"),
         Metrics            = brackets.getModule("utils/Metrics");
@@ -242,28 +241,15 @@ define(function (require, exports, module) {
         });
     }
 
-    function _isFileInArray(fileToCheck, fileArray){
-        if(!fileArray){
-            return false;
-        }
-        for(let file of fileArray){
-            if(file.fullPath === fileToCheck.fullPath){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    function _projectFileChanged(_evt, entry, added, removed) {
-        let configFilePath = FileSystem.getFileForPath(ProjectManager.getProjectRoot().fullPath + PACKAGE_JSON);
-        if(entry && entry.fullPath === configFilePath.fullPath
-            || _isFileInArray(configFilePath, added) || _isFileInArray(configFilePath, removed)){
+    function _projectFileChanged(_evt, changedPath, addedSet, removedSet) {
+        let configPath = path.join(ProjectManager.getProjectRoot().fullPath, PACKAGE_JSON);
+        if(changedPath=== configPath || addedSet.has(configPath) || removedSet.has(configPath)){
             _reloadOptions();
         }
     }
 
     AppInit.appReady(function () {
-        ProjectManager.on(ProjectManager.EVENT_PROJECT_FILE_CHANGED, _projectFileChanged);
+        ProjectManager.on(ProjectManager.EVENT_PROJECT_CHANGED_OR_RENAMED_PATH, _projectFileChanged);
         ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, function () {
             _reloadOptions();
             if(!Phoenix.isNativeApp) {

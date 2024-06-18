@@ -541,7 +541,7 @@ define(function (require, exports, module) {
     }
 
     async function _projectFileChanges(evt, changedFile) {
-        if(changedFile && (utils.isPreviewableFile(changedFile.fullPath) ||
+        if(changedFile && changedFile.isFile && (utils.isPreviewableFile(changedFile.fullPath) ||
             utils.isServerRenderedFile(changedFile.fullPath))){
             // we are getting this change event somehow.
             // bug, investigate why we get this change event as a project file change.

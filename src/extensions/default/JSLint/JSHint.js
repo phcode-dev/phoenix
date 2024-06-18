@@ -244,31 +244,18 @@ define(function (require, exports, module) {
         return !!(jsHintConfigFileErrorMessage || projectSpecificOptions);
     }
 
-    function _isFileInArray(fileToCheck, fileArray){
-        if(!fileArray){
-            return false;
-        }
-        for(let file of fileArray){
-            if(file.fullPath === fileToCheck.fullPath){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    function _projectFileChanged(_evt, entry, added, removed) {
-        let configFilePath = FileSystem.getFileForPath(ProjectManager.getProjectRoot().fullPath + CONFIG_FILE_NAME);
-        if(entry && entry.fullPath === configFilePath.fullPath
-            || _isFileInArray(configFilePath, added)){
+    function _projectFileChanged(_evt, changedPath, addedSet, removedSet) {
+        let configPath = path.join(ProjectManager.getProjectRoot().fullPath, CONFIG_FILE_NAME);
+        if(changedPath === configPath || addedSet.has(configPath)){
             _reloadOptions();
-        } else if(_isFileInArray(configFilePath, removed)){
+        } else if(removedSet.has(configPath)){
             projectSpecificOptions = null;
             jsHintConfigFileErrorMessage = null;
         }
     }
 
     AppInit.appReady(function () {
-        ProjectManager.on(ProjectManager.EVENT_PROJECT_FILE_CHANGED, _projectFileChanged);
+        ProjectManager.on(ProjectManager.EVENT_PROJECT_CHANGED_OR_RENAMED_PATH, _projectFileChanged);
         ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, _reloadOptions);
         _reloadOptions();
     });
