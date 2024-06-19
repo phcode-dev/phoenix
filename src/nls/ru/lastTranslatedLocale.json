@@ -975,7 +975,7 @@
   "BEAUTIFY_CODE_NOTIFICATION": "Нажмите здесь или нажмите <b>`{0}`</b> , чтобы украсить код.</br><img src=\"styles/images/beautify.gif\"><br/> <a href='#' style='float:right;'>хорошо</a>",
   "DEFAULT_PROJECT_NOTIFICATION": "Щелкните здесь, чтобы открыть<br/> <b>проект по умолчанию</b> в phoenix.</br> <a href='#' style='float:right;'>Ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Выбранная папка <span class='dialog-filename'>{0}</span> не пуста. Вы уверены, что хотите заменить содержимое папки проектом?",
-  "DEFAULT_PROJECT_HTML_CLICK_HERE": "Нажмите здесь, чтобы найти этот &ltspan&gt в HTML-файле.",
+  "DEFAULT_PROJECT_HTML_CLICK_HERE": "Нажмите здесь, чтобы найти этот &lt;span&gt; в HTML-файле",
   "BUILD_WEBSITE_SECTION": "Создать сайт",
   "LEARN_SECTION": "Учитесь на примерах",
   "CREATE_EXTENSION_SECTION": "Создайте расширения и темы {APP_NAME}",

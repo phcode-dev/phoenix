@@ -975,7 +975,7 @@
   "BEAUTIFY_CODE_NOTIFICATION": "Kliknij tutaj lub naciśnij <b>`{0}`</b> , aby upiększyć kod.</br><img src=\"styles/images/beautify.gif\"><br/> <a href='#' style='float:right;'>OK</a>",
   "DEFAULT_PROJECT_NOTIFICATION": "Kliknij tutaj, aby otworzyć<br/> <b>domyślny projekt</b> w feniksie.</br> <a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Wybrany folder <span class='dialog-filename'>{0}</span> nie jest pusty. Czy na pewno chcesz zastąpić zawartość folderu projektem?",
-  "DEFAULT_PROJECT_HTML_CLICK_HERE": "Kliknij tutaj, aby zlokalizować ten &ltspan&gt w pliku HTML",
+  "DEFAULT_PROJECT_HTML_CLICK_HERE": "Kliknij tutaj, aby zlokalizować ten &lt;zakres&gt; w pliku HTML",
   "BUILD_WEBSITE_SECTION": "Zbuduj stronę internetową",
   "LEARN_SECTION": "Ucz się z przykładami",
   "CREATE_EXTENSION_SECTION": "Utwórz rozszerzenia i motywy aplikacji {APP_NAME}",

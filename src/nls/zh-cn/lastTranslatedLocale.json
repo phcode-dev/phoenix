@@ -975,7 +975,7 @@
   "BEAUTIFY_CODE_NOTIFICATION": "单击此处或按<b>“{0}”</b>来美化代码。</br><img src=\"styles/images/beautify.gif\"><br/><a href='#' style='float:right;'>好的</a>",
   "DEFAULT_PROJECT_NOTIFICATION": "点击这里打开<br/>凤凰城的<b>默认项目</b>。</br><a href='#' style='float:right;'>好的</a>",
   "DIRECTORY_REPLACE_MESSAGE": "所选文件夹<span class='dialog-filename'>{0}</span>不为空。您确定要将文件夹内容替换为项目吗？",
-  "DEFAULT_PROJECT_HTML_CLICK_HERE": "单击此处在 HTML 文件中查找此 &ltspan&gt",
+  "DEFAULT_PROJECT_HTML_CLICK_HERE": "单击此处在 HTML 文件中定位此 &lt;span&gt;",
   "BUILD_WEBSITE_SECTION": "建立网站",
   "LEARN_SECTION": "通过示例学习",
   "CREATE_EXTENSION_SECTION": "创建 {APP_NAME} 扩展和主题",

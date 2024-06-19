@@ -995,7 +995,7 @@ define({
   "BEAUTIFY_CODE_NOTIFICATION": "Klik di sini atau tekan <b>`{0}`</b> untuk Mempercantik kode.</br><img src=\"styles/images/beautify.gif\"><br/> <a href='#' style='float:right;'>Oke</a>",
   "DEFAULT_PROJECT_NOTIFICATION": "Klik di sini untuk membuka<br/> <b>proyek default</b> di phoenix.</br> <a href='#' style='float:right;'>Oke</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Folder yang dipilih <span class='dialog-filename'>{0}</span> tidak kosong. Apakah Anda yakin ingin mengganti isi folder dengan proyek?",
-  "DEFAULT_PROJECT_HTML_CLICK_HERE": "Klik di sini untuk menemukan &ltspan&gt ini di file HTML",
+  "DEFAULT_PROJECT_HTML_CLICK_HERE": "Klik di sini untuk menemukan &lt;span&gt; dalam file HTML",
   "BUILD_WEBSITE_SECTION": "Bangun Situs Web",
   "LEARN_SECTION": "Belajar Dengan Contoh",
   "CREATE_EXTENSION_SECTION": "Buat Ekstensi dan Tema {APP_NAME}",
