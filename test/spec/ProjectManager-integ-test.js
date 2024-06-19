@@ -729,17 +729,25 @@ define(function (require, exports, module) {
         // }, 10000);
 
         describe("Project file/folder watch events", function () {
-            let changedPath, addedSet, removedSet;
+            let changedPathSet = new Set(),
+                addedSet = new Set(),
+                removedSet = new Set(), callCount = 0;
             function _recorderFn(_evt, _changedPath, _addedSet, _removedSet) {
-                changedPath= _changedPath;
-                addedSet = _addedSet;
-                removedSet = _removedSet;
+                callCount++;
+                if(_changedPath){
+                    changedPathSet.add(_changedPath);
+                }
+                addedSet = new Set([...Array.from(addedSet), ...Array.from(_addedSet)]);
+                removedSet = new Set([...Array.from(removedSet), ...Array.from(_removedSet)]);
             }
             beforeAll(async function () {
                 ProjectManager.on(ProjectManager.EVENT_PROJECT_CHANGED_OR_RENAMED_PATH, _recorderFn);
             });
             beforeEach(async function () {
-                changedPath = addedSet = removedSet = null;
+                changedPathSet = new Set();
+                addedSet = new Set();
+                removedSet = new Set();
+                callCount = 0;
             });
             afterAll(async function () {
                 ProjectManager.off(ProjectManager.EVENT_PROJECT_CHANGED_OR_RENAMED_PATH, _recorderFn);
@@ -751,7 +759,10 @@ define(function (require, exports, module) {
                 await awaitsFor(()=>{
                     return addedSet && addedSet.has(createFilePath);
                 }, ()=>`added files [${addedSet&& Array.from(addedSet)}] to have ${createFilePath}`);
-                changedPath = addedSet = removedSet = null;
+                changedPathSet = new Set();
+                addedSet = new Set();
+                removedSet = new Set();
+                callCount = 0;
                 await SpecRunnerUtils.deletePathAsync(createFilePath, true, FileSystem);
                 await awaitsFor(()=>{
                     return removedSet && removedSet.has(createFilePath);
@@ -764,10 +775,13 @@ define(function (require, exports, module) {
                 await awaitsFor(()=>{
                     return addedSet && addedSet.has(createFilePath);
                 }, ()=>`added files [${addedSet&& Array.from(addedSet)}] to have ${createFilePath}`);
-                changedPath = addedSet = removedSet = null;
+                changedPathSet = new Set();
+                addedSet = new Set();
+                removedSet = new Set();
+                callCount = 0;
                 await jsPromise(SpecRunnerUtils.createTextFile(createFilePath, "changed", FileSystem));
                 await awaitsFor(()=>{
-                    return changedPath === createFilePath;
+                    return changedPathSet.has(createFilePath);
                 }, ()=>`removed files [${removedSet&& Array.from(removedSet)}] to have ${createFilePath}`);
                 await SpecRunnerUtils.deletePathAsync(createFilePath, true, FileSystem);
                 await awaitsFor(()=>{
@@ -780,12 +794,15 @@ define(function (require, exports, module) {
                 await SpecRunnerUtils.ensureExistsDirAsync(createDirPath, "hello", FileSystem);
                 await awaitsFor(()=>{
                     return addedSet && addedSet.has(createDirPath);
-                }, ()=>`added dir [${addedSet&& Array.from(addedSet)}] to have ${createDirPath}`);
-                changedPath = addedSet = removedSet = null;
+                }, ()=>`event count ${callCount} added dir [${addedSet&& Array.from(addedSet)}] to have ${createDirPath}`);
+                changedPathSet = new Set();
+                addedSet = new Set();
+                removedSet = new Set();
+                callCount = 0;
                 await SpecRunnerUtils.deletePathAsync(createDirPath, true, FileSystem);
                 await awaitsFor(()=>{
                     return removedSet && removedSet.has(createDirPath);
-                }, ()=>`removed dir [${removedSet&& Array.from(removedSet)}] to have ${createDirPath}`);
+                }, ()=>`event count ${callCount} removed dir [${removedSet&& Array.from(removedSet)}] to have ${createDirPath}`);
             });
 
             it("should renaming file in same dir raise added and removed event", async function () {
@@ -795,7 +812,10 @@ define(function (require, exports, module) {
                 await awaitsFor(()=>{
                     return addedSet && addedSet.has(createFilePath);
                 }, ()=>`added files [${addedSet&& Array.from(addedSet)}] to have ${createFilePath}`);
-                changedPath = addedSet = removedSet = null;
+                changedPathSet = new Set();
+                addedSet = new Set();
+                removedSet = new Set();
+                callCount = 0;
                 await jsPromise(SpecRunnerUtils.rename(createFilePath, renamedFilePath));
                 await awaitsFor(()=>{
                     return removedSet && removedSet.has(createFilePath) && addedSet && addedSet.has(renamedFilePath);
@@ -812,7 +832,10 @@ define(function (require, exports, module) {
                 await awaitsFor(()=>{
                     return addedSet && addedSet.has(createDirPath);
                 }, ()=>`added dir [${addedSet&& Array.from(addedSet)}] to have ${createDirPath}`);
-                changedPath = addedSet = removedSet = null;
+                changedPathSet = new Set();
+                addedSet = new Set();
+                removedSet = new Set();
+                callCount = 0;
                 await jsPromise(SpecRunnerUtils.rename(createDirPath, renamedDirPath));
                 await awaitsFor(()=>{
                     return removedSet && removedSet.has(createDirPath) && addedSet && addedSet.has(renamedDirPath);
