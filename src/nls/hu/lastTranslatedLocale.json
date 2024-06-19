@@ -975,7 +975,7 @@
   "BEAUTIFY_CODE_NOTIFICATION": "Kattintson ide, vagy nyomja meg <b>a `{0}`</b> gombot a kód szépítéséhez.</br><img src=\"styles/images/beautify.gif\"><br/> <a href='#' style='float:right;'>rendben</a>",
   "DEFAULT_PROJECT_NOTIFICATION": "Kattintson ide a megnyitásához<br/> <b>alapértelmezett projekt</b> a phoenixben.</br> <a href='#' style='float:right;'>rendben</a>",
   "DIRECTORY_REPLACE_MESSAGE": "A kiválasztott mappa <span class='dialog-filename'>({0}</span> ) nem üres. Biztosan le szeretné cserélni a mappa tartalmát a projekttel?",
-  "DEFAULT_PROJECT_HTML_CLICK_HERE": "Kattintson ide, hogy megkeresse ezt a &ltspan&gt-t a HTML-fájlban",
+  "DEFAULT_PROJECT_HTML_CLICK_HERE": "Kattintson ide a &lt;span&gt; a HTML fájlban",
   "BUILD_WEBSITE_SECTION": "Webhely készítése",
   "LEARN_SECTION": "Tanuljon példákkal",
   "CREATE_EXTENSION_SECTION": "Hozzon létre {APP_NAME} bővítményeket és témákat",

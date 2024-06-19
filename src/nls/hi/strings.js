@@ -995,7 +995,7 @@ define({
   "BEAUTIFY_CODE_NOTIFICATION": "कोड को सुंदर बनाने के लिए यहां क्लिक करें या <b>`{0}`</b> दबाएँ।</br><img src=\"styles/images/beautify.gif\"><br/> <a href='#' style='float:right;'>ठीक है</a>",
   "DEFAULT_PROJECT_NOTIFICATION": "खोलने के लिए यहां क्लिक करें<br/> फीनिक्स में <b>डिफ़ॉल्ट परियोजना</b> ।</br> <a href='#' style='float:right;'>ठीक है</a>",
   "DIRECTORY_REPLACE_MESSAGE": "चयनित फ़ोल्डर <span class='dialog-filename'>{0}</span> खाली नहीं है। क्या आप वाकई फ़ोल्डर की सामग्री को प्रोजेक्ट से बदलना चाहते हैं?",
-  "DEFAULT_PROJECT_HTML_CLICK_HERE": "HTML फ़ाइल में इस &ltspan&gt को खोजने के लिए यहां क्लिक करें",
+  "DEFAULT_PROJECT_HTML_CLICK_HERE": "HTML फ़ाइल में इसे &lt;span&gt; खोजने के लिए यहां क्लिक करें",
   "BUILD_WEBSITE_SECTION": "वेबसाइट बनाएं",
   "LEARN_SECTION": "उदाहरणों के साथ सीखें",
   "CREATE_EXTENSION_SECTION": "{APP_NAME} एक्सटेंशन और थीम बनाएं",

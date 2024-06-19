@@ -995,7 +995,7 @@ define({
   "BEAUTIFY_CODE_NOTIFICATION": "Кликните овде или притисните <b>`{0}`</b> да бисте улепшали код.</br><img src=\"styles/images/beautify.gif\"><br/> <a href='#' style='float:right;'>У реду</a>",
   "DEFAULT_PROJECT_NOTIFICATION": "Кликните овде да отворите<br/> <b>подразумевани пројекат</b> у Фениксу.</br> <a href='#' style='float:right;'>У реду</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Изабрани директоријум <span class='dialog-filename'>{0}</span> није празан. Да ли сте сигурни да желите да замените садржај фасцикле са пројектом?",
-  "DEFAULT_PROJECT_HTML_CLICK_HERE": "Кликните овде да бисте пронашли овај &лтспан&гт у ХТМЛ датотеци",
+  "DEFAULT_PROJECT_HTML_CLICK_HERE": "Кликните овде да бисте пронашли овај &лт;спан&гт; у ХТМЛ датотеци",
   "BUILD_WEBSITE_SECTION": "Буилд Вебсите",
   "LEARN_SECTION": "Учите на примерима",
   "CREATE_EXTENSION_SECTION": "Направите {АПП_НАМЕ} екстензије и теме",

@@ -975,7 +975,7 @@
   "BEAUTIFY_CODE_NOTIFICATION": "انقر هنا أو اضغط على <b>`{0}`</b> لتجميل الكود.</br><img src=\"styles/images/beautify.gif\"><br/> <a href='#' style='float:right;'>نعم</a>",
   "DEFAULT_PROJECT_NOTIFICATION": "انقر هنا لفتح ملف<br/> <b>مشروع افتراضي</b> في فينيكس.</br> <a href='#' style='float:right;'>موافق</a>",
   "DIRECTORY_REPLACE_MESSAGE": "المجلد المحدد <span class='dialog-filename'>{0}</span> ليس فارغًا. هل أنت متأكد أنك تريد استبدال محتويات المجلد بالمشروع؟",
-  "DEFAULT_PROJECT_HTML_CLICK_HERE": "انقر هنا لتحديد موقع هذا &ltspan&gt في ملف HTML",
+  "DEFAULT_PROJECT_HTML_CLICK_HERE": "انقر هنا لتحديد موقع هذا &lt;span&gt; في ملف HTML",
   "BUILD_WEBSITE_SECTION": "بناء موقع",
   "LEARN_SECTION": "تعلم بالأمثلة",
   "CREATE_EXTENSION_SECTION": "إنشاء إضافات ومظاهر {APP_NAME}",

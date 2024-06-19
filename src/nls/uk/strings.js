@@ -995,7 +995,7 @@ define({
   "BEAUTIFY_CODE_NOTIFICATION": "Натисніть тут або натисніть <b>`{0}`</b> , щоб прикрасити код.</br><img src=\"styles/images/beautify.gif\"><br/> <a href='#' style='float:right;'>в порядку</a>",
   "DEFAULT_PROJECT_NOTIFICATION": "Натисніть тут, щоб відкрити<br/> <b>проект за замовчуванням</b> у Phoenix.</br> <a href='#' style='float:right;'>в порядку</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Вибрана папка <span class='dialog-filename'>{0}</span> не порожня. Ви впевнені, що бажаєте замінити вміст папки проектом?",
-  "DEFAULT_PROJECT_HTML_CLICK_HERE": "Натисніть тут, щоб знайти цей &ltspan&gt у файлі HTML",
+  "DEFAULT_PROJECT_HTML_CLICK_HERE": "Натисніть тут, щоб знайти цей &lt;span&gt; у файлі HTML",
   "BUILD_WEBSITE_SECTION": "Створення веб-сайту",
   "LEARN_SECTION": "Навчайтеся на прикладах",
   "CREATE_EXTENSION_SECTION": "Створюйте розширення та теми {APP_NAME}",

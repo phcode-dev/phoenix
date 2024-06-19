@@ -975,7 +975,7 @@
   "BEAUTIFY_CODE_NOTIFICATION": "Ak chcete skrášliť kód, kliknite sem alebo stlačte <b>`{0}`</b> .</br><img src=\"styles/images/beautify.gif\"><br/> <a href='#' style='float:right;'>ok</a>",
   "DEFAULT_PROJECT_NOTIFICATION": "Kliknutím sem otvoríte<br/> <b>predvolený projekt</b> vo Phoenixe.</br> <a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Vybratý priečinok <span class='dialog-filename'>{0}</span> nie je prázdny. Naozaj chcete nahradiť obsah priečinka projektom?",
-  "DEFAULT_PROJECT_HTML_CLICK_HERE": "Kliknutím sem nájdite tento &ltspan&gt v súbore HTML",
+  "DEFAULT_PROJECT_HTML_CLICK_HERE": "Kliknutím sem nájdite toto &lt;span&gt; v súbore HTML",
   "BUILD_WEBSITE_SECTION": "Vytvoriť webovú stránku",
   "LEARN_SECTION": "Učte sa s príkladmi",
   "CREATE_EXTENSION_SECTION": "Vytvorte rozšírenia a motívy aplikácie {APP_NAME}",

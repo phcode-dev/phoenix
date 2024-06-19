@@ -995,7 +995,7 @@ define({
   "BEAUTIFY_CODE_NOTIFICATION": "Noklikšķiniet šeit vai nospiediet <b>`{0}`</b> , lai izdaiļotu kodu.</br><img src=\"styles/images/beautify.gif\"><br/> <a href='#' style='float:right;'>labi</a>",
   "DEFAULT_PROJECT_NOTIFICATION": "Noklikšķiniet šeit, lai atvērtu<br/> <b>noklusējuma projekts</b> Fīniksā.</br> <a href='#' style='float:right;'>labi</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Atlasītā mape <span class='dialog-filename'>{0}</span> nav tukša. Vai tiešām vēlaties aizstāt mapes saturu ar projektu?",
-  "DEFAULT_PROJECT_HTML_CLICK_HERE": "Noklikšķiniet šeit, lai HTML failā atrastu šo &ltspan&gt",
+  "DEFAULT_PROJECT_HTML_CLICK_HERE": "Noklikšķiniet šeit, lai atrastu šo &lt;span&gt; HTML failā",
   "BUILD_WEBSITE_SECTION": "Izveidojiet vietni",
   "LEARN_SECTION": "Mācieties ar piemēriem",
   "CREATE_EXTENSION_SECTION": "Izveidojiet {APP_NAME} paplašinājumus un motīvus",

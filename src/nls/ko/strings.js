@@ -995,7 +995,7 @@ define({
   "BEAUTIFY_CODE_NOTIFICATION": "코드를 아름답게 하려면 여기를 클릭하거나 <b>`{0}`를</b> 누르세요.</br><img src=\"styles/images/beautify.gif\"><br/> <a href='#' style='float:right;'>좋아요</a>",
   "DEFAULT_PROJECT_NOTIFICATION": "열려면 여기를 클릭하십시오<br/> 피닉스의 <b>기본 프로젝트</b> .</br> <a href='#' style='float:right;'>좋아요</a>",
   "DIRECTORY_REPLACE_MESSAGE": "선택한 폴더 <span class='dialog-filename'>{0}</span> 이(가) 비어 있지 않습니다. 폴더 내용을 프로젝트로 바꾸시겠습니까?",
-  "DEFAULT_PROJECT_HTML_CLICK_HERE": "HTML 파일에서 &ltspan&gt을 찾으려면 여기를 클릭하세요.",
+  "DEFAULT_PROJECT_HTML_CLICK_HERE": "이 &lt;span&gt;을 찾으려면 여기를 클릭하세요. HTML 파일에서",
   "BUILD_WEBSITE_SECTION": "웹사이트 구축",
   "LEARN_SECTION": "예제로 배우기",
   "CREATE_EXTENSION_SECTION": "{APP_NAME} 확장 프로그램 및 테마 만들기",

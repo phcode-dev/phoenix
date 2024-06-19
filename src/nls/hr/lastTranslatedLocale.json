@@ -975,7 +975,7 @@
   "BEAUTIFY_CODE_NOTIFICATION": "Kliknite ovdje ili pritisnite <b>`{0}`</b> za uljepšavanje koda.</br><img src=\"styles/images/beautify.gif\"><br/> <a href='#' style='float:right;'>u redu</a>",
   "DEFAULT_PROJECT_NOTIFICATION": "Kliknite ovdje da otvorite<br/> <b>zadani projekt</b> u phoenixu.</br> <a href='#' style='float:right;'>u redu</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Odabrana mapa <span class='dialog-filename'>{0}</span> nije prazna. Jeste li sigurni da želite zamijeniti sadržaj mape projektom?",
-  "DEFAULT_PROJECT_HTML_CLICK_HERE": "Kliknite ovdje da pronađete ovaj &ltspan&gt u HTML datoteci",
+  "DEFAULT_PROJECT_HTML_CLICK_HERE": "Kliknite ovdje da pronađete ovaj &lt;span&gt; u HTML datoteci",
   "BUILD_WEBSITE_SECTION": "Izradi web stranicu",
   "LEARN_SECTION": "Učite s primjerima",
   "CREATE_EXTENSION_SECTION": "Izradite {APP_NAME} proširenja i teme",

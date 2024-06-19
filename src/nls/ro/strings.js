@@ -995,7 +995,7 @@ define({
   "BEAUTIFY_CODE_NOTIFICATION": "Faceți clic aici sau apăsați <b>`{0}`</b> pentru a înfrumuseța codul.</br><img src=\"styles/images/beautify.gif\"><br/> <a href='#' style='float:right;'>Bine</a>",
   "DEFAULT_PROJECT_NOTIFICATION": "Faceți clic aici pentru a deschide<br/> <b>proiect implicit</b> în Phoenix.</br> <a href='#' style='float:right;'>O.K</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Dosarul selectat <span class='dialog-filename'>{0}</span> nu este gol. Sigur doriți să înlocuiți conținutul folderului cu proiectul?",
-  "DEFAULT_PROJECT_HTML_CLICK_HERE": "Faceți clic aici pentru a localiza acest &ltspan&gt în fișierul HTML",
+  "DEFAULT_PROJECT_HTML_CLICK_HERE": "Faceți clic aici pentru a localiza acest &lt;span&gt; în fișierul HTML",
   "BUILD_WEBSITE_SECTION": "Construiește site-ul web",
   "LEARN_SECTION": "Învață cu exemple",
   "CREATE_EXTENSION_SECTION": "Creați extensii și teme {APP_NAME}",

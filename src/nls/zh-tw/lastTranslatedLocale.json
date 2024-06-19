@@ -975,7 +975,7 @@
   "BEAUTIFY_CODE_NOTIFICATION": "點擊此處或按<b>“{0}”</b>來美化程式碼。</br><img src=\"styles/images/beautify.gif\"><br/><a href='#' style='float:right;'>好的</a>",
   "DEFAULT_PROJECT_NOTIFICATION": "點擊這裡打開<br/>鳳凰城的<b>默認項目</b>。</br><a href='#' style='float:right;'>好的</a>",
   "DIRECTORY_REPLACE_MESSAGE": "所選文件夾<span class='dialog-filename'>{0}</span>不為空。您確定要將文件夾內容替換為項目嗎？",
-  "DEFAULT_PROJECT_HTML_CLICK_HERE": "按一下此處在 HTML 檔案中找到此 &ltspan&gt",
+  "DEFAULT_PROJECT_HTML_CLICK_HERE": "按此處找到此<span>在 HTML 文件中",
   "BUILD_WEBSITE_SECTION": "建立網站",
   "LEARN_SECTION": "通過示例學習",
   "CREATE_EXTENSION_SECTION": "創建 {APP_NAME} 擴展和主題",

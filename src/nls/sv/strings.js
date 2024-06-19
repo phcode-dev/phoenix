@@ -995,7 +995,7 @@ define({
   "BEAUTIFY_CODE_NOTIFICATION": "Klicka här eller tryck på <b>`{0}`</b> för att försköna koden.</br><img src=\"styles/images/beautify.gif\"><br/> <a href='#' style='float:right;'>ok</a>",
   "DEFAULT_PROJECT_NOTIFICATION": "Klicka här för att öppna<br/> <b>standardprojekt</b> i phoenix.</br> <a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Den valda mappen <span class='dialog-filename'>{0}</span> är inte tom. Är du säker på att du vill ersätta mappinnehållet med projektet?",
-  "DEFAULT_PROJECT_HTML_CLICK_HERE": "Klicka här för att hitta denna &ltspan&gt i HTML-filen",
+  "DEFAULT_PROJECT_HTML_CLICK_HERE": "Klicka här för att hitta denna &lt;span&gt; i HTML-filen",
   "BUILD_WEBSITE_SECTION": "Bygg webbplats",
   "LEARN_SECTION": "Lär dig med exempel",
   "CREATE_EXTENSION_SECTION": "Skapa {APP_NAME}-tillägg och teman",

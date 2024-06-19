@@ -975,7 +975,7 @@
   "BEAUTIFY_CODE_NOTIFICATION": "Κάντε κλικ εδώ ή πατήστε <b>&quot;{0}&quot;</b> για να βελτιωθεί ο κώδικας.</br><img src=\"styles/images/beautify.gif\"><br/> <a href='#' style='float:right;'>Εντάξει</a>",
   "DEFAULT_PROJECT_NOTIFICATION": "Κάντε κλικ εδώ για να ανοίξετε το<br/> <b>προεπιλεγμένο έργο</b> στο phoenix.</br> <a href='#' style='float:right;'>Εντάξει</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Ο επιλεγμένος φάκελος <span class='dialog-filename'>{0}</span> δεν είναι κενός. Είστε βέβαιοι ότι θέλετε να αντικαταστήσετε τα περιεχόμενα του φακέλου με το έργο;",
-  "DEFAULT_PROJECT_HTML_CLICK_HERE": "Κάντε κλικ εδώ για να εντοπίσετε αυτό το &ltspan&gt στο αρχείο HTML",
+  "DEFAULT_PROJECT_HTML_CLICK_HERE": "Κάντε κλικ εδώ για να εντοπίσετε αυτό το &lt;span&gt; στο αρχείο HTML",
   "BUILD_WEBSITE_SECTION": "Κατασκευή Ιστοσελίδας",
   "LEARN_SECTION": "Μάθετε με παραδείγματα",
   "CREATE_EXTENSION_SECTION": "Δημιουργήστε επεκτάσεις και θέματα {APP_NAME}",

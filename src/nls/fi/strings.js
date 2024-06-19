@@ -995,7 +995,7 @@ define({
   "BEAUTIFY_CODE_NOTIFICATION": "Napsauta tätä tai paina <b>`{0}`</b> kaunistaaksesi koodia.</br><img src=\"styles/images/beautify.gif\"><br/> <a href='#' style='float:right;'>okei</a>",
   "DEFAULT_PROJECT_NOTIFICATION": "Napsauta tästä avataksesi<br/> <b>oletusprojekti</b> phoenixissa.</br> <a href='#' style='float:right;'>okei</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Valittu kansio <span class='dialog-filename'>{0}</span> ei ole tyhjä. Haluatko varmasti korvata kansion sisällön projektilla?",
-  "DEFAULT_PROJECT_HTML_CLICK_HERE": "Napsauta tätä löytääksesi tämän &ltspan&gt-tiedoston HTML-tiedostosta",
+  "DEFAULT_PROJECT_HTML_CLICK_HERE": "Napsauta tätä löytääksesi tämän &lt;span&gt; HTML-tiedostossa",
   "BUILD_WEBSITE_SECTION": "Rakenna verkkosivusto",
   "LEARN_SECTION": "Opi esimerkkien avulla",
   "CREATE_EXTENSION_SECTION": "Luo sovelluksen {APP_NAME} laajennuksia ja teemoja",

@@ -995,7 +995,7 @@ define({
   "BEAUTIFY_CODE_NOTIFICATION": "Щракнете тук или натиснете <b>„{0}“</b> , за да разкрасите кода.</br><img src=\"styles/images/beautify.gif\"><br/> <a href='#' style='float:right;'>Добре</a>",
   "DEFAULT_PROJECT_NOTIFICATION": "Щракнете тук, за да отворите<br/> <b>проект по подразбиране</b> във феникс.</br> <a href='#' style='float:right;'>Добре</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Избраната папка <span class='dialog-filename'>{0}</span> не е празна. Сигурни ли сте, че искате да замените съдържанието на папката с проекта?",
-  "DEFAULT_PROJECT_HTML_CLICK_HERE": "Щракнете тук, за да намерите този &ltspan&gt в HTML файла",
+  "DEFAULT_PROJECT_HTML_CLICK_HERE": "Щракнете тук, за да намерите този &lt;span&gt; в HTML файла",
   "BUILD_WEBSITE_SECTION": "Изградете уебсайт",
   "LEARN_SECTION": "Учете с примери",
   "CREATE_EXTENSION_SECTION": "Създайте разширения и теми на {APP_NAME}",

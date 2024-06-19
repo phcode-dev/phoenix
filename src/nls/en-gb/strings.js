@@ -995,7 +995,7 @@ define({
   "BEAUTIFY_CODE_NOTIFICATION": "Click here or press <b>`{0}`</b> to Beautify code. </br> <img src=\"styles/images/beautify.gif\">  <br/> <a href='#' style='float:right;'>ok</a>",
   "DEFAULT_PROJECT_NOTIFICATION": "Click here to open the <br/><b>default project</b> in phoenix. </br> <a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "The selected folder <span class='dialog-filename'>{0}</span> is not empty. Are you sure you want to replace the folder contents with the project?",
-  "DEFAULT_PROJECT_HTML_CLICK_HERE": "Click here to locate this &ltspan&gt in the HTML file",
+  "DEFAULT_PROJECT_HTML_CLICK_HERE": "Click here to locate this &lt;span&gt; in the HTML file",
   "BUILD_WEBSITE_SECTION": "Build Website",
   "LEARN_SECTION": "Learn With Examples",
   "CREATE_EXTENSION_SECTION": "Create {APP_NAME} Extensions and Themes",

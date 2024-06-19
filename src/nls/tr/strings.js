@@ -995,7 +995,7 @@ define({
   "BEAUTIFY_CODE_NOTIFICATION": "Kodu güzelleştirmek için burayı tıklayın veya <b>`{0}`</b> tuşuna basın.</br><img src=\"styles/images/beautify.gif\"><br/> <a href='#' style='float:right;'>Tamam</a>",
   "DEFAULT_PROJECT_NOTIFICATION": "açmak için buraya tıklayın<br/> phoenix&#39;te <b>varsayılan proje</b> .</br> <a href='#' style='float:right;'>tamam</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Seçilen klasör <span class='dialog-filename'>{0}</span> boş değil. Klasör içeriğini projeyle değiştirmek istediğinizden emin misiniz?",
-  "DEFAULT_PROJECT_HTML_CLICK_HERE": "Bunu &ltspan&gt'yi HTML dosyasında bulmak için burayı tıklayın",
+  "DEFAULT_PROJECT_HTML_CLICK_HERE": "Bu &lt;span&gt;'ı bulmak için burayı tıklayın. HTML dosyasında",
   "BUILD_WEBSITE_SECTION": "Web Sitesi Oluştur",
   "LEARN_SECTION": "Örneklerle Öğrenin",
   "CREATE_EXTENSION_SECTION": "{APP_NAME} Uzantıları ve Temaları Oluşturun",

@@ -975,7 +975,7 @@
   "BEAUTIFY_CODE_NOTIFICATION": "اینجا را کلیک کنید یا <b>«{0}»</b> را برای زیباسازی کد فشار دهید.</br><img src=\"styles/images/beautify.gif\"><br/> <a href='#' style='float:right;'>خوب</a>",
   "DEFAULT_PROJECT_NOTIFICATION": "برای باز کردن اینجا کلیک کنید<br/> <b>پروژه پیش فرض</b> در فونیکس</br> <a href='#' style='float:right;'>خوب</a>",
   "DIRECTORY_REPLACE_MESSAGE": "پوشه انتخابی <span class='dialog-filename'>{0}</span> خالی نیست. آیا مطمئن هستید که می خواهید محتوای پوشه را با پروژه جایگزین کنید؟",
-  "DEFAULT_PROJECT_HTML_CLICK_HERE": "برای یافتن این &ltspan&gt در فایل HTML اینجا را کلیک کنید",
+  "DEFAULT_PROJECT_HTML_CLICK_HERE": "برای یافتن این &lt;span&gt; در فایل HTML",
   "BUILD_WEBSITE_SECTION": "ساخت وب سایت",
   "LEARN_SECTION": "با مثال بیاموزید",
   "CREATE_EXTENSION_SECTION": "برنامه‌های افزودنی و طرح‌های زمینه {APP_NAME} را ایجاد کنید",
