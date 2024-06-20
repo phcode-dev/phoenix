@@ -95,7 +95,8 @@ define(function (require, exports, module) {
         DeprecationWarning  = require("utils/DeprecationWarning"),
         ViewCommandHandlers = require("view/ViewCommandHandlers"),
         NotificationUI      = require("widgets/NotificationUI"),
-        MainViewManager     = require("view/MainViewManager");
+        MainViewManager     = require("view/MainViewManager"),
+        Metrics             = require("utils/Metrics");
 
     window.EventManager = EventManager; // Main event intermediary between brackets and other web pages.
     /**
@@ -363,6 +364,7 @@ define(function (require, exports, module) {
                             if (info.length) {
                                 paneId = info[0].paneId;
                             }
+                            Metrics.countEvent(Metrics.EVENT_TYPE.STORAGE, "prefs.corrupt", "startup");
                             FileViewController.openFileAndAddToWorkingSet(userPrefFullPath, paneId)
                                 .done(function () {
                                     Dialogs.showModalDialog(
