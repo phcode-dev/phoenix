@@ -120,9 +120,9 @@
         }
         window.__TAURI__.event.listen("health", processRequest);
         setInterval(async ()=>{
-            // close window if the metrics hidden window is the only one around.
+            // close window if the metrics hidden window and file drop window is the only one around.
             const allTauriWindowsLabels  = await window.__TAURI__.invoke('_get_window_labels');
-            if(allTauriWindowsLabels.length === 1){
+            if(allTauriWindowsLabels.length === 2 || allTauriWindowsLabels.length === 1){
                 window.__TAURI__.window.getCurrent().close();
             }
         }, 1000);
