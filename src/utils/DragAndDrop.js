@@ -168,6 +168,17 @@ define(function (require, exports, module) {
             });
     }
 
+    async function _focusAndOpenDroppedFiles(droppedPaths) {
+        try{
+            const currentWindow = window.__TAURI__.window.getCurrent();
+            await currentWindow.setAlwaysOnTop(true);
+            await currentWindow.setAlwaysOnTop(false);
+        } catch (e) {
+            console.error("Error focusing window");
+        }
+        openDroppedFiles(droppedPaths);
+    }
+
     if(Phoenix.isNativeApp){
         window.__TAURI__.event.listen('file-drop-event-phoenix', ({payload})=> {
             if(!payload || !payload.pathList || !payload.pathList.length || !payload.windowLabelOfListener
@@ -182,7 +193,7 @@ define(function (require, exports, module) {
                     console.error("Error resolving dropped path: ", droppedPath);
                 }
             }
-            openDroppedFiles(droppedVirtualPaths);
+            _focusAndOpenDroppedFiles(droppedVirtualPaths);
         });
     }
 
@@ -223,7 +234,9 @@ define(function (require, exports, module) {
         const isSamePosition = currentPosition.x === newPosition.x && currentPosition.y === newPosition.y;
         window.__TAURI__.event.emit("drop-attach-on-window", {
             projectName: window.path.basename(ProjectManager.getProjectRoot().fullPath),
-            dropMessage: "Drop files to open or drop a folder to open it as a project",
+            dropMessage: Strings.DROP_TO_OPEN_FILES,
+            dropMessageOneFile: Strings.DROP_TO_OPEN_FILE,
+            dropProjectMessage: Strings.DROP_TO_OPEN_PROJECT,
             windowLabelOfListener: window.__TAURI__.window.appWindow.label
         });
         if (isSameSize && isSamePosition && (await fileDropWindow.isVisible())) {
