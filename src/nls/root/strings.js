@@ -449,7 +449,7 @@ define({
     "CMD_FILE_COPY": "Copy",
     "CMD_FILE_COPY_PATH": "Copy Path",
     "CMD_FILE_PASTE": "Paste",
-    "CMD_PROJECT_NEW": "New Project\u2026",
+    "CMD_PROJECT_NEW": "Start Project\u2026",
     "CMD_FILE_NEW_FOLDER": "New Folder",
     "CMD_FILE_OPEN": "Open Files\u2026",
     "CMD_RECENT_FILES_OPEN": "Recent Files\u2026",
