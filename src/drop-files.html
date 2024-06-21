@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Project Name</title>
     <script>
-        let windowLabelOfListener;
+        let windowLabelOfListener, dropMessage, dropProjectMessage, dropMessageOneFile;
         window.__TAURI__.event.listen('tauri://file-drop', (event) => {
             __TAURI__.window.appWindow.hide();
             if(!event || !event.payload || !event.payload.length || !windowLabelOfListener){
@@ -16,9 +16,32 @@
                 pathList: event.payload
             });
         });
+        window.__TAURI__.event.listen('tauri://file-drop-cancelled', (event) => {
+            __TAURI__.window.appWindow.hide();
+        });
+        window.__TAURI__.event.listen('tauri://file-drop-hover', (event) => {
+            if(!event || !event.payload || !dropProjectMessage || !dropMessage){
+                return;
+            }
+            if(event.payload.length === 1) {
+                window.__TAURI__.fs.readDir(event.payload[0])
+                    .then(async ()=>{
+                        // if a single folder is present, we treat it as drop project
+                        document.getElementById("dropMessage").innerText = dropProjectMessage
+                            .replace("{0}", await window.__TAURI__.path.basename(event.payload[0]));
+                    }).catch(()=>{
+                    document.getElementById("dropMessage").innerText = dropMessageOneFile;
+                })
+            } else {
+                document.getElementById("dropMessage").innerText = dropMessage;
+            }
+        });
         window.__TAURI__.event.listen("drop-attach-on-window", ({payload})=> {
             document.getElementById("projectName").innerText = payload.projectName;
-            document.getElementById("dropMessage").innerText = payload.dropMessage;
+            // dropMessage will be set on drag hover events depending on file/files/project
+            dropMessage = payload.dropMessage;
+            dropProjectMessage = payload.dropProjectMessage;
+            dropMessageOneFile = payload.dropMessageOneFile;
             windowLabelOfListener = payload.windowLabelOfListener;
         });
         window.addEventListener('mouseout', function(event) {
