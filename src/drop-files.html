@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project Name</title>
+    <script>
+        let windowLabelOfListener;
+        window.__TAURI__.event.listen('tauri://file-drop', (event) => {
+            __TAURI__.window.appWindow.hide();
+            if(!event || !event.payload || !event.payload.length || !windowLabelOfListener){
+                return;
+            }
+            window.__TAURI__.event.emit('file-drop-event-phoenix', {
+                windowLabelOfListener,
+                pathList: event.payload
+            });
+        });
+        window.__TAURI__.event.listen("drop-attach-on-window", ({payload})=> {
+            document.getElementById("projectName").innerText = payload.projectName;
+            document.getElementById("dropMessage").innerText = payload.dropMessage;
+            windowLabelOfListener = payload.windowLabelOfListener;
+        });
+        window.addEventListener('mouseout', function(event) {
+            // Check if the mouse is leaving the window (relatedTarget is null)
+            __TAURI__.window.appWindow.hide();
+        });
+        window.addEventListener('dragleave', ()=>{
+            __TAURI__.window.appWindow.hide();
+        });
+        window.addEventListener('dragend', ()=>{
+            __TAURI__.window.appWindow.hide();
+        });
+        window.addEventListener('click', ()=>{
+            __TAURI__.window.appWindow.hide();
+        });
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                __TAURI__.window.appWindow.hide();
+            }
+        });
+        setInterval(async ()=>{
+            // close window if the metrics hidden window and file drop window is the only one around.
+            const allTauriWindowsLabels  = await window.__TAURI__.invoke('_get_window_labels');
+            if(allTauriWindowsLabels.length === 2 || allTauriWindowsLabels.length === 1){
+                window.__TAURI__.window.getCurrent().close();
+            }
+        }, 1000);
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+            font-family: Arial, sans-serif;
+            background-color: #212123;
+            color: #ffffff; /* Default text color */
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            background-color: #212123;
+        }
+
+        header {
+            position: absolute;
+            top: 20px;
+            width: 100%;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            color: #cccccc;
+        }
+
+        .drop-area {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 2px dashed #555555;
+            border-radius: 10px;
+            padding: 50px;
+            background-color: #333333;
+            width: 80%;
+            height: 80%;
+        }
+
+        .drop-area .icon {
+            font-size: 3rem;
+            color: #aaaaaa;
+            margin-bottom: 20px;
+        }
+
+        .drop-area p {
+            font-size: 1.2rem;
+            color: #cccccc;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1 id="projectName">Project Name</h1>
+    </header>
+    <div class="drop-area">
+        <div class="icon">&#128193;</div>
+        <!-- This is a Unicode character for a folder icon -->
+        <p id="dropMessage">Drop file here to open</p>
+    </div>
+</div>
+</body>
+</html>
+

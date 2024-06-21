@@ -78,7 +78,8 @@ async function openURLInPhoenixWindow(url, {
             minHeight: minHeight || 600,
             width: width || defaultWidth,
             minWidth: minWidth || 800,
-            acceptFirstMouse: acceptFirstMouse === undefined ? true : acceptFirstMouse
+            acceptFirstMouse: acceptFirstMouse === undefined ? true : acceptFirstMouse,
+            fileDropEnabled: false
         });
         tauriWindow.isTauriWindow = true;
         return tauriWindow;

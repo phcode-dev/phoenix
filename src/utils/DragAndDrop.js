@@ -112,7 +112,7 @@ define(function (require, exports, module) {
                     }
 
                     CommandManager.execute(Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN,
-                                           {fullPath: path, silent: true})
+                        {fullPath: path, silent: true})
                         .done(function () {
                             result.resolve();
                         })
@@ -153,7 +153,7 @@ define(function (require, exports, module) {
                     message += "<ul class='dialog-list'>";
                     errorFiles.forEach(function (info) {
                         message += "<li><span class='dialog-filename'>" +
-                            StringUtils.breakableUrl(ProjectManager.makeProjectRelativeIfPossible(info.path)) +
+                            StringUtils.breakableUrl(ProjectManager.getProjectRelativeOrDisplayPath(info.path)) +
                             "</span> - " + errorToString(info.error) +
                             "</li>";
                     });
@@ -168,6 +168,77 @@ define(function (require, exports, module) {
             });
     }
 
+    if(Phoenix.isNativeApp){
+        window.__TAURI__.event.listen('file-drop-event-phoenix', ({payload})=> {
+            if(!payload || !payload.pathList || !payload.pathList.length || !payload.windowLabelOfListener
+                || payload.windowLabelOfListener !== window.__TAURI__.window.appWindow.label){
+                return;
+            }
+            const droppedVirtualPaths = [];
+            for(const droppedPath of payload.pathList) {
+                try{
+                    droppedVirtualPaths.push(window.fs.getTauriVirtualPath(droppedPath));
+                } catch (e) {
+                    console.error("Error resolving dropped path: ", droppedPath);
+                }
+            }
+            openDroppedFiles(droppedVirtualPaths);
+        });
+    }
+
+    async function showAndResizeFileDropWindow(event) {
+        // Get the current window
+        const currentWindow = window.__TAURI__.window.getCurrent();
+
+        // Get the bounds of the current window
+        const size = await currentWindow.innerSize();
+        // in mac, the innerSize api in tauri gets the full size including titlebar. Since our sidebar is full size
+        const titlebarHeightIfAny = size.height - window.innerHeight;
+        const currentWindowPos = await currentWindow.innerPosition();
+
+        let $activeElement;
+        const fileDropWindow = window.__TAURI__.window.WebviewWindow.getByLabel('fileDrop');
+        if($("#editor-holder").has(event.target).length) {
+            $activeElement = $("#editor-holder");
+        } else if($("#sidebar").has(event.target).length) {
+            $activeElement = $("#sidebar");
+        } else {
+            await fileDropWindow.hide();
+        }
+        if(!$activeElement){
+            return;
+        }
+
+        const offset = $activeElement.offset();
+        const width = $activeElement.outerWidth();
+        const height = $activeElement.outerHeight();
+        const x = currentWindowPos.x + offset.left,
+            y =currentWindowPos.y + titlebarHeightIfAny + offset.top;
+        const newSize = new window.__TAURI__.window.LogicalSize(width, height);
+        const newPosition = new window.__TAURI__.window.LogicalPosition(x, y);
+
+        const currentSize = await fileDropWindow.innerSize();
+        const currentPosition = await fileDropWindow.innerPosition();
+        const isSameSize = currentSize.width === newSize.width && currentSize.height === newSize.height;
+        const isSamePosition = currentPosition.x === newPosition.x && currentPosition.y === newPosition.y;
+        window.__TAURI__.event.emit("drop-attach-on-window", {
+            projectName: window.path.basename(ProjectManager.getProjectRoot().fullPath),
+            dropMessage: "Drop files to open or drop a folder to open it as a project",
+            windowLabelOfListener: window.__TAURI__.window.appWindow.label
+        });
+        if (isSameSize && isSamePosition && (await fileDropWindow.isVisible())) {
+            return; // Do nothing if the window is already at the correct size and position and visible
+        }
+
+        // Resize the fileDrop window to match the current window
+        await fileDropWindow.setSize(newSize);
+        await fileDropWindow.setPosition(newPosition);
+
+        // Show the fileDrop window
+        await fileDropWindow.show();
+        await fileDropWindow.setAlwaysOnTop(true);
+        await fileDropWindow.setAlwaysOnTop(false);
+    }
 
     /**
      * Attaches global drag & drop handlers to this window. This enables dropping files/folders to open them, and also
@@ -181,6 +252,12 @@ define(function (require, exports, module) {
             var files = event.dataTransfer.files;
 
             stopURIListPropagation(files, event);
+            if(Phoenix.isNativeApp && Phoenix.platform !== "linux" &&
+                event.dataTransfer.types && event.dataTransfer.types.includes("Files")){
+                // in linux, there is a bug in ubuntu 24 where dropping a file will cause a ghost icon which only
+                // goes away on reboot. So we dont support drop files in linux for now.
+                showAndResizeFileDropWindow(event);
+            }
 
             if (files && files.length) {
                 event.stopPropagation();
