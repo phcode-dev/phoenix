@@ -355,7 +355,7 @@ define({
   "CMD_FILE_COPY": "Копировать",
   "CMD_FILE_COPY_PATH": "Копировать путь",
   "CMD_FILE_PASTE": "Вставить",
-  "CMD_PROJECT_NEW": "Новый проект…",
+  "CMD_PROJECT_NEW": "Начать проект…",
   "CMD_FILE_NEW_FOLDER": "Новая директория",
   "CMD_FILE_OPEN": "Открыть файлы…",
   "CMD_RECENT_FILES_OPEN": "Недавние файлы…",

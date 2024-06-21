@@ -355,7 +355,7 @@ define({
   "CMD_FILE_COPY": "Kopierën",
   "CMD_FILE_COPY_PATH": "Pad kopiëren",
   "CMD_FILE_PASTE": "Plakken",
-  "CMD_PROJECT_NEW": "Nieuw project…",
+  "CMD_PROJECT_NEW": "Project starten…",
   "CMD_FILE_NEW_FOLDER": "Nieuwe map",
   "CMD_FILE_OPEN": "Open bestanden…",
   "CMD_RECENT_FILES_OPEN": "Recente documenten…",

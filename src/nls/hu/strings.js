@@ -355,7 +355,7 @@ define({
   "CMD_FILE_COPY": "Másolás",
   "CMD_FILE_COPY_PATH": "Útvonal másolása",
   "CMD_FILE_PASTE": "Beillesztés",
-  "CMD_PROJECT_NEW": "Új projekt…",
+  "CMD_PROJECT_NEW": "Projekt indítása…",
   "CMD_FILE_NEW_FOLDER": "Új Mappa",
   "CMD_FILE_OPEN": "Fájlok megnyitása…",
   "CMD_RECENT_FILES_OPEN": "Legutóbbi fájlok…",

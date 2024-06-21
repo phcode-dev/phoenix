@@ -355,7 +355,7 @@ define({
   "CMD_FILE_COPY": "Copia",
   "CMD_FILE_COPY_PATH": "Copia percorso",
   "CMD_FILE_PASTE": "Incolla",
-  "CMD_PROJECT_NEW": "Nuovo progetto…",
+  "CMD_PROJECT_NEW": "Avvia progetto...",
   "CMD_FILE_NEW_FOLDER": "Nuova cartella",
   "CMD_FILE_OPEN": "Apri file...",
   "CMD_RECENT_FILES_OPEN": "File recenti…",

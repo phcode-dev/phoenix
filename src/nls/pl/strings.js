@@ -355,7 +355,7 @@ define({
   "CMD_FILE_COPY": "Kopiuj",
   "CMD_FILE_COPY_PATH": "Kopiuj ścieżkę",
   "CMD_FILE_PASTE": "Wklej",
-  "CMD_PROJECT_NEW": "Nowy projekt…",
+  "CMD_PROJECT_NEW": "Rozpocznij projekt…",
   "CMD_FILE_NEW_FOLDER": "Nowy folder",
   "CMD_FILE_OPEN": "Otwórz pliki…",
   "CMD_RECENT_FILES_OPEN": "Ostatnie pliki…",
