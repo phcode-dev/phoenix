@@ -355,7 +355,7 @@ define({
   "CMD_FILE_COPY": "Kopiraj",
   "CMD_FILE_COPY_PATH": "Kopiraj put",
   "CMD_FILE_PASTE": "Zalijepi",
-  "CMD_PROJECT_NEW": "Novi projekt…",
+  "CMD_PROJECT_NEW": "Započni projekt…",
   "CMD_FILE_NEW_FOLDER": "Nova mapa",
   "CMD_FILE_OPEN": "Otvori datoteke…",
   "CMD_RECENT_FILES_OPEN": "Nedavne datoteke…",

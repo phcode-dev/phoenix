@@ -335,7 +335,7 @@
   "CMD_FILE_COPY": "复制",
   "CMD_FILE_COPY_PATH": "复制路径",
   "CMD_FILE_PASTE": "粘贴",
-  "CMD_PROJECT_NEW": "新项目…",
+  "CMD_PROJECT_NEW": "启动项目…",
   "CMD_FILE_NEW_FOLDER": "新建目录",
   "CMD_FILE_OPEN": "打开文件...",
   "CMD_RECENT_FILES_OPEN": "最近的文件…",

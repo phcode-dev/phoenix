@@ -355,7 +355,7 @@ define({
   "CMD_FILE_COPY": "کاپی",
   "CMD_FILE_COPY_PATH": "کاپی پاتھ",
   "CMD_FILE_PASTE": "چسپاں کریں۔",
-  "CMD_PROJECT_NEW": "نیا کام…",
+  "CMD_PROJECT_NEW": "پروجیکٹ شروع کریں…",
   "CMD_FILE_NEW_FOLDER": "نیا فولڈر",
   "CMD_FILE_OPEN": "فائلیں کھولیں…",
   "CMD_RECENT_FILES_OPEN": "حالیہ فائلز…",

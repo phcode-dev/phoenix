@@ -335,7 +335,7 @@
   "CMD_FILE_COPY": "コピー",
   "CMD_FILE_COPY_PATH": "パスをコピー",
   "CMD_FILE_PASTE": "ペースト",
-  "CMD_PROJECT_NEW": "新しいプロジェクト…",
+  "CMD_PROJECT_NEW": "プロジェクトを開始…",
   "CMD_FILE_NEW_FOLDER": "新しいフォルダー",
   "CMD_FILE_OPEN": "ファイルを開いています…",
   "CMD_RECENT_FILES_OPEN": "最近使用したファイル…",

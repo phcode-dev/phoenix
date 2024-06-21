@@ -355,7 +355,7 @@ define({
   "CMD_FILE_COPY": "Kopēt",
   "CMD_FILE_COPY_PATH": "Kopēt ceļu",
   "CMD_FILE_PASTE": "Ielīmēt",
-  "CMD_PROJECT_NEW": "Jauns projekts…",
+  "CMD_PROJECT_NEW": "Sākt projektu…",
   "CMD_FILE_NEW_FOLDER": "Jauna mape",
   "CMD_FILE_OPEN": "Atvērt failus…",
   "CMD_RECENT_FILES_OPEN": "Jaunākie faili…",

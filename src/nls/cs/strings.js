@@ -355,7 +355,7 @@ define({
   "CMD_FILE_COPY": "Kopírovat",
   "CMD_FILE_COPY_PATH": "Kopírovat cestu",
   "CMD_FILE_PASTE": "Vložit",
-  "CMD_PROJECT_NEW": "Nový projekt…",
+  "CMD_PROJECT_NEW": "Zahájit projekt…",
   "CMD_FILE_NEW_FOLDER": "Nová složka",
   "CMD_FILE_OPEN": "Otevřít soubory…",
   "CMD_RECENT_FILES_OPEN": "Poslední soubory…",

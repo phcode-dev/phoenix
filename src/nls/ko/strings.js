@@ -355,7 +355,7 @@ define({
   "CMD_FILE_COPY": "복사하기",
   "CMD_FILE_COPY_PATH": "경로 복사",
   "CMD_FILE_PASTE": "붙여넣기",
-  "CMD_PROJECT_NEW": "새 프로젝트…",
+  "CMD_PROJECT_NEW": "프로젝트 시작…",
   "CMD_FILE_NEW_FOLDER": "폴더 만들기",
   "CMD_FILE_OPEN": "파일 열기…",
   "CMD_RECENT_FILES_OPEN": "최근 파일…",

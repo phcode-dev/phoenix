@@ -355,7 +355,7 @@ define({
   "CMD_FILE_COPY": "ينسخ",
   "CMD_FILE_COPY_PATH": "نسخ المسار",
   "CMD_FILE_PASTE": "معجون",
-  "CMD_PROJECT_NEW": "مشروع جديد…",
+  "CMD_PROJECT_NEW": "ابدأ المشروع…",
   "CMD_FILE_NEW_FOLDER": "ملف جديد",
   "CMD_FILE_OPEN": "الملفات المفتوحة…",
   "CMD_RECENT_FILES_OPEN": "أحدث الملفات ...",
