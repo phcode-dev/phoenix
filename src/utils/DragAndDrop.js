@@ -22,7 +22,7 @@
 define(function (require, exports, module) {
 
 
-    var Async           = require("utils/Async"),
+    const Async           = require("utils/Async"),
         CommandManager  = require("command/CommandManager"),
         Commands        = require("command/Commands"),
         Dialogs         = require("widgets/Dialogs"),
@@ -33,6 +33,7 @@ define(function (require, exports, module) {
         FileUtils       = require("file/FileUtils"),
         ProjectManager  = require("project/ProjectManager"),
         Strings         = require("strings"),
+        Metrics = require("utils/Metrics"),
         StringUtils     = require("utils/StringUtils");
 
     const _PREF_DRAG_AND_DROP = "dragAndDrop"; // used in debug menu
@@ -117,6 +118,7 @@ define(function (require, exports, module) {
                         }
                     }
 
+                    Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "dragAndDrop", "fileOpen");
                     CommandManager.execute(Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN,
                         {fullPath: path, silent: true})
                         .done(function () {
@@ -128,6 +130,7 @@ define(function (require, exports, module) {
                         });
                 } else if (!err && item.isDirectory && paths.length === 1) {
                     // One folder was dropped, open it.
+                    Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "dragAndDrop", "projectOpen");
                     ProjectManager.openProject(path)
                         .done(function () {
                             result.resolve();
@@ -191,6 +194,7 @@ define(function (require, exports, module) {
                 || payload.windowLabelOfListener !== window.__TAURI__.window.appWindow.label){
                 return;
             }
+            Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "dragAndDrop", "any");
             const droppedVirtualPaths = [];
             for(const droppedPath of payload.pathList) {
                 try{
@@ -295,7 +299,8 @@ define(function (require, exports, module) {
         function handleDrop(event) {
             event = event.originalEvent || event;
 
-            var files = event.dataTransfer.files;
+            const files = event.dataTransfer.files;
+            Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, "dragAndDrop", "any");
 
             stopURIListPropagation(files, event);
 

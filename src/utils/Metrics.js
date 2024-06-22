@@ -90,13 +90,13 @@ define(function (require, exports, module) {
      * @type {Object}
      */
     const EVENT_TYPE = {
-        PLATFORM: "phoenix.platform",
+        PLATFORM: "platform",
         PROJECT: "project",
         THEMES: "themes",
         EXTENSIONS: "extensions",
         NOTIFICATIONS: "notifications",
-        UI: "phoenix.UI",
-        UI_MENU: "phoenix.UIMenu",
+        UI: "UI",
+        UI_MENU: "UIMenu",
         UI_DIALOG: "ui-dialog",
         UI_BOTTOM_PANEL: "ui-bottomPanel",
         UI_SIDE_PANEL: "ui-sidePanel",
