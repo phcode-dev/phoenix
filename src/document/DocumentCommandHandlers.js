@@ -285,7 +285,10 @@ define(function (require, exports, module) {
 
 
         if (currentlyViewedPath) {
-            _$title.text(_currentTitlePath);
+            if(!Phoenix.isNativeApp) {
+                // in native app, the app titlebar will have the file name and the title text section in not there.
+                _$title.text(_currentTitlePath);
+            }
             _$title.attr("title", currentlyViewedPath);
             if (currentDoc) {
                 // dirty dot is always in DOM so layout doesn't change, and visibility is toggled
