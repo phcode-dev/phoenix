@@ -35,7 +35,7 @@ define(function (require, exports, module) {
         PerfUtils              = brackets.getModule("utils/PerfUtils"),
         StringUtils            = brackets.getModule("utils/StringUtils"),
         Dialogs                = brackets.getModule("widgets/Dialogs"),
-        DefaultDialogs         = brackets.getModule("widgets/DefaultDialogs"),
+        DragAndDrop            = brackets.getModule("utils/DragAndDrop"),
         Strings                = brackets.getModule("strings"),
         PreferencesManager     = brackets.getModule("preferences/PreferencesManager"),
         LocalizationUtils      = brackets.getModule("utils/LocalizationUtils"),
@@ -53,7 +53,8 @@ define(function (require, exports, module) {
 
     const KeyboardPrefs = JSON.parse(require("text!keyboard.json"));
 
-    const DIAGNOSTICS_SUBMENU = "debug-diagnostics-sub-menu";
+    const DIAGNOSTICS_SUBMENU = "debug-diagnostics-sub-menu",
+        EXPERIMENTAL_FEATURES_SUB_MENU = "debug-experimental-features";
 
     // default preferences file name
     const DEFAULT_PREFERENCES_FILENAME = "defaultPreferences.json",
@@ -81,7 +82,8 @@ define(function (require, exports, module) {
         DEBUG_OPEN_VFS                        = "debug.openVFS",
         DEBUG_OPEN_EXTENSION_FOLDER           = "debug.openExtensionFolders",
         DEBUG_OPEN_VIRTUAL_SERVER             = "debug.openVirtualServer",
-        DEBUG_OPEN_PREFERENCES_IN_SPLIT_VIEW  = "debug.openPrefsInSplitView";
+        DEBUG_OPEN_PREFERENCES_IN_SPLIT_VIEW  = "debug.openPrefsInSplitView",
+        DEBUG_DRAG_AND_DROP                   = "debug.dragAndDrop";
 
     const LOG_TO_CONSOLE_KEY = logger.loggingOptions.LOCAL_STORAGE_KEYS.LOG_TO_CONSOLE_KEY,
         LOG_LIVE_PREVIEW_KEY = logger.loggingOptions.LOCAL_STORAGE_KEYS.LOG_LIVE_PREVIEW;
@@ -823,6 +825,19 @@ define(function (require, exports, module) {
     diagnosticsSubmenu.addMenuItem(DEBUG_OPEN_VIRTUAL_SERVER, undefined, undefined, undefined, {
         hideWhenCommandDisabled: true
     });
+
+    if(Phoenix.isNativeApp && Phoenix.platform === "linux") {
+        // there is only one experimental feature- drag and drop available in native linux apps only.
+        const experimentalSubmenu = debugMenu.addSubMenu(Strings.CMD_EXPERIMENTAL_FEATURES, EXPERIMENTAL_FEATURES_SUB_MENU);
+        CommandManager.register(Strings.CMD_ENABLE_DRAG_AND_DROP, DEBUG_DRAG_AND_DROP, ()=>{
+            PreferencesManager.set(DragAndDrop._PREF_DRAG_AND_DROP,
+                !PreferencesManager.get(DragAndDrop._PREF_DRAG_AND_DROP));
+        });
+        PreferencesManager.on("change", DragAndDrop._PREF_DRAG_AND_DROP, function () {
+            CommandManager.get(DEBUG_DRAG_AND_DROP).setChecked(PreferencesManager.get(DragAndDrop._PREF_DRAG_AND_DROP));
+        });
+        experimentalSubmenu.addMenuItem(DEBUG_DRAG_AND_DROP);
+    }
 
     CommandManager.get(DEBUG_UNLOAD_CURRENT_EXTENSION)
         .setEnabled(extensionDevelopment.isProjectLoadedAsExtension());

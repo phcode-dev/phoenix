@@ -579,6 +579,8 @@ define({
     // Debug menu commands
     "CMD_OPEN_VFS": "Open Virtual File System",
     "CMD_DIAGNOSTIC_TOOLS": "{APP_NAME} Diagnostic Tools",
+    "CMD_EXPERIMENTAL_FEATURES": "Experimental Features",
+    "CMD_ENABLE_DRAG_AND_DROP": "Drag And Drop Files",
     "CMD_OPEN_EXTENSIONS_FOLDER": "Open Extensions Folder\u2026",
     "CMD_OPEN_VIRTUAL_SERVER": "Open Virtual Server",
 
@@ -1001,6 +1003,7 @@ define({
     "DESCRIPTION_RULERS_COLUMNS": "An array of column numbers to draw vertical rulers in the editor. Eg: [80, 100]",
     "DESCRIPTION_RULERS_COLORS": "An array of ruler colors corresponding to the rulers option in the editor. Eg: [\"#3d3d3d\", \"red\"]",
     "DESCRIPTION_RULERS_ENABLED": "true to enable editor rulers, else false",
+    "DESCRIPTION_DRAG_AND_DROP_ENABLED": "true to enable drag and drop functionality for files and folders from the file explorer or Finder",
     "DESCRIPTION_SMART_INDENT": "Automatically indent when creating a new block",
     "DESCRIPTION_SOFT_TABS": "false to turn off soft tabs behavior",
     "DESCRIPTION_SORT_DIRECTORIES_FIRST": "true to sort the directories first in the project tree",

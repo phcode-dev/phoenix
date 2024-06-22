@@ -29,10 +29,16 @@ define(function (require, exports, module) {
         DefaultDialogs  = require("widgets/DefaultDialogs"),
         MainViewManager = require("view/MainViewManager"),
         FileSystem      = require("filesystem/FileSystem"),
+        PreferencesManager  = require("preferences/PreferencesManager"),
         FileUtils       = require("file/FileUtils"),
         ProjectManager  = require("project/ProjectManager"),
         Strings         = require("strings"),
         StringUtils     = require("utils/StringUtils");
+
+    const _PREF_DRAG_AND_DROP = "dragAndDrop"; // used in debug menu
+    PreferencesManager.definePreference(_PREF_DRAG_AND_DROP, "boolean",
+        Phoenix.isNativeApp && Phoenix.platform !== "linux", {description: Strings.DESCRIPTION_DRAG_AND_DROP_ENABLED}
+    );
 
     /**
      * Returns true if the drag and drop items contains valid drop objects.
@@ -265,7 +271,7 @@ define(function (require, exports, module) {
             var files = event.dataTransfer.files;
 
             stopURIListPropagation(files, event);
-            if(Phoenix.isNativeApp && Phoenix.platform !== "linux" &&
+            if(PreferencesManager.get(_PREF_DRAG_AND_DROP) &&
                 event.dataTransfer.types && event.dataTransfer.types.includes("Files")){
                 // in linux, there is a bug in ubuntu 24 where dropping a file will cause a ghost icon which only
                 // goes away on reboot. So we dont support drop files in linux for now.
@@ -333,4 +339,7 @@ define(function (require, exports, module) {
     exports.attachHandlers      = attachHandlers;
     exports.isValidDrop         = isValidDrop;
     exports.openDroppedFiles    = openDroppedFiles;
+
+    // private exports
+    exports._PREF_DRAG_AND_DROP = _PREF_DRAG_AND_DROP;
 });
