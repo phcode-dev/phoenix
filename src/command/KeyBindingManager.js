@@ -57,7 +57,9 @@ define(function (require, exports, module) {
         _userKeyMapFilePath = path.normalize(brackets.app.getApplicationSupportDirectory() + "/" + KEYMAP_FILENAME);
 
     const EVENT_KEY_BINDING_ADDED = "keyBindingAdded",
-        EVENT_KEY_BINDING_REMOVED = "keyBindingRemoved";
+        EVENT_KEY_BINDING_REMOVED = "keyBindingRemoved",
+        EVENT_NEW_PRESET = "newPreset",
+        EVENT_PRESET_CHANGED = "presetChanged";
 
     const KEY = Keys.KEY;
     const knownBindableCommands = new Set();
@@ -1629,18 +1631,23 @@ define(function (require, exports, module) {
         if(_customKeymapIDInUse === packID) {
             _loadUserKeyMap();
         }
+        exports.trigger(EVENT_NEW_PRESET, packID);
     }
 
     function getAllCustomKeymapPacks() {
         const packDetails = [];
         for(let packID of Object.keys(_registeredCustomKeyMaps)){
-            packDetails.push([{
+            packDetails.push({
                 packID,
                 packageName: _registeredCustomKeyMaps[packID].packageName,
                 keyMap: structuredClone(_registeredCustomKeyMaps[packID].keyMap)
-            }]);
+            });
         }
         return packDetails;
+    }
+
+    function getCurrentCustomKeymapPack() {
+        return _registeredCustomKeyMaps[_customKeymapIDInUse];
     }
 
     /**
@@ -1650,7 +1657,7 @@ define(function (require, exports, module) {
      * @param {string} shortcut - The keyboard shortcut to check.
      * @returns {string|null} - The origin of the custom shortcut, or null if it is not a custom shortcut.
      */
-    function getCustomShortcutOrigin(shortcut) {
+    function _getCustomShortcutOrigin(shortcut) {
         shortcut = normalizeKeyDescriptorString(shortcut);
         if(_originalUserKeyMap.hasOwnProperty(shortcut)){
             return Strings.KEYBOARD_SHORTCUT_SRC_USER;
@@ -1667,9 +1674,9 @@ define(function (require, exports, module) {
      * @param packID
      * @private
      */
-    function _useCustomKeymapPack(packID) {
+    function _setCurrentCustomKeymapPack(packID) {
         if(!PreferencesManager){
-            throw new Error("_useCustomKeymapPack should be called only after appinit event.");
+            throw new Error("setCurrentCustomKeymapPack should be called only after appinit event.");
         }
         PreferencesManager.stateManager.set(STATE_CUSTOM_KEY_MAP_ID, packID);
     }
@@ -1678,6 +1685,7 @@ define(function (require, exports, module) {
         if(!_customKeymapIDInUse || !_registeredCustomKeyMaps[_customKeymapIDInUse]){
             return userKeyMap;
         }
+        Metrics.countEvent(Metrics.EVENT_TYPE.KEYBOARD, 'preset', _customKeymapIDInUse);
         // the custom keymap is something like {"Ctrl-Shift-&": "navigate.gotoFirstProblem"} .
         // user defined shortcuts take precedence over custom shortcuts.
         const customKeyMap = _registeredCustomKeyMaps[_customKeymapIDInUse].keyMap;
@@ -1837,6 +1845,7 @@ define(function (require, exports, module) {
             .on("change", ()=>{
                 _customKeymapIDInUse = PreferencesManager.stateManager.get(STATE_CUSTOM_KEY_MAP_ID);
                 _loadUserKeyMap();
+                exports.constructor(EVENT_PRESET_CHANGED, _customKeymapIDInUse);
             });
         _customKeymapIDInUse = PreferencesManager.stateManager.get(STATE_CUSTOM_KEY_MAP_ID);
         _loadUserKeyMap();
@@ -1984,8 +1993,9 @@ define(function (require, exports, module) {
     exports._onCtrlUp = _onCtrlUp;
 
     // private api
-    exports._useCustomKeymapPack = _useCustomKeymapPack;
     exports._getKnownBindableCommands = _getKnownBindableCommands;
+    exports._getCustomShortcutOrigin = _getCustomShortcutOrigin;
+    exports._setCurrentCustomKeymapPack = _setCurrentCustomKeymapPack;
 
     // Define public API
     exports.getKeymap = getKeymap;
@@ -2002,13 +2012,15 @@ define(function (require, exports, module) {
     exports.showShortcutSelectionDialog = showShortcutSelectionDialog;
     exports.registerCustomKeymapPack = registerCustomKeymapPack;
     exports.getAllCustomKeymapPacks = getAllCustomKeymapPacks;
-    exports.getCustomShortcutOrigin = getCustomShortcutOrigin;
+    exports.getCurrentCustomKeymapPack = getCurrentCustomKeymapPack;
 
     // public constants
     exports.KEY = KEY;
     // public events
     exports.EVENT_KEY_BINDING_ADDED = EVENT_KEY_BINDING_ADDED;
     exports.EVENT_KEY_BINDING_REMOVED = EVENT_KEY_BINDING_REMOVED;
+    exports.EVENT_NEW_PRESET = EVENT_NEW_PRESET;
+    exports.EVENT_PRESET_CHANGED = EVENT_PRESET_CHANGED;
 
     /**
      * Use windows-specific bindings if no other are found (e.g. Linux).

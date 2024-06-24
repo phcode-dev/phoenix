@@ -371,6 +371,9 @@ define({
     //Bottom panel
     "KEYBOARD_SHORTCUT_PANEL_TITLE": "Keyboard Shortcuts",
     "KEYBOARD_SHORTCUT_PRESET_TOOLTIP": "Use keyboard shortcuts from editors like VSCode, WebStorm, or Sublime Text",
+    "KEYBOARD_SHORTCUT_PRESET_SELECT": "Select Shortcut Presets",
+    "KEYBOARD_SHORTCUT_PRESET_USING": "Using {0}",
+    "DEFAULT": "Default",
     "KEYBOARD_SHORTCUT_PANEL_FILTER": "Filter&hellip;",
     "KEYBOARD_SHORTCUT_PANEL_RESET": "Reset\u2026",
     "KEYBOARD_SHORTCUT_PANEL_RESET_DEFAULT": "Reset To Default Shortcuts\u2026",

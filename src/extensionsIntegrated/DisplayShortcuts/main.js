@@ -38,6 +38,7 @@ define(function (require, exports, module) {
         Dialogs             = require("widgets/Dialogs"),
         Metrics       = require("utils/Metrics"),
         WorkspaceManager    = require("view/WorkspaceManager"),
+        StringUtils   = require("utils/StringUtils"),
         AppInit             = require("utils/AppInit"),
         DropdownButton      = require("widgets/DropdownButton").DropdownButton,
         Strings             = require("strings");
@@ -47,6 +48,7 @@ define(function (require, exports, module) {
     const panelHtml           = require("text!./templates/bottom-panel.html"),
         shortcutsHtml       = require("text!./templates/shortcut-table.html"),
         TOGGLE_SHORTCUTS_ID = Commands.HELP_TOGGLE_SHORTCUTS_PANEL;
+    const DEFAULT_PACK_PLACEHOLDER = "default";
     let keyList = [],
         panel,
         $shortcutsPanel,
@@ -111,7 +113,7 @@ define(function (require, exports, module) {
         //  Core commands in Brackets use a simple command title as an id, for example "open.file".
         //  Extensions should use the following format: "author.myextension.mycommandname". 
         //  For example, "lschmitt.csswizard.format.css".
-        const customOrigin = KeyBindingManager.getCustomShortcutOrigin(keyBinding);
+        const customOrigin = KeyBindingManager._getCustomShortcutOrigin(keyBinding);
         if(customOrigin){
             return customOrigin;
         }
@@ -337,6 +339,7 @@ define(function (require, exports, module) {
     }
 
     function _showShortcuts() {
+        _updatePresets();
         let $shortcuts = $("#shortcuts-panel");
         
         // Apply any active filter
@@ -391,6 +394,21 @@ define(function (require, exports, module) {
         keyList = [];
     }
 
+    function _updatePresets() {
+        if (!panel || !panel.isVisible()) {
+            return;
+        }
+        const allPacks = KeyBindingManager.getAllCustomKeymapPacks();
+        const currentKeymapPack = KeyBindingManager.getCurrentCustomKeymapPack();
+        if(currentKeymapPack){
+            presetPicker.$button.text(StringUtils.format(
+                Strings.KEYBOARD_SHORTCUT_PRESET_USING, currentKeymapPack.packageName));
+        } else {
+            presetPicker.$button.text(Strings.KEYBOARD_SHORTCUT_PRESET_SELECT);
+        }
+        presetPicker.items = [DEFAULT_PACK_PLACEHOLDER, ...allPacks.map(pack=>pack.packID)];
+    }
+
     _updateKeyBindings = _.debounce(function () {
         // Update keylist
         destroyKeyList();
@@ -430,13 +448,17 @@ define(function (require, exports, module) {
         }
     }
 
-    function _presetRenderer(item) {
-        var html = "<span class='stylesheet-name'>" + _.escape(item.name);
-        if (item.subDirStr) {
-            html += "<span class='stylesheet-dir'> — " + _.escape(item.subDirStr) + "</span>";
+    function _presetRenderer(packID) {
+        if(packID === DEFAULT_PACK_PLACEHOLDER) {
+            return Strings.DEFAULT;
         }
-        html += "</span>";
-        return html;
+        const allPacks = KeyBindingManager.getAllCustomKeymapPacks();
+        for(let pack of allPacks) {
+            if(pack.packID === packID) {
+                return pack.packageName;
+            }
+        }
+        return packID;
     }
 
     AppInit.appReady(function() {
@@ -461,10 +483,17 @@ define(function (require, exports, module) {
 
         $shortcutsPanel = $("#shortcuts-panel");
 
-        presetPicker = new DropdownButton("Select Shortcut Presets", [], _presetRenderer, {
-            cssClasses: "presetPicker"
+        presetPicker = new DropdownButton(Strings.KEYBOARD_SHORTCUT_PRESET_SELECT, [], _presetRenderer, {
+            cssClasses: "presetPicker no-focus"
         });
         $shortcutsPanel.find(".presetPickerContainer").append(presetPicker.$button);
+        presetPicker.on("select", function (e, selectedPackID) {
+            if(selectedPackID === DEFAULT_PACK_PLACEHOLDER) {
+                KeyBindingManager._setCurrentCustomKeymapPack(null);
+            }
+            KeyBindingManager._setCurrentCustomKeymapPack(selectedPackID);
+            _updatePresets();
+        });
 
         // Events
         $shortcutsPanel.on("dblclick", function (e) {
@@ -510,5 +539,7 @@ define(function (require, exports, module) {
         });
         KeyBindingManager.on(KeyBindingManager.EVENT_KEY_BINDING_ADDED, _updateKeyBindings);
         KeyBindingManager.on(KeyBindingManager.EVENT_KEY_BINDING_REMOVED, _updateKeyBindings);
+        KeyBindingManager.on(KeyBindingManager.EVENT_NEW_PRESET, _updatePresets);
+        KeyBindingManager.on(KeyBindingManager.EVENT_PRESET_CHANGED, _updatePresets);
     });
 });
