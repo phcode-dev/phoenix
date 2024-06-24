@@ -370,11 +370,14 @@ define({
     "KEYBOARD_SHORTCUT_ORIG_EXTENSION": "Extension",
     //Bottom panel
     "KEYBOARD_SHORTCUT_PANEL_TITLE": "Keyboard Shortcuts",
+    "KEYBOARD_SHORTCUT_PRESET_TOOLTIP": "Use keyboard shortcuts from editors like VSCode, WebStorm, or Sublime Text",
     "KEYBOARD_SHORTCUT_PANEL_FILTER": "Filter&hellip;",
     "KEYBOARD_SHORTCUT_PANEL_RESET": "Reset\u2026",
     "KEYBOARD_SHORTCUT_PANEL_RESET_DEFAULT": "Reset To Default Shortcuts\u2026",
     "KEYBOARD_SHORTCUT_RESET_DIALOG_TITLE": "Reset Keyboard Shortcuts",
     "KEYBOARD_SHORTCUT_RESET_DIALOG_MESSAGE": "Reset all custom shortcuts to default? This cannot be undone.",
+    "KEYBOARD_SHORTCUT_SRC_USER": "User Defined",
+    "KEYBOARD_SHORTCUT_SRC_PRESET": "{0} Preset",
 
     /**
      * StatusBar strings

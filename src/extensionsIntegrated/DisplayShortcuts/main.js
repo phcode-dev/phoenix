@@ -39,7 +39,10 @@ define(function (require, exports, module) {
         Metrics       = require("utils/Metrics"),
         WorkspaceManager    = require("view/WorkspaceManager"),
         AppInit             = require("utils/AppInit"),
+        DropdownButton      = require("widgets/DropdownButton").DropdownButton,
         Strings             = require("strings");
+
+    require("./vscode.js");
 
     const panelHtml           = require("text!./templates/bottom-panel.html"),
         shortcutsHtml       = require("text!./templates/shortcut-table.html"),
@@ -49,6 +52,7 @@ define(function (require, exports, module) {
         $shortcutsPanel,
         $filterField,
         currentFilter,
+        presetPicker,
         _updateKeyBindings;
 
     let sortByBase = 1,
@@ -102,11 +106,15 @@ define(function (require, exports, module) {
         return string;
     }
 
-    function _getOriginFromCommandId(cmdID) {
+    function _getOriginFromCommandId(cmdID, keyBinding) {
         // According to CommandManager.register() documentation:
         //  Core commands in Brackets use a simple command title as an id, for example "open.file".
         //  Extensions should use the following format: "author.myextension.mycommandname". 
         //  For example, "lschmitt.csswizard.format.css".
+        const customOrigin = KeyBindingManager.getCustomShortcutOrigin(keyBinding);
+        if(customOrigin){
+            return customOrigin;
+        }
         let idArray = cmdID.split(".");
         const defaultCommands = Object.values(Commands);
 
@@ -138,36 +146,39 @@ define(function (require, exports, module) {
     // CodeMirror and Brackets key maps have different formats, so collect
     // keys into a normalized array
     function _getkeyList() {
-        let i,
+        let keyBinding,
             base,
             command,
             key;
+        const allCommandsWithShortcuts = new Set();
+        const menuCommands = Menus.getAllMenuItemCommands();
+        const knownBindableCommands = KeyBindingManager._getKnownBindableCommands();
+        const allCommandsToList = new Set([...menuCommands, ...knownBindableCommands]);
 
         // Brackets keymap
         let bracketsKeymap = KeyBindingManager.getKeymap();
         if (bracketsKeymap) {
-            for (i in bracketsKeymap) {
-                if (bracketsKeymap.hasOwnProperty(i)) {
-                    key = bracketsKeymap[i];
+            for (keyBinding in bracketsKeymap) {
+                if (bracketsKeymap.hasOwnProperty(keyBinding)) {
+                    key = bracketsKeymap[keyBinding];
                     if (key) {
-                        base = _getBaseKey(i);
+                        base = _getBaseKey(keyBinding);
                         command = CommandManager.get(key.commandID);
                         if (!command) {
                             continue;
                         }
 
-                        // Listen for keybinding changes
-                        command.on("keyBindingAdded.bds keyBindingRemoved.bds", _updateKeyBindings);
-
+                        allCommandsWithShortcuts.add(key.commandID);
                         keyList.push({
                             keyBase: KeyBindingManager.formatKeyDescriptor(base),
-                            keyBinding: i,
-                            keyBindingDisplay: KeyBindingManager.formatKeyDescriptor(i),
+                            keyBinding: keyBinding,
+                            keyBindingDisplay: KeyBindingManager.formatKeyDescriptor(keyBinding),
                             command: command,
                             commandID: key.commandID,
                             commandName: command.getName(),
-                            origin: _getOriginFromCommandId(key.commandID),
-                            filter: command.getName().toLowerCase() +  _filterFromKeyBinding(i)
+                            origin: _getOriginFromCommandId(key.commandID, keyBinding),
+                            filter: command.getName().toLowerCase() +  _filterFromKeyBinding(keyBinding)
+                                + _getOriginFromCommandId(key.commandID, keyBinding).toLowerCase()
                         });
                     }
                 }
@@ -178,27 +189,44 @@ define(function (require, exports, module) {
         if (CodeMirror.keyMap) {
             let cmKeymap = (brackets.platform === "mac") ? CodeMirror.keyMap.macDefault : CodeMirror.keyMap.pcDefault;
             if (cmKeymap) {
-                for (i in cmKeymap) {
+                for (keyBinding in cmKeymap) {
                     // Note that we only ignore CodeMirror duplicates, but
                     // we want to see Brackets & Extensions duplicates
-                    if (cmKeymap.hasOwnProperty(i) &&
-                            (i !== "fallthrough") &&
-                            (_findKeyBinding(keyList, i) === -1)) {
-                        base = _getBaseKey(i);
+                    if (cmKeymap.hasOwnProperty(keyBinding) &&
+                            (keyBinding !== "fallthrough") &&
+                            (_findKeyBinding(keyList, keyBinding) === -1)) {
+                        base = _getBaseKey(keyBinding);
+                        allCommandsWithShortcuts.add(cmKeymap[keyBinding]);
                         keyList.push({
                             keyBase: KeyBindingManager.formatKeyDescriptor(base),
-                            keyBinding: i,
-                            keyBindingDisplay: KeyBindingManager.formatKeyDescriptor(i),
-                            commandID: cmKeymap[i],
-                            commandName: cmKeymap[i],
-                            origin: origCodeMirror,
-                            filter: cmKeymap[i].toLowerCase() +  _filterFromKeyBinding(i)
+                            keyBinding: keyBinding,
+                            keyBindingDisplay: KeyBindingManager.formatKeyDescriptor(keyBinding),
+                            commandID: cmKeymap[keyBinding],
+                            commandName: cmKeymap[keyBinding],
+                            origin: window.debugMode ? origCodeMirror : origBrackets,
+                            filter: cmKeymap[keyBinding].toLowerCase() +  _filterFromKeyBinding(keyBinding) +
+                                origCodeMirror.toLowerCase()
                         });
                     }
                 }
             }
         }
-        
+
+        for(let commandID of allCommandsToList){
+            if(allCommandsWithShortcuts.has(commandID)){
+                continue;
+            }
+            keyList.push({
+                keyBase: "",
+                keyBinding: "",
+                keyBindingDisplay: "",
+                commandID: commandID,
+                commandName: commandID,
+                origin: _getOriginFromCommandId(commandID, keyBinding),
+                filter: commandID.toLowerCase() + _getOriginFromCommandId(commandID, keyBinding).toLowerCase()
+            });
+        }
+
         return keyList;
     }
 
@@ -402,6 +430,15 @@ define(function (require, exports, module) {
         }
     }
 
+    function _presetRenderer(item) {
+        var html = "<span class='stylesheet-name'>" + _.escape(item.name);
+        if (item.subDirStr) {
+            html += "<span class='stylesheet-dir'> — " + _.escape(item.subDirStr) + "</span>";
+        }
+        html += "</span>";
+        return html;
+    }
+
     AppInit.appReady(function() {
         let s, file_menu;
 
@@ -423,6 +460,11 @@ define(function (require, exports, module) {
         panel.hide();
 
         $shortcutsPanel = $("#shortcuts-panel");
+
+        presetPicker = new DropdownButton("Select Shortcut Presets", [], _presetRenderer, {
+            cssClasses: "presetPicker"
+        });
+        $shortcutsPanel.find(".presetPickerContainer").append(presetPicker.$button);
 
         // Events
         $shortcutsPanel.on("dblclick", function (e) {
@@ -466,5 +508,7 @@ define(function (require, exports, module) {
             }
             _showCommandIdsInPanelIfNeeded();
         });
+        KeyBindingManager.on(KeyBindingManager.EVENT_KEY_BINDING_ADDED, _updateKeyBindings);
+        KeyBindingManager.on(KeyBindingManager.EVENT_KEY_BINDING_REMOVED, _updateKeyBindings);
     });
 });

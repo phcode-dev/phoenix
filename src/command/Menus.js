@@ -44,6 +44,7 @@ define(function (require, exports, module) {
     require("utils/Global");
 
     const KEY = Keys.KEY;
+    const allMenuCommands = new Set();
     /**
      * Brackets Application Menu Constants
      * @enum {string}
@@ -169,6 +170,14 @@ define(function (require, exports, module) {
      */
     function getMenu(id) {
         return menuMap[id];
+    }
+
+    /**
+     * retruns a set containing all commands that has a menu item registered
+     * @returns {Set<string>}
+     */
+    function getAllMenuItemCommands() {
+        return new Set(allMenuCommands);
     }
 
     /**
@@ -573,10 +582,16 @@ define(function (require, exports, module) {
                     return null;
                 }
                 name = command.getName();
+                if(!allMenuCommands.has(commandID)){
+                    allMenuCommands.add(commandID);
+                }
             }
         } else {
             commandID = command.getID();
             name = command.getName();
+            if(!allMenuCommands.has(commandID)){
+                allMenuCommands.add(commandID);
+            }
         }
 
         // Internal id is the a composite of the parent menu id and the command id.
@@ -1647,6 +1662,7 @@ define(function (require, exports, module) {
     exports.getOpenMenu = getOpenMenu;
     exports.registerContextMenu = registerContextMenu;
     exports.closeAll = closeAll;
+    exports.getAllMenuItemCommands = getAllMenuItemCommands;
     exports.Menu = Menu;
     exports.MenuItem = MenuItem;
     exports.ContextMenu = ContextMenu;

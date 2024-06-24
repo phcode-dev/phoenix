@@ -60,6 +60,19 @@ define(function (require, exports, module) {
         EVENT_KEY_BINDING_REMOVED = "keyBindingRemoved";
 
     const KEY = Keys.KEY;
+    const knownBindableCommands = new Set();
+
+    /**
+     * @private
+     * Forward declaration for JSLint.
+     * @type {Function}
+     */
+    let _loadUserKeyMap = _.debounce(_loadUserKeyMapImmediate, 200);
+    let PreferencesManager;
+    let _customKeymapIDInUse;
+    const _registeredCustomKeyMaps = {};
+
+    const STATE_CUSTOM_KEY_MAP_ID = "customKeyMapID";
 
     /**
      * @private
@@ -80,7 +93,8 @@ define(function (require, exports, module) {
      * Maps shortcut descriptor to a command id.
      * @type {UserKeyBinding}
      */
-    let _customKeyMap      = {},
+    let _originalUserKeyMap = {},
+        _customKeyMap      = {},
         _customKeyMapCache = {};
 
     /**
@@ -140,13 +154,6 @@ define(function (require, exports, module) {
      * @type {Array.<function(Event): boolean>}
      */
     let _globalKeydownHooks = [];
-
-    /**
-     * @private
-     * Forward declaration for JSLint.
-     * @type {Function}
-     */
-    let _loadUserKeyMap;
 
     /**
      * @private
@@ -602,6 +609,11 @@ define(function (require, exports, module) {
 
                 if (command) {
                     command.trigger(EVENT_KEY_BINDING_REMOVED, {key: normalizedKey, displayKey: binding.displayKey});
+                    exports.trigger(EVENT_KEY_BINDING_REMOVED, {
+                        commandID: command.getID(),
+                        key: normalizedKey,
+                        displayKey: binding.displayKey
+                    });
                 }
             }
         }
@@ -645,6 +657,7 @@ define(function (require, exports, module) {
      *     or is already assigned.
      */
     function _addBinding(commandID, keyBinding, {platform, userBindings, isMenuShortcut}) {
+        knownBindableCommands.add(commandID);
         let key,
             result = null,
             normalized,
@@ -767,7 +780,9 @@ define(function (require, exports, module) {
 
         if (existing) {
             // do not re-assign a key binding
-            console.error("Cannot assign " + normalized + " to " + commandID + ". It is already assigned to " + _keyMap[normalized].commandID);
+            if(commandID !== _keyMap[normalized].commandID) {
+                console.error("Cannot assign " + normalized + " to " + commandID + ". It is already assigned to " + _keyMap[normalized].commandID);
+            }// else the same shortcut is already there, do nothing
             return null;
         }
 
@@ -809,6 +824,7 @@ define(function (require, exports, module) {
 
         if (command) {
             command.trigger(EVENT_KEY_BINDING_ADDED, result, commandID);
+            exports.trigger(EVENT_KEY_BINDING_ADDED, result, commandID);
         }
 
         return result;
@@ -1499,6 +1515,10 @@ define(function (require, exports, module) {
     }
 
     async function _addToUserKeymapFile(shortcut, commandID) {
+        if(shortcut instanceof Array && commandID) {
+            console.error("Shortcut arrays can be specified only if the command id is null", shortcut, commandID);
+            return;
+        }
         let file   = FileSystem.getFileForPath(_getUserKeyMapFilePath());
         let userKeyMap = {overrides:{}};
         let keyMapExists = await Phoenix.VFS.existsAsync(file.fullPath);
@@ -1509,9 +1529,11 @@ define(function (require, exports, module) {
                     userKeyMap = JSON.parse(text);
                     const overrides = userKeyMap.overrides || {};
                     // check if the same command is already assigned a shortcut, then remove before we add
-                    // a new shortcut
+                    // a new shortcut. This is because when one command has multiple shortcuts, we usually
+                    // show a duplicate shortcut dialog. this is unlikely to happen when using the ui. only happens
+                    // when a use manually edits the json. in which case we hope he knows what he is doing.
                     for(let shortcutKey of Object.keys(overrides)) {
-                        if(overrides[shortcutKey] === commandID){
+                        if(commandID && overrides[shortcutKey] === commandID){
                             delete overrides[shortcutKey];
                         }
                     }
@@ -1522,7 +1544,17 @@ define(function (require, exports, module) {
                 return;
             }
         }
-        userKeyMap.overrides[shortcut] = commandID;
+        if(shortcut instanceof Array) {
+            for(let shortcutKey of shortcut) {
+                if(!_isReservedShortcuts(shortcutKey)) {
+                    userKeyMap.overrides[shortcutKey] = commandID;
+                }
+            }
+        } else {
+            if(!_isReservedShortcuts(shortcut)) {
+                userKeyMap.overrides[shortcut] = commandID;
+            }
+        }
         const textContent = JSON.stringify(userKeyMap, null, 4);
         await deferredToPromise(FileUtils.writeText(file, textContent, true));
         _loadUserKeyMap();
@@ -1577,6 +1609,91 @@ define(function (require, exports, module) {
     }
 
     /**
+     * This can be used by extensions to register new kepmap packs that can be listed in the keyboard shortcuts panel
+     * under use preset dropdown. For EG. distribute a `netbeans editor` shortcuts pack via extension.
+     * @param {string} packID - A unique ID for the pack. Use `extensionID.name` format to avoid collisions.
+     * @param {string} packName - A name for the pack.
+     * @param {Object} keyMap - a keymap of the format {`Ctrl-Alt-L`: `file.liveFilePreview`} depending on the platform.
+     * The extension should decide the correct keymap based on the platform before calling this function.
+     */
+    function registerCustomKeymapPack(packID, packName, keyMap) {
+        if(_registeredCustomKeyMaps[packID]){
+            console.error(`registerCustomKeymapPack: ${packID} with name ${packName} is already registered. Ignoring`);
+            return;
+        }
+        console.log("registering custom keymap pack", packID, packName);
+        _registeredCustomKeyMaps[packID] = {
+            packageName: packName,
+            keyMap: keyMap
+        };
+        if(_customKeymapIDInUse === packID) {
+            _loadUserKeyMap();
+        }
+    }
+
+    function getAllCustomKeymapPacks() {
+        const packDetails = [];
+        for(let packID of Object.keys(_registeredCustomKeyMaps)){
+            packDetails.push([{
+                packID,
+                packageName: _registeredCustomKeyMaps[packID].packageName,
+                keyMap: structuredClone(_registeredCustomKeyMaps[packID].keyMap)
+            }]);
+        }
+        return packDetails;
+    }
+
+    /**
+     * Determines the origin of a custom keyboard shortcut is from user keymap.json or a custom keymap preset.
+     * If it is neither (Eg. phoenix default shortcuts, will return null.)
+     *
+     * @param {string} shortcut - The keyboard shortcut to check.
+     * @returns {string|null} - The origin of the custom shortcut, or null if it is not a custom shortcut.
+     */
+    function getCustomShortcutOrigin(shortcut) {
+        if(_originalUserKeyMap.hasOwnProperty(shortcut)){
+            return Strings.KEYBOARD_SHORTCUT_SRC_USER;
+        } else if(_customKeyMap.hasOwnProperty(shortcut) && _customKeymapIDInUse &&
+            _registeredCustomKeyMaps[_customKeymapIDInUse]){
+            return StringUtils.format(Strings.KEYBOARD_SHORTCUT_SRC_PRESET,
+                _registeredCustomKeyMaps[_customKeymapIDInUse].packageName);
+        }
+        return null;
+    }
+
+    /**
+     * internal use, this is for setting the current custom keyboard pack.
+     * @param packID
+     * @private
+     */
+    function _useCustomKeymapPack(packID) {
+        if(!PreferencesManager){
+            throw new Error("_useCustomKeymapPack should be called only after appinit event.");
+        }
+        PreferencesManager.stateManager.set(STATE_CUSTOM_KEY_MAP_ID, packID);
+    }
+
+    function _mixCustomKeyMaps(userKeyMap) {
+        if(!_customKeymapIDInUse || !_registeredCustomKeyMaps[_customKeymapIDInUse]){
+            return userKeyMap;
+        }
+        // the custom keymap is something like {"Ctrl-Shift-&": "navigate.gotoFirstProblem"} .
+        // user defined shortcuts take precedence over custom shortcuts.
+        const customKeyMap = _registeredCustomKeyMaps[_customKeymapIDInUse].keyMap;
+        const userDefinedKeys = Object.keys(userKeyMap);
+        const userDefinedCommandIDs = Object.values(userKeyMap);
+        for(const customKey of Object.keys(customKeyMap)){
+            const customCommand = customKeyMap[customKey];
+            if(!userDefinedCommandIDs.includes(customCommand) && !userDefinedKeys.includes(customKey)){
+                // Assigning multiple shortcuts to the same command will throw a dialog, so we omit a custom command
+                // that is already assigned by user defined command. Also if a shortcut is already in user keymap, we
+                // wont apply the custom keymap
+                userKeyMap[customKey] = customCommand;
+            }
+        }
+    }
+
+    /**
      * @private
      *
      * Reads in the user key bindings and updates the key map with each user key
@@ -1588,12 +1705,12 @@ define(function (require, exports, module) {
      * by 200 ms. The delay is required because when this function is called some
      * extensions may still be adding some commands and their key bindings asychronously.
      */
-    _loadUserKeyMap = _.debounce(_loadUserKeyMapImmediate, 200);
-
     function _loadUserKeyMapImmediate() {
         return new Promise((resolve, reject)=>{
             _readUserKeyMap()
                 .then(function (keyMap) {
+                    _originalUserKeyMap = structuredClone(keyMap);
+                    _mixCustomKeyMaps(keyMap);
                     // Some extensions may add a new command without any key binding. So
                     // we always have to get all commands again to ensure that we also have
                     // those from any extensions installed during the current session.
@@ -1698,7 +1815,14 @@ define(function (require, exports, module) {
             _showErrors = false;
         }
 
-        _initCommandAndKeyMaps();
+        _initCommandAndKeyMaps(); // this will save the default keymap. custom keymap loads should only come after this.
+        PreferencesManager = Phoenix.globalAPI && Phoenix.globalAPI.PreferencesManager;
+        PreferencesManager.stateManager.definePreference(STATE_CUSTOM_KEY_MAP_ID, "string", null)
+            .on("change", ()=>{
+                _customKeymapIDInUse = PreferencesManager.stateManager.get(STATE_CUSTOM_KEY_MAP_ID);
+                _loadUserKeyMap();
+            });
+        _customKeymapIDInUse = PreferencesManager.stateManager.get(STATE_CUSTOM_KEY_MAP_ID);
         _loadUserKeyMap();
     });
 
@@ -1730,12 +1854,16 @@ define(function (require, exports, module) {
     function updateShortcutSelection(event, key) {
         if(key && _isAnAssignableKey(key) && normalizeKeyDescriptorString(key)) {
             let normalizedKey = normalizeKeyDescriptorString(key);
+            if (_isReservedShortcuts(normalizedKey)) {
+                console.warn("Cannot assign reserved shortcut: ", normalizedKey);
+                event.stopPropagation();
+                event.preventDefault();
+                return true;
+            }
             capturedShortcut = normalizedKey;
             let existingBinding = _keyMap[normalizedKey];
             if (!normalizedKey) {
                 console.error("Failed to normalize " + key);
-            } else if (_isReservedShortcuts(normalizedKey)) {
-                console.log("Cannot assign reserved shortcut: ", normalizedKey);
             } else if(existingBinding && existingBinding.commandID === keyboardShortcutCaptureInProgress.getID()){
                 // user press the same shortcut that is already assigned to the command
                 keyboardShortcutDialog.close();
@@ -1771,29 +1899,29 @@ define(function (require, exports, module) {
         const panelCommand = CommandManager.get(Commands.HELP_TOGGLE_SHORTCUTS_PANEL);
         capturedShortcut = null;
         const keyBindings = getKeyBindings(command);
-        let currentShortcut = Strings.KEYBOARD_SHORTCUT_NONE;
+        let currentShortcutText = Strings.KEYBOARD_SHORTCUT_NONE;
         if(keyBindings.length){
-            currentShortcut = keyBindings[0].displayKey || keyBindings[0].key;
+            currentShortcutText = keyBindings[0].displayKey || keyBindings[0].key;
             for(let i=1; i<keyBindings.length; i++){
-                currentShortcut = currentShortcut + `, ${keyBindings[i].displayKey || keyBindings[i].key}`;
+                currentShortcutText = currentShortcutText + `, ${keyBindings[i].displayKey || keyBindings[i].key}`;
             }
         }
         keyboardShortcutCaptureInProgress = command;
         keyboardShortcutDialog = Dialogs.showModalDialogUsingTemplate(Mustache.render(KeyboardDialogTemplate, {
             Strings: Strings,
-            message: StringUtils.format(Strings.KEYBOARD_SHORTCUT_CHANGE_DIALOG_TEXT, command.getName(), currentShortcut)
+            message: StringUtils.format(Strings.KEYBOARD_SHORTCUT_CHANGE_DIALOG_TEXT, command.getName(), currentShortcutText)
         }));
-        if(currentShortcut === Strings.KEYBOARD_SHORTCUT_NONE){
+        if(currentShortcutText === Strings.KEYBOARD_SHORTCUT_NONE){
             $(".change-shortcut-dialog .Remove").addClass("forced-hidden");
         }
         if(panelCommand && panelCommand.getChecked()){
             $(".change-shortcut-dialog .Show").addClass("forced-hidden");
         }
         keyboardShortcutDialog.done((closeReason)=>{
-            if(closeReason === 'remove' && currentShortcut){
-                _addToUserKeymapFile(currentShortcut, null);
+            if(closeReason === 'remove' && currentShortcutText){
+                _addToUserKeymapFile(keyBindings.map(k=>k.key), null);
                 Metrics.countEvent(Metrics.EVENT_TYPE.KEYBOARD, 'shortcut', "removed");
-            } else if(closeReason === Dialogs.DIALOG_BTN_OK && currentShortcut){
+            } else if(closeReason === Dialogs.DIALOG_BTN_OK && capturedShortcut){
                 _addToUserKeymapFile(capturedShortcut, command.getID());
                 Metrics.countEvent(Metrics.EVENT_TYPE.KEYBOARD, 'shortcut', "changed");
             } else if(closeReason === 'show'){
@@ -1816,6 +1944,19 @@ define(function (require, exports, module) {
         return !_isSpecialCommand(commandId);
     }
 
+    /**
+     * gets a list of commands that are known to have had a key binding in this session. Note that this will contain
+     * commands that may not currently have a key binding. IT is mainly used in keyboard shortcuts panel to list items
+     * that can be assigned a key binding.
+     * @type {Set<string>}
+     * @private
+     */
+    function _getKnownBindableCommands() {
+        return new Set(knownBindableCommands);
+    }
+
+    EventDispatcher.makeEventDispatcher(exports);
+
     // unit test only
     exports._reset = _reset;
     exports._setUserKeyMapFilePath = _setUserKeyMapFilePath;
@@ -1825,6 +1966,10 @@ define(function (require, exports, module) {
     exports._loadUserKeyMapImmediate = _loadUserKeyMapImmediate;
     exports._initCommandAndKeyMaps = _initCommandAndKeyMaps;
     exports._onCtrlUp = _onCtrlUp;
+
+    // private api
+    exports._useCustomKeymapPack = _useCustomKeymapPack;
+    exports._getKnownBindableCommands = _getKnownBindableCommands;
 
     // Define public API
     exports.getKeymap = getKeymap;
@@ -1839,6 +1984,9 @@ define(function (require, exports, module) {
     exports.isInOverlayMode = isInOverlayMode;
     exports.resetUserShortcutsAsync = resetUserShortcutsAsync;
     exports.showShortcutSelectionDialog = showShortcutSelectionDialog;
+    exports.registerCustomKeymapPack = registerCustomKeymapPack;
+    exports.getAllCustomKeymapPacks = getAllCustomKeymapPacks;
+    exports.getCustomShortcutOrigin = getCustomShortcutOrigin;
 
     // public constants
     exports.KEY = KEY;
