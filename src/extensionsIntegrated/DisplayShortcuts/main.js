@@ -43,7 +43,7 @@ define(function (require, exports, module) {
         DropdownButton      = require("widgets/DropdownButton").DropdownButton,
         Strings             = require("strings");
 
-    require("./vscode.js");
+    require("./vscode");
 
     const panelHtml           = require("text!./templates/bottom-panel.html"),
         shortcutsHtml       = require("text!./templates/shortcut-table.html"),
