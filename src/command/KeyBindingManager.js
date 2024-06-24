@@ -1602,7 +1602,7 @@ define(function (require, exports, module) {
                     });
             } else {
                 // Just resolve if no user key map file
-                result.resolve();
+                result.resolve({});
             }
         });
         return result.promise();
@@ -1624,7 +1624,7 @@ define(function (require, exports, module) {
         console.log("registering custom keymap pack", packID, packName);
         _registeredCustomKeyMaps[packID] = {
             packageName: packName,
-            keyMap: keyMap
+            keyMap: _getNormalisedKeyMap(keyMap)
         };
         if(_customKeymapIDInUse === packID) {
             _loadUserKeyMap();
@@ -1651,6 +1651,7 @@ define(function (require, exports, module) {
      * @returns {string|null} - The origin of the custom shortcut, or null if it is not a custom shortcut.
      */
     function getCustomShortcutOrigin(shortcut) {
+        shortcut = normalizeKeyDescriptorString(shortcut);
         if(_originalUserKeyMap.hasOwnProperty(shortcut)){
             return Strings.KEYBOARD_SHORTCUT_SRC_USER;
         } else if(_customKeyMap.hasOwnProperty(shortcut) && _customKeymapIDInUse &&
@@ -1693,6 +1694,20 @@ define(function (require, exports, module) {
         }
     }
 
+    function _getNormalisedKeyMap(keyMap) {
+        const normalisedKeyMap = {};
+        for(let key of Object.keys(keyMap)) {
+            try {
+                normalisedKeyMap[normalizeKeyDescriptorString(key)] = keyMap[key];
+            } catch (e) {
+                console.error("Error normalising user keymap key: ", key, e);
+                // we will still inject the key with error as so that the error dialogs will come up as expected.
+                normalisedKeyMap[key] = keyMap[key];
+            }
+        }
+        return normalisedKeyMap;
+    }
+
     /**
      * @private
      *
@@ -1709,6 +1724,7 @@ define(function (require, exports, module) {
         return new Promise((resolve, reject)=>{
             _readUserKeyMap()
                 .then(function (keyMap) {
+                    keyMap = _getNormalisedKeyMap(keyMap);
                     _originalUserKeyMap = structuredClone(keyMap);
                     _mixCustomKeyMaps(keyMap);
                     // Some extensions may add a new command without any key binding. So
