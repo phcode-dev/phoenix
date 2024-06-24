@@ -103,6 +103,9 @@ Phoenix.libs = {
     picomatch: fs.utils.picomatch
 };
 
+// global API is only usable/stable after App init
+Phoenix.globalAPI = {};
+
 Phoenix.app = {
     getNodeState: function (cbfn){
         cbfn(new Error('Node cannot be run in phoenix browser mode'));

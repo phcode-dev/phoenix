@@ -115,6 +115,8 @@ define(function (require, exports, module) {
      * Global notification UI Widgets.
      */
     window.NotificationUI = NotificationUI;
+    Phoenix.globalAPI.NotificationUI = NotificationUI;
+    Phoenix.globalAPI.PreferencesManager = PreferencesManager;
 
     // load modules for later use
     require("utils/Global");
