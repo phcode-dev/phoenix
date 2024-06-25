@@ -478,7 +478,7 @@ define(function (require, exports, module) {
 
         // AppInit.htmlReady() has already executed before extensions are loaded
         // so, for now, we need to call this ourself
-        panel = WorkspaceManager.createBottomPanel(TOGGLE_SHORTCUTS_ID, $(s), 200);
+        panel = WorkspaceManager.createBottomPanel(TOGGLE_SHORTCUTS_ID, $(s), 300);
         panel.hide();
 
         $shortcutsPanel = $("#shortcuts-panel");
