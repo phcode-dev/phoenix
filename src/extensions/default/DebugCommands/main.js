@@ -826,8 +826,8 @@ define(function (require, exports, module) {
         hideWhenCommandDisabled: true
     });
 
-    if(Phoenix.isNativeApp && Phoenix.platform === "linux") {
-        // there is only one experimental feature- drag and drop available in native linux apps only.
+    if(Phoenix.isNativeApp) {
+        // there is only one experimental feature- drag and drop available in native apps only.
         const experimentalSubmenu = debugMenu.addSubMenu(Strings.CMD_EXPERIMENTAL_FEATURES, EXPERIMENTAL_FEATURES_SUB_MENU);
         CommandManager.register(Strings.CMD_ENABLE_DRAG_AND_DROP, DEBUG_DRAG_AND_DROP, ()=>{
             PreferencesManager.set(DragAndDrop._PREF_DRAG_AND_DROP,
