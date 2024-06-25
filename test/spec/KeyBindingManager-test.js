@@ -537,11 +537,11 @@ define(function (require, exports, module) {
                     var msgPrefix = Strings.ERROR_RESTRICTED_SHORTCUTS.replace("{0}", "");
                     expect(message).toMatch(msgPrefix);
                     if (platform === "mac") {
-                        expect(message).toMatch("cmd-z");
-                        expect(message).toMatch("Cmd-m");
-                        expect(message).toMatch("cmd-h");
+                        expect(message.toLowerCase()).toMatch("cmd-z");
+                        expect(message.toLowerCase()).toMatch("cmd-m");
+                        expect(message.toLowerCase()).toMatch("cmd-h");
                     } else {
-                        expect(message).toMatch("ctrl-z");
+                        expect(message.toLowerCase()).toMatch("ctrl-z");
                     }
                     return {done: function (callback) { callback(Dialogs.DIALOG_BTN_OK); } };
                 };

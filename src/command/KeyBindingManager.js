@@ -1704,9 +1704,24 @@ define(function (require, exports, module) {
 
     function _getNormalisedKeyMap(keyMap) {
         const normalisedKeyMap = {};
+        const normalisedKeyMapCounts = {};
+        // if the supplied keymap has duplicates, we have to retain them as is for error dialogs later. Eg:
+        // { "ctrl-2": "file.newFile", "Ctrl-2": "navigate.previousMatch", // observe case of Ctrl here
+        //   "Ctrl-Alt-4": "view.toggleSidebar", "Alt-Ctrl-4": "view.toggleSidebar"}
+        for(let key of Object.keys(keyMap)) {
+            const normalisedKey = normalizeKeyDescriptorString(key);
+            normalisedKeyMapCounts[normalisedKey] = (normalisedKeyMapCounts[normalisedKey] || 0) + 1;
+        }
         for(let key of Object.keys(keyMap)) {
             try {
-                normalisedKeyMap[normalizeKeyDescriptorString(key)] = keyMap[key];
+                const normalisedKey = normalizeKeyDescriptorString(key);
+                if(normalisedKeyMapCounts[normalisedKey] === 1) {
+                    normalisedKeyMap[normalisedKey] = keyMap[key];
+                } else {
+                    // if we are here, it means the supplied keymap has non-normalised duplicates.
+                    // in case of duplicates, we will keep the keys as is in the map for the error dialogs to kick in.
+                    normalisedKeyMap[key] = keyMap[key];
+                }
             } catch (e) {
                 console.error("Error normalising user keymap key: ", key, e);
                 // we will still inject the key with error as so that the error dialogs will come up as expected.
