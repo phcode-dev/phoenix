@@ -27,7 +27,29 @@ function sendToESLintProcess(jsObj) {
     }
 }
 
-// Function to check if Node.js is installed
+function isVersionGreater(versionA, versionB) {
+    try{
+        const partsA = versionA.split('.').map(Number);
+        const partsB = versionB.split('.').map(Number);
+
+        for (let i = 0; i < Math.max(partsA.length, partsB.length); i++) {
+            const partA = partsA[i] || 0;
+            const partB = partsB[i] || 0;
+
+            if (partA > partB) {
+                return true;
+            } else if (partA < partB) {
+                return false;
+            }
+        }
+    } catch (e) {
+        console.error("error comparing nodejs versions: ", versionA, versionB, e);
+    }
+    return false;
+}
+
+// We always use phnode if the system node is lower than phnode version. our supported eslint versions 7-latest runs
+// on phnode 20. If user has the latest node, we will use that for future proofing.
 function getNodeJSBinPath() {
     return new Promise((resolve) => {
         if(nodeBinPath){
@@ -39,8 +61,16 @@ function getNodeJSBinPath() {
                 console.error('System Node.js is not installed, using PHNode for ESLint');
                 nodeBinPath = process.argv[0]; // phnode itself
             } else {
-                console.log(`Node.js is installed. Version: ${stdout.trim()}`);
-                nodeBinPath = "node"; // system node
+                const systemNodeVersion = stdout.trim().substring(1); // remove the 'v' prefix
+                const currentNodeVersion = process.version.substring(1); // remove the 'v' prefix
+
+                if (isVersionGreater(systemNodeVersion, currentNodeVersion)) {
+                    console.log(`System Node.js (${systemNodeVersion}) is newer than phnode(${currentNodeVersion}). Using system Node.js.`);
+                    nodeBinPath = "node"; // system node
+                } else {
+                    console.log(`phnode (${currentNodeVersion}) is same/newer than system nodejs. using phnode.`);
+                    nodeBinPath = process.argv[0]; // current node process path
+                }
             }
             resolve(nodeBinPath);
         });
@@ -171,5 +201,7 @@ async function lintFile(text, fullFilePath, projectFullPath) {
         });
     });
 }
+
+getNodeJSBinPath();
 
 exports.lintFile = lintFile;
