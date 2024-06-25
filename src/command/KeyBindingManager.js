@@ -1555,7 +1555,7 @@ define(function (require, exports, module) {
         } else {
             if(!_isReservedShortcuts(shortcut)) {
                 userKeyMap.overrides[shortcut] = commandID;
-            }
+            } // else we should show an error message here, but not doing it for now.
         }
         const textContent = JSON.stringify(userKeyMap, null, 4);
         await deferredToPromise(FileUtils.writeText(file, textContent, true));
