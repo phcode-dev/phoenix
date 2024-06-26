@@ -253,7 +253,7 @@ define(function (require, exports, module) {
             return;
         }
 
-        const {newSize, newPosition} = await _computeNewPositionAndSize($activeElement);
+        const {newSize, newPosition} = await _computeNewPositionAndSize();
         const currentSize = await fileDropWindow.innerSize();
         const currentPosition = await fileDropWindow.innerPosition();
         const isSameSize = currentSize.width === newSize.width && currentSize.height === newSize.height;
