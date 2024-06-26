@@ -207,7 +207,7 @@ define(function (require, exports, module) {
         });
     }
 
-    async function showAndResizeFileDropWindow(event) {
+    async function _computeNewPositionAndSizeWebkit($activeElement) {
         // Get the current window
         const currentWindow = window.__TAURI__.window.getCurrent();
 
@@ -216,7 +216,31 @@ define(function (require, exports, module) {
         // in mac, the innerSize api in tauri gets the full size including titlebar. Since our sidebar is full size
         const titlebarHeightIfAny = size.height - window.innerHeight;
         const currentWindowPos = await currentWindow.innerPosition();
+        const offset = $activeElement.offset();
+        const width = $activeElement.outerWidth();
+        const height = $activeElement.outerHeight();
+        const x = currentWindowPos.x + offset.left,
+            y =currentWindowPos.y + titlebarHeightIfAny + offset.top;
+        const newSize = new window.__TAURI__.window.LogicalSize(width, height);
+        const newPosition = new window.__TAURI__.window.LogicalPosition(x, y);
+        return {newSize, newPosition};
+    }
 
+    async function _computeNewPositionAndSizeWindows() {
+        const currentWindow = window.__TAURI__.window.getCurrent();
+        const newSize = await currentWindow.innerSize();
+        const newPosition = await currentWindow.innerPosition();
+        return {newSize, newPosition};
+    }
+
+    async function _computeNewPositionAndSize($activeElement) {
+        if(Phoenix.platform === "win") {
+            return _computeNewPositionAndSizeWindows();
+        }
+        return _computeNewPositionAndSizeWebkit($activeElement);
+    }
+
+    async function showAndResizeFileDropWindow(event) {
         let $activeElement;
         const fileDropWindow = window.__TAURI__.window.WebviewWindow.getByLabel('fileDrop');
         if($("#editor-holder").has(event.target).length) {
@@ -230,14 +254,7 @@ define(function (require, exports, module) {
             return;
         }
 
-        const offset = $activeElement.offset();
-        const width = $activeElement.outerWidth();
-        const height = $activeElement.outerHeight();
-        const x = currentWindowPos.x + offset.left,
-            y =currentWindowPos.y + titlebarHeightIfAny + offset.top;
-        const newSize = new window.__TAURI__.window.LogicalSize(width, height);
-        const newPosition = new window.__TAURI__.window.LogicalPosition(x, y);
-
+        const {newSize, newPosition} = await _computeNewPositionAndSize($activeElement);
         const currentSize = await fileDropWindow.innerSize();
         const currentPosition = await fileDropWindow.innerPosition();
         const isSameSize = currentSize.width === newSize.width && currentSize.height === newSize.height;
