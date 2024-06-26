@@ -207,22 +207,12 @@ define(function (require, exports, module) {
         });
     }
 
-    async function _computeNewPositionAndSizeWebkit($activeElement) {
-        // Get the current window
+    async function _computeNewPositionAndSizeWebkit() {
         const currentWindow = window.__TAURI__.window.getCurrent();
-
-        // Get the bounds of the current window
-        const size = await currentWindow.innerSize();
-        // in mac, the innerSize api in tauri gets the full size including titlebar. Since our sidebar is full size
-        const titlebarHeightIfAny = size.height - window.innerHeight;
-        const currentWindowPos = await currentWindow.innerPosition();
-        const offset = $activeElement.offset();
-        const width = $activeElement.outerWidth();
-        const height = $activeElement.outerHeight();
-        const x = currentWindowPos.x + offset.left,
-            y =currentWindowPos.y + titlebarHeightIfAny + offset.top;
-        const newSize = new window.__TAURI__.window.LogicalSize(width, height);
-        const newPosition = new window.__TAURI__.window.LogicalPosition(x, y);
+        const newSize = await currentWindow.innerSize();
+        const newPosition = await currentWindow.innerPosition();
+        newPosition.y = newPosition.y + 28;
+        newSize.height = newSize.height - 28;
         return {newSize, newPosition};
     }
 
@@ -233,11 +223,11 @@ define(function (require, exports, module) {
         return {newSize, newPosition};
     }
 
-    async function _computeNewPositionAndSize($activeElement) {
+    async function _computeNewPositionAndSize() {
         if(Phoenix.platform === "win") {
             return _computeNewPositionAndSizeWindows();
         }
-        return _computeNewPositionAndSizeWebkit($activeElement);
+        return _computeNewPositionAndSizeWebkit();
     }
 
     async function showAndResizeFileDropWindow(event) {
