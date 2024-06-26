@@ -207,18 +207,25 @@ define(function (require, exports, module) {
         });
     }
 
+    const MAC_TITLE_BAR_HEIGHT = 28;
     async function _computeNewPositionAndSizeWebkit() {
         const currentWindow = window.__TAURI__.window.getCurrent();
         const newSize = await currentWindow.innerSize();
         const newPosition = await currentWindow.innerPosition();
         if(Phoenix.platform === "mac") {
-            newPosition.y = newPosition.y + 28;
-            newSize.height = newSize.height - 28;
+            // in mac we somehow get the top left of the window including the title bar even though we are calling the
+            // tauri innerPosition api. So we just adjust for a generally constant title bar height of mac that is 28px.
+            newPosition.y = newPosition.y + MAC_TITLE_BAR_HEIGHT;
+            newSize.height = newSize.height - MAC_TITLE_BAR_HEIGHT;
         }
         return {newSize, newPosition};
     }
 
     async function _computeNewPositionAndSizeWindows() {
+        // Note that the drop window may be on different screens if multi window setup. in windows os, there can be
+        // of different scale factors like 1x and 1.5x on another monitor. Additionally, we may apply our own zoom
+        // settings. So its is always better to just use the tauri provided positions. the tauri api returned values
+        // will position the window to the correct monitor as well.
         const currentWindow = window.__TAURI__.window.getCurrent();
         const newSize = await currentWindow.innerSize();
         const newPosition = await currentWindow.innerPosition();
