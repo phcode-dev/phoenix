@@ -256,7 +256,8 @@ define(function (require, exports, module) {
             dropMessage: Strings.DROP_TO_OPEN_FILES,
             dropMessageOneFile: Strings.DROP_TO_OPEN_FILE,
             dropProjectMessage: Strings.DROP_TO_OPEN_PROJECT,
-            windowLabelOfListener: window.__TAURI__.window.appWindow.label
+            windowLabelOfListener: window.__TAURI__.window.appWindow.label,
+            platform: Phoenix.platform
         });
         if (isSameSize && isSamePosition && (await fileDropWindow.isVisible())) {
             return; // Do nothing if the window is already at the correct size and position and visible
