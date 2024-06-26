@@ -17,7 +17,7 @@
             });
         });
         window.__TAURI__.event.listen('tauri://file-drop-cancelled', (event) => {
-            __TAURI__.window.appWindow.hide();
+            //__TAURI__.window.appWindow.hide();
         });
         window.__TAURI__.event.listen('tauri://file-drop-hover', (event) => {
             if(!event || !event.payload || !dropProjectMessage || !dropMessage){
@@ -49,17 +49,17 @@
             __TAURI__.window.appWindow.hide();
         });
         window.addEventListener('dragleave', ()=>{
-            __TAURI__.window.appWindow.hide();
+            //__TAURI__.window.appWindow.hide();
         });
         window.addEventListener('dragend', ()=>{
-            __TAURI__.window.appWindow.hide();
+            //__TAURI__.window.appWindow.hide();
         });
         window.addEventListener('click', ()=>{
             __TAURI__.window.appWindow.hide();
         });
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
-                __TAURI__.window.appWindow.hide();
+                //__TAURI__.window.appWindow.hide();
             }
         });
         setInterval(async ()=>{
