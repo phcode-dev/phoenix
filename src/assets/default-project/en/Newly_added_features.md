@@ -7,6 +7,39 @@ We are continuously adding features every week to improve the life of web develo
 
 Here's a list of top features recently added to Phoenix:
 
+## Drag and Drop Files and Folders in Desktop Apps - Experimental
+
+`Added on June, 2024`
+
+Drag files from Explorer (Windows) or Finder (Mac) and drop them into Phoenix
+Code to open individual files. Drop a folder to open it as a project.
+
+> Note: This feature is currently disabled on Linux due to UI issues in some
+> Linux distributions. To enable it, select menu
+> `Debug -> Experimental Features -> Drag And Drop Files.`
+
+![drag and drop](https://github.com/phcode-dev/phoenix/assets/5336369/ddd96ff7-bc99-46a6-a62d-6f6f5b78438b)
+
+<h2><a target="_blank" href="https://docs.phcode.dev/docs/Features/Problems%20Panel/html-lint/">HTML Validation</a></h2>
+
+`Added on June, 2024`
+
+We have added HTML Validator to help you find errors like duplicate IDs,
+unrecognized tags, and more.
+
+![HTML validate](https://github.com/phcode-dev/phoenix/assets/5336369/5bc4a1cc-2429-477c-83ca-91f19dcc0b0f)
+
+<h2><a target="_blank" href="https://docs.phcode.dev/docs/Features/Problems%20Panel/ESLint/">ESLint Support</a></h2>
+
+`Added on June, 2024`
+
+All new and simplified ESLint experience that displays all ESLint errors in a
+file. Fix one or all errors with a single click. To enable, open a project that
+uses ESLint in Phoenix Code.
+
+![image](https://github.com/phcode-dev/phoenix/assets/5336369/89830ae8-cd45-47fe-9628-7edc4094db4e)
+
+
 ## Live CSS class and Style Code Hints
 
 `Added on May, 2024`
