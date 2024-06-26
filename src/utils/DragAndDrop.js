@@ -211,8 +211,10 @@ define(function (require, exports, module) {
         const currentWindow = window.__TAURI__.window.getCurrent();
         const newSize = await currentWindow.innerSize();
         const newPosition = await currentWindow.innerPosition();
-        newPosition.y = newPosition.y + 28;
-        newSize.height = newSize.height - 28;
+        if(Phoenix.platform === "mac") {
+            newPosition.y = newPosition.y + 28;
+            newSize.height = newSize.height - 28;
+        }
         return {newSize, newPosition};
     }
 
