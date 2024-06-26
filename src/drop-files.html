@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Project Name</title>
     <script>
-        let windowLabelOfListener, dropMessage, dropProjectMessage, dropMessageOneFile;
+        let windowLabelOfListener, dropMessage, dropProjectMessage, dropMessageOneFile, platform;
         window.__TAURI__.event.listen('tauri://file-drop', (event) => {
             __TAURI__.window.appWindow.hide();
             if(!event || !event.payload || !event.payload.length || !windowLabelOfListener){
@@ -16,8 +16,22 @@
                 pathList: event.payload
             });
         });
-        window.__TAURI__.event.listen('tauri://file-drop-cancelled', (event) => {
-            //__TAURI__.window.appWindow.hide();
+        window.addEventListener('mouseout', function(_event) {
+            __TAURI__.window.appWindow.hide();
+        });
+        window.__TAURI__.event.listen('tauri://file-drop-cancelled', (_event) => {
+            // usually in mac, when the drag leaves the window, we would get a mouseout event. this doesnt
+            // happen in windows as tauri has a custom hwnd window overlay over this dop window and appear
+            // to be swallowing the mouse out events. So we listen to tauri's drop cancelled event instead
+            // on windows only.
+            if(platform === "win") {
+                // in windows, tauri drop work differently, we have to do this to prevent the drop window not
+                // disappearing on mouse out.
+                __TAURI__.window.appWindow.hide();
+            }
+        });
+        window.addEventListener('click', ()=>{
+            __TAURI__.window.appWindow.hide();
         });
         window.__TAURI__.event.listen('tauri://file-drop-hover', (event) => {
             if(!event || !event.payload || !dropProjectMessage || !dropMessage){
@@ -43,25 +57,22 @@
             dropProjectMessage = payload.dropProjectMessage;
             dropMessageOneFile = payload.dropMessageOneFile;
             windowLabelOfListener = payload.windowLabelOfListener;
+            platform = payload.platform;
         });
-        window.addEventListener('mouseout', function(event) {
-            // Check if the mouse is leaving the window (relatedTarget is null)
-            __TAURI__.window.appWindow.hide();
-        });
-        window.addEventListener('dragleave', ()=>{
-            //__TAURI__.window.appWindow.hide();
-        });
-        window.addEventListener('dragend', ()=>{
-            //__TAURI__.window.appWindow.hide();
-        });
-        window.addEventListener('click', ()=>{
-            __TAURI__.window.appWindow.hide();
-        });
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                //__TAURI__.window.appWindow.hide();
-            }
-        });
+
+        // The below code is commented as it was causing flicker issues in some platforms. IF adding these below
+        // event handlers, tread carefully.
+        // window.addEventListener('dragleave', ()=>{
+        //     //__TAURI__.window.appWindow.hide();
+        // });
+        // window.addEventListener('dragend', ()=>{
+        //     //__TAURI__.window.appWindow.hide();
+        // });
+        // document.addEventListener('visibilitychange', () => {
+        //     if (document.hidden) {
+        //         //__TAURI__.window.appWindow.hide();
+        //     }
+        // });
         setInterval(async ()=>{
             // close window if the metrics hidden window and file drop window is the only one around.
             const allTauriWindowsLabels  = await window.__TAURI__.invoke('_get_window_labels');
