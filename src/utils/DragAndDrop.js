@@ -207,17 +207,14 @@ define(function (require, exports, module) {
         });
     }
 
-    const MAC_TITLE_BAR_HEIGHT = 28;
     async function _computeNewPositionAndSizeWebkit() {
         const currentWindow = window.__TAURI__.window.getCurrent();
         const newSize = await currentWindow.innerSize();
         const newPosition = await currentWindow.innerPosition();
-        if(Phoenix.platform === "mac") {
-            // in mac we somehow get the top left of the window including the title bar even though we are calling the
-            // tauri innerPosition api. So we just adjust for a generally constant title bar height of mac that is 28px.
-            newPosition.y = newPosition.y + MAC_TITLE_BAR_HEIGHT;
-            newSize.height = newSize.height - MAC_TITLE_BAR_HEIGHT;
-        }
+        // in mac we somehow get the top left of the window including the title bar even though we are calling the
+        // tauri innerPosition api. We earlier adjusted for a generally constant title bar height of mac that is 28px.
+        // But then is nome macs due to display scaling, it was not 28px all the time.
+        // so, we just draw over the entire window in mac alone.
         return {newSize, newPosition};
     }
 

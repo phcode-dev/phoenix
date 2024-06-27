@@ -7,7 +7,7 @@ We are continuously adding features every week to improve the life of web develo
 
 Here's a list of top features recently added to Phoenix:
 
-## Drag and Drop Files and Folders in Desktop Apps
+## Drag and Drop Files and Folders in Desktop Apps - Experimental
 
 `Added on June, 2024`
 
