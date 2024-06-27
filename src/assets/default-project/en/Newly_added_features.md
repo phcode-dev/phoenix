@@ -37,7 +37,7 @@ All new and simplified ESLint experience that displays all ESLint errors in a
 file. Fix one or all errors with a single click. To enable, open a project that
 uses ESLint in Phoenix Code.
 
-![image](https://github.com/phcode-dev/phoenix/assets/5336369/89830ae8-cd45-47fe-9628-7edc4094db4e)
+![image](https://github.com/phcode-dev/phoenix/assets/5336369/eb00691a-a0b4-4c1a-9209-d78fc7db764d)
 
 
 ## Live CSS class and Style Code Hints
