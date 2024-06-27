@@ -7,7 +7,7 @@ We are continuously adding features every week to improve the life of web develo
 
 Here's a list of top features recently added to Phoenix:
 
-## Drag and Drop Files and Folders in Desktop Apps - Experimental
+## Drag and Drop Files and Folders in Desktop Apps
 
 `Added on June, 2024`
 
@@ -17,6 +17,8 @@ Code to open individual files. Drop a folder to open it as a project.
 > Note: This feature is currently disabled on Linux due to UI issues in some
 > Linux distributions. To enable it, select menu
 > `Debug -> Experimental Features -> Drag And Drop Files.`
+
+>  This feature is not available in the browser version @ phcode.dev
 
 ![drag and drop](https://github.com/phcode-dev/phoenix/assets/5336369/ddd96ff7-bc99-46a6-a62d-6f6f5b78438b)
 
