@@ -277,7 +277,9 @@ define(function (require, exports, module) {
         // Show the fileDrop window
         await fileDropWindow.show();
         await fileDropWindow.setAlwaysOnTop(true);
-        await fileDropWindow.setAlwaysOnTop(false);
+        // the fileDropWindow window will always be on top as the window itslef has logic to dismiss itself if mouse
+        // exited it. Also, if we dont to that, in mac in some cases, the window will go to the background while
+        // dragging. So while this window is visible, this will alwyas be on top.
     }
 
     /**
