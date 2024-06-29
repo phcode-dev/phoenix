@@ -15,7 +15,7 @@
     "devDependencies": {
         "@commitlint/cli": "^16.0.2",
         "@commitlint/config-conventional": "^16.0.0",
-        "@google-cloud/translate": "^7.0.3",
+        "@google-cloud/translate": "^8.3.0",
         "@playwright/test": "^1.38.1",
         "del": "^6.0.0",
         "documentation": "^13.2.5",
