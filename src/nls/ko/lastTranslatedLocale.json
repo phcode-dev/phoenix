@@ -114,7 +114,7 @@
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "미리보기 페이지 고정 또는 고정 해제",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "실시간 프리 (구문 오류로 인해 업데이트되지 않습니다)",
   "LIVE_DEV_SETTINGS": "실시간 미리보기 설정…",
-  "LIVE_DEV_SETTINGS_BANNER": "PHP, JSP 및 기타 서버 렌더링 파일을 실시간으로 미리 볼 수 있도록 사용자 정의 서버 설정",
+  "LIVE_DEV_SETTINGS_BANNER": "` <b>{0}</b> ` 및 기타 서버 렌더링 파일(PHP, JSP 등)을 실시간으로 미리 볼 수 있도록 사용자 정의 서버를 설정하세요.",
   "LIVE_DEV_SETTINGS_TITLE": "실시간 미리보기 설정",
   "LIVE_DEV_SETTINGS_STARTUP": "시작 시 실시간 미리보기 패널 표시",
   "LIVE_DEV_SETTINGS_SERVER_PREFERENCE": "사용자 정의 개발 서버를 활성화하려면 true입니다.",

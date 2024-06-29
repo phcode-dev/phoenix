@@ -134,7 +134,7 @@ define({
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "プレビューページをピン留めまたはピン留め解除する",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "ライブプレビュー (シンタックスエラーのため更新されません)",
   "LIVE_DEV_SETTINGS": "ライブプレビュー設定…",
-  "LIVE_DEV_SETTINGS_BANNER": "PHP、JSP、その他のサーバーレンダリングファイルをライブプレビューするためのカスタムサーバーをセットアップする",
+  "LIVE_DEV_SETTINGS_BANNER": "` <b>{0}</b> ` やその他のサーバーレンダリングファイル (PHP、JSP など) をライブプレビューするためのカスタムサーバーを設定します。",
   "LIVE_DEV_SETTINGS_TITLE": "ライブプレビュー設定",
   "LIVE_DEV_SETTINGS_STARTUP": "起動時にライブプレビューパネルを表示する",
   "LIVE_DEV_SETTINGS_SERVER_PREFERENCE": "カスタム開発サーバーを有効にするにはtrue",

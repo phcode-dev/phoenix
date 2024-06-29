@@ -114,7 +114,7 @@
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Önizleme Sayfasını Sabitleme veya Sabitlemeyi Kaldırma",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Canlı Önizleme (sözdizimi hatası nedeniyle güncellenmiyor)",
   "LIVE_DEV_SETTINGS": "Canlı Önizleme Ayarları…",
-  "LIVE_DEV_SETTINGS_BANNER": "PHP, JSP ve sunucu tarafından oluşturulan diğer dosyaların canlı önizlemesini yapmak için özel bir sunucu kurun",
+  "LIVE_DEV_SETTINGS_BANNER": "` <b>{0}</b> ` ve sunucu tarafından oluşturulan diğer dosyaların (PHP, JSP, vb.) canlı önizlemesini yapmak için özel bir sunucu ayarlayın.",
   "LIVE_DEV_SETTINGS_TITLE": "Canlı Önizleme Ayarları",
   "LIVE_DEV_SETTINGS_STARTUP": "Başlangıçta Canlı Önizleme Panelini Göster",
   "LIVE_DEV_SETTINGS_SERVER_PREFERENCE": "true özel geliştirme sunucusunu etkinleştirmek için",

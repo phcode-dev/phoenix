@@ -114,7 +114,7 @@
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Voorbeeldpagina vastzetten of losmaken",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Live Voorbeeld (niet bezig met updaten door een verkeerde syntax)",
   "LIVE_DEV_SETTINGS": "Instellingen voor livevoorbeelden…",
-  "LIVE_DEV_SETTINGS_BANNER": "Stel een aangepaste server in voor live previews van PHP-, JSP- en andere door de server weergegeven bestanden",
+  "LIVE_DEV_SETTINGS_BANNER": "Stel een aangepaste server in voor live preview van ` <b>{0}</b> ` en andere door de server weergegeven bestanden (PHP, JSP, etc.)",
   "LIVE_DEV_SETTINGS_TITLE": "Instellingen voor livevoorbeelden",
   "LIVE_DEV_SETTINGS_STARTUP": "Live preview-paneel weergeven bij opstarten",
   "LIVE_DEV_SETTINGS_SERVER_PREFERENCE": "true om aangepaste ontwikkelingsserver in te schakelen",

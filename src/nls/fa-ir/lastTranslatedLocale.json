@@ -114,7 +114,7 @@
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "پین کردن یا برداشتن پین صفحه پیش نمایش",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "پیش نمایش زنده (به دلیل خطا در سینتکس، بروزرسانی نشده است)",
   "LIVE_DEV_SETTINGS": "تنظیمات پیش‌نمایش زنده…",
-  "LIVE_DEV_SETTINGS_BANNER": "یک سرور سفارشی برای پیش نمایش زنده PHP، JSP و سایر فایل های ارائه شده توسط سرور تنظیم کنید",
+  "LIVE_DEV_SETTINGS_BANNER": "یک سرور سفارشی برای پیش‌نمایش زنده « <b>{0}</b> » و سایر فایل‌های ارائه‌شده توسط سرور (PHP، JSP و غیره) تنظیم کنید.",
   "LIVE_DEV_SETTINGS_TITLE": "تنظیمات پیش نمایش زنده",
   "LIVE_DEV_SETTINGS_STARTUP": "نمایش پنل پیش نمایش زنده در راه اندازی",
   "LIVE_DEV_SETTINGS_SERVER_PREFERENCE": "درست است تا سرور توسعه سفارشی را فعال کند",
