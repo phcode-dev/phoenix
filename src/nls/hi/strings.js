@@ -134,7 +134,7 @@ define({
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "पूर्वावलोकन पृष्ठ पिन या अनपिन करें",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "लाइव पूर्वावलोकन (सिंटैक्स त्रुटि के कारण अपडेट नहीं हो रहा है)",
   "LIVE_DEV_SETTINGS": "लाइव पूर्वावलोकन सेटिंग्स…",
-  "LIVE_DEV_SETTINGS_BANNER": "PHP, JSP और अन्य सर्वर-रेंडर की गई फ़ाइलों का लाइव पूर्वावलोकन करने के लिए एक कस्टम सर्वर सेट अप करें",
+  "LIVE_DEV_SETTINGS_BANNER": "` <b>{0}</b> ` और अन्य सर्वर-रेंडर की गई फ़ाइलों (PHP, JSP, आदि) का लाइव पूर्वावलोकन करने के लिए एक कस्टम सर्वर सेट करें।",
   "LIVE_DEV_SETTINGS_TITLE": "लाइव पूर्वावलोकन सेटिंग्स",
   "LIVE_DEV_SETTINGS_STARTUP": "स्टार्टअप पर लाइव पूर्वावलोकन पैनल दिखाएं",
   "LIVE_DEV_SETTINGS_SERVER_PREFERENCE": "कस्टम डेवलपमेंट सर्वर को सक्षम करने के लिए true",

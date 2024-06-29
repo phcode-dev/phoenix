@@ -134,7 +134,7 @@ define({
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Előnézeti oldal rögzítése vagy rögzítésének feloldása",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Élő előnézet (szintaktikai hiba miatt nem frissül)",
   "LIVE_DEV_SETTINGS": "Élő előnézet beállításai…",
-  "LIVE_DEV_SETTINGS_BANNER": "Állítson be egyéni szervert a PHP, JSP és más szerver által renderelt fájlok élő előnézetéhez",
+  "LIVE_DEV_SETTINGS_BANNER": "Állítson be egyéni szervert a ` <b>{0}</b> ` és más szerver által renderelt fájlok (PHP, JSP stb.) élő előnézetéhez.",
   "LIVE_DEV_SETTINGS_TITLE": "Élő előnézet beállításai",
   "LIVE_DEV_SETTINGS_STARTUP": "Az Élő előnézeti panel megjelenítése indításkor",
   "LIVE_DEV_SETTINGS_SERVER_PREFERENCE": "igaz az egyéni fejlesztői szerver engedélyezéséhez",

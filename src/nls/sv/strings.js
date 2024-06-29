@@ -134,7 +134,7 @@ define({
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Fäst eller lossa förhandsgranskningssida",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Förhandsvisning (uppdateras inte på grund av syntaxfel)",
   "LIVE_DEV_SETTINGS": "Inställningar för liveförhandsvisning...",
-  "LIVE_DEV_SETTINGS_BANNER": "Konfigurera en anpassad server för att liveförhandsgranska PHP, JSP och andra serverrenderade filer",
+  "LIVE_DEV_SETTINGS_BANNER": "Konfigurera en anpassad server för att liveförhandsgranska ` <b>{0}</b> ` och andra serverrenderade filer (PHP, JSP, etc.)",
   "LIVE_DEV_SETTINGS_TITLE": "Inställningar för liveförhandsvisning",
   "LIVE_DEV_SETTINGS_STARTUP": "Visa Live Preview Panel vid start",
   "LIVE_DEV_SETTINGS_SERVER_PREFERENCE": "sant för att aktivera anpassad utvecklingsserver",

@@ -114,7 +114,7 @@
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Piespraust vai atspraust priekšskatījuma lapu",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Tiešais priekšskatījums (netiek atjaunināts sintakses kļūdas dēļ)",
   "LIVE_DEV_SETTINGS": "Tiešraides priekšskatījuma iestatījumi…",
-  "LIVE_DEV_SETTINGS_BANNER": "Iestatiet pielāgotu serveri, lai tiešraidē priekšskatītu PHP, JSP un citus servera renderētus failus",
+  "LIVE_DEV_SETTINGS_BANNER": "Iestatiet pielāgotu serveri, lai tiešraidē priekšskatītu ` <b>{0}</b> ` un citus servera renderētus failus (PHP, JSP utt.)",
   "LIVE_DEV_SETTINGS_TITLE": "Tiešraides priekšskatījuma iestatījumi",
   "LIVE_DEV_SETTINGS_STARTUP": "Startēšanas laikā parādiet tiešraides priekšskatījuma paneli",
   "LIVE_DEV_SETTINGS_SERVER_PREFERENCE": "patiess, lai iespējotu pielāgotu izstrādes serveri",

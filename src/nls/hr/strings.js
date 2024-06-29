@@ -134,7 +134,7 @@ define({
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Prikvači ili otkvači stranicu pregleda",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Prikaz uživo (ne osvježava se zbog greške u sintaksi)",
   "LIVE_DEV_SETTINGS": "Postavke pregleda uživo…",
-  "LIVE_DEV_SETTINGS_BANNER": "Postavite prilagođeni poslužitelj za live pretpregled PHP, JSP i drugih datoteka koje prikazuje poslužitelj",
+  "LIVE_DEV_SETTINGS_BANNER": "Postavite prilagođeni poslužitelj za pregled uživo ` <b>{0}</b> ` i drugih datoteka koje prikazuje poslužitelj (PHP, JSP, itd.)",
   "LIVE_DEV_SETTINGS_TITLE": "Postavke pregleda uživo",
   "LIVE_DEV_SETTINGS_STARTUP": "Prikaži ploču za pregled uživo pri pokretanju",
   "LIVE_DEV_SETTINGS_SERVER_PREFERENCE": "true za omogućavanje prilagođenog razvojnog poslužitelja",

@@ -134,7 +134,7 @@ define({
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Anclar o desanclar la página de vista previa",
   "LIVE_DEV_STATUS_TIP_SYNC_ERROR": "Vista previa dinámica (no se está actualizando debido a un error de sintaxis)",
   "LIVE_DEV_SETTINGS": "Configuración de vista previa en vivo...",
-  "LIVE_DEV_SETTINGS_BANNER": "Configure un servidor personalizado para obtener una vista previa en vivo de PHP, JSP y otros archivos renderizados en el servidor",
+  "LIVE_DEV_SETTINGS_BANNER": "Configure un servidor personalizado para obtener una vista previa en vivo de ` <b>{0}</b> ` y otros archivos renderizados por el servidor (PHP, JSP, etc.)",
   "LIVE_DEV_SETTINGS_TITLE": "Configuración de vista previa en vivo",
   "LIVE_DEV_SETTINGS_STARTUP": "Mostrar panel de vista previa en vivo al inicio",
   "LIVE_DEV_SETTINGS_SERVER_PREFERENCE": "true para habilitar el servidor de desarrollo personalizado",
