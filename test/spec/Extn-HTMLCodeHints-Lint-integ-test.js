@@ -179,7 +179,7 @@ define(function (require, exports, module) {
             await SpecRunnerUtils.deletePathAsync(validNameJSON, true, FileSystem);
         }, 6000);
 
-        const testExtensions = [".htm", ".xhtml", ".jsp", ".asp", ".aspx", ".php"];
+        const testExtensions = [".htm", ".xhtml", ".shtml", ".jsp", ".asp", ".aspx", ".php"];
         for(let testExtension of testExtensions) {
             // eslint-disable-next-line no-loop-func
             it(`should show html lint error in ${testExtension} files`, async function () {

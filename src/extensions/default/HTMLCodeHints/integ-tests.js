@@ -311,7 +311,7 @@ define(function (require, exports, module) {
             await closeSession();
         }
 
-        const extensions = ["html", "htm", "xhtml", "php", "asp", "aspx", "jsp"];
+        const extensions = ["html", "htm", "xhtml", "php", "asp", "aspx", "jsp", "shtml"];
 
         for(let extn of extensions){
             it(`should be able to add the class name by selecting the code hint in ${extn} file`, async function () {
