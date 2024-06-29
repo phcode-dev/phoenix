@@ -676,7 +676,7 @@ define(function (require, exports, module) {
         }
         const fullPath = changedFile.fullPath;
         if(changedFile && _shouldShowCustomServerBar(fullPath)){
-            _showCustomServerBar();
+            _showCustomServerBar(fullPath);
         }
         const shouldUseInbuiltPreview = utils.isMarkdownFile(fullPath) || utils.isSVG(fullPath);
         if(urlPinned || (LivePreviewSettings.isUsingCustomServer() &&
@@ -722,7 +722,7 @@ define(function (require, exports, module) {
         if(!editor || !_shouldShowCustomServerBar(editor.document.file.fullPath)){
             return;
         }
-        _showCustomServerBar();
+        _showCustomServerBar(editor.document.file.fullPath);
     }
 
     function _shouldShowCustomServerBar(fullPath) {
@@ -734,14 +734,17 @@ define(function (require, exports, module) {
         return utils.isServerRenderedFile(fullPath);
     }
 
-    function _showCustomServerBar() {
+    function _showCustomServerBar(fullFilePath) {
         if(customServerModalBar){
+            $(".custom-banner-setup-server-text-message").html(
+                StringUtils.format(Strings.LIVE_DEV_SETTINGS_BANNER, path.extname(fullFilePath))
+            );
             return;
         }
         // Show the search bar
         const searchBarHTML =`<div style="display: flex;justify-content: end;align-items: baseline;">
-            <div style="margin-right: 5px;">
-                ${Strings.LIVE_DEV_SETTINGS_BANNER}
+            <div style="margin-right: 5px;" class="custom-banner-setup-server-text-message">
+                ${StringUtils.format(Strings.LIVE_DEV_SETTINGS_BANNER, path.extname(fullFilePath))}
             </div>
             <button class="btn btn-mini live-preview-settings" style="margin-right: 5px;">
                 ${Strings.LIVE_DEV_SETTINGS}

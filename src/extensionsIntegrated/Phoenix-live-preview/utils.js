@@ -79,6 +79,7 @@ define(function (require, exports, module) {
     function isServerRenderedFile(filePath) {
         let extension = getExtension(filePath);
         return [
+            "shtml",
             "asp",
             "aspx",
             "php",

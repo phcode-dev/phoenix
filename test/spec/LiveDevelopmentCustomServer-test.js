@@ -535,6 +535,7 @@ define(function (require, exports, module) {
         }, 30000);
 
         const SERVER_FILES = [
+            "shtml",
             "asp",
             "aspx",
             "php",
