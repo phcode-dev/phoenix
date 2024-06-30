@@ -13,5 +13,10 @@
   "Ctrl-B": "view.toggleSidebar",
   "Ctrl-J": "view.togglePanels",
   "Ctrl-Shift-X": "file.extensionManager",
-  "Alt-Z": "view.toggleWordWrap"
+  "Alt-Z": "view.toggleWordWrap",
+  "Ctrl-Alt--": "navigation.jump.back",
+  "Ctrl-Shift-_": "navigation.jump.fwd",
+  "Ctrl-P": "navigate.quickOpen",
+  "Ctrl-Shift-P": "cmd.keyboardNavUI",
+  "Ctrl-Shift-O": "navigate.gotoDefinition"
 }
