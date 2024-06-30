@@ -1347,7 +1347,8 @@ define(function (require, exports, module) {
             if(MainViewManager.getPaneCount() === 1) {
                 paneToUse = MainViewManager.ACTIVE_PANE;
             }
-            FileViewController.openFileAndAddToWorkingSet(leastRecentlyClosedPath, paneToUse);
+            _enableOrDisableReopenClosedCmd();
+            return FileViewController.openFileAndAddToWorkingSet(leastRecentlyClosedPath, paneToUse);
         }
         _enableOrDisableReopenClosedCmd();
     }

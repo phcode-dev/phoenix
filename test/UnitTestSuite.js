@@ -116,6 +116,7 @@ define(function (require, exports, module) {
     require("spec/file-encoding-integ-test");
     require("spec/StateManager-test");
     require("spec/TaskManager-integ-test");
+    require("spec/Generic-integ-test");
     // Integrated extension tests
     require("spec/Extn-InAppNotifications-integ-test");
     require("spec/Extn-RemoteFileAdapter-integ-test");
