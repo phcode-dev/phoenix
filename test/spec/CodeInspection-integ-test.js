@@ -113,6 +113,7 @@ define(function (require, exports, module) {
             if (!("sticky" in pos)) {
                 pos.sticky = null;
             }
+            return pos;
         }
 
         let savedCopyFn;
@@ -1110,7 +1111,7 @@ define(function (require, exports, module) {
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles(["errors.js"]), "open test file");
 
                 CommandManager.execute(Commands.NAVIGATE_GOTO_FIRST_PROBLEM);
-                expect(fixPos(EditorManager.getActiveEditor().getCursorPos())).toEqual(fixPos({line: 1, ch: 3}));
+                expect(fixPos(EditorManager.getActiveEditor().getCursorPos())).toEql(fixPos({line: 1, ch: 3}));
             });
 
             it("should be able to copy problem message", async function () {
@@ -1159,7 +1160,50 @@ define(function (require, exports, module) {
 
                 CommandManager.execute(Commands.NAVIGATE_GOTO_FIRST_PROBLEM);
                 // 'first' error is in order of linter registration, not in line number order
-                expect(fixPos(EditorManager.getActiveEditor().getCursorPos())).toEqual(fixPos({line: 1, ch: 3}));
+                expect(fixPos(EditorManager.getActiveEditor().getCursorPos())).toEql(fixPos({line: 1, ch: 3}));
+            });
+
+            it("should Go to Next and previous Error with errors from two providers", async function () {
+                var codeInspector1 = createCodeInspector("javascript linter 1", {
+                    errors: [
+                        {
+                            pos: { line: 1, ch: 3 },
+                            message: "Some errors here and there",
+                            type: CodeInspection.Type.WARNING
+                        },
+                        {
+                            pos: { line: 1, ch: 9 },
+                            message: "another error",
+                            type: CodeInspection.Type.WARNING
+                        }
+                    ]
+                });
+                var codeInspector2 = createCodeInspector("javascript linter 2", {
+                    errors: [
+                        {
+                            pos: { line: 0, ch: 2 },
+                            message: "Different error",
+                            type: CodeInspection.Type.WARNING
+                        }
+                    ]
+                });
+                CodeInspection.register("javascript", codeInspector1);
+                CodeInspection.register("javascript", codeInspector2);
+
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["errors.js"]), "open test file");
+
+                const editor = EditorManager.getActiveEditor();
+                editor.setCursorPos(0, 0);
+                CommandManager.execute(Commands.NAVIGATE_GOTO_NEXT_PROBLEM);
+                expect(fixPos(EditorManager.getActiveEditor().getCursorPos())).toEql(fixPos({line: 1, ch: 0}));
+                CommandManager.execute(Commands.NAVIGATE_GOTO_NEXT_PROBLEM);
+                expect(fixPos(EditorManager.getActiveEditor().getCursorPos())).toEql(fixPos({line: 1, ch: 8}));
+                CommandManager.execute(Commands.NAVIGATE_GOTO_NEXT_PROBLEM);
+                expect(fixPos(EditorManager.getActiveEditor().getCursorPos())).toEql(fixPos({line: 1, ch: 8}));
+                CommandManager.execute(Commands.NAVIGATE_GOTO_PREV_PROBLEM);
+                expect(fixPos(EditorManager.getActiveEditor().getCursorPos())).toEql(fixPos({line: 1, ch: 0}));
+                CommandManager.execute(Commands.NAVIGATE_GOTO_PREV_PROBLEM);
+                expect(fixPos(EditorManager.getActiveEditor().getCursorPos())).toEql(fixPos({line: 0, ch: 0}));
             });
 
             it("should not show providers that returns isIgnored", async function () {
