@@ -464,6 +464,8 @@ define({
   "CMD_GOTO_DEFINITION": "Ātrā definīcijas meklēšana",
   "CMD_GOTO_DEFINITION_PROJECT": "Ātrās meklēšanas definīcija projektā",
   "CMD_GOTO_FIRST_PROBLEM": "Iet uz pirmo problēmu",
+  "CMD_GOTO_NEXT_PROBLEM": "Dodieties uz nākamo problēmu",
+  "CMD_GOTO_PREV_PROBLEM": "Dodieties uz iepriekšējo problēmu",
   "CMD_TOGGLE_QUICK_EDIT": "Ātrā rediģēšana",
   "CMD_TOGGLE_QUICK_DOCS": "Ātrie dokumenti",
   "CMD_QUICK_EDIT_PREV_MATCH": "Iepriekšējais ātrās rediģēšanas vienums",

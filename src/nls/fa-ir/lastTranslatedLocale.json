@@ -444,6 +444,8 @@
   "CMD_GOTO_DEFINITION": "تعریف جستجوی سریع",
   "CMD_GOTO_DEFINITION_PROJECT": "تعریف سریع یافتن در پروژه",
   "CMD_GOTO_FIRST_PROBLEM": "رجوع به اولین خطا/اخطار",
+  "CMD_GOTO_NEXT_PROBLEM": "به مشکل بعدی بروید",
+  "CMD_GOTO_PREV_PROBLEM": "به مشکل قبلی بروید",
   "CMD_TOGGLE_QUICK_EDIT": "ویرایش سریع",
   "CMD_TOGGLE_QUICK_DOCS": "مستند گزاری سریع",
   "CMD_QUICK_EDIT_PREV_MATCH": "مورد ویرایش سریع قبلی",

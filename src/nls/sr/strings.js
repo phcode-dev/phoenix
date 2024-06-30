@@ -464,6 +464,8 @@ define({
   "CMD_GOTO_DEFINITION": "Брзо пронађи дефиницију",
   "CMD_GOTO_DEFINITION_PROJECT": "Брзо проналажење дефиниције у пројекту",
   "CMD_GOTO_FIRST_PROBLEM": "Иди на први проблем",
+  "CMD_GOTO_NEXT_PROBLEM": "Идите на следећи проблем",
+  "CMD_GOTO_PREV_PROBLEM": "Идите на претходни проблем",
   "CMD_TOGGLE_QUICK_EDIT": "Измени на брзину",
   "CMD_TOGGLE_QUICK_DOCS": "Брзи документи",
   "CMD_QUICK_EDIT_PREV_MATCH": "Претходна ставка за брзо уређивање",

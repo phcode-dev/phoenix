@@ -444,6 +444,8 @@
   "CMD_GOTO_DEFINITION": "ദ്രുത കണ്ടെത്തൽ നിർവ്വചനം",
   "CMD_GOTO_DEFINITION_PROJECT": "പ്രോജക്റ്റിൽ ദ്രുത കണ്ടെത്തൽ നിർവ്വചനം",
   "CMD_GOTO_FIRST_PROBLEM": "ആദ്യ പ്രശ്നത്തിലേക്ക് പോകുക",
+  "CMD_GOTO_NEXT_PROBLEM": "അടുത്ത പ്രശ്നത്തിലേക്ക് പോകുക",
+  "CMD_GOTO_PREV_PROBLEM": "മുമ്പത്തെ പ്രശ്നത്തിലേക്ക് പോകുക",
   "CMD_TOGGLE_QUICK_EDIT": "ദ്രുത എഡിറ്റ്",
   "CMD_TOGGLE_QUICK_DOCS": "ദ്രുത ഡോക്‌സ്",
   "CMD_QUICK_EDIT_PREV_MATCH": "മുമ്പത്തെ ദ്രുത എഡിറ്റ് ഇനം",

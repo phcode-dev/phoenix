@@ -444,6 +444,8 @@
   "CMD_GOTO_DEFINITION": "快速尋找定義",
   "CMD_GOTO_DEFINITION_PROJECT": "在項目中快速查找定義",
   "CMD_GOTO_FIRST_PROBLEM": "到第一筆問題",
+  "CMD_GOTO_NEXT_PROBLEM": "轉到下一個問題",
+  "CMD_GOTO_PREV_PROBLEM": "轉到上一個問題",
   "CMD_TOGGLE_QUICK_EDIT": "快速編輯",
   "CMD_TOGGLE_QUICK_DOCS": "快速文件",
   "CMD_QUICK_EDIT_PREV_MATCH": "上一個快速編輯項目",

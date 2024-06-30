@@ -464,6 +464,8 @@ define({
   "CMD_GOTO_DEFINITION": "فوری تلاش کی تعریف",
   "CMD_GOTO_DEFINITION_PROJECT": "پروجیکٹ میں فوری تلاش کی تعریف",
   "CMD_GOTO_FIRST_PROBLEM": "پہلے مسئلہ پر جائیں۔",
+  "CMD_GOTO_NEXT_PROBLEM": "اگلا مسئلہ پر جائیں۔",
+  "CMD_GOTO_PREV_PROBLEM": "پچھلا مسئلہ پر جائیں۔",
   "CMD_TOGGLE_QUICK_EDIT": "فوری ترمیم کریں۔",
   "CMD_TOGGLE_QUICK_DOCS": "فوری دستاویزات",
   "CMD_QUICK_EDIT_PREV_MATCH": "پچھلا کوئیک ایڈیٹ آئٹم",

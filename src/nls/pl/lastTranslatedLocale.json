@@ -444,6 +444,8 @@
   "CMD_GOTO_DEFINITION": "Znajdź szybko definicję",
   "CMD_GOTO_DEFINITION_PROJECT": "Szybkie wyszukiwanie definicji w projekcie",
   "CMD_GOTO_FIRST_PROBLEM": "Przejdź do pierwszego błędu",
+  "CMD_GOTO_NEXT_PROBLEM": "Przejdź do następnego problemu",
+  "CMD_GOTO_PREV_PROBLEM": "Przejdź do poprzedniego problemu",
   "CMD_TOGGLE_QUICK_EDIT": "Szybka edycja",
   "CMD_TOGGLE_QUICK_DOCS": "Szybka dokumentacja",
   "CMD_QUICK_EDIT_PREV_MATCH": "Poprzedni element szybkiej edycji",

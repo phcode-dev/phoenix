@@ -444,6 +444,8 @@
   "CMD_GOTO_DEFINITION": "Brzo nađi definiciju",
   "CMD_GOTO_DEFINITION_PROJECT": "Definicija brzog traženja u projektu",
   "CMD_GOTO_FIRST_PROBLEM": "Idi na prvu grešku/upozorenje",
+  "CMD_GOTO_NEXT_PROBLEM": "Idi na sljedeći problem",
+  "CMD_GOTO_PREV_PROBLEM": "Idi na prethodni problem",
   "CMD_TOGGLE_QUICK_EDIT": "Brzo izmjeni",
   "CMD_TOGGLE_QUICK_DOCS": "Brzi dokumenti",
   "CMD_QUICK_EDIT_PREV_MATCH": "Prethodna stavka za brzo uređivanje",

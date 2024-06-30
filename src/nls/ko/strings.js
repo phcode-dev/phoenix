@@ -464,6 +464,8 @@ define({
   "CMD_GOTO_DEFINITION": "빠른 정의 검색",
   "CMD_GOTO_DEFINITION_PROJECT": "프로젝트에서 빠른 찾기 정의",
   "CMD_GOTO_FIRST_PROBLEM": "최초의 에러 또는 경고로 이동",
+  "CMD_GOTO_NEXT_PROBLEM": "다음 문제로 이동",
+  "CMD_GOTO_PREV_PROBLEM": "이전 문제로 이동",
   "CMD_TOGGLE_QUICK_EDIT": "빠른 편집",
   "CMD_TOGGLE_QUICK_DOCS": "빠른 문서보기",
   "CMD_QUICK_EDIT_PREV_MATCH": "이전 빠른 편집 항목",

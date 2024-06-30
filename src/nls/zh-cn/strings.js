@@ -464,6 +464,8 @@ define({
   "CMD_GOTO_DEFINITION": "转到定义",
   "CMD_GOTO_DEFINITION_PROJECT": "在项目中快速查找定义",
   "CMD_GOTO_FIRST_PROBLEM": "转到第一个错误/警告",
+  "CMD_GOTO_NEXT_PROBLEM": "转到下一个问题",
+  "CMD_GOTO_PREV_PROBLEM": "转到上一个问题",
   "CMD_TOGGLE_QUICK_EDIT": "快速编辑",
   "CMD_TOGGLE_QUICK_DOCS": "快速文档",
   "CMD_QUICK_EDIT_PREV_MATCH": "上一个快速编辑项目",

@@ -444,6 +444,8 @@
   "CMD_GOTO_DEFINITION": "त्वरित खोज परिभाषा",
   "CMD_GOTO_DEFINITION_PROJECT": "परियोजना में त्वरित खोज परिभाषा",
   "CMD_GOTO_FIRST_PROBLEM": "पहली समस्या पर जाएँ",
+  "CMD_GOTO_NEXT_PROBLEM": "अगली समस्या पर जाएँ",
+  "CMD_GOTO_PREV_PROBLEM": "पिछली समस्या पर जाएँ",
   "CMD_TOGGLE_QUICK_EDIT": "शीघ्र संपादित",
   "CMD_TOGGLE_QUICK_DOCS": "त्वरित डॉक्स",
   "CMD_QUICK_EDIT_PREV_MATCH": "पिछला त्वरित संपादन आइटम",

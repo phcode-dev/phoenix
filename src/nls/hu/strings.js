@@ -464,6 +464,8 @@ define({
   "CMD_GOTO_DEFINITION": "Gyors Definíció keresés",
   "CMD_GOTO_DEFINITION_PROJECT": "Gyorskeresés definíció a Projectben",
   "CMD_GOTO_FIRST_PROBLEM": "Lépjen az Első probléma elemre",
+  "CMD_GOTO_NEXT_PROBLEM": "Lépjen a Következő probléma elemre",
+  "CMD_GOTO_PREV_PROBLEM": "Lépjen az Előző probléma elemre",
   "CMD_TOGGLE_QUICK_EDIT": "Gyors Szerkesztés",
   "CMD_TOGGLE_QUICK_DOCS": "Gyors Dokumentáció",
   "CMD_QUICK_EDIT_PREV_MATCH": "Előző gyorsszerkesztési elem",
