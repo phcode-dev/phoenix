@@ -543,16 +543,21 @@ a:focus {
     }
 }
 
-.menuAnchor.selected .menu-shortcut:not(.fixed-shortcut) {
+.menuAnchor:hover .menu-shortcut:not(.fixed-shortcut) {
     display: none;
 }
 
-.menuAnchor.selected .keyboard-icon {
+.menuAnchor.use-invisible-for-width-compute:hover .menu-shortcut:not(.fixed-shortcut) {
+    visibility: hidden;
+    display: unset;
+}
+
+.menuAnchor:hover .keyboard-icon {
     cursor: pointer;
     visibility: visible;
 }
 
-.menuAnchor.selected .keyboard-icon:hover {
+.menuAnchor:hover .keyboard-icon:hover {
     color: @bc-secondary-btn-border;
 }
 

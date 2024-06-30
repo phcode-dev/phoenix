@@ -651,7 +651,9 @@ define(function (require, exports, module) {
             $menuItem.on("mouseenter", function () {
                 // This is to prevent size jumps when the keyboard
                 // icon hides and shows as selection changes
+                $menuAnchor.addClass("use-invisible-for-width-compute");
                 const currentWidth = $(this).width(); // Get the current width
+                $menuAnchor.removeClass("use-invisible-for-width-compute");
                 $(this).css('min-width', currentWidth + 'px');
                 self.closeSubMenu();
                 // now show selection
@@ -819,10 +821,13 @@ define(function (require, exports, module) {
                          "<span class='right-pusher'></span>" +
                          "<span>&rtrif;</span>"   +
                          "</a></li>");
+        const $menuAnchor = $menuItem.find(".menuAnchor");
 
         let self = this;
         $menuItem.on("mouseenter", function(e) {
+            $menuAnchor.addClass("use-invisible-for-width-compute");
             const currentWidth = $(this).width(); // Get the current width
+            $menuAnchor.removeClass("use-invisible-for-width-compute");
             $(this).css('min-width', currentWidth + 'px'); // Set min-width to the current width
             if (self.openSubMenu && self.openSubMenu.id === menu.id) {
                 return;
