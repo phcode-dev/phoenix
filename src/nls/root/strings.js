@@ -464,6 +464,7 @@ define({
     "CMD_OPEN_FOLDER": "Open Folder\u2026",
     "CMD_FILE_CLOSE": "Close",
     "CMD_FILE_CLOSE_ALL": "Close All",
+    "CMD_REOPEN_CLOSED": "Reopen Closed File",
     "CMD_FILE_CLOSE_LIST": "Close List",
     "CMD_FILE_CLOSE_OTHERS": "Close Others",
     "CMD_FILE_CLOSE_ABOVE": "Close Others Above",
