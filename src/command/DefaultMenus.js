@@ -235,7 +235,8 @@ define(function (require, exports, module) {
         menu.addMenuItem(Commands.NAVIGATE_GOTO_DEFINITION);
         menu.addMenuItem(Commands.NAVIGATE_GOTO_DEFINITION_PROJECT);
         menu.addMenuItem(Commands.NAVIGATE_JUMPTO_DEFINITION);
-        menu.addMenuItem(Commands.NAVIGATE_GOTO_FIRST_PROBLEM);
+        menu.addMenuItem(Commands.NAVIGATE_GOTO_NEXT_PROBLEM);
+        menu.addMenuItem(Commands.NAVIGATE_GOTO_PREV_PROBLEM);
         menu.addMenuDivider();
         menu.addMenuItem(Commands.NAVIGATE_NEXT_DOC);
         menu.addMenuItem(Commands.NAVIGATE_PREV_DOC);

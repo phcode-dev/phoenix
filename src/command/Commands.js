@@ -149,6 +149,8 @@ define(function (require, exports, module) {
     exports.NAVIGATE_GOTO_DEFINITION_PROJECT = "navigate.gotoDefinitionInProject";    // QuickOpen.js                 doDefinitionSearchInProject()
     exports.NAVIGATE_GOTO_LINE          = "navigate.gotoLine";          // QuickOpen.js                 doGotoLine()
     exports.NAVIGATE_GOTO_FIRST_PROBLEM = "navigate.gotoFirstProblem";  // CodeInspection.js            handleGotoFirstProblem()
+    exports.NAVIGATE_GOTO_NEXT_PROBLEM = "navigate.gotoNextProblem";  // CodeInspection.js            handleGotoNextProblem()
+    exports.NAVIGATE_GOTO_PREV_PROBLEM = "navigate.gotoPrevProblem";  // CodeInspection.js            handleGotoPrevProblem()
     exports.TOGGLE_QUICK_EDIT           = "navigate.toggleQuickEdit";   // EditorManager.js             _toggleInlineWidget()
     exports.TOGGLE_QUICK_DOCS           = "navigate.toggleQuickDocs";   // EditorManager.js             _toggleInlineWidget()
     exports.QUICK_EDIT_NEXT_MATCH       = "navigate.nextMatch";         // MultiRangeInlineEditor.js    _nextRange()

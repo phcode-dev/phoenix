@@ -1334,6 +1334,26 @@ define(function (require, exports, module) {
     };
 
     /**
+     * Returns the first mark of a specific type found after the given position.
+     * @param {{line: number, ch: number}} position - The starting position to search from.
+     * @param {string} markType - The type of mark to look for.
+     * @returns {Array[TextMarker]} The array of text markers found, or an empty array if none are found.
+     */
+    Editor.prototype.getMarksAfter = function (position, markType) {
+        return this.findMarks(position, { line: this.lineCount(), ch: 0 }, markType) || [];
+    };
+
+    /**
+     * Returns the first mark of a specific type found before the given position.
+     * @param {{line: number, ch: number}} position - The ending position to search up to.
+     * @param {string} markType - The type of mark to look for.
+     * @returns {Array[TextMarker]} The array of text markers found, or an empty array if none are found.
+     */
+    Editor.prototype.getMarksBefore = function (position, markType) {
+        return this.findMarks({ line: 0, ch: 0 }, position, markType) || [];
+    };
+
+    /**
      * Returns an array containing all marked ranges in the document.
      * @param {string} [markType] - Optional, if given will only return marks of that type. Else returns everything.
      * @returns {Array[TextMarker]} TextMarker - A text marker array
