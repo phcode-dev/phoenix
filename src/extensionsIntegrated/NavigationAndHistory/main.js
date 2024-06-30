@@ -715,7 +715,8 @@ define(function (require, exports, module) {
 
         if (!CommandManager.get(SHOW_RECENT_FILES)) {
             CommandManager.register(Strings.CMD_RECENT_FILES_OPEN, SHOW_RECENT_FILES, _showRecentFileList);
-            KeyBindingManager.addBinding(SHOW_RECENT_FILES, KeyboardPrefs[SHOW_RECENT_FILES]);
+            KeyBindingManager.addBinding(SHOW_RECENT_FILES,
+                Phoenix.isNativeApp ? "Ctrl-R" : "Ctrl-Alt-Shift-O");
         }
 
         // Keyboard only - Navigate to the next doc in MROF list
