@@ -181,6 +181,8 @@ define(function (require, exports, module) {
      */
     function setGotoEnabled(gotoEnabled) {
         CommandManager.get(Commands.NAVIGATE_GOTO_FIRST_PROBLEM).setEnabled(gotoEnabled);
+        CommandManager.get(Commands.NAVIGATE_GOTO_NEXT_PROBLEM).setEnabled(gotoEnabled);
+        CommandManager.get(Commands.NAVIGATE_GOTO_PREV_PROBLEM).setEnabled(gotoEnabled);
         _gotoEnabled = gotoEnabled;
     }
 
@@ -1076,10 +1078,78 @@ define(function (require, exports, module) {
         }
     }
 
+    function handleGotoNextProblem() {
+        if (_gotoEnabled) {
+            const editor = EditorManager.getCurrentFullEditor();
+            if(!editor){
+                return;
+            }
+            const currentCursor = editor.getCursorPos();
+            const nextMarks = editor.getMarksAfter(currentCursor, CODE_MARK_TYPE_INSPECTOR);
+            if(!nextMarks.length || !nextMarks[0].find()){
+                return;
+            }
+
+            let nextMark = null;
+            for (let i = 0; i < nextMarks.length; i++) {
+                const markRange = nextMarks[i].find();
+                if (markRange && (markRange.from.line > currentCursor.line ||
+                    (markRange.from.line === currentCursor.line && markRange.from.ch > currentCursor.ch))) {
+                    nextMark = nextMarks[i];
+                    break;
+                }
+            }
+
+            if (!nextMark) {
+                return;
+            }
+            const nextMarkRange = nextMark.find();
+            if (nextMarkRange) {
+                editor.setCursorPos(nextMarkRange.from.line, nextMarkRange.from.ch);
+            }
+        }
+    }
+
+    function handleGotoPrevProblem() {
+        if (_gotoEnabled) {
+            const editor = EditorManager.getCurrentFullEditor();
+            if (!editor) {
+                return;
+            }
+            const currentCursor = editor.getCursorPos();
+            const prevMarks = editor.getMarksBefore(currentCursor, CODE_MARK_TYPE_INSPECTOR);
+
+            if (!prevMarks.length) {
+                return;
+            }
+
+            let prevMark = null;
+            for (let i = prevMarks.length - 1; i >= 0; i--) {
+                const markRange = prevMarks[i].find();
+                if (markRange && (markRange.to.line < currentCursor.line ||
+                    (markRange.to.line === currentCursor.line && markRange.to.ch < currentCursor.ch))) {
+                    prevMark = prevMarks[i];
+                    break;
+                }
+            }
+
+            if (!prevMark) {
+                return;
+            }
+
+            const prevMarkRange = prevMark.find();
+            if (prevMarkRange) {
+                editor.setCursorPos(prevMarkRange.from.line, prevMarkRange.from.ch);
+            }
+        }
+    }
+
     // Register command handlers
     CommandManager.register(Strings.CMD_VIEW_TOGGLE_INSPECTION, Commands.VIEW_TOGGLE_INSPECTION,        toggleEnabled);
     CommandManager.register(Strings.CMD_VIEW_TOGGLE_PROBLEMS, Commands.VIEW_TOGGLE_PROBLEMS,        toggleProblems);
     CommandManager.register(Strings.CMD_GOTO_FIRST_PROBLEM,     Commands.NAVIGATE_GOTO_FIRST_PROBLEM,   handleGotoFirstProblem);
+    CommandManager.register(Strings.CMD_GOTO_NEXT_PROBLEM,     Commands.NAVIGATE_GOTO_NEXT_PROBLEM,   handleGotoNextProblem);
+    CommandManager.register(Strings.CMD_GOTO_PREV_PROBLEM,     Commands.NAVIGATE_GOTO_PREV_PROBLEM,   handleGotoPrevProblem);
 
     // Register preferences
     prefs.definePreference(PREF_ENABLED, "boolean", brackets.config["linting.enabled_by_default"], {

@@ -304,6 +304,12 @@
             "key": "Alt-PageDown"
         }
     ],
+    "navigate.gotoNextProblem": [
+        "F8"
+    ],
+    "navigate.gotoPrevProblem": [
+        "Shift-F8"
+    ],
     "navigate.prevDocListOrder":  [
         {
             "key": "Alt-PageUp"
