@@ -787,7 +787,7 @@ define(function (require, exports, module) {
 
     async function loadProjectInTestWindow(path) {
         let result = _testWindow.brackets.test.ProjectManager.openProject(path);
-        await awaitsForDone(result);
+        await awaitsForDone(result, "Error opening project "+path);
     }
 
     /**
