@@ -290,6 +290,9 @@
     "navigate.gotoDefinition":  [
         "Ctrl-T"
     ],
+    "view.toggleProblems":  [
+        "Ctrl-Shift-M"
+    ],
     "navigate.jumptoDefinition":  [
         "Ctrl-J"
     ],
