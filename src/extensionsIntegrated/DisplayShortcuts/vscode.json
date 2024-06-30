@@ -1,2 +1,17 @@
 {
+  "Ctrl-3": null,
+  "Ctrl-Alt-Shift-W": null,
+  "Ctrl-Shift-W": null,
+  "Ctrl-Alt-S": null,
+  "Ctrl-Shift-Up": "edit.addCursorToPrevLine",
+  "Ctrl-Shift-Down": "edit.addCursorToNextLine",
+  "Ctrl-Shift-L": "cmd.findAllAndSelect",
+  "Ctrl-Shift-A": "edit.blockComment",
+  "Alt-Up": "edit.lineUp",
+  "Alt-Down": "edit.lineDown",
+  "Ctrl-D": "cmd.addNextMatch",
+  "Ctrl-B": "view.toggleSidebar",
+  "Ctrl-J": "view.togglePanels",
+  "Ctrl-Shift-X": "file.extensionManager",
+  "Alt-Z": "view.toggleWordWrap"
 }

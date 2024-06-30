@@ -583,6 +583,7 @@ define(function (require, exports, module) {
                     }
                     toggleCollapsed(false);
                     scrollToProblem(pos.line);
+                    // todo strobe effect
                 });
                 $problemView.find(".copy-qv-error-text-btn").click(function (evt) {
                     evt.preventDefault();
@@ -1013,6 +1014,10 @@ define(function (require, exports, module) {
         run();
     }
 
+    function toggleProblems() {
+        toggleCollapsed();
+    }
+
     let lastRunTime;
     $(window.document).on("mousemove", ()=>{
         if(Phoenix.isTestWindow){
@@ -1073,6 +1078,7 @@ define(function (require, exports, module) {
 
     // Register command handlers
     CommandManager.register(Strings.CMD_VIEW_TOGGLE_INSPECTION, Commands.VIEW_TOGGLE_INSPECTION,        toggleEnabled);
+    CommandManager.register(Strings.CMD_VIEW_TOGGLE_PROBLEMS, Commands.VIEW_TOGGLE_PROBLEMS,        toggleProblems);
     CommandManager.register(Strings.CMD_GOTO_FIRST_PROBLEM,     Commands.NAVIGATE_GOTO_FIRST_PROBLEM,   handleGotoFirstProblem);
 
     // Register preferences

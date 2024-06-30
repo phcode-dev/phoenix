@@ -550,6 +550,7 @@ define({
     "CMD_TOGGLE_WORD_WRAP": "Word Wrap",
     "CMD_LIVE_HIGHLIGHT": "Live Preview Highlight",
     "CMD_VIEW_TOGGLE_INSPECTION": "Lint Files on Save",
+    "CMD_VIEW_TOGGLE_PROBLEMS": "Problems",
     "CMD_WORKINGSET_SORT_BY_ADDED": "Sort by Added",
     "CMD_WORKINGSET_SORT_BY_NAME": "Sort by Name",
     "CMD_WORKINGSET_SORT_BY_TYPE": "Sort by Type",
