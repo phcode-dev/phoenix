@@ -305,10 +305,10 @@
         }
     ],
     "navigate.gotoNextProblem": [
-        "F8"
+        "Ctrl-I"
     ],
     "navigate.gotoPrevProblem": [
-        "Shift-F8"
+        "Ctrl-Shift-I"
     ],
     "navigate.prevDocListOrder":  [
         {
