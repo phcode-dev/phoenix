@@ -444,6 +444,8 @@
   "CMD_GOTO_DEFINITION": "Prejsť na definíciu",
   "CMD_GOTO_DEFINITION_PROJECT": "Definícia rýchleho hľadania v projekte",
   "CMD_GOTO_FIRST_PROBLEM": "Prejdite na Prvý problém",
+  "CMD_GOTO_NEXT_PROBLEM": "Prejdite na Ďalší problém",
+  "CMD_GOTO_PREV_PROBLEM": "Prejdite na predchádzajúci problém",
   "CMD_TOGGLE_QUICK_EDIT": "Rýchla úprava",
   "CMD_TOGGLE_QUICK_DOCS": "Rýchla dokumentácia",
   "CMD_QUICK_EDIT_PREV_MATCH": "Predchádzajúca položka rýchlej úpravy",

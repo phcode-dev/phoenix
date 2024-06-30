@@ -464,6 +464,8 @@ define({
   "CMD_GOTO_DEFINITION": "定義をクイック検索",
   "CMD_GOTO_DEFINITION_PROJECT": "プロジェクトで定義をクイック検索",
   "CMD_GOTO_FIRST_PROBLEM": "最初の問題に移動",
+  "CMD_GOTO_NEXT_PROBLEM": "次の問題へ進む",
+  "CMD_GOTO_PREV_PROBLEM": "前の問題へ戻る",
   "CMD_TOGGLE_QUICK_EDIT": "クイック編集",
   "CMD_TOGGLE_QUICK_DOCS": "クイックドキュメント",
   "CMD_QUICK_EDIT_PREV_MATCH": "前のクイック編集項目",

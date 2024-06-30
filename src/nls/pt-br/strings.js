@@ -464,6 +464,8 @@ define({
   "CMD_GOTO_DEFINITION": "Encontrar definição",
   "CMD_GOTO_DEFINITION_PROJECT": "Definição de busca rápida no projeto",
   "CMD_GOTO_FIRST_PROBLEM": "Ir ao primeiro erro/aviso",
+  "CMD_GOTO_NEXT_PROBLEM": "Vá para o próximo problema",
+  "CMD_GOTO_PREV_PROBLEM": "Ir para o problema anterior",
   "CMD_TOGGLE_QUICK_EDIT": "Edição rápida",
   "CMD_TOGGLE_QUICK_DOCS": "Documentação rápida",
   "CMD_QUICK_EDIT_PREV_MATCH": "Item de edição rápida anterior",

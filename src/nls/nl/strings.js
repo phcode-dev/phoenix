@@ -464,6 +464,8 @@ define({
   "CMD_GOTO_DEFINITION": "Definitie snel zoeken",
   "CMD_GOTO_DEFINITION_PROJECT": "Snel zoeken naar definitie in Project",
   "CMD_GOTO_FIRST_PROBLEM": "Ga naar de eerstvolgende fout/waarschuwing",
+  "CMD_GOTO_NEXT_PROBLEM": "Ga naar het volgende probleem",
+  "CMD_GOTO_PREV_PROBLEM": "Ga naar Vorig probleem",
   "CMD_TOGGLE_QUICK_EDIT": "Snel wijzigen",
   "CMD_TOGGLE_QUICK_DOCS": "Snel naar documentatie",
   "CMD_QUICK_EDIT_PREV_MATCH": "Vorig item Snel bewerken",

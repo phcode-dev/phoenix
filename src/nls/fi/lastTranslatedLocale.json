@@ -444,6 +444,8 @@
   "CMD_GOTO_DEFINITION": "Etsi määrittely nopeasti",
   "CMD_GOTO_DEFINITION_PROJECT": "Quick Find Definition in Project",
   "CMD_GOTO_FIRST_PROBLEM": "Siirry ensimmäiseen ongelmaan",
+  "CMD_GOTO_NEXT_PROBLEM": "Siirry kohtaan Seuraava ongelma",
+  "CMD_GOTO_PREV_PROBLEM": "Siirry kohtaan Edellinen ongelma",
   "CMD_TOGGLE_QUICK_EDIT": "Pikamuokkaus",
   "CMD_TOGGLE_QUICK_DOCS": "Pikadokumentaatio",
   "CMD_QUICK_EDIT_PREV_MATCH": "Edellinen pikamuokkauskohde",

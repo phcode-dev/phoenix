@@ -464,6 +464,8 @@ define({
   "CMD_GOTO_DEFINITION": "Quick Find Definition",
   "CMD_GOTO_DEFINITION_PROJECT": "Quick Find Definition in Project",
   "CMD_GOTO_FIRST_PROBLEM": "Go to First Problem",
+  "CMD_GOTO_NEXT_PROBLEM": "Go to Next Problem",
+  "CMD_GOTO_PREV_PROBLEM": "Go to Previous Problem",
   "CMD_TOGGLE_QUICK_EDIT": "Quick Edit",
   "CMD_TOGGLE_QUICK_DOCS": "Quick Docs",
   "CMD_QUICK_EDIT_PREV_MATCH": "Previous Quick Edit Item",

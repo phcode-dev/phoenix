@@ -464,6 +464,8 @@ define({
   "CMD_GOTO_DEFINITION": "Γρήγορη Αναζήτηση Ορισμού",
   "CMD_GOTO_DEFINITION_PROJECT": "Γρήγορη εύρεση ορισμού στο έργο",
   "CMD_GOTO_FIRST_PROBLEM": "Πήγαινε στο Πρώτο Σφάλμα/Προειδοποίηση",
+  "CMD_GOTO_NEXT_PROBLEM": "Μεταβείτε στο Επόμενο Πρόβλημα",
+  "CMD_GOTO_PREV_PROBLEM": "Μεταβείτε στο Προηγούμενο πρόβλημα",
   "CMD_TOGGLE_QUICK_EDIT": "Γρήγορη Επεξεργασία",
   "CMD_TOGGLE_QUICK_DOCS": "Γρήγορα Έγγραφα",
   "CMD_QUICK_EDIT_PREV_MATCH": "Προηγούμενο στοιχείο γρήγορης επεξεργασίας",

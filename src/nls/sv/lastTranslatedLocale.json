@@ -444,6 +444,8 @@
   "CMD_GOTO_DEFINITION": "Gå till definition",
   "CMD_GOTO_DEFINITION_PROJECT": "Snabbsökningsdefinition i Project",
   "CMD_GOTO_FIRST_PROBLEM": "Gå till första fel/varning",
+  "CMD_GOTO_NEXT_PROBLEM": "Gå till nästa problem",
+  "CMD_GOTO_PREV_PROBLEM": "Gå till Föregående problem",
   "CMD_TOGGLE_QUICK_EDIT": "Snabbredigering",
   "CMD_TOGGLE_QUICK_DOCS": "Quick Docs",
   "CMD_QUICK_EDIT_PREV_MATCH": "Föregående snabbredigeringsobjekt",

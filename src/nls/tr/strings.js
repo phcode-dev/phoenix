@@ -464,6 +464,8 @@ define({
   "CMD_GOTO_DEFINITION": "Tanıma Git",
   "CMD_GOTO_DEFINITION_PROJECT": "Projede Hızlı Bul Tanımı",
   "CMD_GOTO_FIRST_PROBLEM": "İlk Hata veya Uyarıya Git",
+  "CMD_GOTO_NEXT_PROBLEM": "Sonraki Soruna Git",
+  "CMD_GOTO_PREV_PROBLEM": "Önceki Soruna Git",
   "CMD_TOGGLE_QUICK_EDIT": "Hızlı Düzenle",
   "CMD_TOGGLE_QUICK_DOCS": "Hızlı Erişim Dökümanları",
   "CMD_QUICK_EDIT_PREV_MATCH": "Önceki Hızlı Düzenleme Öğesi",

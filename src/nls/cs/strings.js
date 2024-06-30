@@ -464,6 +464,8 @@ define({
   "CMD_GOTO_DEFINITION": "Přejít na definici",
   "CMD_GOTO_DEFINITION_PROJECT": "Definice rychlého hledání v projektu",
   "CMD_GOTO_FIRST_PROBLEM": "Přejít na první chybu/varování",
+  "CMD_GOTO_NEXT_PROBLEM": "Přejděte na Další problém",
+  "CMD_GOTO_PREV_PROBLEM": "Přejděte na předchozí problém",
   "CMD_TOGGLE_QUICK_EDIT": "Rychlá úprava",
   "CMD_TOGGLE_QUICK_DOCS": "Rychlá dokumentace",
   "CMD_QUICK_EDIT_PREV_MATCH": "Předchozí položka rychlé úpravy",

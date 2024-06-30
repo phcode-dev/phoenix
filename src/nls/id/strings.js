@@ -464,6 +464,8 @@ define({
   "CMD_GOTO_DEFINITION": "Cari Cepat Definisi",
   "CMD_GOTO_DEFINITION_PROJECT": "Definisi Pencarian Cepat dalam Proyek",
   "CMD_GOTO_FIRST_PROBLEM": "Pergi ke Masalah Pertama",
+  "CMD_GOTO_NEXT_PROBLEM": "Lanjutkan ke Masalah Berikutnya",
+  "CMD_GOTO_PREV_PROBLEM": "Lanjutkan ke Masalah Sebelumnya",
   "CMD_TOGGLE_QUICK_EDIT": "Edit Cepat",
   "CMD_TOGGLE_QUICK_DOCS": "Dokumentasi Cepat",
   "CMD_QUICK_EDIT_PREV_MATCH": "Item Edit Cepat Sebelumnya",

@@ -444,6 +444,8 @@
   "CMD_GOTO_DEFINITION": "Швидкий пошук оголошення",
   "CMD_GOTO_DEFINITION_PROJECT": "Визначення швидкого пошуку в проекті",
   "CMD_GOTO_FIRST_PROBLEM": "Перейти до найближчої помилки",
+  "CMD_GOTO_NEXT_PROBLEM": "Перейти до наступної проблеми",
+  "CMD_GOTO_PREV_PROBLEM": "Перейти до попередньої проблеми",
   "CMD_TOGGLE_QUICK_EDIT": "Швидке редагування",
   "CMD_TOGGLE_QUICK_DOCS": "Швидка документація",
   "CMD_QUICK_EDIT_PREV_MATCH": "Попередній елемент швидкого редагування",

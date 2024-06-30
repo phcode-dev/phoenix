@@ -464,6 +464,8 @@ define({
   "CMD_GOTO_DEFINITION": "Acces rapid la definiție",
   "CMD_GOTO_DEFINITION_PROJECT": "Definiție de căutare rapidă în proiect",
   "CMD_GOTO_FIRST_PROBLEM": "Mergi la prima eroare/primul avertisment",
+  "CMD_GOTO_NEXT_PROBLEM": "Accesați Următoarea problemă",
+  "CMD_GOTO_PREV_PROBLEM": "Accesați Problema anterioară",
   "CMD_TOGGLE_QUICK_EDIT": "Editare rapidă",
   "CMD_TOGGLE_QUICK_DOCS": "Documentație rapidă",
   "CMD_QUICK_EDIT_PREV_MATCH": "Elementul de editare rapidă anterior",
