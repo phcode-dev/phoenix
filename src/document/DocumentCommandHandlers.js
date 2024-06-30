@@ -1320,6 +1320,38 @@ define(function (require, exports, module) {
         return saveAll();
     }
 
+    let closedFilesHistory = new Map();
+
+    function _enableOrDisableReopenClosedCmd() {
+        CommandManager.get(Commands.FILE_REOPEN_CLOSED).setEnabled(!!closedFilesHistory.size);
+    }
+
+    function _addToClosedFilesHistory(filePath, paneID) {
+        closedFilesHistory.set(filePath, {paneID, closeTime: Date.now()});
+        _enableOrDisableReopenClosedCmd();
+    }
+
+    function handleReopenClosed() {
+        // find the file that was most recently closed
+        let leastRecentlyClosedPath, leastRecentlyClosedTime, paneToUse;
+        for(let closedFilePath of closedFilesHistory.keys()){
+            const currentScan = closedFilesHistory.get(closedFilePath);
+            if(!leastRecentlyClosedPath || leastRecentlyClosedTime < currentScan.closeTime) {
+                leastRecentlyClosedPath = closedFilePath;
+                leastRecentlyClosedTime = currentScan.closeTime;
+                paneToUse = currentScan.paneID;
+            }
+        }
+        if(leastRecentlyClosedPath) {
+            closedFilesHistory.delete(leastRecentlyClosedPath);
+            if(MainViewManager.getPaneCount() === 1) {
+                paneToUse = MainViewManager.ACTIVE_PANE;
+            }
+            FileViewController.openFileAndAddToWorkingSet(leastRecentlyClosedPath, paneToUse);
+        }
+        _enableOrDisableReopenClosedCmd();
+    }
+
     /**
      * Closes the specified file: removes it from the workingset, and closes the main editor if one
      * is open. Prompts user about saving changes first, if document is dirty.
@@ -1339,7 +1371,8 @@ define(function (require, exports, module) {
             promptOnly,
             _forceClose,
             _spawnedRequest,
-            paneId = MainViewManager.ACTIVE_PANE;
+            paneId = MainViewManager.ACTIVE_PANE,
+            activePaneID = MainViewManager.getActivePaneId();
 
         if (commandData) {
             file        = commandData.file;
@@ -1353,6 +1386,11 @@ define(function (require, exports, module) {
         function doClose(file) {
             if (!promptOnly) {
                 MainViewManager._close(paneId, file);
+                let paneClosing = paneId;
+                if(paneId === MainViewManager.ACTIVE_PANE){
+                    paneClosing = activePaneID;
+                }
+                _addToClosedFilesHistory(file.fullPath, paneClosing);
                 _fileClosed(file);
             }
         }
@@ -2192,6 +2230,8 @@ define(function (require, exports, module) {
 
     let firstProjectOpenHandled = false;
     ProjectManager.on(ProjectManager.EVENT_AFTER_PROJECT_OPEN, ()=>{
+        closedFilesHistory = new Map();
+        _enableOrDisableReopenClosedCmd();
         if(firstProjectOpenHandled){
             return;
         }
@@ -2252,6 +2292,7 @@ define(function (require, exports, module) {
     CommandManager.register(Strings.CMD_FILE_CLOSE,                  Commands.FILE_CLOSE,                     handleFileClose);
     CommandManager.register(Strings.CMD_FILE_CLOSE_ALL,              Commands.FILE_CLOSE_ALL,                 handleFileCloseAll);
     CommandManager.register(Strings.CMD_FILE_CLOSE_LIST,             Commands.FILE_CLOSE_LIST,                handleFileCloseList);
+    CommandManager.register(Strings.CMD_REOPEN_CLOSED,               Commands.FILE_REOPEN_CLOSED,             handleReopenClosed);
 
     // Traversal
     CommandManager.register(Strings.CMD_NEXT_DOC,                    Commands.NAVIGATE_NEXT_DOC,              handleGoNextDoc);

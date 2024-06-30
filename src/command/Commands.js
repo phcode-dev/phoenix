@@ -49,6 +49,7 @@ define(function (require, exports, module) {
     exports.FILE_CLOSE                  = "file.close";                 // DocumentCommandHandlers.js   handleFileClose()
     exports.FILE_CLOSE_ALL              = "file.close_all";             // DocumentCommandHandlers.js   handleFileCloseAll()
     exports.FILE_CLOSE_LIST             = "file.close_list";            // DocumentCommandHandlers.js   handleFileCloseList()
+    exports.FILE_REOPEN_CLOSED          = "file.reopen_closed";         // DocumentCommandHandlers.js   handleReopenClosed()
     exports.FILE_OPEN_DROPPED_FILES     = "file.openDroppedFiles";      // DragAndDrop.js               openDroppedFiles()
     exports.FILE_LIVE_FILE_PREVIEW      = "file.liveFilePreview";       // LiveDevelopment/main.js      _handleGoLiveCommand()
     exports.FILE_LIVE_FILE_PREVIEW_SETTINGS = "file.liveFilePreviewSettings";       // LiveDevelopment/main.js      _handleGoLiveCommand()

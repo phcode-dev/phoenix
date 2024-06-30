@@ -75,6 +75,7 @@ define(function (require, exports, module) {
     const fileCloseAllShortcut = isDesktop ? "Ctrl-Shift-W" : ""; // Ctrl-Alt-Shift-W` universal shortcut is set in keyboard.json
     const openFileShortcut = isDesktop ? "Ctrl-O" : "";
     const openFolderShortcut = isBrowser ? "Ctrl-O" : "";
+    const reopenClosedShortcut = isBrowser ? "" : "Ctrl-Shift-T";
 
     AppInit.htmlReady(function () {
         /**
@@ -119,6 +120,7 @@ define(function (require, exports, module) {
         menu.addMenuItem(Commands.FILE_OPEN_FOLDER, openFolderShortcut);
         menu.addMenuItem(Commands.FILE_CLOSE, fileCloseShortcut);
         menu.addMenuItem(Commands.FILE_CLOSE_ALL, fileCloseAllShortcut);
+        menu.addMenuItem(Commands.FILE_REOPEN_CLOSED, reopenClosedShortcut);
         menu.addMenuDivider();
         menu.addMenuItem(Commands.FILE_SAVE);
         menu.addMenuItem(Commands.FILE_SAVE_ALL);

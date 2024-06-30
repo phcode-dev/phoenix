@@ -731,7 +731,7 @@ define(function (require, exports, module) {
         KeyBindingManager.addBinding(PREV_IN_RECENT_FILES, KeyboardPrefs[PREV_IN_RECENT_FILES]);
 
         var menu = Menus.getMenu(Menus.AppMenuBar.FILE_MENU);
-        menu.addMenuItem(SHOW_RECENT_FILES, "", Menus.AFTER, Commands.FILE_OPEN_FOLDER);
+        menu.addMenuItem(SHOW_RECENT_FILES, "", Menus.AFTER, Commands.FILE_REOPEN_CLOSED);
     }
 
     function _initDefaultNavigationCommands() {
