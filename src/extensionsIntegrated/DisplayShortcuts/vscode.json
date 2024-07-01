@@ -20,5 +20,6 @@
   "Ctrl-Shift-P": "cmd.keyboardNavUI",
   "Ctrl-Shift-O": "navigate.gotoDefinition",
   "F8": "navigate.gotoNextProblem",
-  "Shift-F8": "navigate.gotoPrevProblem"
+  "Shift-F8": "navigate.gotoPrevProblem",
+  "F12": "navigate.jumptoDefinition"
 }
