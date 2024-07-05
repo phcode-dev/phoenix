@@ -188,6 +188,47 @@ function _unregisterServiceWorkers() {
     });
 }
 
+const SESSION_RESTART_ONCE_DUE_TO_CRITICAL_ERROR = "SESSION_RESTART_ONCE_DUE_TO_CRITICAL_ERROR";
+
+async function _recoverOnFailure(err) {
+    // metrics api might not be available here as we were seeing no metrics raised. Only bugsnag there.
+    window.logger && window.logger.reportError(err,
+        'Critical error when loading brackets. Trying to reload again.');
+    const restartedOnce = sessionStorage.getItem(SESSION_RESTART_ONCE_DUE_TO_CRITICAL_ERROR);
+    let shouldRestart;
+    if(!restartedOnce){
+        sessionStorage.setItem(SESSION_RESTART_ONCE_DUE_TO_CRITICAL_ERROR, "true");
+        shouldRestart = true;
+    } else {
+        shouldRestart = confirm("Oops! Something went wrong. Reload app?");
+        if(shouldRestart instanceof Promise){
+            shouldRestart = await shouldRestart;
+        }
+    }
+    if(!shouldRestart) {
+        return;
+    }
+
+    // try a cache reset
+    if(window._resetCacheIfNeeded){
+        window._resetCacheIfNeeded(true)
+            .finally(()=>{
+                // wait for 3 seconds for bugsnag to send report and service workers to be active.
+                setTimeout(()=>{
+                    _unregisterServiceWorkers()
+                        .then(()=>{
+                            location.reload();
+                        });
+                }, 3000);
+            });
+    } else {
+        // wait for 3 seconds for bugsnag to send report.
+        setTimeout(()=>{
+            location.reload();
+        }, 3000);
+    }
+}
+
 define(function (require) {
 
 
@@ -196,29 +237,6 @@ define(function (require) {
     require(["utils/Metrics", "utils/Compatibility", "utils/EventDispatcher"], function () {
         window.Metrics = require("utils/Metrics");
         // Load the brackets module. This is a self-running module that loads and runs the entire application.
-        require(["brackets"], ()=>{}, (err)=>{
-            // metrics api might not be available here as we were seeing no metrics raised. Only bugsnag there.
-            window.logger && window.logger.reportError(err,
-                'Critical error when loading brackets. Trying to reload again.');
-            alert("Oops! Something went wrong. Trying to restart app...");
-            // try a cache reset
-            if(window._resetCacheIfNeeded){
-                window._resetCacheIfNeeded(true)
-                    .finally(()=>{
-                        // wait for 3 seconds for bugsnag to send report and service workers to be active.
-                        setTimeout(()=>{
-                            _unregisterServiceWorkers()
-                                .then(()=>{
-                                    location.reload();
-                                });
-                        }, 3000);
-                    });
-            } else {
-                // wait for 3 seconds for bugsnag to send report.
-                setTimeout(()=>{
-                    location.reload();
-                }, 3000);
-            }
-        });
+        require(["brackets"], ()=>{}, _recoverOnFailure);
     });
 });
