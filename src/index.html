@@ -185,23 +185,35 @@
                 const appNamePromise = window.__TAURI__.app.getName();
                 // for running tests, the user document dir is set to app data dir as we dont want to
                 // corrupt user documents dir for tests
-                let documentDirPromise;
+                let documentDirPromise, homeDirPromise;
                 if(_isTestWindow()){
                     documentDirPromise = window.__TAURI__.path.appLocalDataDir(); // appdata/testDocuments will be appended below
                 } else {
                     documentDirPromise = window.__TAURI__.path.documentDir();
+                    homeDirPromise = window.__TAURI__.path.homeDir();
                 }
 
                 const appLocalDirPromise =  window.__TAURI__.path.appLocalDataDir();
                 const tempDirPromise = window.__TAURI__.os.tempdir();
                 window._tauriBootVars = {};
                 const tauriBootStartTime = Date.now();
-                window._tauriBootVarsPromise = Promise.all([appNamePromise, documentDirPromise,
-                    appLocalDirPromise, tempDirPromise])
+                window._tauriBootVarsPromise = Promise.allSettled([appNamePromise, documentDirPromise,
+                    appLocalDirPromise, tempDirPromise, homeDirPromise])
                     .then((results) => {
-                        window._tauriBootVars.appname = results[0];
+                        window._tauriBootVars.appname = results[0].value;
 
-                        window._tauriBootVars.documentDir = results[1];
+                        if(results[1].status === "fulfilled"){
+                            window._tauriBootVars.documentDir = results[1].value;
+                        } else if(results[4].status === "fulfilled"){
+                            // some linux distros may not have Documents folder. so we use the home folder
+                            // https://github.com/phcode-dev/phoenix/issues/1729
+                            window._tauriBootVars.documentDir = results[4].value;
+                        } else {
+                            console.error("unable to determine user documents dir, defaulting to app data dir documentdir:",
+                                results[1].reason, "home folder error: ", results[4].reason);
+                            window._tauriBootVars.documentDir = results[2].value;
+                        }
+
                         // For tests, documents dir is localAppDataDir/testDocuments to keep user documents garbage free for tests
                         // Also In github actions, the tauri get doc dir call gets stuck indefinitely
                         if(_isTestWindow()){
@@ -212,8 +224,8 @@
                         }
                         //Documents dir special case for tests
 
-                        window._tauriBootVars.appLocalDir = results[2];
-                        window._tauriBootVars.tempDir = results[3];
+                        window._tauriBootVars.appLocalDir = results[2].value;
+                        window._tauriBootVars.tempDir = results[3].value;
                         window._tauriBootVars.bootstrapTime = Date.now() - tauriBootStartTime;
                         localStorage.setItem(TAURI_BOOT_VARS_LOCALSTORAGE_KEY, JSON.stringify(window._tauriBootVars));
                     });
