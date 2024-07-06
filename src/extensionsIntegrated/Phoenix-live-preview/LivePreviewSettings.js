@@ -233,15 +233,20 @@ define(function (require, exports, module) {
             // www/design/index.html -> design/index.html
             pathRelativeToServeRoot = relativePath.replace(customServer.pathInProject, "");
         }
-        const isServerRenderedURL = (utils.isPreviewableFile(fullPath) || utils.isServerRenderedFile(fullPath))
-            && !utils.isMarkdownFile(fullPath) && !utils.isSVG(fullPath);
+        const isLocalRenderFile = utils.isMarkdownFile(fullPath) || utils.isSVG(fullPath);
+        const isServerRenderedFile = (utils.isPreviewableFile(fullPath) || utils.isServerRenderedFile(fullPath))
+            && !isLocalRenderFile;
+        const isOutsideServeRoot = customServer.pathInProject !== "" &&
+            !relativePath.startsWith(customServer.pathInProject);
         if(framework === FRAMEWORK_DOCUSAURUS && utils.isMarkdownFile(fullPath)) {
             // for docusaurus, we do not have a reliable way to parse the config file and deduce paths, so we always
             // return the root url for now.
             pathRelativeToServeRoot = "";
-        } else if(!isServerRenderedURL || (customServer.pathInProject !== "" &&
-            !relativePath.startsWith(customServer.pathInProject))){ // someNonServePath/design/index.html -> cannot serve this!
+        } else if((isServerRenderedFile && isOutsideServeRoot) || // someNonServePath/index.html -> cannot serve this!
+            (isLocalRenderFile && !isServerRenderedFile)){
             return null;
+        } else if(!isServerRenderedFile) {
+            return customServer.serverURL;
         }
         // www/design/index.html -> http://localhost:8000/design/index.html
         return `${customServer.serverURL}${pathRelativeToServeRoot}`;
