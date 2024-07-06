@@ -23,7 +23,7 @@ define(function (require, exports, module) {
     const KeyBindingManager   = require("command/KeyBindingManager"),
         vscodeKeyMap = JSON.parse(require("text!./vscode.json"));
 
-    const VSCODE_PACK_ID = "vscode";
+    const VSCODE_PACK_ID = "VSCode";
 
-    KeyBindingManager.registerCustomKeymapPack(VSCODE_PACK_ID, "Visual Studio Code", vscodeKeyMap);
+    KeyBindingManager.registerCustomKeymapPack(VSCODE_PACK_ID, VSCODE_PACK_ID, vscodeKeyMap);
 });
