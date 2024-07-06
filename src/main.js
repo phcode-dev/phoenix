@@ -191,6 +191,10 @@ function _unregisterServiceWorkers() {
 const SESSION_RESTART_ONCE_DUE_TO_CRITICAL_ERROR = "SESSION_RESTART_ONCE_DUE_TO_CRITICAL_ERROR";
 
 async function _recoverOnFailure(err) {
+    if (!Phoenix.isNativeApp && !navigator.onLine) {
+        alert('No internet connection. Please check your connection and reload page.');
+        return;
+    }
     // metrics api might not be available here as we were seeing no metrics raised. Only bugsnag there.
     window.logger && window.logger.reportError(err,
         'Critical error when loading brackets. Trying to reload again.');
