@@ -679,12 +679,14 @@ define(function (require, exports, module) {
             _showCustomServerBar(fullPath);
         }
         const shouldUseInbuiltPreview = utils.isMarkdownFile(fullPath) || utils.isSVG(fullPath);
-        if(urlPinned || (LivePreviewSettings.isUsingCustomServer() &&
-            !LivePreviewSettings.getCustomServerConfig(fullPath) && !shouldUseInbuiltPreview)){
+        const customServeConfig = LivePreviewSettings.isUsingCustomServer() &&
+            LivePreviewSettings.getCustomServerConfig(fullPath);
+        if(urlPinned || (LivePreviewSettings.isUsingCustomServer() && !customServeConfig && !shouldUseInbuiltPreview)){
             return;
         }
         if(changedFile && (utils.isPreviewableFile(fullPath) ||
-            utils.isServerRenderedFile(fullPath))){
+            utils.isServerRenderedFile(fullPath) ||
+            (customServeConfig && currentLivePreviewURL !== customServeConfig))){
             _loadPreview();
             if(!panelShownAtStartup && ProjectManager.isStartupFilesLoaded()){
                 let previewDetails = await StaticServer.getPreviewDetails();
