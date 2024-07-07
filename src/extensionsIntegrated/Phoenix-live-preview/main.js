@@ -679,14 +679,24 @@ define(function (require, exports, module) {
             _showCustomServerBar(fullPath);
         }
         const shouldUseInbuiltPreview = utils.isMarkdownFile(fullPath) || utils.isSVG(fullPath);
-        const customServeConfig = LivePreviewSettings.isUsingCustomServer() &&
+        const customServeURL = LivePreviewSettings.isUsingCustomServer() &&
             LivePreviewSettings.getCustomServerConfig(fullPath);
-        if(urlPinned || (LivePreviewSettings.isUsingCustomServer() && !customServeConfig && !shouldUseInbuiltPreview)){
+        if(urlPinned || (LivePreviewSettings.isUsingCustomServer() && !customServeURL && !shouldUseInbuiltPreview)){
             return;
         }
+        // If we are using a custom server URL, we need to handle the live preview carefully:
+        // - If the user has not clicked on a previewable file from the custom server URL,
+        //   we should always show the base server URL. This is because some projects, like React,
+        //   do not have an HTML file and only contain JSX/render files. In these cases, we should show the live preview
+        // - However, if the user is already previewing a file from the custom server (e.g., customBaseURL/some.html),
+        //   we should not switch back to the base URL when they click on another file (e.g., a JS file).
+        //   This is because the user might be editing a related file of the custom-served page.
+        // - Therefore, we only switch to the base URL if the current preview has nothing to do with the custom server
+        //   URL for a better user experience.
+        const shouldSwitchCustomServer = customServeURL && currentLivePreviewURL !== customServeURL &&
+            (!currentLivePreviewURL || !currentLivePreviewURL.startsWith(customServeURL));
         if(changedFile && (utils.isPreviewableFile(fullPath) ||
-            utils.isServerRenderedFile(fullPath) ||
-            (customServeConfig && currentLivePreviewURL !== customServeConfig))){
+            utils.isServerRenderedFile(fullPath) || shouldSwitchCustomServer)){
             _loadPreview();
             if(!panelShownAtStartup && ProjectManager.isStartupFilesLoaded()){
                 let previewDetails = await StaticServer.getPreviewDetails();
