@@ -459,6 +459,17 @@ define(function (require, exports, module) {
             await _waitForIframeURL('http://localhost:43768/sub.html');
         }, 30000);
 
+        it("should custom server base url be loaded by default for non-previewable files", async function () {
+            await _setupDocusaurusProject("sub/");
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["blank.css"]),
+                "open blank.css");
+            await _waitForIframeURL('http://localhost:43768/');
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["sub/sub.html"]),
+                "open sub/sub.html");
+            await _waitForIframeURL('http://localhost:43768/sub.html');
+        }, 30000);
+
         it("should custom server always load non docasaurus markdowns with intgrated live preview", async function () {
             const testTempDir = await SpecRunnerUtils.getTempTestDirectory(
                 "/spec/LiveDevelopment-MultiBrowser-test-files", true);
@@ -605,6 +616,25 @@ define(function (require, exports, module) {
                 await _waitForIframeURL('http://localhost:43768/simple1.html');
                 await endPreviewSession();
             }
+        }, 30000);
+
+        it("should custom server load base url for non-previewable files", async function () {
+            const testTempDir = await SpecRunnerUtils.getTempTestDirectory(
+                "/spec/LiveDevelopment-MultiBrowser-test-files", true);
+            await SpecRunnerUtils.loadProjectInTestWindow(testTempDir);
+            await awaits(1000); // this is here so that the preferences json is properly created and loaded
+            PreferencesManager.set(PREFERENCE_PROJECT_SERVER_ENABLED, true, PreferencesManager.PROJECT_SCOPE);
+            PreferencesManager.set(PREFERENCE_PROJECT_SERVER_URL, "http://localhost:43768", PreferencesManager.PROJECT_SCOPE);
+            PreferencesManager.set(PREFERENCE_PROJECT_SERVER_PATH, "", PreferencesManager.PROJECT_SCOPE);
+            PreferencesManager.set(PREFERENCE_PROJECT_PREVIEW_FRAMEWORK, "Custom", PreferencesManager.PROJECT_SCOPE);
+            PreferencesManager.set(PREFERENCE_PROJECT_SERVER_HOT_RELOAD_SUPPORTED, false, PreferencesManager.PROJECT_SCOPE);
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["blank.css"]),
+                "open blank.css");
+            await _waitForIframeURL('http://localhost:43768/');
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "open simple1.html");
+            await _waitForIframeURL('http://localhost:43768/simple1.html');
+            await endPreviewSession();
         }, 30000);
 
         it("should custom server honor custom server root subPath", async function () {
