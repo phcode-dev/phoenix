@@ -105,6 +105,8 @@ define({
   "ERROR_IN_BROWSER": "{APP_NAME} je vytvorený HTML, ale teraz pracuje ako desktopová aplikácia, takže ho môžete využiť na úpravu lokálnych súborov. Prosím, používajte shell aplikácie v <b>github.com/adobe/brackets-shell</b> repozitári pre spustenie {APP_NAME}.",
   "ERROR_MAX_FILES_TITLE": "Chyba pri indexovaní súborov",
   "ERROR_MAX_FILES": "Bol indexovaný maximálny počet súborov. Akcie pre vyhľadávanie súborov podľa indexu nemusia fungovať správne.",
+  "ALERT": "Upozornenie",
+  "CONFIRM": "Potvrďte",
   "ERROR_LAUNCHING_BROWSER_TITLE": "Chyba pri spúšťaní prehliadača",
   "ERROR_CANT_FIND_CHROME": "Prehliadač Google Chrome nebol nájdený. Prosím uistite sa, že je nainštalovaný.",
   "ERROR_LAUNCHING_BROWSER": "Nastala chyba pri spúšťaní prehliadača. (chyba {0})",

@@ -105,6 +105,8 @@ define({
   "ERROR_IN_BROWSER": "{APP_NAME} on tehty HTML:llä, mutta juuri nyt se toimii työpöytäsovelluksena, joten voit muokata sillä paikallisia tiedostoja. Käytä ohjelmistolähteen <b>github.com/adobe/brackets-shell</b> sovellusliittymää, niin voit suorittaa {APP_NAME}in.",
   "ERROR_MAX_FILES_TITLE": "Virhe tiedostojen indeksoinnissa",
   "ERROR_MAX_FILES": "Tässä projektissa on yli 30&nbsp;000 tiedostoa. Useiden tiedostojen väliset ominaisuudet poistetaan käytöstä, tai ne toimivat niin kuin projekti olisi tyhjä. <a href='https://github.com/adobe/brackets/wiki/Large-Projects'>Lue lisää suurten projektien parissa työskentelystä</a>.",
+  "ALERT": "Varoitus",
+  "CONFIRM": "Vahvistaa",
   "ERROR_LAUNCHING_BROWSER_TITLE": "Virhe selaimen avaamisessa",
   "ERROR_CANT_FIND_CHROME": "Google Chrome ‑selainta ei löytynyt. Varmista, että se on asennettu.",
   "ERROR_LAUNCHING_BROWSER": "Selaimen avaaminen epäonnistui. (Virhe {0}.)",

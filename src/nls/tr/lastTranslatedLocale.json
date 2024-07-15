@@ -85,6 +85,8 @@
   "ERROR_IN_BROWSER": "{APP_NAME} HTML olarak hazırlandı, ancak şuan için masaüstünde çalışabilmekte. Bu nedenle makinanızda bulunan dosyalarda değişiklik için kullanabilirsiniz. {APP_NAME} programını çalıştırabilmek için lütfen <b>github.com/adobe/brackets-shell</b> adresindeki 'application shell'i kullanınız.",
   "ERROR_MAX_FILES_TITLE": "Dosyalar indekslenirken hata",
   "ERROR_MAX_FILES": "Maksimum sayıda dosya indekslendi. Indekslenen dosyalardaki işlemler düzgün çalışmayabilir.",
+  "ALERT": "Uyarı",
+  "CONFIRM": "Onaylamak",
   "ERROR_LAUNCHING_BROWSER_TITLE": "Tarayıcı çalıştırılırken hata",
   "ERROR_CANT_FIND_CHROME": "Google Chrome tarayıcısı bulunamadı. Lütfen kurulu olduğundan emin olun.",
   "ERROR_LAUNCHING_BROWSER": "Tarayıcı açılırken hata meydana geldi. (hata {0})",

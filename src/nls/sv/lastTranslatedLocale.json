@@ -85,6 +85,8 @@
   "ERROR_IN_BROWSER": "{APP_NAME} är byggd i HTML, men körs just nu som en skrivbordsapplikation så att du kan använda den för att redigera lokala filer. Vänligen använd skalapplikationen <b>github.com/adobe/brackets-shell</b> för att köra {APP_NAME}.",
   "ERROR_MAX_FILES_TITLE": "Fel vid indexering av filer",
   "ERROR_MAX_FILES": "Det maximala antalet filer har indexerats. Funktioner som använder sig av indexet kanske inte kommer att fungera som förväntat.",
+  "ALERT": "Varna",
+  "CONFIRM": "Bekräfta",
   "ERROR_LAUNCHING_BROWSER_TITLE": "Webbläsaren kunde inte öppnas.",
   "ERROR_CANT_FIND_CHROME": "Google Chrome kunde inte hittas. Kontrollera att den är installerad.",
   "ERROR_LAUNCHING_BROWSER": "Ett fel inträffade då webbläsaren skulle startas. (fel {0})",

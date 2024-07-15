@@ -85,6 +85,8 @@
   "ERROR_IN_BROWSER": "{APP_NAME} je vytvořen v HTML, ale nyní pracuje jako desktopová aplikace, takže ji můžete použít pro úpravu lokálních souborů. Prosím, použijte shell aplikace v repozitáři <b>github.com/adobe/brackets-shell</b> pro spuštění {APP_NAME}.",
   "ERROR_MAX_FILES_TITLE": "Chyba při indexování souborů",
   "ERROR_MAX_FILES": "Tento projekt obsahuje více než 30.000 souborů. Funkce zpracovávající více souborů mohou být zablokované nebo se mohou chovat jako kdyby byl projekt prázdný. <a href='https://github.com/adobe/brackets/wiki/Large-Projects'>Čtěte více o práci s obřími projekty</a>.",
+  "ALERT": "Upozornění",
+  "CONFIRM": "Potvrdit",
   "ERROR_LAUNCHING_BROWSER_TITLE": "Chyba při spouštění prohlížeče",
   "ERROR_CANT_FIND_CHROME": "Prohlížeč Google Chrome nebyl nalezen. Přesvědčte se, že je nainstalován",
   "ERROR_LAUNCHING_BROWSER": "Došlo k chybě při spouštění prohlížeče. (chyba {0})",

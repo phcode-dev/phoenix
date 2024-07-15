@@ -85,6 +85,8 @@
   "ERROR_IN_BROWSER": "{APP_NAME} 是建立在 HTML 上的一个桌面程序, 你可以用它修改本地文件. 可以前往此处下载系统对应的版本<b>github.com/adobe/brackets-shell</b>, 然后重新运行 {APP_NAME}.",
   "ERROR_MAX_FILES_TITLE": "索引文件错误",
   "ERROR_MAX_FILES": "索引文件过多, 可能无法通过索引查找文件。",
+  "ALERT": "警报",
+  "CONFIRM": "确认",
   "ERROR_LAUNCHING_BROWSER_TITLE": "启动浏览器失败",
   "ERROR_CANT_FIND_CHROME": "没有找到 Google Chrome 浏览器, 请确定您已安装了 Chrome 浏览器。",
   "ERROR_LAUNCHING_BROWSER": "启动浏览器时发生错误。 (错误 {0})",
