@@ -105,6 +105,8 @@ define({
   "ERROR_IN_BROWSER": "{APP_NAME} dibuat menggunakan HTML, tetapi saat ini berjalan sebagai aplikasi desktop agar Anda dapat mengedit file lokal. Gunakan shell aplikasi di repositori <b>github.com/adobe/brackets-shell</b> untuk menjalankan {APP_NAME}.",
   "ERROR_MAX_FILES_TITLE": "Gagal Mengindeks File",
   "ERROR_MAX_FILES": "Proyek ini mempunyai lebih dari 30,000 file. Fitur yang beroperasi di beberapa file mungkin dinonaktifkan atau bersikap seolah-olah proyek kosong. <a href='https://github.com/adobe/brackets/wiki/Large-Projects'>Baca selengkapnya tentang bekerja dengan proyek besar</a>.",
+  "ALERT": "Peringatan",
+  "CONFIRM": "Mengonfirmasi",
   "ERROR_LAUNCHING_BROWSER_TITLE": "Gagal Menjalankan Peramban",
   "ERROR_CANT_FIND_CHROME": "Peramban Google Chrome tidak dapat ditemukan. Pastikan Anda telah menginstalnya.",
   "ERROR_LAUNCHING_BROWSER": "Terjadi kesalahan saat menjalankan peramban. (kesalahan {0})",

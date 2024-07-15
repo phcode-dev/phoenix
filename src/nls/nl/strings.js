@@ -105,6 +105,8 @@ define({
   "ERROR_IN_BROWSER": "{APP_NAME} is gebouwd in HTML, maar op dit moment werkt het als desktop applicatie zodat je het kan gebruiken om lokale bestanden te bewerken. Gebruik graag de applicatie-omgeving op <b>github.com/adobe/brackets-shell</b> om {APP_NAME} te starten.",
   "ERROR_MAX_FILES_TITLE": "Probleem bij het indexeren van bestanden",
   "ERROR_MAX_FILES": "Het maximum aantal bestanden is geïndexeerd. Het kan zijn dat acties om bestanden op te zoeken in de index niet correct verlopen.",
+  "ALERT": "Waarschuw",
+  "CONFIRM": "Bevestigen",
   "ERROR_LAUNCHING_BROWSER_TITLE": "Probleem bij het starten in de browser",
   "ERROR_CANT_FIND_CHROME": "De Google Chrome browser kon niet gevonden worden. Zorg ervoor dat deze geïnstalleerd is.",
   "ERROR_LAUNCHING_BROWSER": "Er is een fout opgetreden bij het starten van de browser. (error {0})",

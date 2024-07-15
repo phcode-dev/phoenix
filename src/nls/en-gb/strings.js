@@ -105,6 +105,8 @@ define({
   "ERROR_IN_BROWSER": "{APP_NAME} is built in HTML, but right now it runs as a desktop app so you can use it to edit local files. Please use the application shell in the <b>github.com/adobe/brackets-shell</b> repo to run {APP_NAME}.",
   "ERROR_MAX_FILES_TITLE": "Error Indexing Files",
   "ERROR_MAX_FILES": "This project contains more than 30,000 files. Features that operate across multiple files may be disabled or behave as if the project is empty. <a href='https://github.com/adobe/brackets/wiki/Large-Projects'>Read more about working with large projects</a>.",
+  "ALERT": "Alert",
+  "CONFIRM": "Confirm",
   "ERROR_LAUNCHING_BROWSER_TITLE": "Error Launching Browser",
   "ERROR_CANT_FIND_CHROME": "The Google Chrome browser could not be found. Please make sure it is installed.",
   "ERROR_LAUNCHING_BROWSER": "An error occurred when launching the browser. (error {0})",

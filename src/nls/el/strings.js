@@ -105,6 +105,8 @@ define({
   "ERROR_IN_BROWSER": "To {APP_NAME} είναι γραμμένο σε HTML, αλλά αυτή τη στιγμή τρέχει σαν native εφαρμογή έτσι ώστε να μπορείτε να επεξεργαστείτε τοπικά αρχεία. Παρακαλούμε να χρησιμοποιήσετε το application shell στο <b>github.com/adobe/brackets-shell</b> repo για να τρέξετε το {APP_NAME}.",
   "ERROR_MAX_FILES_TITLE": "Σφάλμα κατά τη διαδικασία indexing των αρχείων",
   "ERROR_MAX_FILES": "Ο μέγιστος αριθμός αρχείων έχει καταχωρηθεί index. Λειτουργίες που ψάχνουν αρχεία στο index μπορεί να μην δουλεύουν σωστά.",
+  "ALERT": "Συναγερμός",
+  "CONFIRM": "Επιβεβαιώνω",
   "ERROR_LAUNCHING_BROWSER_TITLE": "Σφάλμα ανοίγματος browser",
   "ERROR_CANT_FIND_CHROME": "Ο Google Chrome browser δεν βρέθηκε. Παρακαλούμε σιγουρευτείτε ότι είναι εγκατεστημένος.",
   "ERROR_LAUNCHING_BROWSER": "Σφάλμα προέκυψε κατά τη διαδικασία ανοίγματος του browser. (error {0})",

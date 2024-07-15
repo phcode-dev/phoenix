@@ -105,6 +105,8 @@ define({
   "ERROR_IN_BROWSER": "{APP_NAME} ir būvēta HTML, bet šobrīd strādā kā darbvirsmas lietotne, tāpēc to var izmantot, lai rediģētu lokālās datnes. Lūdzu, izmantojiet lietotnes čaulu <b>github.com/adobe/brackets-shell</b> repozitorijā, lai palaistu {APP_NAME}.",
   "ERROR_MAX_FILES_TITLE": "Kļūda, indeksējot datnes",
   "ERROR_MAX_FILES": "Šis projekts ietver vairāk nekā 30000 datņu. Funkcijas, kas darbojas vairākās datnēs, var tikt atspējotas vai darboties tā, it kā projekts būtu tukšs. <a href='https://github.com/adobe/brackets/wiki/Large-Projects'> Lasīt vairāk par strādāšanu ar lieliem projektiem</a>.",
+  "ALERT": "Brīdinājums",
+  "CONFIRM": "Apstiprināt",
   "ERROR_LAUNCHING_BROWSER_TITLE": "Kļūda, palaižot pārlūku",
   "ERROR_CANT_FIND_CHROME": "Pārlūks Google Chrome netika atrasts. Pārliecinieties, ka tas ir instalēts.",
   "ERROR_LAUNCHING_BROWSER": "Radās kļūda, palaižot pārlūku. (kļūda {0})",

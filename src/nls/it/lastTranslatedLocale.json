@@ -85,6 +85,8 @@
   "ERROR_IN_BROWSER": "{APP_NAME} è scritta in HTML, ma al momento viene eseguita come applicazione desktop per avere la possibilità di modificare file locali. Puoi usare la shell dal repository <b>github.com/adobe/brackets-shell</b> per eseguire {APP_NAME}.",
   "ERROR_MAX_FILES_TITLE": "Errore durante l’indicizzazione dei file",
   "ERROR_MAX_FILES": "È stato raggiunto il massimo numero di file indicizzati. Le azioni che controllano file presenti nell’indice posso funzionare in modo non corretto.",
+  "ALERT": "Mettere in guardia",
+  "CONFIRM": "Confermare",
   "ERROR_LAUNCHING_BROWSER_TITLE": "Errore durante l’avvio del browser",
   "ERROR_CANT_FIND_CHROME": "Non è stato possibile trovare il browser Google Chrome. Assicurarsi che sia correttamente installato.",
   "ERROR_LAUNCHING_BROWSER": "Errore durante l’avvio del browser. (errore {0})",

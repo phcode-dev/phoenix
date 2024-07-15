@@ -105,6 +105,8 @@ define({
   "ERROR_IN_BROWSER": "{APP_NAME} e construit în HTML, dar acum rulează ca o aplicație desktop și poate fi folosit pentru a edita fișierele locale. Lansați interpretatorul de comenzi al aplicației din repozitoriul <b>github.com/adobe/brackets-shell</b> pentru a rula {APP_NAME}.",
   "ERROR_MAX_FILES_TITLE": "Eroare la indexarea fișierelor",
   "ERROR_MAX_FILES": "Ați atins numărul maxim de fișiere indexate. Acțiunile pentru căutarea fișierelor în index ar putea lucra incorect.",
+  "ALERT": "Alerta",
+  "CONFIRM": "A confirma",
   "ERROR_LAUNCHING_BROWSER_TITLE": "Eroare la lansarea browser-ului",
   "ERROR_CANT_FIND_CHROME": "Browser-ul Google Chrome nu a putut fi găsit. Asigurați-vă că el este instalat.",
   "ERROR_LAUNCHING_BROWSER": "S-a produs o eroare la lansarea browser-ului. (eroare {0})",

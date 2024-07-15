@@ -105,6 +105,8 @@ define({
   "ERROR_IN_BROWSER": "{APP_NAME} został zbudowany w HTML, jednak na razie działa jako samodzielna aplikacja. Możesz użyć jej do edycji plików na dysku. Aby uruchomić {APP_NAME} użyj aplikacji dostępnej pod adresem <b>github.com/adobe/brackets-shell</b>.",
   "ERROR_MAX_FILES_TITLE": "Błąd podczas indeksowania plików",
   "ERROR_MAX_FILES": "Ten projekt zawiera więcej niż 30.000 plików. Funkcje, które pracują na wielu plikach mogą być wyłączone lub zachowywać się tak, jakby projekt był pusty. <a href='https://github.com/adobe/brackets/wiki/Large-Projects'>Przeczytaj więcej nt. pracy z dużymi projektami</a>.",
+  "ALERT": "Alarm",
+  "CONFIRM": "Potwierdzać",
   "ERROR_LAUNCHING_BROWSER_TITLE": "Błąd podczas uruchamiania przeglądarki",
   "ERROR_CANT_FIND_CHROME": "Nie znaleziono przeglądarki Google Chrome. Upewnij się, że jest zainstalowana.",
   "ERROR_LAUNCHING_BROWSER": "Błąd podczas uruchamiania przeglądarki. (błąd {0})",

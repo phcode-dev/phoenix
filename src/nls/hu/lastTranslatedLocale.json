@@ -85,6 +85,8 @@
   "ERROR_IN_BROWSER": "A {APP_NAME} HTML-ben épült, de jelenleg asztali alkalmazásként fut, ezért helyi fájlokat is tudsz vele szerkeszteni. Kérlek használd az alkalmazás \"burkot\" a {APP_NAME} futtatásához: <b>github.com/adobe/brackets-shell</b>.",
   "ERROR_MAX_FILES_TITLE": "Hiba a fájlok Indexszelése közben",
   "ERROR_MAX_FILES": "A maximális fájlszám indexelésre került. Folyamatok amelyek a fájlokat az indexben keresik esélyes hogy nem fognak rendesen működni.",
+  "ALERT": "Éber",
+  "CONFIRM": "megerősít",
   "ERROR_LAUNCHING_BROWSER_TITLE": "Hiba a böngésző megnyitása közben",
   "ERROR_CANT_FIND_CHROME": "A Google Chrome böngésző nem található. Bizonyosodj meg hogy telepítve van.",
   "ERROR_LAUNCHING_BROWSER": "Hiba a böngésző megnyitása közben: (hiba {0})",

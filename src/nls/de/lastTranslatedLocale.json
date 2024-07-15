@@ -85,6 +85,8 @@
   "ERROR_IN_BROWSER": "{APP_NAME} wurde in HTML programmiert, ist derzeit jedoch lediglich als Desktop-Anwendung verfügbar, um damit lokale Dateien zu bearbeiten. Bitte verwenden Sie die Anwendungs-Shell im Repo <b>github.com/adobe/brackets-shell</b>, um {APP_NAME} auszuführen.",
   "ERROR_MAX_FILES_TITLE": "Fehler beim Indizieren der Dateien",
   "ERROR_MAX_FILES": "Dieses Projekt besteht aus über 30.000 Dateien. Funktionen, die mit mehreren Dateien interagieren, wurden eventuell deaktiviert oder verhalten sich so, als ob das Projekt keine Dateien hätte. <a href='https://github.com/adobe/brackets/wiki/Large-Projects'>Lies mehr über das Arbeiten mit großen Projekten</a>.",
+  "ALERT": "Alarm",
+  "CONFIRM": "Bestätigen",
   "ERROR_LAUNCHING_BROWSER_TITLE": "Fehler beim Starten des Browsers",
   "ERROR_CANT_FIND_CHROME": "Der Browser Google Chrome konnte nicht gefunden werden. Bitte stellen Sie sicher, dass er installiert ist.",
   "ERROR_LAUNCHING_BROWSER": "Beim Starten des Browsers ist ein Fehler aufgetreten. (Fehler {0})",

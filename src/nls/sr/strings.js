@@ -105,6 +105,8 @@ define({
   "ERROR_IN_BROWSER": "Апликација {APP_NAME} је направљена помоћу HTML-а, али тренутно ради као \"desktop\" апликација па је можете користити за измену локалних датотека. Молимо Вас користите \"application shell\" на <b>github.com/adobe/brackets-shell</b> репозиторијуму за покретање {APP_NAME}-а.",
   "ERROR_MAX_FILES_TITLE": "Грешка приликом индексирања датотека",
   "ERROR_MAX_FILES": "Пројекат садржи више од 30.000 датотека. Делови апликације који врше обраду над више датотека могу постати неактивни или се понашати као да је пројекат празан. <a href='https://github.com/adobe/brackets/wiki/Large-Projects'>Прочитајте више о раду са великим пројектима</a>.",
+  "ALERT": "Алерт",
+  "CONFIRM": "Потврди",
   "ERROR_LAUNCHING_BROWSER_TITLE": "Грешка при покретању претраживача",
   "ERROR_CANT_FIND_CHROME": "Google Chrome претраживач није пронађен. Молимо потврдите да је инсталиран.",
   "ERROR_LAUNCHING_BROWSER": "Грешка приликом покретања претраживача. (error {0})",
