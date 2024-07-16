@@ -352,6 +352,23 @@ define(function (require, exports, module) {
                 }, "waits for image to open");
             });
 
+            it("Should click on svg image preview open the corresponding file", async function () {
+                // should alos be able to load an svg with chinese unicode alphabets. This is here as if svg is
+                // read as text, the chinese text will go dodo, we read as binary.
+                const popoverInfo = await getPopoverAtPos(225, 26),
+                    imagePreview = popoverInfo.content.find("#quick-view-image-preview"),
+                    imagePath = imagePreview.attr("data-for-test"),
+                    expectedPathEnding = "img/chinese.svg";
+
+                // Just check end of path - local drive location prefix unimportant
+                expect(imagePath.substr(imagePath.length - expectedPathEnding.length)).toBe(expectedPathEnding);
+                imagePreview.click();
+                await awaitsFor(()=>{
+                    let currentFile = MainViewManager.getCurrentlyViewedFile();
+                    return currentFile.fullPath.endsWith(expectedPathEnding);
+                }, "waits for chinese sch image to open");
+            });
+
             it("Should show image preview for urls with http/https",async function () {
                 await checkImagePathAtPos("https://raw.github.com/gruehle/HoverPreview/master/screenshots/Image.png", 145, 26);
             });

@@ -169,10 +169,12 @@ define(function (require, exports, module) {
 
             function _imageToDataURI(file, cb) {
                 let contentType = "data:image;base64,";
+                let doNotCache = false;
                 if(file.name.endsWith('.svg')){
                     contentType = "data:image/svg+xml;base64,";
+                    doNotCache = true;
                 }
-                file.read({encoding: window.fs.BYTE_ARRAY_ENCODING}, function (err, content) {
+                file.read({encoding: window.fs.BYTE_ARRAY_ENCODING, doNotCache}, function (err, content) {
                     if(err){
                         cb(err);
                         return;
