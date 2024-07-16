@@ -37,8 +37,9 @@ define(function (require, exports, module) {
 
     // All popup notifications will show immediately on boot, we don't want to interrupt user amidst his work
     // by showing it at a later point in time.
-    const BOOT_DIALOG_DELAY = 2000,
-        GENERAL_SURVEY_TIME = 600000, // 10 min
+    const GENERAL_SURVEY_TIME = 600000, // 10 min
+        POWER_USER_SURVEY_TIME = 7000, // 7 seconds to allow the survey to preload, but not
+        // enough time to break user workflow
         ONE_MONTH_IN_DAYS = 30,
         POWER_USER_SURVEY_INTERVAL_DAYS = 35,
         USAGE_COUNTS_KEY    = "healthDataUsage"; // private to phoenix, set from health data extension
@@ -214,18 +215,28 @@ define(function (require, exports, module) {
     }
 
     function _showGeneralSurvey(surveyURL) {
+        let surveyVersion = 6; // increment this if you want to show this again
+        if(userAlreadyDidAction.generalSurveyShownVersion === surveyVersion) {
+            return;
+        }
+        const $surveyFrame = addSurveyIframe(surveyURL);
         setTimeout(()=>{
-            let surveyVersion = 6; // increment this if you want to show this again
-            var templateVars = {
-                Strings: Strings,
-                surveyURL
+            const templateVars = {
+                Strings: Strings
             };
-            if(userAlreadyDidAction.generalSurveyShownVersion !== surveyVersion){
-                Metrics.countEvent(Metrics.EVENT_TYPE.USER, "survey", "generalShown", 1);
-                Dialogs.showModalDialogUsingTemplate(Mustache.render(SurveyTemplate, templateVars));
-                userAlreadyDidAction.generalSurveyShownVersion = surveyVersion;
-                PhStore.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
-            }
+            let positionObserver;
+            Metrics.countEvent(Metrics.EVENT_TYPE.USER, "survey", "generalShown", 1);
+            Dialogs.showModalDialogUsingTemplate(Mustache.render(SurveyTemplate, templateVars)).done(()=>{
+                positionObserver && positionObserver.disconnect();
+                $surveyFrame.remove();
+            });
+            setTimeout(()=>{
+                const $surveyFrameContainer = $('#surveyFrameContainer');
+                repositionIframe($surveyFrame, $surveyFrameContainer);
+                positionObserver = observerPositionChanges($surveyFrame, $surveyFrameContainer);
+            }, 200);
+            userAlreadyDidAction.generalSurveyShownVersion = surveyVersion;
+            PhStore.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
         }, GENERAL_SURVEY_TIME);
     }
 
@@ -247,6 +258,43 @@ define(function (require, exports, module) {
         return totalUsageDays >= 3 || (totalUsageMinutes/60) >= 8;
     }
 
+    function addSurveyIframe(surveyURL) {
+        const $surveyFrame = $('<iframe>', {
+            src: surveyURL,
+            class: 'forced-hidden',
+            css: {
+                border: '0',
+                position: 'absolute',
+                top: 0,
+                "z-index": 10000
+            }
+        });
+        $('#alwaysHiddenElements').append($surveyFrame); // preload the survey to increase user responses.
+        return $surveyFrame;
+    }
+
+    function repositionIframe($surveyFrame, $destContainer) {
+        const container = $destContainer.offset();
+        const height = $destContainer.outerHeight();
+        const width = $destContainer.outerWidth();
+        $surveyFrame.css({
+            top: container.top + 'px',
+            left: container.left + 'px',
+            width: width + 'px',
+            height: height + 'px',
+            display: 'block'
+        });
+        $surveyFrame.removeClass("forced-hidden");
+    }
+
+    function observerPositionChanges($surveyFrame, $destContainer) {
+        const resizeObserver = new ResizeObserver(function() {
+            repositionIframe($surveyFrame, $destContainer);
+        });
+        resizeObserver.observe(document.body);
+        return resizeObserver;
+    }
+
     function _showPowerUserSurvey(surveyURL) {
         if(_isPowerUser()) {
             Metrics.countEvent(Metrics.EVENT_TYPE.USER, "power", "user", 1);
@@ -257,16 +305,26 @@ define(function (require, exports, module) {
             if(currentDate < nextShowDate){
                 return;
             }
+            const $surveyFrame = addSurveyIframe(surveyURL);
             setTimeout(()=>{
                 Metrics.countEvent(Metrics.EVENT_TYPE.USER, "survey", "powerShown", 1);
                 const templateVars = {
-                    Strings: Strings,
-                    surveyURL
+                    Strings: Strings
                 };
-                Dialogs.showModalDialogUsingTemplate(Mustache.render(SurveyTemplate, templateVars));
+                let positionObserver;
+                Dialogs.showModalDialogUsingTemplate(Mustache.render(SurveyTemplate, templateVars))
+                    .done(()=>{
+                        positionObserver && positionObserver.disconnect();
+                        $surveyFrame.remove();
+                    });
+                const $surveyFrameContainer = $('#surveyFrameContainer');
+                setTimeout(()=>{
+                    repositionIframe($surveyFrame, $surveyFrameContainer);
+                    positionObserver = observerPositionChanges($surveyFrame, $surveyFrameContainer);
+                }, 200);
                 userAlreadyDidAction.lastShownPowerSurveyDate = Date.now();
                 PhStore.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
-            }, BOOT_DIALOG_DELAY);
+            }, POWER_USER_SURVEY_TIME);
         }
     }
 
