@@ -120,20 +120,24 @@ define(function (require, exports, module) {
 
         this._impl.readFile(this._path, options, function (err, data, encoding, preserveBOM, stat) {
             if (err) {
-                this._clearCachedData();
+                if(!options.doNotCache){
+                    this._clearCachedData();
+                }
                 callback(err);
                 return;
             }
 
-            // Always store the hash
-            this._hash = stat._hash;
-            this._encoding = encoding;
-            this._preserveBOM = preserveBOM;
+            if(!options.doNotCache) {
+                // Always store the hash
+                this._hash = stat._hash;
+                this._encoding = encoding;
+                this._preserveBOM = preserveBOM;
 
-            // Only cache data for watched files
-            if (watched) {
-                this._stat = stat;
-                this._contents = data;
+                // Only cache data for watched files
+                if (watched) {
+                    this._stat = stat;
+                    this._contents = data;
+                }
             }
 
             callback(err, data, encoding, stat);

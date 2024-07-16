@@ -1,0 +1,6 @@
+<svg width="200px" height="100px" xmlns="http://www.w3.org/2000/svg">
+    <!-- Background Rectangle -->
+    <rect width="100%" height="100%" fill="#7f6ad3"/>
+    <!-- Chinese Text -->
+    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="20" fill="black">你好</text>
+</svg>

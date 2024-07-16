@@ -221,3 +221,7 @@ background: -ms-linear-gradient(top,  #d2dfed 0%,#c8d7eb 26%,#bed0ea 51%,#a6c0e3
     background: "https://website.com/archive.zip";
     background: "https://website.com/archive.tgz";
 }
+
+.chinese-svg {
+    background: url("img/chinese.svg");
+}
