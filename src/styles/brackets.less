@@ -144,15 +144,27 @@ html, body {
     background-color: @matching-bracket;
 }
 
+.editor-text-tag-sync-underline {
+    text-decoration-style: double;
+    text-decoration-line: underline;
+    text-decoration-skip-ink: none;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 1px;
+    text-decoration-color: @bc-primary-btn-border;
+}
+
 .editor-text-rename-outline{
-    border-top: 2px @bc-primary-btn-border solid;
-    border-bottom: 2px @bc-primary-btn-border solid;
+    border-top: 1px @bc-primary-btn-border solid;
+    border-bottom: 1px @bc-primary-btn-border solid;
 }
-.editor-text-rename-outline-left{
-    border-left: 2px @bc-primary-btn-border solid;
+.editor-text-rename-outline-left {
+    box-shadow: inset 1px 0 0 0 @bc-primary-btn-border; /* Left shadow */
 }
-.editor-text-rename-outline-right{
-    border-right: 2px @bc-primary-btn-border solid;
+.editor-text-rename-outline-right {
+    box-shadow: inset -1px 0 0 0 @bc-primary-btn-border; /* right shadow */
+}
+.editor-text-rename-outline-left.editor-text-rename-outline-right {
+    box-shadow: inset 1px 0 0 0 @bc-primary-btn-border, inset -1px 0 0 0 @bc-primary-btn-border; /* Left, right shadow */
 }
 
 // error class has highest visual precedence, followed by warning, spell error and info.
