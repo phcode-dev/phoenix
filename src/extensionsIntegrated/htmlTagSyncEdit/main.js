@@ -185,9 +185,10 @@ define(function (require, exports, module) {
         if(!token || token.type === "tag") {
             return false;
         }
-        // <| > or </| > or <|> or </|> or </|\n
+        // <| > or </| > or <|> or </|> or </|\n but not >|\n
         if((token.type === "tag bracket" || token.string === "</") && (curChar === " " || curChar === ">" ||
-            !curChar)) { // // if curChar is null, it means that its the last charecter
+            (token.string !== ">" && !curChar))) {
+            // if curChar is null, it means that its the last charecter
             return true;
         }
         return false;
