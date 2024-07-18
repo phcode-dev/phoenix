@@ -21,6 +21,7 @@
 /*global*/
 
 // This file handles synchronous tag edit for html files. ie, if we edit <div> then the </div> part is also updated.
+// this is a state machine over an abstract syntax tree and is a bit complex. apologies to the reader.
 
 define(function (require, exports, module) {
     const AppInit = require("utils/AppInit"),
@@ -189,6 +190,10 @@ define(function (require, exports, module) {
 
     function cursorActivity() {
         const cursor = activeEditor.getCursorPos();
+        if(activeEditor.hasMultipleCursors()){
+            clearRenameMarkers();
+            return;
+        }
         let token = _getTagToken(cursor);
         if(!token) {
             if(!_isEditingEmptyTag()){
@@ -226,6 +231,9 @@ define(function (require, exports, module) {
 
     const tagSyncFileModes = new Set(["htm", "html", "xhtml"]);
     function _isTagSyncEditable(editor) {
+        // ideally we can just listen to html sections within non-html files too instead of only accepting html file
+        // types. This was the original impl but found that html text in markdown sync edit worked as a disaster
+        // mostly due to codemirror issues in AST out of our scope. So we just do this full file switch now.
         const language = LanguageManager.getLanguageForPath(editor.document.file.fullPath);
         if(!language || !language.getId()){
             return false;
@@ -250,7 +258,6 @@ define(function (require, exports, module) {
     }
 
     AppInit.appReady(function () {
-        // todo only attach to html /xml like files as there is bug in codemirror
         // todo escape key handling
         // todo fix legacy extension not supported
         EditorManager.on(EditorManager.EVENT_ACTIVE_EDITOR_CHANGED + HTML_TAG_SYNC, init);

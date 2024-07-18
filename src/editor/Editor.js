@@ -941,6 +941,15 @@ define(function (require, exports, module) {
     };
 
     /**
+     * Check if the editor has multiple cursors or selections
+     * @returns {boolean}
+     */
+    Editor.prototype.hasMultipleCursors = function () {
+        const selections = this._codeMirror.listSelections();
+        return selections.length > 1;
+    };
+
+    /**
      * Takes the given selections, and expands each selection so it encompasses whole lines. Merges
      * adjacent line selections together. Keeps track of each original selection associated with a given
      * line selection (there might be multiple if individual selections were merged into a single line selection).
