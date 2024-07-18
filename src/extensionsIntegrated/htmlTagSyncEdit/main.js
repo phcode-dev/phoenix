@@ -112,6 +112,7 @@ define(function (require, exports, module) {
         let token = _getTagToken(cursor);
         if(!token && marksPresent && _isEditingEmptyTag()) {
             ignoreChanges = true;
+            activeEditor.undo();
             activeEditor.operation(()=>{
                 _replaceMarkText(MARK_TYPE_TAG_RENAME_START, "", "syncTagPaste");
                 _replaceMarkText(MARK_TYPE_TAG_RENAME_END, "", "syncTagPaste");
@@ -137,16 +138,15 @@ define(function (require, exports, module) {
             return;
         }
         ignoreChanges = true;
+        let editOrigin = changes[0].origin;
         if(changes[0].origin === "paste"){
-            activeEditor.undo();
-            activeEditor.operation(()=>{
-                _replaceMarkText(MARK_TYPE_TAG_RENAME_START, tag, "syncTagPaste");
-                _replaceMarkText(MARK_TYPE_TAG_RENAME_END, tag, "syncTagPaste");
-            });
-            ignoreChanges = false;
-            return;
+            editOrigin = "syncTagPaste";
         }
-        activeEditor.replaceRange(tag, markToReplace.from, markToReplace.to, changes[0].origin);
+        activeEditor.undo();
+        activeEditor.operation(()=>{
+            _replaceMarkText(MARK_TYPE_TAG_RENAME_START, tag, editOrigin);
+            _replaceMarkText(MARK_TYPE_TAG_RENAME_END, tag, editOrigin);
+        });
         ignoreChanges = false;
     }
 
