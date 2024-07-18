@@ -26,11 +26,26 @@ define(function (require, exports, module) {
     const AppInit = require("utils/AppInit"),
         Editor = require("editor/Editor").Editor,
         CodeMirror = require("thirdparty/CodeMirror/lib/codemirror"),
+        Commands            = require("command/Commands"),
+        PreferencesManager  = require("preferences/PreferencesManager"),
+        Strings             = require("strings"),
+        Menus = require("command/Menus"),
+        CommandManager     = require("command/CommandManager"),
         EditorManager = require("editor/EditorManager");
+
+    const CMD_AUTO_RENAME_TAGS = "edit.autoRenameTags";
 
     const HTML_TAG_SYNC = ".htmlTagSync",
         MARK_TYPE_TAG_RENAME_START = "startTagSyncEdit",
         MARK_TYPE_TAG_RENAME_END = "endTagSyncEdit";
+
+    const PREFERENCES_AUTO_RENAME_TAGS = "autoRenameTags";
+    PreferencesManager.definePreference(PREFERENCES_AUTO_RENAME_TAGS, "boolean", true, {
+        description: Strings.DESCRIPTION_AUTO_RENAME_TAGS
+    });
+
+    let syncEditEnabled = PreferencesManager.get(PREFERENCES_AUTO_RENAME_TAGS);
+
     const MARK_STYLE = {
         className: "editor-text-tag-sync-underline",
         clearWhenEmpty: false,
@@ -200,18 +215,46 @@ define(function (require, exports, module) {
         updateRenameMarkers(matchingTags, cursor);
     }
 
+    function toggleAutoRenameTags() {
+        PreferencesManager.set(PREFERENCES_AUTO_RENAME_TAGS, !PreferencesManager.get(PREFERENCES_AUTO_RENAME_TAGS));
+    }
+
+    function enableIfNeeded() {
+        syncEditEnabled = PreferencesManager.get(PREFERENCES_AUTO_RENAME_TAGS);
+        init();
+    }
+
+    function init() {
+        if(activeEditor) {
+            activeEditor.off(Editor.EVENT_CURSOR_ACTIVITY + HTML_TAG_SYNC);
+            clearRenameMarkers();
+        }
+        if(!syncEditEnabled){
+            return;
+        }
+        activeEditor = EditorManager.getActiveEditor();
+        if(!activeEditor){
+            return;
+        }
+        activeEditor.on(Editor.EVENT_CURSOR_ACTIVITY + HTML_TAG_SYNC, cursorActivity);
+        cursorActivity();
+    }
+
     AppInit.appReady(function () {
-        EditorManager.on(EditorManager.EVENT_ACTIVE_EDITOR_CHANGED + HTML_TAG_SYNC, ()=>{
-            if(activeEditor) {
-                activeEditor.off(Editor.EVENT_CURSOR_ACTIVITY + HTML_TAG_SYNC);
-                clearRenameMarkers();
-            }
-            activeEditor = EditorManager.getActiveEditor();
-            if(!activeEditor){
-                return;
-            }
-            activeEditor.on(Editor.EVENT_CURSOR_ACTIVITY + HTML_TAG_SYNC, cursorActivity);
-            cursorActivity();
+        // todo only attach to html /xml like files as there is bug in codemirror
+        // todo escape key handling
+        // todo fix legacy extension not supported
+        EditorManager.on(EditorManager.EVENT_ACTIVE_EDITOR_CHANGED + HTML_TAG_SYNC, init);
+        setTimeout(init, 1000);
+        const toggleCmd = CommandManager.register(Strings.CMD_AUTO_RENAME_TAGS, CMD_AUTO_RENAME_TAGS,
+            toggleAutoRenameTags);
+        toggleCmd.setChecked(PreferencesManager.get(PREFERENCES_AUTO_RENAME_TAGS));
+        Menus.getMenu(Menus.AppMenuBar.EDIT_MENU).addMenuItem(CMD_AUTO_RENAME_TAGS,
+            "", Menus.AFTER, Commands.TOGGLE_CLOSE_BRACKETS);
+        PreferencesManager.on("change", PREFERENCES_AUTO_RENAME_TAGS, ()=>{
+            toggleCmd.setChecked(PreferencesManager.get(PREFERENCES_AUTO_RENAME_TAGS));
+            enableIfNeeded();
         });
+        enableIfNeeded();
     });
 });
