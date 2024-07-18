@@ -54,7 +54,6 @@ define(function (require, exports, module) {
             return;
         }
         marksPresent = false;
-        console.log("detach");
         activeEditor.off(Editor.EVENT_CHANGE + HTML_TAG_SYNC);
         activeEditor.clearAllMarks(MARK_TYPE_TAG_RENAME_START);
         activeEditor.clearAllMarks(MARK_TYPE_TAG_RENAME_END);
@@ -72,12 +71,29 @@ define(function (require, exports, module) {
         return token;
     }
 
+    function _replaceMarkText(markType, text, editOrigin) {
+        let markToReplace = activeEditor.getAllMarks(markType);
+        if(!markToReplace.length) {
+            return;
+        }
+        markToReplace = markToReplace[0].find();
+        activeEditor.replaceRange(text, markToReplace.from, markToReplace.to, editOrigin);
+    }
+
+    let ignoreChanges = false;
     function _changeHandler(_evt, _editor, changes) {
-        if(!changes || !changes.length){
+        if(!changes || !changes.length || ignoreChanges || changes[0].origin === "undo"){
             return;
         }
         const cursor = activeEditor.getCursorPos();
         let token = _getTagToken(cursor);
+        if(!token && marksPresent && _isEditingEmptyTag()) {
+            ignoreChanges = true;
+            _replaceMarkText(MARK_TYPE_TAG_RENAME_START, "", "syncTagPaste");
+            _replaceMarkText(MARK_TYPE_TAG_RENAME_END, "", "syncTagPaste");
+            ignoreChanges = false;
+            return;
+        }
         if(!token || !marksPresent) {
             clearRenameMarkers();
             return;
@@ -95,7 +111,18 @@ define(function (require, exports, module) {
         if(markedText === tag){
             return;
         }
+        ignoreChanges = true;
+        if(changes[0].origin === "paste"){
+            activeEditor.undo();
+            activeEditor.operation(()=>{
+                _replaceMarkText(MARK_TYPE_TAG_RENAME_START, tag, "syncTagPaste");
+                _replaceMarkText(MARK_TYPE_TAG_RENAME_END, tag, "syncTagPaste");
+            });
+            ignoreChanges = false;
+            return;
+        }
         activeEditor.replaceRange(tag, markToReplace.from, markToReplace.to, changes[0].origin);
+        ignoreChanges = false;
     }
 
     function updateRenameMarkers(matchingTags, cursor) {
@@ -114,8 +141,30 @@ define(function (require, exports, module) {
         const closePosStart = {line: closePos.line, ch: closePos.ch +2};
         const closePosEnd = {line: closePos.line, ch: closePos.ch + 2 + tagName.length};
         activeEditor.markText(MARK_TYPE_TAG_RENAME_END, closePosStart, closePosEnd, MARK_STYLE);
-        console.log("+attach");
         activeEditor.on(Editor.EVENT_CHANGE + HTML_TAG_SYNC, _changeHandler);
+    }
+
+    /**
+     * we are editing an empty tag if cursor is something like <|> or <| > or <| class=""> or </|> or </| >
+     * @param cursor
+     * @returns {*|null|boolean}
+     * @private
+     */
+    function _isEditingEmptyTag() {
+        if(!marksPresent){
+            return false;
+        }
+        const cursor = activeEditor.getCursorPos();
+        let token = activeEditor.getToken(cursor);
+        let curChar = activeEditor.getCharacterAtPosition(cursor);
+        if(!token || !curChar || token.type === "tag") {
+            return false;
+        }
+        // <| > or </| > or <|> or </|>
+        if((token.type === "tag bracket" || token.string === "</") && (curChar === " " || curChar === ">")) {
+            return true;
+        }
+        return false;
     }
 
     function cursorActivity() {
@@ -127,7 +176,9 @@ define(function (require, exports, module) {
         const cursor = activeEditor.getCursorPos();
         let token = _getTagToken(cursor);
         if(!token) {
-            clearRenameMarkers();
+            if(!_isEditingEmptyTag()){
+                clearRenameMarkers();
+            }
             return;
         }
         const startMark = activeEditor.findMarksAt(cursor, MARK_TYPE_TAG_RENAME_START);

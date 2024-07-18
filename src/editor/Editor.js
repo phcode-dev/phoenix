@@ -1057,6 +1057,24 @@ define(function (require, exports, module) {
     };
 
     /**
+     * Retrieves a single character from the specified position in the editor.
+     *
+     * @param {CodeMirror.Position} pos - The position from which to retrieve the character.
+     *                                    This should be an object with `line` and `ch` properties.
+     * @returns {string|null} The character at the given position if within bounds,
+     *                        otherwise `null` if the position is out of range.
+     */
+    Editor.prototype.getCharacterAtPosition = function (pos) {
+        const cm = this._codeMirror;
+        let lineText = cm.getLine(pos.line);
+        if (pos.ch >= lineText.length || pos.line >= cm.lineCount()) {
+            return null;
+        }
+
+        return cm.getRange(pos, {line: pos.line, ch: pos.ch + 1});
+    };
+
+    /**
      * Get the token after the one at the given cursor position
      *
      * @param {{line: number, ch: number}} [cursor] - Optional cursor position after
