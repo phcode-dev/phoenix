@@ -112,8 +112,10 @@ define(function (require, exports, module) {
         let token = _getTagToken(cursor);
         if(!token && marksPresent && _isEditingEmptyTag()) {
             ignoreChanges = true;
-            _replaceMarkText(MARK_TYPE_TAG_RENAME_START, "", "syncTagPaste");
-            _replaceMarkText(MARK_TYPE_TAG_RENAME_END, "", "syncTagPaste");
+            activeEditor.operation(()=>{
+                _replaceMarkText(MARK_TYPE_TAG_RENAME_START, "", "syncTagPaste");
+                _replaceMarkText(MARK_TYPE_TAG_RENAME_END, "", "syncTagPaste");
+            });
             ignoreChanges = false;
             return;
         }
@@ -180,11 +182,12 @@ define(function (require, exports, module) {
         const cursor = activeEditor.getCursorPos();
         let token = activeEditor.getToken(cursor);
         let curChar = activeEditor.getCharacterAtPosition(cursor);
-        if(!token || !curChar || token.type === "tag") {
+        if(!token || token.type === "tag") {
             return false;
         }
-        // <| > or </| > or <|> or </|>
-        if((token.type === "tag bracket" || token.string === "</") && (curChar === " " || curChar === ">")) {
+        // <| > or </| > or <|> or </|> or </|\n
+        if((token.type === "tag bracket" || token.string === "</") && (curChar === " " || curChar === ">" ||
+            !curChar)) { // // if curChar is null, it means that its the last charecter
             return true;
         }
         return false;
