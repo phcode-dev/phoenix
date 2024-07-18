@@ -75,7 +75,15 @@ define(function (require, exports, module) {
     }
 
     function _getTagToken(cursor) {
+        let curChar = activeEditor.getCharacterAtPosition(cursor);
+        if(curChar === "<"){ // <|<  or <div>|</div> is not a valid tag edit point
+            return null;
+        }
         let token = activeEditor.getToken(cursor);
+        if(token && token.string === "<>"){
+            // empty tags are not syncable if they are not being edited
+            return null;
+        }
         if(token && token.type === "tag bracket") {// the cursosr is just before the tag like: <|tag or </|tag or <|/tag
             cursor.ch++; // move one step to <t|ag or </t|ag or </|tag ; position </|tag is still invalid tough
             token = activeEditor.getToken(cursor);
