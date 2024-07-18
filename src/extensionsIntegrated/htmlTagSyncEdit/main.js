@@ -25,6 +25,7 @@
 define(function (require, exports, module) {
     const AppInit = require("utils/AppInit"),
         Editor = require("editor/Editor").Editor,
+        LanguageManager     = require("language/LanguageManager"),
         CodeMirror = require("thirdparty/CodeMirror/lib/codemirror"),
         Commands            = require("command/Commands"),
         PreferencesManager  = require("preferences/PreferencesManager"),
@@ -53,16 +54,6 @@ define(function (require, exports, module) {
         inclusiveRight: true
     };
     let activeEditor, marksPresent, tagPosition;
-
-    const tagSyncFileModes = new Set(["htm", "html", "xhtml", "xml"]);
-
-    function isTagSyncEditable() {
-        if (!activeEditor) {
-            return false;
-        }
-        let language = activeEditor.getLanguageForSelection();
-        return tagSyncFileModes.has(language.getId());
-    }
 
     function clearRenameMarkers() {
         if(!marksPresent || !activeEditor){
@@ -142,10 +133,12 @@ define(function (require, exports, module) {
         if(changes[0].origin === "paste"){
             editOrigin = "syncTagPaste";
         }
+        const restoreCursor = activeEditor.getCursorPos();
         activeEditor.undo();
         activeEditor.operation(()=>{
             _replaceMarkText(MARK_TYPE_TAG_RENAME_START, tag, editOrigin);
             _replaceMarkText(MARK_TYPE_TAG_RENAME_END, tag, editOrigin);
+            activeEditor.setCursorPos(restoreCursor);
         });
         ignoreChanges = false;
     }
@@ -195,11 +188,6 @@ define(function (require, exports, module) {
     }
 
     function cursorActivity() {
-        const isTagEditableDoc = isTagSyncEditable();
-        if(!isTagEditableDoc){
-            clearRenameMarkers();
-            return;
-        }
         const cursor = activeEditor.getCursorPos();
         let token = _getTagToken(cursor);
         if(!token) {
@@ -236,6 +224,15 @@ define(function (require, exports, module) {
         init();
     }
 
+    const tagSyncFileModes = new Set(["htm", "html", "xhtml"]);
+    function _isTagSyncEditable(editor) {
+        const language = LanguageManager.getLanguageForPath(editor.document.file.fullPath);
+        if(!language || !language.getId()){
+            return false;
+        }
+        return tagSyncFileModes.has(language.getId());
+    }
+
     function init() {
         if(activeEditor) {
             activeEditor.off(Editor.EVENT_CURSOR_ACTIVITY + HTML_TAG_SYNC);
@@ -245,7 +242,7 @@ define(function (require, exports, module) {
             return;
         }
         activeEditor = EditorManager.getActiveEditor();
-        if(!activeEditor){
+        if(!activeEditor || !_isTagSyncEditable(activeEditor)) {
             return;
         }
         activeEditor.on(Editor.EVENT_CURSOR_ACTIVITY + HTML_TAG_SYNC, cursorActivity);
@@ -270,3 +267,11 @@ define(function (require, exports, module) {
         enableIfNeeded();
     });
 });
+
+// todo tests
+// delete key tests
+// empty by delete tests
+// backspace key tests
+// empty by backspace tests
+// copy paste on tag
+// musti cursor disable
