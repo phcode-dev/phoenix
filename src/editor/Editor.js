@@ -1067,7 +1067,7 @@ define(function (require, exports, module) {
 
     /**
      * Retrieves a single character from the specified position in the editor.
-     *
+     * x|y where `|` is the cursor, will return y
      * @param {CodeMirror.Position} pos - The position from which to retrieve the character.
      *                                    This should be an object with `line` and `ch` properties.
      * @returns {string|null} The character at the given position if within bounds,
@@ -1081,6 +1081,22 @@ define(function (require, exports, module) {
         }
 
         return cm.getRange(pos, {line: pos.line, ch: pos.ch + 1});
+    };
+
+    /**
+     * Retrieves a single character previous to the specified position in the editor in the same line if possible.
+     * x|y where `|` is the cursor, will return x
+     *
+     * @param {CodeMirror.Position} pos - The position from which to retrieve the character.
+     *                                    This should be an object with `line` and `ch` properties.
+     * @returns {string|null} The character previous to the given position if within bounds,
+     *                        otherwise `null` if the position is out of range.
+     */
+    Editor.prototype.getPrevCharacterAtPosition = function (pos) {
+        if(pos.ch === 0) {
+            return null;
+        }
+        return this.getCharacterAtPosition({line: pos.line, ch: pos.ch-1});
     };
 
     /**
