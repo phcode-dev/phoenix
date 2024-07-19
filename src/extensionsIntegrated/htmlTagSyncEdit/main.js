@@ -188,7 +188,6 @@ define(function (require, exports, module) {
     }
 
     function updateRenameMarkers(matchingTags, cursor) {
-        // todo multi cursor
         const tagName = matchingTags.open.tag;
         let openPos = matchingTags.open.from,
             closePos = matchingTags.close.from;
