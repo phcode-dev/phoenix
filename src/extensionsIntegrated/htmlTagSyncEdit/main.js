@@ -54,13 +54,14 @@ define(function (require, exports, module) {
         inclusiveLeft: true,
         inclusiveRight: true
     };
-    let activeEditor, marksPresent, tagPosition;
+    let activeEditor, marksPresent, tagPosition, langType;
 
     function clearRenameMarkers() {
         if(!marksPresent || !activeEditor){
             return;
         }
         marksPresent = false;
+        console.log("-detach");
         activeEditor.off(Editor.EVENT_CHANGE + HTML_TAG_SYNC);
         activeEditor.clearAllMarks(MARK_TYPE_TAG_RENAME_START);
         activeEditor.clearAllMarks(MARK_TYPE_TAG_RENAME_END);
@@ -76,9 +77,14 @@ define(function (require, exports, module) {
             // empty tags are not syncable if they are not being edited
             return null;
         }
-        if(token && token.type === "tag bracket") {// the cursosr is just before the tag like: <|tag or </|tag or <|/tag
-            cursor.ch++; // move one step to <t|ag or </t|ag or </|tag ; position </|tag is still invalid tough
+        if(token && token.type === "tag bracket" && token.string !== ">") {
+            // the cursosr is just before the tag like: <|tag or </|tag or <|/tag ; but not <tag|>
+            // move one step to <t|ag or </t|ag or </|tag ; position </|tag is still invalid tough
+            cursor.ch++;
             token = activeEditor.getToken(cursor);
+        } else if(langType === "xml" && token && (curChar === ">" || curChar === " ") && cursor.ch >= 1){
+            // usually in xml <tag|> or <tag| > position, the ast will give > or " "
+            token = activeEditor.getToken({line: cursor.line, ch: cursor.ch -1});
         }
         if(!token || !(token.type === "tag" || token.type === "tag error")) {
             return null;
@@ -95,14 +101,38 @@ define(function (require, exports, module) {
         activeEditor.replaceRange(text, markToReplace.from, markToReplace.to, editOrigin);
     }
 
+    function _repositionCursor(offset) {
+        let mark = (tagPosition === "open") ?
+            activeEditor.getAllMarks(MARK_TYPE_TAG_RENAME_START):
+            activeEditor.getAllMarks(MARK_TYPE_TAG_RENAME_END);
+        if(!mark.length) {
+            // there is no mark here, don't do anything.
+            return;
+        }
+        mark = mark[0].find();
+        activeEditor.setCursorPos(mark.from.line, mark.from.ch+offset);
+    }
+
     let ignoreChanges = false;
     function _changeHandler(_evt, _editor, changes) {
         if(!changes || !changes.length || ignoreChanges || changes[0].origin === "undo"){
             return;
         }
+        if(!marksPresent) {
+            clearRenameMarkers();
+            return;
+        }
         const cursor = activeEditor.getCursorPos();
-        let token = _getTagToken(cursor);
-        if(!token && marksPresent && _isEditingEmptyTag()) {
+        let mark = tagPosition === "open" ?
+            activeEditor.findMarksAt(cursor, MARK_TYPE_TAG_RENAME_START):
+            activeEditor.findMarksAt(cursor, MARK_TYPE_TAG_RENAME_END);
+        if(!mark.length) {
+            // there is no mark here, don't do anything.
+            return;
+        }
+        mark = mark[0].find();
+        const markedText = activeEditor.getTextBetween(mark.from, mark.to);
+        if(!markedText && marksPresent && _isEditingEmptyTag()) {
             ignoreChanges = true;
             activeEditor.undo();
             activeEditor.operation(()=>{
@@ -112,11 +142,12 @@ define(function (require, exports, module) {
             ignoreChanges = false;
             return;
         }
-        if(!token || !marksPresent) {
+        if(!markedText || markedText.includes(" ")){
             clearRenameMarkers();
             return;
         }
-        const tag = token.string;
+        const cursorOffsetInMark = cursor.ch - mark.from.ch;
+        const tag = markedText.trim();
         let markToReplace = activeEditor.getAllMarks(MARK_TYPE_TAG_RENAME_END);
         if(tagPosition === "close"){
             markToReplace = activeEditor.getAllMarks(MARK_TYPE_TAG_RENAME_START);
@@ -125,8 +156,8 @@ define(function (require, exports, module) {
             return;
         }
         markToReplace = markToReplace[0].find();
-        const markedText = activeEditor.getTextBetween(markToReplace.from, markToReplace.to);
-        if(markedText === tag){
+        const markedReplaceText = activeEditor.getTextBetween(markToReplace.from, markToReplace.to);
+        if(markedReplaceText === tag){
             return;
         }
         ignoreChanges = true;
@@ -134,12 +165,11 @@ define(function (require, exports, module) {
         if(changes[0].origin === "paste"){
             editOrigin = "syncTagPaste";
         }
-        const restoreCursor = activeEditor.getCursorPos();
         activeEditor.undo();
         activeEditor.operation(()=>{
             _replaceMarkText(MARK_TYPE_TAG_RENAME_START, tag, editOrigin);
             _replaceMarkText(MARK_TYPE_TAG_RENAME_END, tag, editOrigin);
-            activeEditor.setCursorPos(restoreCursor);
+            _repositionCursor(cursorOffsetInMark);
         });
         ignoreChanges = false;
     }
@@ -160,6 +190,7 @@ define(function (require, exports, module) {
         const closePosStart = {line: closePos.line, ch: closePos.ch +2};
         const closePosEnd = {line: closePos.line, ch: closePos.ch + 2 + tagName.length};
         activeEditor.markText(MARK_TYPE_TAG_RENAME_END, closePosStart, closePosEnd, MARK_STYLE);
+        console.log("+attach");
         activeEditor.on(Editor.EVENT_CHANGE + HTML_TAG_SYNC, _changeHandler);
     }
 
@@ -194,18 +225,18 @@ define(function (require, exports, module) {
             clearRenameMarkers();
             return;
         }
-        let token = _getTagToken(cursor);
-        if(!token) {
-            if(!_isEditingEmptyTag()){
-                clearRenameMarkers();
-            }
-            return;
-        }
         const startMark = activeEditor.findMarksAt(cursor, MARK_TYPE_TAG_RENAME_START);
         const endMark = activeEditor.findMarksAt(cursor, MARK_TYPE_TAG_RENAME_END);
         if(startMark.length || endMark.length) {
             // there is already a mark here, don't do anything. This will come in play when the user is editing a start
             // or end tag and we need to sync update in change handler.
+            return;
+        }
+        let token = _getTagToken(cursor);
+        if(!token) {
+            if(!_isEditingEmptyTag()){
+                clearRenameMarkers();
+            }
             return;
         }
         const matchingTags = CodeMirror.findMatchingTag(activeEditor._codeMirror, cursor);
@@ -229,7 +260,7 @@ define(function (require, exports, module) {
         init();
     }
 
-    const tagSyncFileModes = new Set(["htm", "html", "xhtml"]);
+    const tagSyncFileModes = new Set(["htm", "html", "xhtml", "xml", "svg"]);
     function _isTagSyncEditable(editor) {
         // ideally we can just listen to html sections within non-html files too instead of only accepting html file
         // types. This was the original impl but found that html text in markdown sync edit worked as a disaster
@@ -238,6 +269,7 @@ define(function (require, exports, module) {
         if(!language || !language.getId()){
             return false;
         }
+        langType = language.getId();
         return tagSyncFileModes.has(language.getId());
     }
 
@@ -250,6 +282,7 @@ define(function (require, exports, module) {
             return;
         }
         activeEditor = EditorManager.getActiveEditor();
+        langType = null;
         if(!activeEditor || !_isTagSyncEditable(activeEditor)) {
             return;
         }
@@ -281,4 +314,6 @@ define(function (require, exports, module) {
 // backspace key tests
 // empty by backspace tests
 // copy paste on tag
-// musti cursor disable
+// multi cursor disable
+// click on div tag with syc edit. Now click on another unrelated `tag>|` at cursor. the original underline should go
+// cursor positons after edit should be as expected. test for <d| <|d <dd|dd <|dddd <dddd| and </ countearpart
