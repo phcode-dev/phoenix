@@ -30,6 +30,7 @@ define(function (require, exports, module) {
         CodeMirror = require("thirdparty/CodeMirror/lib/codemirror"),
         Commands            = require("command/Commands"),
         PreferencesManager  = require("preferences/PreferencesManager"),
+        WorkspaceManager      = require("view/WorkspaceManager"),
         Strings             = require("strings"),
         Menus = require("command/Menus"),
         CommandManager     = require("command/CommandManager"),
@@ -39,7 +40,8 @@ define(function (require, exports, module) {
 
     const HTML_TAG_SYNC = ".htmlTagSync",
         MARK_TYPE_TAG_RENAME_START = "startTagSyncEdit",
-        MARK_TYPE_TAG_RENAME_END = "endTagSyncEdit";
+        MARK_TYPE_TAG_RENAME_END = "endTagSyncEdit",
+        MARK_TYPE_TAG_RENAME_ESCAPED = "escapeTagSyncEdit";
 
     const PREFERENCES_AUTO_RENAME_TAGS = "autoRenameTags";
     PreferencesManager.definePreference(PREFERENCES_AUTO_RENAME_TAGS, "boolean", true, {
@@ -49,11 +51,16 @@ define(function (require, exports, module) {
     let syncEditEnabled = PreferencesManager.get(PREFERENCES_AUTO_RENAME_TAGS);
 
     const MARK_STYLE = {
-        className: "editor-text-tag-sync-underline",
-        clearWhenEmpty: false,
-        inclusiveLeft: true,
-        inclusiveRight: true
-    };
+            className: "editor-text-tag-sync-underline",
+            clearWhenEmpty: false,
+            inclusiveLeft: true,
+            inclusiveRight: true
+        }, MARK_STYLE_ESCAPE = {
+            className: "editor-text-tag-sync-escape",
+            clearWhenEmpty: false,
+            inclusiveLeft: true,
+            inclusiveRight: true
+        };
     let activeEditor, marksPresent, tagPosition, langType;
 
     function clearRenameMarkers() {
@@ -61,10 +68,10 @@ define(function (require, exports, module) {
             return;
         }
         marksPresent = false;
-        console.log("-detach");
         activeEditor.off(Editor.EVENT_CHANGE + HTML_TAG_SYNC);
         activeEditor.clearAllMarks(MARK_TYPE_TAG_RENAME_START);
         activeEditor.clearAllMarks(MARK_TYPE_TAG_RENAME_END);
+        activeEditor.clearAllMarks(MARK_TYPE_TAG_RENAME_ESCAPED);
     }
 
     function _getTagToken(cursor) {
@@ -115,7 +122,7 @@ define(function (require, exports, module) {
 
     let ignoreChanges = false;
     function _changeHandler(_evt, _editor, changes) {
-        if(!changes || !changes.length || ignoreChanges || changes[0].origin === "undo"){
+        if(!changes || !activeEditor || !changes.length || ignoreChanges || changes[0].origin === "undo"){
             return;
         }
         if(!marksPresent) {
@@ -123,6 +130,12 @@ define(function (require, exports, module) {
             return;
         }
         const cursor = activeEditor.getCursorPos();
+        const escapeMarks = activeEditor.findMarksAt(cursor, MARK_TYPE_TAG_RENAME_ESCAPED);
+        if(escapeMarks.length){
+            // so if the user pressed escape key while on a rename marker, we disable tag sync the rename temporarily
+            // till user moves to a different tag
+            return;
+        }
         let mark = tagPosition === "open" ?
             activeEditor.findMarksAt(cursor, MARK_TYPE_TAG_RENAME_START):
             activeEditor.findMarksAt(cursor, MARK_TYPE_TAG_RENAME_END);
@@ -190,7 +203,6 @@ define(function (require, exports, module) {
         const closePosStart = {line: closePos.line, ch: closePos.ch +2};
         const closePosEnd = {line: closePos.line, ch: closePos.ch + 2 + tagName.length};
         activeEditor.markText(MARK_TYPE_TAG_RENAME_END, closePosStart, closePosEnd, MARK_STYLE);
-        console.log("+attach");
         activeEditor.on(Editor.EVENT_CHANGE + HTML_TAG_SYNC, _changeHandler);
     }
 
@@ -227,7 +239,8 @@ define(function (require, exports, module) {
         }
         const startMark = activeEditor.findMarksAt(cursor, MARK_TYPE_TAG_RENAME_START);
         const endMark = activeEditor.findMarksAt(cursor, MARK_TYPE_TAG_RENAME_END);
-        if(startMark.length || endMark.length) {
+        const escapeMark = activeEditor.findMarksAt(cursor, MARK_TYPE_TAG_RENAME_ESCAPED);
+        if(startMark.length || endMark.length || escapeMark.length) {
             // there is already a mark here, don't do anything. This will come in play when the user is editing a start
             // or end tag and we need to sync update in change handler.
             return;
@@ -290,8 +303,25 @@ define(function (require, exports, module) {
         cursorActivity();
     }
 
+    function _handleEscapeKeyEvent(event) {
+        if(!marksPresent || !activeEditor){
+            return false;
+        }
+        const cursor = activeEditor.getCursorPos();
+        const startMark = activeEditor.getAllMarks(MARK_TYPE_TAG_RENAME_START);
+        const endMark = activeEditor.getAllMarks(MARK_TYPE_TAG_RENAME_END);
+        let activeMark = (tagPosition === "open") ?
+            activeEditor.findMarksAt(cursor, MARK_TYPE_TAG_RENAME_START):
+            activeEditor.findMarksAt(cursor, MARK_TYPE_TAG_RENAME_END);
+        if(activeMark.length){
+            const mark = activeMark[0].find();
+            activeEditor.markText(MARK_TYPE_TAG_RENAME_ESCAPED, mark.from, mark.to, MARK_STYLE_ESCAPE);
+            startMark.length && startMark[0].clear();
+            endMark.length && endMark[0].clear();
+        }
+    }
+
     AppInit.appReady(function () {
-        // todo escape key handling
         // todo fix legacy extension not supported
         EditorManager.on(EditorManager.EVENT_ACTIVE_EDITOR_CHANGED + HTML_TAG_SYNC, init);
         setTimeout(init, 1000);
@@ -305,6 +335,7 @@ define(function (require, exports, module) {
             enableIfNeeded();
         });
         enableIfNeeded();
+        WorkspaceManager.addEscapeKeyEventHandler("tagSyncEdit", _handleEscapeKeyEvent);
     });
 });
 
@@ -317,3 +348,4 @@ define(function (require, exports, module) {
 // multi cursor disable
 // click on div tag with syc edit. Now click on another unrelated `tag>|` at cursor. the original underline should go
 // cursor positons after edit should be as expected. test for <d| <|d <dd|dd <|dddd <dddd| and </ countearpart
+// escape key handling
