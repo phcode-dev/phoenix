@@ -290,7 +290,7 @@ define(function (require, exports, module) {
             activeEditor.off(Editor.EVENT_CURSOR_ACTIVITY + HTML_TAG_SYNC);
             clearRenameMarkers();
         }
-        if(!syncEditEnabled){
+        if(!syncEditEnabled || (Phoenix.isTestWindow && !window.___syncEditEnabledForTests)){
             return;
         }
         activeEditor = EditorManager.getActiveEditor();
@@ -317,11 +317,12 @@ define(function (require, exports, module) {
             activeEditor.markText(MARK_TYPE_TAG_RENAME_ESCAPED, mark.from, mark.to, MARK_STYLE_ESCAPE);
             startMark.length && startMark[0].clear();
             endMark.length && endMark[0].clear();
+            return true;
         }
+        return false;
     }
 
     AppInit.appReady(function () {
-        // todo fix legacy extension not supported
         EditorManager.on(EditorManager.EVENT_ACTIVE_EDITOR_CHANGED + HTML_TAG_SYNC, init);
         setTimeout(init, 1000);
         const toggleCmd = CommandManager.register(Strings.CMD_AUTO_RENAME_TAGS, CMD_AUTO_RENAME_TAGS,
