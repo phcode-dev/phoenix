@@ -272,7 +272,7 @@ define(function (require, exports, module) {
         init();
     }
 
-    const tagSyncFileModes = new Set(["htm", "html", "xhtml", "xml", "svg"]);
+    const tagSyncFileModes = new Set(["htm", "html", "xhtml", "xml", "svg", "php"]);
     function _isTagSyncEditable(editor) {
         // ideally we can just listen to html sections within non-html files too instead of only accepting html file
         // types. This was the original impl but found that html text in markdown sync edit worked as a disaster
