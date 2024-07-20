@@ -271,6 +271,7 @@ define(function (require, exports, module) {
             LiveDevMultiBrowser: require("LiveDevelopment/LiveDevMultiBrowser"),
             LiveDevServerManager: require("LiveDevelopment/LiveDevServerManager"),
             LiveDevProtocol: require("LiveDevelopment/MultiBrowserImpl/protocol/LiveDevProtocol"),
+            MacroRunner: require("utils/MacroRunner"),
             MainViewFactory: require("view/MainViewFactory"),
             MainViewManager: require("view/MainViewManager"),
             Menus: require("command/Menus"),

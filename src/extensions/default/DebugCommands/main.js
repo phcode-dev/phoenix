@@ -49,6 +49,7 @@ define(function (require, exports, module) {
         NodeConnector          = brackets.getModule("NodeConnector"),
         extensionDevelopment   = require("extensionDevelopment"),
         PerfDialogTemplate     = require("text!htmlContent/perf-dialog.html"),
+        TestBuilder      = require("./testBuilder"),
         LanguageDialogTemplate = require("text!htmlContent/language-dialog.html");
 
     const KeyboardPrefs = JSON.parse(require("text!keyboard.json"));
@@ -83,6 +84,7 @@ define(function (require, exports, module) {
         DEBUG_OPEN_EXTENSION_FOLDER           = "debug.openExtensionFolders",
         DEBUG_OPEN_VIRTUAL_SERVER             = "debug.openVirtualServer",
         DEBUG_OPEN_PREFERENCES_IN_SPLIT_VIEW  = "debug.openPrefsInSplitView",
+        DEBUG_BUILD_TESTS                     = "debug.buildTests",
         DEBUG_DRAG_AND_DROP                   = "debug.dragAndDrop";
 
     const LOG_TO_CONSOLE_KEY = logger.loggingOptions.LOCAL_STORAGE_KEYS.LOG_TO_CONSOLE_KEY,
@@ -810,6 +812,8 @@ define(function (require, exports, module) {
     debugMenu.addMenuItem(Commands.FILE_OPEN_KEYMAP, null);
     const diagnosticsSubmenu = debugMenu.addSubMenu(Strings.CMD_DIAGNOSTIC_TOOLS, DIAGNOSTICS_SUBMENU);
     diagnosticsSubmenu.addMenuItem(DEBUG_RUN_UNIT_TESTS);
+    CommandManager.register(Strings.CMD_BUILD_TESTS, DEBUG_BUILD_TESTS, TestBuilder.toggleTestBuilder);
+    diagnosticsSubmenu.addMenuItem(DEBUG_BUILD_TESTS);
     diagnosticsSubmenu.addMenuDivider();
     diagnosticsSubmenu.addMenuItem(DEBUG_ENABLE_LOGGING);
     diagnosticsSubmenu.addMenuItem(DEBUG_ENABLE_PHNODE_INSPECTOR, undefined, undefined, undefined, {
