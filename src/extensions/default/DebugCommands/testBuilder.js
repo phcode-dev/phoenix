@@ -55,7 +55,7 @@ define(function (require, exports, module) {
          <a href="#" class="close" style="right: 0;margin-right: 10px;">&times;</a>
       </div>  
     </div>
-    <div style="display: flex; height: 100%;">
+    <div style="display: flex; height: 100%; overflow: scroll;">
 <!--27 px is status bar height. If this is not set, the preview code mirror editor gives weird layout issues at times-->
         <div class="test_builder-editor" style="width: 100%; height: 100%;"></div>
     </div>
@@ -95,7 +95,7 @@ define(function (require, exports, module) {
             return;
         }
         const formattedSelections = MacroRunner.computeCursors(editor, true);
-        builderEditor.replaceRange(`\n__PR.setCursors([${formattedSelections.join(", ")}])`,
+        builderEditor.replaceRange(`\n__PR.setCursors([${formattedSelections.join(", ")}]);`,
             builderEditor.getEndingCursorPos());
         editor.focus();
     }
@@ -109,7 +109,7 @@ define(function (require, exports, module) {
         const start = selection.start, end = selection.end;
         const selectionText = `${start.line+1}:${start.ch+1}-${end.line+1}:${end.ch+1}`;
         let quotedString = editor.getSelectedText().replaceAll("\n", "\\n");
-        builderEditor.replaceRange(`\n__PR.validateText(\`${quotedString}\`, "${selectionText}")`,
+        builderEditor.replaceRange(`\n__PR.validateText(\`${quotedString}\`, "${selectionText}");`,
             builderEditor.getEndingCursorPos());
         editor.focus();
     }
@@ -130,7 +130,7 @@ define(function (require, exports, module) {
         }
         for(let markType of Object.keys(markTypeMap)) {
             const selections = markTypeMap[markType];
-            builderEditor.replaceRange(`\n__PR.validateMarks("${markType}", [${selections.join(", ")}])`,
+            builderEditor.replaceRange(`\n__PR.validateMarks("${markType}", [${selections.join(", ")}]);`,
                 builderEditor.getEndingCursorPos());
         }
     }

@@ -302,7 +302,7 @@ define(function (require, exports, module) {
         cursorActivity();
     }
 
-    function _handleEscapeKeyEvent(event) {
+    function _handleEscapeKeyEvent(_event) {
         if(!marksPresent || !activeEditor){
             return false;
         }

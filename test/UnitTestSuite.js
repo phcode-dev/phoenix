@@ -127,6 +127,7 @@ define(function (require, exports, module) {
     // extension integration tests
     require("spec/Extn-CSSCodeHints-integ-test");
     require("spec/Extn-HTMLCodeHints-Lint-integ-test");
+    require("spec/Extn-HtmlTagSyncEdit-integ-test");
     // Node Tests
     require("spec/NodeConnection-test");
     // todo TEST_MODERN

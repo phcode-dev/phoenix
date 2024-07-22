@@ -40,5 +40,5 @@ define(function (require, exports, module) {
     require("./RecentProjects/main");
     require("./DisplayShortcuts/main");
     require("./appUpdater/main");
-    require("./htmlTagSyncEdit/main");
+    require("./HtmlTagSyncEdit/main");
 });
