@@ -334,9 +334,21 @@ define(function (require, exports, module) {
         return jsPromise(CommandManager.execute(Commands.FILE_CLOSE_ALL, { _forceClose: true }));
     }
 
+    function execCommand(commandID, args) {
+        return jsPromise(CommandManager.execute(commandID, args));
+    }
+
+    function undo() {
+        return execCommand(Commands.EDIT_UNDO);
+    }
+
+    function redo() {
+        return execCommand(Commands.EDIT_REDO);
+    }
+
     const __PR= {
         openFile, setCursors, expectCursorsToBe, keydown, typeAtCursor, validateText, validateAllMarks, validateMarks,
-        closeFile, closeAll
+        closeFile, closeAll, undo, redo
     };
 
     async function runMacro(macroText) {
