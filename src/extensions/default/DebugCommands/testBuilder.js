@@ -23,15 +23,16 @@
 define(function (require, exports, module) {
     const AppInit = brackets.getModule("utils/AppInit"),
         DocumentManager = brackets.getModule("document/DocumentManager"),
+        EditorManager = brackets.getModule("editor/EditorManager"),
         FileSystem = brackets.getModule("filesystem/FileSystem"),
         Editor = brackets.getModule("editor/Editor"),
         Dialogs = brackets.getModule("widgets/Dialogs"),
         CommandManager = brackets.getModule("command/CommandManager"),
         Commands = brackets.getModule("command/Commands"),
-        MacroRunner = brackets.getModule("utils/MacroRunner"),
-        WorkspaceManager = brackets.getModule("view/WorkspaceManager");
+        WorkspaceManager = brackets.getModule("view/WorkspaceManager"),
+        MacroRunner = require("./MacroRunner");
 
-    const BUILD_SCRATCH_FILE = path.join(brackets.app.getApplicationSupportDirectory(), "testBuilder.md");
+    const BUILD_SCRATCH_FILE = path.join(brackets.app.getApplicationSupportDirectory(), "testBuilder.js");
     let builderPanel, $panel, builderEditor;
 
     function toggleTestBuilder() {
@@ -39,11 +40,17 @@ define(function (require, exports, module) {
     }
     const panelHTML = `
 <div id="test-builder-panel-phcode" class="bottom-panel vert-resizable top-resizer">
-    <div class="toolbar simple-toolbar-layout">
-        <div class="title">Test Builder</div>
-        <button class="btn btn-mini no-focus save-test-builder">Save</button>
-        <button class="btn btn-mini primary no-focus run-test-builder">Run</button>
-        <a href="#" class="close">&times;</a>
+    <div class="toolbar" style="display: flex; justify-content: space-between;">
+      <div style="display: flex">
+         <div class="title">Test Builder</div>
+         <button class="btn btn-mini no-focus save-test-builder">Save</button>
+         <button class="btn btn-mini primary no-focus run-test-builder">Run</button>
+         <button class="btn btn-mini no-focus run-selected">Run Selected</button>
+      </div>
+      <div>
+         <button class="btn btn-mini no-focus cursor-locate" style="margin-right: 20px;">cursor</button>
+         <a href="#" class="close" style="right: 0;margin-right: 10px;">&times;</a>
+      </div>  
     </div>
     <div style="display: flex; height: 100%;">
 <!--27 px is status bar height. If this is not set, the preview code mirror editor gives weird layout issues at times-->
@@ -63,9 +70,9 @@ define(function (require, exports, module) {
         });
     }
 
-    async function runTests() {
+    async function runTests(macroText) {
         saveFile();
-        const errors = await MacroRunner.runMacro(builderEditor.document.getText());
+        const errors = await MacroRunner.runMacro(macroText || builderEditor.document.getText());
         if(errors.length) {
             let errorHTML = "";
             for (let error of errors) {
@@ -73,6 +80,30 @@ define(function (require, exports, module) {
             }
             Dialogs.showErrorDialog("Error running macro: ", errorHTML);
         }
+    }
+
+    function runSelection() {
+        return runTests(builderEditor.getSelectedText());
+    }
+
+    function _locateCursor() {
+        const editor = EditorManager.getActiveEditor();
+        if(!editor) {
+            return;
+        }
+        const selections = editor.getSelections();
+        const formattedSelections = selections.map(selection => {
+            const start = selection.start;
+            const end = selection.end;
+
+            // Check if the selection is a cursor (start and end are the same)
+            if (start.line === end.line && start.ch === end.ch) {
+                return `"${start.line+1}:${start.ch+1}"`;
+            }
+            return `"${start.line+1}:${start.ch+1}-${end.line+1}:${end.ch+1}"`;
+        });
+        builderEditor.replaceRange(`\nsetCursors([${formattedSelections.join(", ")}])`, builderEditor.getEndingCursorPos());
+        editor.focus();
     }
 
     async function _setupPanel() {
@@ -89,11 +120,15 @@ define(function (require, exports, module) {
             builderEditor.updateLayout();
         });
         new ResizeObserver(()=>{
-            builderEditor.updateLayout();
+            builderEditor && builderEditor.updateLayout();
         }).observe($panel[0]);
 
         $panel.find(".save-test-builder").click(saveFile);
-        $panel.find(".run-test-builder").click(runTests);
+        $panel.find(".run-test-builder").click(()=>{
+            runTests();
+        });
+        $panel.find(".run-selected").click(runSelection);
+        $panel.find(".cursor-locate").click(_locateCursor);
     }
 
     AppInit.appReady(function () {
