@@ -92,19 +92,60 @@ define(function (require, exports, module) {
         activeEditor.setSelections(parsedSelections);
     }
 
-    const MACRO_FUNCTIONS= {
-        "openFile": openFile,
-        "setCursors": setCursors
+    /**
+     * gets cursor selections array that can be used in the setCursors API
+     * @param editor
+     * @returns {*}
+     */
+    function computeCursors(editor, addQuotes) {
+        const selections = editor.getSelections();
+        return selections.map(selection => {
+            const start = selection.start;
+            const end = selection.end;
+            let cursor;
+
+            // Check if the selection is a cursor (start and end are the same)
+            if (start.line === end.line && start.ch === end.ch) {
+                cursor = `${start.line + 1}:${start.ch + 1}`;
+            } else {
+                cursor = `${start.line + 1}:${start.ch + 1}-${end.line + 1}:${end.ch + 1}`;
+            }
+            return addQuotes ? `"${cursor}"` : cursor;
+        });
+    }
+
+    /**
+     * Validates the currently active editor has selections as given here
+     */
+    function expectCursorsToBe(expectedSelections) {
+        const activeEditor = EditorManager.getActiveEditor();
+        if(!activeEditor){
+            throw new Error(`No active editor found for expectCursorsToBe: ${expectedSelections}`);
+        }
+        const currentSelections = computeCursors(activeEditor);
+        if(currentSelections.length !== expectedSelections.length) {
+            throw new Error(`expectCursorsToBe: [${expectedSelections.join(", ")}] `+
+             `but got [${currentSelections.join(", ")}]`);
+        }
+        for(let i = 0; i < currentSelections.length; i++) {
+            if(!currentSelections.includes(`${expectedSelections[i]}`) ||
+                !expectedSelections.includes(currentSelections[i])){
+                throw new Error(`expectCursorsToBe: [${expectedSelections.join(", ")}] `+
+                    `but got [${currentSelections.join(", ")}]`);
+            }
+        }
+    }
+
+    const __PR= {
+        openFile, setCursors, expectCursorsToBe
     };
-    const functionNames = Object.keys(MACRO_FUNCTIONS);
-    const functionRefs = Object.values(MACRO_FUNCTIONS);
 
     async function runMacro(macroText) {
         let errors = [];
         try{
             const AsyncFunction = async function () {}.constructor;
-            const macroAsync = new AsyncFunction(...functionNames, macroText);
-            await macroAsync(...functionRefs);
+            const macroAsync = new AsyncFunction("__PR", macroText);
+            await macroAsync(__PR);
         } catch (e) {
             console.error("Error executing macro: ", macroText, e);
             errors.push({
@@ -117,7 +158,8 @@ define(function (require, exports, module) {
     }
 
     if(Phoenix.isTestWindow) {
-        window.__runTestMacro = runMacro;
+        window.__PR = __PR;
     }
+    exports.computeCursors = computeCursors;
     exports.runMacro = runMacro;
 });
