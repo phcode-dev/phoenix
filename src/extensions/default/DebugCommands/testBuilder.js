@@ -48,7 +48,9 @@ define(function (require, exports, module) {
          <button class="btn btn-mini no-focus run-selected">Run Selected</button>
       </div>
       <div>
-         <button class="btn btn-mini no-focus cursor-locate" style="margin-right: 20px;">cursor</button>
+         <button class="btn btn-mini no-focus cursor-locate">cursor</button>
+         <button class="btn btn-mini no-focus text-validate" title="validate text" style="margin-right: 20px;">
+            Text</button>
          <a href="#" class="close" style="right: 0;margin-right: 10px;">&times;</a>
       </div>  
     </div>
@@ -97,6 +99,19 @@ define(function (require, exports, module) {
         editor.focus();
     }
 
+    function _validateText() {
+        const editor = EditorManager.getActiveEditor();
+        if(!editor) {
+            return;
+        }
+        const selection = editor.getSelection();
+        const start = selection.start, end = selection.end;
+        const selectionText = `${start.line+1}:${start.ch+1}-${end.line+1}:${end.ch+1}`;
+        builderEditor.replaceRange(`\n__PR.validateText("${editor.getSelectedText()}", "${selectionText}")`,
+            builderEditor.getEndingCursorPos());
+        editor.focus();
+    }
+
     async function _setupPanel() {
         let file = FileSystem.getFileForPath(BUILD_SCRATCH_FILE);
         let isExists = await file.existsAsync();
@@ -120,6 +135,7 @@ define(function (require, exports, module) {
         });
         $panel.find(".run-selected").click(runSelection);
         $panel.find(".cursor-locate").click(_locateCursor);
+        $panel.find(".text-validate").click(_validateText);
     }
 
     AppInit.appReady(function () {
