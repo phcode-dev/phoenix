@@ -91,18 +91,9 @@ define(function (require, exports, module) {
         if(!editor) {
             return;
         }
-        const selections = editor.getSelections();
-        const formattedSelections = selections.map(selection => {
-            const start = selection.start;
-            const end = selection.end;
-
-            // Check if the selection is a cursor (start and end are the same)
-            if (start.line === end.line && start.ch === end.ch) {
-                return `"${start.line+1}:${start.ch+1}"`;
-            }
-            return `"${start.line+1}:${start.ch+1}-${end.line+1}:${end.ch+1}"`;
-        });
-        builderEditor.replaceRange(`\nsetCursors([${formattedSelections.join(", ")}])`, builderEditor.getEndingCursorPos());
+        const formattedSelections = MacroRunner.computeCursors(editor, true);
+        builderEditor.replaceRange(`\n__PR.setCursors([${formattedSelections.join(", ")}])`,
+            builderEditor.getEndingCursorPos());
         editor.focus();
     }
 
