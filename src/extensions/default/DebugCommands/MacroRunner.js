@@ -35,6 +35,7 @@
 define(function (require, exports, module) {
     const FileViewController = brackets.getModule("project/FileViewController"),
         EditorManager = brackets.getModule("editor/EditorManager"),
+        KeyEvent = brackets.getModule("utils/KeyEvent"),
         ProjectManager = brackets.getModule("project/ProjectManager");
 
     /**
@@ -136,16 +137,98 @@ define(function (require, exports, module) {
         }
     }
 
+    /**
+     * Simulate a key event.
+     * @param {Number} key Key code available as One of the KeyEvent.DOM_VK_*
+     * @param {String} event Key event to simulate. one of keydown, keyup or keypress
+     * @param {HTMLElement} element Element to receive event
+     * @param {KeyboardEventInit} options Optional arguments for key event
+     */
+    function raiseKeyEvent(key, event, element, options) {
+        const doc = element.ownerDocument;
+
+        if(typeof options === 'undefined') {
+            options = {
+                view: doc.defaultView,
+                bubbles: true,
+                cancelable: true,
+                keyIdentifer: key
+            };
+        } else {
+            options.view = doc.defaultView;
+            options.bubbles = true;
+            options.cancelable = true;
+            options.keyIdentifier = key;
+        }
+        const oEvent = new KeyboardEvent(event, options);
+
+        if (event !== "keydown" && event !== "keyup" && event !== "keypress") {
+            console.log("SpecRunnerUtils.simulateKeyEvent() - unsupported keyevent: " + event);
+            return;
+        }
+
+        // Chromium Hack: need to override the 'which' property.
+        // Note: this code is not designed to work in IE, Safari,
+        // or other browsers. Well, maybe with Firefox. YMMV.
+        Object.defineProperty(oEvent, 'keyCode', {
+            get: function () {
+                return this.keyCodeVal;
+            }
+        });
+        Object.defineProperty(oEvent, 'which', {
+            get: function () {
+                return this.keyCodeVal;
+            }
+        });
+        Object.defineProperty(oEvent, 'charCode', {
+            get: function () {
+                return this.keyCodeVal;
+            }
+        });
+
+        oEvent.keyCodeVal = key;
+        if (oEvent.keyCode !== key) {
+            console.log("SpecRunnerUtils.simulateKeyEvent() - keyCode mismatch: " + oEvent.keyCode);
+        }
+
+        element.dispatchEvent(oEvent);
+    }
+
+    /**
+     * @param {Array<string>} keysArray An array of Key strings available as One of the KeyEvent.DOM_VK_* without the
+     *    `KeyEvent.DOM_VK_` prefix. Eg: use `["ESCAPE"]` instead of fully specifying [`DOM_VK_ESCAPE`]
+     * @param {object} modifiers to modify the key
+     * @param {boolean} modifiers.ctrlKey
+     * @param {boolean} modifiers.altKey
+     * @param {boolean} modifiers.shiftKey
+     * @param {boolean} modifiers.metaKey
+     * @param keysArray
+     */
+    function keydown(keysArray, modifiers) {
+        for(let key of keysArray) {
+            if(typeof key === "string"){
+                if(!key.startsWith("DOM_VK_")){
+                    key = "DOM_VK_"+key;
+                }
+                key = KeyEvent[key];
+                if(!key){
+                    throw new Error(`Invalid key "${key}"`);
+                }
+            }
+            raiseKeyEvent(key, "keydown", document.activeElement, modifiers);
+        }
+    }
+
     const __PR= {
-        openFile, setCursors, expectCursorsToBe
+        openFile, setCursors, expectCursorsToBe, keydown
     };
 
     async function runMacro(macroText) {
         let errors = [];
         try{
             const AsyncFunction = async function () {}.constructor;
-            const macroAsync = new AsyncFunction("__PR", macroText);
-            await macroAsync(__PR);
+            const macroAsync = new AsyncFunction("__PR", "KeyEvent", macroText);
+            await macroAsync(__PR, KeyEvent);
         } catch (e) {
             console.error("Error executing macro: ", macroText, e);
             errors.push({
