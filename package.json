@@ -111,7 +111,7 @@
         "mime-db": "^1.52.0",
         "mustache": "^4.2.0",
         "prettier": "^3.2.5",
-        "requirejs": "^2.3.6",
+        "requirejs": "^2.3.7",
         "tern": "^0.24.3",
         "tinycolor2": "^1.4.2",
         "underscore": "^1.13.4"
