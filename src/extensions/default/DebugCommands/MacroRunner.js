@@ -241,8 +241,31 @@ define(function (require, exports, module) {
         }
     }
 
+    // converts string of from "ln:ch" to pos object
+    function _toPos(posString) {
+        const pos = posString.split(":");
+        return {line: Number(pos[0]) - 1, ch: Number(pos[1]) - 1 };
+    }
+
+    /**
+     * Verify if the given text is same as what is in between the given selection.
+     * @param {string} text
+     * @param {string} selection of the form "ln:ch-ln:ch"
+     */
+    function validateText(text, selection) {
+        const activeEditor = EditorManager.getActiveEditor();
+        if(!activeEditor){
+            throw new Error(`No active editor found to validateText: ${text} at selection ${selection}`);
+        }
+        const from = selection.split("-")[0], to = selection.split("-")[1];
+        const selectedText = activeEditor.getTextBetween(_toPos(from), _toPos(to));
+        if(selectedText !== text){
+            throw new Error(`validateText: expected text at [${selection}] to be "${text}" but got "${selectedText}"`);
+        }
+    }
+
     const __PR= {
-        openFile, setCursors, expectCursorsToBe, keydown, typeAtCursor
+        openFile, setCursors, expectCursorsToBe, keydown, typeAtCursor, validateText
     };
 
     async function runMacro(macroText) {
