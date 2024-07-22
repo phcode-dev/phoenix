@@ -105,5 +105,17 @@ define(function (require, exports, module) {
             await _testEmptyATag();
             await __PR.closeFile();
         });
+
+        it("should be able to edit over tag selection and undo to sync update tags", async function () {
+            await __PR.openFile("a.html");
+            __PR.setCursors(["20:11-20:14"]);
+            __PR.typeAtCursor("hello");
+            __PR.validateText(`hello`, "14:10-14:15");
+            __PR.validateText(`hello`, "20:11-20:16");
+            await __PR.undo();
+            __PR.validateText(`div`, "20:11-20:14");
+            __PR.validateText(`div`, "14:10-14:13");
+            __PR.expectCursorsToBe(["20:11-20:14"]);
+        });
     });
 });
