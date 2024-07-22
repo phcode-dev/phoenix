@@ -36,6 +36,15 @@ define(function (require, exports, module) {
     let builderPanel, $panel, builderEditor;
 
     function toggleTestBuilder() {
+        if(!$panel){
+            $panel = $(panelHTML);
+            builderPanel = WorkspaceManager.createBottomPanel("phcode-test-builder-panel", $panel, 100);
+            builderPanel.hide();
+            _setupPanel().then(()=>{
+                builderPanel.setVisible(!builderPanel.isVisible());
+            });
+            return;
+        }
         builderPanel.setVisible(!builderPanel.isVisible());
     }
     const panelHTML = `
@@ -152,6 +161,7 @@ define(function (require, exports, module) {
             builderEditor && builderEditor.updateLayout();
         }).observe($panel[0]);
 
+        $panel.find(".close").click(toggleTestBuilder);
         $panel.find(".save-test-builder").click(saveFile);
         $panel.find(".run-test-builder").click(()=>{
             runTests();
@@ -163,6 +173,9 @@ define(function (require, exports, module) {
     }
 
     AppInit.appReady(function () {
+        if(Phoenix.isTestWindow) {
+            return;
+        }
         $panel = $(panelHTML);
         builderPanel = WorkspaceManager.createBottomPanel("phcode-test-builder-panel", $panel, 100);
         builderPanel.hide();
