@@ -318,8 +318,8 @@ define(function (require, exports, module) {
             throw new Error(`validateMarks expected mark count for "${markType}" to be: ${totalMarkCount} `+
                 `but got ${marksLocations.length}`);
         }
-        for(let i = 0; i < selections.length; i++) {
-            if(!marksLocations.includes(selections[i])){
+        for(let selection of selections) {
+            if(!marksLocations.includes(selection)){
                 throw new Error(`validateMarks expected marks "${markType}" to be at: [${selections.join(", ")}] `+
                     `but got marked locations [${marksLocations.join(", ")}]`);
             }
