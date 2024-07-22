@@ -76,11 +76,7 @@ define(function (require, exports, module) {
             await __PR.closeFile();
         });
 
-        it("should edit a tag with backspace key making it empty and then edit as expected", async function () {
-            await __PR.openFile("a.html");
-
-            __PR.setCursors(["16:15"]);
-            __PR.keydown(["BACK_SPACE"]);
+        async function _testEmptyATag() {
             __PR.validateMarks("startTagSyncEdit", ["16:14-16:14"]);
             __PR.validateMarks("endTagSyncEdit", ["18:15-18:15"]);
             __PR.typeAtCursor("hi");
@@ -92,6 +88,21 @@ define(function (require, exports, module) {
             await __PR.undo();
             __PR.validateText(`a`, "16:14-16:15");
             __PR.validateText(`a`, "18:15-18:16");
+        }
+
+        it("should edit a tag with backspace key making it empty and then edit as expected", async function () {
+            await __PR.openFile("a.html");
+            __PR.setCursors(["16:15"]);
+            __PR.keydown(["BACK_SPACE"]);
+            await _testEmptyATag();
+            await __PR.closeFile();
+        });
+
+        it("should edit a tag with delete key making it empty and then edit as expected", async function () {
+            await __PR.openFile("a.html");
+            __PR.setCursors(["16:14"]);
+            __PR.keydown(["DELETE"]);
+            await _testEmptyATag();
             await __PR.closeFile();
         });
     });
