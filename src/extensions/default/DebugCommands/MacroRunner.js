@@ -45,8 +45,10 @@
  */
 define(function (require, exports, module) {
     const FileViewController = brackets.getModule("project/FileViewController"),
+        CommandManager = brackets.getModule("command/CommandManager"),
         EditorManager = brackets.getModule("editor/EditorManager"),
         KeyEvent = brackets.getModule("utils/KeyEvent"),
+        Commands = brackets.getModule("command/Commands"),
         ProjectManager = brackets.getModule("project/ProjectManager");
 
     /**
@@ -324,8 +326,17 @@ define(function (require, exports, module) {
         }
     }
 
+    function closeFile() {
+        return jsPromise(CommandManager.execute(Commands.FILE_CLOSE, { _forceClose: true }));
+    }
+
+    function closeAll() {
+        return jsPromise(CommandManager.execute(Commands.FILE_CLOSE_ALL, { _forceClose: true }));
+    }
+
     const __PR= {
-        openFile, setCursors, expectCursorsToBe, keydown, typeAtCursor, validateText, validateAllMarks, validateMarks
+        openFile, setCursors, expectCursorsToBe, keydown, typeAtCursor, validateText, validateAllMarks, validateMarks,
+        closeFile, closeAll
     };
 
     async function runMacro(macroText) {
