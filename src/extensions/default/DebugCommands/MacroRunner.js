@@ -21,7 +21,15 @@
 /*global path, jsPromise*/
 
 /**
- *  Utilities functions for running macros. This can be later extended to run macros. But since this uses eval, the
+ *  Utilities functions for running macros.
+ *  Eg:
+ *  await __PR.openFile("a.html");
+ *   __PR.setCursors(["17:28", "17:28-17:30"])
+ * __PR.expectCursorsToBe(["17:28", "17:28-17:30"])
+ * __PR.keydown(["BACK_SPACE"])
+ * __PR.typeAtCursor("hello")
+ *
+ *  This can be later extended to run macros. But since this uses eval, the
  *  security posture must be changed. One way is to:
  *  1. create an iframe that contains the macro panel and codemirror surface in a sandboxed or 3rd party context. This
  *     will create origin isolation in browser so that extensions cannot read or write to the ifrmae macro code.
@@ -197,6 +205,7 @@ define(function (require, exports, module) {
     /**
      * @param {Array<string>} keysArray An array of Key strings available as One of the KeyEvent.DOM_VK_* without the
      *    `KeyEvent.DOM_VK_` prefix. Eg: use `["ESCAPE"]` instead of fully specifying [`DOM_VK_ESCAPE`]
+     *    E.g: __PR.keydown(["BACK_SPACE"]) or __PR.keydown(["BACK_SPACE"], {ctrlKey: true})
      * @param {object} modifiers to modify the key
      * @param {boolean} modifiers.ctrlKey
      * @param {boolean} modifiers.altKey
@@ -219,8 +228,21 @@ define(function (require, exports, module) {
         }
     }
 
+    function typeAtCursor(text, origin) {
+        const activeEditor = EditorManager.getActiveEditor();
+        if(!activeEditor){
+            throw new Error(`No active editor found to typeAtCursor: ${text}`);
+        }
+        const selections = activeEditor.getSelections();
+        // Insert text at each cursor or the head of each selection.
+        // We perform the insertions in reverse order to avoid affecting the indices of subsequent insertions.
+        for (let selection of selections) {
+            activeEditor.replaceRange(text, selection.start, selection.end, origin);
+        }
+    }
+
     const __PR= {
-        openFile, setCursors, expectCursorsToBe, keydown
+        openFile, setCursors, expectCursorsToBe, keydown, typeAtCursor
     };
 
     async function runMacro(macroText) {
