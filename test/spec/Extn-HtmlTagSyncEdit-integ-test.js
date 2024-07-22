@@ -73,6 +73,26 @@ define(function (require, exports, module) {
             __PR.validateMarks("endTagSyncEdit", ["11:40-11:44"]);
             __PR.setCursors(["4:12"]);
             __PR.validateMarks("startTagSyncEdit", []);
+            await __PR.closeFile();
+        });
+
+        it("should edit a tag with backspace key making it empty and then edit as expected", async function () {
+            await __PR.openFile("a.html");
+
+            __PR.setCursors(["16:15"]);
+            __PR.keydown(["BACK_SPACE"]);
+            __PR.validateMarks("startTagSyncEdit", ["16:14-16:14"]);
+            __PR.validateMarks("endTagSyncEdit", ["18:15-18:15"]);
+            __PR.typeAtCursor("hi");
+            __PR.validateMarks("startTagSyncEdit", ["16:14-16:16"]);
+            __PR.validateText(`hi`, "16:14-16:16");
+            __PR.validateText(`hi`, "18:15-18:17");
+            await __PR.undo();
+            __PR.validateMarks("startTagSyncEdit", ["16:14-16:14"]);
+            await __PR.undo();
+            __PR.validateText(`a`, "16:14-16:15");
+            __PR.validateText(`a`, "18:15-18:16");
+            await __PR.closeFile();
         });
     });
 });

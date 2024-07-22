@@ -96,7 +96,7 @@ define(function (require, exports, module) {
         }
         const formattedSelections = MacroRunner.computeCursors(editor, true);
         builderEditor.replaceRange(`\n__PR.setCursors([${formattedSelections.join(", ")}]);`,
-            builderEditor.getEndingCursorPos());
+            builderEditor.getCursorPos());
         editor.focus();
     }
 
@@ -110,7 +110,7 @@ define(function (require, exports, module) {
         const selectionText = `${start.line+1}:${start.ch+1}-${end.line+1}:${end.ch+1}`;
         let quotedString = editor.getSelectedText().replaceAll("\n", "\\n");
         builderEditor.replaceRange(`\n__PR.validateText(\`${quotedString}\`, "${selectionText}");`,
-            builderEditor.getEndingCursorPos());
+            builderEditor.getCursorPos());
         editor.focus();
     }
 
@@ -131,7 +131,7 @@ define(function (require, exports, module) {
         for(let markType of Object.keys(markTypeMap)) {
             const selections = markTypeMap[markType];
             builderEditor.replaceRange(`\n__PR.validateMarks("${markType}", [${selections.join(", ")}]);`,
-                builderEditor.getEndingCursorPos());
+                builderEditor.getCursorPos());
         }
     }
 
