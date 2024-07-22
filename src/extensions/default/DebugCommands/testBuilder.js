@@ -48,6 +48,7 @@ define(function (require, exports, module) {
          <button class="btn btn-mini no-focus run-selected">Run Selected</button>
       </div>
       <div>
+         <button class="btn btn-mini no-focus mark-validate" title="Validate marks at cursor">Marks</button>
          <button class="btn btn-mini no-focus cursor-locate">cursor</button>
          <button class="btn btn-mini no-focus text-validate" title="validate text" style="margin-right: 20px;">
             Text</button>
@@ -107,9 +108,31 @@ define(function (require, exports, module) {
         const selection = editor.getSelection();
         const start = selection.start, end = selection.end;
         const selectionText = `${start.line+1}:${start.ch+1}-${end.line+1}:${end.ch+1}`;
-        builderEditor.replaceRange(`\n__PR.validateText("${editor.getSelectedText()}", "${selectionText}")`,
+        let quotedString = editor.getSelectedText().replaceAll("\n", "\\n");
+        builderEditor.replaceRange(`\n__PR.validateText(\`${quotedString}\`, "${selectionText}")`,
             builderEditor.getEndingCursorPos());
         editor.focus();
+    }
+
+    function _validateMarks(){
+        const editor = EditorManager.getActiveEditor();
+        if(!editor) {
+            return;
+        }
+        const marks = editor.findMarksAt(editor.getCursorPos()).filter(mark => mark.markType);
+        const markTypeMap = {};
+        for(let mark of marks){
+            if(!markTypeMap[mark.markType]){
+                markTypeMap[mark.markType] = [];
+            }
+            const loc = mark.find();
+            markTypeMap[mark.markType].push(`"${loc.from.line+1}:${loc.from.ch+1}-${loc.to.line+1}:${loc.to.ch+1}"`);
+        }
+        for(let markType of Object.keys(markTypeMap)) {
+            const selections = markTypeMap[markType];
+            builderEditor.replaceRange(`\n__PR.validateMarks("${markType}", [${selections.join(", ")}])`,
+                builderEditor.getEndingCursorPos());
+        }
     }
 
     async function _setupPanel() {
@@ -136,6 +159,7 @@ define(function (require, exports, module) {
         $panel.find(".run-selected").click(runSelection);
         $panel.find(".cursor-locate").click(_locateCursor);
         $panel.find(".text-validate").click(_validateText);
+        $panel.find(".mark-validate").click(_validateMarks);
     }
 
     AppInit.appReady(function () {

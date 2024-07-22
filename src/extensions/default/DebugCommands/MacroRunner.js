@@ -28,6 +28,9 @@
  * __PR.expectCursorsToBe(["17:28", "17:28-17:30"])
  * __PR.keydown(["BACK_SPACE"])
  * __PR.typeAtCursor("hello")
+ * __PR.validateText(`a`, "16:14-16:15")
+ * __PR.validateAllMarks("startTagSyncEdit", ["16:14-16:15"]); // All marks of type startTagSyncEdit should be there
+ * __PR.validateMarks("startTagSyncEdit", ["16:14-16:15"], 1); // 1 is total marks of type startTagSyncEdit
  *
  *  This can be later extended to run macros. But since this uses eval, the
  *  security posture must be changed. One way is to:
@@ -264,8 +267,65 @@ define(function (require, exports, module) {
         }
     }
 
+    function _getMarkLocations(markType, whichAPI, selections) {
+        const activeEditor = EditorManager.getActiveEditor();
+        if(!activeEditor){
+            throw new Error(`No active editor found to ${whichAPI}: "${markType}" for selection "${selections}"`);
+        }
+        const marks = activeEditor.getAllMarks(markType);
+        const marksLocations = [];
+        for(let mark of marks){
+            const loc = mark.find();
+            marksLocations.push(`${loc.from.line+1}:${loc.from.ch+1}-${loc.to.line+1}:${loc.to.ch+1}`);
+        }
+        return marksLocations;
+    }
+
+    /**
+     * validates all marks of the given mark type
+     * @param {string} markType
+     * @param {Array<string>} selections - An array of strings defining cursor positions or selection ranges.
+     */
+    function validateAllMarks(markType, selections) {
+        const marksLocations = _getMarkLocations(markType, "validateAllMarks", selections);
+        if(!selections || marksLocations.length !== selections.length){
+            throw new Error(`validateAllMarks expected marks "${markType}" at: [${selections&&selections.join(", ")}] `+
+                `but got marked locations [${marksLocations.join(", ")}]`);
+        }
+        for(let i = 0; i < selections.length; i++) {
+            if(!selections.includes(`${marksLocations[i]}`) ||
+                !marksLocations.includes(selections[i])){
+                throw new Error(`validateAllMarks expected marks "${markType}" at: [${selections.join(", ")}] `+
+                    `but got marked locations [${marksLocations.join(", ")}]`);
+            }
+        }
+    }
+
+    /**
+     * validates if the given mark type is present in the specified selections
+     * @param {string} markType
+     * @param {Array<string>} selections - An array of strings defining cursor positions or selection ranges.
+     * @param {number} [totalMarkCount] optional to validate against the total number of expected marks of the type
+     */
+    function validateMarks(markType, selections, totalMarkCount) {
+        const marksLocations = _getMarkLocations(markType, "validateMarks", selections);
+        if(!selections){
+            return;
+        }
+        if(totalMarkCount !== undefined && marksLocations.length !== totalMarkCount){
+            throw new Error(`validateMarks expected mark count for "${markType}" to be: ${totalMarkCount} `+
+                `but got ${marksLocations.length}`);
+        }
+        for(let i = 0; i < selections.length; i++) {
+            if(!marksLocations.includes(selections[i])){
+                throw new Error(`validateMarks expected marks "${markType}" to be at: [${selections.join(", ")}] `+
+                    `but got marked locations [${marksLocations.join(", ")}]`);
+            }
+        }
+    }
+
     const __PR= {
-        openFile, setCursors, expectCursorsToBe, keydown, typeAtCursor, validateText
+        openFile, setCursors, expectCursorsToBe, keydown, typeAtCursor, validateText, validateAllMarks, validateMarks
     };
 
     async function runMacro(macroText) {
