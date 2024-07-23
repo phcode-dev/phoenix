@@ -199,6 +199,17 @@ define(function (require, exports, module) {
                 __PR.validateMarks("startTagSyncEdit", ["9:14-9:15"]);
                 await __PR.closeFile();
             });
+
+            it(`should be able to disable tag sync feature with preference for ${fileName}`, async function () {
+                await __PR.openFile(fileName);
+                __PR.setCursors(["8:12"]);
+                __PR.validateMarks("startTagSyncEdit", ["8:10-8:13"]);
+                __PR.setPreference("autoRenameTags", false);
+                __PR.validateAllMarks("startTagSyncEdit", []);
+                __PR.setPreference("autoRenameTags", true);
+                __PR.validateMarks("startTagSyncEdit", ["8:10-8:13"]);
+                await __PR.closeFile();
+            });
         }
 
         const htmlFiles = ["a.html", "a.htm", "a.xhtml", "a.php", "a.xml"];

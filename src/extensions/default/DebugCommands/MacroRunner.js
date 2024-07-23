@@ -49,6 +49,7 @@ define(function (require, exports, module) {
         EditorManager = brackets.getModule("editor/EditorManager"),
         KeyEvent = brackets.getModule("utils/KeyEvent"),
         Commands = brackets.getModule("command/Commands"),
+        PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
         ProjectManager = brackets.getModule("project/ProjectManager");
 
     /**
@@ -346,9 +347,17 @@ define(function (require, exports, module) {
         return execCommand(Commands.EDIT_REDO);
     }
 
+    function setPreference(key, value){
+        PreferencesManager.set(key, value);
+    }
+
+    function getPreference(key){
+        return PreferencesManager.get(key);
+    }
+
     const __PR= {
         openFile, setCursors, expectCursorsToBe, keydown, typeAtCursor, validateText, validateAllMarks, validateMarks,
-        closeFile, closeAll, undo, redo
+        closeFile, closeAll, undo, redo, setPreference, getPreference
     };
 
     async function runMacro(macroText) {
