@@ -29,14 +29,12 @@ define(function (require, exports, module) {
     describe("integration:HtmlTagSyncEdit", function () {
         const testRootSpec = "/spec/HtmlTagSyncEdit-test-files/";
         let testProjectsFolder = SpecRunnerUtils.getTestPath(testRootSpec),
-            Strings     = require("strings"),
             testWindow,
-            $, __PR; // __PR can be debugged using debug menu> phoenix code diag tools> test builder
+            __PR; // __PR can be debugged using debug menu> phoenix code diag tools> test builder
 
         beforeAll(async function () {
             testWindow = await SpecRunnerUtils.createTestWindowAndRun();
             // Load module instances from brackets.test
-            $ = testWindow.$;
             await SpecRunnerUtils.loadProjectInTestWindow(testProjectsFolder);
             __PR = testWindow.__PR;
             testWindow.___syncEditEnabledForTests = true;
@@ -46,7 +44,6 @@ define(function (require, exports, module) {
             await __PR.closeAll();
             testWindow.___syncEditEnabledForTests = false;
             testWindow    = null;
-            $             = null;
             __PR          = null;
             await SpecRunnerUtils.closeTestWindow();
         }, 30000);
