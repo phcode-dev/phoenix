@@ -338,14 +338,3 @@ define(function (require, exports, module) {
         WorkspaceManager.addEscapeKeyEventHandler("tagSyncEdit", _handleEscapeKeyEvent);
     });
 });
-
-// todo tests
-// delete key tests
-// empty by delete tests
-// backspace key tests
-// empty by backspace tests
-// copy paste on tag
-// multi cursor disable
-// click on div tag with syc edit. Now click on another unrelated `tag>|` at cursor. the original underline should go
-// cursor positons after edit should be as expected. test for <d| <|d <dd|dd <|dddd <dddd| and </ countearpart
-// escape key handling
