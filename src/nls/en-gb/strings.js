@@ -699,6 +699,7 @@ define({
   "CMD_LAUNCH_SCRIPT_MAC": "Install Command Line Shortcut",
   "CMD_SWITCH_LANGUAGE": "Switch Language…",
   "CMD_RUN_UNIT_TESTS": "Run {APP_NAME} Tests",
+  "CMD_BUILD_TESTS": "Build Editor Tests",
   "CMD_SHOW_PERF_DATA": "Show Performance Data",
   "CMD_ENABLE_LOGGING": "Enable Detailed Logs",
   "CMD_ENABLE_PHNODE_INSPECTOR": "Enable PhNode Inspector",

@@ -699,6 +699,7 @@ define({
   "CMD_LAUNCH_SCRIPT_MAC": "Инсталиране на пряк път за командния ред",
   "CMD_SWITCH_LANGUAGE": "Превключване на езика...",
   "CMD_RUN_UNIT_TESTS": "Изпълнете тестове на {APP_NAME}",
+  "CMD_BUILD_TESTS": "Тестове за редактор на компилации",
   "CMD_SHOW_PERF_DATA": "Показване на данните за производителността",
   "CMD_ENABLE_LOGGING": "Активиране на подробни регистрационни файлове",
   "CMD_ENABLE_PHNODE_INSPECTOR": "Активирайте PhNode Inspector",

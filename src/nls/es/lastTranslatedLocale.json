@@ -679,6 +679,7 @@
   "CMD_LAUNCH_SCRIPT_MAC": "Instalar acceso directo por línea de comandos",
   "CMD_SWITCH_LANGUAGE": "Cambiar idioma…",
   "CMD_RUN_UNIT_TESTS": "Ejecute pruebas de {APP_NAME}",
+  "CMD_BUILD_TESTS": "Pruebas del editor de compilación",
   "CMD_SHOW_PERF_DATA": "Mostrar información de rendimiento",
   "CMD_ENABLE_LOGGING": "Habilitar registros detallados",
   "CMD_ENABLE_PHNODE_INSPECTOR": "Habilitar el inspector de PhNode",

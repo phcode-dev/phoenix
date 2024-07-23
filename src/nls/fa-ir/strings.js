@@ -699,6 +699,7 @@ define({
   "CMD_LAUNCH_SCRIPT_MAC": "میانبر خط فرمان را نصب کنید",
   "CMD_SWITCH_LANGUAGE": "تغییر زبان…",
   "CMD_RUN_UNIT_TESTS": "آزمایش‌های {APP_NAME} را اجرا کنید",
+  "CMD_BUILD_TESTS": "ساخت تست های ویرایشگر",
   "CMD_SHOW_PERF_DATA": "نمایش داده های عملکردی",
   "CMD_ENABLE_LOGGING": "گزارش های تفصیلی را فعال کنید",
   "CMD_ENABLE_PHNODE_INSPECTOR": "PhNode Inspector را فعال کنید",

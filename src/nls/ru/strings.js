@@ -699,6 +699,7 @@ define({
   "CMD_LAUNCH_SCRIPT_MAC": "Установить ярлык командной строки",
   "CMD_SWITCH_LANGUAGE": "Переключить язык…",
   "CMD_RUN_UNIT_TESTS": "Запустите тесты {APP_NAME}",
+  "CMD_BUILD_TESTS": "Тесты редактора сборки",
   "CMD_SHOW_PERF_DATA": "Показать данные о производительности",
   "CMD_ENABLE_LOGGING": "Включить подробные журналы",
   "CMD_ENABLE_PHNODE_INSPECTOR": "Включить инспектор PhNode",

@@ -699,6 +699,7 @@ define({
   "CMD_LAUNCH_SCRIPT_MAC": "Nainštalujte skratku príkazového riadka",
   "CMD_SWITCH_LANGUAGE": "Prepnúť jazyk…",
   "CMD_RUN_UNIT_TESTS": "Spustite testy aplikácie {APP_NAME}",
+  "CMD_BUILD_TESTS": "Testy editora zostavovania",
   "CMD_SHOW_PERF_DATA": "Zobraziť údaje o výkone",
   "CMD_ENABLE_LOGGING": "Povoliť podrobné denníky",
   "CMD_ENABLE_PHNODE_INSPECTOR": "Povoliť PhNode Inspector",

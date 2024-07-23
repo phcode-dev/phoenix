@@ -699,6 +699,7 @@ define({
   "CMD_LAUNCH_SCRIPT_MAC": "تثبيت اختصار سطر الأوامر",
   "CMD_SWITCH_LANGUAGE": "تبديل اللغة...",
   "CMD_RUN_UNIT_TESTS": "قم بإجراء اختبارات {APP_NAME}.",
+  "CMD_BUILD_TESTS": "بناء اختبارات المحرر",
   "CMD_SHOW_PERF_DATA": "إظهار بيانات الأداء",
   "CMD_ENABLE_LOGGING": "تمكين السجلات التفصيلية",
   "CMD_ENABLE_PHNODE_INSPECTOR": "تمكين PhNode المفتش",

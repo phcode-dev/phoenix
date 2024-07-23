@@ -679,6 +679,7 @@
   "CMD_LAUNCH_SCRIPT_MAC": "Kommandozeilenverknüpfung einrichten",
   "CMD_SWITCH_LANGUAGE": "Sprache wechseln…",
   "CMD_RUN_UNIT_TESTS": "Führen Sie {APP_NAME}-Tests aus",
+  "CMD_BUILD_TESTS": "Build-Editor-Tests",
   "CMD_SHOW_PERF_DATA": "Performance-Analyse",
   "CMD_ENABLE_LOGGING": "Aktivieren Sie detaillierte Protokolle",
   "CMD_ENABLE_PHNODE_INSPECTOR": "Aktivieren Sie PhNode Inspector",

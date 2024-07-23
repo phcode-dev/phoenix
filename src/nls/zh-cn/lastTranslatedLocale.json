@@ -679,6 +679,7 @@
   "CMD_LAUNCH_SCRIPT_MAC": "安装命令行快捷方式",
   "CMD_SWITCH_LANGUAGE": "切换语言...",
   "CMD_RUN_UNIT_TESTS": "运行 {APP_NAME} 测试",
+  "CMD_BUILD_TESTS": "构建编辑器测试",
   "CMD_SHOW_PERF_DATA": "显示性能数据",
   "CMD_ENABLE_LOGGING": "启用详细日志",
   "CMD_ENABLE_PHNODE_INSPECTOR": "启用 PhNode 检查器",

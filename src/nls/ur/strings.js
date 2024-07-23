@@ -699,6 +699,7 @@ define({
   "CMD_LAUNCH_SCRIPT_MAC": "کمانڈ لائن شارٹ کٹ انسٹال کریں۔",
   "CMD_SWITCH_LANGUAGE": "زبان تبدیل کریں…",
   "CMD_RUN_UNIT_TESTS": "{APP_NAME} ٹیسٹ چلائیں۔",
+  "CMD_BUILD_TESTS": "ایڈیٹر ٹیسٹ بنائیں",
   "CMD_SHOW_PERF_DATA": "کارکردگی کا ڈیٹا دکھائیں۔",
   "CMD_ENABLE_LOGGING": "تفصیلی لاگز کو فعال کریں۔",
   "CMD_ENABLE_PHNODE_INSPECTOR": "پی ایچ نوڈ انسپکٹر کو فعال کریں۔",

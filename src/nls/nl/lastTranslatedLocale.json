@@ -679,6 +679,7 @@
   "CMD_LAUNCH_SCRIPT_MAC": "Installeer {APP_NAME} in de opdrachtprompt",
   "CMD_SWITCH_LANGUAGE": "Taal wijzigen...",
   "CMD_RUN_UNIT_TESTS": "Voer {APP_NAME}-tests uit",
+  "CMD_BUILD_TESTS": "Editor-tests bouwen",
   "CMD_SHOW_PERF_DATA": "Toon prestatiedata",
   "CMD_ENABLE_LOGGING": "Gedetailleerde logboeken inschakelen",
   "CMD_ENABLE_PHNODE_INSPECTOR": "Schakel PhNode Inspector in",

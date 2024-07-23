@@ -679,6 +679,7 @@
   "CMD_LAUNCH_SCRIPT_MAC": "कमांड लाइन शॉर्टकट स्थापित करें",
   "CMD_SWITCH_LANGUAGE": "भाषा बदलें...",
   "CMD_RUN_UNIT_TESTS": "{APP_NAME} परीक्षण चलाएँ",
+  "CMD_BUILD_TESTS": "बिल्ड एडिटर परीक्षण",
   "CMD_SHOW_PERF_DATA": "प्रदर्शन डेटा दिखाएं",
   "CMD_ENABLE_LOGGING": "विस्तृत लॉग सक्षम करें",
   "CMD_ENABLE_PHNODE_INSPECTOR": "PhNode इंस्पेक्टर सक्षम करें",

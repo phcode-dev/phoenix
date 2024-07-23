@@ -699,6 +699,7 @@ define({
   "CMD_LAUNCH_SCRIPT_MAC": "Instalēt komandrindas saīsni",
   "CMD_SWITCH_LANGUAGE": "Mainīt valodu…",
   "CMD_RUN_UNIT_TESTS": "Palaidiet {APP_NAME} testus",
+  "CMD_BUILD_TESTS": "Būvredaktora testi",
   "CMD_SHOW_PERF_DATA": "Rādīt veiktspējas informāciju",
   "CMD_ENABLE_LOGGING": "Iespējot detalizētus žurnālus",
   "CMD_ENABLE_PHNODE_INSPECTOR": "Iespējot PhNode inspektoru",

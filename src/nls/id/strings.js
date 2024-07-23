@@ -699,6 +699,7 @@ define({
   "CMD_LAUNCH_SCRIPT_MAC": "Instal Pintasan Baris Perintah",
   "CMD_SWITCH_LANGUAGE": "Ganti Bahasa…",
   "CMD_RUN_UNIT_TESTS": "Jalankan Pengujian {APP_NAME}",
+  "CMD_BUILD_TESTS": "Bangun Tes Editor",
   "CMD_SHOW_PERF_DATA": "Tampilkan Data Performa",
   "CMD_ENABLE_LOGGING": "Aktifkan Log Terperinci",
   "CMD_ENABLE_PHNODE_INSPECTOR": "Aktifkan Inspektur PhNode",

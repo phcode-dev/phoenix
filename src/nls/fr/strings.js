@@ -699,6 +699,7 @@ define({
   "CMD_LAUNCH_SCRIPT_MAC": "Installer le raccourci de ligne de commande",
   "CMD_SWITCH_LANGUAGE": "Changer de langue…",
   "CMD_RUN_UNIT_TESTS": "Exécuter les tests {APP_NAME}",
+  "CMD_BUILD_TESTS": "Tests de l'éditeur de build",
   "CMD_SHOW_PERF_DATA": "Afficher les données de performances",
   "CMD_ENABLE_LOGGING": "Activer les journaux détaillés",
   "CMD_ENABLE_PHNODE_INSPECTOR": "Activer l'inspecteur PhNode",

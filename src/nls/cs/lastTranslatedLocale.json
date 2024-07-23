@@ -679,6 +679,7 @@
   "CMD_LAUNCH_SCRIPT_MAC": "Nainstalovat zástupce do příkazové řádky",
   "CMD_SWITCH_LANGUAGE": "Přepnout jazyk…",
   "CMD_RUN_UNIT_TESTS": "Spusťte testy aplikace {APP_NAME}",
+  "CMD_BUILD_TESTS": "Testy editoru sestavení",
   "CMD_SHOW_PERF_DATA": "Zobrazit údaje o výkonnosti",
   "CMD_ENABLE_LOGGING": "Povolit podrobné protokoly",
   "CMD_ENABLE_PHNODE_INSPECTOR": "Povolit PhNode Inspector",
