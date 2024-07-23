@@ -51,155 +51,162 @@ define(function (require, exports, module) {
             await SpecRunnerUtils.closeTestWindow();
         }, 30000);
 
-        it("should underline all locations where sync edit is supported", async function () {
-            await __PR.openFile("a.html");
-            __PR.setCursors(["8:10"]);
-            __PR.validateMarks("startTagSyncEdit", ["8:10-8:13"]);
-            __PR.setCursors(["8:13"]);
-            __PR.validateMarks("startTagSyncEdit", ["8:10-8:13"]);
-            __PR.setCursors(["13:10"]);
-            __PR.validateMarks("startTagSyncEdit", []);
-            __PR.setCursors(["13:11"]);
-            __PR.validateMarks("endTagSyncEdit", ["13:11-13:14"]);
-            __PR.setCursors(["13:14"]);
-            __PR.validateMarks("endTagSyncEdit", ["13:11-13:14"]);
-            __PR.setCursors(["16:15"]);
-            __PR.validateMarks("startTagSyncEdit", ["16:14-16:15"]);
-            __PR.setCursors(["18:16"]);
-            __PR.validateMarks("endTagSyncEdit", ["18:15-18:16"]);
-            __PR.setCursors(["11:20"]);
-            __PR.validateMarks("startTagSyncEdit", ["11:18-11:22"]);
-            __PR.setCursors(["11:42"]);
-            __PR.validateMarks("endTagSyncEdit", ["11:40-11:44"]);
-            __PR.setCursors(["4:12"]);
-            __PR.validateMarks("startTagSyncEdit", []);
-            await __PR.closeFile();
-        });
+        function testFile(fileName) {
+            it(`should underline all locations where sync edit is supported ${fileName}`, async function () {
+                await __PR.openFile(fileName);
+                __PR.setCursors(["8:10"]);
+                __PR.validateMarks("startTagSyncEdit", ["8:10-8:13"]);
+                __PR.setCursors(["8:13"]);
+                __PR.validateMarks("startTagSyncEdit", ["8:10-8:13"]);
+                __PR.setCursors(["13:10"]);
+                __PR.validateMarks("startTagSyncEdit", []);
+                __PR.setCursors(["13:11"]);
+                __PR.validateMarks("endTagSyncEdit", ["13:11-13:14"]);
+                __PR.setCursors(["13:14"]);
+                __PR.validateMarks("endTagSyncEdit", ["13:11-13:14"]);
+                __PR.setCursors(["16:15"]);
+                __PR.validateMarks("startTagSyncEdit", ["16:14-16:15"]);
+                __PR.setCursors(["18:16"]);
+                __PR.validateMarks("endTagSyncEdit", ["18:15-18:16"]);
+                __PR.setCursors(["11:20"]);
+                __PR.validateMarks("startTagSyncEdit", ["11:18-11:22"]);
+                __PR.setCursors(["11:42"]);
+                __PR.validateMarks("endTagSyncEdit", ["11:40-11:44"]);
+                __PR.setCursors(["4:12"]);
+                __PR.validateMarks("startTagSyncEdit", []);
+                await __PR.closeFile();
+            });
 
-        async function _testEmptyATag() {
-            __PR.validateMarks("startTagSyncEdit", ["16:14-16:14"]);
-            __PR.validateMarks("endTagSyncEdit", ["18:15-18:15"]);
-            __PR.typeAtCursor("hi");
-            __PR.validateMarks("startTagSyncEdit", ["16:14-16:16"]);
-            __PR.validateText(`hi`, "16:14-16:16");
-            __PR.validateText(`hi`, "18:15-18:17");
-            await __PR.undo();
-            __PR.validateMarks("startTagSyncEdit", ["16:14-16:14"]);
-            await __PR.undo();
-            __PR.validateText(`a`, "16:14-16:15");
-            __PR.validateText(`a`, "18:15-18:16");
+            async function _testEmptyATag() {
+                __PR.validateMarks("startTagSyncEdit", ["16:14-16:14"]);
+                __PR.validateMarks("endTagSyncEdit", ["18:15-18:15"]);
+                __PR.typeAtCursor("hi");
+                __PR.validateMarks("startTagSyncEdit", ["16:14-16:16"]);
+                __PR.validateText(`hi`, "16:14-16:16");
+                __PR.validateText(`hi`, "18:15-18:17");
+                await __PR.undo();
+                __PR.validateMarks("startTagSyncEdit", ["16:14-16:14"]);
+                await __PR.undo();
+                __PR.validateText(`a`, "16:14-16:15");
+                __PR.validateText(`a`, "18:15-18:16");
+            }
+
+            it(`should edit a tag with backspace key making it empty and then edit as expected ${fileName}`, async function () {
+                await __PR.openFile(fileName);
+                __PR.setCursors(["16:15"]);
+                __PR.keydown(["BACK_SPACE"]);
+                await _testEmptyATag();
+                await __PR.closeFile();
+            });
+
+            it(`should edit a tag with delete key making it empty and then edit as expected ${fileName}`, async function () {
+                await __PR.openFile(fileName);
+                __PR.setCursors(["16:14"]);
+                __PR.keydown(["DELETE"]);
+                await _testEmptyATag();
+                await __PR.closeFile();
+            });
+
+            it(`should be able to edit over tag selection and undo to sync update tags ${fileName}`, async function () {
+                await __PR.openFile(fileName);
+                __PR.setCursors(["20:11-20:14"]);
+                __PR.typeAtCursor("hello");
+                __PR.validateText(`hello`, "14:10-14:15");
+                __PR.validateText(`hello`, "20:11-20:16");
+                await __PR.undo();
+                __PR.validateText(`div`, "20:11-20:14");
+                __PR.validateText(`div`, "14:10-14:13");
+                __PR.expectCursorsToBe(["20:11-20:14"]);
+                await __PR.closeFile();
+            });
+
+            it(`should multi cursor stop sync tag rename ${fileName}`, async function () {
+                await __PR.openFile(fileName);
+                __PR.setCursors(["13:13"]);
+                __PR.validateMarks("endTagSyncEdit", ["13:11-13:14"]);
+                __PR.setCursors(["8:12", "13:13"]);
+                __PR.validateMarks("endTagSyncEdit", [], 0);
+                __PR.setCursors(["13:12"]);
+                __PR.validateMarks("endTagSyncEdit", ["13:11-13:14"]);
+                await __PR.closeFile();
+            });
+
+            it(`should clicking out on a non-sync editable location clear underlines ${fileName}`, async function () {
+                await __PR.openFile(fileName);
+                __PR.setCursors(["8:12"]);
+                __PR.validateMarks("startTagSyncEdit", ["8:10-8:13"]);
+                __PR.setCursors(["10:24"]);
+                __PR.validateMarks("endTagSyncEdit", [], 0);
+                __PR.setCursors(["9:15"]);
+                __PR.validateMarks("startTagSyncEdit", ["9:14-9:15"]);
+                __PR.setCursors(["9:16"]);
+                __PR.validateMarks("endTagSyncEdit", [], 0);
+                await __PR.closeFile();
+            });
+
+            it(`should cursor positions be as expected while typing start tag ${fileName}`, async function () {
+                await __PR.openFile(fileName);
+
+                __PR.setCursors(["9:14"]);
+                __PR.typeAtCursor("t");
+                __PR.expectCursorsToBe(["9:15"]);
+                __PR.validateText(`ti`, "12:15-12:17");
+
+                __PR.setCursors(["9:16"]);
+                __PR.typeAtCursor("m");
+                __PR.expectCursorsToBe(["9:17"]);
+                __PR.validateText(`tim`, "12:15-12:18");
+
+                __PR.setCursors(["9:15"]);
+                __PR.typeAtCursor("p");
+                __PR.setCursors(["9:16"]);
+                __PR.validateText(`tpim`, "12:15-12:19");
+                await __PR.closeFile();
+            });
+
+            it(`should cursor positions be as expected while typing end tag on same line ${fileName}`, async function () {
+                await __PR.openFile(fileName);
+
+                __PR.setCursors(["11:36"]);
+                __PR.typeAtCursor("t");
+                __PR.expectCursorsToBe(["11:38"]);
+                __PR.validateText(`tu`, "11:24-11:26");
+
+                __PR.setCursors(["11:39"]);
+                __PR.typeAtCursor("m");
+                __PR.expectCursorsToBe(["11:41"]);
+                __PR.validateText(`tum`, "11:24-11:27");
+
+                __PR.setCursors(["11:39"]);
+                __PR.typeAtCursor("i");
+                __PR.setCursors(["11:41"]);
+                __PR.validateText(`tium`, "11:24-11:28");
+                await __PR.closeFile();
+            });
+
+            it(`should escape key disable tag sync edit till it moves out of the current tag ${fileName}`, async function () {
+                await __PR.openFile(fileName);
+
+                __PR.setCursors(["8:12"]);
+                __PR.keydown(["ESCAPE"]);
+                __PR.validateMarks("endTagSyncEdit", [], 0);
+                __PR.setCursors(["8:13"]);
+                __PR.validateMarks("endTagSyncEdit", [], 0);
+                __PR.setCursors(["8:12"]);
+                __PR.typeAtCursor("p");
+                __PR.validateText(`dipv`, "8:10-8:14");
+                __PR.validateText(`div`, "13:11-13:14");
+                __PR.validateMarks("endTagSyncEdit", [], 0);
+                // now move to another tag inside the boken tag, it should be sync editable in most cases
+                __PR.setCursors(["9:15"]);
+                __PR.validateMarks("startTagSyncEdit", ["9:14-9:15"]);
+                await __PR.closeFile();
+            });
         }
 
-        it("should edit a tag with backspace key making it empty and then edit as expected", async function () {
-            await __PR.openFile("a.html");
-            __PR.setCursors(["16:15"]);
-            __PR.keydown(["BACK_SPACE"]);
-            await _testEmptyATag();
-            await __PR.closeFile();
-        });
-
-        it("should edit a tag with delete key making it empty and then edit as expected", async function () {
-            await __PR.openFile("a.html");
-            __PR.setCursors(["16:14"]);
-            __PR.keydown(["DELETE"]);
-            await _testEmptyATag();
-            await __PR.closeFile();
-        });
-
-        it("should be able to edit over tag selection and undo to sync update tags", async function () {
-            await __PR.openFile("a.html");
-            __PR.setCursors(["20:11-20:14"]);
-            __PR.typeAtCursor("hello");
-            __PR.validateText(`hello`, "14:10-14:15");
-            __PR.validateText(`hello`, "20:11-20:16");
-            await __PR.undo();
-            __PR.validateText(`div`, "20:11-20:14");
-            __PR.validateText(`div`, "14:10-14:13");
-            __PR.expectCursorsToBe(["20:11-20:14"]);
-            await __PR.closeFile();
-        });
-
-        it("should multi cursor stop sync tag rename", async function () {
-            await __PR.openFile("a.html");
-            __PR.setCursors(["13:13"]);
-            __PR.validateMarks("endTagSyncEdit", ["13:11-13:14"]);
-            __PR.setCursors(["8:12", "13:13"]);
-            __PR.validateMarks("endTagSyncEdit", [], 0);
-            __PR.setCursors(["13:12"]);
-            __PR.validateMarks("endTagSyncEdit", ["13:11-13:14"]);
-            await __PR.closeFile();
-        });
-
-        it("should clicking out on a non-sync editable location clear underlines", async function () {
-            await __PR.openFile("a.html");
-            __PR.setCursors(["8:12"]);
-            __PR.validateMarks("startTagSyncEdit", ["8:10-8:13"]);
-            __PR.setCursors(["10:24"]);
-            __PR.validateMarks("endTagSyncEdit", [], 0);
-            __PR.setCursors(["9:15"]);
-            __PR.validateMarks("startTagSyncEdit", ["9:14-9:15"]);
-            __PR.setCursors(["9:16"]);
-            __PR.validateMarks("endTagSyncEdit", [], 0);
-            await __PR.closeFile();
-        });
-
-        it("should cursor positions be as expected while typing start tag", async function () {
-            await __PR.openFile("a.html");
-
-            __PR.setCursors(["9:14"]);
-            __PR.typeAtCursor("t");
-            __PR.expectCursorsToBe(["9:15"]);
-            __PR.validateText(`ti`, "12:15-12:17");
-
-            __PR.setCursors(["9:16"]);
-            __PR.typeAtCursor("m");
-            __PR.expectCursorsToBe(["9:17"]);
-            __PR.validateText(`tim`, "12:15-12:18");
-
-            __PR.setCursors(["9:15"]);
-            __PR.typeAtCursor("p");
-            __PR.setCursors(["9:16"]);
-            __PR.validateText(`tpim`, "12:15-12:19");
-            await __PR.closeFile();
-        });
-
-        it("should cursor positions be as expected while typing end tag on same line", async function () {
-            await __PR.openFile("a.html");
-
-            __PR.setCursors(["11:36"]);
-            __PR.typeAtCursor("t");
-            __PR.expectCursorsToBe(["11:38"]);
-            __PR.validateText(`tu`, "11:24-11:26");
-
-            __PR.setCursors(["11:39"]);
-            __PR.typeAtCursor("m");
-            __PR.expectCursorsToBe(["11:41"]);
-            __PR.validateText(`tum`, "11:24-11:27");
-
-            __PR.setCursors(["11:39"]);
-            __PR.typeAtCursor("i");
-            __PR.setCursors(["11:41"]);
-            __PR.validateText(`tium`, "11:24-11:28");
-            await __PR.closeFile();
-        });
-
-        it("should escape key disable tag sync edit till it moves out of the current tag", async function () {
-            await __PR.openFile("a.html");
-
-            __PR.setCursors(["8:12"]);
-            __PR.keydown(["ESCAPE"]);
-            __PR.validateMarks("endTagSyncEdit", [], 0);
-            __PR.setCursors(["8:13"]);
-            __PR.validateMarks("endTagSyncEdit", [], 0);
-            __PR.setCursors(["8:12"]);
-            __PR.typeAtCursor("p");
-            __PR.validateText(`dipv`, "8:10-8:14");
-            __PR.validateText(`div`, "13:11-13:14");
-            __PR.validateMarks("endTagSyncEdit", [], 0);
-            // now move to another tag inside the boken tag, it should be sync editable in most cases
-            __PR.setCursors(["9:15"]);
-            __PR.validateMarks("startTagSyncEdit", ["9:14-9:15"]);
-            await __PR.closeFile();
-        });
+        const htmlFiles = ["a.html", "a.htm", "a.xhtml", "a.php", "a.xml"];
+        for(let htmlFile of htmlFiles){
+            testFile(htmlFile);
+        }
     });
 });
