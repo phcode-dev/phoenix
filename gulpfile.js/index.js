@@ -74,7 +74,7 @@ function cleanAll() {
  * @returns {*}
  */
 function makeDistAll() {
-    return src('src/**/*')
+    return src(['src/**/*', 'src/.*/*.*'])
         .pipe(dest('dist'));
 }
 
@@ -110,7 +110,7 @@ function makeNonMinifyDist() {
 }
 
 function makeDistNonJS() {
-    return src(['src/**/*', '!src/**/*.js'])
+    return src(['src/**/*', 'src/.*/*.*', '!src/**/*.js'])
         .pipe(dest('dist'));
 }
 
