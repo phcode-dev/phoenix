@@ -679,6 +679,7 @@
   "CMD_LAUNCH_SCRIPT_MAC": "Инсталирајте пречицу командне линије",
   "CMD_SWITCH_LANGUAGE": "Промени језик…",
   "CMD_RUN_UNIT_TESTS": "Покрените {АПП_НАМЕ} тестове",
+  "CMD_BUILD_TESTS": "Буилд Едитор Тестс",
   "CMD_SHOW_PERF_DATA": "Прикажи податке о перформансама",
   "CMD_ENABLE_LOGGING": "Омогући детаљне евиденције",
   "CMD_ENABLE_PHNODE_INSPECTOR": "Омогућите ПхНоде Инспецтор",

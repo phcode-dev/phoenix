@@ -679,6 +679,7 @@
   "CMD_LAUNCH_SCRIPT_MAC": "Instalați comanda rapidă în linia de comandă",
   "CMD_SWITCH_LANGUAGE": "Schimbați limba...",
   "CMD_RUN_UNIT_TESTS": "Rulați testele {APP_NAME}",
+  "CMD_BUILD_TESTS": "Teste pentru editorul de compilare",
   "CMD_SHOW_PERF_DATA": "Arată datele despre performanță",
   "CMD_ENABLE_LOGGING": "Activați jurnalele detaliate",
   "CMD_ENABLE_PHNODE_INSPECTOR": "Activați PhNode Inspector",

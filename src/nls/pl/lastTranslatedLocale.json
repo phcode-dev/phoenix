@@ -679,6 +679,7 @@
   "CMD_LAUNCH_SCRIPT_MAC": "Zainstaluj skrót do wiersza poleceń",
   "CMD_SWITCH_LANGUAGE": "Zmień język…",
   "CMD_RUN_UNIT_TESTS": "Uruchom testy aplikacji {APP_NAME}",
+  "CMD_BUILD_TESTS": "Testy edytora kompilacji",
   "CMD_SHOW_PERF_DATA": "Pokaż informacje o wydajności",
   "CMD_ENABLE_LOGGING": "Włącz szczegółowe dzienniki",
   "CMD_ENABLE_PHNODE_INSPECTOR": "Włącz inspektora PhNode",

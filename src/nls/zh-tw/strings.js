@@ -699,6 +699,7 @@ define({
   "CMD_LAUNCH_SCRIPT_MAC": "安裝命令列捷徑",
   "CMD_SWITCH_LANGUAGE": "切換語言...",
   "CMD_RUN_UNIT_TESTS": "運行 {APP_NAME} 測試",
+  "CMD_BUILD_TESTS": "建立編輯器測試",
   "CMD_SHOW_PERF_DATA": "顯示效能資料",
   "CMD_ENABLE_LOGGING": "啟用詳細日誌",
   "CMD_ENABLE_PHNODE_INSPECTOR": "啟用 PhNode 檢查器",

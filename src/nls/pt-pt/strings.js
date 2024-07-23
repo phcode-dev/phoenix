@@ -699,6 +699,7 @@ define({
   "CMD_LAUNCH_SCRIPT_MAC": "Instalar atalho de linha de comando",
   "CMD_SWITCH_LANGUAGE": "Mudar idioma…",
   "CMD_RUN_UNIT_TESTS": "Execute testes do {APP_NAME}",
+  "CMD_BUILD_TESTS": "Construir testes do editor",
   "CMD_SHOW_PERF_DATA": "Mostrar dados de desempenho",
   "CMD_ENABLE_LOGGING": "Ativar registros detalhados",
   "CMD_ENABLE_PHNODE_INSPECTOR": "Habilitar Inspetor PhNode",

@@ -699,6 +699,7 @@ define({
   "CMD_LAUNCH_SCRIPT_MAC": "Installer kommandolinjegenvej",
   "CMD_SWITCH_LANGUAGE": "Skift sprog...",
   "CMD_RUN_UNIT_TESTS": "Kør {APP_NAME}-tests",
+  "CMD_BUILD_TESTS": "Byg Editor-tests",
   "CMD_SHOW_PERF_DATA": "Vis ydelsesdata",
   "CMD_ENABLE_LOGGING": "Aktiver detaljerede logfiler",
   "CMD_ENABLE_PHNODE_INSPECTOR": "Aktiver PhNode Inspector",

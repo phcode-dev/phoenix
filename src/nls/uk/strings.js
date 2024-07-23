@@ -699,6 +699,7 @@ define({
   "CMD_LAUNCH_SCRIPT_MAC": "Встановити ярлик командного рядка",
   "CMD_SWITCH_LANGUAGE": "Змінити мову…",
   "CMD_RUN_UNIT_TESTS": "Виконайте тести {APP_NAME}",
+  "CMD_BUILD_TESTS": "Тести редактора збірок",
   "CMD_SHOW_PERF_DATA": "Показати дані продуктивності",
   "CMD_ENABLE_LOGGING": "Увімкнути докладні журнали",
   "CMD_ENABLE_PHNODE_INSPECTOR": "Увімкнути PhNode Inspector",

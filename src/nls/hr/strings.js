@@ -699,6 +699,7 @@ define({
   "CMD_LAUNCH_SCRIPT_MAC": "Instalirajte prečac naredbenog retka",
   "CMD_SWITCH_LANGUAGE": "Promjena jezika…",
   "CMD_RUN_UNIT_TESTS": "Pokrenite {APP_NAME} testove",
+  "CMD_BUILD_TESTS": "Testovi uređivača građe",
   "CMD_SHOW_PERF_DATA": "Prikaži podatke o performansama",
   "CMD_ENABLE_LOGGING": "Omogući detaljne zapisnike",
   "CMD_ENABLE_PHNODE_INSPECTOR": "Omogući PhNode Inspector",

@@ -699,6 +699,7 @@ define({
   "CMD_LAUNCH_SCRIPT_MAC": "Telepítse a parancssori parancsikont",
   "CMD_SWITCH_LANGUAGE": "Nyelv váltása…",
   "CMD_RUN_UNIT_TESTS": "Futtassa a {APP_NAME} teszteket",
+  "CMD_BUILD_TESTS": "Build Editor tesztek",
   "CMD_SHOW_PERF_DATA": "Teljesítmény adatok megjelenítése",
   "CMD_ENABLE_LOGGING": "Részletes naplók engedélyezése",
   "CMD_ENABLE_PHNODE_INSPECTOR": "A PhNode Inspector engedélyezése",

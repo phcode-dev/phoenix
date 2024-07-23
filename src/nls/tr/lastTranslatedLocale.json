@@ -679,6 +679,7 @@
   "CMD_LAUNCH_SCRIPT_MAC": "Komut Satırı Kısayolunu Yükle",
   "CMD_SWITCH_LANGUAGE": "Dili Değiştir…",
   "CMD_RUN_UNIT_TESTS": "{APP_NAME} Testlerini çalıştırın",
+  "CMD_BUILD_TESTS": "Düzenleyici Testleri Oluşturun",
   "CMD_SHOW_PERF_DATA": "Performans Bilgisini Göster",
   "CMD_ENABLE_LOGGING": "Ayrıntılı Günlükleri Etkinleştir",
   "CMD_ENABLE_PHNODE_INSPECTOR": "PhNode Inspector'ı etkinleştir",

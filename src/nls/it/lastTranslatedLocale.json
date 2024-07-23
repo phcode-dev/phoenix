@@ -679,6 +679,7 @@
   "CMD_LAUNCH_SCRIPT_MAC": "Aggiungi linea di comando di Brackets",
   "CMD_SWITCH_LANGUAGE": "Cambia lingua...",
   "CMD_RUN_UNIT_TESTS": "Esegui test su {APP_NAME}",
+  "CMD_BUILD_TESTS": "Costruisci test dell'editor",
   "CMD_SHOW_PERF_DATA": "Mostra dati sulla performance",
   "CMD_ENABLE_LOGGING": "Abilita registri dettagliati",
   "CMD_ENABLE_PHNODE_INSPECTOR": "Abilita l'ispettore PhNode",

@@ -679,6 +679,7 @@
   "CMD_LAUNCH_SCRIPT_MAC": "Εγκατάσταση συντόμευσης για την γραμμή εντολών",
   "CMD_SWITCH_LANGUAGE": "Αλλαγή γλώσσας…",
   "CMD_RUN_UNIT_TESTS": "Εκτελέστε δοκιμές {APP_NAME}",
+  "CMD_BUILD_TESTS": "Δοκιμές Build Editor",
   "CMD_SHOW_PERF_DATA": "Προβολή Δεδομένων Επίδοσης",
   "CMD_ENABLE_LOGGING": "Ενεργοποίηση λεπτομερών αρχείων καταγραφής",
   "CMD_ENABLE_PHNODE_INSPECTOR": "Ενεργοποιήστε το PhNode Inspector",

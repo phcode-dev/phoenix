@@ -699,6 +699,7 @@ define({
   "CMD_LAUNCH_SCRIPT_MAC": "കമാൻഡ് ലൈൻ കുറുക്കുവഴി ഇൻസ്റ്റാൾ ചെയ്യുക",
   "CMD_SWITCH_LANGUAGE": "ഭാഷ മാറുക...",
   "CMD_RUN_UNIT_TESTS": "{APP_NAME} ടെസ്റ്റുകൾ പ്രവർത്തിപ്പിക്കുക",
+  "CMD_BUILD_TESTS": "ബിൽഡ് എഡിറ്റർ ടെസ്റ്റുകൾ",
   "CMD_SHOW_PERF_DATA": "പ്രകടന ഡാറ്റ കാണിക്കുക",
   "CMD_ENABLE_LOGGING": "വിശദമായ ലോഗുകൾ പ്രവർത്തനക്ഷമമാക്കുക",
   "CMD_ENABLE_PHNODE_INSPECTOR": "PhNode ഇൻസ്പെക്ടർ പ്രവർത്തനക്ഷമമാക്കുക",

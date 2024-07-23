@@ -699,6 +699,7 @@ define({
   "CMD_LAUNCH_SCRIPT_MAC": "명령 줄 바로가기 설치",
   "CMD_SWITCH_LANGUAGE": "언어 전환…",
   "CMD_RUN_UNIT_TESTS": "{APP_NAME} 테스트 실행",
+  "CMD_BUILD_TESTS": "빌드 편집기 테스트",
   "CMD_SHOW_PERF_DATA": "성능 데이터를 표시",
   "CMD_ENABLE_LOGGING": "상세 로그 활성화",
   "CMD_ENABLE_PHNODE_INSPECTOR": "PhNode 검사기 활성화",

@@ -699,6 +699,7 @@ define({
   "CMD_LAUNCH_SCRIPT_MAC": "コマンドラインショートカットをインストール",
   "CMD_SWITCH_LANGUAGE": "言語を切り替え…",
   "CMD_RUN_UNIT_TESTS": "{APP_NAME} テストを実行する",
+  "CMD_BUILD_TESTS": "ビルドエディターテスト",
   "CMD_SHOW_PERF_DATA": "パフォーマンスデータを表示",
   "CMD_ENABLE_LOGGING": "詳細ログを有効にする",
   "CMD_ENABLE_PHNODE_INSPECTOR": "PhNode インスペクターを有効にする",

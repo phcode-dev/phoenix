@@ -699,6 +699,7 @@ define({
   "CMD_LAUNCH_SCRIPT_MAC": "Asenna komentorivin oikotie",
   "CMD_SWITCH_LANGUAGE": "Vaihda kieltä…",
   "CMD_RUN_UNIT_TESTS": "Suorita sovelluksen {APP_NAME} testit",
+  "CMD_BUILD_TESTS": "Rakennuseditorin testit",
   "CMD_SHOW_PERF_DATA": "Näytä suorituskykytiedot",
   "CMD_ENABLE_LOGGING": "Ota käyttöön yksityiskohtaiset lokit",
   "CMD_ENABLE_PHNODE_INSPECTOR": "Ota PhNode Inspector käyttöön",

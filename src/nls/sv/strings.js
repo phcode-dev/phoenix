@@ -699,6 +699,7 @@ define({
   "CMD_LAUNCH_SCRIPT_MAC": "Installera genväg i kommandotolk",
   "CMD_SWITCH_LANGUAGE": "Byt språk...",
   "CMD_RUN_UNIT_TESTS": "Kör {APP_NAME}-tester",
+  "CMD_BUILD_TESTS": "Byggredaktörstester",
   "CMD_SHOW_PERF_DATA": "Visa prestandadata",
   "CMD_ENABLE_LOGGING": "Aktivera detaljerade loggar",
   "CMD_ENABLE_PHNODE_INSPECTOR": "Aktivera PhNode Inspector",
