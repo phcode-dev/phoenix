@@ -1115,7 +1115,7 @@ define(function (require, exports, module) {
         Meta: true
     };
     function _detectTripleCtrlKeyPress(event) {
-        if(!PreferencesManager.get(PREF_TRIPLE_CTRL_KEY_PRESS_ENABLED)){
+        if(PreferencesManager && !PreferencesManager.get(PREF_TRIPLE_CTRL_KEY_PRESS_ENABLED)){
             return false;
         }
         const currentTime = new Date().getTime(); // Get the current time
