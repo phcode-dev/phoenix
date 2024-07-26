@@ -861,6 +861,7 @@ define({
   "DESCRIPTION_RULERS_ENABLED": "Düzenleyici cetvellerini etkinleştirmek için true, aksi halde false",
   "DESCRIPTION_AUTO_RENAME_TAGS": "eşleştirilmiş HTML/XML etiketini otomatik olarak yeniden adlandırmak için true, aksi halde false",
   "DESCRIPTION_DRAG_AND_DROP_ENABLED": "true Dosya gezgini veya Finder'dan dosyalar ve klasörler için sürükle ve bırak işlevini etkinleştirmek için",
+  "DESCRIPTION_TRIPLE_CTRL_PALETTE": "true Ctrl/Cmd tuşuna art arda 3 kez basıldığında görsel komut katmanının gösterilmesini etkinleştirmek için",
   "DESCRIPTION_SMART_INDENT": "Yeni bir blok oluştururken otomatik olarak girinti",
   "DESCRIPTION_SOFT_TABS": "yumuşak sekmeler davranışını kapatmak için false",
   "DESCRIPTION_SORT_DIRECTORIES_FIRST": "proje ağacında ilk önce dizinleri sıralamak için true .",

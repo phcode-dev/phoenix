@@ -861,6 +861,7 @@ define({
   "DESCRIPTION_RULERS_ENABLED": "true to enable editor rulers, else false",
   "DESCRIPTION_AUTO_RENAME_TAGS": "true to automatically rename paired HTML/XML tag, else false",
   "DESCRIPTION_DRAG_AND_DROP_ENABLED": "true to enable drag and drop functionality for files and folders from the file explorer or Finder",
+  "DESCRIPTION_TRIPLE_CTRL_PALETTE": "true to enable showing the visual command overlay on pressing Ctrl/Cmd key 3 consecutive times",
   "DESCRIPTION_SMART_INDENT": "Automatically indent when creating a new block",
   "DESCRIPTION_SOFT_TABS": "false to turn off soft tabs behavior",
   "DESCRIPTION_SORT_DIRECTORIES_FIRST": "true to sort the directories first in the project tree",

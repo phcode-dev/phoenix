@@ -841,6 +841,7 @@
   "DESCRIPTION_RULERS_ENABLED": "ایڈیٹر حکمرانوں کو فعال کرنے کے لیے درست، ورنہ غلط",
   "DESCRIPTION_AUTO_RENAME_TAGS": "جوڑا بنائے گئے HTML/XML ٹیگ کا نام تبدیل کرنے کے لیے درست، ورنہ غلط",
   "DESCRIPTION_DRAG_AND_DROP_ENABLED": "فائل ایکسپلورر یا فائنڈر سے فائلوں اور فولڈرز کے لیے ڈریگ اینڈ ڈراپ فعالیت کو فعال کرنے کے لیے درست",
+  "DESCRIPTION_TRIPLE_CTRL_PALETTE": "3 بار لگاتار Ctrl/Cmd کلید دبانے پر بصری کمانڈ اوورلے دکھانے کو فعال کرنے کے لیے درست",
   "DESCRIPTION_SMART_INDENT": "نیا بلاک بناتے وقت خودکار طور پر انڈینٹ کریں۔",
   "DESCRIPTION_SOFT_TABS": "نرم ٹیبز کے رویے کو بند کرنے کے لیے غلط",
   "DESCRIPTION_SORT_DIRECTORIES_FIRST": "پروجیکٹ کے درخت میں پہلے ڈائریکٹریوں کو ترتیب دینے کے لئے درست",

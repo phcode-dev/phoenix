@@ -861,6 +861,7 @@ define({
   "DESCRIPTION_RULERS_ENABLED": "true para habilitar las reglas del editor; de lo contrario, false",
   "DESCRIPTION_AUTO_RENAME_TAGS": "true para cambiar automáticamente el nombre de la etiqueta HTML/XML emparejada; de lo contrario, false",
   "DESCRIPTION_DRAG_AND_DROP_ENABLED": "True para habilitar la funcionalidad de arrastrar y soltar archivos y carpetas desde el explorador de archivos o el Finder",
+  "DESCRIPTION_TRIPLE_CTRL_PALETTE": "True para habilitar la visualización del comando visual superpuesto al presionar la tecla Ctrl/Cmd 3 veces consecutivas",
   "DESCRIPTION_SMART_INDENT": "Indentar automáticamente cuando se crea un nuevo bloque",
   "DESCRIPTION_SOFT_TABS": "false para deshabilitar el comportamiento de \"soft tabs\"",
   "DESCRIPTION_SORT_DIRECTORIES_FIRST": "true para ordenar los directorios primero en el árbol del proyecto",

@@ -861,6 +861,7 @@ define({
   "DESCRIPTION_RULERS_ENABLED": "true برای فعال کردن خط‌کش‌های ویرایشگر، در غیر این صورت false",
   "DESCRIPTION_AUTO_RENAME_TAGS": "درست برای تغییر نام خودکار تگ HTML/XML جفت شده، در غیر این صورت نادرست است",
   "DESCRIPTION_DRAG_AND_DROP_ENABLED": "true برای فعال کردن قابلیت کشیدن و رها کردن فایل‌ها و پوشه‌ها از کاوشگر فایل یا Finder",
+  "DESCRIPTION_TRIPLE_CTRL_PALETTE": "درست برای فعال کردن نمایش همپوشانی دستور بصری با فشار دادن کلید Ctrl/Cmd 3 بار متوالی",
   "DESCRIPTION_SMART_INDENT": "هنگام ایجاد یک بلوک جدید، به طور خودکار تورفتگی ایجاد شود",
   "DESCRIPTION_SOFT_TABS": "نادرست برای خاموش کردن رفتار زبانه های نرم افزاری",
   "DESCRIPTION_SORT_DIRECTORIES_FIRST": "درست است تا دایرکتوری ها را ابتدا در درخت پروژه مرتب کنید",

@@ -861,6 +861,7 @@ define({
   "DESCRIPTION_RULERS_ENABLED": "true 啟用編輯器標尺，否則 false",
   "DESCRIPTION_AUTO_RENAME_TAGS": "true 自動重新命名配對的 HTML/XML 標記，否則 false",
   "DESCRIPTION_DRAG_AND_DROP_ENABLED": "true 則啟用檔案總管或 Finder 中檔案和資料夾的拖放功能",
+  "DESCRIPTION_TRIPLE_CTRL_PALETTE": "true 表示連續按 Ctrl/Cmd 鍵 3 次時顯示可視指令覆蓋",
   "DESCRIPTION_SMART_INDENT": "建立新區塊時自動縮排",
   "DESCRIPTION_SOFT_TABS": "false 代表停用軟體 Tab 功能",
   "DESCRIPTION_SORT_DIRECTORIES_FIRST": "true 代表在專案樹中將目錄排在上面",

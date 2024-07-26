@@ -861,6 +861,7 @@ define({
   "DESCRIPTION_RULERS_ENABLED": "true pentru a activa regulile editorului, altfel false",
   "DESCRIPTION_AUTO_RENAME_TAGS": "true pentru a redenumi automat eticheta HTML/XML asociată, altfel false",
   "DESCRIPTION_DRAG_AND_DROP_ENABLED": "true pentru a activa funcționalitatea de glisare și plasare pentru fișiere și foldere din exploratorul de fișiere sau din Finder",
+  "DESCRIPTION_TRIPLE_CTRL_PALETTE": "adevărat pentru a activa afișarea suprapunerii comenzii vizuale la apăsarea tastei Ctrl/Cmd de 3 ori consecutiv",
   "DESCRIPTION_SMART_INDENT": "Indentați automat la crearea unui bloc nou",
   "DESCRIPTION_SOFT_TABS": "false pentru a dezactiva comportamentul filelor soft",
   "DESCRIPTION_SORT_DIRECTORIES_FIRST": "true pentru a sorta directoarele mai întâi în arborele proiectului",

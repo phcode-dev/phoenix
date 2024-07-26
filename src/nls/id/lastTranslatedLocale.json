@@ -841,6 +841,7 @@
   "DESCRIPTION_RULERS_ENABLED": "benar untuk mengaktifkan penggaris editor, jika tidak salah",
   "DESCRIPTION_AUTO_RENAME_TAGS": "true untuk secara otomatis mengganti nama tag HTML/XML yang dipasangkan, jika tidak, salah",
   "DESCRIPTION_DRAG_AND_DROP_ENABLED": "true untuk mengaktifkan fungsionalitas drag and drop untuk file dan folder dari file explorer atau Finder",
+  "DESCRIPTION_TRIPLE_CTRL_PALETTE": "true untuk mengaktifkan menampilkan overlay perintah visual dengan menekan tombol Ctrl/Cmd 3 kali berturut-turut",
   "DESCRIPTION_SMART_INDENT": "Indentasi secara otomatis saat membuat blok baru",
   "DESCRIPTION_SOFT_TABS": "salah untuk mematikan perilaku tab lunak",
   "DESCRIPTION_SORT_DIRECTORIES_FIRST": "benar untuk mengurutkan direktori terlebih dahulu di pohon proyek",

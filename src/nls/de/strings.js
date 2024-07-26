@@ -861,6 +861,7 @@ define({
   "DESCRIPTION_RULERS_ENABLED": "true, um Editorlineale zu aktivieren, andernfalls false",
   "DESCRIPTION_AUTO_RENAME_TAGS": "„true“, um gepaarte HTML/XML-Tags automatisch umzubenennen, sonst „false“",
   "DESCRIPTION_DRAG_AND_DROP_ENABLED": "True, um die Drag & Drop-Funktionalität für Dateien und Ordner aus dem Datei-Explorer oder Finder zu aktivieren",
+  "DESCRIPTION_TRIPLE_CTRL_PALETTE": "True, um die Anzeige der visuellen Befehlsüberlagerung zu aktivieren, wenn die Strg-/Befehlstaste dreimal hintereinander gedrückt wird.",
   "DESCRIPTION_SMART_INDENT": "Aktiviert das automatische Einrücken von neuen Blocks",
   "DESCRIPTION_SOFT_TABS": "Aktiviert die \"Soft Tabs\"-Navigation",
   "DESCRIPTION_SORT_DIRECTORIES_FIRST": "Aktiviert, dass Ordner im Dateibaum vor Dateien aufgelistet werden",

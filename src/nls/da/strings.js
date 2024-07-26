@@ -861,6 +861,7 @@ define({
   "DESCRIPTION_RULERS_ENABLED": "sand for at aktivere editor linealer, ellers falsk",
   "DESCRIPTION_AUTO_RENAME_TAGS": "true for automatisk at omdøbe parret HTML/XML-tag, ellers falsk",
   "DESCRIPTION_DRAG_AND_DROP_ENABLED": "sand for at aktivere træk og slip-funktionalitet for filer og mapper fra filstifinderen eller Finder",
+  "DESCRIPTION_TRIPLE_CTRL_PALETTE": "sand for at aktivere visning af den visuelle kommandooverlejring ved at trykke på Ctrl/Cmd-tasten 3 gange i træk",
   "DESCRIPTION_SMART_INDENT": "Indryk automatisk, når du opretter en ny blok",
   "DESCRIPTION_SOFT_TABS": "falsk for at deaktivere bløde faner-adfærd",
   "DESCRIPTION_SORT_DIRECTORIES_FIRST": "sandt at sortere mapperne først i projekttræet",

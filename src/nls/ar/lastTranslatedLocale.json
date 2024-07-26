@@ -841,6 +841,7 @@
   "DESCRIPTION_RULERS_ENABLED": "صحيح لتمكين مساطر المحرر، وإلا خطأ",
   "DESCRIPTION_AUTO_RENAME_TAGS": "صحيح لإعادة تسمية علامة HTML/XML المقترنة تلقائيًا، وإلا فسيكون خطأ",
   "DESCRIPTION_DRAG_AND_DROP_ENABLED": "صحيح لتمكين وظيفة السحب والإفلات للملفات والمجلدات من مستكشف الملفات أو Finder",
+  "DESCRIPTION_TRIPLE_CTRL_PALETTE": "صحيح لتمكين إظهار تراكب الأوامر المرئية عند الضغط على مفتاح Ctrl/Cmd 3 مرات متتالية",
   "DESCRIPTION_SMART_INDENT": "مسافة بادئة تلقائيًا عند إنشاء كتلة جديدة",
   "DESCRIPTION_SOFT_TABS": "خطأ لإيقاف سلوك علامات التبويب الناعمة",
   "DESCRIPTION_SORT_DIRECTORIES_FIRST": "صحيح لفرز الدلائل أولاً في شجرة المشروع",

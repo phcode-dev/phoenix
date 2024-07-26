@@ -841,6 +841,7 @@
   "DESCRIPTION_RULERS_ENABLED": "true, щоб увімкнути лінійки редактора, інакше false",
   "DESCRIPTION_AUTO_RENAME_TAGS": "true для автоматичного перейменування парного тегу HTML/XML, інакше false",
   "DESCRIPTION_DRAG_AND_DROP_ENABLED": "true, щоб увімкнути функцію перетягування для файлів і папок із файлового провідника або Finder",
+  "DESCRIPTION_TRIPLE_CTRL_PALETTE": "true, щоб увімкнути показ візуального накладення команд після натискання клавіші Ctrl/Cmd 3 рази поспіль",
   "DESCRIPTION_SMART_INDENT": "Автоматичний відступ при створенні нового блоку",
   "DESCRIPTION_SOFT_TABS": "false, щоб вимкнути поведінку програмних вкладок",
   "DESCRIPTION_SORT_DIRECTORIES_FIRST": "true, щоб спочатку сортувати каталоги в дереві проекту",

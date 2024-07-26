@@ -841,6 +841,7 @@
   "DESCRIPTION_RULERS_ENABLED": "patiess, lai iespējotu redaktora lineālus, pretējā gadījumā false",
   "DESCRIPTION_AUTO_RENAME_TAGS": "patiess, lai automātiski pārdēvētu pārī savienoto HTML/XML tagu, pretējā gadījumā false",
   "DESCRIPTION_DRAG_AND_DROP_ENABLED": "true, lai iespējotu vilkšanas un nomešanas funkcionalitāti failiem un mapēm no failu pārlūka vai Finder",
+  "DESCRIPTION_TRIPLE_CTRL_PALETTE": "True, lai iespējotu vizuālā komandas pārklājuma rādīšanu, trīs reizes pēc kārtas nospiežot taustiņu Ctrl/Cmd",
   "DESCRIPTION_SMART_INDENT": "Automātiskā atkāpe, veidojot jaunu bloku",
   "DESCRIPTION_SOFT_TABS": "vērtība false, lai izslēgtu mīkstās tabulācijas uzvedību",
   "DESCRIPTION_SORT_DIRECTORIES_FIRST": "vērtība true, lai projektu kokā pirmos sakārtotu katalogus",
