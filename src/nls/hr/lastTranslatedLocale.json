@@ -841,6 +841,7 @@
   "DESCRIPTION_RULERS_ENABLED": "true za omogućavanje uređivača ravnala, inače false",
   "DESCRIPTION_AUTO_RENAME_TAGS": "true za automatsko preimenovanje uparenih HTML/XML oznaka, inače false",
   "DESCRIPTION_DRAG_AND_DROP_ENABLED": "true za omogućavanje funkcije povlačenja i ispuštanja za datoteke i mape iz preglednika datoteka ili Findera",
+  "DESCRIPTION_TRIPLE_CTRL_PALETTE": "true za omogućavanje prikaza vizualnog preklapanja naredbi nakon pritiska tipke Ctrl/Cmd 3 uzastopna puta",
   "DESCRIPTION_SMART_INDENT": "Automatsko uvlačenje prilikom stvaranja novog bloka",
   "DESCRIPTION_SOFT_TABS": "false za isključivanje ponašanja mekih kartica",
   "DESCRIPTION_SORT_DIRECTORIES_FIRST": "true za prvo sortiranje direktorija u stablu projekta",

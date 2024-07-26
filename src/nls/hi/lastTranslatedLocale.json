@@ -841,6 +841,7 @@
   "DESCRIPTION_RULERS_ENABLED": "संपादक शासकों को सक्षम करने के लिए सत्य है, अन्यथा असत्य",
   "DESCRIPTION_AUTO_RENAME_TAGS": "युग्मित HTML/XML टैग का स्वचालित रूप से नाम बदलने के लिए सत्य, अन्यथा असत्य",
   "DESCRIPTION_DRAG_AND_DROP_ENABLED": "फ़ाइल एक्सप्लोरर या फ़ाइंडर से फ़ाइलों और फ़ोल्डरों के लिए ड्रैग और ड्रॉप कार्यक्षमता को सक्षम करने के लिए true",
+  "DESCRIPTION_TRIPLE_CTRL_PALETTE": "Ctrl/Cmd कुंजी को लगातार 3 बार दबाने पर दृश्य कमांड ओवरले दिखाने के लिए true का उपयोग करें",
   "DESCRIPTION_SMART_INDENT": "नया ब्लॉक बनाते समय स्वचालित रूप से इंडेंट करें",
   "DESCRIPTION_SOFT_TABS": "सॉफ्ट टैब व्यवहार को बंद करने के लिए गलत",
   "DESCRIPTION_SORT_DIRECTORIES_FIRST": "प्रोजेक्ट ट्री में पहले निर्देशिकाओं को सॉर्ट करने के लिए सही है",

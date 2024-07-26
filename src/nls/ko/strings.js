@@ -861,6 +861,7 @@ define({
   "DESCRIPTION_RULERS_ENABLED": "편집기 눈금자를 활성화하려면 true이고, 그렇지 않으면 false입니다.",
   "DESCRIPTION_AUTO_RENAME_TAGS": "쌍을 이루는 HTML/XML 태그의 이름을 자동으로 바꾸려면 true이고, 그렇지 않으면 false입니다.",
   "DESCRIPTION_DRAG_AND_DROP_ENABLED": "파일 탐색기 또는 Finder에서 파일 및 폴더에 대한 끌어서 놓기 기능을 활성화하려면 true입니다.",
+  "DESCRIPTION_TRIPLE_CTRL_PALETTE": "Ctrl/Cmd 키를 연속 3번 누를 때 시각적 명령 오버레이 표시를 활성화하려면 true입니다.",
   "DESCRIPTION_SMART_INDENT": "새 블록을 만들 때 자동 들여쓰기",
   "DESCRIPTION_SOFT_TABS": "소프트 탭 작동을 끄려면 false",
   "DESCRIPTION_SORT_DIRECTORIES_FIRST": "프로젝트 트리에서 디렉토리 우선 정렬하려면 true",

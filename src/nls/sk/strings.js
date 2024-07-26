@@ -861,6 +861,7 @@ define({
   "DESCRIPTION_RULERS_ENABLED": "true, ak chcete povoliť pravítka editora, inak false",
   "DESCRIPTION_AUTO_RENAME_TAGS": "true na automatické premenovanie spárovanej značky HTML/XML, inak false",
   "DESCRIPTION_DRAG_AND_DROP_ENABLED": "true, aby sa umožnila funkcia drag and drop pre súbory a priečinky z prieskumníka súborov alebo Findera",
+  "DESCRIPTION_TRIPLE_CTRL_PALETTE": "true, aby sa umožnilo zobrazenie prekrytia vizuálneho príkazu po stlačení klávesu Ctrl/Cmd 3-krát za sebou",
   "DESCRIPTION_SMART_INDENT": "Automaticky odsadiť pri vytváraní nového bloku",
   "DESCRIPTION_SOFT_TABS": "false na vypnutie správania mäkkých kariet",
   "DESCRIPTION_SORT_DIRECTORIES_FIRST": "true, ak chcete zoradiť adresáre ako prvé v strome projektu",

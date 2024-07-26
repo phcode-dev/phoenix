@@ -861,6 +861,7 @@ define({
   "DESCRIPTION_RULERS_ENABLED": "true за активиране на линийките на редактора, иначе false",
   "DESCRIPTION_AUTO_RENAME_TAGS": "true за автоматично преименуване на сдвоен HTML/XML таг, иначе false",
   "DESCRIPTION_DRAG_AND_DROP_ENABLED": "true, за да активирате функцията за плъзгане и пускане за файлове и папки от файловия изследовател или Finder",
+  "DESCRIPTION_TRIPLE_CTRL_PALETTE": "true, за да активирате показването на наслагването на визуална команда при натискане на клавиша Ctrl/Cmd 3 последователни пъти",
   "DESCRIPTION_SMART_INDENT": "Автоматичен отстъп при създаване на нов блок",
   "DESCRIPTION_SOFT_TABS": "Задайте false за изключване на леките табулатори",
   "DESCRIPTION_SORT_DIRECTORIES_FIRST": "Задайте true за показване на папките най-отгоре в дървото на файловете",

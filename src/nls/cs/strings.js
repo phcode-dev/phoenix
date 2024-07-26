@@ -861,6 +861,7 @@ define({
   "DESCRIPTION_RULERS_ENABLED": "true pro povolení pravítek editoru, jinak false",
   "DESCRIPTION_AUTO_RENAME_TAGS": "true pro automatické přejmenování spárované HTML/XML značky, jinak false",
   "DESCRIPTION_DRAG_AND_DROP_ENABLED": "true pro aktivaci funkce přetažení pro soubory a složky z Průzkumníka souborů nebo Finderu",
+  "DESCRIPTION_TRIPLE_CTRL_PALETTE": "true pro zobrazení překryvného vizuálního příkazu po stisknutí klávesy Ctrl/Cmd 3krát za sebou",
   "DESCRIPTION_SMART_INDENT": "Automaticky odsadit při vytvoření nového bloku",
   "DESCRIPTION_SOFT_TABS": "false k zamezení nahrazování tabulátorů mezerami",
   "DESCRIPTION_SORT_DIRECTORIES_FIRST": "true k řazení složek nahoru ve stromu souborů projektu",

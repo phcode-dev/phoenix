@@ -861,6 +861,7 @@ define({
   "DESCRIPTION_RULERS_ENABLED": "true om editorlinialen in te schakelen, anders false",
   "DESCRIPTION_AUTO_RENAME_TAGS": "true om de gekoppelde HTML/XML-tag automatisch te hernoemen, anders false",
   "DESCRIPTION_DRAG_AND_DROP_ENABLED": "true om de functionaliteit voor slepen en neerzetten voor bestanden en mappen vanuit de bestandsverkenner of Finder in te schakelen",
+  "DESCRIPTION_TRIPLE_CTRL_PALETTE": "true om de visuele commando-overlay weer te geven wanneer u drie keer achter elkaar op de Ctrl/Cmd-toets drukt",
   "DESCRIPTION_SMART_INDENT": "Automatisch inspringen bij het maken van een nieuw blok",
   "DESCRIPTION_SOFT_TABS": "false om het gedrag van zachte tabbladen uit te schakelen",
   "DESCRIPTION_SORT_DIRECTORIES_FIRST": "true om de mappen eerst in de projectboom te sorteren",

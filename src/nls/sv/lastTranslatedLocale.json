@@ -841,6 +841,7 @@
   "DESCRIPTION_RULERS_ENABLED": "sant för att aktivera redaktörslinjaler, annars falskt",
   "DESCRIPTION_AUTO_RENAME_TAGS": "true för att automatiskt byta namn på parad HTML/XML-tagg, annars false",
   "DESCRIPTION_DRAG_AND_DROP_ENABLED": "sant för att aktivera dra och släpp-funktionalitet för filer och mappar från filutforskaren eller Finder",
+  "DESCRIPTION_TRIPLE_CTRL_PALETTE": "sant för att visa det visuella kommandoöverlägget när du trycker på Ctrl/Cmd-tangenten 3 gånger i följd",
   "DESCRIPTION_SMART_INDENT": "Indrag automatiskt när du skapar ett nytt block",
   "DESCRIPTION_SOFT_TABS": "false för att stänga av beteendet med mjuka flikar",
   "DESCRIPTION_SORT_DIRECTORIES_FIRST": "sant att sortera katalogerna först i projektträdet",

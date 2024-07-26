@@ -861,6 +861,7 @@ define({
   "DESCRIPTION_RULERS_ENABLED": "igaz a szerkesztői vonalzók engedélyezéséhez, egyébként false",
   "DESCRIPTION_AUTO_RENAME_TAGS": "igaz a párosított HTML/XML címke automatikus átnevezéséhez, egyébként false",
   "DESCRIPTION_DRAG_AND_DROP_ENABLED": "igaz, hogy engedélyezze a drag and drop funkciót a fájlok és mappák számára a fájlkezelőből vagy a Finderből",
+  "DESCRIPTION_TRIPLE_CTRL_PALETTE": "igaz, hogy engedélyezze a vizuális parancsfedő megjelenítését a Ctrl/Cmd billentyű három egymást követő lenyomására",
   "DESCRIPTION_SMART_INDENT": "Automatikus behúzás új blokk létrehozásakor",
   "DESCRIPTION_SOFT_TABS": "false a lágy lapok viselkedésének kikapcsolásához",
   "DESCRIPTION_SORT_DIRECTORIES_FIRST": "igaz, ha először rendezi a könyvtárakat a projektfában",

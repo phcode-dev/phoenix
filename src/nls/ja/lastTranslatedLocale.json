@@ -841,6 +841,7 @@
   "DESCRIPTION_RULERS_ENABLED": "エディターのルーラーを有効にする場合は true、そうでない場合は false",
   "DESCRIPTION_AUTO_RENAME_TAGS": "ペアになった HTML/XML タグの名前を自動的に変更する場合は true、そうでない場合は false",
   "DESCRIPTION_DRAG_AND_DROP_ENABLED": "ファイルエクスプローラーまたは Finder からファイルやフォルダをドラッグ アンド ドロップする機能を有効にするには true にします。",
+  "DESCRIPTION_TRIPLE_CTRL_PALETTE": "true にすると、Ctrl/Cmd キーを 3 回連続して押すとビジュアル コマンド オーバーレイが表示されます。",
   "DESCRIPTION_SMART_INDENT": "新規ブロックの作成時に自動的にインデントを設定",
   "DESCRIPTION_SOFT_TABS": "ソフトタブの動作を無効にするには false",
   "DESCRIPTION_SORT_DIRECTORIES_FIRST": "プロジェクトツリーでディレクトリが先に来るように並べ替えるには true",

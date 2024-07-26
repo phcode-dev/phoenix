@@ -841,6 +841,7 @@
   "DESCRIPTION_RULERS_ENABLED": "true 启用编辑器标尺，否则 false",
   "DESCRIPTION_AUTO_RENAME_TAGS": "true 则自动重命名配对的 HTML/XML 标签，否则为 false",
   "DESCRIPTION_DRAG_AND_DROP_ENABLED": "true 表示从文件资源管理器或 Finder 启用文件和文件夹的拖放功能",
+  "DESCRIPTION_TRIPLE_CTRL_PALETTE": "true 启用在连续按下 Ctrl/Cmd 键 3 次时显示可视命令覆盖",
   "DESCRIPTION_SMART_INDENT": "生成新区域时自动缩进",
   "DESCRIPTION_SOFT_TABS": "值为假时，关闭软 tab 功能",
   "DESCRIPTION_SORT_DIRECTORIES_FIRST": "值为真时，给项目数中的文件夹排序",

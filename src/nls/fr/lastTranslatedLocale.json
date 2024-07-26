@@ -841,6 +841,7 @@
   "DESCRIPTION_RULERS_ENABLED": "true pour activer les règles de l'éditeur, sinon false",
   "DESCRIPTION_AUTO_RENAME_TAGS": "true pour renommer automatiquement la balise HTML/XML appariée, sinon false",
   "DESCRIPTION_DRAG_AND_DROP_ENABLED": "true pour activer la fonctionnalité glisser-déposer pour les fichiers et dossiers à partir de l'explorateur de fichiers ou du Finder",
+  "DESCRIPTION_TRIPLE_CTRL_PALETTE": "true pour activer l'affichage de la superposition de commandes visuelles en appuyant sur la touche Ctrl/Cmd 3 fois consécutives",
   "DESCRIPTION_SMART_INDENT": "Mettre en retrait automatiquement lors de la création d’un nouveau bloc",
   "DESCRIPTION_SOFT_TABS": "faux pour désactiver le comportement des tabulations flexibles",
   "DESCRIPTION_SORT_DIRECTORIES_FIRST": "vrai pour trier les répertoires en premier dans l’arborescence de projets",

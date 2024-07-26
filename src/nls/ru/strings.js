@@ -861,6 +861,7 @@ define({
   "DESCRIPTION_RULERS_ENABLED": "true, чтобы включить линейки редактора, иначе false",
   "DESCRIPTION_AUTO_RENAME_TAGS": "true для автоматического переименования парного тега HTML/XML, иначе false",
   "DESCRIPTION_DRAG_AND_DROP_ENABLED": "Значение true, чтобы включить функцию перетаскивания файлов и папок из проводника или Finder.",
+  "DESCRIPTION_TRIPLE_CTRL_PALETTE": "Значение true, чтобы включить отображение визуального наложения команд при нажатии клавиши Ctrl/Cmd 3 раза подряд.",
   "DESCRIPTION_SMART_INDENT": "Автоматический отступ при создании нового блока",
   "DESCRIPTION_SOFT_TABS": "false, чтобы отключить поведение мягких вкладок",
   "DESCRIPTION_SORT_DIRECTORIES_FIRST": "Значение true, чтобы сначала отсортировать каталоги в дереве проекта.",
