@@ -43,7 +43,7 @@ define(function (require, exports, module) {
 
     function showOverlay(targetId) {
         // Find the target div and the overlay div
-        Metrics.countEvent(Metrics.EVENT_TYPE.KEYBOARD, "ctrlx3", "showOverlay");
+        Metrics.countEvent(Metrics.EVENT_TYPE.UI, "palette", "showOverlay");
         if(!targetId){
             console.error("No target ID for selecting overlay. Ignoring");
             return;

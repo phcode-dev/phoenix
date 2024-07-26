@@ -75,6 +75,7 @@ define(function (require, exports, module) {
     const _registeredCustomKeyMaps = {};
 
     const STATE_CUSTOM_KEY_MAP_ID = "customKeyMapID";
+    const PREF_TRIPLE_CTRL_KEY_PRESS_ENABLED = "tripleCtrlPalette";
 
     /**
      * @private
@@ -1101,9 +1102,10 @@ define(function (require, exports, module) {
         }
     }
 
-    let lastKeyPressTime = 0; // Store the time of the last key press
+    let lastCtrlKeyPressTime = 0; // Store the time of the last key press
     let pressCount = 0; // Counter for consecutive Control key presses
-    const doublePressInterval = 500; // Maximum time interval between presses, in milliseconds, to consider it a double press
+    const doublePressInterval = 250; // Maximum time interval between presses, in milliseconds, to consider it a double press
+    const PRESS_ACTIVATE_COUNT = 3;
     const ctrlKeyCodes = {
         ControlLeft: true,
         ControlRight: true,
@@ -1113,22 +1115,28 @@ define(function (require, exports, module) {
         Meta: true
     };
     function _detectTripleCtrlKeyPress(event) {
+        if(!PreferencesManager.get(PREF_TRIPLE_CTRL_KEY_PRESS_ENABLED)){
+            return false;
+        }
+        const currentTime = new Date().getTime(); // Get the current time
         if (ctrlKeyCodes[event.code] && ctrlKeyCodes[event.key] && !event.shiftKey && !event.altKey) {
-            const currentTime = new Date().getTime(); // Get the current time
             pressCount++;
-            if (currentTime - lastKeyPressTime <= doublePressInterval) {
-                if(pressCount === 3) {
-                    KeyboardOverlayMode.startOverlayMode();
-                    event.stopPropagation();
-                    event.preventDefault();
-                    return true;
-                }
-                // ignore all higher order press events like triple/quadruple press
-            } else {
+            if(pressCount === PRESS_ACTIVATE_COUNT && (currentTime - lastCtrlKeyPressTime) <= doublePressInterval) {
+                KeyboardOverlayMode.startOverlayMode();
+                event.stopPropagation();
+                event.preventDefault();
+                lastCtrlKeyPressTime = currentTime;
+                Metrics.countEvent(Metrics.EVENT_TYPE.KEYBOARD, 'ctrlx'+PRESS_ACTIVATE_COUNT, "showOverlay");
+                return true;
+            }
+            if((currentTime - lastCtrlKeyPressTime) > doublePressInterval){
                 pressCount = 1;
             }
-            lastKeyPressTime = currentTime;
+            lastCtrlKeyPressTime = currentTime;
+        } else {
+            pressCount = 0;
         }
+        return false;
     }
 
     const dontHideMouseOnKeys = {
@@ -1862,6 +1870,9 @@ define(function (require, exports, module) {
                 _loadUserKeyMap();
                 exports.constructor(EVENT_PRESET_CHANGED, _customKeymapIDInUse);
             });
+        PreferencesManager.definePreference(PREF_TRIPLE_CTRL_KEY_PRESS_ENABLED, "boolean", true, {
+            description: Strings.DESCRIPTION_TRIPLE_CTRL_PALETTE
+        });
         _customKeymapIDInUse = PreferencesManager.stateManager.get(STATE_CUSTOM_KEY_MAP_ID);
         _loadUserKeyMap();
     });
