@@ -73,7 +73,7 @@
     "javascript": {
         "name": "JavaScript",
         "mode": "javascript",
-        "fileExtensions": ["js", "js.erb", "jsm", "_js"],
+        "fileExtensions": ["js", "js.erb", "jsm", "_js", "cjs", "mjs"],
         "blockComment": ["/*", "*/"],
         "lineComment": ["//"]
     },
