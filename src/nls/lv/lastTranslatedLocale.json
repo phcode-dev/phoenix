@@ -956,7 +956,7 @@
   "CANNOT_PUBLISH_LARGE_PROJECT_MESSAGE": "Phoenix joprojām ir eksperimentālā alfa. Mēs vēl neesam iespējojuši sinhronizāciju projektiem, kuros ir vairāk nekā 500 failu.",
   "SHARE_WEBSITE": "Vai publicēt un kopīgot vietni?",
   "PUBLISH": "Publicēt",
-  "PUBLISH_CONSENT_MESSAGE": "Ātri priekšskatiet izmaiņas un kopīgojiet savu vietni ar citiem. Phoenix var publicēt šo vietni jūsu vietā vietnē {0}. Publicētās saites būs derīgas 30 dienas. </br>Vai vēlaties publicēt un koplietot savu vietni?",
+  "PUBLISH_CONSENT_MESSAGE": "Ātri priekšskatiet izmaiņas un kopīgojiet savu vietni ar citiem. {APP_NAME} var publicēt šo vietni jūsu vietā vietnē {0}. Publicētās saites būs derīgas 3 dienas. </br>Vai vēlaties publicēt un koplietot savu vietni?",
   "PUBLISH_SYNC_IN_PROGRESS": "Notiek sinhronizācija priekšskatījumam...",
   "PUBLISH_PAGE": "Noklikšķiniet, lai publicētu un kopīgotu šo vietni",
   "PUBLISH_VIEW_PAGE": "Noklikšķiniet, lai skatītu publicēto lapu",

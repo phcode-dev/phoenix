@@ -976,7 +976,7 @@ define({
   "CANNOT_PUBLISH_LARGE_PROJECT_MESSAGE": "Phoenix hala deneysel alfa aşamasındadır. 500'den fazla dosya içeren projelerin senkronizasyonunu henüz etkinleştirmedik.",
   "SHARE_WEBSITE": "Web Sitesini Yayınla ve Paylaş?",
   "PUBLISH": "Yayınla",
-  "PUBLISH_CONSENT_MESSAGE": "Değişiklikleri hızla önizleyin ve web sitenizi başkalarıyla paylaşın. Phoenix bu web sitesini sizin için {0} adresinde yayınlayabilir. Yayınlanan linkler 30 gün süreyle geçerli olacaktır. </br>Web sitenizi yayınlamak ve paylaşmak istiyor musunuz?",
+  "PUBLISH_CONSENT_MESSAGE": "Değişiklikleri hızla önizleyin ve web sitenizi başkalarıyla paylaşın. {APP_NAME} bu web sitesini sizin için {0} adresinde yayınlayabilir. Yayınlanan linkler 3 gün süreyle geçerli olacaktır. </br>Web sitenizi yayınlamak ve paylaşmak ister misiniz?",
   "PUBLISH_SYNC_IN_PROGRESS": "Önizleme için senkronizasyon devam ediyor...",
   "PUBLISH_PAGE": "Bu siteyi yayınlamak ve paylaşmak için tıklayın",
   "PUBLISH_VIEW_PAGE": "Yayınlanan sayfayı görüntülemek için tıklayın",

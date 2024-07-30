@@ -956,7 +956,7 @@
   "CANNOT_PUBLISH_LARGE_PROJECT_MESSAGE": "Phoenix is still in experimental alpha. We have not yet enabled sync of projects with greater than 500 files.",
   "SHARE_WEBSITE": "Publish and Share Website?",
   "PUBLISH": "Publish",
-  "PUBLISH_CONSENT_MESSAGE": "Quickly preview changes and share your website with others. Phoenix can publish this website for you at {0}. The published links will be valid for a period of 30 days. </br>Do you wish to publish and share your website?",
+  "PUBLISH_CONSENT_MESSAGE": "Quickly preview changes and share your website with others. {APP_NAME} can publish this website for you at {0}. The published links will be valid for a period of 3 days. </br>Do you wish to publish and share your website?",
   "PUBLISH_SYNC_IN_PROGRESS": "Sync in progress for preview...",
   "PUBLISH_PAGE": "Click to publish and share this site",
   "PUBLISH_VIEW_PAGE": "Click to view published page",

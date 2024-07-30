@@ -976,7 +976,7 @@ define({
   "CANNOT_PUBLISH_LARGE_PROJECT_MESSAGE": "Phoenix jest wciąż w fazie eksperymentalnej alfa. Nie włączyliśmy jeszcze synchronizacji projektów zawierających ponad 500 plików.",
   "SHARE_WEBSITE": "Publikować i udostępniać witrynę?",
   "PUBLISH": "Publikować",
-  "PUBLISH_CONSENT_MESSAGE": "Szybko przeglądaj zmiany i udostępniaj swoją witrynę innym. Firma Phoenix może opublikować dla Ciebie tę witrynę pod adresem {0}. Opublikowane linki będą ważne przez okres 30 dni. </br>Chcesz opublikować i udostępnić swoją witrynę?",
+  "PUBLISH_CONSENT_MESSAGE": "Szybko przeglądaj zmiany i udostępniaj swoją witrynę innym osobom. Aplikacja {APP_NAME} może opublikować dla Ciebie tę witrynę internetową pod adresem {0}. Opublikowane linki będą ważne przez okres 3 dni. </br>Czy chcesz opublikować i udostępnić swoją witrynę internetową?",
   "PUBLISH_SYNC_IN_PROGRESS": "Trwa synchronizacja podglądu...",
   "PUBLISH_PAGE": "Kliknij, aby opublikować i udostępnić tę witrynę",
   "PUBLISH_VIEW_PAGE": "Kliknij, aby wyświetlić opublikowaną stronę",

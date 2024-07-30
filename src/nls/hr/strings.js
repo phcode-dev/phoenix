@@ -976,7 +976,7 @@ define({
   "CANNOT_PUBLISH_LARGE_PROJECT_MESSAGE": "Phoenix je još uvijek u eksperimentalnoj alfa fazi. Još nismo omogućili sinkronizaciju projekata s više od 500 datoteka.",
   "SHARE_WEBSITE": "Objaviti i podijeliti web stranicu?",
   "PUBLISH": "Objaviti",
-  "PUBLISH_CONSENT_MESSAGE": "Brzo pregledajte promjene i podijelite svoje web mjesto s drugima. Phoenix vam može objaviti ovu web stranicu na {0}. Objavljene poveznice vrijede 30 dana. </br>Želite li objaviti i podijeliti svoju web stranicu?",
+  "PUBLISH_CONSENT_MESSAGE": "Brzo pregledajte promjene i podijelite svoje web mjesto s drugima. {APP_NAME} može objaviti ovu web stranicu za vas na {0}. Objavljeni linkovi vrijede 3 dana. </br>Želite li objaviti i podijeliti svoju web stranicu?",
   "PUBLISH_SYNC_IN_PROGRESS": "Sinkronizacija u tijeku za pregled...",
   "PUBLISH_PAGE": "Kliknite za objavu i dijeljenje ove stranice",
   "PUBLISH_VIEW_PAGE": "Kliknite za pregled objavljene stranice",
