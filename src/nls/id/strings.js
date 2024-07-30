@@ -976,7 +976,7 @@ define({
   "CANNOT_PUBLISH_LARGE_PROJECT_MESSAGE": "Phoenix masih dalam alpha eksperimental. Kami belum mengaktifkan sinkronisasi proyek dengan lebih dari 500 file.",
   "SHARE_WEBSITE": "Publikasikan dan Bagikan Situs Web?",
   "PUBLISH": "Menerbitkan",
-  "PUBLISH_CONSENT_MESSAGE": "Pratinjau perubahan dengan cepat dan bagikan situs web Anda dengan orang lain. Phoenix dapat memublikasikan situs web ini untuk Anda di {0}. Tautan yang diterbitkan akan berlaku untuk jangka waktu 30 hari. </br>Apakah Anda ingin memublikasikan dan membagikan situs web Anda?",
+  "PUBLISH_CONSENT_MESSAGE": "Pratinjau perubahan dengan cepat dan bagikan situs web Anda dengan orang lain. {APP_NAME} dapat memublikasikan situs web ini untuk Anda di {0}. Tautan yang dipublikasikan akan berlaku untuk jangka waktu 3 hari. </br>Apakah Anda ingin mempublikasikan dan membagikan situs web Anda?",
   "PUBLISH_SYNC_IN_PROGRESS": "Sinkronisasi sedang berlangsung untuk pratinjau...",
   "PUBLISH_PAGE": "Klik untuk memublikasikan dan membagikan situs ini",
   "PUBLISH_VIEW_PAGE": "Klik untuk melihat halaman yang diterbitkan",

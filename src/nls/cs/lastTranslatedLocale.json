@@ -956,7 +956,7 @@
   "CANNOT_PUBLISH_LARGE_PROJECT_MESSAGE": "Phoenix je stále v experimentální verzi alfa. Zatím jsme nepovolili synchronizaci projektů s více než 500 soubory.",
   "SHARE_WEBSITE": "Publikovat a sdílet web?",
   "PUBLISH": "Publikovat",
-  "PUBLISH_CONSENT_MESSAGE": "Rychlý náhled změn a sdílení vašeho webu s ostatními. Phoenix pro vás může publikovat tyto webové stránky na adrese {0}. Zveřejněné odkazy budou platné po dobu 30 dnů. </br>Přejete si zveřejnit a sdílet svůj web?",
+  "PUBLISH_CONSENT_MESSAGE": "Rychlý náhled změn a sdílení vašeho webu s ostatními. Aplikace {APP_NAME} vám může publikovat tento web na adrese {0}. Zveřejněné odkazy budou platné po dobu 3 dnů. </br>Přejete si zveřejnit a sdílet svůj web?",
   "PUBLISH_SYNC_IN_PROGRESS": "Probíhá synchronizace pro náhled...",
   "PUBLISH_PAGE": "Klikněte pro publikování a sdílení tohoto webu",
   "PUBLISH_VIEW_PAGE": "Kliknutím zobrazíte publikovanou stránku",

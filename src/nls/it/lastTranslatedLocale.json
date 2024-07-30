@@ -956,7 +956,7 @@
   "CANNOT_PUBLISH_LARGE_PROJECT_MESSAGE": "Phoenix è ancora in fase sperimentale alfa. Non abbiamo ancora abilitato la sincronizzazione di progetti con più di 500 file.",
   "SHARE_WEBSITE": "Pubblica e condividi il sito web?",
   "PUBLISH": "Pubblicare",
-  "PUBLISH_CONSENT_MESSAGE": "Visualizza rapidamente l'anteprima delle modifiche e condividi il tuo sito web con altri. Phoenix può pubblicare questo sito web per te su {0}. I link pubblicati avranno una validità di 30 giorni. </br>Vuoi pubblicare e condividere il tuo sito web?",
+  "PUBLISH_CONSENT_MESSAGE": "Visualizza rapidamente l'anteprima delle modifiche e condividi il tuo sito web con altri. {APP_NAME} può pubblicare questo sito web per te su {0}. I link pubblicati saranno validi per un periodo di 3 giorni. </br>Desideri pubblicare e condividere il tuo sito web?",
   "PUBLISH_SYNC_IN_PROGRESS": "Sincronizzazione in corso per l'anteprima...",
   "PUBLISH_PAGE": "Clicca per pubblicare e condividere questo sito",
   "PUBLISH_VIEW_PAGE": "Clicca per visualizzare la pagina pubblicata",

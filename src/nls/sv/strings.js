@@ -976,7 +976,7 @@ define({
   "CANNOT_PUBLISH_LARGE_PROJECT_MESSAGE": "Phoenix är fortfarande i experimentell alfa. Vi har ännu inte aktiverat synkronisering av projekt med fler än 500 filer.",
   "SHARE_WEBSITE": "Publicera och dela webbplats?",
   "PUBLISH": "Publicera",
-  "PUBLISH_CONSENT_MESSAGE": "Förhandsgranska snabbt ändringar och dela din webbplats med andra. Phoenix kan publicera den här webbplatsen åt dig på {0}. De publicerade länkarna kommer att vara giltiga i 30 dagar. </br>Vill du publicera och dela din webbplats?",
+  "PUBLISH_CONSENT_MESSAGE": "Förhandsgranska snabbt ändringar och dela din webbplats med andra. {APP_NAME} kan publicera den här webbplatsen åt dig på {0}. De publicerade länkarna kommer att vara giltiga i 3 dagar. </br>Vill du publicera och dela din webbplats?",
   "PUBLISH_SYNC_IN_PROGRESS": "Synkronisering pågår för förhandsgranskning...",
   "PUBLISH_PAGE": "Klicka för att publicera och dela denna webbplats",
   "PUBLISH_VIEW_PAGE": "Klicka för att se publicerad sida",

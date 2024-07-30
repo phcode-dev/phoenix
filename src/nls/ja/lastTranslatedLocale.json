@@ -956,7 +956,7 @@
   "CANNOT_PUBLISH_LARGE_PROJECT_MESSAGE": "Phoenix はまだ実験的なアルファ版です。 500 を超えるファイルを含むプロジェクトの同期はまだ有効になっていません。",
   "SHARE_WEBSITE": "ウェブサイトを公開して共有しますか?",
   "PUBLISH": "公開",
-  "PUBLISH_CONSENT_MESSAGE": "変更をすばやくプレビューし、Web サイトを他のユーザーと共有します。 Phoenix は、この Web サイトを {0} で公開できます。公開されたリンクは 30 日間有効です。 </br>ウェブサイトを公開して共有しますか?",
+  "PUBLISH_CONSENT_MESSAGE": "変更内容をすばやくプレビューし、Web サイトを他のユーザーと共有します。{APP_NAME} は、この Web サイトを {0} に公開できます。公開されたリンクは 3 日間有効です。</br>Web サイトを公開して共有しますか?",
   "PUBLISH_SYNC_IN_PROGRESS": "プレビューのために同期中...",
   "PUBLISH_PAGE": "クリックしてこのサイトを公開して共有する",
   "PUBLISH_VIEW_PAGE": "クリックして公開ページを表示",

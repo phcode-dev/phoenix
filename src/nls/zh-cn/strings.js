@@ -976,7 +976,7 @@ define({
   "CANNOT_PUBLISH_LARGE_PROJECT_MESSAGE": "Phoenix 仍处于实验性 alpha 阶段。我们尚未启用超过 500 个文件的项目同步。",
   "SHARE_WEBSITE": "发布和共享网站？",
   "PUBLISH": "发布",
-  "PUBLISH_CONSENT_MESSAGE": "快速预览更改并与他人共享您的网站。 Phoenix 可以在 {0} 为您发布此网站。发布的链接有效期为 30 天。 </br>您想发布和分享您的网站吗？",
+  "PUBLISH_CONSENT_MESSAGE": "快速预览更改并与他人分享您的网站。{APP_NAME} 可以在 {0} 为您发布此网站。发布的链接有效期为 3 天。</br>您是否希望发布并分享您的网站？",
   "PUBLISH_SYNC_IN_PROGRESS": "正在同步以进行预览...",
   "PUBLISH_PAGE": "点击发布和分享本站",
   "PUBLISH_VIEW_PAGE": "点击查看发布页面",
