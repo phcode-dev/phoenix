@@ -180,7 +180,7 @@ define(function (require, exports, module) {
             // the active editor takes the priority in the workflow. If a css related file is active,
             // then we dont need to open the html live doc. For less files, we dont check if its related as
             // its not directly linked usually and needs a compile step. so we just do a fuzzy search.
-            activeEditor.focus();
+            _focusEditorIfNeeded(activeEditor, nodeName, contentEditable);
             _searchAndCursorIfCSS(activeEditor, allSelectors, nodeName);
             // in this case, see if we need to do any css reverse highlight magic here
         } else if(openLiveDocEditor) {
