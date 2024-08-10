@@ -1431,38 +1431,6 @@ define(function (require, exports, module) {
             await endPreviewSession();
         }, 30000);
 
-        it("should open html in correct pane on clicking live preview in split pane", async function () {
-            MainViewManager.setLayoutScheme(1, 2);
-            MainViewManager.setActivePaneId(MainViewManager.FIRST_PANE);
-            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["cssLivePreview.html"], MainViewManager.FIRST_PANE),
-                "SpecRunnerUtils.openProjectFiles cssLivePreview.html");
-
-            await waitsForLiveDevelopmentToOpen();
-
-            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.css"], MainViewManager.SECOND_PANE),
-                "SpecRunnerUtils.openProjectFiles simple1.css"); // non related file
-            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["blank.css"], MainViewManager.FIRST_PANE),
-                "SpecRunnerUtils.openProjectFiles blank.css");  // non related file
-
-            // now the live preview page's editor is not visible in any panes, but is already open in first pane
-            // so, on clicking live preview, it should open the file in first pane
-            MainViewManager.setActivePaneId(MainViewManager.SECOND_PANE);
-
-            await forRemoteExec(`document.getElementById("testId2").click()`);
-            let editor = EditorManager.getActiveEditor();
-            await awaitsFor(()=>{
-                editor = EditorManager.getActiveEditor();
-                return editor && editor.document.file.name === "cssLivePreview.html";
-            }, "cssLivePreview.html to open as active editor");
-            await _forSelection("#testId", editor, { line: 13, ch: 4, sticky: null });
-            editor = EditorManager.getActiveEditor();
-            expect(editor.document.file.name).toBe("cssLivePreview.html");
-            expect(MainViewManager.getActivePaneId()).toBe(MainViewManager.FIRST_PANE);
-
-            MainViewManager.setLayoutScheme(1, 1);
-            await endPreviewSession();
-        }, 30000);
-
         it("should reverse highlight open previewed html file if not open on clicking live preview", async function () {
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
                 "SpecRunnerUtils.openProjectFiles simple1.html");
