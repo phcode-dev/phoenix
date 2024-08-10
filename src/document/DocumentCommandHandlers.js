@@ -2131,7 +2131,7 @@ define(function (require, exports, module) {
                 if(nodeTerminateDueToShutdown){
                     return; // normal shutdown
                 }
-                Metrics.countEvent(Metrics.EVENT_TYPE.NODEJS, 'crash', "dlgShown");
+                Metrics.countEvent(Metrics.EVENT_TYPE.NODEJS, 'crash', Phoenix.platform);
                 window.fs.forceUseNodeWSEndpoint(false);
                 Dialogs
                     .showErrorDialog(Strings.ERROR_NODE_JS_CRASH_TITLE, Strings.ERROR_NODE_JS_CRASH_MESSAGE)
