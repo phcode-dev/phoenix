@@ -1,5 +1,5 @@
 # Credits
-Based on [Backets](https://brackets.io/), by the brackets.io community and [core.ai](https://core.ai/).
+Based on [Brackets](https://brackets.io/), by the brackets.io community and [core.ai](https://core.ai/).
 
 [Original work](https://github.com/adobe/brackets/) Copyright (c) 2012 Adobe Systems Incorporated.
 # License credits 
