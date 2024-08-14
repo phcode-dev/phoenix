@@ -78,12 +78,15 @@ define(function (require, exports, module) {
         EventDispatcher    = require("utils/EventDispatcher"),
         PerfUtils          = require("utils/PerfUtils"),
         PreferencesManager = require("preferences/PreferencesManager"),
+        StateManager       = require("preferences/StateManager"),
         TextRange          = require("document/TextRange").TextRange,
         TokenUtils         = require("utils/TokenUtils"),
         HTMLUtils          = require("language/HTMLUtils"),
         MainViewManager    = require("view/MainViewManager"),
         Metrics            = require("utils/Metrics"),
         _                  = require("thirdparty/lodash");
+
+    const tabSpacesStateManager = StateManager._createInternalStateManager(StateManager._INTERNAL_STATES.TAB_SPACES);
 
     /** Editor helpers */
 
@@ -2570,6 +2573,16 @@ define(function (require, exports, module) {
     };
 
     // Global settings that affect Editor instances that share the same preference locations
+    let computedTabSpaces = new Map();
+    function _getCachedSpaceCfg(key) {
+        // there are two storages for auto detected spaces for files. IF the user has explicitly set the spacing
+        // through the status bar, its stored permanently. else its computed on the fly
+        let cachedCfg = tabSpacesStateManager.get(key);
+        if(cachedCfg){
+            return cachedCfg;
+        }
+        return computedTabSpaces.get(key);
+    }
 
     /**
      * Sets whether to use tab characters (vs. spaces) when inserting new text.
@@ -2579,9 +2592,11 @@ define(function (require, exports, module) {
      * @return {boolean} true if value was valid
      */
     Editor.setUseTabChar = function (value, fullPath) {
-        let computedValues = computedTabSpaces.get(fullPath);
+        let computedValues = _getCachedSpaceCfg(fullPath);
         if(Editor.getAutoTabSpaces(fullPath) && computedValues) {
             computedValues.useTabChar = value;
+            // persist explicitly user set values to storage
+            tabSpacesStateManager.set(fullPath, computedValues);
             return true;
         }
         var options = fullPath && {context: fullPath};
@@ -2594,7 +2609,7 @@ define(function (require, exports, module) {
      * @return {boolean}
      */
     Editor.getUseTabChar = function (fullPath) {
-        const computedValues = computedTabSpaces.get(fullPath);
+        let computedValues = _getCachedSpaceCfg(fullPath);
         if(Editor.getAutoTabSpaces(fullPath) && computedValues) {
             return computedValues.useTabChar;
         }
@@ -2609,10 +2624,12 @@ define(function (require, exports, module) {
      * @return {boolean} true if value was valid
      */
     Editor.setTabSize = function (value, fullPath) {
-        let computedValues = computedTabSpaces.get(fullPath);
+        let computedValues = _getCachedSpaceCfg(fullPath);
         if(Editor.getAutoTabSpaces(fullPath) && computedValues) {
             if(EditorPreferences.isValidTabSize(value)){
                 computedValues.tabSize = value;
+                // persist explicitly user set values to storage
+                tabSpacesStateManager.set(fullPath, computedValues);
             }
             return true;
         }
@@ -2626,18 +2643,17 @@ define(function (require, exports, module) {
      * @return {number}
      */
     Editor.getTabSize = function (fullPath) {
-        const computedValues = computedTabSpaces.get(fullPath);
+        let computedValues = _getCachedSpaceCfg(fullPath);
         if(Editor.getAutoTabSpaces(fullPath) && computedValues && computedValues.tabSize) {
             return computedValues.tabSize;
         }
         return PreferencesManager.get(TAB_SIZE, _buildPreferencesContext(fullPath));
     };
 
-    let computedTabSpaces = new Map();
     const MAX_LINES_TO_SCAN_FOR_INDENT = 700; // this is high to account for any js docs/ file comments
     function _computeTabSpaces(editor, scanFullFile, recompute) {
         const fullPath = editor.document.file.fullPath;
-        if(computedTabSpaces.has(fullPath) && !recompute) {
+        if(_getCachedSpaceCfg(fullPath) && !recompute) {
             return;
         }
         // we only scan the first 200 lines of text to determine the spaces.
@@ -2648,6 +2664,7 @@ define(function (require, exports, module) {
             // this happens if the util cant find out the tab/spacing config
             amount = EditorPreferences.DEFAULT_SPACE_UNITS;
         }
+        tabSpacesStateManager.set(fullPath, null); // we dont have a remove api, so just nulling for now
         computedTabSpaces.set(fullPath, {
             useTabChar,
             tabSize: useTabChar ? Math.min(amount, EditorPreferences.MAX_TAB_SIZE) : 0,
@@ -2662,7 +2679,7 @@ define(function (require, exports, module) {
         if(!Editor.getAutoTabSpaces(fullPath)){
             return; // auto detect is disabled
         }
-        if(computedTabSpaces.has(fullPath) && !recompute) {
+        if(_getCachedSpaceCfg(fullPath) && !recompute) {
             editor._updateOption(AUTO_TAB_SPACES);
             return;
         }
@@ -2699,10 +2716,12 @@ define(function (require, exports, module) {
      * @return {boolean} true if value was valid
      */
     Editor.setSpaceUnits = function (value, fullPath) {
-        let computedValues = computedTabSpaces.get(fullPath);
+        let computedValues = _getCachedSpaceCfg(fullPath);
         if(Editor.getAutoTabSpaces(fullPath) && computedValues) {
             if(EditorPreferences.isValidSpaceUnit(value)){
                 computedValues.spaceUnits = value;
+                // persist explicitly user set values to storage
+                tabSpacesStateManager.set(fullPath, computedValues);
             }
             return true;
         }
@@ -2716,7 +2735,7 @@ define(function (require, exports, module) {
      * @return {number}
      */
     Editor.getSpaceUnits = function (fullPath) {
-        const computedValues = computedTabSpaces.get(fullPath);
+        let computedValues = _getCachedSpaceCfg(fullPath);
         if(Editor.getAutoTabSpaces(fullPath) && computedValues && computedValues.spaceUnits) {
             return computedValues.spaceUnits;
         }

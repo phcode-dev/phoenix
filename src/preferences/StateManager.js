@@ -141,8 +141,8 @@ define(function (require, exports, module) {
     /**
      * returns a preference instance that can be listened `.on("change", cbfn(changeType))` . The callback fucntion will be called
      * whenever there is a change in the supplied id with a changeType argument. The change type can be one of the two:
-     * CHANGE_TYPE_INTERNAL - if change is made within the current editor
-     * CHANGE_TYPE_EXTERNAL - if change is made within the current editor
+     * CHANGE_TYPE_INTERNAL - if change is made within the current app window/browser tap
+     * CHANGE_TYPE_EXTERNAL - if change is made in a different app window/browser tab
      *
      * @param id
      * @param type
@@ -235,6 +235,14 @@ define(function (require, exports, module) {
         console.warn("StateManager.getPrefixedSystem() is deprecated. Use StateManager.createExtensionStateManager()");
         return createExtensionStateManager(prefix);
     }
+
+    // private api for internal use only
+    // All internal states must be registered here to prevent collisions in internal codebase state managers
+    const _INTERNAL_STATES = {
+        TAB_SPACES: "TAB_SPC_"
+    };
+    exports._INTERNAL_STATES = _INTERNAL_STATES;
+    exports._createInternalStateManager = createExtensionStateManager;
 
     // public api
     exports.get     = getVal;

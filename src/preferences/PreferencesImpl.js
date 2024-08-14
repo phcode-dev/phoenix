@@ -30,7 +30,6 @@ define(function (require, exports, module) {
 
     const PreferencesBase = require("./PreferencesBase"),
         Async           = require("utils/Async"),
-        StateManager            = require("preferences/StateManager"),
 
         // The SETTINGS_FILENAME is used with a preceding "." within user projects
         SETTINGS_FILENAME = "phcode.json",
