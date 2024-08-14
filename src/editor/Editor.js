@@ -106,8 +106,6 @@ define(function (require, exports, module) {
 
     EditorPreferences.init(cmOptions);
 
-    const MAX_LINES_TO_SCAN_INDENT = 1000;
-
     const CLOSE_BRACKETS    = EditorPreferences.CLOSE_BRACKETS,
         CLOSE_TAGS          = EditorPreferences.CLOSE_TAGS,
         DRAG_DROP           = EditorPreferences.DRAG_DROP,
@@ -130,7 +128,7 @@ define(function (require, exports, module) {
         LINE_NUMBER_GUTTER_PRIORITY     = EditorPreferences.LINE_NUMBER_GUTTER_PRIORITY,
         CODE_FOLDING_GUTTER_PRIORITY    = EditorPreferences.CODE_FOLDING_GUTTER_PRIORITY;
 
-    let editorOptions = Object.keys(cmOptions);
+    let editorOptions = [...Object.keys(cmOptions), AUTO_TAB_SPACES];
 
     /** Editor preferences */
 
@@ -2304,6 +2302,9 @@ define(function (require, exports, module) {
                 newValue = Editor.getTabSize(fullPath);
             } else {
                 const newTabSpaceCfg = Editor.getAutoTabSpaces(fullPath);
+                if(newTabSpaceCfg){
+                    _computeTabSpaces(this);
+                }
                 const newUseTabCharCfg = Editor.getUseTabChar(fullPath);
                 if(this._currentOptions[AUTO_TAB_SPACES] === newTabSpaceCfg &&
                     this._currentOptions[USE_TAB_CHAR] === newUseTabCharCfg) {
@@ -2622,16 +2623,9 @@ define(function (require, exports, module) {
 
     let computedTabSpaces = new Map();
     const MAX_LINES_TO_SCAN_FOR_INDENT = 700; // this is high to account for any js docs/ file comments
-    Editor._autoDetectTabSpaces = function (editor, scanFullFile) {
-        if(!editor){
-            return;
-        }
+    function _computeTabSpaces(editor, scanFullFile, recompute) {
         const fullPath = editor.document.file.fullPath;
-        if(!Editor.getAutoTabSpaces(fullPath)){
-            return; // auto detect is disabled
-        }
-        if(computedTabSpaces.has(fullPath)) {
-            editor._updateOption(AUTO_TAB_SPACES);
+        if(computedTabSpaces.has(fullPath) && !recompute) {
             return;
         }
         // we only scan the first 200 lines of text to determine the spaces.
@@ -2647,6 +2641,20 @@ define(function (require, exports, module) {
             tabSize: useTabChar ? Math.min(amount, EditorPreferences.MAX_TAB_SIZE) : 0,
             spaceUnits: useTabChar ? 0 : Math.min(amount, EditorPreferences.MAX_SPACE_UNITS)
         });
+    }
+    Editor._autoDetectTabSpaces = function (editor, scanFullFile, recompute) {
+        if(!editor){
+            return;
+        }
+        const fullPath = editor.document.file.fullPath;
+        if(!Editor.getAutoTabSpaces(fullPath)){
+            return; // auto detect is disabled
+        }
+        if(computedTabSpaces.has(fullPath) && !recompute) {
+            editor._updateOption(AUTO_TAB_SPACES);
+            return;
+        }
+        _computeTabSpaces(editor, scanFullFile, recompute);
         editor._updateOption(AUTO_TAB_SPACES);
     };
 
@@ -2658,8 +2666,6 @@ define(function (require, exports, module) {
      * @return {boolean} true if value was valid
      */
     Editor.setAutoTabSpaces = function (value, fullPath) {
-        computedTabSpaces = new Map(); // reset all computed values as user may want to recompute tabSpaces of
-        // current file by double clicking the statusbar icon
         const options = fullPath && {context: fullPath};
         return PreferencesManager.set(AUTO_TAB_SPACES, value, options);
     };

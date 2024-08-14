@@ -60,6 +60,7 @@ define(function (require, exports, module) {
         $cursorInfo,
         $fileInfo,
         $indentType,
+        $indentAuto,
         $indentWidthLabel,
         $indentWidthInput,
         $statusOverwrite;
@@ -125,6 +126,11 @@ define(function (require, exports, module) {
         $indentWidthLabel.attr("title", indentWithTabs ? Strings.STATUSBAR_INDENT_SIZE_TOOLTIP_TABS : Strings.STATUSBAR_INDENT_SIZE_TOOLTIP_SPACES);
     }
 
+    function _updateAutoIndent(fullPath) {
+        const autoIndent = Editor.getAutoTabSpaces(fullPath);
+        $indentAuto.html(autoIndent ? Strings.STATUSBAR_AUTO_INDENT : Strings.STATUSBAR_FIXED_INDENT);
+    }
+
     /**
      * Get indent size based on type
      * @param {string} fullPath Path to file in current editor
@@ -153,6 +159,20 @@ define(function (require, exports, module) {
 
         Editor.setUseTabChar(!Editor.getUseTabChar(fullPath), fullPath);
         _updateIndentType(fullPath);
+        _updateAutoIndent(fullPath);
+        _updateIndentSize(fullPath);
+    }
+
+    function _toggleAutoIndent() {
+        const current = EditorManager.getActiveEditor(),
+            fullPath = current && current.document.file.fullPath;
+        Editor.setAutoTabSpaces(!Editor.getAutoTabSpaces(fullPath), fullPath);
+        if(Editor.getAutoTabSpaces(fullPath)){
+            // if the user explicitly clicked on the auto indent status bar icon, he might mean to recompute it
+            Editor._autoDetectTabSpaces(current, true, true);
+        }
+        _updateIndentType(fullPath);
+        _updateAutoIndent(fullPath);
         _updateIndentSize(fullPath);
     }
 
@@ -294,6 +314,7 @@ define(function (require, exports, module) {
             current.on("cursorActivity.statusbar", _updateCursorInfo);
             current.on("optionChange.statusbar", function () {
                 _updateIndentType(fullPath);
+                _updateAutoIndent(fullPath);
                 _updateIndentSize(fullPath);
             });
             current.on("change.statusbar", function () {
@@ -313,6 +334,7 @@ define(function (require, exports, module) {
             _updateFileInfo(current);
             _initOverwriteMode(current);
             _updateIndentType(fullPath);
+            _updateAutoIndent(fullPath);
             _updateIndentSize(fullPath);
         }
     }
@@ -372,6 +394,7 @@ define(function (require, exports, module) {
         $cursorInfo         = $("#status-cursor");
         $fileInfo           = $("#status-file");
         $indentType         = $("#indent-type");
+        $indentAuto         = $("#indent-auto");
         $indentWidthLabel   = $("#indent-width-label");
         $indentWidthInput   = $("#indent-width-input");
         $statusOverwrite    = $("#status-overwrite");
@@ -461,6 +484,7 @@ define(function (require, exports, module) {
 
         // indentation event handlers
         $indentType.on("click", _toggleIndentType);
+        $indentAuto.on("click", _toggleAutoIndent);
         $indentWidthLabel
             .on("click", function () {
                 // update the input value before displaying

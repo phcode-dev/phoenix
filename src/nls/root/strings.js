@@ -399,6 +399,8 @@ define({
     "STATUSBAR_INDENT_SIZE_TOOLTIP_TABS": "Click to change tab character width",
     "STATUSBAR_SPACES": "Spaces:",
     "STATUSBAR_TAB_SIZE": "Tab Size:",
+    "STATUSBAR_AUTO_INDENT": "<span title='Click to switch to fixed indents. Currently set to automatically detect and apply indents based on current file.'>Auto</span>",
+    "STATUSBAR_FIXED_INDENT": "<span title='Click to switch to Auto indent detection. Currently set to Fixed indent.'>Fixed</span>",
     "STATUSBAR_LINE_COUNT_SINGULAR": "\u2014 {0} Line",
     "STATUSBAR_LINE_COUNT_PLURAL": "\u2014 {0} Lines",
     "STATUSBAR_USER_EXTENSIONS_DISABLED": "Extensions Disabled",
