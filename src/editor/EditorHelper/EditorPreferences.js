@@ -166,6 +166,14 @@ define(function (require, exports, module) {
         description: Strings.DESCRIPTION_INPUT_STYLE
     });
 
+    function isValidTabSize (size) {
+        return ValidationUtils.isIntegerInRange(size, MIN_TAB_SIZE, MAX_TAB_SIZE);
+    }
+
+    function isValidSpaceUnit (size) {
+        return ValidationUtils.isIntegerInRange(size, MIN_SPACE_UNITS, MAX_SPACE_UNITS);
+    }
+
     function init(cmOptions) {
         // Mappings from Brackets preferences to CodeMirror options
         cmOptions[CLOSE_BRACKETS]     = "autoCloseBrackets";
@@ -218,4 +226,6 @@ define(function (require, exports, module) {
     exports.CODE_FOLDING_GUTTER_PRIORITY    = CODE_FOLDING_GUTTER_PRIORITY;
 
     exports.init =init;
+    exports.isValidTabSize = isValidTabSize;
+    exports.isValidSpaceUnit = isValidSpaceUnit;
 });

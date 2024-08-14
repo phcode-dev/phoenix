@@ -2579,6 +2579,11 @@ define(function (require, exports, module) {
      * @return {boolean} true if value was valid
      */
     Editor.setUseTabChar = function (value, fullPath) {
+        let computedValues = computedTabSpaces.get(fullPath);
+        if(Editor.getAutoTabSpaces(fullPath) && computedValues) {
+            computedValues.useTabChar = value;
+            return true;
+        }
         var options = fullPath && {context: fullPath};
         return PreferencesManager.set(USE_TAB_CHAR, value, options);
     };
@@ -2604,6 +2609,13 @@ define(function (require, exports, module) {
      * @return {boolean} true if value was valid
      */
     Editor.setTabSize = function (value, fullPath) {
+        let computedValues = computedTabSpaces.get(fullPath);
+        if(Editor.getAutoTabSpaces(fullPath) && computedValues) {
+            if(EditorPreferences.isValidTabSize(value)){
+                computedValues.tabSize = value;
+            }
+            return true;
+        }
         var options = fullPath && {context: fullPath};
         return PreferencesManager.set(TAB_SIZE, value, options);
     };
@@ -2687,6 +2699,13 @@ define(function (require, exports, module) {
      * @return {boolean} true if value was valid
      */
     Editor.setSpaceUnits = function (value, fullPath) {
+        let computedValues = computedTabSpaces.get(fullPath);
+        if(Editor.getAutoTabSpaces(fullPath) && computedValues) {
+            if(EditorPreferences.isValidSpaceUnit(value)){
+                computedValues.spaceUnits = value;
+            }
+            return true;
+        }
         var options = fullPath && {context: fullPath};
         return PreferencesManager.set(SPACE_UNITS, value, options);
     };
