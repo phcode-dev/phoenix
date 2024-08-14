@@ -33,7 +33,7 @@ define(function (require, exports, module) {
     const SOFT_TABS = EditorPreferences.SOFT_TABS;
 
     /*Start of modified code: https://www.npmjs.com/package/detect-indent
-    * We modified the code to specify `scanLineLimit` for partial scans in a large text*/
+    * We modified the code to work on editor as well as text and adds `scanLineLimit` for partial scans in large text*/
     // Detect either spaces or tabs but not both to properly handle tabs for indentation and spaces for alignment
     const INDENT_REGEX = /^(?:( )+|\t+)/;
 
@@ -54,7 +54,7 @@ define(function (require, exports, module) {
      }
      ```
      */
-    function makeIndentsMap(string, ignoreSingleSpaces, scanLineLimit) {
+    function makeIndentsMap(editor, ignoreSingleSpaces, scanLineLimit) {
         const indents = new Map();
 
         // Remember the size of previous line's indentation
@@ -62,9 +62,11 @@ define(function (require, exports, module) {
         let previousIndentType;
 
         // Indents key (ident type + size of the indents/unindents)
-        let key;
+        const totalLines = editor.lineCount();
+        let key, scanLimit = scanLineLimit ? Math.min(scanLineLimit, totalLines) : totalLines;
 
-        for (const line of string.split(/\n/g, scanLineLimit)) {
+        for (let i =0; i < scanLimit; i++) {
+            const line = editor.document.getLine(i);
             if (!line) {
                 // Ignore empty lines
                 continue;
@@ -165,21 +167,17 @@ define(function (require, exports, module) {
 
     /**
      * computes the tab/spaces config for the file
-     * @param string the text to determine the indent config
-     * @param scanLineLimit - the number of lines to scan. This can be used if you dont want to scan
-     *   full text for large texts
+     * @param {number} [scanLineLimit] - Optional number of lines to scan. This can be used if you dont want to scan
+     *   full text for large texts. default scans all text.
      * @returns {{amount: number, indent: string, type: (string)}}
      */
-    function detectIndent(string, scanLineLimit) {
-        if (typeof string !== 'string') {
-            throw new TypeError('Expected a string');
-        }
-
+    function _detectIndent(scanLineLimit) {
+        const editor = this;
         // Identify indents while skipping single space indents to avoid common edge cases (e.g. code comments)
         // If no indents are identified, run again and include all indents for comprehensive detection
-        let indents = makeIndentsMap(string, true, scanLineLimit);
+        let indents = makeIndentsMap(editor, true, scanLineLimit);
         if (indents.size === 0) {
-            indents = makeIndentsMap(string, false, scanLineLimit);
+            indents = makeIndentsMap(editor, false, scanLineLimit);
         }
 
         const keyOfMostUsedIndent = getMostUsedKey(indents);
@@ -416,8 +414,8 @@ define(function (require, exports, module) {
         Editor.prototype._autoIndentEachSelection = _autoIndentEachSelection;
         Editor.prototype._handleTabKey = _handleTabKey;
         Editor.prototype._handleSoftTabNavigation = _handleSoftTabNavigation;
+        Editor.prototype._detectIndent = _detectIndent;
     }
 
     exports.addHelpers =addHelpers;
-    exports.detectIndent =detectIndent;
 });
