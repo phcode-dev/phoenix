@@ -2621,7 +2621,8 @@ define(function (require, exports, module) {
     };
 
     let computedTabSpaces = new Map();
-    Editor._autoDetectTabSpaces = function (editor) {
+    const MAX_LINES_TO_SCAN_FOR_INDENT = 700; // this is high to account for any js docs/ file comments
+    Editor._autoDetectTabSpaces = function (editor, scanFullFile) {
         if(!editor){
             return;
         }
@@ -2633,8 +2634,8 @@ define(function (require, exports, module) {
             editor._updateOption(AUTO_TAB_SPACES);
             return;
         }
-        const text = editor.document.getText();
-        const detectedVals = IndentHelper.detectIndent(text);
+        // we only scan the first 200 lines of text to determine the spaces.
+        const detectedVals = editor._detectIndent(scanFullFile? undefined : MAX_LINES_TO_SCAN_FOR_INDENT);
         const useTabChar = (detectedVals.type === "tab");
         let amount = detectedVals.amount;
         if(!detectedVals.type || !amount){
