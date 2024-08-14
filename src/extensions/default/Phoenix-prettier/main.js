@@ -232,7 +232,7 @@ define(function (require, exports, module) {
             options._usePlugin = parsersForLanguage[languageId];
             Object.assign(options, {
                 parser: parsersForLanguage[languageId],
-                tabWidth: indentWithTabs ? Editor.getTabSize() : Editor.getSpaceUnits(),
+                tabWidth: indentWithTabs ? Editor.getTabSize(filepath) : Editor.getSpaceUnits(filepath),
                 useTabs: indentWithTabs,
                 filepath: filepath,
                 printWidth: printWidth,
