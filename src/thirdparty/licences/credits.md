@@ -9,6 +9,7 @@ Please find all other licenses and attributions below:
 
 ## Other Libraries used
 1. https://www.npmjs.com/package/@pixelbrackets/gfm-stylesheet under AGPL 2.0 license
+2. https://www.npmjs.com/package/detect-indent detect-indent MIT Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (https://sindresorhus.com)
 
 ## Attributions for Images and other assets used
 

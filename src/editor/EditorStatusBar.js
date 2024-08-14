@@ -287,7 +287,8 @@ define(function (require, exports, module) {
         if (!current) {
             StatusBar.hideAllPanes();
         } else {
-            var fullPath = current.document.file.fullPath;
+            Editor._autoDetectTabSpaces(current);
+            const fullPath = current.document.file.fullPath;
             StatusBar.showAllPanes();
 
             current.on("cursorActivity.statusbar", _updateCursorInfo);

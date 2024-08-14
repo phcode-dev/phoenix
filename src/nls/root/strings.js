@@ -1028,6 +1028,7 @@ define({
     "DESCRIPTION_STYLE_ACTIVE_LINE": "true to highlight background color of the line the cursor is on",
     "DESCRIPTION_TAB_SIZE": "Number of spaces to display for tabs",
     "DESCRIPTION_USE_TAB_CHAR": "true to use tabs instead of spaces",
+    "DESCRIPTION_AUTO_TAB_SPACE": "true to auto detect tabs and spaces used in current file",
     "DESCRIPTION_UPPERCASE_COLORS": "true to generate uppercase hex colors in Inline Color Editor",
     "DESCRIPTION_WORD_WRAP": "Wrap lines that exceed the viewport width",
     "DESCRIPTION_SEARCH_AUTOHIDE": "Close the search as soon as the editor is focused",

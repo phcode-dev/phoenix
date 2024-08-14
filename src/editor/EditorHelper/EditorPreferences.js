@@ -43,6 +43,7 @@ define(function (require, exports, module) {
         SPACE_UNITS         = "spaceUnits",
         STYLE_ACTIVE_LINE   = "styleActiveLine",
         TAB_SIZE            = "tabSize",
+        AUTO_TAB_SPACES     = "autoTabSpaces",
         UPPERCASE_COLORS    = "uppercaseColors",
         USE_TAB_CHAR        = "useTabChar",
         WORD_WRAP           = "wordWrap",
@@ -141,6 +142,9 @@ define(function (require, exports, module) {
         validator: _.partialRight(ValidationUtils.isIntegerInRange, MIN_TAB_SIZE, MAX_TAB_SIZE),
         description: Strings.DESCRIPTION_TAB_SIZE
     });
+    PreferencesManager.definePreference(AUTO_TAB_SPACES,    "boolean", true, {
+        description: Strings.DESCRIPTION_AUTO_TAB_SPACE
+    });
     PreferencesManager.definePreference(UPPERCASE_COLORS,   "boolean", false, {
         description: Strings.DESCRIPTION_UPPERCASE_COLORS
     });
@@ -194,6 +198,7 @@ define(function (require, exports, module) {
     exports.SPACE_UNITS         = SPACE_UNITS;
     exports.STYLE_ACTIVE_LINE   = STYLE_ACTIVE_LINE;
     exports.TAB_SIZE            = TAB_SIZE;
+    exports.AUTO_TAB_SPACES     = AUTO_TAB_SPACES;
     exports.UPPERCASE_COLORS    = UPPERCASE_COLORS;
     exports.USE_TAB_CHAR        = USE_TAB_CHAR;
     exports.WORD_WRAP           = WORD_WRAP;
