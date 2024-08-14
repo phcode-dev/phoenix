@@ -85,7 +85,6 @@ define(function (require, exports, module) {
     var userScopeLoading = manager.addScope("user", userScope);
 
     _addScopePromises.push(userScopeLoading);
-    _addScopePromises.push(StateManager._migrateLegacyStateFile());
 
     // Set up the .phcode.json file handling
     userScopeLoading
