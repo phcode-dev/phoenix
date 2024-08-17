@@ -19,7 +19,7 @@
  *
  */
 
-/*global gtag, analytics, mixpanel*/
+/*global gtag, analytics, logger*/
 
 // @INCLUDE_IN_API_DOCS
 /**
@@ -144,11 +144,39 @@ define(function (require, exports, module) {
 
     _createAnalyticsShims();
 
+    const MINUTES_10 = 10*1000;
+    let tauriGaErrorCountSent = 0, sendOnceMore = false, noFurtherReporting = false;
     function _sendTauriGAEvent(analyticsID, customUserID, events=[]) {
         window.__TAURI__.event.emit("health", {
             analyticsID: analyticsID,
             customUserID: customUserID,
             events
+        }).catch(err=>{
+            if(window.debugMode){
+                console.error(err);
+            }
+            if(noFurtherReporting){
+                return;
+            }
+            // we only report 1 error once to prevent too many Bugsnag reports. We seen in bugsnag that like 2-3
+            // users triggers thousands of this error in bugsnag report per day as they send continuous error reports
+            // every minute due to this error. We throttle to send only 2 errors to bugsnag any minute at app level,
+            // so this will starve other genuine errors as well if not captured here.
+            tauriGaErrorCountSent ++;
+            if(sendOnceMore){
+                // we send the crash stack once and then another report 10 minutes later. After that, this is likeley
+                // to fail always.
+                noFurtherReporting = true;
+                logger.reportError(err,
+                    `${tauriGaErrorCountSent} _sendTauriGAEvent failures in ${MINUTES_10/1000} minutes`);
+            }
+            if(tauriGaErrorCountSent !== 1){
+                return;
+            }
+            logger.reportError(err);
+            setTimeout(()=>{
+                sendOnceMore = true;
+            }, MINUTES_10);
         });
     }
 
