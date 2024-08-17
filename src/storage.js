@@ -152,6 +152,41 @@ import {set, entries, createStore} from './thirdparty/idb-keyval.js';
         return null;
     }
 
+    const MINUTES_10 = 10*1000;
+    let errorCountReported = 0, sendOnceMore = false, noFurtherReporting = false;
+    function _reportPutItemError(err) {
+        // in bugsnag, we get errors from a few users(line 2-3 users), who might likely have crashed
+        // phnode and dont know how to kill the process and the window is still open in back for several
+        // days(send 22+days). This was being caught every minute and reported in bugsnag which
+        // generates like 20K+ reports per user per month. So we only report error once in an hour.
+        if(window.debugMode){
+            console.error(err);
+        }
+        const logger = window.logger;
+        if(!logger || noFurtherReporting){
+            return;
+        }
+        // we only report 1 error once to prevent too many Bugsnag reports. We seen in bugsnag that like 2-3
+        // users triggers thousands of this error in bugsnag report per day as they send continuous error reports
+        // every minute due to this error. We throttle to send only 2 errors to bugsnag any minute at app level,
+        // so this will starve other genuine errors as well if not captured here.
+        errorCountReported ++;
+        if(sendOnceMore){
+            // we send the crash stack once and then another report 10 minutes later. After that, this is likely
+            // to fail always.
+            noFurtherReporting = true;
+            logger.reportError(err,
+                `${errorCountReported} tauri:storage:setItem failures in ${MINUTES_10/1000} minutes`);
+        }
+        if(errorCountReported !== 1){
+            return;
+        }
+        logger.reportError(err);
+        setTimeout(()=>{
+            sendOnceMore = true;
+        }, MINUTES_10);
+    }
+
     /**
      * Sets the value of a specified key in the localStorage.
      *
@@ -168,7 +203,9 @@ import {set, entries, createStore} from './thirdparty/idb-keyval.js';
         };
         if(!Phoenix.isTestWindow || key === _testKey) {
             if(isDesktop) {
-                storageNodeConnector.execPeer("putItem", {key, value: valueToStore});
+                storageNodeConnector
+                    .execPeer("putItem", {key, value: valueToStore})
+                    .catch(_reportPutItemError);
                 // this is an in-memory tauri store that takes care of multi window case, since we have a single
                 // instance, all windows share this and can reconstruct the full view from the dumb file + this map
                 // when the editor boots up instead of having to write the dump file frequently.
