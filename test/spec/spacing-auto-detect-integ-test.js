@@ -108,5 +108,38 @@ define(function (require, exports, module) {
             validateSpacing("Tab Size:", "6", "Auto");
             await __PR.closeFile();
         });
+
+        it(`should switching to fixed mode default to 4 spaces for all files`, async function () {
+            await __PR.openFile("tab-2.js");
+            validateSpacing("Tab Size:", "2", "Auto");
+            $("#indent-auto").click();
+            validateSpacing("Spaces:", "4", "Fixed");
+            await __PR.openFile("space-1.js");
+            validateSpacing("Spaces:", "4", "Fixed");
+            await __PR.closeFile();
+        });
+
+        it(`should be able to change spacing/tabs settings of fixed mode`, async function () {
+            await __PR.openFile("tab-2.js");
+            // now change the fixed width
+            __PR.EDITING.setEditorSpacing(true, 6, false);
+            validateSpacing("Tab Size:", "6", "Fixed");
+            await __PR.openFile("space-12.js");
+            validateSpacing("Tab Size:", "6", "Fixed");
+            // revert back to defaults
+            __PR.EDITING.setEditorSpacing(false, 4, false);
+            await __PR.closeFile();
+        });
+
+        it(`should toggling auto mode recompute the spacing`, async function () {
+            await __PR.openFile("tab-2.js");
+            __PR.EDITING.setEditorSpacing(false, 3, true);
+            validateSpacing("Spaces:", "3", "Auto");
+            // now toggle the auto to fixed and then to auto once to force recompute spacing
+            $("#indent-auto").click();
+            $("#indent-auto").click();
+            validateSpacing("Tab Size:", "2", "Auto");
+            await __PR.closeFile();
+        });
     });
 });

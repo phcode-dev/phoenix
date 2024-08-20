@@ -2597,6 +2597,9 @@ define(function (require, exports, module) {
             computedValues.useTabChar = value;
             // persist explicitly user set values to storage
             tabSpacesStateManager.set(fullPath, computedValues);
+            Editor.forEveryEditor(editor=>{
+                editor._updateOption(USE_TAB_CHAR);
+            }, fullPath);
             return true;
         }
         var options = fullPath && {context: fullPath};
@@ -2630,6 +2633,9 @@ define(function (require, exports, module) {
                 computedValues.tabSize = value;
                 // persist explicitly user set values to storage
                 tabSpacesStateManager.set(fullPath, computedValues);
+                Editor.forEveryEditor(editor=>{
+                    editor._updateOption(TAB_SIZE);
+                }, fullPath);
             }
             return true;
         }
@@ -2722,6 +2728,9 @@ define(function (require, exports, module) {
                 computedValues.spaceUnits = value;
                 // persist explicitly user set values to storage
                 tabSpacesStateManager.set(fullPath, computedValues);
+                Editor.forEveryEditor(editor=>{
+                    editor._updateOption(SPACE_UNITS);
+                }, fullPath);
             }
             return true;
         }
@@ -2847,11 +2856,19 @@ define(function (require, exports, module) {
     };
 
     /**
-     * Runs callback for every Editor instance that currently exists
+     * Runs callback for every Editor instance that currently exists or only the editors matching the given fullPath.
      * @param {!function(!Editor)} callback
+     * @param {string} [fullPath] an optional second argument, if given will only callback for all editors
+     *  that is editing the file for the given fullPath
      */
-    Editor.forEveryEditor = function (callback) {
-        _instances.forEach(callback);
+    Editor.forEveryEditor = function (callback, fullPath) {
+        _instances.forEach(function (editor) {
+            if(!fullPath) {
+                callback(editor);
+            } else if(editor.document.file.fullPath === fullPath) {
+                callback(editor);
+            }
+        });
     };
 
     /**
