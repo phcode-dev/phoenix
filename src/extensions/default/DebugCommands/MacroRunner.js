@@ -374,11 +374,11 @@ define(function (require, exports, module) {
                 Editor.Editor.setAutoTabSpaces(isAutoMode, fullPath);
                 isAutoMode && Editor.Editor._autoDetectTabSpaces(activeEditor, true, true);
             }
-            Editor.Editor.setUseTabChar(useTabs);
+            Editor.Editor.setUseTabChar(useTabs, fullPath);
             if(useTabs) {
-                Editor.Editor.setTabSize(spaceOrTabCount);
+                Editor.Editor.setTabSize(spaceOrTabCount, fullPath);
             } else {
-                Editor.Editor.setSpaceUnits(spaceOrTabCount);
+                Editor.Editor.setSpaceUnits(spaceOrTabCount, fullPath);
             }
         }
     };
