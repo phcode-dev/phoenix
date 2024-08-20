@@ -50,6 +50,8 @@ define(function (require, exports, module) {
         KeyEvent = brackets.getModule("utils/KeyEvent"),
         Commands = brackets.getModule("command/Commands"),
         PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
+        Editor = brackets.getModule("editor/Editor"),
+        _ = brackets.getModule("thirdparty/lodash"),
         ProjectManager = brackets.getModule("project/ProjectManager");
 
     /**
@@ -304,6 +306,12 @@ define(function (require, exports, module) {
         }
     }
 
+    function validateEqual(obj1, obj2) {
+        if(!_.isEqual(obj1, obj2)){
+            throw new Error(`validateEqual: expected ${JSON.stringify(obj1)} to equal ${JSON.stringify(obj2)}`);
+        }
+    }
+
     /**
      * validates if the given mark type is present in the specified selections
      * @param {string} markType
@@ -355,9 +363,29 @@ define(function (require, exports, module) {
         return PreferencesManager.get(key);
     }
 
+    const EDITING = {
+        setEditorSpacing: function (useTabs, spaceOrTabCount, isAutoMode) {
+            const activeEditor = EditorManager.getActiveEditor();
+            if(!activeEditor){
+                throw new Error(`No active editor found to setEditorSpacing`);
+            }
+            const fullPath = activeEditor.document.file.fullPath;
+            if(Editor.Editor.getAutoTabSpaces(fullPath) !== isAutoMode){
+                Editor.Editor.setAutoTabSpaces(isAutoMode, fullPath);
+                isAutoMode && Editor.Editor._autoDetectTabSpaces(activeEditor, true, true);
+            }
+            Editor.Editor.setUseTabChar(useTabs);
+            if(useTabs) {
+                Editor.Editor.setTabSize(spaceOrTabCount);
+            } else {
+                Editor.Editor.setSpaceUnits(spaceOrTabCount);
+            }
+        }
+    };
+
     const __PR= {
         openFile, setCursors, expectCursorsToBe, keydown, typeAtCursor, validateText, validateAllMarks, validateMarks,
-        closeFile, closeAll, undo, redo, setPreference, getPreference
+        closeFile, closeAll, undo, redo, setPreference, getPreference, validateEqual, EDITING
     };
 
     async function runMacro(macroText) {
