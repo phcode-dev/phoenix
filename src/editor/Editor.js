@@ -2932,10 +2932,6 @@ define(function (require, exports, module) {
             });
         });
     });
-    
-    function f() {
-        
-    }
 
     // Define public API
     exports.Editor                  = Editor;
