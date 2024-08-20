@@ -249,6 +249,7 @@ define(function (require, exports, module) {
             DocumentModule: require("document/Document"),
             DragAndDrop: require("utils/DragAndDrop"),
             EditorManager: require("editor/EditorManager"),
+            Editor: require("editor/Editor"),
             EventManager: require("utils/EventManager"),
             ExtensionLoader: require("utils/ExtensionLoader"),
             ExtensionUtils: require("utils/ExtensionUtils"),

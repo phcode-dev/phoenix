@@ -30,6 +30,7 @@ define(function (require, exports, module) {
         EditorManager,       // loaded from brackets.test
         DocumentModule,      // loaded from brackets.test
         DocumentManager,     // loaded from brackets.test
+        Editor,     // loaded from brackets.test
         MainViewManager,     // loaded from brackets.test
         SpecRunnerUtils     = require("spec/SpecRunnerUtils");
 
@@ -50,6 +51,7 @@ define(function (require, exports, module) {
             DocumentModule      = testWindow.brackets.test.DocumentModule;
             DocumentManager     = testWindow.brackets.test.DocumentManager;
             MainViewManager     = testWindow.brackets.test.MainViewManager;
+            Editor     = testWindow.brackets.test.Editor;
 
             await SpecRunnerUtils.loadProjectInTestWindow(testPath);
         }, 30000);
@@ -294,7 +296,7 @@ define(function (require, exports, module) {
                 var promise,
                     cssDoc,
                     cssMasterEditor;
-
+                Editor.Editor.setAutoTabSpaces(false);
                 promise = CommandManager.execute(Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN, {fullPath: HTML_FILE});
                 await awaitsForDone(promise, "Open into working set");
 
