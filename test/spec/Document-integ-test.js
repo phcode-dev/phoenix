@@ -292,11 +292,11 @@ define(function (require, exports, module) {
             // TODO: additional, simpler ref counting test cases such as Live Development, open/close inline editor (refs from
             //  both editor & rule list TextRanges), navigate files w/o adding to working set, etc.
 
-            it("should clean up (later) a master Editor auto-created by calling read-only Document API, if Editor not used by UI", async function () {
+            async function testRef(useAutoTabSpaces) {
                 var promise,
                     cssDoc,
                     cssMasterEditor;
-                Editor.Editor.setAutoTabSpaces(false);
+                Editor.Editor.setAutoTabSpaces(useAutoTabSpaces);
                 promise = CommandManager.execute(Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN, {fullPath: HTML_FILE});
                 await awaitsForDone(promise, "Open into working set");
 
@@ -309,8 +309,12 @@ define(function (require, exports, module) {
 
                 // Force creation of master editor for CSS file
                 cssDoc = DocumentManager.getOpenDocumentForPath(CSS_FILE);
-                expect(cssDoc._masterEditor).toBeFalsy();
-                DocumentManager.getOpenDocumentForPath(CSS_FILE).getLine(0);
+                if(!useAutoTabSpaces){
+                    // if auto tab spaces is enabled, the space detect algo will read the file contents for detecting
+                    // spacing, so these 2 lines won't apply.
+                    expect(cssDoc._masterEditor).toBeFalsy();
+                    DocumentManager.getOpenDocumentForPath(CSS_FILE).getLine(0);
+                }
                 expect(cssDoc._masterEditor).toBeTruthy();
 
                 // Close inline editor
@@ -337,6 +341,14 @@ define(function (require, exports, module) {
                 expect(testWindow.$(".CodeMirror").length).toBe(2);   // HTML editor (working set) & JS editor (current)
 
                 cssDoc = cssMasterEditor = null;
+            }
+
+            it("should clean up (later) a master Editor auto-created by calling read-only Document API, if Editor not used by UI", async function () {
+                await testRef(false);
+            });
+
+            it("should clean up (later) a master Editor in auto tab space detect mode, auto-created by calling read-only Document API, if Editor not used by UI", async function () {
+                await testRef(true);
             });
         });
     });
