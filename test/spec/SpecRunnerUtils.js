@@ -438,6 +438,7 @@ define(function (require, exports, module) {
 
         Editor.setUseTabChar(EDITOR_USE_TABS);
         Editor.setSpaceUnits(EDITOR_SPACE_UNITS);
+        Editor._autoDetectTabSpaces(editor, undefined, true);
 
         if (pane.addView) {
             pane.addView(editor);

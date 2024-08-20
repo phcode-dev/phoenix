@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, beforeEach, afterEach, awaitsForDone*/
+/*global describe, it, expect, afterAll, afterEach, beforeAll*/
 
 define(function (require, exports, module) {
 
@@ -36,6 +36,7 @@ define(function (require, exports, module) {
 
     const jsFile = require("text!../../../../test/spec/prettier-test-files/js/test.js"),
         jsPrettyFile = require("text!../../../../test/spec/prettier-test-files/js/test-pretty.js"),
+        jsPrettyFile8Indent = require("text!../../../../test/spec/prettier-test-files/js/test-pretty-8-indent.js"),
         jsPrettyRulerFile = require("text!../../../../test/spec/prettier-test-files/js/test-pretty-ruler.js"),
         jsPrettySelection = require("text!../../../../test/spec/prettier-test-files/js/test-pretty-selection.js"),
         jsPrettySelectionOffset = require("text!../../../../test/spec/prettier-test-files/js/test-pretty-selection-offset.js"),
@@ -63,6 +64,13 @@ define(function (require, exports, module) {
     describe("integration: Phoenix Prettier", function () {
         let testEditor, testDocument;
 
+        beforeAll(async ()=>{
+            Editor.setAutoTabSpaces(false);
+        });
+        afterAll(()=>{
+            Editor.setAutoTabSpaces(true);
+        });
+
         function createMockEditor(text, language, filename) {
             let mock = SpecRunnerUtils.createMockEditor(text, language, undefined,
                 {filename: filename});
@@ -73,6 +81,7 @@ define(function (require, exports, module) {
         describe("JS Beautify", function (){
             afterEach(async function () {
                 SpecRunnerUtils.destroyMockEditor(testDocument);
+                Editor.setAutoTabSpaces(false);
                 Editor.setUseTabChar(false);
                 Editor.setSpaceUnits(4);
             });
@@ -81,6 +90,13 @@ define(function (require, exports, module) {
                 createMockEditor(jsFile, "javascript", "/test.js");
                 await BeautificationManager.beautifyEditor(testEditor);
                 expect(testEditor.document.getText(true)).toBe(jsPrettyFile);
+            });
+
+            it("should beautify editor for js with auto detected spacing", async function () {
+                Editor.setAutoTabSpaces(true);
+                createMockEditor(jsFile, "javascript", "/test.js");
+                await BeautificationManager.beautifyEditor(testEditor);
+                expect(testEditor.document.getText(true)).toBe(jsPrettyFile8Indent);
             });
 
             it("should use line max length from editor rulers by default", async function () {
