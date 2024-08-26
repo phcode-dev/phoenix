@@ -214,8 +214,7 @@ function confirmReload(title, message) {
     });
     copyButton.textContent = 'Copy Error';
     getHelpButton.textContent = 'Get Help';
-    reloadButton.textContent = 'Reload Page';
-
+    reloadButton.textContent = 'Restart App';
     // Styling for visibility
     // Define common styles for buttons
     const buttonStyles = {

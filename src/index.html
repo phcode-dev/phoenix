@@ -208,10 +208,18 @@
                             // some linux distros may not have Documents folder. so we use the home folder
                             // https://github.com/phcode-dev/phoenix/issues/1729
                             window._tauriBootVars.documentDir = results[4].value;
-                        } else {
-                            console.error("unable to determine user documents dir, defaulting to app data dir documentdir:",
+                        } else if(results[2].status === "fulfilled"){
+                            console.error("Unable to determine user documents dir, defaulting to app data dir as document dir:",
                                 results[1].reason, "home folder error: ", results[4].reason);
                             window._tauriBootVars.documentDir = results[2].value;
+                        } else {
+                            alert("Could not resolve user documents directory. \nPhoenix Code cannot start.");
+                        }
+
+                        if(results[2].status === "fulfilled") {
+                            window._tauriBootVars.appLocalDir = results[2].value;
+                        } else {
+                            alert("Could not resolve Application Data directory. \nPhoenix Code cannot start.");
                         }
 
                         // For tests, documents dir is localAppDataDir/testDocuments to keep user documents garbage free for tests
