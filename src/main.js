@@ -190,29 +190,112 @@ function _unregisterServiceWorkers() {
 
 const SESSION_RESTART_ONCE_DUE_TO_CRITICAL_ERROR = "SESSION_RESTART_ONCE_DUE_TO_CRITICAL_ERROR";
 
-async function _recoverOnFailure(err) {
-    if (!Phoenix.isNativeApp && !navigator.onLine) {
-        alert('No internet connection. Please check your connection and reload page.');
-        return;
-    }
-    // metrics api might not be available here as we were seeing no metrics raised. Only bugsnag there.
-    window.logger && window.logger.reportError(err,
-        'Critical error when loading brackets. Trying to reload again.');
-    const restartedOnce = sessionStorage.getItem(SESSION_RESTART_ONCE_DUE_TO_CRITICAL_ERROR);
-    let shouldRestart;
-    if(!restartedOnce){
-        sessionStorage.setItem(SESSION_RESTART_ONCE_DUE_TO_CRITICAL_ERROR, "true");
-        shouldRestart = true;
-    } else {
-        shouldRestart = confirm("Oops! Something went wrong. Reload app?");
-        if(shouldRestart instanceof Promise){
-            shouldRestart = await shouldRestart;
-        }
-    }
-    if(!shouldRestart) {
-        return;
-    }
+function confirmReload(title, message) {
+    // vanilla js elements as we dont know if anything else is available in crash scenario
+    const modal = document.createElement('div');
+    const modalContent = document.createElement('div');
+    const modalTitle = document.createElement('h2');
+    const modalMessage = document.createElement('p');
+    const buttonsContainer = document.createElement('div'); // Container for buttons
+    const copyButton = document.createElement('button');
+    const getHelpButton = document.createElement('button');
+    const reloadButton = document.createElement('button');
 
+    // Set content
+    modalTitle.textContent = title;
+    message.split('\n').forEach((part, index, array) => {
+        modalMessage.appendChild(document.createTextNode(part));
+        if (index < array.length - 1) { // Don't add a break on the last element
+            modalMessage.appendChild(document.createElement('br'));
+        }
+    });
+    copyButton.textContent = 'Copy Error';
+    getHelpButton.textContent = 'Get Help';
+    reloadButton.textContent = 'Reload Page';
+
+    // Styling for visibility
+    modalTitle.style.color = 'red';
+    modal.style.color = 'black';
+    modal.style.position = 'fixed';
+    modal.style.top = '0';
+    modal.style.left = '0';
+    modal.style.width = '100%';
+    modal.style.height = '100%';
+    modal.style.backgroundColor = 'rgba(0, 0, 0, 0.75)';
+    modal.style.zIndex = '10000000'; // Ensure modal is on top
+    modal.style.display = 'flex';
+    modal.style.justifyContent = 'center';
+    modal.style.alignItems = 'center';
+
+    modalContent.style.backgroundColor = 'white';
+    modalContent.style.padding = '20px';
+    modalContent.style.borderRadius = '10px';
+    modalContent.style.textAlign = 'center';
+    modalContent.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
+
+    // Styling buttons and their container
+    buttonsContainer.style.marginTop = '20px';
+    buttonsContainer.style.display = 'flex';
+    buttonsContainer.style.justifyContent = 'space-around'; // Space buttons nicely
+
+    copyButton.style.padding = '10px 20px';
+    copyButton.style.marginRight = '10px'; // Space between buttons
+    copyButton.style.border = 'none';
+    copyButton.style.color = 'white';
+    copyButton.style.backgroundColor = '#288edf';
+    copyButton.style.borderRadius = '5px';
+    copyButton.style.cursor = 'pointer';
+
+    getHelpButton.style.padding = '10px 20px';
+    getHelpButton.style.marginRight = '10px'; // Space between buttons
+    getHelpButton.style.border = 'none';
+    getHelpButton.style.color = 'white';
+    getHelpButton.style.backgroundColor = '#4CAF50';
+    getHelpButton.style.borderRadius = '5px';
+    getHelpButton.style.cursor = 'pointer';
+
+    reloadButton.style.padding = '10px 20px';
+    reloadButton.style.border = 'none';
+    reloadButton.style.color = 'white';
+    reloadButton.style.backgroundColor = '#4CAF50';
+    reloadButton.style.borderRadius = '5px';
+    reloadButton.style.cursor = 'pointer';
+
+    // Event listeners for buttons
+    copyButton.onclick = function() {
+        navigator.clipboard.writeText(message).then(() => {
+            alert('Error Message copied!');
+        }, (err) => {
+            console.error('Failed to copy text: ', err);
+        });
+    };
+    getHelpButton.onclick = function() {
+        Phoenix.app.openURLInDefaultBrowser("https://github.com/phcode-dev/phoenix/discussions");
+    };
+
+    // Append children
+    modalContent.appendChild(modalTitle);
+    modalContent.appendChild(modalMessage);
+    buttonsContainer.appendChild(copyButton);
+    buttonsContainer.appendChild(getHelpButton);
+    buttonsContainer.appendChild(reloadButton);
+    modalContent.appendChild(buttonsContainer);
+    modal.appendChild(modalContent);
+
+    // Append modal to the body
+    document.body.appendChild(modal);
+
+    return new Promise(resolve =>{
+        reloadButton.onclick = function() {
+            resolve(true);
+            reloadButton.textContent = 'Reloading...';
+            reloadButton.style.color = 'darkgray';
+            reloadButton.style.backgroundColor = 'grey';
+        };
+    });
+}
+
+function resetCacheAndRestart() {
     // try a cache reset
     if(window._resetCacheIfNeeded){
         window._resetCacheIfNeeded(true)
@@ -233,9 +316,29 @@ async function _recoverOnFailure(err) {
     }
 }
 
+async function _recoverOnFailure(err) {
+    if (!Phoenix.isNativeApp && !navigator.onLine) {
+        alert('No internet connection. Please check your connection and reload page.');
+        return;
+    }
+    // metrics api might not be available here as we were seeing no metrics raised. Only bugsnag there.
+    window.logger && window.logger.reportError(err,
+        'Critical error when loading brackets. Trying to reload again.');
+    const restartedOnce = sessionStorage.getItem(SESSION_RESTART_ONCE_DUE_TO_CRITICAL_ERROR);
+    let shouldRestart;
+    if(!restartedOnce){
+        sessionStorage.setItem(SESSION_RESTART_ONCE_DUE_TO_CRITICAL_ERROR, "true");
+        shouldRestart = true;
+    } else {
+        shouldRestart = await confirmReload('Oops! Something went wrong', (err.message +"\n"+ err.stack)||err);
+    }
+    if(!shouldRestart) {
+        return;
+    }
+    resetCacheAndRestart();
+}
+
 define(function (require) {
-
-
     // Load compatibility shims--these need to load early, be careful moving this
     // Event dispatcher must be loaded before worker comm https://github.com/phcode-dev/phoenix/pull/678
     require(["utils/Metrics", "utils/Compatibility", "utils/EventDispatcher"], function () {
