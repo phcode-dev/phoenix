@@ -27,7 +27,8 @@
 
             if(event.data.type === "WHO_AM_I_RESPONSE") {
                 window.__PHOENIX_EMBED_INFO = {
-                    isTauri: event.data.isTauri
+                    isTauri: event.data.isTauri,
+                    platform: event.data.platform
                 };
             } else if(event.data.type === "_TEST_FOCUS_CLICK") { // for integ tests
                 document.body.click();

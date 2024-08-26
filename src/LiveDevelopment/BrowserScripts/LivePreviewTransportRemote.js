@@ -329,22 +329,6 @@
         }
     });
 
-    let alertStr = "Alert", confirmStr = "Confirm";
-
-    function alertPatch(message) {
-        // in tauri windows, only the prompt API works. so we use it for alerts as well
-        // we cant use html alerts here as the alert api will pause js which we cant do via js alone.
-        prompt(alertStr, message);
-    }
-
-    function confirmPatch(message) {
-        // in tauri windows, only the prompt API works. so we use it for confirm as well
-        // we cant use html alerts here as the alert api will pause js which we cant do via js alone.
-        const response = prompt(confirmStr, message);
-        // prompt will return null if cancel is pressed
-        return !!response;
-    }
-
     // this is for managing who am i context in iframes embedded in phoenix to have special handling.
     window.addEventListener('message', function(event) {
         if (!TRANSPORT_CONFIG.TRUSTED_ORIGINS_EMBED[event.origin]) {
@@ -352,15 +336,9 @@
         }
         if(event.data.type === "WHO_AM_I_RESPONSE") {
             window.__PHOENIX_EMBED_INFO = {
-                isTauri: event.data.isTauri
+                isTauri: event.data.isTauri,
+                platform: event.data.platform
             };
-            alertStr = event.data.alertStr || alertStr;
-            confirmStr = event.data.confirmStr || confirmStr;
-            if(event.data.isTauri && event.data.platform === 'win') {
-                // patch alert and confirm as in windows iframes in tauri, these are not present.
-                window.alert = alertPatch;
-                window.confirm = confirmPatch;
-            }
         }
     });
     if(window.self !== window.parent){
