@@ -190,6 +190,9 @@ function _unregisterServiceWorkers() {
 
 const SESSION_RESTART_ONCE_DUE_TO_CRITICAL_ERROR = "SESSION_RESTART_ONCE_DUE_TO_CRITICAL_ERROR";
 
+function applyStyles(element, styles) {
+    Object.assign(element.style, styles);
+}
 function confirmReload(title, message) {
     // vanilla js elements as we dont know if anything else is available in crash scenario
     const modal = document.createElement('div');
@@ -214,52 +217,54 @@ function confirmReload(title, message) {
     reloadButton.textContent = 'Reload Page';
 
     // Styling for visibility
+    // Define common styles for buttons
+    const buttonStyles = {
+        padding: '10px 20px',
+        marginRight: '10px', // Space between buttons
+        border: 'none',
+        color: 'white',
+        borderRadius: '5px',
+        cursor: 'pointer'
+    };
+
+    // Specific styles for different buttons
+    const copyButtonStyles = {backgroundColor: '#288edf'};
+    const getHelpButtonStyles = {backgroundColor: '#4CAF50'};
+    const reloadButtonStyles = {backgroundColor: '#4CAF50'};
+
     modalTitle.style.color = 'red';
-    modal.style.color = 'black';
-    modal.style.position = 'fixed';
-    modal.style.top = '0';
-    modal.style.left = '0';
-    modal.style.width = '100%';
-    modal.style.height = '100%';
-    modal.style.backgroundColor = 'rgba(0, 0, 0, 0.75)';
-    modal.style.zIndex = '10000000'; // Ensure modal is on top
-    modal.style.display = 'flex';
-    modal.style.justifyContent = 'center';
-    modal.style.alignItems = 'center';
+    applyStyles(modal, {
+        color: 'black',
+        position: 'fixed',
+        top: '0',
+        left: '0',
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'rgba(0, 0, 0, 0.75)',
+        zIndex: '10000000',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+    });
 
-    modalContent.style.backgroundColor = 'white';
-    modalContent.style.padding = '20px';
-    modalContent.style.borderRadius = '10px';
-    modalContent.style.textAlign = 'center';
-    modalContent.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
+    applyStyles(modalContent, {
+        backgroundColor: 'white',
+        padding: '20px',
+        borderRadius: '10px',
+        textAlign: 'center',
+        boxShadow: '0 4px 8px rgba(0,0,0,0.2)'
+    });
 
-    // Styling buttons and their container
-    buttonsContainer.style.marginTop = '20px';
-    buttonsContainer.style.display = 'flex';
-    buttonsContainer.style.justifyContent = 'space-around'; // Space buttons nicely
+    applyStyles(buttonsContainer, {
+        marginTop: '20px',
+        display: 'flex',
+        justifyContent: 'space-around'
+    });
 
-    copyButton.style.padding = '10px 20px';
-    copyButton.style.marginRight = '10px'; // Space between buttons
-    copyButton.style.border = 'none';
-    copyButton.style.color = 'white';
-    copyButton.style.backgroundColor = '#288edf';
-    copyButton.style.borderRadius = '5px';
-    copyButton.style.cursor = 'pointer';
-
-    getHelpButton.style.padding = '10px 20px';
-    getHelpButton.style.marginRight = '10px'; // Space between buttons
-    getHelpButton.style.border = 'none';
-    getHelpButton.style.color = 'white';
-    getHelpButton.style.backgroundColor = '#4CAF50';
-    getHelpButton.style.borderRadius = '5px';
-    getHelpButton.style.cursor = 'pointer';
-
-    reloadButton.style.padding = '10px 20px';
-    reloadButton.style.border = 'none';
-    reloadButton.style.color = 'white';
-    reloadButton.style.backgroundColor = '#4CAF50';
-    reloadButton.style.borderRadius = '5px';
-    reloadButton.style.cursor = 'pointer';
+    // Apply styles to buttons
+    applyStyles(copyButton, {...buttonStyles, ...copyButtonStyles});
+    applyStyles(getHelpButton, {...buttonStyles, ...getHelpButtonStyles});
+    applyStyles(reloadButton, {...buttonStyles, ...reloadButtonStyles});
 
     // Event listeners for buttons
     copyButton.onclick = function() {
