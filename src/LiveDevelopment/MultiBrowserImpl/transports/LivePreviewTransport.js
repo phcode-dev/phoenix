@@ -27,6 +27,7 @@ define(function (require, exports, module) {
 
     const LiveDevProtocol      = require("LiveDevelopment/MultiBrowserImpl/protocol/LiveDevProtocol"),
         EventDispatcher = require("utils/EventDispatcher"),
+        Strings            = require("strings"),
         Metrics = require("utils/Metrics");
 
     const METRIC_SEND_INTERVAL_MS = 1000;
@@ -75,9 +76,14 @@ define(function (require, exports, module) {
             _transportBridge.getRemoteTransportScript()) || "";
         transportScript = "const TRANSPORT_CONFIG={};" +
             `TRANSPORT_CONFIG.PHOENIX_INSTANCE_ID = "${Phoenix.PHOENIX_INSTANCE_ID}";\n` +
+            `TRANSPORT_CONFIG.IS_NATIVE_APP = ${Phoenix.isNativeApp};\n` +
+            `TRANSPORT_CONFIG.PLATFORM = "${Phoenix.platform}";\n` +
             `TRANSPORT_CONFIG.LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME = "${LiveDevProtocol.LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME}";\n` +
             `TRANSPORT_CONFIG.LIVE_PREVIEW_DEBUG_ENABLED = ${logger.loggingOptions.logLivePreview};\n`+
             `TRANSPORT_CONFIG.TRUSTED_ORIGINS_EMBED = ${JSON.stringify(Phoenix.TRUSTED_ORIGINS)};\n`+
+            `TRANSPORT_CONFIG.STRINGS = {
+                UNSUPPORTED_DOM_APIS_CONFIRM: "${Strings.UNSUPPORTED_DOM_APIS_CONFIRM}"
+            };\n`+
             transportScript;
         return LivePreviewTransportRemote.replace(replaceString, transportScript)
             + "\n";

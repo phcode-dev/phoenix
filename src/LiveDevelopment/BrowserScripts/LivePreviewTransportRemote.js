@@ -329,16 +329,123 @@
         }
     });
 
+    function alertPatch(message) {
+        // Create the modal container
+        const modal = document.createElement('div');
+        modal.style.position = 'fixed';
+        modal.style.top = '0';
+        modal.style.left = '0';
+        modal.style.width = '100%';
+        modal.style.height = '100vh';
+        modal.style.backgroundColor = 'rgba(0,0,0,0.5)';
+        modal.style.display = 'flex';
+        modal.style.justifyContent = 'center';
+        modal.style.alignItems = 'center';
+        modal.style.zIndex = '1000000000';
+
+        // Create the modal content box
+        const modalContent = document.createElement('div');
+        modalContent.style.backgroundColor = 'white';
+        modalContent.style.padding = '20px';
+        modalContent.style.borderRadius = '5px';
+        modalContent.style.minWidth = '300px';
+        modalContent.style.margin = 'auto';
+        modalContent.style.textAlign = 'center';
+
+        // Add title to the modal with the current page URL
+        const title = document.createElement('h3');
+        title.textContent = "alert"; // not translated as window.alert is same in all languages.
+        title.style.marginBottom = '10px';
+
+        // Add text to the modal
+        const text = document.createElement('p');
+        text.textContent = message;
+        text.style.marginBottom = '20px';
+
+        // Create OK button to close the modal
+        const button = document.createElement('button');
+        button.textContent = 'OK';
+        button.style.padding = '10px 20px';
+        button.style.border = 'none';
+        button.style.backgroundColor = '#007BFF';
+        button.style.color = 'white';
+        button.style.borderRadius = '5px';
+        button.style.cursor = 'pointer';
+
+        button.onclick = function() {
+            document.body.removeChild(modal);
+        };
+
+        // Append elements
+        modalContent.appendChild(title);
+        modalContent.appendChild(text);
+        modalContent.appendChild(button);
+        modal.appendChild(modalContent);
+        document.body.appendChild(modal);
+    }
+
+    function unsupported() {
+        alertPatch(TRANSPORT_CONFIG.STRINGS.UNSUPPORTED_DOM_APIS_CONFIRM);
+    }
+
+    // all externally opened live previews have the phcodeLivePreview="true" query string parameter set.
+    const currentUrl = new URL(window.location.href);
+    const queryParams = new URLSearchParams(currentUrl.search);
+    const isExternalBrowser = queryParams.get("phcodeLivePreview") === "true";
+    const isTauri = TRANSPORT_CONFIG.IS_NATIVE_APP;
+    const platform = TRANSPORT_CONFIG.PLATFORM;
+
+    let alertQueue = [], confirmOrPromptCalled = false;
+    let addToQueue = true;
+    if(!isExternalBrowser){
+        // this is an embedded iframe we always take hold of the alert api for better ux within the live preivew frame.
+        window.__PHOENIX_EMBED_INFO = {isTauri, platform};
+        const shouldPatchAlert = (isTauri && platform === "mac");
+        if(shouldPatchAlert){
+            // In Mac embedded live preview iframe in tauri, alert, prompt, and confirm apis
+            // are not available, so we need to patch the other apis in mac
+            window.alert = function (...args) {
+                // at this time, we cant add our html alert as body is not loaded yet. So we queue alerts.
+                addToQueue && alertQueue.push(...args);
+            };
+            window.confirm = function () {
+                // confirm and prompt is no-op in mac, we just need to show that the api is not supported, so we just
+                // keep a flag.
+                confirmOrPromptCalled = true;
+            };
+            window.prompt = function () {
+                confirmOrPromptCalled = true;
+            };
+            function drainAlertQueues() {
+                addToQueue = false;
+                if(confirmOrPromptCalled) {
+                    unsupported();
+                }
+                for(let i=0; i<alertQueue.length; i++) {
+                    alertPatch(alertQueue[i]);
+                }
+                alertQueue = [];
+                window.alert = alertPatch;
+                window.confirm = unsupported;
+                window.prompt = unsupported;
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                drainAlertQueues();
+            });
+        }
+    }
+
     // this is for managing who am i context in iframes embedded in phoenix to have special handling.
     window.addEventListener('message', function(event) {
         if (!TRANSPORT_CONFIG.TRUSTED_ORIGINS_EMBED[event.origin]) {
             return; // Ignore messages from unexpected origins
         }
         if(event.data.type === "WHO_AM_I_RESPONSE") {
-            window.__PHOENIX_EMBED_INFO = {
-                isTauri: event.data.isTauri,
-                platform: event.data.platform
-            };
+            if(!window.__PHOENIX_EMBED_INFO){
+                // this is set from transport config. We should be here
+                console.error("Expected window.__PHOENIX_EMBED_INFO to be set, but not???");
+            }
         }
     });
     if(window.self !== window.parent){
