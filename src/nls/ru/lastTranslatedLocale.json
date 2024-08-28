@@ -430,7 +430,7 @@
   "CMD_SCROLL_LINE_DOWN": "Прокрутить на строку вниз",
   "CMD_TOGGLE_LINE_NUMBERS": "Номера строк",
   "CMD_TOGGLE_ACTIVE_LINE": "Подсвечивать активную строку",
-  "CMD_TOGGLE_WORD_WRAP": "Заворачивать строки",
+  "CMD_TOGGLE_WORD_WRAP": "Перенос строки",
   "CMD_LIVE_HIGHLIGHT": "Подсвечивать в Live Preview",
   "CMD_VIEW_TOGGLE_INSPECTION": "Анализировать при сохранении",
   "CMD_VIEW_TOGGLE_PROBLEMS": "Проблемы",
