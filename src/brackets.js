@@ -69,12 +69,12 @@ define(function (require, exports, module) {
     require("NodeConnector");
     require("command/KeyboardOverlayMode");
     require("editor/EditorManager");
+    require("project/FileViewController");
 
     // Load dependent modules
     const AppInit             = require("utils/AppInit"),
         LanguageManager     = require("language/LanguageManager"),
         ProjectManager      = require("project/ProjectManager"),
-        FileViewController  = require("project/FileViewController"),
         FileSyncManager     = require("project/FileSyncManager"),
         Commands            = require("command/Commands"),
         CommandManager      = require("command/CommandManager"),
@@ -95,8 +95,8 @@ define(function (require, exports, module) {
         DeprecationWarning  = require("utils/DeprecationWarning"),
         ViewCommandHandlers = require("view/ViewCommandHandlers"),
         NotificationUI      = require("widgets/NotificationUI"),
-        MainViewManager     = require("view/MainViewManager"),
         Metrics             = require("utils/Metrics");
+    require("view/MainViewManager");
 
     window.EventManager = EventManager; // Main event intermediary between brackets and other web pages.
     /**
