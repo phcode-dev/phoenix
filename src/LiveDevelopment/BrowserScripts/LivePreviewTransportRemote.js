@@ -329,7 +329,7 @@
         }
     });
 
-    function alertPatch(message) {
+    function alertPatch(message, titleText) {
         // Create the modal container
         const modal = document.createElement('div');
         modal.style.position = 'fixed';
@@ -354,7 +354,7 @@
 
         // Add title to the modal with the current page URL
         const title = document.createElement('h3');
-        title.textContent = "alert"; // not translated as window.alert is same in all languages.
+        title.textContent = titleText || "alert"; // not translated as window.alert is same in all languages.
         title.style.marginBottom = '10px';
 
         // Add text to the modal
@@ -384,8 +384,11 @@
         document.body.appendChild(modal);
     }
 
-    function unsupported() {
-        alertPatch(TRANSPORT_CONFIG.STRINGS.UNSUPPORTED_DOM_APIS_CONFIRM);
+    function unsupportedConfirm() {
+        alertPatch(TRANSPORT_CONFIG.STRINGS.UNSUPPORTED_DOM_APIS_CONFIRM, "window.confirm");
+    }
+    function unsupportedPrompt() {
+        alertPatch(TRANSPORT_CONFIG.STRINGS.UNSUPPORTED_DOM_APIS_CONFIRM, "window.prompt");
     }
 
     // all externally opened live previews have the phcodeLivePreview="true" query string parameter set.
@@ -395,7 +398,7 @@
     const isTauri = TRANSPORT_CONFIG.IS_NATIVE_APP;
     const platform = TRANSPORT_CONFIG.PLATFORM;
 
-    let alertQueue = [], confirmOrPromptCalled = false;
+    let alertQueue = [], confirmCalled = false, promptCalled = false;
     let addToQueue = true;
     if(!isExternalBrowser){
         // this is an embedded iframe we always take hold of the alert api for better ux within the live preivew frame.
@@ -411,23 +414,26 @@
             window.confirm = function () {
                 // confirm and prompt is no-op in mac, we just need to show that the api is not supported, so we just
                 // keep a flag.
-                confirmOrPromptCalled = true;
+                confirmCalled = true;
             };
             window.prompt = function () {
-                confirmOrPromptCalled = true;
+                promptCalled = true;
             };
             function drainAlertQueues() {
                 addToQueue = false;
-                if(confirmOrPromptCalled) {
-                    unsupported();
+                if(confirmCalled) {
+                    unsupportedConfirm();
+                }
+                if(promptCalled) {
+                    unsupportedPrompt();
                 }
                 for(let i=0; i<alertQueue.length; i++) {
                     alertPatch(alertQueue[i]);
                 }
                 alertQueue = [];
                 window.alert = alertPatch;
-                window.confirm = unsupported;
-                window.prompt = unsupported;
+                window.confirm = unsupportedConfirm;
+                window.prompt = unsupportedPrompt;
             }
 
             document.addEventListener('DOMContentLoaded', function() {
