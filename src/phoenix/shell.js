@@ -515,6 +515,17 @@ Phoenix.app = {
         }
         return window.__TAURI__.tauri.invoke("zoom_window", {scaleFactor: scaleFactor});
     },
+    _openUrlInBrowserWin: function (url, browser) {
+        // private API for internal use only. May be removed at any time.
+        // Please use NodeUtils.openUrlInBrowser for a platform independent equivalent of this.
+        if(!Phoenix.isNativeApp){
+            throw new Error("_openUrlInBrowserWin is not supported in browsers");
+        }
+        if(Phoenix.platform !== "win") {
+            throw new Error("_openUrlInBrowserWin is only supported in windows");
+        }
+        return window.__TAURI__.invoke('_open_url_in_browser_win', { url, browser });
+    },
     getApplicationSupportDirectory: Phoenix.VFS.getAppSupportDir,
     getExtensionsDirectory: Phoenix.VFS.getExtensionDir,
     getUserDocumentsDirectory: Phoenix.VFS.getUserDocumentsDirectory,
