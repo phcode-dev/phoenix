@@ -75,6 +75,9 @@ define(function (require, exports, module) {
         if(!Phoenix.isNativeApp) {
             throw new Error("openUrlInBrowser not available in browser");
         }
+        if(Phoenix.platform === "win") {
+            return Phoenix.app._openUrlInBrowserWin(url, browserName);
+        }
         return utilsConnector.execPeer("openUrlInBrowser", {url, browserName});
     }
 
