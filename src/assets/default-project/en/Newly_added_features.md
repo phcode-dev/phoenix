@@ -7,6 +7,32 @@ We are continuously adding features every week to improve the life of web develo
 
 Here's a list of top features recently added to Phoenix:
 
+## Auto Tab and Spacing detection
+
+`Added on August, 2024`
+
+Phoenix Code can now automatically detect and apply the indentation style (tabs or spaces) based on the existing code in the file.
+[Read more...](https://docs.phcode.dev/docs/editing-text/#auto-space-detection)
+
+![image](https://github.com/user-attachments/assets/0adc47c5-a561-4002-bffb-d7bcde999b9d)
+
+## Auto rename start and end of HTML/XML/SVG tags
+
+`Added on July, 2024`
+
+Automatically rename paired HTML/XML/SVG tags as you type at the start or end of the tag. [Read more...](https://docs.phcode.dev/docs/editing-text/#auto-rename-tag)
+
+![tag sync](https://github.com/user-attachments/assets/ad82db8c-df1c-4c83-a5db-145caab539ec)
+
+## Now Available on ChromeOS
+
+`Added on July, 2024`
+
+All new native ChromeOS app is now available on the Google Play Store.
+The ChromeOS app is a highly requested feature and is specially made for education and student use.
+
+[![google play icon (1)](https://github.com/user-attachments/assets/0a7f20ce-653c-43a8-ac3e-3875ea74df5b)](https://play.google.com/store/apps/details?id=prod.phcode.twa)
+
 ## Drag and Drop Files and Folders in Desktop Apps - Experimental
 
 `Added on June, 2024`
