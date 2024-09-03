@@ -136,7 +136,7 @@ periodically to staging. To view staging:
    up to 15 minutes before the changes are deployed to the dev stage. Reload page a few times to get the latest
    dev build and reset cached content.
 
-## Deployment to phcore.dev
+## Deployment to phcode.dev
 * All changes pushed to the main branch are automatically published to https://dev.phcode.dev 
 * To publish the changes to https://staging.phcode.dev , push changes to the `staging` branch in this repo with a pull request.
 * Once the changes are validated and tested, trigger a prod deployment by pushing to the `prod` branch.
