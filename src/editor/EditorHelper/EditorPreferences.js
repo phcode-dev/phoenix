@@ -59,8 +59,10 @@ define(function (require, exports, module) {
         MIN_TAB_SIZE            =  1,
         DEFAULT_SPACE_UNITS     =  4,
         DEFAULT_TAB_SIZE        =  4,
+        AUTO_TAB_SIZE           =  4,
         MAX_SPACE_UNITS         = 10,
-        MAX_TAB_SIZE            = 10;
+        MAX_TAB_SIZE            = 10,
+        MAX_AUTO_TAB_UNITS      = 3;
 
     const LINE_NUMBER_GUTTER = "CodeMirror-linenumbers",
         LINE_NUMBER_GUTTER_PRIORITY     = 100,
@@ -220,6 +222,8 @@ define(function (require, exports, module) {
     exports.DEFAULT_TAB_SIZE        =  DEFAULT_TAB_SIZE;
     exports.MAX_SPACE_UNITS         = MAX_SPACE_UNITS;
     exports.MAX_TAB_SIZE            = MAX_TAB_SIZE;
+    exports.AUTO_TAB_SIZE           = AUTO_TAB_SIZE;
+    exports.MAX_AUTO_TAB_UNITS      = MAX_AUTO_TAB_UNITS;
 
     exports.LINE_NUMBER_GUTTER = LINE_NUMBER_GUTTER;
     exports.LINE_NUMBER_GUTTER_PRIORITY     = LINE_NUMBER_GUTTER_PRIORITY;

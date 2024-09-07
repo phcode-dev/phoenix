@@ -2299,34 +2299,58 @@ define(function (require, exports, module) {
 
         const fullPath = this.document.file.fullPath;
         if(SPACING_OPTIONS.has(prefName)){
-            if(prefName === SPACE_UNITS){
-                newValue = Editor.getSpaceUnits(fullPath);
-            } else if(prefName === TAB_SIZE){
-                newValue = Editor.getTabSize(fullPath);
-            } else {
-                const newTabSpaceCfg = Editor.getAutoTabSpaces(fullPath);
-                if(newTabSpaceCfg){
-                    _computeTabSpaces(this);
+            const newUseAutoTabs = Editor.getAutoTabSpaces(fullPath);
+            if(newUseAutoTabs){
+                _computeTabSpaces(this);
+            }
+            const newUseTabCharCfg = Editor.getUseTabChar(fullPath);
+            const newSpaceUnits = Editor.getSpaceUnits(fullPath);
+            const newTabSize = Editor.getTabSize(fullPath);
+            const newTabUnits = Editor.getAutoTabUnits(fullPath);
+            if(this._currentOptions[AUTO_TAB_SPACES] === newUseAutoTabs &&
+                this._currentOptions[USE_TAB_CHAR] === newUseTabCharCfg &&
+                this._currentOptions[SPACE_UNITS] === newSpaceUnits &&
+                this._currentOptions[TAB_SIZE] === newTabSize) {
+                // no change
+                const currentIndentUnit = this._codeMirror.getOption("indentUnit");
+                let expectedIndentUnit;
+                if(newUseAutoTabs) {
+                    expectedIndentUnit = newUseTabCharCfg ?
+                        newTabUnits * this._currentOptions[TAB_SIZE] :
+                        this._currentOptions[SPACE_UNITS];
+                } else {
+                    expectedIndentUnit = newUseTabCharCfg ?
+                        this._currentOptions[TAB_SIZE]:
+                        this._currentOptions[SPACE_UNITS];
                 }
-                const newUseTabCharCfg = Editor.getUseTabChar(fullPath);
-                if(this._currentOptions[AUTO_TAB_SPACES] === newTabSpaceCfg &&
-                    this._currentOptions[USE_TAB_CHAR] === newUseTabCharCfg) {
-                    // no change
+                if(currentIndentUnit === expectedIndentUnit) {
                     return;
                 }
-                this._currentOptions[AUTO_TAB_SPACES] = newTabSpaceCfg;
-                this._currentOptions[USE_TAB_CHAR] = newUseTabCharCfg;
-                this._currentOptions[SPACE_UNITS] = Editor.getSpaceUnits(fullPath);
-                this._currentOptions[TAB_SIZE] = Editor.getTabSize(fullPath);
-                this._codeMirror.setOption(cmOptions[USE_TAB_CHAR], newUseTabCharCfg);
+            }
+            this._currentOptions[AUTO_TAB_SPACES] = newUseAutoTabs;
+            this._currentOptions[USE_TAB_CHAR] = newUseTabCharCfg;
+            this._currentOptions[SPACE_UNITS] = newSpaceUnits;
+            this._currentOptions[TAB_SIZE] = newTabSize;
+            this._codeMirror.setOption(cmOptions[USE_TAB_CHAR], newUseTabCharCfg);
+            if(newUseAutoTabs) {
+                if(newUseTabCharCfg){
+                    this._codeMirror.setOption(cmOptions[TAB_SIZE], this._currentOptions[TAB_SIZE]);
+                    this._codeMirror.setOption("indentUnit", newTabUnits*this._currentOptions[TAB_SIZE]);
+                } else {
+                    this._codeMirror.setOption(cmOptions[TAB_SIZE], this._currentOptions[TAB_SIZE]);
+                    this._codeMirror.setOption("indentUnit", this._currentOptions[SPACE_UNITS]);
+                }
+            } else {
                 this._codeMirror.setOption("indentUnit", newUseTabCharCfg === true ?
-                    this._currentOptions[TAB_SIZE] :
+                    this._currentOptions[TAB_SIZE]:
                     this._currentOptions[SPACE_UNITS]
                 );
-                this.trigger("optionChange", AUTO_TAB_SPACES, newTabSpaceCfg);
-                this.trigger("optionChange", USE_TAB_CHAR, newUseTabCharCfg);
-                return;
+                this._codeMirror.setOption(cmOptions[TAB_SIZE], this._currentOptions[TAB_SIZE]);
             }
+            this._codeMirror.setOption(cmOptions[USE_TAB_CHAR], newUseTabCharCfg);
+            this.trigger("optionChange", AUTO_TAB_SPACES, newUseAutoTabs);
+            this.trigger("optionChange", USE_TAB_CHAR, newUseTabCharCfg);
+            return;
         }
 
         if (oldValue !== newValue) {
@@ -2656,6 +2680,19 @@ define(function (require, exports, module) {
         return PreferencesManager.get(TAB_SIZE, _buildPreferencesContext(fullPath));
     };
 
+    /**
+     * Gets the number of tabs for the file. Will
+     * @param fullPath
+     * @returns {number|*}
+     */
+    Editor.getAutoTabUnits = function (fullPath) {
+        let computedValues = _getCachedSpaceCfg(fullPath);
+        if(Editor.getAutoTabSpaces(fullPath) && computedValues && computedValues.tabUnits) {
+            return computedValues.tabUnits;
+        }
+        return EditorPreferences.MIN_SPACE_UNITS;
+    };
+
     const MAX_LINES_TO_SCAN_FOR_INDENT = 700; // this is high to account for any js docs/ file comments
     function _computeTabSpaces(editor, scanFullFile, recompute) {
         const fullPath = editor.document.file.fullPath;
@@ -2673,8 +2710,9 @@ define(function (require, exports, module) {
         tabSpacesStateManager.set(fullPath, null); // we dont have a remove api, so just nulling for now
         computedTabSpaces.set(fullPath, {
             useTabChar,
-            tabSize: useTabChar ? Math.min(amount, EditorPreferences.MAX_TAB_SIZE) : 0,
-            spaceUnits: useTabChar ? 0 : Math.min(amount, EditorPreferences.MAX_SPACE_UNITS)
+            tabSize: EditorPreferences.DEFAULT_TAB_SIZE,
+            spaceUnits: useTabChar ? 0 : Math.min(amount, EditorPreferences.MAX_SPACE_UNITS),
+            tabUnits: useTabChar ? Math.min(amount, EditorPreferences.MAX_AUTO_TAB_UNITS) : 0
         });
     }
     Editor._autoDetectTabSpaces = function (editor, scanFullFile, recompute) {
