@@ -73,15 +73,26 @@ define(function (require, exports, module) {
             await __PR.closeFile();
         });
 
+        async function verifyIf2TabsWithEdits() {
+            __PR.setCursors(["1:14"]);
+            __PR.keydown(["RETURN"]);
+            __PR.expectCursorsToBe(["2:3"]);
+            await __PR.undo();
+        }
+
         it(`should detect 2 tabs auto`, async function () {
             await __PR.openFile("tab-2.js");
-            validateSpacing("Tab Size:", "2", "Auto");
+            validateSpacing("Tab Size:", "4", "Auto"); // auto mode will always fix tab space to 4
+            await verifyIf2TabsWithEdits();
             await __PR.closeFile();
         });
 
-        it(`should detect 12 tabs as 10 tabs auto`, async function () {
+        it(`should detect 12 tabs as 4 tab units only`, async function () {
             await __PR.openFile("tab-12.js");
-            validateSpacing("Tab Size:", "10", "Auto");
+            validateSpacing("Tab Size:", "4", "Auto");
+            __PR.setCursors(["1:14"]);
+            __PR.keydown(["RETURN"]);
+            __PR.expectCursorsToBe(["2:5"]);
             await __PR.closeFile();
         });
 
@@ -92,7 +103,8 @@ define(function (require, exports, module) {
             validateSpacing("Tab Size:", "4", "Auto");
             // now switch to another file
             await __PR.openFile("tab-2.js");
-            validateSpacing("Tab Size:", "2", "Auto");
+            validateSpacing("Tab Size:", "4", "Auto");
+            await verifyIf2TabsWithEdits();
             // now switch back and it should remember the overridden settings
             await __PR.openFile("space-1.js");
             validateSpacing("Tab Size:", "4", "Auto");
@@ -102,7 +114,8 @@ define(function (require, exports, module) {
             // now close the file and switch to another file
             await __PR.closeFile();
             await __PR.openFile("tab-2.js");
-            validateSpacing("Tab Size:", "2", "Auto");
+            validateSpacing("Tab Size:", "4", "Auto");
+            await verifyIf2TabsWithEdits();
             // now switch back and it should remember the overridden settings
             await __PR.openFile("space-1.js");
             validateSpacing("Tab Size:", "6", "Auto");
@@ -111,7 +124,8 @@ define(function (require, exports, module) {
 
         it(`should switching to fixed mode default to 4 spaces for all files`, async function () {
             await __PR.openFile("tab-2.js");
-            validateSpacing("Tab Size:", "2", "Auto");
+            validateSpacing("Tab Size:", "4", "Auto");
+            await verifyIf2TabsWithEdits();
             $("#indent-auto").click();
             validateSpacing("Spaces:", "4", "Fixed");
             await __PR.openFile("space-1.js");
@@ -131,14 +145,24 @@ define(function (require, exports, module) {
             await __PR.closeFile();
         });
 
+        async function verifyIf2SpacesWithEdit() {
+            __PR.setCursors(["1:14"]);
+            __PR.keydown(["RETURN"]);
+            __PR.expectCursorsToBe(["2:4"]);
+            __PR.validateText(`   `, "2:1-2:4");
+            await __PR.undo();
+        }
+
         it(`should toggling auto mode recompute the spacing`, async function () {
             await __PR.openFile("tab-2.js");
             __PR.EDITING.setEditorSpacing(false, 3, true);
             validateSpacing("Spaces:", "3", "Auto");
+            await verifyIf2SpacesWithEdit();
             // now toggle the auto to fixed and then to auto once to force recompute spacing
             $("#indent-auto").click();
             $("#indent-auto").click();
-            validateSpacing("Tab Size:", "2", "Auto");
+            validateSpacing("Tab Size:", "4", "Auto");
+            await verifyIf2TabsWithEdits();
             await __PR.closeFile();
         });
     });

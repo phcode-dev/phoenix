@@ -62,7 +62,7 @@ define(function (require, exports, module) {
         AUTO_TAB_SIZE           =  4,
         MAX_SPACE_UNITS         = 10,
         MAX_TAB_SIZE            = 10,
-        MAX_AUTO_TAB_UNITS      = 3;
+        MAX_AUTO_TAB_UNITS      = 4;
 
     const LINE_NUMBER_GUTTER = "CodeMirror-linenumbers",
         LINE_NUMBER_GUTTER_PRIORITY     = 100,
