@@ -421,14 +421,16 @@ define(function (require, exports, module) {
             window.fs.getTauriPlatformPath(entries[0].fullPath));
     }
 
-    function _cleanExtractedFolderSilent() {
+    function _cleanExtractedFolderSilent(logError) {
         return new Promise(resolve=>{
             const appdataDir = window._tauriBootVars.appLocalDir;
             let extractPlatformPath = path.join(appdataDir, 'installer', "extracted");
             const extractedVirtualPath = window.fs.getTauriVirtualPath(extractPlatformPath);
             let directory = FileSystem.getDirectoryForPath(extractedVirtualPath);
             directory.unlinkAsync()
-                .catch(console.error)
+                .catch(err=>{
+                    logError && console.error(`Error cleaning up ${extractedVirtualPath}`, err);
+                })
                 .finally(resolve);
         });
     }
@@ -454,7 +456,7 @@ define(function (require, exports, module) {
             throw new Error("Update script exit with non-0 exit code: " + result.code);
         }
         // now remove the original .app
-        await _cleanExtractedFolderSilent();
+        await _cleanExtractedFolderSilent(true);
     }
 
     let installerLocation;
