@@ -7,31 +7,32 @@ We are continuously adding features every week to improve the life of web develo
 
 Here's a list of top features recently added to Phoenix:
 
-## Auto Tab and Spacing detection
+<h2><a target="_blank" href="https://docs.phcode.dev/docs/editing-text/#auto-space-detection">Auto Tab and Spacing Detection</a></h2>
 
 `Added on August, 2024`
 
 Phoenix Code can now automatically detect and apply the indentation style (tabs or spaces) based on the existing code in the file.
-[Read more...](https://docs.phcode.dev/docs/editing-text/#auto-space-detection)
 
 ![image](https://github.com/user-attachments/assets/0adc47c5-a561-4002-bffb-d7bcde999b9d)
 
-## Auto rename start and end of HTML/XML/SVG tags
+<h2><a target="_blank" href="https://docs.phcode.dev/docs/editing-text/#auto-rename-tag">Auto rename start and end of HTML/XML/SVG tags</a></h2>
 
 `Added on July, 2024`
 
-Automatically rename paired HTML/XML/SVG tags as you type at the start or end of the tag. [Read more...](https://docs.phcode.dev/docs/editing-text/#auto-rename-tag)
+Automatically rename paired HTML/XML/SVG tags as you type at the start or end of the tag.
 
 ![tag sync](https://github.com/user-attachments/assets/ad82db8c-df1c-4c83-a5db-145caab539ec)
 
-## Now Available on ChromeOS
+<h2><a target="_blank" href="https://play.google.com/store/apps/details?id=prod.phcode.twa">Now Available on ChromeOS</a></h2>
 
 `Added on July, 2024`
 
 All new native ChromeOS app is now available on the Google Play Store.
 The ChromeOS app is a highly requested feature and is specially made for education and student use.
 
-[![google play icon (1)](https://github.com/user-attachments/assets/0a7f20ce-653c-43a8-ac3e-3875ea74df5b)](https://play.google.com/store/apps/details?id=prod.phcode.twa)
+<a target="_blank" href="https://play.google.com/store/apps/details?id=prod.phcode.twa">
+<img alt="Get phcode.io on google play" src="https://github.com/user-attachments/assets/0a7f20ce-653c-43a8-ac3e-3875ea74df5b">
+</a>
 
 ## Drag and Drop Files and Folders in Desktop Apps - Experimental
 
@@ -167,14 +168,14 @@ Creating extensions and themes is now easier than ever with a single click in Gi
 * Create a <a href="https://github.com/phcode-dev/theme-template" target="_blank">Theme</a> or <a href="https://github.com/phcode-dev/extension-template" target="_blank">Extension</a> with a single click.
 * Load/unload development extensions with new `Debug> Reload With Extensions` menu. ![image](https://user-images.githubusercontent.com/5336369/224746152-0416a862-891a-4fe1-b9dd-09add25a6cc0.png)
 * [Publish an extension](https://github.com/phcode-dev/phoenix/wiki/How-To-Write-Extensions-And-Themes#publishing-to-the-extensiontheme-store)
-  directly from your GitHub repo by creating a GitHub release!  
+  directly from your GitHub repo by creating a GitHub release!
 
 ## Extensions and Themes Store
 `Added on January,2023`
 
 * Browse and install extensions and themes from the store. Click on the `extensions icon` or select `File > Extension Manager` from menu item to view store.
 * To apply themes after installing, click on menu `View > Themes` and select Theme to apply.
-* Most extensions from [Brackets](https://brackets.io) is available in Phoenix Web except few that requires native privileges. 
+* Most extensions from [Brackets](https://brackets.io) is available in Phoenix Web except few that requires native privileges.
   ![extensions](https://github.com/phcode-dev/phoenix/assets/5336369/a6e7b1bf-4020-489c-8234-e5c270ebe56c)
 
 
