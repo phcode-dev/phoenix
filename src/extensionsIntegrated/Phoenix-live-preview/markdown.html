@@ -99,12 +99,19 @@
                         href: location.href
                     }, "{{{PARENT_ORIGIN}}}");
                 }
+
+                let target = event.target;
+                // Traverse up the DOM tree to find if the target is within an <a> tag
+                while (target && target.tagName !== 'A') {
+                    target = target.parentNode;
+                }
+
                 // in desktop phoenix builds, tauri will not open anchor tags in browser if it is in
                 // an iframe(except for the intel mac bug)
                 // in normal browsers, we dont need to do this.
                 if (window.__PHOENIX_EMBED_INFO && window.__PHOENIX_EMBED_INFO.isTauri &&
-                    event.target.tagName === 'A' && (event.target.target === '_blank')) {
-                        const href = getAbsoluteUrl(event.target.getAttribute('href'));
+                    target.tagName === 'A' && (target.target === '_blank')) {
+                        const href = getAbsoluteUrl(target.getAttribute('href'));
                         window.parent.postMessage({
                             handlerName: "ph-liveServer",
                             eventName: 'embeddedIframeHrefClick',
