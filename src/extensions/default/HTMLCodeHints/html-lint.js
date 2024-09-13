@@ -112,6 +112,9 @@ define(function (require, exports, module) {
                     resolve({ errors: lintResult });
                 }
                 resolve();
+            }).catch(err=>{
+                console.error("HTML Lint failed:", err);
+                reject(new Error("HTML Lint failed as HTML plugin is not yet loaded. Please try again."));
             });
         });
     }

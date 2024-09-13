@@ -87,7 +87,7 @@ define(function (require, exports, module) {
      * a gold star when no errors are found.
      */
     async function lintOneFile(text, _fullPath) {
-        return new Promise((resolve)=>{
+        return new Promise((resolve, reject)=>{
             if(jsHintConfigFileErrorMessage){
                 resolve({ errors: _getLinterConfigFileErrorMsg() });
                 return;
@@ -118,6 +118,9 @@ define(function (require, exports, module) {
                     resolve({ errors: errors });
                 }
                 resolve();
+            }).catch(err=>{
+                console.error("JSHint failed:", err);
+                reject(new Error("JSHint failed as JSHint plugin is not yet loaded. Please try again."));
             });
         });
     }
