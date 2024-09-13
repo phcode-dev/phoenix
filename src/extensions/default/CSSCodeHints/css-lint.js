@@ -79,6 +79,9 @@ define(function (require, exports, module) {
                     resolve({ errors: lintResult });
                 }
                 resolve();
+            }).catch(err=>{
+                console.error("CSS Lint failed:", err);
+                reject(new Error("CSS Lint failed as CSS Lint plugin is not yet loaded. Please try again."));
             });
         });
     }
