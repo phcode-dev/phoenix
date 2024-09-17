@@ -544,6 +544,7 @@
   "EMPTY_VIEW_HEADER": "<em>Open a file while this pane has focus</em>",
   "FLIPVIEW_BTN_TOOLTIP": "Flip this view to {0} pane",
   "CURRENT_THEME": "Current Theme",
+  "GET_MORE_THEMES": "Get More...",
   "USE_THEME_SCROLLBARS": "Use Theme Scrollbars",
   "FONT_SIZE": "Font Size",
   "FONT_FAMILY": "Font Family",

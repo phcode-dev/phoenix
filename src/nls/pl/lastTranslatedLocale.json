@@ -544,6 +544,7 @@
   "EMPTY_VIEW_HEADER": "<em>Kliknij w to okno, a następnie otwórz plik</em>",
   "FLIPVIEW_BTN_TOOLTIP": "Przenieś ten widok do: {0}",
   "CURRENT_THEME": "Aktualny motyw",
+  "GET_MORE_THEMES": "Dowiedz się więcej...",
   "USE_THEME_SCROLLBARS": "Użyj pasków przewijania z motywu",
   "FONT_SIZE": "Rozmiar czcionki",
   "FONT_FAMILY": "Rodzina czcionek",

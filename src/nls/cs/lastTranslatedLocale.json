@@ -544,6 +544,7 @@
   "EMPTY_VIEW_HEADER": "<em>Otevřete soubor, zatímco tento panel je aktivní</em>",
   "FLIPVIEW_BTN_TOOLTIP": "Přepnout toto zobrazení na panel {0}",
   "CURRENT_THEME": "Aktuální motiv",
+  "GET_MORE_THEMES": "Získejte více...",
   "USE_THEME_SCROLLBARS": "Použít posuvníky motivu",
   "FONT_SIZE": "Velikost písma",
   "FONT_FAMILY": "Rodina písma",

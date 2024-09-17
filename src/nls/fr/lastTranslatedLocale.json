@@ -544,6 +544,7 @@
   "EMPTY_VIEW_HEADER": "<em>Ouvrir un fichier quand ce panneau est actif</em>",
   "FLIPVIEW_BTN_TOOLTIP": "Transférer cette vue dans le volet de {0}",
   "CURRENT_THEME": "Thème actuel ",
+  "GET_MORE_THEMES": "Obtenez plus...",
   "USE_THEME_SCROLLBARS": "Utiliser les barres de défilement du thème ",
   "FONT_SIZE": "Taille de la police ",
   "FONT_FAMILY": "Famille de polices ",

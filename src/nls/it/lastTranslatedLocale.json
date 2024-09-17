@@ -544,6 +544,7 @@
   "EMPTY_VIEW_HEADER": "<em>Aprire un file mentre questo riquadro è attivo</em>",
   "FLIPVIEW_BTN_TOOLTIP": "Spostare questa vista nel riquadro {0}",
   "CURRENT_THEME": "Tema attuale",
+  "GET_MORE_THEMES": "Scopri di più...",
   "USE_THEME_SCROLLBARS": "Utilizzare le barre di scorrimento a tema",
   "FONT_SIZE": "Dimensioni carattere",
   "FONT_FAMILY": "Tipo di carattere",

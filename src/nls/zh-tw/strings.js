@@ -564,6 +564,7 @@ define({
   "EMPTY_VIEW_HEADER": "<em>選到本窗格後再開啟檔案</em>",
   "FLIPVIEW_BTN_TOOLTIP": "將此視圖翻轉到 {0} 窗格",
   "CURRENT_THEME": "目前的佈景主題",
+  "GET_MORE_THEMES": "取得更多...",
   "USE_THEME_SCROLLBARS": "使用佈景主題的捲軸",
   "FONT_SIZE": "字體大小",
   "FONT_FAMILY": "字體",

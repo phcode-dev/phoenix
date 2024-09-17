@@ -544,6 +544,7 @@
   "EMPTY_VIEW_HEADER": "<em>Öppna en fil medan denna panel är i fokus</em>",
   "FLIPVIEW_BTN_TOOLTIP": "Flippa denna vy till panel {0}",
   "CURRENT_THEME": "Nuvarande tema",
+  "GET_MORE_THEMES": "Få mer...",
   "USE_THEME_SCROLLBARS": "Använd temats rullningslister",
   "FONT_SIZE": "Teckenstorlek",
   "FONT_FAMILY": "Typsnitt",

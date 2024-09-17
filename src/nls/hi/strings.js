@@ -564,6 +564,7 @@ define({
   "EMPTY_VIEW_HEADER": "<em>इस फलक में फ़ोकस होने पर फ़ाइल खोलें</em>",
   "FLIPVIEW_BTN_TOOLTIP": "इस दृश्य को {0} फलक . पर फ़्लिप करें",
   "CURRENT_THEME": "वर्तमान थीम",
+  "GET_MORE_THEMES": "अधिक मिलना...",
   "USE_THEME_SCROLLBARS": "थीम स्क्रॉलबार का उपयोग करें",
   "FONT_SIZE": "फ़ॉन्ट आकार",
   "FONT_FAMILY": "फ़ॉन्ट परिवार",

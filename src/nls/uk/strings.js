@@ -564,6 +564,7 @@ define({
   "EMPTY_VIEW_HEADER": "<em>Відкрийте файл, поки ця панель у фокусі</em>",
   "FLIPVIEW_BTN_TOOLTIP": "Переверніть цей вигляд на панель {0}",
   "CURRENT_THEME": "Поточна тема",
+  "GET_MORE_THEMES": "Отримати більше...",
   "USE_THEME_SCROLLBARS": "Брати панель прокрутки з теми",
   "FONT_SIZE": "Розмір шрифту",
   "FONT_FAMILY": "Сімейство шрифтів",

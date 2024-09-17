@@ -564,6 +564,7 @@ define({
   "EMPTY_VIEW_HEADER": "<em>افتح ملفًا أثناء التركيز على هذا الجزء</em>",
   "FLIPVIEW_BTN_TOOLTIP": "قلب هذا العرض إلى لوحة {0}",
   "CURRENT_THEME": "الموضوع الحالي",
+  "GET_MORE_THEMES": "احصل على المزيد...",
   "USE_THEME_SCROLLBARS": "استخدام أشرطة التمرير للموضوع",
   "FONT_SIZE": "حجم الخط",
   "FONT_FAMILY": "خط العائلة",

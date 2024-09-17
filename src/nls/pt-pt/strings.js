@@ -564,6 +564,7 @@ define({
   "EMPTY_VIEW_HEADER": "<em>Abra um arquivo enquanto este painel estiver em foco</em>",
   "FLIPVIEW_BTN_TOOLTIP": "Virar esta visualização para o painel {0}",
   "CURRENT_THEME": "Tema atual",
+  "GET_MORE_THEMES": "Saiba mais...",
   "USE_THEME_SCROLLBARS": "Usar barras de rolagem do tema",
   "FONT_SIZE": "Tamanho da fonte",
   "FONT_FAMILY": "Família de fontes",

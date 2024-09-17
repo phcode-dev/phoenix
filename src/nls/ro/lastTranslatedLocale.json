@@ -544,6 +544,7 @@
   "EMPTY_VIEW_HEADER": "<em>Selectați un fișier cât această vedere e activă</em>",
   "FLIPVIEW_BTN_TOOLTIP": "Întoarceți această vizualizare în panoul {0}",
   "CURRENT_THEME": "Tema curentă",
+  "GET_MORE_THEMES": "Obțineți mai multe...",
   "USE_THEME_SCROLLBARS": "Folosește barele de derulare ale temei",
   "FONT_SIZE": "Mărimea fontului",
   "FONT_FAMILY": "Familia fontului",

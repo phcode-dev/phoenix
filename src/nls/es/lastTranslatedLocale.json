@@ -544,6 +544,7 @@
   "EMPTY_VIEW_HEADER": "<em>Abra un archivo mientras este panel está enfocado</em>",
   "FLIPVIEW_BTN_TOOLTIP": "Voltear esta vista al panel {0}",
   "CURRENT_THEME": "Tema actual",
+  "GET_MORE_THEMES": "Obtenga más...",
   "USE_THEME_SCROLLBARS": "Usar las barras de desplazamiento del tema",
   "FONT_SIZE": "Tamaño de letra",
   "FONT_FAMILY": "Tipo de letra",

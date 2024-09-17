@@ -544,6 +544,7 @@
   "EMPTY_VIEW_HEADER": "<em>Buka file ketika panel ini mendapat fokus</em>",
   "FLIPVIEW_BTN_TOOLTIP": "Balikkan tampilan ini ke {0} panel",
   "CURRENT_THEME": "Tema Saat Ini",
+  "GET_MORE_THEMES": "Dapatkan Lebih Banyak...",
   "USE_THEME_SCROLLBARS": "Gunakan Scrollbar Tema",
   "FONT_SIZE": "Ukuran Huruf",
   "FONT_FAMILY": "Famili Huruf",

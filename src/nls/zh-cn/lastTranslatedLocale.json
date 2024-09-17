@@ -544,6 +544,7 @@
   "EMPTY_VIEW_HEADER": "<em>保持此窗格的焦点，打开文件</em>",
   "FLIPVIEW_BTN_TOOLTIP": "将此视图翻转到 {0} 面板",
   "CURRENT_THEME": "当前主题",
+  "GET_MORE_THEMES": "获取更多...",
   "USE_THEME_SCROLLBARS": "使用主题自带滚动条",
   "FONT_SIZE": "字号",
   "FONT_FAMILY": "字体",

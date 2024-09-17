@@ -564,6 +564,7 @@ define({
   "EMPTY_VIEW_HEADER": "<em>Odak bu bölmedeyken bir dosya açın</em>",
   "FLIPVIEW_BTN_TOOLTIP": "Bu görünümü {0} bölmesine çevirin",
   "CURRENT_THEME": "Mevcut Tema",
+  "GET_MORE_THEMES": "Daha Fazlasını Alın...",
   "USE_THEME_SCROLLBARS": "Tema Kaydırma Çubuklarını Kullan",
   "FONT_SIZE": "Yazı Boyutu",
   "FONT_FAMILY": "Font ailesi",
