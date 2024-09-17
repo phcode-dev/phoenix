@@ -1,4 +1,4 @@
-The following standard libraries are available inside phoenix:
+The following standard libraries are available inside Phoenix:
 
 ## jquery
 https://jquery.com/
@@ -30,7 +30,7 @@ See the following urls for available icons:
 
 ## devicon
 
-devicon is used for iconography in phoenix.
+devicon is used for iconography in Phoenix.
 
 >usage: similar to fontawesome
 
@@ -38,7 +38,7 @@ devicon is used for iconography in phoenix.
 
 ## file-icons
 
-file-icon is used for iconography in phoenix.
+file-icon is used for iconography in Phoenix.
  
 > usage: similar to fontawesome
 
