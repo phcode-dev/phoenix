@@ -564,6 +564,7 @@ define({
   "EMPTY_VIEW_HEADER": "<em>Avaa tiedosto tämän ruudun ollessa valittuna</em>",
   "FLIPVIEW_BTN_TOOLTIP": "Heitä tämä näkymä {0}paneeliin",
   "CURRENT_THEME": "Nykyinen teema",
+  "GET_MORE_THEMES": "Hanki lisää...",
   "USE_THEME_SCROLLBARS": "Käytä teeman vierityspalkkeja",
   "FONT_SIZE": "Fonttikoko",
   "FONT_FAMILY": "Fonttiperhe",

@@ -544,6 +544,7 @@
   "EMPTY_VIEW_HEADER": "<em>Open een bestand wanneer dit paneel actief is</em>",
   "FLIPVIEW_BTN_TOOLTIP": "Draai deze weergave naar het deelvenster {0}",
   "CURRENT_THEME": "Huidig thema",
+  "GET_MORE_THEMES": "Meer informatie...",
   "USE_THEME_SCROLLBARS": "Scrollbalken van thema",
   "FONT_SIZE": "Lettergrootte",
   "FONT_FAMILY": "Lettertype(s)",

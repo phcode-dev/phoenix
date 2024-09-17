@@ -544,6 +544,7 @@
   "EMPTY_VIEW_HEADER": "<em>Отвори датотеку док је овај панел у фокусу</em>",
   "FLIPVIEW_BTN_TOOLTIP": "Окрените овај приказ у окно {0}",
   "CURRENT_THEME": "Тренутна тема",
+  "GET_MORE_THEMES": "Набавите више...",
   "USE_THEME_SCROLLBARS": "Користи клизаче из теме",
   "FONT_SIZE": "Величина фонта",
   "FONT_FAMILY": "Породица фонта",

@@ -544,6 +544,7 @@
   "EMPTY_VIEW_HEADER": "<em>이 창에 포커스가 있을 때 파일 열기</em>",
   "FLIPVIEW_BTN_TOOLTIP": "{0} 창에 이 보기를 반전",
   "CURRENT_THEME": "현재 테마",
+  "GET_MORE_THEMES": "더 자세히 알아보세요...",
   "USE_THEME_SCROLLBARS": "테마에서 정의한 스크롤바 적용",
   "FONT_SIZE": "글자 크기",
   "FONT_FAMILY": "글꼴",

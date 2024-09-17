@@ -564,6 +564,7 @@ define({
   "EMPTY_VIEW_HEADER": "<em>انتخاب کنید یک فایلی را در حالی که بر روی این قسمت تمرکز شده است</em>",
   "FLIPVIEW_BTN_TOOLTIP": "این نما را به صفحه {0} برگردانید",
   "CURRENT_THEME": "پوسته فعلی",
+  "GET_MORE_THEMES": "دریافت بیشتر...",
   "USE_THEME_SCROLLBARS": "استفاده از نوار شناور پوسته",
   "FONT_SIZE": "اندازه قلم",
   "FONT_FAMILY": "نوع قلم",

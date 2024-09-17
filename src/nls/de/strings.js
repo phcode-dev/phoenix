@@ -564,6 +564,7 @@ define({
   "EMPTY_VIEW_HEADER": "<em>Öffnen Sie eine Datei, während diese Ansicht fokussiert ist</em>",
   "FLIPVIEW_BTN_TOOLTIP": "Diese Ansicht nach {0} verschieben",
   "CURRENT_THEME": "Aktuelles Design",
+  "GET_MORE_THEMES": "Mehr erfahren...",
   "USE_THEME_SCROLLBARS": "Scrollbars vom Design verwenden",
   "FONT_SIZE": "Schriftgröße",
   "FONT_FAMILY": "Schriftart",

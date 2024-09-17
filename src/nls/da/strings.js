@@ -564,6 +564,7 @@ define({
   "EMPTY_VIEW_HEADER": "<em>Åbn en fil, mens denne rude har fokus</em>",
   "FLIPVIEW_BTN_TOOLTIP": "Vend denne visning til {0} rude",
   "CURRENT_THEME": "Aktuelt tema",
+  "GET_MORE_THEMES": "Få mere...",
   "USE_THEME_SCROLLBARS": "Brug temarullepaneler",
   "FONT_SIZE": "Skriftstørrelse",
   "FONT_FAMILY": "Fontfamilie",

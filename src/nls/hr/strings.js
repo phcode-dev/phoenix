@@ -564,6 +564,7 @@ define({
   "EMPTY_VIEW_HEADER": "<em>Otvori datoteku dok je ovaj panel u fokusu</em>",
   "FLIPVIEW_BTN_TOOLTIP": "Okrenite ovaj prikaz na {0} okno",
   "CURRENT_THEME": "Trenutna tema",
+  "GET_MORE_THEMES": "Nabavite više...",
   "USE_THEME_SCROLLBARS": "Koristi scrollbarove teme",
   "FONT_SIZE": "Veličina fonta",
   "FONT_FAMILY": "Obitelj fonta",

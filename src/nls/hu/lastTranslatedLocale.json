@@ -544,6 +544,7 @@
   "EMPTY_VIEW_HEADER": "<em>Nyisson meg egy fájlt, miközben ez a panel fókuszban van</em>",
   "FLIPVIEW_BTN_TOOLTIP": "Fordítsa ezt a nézetet a következőre: {0}",
   "CURRENT_THEME": "Aktuális téma",
+  "GET_MORE_THEMES": "Szerezz többet...",
   "USE_THEME_SCROLLBARS": "Használja a téma görgetősávjait",
   "FONT_SIZE": "Betűméret",
   "FONT_FAMILY": "Betűtípus család",

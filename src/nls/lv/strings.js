@@ -564,6 +564,7 @@ define({
   "EMPTY_VIEW_HEADER": "<em>Atvērt datni, kamēr fokuss ir uz šo rūti</em>",
   "FLIPVIEW_BTN_TOOLTIP": "Pārnest šo skatu uz rūti {0}",
   "CURRENT_THEME": "Pašreizējais dizains",
+  "GET_MORE_THEMES": "Iegūstiet vairāk...",
   "USE_THEME_SCROLLBARS": "Lietot dizaina ritjoslas",
   "FONT_SIZE": "Fonta lielums",
   "FONT_FAMILY": "Fontu saime",

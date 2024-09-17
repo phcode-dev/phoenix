@@ -564,6 +564,7 @@ define({
   "EMPTY_VIEW_HEADER": "<em>このペインにフォーカスがあるときにファイルを開く</em>",
   "FLIPVIEW_BTN_TOOLTIP": "このビューを {0} ペインにめくる",
   "CURRENT_THEME": "現在のテーマ ",
+  "GET_MORE_THEMES": "さらに詳しく...",
   "USE_THEME_SCROLLBARS": "テーマスクロールバーを使用 ",
   "FONT_SIZE": "フォントサイズ ",
   "FONT_FAMILY": "フォントファミリー ",
