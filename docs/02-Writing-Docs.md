@@ -25,15 +25,15 @@ have this comment in any part of the file:
 ```
 
 ### Writing JSDoc in source
-Let us consider this example source file [src/utils/Metrics.js](https://github.com/phcode-dev/Phoenix/blob/main/src/utils/Metrics.js).
+Let us consider this example source file [src/utils/Metrics.js](https://github.com/phcode-dev/phoenix/blob/main/src/utils/Metrics.js).
 The file is created with [JSDoc](https://jsdoc.app/) compliant source code comments. Make changes to
 the source code comments as required.
 
-When you run `npm run createJSDoc` or `npm run build` the corresponding docs for the js file are automatically generated at [docs/generatedApiDocs/utils/Metrics-API.md](https://github.com/phcode-dev/Phoenix/blob/main/docs/generatedApiDocs/utils/Metrics-API.md).
+When you run `npm run createJSDoc` or `npm run build` the corresponding docs for the js file are automatically generated at [docs/generatedApiDocs/utils/Metrics-API.md](https://github.com/phcode-dev/phoenix/blob/main/docs/generatedApiDocs/utils/Metrics-API.md).
 
 The generated docs should be pushed to Phoenix repo if there are any doc changes.
 Once the changes are pushed, the build system will update the docs in all
-[wikis](https://github.com/phcode-dev/Phoenix/wiki)/
+[wikis](https://github.com/phcode-dev/phoenix/wiki)/
 [doc](https://docs.phcode.dev/) sites automatically.
 
 ## JSDoc Examples
