@@ -1,0 +1,8 @@
+{
+  "locales": [
+    "en"
+  ],
+  "outDir": "api\\worker\\WorkerComm",
+  "jsdoc": "./jsdoc.json",
+  "bulma": false
+}

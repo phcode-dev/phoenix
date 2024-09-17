@@ -1,0 +1,14 @@
+{
+  "source": {
+    "include": [
+      "dev-api\\temp"
+    ]
+  },
+  "plugins": [
+    "plugins/markdown"
+  ],
+  "opts": {
+    "destination": "../api",
+    "recurse": true
+  }
+}
