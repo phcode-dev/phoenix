@@ -5,7 +5,7 @@ https://jquery.com/
 
 ## fontawesome
 
-Fontawesome is used for iconography in phoenix.
+Fontawesome is used for iconography in Phoenix.
 
 credits: https://fontawesome.com/
 
@@ -45,7 +45,7 @@ file-icon is used for iconography in Phoenix.
 credits: https://uiwjs.github.io/file-icons/index.html
 
 ## Additional icon sources
-This is not included in phoenix, but you can get icons from
+This is not included in Phoenix, but you can get icons from
 1. [Ionicons](http://ionicons.com)
 
 ### Usage
