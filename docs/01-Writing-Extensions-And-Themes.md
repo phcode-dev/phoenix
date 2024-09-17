@@ -7,7 +7,7 @@ Click on one of the below links and follow the instructions there to start:
 * [Create a node.js extension](https://github.com/phcode-dev/extension-node-template)
 
 # API docs
-This is an evolving document, please refer the below links for extension API docs and how tos.
+This is an evolving document, please refer the below links for extension API docs and how to's.
 * Phoenix APIs - https://github.com/phcode-dev/phoenix/wiki#phoenix-api-docs
   * This is a work in progress. As we improve our documentation for phcode.dev, please check out the Brackets API docs too. 
 * Brackets APIs are also supported- https://brackets.io/docs/current/
@@ -78,5 +78,5 @@ See this link on [understanding how to change repo visibility](https://docs.gith
 The `verified` extension badge(tick mark) will be automatically granted to verified GitHub Organizations.
 
 ### How do I delete my extension from the store
-Please raise an issue here: https://github.com/phcode-dev/phoenix/issues/new/choose , mention your extension repository.
+Please raise an issue here: https://github.com/phcode-dev/phoenix/issues/new/choose, mention your extension repository.
 
