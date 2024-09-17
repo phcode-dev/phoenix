@@ -205,7 +205,7 @@ define(function (require, exports, module) {
      * @private
      * Show a dialog that allows the user to browse and manage extensions.
      */
-    function _showDialog() {
+    function _showDialog(which) {
         Metrics.countEvent(Metrics.EVENT_TYPE.EXTENSIONS, "dialogue", "shown");
 
         let dialog,
@@ -421,6 +421,10 @@ define(function (require, exports, module) {
                 Metrics.countEvent(Metrics.EVENT_TYPE.EXTENSIONS, "install", "fromURL");
                 InstallExtensionDialog.showDialog().done(ExtensionManager.updateFromDownload);
             });
+
+        if(which === "themes"){
+            $dlg.find(".nav-tabs a.themes").click();
+        }
 
         return new $.Deferred().resolve(dialog).promise();
     }

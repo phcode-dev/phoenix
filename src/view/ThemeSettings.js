@@ -31,6 +31,8 @@ define(function (require, exports, module) {
         ViewCommandHandlers = require("view/ViewCommandHandlers"),
         settingsTemplate    = require("text!htmlContent/themes-settings.html"),
         PreferencesManager  = require("preferences/PreferencesManager"),
+        CommandManager      = require("command/CommandManager"),
+        Commands            = require("command/Commands"),
         prefs               = PreferencesManager.getExtensionPrefs("themes");
 
     /**
@@ -140,7 +142,8 @@ define(function (require, exports, module) {
                 }
             });
 
-        Dialogs.showModalDialogUsingTemplate($template).done(function (id) {
+        const dialog = Dialogs.showModalDialogUsingTemplate($template);
+        dialog.done(function (id) {
             var setterFn;
 
             if (id === "save") {
@@ -162,6 +165,14 @@ define(function (require, exports, module) {
                 prefs.set("theme", currentSettings.theme);
             }
         });
+        $template
+            .find(".get-more-themes")
+            .click(function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+                dialog.close();
+                CommandManager.execute(Commands.FILE_EXTENSION_MANAGER, "themes");
+            });
     }
 
     /**
