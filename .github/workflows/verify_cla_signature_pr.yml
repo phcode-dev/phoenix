@@ -58,8 +58,8 @@ jobs:
         env:
           EMPLOYER_CLA_LINK: https://raw.githubusercontent.com/phcode-dev/contributor-license-agreement/main/employer_contributor_license_agreement.md
           PERSONAL_CLA_LINK: https://raw.githubusercontent.com/phcode-dev/contributor-license-agreement/main/personal_contributor_licence_agreement.md
-      
-      - uses: actions/upload-artifact@v2
+
+      - uses: actions/upload-artifact@v4
         with:
           name: prcontext
           path: .tmp/
