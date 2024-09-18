@@ -2,7 +2,7 @@
   "locales": [
     "en"
   ],
-  "outDir": "api\\worker\\WorkerComm",
+  "outDir": "",
   "jsdoc": "./jsdoc.json",
   "bulma": false
 }
