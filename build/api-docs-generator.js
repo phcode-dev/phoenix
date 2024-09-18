@@ -209,6 +209,10 @@ function generateMdxFiles() {
       processJsFile(file, config);
     }
 
+    // After processing all files, set outDir to empty string
+    config.outDir = "";
+    fs.writeFileSync(configFile, JSON.stringify(config, null, 2));
+
     // Post-processing of MDX files
     processMdxFiles(mdxApiDir);
 
