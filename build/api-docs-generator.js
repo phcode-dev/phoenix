@@ -8,6 +8,15 @@ const inputDir = path.join(__dirname, '../src');
 // DONOT MODIFY THIS 
 const outputDir = path.join(__dirname, './dev-temp'); // this directory will be automatically removed (required for automative processes, the final output will be in API directory). 
 
+// Set up paths for the build process
+const buildDir = __dirname;
+const jsdocFile = path.join(buildDir, 'jsdoc.json');
+const configFile = path.join(buildDir, 'config.json');
+const sourceDir = path.join(buildDir, 'dev-temp');
+const devApiDir = path.join(buildDir, 'dev-api');
+const tempDir = path.join(devApiDir, 'temp');
+const mdxApiDir = path.join(__dirname, 'api');
+
 
 /**
  * Checks if a file contains a specific line.
@@ -168,15 +177,6 @@ console.log("Successfully removed redundant JS code");
 
 
 // Conversion of MDX from JS files starts here
-
-// Set up paths for the build process
-const buildDir = __dirname;
-const jsdocFile = path.join(buildDir, 'jsdoc.json');
-const configFile = path.join(buildDir, 'config.json');
-const sourceDir = path.join(buildDir, 'dev-temp');
-const devApiDir = path.join(buildDir, 'dev-api');
-const tempDir = path.join(devApiDir, 'temp');
-const mdxApiDir = path.join(__dirname, 'api');
 
 
 /**
@@ -512,37 +512,6 @@ generateMdxFiles();
 
 console.log("Redundant files generated for conversion process are removed!");
 
-// Root directories
-const docsDir = './docs';
-
-/**
- * Copies markdown files from the docs directory to the API directory.
- *
- * @param {string} sourceDir - Source directory containing markdown files
- * @param {string} destDir - Destination directory for copied files
- */
-const copyMarkdownFiles = (sourceDir, destDir) => {
-  // Create the destination directory if it doesn't exist
-  if (!fs.existsSync(destDir)) {
-    fs.mkdirSync(destDir, { recursive: true });
-  }
-
-  fs.readdirSync(sourceDir).forEach((file) => {
-    const sourcePath = path.join(sourceDir, file);
-    const destPath = path.join(destDir, file);
-    const stat = fs.lstatSync(sourcePath);
-
-    // Only copy if it's a file and has .md extension
-    if (stat.isFile() && path.extname(sourcePath) === '.md') {
-      fs.copyFileSync(sourcePath, destPath);
-    }
-  });
-};
-
-// Execute the function
-copyMarkdownFiles(docsDir, mdxApiDir);
-
-
 const notificationUIPath = './build/api/widgets/NotificationUI.mdx';
 
 /**
@@ -591,15 +560,15 @@ function moveToApiReference(sourceDir, destDir) {
     if (entry.isDirectory()) {
       // Skip the "API reference" folder itself
       if (entry.name === "API reference") continue;
-      
+
       // Create the corresponding directory in the destination
       if (!fs.existsSync(destPath)) {
         fs.mkdirSync(destPath, { recursive: true });
       }
-      
+
       // Move contents of the directory
       moveToApiReference(srcPath, destPath);
-      
+
       // Remove the now-empty directory from the source
       if (fs.readdirSync(srcPath).length === 0) {
         fs.rmdirSync(srcPath);
@@ -615,4 +584,61 @@ const apiReferenceDir = path.join(__dirname, 'api', 'API reference');
 moveToApiReference(path.join(__dirname, 'api'), apiReferenceDir);
 console.log("All MDX files have been moved to the API reference folder");
 
-console.log("All set! Just move the API folder to the docs site");
+
+/**
+ * Delete the docs/generatedApiDocs directory and all its content, to add the new generated content there
+ */
+function removeGeneratedApiDocs() {
+  const generatedApiDocsDir = './docs/generatedApiDocs';
+  try {
+    fs.rmSync(generatedApiDocsDir, { recursive: true, force: true });
+  } catch (err) {
+    console.error(`Error while deleting the generatedApiDocs directory: ${err}`);
+  }
+}
+
+removeGeneratedApiDocs();
+
+
+/**
+ * Move the API reference directory from the 'build' directory to the 'docs' directory
+ * @param {string} sourceDir Takes the input dir address 
+ * @param {string} destDir Takes the output dir address
+ */
+function moveApiReferenceDir(sourceDir, destDir) {
+
+  // check if API Reference dir already exists in destination. If yes, remove it
+  if(fs.existsSync(path.join(destDir, 'API Reference'))) {
+    fs.rmSync(path.join(destDir, 'API Reference'), { recursive: true, force: true });
+  }
+
+  // add full paths
+  sourceDir = path.join(sourceDir, 'API Reference');
+  destDir = path.join(destDir, 'API Reference');
+
+  // Move the directory
+  try {
+    fs.renameSync(sourceDir, destDir);
+  } catch (err) {
+    console.error(`Error while moving the directory from build to docs: ${err}`);
+  }
+}
+
+moveApiReferenceDir(mdxApiDir, './docs');
+
+/**
+ * Delete the API directory i.e. inside the 'build' directory as all its contents are now moved to docs directory
+ * @param {string} mdxApiDir Path of the api dir 
+ */
+function removeApiDir(mdxApiDir) {
+  try {
+    fs.rmSync(mdxApiDir, { recursive: true, force: true });
+  } catch (err) {
+    console.error(`Error while deleting the Api directory present inside build directory: ${err}`);
+  }
+}
+
+removeApiDir(mdxApiDir);
+
+
+console.log("All set! Just copy the docs directory to the docs site.");
