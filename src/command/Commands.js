@@ -129,6 +129,7 @@ define(function (require, exports, module) {
     exports.TOGGLE_ACTIVE_LINE          = "view.toggleActiveLine";      // EditorOptionHandlers.js      _getToggler()
     exports.TOGGLE_WORD_WRAP            = "view.toggleWordWrap";        // EditorOptionHandlers.js      _getToggler()
     exports.TOGGLE_RULERS               = "view.toggleRulers";          // EditorOptionHandlers.js
+    exports.TOGGLE_INDENT_GUIDES        = "view.toggleIndentGuides";    // integrated extension indentGuides
     exports.TOGGLE_SEARCH_AUTOHIDE      = "view.toggleSearchAutoHide";  // EditorOptionHandlers.js      _getToggler()
 
     exports.CMD_OPEN                        = "cmd.open";
