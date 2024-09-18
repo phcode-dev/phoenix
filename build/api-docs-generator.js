@@ -516,34 +516,6 @@ generateMdxFiles();
 
 console.log("Redundant files generated for conversion process are removed!");
 
-const notificationUIPath = './build/api/widgets/NotificationUI.mdx';
-
-/**
- * fix notification UI broken areas
- * NotificationUI file has some issues and mdx is not being rendered properly. Fixing it.
- * Removing a line where docusaurus throws error
- * Removing </br> tag that's within div tag. Only two instances of this in whole project, so fixing it by searching for the exact line instead of writing a logic (as the logic may disturb content from other files)
- * @param {string} filePath
- */
-function fixNotificationUiFile(filePath) {
-  try {
-    // Read the file synchronously
-    let content = fs.readFileSync(filePath, 'utf8');
-
-    // Fix notification UI broken areas
-    content = content.replace('ame="badge badge--info margin-left--sm">static</span><br/><a href="#done">done</a><span className="badge badge--info margin-left--sm">static</span></div></div>\n</div>', '');
-
-    // Write the file synchronously
-    fs.writeFileSync(filePath, content, 'utf8');
-
-    console.log("Successfully fixed the issues inside notificationUI file");
-  } catch (err) {
-    console.error('Error while fixing notificationUI file', err);
-  }
-}
-
-fixNotificationUiFile(notificationUIPath);
-
 
 /**
  * Moves all MDX files and subfolders to a specified destination folder.
