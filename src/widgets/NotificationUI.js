@@ -94,7 +94,6 @@ define(function (require, exports, module) {
      * This is an instance of the notification returned by the `createFromTemplate` call. The object can be used to
      * control the created notification. See Notification docs below.
      * @type {Object}
-     * @name Notification
      */
 
     /**
