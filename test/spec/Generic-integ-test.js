@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, path, it, expect, awaitsForDone, beforeAll, afterAll */
+/*global describe, path, it, expect, awaitsForDone, beforeAll, afterAll, awaitsFor */
 
 define(function (require, exports, module) {
 
@@ -72,6 +72,68 @@ define(function (require, exports, module) {
         async function _reopenClosedFile() {
             await awaitsForDone(CommandManager.execute(Commands.FILE_REOPEN_CLOSED));
         }
+
+        describe("Indent Guides", function () {
+            let currentProjectPath;
+            beforeAll(async function () {
+                // Working set behavior is sensitive to whether file lives in the project or outside it, so make
+                // the project root a known quantity.
+                currentProjectPath = await SpecRunnerUtils.getTestPath("/spec/space-detect-test-files");
+                await SpecRunnerUtils.loadProjectInTestWindow(currentProjectPath);
+            });
+
+            async function verify(fileName, expectedIndentLines) {
+                const isChecked = CommandManager.get(Commands.TOGGLE_INDENT_GUIDES).getChecked();
+                if(!isChecked){
+                    await awaitsForDone(CommandManager.execute(Commands.TOGGLE_INDENT_GUIDES));
+                }
+                await _openProjectFile(fileName);
+                await awaitsFor(function () {
+                    const _isChecked = CommandManager.get(Commands.TOGGLE_INDENT_GUIDES).getChecked();
+                    return _isChecked &&
+                        _$("#first-pane .cm-phcode-indent-guides:visible").length === expectedIndentLines;
+                }, ()=>{
+                    return `Indent guides tobe ${expectedIndentLines} but got
+                     ${_$("#first-pane .cm-phcode-indent-guides:visible").length}`;
+                });
+                await awaitsForDone(CommandManager.execute(Commands.TOGGLE_INDENT_GUIDES));
+                await awaitsFor(function () {
+                    const _isChecked = CommandManager.get(Commands.TOGGLE_INDENT_GUIDES).getChecked();
+                    return !_isChecked && _$("#first-pane .cm-phcode-indent-guides:visible").length === 0;
+                }, ()=>{
+                    return `Indent guides to go, but got ${_$("#first-pane .cm-phcode-indent-guides:visible").length}`;
+                });
+                await awaitsForDone(CommandManager.execute(Commands.TOGGLE_INDENT_GUIDES));
+                await awaitsFor(function () {
+                    const _isChecked = CommandManager.get(Commands.TOGGLE_INDENT_GUIDES).getChecked();
+                    return _isChecked &&
+                        _$("#first-pane .cm-phcode-indent-guides:visible").length === expectedIndentLines;
+                }, ()=>{
+                    return `Guides to be back ${expectedIndentLines} but got
+                     ${_$("#first-pane .cm-phcode-indent-guides:visible").length}`;
+                });
+            }
+
+            it("should show and toggle indent guides with 1 space file", async function () {
+                await verify("space-1.js", 1);
+            });
+
+            it("should show and toggle indent guides with 12 space file", async function () {
+                await verify("space-12.js", 3);
+            });
+
+            it("should show and toggle indent guides with no space file", async function () {
+                await verify("space-none.js", 0);
+            });
+
+            it("should show and toggle indent guides with 2 tabs", async function () {
+                await verify("tab-2.js", 2);
+            });
+
+            it("should show and toggle indent guides with 12 tabs", async function () {
+                await verify("tab-12.js", 12);
+            });
+        });
 
         describe("reopen closed files test", function () {
             let currentProjectPath;
