@@ -121,8 +121,8 @@ define(function (require, exports, module) {
      * listen to these events should register their named eventHandler with `EventManager`.
      *
      * By default, only origins part of `window.Phoenix.TRUSTED_ORIGINS` are whitelisted. If your extension is
-     * bringing in a cross-origin ifrmame say (`http://mydomain.com`), you should add it to the whitelist by setting
-     * `window.Phoenix.TRUSTED_ORIGINS ("http://mydomain.com") = true;`
+     * bringing in a cross-origin ifrmame say [`http://mydomain.com`], you should add it to the whitelist by setting
+     * `window.Phoenix.TRUSTED_ORIGINS ["http://mydomain.com"] = true;`
      *
      * @function
      * @global
@@ -141,7 +141,7 @@ define(function (require, exports, module) {
      * // Note: for event handler names, please change the `extensionName` to your extension name
      * // to prevent collisions. EventHandlers starting with `ph-` and `br-` are reserved as system handlers
      * // and not available for use in extensions.
-     * window.Phoenix.TRUSTED_ORIGINS ("http://mydomain.com") = true;
+     * window.Phoenix.TRUSTED_ORIGINS ["http://mydomain.com"] = true;
      * EventManager.registerEventHandler("`extensionName`-iframeMessageHandler", exports);
      * exports.on("iframeHelloEvent", function(_ev, event){
      *    console.log(event.data.message);
