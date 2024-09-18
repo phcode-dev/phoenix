@@ -9,7 +9,6 @@ const inputDir = path.join(__dirname, '../src');
 const outputDir = path.join(__dirname, './dev-temp'); // this directory will be automatically removed (required for automative processes, the final output will be in API directory). 
 
 
-
 /**
  * Checks if a file contains a specific line.
  * This function is called to check if a file has @  INCLUDE_IN_API_DOCS 
@@ -314,7 +313,7 @@ function processJsFile(file, config) {
   // Run jsdoc-to-mdx
   execSync(`npx jsdoc-to-mdx -c ${path.relative(__dirname, configFile)}`, { cwd: __dirname });
 
-  console.log(`${path.basename(file)} is successfully converted to MDX`);
+  console.log(`${file} is successfully converted to MDX`);
 
   // Merge generated MDX files
   mergeMdxFiles(outDir, `${fileName}.mdx`, path.join(mdxApiDir, relativeDir));
@@ -544,35 +543,7 @@ const copyMarkdownFiles = (sourceDir, destDir) => {
 copyMarkdownFiles(docsDir, mdxApiDir);
 
 
-const eventManagerPath = './build/api/utils/EventManager.mdx';
 const notificationUIPath = './build/api/widgets/NotificationUI.mdx';
-
-
-/**
- * Function to fix all <extensionName> tags from the EventManager.mdx file as Docusaurus doesn't validate it and throws error
- * removing links where docusaurus throws error. 
- * @param {string} filePath
- */
-function fixEventManagerFile(filePath) {
-  try {
-    // Read the file content
-    let content = fs.readFileSync(filePath, 'utf8');
-
-    // Use a regular expression to find and remove all <extensionName> tags
-    let updatedContent = content.replace(/<extensionName>/g, '<extensionName />');
-
-    updatedContent = updatedContent.replace('[&quot;http://mydomain.com&quot;]=true;', '');
-
-    updatedContent = updatedContent.replace('["http://mydomain.com"]', '');
-
-    // Write the updated content back to the file
-    fs.writeFileSync(filePath, updatedContent, 'utf8');
-    console.log("Successfully fixed all issues inside eventManager file");
-  } catch (error) {
-    console.error(`Error processing file ${filePath}: ${error.message}`);
-  }
-}
-
 
 /**
  * fix notification UI broken areas
@@ -586,26 +557,18 @@ function fixNotificationUiFile(filePath) {
     // Read the file synchronously
     let content = fs.readFileSync(filePath, 'utf8');
 
-    let updatedContent = content;
-
     // Fix notification UI broken areas
-    updatedContent = updatedContent.replace('ame="badge badge--info margin-left--sm">static</span><br/><a href="#done">done</a><span className="badge badge--info margin-left--sm">static</span></div></div>\n</div>', '');
-
-    updatedContent = updatedContent.replace('Click me to </br>locate the file in file tree', 'Click me to locate the file in file tree');
-    
-    // Replace second occurrence
-    updatedContent = updatedContent.replace('Click me to </br>locate the file in file tree', 'Click me to locate the file in file tree');
+    content = content.replace('ame="badge badge--info margin-left--sm">static</span><br/><a href="#done">done</a><span className="badge badge--info margin-left--sm">static</span></div></div>\n</div>', '');
 
     // Write the file synchronously
-    fs.writeFileSync(filePath, updatedContent, 'utf8');
+    fs.writeFileSync(filePath, content, 'utf8');
 
-    console.log("Successfully fixed all issues inside notificationUI file");
+    console.log("Successfully fixed the issues inside notificationUI file");
   } catch (err) {
-    console.error('Error:', err);
+    console.error('Error while fixing notificationUI file', err);
   }
 }
 
-fixEventManagerFile(eventManagerPath);
 fixNotificationUiFile(notificationUIPath);
 
 
