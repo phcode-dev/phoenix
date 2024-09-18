@@ -564,6 +564,7 @@ define({
     "CMD_THEMES": "Themes\u2026",
     "CMD_TOGGLE_SEARCH_AUTOHIDE": "Automatically close search",
     "CMD_TOGGLE_RULERS": "Rulers",
+    "CMD_TOGGLE_INDENT_GUIDES": "Indent Guide Lines",
     "CMD_KEYBOARD_NAV_OVERLAY": "Visual Command Palette",
 
     // Navigate menu commands
@@ -1236,5 +1237,8 @@ define({
     "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Put the > of a multi-line HTML (HTML, JSX, Vue, Angular) element at the end of the last line instead of being alone on the next line (does not apply to self closing elements)",
     "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Enforce single attribute per line in HTML, Vue and JSX",
     "BEAUTIFY_OPTION_PROSE_WRAP": "Wrap prose if it exceeds the print width in markdown files",
-    "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Print trailing commas wherever possible in multi-line comma-separated syntactic structures"
+    "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Print trailing commas wherever possible in multi-line comma-separated syntactic structures",
+    // indent guides extension
+    "DESCRIPTION_INDENT_GUIDES_ENABLED": "true to show indent guide lines, else false.",
+    "DESCRIPTION_HIDE_FIRST": "true to show the first Indent Guide line else false."
 });

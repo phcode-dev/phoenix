@@ -41,4 +41,5 @@ define(function (require, exports, module) {
     require("./DisplayShortcuts/main");
     require("./appUpdater/main");
     require("./HtmlTagSyncEdit/main");
+    require("./indentGuides/main");
 });
