@@ -68,6 +68,7 @@ test/thirdparty/jasmine-reporters
 /src/styles/brackets.min.css.map
 /src/assets/default-project/*.zip
 /src/assets/sample-projects/*.zip
+/build/temp
 
 
 # ignore everything in the dev extension directory EXCEPT the README
