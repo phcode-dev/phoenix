@@ -443,6 +443,7 @@
   "CMD_THEMES": "Dizains…",
   "CMD_TOGGLE_SEARCH_AUTOHIDE": "Automātiski aizvērt meklēšanu",
   "CMD_TOGGLE_RULERS": "Valdnieki",
+  "CMD_TOGGLE_INDENT_GUIDES": "Atkāpe Vadlīnijas",
   "CMD_KEYBOARD_NAV_OVERLAY": "Vizuālā komandu palete",
   "NAVIGATE_MENU": "Pārvietoties",
   "CMD_QUICK_OPEN": "Ātrā atvēršana",
@@ -1035,5 +1036,7 @@
   "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Ievietojiet vairāku rindiņu HTML (HTML, JSX, Vue, Angular) elementu > pēdējās rindiņas beigās, nevis ievietojiet vienu pašu nākamajā rindā (neattiecas uz pašaizverošiem elementiem).",
   "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Ieviesiet vienu atribūtu katrā rindā HTML, Vue un JSX",
   "BEAUTIFY_OPTION_PROSE_WRAP": "Aptiniet prozu, ja tas pārsniedz drukas platumu atzīmes failos",
-  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Drukājiet beigu komatus, kur vien iespējams, vairāku rindiņu komatu atdalītās sintaktiskās struktūrās"
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Drukājiet beigu komatus, kur vien iespējams, vairāku rindiņu komatu atdalītās sintaktiskās struktūrās",
+  "DESCRIPTION_INDENT_GUIDES_ENABLED": "patiess, lai parādītu vadlīniju atkāpi, pretējā gadījumā nepatiesi.",
+  "DESCRIPTION_HIDE_FIRST": "patiess, lai parādītu pirmo atkāpes vadlīniju līniju, pretējā gadījumā nepatiesi."
 }

@@ -463,6 +463,7 @@ define({
   "CMD_THEMES": "تھیمز…",
   "CMD_TOGGLE_SEARCH_AUTOHIDE": "تلاش کو خود بخود بند کریں۔",
   "CMD_TOGGLE_RULERS": "حکمرانوں",
+  "CMD_TOGGLE_INDENT_GUIDES": "انڈینٹ گائیڈ لائنز",
   "CMD_KEYBOARD_NAV_OVERLAY": "بصری کمانڈ پیلیٹ",
   "NAVIGATE_MENU": "نیویگیٹ کریں۔",
   "CMD_QUICK_OPEN": "فوری کھولیں۔",
@@ -1055,5 +1056,7 @@ define({
   "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "اگلی لائن پر اکیلے رہنے کی بجائے آخری لائن کے آخر میں ملٹی لائن ایچ ٹی ایم ایل (HTML، JSX، Vue، Angular) عنصر کا > لگائیں (خود بند ہونے والے عناصر پر لاگو نہیں ہوتا)",
   "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "HTML، Vue اور JSX میں فی لائن واحد وصف نافذ کریں۔",
   "BEAUTIFY_OPTION_PROSE_WRAP": "نثر کو لپیٹیں اگر یہ مارک ڈاؤن فائلوں میں پرنٹ کی چوڑائی سے زیادہ ہے۔",
-  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "ملٹی لائن کوما سے الگ کردہ نحوی ڈھانچے میں جہاں بھی ممکن ہو ٹریلنگ کوما پرنٹ کریں"
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "ملٹی لائن کوما سے الگ کردہ نحوی ڈھانچے میں جہاں بھی ممکن ہو ٹریلنگ کوما پرنٹ کریں",
+  "DESCRIPTION_INDENT_GUIDES_ENABLED": "انڈینٹ گائیڈ لائنز دکھانے کے لیے true، ورنہ غلط۔",
+  "DESCRIPTION_HIDE_FIRST": "پہلی انڈینٹ گائیڈ لائن کو دکھانے کے لیے صحیح ورنہ غلط۔"
 });

@@ -463,6 +463,7 @@ define({
   "CMD_THEMES": "Teman…",
   "CMD_TOGGLE_SEARCH_AUTOHIDE": "Stäng sökning automatiskt",
   "CMD_TOGGLE_RULERS": "Linjaler",
+  "CMD_TOGGLE_INDENT_GUIDES": "Indrag guidelinjer",
   "CMD_KEYBOARD_NAV_OVERLAY": "Visuell kommandopalett",
   "NAVIGATE_MENU": "Navigera",
   "CMD_QUICK_OPEN": "Snabböppna",
@@ -1055,5 +1056,7 @@ define({
   "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Sätt > för ett HTML-element med flera rader (HTML, JSX, Vue, Angular) i slutet av den sista raden istället för att vara ensam på nästa rad (gäller inte självstängande element)",
   "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Genomför ett enda attribut per rad i HTML, Vue och JSX",
   "BEAUTIFY_OPTION_PROSE_WRAP": "Slå in prosa om den överskrider utskriftsbredden i markdown-filer",
-  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Skriv ut avslutande kommatecken där det är möjligt i flerrads kommaseparerade syntaktiska strukturer"
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Skriv ut avslutande kommatecken där det är möjligt i flerrads kommaseparerade syntaktiska strukturer",
+  "DESCRIPTION_INDENT_GUIDES_ENABLED": "sant för att visa indragsriktlinjer, annars falskt.",
+  "DESCRIPTION_HIDE_FIRST": "sant för att visa den första indragslinjen annars falsk."
 });

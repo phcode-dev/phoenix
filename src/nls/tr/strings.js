@@ -463,6 +463,7 @@ define({
   "CMD_THEMES": "Temalar…",
   "CMD_TOGGLE_SEARCH_AUTOHIDE": "Aramayı otomatik olarak kapat",
   "CMD_TOGGLE_RULERS": "Cetveller",
+  "CMD_TOGGLE_INDENT_GUIDES": "Girinti Kılavuz Çizgileri",
   "CMD_KEYBOARD_NAV_OVERLAY": "Görsel Komut Paleti",
   "NAVIGATE_MENU": "Git",
   "CMD_QUICK_OPEN": "Hızlı Aç",
@@ -1055,5 +1056,7 @@ define({
   "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Bir sonraki satırda tek başına olmak yerine, çok satırlı bir HTML (HTML, JSX, Vue, Angular) öğesinin > öğesini son satırın sonuna koyun (kendiliğinden kapanan öğeler için geçerli değildir)",
   "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "HTML, Vue ve JSX'te satır başına tek özniteliği uygula",
   "BEAUTIFY_OPTION_PROSE_WRAP": "İşaretleme dosyalarında baskı genişliğini aşarsa düzyazıyı sarın",
-  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Çok satırlı virgülle ayrılmış sözdizimsel yapılarda mümkün olan her yerde sondaki virgülleri yazdırın"
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Çok satırlı virgülle ayrılmış sözdizimsel yapılarda mümkün olan her yerde sondaki virgülleri yazdırın",
+  "DESCRIPTION_INDENT_GUIDES_ENABLED": "girinti kılavuz çizgilerini göstermek için true, aksi takdirde false.",
+  "DESCRIPTION_HIDE_FIRST": "İlk Girinti Kılavuzu satırını göstermek için doğru, aksi takdirde yanlış."
 });

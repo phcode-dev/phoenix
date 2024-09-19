@@ -463,6 +463,7 @@ define({
   "CMD_THEMES": "Témák…",
   "CMD_TOGGLE_SEARCH_AUTOHIDE": "Keresés automatikus bezárása",
   "CMD_TOGGLE_RULERS": "Uralkodók",
+  "CMD_TOGGLE_INDENT_GUIDES": "Vezetővonalak behúzása",
   "CMD_KEYBOARD_NAV_OVERLAY": "Vizuális parancspaletta",
   "NAVIGATE_MENU": "Navigálás",
   "CMD_QUICK_OPEN": "Gyors megnyitás",
@@ -1055,5 +1056,7 @@ define({
   "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Tegye egy többsoros HTML (HTML, JSX, Vue, Angular) elem > jelét az utolsó sor végére ahelyett, hogy egyedül lenne a következő sorban (nem vonatkozik az önzáró elemekre)",
   "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Egyetlen attribútum kényszerítése soronként HTML, Vue és JSX nyelven",
   "BEAUTIFY_OPTION_PROSE_WRAP": "Csomagolja be a prózát, ha meghaladja a nyomtatási szélességet a leíró fájlokban",
-  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "A többsoros, vesszővel elválasztott szintaktikai struktúrákban lehetőség szerint nyomtasson záró vesszőt"
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "A többsoros, vesszővel elválasztott szintaktikai struktúrákban lehetőség szerint nyomtasson záró vesszőt",
+  "DESCRIPTION_INDENT_GUIDES_ENABLED": "igaz a behúzás irányvonalainak megjelenítéséhez, különben hamis.",
+  "DESCRIPTION_HIDE_FIRST": "igaz, hogy az első behúzás segédvonalat mutassa, különben hamis."
 });

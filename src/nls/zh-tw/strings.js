@@ -463,6 +463,7 @@ define({
   "CMD_THEMES": "佈景主題…",
   "CMD_TOGGLE_SEARCH_AUTOHIDE": "自動關閉搜索",
   "CMD_TOGGLE_RULERS": "統治者",
+  "CMD_TOGGLE_INDENT_GUIDES": "縮排引導線",
   "CMD_KEYBOARD_NAV_OVERLAY": "可視化命令面板",
   "NAVIGATE_MENU": "瀏覽",
   "CMD_QUICK_OPEN": "快速開啟",
@@ -1055,5 +1056,7 @@ define({
   "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "將多行 HTML（HTML、JSX、Vue、Angular）元素的 > 放在最後一行的末尾，而不是單獨放在下一行（不適用於自閉合元素）",
   "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "在 HTML、Vue 和 JSX 中每行強制執行單個屬性",
   "BEAUTIFY_OPTION_PROSE_WRAP": "如果散文超過 Markdown 文件中的打印寬度，則包裝散文",
-  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "在多行逗號分隔的句法結構中盡可能打印尾隨逗號"
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "在多行逗號分隔的句法結構中盡可能打印尾隨逗號",
+  "DESCRIPTION_INDENT_GUIDES_ENABLED": "true 則顯示縮排引導線，否則 false。",
+  "DESCRIPTION_HIDE_FIRST": "true 則顯示第一個縮排引導線，否則 false。"
 });

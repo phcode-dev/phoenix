@@ -463,6 +463,7 @@ define({
   "CMD_THEMES": "Теми…",
   "CMD_TOGGLE_SEARCH_AUTOHIDE": "Автоматично закрити пошук",
   "CMD_TOGGLE_RULERS": "Лінійки",
+  "CMD_TOGGLE_INDENT_GUIDES": "Відступи напрямних ліній",
   "CMD_KEYBOARD_NAV_OVERLAY": "Візуальна палітра команд",
   "NAVIGATE_MENU": "Навігація",
   "CMD_QUICK_OPEN": "Швидке відкриття",
@@ -1055,5 +1056,7 @@ define({
   "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Розмістіть > багаторядкового HTML-елемента (HTML, JSX, Vue, Angular) у кінці останнього рядка замість того, щоб бути одним у наступному рядку (не стосується самозакриваючих елементів)",
   "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Використовуйте один атрибут на рядок у HTML, Vue та JSX",
   "BEAUTIFY_OPTION_PROSE_WRAP": "Оберніть прозу, якщо вона перевищує ширину друку у файлах розмітки",
-  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Друк завершальних ком, де це можливо, у багаторядкових синтаксичних структурах, розділених комами"
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Друк завершальних ком, де це можливо, у багаторядкових синтаксичних структурах, розділених комами",
+  "DESCRIPTION_INDENT_GUIDES_ENABLED": "true, щоб показувати напрямні лінії відступу, інакше, false.",
+  "DESCRIPTION_HIDE_FIRST": "true, щоб показати перший напрямний рядок відступу, else false."
 });

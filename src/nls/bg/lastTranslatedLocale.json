@@ -443,6 +443,7 @@
   "CMD_THEMES": "Теми…",
   "CMD_TOGGLE_SEARCH_AUTOHIDE": "Автоматично затваряне на търсенето",
   "CMD_TOGGLE_RULERS": "Линийки",
+  "CMD_TOGGLE_INDENT_GUIDES": "Отстъп на водещи линии",
   "CMD_KEYBOARD_NAV_OVERLAY": "Палета за визуални команди",
   "NAVIGATE_MENU": "Придвижване",
   "CMD_QUICK_OPEN": "Бързо отваряне",
@@ -1035,5 +1036,7 @@
   "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Поставете > на многоредов HTML (HTML, JSX, Vue, Angular) елемент в края на последния ред, вместо да бъде сам на следващия ред (не се отнася за самозатварящи се елементи)",
   "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Прилагане на един атрибут на ред в HTML, Vue и JSX",
   "BEAUTIFY_OPTION_PROSE_WRAP": "Обвийте прозата, ако надвишава ширината на печат във файловете за маркиране",
-  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Отпечатване на запетая в края, където е възможно, в многоредови синтактични структури, разделени със запетая"
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Отпечатване на запетая в края, където е възможно, в многоредови синтактични структури, разделени със запетая",
+  "DESCRIPTION_INDENT_GUIDES_ENABLED": "true за показване на направляващи линии за отстъп, в противен случай е false.",
+  "DESCRIPTION_HIDE_FIRST": "true за показване на първия направляващ ред за отстъпи else false."
 }

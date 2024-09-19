@@ -463,6 +463,7 @@ define({
   "CMD_THEMES": "Teemat…",
   "CMD_TOGGLE_SEARCH_AUTOHIDE": "Sulje haku automaattisesti",
   "CMD_TOGGLE_RULERS": "Hallitsijat",
+  "CMD_TOGGLE_INDENT_GUIDES": "Sisennä apuviivat",
   "CMD_KEYBOARD_NAV_OVERLAY": "Visuaalinen komentopaletti",
   "NAVIGATE_MENU": "Siirry",
   "CMD_QUICK_OPEN": "Pika-avaus",
@@ -1055,5 +1056,7 @@ define({
   "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Lisää monirivisen HTML-elementin (HTML, JSX, Vue, Angular) > viimeisen rivin loppuun sen sijaan, että olisit yksin seuraavalla rivillä (ei koske itsestään sulkeutuvia elementtejä)",
   "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Pakota yksi attribuutti riviä kohden HTML-, Vue- ja JSX-kielissä",
   "BEAUTIFY_OPTION_PROSE_WRAP": "Kääri proosa, jos se ylittää painoleveyden merkintätiedostoissa",
-  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Tulosta loppupilkut aina kun mahdollista monirivisissä pilkuilla erotetuissa syntaktisissa rakenteissa"
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Tulosta loppupilkut aina kun mahdollista monirivisissä pilkuilla erotetuissa syntaktisissa rakenteissa",
+  "DESCRIPTION_INDENT_GUIDES_ENABLED": "tosi näyttääksesi sisennyksen ohjeviivat, muuten epätosi.",
+  "DESCRIPTION_HIDE_FIRST": "tosi näyttääksesi ensimmäisen sisennyksen ohjeviivan, muuten epätosi."
 });

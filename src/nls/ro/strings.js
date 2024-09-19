@@ -463,6 +463,7 @@ define({
   "CMD_THEMES": "Teme…",
   "CMD_TOGGLE_SEARCH_AUTOHIDE": "Închide automat căutarea",
   "CMD_TOGGLE_RULERS": "Conducători",
+  "CMD_TOGGLE_INDENT_GUIDES": "Indentarea liniilor de ghidare",
   "CMD_KEYBOARD_NAV_OVERLAY": "Paleta de comenzi vizuale",
   "NAVIGATE_MENU": "Navigare",
   "CMD_QUICK_OPEN": "Deshidere rapidă",
@@ -1055,5 +1056,7 @@ define({
   "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Puneți > a unui element HTML cu mai multe linii (HTML, JSX, Vue, Angular) la sfârșitul ultimei rânduri, în loc să fiți singur pe linia următoare (nu se aplică elementelor cu autoînchidere)",
   "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Aplicați un singur atribut pe linie în HTML, Vue și JSX",
   "BEAUTIFY_OPTION_PROSE_WRAP": "Înfășurați proza dacă depășește lățimea de tipărire în fișierele de reducere",
-  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Tipăriți virgulele finale ori de câte ori este posibil în structuri sintactice separate prin virgulă cu mai multe linii"
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Tipăriți virgulele finale ori de câte ori este posibil în structuri sintactice separate prin virgulă cu mai multe linii",
+  "DESCRIPTION_INDENT_GUIDES_ENABLED": "adevărat pentru a afișa liniile de ghidare de indentare, altfel fals.",
+  "DESCRIPTION_HIDE_FIRST": "true pentru a afișa prima linie de ghidare de indentare, altfel false."
 });

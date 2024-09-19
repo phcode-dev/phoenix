@@ -463,6 +463,7 @@ define({
   "CMD_THEMES": "थीम…",
   "CMD_TOGGLE_SEARCH_AUTOHIDE": "स्वचालित रूप से खोज बंद करें",
   "CMD_TOGGLE_RULERS": "शासकों",
+  "CMD_TOGGLE_INDENT_GUIDES": "इंडेंट गाइड लाइन्स",
   "CMD_KEYBOARD_NAV_OVERLAY": "विजुअल कमांड पैलेट",
   "NAVIGATE_MENU": "नेविगेट",
   "CMD_QUICK_OPEN": "त्वरित खुला",
@@ -1055,5 +1056,7 @@ define({
   "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "अगली पंक्ति पर अकेले रहने के बजाय अंतिम पंक्ति के अंत में एक बहु-पंक्ति HTML (HTML, JSX, Vue, Angular) तत्व का > रखें (स्वयं बंद करने वाले तत्वों पर लागू नहीं होता)",
   "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "HTML, Vue और JSX में प्रति पंक्ति एकल विशेषता लागू करें",
   "BEAUTIFY_OPTION_PROSE_WRAP": "गद्य लपेटें यदि यह मार्कडाउन फ़ाइलों में प्रिंट की चौड़ाई से अधिक है",
-  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "बहु-पंक्ति अल्पविराम से अलग किए गए वाक्य-विन्यास संरचनाओं में जहां भी संभव हो, अनुगामी अल्पविराम प्रिंट करें"
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "बहु-पंक्ति अल्पविराम से अलग किए गए वाक्य-विन्यास संरचनाओं में जहां भी संभव हो, अनुगामी अल्पविराम प्रिंट करें",
+  "DESCRIPTION_INDENT_GUIDES_ENABLED": "इंडेंट गाइड लाइन दिखाने के लिए सत्य, अन्यथा असत्य।",
+  "DESCRIPTION_HIDE_FIRST": "प्रथम इंडेंट गाइड लाइन दिखाने के लिए true दबाएं, अन्यथा false दबाएं।"
 });

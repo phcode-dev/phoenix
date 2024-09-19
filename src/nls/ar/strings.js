@@ -463,6 +463,7 @@ define({
   "CMD_THEMES": "المظاهر ...",
   "CMD_TOGGLE_SEARCH_AUTOHIDE": "إغلاق البحث تلقائيًا",
   "CMD_TOGGLE_RULERS": "الحكام",
+  "CMD_TOGGLE_INDENT_GUIDES": "خطوط إرشادية للمسافة البادئة",
   "CMD_KEYBOARD_NAV_OVERLAY": "لوحة الأوامر المرئية",
   "NAVIGATE_MENU": "التنقل",
   "CMD_QUICK_OPEN": "فتح سريع",
@@ -1055,5 +1056,7 @@ define({
   "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "ضع عنصر HTML متعدد الأسطر (HTML ، JSX ، Vue ، Angular) في نهاية السطر الأخير بدلاً من أن يكون بمفرده في السطر التالي (لا ينطبق على عناصر الإغلاق الذاتي)",
   "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "فرض سمة واحدة لكل سطر في HTML و Vue و JSX",
   "BEAUTIFY_OPTION_PROSE_WRAP": "لف النثر إذا تجاوز عرض الطباعة في ملفات مارك داون",
-  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "اطبع الفواصل اللاحقة كلما أمكن ذلك في هياكل نحوية متعددة الأسطر مفصولة بفواصل"
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "اطبع الفواصل اللاحقة كلما أمكن ذلك في هياكل نحوية متعددة الأسطر مفصولة بفواصل",
+  "DESCRIPTION_INDENT_GUIDES_ENABLED": "صحيح لإظهار خطوط إرشاد المسافة البادئة، وإلا فهو خطأ.",
+  "DESCRIPTION_HIDE_FIRST": "صحيح لإظهار أول سطر من دليل المسافة البادئة، وإلا فهو خطأ."
 });

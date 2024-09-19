@@ -443,6 +443,7 @@
   "CMD_THEMES": "Temas…",
   "CMD_TOGGLE_SEARCH_AUTOHIDE": "Fechar pesquisa automaticamente",
   "CMD_TOGGLE_RULERS": "Governantes",
+  "CMD_TOGGLE_INDENT_GUIDES": "Linhas de guia de recuo",
   "CMD_KEYBOARD_NAV_OVERLAY": "Paleta de comandos visuais",
   "NAVIGATE_MENU": "Navegar",
   "CMD_QUICK_OPEN": "Abertura rápida",
@@ -1035,5 +1036,7 @@
   "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Coloque o > de um elemento HTML de várias linhas (HTML, JSX, Vue, Angular) no final da última linha em vez de ficar sozinho na próxima linha (não se aplica a elementos de fechamento automático)",
   "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Aplicar atributo único por linha em HTML, Vue e JSX",
   "BEAUTIFY_OPTION_PROSE_WRAP": "Enrole prosa se exceder a largura de impressão em arquivos de remarcação",
-  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Imprima vírgulas à direita sempre que possível em estruturas sintáticas de várias linhas separadas por vírgulas"
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Imprima vírgulas à direita sempre que possível em estruturas sintáticas de várias linhas separadas por vírgulas",
+  "DESCRIPTION_INDENT_GUIDES_ENABLED": "true para mostrar linhas de guia de recuo, caso contrário false.",
+  "DESCRIPTION_HIDE_FIRST": "true para mostrar a primeira linha do Guia de Recuo, caso contrário false."
 }

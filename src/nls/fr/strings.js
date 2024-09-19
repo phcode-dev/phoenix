@@ -463,6 +463,7 @@ define({
   "CMD_THEMES": "Thèmes…",
   "CMD_TOGGLE_SEARCH_AUTOHIDE": "Fermer automatiquement la recherche",
   "CMD_TOGGLE_RULERS": "Règles",
+  "CMD_TOGGLE_INDENT_GUIDES": "Lignes directrices pour l'indentation",
   "CMD_KEYBOARD_NAV_OVERLAY": "Palette de commandes visuelles",
   "NAVIGATE_MENU": "Naviguer",
   "CMD_QUICK_OPEN": "Ouverture rapide",
@@ -1055,5 +1056,7 @@ define({
   "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Mettre le > d'un élément HTML multi-ligne (HTML, JSX, Vue, Angular) à la fin de la dernière ligne au lieu d'être seul sur la ligne suivante (ne s'applique pas aux éléments à fermeture automatique)",
   "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Appliquer un seul attribut par ligne dans HTML, Vue et JSX",
   "BEAUTIFY_OPTION_PROSE_WRAP": "Enveloppez la prose si elle dépasse la largeur d'impression dans les fichiers Markdown",
-  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Imprimer des virgules de fin dans la mesure du possible dans des structures syntaxiques multilignes séparées par des virgules"
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Imprimer des virgules de fin dans la mesure du possible dans des structures syntaxiques multilignes séparées par des virgules",
+  "DESCRIPTION_INDENT_GUIDES_ENABLED": "vrai pour afficher les lignes de guide d'indentation, sinon faux.",
+  "DESCRIPTION_HIDE_FIRST": "vrai pour afficher la première ligne du guide d'indentation, sinon faux."
 });

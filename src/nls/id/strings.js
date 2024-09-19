@@ -463,6 +463,7 @@ define({
   "CMD_THEMES": "Tema…",
   "CMD_TOGGLE_SEARCH_AUTOHIDE": "Tutup pencarian secara otomatis",
   "CMD_TOGGLE_RULERS": "Penguasa",
+  "CMD_TOGGLE_INDENT_GUIDES": "Garis Panduan Indentasi",
   "CMD_KEYBOARD_NAV_OVERLAY": "Palet Perintah Visual",
   "NAVIGATE_MENU": "Navigasi",
   "CMD_QUICK_OPEN": "Buka Cepat",
@@ -1055,5 +1056,7 @@ define({
   "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Letakkan > elemen HTML multi-baris (HTML, JSX, Vue, Angular) di akhir baris terakhir alih-alih sendirian di baris berikutnya (tidak berlaku untuk elemen yang menutup sendiri)",
   "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Terapkan atribut tunggal per baris dalam HTML, Vue, dan JSX",
   "BEAUTIFY_OPTION_PROSE_WRAP": "Bungkus prosa jika melebihi lebar cetak dalam file penurunan harga",
-  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Cetak tanda koma sedapat mungkin dalam struktur sintaksis multi-baris yang dipisahkan koma"
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Cetak tanda koma sedapat mungkin dalam struktur sintaksis multi-baris yang dipisahkan koma",
+  "DESCRIPTION_INDENT_GUIDES_ENABLED": "benar untuk memperlihatkan garis panduan indentasi, jika tidak, salah.",
+  "DESCRIPTION_HIDE_FIRST": "benar untuk menampilkan baris Panduan Indentasi pertama, jika tidak salah."
 });

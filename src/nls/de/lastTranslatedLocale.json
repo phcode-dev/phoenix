@@ -443,6 +443,7 @@
   "CMD_THEMES": "Designs…",
   "CMD_TOGGLE_SEARCH_AUTOHIDE": "Suche automatisch schließen",
   "CMD_TOGGLE_RULERS": "Lineale",
+  "CMD_TOGGLE_INDENT_GUIDES": "Einzugshilfslinien",
   "CMD_KEYBOARD_NAV_OVERLAY": "Visuelle Befehlspalette",
   "NAVIGATE_MENU": "Navigation",
   "CMD_QUICK_OPEN": "Schnell öffnen",
@@ -1035,5 +1036,7 @@
   "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Platzieren Sie das > eines mehrzeiligen HTML-Elements (HTML, JSX, Vue, Angular) am Ende der letzten Zeile, anstatt allein in der nächsten Zeile (gilt nicht für selbstschließende Elemente).",
   "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Erzwingen Sie ein einzelnes Attribut pro Zeile in HTML, Vue und JSX",
   "BEAUTIFY_OPTION_PROSE_WRAP": "Prosa umbrechen, wenn sie die Druckbreite in Markdown-Dateien überschreitet",
-  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Geben Sie, wo immer möglich, nachgestellte Kommas in mehrzeiligen, durch Kommas getrennten syntaktischen Strukturen aus"
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Geben Sie, wo immer möglich, nachgestellte Kommas in mehrzeiligen, durch Kommas getrennten syntaktischen Strukturen aus",
+  "DESCRIPTION_INDENT_GUIDES_ENABLED": "„True“, um Einzugshilfslinien anzuzeigen, sonst „False“.",
+  "DESCRIPTION_HIDE_FIRST": "„True“, um die erste Einzugshilfszeile anzuzeigen, andernfalls „False“."
 }
