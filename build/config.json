@@ -1,8 +1,0 @@
-{
-  "locales": [
-    "en"
-  ],
-  "outDir": "",
-  "jsdoc": "./jsdoc.json",
-  "bulma": false
-}
