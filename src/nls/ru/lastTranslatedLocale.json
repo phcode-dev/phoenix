@@ -443,6 +443,7 @@
   "CMD_THEMES": "Темы…",
   "CMD_TOGGLE_SEARCH_AUTOHIDE": "Автоматически закрыть поиск",
   "CMD_TOGGLE_RULERS": "Правители",
+  "CMD_TOGGLE_INDENT_GUIDES": "Отступы направляющих линий",
   "CMD_KEYBOARD_NAV_OVERLAY": "Палитра визуальных команд",
   "NAVIGATE_MENU": "Навигация",
   "CMD_QUICK_OPEN": "Быстрое открытие",
@@ -1035,5 +1036,7 @@
   "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Поместите > многострочного элемента HTML (HTML, JSX, Vue, Angular) в конец последней строки, а не в одиночку на следующей строке (не относится к самозакрывающимся элементам)",
   "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Применять один атрибут на строку в HTML, Vue и JSX",
   "BEAUTIFY_OPTION_PROSE_WRAP": "Оберните прозу, если она превышает ширину печати в файлах уценки",
-  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Печатайте конечные запятые везде, где это возможно, в многострочных синтаксических структурах, разделенных запятыми."
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Печатайте конечные запятые везде, где это возможно, в многострочных синтаксических структурах, разделенных запятыми.",
+  "DESCRIPTION_INDENT_GUIDES_ENABLED": "true, чтобы показать направляющие линии отступа, в противном случае false.",
+  "DESCRIPTION_HIDE_FIRST": "true, чтобы отобразить первую линию направляющей отступа, в противном случае false."
 }

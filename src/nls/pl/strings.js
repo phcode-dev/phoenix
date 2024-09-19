@@ -463,6 +463,7 @@ define({
   "CMD_THEMES": "Motywy…",
   "CMD_TOGGLE_SEARCH_AUTOHIDE": "Automatycznie zamknij wyszukiwanie",
   "CMD_TOGGLE_RULERS": "Władcy",
+  "CMD_TOGGLE_INDENT_GUIDES": "Wcięcie linii pomocniczych",
   "CMD_KEYBOARD_NAV_OVERLAY": "Wizualna paleta poleceń",
   "NAVIGATE_MENU": "Nawigacja",
   "CMD_QUICK_OPEN": "Otwórz szybko",
@@ -1055,5 +1056,7 @@ define({
   "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Umieść > wielowierszowego elementu HTML (HTML, JSX, Vue, Angular) na końcu ostatniego wiersza zamiast być sam w następnym wierszu (nie dotyczy elementów samozamykających się)",
   "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Egzekwuj pojedynczy atrybut na linię w HTML, Vue i JSX",
   "BEAUTIFY_OPTION_PROSE_WRAP": "Zawijaj prozę, jeśli przekracza szerokość wydruku w plikach przecen",
-  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Drukuj końcowe przecinki tam, gdzie to możliwe, w wielowierszowych strukturach składniowych oddzielonych przecinkami"
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Drukuj końcowe przecinki tam, gdzie to możliwe, w wielowierszowych strukturach składniowych oddzielonych przecinkami",
+  "DESCRIPTION_INDENT_GUIDES_ENABLED": "true, aby wyświetlić linie pomocnicze wcięcia, w przeciwnym wypadku false.",
+  "DESCRIPTION_HIDE_FIRST": "true, aby wyświetlić pierwszą linię prowadnicy wcięcia, w przeciwnym wypadku false."
 });

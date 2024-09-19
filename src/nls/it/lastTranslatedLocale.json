@@ -443,6 +443,7 @@
   "CMD_THEMES": "Temi…",
   "CMD_TOGGLE_SEARCH_AUTOHIDE": "Chiudi automaticamente la ricerca",
   "CMD_TOGGLE_RULERS": "Righelli",
+  "CMD_TOGGLE_INDENT_GUIDES": "Linee guida di rientro",
   "CMD_KEYBOARD_NAV_OVERLAY": "Tavolozza dei comandi visivi",
   "NAVIGATE_MENU": "Naviga",
   "CMD_QUICK_OPEN": "Apri velocemente",
@@ -1035,5 +1036,7 @@
   "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Metti il > di un elemento HTML a più righe (HTML, JSX, Vue, Angular) alla fine dell'ultima riga invece di essere solo nella riga successiva (non si applica agli elementi a chiusura automatica)",
   "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Applica un singolo attributo per riga in HTML, Vue e JSX",
   "BEAUTIFY_OPTION_PROSE_WRAP": "Avvolgi la prosa se supera la larghezza di stampa nei file markdown",
-  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Stampa le virgole finali, ove possibile, in strutture sintattiche separate da virgole su più righe"
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Stampa le virgole finali, ove possibile, in strutture sintattiche separate da virgole su più righe",
+  "DESCRIPTION_INDENT_GUIDES_ENABLED": "true per mostrare le linee guida di rientro, altrimenti false.",
+  "DESCRIPTION_HIDE_FIRST": "true per mostrare la prima riga della guida di rientro, altrimenti false."
 }

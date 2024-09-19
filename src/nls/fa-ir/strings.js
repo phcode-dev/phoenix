@@ -463,6 +463,7 @@ define({
   "CMD_THEMES": "پوسته ها…",
   "CMD_TOGGLE_SEARCH_AUTOHIDE": "بستن خودکار جستجو",
   "CMD_TOGGLE_RULERS": "حاکمان",
+  "CMD_TOGGLE_INDENT_GUIDES": "خطوط راهنمای تورفتگی",
   "CMD_KEYBOARD_NAV_OVERLAY": "پالت فرمان ویژوال",
   "NAVIGATE_MENU": "انتقال",
   "CMD_QUICK_OPEN": "باز کردن سریع",
@@ -1055,5 +1056,7 @@ define({
   "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "> یک عنصر HTML چند خطی (HTML، JSX، Vue، Angular) را در انتهای خط آخر به جای تنها بودن در خط بعدی قرار دهید (در مورد عناصر خود بسته نمی شود)",
   "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "اعمال ویژگی واحد در هر خط در HTML، Vue و JSX",
   "BEAUTIFY_OPTION_PROSE_WRAP": "اگر از عرض چاپ در فایل‌های علامت‌گذاری بیشتر شود، نثر را بپیچید",
-  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "در ساختارهای نحوی چند خطی جدا شده با کاما، هر جا که ممکن است، کاماهای انتهایی را چاپ کنید"
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "در ساختارهای نحوی چند خطی جدا شده با کاما، هر جا که ممکن است، کاماهای انتهایی را چاپ کنید",
+  "DESCRIPTION_INDENT_GUIDES_ENABLED": "درست برای نشان دادن خطوط راهنمای تورفتگی، در غیر این صورت نادرست.",
+  "DESCRIPTION_HIDE_FIRST": "درست است تا اولین خط راهنمای تورفتگی نشان داده شود و در غیر این صورت نادرست است."
 });

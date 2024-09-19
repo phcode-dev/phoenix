@@ -443,6 +443,7 @@
   "CMD_THEMES": "Temaer...",
   "CMD_TOGGLE_SEARCH_AUTOHIDE": "Luk søgning automatisk",
   "CMD_TOGGLE_RULERS": "Herskere",
+  "CMD_TOGGLE_INDENT_GUIDES": "Indrykke guidelinjer",
   "CMD_KEYBOARD_NAV_OVERLAY": "Visuel kommandopalet",
   "NAVIGATE_MENU": "Navigér",
   "CMD_QUICK_OPEN": "Lyn-åbn",
@@ -1035,5 +1036,7 @@
   "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Sæt > af et HTML-element med flere linjer (HTML, JSX, Vue, Angular) i slutningen af den sidste linje i stedet for at være alene på næste linje (gælder ikke selvlukkende elementer)",
   "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Håndhæv en enkelt attribut pr. linje i HTML, Vue og JSX",
   "BEAUTIFY_OPTION_PROSE_WRAP": "Indpak prosa, hvis den overskrider printbredden i markdown-filer",
-  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Udskriv efterstillede kommaer, hvor det er muligt, i kommaseparerede syntaktiske strukturer med flere linjer"
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Udskriv efterstillede kommaer, hvor det er muligt, i kommaseparerede syntaktiske strukturer med flere linjer",
+  "DESCRIPTION_INDENT_GUIDES_ENABLED": "sandt for at vise indrykke hjælpelinjer, ellers falsk.",
+  "DESCRIPTION_HIDE_FIRST": "sand for at vise den første indrykningslinje ellers falsk."
 }

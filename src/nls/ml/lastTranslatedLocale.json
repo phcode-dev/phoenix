@@ -443,6 +443,7 @@
   "CMD_THEMES": "തീമുകൾ...",
   "CMD_TOGGLE_SEARCH_AUTOHIDE": "തിരയൽ സ്വയമേവ അടയ്ക്കുക",
   "CMD_TOGGLE_RULERS": "ഭരണാധികാരികൾ",
+  "CMD_TOGGLE_INDENT_GUIDES": "ഇൻഡൻ്റ് ഗൈഡ് ലൈനുകൾ",
   "CMD_KEYBOARD_NAV_OVERLAY": "വിഷ്വൽ കമാൻഡ് പാലറ്റ്",
   "NAVIGATE_MENU": "നാവിഗേറ്റ് ചെയ്യുക",
   "CMD_QUICK_OPEN": "പെട്ടെന്ന് തുറക്കുക",
@@ -1035,5 +1036,7 @@
   "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "ഒരു മൾട്ടി-ലൈൻ HTML (HTML, JSX, Vue, Angular) ഘടകത്തിന്റെ > അടുത്ത വരിയിൽ തനിച്ചായിരിക്കുന്നതിനുപകരം അവസാന വരിയുടെ അവസാനം ഇടുക (സ്വയം അടയ്ക്കുന്ന ഘടകങ്ങൾക്ക് ബാധകമല്ല)",
   "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "HTML, Vue, JSX എന്നിവയിൽ ഓരോ വരിയിലും ഒരൊറ്റ ആട്രിബ്യൂട്ട് നടപ്പിലാക്കുക",
   "BEAUTIFY_OPTION_PROSE_WRAP": "മാർക്ക്ഡൗൺ ഫയലുകളിലെ പ്രിന്റ് വീതി കവിഞ്ഞാൽ ഗദ്യം പൊതിയുക",
-  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "മൾട്ടി-ലൈൻ കോമ കൊണ്ട് വേർതിരിച്ച വാക്യഘടനയിൽ സാധ്യമാകുന്നിടത്തെല്ലാം ട്രെയിലിംഗ് കോമകൾ പ്രിന്റ് ചെയ്യുക"
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "മൾട്ടി-ലൈൻ കോമ കൊണ്ട് വേർതിരിച്ച വാക്യഘടനയിൽ സാധ്യമാകുന്നിടത്തെല്ലാം ട്രെയിലിംഗ് കോമകൾ പ്രിന്റ് ചെയ്യുക",
+  "DESCRIPTION_INDENT_GUIDES_ENABLED": "ഇൻഡൻ്റ് ഗൈഡ് ലൈനുകൾ കാണിക്കാൻ ശരി, അല്ലെങ്കിൽ തെറ്റ്.",
+  "DESCRIPTION_HIDE_FIRST": "ആദ്യ ഇൻഡൻ്റ് ഗൈഡ് ലൈൻ കാണിക്കുന്നത് ശരിയാണ്, അല്ലാത്തത് തെറ്റാണ്."
 }

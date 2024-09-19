@@ -443,6 +443,7 @@
   "CMD_THEMES": "테마…",
   "CMD_TOGGLE_SEARCH_AUTOHIDE": "자동으로 검색 닫기",
   "CMD_TOGGLE_RULERS": "통치자",
+  "CMD_TOGGLE_INDENT_GUIDES": "들여쓰기 가이드 라인",
   "CMD_KEYBOARD_NAV_OVERLAY": "시각적 명령 팔레트",
   "NAVIGATE_MENU": "탐색",
   "CMD_QUICK_OPEN": "빠른 열기",
@@ -1035,5 +1036,7 @@
   "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "다음 줄에 혼자 있는 대신 여러 줄 HTML(HTML, JSX, Vue, Angular) 요소의 >를 마지막 줄 끝에 배치합니다(자체 닫는 요소에는 적용되지 않음).",
   "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "HTML, Vue 및 JSX에서 행당 단일 속성 적용",
   "BEAUTIFY_OPTION_PROSE_WRAP": "마크다운 파일의 인쇄 너비를 초과하는 경우 산문을 줄입니다.",
-  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "여러 줄 쉼표로 구분된 구문 구조에서 가능한 한 후행 쉼표를 인쇄합니다."
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "여러 줄 쉼표로 구분된 구문 구조에서 가능한 한 후행 쉼표를 인쇄합니다.",
+  "DESCRIPTION_INDENT_GUIDES_ENABLED": "들여쓰기 가이드라인을 표시하려면 true를 지정하고, 그렇지 않으면 false를 지정합니다.",
+  "DESCRIPTION_HIDE_FIRST": "첫 번째 들여쓰기 안내선을 표시하려면 true이고, 그렇지 않으면 false입니다."
 }

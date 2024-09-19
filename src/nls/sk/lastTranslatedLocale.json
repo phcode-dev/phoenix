@@ -443,6 +443,7 @@
   "CMD_THEMES": "Témy…",
   "CMD_TOGGLE_SEARCH_AUTOHIDE": "Automaticky zavrieť vyhľadávanie",
   "CMD_TOGGLE_RULERS": "Pravítka",
+  "CMD_TOGGLE_INDENT_GUIDES": "Odsadenie vodiacich čiar",
   "CMD_KEYBOARD_NAV_OVERLAY": "Paleta vizuálnych príkazov",
   "NAVIGATE_MENU": "Navigácia",
   "CMD_QUICK_OPEN": "Rýchle otvorenie",
@@ -1035,5 +1036,7 @@
   "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Umiestnite > viacriadkového prvku HTML (HTML, JSX, Vue, Angular) na koniec posledného riadku namiesto toho, aby ste boli sami na ďalšom riadku (neplatí pre samozatváracie prvky)",
   "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Vynútiť jeden atribút na riadok v HTML, Vue a JSX",
   "BEAUTIFY_OPTION_PROSE_WRAP": "Zabaľte prózu, ak presahuje šírku tlače do súborov značiek",
-  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Vždy, keď je to možné, tlačte koncové čiarky vo viacriadkových syntaktických štruktúrach oddelených čiarkami"
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Vždy, keď je to možné, tlačte koncové čiarky vo viacriadkových syntaktických štruktúrach oddelených čiarkami",
+  "DESCRIPTION_INDENT_GUIDES_ENABLED": "true, ak chcete zobraziť vodiace čiary odsadenia, inak nepravda.",
+  "DESCRIPTION_HIDE_FIRST": "true, aby sa zobrazil prvý vodiaci riadok odsadenia, inak je nepravda."
 }

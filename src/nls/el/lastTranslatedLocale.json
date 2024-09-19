@@ -443,6 +443,7 @@
   "CMD_THEMES": "Θέματα…",
   "CMD_TOGGLE_SEARCH_AUTOHIDE": "Αυτόματο κλείσιμο αναζήτησης",
   "CMD_TOGGLE_RULERS": "Κυβερνήτες",
+  "CMD_TOGGLE_INDENT_GUIDES": "Γραμμές οδηγών εσοχής",
   "CMD_KEYBOARD_NAV_OVERLAY": "Οπτική παλέτα εντολών",
   "NAVIGATE_MENU": "Πλοήγηση",
   "CMD_QUICK_OPEN": "Γρήγορο Άνοιγμα",
@@ -1035,5 +1036,7 @@
   "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Βάλτε το > ενός στοιχείου HTML πολλών γραμμών (HTML, JSX, Vue, Angular) στο τέλος της τελευταίας γραμμής αντί να είστε μόνοι στην επόμενη γραμμή (δεν ισχύει για στοιχεία που κλείνουν αυτόματα)",
   "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Επιβολή μεμονωμένου χαρακτηριστικού ανά γραμμή σε HTML, Vue και JSX",
   "BEAUTIFY_OPTION_PROSE_WRAP": "Τυλίξτε πρόζα εάν υπερβαίνει το πλάτος εκτύπωσης στα αρχεία σήμανσης",
-  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Εκτυπώστε τελικά κόμματα όπου είναι δυνατόν σε συντακτικές δομές πολλαπλών γραμμών διαχωρισμένων με κόμματα"
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Εκτυπώστε τελικά κόμματα όπου είναι δυνατόν σε συντακτικές δομές πολλαπλών γραμμών διαχωρισμένων με κόμματα",
+  "DESCRIPTION_INDENT_GUIDES_ENABLED": "true για να εμφανίζει τις κατευθυντήριες γραμμές εσοχή, αλλιώς false.",
+  "DESCRIPTION_HIDE_FIRST": "true για να εμφανίζεται η πρώτη γραμμή Οδηγού εσοχής αλλιώς false."
 }

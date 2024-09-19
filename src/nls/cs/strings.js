@@ -463,6 +463,7 @@ define({
   "CMD_THEMES": "Motivy…",
   "CMD_TOGGLE_SEARCH_AUTOHIDE": "Automaticky zavřít vyhledávání",
   "CMD_TOGGLE_RULERS": "Vládci",
+  "CMD_TOGGLE_INDENT_GUIDES": "Odsadit vodicí čáry",
   "CMD_KEYBOARD_NAV_OVERLAY": "Paleta vizuálních příkazů",
   "NAVIGATE_MENU": "Navigace",
   "CMD_QUICK_OPEN": "Rychle otevřít",
@@ -1055,5 +1056,7 @@ define({
   "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Umístěte > víceřádkového prvku HTML (HTML, JSX, Vue, Angular) na konec posledního řádku namísto toho, abyste byli sami na dalším řádku (neplatí pro samozavírací prvky)",
   "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Vynutit jeden atribut na řádek v HTML, Vue a JSX",
   "BEAUTIFY_OPTION_PROSE_WRAP": "Zabalte prózu, pokud přesahuje šířku tisku do souborů značek",
-  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Pokud je to možné, vytiskněte koncové čárky ve víceřádkových syntaktických strukturách oddělených čárkami"
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Pokud je to možné, vytiskněte koncové čárky ve víceřádkových syntaktických strukturách oddělených čárkami",
+  "DESCRIPTION_INDENT_GUIDES_ENABLED": "true pro zobrazení vodicích čar odsazení, jinak false.",
+  "DESCRIPTION_HIDE_FIRST": "true pro zobrazení prvního vodícího řádku odsazení, jinak false."
 });

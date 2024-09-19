@@ -443,6 +443,7 @@
   "CMD_THEMES": "Thema's…",
   "CMD_TOGGLE_SEARCH_AUTOHIDE": "Zoekopdracht automatisch sluiten",
   "CMD_TOGGLE_RULERS": "Heersers",
+  "CMD_TOGGLE_INDENT_GUIDES": "Inspringingsrichtlijnen",
   "CMD_KEYBOARD_NAV_OVERLAY": "Visueel commandopalet",
   "NAVIGATE_MENU": "Navigeer",
   "CMD_QUICK_OPEN": "Snel openen",
@@ -1035,5 +1036,7 @@
   "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Zet de > van een HTML-element met meerdere regels (HTML, JSX, Vue, Angular) aan het einde van de laatste regel in plaats van alleen op de volgende regel te staan (geldt niet voor zelfsluitende elementen)",
   "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Dwing één attribuut per regel af in HTML, Vue en JSX",
   "BEAUTIFY_OPTION_PROSE_WRAP": "Wikkel proza als het de afdrukbreedte overschrijdt in markdown-bestanden",
-  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Print volgkomma's waar mogelijk in syntactische structuren met meerdere regels, gescheiden door komma's"
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Print volgkomma's waar mogelijk in syntactische structuren met meerdere regels, gescheiden door komma's",
+  "DESCRIPTION_INDENT_GUIDES_ENABLED": "true om inspringingsrichtlijnen weer te geven, anders false.",
+  "DESCRIPTION_HIDE_FIRST": "true om de eerste Indent Guide-regel weer te geven, anders false."
 }

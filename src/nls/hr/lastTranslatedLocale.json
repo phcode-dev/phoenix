@@ -443,6 +443,7 @@
   "CMD_THEMES": "Teme…",
   "CMD_TOGGLE_SEARCH_AUTOHIDE": "Automatski zatvori pretragu",
   "CMD_TOGGLE_RULERS": "Vladari",
+  "CMD_TOGGLE_INDENT_GUIDES": "Uvucite vodeće linije",
   "CMD_KEYBOARD_NAV_OVERLAY": "Paleta vizualnih naredbi",
   "NAVIGATE_MENU": "Navigacija",
   "CMD_QUICK_OPEN": "Brzo otvori",
@@ -1035,5 +1036,7 @@
   "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "Stavite > višerednog HTML elementa (HTML, JSX, Vue, Angular) na kraj zadnjeg retka umjesto da bude sam u sljedećem retku (ne odnosi se na elemente koji se sami zatvaraju)",
   "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "Nametnite jedan atribut po retku u HTML-u, Vue-u i JSX-u",
   "BEAUTIFY_OPTION_PROSE_WRAP": "Zamotajte prozu ako premašuje širinu ispisa u datotekama za označavanje",
-  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Ispis zareza na kraju gdje god je to moguće u sintaktičkim strukturama s više redaka odvojenih zarezima"
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Ispis zareza na kraju gdje god je to moguće u sintaktičkim strukturama s više redaka odvojenih zarezima",
+  "DESCRIPTION_INDENT_GUIDES_ENABLED": "true za prikaz uvlačnih linija smjernica, inače false.",
+  "DESCRIPTION_HIDE_FIRST": "true za prikaz prve linije smjernice za uvlačenje else false."
 }

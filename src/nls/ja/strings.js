@@ -463,6 +463,7 @@ define({
   "CMD_THEMES": "テーマ…",
   "CMD_TOGGLE_SEARCH_AUTOHIDE": "検索を自動的に閉じる",
   "CMD_TOGGLE_RULERS": "支配者",
+  "CMD_TOGGLE_INDENT_GUIDES": "インデントガイドライン",
   "CMD_KEYBOARD_NAV_OVERLAY": "ビジュアルコマンドパレット",
   "NAVIGATE_MENU": "ナビゲート",
   "CMD_QUICK_OPEN": "クイックオープン",
@@ -1055,5 +1056,7 @@ define({
   "BEAUTIFY_OPTION_BRACKET_SAME_LINE": "複数行の HTML (HTML、JSX、Vue、Angular) 要素の > を次の行に単独で配置するのではなく、最後の行の最後に配置します (自己終了要素には適用されません)。",
   "BEAUTIFY_OPTION_SINGLE_ATTRIBUTE_PER_LINE": "HTML、Vue、JSX で 1 行に 1 つの属性を適用する",
   "BEAUTIFY_OPTION_PROSE_WRAP": "マークダウンファイルの印刷幅を超える場合は文章を折り返す",
-  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "複数行のコンマ区切りの構文構造では、可能な限り末尾のコンマを出力します"
+  "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "複数行のコンマ区切りの構文構造では、可能な限り末尾のコンマを出力します",
+  "DESCRIPTION_INDENT_GUIDES_ENABLED": "インデントガイドラインを表示する場合は true、それ以外の場合は false です。",
+  "DESCRIPTION_HIDE_FIRST": "最初のインデント ガイドラインを表示する場合は true、そうでない場合は false です。"
 });
