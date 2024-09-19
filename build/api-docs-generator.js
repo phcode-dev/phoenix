@@ -3,19 +3,23 @@ const path = require('path');
 const { execSync } = require('child_process');
 
 // Define the input and output directories
-const inputDir = path.join(__dirname, '../src');
+const BUILD_DIR = __dirname;
+const ROOT_DIR = path.join(BUILD_DIR, '../');
+const SRC_DIR = path.join(ROOT_DIR, 'src');
 
 // DONOT MODIFY THIS
-const outputDir = path.join(__dirname, './dev-temp'); // this directory will be automatically removed (required for automative processes, the final output will be in API directory).
+// this directory will be automatically removed (required for automative processes, the final output will
+// be in API directory).
+const outputDir = path.join(BUILD_DIR, './dev-temp');
 
 // Set up paths for the build process
-const buildDir = __dirname;
-const jsdocFile = path.join(buildDir, 'jsdoc.json');
-const configFile = path.join(buildDir, 'config.json');
-const sourceDir = path.join(buildDir, 'dev-temp');
-const devApiDir = path.join(buildDir, 'dev-api');
+const GENERATED_DOCS_FOLDER = path.join(SRC_DIR, '../', 'docs', 'Generated API Reference');
+const JSDOC_FILE = path.join(BUILD_DIR, 'jsdoc.json');
+const CONFIG_FILE = path.join(BUILD_DIR, 'config.json');
+const MDX_API_DIR = path.join(BUILD_DIR, 'api');
+const sourceDir = path.join(BUILD_DIR, 'dev-temp');
+const devApiDir = path.join(BUILD_DIR, 'dev-api');
 const tempDir = path.join(devApiDir, 'temp');
-const mdxApiDir = path.join(__dirname, 'api');
 
 
 /**
@@ -164,7 +168,7 @@ function removeEmptyDirectories(dir) {
     });
 }
 
-processFilesRecursively(inputDir, inputDir);
+processFilesRecursively(SRC_DIR, SRC_DIR);
 console.log("All script files for the API documentation have been generated!");
 
 removeEmptyDirectories(outputDir);
@@ -177,6 +181,29 @@ console.log("Successfully removed redundant JS code");
 
 // Conversion of MDX from JS files starts here
 
+const JSDOC_JSON_TEMPLATE = {
+    "source": {
+        "include": [
+            "dev-api\\temp"
+        ]
+    },
+    "plugins": [
+        "plugins/markdown"
+    ],
+    "opts": {
+        "destination": "../api",
+        "recurse": true
+    }
+};
+
+const CONFIG_JSON_TEMPLATE = {
+    "locales": [
+        "en"
+    ],
+    "outDir": "",
+    "jsdoc": "./jsdoc.json",
+    "bulma": false
+};
 
 /**
  * Generates MDX files from JS files using jsdoc-to-mdx.
@@ -187,19 +214,19 @@ function generateMdxFiles() {
         // Create necessary directories (all these directories will be removed automatically
         // after the task is completed. Finally after the whole execution we'll be left with
         // just the API directory i.e. mdxApiDir)
-        [devApiDir, tempDir, mdxApiDir].forEach(dir => {
+        [devApiDir, tempDir, MDX_API_DIR].forEach(dir => {
             if (!fs.existsSync(dir)) {
                 fs.mkdirSync(dir, { recursive: true });
             }
         });
 
         // Read JSDoc and config files
-        let jsdocConfig = readJsdocFile();
-        let config = readConfigFile();
+        let jsdocConfig = JSDOC_JSON_TEMPLATE;
+        let config = CONFIG_JSON_TEMPLATE;
 
         // Modify JSDoc config to use temp directory
-        jsdocConfig.source.include = [path.relative(buildDir, tempDir)];
-        fs.writeFileSync(jsdocFile, JSON.stringify(jsdocConfig, null, 2));
+        jsdocConfig.source.include = [path.relative(BUILD_DIR, tempDir)];
+        fs.writeFileSync(JSDOC_FILE, JSON.stringify(jsdocConfig, null, 2));
 
         // Copy JS files to dev-api directory
         copyJsFiles(sourceDir, devApiDir);
@@ -212,10 +239,10 @@ function generateMdxFiles() {
 
         // After processing all files, set outDir to empty string
         config.outDir = "";
-        fs.writeFileSync(configFile, JSON.stringify(config, null, 2));
+        fs.writeFileSync(CONFIG_FILE, JSON.stringify(config, null, 2));
 
         // Post-processing of MDX files
-        processMdxFiles(mdxApiDir);
+        processMdxFiles(MDX_API_DIR);
 
         // Clean up temporary files and directories
         cleanupTempFiles();
@@ -224,30 +251,6 @@ function generateMdxFiles() {
     } catch (error) {
         console.error('Error generating or processing MDX files:', error);
     }
-}
-
-/**
- * Reads JSDoc configuration file.
- * @returns {Object} JSDoc configuration object
- */
-function readJsdocFile() {
-    if (fs.existsSync(jsdocFile)) {
-        return JSON.parse(fs.readFileSync(jsdocFile, 'utf-8'));
-    }
-    console.error("Jsdoc.json not found! Make sure it is inside the same directory as of the script!");
-
-}
-
-/**
- * Reads the configuration file.
- * @returns {Object} Configuration object
- */
-function readConfigFile() {
-    if (fs.existsSync(configFile)) {
-        return JSON.parse(fs.readFileSync(configFile, 'utf-8'));
-    }
-    console.error("Config.json not found! Make sure it is inside the same directory as of the script!");
-
 }
 
 /**
@@ -312,17 +315,17 @@ function processJsFile(file, config) {
     fs.copyFileSync(file, path.join(tempDir, path.basename(file)));
 
     // Set unique outDir for this file
-    const outDir = path.join(mdxApiDir, relativeDir, fileName);
-    config.outDir = path.relative(__dirname, outDir);
-    fs.writeFileSync(configFile, JSON.stringify(config, null, 2));
+    const outDir = path.join(MDX_API_DIR, relativeDir, fileName);
+    config.outDir = path.relative(BUILD_DIR, outDir);
+    fs.writeFileSync(CONFIG_FILE, JSON.stringify(config, null, 2));
 
     // Run jsdoc-to-mdx
-    execSync(`npx jsdoc-to-mdx -c ${path.relative(__dirname, configFile)}`, { cwd: __dirname });
+    execSync(`npx jsdoc-to-mdx -c ${path.relative(BUILD_DIR, CONFIG_FILE)}`, { cwd: BUILD_DIR });
 
     console.log(`${file} is successfully converted to MDX`);
 
     // Merge generated MDX files
-    mergeMdxFiles(outDir, `${fileName}.mdx`, path.join(mdxApiDir, relativeDir));
+    mergeMdxFiles(outDir, `${fileName}.mdx`, path.join(MDX_API_DIR, relativeDir));
 
     // Clean up temp file
     fs.unlinkSync(path.join(tempDir, path.basename(file)));
@@ -498,20 +501,9 @@ function removeBackticksAndCleanup(content) {
  * This leaves us with just the API directory
  */
 function cleanupTempFiles() {
-    // Remove temp directory
-    if (fs.existsSync(tempDir)) {
-        fs.rmSync(tempDir, { recursive: true, force: true });
-    }
-
-    // Remove dev-api directory
-    if (fs.existsSync(devApiDir)) {
-        fs.rmSync(devApiDir, { recursive: true, force: true });
-    }
-
-    // Remove source directory
-    if (fs.existsSync(sourceDir)) {
-        fs.rmSync(sourceDir, { recursive: true, force: true });
-    }
+    fs.rmSync(tempDir, { recursive: true, force: true });
+    fs.rmSync(devApiDir, { recursive: true, force: true });
+    fs.rmSync(sourceDir, { recursive: true, force: true });
 }
 
 
@@ -560,65 +552,11 @@ function moveToApiReference(sourceDir, destDir) {
     }
 }
 
-const apiReferenceDir = path.join(__dirname, 'api', 'API reference');
-moveToApiReference(path.join(__dirname, 'api'), apiReferenceDir);
-console.log("All MDX files have been moved to the API reference folder");
-
-
-/**
- * Delete the docs/generatedApiDocs directory and all its content, to add the new generated content there
- */
-function removeGeneratedApiDocs() {
-    const generatedApiDocsDir = './docs/generatedApiDocs';
-    try {
-        fs.rmSync(generatedApiDocsDir, { recursive: true, force: true });
-    } catch (err) {
-        console.error(`Error while deleting the generatedApiDocs directory: ${err}`);
-    }
-}
-
-removeGeneratedApiDocs();
-
-
-/**
- * Move the API reference directory from the 'build' directory to the 'docs' directory
- * @param {string} srcDir Takes the input dir address
- * @param {string} destDir Takes the output dir address
- */
-function moveApiReferenceDir(srcDir, destDir) {
-
-    // check if API Reference dir already exists in destination. If yes, remove it
-    if(fs.existsSync(path.join(destDir, 'API Reference'))) {
-        fs.rmSync(path.join(destDir, 'API Reference'), { recursive: true, force: true });
-    }
-
-    // add full paths
-    srcDir = path.join(srcDir, 'API Reference');
-    destDir = path.join(destDir, 'API Reference');
-
-    // Move the directory
-    try {
-        fs.renameSync(srcDir, destDir);
-    } catch (err) {
-        console.error(`Error while moving the directory from build to docs: ${err}`);
-    }
-}
-
-moveApiReferenceDir(mdxApiDir, './docs');
-
-/**
- * Delete the API directory i.e. inside the 'build' directory as all its contents are now moved to docs directory
- * @param {string} dirToRemove Path of the api dir
- */
-function removeApiDir(dirToRemove) {
-    try {
-        fs.rmSync(dirToRemove, { recursive: true, force: true });
-    } catch (err) {
-        console.error(`Error while deleting the Api directory present inside build directory: ${err}`);
-    }
-}
-
-removeApiDir(mdxApiDir);
-
-
-console.log("All set! Just copy the docs directory to the docs site.");
+console.log("deleting ", GENERATED_DOCS_FOLDER);
+fs.rmSync(GENERATED_DOCS_FOLDER, { recursive: true, force: true });
+console.log("moving ", MDX_API_DIR, "to",  GENERATED_DOCS_FOLDER);
+moveToApiReference(MDX_API_DIR, GENERATED_DOCS_FOLDER);
+console.log("All set! Updated docs directory.");
+fs.rmSync(MDX_API_DIR, { recursive: true, force: true });
+fs.rmSync(CONFIG_FILE, { recursive: true, force: true });
+fs.rmSync(JSDOC_FILE, { recursive: true, force: true });
