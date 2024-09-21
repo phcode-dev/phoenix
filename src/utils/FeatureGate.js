@@ -68,7 +68,7 @@ define(function (require, exports, module) {
 
     /**
      * Registers a named feature with the default enabled state.
-     * @example <caption>To register a feature gate with name `myExtension.newColors`</caption>
+     * To register a feature gate with name `myExtension.newColors`
      * const FEATURE_NEW_COLORS = 'myExtension.newColors';
      * FeatureGate.registerFeatureGate(FEATURE_NEW_COLORS, false); // false is the default value here
      *
@@ -96,7 +96,7 @@ define(function (require, exports, module) {
 
     /**
      * Returns true is an featureGate is enabled either by default or overridden by the user using local storage.
-     * @example <caption>To check if the feature `myExtension.newColors` is enabled</caption>
+     * To check if the feature `myExtension.newColors` is enabled
      * const FEATURE_NEW_COLORS = 'myExtension.newColors';
      * if(FeatureGate.isFeatureEnabled(FEATURE_NEW_COLORS)){
      *    // do fancy colors here

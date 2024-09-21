@@ -91,7 +91,7 @@ define(function (require, exports, module) {
      *
      * See [worker/WorkerComm](WorkerComm-API) for detailed API docs.
      *
-     * @example <caption>To Execute a named function `extensionName.sayHello` in the worker from phoenix</caption>
+     * To Execute a named function `extensionName.sayHello` in the worker from phoenix
      * // in my_worker.js. It is a good practice to prefix your `[extensionName]`
      * // to exec handler to prevent name collisions with other extensions.
      * WorkerComm.setExecHandler("extensionName.sayHello", (arg)=>{

@@ -159,7 +159,7 @@ define(function (require, exports, module) {
     /**
      * Adds a done callback to the Notification promise. The promise will be resolved
      * when the Notification is dismissed. Never rejected.
-     * @example <caption>Print the close reason on console when the notification closes</caption>
+     * Print the close reason on console when the notification closes
      * notificationInstance.done((closeReason)=>{
      *     console.log(closeReason)
      * })
@@ -174,7 +174,7 @@ define(function (require, exports, module) {
      * Creates a new notification popup from given template.
      * The template can either be a string or a jQuery object representing a DOM node that is *not* in the current DOM.
      *
-     * @example <caption>Creating a notification popup</caption>
+     * Creating a notification popup
      * // note that you can even provide an HTML Element node with
      * // custom event handlers directly here instead of HTML text.
      * let notification1 = NotificationUI.createFromTemplate(
@@ -301,7 +301,7 @@ define(function (require, exports, module) {
      * Creates a new toast notification popup from given title and html message.
      * The message can either be a string or a jQuery object representing a DOM node that is *not* in the current DOM.
      *
-     * @example <caption>Creating a toast notification popup</caption>
+     * Creating a toast notification popup
      * // note that you can even provide an HTML Element node with
      * // custom event handlers directly here instead of HTML text.
      * let notification1 = NotificationUI.createToastFromTemplate( "Title here",

@@ -76,7 +76,7 @@ define(function (require, exports, module) {
     /**
      * Registers a named extension interface. Will overwrite if an interface of the same name is already present.
      *
-     * @example <caption>To register an interface `angularCli`</caption>
+     * To register an interface `angularCli`
      * ExtensionInterface.registerExtensionInterface("angularCli", exports);
      *
      * @param {string} extensionInterfaceName
@@ -102,7 +102,7 @@ define(function (require, exports, module) {
      * Returns a promise that gets resolved only when an ExtensionInterface of the given name is registered. Use this
      * getter to get hold of extensions interface predictably.
      *
-     * @example <caption>To get a registered interface `angularCli`</caption>
+     * To get a registered interface `angularCli`
      * let angularCli;
      * ExtensionInterface.waitAndGetExtensionInterface("angularCli").then(interfaceObj=> angularCli = interfaceObj);
      * ...
