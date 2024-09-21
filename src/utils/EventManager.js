@@ -56,7 +56,7 @@ define(function (require, exports, module) {
      * Registers a named EventHandler. Event handlers are created using the call:
      * `EventDispatcher.makeEventDispatcher(Command.prototype);`
      *
-     * @example <caption>To register a close dialogue event handler in an extension:</caption>
+     * To register a close dialogue event handler in an extension:
      * // in close-dialogue.js module winthin the extension, do the following:
      * const EventDispatcher = brackets.getModule("utils/EventDispatcher"),
      * EventDispatcher.makeEventDispatcher(exports);
@@ -93,7 +93,7 @@ define(function (require, exports, module) {
     /**
      * Triggers an event on the named event handler.
      *
-     * @example <caption>To trigger an event to the `closeDialogue` event handler registered above</caption>
+     * To trigger an event to the `closeDialogue` event handler registered above
      * // anywhere in code, do the following:
      * const EventManager = brackets.getModule("utils/EventManager");
      * EventManager.triggerEvent("closeDialogueHandler", "someEvent", "param1", "param2", ...);

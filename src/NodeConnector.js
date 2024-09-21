@@ -133,9 +133,7 @@
  * const imageArrayBuffer = getSomeImageArrayBuffer(); // Get the ArrayBuffer
  * nodeConnector.triggerPeer('imageEdited', 'name.png', imageArrayBuffer);
  * ```
- *
  * * ## Caveats
- *
  * - Be cautious when sending large binary data, as it may affect performance and memory usage. Transferring large
  *   data is fully supported, but be mindful of performance.
  * - Functions called with `execPeer` and `triggerPeer` must be asynchronous and accept a single argument. An optional

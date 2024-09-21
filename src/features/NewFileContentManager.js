@@ -127,7 +127,7 @@ define(function (require, exports, module) {
     /**
      * Returns a promise that resolves to the default text content of the given file after querying
      * all the content providers. If no text is returned by any providers, it will return an empty string "".
-     * @example <caption>To get the default content given a path</caption>
+     * To get the default content given a path
      * NewFileContentManager.getInitialContentForFile("/path/to/file.jsx");
      * @param {string} fullPath
      * @returns {Promise<string>} The text contents
