@@ -131,7 +131,6 @@ define(function (require, exports, module) {
      * @param {MessageEvent} event - The 'message' event targeted at the window object. The event's
      *   'data' property should have a 'handlerName' and `eventName` property that will be triggered in phcode.
      *
-     * @example
      * // We will try to communicate within an embedded iframe and an extension
      *
      * // In your extension in phoenix, register a handlerName to process a new kind of event.
