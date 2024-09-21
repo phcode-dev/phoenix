@@ -20,7 +20,7 @@
         "del": "^6.0.0",
         "documentation": "^13.2.5",
         "eslint": "^8.18.0",
-        "glob": "^8.0.3",
+        "glob": "^8.1.0",
         "gulp": "^4.0.2",
         "gulp-concat": "^2.6.1",
         "gulp-cssnano": "^2.1.3",

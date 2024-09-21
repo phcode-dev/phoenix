@@ -1,562 +1,632 @@
 const fs = require('fs');
 const path = require('path');
+const glob = require('glob');
 const { execSync } = require('child_process');
 
-// Define the input and output directories
-const BUILD_DIR = __dirname;
-const ROOT_DIR = path.join(BUILD_DIR, '../');
-const SRC_DIR = path.join(ROOT_DIR, 'src');
+const SRC_DIR = './src';
+const BUILD_DIR = './build';
+const DOCS_DIR = './docs';
 
-// DONOT MODIFY THIS
-// this directory will be automatically removed (required for automative processes, the final output will
-// be in API directory).
-const outputDir = path.join(BUILD_DIR, './dev-temp');
+// JS files that are to be converted to MDX are in this directory
+const JS_FILES_DIR = path.join(BUILD_DIR, 'JS-Files');
+// Converted MDX files are in this directory
+const MDX_FILES_DIR = path.join(BUILD_DIR, 'MDX-FILES');
 
-// Set up paths for the build process
-const GENERATED_DOCS_FOLDER = path.join(SRC_DIR, '../', 'docs', 'Generated API Reference');
+// these are temporary files required for conversion process,
+// will automatically be deleted
+const TEMP_DIR = path.join(BUILD_DIR, 'TEMP');
 const JSDOC_FILE = path.join(BUILD_DIR, 'jsdoc.json');
 const CONFIG_FILE = path.join(BUILD_DIR, 'config.json');
-const MDX_API_DIR = path.join(BUILD_DIR, 'api');
-const sourceDir = path.join(BUILD_DIR, 'dev-temp');
-const devApiDir = path.join(BUILD_DIR, 'dev-api');
-const tempDir = path.join(devApiDir, 'temp');
 
-
-/**
- * Checks if a file contains a specific line.
- * This function is called to check if a file has @  INCLUDE_IN_API_DOCS
- * @param {string} filePath - Path to the file
- * @param {string} line - Line to search for
- * @returns {boolean} True if the line is found, false otherwise
- */
-function fileContainsLine(filePath, line) {
-    const content = fs.readFileSync(filePath, 'utf8');
-    return content.includes(line);
-}
-
-
-/**
- * Recursively processes files in the input directory.
- * Copies JS files containing '@INCLUDE_IN_API_DOCS' to the output directory,
- * maintaining the original directory structure.
- *
- * @param {string} dir - Current directory being processed
- * @param {string} baseDir - Base input directory for maintaining structure
- */
-function processFilesRecursively(dir, baseDir) {
-    const files = fs.readdirSync(dir);
-
-    files.forEach(file => {
-        const filePath = path.join(dir, file);
-        const stats = fs.statSync(filePath);
-
-        if (stats.isDirectory()) {
-            // Create corresponding directory in output
-            const newOutputDir = path.join(outputDir, path.relative(baseDir, filePath));
-            if (!fs.existsSync(newOutputDir)) {
-                fs.mkdirSync(newOutputDir, { recursive: true });
-            }
-
-            // Recurse into subdirectories
-            processFilesRecursively(filePath, baseDir);
-        } else if (file.toLowerCase().endsWith('.js')) {
-            // Check if file should be included in API docs
-            if (fileContainsLine(filePath, '@INCLUDE_IN_API_DOCS')) {
-                const newFilePath = path.join(outputDir, path.relative(baseDir, filePath));
-                fs.copyFileSync(filePath, newFilePath);
-            }
-        }
-    });
-}
-
-/**
- * Removes RequireJS code and IIFE wrapper functions.
- * Also fixes some JSDoc issues that jsdoc-to-mdx doesn't handle well.
- * mdx doesn't allow {*} as a param value so modifying it to {any}
- * mdx doesn't allow {...} as a param value so modifying it to {rest}
- *
- *
- * @param {string} dir - Directory containing files to process
- */
-function removeRequireJSCode(dir) {
-    const files = fs.readdirSync(dir);
-
-    files.forEach(file => {
-        const filePath = path.join(dir, file);
-        const stats = fs.statSync(filePath);
-
-        if (stats.isDirectory()) {
-            // Recurse into subdirectories
-            removeRequireJSCode(filePath);
-        } else {
-            try {
-                let modifiedContent = fs.readFileSync(filePath, 'utf8');
-
-                // Fix some JSDoc issues
-                modifiedContent = modifiedContent.replace("@param {*}", '@param {any} any');
-                modifiedContent = modifiedContent.replace("@param {...}", '@param {rest} rest');
-                modifiedContent = modifiedContent.replace(/@module/g, 'module');
-
-                // Remove RequireJS define blocks
-                if (modifiedContent.includes('define(function')) {
-                    modifiedContent = modifiedContent.replace(/define\(function\s*\([^)]*\)\s*{/, '');
-
-                    // Remove matching closing parentheses
-                    if (modifiedContent.trim().endsWith('});')) {
-                        modifiedContent = modifiedContent.trim().slice(0, -3);
-                    }
-                }
-
-                // Remove IIFE wrapper
-                if (modifiedContent.includes('\n(function () {')) {
-                    modifiedContent = modifiedContent.replace(/\(function \(\) \{/, '');
-
-                    // Remove matching closing parentheses
-                    if (modifiedContent.trim().endsWith('}());')) {
-                        modifiedContent = modifiedContent.trim().slice(0, -5);
-                    }
-
-                    // Clean up any leftover unmatched brackets
-                    // removing function wrapper leads to an unmatched '}' and ')'
-                    // this logic just removes the unmatched brackets.
-                    let bracketCount = 0;
-                    for (let indx = 0; indx < modifiedContent.length; indx++) {
-                        if (modifiedContent[indx] === '{') {
-                            bracketCount++;
-                        } else if (modifiedContent[indx] === '}') {
-                            bracketCount--;
-                            if (bracketCount < 0) {
-                                let tempIndx = indx;
-                                while (modifiedContent[indx] && modifiedContent[indx] !== ')') {
-                                    indx--;
-                                }
-                                modifiedContent = modifiedContent.slice(0, indx) + modifiedContent.slice(tempIndx + 1);
-                                bracketCount++;
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                // Write modified content back to file
-                fs.writeFileSync(filePath, modifiedContent, 'utf8');
-            } catch (error) {
-                console.error(`Error processing file ${file}: ${error.message}`);
-            }
-        }
-    });
-}
-
-/**
- * Recursively removes empty directories.
- * while searching for @ INCLUDE_IN_API_DOCS file, some temporary directories are created. Deleting them.
- * @param {string} dir - Directory to clean up
- */
-function removeEmptyDirectories(dir) {
-    const files = fs.readdirSync(dir);
-
-    files.forEach(file => {
-        const filePath = path.join(dir, file);
-        if (fs.statSync(filePath).isDirectory()) {
-            removeEmptyDirectories(filePath);
-
-            // Remove directory if it's empty
-            if (fs.readdirSync(filePath).length === 0) {
-                fs.rmdirSync(filePath);
-            }
-        }
-    });
-}
-
-processFilesRecursively(SRC_DIR, SRC_DIR);
-console.log("All script files for the API documentation have been generated!");
-
-removeEmptyDirectories(outputDir);
-console.log("Successfully removed all the empty directories");
-
-removeRequireJSCode(outputDir);
-console.log("Successfully removed redundant JS code");
-
-
-
-// Conversion of MDX from JS files starts here
 
 const JSDOC_JSON_TEMPLATE = {
     "source": {
         "include": [
-            "dev-api\\temp"
+            "temp"
         ]
     },
     "plugins": [
         "plugins/markdown"
     ],
     "opts": {
-        "destination": "../api",
-        "recurse": true
+        "destination": "TEMP_MDX"
     }
 };
 
 const CONFIG_JSON_TEMPLATE = {
-    "locales": [
-        "en"
-    ],
-    "outDir": "",
+    "outDir": "TEMP_MDX",
     "jsdoc": "./jsdoc.json",
     "bulma": false
 };
 
 /**
- * Generates MDX files from JS files using jsdoc-to-mdx.
- * This is the main function that orchestrates the MDX generation process.
+ * Creates required files & directories
+ * Writes content inside config.json & jsdoc.json
  */
-function generateMdxFiles() {
-    try {
-        // Create necessary directories (all these directories will be removed automatically
-        // after the task is completed. Finally after the whole execution we'll be left with
-        // just the API directory i.e. mdxApiDir)
-        [devApiDir, tempDir, MDX_API_DIR].forEach(dir => {
-            if (!fs.existsSync(dir)) {
-                fs.mkdirSync(dir, { recursive: true });
-            }
-        });
+function createRequiredDir() {
+    fs.writeFileSync(
+        CONFIG_FILE,
+        JSON.stringify(CONFIG_JSON_TEMPLATE, null, 2)
+    );
 
-        // Read JSDoc and config files
-        let jsdocConfig = JSDOC_JSON_TEMPLATE;
-        let config = CONFIG_JSON_TEMPLATE;
+    fs.writeFileSync(
+        JSDOC_FILE,
+        JSON.stringify(JSDOC_JSON_TEMPLATE, null, 2)
+    );
 
-        // Modify JSDoc config to use temp directory
-        jsdocConfig.source.include = [path.relative(BUILD_DIR, tempDir)];
-        fs.writeFileSync(JSDOC_FILE, JSON.stringify(jsdocConfig, null, 2));
-
-        // Copy JS files to dev-api directory
-        copyJsFiles(sourceDir, devApiDir);
-
-        // Process each JS file
-        const jsFiles = getJsFiles(devApiDir);
-        for (const file of jsFiles) {
-            processJsFile(file, config);
-        }
-
-        // After processing all files, set outDir to empty string
-        config.outDir = "";
-        fs.writeFileSync(CONFIG_FILE, JSON.stringify(config, null, 2));
-
-        // Post-processing of MDX files
-        processMdxFiles(MDX_API_DIR);
-
-        // Clean up temporary files and directories
-        cleanupTempFiles();
-
-        console.log('MDX generation and processing completed successfully.');
-    } catch (error) {
-        console.error('Error generating or processing MDX files:', error);
-    }
+    fs.mkdirSync(MDX_FILES_DIR, { recursive: true });
 }
 
-/**
- * Copies JS files from source to destination directory.
- *
- * @param {string} source - Source directory
- * @param {string} destination - Destination directory
- */
-function copyJsFiles(source, destination) {
-    const entries = fs.readdirSync(source, { withFileTypes: true });
-
-    entries.forEach(entry => {
-        const srcPath = path.join(source, entry.name);
-        const destPath = path.join(destination, entry.name);
-
-        if (entry.isDirectory()) {
-            if (!fs.existsSync(destPath)) {
-                fs.mkdirSync(destPath, { recursive: true });
-            }
-            copyJsFiles(srcPath, destPath);
-        } else if (path.extname(entry.name) === '.js') {
-            fs.copyFileSync(srcPath, destPath);
-        }
-    });
-}
 
 /**
- * Recursively gets all JS files in a directory.
- *
- * @param {string} dir - Directory to search
- * @returns {string[]} Array of file paths
+ * To get all the JS files from src dir that are to be converted to MDX
+ * Creates a copy of all required JS files into JS-Files directory
+ * @returns {array} list of all required JS files
  */
-function getJsFiles(dir) {
-    let results = [];
-    const entries = fs.readdirSync(dir, { withFileTypes: true });
+function getJsFiles() {
+    // gets all JS files from src
+    // (even the ones that we don't need to add in API docs)
+    const files = glob.sync(`${SRC_DIR}/**/*.js`);
 
-    for (const entry of entries) {
-        const fullPath = path.join(dir, entry.name);
-        if (entry.isDirectory()) {
-            results = results.concat(getJsFiles(fullPath));
-        } else if (path.extname(fullPath) === '.js') {
-            results.push(fullPath);
+    // this gets all the files that we need to add in API docs
+    const requiredJSfiles = [];
+    for (const file of files) {
+
+        const content = fs.readFileSync(file, "utf-8");
+
+        // check if file has this line, if yes include it in the list
+        if (content.includes("@INCLUDE_IN_API_DOCS")) {
+
+            // to copy all files from into JS-Files dir,
+            // while maintaining the sub-directory structure
+            const relativePath = path.relative(SRC_DIR, file);
+            const destPath = path.join(JS_FILES_DIR, relativePath);
+            requiredJSfiles.push(destPath);
+            fs.mkdirSync(path.dirname(destPath), { recursive: true });
+            fs.copyFileSync(file, destPath);
+
         }
     }
 
-    return results;
-}
+    return requiredJSfiles;
 
-/**
- * Processes a single JS file to generate MDX.
- * It processes one JS file at a time, as one JS file may create multiple MDX files, so
- * after creating, we need to merge all the MDX files created a single JS file.
- *
- * @param {string} file - Path to the JS file
- * @param {Object} config - Configuration object
- */
-function processJsFile(file, config) {
-    const relativeDir = path.dirname(path.relative(devApiDir, file));
-    const fileName = path.basename(file, '.js');
-
-    // Copy JS file to temp directory
-    fs.copyFileSync(file, path.join(tempDir, path.basename(file)));
-
-    // Set unique outDir for this file
-    const outDir = path.join(MDX_API_DIR, relativeDir, fileName);
-    config.outDir = path.relative(BUILD_DIR, outDir);
-    fs.writeFileSync(CONFIG_FILE, JSON.stringify(config, null, 2));
-
-    // Run jsdoc-to-mdx
-    execSync(`npx jsdoc-to-mdx -c ${path.relative(BUILD_DIR, CONFIG_FILE)}`, { cwd: BUILD_DIR });
-
-    console.log(`${file} is successfully converted to MDX`);
-
-    // Merge generated MDX files
-    mergeMdxFiles(outDir, `${fileName}.mdx`, path.join(MDX_API_DIR, relativeDir));
-
-    // Clean up temp file
-    fs.unlinkSync(path.join(tempDir, path.basename(file)));
 }
 
 
 /**
- * Merges multiple MDX files into a single file.
- * Multiple MDX files are generated from a single JS file, so we need to merge all the generated
- * MDX files into a single MDX file
- *
- * @param {string} dir - Directory containing MDX files
- * @param {string} outputFileName - Name of the output file
- * @param {string} finalDir - Directory to save the merged file
+ * Handles the generation of MDX from JS file
+ * Does it in two step process,
+ * (because MDX was unable to parse due to some issues)
+ * 1. Gets all the JSDoc content from the start of the file i.e. before code
+ * 2. Gets JSDoc content from between the code
+ * @param {stringPathLike} file The current JS file i.e. to be converted
  */
-function mergeMdxFiles(dir, outputFileName, finalDir) {
-    const mdxFiles = fs.readdirSync(dir).filter(file => path.extname(file) === '.mdx');
-    let mergedContent = '';
+function generateMDX(file) {
+    // a copy of the content, to update the content later.
+    const copyContent = fs.readFileSync(file, "utf-8");
 
-    for (const file of mdxFiles) {
-        const content = fs.readFileSync(path.join(dir, file), 'utf-8');
-        mergedContent += content + '\n\n';
-    }
+    // replace the RequireJS code block with `Export` block
+    // because MDX cannot parse RequireJS
+    let content = replaceRequireJSCode(file);
+    fs.writeFileSync(file, content, "utf-8");
 
-    if (!fs.existsSync(finalDir)) {
-        fs.mkdirSync(finalDir, { recursive: true });
-    }
+    // execute the command, 1st step completed (refer to this function's JSDoc)
+    execSync(`npx jsdoc-to-mdx -c ${path.relative(BUILD_DIR, CONFIG_FILE)}`,
+        { cwd: BUILD_DIR }
+    );
 
-    const outputPath = path.join(finalDir, outputFileName);
+    // we expect a single MDX file here, but
+    // sometimes due to parsing issues it can create multiple mdx files,
+    // we need only the main file, removing all others
+    const removeFiles = glob.sync(`${BUILD_DIR}/TEMP_MDX/*.mdx`);
+    if (removeFiles.length > 1) {
 
-    // Append to existing file if it exists
-    if (fs.existsSync(outputPath)) {
-        const existingContent = fs.readFileSync(outputPath, 'utf-8');
-        mergedContent = existingContent + '\n\n' + mergedContent;
-    }
-
-    fs.writeFileSync(outputPath, mergedContent);
-
-    // Clean up temporary directory
-    fs.rmSync(dir, { recursive: true, force: true });
-}
-
-
-/**
- * Processes all MDX files in a directory.
- *
- * @param {string} dir - Directory containing MDX files
- */
-function processMdxFiles(dir) {
-    const entries = fs.readdirSync(dir, { withFileTypes: true });
-
-    for (const entry of entries) {
-        const fullPath = path.join(dir, entry.name);
-        if (entry.isDirectory()) {
-            processMdxFiles(fullPath);
-        } else if (path.extname(entry.name) === '.mdx') {
-            processOneMdxFile(fullPath, dir, entry.name);
-        }
-    }
-}
-
-
-/**
- * Processes a single MDX file.
- * This function removes non-essentail details from the MDX file.
- * Adds Import section at the top of the files
- * Creates headings (Members, Methods, Properties) and move the content inside their respective headings
- *
- * @param {string} filePath - Path to the MDX file
- * @param {string} dir - Directory containing the file
- * @param {string} fileName - Name of the file
- */
-function processOneMdxFile(filePath, dir, fileName) {
-    let content = fs.readFileSync(filePath, 'utf-8');
-
-    // Escape curly braces
-    content = content.replace(/\{/g, '\\{');
-
-    // Remove custom_edit_url lines
-    content = content.replace(/---\s*custom_edit_url:\s*null\s*---/g, '');
-
-    // Add import statement
-    const directoryName = path.basename(dir);
-    const fileNameWithoutExt = path.basename(fileName, '.mdx');
-    const importStatement =
-        `### Import :\n\n\`\`\`\nbrackets.getModule("${directoryName}/${fileNameWithoutExt}")\n\`\`\`\n\n`;
-
-    // Organize content into sections
-    const sections = {
-        methods: [],
-        properties: [],
-        others: []
-    };
-
-    const blocks = content.split(/(?=```ts)/);
-
-    blocks.forEach(block => {
-        if (block.includes('```ts\nfunction')) {
-            sections.methods.push(processBlock(block, 'function'));
-        } else if (block.includes('```ts\nconst')) {
-            sections.properties.push(processBlock(block, 'const'));
-        } else {
-            sections.others.push(processBlock(block, ''));
-        }
-    });
-
-    // Reconstruct the content
-    let newContent = importStatement;
-    if (sections.methods.length > 0) {
-        newContent += '## METHODS\n\n' + sections.methods.join('\n\n');
-    }
-    if (sections.properties.length > 0) {
-        newContent += '\n\n## PROPERTIES\n\n' + sections.properties.join('\n\n');
-    }
-    if (sections.others.length > 0) {
-        newContent += '\n\n## OTHER MEMBERS\n\n' + sections.others.join('\n\n');
-    }
-
-    // Remove all backticks and clean up 'ts' leftovers
-    newContent = removeBackticksAndCleanup(newContent);
-
-    fs.writeFileSync(filePath, newContent);
-}
-
-
-/**
- * Processes a block of MDX content.
- * Creates subheadings for the functions, constructors and other members
- *
- * @param {string} block - Block of MDX content
- * @param {string} type - Type of block (function, const, or empty string)
- * @returns {string} Processed block
- */
-function processBlock(block, type) {
-    const lines = block.split('\n');
-    const declarationLine = lines.findIndex(line => line.startsWith('```ts'));
-
-    if (declarationLine !== -1) {
-        if (type) {
-            const match = lines[declarationLine + 1].match(new RegExp(`${type}\\s+([^(]+)`));
-            if (match) {
-                const name = match[1].trim();
-                lines[declarationLine + 1] = lines[declarationLine + 1].replace(`${type} ${name}`, `### ${name}`);
+        for (const removeFile of removeFiles) {
+            // Description.mdx because it is the main function name,
+            // so main file gets created with this name
+            if (!removeFile.endsWith('Description.mdx')) {
+                fs.unlinkSync(removeFile);
             }
         }
-        // Remove the ```ts line
-        lines.splice(declarationLine, 1);
     }
 
-    return lines.join('\n');
+    // rename mdx file to its filename `Eg.(Description.mdx -> filename.mdx)`
+    renameMdxFile(path.basename(file, '.js'));
+
+    // reverse back the content i.e. was modified
+    // for 2nd step
+    fs.writeFileSync(file, copyContent, "utf-8");
+
+    // Completely removes the RequireJS code block
+    // so that the inner JSDoc comments can be parsed
+    content = removeRequireJSCode(file);
+    fs.writeFileSync(file, content, "utf-8");
+
+    // create a temp folder inside temp_mdx
+    // because it creates multiple mdx files
+    // which will merge it to the main mdx file later
+    fs.mkdirSync(
+        path.join("build", "TEMP_MDX", "TEMP"),
+        { recursive: true }
+    );
+
+    // modify jsdoc and config file destination paths
+    // so that mdx files are now generated inside temp dir
+    JSDOC_JSON_TEMPLATE.opts.destination = path.join("TEMP_MDX", "TEMP");
+    fs.writeFileSync(
+        JSDOC_FILE, JSON.stringify(JSDOC_JSON_TEMPLATE, null, 2)
+    );
+
+    CONFIG_JSON_TEMPLATE.outDir = path.join("TEMP_MDX", "TEMP");
+    fs.writeFileSync(
+        CONFIG_FILE, JSON.stringify(CONFIG_JSON_TEMPLATE, null, 2)
+    );
+
+    execSync(`npx jsdoc-to-mdx -c ${path.relative(BUILD_DIR, CONFIG_FILE)}`,
+        { cwd: BUILD_DIR }
+    );
 }
 
-
 /**
- * Removes backticks and cleans up 'ts' leftovers in MDX content.
- *
- * @param {string} content - MDX content to clean up
- * @returns {string} Cleaned up content
+ * Replace RequireJS `define` code blocksand IIFE functions with `export`
+ * as JSDoc-to-MDX cannot parse `define` blocks and IIFE functions
+ * @param {stringPathLike} file Javascript file path
+ * @return {string} updated content for the file
  */
-function removeBackticksAndCleanup(content) {
-    // Remove all backticks
-    content = content.replace(/```/g, '');
 
-    // Remove 'ts' at the beginning of a line or after a newline character
-    content = content.replace(/(\n|^)ts\s*/g, '$1');
+function replaceRequireJSCode(file) {
+    let content = fs.readFileSync(file, "utf-8");
+
+
+    if (content.includes('\n(function () {')) {
+        // IIFE function modification
+
+        content = content.replace(
+            /\(function \(\) \{/,
+            'export function Description () {'
+        );
+
+        // Remove matching closing parentheses
+        if (content.trim().endsWith('}());')) {
+            content = content.trim().slice(0, -4);
+        }
+
+
+        // Clean up any leftover unmatched brackets
+        // removing `function wrapper` leads to an unmatched '}' and ')'
+        // this logic just removes the unmatched brackets.
+        let bracketCount = 0;
+        for (let indx = 0; indx < content.length; indx++) {
+            if (content[indx] === '{') {
+                bracketCount++;
+            } else if (content[indx] === '}') {
+                bracketCount--;
+                if (bracketCount < 0) {
+                    let tempIndx = indx;
+                    while (content[indx] && content[indx] !== ')') {
+                        indx--;
+                    }
+                    content = content.slice(0, indx)
+                        + content.slice(tempIndx + 1);
+                    bracketCount++;
+                    break;
+                }
+            }
+        }
+    } else if (content.includes('define(function')) {
+
+        // replace define block with export block
+        content = content.replace(
+            /define\(function\s*\([^)]*\)\s*{/,
+            'export function Description () {'
+        );
+
+        // remove trailing braces from define block
+        if (content.trim().endsWith('});')) {
+            content = content.trim().slice(0, -2);
+        }
+    }
+
+    // Fix some JSDoc issues, where MDX breaks
+    content = content.replace("@param {*}", '@param {any} any');
+    content = content.replace("@param {...}", '@param {rest} rest');
+    content = content.replace(/@module/g, 'module');
 
     return content;
+
 }
 
-
 /**
- * Cleans up temporary files and directories created during the MDX generation process.
- * This leaves us with just the API directory
+ * Remove RequireJS `define` code blocks and IIFE functions
+ * as JSDoc-to-MDX cannot parse `define` blocks and IIFE functions
+ * @param {stringPathLike} file Javascript file path
+ * @return {string} updated content for the file
  */
-function cleanupTempFiles() {
-    fs.rmSync(tempDir, { recursive: true, force: true });
-    fs.rmSync(devApiDir, { recursive: true, force: true });
-    fs.rmSync(sourceDir, { recursive: true, force: true });
-}
+function removeRequireJSCode(file) {
+    let content = fs.readFileSync(file, "utf-8");
 
+    // Remove the JSDoc comments from 1st part
+    // i.e. those comments which are already covered
+    content = content.replace(/\/\*\*[\s\S]*?\*\//, '');
 
-// Start the MDX generation process
-generateMdxFiles();
+    if (content.includes('\n(function () {')) {
 
-console.log("Redundant files generated for conversion process are removed!");
+        // IIFE function removal
+        content = content.replace(
+            /\(function \(\) \{/,
+            ''
+        );
 
+        // Remove matching closing parentheses
+        if (content.trim().endsWith('}());')) {
+            content = content.trim().slice(0, -5);
+        }
 
-/**
- * Moves all MDX files and subfolders to a specified destination folder.
- * @param {string} sourceDir - The source directory containing MDX files and folders
- * @param {string} destDir - The destination directory for API reference
- */
-function moveToApiReference(sourceDir, destDir) {
-    if (!fs.existsSync(destDir)) {
-        fs.mkdirSync(destDir, { recursive: true });
-    }
+        // Clean up any leftover unmatched brackets
+        // removing `function wrapper` leads to an unmatched '}' and ')'
+        // this logic just removes the unmatched brackets.
+        let bracketCount = 0;
+        for (let indx = 0; indx < content.length; indx++) {
+            if (content[indx] === '{') {
+                bracketCount++;
+            } else if (content[indx] === '}') {
+                bracketCount--;
+                if (bracketCount < 0) {
+                    let tempIndx = indx;
+                    while (content[indx] && content[indx] !== ')') {
+                        indx--;
+                    }
 
-    const entries = fs.readdirSync(sourceDir, { withFileTypes: true });
+                    content = content.slice(0, indx)
+                        + content.slice(tempIndx + 1);
 
-    for (const entry of entries) {
-        const srcPath = path.join(sourceDir, entry.name);
-        const destPath = path.join(destDir, entry.name);
-
-        if (entry.isDirectory()) {
-            // Skip the "API reference" folder itself
-            if (entry.name === "API reference") { continue; }
-
-            // Create the corresponding directory in the destination
-            if (!fs.existsSync(destPath)) {
-                fs.mkdirSync(destPath, { recursive: true });
+                    bracketCount++;
+                    break;
+                }
             }
+        }
+    } else if (content.includes('define(function')) {
+        // remove define block
+        content = content.replace(
+            /define\(function\s*\([^)]*\)\s*{/,
+            ''
+        );
 
-            // Move contents of the directory
-            moveToApiReference(srcPath, destPath);
-
-            // Remove the now-empty directory from the source
-            if (fs.readdirSync(srcPath).length === 0) {
-                fs.rmdirSync(srcPath);
-            }
-        } else if (path.extname(entry.name) === '.mdx') {
-            // If it's an MDX file, move it
-            fs.renameSync(srcPath, destPath);
+        // remove trailing braces from define block
+        if (content.trim().endsWith('});')) {
+            content = content.trim().slice(0, -3);
         }
     }
+
+    // Fix some JSDoc issues, where MDX breaks
+    content = content.replace("@param {*}", '@param {any} any');
+    content = content.replace("@param {...}", '@param {rest} rest');
+    content = content.replace(/@module/g, 'module');
+
+    return content;
+
 }
 
-console.log("deleting ", GENERATED_DOCS_FOLDER);
-fs.rmSync(GENERATED_DOCS_FOLDER, { recursive: true, force: true });
-console.log("moving ", MDX_API_DIR, "to",  GENERATED_DOCS_FOLDER);
-moveToApiReference(MDX_API_DIR, GENERATED_DOCS_FOLDER);
-console.log("All set! Updated docs directory.");
-fs.rmSync(MDX_API_DIR, { recursive: true, force: true });
-fs.rmSync(CONFIG_FILE, { recursive: true, force: true });
-fs.rmSync(JSDOC_FILE, { recursive: true, force: true });
+
+/**
+ * Rename the Description.mdx file to its filename
+ * for ex :- (Description.mdx -> Metrics.mdx)
+ * Description is the default name provided for the main MDX file
+ * @param {string} fileName The new name for the file
+ */
+function renameMdxFile(fileName) {
+    const generatedMDXFilePath = path.join(
+        BUILD_DIR, 'TEMP_MDX', 'Description.mdx'
+    );
+    const newMDXFilePath = path.join(
+        BUILD_DIR, 'TEMP_MDX', `${fileName}.mdx`
+    );
+    fs.renameSync(generatedMDXFilePath, newMDXFilePath);
+}
+
+
+/**
+ * This function is responsible to merge all the MDX files into one
+ */
+function mergeMdxFiles() {
+
+    // Note: mainFile will be an array with just 1 file i.e. [0]
+    const mainFile = glob.sync(
+        `${BUILD_DIR}/TEMP_MDX/*.mdx`
+    );
+
+    // files to be merged into mail file
+    const mergeFiles = glob.sync(
+        `${BUILD_DIR}/TEMP_MDX/TEMP/*.mdx`
+    );
+
+    let mergedContent = fs.readFileSync(mainFile[0], "utf8");
+
+    for (let mergeFile of mergeFiles) {
+        const content = fs.readFileSync(mergeFile, "utf8");
+
+        mergedContent += '\n\n' + content;
+    }
+
+    // update the content after merging
+    fs.writeFileSync(mainFile[0], mergedContent, "utf8");
+
+    // deleting the merged mdx files
+    fs.rmSync(path.join(BUILD_DIR, 'TEMP_MDX', 'TEMP'),
+        { recursive: true, force: true }
+    );
+
+}
+
+
+/**
+ * After merging all the mdx files into one single mdx file,
+ * move the file to MDX_FILES_DIR, maintaining the sub-directory structure
+ * MDX_FILES_DIR is the main dir which will store all the generated MDX files
+ * @param {stringPathLike} filePath JS filepath to maintain sub-dir structure
+ */
+function moveFileToMdxDir(filePath) {
+
+    // separate the sections...(like features, utils etc)
+    // also makes sure it works fine on any OS (whether linux/windows)
+    const getDirName = path.normalize(filePath).split(path.sep)[2];
+
+
+    let mdxDirPath;
+    let file;
+
+    // when it is not a dir but instead a file
+    // for ex :- NodeConnector is not inside any sub-dir
+    if (getDirName.endsWith('.js')) {
+        file = glob.sync(`${BUILD_DIR}/TEMP_MDX/*.mdx`);
+        mdxDirPath = MDX_FILES_DIR + '/' + path.basename(file[0]);
+
+    } else {
+        mdxDirPath = path.join(
+            MDX_FILES_DIR, getDirName
+        );
+
+        // create sub-dir if not exists, for ex :- features, utils
+        if (!(fs.readdirSync(MDX_FILES_DIR).includes(getDirName))) {
+            fs.mkdirSync(mdxDirPath);
+        }
+
+        file = glob.sync(`${BUILD_DIR}/TEMP_MDX/*.mdx`);
+        mdxDirPath += '/' + path.basename(file[0]);
+    }
+
+    fs.copyFileSync(file[0], mdxDirPath);
+
+    // deleting TEMP_MDX dir, as file is now copied to MDX_FILES_DIR
+    fs.rmSync(path.join(BUILD_DIR, 'TEMP_MDX'),
+        { recursive: true, force: true }
+    );
+
+    // deleting TEMP dir, as this JS file has been successfully converted
+    fs.rmSync(path.join(BUILD_DIR, 'TEMP'),
+        { recursive: true, force: true }
+    );
+
+    // reset config.json and jsdoc.json
+    JSDOC_JSON_TEMPLATE.opts.destination = "TEMP_MDX";
+    fs.writeFileSync(
+        JSDOC_FILE, JSON.stringify(JSDOC_JSON_TEMPLATE, null, 2)
+    );
+
+    CONFIG_JSON_TEMPLATE.outDir = "TEMP_MDX";
+    fs.writeFileSync(
+        CONFIG_FILE, JSON.stringify(CONFIG_JSON_TEMPLATE, null, 2)
+    );
+
+}
+
+
+/**
+ * Function responsible to fix MDX file issues
+ * And make it more readable and useful
+ */
+function mdxFileModifications() {
+
+    const mdxFiles = glob.sync('build/MDX-FILES/**/*.mdx');
+
+    for (const mdxFile of mdxFiles) {
+        let content = fs.readFileSync(mdxFile, "utf8");
+
+        // Escape curly braces
+        content = content.replace(/\{/g, '\\{');
+
+        // Remove custom_edit_url lines
+        content = content.replace(
+            /---\s*custom_edit_url:\s*null\s*---/g,
+            ''
+        );
+
+        // remove function keyword and parantheses from description section
+        // added while replacing require JS code
+        // function Description() -> ### Description
+        content = content.replace(
+            /```ts\s*\nfunction\s+Description\s*\(\)\s*\n```/g,
+            "### Description"
+        );
+
+        // create subheadings for functions, const, events, members etc
+        // subheadings are displayed on the right panel of Docs site
+        content = createSubHeadings(content);
+
+        // Add import statement at the top of every file
+        // and how to import i.e. with dirname and filename
+        const directoryName = path.basename(mdxFile.split('/')[2]);
+        const fileNameWithoutExt = path.basename(mdxFile, '.mdx');
+
+        let importStatement = '';
+        // when file has no parent sub-dir
+        // for example NodeConnector.mdx
+        if(directoryName.endsWith('.mdx')) {
+            importStatement =
+            `### Import :\n\`\`\`\n` +
+            `brackets.getModule("${fileNameWithoutExt}")\n` +
+            `\`\`\`\n`;
+        } else {
+            importStatement =
+            `### Import :\n\`\`\`\n` +
+            `brackets.getModule("${directoryName}/${fileNameWithoutExt}")\n` +
+            `\`\`\`\n`;
+        }
+
+
+        let finalContent = importStatement;
+        finalContent += '\n' + content;
+
+        fs.writeFileSync(mdxFile, finalContent, "utf8");
+    }
+}
+
+
+/**
+ * Function responsible to create subheadings
+ * for functions, const, events, members etc
+ * subheadings are displayed on the right panel of Docs site
+ * @param {string} content MDX File content
+ * @returns {string} modified content
+ */
+function createSubHeadings(content) {
+    const lines = content.split('\n');
+
+    // will recreate the content parsing it line by line
+    const processedLines = [];
+    let i = 0;
+
+    while (i < lines.length) {
+
+        // wherever we get ```ts, check if next line has a matching keyword
+        // if yes then replace it with ### to create the sub-heading
+        if (lines[i].trim() === '```ts') {
+
+            if (lines[i + 1].trim().startsWith('function')) {
+                processedLines.push(lines[i + 1]
+                    .replace('function', '###').trim());
+
+            } else if (lines[i + 1].trim().startsWith('const')) {
+                processedLines.push(lines[i + 1]
+                    .replace('const', '###').trim());
+
+            } else if (lines[i + 1].trim().startsWith('class')) {
+                processedLines.push(lines[i + 1]
+                    .replace('class', '###').trim());
+
+            } else if (lines[i + 1].trim().startsWith('new')) {
+                processedLines.push(lines[i + 1]
+                    .replace('new', '###').trim());
+
+            } else if (lines[i + 1].trim().startsWith('event')) {
+                processedLines.push(lines[i + 1]
+                    .replace('event', '###').trim());
+
+            } else if (lines[i + 1].trim().startsWith('member')) {
+                processedLines.push(lines[i + 1]
+                    .replace('member', '###').trim());
+
+            }
+            i += 3; // Skip the next line (which should be the closing ```)
+        } else {
+            processedLines.push(lines[i]);
+            i++;
+        }
+    }
+    return processedLines.join('\n');
+
+}
+
+
+/**
+ * Delete all the non-required files and folders
+ * as MDX has been completely generated
+ */
+function deleteFiles() {
+    fs.rmSync(JS_FILES_DIR,
+        { recursive: true, force: true }
+    );
+
+    // remove generatedApiDocs dir from Docs dir
+    // this dir has all the previously generated Markdown files
+    const generatedApiDocsPath = path.join(DOCS_DIR, 'generatedApiDocs');
+    if (fs.existsSync(generatedApiDocsPath)) {
+        fs.rmSync(path.join(DOCS_DIR, 'generatedApiDocs'),
+            { recursive: true, force: true }
+        );
+    }
+
+    // remove config and jsdoc file
+    fs.unlinkSync(path.join(BUILD_DIR, 'config.json'));
+    fs.unlinkSync(path.join(BUILD_DIR, 'jsdoc.json'));
+}
+
+
+/**
+ * Move the MDX_FILES_DIR from build directory to docs dir
+ */
+function moveMdxDirToDocs() {
+    const oldLocation = MDX_FILES_DIR;
+    const newLocation = path.join(DOCS_DIR, 'API-REFERENCE');
+
+    fs.renameSync(oldLocation, newLocation);
+}
+
+
+/**
+ * This function handles the control flow of the program
+ */
+function driver() {
+
+    createRequiredDir();
+
+    const requiredJSfiles = getJsFiles();
+    console.log("JS-Files dir ready");
+
+    for (let jsFile of requiredJSfiles) {
+
+        // create temporary dir and copy js file,
+        // to convert it to MDX
+        const fileName = path.basename(jsFile, '.js');
+        fs.mkdirSync(TEMP_DIR, { recursive: true });
+        fs.copyFileSync(jsFile, path.join(TEMP_DIR, `${fileName}.js`));
+
+        console.log(
+            `Converting ${path.join(TEMP_DIR, `${fileName}.js`)} to MDX`
+        );
+
+        // generate MDX files
+        generateMDX(path.join(TEMP_DIR, `${fileName}.js`));
+
+        console.log(
+            `Converted ${path.join(TEMP_DIR, `${fileName}.js`)} to MDX`
+        );
+
+        // merge all the generated MDX files
+        mergeMdxFiles();
+        console.log(`${fileName}.js merged successfully!`);
+
+        // move the merged MDX file from TEMP_DIR to MDX_FILES_DIR
+        moveFileToMdxDir(jsFile);
+        console.log(`${fileName}.js moved successfully`);
+        console.log('\n');
+    }
+
+    // after all the MDX files has been generated
+
+    // Make the necessary changes to the MDX files
+    // so that docusaurus can parse it correctly
+    mdxFileModifications();
+    console.log("MDX file modifications successful");
+
+    // delete non-required files and folders
+    deleteFiles();
+    console.log("Deleted non-required files");
+
+    // move MDX_FILES_DIR from build dir to Docs dir
+    moveMdxDirToDocs();
+    console.log("All set! Just move the docs dir to Docs site");
+
+}
+
+driver();
