@@ -69,6 +69,8 @@ test/thirdparty/jasmine-reporters
 /src/assets/default-project/*.zip
 /src/assets/sample-projects/*.zip
 /build/temp
+/build/config.json
+/build/jsdoc.json
 
 
 # ignore everything in the dev extension directory EXCEPT the README
