@@ -6,8 +6,8 @@ SelectionViewManager provides support to add interactive preview popups on selec
 This can be used to provide interactive editor controls on a selected element.
 
 Extensions can register to provide previews with `SelectionViewManager.registerSelectionViewProvider` API.
-!\[image]\([https://user-images.githubusercontent.com/5336369/186434397-3db55789-6077-4d02-b4e2-78ef3f663399.png][1] alt="user image" /)
-!\[selection view]\([https://user-images.githubusercontent.com/5336369/186434671-c1b263e5-19a9-4a9d-8f90-507df5f881b5.gif][2] alt="user gif" /)
+![image][1]
+![selection view][2]
 
 ### See Related: QuickViewManager
 
@@ -17,7 +17,7 @@ SelectionViewManager API.
 *   SelectionViews popup only once user selects a text by mouse or hover over a region with text selection.
 *   Quickviews popup on mouse hover.
 
-!\[quick-view-youtube.png]\([https://docs-images.phcode.dev/phcode-sdk/quick-view-youtube.png][4] alt="quick view youtube image" /)
+![quick-view-youtube.png][4]
 
 ## Usage
 

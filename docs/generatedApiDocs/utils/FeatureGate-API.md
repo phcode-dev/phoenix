@@ -41,9 +41,6 @@ if(FeatureGate.isFeatureEnabled(FEATURE_NEW_COLORS)){
 ## registerFeatureGate
 
 Registers a named feature with the default enabled state.
-To register a feature gate with name `myExtension.newColors`
-const FEATURE_NEW_COLORS = 'myExtension.newColors';
-FeatureGate.registerFeatureGate(FEATURE_NEW_COLORS, false); // false is the default value here
 
 Type: [function][1]
 
@@ -51,6 +48,15 @@ Type: [function][1]
 
 *   `featureName` **[string][2]** 
 *   `enabledDefault` **[boolean][3]** 
+
+### Examples
+
+To register a feature gate with name `myExtension.newColors`
+
+```javascript
+const FEATURE_NEW_COLORS = 'myExtension.newColors';
+FeatureGate.registerFeatureGate(FEATURE_NEW_COLORS, false); // false is the default value here
+```
 
 ## getAllRegisteredFeatures
 
@@ -63,17 +69,23 @@ Returns **\[[String][2]]** list of registered features
 ## isFeatureEnabled
 
 Returns true is an featureGate is enabled either by default or overridden by the user using local storage.
-To check if the feature `myExtension.newColors` is enabled
-const FEATURE_NEW_COLORS = 'myExtension.newColors';
-if(FeatureGate.isFeatureEnabled(FEATURE_NEW_COLORS)){
-// do fancy colors here
-}
 
 Type: [function][1]
 
 ### Parameters
 
 *   `featureName` **[string][2]** 
+
+### Examples
+
+To check if the feature `myExtension.newColors` is enabled
+
+```javascript
+const FEATURE_NEW_COLORS = 'myExtension.newColors';
+if(FeatureGate.isFeatureEnabled(FEATURE_NEW_COLORS)){
+   // do fancy colors here
+}
+```
 
 Returns **[boolean][3]** 
 

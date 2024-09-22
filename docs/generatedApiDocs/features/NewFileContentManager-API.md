@@ -93,12 +93,18 @@ A promise that resolves with the content text or rejects if there is no content 
 
 Returns a promise that resolves to the default text content of the given file after querying
 all the content providers. If no text is returned by any providers, it will return an empty string "".
-To get the default content given a path
-NewFileContentManager.getInitialContentForFile("/path/to/file.jsx");
 
 ### Parameters
 
 *   `fullPath` **[string][1]** 
+
+### Examples
+
+To get the default content given a path
+
+```javascript
+NewFileContentManager.getInitialContentForFile("/path/to/file.jsx");
+```
 
 Returns **[Promise][2]<[string][1]>** The text contents
 

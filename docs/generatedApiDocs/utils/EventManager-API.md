@@ -34,24 +34,29 @@ EventManager.triggerEvent("drawImage-Handler", "someEventName", "param1", "param
 Registers a named EventHandler. Event handlers are created using the call:
 `EventDispatcher.makeEventDispatcher(Command.prototype);`
 
-To register a close dialogue event handler in an extension:
-// in close-dialogue.js module winthin the extension, do the following:
-const EventDispatcher = brackets.getModule("utils/EventDispatcher"),
-EventDispatcher.makeEventDispatcher(exports);
-const EventManager = brackets.getModule("utils/EventManager");
-
-// Note: for event handler names, please change the `extensionName` to your extension name
-// to prevent collisions. EventHandlers starting with `ph-` and `br-` are reserved as system handlers
-// and not available for use in extensions.
-EventManager.registerEventHandler("`extensionName`-closeDialogueHandler", exports);
-// Once the event handler is registered, see triggerEvent API on how to raise events
-
 Type: [function][1]
 
 ### Parameters
 
 *   `handlerName` **[string][2]** a unique name of the handler.
 *   `eventDispatcher` **[object][3]** An EventDispatcher that will be used to trigger events.
+
+### Examples
+
+To register a close dialogue event handler in an extension:
+
+```javascript
+// in close-dialogue.js module winthin the extension, do the following:
+const EventDispatcher = brackets.getModule("utils/EventDispatcher"),
+EventDispatcher.makeEventDispatcher(exports);
+const EventManager = brackets.getModule("utils/EventManager");
+
+// Note: for event handler names, please change the <extensionName> to your extension name
+// to prevent collisions. EventHandlers starting with `ph-` and `br-` are reserved as system handlers
+// and not available for use in extensions.
+EventManager.registerEventHandler("<extensionName>-closeDialogueHandler", exports);
+// Once the event handler is registered, see triggerEvent API on how to raise events
+```
 
 Returns **[boolean][4]** 
 
@@ -71,11 +76,6 @@ Returns **[boolean][4]**
 
 Triggers an event on the named event handler.
 
-To trigger an event to the `closeDialogue` event handler registered above
-// anywhere in code, do the following:
-const EventManager = brackets.getModule("utils/EventManager");
-EventManager.triggerEvent("closeDialogueHandler", "someEvent", "param1", "param2", ...);
-
 Type: [function][1]
 
 ### Parameters
@@ -83,6 +83,16 @@ Type: [function][1]
 *   `handlerName` **[string][2]** 
 *   `eventName`  the event name as recognised by the handler. this is usually a string.
 *   `eventParams` **...any** Can be a comma seperated list of args or a single argument.
+
+### Examples
+
+To trigger an event to the `closeDialogue` event handler registered above
+
+```javascript
+// anywhere in code, do the following:
+const EventManager = brackets.getModule("utils/EventManager");
+EventManager.triggerEvent("closeDialogueHandler", "someEvent", "param1", "param2", ...);
+```
 
 ## onmessage
 
@@ -93,33 +103,43 @@ Instead of directly overriding window.onmessage, extensions or other elements th
 listen to these events should register their named eventHandler with `EventManager`.
 
 By default, only origins part of `window.Phoenix.TRUSTED_ORIGINS` are whitelisted. If your extension is
-bringing in a cross-origin ifrmame say \[`http://mydomain.com`], you should add it to the whitelist by setting
-`window.Phoenix.TRUSTED_ORIGINS ["http://mydomain.com"] = true;`
+bringing in a cross-origin ifrmame say `http://mydomain.com`, you should add it to the whitelist by setting
+`window.Phoenix.TRUSTED_ORIGINS["http://mydomain.com"]=true;`
 
 ### Parameters
 
 *   `event` **[MessageEvent][6]** The 'message' event targeted at the window object. The event's
-    'data' property should have a 'handlerName' and `eventName` property that will be triggered in phcode.// We will try to communicate within an embedded iframe and an extension// In your extension in phoenix, register a handlerName to process a new kind of event.
-    const EventDispatcher = brackets.getModule("utils/EventDispatcher"),
-    EventDispatcher.makeEventDispatcher(exports);
-    const EventManager = brackets.getModule("utils/EventManager");
-    // Note: for event handler names, please change the `extensionName` to your extension name
-    // to prevent collisions. EventHandlers starting with `ph-` and `br-` are reserved as system handlers
-    // and not available for use in extensions.
-    window.Phoenix.TRUSTED_ORIGINS \["[http://mydomain.com][7]"] = true;
-    EventManager.registerEventHandler("`extensionName`-iframeMessageHandler", exports);
-    exports.on("iframeHelloEvent", function(\_ev, event){
-    console.log(event.data.message);
-    });// Now from your iframe, send a message to the above event handler using:
-    window.parent.postMessage({
-    handlerName: "`extensionName`-iframeMessageHandler",
+    'data' property should have a 'handlerName' and `eventName` property that will be triggered in phcode.
+
+### Examples
+
+```javascript
+// We will try to communicate within an embedded iframe and an extension
+
+// In your extension in phoenix, register a handlerName to process a new kind of event.
+const EventDispatcher = brackets.getModule("utils/EventDispatcher"),
+EventDispatcher.makeEventDispatcher(exports);
+const EventManager = brackets.getModule("utils/EventManager");
+// Note: for event handler names, please change the <extensionName> to your extension name
+// to prevent collisions. EventHandlers starting with `ph-` and `br-` are reserved as system handlers
+// and not available for use in extensions.
+window.Phoenix.TRUSTED_ORIGINS["http://mydomain.com"]=true;
+EventManager.registerEventHandler("<extensionName>-iframeMessageHandler", exports);
+exports.on("iframeHelloEvent", function(_ev, event){
+   console.log(event.data.message);
+});
+
+// Now from your iframe, send a message to the above event handler using:
+window.parent.postMessage({
+    handlerName: "<extensionName>-iframeMessageHandler",
     eventName: "iframeHelloEvent",
     message: "hello world"
-    }, '\*');
-    // `you should replace * with the trusted domains list in production for security.` See how this can be
-    // done securely with this example: [https://github.com/phcode-dev/phcode.live/blob/6d64386fbb9d671cdb64622bc48ffe5f71959bff/docs/virtual-server-loader.js#L43][8]
-    // Abstract is that, pass in the parentOrigin as a query string parameter in iframe, and validate it against
-    // a trusted domains list in your iframe.
+}, '*');
+// `you should replace * with the trusted domains list in production for security.` See how this can be
+// done securely with this example: https://github.com/phcode-dev/phcode.live/blob/6d64386fbb9d671cdb64622bc48ffe5f71959bff/docs/virtual-server-loader.js#L43
+// Abstract is that, pass in the parentOrigin as a query string parameter in iframe, and validate it against
+// a trusted domains list in your iframe.
+```
 
 [1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
 
@@ -132,7 +152,3 @@ bringing in a cross-origin ifrmame say \[`http://mydomain.com`], you should add 
 [5]: https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage
 
 [6]: https://developer.mozilla.org/docs/Web/API/MessageEvent
-
-[7]: http://mydomain.com
-
-[8]: https://github.com/phcode-dev/phcode.live/blob/6d64386fbb9d671cdb64622bc48ffe5f71959bff/docs/virtual-server-loader.js#L43
