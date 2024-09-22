@@ -4,8 +4,8 @@
 
 QuickViewManager provides support to add interactive preview popups on hover over the main editors.
 Extensions can register to provide previews with `QuickViewManager.registerQuickViewProvider` API.
-![quick-view-image.png][1]
-![quick-view-youtube.png][2]
+!\[quick-view-image.png]\([https://docs-images.phcode.dev/phcode-sdk/quick-view-image.png][1] alt="quick view image" /)
+!\[quick-view-youtube.png]\([https://docs-images.phcode.dev/phcode-sdk/quick-view-youtube.png][2] alt="quick view youtube image" /)
 
 ### See Related: SelectionViewManager
 
@@ -15,7 +15,7 @@ QuickViewManager API.
 *   SelectionViews popup only once user selects a text by mouse or hover over a region with text selection.
 *   Quickviews popup on mouse hover.
 
-![image][4]
+!\[image]\([https://user-images.githubusercontent.com/5336369/186434397-3db55789-6077-4d02-b4e2-78ef3f663399.png][4] alt="user image" /)
 
 ## Usage
 

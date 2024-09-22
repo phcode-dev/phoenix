@@ -31,7 +31,7 @@ Another advanced example where you can specify html and interactive components i
 // note that you can even provide an HTML Element node with
 // custom event handlers directly here instead of HTML text.
 let notification1 = NotificationUI.createFromTemplate(
-  "<div>Click me to </br>locate the file in file tree</div>", "showInfileTree",{
+  "<div>Click me to locate the file in file tree</div>", "showInfileTree",{
       allowedPlacements: ['top', 'bottom'],
       dismissOnClick: false,
       autoCloseTimeS: 300 // auto close the popup after 5 minutes
@@ -55,6 +55,11 @@ control the created notification. See Notification docs below.
 
 Type: [Object][2]
 
+### Parameters
+
+*   `$notification`  
+*   `type`  
+
 ## Notification.close
 
 Closes the Notification if is visible and destroys then dom nodes
@@ -69,23 +74,27 @@ Type: [function][3]
 
 Adds a done callback to the Notification promise. The promise will be resolved
 when the Notification is dismissed. Never rejected.
+Print the close reason on console when the notification closes
+notificationInstance.done((closeReason)=>{
+console.log(closeReason)
+})
 
 Type: [function][3]
-
-### Examples
-
-Print the close reason on console when the notification closes
-
-```javascript
-notificationInstance.done((closeReason)=>{
-    console.log(closeReason)
-})
-```
 
 ## createFromTemplate
 
 Creates a new notification popup from given template.
 The template can either be a string or a jQuery object representing a DOM node that is *not* in the current DOM.
+
+Creating a notification popup
+// note that you can even provide an HTML Element node with
+// custom event handlers directly here instead of HTML text.
+let notification1 = NotificationUI.createFromTemplate(
+"<div>Click me to locate the file in file tree</div>", "showInfileTree",{
+allowedPlacements: \['top', 'bottom'],
+dismissOnClick: false,
+autoCloseTimeS: 300 // auto close the popup after 5 minutes
+});
 
 Type: [function][3]
 
@@ -100,27 +109,21 @@ Type: [function][3]
     *   `autoCloseTimeS` - Time in seconds after which the notification should be auto closed. Default is never.
     *   `dismissOnClick` - when clicked, the notification is closed. Default is true(dismiss). (optional, default `{}`)
 
-### Examples
-
-Creating a notification popup
-
-```javascript
-// note that you can even provide an HTML Element node with
-// custom event handlers directly here instead of HTML text.
-let notification1 = NotificationUI.createFromTemplate(
-  "<div>Click me to </br>locate the file in file tree</div>", "showInfileTree",{
-      allowedPlacements: ['top', 'bottom'],
-      dismissOnClick: false,
-      autoCloseTimeS: 300 // auto close the popup after 5 minutes
-  });
-```
-
 Returns **[Notification][6]** Object with a done handler that resolves when the notification closes.
 
 ## createToastFromTemplate
 
 Creates a new toast notification popup from given title and html message.
 The message can either be a string or a jQuery object representing a DOM node that is *not* in the current DOM.
+
+Creating a toast notification popup
+// note that you can even provide an HTML Element node with
+// custom event handlers directly here instead of HTML text.
+let notification1 = NotificationUI.createToastFromTemplate( "Title here",
+"<div>Click me to locate the file in file tree</div>", {
+dismissOnClick: false,
+autoCloseTimeS: 300 // auto close the popup after 5 minutes
+});
 
 Type: [function][3]
 
@@ -133,20 +136,6 @@ Type: [function][3]
     *   `dismissOnClick` - when clicked, the notification is closed. Default is true(dismiss).
     *   `toastStyle` - To style the toast notification for error, warning, info etc. Can be
         one of `NotificationUI.NOTIFICATION_STYLES_CSS_CLASS.*` or your own css class name. (optional, default `{}`)
-
-### Examples
-
-Creating a toast notification popup
-
-```javascript
-// note that you can even provide an HTML Element node with
-// custom event handlers directly here instead of HTML text.
-let notification1 = NotificationUI.createToastFromTemplate( "Title here",
-  "<div>Click me to </br>locate the file in file tree</div>", {
-      dismissOnClick: false,
-      autoCloseTimeS: 300 // auto close the popup after 5 minutes
-  });
-```
 
 Returns **[Notification][6]** Object with a done handler that resolves when the notification closes.
 

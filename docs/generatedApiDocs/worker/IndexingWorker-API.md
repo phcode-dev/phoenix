@@ -60,21 +60,16 @@ or the global `WorkerComm` reference within the Indexing worker. (See example be
 
 See [worker/WorkerComm][2] for detailed API docs.
 
-### Examples
-
 To Execute a named function `extensionName.sayHello` in the worker from phoenix
-
-```javascript
 // in my_worker.js. It is a good practice to prefix your `[extensionName]`
 // to exec handler to prevent name collisions with other extensions.
 WorkerComm.setExecHandler("extensionName.sayHello", (arg)=>{
-    console.log("hello from worker ", arg); // prints "hello from worker phoenix"
-    return "Hello Phoenix";
-  });
+console.log("hello from worker ", arg); // prints "hello from worker phoenix"
+return "Hello Phoenix";
+});
 // In Phoenix/extension
 let workerMessage = await IndexingWorker.execPeer("extensionName.sayHello", "phoenix");
 console.log(workerMessage); // prints "Hello Phoenix"
-```
 
 ## EVENT_CRAWL_STARTED
 

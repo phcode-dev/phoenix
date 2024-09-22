@@ -42,20 +42,15 @@ interface made available.
 
 Registers a named extension interface. Will overwrite if an interface of the same name is already present.
 
+To register an interface `angularCli`
+ExtensionInterface.registerExtensionInterface("angularCli", exports);
+
 Type: [function][1]
 
 ### Parameters
 
 *   `extensionInterfaceName` **[string][2]** 
 *   `interfaceObject` **[Object][3]** 
-
-### Examples
-
-To register an interface `angularCli`
-
-```javascript
-ExtensionInterface.registerExtensionInterface("angularCli", exports);
-```
 
 ## isExistsExtensionInterface
 
@@ -74,17 +69,7 @@ Returns **[boolean][4]**
 Returns a promise that gets resolved only when an ExtensionInterface of the given name is registered. Use this
 getter to get hold of extensions interface predictably.
 
-Type: [function][1]
-
-### Parameters
-
-*   `extensionInterfaceName`  
-
-### Examples
-
 To get a registered interface `angularCli`
-
-```javascript
 let angularCli;
 ExtensionInterface.waitAndGetExtensionInterface("angularCli").then(interfaceObj=> angularCli = interfaceObj);
 ...
@@ -92,7 +77,12 @@ if(angularCli){ // check if angular cli is avilable
 angularCli.callSomeFunction();
 }
 ...
-```
+
+Type: [function][1]
+
+### Parameters
+
+*   `extensionInterfaceName`  
 
 Returns **[Promise][5]** 
 
