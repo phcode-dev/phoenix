@@ -34,9 +34,6 @@ Type: [Object][1]
 ## countEvent
 
 log a numeric count >=0
-To log that user clicked searchButton 5 times:
-Metrics.countEvent(Metrics.EVENT_TYPE.UI, "searchButton", "click");
-Metrics.countEvent(Metrics.EVENT_TYPE.UI, "searchButton", "click", 5);
 
 Type: [function][2]
 
@@ -50,11 +47,18 @@ Type: [function][2]
     needs to be logged- should be a js var compatible string
 *   `count` **[number][5]** > \=0 , optional, if not set defaults to 1 (optional, default `1`)
 
+### Examples
+
+To log that user clicked searchButton 5 times:
+
+```javascript
+Metrics.countEvent(Metrics.EVENT_TYPE.UI, "searchButton", "click");
+Metrics.countEvent(Metrics.EVENT_TYPE.UI, "searchButton", "click", 5);
+```
+
 ## valueEvent
 
 log a numeric value (number).
-To log that startup time is 200ms:
-Metrics.valueEvent(Metrics.EVENT_TYPE.PERFORMANCE, "startupTime", "ms", 200);
 
 Type: [function][2]
 
@@ -67,6 +71,14 @@ Type: [function][2]
 *   `eventSubCategory` **[string][4]** The kind of Event Sub Category that
     needs to be logged- should be a js var compatible string
 *   `value` **[number][5]** 
+
+### Examples
+
+To log that startup time is 200ms:
+
+```javascript
+Metrics.valueEvent(Metrics.EVENT_TYPE.PERFORMANCE, "startupTime", "ms", 200);
+```
 
 ## flushMetrics
 

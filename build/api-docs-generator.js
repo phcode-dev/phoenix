@@ -67,31 +67,29 @@ function getJsFiles() {
     // gets all JS files from src
     // (even the ones that we don't need to add in API docs)
     const files = glob.sync(`${SRC_DIR}/**/*.js`);
-
     // this gets all the files that we need to add in API docs
     const requiredJSfiles = [];
     for (const file of files) {
+        // Check if it's a file (not a directory)
+        if (fs.statSync(file).isFile()) {
 
-        const content = fs.readFileSync(file, "utf-8");
+            const content = fs.readFileSync(file, "utf-8");
+            // check if file has this line, if yes include it in the list
+            if (content.includes("@INCLUDE_IN_API_DOCS")) {
 
-        // check if file has this line, if yes include it in the list
-        if (content.includes("@INCLUDE_IN_API_DOCS")) {
+                // to copy all files from into JS-Files dir,
+                // while maintaining the sub-directory structure
+                const relativePath = path.relative(SRC_DIR, file);
+                const destPath = path.join(JS_FILES_DIR, relativePath);
+                requiredJSfiles.push(destPath);
+                fs.mkdirSync(path.dirname(destPath), { recursive: true });
+                fs.copyFileSync(file, destPath);
 
-            // to copy all files from into JS-Files dir,
-            // while maintaining the sub-directory structure
-            const relativePath = path.relative(SRC_DIR, file);
-            const destPath = path.join(JS_FILES_DIR, relativePath);
-            requiredJSfiles.push(destPath);
-            fs.mkdirSync(path.dirname(destPath), { recursive: true });
-            fs.copyFileSync(file, destPath);
-
+            }
         }
     }
-
     return requiredJSfiles;
-
 }
-
 
 /**
  * Handles the generation of MDX from JS file
@@ -461,16 +459,16 @@ function mdxFileModifications() {
         let importStatement = '';
         // when file has no parent sub-dir
         // for example NodeConnector.mdx
-        if(directoryName.endsWith('.mdx')) {
+        if (directoryName.endsWith('.mdx')) {
             importStatement =
-            `### Import :\n\`\`\`\n` +
-            `brackets.getModule("${fileNameWithoutExt}")\n` +
-            `\`\`\`\n`;
+                `### Import :\n\`\`\`\n` +
+                `brackets.getModule("${fileNameWithoutExt}")\n` +
+                `\`\`\`\n`;
         } else {
             importStatement =
-            `### Import :\n\`\`\`\n` +
-            `brackets.getModule("${directoryName}/${fileNameWithoutExt}")\n` +
-            `\`\`\`\n`;
+                `### Import :\n\`\`\`\n` +
+                `brackets.getModule("${directoryName}/${fileNameWithoutExt}")\n` +
+                `\`\`\`\n`;
         }
 
 
@@ -577,6 +575,8 @@ function moveMdxDirToDocs() {
  * This function handles the control flow of the program
  */
 function driver() {
+
+    console.log("Process started!");
 
     createRequiredDir();
 
