@@ -106,7 +106,7 @@ To get the default content given a path
 NewFileContentManager.getInitialContentForFile("/path/to/file.jsx");
 ```
 
-Returns **[Promise][2]<[string][1]>** The text contents
+Returns **[Promise][2] < [string][1]>** The text contents
 
 [1]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
