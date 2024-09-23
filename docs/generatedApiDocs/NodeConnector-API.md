@@ -20,10 +20,10 @@ const NodeConnector = require('NodeConnector');
 const XY_NODE_CONNECTOR_ID = 'ext_x_y'; // Use a unique ID
 let nodeConnector = NodeConnector.createNodeConnector(XY_NODE_CONNECTOR_ID, exports);
 
-exports.modifyImage = async function(imageName, imageArrayBuffer) {
+exports.modifyImage = async function(imageName, imageArrayBuffer) \{
   // Perform image operations with the imageArrayBuffer
   // To return an ArrayBuffer, return an object with a `buffer` key.
-  return {
+  return \{
     operationDone: 'colored, cropped',
     buffer: imageArrayBuffer,
   };
@@ -36,7 +36,7 @@ exports.modifyImage = async function(imageName, imageArrayBuffer) {
 const XY_NODE_CONNECTOR_ID = 'ext_x_y'; // Use the same unique ID
 let nodeConnector = global.createNodeConnector(XY_NODE_CONNECTOR_ID, exports);
 
-exports.getPWDRelative = async function(subPath) {
+exports.getPWDRelative = async function(subPath) \{
   return process.cwd + '/' + subPath;
 };
 ```
@@ -56,7 +56,7 @@ To execute a Phoenix function from Node.js and transfer binary data, pass an opt
 
 ```js
 // In `y.js` (Node.js)
-const { operationDone, buffer } = await nodeConnector.execPeer('modifyImage', {name:'theHills.png'}, imageAsArrayBuffer);
+const \{ operationDone, buffer } = await nodeConnector.execPeer('modifyImage', \{name:'theHills.png'}, imageAsArrayBuffer);
 ```
 
 ## Event Handling
@@ -66,11 +66,11 @@ to events between Node.js and Phoenix using the `triggerPeer` and (`on`, `one` o
 
 ```js
 // In `y.js` (Node.js)
-nodeConnector.on('phoenixProjectOpened', (_event, projectPath) => {
+nodeConnector.on('phoenixProjectOpened', (_event, projectPath) => \{
   console.log(projectPath);
 });
 
-nodeConnector.one('phoenixProjectOpened', (_event, projectPath) => {
+nodeConnector.one('phoenixProjectOpened', (_event, projectPath) => \{
   console.log(projectPath + "will be received only once");
 });
 ```
@@ -100,7 +100,7 @@ Example of calling a function in Node.js with binary data transfer:
 
 ```js
 // In `y.js` (Node.js)
-const { operationDone, buffer } = await nodeConnector.execPeer('modifyImage', {name:'name.png'}, imageArrayBuffer);
+const \{ operationDone, buffer } = await nodeConnector.execPeer('modifyImage', \{name:'name.png'}, imageArrayBuffer);
 ```
 
 ### Handling ArrayBuffer Data in Event Handling
@@ -155,7 +155,7 @@ within a timeframe of less than 10 seconds(ideally same time) for seamless commu
 
 *   Throws **[Error][3]** If a node connector with the same ID already exists/invalid args passed.
 
-Returns **{execPeer: [function][4], triggerPeer: [function][4], trigger: [function][4], on: [function][4], off: [function][4], one: [function][4]}** A NodeConnector Object. Also contains all the APIs supported by `utils/EventDispatcher` module.
+Returns **\{execPeer: [function][4], triggerPeer: [function][4], trigger: [function][4], on: [function][4], off: [function][4], one: [function][4]}** A NodeConnector Object. Also contains all the APIs supported by `utils/EventDispatcher` module.
 
 ## isNodeAvailable
 

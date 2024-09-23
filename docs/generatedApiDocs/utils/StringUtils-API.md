@@ -24,7 +24,7 @@ Splits the text by new line characters and returns an array of lines
 
 *   `text` **[string][1]** 
 
-Returns **[Array][2]<[string][1]>** lines
+Returns **[Array][2] < [string][1]>** lines
 
 ## offsetToLineNum
 
@@ -38,7 +38,7 @@ this function to compute a line number from the offset.
 
 ### Parameters
 
-*   `textOrLines` **([string][1] | [Array][2]<[string][1]>)** string or array of lines from which
+*   `textOrLines` **([string][1] | [Array][2] < [string][1]>)** string or array of lines from which
     to compute the line number from the offset
 *   `offset` **[number][3]** 
 

@@ -66,14 +66,14 @@ self.EventDispatcher.trigger("someEvent"); // within web worker
 
 ```js
 // in your extension js file.
-define (function (require, exports, module) {
+define (function (require, exports, module) \{
     const EventDispatcher     = brackets.getModule("utils/EventDispatcher");
     EventDispatcher.makeEventDispatcher(exports); // This extension triggers some events
-    let eventHandler = function (event, paramObject, paramVal) {
+    let eventHandler = function (event, paramObject, paramVal) \{
         console.log(event, paramObject, paramVal);
     };
     exports.on("sampleEvent", eventHandler); // listen to our own event for demo
-    exports.trigger("sampleEvent", { // trigger a sample event. This will activate the above listener 'on' function.
+    exports.trigger("sampleEvent", \{ // trigger a sample event. This will activate the above listener 'on' function.
             param: 1,
             param2: "sample"
     }, "value");
@@ -93,7 +93,7 @@ Type: [function][2]
 *   `eventStr`  
 *   `eventName` **[string][3]** Event name and/or trailing ".namespace"
 
-Returns **!{event: [string][3], ns: [string][3]}** Uses "" for missing parts.
+Returns **!\{event: [string][3], ns: [string][3]}** Uses "" for missing parts.
 
 ## setLeakThresholdForEvent
 
