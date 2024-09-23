@@ -565,7 +565,7 @@ function deleteFiles() {
  */
 function moveMdxDirToDocs() {
     const oldLocation = MDX_FILES_DIR;
-    const newLocation = path.join(DOCS_DIR, 'API-REFERENCE');
+    const newLocation = path.join(DOCS_DIR, 'API-Reference');
 
     fs.renameSync(oldLocation, newLocation);
 }
