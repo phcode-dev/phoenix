@@ -22,7 +22,7 @@ const CONFIG_FILE = path.join(BUILD_DIR, 'config.json');
 const JSDOC_JSON_TEMPLATE = {
     "source": {
         "include": [
-            "temp"
+            "TEMP"
         ]
     },
     "plugins": [
