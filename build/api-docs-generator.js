@@ -545,15 +545,6 @@ function deleteFiles() {
         { recursive: true, force: true }
     );
 
-    // remove generatedApiDocs dir from Docs dir
-    // this dir has all the previously generated Markdown files
-    const generatedApiDocsPath = path.join(DOCS_DIR, 'generatedApiDocs');
-    if (fs.existsSync(generatedApiDocsPath)) {
-        fs.rmSync(path.join(DOCS_DIR, 'generatedApiDocs'),
-            { recursive: true, force: true }
-        );
-    }
-
     // remove config and jsdoc file
     fs.unlinkSync(path.join(BUILD_DIR, 'config.json'));
     fs.unlinkSync(path.join(BUILD_DIR, 'jsdoc.json'));
