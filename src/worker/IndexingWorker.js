@@ -33,6 +33,7 @@
  *   [worker/WorkerComm](WorkerComm-API) to communicate with the web worker.
  *
  * ## Import
+ * @example
  * ```js
  * // usage within extensions:
  * const IndexingWorker = brackets.getModule("worker/IndexingWorker");
@@ -46,6 +47,7 @@
  * │  main.js
  * ```
  * In `main.js` extension module, we can import `my_worker.js` script into `IndexingWorker` by:
+ * @example
  * ```js
  * let ExtensionUtils = brackets.getModule("utils/ExtensionUtils");
  * let workerPath = ExtensionUtils.getModulePath(module, "my_worker.js")

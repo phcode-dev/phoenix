@@ -35,6 +35,7 @@
  *
  * ### Create `NodeConnector` in Phoenix (`x.js`)
  *
+ * @example
  * ```js
  * const NodeConnector = require('NodeConnector');
  * const XY_NODE_CONNECTOR_ID = 'ext_x_y'; // Use a unique ID
@@ -52,6 +53,7 @@
  *
  * ### Create `NodeConnector` in Node.js (`y.js`)
  *
+ * @example
  * ```js
  * const XY_NODE_CONNECTOR_ID = 'ext_x_y'; // Use the same unique ID
  * let nodeConnector = global.createNodeConnector(XY_NODE_CONNECTOR_ID, exports);
@@ -67,6 +69,7 @@
  *
  * To call a Node.js function from Phoenix, use the `execPeer` method.
  *
+ * @example
  * ```js
  * // In `x.js` (Phoenix)
  * const fullPath = await nodeConnector.execPeer('getPWDRelative', 'sub/path.html');
@@ -74,6 +77,7 @@
  *
  * To execute a Phoenix function from Node.js and transfer binary data, pass an optional ArrayBuffer.
  *
+ * @example
  * ```js
  * // In `y.js` (Node.js)
  * const { operationDone, buffer } = await nodeConnector.execPeer('modifyImage', {name:'theHills.png'}, imageAsArrayBuffer);
@@ -84,6 +88,7 @@
  * The `NodeConnector` object implements all the APIs supported by `utils/EventDispatcher`. You can trigger and listen
  * to events between Node.js and Phoenix using the `triggerPeer` and (`on`, `one` or `off`) methods.
  *
+ * @example
  * ```js
  * // In `y.js` (Node.js)
  * nodeConnector.on('phoenixProjectOpened', (_event, projectPath) => {
@@ -97,12 +102,14 @@
  *
  * To raise an event from Phoenix to Node.js:
  *
+ * @example
  * ```js
  * // In `x.js` (Phoenix)
  * nodeConnector.triggerPeer('phoenixProjectOpened', '/x/project/folder');
  * ```
  *
  * To Switch off events
+ * @example
  * ```js
  * nodeConnector.off('phoenixProjectOpened'); // will switch off all event handlers of that name.
  * ```
@@ -117,6 +124,7 @@
  *
  * Example of calling a function in Node.js with binary data transfer:
  *
+ * @example
  * ```js
  * // In `y.js` (Node.js)
  * const { operationDone, buffer } = await nodeConnector.execPeer('modifyImage', {name:'name.png'}, imageArrayBuffer);
@@ -128,6 +136,7 @@
  *
  * Example of sending binary data in an event from Phoenix to Node.js:
  *
+ * @example
  * ```js
  * // In `x.js` (Phoenix)
  * const imageArrayBuffer = getSomeImageArrayBuffer(); // Get the ArrayBuffer

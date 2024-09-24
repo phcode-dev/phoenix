@@ -27,6 +27,7 @@
  * ## Import
  * ### Creating a WebWorker from your extension and attaching `WorkerComm` to it.
  * See an example extension code below that creates its own web worker and uses `WorkerComm` for communication.
+ * @example
  * ```js
  * // from within an extension
  * const WorkerComm = brackets.getModule("worker/WorkerComm"),
@@ -58,6 +59,7 @@
  * The Web Worker we created above also needs to load `WorkerComm` to be able to communicate with the `WorkerComm`
  * instance in Phoenix. For this, we need to load `WorkerComm` from the URL parameters.
  * (WorkerComm.js lib url needs to passed in while creating the web worker from Phoenix).
+ * @example
  * ```js
  * const urlParams = new URLSearchParams(location.search);
  * importScripts(urlParams.get('workerCommUrl'));

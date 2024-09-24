@@ -34,6 +34,7 @@
  * For Making this possible, the `angular-cli` extension makes a named interface available with the ExtensionInterface
  * module and `angular` extension can get hold of the interface as and when the extension gets loaded.
  *
+ * @example
  * ```js
  * // in angular-cli extension, make a file say cli-interface.js module within the extension, do the following:
  * const ExtensionInterface = brackets.getModule("utils/ExtensionInterface"),
@@ -43,6 +44,7 @@
  * Once the interface is registered, the angular extension can get hold of the interface with the following code
  * (inside or outside the extension) by using:
  *
+ * @example
  * ```js
  * let angularCli;
  * ExtensionInterface.waitAndGetExtensionInterface("angularCli").then(interfaceObj=> angularCli = interfaceObj);

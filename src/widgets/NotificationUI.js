@@ -31,6 +31,7 @@
  * ### Simple example
  * For Eg. Let's say we have to create a popup notification over the HTML element with ID `showInfileTree`.
  * We can do this with the following
+ * @example
  * ```js
  * const NotificationUI = brackets.getModule("widgets/NotificationUI");
  * // or use window.NotificationUI global object has the same effect.
@@ -41,6 +42,7 @@
  * ```
  * ### Advanced example
  * Another advanced example where you can specify html and interactive components in the notification
+ * @example
  * ```js
  * // note that you can even provide an HTML Element node with
  * // custom event handlers directly here instead of HTML text.
@@ -55,7 +57,7 @@
  *     console.log("notification is closed in ui reason:", closeReason);
  * })
  * ```
- * The [createFromTemplate]() API can be configured with numerous options. See API options below.
+ * The [createFromTemplate](1) API can be configured with numerous options. See API options below.
  * @module widgets/NotificationUI
  */
 

@@ -55,11 +55,13 @@
  *
  * ## Usage
  * ### Importing from an extension
+ * @example
  * ```js
  * const EventDispatcher = brackets.getModule("utils/EventDispatcher");
  * ```
  * ### Using the global object
  * The EventDispatcher Object is available within the global context, be it phoenix or phoenix core web workers or node.
+ * @example
  * ```js
  * window.EventDispatcher.makeEventDispatcher(exports); // within phoenix require module
  * self.EventDispatcher.makeEventDispatcher(object); // within web worker
@@ -67,6 +69,7 @@
  * ```
  *
  * If you wish to import event dispatcher to your custom web worker, use the following
+ * @example
  * ```js
  * importScripts('<relative path from your extension>/utils/EventDispatcher');
  * // this will add the global EventDispatcher to your web-worker. Note that the EventDispatcher in the web worker
@@ -76,6 +79,7 @@
  * self.EventDispatcher.trigger("someEvent"); // within web worker
  * ```
  * ### Sample Usage within extension
+ * @example
  * ```js
  * // in your extension js file.
  * define (function (require, exports, module) {
