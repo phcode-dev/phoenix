@@ -28,6 +28,7 @@
  *`Status: Internal - Not to be used by third party extensions.`
  *
  * ### Import
+ * @example
  * ```js
  * // usage within core:
  * const Metrics = require("utils/Metrics");

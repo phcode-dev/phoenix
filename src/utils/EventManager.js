@@ -33,6 +33,7 @@
  * ## Usage
  * For Eg. Let's say we have an extension `drawImage` installed that wants to expose custom functionality to phoenix.
  * The Extension will first register named EventHandler like this:
+ * @example
  * ```js
  * // in drawImage/someExtensionModule.js module within the extension, do the following:
  * const EventDispatcher = brackets.getModule("utils/EventDispatcher"),
@@ -44,6 +45,7 @@
  * Once the event handler is registered, we can trigger events on the named handler anywhere in phoenix
  * (inside or outside the extension) by using:
  *
+ * @example
  * ```js
  * EventManager.triggerEvent("drawImage-Handler", "someEventName", "param1", "param2", ...);
  * ```

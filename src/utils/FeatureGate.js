@@ -33,6 +33,7 @@
  * so that only people who want to test the extension will be able to use it.
  *
  * ### creating a feature gate
+ * @example
  * ```js
  * // within extensions
  * const FeatureGate = brackets.getModule("utils/FeatureGate"); // replace with `require` for core modules.
@@ -44,6 +45,7 @@
  * Once the feature is registered, use the below code to check if the feature can be safely enabled. For Eg., if
  * you want to enable fancy colors based on the example above:
  *
+ * @example
  * ```js
  * if(FeatureGate.isFeatureEnabled(FEATURE_NEW_COLORS)){
  *    // do fancy colors here

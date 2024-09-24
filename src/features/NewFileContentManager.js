@@ -28,6 +28,8 @@
  *
  * ## Usage
  * Let's say whenever a user creates a new js file, we have to prefill the contents to "sample content"
+ *
+ * @example
  * ```js
  * const NewFileContentManager = brackets.getModule("features/NewFileContentManager");
  * // replace `js` with language ID(Eg. javascript) if you want to restrict the preview to js files only. use `all` for
@@ -48,6 +50,7 @@
  * ### registerContentProvider
  * Register a Content provider with this api.
  *
+ * @example
  * ```js
  * // syntax
  * NewFileContentManager.registerContentProvider(provider, supportedLanguages, priority);
@@ -59,6 +62,7 @@
  * 1. `priority`: Contents provided hy providers with higher priority will win if there are more than
  *    one provider registered for the language. Default is 0.
  *
+ * @example
  * ```js
  * // to register a provider that will be invoked for all languages. where provider is any object that implements
  * // a getContent function
@@ -70,6 +74,8 @@
  *
  * ### removeContentProvider
  * Removes a registered content provider. The API takes the same arguments as `registerContentProvider`.
+ *
+ * @example
  * ```js
  * // syntax
  * NewFileContentManager.removeContentProvider(provider, supportedLanguages);
@@ -80,6 +86,8 @@
  * ### provider.getContent
  * Each provider must implement the `getContent` function that returns a promise. The promise either resolves with
  * the content text or rejects if there is no content made available by the provider.
+ *
+ * @example
  * ```js
  * exports.CONTENT_PROVIDER_NAME = "extension.someName"; // for debugging
  * // function signature

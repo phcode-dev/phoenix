@@ -41,6 +41,8 @@
  * ## Usage
  * Lets build a "hello world" extension that displays "hello world" above selected text in the editor.
  * In your extension file, add the following code:
+ *
+ * @example
  * ```js
  * const SelectionViewManager = brackets.getModule("features/SelectionViewManager");
  * // replace `all` with language ID(Eg. javascript) if you want to restrict the preview to js files only.
@@ -69,6 +71,7 @@
  * ### registerSelectionViewProvider
  * Register a SelectionView provider with this api.
  *
+ * @example
  * ```js
  * // syntax
  * SelectionViewManager.registerSelectionViewProvider(provider, supportedLanguages);
@@ -78,6 +81,7 @@
  * 1. `supportedLanguages`: An array of languages that the SelectionView supports. If `["all"]` is supplied, then the
  *    SelectionView will be invoked for all languages. Restrict to specific languages: Eg: `["javascript", "html", "php"]`
  *
+ * @example
  * ```js
  * // to register a provider that will be invoked for all languages. where provider is any object that implements
  * // a getSelectionView function
@@ -89,6 +93,8 @@
  *
  * ### removeSelectionViewProvider
  * Removes a registered SelectionView provider. The API takes the same arguments as `registerSelectionViewProvider`.
+ *
+ * @example
  * ```js
  * // syntax
  * SelectionViewManager.removeSelectionViewProvider(provider, supportedLanguages);
@@ -99,6 +105,8 @@
  * ### getSelectionView
  * Each provider must implement the `getSelectionView` function that returns a promise. The promise either resolves with
  * the Selection View details object(described below) or rejects if there is no preview for the position.
+ *
+ * @example
  * ```js
  * // function signature
  * provider.getSelectionView = function(editor, selections) {

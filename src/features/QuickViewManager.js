@@ -40,6 +40,8 @@
  * ## Usage
  * Lets build a "hello world" extension that displays "hello world" on hover over a text in the editor.
  * In your extension file, add the following code:
+ *
+ * @example
  * ```js
  * const QuickViewManager = brackets.getModule("features/QuickViewManager");
  * // replace `all` with language ID(Eg. javascript) if you want to restrict the preview to js files only.
@@ -77,6 +79,7 @@
  * ### registerQuickViewProvider
  * Register a QuickView provider with this api.
  *
+ * @example
  * ```js
  * // syntax
  * QuickViewManager.registerQuickViewProvider(provider, supportedLanguages);
@@ -86,6 +89,8 @@
  * 1. `supportedLanguages`: An array of languages that the QuickView supports. If `["all"]` is supplied, then the
  *    QuickView will be invoked for all languages. Restrict to specific languages: Eg: `["javascript", "html", "php"]`
  *
+ *
+ * @example
  * ```js
  * // to register a provider that will be invoked for all languages. where provider is any object that implements
  * // a getQuickView function
@@ -97,6 +102,8 @@
  *
  * ### removeQuickViewProvider
  * Removes a registered QuickView provider. The API takes the same arguments as `registerQuickViewProvider`.
+ *
+ * @example
  * ```js
  * // syntax
  * QuickViewManager.removeQuickViewProvider(provider, supportedLanguages);
@@ -107,6 +114,8 @@
  * ### getQuickView
  * Each provider must implement the `getQuickView` function that returns a promise. The promise either resolves with
  * the quick view details object(described below) or rejects if there is no preview for the position.
+ *
+ * @example
  * ```js
  * // function signature
  * provider.getQuickView = function(editor, pos, token, line) {
@@ -156,6 +165,8 @@
  * Each provider can optionally implement the `filterQuickView` function to control what among the available
  * quick views should be rendered if multiple providers responded with a QuickView. The function will be called
  * once all `getQuickView` providers provided a valid preview object.
+ *
+ * @example
  * ```js
  * // function signature
  * provider.filterQuickView = function(popovers) {

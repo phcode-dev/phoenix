@@ -461,13 +461,13 @@ function mdxFileModifications() {
         // for example NodeConnector.mdx
         if (directoryName.endsWith('.mdx')) {
             importStatement =
-                `### Import :\n\`\`\`\n` +
+                `### Import :\n\`\`\`js\n` +
                 `brackets.getModule("${fileNameWithoutExt}")\n` +
                 `\`\`\`\n`;
         } else {
             importStatement =
-                `### Import :\n\`\`\`\n` +
-                `brackets.getModule("${directoryName}/${fileNameWithoutExt}")\n` +
+                `### Import :\n\`\`\`js\n` +
+                `brackets.getModule("${fileNameWithoutExt}")\n` +
                 `\`\`\`\n`;
         }
 

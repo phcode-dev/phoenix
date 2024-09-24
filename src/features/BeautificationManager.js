@@ -27,6 +27,7 @@
  * ### registerBeautificationProvider
  * Register a Beautification provider with this api.
  *
+ * @example
  * ```js
  * // syntax
  * BeautificationManager.registerBeautificationProvider(provider, supportedLanguages, priority);
@@ -38,6 +39,7 @@
  * 1. `priority`: Used to break ties among providers for a particular language. Providers with a higher number
  *     will be asked for beatified code before those with a lower priority value. Defaults to zero.
  *
+ * @example
  * ```js
  * // to register a provider that will be invoked for all languages. where provider is any object that implements
  * // a `beautifyEditorProvider` and `beautifyTextProvider` function
@@ -49,6 +51,8 @@
  *
  * ### removeBeautificationProvider
  * Removes a registered Beautification provider. The API takes the same arguments as `registerBeautificationProvider`.
+ *
+ * @example
  * ```js
  * // syntax
  * BeautificationManager.removeBeautificationProvider(provider, supportedLanguages);
@@ -59,6 +63,8 @@
  * ### provider.beautifyEditorProvider
  * Each provider must implement the `beautifyEditorProvider` function that returns a promise. The promise either resolves with
  * the beautified code details or rejects if there is nothing to beautify for the provider.
+ *
+ * @example
  * ```js
  * // function signature
  * provider.beautifyEditorProvider = function(editor) {
@@ -97,6 +103,8 @@
  * Each provider must implement the `beautifyTextProvider` function that returns a promise.
  * The promise either resolves with the beautified code details(same as beautifyEditorProvider) or rejects if
  * there is nothing to beautify for the provider.
+ *
+ * @example
  * ```js
  * // function signature.
  * provider.beautifyTextProvider = function(textToBeautify, filePathOrFileName) {
