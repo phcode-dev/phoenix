@@ -63,18 +63,17 @@ function removeDir(dirPath) {
  */
 function modifyJs(content, fileName) {
 
-    // replace function wrapper with export block
+    // remove function wrapper
     if (content.includes('\n(function () {')) {
-        // IIFE function modification
 
         content = content.replace(
             /\(function \(\) \{/,
-            `export function ${fileName} () {`
+            ''
         );
 
         // Remove matching closing parentheses
         if (content.trim().endsWith('}());')) {
-            content = content.trim().slice(0, -4);
+            content = content.trim().slice(0, -5);
         }
 
         // Clean up any leftover unmatched brackets
@@ -100,20 +99,17 @@ function modifyJs(content, fileName) {
         }
     } else if (content.includes('define(function')) {
 
-        // replace define block with export block
+        // remove define blocks
         content = content.replace(
             /define\(function\s*\([^)]*\)\s*{/,
-            `export function ${fileName} () {`
+            ''
         );
 
         // remove trailing braces from define block
         if (content.trim().endsWith('});')) {
-            content = content.trim().slice(0, -2);
+            content = content.trim().slice(0, -3);
         }
     }
-
-    // Fix some JSDoc issues, where MDX breaks
-    content = content.replace(/@module/g, 'module');
 
     return content;
 }
@@ -142,7 +138,9 @@ function modifyMarkdown(content, relativePath) {
     ).replace(/\\/g, '/');
 
     const importStatement =
-     `### Import :\n\`\`\`js\nbrackets.getModule("${modulePath}")\n\`\`\`\n\n`;
+        `### Import :\n\`\`\`js\nbrackets.getModule("${modulePath}")\n\`\`\`\n\n`;
+
+    content = content.replace(/~/g, '.');
 
     // Combine the import statement with the modified content
     return importStatement + content;
