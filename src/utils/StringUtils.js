@@ -44,7 +44,7 @@ define(function (require, exports, module) {
      * Example: var formatted = StringUtils.format("Hello {0}", "World");
      *
      * @param {string} str The base string
-     * @param {...} Arguments to be substituted into the string
+     * @param {rest} Arguments to be substituted into the string
      *
      * @return {string} Formatted string
      */

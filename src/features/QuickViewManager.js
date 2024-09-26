@@ -262,19 +262,17 @@ define(function (require, exports, module) {
      * 3. If non-null, but visible==false, we're waiting for HOVER_DELAY, which
      *    is tracked by hoverTimer. The state changes to visible==true as soon as
      *    there is a provider. If the mouse moves before then, timer is restarted.
-     *
-     * @type {{
-     *      visible: boolean,
-     *      editor: !Editor,
-     *      hoverTimer: number,             - setTimeout() token
-     *      start: !{line, ch},             - start of matched text range
-     *      end: !{line, ch},               - end of matched text range
-     *      content: !string,               - HTML content to display in popover
-     *      xpos: number,                   - x of center of popover
-     *      ytop: number,                   - y of top of matched text (when popover placed above text, normally)
-     *      ybot: number,                   - y of bottom of matched text (when popover moved below text, avoiding window top)
-     *      marker: ?CodeMirror.TextMarker  - only set once visible==true
-     * }}
+     * @typedef {Object} PopoverState
+     * @property {boolean} visible - Whether the popover is visible.
+     * @property {!Editor} editor - The editor instance associated with the popover.
+     * @property {number} hoverTimer - The token returned by setTimeout().
+     * @property {!{line: number, ch: number}} start - Start of the matched text range.
+     * @property {!{line: number, ch: number}} end - End of the matched text range.
+     * @property {!string} content - HTML content to display in the popover.
+     * @property {number} xpos - X-coordinate of the center of the popover.
+     * @property {number} ytop - Y-coordinate of the top of the matched text when popover is above the text.
+     * @property {number} ybot - Y-coordinate of the bottom of the matched text when popover is below the text.
+     * @property {?CodeMirror.TextMarker} marker - The text marker; only set once `visible` is `true`.
      * @private
      */
     let popoverState = null;
@@ -413,7 +411,7 @@ define(function (require, exports, module) {
      * Returns a popover array with the list of popovers to be rendered after filtering from providers.
      * @param results
      * @param providerInfos
-     * @return {*[]}
+     * @return []
      * @private
      */
     function _getPopover(results, providerInfos) {

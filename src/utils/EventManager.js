@@ -144,12 +144,12 @@ define(function (require, exports, module) {
      * // and not available for use in extensions.
      * window.Phoenix.TRUSTED_ORIGINS ["http://mydomain.com"] = true;
      * EventManager.registerEventHandler("`extensionName`-iframeMessageHandler", exports);
-     * exports.on("iframeHelloEvent", function(_ev, event){
+     * exports.on("iframeHelloEvent", function(_ev, event)\{
      *    console.log(event.data.message);
      * });
      *
      * // Now from your iframe, send a message to the above event handler using:
-     * window.parent.postMessage({
+     * window.parent.postMessage(\{
      *     handlerName: "`extensionName`-iframeMessageHandler",
      *     eventName: "iframeHelloEvent",
      *     message: "hello world"
