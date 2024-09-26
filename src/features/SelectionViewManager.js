@@ -218,17 +218,15 @@ define(function (require, exports, module) {
      * 3. If non-null, but visible==false, we're waiting for HOVER_DELAY, which
      *    is tracked by hoverTimer. The state changes to visible==true as soon as
      *    there is a provider. If the mouse moves before then, timer is restarted.
-     *
-     * @type {{
-     *      visible: boolean,
-     *      editor: !Editor,
-     *      start: !{line, ch},             - start of matched text range
-     *      end: !{line, ch},               - end of matched text range
-     *      content: !string,               - HTML content to display in popover
-     *      xpos: number,                   - x of center of popover
-     *      ytop: number,                   - y of top of matched text (when popover placed above text, normally)
-     *      ybot: number,                   - y of bottom of matched text (when popover moved below text, avoiding window top)
-     * }}
+     * @typedef {Object} PopoverState
+     * @property {boolean} visible - Whether the popover is visible.
+     * @property {!Editor} editor - The editor instance associated with the popover.
+     * @property {!{line: number, ch: number}} start - Start of the matched text range.
+     * @property {!{line: number, ch: number}} end - End of the matched text range.
+     * @property {!string} content - HTML content to display in the popover.
+     * @property {number} xpos - X-coordinate of the center of the popover.
+     * @property {number} ytop - Y-coordinate of the top of the matched text when the popover is placed above the text.
+     * @property {number} ybot - Y-coordinate of the bottom of the matched text when the popover is moved below the text.
      * @private
      */
     let popoverState = null;

@@ -96,7 +96,7 @@ define(function (require, exports, module) {
      * To Execute a named function `extensionName.sayHello` in the worker from phoenix
      * // in my_worker.js. It is a good practice to prefix your `[extensionName]`
      * // to exec handler to prevent name collisions with other extensions.
-     * WorkerComm.setExecHandler("extensionName.sayHello", (arg)=>{
+     * WorkerComm.setExecHandler("extensionName.sayHello", (arg)=>\{
      *     console.log("hello from worker ", arg); // prints "hello from worker phoenix"
      *     return "Hello Phoenix";
      *   });

@@ -49,7 +49,7 @@
  * let angularCli;
  * ExtensionInterface.waitAndGetExtensionInterface("angularCli").then(interfaceObj=> angularCli = interfaceObj);
  * ...
- * if(angularCli){ // check if angular cli is avilable
+ * if(angularCli)\{ // check if angular cli is avilable
  * angularCli.callSomeFunction();
  * }
  * ...
@@ -108,7 +108,7 @@ define(function (require, exports, module) {
      * let angularCli;
      * ExtensionInterface.waitAndGetExtensionInterface("angularCli").then(interfaceObj=> angularCli = interfaceObj);
      * ...
-     * if(angularCli){ // check if angular cli is avilable
+     * if(angularCli)\{ // check if angular cli is avilable
      * angularCli.callSomeFunction();
      * }
      * ...
