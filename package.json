@@ -76,7 +76,7 @@
         "serveWithWebCache": "npm run _releaseWebCache && npm run _serveWithWebCacheHelp && http-server ./dist -p 8000 -c-1",
         "serveExternal": "http-server . -p 8000 -a 0.0.0.0 --log-ip true -c-1",
         "createJSDocs": "gulp createJSDocs && git add docs",
-        "createMDXDocs": "node build/api-docs-generator.js",
+        "createMDDocs": "node build/api-docs-generator.js",
         "_translateStrings": "gulp translateStrings",
         "_minify": "r.js -o require.min.config.js && echo this is untested see https://stackoverflow.com/questions/14337970/minifying-requirejs-javascript-codebase-to-a-single-file"
     },
