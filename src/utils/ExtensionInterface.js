@@ -48,11 +48,9 @@
  * ```js
  * let angularCli;
  * ExtensionInterface.waitAndGetExtensionInterface("angularCli").then(interfaceObj=> angularCli = interfaceObj);
- * ...
- * if(angularCli)\{ // check if angular cli is avilable
+ * if(angularCli){ // check if angular cli is avilable
  * angularCli.callSomeFunction();
  * }
- * ...
  * ```
  *
  * **Note** that the `angularCli` interface is async populated as and when the cli extension is loaded and the
@@ -105,13 +103,13 @@ define(function (require, exports, module) {
      * getter to get hold of extensions interface predictably.
      *
      * To get a registered interface `angularCli`
+     * ```js
      * let angularCli;
      * ExtensionInterface.waitAndGetExtensionInterface("angularCli").then(interfaceObj=> angularCli = interfaceObj);
-     * ...
-     * if(angularCli)\{ // check if angular cli is avilable
+     * if(angularCli){ // check if angular cli is avilable
      * angularCli.callSomeFunction();
      * }
-     * ...
+     * ```
      *
      * @param extensionInterfaceName
      * @return {Promise}

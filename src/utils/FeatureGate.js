@@ -89,7 +89,7 @@ define(function (require, exports, module) {
 
     /**
      * Returns an array of all named registered feature gates.
-     * @return [] list of registered features
+     * @return {string[]} list of registered features
      * @type {function}
      */
     function getAllRegisteredFeatures() {
