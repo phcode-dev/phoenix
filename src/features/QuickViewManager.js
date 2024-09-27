@@ -411,7 +411,7 @@ define(function (require, exports, module) {
      * Returns a popover array with the list of popovers to be rendered after filtering from providers.
      * @param results
      * @param providerInfos
-     * @return []
+     * @return {Object[]}
      * @private
      */
     function _getPopover(results, providerInfos) {

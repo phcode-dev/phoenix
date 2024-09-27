@@ -143,17 +143,21 @@ define(function (require, exports, module) {
      * // to prevent collisions. EventHandlers starting with `ph-` and `br-` are reserved as system handlers
      * // and not available for use in extensions.
      * window.Phoenix.TRUSTED_ORIGINS ["http://mydomain.com"] = true;
+     * ```js
      * EventManager.registerEventHandler("`extensionName`-iframeMessageHandler", exports);
-     * exports.on("iframeHelloEvent", function(_ev, event)\{
+     * exports.on("iframeHelloEvent", function(_ev, event){
      *    console.log(event.data.message);
      * });
+     * ```
      *
      * // Now from your iframe, send a message to the above event handler using:
-     * window.parent.postMessage(\{
+     * ```js
+     * window.parent.postMessage({
      *     handlerName: "`extensionName`-iframeMessageHandler",
      *     eventName: "iframeHelloEvent",
      *     message: "hello world"
      * }, '*');
+     * ```
      * // `you should replace * with the trusted domains list in production for security.` See how this can be
      * // done securely with this example: https://github.com/phcode-dev/phcode.live/blob/6d64386fbb9d671cdb64622bc48ffe5f71959bff/docs/virtual-server-loader.js#L43
      * // Abstract is that, pass in the parentOrigin as a query string parameter in iframe, and validate it against
