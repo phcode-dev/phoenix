@@ -42,7 +42,7 @@ notification1.done((closeReason)=>{
     console.log("notification is closed in ui reason:", closeReason);
 })
 ```
-The [createFromTemplate](1) API can be configured with numerous options. See API options below.
+The `createFromTemplate` API can be configured with numerous options. See API options below.
 
 * [widgets/NotificationUI](#module_widgets/NotificationUI)
     * [.API](#module_widgets/NotificationUI..API)
