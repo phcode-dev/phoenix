@@ -28,7 +28,6 @@ const webserver = require('gulp-webserver');
 const { src, dest, series } = require('gulp');
 // removed require('merge-stream') node module. it gives wired glob behavior and some files goes missing
 const zip = require('gulp-zip');
-const jsDocGenerate = require('./jsDocGenerate');
 const Translate = require("./translateStrings");
 const copyThirdPartyLibs = require("./thirdparty-lib-copy");
 const minify = require('gulp-minify');
@@ -346,24 +345,6 @@ function releaseProd() {
         };
         _updateConfigFile(_.merge(configFile, prodConfigFile));
 
-        resolve();
-    });
-}
-
-function cleanDocs() {
-    return del(['docs/generatedApiDocs']);
-}
-
-function createJSDocs() {
-    return src('src/**/*.js')
-        // Instead of using gulp-uglify, you can create an inline plugin
-        .pipe(jsDocGenerate.generateDocs())
-        .pipe(dest('docs/generatedApiDocs'));
-}
-
-function generateDocIndex() {
-    return new Promise(async (resolve)=>{ // eslint-disable-line
-        await jsDocGenerate.generateDocIndex('docs/generatedApiDocs');
         resolve();
     });
 }
@@ -750,7 +731,7 @@ exports.releaseWebCache = series(makeDistWebCache);
 exports.serve = series(exports.build, serve);
 exports.zipTestFiles = series(zipTestFiles);
 exports.serveExternal = series(exports.build, serveExternal);
-exports.createJSDocs = series(cleanDocs, createJSDocs, generateDocIndex);
+exports.serveExternal = series(exports.build, serveExternal);
 exports.translateStrings = series(translateStrings);
 exports.default = series(exports.build);
 exports.patchVersionBump = series(patchVersionBump);
