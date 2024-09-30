@@ -137,8 +137,9 @@ function modifyMarkdown(content, relativePath) {
         path.basename(relativePath, '.md')
     ).replace(/\\/g, '/');
 
-    const importStatement =
-        `### Import :\n\`\`\`js\nbrackets.getModule("${modulePath}")\n\`\`\`\n\n`;
+    const importStatement = '### Import :\n' +
+        `\`\`\`js\nconst ${path.basename(relativePath, '.md')} = ` +
+        `brackets.getModule("${modulePath}")\n\`\`\`\n\n`;
 
     content = content.replace(/~/g, '.');
 
