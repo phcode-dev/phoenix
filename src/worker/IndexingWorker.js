@@ -26,7 +26,7 @@
  * worker cache to free up the main thread of heavy file access.
  *
  * * Extensions performing large compute tasks should create their own worker and may use easy util methods in
- *   [worker/WorkerComm](../WorkerComm) to communicate with the web worker.
+ *   [worker/WorkerComm](./WorkerComm) to communicate with the web worker.
  *
  * ## Extending the indexing worker
  * You can add your own custom scripts to the indexing worker by following the below example. Suppose you have an
@@ -47,7 +47,7 @@
  * Once the worker script is loaded with the above step:
  * * Phoenix can communicate with worker using the `IndexingWorker` reference in Phoenix.
  * * Worker can communicate with Phoenix with the global `WorkerComm` reference within the Indexing worker.
- * All utility methods in module [worker/WorkerComm](../WorkerComm) can be used for worker communication.
+ * All utility methods in module [worker/WorkerComm](./WorkerComm) can be used for worker communication.
  *
  * A global constant `Phoenix.baseURL` is available in the worker context to get the base url from which phoenix was
  * launched.
@@ -81,7 +81,7 @@ define(function (require, exports, module) {
      * The above methods can be used with either `IndexingWorker` reference within Phoenix
      * or the global `WorkerComm` reference within the Indexing worker. (See example below.)
      *
-     * See [worker/WorkerComm](../WorkerComm) for detailed API docs.
+     * See [worker/WorkerComm](./WorkerComm) for detailed API docs.
      *
      * ```js
      * // To Execute a named function `extensionName.sayHello` in the worker from phoenix
