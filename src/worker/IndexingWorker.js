@@ -28,12 +28,6 @@
  * * Extensions performing large compute tasks should create their own worker and may use easy util methods in
  *   [worker/WorkerComm](../WorkerComm) to communicate with the web worker.
  *
- * ## Import
- * @example
- * ```js
- * // usage within extensions:
- * const IndexingWorker = brackets.getModule("worker/IndexingWorker");
- * ```
  * ## Extending the indexing worker
  * You can add your own custom scripts to the indexing worker by following the below example. Suppose you have an
  * extension folder with the following structure:

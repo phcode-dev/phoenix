@@ -24,7 +24,6 @@
  * WorkerComm provides util methods to communicate between web workers and Phoenix.
  * This module can be loaded from within web-workers and a phoenix extension that loads the web-worker.
  *
- * ## Import
  * ### Creating a WebWorker from your extension and attaching `WorkerComm` to it.
  * See an example extension code below that creates its own web worker and uses `WorkerComm` for communication.
  * @example
