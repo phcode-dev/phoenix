@@ -19,6 +19,8 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /**
  * ViewStateManager is a singleton for views to park their global viwe state. The state is saved
  * with project data but the View or View Factory is responsible for restoring the view state

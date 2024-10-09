@@ -19,6 +19,8 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /* unittests: ProjectModel */
 
 /*global fs, path, jsPromise*/

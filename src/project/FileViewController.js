@@ -19,6 +19,8 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /**
  * Responsible for coordinating file selection between views by permitting only one view
  * to show the current file selection at a time. Currently, only WorkingSetView and

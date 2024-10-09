@@ -19,6 +19,10 @@
  *
  */
 
+
+// @INCLUDE_IN_API_DOCS
+
+
 /*global jsPromise, path*/
 
 /**
@@ -156,7 +160,7 @@ define(function (require, exports, module) {
 
     /**
      * @private
-     * @type
+     * @type {Array<string>}
      */
     let _registeredLanguageIDs = [];
 

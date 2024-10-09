@@ -21,6 +21,8 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /**
  * Button that opens a dropdown list when clicked. More akin to a popup menu than a combobox. Compared to a
  * simple <select> element:

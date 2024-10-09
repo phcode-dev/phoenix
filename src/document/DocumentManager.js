@@ -19,6 +19,8 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /**
  * DocumentManager maintains a list of currently 'open' Documents. The DocumentManager is responsible
  * for coordinating document operations and dispatching certain document events.

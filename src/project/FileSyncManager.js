@@ -19,6 +19,10 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
+
+
 /**
  * FileSyncManager is a set of utilities to help track external modifications to the files and folders
  * in the currently open project.
