@@ -19,6 +19,8 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /**
  * MainViewFactory is a singleton for managing view factories.
  *
@@ -60,12 +62,12 @@
  */
 define(function (require, exports, module) {
 
-
     var _ = require("thirdparty/lodash");
 
-
     /**
-     * @typedef {canOpenFile:function(path:string):boolean, openFile:function(path:string, pane:Pane)} Factory
+     * @typedef {Object} Factory
+     * @property {function(string):boolean} canOpenFile - Checks if the factory can open the file by its path.
+     * @property {function(string, Pane):Promise} openFile - Function to open the file and return a promise.
      */
 
     /**
@@ -77,7 +79,7 @@ define(function (require, exports, module) {
 
     /**
      * Registers a view factory
-     * @param {!Factory} factory - the view factory to register
+     * @param {!Factory} factory - The view factory to register.
      */
     function registerViewFactory(factory) {
         _factories.push(factory);
@@ -85,7 +87,7 @@ define(function (require, exports, module) {
 
     /**
      * Finds a factory that can open the specified file
-     * @param {!string} fullPath - the file to open
+     * @param {!string} fullPath - The file to open.
      * @return {?Factory} A factory that can create a view for the path or undefined if there isn't one.
      */
     function findSuitableFactoryForPath(fullPath) {

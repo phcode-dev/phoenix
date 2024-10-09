@@ -19,6 +19,8 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /**
  * Utilities for working with Deferred, Promise, and other asynchronous processes.
  */

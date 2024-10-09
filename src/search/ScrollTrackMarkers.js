@@ -19,6 +19,8 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /**
  * Manages tickmarks shown along the scrollbar track.
  * NOT yet intended for use by anyone other than the FindReplace module.

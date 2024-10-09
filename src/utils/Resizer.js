@@ -19,6 +19,8 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /**
  * Resizer is a Module utility to inject resizing capabilities to any element
  * inside Brackets.

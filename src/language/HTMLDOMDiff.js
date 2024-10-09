@@ -19,6 +19,9 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
+
 /*unittests: HTML Instrumentation*/
 
 define(function (require, exports, module) {
@@ -282,7 +285,7 @@ define(function (require, exports, module) {
             // a textReplace edit following the same element.
             var previousEdit = newEdits.length > 0 && newEdits[newEdits.length - 1];
             if (previousEdit && previousEdit.type === "textReplace" &&
-                    previousEdit.afterID === textAfterID) {
+                previousEdit.afterID === textAfterID) {
                 oldIndex++;
                 return;
             }
@@ -323,7 +326,7 @@ define(function (require, exports, module) {
             // different parent.
             var possiblyMovedElement = oldNodeMap[newChild.tagID];
             if (possiblyMovedElement &&
-                    newParent.tagID !== getParentID(possiblyMovedElement)) {
+                newParent.tagID !== getParentID(possiblyMovedElement)) {
                 newEdit = {
                     type: "elementMove",
                     tagID: newChild.tagID,
@@ -389,7 +392,7 @@ define(function (require, exports, module) {
                         addTextInsert();
                     }
 
-                // both children are elements
+                    // both children are elements
                 } else {
                     if (newChild.tagID !== oldChild.tagID) {
 
@@ -408,7 +411,7 @@ define(function (require, exports, module) {
                             }
                         }
 
-                    // There has been no change in the tag we're looking at.
+                        // There has been no change in the tag we're looking at.
                     } else {
                         // Since this element hasn't moved, it is a suitable "beforeID"
                         // for the edits we've logged.
@@ -418,7 +421,7 @@ define(function (require, exports, module) {
                     }
                 }
 
-            // We know we're comparing two texts. Just match up their signatures.
+                // We know we're comparing two texts. Just match up their signatures.
             } else {
                 if (newChild.textSignature !== oldChild.textSignature) {
                     newEdit = {
@@ -454,14 +457,14 @@ define(function (require, exports, module) {
                 // is handled on the new tree side).
                 oldIndex++;
 
-            // is this an element? if so, delete it
+                // is this an element? if so, delete it
             } else if (oldChild.isElement()) {
                 if (!addElementDelete()) {
                     console.error("HTML Instrumentation: failed to add elementDelete for remaining element in the original DOM. This should not happen.", oldChild);
                     oldIndex++;
                 }
 
-            // must be text. delete that.
+                // must be text. delete that.
             } else {
                 addTextDelete();
             }
@@ -485,7 +488,7 @@ define(function (require, exports, module) {
                     }
                 }
 
-            // not a new element, so it must be new text.
+                // not a new element, so it must be new text.
             } else {
                 addTextInsert();
             }
@@ -515,20 +518,20 @@ define(function (require, exports, module) {
      * Generate a list of edits that will mutate oldNode to look like newNode.
      * Currently, there are the following possible edit operations:
      *
-     * * elementInsert
-     * * elementDelete
-     * * elementMove
-     * * textInsert
-     * * textDelete
-     * * textReplace
-     * * attrDelete
-     * * attrChange
-     * * attrAdd
-     * * rememberNodes (a special instruction that reflects the need to hang on to moved nodes)
+     * - elementInsert
+     * - elementDelete
+     * - elementMove
+     * - textInsert
+     * - textDelete
+     * - textReplace
+     * - attrDelete
+     * - attrChange
+     * - attrAdd
+     * - rememberNodes (a special instruction that reflects the need to hang on to moved nodes)
      *
-     * @param {Object} oldNode SimpleDOM node with the original content
-     * @param {Object} newNode SimpleDOM node with the new content
-     * @return {Array.{Object}} list of edit operations
+     * @param {Object} oldNode - SimpleDOM node with the original content.
+     * @param {Object} newNode - SimpleDOM node with the new content.
+     * @return {Array<Object>} - List of edit operations.
      */
     function domdiff(oldNode, newNode) {
         var queue = [],
@@ -589,8 +592,8 @@ define(function (require, exports, module) {
                     newElement.children.forEach(queuePush);
                 }
 
-            // This is a new element, so go straight to generating child edits (which will
-            // create the appropriate Insert edits).
+                // This is a new element, so go straight to generating child edits (which will
+                // create the appropriate Insert edits).
             } else {
                 // If this is the root (html) tag, we need to manufacture an insert for it here,
                 // because it isn't the child of any other node. The browser-side code doesn't

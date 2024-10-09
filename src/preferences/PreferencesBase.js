@@ -22,6 +22,9 @@
 /*global appshell */
 /*unittests: Preferences Base */
 
+// @INCLUDE_IN_API_DOCS
+
+
 /**
  * Infrastructure for the preferences system.
  *
@@ -56,13 +59,13 @@
 define(function (require, exports, module) {
 
 
-    var FileUtils       = require("file/FileUtils"),
-        FileSystem      = require("filesystem/FileSystem"),
+    var FileUtils = require("file/FileUtils"),
+        FileSystem = require("filesystem/FileSystem"),
         FileSystemError = require("filesystem/FileSystemError"),
         EventDispatcher = require("utils/EventDispatcher"),
-        _               = require("thirdparty/lodash"),
-        Async           = require("utils/Async"),
-        globmatch       = require("thirdparty/globmatch");
+        _ = require("thirdparty/lodash"),
+        Async = require("utils/Async"),
+        globmatch = require("thirdparty/globmatch");
 
     // CONSTANTS
     var PREFERENCE_CHANGE = "change",
@@ -538,13 +541,13 @@ define(function (require, exports, module) {
          */
         contextChanged: function (oldContext, newContext) {
             var changes = [],
-                data    = this.data;
+                data = this.data;
 
             _.each(this._layers, function (layer) {
                 if (data[layer.key] && oldContext[layer.key] !== newContext[layer.key]) {
                     var changesInLayer = layer.contextChanged(data[layer.key],
-                                                              oldContext,
-                                                              newContext);
+                        oldContext,
+                        newContext);
                     if (changesInLayer) {
                         changes.push(changesInLayer);
                     }
@@ -847,12 +850,12 @@ define(function (require, exports, module) {
      * by [EditorConfig](http://editorconfig.org/). In usage, it looks something like this
      * (switching to single line comments because the glob interferes with the multiline comment):
      */
-//    "path": {
-//        "src/thirdparty/CodeMirror/**/*.js": {
-//            "spaceUnits": 2,
-//            "linting.enabled": false
-//        }
-//    }
+    //    "path": {
+    //        "src/thirdparty/CodeMirror/**/*.js": {
+    //            "spaceUnits": 2,
+    //            "linting.enabled": false
+    //        }
+    //    }
 
     /**
      * There can be multiple paths and they are each checked in turn. The first that matches the
@@ -998,9 +1001,9 @@ define(function (require, exports, module) {
          */
         contextChanged: function (data, oldContext, newContext) {
             var newGlob = _findMatchingGlob(data,
-                              FileUtils.getRelativeFilename(this.prefFilePath, newContext[this.key])),
+                FileUtils.getRelativeFilename(this.prefFilePath, newContext[this.key])),
                 oldGlob = _findMatchingGlob(data,
-                              FileUtils.getRelativeFilename(this.prefFilePath, oldContext[this.key]));
+                    FileUtils.getRelativeFilename(this.prefFilePath, oldContext[this.key]));
 
             if (newGlob === oldGlob) {
                 return;
@@ -1038,9 +1041,9 @@ define(function (require, exports, module) {
     function _addEventDispatcherImpl(proto) {
         var temp = {};
         EventDispatcher.makeEventDispatcher(temp);
-        proto._on_internal  = temp.on;
+        proto._on_internal = temp.on;
         proto._off_internal = temp.off;
-        proto.trigger       = temp.trigger;
+        proto.trigger = temp.trigger;
     }
 
     /**
@@ -1111,15 +1114,16 @@ define(function (require, exports, module) {
         },
 
         /**
-         * Sets the prefixed preference
-         *
-         * @param {string} id Identifier of the preference to set
-         * @param {Object} value New value for the preference
-         * @param {{location: ?Object, context: ?Object}=} options Specific location in which to set the value or the context to use when setting the value
-         * @param {boolean=} doNotSave True if the preference change should not be saved automatically.
-         * @return {valid:  {boolean}, true if no validator specified or if value is valid
-         *          stored: {boolean}} true if a value was stored
-         */
+       * Sets the prefixed preference.
+       *
+       * @param {string} id - The identifier of the preference to set.
+       * @param {Object} value - The new value for the preference.
+       * @param {{location: ?Object, context: ?Object}=} options - Specific location to set the value or context for the operation.
+       * @param {boolean=} doNotSave - If true, the preference change will not be saved automatically.
+       * @return {{valid: boolean, stored: boolean}} An object containing:
+       *     - valid: true if no validator is specified or if the value is valid.
+       *     - stored: true if the value was successfully stored.
+       */
         set: function (id, value, options, doNotSave) {
             return this.base.set(this.prefix + id, value, options, doNotSave);
         },
@@ -1391,30 +1395,30 @@ define(function (require, exports, module) {
             // Find an appropriate scope of lower priority to add it before
             while (i < shadowScopeOrder.length) {
                 if (shadowScopeOrder[i].promise.state() === "pending" ||
-                        shadowScopeOrder[i].promise.state() === "resolved") {
+                    shadowScopeOrder[i].promise.state() === "resolved") {
                     break;
                 }
                 i++;
             }
             switch (shadowScopeOrder[i].promise.state()) {
-            case "pending":
-                // cannot decide now, lookup once pending promise is settled
-                shadowScopeOrder[i].promise.always(function () {
-                    this._tryAddToScopeOrder(shadowEntry);
-                }.bind(this));
-                break;
-            case "resolved":
-                this._pushToScopeOrder(shadowEntry.id, shadowScopeOrder[i].id);
-                this.trigger(SCOPEORDER_CHANGE, {
-                    id: shadowEntry.id,
-                    action: "added"
-                });
-                this._triggerChange({
-                    ids: shadowEntry.scope.getKeys()
-                });
-                break;
-            default:
-                throw new Error("Internal error: no scope found to add before. \"default\" is missing?..");
+                case "pending":
+                    // cannot decide now, lookup once pending promise is settled
+                    shadowScopeOrder[i].promise.always(function () {
+                        this._tryAddToScopeOrder(shadowEntry);
+                    }.bind(this));
+                    break;
+                case "resolved":
+                    this._pushToScopeOrder(shadowEntry.id, shadowScopeOrder[i].id);
+                    this.trigger(SCOPEORDER_CHANGE, {
+                        id: shadowEntry.id,
+                        action: "added"
+                    });
+                    this._triggerChange({
+                        ids: shadowEntry.scope.getKeys()
+                    });
+                    break;
+                default:
+                    throw new Error("Internal error: no scope found to add before. \"default\" is missing?..");
             }
 
         },
@@ -1661,7 +1665,7 @@ define(function (require, exports, module) {
                 if (scope) {
                     var result = scope.get(id, context);
                     if (result !== undefined) {
-                        var pref      = this.getPreference(id),
+                        var pref = this.getPreference(id),
                             validator = pref && pref.validator;
                         if (!validator || validator(result)) {
                             if (pref && pref.type === "object") {
@@ -1703,18 +1707,18 @@ define(function (require, exports, module) {
         },
 
         /**
-         * Sets a preference and notifies listeners that there may
-         * have been a change. By default, the preference is set in the same location in which
-         * it was defined except for the "default" scope. If the current value of the preference
-         * comes from the "default" scope, the new value will be set at the level just above
-         * default.
+         * Sets a preference and notifies listeners that a change may have occurred. 
+         * By default, the preference is set in the same location where it was defined, 
+         * except for the "default" scope. If the current value of the preference 
+         * comes from the "default" scope, the new value will be set at the level just above default.
          *
-         * @param {string} id Identifier of the preference to set
-         * @param {Object} value New value for the preference
-         * @param {{location: ?Object, context: ?Object}=} options Specific location in which to set the value or the context to use when setting the value
-         * @param {boolean=} doNotSave True if the preference change should not be saved automatically.
-         * @return {valid:  {boolean}, true if no validator specified or if value is valid
-         *          stored: {boolean}} true if a value was stored
+         * @param {string} id - The identifier of the preference to set.
+         * @param {Object} value - The new value for the preference.
+         * @param {{location: ?Object, context: ?Object}=} options - Specific location to set the value or context for the operation.
+         * @param {boolean=} doNotSave - If true, the preference change will not be saved automatically.
+         * @return {{valid: boolean, stored: boolean}} An object containing:
+         *     - valid: true if no validator is specified or if the value is valid.
+         *     - stored: true if the value was successfully stored.
          */
         set: function (id, value, options, doNotSave) {
             options = options || {};
@@ -1745,7 +1749,7 @@ define(function (require, exports, module) {
                 return { valid: true, stored: false };
             }
 
-            var pref      = this.getPreference(id),
+            var pref = this.getPreference(id),
                 validator = pref && pref.validator;
             if (validator && !validator(value)) {
                 return { valid: false, stored: false };
@@ -1943,11 +1947,11 @@ define(function (require, exports, module) {
 
 
     // Public interface
-    exports.PreferencesSystem   = PreferencesSystem;
-    exports.Scope               = Scope;
-    exports.MemoryStorage       = MemoryStorage;
-    exports.PathLayer           = PathLayer;
-    exports.ProjectLayer        = ProjectLayer;
-    exports.LanguageLayer       = LanguageLayer;
-    exports.FileStorage         = FileStorage;
+    exports.PreferencesSystem = PreferencesSystem;
+    exports.Scope = Scope;
+    exports.MemoryStorage = MemoryStorage;
+    exports.PathLayer = PathLayer;
+    exports.ProjectLayer = ProjectLayer;
+    exports.LanguageLayer = LanguageLayer;
+    exports.FileStorage = FileStorage;
 });

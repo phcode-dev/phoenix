@@ -22,6 +22,8 @@
 /*jslint regexp: true */
 /*global unescape */
 
+// @INCLUDE_IN_API_DOCS
+
 /**
  * Set of utilities for working with files and text content.
  */

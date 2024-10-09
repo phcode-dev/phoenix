@@ -19,6 +19,9 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
+
 /**
  * This is a collection of utility functions for gathering performance data.
  */

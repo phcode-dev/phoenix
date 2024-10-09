@@ -22,6 +22,9 @@
  *
  */
 
+
+// @INCLUDE_IN_API_DOCS
+
 /**
  * ExtensionLoader searches the filesystem for extensions, then creates a new context for each one and loads it.
  * This module dispatches the following events:

@@ -19,6 +19,8 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /**
  * EditorManager owns the UI for the editor area. This essentially mirrors the 'current document'
  * property maintained by DocumentManager's model.

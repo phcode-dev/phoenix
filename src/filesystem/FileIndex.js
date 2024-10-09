@@ -19,6 +19,9 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
+
 /**
  * FileIndex is an internal module used by FileSystem to maintain an index of all files and directories.
  *

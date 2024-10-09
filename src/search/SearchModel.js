@@ -19,12 +19,14 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 define(function (require, exports, module) {
 
 
-    var FileUtils       = require("file/FileUtils"),
+    var FileUtils = require("file/FileUtils"),
         EventDispatcher = require("utils/EventDispatcher"),
-        FindUtils       = require("search/FindUtils"),
+        FindUtils = require("search/FindUtils"),
         MainViewManager = require("view/MainViewManager");
 
     /**
@@ -47,7 +49,7 @@ define(function (require, exports, module) {
 
     /**
      * The current set of results.
-     * @type {Object.<fullPath: string, {matches: Array.<Object>, collapsed: boolean, timestamp: Date}>}
+     * @type {Object.<string, {matches: Array.<Object>, collapsed: boolean, timestamp: Date}>}
      */
     SearchModel.prototype.results = null;
 
@@ -162,7 +164,7 @@ define(function (require, exports, module) {
         // to avoid logic issues later with comparing values.
         resultInfo.collapsed = !!resultInfo.collapsed;
 
-        if(!this.results[fullpath] && this.numFiles >= 0){
+        if (!this.results[fullpath] && this.numFiles >= 0) {
             this.numFiles++;
         }
         this.results[fullpath] = resultInfo;
@@ -186,7 +188,7 @@ define(function (require, exports, module) {
     SearchModel.prototype.removeResults = function (fullpath) {
         if (this.results[fullpath]) {
             this.numMatches -= this.results[fullpath].matches.length;
-            if(this.numFiles){
+            if (this.numFiles) {
                 this.numFiles--;
             }
             delete this.results[fullpath];
@@ -205,7 +207,7 @@ define(function (require, exports, module) {
      * @return {{files: number, matches: number}}
      */
     SearchModel.prototype.countFilesMatches = function () {
-        return {files: (this.numFiles || Object.keys(this.results).length), matches: this.numMatches};
+        return { files: (this.numFiles || Object.keys(this.results).length), matches: this.numMatches };
     };
 
     /**

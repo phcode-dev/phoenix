@@ -21,6 +21,8 @@
 
 /*global Phoenix*/
 
+// @INCLUDE_IN_API_DOCS
+
 /**
  * Initializes the default brackets menu items.
  */

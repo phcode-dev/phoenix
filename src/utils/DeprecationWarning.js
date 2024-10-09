@@ -19,6 +19,8 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /**
  *  Utilities functions to display deprecation warning in the console.
  *

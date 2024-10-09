@@ -19,6 +19,9 @@
  *
  */
 
+
+// @INCLUDE_IN_API_DOCS
+
 /**
  * FileSystemError describes the errors that can occur when using the FileSystem, File,
  * and Directory modules.
@@ -30,6 +33,7 @@ define(function (require, exports, module) {
 
     /**
      * Enumerated File System Errors
+     * @module
      * @enum {string}
      */
     module.exports = {

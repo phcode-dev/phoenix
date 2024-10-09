@@ -19,6 +19,8 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /**
 * Manages layout of panels surrounding the editor area, and size of the editor area (but not its contents).
  *
