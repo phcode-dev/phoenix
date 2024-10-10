@@ -19,6 +19,8 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /**
  * Utilities for managing file-set filters, as used in Find in Files.
  * Includes both UI for selecting/editing filters, as well as the actual file-filtering implementation.
@@ -26,12 +28,12 @@
 define(function (require, exports, module) {
 
 
-    const DropdownButton     = require("widgets/DropdownButton").DropdownButton,
-        Strings            = require("strings"),
+    const DropdownButton = require("widgets/DropdownButton").DropdownButton,
+        Strings = require("strings"),
         PreferencesManager = require("preferences/PreferencesManager"),
-        ProjectManager     = require("project/ProjectManager"),
-        WorkspaceManager      = require("view/WorkspaceManager"),
-        FindUtils          = require("search/FindUtils");
+        ProjectManager = require("project/ProjectManager"),
+        WorkspaceManager = require("view/WorkspaceManager"),
+        FindUtils = require("search/FindUtils");
 
     const PREFS_CURRENT_FILTER_STRING = "FIND_IN_FILES_CURRENT_FILTER_STRING";
 
@@ -45,7 +47,7 @@ define(function (require, exports, module) {
     /**
      * @type {DropdownButton}
      */
-    let _picker  = null;
+    let _picker = null;
     /**
      * @type { jQuery }
      */
@@ -61,10 +63,10 @@ define(function (require, exports, module) {
         str = str.replaceAll("\\,", randomDigits);
         let patterns = str.split(",");
         let finalPatterns = [];
-        for(let i=0; i<patterns.length; i++){
-            patterns[i]=patterns[i].replaceAll(randomDigits, ",");
+        for (let i = 0; i < patterns.length; i++) {
+            patterns[i] = patterns[i].replaceAll(randomDigits, ",");
             patterns[i] = patterns[i].toLowerCase();
-            if(patterns[i]){
+            if (patterns[i]) {
                 finalPatterns.push(patterns[i]);
             }
         }
@@ -77,14 +79,14 @@ define(function (require, exports, module) {
      * @return {{pattern:string, isActive: function, ignores: function}} a globeFilter filter that can be passed to filterPath()/filterFileList().
      */
     function getActiveFilter() {
-        if(currentFilter){
+        if (currentFilter) {
             return currentFilter;
         }
-        if(currentFilterType === FILTER_TYPE_NO_FILTER) {
+        if (currentFilterType === FILTER_TYPE_NO_FILTER) {
             return {
-                isActive: ()=>false,
+                isActive: () => false,
                 pattern: "",
-                ignores: ()=>false
+                ignores: () => false
             };
         }
         const pattern = PreferencesManager.getViewState(PREFS_CURRENT_FILTER_STRING) || "";
@@ -100,12 +102,12 @@ define(function (require, exports, module) {
      * @param {string} [filterType] - optional, one of FileFilters.FILTER_TYPE_*.
      */
     function setActiveFilter(filter, filterType) {
-        if(typeof filter === 'string'){
+        if (typeof filter === 'string') {
             filter = compile(filter);
         }
         currentFilter = filter;
         PreferencesManager.setViewState(PREFS_CURRENT_FILTER_STRING, filter.pattern);
-        if(filterType) {
+        if (filterType) {
             currentFilterType = filterType;
             _updatePicker();
         }
@@ -124,9 +126,9 @@ define(function (require, exports, module) {
         const userFilter = _filterStringToPatternArray(userFilterString); // this wil lower case too
         const subStringFilter = [];
         const wrappedGlobs = [];
-        for(let glob of userFilter){
+        for (let glob of userFilter) {
             // ./ will only match in present project root, this is as an escape for the above transform we apply
-            if(glob.startsWith("./")) {
+            if (glob.startsWith("./")) {
                 wrappedGlobs.push(glob.slice(2)); // ./*.txt to *.txt
                 continue;
             }
@@ -137,10 +139,10 @@ define(function (require, exports, module) {
             }
 
             // if it's a glob string, add to the glob list
-            if(glob.includes("?") || glob.includes("*") ||
+            if (glob.includes("?") || glob.includes("*") ||
                 glob.includes("[") || glob.includes("]") ||
                 glob.includes("\\") || glob.includes("!")) {
-                if(!glob.startsWith("**/")) {
+                if (!glob.startsWith("**/")) {
                     // make it eazier to search as the user may not know the exact file name and only a part,
                     // in which case we dont want him to type **/ every time to start
                     glob = `**/${glob}`;
@@ -158,12 +160,12 @@ define(function (require, exports, module) {
         function ignores(relativeOrFullPath) {
             // path search is not case-sensitive
             relativeOrFullPath = relativeOrFullPath.toLowerCase();
-            if(!userFilter.length){
+            if (!userFilter.length) {
                 // no filter, ignore nothing.
                 return false;
             }
-            for(let subStr of subStringFilter){
-                if(relativeOrFullPath.includes(subStr)){
+            for (let subStr of subStringFilter) {
+                if (relativeOrFullPath.includes(subStr)) {
                     return true;
                 }
             }
@@ -193,22 +195,22 @@ define(function (require, exports, module) {
             return true;
         }
 
-        if (!ProjectManager.isWithinProject(fullPath)){
+        if (!ProjectManager.isWithinProject(fullPath)) {
             return false;
         }
         const relativePath = ProjectManager.makeProjectRelativeIfPossible(fullPath);
         switch (currentFilterType) {
-        case FILTER_TYPE_INCLUDE:
-            if(compiledFilter.isActive()){
-                return compiledFilter.ignores(relativePath);
-            }
-            return true;
-        case FILTER_TYPE_EXCLUDE:
-            if(compiledFilter.isActive()){
-                return !compiledFilter.ignores(relativePath);
-            }
-            return true;
-        default: return true; // no files excluded
+            case FILTER_TYPE_INCLUDE:
+                if (compiledFilter.isActive()) {
+                    return compiledFilter.ignores(relativePath);
+                }
+                return true;
+            case FILTER_TYPE_EXCLUDE:
+                if (compiledFilter.isActive()) {
+                    return !compiledFilter.ignores(relativePath);
+                }
+                return true;
+            default: return true; // no files excluded
         }
     }
 
@@ -225,22 +227,22 @@ define(function (require, exports, module) {
         }
 
         return files.filter(function (f) {
-            if (!ProjectManager.isWithinProject(f.fullPath)){
+            if (!ProjectManager.isWithinProject(f.fullPath)) {
                 return false;
             }
             const relativePath = ProjectManager.makeProjectRelativeIfPossible(f.fullPath);
             switch (currentFilterType) {
-            case FILTER_TYPE_INCLUDE:
-                if(compiledFilter.isActive()){
-                    return compiledFilter.ignores(relativePath);
-                }
-                return true;
-            case FILTER_TYPE_EXCLUDE:
-                if(compiledFilter.isActive()){
-                    return !compiledFilter.ignores(relativePath);
-                }
-                return true;
-            default: return true; // no files excluded
+                case FILTER_TYPE_INCLUDE:
+                    if (compiledFilter.isActive()) {
+                        return compiledFilter.ignores(relativePath);
+                    }
+                    return true;
+                case FILTER_TYPE_EXCLUDE:
+                    if (compiledFilter.isActive()) {
+                        return !compiledFilter.ignores(relativePath);
+                    }
+                    return true;
+                default: return true; // no files excluded
             }
         });
     }
@@ -258,46 +260,46 @@ define(function (require, exports, module) {
         }
 
         return filePaths.filter(function (fullPath) {
-            if (!ProjectManager.isWithinProject(fullPath)){
+            if (!ProjectManager.isWithinProject(fullPath)) {
                 return false;
             }
             const relativePath = ProjectManager.makeProjectRelativeIfPossible(fullPath);
             switch (currentFilterType) {
-            case FILTER_TYPE_INCLUDE:
-                if(compiledFilter.isActive()){
-                    return compiledFilter.ignores(relativePath);
-                }
-                return true;
-            case FILTER_TYPE_EXCLUDE:
-                if(compiledFilter.isActive()){
-                    return !compiledFilter.ignores(relativePath);
-                }
-                return true;
-            default: return true; // no files excluded
+                case FILTER_TYPE_INCLUDE:
+                    if (compiledFilter.isActive()) {
+                        return compiledFilter.ignores(relativePath);
+                    }
+                    return true;
+                case FILTER_TYPE_EXCLUDE:
+                    if (compiledFilter.isActive()) {
+                        return !compiledFilter.ignores(relativePath);
+                    }
+                    return true;
+                default: return true; // no files excluded
             }
         });
     }
 
     function _updatePicker() {
-        if(!_picker){
+        if (!_picker) {
             console.error("No file filter picker ui to update");
             return;
         }
         switch (currentFilterType) {
-        case FILTER_TYPE_NO_FILTER:
-            _picker.setButtonLabel(Strings.NO_FILE_FILTER);
-            $filterContainer && $filterContainer.addClass("forced-hidden");
-            break;
-        case FILTER_TYPE_INCLUDE:
-            _picker.setButtonLabel(Strings.INCLUDE_FILE_FILTER);
-            $filterContainer && $filterContainer.removeClass("forced-hidden");
-            break;
-        case FILTER_TYPE_EXCLUDE:
-            _picker.setButtonLabel(Strings.EXCLUDE_FILE_FILTER);
-            $filterContainer && $filterContainer.removeClass("forced-hidden");
-            break;
+            case FILTER_TYPE_NO_FILTER:
+                _picker.setButtonLabel(Strings.NO_FILE_FILTER);
+                $filterContainer && $filterContainer.addClass("forced-hidden");
+                break;
+            case FILTER_TYPE_INCLUDE:
+                _picker.setButtonLabel(Strings.INCLUDE_FILE_FILTER);
+                $filterContainer && $filterContainer.removeClass("forced-hidden");
+                break;
+            case FILTER_TYPE_EXCLUDE:
+                _picker.setButtonLabel(Strings.EXCLUDE_FILE_FILTER);
+                $filterContainer && $filterContainer.removeClass("forced-hidden");
+                break;
         }
-        if(!$filterContainer) {
+        if (!$filterContainer) {
             return;
         }
         $filterContainer.find(".error-filter").hide();
@@ -305,12 +307,12 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Creates a UI element for selecting a filter, populated with a list of recently used filters, an option to
-     * edit the selected filter and another option to create a new filter. The client should call commitDropdown()
-     * when the UI containing the filter picker is confirmed (which updates the MRU order) and then use the
-     * returned filter object as needed.
+     * Creates a UI element for selecting a filter. The picker is populated with a list of recently used filters,
+     * an option to edit the selected filter, and another option to create a new filter. The client should call
+     * `commitDropdown()` when the UI containing the filter picker is confirmed, which updates the Most Recently 
+     * Used (MRU) order, and then use the returned filter object as needed.
      *
-     * @return {[jQueryObject]} Picker UI.
+     * @return {jQueryObject} The Picker UI as a jQuery object.
      */
     function createFilterPicker() {
         _picker = new DropdownButton("", [
@@ -328,10 +330,10 @@ define(function (require, exports, module) {
             </div><div class="error-filter"></div><span id="filter-counter"></span>
         </div>`);
         const $inputElem = $filterContainer.find("#fif-filter-input");
-        if(currentFilter){
+        if (currentFilter) {
             $inputElem.val(currentFilter.pattern);
         }
-        $filterContainer.find("#fif-filter-input").on('input', function() {
+        $filterContainer.find("#fif-filter-input").on('input', function () {
             setActiveFilter($inputElem.val());
         });
 
@@ -348,7 +350,7 @@ define(function (require, exports, module) {
                 setActiveFilter($inputElem.val());
                 _updatePicker();
                 $filterContainer.find("#fif-filter-input").focus();
-            } else if(item === Strings.EXCLUDE_FILE_FILTER) {
+            } else if (item === Strings.EXCLUDE_FILE_FILTER) {
                 currentFilterType = FILTER_TYPE_EXCLUDE;
                 setActiveFilter($inputElem.val());
                 _updatePicker();
@@ -378,15 +380,15 @@ define(function (require, exports, module) {
     }
 
     // For unit tests only
-    exports.showDropdown       = showDropdown;
-    exports.closeDropdown      = closeDropdown;
+    exports.showDropdown = showDropdown;
+    exports.closeDropdown = closeDropdown;
 
-    exports.createFilterPicker     = createFilterPicker;
-    exports.getActiveFilter        = getActiveFilter;
-    exports.setActiveFilter        = setActiveFilter;
-    exports.compile                = compile;
-    exports.filterPath             = filterPath;
-    exports.filterFileList         = filterFileList;
+    exports.createFilterPicker = createFilterPicker;
+    exports.getActiveFilter = getActiveFilter;
+    exports.setActiveFilter = setActiveFilter;
+    exports.compile = compile;
+    exports.filterPath = filterPath;
+    exports.filterFileList = filterFileList;
     exports.getPathsMatchingFilter = getPathsMatchingFilter;
 
     // filter types

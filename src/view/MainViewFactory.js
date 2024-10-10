@@ -19,11 +19,13 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /**
  * MainViewFactory is a singleton for managing view factories.
  *
  * Registering a view factory:
- *
+ *```js
  *      registerViewFactory({
  *           canOpenFile: function (fullPath) {
  *               return (fullPath.slice(-4) === ".ico");
@@ -32,10 +34,10 @@
  *               return createIconView(file, pane);
  *           }
  *      });
- *
+ *```
  *  The openFile method is used to open the file and construct
  *  a view of it.  Implementation should add the view to the pane
- *
+ *```js
  *      function createIconView(file, pane) {
  *          // IconView will construct its DOM and append
  *          //  it to pane.$el
@@ -45,27 +47,27 @@
  *          pane.addView(view, true);
  *          return new $.Deferred().resolve().promise();
  *      }
- *
+ *```
  *  Factories should only create 1 view of a file per pane.  Brackets currently only supports 1 view of
  *  a file open at a given time but that may change to allow the same file open in more than 1 pane. Therefore
  *  Factories can do a simple check to see if a view already exists and show it before creating a new one:
- *
+ *```js
  *      var view = pane.getViewForPath(file.fullPath);
  *      if (view) {
  *          pane.showView(view);
  *      } else {
  *          return createIconView(file, pane);
  *      }
- *
+ *```
  */
 define(function (require, exports, module) {
 
-
     var _ = require("thirdparty/lodash");
 
-
     /**
-     * @typedef {canOpenFile:function(path:string):boolean, openFile:function(path:string, pane:Pane)} Factory
+     * @typedef {Object} Factory
+     * @property {function(string):boolean} canOpenFile - Checks if the factory can open the file by its path.
+     * @property {function(string, Pane):Promise} openFile - Function to open the file and return a promise.
      */
 
     /**
@@ -77,7 +79,7 @@ define(function (require, exports, module) {
 
     /**
      * Registers a view factory
-     * @param {!Factory} factory - the view factory to register
+     * @param {!Factory} factory - The view factory to register.
      */
     function registerViewFactory(factory) {
         _factories.push(factory);
@@ -85,7 +87,7 @@ define(function (require, exports, module) {
 
     /**
      * Finds a factory that can open the specified file
-     * @param {!string} fullPath - the file to open
+     * @param {!string} fullPath - The file to open.
      * @return {?Factory} A factory that can create a view for the path or undefined if there isn't one.
      */
     function findSuitableFactoryForPath(fullPath) {

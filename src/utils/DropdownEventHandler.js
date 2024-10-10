@@ -19,6 +19,8 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 define(function (require, exports, module) {
 
 
@@ -43,7 +45,7 @@ define(function (require, exports, module) {
      * - Up/Down     - change selection
      * - PageUp/Down - change selection
      *
-     * Items whose <a> has the .disabled class do not respond to selection.
+     * Items whose "a" has the .disabled class do not respond to selection.
      *
      * @constructor
      * @param {jQueryObject} $list  associated list object

@@ -30,6 +30,7 @@ define(function (require, exports, module) {
 
     /**
      * Enumerated File System Errors
+     * @module
      * @enum {string}
      */
     module.exports = {

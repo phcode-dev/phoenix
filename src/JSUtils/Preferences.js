@@ -19,6 +19,8 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /**
 
     This class parses configuration values from a JSON object. The expected

@@ -21,6 +21,9 @@
 
 /*global Phoenix*/
 
+// @INCLUDE_IN_API_DOCS
+
+
 /*
  * To ensure cache coherence, current and future asynchronous state-changing
  * operations of FileSystemEntry and its subclasses should implement the
@@ -63,7 +66,7 @@ define(function (require, exports, module) {
 
 
     var FileSystemError = require("filesystem/FileSystemError"),
-        WatchedRoot     = require("filesystem/WatchedRoot");
+        WatchedRoot = require("filesystem/WatchedRoot");
 
     var VISIT_DEFAULT_MAX_DEPTH = 100,
         VISIT_DEFAULT_MAX_ENTRIES = 200000;
@@ -162,9 +165,9 @@ define(function (require, exports, module) {
     FileSystemEntry.prototype._isDirectory = false;
 
     /**
-     * Cached copy of this entry's watched root
-     * @type {entry: File|Directory, filter: function(FileSystemEntry):boolean, active: boolean}
-     */
+    * Cached copy of this entry's watched root.
+    * @type {{entry: (File|Directory), filter: function(FileSystemEntry): boolean, active: boolean}}
+    */
     FileSystemEntry.prototype._watchedRoot = undefined;
 
     /**
@@ -205,10 +208,10 @@ define(function (require, exports, module) {
 
         if (watchedRoot) {
             if (watchedRoot.status === WatchedRoot.ACTIVE ||
-                    (relaxed && watchedRoot.status === WatchedRoot.STARTING)) {
+                (relaxed && watchedRoot.status === WatchedRoot.STARTING)) {
                 return filterResult;
             }
-                // We had a watched root, but it's no longer active, so it must now be invalid.
+            // We had a watched root, but it's no longer active, so it must now be invalid.
             this._watchedRoot = undefined;
             this._watchedRootFilterResult = false;
             this._clearCachedData();
@@ -304,9 +307,9 @@ define(function (require, exports, module) {
      */
     FileSystemEntry.prototype.existsAsync = async function () {
         let that = this;
-        return new Promise((resolve, reject)=>{
-            that.exists((err, exists)=>{
-                if(err){
+        return new Promise((resolve, reject) => {
+            that.exists((err, exists) => {
+                if (err) {
                     reject(err);
                 } else {
                     resolve(exists);
@@ -350,9 +353,9 @@ define(function (require, exports, module) {
      */
     FileSystemEntry.prototype.statAsync = async function () {
         let that = this;
-        return new Promise((resolve, reject)=>{
-            that.stat((err, stat)=>{
-                if(err){
+        return new Promise((resolve, reject) => {
+            that.stat((err, stat) => {
+                if (err) {
                     reject(err);
                 } else {
                     resolve(stat);
@@ -369,8 +372,8 @@ define(function (require, exports, module) {
      *      string parameter.
      */
     FileSystemEntry.prototype.rename = function (newFullPath, callback) {
-        callback = callback || function () {};
-        if(this.isDirectory){
+        callback = callback || function () { };
+        if (this.isDirectory) {
             newFullPath = Phoenix.VFS.ensureTrailingSlash(newFullPath);
         }
 
@@ -405,16 +408,16 @@ define(function (require, exports, module) {
     };
 
     /**
-     * Permanently delete this entry. For Directories, this will delete the directory
-     * and all of its contents. For reversible delete, see moveToTrash().
+     * Permanently deletes this entry. For directories, this will delete the directory
+     * and all of its contents. For a reversible delete, see `moveToTrash()`.
      *
-     * @return {Promise<>} a promise that resolves when delete is success or rejects.
+     * @return {Promise<void>} A promise that resolves when the delete is successful or rejects with an error.
      */
     FileSystemEntry.prototype.unlinkAsync = function () {
         let that = this;
-        return new Promise((resolve, reject)=>{
-            that.unlink((err)=>{
-                if(err){
+        return new Promise((resolve, reject) => {
+            that.unlink((err) => {
+                if (err) {
                     reject(err);
                 } else {
                     resolve();
@@ -431,7 +434,7 @@ define(function (require, exports, module) {
      *      string parameter.
      */
     FileSystemEntry.prototype.unlink = function (callback) {
-        callback = callback || function () {};
+        callback = callback || function () { };
 
         // Block external change events until after the write has finished
         this._fileSystem._beginChange();
@@ -471,7 +474,7 @@ define(function (require, exports, module) {
             return;
         }
 
-        callback = callback || function () {};
+        callback = callback || function () { };
 
         // Block external change events until after the write has finished
         this._fileSystem._beginChange();
@@ -508,7 +511,7 @@ define(function (require, exports, module) {
      *      applied to descendent FileSystemEntry objects. If the function returns false for
      *      a particular Directory entry, that directory's descendents will not be visited.
      * @param {{maxDepth: number, maxEntries: number, sortList: boolean, visitHiddenTree: boolean}} options
-     * @returns {Promise<>} that resolves when the visit is complete
+     * @returns {Promise<void>} that resolves when the visit is complete
      */
     FileSystemEntry.prototype._visitHelper = async function (stats, visitedPaths, visitor, options, _currentDepth = 0, _entries = null) {
         const self = this;
@@ -537,15 +540,15 @@ define(function (require, exports, module) {
         let shouldVisitChildren = visitor(self, _entries);
         // Check if the result is a promise
         if (typeof shouldVisitChildren === "object" && shouldVisitChildren instanceof Promise) {
-            shouldVisitChildren =  await shouldVisitChildren;
+            shouldVisitChildren = await shouldVisitChildren;
         }
         if (!shouldVisitChildren || self.isFile || _currentDepth >= maxDepth) {
             return;
         }
 
-        let {entries, entriesStats} = await self.getContentsAsync(filterNothing);
+        let { entries, entriesStats } = await self.getContentsAsync(filterNothing);
 
-        for(let i=0; i<entriesStats.length; i++){
+        for (let i = 0; i < entriesStats.length; i++) {
             entries[i]._entryStats = entriesStats[i];
         }
 
@@ -557,7 +560,7 @@ define(function (require, exports, module) {
             entries = entries.sort(compare);
         }
 
-        for(let entry of entries){
+        for (let entry of entries) {
             // this is left intentionally serial to prevent a chrome crash bug when large number of fs
             // access APIs are called. Try to make this parallel in the future after verifying on a large
             // folder with more than 100K entries.
@@ -594,7 +597,7 @@ define(function (require, exports, module) {
                 options = {};
             }
 
-            callback = callback || function () {};
+            callback = callback || function () { };
         }
 
         if (options.maxDepth === undefined) {
@@ -612,10 +615,10 @@ define(function (require, exports, module) {
             }
 
             self._visitHelper(stats, {}, visitor, options)
-                .then(()=>{
+                .then(() => {
                     callback(null);
                 })
-                .catch((err)=>{
+                .catch((err) => {
                     callback(err);
                 });
         });

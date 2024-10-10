@@ -19,17 +19,19 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 define(function (require, exports, module) {
 
 
-    var EditorManager       = require("editor/EditorManager"),
-        EventDispatcher     = require("utils/EventDispatcher"),
-        FileUtils           = require("file/FileUtils"),
-        InMemoryFile        = require("document/InMemoryFile"),
-        PerfUtils           = require("utils/PerfUtils"),
-        LanguageManager     = require("language/LanguageManager"),
-        CodeMirror          = require("thirdparty/CodeMirror/lib/codemirror"),
-        _                   = require("thirdparty/lodash");
+    var EditorManager = require("editor/EditorManager"),
+        EventDispatcher = require("utils/EventDispatcher"),
+        FileUtils = require("file/FileUtils"),
+        InMemoryFile = require("document/InMemoryFile"),
+        PerfUtils = require("utils/PerfUtils"),
+        LanguageManager = require("language/LanguageManager"),
+        CodeMirror = require("thirdparty/CodeMirror/lib/codemirror"),
+        _ = require("thirdparty/lodash");
 
     /**
      * Model for the contents of a single file and its current modification state.
@@ -39,13 +41,13 @@ define(function (require, exports, module) {
      *
      * __change__ -- When the text of the editor changes (including due to undo/redo).
      *
-     * Passes ({Document}, {ChangeList}), where ChangeList is an array
+     * Passes ({Document}, {'ChangeList'}), where ChangeList is an array
      * of change record objects. Each change record looks like:
-     *
+     *```js
      *     { from: start of change, expressed as {line: <line number>, ch: <character offset>},
      *       to: end of change, expressed as {line: <line number>, ch: <chracter offset>},
      *       text: array of lines of text to replace existing text }
-     *
+     *```
      * The line and ch offsets are both 0-based.
      *
      * The ch offset in "from" is inclusive, but the ch offset in "to" is exclusive. For example,
@@ -403,7 +405,7 @@ define(function (require, exports, module) {
                 // TODO: Dumb to split it here just to join it again in the change handler, but this is
                 // the CodeMirror change format. Should we document our change format to allow this to
                 // either be an array of lines or a single string?
-                this._notifyDocumentChange([{text: text.split(/\r?\n/)}]);
+                this._notifyDocumentChange([{ text: text.split(/\r?\n/) }]);
             }
         }
         this._updateTimestamp(newTimestamp);
@@ -592,7 +594,7 @@ define(function (require, exports, module) {
         if (pos.line === change.to.line) {
             ch += CodeMirror.changeEnd(change).ch - change.to.ch;
         }
-        return {line: line, ch: ch};
+        return { line: line, ch: ch };
     };
 
     /**
@@ -606,7 +608,6 @@ define(function (require, exports, module) {
             cb(itemOrArr, 0);
         }
     }
-
     /**
      * Helper function for edit operations that operate on multiple selections. Takes an "edit list"
      * that specifies a list of replaceRanges that should occur, but where all the positions are with
@@ -624,43 +625,42 @@ define(function (require, exports, module) {
      * then this function will adjust them as necessary for the effects of other edits, and then return a
      * flat list of all the selections, suitable for passing to `setSelections()`.
      *
-     * @param {!Array.<{edit: {text: string, start:{line: number, ch: number}, end:?{line: number, ch: number}}
-     *                        | Array.<{text: string, start:{line: number, ch: number}, end:?{line: number, ch: number}}>,
-     *                  selection: ?{start:{line:number, ch:number}, end:{line:number, ch:number},
-     *                              primary:boolean, reversed: boolean, isBeforeEdit: boolean}>}
-     *                        | ?Array.<{start:{line:number, ch:number}, end:{line:number, ch:number},
-     *                                  primary:boolean, reversed: boolean, isBeforeEdit: boolean}>}>} edits
-     *     Specifies the list of edits to perform in a manner similar to CodeMirror's `replaceRange`. This array
-     *     will be mutated.
-     *
-     *     `edit` is the edit to perform:
-     *         `text` will replace the current contents of the range between `start` and `end`.
-     *         If `end` is unspecified, the text is inserted at `start`.
-     *         `start` and `end` should be positions relative to the document *ignoring* all other edit descriptions
-     *         (i.e., as if you were only performing this one edit on the document).
-     *     If any of the edits overlap, an error will be thrown.
-     *
-     *     If `selection` is specified, it should be a selection associated with this edit.
-     *          If `isBeforeEdit` is set on the selection, the selection will be fixed up for this edit.
-     *          If not, it won't be fixed up for this edit, meaning it should be expressed in terms of
-     *          the document state after this individual edit is performed (ignoring any other edits).
-     *          Note that if you were planning on just specifying `isBeforeEdit` for every selection, you can
-     *          accomplish the same thing by simply not passing any selections and letting the editor update
-     *          the existing selections automatically.
-     *
-     *     Note that `edit` and `selection` can each be either an individual edit/selection, or a group of
-     *     edits/selections to apply in order. This can be useful if you need to perform multiple edits in a row
-     *     and then specify a resulting selection that shouldn't be fixed up for any of those edits (but should be
-     *     fixed up for edits related to other selections). It can also be useful if you have several selections
-     *     that should ignore the effects of a given edit because you've fixed them up already (this commonly happens
-     *     with line-oriented edits where multiple cursors on the same line should be ignored, but still tracked).
-     *     Within an edit group, edit positions must be specified relative to previous edits within that group. Also,
-     *     the total bounds of edit groups must not overlap (e.g. edits in one group can't surround an edit from another group).
-     *
-     * @param {?string} origin An optional edit origin that's passed through to each replaceRange().
-     * @return {Array<{start:{line:number, ch:number}, end:{line:number, ch:number}, primary:boolean, reversed: boolean}>}
-     *     The list of passed selections adjusted for the performed edits, if any.
-     */
+     * @param {!{edit: {text: string, start:{line: number, ch: number}, end: {line: number, ch: number} | undefined}
+    *                        | {text: string, start:{line: number, ch: number}, end: {line: number, ch: number} | undefined},
+    *                  selection: {start:{line:number, ch:number}, end:{line:number, ch:number},
+    *                              primary:boolean, reversed: boolean, isBeforeEdit: boolean} | undefined}} edits
+    *     Specifies the list of edits to perform in a manner similar to CodeMirror's `replaceRange`. This array
+    *     will be mutated.
+    *
+    *     `edit` is the edit to perform:
+    *         `text` will replace the current contents of the range between `start` and `end`.
+    *         If `end` is unspecified, the text is inserted at `start`.
+    *         `start` and `end` should be positions relative to the document *ignoring* all other edit descriptions
+    *         (i.e., as if you were only performing this one edit on the document).
+    *     If any of the edits overlap, an error will be thrown.
+    *
+    *     If `selection` is specified, it should be a selection associated with this edit.
+    *          If `isBeforeEdit` is set on the selection, the selection will be fixed up for this edit.
+    *          If not, it won't be fixed up for this edit, meaning it should be expressed in terms of
+    *          the document state after this individual edit is performed (ignoring any other edits).
+    *          Note that if you were planning on just specifying `isBeforeEdit` for every selection, you can
+    *          accomplish the same thing by simply not passing any selections and letting the editor update
+    *          the existing selections automatically.
+    *
+    *     Note that `edit` and `selection` can each be either an individual edit/selection, or a group of
+    *     edits/selections to apply in order. This can be useful if you need to perform multiple edits in a row
+    *     and then specify a resulting selection that shouldn't be fixed up for any of those edits (but should be
+    *     fixed up for edits related to other selections). It can also be useful if you have several selections
+    *     that should ignore the effects of a given edit because you've fixed them up already (this commonly happens
+    *     with line-oriented edits where multiple cursors on the same line should be ignored, but still tracked).
+    *     Within an edit group, edit positions must be specified relative to previous edits within that group. Also,
+    *     the total bounds of edit groups must not overlap (e.g. edits in one group can't surround an edit from another group).
+    *
+    * @param {?string} origin An optional edit origin that's passed through to each replaceRange().
+    * @return {{start:{line:number, ch:number}, end:{line:number, ch:number}, primary:boolean, reversed: boolean[]}}
+    *     The list of passed selections adjusted for the performed edits, if any.
+    */
+
     Document.prototype.doMultipleEdits = function (edits, origin) {
         var self = this;
 

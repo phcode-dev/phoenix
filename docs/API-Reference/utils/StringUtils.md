@@ -1,6 +1,6 @@
 ### Import :
 ```js
-brackets.getModule("utils/StringUtils")
+const StringUtils = brackets.getModule("utils/StringUtils")
 ```
 
 <a name="module_utils/StringUtils"></a>
@@ -24,9 +24,7 @@ Utilities functions related to string manipulation
 <a name="module_utils/StringUtils..format"></a>
 
 ### utils/StringUtils.format(str, Arguments) ⇒ <code>string</code>
-Format a string by replacing placeholder symbols with passed in arguments.
-
-Example: var formatted = StringUtils.format("Hello {0}", "World");
+Format a string by replacing placeholder symbols with passed in arguments.Example: var formatted = StringUtils.format("Hello {0}", "World");
 
 **Kind**: inner method of [<code>utils/StringUtils</code>](#module_utils/StringUtils)  
 **Returns**: <code>string</code> - Formatted string  
@@ -51,13 +49,7 @@ Splits the text by new line characters and returns an array of lines
 <a name="module_utils/StringUtils..offsetToLineNum"></a>
 
 ### utils/StringUtils.offsetToLineNum(textOrLines, offset) ⇒ <code>number</code>
-Returns a line number corresponding to an offset in some text. The text can
-be specified as a single string or as an array of strings that correspond to
-the lines of the string.
-
-Specify the text in lines when repeatedly calling the function on the same
-text in a loop. Use getLines() to divide the text into lines, then repeatedly call
-this function to compute a line number from the offset.
+Returns a line number corresponding to an offset in some text. The text canbe specified as a single string or as an array of strings that correspond tothe lines of the string.Specify the text in lines when repeatedly calling the function on the sametext in a loop. Use getLines() to divide the text into lines, then repeatedly callthis function to compute a line number from the offset.
 
 **Kind**: inner method of [<code>utils/StringUtils</code>](#module_utils/StringUtils)  
 **Returns**: <code>number</code> - line number  
@@ -106,8 +98,7 @@ Return an escaped path or URL string that can be broken near path separators.
 <a name="module_utils/StringUtils..prettyPrintBytes"></a>
 
 ### utils/StringUtils.prettyPrintBytes(bytes, precision) ⇒ <code>string</code>
-Converts number of bytes into human readable format.
-If param bytes is negative it returns the number without any changes.
+Converts number of bytes into human readable format.If param bytes is negative it returns the number without any changes.
 
 **Kind**: inner method of [<code>utils/StringUtils</code>](#module_utils/StringUtils)  
 
@@ -132,8 +123,7 @@ Truncate text to specified length.
 <a name="module_utils/StringUtils..hashCode"></a>
 
 ### utils/StringUtils.hashCode(str) ⇒ <code>number</code>
-Computes a 32bit hash from the given string
-Taken from http://stackoverflow.com/questions/7616461/generate-a-hash-from-string-in-javascript-jquery
+Computes a 32bit hash from the given stringTaken from http://stackoverflow.com/questions/7616461/generate-a-hash-from-string-in-javascript-jquery
 
 **Kind**: inner method of [<code>utils/StringUtils</code>](#module_utils/StringUtils)  
 **Returns**: <code>number</code> - The 32-bit hash  
@@ -146,9 +136,7 @@ Taken from http://stackoverflow.com/questions/7616461/generate-a-hash-from-strin
 <a name="module_utils/StringUtils..randomString"></a>
 
 ### utils/StringUtils.randomString(stringLength, [prefix]) ⇒ <code>string</code>
-Generates a random nonce string of the specified length.
-
-!!!Should not be used for crypto secure workflows.!!!
+Generates a random nonce string of the specified length.!!!Should not be used for crypto secure workflows.!!!
 
 **Kind**: inner method of [<code>utils/StringUtils</code>](#module_utils/StringUtils)  
 **Returns**: <code>string</code> - - The randomly generated nonce.  

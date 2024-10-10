@@ -19,6 +19,8 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /**
  * A status bar with support for file information and busy and status indicators. This is a semi-generic
  * container; for the code that decides what content appears in the status bar, see client modules like

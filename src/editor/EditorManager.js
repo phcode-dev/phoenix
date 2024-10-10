@@ -19,6 +19,8 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /**
  * EditorManager owns the UI for the editor area. This essentially mirrors the 'current document'
  * property maintained by DocumentManager's model.
@@ -80,7 +82,7 @@ define(function (require, exports, module) {
     /**
      * Registered inline-editor widget providers sorted descending by priority.
      * @see {@link #registerInlineEditProvider}.
-     * @type {Array.<{priority:number, provider:function(...)}>}
+     * @type {{priority:number, provider:function(...)}} array
      * @private
      */
     var _inlineEditProviders = [];
@@ -88,7 +90,7 @@ define(function (require, exports, module) {
     /**
      * Registered inline documentation widget providers sorted descending by priority.
      * @see {@link #registerInlineDocsProvider}.
-     * @type {Array.<{priority:number, provider:function(...)}>}
+     * @type {{priority:number, provider:function(...)}}
      * @private
      */
     var _inlineDocsProviders = [];
@@ -205,7 +207,7 @@ define(function (require, exports, module) {
      * position, and once the widget has been created inserts it into the editor.
      *
      * @param {!Editor} editor The host editor
-     * @param {Array.<{priority:number, provider:function(...)}>} providers
+     * @param {{priority:number, provider:function(...)}} array providers
      *      prioritized list of providers
      * @param {string=} defaultErrorMsg Default message to display if no providers return non-null
      * @return {$.Promise} a promise that will be resolved when an InlineWidget
@@ -273,7 +275,7 @@ define(function (require, exports, module) {
     /**
      * Closes any focused inline widget. Else, asynchronously asks providers to create one.
      *
-     * @param {Array.<{priority:number, provider:function(...)}>} providers
+     * @param {{priority:number, provider:function(...)}} array providers
      *   prioritized list of providers
      * @param {string=} errorMsg Default message to display if no providers return non-null
      * @return {!Promise} A promise resolved with true if an inline widget is opened or false
@@ -315,7 +317,7 @@ define(function (require, exports, module) {
     /**
      * Inserts a prioritized provider object into the array in sorted (descending) order.
      * @private
-     * @param {Array.<{priority:number, provider:function(...)}>} array
+     * @param {{priority:number, provider:function(...)}} array
      * @param {number} priority
      * @param {function(...)} provider
      */

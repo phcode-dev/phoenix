@@ -19,6 +19,8 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
  /**
   * Manages global application commands that can be called from menu items, key bindings, or subparts
   * of the application.
@@ -40,14 +42,16 @@ define(function (require, exports, module) {
 
     /**
      * Map of all registered global commands
-     * @type {Object.<commandID: string, Command>}
+     * @type {Object} CommandMap
+     * @property {Object.<string, Command>} commands - A map of command IDs to Command objects.
      */
     let _commands = {};
 
     /**
      * Temporary copy of commands map for restoring after testing
      * TODO (issue #1039): implement separate require contexts for unit tests
-     * @type {Object.<commandID: string, Command>}
+     * @type {Object} CommandMap
+     * @property {Object.<string, Command>} commands - A map of command IDs to Command objects.
      */
     let _commandsOriginal = {};
 

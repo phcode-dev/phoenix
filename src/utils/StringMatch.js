@@ -19,6 +19,9 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
+
 /*unittests: StringMatch */
 
 define(function (require, exports, module) {
@@ -424,8 +427,8 @@ define(function (require, exports, module) {
 
         for (queryCounter = 0; queryCounter < query.length; queryCounter++) {
             matchList = _generateMatchList(query.substring(queryCounter),
-                                     str, originalQuery.substring(queryCounter),
-                                     originalStr, specials, startingSpecial);
+                str, originalQuery.substring(queryCounter),
+                originalStr, specials, startingSpecial);
 
             // if we've got a match *or* there are no segments in this string, we're done
             if (matchList || startingSpecial === 0) {
@@ -472,10 +475,10 @@ define(function (require, exports, module) {
             if (result.remainder) {
                 // Scan with the remainder only through the beginning of the last segment
                 var remainderMatchList = _generateMatchList(result.remainder,
-                                              compareLower.substring(0, lastSegmentStart),
-                                              result.originalRemainder,
-                                              originalStr.substring(0, lastSegmentStart),
-                                              specials.slice(0, lastSegmentSpecialsIndex), 0);
+                    compareLower.substring(0, lastSegmentStart),
+                    result.originalRemainder,
+                    originalStr.substring(0, lastSegmentStart),
+                    specials.slice(0, lastSegmentSpecialsIndex), 0);
 
                 if (remainderMatchList) {
                     // add the new matched ranges to the beginning of the set of ranges we had
@@ -500,7 +503,7 @@ define(function (require, exports, module) {
      * @param {Array.<SpecialMatch|NormalMatch>} matchList to convert
      * @param {string} original string
      * @param {int} character index where last segment begins
-     * @return {{ranges:Array.<{text:string, matched:boolean, includesLastSegment:boolean}>, matchGoodness:int, scoreDebug: Object}} matched ranges and score
+     * @return {{ranges:{text:string, matched:boolean, includesLastSegment:boolean}, matchGoodness:int, scoreDebug: Object}} matched ranges and score
      */
     function _computeRangesAndScore(matchList, str, lastSegmentStart) {
         var matchCounter;
@@ -700,7 +703,7 @@ define(function (require, exports, module) {
      *
      * @param {string} str  The string with the prefix match for the query
      * @param {string} query  The query that matched the beginning of str
-     * @return {{ranges:Array.<{text:string, matched:boolean, includesLastSegment:boolean}>, matchGoodness:int, scoreDebug: Object}} ranges has a matching range for beginning of str
+     * @return {{ranges:{text:string, matched:boolean, includesLastSegment:boolean}, matchGoodness:int, scoreDebug: Object}} ranges has a matching range for beginning of str
      *                      and a non-matching range for the end of the str
      *                      the score is -Number.MAX_VALUE in all cases
      */
@@ -766,10 +769,10 @@ define(function (require, exports, module) {
      * //   ]
      * @private
      */
-    function _computeMatchingRanges(query= "", searchString = "", includeNonContiguous) {
+    function _computeMatchingRanges(query = "", searchString = "", includeNonContiguous) {
         let index = searchString.toLowerCase().indexOf(query.toLowerCase());
 
-        if(includeNonContiguous){
+        if (includeNonContiguous) {
             console.error("includeNonContiguous option is not supported in _computeMatchingRanges");
         }
         if (index === -1) {
@@ -780,7 +783,7 @@ define(function (require, exports, module) {
         // now we have to find segment that matches the given query. Eg:
         // Eg: background-color: blue;
 
-        if(index === 0 && query.length === searchString.length) {
+        if (index === 0 && query.length === searchString.length) {
             // background-color: blue; full match case
             // match is at beginning
             return [{
@@ -788,7 +791,7 @@ define(function (require, exports, module) {
                 matched: true
             }];
         }
-        if(index === 0) {
+        if (index === 0) {
             // query = backgou , can be split into 2 parts <backgro>und-color: blue;
             // match is at beginning
             return [{
@@ -799,7 +802,7 @@ define(function (require, exports, module) {
                 matched: false
             }];
         }
-        if((index + query.length) === searchString.length) {
+        if ((index + query.length) === searchString.length) {
             // query = blue; , can be split into 2 parts: background-color: <blue;>
             // match is at the end
             return [{
@@ -819,34 +822,33 @@ define(function (require, exports, module) {
             text: searchString.substring(index, index + query.length),
             matched: true
         }, {
-            text: searchString.slice(index +  query.length),
+            text: searchString.slice(index + query.length),
             matched: false
         }];
     }
 
     /**
-     * Computes the most relevant ordering for code hints
-     * @param {Array<>} result
-     * @param query
-     * @param {Array[string]} [prefixListLower] - Optional array of result values,
-     *          Will rank matching items in the choices to top
-     *          if query starts with the array. EG: on typing b, we have to show background-color
-     *          to top. So we pass in ["background-color"] as boost prefix List option along with other
-     *          css properties that we want to boost in the results.
-     * @param {number} [maxResults] - Optional maximum number of results to include in results
-     * @param {boolean} onlyContiguous - is set, will only include contiguous results.
-     *          ie: test-<bac>kcol is ok, test-<ba>ck<c>ol is not
-     * @returns {*|*[]}
+     * Computes the most relevant ordering for code hints.
+     * @param {Array} result - The array of results to be ordered.
+     * @param {string} query - The query string used for matching.
+     * @param {Array<string>} [prefixListLower] - Optional array of result values,
+     *          that will rank matching items in the choices to the top
+     *          if the query starts with the array. For example, on typing 'b', we have to show
+     *          'background-color' at the top. So we pass in ["background-color"] as a boost prefix list option 
+     *          along with other CSS properties that we want to boost in the results.
+     * @param {number} [maxResults] - Optional maximum number of results to include in the output.
+     * @param {boolean} onlyContiguous - If set, will only include contiguous results.
+     * @returns {Array|*} - The ordered results.
      */
     function _codeHintsRelevanceSort(result, query, prefixListLower, maxResults, onlyContiguous) {
         const queryLower = query.toLowerCase();
-        if(!prefixListLower){
+        if (!prefixListLower) {
             return result;
         }
         prefixListLower = prefixListLower.map(prefix => prefix.toLowerCase());
         const filteredPrefixMapLower = {};
-        for(let prefixLower of prefixListLower){
-            if(prefixLower.startsWith(queryLower)){
+        for (let prefixLower of prefixListLower) {
+            if (prefixLower.startsWith(queryLower)) {
                 filteredPrefixMapLower[prefixLower] = true;
             }
         }
@@ -860,32 +862,32 @@ define(function (require, exports, module) {
             contiguousResults = [], // Eg: background-<color>-border , when searching color, internal position
             disjointResults = []; // Eg: <ba>ckground-<co>lor , when searching baco
         let resultItemLabelLower, fullMatchStartIndex, fullMatchIndexFromEnd;
-        for(const resultItem of result) {
+        for (const resultItem of result) {
             resultItemLabelLower = resultItem.label.toLowerCase();
             fullMatchStartIndex = resultItemLabelLower.indexOf(queryLower);
             fullMatchIndexFromEnd = -1;
-            if(fullMatchStartIndex !== -1){
+            if (fullMatchStartIndex !== -1) {
                 // Eg: `back-<color>` : fullMatchIndexFromEnd = 0 and for `back-<color>;` it is 1
                 fullMatchIndexFromEnd = resultItemLabelLower.length - (fullMatchStartIndex + queryLower + 1);
             }
-            if(filteredPrefixMapLower[resultItemLabelLower]) { // if result matches one of the prefix
+            if (filteredPrefixMapLower[resultItemLabelLower]) { // if result matches one of the prefix
                 resultsWithPrefix[resultItemLabelLower] = resultItem;
                 resultItem.matchGoodness = +Number.MAX_VALUE; // boosted match
-            } else if(fullMatchStartIndex === 0){
+            } else if (fullMatchStartIndex === 0) {
                 // the result starts with the query string and is therefore given the highest priority
                 startingWithResults.push(resultItem);
                 resultItem.matchGoodness = +Number.MAX_VALUE; // boosted match
-            } else if(fullMatchIndexFromEnd === 0 || fullMatchIndexFromEnd === 1){
+            } else if (fullMatchIndexFromEnd === 0 || fullMatchIndexFromEnd === 1) {
                 // Eg: `back-<color>` : fullMatchIndexFromEnd = 0 and for `back-<color>;` it is 1
                 endingWithResults.push(resultItem);
                 resultItem.matchGoodness = +Number.MAX_VALUE; // boosted match
-            } else if(resultItemLabelLower.includes(queryLower)){
+            } else if (resultItemLabelLower.includes(queryLower)) {
                 contiguousResults.push(resultItem);
                 resultItem.matchGoodness = +Number.MAX_VALUE; // boosted match
             } else {
                 disjointResults.push(resultItem);
             }
-            if(maxResults && resultsWithPrefix.length === maxResults) {
+            if (maxResults && resultsWithPrefix.length === maxResults) {
                 break; // we don't need to go any further
             }
         }
@@ -893,15 +895,15 @@ define(function (require, exports, module) {
         // items in the result.
         const orderedResults = [];
         // first merge the boosted prefixes
-        for(let prefixItemLower of prefixListLower) {
-            if(resultsWithPrefix[prefixItemLower]){
+        for (let prefixItemLower of prefixListLower) {
+            if (resultsWithPrefix[prefixItemLower]) {
                 orderedResults.push(resultsWithPrefix[prefixItemLower]);
             }
         }
         let totalResultCount = orderedResults.length;
         function _mergeResults(resultArray) {
-            for(let resultItem of resultArray) {
-                if(maxResults && totalResultCount >= maxResults) {
+            for (let resultItem of resultArray) {
+                if (maxResults && totalResultCount >= maxResults) {
                     break;
                 }
                 orderedResults.push(resultItem);
@@ -913,7 +915,7 @@ define(function (require, exports, module) {
         _mergeResults(startingWithResults);
         _mergeResults(endingWithResults);
         _mergeResults(contiguousResults);
-        if(onlyContiguous) {
+        if (onlyContiguous) {
             return orderedResults;
         }
         _mergeResults(disjointResults);
@@ -944,7 +946,7 @@ define(function (require, exports, module) {
      *                  and the last segment is searched first and matches there are scored higher.
      * @param {?Object} special (optional) the specials data from findSpecialCharacters, if already known
      *                  This is generally just used by StringMatcher for optimization.
-     * @return {{ranges:Array.<{text:string, matched:boolean, includesLastSegment:boolean}>, matchGoodness:int, scoreDebug: Object}} matched ranges and score
+     * @return {{ranges:{text:string, matched:boolean, includesLastSegment:boolean}, matchGoodness:int, scoreDebug: Object}} matched ranges and score
      */
     function stringMatch(str, query, options, special) {
         var result;
@@ -995,7 +997,7 @@ define(function (require, exports, module) {
         if (options.segmentedSearch) {
             lastSegmentStart = special.specials[special.lastSegmentSpecialsIndex];
             matchList = _wholeStringSearch(queryLower, compareLower, query, str, special.specials,
-                              special.lastSegmentSpecialsIndex);
+                special.lastSegmentSpecialsIndex);
         } else {
             lastSegmentStart = 0;
             matchList = _generateMatchList(queryLower, compareLower, query, str, special.specials, 0);
@@ -1094,19 +1096,18 @@ define(function (require, exports, module) {
      *          to top. So we pass in ["background-color"] as boost prefix option along with other
      *          css properties that we want to boost.
      * @param {boolean} options.onlyContiguous - is set, will only include contiguous results.
-     *          ie: test-<bac>kcol is ok, test-<ba>ck<c>ol is not
      * @return {Array<string>} - An array of matching code hints.
      */
     function codeHintsSort(query, choices, options) {
         let choice;
         let results = [];
         options = options || {};
-        for(let i=0; i<choices.length; i++) {
+        for (let i = 0; i < choices.length; i++) {
             choice = choices[i];
             const result = stringMatch(choice, query, codeHintsMatcherOptions);
             if (result) {
                 result.sourceIndex = i;
-                if(!query){
+                if (!query) {
                     delete result.stringRanges; // for empty query like "", we dont want to show any string ranges
                 }
                 results.push(result);
@@ -1115,12 +1116,12 @@ define(function (require, exports, module) {
         basicMatchSort(results);
         results = _codeHintsRelevanceSort(results, query, options.boostPrefixList || [],
             options.limit, options.onlyContiguous);
-        if(!query){
+        if (!query) {
             return results;
         }
-        for(let result of results) {
+        for (let result of results) {
             const ranges = _computeMatchingRanges(query, result.label);
-            if(ranges){
+            if (ranges) {
                 result.stringRanges = ranges;
             }
         }
@@ -1148,14 +1149,14 @@ define(function (require, exports, module) {
     /**
      * Map from search-result string to the findSpecialCharacters() result for that string - easy to cache
      * since this info doesn't change as the query changes.
-     * @type {Object.<string, {specials:Array.<number>, lastSegmentSpecialsIndex:number}>}
+     * @type {{string: {specials:Array.<number>, lastSegmentSpecialsIndex:number}}}
      */
     StringMatcher.prototype._specialsCache = null;
 
     /**
      * Set of search-result strings that we know don't match the query _lastQuery - or any other query with
      * that prefix.
-     * @type {Object.<string, boolean>}
+     * @type {{string: boolean}}
      */
     StringMatcher.prototype._noMatchCache = null;
 
@@ -1175,7 +1176,7 @@ define(function (require, exports, module) {
      *
      * @param {string} str  The string to search
      * @param {string} query  The query string to find in string
-     * @return {{ranges:Array.<{text:string, matched:boolean, includesLastSegment:boolean}>, matchGoodness:int, scoreDebug: Object}} matched ranges and score
+     * @return {{ranges:{text:string, matched:boolean, includesLastSegment:boolean}, matchGoodness:int, scoreDebug: Object}} matched ranges and score
      */
     StringMatcher.prototype.match = function (str, query) {
 
@@ -1208,20 +1209,20 @@ define(function (require, exports, module) {
         return result;
     };
 
-    exports._findSpecialCharacters  = findSpecialCharacters;
-    exports._wholeStringSearch      = _wholeStringSearch;
-    exports._lastSegmentSearch      = _lastSegmentSearch;
-    exports._setDebugScores         = _setDebugScores;
-    exports._generateMatchList      = _generateMatchList;
-    exports._SpecialMatch           = SpecialMatch;
-    exports._NormalMatch            = NormalMatch;
-    exports._computeRangesAndScore  = _computeRangesAndScore;
+    exports._findSpecialCharacters = findSpecialCharacters;
+    exports._wholeStringSearch = _wholeStringSearch;
+    exports._lastSegmentSearch = _lastSegmentSearch;
+    exports._setDebugScores = _setDebugScores;
+    exports._generateMatchList = _generateMatchList;
+    exports._SpecialMatch = SpecialMatch;
+    exports._NormalMatch = NormalMatch;
+    exports._computeRangesAndScore = _computeRangesAndScore;
 
     // public exports
-    exports.SearchResult            = SearchResult;
-    exports.stringMatch             = stringMatch;
-    exports.basicMatchSort          = basicMatchSort;
-    exports.multiFieldSort          = multiFieldSort;
-    exports.codeHintsSort           = codeHintsSort;
-    exports.StringMatcher           = StringMatcher;
+    exports.SearchResult = SearchResult;
+    exports.stringMatch = stringMatch;
+    exports.basicMatchSort = basicMatchSort;
+    exports.multiFieldSort = multiFieldSort;
+    exports.codeHintsSort = codeHintsSort;
+    exports.StringMatcher = StringMatcher;
 });

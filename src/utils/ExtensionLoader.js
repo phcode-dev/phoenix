@@ -22,6 +22,9 @@
  *
  */
 
+
+// @INCLUDE_IN_API_DOCS
+
 /**
  * ExtensionLoader searches the filesystem for extensions, then creates a new context for each one and loads it.
  * This module dispatches the following events:
@@ -116,8 +119,8 @@ define(function (require, exports, module) {
     /**
      * Returns the full path of the default user extensions directory. This is in the users
      * application support directory, which is typically
-     * /Users/<user>/Application Support/Brackets/extensions/user on the mac, and
-     * C:\Users\<user>\AppData\Roaming\Brackets\extensions\user on windows.
+     * /Users/"user"/Application Support/Brackets/extensions/user on the mac, and
+     * C:\Users\"user"\AppData\Roaming\Brackets\extensions\user on windows.
      */
     function getUserExtensionPath() {
         return pathLib.normalize(Phoenix.VFS.getUserExtensionDir());

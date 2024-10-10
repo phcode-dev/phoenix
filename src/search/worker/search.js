@@ -19,6 +19,8 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /*eslint-env node */
 /*jslint node: true */
 /*global getFileContentsForFile, files, crawlComplete, WorkerComm */
@@ -85,7 +87,7 @@ function offsetToLineNum(textOrLines, offset) {
  * Searches through the contents and returns an array of matches
  * @param {string} contents
  * @param {RegExp} queryExpr
- * @return {!Array.<{start: {line:number,ch:number}, end: {line:number,ch:number}, line: string}>}
+ * @return {!{start: {line:number,ch:number}, end: {line:number,ch:number}, line: string}}
  */
 function getSearchMatches(contents, queryExpr) {
     if (!contents) {

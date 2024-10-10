@@ -19,6 +19,8 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /**
  * ProjectManager glues together the project model and file tree view and integrates as needed with other parts
  * of Brackets. It is responsible for creating and updating the project tree when projects are opened

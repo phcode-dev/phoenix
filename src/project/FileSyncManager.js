@@ -19,6 +19,10 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
+
+
 /**
  * FileSyncManager is a set of utilities to help track external modifications to the files and folders
  * in the currently open project.
@@ -73,12 +77,12 @@ define(function (require, exports, module) {
     var toClose;
 
     /**
-     * @type {Array.<{doc: Document, fileTime: number}>}
+     * @type {{doc: Document, fileTime: number}} Array
      */
     var editConflicts;
 
     /**
-     * @type {Array.<{doc: Document, fileTime: number}>}
+     * @type {{doc: Document, fileTime: number}} Array
      */
     var deleteConflicts;
 

@@ -21,6 +21,8 @@
 
 /*global Phoenix*/
 
+// @INCLUDE_IN_API_DOCS
+
 /**
  * Text-editing commands that apply to whichever Editor is currently focused
  */
@@ -28,21 +30,21 @@ define(function (require, exports, module) {
 
 
     // Load dependent modules
-    var Commands           = require("command/Commands"),
-        Strings            = require("strings"),
-        Editor              = require("editor/Editor").Editor,
-        CommandManager     = require("command/CommandManager"),
-        EditorManager      = require("editor/EditorManager"),
-        StringUtils        = require("utils/StringUtils"),
-        TokenUtils         = require("utils/TokenUtils"),
-        CodeMirror         = require("thirdparty/CodeMirror/lib/codemirror"),
-        _                  = require("thirdparty/lodash");
+    var Commands = require("command/Commands"),
+        Strings = require("strings"),
+        Editor = require("editor/Editor").Editor,
+        CommandManager = require("command/CommandManager"),
+        EditorManager = require("editor/EditorManager"),
+        StringUtils = require("utils/StringUtils"),
+        TokenUtils = require("utils/TokenUtils"),
+        CodeMirror = require("thirdparty/CodeMirror/lib/codemirror"),
+        _ = require("thirdparty/lodash");
 
     /**
      * List of constants
      */
-    var DIRECTION_UP    = -1;
-    var DIRECTION_DOWN  = +1;
+    var DIRECTION_UP = -1;
+    var DIRECTION_DOWN = +1;
 
     /**
      * @private
@@ -53,7 +55,7 @@ define(function (require, exports, module) {
      */
     function _createSpecialLineExp(lineSyntax, blockSyntax) {
         var i, character, escapedCharacter,
-            subExps   = [],
+            subExps = [],
             prevChars = "";
 
         for (i = lineSyntax.length; i < blockSyntax.length; i++) {
@@ -166,29 +168,23 @@ define(function (require, exports, module) {
      * out. Commenting out adds the prefix at column 0 of every line. Uncommenting removes the first prefix
      * on each line (if any - empty lines might not have one).
      *
-     * @param {!Editor} editor
-     * @param {!Array.<string>} prefixes, e.g. ["//"]
-     * @param {string=} blockPrefix, e.g. "<!--"
-     * @param {string=} blockSuffix, e.g. "-->"
-     * @param {!Editor} editor The editor to edit within.
-     * @param {!{selectionForEdit: {start:{line:number, ch:number}, end:{line:number, ch:number}, reversed:boolean, primary:boolean},
-     *           selectionsToTrack: Array.<{start:{line:number, ch:number}, end:{line:number, ch:number}, reversed:boolean, primary:boolean}>}}
-     *      lineSel A line selection as returned from `Editor.convertToLineSelections()`. `selectionForEdit` is the selection to perform
-     *      the line comment operation on, and `selectionsToTrack` are a set of selections associated with this line that need to be
-     *      tracked through the edit.
-     * @return {{edit: {text: string, start:{line: number, ch: number}, end:?{line: number, ch: number}}|Array.<{text: string, start:{line: number, ch: number}, end:?{line: number, ch: number}}>,
-     *                  selection: {start:{line:number, ch:number}, end:{line:number, ch:number}, primary:boolean, reversed: boolean, isBeforeEdit: boolean}>}|
-     *                  Array.<{start:{line:number, ch:number}, end:{line:number, ch:number}, primary:boolean, reversed: boolean, isBeforeEdit: boolean}>}}
-     *      An edit description suitable for including in the edits array passed to `Document.doMultipleEdits()`.
+     * @typedef {{line: number, ch: number}} Position
+     * @typedef {{start: Position, end: Position, reversed: boolean, primary: boolean}} Selection
+     * @param {Editor} editor
+     * @param {string[]} prefixes - Comment prefixes, e.g. ["//"]
+     * @param {string} [blockPrefix] - Block comment start, e.g. "<!--"
+     * @param {string} [blockSuffix] - Block comment end, e.g. "-->"
+     * @param {{selectionForEdit: Selection, selectionsToTrack: Selection[]}} lineSel
+     * @returns {{edit: Object|Object[], selection: Selection|Selection[]}}
      */
     function _getLineCommentPrefixEdit(editor, prefixes, blockPrefix, blockSuffix, lineSel) {
-        var doc         = editor.document,
-            sel         = lineSel.selectionForEdit,
+        var doc = editor.document,
+            sel = lineSel.selectionForEdit,
             trackedSels = lineSel.selectionsToTrack,
-            lineExp     = _createLineExpressions(prefixes, blockPrefix, blockSuffix),
-            startLine   = sel.start.line,
-            endLine     = sel.end.line,
-            editGroup   = [];
+            lineExp = _createLineExpressions(prefixes, blockPrefix, blockSuffix),
+            startLine = sel.start.line,
+            endLine = sel.end.line,
+            editGroup = [];
 
         // In full-line selection, cursor pos is start of next line - but don't want to modify that line
         if (sel.end.ch === 0) {
@@ -223,17 +219,17 @@ define(function (require, exports, module) {
                         cursorPosition = originalCursorPosition;
                     }
 
-                    editGroup.push({text: prefixes[0], start: {line: i, ch: cursorPosition}});
+                    editGroup.push({ text: prefixes[0], start: { line: i, ch: cursorPosition } });
                 } else {
-                    editGroup.push({text: prefixes[0], start: {line: i, ch: 0}});
+                    editGroup.push({ text: prefixes[0], start: { line: i, ch: 0 } });
                 }
             }
 
             // Make sure tracked selections include the prefix that was added at start of range
             _.each(trackedSels, function (trackedSel) {
                 if (trackedSel.start.ch === 0 && CodeMirror.cmpPos(trackedSel.start, trackedSel.end) !== 0) {
-                    trackedSel.start = {line: trackedSel.start.line, ch: 0};
-                    trackedSel.end = {line: trackedSel.end.line, ch: (trackedSel.end.line === endLine ? trackedSel.end.ch + prefixes[0].length : 0)};
+                    trackedSel.start = { line: trackedSel.start.line, ch: 0 };
+                    trackedSel.end = { line: trackedSel.end.line, ch: (trackedSel.end.line === endLine ? trackedSel.end.ch + prefixes[0].length : 0) };
                 } else {
                     trackedSel.isBeforeEdit = true;
                 }
@@ -241,19 +237,19 @@ define(function (require, exports, module) {
         } else {
             // Uncomment - remove the prefix on each line (if any)
             for (i = startLine; i <= endLine; i++) {
-                line   = doc.getLine(i);
+                line = doc.getLine(i);
                 prefix = _getLinePrefix(line, lineExp, prefixes);
 
                 if (prefix) {
                     commentI = line.indexOf(prefix);
-                    editGroup.push({text: "", start: {line: i, ch: commentI}, end: {line: i, ch: commentI + prefix.length}});
+                    editGroup.push({ text: "", start: { line: i, ch: commentI }, end: { line: i, ch: commentI + prefix.length } });
                 }
             }
             _.each(trackedSels, function (trackedSel) {
                 trackedSel.isBeforeEdit = true;
             });
         }
-        return {edit: editGroup, selection: trackedSels};
+        return { edit: editGroup, selection: trackedSels };
     }
 
     /**
@@ -285,11 +281,11 @@ define(function (require, exports, module) {
             // If it doesnt matches either prefix or suffix, we know is a block comment
             if (!ctx.token.string.match(prefixExp) && !ctx.token.string.match(suffixExp)) {
                 return true;
-            // We found a line with just a block comment delimiter, but we can't tell which one it is, so we will
-            // keep searching recursively and return the opposite value
+                // We found a line with just a block comment delimiter, but we can't tell which one it is, so we will
+                // keep searching recursively and return the opposite value
             } else if (prefix === suffix && ctx.token.string.length === prefix.length) {
                 return !_isPrevTokenABlockComment(ctx, prefix, suffix, prefixExp, suffixExp, lineExp);
-            // We can just now the result by checking if the string matches the prefix
+                // We can just now the result by checking if the string matches the prefix
             }
             return ctx.token.string.match(prefixExp);
 
@@ -318,46 +314,48 @@ define(function (require, exports, module) {
      * Generates an edit that adds or removes block-comment tokens to the selection, preserving selection
      * and cursor position. Applies to the currently focused Editor.
      *
-     * If the selection is inside a block-comment or one block-comment is inside or partially inside the selection
-     * it will uncomment, otherwise it will comment out, unless if there are multiple block comments inside the selection,
-     * where it does nothing.
+     * If the selection is inside a block-comment or one block-comment is inside or partially inside the selection,
+     * it will uncomment; otherwise, it will comment out, unless there are multiple block comments inside the selection,
+     * in which case it does nothing.
      * Commenting out adds the prefix before the selection and the suffix after.
      * Uncommenting removes them.
      *
-     * If all the lines inside the selection are line-comment and if the selection is not inside a block-comment, it will
-     * line uncomment all the lines, otherwise it will block comment/uncomment. In the first case, we return null to
+     * If all the lines inside the selection are line-commented and the selection is not inside a block-comment, it will
+     * line uncomment all the lines; otherwise, it will block comment/uncomment. In the first case, we return null to
      * indicate to the caller that it needs to handle this selection as a line comment.
      *
-     * @param {!Editor} editor
-     * @param {!string} prefix, e.g. "<!--"
-     * @param {!string} suffix, e.g. "-->"
-     * @param {!Array.<string>} linePrefixes, e.g. ["//"]
+     * @param {!Editor} editor The editor instance where the operation will occur.
+     * @param {!string} prefix The block comment prefix, e.g., "< !--".
+     * @param {!string} suffix The block comment suffix, e.g., "-->".
+     * @param {!Array.<string>} linePrefixes The possible line comment prefixes, e.g., ["//"].
      * @param {!{start:{line:number, ch:number}, end:{line:number, ch:number}, reversed:boolean, primary:boolean}} sel
      *      The selection to block comment/uncomment.
-     * @param {?Array.<{!{start:{line:number, ch:number}, end:{line:number, ch:number}, reversed:boolean, primary:boolean}}>} selectionsToTrack
-     *      An array of selections that should be tracked through this edit.
-     * @param {String} command The command callee. It cans be "line" or "block".
-     * @return {{edit: {text: string, start:{line: number, ch: number}, end:?{line: number, ch: number}}|Array.<{text: string, start:{line: number, ch: number}, end:?{line: number, ch: number}}>,
-     *                  selection: {start:{line:number, ch:number}, end:{line:number, ch:number}, primary:boolean, reversed: boolean, isBeforeEdit: boolean}>}|
-     *                  Array.<{start:{line:number, ch:number}, end:{line:number, ch:number}, primary:boolean, reversed: boolean, isBeforeEdit: boolean}>}}
-     *      An edit description suitable for including in the edits array passed to `Document.doMultipleEdits()`.
-     */
+     * @param {?{start:{line:number, ch:number}, end:{line:number, ch:number}, reversed:boolean, primary:boolean}} selectionsToTrack
+     *      An array of selections that should be tracked through this edit, if any.
+     * @param {string} command The command being executed, can be "line" or "block".
+     * @return {{edit: {text: string, start:{line: number, ch: number}, end:{line: number, ch: number} | undefined}
+    *                | {text: string, start:{line: number, ch: number}, end:{line: number, ch: number[]} | undefined},
+    *                  selection: {start:{line:number, ch:number}, end:{line:number, ch:number}, primary:boolean, reversed:boolean, isBeforeEdit:boolean}} |
+    *          {start:{line:number, ch:number}, end:{line:number, ch:number}, primary:boolean, reversed:boolean, isBeforeEdit:boolean[]} | null}
+    *      An edit description suitable for including in the edits array passed to `Document.doMultipleEdits()`, or `null`
+    *      if line commenting should be handled by the caller.
+    */
     function _getBlockCommentPrefixSuffixEdit(editor, prefix, suffix, linePrefixes, sel, selectionsToTrack, command) {
-        var doc            = editor.document,
-            ctx            = TokenUtils.getInitialContext(editor._codeMirror, {line: sel.start.line, ch: sel.start.ch}),
-            selEndIndex    = editor.indexFromPos(sel.end),
-            lineExp        = _createLineExpressions(linePrefixes, prefix, suffix),
-            prefixExp      = new RegExp("^" + StringUtils.regexEscape(prefix), "g"),
-            suffixExp      = new RegExp(StringUtils.regexEscape(suffix) + "$", "g"),
-            prefixPos      = null,
-            suffixPos      = null,
+        var doc = editor.document,
+            ctx = TokenUtils.getInitialContext(editor._codeMirror, { line: sel.start.line, ch: sel.start.ch }),
+            selEndIndex = editor.indexFromPos(sel.end),
+            lineExp = _createLineExpressions(linePrefixes, prefix, suffix),
+            prefixExp = new RegExp("^" + StringUtils.regexEscape(prefix), "g"),
+            suffixExp = new RegExp(StringUtils.regexEscape(suffix) + "$", "g"),
+            prefixPos = null,
+            suffixPos = null,
             commentAtStart = true,
             isBlockComment = false,
-            canComment     = false,
+            canComment = false,
             invalidComment = false,
-            lineUncomment  = false,
-            result         = true,
-            editGroup      = [],
+            lineUncomment = false,
+            result = true,
+            editGroup = [],
             edit;
 
         var searchCtx, atSuffix, suffixEnd, initialPos, endLine;
@@ -392,15 +390,15 @@ define(function (require, exports, module) {
                 // comment over the whole line, and if we found this comment at the start of the selection, we need to search
                 // backwards until we get can tell if we are in a block or a line comment
                 if (ctx.token.start === 0 && !ctx.token.string.match(/^\\s*/) && commentAtStart) {
-                    searchCtx      = TokenUtils.getInitialContext(editor._codeMirror, {line: ctx.pos.line, ch: ctx.token.start});
+                    searchCtx = TokenUtils.getInitialContext(editor._codeMirror, { line: ctx.pos.line, ch: ctx.token.start });
                     isBlockComment = _isPrevTokenABlockComment(searchCtx, prefix, suffix, prefixExp, suffixExp, lineExp);
 
-                // If not, we already know that is a line comment
+                    // If not, we already know that is a line comment
                 } else {
                     isBlockComment = false;
                 }
 
-            // If it was not a line comment, it has to be a block comment
+                // If it was not a line comment, it has to be a block comment
             } else {
                 isBlockComment = true;
 
@@ -409,8 +407,8 @@ define(function (require, exports, module) {
                 // This means that the token will be anywere inside the block comment, including the lines with the delimiters.
                 // This is required so that later we can find the prefix by moving backwards and the suffix by moving forwards.
                 if (ctx.token.string === prefix && prefix === suffix) {
-                    searchCtx = TokenUtils.getInitialContext(editor._codeMirror, {line: ctx.pos.line, ch: ctx.token.start});
-                    atSuffix  = _isPrevTokenABlockComment(searchCtx, prefix, suffix, prefixExp, suffixExp, lineExp);
+                    searchCtx = TokenUtils.getInitialContext(editor._codeMirror, { line: ctx.pos.line, ch: ctx.token.start });
+                    atSuffix = _isPrevTokenABlockComment(searchCtx, prefix, suffix, prefixExp, suffixExp, lineExp);
                     if (atSuffix) {
                         TokenUtils.moveSkippingWhitespace(TokenUtils.movePrevToken, ctx);
                     } else {
@@ -428,7 +426,7 @@ define(function (require, exports, module) {
                 while (result && !ctx.token.string.match(prefixExp)) {
                     result = TokenUtils.moveSkippingWhitespace(TokenUtils.movePrevToken, ctx);
                 }
-                prefixPos = result && {line: ctx.pos.line, ch: ctx.token.start};
+                prefixPos = result && { line: ctx.pos.line, ch: ctx.token.start };
 
                 // Restore the context at the initial position to find the position of the start of the suffix,
                 // but only when we found the prefix alone in one line
@@ -439,7 +437,7 @@ define(function (require, exports, module) {
                 while (result && !ctx.token.string.match(suffixExp)) {
                     result = TokenUtils.moveSkippingWhitespace(TokenUtils.moveNextToken, ctx);
                 }
-                suffixPos = result && {line: ctx.pos.line, ch: ctx.token.end - suffix.length};
+                suffixPos = result && { line: ctx.pos.line, ch: ctx.token.end - suffix.length };
 
                 // Lets check if there are more comments in the selection. We do nothing if there is one
                 do {
@@ -468,7 +466,7 @@ define(function (require, exports, module) {
                     canComment = true;
                 }
             }
-        // If not, we can comment
+            // If not, we can comment
         } else {
             canComment = true;
         }
@@ -477,7 +475,7 @@ define(function (require, exports, module) {
         // Make the edit
         if (invalidComment) {
             // We don't want to do an edit, but we still want to track selections associated with it.
-            edit = {edit: [], selection: selectionsToTrack};
+            edit = { edit: [], selection: selectionsToTrack };
 
         } else if (lineUncomment) {
             // Return a null edit. This is a signal to the caller that we should delegate to the
@@ -498,22 +496,22 @@ define(function (require, exports, module) {
                         var indentChar = useTabChar ? "\t" : " ";
                         editGroup.push({
                             text: _.repeat(indentChar, endCh) + suffix + "\n",
-                            start: {line: sel.end.line, ch: 0}
+                            start: { line: sel.end.line, ch: 0 }
                         });
                         editGroup.push({
                             text: prefix + "\n" + _.repeat(indentChar, startCh),
-                            start: {line: sel.start.line, ch: startCh}
+                            start: { line: sel.start.line, ch: startCh }
                         });
                     } else {
-                        editGroup.push({text: suffix + "\n", start: sel.end});
-                        editGroup.push({text: prefix + "\n", start: sel.start});
+                        editGroup.push({ text: suffix + "\n", start: sel.end });
+                        editGroup.push({ text: prefix + "\n", start: sel.start });
                     }
                 } else {
-                    editGroup.push({text: suffix, start: sel.end});
+                    editGroup.push({ text: suffix, start: sel.end });
                     if (isIndentLineCommand()) {
-                        editGroup.push({text: prefix, start: { line: sel.start.line, ch: startCh }});
+                        editGroup.push({ text: prefix, start: { line: sel.start.line, ch: startCh } });
                     } else {
-                        editGroup.push({text: prefix, start: sel.start});
+                        editGroup.push({ text: prefix, start: sel.start });
                     }
                 }
 
@@ -549,11 +547,11 @@ define(function (require, exports, module) {
                     updatePosForEdit(trackedSel.end);
                 });
 
-            // Uncomment - remove prefix and suffix.
-            } else if(prefixPos){
+                // Uncomment - remove prefix and suffix.
+            } else if (prefixPos) {
                 // Find if the prefix and suffix are at the ch 0 and if they are the only thing in the line.
                 // If both are found we assume that a complete line selection comment added new lines, so we remove them.
-                var line          = doc.getLine(prefixPos.line).trim(),
+                var line = doc.getLine(prefixPos.line).trim(),
                     prefixAtStart = prefixPos.ch === 0 && prefix.length === line.length,
                     prefixIndented = indentLineComment && prefix.length === line.length,
                     suffixAtStart = false,
@@ -568,21 +566,21 @@ define(function (require, exports, module) {
                 // Remove the suffix if there is one
                 if (suffixPos) {
                     if (suffixIndented) {
-                        editGroup.push({text: "", start: {line: suffixPos.line, ch: 0}, end: {line: suffixPos.line + 1, ch: 0}});
+                        editGroup.push({ text: "", start: { line: suffixPos.line, ch: 0 }, end: { line: suffixPos.line + 1, ch: 0 } });
                     } else if (prefixAtStart && suffixAtStart) {
-                        editGroup.push({text: "", start: suffixPos, end: {line: suffixPos.line + 1, ch: 0}});
+                        editGroup.push({ text: "", start: suffixPos, end: { line: suffixPos.line + 1, ch: 0 } });
                     } else {
-                        editGroup.push({text: "", start: suffixPos, end: {line: suffixPos.line, ch: suffixPos.ch + suffix.length}});
+                        editGroup.push({ text: "", start: suffixPos, end: { line: suffixPos.line, ch: suffixPos.ch + suffix.length } });
                     }
                 }
 
                 // Remove the prefix
                 if (prefixIndented) {
-                    editGroup.push({text: "", start: {line: prefixPos.line, ch: 0}, end: {line: prefixPos.line + 1, ch: 0}});
+                    editGroup.push({ text: "", start: { line: prefixPos.line, ch: 0 }, end: { line: prefixPos.line + 1, ch: 0 } });
                 } else if (prefixAtStart && suffixAtStart) {
-                    editGroup.push({text: "", start: prefixPos, end: {line: prefixPos.line + 1, ch: 0}});
+                    editGroup.push({ text: "", start: prefixPos, end: { line: prefixPos.line + 1, ch: 0 } });
                 } else {
-                    editGroup.push({text: "", start: prefixPos, end: {line: prefixPos.line, ch: prefixPos.ch + prefix.length}});
+                    editGroup.push({ text: "", start: prefixPos, end: { line: prefixPos.line, ch: prefixPos.ch + prefix.length } });
                 }
 
                 // Don't fix up the tracked selections here - let the edit fix them up.
@@ -591,7 +589,7 @@ define(function (require, exports, module) {
                 });
             }
 
-            edit = {edit: editGroup, selection: selectionsToTrack};
+            edit = { edit: editGroup, selection: selectionsToTrack };
         }
 
         return edit;
@@ -604,29 +602,49 @@ define(function (require, exports, module) {
      * line selection in the form returned by `Editor.convertToLineSelections()`.
      *
      * The implementation uses blockCommentPrefixSuffix, with the exception of the case where
-     * there is no selection on a uncommented and not empty line. In this case the whole lines gets
+     * there is no selection on an uncommented and not empty line. In this case, the whole line gets
      * commented in a block-comment.
      *
-     * @param {!Editor} editor
-     * @param {!String} prefix
-     * @param {!String} suffix
+     * @param {!Editor} editor The editor instance where the operation will occur.
+     * @param {!string} prefix The block comment prefix, e.g., "< !--".
+     * @param {!string} suffix The block comment suffix, e.g., "-->".
      * @param {!{selectionForEdit: {start:{line:number, ch:number}, end:{line:number, ch:number}, reversed:boolean, primary:boolean},
-     *           selectionsToTrack: Array.<{start:{line:number, ch:number}, end:{line:number, ch:number}, reversed:boolean, primary:boolean}>}}
-     *      lineSel A line selection as returned from `Editor.convertToLineSelections()`. `selectionForEdit` is the selection to perform
-     *      the line comment operation on, and `selectionsToTrack` are a set of selections associated with this line that need to be
-     *      tracked through the edit.
-     * @param {String} command The command callee. It cans be "line" or "block".
-     * @return {{edit: {text: string, start:{line: number, ch: number}, end:?{line: number, ch: number}}|Array.<{text: string, start:{line: number, ch: number}, end:?{line: number, ch: number}}>,
-     *                  selection: {start:{line:number, ch:number}, end:{line:number, ch:number}, primary:boolean, reversed: boolean, isBeforeEdit: boolean}>}|
-     *                  Array.<{start:{line:number, ch:number}, end:{line:number, ch:number}, primary:boolean, reversed: boolean, isBeforeEdit: boolean}>}}
-     *      An edit description suitable for including in the edits array passed to `Document.doMultipleEdits()`.
-     */
+    *           selectionsToTrack: {start:{line:number, ch:number}, end:{line:number, ch:number}, reversed:boolean, primary:boolean}}} lineSel
+    *      A line selection as returned from `Editor.convertToLineSelections()`. `selectionForEdit` is the selection to perform
+    *      the line comment operation on, and `selectionsToTrack` are a set of selections associated with this line that need to be
+    *      tracked through the edit.
+    * @param {string} command The command being executed, can be "line" or "block".
+    * @return {{
+    *   edit: {
+    *     text: string,
+    *     start: {line: number, ch: number},
+    *     end: {line: number, ch: number} | undefined
+    *   } | {
+    *     text: string,
+    *     start: {line: number, ch: number},
+    *     end: {line: number, ch: number} | undefined
+    *   },
+    *   selection: {
+    *     start: {line: number, ch: number},
+    *     end: {line: number, ch: number},
+    *     primary: boolean,
+    *     reversed: boolean,
+    *     isBeforeEdit: boolean
+    *   },
+    *   start: {line: number, ch: number},
+    *   end: {line: number, ch: number},
+    *   primary: boolean,
+    *   reversed: boolean,
+    *   isBeforeEdit: boolean
+    * }}
+    *      An edit description suitable for including in the edits array passed to `Document.doMultipleEdits()`.
+    */
     function _getLineCommentPrefixSuffixEdit(editor, prefix, suffix, lineSel, command) {
         var sel = lineSel.selectionForEdit;
 
         // For one-line selections, we shrink the selection to exclude the trailing newline.
         if (sel.end.line === sel.start.line + 1 && sel.end.ch === 0) {
-            sel.end = {line: sel.start.line, ch: editor.document.getLine(sel.start.line).length};
+            sel.end = { line: sel.start.line, ch: editor.document.getLine(sel.start.line).length };
         }
 
         // Now just run the standard block comment code, but make sure to track any associated selections
@@ -639,19 +657,22 @@ define(function (require, exports, module) {
         return language && (language.hasLineCommentSyntax() || language.hasBlockCommentSyntax());
     }
 
+
     /**
      * @private
      * Generates an array of edits for toggling line comments on the given selections.
      *
-     * @param {!Editor} editor The editor to edit within.
-     * @param {Array.<{start:{line:number, ch:number}, end:{line:number, ch:number}, primary:boolean, reversed: boolean, isBeforeEdit: boolean}>}
-     *      selections The selections we want to line-comment.
-     * @param {String} command The command callee. It cans be "line" or "block".
-     * @return {Array.<{edit: {text: string, start:{line: number, ch: number}, end:?{line: number, ch: number}}|Array.<{text: string, start:{line: number, ch: number}, end:?{line: number, ch: number}}>,
-     *                  selection: {start:{line:number, ch:number}, end:{line:number, ch:number}, primary:boolean, reversed: boolean, isBeforeEdit: boolean}>}|
-     *                  Array.<{start:{line:number, ch:number}, end:{line:number, ch:number}, primary:boolean, reversed: boolean, isBeforeEdit: boolean}>}>}
-     *      An array of edit descriptions suitable for including in the edits array passed to `Document.doMultipleEdits()`.
+     * @param {!Editor} editor The editor instance where the edits are to be performed.
+     * @param {{start: {line: number, ch: number}, end: {line: number, ch: number}, primary: boolean, reversed: boolean, isBeforeEdit: boolean}} selections - The selection details
+     *      The selections to toggle comments on. Each selection object contains start and end line/character positions, as well as metadata about the selection.
+     * @param {string} command The command type, either "line" or "block", that determines the type of commenting.
+     * @return {{edit: {text: string, start: {line: number, ch: number}, end: {line: number, ch: number} | null} |
+     *                  {text: string, start: {line: number, ch: number}, end: {line: number, ch: number} | null},
+     *                  selection: {start: {line: number, ch: number}, end: {line: number, ch: number}, primary: boolean, reversed: boolean, isBeforeEdit: boolean}} |
+     *          {start: {line: number, ch: number}, end: {line: number, ch: number}, primary: boolean, reversed: boolean, isBeforeEdit: boolean}}
+     *      An array of edit descriptions, where each edit includes the text, start and end positions, and tracked selections suitable for `Document.doMultipleEdits()`.
      */
+
     function _getLineCommentEdits(editor, selections, command) {
         // We need to expand line selections in order to coalesce cursors on the same line, but we
         // don't want to merge adjacent line selections.
@@ -672,7 +693,7 @@ define(function (require, exports, module) {
             }
             if (!edit) {
                 // Even if we didn't want to do an edit, we still need to track the selection.
-                edit = {selection: lineSel.selectionsToTrack};
+                edit = { selection: lineSel.selectionsToTrack };
             }
             edits.push(edit);
         });
@@ -689,7 +710,7 @@ define(function (require, exports, module) {
             return;
         }
 
-        if(!_languageHasCommentsDefined(editor)) {
+        if (!_languageHasCommentsDefined(editor)) {
             editor._toggleComment();
             return;
         }
@@ -707,7 +728,7 @@ define(function (require, exports, module) {
             return;
         }
 
-        if(!_languageHasCommentsDefined(editor)) {
+        if (!_languageHasCommentsDefined(editor)) {
             editor._toggleComment();
             return;
         }
@@ -716,14 +737,14 @@ define(function (require, exports, module) {
             lineCommentSels = [];
         _.each(editor.getSelections(), function (sel) {
             var mode = editor.getModeForRange(sel.start, sel.end),
-                edit = {edit: [], selection: [sel]}; // default edit in case we don't have a mode for this selection
+                edit = { edit: [], selection: [sel] }; // default edit in case we don't have a mode for this selection
             if (mode) {
                 var language = editor.document.getLanguage().getLanguageForMode(mode.name || mode);
 
                 if (language.hasBlockCommentSyntax()) {
                     // getLineCommentPrefixes always return an array, and will be empty if no line comment syntax is defined
                     edit = _getBlockCommentPrefixSuffixEdit(editor, language.getBlockCommentPrefix(), language.getBlockCommentSuffix(),
-                                                            language.getLineCommentPrefixes(), sel);
+                        language.getLineCommentPrefixes(), sel);
                     if (!edit) {
                         // This is only null if the block comment code found that the selection is within a line-commented line.
                         // Add this to the list of line-comment selections we need to handle. Since edit is null, we'll skip
@@ -780,10 +801,10 @@ define(function (require, exports, module) {
             }
             // Don't need to explicitly track selections since we are doing the edits in such a way that
             // the existing selections will get appropriately updated.
-            edits.push({edit: {text: doc.getRange(sel.start, sel.end) + delimiter, start: sel.start }});
+            edits.push({ edit: { text: doc.getRange(sel.start, sel.end) + delimiter, start: sel.start } });
         });
         _.each(rangeSels, function (sel) {
-            edits.push({edit: {text: doc.getRange(sel.start, sel.end), start: sel.start }});
+            edits.push({ edit: { text: doc.getRange(sel.start, sel.end), start: sel.start } });
         });
 
         doc.doMultipleEdits(edits);
@@ -827,7 +848,7 @@ define(function (require, exports, module) {
 
             // We don't need to track the original selections, since they'll get collapsed as
             // part of the various deletions that occur.
-            edits.push({edit: {text: "", start: from, end: to}});
+            edits.push({ edit: { text: "", start: from, end: to } });
         });
         doc.doMultipleEdits(edits);
     }
@@ -844,16 +865,16 @@ define(function (require, exports, module) {
             return;
         }
 
-        var doc             = editor.document,
-            lineSelections  = editor.convertToLineSelections(editor.getSelections()),
-            isInlineWidget  = !!EditorManager.getFocusedInlineWidget(),
-            firstLine       = editor.getFirstVisibleLine(),
-            lastLine        = editor.getLastVisibleLine(),
-            totalLines      = editor.lineCount(),
-            lineLength      = 0,
-            edits           = [],
-            newSels         = [],
-            pos             = {};
+        var doc = editor.document,
+            lineSelections = editor.convertToLineSelections(editor.getSelections()),
+            isInlineWidget = !!EditorManager.getFocusedInlineWidget(),
+            firstLine = editor.getFirstVisibleLine(),
+            lastLine = editor.getLastVisibleLine(),
+            totalLines = editor.lineCount(),
+            lineLength = 0,
+            edits = [],
+            newSels = [],
+            pos = {};
 
         _.each(lineSelections, function (lineSel) {
             var sel = lineSel.selectionForEdit,
@@ -861,62 +882,62 @@ define(function (require, exports, module) {
 
             // Make the move
             switch (direction) {
-            case DIRECTION_UP:
-                if (sel.start.line !== firstLine) {
-                    var prevText = doc.getRange({ line: sel.start.line - 1, ch: 0 }, sel.start);
+                case DIRECTION_UP:
+                    if (sel.start.line !== firstLine) {
+                        var prevText = doc.getRange({ line: sel.start.line - 1, ch: 0 }, sel.start);
 
-                    if (sel.end.line === lastLine + 1) {
-                        if (isInlineWidget) {
-                            prevText   = prevText.substring(0, prevText.length - 1);
-                            lineLength = doc.getLine(sel.end.line - 1).length;
-                            editGroup.push({text: "\n", start: { line: sel.end.line - 1, ch: lineLength }});
-                        } else {
-                            prevText = "\n" + prevText.substring(0, prevText.length - 1);
-                        }
-                    }
-
-                    editGroup.push({text: "", start: { line: sel.start.line - 1, ch: 0 }, end: sel.start});
-                    editGroup.push({text: prevText, start: { line: sel.end.line - 1, ch: 0 }});
-
-                    // Make sure CodeMirror hasn't expanded the selection to include
-                    // the line we inserted below.
-                    _.each(lineSel.selectionsToTrack, function (originalSel) {
-                        originalSel.start.line--;
-                        originalSel.end.line--;
-                    });
-
-                    edits.push({edit: editGroup, selection: lineSel.selectionsToTrack});
-                }
-                break;
-            case DIRECTION_DOWN:
-                if (sel.end.line <= lastLine) {
-                    var nextText      = doc.getRange(sel.end, { line: sel.end.line + 1, ch: 0 }),
-                        deletionStart = sel.end;
-
-                    if (sel.end.line === lastLine) {
-                        if (isInlineWidget) {
-                            if (sel.end.line === totalLines - 1) {
-                                nextText += "\n";
+                        if (sel.end.line === lastLine + 1) {
+                            if (isInlineWidget) {
+                                prevText = prevText.substring(0, prevText.length - 1);
+                                lineLength = doc.getLine(sel.end.line - 1).length;
+                                editGroup.push({ text: "\n", start: { line: sel.end.line - 1, ch: lineLength } });
+                            } else {
+                                prevText = "\n" + prevText.substring(0, prevText.length - 1);
                             }
-                            lineLength = doc.getLine(sel.end.line - 1).length;
-                            editGroup.push({text: "\n", start: { line: sel.end.line, ch: doc.getLine(sel.end.line).length }});
-                        } else {
-                            nextText     += "\n";
-                            deletionStart = { line: sel.end.line - 1, ch: doc.getLine(sel.end.line - 1).length };
                         }
-                    }
 
-                    editGroup.push({text: "", start: deletionStart, end: { line: sel.end.line + 1, ch: 0 }});
-                    if (lineLength) {
-                        editGroup.push({text: "", start: { line: sel.end.line - 1, ch: lineLength }, end: { line: sel.end.line, ch: 0 }});
-                    }
-                    editGroup.push({text: nextText, start: { line: sel.start.line, ch: 0 }});
+                        editGroup.push({ text: "", start: { line: sel.start.line - 1, ch: 0 }, end: sel.start });
+                        editGroup.push({ text: prevText, start: { line: sel.end.line - 1, ch: 0 } });
 
-                    // In this case, we don't need to track selections, because the edits are done in such a way that
-                    // the existing selections will automatically be updated properly by CodeMirror as it does the edits.
-                    edits.push({edit: editGroup});
-                }
-                break;
+                        // Make sure CodeMirror hasn't expanded the selection to include
+                        // the line we inserted below.
+                        _.each(lineSel.selectionsToTrack, function (originalSel) {
+                            originalSel.start.line--;
+                            originalSel.end.line--;
+                        });
+
+                        edits.push({ edit: editGroup, selection: lineSel.selectionsToTrack });
+                    }
+                    break;
+                case DIRECTION_DOWN:
+                    if (sel.end.line <= lastLine) {
+                        var nextText = doc.getRange(sel.end, { line: sel.end.line + 1, ch: 0 }),
+                            deletionStart = sel.end;
+
+                        if (sel.end.line === lastLine) {
+                            if (isInlineWidget) {
+                                if (sel.end.line === totalLines - 1) {
+                                    nextText += "\n";
+                                }
+                                lineLength = doc.getLine(sel.end.line - 1).length;
+                                editGroup.push({ text: "\n", start: { line: sel.end.line, ch: doc.getLine(sel.end.line).length } });
+                            } else {
+                                nextText += "\n";
+                                deletionStart = { line: sel.end.line - 1, ch: doc.getLine(sel.end.line - 1).length };
+                            }
+                        }
+
+                        editGroup.push({ text: "", start: deletionStart, end: { line: sel.end.line + 1, ch: 0 } });
+                        if (lineLength) {
+                            editGroup.push({ text: "", start: { line: sel.end.line - 1, ch: lineLength }, end: { line: sel.end.line, ch: 0 } });
+                        }
+                        editGroup.push({ text: nextText, start: { line: sel.start.line, ch: 0 } });
+
+                        // In this case, we don't need to track selections, because the edits are done in such a way that
+                        // the existing selections will automatically be updated properly by CodeMirror as it does the edits.
+                        edits.push({ edit: editGroup });
+                    }
+                    break;
             }
         });
 
@@ -968,11 +989,11 @@ define(function (require, exports, module) {
             return;
         }
 
-        var selections     = editor.getSelections(),
+        var selections = editor.getSelections(),
             isInlineWidget = !!EditorManager.getFocusedInlineWidget(),
-            lastLine       = editor.getLastVisibleLine(),
-            doc            = editor.document,
-            edits          = [],
+            lastLine = editor.getLastVisibleLine(),
+            doc = editor.document,
+            edits = [],
             newSelections,
             line;
 
@@ -987,30 +1008,30 @@ define(function (require, exports, module) {
         doc.batchOperation(function () {
             _.each(selections, function (sel, index) {
                 if (index === 0 ||
-                        (direction === DIRECTION_UP && sel.start.line > selections[index - 1].start.line) ||
-                        (direction === DIRECTION_DOWN && sel.end.line > selections[index - 1].end.line)) {
+                    (direction === DIRECTION_UP && sel.start.line > selections[index - 1].start.line) ||
+                    (direction === DIRECTION_DOWN && sel.end.line > selections[index - 1].end.line)) {
                     // Insert the new line
                     switch (direction) {
-                    case DIRECTION_UP:
-                        line = sel.start.line;
-                        break;
-                    case DIRECTION_DOWN:
-                        line = sel.end.line;
-                        if (!(CodeMirror.cmpPos(sel.start, sel.end) !== 0 && sel.end.ch === 0)) {
-                            // If not linewise selection
-                            line++;
-                        }
-                        break;
+                        case DIRECTION_UP:
+                            line = sel.start.line;
+                            break;
+                        case DIRECTION_DOWN:
+                            line = sel.end.line;
+                            if (!(CodeMirror.cmpPos(sel.start, sel.end) !== 0 && sel.end.ch === 0)) {
+                                // If not linewise selection
+                                line++;
+                            }
+                            break;
                     }
 
                     var insertPos;
                     if (line > lastLine && isInlineWidget) {
-                        insertPos = {line: line - 1, ch: doc.getLine(line - 1).length};
+                        insertPos = { line: line - 1, ch: doc.getLine(line - 1).length };
                     } else {
-                        insertPos = {line: line, ch: 0};
+                        insertPos = { line: line, ch: 0 };
                     }
                     // We want the selection after this edit to be right before the \n we just inserted.
-                    edits.push({edit: {text: "\n", start: insertPos}, selection: {start: insertPos, end: insertPos, primary: sel.primary}});
+                    edits.push({ edit: { text: "\n", start: insertPos }, selection: { start: insertPos, end: insertPos, primary: sel.primary } });
                 } else {
                     // We just want to discard this selection, since we've already operated on the
                     // same line and it would just collapse to the same location. But if this was
@@ -1130,7 +1151,7 @@ define(function (require, exports, module) {
 
                     // If this is the primary selection, we want the new cursor we're adding to become the
                     // primary selection.
-                    newSels.push({start: pos, end: pos, primary: sel.primary});
+                    newSels.push({ start: pos, end: pos, primary: sel.primary });
                     sel.primary = false;
                 }
             });
@@ -1205,11 +1226,11 @@ define(function (require, exports, module) {
 
     function _applyPaste(text) {
         var editor = EditorManager.getFocusedEditor();
-        if(editor){
+        if (editor) {
             var doc = editor._codeMirror.getDoc();
             var selection = doc.getSelection();
             var cursor = doc.getCursor();
-            if(selection){
+            if (selection) {
                 doc.replaceSelection(text);
             } else {
                 doc.replaceRange(text, cursor);
@@ -1221,11 +1242,11 @@ define(function (require, exports, module) {
         const result = new $.Deferred();
         Phoenix.app.clipboardReadText()
             .then(_applyPaste)
-            .catch(err =>{
+            .catch(err => {
                 console.error(err);
                 _execCommand("paste");
             })
-            .finally(()=>{
+            .finally(() => {
                 // always resolve as we don't know if the _execCommand("paste") did its work or not.
                 result.resolve();
             });
@@ -1233,25 +1254,25 @@ define(function (require, exports, module) {
     }
 
     // Register commands
-    CommandManager.register(Strings.CMD_INDENT,                 Commands.EDIT_INDENT,                 indentText);
-    CommandManager.register(Strings.CMD_UNINDENT,               Commands.EDIT_UNINDENT,               unindentText);
-    CommandManager.register(Strings.CMD_COMMENT,                Commands.EDIT_LINE_COMMENT,           lineComment);
-    CommandManager.register(Strings.CMD_BLOCK_COMMENT,          Commands.EDIT_BLOCK_COMMENT,          blockComment);
-    CommandManager.register(Strings.CMD_DUPLICATE,              Commands.EDIT_DUPLICATE,              duplicateText);
-    CommandManager.register(Strings.CMD_DELETE_LINES,           Commands.EDIT_DELETE_LINES,           deleteCurrentLines);
-    CommandManager.register(Strings.CMD_LINE_UP,                Commands.EDIT_LINE_UP,                moveLineUp);
-    CommandManager.register(Strings.CMD_LINE_DOWN,              Commands.EDIT_LINE_DOWN,              moveLineDown);
-    CommandManager.register(Strings.CMD_OPEN_LINE_ABOVE,        Commands.EDIT_OPEN_LINE_ABOVE,        openLineAbove);
-    CommandManager.register(Strings.CMD_OPEN_LINE_BELOW,        Commands.EDIT_OPEN_LINE_BELOW,        openLineBelow);
-    CommandManager.register(Strings.CMD_SELECT_LINE,            Commands.EDIT_SELECT_LINE,            selectLine);
-    CommandManager.register(Strings.CMD_SPLIT_SEL_INTO_LINES,   Commands.EDIT_SPLIT_SEL_INTO_LINES,   splitSelIntoLines);
-    CommandManager.register(Strings.CMD_ADD_CUR_TO_NEXT_LINE,   Commands.EDIT_ADD_CUR_TO_NEXT_LINE,   addCursorToNextLine);
-    CommandManager.register(Strings.CMD_ADD_CUR_TO_PREV_LINE,   Commands.EDIT_ADD_CUR_TO_PREV_LINE,   addCursorToPrevLine);
+    CommandManager.register(Strings.CMD_INDENT, Commands.EDIT_INDENT, indentText);
+    CommandManager.register(Strings.CMD_UNINDENT, Commands.EDIT_UNINDENT, unindentText);
+    CommandManager.register(Strings.CMD_COMMENT, Commands.EDIT_LINE_COMMENT, lineComment);
+    CommandManager.register(Strings.CMD_BLOCK_COMMENT, Commands.EDIT_BLOCK_COMMENT, blockComment);
+    CommandManager.register(Strings.CMD_DUPLICATE, Commands.EDIT_DUPLICATE, duplicateText);
+    CommandManager.register(Strings.CMD_DELETE_LINES, Commands.EDIT_DELETE_LINES, deleteCurrentLines);
+    CommandManager.register(Strings.CMD_LINE_UP, Commands.EDIT_LINE_UP, moveLineUp);
+    CommandManager.register(Strings.CMD_LINE_DOWN, Commands.EDIT_LINE_DOWN, moveLineDown);
+    CommandManager.register(Strings.CMD_OPEN_LINE_ABOVE, Commands.EDIT_OPEN_LINE_ABOVE, openLineAbove);
+    CommandManager.register(Strings.CMD_OPEN_LINE_BELOW, Commands.EDIT_OPEN_LINE_BELOW, openLineBelow);
+    CommandManager.register(Strings.CMD_SELECT_LINE, Commands.EDIT_SELECT_LINE, selectLine);
+    CommandManager.register(Strings.CMD_SPLIT_SEL_INTO_LINES, Commands.EDIT_SPLIT_SEL_INTO_LINES, splitSelIntoLines);
+    CommandManager.register(Strings.CMD_ADD_CUR_TO_NEXT_LINE, Commands.EDIT_ADD_CUR_TO_NEXT_LINE, addCursorToNextLine);
+    CommandManager.register(Strings.CMD_ADD_CUR_TO_PREV_LINE, Commands.EDIT_ADD_CUR_TO_PREV_LINE, addCursorToPrevLine);
 
-    CommandManager.register(Strings.CMD_UNDO,                   Commands.EDIT_UNDO,                   handleUndo);
-    CommandManager.register(Strings.CMD_REDO,                   Commands.EDIT_REDO,                   handleRedo);
-    CommandManager.register(Strings.CMD_CUT,                    Commands.EDIT_CUT,                    _execCommandCut);
-    CommandManager.register(Strings.CMD_COPY,                   Commands.EDIT_COPY,                   _execCommandCopy);
-    CommandManager.register(Strings.CMD_PASTE,                  Commands.EDIT_PASTE,                  _execCommandPaste);
-    CommandManager.register(Strings.CMD_SELECT_ALL,             Commands.EDIT_SELECT_ALL,             _handleSelectAll);
+    CommandManager.register(Strings.CMD_UNDO, Commands.EDIT_UNDO, handleUndo);
+    CommandManager.register(Strings.CMD_REDO, Commands.EDIT_REDO, handleRedo);
+    CommandManager.register(Strings.CMD_CUT, Commands.EDIT_CUT, _execCommandCut);
+    CommandManager.register(Strings.CMD_COPY, Commands.EDIT_COPY, _execCommandCopy);
+    CommandManager.register(Strings.CMD_PASTE, Commands.EDIT_PASTE, _execCommandPaste);
+    CommandManager.register(Strings.CMD_SELECT_ALL, Commands.EDIT_SELECT_ALL, _handleSelectAll);
 });

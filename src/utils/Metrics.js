@@ -21,7 +21,6 @@
 
 /*global gtag, analytics, logger*/
 
-// @INCLUDE_IN_API_DOCS
 /**
  * The Metrics API can be used to send analytics data to track feature usage in accordance with users privacy settings.
  *

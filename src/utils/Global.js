@@ -19,6 +19,8 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /**
  * Initializes the global "brackets" variable and it's properties.
  * Modules should not access the global.brackets object until either

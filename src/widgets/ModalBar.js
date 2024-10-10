@@ -19,6 +19,8 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /**
  * A "modal bar" component. This is a lightweight replacement for modal dialogs that
  * appears at the top of the editor area for operations like Find and Quick Open.

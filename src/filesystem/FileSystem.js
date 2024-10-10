@@ -21,6 +21,9 @@
 
 /*global Phoenix*/
 
+// @INCLUDE_IN_API_DOCS
+
+
 /**
  * FileSystem is a model object representing a complete file system. This object creates
  * and manages File and Directory instances, dispatches events when the file system changes,
@@ -89,15 +92,15 @@
 define(function (require, exports, module) {
 
 
-    const Directory       = require("filesystem/Directory"),
-        File            = require("filesystem/File"),
-        FileIndex       = require("filesystem/FileIndex"),
+    const Directory = require("filesystem/Directory"),
+        File = require("filesystem/File"),
+        FileIndex = require("filesystem/FileIndex"),
         FileSystemError = require("filesystem/FileSystemError"),
-        RemoteFile      = require("filesystem/RemoteFile"),
-        WatchedRoot     = require("filesystem/WatchedRoot"),
+        RemoteFile = require("filesystem/RemoteFile"),
+        WatchedRoot = require("filesystem/WatchedRoot"),
         EventDispatcher = require("utils/EventDispatcher"),
-        PathUtils       = require("thirdparty/path-utils/path-utils"),
-        _               = require("thirdparty/lodash");
+        PathUtils = require("thirdparty/path-utils/path-utils"),
+        _ = require("thirdparty/lodash");
 
 
     // Collection of registered protocol adapters
@@ -202,7 +205,7 @@ define(function (require, exports, module) {
     /**
      * Queue of arguments with which to invoke _handleExternalChanges(); triggered
      * once _activeChangeCount drops to zero.
-     * @type {!Array.<{path:?string, stat:FileSystemStats=}>}
+     * @type {!{path:?string, stat:FileSystemStats}}
      */
     FileSystem.prototype._externalChanges = null;
 
@@ -222,7 +225,7 @@ define(function (require, exports, module) {
      * @param {FileSystemStats=} stat An optional stat object for the changed entry
      */
     FileSystem.prototype._enqueueExternalChange = function (path, stat) {
-        this._externalChanges.push({path: path, stat: stat});
+        this._externalChanges.push({ path: path, stat: stat });
         if (!this._activeChangeCount) {
             this._triggerExternalChangesNow();
         }
@@ -231,7 +234,7 @@ define(function (require, exports, module) {
 
     /**
      * The queue of pending watch/unwatch requests.
-     * @type {Array.<{fn: function(), cb: function()}>}
+     * @type {{fn: function(), cb: function()}} Array
      */
     FileSystem.prototype._watchRequests = null;
 
@@ -265,7 +268,7 @@ define(function (require, exports, module) {
      */
     FileSystem.prototype._enqueueWatchRequest = function (fn, cb) {
         // Enqueue the given watch/unwatch request
-        this._watchRequests.push({fn: fn, cb: cb});
+        this._watchRequests.push({ fn: fn, cb: cb });
 
         // Begin processing the queue if it is not already being processed
         if (this._watchRequests.length === 1) {
@@ -283,13 +286,14 @@ define(function (require, exports, module) {
     FileSystem.prototype._watchedRoots = null;
 
     /**
-     * Finds a parent watched root for a given path, or returns null if a parent
-     * watched root does not exist.
-     *
-     * @param {string} fullPath The child path for which a parent watched root is to be found
-     * @return {?{entry: FileSystemEntry, filter: function(string) boolean}} The parent
-     *      watched root, if it exists, or null.
-     */
+    * Finds a parent watched root for a given path, or returns null if a parent
+    * watched root does not exist.
+    *
+    * @param {string} fullPath The child path for which a parent watched root is to be found.
+    * @return {?{entry: FileSystemEntry, filter: function(string): boolean}} The parent
+    *      watched root, if it exists, or null.
+    */
+
     FileSystem.prototype._findWatchedRootForPath = function (fullPath) {
         var watchedRoot = null;
 
@@ -555,7 +559,7 @@ define(function (require, exports, module) {
      */
     FileSystem.prototype.getFileForPath = function (path) {
         let virtualServingPath = Phoenix.VFS.getPathForVirtualServingURL(path);
-        if(virtualServingPath) {
+        if (virtualServingPath) {
             // this is so that extensions that load from an http path can figure out the actual file system path
             // from just the virtual serving URL.
             // FileSystem.getDirectoryForPath(ExtensionUtils.getModulePath(module, "some FolderInModule/"))
@@ -573,7 +577,7 @@ define(function (require, exports, module) {
 
     function _getNewPath(suggestedPath, isDir, i, pathLib) {
         suggestedPath = pathLib.normalize(suggestedPath);
-        if(isDir){
+        if (isDir) {
             return `${suggestedPath} (copy ${i})`;
         } else {
             const dir = pathLib.dirname(suggestedPath),
@@ -604,7 +608,7 @@ define(function (require, exports, module) {
                 return;
             }
             let target;
-            if(stat.isFile){
+            if (stat.isFile) {
                 let parentDir = window.path.dirname(stat.realPath);
                 target = self.getDirectoryForPath(parentDir);
             } else {
@@ -643,10 +647,10 @@ define(function (require, exports, module) {
             if (stat) {
                 // find a suggested path
                 let isDir = stat.isDirectory;
-                for(let i = 1; i < MAX_DEDUPE_NUMBER; i++) {
+                for (let i = 1; i < MAX_DEDUPE_NUMBER; i++) {
                     let newPath = _getNewPath(suggestedPath, isDir, i, self._impl.pathLib);
                     let exists = await self._impl.existsAsync(newPath);
-                    if(!exists){
+                    if (!exists) {
                         callback(null, newPath);
                         return;
                     }
@@ -670,7 +674,7 @@ define(function (require, exports, module) {
      */
     FileSystem.prototype.getDirectoryForPath = function (path) {
         let virtualServingPath = Phoenix.VFS.getPathForVirtualServingURL(path);
-        if(virtualServingPath) {
+        if (virtualServingPath) {
             // this is so that extensions that load from an http path can figure out the actual file system path
             // from just the virtual serving URL.
             // FileSystem.getDirectoryForPath(ExtensionUtils.getModulePath(module, "some FolderInModule/"))
@@ -742,13 +746,13 @@ define(function (require, exports, module) {
     /**
      * promisified version of FileSystem.resolve
      * @param {String} path to resolve
-     * @returns {Promise<{entry, stat}>}
+     * @returns {{'entry', 'stat'}}
      */
     FileSystem.prototype.resolveAsync = function (path) {
         let self = this;
-        return new Promise((resolve, reject)=>{
-            self.resolve(path, (err, item, stat)=>{
-                if(err){
+        return new Promise((resolve, reject) => {
+            self.resolve(path, (err, item, stat) => {
+                if (err) {
                     reject(err);
                     return;
                 }
@@ -779,11 +783,11 @@ define(function (require, exports, module) {
      *                          be empty.
      */
     FileSystem.prototype.showOpenDialog = function (allowMultipleSelection,
-                            chooseDirectories,
-                            title,
-                            initialPath,
-                            fileTypes,
-                            callback) {
+        chooseDirectories,
+        title,
+        initialPath,
+        fileTypes,
+        callback) {
 
         this._impl.showOpenDialog(allowMultipleSelection, chooseDirectories, title, initialPath, fileTypes, callback);
     };
@@ -965,22 +969,23 @@ define(function (require, exports, module) {
     /**
      * Recursively gets all files and directories given a root path. It filters out all files
      * that are not shown in the file tree by default, unless the filterNothing option is specified.
-     * @param {Directory} directory To get all descendant contents from
-     * @param {boolean} filterNothing - if specified, will return every thing, including system locations like `.git`
-     *    Use this option to take full backups, or entire disc read workflows.
-     * @return {Promise<Array[File|Directory]>} A promise that resolves with the file and directory contents
+     *
+     * @param {Directory} directory The root directory to get all descendant contents from.
+     * @param {boolean} [filterNothing=false] If true, returns everything, including system locations like `.git`.
+     *     Use this option for full backups or entire disk read workflows.
+     * @return {Promise<Array<(File|Directory)>>} A promise that resolves with an array of file and directory contents.
      */
     FileSystem.prototype.getAllDirectoryContents = function (directory, filterNothing = false) {
-        return new Promise((resolve, reject)=>{
+        return new Promise((resolve, reject) => {
             let contents = [];
             function visitor(entry) {
-                if(directory.fullPath !== entry.fullPath){
+                if (directory.fullPath !== entry.fullPath) {
                     contents.push(entry);
                 }
                 return true;
             }
-            directory.visit(visitor, {visitHiddenTree: filterNothing}, (err)=>{
-                if(err){
+            directory.visit(visitor, { visitHiddenTree: filterNothing }, (err) => {
+                if (err) {
                     reject(err);
                     return;
                 }
@@ -1020,12 +1025,12 @@ define(function (require, exports, module) {
 
         var fullPath = entry.fullPath;
 
-        callback = callback || function () {};
+        callback = callback || function () { };
 
         var watchingParentRoot = this._findWatchedRootForPath(fullPath);
         if (watchingParentRoot &&
-                (watchingParentRoot.status === WatchedRoot.STARTING ||
-                 watchingParentRoot.status === WatchedRoot.ACTIVE)) {
+            (watchingParentRoot.status === WatchedRoot.STARTING ||
+                watchingParentRoot.status === WatchedRoot.ACTIVE)) {
             callback("A parent of this root is already watched");
             return;
         }
@@ -1038,8 +1043,8 @@ define(function (require, exports, module) {
         }, this);
 
         if (watchingChildRoot &&
-                (watchingChildRoot.status === WatchedRoot.STARTING ||
-                 watchingChildRoot.status === WatchedRoot.ACTIVE)) {
+            (watchingChildRoot.status === WatchedRoot.STARTING ||
+                watchingChildRoot.status === WatchedRoot.ACTIVE)) {
             callback("A child of this root is already watched");
             return;
         }
@@ -1079,7 +1084,7 @@ define(function (require, exports, module) {
         var fullPath = entry.fullPath,
             watchedRoot = this._watchedRoots[fullPath];
 
-        callback = callback || function () {};
+        callback = callback || function () { };
 
         if (!watchedRoot) {
             callback(FileSystemError.ROOT_NOT_WATCHED);

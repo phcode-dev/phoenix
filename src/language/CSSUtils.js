@@ -19,6 +19,8 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /*jslint regexp: true */
 /*global jsPromise, catchToNull, path*/
 
@@ -28,22 +30,22 @@
 define(function (require, exports, module) {
 
 
-    var CodeMirror          = require("thirdparty/CodeMirror/lib/codemirror"),
-        Async               = require("utils/Async"),
-        DocumentManager     = require("document/DocumentManager"),
-        AppInit             = require("utils/AppInit"),
-        EditorManager       = require("editor/EditorManager"),
-        HTMLUtils           = require("language/HTMLUtils"),
-        LanguageManager     = require("language/LanguageManager"),
-        ProjectManager      = require("project/ProjectManager"),
-        TokenUtils          = require("utils/TokenUtils"),
-        IndexingWorker      = require("worker/IndexingWorker"),
-        _                   = require("thirdparty/lodash");
+    var CodeMirror = require("thirdparty/CodeMirror/lib/codemirror"),
+        Async = require("utils/Async"),
+        DocumentManager = require("document/DocumentManager"),
+        AppInit = require("utils/AppInit"),
+        EditorManager = require("editor/EditorManager"),
+        HTMLUtils = require("language/HTMLUtils"),
+        LanguageManager = require("language/LanguageManager"),
+        ProjectManager = require("project/ProjectManager"),
+        TokenUtils = require("utils/TokenUtils"),
+        IndexingWorker = require("worker/IndexingWorker"),
+        _ = require("thirdparty/lodash");
 
     const MAX_CONTENT_LENGTH = 10 * 1024 * 1024; // 10MB
     // Constants
-    const SELECTOR   = "selector",
-        PROP_NAME  = "prop.name",
+    const SELECTOR = "selector",
+        PROP_NAME = "prop.name",
         PROP_VALUE = "prop.value",
         IMPORT_URL = "import.url";
 
@@ -52,9 +54,11 @@ define(function (require, exports, module) {
      * that is keyed by closing brackets.
      * @type {{string: string}}
      */
-    var _bracketPairs = { "{": "}",
-            "[": "]",
-            "(": ")" },
+    var _bracketPairs = {
+        "{": "}",
+        "[": "]",
+        "(": ")"
+    },
         _invertedBracketPairs = _.invert(_bracketPairs);
 
     /**
@@ -101,9 +105,10 @@ define(function (require, exports, module) {
 
     /**
      * @private
-     * Checks if the current cursor position is inside the property name context
-     * @param {editor:{CodeMirror}, pos:{ch:{string}, line:{number}}, token:{object}} context
-     * @return {boolean} true if the context is in property name
+     * Checks if the current cursor position is inside the property name context.
+     * @param {{editor: CodeMirror, pos: {ch: number, line: number}, token: object}} context - The context containing the editor,
+     *     cursor position, and token information.
+     * @return {boolean} true if the context is in a property name, false otherwise.
      */
     function _isInPropName(ctx) {
         var state = _getContextState(ctx),
@@ -115,12 +120,12 @@ define(function (require, exports, module) {
         lastToken = state.context.type;
         return (lastToken === "{" || lastToken === "rule" || lastToken === "block");
     }
-
     /**
      * @private
-     * Checks if the current cursor position is inside the property value context
-     * @param {editor:{CodeMirror}, pos:{ch:{string}, line:{number}}, token:{object}} context
-     * @return {boolean} true if the context is in property value
+     * Checks if the current cursor position is inside the property value context.
+     * @param {{editor: CodeMirror, pos: {ch: number, line: number}, token: object}} context - The context containing the editor,
+     *     cursor position, and token information.
+     * @return {boolean} true if the context is in a property value, false otherwise.
      */
     function _isInPropValue(ctx) {
 
@@ -142,15 +147,16 @@ define(function (require, exports, module) {
         }
 
         return ((state.context.type === "prop" &&
-                    (state.context.prev.type === "rule" || state.context.prev.type === "block")) ||
-                    isInsideParens(state.context));
+            (state.context.prev.type === "rule" || state.context.prev.type === "block")) ||
+            isInsideParens(state.context));
     }
 
     /**
      * @private
-     * Checks if the current cursor position is inside an at-rule
-     * @param {editor:{CodeMirror}, pos:{ch:{string}, line:{number}}, token:{object}} context
-     * @return {boolean} true if the context is in property value
+     * Checks if the current cursor position is inside an at-rule.
+     * @param {{editor: CodeMirror, pos: {ch: number, line: number}, token: object}} context - The context containing the editor,
+     *     cursor position, and token information.
+     * @return {boolean} true if the context is inside an at-rule, false otherwise.
      */
     function _isInAtRule(ctx) {
         var state = _getContextState(ctx);
@@ -182,13 +188,15 @@ define(function (require, exports, module) {
      *                   end: {line: number, ch: number}}}} A CSS context info object.
      */
     function createInfo(context, offset, name, index, values, isNewItem, range) {
-        var ruleInfo = { context: context || "",
+        var ruleInfo = {
+            context: context || "",
             offset: offset || 0,
             name: name || "",
             index: -1,
             values: [],
             isNewItem: (isNewItem === true),
-            range: range };
+            range: range
+        };
 
         if (context === PROP_VALUE || context === SELECTOR || context === IMPORT_URL) {
             ruleInfo.index = index;
@@ -200,13 +208,14 @@ define(function (require, exports, module) {
 
     /**
      * @private
-     * Scan backwards to check for any prefix if the current context is property name.
-     * If the current context is in a prefix (either 'meta' or '-'), then scan forwards
-     * to collect the entire property name. Return the name of the property in the CSS
-     * context info object if there is one that seems to be valid. Return an empty context
-     * info when we find an invalid one.
+     * Scans backwards to check for any prefix if the current context is a property name.
+     * If the current context is in a prefix (either 'meta' or '-'), then scans forwards
+     * to collect the entire property name. Returns the name of the property in the CSS
+     * context info object if a valid one is found. Returns an empty context info when
+     * an invalid one is encountered.
      *
-     * @param {editor:{CodeMirror}, pos:{ch:{string}, line:{number}}, token:{object}} ctx  context
+     * @param {{editor: CodeMirror, pos: {ch: number, line: number}, token: object}} ctx - The context containing
+     *     the editor, cursor position, and token information.
      * @return {{context: string,
      *           offset: number,
      *           name: string,
@@ -223,17 +232,17 @@ define(function (require, exports, module) {
             excludedCharacters = [";", "{", "}"];
 
         if (ctx.token.type === "property" || ctx.token.type === "property error" ||
-                ctx.token.type === "tag") {
+            ctx.token.type === "tag") {
             propName = tokenString;
             if (TokenUtils.movePrevToken(ctx) && _hasNonWhitespace(ctx.token.string) &&
-                    excludedCharacters.indexOf(ctx.token.string) === -1) {
+                excludedCharacters.indexOf(ctx.token.string) === -1) {
                 propName = ctx.token.string + tokenString;
                 offset += ctx.token.string.length;
             }
         } else if (ctx.token.type === "meta" || tokenString === "-") {
             propName = tokenString;
             if (TokenUtils.moveNextToken(ctx) &&
-                    (ctx.token.type === "property" || ctx.token.type === "property error" ||
+                (ctx.token.type === "property" || ctx.token.type === "property error" ||
                     ctx.token.type === "tag")) {
                 propName += ctx.token.string;
             }
@@ -241,11 +250,11 @@ define(function (require, exports, module) {
             // We're not inside the property name context.
             return createInfo();
         } else {
-            var testPos = {ch: ctx.pos.ch + 1, line: ctx.pos.line},
+            var testPos = { ch: ctx.pos.ch + 1, line: ctx.pos.line },
                 testToken = ctx.editor.getTokenAt(testPos, true);
 
             if (testToken.type === "property" || testToken.type === "property error" ||
-                    testToken.type === "tag") {
+                testToken.type === "tag") {
                 propName = testToken.string;
                 offset = 0;
             } else if (testToken.type === "meta" || testToken.string === "-") {
@@ -266,10 +275,11 @@ define(function (require, exports, module) {
 
     /**
      * @private
-     * Scans backwards from the current context and returns the name of the property if there is
-     * a valid one.
-     * @param {editor:{CodeMirror}, pos:{ch:{string}, line:{number}}, token:{object}} context
-     * @return {string} the property name of the current rule.
+     * Scans backwards from the current context and returns the name of the property if a valid one is found.
+     *
+     * @param {{editor: CodeMirror, pos: {ch: number, line: number}, token: object}} context - The context containing
+     *     the editor, cursor position, and token information.
+     * @return {string} The property name of the current rule, or an empty string if no valid property name is found.
      */
     function _getPropNameStartingFromPropValue(ctx) {
         var ctxClone = $.extend({}, ctx),
@@ -283,7 +293,7 @@ define(function (require, exports, module) {
         } while (ctxClone.token.string !== ":" && TokenUtils.moveSkippingWhitespace(TokenUtils.movePrevToken, ctxClone));
 
         if (ctxClone.token.string === ":" && TokenUtils.moveSkippingWhitespace(TokenUtils.movePrevToken, ctxClone) &&
-                (ctxClone.token.type === "property" || ctxClone.token.type === "property error")) {
+            (ctxClone.token.type === "property" || ctxClone.token.type === "property error")) {
             propName = ctxClone.token.string;
             if (TokenUtils.movePrevToken(ctxClone) && ctxClone.token.type === "meta") {
                 propName = ctxClone.token.string + propName;
@@ -295,10 +305,12 @@ define(function (require, exports, module) {
 
     /**
      * @private
-     * Gets all of the space/comma seperated tokens before the the current cursor position.
-     * @param {editor:{CodeMirror}, pos:{ch:{string}, line:{number}}, token:{object}} context
-     * @return {?Array.<string>} An array of all the space/comma seperated tokens before the
-     *    current cursor position
+     * Gets all of the space/comma-separated tokens before the current cursor position.
+     *
+     * @param {{editor: CodeMirror, pos: {ch: number, line: number}, token: object}} context - The context containing
+     *     the editor instance, the cursor position, and token information.
+     * @return {?Array.<string>} An array of all the space/comma-separated tokens before the
+     *     current cursor position, or null if no tokens are found.
      */
     function _getPrecedingPropValues(ctx) {
         var lastValue = "",
@@ -315,7 +327,7 @@ define(function (require, exports, module) {
             }
 
             if ((ctx.token.string.length > 0 && !ctx.token.string.match(/\S/)) ||
-                    ctx.token.string === ",") {
+                ctx.token.string === ",") {
                 lastValue = curValue;
             } else {
                 lastValue = "";
@@ -339,11 +351,13 @@ define(function (require, exports, module) {
 
     /**
      * @private
-     * Gets all of the space/comma seperated tokens after the the current cursor position.
-     * @param {editor:{CodeMirror}, pos:{ch:{string}, line:{number}}, token:{object}} context
-     * @param {string} currentValue The token string at the current cursor position
-     * @return {?Array.<string>} An array of all the space/comma seperated tokens after the
-     *    current cursor position
+     * Gets all of the space/comma-separated tokens after the current cursor position.
+     *
+     * @param {{editor: CodeMirror, pos: {ch: number, line: number}, token: object}} context - The context containing
+     *     the editor instance, the cursor position, and token information.
+     * @param {string} currentValue - The token string at the current cursor position.
+     * @return {?Array.<string>} An array of all the space/comma-separated tokens after the
+     *     current cursor position, or null if no tokens are found.
      */
     function _getSucceedingPropValues(ctx, currentValue) {
         var lastValue = currentValue,
@@ -389,18 +403,21 @@ define(function (require, exports, module) {
 
     /**
      * @private
-     * Return a range object with a start position and an end position after
-     * skipping any whitespaces and all separators used before and after a
-     * valid property value.
+     * Returns a range object with a start position and an end position after
+     * skipping any whitespace and separators used before and after a valid property value.
      *
-     * @param {editor:{CodeMirror}, pos:{ch:{string}, line:{number}}, token:{object}} startCtx context
-     * @param {editor:{CodeMirror}, pos:{ch:{string}, line:{number}}, token:{object}} endCtx context
+     * @param {{editor: CodeMirror, pos: {ch: number, line: number}, token: object}} startCtx - The context
+     *     representing the starting position, containing the editor instance and cursor position.
+     * @param {{editor: CodeMirror, pos: {ch: number, line: number}, token: object}} endCtx - The context
+     *     representing the ending position, containing the editor instance and cursor position.
      * @return {{start: {line: number, ch: number},
-     *           end: {line: number, ch: number}}} A range object.
-     */
+    *           end: {line: number, ch: number}}} A range object with the start and end positions.
+    */
     function _getRangeForPropValue(startCtx, endCtx) {
-        var range = { "start": {},
-            "end": {} };
+        var range = {
+            "start": {},
+            "end": {}
+        };
 
         // Skip the ":" and any leading whitespace
         while (TokenUtils.moveNextToken(startCtx)) {
@@ -411,7 +428,7 @@ define(function (require, exports, module) {
 
         // Skip the trailing whitespace and property separators.
         while (endCtx.token.string === ";" || endCtx.token.string === "}" ||
-                !_hasNonWhitespace(endCtx.token.string)) {
+            !_hasNonWhitespace(endCtx.token.string)) {
             TokenUtils.movePrevToken(endCtx);
         }
 
@@ -426,9 +443,11 @@ define(function (require, exports, module) {
 
     /**
      * @private
-     * Returns a context info object for the current CSS style rule
-     * @param {editor:{CodeMirror}, pos:{ch:{string}, line:{number}}, token:{object}} context
-     * @param {!Editor} editor
+     * Returns a context info object for the current CSS style rule.
+     *
+     * @param {{editor: CodeMirror, pos: {ch: number, line: number}, token: object}} context - The context 
+     *     containing the editor instance, cursor position, and token information.
+     * @param {!Editor} editor - The editor instance in which the CSS rule is defined.
      * @return {{context: string,
      *           offset: number,
      *           name: string,
@@ -439,11 +458,11 @@ define(function (require, exports, module) {
      *                   end: {line: number, ch: number}}}} A CSS context info object.
      */
     function _getRuleInfoStartingFromPropValue(ctx, editorParam) {
-        var editor      = editorParam._codeMirror || editorParam,
-            contextDoc  = editor.document || editor.doc,
+        var editor = editorParam._codeMirror || editorParam,
+            contextDoc = editor.document || editor.doc,
             propNamePos = $.extend({}, ctx.pos),
             backwardPos = $.extend({}, ctx.pos),
-            forwardPos  = $.extend({}, ctx.pos),
+            forwardPos = $.extend({}, ctx.pos),
             propNameCtx = TokenUtils.getInitialContext(editor, propNamePos),
             backwardCtx,
             forwardCtx,
@@ -452,7 +471,7 @@ define(function (require, exports, module) {
             index = -1,
             offset = TokenUtils.offsetInToken(ctx),
             canAddNewOne = false,
-            testPos = {ch: ctx.pos.ch + 1, line: ctx.pos.line},
+            testPos = { ch: ctx.pos.ch + 1, line: ctx.pos.line },
             testToken = editor.getTokenAt(testPos, true),
             propName,
             range;
@@ -497,8 +516,8 @@ define(function (require, exports, module) {
             offset = 0;
 
             // If pos is at EOL, then there's implied whitespace (newline).
-            if (contextDoc.getLine(ctx.pos.line).length > ctx.pos.ch  &&
-                    (testToken.string.length === 0 || testToken.string.match(/\S/))) {
+            if (contextDoc.getLine(ctx.pos.line).length > ctx.pos.ch &&
+                (testToken.string.length === 0 || testToken.string.match(/\S/))) {
                 canAddNewOne = false;
             }
         }
@@ -511,8 +530,10 @@ define(function (require, exports, module) {
             range = _getRangeForPropValue(backwardCtx, forwardCtx);
         } else {
             // No property value, so just return the cursor pos as range
-            range = { "start": _.clone(ctx.pos),
-                "end": _.clone(ctx.pos) };
+            range = {
+                "start": _.clone(ctx.pos),
+                "end": _.clone(ctx.pos)
+            };
         }
 
         // If current index is more than the propValues size, then the cursor is
@@ -526,21 +547,23 @@ define(function (require, exports, module) {
 
     /**
      * @private
-     * Returns a context info object for the current CSS import rule
-     * @param {editor:{CodeMirror}, pos:{ch:{string}, line:{number}}, token:{object}} context
-     * @param {!Editor} editor
+     * Returns a context info object for the current CSS import rule.
+     *
+     * @param {{editor: CodeMirror, pos: {ch: number, line: number}, token: object}} context - The context 
+     *     containing the editor instance, cursor position, and token information.
+     * @param {!Editor} editor - The editor instance in which the CSS import rule is defined.
      * @return {{context: string,
-     *           offset: number,
-     *           name: string,
-     *           index: number,
-     *           values: Array.<string>,
-     *           isNewItem: boolean,
-     *           range: {start: {line: number, ch: number},
-     *                   end: {line: number, ch: number}}}} A CSS context info object.
-     */
+    *           offset: number,
+    *           name: string,
+    *           index: number,
+    *           values: Array.<string>,
+    *           isNewItem: boolean,
+    *           range: {start: {line: number, ch: number},
+    *                   end: {line: number, ch: number}}}} A CSS context info object.
+    */
     function _getImportUrlInfo(ctx, editor) {
         var backwardPos = $.extend({}, ctx.pos),
-            forwardPos  = $.extend({}, ctx.pos),
+            forwardPos = $.extend({}, ctx.pos),
             backwardCtx,
             forwardCtx,
             index = 0,
@@ -632,12 +655,12 @@ define(function (require, exports, module) {
              * as CM in htmlmixed mode doesn't yet identify this as css context. We provide
              * a no-op display function to run CM without a DOM head.
              */
-            var _contextCM = new CodeMirror(function () {}, {
+            var _contextCM = new CodeMirror(function () { }, {
                 value: "{" + tagInfo.attr.value.replace(/(^")|("$)/g, ""),
                 mode: "css"
             });
 
-            ctx = TokenUtils.getInitialContext(_contextCM, {line: 0, ch: offset + 1});
+            ctx = TokenUtils.getInitialContext(_contextCM, { line: 0, ch: offset + 1 });
         }
 
         if (_isInPropName(ctx)) {
@@ -732,20 +755,20 @@ define(function (require, exports, module) {
     function extractAllSelectors(text, documentMode) {
         var state, lines, lineCount,
             token, style, stream, line,
-            selectors              = [],
-            mode                   = CodeMirror.getMode({indentUnit: 2}, documentMode || "css"),
-            currentSelector        = "",
-            currentLevel           = 0,
-            ruleStartChar          = -1,
-            ruleStartLine          = -1,
-            selectorStartChar      = -1,
-            selectorStartLine      = -1,
+            selectors = [],
+            mode = CodeMirror.getMode({ indentUnit: 2 }, documentMode || "css"),
+            currentSelector = "",
+            currentLevel = 0,
+            ruleStartChar = -1,
+            ruleStartLine = -1,
+            selectorStartChar = -1,
+            selectorStartLine = -1,
             selectorGroupStartLine = -1,
             selectorGroupStartChar = -1,
-            declListStartLine      = -1,
-            declListStartChar      = -1,
-            escapePattern          = new RegExp("\\\\[^\\\\]+", "g"),
-            validationPattern      = new RegExp("\\\\([a-f0-9]{6}|[a-f0-9]{4}(\\s|\\\\|$)|[a-f0-9]{2}(\\s|\\\\|$)|.)", "i"),
+            declListStartLine = -1,
+            declListStartChar = -1,
+            escapePattern = new RegExp("\\\\[^\\\\]+", "g"),
+            validationPattern = new RegExp("\\\\([a-f0-9]{6}|[a-f0-9]{4}(\\s|\\\\|$)|[a-f0-9]{2}(\\s|\\\\|$)|.)", "i"),
             _parseRuleList;
 
         // implement _firstToken()/_nextToken() methods to
@@ -879,7 +902,7 @@ define(function (require, exports, module) {
 
         function _maybeProperty() {
             return (/^-(moz|ms|o|webkit)-$/.test(token) ||
-                    (state.state !== "top" && state.state !== "block" && state.state !== "pseudo" &&
+                (state.state !== "top" && state.state !== "block" && state.state !== "pseudo" &&
                     // Has a semicolon as in "rgb(0,0,0);", but not one of those after a LESS
                     // mixin parameter variable as in ".size(@width; @height)"
                     stream.string.indexOf(";") !== -1 && !/\([^)]+;/.test(stream.string)));
@@ -929,14 +952,14 @@ define(function (require, exports, module) {
 
             // Everything until the next ',' or '{' is part of the current selector
             while ((token !== "," && token !== "{") ||
-                    (token === "{" && /[#@]$/.test(currentSelector)) ||
-                    (token === "," && !_hasNonWhitespace(currentSelector))) {
+                (token === "{" && /[#@]$/.test(currentSelector)) ||
+                (token === "," && !_hasNonWhitespace(currentSelector))) {
                 if (token === "{") {
                     // Append the interpolated variable to selector
                     currentSelector += _skipToClosingBracket("{");
                     _nextToken();  // skip the closing brace
                 } else if (token === "}" &&
-                        (!currentSelector || /:\s*\S/.test(currentSelector) || !/[#@]\{.+/.test(currentSelector))) {
+                    (!currentSelector || /:\s*\S/.test(currentSelector) || !/[#@]\{.+/.test(currentSelector))) {
                     // Either empty currentSelector or currentSelector is a CSS property
                     // but not a selector that is in the form of #{$class} or @{class}
                     return false;
@@ -944,8 +967,8 @@ define(function (require, exports, module) {
                 // Clear currentSelector if we're in a property, but make sure we don't treat
                 // the semicolors inside a parameter as a property separators.
                 if ((token === ";" && state.state !== "parens") ||
-                        // Make sure that something like `> li > a {` is not identified as a property
-                        (state.state === "prop" && !/\{/.test(stream.string))) {
+                    // Make sure that something like `> li > a {` is not identified as a property
+                    (state.state === "prop" && !/\{/.test(stream.string))) {
                     currentSelector = "";
                 } else if (token === "(") {
                     // Collect everything inside the parentheses as a whole chunk so that
@@ -982,7 +1005,7 @@ define(function (require, exports, module) {
                         }
                         if (parseInt(unicodeChar, 16) < 0x10FFFF) {
                             return String.fromCharCode(parseInt(unicodeChar, 16));
-                        }  return String.fromCharCode(0xFFFD);
+                        } return String.fromCharCode(0xFFFD);
 
                     });
                 });
@@ -1001,7 +1024,8 @@ define(function (require, exports, module) {
                     ruleStartChar = stream.start - currentSelector.length;
                 }
                 var parentSelectors = _getParentSelectors();
-                selectors.push({selector: currentSelector,
+                selectors.push({
+                    selector: currentSelector,
                     ruleStartLine: ruleStartLine,
                     ruleStartChar: ruleStartChar,
                     selectorStartLine: selectorStartLine,
@@ -1354,7 +1378,7 @@ define(function (require, exports, module) {
      * @param {!string} text CSS text to search
      * @param {!string} selector selector to search for
      * @param {!string} mode language mode of the document that text belongs to
-     * @return {Array.<{selectorGroupStartLine:number, declListEndLine:number, selector:string}>}
+     * @return {{selectorGroupStartLine:number, declListEndLine:number, selector:string}}
      *      Array of objects containing the start and end line numbers (0-based, inclusive range) for each
      *      matched selector.
      */
@@ -1400,7 +1424,7 @@ define(function (require, exports, module) {
     /**
      * Converts the results of _findAllMatchingSelectorsInText() into a simpler bag of data and
      * appends those new objects to the given 'resultSelectors' Array.
-     * @param {Array.<{document:Document, lineStart:number, lineEnd:number}>} resultSelectors
+     * @param {{document:Document, lineStart:number, lineEnd:number}} resultSelectors Array
      * @param {Array.<SelectorInfo>} selectorsToAdd
      * @param {!Document} sourceDoc
      * @param {!number} lineOffset Amount to offset all line number info by. Used if the first line
@@ -1420,7 +1444,7 @@ define(function (require, exports, module) {
 
     /** Finds matching selectors in CSS files; adds them to 'resultSelectors' */
     function _findMatchingRulesInCSSFiles(selector, resultSelectors) {
-        var result          = new $.Deferred();
+        var result = new $.Deferred();
 
         // Load one CSS file and search its contents
         function _loadFileAndScan(fullPath, selector) {
@@ -1455,7 +1479,7 @@ define(function (require, exports, module) {
         return result.promise();
     }
 
-    /** Finds matching selectors in the <style> block of a single HTML file; adds them to 'resultSelectors' */
+    /** Finds matching selectors in the 'style' block of a single HTML file; adds them to 'resultSelectors' */
     function _findMatchingRulesInStyleBlocks(htmlDocument, selector, resultSelectors) {
         // HTMLUtils requires a real CodeMirror instance; make sure we can give it the right Editor
         var htmlEditor = EditorManager.getCurrentFullEditor();
@@ -1491,13 +1515,13 @@ define(function (require, exports, module) {
      *  .foo.bar {}
      *
      * @param {!string} selector The selector to match. This can be a tag selector, class selector or id selector
-     * @param {?Document} htmlDocument An HTML file for context (so we can search <style> blocks)
+     * @param {?Document} htmlDocument An HTML file for context (so we can search 'style' blocks)
      * @return {$.Promise} that will be resolved with an Array of objects containing the
      *      source document, start line, and end line (0-based, inclusive range) for each matching declaration list.
      *      Does not addRef() the documents returned in the array.
      */
     function findMatchingRules(selector, htmlDocument) {
-        var result          = new $.Deferred(),
+        var result = new $.Deferred(),
             resultSelectors = [];
 
         // Synchronously search for matches in <style> blocks
@@ -1592,12 +1616,12 @@ define(function (require, exports, module) {
         }
 
         var skipPrevSibling = false,
-            state           = _getContextState(ctx);
+            state = _getContextState(ctx);
 
         // If the cursor is inside a non-whitespace token with "block" or "top" state, then it is inside a
         // selector. The only exception is when it is immediately after the '{'.
         if (isPreprocessorDoc && _hasNonWhitespace(ctx.token.string) && ctx.token.string !== "{" &&
-                (state.state === "block" || state.state === "top")) {
+            (state.state === "block" || state.state === "top")) {
             foundChars = true;
         }
 
@@ -1648,7 +1672,7 @@ define(function (require, exports, module) {
         // For preprocessor documents we need to move the cursor to next non-whitespace
         // token so that we can collect the current selector if the cursor is inside it.
         if ((!selector && !foundChars && !isPreprocessorDoc) ||
-                (isPreprocessorDoc && (ctx.token.string === "" || /\s+/.test(ctx.token.string)))) {
+            (isPreprocessorDoc && (ctx.token.string === "" || /\s+/.test(ctx.token.string)))) {
             if (TokenUtils.moveNextToken(ctx) && ctx.token.type !== "comment" && _hasNonWhitespace(ctx.token.string)) {
                 foundChars = true;
                 ctx = TokenUtils.getInitialContext(cm, $.extend({}, pos));
@@ -1748,13 +1772,13 @@ define(function (require, exports, module) {
         var docLines = doc.getText().split("\n"),
             lastDocLine = docLines.length - 1,
             lastDocChar = docLines[docLines.length - 1].length;
-        doc.replaceRange(newRule, {line: lastDocLine, ch: lastDocChar});
+        doc.replaceRange(newRule, { line: lastDocLine, ch: lastDocChar });
         return {
             range: {
-                from: {line: lastDocLine + 1, ch: 0},
-                to: {line: lastDocLine + 3, ch: 1}
+                from: { line: lastDocLine + 1, ch: 0 },
+                to: { line: lastDocLine + 3, ch: 1 }
             },
-            pos: {line: lastDocLine + 2, ch: blankLineOffset}
+            pos: { line: lastDocLine + 2, ch: blankLineOffset }
         };
     }
 
@@ -1772,10 +1796,10 @@ define(function (require, exports, module) {
             }
             // Push the entry unless it refers to the same rule as the previous entry.
             if (!(lastRule &&
-                     rule.document === lastRule.document &&
-                     rule.lineStart === lastRule.lineStart &&
-                     rule.lineEnd === lastRule.lineEnd &&
-                     rule.selectorGroup === lastRule.selectorGroup)) {
+                rule.document === lastRule.document &&
+                rule.lineStart === lastRule.lineStart &&
+                rule.lineEnd === lastRule.lineEnd &&
+                rule.selectorGroup === lastRule.selectorGroup)) {
                 newRules.push(rule);
             }
             lastRule = rule;
@@ -1814,11 +1838,11 @@ define(function (require, exports, module) {
     function _extractSelectorSet(selectorList) {
         const regex = /[{}!]/;
         const selectors = new Set();
-        if(!selectorList){
+        if (!selectorList) {
             return selectors;
         }
-        for(let item of selectorList) {
-            if(regex.test(item) || !item.trim()){
+        for (let item of selectorList) {
+            if (regex.test(item) || !item.trim()) {
                 // this happens for scss selectors like #${var}-something. we ignore that for now instead of resolving
                 continue;
             }
@@ -1829,24 +1853,24 @@ define(function (require, exports, module) {
     }
 
     const CSSSelectorCache = new Phoenix.libs.LRUCache({
-        maxSize: 100*1024*1024, // 100MB
+        maxSize: 100 * 1024 * 1024, // 100MB
         sizeCalculation: (value) => {
             return value.length;
         }
     });
 
     function _projectFileChanged(_evt, entry) {
-        if(!entry){
+        if (!entry) {
             return;
         }
         let changedPath = entry.fullPath;
-        if(entry.isFile) {
+        if (entry.isFile) {
             CSSSelectorCache.delete(changedPath);
-        } else if(entry.isDirectory) {
+        } else if (entry.isDirectory) {
             changedPath = Phoenix.VFS.ensureTrailingSlash(changedPath);
             const cachedFilePaths = Array.from(CSSSelectorCache.keys());
-            for(let filePath of cachedFilePaths) {
-                if(filePath.startsWith(changedPath)){
+            for (let filePath of cachedFilePaths) {
+                if (filePath.startsWith(changedPath)) {
                     CSSSelectorCache.delete(filePath);
                 }
             }
@@ -1860,31 +1884,31 @@ define(function (require, exports, module) {
     };
 
     function _loadFileAndScanCSSSelectorCached(fullPath) {
-        return new Promise(resolve=>{
+        return new Promise(resolve => {
             DocumentManager.getDocumentForPath(fullPath)
                 .done(function (doc) {
                     // Find all matching rules for the given CSS file's content, and add them to the
                     // overall search result
                     let selectors = new Set();
                     const cachedSelectors = CSSSelectorCache.get(fullPath);
-                    if(cachedSelectors){
+                    if (cachedSelectors) {
                         resolve(new Set(JSON.parse(cachedSelectors)));
                         return;
                     }
                     const langID = doc.getLanguage().getId();
-                    if(!CSS_MODE_MAP[langID]){
+                    if (!CSS_MODE_MAP[langID]) {
                         console.log("Cannot parse CSS for mode :", langID, "ignoring", fullPath);
                         resolve(selectors);
                         return;
                     }
                     console.log("scanning file for css selector collation: ", fullPath);
                     IndexingWorker.execPeer("css_getAllSymbols",
-                        {text: doc.getText(), cssMode: CSS_MODE_MAP[langID], filePath: fullPath})
-                        .then((selectorArray)=>{
+                        { text: doc.getText(), cssMode: CSS_MODE_MAP[langID], filePath: fullPath })
+                        .then((selectorArray) => {
                             selectors = _extractSelectorSet(selectorArray);
                             CSSSelectorCache.set(fullPath, JSON.stringify(Array.from(selectors)));
                             resolve(selectors);
-                        }).catch(err=>{
+                        }).catch(err => {
                             console.warn("CSS language service unable to get selectors for" + fullPath, err);
                             resolve(selectors);  // still resolve, so the overall result doesn't reject
                         });
@@ -1902,7 +1926,7 @@ define(function (require, exports, module) {
         const match = selector.match(/^[^\s>+~:\[]+/);
         // Return the match if found, otherwise return the original selector if no ':' or '::' is present
         selector = match ? match[0] : selector;
-        if(selector.startsWith(".")) {
+        if (selector.startsWith(".")) {
             // Eg .class1.class2 type selector, we have to consider this too, so we always take the first segment only
             selector = "." + selector.split(".")[1];
         }
@@ -1932,7 +1956,7 @@ define(function (require, exports, module) {
             // dont use fetchBlock10Secs.has as lru cache wont delete ttl expired items for performance.
             // fetchBlock10Secs.get will return undefined for ttl expired items
             // we purge this cache anyway on project switch/max entry reached.
-            if(cacheInProgress.has(link) || fetchBlock10Secs.get(link)){
+            if (cacheInProgress.has(link) || fetchBlock10Secs.get(link)) {
                 return;
             }
             fetchBlock10Secs.set(link, true);
@@ -1952,11 +1976,11 @@ define(function (require, exports, module) {
             const response = await fetch(link);
             const styleSheetText = await response.text();
             IndexingWorker.execPeer("css_getAllSymbols",
-                {text: styleSheetText, cssMode: CSS_MODE_MAP[extension], filePath: link})
-                .then((selectorArray)=>{
+                { text: styleSheetText, cssMode: CSS_MODE_MAP[extension], filePath: link })
+                .then((selectorArray) => {
                     const selectorJson = JSON.stringify(Array.from(_extractSelectorSet(selectorArray)));
                     CSSSelectorCache.set(link, selectorJson);
-                }).catch(err=>{
+                }).catch(err => {
                     console.warn("CSS language service unable to get selectors for link" + link, err);
                 });
         } catch (e) {
@@ -1977,20 +2001,20 @@ define(function (require, exports, module) {
      */
     async function _getLinkedCSSFileSelectors(htmlFileContent, fileMode, fullPath) {
         const linkedFiles = await catchToNull(IndexingWorker.execPeer(
-            "html_getAllLinks", {text: htmlFileContent, htmlMode: fileMode, filePath: fullPath}),
-            "error extracting linked css files from"+ fullPath) || [];
+            "html_getAllLinks", { text: htmlFileContent, htmlMode: fileMode, filePath: fullPath }),
+            "error extracting linked css files from" + fullPath) || [];
         let selectors = new Set();
         let externalStyleSheetCount = 0;
-        for(const link of linkedFiles) {
-            if(externalStyleSheetCount >= MAX_ALLOWED_EXTERNAL_STYLE_SHEETS){
+        for (const link of linkedFiles) {
+            if (externalStyleSheetCount >= MAX_ALLOWED_EXTERNAL_STYLE_SHEETS) {
                 break;
             }
-            if(link.startsWith("http://") || link.startsWith("https://")) {
-                externalStyleSheetCount ++;
+            if (link.startsWith("http://") || link.startsWith("https://")) {
+                externalStyleSheetCount++;
                 let cachedSelectorsArray = CSSSelectorCache.get(link);
-                if(cachedSelectorsArray){
+                if (cachedSelectorsArray) {
                     cachedSelectorsArray = JSON.parse(cachedSelectorsArray);
-                    for(let value of cachedSelectorsArray){
+                    for (let value of cachedSelectorsArray) {
                         selectors.add(value);
                     }
                 } else {
@@ -2004,7 +2028,7 @@ define(function (require, exports, module) {
     async function _getAllSelectorsInCurrentHTMLEditor() {
         let selectors = new Set();
         const htmlEditor = EditorManager.getCurrentFullEditor();
-        if (!htmlEditor || !_isHtmlLike(htmlEditor) ) {
+        if (!htmlEditor || !_isHtmlLike(htmlEditor)) {
             return selectors;
         }
 
@@ -2018,7 +2042,7 @@ define(function (require, exports, module) {
         });
         const fullPath = htmlEditor.document.file.fullPath;
         const selectorsPromise = IndexingWorker.execPeer(
-            "css_getAllSymbols", {text: cssText, cssMode: "CSS", filePath: fullPath});
+            "css_getAllSymbols", { text: cssText, cssMode: "CSS", filePath: fullPath });
         const htmlLanguageID = LanguageManager.getLanguageForPath(fullPath).getId();
         const remoteLinkedSelectors = await _getLinkedCSSFileSelectors(htmlEditor.document.getText(),
             htmlLanguageID.toUpperCase(), fullPath);
@@ -2033,13 +2057,13 @@ define(function (require, exports, module) {
         includeIDs: true,
         scanCurrentHtml: true
     }) {
-        globalPrecacheRun ++; // we need to stop the pre cache logic from doing the same cache again
-        return new Promise(resolve=>{
+        globalPrecacheRun++; // we need to stop the pre cache logic from doing the same cache again
+        return new Promise(resolve => {
             ProjectManager.getAllFiles(ProjectManager.getLanguageFilter(["css", "less", "scss"]))
                 .done(function (cssFiles) {
                     // Create an array of promises from the array of cssFiles
                     const promises = cssFiles.map(fileInfo => _loadFileAndScanCSSSelectorCached(fileInfo.fullPath));
-                    if(options.scanCurrentHtml){
+                    if (options.scanCurrentHtml) {
                         promises.push(_getAllSelectorsInCurrentHTMLEditor());
                     }
                     const mergedSets = new Set();
@@ -2049,7 +2073,7 @@ define(function (require, exports, module) {
                             results.forEach((result, index) => {
                                 if (result.status === 'fulfilled') {
                                     result.value.forEach(value => {
-                                        if((options.includeClasses && value.startsWith(".")) ||
+                                        if ((options.includeClasses && value.startsWith(".")) ||
                                             (options.includeIDs && value.startsWith("#"))) {
                                             mergedSets.add(value);
                                         }
@@ -2066,12 +2090,12 @@ define(function (require, exports, module) {
     }
 
     async function _populateSelectorCache() {
-        globalPrecacheRun ++;
+        globalPrecacheRun++;
         const currentCacheRun = globalPrecacheRun;
         const cssFiles = await jsPromise(ProjectManager.getAllFiles(
             ProjectManager.getLanguageFilter(["css", "less", "scss"])));
-        for(let cssFile of cssFiles){
-            if(currentCacheRun !== globalPrecacheRun) {
+        for (let cssFile of cssFiles) {
+            if (currentCacheRun !== globalPrecacheRun) {
                 // this is for cases in very large projects where the project switches while a
                 // project wide css parse was in progress.
                 break;
@@ -2081,12 +2105,12 @@ define(function (require, exports, module) {
     }
 
     AppInit.appReady(function () {
-        if(Phoenix.isSpecRunnerWindow){
+        if (Phoenix.isSpecRunnerWindow) {
             // no unit tests event handlers
             return;
         }
         ProjectManager.on(ProjectManager.EVENT_PROJECT_FILE_CHANGED, _projectFileChanged);
-        ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, ()=>{
+        ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, () => {
             CSSSelectorCache.clear();
             fetchBlock10Secs.clear();
             setTimeout(_populateSelectorCache, 2000);

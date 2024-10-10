@@ -19,6 +19,8 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /*global Phoenix*/
 
 /*
@@ -1347,8 +1349,9 @@ define(function (require, exports, module) {
      *
      * During debugging, you can turn this automatic resetting behavior off
      * by running this in the console:
+     * ```js
      * brackets._configureJSCodeHints({ noReset: true })
-     *
+     * ```
      * This function is also used in unit testing with the "force" flag to
      * reset the module for each test to start with a clean environment.
      *
@@ -1468,9 +1471,7 @@ define(function (require, exports, module) {
     /**
      *  Track the update area of the current document so we can tell if we can send
      *  partial updates to tern or not.
-     *
-     * @param {Array.<{from: {line:number, ch: number}, to: {line:number, ch: number},
-     *     text: Array<string>}>} changeList - the document changes from the current change event
+     * @param {{from: {line: number, ch: number}, to: {line: number, ch: number}, text: string[]}} changeList - The document changes from the current change event
      */
     function trackChange(changeList) {
         var changed = documentChanges, i;

@@ -19,20 +19,22 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /**
  * Manages the workingSetList sort methods.
  */
 define(function (require, exports, module) {
 
 
-    var Commands                = require("command/Commands"),
-        CommandManager          = require("command/CommandManager"),
-        MainViewManager         = require("view/MainViewManager"),
-        PreferencesManager      = require("preferences/PreferencesManager"),
-        FileUtils               = require("file/FileUtils"),
-        AppInit                 = require("utils/AppInit"),
-        Strings                 = require("strings"),
-        _                       = require("thirdparty/lodash");
+    var Commands = require("command/Commands"),
+        CommandManager = require("command/CommandManager"),
+        MainViewManager = require("view/MainViewManager"),
+        PreferencesManager = require("preferences/PreferencesManager"),
+        FileUtils = require("file/FileUtils"),
+        AppInit = require("utils/AppInit"),
+        Strings = require("strings"),
+        _ = require("thirdparty/lodash");
 
     /**
      * List of sorting method objects
@@ -57,9 +59,11 @@ define(function (require, exports, module) {
 
 
     /**
-     * Maps Legacy sort method names  to new sort method names
+     * Maps legacy sort method names to new sort method names.
+     *
      * @private
-     * @type {object.<string: string>} oldname: newname
+     * @type {Object.<string, string>} An object where each key is the legacy method name
+     *     and the corresponding value is the new method name.
      */
     var _sortPrefConversionMap = {
         "view.sortWorkingSetByAdded": "cmd.sortWorkingSetByAdded",
@@ -210,7 +214,7 @@ define(function (require, exports, module) {
     function Sort(commandID, compareFn, events, automaticFn) {
         this._commandID = commandID;
         this._compareFn = compareFn;
-        this._events    = events;
+        this._events = events;
     }
 
     /**
@@ -274,7 +278,7 @@ define(function (require, exports, module) {
      * @param {function(File, File): number} compareFn The function that
      *      will be used inside JavaScript's sort function. The return a value
      *      should be >0 (sort a to a lower index than b), =0 (leaves a and b
-     *      unchanged with respect to each other) or <0 (sort b to a lower index
+     *      unchanged with respect to each other) or < 0 (sort b to a lower index
      *      than a) and must always returns the same value when given a specific
      *      pair of elements a and b as its two arguments. Documentation at:
      *      https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/sort
@@ -367,9 +371,9 @@ define(function (require, exports, module) {
      * Register Command Handlers
      */
     CommandManager.register(Strings.CMD_WORKINGSET_SORT_BY_ADDED, Commands.CMD_WORKINGSET_SORT_BY_ADDED, _.partial(_handleSort, Commands.CMD_WORKINGSET_SORT_BY_ADDED));
-    CommandManager.register(Strings.CMD_WORKINGSET_SORT_BY_NAME,  Commands.CMD_WORKINGSET_SORT_BY_NAME,  _.partial(_handleSort, Commands.CMD_WORKINGSET_SORT_BY_NAME));
-    CommandManager.register(Strings.CMD_WORKINGSET_SORT_BY_TYPE,  Commands.CMD_WORKINGSET_SORT_BY_TYPE,  _.partial(_handleSort, Commands.CMD_WORKINGSET_SORT_BY_TYPE));
-    CommandManager.register(Strings.CMD_WORKING_SORT_TOGGLE_AUTO,   Commands.CMD_WORKING_SORT_TOGGLE_AUTO,    _handleToggleAutoSort);
+    CommandManager.register(Strings.CMD_WORKINGSET_SORT_BY_NAME, Commands.CMD_WORKINGSET_SORT_BY_NAME, _.partial(_handleSort, Commands.CMD_WORKINGSET_SORT_BY_NAME));
+    CommandManager.register(Strings.CMD_WORKINGSET_SORT_BY_TYPE, Commands.CMD_WORKINGSET_SORT_BY_TYPE, _.partial(_handleSort, Commands.CMD_WORKINGSET_SORT_BY_TYPE));
+    CommandManager.register(Strings.CMD_WORKING_SORT_TOGGLE_AUTO, Commands.CMD_WORKING_SORT_TOGGLE_AUTO, _handleToggleAutoSort);
 
 
     /**
@@ -404,7 +408,7 @@ define(function (require, exports, module) {
      */
     AppInit.appReady(function () {
         var sortMethod = initSortMethod(),
-            curSort    = get(sortMethod),
+            curSort = get(sortMethod),
             autoSort = PreferencesManager.getViewState("automaticSort");
 
         if (curSort) {
@@ -419,8 +423,8 @@ define(function (require, exports, module) {
     });
 
     // Public API
-    exports.register        = register;
-    exports.get             = get;
-    exports.getAutomatic    = getAutomatic;
-    exports.setAutomatic    = setAutomatic;
+    exports.register = register;
+    exports.get = get;
+    exports.getAutomatic = getAutomatic;
+    exports.setAutomatic = setAutomatic;
 });

@@ -21,27 +21,29 @@
 
 /*global Phoenix*/
 
+// @INCLUDE_IN_API_DOCS
+
 /*
  * The core search functionality used by Find in Files and single-file Replace Batch.
  */
 define(function (require, exports, module) {
 
 
-    var _                     = require("thirdparty/lodash"),
-        FileFilters           = require("search/FileFilters"),
-        Async                 = require("utils/Async"),
-        StringUtils           = require("utils/StringUtils"),
-        ProjectManager        = require("project/ProjectManager"),
-        DocumentModule        = require("document/Document"),
-        DocumentManager       = require("document/DocumentManager"),
-        MainViewManager       = require("view/MainViewManager"),
-        FileSystem            = require("filesystem/FileSystem"),
-        LanguageManager       = require("language/LanguageManager"),
-        SearchModel           = require("search/SearchModel").SearchModel,
-        PerfUtils             = require("utils/PerfUtils"),
-        FindUtils             = require("search/FindUtils"),
-        Metrics               = require("utils/Metrics"),
-        IndexingWorker        = require("worker/IndexingWorker");
+    var _ = require("thirdparty/lodash"),
+        FileFilters = require("search/FileFilters"),
+        Async = require("utils/Async"),
+        StringUtils = require("utils/StringUtils"),
+        ProjectManager = require("project/ProjectManager"),
+        DocumentModule = require("document/Document"),
+        DocumentManager = require("document/DocumentManager"),
+        MainViewManager = require("view/MainViewManager"),
+        FileSystem = require("filesystem/FileSystem"),
+        LanguageManager = require("language/LanguageManager"),
+        SearchModel = require("search/SearchModel").SearchModel,
+        PerfUtils = require("utils/PerfUtils"),
+        FindUtils = require("search/FindUtils"),
+        Metrics = require("utils/Metrics"),
+        IndexingWorker = require("worker/IndexingWorker");
 
     let projectIndexingComplete = false;
 
@@ -108,7 +110,7 @@ define(function (require, exports, module) {
 
         DocumentModule.on("documentChange", _documentChangeHandler);
         FileSystem.on("change", _debouncedFileSystemChangeHandler);
-        DocumentManager.on("fileNameChange",  _fileNameChangeHandler);
+        DocumentManager.on("fileNameChange", _fileNameChangeHandler);
     }
 
     function workerFileCacheComplete(data) {
@@ -133,7 +135,7 @@ define(function (require, exports, module) {
         FindUtils.setInstantSearchDisabled(false);
         FindUtils.notifyIndexingFinished();
         Metrics.valueEvent(Metrics.EVENT_TYPE.SEARCH, "indexing", "numFiles", numFiles);
-        Metrics.valueEvent(Metrics.EVENT_TYPE.SEARCH, "indexing", "cacheSizeKB", cacheSize/1024);
+        Metrics.valueEvent(Metrics.EVENT_TYPE.SEARCH, "indexing", "cacheSizeKB", cacheSize / 1024);
         Metrics.valueEvent(Metrics.EVENT_TYPE.SEARCH, "indexing", "crawlTimeMs", crawlTime);
     }
 
@@ -142,7 +144,7 @@ define(function (require, exports, module) {
      * Searches through the contents and returns an array of matches
      * @param {string} contents
      * @param {RegExp} queryExpr
-     * @return {!Array.<{start: {line:number,ch:number}, end: {line:number,ch:number}, line: string}>}
+     * @return {!{start: {line:number,ch:number}, end: {line:number,ch:number}, line: string}}
      */
     function _getSearchMatches(contents, queryExpr) {
         // Quick exit if not found or if we hit the limit
@@ -152,20 +154,20 @@ define(function (require, exports, module) {
 
         var match, lineNum, line, ch, totalMatchLength, matchedLines, numMatchedLines, lastLineLength, endCh,
             padding, leftPadding, rightPadding, highlightOffset, highlightEndCh,
-            lines   = StringUtils.getLines(contents),
+            lines = StringUtils.getLines(contents),
             matches = [];
 
         while ((match = queryExpr.exec(contents)) !== null) {
-            lineNum          = StringUtils.offsetToLineNum(lines, match.index);
-            line             = lines[lineNum];
-            ch               = match.index - contents.lastIndexOf("\n", match.index - 1) - 1;  // 0-based index
-            matchedLines     = match[0].split("\n");
-            numMatchedLines  = matchedLines.length;
+            lineNum = StringUtils.offsetToLineNum(lines, match.index);
+            line = lines[lineNum];
+            ch = match.index - contents.lastIndexOf("\n", match.index - 1) - 1;  // 0-based index
+            matchedLines = match[0].split("\n");
+            numMatchedLines = matchedLines.length;
             totalMatchLength = match[0].length;
-            lastLineLength   = matchedLines[matchedLines.length - 1].length;
-            endCh            = (numMatchedLines === 1 ? ch + totalMatchLength : lastLineLength);
-            highlightEndCh   = (numMatchedLines === 1 ? endCh : line.length);
-            highlightOffset  = 0;
+            lastLineLength = matchedLines[matchedLines.length - 1].length;
+            endCh = (numMatchedLines === 1 ? ch + totalMatchLength : lastLineLength);
+            highlightEndCh = (numMatchedLines === 1 ? endCh : line.length);
+            highlightOffset = 0;
 
             if (highlightEndCh <= MAX_DISPLAY_LENGTH) {
                 // Don't store more than 200 chars per line
@@ -184,8 +186,8 @@ define(function (require, exports, module) {
             }
 
             matches.push({
-                start: {line: lineNum, ch: ch},
-                end: {line: lineNum + numMatchedLines - 1, ch: endCh},
+                start: { line: lineNum, ch: ch },
+                end: { line: lineNum + numMatchedLines - 1, ch: endCh },
 
                 highlightOffset: highlightOffset,
 
@@ -225,14 +227,14 @@ define(function (require, exports, module) {
      * @private
      * Update the search results using the given list of changes for the given document
      * @param {Document} doc  The Document that changed, should be the current one
-     * @param {Array.<{from: {line:number,ch:number}, to: {line:number,ch:number}, text: !Array.<string>}>} changeList
+     * @param {{from: {line:number,ch:number}, to: {line:number,ch:number}, text: !Array.<string>}} changeList Array
      *      An array of changes as described in the Document constructor
      */
     function _updateResults(doc, changeList) {
         var i, diff, matches, lines, start, howMany,
             resultsChanged = false,
-            fullPath       = doc.file.fullPath,
-            resultInfo     = searchModel.results[fullPath];
+            fullPath = doc.file.fullPath,
+            resultInfo = searchModel.results[fullPath];
 
         // Remove the results before we make any changes, so the SearchModel can accurately update its count.
         searchModel.removeResults(fullPath);
@@ -247,7 +249,7 @@ define(function (require, exports, module) {
                 // TODO: add unit test exercising timestamp logic in this case
                 // We don't just call _updateSearchMatches() here because we want to continue iterating through changes in
                 // the list and update at the end.
-                resultInfo = {matches: _getSearchMatches(doc.getText(), searchModel.queryExpr), timestamp: doc.diskTimestamp};
+                resultInfo = { matches: _getSearchMatches(doc.getText(), searchModel.queryExpr), timestamp: doc.diskTimestamp };
                 resultsChanged = true;
 
             } else {
@@ -272,7 +274,7 @@ define(function (require, exports, module) {
                             howMany++;
                         } else {
                             item.start.line += diff;
-                            item.end.line   += diff;
+                            item.end.line += diff;
                         }
                     });
 
@@ -289,13 +291,13 @@ define(function (require, exports, module) {
                     // Updates the line numbers, since we only searched part of the file
                     matches.forEach(function (value, key) {
                         matches[key].start.line += change.from.line;
-                        matches[key].end.line   += change.from.line;
+                        matches[key].end.line += change.from.line;
                     });
 
                     // If the file index exists, add the new matches to the file at the start index found before
                     if (resultInfo) {
                         Array.prototype.splice.apply(resultInfo.matches, [start, 0].concat(matches));
-                    // If not, add the matches to a new file index
+                        // If not, add the matches to a new file index
                     } else {
                         // TODO: add unit test exercising timestamp logic in self case
                         resultInfo = {
@@ -409,11 +411,12 @@ define(function (require, exports, module) {
 
     /**
      * @private
-     * Tries to update the search result on document changes
-     * @param {$.Event} event
-     * @param {Document} document
-     * @param {<{from: {line:number,ch:number}, to: {line:number,ch:number}, text: !Array.<string>}>} change
-     *      A change list as described in the Document constructor
+     * Attempts to update the search results based on document changes.
+     *
+     * @param {$.Event} event - The event triggered by the document change.
+     * @param {Document} document - The document that is being modified.
+     * @param {{from: {line: number, ch: number}, to: {line: number, ch: number}, text: !Array.<string>}} change 
+     *     - An object representing the change list as described in the Document constructor.
      */
     _documentChangeHandler = function (event, document, change) {
         changedFileList[document.file.fullPath] = true;
@@ -442,7 +445,7 @@ define(function (require, exports, module) {
                 // Note that we don't fire a model change here, since this is always called by some outer batch
                 // operation that will fire it once it's done.
                 var matches = _getSearchMatches(text, searchModel.queryExpr);
-                searchModel.setResults(file.fullPath, {matches: matches, timestamp: timestamp});
+                searchModel.setResults(file.fullPath, { matches: matches, timestamp: timestamp });
                 result.resolve(!!matches.length);
             })
             .fail(function () {
@@ -513,7 +516,7 @@ define(function (require, exports, module) {
                 // Filter out files/folders that match user's current exclusion filter
                 const isSingleFileScope = scope && scope.isFile;
                 // in single files scope, the file needs to be searched anyway, exclusions wont apply.
-                if (!isSingleFileScope){
+                if (!isSingleFileScope) {
                     fileListResult = FileFilters.filterFileList(filter, fileListResult);
                 }
 
@@ -646,19 +649,19 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Given a set of search results, replaces them with the given replaceText, either on disk or in memory.
-     * @param {Object.<fullPath: string, {matches: Array.<{start: {line:number,ch:number}, end: {line:number,ch:number}, startOffset: number, endOffset: number, line: string}>, collapsed: boolean}>} results
-     *      The list of results to replace, as returned from _doSearch..
-     * @param {string} replaceText The text to replace each result with.
-     * @param {?Object} options An options object:
-     *      forceFilesOpen: boolean - Whether to open all files in editors and do replacements there rather than doing the
-     *          replacements on disk. Note that even if this is false, files that are already open in editors will have replacements
-     *          done in memory.
-     *      isRegexp: boolean - Whether the original query was a regexp. If true, $-substitution is performed on the replaceText.
-     * @return {$.Promise} A promise that's resolved when the replacement is finished or rejected with an array of errors
-     *      if there were one or more errors. Each individual item in the array will be a {item: string, error: string} object,
-     *      where item is the full path to the file that could not be updated, and error is either a FileSystem error or one
-     *      of the `FindInFiles.ERROR_*` constants.
+     * Replaces a set of search results with the specified `replaceText`, either on disk or in memory.
+     *
+     * @param {{string: {matches: {start: {line: number, ch: number}, end: {line: number, ch: number}, startOffset: number, endOffset: number, line: string}, collapsed: boolean}}} results 
+     *     - The list of results to replace, as returned from `_doSearch`.
+     * @param {string} replaceText - The text to replace each result with.
+     * @param {?Object} options - An options object:
+     *     @param {boolean} options.forceFilesOpen - Whether to open all files in editors and perform replacements there instead of on disk. 
+     *         Note that even if this is false, replacements will still occur in memory for files already open in editors.
+     *     @param {boolean} options.isRegexp - Indicates if the original query was a regular expression. If true, $-substitution is applied to the `replaceText`.
+     * @return {$.Promise} A promise that resolves when the replacement is finished or is rejected with an array of errors if any occur. 
+     *     Each item in the array will be an object containing:
+     *     @param {string} item - The full path to the file that could not be updated.
+     *     @param {string} error - Either a FileSystem error or one of the `FindInFiles.ERROR_*` constants.
      */
     function doReplace(results, replaceText, options) {
         return FindUtils.performReplacements(results, replaceText, options).always(function () {
@@ -773,7 +776,7 @@ define(function (require, exports, module) {
             entries.forEach(function (entry) {
                 Object.keys(searchModel.results).forEach(function (fullPath) {
                     if (fullPath === entry.fullPath ||
-                            (entry.isDirectory && fullPath.indexOf(entry.fullPath) === 0)) {
+                        (entry.isDirectory && fullPath.indexOf(entry.fullPath) === 0)) {
                         // worker search : inform worker that the file is removed
                         fullPaths.push(fullPath);
                         if (findOrReplaceInProgress) {
@@ -855,7 +858,7 @@ define(function (require, exports, module) {
             if (added.length === 0 && removed.length === 0) {
                 // If the added or removed sets are null, must redo the search for the entire subtree - we
                 // don't know which child files/folders may have been added or removed.
-                _removeSearchResultsForEntries([ entry ]);
+                _removeSearchResultsForEntries([entry]);
 
                 var deferred = $.Deferred();
                 addPromise = deferred.promise();
@@ -867,8 +870,8 @@ define(function (require, exports, module) {
                 addPromise = _addSearchResultsForEntries(added);
             }
         } else { // entry.isFile
-            _removeSearchResultsForEntries([ entry ]);
-            addPromise = _addSearchResultsForEntries([ entry ]);
+            _removeSearchResultsForEntries([entry]);
+            addPromise = _addSearchResultsForEntries([entry]);
         }
 
         addPromise.always(function () {
@@ -983,7 +986,7 @@ define(function (require, exports, module) {
                 FindUtils.notifyWorkerSearchFinished();
                 if (searchModel.results) {
                     var resultEntry;
-                    for (resultEntry in rcvd_object.results ) {
+                    for (resultEntry in rcvd_object.results) {
                         if (rcvd_object.results.hasOwnProperty(resultEntry)) {
                             searchModel.results[resultEntry.toString()] = rcvd_object.results[resultEntry];
                         }
@@ -1037,15 +1040,15 @@ define(function (require, exports, module) {
     FindUtils.on(FindUtils.SEARCH_COLLAPSE_RESULTS, _searchcollapseResults);
 
     // Public exports
-    exports.searchModel               = searchModel;
+    exports.searchModel = searchModel;
     exports.isProjectIndexingComplete = isProjectIndexingComplete;
-    exports.doSearchInScope           = doSearchInScope;
-    exports.doReplace                 = doReplace;
-    exports.getCandidateFiles         = getCandidateFiles;
-    exports.clearSearch               = clearSearch;
-    exports.ZERO_FILES_TO_SEARCH      = ZERO_FILES_TO_SEARCH;
-    exports.getNextPageofSearchResults          = getNextPageofSearchResults;
-    exports.getAllSearchResults       = getAllSearchResults;
+    exports.doSearchInScope = doSearchInScope;
+    exports.doReplace = doReplace;
+    exports.getCandidateFiles = getCandidateFiles;
+    exports.clearSearch = clearSearch;
+    exports.ZERO_FILES_TO_SEARCH = ZERO_FILES_TO_SEARCH;
+    exports.getNextPageofSearchResults = getNextPageofSearchResults;
+    exports.getAllSearchResults = getAllSearchResults;
 
     // For unit tests only
     exports._documentChangeHandler = _documentChangeHandler;

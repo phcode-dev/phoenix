@@ -19,27 +19,29 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /*
  * UI for the Find/Replace and Find in Files modal bar.
  */
 define(function (require, exports, module) {
 
 
-    const _                  = require("thirdparty/lodash"),
-        Mustache           = require("thirdparty/mustache/mustache"),
-        EventDispatcher    = require("utils/EventDispatcher"),
-        Commands           = require("command/Commands"),
-        KeyBindingManager  = require("command/KeyBindingManager"),
-        KeyEvent           = require("utils/KeyEvent"),
-        ModalBar           = require("widgets/ModalBar").ModalBar,
+    const _ = require("thirdparty/lodash"),
+        Mustache = require("thirdparty/mustache/mustache"),
+        EventDispatcher = require("utils/EventDispatcher"),
+        Commands = require("command/Commands"),
+        KeyBindingManager = require("command/KeyBindingManager"),
+        KeyEvent = require("utils/KeyEvent"),
+        ModalBar = require("widgets/ModalBar").ModalBar,
         PreferencesManager = require("preferences/PreferencesManager"),
-        MainViewManager    = require("view/MainViewManager"),
-        Strings            = require("strings"),
-        ViewUtils          = require("utils/ViewUtils"),
-        FindUtils          = require("search/FindUtils"),
-        FileUtils          = require("file/FileUtils"),
-        QuickSearchField   = require("search/QuickSearchField").QuickSearchField,
-        Metrics            = require("utils/Metrics");
+        MainViewManager = require("view/MainViewManager"),
+        Strings = require("strings"),
+        ViewUtils = require("utils/ViewUtils"),
+        FindUtils = require("search/FindUtils"),
+        FileUtils = require("file/FileUtils"),
+        QuickSearchField = require("search/QuickSearchField").QuickSearchField,
+        Metrics = require("utils/Metrics");
 
     /**
      * @private
@@ -58,7 +60,7 @@ define(function (require, exports, module) {
     const INSTANT_SEARCH_INTERVAL_MS = 50;
 
     /**
-     * @constructor
+     *
      * Find Bar UI component, used for both single- and multi-file find/replace. This doesn't actually
      * create and add the FindBar to the DOM - for that, call open().
      *
@@ -72,7 +74,9 @@ define(function (require, exports, module) {
      * - doReplace - when the user chooses to do a single replace. Use getReplaceText() to get the current replacement text.
      * - doReplaceBatch - when the user chooses to initiate a Replace All. Use getReplaceText() to get the current replacement text.
      * - doReplaceAll - when the user chooses to perform a Replace All. Use getReplaceText() to get the current replacement text.
-     *-  close - when the find bar is closed
+     * - close - when the find bar is closed
+     *
+     * @constructor
      *
      * @param {boolean=} options.multifile - true if this is a Find/Replace in Files (changes the behavior of Enter in
      *      the fields, hides the navigator controls, shows the scope/filter controls, and if in replace mode, hides the
@@ -302,16 +306,16 @@ define(function (require, exports, module) {
         function _keydownHookForCtrlSpace(event) {
             const ctrlSpaceEvent = (event.ctrlKey === true || event.metaKey === true) &&
                 (event.keyCode === KeyEvent.DOM_VK_SPACE);
-            if(!ctrlSpaceEvent){
+            if (!ctrlSpaceEvent) {
                 return;
             }
-            if($("#find-what").is(":focus")){
+            if ($("#find-what").is(":focus")) {
                 self.showSearchHints();
                 event.stopPropagation();
                 event.preventDefault();
                 return true;
             }
-            if($("#fif-filter-input").is(":focus")){
+            if ($("#fif-filter-input").is(":focus")) {
                 self.showFilterHints();
                 event.stopPropagation();
                 event.preventDefault();
@@ -354,7 +358,7 @@ define(function (require, exports, module) {
             if (self._closed) {
                 return;
             }
-            if ( self.getQueryInfo().query !== lastQueriedText && !FindUtils.isWorkerSearchInProgress()) {
+            if (self.getQueryInfo().query !== lastQueriedText && !FindUtils.isWorkerSearchInProgress()) {
                 // init Search
                 if (self._options.multifile) {
                     self.trigger("doFind");
@@ -393,7 +397,7 @@ define(function (require, exports, module) {
             })
             .on("focusout", "#find-what", function (e) {
                 $(".find-what-wrapper").removeClass("find-what-wrapper-focused");
-                setTimeout(()=>{
+                setTimeout(() => {
                     if (self.searchField && !$("#find-what").is(":focus")) {
                         self.searchField.destroy();
                         self.searchField = null;
@@ -402,7 +406,7 @@ define(function (require, exports, module) {
                 // means that if we destroy it here, the commit will never be called. so the delay timer.
             })
             .on("focusout", "#fif-filter-input", function (e) {
-                setTimeout(()=>{
+                setTimeout(() => {
                     if (self.filterField && !$("#fif-filter-input").is(":focus")) {
                         self.filterField.destroy();
                         self.filterField = null;
@@ -430,7 +434,7 @@ define(function (require, exports, module) {
             })
             .on("keydown", "#find-what, #replace-with, #fif-filter-input", function (e) {
                 if (e.keyCode === KeyEvent.DOM_VK_RETURN) {
-                    if(self._options.multifile && e.shiftKey) {
+                    if (self._options.multifile && e.shiftKey) {
                         // In multi file search, if we press shift+return key, we enter the multi line ssearch mode and
                         // the text input will receive the enter key to create a new line in text field.
                         return;
@@ -464,7 +468,7 @@ define(function (require, exports, module) {
                 } else if (e.keyCode === KeyEvent.DOM_VK_DOWN) {
                     e.preventDefault();
                     e.stopPropagation();
-                    if(self._options.multifile){
+                    if (self._options.multifile) {
                         self.trigger("selectNextResult");
                         return;
                     }
@@ -472,7 +476,7 @@ define(function (require, exports, module) {
                 } else if (e.keyCode === KeyEvent.DOM_VK_UP) {
                     e.preventDefault();
                     e.stopPropagation();
-                    if(self._options.multifile){
+                    if (self._options.multifile) {
                         self.trigger("selectPrevResult");
                         return;
                     }
@@ -553,8 +557,8 @@ define(function (require, exports, module) {
                 query = query || "";
                 const asyncResult = new $.Deferred();
                 let history = PreferencesManager.getViewState(stateVarName) || [];
-                if(!self._dontFilterHistory){
-                    history = history.filter(historyItem=> {
+                if (!self._dontFilterHistory) {
+                    history = history.filter(historyItem => {
                         return ((typeof historyItem === 'string') &&
                             historyItem.toLowerCase().includes(query.toLowerCase()));
                     });
@@ -579,7 +583,7 @@ define(function (require, exports, module) {
                 self[fieldName].destroy();
                 self[fieldName] = null;
                 // now move the committed item to top of history as its most recent
-                if(itemIndex){
+                if (itemIndex) {
                     let history = PreferencesManager.getViewState(stateVarName) || [];
                     let deletedItem = history.splice(itemIndex, 1);
                     history.unshift(deletedItem[0]);
@@ -587,7 +591,7 @@ define(function (require, exports, module) {
                 }
             },
             onDismiss: function () {
-                if(self[fieldName]){
+                if (self[fieldName]) {
                     self[fieldName].destroy();
                     self[fieldName] = null;
                 }
@@ -597,7 +601,7 @@ define(function (require, exports, module) {
                 history.splice(deletedIndex, 1);
                 PreferencesManager.setViewState(stateVarName, history);
             },
-            onHighlight: function (selectedItem, query, explicit) {},
+            onHighlight: function (selectedItem, query, explicit) { },
             highlightZeroResults: false,
             focusLastActiveElementOnClose: true
         });
@@ -654,7 +658,7 @@ define(function (require, exports, module) {
     FindBar.prototype.getQueryInfo = function (usePlatformLineEndings = true) {
         let query = this.$("#find-what").val() || "";
         const lineEndings = FileUtils.sniffLineEndings(query);
-        if(usePlatformLineEndings && lineEndings === FileUtils.LINE_ENDINGS_LF && brackets.platform === "win") {
+        if (usePlatformLineEndings && lineEndings === FileUtils.LINE_ENDINGS_LF && brackets.platform === "win") {
             query = query.replace(/\n/g, "\r\n");
         }
         return {
@@ -708,7 +712,7 @@ define(function (require, exports, module) {
         $filterInput.removeClass("no-results");
         $findWhat.removeClass("no-results");
         let $borderEl = $findWhat;
-        if($filterInput.is(":focus")){
+        if ($filterInput.is(":focus")) {
             $borderEl = $filterInput;
         }
         ViewUtils.toggleClass($borderEl, "no-results", showIndicator);
@@ -737,7 +741,7 @@ define(function (require, exports, module) {
     };
 
     FindBar.prototype.focus = function (enable) {
-        if(!this.$("#fif-filter-input").is(':focus')){
+        if (!this.$("#fif-filter-input").is(':focus')) {
             // the filter find bar text input already has focus
             this.$("#find-what").focus();
         }
@@ -832,7 +836,7 @@ define(function (require, exports, module) {
      * @param {!Editor} editor
      * @return {string} first line of primary selection to populate the find bar
      */
-    FindBar._getInitialQueryFromSelection = function(editor) {
+    FindBar._getInitialQueryFromSelection = function (editor) {
         const selectionText = editor.document.getSelectedText(true);
         if (selectionText) {
             return selectionText
@@ -842,11 +846,13 @@ define(function (require, exports, module) {
     };
 
     /**
-     * Gets you the right query and replace text to prepopulate the Find Bar.
+     * Retrieves the appropriate query and replacement text to prepopulate the Find Bar.
+     *
      * @static
-     * @param {?FindBar} currentFindBar The currently open Find Bar, if any
-     * @param {?Editor} The active editor, if any
-     * @return {query: string, replaceText: string} Query and Replace text to prepopulate the Find Bar with
+     * @param {?FindBar} currentFindBar - The currently open Find Bar, if any.
+     * @param {?Editor} activeEditor - The active editor, if any.
+     * @return {{query: string, replaceText: string}} An object containing the query and replacement text
+     *     to prepopulate the Find Bar.
      */
     FindBar.getInitialQuery = function (currentFindBar, editor) {
         var query,
@@ -874,7 +880,7 @@ define(function (require, exports, module) {
             }
         }
 
-        return {query: query, replaceText: replaceText};
+        return { query: query, replaceText: replaceText };
     };
 
     PreferencesManager.stateManager.definePreference("caseSensitive", "boolean", false);

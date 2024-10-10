@@ -19,6 +19,9 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
+
 /**
  * This is a collection of utility functions for gathering performance data.
  */
@@ -301,12 +304,12 @@ define(function (require, exports, module) {
 
     /**
      * return single value, or comma separated values for an array or return aggregated values with
-     * <min value, average, max value, standard deviation>
+     * "min value, average, max value, standard deviation"
      * @param   {Array}    entry          An array or a single value
      * @param   {Boolean} aggregateStats If set, the returned value will be aggregated in the form -
-     *                                   <min(avg)max[standard deviation]>
+     *                                   "min(avg)max[standard deviation]"
      * @return {String}   a single value, or comma separated values in an array or
-     *                     <min(avg)max[standard deviation]> if aggregateStats is set
+     *                     "min(avg)max[standard deviation]" if aggregateStats is set
      */
     function getValueAsString(entry, aggregateStats) {
         if (!Array.isArray(entry)) {

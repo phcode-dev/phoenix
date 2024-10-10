@@ -19,167 +19,170 @@
  *
  */
 
- /**
-  * Pane objects host views of files, editors, etc... Clients cannot access
-  * Pane objects directly. Instead the implementation is protected by the
-  * MainViewManager -- however View Factories are given a Pane object which
-  * they can use to add views.  References to Pane objects should not be kept
-  * as they may be destroyed and removed from the DOM.
-  *
-  * To get a custom view, there are two components:
-  *
-  *  1) A View Factory
-  *  2) A View Object
-  *
-  * View objects are anonymous object that have a particular interface.
-  *
-  * Views can be added to a pane but do not have to exist in the Pane object's view list.
-  * Such views are "temporary views".  Temporary views are not serialized with the Pane state
-  * or reconstituted when the pane is serialized from disk.  They are destroyed at the earliest
-  * opportunity.
-  *
-  * Temporary views are added by calling `Pane.showView()` and passing it the view object. The view
-  * will be destroyed when the next view is shown, the pane is mereged with another pane or the "Close All"
-  * command is exectuted on the Pane.  Temporary Editor Views do not contain any modifications and are
-  * added to the workingset (and are no longer tempoary views) once the document has been modified. They
-  * will remain in the working set until closed from that point on.
-  *
-  * Views that have a longer life span are added by calling addView to associate the view with a
-  * filename in the _views object.  These views are not destroyed until they are removed from the pane
-  * by calling one of the following: removeView, removeViews, or _reset
-  *
-  * Pane Object Events:
-  *
-  *  - viewListChange - Whenever there is a file change to a file in the working set.  These 2 events: `DocumentManager.pathRemove`
-  *  and `DocumentManager.fileNameChange` will cause a `viewListChange` event so the WorkingSetView can update.
-  *
-  *  - currentViewChange - Whenever the current view changes.
-  *             (e, newView:View, oldView:View)
-  *
-  *  - viewDestroy - Whenever a view has been destroyed
-  *             (e, view:View)
-  *
-  * View Interface:
-  *
-  * The view is an anonymous object which has the following method signatures. see ImageViewer for an example or the sample
-  * provided with Brackets `src/extensions/samples/BracketsConfigCentral`
-  *
-  *     {
-  *         $el:jQuery
-  *         getFile: function ():!File
-  *         updateLayout: function(forceRefresh:boolean)
-  *         destroy: function()
-  *         getScrollPos: function():*=
-  *         adjustScrollPos: function(state:Object=, heightDelta:number)=
-  *         notifyContainerChange: function()=
-  *         notifyVisibilityChange: function(boolean)=
-  *         focus:function()=
-  *     }
-  *
-  * When views are created they can be added to the pane by calling `pane.addView()`.
-  * Views can be created and parented by attaching directly  to `pane.$el`
-  *
-  *     this._codeMirror = new CodeMirror(pane.$el, ...)
-  *
-  * Factories can create a view that's initially hidden by calling `pane.addView(view)` and passing `false` for the show parameter.
-  * Hidden views can be later shown by calling `pane.showView(view)`
-  *
-  * `$el:jQuery!`
-  *
-  *  property that stores the jQuery wrapped DOM element of the view. All views must have one so pane objects can manipulate the DOM
-  *  element when necessary (e.g. `showView`, `_reparent`, etc...)
-  *
-  * `getFile():File!`
-  *
-  *  Called throughout the life of a View when the current file is queried by the system.
-  *
-  * `updateLayout(forceRefresh:boolean)`
-  *
-  *  Called to notify the view that it should be resized to fit its parent container.  This may be called several times
-  *  or only once.  Views can ignore the `forceRefresh` flag. It is used for editor views to force a relayout of the editor
-  *  which probably isn't necessary for most views.  Views should implement their html to be dynamic and not rely on this
-  *  function to be called whenever possible.
-  *
-  * `destroy()`
-  *
-  *  Views must implement a destroy method to remove their DOM element at the very least.  There is no default
-  *  implementation and views are hidden before this method is called. The Pane object doesn't make assumptions
-  *  about when it is safe to remove a node. In some instances other cleanup  must take place before a the DOM
-  *  node is destroyed so the implementation details are left to the view.
-  *
-  *  Views can implement a simple destroy by calling
-  *
-  *      this.$el.remove()
-  *
-  *  These members are optional and need not be implemented by Views
-  *
-  *      getScrollPos()
-  *      adjustScrollPos()
-  *
-  *  The system at various times will want to save and restore a view's scroll position.  The data returned by `getScrollPos()`
-  *  is specific to the view and will be passed back to `adjustScrollPos()` when the scroll position needs to be restored.
-  *
-  *  When Modal Bars are invoked, the system calls `getScrollPos()` so that the current scroll psotion of all visible Views can be cached.
-  *  That cached scroll position is later passed to `adjustScrollPos()` along with a height delta.  The height delta is used to
-  *  scroll the view so that it doesn't appear to have "jumped" when invoking the Modal Bar.
-  *
-  *  Height delta will be a positive when the Modal Bar is being shown and negative number when the Modal Bar is being hidden.
-  *
-  *  `getViewState()` is another optional member that is used to cache a view's state when hiding or destroying a view or closing the project.
-  *  The data returned by this member is stored in `ViewStateManager` and is saved with the project.
-  *
-  *  Views or View Factories are responsible for restoring the view state when the view of that file is created by recalling the cached state
-  *
-  *      var view = createIconView(file, pane);
-  *      view.restoreViewState(ViewStateManager.getViewState(file.fullPath));
-  *
-  *  Notifications
-  *  The following optional methods receive notifications from the Pane object when certain events take place which affect the view:
-  *
-  * `notifyContainerChange()`
-  *
-  *  Optional Notification callback called when the container changes. The view can perform any synchronization or state update
-  *  it needs to do when its parent container changes.
-  *
-  * `notifyVisiblityChange()`
-  *
-  *  Optional Notification callback called when the view's vsibility changes.  The view can perform any synchronization or
-  *  state update it needs to do when its visiblity state changes.
-  */
+// @INCLUDE_IN_API_DOCS
+
+/**
+ * Pane objects host views of files, editors, etc... Clients cannot access
+ * Pane objects directly. Instead the implementation is protected by the
+ * MainViewManager -- however View Factories are given a Pane object which
+ * they can use to add views.  References to Pane objects should not be kept
+ * as they may be destroyed and removed from the DOM.
+ *
+ * To get a custom view, there are two components:
+ *
+ *  1) A View Factory
+ *  2) A View Object
+ *
+ * View objects are anonymous object that have a particular interface.
+ *
+ * Views can be added to a pane but do not have to exist in the Pane object's view list.
+ * Such views are "temporary views".  Temporary views are not serialized with the Pane state
+ * or reconstituted when the pane is serialized from disk.  They are destroyed at the earliest
+ * opportunity.
+ *
+ * Temporary views are added by calling `Pane.showView()` and passing it the view object. The view
+ * will be destroyed when the next view is shown, the pane is mereged with another pane or the "Close All"
+ * command is exectuted on the Pane.  Temporary Editor Views do not contain any modifications and are
+ * added to the workingset (and are no longer tempoary views) once the document has been modified. They
+ * will remain in the working set until closed from that point on.
+ *
+ * Views that have a longer life span are added by calling addView to associate the view with a
+ * filename in the _views object.  These views are not destroyed until they are removed from the pane
+ * by calling one of the following: removeView, removeViews, or _reset
+ *
+ * Pane Object Events:
+ *
+ *  - viewListChange - Whenever there is a file change to a file in the working set.  These 2 events: `DocumentManager.pathRemove`
+ *  and `DocumentManager.fileNameChange` will cause a `viewListChange` event so the WorkingSetView can update.
+ *
+ *  - currentViewChange - Whenever the current view changes.
+ *             (e, newView:View, oldView:View)
+ *
+ *  - viewDestroy - Whenever a view has been destroyed
+ *             (e, view:View)
+ *
+ * View Interface:
+ *
+ * The view is an anonymous object which has the following method signatures. see ImageViewer for an example or the sample
+ * provided with Brackets `src/extensions/samples/BracketsConfigCentral`
+ *
+ * ```js
+ *     {
+ *         $el:jQuery
+ *         getFile: function ():!File
+ *         updateLayout: function(forceRefresh:boolean)
+ *         destroy: function()
+ *         getScrollPos: function():*=
+ *         adjustScrollPos: function(state:Object=, heightDelta:number)=
+ *         notifyContainerChange: function()=
+ *         notifyVisibilityChange: function(boolean)=
+ *         focus:function()=
+ *     }
+ *```
+ * When views are created they can be added to the pane by calling `pane.addView()`.
+ * Views can be created and parented by attaching directly  to `pane.$el`
+ *
+ *     this._codeMirror = new CodeMirror(pane.$el, ...)
+ *
+ * Factories can create a view that's initially hidden by calling `pane.addView(view)` and passing `false` for the show parameter.
+ * Hidden views can be later shown by calling `pane.showView(view)`
+ *
+ * `$el:jQuery!`
+ *
+ *  property that stores the jQuery wrapped DOM element of the view. All views must have one so pane objects can manipulate the DOM
+ *  element when necessary (e.g. `showView`, `_reparent`, etc...)
+ *
+ * `getFile():File!`
+ *
+ *  Called throughout the life of a View when the current file is queried by the system.
+ *
+ * `updateLayout(forceRefresh:boolean)`
+ *
+ *  Called to notify the view that it should be resized to fit its parent container.  This may be called several times
+ *  or only once.  Views can ignore the `forceRefresh` flag. It is used for editor views to force a relayout of the editor
+ *  which probably isn't necessary for most views.  Views should implement their html to be dynamic and not rely on this
+ *  function to be called whenever possible.
+ *
+ * `destroy()`
+ *
+ *  Views must implement a destroy method to remove their DOM element at the very least.  There is no default
+ *  implementation and views are hidden before this method is called. The Pane object doesn't make assumptions
+ *  about when it is safe to remove a node. In some instances other cleanup  must take place before a the DOM
+ *  node is destroyed so the implementation details are left to the view.
+ *
+ *  Views can implement a simple destroy by calling
+ *
+ *      this.$el.remove()
+ *
+ *  These members are optional and need not be implemented by Views
+ *
+ *      getScrollPos()
+ *      adjustScrollPos()
+ *
+ *  The system at various times will want to save and restore a view's scroll position.  The data returned by `getScrollPos()`
+ *  is specific to the view and will be passed back to `adjustScrollPos()` when the scroll position needs to be restored.
+ *
+ *  When Modal Bars are invoked, the system calls `getScrollPos()` so that the current scroll psotion of all visible Views can be cached.
+ *  That cached scroll position is later passed to `adjustScrollPos()` along with a height delta.  The height delta is used to
+ *  scroll the view so that it doesn't appear to have "jumped" when invoking the Modal Bar.
+ *
+ *  Height delta will be a positive when the Modal Bar is being shown and negative number when the Modal Bar is being hidden.
+ *
+ *  `getViewState()` is another optional member that is used to cache a view's state when hiding or destroying a view or closing the project.
+ *  The data returned by this member is stored in `ViewStateManager` and is saved with the project.
+ *
+ *  Views or View Factories are responsible for restoring the view state when the view of that file is created by recalling the cached state
+ *
+ *      var view = createIconView(file, pane);
+ *      view.restoreViewState(ViewStateManager.getViewState(file.fullPath));
+ *
+ *  Notifications
+ *  The following optional methods receive notifications from the Pane object when certain events take place which affect the view:
+ *
+ * `notifyContainerChange()`
+ *
+ *  Optional Notification callback called when the container changes. The view can perform any synchronization or state update
+ *  it needs to do when its parent container changes.
+ *
+ * `notifyVisiblityChange()`
+ *
+ *  Optional Notification callback called when the view's vsibility changes.  The view can perform any synchronization or
+ *  state update it needs to do when its visiblity state changes.
+ */
 define(function (require, exports, module) {
 
 
-    var _                   = require("thirdparty/lodash"),
-        Mustache            = require("thirdparty/mustache/mustache"),
-        EventDispatcher     = require("utils/EventDispatcher"),
-        FileSystem          = require("filesystem/FileSystem"),
-        InMemoryFile        = require("document/InMemoryFile"),
-        Editor              = require("editor/Editor").Editor,
-        ViewStateManager    = require("view/ViewStateManager"),
-        MainViewManager     = require("view/MainViewManager"),
-        PreferencesManager  = require("preferences/PreferencesManager"),
-        DocumentManager     = require("document/DocumentManager"),
-        CommandManager      = require("command/CommandManager"),
-        Commands            = require("command/Commands"),
-        Strings             = require("strings"),
-        StringUtils         = require("utils/StringUtils"),
-        ViewUtils           = require("utils/ViewUtils"),
-        ProjectManager      = require("project/ProjectManager"),
-        paneTemplate        = require("text!htmlContent/pane.html");
+    var _ = require("thirdparty/lodash"),
+        Mustache = require("thirdparty/mustache/mustache"),
+        EventDispatcher = require("utils/EventDispatcher"),
+        FileSystem = require("filesystem/FileSystem"),
+        InMemoryFile = require("document/InMemoryFile"),
+        Editor = require("editor/Editor").Editor,
+        ViewStateManager = require("view/ViewStateManager"),
+        MainViewManager = require("view/MainViewManager"),
+        PreferencesManager = require("preferences/PreferencesManager"),
+        DocumentManager = require("document/DocumentManager"),
+        CommandManager = require("command/CommandManager"),
+        Commands = require("command/Commands"),
+        Strings = require("strings"),
+        StringUtils = require("utils/StringUtils"),
+        ViewUtils = require("utils/ViewUtils"),
+        ProjectManager = require("project/ProjectManager"),
+        paneTemplate = require("text!htmlContent/pane.html");
 
     /**
      * Internal pane id
      * @const
      * @private
      */
-    var FIRST_PANE          = "first-pane";
+    var FIRST_PANE = "first-pane";
 
     /**
      * Internal pane id
      * @const
      * @private
      */
-    var SECOND_PANE         = "second-pane";
+    var SECOND_PANE = "second-pane";
 
     // Define showPaneHeaderButtons, which controls when to show close and flip-view buttons
     // on the header.
@@ -199,12 +202,12 @@ define(function (require, exports, module) {
      * Make an index request object
      * @param {boolean} requestIndex - true to request an index, false if not
      * @param {number} index - the index to request
-     * @return {indexRequested:boolean, index:number} an object that can be passed to
+     * @return {{indexRequested: boolean, index: number}} An object that can be passed to
      * {@link Pane#addToViewList} to insert the item at a specific index
      * @see Pane#addToViewList
      */
     function _makeIndexRequestObject(requestIndex, index) {
-        return {indexRequested: requestIndex, index: index};
+        return { indexRequested: requestIndex, index: index };
     }
 
     /**
@@ -224,26 +227,23 @@ define(function (require, exports, module) {
         }, 1);
     }
 
-    /**
-     * @typedef {!$el: jQuery, getFile:function():!File, updateLayout:function(forceRefresh:boolean), destroy:function(),  getScrollPos:function():?,  adjustScrollPos:function(state:Object=, heightDelta:number)=, getViewState:function():?*=, restoreViewState:function(viewState:!*)=, notifyContainerChange:function()=, notifyVisibilityChange:function(boolean)=} View
-     */
 
     /**
-     * Pane Objects are constructed by the MainViewManager object when a Pane view is needed
-     * @see {@link MainViewManager} for more information
-     *
-     * @constructor
-     * @param {!string} id - The id to use to identify this pane
-     * @param {!JQuery} $container - The parent $container to place the pane view
-     */
+    * Pane Objects are constructed by the MainViewManager object when a Pane view is needed.
+    * @see {@link MainViewManager} for more information
+    *
+    * @constructor
+    * @param {!string} id - The id to use to identify this pane.
+    * @param {!jQuery} $container - The parent jQuery container to place the pane view.
+    */
     function Pane(id, $container) {
         this._initialize();
 
         // Setup the container and the element we're inserting
         var self = this,
             showPaneHeaderButtonsPref = PreferencesManager.get("pane.showPaneHeaderButtons"),
-            $el = $container.append(Mustache.render(paneTemplate, {id: id})).find("#" + id),
-            $header  = $el.find(".pane-header"),
+            $el = $container.append(Mustache.render(paneTemplate, { id: id })).find("#" + id),
+            $header = $el.find(".pane-header"),
             $headerText = $header.find(".pane-header-text"),
             $headerFlipViewBtn = $header.find(".pane-header-flipview-btn"),
             $headerCloseBtn = $header.find(".pane-header-close-btn"),
@@ -262,10 +262,12 @@ define(function (require, exports, module) {
 
             // If the same doc view is present in the destination, show the file instead of flipping it
             if (sameDocInOtherView) {
-                CommandManager.execute(Commands.FILE_OPEN, {fullPath: currentFile.fullPath,
-                    paneId: otherPaneId}).always(function () {
-                        _ensurePaneIsFocused(otherPaneId);
-                    });
+                CommandManager.execute(Commands.FILE_OPEN, {
+                    fullPath: currentFile.fullPath,
+                    paneId: otherPaneId
+                }).always(function () {
+                    _ensurePaneIsFocused(otherPaneId);
+                });
                 return;
             }
 
@@ -275,13 +277,15 @@ define(function (require, exports, module) {
             var activePaneIdBeforeFlip = MainViewManager.getActivePaneId();
 
             MainViewManager._moveView(self.id, otherPaneId, currentFile).always(function () {
-                CommandManager.execute(Commands.FILE_OPEN, {fullPath: currentFile.fullPath,
-                    paneId: otherPaneId}).always(function () {
+                CommandManager.execute(Commands.FILE_OPEN, {
+                    fullPath: currentFile.fullPath,
+                    paneId: otherPaneId
+                }).always(function () {
                     // Trigger view list changes for both panes
-                        self.trigger("viewListChange");
-                        otherPane.trigger("viewListChange");
-                        _ensurePaneIsFocused(activePaneIdBeforeFlip);
-                    });
+                    self.trigger("viewListChange");
+                    otherPane.trigger("viewListChange");
+                    _ensurePaneIsFocused(activePaneIdBeforeFlip);
+                });
             });
         });
 
@@ -293,7 +297,7 @@ define(function (require, exports, module) {
             var file = self.getCurrentlyViewedFile();
 
             if (file) {
-                CommandManager.execute(Commands.FILE_CLOSE, {File: file, paneId: self.id});
+                CommandManager.execute(Commands.FILE_CLOSE, { File: file, paneId: self.id });
 
                 if (!self.getCurrentlyViewedFile() && PreferencesManager.get("pane.mergePanesWhenLastFileClosed")) {
                     MainViewManager.setLayoutScheme(1, 1);
@@ -306,7 +310,7 @@ define(function (require, exports, module) {
         this._lastFocusedElement = $el[0];
 
         // Make these properties read only
-        Object.defineProperty(this,  "id", {
+        Object.defineProperty(this, "id", {
             get: function () {
                 return id;
             },
@@ -315,7 +319,7 @@ define(function (require, exports, module) {
             }
         });
 
-        Object.defineProperty(this,  "$el", {
+        Object.defineProperty(this, "$el", {
             get: function () {
                 return $el;
             },
@@ -324,7 +328,7 @@ define(function (require, exports, module) {
             }
         });
 
-        Object.defineProperty(this,  "$header", {
+        Object.defineProperty(this, "$header", {
             get: function () {
                 return $header;
             },
@@ -333,7 +337,7 @@ define(function (require, exports, module) {
             }
         });
 
-        Object.defineProperty(this,  "$headerText", {
+        Object.defineProperty(this, "$headerText", {
             get: function () {
                 return $headerText;
             },
@@ -342,7 +346,7 @@ define(function (require, exports, module) {
             }
         });
 
-        Object.defineProperty(this,  "$headerFlipViewBtn", {
+        Object.defineProperty(this, "$headerFlipViewBtn", {
             get: function () {
                 return $headerFlipViewBtn;
             },
@@ -351,7 +355,7 @@ define(function (require, exports, module) {
             }
         });
 
-        Object.defineProperty(this,  "$headerCloseBtn", {
+        Object.defineProperty(this, "$headerCloseBtn", {
             get: function () {
                 return $headerCloseBtn;
             },
@@ -360,7 +364,7 @@ define(function (require, exports, module) {
             }
         });
 
-        Object.defineProperty(this,  "$content", {
+        Object.defineProperty(this, "$content", {
             get: function () {
                 return $content;
             },
@@ -369,7 +373,7 @@ define(function (require, exports, module) {
             }
         });
 
-        Object.defineProperty(this,  "$container", {
+        Object.defineProperty(this, "$container", {
             get: function () {
                 return $container;
             },
@@ -381,17 +385,17 @@ define(function (require, exports, module) {
         this.updateHeaderText();
 
         switch (showPaneHeaderButtonsPref) {
-        case "always":
-            this.$header.addClass("always-show-header-buttons");
-            break;
-        case "never":
-            this.$headerFlipViewBtn.css("display", "none");
-            this.$headerCloseBtn.css("display", "none");
-            break;
+            case "always":
+                this.$header.addClass("always-show-header-buttons");
+                break;
+            case "never":
+                this.$headerFlipViewBtn.css("display", "none");
+                this.$headerCloseBtn.css("display", "none");
+                break;
         }
 
         // Listen to document events so we can update ourself
-        DocumentManager.on(this._makeEventName("fileNameChange"),  _.bind(this._handleFileNameChange, this));
+        DocumentManager.on(this._makeEventName("fileNameChange"), _.bind(this._handleFileNameChange, this));
         DocumentManager.on(this._makeEventName("pathDeleted"), _.bind(this._handleFileDeleted, this));
         MainViewManager.on(this._makeEventName("activePaneChange"), _.bind(this._handleActivePaneChange, this));
         MainViewManager.on(this._makeEventName("workingSetAdd"), _.bind(this.updateHeaderText, this));
@@ -510,22 +514,22 @@ define(function (require, exports, module) {
         this.showInterstitial(true);
     };
 
-   /**
-     * Creates a pane event namespaced to this pane
-     * (pass an empty string to generate just the namespace key to pass to jQuery to turn off all events handled by this pane)
-     * @private
-     * @param {!string} name - the name of the event to namespace
-     * @return {string} an event namespaced to this pane
-     */
+    /**
+      * Creates a pane event namespaced to this pane
+      * (pass an empty string to generate just the namespace key to pass to jQuery to turn off all events handled by this pane)
+      * @private
+      * @param {!string} name - the name of the event to namespace
+      * @return {string} an event namespaced to this pane
+      */
     Pane.prototype._makeEventName = function (name) {
         return name + ".pane-" + this.id;
     };
 
-   /**
-     * Reparents a view to this pane
-     * @private
-     * @param {!View} view - the view to reparent
-     */
+    /**
+      * Reparents a view to this pane
+      * @private
+      * @param {!View} view - the view to reparent
+      */
     Pane.prototype._reparent = function (view) {
         view.$el.appendTo(this.$content);
         this._views[view.getFile().fullPath] = view;
@@ -607,7 +611,7 @@ define(function (require, exports, module) {
             self._viewListAddedOrder.splice(self.findInViewListAddedOrder(file.fullPath), 1);
 
             // insert the view into the working set
-            destinationPane._addToViewList(file,  _makeIndexRequestObject(true, destinationIndex));
+            destinationPane._addToViewList(file, _makeIndexRequestObject(true, destinationIndex));
 
             // if we had a view, it had previously been opened
             // otherwise, the file was in the working set unopened
@@ -691,8 +695,8 @@ define(function (require, exports, module) {
      */
     Pane.prototype.destroy = function () {
         if (this._currentView ||
-                Object.keys(this._views).length > 0 ||
-                this._viewList.length > 0) {
+            Object.keys(this._views).length > 0 ||
+            this._viewList.length > 0) {
             console.warn("destroying a pane that isn't empty");
         }
 
@@ -705,10 +709,10 @@ define(function (require, exports, module) {
         this.$el.remove();
     };
 
-   /**
-     * Returns a copy of the view file list
-     * @return {!Array.<File>}
-     */
+    /**
+      * Returns a copy of the view file list
+      * @return {!Array.<File>}
+      */
     Pane.prototype.getViewList = function () {
         return _.clone(this._viewList);
     };
@@ -743,12 +747,12 @@ define(function (require, exports, module) {
         });
     };
 
-   /**
-     * Returns the order in which the item was last used
-     * @param {!string} fullPath the full path of the item to look for
-     * @return {number} order of the item or -1 if not found.
-     *      0 indicates most recently used, followed by 1 and so on...
-     */
+    /**
+      * Returns the order in which the item was last used
+      * @param {!string} fullPath the full path of the item to look for
+      * @return {number} order of the item or -1 if not found.
+      *      0 indicates most recently used, followed by 1 and so on...
+      */
     Pane.prototype.findInViewListMRUOrder = function (fullPath) {
         return _.findIndex(this._viewListMRUOrder, function (file) {
             return file.fullPath === fullPath;
@@ -814,7 +818,7 @@ define(function (require, exports, module) {
      */
     Pane.prototype._canAddFile = function (file) {
         return ((this._views.hasOwnProperty(file.fullPath) && this.findInViewList(file.fullPath) === -1) ||
-                    (MainViewManager._getPaneIdForPath(file.fullPath) !== this.id));
+            (MainViewManager._getPaneIdForPath(file.fullPath) !== this.id));
     };
 
     /**
@@ -953,8 +957,8 @@ define(function (require, exports, module) {
     };
 
     /**
-     * Moves the specified file to the front of the MRU list
-     * @param {!File} file
+     * Moves the specified file to the front of the MRU (Most Recently Used) list.
+     * @param {!File} file - The file to move to the front of the MRU list.
      */
     Pane.prototype.makeViewMostRecent = function (file) {
         var index = this.findInViewListMRUOrder(file.fullPath);
@@ -965,23 +969,18 @@ define(function (require, exports, module) {
     };
 
     /**
-     * Sorts items in the pane's view list
-     * @param {function(paneId:!string, left:!string, right:!string):number} compareFn - the function used to compare items in the viewList
-     */
-
-    /**
-     * invokes Array.sort method on the internal view list.
-     * @param {sortFunctionCallback} compareFn - the function to call to determine if the
+     * Sorts items in the pane's view list.
+     * @param {function(string, string, string): number} compareFn - The function used to compare items in the view list.
      */
     Pane.prototype.sortViewList = function (compareFn) {
         this._viewList.sort(_.partial(compareFn, this.id));
     };
 
     /**
-     * moves a working set item from one index to another shifting the items
-     * after in the working set up and reinserting it at the desired location
-     * @param {!number} fromIndex - the index of the item to move
-     * @param {!number} toIndex - the index to move to
+     * Moves a working set item from one index to another, shifting the items after
+     * it in the working set up and reinserting it at the desired location.
+     * @param {!number} fromIndex - The index of the item to move.
+     * @param {!number} toIndex - The index to move the item to.
      * @private
      */
     Pane.prototype.moveWorkingSetItem = function (fromIndex, toIndex) {
@@ -1038,9 +1037,9 @@ define(function (require, exports, module) {
         }
 
         this.$headerFlipViewBtn.removeClass(ICON_CLASSES.join(" "))
-                      .addClass(ICON_CLASSES[directionIndex]);
+            .addClass(ICON_CLASSES[directionIndex]);
 
-        this.$headerFlipViewBtn.attr("title", StringUtils.format(Strings.FLIPVIEW_BTN_TOOLTIP,  DIRECTION_STRINGS[directionIndex].toLowerCase()));
+        this.$headerFlipViewBtn.attr("title", StringUtils.format(Strings.FLIPVIEW_BTN_TOOLTIP, DIRECTION_STRINGS[directionIndex].toLowerCase()));
     };
 
     /**
@@ -1107,7 +1106,7 @@ define(function (require, exports, module) {
      * @param {!string} fullPath - path of the file that was deleted
      */
     Pane.prototype._handleFileDeleted = function (e, fullPath) {
-        if (this.removeView({fullPath: fullPath})) {
+        if (this.removeView({ fullPath: fullPath })) {
             this.trigger("viewListChange");
         }
     };
@@ -1338,7 +1337,7 @@ define(function (require, exports, module) {
      * @return {jQuery.promise} promise that will resolve when the file is opened
      */
     Pane.prototype._execOpenFile = function (fullPath) {
-        return CommandManager.execute(Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN, { fullPath: fullPath, paneId: this.id, options: {noPaneActivate: true}});
+        return CommandManager.execute(Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN, { fullPath: fullPath, paneId: this.id, options: { noPaneActivate: true } });
     };
 
     /**
@@ -1369,7 +1368,7 @@ define(function (require, exports, module) {
                 }
                 return true;
             }
-                // Nothing was removed so don't try to remove it again
+            // Nothing was removed so don't try to remove it again
             return false;
 
         }
@@ -1464,7 +1463,7 @@ define(function (require, exports, module) {
         //  3. Focus the image view using the working-set.
         //  ==> Focus is still in the text area. Any keyboard input will modify the document
         if (current.tagName.toLowerCase() === "textarea" &&
-                (!this._currentView || !this._currentView._codeMirror)) {
+            (!this._currentView || !this._currentView._codeMirror)) {
             current.blur();
         }
 
@@ -1496,9 +1495,7 @@ define(function (require, exports, module) {
     /**
      * serializes the pane state from JSON
      * @param {!Object} state - the state to load
-     * @return {jQuery.Promise} A promise which resolves to
-     *              {fullPath:string, paneId:string}
-     *              which can be passed as command data to FILE_OPEN
+     * @return {jQuery.Promise} A promise which resolves to \{fullPath:string, paneId:string} which can be passed as command data to FILE_OPEN
      */
     Pane.prototype.loadState = function (state) {
         var filesToAdd = [],
@@ -1528,7 +1525,7 @@ define(function (require, exports, module) {
         activeFile = activeFile || getInitialViewFilePath();
 
         if (activeFile) {
-            data = {paneId: self.id, fullPath: activeFile};
+            data = { paneId: self.id, fullPath: activeFile };
         }
 
         return new $.Deferred().resolve(data);
@@ -1573,7 +1570,7 @@ define(function (require, exports, module) {
      */
     Pane.prototype.getScrollState = function () {
         if (this._currentView && this._currentView.getScrollPos) {
-            return {scrollPos: this._currentView.getScrollPos()};
+            return { scrollPos: this._currentView.getScrollPos() };
         }
     };
 

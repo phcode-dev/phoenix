@@ -21,6 +21,8 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /**
  * Button that opens a dropdown list when clicked. More akin to a popup menu than a combobox. Compared to a
  * simple <select> element:
@@ -39,12 +41,12 @@ define(function (require, exports, module) {
 
 
     // Load dependent modules
-    const DropdownEventHandler    = require("utils/DropdownEventHandler").DropdownEventHandler,
-        EventDispatcher         = require("utils/EventDispatcher"),
-        WorkspaceManager        = require("view/WorkspaceManager"),
-        Menus                   = require("command/Menus"),
-        ViewUtils               = require("utils/ViewUtils"),
-        _                       = require("thirdparty/lodash");
+    const DropdownEventHandler = require("utils/DropdownEventHandler").DropdownEventHandler,
+        EventDispatcher = require("utils/EventDispatcher"),
+        WorkspaceManager = require("view/WorkspaceManager"),
+        Menus = require("command/Menus"),
+        ViewUtils = require("utils/ViewUtils"),
+        _ = require("thirdparty/lodash");
 
     const EVENT_SELECTED = "select",
         EVENT_LIST_RENDERED = "listRendered",
@@ -53,24 +55,25 @@ define(function (require, exports, module) {
 
     /**
      * Creates a single dropdown-button instance. The DOM node is created but not attached to
-     * the document anywhere - clients should append this.$button to the appropriate location.
+     * the document anywhere - clients should append `this.$button` to the appropriate location.
      *
      * DropdownButton dispatches the following events:
-     *  - "select" - when an option in the dropdown is clicked. Passed item object and index.
+     *  - "select" - triggered when an option in the dropdown is clicked. Passed item object and index.
      *
-     * @param {!string} label  Label to display on the button
-     * @param {!Array.<*>} items  Items in the dropdown list. It generally doesn't matter what type/value the
-     *          items have, except that any item === "---" will be treated as a divider. Such items are not
-     *          clickable and itemRenderer() will not be called for them.
-     * @param {?function(*, number):!string|{html:string, enabled:boolean} itemRenderer  Optional function to
-     *          convert a single item to HTML (see itemRenderer() docs below). If not provided, items are
-     *          assumed to be plain text strings.
-     * @param {Object?} options
-     * @param {boolean?} options.enableFilter - true if you need to enable filter by typing
-     * @param {string?} options.cssClasses - space seperated list of css classes to apply to button
-     * @param {function(userSearchText, elementText, elementIndex)?} options.customFilter - Optional. When `enableFilter`
-     *      is enabled, this function is used as a custom filtering callback. It receives the user's search text, the
-     *      text of the element being filtered, and the element's index. Return `true` to display the list item, or `false` to hide it.
+     * @param {!string} label - The label to display on the button.
+     * @param {!Array<*>} items - Items in the dropdown list. Items can have any type/value. 
+     *          An item with the value `"---"` will be treated as a divider, which is not clickable, 
+     *          and `itemRenderer()` will not be called for it.
+     * @param {?function(*, number): (string|{html: string, enabled: boolean})} [itemRenderer] - 
+     *          Optional function to convert a single item to HTML. If not provided, items are assumed 
+     *          to be plain text strings. The function receives the item and its index.
+     * @param {Object} [options] - Additional options for the dropdown.
+     * @param {boolean} [options.enableFilter=false] - Set to `true` to enable filtering by typing.
+     * @param {string} [options.cssClasses] - A space-separated list of CSS classes to apply to the button.
+     * @param {function(string, string, number): boolean} [options.customFilter] - Optional. When `enableFilter` 
+     *      is enabled, this function is used as a custom filtering callback. It receives the user's search text, 
+     *      the text of the element being filtered, and the element's index. Return `true` to display the list item, 
+     *      or `false` to hide it.
      */
     function DropdownButton(label, items, itemRenderer, options) {
         this.items = items;
@@ -80,8 +83,8 @@ define(function (require, exports, module) {
 
         this.itemRenderer = itemRenderer || this.itemRenderer;
 
-        this._onClick        = this._onClick.bind(this);
-        this.closeDropdown   = this.closeDropdown.bind(this);
+        this._onClick = this._onClick.bind(this);
+        this.closeDropdown = this.closeDropdown.bind(this);
         this._onClickOutside = this._onClickOutside.bind(this);
 
         this.$button = $(`<button class='btn btn-dropdown ${options.cssClasses ? options.cssClasses : ''}'/>`)
@@ -195,7 +198,7 @@ define(function (require, exports, module) {
         this.itemsSearchFilterText = [];
         let html = "";
         this.searchStr = "";
-        if(self.enableFilter){
+        if (self.enableFilter) {
             $parent.append(`<li class="sticky-li-top forced-hidden"><a class='stylesheet-link'><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;<span class="searchTextSpan"></span></a></li>`);
         }
         this.items.forEach(function (item, i) {
@@ -207,7 +210,7 @@ define(function (require, exports, module) {
                     itemHtml = rendered.html || rendered || "",
                     disabledClass = (rendered.html && !rendered.enabled) ? "disabled" : "";
 
-                if(rendered.$html){
+                if (rendered.$html) {
                     const $atag = $(`<a class='stylesheet-link ${disabledClass}' data-index='${i}'></a>`);
                     $atag.append(rendered.$html);
                     const $itemHtml = $(`<li data-index='${i}'></li>`).append($atag);
@@ -262,7 +265,7 @@ define(function (require, exports, module) {
         }
 
         var listItems = $("li", this.$dropdown),
-            count     = listItems.length;
+            count = listItems.length;
 
         if (index > -1 && index < count) {
             $("a", listItems[index]).toggleClass("checked", checked);
@@ -273,9 +276,9 @@ define(function (require, exports, module) {
         const $dropdown = this.$dropdown;
         // Calculate position of dropdown
         var toggleOffset = this.$button.offset(),
-            posLeft      = toggleOffset.left,
-            posTop       = toggleOffset.top + this.$button.outerHeight(),
-            elementRect  = {
+            posLeft = toggleOffset.left,
+            posTop = toggleOffset.top + this.$button.outerHeight(),
+            elementRect = {
                 top: posTop,
                 left: posLeft,
                 height: $dropdown.height(),
@@ -368,20 +371,20 @@ define(function (require, exports, module) {
     DropdownButton.prototype.filterDropdown = function (searchString) {
         this.searchStr = searchString;
         const $stickyLi = this.$dropdown.find('li.sticky-li-top');
-        for(let i=0; i<this.itemsSearchFilterText.length; i++){
+        for (let i = 0; i < this.itemsSearchFilterText.length; i++) {
             const itemText = this.itemsSearchFilterText[i];
             const $liElementAtIndex = this.$dropdown.find(`li[data-index='${i}']`);
             let shouldShow = itemText && itemText.toLowerCase().includes(searchString.toLowerCase());
-            if(this.customFilter){
+            if (this.customFilter) {
                 shouldShow = this.customFilter(searchString, itemText, i);
             }
-            if(shouldShow){
+            if (shouldShow) {
                 $liElementAtIndex.removeClass('forced-hidden');
             } else {
                 $liElementAtIndex.addClass('forced-hidden');
             }
         }
-        if(searchString) {
+        if (searchString) {
             $stickyLi.removeClass('forced-hidden');
             $stickyLi.find('.searchTextSpan').text(searchString);
         } else {
@@ -390,12 +393,12 @@ define(function (require, exports, module) {
     };
 
     DropdownButton.prototype._onKeyDown = function (event) {
-        if(!this.enableFilter){
+        if (!this.enableFilter) {
             return false;
         }
         const self = this;
-        if((event.ctrlKey || event.metaKey) && event.key === 'v') {
-            Phoenix.app.clipboardReadText().then(text=>{
+        if ((event.ctrlKey || event.metaKey) && event.key === 'v') {
+            Phoenix.app.clipboardReadText().then(text => {
                 self.searchStr += text;
                 self.filterDropdown(this.searchStr);
             });
@@ -406,7 +409,7 @@ define(function (require, exports, module) {
             this.searchStr += event.key;
         } else if (event.key === 'Backspace') {
             // Remove the last character when Backspace is pressed
-            this.searchStr  = this.searchStr.slice(0, -1);
+            this.searchStr = this.searchStr.slice(0, -1);
         } else {
             // bubble up, not for us to handle
             return false;
@@ -433,7 +436,7 @@ define(function (require, exports, module) {
 
         // If click is outside dropdown list or dropdown button, then close dropdown list
         if (!$(event.target).is(this.$button) &&
-                ($container.length === 0 || $container[0] !== this.$dropdown[0])) {
+            ($container.length === 0 || $container[0] !== this.$dropdown[0])) {
             this.closeDropdown();
             event.stopPropagation();
             event.preventDefault();

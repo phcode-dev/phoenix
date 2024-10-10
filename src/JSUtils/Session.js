@@ -19,19 +19,22 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
+
 /*jslint regexp: true */
 
 define(function (require, exports, module) {
 
 
-    var StringMatch     = require("utils/StringMatch"),
-        TokenUtils      = require("utils/TokenUtils"),
+    var StringMatch = require("utils/StringMatch"),
+        TokenUtils = require("utils/TokenUtils"),
         LanguageManager = require("language/LanguageManager"),
-        HTMLUtils       = require("language/HTMLUtils"),
-        HintUtils       = require("JSUtils/HintUtils"),
-        ScopeManager    = require("JSUtils/ScopeManager"),
-        Acorn           = require("thirdparty/acorn/dist/acorn"),
-        Acorn_Loose     = require("thirdparty/acorn/dist/acorn_loose");
+        HTMLUtils = require("language/HTMLUtils"),
+        HintUtils = require("JSUtils/HintUtils"),
+        ScopeManager = require("JSUtils/ScopeManager"),
+        Acorn = require("thirdparty/acorn/dist/acorn"),
+        Acorn_Loose = require("thirdparty/acorn/dist/acorn_loose");
 
     /**
      * Session objects encapsulate state associated with a hinting session
@@ -52,7 +55,7 @@ define(function (require, exports, module) {
     /**
      *  Get the builtin libraries tern is using.
      *
-     * @return {Array.<string>} - array of library names.
+     * @return {Array.<String>} - array of library names.
      * @private
      */
     Session.prototype._getBuiltins = function () {
@@ -67,7 +70,7 @@ define(function (require, exports, module) {
     /**
      * Get the name of the file associated with the current session
      *
-     * @return {string} - the full pathname of the file associated with the
+     * @return {String} - the full pathname of the file associated with the
      *      current session
      */
     Session.prototype.getPath = function () {
@@ -87,7 +90,7 @@ define(function (require, exports, module) {
      * Get the text of a line.
      *
      * @param {number} line - the line number
-     * @return {string} - the text of the line
+     * @return {String} - the text of the line
      */
     Session.prototype.getLine = function (line) {
         var doc = this.editor.document;
@@ -159,8 +162,8 @@ define(function (require, exports, module) {
      *      none exists.
      */
     Session.prototype.getNextCursorOnLine = function (cursor) {
-        var doc     = this.editor.document,
-            line    = doc.getLine(cursor.line);
+        var doc = this.editor.document,
+            line = doc.getLine(cursor.line);
 
         if (cursor.ch < line.length) {
             return {
@@ -181,9 +184,9 @@ define(function (require, exports, module) {
      *      cursor position
      */
     Session.prototype._getPreviousToken = function (cursor) {
-        var token   = this.getToken(cursor),
-            prev    = token,
-            doc     = this.editor.document;
+        var token = this.getToken(cursor),
+            prev = token,
+            doc = this.editor.document;
 
         do {
             if (prev.start < cursor.ch) {
@@ -207,14 +210,14 @@ define(function (require, exports, module) {
      *
      * @param {{line: number, ch: number}} cursor - cursor position after
      *      which a token should be retrieved
-     * @param {boolean} skipWhitespace - true if this should skip over whitespace tokens
+     * @param {Boolean} skipWhitespace - true if this should skip over whitespace tokens
      * @return {Object} - the CodeMirror token after the one at the given
      *      cursor position
      */
     Session.prototype.getNextToken = function (cursor, skipWhitespace) {
-        var token   = this.getToken(cursor),
-            next    = token,
-            doc     = this.editor.document;
+        var token = this.getToken(cursor),
+            next = token,
+            doc = this.editor.document;
 
         do {
             if (next.end > cursor.ch) {
@@ -235,18 +238,18 @@ define(function (require, exports, module) {
     };
 
     /**
-     * Calculate a query string relative to the current cursor position
-     * and token. E.g., from a state "identi<cursor>er", the query string is
+     * Calculate a query String relative to the current cursor position
+     * and token. E.g., from a state "identi--cursor--er", the query String is
      * "identi".
      *
-     * @return {string} - the query string for the current cursor position
+     * @return {String} - the query String for the current cursor position
      */
     Session.prototype.getQuery = function () {
-        var cursor  = this.getCursor(),
-            token   = this.getToken(cursor),
-            query   = "",
-            start   = cursor.ch,
-            end     = start;
+        var cursor = this.getCursor(),
+            token = this.getToken(cursor),
+            query = "",
+            start = cursor.ch,
+            end = start;
 
         if (token) {
             var line = this.getLine(cursor.line);
@@ -272,7 +275,7 @@ define(function (require, exports, module) {
      *      at which context information is to be retrieved
      * @param {number=} depth - the current depth of the parenthesis stack, or
      *      undefined if the depth is 0.
-     * @return {string} - the context for the property that was looked up
+     * @return {String} - the context for the property that was looked up
      */
     Session.prototype.getContext = function (cursor, depth) {
         var token = this.getToken(cursor);
@@ -309,8 +312,8 @@ define(function (require, exports, module) {
         if (token && token.string === ".") {
             return cursor;
         }
-            // If something has been typed like 'foo.b' then we have to look back 2 tokens
-            // to get past the 'b' token
+        // If something has been typed like 'foo.b' then we have to look back 2 tokens
+        // to get past the 'b' token
         token = this._getPreviousToken(cursor);
         if (token && token.string === ".") {
             return cursor;
@@ -339,17 +342,17 @@ define(function (require, exports, module) {
     /**
      * Determine if the caret is either within a function call or on the function call itself.
      *
-     * @return {{inFunctionCall: boolean, functionCallPos: {line: number, ch: number}}}
+     * @return {{inFunctionCall: Boolean, functionCallPos: {line: number, ch: number}}}
      * inFunctionCall - true if the caret if either within a function call or on the
      * function call itself.
      * functionCallPos - the offset of the '(' character of the function call if inFunctionCall
      * is true, otherwise undefined.
      */
     Session.prototype.getFunctionInfo = function () {
-        var inFunctionCall   = false,
-            cursor           = this.getCursor(),
+        var inFunctionCall = false,
+            cursor = this.getCursor(),
             functionCallPos,
-            token            = this.getToken(cursor),
+            token = this.getToken(cursor),
             lexical,
             self = this,
             foundCall = false;
@@ -365,7 +368,7 @@ define(function (require, exports, module) {
             var type = token.type,
                 nextToken,
                 localLexical,
-                localCursor = {line: cursor.line, ch: token.end};
+                localCursor = { line: cursor.line, ch: token.end };
 
             if (type === "variable-2" || type === "variable" || type === "property") {
                 nextToken = self.getNextToken(localCursor, true);
@@ -382,7 +385,7 @@ define(function (require, exports, module) {
          * Test is a lexical state is in a function call.
          *
          * @param {Object} lex - lexical state.
-         * @return {Object | boolean}
+         * @return {Object | Boolean}
          *
          */
         function isInFunctionalCall(lex) {
@@ -435,7 +438,7 @@ define(function (require, exports, module) {
 
                 if (found) {
                     inFunctionCall = true;
-                    functionCallPos = {line: line, ch: col};
+                    functionCallPos = { line: line, ch: col };
                 }
             }
         }
@@ -450,19 +453,18 @@ define(function (require, exports, module) {
      * Get the type of the current session, i.e., whether it is a property
      * lookup and, if so, what the context of the lookup is.
      *
-     * @return {{property: boolean,
-                 context: string} - an Object consisting
-     *      of a {boolean} "property" that indicates whether or not the type of
-     *      the session is a property lookup, and a {string} "context" that
+     * @return {{property: Boolean, context: String}} - an Object consisting
+     *      of a {Boolean} "property" that indicates whether or not the type of
+     *      the session is a property lookup, and a {String} "context" that
      *      indicates the object context (as described in getContext above) of
      *      the property lookup, or null if there is none. The context is
      *      always null for non-property lookups.
      */
     Session.prototype.getType = function () {
-        var propertyLookup   = false,
-            context          = null,
-            cursor           = this.getCursor(),
-            token            = this.getToken(cursor);
+        var propertyLookup = false,
+            context = null,
+            cursor = this.getCursor(),
+            token = this.getToken(cursor);
 
         if (token) {
             if (token.type === "property") {
@@ -482,8 +484,8 @@ define(function (require, exports, module) {
         };
     };
 
-    // Comparison function used for sorting that does a case-insensitive string
-    // comparison on the "value" field of both objects. Unlike a normal string
+    // Comparison function used for sorting that does a case-insensitive String
+    // comparison on the "value" field of both objects. Unlike a normal String
     // comparison, however, this sorts leading "_" to the bottom, given that a
     // leading "_" usually denotes a private value.
     function penalizeUnderscoreValueCompare(a, b) {
@@ -504,14 +506,14 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Get a list of hints for the current session using the current scope
+     * Retrieves a list of hints for the current session based on the current scope
      * information.
      *
-     * @param {string} query - the query prefix
-     * @param {StringMatcher} matcher - the class to find query matches and sort the results
-     * @return {hints: Array.<string>, needGuesses: boolean} - array of
-     * matching hints. If needGuesses is true, then the caller needs to
-     * request guesses and call getHints again.
+     * @param {String} query - The query prefix used to filter hints.
+     * @param {StringMatcher} matcher - The class used to find query matches and sort the results.
+     * @return {{hints: Array<String>, needGuesses: Boolean}} An object containing:
+     *   - `hints`: An array of matching hints.
+     *   - `needGuesses`: A Boolean indicating whether the caller needs to request guesses and call getHints again.
      */
     Session.prototype.getHints = function (query, matcher) {
 
@@ -520,15 +522,15 @@ define(function (require, exports, module) {
         }
 
         var MAX_DISPLAYED_HINTS = 500,
-            type                = this.getType(),
-            builtins            = this._getBuiltins(),
-            needGuesses         = false,
+            type = this.getType(),
+            builtins = this._getBuiltins(),
+            needGuesses = false,
             hints;
 
         /**
          *  Is the origin one of the builtin files.
          *
-         * @param {string} origin
+         * @param {String} origin
          */
         function isBuiltin(origin) {
             return builtins.indexOf(origin) !== -1;
@@ -573,7 +575,7 @@ define(function (require, exports, module) {
                     }
 
                     if (!type.property && !type.showFunctionType && hint.origin &&
-                            isBuiltin(hint.origin)) {
+                        isBuiltin(hint.origin)) {
                         searchResult.builtin = 1;
                     } else {
                         searchResult.builtin = 0;
@@ -599,20 +601,20 @@ define(function (require, exports, module) {
                 }
             }
 
-            StringMatch.multiFieldSort(hints, [ "matchGoodness", penalizeUnderscoreValueCompare ]);
+            StringMatch.multiFieldSort(hints, ["matchGoodness", penalizeUnderscoreValueCompare]);
         } else {     // identifiers, literals, and keywords
             hints = this.ternHints || [];
             hints = hints.concat(HintUtils.LITERALS);
             hints = hints.concat(HintUtils.KEYWORDS);
             hints = filterWithQueryAndMatcher(hints, matcher);
-            StringMatch.multiFieldSort(hints, [ "matchGoodness", "depth", "builtin", penalizeUnderscoreValueCompare ]);
+            StringMatch.multiFieldSort(hints, ["matchGoodness", "depth", "builtin", penalizeUnderscoreValueCompare]);
         }
 
         if (hints.length > MAX_DISPLAYED_HINTS) {
             hints = hints.slice(0, MAX_DISPLAYED_HINTS);
         }
 
-        return {hints: hints, needGuesses: needGuesses};
+        return { hints: hints, needGuesses: needGuesses };
     };
 
     Session.prototype.setTernHints = function (newHints) {
@@ -625,9 +627,7 @@ define(function (require, exports, module) {
 
     /**
      * Set a new function type hint.
-     *
-     * @param {Array<{name: string, type: string, isOptional: boolean}>} newFnType -
-     * Array of function hints.
+     * @param {{name: String, type: String, isOptional: Boolean[]}} newFnType - Array of function hints
      */
     Session.prototype.setFnType = function (newFnType) {
         this.fnType = newFnType;
@@ -646,7 +646,7 @@ define(function (require, exports, module) {
      * Get the function type hint.  This will format the hint, showing the
      * parameter at the cursor in bold.
      *
-     * @return {{parameters: Array<{name: string, type: string, isOptional: boolean}>,
+     * @return {{parameters: Array<{name: String, type: String, isOptional: Boolean}>,
      * currentIndex: number}} An Object where the
      * "parameters" property is an array of parameter objects;
      * the "currentIndex" property index of the hint the cursor is on, may be
@@ -656,9 +656,9 @@ define(function (require, exports, module) {
         var fnHint = this.fnType,
             cursor = this.getCursor(),
             token = this.getToken(this.functionCallPos),
-            start = {line: this.functionCallPos.line, ch: token.start},
+            start = { line: this.functionCallPos.line, ch: token.start },
             fragment = this.editor.document.getRange(start,
-                {line: this.functionCallPos.line + 10, ch: 0});
+                { line: this.functionCallPos.line + 10, ch: 0 });
 
         var ast;
         try {
@@ -737,21 +737,21 @@ define(function (require, exports, module) {
             }
         }
 
-        return {parameters: fnHint, currentIndex: currentArg};
+        return { parameters: fnHint, currentIndex: currentArg };
     };
 
     /**
      * Get the javascript text of the file open in the editor for this Session.
      * For a javascript file, this is just the text of the file.  For an HTML file,
-     * this will be only the text in the <script> tags.  This is so that we can pass
+     * this will be only the text in the script tags.  This is so that we can pass
      * just the javascript text to tern, and avoid confusing it with HTML tags, since it
      * only knows how to parse javascript.
-     * @return {string} - the "javascript" text that can be sent to Tern.
+     * @return {String} - the "javascript" text that can be sent to Tern.
      */
     Session.prototype.getJavascriptText = function () {
         if (LanguageManager.getLanguageForPath(this.editor.document.file.fullPath).getId() === "html") {
             // HTML file - need to send back only the bodies of the
-            // <script> tags
+            // script tags
             var text = "",
                 editor = this.editor,
                 scriptBlocks = HTMLUtils.findBlocks(editor, "javascript");
@@ -763,7 +763,7 @@ define(function (require, exports, module) {
             // Alternatively we could strip the non-javascript text, and modify the offset,
             // and/or cursor, but then we have to remember how to reverse the translation
             // to support jump-to-definition
-            var htmlStart = {line: 0, ch: 0};
+            var htmlStart = { line: 0, ch: 0 };
             scriptBlocks.forEach(function (scriptBlock) {
                 var start = scriptBlock.start,
                     end = scriptBlock.end;
@@ -778,7 +778,7 @@ define(function (require, exports, module) {
 
             return text;
         }
-            // Javascript file, just return the text
+        // Javascript file, just return the text
         return this.editor.document.getText();
 
     };
@@ -789,7 +789,7 @@ define(function (require, exports, module) {
      * parameter declarations, but we can tell those from the token itself rather than having
      * to look at previous tokens.
      *
-     * @return {boolean} - true if the current cursor position is in the name of a function
+     * @return {Boolean} - true if the current cursor position is in the name of a function
      * declaration.
      */
     Session.prototype.isFunctionName = function () {

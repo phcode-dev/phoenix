@@ -19,13 +19,16 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
+
 define(function (require, exports, module) {
 
 
     const FileSystemEntry = require("filesystem/FileSystemEntry"),
         FileSystem = require("filesystem/FileSystem");
 
-    /*
+    /**
      * Model for a file system Directory.
      *
      * This class should *not* be instantiated directly. Use FileSystem.getDirectoryForPath,
@@ -63,7 +66,7 @@ define(function (require, exports, module) {
 
     /**
      * The stats errors for the contents of this directory.
-     * @type {object.<string: string>} fullPaths are mapped to FileSystemError strings
+     * @type {Object.<string, string>} Full paths are mapped to FileSystemError strings.
      */
     Directory.prototype._contentsStatsErrors = null;
 
@@ -128,9 +131,9 @@ define(function (require, exports, module) {
      */
     Directory.prototype.isEmptyAsync = function () {
         let that = this;
-        return new Promise((resolve, reject)=>{
-            that.getContents((err, contents) =>{
-                if(err){
+        return new Promise((resolve, reject) => {
+            that.getContents((err, contents) => {
+                if (err) {
                     reject(err);
                     return;
                 }
@@ -156,14 +159,14 @@ define(function (require, exports, module) {
      */
     Directory.prototype.unlinkEmptyDirectoryAsync = async function () {
         let that = this;
-        let {entries} = await that.getContentsAsync();
-        for(let entry of entries){
-            if(entry.isDirectory) {
+        let { entries } = await that.getContentsAsync();
+        for (let entry of entries) {
+            if (entry.isDirectory) {
                 await entry.unlinkEmptyDirectoryAsync();
             }
         }
         let isEmpty = await that.isEmptyAsync();
-        if(isEmpty){
+        if (isEmpty) {
             await that.unlinkAsync();
         }
     };
@@ -175,19 +178,19 @@ define(function (require, exports, module) {
      * @param {boolean} filterNothing - is specified, will return a true contents of dir as shown in disc,
      *      weather it is shown in the file tree or not. Can be used for backup/restore flows.
      *
-     * @return {Promise<{entries: FileSystemEntry, contentStats: FileSystemStats, contentsStatsErrors}>} An object
+     * @return {{entries: FileSystemEntry, contentStats: FileSystemStats, contentsStatsErrors}} An object
      * with attributes - entries(an array of file system entries), contentStats and contentsStatsErrors(a map from
      * content name to error if there is any).
      */
-    Directory.prototype.getContentsAsync = function (filterNothing= false) {
+    Directory.prototype.getContentsAsync = function (filterNothing = false) {
         let that = this;
-        return new Promise((resolve, reject)=>{
-            that.getContents((err, contents, entriesStats, entriesStatsErrors) =>{
-                if(err){
+        return new Promise((resolve, reject) => {
+            that.getContents((err, contents, entriesStats, entriesStatsErrors) => {
+                if (err) {
                     reject(err);
                     return;
                 }
-                resolve({entries: contents, entriesStats, entriesStatsErrors});
+                resolve({ entries: contents, entriesStats, entriesStatsErrors });
             }, filterNothing);
         });
     };
@@ -206,7 +209,7 @@ define(function (require, exports, module) {
      *      weather it is shown in the file tree or not. Can be used for backup/restore flows.
      */
     Directory.prototype.getContents = function (callback, filterNothing = false) {
-        if(!filterNothing) {
+        if (!filterNothing) {
             if (this._contentsCallbacks) {
                 // There is already a pending call for this directory's contents.
                 // Push the new callback onto the stack and return.
@@ -276,7 +279,7 @@ define(function (require, exports, module) {
                 }
             }
 
-            if(!filterNothing){
+            if (!filterNothing) {
                 // Reset the callback list before we begin calling back so that
                 // synchronous reentrant calls are handled correctly.
                 var currentCallbacks = this._contentsCallbacks;
@@ -299,9 +302,9 @@ define(function (require, exports, module) {
      */
     Directory.prototype.createAsync = function () {
         let that = this;
-        return new Promise((resolve, reject)=>{
-            that.create((err, stat)=>{
-                if(err){
+        return new Promise((resolve, reject) => {
+            that.create((err, stat) => {
+                if (err) {
                     reject(err);
                     return;
                 }
@@ -317,7 +320,7 @@ define(function (require, exports, module) {
      *      FileSystemError string or the stat object for the created directory.
      */
     Directory.prototype.create = function (callback) {
-        callback = callback || function () {};
+        callback = callback || function () { };
 
         // Block external change events until after the write has finished
         this._fileSystem._beginChange();

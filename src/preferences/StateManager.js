@@ -18,6 +18,9 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
+
 /*unittests: Preferences Manager */
 /*global fs*/
 

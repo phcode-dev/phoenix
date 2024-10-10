@@ -19,6 +19,10 @@
  *
  */
 
+
+// @INCLUDE_IN_API_DOCS
+
+
 /*global jsPromise, path*/
 
 /**
@@ -150,13 +154,13 @@ define(function (require, exports, module) {
 
     /**
      * @private
-     * @type {{languageId:string, Array.<{name:string, scanFileAsync:?function(string, string):!{$.Promise}, scanFile:?function(string, string):Object}>}}
+     * @type {{languageId:string, {name:string, scanFileAsync:?function(string, string):!{$.Promise}, scanFile:?function(string, string):Object}}}
      */
     var _providers = {};
 
     /**
      * @private
-     * @type
+     * @type {Array<string>}
      */
     let _registeredLanguageIDs = [];
 
@@ -195,7 +199,7 @@ define(function (require, exports, module) {
      * Decision is made depending on the file extension.
      *
      * @param {!string} filePath
-     * @return {Array.<{name:string, scanFileAsync:?function(string, string):!{$.Promise}, scanFile:?function(string, string):?{errors:!Array, aborted:boolean}}>}
+     * @return {{name:string, scanFileAsync:?function(string, string):!{$.Promise}, scanFile:?function(string, string):?{errors:!Array, aborted:boolean}}}
      */
     function getProvidersForPath(filePath) {
         var language            = LanguageManager.getLanguageForPath(filePath).getId(),
@@ -257,8 +261,8 @@ define(function (require, exports, module) {
      * If there are no providers registered for this file, the Promise yields null instead.
      *
      * @param {!File} file File that will be inspected for errors.
-     * @param {?Array.<{name:string, scanFileAsync:?function(string, string):!{$.Promise}, scanFile:?function(string, string):?{errors:!Array, aborted:boolean}}>} providerList
-     * @return {$.Promise} a jQuery promise that will be resolved with ?Array.<{provider:Object, result: ?{errors:!Array, aborted:boolean}}>
+     * @param {?{name:string, scanFileAsync:?function(string, string):!{$.Promise}, scanFile:?function(string, string):?{errors:!Array, aborted:boolean}}} providerList Array
+     * @return {$.Promise} a jQuery promise that will be resolved with ?\{provider:Object, result: ?\{errors:!Array, aborted:boolean}}
      */
     function inspectFile(file, providerList) {
         var response = new $.Deferred(),
@@ -358,7 +362,7 @@ define(function (require, exports, module) {
      * change based on the number of problems reported and how many provider reported problems.
      *
      * @param {Number} numProblems - total number of problems across all providers
-     * @param {Array.<{name:string, scanFileAsync:?function(string, string):!{$.Promise}, scanFile:?function(string, string):Object}>} providersReportingProblems - providers that reported problems
+     * @param {{name:string, scanFileAsync:?function(string, string):!{$.Promise}, scanFile:?function(string, string):Object}} Array providersReportingProblems - providers that reported problems
      * @param {boolean} aborted - true if any provider returned a result with the 'aborted' flag set
      * @param fileName
      */
@@ -882,6 +886,7 @@ define(function (require, exports, module) {
      *   the same type of value as `scanFile()`. Rejecting the promise is treated as an internal error in the provider.
      *
      * Each error object in the results should have the following structure:
+     * ```js
      *              { pos:{line,ch},
      *                endPos:?{line,ch},
      *                message:string,
@@ -893,6 +898,7 @@ define(function (require, exports, module) {
      *                         start: number,
      *                         end: number
      *                }}}
+     * ```
      * @typedef {Object} Error
      * @property {Object} pos - The start position of the error.
      * @property {number} pos.line - The line number (0-based).

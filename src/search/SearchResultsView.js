@@ -19,6 +19,8 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /*
  * Panel showing search results for a Find/Replace in Files operation.
  */

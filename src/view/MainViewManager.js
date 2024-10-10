@@ -21,6 +21,8 @@
 
 // jshint ignore: start
 
+// @INCLUDE_IN_API_DOCS
+
 /**
  * MainViewManager manages the arrangement of all open panes as well as provides the controller
  * logic behind all views in the MainView (e.g. ensuring that a file doesn't appear in 2 lists)
@@ -53,13 +55,13 @@
  *    - workingSetAdd -- When a file is added to the working set
  *          (e, fileAdded:File, index:number, paneId:string)
  *    - workingSetAddList -- When multiple files are added to the working set
- *          (e, fileAdded:Array.<File>, paneId:string)
+ *          (e, fileAdded:Array."File", paneId:string)
  *    - workingSetMove - When a File has moved to a different working set
  *          (e, File:FILE, sourcePaneId:string, destinationPaneId:string)
  *    - workingSetRemove -- When a file is removed from the working set
  *          (e, fileRemoved:File, suppressRedraw:boolean, paneId:string)
  *    - workingSetRemoveList -- When multiple files are removed from the working set
- *          (e, filesRemoved:Array.<File>, paneId:string)
+ *          (e, filesRemoved:Array."File", paneId:string)
  *    - workingSetSort -- When a pane's view array is reordered without additions or removals.
  *          (e, paneId:string)
  *    - workingSetUpdate -- When changes happen due to system events such as a file being deleted.
@@ -75,25 +77,25 @@
 define(function (require, exports, module) {
 
 
-    var _                   = require("thirdparty/lodash"),
-        EventDispatcher     = require("utils/EventDispatcher"),
-        Strings             = require("strings"),
-        AppInit             = require("utils/AppInit"),
-        CommandManager      = require("command/CommandManager"),
-        MainViewFactory     = require("view/MainViewFactory"),
-        ViewStateManager    = require("view/ViewStateManager"),
-        Commands            = require("command/Commands"),
-        EditorManager       = require("editor/EditorManager"),
-        FileSystemError     = require("filesystem/FileSystemError"),
-        DocumentManager     = require("document/DocumentManager"),
-        PreferencesManager  = require("preferences/PreferencesManager"),
-        ProjectManager      = require("project/ProjectManager"),
-        WorkspaceManager    = require("view/WorkspaceManager"),
-        AsyncUtils          = require("utils/Async"),
-        ViewUtils           = require("utils/ViewUtils"),
-        Resizer             = require("utils/Resizer"),
-        Pane                = require("view/Pane").Pane,
-        KeyBindingManager   = brackets.getModule("command/KeyBindingManager");
+    var _ = require("thirdparty/lodash"),
+        EventDispatcher = require("utils/EventDispatcher"),
+        Strings = require("strings"),
+        AppInit = require("utils/AppInit"),
+        CommandManager = require("command/CommandManager"),
+        MainViewFactory = require("view/MainViewFactory"),
+        ViewStateManager = require("view/ViewStateManager"),
+        Commands = require("command/Commands"),
+        EditorManager = require("editor/EditorManager"),
+        FileSystemError = require("filesystem/FileSystemError"),
+        DocumentManager = require("document/DocumentManager"),
+        PreferencesManager = require("preferences/PreferencesManager"),
+        ProjectManager = require("project/ProjectManager"),
+        WorkspaceManager = require("view/WorkspaceManager"),
+        AsyncUtils = require("utils/Async"),
+        ViewUtils = require("utils/ViewUtils"),
+        Resizer = require("utils/Resizer"),
+        Pane = require("view/Pane").Pane,
+        KeyBindingManager = brackets.getModule("command/KeyBindingManager");
 
     const EVENT_CURRENT_FILE_CHANGE = "currentFileChange";
 
@@ -102,14 +104,14 @@ define(function (require, exports, module) {
      * @const
      * @private
      */
-    var PREFS_NAME          = "mainView.state";
+    var PREFS_NAME = "mainView.state";
 
     /**
      * Legacy Preference setting name used to migrate old preferences
      * @const
      * @private
      */
-    var OLD_PREFS_NAME      = "project.files";
+    var OLD_PREFS_NAME = "project.files";
 
     /**
      * Special paneId shortcut that can be used to specify that
@@ -118,7 +120,7 @@ define(function (require, exports, module) {
      * Check the API documentation before use.
      * @const
      */
-    var ALL_PANES           = "ALL_PANES";
+    var ALL_PANES = "ALL_PANES";
 
     /**
      * Special paneId shortcut that can be used to specify that
@@ -126,21 +128,21 @@ define(function (require, exports, module) {
      * All APIs support this shortcut.
      * @const
      */
-    var ACTIVE_PANE        = "ACTIVE_PANE";
+    var ACTIVE_PANE = "ACTIVE_PANE";
 
     /**
      * Internal pane id
      * @const
      * @private
      */
-    var FIRST_PANE          = "first-pane";
+    var FIRST_PANE = "first-pane";
 
     /**
      * Internal pane id
      * @const
      * @private
      */
-    var SECOND_PANE         = "second-pane";
+    var SECOND_PANE = "second-pane";
 
     /*
      * NOTE: The following commands and constants will change
@@ -152,21 +154,21 @@ define(function (require, exports, module) {
      * @const
      * @private
      */
-    var VERTICAL            = "VERTICAL";
+    var VERTICAL = "VERTICAL";
 
     /**
      * Horizontal layout state name
      * @const
      * @private
      */
-    var HORIZONTAL          = "HORIZONTAL";
+    var HORIZONTAL = "HORIZONTAL";
 
     /**
      * The minimum width or height that a pane can be
      * @const
      * @private
      */
-    var MIN_PANE_SIZE      = 75;
+    var MIN_PANE_SIZE = 75;
 
     /**
      * current orientation (null, VERTICAL or HORIZONTAL)
@@ -222,13 +224,13 @@ define(function (require, exports, module) {
     var _mruList = [];
 
     /**
-     * localized pane titles
-     * @type {Object.<FIRST_PANE|SECOND_PANE, <VERTICAL.string, HORIZONTAL.string>}}
-     *  Localized string for first and second panes in the current orientation.
+     * Localized pane titles
+     * @type {Object.<"FIRST_PANE"|"SECOND_PANE", {VERTICAL: string, HORIZONTAL: string}>}
+     * Localized string for first and second panes in the current orientation.
      * @see {@link #getPaneTitle} for more information
      * @private
      */
-    var _paneTitles  = {};
+    var _paneTitles = {};
 
     /*
      * Initialize _paneTitles
@@ -236,10 +238,10 @@ define(function (require, exports, module) {
     _paneTitles[FIRST_PANE] = {};
     _paneTitles[SECOND_PANE] = {};
 
-    _paneTitles[FIRST_PANE][VERTICAL]     = Strings.LEFT;
-    _paneTitles[FIRST_PANE][HORIZONTAL]   = Strings.TOP;
-    _paneTitles[SECOND_PANE][VERTICAL]    = Strings.RIGHT;
-    _paneTitles[SECOND_PANE][HORIZONTAL]  = Strings.BOTTOM;
+    _paneTitles[FIRST_PANE][VERTICAL] = Strings.LEFT;
+    _paneTitles[FIRST_PANE][HORIZONTAL] = Strings.TOP;
+    _paneTitles[SECOND_PANE][VERTICAL] = Strings.RIGHT;
+    _paneTitles[SECOND_PANE][HORIZONTAL] = Strings.BOTTOM;
 
     /**
      * Makes a MRU List Entry
@@ -249,7 +251,7 @@ define(function (require, exports, module) {
      * @private
      */
     function _makeMRUListEntry(file, paneId) {
-        return {file: file, paneId: paneId};
+        return { file: file, paneId: paneId };
     }
 
     /**
@@ -396,9 +398,9 @@ define(function (require, exports, module) {
 
             exports.trigger("activePaneChange", newPaneId, oldPaneId);
             exports.trigger(EVENT_CURRENT_FILE_CHANGE, _getPane(ACTIVE_PANE).getCurrentlyViewedFile(),
-                                                            newPaneId,
-                                                            oldPane.getCurrentlyViewedFile(),
-                                                            oldPaneId);
+                newPaneId,
+                oldPane.getCurrentlyViewedFile(),
+                oldPaneId);
 
             _makePaneMostRecent(_activePaneId);
             focusActivePane();
@@ -439,15 +441,17 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Get an array of editors open in panes with their pane ids. Can return empty if no editor open.
-     * @return {[{editor: Editor, paneId:string}]}
+     * Gets an array of editors open in panes with their pane IDs.
+     * Can return an empty array if no editors are open.
+     *
+     * @return {{editor: Editor, paneId: string[]}} An array of objects, each containing an editor and its corresponding pane ID.
      */
     function getAllViewedEditors() {
         const editorList = [];
-        for(let paneId of getPaneIdList()){
+        for (let paneId of getPaneIdList()) {
             const editor = getCurrentlyViewedEditor(paneId);
-            if(editor){
-                editorList.push({editor, paneId});
+            if (editor) {
+                editorList.push({ editor, paneId });
             }
         }
         return editorList;
@@ -646,7 +650,7 @@ define(function (require, exports, module) {
      * Finds all instances of the specified file in all working sets.
      * If there is a temporary view of the file, it is not part of the result set
      * @param {!string} fullPath - path of the file to find views of
-     * @return {Array.<{pane:string, index:number}>} an array of paneId/index records
+     * @return {{pane:string, index:number}} an array of paneId/index records
      */
     function findInAllWorkingSets(fullPath) {
         let index,
@@ -655,26 +659,28 @@ define(function (require, exports, module) {
         _.forEach(_panes, function (pane) {
             index = pane.findInViewList(fullPath);
             if (index >= 0) {
-                result.push({paneId: pane.id, index: index});
+                result.push({ paneId: pane.id, index: index });
             }
         });
 
         return result;
     }
 
+
     /**
-     * Returns the paneId and editor(if present) of the given file on any open and viewable pane. If same file
-     * is open in multiple panes, all matching panes will be returned. If not found in any panes, [] will be returned.
-     * @param {string} fullPath
-     * @return {[{paneId:string, editor:?Editor}]} paneId - array of id of the panes in which the file is open.
+     * Returns the pane IDs and editors (if present) of the given file in any open and viewable pane. 
+     * If the same file is open in multiple panes, all matching panes will be returned. 
+     * If not found in any panes, an empty array will be returned.
+     * @param {string} fullPath - The full path of the file to search for.
+     * @return {{paneId: string, editor: ?Editor}} An array of objects, each containing the pane ID and the corresponding editor, if present.
      */
     function findInOpenPane(fullPath) {
         const paneList = [];
-        for(let paneId of getPaneIdList()){
+        for (let paneId of getPaneIdList()) {
             const file = getCurrentlyViewedFile(paneId);
             const editor = getCurrentlyViewedEditor(paneId);
-            if(file && file.fullPath === fullPath){
-                paneList.push({paneId, editor});
+            if (file && file.fullPath === fullPath) {
+                paneList.push({ paneId, editor });
             }
         }
         return paneList;
@@ -726,7 +732,7 @@ define(function (require, exports, module) {
         if (!info) {
             _.forEach(_panes, function (pane) {
                 if (pane.getCurrentlyViewedPath() === fullPath) {
-                    info = {paneId: pane.id};
+                    info = { paneId: pane.id };
                     return false;
                 }
             });
@@ -750,7 +756,7 @@ define(function (require, exports, module) {
             _saveViewState();
             _viewStateSaveScheduled = false;
         }
-        if(!_viewStateSaveScheduled){
+        if (!_viewStateSaveScheduled) {
             _viewStateSaveScheduled = true;
             window.setTimeout(_saveViewStateAndResetScheduler, 1000);
         }
@@ -911,9 +917,9 @@ define(function (require, exports, module) {
      */
     function switchPaneFocus() {
         var $firstPane = $('#first-pane'), $secondPane = $('#second-pane');
-        if($firstPane.hasClass('active-pane')) {
+        if ($firstPane.hasClass('active-pane')) {
             $secondPane.click();
-        }        else {
+        } else {
             $firstPane.click();
         }
     }
@@ -1115,23 +1121,27 @@ define(function (require, exports, module) {
         _.forEach(_panes, function (pane) {
             if (pane.id === FIRST_PANE) {
                 if (_orientation === VERTICAL) {
-                    pane.$el.css({height: "100%",
+                    pane.$el.css({
+                        height: "100%",
                         width: size + "%",
                         float: "left"
                     });
                 } else {
-                    pane.$el.css({ height: size + "%",
+                    pane.$el.css({
+                        height: size + "%",
                         width: "100%"
                     });
                 }
             } else {
                 if (_orientation === VERTICAL) {
-                    pane.$el.css({  height: "100%",
+                    pane.$el.css({
+                        height: "100%",
                         width: "auto",
                         float: "none"
                     });
                 } else {
-                    pane.$el.css({ width: "100%",
+                    pane.$el.css({
+                        width: "100%",
                         height: "50%"
                     });
                 }
@@ -1178,9 +1188,9 @@ define(function (require, exports, module) {
                 _updatePaneHeaders();
                 if (_activePaneId === newPane.id) {
                     exports.trigger(EVENT_CURRENT_FILE_CHANGE,
-                                               newView && newView.getFile(),
-                                               newPane.id, oldView && oldView.getFile(),
-                                               newPane.id);
+                        newView && newView.getFile(),
+                        newPane.id, oldView && oldView.getFile(),
+                        newPane.id);
                 }
             });
             newPane.on("viewDestroy.mainView", function (e, view) {
@@ -1198,9 +1208,9 @@ define(function (require, exports, module) {
     function _makeFirstPaneResizable() {
         var firstPane = _panes[FIRST_PANE];
         Resizer.makeResizable(firstPane.$el,
-                              _orientation === HORIZONTAL ? Resizer.DIRECTION_VERTICAL : Resizer.DIRECTION_HORIZONTAL,
-                              _orientation === HORIZONTAL ? Resizer.POSITION_BOTTOM : Resizer.POSITION_RIGHT,
-                              MIN_PANE_SIZE, false, false, false,
+            _orientation === HORIZONTAL ? Resizer.DIRECTION_VERTICAL : Resizer.DIRECTION_HORIZONTAL,
+            _orientation === HORIZONTAL ? Resizer.POSITION_BOTTOM : Resizer.POSITION_RIGHT,
+            MIN_PANE_SIZE, false, false, false,
             true, undefined, true);
 
         firstPane.$el.on("panelResizeUpdate", function () {
@@ -1405,11 +1415,14 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Closes a file in the specified pane or panes
-     * @param {!string} paneId - id of the pane in which to open the document
-     * @param {!File} file - file to close
-     * @param {Object={noOpenNextFile:boolean}} optionsIn - options
-     * This function does not fail if the file is not open
+     * Closes a file in the specified pane or panes.
+     * 
+     * @param {!string} paneId - The ID of the pane in which to close the document.
+     * @param {!File} file - The file to close.
+     * @param {Object} [optionsIn] - Optional parameters for the close operation.
+     * @param {boolean} [optionsIn.noOpenNextFile] - If set to true, prevents opening the next file after closing.
+     * 
+     * This function does not fail if the file is not open.
      */
     function _close(paneId, file, optionsIn) {
         var options = optionsIn || {};
@@ -1645,7 +1658,7 @@ define(function (require, exports, module) {
 
         }
 
-        let projectRoot     = ProjectManager.getProjectRoot();
+        let projectRoot = ProjectManager.getProjectRoot();
         if (!projectRoot) {
             return;
         }
@@ -1718,8 +1731,8 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Retrieves the current layout scheme
-     * @return {!{rows: number, columns: number>}}
+     * Retrieves the current layout scheme.
+     * @return {!{rows: number, columns: number}} - An object containing the number of rows and columns in the layout.
      */
     function getLayoutScheme() {
         var result = {
@@ -1745,10 +1758,10 @@ define(function (require, exports, module) {
     });
 
     // Event handlers - not safe to call on() directly, due to circular dependencies
-    EventDispatcher.on_duringInit(ProjectManager, "projectOpen",                       _loadViewState);
+    EventDispatcher.on_duringInit(ProjectManager, "projectOpen", _loadViewState);
     EventDispatcher.on_duringInit(ProjectManager, "beforeProjectClose beforeAppClose", _saveViewState);
-    EventDispatcher.on_duringInit(EditorManager, "activeEditorChange",                 _activeEditorChange);
-    EventDispatcher.on_duringInit(DocumentManager, "pathDeleted",                      _removeDeletedFileFromMRU);
+    EventDispatcher.on_duringInit(EditorManager, "activeEditorChange", _activeEditorChange);
+    EventDispatcher.on_duringInit(DocumentManager, "pathDeleted", _removeDeletedFileFromMRU);
 
 
     EventDispatcher.makeEventDispatcher(exports);
@@ -1756,75 +1769,75 @@ define(function (require, exports, module) {
     EventDispatcher.setLeakThresholdForEvent(EVENT_CURRENT_FILE_CHANGE, 25);
 
     // Unit Test Helpers
-    exports._initialize                   = _initialize;
-    exports._getPane                      = _getPane;
+    exports._initialize = _initialize;
+    exports._getPane = _getPane;
 
     // Private Helpers
-    exports._removeView                   = _removeView;
-    exports._moveView                     = _moveView;
+    exports._removeView = _removeView;
+    exports._moveView = _moveView;
 
     // Private API
-    exports._sortWorkingSet               = _sortWorkingSet;
-    exports._moveWorkingSetItem           = _moveWorkingSetItem;
-    exports._swapWorkingSetListIndexes    = _swapWorkingSetListIndexes;
-    exports._destroyEditorIfNotNeeded     = _destroyEditorIfNotNeeded;
-    exports._edit                         = _edit;
-    exports._open                         = _open;
-    exports._close                        = _close;
-    exports._closeAll                     = _closeAll;
-    exports._closeList                    = _closeList;
-    exports._getPaneIdForPath             = _getPaneIdForPath;
+    exports._sortWorkingSet = _sortWorkingSet;
+    exports._moveWorkingSetItem = _moveWorkingSetItem;
+    exports._swapWorkingSetListIndexes = _swapWorkingSetListIndexes;
+    exports._destroyEditorIfNotNeeded = _destroyEditorIfNotNeeded;
+    exports._edit = _edit;
+    exports._open = _open;
+    exports._close = _close;
+    exports._closeAll = _closeAll;
+    exports._closeList = _closeList;
+    exports._getPaneIdForPath = _getPaneIdForPath;
 
     // WorkingSet Management
-    exports.addToWorkingSet               = addToWorkingSet;
-    exports.addListToWorkingSet           = addListToWorkingSet;
-    exports.getWorkingSetSize             = getWorkingSetSize;
-    exports.getWorkingSet                 = getWorkingSet;
+    exports.addToWorkingSet = addToWorkingSet;
+    exports.addListToWorkingSet = addListToWorkingSet;
+    exports.getWorkingSetSize = getWorkingSetSize;
+    exports.getWorkingSet = getWorkingSet;
 
     // Pane state
-    exports.cacheScrollState              = cacheScrollState;
-    exports.restoreAdjustedScrollState    = restoreAdjustedScrollState;
+    exports.cacheScrollState = cacheScrollState;
+    exports.restoreAdjustedScrollState = restoreAdjustedScrollState;
 
     // Searching
-    exports.findInWorkingSet              = findInWorkingSet;
-    exports.findInWorkingSetByAddedOrder  = findInWorkingSetByAddedOrder;
-    exports.findInWorkingSetByMRUOrder    = findInWorkingSetByMRUOrder;
-    exports.findInAllWorkingSets          = findInAllWorkingSets;
-    exports.findInOpenPane                = findInOpenPane;
-    exports.findInGlobalMRUList           = _findFileInMRUList;
+    exports.findInWorkingSet = findInWorkingSet;
+    exports.findInWorkingSetByAddedOrder = findInWorkingSetByAddedOrder;
+    exports.findInWorkingSetByMRUOrder = findInWorkingSetByMRUOrder;
+    exports.findInAllWorkingSets = findInAllWorkingSets;
+    exports.findInOpenPane = findInOpenPane;
+    exports.findInGlobalMRUList = _findFileInMRUList;
 
     // Traversal
-    exports.beginTraversal                = beginTraversal;
-    exports.endTraversal                  = endTraversal;
-    exports.traverseToNextViewByMRU       = traverseToNextViewByMRU;
+    exports.beginTraversal = beginTraversal;
+    exports.endTraversal = endTraversal;
+    exports.traverseToNextViewByMRU = traverseToNextViewByMRU;
     exports.traverseToNextViewInListOrder = traverseToNextViewInListOrder;
 
     // PaneView Attributes
-    exports.getActivePaneId               = getActivePaneId;
-    exports.setActivePaneId               = setActivePaneId;
-    exports.getPaneIdList                 = getPaneIdList;
-    exports.getPaneTitle                  = getPaneTitle;
-    exports.getPaneCount                  = getPaneCount;
-    exports.isExclusiveToPane             = isExclusiveToPane;
+    exports.getActivePaneId = getActivePaneId;
+    exports.setActivePaneId = setActivePaneId;
+    exports.getPaneIdList = getPaneIdList;
+    exports.getPaneTitle = getPaneTitle;
+    exports.getPaneCount = getPaneCount;
+    exports.isExclusiveToPane = isExclusiveToPane;
 
-    exports.getAllOpenFiles               = getAllOpenFiles;
-    exports.focusActivePane               = focusActivePane;
-    exports.switchPaneFocus               = switchPaneFocus;
+    exports.getAllOpenFiles = getAllOpenFiles;
+    exports.focusActivePane = focusActivePane;
+    exports.switchPaneFocus = switchPaneFocus;
 
     // Layout
-    exports.setLayoutScheme               = setLayoutScheme;
-    exports.getLayoutScheme               = getLayoutScheme;
+    exports.setLayoutScheme = setLayoutScheme;
+    exports.getLayoutScheme = getLayoutScheme;
 
     // Convenience
-    exports.getCurrentlyViewedFile        = getCurrentlyViewedFile;
-    exports.getCurrentlyViewedPath        = getCurrentlyViewedPath;
-    exports.getCurrentlyViewedEditor      = getCurrentlyViewedEditor;
-    exports.getAllViewedEditors           = getAllViewedEditors;
+    exports.getCurrentlyViewedFile = getCurrentlyViewedFile;
+    exports.getCurrentlyViewedPath = getCurrentlyViewedPath;
+    exports.getCurrentlyViewedEditor = getCurrentlyViewedEditor;
+    exports.getAllViewedEditors = getAllViewedEditors;
 
     // Constants
-    exports.ALL_PANES                     = ALL_PANES;
-    exports.ACTIVE_PANE                   = ACTIVE_PANE;
-    exports.FIRST_PANE                    = FIRST_PANE;
-    exports.SECOND_PANE                   = SECOND_PANE;
-    exports.EVENT_CURRENT_FILE_CHANGE     = EVENT_CURRENT_FILE_CHANGE;
+    exports.ALL_PANES = ALL_PANES;
+    exports.ACTIVE_PANE = ACTIVE_PANE;
+    exports.FIRST_PANE = FIRST_PANE;
+    exports.SECOND_PANE = SECOND_PANE;
+    exports.EVENT_CURRENT_FILE_CHANGE = EVENT_CURRENT_FILE_CHANGE;
 });

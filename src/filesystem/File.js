@@ -19,13 +19,16 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
+
 define(function (require, exports, module) {
 
 
     var FileSystemEntry = require("filesystem/FileSystemEntry");
 
 
-    /*
+    /**
      * Model for a File.
      *
      * This class should *not* be instantiated directly. Use FileSystem.getFileForPath,
@@ -91,7 +94,7 @@ define(function (require, exports, module) {
     /**
      * Read a file.
      *
-     * @param {Object=} options properties {encoding: 'one of format supported here:
+     * @param {Object=} options properties \{encoding: 'one of format supported here:
      * https://developer.mozilla.org/en-US/docs/Web/API/TextDecoder/encoding'}
      * @param {function (?string, string=, FileSystemStats=)} callback Callback that is passed the
      *              FileSystemError string or the file's contents and its stats.
@@ -159,7 +162,7 @@ define(function (require, exports, module) {
      * Write a file.
      *
      * @param {string} data Data to write.
-     * @param {Object=} options properties {encoding: 'one of format supported here:
+     * @param {Object=} options properties \{encoding: 'one of format supported here:
      * https://developer.mozilla.org/en-US/docs/Web/API/TextDecoder/encoding'}
      * @param {function (?string, FileSystemStats=)=} callback Callback that is passed the
      *              FileSystemError string or the file's new stats.

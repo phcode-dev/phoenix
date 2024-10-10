@@ -18,6 +18,8 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /*globals Phoenix, JSZip, Filer, path*/
 
 define(function (require, exports, module) {
@@ -98,19 +100,20 @@ define(function (require, exports, module) {
     }
 
     /**
-     * extracts a given binary zip data array to given location
-     * @param zipData binary UInt8Array zip data
-     * @param projectDir To extract to
-     * @param flattenFirstLevel if set to true, then if zip contents are nested inside a directory, the nexted dir will
-     * be removed in the path structure in destination. For Eg. some Zip may contain a `contents` folder inside the zip
-     * which has all the contents. If we blindly extract the zio, all the contents will be placed inside a `contents`
-     * folder in root and not the root dir itself.
-     * See a sample zip file here: https://api.github.com/repos/StartBootstrap/startbootstrap-grayscales/zipball
-     * @param {function(doneCount: number, totalCount: number)} [progressControlCallback] A function that can be used
-     * to view the progress and stop further extraction. The function will be invoked with (doneCount, totalCount).
-     * The function should return `false` if further extraction needs to be stopped. If nothing or `true` is returned,
-     * it will continue extraction.
-     * @returns {Promise}
+     * Extracts a given binary zip data array to a specified location.
+     * @param {UInt8Array} zipData - Binary zip data.
+     * @param {string} projectDir - Directory to extract to.
+     * @param {boolean} flattenFirstLevel - If set to true, then if zip contents are nested inside a directory,
+     *          the nested directory will be removed in the path structure in the destination. For example,
+     *          some zip may contain a `contents` folder inside the zip which has all the files. If we blindly
+     *          extract the zip, all the contents will be placed inside a `contents` folder in the root instead 
+     *          of the root directory itself. 
+     *          See a sample zip file here: https://api.github.com/repos/StartBootstrap/startbootstrap-grayscales/zipball
+     * @param {function(number, number): boolean} [progressControlCallback] - A function that can be used
+     *          to view the progress and stop further extraction. The function will be invoked with (doneCount, totalCount).
+     *          The function should return `false` if further extraction needs to be stopped. If nothing or `true` is returned,
+     *          it will continue extraction.
+     * @returns {Promise} - A promise that resolves when extraction is complete.
      */
     function unzipBinDataToLocation(zipData, projectDir, flattenFirstLevel = false, progressControlCallback) {
         if(!projectDir.endsWith('/')){

@@ -21,6 +21,8 @@
 
 /*global Phoenix*/
 
+// @INCLUDE_IN_API_DOCS
+
 /**
  * The view that controls the showing and hiding of the sidebar.
  *

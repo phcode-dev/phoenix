@@ -19,26 +19,28 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /**
  * Set of utilities for simple parsing of JS text.
  */
 define(function (require, exports, module) {
 
 
-    var _          = require("thirdparty/lodash"),
-        Acorn      = require("thirdparty/acorn/dist/acorn"),
+    var _ = require("thirdparty/lodash"),
+        Acorn = require("thirdparty/acorn/dist/acorn"),
         AcornLoose = require("thirdparty/acorn/dist/acorn_loose"),
-        ASTWalker  = require("thirdparty/acorn/dist/walk");
+        ASTWalker = require("thirdparty/acorn/dist/walk");
 
     // Load brackets modules
-    var CodeMirror              = require("thirdparty/CodeMirror/lib/codemirror"),
-        Async                   = require("utils/Async"),
-        DocumentManager         = require("document/DocumentManager"),
-        ChangedDocumentTracker  = require("document/ChangedDocumentTracker"),
-        FileSystem              = require("filesystem/FileSystem"),
-        FileUtils               = require("file/FileUtils"),
-        PerfUtils               = require("utils/PerfUtils"),
-        StringUtils             = require("utils/StringUtils");
+    var CodeMirror = require("thirdparty/CodeMirror/lib/codemirror"),
+        Async = require("utils/Async"),
+        DocumentManager = require("document/DocumentManager"),
+        ChangedDocumentTracker = require("document/ChangedDocumentTracker"),
+        FileSystem = require("filesystem/FileSystem"),
+        FileUtils = require("file/FileUtils"),
+        PerfUtils = require("utils/PerfUtils"),
+        StringUtils = require("utils/StringUtils");
 
     /**
      * Tracks dirty documents between invocations of findMatchingFunctions.
@@ -48,10 +50,12 @@ define(function (require, exports, module) {
 
     /**
      * @private
-     * Return an object mapping function name to offset info for all functions in the specified text.
-     * Offset info is an array, since multiple functions of the same name can exist.
-     * @param {!string} text Document text
-     * @return {Object.<string, Array.<{offsetStart: number, offsetEnd: number}>}
+     * Returns an object mapping function names to offset information for all functions in the specified text.
+     * Offset information is an array since multiple functions with the same name can exist.
+     *
+     * @param {!string} text - The document text to be analyzed for function definitions.
+     * @return {Object.<string, Array.<{offsetStart: number, offsetEnd: number}>>} - An object where each key is a function name,
+     *     and the value is an array of objects containing offset information for each function.
      */
     function _findAllFunctionsInText(text) {
         var AST,
@@ -64,9 +68,9 @@ define(function (require, exports, module) {
         PerfUtils.markStart(PerfUtils.JSUTILS_REGEXP);
 
         try {
-            AST = Acorn.parse(text, {locations: true});
+            AST = Acorn.parse(text, { locations: true });
         } catch (e) {
-            AST = AcornLoose.parse(text, {locations: true});
+            AST = AcornLoose.parse(text, { locations: true });
         }
 
         function _addResult(node, offset, prefix) {
@@ -245,8 +249,8 @@ define(function (require, exports, module) {
      * @param {!Array.<{document: Document, name: string, lineStart: number, lineEnd: number}>} rangeResults
      */
     function _computeOffsets(doc, functionName, functions, rangeResults) {
-        var text    = doc.getText(),
-            lines   = StringUtils.getLines(text);
+        var text = doc.getText(),
+            lines = StringUtils.getLines(text);
 
         functions.forEach(function (funcEntry) {
             if (!funcEntry.offsetEnd) {
@@ -254,7 +258,7 @@ define(function (require, exports, module) {
 
                 funcEntry.offsetEnd = _getFunctionEndOffset(text, funcEntry.offsetStart);
                 funcEntry.lineStart = StringUtils.offsetToLineNum(lines, funcEntry.offsetStart);
-                funcEntry.lineEnd   = StringUtils.offsetToLineNum(lines, funcEntry.offsetEnd);
+                funcEntry.lineEnd = StringUtils.offsetToLineNum(lines, funcEntry.offsetEnd);
 
                 PerfUtils.addMeasurement(PerfUtils.JSUTILS_END_OFFSET);
             }
@@ -284,7 +288,7 @@ define(function (require, exports, module) {
                 fileInfo.JSUtils.functions = allFunctions;
                 fileInfo.JSUtils.timestamp = doc.diskTimestamp;
 
-                result.resolve({doc: doc, functions: allFunctions});
+                result.resolve({ doc: doc, functions: allFunctions });
             })
             .fail(function (error) {
                 result.reject(error);
@@ -329,17 +333,22 @@ define(function (require, exports, module) {
 
     /**
      * @private
-     * Compute lineStart and lineEnd for each matched function
-     * @param {!Array.<{doc: Document, fileInfo: FileInfo, functions: Array.<offsetStart: number, offsetEnd: number>}>} docEntries
-     * @param {!string} functionName
-     * @param {!Array.<document: Document, name: string, lineStart: number, lineEnd: number>} rangeResults
-     * @return {$.Promise} A promise resolved with an array of document ranges to populate a MultiRangeInlineEditor.
+     * Computes the line start and line end for each matched function.
+     *
+     * @param {!Array.<{doc: Document, fileInfo: FileInfo, functions: Array.<{offsetStart: number, offsetEnd: number}>}>} docEntries - 
+     *     An array of document entries, each containing a Document object, associated FileInfo, 
+     *     and an array of function offsets.
+     * @param {!string} functionName - The name of the function for which to compute the line ranges.
+     * @param {!Array.<{document: Document, name: string, lineStart: number, lineEnd: number}>} rangeResults - 
+     *     An array that will be populated with results, each containing the Document, 
+     *     function name, line start, and line end.
+     * @return {$.Promise} A promise that resolves with an array of document ranges to populate a MultiRangeInlineEditor.
      */
     function _getOffsetsForFunction(docEntries, functionName) {
         // Filter for documents that contain the named function
-        var result              = new $.Deferred(),
-            matchedDocuments    = [],
-            rangeResults        = [];
+        var result = new $.Deferred(),
+            matchedDocuments = [],
+            rangeResults = [];
 
         docEntries.forEach(function (docEntry) {
             // Need to call _.has here since docEntry.functions could have an
@@ -347,13 +356,13 @@ define(function (require, exports, module) {
             // to invoke docEntry.functions.hasOwnProperty().
             if (_.has(docEntry.functions, functionName)) {
                 var functionsInDocument = docEntry.functions[functionName];
-                matchedDocuments.push({doc: docEntry.doc, fileInfo: docEntry.fileInfo, functions: functionsInDocument});
+                matchedDocuments.push({ doc: docEntry.doc, fileInfo: docEntry.fileInfo, functions: functionsInDocument });
             }
         });
 
         Async.doInParallel(matchedDocuments, function (docEntry) {
-            var doc         = docEntry.doc,
-                oneResult   = new $.Deferred();
+            var doc = docEntry.doc,
+                oneResult = new $.Deferred();
 
             // doc will be undefined if we hit the cache
             if (!doc) {
@@ -392,7 +401,7 @@ define(function (require, exports, module) {
                 if (useCache) {
                     // Return cached data. doc property is undefined since we hit the cache.
                     // _getOffsets() will fetch the Document if necessary.
-                    result.resolve({/*doc: undefined,*/fileInfo: fileInfo, functions: fileInfo.JSUtils.functions});
+                    result.resolve({/*doc: undefined,*/fileInfo: fileInfo, functions: fileInfo.JSUtils.functions });
                 } else {
                     _readFile(fileInfo, result);
                 }
@@ -411,8 +420,8 @@ define(function (require, exports, module) {
      *   contain a map of all function names from the document and each function's start offset.
      */
     function _getFunctionsInFiles(fileInfos) {
-        var result      = new $.Deferred(),
-            docEntries  = [];
+        var result = new $.Deferred(),
+            docEntries = [];
 
         PerfUtils.markStart(PerfUtils.JSUTILS_GET_ALL_FUNCTIONS);
 
@@ -451,7 +460,7 @@ define(function (require, exports, module) {
      *      Does not addRef() the documents returned in the array.
      */
     function findMatchingFunctions(functionName, fileInfos, keepAllFiles) {
-        var result  = new $.Deferred(),
+        var result = new $.Deferred(),
             jsFiles = [];
 
         if (!keepAllFiles) {
@@ -480,8 +489,7 @@ define(function (require, exports, module) {
      *
      * @param text {!String} JS text to search
      * @param searchName {!String} function name to search for
-     * @return {Array.<{offset:number, functionName:string}>}
-     *      Array of objects containing the start offset for each matched function name.
+     * @return {{offset:number, functionName:string}} Array of objects containing the start offset for each matched function name.
      */
     function findAllMatchingFunctionsInText(text, searchName) {
         var allFunctions = _findAllFunctionsInText(text);
