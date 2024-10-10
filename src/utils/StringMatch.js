@@ -503,7 +503,7 @@ define(function (require, exports, module) {
      * @param {Array.<SpecialMatch|NormalMatch>} matchList to convert
      * @param {string} original string
      * @param {int} character index where last segment begins
-     * @return {{ranges:Array.<{text:string, matched:boolean, includesLastSegment:boolean}>, matchGoodness:int, scoreDebug: Object}} matched ranges and score
+     * @return {{ranges:{text:string, matched:boolean, includesLastSegment:boolean}, matchGoodness:int, scoreDebug: Object}} matched ranges and score
      */
     function _computeRangesAndScore(matchList, str, lastSegmentStart) {
         var matchCounter;
@@ -703,7 +703,7 @@ define(function (require, exports, module) {
      *
      * @param {string} str  The string with the prefix match for the query
      * @param {string} query  The query that matched the beginning of str
-     * @return {{ranges:Array.<{text:string, matched:boolean, includesLastSegment:boolean}>, matchGoodness:int, scoreDebug: Object}} ranges has a matching range for beginning of str
+     * @return {{ranges:{text:string, matched:boolean, includesLastSegment:boolean}, matchGoodness:int, scoreDebug: Object}} ranges has a matching range for beginning of str
      *                      and a non-matching range for the end of the str
      *                      the score is -Number.MAX_VALUE in all cases
      */
@@ -838,7 +838,6 @@ define(function (require, exports, module) {
      *          along with other CSS properties that we want to boost in the results.
      * @param {number} [maxResults] - Optional maximum number of results to include in the output.
      * @param {boolean} onlyContiguous - If set, will only include contiguous results.
-     *          i.e., 'test-<bac>kcol' is ok, 'test-<ba>ck<c>ol' is not.
      * @returns {Array|*} - The ordered results.
      */
     function _codeHintsRelevanceSort(result, query, prefixListLower, maxResults, onlyContiguous) {
@@ -947,7 +946,7 @@ define(function (require, exports, module) {
      *                  and the last segment is searched first and matches there are scored higher.
      * @param {?Object} special (optional) the specials data from findSpecialCharacters, if already known
      *                  This is generally just used by StringMatcher for optimization.
-     * @return {{ranges:Array.<{text:string, matched:boolean, includesLastSegment:boolean}>, matchGoodness:int, scoreDebug: Object}} matched ranges and score
+     * @return {{ranges:{text:string, matched:boolean, includesLastSegment:boolean}, matchGoodness:int, scoreDebug: Object}} matched ranges and score
      */
     function stringMatch(str, query, options, special) {
         var result;
@@ -1097,7 +1096,6 @@ define(function (require, exports, module) {
      *          to top. So we pass in ["background-color"] as boost prefix option along with other
      *          css properties that we want to boost.
      * @param {boolean} options.onlyContiguous - is set, will only include contiguous results.
-     *          ie: test-<bac>kcol is ok, test-<ba>ck<c>ol is not
      * @return {Array<string>} - An array of matching code hints.
      */
     function codeHintsSort(query, choices, options) {
@@ -1151,14 +1149,14 @@ define(function (require, exports, module) {
     /**
      * Map from search-result string to the findSpecialCharacters() result for that string - easy to cache
      * since this info doesn't change as the query changes.
-     * @type {Object.<string, {specials:Array.<number>, lastSegmentSpecialsIndex:number}>}
+     * @type {{string: {specials:Array.<number>, lastSegmentSpecialsIndex:number}}}
      */
     StringMatcher.prototype._specialsCache = null;
 
     /**
      * Set of search-result strings that we know don't match the query _lastQuery - or any other query with
      * that prefix.
-     * @type {Object.<string, boolean>}
+     * @type {{string: boolean}}
      */
     StringMatcher.prototype._noMatchCache = null;
 
@@ -1178,7 +1176,7 @@ define(function (require, exports, module) {
      *
      * @param {string} str  The string to search
      * @param {string} query  The query string to find in string
-     * @return {{ranges:Array.<{text:string, matched:boolean, includesLastSegment:boolean}>, matchGoodness:int, scoreDebug: Object}} matched ranges and score
+     * @return {{ranges:{text:string, matched:boolean, includesLastSegment:boolean}, matchGoodness:int, scoreDebug: Object}} matched ranges and score
      */
     StringMatcher.prototype.match = function (str, query) {
 

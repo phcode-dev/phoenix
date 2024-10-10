@@ -197,7 +197,7 @@ define(function (require, exports, module) {
      * happen synchronously; replacements in files on disk will return an error if the on-disk file changes between
      * the time `performReplacements()` is called and the time the replacement actually happens.
      *
-     * @param {Object.<string, {matches: Array.<{start: {line: number, ch: number}, end: {line: number, ch: number}, startOffset: number, endOffset: number, line: string}>, collapsed: boolean}>} results
+     * @param {{string: {matches: {start: {line: number, ch: number}, end: {line: number, ch: number}, startOffset: number, endOffset: number, line: string}, collapsed: boolean}}} results
      *     The list of results to replace, as returned from `_doSearch`.
      * @param {string} replaceText
      *     The text to replace each result with.

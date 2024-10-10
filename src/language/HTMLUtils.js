@@ -319,13 +319,16 @@ define(function (require, exports, module) {
 
     /**
      * Figure out if we're in a tag, and if we are return info about it
-     * An example token stream for this tag is <span id="open-files-disclosure-arrow"></span> :
+     * An example token stream for this tag is 
+     * ```js
+     * <span id="open-files-disclosure-arrow"></span> :
      *      className:tag       string:"<span"
      *      className:          string:" "
      *      className:attribute string:"id"
      *      className:          string:"="
      *      className:string    string:""open-files-disclosure-arrow""
      *      className:tag       string:"></span>"
+     * ```
      * @param {Editor} editor An instance of a Brackets editor
      * @param {{ch: number, line: number}} constPos  A CM pos (likely from editor.getCursorPos())
      * @param {isHtmlMode:boolean} let the module know we are in html mode
@@ -530,7 +533,7 @@ define(function (require, exports, module) {
      * in the given Editor's HTML document (assumes the Editor contains HTML text).
      * @param {!Editor} editor - the editor containing the HTML text
      * @param {string} modeName - the mode name of the tokens to look for
-     * @return {Array.<{start:{line:number, ch:number}, end:{line:number, ch:number}, text:string}>}
+     * @return {{start:{line:number, ch:number}, end:{line:number, ch:number}, text:string}} Array
      */
     function findBlocks(editor, modeName) {
         // Start scanning from beginning of file
@@ -576,10 +579,10 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Returns an Array of info about all <style> blocks in the given Editor's HTML document (assumes
+     * Returns an Array of info about all 'style' blocks in the given Editor's HTML document (assumes
      * the Editor contains HTML text).
      * @param {!Editor} editor
-     * @return {Array.<{start:{line:number, ch:number}, end:{line:number, ch:number}, text:string}>}
+     * @return {{start:{line:number, ch:number}, end:{line:number, ch:number}, text:string}} Array
      */
     function findStyleBlocks(editor) {
         return findBlocks(editor, "css");

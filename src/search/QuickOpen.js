@@ -140,23 +140,23 @@ define(function (require, exports, module) {
      * Creates and registers a new QuickOpenPlugin
      *
      * @param {Object} pluginDef - Plugin definition object containing the following properties:
-     *   {string} name - Plug-in name, **must be unique**.
-     *   {Array<string>} languageIds - Language Ids array. Example: ["javascript", "css", "html"]. To allow any language, pass []. Required.
-     *   {function()} [done] - Called when quick open is complete. Plug-in should clear its internal state. Optional.
-     *   {function(string, StringMatch.StringMatcher): (Array<SearchResult|string>|$.Promise)} search - Takes a query string and a StringMatcher (the use of which is optional but can speed up your searches) and returns
+     *   \{string} name - Plug-in name, **must be unique**.
+     *   \{Array(string)} languageIds - Language Ids array. Example: ["javascript", "css", "html"]. To allow any language, pass []. Required.
+     *   \{function()} [done] - Called when quick open is complete. Plug-in should clear its internal state. Optional.
+     *   \{function(string, StringMatch.StringMatcher): (Array(SearchResult|string)|$.Promise)} search - Takes a query string and a StringMatcher (the use of which is optional but can speed up your searches) and returns
      *      an array of strings or result objects that match the query; or a Promise that resolves to such an array. Required.
-     *   {function(string): boolean} match - Takes a query string and returns true if this plug-in wants to provide
+     *   \{function(string): boolean} match - Takes a query string and returns true if this plug-in wants to provide
      *      results for this query. Required.
-     *   {function(?SearchResult|string, string, boolean)} [itemFocus] - Performs an action when a result has been highlighted (via arrow keys, or by becoming top of the list).
+     *   \{function(?SearchResult|string, string, boolean)} [itemFocus] - Performs an action when a result has been highlighted (via arrow keys, or by becoming top of the list).
      *      Passed the highlighted search result item (as returned by search()), the current query string, and a flag that is true
      *      if the item was highlighted explicitly (arrow keys), not implicitly (at top of list after last search()). Optional.
-     *   {function(?SearchResult|string, string)} itemSelect - Performs an action when a result is chosen.
+     *   \{function(?SearchResult|string, string)} itemSelect - Performs an action when a result is chosen.
      *      Passed the highlighted search result item (as returned by search()), and the current query string. Required.
-     *   {function(SearchResult|string, string): string} [resultsFormatter] - Takes a query string and an item string and returns
-     *      a <LI> item to insert into the displayed search results. Optional.
-     *   {Object} [matcherOptions] - Options to pass along to the StringMatcher (see StringMatch.StringMatcher
+     *   \{function(SearchResult|string, string): string} [resultsFormatter] - Takes a query string and an item string and returns
+     *      a "LI" item to insert into the displayed search results. Optional.
+     *   \{Object} [matcherOptions] - Options to pass along to the StringMatcher (see StringMatch.StringMatcher
      *          for available options). Optional.
-     *   {string} [label] - If provided, the label to show before the query field. Optional.
+     *   \{string} [label] - If provided, the label to show before the query field. Optional.
      *
      * If itemFocus() makes changes to the current document or cursor/scroll position and then the user
      * cancels Quick Open (via Esc), those changes are automatically reverted.
@@ -225,7 +225,7 @@ define(function (require, exports, module) {
      * information for the lifetime of a QuickNavigateDialog (a single search
      * until the dialog is dismissed)
      *
-     * @type {Object.<string, StringMatch.StringMatcher>}
+     * @type {{string, StringMatch.StringMatcher}}
      */
     QuickNavigateDialog.prototype._matchers = null;
 
@@ -250,7 +250,7 @@ define(function (require, exports, module) {
      * Remembers the selection state in origDocPath that was present when showDialog() was called. Focusing on an
      * item can change the selection; we restore this original selection if the user presses Escape. Null if
      * no document was open when Quick Open was invoked.
-     * @type {?Array.<{{start:{line:number, ch:number}, end:{line:number, ch:number}, primary:boolean, reversed:boolean}}>}
+     * @type {?{{start:{line:number, ch:number}, end:{line:number, ch:number}, primary:boolean, reversed:boolean}}}
      */
     QuickNavigateDialog.prototype._origSelections = null;
 

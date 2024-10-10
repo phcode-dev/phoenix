@@ -489,8 +489,7 @@ define(function (require, exports, module) {
      *
      * @param text {!String} JS text to search
      * @param searchName {!String} function name to search for
-     * @return {Array.<{offset:number, functionName:string}>}
-     *      Array of objects containing the start offset for each matched function name.
+     * @return {{offset:number, functionName:string}} Array of objects containing the start offset for each matched function name.
      */
     function findAllMatchingFunctionsInText(text, searchName) {
         var allFunctions = _findAllFunctionsInText(text);

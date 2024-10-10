@@ -55,13 +55,13 @@
  *    - workingSetAdd -- When a file is added to the working set
  *          (e, fileAdded:File, index:number, paneId:string)
  *    - workingSetAddList -- When multiple files are added to the working set
- *          (e, fileAdded:Array.<File>, paneId:string)
+ *          (e, fileAdded:Array."File", paneId:string)
  *    - workingSetMove - When a File has moved to a different working set
  *          (e, File:FILE, sourcePaneId:string, destinationPaneId:string)
  *    - workingSetRemove -- When a file is removed from the working set
  *          (e, fileRemoved:File, suppressRedraw:boolean, paneId:string)
  *    - workingSetRemoveList -- When multiple files are removed from the working set
- *          (e, filesRemoved:Array.<File>, paneId:string)
+ *          (e, filesRemoved:Array."File", paneId:string)
  *    - workingSetSort -- When a pane's view array is reordered without additions or removals.
  *          (e, paneId:string)
  *    - workingSetUpdate -- When changes happen due to system events such as a file being deleted.
@@ -444,7 +444,7 @@ define(function (require, exports, module) {
      * Gets an array of editors open in panes with their pane IDs.
      * Can return an empty array if no editors are open.
      *
-     * @return {Array<{editor: Editor, paneId: string}>} An array of objects, each containing an editor and its corresponding pane ID.
+     * @return {{editor: Editor, paneId: string[]}} An array of objects, each containing an editor and its corresponding pane ID.
      */
     function getAllViewedEditors() {
         const editorList = [];
@@ -650,7 +650,7 @@ define(function (require, exports, module) {
      * Finds all instances of the specified file in all working sets.
      * If there is a temporary view of the file, it is not part of the result set
      * @param {!string} fullPath - path of the file to find views of
-     * @return {Array.<{pane:string, index:number}>} an array of paneId/index records
+     * @return {{pane:string, index:number}} an array of paneId/index records
      */
     function findInAllWorkingSets(fullPath) {
         let index,
@@ -672,7 +672,7 @@ define(function (require, exports, module) {
      * If the same file is open in multiple panes, all matching panes will be returned. 
      * If not found in any panes, an empty array will be returned.
      * @param {string} fullPath - The full path of the file to search for.
-     * @return {Array<{paneId: string, editor: ?Editor}>} An array of objects, each containing the pane ID and the corresponding editor, if present.
+     * @return {{paneId: string, editor: ?Editor}} An array of objects, each containing the pane ID and the corresponding editor, if present.
      */
     function findInOpenPane(fullPath) {
         const paneList = [];

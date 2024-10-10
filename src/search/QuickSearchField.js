@@ -41,7 +41,7 @@ define(function (require, exports, module) {
         PopUpManager = require("widgets/PopUpManager");
 
     /**
-     * Attaches to an existing <input> tag
+     * Attaches to an existing "input" tag
      *
      * @constructor
      *
@@ -56,7 +56,7 @@ define(function (require, exports, module) {
      *
      * @param {!function(*, string): string} options.formatter
      *          Converts one result object to a string of HTML text. Passed the item and the current query. The
-     *          outermost element must be <li>. The ".highlight" class can be ignored as it is applied automatically.
+     *          outermost element must be "li". The ".highlight" class can be ignored as it is applied automatically.
      * @param {!function(?*, string, number): void} options.onCommit
      *          Called when an item is selected by clicking or pressing Enter. Passed the committed item and the current
      *          query and its index. If the current result list is not up to date with the query text at the time Enter is
@@ -129,7 +129,7 @@ define(function (require, exports, module) {
     /** @type {?number} */
     QuickSearchField.prototype._highlightIndex = null;
 
-    /** @type {?jQueryObject} Dropdown's <ol>, while open; null while closed */
+    /** @type {?jQueryObject} Dropdown's "ol", while open; null while closed */
     QuickSearchField.prototype._$dropdown = null;
 
     /** @type {!jQueryObject} */

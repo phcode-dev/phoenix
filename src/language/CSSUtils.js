@@ -1378,7 +1378,7 @@ define(function (require, exports, module) {
      * @param {!string} text CSS text to search
      * @param {!string} selector selector to search for
      * @param {!string} mode language mode of the document that text belongs to
-     * @return {Array.<{selectorGroupStartLine:number, declListEndLine:number, selector:string}>}
+     * @return {{selectorGroupStartLine:number, declListEndLine:number, selector:string}}
      *      Array of objects containing the start and end line numbers (0-based, inclusive range) for each
      *      matched selector.
      */
@@ -1424,7 +1424,7 @@ define(function (require, exports, module) {
     /**
      * Converts the results of _findAllMatchingSelectorsInText() into a simpler bag of data and
      * appends those new objects to the given 'resultSelectors' Array.
-     * @param {Array.<{document:Document, lineStart:number, lineEnd:number}>} resultSelectors
+     * @param {{document:Document, lineStart:number, lineEnd:number}} resultSelectors Array
      * @param {Array.<SelectorInfo>} selectorsToAdd
      * @param {!Document} sourceDoc
      * @param {!number} lineOffset Amount to offset all line number info by. Used if the first line
@@ -1479,7 +1479,7 @@ define(function (require, exports, module) {
         return result.promise();
     }
 
-    /** Finds matching selectors in the <style> block of a single HTML file; adds them to 'resultSelectors' */
+    /** Finds matching selectors in the 'style' block of a single HTML file; adds them to 'resultSelectors' */
     function _findMatchingRulesInStyleBlocks(htmlDocument, selector, resultSelectors) {
         // HTMLUtils requires a real CodeMirror instance; make sure we can give it the right Editor
         var htmlEditor = EditorManager.getCurrentFullEditor();
@@ -1515,7 +1515,7 @@ define(function (require, exports, module) {
      *  .foo.bar {}
      *
      * @param {!string} selector The selector to match. This can be a tag selector, class selector or id selector
-     * @param {?Document} htmlDocument An HTML file for context (so we can search <style> blocks)
+     * @param {?Document} htmlDocument An HTML file for context (so we can search 'style' blocks)
      * @return {$.Promise} that will be resolved with an Array of objects containing the
      *      source document, start line, and end line (0-based, inclusive range) for each matching declaration list.
      *      Does not addRef() the documents returned in the array.

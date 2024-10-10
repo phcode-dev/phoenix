@@ -102,7 +102,7 @@ define(function (require, exports, module) {
 
     /**
      * A list of gutter name and priorities currently registered for editors.
-     * The line number gutter is defined as { name: LINE_NUMBER_GUTTER, priority: 100 }
+     * The line number gutter is defined as \{ name: LINE_NUMBER_GUTTER, priority: 100 }
      * @type {Array<Object>} items - An array of objects, where each object contains the following properties:
      * @property {string} name - The name of the item.
      * @property {number} priority - The priority of the item.
@@ -669,7 +669,7 @@ define(function (require, exports, module) {
      *  selection to return. It may be "start", "end", "head" (the side of the
      *  selection that moves when you press shift+arrow), or "anchor" (the
      *  fixed side of the selection). Omitting the argument is the same as
-     *  passing "head". A {line, ch} object will be returned.)
+     *  passing "head". A {'line', 'ch'} object will be returned.)
      * @return {{line:number, ch:number}}
      */
     Editor.prototype.getCursorPos = function (expandTabs, which) {
@@ -792,7 +792,7 @@ define(function (require, exports, module) {
 
 
     /**
-     * Returns a {from, to} object indicating the start (inclusive) and end (exclusive) of the currently rendered
+     * Returns a {'from', 'to'} object indicating the start (inclusive) and end (exclusive) of the currently rendered
      * part of the document. In big documents, when most content is scrolled out of view, Editor will only render
      * the visible part, and a margin around it. See also the `viewportChange` event fired on the editor.
      *
@@ -942,7 +942,7 @@ define(function (require, exports, module) {
      * (the end of the selection that would be changed if the user extended the selection)
      * is before the anchor.
      * If `primary` is set, then that selection is the primary selection.
-     * @return {Array.<{start:{line:number, ch:number}, end:{line:number, ch:number}, reversed:boolean, primary:boolean}>}
+     * @return {{start:{line:number, ch:number}, end:{line:number, ch:number}, reversed:boolean, primary:boolean[]}}
      */
     Editor.prototype.getSelections = function () {
         var primarySel = this.getSelection();
@@ -973,14 +973,13 @@ define(function (require, exports, module) {
      * line selection (there might be multiple if individual selections were merged into a single line selection).
      * Useful for doing multiple-selection-aware line edits.
      *
-     * @param {Array.<{start:{line:number, ch:number}, end:{line:number, ch:number}, reversed:boolean, primary:boolean}>} selections
+     * @param {{start:{line:number, ch:number}, end:{line:number, ch:number}, reversed:boolean, primary:boolean}} selections
      *      The selections to expand.
      * @param {{expandEndAtStartOfLine: boolean, mergeAdjacent: boolean}} options
      *      expandEndAtStartOfLine: true if a range selection that ends at the beginning of a line should be expanded
      *          to encompass the line. Default false.
      *      mergeAdjacent: true if adjacent line ranges should be merged. Default true.
-     * @return {Array.<{selectionForEdit: {start:{line:number, ch:number}, end:{line:number, ch:number}, reversed:boolean, primary:boolean},
-     *                  selectionsToTrack: Array.<{start:{line:number, ch:number}, end:{line:number, ch:number}, reversed:boolean, primary:boolean}>}>}
+     * @return {{selectionForEdit: {start: {line: number, ch: number}, end: {line: number, ch: number}, reversed: boolean, primary: boolean}, selectionsToTrack: {start: {line: number, ch: number}, end: {line: number, ch: number}, reversed: boolean, primary: boolean}}}
      *      The combined line selections. For each selection, `selectionForEdit` is the line selection, and `selectionsToTrack` is
      *      the set of original selections that combined to make up the given line selection. Note that the selectionsToTrack will
      *      include the original objects passed in `selections`, so if it is later mutated the original passed-in selections will be
@@ -1039,7 +1038,7 @@ define(function (require, exports, module) {
     };
 
     /**
-     * Given an {left, top} object (e.g. coordinates of a mouse event) returns the {line, ch} position that
+     * Given an {'left', 'top'} object (e.g. coordinates of a mouse event) returns the {'line', 'ch'} position that
      * corresponds to it. The optional mode parameter determines relative to what the coordinates are interpreted.
      *
      * @param {{left: number, top:number}} coordinates can be obtained from Eg. coordinates of a mouse event
@@ -1628,7 +1627,7 @@ define(function (require, exports, module) {
      * getSelection() and getCursorPos()) defaulting to the last if not specified.
      * Overlapping ranges will be automatically merged, and the selection will be sorted.
      * Optionally centers around the primary selection after making the selection.
-     * @param {!Array<{start:{line:number, ch:number}, end:{line:number, ch:number}, primary:boolean, reversed: boolean}>} selections
+     * @param {!{start:{line:number, ch:number}, end:{line:number, ch:number}, primary:boolean, reversed: boolean}} selections
      *      The selection ranges to set. If the start and end of a range are the same, treated as a cursor.
      *      If reversed is true, set the anchor of the range to the end instead of the start.
      *      If primary is true, this is the primary selection. Behavior is undefined if more than
@@ -1928,7 +1927,7 @@ define(function (require, exports, module) {
     /**
      * Returns a list of all inline widgets currently open in this editor. Each entry contains the
      * inline's id, and the data parameter that was passed to addInlineWidget().
-     * @return {!Array.<{id:number, data:Object}>}
+     * @return {!{id:number, data:Object[]}}
      */
     Editor.prototype.getInlineWidgets = InlineWidgetHelper.getInlineWidgets;
 
@@ -1993,7 +1992,7 @@ define(function (require, exports, module) {
     };
 
     /*
-     * @typedef {scrollPos:{x:number, y:number},Array.<{start:{line:number, ch:number},end:{line:number, ch:number}}>} EditorViewState
+     * @typedef {scrollPos:{x:number, y:number},{start:{line:number, ch:number},end:{line:number, ch:number}}} EditorViewState
      */
 
     /*
@@ -2257,7 +2256,7 @@ define(function (require, exports, module) {
 
     /**
      * @private
-     * @type {!Array.<{id:number, data:Object}>}
+     * @type {!{id:number, data:Object[]}}
      */
     Editor.prototype._inlineWidgets = null;
 
@@ -2547,7 +2546,7 @@ define(function (require, exports, module) {
 
     /**
      * Returns the list of gutters current registered on all editors.
-     * @return {!Array.<{name: string, priority: number}>}
+     * @return {!{name: string, priority: number}}
      */
     Editor.getRegisteredGutters = function () {
         return registeredGutters;

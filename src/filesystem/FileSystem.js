@@ -205,7 +205,7 @@ define(function (require, exports, module) {
     /**
      * Queue of arguments with which to invoke _handleExternalChanges(); triggered
      * once _activeChangeCount drops to zero.
-     * @type {!Array.<{path:?string, stat:FileSystemStats=}>}
+     * @type {!{path:?string, stat:FileSystemStats}}
      */
     FileSystem.prototype._externalChanges = null;
 
@@ -234,7 +234,7 @@ define(function (require, exports, module) {
 
     /**
      * The queue of pending watch/unwatch requests.
-     * @type {Array.<{fn: function(), cb: function()}>}
+     * @type {{fn: function(), cb: function()}} Array
      */
     FileSystem.prototype._watchRequests = null;
 
@@ -746,7 +746,7 @@ define(function (require, exports, module) {
     /**
      * promisified version of FileSystem.resolve
      * @param {String} path to resolve
-     * @returns {Promise<{entry, stat}>}
+     * @returns {{'entry', 'stat'}}
      */
     FileSystem.prototype.resolveAsync = function (path) {
         let self = this;
