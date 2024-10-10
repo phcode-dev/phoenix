@@ -77,12 +77,12 @@ define(function (require, exports, module) {
     var toClose;
 
     /**
-     * @type {Array.<{doc: Document, fileTime: number}>}
+     * @type {{doc: Document, fileTime: number}} Array
      */
     var editConflicts;
 
     /**
-     * @type {Array.<{doc: Document, fileTime: number}>}
+     * @type {{doc: Document, fileTime: number}} Array
      */
     var deleteConflicts;
 

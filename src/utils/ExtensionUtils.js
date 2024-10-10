@@ -35,7 +35,7 @@ define(function (require, exports, module) {
         Package                     = require("extensibility/Package");
 
     /**
-     * Appends a <style> tag to the document's head.
+     * Appends a "style" tag to the document's head.
      *
      * @param {!string} css CSS code to use as the tag's content
      * @return {!HTMLStyleElement} The generated HTML node
@@ -45,7 +45,7 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Appends a <link> tag to the document's head.
+     * Appends a "link" tag to the document's head.
      *
      * @param {!string} url URL to a style sheet
      * @param {$.Deferred=} deferred Optionally check for load and error events

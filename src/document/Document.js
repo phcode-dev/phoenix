@@ -41,13 +41,13 @@ define(function (require, exports, module) {
      *
      * __change__ -- When the text of the editor changes (including due to undo/redo).
      *
-     * Passes ({Document}, {ChangeList}), where ChangeList is an array
+     * Passes ({Document}, {'ChangeList'}), where ChangeList is an array
      * of change record objects. Each change record looks like:
-     *
+     *```js
      *     { from: start of change, expressed as {line: <line number>, ch: <character offset>},
      *       to: end of change, expressed as {line: <line number>, ch: <chracter offset>},
      *       text: array of lines of text to replace existing text }
-     *
+     *```
      * The line and ch offsets are both 0-based.
      *
      * The ch offset in "from" is inclusive, but the ch offset in "to" is exclusive. For example,
@@ -625,10 +625,10 @@ define(function (require, exports, module) {
      * then this function will adjust them as necessary for the effects of other edits, and then return a
      * flat list of all the selections, suitable for passing to `setSelections()`.
      *
-     * @param {!Array<{edit: {text: string, start:{line: number, ch: number}, end: {line: number, ch: number} | undefined}
-    *                        | Array<{text: string, start:{line: number, ch: number}, end: {line: number, ch: number} | undefined}>,
+     * @param {!{edit: {text: string, start:{line: number, ch: number}, end: {line: number, ch: number} | undefined}
+    *                        | {text: string, start:{line: number, ch: number}, end: {line: number, ch: number} | undefined},
     *                  selection: {start:{line:number, ch:number}, end:{line:number, ch:number},
-        *                              primary:boolean, reversed: boolean, isBeforeEdit: boolean} | undefined}>} edits
+    *                              primary:boolean, reversed: boolean, isBeforeEdit: boolean} | undefined}} edits
     *     Specifies the list of edits to perform in a manner similar to CodeMirror's `replaceRange`. This array
     *     will be mutated.
     *
@@ -657,7 +657,7 @@ define(function (require, exports, module) {
     *     the total bounds of edit groups must not overlap (e.g. edits in one group can't surround an edit from another group).
     *
     * @param {?string} origin An optional edit origin that's passed through to each replaceRange().
-    * @return {Array<{start:{line:number, ch:number}, end:{line:number, ch:number}, primary:boolean, reversed: boolean}>}
+    * @return {{start:{line:number, ch:number}, end:{line:number, ch:number}, primary:boolean, reversed: boolean[]}}
     *     The list of passed selections adjusted for the performed edits, if any.
     */
 

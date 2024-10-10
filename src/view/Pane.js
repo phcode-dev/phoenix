@@ -66,6 +66,7 @@
  * The view is an anonymous object which has the following method signatures. see ImageViewer for an example or the sample
  * provided with Brackets `src/extensions/samples/BracketsConfigCentral`
  *
+ * ```js
  *     {
  *         $el:jQuery
  *         getFile: function ():!File
@@ -77,7 +78,7 @@
  *         notifyVisibilityChange: function(boolean)=
  *         focus:function()=
  *     }
- *
+ *```
  * When views are created they can be added to the pane by calling `pane.addView()`.
  * Views can be created and parented by attaching directly  to `pane.$el`
  *
@@ -1494,9 +1495,7 @@ define(function (require, exports, module) {
     /**
      * serializes the pane state from JSON
      * @param {!Object} state - the state to load
-     * @return {jQuery.Promise} A promise which resolves to
-     *              {fullPath:string, paneId:string}
-     *              which can be passed as command data to FILE_OPEN
+     * @return {jQuery.Promise} A promise which resolves to \{fullPath:string, paneId:string} which can be passed as command data to FILE_OPEN
      */
     Pane.prototype.loadState = function (state) {
         var filesToAdd = [],

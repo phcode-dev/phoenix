@@ -353,7 +353,7 @@ define(function (require, exports, module) {
      *  This gets called (potentially) on every keypress. So, it should be fast.
      *
      * @param {!string} languageId
-     * @return {?Array.<{provider: Object, priority: number}>}
+     * @return {?{provider: Object, priority: number[]}}
      */
     function _getProvidersForLanguageId(languageId) {
         var providers = hintProviders[languageId] || hintProviders.all;

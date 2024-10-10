@@ -325,18 +325,18 @@ define(function (require, exports, module) {
      * indicate to the caller that it needs to handle this selection as a line comment.
      *
      * @param {!Editor} editor The editor instance where the operation will occur.
-     * @param {!string} prefix The block comment prefix, e.g., "<!--".
+     * @param {!string} prefix The block comment prefix, e.g., "< !--".
      * @param {!string} suffix The block comment suffix, e.g., "-->".
      * @param {!Array.<string>} linePrefixes The possible line comment prefixes, e.g., ["//"].
      * @param {!{start:{line:number, ch:number}, end:{line:number, ch:number}, reversed:boolean, primary:boolean}} sel
      *      The selection to block comment/uncomment.
-     * @param {?Array.<{start:{line:number, ch:number}, end:{line:number, ch:number}, reversed:boolean, primary:boolean}>} selectionsToTrack
+     * @param {?{start:{line:number, ch:number}, end:{line:number, ch:number}, reversed:boolean, primary:boolean}} selectionsToTrack
      *      An array of selections that should be tracked through this edit, if any.
      * @param {string} command The command being executed, can be "line" or "block".
      * @return {{edit: {text: string, start:{line: number, ch: number}, end:{line: number, ch: number} | undefined}
-    *                | Array.<{text: string, start:{line: number, ch: number}, end:{line: number, ch: number} | undefined}>,
+    *                | {text: string, start:{line: number, ch: number}, end:{line: number, ch: number[]} | undefined},
     *                  selection: {start:{line:number, ch:number}, end:{line:number, ch:number}, primary:boolean, reversed:boolean, isBeforeEdit:boolean}} |
-    *          Array.<{start:{line:number, ch:number}, end:{line:number, ch:number}, primary:boolean, reversed:boolean, isBeforeEdit:boolean}> | null}
+    *          {start:{line:number, ch:number}, end:{line:number, ch:number}, primary:boolean, reversed:boolean, isBeforeEdit:boolean[]} | null}
     *      An edit description suitable for including in the edits array passed to `Document.doMultipleEdits()`, or `null`
     *      if line commenting should be handled by the caller.
     */
@@ -606,18 +606,37 @@ define(function (require, exports, module) {
      * commented in a block-comment.
      *
      * @param {!Editor} editor The editor instance where the operation will occur.
-     * @param {!string} prefix The block comment prefix, e.g., "<!--".
+     * @param {!string} prefix The block comment prefix, e.g., "< !--".
      * @param {!string} suffix The block comment suffix, e.g., "-->".
      * @param {!{selectionForEdit: {start:{line:number, ch:number}, end:{line:number, ch:number}, reversed:boolean, primary:boolean},
-    *           selectionsToTrack: Array.<{start:{line:number, ch:number}, end:{line:number, ch:number}, reversed:boolean, primary:boolean}>}} lineSel
+    *           selectionsToTrack: {start:{line:number, ch:number}, end:{line:number, ch:number}, reversed:boolean, primary:boolean}}} lineSel
     *      A line selection as returned from `Editor.convertToLineSelections()`. `selectionForEdit` is the selection to perform
     *      the line comment operation on, and `selectionsToTrack` are a set of selections associated with this line that need to be
     *      tracked through the edit.
     * @param {string} command The command being executed, can be "line" or "block".
-    * @return {{edit: {text: string, start:{line: number, ch: number}, end: {line: number, ch: number} | undefined} |
-    *                  Array.<{text: string, start:{line: number, ch: number}, end: {line: number, ch: number} | undefined}>,
-    *                  selection: {start:{line:number, ch:number}, end:{line:number, ch:number}, primary:boolean, reversed: boolean, isBeforeEdit: boolean}} |
-    *          Array.<{start:{line:number, ch:number}, end:{line:number, ch:number}, primary:boolean, reversed:boolean, isBeforeEdit:boolean}>}}
+    * @return {{
+    *   edit: {
+    *     text: string,
+    *     start: {line: number, ch: number},
+    *     end: {line: number, ch: number} | undefined
+    *   } | {
+    *     text: string,
+    *     start: {line: number, ch: number},
+    *     end: {line: number, ch: number} | undefined
+    *   },
+    *   selection: {
+    *     start: {line: number, ch: number},
+    *     end: {line: number, ch: number},
+    *     primary: boolean,
+    *     reversed: boolean,
+    *     isBeforeEdit: boolean
+    *   },
+    *   start: {line: number, ch: number},
+    *   end: {line: number, ch: number},
+    *   primary: boolean,
+    *   reversed: boolean,
+    *   isBeforeEdit: boolean
+    * }}
     *      An edit description suitable for including in the edits array passed to `Document.doMultipleEdits()`.
     */
     function _getLineCommentPrefixSuffixEdit(editor, prefix, suffix, lineSel, command) {
@@ -644,13 +663,13 @@ define(function (require, exports, module) {
      * Generates an array of edits for toggling line comments on the given selections.
      *
      * @param {!Editor} editor The editor instance where the edits are to be performed.
-     * @param {Array.<{start: {line: number, ch: number}, end: {line: number, ch: number}, primary: boolean, reversed: boolean, isBeforeEdit: boolean}>} selections
+     * @param {{start: {line: number, ch: number}, end: {line: number, ch: number}, primary: boolean, reversed: boolean, isBeforeEdit: boolean}} selections - The selection details
      *      The selections to toggle comments on. Each selection object contains start and end line/character positions, as well as metadata about the selection.
      * @param {string} command The command type, either "line" or "block", that determines the type of commenting.
-     * @return {Array.<{edit: {text: string, start: {line: number, ch: number}, end: {line: number, ch: number} | null} | 
-     *                  Array.<{text: string, start: {line: number, ch: number}, end: {line: number, ch: number} | null}>,
+     * @return {{edit: {text: string, start: {line: number, ch: number}, end: {line: number, ch: number} | null} |
+     *                  {text: string, start: {line: number, ch: number}, end: {line: number, ch: number} | null},
      *                  selection: {start: {line: number, ch: number}, end: {line: number, ch: number}, primary: boolean, reversed: boolean, isBeforeEdit: boolean}} |
-     *          {start: {line: number, ch: number}, end: {line: number, ch: number}, primary: boolean, reversed: boolean, isBeforeEdit: boolean}>}
+     *          {start: {line: number, ch: number}, end: {line: number, ch: number}, primary: boolean, reversed: boolean, isBeforeEdit: boolean}}
      *      An array of edit descriptions, where each edit includes the text, start and end positions, and tracked selections suitable for `Document.doMultipleEdits()`.
      */
 

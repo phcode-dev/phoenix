@@ -278,7 +278,7 @@ define(function (require, exports, module) {
      * @param {function(File, File): number} compareFn The function that
      *      will be used inside JavaScript's sort function. The return a value
      *      should be >0 (sort a to a lower index than b), =0 (leaves a and b
-     *      unchanged with respect to each other) or <0 (sort b to a lower index
+     *      unchanged with respect to each other) or < 0 (sort b to a lower index
      *      than a) and must always returns the same value when given a specific
      *      pair of elements a and b as its two arguments. Documentation at:
      *      https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/sort

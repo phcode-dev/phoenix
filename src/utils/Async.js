@@ -460,7 +460,7 @@ define(function (require, exports, module) {
      * Utility for converting a method that takes (error, callback) to one that returns a promise;
      * useful for using FileSystem methods (or other Node-style API methods) in a promise-oriented
      * workflow. For example, instead of
-     *
+     *```js
      *      var deferred = new $.Deferred();
      *      file.read(function (err, contents) {
      *          if (err) {
@@ -471,7 +471,7 @@ define(function (require, exports, module) {
      *          }
      *      }
      *      return deferred.promise();
-     *
+     *```
      * you can just do
      *
      *      return Async.promisify(file, "read").then(function (contents) {

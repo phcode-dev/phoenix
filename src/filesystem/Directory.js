@@ -28,7 +28,7 @@ define(function (require, exports, module) {
     const FileSystemEntry = require("filesystem/FileSystemEntry"),
         FileSystem = require("filesystem/FileSystem");
 
-    /*
+    /**
      * Model for a file system Directory.
      *
      * This class should *not* be instantiated directly. Use FileSystem.getDirectoryForPath,
@@ -178,7 +178,7 @@ define(function (require, exports, module) {
      * @param {boolean} filterNothing - is specified, will return a true contents of dir as shown in disc,
      *      weather it is shown in the file tree or not. Can be used for backup/restore flows.
      *
-     * @return {Promise<{entries: FileSystemEntry, contentStats: FileSystemStats, contentsStatsErrors}>} An object
+     * @return {{entries: FileSystemEntry, contentStats: FileSystemStats, contentsStatsErrors}} An object
      * with attributes - entries(an array of file system entries), contentStats and contentsStatsErrors(a map from
      * content name to error if there is any).
      */

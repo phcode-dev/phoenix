@@ -549,8 +549,7 @@ define(function (require, exports, module) {
      *
      * @param {!string | Command} command - the command the menu will execute.
      *      Pass Menus.DIVIDER for a menu divider, or just call addMenuDivider() instead.
-     * @param {?string | Array.<{key: string, platform: string}>}  [keyBindings] - register one
-     *      one or more key bindings to associate with the supplied command.
+     * @param {?(string | {key: string, platform: string[]})} [keyBindings] - Register one or more key bindings to associate with the supplied command
      * @param {?string} [position] - constant defining the position of new MenuItem relative to
      *      other MenuItems. Values:
      *          - With no relativeID, use Menus.FIRST or LAST (default is LAST)
@@ -1603,12 +1602,13 @@ define(function (require, exports, module) {
      *      - use addMenuItem() to add items to the context menu
      *      - call open() to show the context menu.
      *      For example:
+     *      ```js
      *      $("#my_ID").contextmenu(function (e) {
      *          if (e.which === 3) {
      *              my_cmenu.open(e);
      *          }
      *      });
-     *
+     *      ```
      * To make menu items be contextual to things like selection, listen for the "beforeContextMenuOpen"
      * to make changes to Command objects before the context menu is shown. MenuItems are views of
      * Commands, which control a MenuItem's name, enabled state, and checked state.

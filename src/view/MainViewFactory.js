@@ -25,7 +25,7 @@
  * MainViewFactory is a singleton for managing view factories.
  *
  * Registering a view factory:
- *
+ *```js
  *      registerViewFactory({
  *           canOpenFile: function (fullPath) {
  *               return (fullPath.slice(-4) === ".ico");
@@ -34,10 +34,10 @@
  *               return createIconView(file, pane);
  *           }
  *      });
- *
+ *```
  *  The openFile method is used to open the file and construct
  *  a view of it.  Implementation should add the view to the pane
- *
+ *```js
  *      function createIconView(file, pane) {
  *          // IconView will construct its DOM and append
  *          //  it to pane.$el
@@ -47,18 +47,18 @@
  *          pane.addView(view, true);
  *          return new $.Deferred().resolve().promise();
  *      }
- *
+ *```
  *  Factories should only create 1 view of a file per pane.  Brackets currently only supports 1 view of
  *  a file open at a given time but that may change to allow the same file open in more than 1 pane. Therefore
  *  Factories can do a simple check to see if a view already exists and show it before creating a new one:
- *
+ *```js
  *      var view = pane.getViewForPath(file.fullPath);
  *      if (view) {
  *          pane.showView(view);
  *      } else {
  *          return createIconView(file, pane);
  *      }
- *
+ *```
  */
 define(function (require, exports, module) {
 

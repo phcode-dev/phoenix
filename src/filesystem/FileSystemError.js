@@ -19,9 +19,6 @@
  *
  */
 
-
-// @INCLUDE_IN_API_DOCS
-
 /**
  * FileSystemError describes the errors that can occur when using the FileSystem, File,
  * and Directory modules.

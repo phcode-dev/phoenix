@@ -60,7 +60,7 @@ define(function (require, exports, module) {
     const INSTANT_SEARCH_INTERVAL_MS = 50;
 
     /**
-     * @constructor
+     *
      * Find Bar UI component, used for both single- and multi-file find/replace. This doesn't actually
      * create and add the FindBar to the DOM - for that, call open().
      *
@@ -74,7 +74,9 @@ define(function (require, exports, module) {
      * - doReplace - when the user chooses to do a single replace. Use getReplaceText() to get the current replacement text.
      * - doReplaceBatch - when the user chooses to initiate a Replace All. Use getReplaceText() to get the current replacement text.
      * - doReplaceAll - when the user chooses to perform a Replace All. Use getReplaceText() to get the current replacement text.
-     *-  close - when the find bar is closed
+     * - close - when the find bar is closed
+     *
+     * @constructor
      *
      * @param {boolean=} options.multifile - true if this is a Find/Replace in Files (changes the behavior of Enter in
      *      the fields, hides the navigator controls, shows the scope/filter controls, and if in replace mode, hides the

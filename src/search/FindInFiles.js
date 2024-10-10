@@ -144,7 +144,7 @@ define(function (require, exports, module) {
      * Searches through the contents and returns an array of matches
      * @param {string} contents
      * @param {RegExp} queryExpr
-     * @return {!Array.<{start: {line:number,ch:number}, end: {line:number,ch:number}, line: string}>}
+     * @return {!{start: {line:number,ch:number}, end: {line:number,ch:number}, line: string}}
      */
     function _getSearchMatches(contents, queryExpr) {
         // Quick exit if not found or if we hit the limit
@@ -227,7 +227,7 @@ define(function (require, exports, module) {
      * @private
      * Update the search results using the given list of changes for the given document
      * @param {Document} doc  The Document that changed, should be the current one
-     * @param {Array.<{from: {line:number,ch:number}, to: {line:number,ch:number}, text: !Array.<string>}>} changeList
+     * @param {{from: {line:number,ch:number}, to: {line:number,ch:number}, text: !Array.<string>}} changeList Array
      *      An array of changes as described in the Document constructor
      */
     function _updateResults(doc, changeList) {
@@ -651,7 +651,7 @@ define(function (require, exports, module) {
     /**
      * Replaces a set of search results with the specified `replaceText`, either on disk or in memory.
      *
-     * @param {Object.<string, {matches: Array.<{start: {line: number, ch: number}, end: {line: number, ch: number}, startOffset: number, endOffset: number, line: string}>, collapsed: boolean}>} results 
+     * @param {{string: {matches: {start: {line: number, ch: number}, end: {line: number, ch: number}, startOffset: number, endOffset: number, line: string}, collapsed: boolean}}} results 
      *     - The list of results to replace, as returned from `_doSearch`.
      * @param {string} replaceText - The text to replace each result with.
      * @param {?Object} options - An options object:

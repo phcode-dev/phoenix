@@ -54,7 +54,7 @@ define(function (require, exports, module) {
 
     /**
      * Text positions of markers
-     * @type {!Array.<{line: number, ch: number}>}
+     * @type {!{line: number, ch: number}} Array
      */
     var marks = [];
 
@@ -211,8 +211,8 @@ define(function (require, exports, module) {
 
     /**
      * Add tickmarks to the editor's tickmark track, if it's visible
-     * @param curEditor {!Editor}
-     * @param posArray {!Array.<{line:Number, ch:Number}>}
+     * @param {!Editor} curEditor
+     * @param {!{line:Number, ch:Number}} posArray
      */
     function addTickmarks(curEditor, posArray) {
         console.assert(editor === curEditor);
