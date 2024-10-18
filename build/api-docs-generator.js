@@ -34,6 +34,63 @@ async function removeDir(dirPath) {
     await fs.rm(dirPath, { recursive: true, force: true });
 }
 
+/**
+ * Responsible to extract file names with their parent dir
+ * Ex :- docs/API-Reference/worker/WorkerComm -> worker/WorkerComm
+ * @param {array} files list of all the files
+ * @param {string} excludeParent for files with no parent dir(eg:NodeConnector)
+ * @returns array of all file names
+ */
+function getFileNames(files, excludeParent) {
+    return files.map(filePath => {
+        // Extract directory and filename
+        const { dir, name } = path.parse(filePath);
+        // Get the parent folder name
+        const parentFolder = path.basename(dir);
+
+        // Check if the parent folder is the one to exclude
+        // Return only the base name if it's the excluded parent
+        if (parentFolder === excludeParent) {
+            return name;
+        }
+
+        // Combine if parent folder exists
+        return parentFolder ? `${parentFolder}/${name}` : name;
+    });
+}
+
+// Main async function to get existing markdown and js files
+/**
+ * Responsible to remove all non-required markdown files
+ * If `@INCLUDE_IN_API_DOCS` is removed from the source file
+ * @param {array} jsFiles files to be included in API docs
+ */
+async function getExistingMarkdownFiles(jsFiles) {
+    const mdFiles = await globPromise(`./docs/API-Reference/**/*.md`);
+
+    // Get markdown file names without extensions
+    const mdFileNames = getFileNames(mdFiles, 'API-Reference');
+
+    // Get JS file names without extensions
+    const jsFileNames = getFileNames(jsFiles, 'src');
+
+    const filesToRemove = mdFileNames.filter(
+        mdFileName => !jsFileNames.includes(mdFileName)
+    );
+
+    for (const mdFile of mdFiles) {
+        const temp = String(getFileNames([mdFile], 'API-Reference'));
+        if (filesToRemove.includes(temp)) {
+            await fs.unlink(mdFile);
+            console.log(
+                `${mdFile} has been removed as no more needed in API docs`
+            );
+        }
+    }
+
+    console.log('All non required files removed successfully!');
+}
+
 
 /**
  * Responsible to get the JS Files that are to be included in API DOCS
@@ -228,8 +285,9 @@ async function driver() {
     try {
         console.log("Fetching required JS files...");
         const jsFiles = await getJsFiles();
-        console.log(`Found ${jsFiles.length} files to process`);
+        await getExistingMarkdownFiles(jsFiles);
 
+        console.log(`Found ${jsFiles.length} files to process`);
         await createDir(TEMP_DIR);
         await createDir(MD_FILES_DIR);
 
