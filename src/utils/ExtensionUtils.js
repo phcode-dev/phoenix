@@ -84,7 +84,7 @@ define(function (require, exports, module) {
     /**
      * Parses LESS code and returns a promise that resolves with plain CSS code.
      *
-     * Pass the {@link url} argument to resolve relative URLs contained in the code.
+     * Pass the link url argument to resolve relative URLs contained in the code.
      * Make sure URLs in the code are wrapped in quotes, like so:
      *     background-image: url("image.png");
      *
