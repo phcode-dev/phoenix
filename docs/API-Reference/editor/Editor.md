@@ -143,7 +143,12 @@ const Editor = brackets.getModule("editor/Editor")
 <a name="new_Editor_new"></a>
 
 ### new Editor(document, makeMasterEditor, container, [range], options)
-Creates a new CodeMirror editor instance bound to the given Document. The Document need not havea "master" Editor realized yet, even if makeMasterEditor is false; in that case, the first timean edit occurs we will automatically ask EditorManager to create a "master" editor to render theDocument modifiable.ALWAYS call destroy() when you are done with an Editor - otherwise it will leak a Document ref.
+Creates a new CodeMirror editor instance bound to the given Document. The Document need not have
+a "master" Editor realized yet, even if makeMasterEditor is false; in that case, the first time
+an edit occurs we will automatically ask EditorManager to create a "master" editor to render the
+Document modifiable.
+
+ALWAYS call destroy() when you are done with an Editor - otherwise it will leak a Document ref.
 
 
 | Param | Type | Description |
@@ -157,10 +162,12 @@ Creates a new CodeMirror editor instance bound to the given Document. The Docume
 <a name="Editor+addInlineWidget"></a>
 
 ### editor.addInlineWidget ⇒ <code>$.Promise</code>
-Adds an inline widget below the given line. If any inline widget was already open for thatline, it is closed without warning.
+Adds an inline widget below the given line. If any inline widget was already open for that
+line, it is closed without warning.
 
 **Kind**: instance property of [<code>Editor</code>](#Editor)  
-**Returns**: <code>$.Promise</code> - A promise object that is resolved when the widget has been added (but might    still be animating open). Never rejected.  
+**Returns**: <code>$.Promise</code> - A promise object that is resolved when the widget has been added (but might
+    still be animating open). Never rejected.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -200,7 +207,8 @@ Removes all inline widgets for a given line
 <a name="Editor+getAllInlineWidgetsForLine"></a>
 
 ### editor.getAllInlineWidgetsForLine
-****** Update actual public API doc in Editor.js *****Gets all inline widgets for a given line
+****** Update actual public API doc in Editor.js *****
+Gets all inline widgets for a given line
 
 **Kind**: instance property of [<code>Editor</code>](#Editor)  
 
@@ -211,7 +219,8 @@ Removes all inline widgets for a given line
 <a name="Editor+getInlineWidgets"></a>
 
 ### editor.getInlineWidgets ⇒ <code>Object</code>
-Returns a list of all inline widgets currently open in this editor. Each entry contains theinline's id, and the data parameter that was passed to addInlineWidget().
+Returns a list of all inline widgets currently open in this editor. Each entry contains the
+inline's id, and the data parameter that was passed to addInlineWidget().
 
 **Kind**: instance property of [<code>Editor</code>](#Editor)  
 <a name="Editor+getFocusedInlineWidget"></a>
@@ -242,13 +251,16 @@ The Document we're bound to
 <a name="Editor+_lastEditorWidth"></a>
 
 ### editor.\_lastEditorWidth : <code>number</code>
-The Editor's last known width.Used in conjunction with updateLayout to recompute the layoutif the parent container changes its size since our last layout update.
+The Editor's last known width.
+Used in conjunction with updateLayout to recompute the layout
+if the parent container changes its size since our last layout update.
 
 **Kind**: instance property of [<code>Editor</code>](#Editor)  
 <a name="Editor+_duringSync"></a>
 
 ### editor.\_duringSync : <code>boolean</code>
-If true, we're in the middle of syncing to/from the Document. Used to ignore spurious changeevents caused by us (vs. change events caused by others, which we need to pay attention to).
+If true, we're in the middle of syncing to/from the Document. Used to ignore spurious change
+events caused by us (vs. change events caused by others, which we need to pay attention to).
 
 **Kind**: instance property of [<code>Editor</code>](#Editor)  
 <a name="Editor+getInlineWidgetsBelowCursor"></a>
@@ -266,13 +278,16 @@ returns true if the editor can do something an escape key event. Eg. Disable mul
 <a name="Editor+destroy"></a>
 
 ### editor.destroy()
-Removes this editor from the DOM and detaches from the Document. If this is the "master"Editor that is secretly providing the Document's backing state, then the Document reverts toa read-only string-backed mode.
+Removes this editor from the DOM and detaches from the Document. If this is the "master"
+Editor that is secretly providing the Document's backing state, then the Document reverts to
+a read-only string-backed mode.
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 <a name="Editor+_getModeFromDocument"></a>
 
 ### editor.\_getModeFromDocument() ⇒ <code>string</code>
-Determine the mode to use from the document's languageUses "text/plain" if the language does not define a mode
+Determine the mode to use from the document's language
+Uses "text/plain" if the language does not define a mode
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 **Returns**: <code>string</code> - The mode to use  
@@ -290,13 +305,15 @@ Selects all text and maintains the current scroll position.
 <a name="Editor+_updateHiddenLines"></a>
 
 ### editor.\_updateHiddenLines()
-Ensures that the lines that are actually hidden in the inline editor correspond tothe desired visible range.
+Ensures that the lines that are actually hidden in the inline editor correspond to
+the desired visible range.
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 <a name="Editor+_resetText"></a>
 
 ### editor.\_resetText(text)
-Sets the contents of the editor, clears the undo/redo history and marks the document clean. Dispatches a change event.Semi-private: only Document should call this.
+Sets the contents of the editor, clears the undo/redo history and marks the document clean. Dispatches a change event.
+Semi-private: only Document should call this.
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 
@@ -307,14 +324,18 @@ Sets the contents of the editor, clears the undo/redo history and marks the docu
 <a name="Editor+getFile"></a>
 
 ### editor.getFile() ⇒ <code>File</code>
-Gets the file associated with this editorThis is a required Pane-View interface method
+Gets the file associated with this editor
+This is a required Pane-View interface method
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 **Returns**: <code>File</code> - the file associated with this editor  
 <a name="Editor+getCursorPos"></a>
 
 ### editor.getCursorPos([expandTabs], [which]) ⇒ <code>Object</code>
-Gets the current cursor position within the editor.Cursor positions can be converted to index(0 based character offsets in editor text string)using `editor.indexFromPos` API.
+Gets the current cursor position within the editor.
+
+Cursor positions can be converted to index(0 based character offsets in editor text string)
+using `editor.indexFromPos` API.
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 
@@ -337,7 +358,8 @@ Gets the cursor position of the last charected in the editor.
 <a name="Editor+getColOffset"></a>
 
 ### editor.getColOffset(pos) ⇒ <code>number</code>
-Returns the display column (zero-based) for a given string-based pos. Differs from pos.ch onlywhen the line contains preceding \t chars. Result depends on the current tab size setting.
+Returns the display column (zero-based) for a given string-based pos. Differs from pos.ch only
+when the line contains preceding \t chars. Result depends on the current tab size setting.
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 
@@ -348,7 +370,8 @@ Returns the display column (zero-based) for a given string-based pos. Differs fr
 <a name="Editor+getCharIndexForColumn"></a>
 
 ### editor.getCharIndexForColumn(lineNum, column) ⇒ <code>number</code>
-Returns the string-based pos for a given display column (zero-based) in given line. Differs from columnonly when the line contains preceding \t chars. Result depends on the current tab size setting.
+Returns the string-based pos for a given display column (zero-based) in given line. Differs from column
+only when the line contains preceding \t chars. Result depends on the current tab size setting.
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 
@@ -386,13 +409,22 @@ Set the editor size in pixels or percentage
 <a name="Editor+getViewport"></a>
 
 ### editor.getViewport() ⇒ <code>Object</code>
-Returns a {'from', 'to'} object indicating the start (inclusive) and end (exclusive) of the currently renderedpart of the document. In big documents, when most content is scrolled out of view, Editor will only renderthe visible part, and a margin around it. See also the `viewportChange` event fired on the editor.This is combination with `viewportChange` event can be used to selectively redraw visual elements in codelike syntax analyze only parts of code instead of the full code everytime.
+Returns a {'from', 'to'} object indicating the start (inclusive) and end (exclusive) of the currently rendered
+part of the document. In big documents, when most content is scrolled out of view, Editor will only render
+the visible part, and a margin around it. See also the `viewportChange` event fired on the editor.
+
+This is combination with `viewportChange` event can be used to selectively redraw visual elements in code
+like syntax analyze only parts of code instead of the full code everytime.
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 <a name="Editor+centerOnCursor"></a>
 
 ### editor.centerOnCursor(centerOptions)
-Scrolls the editor viewport to vertically center the line with the cursor,but only if the cursor is currently near the edges of the viewport orentirely outside the viewport.This does not alter the horizontal scroll position.
+Scrolls the editor viewport to vertically center the line with the cursor,
+but only if the cursor is currently near the edges of the viewport or
+entirely outside the viewport.
+
+This does not alter the horizontal scroll position.
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 
@@ -425,7 +457,8 @@ Given a position, returns its index within the text (assuming \n newlines)
 <a name="Editor+posWithinRange"></a>
 
 ### editor.posWithinRange(pos, start, end, endInclusive)
-Returns true if pos is between start and end (INclusive at start; EXclusive at end by default,but overridable via the endInclusive flag).
+Returns true if pos is between start and end (INclusive at start; EXclusive at end by default,
+but overridable via the endInclusive flag).
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 
@@ -444,13 +477,23 @@ Returns true if pos is between start and end (INclusive at start; EXclusive at e
 <a name="Editor+getSelection"></a>
 
 ### editor.getSelection() ⇒ <code>Object</code>
-Gets the current selection; if there is more than one selection, returns the primary selection(generally the last one made). Start is inclusive, end is exclusive. If there is no selection,returns the current cursor position as both the start and end of the range (i.e. a selectionof length zero). If `reversed` is set, then the head of the selection (the end of the selectionthat would be changed if the user extended the selection) is before the anchor.
+Gets the current selection; if there is more than one selection, returns the primary selection
+(generally the last one made). Start is inclusive, end is exclusive. If there is no selection,
+returns the current cursor position as both the start and end of the range (i.e. a selection
+of length zero). If `reversed` is set, then the head of the selection (the end of the selection
+that would be changed if the user extended the selection) is before the anchor.
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 <a name="Editor+getSelections"></a>
 
 ### editor.getSelections() ⇒ <code>Object</code>
-Returns an array of current selections, nonoverlapping and sorted in document order.Each selection is a start/end pair, with the start guaranteed to come before the end.Cursors are represented as a range whose start is equal to the end.If `reversed` is set, then the head of the selection(the end of the selection that would be changed if the user extended the selection)is before the anchor.If `primary` is set, then that selection is the primary selection.
+Returns an array of current selections, nonoverlapping and sorted in document order.
+Each selection is a start/end pair, with the start guaranteed to come before the end.
+Cursors are represented as a range whose start is equal to the end.
+If `reversed` is set, then the head of the selection
+(the end of the selection that would be changed if the user extended the selection)
+is before the anchor.
+If `primary` is set, then that selection is the primary selection.
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 <a name="Editor+hasMultipleCursors"></a>
@@ -462,10 +505,16 @@ Check if the editor has multiple cursors or selections
 <a name="Editor+convertToLineSelections"></a>
 
 ### editor.convertToLineSelections(selections, options) ⇒ <code>Object</code>
-Takes the given selections, and expands each selection so it encompasses whole lines. Mergesadjacent line selections together. Keeps track of each original selection associated with a givenline selection (there might be multiple if individual selections were merged into a single line selection).Useful for doing multiple-selection-aware line edits.
+Takes the given selections, and expands each selection so it encompasses whole lines. Merges
+adjacent line selections together. Keeps track of each original selection associated with a given
+line selection (there might be multiple if individual selections were merged into a single line selection).
+Useful for doing multiple-selection-aware line edits.
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
-**Returns**: <code>Object</code> - The combined line selections. For each selection, `selectionForEdit` is the line selection, and `selectionsToTrack` is     the set of original selections that combined to make up the given line selection. Note that the selectionsToTrack will     include the original objects passed in `selections`, so if it is later mutated the original passed-in selections will be     mutated as well.  
+**Returns**: <code>Object</code> - The combined line selections. For each selection, `selectionForEdit` is the line selection, and `selectionsToTrack` is
+     the set of original selections that combined to make up the given line selection. Note that the selectionsToTrack will
+     include the original objects passed in `selections`, so if it is later mutated the original passed-in selections will be
+     mutated as well.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -475,7 +524,9 @@ Takes the given selections, and expands each selection so it encompasses whole l
 <a name="Editor+getSelectedText"></a>
 
 ### editor.getSelectedText([allSelections]) ⇒ <code>string</code>
-Returns the currently selected text, or "" if no selection. Includes \n if theselection spans multiple lines (does NOT reflect the Document's line-endings style). Bydefault, returns only the contents of the primary selection, unless `allSelections` is true.
+Returns the currently selected text, or "" if no selection. Includes \n if the
+selection spans multiple lines (does NOT reflect the Document's line-endings style). By
+default, returns only the contents of the primary selection, unless `allSelections` is true.
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 **Returns**: <code>string</code> - The selected text.  
@@ -487,7 +538,8 @@ Returns the currently selected text, or "" if no selection. Includes \n if thes
 <a name="Editor+coordsChar"></a>
 
 ### editor.coordsChar(coordinates, [mode]) ⇒ <code>Object</code>
-Given an {'left', 'top'} object (e.g. coordinates of a mouse event) returns the {'line', 'ch'} position thatcorresponds to it. The optional mode parameter determines relative to what the coordinates are interpreted.
+Given an {'left', 'top'} object (e.g. coordinates of a mouse event) returns the {'line', 'ch'} position that
+corresponds to it. The optional mode parameter determines relative to what the coordinates are interpreted.
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 **Returns**: <code>Object</code> - for the given coordinates  
@@ -500,7 +552,9 @@ Given an {'left', 'top'} object (e.g. coordinates of a mouse event) returns the 
 <a name="Editor+charCoords"></a>
 
 ### editor.charCoords(pos, [mode]) ⇒ <code>Object</code>
-Returns the position and dimensions of an arbitrary character given a cursor (Eg. from getCursorPos()).It'll give the size of the whole character, rather than just the position that the cursor would havewhen it would sit at that position.
+Returns the position and dimensions of an arbitrary character given a cursor (Eg. from getCursorPos()).
+It'll give the size of the whole character, rather than just the position that the cursor would have
+when it would sit at that position.
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 **Returns**: <code>Object</code> - coordinates for the given character position  
@@ -513,10 +567,12 @@ Returns the position and dimensions of an arbitrary character given a cursor (Eg
 <a name="Editor+getToken"></a>
 
 ### editor.getToken([cursor], [precise]) ⇒ <code>Object</code>
-Get the token at the given cursor position, or at the current cursorif none is given.
+Get the token at the given cursor position, or at the current cursor
+if none is given.
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
-**Returns**: <code>Object</code> - -the CodeMirror token at the given cursor position  
+**Returns**: <code>Object</code> - -
+the CodeMirror token at the given cursor position  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -526,10 +582,12 @@ Get the token at the given cursor position, or at the current cursorif none is 
 <a name="Editor+getCharacterAtPosition"></a>
 
 ### editor.getCharacterAtPosition(pos) ⇒ <code>string</code> \| <code>null</code>
-Retrieves a single character from the specified position in the editor.x|y where `|` is the cursor, will return y
+Retrieves a single character from the specified position in the editor.
+x|y where `|` is the cursor, will return y
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
-**Returns**: <code>string</code> \| <code>null</code> - The character at the given position if within bounds,                       otherwise `null` if the position is out of range.  
+**Returns**: <code>string</code> \| <code>null</code> - The character at the given position if within bounds,
+                       otherwise `null` if the position is out of range.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -538,10 +596,12 @@ Retrieves a single character from the specified position in the editor.x|y wher
 <a name="Editor+getPrevCharacterAtPosition"></a>
 
 ### editor.getPrevCharacterAtPosition(pos) ⇒ <code>string</code> \| <code>null</code>
-Retrieves a single character previous to the specified position in the editor in the same line if possible.x|y where `|` is the cursor, will return x
+Retrieves a single character previous to the specified position in the editor in the same line if possible.
+x|y where `|` is the cursor, will return x
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
-**Returns**: <code>string</code> \| <code>null</code> - The character previous to the given position if within bounds,                       otherwise `null` if the position is out of range.  
+**Returns**: <code>string</code> \| <code>null</code> - The character previous to the given position if within bounds,
+                       otherwise `null` if the position is out of range.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -553,7 +613,8 @@ Retrieves a single character previous to the specified position in the editor in
 Get the token after the one at the given cursor position
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
-**Returns**: <code>Object</code> - -the CodeMirror token after the one at the given cursor position  
+**Returns**: <code>Object</code> - -
+the CodeMirror token after the one at the given cursor position  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -567,7 +628,8 @@ Get the token after the one at the given cursor position
 Get the token before the one at the given cursor position
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
-**Returns**: <code>Object</code> - - the CodeMirror token beforethe one at the given cursor position  
+**Returns**: <code>Object</code> - - the CodeMirror token before
+the one at the given cursor position  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -578,7 +640,12 @@ Get the token before the one at the given cursor position
 <a name="Editor+operation"></a>
 
 ### editor.operation(execFn) ⇒ <code>\*</code>
-Use This if you are making large number of editor changes in a single workflow to improve performance.The editor internally buffers changes and only updates its DOM structure after it has finished performingsome operation. If you need to perform a lot of operations on a CodeMirror instance, you can call this methodwith a function argument. It will call the function, buffering up all changes, and only doing the expensiveupdate after the function returns. This can be a lot faster. The return value from this method will be thereturn value of your function.
+Use This if you are making large number of editor changes in a single workflow to improve performance.
+The editor internally buffers changes and only updates its DOM structure after it has finished performing
+some operation. If you need to perform a lot of operations on a CodeMirror instance, you can call this method
+with a function argument. It will call the function, buffering up all changes, and only doing the expensive
+update after the function returns. This can be a lot faster. The return value from this method will be the
+return value of your function.
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 
@@ -603,10 +670,12 @@ Same as markText, but will apply to the token at the given position or current p
 <a name="Editor+setBookmark"></a>
 
 ### editor.setBookmark(markType, [cursorPos], [options]) ⇒ <code>Object</code>
-Inserts a bookmark, a handle that follows the text around it as it is being edited, at the given position.Similar to mark text, but for just a point instead of range.
+Inserts a bookmark, a handle that follows the text around it as it is being edited, at the given position.
+Similar to mark text, but for just a point instead of range.
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
-**Returns**: <code>Object</code> - TextMarker- A bookmark has two methods find() and clear(). `find` returns the currentposition of the bookmark, if it is still in the document, and `clear` explicitly removes the bookmark.  
+**Returns**: <code>Object</code> - TextMarker- A bookmark has two methods find() and clear(). `find` returns the current
+position of the bookmark, if it is still in the document, and `clear` explicitly removes the bookmark.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -716,19 +785,24 @@ Get a (JSON-serializable) representation of the undo history.
 <a name="Editor+setHistory"></a>
 
 ### editor.setHistory()
-Replace the editor's undo history with the one provided, which must be a valueas returned by getHistory. Note that this will have entirely undefined resultsif the editor content isn't also the same as it was when getHistory was called.
+Replace the editor's undo history with the one provided, which must be a value
+as returned by getHistory. Note that this will have entirely undefined results
+if the editor content isn't also the same as it was when getHistory was called.
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 <a name="Editor+createHistoryRestorePoint"></a>
 
 ### editor.createHistoryRestorePoint()
-Creates a named restore point in undo history. this can be later be restored to undo allchanged till the named restore point in one go.
+Creates a named restore point in undo history. this can be later be restored to undo all
+changed till the named restore point in one go.
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 <a name="Editor+setSelection"></a>
 
 ### editor.setSelection(start, [end], [center], [centerOptions], [origin])
-Sets the current selection. Start is inclusive, end is exclusive. Places the cursor at theend of the selection range. Optionally centers around the cursor aftermaking the selection
+Sets the current selection. Start is inclusive, end is exclusive. Places the cursor at the
+end of the selection range. Optionally centers around the cursor after
+making the selection
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 
@@ -738,7 +812,7 @@ Sets the current selection. Start is inclusive, end is exclusive. Places the cur
 | [end] | <code>Object</code> | If not specified, defaults to start. |
 | [center] | <code>boolean</code> | true to center the viewport |
 | [centerOptions] | <code>number</code> | Option value, or 0 for no options; one of the BOUNDARY_* constants above. |
-| [origin] | <code>string</code> | An optional string that describes what other selection or edit operations this      should be merged with for the purposes of undo. See [Document#replaceRange](Document#replaceRange) for more details. |
+| [origin] | <code>string</code> | An optional string that describes what other selection or edit operations this      should be merged with for the purposes of undo. See [Document::Document#replaceRange](Document::Document#replaceRange) for more details. |
 
 <a name="Editor+replaceSelection"></a>
 
@@ -755,7 +829,8 @@ Replace the selection with the given string.
 <a name="Editor+replaceSelections"></a>
 
 ### editor.replaceSelections(replacement, [select])
-Replaces the content of multiple selections with the strings in the array. The length of the givenarray should be the same as the number of active selections.
+Replaces the content of multiple selections with the strings in the array. The length of the given
+array should be the same as the number of active selections.
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 
@@ -795,7 +870,10 @@ Replaces multiple ranges in the editor with the specified texts.
 
 **Example**  
 ```js
-editor.replaceMultipleRanges([  { from: { line: 0, ch: 0 }, to: { line: 0, ch: 5 }, text: 'Hello' },  { from: { line: 1, ch: 0 }, to: { line: 1, ch: 4 }, text: 'World' }], 'exampleOrigin');
+editor.replaceMultipleRanges([
+  { from: { line: 0, ch: 0 }, to: { line: 0, ch: 5 }, text: 'Hello' },
+  { from: { line: 1, ch: 0 }, to: { line: 1, ch: 4 }, text: 'World' }
+], 'exampleOrigin');
 ```
 <a name="Editor+clearSelection"></a>
 
@@ -806,7 +884,10 @@ Clears any active selection if present.
 <a name="Editor+setSelections"></a>
 
 ### editor.setSelections(selections, center, centerOptions, origin)
-Sets a multiple selection, with the "primary" selection (the one returned bygetSelection() and getCursorPos()) defaulting to the last if not specified.Overlapping ranges will be automatically merged, and the selection will be sorted.Optionally centers around the primary selection after making the selection.
+Sets a multiple selection, with the "primary" selection (the one returned by
+getSelection() and getCursorPos()) defaulting to the last if not specified.
+Overlapping ranges will be automatically merged, and the selection will be sorted.
+Optionally centers around the primary selection after making the selection.
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 
@@ -815,7 +896,7 @@ Sets a multiple selection, with the "primary" selection (the one returned byget
 | selections | <code>Object</code> | The selection ranges to set. If the start and end of a range are the same, treated as a cursor.      If reversed is true, set the anchor of the range to the end instead of the start.      If primary is true, this is the primary selection. Behavior is undefined if more than      one selection has primary set to true. If none has primary set to true, the last one is primary. |
 | center | <code>boolean</code> | true to center the viewport around the primary selection. |
 | centerOptions | <code>number</code> | Option value, or 0 for no options; one of the BOUNDARY_* constants above. |
-| origin | <code>string</code> | An optional string that describes what other selection or edit operations this      should be merged with for the purposes of undo. See [Document#replaceRange](Document#replaceRange) for more details. |
+| origin | <code>string</code> | An optional string that describes what other selection or edit operations this      should be merged with for the purposes of undo. See [Document::Document#replaceRange](Document::Document#replaceRange) for more details. |
 
 <a name="Editor+toggleOverwrite"></a>
 
@@ -831,7 +912,8 @@ Sets the editors overwrite mode state. If null is passed, the state is toggled.
 <a name="Editor+selectWordAt"></a>
 
 ### editor.selectWordAt(pos)
-Selects word that the given pos lies within or adjacent to. If pos isn't touching a word(e.g. within a token like "//"), moves the cursor to pos without selecting a range.
+Selects word that the given pos lies within or adjacent to. If pos isn't touching a word
+(e.g. within a token like "//"), moves the cursor to pos without selecting a range.
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 
@@ -842,7 +924,8 @@ Selects word that the given pos lies within or adjacent to. If pos isn't touchin
 <a name="Editor+getWordAt"></a>
 
 ### editor.getWordAt(pos) ⇒ <code>Object</code>
-Gets word at the given pos lies within or adjacent to. If pos isn't touching a word(e.g. within a token like "//"), returns null
+Gets word at the given pos lies within or adjacent to. If pos isn't touching a word
+(e.g. within a token like "//"), returns null
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 
@@ -853,7 +936,9 @@ Gets word at the given pos lies within or adjacent to. If pos isn't touching a w
 <a name="Editor+getNumberAt"></a>
 
 ### editor.getNumberAt(pos, maxDigits) ⇒ <code>Object</code>
-Gets number string of (upto 10 digits default) at the given pos lies within or adjacent to.If pos isn't touching a number, returns null. If the number in string is greater than max digits returns null.
+Gets number string of (upto 10 digits default) at the given pos lies within or adjacent to.
+If pos isn't touching a number, returns null. If the number in string is greater than max digits
+ returns null.
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 
@@ -918,7 +1003,9 @@ Gets the root DOM node of the editor.
 <a name="Editor+_getLineSpaceElement"></a>
 
 ### editor.\_getLineSpaceElement() ⇒ <code>HTMLDivElement</code>
-Gets the lineSpace element within the editor (the container around the individual lines of code).FUTURE: This is fairly CodeMirror-specific. Logic that depends on this may break if we switcheditors.
+Gets the lineSpace element within the editor (the container around the individual lines of code).
+FUTURE: This is fairly CodeMirror-specific. Logic that depends on this may break if we switch
+editors.
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 **Returns**: <code>HTMLDivElement</code> - The editor's lineSpace element.  
@@ -956,7 +1043,8 @@ Sets the current scroll position of the editor.
 <a name="Editor+displayErrorMessageAtCursor"></a>
 
 ### editor.displayErrorMessageAtCursor(errorMsg)
-Display temporary popover message at current cursor position. Display message abovecursor if space allows, otherwise below.
+Display temporary popover message at current cursor position. Display message above
+cursor if space allows, otherwise below.
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 
@@ -967,7 +1055,10 @@ Display temporary popover message at current cursor position. Display message ab
 <a name="Editor+getVirtualScrollAreaTop"></a>
 
 ### editor.getVirtualScrollAreaTop() ⇒ <code>number</code>
-Returns the offset of the top of the virtual scroll area relative to the browser window (not the editoritself). Mainly useful for calculations related to scrollIntoView(), where you're starting with theoffset() of a child widget (relative to the browser window) and need to figure out how far down it is fromthe top of the virtual scroll area (excluding the top padding).
+Returns the offset of the top of the virtual scroll area relative to the browser window (not the editor
+itself). Mainly useful for calculations related to scrollIntoView(), where you're starting with the
+offset() of a child widget (relative to the browser window) and need to figure out how far down it is from
+the top of the virtual scroll area (excluding the top padding).
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 <a name="Editor+focus"></a>
@@ -1030,7 +1121,8 @@ Redo the last un-done edit.
 <a name="Editor+notifyVisibilityChange"></a>
 
 ### editor.notifyVisibilityChange(show, refresh)
-View API Visibility Change Notification handler.  This is alsocalled by the native "setVisible" API which refresh can be optimized
+View API Visibility Change Notification handler.  This is also
+called by the native "setVisible" API which refresh can be optimized
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 
@@ -1042,7 +1134,8 @@ View API Visibility Change Notification handler.  This is alsocalled by the nat
 <a name="Editor+setVisible"></a>
 
 ### editor.setVisible(show, refresh)
-Shows or hides the editor within its parent. Does not force its ancestors tobecome visible.
+Shows or hides the editor within its parent. Does not force its ancestors to
+become visible.
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 
@@ -1054,16 +1147,21 @@ Shows or hides the editor within its parent. Does not force its ancestors tobec
 <a name="Editor+isFullyVisible"></a>
 
 ### editor.isFullyVisible()
-Returns true if the editor is fully visible--i.e., is in the DOM, all ancestors arevisible, and has a non-zero width/height.
+Returns true if the editor is fully visible--i.e., is in the DOM, all ancestors are
+visible, and has a non-zero width/height.
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 <a name="Editor+getModeForRange"></a>
 
 ### editor.getModeForRange(start, end, [knownMixed]) ⇒ <code>Object</code> \| <code>string</code>
-Gets the syntax-highlighting mode for the given range.Returns null if the mode at the start of the selection differs from the mode at the end -an *approximation* of whether the mode is consistent across the whole range (a pattern likeA-B-A would return A as the mode, not null).
+Gets the syntax-highlighting mode for the given range.
+Returns null if the mode at the start of the selection differs from the mode at the end -
+an *approximation* of whether the mode is consistent across the whole range (a pattern like
+A-B-A would return A as the mode, not null).
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
-**Returns**: <code>Object</code> \| <code>string</code> - Name of syntax-highlighting mode, or object containing a "name" property    naming the mode along with configuration options required by the mode.  
+**Returns**: <code>Object</code> \| <code>string</code> - Name of syntax-highlighting mode, or object containing a "name" property
+    naming the mode along with configuration options required by the mode.  
 **See**: [LanguageManager::#getLanguageForPath](LanguageManager::#getLanguageForPath) and [LanguageManager::Language#getMode](LanguageManager::Language#getMode).  
 
 | Param | Type | Description |
@@ -1075,10 +1173,16 @@ Gets the syntax-highlighting mode for the given range.Returns null if the mode 
 <a name="Editor+getModeForSelection"></a>
 
 ### editor.getModeForSelection(selection) ⇒ <code>Object</code> \| <code>string</code>
-Gets the syntax-highlighting mode for the current selection or cursor position. (The mode mayvary within one file due to embedded languages, e.g. JS embedded in an HTML script block). See`getModeForRange()` for how this is determined for a single selection.If there are multiple selections, this will return a mode only if all the selections are individuallyconsistent and resolve to the same mode.
+Gets the syntax-highlighting mode for the current selection or cursor position. (The mode may
+vary within one file due to embedded languages, e.g. JS embedded in an HTML script block). See
+`getModeForRange()` for how this is determined for a single selection.
+
+If there are multiple selections, this will return a mode only if all the selections are individually
+consistent and resolve to the same mode.
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
-**Returns**: <code>Object</code> \| <code>string</code> - Name of syntax-highlighting mode, or object containing a "name" property    naming the mode along with configuration options required by the mode.  
+**Returns**: <code>Object</code> \| <code>string</code> - Name of syntax-highlighting mode, or object containing a "name" property
+    naming the mode along with configuration options required by the mode.  
 **See**: [LanguageManager::#getLanguageForPath](LanguageManager::#getLanguageForPath) and [LanguageManager::Language#getMode](LanguageManager::Language#getMode).  
 
 | Param | Type |
@@ -1088,13 +1192,15 @@ Gets the syntax-highlighting mode for the current selection or cursor position. 
 <a name="Editor+getLanguageForSelection"></a>
 
 ### editor.getLanguageForSelection() ⇒ <code>Language</code>
-gets the language for the selection. (Javascript selected from an HTML document or CSS selected from an HTMLdocument, etc...)
+gets the language for the selection. (Javascript selected from an HTML document or CSS selected from an HTML
+document, etc...)
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 <a name="Editor+getLanguageForPosition"></a>
 
 ### editor.getLanguageForPosition() ⇒ <code>Language</code>
-gets the language for the selection. (Javascript selected from an HTML document or CSS selected from an HTMLdocument, etc...)
+gets the language for the selection. (Javascript selected from an HTML document or CSS selected from an HTML
+document, etc...)
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 <a name="Editor+getModeForDocument"></a>
@@ -1108,7 +1214,8 @@ Gets the syntax-highlighting mode for the document.
 <a name="Editor+updateLayout"></a>
 
 ### editor.updateLayout([forceRefresh])
-resizes the editor to fill its parent containershould not be used on inline editors
+resizes the editor to fill its parent container
+should not be used on inline editors
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 
@@ -1144,7 +1251,8 @@ Gets the gutter marker of the given name if found on the current line, else retu
 <a name="Editor+clearGutterMarker"></a>
 
 ### editor.clearGutterMarker(lineNumber, gutterName)
-Clears the marker for the specified gutter on the specified line number. Does nothing if there was no markeron the line.
+Clears the marker for the specified gutter on the specified line number. Does nothing if there was no marker
+on the line.
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 
@@ -1173,7 +1281,34 @@ Mark options to use with API with Editor.markText or Editor.markToken.
 <a name="Editor.EVENT_BEFORE_CHANGE"></a>
 
 ### Editor.EVENT\_BEFORE\_CHANGE
-Each Editor instance object dispatches the following events:   - keydown, keypress, keyup -- When any key event happens in the editor (whether it changes the     text or not). Handlers are passed `(BracketsEvent, Editor, KeyboardEvent)`. The 3nd arg is the     raw DOM event. Note: most listeners will only want to listen for "keypress".   - change - Triggered with an array of change objects. Parameters: (editor, changeList)   - beforeChange - (self, changeObj)   - beforeSelectionChange - (selectionObj)   - focus - Fired when an editor is focused   - blur - Fired when an editor loses focused   - update - Will be fired whenever Editor updates its DOM display.   - cursorActivity -- When the user moves the cursor or changes the selection, or an edit occurs.     Note: do not listen to this in order to be generally informed of edits--listen to the     "change" event on Document instead.   - scroll -- When the editor is scrolled, either by user action or programmatically.   - viewportChange - (from: number, to: number) Fires whenever the view port of the editor changes     (due to scrolling, editing, or any other factor). The from and to arguments give the new start     and end of the viewport. This is combination with `editorInstance.getViewPort()` can be used to     selectively redraw visual elements in code like syntax analyze only parts of code instead     of the full code everytime.   - lostContent -- When the backing Document changes in such a way that this Editor is no longer     able to display accurate text. This occurs if the Document's file is deleted, or in certain     Document->editor syncing edge cases that we do not yet support (the latter cause will     eventually go away).   - optionChange -- Triggered when an option for the editor is changed. The 2nd arg to the listener     is a string containing the editor option that is changing. The 3rd arg, which can be any     data type, is the new value for the editor option.   - beforeDestroy - Triggered before the object is about to dispose of all its internal state data     so that listeners can cache things like scroll pos, etc...
+Each Editor instance object dispatches the following events:
+   - keydown, keypress, keyup -- When any key event happens in the editor (whether it changes the
+     text or not). Handlers are passed `(BracketsEvent, Editor, KeyboardEvent)`. The 3nd arg is the
+     raw DOM event. Note: most listeners will only want to listen for "keypress".
+   - change - Triggered with an array of change objects. Parameters: (editor, changeList)
+   - beforeChange - (self, changeObj)
+   - beforeSelectionChange - (selectionObj)
+   - focus - Fired when an editor is focused
+   - blur - Fired when an editor loses focused
+   - update - Will be fired whenever Editor updates its DOM display.
+   - cursorActivity -- When the user moves the cursor or changes the selection, or an edit occurs.
+     Note: do not listen to this in order to be generally informed of edits--listen to the
+     "change" event on Document instead.
+   - scroll -- When the editor is scrolled, either by user action or programmatically.
+   - viewportChange - (from: number, to: number) Fires whenever the view port of the editor changes
+     (due to scrolling, editing, or any other factor). The from and to arguments give the new start
+     and end of the viewport. This is combination with `editorInstance.getViewPort()` can be used to
+     selectively redraw visual elements in code like syntax analyze only parts of code instead
+     of the full code everytime.
+   - lostContent -- When the backing Document changes in such a way that this Editor is no longer
+     able to display accurate text. This occurs if the Document's file is deleted, or in certain
+     Document->editor syncing edge cases that we do not yet support (the latter cause will
+     eventually go away).
+   - optionChange -- Triggered when an option for the editor is changed. The 2nd arg to the listener
+     is a string containing the editor option that is changing. The 3rd arg, which can be any
+     data type, is the new value for the editor option.
+   - beforeDestroy - Triggered before the object is about to dispose of all its internal state data
+     so that listeners can cache things like scroll pos, etc...
 
 **Kind**: static property of [<code>Editor</code>](#Editor)  
 <a name="Editor.getRegisteredGutters"></a>
@@ -1220,7 +1355,8 @@ Unregisters the gutter with the specified name and removes it from the UI.
 <a name="Editor.setUseTabChar"></a>
 
 ### Editor.setUseTabChar(value, [fullPath]) ⇒ <code>boolean</code>
-Sets whether to use tab characters (vs. spaces) when inserting new text.Affects any editors that share the same preference location.
+Sets whether to use tab characters (vs. spaces) when inserting new text.
+Affects any editors that share the same preference location.
 
 **Kind**: static method of [<code>Editor</code>](#Editor)  
 **Returns**: <code>boolean</code> - true if value was valid  
@@ -1244,7 +1380,8 @@ Gets whether the specified or current file uses tab characters (vs. spaces) when
 <a name="Editor.setTabSize"></a>
 
 ### Editor.setTabSize(value, [fullPath]) ⇒ <code>boolean</code>
-Sets tab character width.Affects any editors that share the same preference location.
+Sets tab character width.
+Affects any editors that share the same preference location.
 
 **Kind**: static method of [<code>Editor</code>](#Editor)  
 **Returns**: <code>boolean</code> - true if value was valid  
@@ -1279,7 +1416,8 @@ Gets the number of tabs for the file. Will
 <a name="Editor.setAutoTabSpaces"></a>
 
 ### Editor.setAutoTabSpaces(value, [fullPath]) ⇒ <code>boolean</code>
-When set, the tabs and spaces to be used will be auto detected from the current file or fall back to defaults.Affects any editors that share the same preference location.
+When set, the tabs and spaces to be used will be auto detected from the current file or fall back to defaults.
+Affects any editors that share the same preference location.
 
 **Kind**: static method of [<code>Editor</code>](#Editor)  
 **Returns**: <code>boolean</code> - true if value was valid  
@@ -1303,7 +1441,8 @@ Get auto tabbing/spacing option
 <a name="Editor.setSpaceUnits"></a>
 
 ### Editor.setSpaceUnits(value, [fullPath]) ⇒ <code>boolean</code>
-Sets indentation width.Affects any editors that share the same preference location.
+Sets indentation width.
+Affects any editors that share the same preference location.
 
 **Kind**: static method of [<code>Editor</code>](#Editor)  
 **Returns**: <code>boolean</code> - true if value was valid  
@@ -1327,7 +1466,8 @@ Get indentation width
 <a name="Editor.setCloseBrackets"></a>
 
 ### Editor.setCloseBrackets(value, [fullPath]) ⇒ <code>boolean</code>
-Sets the auto close brackets.Affects any editors that share the same preference location.
+Sets the auto close brackets.
+Affects any editors that share the same preference location.
 
 **Kind**: static method of [<code>Editor</code>](#Editor)  
 **Returns**: <code>boolean</code> - true if value was valid  
@@ -1351,7 +1491,8 @@ Gets whether the specified or current file uses auto close brackets
 <a name="Editor.setShowLineNumbers"></a>
 
 ### Editor.setShowLineNumbers(value, [fullPath]) ⇒ <code>boolean</code>
-Sets show line numbers option.Affects any editors that share the same preference location.
+Sets show line numbers option.
+Affects any editors that share the same preference location.
 
 **Kind**: static method of [<code>Editor</code>](#Editor)  
 **Returns**: <code>boolean</code> - true if value was valid  
@@ -1375,7 +1516,8 @@ Returns true if show line numbers is enabled for the specified or current file
 <a name="Editor.setShowActiveLine"></a>
 
 ### Editor.setShowActiveLine(value, [fullPath]) ⇒ <code>boolean</code>
-Sets show active line option.Affects any editors that share the same preference location.
+Sets show active line option.
+Affects any editors that share the same preference location.
 
 **Kind**: static method of [<code>Editor</code>](#Editor)  
 **Returns**: <code>boolean</code> - true if value was valid  
@@ -1399,7 +1541,8 @@ Returns true if show active line is enabled for the specified or current file
 <a name="Editor.setWordWrap"></a>
 
 ### Editor.setWordWrap(value, [fullPath]) ⇒ <code>boolean</code>
-Sets word wrap option.Affects any editors that share the same preference location.
+Sets word wrap option.
+Affects any editors that share the same preference location.
 
 **Kind**: static method of [<code>Editor</code>](#Editor)  
 **Returns**: <code>boolean</code> - true if value was valid  
@@ -1423,7 +1566,8 @@ Returns true if word wrap is enabled for the specified or current file
 <a name="Editor.setIndentLineComment"></a>
 
 ### Editor.setIndentLineComment(value, [fullPath]) ⇒ <code>boolean</code>
-Sets indentLineComment option.Affects any editors that share the same preference location.
+Sets indentLineComment option.
+Affects any editors that share the same preference location.
 
 **Kind**: static method of [<code>Editor</code>](#Editor)  
 **Returns**: <code>boolean</code> - true if value was valid  
@@ -1459,7 +1603,53 @@ Runs callback for every Editor instance that currently exists or only the editor
 <a name="CommandManager"></a>
 
 ## CommandManager
-Editor is a 1-to-1 wrapper for a CodeMirror editor instance. It layers on Brackets-specificfunctionality and provides APIs that cleanly pass through the bits of CodeMirror that the restof our codebase may want to interact with. An Editor is always backed by a Document, and staysin sync with its content; because Editor keeps the Document alive, it's important to alwaysdestroy() an Editor that's going away so it can release its Document ref.For now, there's a distinction between the "master" Editor for a Document - which secretly actsas the Document's internal model of the text state - and the multitude of secondary Editorswhich, via Document, sync their changes to and from that master.For now, direct access to the underlying CodeMirror object is still possible via `_codeMirror` --but this is considered deprecated and may go away.The Editor object dispatches the following events: (available as `Editor.EVENT_*` constants. see below)   - keydown, keypress, keyup -- When any key event happens in the editor (whether it changes the     text or not). Handlers are passed `(BracketsEvent, Editor, KeyboardEvent)`. The 3nd arg is the     raw DOM event. Note: most listeners will only want to listen for "keypress".   - change - Triggered with an array of change objects. Parameters: (editor, changeList)   - beforeChange - (self, changeObj)   - beforeSelectionChange - (selectionObj)   - focus - Fired when an editor is focused   - blur - Fired when an editor loses focused   - update - Will be fired whenever Editor updates its DOM display.   - cursorActivity -- When the user moves the cursor or changes the selection, or an edit occurs.     Note: do not listen to this in order to be generally informed of edits--listen to the     "change" event on Document instead.   - scroll -- When the editor is scrolled, either by user action or programmatically.   - viewportChange - (from: number, to: number) Fires whenever the view port of the editor changes     (due to scrolling, editing, or any other factor). The from and to arguments give the new start     and end of the viewport. This is combination with `editorInstance.getViewPort()` can be used to     selectively redraw visual elements in code like syntax analyze only parts of code instead     of the full code everytime.   - lostContent -- When the backing Document changes in such a way that this Editor is no longer     able to display accurate text. This occurs if the Document's file is deleted, or in certain     Document->editor syncing edge cases that we do not yet support (the latter cause will     eventually go away).   - optionChange -- Triggered when an option for the editor is changed. The 2nd arg to the listener     is a string containing the editor option that is changing. The 3rd arg, which can be any     data type, is the new value for the editor option.   - beforeDestroy - Triggered before the object is about to dispose of all its internal state data     so that listeners can cache things like scroll pos, etc...The Editor also dispatches "change" events internally, but you should listen for those onDocuments, not Editors.To listen for events, do something like this: (see EventDispatcher for details on this pattern)    `editorInstance.on("eventname", handler);`
+Editor is a 1-to-1 wrapper for a CodeMirror editor instance. It layers on Brackets-specific
+functionality and provides APIs that cleanly pass through the bits of CodeMirror that the rest
+of our codebase may want to interact with. An Editor is always backed by a Document, and stays
+in sync with its content; because Editor keeps the Document alive, it's important to always
+destroy() an Editor that's going away so it can release its Document ref.
+
+For now, there's a distinction between the "master" Editor for a Document - which secretly acts
+as the Document's internal model of the text state - and the multitude of secondary Editors
+which, via Document, sync their changes to and from that master.
+
+For now, direct access to the underlying CodeMirror object is still possible via `_codeMirror` --
+but this is considered deprecated and may go away.
+
+The Editor object dispatches the following events: (available as `Editor.EVENT_*` constants. see below)
+   - keydown, keypress, keyup -- When any key event happens in the editor (whether it changes the
+     text or not). Handlers are passed `(BracketsEvent, Editor, KeyboardEvent)`. The 3nd arg is the
+     raw DOM event. Note: most listeners will only want to listen for "keypress".
+   - change - Triggered with an array of change objects. Parameters: (editor, changeList)
+   - beforeChange - (self, changeObj)
+   - beforeSelectionChange - (selectionObj)
+   - focus - Fired when an editor is focused
+   - blur - Fired when an editor loses focused
+   - update - Will be fired whenever Editor updates its DOM display.
+   - cursorActivity -- When the user moves the cursor or changes the selection, or an edit occurs.
+     Note: do not listen to this in order to be generally informed of edits--listen to the
+     "change" event on Document instead.
+   - scroll -- When the editor is scrolled, either by user action or programmatically.
+   - viewportChange - (from: number, to: number) Fires whenever the view port of the editor changes
+     (due to scrolling, editing, or any other factor). The from and to arguments give the new start
+     and end of the viewport. This is combination with `editorInstance.getViewPort()` can be used to
+     selectively redraw visual elements in code like syntax analyze only parts of code instead
+     of the full code everytime.
+   - lostContent -- When the backing Document changes in such a way that this Editor is no longer
+     able to display accurate text. This occurs if the Document's file is deleted, or in certain
+     Document->editor syncing edge cases that we do not yet support (the latter cause will
+     eventually go away).
+   - optionChange -- Triggered when an option for the editor is changed. The 2nd arg to the listener
+     is a string containing the editor option that is changing. The 3rd arg, which can be any
+     data type, is the new value for the editor option.
+   - beforeDestroy - Triggered before the object is about to dispose of all its internal state data
+     so that listeners can cache things like scroll pos, etc...
+
+The Editor also dispatches "change" events internally, but you should listen for those on
+Documents, not Editors.
+
+To listen for events, do something like this: (see EventDispatcher for details on this pattern)
+    `editorInstance.on("eventname", handler);`
 
 **Kind**: global variable  
 <a name="IndentHelper"></a>
@@ -1471,7 +1661,8 @@ Editor helpers
 <a name="registeredGutters"></a>
 
 ## registeredGutters : <code>Array.&lt;Object&gt;</code>
-A list of gutter name and priorities currently registered for editors.The line number gutter is defined as \{ name: LINE_NUMBER_GUTTER, priority: 100 }
+A list of gutter name and priorities currently registered for editors.
+The line number gutter is defined as \{ name: LINE_NUMBER_GUTTER, priority: 100 }
 
 **Kind**: global variable  
 **Properties**
@@ -1491,13 +1682,15 @@ Guard flag to prevent focus() reentrancy (via blur handlers), even across Editor
 <a name="BOUNDARY_CHECK_NORMAL"></a>
 
 ## BOUNDARY\_CHECK\_NORMAL : <code>number</code>
-Constant: ignore upper boundary when centering textConstant: bulls-eye = strictly centre always
+Constant: ignore upper boundary when centering text
+Constant: bulls-eye = strictly centre always
 
 **Kind**: global variable  
 <a name="_instances"></a>
 
 ## \_instances : [<code>Array.&lt;Editor&gt;</code>](#Editor)
-List of all current (non-destroy()ed) Editor instances. Needed when changing global preferencesthat affect all editors, e.g. tabbing or color scheme settings.
+List of all current (non-destroy()ed) Editor instances. Needed when changing global preferences
+that affect all editors, e.g. tabbing or color scheme settings.
 
 **Kind**: global variable  
 <a name="CENTERING_MARGIN"></a>
@@ -1518,7 +1711,8 @@ Helper functions to check options.
 <a name="_buildPreferencesContext"></a>
 
 ## \_buildPreferencesContext(fullPath) ⇒ <code>\*</code>
-Helper function to build preferences context based on the full path ofthe file.
+Helper function to build preferences context based on the full path of
+the file.
 
 **Kind**: global function  
 **Returns**: <code>\*</code> - A context for the specified file name  
