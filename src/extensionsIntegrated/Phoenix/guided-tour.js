@@ -37,7 +37,7 @@ define(function (require, exports, module) {
 
     // All popup notifications will show immediately on boot, we don't want to interrupt user amidst his work
     // by showing it at a later point in time.
-    const GENERAL_SURVEY_TIME = 600000, // 10 min
+    const GENERAL_SURVEY_TIME = 1200000, // 20 min
         POWER_USER_SURVEY_TIME = 10000, // 10 seconds to allow the survey to preload, but not
         // enough time to break user workflow
         ONE_MONTH_IN_DAYS = 30,
