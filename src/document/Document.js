@@ -41,7 +41,7 @@ define(function (require, exports, module) {
      *
      * __change__ -- When the text of the editor changes (including due to undo/redo).
      *
-     * Passes ({Document}, {'ChangeList'}), where ChangeList is an array
+     * Passes ({'Document'}, {'ChangeList'}), where ChangeList is an array
      * of change record objects. Each change record looks like:
      *```js
      *     { from: start of change, expressed as {line: <line number>, ch: <character offset>},

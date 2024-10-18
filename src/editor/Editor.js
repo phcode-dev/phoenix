@@ -1537,7 +1537,7 @@ define(function (require, exports, module) {
      * @param {boolean} [center] true to center the viewport
      * @param {number} [centerOptions] Option value, or 0 for no options; one of the BOUNDARY_* constants above.
      * @param {?string} [origin] An optional string that describes what other selection or edit operations this
-     *      should be merged with for the purposes of undo. See {@link Document#replaceRange} for more details.
+     *      should be merged with for the purposes of undo. See {@link Document::Document#replaceRange} for more details.
      */
     Editor.prototype.setSelection = function (start, end, center, centerOptions, origin) {
         this.setSelections([{ start: start, end: end || start }], center, centerOptions, origin);
@@ -1635,7 +1635,7 @@ define(function (require, exports, module) {
      * @param {boolean} center true to center the viewport around the primary selection.
      * @param {number} centerOptions Option value, or 0 for no options; one of the BOUNDARY_* constants above.
      * @param {?string} origin An optional string that describes what other selection or edit operations this
-     *      should be merged with for the purposes of undo. See {@link Document#replaceRange} for more details.
+     *      should be merged with for the purposes of undo. See {@link Document::Document#replaceRange} for more details.
      */
     Editor.prototype.setSelections = function (selections, center, centerOptions, origin) {
         var primIndex = selections.length - 1, options;
