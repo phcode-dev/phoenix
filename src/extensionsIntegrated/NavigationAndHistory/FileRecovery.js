@@ -156,6 +156,32 @@ define(function (require, exports, module) {
         await createDir(folder);
     }
 
+    function integrityCheck(input) {
+        // The backup is of the form "length,string_backed_up" so that we can do integrity checks. ideally we should use
+        // crypto hash functions but that may be expensive. since this is reversible with undo, not doing it for now.
+        if(!input){
+            return null;
+        }
+        const parts = input.split(',', 2);
+
+        if (parts.length !== 2) {
+            return null;
+        }
+
+        // Parse the length part (should be the first part before the comma)
+        const expectedLength = parseInt(parts[0], 10);
+        if (isNaN(expectedLength)) {
+            return null;
+        }
+
+        // The second part is the actual string after the comma
+        const actualString = parts[1];
+        if (actualString.length === expectedLength) {
+            return actualString;
+        }
+        return null;
+    }
+
     async function loadLastBackedUpFileContents(projectRootPath) {
         const project = trackedProjects[projectRootPath];
         if(!project){
@@ -171,7 +197,10 @@ define(function (require, exports, module) {
             if(entry.isDirectory){
                 continue;
             }
-            let text = await jsPromise(FileUtils.readAsText(entry));
+            let text = integrityCheck(await jsPromise(FileUtils.readAsText(entry)));
+            if(!text){
+                continue;
+            }
             let projectFilePath = getProjectFilePath(entry.fullPath, projectRootPath);
             if(currentProjectLoadCount !== project.projectLoadCount){
                 // this means that while we were tying to load a project backup, the user switched to another project
@@ -257,7 +286,8 @@ define(function (require, exports, module) {
             let parentDir = FileSystem.getDirectoryForPath(path.dirname(filePath));
             await createDir(parentDir);
             let file = FileSystem.getFileForPath(filePath);
-            await jsPromise(FileUtils.writeText(file, contents, true));
+            const restoreContentsWithIntegrity = contents.length + "," + contents;
+            await jsPromise(FileUtils.writeText(file, restoreContentsWithIntegrity, true));
         } catch (e) {
             console.error(e);
         }
