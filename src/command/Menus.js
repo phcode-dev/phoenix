@@ -75,10 +75,30 @@ define(function (require, exports, module) {
         SPLITVIEW_MENU: "splitview-menu"
     };
 
-    const EVENT_BEFORE_CONTEXT_MENU_OPEN = "beforeContextMenuOpen",
-        EVENT_BEFORE_CONTEXT_MENU_CLOSE = "beforeContextMenuClose",
-        EVENT_BEFORE_SUB_MENU_OPEN = "beforeSubMenuOpen",
-        EVENT_BEFORE_SUB_MENU_CLOSE = "beforeSubMenuClose";
+    /**
+     * Event triggered before the context menu opens.
+     * @event EVENT_BEFORE_CONTEXT_MENU_OPEN
+     */
+    const EVENT_BEFORE_CONTEXT_MENU_OPEN = "beforeContextMenuOpen";
+
+    /**
+     * Event triggered before the context menu closes.
+     * @event EVENT_BEFORE_CONTEXT_MENU_CLOSE
+     */
+    const EVENT_BEFORE_CONTEXT_MENU_CLOSE = "beforeContextMenuClose";
+
+    /**
+     * Event triggered before a sub-menu opens.
+     * @event EVENT_BEFORE_SUB_MENU_OPEN
+     */
+    const EVENT_BEFORE_SUB_MENU_OPEN = "beforeSubMenuOpen";
+
+    /**
+     * Event triggered before a sub-menu closes.
+     * @event EVENT_BEFORE_SUB_MENU_CLOSE
+     */
+    const EVENT_BEFORE_SUB_MENU_CLOSE = "beforeSubMenuClose";
+
 
     /**
      * Brackets Application Menu Section Constants
@@ -90,6 +110,8 @@ define(function (require, exports, module) {
      * specify a position of FIRST_IN_SECTION or LAST_IN_SECTION.
      *
      * Menu sections are denoted by dividers or the beginning/end of a menu
+     *
+     * @enum {string}
      */
     let MenuSection = {
         // Menu Section                     Command ID to mark the section
@@ -129,7 +151,7 @@ define(function (require, exports, module) {
      * specify the relative position of a newly created menu object
      * @enum {string}
      */
-    let BEFORE = "before",
+    const BEFORE = "before",
         AFTER = "after",
         FIRST = "first",
         LAST = "last",
@@ -146,6 +168,7 @@ define(function (require, exports, module) {
      * Maps menuID's to Menu objects
      * @type {Object} menuMap
      * @property {Object.<string, Menu>} menuID - A map of Menu IDs to Menu objects.
+     * @private
      */
     let menuMap = {};
 
@@ -153,6 +176,7 @@ define(function (require, exports, module) {
      * Maps contextMenuID's to ContextMenu objects
      * @type {Object} contextMenuMap
      * @property {Object.<string, ContextMenu>} contextMenuID - A map of ContextMenu IDs to ContextMenu objects.
+     * @private
      */
     let contextMenuMap = {};
 
@@ -160,6 +184,7 @@ define(function (require, exports, module) {
      * Maps menuItemID's to MenuItem object
      * @type {Object} menuItemMap
      * @property {Object.<string, MenuItem>} menuItemID - A map of MenuItem IDs to MenuItem objects.
+     * @private
      */
     let menuItemMap = {};
 
@@ -167,6 +192,7 @@ define(function (require, exports, module) {
      * Maps menuItemID's to ContextMenu objects
      * @type {Object} subMenuItemMap
      * @property {Object.<string, ContextMenu>} menuItemId - A map of MenuItem IDs to ContextMenu objects.
+     * @private
      */
     let subMenuItemMap = {};
 
@@ -316,7 +342,6 @@ define(function (require, exports, module) {
      * name, enabled, and checked state of a MenuItem. The MenuItem will update automatically
      *
      * @constructor
-     * @private
      *
      * @param {string} id
      * @param {string|Command} command - the Command this MenuItem will reflect.
@@ -358,7 +383,6 @@ define(function (require, exports, module) {
      * the Menu API to query and modify menus.
      *
      * @constructor
-     * @private
      *
      * @param {string} id
      */
@@ -374,6 +398,7 @@ define(function (require, exports, module) {
      * Determine MenuItem in this Menu, that has the specified command
      *
      * @param {Command} command - the command to search for.
+     * @private
      * @return {?HTMLLIElement} menu item list element
      */
     Menu.prototype._getMenuItemForCommand = function (command) {
@@ -393,6 +418,7 @@ define(function (require, exports, module) {
      * @param {?string} relativeID - id of command (future: sub-menu).
      * @param {?string} position - only needed when relativeID is a MenuSection
      * @return {?HTMLLIElement} menu item list element
+     * @private
      */
     Menu.prototype._getRelativeMenuItem = function (relativeID, position) {
         let $relativeElement;
@@ -950,6 +976,7 @@ define(function (require, exports, module) {
 
     /**
      * Synchronizes MenuItem checked state with underlying Command checked state
+     * @private
      */
     MenuItem.prototype._checkedChanged = function () {
         let checked = !!this._command.getChecked();
@@ -968,6 +995,7 @@ define(function (require, exports, module) {
 
     /**
      * Synchronizes MenuItem enabled state with underlying Command enabled state
+     * @private
      */
     MenuItem.prototype._enabledChanged = function () {
         if (this.isNative) {
@@ -989,6 +1017,7 @@ define(function (require, exports, module) {
 
     /**
      * Synchronizes MenuItem name with underlying Command name
+     * @private
      */
     MenuItem.prototype._nameChanged = function () {
         if (this.isNative) {
@@ -1068,6 +1097,11 @@ define(function (require, exports, module) {
         }
     }
 
+    /**
+     * Opens a menu with the given id
+     * @param id
+     * @returns {null}
+     */
     function openMenu(id) {
         if (!id) {
             id = lastOpenedMenuID;
