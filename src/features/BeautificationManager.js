@@ -146,8 +146,17 @@ define(function (require, exports, module) {
         PreferencesManager = require("preferences/PreferencesManager"),
         ProviderRegistrationHandler = require("features/PriorityBasedRegistration").RegistrationHandler;
 
-    const PREFERENCES_BEAUTIFY_ON_SAVE = "BeautifyOnSave",
-        FAILED_EDITOR_TEXT_CHANGED = "Beautify failed- editorTextChanged";
+    /**
+     * Preference key to determine if the code should be beautified on save.
+     * @constant {string}
+     */
+    const PREFERENCES_BEAUTIFY_ON_SAVE = "BeautifyOnSave";
+
+    /**
+     * Event or message indicating that beautification failed because the editor's text was modified.
+     * @constant {string}
+     */
+    const FAILED_EDITOR_TEXT_CHANGED = "Beautify failed- editorTextChanged";
 
     let _providerRegistrationHandler = new ProviderRegistrationHandler(),
         registerBeautificationProvider = _providerRegistrationHandler
@@ -165,16 +174,16 @@ define(function (require, exports, module) {
     async function _getBeautifiedCodeDetails(editor) {
         let enabledProviders = _getEnabledProviders(editor.document.file.fullPath);
 
-        for(let item of enabledProviders){
-            if(!item.provider.beautifyEditorProvider || !item.provider.beautifyTextProvider){
+        for (let item of enabledProviders) {
+            if (!item.provider.beautifyEditorProvider || !item.provider.beautifyTextProvider) {
                 console.error(
                     "Beautify providers must implement `beautifyEditorProvider` and `beautifyTextProvider` function",
                     item);
                 continue;
             }
-            try{
+            try {
                 let beautyObject = await item.provider.beautifyEditorProvider(editor);
-                if(beautyObject){
+                if (beautyObject) {
                     return beautyObject;
                 }
             } catch (e) {
@@ -185,7 +194,7 @@ define(function (require, exports, module) {
     }
 
     function _onActiveEditorChange(_evt, current) {
-        if(current && _getEnabledProviders(current.document.file.fullPath).length){
+        if (current && _getEnabledProviders(current.document.file.fullPath).length) {
             beautifyCommand.setEnabled(true);
             return;
         }
@@ -193,22 +202,22 @@ define(function (require, exports, module) {
     }
 
     function _replaceText(editor, beautyObject) {
-        if (editor.document.getText() !== beautyObject.originalText){
+        if (editor.document.getText() !== beautyObject.originalText) {
             // editor text changed in between beautification. we cant apply changes
             throw new Error(FAILED_EDITOR_TEXT_CHANGED);
         }
         let ranges = beautyObject.ranges || {
-            replaceStart: {line: 0, ch: 0},
+            replaceStart: { line: 0, ch: 0 },
             replaceEnd: editor.getEndingCursorPos()
         };
-        if(editor.document.getRange(ranges.replaceStart, ranges.replaceEnd) !== beautyObject.changedText) {
-            if(editor.hasSelection()){
+        if (editor.document.getRange(ranges.replaceStart, ranges.replaceEnd) !== beautyObject.changedText) {
+            if (editor.hasSelection()) {
                 editor.setSelection(ranges.replaceStart, ranges.replaceEnd);
                 editor.replaceSelection(beautyObject.changedText, 'around');
             } else {
                 let cursor = editor.getCursorPos();
                 editor.replaceRange(beautyObject.changedText, ranges.replaceStart, ranges.replaceEnd);
-                if(beautyObject.cursorOffset || beautyObject.cursorOffset === 0){
+                if (beautyObject.cursorOffset || beautyObject.cursorOffset === 0) {
                     // we have accurate cursor positioning from beautifier
                     cursor = editor.posFromIndex(beautyObject.cursorOffset);
                 }
@@ -224,27 +233,27 @@ define(function (require, exports, module) {
      * if beautification failed.
      * @type {function}
      */
-    function beautifyEditor(editor){
-        return new Promise((resolve, reject)=>{
-            if(!editor){
+    function beautifyEditor(editor) {
+        return new Promise((resolve, reject) => {
+            if (!editor) {
                 reject();
                 return;
             }
             _getBeautifiedCodeDetails(editor).then(beautyObject => {
-                if(!beautyObject || !beautyObject.changedText){
+                if (!beautyObject || !beautyObject.changedText) {
                     reject();
                     return;
                 }
                 let rejected = false;
                 editor.operation(function () {
-                    try{
+                    try {
                         _replaceText(editor, beautyObject);
                     } catch (e) {
                         rejected = true;
                         reject(e);
                     }
                 });
-                if(!rejected){
+                if (!rejected) {
                     resolve();
                 }
             }).catch(e => {
@@ -270,18 +279,18 @@ define(function (require, exports, module) {
      *    1. `replaceEnd{line,ch}` - the end of range to replace
      * @type {function}
      */
-    async function beautifyText(textToBeautify, filePathOrFileName){
+    async function beautifyText(textToBeautify, filePathOrFileName) {
         let enabledProviders = _getEnabledProviders(filePathOrFileName);
-        for(let item of enabledProviders){
-            if(!item.provider.beautifyEditorProvider || !item.provider.beautifyTextProvider){
+        for (let item of enabledProviders) {
+            if (!item.provider.beautifyEditorProvider || !item.provider.beautifyTextProvider) {
                 console.error(
                     "Beautify providers must implement `beautifyEditorProvider` and `beautifyTextProvider` function",
                     item);
                 continue;
             }
-            try{
+            try {
                 let beautyObject = await item.provider.beautifyTextProvider(textToBeautify, filePathOrFileName);
-                if(beautyObject){
+                if (beautyObject) {
                     return beautyObject;
                 }
             } catch (e) {
@@ -294,19 +303,19 @@ define(function (require, exports, module) {
     function _beautifyCommand() {
         let result = new $.Deferred();
         let editor = EditorManager.getActiveEditor();
-        if(!editor){
+        if (!editor) {
             result.reject();
             return result.promise();
         }
         let busyMessage = StringUtils.format(Strings.BEAUTIFY_PROJECT_BUSY_MESSAGE, editor.getFile().name);
         ProjectManager.setProjectBusy(true, busyMessage);
-        beautifyEditor(editor).then( () => {
+        beautifyEditor(editor).then(() => {
             ProjectManager.setProjectBusy(false, busyMessage);
             console.log("Beautified");
             result.resolve();
-        }).catch(e=>{
+        }).catch(e => {
             let message = editor.hasSelection() ? Strings.BEAUTIFY_ERROR_SELECTION : Strings.BEAUTIFY_ERROR;
-            if(e.message === FAILED_EDITOR_TEXT_CHANGED){
+            if (e.message === FAILED_EDITOR_TEXT_CHANGED) {
                 message = Strings.BEAUTIFY_ERROR_ORIGINAL_CHANGED;
             }
 
@@ -320,7 +329,7 @@ define(function (require, exports, module) {
 
     function _beautifyOnSave(_evt, doc) {
         let editor = EditorManager.getActiveEditor();
-        if(!_isBeautifyOnSaveEnabled() || !editor || editor.document.file.fullPath !== doc.file.fullPath){
+        if (!_isBeautifyOnSaveEnabled() || !editor || editor.document.file.fullPath !== doc.file.fullPath) {
             return;
         }
         editor.clearSelection();
@@ -340,11 +349,11 @@ define(function (require, exports, module) {
 
     AppInit.appReady(function () {
         beautifyCommand = CommandManager.register(Strings.CMD_BEAUTIFY_CODE,
-            Commands.EDIT_BEAUTIFY_CODE, ()=>{
+            Commands.EDIT_BEAUTIFY_CODE, () => {
                 _beautifyCommand();
             });
         beautifyOnSaveCommand = CommandManager.register(Strings.CMD_BEAUTIFY_CODE_ON_SAVE,
-            Commands.EDIT_BEAUTIFY_CODE_ON_SAVE, ()=>{
+            Commands.EDIT_BEAUTIFY_CODE_ON_SAVE, () => {
                 _toggleBeautifyOnSave();
             });
         let editMenu = Menus.getMenu(Menus.AppMenuBar.EDIT_MENU);
