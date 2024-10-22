@@ -208,7 +208,7 @@ define(function (require, exports, module) {
                 "usage"
             );
             selStr = StringUtils.format(Strings.STATUSBAR_SELECTION_MULTIPLE, sels.length);
-            shortSelStr = StringUtils.format(Strings.STATUSBAR_SELECTION_MULTIPLE_SHORT, sels.length);
+            shortSelStr = StringUtils.format(Strings.STATUSBAR_SELECTION_MULTIPLE_SHORT_DO_NOT_TRANSLATE, sels.length);
         } else if (editor.hasSelection()) {
             const sel = sels[0];
             if (sel.start.line !== sel.end.line) {
@@ -218,13 +218,13 @@ define(function (require, exports, module) {
                 }
                 selStr = _formatCountable(lines, Strings.STATUSBAR_SELECTION_LINE_SINGULAR,
                     Strings.STATUSBAR_SELECTION_LINE_PLURAL);
-                shortSelStr = StringUtils.format(Strings.STATUSBAR_SELECTION_SHORT, lines);
+                shortSelStr = StringUtils.format(Strings.STATUSBAR_SELECTION_SHORT_DO_NOT_TRANSLATE, lines);
             } else {
                 // end ch is exclusive always
                 const cols = editor.getColOffset(sel.end) - editor.getColOffset(sel.start);
                 selStr = _formatCountable(cols, Strings.STATUSBAR_SELECTION_CH_SINGULAR,
                     Strings.STATUSBAR_SELECTION_CH_PLURAL);
-                shortSelStr = StringUtils.format(Strings.STATUSBAR_SELECTION_SHORT, cols);
+                shortSelStr = StringUtils.format(Strings.STATUSBAR_SELECTION_SHORT_DO_NOT_TRANSLATE, cols);
             }
         }
         $cursorInfo.text(cursorStrShort + shortSelStr);
