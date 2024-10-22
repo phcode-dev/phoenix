@@ -131,32 +131,32 @@ define(function (require, exports, module) {
 
 
     // Dependencies
-    var CodeMirror            = require("thirdparty/CodeMirror/lib/codemirror"),
-        EventDispatcher       = require("utils/EventDispatcher"),
-        Async                 = require("utils/Async"),
-        FileUtils             = require("file/FileUtils"),
-        Strings               = require("strings"),
+    var CodeMirror = require("thirdparty/CodeMirror/lib/codemirror"),
+        EventDispatcher = require("utils/EventDispatcher"),
+        Async = require("utils/Async"),
+        FileUtils = require("file/FileUtils"),
+        Strings = require("strings"),
         _defaultLanguagesJSON = require("text!language/languages.json"),
-        _                     = require("thirdparty/lodash"),
+        _ = require("thirdparty/lodash"),
 
         // PreferencesManager is loaded near the end of the file
         PreferencesManager;
 
     // State
-    var _fallbackLanguage               = null,
-        _pendingLanguages               = {},
-        _languages                      = {},
+    var _fallbackLanguage = null,
+        _pendingLanguages = {},
+        _languages = {},
         _baseFileExtensionToLanguageMap = {},
-        _fileExtensionToLanguageMap     = Object.create(_baseFileExtensionToLanguageMap),
-        _fileNameToLanguageMap          = {},
-        _filePathToLanguageMap          = {},
-        _modeToLanguageMap              = {},
+        _fileExtensionToLanguageMap = Object.create(_baseFileExtensionToLanguageMap),
+        _fileNameToLanguageMap = {},
+        _filePathToLanguageMap = {},
+        _modeToLanguageMap = {},
         _ready;
 
     // Constants
 
     var _EXTENSION_MAP_PREF = "language.fileExtensions",
-        _NAME_MAP_PREF      = "language.fileNames";
+        _NAME_MAP_PREF = "language.fileNames";
 
     // Tracking for changes to mappings made by preferences
     var _prefState = {};
@@ -183,6 +183,7 @@ define(function (require, exports, module) {
      * Checks whether value is a non-empty string. Reports an error otherwise.
      * If no deferred is passed, console.error is called.
      * Otherwise the deferred is rejected with the error message.
+     * @private
      * @param {*}                value         The value to validate
      * @param {!string}          description   A helpful identifier for value
      * @param {?jQuery.Deferred} deferred      A deferred to reject with the error message in case of an error
@@ -206,6 +207,7 @@ define(function (require, exports, module) {
     /**
      * Monkey-patch CodeMirror to prevent modes from being overwritten by extensions.
      * We may rely on the tokens provided by some of these modes.
+     * @private
      */
     function _patchCodeMirror() {
         var _original_CodeMirror_defineMode = CodeMirror.defineMode;
@@ -221,13 +223,14 @@ define(function (require, exports, module) {
 
     /**
      * Adds a global mode-to-language association.
+     * @private
      * @param {!string} mode The mode to associate the language with
      * @param {!Language} language The language to associate with the mode
      */
     function _setLanguageForMode(mode, language) {
         if (_modeToLanguageMap[mode]) {
             console.warn("CodeMirror mode \"" + mode + "\" is already used by language " + _modeToLanguageMap[mode]._name + " - cannot fully register language " + language._name +
-                         " using the same mode. Some features will treat all content with this mode as language " + _modeToLanguageMap[mode]._name);
+                " using the same mode. Some features will treat all content with this mode as language " + _modeToLanguageMap[mode]._name);
             return;
         }
 
@@ -307,7 +310,7 @@ define(function (require, exports, module) {
                 //   ["md"]  => "md"
                 //   ["txt"] => "txt"
                 extension = parts.join(".");
-                language  = _fileExtensionToLanguageMap[extension];
+                language = _fileExtensionToLanguageMap[extension];
                 // Remove the first part
                 // First iteration:
                 //   ["coffee", "md"]     => ["md"]
@@ -336,6 +339,7 @@ define(function (require, exports, module) {
 
     /**
      * Resolves a CodeMirror mode to a Language object.
+     * @private
      * @param {!string} mode CodeMirror mode
      * @return {Language} The language for the provided mode or the fallback language
      */
@@ -394,6 +398,7 @@ define(function (require, exports, module) {
 
     /**
      * Resets all the language overrides for file paths. Used by unit tests only.
+     * @private
      */
     function _resetPathLanguageOverrides() {
         _filePathToLanguageMap = {};
@@ -437,11 +442,12 @@ define(function (require, exports, module) {
 
     /**
      * Model for a language.
+     * @private
      * @constructor
      */
     function Language() {
-        this._fileExtensions    = [];
-        this._fileNames         = [];
+        this._fileExtensions = [];
+        this._fileNames = [];
         this._modeToLanguageMap = {};
         this._lineCommentSyntax = [];
     }
@@ -449,60 +455,70 @@ define(function (require, exports, module) {
 
     /**
      * Identifier for this language
+     * @private
      * @type {string}
      */
     Language.prototype._id = null;
 
     /**
      * Human-readable name of this language
+     * @private
      * @type {string}
      */
     Language.prototype._name = null;
 
     /**
      * CodeMirror mode for this language
+     * @private
      * @type {string}
      */
     Language.prototype._mode = null;
 
     /**
      * File extensions that use this language
+     * @private
      * @type {Array.<string>}
      */
     Language.prototype._fileExtensions = null;
 
     /**
      * File names for extensionless files that use this language
+     * @private
      * @type {Array.<string>}
      */
     Language.prototype._fileNames = null;
 
     /**
      * Line comment syntax
+     * @private
      * @type {Array.<string>}
      */
     Language.prototype._lineCommentSyntax = null;
 
     /**
      * Which language to use for what CodeMirror mode
+     * @private
      * @type {Object.<string,Language>}
      */
     Language.prototype._modeToLanguageMap = null;
 
     /**
      * Block comment syntax
+     * @private
      * @type {{ prefix: string, suffix: string }}
      */
     Language.prototype._blockCommentSyntax = null;
 
     /**
      * Whether or not the language is binary
+     * @private
      * @type {boolean}
      */
     Language.prototype._isBinary = false;
 
     /**
      * Returns the identifier for this language.
+     * @private
      * @return {string} The identifier
      */
     Language.prototype.getId = function () {
@@ -511,6 +527,7 @@ define(function (require, exports, module) {
 
     /**
      * Sets the identifier for this language or prints an error to the console.
+     * @private
      * @param {!string} id Identifier for this language: lowercase letters, digits, and _ separators (e.g. "cpp", "foo_bar", "c99")
      * @return {boolean} Whether the ID was valid and set or not
      */
@@ -539,6 +556,7 @@ define(function (require, exports, module) {
 
     /**
      * Sets the human-readable name of this language or prints an error to the console.
+     * @private
      * @param {!string} name Human-readable name of the language, as it's commonly referred to (e.g. "C++")
      * @return {boolean} Whether the name was valid and set or not
      */
@@ -561,15 +579,15 @@ define(function (require, exports, module) {
 
     /**
      * Loads a mode and sets it for this language.
-     *
+     * @private
      * @param {(string|Array.<string>)} mode  CodeMirror mode (e.g. "htmlmixed"), optionally paired with a MIME mode defined by
      *      that mode (e.g. ["clike", "text/x-c++src"]). Unless the mode is located in thirdparty/CodeMirror/mode/"name"/"name".js,
      *      you need to first load it yourself.
      * @return {$.Promise} A promise object that will be resolved when the mode is loaded and set
      */
     Language.prototype._loadAndSetMode = function (mode) {
-        var result      = new $.Deferred(),
-            self        = this,
+        var result = new $.Deferred(),
+            self = this,
             mimeMode; // Mode can be an array specifying a mode plus a MIME mode defined by that mode ["clike", "text/x-c++src"]
 
         if (Array.isArray(mode)) {
@@ -648,6 +666,12 @@ define(function (require, exports, module) {
             this._addFileExtension(extension);
         }
     };
+
+    /**
+     * Adds a single file extension to this language after processing it.
+     * @private
+     * @param {string} extension - A file extension to be added, without the leading dot.
+     */
     Language.prototype._addFileExtension = function (extension) {
         // Remove a leading dot if present
         if (extension.charAt(0) === ".") {
@@ -668,7 +692,7 @@ define(function (require, exports, module) {
             }
 
             this._wasModified();
-        } else if(!_fileExtensionToLanguageMap[extension]) {
+        } else if (!_fileExtensionToLanguageMap[extension]) {
 
             // Language should be in the extension map but isn't
             _fileExtensionToLanguageMap[extension] = this;
@@ -687,6 +711,12 @@ define(function (require, exports, module) {
             this._removeFileExtension(extension);
         }
     };
+
+    /**
+     * Unregisters a single file extension from this language after processing it.
+     * @private
+     * @param {string} extension - A file extension to be removed, without the leading dot.
+     */
     Language.prototype._removeFileExtension = function (extension) {
         // Remove a leading dot if present
         if (extension.charAt(0) === ".") {
@@ -717,6 +747,14 @@ define(function (require, exports, module) {
             this._addFileName(name);
         }
     };
+
+    /**
+     * Registers a single extensionless file name to the language after processing it.
+     *
+     * @private
+     * @param {string} name - An extensionless file name to be added, converted to
+     * lowercase for case-insensitive checks.
+     */
     Language.prototype._addFileName = function (name) {
         // Make checks below case-INsensitive
         name = name.toLowerCase();
@@ -735,6 +773,7 @@ define(function (require, exports, module) {
         }
     };
 
+
     /**
      * Unregisters one or more file names from this language.
      * @param {!string|Array.<string>} extension An extensionless file name (or array thereof) used by this language
@@ -746,6 +785,15 @@ define(function (require, exports, module) {
             this._removeFileName(name);
         }
     };
+
+
+    /**
+     * Unregisters a single extensionless file name from the language after processing it.
+     *
+     * @private
+     * @param {string} name - An extensionless file name to be removed, converted to
+     * lowercase for case-insensitive checks.
+     */
     Language.prototype._removeFileName = function (name) {
         // Make checks below case-INsensitive
         name = name.toLowerCase();
@@ -904,6 +952,7 @@ define(function (require, exports, module) {
 
     /**
      * Sets whether or not the language is binary
+     * @private
      * @param {!boolean} isBinary
      */
     Language.prototype._setBinary = function (isBinary) {
@@ -937,12 +986,12 @@ define(function (require, exports, module) {
             return result.promise();
         }
 
-        var language       = new Language(),
-            name           = definition.name,
+        var language = new Language(),
+            name = definition.name,
             fileExtensions = definition.fileExtensions,
-            fileNames      = definition.fileNames,
-            blockComment   = definition.blockComment,
-            lineComment    = definition.lineComment,
+            fileNames = definition.fileNames,
+            blockComment = definition.blockComment,
+            lineComment = definition.lineComment,
             i,
             l;
 
@@ -965,15 +1014,15 @@ define(function (require, exports, module) {
             _languages[language.getId()] = language;
 
             // restore any preferences for non-default languages
-            if(PreferencesManager) {
+            if (PreferencesManager) {
                 _updateFromPrefs(_EXTENSION_MAP_PREF);
                 _updateFromPrefs(_NAME_MAP_PREF);
             }
         }
 
         if (!language._setId(id) || !language._setName(name) ||
-                (blockComment && !language.setBlockCommentSyntax(blockComment[0], blockComment[1])) ||
-                (lineComment && !language.setLineCommentSyntax(lineComment))) {
+            (blockComment && !language.setBlockCommentSyntax(blockComment[0], blockComment[1])) ||
+            (lineComment && !language.setLineCommentSyntax(lineComment))) {
             result.reject();
             return result.promise();
         }
@@ -1087,11 +1136,11 @@ define(function (require, exports, module) {
                     language[state.add](name);
                 }
             }
-            if(!getLanguage(newMapping[name])) {
+            if (!getLanguage(newMapping[name])) {
 
                 // If the language doesn't exist, restore any overrides and remove it
                 // from the state.
-                if(overridden[name]) {
+                if (overridden[name]) {
                     _restoreOverriddenDefault(name, state);
                 }
                 delete newMapping[name];
@@ -1192,17 +1241,17 @@ define(function (require, exports, module) {
     });
 
     // Private for unit tests
-    exports._EXTENSION_MAP_PREF         = _EXTENSION_MAP_PREF;
-    exports._NAME_MAP_PREF              = _NAME_MAP_PREF;
+    exports._EXTENSION_MAP_PREF = _EXTENSION_MAP_PREF;
+    exports._NAME_MAP_PREF = _NAME_MAP_PREF;
     exports._resetPathLanguageOverrides = _resetPathLanguageOverrides;
 
     // Public methods
-    exports.ready                       = _ready;
-    exports.defineLanguage              = defineLanguage;
-    exports.getLanguage                 = getLanguage;
-    exports.getLanguageForExtension     = getLanguageForExtension;
-    exports.getLanguageForPath          = getLanguageForPath;
-    exports.getLanguages                = getLanguages;
-    exports.setLanguageOverrideForPath  = setLanguageOverrideForPath;
-    exports.getCompoundFileExtension    = getCompoundFileExtension;
+    exports.ready = _ready;
+    exports.defineLanguage = defineLanguage;
+    exports.getLanguage = getLanguage;
+    exports.getLanguageForExtension = getLanguageForExtension;
+    exports.getLanguageForPath = getLanguageForPath;
+    exports.getLanguages = getLanguages;
+    exports.setLanguageOverrideForPath = setLanguageOverrideForPath;
+    exports.getCompoundFileExtension = getCompoundFileExtension;
 });

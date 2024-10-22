@@ -61,14 +61,20 @@ define(function (require, exports, module) {
         PanelTemplate           = require("text!htmlContent/problems-panel.html"),
         ResultsTemplate         = require("text!htmlContent/problems-panel-table.html"),
         Mustache                = require("thirdparty/mustache/mustache"),
-        QuickViewManager  = require("features/QuickViewManager"),
-        Metrics           = require("utils/Metrics");
+        QuickViewManager        = require("features/QuickViewManager"),
+        Metrics                 = require("utils/Metrics");
 
-    const CODE_INSPECTION_GUTTER_PRIORITY      = 500,
-        CODE_INSPECTION_GUTTER = "code-inspection-gutter";
 
+    /** Constant representing the priority for code inspection gutter. */
+    const CODE_INSPECTION_GUTTER_PRIORITY = 500;
+
+    /** Constant representing the CSS class for the code inspection gutter. */
+    const CODE_INSPECTION_GUTTER = "code-inspection-gutter";
+
+    /** Constant indicating the origin of an edit as a lint fix. */
     const EDIT_ORIGIN_LINT_FIX = "lint_fix";
 
+    /** Constant for the identifier of the status inspection indicator. */
     const INDICATOR_ID = "status-inspection";
 
     /** Values for problem's 'type' property */
@@ -81,6 +87,13 @@ define(function (require, exports, module) {
         META: "meta"
     };
 
+    /**
+     * Get the CSS class for the icon based on the problem type and its fixability.
+     * @private
+     * @param {Type} type - The type of the problem (ERROR, WARNING, META).
+     * @param {boolean} isFixable - Indicates if the problem is fixable.
+     * @return {string} - The corresponding icon class for the specified problem type.
+     */
     function _getIconClassForType(type, isFixable) {
         switch (type) {
         case Type.ERROR: return isFixable ?
@@ -98,6 +111,9 @@ define(function (require, exports, module) {
         }
     }
 
+    /**
+     * @constant {string} CODE_MARK_TYPE_INSPECTOR - Type of the code mark for the inspector.
+     */
     const CODE_MARK_TYPE_INSPECTOR = "codeInspector";
 
     /**
@@ -132,6 +148,10 @@ define(function (require, exports, module) {
      */
     var $problemsPanel;
 
+    /**
+     * @private
+     * @type {$.Element}
+     */
     let $fixAllBtn;
 
     /**
@@ -190,6 +210,10 @@ define(function (require, exports, module) {
         _gotoEnabled = gotoEnabled;
     }
 
+    /**
+     * Responsible to unregister all the _providers
+     * @private
+     */
     function _unregisterAll() {
         _providers = {};
     }
@@ -417,6 +441,12 @@ define(function (require, exports, module) {
         StatusBar.updateIndicator(INDICATOR_ID, true, iconType, tooltip);
     }
 
+    /**
+     * Gets the mark options for a given error type.
+     * @private
+     * @param {Object} error - The error object containing type information.
+     * @returns {Object} - The mark options corresponding to the error type.
+     */
     function _getMarkOptions(error){
         switch (error.type) {
         case Type.ERROR: return Editor.getMarkOptionUnderlineError();
@@ -425,6 +455,12 @@ define(function (require, exports, module) {
         }
     }
 
+    /**
+     * Gets the priority level for marking a given type.
+     * @private
+     * @param {string} type - The type of the mark (ERROR, WARNING, META).
+     * @returns {number} - The priority level of the mark type.
+     */
     function _getMarkTypePriority(type){
         switch (type) {
         case Type.ERROR: return 3;
@@ -433,6 +469,14 @@ define(function (require, exports, module) {
         }
     }
 
+
+    /**
+     * Checks if a token should be marked at the specified position based on the error object.
+     * @private
+     * @param {Editor} editor - The editor instance.
+     * @param {Object} error - The error object containing position information.
+     * @returns {boolean} - True if the token can be marked; otherwise, false.
+     */
     function _shouldMarkTokenAtPosition(editor, error) {
         if(isNaN(error.pos.line) || isNaN(error.pos.ch) || error.pos.line < 0 || error.pos.ch < 0){
             console.warn("CodeInspector: Invalid error position: ", error);
@@ -444,6 +488,7 @@ define(function (require, exports, module) {
     /**
      * It creates a div element with a span element inside it, and then adds a click handler to move cursor to the
      * error position.
+     * @private
      * @param editor - the editor instance
      * @param line - the line number of the error
      * @param ch - the character position of the error
@@ -484,12 +529,28 @@ define(function (require, exports, module) {
         }
     }
 
+
+    /**
+     * Populates dummy gutter elements in the editor from the specified range.
+     * @private
+     * @param {Editor} editor - The editor instance.
+     * @param {number} from - The starting line number.
+     * @param {number} to - The ending line number.
+     */
     function _populateDummyGutterElements(editor, from, to) {
         for(let line=from; line <= to; line++) {
             _addDummyGutterMarkerIfNotExist(editor, line);
         }
     }
 
+
+    /**
+     * Updates gutter marks based on the provided error messages.
+     * It marks lines with the highest priority error icon and updates gutter markers.
+     * @private
+     * @param {Editor} editor - The editor instance.
+     * @param {Object} gutterErrorMessages - An object mapping line numbers to error messages.
+     */
     function _updateGutterMarks(editor, gutterErrorMessages) {
         // add gutter icons
         for(let lineno of Object.keys(gutterErrorMessages)){
@@ -514,6 +575,16 @@ define(function (require, exports, module) {
         _populateDummyGutterElements(editor, 0, editor.getLastVisibleLine());
     }
 
+
+    /**
+     * Handles viewport change events in the editor and populates dummy gutter elements.
+     * If gutter registration is in progress, it debounces the changes.
+     * @private
+     * @param {Event} _evt - The viewport change event.
+     * @param {Editor} editor - The editor instance.
+     * @param {number} from - The starting line number.
+     * @param {number} to - The ending line number.
+     */
     function _editorVieportChangeHandler(_evt, editor, from, to) {
         if(gutterRegistrationInProgress){
             if(editor.gutterViewportChangeTimer){
@@ -530,6 +601,11 @@ define(function (require, exports, module) {
         _populateDummyGutterElements(editor, from, to);
     }
 
+    /**
+     * Scrolls to the specified problem line in the problems panel.
+     * @param {number} lineNumber - The line number to scroll to.
+     * @returns {jQuery|null} - The parent element of the line number if found, otherwise null.
+     */
     function scrollToProblem(lineNumber) {
         const $lineElement = $problemsPanelTable.find('td.line-number[data-line="' + lineNumber + '"]');
         if ($lineElement.length) {
@@ -540,6 +616,14 @@ define(function (require, exports, module) {
     }
 
 
+    /**
+     * Generates a quick view for code inspection at the specified position in the editor.
+     * @param {Editor} editor - The editor instance.
+     * @param {Object} pos - The position in the editor where the quick view is requested.
+     * @param {Object} token - The token at the position for which the quick view is generated.
+     * @param {number} line - The line number of the token.
+     * @returns {Promise} - A promise that resolves with the quick view details or rejects if none are found.
+     */
     function getQuickView(editor, pos, token, line) {
         return new Promise((resolve, reject)=>{
             let codeInspectionMarks = editor.findMarksAt(pos, CODE_MARK_TYPE_INSPECTOR) || [];
@@ -625,6 +709,17 @@ define(function (require, exports, module) {
 
     let fixIDCounter = 1;
     let documentFixes = new Map(), lastDocumentScanTimeStamp;
+
+    /**
+     * Registers a new fix in the editor and stores it in the `documentFixes` map.
+     * If the document has changed since the last scan, all existing fixes are invalidated.
+     * @private
+     * @param {Editor} editor - The editor instance.
+     * @param {Object} fix - The fix object containing information about the range and fixable issue.
+     * @param {string} providerName - The name of the provider registering this fix.
+     * @param {number} maxOffset - The maximum valid range offset for the fix.
+     * @returns {number|null} - A unique ID for the registered fix, or `null` if invalid.
+     */
     function _registerNewFix(editor, fix, providerName, maxOffset) {
         if(!editor || !fix || !fix.rangeOffset) {
             return null;
@@ -696,6 +791,13 @@ define(function (require, exports, module) {
 
     const scrollPositionMap = new Map();
 
+    /**
+     * Handles the case where no linting provider returns results for the current document.
+     * Updates the status bar, hides the problems panel, and disables the "Go To" functionality.
+     * @private
+     * @param {Document} currentDoc - The current document being inspected.
+     * @param {string} fullFilePath - The full file path of the document.
+     */
     function _noProviderReturnedResults(currentDoc, fullFilePath) {
         // No provider for current file
         _hasErrors = false;
@@ -957,6 +1059,7 @@ define(function (require, exports, module) {
 
     /**
      * Returns a list of providers registered for given languageId through register function
+     * @param {string} languageId - The language ID for which the provider is registered.
      */
     function getProvidersForLanguageId(languageId) {
         var result = [];
@@ -1022,6 +1125,9 @@ define(function (require, exports, module) {
         run();
     }
 
+    /**
+     * Calls the toggleCollapsed function
+     */
     function toggleProblems() {
         toggleCollapsed();
     }
@@ -1076,7 +1182,9 @@ define(function (require, exports, module) {
         }
     }
 
-    /** Command to go to the first Problem */
+    /**
+     * Command to go to the first Problem
+     */
     function handleGotoFirstProblem() {
         run();
         if (_gotoEnabled) {
@@ -1084,6 +1192,9 @@ define(function (require, exports, module) {
         }
     }
 
+    /**
+     * Command to go to the next problem
+     */
     function handleGotoNextProblem() {
         if (_gotoEnabled) {
             const editor = EditorManager.getCurrentFullEditor();
@@ -1116,6 +1227,9 @@ define(function (require, exports, module) {
         }
     }
 
+    /**
+     * Command to go to the previous problem
+     */
     function handleGotoPrevProblem() {
         if (_gotoEnabled) {
             const editor = EditorManager.getCurrentFullEditor();
@@ -1185,6 +1299,13 @@ define(function (require, exports, module) {
         description: Strings.DESCRIPTION_USE_PREFERED_ONLY
     });
 
+    /**
+     * Checks if the provided fix details are invalid.
+     * @private
+     * @param {Object} fixDetails - The details of the fix.
+     * @param {number} maxOffset - Maximum valid offset in the document.
+     * @returns {boolean} - Returns true if the fix is invalid, false otherwise.
+     */
     function _isInvalidFix(fixDetails, maxOffset) {
         return (!_.isNumber(fixDetails.rangeOffset.start) || !_.isNumber(fixDetails.rangeOffset.end) ||
             fixDetails.rangeOffset.start < 0 || fixDetails.rangeOffset.end < 0 ||
@@ -1192,6 +1313,12 @@ define(function (require, exports, module) {
             typeof fixDetails.replaceText !== "string");
     }
 
+
+    /**
+     * Applies a specific fix identified by the fixID.
+     * @private
+     * @param {string} fixID - The ID of the fix to apply.
+     */
     function _fixProblem(fixID) {
         const fixDetails = documentFixes.get(fixID);
         const editor = EditorManager.getCurrentFullEditor();
@@ -1212,6 +1339,10 @@ define(function (require, exports, module) {
         run();
     }
 
+    /**
+     * Applies all available fixes in the document.
+     * @private
+     */
     function _fixAllProblems() {
         const editor = EditorManager.getCurrentFullEditor();
         if(!editor || editor.document.lastChangeTimestamp !== lastDocumentScanTimeStamp) {
