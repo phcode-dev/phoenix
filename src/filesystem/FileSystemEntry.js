@@ -68,10 +68,19 @@ define(function (require, exports, module) {
     var FileSystemError = require("filesystem/FileSystemError"),
         WatchedRoot = require("filesystem/WatchedRoot");
 
-    var VISIT_DEFAULT_MAX_DEPTH = 100,
-        VISIT_DEFAULT_MAX_ENTRIES = 200000;
+    /**
+     * Default maximum depth for visits, set to 100
+     */
+    var VISIT_DEFAULT_MAX_DEPTH = 100;
 
-    /* Counter to give every entry a unique id */
+    /**
+     * Default maximum entries for visits, set to 100
+     */
+    var VISIT_DEFAULT_MAX_ENTRIES = 200000;
+
+    /**
+     * Counter to give every entry a unique id
+     */
     var nextId = 0;
 
     /**
@@ -90,7 +99,15 @@ define(function (require, exports, module) {
         this._id = nextId++;
     }
 
-    // Add "fullPath", "name", "parent", "id", "isFile" and "isDirectory" getters
+    /**
+     * Defines properties on FileSystemEntry prototype with getters and restricted setters.
+     * @property {string} fullPath - Full path of the file or directory, read-only.
+     * @property {string} name - Name of the file or directory, read-only.
+     * @property {string} parentPath - Parent path of the entry, read-only.
+     * @property {string|number} id - Unique identifier of the entry, read-only.
+     * @property {boolean} isFile - Indicates if the entry is a file, read-only.
+     * @property {boolean} isDirectory - Indicates if the entry is a directory, read-only.
+     */
     Object.defineProperties(FileSystemEntry.prototype, {
         "fullPath": {
             get: function () { return this._path; },
@@ -124,60 +141,70 @@ define(function (require, exports, module) {
 
     /**
      * Cached stat object for this file.
+     * @private
      * @type {?FileSystemStats}
      */
     FileSystemEntry.prototype._stat = null;
 
     /**
      * Parent file system.
+     * @private
      * @type {!FileSystem}
      */
     FileSystemEntry.prototype._fileSystem = null;
 
     /**
      * The path of this entry.
+     * @private
      * @type {string}
      */
     FileSystemEntry.prototype._path = null;
 
     /**
      * The name of this entry.
+     * @private
      * @type {string}
      */
     FileSystemEntry.prototype._name = null;
 
     /**
      * The parent of this entry.
+     * @private
      * @type {string}
      */
     FileSystemEntry.prototype._parentPath = null;
 
     /**
      * Whether or not the entry is a file
+     * @private
      * @type {boolean}
      */
     FileSystemEntry.prototype._isFile = false;
 
     /**
      * Whether or not the entry is a directory
+     * @private
      * @type {boolean}
      */
     FileSystemEntry.prototype._isDirectory = false;
 
     /**
     * Cached copy of this entry's watched root.
+    * @private
     * @type {{entry: (File|Directory), filter: function(FileSystemEntry): boolean, active: boolean}}
     */
     FileSystemEntry.prototype._watchedRoot = undefined;
 
     /**
      * Cached result of _watchedRoot.filter(this.name, this.parentPath).
+     * @private
      * @type {boolean}
      */
     FileSystemEntry.prototype._watchedRootFilterResult = undefined;
 
     /**
      * Determines whether or not the entry is watched.
+     * @private
      * @param {boolean=} relaxed If falsey, the method will only return true if
      *      the watched root is fully active. If true, the method will return
      *      true if the watched root is either starting up or fully active.
@@ -265,6 +292,8 @@ define(function (require, exports, module) {
 
     /**
      * Helpful toString for debugging purposes
+     * @private
+     * @return {string} Directory/file path
      */
     FileSystemEntry.prototype.toString = function () {
         return "[" + (this.isDirectory ? "Directory " : "File ") + this._path + "]";
