@@ -58,6 +58,7 @@ define(function (require, exports, module) {
         encodingSelect, // this is a DropdownButton instance
         tasksSelect, // this is a DropdownButton instance
         $cursorInfo,
+        $statusInfo,
         $fileInfo,
         $indentType,
         $indentAuto,
@@ -106,13 +107,17 @@ define(function (require, exports, module) {
         encodingSelect.$button.text(doc.file._encoding);
     }
 
+    function _getLineCountStr(editor) {
+        const lines = editor.lineCount();
+        return _formatCountable(lines, Strings.STATUSBAR_LINE_COUNT_SINGULAR, Strings.STATUSBAR_LINE_COUNT_PLURAL);
+    }
+
     /**
      * Update file information
      * @param {Editor} editor Current editor
      */
     function _updateFileInfo(editor) {
-        var lines = editor.lineCount();
-        $fileInfo.text(_formatCountable(lines, Strings.STATUSBAR_LINE_COUNT_SINGULAR, Strings.STATUSBAR_LINE_COUNT_PLURAL));
+        $fileInfo.text(_getLineCountStr(editor));
     }
 
     /**
@@ -185,12 +190,15 @@ define(function (require, exports, module) {
         editor = editor || EditorManager.getActiveEditor();
 
         // compute columns, account for tab size
-        var cursor = editor.getCursorPos(true);
+        const cursor = editor.getCursorPos(true);
 
-        var cursorStr = StringUtils.format(Strings.STATUSBAR_CURSOR_POSITION, cursor.line + 1, cursor.ch + 1);
+        let cursorStr = StringUtils.format(Strings.STATUSBAR_CURSOR_POSITION, cursor.line + 1, cursor.ch + 1);
+        let cursorStrShort = StringUtils.format(
+            Strings.STATUSBAR_CURSOR_POSITION_SHORT, cursor.line + 1, cursor.ch + 1);
 
-        var sels = editor.getSelections(),
-            selStr = "";
+        let sels = editor.getSelections(),
+            selStr = "",
+            shortSelStr = "";
 
         if (sels.length > 1) {
             //Send analytics data for multicursor use
@@ -200,20 +208,28 @@ define(function (require, exports, module) {
                 "usage"
             );
             selStr = StringUtils.format(Strings.STATUSBAR_SELECTION_MULTIPLE, sels.length);
+            shortSelStr = StringUtils.format(Strings.STATUSBAR_SELECTION_MULTIPLE_SHORT, sels.length);
         } else if (editor.hasSelection()) {
-            var sel = sels[0];
+            const sel = sels[0];
             if (sel.start.line !== sel.end.line) {
-                var lines = sel.end.line - sel.start.line + 1;
+                let lines = sel.end.line - sel.start.line + 1;
                 if (sel.end.ch === 0) {
                     lines--;  // end line is exclusive if ch is 0, inclusive otherwise
                 }
-                selStr = _formatCountable(lines, Strings.STATUSBAR_SELECTION_LINE_SINGULAR, Strings.STATUSBAR_SELECTION_LINE_PLURAL);
+                selStr = _formatCountable(lines, Strings.STATUSBAR_SELECTION_LINE_SINGULAR,
+                    Strings.STATUSBAR_SELECTION_LINE_PLURAL);
+                shortSelStr = StringUtils.format(Strings.STATUSBAR_SELECTION_SHORT, lines);
             } else {
-                var cols = editor.getColOffset(sel.end) - editor.getColOffset(sel.start);  // end ch is exclusive always
-                selStr = _formatCountable(cols, Strings.STATUSBAR_SELECTION_CH_SINGULAR, Strings.STATUSBAR_SELECTION_CH_PLURAL);
+                // end ch is exclusive always
+                const cols = editor.getColOffset(sel.end) - editor.getColOffset(sel.start);
+                selStr = _formatCountable(cols, Strings.STATUSBAR_SELECTION_CH_SINGULAR,
+                    Strings.STATUSBAR_SELECTION_CH_PLURAL);
+                shortSelStr = StringUtils.format(Strings.STATUSBAR_SELECTION_SHORT, cols);
             }
         }
-        $cursorInfo.text(cursorStr + selStr);
+        $cursorInfo.text(cursorStrShort + shortSelStr);
+        $statusInfo.attr("title", cursorStr + selStr + " " + _getLineCountStr(editor)+ "\n" +
+            Strings.STATUSBAR_CURSOR_GOTO);
     }
 
     /**
@@ -392,12 +408,19 @@ define(function (require, exports, module) {
     function _init() {
 
         $cursorInfo         = $("#status-cursor");
+        $statusInfo         = $("#status-info");
         $fileInfo           = $("#status-file");
         $indentType         = $("#indent-type");
         $indentAuto         = $("#indent-auto");
         $indentWidthLabel   = $("#indent-width-label");
         $indentWidthInput   = $("#indent-width-input");
         $statusOverwrite    = $("#status-overwrite");
+
+        $statusInfo.click((event)=>{
+            event.preventDefault();
+            event.stopPropagation();
+            CommandManager.execute(Commands.NAVIGATE_GOTO_LINE);
+        });
 
         languageSelect      = new DropdownButton.DropdownButton("", [], function (item, index) {
             var document = EditorManager.getActiveEditor().document,
