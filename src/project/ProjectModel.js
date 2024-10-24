@@ -42,7 +42,16 @@ define(function (require, exports, module) {
         Async               = require("utils/Async"),
         PerfUtils           = require("utils/PerfUtils");
 
-    // Constants
+    /**
+     * EVENT_CHANGE - Event triggered on change.
+     * EVENT_SHOULD_SELECT - Event indicating an item should be selected.
+     * EVENT_SHOULD_FOCUS - Event indicating an item should gain focus.
+     * EVENT_FS_RENAME_STARTED - Event triggered when a rename operation starts.
+     * EVENT_FS_RENAME_END - Event triggered when a rename operation ends.
+     * ERROR_CREATION - Error indicating a creation error.
+     * ERROR_INVALID_FILENAME - Error indicating an invalid filename.
+     * ERROR_NOT_IN_PROJECT - Error indicating that the item is not in the project.
+     */
     var EVENT_CHANGE            = "change",
         EVENT_SHOULD_SELECT     = "select",
         EVENT_SHOULD_FOCUS      = "focus",
@@ -165,8 +174,12 @@ define(function (require, exports, module) {
         return shouldShow(entry) && !_cacheExcludeFileNameRegEx.test(entry.name);
     }
 
-    // Constants used by the ProjectModel
-
+    /**
+     * Constants used by the ProjectModel
+     * FILE_RENAMING = 0
+     * FILE_CREATING = 1
+     * RENAME_CANCELLED = 2
+     */
     var FILE_RENAMING     = 0,
         FILE_CREATING     = 1,
         RENAME_CANCELLED  = 2;
@@ -458,6 +471,12 @@ define(function (require, exports, module) {
         return path;
     };
 
+
+    /**
+     * Retrieves the content of a .gitignore file at the specified path.
+     * @private
+     * @param {string} fullPath - The full path to the .gitignore file.
+     */
     function _getGitIgnoreFileContent(fullPath) {
         return new Promise(resolve=>{
             DocumentManager.getDocumentForPath(fullPath)
@@ -470,6 +489,13 @@ define(function (require, exports, module) {
         });
     }
 
+    /**
+     * Checks if a given entry is ignored by any of the specified .gitignore filters.
+     * @private
+     * @param {Object} entry - The entry to check, containing a `fullPath` property.
+     * @param {Array} gitIgnoreFilters - An array of .gitignore filter objects, each containing a `basePath` and a `gitIgnore` object with an `ignores` method.
+     * @returns {boolean} True if the entry is ignored by any filter, false otherwise.
+     */
     function _gitIgnores(entry, gitIgnoreFilters) {
         try{
             for(let filter of gitIgnoreFilters) {
@@ -485,6 +511,14 @@ define(function (require, exports, module) {
         return false;
     }
 
+    /**
+     * Updates the .gitignore filters based on the content of the specified .gitignore file.
+     * @private
+     * @param {string} gitIgnorePath - The path to the .gitignore file.
+     * @param {string} parentFullPath - The full path of the directory containing the .gitignore file.
+     * @param {Object} gitIgnoreSearchedInDir - An object tracking directories that have been searched for .gitignore files.
+     * @param {Array} gitIgnoreFilters - An array to which new .gitignore filters will be added.
+     */
     async function _updateGitIgnoreFromPath(gitIgnorePath, parentFullPath, gitIgnoreSearchedInDir, gitIgnoreFilters) {
         const gitIgnoreContent = await _getGitIgnoreFileContent(gitIgnorePath);
         gitIgnoreSearchedInDir[parentFullPath] = true;
@@ -497,6 +531,14 @@ define(function (require, exports, module) {
         }
     }
 
+    /**
+     * Checks for a .gitignore file among sibling entries and updates gitIgnore filters if found.
+     * @private
+     * @param {Object} entry - The entry for which to check the .gitignore file.
+     * @param {Array} siblingEntries - An array of entries in the same directory as the entry.
+     * @param {Object} gitIgnoreSearchedInDir - An object tracking directories that have been searched for .gitignore files.
+     * @param {Array} gitIgnoreFilters - An array to which new .gitignore filters will be added.
+     */
     async function _updateGitIgnore(entry, siblingEntries, gitIgnoreSearchedInDir, gitIgnoreFilters) {
         const parentFullPath = `${path.dirname(entry.fullPath)}/`; // Eg. /path/to/dir/
         if(!gitIgnoreSearchedInDir[parentFullPath] && siblingEntries) {
@@ -588,6 +630,15 @@ define(function (require, exports, module) {
         return this._allFilesCachePromise;
     };
 
+    /**
+     * Retrieves a cached list of all files within the specified scope of the project.
+     *
+     * This function checks if the provided scope is within the project root. If not, it returns a rejected promise.
+     * If the cache is invalidated, it populates the cache with files that are not ignored by .gitignore filters.
+     * @private
+     * @param {Array} sort - An array defining how to sort the files.
+     * @param {Object} scope - The scope within which to retrieve files.
+     */
     ProjectModel.prototype._getAllFilesInScopeCache = function (sort, scope) {
         let self = this;
         if(!this.isWithinProject(scope)){
@@ -1244,6 +1295,7 @@ define(function (require, exports, module) {
     /**
      * Cancels the creation process that is underway. The original promise returned will be resolved with the
      * RENAME_CANCELLED value. The temporary entry added to the file tree will be deleted.
+     * @private
      */
     ProjectModel.prototype._cancelCreating = function () {
         var renameInfo = this._selections.rename;
@@ -1454,6 +1506,7 @@ define(function (require, exports, module) {
     /**
      * Although Brackets is generally standardized on folder paths with a trailing "/", some APIs here
      * receive project paths without "/" due to legacy preference storage formats, etc.
+     * @private
      * @param {!string} fullPath  Path that may or may not end in "/"
      * @return {!string} Path that ends in "/"
      */
@@ -1493,7 +1546,7 @@ define(function (require, exports, module) {
     /**
      * Returns true if the given path is the same as one of the welcome projects we've previously opened,
      * or the one for the current build.
-     *
+     * @private
      * @param {string} path Path to check to see if it's a welcome project
      * @param {string} welcomeProjectPath Current welcome project path
      * @param {Array.<string>=} welcomeProjects All known welcome projects

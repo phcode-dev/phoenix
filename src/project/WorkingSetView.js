@@ -80,15 +80,23 @@ define(function (require, exports, module) {
     /**
      * #working-set-list-container
      * @type {jQuery}
+     * @private
      */
     var $workingFilesContainer;
 
     /**
      * Constants for event.which values
+     * LEFT_BUTTON = 1
      * @enum {number}
      */
-    var LEFT_BUTTON = 1,
-        MIDDLE_BUTTON = 2;
+    var LEFT_BUTTON = 1;
+
+    /**
+     * Constants for event.which values
+     * MIDDLE_BUTTON = 2
+     * @enum {number}
+     */
+    var MIDDLE_BUTTON = 2;
 
     /**
      * Each list item in the working set stores a references to the related document in the list item's data.
@@ -99,21 +107,57 @@ define(function (require, exports, module) {
     var _FILE_KEY = "file";
 
     /**
-     * Constants for hitTest.where
-     * @enum {string}
+     * Constant for hitTest.where representing an area with no ownership.
+     * @constant {string}
      */
-    var NOMANSLAND = "nomansland",
-        NOMOVEITEM = "nomoveitem",
-        ABOVEITEM  = "aboveitem",
-        BELOWITEM  = "belowitem",
-        TOPSCROLL  = "topscroll",
-        BOTSCROLL  = "bottomscroll",
-        BELOWVIEW  = "belowview",
-        ABOVEVIEW  = "aboveview";
+    var NOMANSLAND = "nomansland";
+
+    /**
+     * Constant for hitTest.where indicating an item that cannot be moved.
+     * @constant {string}
+     */
+    var NOMOVEITEM = "nomoveitem";
+
+    /**
+     * Constant for hitTest.where indicating the position above an item.
+     * @constant {string}
+     */
+    var ABOVEITEM = "aboveitem";
+
+    /**
+     * Constant for hitTest.where indicating the position below an item.
+     * @constant {string}
+     */
+    var BELOWITEM = "belowitem";
+
+    /**
+     * Constant for hitTest.where indicating the top scroll area.
+     * @constant {string}
+     */
+    var TOPSCROLL = "topscroll";
+
+    /**
+     * Constant for hitTest.where indicating the bottom scroll area.
+     * @constant {string}
+     */
+    var BOTSCROLL = "bottomscroll";
+
+    /**
+     * Constant for hitTest.where indicating the area below the view.
+     * @constant {string}
+     */
+    var BELOWVIEW = "belowview";
+
+    /**
+     * Constant for hitTest.where indicating the area above the view.
+     * @constant {string}
+     */
+    var ABOVEVIEW = "aboveview";
+
 
     /**
      * Drag an item has to move 3px before dragging starts
-     * @constant
+     * @private
      */
     var _DRAG_MOVE_DETECTION_START = 3;
 
@@ -164,7 +208,11 @@ define(function (require, exports, module) {
         return (docIfOpen && docIfOpen.isDirty);
     }
 
-
+    /**
+     * Determine if the selection has focus
+     * @private
+     * @returns {boolean} true if the selection has focus else false
+     */
     function _hasSelectionFocus() {
         return FileViewController.getFileSelectionFocus() === FileViewController.WORKING_SET_VIEW;
     }
@@ -244,7 +292,10 @@ define(function (require, exports, module) {
         var interval,
             sourceFile = $el.data(_FILE_KEY);
 
-        // turn off the "hover-scroll"
+        /**
+         * turn off the "hover-scroll"
+         * @param {jQuery} $el the element
+         */
         function endScroll($el) {
             if (interval) {
                 window.clearInterval(interval);
@@ -252,13 +303,20 @@ define(function (require, exports, module) {
             }
         }
 
-        //  We scroll the list while hovering over the first or last visible list element
-        //  in the working set, so that positioning a working set item before or after one
-        //  that has been scrolled out of view can be performed.
-        //
-        //  This function will call the drag interface repeatedly on an interval to allow
-        //  the item to be dragged while scrolling the list until the mouse is moved off
-        //  the first or last item or endScroll is called
+        /**
+         * We scroll the list while hovering over the first or last visible list element
+         * in the working set, so that positioning a working set item before or after one
+         * that has been scrolled out of view can be performed.
+         *
+         * This function will call the drag interface repeatedly on an interval to allow
+         * the item to be dragged while scrolling the list until the mouse is moved off
+         * the first or last item or endScroll is called
+         *
+         * @param {jQuery} $container - The jQuery object representing the container to scroll.
+         * @param {jQuery} $el - The jQuery object representing the element being dragged.
+         * @param {number} dir - The direction of the scroll, where -1 indicates up and 1 indicates down.
+         * @param {function} callback - The function to call while scrolling, allowing for additional actions.
+         */
         function scroll($container, $el, dir, callback) {
             var container = $container[0],
                 maxScroll = container.scrollHeight - container.clientHeight;
@@ -276,7 +334,11 @@ define(function (require, exports, module) {
             }
         }
 
-        // The mouse down handler pretty much handles everything
+        /**
+         * Mouse down handler, pretty much handles everything
+         * @private
+         * @param {Event} e
+         */
         $el.mousedown(function (e) {
             var scrollDir = 0,
                 dragged = false,
@@ -296,6 +358,13 @@ define(function (require, exports, module) {
                 $ghost,
                 draggingCurrentFile;
 
+
+            /**
+             * Initializes the dragging behavior for the specified element.
+             * This function sets up a ghost element that visually represents the item being dragged.
+             * It calculates the item's height and position, clones the element, and configures
+             * the ghost element's appearance and positioning during the drag operation.
+             */
             function initDragging() {
                 itemHeight = $el.height();
                 offset = $el.offset();
@@ -320,13 +389,20 @@ define(function (require, exports, module) {
                 $ghost.appendTo($("body"));
             }
 
-            // Switches the view context to match the hit context
+            /**
+             * Switches the view context to match the hit context
+             * @param {Object} hit
+             */
             function updateContext(hit) {
                 // just set the container and update
                 currentView = _viewFromEl(hit.which);
             }
 
-            // Determines where the mouse hit was
+
+            /**
+             * Determines where the mouse hit was
+             * @param {Event} e
+             */
             function hitTest(e) {
                 var pageY = $ghost.offset().top,
                     direction =  e.pageY - lastPageY,
@@ -598,8 +674,12 @@ define(function (require, exports, module) {
                 return result;
             }
 
-            // mouse move handler -- this pretty much does
-            //  the heavy lifting for dragging the item around
+            /**
+             * mouse move handler -- this pretty much does
+             * the heavy lifting for dragging the item around
+             * @private
+             * @param {Event} e
+             */
             $(window).on("mousemove.wsvdragging", function (e) {
                 // The drag function
                 function drag(e) {
@@ -711,6 +791,9 @@ define(function (require, exports, module) {
             });
 
 
+            /**
+             * To scroll to the bottom of the current view
+             */
             function scrollCurrentViewToBottom() {
                 var $container = currentView.$openFilesContainer,
                     container = $container[0],
@@ -721,7 +804,9 @@ define(function (require, exports, module) {
                 }
             }
 
-            // Close down the drag operation
+            /**
+             * Close down the drag operation
+             */
             function preDropCleanup() {
                 window.onmousewheel = window.document.onmousewheel = null;
                 $(window).off(".wsvdragging");
@@ -742,6 +827,10 @@ define(function (require, exports, module) {
             }
 
             // Final Cleanup
+            /**
+             * Final cleanup after dropping
+             * @param {boolean} noRefresh whether its refreshed or not
+             */
             function postDropCleanup(noRefresh) {
                 if (dragged) {
                     // re-enable stuff we turned off
@@ -760,7 +849,9 @@ define(function (require, exports, module) {
                 MainViewManager.focusActivePane();
             }
 
-            // Drop
+            /**
+             * Responsible to handle the drop
+             */
             function drop() {
                 preDropCleanup();
                 if (sourceView.paneId === currentView.paneId && startingIndex === $el.index()) {
@@ -855,7 +946,7 @@ define(function (require, exports, module) {
         });
     }
 
-    /*
+    /**
      * WorkingSetView constructor
      * @constructor
      * @param {!jQuery} $container - owning container
@@ -874,8 +965,9 @@ define(function (require, exports, module) {
         this.init();
     }
 
-    /*
+    /**
      * Hides or shows the WorkingSetView
+     * @private
      */
     WorkingSetView.prototype._updateVisibility = function () {
         var fileList = MainViewManager.getWorkingSet(this.paneId);
@@ -889,7 +981,7 @@ define(function (require, exports, module) {
         }
     };
 
-    /*
+    /**
      * paneLayoutChange event listener
      * @private
      */
@@ -929,7 +1021,7 @@ define(function (require, exports, module) {
         return result;
     };
 
-    /*
+    /**
      * creates a name that is namespaced to this pane
      * @param {!string} name - name of the event to create.
      * use an empty string to get just the event name to turn off all events in the namespace
@@ -1521,7 +1613,7 @@ define(function (require, exports, module) {
         });
     });
 
-    /*
+    /**
      * To be used by other modules/default-extensions which needs to borrow working set entry icons
      * @param {!object} data - contains file info {fullPath, name, isFile}
      * @param {!jQuery} $element - jquery fn wrap for the list item
@@ -1540,7 +1632,7 @@ define(function (require, exports, module) {
         }
     }
 
-    /*
+    /**
      * To be used by other modules/default-extensions which needs to borrow working set entry custom classes
      * @param {!object} data - contains file info {fullPath, name, isFile}
      * @param {!jQuery} $element - jquery fn wrap for the list item

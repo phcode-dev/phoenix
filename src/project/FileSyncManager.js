@@ -55,6 +55,7 @@ define(function (require, exports, module) {
 
     /**
      * Guard to spot re-entrancy while syncOpenDocuments() is still in progress
+     * @private
      * @type {boolean}
      */
     var _alreadyChecking = false;
@@ -62,6 +63,7 @@ define(function (require, exports, module) {
     /**
      * If true, we should bail from the syncOpenDocuments() process and then re-run it. See
      * comments in syncOpenDocuments() for how this works.
+     * @private
      * @type {boolean}
      */
     var _restartPending = false;
@@ -242,6 +244,7 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Display an error when reload is unsuccessful
      * @param {FileError} error
      * @param {!Document} doc
      * @return {Dialog}

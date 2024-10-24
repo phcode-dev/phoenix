@@ -387,8 +387,9 @@ define(function (require, exports, module) {
      */
     PreferencesManager.stateManager.definePreference(_WORKING_SET_SORT_PREF, "string", "");
 
-    /*
+    /**
      * initializes global sort method from preference settings or the default
+     * @return {string} the sort method to be used
      */
     function initSortMethod() {
         var sortMethod = PreferencesManager.getViewState(_WORKING_SET_SORT_PREF);

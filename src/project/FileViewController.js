@@ -61,8 +61,17 @@ define(function (require, exports, module) {
      * @private
      */
     var _curDocChangedDueToMe = false;
+
+    /**
+     * WORKING_SET_VIEW - Identifier for the Working Set View.
+     */
     var WORKING_SET_VIEW = "WorkingSetView";
+
+    /**
+     * PROJECT_MANAGER - Identifier for the Project Manager.
+     */
     var PROJECT_MANAGER = "ProjectManager";
+
 
     /**
      * @private
