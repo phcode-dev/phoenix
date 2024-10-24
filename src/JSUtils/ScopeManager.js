@@ -35,43 +35,63 @@ define(function (require, exports, module) {
 
     var _ = require("thirdparty/lodash");
 
-    const CodeMirror          = require("thirdparty/CodeMirror/lib/codemirror"),
-        DefaultDialogs      = require("widgets/DefaultDialogs"),
-        Dialogs             = require("widgets/Dialogs"),
-        DocumentManager     = require("document/DocumentManager"),
-        EditorManager       = require("editor/EditorManager"),
-        FileSystem          = require("filesystem/FileSystem"),
-        FileUtils           = require("file/FileUtils"),
-        LanguageManager     = require("language/LanguageManager"),
-        PreferencesManager  = require("preferences/PreferencesManager"),
-        ProjectManager      = require("project/ProjectManager"),
-        Strings             = require("strings"),
-        StringUtils         = require("utils/StringUtils"),
-        InMemoryFile        = require("document/InMemoryFile"),
-        IndexingWorker      = require("worker/IndexingWorker");
+    const CodeMirror = require("thirdparty/CodeMirror/lib/codemirror"),
+        DefaultDialogs = require("widgets/DefaultDialogs"),
+        Dialogs = require("widgets/Dialogs"),
+        DocumentManager = require("document/DocumentManager"),
+        EditorManager = require("editor/EditorManager"),
+        FileSystem = require("filesystem/FileSystem"),
+        FileUtils = require("file/FileUtils"),
+        LanguageManager = require("language/LanguageManager"),
+        PreferencesManager = require("preferences/PreferencesManager"),
+        ProjectManager = require("project/ProjectManager"),
+        Strings = require("strings"),
+        StringUtils = require("utils/StringUtils"),
+        InMemoryFile = require("document/InMemoryFile"),
+        IndexingWorker = require("worker/IndexingWorker");
 
     IndexingWorker.loadScriptInWorker(`${Phoenix.baseURL}JSUtils/worker/tern-main.js`);
 
-    var HintUtils           = require("./HintUtils"),
-        MessageIds          = JSON.parse(require("text!./MessageIds.json")),
-        Preferences         = require("./Preferences");
+    var HintUtils = require("./HintUtils"),
+        MessageIds = JSON.parse(require("text!./MessageIds.json")),
+        Preferences = require("./Preferences");
 
-    let ternEnvironment     = [],
-        ternConfigInitDone        = false,
+    /**
+     * Configuration and state variables for the Tern server and hinting system.
+     *
+     * - `ternEnvironment`: Array to store the active Tern environment settings.
+     * - `ternConfigInitDone`: Boolean indicating if the Tern configuration is initialized.
+     * - `pendingTernRequests`: Object holding references to pending Tern requests.
+     * - `builtinLibraryNames`: Array to store names of built-in libraries for Tern.
+     * - `isDocumentDirty`: Boolean indicating if the current document has unsaved changes.
+     * - `currentModule`: Stores the currently active module for Tern processing.
+     * - `documentChanges`: Object tracking bounds of recent document changes.
+     * - `preferences`: Holds the active preferences for the Tern setup.
+     * - `deferredPreferences`: Deferred promise for preferences loading.
+     */
+
+    let ternEnvironment = [],
+        ternConfigInitDone = false,
         pendingTernRequests = {},
         builtinLibraryNames = [],
-        isDocumentDirty     = false,
-        _hintCount          = 0,
-        currentModule       = null,
-        documentChanges     = null,     // bounds of document changes
-        preferences         = null,
+        isDocumentDirty = false,
+        _hintCount = 0,
+        currentModule = null,
+        documentChanges = null,     // bounds of document changes
+        preferences = null,
         deferredPreferences = null;
 
-
-    const MAX_HINTS           = 30,  // how often to reset the tern server
-        LARGE_LINE_CHANGE   = 100,
-        LARGE_LINE_COUNT    = 10000,
-        OFFSET_ZERO         = {line: 0, ch: 0};
+    /**
+     * Constants:
+     * - `MAX_HINTS`: Maximum number of hints to trigger Tern server reset.
+     * - `LARGE_LINE_CHANGE`: Threshold for large changes in a single line.
+     * - `LARGE_LINE_COUNT`: Maximum number of lines allowed in a document before optimization kicks in.
+     * - `OFFSET_ZERO`: Object representing the starting position of a document (line 0, character 0).
+     */
+    const MAX_HINTS = 30,  // how often to reset the tern server
+        LARGE_LINE_CHANGE = 100,
+        LARGE_LINE_COUNT = 10000,
+        OFFSET_ZERO = { line: 0, ch: 0 };
 
     var config = {};
 
@@ -90,16 +110,16 @@ define(function (require, exports, module) {
     function initTernEnv() {
         const builtinDefinitionFiles = JSON.parse(require("text!thirdparty/tern/defs/defs.json"));
 
-        for(let fileName of builtinDefinitionFiles){
+        for (let fileName of builtinDefinitionFiles) {
             let fileUrl = `${Phoenix.baseURL}thirdparty/tern/defs/${fileName}`;
             console.log("loading tern definition file: ", fileUrl);
             fetch(fileUrl)
-                .then(async contents =>{
+                .then(async contents => {
                     const ternDefsLibrary = await contents.json();
                     builtinLibraryNames.push(ternDefsLibrary["!name"]);
                     ternEnvironment.push(ternDefsLibrary);
                 })
-                .catch(e =>{
+                .catch(e => {
                     console.error("failed to init from tern definition file " + fileName, e);
                 });
         }
@@ -210,8 +230,8 @@ define(function (require, exports, module) {
      * @return {boolean} true if in editor, false otherwise.
      */
     function isFileBeingEdited(filePath) {
-        var currentEditor   = EditorManager.getActiveEditor(),
-            currentDoc      = currentEditor && currentEditor.document;
+        var currentEditor = EditorManager.getActiveEditor(),
+            currentDoc = currentEditor && currentEditor.document;
 
         return (currentDoc && currentDoc.file.fullPath === filePath);
     }
@@ -319,6 +339,7 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Responsible to resolve the path, when parsing the file
      * @param {string} file a relative path
      * @return {string} returns the path we resolved when we tried to parse the file, or undefined
      */
@@ -407,7 +428,7 @@ define(function (require, exports, module) {
      *      has completed.
      */
     function requestJumptoDef(session, document, offset) {
-        var path    = document.file.fullPath,
+        var path = document.file.fullPath,
             fileInfo = {
                 type: MessageIds.TERN_FILE_INFO_TYPE_FULL,
                 name: path,
@@ -417,7 +438,7 @@ define(function (require, exports, module) {
 
         var ternPromise = getJumptoDef(fileInfo, offset);
 
-        return {promise: ternPromise};
+        return { promise: ternPromise };
     }
 
     /**
@@ -517,11 +538,11 @@ define(function (require, exports, module) {
      */
     function getFragmentAround(session, start) {
         var minIndent = null,
-            minLine   = null,
+            minLine = null,
             endLine,
-            cm        = session.editor._codeMirror,
-            tabSize   = cm.getOption("tabSize"),
-            document  = session.editor.document,
+            cm = session.editor._codeMirror,
+            tabSize = cm.getOption("tabSize"),
+            document = session.editor.document,
             p,
             min,
             indent,
@@ -535,7 +556,7 @@ define(function (require, exports, module) {
             if (fn >= 0) {
                 indent = CodeMirror.countColumn(line, null, tabSize);
                 if (minIndent === null || minIndent > indent) {
-                    if (session.getToken({line: p, ch: fn + 1}).type === "keyword") {
+                    if (session.getToken({ line: p, ch: fn + 1 }).type === "keyword") {
                         minIndent = indent;
                         minLine = p;
                     }
@@ -566,13 +587,15 @@ define(function (require, exports, module) {
             }
         }
 
-        var from = {line: minLine, ch: 0},
-            to   = {line: endLine, ch: endCh};
+        var from = { line: minLine, ch: 0 },
+            to = { line: endLine, ch: endCh };
 
-        return {type: MessageIds.TERN_FILE_INFO_TYPE_PART,
+        return {
+            type: MessageIds.TERN_FILE_INFO_TYPE_PART,
             name: document.file.fullPath,
             offsetLines: from.line,
-            text: document.getRange(from, to)};
+            text: document.getRange(from, to)
+        };
     }
 
 
@@ -595,22 +618,28 @@ define(function (require, exports, module) {
             result;
 
         if (isHtmlFile) {
-            result = {type: MessageIds.TERN_FILE_INFO_TYPE_FULL,
+            result = {
+                type: MessageIds.TERN_FILE_INFO_TYPE_FULL,
                 name: path,
-                text: session.getJavascriptText()};
+                text: session.getJavascriptText()
+            };
         } else if (!documentChanges) {
-            result = {type: MessageIds.TERN_FILE_INFO_TYPE_EMPTY,
+            result = {
+                type: MessageIds.TERN_FILE_INFO_TYPE_EMPTY,
                 name: path,
-                text: ""};
+                text: ""
+            };
         } else if (!preventPartialUpdates && session.editor.lineCount() > LARGE_LINE_COUNT &&
-                (documentChanges.to - documentChanges.from < LARGE_LINE_CHANGE) &&
-                documentChanges.from <= start.line &&
-                documentChanges.to > end.line) {
+            (documentChanges.to - documentChanges.from < LARGE_LINE_CHANGE) &&
+            documentChanges.from <= start.line &&
+            documentChanges.to > end.line) {
             result = getFragmentAround(session, start);
         } else {
-            result = {type: MessageIds.TERN_FILE_INFO_TYPE_FULL,
+            result = {
+                type: MessageIds.TERN_FILE_INFO_TYPE_FULL,
                 name: path,
-                text: getTextFromDocument(document)};
+                text: getTextFromDocument(document)
+            };
         }
 
         documentChanges = null;
@@ -634,7 +663,7 @@ define(function (require, exports, module) {
         var newOffset;
 
         if (offset) {
-            newOffset = {line: offset.line, ch: offset.ch};
+            newOffset = { line: offset.line, ch: offset.ch };
         } else {
             newOffset = session.getCursor();
         }
@@ -690,7 +719,7 @@ define(function (require, exports, module) {
             offset = response.offset,
             completions = response.completions,
             properties = response.properties,
-            fnType  = response.fnType,
+            fnType = response.fnType,
             type = response.type,
             error = response.error,
             $deferredHints = getPendingRequest(file, offset, type);
@@ -699,9 +728,9 @@ define(function (require, exports, module) {
             if (error) {
                 $deferredHints.reject();
             } else if (completions) {
-                $deferredHints.resolveWith(null, [{completions: completions}]);
+                $deferredHints.resolveWith(null, [{ completions: completions }]);
             } else if (properties) {
-                $deferredHints.resolveWith(null, [{properties: properties}]);
+                $deferredHints.resolveWith(null, [{ properties: properties }]);
             } else if (fnType) {
                 $deferredHints.resolveWith(null, [fnType]);
             }
@@ -752,8 +781,8 @@ define(function (require, exports, module) {
      */
     function handleTimedOut(response) {
 
-        var detectedExclusions  = PreferencesManager.get("jscodehints.detectedExclusions") || [],
-            filePath            = response.file;
+        var detectedExclusions = PreferencesManager.get("jscodehints.detectedExclusions") || [],
+            filePath = response.file;
 
         // Don't exclude the file currently being edited
         if (isFileBeingEdited(filePath)) {
@@ -812,15 +841,15 @@ define(function (require, exports, module) {
      *
      */
     function TernModule() {
-        var ternPromise         = null,
-            addFilesPromise     = null,
-            rootTernDir         = null,
-            projectRoot         = null,
-            stopAddingFiles     = false,
-            resolvedFiles       = {},       // file -> resolved file
-            numInitialFiles     = 0,
-            numResolvedFiles    = 0,
-            numAddedFiles       = 0;
+        var ternPromise = null,
+            addFilesPromise = null,
+            rootTernDir = null,
+            projectRoot = null,
+            stopAddingFiles = false,
+            resolvedFiles = {},       // file -> resolved file
+            numInitialFiles = 0,
+            numResolvedFiles = 0,
+            numAddedFiles = 0;
 
         /**
          * @param {string} file a relative path
@@ -857,6 +886,7 @@ define(function (require, exports, module) {
         /**
          * Send a message to the tern node domain - this is only for messages that
          * need to be sent before and while the addFilesPromise is being resolved.
+         * @private
          */
         function _postMessageByPass(msg) {
             ternPromise.done(function () {
@@ -874,7 +904,7 @@ define(function (require, exports, module) {
          * @return {jQuery.Promise} - the promise for the request
          */
         function updateTernFile(document) {
-            var path  = document.file.fullPath;
+            var path = document.file.fullPath;
 
             _postMessageByPass({
                 type: MessageIds.TERN_UPDATE_FILE_MSG,
@@ -912,12 +942,12 @@ define(function (require, exports, module) {
              * @return {jQuery.Promise} - the Promise returned from DocumentMangaer.getDocumentText()
              */
             function getDocText(filePath) {
-                if(!filePath.startsWith("/")){
+                if (!filePath.startsWith("/")) {
                     // tern seems to ignore the leading / we send with the file path
                     filePath = `/${filePath}`;
                 }
                 if (!FileSystem.isAbsolutePath(filePath) || // don't handle URLs
-                        filePath.slice(0, 2) === "//") { // don't handle protocol-relative URLs like //example.com/main.js (see #10566)
+                    filePath.slice(0, 2) === "//") { // don't handle protocol-relative URLs like //example.com/main.js (see #10566)
                     return (new $.Deferred()).reject().promise();
                 }
 
@@ -1128,14 +1158,14 @@ define(function (require, exports, module) {
                 }
             }
 
-            if(!ternConfigInitDone){
+            if (!ternConfigInitDone) {
                 ternConfigInitDone = true;
                 IndexingWorker.off("tern-data");
                 IndexingWorker.on("tern-data", _ternWorkerEventHandler);
                 IndexingWorker.execPeer("invokeTernCommand", {
                     type: MessageIds.SET_CONFIG,
                     config: config
-                }).then(()=>{
+                }).then(() => {
                     moduleDeferred.resolveWith(null);
                 });
             } else {
@@ -1189,9 +1219,9 @@ define(function (require, exports, module) {
          * @param {?Document} previousDocument - the document the editor has changed from
          */
         function doEditorChange(session, document, previousDocument) {
-            var file        = document.file,
-                path        = file.fullPath,
-                dir         = file.parentPath,
+            var file = document.file,
+                path = file.fullPath,
+                dir = file.parentPath,
                 pr;
 
             var addFilesDeferred = $.Deferred();
@@ -1272,7 +1302,7 @@ define(function (require, exports, module) {
                                     // all the files under the project root.
                                     var currentDir = (dir + "/");
                                     if (projectRoot && currentDir !== projectRoot &&
-                                            currentDir.indexOf(projectRoot) === 0) {
+                                        currentDir.indexOf(projectRoot) === 0) {
                                         addAllFilesAndSubdirectories(projectRoot, function () {
                                             // prime the pump again but this time don't wait
                                             // for completion.
@@ -1329,6 +1359,10 @@ define(function (require, exports, module) {
             }
         }
 
+        /**
+         * Executes a function when the `addFilesPromise` is resolved.
+         * @param {Function} func - The function to execute once the promise is fulfilled.
+         */
         function whenReady(func) {
             addFilesPromise.done(func);
         }
@@ -1354,7 +1388,7 @@ define(function (require, exports, module) {
      * ```
      * This function is also used in unit testing with the "force" flag to
      * reset the module for each test to start with a clean environment.
-     *
+     * @private
      * @param {Session} session
      * @param {Document} document
      * @param {boolean} force true to force a reset regardless of how long since the last one
@@ -1476,7 +1510,7 @@ define(function (require, exports, module) {
     function trackChange(changeList) {
         var changed = documentChanges, i;
         if (changed === null) {
-            documentChanges = changed = {from: changeList[0].from.line, to: changeList[0].from.line};
+            documentChanges = changed = { from: changeList[0].from.line, to: changeList[0].from.line };
             if (config.debug) {
                 console.debug("ScopeManager: document has changed");
             }
@@ -1547,7 +1581,10 @@ define(function (require, exports, module) {
         initPreferences(projectRootPath);
     }
 
-    /** Used to avoid timing bugs in unit tests */
+    /**
+     * Used to avoid timing bugs in unit tests
+     * @private
+     */
     function _readyPromise() {
         return deferredPreferences;
     }

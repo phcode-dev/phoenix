@@ -68,8 +68,16 @@ define(function (require, exports, module) {
         globmatch = require("thirdparty/globmatch");
 
     // CONSTANTS
-    var PREFERENCE_CHANGE = "change",
-        SCOPEORDER_CHANGE = "scopeOrderChange";
+    /**
+     * PREFERENCE_CHANGE - Event type for preference changes.
+     */
+    var PREFERENCE_CHANGE = "change";
+
+    /**
+     * SCOPEORDER_CHANGE - Event type for scope order changes.
+     */
+    var SCOPEORDER_CHANGE = "scopeOrderChange";
+
 
     /*
      * Storages manage the loading and saving of preference data.
@@ -1037,6 +1045,7 @@ define(function (require, exports, module) {
      * Utility for PreferencesSystem & PrefixedPreferencesSystem -- attach EventDispatcher's on()/off()
      * implementation as private _on_internal()/_off_internal() methods, so the custom on()/off() APIs
      * these classes use can leverage EventDispatcher code internally. Also attach the regular public trigger().
+     * @private
      */
     function _addEventDispatcherImpl(proto) {
         var temp = {};

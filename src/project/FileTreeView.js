@@ -62,12 +62,15 @@ define(function (require, exports, module) {
     var _draggedItemPath;
 
 
-    // Constants
-
-    // Time range from first click to second click to invoke renaming.
+    /**
+     * Time range from first click to second click to invoke renaming.
+     */
     const RIGHT_MOUSE_BUTTON    = 2,
         LEFT_MOUSE_BUTTON     = 0;
 
+    /**
+     * width of the indentation
+     */
     const INDENTATION_WIDTH     = 10;
 
     /**
@@ -1171,6 +1174,10 @@ define(function (require, exports, module) {
                 this.props.selectionViewInfo !== nextProps.selectionViewInfo;
         },
 
+        /**
+         * Handles the drop
+         * @param {Event} e
+         */
         handleDrop: function(e) {
             var data = JSON.parse(e.dataTransfer.getData("text"));
             this.props.actions.moveItem(data.path, this.props.parentPath);

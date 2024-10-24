@@ -41,6 +41,13 @@ define(function (require, exports, module) {
 
     const definedPreferences = {};
 
+    /**
+     * Retrieves the key for a preference based on the project context.
+     *
+     * @param {string} id - The preference ID.
+     * @param {boolean} useProjectContext - Indicates whether to use the project context.
+     * @return {string} - The generated key for the preference.
+     */
     function _getKey(id, useProjectContext) {
         if(useProjectContext){
             const projectRootPath = ProjectManager.getProjectRoot().fullPath;
@@ -49,6 +56,12 @@ define(function (require, exports, module) {
         return `${PHSTORE_STATEMANAGER_PREFIX}${id}`; // STATE_ID
     }
 
+    /**
+     * Converts a legacy context to a modern context format.
+     *
+     * @param {Object|null} [context] - The legacy context object.
+     * @return {string} - The converted context string.
+     */
     function _GET_CONTEXT_FROM_LEGACY_CONTEXT(context = null) {
         if(_.get(context, "location.layer") === 'project'){
             return PROJECT_CONTEXT;
@@ -56,6 +69,14 @@ define(function (require, exports, module) {
         return GLOBAL_CONTEXT;
     }
 
+
+    /**
+     * Gets an item from the store or returns a default value if the item is null or undefined.
+     *
+     * @param {*} item - The item to check.
+     * @param {string} id - The preference ID.
+     * @return {*} - The original item or the initial value from defined preferences.
+     */
     function _getItemOrDefault(item, id) {
         if((item === null || item === undefined) && definedPreferences[id]){
             return definedPreferences[id].initial;
@@ -185,6 +206,12 @@ define(function (require, exports, module) {
         return preference;
     }
 
+    /**
+     * Retrieves a defined preference by its ID.
+     *
+     * @param {string} id - The preference ID to retrieve.
+     * @return {Object} - The preference object.
+     */
     function getPreferenceInternal(id) {
         if(!definedPreferences[id]){
             throw new Error("getPreference " + id + " no such preference defined.");
@@ -193,6 +220,13 @@ define(function (require, exports, module) {
     }
 
     const knownExtensions = {};
+
+    /**
+     * Creates a state manager for an extension, allowing preference management within that extension.
+     *
+     * @param {string} extensionID - The unique ID for the extension.
+     * @return {Object} - The extension state manager with methods to get, set, and define preferences.
+     */
     function createExtensionStateManager(extensionID) {
         let i=0;
         if(extensionID.includes(".")){
@@ -229,10 +263,22 @@ define(function (require, exports, module) {
         };
     }
 
+    /**
+     * Saves the current state, with a warning that this method is deprecated.
+     *
+     * @deprecated
+     */
     function save() {
         console.warn("StateManager.save() is deprecated. Settings are auto saved to a high throughput Database");
     }
 
+    /**
+     * Retrieves a prefixed system state manager, with a warning that this method is deprecated.
+     *
+     * @param {string} prefix - The prefix for the state manager.
+     * @return {Object} - The prefixed system state manager.
+     * @deprecated
+     */
     function getPrefixedSystem(prefix) {
         console.warn("StateManager.getPrefixedSystem() is deprecated. Use StateManager.createExtensionStateManager()");
         return createExtensionStateManager(prefix);

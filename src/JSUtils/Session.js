@@ -177,7 +177,7 @@ define(function (require, exports, module) {
 
     /**
      * Get the token before the one at the given cursor position
-     *
+     * @private
      * @param {{line: number, ch: number}} cursor - cursor position after
      *      which a token should be retrieved
      * @return {Object} - the CodeMirror token before the one at the given
@@ -301,6 +301,7 @@ define(function (require, exports, module) {
     };
 
     /**
+     * Returns the position of the previous "." in a property lookup or undefined if not found.
      * @return {{line:number, ch:number}} - the line, col info for where the previous "."
      *      in a property lookup occurred, or undefined if no previous "." was found.
      */
@@ -323,7 +324,7 @@ define(function (require, exports, module) {
     };
 
     /**
-     *
+     * Retrieves the lexical state from a CodeMirror token, handling inline JavaScript in HTML files.
      * @param {Object} token - a CodeMirror token
      * @return {*} - the lexical state of the token
      */

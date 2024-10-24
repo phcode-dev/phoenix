@@ -28,14 +28,26 @@ define(function (require, exports, module) {
     var CodeMirror = require("thirdparty/CodeMirror/lib/codemirror"),
         TokenUtils = require("utils/TokenUtils");
 
-    // Constants
+    /**
+     * Constants used for identifying various HTML token types.
+     *
+     * TAG_NAME - Represents the name of an HTML tag.
+     * CLOSING_TAG - Represents a closing HTML tag.
+     * ATTR_NAME - Represents an attribute name in an HTML tag.
+     * ATTR_VALUE - Represents an attribute value in an HTML tag.
+     */
     var TAG_NAME = "tagName",
         CLOSING_TAG = "closingTag",
         ATTR_NAME = "attr.name",
         ATTR_VALUE = "attr.value";
 
-    // Regular expression for token types with "tag" prefixed
+    /**
+     * Regular expression for identifying token types that start with "tag".
+     *
+     * tagPrefixedRegExp - The regular expression pattern for token types prefixed with "tag".
+     */
     var tagPrefixedRegExp = /^tag/;
+
 
     /**
      * @private

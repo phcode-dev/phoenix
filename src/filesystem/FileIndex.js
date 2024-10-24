@@ -19,7 +19,6 @@
  *
  */
 
-// @INCLUDE_IN_API_DOCS
 
 
 /**
@@ -42,7 +41,6 @@ define(function (require, exports, module) {
 
     /**
      * Master index
-     *
      * @type {Object.<string, File|Directory>} Maps a fullPath to a File or Directory object
      */
     FileIndex.prototype._index = null;

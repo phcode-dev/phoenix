@@ -39,7 +39,9 @@ define(function (require, exports, module) {
         EventDispatcher     = require("utils/EventDispatcher"),
         FileUtils           = require("file/FileUtils");
 
-    // Constants
+    /**
+     * EVENT_CHANGE - Event name for change events
+     */
     var EVENT_CHANGE = "change";
 
     /**
@@ -297,7 +299,8 @@ define(function (require, exports, module) {
 
     /**
      * @private
-     *
+     * @param {array} treeData
+     * @param {string} projectRootPath
      * See `FileTreeViewModel.getOpenNodes`.
      */
     function _getOpenNodes(treeData, projectRootPath) {
@@ -333,6 +336,8 @@ define(function (require, exports, module) {
 
     /**
      * @private
+     * @param {array} treeData
+     * @param {string} projectRootPath
      * TODO: merge with _getOpenNodes?!
      * See `FileTreeViewModel.getChildNodes`.
      */
@@ -372,6 +377,11 @@ define(function (require, exports, module) {
         return _getOpenNodes(this._treeData, projectRootPath);
     };
 
+    /**
+     * Responsible to get all the child directories inside a parent directory
+     * @param {string} parent the parent directory path
+     * @returns {array} list of all the child directories
+     */
     FileTreeViewModel.prototype.getChildDirectories = function (parent) {
         var treeData = this._treeData,
             objectPath = _filePathToObjectPath(treeData, parent);
@@ -577,7 +587,7 @@ define(function (require, exports, module) {
 
     /**
      * Returns the object at the given file path.
-     *
+     * @private
      * @param {string} path Path to the object
      * @return {Immutable.Map=} directory or file object from the tree. Null if it's not found.
      */
@@ -591,7 +601,7 @@ define(function (require, exports, module) {
 
     /**
      * Closes a subtree path, given by an object path.
-     *
+     * @private
      * @param {Immutable.Map} directory Current directory
      * @return {Immutable.Map} new directory
      */

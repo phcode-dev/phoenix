@@ -28,17 +28,24 @@ define(function (require, exports, module) {
     // Load dependencies.
     var TokenUtils  = require("utils/TokenUtils");
 
-    // Enums of token types.
+    /**
+     * Enum of token types
+     * TOKEN_TAG token type for tags, default value is 1
+     * TOKEN_ATTR token type for attributes, default value is 2
+     * TOKEN_VALUE token type for value, default value is 3
+     */
     var TOKEN_TAG    = 1,
         TOKEN_ATTR   = 2,
         TOKEN_VALUE  = 3;
 
-    // Regex to find whitespace.
+    /**
+     * Regex to find whitespace.
+     */
     var regexWhitespace = /^\s+$/;
 
     /**
      * Returns an object that represents all its params.
-     *
+     * @private
      * @param {!Token} token CodeMirror token at the current pos
      * @param {number} tokenType Type of current token
      * @param {number} offset Offset in current token
@@ -62,7 +69,7 @@ define(function (require, exports, module) {
 
     /**
      * Return the tagName and a list of attributes used by the tag.
-     *
+     * @private
      * @param {!Editor} editor An instance of active editor
      * @param {!{line: number, ch: number}} constPos The position of cursor in the active editor
      * @return {!{tagName: string, exclusionList: Array.<string>, shouldReplace: boolean}}
@@ -149,7 +156,7 @@ define(function (require, exports, module) {
 
     /**
      * Return the tag name, attribute name and a list of options used by the attribute
-     *
+     * @private
      * @param {!Editor} editor An instance of active editor
      * @param {!{line: number, ch: number}} pos Position of cursor in the editor
      * @return {!{tagName: string, attrName: string, exclusionList: Array.<string>}}

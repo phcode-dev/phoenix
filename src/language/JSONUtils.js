@@ -25,16 +25,27 @@
 define(function (require, exports, module) {
 
 
-    var TokenUtils      = require("utils/TokenUtils");
+    var TokenUtils = require("utils/TokenUtils");
 
-    // Enumerations for token types.
-    var TOKEN_KEY   = 1,
+    /**
+     * Enumeration for token types.
+     * TOKEN_KEY - Represents a token type for keys.
+     * TOKEN_VALUE - Represents a token type for values.
+     */
+    var TOKEN_KEY = 1,
         TOKEN_VALUE = 2;
 
-    // Whitelist for allowed value types.
+    /**
+     * Whitelist for allowed value types in tokens.
+     * valueTokenTypes - The array of allowed value types.
+     */
     var valueTokenTypes = ["atom", "string", "number", "variable"];
 
-    // Reg-ex to match colon, comma, opening bracket of an array and white-space.
+    /**
+     * Regular expression to match allowed characters for tokens, including colon, comma, 
+     * opening bracket of an array, and whitespace.
+     * regexAllowedChars - The regular expression pattern for matching allowed characters.
+     */
     var regexAllowedChars = /(?:^[:,\[]$)|(?:^\s+$)/;
 
     /**
@@ -202,7 +213,7 @@ define(function (require, exports, module) {
 
             // Disallow hints if cursor is out of the string.
             if (/^['"]$/.test(ctx.token.string.substr(-1, 1)) &&
-                    ctx.token.string.length !== 1 && ctx.token.end === pos.ch) {
+                ctx.token.string.length !== 1 && ctx.token.end === pos.ch) {
                 return null;
             }
             keyName = stripQuotes(ctx.token.string);
@@ -226,12 +237,12 @@ define(function (require, exports, module) {
 
             return _createContextInfo(ctx.token, TOKEN_KEY, offset, keyName, valueName, parentKeyName, null, exclusionList, shouldReplace);
         } else if (ctx.token && (valueTokenTypes.indexOf(ctx.token.type) !== -1 ||
-                                (ctx.token.type === null && regexAllowedChars.test(ctx.token.string)))) {
+            (ctx.token.type === null && regexAllowedChars.test(ctx.token.string)))) {
             // Boolean, String, Number and variable literal values.
 
             // Disallow hints if cursor is out of the string.
             if (ctx.token.type === "string" && /^['"]$/.test(ctx.token.string.substr(-1, 1)) &&
-                    ctx.token.string.length !== 1 && ctx.token.end === pos.ch) {
+                ctx.token.string.length !== 1 && ctx.token.end === pos.ch) {
                 return null;
             }
             valueName = ctx.token.string;
@@ -296,9 +307,9 @@ define(function (require, exports, module) {
     }
 
     // Expose public API.
-    exports.TOKEN_KEY           = TOKEN_KEY;
-    exports.TOKEN_VALUE         = TOKEN_VALUE;
-    exports.regexAllowedChars   = regexAllowedChars;
-    exports.getContextInfo      = getContextInfo;
-    exports.stripQuotes         = stripQuotes;
+    exports.TOKEN_KEY = TOKEN_KEY;
+    exports.TOKEN_VALUE = TOKEN_VALUE;
+    exports.regexAllowedChars = regexAllowedChars;
+    exports.getContextInfo = getContextInfo;
+    exports.stripQuotes = stripQuotes;
 });

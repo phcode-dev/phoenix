@@ -44,6 +44,7 @@ define(function (require, exports, module) {
 
     /**
      * Tracks dirty documents between invocations of findMatchingFunctions.
+     * @private
      * @type {ChangedDocumentTracker}
      */
     var _changedDocumentTracker = new ChangedDocumentTracker();
@@ -170,9 +171,15 @@ define(function (require, exports, module) {
         return results;
     }
 
-    // Given the start offset of a function definition (before the opening brace), find
-    // the end offset for the function (the closing "}"). Returns the position one past the
-    // close brace. Properly ignores braces inside comments, strings, and regexp literals.
+    /**
+     * Given the start offset of a function definition (before the opening brace), find
+     * the end offset for the function (the closing "}"). Returns the position one past the
+     * close brace. Properly ignores braces inside comments, strings, and regexp literals.
+     * @private
+     * @param {string} text - The entire text in which the function is defined.
+     * @param {number} offsetStart - The start offset of the function definition (before the opening brace).
+     * @return {number} The position one past the closing brace of the function definition.
+     */
     function _getFunctionEndOffset(text, offsetStart) {
         var mode = CodeMirror.getMode({}, "javascript");
         var state = CodeMirror.startState(mode), stream, style, token;
@@ -297,6 +304,7 @@ define(function (require, exports, module) {
 
     /**
      * Determines if the document function cache is up to date.
+     * @private
      * @param {FileInfo} fileInfo
      * @return {$.Promise} A promise resolved with true with true when a function cache is available for the document. Resolves
      *   with false when there is no cache or the cache is stale.
@@ -389,6 +397,7 @@ define(function (require, exports, module) {
     /**
      * Resolves with a record containing the Document or FileInfo and an Array of all
      * function names with offsets for the specified file. Results may be cached.
+     * @private
      * @param {FileInfo} fileInfo
      * @return {$.Promise} A promise resolved with a document info object that
      *   contains a map of all function names from the document and each function's start offset.

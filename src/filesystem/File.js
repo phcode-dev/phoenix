@@ -147,6 +147,18 @@ define(function (require, exports, module) {
         }.bind(this));
     };
 
+
+    /**
+     * Inserts a file into the list if it is not already present.
+     *
+     * This function checks whether a given file object is already present in the provided list 
+     * based on its `fullPath`. If the file is not present, it is added to the list.
+     *
+     * @private
+     * @param {Array.<File>} addedList - The list of files to which the file may be added.
+     * @param {File} file - The file to be checked and potentially added to the list.
+     * @returns {Array.<File>} The updated list with the file added if it was not present.
+     */
     function _insertIfNotPresent(addedList, file) {
         if(!addedList || !addedList.length) {
             return [file];
