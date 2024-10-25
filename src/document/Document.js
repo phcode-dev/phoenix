@@ -85,6 +85,7 @@ define(function (require, exports, module) {
     /**
      * Number of clients who want this Document to stay alive. The Document is listed in
      * DocumentManager._openDocuments whenever refCount > 0.
+     * @private
      */
     Document.prototype._refCount = 0;
 
@@ -140,12 +141,14 @@ define(function (require, exports, module) {
 
     /**
      * True while refreshText() is in progress and change notifications shouldn't trip the dirty flag.
+     * @private
      * @type {boolean}
      */
     Document.prototype._refreshInProgress = false;
 
     /**
      * The text contents of the file, or null if our backing model is _masterEditor.
+     * @private
      * @type {?string}
      */
     Document.prototype._text = null;
@@ -154,6 +157,7 @@ define(function (require, exports, module) {
      * Editor object representing the full-size editor UI for this document. May be null if Document
      * has not yet been modified or been the currentDocument; in that case, our backing model is the
      * string _text.
+     * @private
      * @type {?Editor}
      */
     Document.prototype._masterEditor = null;
@@ -161,6 +165,7 @@ define(function (require, exports, module) {
     /**
      * The content's line-endings style. If a Document is created on empty text, or text with
      * inconsistent line endings, defaults to the current platform's standard endings.
+     * @private
      * @type {FileUtils.LINE_ENDINGS_CRLF|FileUtils.LINE_ENDINGS_LF}
      */
     Document.prototype._lineEndings = null;
@@ -198,6 +203,7 @@ define(function (require, exports, module) {
      * Attach a backing Editor to the Document, enabling setText() to be called. Assumes Editor has
      * already been initialized with the value of getText(). ONLY Editor should call this (and only
      * when EditorManager has told it to act as the master editor).
+     * @private
      * @param {!Editor} masterEditor
      */
     Document.prototype._makeEditable = function (masterEditor) {
@@ -212,6 +218,7 @@ define(function (require, exports, module) {
      * Detach the backing Editor from the Document, disallowing setText(). The text content is
      * stored back onto _text so other Document clients continue to have read-only access. ONLY
      * Editor.destroy() should call this.
+     * @private
      */
     Document.prototype._makeNonEditable = function () {
         if (!this._masterEditor) {
@@ -233,6 +240,7 @@ define(function (require, exports, module) {
     /**
      * Toggles the master editor which has gained focus from a pool of full editors
      * To be used internally by Editor only
+     * @private
      */
     Document.prototype._toggleMasterEditor = function (masterEditor) {
         // Do a check before processing the request to ensure inline editors are not being set as master editor
@@ -244,6 +252,7 @@ define(function (require, exports, module) {
 
     /**
      * Checks and returns if a full editor exists for the provided pane attached to this document
+     * @private
      * @param {String} paneId
      * @return {Editor} Attached editor bound to the provided pane id
      */
@@ -262,6 +271,7 @@ define(function (require, exports, module) {
     /**
      * Disassociates an editor from this document if present in the associated editor list
      * To be used internally by Editor only when destroyed and not the current master editor for the document
+     * @private
      */
     Document.prototype._disassociateEditor = function (editor) {
         // Do a check before processing the request to ensure inline editors are not being handled
@@ -273,6 +283,7 @@ define(function (require, exports, module) {
     /**
      * Aassociates a full editor to this document
      * To be used internally by Editor only when pane marking happens
+     * @private
      */
     Document.prototype._associateEditor = function (editor) {
         // Do a check before processing the request to ensure inline editors are not being handled
@@ -285,6 +296,7 @@ define(function (require, exports, module) {
      * Guarantees that _masterEditor is non-null. If needed, asks EditorManager to create a new master
      * editor bound to this Document (which in turn causes Document._makeEditable() to be called).
      * Should ONLY be called by Editor and Document.
+     * @private
      */
     Document.prototype._ensureMasterEditor = function () {
         if (!this._masterEditor) {
@@ -600,6 +612,7 @@ define(function (require, exports, module) {
     /**
      * Like _.each(), but if given a single item not in an array, acts as
      * if it were an array containing just that item.
+     * @private
      */
     function oneOrEach(itemOrArr, cb) {
         if (Array.isArray(itemOrArr)) {
@@ -768,6 +781,7 @@ define(function (require, exports, module) {
 
     /**
      * Updates the language to match the current mapping given by LanguageManager
+     * @private
      */
     Document.prototype._updateLanguage = function () {
         var oldLanguage = this.language;
@@ -777,7 +791,10 @@ define(function (require, exports, module) {
         }
     };
 
-    /** Called when Document.file has been modified (due to a rename) */
+    /**
+     * Called when Document.file has been modified (due to a rename)
+     * @private
+     */
     Document.prototype._notifyFilePathChanged = function () {
         // File extension may have changed
         this._updateLanguage();

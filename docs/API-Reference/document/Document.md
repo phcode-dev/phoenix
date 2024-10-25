@@ -11,7 +11,6 @@ const Document = brackets.getModule("document/Document")
 * [Document](#Document)
     * [new Document(file, initialTimestamp, rawText)](#new_Document_new)
     * _instance_
-        * [._refCount](#Document+_refCount)
         * [.file](#Document+file) : <code>File</code>
         * [.language](#Document+language) : <code>Language</code>
         * [.isDirty](#Document+isDirty) : <code>boolean</code>
@@ -19,19 +18,8 @@ const Document = brackets.getModule("document/Document")
         * [.diskTimestamp](#Document+diskTimestamp) : <code>Date</code>
         * [.lastChangeTimestamp](#Document+lastChangeTimestamp) : <code>number</code>
         * [.keepChangesTime](#Document+keepChangesTime) : <code>Number</code>
-        * [._refreshInProgress](#Document+_refreshInProgress) : <code>boolean</code>
-        * [._text](#Document+_text) : <code>string</code>
-        * [._masterEditor](#Document+_masterEditor) : <code>Editor</code>
-        * [._lineEndings](#Document+_lineEndings) : <code>FileUtils.LINE\_ENDINGS\_CRLF</code> \| <code>FileUtils.LINE\_ENDINGS\_LF</code>
         * [.addRef()](#Document+addRef)
         * [.releaseRef()](#Document+releaseRef)
-        * [._makeEditable(masterEditor)](#Document+_makeEditable)
-        * [._makeNonEditable()](#Document+_makeNonEditable)
-        * [._toggleMasterEditor()](#Document+_toggleMasterEditor)
-        * [._checkAssociatedEditorForPane(paneId)](#Document+_checkAssociatedEditorForPane) ⇒ <code>Editor</code>
-        * [._disassociateEditor()](#Document+_disassociateEditor)
-        * [._associateEditor()](#Document+_associateEditor)
-        * [._ensureMasterEditor()](#Document+_ensureMasterEditor)
         * [.getText([useOriginalLineEndings])](#Document+getText) ⇒ <code>string</code>
         * [.getSelectedText([useOriginalLineEndings], [allSelections])](#Document+getSelectedText) ⇒ <code>string</code> \| <code>null</code>
         * [.setText(text)](#Document+setText)
@@ -44,8 +32,6 @@ const Document = brackets.getModule("document/Document")
         * [.adjustPosForChange(pos, textLines, start, end)](#Document+adjustPosForChange) ⇒ <code>Object</code>
         * [.doMultipleEdits(edits, origin)](#Document+doMultipleEdits) ⇒ <code>Object</code>
         * [.getLanguage()](#Document+getLanguage) ⇒ <code>Language</code>
-        * [._updateLanguage()](#Document+_updateLanguage)
-        * [._notifyFilePathChanged()](#Document+_notifyFilePathChanged)
         * [.isUntitled()](#Document+isUntitled) ⇒ <code>boolean</code>
         * [.reload()](#Document+reload) ⇒ <code>promise</code>
     * _static_
@@ -93,13 +79,6 @@ __languageChanged__ -- When the value of getLanguage() has changed. 2nd argument
 | initialTimestamp | <code>Date</code> | File's timestamp when we read it off disk. |
 | rawText | <code>string</code> | Text content of the file. |
 
-<a name="Document+_refCount"></a>
-
-### document.\_refCount
-Number of clients who want this Document to stay alive. The Document is listed in
-DocumentManager._openDocuments whenever refCount > 0.
-
-**Kind**: instance property of [<code>Document</code>](#Document)  
 <a name="Document+file"></a>
 
 ### document.file : <code>File</code>
@@ -150,33 +129,6 @@ keep changes.
 Note that this is a time as returned by Date.getTime(), not a Date object.
 
 **Kind**: instance property of [<code>Document</code>](#Document)  
-<a name="Document+_refreshInProgress"></a>
-
-### document.\_refreshInProgress : <code>boolean</code>
-True while refreshText() is in progress and change notifications shouldn't trip the dirty flag.
-
-**Kind**: instance property of [<code>Document</code>](#Document)  
-<a name="Document+_text"></a>
-
-### document.\_text : <code>string</code>
-The text contents of the file, or null if our backing model is _masterEditor.
-
-**Kind**: instance property of [<code>Document</code>](#Document)  
-<a name="Document+_masterEditor"></a>
-
-### document.\_masterEditor : <code>Editor</code>
-Editor object representing the full-size editor UI for this document. May be null if Document
-has not yet been modified or been the currentDocument; in that case, our backing model is the
-string _text.
-
-**Kind**: instance property of [<code>Document</code>](#Document)  
-<a name="Document+_lineEndings"></a>
-
-### document.\_lineEndings : <code>FileUtils.LINE\_ENDINGS\_CRLF</code> \| <code>FileUtils.LINE\_ENDINGS\_LF</code>
-The content's line-endings style. If a Document is created on empty text, or text with
-inconsistent line endings, defaults to the current platform's standard endings.
-
-**Kind**: instance property of [<code>Document</code>](#Document)  
 <a name="Document+addRef"></a>
 
 ### document.addRef()
@@ -187,68 +139,6 @@ Add a ref to keep this Document alive
 
 ### document.releaseRef()
 Remove a ref that was keeping this Document alive
-
-**Kind**: instance method of [<code>Document</code>](#Document)  
-<a name="Document+_makeEditable"></a>
-
-### document.\_makeEditable(masterEditor)
-Attach a backing Editor to the Document, enabling setText() to be called. Assumes Editor has
-already been initialized with the value of getText(). ONLY Editor should call this (and only
-when EditorManager has told it to act as the master editor).
-
-**Kind**: instance method of [<code>Document</code>](#Document)  
-
-| Param | Type |
-| --- | --- |
-| masterEditor | <code>Editor</code> | 
-
-<a name="Document+_makeNonEditable"></a>
-
-### document.\_makeNonEditable()
-Detach the backing Editor from the Document, disallowing setText(). The text content is
-stored back onto _text so other Document clients continue to have read-only access. ONLY
-Editor.destroy() should call this.
-
-**Kind**: instance method of [<code>Document</code>](#Document)  
-<a name="Document+_toggleMasterEditor"></a>
-
-### document.\_toggleMasterEditor()
-Toggles the master editor which has gained focus from a pool of full editors
-To be used internally by Editor only
-
-**Kind**: instance method of [<code>Document</code>](#Document)  
-<a name="Document+_checkAssociatedEditorForPane"></a>
-
-### document.\_checkAssociatedEditorForPane(paneId) ⇒ <code>Editor</code>
-Checks and returns if a full editor exists for the provided pane attached to this document
-
-**Kind**: instance method of [<code>Document</code>](#Document)  
-**Returns**: <code>Editor</code> - Attached editor bound to the provided pane id  
-
-| Param | Type |
-| --- | --- |
-| paneId | <code>String</code> | 
-
-<a name="Document+_disassociateEditor"></a>
-
-### document.\_disassociateEditor()
-Disassociates an editor from this document if present in the associated editor list
-To be used internally by Editor only when destroyed and not the current master editor for the document
-
-**Kind**: instance method of [<code>Document</code>](#Document)  
-<a name="Document+_associateEditor"></a>
-
-### document.\_associateEditor()
-Aassociates a full editor to this document
-To be used internally by Editor only when pane marking happens
-
-**Kind**: instance method of [<code>Document</code>](#Document)  
-<a name="Document+_ensureMasterEditor"></a>
-
-### document.\_ensureMasterEditor()
-Guarantees that _masterEditor is non-null. If needed, asks EditorManager to create a new master
-editor bound to this Document (which in turn causes Document._makeEditable() to be called).
-Should ONLY be called by Editor and Document.
 
 **Kind**: instance method of [<code>Document</code>](#Document)  
 <a name="Document+getText"></a>
@@ -423,18 +313,6 @@ The language returned is based on the file extension.
 
 **Kind**: instance method of [<code>Document</code>](#Document)  
 **Returns**: <code>Language</code> - An object describing the language used in this document  
-<a name="Document+_updateLanguage"></a>
-
-### document.\_updateLanguage()
-Updates the language to match the current mapping given by LanguageManager
-
-**Kind**: instance method of [<code>Document</code>](#Document)  
-<a name="Document+_notifyFilePathChanged"></a>
-
-### document.\_notifyFilePathChanged()
-Called when Document.file has been modified (due to a rename)
-
-**Kind**: instance method of [<code>Document</code>](#Document)  
 <a name="Document+isUntitled"></a>
 
 ### document.isUntitled() ⇒ <code>boolean</code>
@@ -455,10 +333,3 @@ Reloads the document from FileSystem
 Normalizes line endings the same way CodeMirror would
 
 **Kind**: static method of [<code>Document</code>](#Document)  
-<a name="oneOrEach"></a>
-
-## oneOrEach()
-Like _.each(), but if given a single item not in an array, acts as
-if it were an array containing just that item.
-
-**Kind**: global function  

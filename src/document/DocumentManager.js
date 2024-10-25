@@ -96,13 +96,50 @@ define(function (require, exports, module) {
         ProjectManager      = require("project/ProjectManager"),
         Strings             = require("strings");
 
-    const EVENT_AFTER_DOCUMENT_CREATE = "afterDocumentCreate",
-        EVENT_PATH_DELETED = "pathDeleted",
-        EVENT_FILE_NAME_CHANGE = "fileNameChange",
-        EVENT_BEFORE_DOCUMENT_DELETE = "beforeDocumentDelete",
-        EVENT_DOCUMENT_REFRESHED = "documentRefreshed",
-        EVENT_DOCUMENT_CHANGE = "documentChange",
-        EVENT_DIRTY_FLAG_CHANGED = "dirtyFlagChange";
+    /**
+     * Event triggered after a document is created.
+     * @constant {string}
+     */
+    const EVENT_AFTER_DOCUMENT_CREATE = "afterDocumentCreate";
+
+    /**
+     * Event triggered when a file or folder path is deleted.
+     * @constant {string}
+     */
+    const EVENT_PATH_DELETED = "pathDeleted";
+
+    /**
+     * Event triggered when a file's name changes.
+     * @constant {string}
+     */
+    const EVENT_FILE_NAME_CHANGE = "fileNameChange";
+
+    /**
+     * Event triggered before a document is deleted.
+     * @constant {string}
+     */
+    const EVENT_BEFORE_DOCUMENT_DELETE = "beforeDocumentDelete";
+
+    /**
+     * Event triggered when a document is refreshed.
+     * @constant {string}
+     */
+    const EVENT_DOCUMENT_REFRESHED = "documentRefreshed";
+
+    /**
+     * Event triggered when a document's content changes.
+     * @constant {string}
+     */
+    const EVENT_DOCUMENT_CHANGE = "documentChange";
+
+    /**
+     * Event triggered when the document's dirty flag changes,
+     * indicating if the document has unsaved changes.
+     * @constant {string}
+     */
+    const EVENT_DIRTY_FLAG_CHANGED = "dirtyFlagChange";
+
+
 
 
     /**
@@ -143,6 +180,8 @@ define(function (require, exports, module) {
 
     /**
      * Returns the Document that is currently open in the editor UI. May be null.
+     * @private
+     * @deprecated
      * @return {?Document}
      */
     function getCurrentDocument() {
@@ -158,6 +197,7 @@ define(function (require, exports, module) {
 
     /**
      * Returns a list of items in the working set in UI list order. May be 0-length, but never null.
+     * @private
      * @deprecated Use MainViewManager.getWorkingSet() instead
      * @return {Array.<File>}
      */
@@ -172,6 +212,7 @@ define(function (require, exports, module) {
 
     /**
      * Returns the index of the file matching fullPath in the working set.
+     * @private
      * @deprecated Use MainViewManager.findInWorkingSet() instead
      * @param {!string} fullPath
      * @return {number} index, -1 if not found
@@ -201,6 +242,7 @@ define(function (require, exports, module) {
 
     /**
      * Adds the given file to the end of the working set list.
+     * @private
      * @deprecated Use MainViewManager.addToWorkingSet() instead
      * @param {!File} file
      * @param {number=} index  Position to add to list (defaults to last); -1 is ignored
@@ -213,6 +255,7 @@ define(function (require, exports, module) {
     }
 
     /**
+     * @private
      * @deprecated Use MainViewManager.addListToWorkingSet() instead
      * Adds the given file list to the end of the working set list.
      * If a file in the list has its own custom viewer, then it
@@ -230,6 +273,7 @@ define(function (require, exports, module) {
 
     /**
      * closes a list of files
+     * @private
      * @deprecated Use CommandManager.execute(Commands.FILE_CLOSE_LIST) instead
      * @param {!Array.<File>} list - list of File objectgs to close
      */
@@ -240,6 +284,7 @@ define(function (require, exports, module) {
 
     /**
      * closes all open files
+     * @private
      * @deprecated CommandManager.execute(Commands.FILE_CLOSE_ALL) instead
      */
     function closeAll() {
@@ -249,6 +294,7 @@ define(function (require, exports, module) {
 
     /**
      * closes the specified file file
+     * @private
      * @deprecated use CommandManager.execute(Commands.FILE_CLOSE, {File: file}) instead
      * @param {!File} file - the file to close
      */
@@ -259,6 +305,7 @@ define(function (require, exports, module) {
 
     /**
      * opens the specified document for editing in the currently active pane
+     * @private
      * @deprecated use CommandManager.execute(Commands.CMD_OPEN, {fullPath: doc.file.fullPath}) instead
      * @param {!Document} document  The Document to make current.
      */
@@ -270,6 +317,7 @@ define(function (require, exports, module) {
 
     /**
      * freezes the Working Set MRU list
+     * @private
      * @deprecated use MainViewManager.beginTraversal() instead
      */
     function beginDocumentNavigation() {
@@ -279,6 +327,7 @@ define(function (require, exports, module) {
 
     /**
      * ends document navigation and moves the current file to the front of the MRU list in the Working Set
+     * @private
      * @deprecated use MainViewManager.endTraversal() instead
      */
     function finalizeDocumentNavigation() {
@@ -289,6 +338,7 @@ define(function (require, exports, module) {
     /**
      * Get the next or previous file in the working set, in MRU order (relative to currentDocument). May
      * return currentDocument itself if working set is length 1.
+     * @private
      * @deprecated use MainViewManager.traverseToNextViewByMRU() instead
      */
     function getNextPrevFile(inc) {
@@ -305,6 +355,7 @@ define(function (require, exports, module) {
      * rooted in the UI anywhere. This can happen if the Editor is auto-created via Document APIs that
      * trigger _ensureMasterEditor() without making it dirty. E.g. a command invoked on the focused
      * inline editor makes no-op edits or does a read-only operation.
+     * @private
      */
     function _gcDocuments() {
         getAllOpenDocuments().forEach(function (doc) {
@@ -479,6 +530,7 @@ define(function (require, exports, module) {
      *        without warning in a future release.
      *
      * @param {!File} file
+     * @private
      */
     function notifyFileDeleted(file) {
         // Notify all editors to close as well
@@ -501,6 +553,7 @@ define(function (require, exports, module) {
      * for updating underlying model data and notifying all views of the change.
      *
      * @param {string} fullPath The path of the file/folder that has been deleted
+     * @private
      */
     function notifyPathDeleted(fullPath) {
         // FileSyncManager.syncOpenDocuments() does all the work prompting
@@ -527,6 +580,7 @@ define(function (require, exports, module) {
      *
      * @param {string} oldName The old name of the file/folder
      * @param {string} newName The new name of the file/folder
+     * @private
      */
     function notifyPathNameChanged(oldName, newName) {
         // Notify all open documents
