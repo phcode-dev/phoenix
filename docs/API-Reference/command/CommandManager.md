@@ -3,34 +3,39 @@
 const CommandManager = brackets.getModule("command/CommandManager")
 ```
 
-<a name="_commands"></a>
-
-## \_commands : <code>Object</code>
-Map of all registered global commands
-
-**Kind**: global variable  
-**Properties**
-
-| Name | Type | Description |
-| --- | --- | --- |
-| commands | <code>Object.&lt;string, Command&gt;</code> | A map of command IDs to Command objects. |
-
-<a name="_commandsOriginal"></a>
-
-## \_commandsOriginal : <code>Object</code>
-Temporary copy of commands map for restoring after testingTODO (issue #1039): implement separate require contexts for unit tests
-
-**Kind**: global variable  
-**Properties**
-
-| Name | Type | Description |
-| --- | --- | --- |
-| commands | <code>Object.&lt;string, Command&gt;</code> | A map of command IDs to Command objects. |
-
 <a name="EventDispatcher"></a>
 
 ## EventDispatcher
-Manages global application commands that can be called from menu items, key bindings, or subpartsof the application.This module dispatches these event(s):   - commandRegistered  -- when a new command is registered   - beforeExecuteCommand -- before dispatching a command
+Manages global application commands that can be called from menu items, key bindings, or subparts
+of the application.
+
+This module dispatches these event(s):
+   - commandRegistered  -- when a new command is registered
+   - beforeExecuteCommand -- before dispatching a command
+
+**Kind**: global constant  
+<a name="EVENT_BEFORE_EXECUTE_COMMAND"></a>
+
+## EVENT\_BEFORE\_EXECUTE\_COMMAND : <code>string</code>
+Event triggered before command executes.
+
+**Kind**: global constant  
+<a name="SOURCE_KEYBOARD_SHORTCUT"></a>
+
+## SOURCE\_KEYBOARD\_SHORTCUT : <code>string</code>
+Keyboard shortcut trigger.
+
+**Kind**: global constant  
+<a name="SOURCE_UI_MENU_CLICK"></a>
+
+## SOURCE\_UI\_MENU\_CLICK : <code>string</code>
+UI menu click trigger.
+
+**Kind**: global constant  
+<a name="SOURCE_OTHER"></a>
+
+## SOURCE\_OTHER : <code>string</code>
+Other trigger types.
 
 **Kind**: global constant  
 <a name="register"></a>
@@ -60,18 +65,6 @@ Registers a global internal only command.
 | id | <code>string</code> | unique identifier for command.      Core commands in Brackets use a simple command title as an id, for example "app.abort_quit".      Extensions should use the following format: "author.myextension.mycommandname".      For example, "lschmitt.csswizard.format.css". |
 | commandFn | <code>function</code> | the function to call when the command is executed. Any arguments passed to     execute() (after the id) are passed as arguments to the function. If the function is asynchronous,     it must return a jQuery promise that is resolved when the command completes. Otherwise, the     CommandManager will assume it is synchronous, and return a promise that is already resolved. |
 
-<a name="_testReset"></a>
-
-## \_testReset()
-Clear all commands for unit testing, but first make copy of commands so thatthey can be restored afterward
-
-**Kind**: global function  
-<a name="_testRestore"></a>
-
-## \_testRestore()
-Restore original commands after test and release copy
-
-**Kind**: global function  
 <a name="get"></a>
 
 ## get(id) ⇒ [<code>Command</code>](#new_Command_new)

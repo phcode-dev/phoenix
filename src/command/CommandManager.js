@@ -34,16 +34,36 @@ define(function (require, exports, module) {
 
     const EventDispatcher = require("utils/EventDispatcher");
 
+    /**
+     * Event triggered before command executes.
+     * @constant {string}
+     */
     const EVENT_BEFORE_EXECUTE_COMMAND = "beforeExecuteCommand";
-    const SOURCE_KEYBOARD_SHORTCUT = "keyboardShortcut",
-        SOURCE_UI_MENU_CLICK = "uiMenuClick",
-        SOURCE_OTHER = "otherExecAction";
+
+    /**
+     * Keyboard shortcut trigger.
+     * @constant {string}
+     */
+    const SOURCE_KEYBOARD_SHORTCUT = "keyboardShortcut";
+
+    /**
+     * UI menu click trigger.
+     * @constant {string}
+     */
+    const SOURCE_UI_MENU_CLICK = "uiMenuClick";
+
+    /**
+     * Other trigger types.
+     * @constant {string}
+     */
+    const SOURCE_OTHER = "otherExecAction";
 
 
     /**
      * Map of all registered global commands
      * @type {Object} CommandMap
      * @property {Object.<string, Command>} commands - A map of command IDs to Command objects.
+     * @private
      */
     let _commands = {};
 
@@ -52,6 +72,7 @@ define(function (require, exports, module) {
      * TODO (issue #1039): implement separate require contexts for unit tests
      * @type {Object} CommandMap
      * @property {Object.<string, Command>} commands - A map of command IDs to Command objects.
+     * @private
      */
     let _commandsOriginal = {};
 
@@ -83,6 +104,7 @@ define(function (require, exports, module) {
 
     /**
      * Get command id
+     * @private
      * @return {string}
      */
     Command.prototype.getID = function () {
@@ -91,7 +113,7 @@ define(function (require, exports, module) {
 
     /**
      * Executes the command. Additional arguments are passed to the executing function
-     *
+     * @private
      * @return {$.Promise} a jQuery promise that will be resolved when the command completes.
      */
     Command.prototype.execute = function () {
@@ -120,6 +142,7 @@ define(function (require, exports, module) {
 
     /**
      * Is command enabled?
+     * @private
      * @return {boolean}
      */
     Command.prototype.getEnabled = function () {
@@ -129,6 +152,7 @@ define(function (require, exports, module) {
     /**
      * Sets enabled state of Command and dispatches "enabledStateChange"
      * when the enabled state changes.
+     * @private
      * @param {boolean} enabled
      */
     Command.prototype.setEnabled = function (enabled) {
@@ -143,6 +167,7 @@ define(function (require, exports, module) {
     /**
      * Sets enabled state of Command and dispatches "checkedStateChange"
      * when the enabled state changes.
+     * @private
      * @param {boolean} checked
      */
     Command.prototype.setChecked = function (checked) {
@@ -156,6 +181,7 @@ define(function (require, exports, module) {
 
     /**
      * Is command checked?
+     * @private
      * @return {boolean}
      */
     Command.prototype.getChecked = function () {
@@ -169,7 +195,7 @@ define(function (require, exports, module) {
      * Note, a Command name can appear in either HTML or native UI
      * so HTML tags should not be used. To add a Unicode character,
      * use \uXXXX instead of an HTML entity.
-     *
+     * @private
      * @param {string} name
      */
     Command.prototype.setName = function (name) {
@@ -183,6 +209,7 @@ define(function (require, exports, module) {
 
     /**
      * Get command name
+     * @private
      * @return {string}
      */
     Command.prototype.getName = function () {
@@ -259,6 +286,7 @@ define(function (require, exports, module) {
     /**
      * Clear all commands for unit testing, but first make copy of commands so that
      * they can be restored afterward
+     * @private
      */
     function _testReset() {
         _commandsOriginal = _commands;
@@ -267,6 +295,7 @@ define(function (require, exports, module) {
 
     /**
      * Restore original commands after test and release copy
+     * @private
      */
     function _testRestore() {
         _commands = _commandsOriginal;
