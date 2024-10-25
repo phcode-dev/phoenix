@@ -111,38 +111,66 @@ define(function (require, exports, module) {
      *
      * Menu sections are denoted by dividers or the beginning/end of a menu
      *
-     * @enum {string}
+     * @enum {object}
      */
-    let MenuSection = {
-        // Menu Section                     Command ID to mark the section
-        FILE_OPEN_CLOSE_COMMANDS: { sectionMarker: Commands.FILE_NEW },
-        FILE_SAVE_COMMANDS: { sectionMarker: Commands.FILE_SAVE },
-        FILE_LIVE: { sectionMarker: Commands.FILE_LIVE_FILE_PREVIEW },
-        FILE_SETTINGS: { sectionMarker: Commands.FILE_EXTENSION_MANAGER },
-        FILE_EXTENSION_MANAGER: { sectionMarker: Commands.FILE_EXTENSION_MANAGER }, // deprecated. here for legacy support
+    const MenuSection = {
+        FILE_OPEN_CLOSE_COMMANDS,
+        FILE_SAVE_COMMANDS,
+        FILE_LIVE,
+        FILE_SETTINGS,
+        FILE_EXTENSION_MANAGER, // Deprecated
 
-        EDIT_UNDO_REDO_COMMANDS: { sectionMarker: Commands.EDIT_UNDO },
-        EDIT_TEXT_COMMANDS: { sectionMarker: Commands.EDIT_CUT },
-        EDIT_SELECTION_COMMANDS: { sectionMarker: Commands.EDIT_SELECT_ALL },
-        EDIT_MODIFY_SELECTION: { sectionMarker: Commands.EDIT_INDENT },
-        EDIT_COMMENT_SELECTION: { sectionMarker: Commands.EDIT_LINE_COMMENT },
-        EDIT_CODE_HINTS_COMMANDS: { sectionMarker: Commands.SHOW_CODE_HINTS },
-        EDIT_TOGGLE_OPTIONS: { sectionMarker: Commands.TOGGLE_CLOSE_BRACKETS },
+        EDIT_UNDO_REDO_COMMANDS,
+        EDIT_TEXT_COMMANDS,
+        EDIT_SELECTION_COMMANDS,
+        EDIT_MODIFY_SELECTION,
+        EDIT_COMMENT_SELECTION,
+        EDIT_CODE_HINTS_COMMANDS,
+        EDIT_TOGGLE_OPTIONS,
 
-        FIND_FIND_COMMANDS: { sectionMarker: Commands.CMD_FIND },
-        FIND_FIND_IN_COMMANDS: { sectionMarker: Commands.CMD_FIND_IN_FILES },
-        FIND_REPLACE_COMMANDS: { sectionMarker: Commands.CMD_REPLACE },
+        FIND_FIND_COMMANDS,
+        FIND_FIND_IN_COMMANDS,
+        FIND_REPLACE_COMMANDS,
 
-        VIEW_HIDESHOW_COMMANDS: { sectionMarker: Commands.VIEW_HIDE_SIDEBAR },
-        VIEW_FONTSIZE_COMMANDS: { sectionMarker: Commands.VIEW_ZOOM_SUBMENU },
-        VIEW_TOGGLE_OPTIONS: { sectionMarker: Commands.TOGGLE_ACTIVE_LINE },
+        VIEW_HIDESHOW_COMMANDS,
+        VIEW_FONTSIZE_COMMANDS,
+        VIEW_TOGGLE_OPTIONS,
 
-        NAVIGATE_GOTO_COMMANDS: { sectionMarker: Commands.NAVIGATE_QUICK_OPEN },
-        NAVIGATE_DOCUMENTS_COMMANDS: { sectionMarker: Commands.NAVIGATE_NEXT_DOC },
-        NAVIGATE_OS_COMMANDS: { sectionMarker: Commands.NAVIGATE_SHOW_IN_FILE_TREE },
-        NAVIGATE_QUICK_EDIT_COMMANDS: { sectionMarker: Commands.TOGGLE_QUICK_EDIT },
-        NAVIGATE_QUICK_DOCS_COMMANDS: { sectionMarker: Commands.TOGGLE_QUICK_DOCS }
+        NAVIGATE_GOTO_COMMANDS,
+        NAVIGATE_DOCUMENTS_COMMANDS,
+        NAVIGATE_OS_COMMANDS,
+        NAVIGATE_QUICK_EDIT_COMMANDS,
+        NAVIGATE_QUICK_DOCS_COMMANDS
     };
+
+    // Define each section as a separate constant
+    const FILE_OPEN_CLOSE_COMMANDS = { sectionMarker: Commands.FILE_NEW };
+    const FILE_SAVE_COMMANDS = { sectionMarker: Commands.FILE_SAVE };
+    const FILE_LIVE = { sectionMarker: Commands.FILE_LIVE_FILE_PREVIEW };
+    const FILE_SETTINGS = { sectionMarker: Commands.FILE_EXTENSION_MANAGER };
+    const FILE_EXTENSION_MANAGER = { sectionMarker: Commands.FILE_EXTENSION_MANAGER }; // Deprecated
+
+    const EDIT_UNDO_REDO_COMMANDS = { sectionMarker: Commands.EDIT_UNDO };
+    const EDIT_TEXT_COMMANDS = { sectionMarker: Commands.EDIT_CUT };
+    const EDIT_SELECTION_COMMANDS = { sectionMarker: Commands.EDIT_SELECT_ALL };
+    const EDIT_MODIFY_SELECTION = { sectionMarker: Commands.EDIT_INDENT };
+    const EDIT_COMMENT_SELECTION = { sectionMarker: Commands.EDIT_LINE_COMMENT };
+    const EDIT_CODE_HINTS_COMMANDS = { sectionMarker: Commands.SHOW_CODE_HINTS };
+    const EDIT_TOGGLE_OPTIONS = { sectionMarker: Commands.TOGGLE_CLOSE_BRACKETS };
+
+    const FIND_FIND_COMMANDS = { sectionMarker: Commands.CMD_FIND };
+    const FIND_FIND_IN_COMMANDS = { sectionMarker: Commands.CMD_FIND_IN_FILES };
+    const FIND_REPLACE_COMMANDS = { sectionMarker: Commands.CMD_REPLACE };
+
+    const VIEW_HIDESHOW_COMMANDS = { sectionMarker: Commands.VIEW_HIDE_SIDEBAR };
+    const VIEW_FONTSIZE_COMMANDS = { sectionMarker: Commands.VIEW_ZOOM_SUBMENU };
+    const VIEW_TOGGLE_OPTIONS = { sectionMarker: Commands.TOGGLE_ACTIVE_LINE };
+
+    const NAVIGATE_GOTO_COMMANDS = { sectionMarker: Commands.NAVIGATE_QUICK_OPEN };
+    const NAVIGATE_DOCUMENTS_COMMANDS = { sectionMarker: Commands.NAVIGATE_NEXT_DOC };
+    const NAVIGATE_OS_COMMANDS = { sectionMarker: Commands.NAVIGATE_SHOW_IN_FILE_TREE };
+    const NAVIGATE_QUICK_EDIT_COMMANDS = { sectionMarker: Commands.TOGGLE_QUICK_EDIT };
+    const NAVIGATE_QUICK_DOCS_COMMANDS = { sectionMarker: Commands.TOGGLE_QUICK_DOCS };
 
 
     /**

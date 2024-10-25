@@ -434,29 +434,29 @@ Menu sections are denoted by dividers or the beginning/end of a menu
 
 | Name | Type | Default |
 | --- | --- | --- |
-| FILE_OPEN_CLOSE_COMMANDS | <code>string</code> | <code>&quot;{\&quot;sectionMarker\&quot;:\&quot;\&quot;}&quot;</code> | 
-| FILE_SAVE_COMMANDS | <code>string</code> | <code>&quot;{\&quot;sectionMarker\&quot;:\&quot;\&quot;}&quot;</code> | 
-| FILE_LIVE | <code>string</code> | <code>&quot;{\&quot;sectionMarker\&quot;:\&quot;\&quot;}&quot;</code> | 
-| FILE_SETTINGS | <code>string</code> | <code>&quot;{\&quot;sectionMarker\&quot;:\&quot;\&quot;}&quot;</code> | 
-| FILE_EXTENSION_MANAGER | <code>string</code> | <code>&quot;{\&quot;sectionMarker\&quot;:\&quot;\&quot;}&quot;</code> | 
-| EDIT_UNDO_REDO_COMMANDS | <code>string</code> | <code>&quot;{\&quot;sectionMarker\&quot;:\&quot;\&quot;}&quot;</code> | 
-| EDIT_TEXT_COMMANDS | <code>string</code> | <code>&quot;{\&quot;sectionMarker\&quot;:\&quot;\&quot;}&quot;</code> | 
-| EDIT_SELECTION_COMMANDS | <code>string</code> | <code>&quot;{\&quot;sectionMarker\&quot;:\&quot;\&quot;}&quot;</code> | 
-| EDIT_MODIFY_SELECTION | <code>string</code> | <code>&quot;{\&quot;sectionMarker\&quot;:\&quot;\&quot;}&quot;</code> | 
-| EDIT_COMMENT_SELECTION | <code>string</code> | <code>&quot;{\&quot;sectionMarker\&quot;:\&quot;\&quot;}&quot;</code> | 
-| EDIT_CODE_HINTS_COMMANDS | <code>string</code> | <code>&quot;{\&quot;sectionMarker\&quot;:\&quot;\&quot;}&quot;</code> | 
-| EDIT_TOGGLE_OPTIONS | <code>string</code> | <code>&quot;{\&quot;sectionMarker\&quot;:\&quot;\&quot;}&quot;</code> | 
-| FIND_FIND_COMMANDS | <code>string</code> | <code>&quot;{\&quot;sectionMarker\&quot;:\&quot;\&quot;}&quot;</code> | 
-| FIND_FIND_IN_COMMANDS | <code>string</code> | <code>&quot;{\&quot;sectionMarker\&quot;:\&quot;\&quot;}&quot;</code> | 
-| FIND_REPLACE_COMMANDS | <code>string</code> | <code>&quot;{\&quot;sectionMarker\&quot;:\&quot;\&quot;}&quot;</code> | 
-| VIEW_HIDESHOW_COMMANDS | <code>string</code> | <code>&quot;{\&quot;sectionMarker\&quot;:\&quot;\&quot;}&quot;</code> | 
-| VIEW_FONTSIZE_COMMANDS | <code>string</code> | <code>&quot;{\&quot;sectionMarker\&quot;:\&quot;\&quot;}&quot;</code> | 
-| VIEW_TOGGLE_OPTIONS | <code>string</code> | <code>&quot;{\&quot;sectionMarker\&quot;:\&quot;\&quot;}&quot;</code> | 
-| NAVIGATE_GOTO_COMMANDS | <code>string</code> | <code>&quot;{\&quot;sectionMarker\&quot;:\&quot;\&quot;}&quot;</code> | 
-| NAVIGATE_DOCUMENTS_COMMANDS | <code>string</code> | <code>&quot;{\&quot;sectionMarker\&quot;:\&quot;\&quot;}&quot;</code> | 
-| NAVIGATE_OS_COMMANDS | <code>string</code> | <code>&quot;{\&quot;sectionMarker\&quot;:\&quot;\&quot;}&quot;</code> | 
-| NAVIGATE_QUICK_EDIT_COMMANDS | <code>string</code> | <code>&quot;{\&quot;sectionMarker\&quot;:\&quot;\&quot;}&quot;</code> | 
-| NAVIGATE_QUICK_DOCS_COMMANDS | <code>string</code> | <code>&quot;{\&quot;sectionMarker\&quot;:\&quot;\&quot;}&quot;</code> | 
+| FILE_OPEN_CLOSE_COMMANDS | <code>object</code> | <code>FILE_OPEN_CLOSE_COMMANDS</code> | 
+| FILE_SAVE_COMMANDS | <code>object</code> | <code>FILE_SAVE_COMMANDS</code> | 
+| FILE_LIVE | <code>object</code> | <code>FILE_LIVE</code> | 
+| FILE_SETTINGS | <code>object</code> | <code>FILE_SETTINGS</code> | 
+| FILE_EXTENSION_MANAGER | <code>object</code> | <code>FILE_EXTENSION_MANAGER</code> | 
+| EDIT_UNDO_REDO_COMMANDS | <code>object</code> | <code>EDIT_UNDO_REDO_COMMANDS</code> | 
+| EDIT_TEXT_COMMANDS | <code>object</code> | <code>EDIT_TEXT_COMMANDS</code> | 
+| EDIT_SELECTION_COMMANDS | <code>object</code> | <code>EDIT_SELECTION_COMMANDS</code> | 
+| EDIT_MODIFY_SELECTION | <code>object</code> | <code>EDIT_MODIFY_SELECTION</code> | 
+| EDIT_COMMENT_SELECTION | <code>object</code> | <code>EDIT_COMMENT_SELECTION</code> | 
+| EDIT_CODE_HINTS_COMMANDS | <code>object</code> | <code>EDIT_CODE_HINTS_COMMANDS</code> | 
+| EDIT_TOGGLE_OPTIONS | <code>object</code> | <code>EDIT_TOGGLE_OPTIONS</code> | 
+| FIND_FIND_COMMANDS | <code>object</code> | <code>FIND_FIND_COMMANDS</code> | 
+| FIND_FIND_IN_COMMANDS | <code>object</code> | <code>FIND_FIND_IN_COMMANDS</code> | 
+| FIND_REPLACE_COMMANDS | <code>object</code> | <code>FIND_REPLACE_COMMANDS</code> | 
+| VIEW_HIDESHOW_COMMANDS | <code>object</code> | <code>VIEW_HIDESHOW_COMMANDS</code> | 
+| VIEW_FONTSIZE_COMMANDS | <code>object</code> | <code>VIEW_FONTSIZE_COMMANDS</code> | 
+| VIEW_TOGGLE_OPTIONS | <code>object</code> | <code>VIEW_TOGGLE_OPTIONS</code> | 
+| NAVIGATE_GOTO_COMMANDS | <code>object</code> | <code>NAVIGATE_GOTO_COMMANDS</code> | 
+| NAVIGATE_DOCUMENTS_COMMANDS | <code>object</code> | <code>NAVIGATE_DOCUMENTS_COMMANDS</code> | 
+| NAVIGATE_OS_COMMANDS | <code>object</code> | <code>NAVIGATE_OS_COMMANDS</code> | 
+| NAVIGATE_QUICK_EDIT_COMMANDS | <code>object</code> | <code>NAVIGATE_QUICK_EDIT_COMMANDS</code> | 
+| NAVIGATE_QUICK_DOCS_COMMANDS | <code>object</code> | <code>NAVIGATE_QUICK_DOCS_COMMANDS</code> | 
 
 <a name="BEFORE"></a>
 
