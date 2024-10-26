@@ -123,7 +123,7 @@ define(function (require, exports, module) {
          *
          * If this item is not being deleted, then it will be used as the `afterID`
          * for text edits that follow.
-         *
+         * @private
          * @param {int} beforeID ID to set on the pending edits
          * @param {boolean} isBeingDeleted true if the given item is being deleted. If so,
          *     we can't use it as the `afterID` for future edits--whatever previous item
@@ -156,7 +156,6 @@ define(function (require, exports, module) {
          * If the element was in the old DOM, this will return false and the
          * main loop will either spot this element later in the child list
          * or the element has been moved.
-         *
          * @return {boolean} true if an elementInsert was created
          */
         var addElementInsert = function () {
@@ -195,7 +194,6 @@ define(function (require, exports, module) {
          * If the element is in the new DOM, then this will return false and
          * the main loop with either spot this node later on or the element
          * has been moved.
-         *
          * @return {boolean} true if elementDelete was generated
          */
         var addElementDelete = function () {
@@ -244,7 +242,7 @@ define(function (require, exports, module) {
 
         /**
          * Finds the previous child of the new tree.
-         *
+         * @private
          * @return {?Object} previous child or null if there wasn't one
          */
         var prevNode = function () {
@@ -313,7 +311,6 @@ define(function (require, exports, module) {
          * Adds an elementMove edit if the parent has changed between the old and new trees.
          * These are fairly infrequent and generally occur if you make a change across
          * tag boundaries.
-         *
          * @return {boolean} true if an elementMove was generated
          */
         var addElementMove = function () {
@@ -346,7 +343,6 @@ define(function (require, exports, module) {
         /**
          * Looks to see if the element in the old tree has moved by checking its
          * current and former parents.
-         *
          * @return {boolean} true if the element has moved
          */
         var hasMoved = function (oldChild) {
@@ -445,7 +441,7 @@ define(function (require, exports, module) {
         // At this point, we've used up all of the children in at least one of the
         // two sets of children.
 
-        /**
+        /*
          * Take care of any remaining children in the old tree.
          */
         while (oldIndex < oldChildren.length) {
@@ -470,7 +466,7 @@ define(function (require, exports, module) {
             }
         }
 
-        /**
+        /*
          * Take care of the remaining children in the new tree.
          */
         while (newIndex < newChildren.length) {
@@ -494,7 +490,7 @@ define(function (require, exports, module) {
             }
         }
 
-        /**
+        /*
          * Finalize remaining edits. For inserts and moves, we can set the `lastChild`
          * flag and the browser can simply use `appendChild` to add these items.
          */
@@ -528,7 +524,6 @@ define(function (require, exports, module) {
      * - attrChange
      * - attrAdd
      * - rememberNodes (a special instruction that reflects the need to hang on to moved nodes)
-     *
      * @param {Object} oldNode - SimpleDOM node with the original content.
      * @param {Object} newNode - SimpleDOM node with the new content.
      * @return {Array<Object>} - List of edit operations.
@@ -556,7 +551,6 @@ define(function (require, exports, module) {
 
         /**
          * Aggregates the child edits in the proper data structures.
-         *
          * @param {Object} delta edits, moves and newElements to add
          */
         var addEdits = function (delta) {

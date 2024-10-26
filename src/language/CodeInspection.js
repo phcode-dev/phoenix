@@ -64,8 +64,14 @@ define(function (require, exports, module) {
         QuickViewManager  = require("features/QuickViewManager"),
         Metrics           = require("utils/Metrics");
 
-    const CODE_INSPECTION_GUTTER_PRIORITY      = 500,
-        CODE_INSPECTION_GUTTER = "code-inspection-gutter";
+    const CODE_INSPECTION_GUTTER_PRIORITY      = 500;
+
+    /**
+     * Code inspection gutter
+     * @const
+     * @type {string}
+     */
+    const CODE_INSPECTION_GUTTER = "code-inspection-gutter";
 
     const EDIT_ORIGIN_LINT_FIX = "lint_fix";
 
@@ -102,6 +108,7 @@ define(function (require, exports, module) {
 
     /**
      * Constants for the preferences defined in this file.
+     * @private
      */
     const PREF_ENABLED            = "enabled",
         PREF_COLLAPSED          = "collapsed",
@@ -181,6 +188,7 @@ define(function (require, exports, module) {
 
     /**
      * Enable or disable the "Go to First Error" command
+     * @private
      * @param {boolean} gotoEnabled Whether it is enabled.
      */
     function setGotoEnabled(gotoEnabled) {
@@ -360,7 +368,7 @@ define(function (require, exports, module) {
     /**
      * Update the title of the problem panel and the tooltip of the status bar icon. The title and the tooltip will
      * change based on the number of problems reported and how many provider reported problems.
-     *
+     * @private
      * @param {Number} numProblems - total number of problems across all providers
      * @param {{name:string, scanFileAsync:?function(string, string):!{$.Promise}, scanFile:?function(string, string):Object}} Array providersReportingProblems - providers that reported problems
      * @param {boolean} aborted - true if any provider returned a result with the 'aborted' flag set
@@ -444,6 +452,7 @@ define(function (require, exports, module) {
     /**
      * It creates a div element with a span element inside it, and then adds a click handler to move cursor to the
      * error position.
+     * @private
      * @param editor - the editor instance
      * @param line - the line number of the error
      * @param ch - the character position of the error
@@ -530,6 +539,11 @@ define(function (require, exports, module) {
         _populateDummyGutterElements(editor, from, to);
     }
 
+    /**
+     * Scrolls to the problem line
+     * @param {number} lineNumber The line number to scroll to
+     * @returns {jQuery|null}
+     */
     function scrollToProblem(lineNumber) {
         const $lineElement = $problemsPanelTable.find('td.line-number[data-line="' + lineNumber + '"]');
         if ($lineElement.length) {
@@ -719,7 +733,6 @@ define(function (require, exports, module) {
      * Run inspector applicable to current document. Updates status bar indicator and refreshes error list in
      * bottom panel. Does not run if inspection is disabled or if a providerName is given and does not
      * match the current doc's provider name.
-     *
      * @param {?string} providerName name of the provider that is requesting a run
      */
     function run() {
@@ -957,6 +970,7 @@ define(function (require, exports, module) {
 
     /**
      * Returns a list of providers registered for given languageId through register function
+     * @private
      */
     function getProvidersForLanguageId(languageId) {
         var result = [];
@@ -971,6 +985,7 @@ define(function (require, exports, module) {
 
     /**
      * Update DocumentManager listeners.
+     * @private
      */
     function updateListeners() {
         if (_enabled) {
@@ -1048,7 +1063,7 @@ define(function (require, exports, module) {
      * Toggle the collapsed state for the panel. This explicitly collapses the panel (as opposed to
      * the auto collapse due to files with no errors & filetypes with no provider). When explicitly
      * collapsed, the panel will not reopen automatically on switch files or save.
-     *
+     * @private
      * @param {?boolean} collapsed Collapsed state. If omitted, the state is toggled.
      * @param {?boolean} doNotSave true if the preference should not be saved to user settings. This is generally for events triggered by project-level settings.
      */
@@ -1076,7 +1091,10 @@ define(function (require, exports, module) {
         }
     }
 
-    /** Command to go to the first Problem */
+    /**
+     * Command to go to the first Problem
+     * @private
+     */
     function handleGotoFirstProblem() {
         run();
         if (_gotoEnabled) {
