@@ -20,16 +20,11 @@ const Editor = brackets.getModule("editor/Editor")
         * [.getFocusedInlineWidget](#Editor+getFocusedInlineWidget) ⇒ <code>InlineWidget</code>
         * [.setInlineWidgetHeight](#Editor+setInlineWidgetHeight)
         * [.document](#Editor+document) : <code>Document</code>
-        * [._lastEditorWidth](#Editor+_lastEditorWidth) : <code>number</code>
-        * [._duringSync](#Editor+_duringSync) : <code>boolean</code>
         * [.getInlineWidgetsBelowCursor()](#Editor+getInlineWidgetsBelowCursor) ⇒ <code>boolean</code>
         * [.canConsumeEscapeKeyEvent()](#Editor+canConsumeEscapeKeyEvent)
         * [.destroy()](#Editor+destroy)
-        * [._getModeFromDocument()](#Editor+_getModeFromDocument) ⇒ <code>string</code>
         * [.selectAllNoScroll()](#Editor+selectAllNoScroll)
         * [.isTextSubset()](#Editor+isTextSubset) ⇒ <code>boolean</code>
-        * [._updateHiddenLines()](#Editor+_updateHiddenLines)
-        * [._resetText(text)](#Editor+_resetText)
         * [.getFile()](#Editor+getFile) ⇒ <code>File</code>
         * [.getCursorPos([expandTabs], [which])](#Editor+getCursorPos) ⇒ <code>Object</code>
         * [.getEndingCursorPos([expandTabs])](#Editor+getEndingCursorPos) ⇒ <code>Object</code>
@@ -67,7 +62,8 @@ const Editor = brackets.getModule("editor/Editor")
         * [.isSamePosition(position1, position2)](#Editor+isSamePosition) ⇒ <code>boolean</code>
         * [.getHistory()](#Editor+getHistory) ⇒ <code>Array</code>
         * [.setHistory()](#Editor+setHistory)
-        * [.createHistoryRestorePoint()](#Editor+createHistoryRestorePoint)
+        * [.createHistoryRestorePoint(restorePointName)](#Editor+createHistoryRestorePoint)
+        * [.restoreHistoryPoint(restorePointName)](#Editor+restoreHistoryPoint)
         * [.setSelection(start, [end], [center], [centerOptions], [origin])](#Editor+setSelection)
         * [.replaceSelection(replacement, [select])](#Editor+replaceSelection)
         * [.replaceSelections(replacement, [select])](#Editor+replaceSelections)
@@ -77,6 +73,7 @@ const Editor = brackets.getModule("editor/Editor")
         * [.setSelections(selections, center, centerOptions, origin)](#Editor+setSelections)
         * [.toggleOverwrite(start)](#Editor+toggleOverwrite)
         * [.selectWordAt(pos)](#Editor+selectWordAt)
+        * [.getTextBetween(startPos, endPos)](#Editor+getTextBetween) ⇒ <code>string</code>
         * [.getWordAt(pos)](#Editor+getWordAt) ⇒ <code>Object</code>
         * [.getNumberAt(pos, maxDigits)](#Editor+getNumberAt) ⇒ <code>Object</code>
         * [.lineCount()](#Editor+lineCount) ⇒ <code>number</code>
@@ -86,14 +83,15 @@ const Editor = brackets.getModule("editor/Editor")
         * [.totalHeight()](#Editor+totalHeight) ⇒ <code>number</code>
         * [.getScrollerElement()](#Editor+getScrollerElement) ⇒ <code>HTMLDivElement</code>
         * [.getRootElement()](#Editor+getRootElement) ⇒ <code>HTMLDivElement</code>
-        * [._getLineSpaceElement()](#Editor+_getLineSpaceElement) ⇒ <code>HTMLDivElement</code>
         * [.getScrollPos()](#Editor+getScrollPos) ⇒ <code>Object</code>
         * [.adjustScrollPos(scrollPos, heightDelta)](#Editor+adjustScrollPos)
         * [.setScrollPos(x, y)](#Editor+setScrollPos)
+        * [.getTextHeight()](#Editor+getTextHeight) ⇒ <code>number</code>
         * [.displayErrorMessageAtCursor(errorMsg)](#Editor+displayErrorMessageAtCursor)
         * [.getVirtualScrollAreaTop()](#Editor+getVirtualScrollAreaTop) ⇒ <code>number</code>
         * [.focus()](#Editor+focus)
         * [.hasFocus()](#Editor+hasFocus)
+        * [.getViewState()](#Editor+getViewState) ⇒ <code>EditorViewState</code>
         * [.restoreViewState(viewState)](#Editor+restoreViewState)
         * [.refresh([handleResize])](#Editor+refresh)
         * [.refreshAll([handleResize])](#Editor+refreshAll)
@@ -114,7 +112,12 @@ const Editor = brackets.getModule("editor/Editor")
         * [.clearGutter(gutterName)](#Editor+clearGutter)
     * _static_
         * [.getMarkOptionUnderlineError](#Editor.getMarkOptionUnderlineError)
-        * [.EVENT_BEFORE_CHANGE](#Editor.EVENT_BEFORE_CHANGE)
+        * [.getMarkOptionUnderlineWarn](#Editor.getMarkOptionUnderlineWarn)
+        * [.getMarkOptionUnderlineInfo](#Editor.getMarkOptionUnderlineInfo)
+        * [.getMarkOptionUnderlineSpellcheck](#Editor.getMarkOptionUnderlineSpellcheck)
+        * [.getMarkOptionHyperlinkText](#Editor.getMarkOptionHyperlinkText)
+        * [.getMarkOptionMatchingRefs](#Editor.getMarkOptionMatchingRefs)
+        * [.getMarkOptionRenameOutline](#Editor.getMarkOptionRenameOutline)
         * [.getRegisteredGutters()](#Editor.getRegisteredGutters) ⇒ <code>Object</code>
         * [.isGutterRegistered(gutterName)](#Editor.isGutterRegistered) ⇒ <code>boolean</code>
         * [.registerGutter(name, priority, [languageIds])](#Editor.registerGutter)
@@ -248,21 +251,6 @@ Sets the height of an inline widget in this editor.
 The Document we're bound to
 
 **Kind**: instance property of [<code>Editor</code>](#Editor)  
-<a name="Editor+_lastEditorWidth"></a>
-
-### editor.\_lastEditorWidth : <code>number</code>
-The Editor's last known width.
-Used in conjunction with updateLayout to recompute the layout
-if the parent container changes its size since our last layout update.
-
-**Kind**: instance property of [<code>Editor</code>](#Editor)  
-<a name="Editor+_duringSync"></a>
-
-### editor.\_duringSync : <code>boolean</code>
-If true, we're in the middle of syncing to/from the Document. Used to ignore spurious change
-events caused by us (vs. change events caused by others, which we need to pay attention to).
-
-**Kind**: instance property of [<code>Editor</code>](#Editor)  
 <a name="Editor+getInlineWidgetsBelowCursor"></a>
 
 ### editor.getInlineWidgetsBelowCursor() ⇒ <code>boolean</code>
@@ -283,14 +271,6 @@ Editor that is secretly providing the Document's backing state, then the Documen
 a read-only string-backed mode.
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
-<a name="Editor+_getModeFromDocument"></a>
-
-### editor.\_getModeFromDocument() ⇒ <code>string</code>
-Determine the mode to use from the document's language
-Uses "text/plain" if the language does not define a mode
-
-**Kind**: instance method of [<code>Editor</code>](#Editor)  
-**Returns**: <code>string</code> - The mode to use  
 <a name="Editor+selectAllNoScroll"></a>
 
 ### editor.selectAllNoScroll()
@@ -302,25 +282,6 @@ Selects all text and maintains the current scroll position.
 ### editor.isTextSubset() ⇒ <code>boolean</code>
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 **Returns**: <code>boolean</code> - True if editor is not showing the entire text of the document (i.e. an inline editor)  
-<a name="Editor+_updateHiddenLines"></a>
-
-### editor.\_updateHiddenLines()
-Ensures that the lines that are actually hidden in the inline editor correspond to
-the desired visible range.
-
-**Kind**: instance method of [<code>Editor</code>](#Editor)  
-<a name="Editor+_resetText"></a>
-
-### editor.\_resetText(text)
-Sets the contents of the editor, clears the undo/redo history and marks the document clean. Dispatches a change event.
-Semi-private: only Document should call this.
-
-**Kind**: instance method of [<code>Editor</code>](#Editor)  
-
-| Param | Type |
-| --- | --- |
-| text | <code>string</code> | 
-
 <a name="Editor+getFile"></a>
 
 ### editor.getFile() ⇒ <code>File</code>
@@ -792,11 +753,28 @@ if the editor content isn't also the same as it was when getHistory was called.
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 <a name="Editor+createHistoryRestorePoint"></a>
 
-### editor.createHistoryRestorePoint()
+### editor.createHistoryRestorePoint(restorePointName)
 Creates a named restore point in undo history. this can be later be restored to undo all
 changed till the named restore point in one go.
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| restorePointName | <code>string</code> | The name of the restore point to revert to. |
+
+<a name="Editor+restoreHistoryPoint"></a>
+
+### editor.restoreHistoryPoint(restorePointName)
+To restore the editor to a named restore point
+if the restore point is found, it reverts all changes made after that point.
+
+**Kind**: instance method of [<code>Editor</code>](#Editor)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| restorePointName | <code>string</code> | The name of the restore point to revert to. |
+
 <a name="Editor+setSelection"></a>
 
 ### editor.setSelection(start, [end], [center], [centerOptions], [origin])
@@ -921,6 +899,19 @@ Selects word that the given pos lies within or adjacent to. If pos isn't touchin
 | --- | --- |
 | pos | <code>Object</code> | 
 
+<a name="Editor+getTextBetween"></a>
+
+### editor.getTextBetween(startPos, endPos) ⇒ <code>string</code>
+To get the text between the starting position and the ending position
+
+**Kind**: instance method of [<code>Editor</code>](#Editor)  
+**Returns**: <code>string</code> - The text between the starting position and the ending position  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| startPos | <code>Object</code> | | The starting position |
+| endPos | <code>Object</code> | | The ending position |
+
 <a name="Editor+getWordAt"></a>
 
 ### editor.getWordAt(pos) ⇒ <code>Object</code>
@@ -1000,15 +991,6 @@ Gets the root DOM node of the editor.
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 **Returns**: <code>HTMLDivElement</code> - The editor's root DOM node.  
-<a name="Editor+_getLineSpaceElement"></a>
-
-### editor.\_getLineSpaceElement() ⇒ <code>HTMLDivElement</code>
-Gets the lineSpace element within the editor (the container around the individual lines of code).
-FUTURE: This is fairly CodeMirror-specific. Logic that depends on this may break if we switch
-editors.
-
-**Kind**: instance method of [<code>Editor</code>](#Editor)  
-**Returns**: <code>HTMLDivElement</code> - The editor's lineSpace element.  
 <a name="Editor+getScrollPos"></a>
 
 ### editor.getScrollPos() ⇒ <code>Object</code>
@@ -1040,6 +1022,13 @@ Sets the current scroll position of the editor.
 | x | <code>number</code> | scrollLeft position in pixels |
 | y | <code>number</code> | scrollTop position in pixels |
 
+<a name="Editor+getTextHeight"></a>
+
+### editor.getTextHeight() ⇒ <code>number</code>
+Returns the current text height of the editor.
+
+**Kind**: instance method of [<code>Editor</code>](#Editor)  
+**Returns**: <code>number</code> - Height of the text in pixels  
 <a name="Editor+displayErrorMessageAtCursor"></a>
 
 ### editor.displayErrorMessageAtCursor(errorMsg)
@@ -1071,6 +1060,12 @@ Gives focus to the editor control
 
 ### editor.hasFocus()
 Returns true if the editor has focus
+
+**Kind**: instance method of [<code>Editor</code>](#Editor)  
+<a name="Editor+getViewState"></a>
+
+### editor.getViewState() ⇒ <code>EditorViewState</code>
+returns the view state for the editor
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 <a name="Editor+restoreViewState"></a>
@@ -1275,40 +1270,43 @@ Clears all marks from the gutter with the specified name.
 <a name="Editor.getMarkOptionUnderlineError"></a>
 
 ### Editor.getMarkOptionUnderlineError
-Mark options to use with API with Editor.markText or Editor.markToken.
+Mark option to underline errors.
 
 **Kind**: static property of [<code>Editor</code>](#Editor)  
-<a name="Editor.EVENT_BEFORE_CHANGE"></a>
+<a name="Editor.getMarkOptionUnderlineWarn"></a>
 
-### Editor.EVENT\_BEFORE\_CHANGE
-Each Editor instance object dispatches the following events:
-   - keydown, keypress, keyup -- When any key event happens in the editor (whether it changes the
-     text or not). Handlers are passed `(BracketsEvent, Editor, KeyboardEvent)`. The 3nd arg is the
-     raw DOM event. Note: most listeners will only want to listen for "keypress".
-   - change - Triggered with an array of change objects. Parameters: (editor, changeList)
-   - beforeChange - (self, changeObj)
-   - beforeSelectionChange - (selectionObj)
-   - focus - Fired when an editor is focused
-   - blur - Fired when an editor loses focused
-   - update - Will be fired whenever Editor updates its DOM display.
-   - cursorActivity -- When the user moves the cursor or changes the selection, or an edit occurs.
-     Note: do not listen to this in order to be generally informed of edits--listen to the
-     "change" event on Document instead.
-   - scroll -- When the editor is scrolled, either by user action or programmatically.
-   - viewportChange - (from: number, to: number) Fires whenever the view port of the editor changes
-     (due to scrolling, editing, or any other factor). The from and to arguments give the new start
-     and end of the viewport. This is combination with `editorInstance.getViewPort()` can be used to
-     selectively redraw visual elements in code like syntax analyze only parts of code instead
-     of the full code everytime.
-   - lostContent -- When the backing Document changes in such a way that this Editor is no longer
-     able to display accurate text. This occurs if the Document's file is deleted, or in certain
-     Document->editor syncing edge cases that we do not yet support (the latter cause will
-     eventually go away).
-   - optionChange -- Triggered when an option for the editor is changed. The 2nd arg to the listener
-     is a string containing the editor option that is changing. The 3rd arg, which can be any
-     data type, is the new value for the editor option.
-   - beforeDestroy - Triggered before the object is about to dispose of all its internal state data
-     so that listeners can cache things like scroll pos, etc...
+### Editor.getMarkOptionUnderlineWarn
+Mark option to underline warnings.
+
+**Kind**: static property of [<code>Editor</code>](#Editor)  
+<a name="Editor.getMarkOptionUnderlineInfo"></a>
+
+### Editor.getMarkOptionUnderlineInfo
+Mark option to underline informational text.
+
+**Kind**: static property of [<code>Editor</code>](#Editor)  
+<a name="Editor.getMarkOptionUnderlineSpellcheck"></a>
+
+### Editor.getMarkOptionUnderlineSpellcheck
+Mark option to underline spelling errors.
+
+**Kind**: static property of [<code>Editor</code>](#Editor)  
+<a name="Editor.getMarkOptionHyperlinkText"></a>
+
+### Editor.getMarkOptionHyperlinkText
+Mark option to highlight hyperlinks.
+
+**Kind**: static property of [<code>Editor</code>](#Editor)  
+<a name="Editor.getMarkOptionMatchingRefs"></a>
+
+### Editor.getMarkOptionMatchingRefs
+Mark option for matching references.
+
+**Kind**: static property of [<code>Editor</code>](#Editor)  
+<a name="Editor.getMarkOptionRenameOutline"></a>
+
+### Editor.getMarkOptionRenameOutline
+Mark option for renaming outlines.
 
 **Kind**: static property of [<code>Editor</code>](#Editor)  
 <a name="Editor.getRegisteredGutters"></a>
@@ -1652,72 +1650,25 @@ To listen for events, do something like this: (see EventDispatcher for details o
     `editorInstance.on("eventname", handler);`
 
 **Kind**: global variable  
-<a name="IndentHelper"></a>
-
-## IndentHelper
-Editor helpers
-
-**Kind**: global variable  
-<a name="registeredGutters"></a>
-
-## registeredGutters : <code>Array.&lt;Object&gt;</code>
-A list of gutter name and priorities currently registered for editors.
-The line number gutter is defined as \{ name: LINE_NUMBER_GUTTER, priority: 100 }
-
-**Kind**: global variable  
-**Properties**
-
-| Name | Type | Description |
-| --- | --- | --- |
-| name | <code>string</code> | The name of the item. |
-| priority | <code>number</code> | The priority of the item. |
-| languageIds | <code>Array</code> | An array of language IDs. |
-
-<a name="_duringFocus"></a>
-
-## \_duringFocus : <code>boolean</code>
-Guard flag to prevent focus() reentrancy (via blur handlers), even across Editors
-
-**Kind**: global variable  
 <a name="BOUNDARY_CHECK_NORMAL"></a>
 
 ## BOUNDARY\_CHECK\_NORMAL : <code>number</code>
-Constant: ignore upper boundary when centering text
-Constant: bulls-eye = strictly centre always
+Constant: Normal boundary check when centering text.
 
 **Kind**: global variable  
-<a name="_instances"></a>
+<a name="BOUNDARY_IGNORE_TOP"></a>
 
-## \_instances : [<code>Array.&lt;Editor&gt;</code>](#Editor)
-List of all current (non-destroy()ed) Editor instances. Needed when changing global preferences
-that affect all editors, e.g. tabbing or color scheme settings.
+## BOUNDARY\_IGNORE\_TOP : <code>number</code>
+Constant: Ignore the upper boundary when centering text.
+
+**Kind**: global variable  
+<a name="BOUNDARY_BULLSEYE"></a>
+
+## BOUNDARY\_BULLSEYE : <code>number</code>
+Constant: Bulls-eye mode, strictly center the text always.
 
 **Kind**: global variable  
 <a name="CENTERING_MARGIN"></a>
 
 ## CENTERING\_MARGIN
 **Kind**: global constant  
-<a name="_checkTopBoundary"></a>
-
-## \_checkTopBoundary(options)
-Helper functions to check options.
-
-**Kind**: global function  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| options | <code>number</code> | BOUNDARY_CHECK_NORMAL or BOUNDARY_IGNORE_TOP |
-
-<a name="_buildPreferencesContext"></a>
-
-## \_buildPreferencesContext(fullPath) ⇒ <code>\*</code>
-Helper function to build preferences context based on the full path of
-the file.
-
-**Kind**: global function  
-**Returns**: <code>\*</code> - A context for the specified file name  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| fullPath | <code>string</code> | Full path of the file |
-
