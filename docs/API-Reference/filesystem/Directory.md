@@ -10,9 +10,6 @@ const Directory = brackets.getModule("filesystem/Directory")
 
 * [Directory](#Directory)
     * [new Directory(fullPath, fileSystem)](#new_Directory_new)
-    * [._contents](#Directory+_contents) : <code>Array.&lt;FileSystemEntry&gt;</code>
-    * [._contentsStats](#Directory+_contentsStats) : <code>Array.&lt;FileSystemStats&gt;</code>
-    * [._contentsStatsErrors](#Directory+_contentsStatsErrors) : <code>Object.&lt;string, string&gt;</code>
     * [.isEmptyAsync()](#Directory+isEmptyAsync) ⇒ <code>Promise.&lt;boolean&gt;</code>
     * [.unlinkEmptyDirectoryAsync()](#Directory+unlinkEmptyDirectoryAsync) ⇒ <code>Promise.&lt;void&gt;</code>
     * [.getContentsAsync(filterNothing)](#Directory+getContentsAsync) ⇒ <code>Object</code>
@@ -23,7 +20,14 @@ const Directory = brackets.getModule("filesystem/Directory")
 <a name="new_Directory_new"></a>
 
 ### new Directory(fullPath, fileSystem)
-Model for a file system Directory.This class should *not* be instantiated directly. Use FileSystem.getDirectoryForPath,FileSystem.resolve, or Directory.getContents to create an instance of this class.Note: Directory.fullPath always has a trailing slash.See the FileSystem class for more details.
+Model for a file system Directory.
+
+This class should *not* be instantiated directly. Use FileSystem.getDirectoryForPath,
+FileSystem.resolve, or Directory.getContents to create an instance of this class.
+
+Note: Directory.fullPath always has a trailing slash.
+
+See the FileSystem class for more details.
 
 
 | Param | Type | Description |
@@ -31,24 +35,6 @@ Model for a file system Directory.This class should *not* be instantiated dire
 | fullPath | <code>string</code> | The full path for this Directory. |
 | fileSystem | <code>FileSystem</code> | The file system associated with this Directory. |
 
-<a name="Directory+_contents"></a>
-
-### directory.\_contents : <code>Array.&lt;FileSystemEntry&gt;</code>
-The contents of this directory. This "private" property is used by FileSystem.
-
-**Kind**: instance property of [<code>Directory</code>](#Directory)  
-<a name="Directory+_contentsStats"></a>
-
-### directory.\_contentsStats : <code>Array.&lt;FileSystemStats&gt;</code>
-The stats for the contents of this directory, such that this._contentsStats[i]corresponds to this._contents[i].
-
-**Kind**: instance property of [<code>Directory</code>](#Directory)  
-<a name="Directory+_contentsStatsErrors"></a>
-
-### directory.\_contentsStatsErrors : <code>Object.&lt;string, string&gt;</code>
-The stats errors for the contents of this directory.
-
-**Kind**: instance property of [<code>Directory</code>](#Directory)  
 <a name="Directory+isEmptyAsync"></a>
 
 ### directory.isEmptyAsync() ⇒ <code>Promise.&lt;boolean&gt;</code>
@@ -59,7 +45,12 @@ Returns true if is a directory exists and is empty.
 <a name="Directory+unlinkEmptyDirectoryAsync"></a>
 
 ### directory.unlinkEmptyDirectoryAsync() ⇒ <code>Promise.&lt;void&gt;</code>
-Recursively deletes all empty subdirectories within the current directory. If all subdirectories are empty,the current directory itself will be deleted.A directory is considered empty if it doesn't contain any files in its subtree.If a subtree contains a large number of nested subdirectories and no files, the whole tree will be deleted.Only branches that contain a file will be retained.
+Recursively deletes all empty subdirectories within the current directory. If all subdirectories are empty,
+the current directory itself will be deleted.
+A directory is considered empty if it doesn't contain any files in its subtree.
+
+If a subtree contains a large number of nested subdirectories and no files, the whole tree will be deleted.
+Only branches that contain a file will be retained.
 
 **Kind**: instance method of [<code>Directory</code>](#Directory)  
 **Returns**: <code>Promise.&lt;void&gt;</code> - A Promise that resolves when the operation is finished  
@@ -74,10 +65,13 @@ await dir.unlinkEmptyDirectoryAsync();
 <a name="Directory+getContentsAsync"></a>
 
 ### directory.getContentsAsync(filterNothing) ⇒ <code>Object</code>
-Read the contents of a Directory, returns a promise. It filters out all filesthat are not shown in the file tree by default, unless the filterNothing option is specified.
+Read the contents of a Directory, returns a promise. It filters out all files
+that are not shown in the file tree by default, unless the filterNothing option is specified.
 
 **Kind**: instance method of [<code>Directory</code>](#Directory)  
-**Returns**: <code>Object</code> - An objectwith attributes - entries(an array of file system entries), contentStats and contentsStatsErrors(a map fromcontent name to error if there is any).  
+**Returns**: <code>Object</code> - An object
+with attributes - entries(an array of file system entries), contentStats and contentsStatsErrors(a map from
+content name to error if there is any).  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -86,7 +80,8 @@ Read the contents of a Directory, returns a promise. It filters out all filesth
 <a name="Directory+getContents"></a>
 
 ### directory.getContents(callback, filterNothing)
-Read the contents of a Directory. It filters out all filesthat are not shown in the file tree by default, unless the filterNothing option is specified.
+Read the contents of a Directory. It filters out all files
+that are not shown in the file tree by default, unless the filterNothing option is specified.
 
 **Kind**: instance method of [<code>Directory</code>](#Directory)  
 

@@ -9,7 +9,6 @@ const FileIndex = brackets.getModule("filesystem/FileIndex")
 **Kind**: global class  
 
 * [FileIndex](#FileIndex)
-    * [._index](#FileIndex+_index) : <code>Object.&lt;string, (File\|Directory)&gt;</code>
     * [.clear()](#FileIndex+clear)
     * [.doNotRemoveFromIndex()](#FileIndex+doNotRemoveFromIndex)
     * [.visitAll(Called)](#FileIndex+visitAll)
@@ -18,12 +17,6 @@ const FileIndex = brackets.getModule("filesystem/FileIndex")
     * [.entryRenamed(oldPath, newPath, isDirectory)](#FileIndex+entryRenamed)
     * [.getEntry(path)](#FileIndex+getEntry) ⇒ <code>File</code> \| <code>Directory</code>
 
-<a name="FileIndex+_index"></a>
-
-### fileIndex.\_index : <code>Object.&lt;string, (File\|Directory)&gt;</code>
-Master index
-
-**Kind**: instance property of [<code>FileIndex</code>](#FileIndex)  
 <a name="FileIndex+clear"></a>
 
 ### fileIndex.clear()
@@ -72,7 +65,8 @@ Remove an entry.
 <a name="FileIndex+entryRenamed"></a>
 
 ### fileIndex.entryRenamed(oldPath, newPath, isDirectory)
-Notify the index that an entry has been renamed. This updatesall affected entries in the index.
+Notify the index that an entry has been renamed. This updates
+all affected entries in the index.
 
 **Kind**: instance method of [<code>FileIndex</code>](#FileIndex)  
 
@@ -85,10 +79,12 @@ Notify the index that an entry has been renamed. This updatesall affected entri
 <a name="FileIndex+getEntry"></a>
 
 ### fileIndex.getEntry(path) ⇒ <code>File</code> \| <code>Directory</code>
-Returns the cached entry for the specified path, or undefinedif the path has not been cached.
+Returns the cached entry for the specified path, or undefined
+if the path has not been cached.
 
 **Kind**: instance method of [<code>FileIndex</code>](#FileIndex)  
-**Returns**: <code>File</code> \| <code>Directory</code> - The entry for the path, or undefined if it hasn't             been cached yet.  
+**Returns**: <code>File</code> \| <code>Directory</code> - The entry for the path, or undefined if it hasn't
+             been cached yet.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -97,6 +93,8 @@ Returns the cached entry for the specified path, or undefinedif the path has no
 <a name="FileUtils"></a>
 
 ## FileUtils
-FileIndex is an internal module used by FileSystem to maintain an index of all files and directories.This module is *only* used by FileSystem, and should not be called directly.
+FileIndex is an internal module used by FileSystem to maintain an index of all files and directories.
+
+This module is *only* used by FileSystem, and should not be called directly.
 
 **Kind**: global variable  
