@@ -3,6 +3,30 @@
 const HTMLUtils = brackets.getModule("language/HTMLUtils")
 ```
 
+<a name="TAG_NAME"></a>
+
+## TAG\_NAME : <code>string</code>
+Key representing tag name
+
+**Kind**: global constant  
+<a name="CLOSING_TAG"></a>
+
+## CLOSING\_TAG : <code>string</code>
+Key representing closing tag
+
+**Kind**: global constant  
+<a name="ATTR_NAME"></a>
+
+## ATTR\_NAME : <code>string</code>
+Key representing attribute name
+
+**Kind**: global constant  
+<a name="ATTR_VALUE"></a>
+
+## ATTR\_VALUE : <code>string</code>
+Key representing attribute value
+
+**Kind**: global constant  
 <a name="getTagAttributes"></a>
 
 ## getTagAttributes(editor, pos) ⇒ <code>Array.&lt;string&gt;</code>
@@ -35,7 +59,17 @@ Creates a tagInfo object and assures all the values are entered or are empty str
 <a name="getTagInfo"></a>
 
 ## getTagInfo(editor, constPos, let) ⇒ <code>Object</code>
-Figure out if we're in a tag, and if we are return info about itAn example token stream for this tag is ```js<span id="open-files-disclosure-arrow"></span> :     className:tag       string:"<span"     className:          string:" "     className:attribute string:"id"     className:          string:"="     className:string    string:""open-files-disclosure-arrow""     className:tag       string:"></span>"```
+Figure out if we're in a tag, and if we are return info about it
+An example token stream for this tag is 
+```js
+<span id="open-files-disclosure-arrow"></span> :
+     className:tag       string:"<span"
+     className:          string:" "
+     className:attribute string:"id"
+     className:          string:"="
+     className:string    string:""open-files-disclosure-arrow""
+     className:tag       string:"></span>"
+```
 
 **Kind**: global function  
 **Returns**: <code>Object</code> - A tagInfo object with some context about the current tag hint.  
@@ -49,7 +83,8 @@ Figure out if we're in a tag, and if we are return info about itAn example toke
 <a name="findBlocks"></a>
 
 ## findBlocks(editor, modeName) ⇒ <code>Object</code>
-Returns an Array of info about all blocks whose token mode name matches that passed in,in the given Editor's HTML document (assumes the Editor contains HTML text).
+Returns an Array of info about all blocks whose token mode name matches that passed in,
+in the given Editor's HTML document (assumes the Editor contains HTML text).
 
 **Kind**: global function  
 **Returns**: <code>Object</code> - Array  
@@ -62,7 +97,8 @@ Returns an Array of info about all blocks whose token mode name matches that pas
 <a name="findStyleBlocks"></a>
 
 ## findStyleBlocks(editor) ⇒ <code>Object</code>
-Returns an Array of info about all 'style' blocks in the given Editor's HTML document (assumesthe Editor contains HTML text).
+Returns an Array of info about all 'style' blocks in the given Editor's HTML document (assumes
+the Editor contains HTML text).
 
 **Kind**: global function  
 **Returns**: <code>Object</code> - Array  

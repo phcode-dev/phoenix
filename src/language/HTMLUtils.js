@@ -28,11 +28,32 @@ define(function (require, exports, module) {
     var CodeMirror = require("thirdparty/CodeMirror/lib/codemirror"),
         TokenUtils = require("utils/TokenUtils");
 
+
     // Constants
-    var TAG_NAME = "tagName",
-        CLOSING_TAG = "closingTag",
-        ATTR_NAME = "attr.name",
-        ATTR_VALUE = "attr.value";
+    /**
+     * Key representing tag name
+     * @type {string}
+     */
+    const TAG_NAME = "tagName";
+
+    /**
+     * Key representing closing tag
+     * @type {string}
+     */
+    const CLOSING_TAG = "closingTag";
+
+    /**
+     * Key representing attribute name
+     * @type {string}
+     */
+    const ATTR_NAME = "attr.name";
+
+    /**
+     * Key representing attribute value
+     * @type {string}
+     */
+    const ATTR_VALUE = "attr.value";
+
 
     // Regular expression for token types with "tag" prefixed
     var tagPrefixedRegExp = /^tag/;

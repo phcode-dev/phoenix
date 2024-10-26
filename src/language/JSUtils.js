@@ -44,6 +44,7 @@ define(function (require, exports, module) {
 
     /**
      * Tracks dirty documents between invocations of findMatchingFunctions.
+     * @private
      * @type {ChangedDocumentTracker}
      */
     var _changedDocumentTracker = new ChangedDocumentTracker();
@@ -297,6 +298,7 @@ define(function (require, exports, module) {
 
     /**
      * Determines if the document function cache is up to date.
+     * @private
      * @param {FileInfo} fileInfo
      * @return {$.Promise} A promise resolved with true with true when a function cache is available for the document. Resolves
      *   with false when there is no cache or the cache is stale.
@@ -389,6 +391,7 @@ define(function (require, exports, module) {
     /**
      * Resolves with a record containing the Document or FileInfo and an Array of all
      * function names with offsets for the specified file. Results may be cached.
+     * @private
      * @param {FileInfo} fileInfo
      * @return {$.Promise} A promise resolved with a document info object that
      *   contains a map of all function names from the document and each function's start offset.

@@ -27,14 +27,25 @@ define(function (require, exports, module) {
 
     var TokenUtils      = require("utils/TokenUtils");
 
-    // Enumerations for token types.
-    var TOKEN_KEY   = 1,
-        TOKEN_VALUE = 2;
+    /**
+     * Enumeration for Token Key
+     * @type {number}
+     */
+    const TOKEN_KEY = 1;
+
+    /**
+     * Enumeration for Token value
+     * @type {number}
+     */
+    const TOKEN_VALUE = 2;
 
     // Whitelist for allowed value types.
     var valueTokenTypes = ["atom", "string", "number", "variable"];
 
-    // Reg-ex to match colon, comma, opening bracket of an array and white-space.
+    /**
+     * Reg-ex to match colon, comma, opening bracket of an array and white-space.
+     * @type {RegExp}
+     */
     var regexAllowedChars = /(?:^[:,\[]$)|(?:^\s+$)/;
 
     /**

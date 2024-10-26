@@ -3,6 +3,24 @@
 const JSONUtils = brackets.getModule("language/JSONUtils")
 ```
 
+<a name="regexAllowedChars"></a>
+
+## regexAllowedChars : <code>RegExp</code>
+Reg-ex to match colon, comma, opening bracket of an array and white-space.
+
+**Kind**: global variable  
+<a name="TOKEN_KEY"></a>
+
+## TOKEN\_KEY : <code>number</code>
+Enumeration for Token Key
+
+**Kind**: global constant  
+<a name="TOKEN_VALUE"></a>
+
+## TOKEN\_VALUE : <code>number</code>
+Enumeration for Token value
+
+**Kind**: global constant  
 <a name="stripQuotes"></a>
 
 ## stripQuotes(string) ⇒ <code>String</code>

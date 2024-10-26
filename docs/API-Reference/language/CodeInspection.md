@@ -6,7 +6,21 @@ const CodeInspection = brackets.getModule("language/CodeInspection")
 <a name="_"></a>
 
 ## \_
-Manages linters and other code inspections on a per-language basis. Provides a UI and status indicator forthe resulting errors/warnings.Currently, inspection providers are only invoked on the current file and only when it is opened, switched to,or saved. But in the future, inspectors may be invoked as part of a global scan, at intervals while typing, etc.Currently, results are only displayed in a bottom panel list and in a status bar icon. But in the future,results may also be displayed inline in the editor (as gutter markers, etc.).In the future, support may also be added for error/warning providers that cannot process a single file at a time(e.g. a full-project compiler).
+Manages linters and other code inspections on a per-language basis. Provides a UI and status indicator for
+the resulting errors/warnings.
+
+Currently, inspection providers are only invoked on the current file and only when it is opened, switched to,
+or saved. But in the future, inspectors may be invoked as part of a global scan, at intervals while typing, etc.
+Currently, results are only displayed in a bottom panel list and in a status bar icon. But in the future,
+results may also be displayed inline in the editor (as gutter markers, etc.).
+In the future, support may also be added for error/warning providers that cannot process a single file at a time
+(e.g. a full-project compiler).
+
+**Kind**: global constant  
+<a name="CODE_INSPECTION_GUTTER"></a>
+
+## CODE\_INSPECTION\_GUTTER : <code>string</code>
+Code inspection gutter
 
 **Kind**: global constant  
 <a name="Type"></a>
@@ -39,27 +53,11 @@ Maintainability issue, probable error / bad smell, etc.
 Inspector unable to continue, code too complex for static analysis, etc. Not counted in err/warn tally.
 
 **Kind**: static property of [<code>Type</code>](#Type)  
-<a name="PREF_ENABLED"></a>
-
-## PREF\_ENABLED
-Constants for the preferences defined in this file.
-
-**Kind**: global constant  
-<a name="setGotoEnabled"></a>
-
-## setGotoEnabled(gotoEnabled)
-Enable or disable the "Go to First Error" command
-
-**Kind**: global function  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| gotoEnabled | <code>boolean</code> | Whether it is enabled. |
-
 <a name="getProvidersForPath"></a>
 
 ## getProvidersForPath(filePath) ⇒ <code>Object</code>
-Returns a list of provider for given file path, if available.Decision is made depending on the file extension.
+Returns a list of provider for given file path, if available.
+Decision is made depending on the file extension.
 
 **Kind**: global function  
 
@@ -82,7 +80,15 @@ Returns an array of the IDs of providers registered for a specific language
 <a name="inspectFile"></a>
 
 ## inspectFile(file, providerList) ⇒ <code>$.Promise</code>
-Runs a file inspection over passed file. Uses the given list of providers if specified, otherwise usesthe set of providers that are registered for the file's language.This method doesn't update the Brackets UI, just provides inspection results.These results will reflect any unsaved changes present in the file if currently open.The Promise yields an array of provider-result pair objects (the result is the return value of theprovider's scanFile() - see register() for details). The result object may be null if there were noerrors from that provider.If there are no providers registered for this file, the Promise yields null instead.
+Runs a file inspection over passed file. Uses the given list of providers if specified, otherwise uses
+the set of providers that are registered for the file's language.
+This method doesn't update the Brackets UI, just provides inspection results.
+These results will reflect any unsaved changes present in the file if currently open.
+
+The Promise yields an array of provider-result pair objects (the result is the return value of the
+provider's scanFile() - see register() for details). The result object may be null if there were no
+errors from that provider.
+If there are no providers registered for this file, the Promise yields null instead.
 
 **Kind**: global function  
 **Returns**: <code>$.Promise</code> - a jQuery promise that will be resolved with ?\{provider:Object, result: ?\{errors:!Array, aborted:boolean}}  
@@ -92,41 +98,23 @@ Runs a file inspection over passed file. Uses the given list of providers if spe
 | file | <code>File</code> | File that will be inspected for errors. |
 | providerList | <code>Object</code> | Array |
 
-<a name="updatePanelTitleAndStatusBar"></a>
+<a name="scrollToProblem"></a>
 
-## updatePanelTitleAndStatusBar(numProblems, Array, aborted, fileName)
-Update the title of the problem panel and the tooltip of the status bar icon. The title and the tooltip willchange based on the number of problems reported and how many provider reported problems.
+## scrollToProblem(lineNumber) ⇒ <code>jQuery</code> \| <code>null</code>
+Scrolls to the problem line
 
 **Kind**: global function  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| numProblems | <code>Number</code> | total number of problems across all providers |
-| Array | <code>Object</code> | providersReportingProblems - providers that reported problems |
-| aborted | <code>boolean</code> | true if any provider returned a result with the 'aborted' flag set |
-| fileName |  |  |
-
-<a name="_createMarkerElement"></a>
-
-## \_createMarkerElement(editor, line, ch, type, message, isFixable) ⇒
-It creates a div element with a span element inside it, and then adds a click handler to move cursor to theerror position.
-
-**Kind**: global function  
-**Returns**: A DOM element.  
-
-| Param | Description |
-| --- | --- |
-| editor | the editor instance |
-| line | the line number of the error |
-| ch | the character position of the error |
-| type | The type of the marker. This is a string that can be one of the error types |
-| message | The message that will be displayed when you hover over the marker. |
-| isFixable | true if we need to use the fix icon |
+| lineNumber | <code>number</code> | The line number to scroll to |
 
 <a name="run"></a>
 
 ## run(providerName)
-Run inspector applicable to current document. Updates status bar indicator and refreshes error list inbottom panel. Does not run if inspection is disabled or if a providerName is given and does notmatch the current doc's provider name.
+Run inspector applicable to current document. Updates status bar indicator and refreshes error list in
+bottom panel. Does not run if inspection is disabled or if a providerName is given and does not
+match the current doc's provider name.
 
 **Kind**: global function  
 
@@ -134,18 +122,6 @@ Run inspector applicable to current document. Updates status bar indicator and r
 | --- | --- | --- |
 | providerName | <code>string</code> | name of the provider that is requesting a run |
 
-<a name="getProvidersForLanguageId"></a>
-
-## getProvidersForLanguageId()
-Returns a list of providers registered for given languageId through register function
-
-**Kind**: global function  
-<a name="updateListeners"></a>
-
-## updateListeners()
-Update DocumentManager listeners.
-
-**Kind**: global function  
 <a name="toggleEnabled"></a>
 
 ## toggleEnabled(enabled, doNotSave)
@@ -158,28 +134,41 @@ Enable or disable all inspection.
 | enabled | <code>boolean</code> | Enabled state. If omitted, the state is toggled. |
 | doNotSave | <code>boolean</code> | true if the preference should not be saved to user settings. This is generally for events triggered by project-level settings. |
 
-<a name="toggleCollapsed"></a>
-
-## toggleCollapsed(collapsed, doNotSave)
-Toggle the collapsed state for the panel. This explicitly collapses the panel (as opposed tothe auto collapse due to files with no errors & filetypes with no provider). When explicitlycollapsed, the panel will not reopen automatically on switch files or save.
-
-**Kind**: global function  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| collapsed | <code>boolean</code> | Collapsed state. If omitted, the state is toggled. |
-| doNotSave | <code>boolean</code> | true if the preference should not be saved to user settings. This is generally for events triggered by project-level settings. |
-
-<a name="handleGotoFirstProblem"></a>
-
-## handleGotoFirstProblem()
-Command to go to the first Problem
-
-**Kind**: global function  
 <a name="Error"></a>
 
 ## Error : <code>Object</code>
-Registers a provider for a specific language to inspect files and provide linting results.The provider is passed the text of the file and its full path. Providers should not assume thatthe file is open (i.e., `DocumentManager.getOpenDocumentForPath()` may return `null`) or that thefile on disk matches the text given (the file may have unsaved changes).Registering any provider for the "javascript" language automatically unregisters the built-inBrackets JSLint provider. This is a temporary convenience until a UI exists for disablingregistered providers.Providers must implement `canInspect()`, `scanFile()`, or `scanFileAsync()`. If both `scanFile()`and `scanFileAsync()` are implemented, `scanFile()` is ignored.- `canInspect(fullPath)`: A synchronous call to determine if the file can be scanned by this provider.- `scanFile(text, fullPath)`: A synchronous function returning linting results or `null`.- `scanFileAsync(text, fullPath)`: An asynchronous function returning a jQuery Promise resolved with  the same type of value as `scanFile()`. Rejecting the promise is treated as an internal error in the provider.Each error object in the results should have the following structure:```js             { pos:{line,ch},               endPos:?{line,ch},               message:string,               htmlMessage:string,               type:?Type ,               fix: { // an optional fix, if present will show the fix button                    replace: "text to replace the offset given below",                    rangeOffset: {                        start: number,                        end: number               }}}```
+Registers a provider for a specific language to inspect files and provide linting results.
+
+The provider is passed the text of the file and its full path. Providers should not assume that
+the file is open (i.e., `DocumentManager.getOpenDocumentForPath()` may return `null`) or that the
+file on disk matches the text given (the file may have unsaved changes).
+
+Registering any provider for the "javascript" language automatically unregisters the built-in
+Brackets JSLint provider. This is a temporary convenience until a UI exists for disabling
+registered providers.
+
+Providers must implement `canInspect()`, `scanFile()`, or `scanFileAsync()`. If both `scanFile()`
+and `scanFileAsync()` are implemented, `scanFile()` is ignored.
+
+- `canInspect(fullPath)`: A synchronous call to determine if the file can be scanned by this provider.
+- `scanFile(text, fullPath)`: A synchronous function returning linting results or `null`.
+- `scanFileAsync(text, fullPath)`: An asynchronous function returning a jQuery Promise resolved with
+  the same type of value as `scanFile()`. Rejecting the promise is treated as an internal error in the provider.
+
+Each error object in the results should have the following structure:
+```js
+             { pos:{line,ch},
+               endPos:?{line,ch},
+               message:string,
+               htmlMessage:string,
+               type:?Type ,
+               fix: { // an optional fix, if present will show the fix button
+                    replace: "text to replace the offset given below",
+                    rangeOffset: {
+                        start: number,
+                        end: number
+               }}}
+```
 
 **Kind**: global typedef  
 

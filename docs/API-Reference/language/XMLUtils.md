@@ -3,47 +3,30 @@
 const XMLUtils = brackets.getModule("language/XMLUtils")
 ```
 
-<a name="_createTagInfo"></a>
+<a name="regexWhitespace"></a>
 
-## \_createTagInfo(token, tokenType, offset, exclusionList, tagName, attrName, shouldReplace) ⇒ <code>Object</code>
-Returns an object that represents all its params.
+## regexWhitespace : <code>RegExp</code>
+Regex to find whitespace
 
-**Kind**: global function  
+**Kind**: global variable  
+<a name="TOKEN_TAG"></a>
 
-| Param | Type | Description |
-| --- | --- | --- |
-| token | <code>Token</code> | CodeMirror token at the current pos |
-| tokenType | <code>number</code> | Type of current token |
-| offset | <code>number</code> | Offset in current token |
-| exclusionList | <code>Array.&lt;string&gt;</code> | List of attributes of a tag or attribute options used by an attribute |
-| tagName | <code>string</code> | Name of the current tag |
-| attrName | <code>string</code> | Name of the current attribute |
-| shouldReplace | <code>boolean</code> | true if we don't want to append ="" to an attribute |
+## TOKEN\_TAG : <code>number</code>
+Enum token tag
 
-<a name="_getTagAttributes"></a>
+**Kind**: global constant  
+<a name="TOKEN_ATTR"></a>
 
-## \_getTagAttributes(editor, constPos) ⇒ <code>Object</code>
-Return the tagName and a list of attributes used by the tag.
+## TOKEN\_ATTR : <code>number</code>
+Enum token attribute
 
-**Kind**: global function  
+**Kind**: global constant  
+<a name="TOKEN_VALUE"></a>
 
-| Param | Type | Description |
-| --- | --- | --- |
-| editor | <code>Editor</code> | An instance of active editor |
-| constPos | <code>Object</code> | The position of cursor in the active editor |
+## TOKEN\_VALUE : <code>number</code>
+Enum token value
 
-<a name="_getTagAttributeValue"></a>
-
-## \_getTagAttributeValue(editor, pos) ⇒ <code>Object</code>
-Return the tag name, attribute name and a list of options used by the attribute
-
-**Kind**: global function  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| editor | <code>Editor</code> | An instance of active editor |
-| pos | <code>Object</code> | Position of cursor in the editor |
-
+**Kind**: global constant  
 <a name="getTagInfo"></a>
 
 ## getTagInfo(editor, pos) ⇒ <code>Object</code>
