@@ -152,19 +152,19 @@ define(function (require, exports, module) {
      * Constant: Normal boundary check when centering text.
      * @type {number}
      */
-    var BOUNDARY_CHECK_NORMAL = 0;
+    const BOUNDARY_CHECK_NORMAL = 0;
 
     /**
      * Constant: Ignore the upper boundary when centering text.
      * @type {number}
      */
-    var BOUNDARY_IGNORE_TOP = 1;
+    const BOUNDARY_IGNORE_TOP = 1;
 
     /**
      * Constant: Bulls-eye mode, strictly center the text always.
      * @type {number}
      */
-    var BOUNDARY_BULLSEYE = 2;
+    const BOUNDARY_BULLSEYE = 2;
 
 
     /**

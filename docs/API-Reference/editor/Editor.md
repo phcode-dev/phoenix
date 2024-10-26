@@ -1655,19 +1655,19 @@ To listen for events, do something like this: (see EventDispatcher for details o
 ## BOUNDARY\_CHECK\_NORMAL : <code>number</code>
 Constant: Normal boundary check when centering text.
 
-**Kind**: global variable  
+**Kind**: global constant  
 <a name="BOUNDARY_IGNORE_TOP"></a>
 
 ## BOUNDARY\_IGNORE\_TOP : <code>number</code>
 Constant: Ignore the upper boundary when centering text.
 
-**Kind**: global variable  
+**Kind**: global constant  
 <a name="BOUNDARY_BULLSEYE"></a>
 
 ## BOUNDARY\_BULLSEYE : <code>number</code>
 Constant: Bulls-eye mode, strictly center the text always.
 
-**Kind**: global variable  
+**Kind**: global constant  
 <a name="CENTERING_MARGIN"></a>
 
 ## CENTERING\_MARGIN
