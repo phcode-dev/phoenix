@@ -100,6 +100,38 @@ define(function (require, exports, module) {
     const EVENT_BEFORE_SUB_MENU_CLOSE = "beforeSubMenuClose";
 
 
+
+    // Define each section as a separate constant
+    const FILE_OPEN_CLOSE_COMMANDS = { sectionMarker: Commands.FILE_NEW };
+    const FILE_SAVE_COMMANDS = { sectionMarker: Commands.FILE_SAVE };
+    const FILE_LIVE = { sectionMarker: Commands.FILE_LIVE_FILE_PREVIEW };
+    const FILE_SETTINGS = { sectionMarker: Commands.FILE_EXTENSION_MANAGER };
+    const FILE_EXTENSION_MANAGER = { sectionMarker: Commands.FILE_EXTENSION_MANAGER }; // Deprecated
+
+    const EDIT_UNDO_REDO_COMMANDS = { sectionMarker: Commands.EDIT_UNDO };
+    const EDIT_TEXT_COMMANDS = { sectionMarker: Commands.EDIT_CUT };
+    const EDIT_SELECTION_COMMANDS = { sectionMarker: Commands.EDIT_SELECT_ALL };
+    const EDIT_MODIFY_SELECTION = { sectionMarker: Commands.EDIT_INDENT };
+    const EDIT_COMMENT_SELECTION = { sectionMarker: Commands.EDIT_LINE_COMMENT };
+    const EDIT_CODE_HINTS_COMMANDS = { sectionMarker: Commands.SHOW_CODE_HINTS };
+    const EDIT_TOGGLE_OPTIONS = { sectionMarker: Commands.TOGGLE_CLOSE_BRACKETS };
+
+    const FIND_FIND_COMMANDS = { sectionMarker: Commands.CMD_FIND };
+    const FIND_FIND_IN_COMMANDS = { sectionMarker: Commands.CMD_FIND_IN_FILES };
+    const FIND_REPLACE_COMMANDS = { sectionMarker: Commands.CMD_REPLACE };
+
+    const VIEW_HIDESHOW_COMMANDS = { sectionMarker: Commands.VIEW_HIDE_SIDEBAR };
+    const VIEW_FONTSIZE_COMMANDS = { sectionMarker: Commands.VIEW_ZOOM_SUBMENU };
+    const VIEW_TOGGLE_OPTIONS = { sectionMarker: Commands.TOGGLE_ACTIVE_LINE };
+
+    const NAVIGATE_GOTO_COMMANDS = { sectionMarker: Commands.NAVIGATE_QUICK_OPEN };
+    const NAVIGATE_DOCUMENTS_COMMANDS = { sectionMarker: Commands.NAVIGATE_NEXT_DOC };
+    const NAVIGATE_OS_COMMANDS = { sectionMarker: Commands.NAVIGATE_SHOW_IN_FILE_TREE };
+    const NAVIGATE_QUICK_EDIT_COMMANDS = { sectionMarker: Commands.TOGGLE_QUICK_EDIT };
+    const NAVIGATE_QUICK_DOCS_COMMANDS = { sectionMarker: Commands.TOGGLE_QUICK_DOCS };
+
+
+
     /**
      * Brackets Application Menu Section Constants
      * It is preferred that plug-ins specify the location of new MenuItems
@@ -142,35 +174,6 @@ define(function (require, exports, module) {
         NAVIGATE_QUICK_EDIT_COMMANDS,
         NAVIGATE_QUICK_DOCS_COMMANDS
     };
-
-    // Define each section as a separate constant
-    const FILE_OPEN_CLOSE_COMMANDS = { sectionMarker: Commands.FILE_NEW };
-    const FILE_SAVE_COMMANDS = { sectionMarker: Commands.FILE_SAVE };
-    const FILE_LIVE = { sectionMarker: Commands.FILE_LIVE_FILE_PREVIEW };
-    const FILE_SETTINGS = { sectionMarker: Commands.FILE_EXTENSION_MANAGER };
-    const FILE_EXTENSION_MANAGER = { sectionMarker: Commands.FILE_EXTENSION_MANAGER }; // Deprecated
-
-    const EDIT_UNDO_REDO_COMMANDS = { sectionMarker: Commands.EDIT_UNDO };
-    const EDIT_TEXT_COMMANDS = { sectionMarker: Commands.EDIT_CUT };
-    const EDIT_SELECTION_COMMANDS = { sectionMarker: Commands.EDIT_SELECT_ALL };
-    const EDIT_MODIFY_SELECTION = { sectionMarker: Commands.EDIT_INDENT };
-    const EDIT_COMMENT_SELECTION = { sectionMarker: Commands.EDIT_LINE_COMMENT };
-    const EDIT_CODE_HINTS_COMMANDS = { sectionMarker: Commands.SHOW_CODE_HINTS };
-    const EDIT_TOGGLE_OPTIONS = { sectionMarker: Commands.TOGGLE_CLOSE_BRACKETS };
-
-    const FIND_FIND_COMMANDS = { sectionMarker: Commands.CMD_FIND };
-    const FIND_FIND_IN_COMMANDS = { sectionMarker: Commands.CMD_FIND_IN_FILES };
-    const FIND_REPLACE_COMMANDS = { sectionMarker: Commands.CMD_REPLACE };
-
-    const VIEW_HIDESHOW_COMMANDS = { sectionMarker: Commands.VIEW_HIDE_SIDEBAR };
-    const VIEW_FONTSIZE_COMMANDS = { sectionMarker: Commands.VIEW_ZOOM_SUBMENU };
-    const VIEW_TOGGLE_OPTIONS = { sectionMarker: Commands.TOGGLE_ACTIVE_LINE };
-
-    const NAVIGATE_GOTO_COMMANDS = { sectionMarker: Commands.NAVIGATE_QUICK_OPEN };
-    const NAVIGATE_DOCUMENTS_COMMANDS = { sectionMarker: Commands.NAVIGATE_NEXT_DOC };
-    const NAVIGATE_OS_COMMANDS = { sectionMarker: Commands.NAVIGATE_SHOW_IN_FILE_TREE };
-    const NAVIGATE_QUICK_EDIT_COMMANDS = { sectionMarker: Commands.TOGGLE_QUICK_EDIT };
-    const NAVIGATE_QUICK_DOCS_COMMANDS = { sectionMarker: Commands.TOGGLE_QUICK_DOCS };
 
 
     /**
