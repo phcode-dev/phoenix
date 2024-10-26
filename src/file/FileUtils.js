@@ -44,6 +44,7 @@ define(function (require, exports, module) {
 
     /**
      * @const {Number} Maximium file size (in megabytes)
+     * @private
      *   (for display strings)
      *   This must be a hard-coded value since this value
      *   tells how low-level APIs should behave which cannot
@@ -61,6 +62,7 @@ define(function (require, exports, module) {
 
     /**
      * @var {List} list of File Extensions which will be opened in external Application
+     * @private
      */
     var extListToBeOpenedInExtApp = [];
 
@@ -118,11 +120,16 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Line endings
+     * Line endings crlf
      * @enum {string}
      */
-    var LINE_ENDINGS_CRLF = "CRLF",
-        LINE_ENDINGS_LF   = "LF";
+    const LINE_ENDINGS_CRLF = "CRLF";
+
+    /**
+     * Line endings lf
+     * @enum {string}
+     */
+     const LINE_ENDINGS_LF   = "LF";
 
     /**
      * Returns the standard line endings for the current platform
@@ -203,6 +210,7 @@ define(function (require, exports, module) {
 
     /**
      * Shows an error dialog indicating that the given file could not be opened due to the given error
+     * @private
      * @deprecated Use DocumentCommandHandlers.showFileOpenError() instead
      *
      * @param {!FileSystemError} name
@@ -352,6 +360,7 @@ define(function (require, exports, module) {
      * If the only `.` in the file is the first character,
      * returns "" as this is not considered an extension.
      * This method considers known extensions which include `.` in them.
+     * @private
      * @deprecated Use LanguageManager.getCompoundFileExtension() instead
      *
      * @param {string} fullPath full path to a file or directory
