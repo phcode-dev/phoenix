@@ -21,8 +21,6 @@
 
 /*global Phoenix*/
 
-// @INCLUDE_IN_API_DOCS
-
 /**
  * Text-editing commands that apply to whichever Editor is currently focused
  */

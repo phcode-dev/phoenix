@@ -274,7 +274,7 @@ define(function (require, exports, module) {
 
     /**
      * Closes any focused inline widget. Else, asynchronously asks providers to create one.
-     *
+     * @private
      * @param {{priority:number, provider:function(...)}} array providers
      *   prioritized list of providers
      * @param {string=} errorMsg Default message to display if no providers return non-null
@@ -344,6 +344,7 @@ define(function (require, exports, module) {
      * Only called from Document._ensureMasterEditor()
      * The editor view is placed in a hidden part of the DOM but can later be moved to a visible pane
      * when the document is opened using pane.addView()
+     * @private
      * @param {!Document} doc - document to create a hidden editor for
      */
     function _createUnattachedMasterEditor(doc) {
@@ -419,7 +420,6 @@ define(function (require, exports, module) {
 
 
     /**
-     * @private
      * Given a host editor, return a list of all Editors in all its open inline widgets. (Ignoring
      * any other inline widgets that might be open but don't contain Editors).
      * @param {!Editor} hostEditor
@@ -500,6 +500,7 @@ define(function (require, exports, module) {
     }
 
     /**
+     * @private
      * @deprecated
      * resizes the editor
      */
@@ -559,6 +560,7 @@ define(function (require, exports, module) {
     }
 
     /**
+     * @private
      * @deprecated use MainViewManager.getCurrentlyViewedFile() instead
      * @return {string=} path of the file currently viewed in the active, full sized editor or null when there is no active editor
      */
@@ -582,6 +584,7 @@ define(function (require, exports, module) {
     }
 
     /**
+     * @private
      * @deprecated There is no equivalent API moving forward.
      * Use MainViewManager._initialize() from a unit test to create a Main View attached to a specific DOM element
      */
@@ -590,6 +593,7 @@ define(function (require, exports, module) {
     }
 
     /**
+     * @private
      * @deprecated Register a View Factory instead
      * @see MainViewFactory::#registerViewFactory
      */
@@ -744,6 +748,7 @@ define(function (require, exports, module) {
 
     /**
      * file removed from pane handler.
+     * @private
      * @param {jQuery.Event} e
      * @param {File|Array.<File>} removedFiles - file, path or array of files or paths that are being removed
      */

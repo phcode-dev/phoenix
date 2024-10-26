@@ -90,7 +90,7 @@ define(function (require, exports, module) {
 
     const tabSpacesStateManager = StateManager._createInternalStateManager(StateManager._INTERNAL_STATES.TAB_SPACES);
 
-    /** Editor helpers */
+    /* Editor helpers */
 
     let IndentHelper = require("./EditorHelper/IndentHelper"),
         EditorPreferences = require("./EditorHelper/EditorPreferences"),
@@ -98,11 +98,12 @@ define(function (require, exports, module) {
         ErrorPopupHelper = require("./EditorHelper/ErrorPopupHelper"),
         InlineWidgetHelper = require("./EditorHelper/InlineWidgetHelper");
 
-    /** Editor preferences */
+    /* Editor preferences */
 
     /**
      * A list of gutter name and priorities currently registered for editors.
      * The line number gutter is defined as \{ name: LINE_NUMBER_GUTTER, priority: 100 }
+     * @private
      * @type {Array<Object>} items - An array of objects, where each object contains the following properties:
      * @property {string} name - The name of the item.
      * @property {number} priority - The priority of the item.
@@ -138,22 +139,33 @@ define(function (require, exports, module) {
 
     let editorOptions = [...Object.keys(cmOptions), AUTO_TAB_SPACES];
 
-    /** Editor preferences */
+    /* Editor preferences */
 
     /**
      * Guard flag to prevent focus() reentrancy (via blur handlers), even across Editors
+     * @private
      * @type {boolean}
      */
     var _duringFocus = false;
 
     /**
-     * Constant: ignore upper boundary when centering text
-     * Constant: bulls-eye = strictly centre always
+     * Constant: Normal boundary check when centering text.
      * @type {number}
      */
-    var BOUNDARY_CHECK_NORMAL = 0,
-        BOUNDARY_IGNORE_TOP = 1,
-        BOUNDARY_BULLSEYE = 2;
+    var BOUNDARY_CHECK_NORMAL = 0;
+
+    /**
+     * Constant: Ignore the upper boundary when centering text.
+     * @type {number}
+     */
+    var BOUNDARY_IGNORE_TOP = 1;
+
+    /**
+     * Constant: Bulls-eye mode, strictly center the text always.
+     * @type {number}
+     */
+    var BOUNDARY_BULLSEYE = 2;
+
 
     /**
      * @private
@@ -167,6 +179,7 @@ define(function (require, exports, module) {
 
     /**
      * Helper functions to check options.
+     * @private
      * @param {number} options BOUNDARY_CHECK_NORMAL or BOUNDARY_IGNORE_TOP
      */
     function _checkTopBoundary(options) {
@@ -180,7 +193,7 @@ define(function (require, exports, module) {
     /**
      * Helper function to build preferences context based on the full path of
      * the file.
-     *
+     * @private
      * @param {string} fullPath Full path of the file
      *
      * @return {*} A context for the specified file name
@@ -193,6 +206,7 @@ define(function (require, exports, module) {
     /**
      * List of all current (non-destroy()ed) Editor instances. Needed when changing global preferences
      * that affect all editors, e.g. tabbing or color scheme settings.
+     * @private
      * @type {Array.<Editor>}
      */
     var _instances = [];
@@ -559,6 +573,7 @@ define(function (require, exports, module) {
     /**
      * Determine the mode to use from the document's language
      * Uses "text/plain" if the language does not define a mode
+     * @private
      * @return {string} The mode to use
      */
     Editor.prototype._getModeFromDocument = function () {
@@ -594,6 +609,7 @@ define(function (require, exports, module) {
     /**
      * Ensures that the lines that are actually hidden in the inline editor correspond to
      * the desired visible range.
+     * @private
      */
     Editor.prototype._updateHiddenLines = function () {
         if (this._visibleRange) {
@@ -615,6 +631,7 @@ define(function (require, exports, module) {
     /**
      * Sets the contents of the editor, clears the undo/redo history and marks the document clean. Dispatches a change event.
      * Semi-private: only Document should call this.
+     * @private
      * @param {!string} text
      */
     Editor.prototype._resetText = function (text) {
@@ -1245,14 +1262,38 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Mark options to use with API with Editor.markText or Editor.markToken.
+     * Mark option to underline errors.
      */
     Editor.getMarkOptionUnderlineError = getMarkOptionUnderlineError;
+
+    /**
+     * Mark option to underline warnings.
+     */
     Editor.getMarkOptionUnderlineWarn = getMarkOptionUnderlineWarn;
+
+    /**
+     * Mark option to underline informational text.
+     */
     Editor.getMarkOptionUnderlineInfo = getMarkOptionUnderlineInfo;
+
+    /**
+     * Mark option to underline spelling errors.
+     */
     Editor.getMarkOptionUnderlineSpellcheck = getMarkOptionUnderlineSpellcheck;
+
+    /**
+     * Mark option to highlight hyperlinks.
+     */
     Editor.getMarkOptionHyperlinkText = getMarkOptionHyperlinkText;
+
+    /**
+     * Mark option for matching references.
+     */
     Editor.getMarkOptionMatchingRefs = getMarkOptionMatchingRefs;
+
+    /**
+     * Mark option for renaming outlines.
+     */
     Editor.getMarkOptionRenameOutline = getMarkOptionRenameOutline;
 
     /**
@@ -1471,6 +1512,7 @@ define(function (require, exports, module) {
     /**
      * Creates a named restore point in undo history. this can be later be restored to undo all
      * changed till the named restore point in one go.
+     * @param {string} restorePointName - The name of the restore point to revert to.
      */
     Editor.prototype.createHistoryRestorePoint = function (restorePointName) {
         const history = this.getHistory();
@@ -1483,6 +1525,12 @@ define(function (require, exports, module) {
         this._codeMirror.changeGeneration(true);
     };
 
+    /**
+     * To restore the editor to a named restore point
+     * if the restore point is found, it reverts all changes made after that point.
+     *
+     * @param {string} restorePointName - The name of the restore point to revert to.
+     */
     Editor.prototype.restoreHistoryPoint = function (restorePointName) {
         const history = this.getHistory();
         if (!history.done && !history.done.length) {
@@ -1672,6 +1720,12 @@ define(function (require, exports, module) {
         this.setSelection(word.anchor, word.head);
     };
 
+    /**
+     * To get the text between the starting position and the ending position
+     * @param {!{line:number, ch:number}} startPos | The starting position
+     * @param {!{line:number, ch:number}} endPos | The ending position
+     * @returns {string} The text between the starting position and the ending position
+     */
     Editor.prototype.getTextBetween = function (startPos, endPos) {
         const text = this._codeMirror.getRange(startPos, endPos);
         return text;
@@ -1795,7 +1849,9 @@ define(function (require, exports, module) {
         return (this._visibleRange ? this._visibleRange.endLine : this.lineCount() - 1);
     };
 
-    /* Hides the specified line number in the editor
+    /**
+     * Hides the specified line number in the editor
+     * @private
      * @param {!from} line to start hiding from (inclusive)
      * @param {!to} line to end hiding at (exclusive)
      * @return {TextMarker} The CodeMirror mark object that's hiding the lines
@@ -1847,6 +1903,7 @@ define(function (require, exports, module) {
      * Gets the lineSpace element within the editor (the container around the individual lines of code).
      * FUTURE: This is fairly CodeMirror-specific. Logic that depends on this may break if we switch
      * editors.
+     * @private
      * @return {!HTMLDivElement} The editor's lineSpace element.
      */
     Editor.prototype._getLineSpaceElement = function () {
@@ -1880,7 +1937,7 @@ define(function (require, exports, module) {
         this._codeMirror.scrollTo(x, y);
     };
 
-    /*
+    /**
      * Returns the current text height of the editor.
      * @return {number} Height of the text in pixels
      */
@@ -1995,7 +2052,7 @@ define(function (require, exports, module) {
      * @typedef {scrollPos:{x:number, y:number},{start:{line:number, ch:number},end:{line:number, ch:number}}} EditorViewState
      */
 
-    /*
+    /**
      * returns the view state for the editor
      * @return {!EditorViewState}
      */
@@ -2233,6 +2290,7 @@ define(function (require, exports, module) {
      * The Editor's last known width.
      * Used in conjunction with updateLayout to recompute the layout
      * if the parent container changes its size since our last layout update.
+     * @private
      * @type {?number}
      */
     Editor.prototype._lastEditorWidth = null;
@@ -2241,6 +2299,7 @@ define(function (require, exports, module) {
     /**
      * If true, we're in the middle of syncing to/from the Document. Used to ignore spurious change
      * events caused by us (vs. change events caused by others, which we need to pay attention to).
+     * @private
      * @type {!boolean}
      */
     Editor.prototype._duringSync = false;
@@ -2948,6 +3007,7 @@ define(function (require, exports, module) {
     Editor.CODE_FOLDING_GUTTER_PRIORITY = CODE_FOLDING_GUTTER_PRIORITY;
 
     /**
+     * @private
      * Each Editor instance object dispatches the following events:
      *    - keydown, keypress, keyup -- When any key event happens in the editor (whether it changes the
      *      text or not). Handlers are passed `(BracketsEvent, Editor, KeyboardEvent)`. The 3nd arg is the
