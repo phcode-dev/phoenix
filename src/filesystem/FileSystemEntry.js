@@ -124,60 +124,70 @@ define(function (require, exports, module) {
 
     /**
      * Cached stat object for this file.
+     * @private
      * @type {?FileSystemStats}
      */
     FileSystemEntry.prototype._stat = null;
 
     /**
      * Parent file system.
+     * @private
      * @type {!FileSystem}
      */
     FileSystemEntry.prototype._fileSystem = null;
 
     /**
      * The path of this entry.
+     * @private
      * @type {string}
      */
     FileSystemEntry.prototype._path = null;
 
     /**
      * The name of this entry.
+     * @private
      * @type {string}
      */
     FileSystemEntry.prototype._name = null;
 
     /**
      * The parent of this entry.
+     * @private
      * @type {string}
      */
     FileSystemEntry.prototype._parentPath = null;
 
     /**
      * Whether or not the entry is a file
+     * @private
      * @type {boolean}
      */
     FileSystemEntry.prototype._isFile = false;
 
     /**
      * Whether or not the entry is a directory
+     * @private
      * @type {boolean}
      */
     FileSystemEntry.prototype._isDirectory = false;
 
     /**
     * Cached copy of this entry's watched root.
+     * @private
     * @type {{entry: (File|Directory), filter: function(FileSystemEntry): boolean, active: boolean}}
     */
     FileSystemEntry.prototype._watchedRoot = undefined;
 
     /**
      * Cached result of _watchedRoot.filter(this.name, this.parentPath).
+     * @private
      * @type {boolean}
      */
     FileSystemEntry.prototype._watchedRootFilterResult = undefined;
 
     /**
      * Determines whether or not the entry is watched.
+     * @private
      * @param {boolean=} relaxed If falsey, the method will only return true if
      *      the watched root is fully active. If true, the method will return
      *      true if the watched root is either starting up or fully active.
