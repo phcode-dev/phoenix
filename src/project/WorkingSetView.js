@@ -80,11 +80,13 @@ define(function (require, exports, module) {
     /**
      * #working-set-list-container
      * @type {jQuery}
+     * @private
      */
     var $workingFilesContainer;
 
     /**
      * Constants for event.which values
+     * @private
      * @enum {number}
      */
     var LEFT_BUTTON = 1,
@@ -101,6 +103,7 @@ define(function (require, exports, module) {
     /**
      * Constants for hitTest.where
      * @enum {string}
+     * @private
      */
     var NOMANSLAND = "nomansland",
         NOMOVEITEM = "nomoveitem",
@@ -114,6 +117,7 @@ define(function (require, exports, module) {
     /**
      * Drag an item has to move 3px before dragging starts
      * @constant
+     * @private
      */
     var _DRAG_MOVE_DETECTION_START = 3;
 
@@ -855,8 +859,9 @@ define(function (require, exports, module) {
         });
     }
 
-    /*
+    /**
      * WorkingSetView constructor
+     * @private
      * @constructor
      * @param {!jQuery} $container - owning container
      * @param {!string} paneId - paneId of this view pertains to
@@ -874,8 +879,9 @@ define(function (require, exports, module) {
         this.init();
     }
 
-    /*
+    /**
      * Hides or shows the WorkingSetView
+     * @private
      */
     WorkingSetView.prototype._updateVisibility = function () {
         var fileList = MainViewManager.getWorkingSet(this.paneId);
@@ -889,7 +895,7 @@ define(function (require, exports, module) {
         }
     };
 
-    /*
+    /**
      * paneLayoutChange event listener
      * @private
      */
@@ -929,7 +935,7 @@ define(function (require, exports, module) {
         return result;
     };
 
-    /*
+    /**
      * creates a name that is namespaced to this pane
      * @param {!string} name - name of the event to create.
      * use an empty string to get just the event name to turn off all events in the namespace
@@ -1403,6 +1409,7 @@ define(function (require, exports, module) {
 
     /**
      * Initializes the WorkingSetView object
+     * @private
      */
     WorkingSetView.prototype.init = function () {
         this.$openFilesContainer = this.$el.find(".open-files-container");
@@ -1441,6 +1448,7 @@ define(function (require, exports, module) {
 
     /**
      * Destroys the WorkingSetView DOM element and removes all event handlers
+     * @private
      */
     WorkingSetView.prototype.destroy = function () {
         ViewUtils.removeScrollerShadow(this.$openFilesContainer[0], null);
@@ -1521,10 +1529,11 @@ define(function (require, exports, module) {
         });
     });
 
-    /*
+    /**
      * To be used by other modules/default-extensions which needs to borrow working set entry icons
      * @param {!object} data - contains file info {fullPath, name, isFile}
      * @param {!jQuery} $element - jquery fn wrap for the list item
+     * @private
      */
     function useIconProviders(data, $element) {
         for(let provider of _iconProviders){
@@ -1540,10 +1549,11 @@ define(function (require, exports, module) {
         }
     }
 
-    /*
+    /**
      * To be used by other modules/default-extensions which needs to borrow working set entry custom classes
      * @param {!object} data - contains file info {fullPath, name, isFile}
      * @param {!jQuery} $element - jquery fn wrap for the list item
+     * @private
      */
     function useClassProviders(data, $element) {
         let succeededPriority = null;

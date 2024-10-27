@@ -55,6 +55,7 @@ define(function (require, exports, module) {
 
     /**
      * Guard to spot re-entrancy while syncOpenDocuments() is still in progress
+     * @private
      * @type {boolean}
      */
     var _alreadyChecking = false;
@@ -62,27 +63,32 @@ define(function (require, exports, module) {
     /**
      * If true, we should bail from the syncOpenDocuments() process and then re-run it. See
      * comments in syncOpenDocuments() for how this works.
+     * @private
      * @type {boolean}
      */
     var _restartPending = false;
 
     /**
      * @type {Array.<Document>}
+     * @private
      */
     var toReload;
 
     /**
      * @type {Array.<Document>}
+     * @private
      */
     var toClose;
 
     /**
      * @type {{doc: Document, fileTime: number}} Array
+     * @private
      */
     var editConflicts;
 
     /**
      * @type {{doc: Document, fileTime: number}} Array
+     * @private
      */
     var deleteConflicts;
 
@@ -94,6 +100,7 @@ define(function (require, exports, module) {
      *  toClose         - deleted on disk; unchanged within Brackets
      *  editConflicts   - changed on disk; also dirty in Brackets
      *  deleteConflicts - deleted on disk; also dirty in Brackets
+     *  @private
      *
      * @param {!Array.<Document>} docs
      * @return {$.Promise}  Resolved when all scanning done, or rejected immediately if there's any
@@ -176,6 +183,7 @@ define(function (require, exports, module) {
     /**
      * Scans all the files in the working set that do not have Documents (and thus were not scanned
      * by findExternalChanges()). If any were deleted on disk, removes them from the working set.
+     * @private
      */
     function syncUnopenWorkingSet() {
         // We only care about working set entries that have never been open (have no Document).
@@ -212,7 +220,7 @@ define(function (require, exports, module) {
 
     /**
      * Reloads the Document's contents from disk, discarding any unsaved changes in the editor.
-     *
+     * @private
      * @param {!Document} doc
      * @return {$.Promise} Resolved after editor has been refreshed; rejected if unable to load the
      *      file's new content. Errors are logged but no UI is shown.
@@ -233,6 +241,7 @@ define(function (require, exports, module) {
     /**
      * Reloads all the documents in "toReload" silently (no prompts). The operations are all run
      * in parallel.
+     * @private
      * @return {$.Promise} Resolved/rejected after all reloads done; will be rejected if any one
      *      file's reload failed. Errors are logged (by reloadDoc()) but no UI is shown.
      */
@@ -242,6 +251,7 @@ define(function (require, exports, module) {
     }
 
     /**
+     * @private
      * @param {FileError} error
      * @param {!Document} doc
      * @return {Dialog}
@@ -261,6 +271,7 @@ define(function (require, exports, module) {
 
     /**
      * Closes all the documents in "toClose" silently (no prompts). Completes synchronously.
+     * @private
      */
     function closeDeletedDocs() {
         toClose.forEach(function (doc) {
@@ -273,7 +284,7 @@ define(function (require, exports, module) {
      * Walks through all the documents in "editConflicts" & "deleteConflicts" and prompts the user
      * about each one. Processing is sequential: if the user chooses to reload a document, the next
      * prompt is not shown until after the reload has completed.
-     *
+     * @private
      * @param {string} title Title of the dialog.
      * @return {$.Promise} Resolved/rejected after all documents have been prompted and (if
      *      applicable) reloaded (and any resulting error UI has been dismissed). Rejected if any

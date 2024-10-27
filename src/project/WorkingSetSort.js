@@ -204,6 +204,7 @@ define(function (require, exports, module) {
 
 
     /**
+     * @private
      * @constructor
      * @param {string} commandID A valid command identifier.
      * @param {function(File, File): number} compareFn A valid sort
@@ -219,6 +220,7 @@ define(function (require, exports, module) {
 
     /**
      * The Command ID
+     * @private
      * @return {string}
      */
     Sort.prototype.getCommandID = function () {
@@ -227,6 +229,7 @@ define(function (require, exports, module) {
 
     /**
      * The compare function
+     * @private
      * @return {function(File, File): number}
      */
     Sort.prototype.getCompareFn = function () {
@@ -235,6 +238,7 @@ define(function (require, exports, module) {
 
     /**
      * Gets the event that this sort object is listening to
+     * @private
      * @return {string}
      */
     Sort.prototype.getEvents = function () {
@@ -243,6 +247,7 @@ define(function (require, exports, module) {
 
     /**
      * Checks/Unchecks the command which will show a check in the menu
+     * @private
      * @param {boolean} value
      */
     Sort.prototype.setChecked = function (value) {
@@ -254,6 +259,7 @@ define(function (require, exports, module) {
 
     /**
      * Performs the sort and makes it the current sort method.
+     * @private
      */
     Sort.prototype.execute = function () {
         _setCurrentSort(this);
@@ -262,6 +268,7 @@ define(function (require, exports, module) {
 
     /**
      * Only performs the working set sort if this is the current sort.
+     * @private
      */
     Sort.prototype.sort = function () {
         if (_currentSort === this) {
@@ -378,12 +385,14 @@ define(function (require, exports, module) {
 
     /**
      * Initialize default values for sorting preferences
+     * @private
      */
     PreferencesManager.stateManager.definePreference("automaticSort", "boolean", false);
 
     /**
      * Define a default sort method that's empty so that we
      *   just convert and use the legacy sort method
+     *  @private
      */
     PreferencesManager.stateManager.definePreference(_WORKING_SET_SORT_PREF, "string", "");
 
@@ -405,6 +414,7 @@ define(function (require, exports, module) {
 
     /**
      * Initialize items dependent on extensions/workingSetList
+     * @private
      */
     AppInit.appReady(function () {
         var sortMethod = initSortMethod(),

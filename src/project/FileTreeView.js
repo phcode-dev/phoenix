@@ -85,10 +85,12 @@ define(function (require, exports, module) {
 
     /**
      * Mixin that allows a component to compute the full path to its directory entry.
+     * @private
      */
     var pathComputer = {
         /**
          * Computes the full path of the file represented by this input.
+         * @private
          */
         myPath: function () {
             var result = this.props.parentPath + this.props.name;
@@ -155,11 +157,13 @@ define(function (require, exports, module) {
     /**
      * This is a mixin that provides rename input behavior. It is responsible for taking keyboard input
      * and invoking the correct action based on that input.
+     * @private
      */
     var renameBehavior = {
         /**
          * Stop clicks from propagating so that clicking on the rename input doesn't
          * cause directories to collapse.
+         * @private
          */
         handleClick: function (e) {
             e.stopPropagation();
@@ -171,6 +175,7 @@ define(function (require, exports, module) {
         /**
          * If the user presses enter or escape, we either successfully complete or cancel, respectively,
          * the rename or create operation that is underway.
+         * @private
          */
         handleKeyDown: function (e) {
             this.props.actions.setRenameValue(this.props.parentPath + this.refs.name.value.trim());
@@ -184,6 +189,7 @@ define(function (require, exports, module) {
         /**
          * The rename or create operation can be completed or canceled by actions outside of
          * this component, so we keep the model up to date by sending every update via an action.
+         * @private
          */
         handleInput: function (e) {
             this.props.actions.setRenameValue(this.props.parentPath + this.refs.name.value.trim());
@@ -199,6 +205,7 @@ define(function (require, exports, module) {
 
         /**
          * If we leave the field for any reason, complete the rename.
+         * @private
          */
         handleBlur: function () {
             this.props.actions.performRename();
@@ -207,6 +214,7 @@ define(function (require, exports, module) {
 
     /**
      * This is a mixin that provides drag and drop move function.
+     * @private
      */
     var dragAndDrop = {
         handleDrag: function(e) {
@@ -397,13 +405,14 @@ define(function (require, exports, module) {
     /**
      * Mixin for components that support the "icons" and "addClass" extension points.
      * `fileNode` and `directoryNode` support this.
+     * @private
      */
     var extendable = {
 
         /**
          * Calls the icon providers to get the collection of icons (most likely just one) for
          * the current file or directory.
-         *
+         * @private
          * @return {Array.<PreactComponent>} icon components to render
          */
         getIcons: function () {
@@ -445,7 +454,7 @@ define(function (require, exports, module) {
         /**
          * Calls the addClass providers to get the classes (in string form) to add for the current
          * file or directory.
-         *
+         * @private
          * @param {string} classes Initial classes for this node
          * @return {string} classes for the current node
          */
@@ -504,6 +513,7 @@ define(function (require, exports, module) {
         /**
          * Thanks to immutable objects, we can just do a start object identity check to know
          * whether or not we need to re-render.
+         * @private
          */
         shouldComponentUpdate: function (nextProps, nextState) {
             return nextProps.forceRender ||
@@ -514,6 +524,7 @@ define(function (require, exports, module) {
         /**
          * If this node is newly selected, scroll it into view. Also, move the selection or
          * context boxes as appropriate.
+         * @private
          */
         componentDidUpdate: function (prevProps, prevState) {
             var wasSelected = prevProps.entry.get("selected"),
@@ -538,6 +549,7 @@ define(function (require, exports, module) {
         /**
          * When the user clicks on the node, we'll either select it or, if they've clicked twice
          * with a bit of delay in between, we'll invoke the `startRename` action.
+         * @private
          */
         handleClick: function (e) {
             // If we're renaming, allow the click to go through to the rename input.
@@ -569,6 +581,7 @@ define(function (require, exports, module) {
         /**
          * select the current node in the file tree on mouse down event on files.
          * This is to increase click responsiveness of file tree.
+         * @private
          */
         selectNode: function (e) {
             if (e.button !== LEFT_MOUSE_BUTTON) {
@@ -591,6 +604,7 @@ define(function (require, exports, module) {
         /**
          * When the user double clicks, we will select this file and add it to the working
          * set (via the `selectInWorkingSet` action.)
+         * @private
          */
         handleDoubleClick: function () {
             if (!this.props.entry.get("rename")) {
@@ -606,7 +620,7 @@ define(function (require, exports, module) {
 
         /**
          * Create the data object to pass to extensions.
-         *
+         * @private
          * @return {!{name:string, isFile:boolean, fullPath:string}} Data for extensions
          */
         getDataForExtension: function () {
@@ -801,6 +815,7 @@ define(function (require, exports, module) {
          * We need to update this component if the sort order changes or our entry object
          * changes. Thanks to immutability, if any of the directory contents change, our
          * entry object will change.
+         * @private
          */
         shouldComponentUpdate: function (nextProps, nextState) {
             return nextProps.forceRender ||
@@ -812,6 +827,7 @@ define(function (require, exports, module) {
 
         /**
          * If you click on a directory, it will toggle between open and closed.
+         * @private
          */
         handleClick: function (event) {
             if (this.props.entry.get("rename")) {
@@ -853,6 +869,7 @@ define(function (require, exports, module) {
 
         /**
          * select the current node in the file tree
+         * @private
          */
         selectNode: function (e) {
             // Do nothing for folders on keydown event. Only expand the file tree on click event
@@ -863,6 +880,7 @@ define(function (require, exports, module) {
          * Create the data object to pass to extensions.
          *
          * @return {{name: {string}, isFile: {boolean}, fullPath: {string}}} Data for extensions
+         * @private
          */
         getDataForExtension: function () {
             return {
@@ -1032,6 +1050,7 @@ define(function (require, exports, module) {
      * * selectionViewInfo: Immutable.Map with width, scrollTop, scrollLeft and offsetTop for the tree container
      * * visible: should this be visible now
      * * selectedClassName: class name applied to the element that is selected
+     * @private
      */
     var fileSelectionBox = Preact.createFactory(Preact.createClass({
         /**
@@ -1081,6 +1100,7 @@ define(function (require, exports, module) {
      * * visible: should this be visible now
      * * selectedClassName: class name applied to the element that is selected
      * * className: class to be applied to the extension element
+     * @private
      */
     var selectionExtension = Preact.createFactory(Preact.createClass({
         /**

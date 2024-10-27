@@ -42,15 +42,54 @@ define(function (require, exports, module) {
         Async               = require("utils/Async"),
         PerfUtils           = require("utils/PerfUtils");
 
-    // Constants
-    var EVENT_CHANGE            = "change",
-        EVENT_SHOULD_SELECT     = "select",
-        EVENT_SHOULD_FOCUS      = "focus",
-        EVENT_FS_RENAME_STARTED = "mvStart",
-        EVENT_FS_RENAME_END     = "mvEnd",
-        ERROR_CREATION          = "creationError",
-        ERROR_INVALID_FILENAME  = "invalidFilename",
-        ERROR_NOT_IN_PROJECT    = "notInProject";
+
+    /**
+     * Triggered when change occurs.
+     * @type {string}
+     */
+    const EVENT_CHANGE = "change";
+
+    /**
+     * Triggered when item should be selected.
+     * @type {string}
+     */
+    const EVENT_SHOULD_SELECT = "select";
+
+    /**
+     * Triggered when item should receive focus.
+     * @type {string}
+     */
+    const EVENT_SHOULD_FOCUS = "focus";
+
+    /**
+     * Triggered when file system rename operation starts.
+     * @type {string}
+     */
+    const EVENT_FS_RENAME_STARTED = "mvStart";
+
+    /**
+     * Triggered when file system rename operation ends.
+     * @type {string}
+     */
+    const EVENT_FS_RENAME_END = "mvEnd";
+
+    /**
+     * Error during creation.
+     * @type {string}
+     */
+    const ERROR_CREATION = "creationError";
+
+    /**
+     * Error because of Invalid filename
+     * @type {string}
+     */
+    const ERROR_INVALID_FILENAME = "invalidFilename";
+
+    /**
+     * Error when an item is not in a project
+     * @type {string}
+     */
+    const ERROR_NOT_IN_PROJECT = "notInProject";
 
     /**
      * @private
@@ -165,11 +204,26 @@ define(function (require, exports, module) {
         return shouldShow(entry) && !_cacheExcludeFileNameRegEx.test(entry.name);
     }
 
-    // Constants used by the ProjectModel
+    /**
+     * File renaming
+     * @const
+     * @type {number}
+     */
+    const FILE_RENAMING = 0;
 
-    var FILE_RENAMING     = 0,
-        FILE_CREATING     = 1,
-        RENAME_CANCELLED  = 2;
+    /**
+     * File creating
+     * @const
+     * @type {number}
+     */
+    const FILE_CREATING = 1;
+
+    /**
+     * Rename cancelled
+     * @const
+     * @type {number}
+     */
+    const RENAME_CANCELLED = 2;
 
 
     /**
@@ -1244,6 +1298,7 @@ define(function (require, exports, module) {
     /**
      * Cancels the creation process that is underway. The original promise returned will be resolved with the
      * RENAME_CANCELLED value. The temporary entry added to the file tree will be deleted.
+     * @private
      */
     ProjectModel.prototype._cancelCreating = function () {
         var renameInfo = this._selections.rename;
@@ -1454,6 +1509,7 @@ define(function (require, exports, module) {
     /**
      * Although Brackets is generally standardized on folder paths with a trailing "/", some APIs here
      * receive project paths without "/" due to legacy preference storage formats, etc.
+     * @private
      * @param {!string} fullPath  Path that may or may not end in "/"
      * @return {!string} Path that ends in "/"
      */
@@ -1493,7 +1549,7 @@ define(function (require, exports, module) {
     /**
      * Returns true if the given path is the same as one of the welcome projects we've previously opened,
      * or the one for the current build.
-     *
+     * @private
      * @param {string} path Path to check to see if it's a welcome project
      * @param {string} welcomeProjectPath Current welcome project path
      * @param {Array.<string>=} welcomeProjects All known welcome projects
