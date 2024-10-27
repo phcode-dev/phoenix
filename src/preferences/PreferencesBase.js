@@ -131,6 +131,7 @@ define(function (require, exports, module) {
      * Error type for problems parsing preference files.
      *
      * @constructor
+     * @private
      * @param {string} message Error message
      */
     function ParsingError(message) {
@@ -1022,7 +1023,7 @@ define(function (require, exports, module) {
 
     /**
      * Represents a single, known Preference.
-     *
+     * @private
      * @constructor
      * @param {Object} properties Information about the Preference that is stored on this object
      */
@@ -1037,6 +1038,7 @@ define(function (require, exports, module) {
      * Utility for PreferencesSystem & PrefixedPreferencesSystem -- attach EventDispatcher's on()/off()
      * implementation as private _on_internal()/_off_internal() methods, so the custom on()/off() APIs
      * these classes use can leverage EventDispatcher code internally. Also attach the regular public trigger().
+     * @private
      */
     function _addEventDispatcherImpl(proto) {
         var temp = {};
@@ -1049,7 +1051,7 @@ define(function (require, exports, module) {
     /**
      * Provides a subset of the PreferencesSystem functionality with preference
      * access always occurring with the given prefix.
-     *
+     * @private
      * @constructor
      * @param {PreferencesSystem} base The real PreferencesSystem that is backing this one
      * @param {string} prefix Prefix that is used for preferences lookup. Any separator characters should already be added.
@@ -1063,7 +1065,7 @@ define(function (require, exports, module) {
     PrefixedPreferencesSystem.prototype = {
         /**
          * Defines a new (prefixed) preference.
-         *
+         * @private
          * @param {string} id unprefixed identifier of the preference. Generally a dotted name.
          * @param {string} type Data type for the preference (generally, string, boolean, number)
          * @param {Object} initial Default value for the preference
@@ -1084,7 +1086,7 @@ define(function (require, exports, module) {
 
         /**
          * Get the prefixed preference object
-         *
+         * @private
          * @param {string} id ID of the pref to retrieve.
          */
         getPreference: function (id) {
@@ -1093,7 +1095,7 @@ define(function (require, exports, module) {
 
         /**
          * Gets the prefixed preference
-         *
+         * @private
          * @param {string} id Name of the preference for which the value should be retrieved
          * @param {Object=} context Optional context object to change the preference lookup
          */
@@ -1104,7 +1106,7 @@ define(function (require, exports, module) {
 
         /**
          * Gets the location in which the value of a prefixed preference has been set.
-         *
+         * @private
          * @param {string} id Name of the preference for which the value should be retrieved
          * @param {Object=} context Optional context object to change the preference lookup
          * @return {{scope: string, layer: ?string, layerID: ?object}} Object describing where the preferences came from
@@ -1115,7 +1117,7 @@ define(function (require, exports, module) {
 
         /**
        * Sets the prefixed preference.
-       *
+       * @private
        * @param {string} id - The identifier of the preference to set.
        * @param {Object} value - The new value for the preference.
        * @param {{location: ?Object, context: ?Object}=} options - Specific location to set the value or context for the operation.
@@ -1168,7 +1170,7 @@ define(function (require, exports, module) {
         /**
          * Sets up a listener for events for this PrefixedPreferencesSystem. Only prefixed events
          * will notify. Optionally, you can set up a listener for a specific preference.
-         *
+         * @private
          * @param {string} event Name of the event to listen for
          * @param {string|Function} preferenceID Name of a specific preference or the handler function
          * @param {?Function} handler Handler for the event
@@ -1191,7 +1193,7 @@ define(function (require, exports, module) {
         /**
          * Turns off the event handlers for a given event, optionally for a specific preference
          * or a specific handler function.
-         *
+         * @private
          * @param {string} event Name of the event for which to turn off listening
          * @param {string|Function} preferenceID Name of a specific preference or the handler function
          * @param {?Function} handler Specific handler which should stop being notified
@@ -1213,7 +1215,7 @@ define(function (require, exports, module) {
         /**
          * Saves the preferences. If a save is already in progress, a Promise is returned for
          * that save operation.
-         *
+         * @private
          * @return {Promise} Resolved when the preferences are done saving.
          */
         save: function () {
