@@ -10,32 +10,42 @@ const FindBar = brackets.getModule("search/FindBar")
 
 * [FindBar](#FindBar)
     * [new FindBar([scopeLabel])](#new_FindBar_new)
-    * _instance_
-        * [.open()](#FindBar+open)
-        * [.close(suppressAnimation)](#FindBar+close)
-        * [.isClosed()](#FindBar+isClosed) ⇒ <code>boolean</code>
-        * [.getOptions()](#FindBar+getOptions) ⇒ <code>Object</code>
-        * [.getQueryInfo()](#FindBar+getQueryInfo) ⇒ <code>Object</code>
-        * [.showError(error, [isHTML], [isFilterError])](#FindBar+showError)
-        * [.showFindCount(count)](#FindBar+showFindCount)
-        * [.showNoResults(showIndicator, showMessage)](#FindBar+showNoResults)
-        * [.getReplaceText()](#FindBar+getReplaceText) ⇒ <code>string</code>
-        * [.enable(enable)](#FindBar+enable)
-        * [.isEnabled()](#FindBar+isEnabled) ⇒ <code>boolean</code>
-        * [.isReplaceEnabled()](#FindBar+isReplaceEnabled) ⇒ <code>boolean</code>
-        * [.enableNavigation(enable)](#FindBar+enableNavigation)
-        * [.enableReplace(enable)](#FindBar+enableReplace)
-        * [.focusQuery()](#FindBar+focusQuery)
-        * [.focusReplace()](#FindBar+focusReplace)
-        * [.showIndexingSpinner()](#FindBar+showIndexingSpinner)
-        * [.redoInstantSearch()](#FindBar+redoInstantSearch)
-    * _static_
-        * [.getInitialQuery(currentFindBar, activeEditor)](#FindBar.getInitialQuery) ⇒ <code>Object</code>
+    * [.open()](#FindBar+open)
+    * [.close(suppressAnimation)](#FindBar+close)
+    * [.isClosed()](#FindBar+isClosed) ⇒ <code>boolean</code>
+    * [.getOptions()](#FindBar+getOptions) ⇒ <code>Object</code>
+    * [.getQueryInfo()](#FindBar+getQueryInfo) ⇒ <code>Object</code>
+    * [.showError(error, [isHTML], [isFilterError])](#FindBar+showError)
+    * [.showFindCount(count)](#FindBar+showFindCount)
+    * [.showNoResults(showIndicator, showMessage)](#FindBar+showNoResults)
+    * [.getReplaceText()](#FindBar+getReplaceText) ⇒ <code>string</code>
+    * [.enable(enable)](#FindBar+enable)
+    * [.isEnabled()](#FindBar+isEnabled) ⇒ <code>boolean</code>
+    * [.isReplaceEnabled()](#FindBar+isReplaceEnabled) ⇒ <code>boolean</code>
+    * [.enableNavigation(enable)](#FindBar+enableNavigation)
+    * [.enableReplace(enable)](#FindBar+enableReplace)
+    * [.focusQuery()](#FindBar+focusQuery)
+    * [.focusReplace()](#FindBar+focusReplace)
+    * [.showIndexingSpinner()](#FindBar+showIndexingSpinner)
+    * [.redoInstantSearch()](#FindBar+redoInstantSearch)
 
 <a name="new_FindBar_new"></a>
 
 ### new FindBar([scopeLabel])
-Find Bar UI component, used for both single- and multi-file find/replace. This doesn't actuallycreate and add the FindBar to the DOM - for that, call open().Dispatches these events:- queryChange - when the user types in the input field or sets a query option. Use getQueryInfo()     to get the current query state.- doFind - when the user chooses to do a Find Previous or Find Next.     Parameters are:         shiftKey - boolean, false for Find Next, true for Find Previous- doReplace - when the user chooses to do a single replace. Use getReplaceText() to get the current replacement text.- doReplaceBatch - when the user chooses to initiate a Replace All. Use getReplaceText() to get the current replacement text.- doReplaceAll - when the user chooses to perform a Replace All. Use getReplaceText() to get the current replacement text.- close - when the find bar is closed
+Find Bar UI component, used for both single- and multi-file find/replace. This doesn't actually
+create and add the FindBar to the DOM - for that, call open().
+
+Dispatches these events:
+
+- queryChange - when the user types in the input field or sets a query option. Use getQueryInfo()
+     to get the current query state.
+- doFind - when the user chooses to do a Find Previous or Find Next.
+     Parameters are:
+         shiftKey - boolean, false for Find Next, true for Find Previous
+- doReplace - when the user chooses to do a single replace. Use getReplaceText() to get the current replacement text.
+- doReplaceBatch - when the user chooses to initiate a Replace All. Use getReplaceText() to get the current replacement text.
+- doReplaceAll - when the user chooses to perform a Replace All. Use getReplaceText() to get the current replacement text.
+- close - when the find bar is closed
 
 
 | Param | Type | Description |
@@ -106,7 +116,8 @@ Set the find count.
 <a name="FindBar+showNoResults"></a>
 
 ### findBar.showNoResults(showIndicator, showMessage)
-Show or hide the no-results indicator and optional message. This is also used toindicate regular expression errors.
+Show or hide the no-results indicator and optional message. This is also used to
+indicate regular expression errors.
 
 **Kind**: instance method of [<code>FindBar</code>](#FindBar)  
 
@@ -124,7 +135,9 @@ Returns the current replace text.
 <a name="FindBar+enable"></a>
 
 ### findBar.enable(enable)
-Enables or disables the controls in the Find bar. Note that if enable is true, *all* controls will bere-enabled, even if some were previously disabled using enableNavigation() or enableReplace(), so youwill need to refresh their enable state after calling this.
+Enables or disables the controls in the Find bar. Note that if enable is true, *all* controls will be
+re-enabled, even if some were previously disabled using enableNavigation() or enableReplace(), so you
+will need to refresh their enable state after calling this.
 
 **Kind**: instance method of [<code>FindBar</code>](#FindBar)  
 
@@ -145,7 +158,8 @@ Enables or disables the controls in the Find bar. Note that if enable is true, *
 <a name="FindBar+enableNavigation"></a>
 
 ### findBar.enableNavigation(enable)
-Enable or disable the navigation controls if present. Note that if the Find bar is currently disabled(i.e. isEnabled() returns false), this will have no effect.
+Enable or disable the navigation controls if present. Note that if the Find bar is currently disabled
+(i.e. isEnabled() returns false), this will have no effect.
 
 **Kind**: instance method of [<code>FindBar</code>](#FindBar)  
 
@@ -156,7 +170,8 @@ Enable or disable the navigation controls if present. Note that if the Find bar 
 <a name="FindBar+enableReplace"></a>
 
 ### findBar.enableReplace(enable)
-Enable or disable the replace controls if present. Note that if the Find bar is currently disabled(i.e. isEnabled() returns false), this will have no effect.
+Enable or disable the replace controls if present. Note that if the Find bar is currently disabled
+(i.e. isEnabled() returns false), this will have no effect.
 
 **Kind**: instance method of [<code>FindBar</code>](#FindBar)  
 
@@ -188,16 +203,3 @@ The indexing spinner is usually shown when node is indexing files
 Force a search again
 
 **Kind**: instance method of [<code>FindBar</code>](#FindBar)  
-<a name="FindBar.getInitialQuery"></a>
-
-### FindBar.getInitialQuery(currentFindBar, activeEditor) ⇒ <code>Object</code>
-Retrieves the appropriate query and replacement text to prepopulate the Find Bar.
-
-**Kind**: static method of [<code>FindBar</code>](#FindBar)  
-**Returns**: <code>Object</code> - An object containing the query and replacement text    to prepopulate the Find Bar.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| currentFindBar | [<code>FindBar</code>](#FindBar) | The currently open Find Bar, if any. |
-| activeEditor | <code>Editor</code> | The active editor, if any. |
-

@@ -51,6 +51,10 @@ define(function (require, exports, module) {
     var _providerRegistrationHandler = new ProviderRegistrationHandler(),
         _registerQuickOpenProvider = _providerRegistrationHandler.registerProvider.bind(_providerRegistrationHandler);
 
+    /**
+     * Represents the symbol kind
+     * @type {Object}
+     */
     var SymbolKind = {
         "1": "File",
         "2": "Module",
@@ -82,25 +86,34 @@ define(function (require, exports, module) {
 
     /**
      * The regular expression to check the cursor position
+     * @private
      * @const {RegExp}
      */
     var CURSOR_POS_EXP = new RegExp(":([^,]+)?(,(.+)?)?");
 
     /**
      * Current plugin
+     * @private
      * @type {QuickOpenPlugin}
      */
     var currentPlugin = null;
 
-    /** @type {Array.<File>} */
+    /**
+     *  @type {Array.<File>}
+     *  @private
+     */
     var fileList;
 
-    /** @type {$.Promise} */
+    /**
+     * @type {$.Promise}
+     * @private
+     */
     var fileListPromise;
 
     /**
      * The currently open (or last open) QuickNavigateDialog
      * @type {?QuickNavigateDialog}
+     * @private
      */
     var _curDialog;
 
@@ -182,6 +195,7 @@ define(function (require, exports, module) {
 
     /**
      * QuickNavigateDialog class
+     * @private
      * @constructor
      */
     function QuickNavigateDialog() {
@@ -207,6 +221,7 @@ define(function (require, exports, module) {
      * True if the search bar is currently open. Note that this is set to false immediately
      * when the bar starts closing; it doesn't wait for the ModalBar animation to finish.
      * @type {boolean}
+     * @private
      */
     QuickNavigateDialog.prototype.isOpen = false;
 
@@ -277,7 +292,7 @@ define(function (require, exports, module) {
     /**
      * Attempts to extract a line number from the query where the line number
      * is followed by a colon. Callers should explicitly test result with isNaN()
-     *
+     * @private
      * @param {string} query string to extract line number from
      * @return {{query: string, local: boolean, line: number, ch: number}} An object with
      *      the extracted line and column numbers, and two additional fields: query with the original position
@@ -309,6 +324,7 @@ define(function (require, exports, module) {
      * Note, if selectedItem is null quick search should inspect $searchField for text
      * that may have not matched anything in the list, but may have information
      * for carrying out an action (e.g. go to line).
+     * @private
      */
     QuickNavigateDialog.prototype._handleItemSelect = function (selectedItem, query) {
 
@@ -357,6 +373,7 @@ define(function (require, exports, module) {
     /**
      * Opens the file specified by selected item if there is no current plug-in, otherwise defers handling
      * to the currentPlugin
+     * @private
      */
     QuickNavigateDialog.prototype._handleItemHighlight = function (selectedItem, query, explicit) {
         if (currentPlugin && currentPlugin.itemFocus) {
@@ -368,6 +385,7 @@ define(function (require, exports, module) {
      * Closes the search bar; if search bar is already closing, returns the Promise that is tracking the
      * existing close activity.
      * @return {$.Promise} Resolved when the search bar is entirely closed.
+     * @private
      */
     QuickNavigateDialog.prototype.close = function () {
         if (!this.isOpen) {
@@ -462,8 +480,8 @@ define(function (require, exports, module) {
     /**
      * Handles changes to the current query in the search field.
      * @param {string} query The new query.
-     * @return {$.Promise|Array.<*>|{error:?string}} The filtered list of results, an error object, or a Promise that
-     *                                               yields one of those
+     * @return {$.Promise|Array.<*>|{error:?string}} The filtered list of results, an error object, or a Promise that yields one of those
+     * @private
      */
     QuickNavigateDialog.prototype._filterCallback = function (query) {
         // Re-evaluate which plugin is active each time query string changes
@@ -588,6 +606,7 @@ define(function (require, exports, module) {
 
     /**
      * Formats the entry for the given item to be displayed in the dropdown.
+     * @private
      * @param {Object} item The item to be displayed.
      * @return {string} The HTML to be displayed.
      */
@@ -607,6 +626,7 @@ define(function (require, exports, module) {
     /**
      * Sets the value in the search field, updating the current mode and label based on the
      * given prefix.
+     * @private
      * @param {string} prefix The prefix that determines which mode we're in: must be empty (for file search),
      *      "@" for go to definition, or ":" for go to line.
      * @param {string} initialString The query string to search for (without the prefix).
@@ -624,6 +644,7 @@ define(function (require, exports, module) {
 
     /**
      * Sets the dialog label based on the current plugin (if any) and the current query.
+     * @private
      * @param {Object} plugin The current Quick Open plugin, or none if there is none.
      * @param {string} query The user's current query.
      */
@@ -655,6 +676,7 @@ define(function (require, exports, module) {
 
     /**
      * Shows the search dialog and initializes the auto suggestion list with filenames from the current project
+     * @private
      */
     QuickNavigateDialog.prototype.showDialog = function (prefix, initialString) {
         if (this.isOpen) {

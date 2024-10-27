@@ -831,8 +831,9 @@ define(function (require, exports, module) {
         this.trigger("doFind");
     };
 
-    /*
+    /**
      * Returns the string used to prepopulate the find bar
+     * @private
      * @param {!Editor} editor
      * @return {string} first line of primary selection to populate the find bar
      */
@@ -847,7 +848,7 @@ define(function (require, exports, module) {
 
     /**
      * Retrieves the appropriate query and replacement text to prepopulate the Find Bar.
-     *
+     * @private
      * @static
      * @param {?FindBar} currentFindBar - The currently open Find Bar, if any.
      * @param {?Editor} activeEditor - The active editor, if any.

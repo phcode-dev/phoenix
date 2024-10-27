@@ -21,7 +21,7 @@
 
 // @INCLUDE_IN_API_DOCS
 
-/*
+/**
  * Text field with attached dropdown list that is updated (based on a provider) whenever the text changes.
  *
  * For styling, the DOM structure of the popup is as follows:
@@ -114,32 +114,59 @@ define(function (require, exports, module) {
     /** @type {!Object} */
     QuickSearchField.prototype.options = null;
 
-    /** @type {?$.Promise} Promise corresponding to latest resultProvider call. Any earlier promises ignored */
+    /**
+     * @type {?$.Promise} Promise corresponding to latest resultProvider call. Any earlier promises ignored
+     * @private
+     */
     QuickSearchField.prototype._pending = null;
 
-    /** @type {boolean} True if Enter already pressed & just waiting for results to arrive before committing */
+    /**
+     * @type {boolean} True if Enter already pressed & just waiting for results to arrive before committing
+     * @private
+     */
     QuickSearchField.prototype._commitPending = false;
 
-    /** @type {?string} Value of $input corresponding to the _displayedResults list */
+    /**
+     * @type {?string} Value of $input corresponding to the _displayedResults list
+     * @private
+     */
     QuickSearchField.prototype._displayedQuery = null;
 
-    /** @type {?Array.<*>}  Latest resultProvider result */
+    /**
+     * @type {?Array.<*>}  Latest resultProvider result
+     * @private
+     */
     QuickSearchField.prototype._displayedResults = null;
 
-    /** @type {?number} */
+    /**
+     * @type {?number}
+     * @private
+     */
     QuickSearchField.prototype._highlightIndex = null;
 
-    /** @type {?jQueryObject} Dropdown's "ol", while open; null while closed */
+    /**
+     * @type {?jQueryObject} Dropdown's "ol", while open; null while closed
+     * @private
+     */
     QuickSearchField.prototype._$dropdown = null;
 
-    /** @type {!jQueryObject} */
+    /**
+     * @type {!jQueryObject}
+     * @private
+     */
     QuickSearchField.prototype.$input = null;
 
-    /** @type {!jQueryObject} */
+    /**
+     * @type {!jQueryObject}
+     * @private
+     */
     QuickSearchField.prototype.$positionEl = null;
 
 
-    /** When text field changes, update results list */
+    /**
+     * When text field changes, update results list
+     * @private
+     */
     QuickSearchField.prototype._handleInput = function () {
         this._pending = null;  // immediately invalidate any previous Promise
 
@@ -155,7 +182,10 @@ define(function (require, exports, module) {
         }, 0);
     };
 
-    /** Handle special keys: Enter, Up/Down */
+    /**
+     * Handle special keys: Enter, Up/Down
+     * @private
+     */
     QuickSearchField.prototype._handleKeyDown = function (event) {
         let popupVisible = false;
         if (this._$dropdown && this._$dropdown.is(":visible")) {
@@ -211,7 +241,10 @@ define(function (require, exports, module) {
         }
     };
 
-    /** Call onCommit() immediately */
+    /**
+     * Call onCommit() immediately
+     * @private
+     */
     QuickSearchField.prototype._doCommit = function (index) {
         var item;
         if (this._displayedResults && this._displayedResults.length) {
@@ -224,7 +257,10 @@ define(function (require, exports, module) {
         this.options.onCommit(item, this._displayedQuery, this._highlightIndex);
     };
 
-    /** Update display to reflect value of _highlightIndex, & call onHighlight() */
+    /**
+     * Update display to reflect value of _highlightIndex, & call onHighlight()
+     * @private
+     */
     QuickSearchField.prototype._updateHighlight = function (explicit) {
         if (this._$dropdown) {
             var $items = this._$dropdown.find("li");
@@ -272,7 +308,10 @@ define(function (require, exports, module) {
     };
 
 
-    /** Close dropdown result list if visible */
+    /**
+     * Close dropdown result list if visible
+     * @private
+     */
     QuickSearchField.prototype._closeDropdown = function () {
         if (this._$dropdown) {
             this._$dropdown.remove();
@@ -286,6 +325,7 @@ define(function (require, exports, module) {
 
     /**
      * Open dropdown result list & populate with the given content
+     * @private
      * @param {!string|jQueryObject} htmlContent
      */
     QuickSearchField.prototype._openDropdown = function (htmlContent) {
@@ -322,6 +362,7 @@ define(function (require, exports, module) {
     /**
      * Given finished provider result, format it into HTML and show in dropdown, and update "no-results" style.
      * If an Enter key commit was pending from earlier, process it now.
+     * @private
      * @param {!Array.<*>} results
      * @param {!string} query
      */

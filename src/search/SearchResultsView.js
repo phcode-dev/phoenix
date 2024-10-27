@@ -53,6 +53,7 @@ define(function (require, exports, module) {
      * @const
      * The maximum results to show per page.
      * @type {number}
+     * @private
      */
     var RESULTS_PER_PAGE = 100;
 
@@ -60,6 +61,7 @@ define(function (require, exports, module) {
      * @const
      * Debounce time for document changes updating the search results view.
      * @type {number}
+     * @private
      */
     var UPDATE_TIMEOUT   = 400;
 
@@ -107,40 +109,71 @@ define(function (require, exports, module) {
     }
     EventDispatcher.makeEventDispatcher(SearchResultsView.prototype);
 
-    /** @type {SearchModel} The search results model we're viewing. */
+    /**
+     * @type {SearchModel} The search results model we're viewing.
+     * @private
+     */
     SearchResultsView.prototype._model = null;
 
     /**
      * Array with content used in the Results Panel
      * @type {Array.<{fileIndex: number, filename: string, fullPath: string, items: Array.<Object>}>}
+     * @private
      */
     SearchResultsView.prototype._searchList = [];
 
-    /** @type {Panel} Bottom panel holding the search results */
+    /**
+     * @type {Panel} Bottom panel holding the search results
+     * @private
+     */
     SearchResultsView.prototype._panel = null;
 
-    /** @type {?string} The full path of the file that was open in the main editor on the initial search */
+    /**
+     * @type {?string} The full path of the file that was open in the main editor on the initial search
+     * @private
+     */
     SearchResultsView.prototype._initialFilePath = null;
 
-    /** @type {number} The index of the first result that is displayed */
+    /**
+     * @type {number} The index of the first result that is displayed
+     * @private
+     */
     SearchResultsView.prototype._currentStart = 0;
 
-    /** @type {boolean} Used to remake the replace all summary after it is changed */
+    /**
+     * @type {boolean} Used to remake the replace all summary after it is changed
+     * @private
+     */
     SearchResultsView.prototype._allChecked = false;
 
-    /** @type {$.Element} The currently selected row */
+    /**
+     * @type {$.Element} The currently selected row
+     * @private
+     */
     SearchResultsView.prototype._$selectedRow = null;
 
-    /** @type {$.Element} The element where the title is placed */
+    /**
+     * @type {$.Element} The element where the title is placed
+     * @private
+     */
     SearchResultsView.prototype._$summary = null;
 
-    /** @type {$.Element} The table that holds the results */
+    /**
+     * @type {$.Element} The table that holds the results
+     * @private
+     */
     SearchResultsView.prototype._$table = null;
 
-    /** @type {number} The ID we use for timeouts when handling model changes. */
+    /**
+     * @type {number} The ID we use for timeouts when handling model changes.
+     * @private
+     */
     SearchResultsView.prototype._timeoutID = null;
 
-    /** @type {string} The Id we use to check if it is reference search or match search */
+    /**
+     * @type {string} The Id we use to check if it is reference search or match search
+     * @private
+     */
     SearchResultsView.prototype._searchResultsType = null;
 
     /**
@@ -697,6 +730,7 @@ define(function (require, exports, module) {
 
     /**
      * Updates the results view after a model change, preserving scroll position and selection.
+     * @private
      */
     SearchResultsView.prototype._updateResults = function () {
         // In general this shouldn't get called if the panel is closed, but in case some

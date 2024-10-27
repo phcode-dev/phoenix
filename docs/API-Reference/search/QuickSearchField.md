@@ -11,22 +11,7 @@ const QuickSearchField = brackets.getModule("search/QuickSearchField")
 * [QuickSearchField](#QuickSearchField)
     * [new QuickSearchField($input)](#new_QuickSearchField_new)
     * [.options](#QuickSearchField+options) : <code>Object</code>
-    * [._pending](#QuickSearchField+_pending) : <code>$.Promise</code>
-    * [._commitPending](#QuickSearchField+_commitPending) : <code>boolean</code>
-    * [._displayedQuery](#QuickSearchField+_displayedQuery) : <code>string</code>
-    * [._displayedResults](#QuickSearchField+_displayedResults) : <code>Array.&lt;\*&gt;</code>
-    * [._highlightIndex](#QuickSearchField+_highlightIndex) : <code>number</code>
-    * [._$dropdown](#QuickSearchField+_$dropdown) : <code>jQueryObject</code>
-    * [.$input](#QuickSearchField+$input) : <code>jQueryObject</code>
-    * [.$positionEl](#QuickSearchField+$positionEl) : <code>jQueryObject</code>
-    * [._handleInput()](#QuickSearchField+_handleInput)
-    * [._handleKeyDown()](#QuickSearchField+_handleKeyDown)
-    * [._doCommit()](#QuickSearchField+_doCommit)
-    * [._updateHighlight()](#QuickSearchField+_updateHighlight)
     * [.updateResults()](#QuickSearchField+updateResults)
-    * [._closeDropdown()](#QuickSearchField+_closeDropdown)
-    * [._openDropdown(htmlContent)](#QuickSearchField+_openDropdown)
-    * [._render(results, query)](#QuickSearchField+_render)
     * [.setText(value)](#QuickSearchField+setText)
     * [.destroy()](#QuickSearchField+destroy)
 
@@ -55,107 +40,13 @@ Attaches to an existing "input" tag
 
 ### quickSearchField.options : <code>Object</code>
 **Kind**: instance property of [<code>QuickSearchField</code>](#QuickSearchField)  
-<a name="QuickSearchField+_pending"></a>
-
-### quickSearchField.\_pending : <code>$.Promise</code>
-Promise corresponding to latest resultProvider call. Any earlier promises ignored
-
-**Kind**: instance property of [<code>QuickSearchField</code>](#QuickSearchField)  
-<a name="QuickSearchField+_commitPending"></a>
-
-### quickSearchField.\_commitPending : <code>boolean</code>
-True if Enter already pressed & just waiting for results to arrive before committing
-
-**Kind**: instance property of [<code>QuickSearchField</code>](#QuickSearchField)  
-<a name="QuickSearchField+_displayedQuery"></a>
-
-### quickSearchField.\_displayedQuery : <code>string</code>
-Value of $input corresponding to the _displayedResults list
-
-**Kind**: instance property of [<code>QuickSearchField</code>](#QuickSearchField)  
-<a name="QuickSearchField+_displayedResults"></a>
-
-### quickSearchField.\_displayedResults : <code>Array.&lt;\*&gt;</code>
-Latest resultProvider result
-
-**Kind**: instance property of [<code>QuickSearchField</code>](#QuickSearchField)  
-<a name="QuickSearchField+_highlightIndex"></a>
-
-### quickSearchField.\_highlightIndex : <code>number</code>
-**Kind**: instance property of [<code>QuickSearchField</code>](#QuickSearchField)  
-<a name="QuickSearchField+_$dropdown"></a>
-
-### quickSearchField.\_$dropdown : <code>jQueryObject</code>
-Dropdown's "ol", while open; null while closed
-
-**Kind**: instance property of [<code>QuickSearchField</code>](#QuickSearchField)  
-<a name="QuickSearchField+$input"></a>
-
-### quickSearchField.$input : <code>jQueryObject</code>
-**Kind**: instance property of [<code>QuickSearchField</code>](#QuickSearchField)  
-<a name="QuickSearchField+$positionEl"></a>
-
-### quickSearchField.$positionEl : <code>jQueryObject</code>
-**Kind**: instance property of [<code>QuickSearchField</code>](#QuickSearchField)  
-<a name="QuickSearchField+_handleInput"></a>
-
-### quickSearchField.\_handleInput()
-When text field changes, update results list
-
-**Kind**: instance method of [<code>QuickSearchField</code>](#QuickSearchField)  
-<a name="QuickSearchField+_handleKeyDown"></a>
-
-### quickSearchField.\_handleKeyDown()
-Handle special keys: Enter, Up/Down
-
-**Kind**: instance method of [<code>QuickSearchField</code>](#QuickSearchField)  
-<a name="QuickSearchField+_doCommit"></a>
-
-### quickSearchField.\_doCommit()
-Call onCommit() immediately
-
-**Kind**: instance method of [<code>QuickSearchField</code>](#QuickSearchField)  
-<a name="QuickSearchField+_updateHighlight"></a>
-
-### quickSearchField.\_updateHighlight()
-Update display to reflect value of _highlightIndex, & call onHighlight()
-
-**Kind**: instance method of [<code>QuickSearchField</code>](#QuickSearchField)  
 <a name="QuickSearchField+updateResults"></a>
 
 ### quickSearchField.updateResults()
-Refresh the results dropdown, as if the user had changed the search text. Useful for providers thatwant to show cached data initially, then update the results with fresher data once available.
+Refresh the results dropdown, as if the user had changed the search text. Useful for providers that
+want to show cached data initially, then update the results with fresher data once available.
 
 **Kind**: instance method of [<code>QuickSearchField</code>](#QuickSearchField)  
-<a name="QuickSearchField+_closeDropdown"></a>
-
-### quickSearchField.\_closeDropdown()
-Close dropdown result list if visible
-
-**Kind**: instance method of [<code>QuickSearchField</code>](#QuickSearchField)  
-<a name="QuickSearchField+_openDropdown"></a>
-
-### quickSearchField.\_openDropdown(htmlContent)
-Open dropdown result list & populate with the given content
-
-**Kind**: instance method of [<code>QuickSearchField</code>](#QuickSearchField)  
-
-| Param | Type |
-| --- | --- |
-| htmlContent | <code>string</code> \| <code>jQueryObject</code> | 
-
-<a name="QuickSearchField+_render"></a>
-
-### quickSearchField.\_render(results, query)
-Given finished provider result, format it into HTML and show in dropdown, and update "no-results" style.If an Enter key commit was pending from earlier, process it now.
-
-**Kind**: instance method of [<code>QuickSearchField</code>](#QuickSearchField)  
-
-| Param | Type |
-| --- | --- |
-| results | <code>Array.&lt;\*&gt;</code> | 
-| query | <code>string</code> | 
-
 <a name="QuickSearchField+setText"></a>
 
 ### quickSearchField.setText(value)
@@ -173,3 +64,19 @@ Programmatically changes the search text and updates the results.
 Closes the dropdown, and discards any pending Promises.
 
 **Kind**: instance method of [<code>QuickSearchField</code>](#QuickSearchField)  
+<a name="KeyEvent"></a>
+
+## KeyEvent
+Text field with attached dropdown list that is updated (based on a provider) whenever the text changes.
+
+For styling, the DOM structure of the popup is as follows:
+ body
+     ol.quick-search-container
+         li
+         li.highlight
+         li
+And the text field is:
+     input
+     input.no-results
+
+**Kind**: global constant  

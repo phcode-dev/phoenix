@@ -19,8 +19,6 @@
  *
  */
 
-// @INCLUDE_IN_API_DOCS
-
 /*eslint-env node */
 /*jslint node: true */
 /*global getFileContentsForFile, files, crawlComplete, WorkerComm */

@@ -3,10 +3,37 @@
 const FindUtils = brackets.getModule("search/FindUtils")
 ```
 
+<a name="instantSearchDisabled"></a>
+
+## instantSearchDisabled : <code>boolean</code>
+if instant search is disabled, defaults to false
+
+**Kind**: global variable  
+<a name="indexingInProgress"></a>
+
+## indexingInProgress : <code>boolean</code>
+if indexing in progress, defaults to false
+
+**Kind**: global variable  
+<a name="workerSearchCount"></a>
+
+## workerSearchCount : <code>number</code>
+count of worker search, defaults to 0
+
+**Kind**: global variable  
+<a name="collapseResults"></a>
+
+## collapseResults : <code>boolean</code>
+if collapse results, defaults to false
+
+**Kind**: global variable  
 <a name="parseDollars"></a>
 
 ## parseDollars(replaceWith, match) ⇒ <code>string</code>
-Given a replace string that contains $-expressions, replace them with data from the givenregexp match info.NOTE: we can't just use the ordinary replace() function here because the string has beenextracted from the original text and so might be missing some context that the regexp matched.
+Given a replace string that contains $-expressions, replace them with data from the given
+regexp match info.
+NOTE: we can't just use the ordinary replace() function here because the string has been
+extracted from the original text and so might be missing some context that the regexp matched.
 
 **Kind**: global function  
 **Returns**: <code>string</code> - The replace text with the $-expressions substituted.  
@@ -16,58 +43,25 @@ Given a replace string that contains $-expressions, replace them with data from 
 | replaceWith | <code>string</code> | The string containing the $-expressions. |
 | match | <code>Object</code> | The match data from the regexp. |
 
-<a name="_doReplaceInDocument"></a>
-
-## \_doReplaceInDocument(doc, matchInfo, replaceText, [isRegexp]) ⇒ <code>$.Promise</code>
-Does a set of replacements in a single document in memory.
-
-**Kind**: global function  
-**Returns**: <code>$.Promise</code> - A promise that's resolved when the replacement is finished or rejected with an error if there were one or more errors.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| doc | <code>Document</code> | The document to do the replacements in. |
-| matchInfo | <code>Object</code> | The match info for this file, as returned by `_addSearchMatches()`. Might be mutated. |
-| replaceText | <code>string</code> | The text to replace each result with. |
-| [isRegexp] | <code>boolean</code> | Whether the original query was a regexp. |
-
-<a name="_doReplaceOnDisk"></a>
-
-## \_doReplaceOnDisk(fullPath, matchInfo, replaceText, [isRegexp]) ⇒ <code>$.Promise</code>
-Does a set of replacements in a single file on disk.
-
-**Kind**: global function  
-**Returns**: <code>$.Promise</code> - A promise that's resolved when the replacement is finished or rejected with an error if there were one or more errors.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| fullPath | <code>string</code> | The full path to the file. |
-| matchInfo | <code>Object</code> | The match info for this file, as returned by `_addSearchMatches()`. |
-| replaceText | <code>string</code> | The text to replace each result with. |
-| [isRegexp] | <code>boolean</code> | Whether the original query was a regexp. |
-
-<a name="_doReplaceInOneFile"></a>
-
-## \_doReplaceInOneFile(fullPath, matchInfo, replaceText, [options]) ⇒ <code>$.Promise</code>
-Does a set of replacements in a single file. If the file is already open in a Document in memory,will do the replacement there, otherwise does it directly on disk.
-
-**Kind**: global function  
-**Returns**: <code>$.Promise</code> - A promise that's resolved when the replacement is finished or rejected with an error if there were one or more errors.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| fullPath | <code>string</code> | The full path to the file. |
-| matchInfo | <code>Object</code> | The match info for this file, as returned by `_addSearchMatches()`. |
-| replaceText | <code>string</code> | The text to replace each result with. |
-| [options] | <code>Object</code> | An options object:      forceFilesOpen: boolean - Whether to open the file in an editor and do replacements there rather than doing the          replacements on disk. Note that even if this is false, files that are already open in editors will have replacements          done in memory.      isRegexp: boolean - Whether the original query was a regexp. If true, $-substitution is performed on the replaceText. |
-
 <a name="performReplacements"></a>
 
 ## performReplacements(results, replaceText, options) ⇒ <code>$.Promise</code>
-Given a set of search results, replaces them with the given `replaceText`, either on disk or in memory.Checks timestamps to ensure replacements are not performed in files that have changed on disk sincethe original search results were generated. However, does *not* check whether edits have been performedin in-memory documents since the search; it's up to the caller to guarantee this hasn't happened.(When called from the standard Find in Files UI, `SearchResultsView` guarantees this. If called headlessly,the caller needs to track changes.)Replacements in documents that are already open in memory at the start of the replacement are guaranteed tohappen synchronously; replacements in files on disk will return an error if the on-disk file changes betweenthe time `performReplacements()` is called and the time the replacement actually happens.
+Given a set of search results, replaces them with the given `replaceText`, either on disk or in memory.
+Checks timestamps to ensure replacements are not performed in files that have changed on disk since
+the original search results were generated. However, does *not* check whether edits have been performed
+in in-memory documents since the search; it's up to the caller to guarantee this hasn't happened.
+(When called from the standard Find in Files UI, `SearchResultsView` guarantees this. If called headlessly,
+the caller needs to track changes.)
+
+Replacements in documents that are already open in memory at the start of the replacement are guaranteed to
+happen synchronously; replacements in files on disk will return an error if the on-disk file changes between
+the time `performReplacements()` is called and the time the replacement actually happens.
 
 **Kind**: global function  
-**Returns**: <code>$.Promise</code> - A promise that's resolved when the replacement is finished or rejected with an array of errors    if there were one or more errors. Each individual item in the array will be a `{item: string, error: string}` object,    where `item` is the full path to the file that could not be updated, and `error` is either a FileSystem error or one    of the `FindUtils.ERROR_*` constants.  
+**Returns**: <code>$.Promise</code> - A promise that's resolved when the replacement is finished or rejected with an array of errors
+    if there were one or more errors. Each individual item in the array will be a `{item: string, error: string}` object,
+    where `item` is the full path to the file that could not be updated, and `error` is either a FileSystem error or one
+    of the `FindUtils.ERROR_*` constants.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -94,7 +88,10 @@ Returns label text to indicate the search scope. Already HTML-escaped.
 Parses the given query into a regexp, and returns whether it was valid or not.
 
 **Kind**: global function  
-**Returns**: <code>Object</code> - queryExpr - the regexp representing the query     valid - set to true if query is a nonempty string or a valid regexp.     empty - set to true if query was empty.     error - set to an error string if valid is false and query is nonempty.  
+**Returns**: <code>Object</code> - queryExpr - the regexp representing the query
+     valid - set to true if query is a nonempty string or a valid regexp.
+     empty - set to true if query was empty.
+     error - set to an error string if valid is false and query is nonempty.  
 
 | Param | Type |
 | --- | --- |
@@ -157,13 +154,15 @@ Raises an event when the search scope changes[say search in a subdirectory in th
 <a name="notifyWorkerSearchStarted"></a>
 
 ## notifyWorkerSearchStarted()
-Notifies that a worker search has started so that we FindUtils can figure outif any outstanding worker search requests are pending
+Notifies that a worker search has started so that we FindUtils can figure out
+if any outstanding worker search requests are pending
 
 **Kind**: global function  
 <a name="notifyWorkerSearchFinished"></a>
 
 ## notifyWorkerSearchFinished()
-Notifies that a worker search has finished so that we FindUtils can figure outif any outstanding worker search requests are pending
+Notifies that a worker search has finished so that we FindUtils can figure out
+if any outstanding worker search requests are pending
 
 **Kind**: global function  
 <a name="notifyIndexingStarted"></a>
