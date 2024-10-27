@@ -35,10 +35,29 @@ define(function (require, exports, module) {
         StringUtils = require("utils/StringUtils"),
         _ = require("thirdparty/lodash");
 
-    var instantSearchDisabled = false,
-        indexingInProgress = false,
-        workerSearchCount = 0,
-        collapseResults = false;
+    /**
+     * if instant search is disabled, defaults to false
+     * @type {boolean}
+     */
+    let instantSearchDisabled = false;
+
+    /**
+     * if indexing in progress, defaults to false
+     * @type {boolean}
+     */
+    let indexingInProgress = false;
+
+    /**
+     * count of worker search, defaults to 0
+     * @type {number}
+     */
+    let workerSearchCount = 0;
+
+    /**
+     * if collapse results, defaults to false
+     * @type {boolean}
+     */
+    let collapseResults = false;
 
     EventDispatcher.makeEventDispatcher(exports);
 
@@ -78,6 +97,7 @@ define(function (require, exports, module) {
 
     /**
      * Does a set of replacements in a single document in memory.
+     * @private
      * @param {!Document} doc The document to do the replacements in.
      * @param {Object} matchInfo The match info for this file, as returned by `_addSearchMatches()`. Might be mutated.
      * @param {string} replaceText The text to replace each result with.
@@ -110,6 +130,7 @@ define(function (require, exports, module) {
 
     /**
      * Does a set of replacements in a single file on disk.
+     * @private
      * @param {string} fullPath The full path to the file.
      * @param {Object} matchInfo The match info for this file, as returned by `_addSearchMatches()`.
      * @param {string} replaceText The text to replace each result with.
@@ -151,6 +172,7 @@ define(function (require, exports, module) {
     /**
      * Does a set of replacements in a single file. If the file is already open in a Document in memory,
      * will do the replacement there, otherwise does it directly on disk.
+     * @private
      * @param {string} fullPath The full path to the file.
      * @param {Object} matchInfo The match info for this file, as returned by `_addSearchMatches()`.
      * @param {string} replaceText The text to replace each result with.

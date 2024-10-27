@@ -37,19 +37,36 @@ define(function (require, exports, module) {
 
     const PREFS_CURRENT_FILTER_STRING = "FIND_IN_FILES_CURRENT_FILTER_STRING";
 
-    const FILTER_TYPE_EXCLUDE = "excludeFilter",
-        FILTER_TYPE_INCLUDE = "includeFilter",
-        FILTER_TYPE_NO_FILTER = "noFilter";
+    /**
+     * @const
+     * @type {string}
+     */
+    const FILTER_TYPE_EXCLUDE = "excludeFilter";
+
+    /**
+     * @const
+     * @type {string}
+     */
+    const FILTER_TYPE_INCLUDE = "includeFilter";
+
+    /**
+     * @const
+     * @type {string}
+     */
+    const FILTER_TYPE_NO_FILTER = "noFilter";
+
 
     let currentFilter = null,
         currentFilterType = FILTER_TYPE_NO_FILTER;
 
     /**
      * @type {DropdownButton}
+     * @private
      */
     let _picker = null;
     /**
      * @type { jQuery }
+     * @private
      */
     let $filterContainer = null;
 

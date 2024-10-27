@@ -21,8 +21,6 @@
 
 /*unittests: FindReplace*/
 
-// @INCLUDE_IN_API_DOCS
-
 /**
  * Adds Find and Replace commands
  *

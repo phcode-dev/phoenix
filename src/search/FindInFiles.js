@@ -70,6 +70,7 @@ define(function (require, exports, module) {
     /**
      * Maximum length of text displayed in search results panel
      * @const
+     * @private
      */
     var MAX_DISPLAY_LENGTH = 200;
 
@@ -93,17 +94,24 @@ define(function (require, exports, module) {
      * Waits for FS changes to stack up until processing them
      * (scripts like npm install can do a lot of movements on the disk)
      * @const
+     * @private
      */
     var FILE_SYSTEM_EVENT_DEBOUNCE_TIME = 100;
 
-    /** Remove the listeners that were tracking potential search result changes */
+    /**
+     * Remove the listeners that were tracking potential search result changes
+     * @private
+     */
     function _removeListeners() {
         DocumentModule.off("documentChange", _documentChangeHandler);
         FileSystem.off("change", _debouncedFileSystemChangeHandler);
         DocumentManager.off("fileNameChange", _fileNameChangeHandler);
     }
 
-    /** Add listeners to track events that might change the search result set */
+    /**
+     * Add listeners to track events that might change the search result set
+     * @private
+     */
     function _addListeners() {
         // Avoid adding duplicate listeners - e.g. if a 2nd search is run without closing the old results panel first
         _removeListeners();
@@ -326,7 +334,7 @@ define(function (require, exports, module) {
     /**
      * Checks that the file matches the given subtree scope. To fully check whether the file
      * should be in the search set, use _inSearchScope() instead - a supserset of this.
-     *
+     * @private
      * @param {!File} file
      * @param {?FileSystemEntry} scope Search scope, or null if whole project
      * @return {boolean}
@@ -346,6 +354,7 @@ define(function (require, exports, module) {
 
     /**
      * Filters out files that are known binary types.
+     * @private
      * @param {string} fullPath
      * @return {boolean} True if the file's contents can be read as text
      */
@@ -381,6 +390,7 @@ define(function (require, exports, module) {
      * file exclusion filters, and isn't binary). Used when updating results incrementally - during the
      * initial search, these checks are done in bulk via getCandidateFiles() and the filterFileList() call
      * after it.
+     * @private
      * @param {!File} file
      * @return {boolean}
      */
@@ -680,6 +690,7 @@ define(function (require, exports, module) {
 
     /**
      * Notify worker that the results should be collapsed
+     * @private
      */
     function _searchcollapseResults() {
         IndexingWorker.execPeer("collapseResults", FindUtils.isCollapsedResults());
@@ -688,6 +699,7 @@ define(function (require, exports, module) {
     /**
      * Inform worker that the list of files has changed.
      * @param {array} fileList The list of files that changed.
+     * @private
      */
     function filesChanged(fileList) {
         if (!fileList || fileList.length === 0) {
@@ -706,6 +718,7 @@ define(function (require, exports, module) {
     /**
      * Inform worker that the list of files have been removed.
      * @param {array} fileList The list of files that was removed.
+     * @private
      */
     function filesRemoved(fileList) {
         if (!fileList || fileList.length === 0) {
@@ -884,12 +897,14 @@ define(function (require, exports, module) {
 
     /**
      * This stores file system events emitted by watchers that were not yet processed
+     * @private
      */
     var _cachedFileSystemEvents = [];
 
     /**
      * Debounced function to process emitted file system events
      * for cases when there's a lot of fs events emitted in a very short period of time
+     * @private
      */
     _processCachedFileSystemEvents = _.debounce(function () {
         // we need to reduce _cachedFileSystemEvents not to contain duplicates!
@@ -913,6 +928,7 @@ define(function (require, exports, module) {
     /**
      * Wrapper function for _fileSystemChangeHandler which handles all incoming fs events
      * putting them to cache and executing a debounced function
+     * @private
      */
     _debouncedFileSystemChangeHandler = function (event, entry, added, removed) {
         // normalize this here so we don't need to handle null later
@@ -938,6 +954,7 @@ define(function (require, exports, module) {
      *
      * This should never be called directly and only called via _scheduleCacheInit() below
      * to not affect project load performance.
+     * @private
      */
     var _initCache = function () {
         projectIndexingComplete = false;
@@ -1005,6 +1022,10 @@ define(function (require, exports, module) {
         return searchDeferred.promise();
     }
 
+    /**
+     * Get all the search results.
+     * @return {object} A promise that's resolved with the search results or rejected when the find competes.
+     */
     function getAllSearchResults() {
         var searchDeferred = $.Deferred();
         if (searchModel.allResultsAvailable) {
