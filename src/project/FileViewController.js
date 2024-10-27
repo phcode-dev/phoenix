@@ -61,7 +61,17 @@ define(function (require, exports, module) {
      * @private
      */
     var _curDocChangedDueToMe = false;
+
+    /**
+     * view managing working set.
+     * @type {string}
+     */
     var WORKING_SET_VIEW = "WorkingSetView";
+
+    /**
+     * manager handling project-related operations.
+     * @type {string}
+     */
     var PROJECT_MANAGER = "ProjectManager";
 
     /**
@@ -73,6 +83,7 @@ define(function (require, exports, module) {
     // Due to circular dependencies, not safe to call on() directly
     /**
      * Change the doc selection to the working set when ever a new file is added to the working set
+     * @private
      */
     EventDispatcher.on_duringInit(MainViewManager, "workingSetAdd", function (event, addedFile) {
         _fileSelectionFocus = WORKING_SET_VIEW;
@@ -81,6 +92,7 @@ define(function (require, exports, module) {
 
     /**
      * Update the file selection focus whenever the contents of the editor area change
+     * @private
      */
     EventDispatcher.on_duringInit(MainViewManager, "currentFileChange", function (event, file, paneId) {
         var perfTimerName;
@@ -236,6 +248,7 @@ define(function (require, exports, module) {
     /**
      * Opens the specified document if it's not already open, adds it to the working set,
      * and selects it in the WorkingSetView
+     * @private
      * @deprecated use FileViewController.openFileAndAddToWorkingSet() instead
      * @param {!fullPath}
      * @return {!$.Promise}

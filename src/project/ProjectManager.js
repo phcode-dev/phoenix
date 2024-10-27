@@ -82,24 +82,83 @@ define(function (require, exports, module) {
     // See #10115
     require("command/DefaultMenus");
 
-    const EVENT_PROJECT_BEFORE_CLOSE = "beforeProjectClose",
-        EVENT_PROJECT_CLOSE = "projectClose",
-        EVENT_PROJECT_OPEN_FAILED = "projectFileOpenFailed",
-        EVENT_PROJECT_OPEN = "projectOpen",
-        EVENT_AFTER_PROJECT_OPEN = "afterProjectOpen",
-        // on boot, we load files that have been passed in from os either with `open with` from os file explorer or
-        // as cli from terminal. EVENT_AFTER_STARTUP_FILES_LOADED is trigerred after those files have been loaded.
-        // Note that this may be trigerred before any extensions get loaded, so always a good idea to check for
-        // isStartupFilesLoaded()
-        EVENT_AFTER_STARTUP_FILES_LOADED = "startupFilesLoaded",
-        EVENT_PROJECT_REFRESH = "projectRefresh",
-        EVENT_CONTENT_CHANGED = "contentChanged",
-        // This will capture all file/folder changes in projects except renames. If you want to track renames,
-        // use EVENT_PROJECT_PATH_CHANGED_OR_RENAMED to track all changes or EVENT_PROJECT_FILE_RENAMED too.
-        EVENT_PROJECT_FILE_CHANGED = "projectFileChanged",
-        EVENT_PROJECT_FILE_RENAMED = "projectFileRenamed",
-        // the path changed event differs in the sense that all events returned by this will be a path.
-        EVENT_PROJECT_CHANGED_OR_RENAMED_PATH = "projectChangedPath";
+    /**
+     * Triggered before the project closes.
+     * @type {string}
+     */
+    const EVENT_PROJECT_BEFORE_CLOSE = "beforeProjectClose";
+
+    /**
+     * Triggered when the project has closed.
+     * @type {string}
+     */
+    const EVENT_PROJECT_CLOSE = "projectClose";
+
+    /**
+     * Triggered when opening a project file fails.
+     * @type {string}
+     */
+    const EVENT_PROJECT_OPEN_FAILED = "projectFileOpenFailed";
+
+    /**
+     * Triggered when a project is opened.
+     * @type {string}
+     */
+    const EVENT_PROJECT_OPEN = "projectOpen";
+
+    /**
+     * Triggered after a project is successfully opened.
+     * @type {string}
+     */
+    const EVENT_AFTER_PROJECT_OPEN = "afterProjectOpen";
+
+    /**
+     * Triggered after startup files (from OS or CLI) are loaded.
+     * Note: This may occur before extensions are loaded, so check `isStartupFilesLoaded()`.
+     * @type {string}
+     */
+    const EVENT_AFTER_STARTUP_FILES_LOADED = "startupFilesLoaded";
+
+
+    // on boot, we load files that have been passed in from os either with `open with` from os file explorer or
+    // as cli from terminal. EVENT_AFTER_STARTUP_FILES_LOADED is trigerred after those files have been loaded.
+    // Note that this may be trigerred before any extensions get loaded, so always a good idea to check for
+    // isStartupFilesLoaded()
+    /**
+     * Triggered when the project is refreshed.
+     * @type {string}
+     */
+    const EVENT_PROJECT_REFRESH = "projectRefresh";
+
+    /**
+     * Triggered when content in the project changes.
+     * @type {string}
+     */
+    const EVENT_CONTENT_CHANGED = "contentChanged";
+
+
+    // This will capture all file/folder changes in projects except renames. If you want to track renames,
+    // use EVENT_PROJECT_PATH_CHANGED_OR_RENAMED to track all changes or EVENT_PROJECT_FILE_RENAMED too.
+    /**
+     * Triggered when any file or folder in the project changes, excluding renames.
+     * @type {string}
+     */
+    const EVENT_PROJECT_FILE_CHANGED = "projectFileChanged";
+
+    /**
+     * Triggered specifically when a project file is renamed.
+     * @type {string}
+     */
+    const EVENT_PROJECT_FILE_RENAMED = "projectFileRenamed";
+
+
+    // the path changed event differs in the sense that all events returned by this will be a path.
+    /**
+     * Triggered when paths in the project are changed or renamed.
+     * @type {string}
+     */
+    const EVENT_PROJECT_CHANGED_OR_RENAMED_PATH = "projectChangedPath";
+
 
     EventDispatcher.setLeakThresholdForEvent(EVENT_PROJECT_OPEN, 25);
 
@@ -115,7 +174,7 @@ define(function (require, exports, module) {
 
     /**
      * Name of the preferences for sorting directories first
-     *
+     * @private
      * @type {string}
      */
     var SORT_DIRECTORIES_FIRST = "sortDirectoriesFirst";
@@ -294,6 +353,7 @@ define(function (require, exports, module) {
      * Sets the directory at the given path to open in the tree and saves the open nodes to view state.
      *
      * See `ProjectModel.setDirectoryOpen`
+     * @private
      */
     ActionCreator.prototype.setDirectoryOpen = function (path, open) {
         this.model.setDirectoryOpen(path, open).then(_saveTreeState);
@@ -301,6 +361,7 @@ define(function (require, exports, module) {
 
     /**
      * See `ProjectModel.setSelected`
+     * @private
      */
     ActionCreator.prototype.setSelected = function (path, doNotOpen) {
         this.model.setSelected(path, doNotOpen);
@@ -308,6 +369,7 @@ define(function (require, exports, module) {
 
     /**
      * See `ProjectModel.selectInWorkingSet`
+     * @private
      */
     ActionCreator.prototype.selectInWorkingSet = function (path) {
         this.model.selectInWorkingSet(path);
@@ -315,6 +377,7 @@ define(function (require, exports, module) {
 
     /**
      * See `FileViewController.openWithExternalApplication`
+     * @private
      */
     ActionCreator.prototype.openWithExternalApplication = function (path) {
         FileViewController.openWithExternalApplication(path);
@@ -323,6 +386,7 @@ define(function (require, exports, module) {
 
     /**
      * See `ProjectModel.setContext`
+     * @private
      */
     ActionCreator.prototype.setContext = function (path) {
         this.model.setContext(path);
@@ -330,6 +394,7 @@ define(function (require, exports, module) {
 
     /**
      * See `ProjectModel.restoreContext`
+     * @private
      */
     ActionCreator.prototype.restoreContext = function () {
         this.model.restoreContext();
@@ -337,6 +402,7 @@ define(function (require, exports, module) {
 
     /**
      * See `ProjectModel.startRename`
+     * @private
      */
     ActionCreator.prototype.startRename = function (path, isMoved) {
         // This is very not Flux-like, which is a sign that Flux may not be the
@@ -348,6 +414,7 @@ define(function (require, exports, module) {
 
     /**
      * See `ProjectModel.setRenameValue`
+     * @private
      */
     ActionCreator.prototype.setRenameValue = function (path) {
         this.model.setRenameValue(path);
@@ -355,6 +422,7 @@ define(function (require, exports, module) {
 
     /**
      * See `ProjectModel.cancelRename`
+     * @private
      */
     ActionCreator.prototype.cancelRename = function () {
         this.model.cancelRename();
@@ -362,6 +430,7 @@ define(function (require, exports, module) {
 
     /**
      * See `ProjectModel.performRename`
+     * @private
      */
     ActionCreator.prototype.performRename = function () {
         return this.model.performRename();
@@ -369,6 +438,7 @@ define(function (require, exports, module) {
 
     /**
      * See `ProjectModel.startCreating`
+     * @private
      */
     ActionCreator.prototype.startCreating = function (basedir, newName, isFolder) {
         return this.model.startCreating(basedir, newName, isFolder);
@@ -376,6 +446,7 @@ define(function (require, exports, module) {
 
     /**
      * See `ProjectModel.setSortDirectoriesFirst`
+     * @private
      */
     ActionCreator.prototype.setSortDirectoriesFirst = function (sortDirectoriesFirst) {
         this.model.setSortDirectoriesFirst(sortDirectoriesFirst);
@@ -383,6 +454,7 @@ define(function (require, exports, module) {
 
     /**
      * See `ProjectModel.setFocused`
+     * @private
      */
     ActionCreator.prototype.setFocused = function (focused) {
         this.model.setFocused(focused);
@@ -390,6 +462,7 @@ define(function (require, exports, module) {
 
     /**
      * See `ProjectModel.setCurrentFile`
+     * @private
      */
     ActionCreator.prototype.setCurrentFile = function (curFile) {
         this.model.setCurrentFile(curFile);
@@ -397,6 +470,7 @@ define(function (require, exports, module) {
 
     /**
      * See `ProjectModel.toggleSubdirectories`
+     * @private
      */
     ActionCreator.prototype.toggleSubdirectories = function (path, openOrClose) {
         this.model.toggleSubdirectories(path, openOrClose).then(_saveTreeState);
@@ -404,6 +478,7 @@ define(function (require, exports, module) {
 
     /**
      * See `ProjectModel.closeSubtree`
+     * @private
      */
     ActionCreator.prototype.closeSubtree = function (path) {
         this.model.closeSubtree(path);
@@ -425,6 +500,7 @@ define(function (require, exports, module) {
 
     /**
      * Moves the item in the oldPath to the newDirectory directory
+     * @private
      */
     ActionCreator.prototype.moveItem = function (oldPath, newDirectory) {
         var fileName = FileUtils.getBaseName(oldPath),
@@ -450,6 +526,7 @@ define(function (require, exports, module) {
 
     /**
      * See `ProjectModel.refresh`
+     * @private
      */
     ActionCreator.prototype.refresh = function () {
         this.model.refresh();
@@ -754,7 +831,6 @@ define(function (require, exports, module) {
     _renderTree = _.debounce(_renderTreeSync, _RENDER_DEBOUNCE_TIME);
 
     /**
-     * @private
      *
      * Returns the full path to the welcome project, which we open on first launch.
      *
@@ -775,7 +851,7 @@ define(function (require, exports, module) {
     }
 
     /**
-     * The flder where all the system managed projects live
+     * The folder where all the system managed projects live
      * @returns {string}
      */
     function getLocalProjectsPath() {
@@ -784,7 +860,7 @@ define(function (require, exports, module) {
 
     /**
      * Adds the path to the list of welcome projects we've ever seen, if not on the list already.
-     *
+     * @private
      * @param {string} path Path to possibly add
      */
     function addWelcomeProjectPath(path) {
@@ -820,6 +896,7 @@ define(function (require, exports, module) {
      * @deprecated use getStartupProjectPath instead. Can be removed anytime after 2-Apr-2023.
      * Initial project path is stored in prefs, which defaults to the welcome project on
      * first launch.
+     * @private
      */
     function getInitialProjectPath() {
         return updateWelcomeProjectPath(PreferencesManager.getViewState("projectPath"));
@@ -1250,7 +1327,7 @@ define(function (require, exports, module) {
     /**
      * Loads the given folder as a project. Does NOT prompt about any unsaved changes - use openProject()
      * instead to check for unsaved changes and (optionally) let the user choose the folder to open.
-     *
+     * @private
      * @param {!string} rootPath  Absolute path to the root folder of the project.
      *  A trailing "/" on the path is optional (unlike many Brackets APIs that assume a trailing "/").
      * @return {$.Promise} A promise object that will be resolved when the
@@ -1387,6 +1464,7 @@ define(function (require, exports, module) {
 
     /**
      * Invoke project settings dialog.
+     * @private
      * @return {$.Promise}
      */
     function _projectSettings() {

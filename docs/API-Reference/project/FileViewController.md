@@ -3,10 +3,23 @@
 const FileViewController = brackets.getModule("project/FileViewController")
 ```
 
+<a name="WORKING_SET_VIEW"></a>
+
+## WORKING\_SET\_VIEW : <code>string</code>
+view managing working set.
+
+**Kind**: global variable  
+<a name="PROJECT_MANAGER"></a>
+
+## PROJECT\_MANAGER : <code>string</code>
+manager handling project-related operations.
+
+**Kind**: global variable  
 <a name="setFileViewFocus"></a>
 
 ## setFileViewFocus(fileSelectionFocus)
-Modifies the selection focus in the project side bar. A file can either be selectedin the working set (the open files) or in the file tree, but not both.
+Modifies the selection focus in the project side bar. A file can either be selected
+in the working set (the open files) or in the file tree, but not both.
 
 **Kind**: global function  
 
@@ -17,7 +30,8 @@ Modifies the selection focus in the project side bar. A file can either be selec
 <a name="openAndSelectDocument"></a>
 
 ## openAndSelectDocument(fullPath, fileSelectionFocus, paneId) ⇒ <code>$.Promise</code>
-Opens a document if it's not open and selects the file in the UI corresponding tofileSelectionFocus
+Opens a document if it's not open and selects the file in the UI corresponding to
+fileSelectionFocus
 
 **Kind**: global function  
 
@@ -30,7 +44,8 @@ Opens a document if it's not open and selects the file in the UI corresponding t
 <a name="openFileAndAddToWorkingSet"></a>
 
 ## openFileAndAddToWorkingSet(fullPath, [paneId]) ⇒ <code>$.Promise</code>
-Opens the specified document if it's not already open, adds it to the working set,and selects it in the WorkingSetView
+Opens the specified document if it's not already open, adds it to the working set,
+and selects it in the WorkingSetView
 
 **Kind**: global function  
 
@@ -45,19 +60,6 @@ Opens the specified document if it's not already open, adds it to the working se
 Opens the specified document with its associated external editor,
 
 **Kind**: global function  
-<a name="addToWorkingSetAndSelect"></a>
-
-## ..addToWorkingSetAndSelect(fullPath) ⇒ <code>$.Promise</code>..
-***Deprecated***
-
-Opens the specified document if it's not already open, adds it to the working set,and selects it in the WorkingSetView
-
-**Kind**: global function  
-
-| Param | Type |
-| --- | --- |
-| fullPath | <code>fullPath</code> | 
-
 <a name="getFileSelectionFocus"></a>
 
 ## getFileSelectionFocus() ⇒ <code>String</code>

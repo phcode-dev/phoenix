@@ -3,30 +3,6 @@
 const WorkingSetView = brackets.getModule("project/WorkingSetView")
 ```
 
-<a name="$workingFilesContainer"></a>
-
-## $workingFilesContainer : <code>jQuery</code>
-#working-set-list-container
-
-**Kind**: global variable  
-<a name="LEFT_BUTTON"></a>
-
-## LEFT\_BUTTON : <code>enum</code>
-Constants for event.which values
-
-**Kind**: global enum  
-<a name="NOMANSLAND"></a>
-
-## NOMANSLAND : <code>enum</code>
-Constants for hitTest.where
-
-**Kind**: global enum  
-<a name="_DRAG_MOVE_DETECTION_START"></a>
-
-## \_DRAG\_MOVE\_DETECTION\_START
-Drag an item has to move 3px before dragging starts
-
-**Kind**: global constant  
 <a name="refresh"></a>
 
 ## refresh()
@@ -54,7 +30,8 @@ Creates a new WorkingSetView object for the specified pane
 <a name="addIconProvider"></a>
 
 ## addIconProvider(callback, [priority])
-Adds an icon provider. The callback is invoked before each working set item is created, and canreturn content to prepend to the item if it supports the icon.
+Adds an icon provider. The callback is invoked before each working set item is created, and can
+return content to prepend to the item if it supports the icon.
 
 **Kind**: global function  
 
@@ -66,7 +43,8 @@ Adds an icon provider. The callback is invoked before each working set item is c
 <a name="addClassProvider"></a>
 
 ## addClassProvider(callback, [priority])
-Adds a CSS class provider, invoked before each working set item is created or updated. When calledto update an existing item, all previously applied classes have been cleared.
+Adds a CSS class provider, invoked before each working set item is created or updated. When called
+to update an existing item, all previously applied classes have been cleared.
 
 **Kind**: global function  
 

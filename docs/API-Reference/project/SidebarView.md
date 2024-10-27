@@ -6,13 +6,16 @@ const SidebarView = brackets.getModule("project/SidebarView")
 <a name="AppInit"></a>
 
 ## AppInit
-The view that controls the showing and hiding of the sidebar.Although the sidebar view doesn't dispatch any events directly, it is aresizable element (../utils/Resizer.js), which means it can dispatch Resizerevents.  For example, if you want to listen for the sidebar showingor hiding itself, set up listeners for the corresponding Resizer events,panelCollapsed and panelExpanded:     $("#sidebar").on("panelCollapsed", ...);     $("#sidebar").on("panelExpanded", ...);
+The view that controls the showing and hiding of the sidebar.
 
-**Kind**: global variable  
-<a name="_cmdSplitNone"></a>
+Although the sidebar view doesn't dispatch any events directly, it is a
+resizable element (../utils/Resizer.js), which means it can dispatch Resizer
+events.  For example, if you want to listen for the sidebar showing
+or hiding itself, set up listeners for the corresponding Resizer events,
+panelCollapsed and panelExpanded:
 
-## \_cmdSplitNone
-Register Command Handlers
+     $("#sidebar").on("panelCollapsed", ...);
+     $("#sidebar").on("panelExpanded", ...);
 
 **Kind**: global variable  
 <a name="toggle"></a>

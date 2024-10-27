@@ -3,12 +3,73 @@
 const ProjectManager = brackets.getModule("project/ProjectManager")
 ```
 
-<a name="SORT_DIRECTORIES_FIRST"></a>
+<a name="EVENT_PROJECT_BEFORE_CLOSE"></a>
 
-## SORT\_DIRECTORIES\_FIRST : <code>string</code>
-Name of the preferences for sorting directories first
+## EVENT\_PROJECT\_BEFORE\_CLOSE : <code>string</code>
+Triggered before the project closes.
 
-**Kind**: global variable  
+**Kind**: global constant  
+<a name="EVENT_PROJECT_CLOSE"></a>
+
+## EVENT\_PROJECT\_CLOSE : <code>string</code>
+Triggered when the project has closed.
+
+**Kind**: global constant  
+<a name="EVENT_PROJECT_OPEN_FAILED"></a>
+
+## EVENT\_PROJECT\_OPEN\_FAILED : <code>string</code>
+Triggered when opening a project file fails.
+
+**Kind**: global constant  
+<a name="EVENT_PROJECT_OPEN"></a>
+
+## EVENT\_PROJECT\_OPEN : <code>string</code>
+Triggered when a project is opened.
+
+**Kind**: global constant  
+<a name="EVENT_AFTER_PROJECT_OPEN"></a>
+
+## EVENT\_AFTER\_PROJECT\_OPEN : <code>string</code>
+Triggered after a project is successfully opened.
+
+**Kind**: global constant  
+<a name="EVENT_AFTER_STARTUP_FILES_LOADED"></a>
+
+## EVENT\_AFTER\_STARTUP\_FILES\_LOADED : <code>string</code>
+Triggered after startup files (from OS or CLI) are loaded.
+Note: This may occur before extensions are loaded, so check `isStartupFilesLoaded()`.
+
+**Kind**: global constant  
+<a name="EVENT_PROJECT_REFRESH"></a>
+
+## EVENT\_PROJECT\_REFRESH : <code>string</code>
+Triggered when the project is refreshed.
+
+**Kind**: global constant  
+<a name="EVENT_CONTENT_CHANGED"></a>
+
+## EVENT\_CONTENT\_CHANGED : <code>string</code>
+Triggered when content in the project changes.
+
+**Kind**: global constant  
+<a name="EVENT_PROJECT_FILE_CHANGED"></a>
+
+## EVENT\_PROJECT\_FILE\_CHANGED : <code>string</code>
+Triggered when any file or folder in the project changes, excluding renames.
+
+**Kind**: global constant  
+<a name="EVENT_PROJECT_FILE_RENAMED"></a>
+
+## EVENT\_PROJECT\_FILE\_RENAMED : <code>string</code>
+Triggered specifically when a project file is renamed.
+
+**Kind**: global constant  
+<a name="EVENT_PROJECT_CHANGED_OR_RENAMED_PATH"></a>
+
+## EVENT\_PROJECT\_CHANGED\_OR\_RENAMED\_PATH : <code>string</code>
+Triggered when paths in the project are changed or renamed.
+
+**Kind**: global constant  
 <a name="getFileTreeContext"></a>
 
 ## getFileTreeContext() ⇒ <code>File</code> \| <code>Directory</code>
@@ -18,13 +79,17 @@ Returns the File or Directory corresponding to the item that was right-clicked o
 <a name="getSelectedItem"></a>
 
 ## getSelectedItem() ⇒ <code>File</code> \| <code>Directory</code>
-Returns the File or Directory corresponding to the item selected in the sidebar panel, whether inthe file tree OR in the working set; or null if no item is selected anywhere in the sidebar.May NOT be identical to the current Document - a folder may be selected in the sidebar, or the sidebar may nothave the current document visible in the tree & working set.
+Returns the File or Directory corresponding to the item selected in the sidebar panel, whether in
+the file tree OR in the working set; or null if no item is selected anywhere in the sidebar.
+May NOT be identical to the current Document - a folder may be selected in the sidebar, or the sidebar may not
+have the current document visible in the tree & working set.
 
 **Kind**: global function  
 <a name="getBaseUrl"></a>
 
 ## getBaseUrl() ⇒ <code>String</code>
-Returns the encoded Base URL of the currently loaded project, or empty string if no projectis open (during startup, or running outside of app shell).
+Returns the encoded Base URL of the currently loaded project, or empty string if no project
+is open (during startup, or running outside of app shell).
 
 **Kind**: global function  
 <a name="setBaseUrl"></a>
@@ -41,7 +106,8 @@ Sets the encoded Base URL of the currently loaded project.
 <a name="isWithinProject"></a>
 
 ## isWithinProject(absPathOrEntry) ⇒ <code>boolean</code>
-Returns true if absPath lies within the project, false otherwise.Does not support paths containing ".."
+Returns true if absPath lies within the project, false otherwise.
+Does not support paths containing ".."
 
 **Kind**: global function  
 
@@ -64,7 +130,9 @@ Returns an array of files that is within the project from the supplied list of p
 <a name="makeProjectRelativeIfPossible"></a>
 
 ## makeProjectRelativeIfPossible(absPath) ⇒ <code>string</code>
-If absPath lies within the project, returns a project-relative path. Else returns absPathunmodified.Does not support paths containing ".."
+If absPath lies within the project, returns a project-relative path. Else returns absPath
+unmodified.
+Does not support paths containing ".."
 
 **Kind**: global function  
 
@@ -75,7 +143,11 @@ If absPath lies within the project, returns a project-relative path. Else return
 <a name="getProjectRelativeOrDisplayPath"></a>
 
 ## getProjectRelativeOrDisplayPath(fullPath) ⇒ <code>string</code>
-Gets a generally displayable path that can be shown to the user in most cases.Gets the project relative path if possible. If paths is not in project, then if its a platform path(Eg. in tauri)it will return the full platform path. If not, then it will return a mount relative path for fs access mountfolders opened in the bowser. at last, falling back to vfs path. This should only be used for display purposesas this path will be changed by phcode depending on the situation in the future.
+Gets a generally displayable path that can be shown to the user in most cases.
+Gets the project relative path if possible. If paths is not in project, then if its a platform path(Eg. in tauri)
+it will return the full platform path. If not, then it will return a mount relative path for fs access mount
+folders opened in the bowser. at last, falling back to vfs path. This should only be used for display purposes
+as this path will be changed by phcode depending on the situation in the future.
 
 **Kind**: global function  
 
@@ -86,30 +158,34 @@ Gets a generally displayable path that can be shown to the user in most cases.G
 <a name="getProjectRoot"></a>
 
 ## getProjectRoot() ⇒ <code>Directory</code>
-Returns the root folder of the currently loaded project, or null if no project is open (duringstartup, or running outside of app shell).
+Returns the root folder of the currently loaded project, or null if no project is open (during
+startup, or running outside of app shell).
 
 **Kind**: global function  
-<a name="getLocalProjectsPath"></a>
+<a name="getWelcomeProjectPath"></a>
 
-## getLocalProjectsPath() ⇒ <code>string</code>
-The flder where all the system managed projects live
-
-**Kind**: global function  
-<a name="addWelcomeProjectPath"></a>
-
-## addWelcomeProjectPath(path)
-Adds the path to the list of welcome projects we've ever seen, if not on the list already.
+## getWelcomeProjectPath(sampleUrl, initialPath) ⇒ <code>string</code>
+Returns the full path to the welcome project, which we open on first launch.
 
 **Kind**: global function  
+**Returns**: <code>string</code> - fullPath reference  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| path | <code>string</code> | Path to possibly add |
+| sampleUrl | <code>string</code> | URL for getting started project |
+| initialPath | <code>string</code> | Path to Brackets directory (see FileUtils.getNativeBracketsDirectoryPath()) |
 
+<a name="getLocalProjectsPath"></a>
+
+## getLocalProjectsPath() ⇒ <code>string</code>
+The folder where all the system managed projects live
+
+**Kind**: global function  
 <a name="isWelcomeProjectPath"></a>
 
 ## isWelcomeProjectPath(path) ⇒ <code>boolean</code>
-Returns true if the given path is the same as one of the welcome projects we've previously opened,or the one for the current build.
+Returns true if the given path is the same as one of the welcome projects we've previously opened,
+or the one for the current build.
 
 **Kind**: global function  
 **Returns**: <code>boolean</code> - true if this is a welcome project path  
@@ -124,40 +200,27 @@ Returns true if the given path is the same as one of the welcome projects we've 
 If the provided path is to an old welcome project, returns the current one instead.
 
 **Kind**: global function  
-<a name="getInitialProjectPath"></a>
-
-## ..getInitialProjectPath()..
-***Deprecated***
-
-**Kind**: global function  
 <a name="getStartupProjectPath"></a>
 
 ## getStartupProjectPath()
-Initial project path is stored in prefs, which defaults to the welcome project onfirst launch.
+Initial project path is stored in prefs, which defaults to the welcome project on
+first launch.
 
 **Kind**: global function  
-<a name="_loadProject"></a>
-
-## \_loadProject(rootPath) ⇒ <code>$.Promise</code>
-Loads the given folder as a project. Does NOT prompt about any unsaved changes - use openProject()instead to check for unsaved changes and (optionally) let the user choose the folder to open.
-
-**Kind**: global function  
-**Returns**: <code>$.Promise</code> - A promise object that will be resolved when the project is loaded and tree is rendered, or rejected if the project path fails to load.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| rootPath | <code>string</code> | Absolute path to the root folder of the project.  A trailing "/" on the path is optional (unlike many Brackets APIs that assume a trailing "/"). |
-
 <a name="refreshFileTree"></a>
 
 ## refreshFileTree()
-Refresh the project's file tree, maintaining the current selection.Note that the original implementation of this returned a promise to be resolved when the refresh is complete.That use is deprecated and `refreshFileTree` is now a "fire and forget" kind of function.
+Refresh the project's file tree, maintaining the current selection.
+
+Note that the original implementation of this returned a promise to be resolved when the refresh is complete.
+That use is deprecated and `refreshFileTree` is now a "fire and forget" kind of function.
 
 **Kind**: global function  
 <a name="showInTree"></a>
 
 ## showInTree(entry) ⇒ <code>$.Promise</code>
-Expands tree nodes to show the given file or folder and selects it. Silently no-ops if thepath lies outside the project, or if it doesn't exist.
+Expands tree nodes to show the given file or folder and selects it. Silently no-ops if the
+path lies outside the project, or if it doesn't exist.
 
 **Kind**: global function  
 **Returns**: <code>$.Promise</code> - Resolved when done; or rejected if not found  
@@ -169,28 +232,27 @@ Expands tree nodes to show the given file or folder and selects it. Silently no-
 <a name="openProject"></a>
 
 ## openProject([path]) ⇒ <code>$.Promise</code>
-Open a new project. Currently, Brackets must always have a project open, sothis method handles both closing the current project and opening a new project.
+Open a new project. Currently, Brackets must always have a project open, so
+this method handles both closing the current project and opening a new project.
 
 **Kind**: global function  
-**Returns**: <code>$.Promise</code> - A promise object that will be resolved when the project is loaded and tree is rendered, or rejected if the project path fails to load.  
+**Returns**: <code>$.Promise</code> - A promise object that will be resolved when the
+ project is loaded and tree is rendered, or rejected if the project path
+ fails to load.  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | [path] | <code>string</code> | Optional absolute path to the root folder of the project.  If path is undefined or null, displays a dialog where the user can choose a  folder to load. If the user cancels the dialog, nothing more happens. |
 
-<a name="_projectSettings"></a>
-
-## \_projectSettings() ⇒ <code>$.Promise</code>
-Invoke project settings dialog.
-
-**Kind**: global function  
 <a name="createNewItem"></a>
 
 ## createNewItem(baseDir, initialName, skipRename, isFolder) ⇒ <code>$.Promise</code>
 Create a new item in the current project.
 
 **Kind**: global function  
-**Returns**: <code>$.Promise</code> - A promise object that will be resolved with the File of the created object, or rejected if the user cancelled or entered an illegal filename.  
+**Returns**: <code>$.Promise</code> - A promise object that will be resolved with the File
+ of the created object, or rejected if the user cancelled or entered an illegal
+ filename.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -230,7 +292,14 @@ Causes the rename operation that's in progress to complete.
 <a name="setProjectBusy"></a>
 
 ## setProjectBusy(isBusy, message)
-Sets or unsets project busy spinner with the specified message as reason.For Eg., if you want to mark project as busy with reason compiling project:`setProjectBusy(true, "compiling project...")` . The project spinner will be shown with the specified reason.Once the compilation is complete, call, we need to unset the busy status by calling:`setProjectBusy(false, "compiling project...")` . Make sure to pass in the exact message whencalling set and unset.
+Sets or unsets project busy spinner with the specified message as reason.
+
+For Eg., if you want to mark project as busy with reason compiling project:
+`setProjectBusy(true, "compiling project...")` . The project spinner will be shown with the specified reason.
+
+Once the compilation is complete, call, we need to unset the busy status by calling:
+`setProjectBusy(false, "compiling project...")` . Make sure to pass in the exact message when
+calling set and unset.
 
 **Kind**: global function  
 
@@ -259,7 +328,9 @@ Gets the filesystem object for the current context in the file tree.
 <a name="renameItemInline"></a>
 
 ## renameItemInline(entry, [isMoved]) ⇒ <code>$.Promise</code>
-Starts a rename operation, completing the current operation if there is one.The Promise returned is resolved with an object with a `newPath` property with the renamed path. If the user cancels the operation, the promise is resolved with the value RENAME_CANCELLED.
+Starts a rename operation, completing the current operation if there is one.
+
+The Promise returned is resolved with an object with a `newPath` property with the renamed path. If the user cancels the operation, the promise is resolved with the value RENAME_CANCELLED.
 
 **Kind**: global function  
 **Returns**: <code>$.Promise</code> - a promise resolved when the rename is done.  
@@ -272,7 +343,10 @@ Starts a rename operation, completing the current operation if there is one.Th
 <a name="getAllFiles"></a>
 
 ## getAllFiles(filter, [includeWorkingSet], [sort], options) ⇒ <code>$.Promise</code>
-Returns an Array of all files for this project, optionally includingfiles in the working set that are *not* under the project root. Files arefiltered first by ProjectModel.shouldShow(), then by the custom filterargument (if one was provided).
+Returns an Array of all files for this project, optionally including
+files in the working set that are *not* under the project root. Files are
+filtered first by ProjectModel.shouldShow(), then by the custom filter
+argument (if one was provided).
 
 **Kind**: global function  
 **Returns**: <code>$.Promise</code> - Promise that is resolved with an Array of File objects.  
@@ -288,7 +362,8 @@ Returns an Array of all files for this project, optionally includingfiles in th
 <a name="addIconProvider"></a>
 
 ## addIconProvider(callback, [priority])
-Adds an icon provider. The callback is invoked before each working set item is created, and canreturn content to prepend to the item if it supports the icon.
+Adds an icon provider. The callback is invoked before each working set item is created, and can
+return content to prepend to the item if it supports the icon.
 
 **Kind**: global function  
 
@@ -300,7 +375,8 @@ Adds an icon provider. The callback is invoked before each working set item is c
 <a name="addClassesProvider"></a>
 
 ## addClassesProvider(callback, [priority])
-Adds a CSS class provider, invoked before each working set item is created or updated. When calledto update an existing item, all previously applied classes have been cleared.
+Adds a CSS class provider, invoked before each working set item is created or updated. When called
+to update an existing item, all previously applied classes have been cleared.
 
 **Kind**: global function  
 
@@ -312,6 +388,9 @@ Adds a CSS class provider, invoked before each working set item is created or up
 <a name="rerenderTree"></a>
 
 ## rerenderTree()
-Forces the file tree to rerender. Typically, the tree only rerenders the portions of thetree that have changed data. If an extension that augments the tree has changes that itneeds to display, calling rerenderTree will cause the components for the whole tree tobe rerendered.
+Forces the file tree to rerender. Typically, the tree only rerenders the portions of the
+tree that have changed data. If an extension that augments the tree has changes that it
+needs to display, calling rerenderTree will cause the components for the whole tree to
+be rerendered.
 
 **Kind**: global function  
