@@ -31,6 +31,7 @@ define(function (require, exports, module) {
     /**
      * Connection attempts to make before failing
      * @type {number}
+     * @private
      */
     var CONNECTION_ATTEMPTS = 10;
 
@@ -41,18 +42,21 @@ define(function (require, exports, module) {
      * as they realize they can't connect. So, we should rarely hit the
      * connection timeout even if we try to connect to a port that isn't open.
      * @type {number}
+     * @private
      */
     var CONNECTION_TIMEOUT  = 10000; // 10 seconds
 
     /**
      * Milliseconds to wait before retrying connecting
      * @type {number}
+     * @private
      */
     var RETRY_DELAY         = 500;   // 1/2 second
 
     /**
      * Maximum value of the command ID counter
      * @type  {number}
+     * @private
      */
     var MAX_COUNTER_VALUE = 4294967295; // 2^32 - 1
 

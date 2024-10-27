@@ -177,6 +177,11 @@ define(function (require, exports, module) {
         triggerEvent(handlerName, eventName, event);
     };
 
+    /**
+     * To set the origin as trusted.
+     * @param {string} origin
+     * @param {boolean} isTrusted
+     */
     function setTrustedOrigin(origin, isTrusted) {
         if(!isTrusted){
             delete eventTrustedOrigins[origin];

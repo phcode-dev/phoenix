@@ -9,16 +9,11 @@ const DeprecationWarning = brackets.getModule("utils/DeprecationWarning")
 Utilities functions to display deprecation warning in the console.
 
 **Kind**: global variable  
-<a name="_trimStack"></a>
-
-## \_trimStack()
-Trim the stack so that it does not have the call to this module,and all the calls to require.js to load the extension that showsthis deprecation warning.
-
-**Kind**: global function  
 <a name="deprecationWarning"></a>
 
 ## deprecationWarning(message, [oncePerCaller], [callerStackPos])
-Show deprecation warning with the call stack if ithas never been displayed before.
+Show deprecation warning with the call stack if it
+has never been displayed before.
 
 **Kind**: global function  
 
@@ -31,7 +26,16 @@ Show deprecation warning with the call stack if ithas never been displayed befo
 <a name="deprecateEvent"></a>
 
 ## deprecateEvent(outbound, inbound, oldEventName, newEventName, [canonicalOutboundName], [canonicalInboundName])
-Show a deprecation warning if there are listeners for the event```   DeprecationWarning.deprecateEvent(exports,                                     MainViewManager,                                     "workingSetAdd",                                     "workingSetAdd",                                     "DocumentManager.workingSetAdd",                                     "MainViewManager.workingSetAdd");```
+Show a deprecation warning if there are listeners for the event
+
+```
+   DeprecationWarning.deprecateEvent(exports,
+                                     MainViewManager,
+                                     "workingSetAdd",
+                                     "workingSetAdd",
+                                     "DocumentManager.workingSetAdd",
+                                     "MainViewManager.workingSetAdd");
+```
 
 **Kind**: global function  
 

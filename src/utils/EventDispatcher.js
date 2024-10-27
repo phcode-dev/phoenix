@@ -21,8 +21,6 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-// @INCLUDE_IN_API_DOCS
-
 /**
  * Implements a jQuery-like event dispatch pattern for non-DOM objects (works in web workers and phoenix node as well):
  *  - Listeners are attached via on()/one() & detached via off()

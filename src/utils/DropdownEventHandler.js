@@ -78,7 +78,7 @@ define(function (require, exports, module) {
 
         /**
          * Convert keydown events into hint list navigation actions.
-         *
+         * @private
          * @param {KeyboardEvent} event
          * @return {boolean} true if key was handled, otherwise false.
          */
@@ -133,6 +133,7 @@ define(function (require, exports, module) {
 
         /**
          * PopUpManager callback
+         * @private
          */
         function closeCallback() {
             KeyBindingManager.removeGlobalKeydownHook(_keydownHook);
@@ -158,6 +159,7 @@ define(function (require, exports, module) {
 
     /**
      * Cleanup
+     * @private
      */
     DropdownEventHandler.prototype._cleanup = function () {
         if (this.$list) {
@@ -171,6 +173,7 @@ define(function (require, exports, module) {
     /**
      * Try to select item at the given index. If it's disabled or a divider, keep trying by incrementing
      * index by 'direction' each time (wrapping around if needed).
+     * @private
      * @param {number} index  If out of bounds, index either wraps around to remain in range (e.g. -1 yields
      *                      last item, length+1 yields 2nd item) or if noWrap set, clips instead (e.g. -1 yields
      *                      first item, length+1 yields last item).
@@ -208,6 +211,7 @@ define(function (require, exports, module) {
 
     /**
      * @return {number} The number of items per scroll page.
+     * @private
      */
     DropdownEventHandler.prototype._itemsPerPage = function () {
         var itemsPerPage = 1,
@@ -227,6 +231,7 @@ define(function (require, exports, module) {
 
     /**
      * Call selectionCallback with selected index
+     * @private
      */
     DropdownEventHandler.prototype._selectionHandler = function () {
 
@@ -240,7 +245,7 @@ define(function (require, exports, module) {
 
     /**
      * Call selectionCallback with selected item
-     *
+     * @private
      * @param {jQueryObject} $item
      */
     DropdownEventHandler.prototype._clickHandler = function ($link) {
@@ -289,6 +294,7 @@ define(function (require, exports, module) {
 
     /**
      * Register mouse event handlers
+     * @private
      */
     DropdownEventHandler.prototype._registerMouseEvents = function () {
         var self = this;

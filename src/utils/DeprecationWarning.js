@@ -37,6 +37,7 @@ define(function (require, exports, module) {
      * Trim the stack so that it does not have the call to this module,
      * and all the calls to require.js to load the extension that shows
      * this deprecation warning.
+     * @private
      */
     function _trimStack(stack) {
         var indexOfFirstRequireJSline;

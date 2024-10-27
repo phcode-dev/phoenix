@@ -60,9 +60,29 @@
  */
 
 define(function (require, exports, module) {
-    const FEATURE_REGISTERED = "featureGateRegistered",
-        ENABLED = 'enabled',
-        DISABLED = 'disabled';
+
+    /**
+     * feature gate registered
+     * @const
+     * @type {string}
+     */
+    const FEATURE_REGISTERED = "featureGateRegistered";
+
+    /**
+     * Registered feature gate enabled
+     * @const
+     * @type {string}
+     */
+    const ENABLED = 'enabled';
+
+    /**
+     * Register feature gate disabled
+     * @const
+     * @type {string}
+     */
+    const DISABLED = 'disabled';
+
+
 
     let EventDispatcher = require("utils/EventDispatcher");
 

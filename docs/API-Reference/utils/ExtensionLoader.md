@@ -3,34 +3,31 @@
 const ExtensionLoader = brackets.getModule("utils/ExtensionLoader")
 ```
 
-<a name="contexts"></a>
+<a name="EVENT_EXTENSION_LOADED"></a>
 
-## contexts : <code>Object.&lt;string, Object&gt;</code>
-Stores require.js contexts of extensions
+## EVENT\_EXTENSION\_LOADED : <code>string</code>
+Event triggers when extension is loaded
 
 **Kind**: global variable  
-<a name="DEFAULT_EXTENSIONS_PATH_BASE"></a>
+<a name="EVENT_EXTENSION_DISABLED"></a>
 
-## DEFAULT\_EXTENSIONS\_PATH\_BASE
-Returns the path to the default extensions directory relative to Phoenix base URL
+## EVENT\_EXTENSION\_DISABLED : <code>string</code>
+Event triggers when extension is disabled
 
-**Kind**: global constant  
-<a name="_getExtensionPath"></a>
+**Kind**: global variable  
+<a name="EVENT_EXTENSION_LOAD_FAILED"></a>
 
-## \_getExtensionPath()
-Returns the full path to the development extensions directory.
+## EVENT\_EXTENSION\_LOAD\_FAILED : <code>string</code>
+Event triggers when extension load fails
 
-**Kind**: global function  
-<a name="getDevExtensionPath"></a>
-
-## getDevExtensionPath()
-Returns the full path to the development extensions directory.
-
-**Kind**: global function  
+**Kind**: global variable  
 <a name="getUserExtensionPath"></a>
 
 ## getUserExtensionPath()
-Returns the full path of the default user extensions directory. This is in the usersapplication support directory, which is typically/Users/"user"/Application Support/Brackets/extensions/user on the mac, andC:\Users\"user"\AppData\Roaming\Brackets\extensions\user on windows.
+Returns the full path of the default user extensions directory. This is in the users
+application support directory, which is typically
+/Users/"user"/Application Support/Brackets/extensions/user on the mac, and
+C:\Users\"user"\AppData\Roaming\Brackets\extensions\user on windows.
 
 **Kind**: global function  
 <a name="getRequireContextForExtension"></a>
@@ -39,26 +36,12 @@ Returns the full path of the default user extensions directory. This is in the u
 Returns the require.js require context used to load an extension
 
 **Kind**: global function  
-**Returns**: <code>Object</code> - A require.js require object used to load the extension, or undefined ifthere is no require object with that name  
+**Returns**: <code>Object</code> - A require.js require object used to load the extension, or undefined if
+there is no require object with that name  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | name, | <code>string</code> | used to identify the extension |
-
-<a name="loadExtensionModule"></a>
-
-## loadExtensionModule(name,, config, entryPoint, metadata) ⇒ <code>$.Promise</code>
-Loads the extension module that lives at baseUrl into its own Require.js context
-
-**Kind**: global function  
-**Returns**: <code>$.Promise</code> - A promise object that is resolved when the extension is loaded, or rejected             if the extension fails to load or throws an exception immediately when loaded.             (Note: if extension contains a JS syntax error, promise is resolved not rejected).  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| name, | <code>string</code> | used to identify the extension |
-| config | <code>Object</code> | object with baseUrl property containing absolute path of extension |
-| entryPoint | <code>string</code> | name of the main js file to load |
-| metadata | <code>Object</code> |  |
 
 <a name="loadExtension"></a>
 
@@ -66,21 +49,9 @@ Loads the extension module that lives at baseUrl into its own Require.js context
 Loads the extension that lives at baseUrl into its own Require.js context
 
 **Kind**: global function  
-**Returns**: <code>$.Promise</code> - A promise object that is resolved when the extension is loaded, or rejected             if the extension fails to load or throws an exception immediately when loaded.             (Note: if extension contains a JS syntax error, promise is resolved not rejected).  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| name, | <code>string</code> | used to identify the extension |
-| config | <code>Object</code> | object with baseUrl property containing absolute path of extension |
-| entryPoint, | <code>string</code> | name of the main js file to load |
-
-<a name="_testExtensionByURL"></a>
-
-## \_testExtensionByURL(name,, config, entryPoint,) ⇒ <code>$.Promise</code>
-Runs unit tests for the extension that lives at baseUrl into its own Require.js context
-
-**Kind**: global function  
-**Returns**: <code>$.Promise</code> - A promise object that is resolved when all extensions complete loading.  
+**Returns**: <code>$.Promise</code> - A promise object that is resolved when the extension is loaded, or rejected
+             if the extension fails to load or throws an exception immediately when loaded.
+             (Note: if extension contains a JS syntax error, promise is resolved not rejected).  
 
 | Param | Type | Description |
 | --- | --- | --- |

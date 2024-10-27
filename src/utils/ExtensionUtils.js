@@ -72,6 +72,7 @@ define(function (require, exports, module) {
     /**
      * getModuleUrl returns different urls for win platform
      * so that's why we need a different check here
+     * @private
      * @see #getModuleUrl
      * @param {!string} pathOrUrl that should be checked if it's absolute
      * @return {!boolean} returns true if pathOrUrl is absolute url on win platform
@@ -225,7 +226,7 @@ define(function (require, exports, module) {
     /**
      * Loads the package.json file in the given extension folder as well as any additional
      * metadata.
-     *
+     * @private
      * @param {string} baseExtensionUrl The extension folder.
      * @param {?string} extensionName optional extension name
      * @return {$.Promise} A promise object that is resolved with the parsed contents of the package.json file,

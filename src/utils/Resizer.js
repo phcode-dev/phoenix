@@ -43,24 +43,81 @@
  */
 define(function (require, exports, module) {
 
-
-    var DIRECTION_VERTICAL = "vert";
-    var DIRECTION_HORIZONTAL = "horz";
-
-    var POSITION_TOP = "top";
-    var POSITION_BOTTOM = "bottom";
-    var POSITION_LEFT = "left";
-    var POSITION_RIGHT = "right";
-    var PREFS_PURE_CODE = "noDistractions";
-
     // Minimum size (height or width) for autodiscovered resizable panels
     var DEFAULT_MIN_SIZE = 100;
 
-    const EVENT_PANEL_COLLAPSED = 'panelCollapsed',
-        EVENT_PANEL_EXPANDED = 'panelExpanded',
-        EVENT_PANEL_RESIZE_START = 'panelResizeStart',
-        EVENT_PANEL_RESIZE_UPDATE = 'panelResizeUpdate',
-        EVENT_PANEL_RESIZE_END = 'panelResizeEnd';
+    /**
+     * Represents the vertical direction.
+     * @type {string}
+     */
+    var DIRECTION_VERTICAL = "vert";
+
+    /**
+     * Represents the horizontal direction.
+     * @type {string}
+     */
+    var DIRECTION_HORIZONTAL = "horz";
+
+    /**
+     * Indicates the top position.
+     * @type {string}
+     */
+    var POSITION_TOP = "top";
+
+    /**
+     * Indicates the bottom position.
+     * @type {string}
+     */
+    var POSITION_BOTTOM = "bottom";
+
+    /**
+     * Indicates the left position.
+     * @type {string}
+     */
+    var POSITION_LEFT = "left";
+
+    /**
+     * Indicates the right position.
+     * @type {string}
+     */
+    var POSITION_RIGHT = "right";
+
+    /**
+     * Preference for a distraction-free mode.
+     * @type {string}
+     */
+    var PREFS_PURE_CODE = "noDistractions";
+
+    /**
+     * Event triggered when a panel is collapsed.
+     * @constant {string}
+     */
+    const EVENT_PANEL_COLLAPSED = 'panelCollapsed';
+
+    /**
+     * Event triggered when a panel is expanded.
+     * @constant {string}
+     */
+    const EVENT_PANEL_EXPANDED = 'panelExpanded';
+
+    /**
+     * Event triggered at the start of panel resizing.
+     * @constant {string}
+     */
+    const EVENT_PANEL_RESIZE_START = 'panelResizeStart';
+
+    /**
+     * Event triggered during panel resizing updates.
+     * @constant {string}
+     */
+    const EVENT_PANEL_RESIZE_UPDATE = 'panelResizeUpdate';
+
+    /**
+     * Event triggered at the end of panel resizing.
+     * @constant {string}
+     */
+    const EVENT_PANEL_RESIZE_END = 'panelResizeEnd';
+
 
     // Load dependent modules
     var AppInit                 = require("utils/AppInit"),

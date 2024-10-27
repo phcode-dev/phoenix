@@ -63,10 +63,26 @@ define(function (require, exports, module) {
 
     // default async initExtension timeout
     var EXTENSION_LOAD_TIMOUT_SECONDS = 60,
-        INIT_EXTENSION_TIMEOUT = EXTENSION_LOAD_TIMOUT_SECONDS * 1000,
-        EVENT_EXTENSION_LOADED = "load",
-        EVENT_EXTENSION_DISABLED = "disabled",
-        EVENT_EXTENSION_LOAD_FAILED = "loadFailed";
+        INIT_EXTENSION_TIMEOUT = EXTENSION_LOAD_TIMOUT_SECONDS * 1000;
+
+    /**
+     * Event triggers when extension is loaded
+     * @type {string}
+     */
+    let EVENT_EXTENSION_LOADED = "load";
+
+    /**
+     * Event triggers when extension is disabled
+     * @type {string}
+     */
+    let EVENT_EXTENSION_DISABLED = "disabled";
+
+    /**
+     * Event triggers when extension load fails
+     * @type {string}
+     */
+    let EVENT_EXTENSION_LOAD_FAILED = "loadFailed";
+
 
     var _init       = false,
         _extensions = {},
@@ -75,6 +91,7 @@ define(function (require, exports, module) {
 
     /**
      * Stores require.js contexts of extensions
+     * @private
      * @type {Object.<string, Object>}
      */
     var contexts    = {};
@@ -96,6 +113,7 @@ define(function (require, exports, module) {
 
     /**
      * Returns the path to the default extensions directory relative to Phoenix base URL
+     * @private
      */
     const DEFAULT_EXTENSIONS_PATH_BASE = "extensions/default";
     function getDefaultExtensionPath() {
@@ -104,6 +122,7 @@ define(function (require, exports, module) {
 
     /**
      * Returns the full path to the development extensions directory.
+     * @private
      */
     function _getExtensionPath() {
         return pathLib.normalize(Phoenix.VFS.getExtensionDir());
@@ -111,6 +130,7 @@ define(function (require, exports, module) {
 
     /**
      * Returns the full path to the development extensions directory.
+     * @private
      */
     function getDevExtensionPath() {
         return pathLib.normalize(Phoenix.VFS.getDevExtensionDir());
@@ -222,7 +242,7 @@ define(function (require, exports, module) {
 
     /**
      * Loads the extension module that lives at baseUrl into its own Require.js context
-     *
+     * @private
      * @param {!string} name, used to identify the extension
      * @param {!{baseUrl: string}} config object with baseUrl property containing absolute path of extension
      * @param {string} entryPoint name of the main js file to load
@@ -386,7 +406,7 @@ define(function (require, exports, module) {
 
     /**
      * Runs unit tests for the extension that lives at baseUrl into its own Require.js context
-     *
+     * @private
      * @param {!string} name, used to identify the extension
      * @param {!{baseUrl: string}} config object with baseUrl property containing absolute path of extension
      * @param {!string} entryPoint, name of the main js file to load

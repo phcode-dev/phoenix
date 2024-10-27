@@ -30,10 +30,14 @@ Exposes the domains registered with the server. This object willhave a property 
 <a name="NodeConnection+connect"></a>
 
 ### nodeConnection.connect(autoReconnect) ⇒ <code>jQuery.Promise</code>
-Connect to the node server. After connecting, the NodeConnectionobject will trigger a "close" event when the underlying socketis closed. If the connection is set to autoReconnect, then theevent will also include a jQuery promise for the connection.
+Connect to the node server. After connecting, the NodeConnection
+object will trigger a "close" event when the underlying socket
+is closed. If the connection is set to autoReconnect, then the
+event will also include a jQuery promise for the connection.
 
 **Kind**: instance method of [<code>NodeConnection</code>](#NodeConnection)  
-**Returns**: <code>jQuery.Promise</code> - Promise that resolves/rejects when the   connection succeeds/fails  
+**Returns**: <code>jQuery.Promise</code> - Promise that resolves/rejects when the
+   connection succeeds/fails  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -49,7 +53,10 @@ Determines whether the NodeConnection is currently connected
 <a name="NodeConnection+disconnect"></a>
 
 ### nodeConnection.disconnect()
-Explicitly disconnects from the server. Note that even ifautoReconnect was set to true at connection time, the connectionwill not reconnect after this call. Reconnection can be manually doneby calling connect() again.
+Explicitly disconnects from the server. Note that even if
+autoReconnect was set to true at connection time, the connection
+will not reconnect after this call. Reconnection can be manually done
+by calling connect() again.
 
 **Kind**: instance method of [<code>NodeConnection</code>](#NodeConnection)  
 <a name="NodeConnection+loadDomains"></a>
@@ -58,34 +65,12 @@ Explicitly disconnects from the server. Note that even ifautoReconnect was set 
 Load domains into the server by path
 
 **Kind**: instance method of [<code>NodeConnection</code>](#NodeConnection)  
-**Returns**: <code>jQuery.Promise</code> - Promise that resolves after the load has   succeeded and the new API is availale at NodeConnection.domains,   or that rejects on failure.  
+**Returns**: <code>jQuery.Promise</code> - Promise that resolves after the load has
+   succeeded and the new API is availale at NodeConnection.domains,
+   or that rejects on failure.  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | List | <code>Array.&lt;string&gt;</code> | of absolute paths to load |
 | autoReload | <code>boolean</code> | Whether to auto-reload the domains if the server    fails and restarts. Note that the reload is initiated by the    client, so it will only happen after the client reconnects. |
 
-<a name="CONNECTION_ATTEMPTS"></a>
-
-## CONNECTION\_ATTEMPTS : <code>number</code>
-Connection attempts to make before failing
-
-**Kind**: global variable  
-<a name="CONNECTION_TIMEOUT"></a>
-
-## CONNECTION\_TIMEOUT : <code>number</code>
-Milliseconds to wait before a particular connection attempt is considered failed.NOTE: It's okay for the connection timeout to be long because theexpected behavior of WebSockets is to send a "close" event as soonas they realize they can't connect. So, we should rarely hit theconnection timeout even if we try to connect to a port that isn't open.
-
-**Kind**: global variable  
-<a name="RETRY_DELAY"></a>
-
-## RETRY\_DELAY : <code>number</code>
-Milliseconds to wait before retrying connecting
-
-**Kind**: global variable  
-<a name="MAX_COUNTER_VALUE"></a>
-
-## MAX\_COUNTER\_VALUE : <code>number</code>
-Maximum value of the command ID counter
-
-**Kind**: global variable  

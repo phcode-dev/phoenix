@@ -37,6 +37,7 @@ define(function (require, exports, module) {
     /**
      * Flag to enable/disable performance data gathering. Default is true (enabled)
      * @type {boolean} enabled
+     * @private
      */
     var enabled = brackets && !!brackets.app.getTimeSinceStartup;
 
@@ -45,12 +46,14 @@ define(function (require, exports, module) {
      * test (passed to markStart/addMeasurement), and the value is the time, in
      * milliseconds, that it took to run the test. If multiple runs of the same test
      * are made, the value is an Array with each run stored as an entry in the Array.
+     * @private
      */
     var perfData = {};
 
     /**
      * Active tests. This is a hash of all tests that have had markStart() called,
      * but have not yet had addMeasurement() called.
+     * @private
      */
     var activeTests = {};
 
@@ -58,6 +61,7 @@ define(function (require, exports, module) {
      * Updatable tests. This is a hash of all tests that have had markStart() called,
      * and have had updateMeasurement() called. Caller must explicitly remove tests
      * from this list using finalizeMeasurement()
+     * @private
      */
     var updatableTests = {};
 
@@ -89,6 +93,7 @@ define(function (require, exports, module) {
     /**
      * Override toString() to allow using PerfMeasurement as an array key without
      * explicit conversion.
+     * @private
      */
     PerfMeasurement.prototype.toString = function () {
         return this.name;
@@ -305,6 +310,7 @@ define(function (require, exports, module) {
     /**
      * return single value, or comma separated values for an array or return aggregated values with
      * "min value, average, max value, standard deviation"
+     * @private
      * @param   {Array}    entry          An array or a single value
      * @param   {Boolean} aggregateStats If set, the returned value will be aggregated in the form -
      *                                   "min(avg)max[standard deviation]"

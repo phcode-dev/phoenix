@@ -56,12 +56,21 @@ define(function (require, exports, module) {
         });
     }
 
+    /**
+     * Regex escape
+     * @param {string} str
+     * @returns {string}
+     */
     function regexEscape(str) {
         return str.replace(/([.?*+\^$\[\]\\(){}|\-])/g, "\\$1");
     }
 
-    // Periods (aka "dots") are allowed in HTML identifiers, but jQuery interprets
-    // them as the start of a class selector, so they need to be escaped
+    /**
+     * Periods (aka "dots") are allowed in HTML identifiers, but jQuery interprets
+     * them as the start of a class selector, so they need to be escaped
+     * @param {string} str
+     * @returns {string}
+     */
     function jQueryIdEscape(str) {
         return str.replace(/\./g, "\\.");
     }
@@ -137,6 +146,14 @@ define(function (require, exports, module) {
         return str.indexOf(suffix, str.length - suffix.length) !== -1;
     }
 
+    /**
+     * sort two urls alphabetically
+     * ensure folders appear before files on windows
+     *
+     * @param {string} a
+     * @param {string} b
+     * @returns {number}
+     */
     function urlSort(a, b) {
         var a2, b2;
         function isFile(s) {
@@ -271,6 +288,12 @@ define(function (require, exports, module) {
         return randomId;
     }
 
+    /**
+     * Check if value is a valid number
+     *
+     * @param {string} value
+     * @returns {boolean} true if value is valid number, else false
+     */
     function isNumber(value) {
         return parseFloat(value).toString() === value;
     }

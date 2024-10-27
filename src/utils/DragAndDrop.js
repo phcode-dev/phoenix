@@ -74,6 +74,7 @@ define(function (require, exports, module) {
      * Determines if the event contains a type list that has a URI-list.
      * If it does and contains an empty file list, then what is being dropped is a URL.
      * If that is true then we stop the event propagation and default behavior to save Brackets editor from the browser taking over.
+     * @private
      * @param {Array.<File>} files Array of File objects from the event datastructure. URLs are the only drop item that would contain a URI-list.
      * @param {event} event The event datastucture containing datatransfer information about the drag/drop event. Contains a type list which may or may not hold a URI-list depending on what was dragged/dropped. Interested if it does.
      */
