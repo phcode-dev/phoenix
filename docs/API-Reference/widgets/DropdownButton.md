@@ -3,10 +3,38 @@
 const DropdownButton = brackets.getModule("widgets/DropdownButton")
 ```
 
+<a name="EVENT_SELECTED"></a>
+
+## EVENT\_SELECTED : <code>string</code>
+Event triggered when an item is selected.
+
+**Kind**: global constant  
+<a name="EVENT_LIST_RENDERED"></a>
+
+## EVENT\_LIST\_RENDERED : <code>string</code>
+Event triggered when the list is rendered.
+
+**Kind**: global constant  
+<a name="EVENT_DROPDOWN_SHOWN"></a>
+
+## EVENT\_DROPDOWN\_SHOWN : <code>string</code>
+Event triggered when the dropdown is shown.
+
+**Kind**: global constant  
+<a name="EVENT_DROPDOWN_CLOSED"></a>
+
+## EVENT\_DROPDOWN\_CLOSED : <code>string</code>
+Event triggered when the dropdown is closed.
+
+**Kind**: global constant  
 <a name="DropdownButton"></a>
 
 ## DropdownButton(label, items, [itemRenderer], [options])
-Creates a single dropdown-button instance. The DOM node is created but not attached tothe document anywhere - clients should append `this.$button` to the appropriate location.DropdownButton dispatches the following events: - "select" - triggered when an option in the dropdown is clicked. Passed item object and index.
+Creates a single dropdown-button instance. The DOM node is created but not attached to
+the document anywhere - clients should append `this.$button` to the appropriate location.
+
+DropdownButton dispatches the following events:
+ - "select" - triggered when an option in the dropdown is clicked. Passed item object and index.
 
 **Kind**: global function  
 
@@ -24,13 +52,10 @@ Creates a single dropdown-button instance. The DOM node is created but not attac
 * [DropdownButton(label, items, [itemRenderer], [options])](#DropdownButton)
     * [.items](#DropdownButton+items) : <code>Array.&lt;\*&gt;</code>
     * [.itemsSearchFilterText](#DropdownButton+itemsSearchFilterText) : <code>null</code>
-    * [.$button](#DropdownButton+$button) : <code>jQueryObject</code>
-    * [.$dropdown](#DropdownButton+$dropdown) : <code>jQueryObject</code>
     * [.dropdownExtraClasses](#DropdownButton+dropdownExtraClasses) : <code>string</code>
     * [.setButtonLabel(label)](#DropdownButton+setButtonLabel)
     * [.isOpen()](#DropdownButton+isOpen)
     * [.itemRenderer(item, index)](#DropdownButton+itemRenderer) ⇒ <code>string</code> \| <code>Object</code>
-    * [._renderList($parent)](#DropdownButton+_renderList) ⇒ <code>jQueryObject</code>
     * [.refresh()](#DropdownButton+refresh)
     * [.setChecked(index, checked)](#DropdownButton+setChecked)
     * [.showDropdown()](#DropdownButton+showDropdown)
@@ -47,19 +72,8 @@ Items in dropdown list - may be changed any time dropdown isn't open
 <a name="DropdownButton+itemsSearchFilterText"></a>
 
 ### dropdownButton.itemsSearchFilterText : <code>null</code>
-This is filter text corresponding to each items. it will be used to filter the items based onthe keyboard key presses the user does to enter search filter in popup.
-
-**Kind**: instance property of [<code>DropdownButton</code>](#DropdownButton)  
-<a name="DropdownButton+$button"></a>
-
-### dropdownButton.$button : <code>jQueryObject</code>
-The clickable button. Available as soon as the DropdownButton is constructed.
-
-**Kind**: instance property of [<code>DropdownButton</code>](#DropdownButton)  
-<a name="DropdownButton+$dropdown"></a>
-
-### dropdownButton.$dropdown : <code>jQueryObject</code>
-The dropdown element. Only non-null while open.
+This is filter text corresponding to each items. it will be used to filter the items based on
+the keyboard key presses the user does to enter search filter in popup.
 
 **Kind**: instance property of [<code>DropdownButton</code>](#DropdownButton)  
 <a name="DropdownButton+dropdownExtraClasses"></a>
@@ -91,29 +105,20 @@ returns true if the dropdown is open
 Called for each item when rendering the dropdown.
 
 **Kind**: instance method of [<code>DropdownButton</code>](#DropdownButton)  
-**Returns**: <code>string</code> \| <code>Object</code> - Formatted & escaped HTML, either as a simple string     or as the 'html' field in an object that also conveys enabled state. Disabled items inherit gray     text color and cannot be selected.  
+**Returns**: <code>string</code> \| <code>Object</code> - Formatted & escaped HTML, either as a simple string
+     or as the 'html' field in an object that also conveys enabled state. Disabled items inherit gray
+     text color and cannot be selected.  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | item | <code>\*</code> | from items array |
 | index | <code>number</code> | in items array |
 
-<a name="DropdownButton+_renderList"></a>
-
-### dropdownButton.\_renderList($parent) ⇒ <code>jQueryObject</code>
-Converts the list of item objects into HTML list items in format required by DropdownEventHandler
-
-**Kind**: instance method of [<code>DropdownButton</code>](#DropdownButton)  
-**Returns**: <code>jQueryObject</code> - The dropdown element with the rendered list items appended.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| $parent | <code>jQueryObject</code> | The dropdown element |
-
 <a name="DropdownButton+refresh"></a>
 
 ### dropdownButton.refresh()
-Refresh the dropdown list by removing and re-creating all list items.Call this after deleting/adding any item in the dropdown list.
+Refresh the dropdown list by removing and re-creating all list items.
+Call this after deleting/adding any item in the dropdown list.
 
 **Kind**: instance method of [<code>DropdownButton</code>](#DropdownButton)  
 <a name="DropdownButton+setChecked"></a>

@@ -73,6 +73,11 @@ define(function (require, exports, module) {
     const NOTIFICATION_TYPE_ARROW = "arrow",
         NOTIFICATION_TYPE_TOAST = "toast";
 
+    /**
+     * CSS class names for notification styles.
+     * @type {object}
+     * @const
+     */
     const NOTIFICATION_STYLES_CSS_CLASS = {
         INFO: "style-info",
         WARNING: "style-warning",
@@ -81,6 +86,11 @@ define(function (require, exports, module) {
         DANGER: "style-danger"
     };
 
+    /**
+     * Closing notification reason.
+     * @type {object}
+     * @const
+     */
     const CLOSE_REASON ={
         TIMEOUT: 'closeTimeout',
         CLICK_DISMISS: 'clickDismiss',
