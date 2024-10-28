@@ -97,6 +97,11 @@ define(function (require, exports, module) {
         Pane = require("view/Pane").Pane,
         KeyBindingManager = brackets.getModule("command/KeyBindingManager");
 
+    /**
+     * Event current file change
+     * @const
+     * @type {string}
+     */
     const EVENT_CURRENT_FILE_CHANGE = "currentFileChange";
 
     /**
@@ -220,6 +225,7 @@ define(function (require, exports, module) {
     /**
      * The global MRU list (for traversing)
      * @type {Array.<file:File, paneId:string>}
+     * @private
      */
     var _mruList = [];
 
@@ -293,6 +299,7 @@ define(function (require, exports, module) {
      * Resolve paneId to actual pane.
      * @param {?string} paneId - id of the desired pane. May be symbolic or null (to indicate current pane)
      * @return {string} id of the pane in which to open the document
+     * @private
      */
     function _resolvePaneId(paneId) {
         if (!paneId || paneId === ACTIVE_PANE) {
@@ -329,6 +336,7 @@ define(function (require, exports, module) {
      * Determines if the pane id is a special pane id
      * @param {!string} paneId - the id to test
      * @return {boolean} true if the pane id is a special identifier, false if not
+     * @private
      */
     function _isSpecialPaneId(paneId) {
         return paneId === ACTIVE_PANE || paneId === ALL_PANES;
@@ -409,6 +417,7 @@ define(function (require, exports, module) {
 
     /**
      * Retrieves the Pane ID for the specified container
+     * @private
      * @param {!jQuery} $el - the element of the pane to fetch
      * @return {?string} the id of the pane that matches the container or undefined if a pane doesn't exist for that container
      */
@@ -1153,6 +1162,7 @@ define(function (require, exports, module) {
 
     /**
      * Updates the header text for all panes
+     * @private
      */
     function _updatePaneHeaders() {
         _forEachPaneOrPanes(ALL_PANES, function (pane) {
@@ -1291,6 +1301,7 @@ define(function (require, exports, module) {
     /**
      * Opens a file in the specified pane this can be used to open a file with a custom viewer
      * or a document for editing.  If it's a document for editing, edit is called on the document
+     * @private
      * @param {!string} paneId - id of the pane in which to open the document
      * @param {!File} file - file to open
      * @param {{noPaneActivate:boolean=}=} optionsIn - options
@@ -1416,7 +1427,7 @@ define(function (require, exports, module) {
 
     /**
      * Closes a file in the specified pane or panes.
-     * 
+     * @private
      * @param {!string} paneId - The ID of the pane in which to close the document.
      * @param {!File} file - The file to close.
      * @param {Object} [optionsIn] - Optional parameters for the close operation.
@@ -1437,6 +1448,7 @@ define(function (require, exports, module) {
 
     /**
      * Closes a list of file in the specified pane or panes
+     * @private
      * @param {!string} paneId - id of the pane in which to open the document
      * @param {!Array.<File>} fileList - files to close
      * This function does not fail if the file is not open
@@ -1454,6 +1466,7 @@ define(function (require, exports, module) {
 
     /**
      * Closes all files in the specified pane or panes
+     * @private
      * @param {!string} paneId - id of the pane in which to open the document
      * This function does not fail if the file is not open
      */
@@ -1493,7 +1506,8 @@ define(function (require, exports, module) {
 
     /**
      * Destroys an editor object if a document is no longer referenced
-     * @param {!Document} doc - document to destroy
+     * @private
+     * @param {!Document} document - document to destroy
      */
     function _destroyEditorIfNotNeeded(document) {
         if (!(document instanceof DocumentManager.Document)) {
@@ -1518,7 +1532,7 @@ define(function (require, exports, module) {
 
 
     /**
-     * Loads the workingset state
+     * Loads the working set state
      * @private
      */
     function _loadViewState(e) {
@@ -1543,7 +1557,7 @@ define(function (require, exports, module) {
                 }
             };
 
-            // Add all files to the workingset without verifying that
+            // Add all files to the working set without verifying that
             // they still exist on disk (for faster project switching)
             files.forEach(function (value) {
                 result.panes[FIRST_PANE].push(value);
@@ -1633,7 +1647,7 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Saves the workingset state
+     * Saves the working set state
      * @private
      */
     function _saveViewState() {

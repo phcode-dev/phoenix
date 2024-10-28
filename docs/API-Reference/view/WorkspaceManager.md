@@ -3,98 +3,43 @@
 const WorkspaceManager = brackets.getModule("view/WorkspaceManager")
 ```
 
-<a name="$windowContent"></a>
-
-## $windowContent : <code>jQueryObject</code>
-The ".content" vertical stack (editor + all header/footer panels)
-
-**Kind**: global variable  
-<a name="$editorHolder"></a>
-
-## $editorHolder : <code>jQueryObject</code>
-The "#editor-holder": has only one visible child, the current CodeMirror instance (or the no-editor placeholder)
-
-**Kind**: global variable  
-<a name="$mainToolbar"></a>
-
-## $mainToolbar : <code>jQueryObject</code>
-The "#main-toolbay": to the right side holding plugin panels and icons
-
-**Kind**: global variable  
-<a name="$mainPluginPanel"></a>
-
-## $mainPluginPanel : <code>jQueryObject</code>
-The "#main-plugin-panel": The plugin panel main container
-
-**Kind**: global variable  
-<a name="$pluginIconsBar"></a>
-
-## $pluginIconsBar : <code>jQueryObject</code>
-The "#plugin-icons-bar": holding all the plugin icons
-
-**Kind**: global variable  
-<a name="panelIDMap"></a>
-
-## panelIDMap
-A map from panel ID's to all reated panels
-
-**Kind**: global variable  
-<a name="windowResizing"></a>
-
-## windowResizing : <code>boolean</code>
-Have we already started listening for the end of the ongoing window resize?
-
-**Kind**: global variable  
 <a name="AppInit"></a>
 
 ## AppInit
-Manages layout of panels surrounding the editor area, and size of the editor area (but not its contents).Updates panel sizes when the window is resized. Maintains the max resizing limits for panels, based oncurrently available window size.Events:`workspaceUpdateLayout` When workspace size changes for any reason (including panel show/hide panel resize, or the window resize).             The 2nd arg is the available workspace height.             The 3rd arg is a refreshHint flag for internal use (passed in to recomputeLayout)
+Manages layout of panels surrounding the editor area, and size of the editor area (but not its contents).
+
+Updates panel sizes when the window is resized. Maintains the max resizing limits for panels, based on
+currently available window size.
+
+Events:
+`workspaceUpdateLayout` When workspace size changes for any reason (including panel show/hide panel resize, or the window resize).
+             The 2nd arg is the available workspace height.
+             The 3rd arg is a refreshHint flag for internal use (passed in to recomputeLayout)
 
 **Kind**: global constant  
-<a name="calcAvailableHeight"></a>
+<a name="EVENT_WORKSPACE_UPDATE_LAYOUT"></a>
 
-## calcAvailableHeight() ⇒ <code>number</code>
-Calculates the available height for the full-size Editor (or the no-editor placeholder),accounting for the current size of all visible panels, toolbar, & status bar.
+## EVENT\_WORKSPACE\_UPDATE\_LAYOUT
+Event triggered when the workspace layout updates.
 
-**Kind**: global function  
-<a name="updateResizeLimits"></a>
+**Kind**: global constant  
+<a name="EVENT_WORKSPACE_PANEL_SHOWN"></a>
 
-## updateResizeLimits()
-Updates panel resize limits to disallow making panels big enough to shrink editor area below 0
+## EVENT\_WORKSPACE\_PANEL\_SHOWN
+Event triggered when a panel is shown.
 
-**Kind**: global function  
-<a name="triggerUpdateLayout"></a>
+**Kind**: global constant  
+<a name="EVENT_WORKSPACE_PANEL_HIDDEN"></a>
 
-## triggerUpdateLayout([refreshHint])
-Calculates a new size for editor-holder and resizes it accordingly, then and dispatches the "workspaceUpdateLayout"event. (The editors within are resized by EditorManager, in response to that event).
+## EVENT\_WORKSPACE\_PANEL\_HIDDEN
+Event triggered when a panel is hidden.
 
-**Kind**: global function  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| [refreshHint] | <code>boolean</code> | true to force a complete refresh |
-
-<a name="handleWindowResize"></a>
-
-## handleWindowResize()
-Trigger editor area resize whenever the window is resized
-
-**Kind**: global function  
-<a name="listenToResize"></a>
-
-## listenToResize($panel)
-Trigger editor area resize whenever the given panel is shown/hidden/resized
-
-**Kind**: global function  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| $panel | <code>jQueryObject</code> | the jquery object in which to attach event handlers |
-
+**Kind**: global constant  
 <a name="createBottomPanel"></a>
 
 ## createBottomPanel(id, $panel, [minSize]) ⇒ <code>Panel</code>
-Creates a new resizable panel beneath the editor area and above the status bar footer. Panel is initially invisible.The panel's size & visibility are automatically saved & restored as a view-state preference.
+Creates a new resizable panel beneath the editor area and above the status bar footer. Panel is initially invisible.
+The panel's size & visibility are automatically saved & restored as a view-state preference.
 
 **Kind**: global function  
 
@@ -107,7 +52,9 @@ Creates a new resizable panel beneath the editor area and above the status bar f
 <a name="createPluginPanel"></a>
 
 ## createPluginPanel(id, $panel, [minSize], $toolbarIcon, [initialSize]) ⇒ <code>Panel</code>
-Creates a new resizable plugin panel associated with the given toolbar icon. Panel is initially invisible.The panel's size & visibility are automatically saved & restored. Only one panel can be associated with atoolbar icon.
+Creates a new resizable plugin panel associated with the given toolbar icon. Panel is initially invisible.
+The panel's size & visibility are automatically saved & restored. Only one panel can be associated with a
+toolbar icon.
 
 **Kind**: global function  
 
@@ -141,7 +88,8 @@ Gets the Panel interface for the given ID. Can return undefined if no panel with
 <a name="recomputeLayout"></a>
 
 ## recomputeLayout(refreshHint)
-Called when an external widget has appeared and needs some of the space occupied by the mainview manager
+Called when an external widget has appeared and needs some of the space occupied
+ by the mainview manager
 
 **Kind**: global function  
 
@@ -149,10 +97,24 @@ Called when an external widget has appeared and needs some of the space occupied
 | --- | --- | --- |
 | refreshHint | <code>boolean</code> | true to refresh the editor, false if not |
 
+<a name="isPanelVisible"></a>
+
+## isPanelVisible(panelID) ⇒ <code>boolean</code>
+Responsible to check if the panel is visible or not.
+Returns true if visible else false.
+
+**Kind**: global function  
+
+| Param |
+| --- |
+| panelID | 
+
 <a name="addEscapeKeyEventHandler"></a>
 
 ## addEscapeKeyEventHandler(consumerName, eventHandler) ⇒ <code>boolean</code>
-If any widgets related to the editor needs to handle the escape key event, add it here. returning true from theregistered handler will prevent primary escape key toggle panel behavior of phoenix. Note that returning truewill no stop the event bubbling, that has to be controlled with the event parameter forwarded to the handler.
+If any widgets related to the editor needs to handle the escape key event, add it here. returning true from the
+registered handler will prevent primary escape key toggle panel behavior of phoenix. Note that returning true
+will no stop the event bubbling, that has to be controlled with the event parameter forwarded to the handler.
 
 **Kind**: global function  
 **Returns**: <code>boolean</code> - true if added  

@@ -44,21 +44,43 @@ define(function (require, exports, module) {
         EditorManager           = require("editor/EditorManager"),
         KeyEvent                = require("utils/KeyEvent");
 
-    //constants
-    const EVENT_WORKSPACE_UPDATE_LAYOUT  = "workspaceUpdateLayout",
-        EVENT_WORKSPACE_PANEL_SHOWN    = PanelView.EVENT_PANEL_SHOWN,
-        EVENT_WORKSPACE_PANEL_HIDDEN   = PanelView.EVENT_PANEL_HIDDEN,
-        MAIN_TOOLBAR_WIDTH = 30;
+
+    /**
+     * Event triggered when the workspace layout updates.
+     * @const
+     */
+    const EVENT_WORKSPACE_UPDATE_LAYOUT = "workspaceUpdateLayout";
+
+    /**
+     * Event triggered when a panel is shown.
+     * @const
+     */
+    const EVENT_WORKSPACE_PANEL_SHOWN = PanelView.EVENT_PANEL_SHOWN;
+
+    /**
+     * Event triggered when a panel is hidden.
+     * @const
+     */
+    const EVENT_WORKSPACE_PANEL_HIDDEN = PanelView.EVENT_PANEL_HIDDEN;
+
+    /**
+     * Width of the main toolbar in pixels.
+     * @const
+     * @private
+     */
+    const MAIN_TOOLBAR_WIDTH = 30;
 
     /**
      * The ".content" vertical stack (editor + all header/footer panels)
      * @type {jQueryObject}
+     * @private
      */
     var $windowContent;
 
     /**
      * The "#editor-holder": has only one visible child, the current CodeMirror instance (or the no-editor placeholder)
      * @type {jQueryObject}
+     * @private
      */
     var $editorHolder;
 
@@ -66,28 +88,33 @@ define(function (require, exports, module) {
     /**
      * The "#main-toolbay": to the right side holding plugin panels and icons
      * @type {jQueryObject}
+     * @private
      */
     var $mainToolbar;
 
     /**
      * The "#main-plugin-panel": The plugin panel main container
      * @type {jQueryObject}
+     * @private
      */
     let $mainPluginPanel;
 
     /**
      * The "#plugin-icons-bar": holding all the plugin icons
      * @type {jQueryObject}
+     * @private
      */
     let $pluginIconsBar;
 
     /**
-     * A map from panel ID's to all reated panels
+     * A map from panel ID's to all related panels
+     * @private
      */
     var panelIDMap = {};
 
     /**
      * Have we already started listening for the end of the ongoing window resize?
+     * @private
      * @type {boolean}
      */
     var windowResizing = false;
@@ -100,6 +127,7 @@ define(function (require, exports, module) {
      * Calculates the available height for the full-size Editor (or the no-editor placeholder),
      * accounting for the current size of all visible panels, toolbar, & status bar.
      * @return {number}
+     * @private
      */
     function calcAvailableHeight() {
         var availableHt = $windowContent.height();
@@ -115,7 +143,10 @@ define(function (require, exports, module) {
         return Math.max(availableHt, 0);
     }
 
-    /** Updates panel resize limits to disallow making panels big enough to shrink editor area below 0 */
+    /**
+     * Updates panel resize limits to disallow making panels big enough to shrink editor area below 0
+     * @private
+     */
     function updateResizeLimits() {
         var editorAreaHeight = $editorHolder.height();
 
@@ -135,7 +166,7 @@ define(function (require, exports, module) {
     /**
      * Calculates a new size for editor-holder and resizes it accordingly, then and dispatches the "workspaceUpdateLayout"
      * event. (The editors within are resized by EditorManager, in response to that event).
-     *
+     * @private
      * @param {boolean=} refreshHint  true to force a complete refresh
      */
     function triggerUpdateLayout(refreshHint) {
@@ -152,7 +183,10 @@ define(function (require, exports, module) {
     }
 
 
-    /** Trigger editor area resize whenever the window is resized */
+    /**
+     * Trigger editor area resize whenever the window is resized
+     * @private
+     */
     function handleWindowResize() {
         // These are not initialized in Jasmine Spec Runner window until a test
         // is run that creates a mock document.
@@ -177,7 +211,8 @@ define(function (require, exports, module) {
     }
 
     /** Trigger editor area resize whenever the given panel is shown/hidden/resized
-     *  @param {!jQueryObject} $panel the jquery object in which to attach event handlers
+     * @private
+     * @param {!jQueryObject} $panel the jquery object in which to attach event handlers
      */
     function listenToResize($panel) {
         // Update editor height when shown/hidden, & continuously as panel is resized
@@ -294,7 +329,10 @@ define(function (require, exports, module) {
         listenToResize($("#main-toolbar"));
     });
 
-    /* Unit test only: allow passing in mock DOM notes, e.g. for use with SpecRunnerUtils.createMockEditor() */
+    /**
+     * Unit test only: allow passing in mock DOM notes, e.g. for use with SpecRunnerUtils.createMockEditor()
+     * @private
+     */
     function _setMockDOM($mockWindowContent, $mockEditorHolder, $mockMainToolbar, $mockMainPluginPanel, $mockPluginIconsBar) {
         $windowContent = $mockWindowContent;
         $editorHolder = $mockEditorHolder;
@@ -372,6 +410,12 @@ define(function (require, exports, module) {
         exports.trigger(EVENT_WORKSPACE_PANEL_HIDDEN, panelID);
     });
 
+    /**
+     * Responsible to check if the panel is visible or not.
+     * Returns true if visible else false.
+     * @param panelID
+     * @returns {boolean}
+     */
     function isPanelVisible(panelID) {
         let panel = getPanelForID(panelID);
         if(panel && panel.isVisible()){
