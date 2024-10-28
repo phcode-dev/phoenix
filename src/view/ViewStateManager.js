@@ -52,7 +52,8 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Sets the view state for the specfied file
+     * Sets the view state for the specified file
+     * @private
      * @param {!File} file - the file to record the view state for
      * @param {?*} viewState - any data that the view needs to restore the view state.
      */

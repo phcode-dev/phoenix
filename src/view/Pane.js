@@ -200,6 +200,7 @@ define(function (require, exports, module) {
 
     /**
      * Make an index request object
+     * @private
      * @param {boolean} requestIndex - true to request an index, false if not
      * @param {number} index - the index to request
      * @return {{indexRequested: boolean, index: number}} An object that can be passed to
@@ -464,18 +465,21 @@ define(function (require, exports, module) {
 
     /**
      * The list of files views
+     * @private
      * @type {Array.<File>}
      */
     Pane.prototype._viewList = [];
 
     /**
      * The list of files views in MRU order
+     * @private
      * @type {Array.<File>}
      */
     Pane.prototype._viewListMRUOrder = [];
 
     /**
      * The list of files views in Added order
+     * @private
      * @type {Array.<File>}
      */
     Pane.prototype._viewListAddedOrder = [];
@@ -541,6 +545,7 @@ define(function (require, exports, module) {
     /**
      * Hides the current view if there is one, shows the
      *  interstitial screen and notifies that the view changed
+     *  @private
      */
     Pane.prototype._hideCurrentView = function () {
         if (this._currentView) {
@@ -641,7 +646,7 @@ define(function (require, exports, module) {
 
     /**
      * Merges the another Pane object's contents into this Pane
-     * @param {!Pane} Other - Pane from which to copy
+     * @param {!Pane} other - Pane from which to copy
      */
     Pane.prototype.mergeFrom = function (other) {
         // save this because we're setting it to null and we
@@ -890,6 +895,7 @@ define(function (require, exports, module) {
 
     /**
      * Dispatches a currentViewChange event
+     * @private
      * @param {?View} newView - the view become the current view
      * @param {?View} oldView - the view being replaced
      */
@@ -1216,6 +1222,7 @@ define(function (require, exports, module) {
 
     /**
      * Update header and content height
+     * @private
      */
     Pane.prototype._updateHeaderHeight = function () {
         var paneContentHeight = this.$el.height();
@@ -1333,6 +1340,7 @@ define(function (require, exports, module) {
 
     /**
      * Executes a FILE_OPEN command to open a file
+     * @private
      * @param  {!string} fullPath - path of the file to open
      * @return {jQuery.promise} promise that will resolve when the file is opened
      */
@@ -1483,6 +1491,7 @@ define(function (require, exports, module) {
 
     /**
      * MainViewManager.activePaneChange handler
+     * @private
      * @param {jQuery.event} e - event data
      * @param {!string} activePaneId - the new active pane id
      */
