@@ -27,7 +27,8 @@ Add Esc key handling for a popup DOM element.
 <a name="removePopUp"></a>
 
 ## removePopUp($popUp)
-Remove Esc key handling for a pop-up. Removes the pop-up from the DOMif the pop-up is currently visible and was not originally attached.
+Remove Esc key handling for a pop-up. Removes the pop-up from the DOM
+if the pop-up is currently visible and was not originally attached.
 
 **Kind**: global function  
 
@@ -35,27 +36,12 @@ Remove Esc key handling for a pop-up. Removes the pop-up from the DOMif the pop
 | --- | --- |
 | $popUp | <code>jQuery</code> | 
 
-<a name="removeCurrentPopUp"></a>
-
-## removeCurrentPopUp([keyEvent])
-Remove Esc key handling for a pop-up. Removes the pop-up from the DOMif the pop-up is currently visible and was not originally attached.
-
-**Kind**: global function  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| [keyEvent] | <code>KeyboardEvent</code> | (optional) |
-
-<a name="_beforeMenuPopup"></a>
-
-## \_beforeMenuPopup()
-A menu is being popped up, so remove any menu that is currently popped up
-
-**Kind**: global function  
 <a name="listenToContextMenu"></a>
 
 ## listenToContextMenu(contextMenu)
-Context menus are also created in AppInit.htmlReady(), so they may notyet have been created when we get our AppInit.htmlReady() callback, sowe provide this method to tell us when to start listening for their events
+Context menus are also created in AppInit.htmlReady(), so they may not
+yet have been created when we get our AppInit.htmlReady() callback, so
+we provide this method to tell us when to start listening for their events
 
 **Kind**: global function  
 
