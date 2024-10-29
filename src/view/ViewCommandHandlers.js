@@ -19,6 +19,8 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /*global less, Phoenix */
 
 /**
@@ -75,12 +77,14 @@ define(function (require, exports, module) {
     /**
      * @const
      * @type {string}
+     * @private
      */
     var DYNAMIC_FONT_STYLE_ID = "codemirror-dynamic-fonts";
 
     /**
      * @const
      * @type {string}
+     * @private
      */
     var DYNAMIC_FONT_FAMILY_ID = "codemirror-dynamic-font-family";
 
@@ -340,7 +344,10 @@ define(function (require, exports, module) {
         return true;
     }
 
-    /** Increases the font size by 1 */
+    /**
+     * Increases the font size by 1
+     * @private
+     */
     function _handleIncreaseFontSize() {
         _adjustFontSize(1);
     }
@@ -385,12 +392,18 @@ define(function (require, exports, module) {
         }
     }
 
-    /** Decreases the font size by 1 */
+    /**
+     * Decreases the font size by 1
+     * @private
+     */
     function _handleDecreaseFontSize() {
         _adjustFontSize(-1);
     }
 
-    /** Restores the font size to the original size */
+    /**
+     * Restores the font size to the original size
+     * @private
+     */
     function _handleRestoreFontSize() {
         setFontSize(DEFAULT_FONT_SIZE + "px");
     }
@@ -418,6 +431,7 @@ define(function (require, exports, module) {
 
     /**
      * Initializes the different settings that need to loaded
+     * @private
      */
     function init() {
         currFontFamily = prefs.get("fontFamily");
@@ -537,17 +551,26 @@ define(function (require, exports, module) {
         editor.setScrollPos(scrollInfo.left, (textHeight * lines) + removedScroll);
     }
 
-    /** Scrolls one line up */
+    /**
+     * Scrolls one line up
+     * @private
+     */
     function _handleScrollLineUp() {
         _scrollLine(-1);
     }
 
-    /** Scrolls one line down */
+    /**
+     * Scrolls one line down
+     * @private
+     */
     function _handleScrollLineDown() {
         _scrollLine(1);
     }
 
-    /** Open theme settings dialog */
+    /**
+     * Open theme settings dialog
+     * @private
+     */
     function _handleThemeSettings() {
         ThemeSettings.showDialog();
     }

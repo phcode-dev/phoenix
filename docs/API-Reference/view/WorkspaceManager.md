@@ -3,6 +3,18 @@
 const WorkspaceManager = brackets.getModule("view/WorkspaceManager")
 ```
 
+<a name="PANEL_TYPE_BOTTOM_PANEL"></a>
+
+## PANEL\_TYPE\_BOTTOM\_PANEL : <code>string</code>
+Constant representing the type of bottom panel
+
+**Kind**: global variable  
+<a name="PANEL_TYPE_PLUGIN_PANEL"></a>
+
+## PANEL\_TYPE\_PLUGIN\_PANEL : <code>string</code>
+Constant representing the type of plugin panel
+
+**Kind**: global variable  
 <a name="AppInit"></a>
 
 ## AppInit

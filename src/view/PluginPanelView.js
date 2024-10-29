@@ -16,6 +16,7 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
 
 /*global fs, Phoenix, process*/
 /*eslint no-console: 0*/
@@ -24,10 +25,28 @@
 
 define(function (require, exports, module) {
 
-    const EventDispatcher = require("utils/EventDispatcher"),
-        EVENT_PANEL_SHOWN = "panelShown",
-        EVENT_PANEL_HIDDEN = "panelHidden",
-        PANEL_TYPE_PLUGIN_PANEL = "pluginPanel";
+    const EventDispatcher = require("utils/EventDispatcher");
+
+    /**
+     * Event when panel is hidden
+     * @type {string}
+     * @constant
+     */
+    const EVENT_PANEL_HIDDEN = 'panelHidden';
+
+    /**
+     * Event when panel is shown
+     * @type {string}
+     * @constant
+     */
+    const EVENT_PANEL_SHOWN = 'panelShown';
+
+    /**
+     * type for plugin panel
+     * @type {string}
+     * @constant
+     */
+    const PANEL_TYPE_PLUGIN_PANEL = 'pluginPanel';
 
     /**
      * Represents a panel below the editor area (a child of ".content").
@@ -125,7 +144,7 @@ define(function (require, exports, module) {
     };
 
     /**
-     * gets the Panle's type
+     * gets the Panel's type
      * @return {string}
      */
     Panel.prototype.getPanelType = function () {

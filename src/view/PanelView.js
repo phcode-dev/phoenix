@@ -16,6 +16,7 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
 
 /*global fs, Phoenix, process*/
 /*eslint no-console: 0*/
@@ -25,10 +26,29 @@
 define(function (require, exports, module) {
 
     const EventDispatcher = require("utils/EventDispatcher"),
-        Resizer = require("utils/Resizer"),
-        EVENT_PANEL_HIDDEN = 'panelHidden',
-        EVENT_PANEL_SHOWN = 'panelShown',
-        PANEL_TYPE_BOTTOM_PANEL = "bottomPanel";
+        Resizer = require("utils/Resizer");
+    
+    /**
+     * Event when panel is hidden
+     * @type {string}
+     * @constant
+     */
+    const EVENT_PANEL_HIDDEN = 'panelHidden';
+
+    /**
+     * Event when panel is shown
+     * @type {string}
+     * @constant
+     */
+    const EVENT_PANEL_SHOWN = 'panelShown';
+
+    /**
+     * type for bottom panel
+     * @type {string}
+     * @constant
+     */
+    const PANEL_TYPE_BOTTOM_PANEL = 'bottomPanel';
+
 
     /**
      * Represents a panel below the editor area (a child of ".content").
@@ -113,7 +133,7 @@ define(function (require, exports, module) {
     };
 
     /**
-     * gets the Panle's type
+     * gets the Panel's type
      * @return {string}
      */
     Panel.prototype.getPanelType = function () {
