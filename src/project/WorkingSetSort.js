@@ -38,6 +38,7 @@ define(function (require, exports, module) {
 
     /**
      * List of sorting method objects
+     *
      * @private
      * @type {Array.<Sort>}
      */
@@ -45,6 +46,7 @@ define(function (require, exports, module) {
 
     /**
      * Denotes the current sort method object
+     *
      * @private
      * @type {Sort}
      */
@@ -52,6 +54,7 @@ define(function (require, exports, module) {
 
     /**
      * Denotes if automatic sorting is enabled or not
+     *
      * @private
      * @type {boolean}
      */
@@ -73,6 +76,7 @@ define(function (require, exports, module) {
 
     /**
      * Events which the sort command will listen for to trigger a sort
+     *
      * @constant {string}
      * @private
      */
@@ -80,6 +84,7 @@ define(function (require, exports, module) {
 
     /**
      * Preference name
+     *
      * @constant {string}
      * @private
      */
@@ -87,6 +92,7 @@ define(function (require, exports, module) {
 
     /**
      * Legacy preference name
+     *
      * @constant {string}
      * @private
      */
@@ -94,6 +100,7 @@ define(function (require, exports, module) {
 
     /**
      * Retrieves a Sort object by id
+     *
      * @param {(string|Command)} command A command ID or a command object.
      * @return {?Sort}
      */
@@ -114,6 +121,7 @@ define(function (require, exports, module) {
 
     /**
      * Converts the old brackets working set sort preference into the modern paneview sort preference
+     *
      * @private
      * @param {!string} sortMethod - sort preference to convert
      * @return {?string} new sort preference string or undefined if an sortMethod is not found
@@ -142,6 +150,7 @@ define(function (require, exports, module) {
 
     /**
      * Removes the sort listeners.
+     *
      * @private
      */
     function _removeListeners() {
@@ -150,6 +159,7 @@ define(function (require, exports, module) {
 
     /**
      * Enables/Disables Automatic Sort depending on the value.
+     *
      * @param {boolean} enable True to enable, false to disable.
      */
     function setAutomatic(enable) {
@@ -167,6 +177,7 @@ define(function (require, exports, module) {
 
     /**
      * Adds the current sort MainViewManager listeners.
+     *
      * @private
      */
     function _addListeners() {
@@ -184,6 +195,7 @@ define(function (require, exports, module) {
 
     /**
      * Sets the current sort method and checks it on the context menu.
+     *
      * @private
      * @param {Sort} newSort
      */
@@ -204,7 +216,6 @@ define(function (require, exports, module) {
 
 
     /**
-     * @private
      * @constructor
      * @param {string} commandID A valid command identifier.
      * @param {function(File, File): number} compareFn A valid sort
@@ -220,7 +231,7 @@ define(function (require, exports, module) {
 
     /**
      * The Command ID
-     * @private
+     *
      * @return {string}
      */
     Sort.prototype.getCommandID = function () {
@@ -229,7 +240,7 @@ define(function (require, exports, module) {
 
     /**
      * The compare function
-     * @private
+     *
      * @return {function(File, File): number}
      */
     Sort.prototype.getCompareFn = function () {
@@ -238,7 +249,7 @@ define(function (require, exports, module) {
 
     /**
      * Gets the event that this sort object is listening to
-     * @private
+     *
      * @return {string}
      */
     Sort.prototype.getEvents = function () {
@@ -247,7 +258,7 @@ define(function (require, exports, module) {
 
     /**
      * Checks/Unchecks the command which will show a check in the menu
-     * @private
+     *
      * @param {boolean} value
      */
     Sort.prototype.setChecked = function (value) {
@@ -259,7 +270,6 @@ define(function (require, exports, module) {
 
     /**
      * Performs the sort and makes it the current sort method.
-     * @private
      */
     Sort.prototype.execute = function () {
         _setCurrentSort(this);
@@ -268,7 +278,6 @@ define(function (require, exports, module) {
 
     /**
      * Only performs the working set sort if this is the current sort.
-     * @private
      */
     Sort.prototype.sort = function () {
         if (_currentSort === this) {
@@ -281,6 +290,7 @@ define(function (require, exports, module) {
 
     /**
      * Registers a working set sort method.
+     *
      * @param {(string|Command)} command A command ID or a command object
      * @param {function(File, File): number} compareFn The function that
      *      will be used inside JavaScript's sort function. The return a value
@@ -330,6 +340,7 @@ define(function (require, exports, module) {
 
     /**
      * Command Handler for CMD_WORKING_SORT_TOGGLE_AUTO
+     *
      * @private
      */
     function _handleToggleAutoSort() {
@@ -338,6 +349,7 @@ define(function (require, exports, module) {
 
     /**
      * Command Handler for CMD_WORKINGSET_SORT_BY_*
+     *
      * @private
      * @param {!string} commandId identifies the sort method to use
      */
@@ -385,6 +397,7 @@ define(function (require, exports, module) {
 
     /**
      * Initialize default values for sorting preferences
+     *
      * @private
      */
     PreferencesManager.stateManager.definePreference("automaticSort", "boolean", false);
@@ -392,6 +405,7 @@ define(function (require, exports, module) {
     /**
      * Define a default sort method that's empty so that we
      *   just convert and use the legacy sort method
+     *
      *  @private
      */
     PreferencesManager.stateManager.definePreference(_WORKING_SET_SORT_PREF, "string", "");
@@ -414,6 +428,7 @@ define(function (require, exports, module) {
 
     /**
      * Initialize items dependent on extensions/workingSetList
+     *
      * @private
      */
     AppInit.appReady(function () {
