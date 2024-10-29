@@ -3,30 +3,6 @@
 const FindUtils = brackets.getModule("search/FindUtils")
 ```
 
-<a name="instantSearchDisabled"></a>
-
-## instantSearchDisabled : <code>boolean</code>
-if instant search is disabled, defaults to false
-
-**Kind**: global variable  
-<a name="indexingInProgress"></a>
-
-## indexingInProgress : <code>boolean</code>
-if indexing in progress, defaults to false
-
-**Kind**: global variable  
-<a name="workerSearchCount"></a>
-
-## workerSearchCount : <code>number</code>
-count of worker search, defaults to 0
-
-**Kind**: global variable  
-<a name="collapseResults"></a>
-
-## collapseResults : <code>boolean</code>
-if collapse results, defaults to false
-
-**Kind**: global variable  
 <a name="parseDollars"></a>
 
 ## parseDollars(replaceWith, match) ⇒ <code>string</code>

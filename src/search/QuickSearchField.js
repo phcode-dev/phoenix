@@ -152,13 +152,11 @@ define(function (require, exports, module) {
 
     /**
      * @type {!jQueryObject}
-     * @private
      */
     QuickSearchField.prototype.$input = null;
 
     /**
      * @type {!jQueryObject}
-     * @private
      */
     QuickSearchField.prototype.$positionEl = null;
 

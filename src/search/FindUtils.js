@@ -37,24 +37,32 @@ define(function (require, exports, module) {
 
     /**
      * if instant search is disabled, defaults to false
+     *
+     * @private
      * @type {boolean}
      */
     let instantSearchDisabled = false;
 
     /**
      * if indexing in progress, defaults to false
+     *
+     * @private
      * @type {boolean}
      */
     let indexingInProgress = false;
 
     /**
      * count of worker search, defaults to 0
+     *
+     * @private
      * @type {number}
      */
     let workerSearchCount = 0;
 
     /**
      * if collapse results, defaults to false
+     *
+     * @private
      * @type {boolean}
      */
     let collapseResults = false;
@@ -66,6 +74,7 @@ define(function (require, exports, module) {
      * regexp match info.
      * NOTE: we can't just use the ordinary replace() function here because the string has been
      * extracted from the original text and so might be missing some context that the regexp matched.
+     *
      * @param {string} replaceWith The string containing the $-expressions.
      * @param {Object} match The match data from the regexp.
      * @return {string} The replace text with the $-expressions substituted.
@@ -97,6 +106,7 @@ define(function (require, exports, module) {
 
     /**
      * Does a set of replacements in a single document in memory.
+     *
      * @private
      * @param {!Document} doc The document to do the replacements in.
      * @param {Object} matchInfo The match info for this file, as returned by `_addSearchMatches()`. Might be mutated.
@@ -130,6 +140,7 @@ define(function (require, exports, module) {
 
     /**
      * Does a set of replacements in a single file on disk.
+     *
      * @private
      * @param {string} fullPath The full path to the file.
      * @param {Object} matchInfo The match info for this file, as returned by `_addSearchMatches()`.
@@ -172,6 +183,7 @@ define(function (require, exports, module) {
     /**
      * Does a set of replacements in a single file. If the file is already open in a Document in memory,
      * will do the replacement there, otherwise does it directly on disk.
+     *
      * @private
      * @param {string} fullPath The full path to the file.
      * @param {Object} matchInfo The match info for this file, as returned by `_addSearchMatches()`.
@@ -281,6 +293,7 @@ define(function (require, exports, module) {
 
     /**
      * Returns label text to indicate the search scope. Already HTML-escaped.
+     *
      * @param {?Entry} scope
      * @return {string}
      */
@@ -299,6 +312,7 @@ define(function (require, exports, module) {
 
     /**
      * Parses the given query into a regexp, and returns whether it was valid or not.
+     *
      * @param {{query: string, caseSensitive: boolean, isRegexp: boolean}} queryInfo
      * @return {{queryExpr: RegExp, valid: boolean, empty: boolean, error: string}}
      *      queryExpr - the regexp representing the query
@@ -337,6 +351,7 @@ define(function (require, exports, module) {
 
     /**
     * Prioritizes the open file and then the working set files to the starting of the list of files
+     *
     * @param {Array.<*>} files An array of file paths or file objects to sort
     * @param {?string} firstFile If specified, the path to the file that should be sorted to the top.
     * @return {Array.<*>}
@@ -381,6 +396,7 @@ define(function (require, exports, module) {
 
     /**
      * Returns the path of the currently open file or null if there isn't one open
+     *
      * @return {?string}
      */
     function getOpenFilePath() {
@@ -390,6 +406,7 @@ define(function (require, exports, module) {
 
     /**
      * enable/disable instant search
+     *
      * @param {boolean} disable true to disable web worker based search
      */
     function setInstantSearchDisabled(disable) {
@@ -398,6 +415,7 @@ define(function (require, exports, module) {
 
     /**
      * if instant search is disabled, this will return true we can only do instant search through worker
+     *
      * @return {boolean}
      */
     function isInstantSearchDisabled() {
@@ -406,6 +424,7 @@ define(function (require, exports, module) {
 
     /**
      * check if a search is progressing in worker
+     *
      * @return {Boolean} true if search is processing in worker
      */
     function isWorkerSearchInProgress() {
@@ -472,6 +491,7 @@ define(function (require, exports, module) {
 
     /**
      * Return true if indexing is in progress in worker
+     *
      * @return {boolean} true if files are being indexed in worker
      */
     function isIndexingInProgress() {
@@ -480,6 +500,7 @@ define(function (require, exports, module) {
 
     /**
      * Set if we need to collapse all results in the results pane
+     *
      * @param {boolean} collapse true to collapse
      */
     function setCollapseResults(collapse) {
@@ -489,6 +510,7 @@ define(function (require, exports, module) {
 
     /**
      * check if results should be collapsed
+     *
      * @return {boolean} true if results should be collapsed
      */
     function isCollapsedResults() {
