@@ -86,6 +86,7 @@ define(function (require, exports, module) {
 
     /**
      * Read in the json files that have type information for the builtins, dom,etc
+     * @private
      */
     function initTernEnv() {
         const builtinDefinitionFiles = JSON.parse(require("text!thirdparty/tern/defs/defs.json"));
@@ -110,7 +111,7 @@ define(function (require, exports, module) {
     /**
      *  Init preferences from a file in the project root or builtin
      *  defaults if no file is found;
-     *
+     * @private
      *  @param {string=} projectRootPath - new project root path. Only needed
      *  for unit tests.
      */
@@ -166,7 +167,7 @@ define(function (require, exports, module) {
 
     /**
      * Will initialize preferences only if they do not exist.
-     *
+     * @private
      */
     function ensurePreferences() {
         if (!deferredPreferences) {
@@ -186,7 +187,7 @@ define(function (require, exports, module) {
 
     /**
      * Test if the directory should be excluded from analysis.
-     *
+     * @private
      * @param {!string} path - full directory path.
      * @return {boolean} true if excluded, false otherwise.
      */
@@ -205,7 +206,7 @@ define(function (require, exports, module) {
 
     /**
      * Test if the file path is in current editor
-     *
+     * @private
      * @param {string} filePath file path to test for exclusion.
      * @return {boolean} true if in editor, false otherwise.
      */
@@ -218,7 +219,7 @@ define(function (require, exports, module) {
 
     /**
      * Test if the file path is an internal exclusion.
-     *
+     * @private
      * @param {string} path file path to test for exclusion.
      * @return {boolean} true if excluded, false otherwise.
      */
@@ -235,7 +236,7 @@ define(function (require, exports, module) {
 
     /**
      * Test if the file should be excluded from analysis.
-     *
+     * @private
      * @param {!File} file - file to test for exclusion.
      * @return {boolean} true if excluded, false otherwise.
      */
@@ -328,6 +329,7 @@ define(function (require, exports, module) {
 
     /**
      * Get a Promise for the definition from TernJS, for the file & offset passed in.
+     * @private
      * @param {{type: string, name: string, offsetLines: number, text: string}} fileInfo
      * - type of update, name of file, and the text of the update.
      * For "full" updates, the whole text of the file is present. For "part" updates,
@@ -363,6 +365,7 @@ define(function (require, exports, module) {
     /**
      * Get the text of a document, applying any size restrictions
      * if necessary
+     * @private
      * @param {Document} document - the document to get the text from
      * @return {string} the text, or the empty text if the original was too long
      */
@@ -375,7 +378,7 @@ define(function (require, exports, module) {
     /**
      * Handle the response from the tern node domain when
      * it responds with the references
-     *
+     * @private
      * @param response - the response from the node domain
      */
     function handleRename(response) {
@@ -423,7 +426,7 @@ define(function (require, exports, module) {
     /**
      * Handle the response from the tern node domain when
      * it responds with the definition
-     *
+     * @private
      * @param response - the response from the node domain
      */
     function handleJumptoDef(response) {
@@ -442,7 +445,7 @@ define(function (require, exports, module) {
     /**
      * Handle the response from the tern node domain when
      * it responds with the scope data
-     *
+     * @private
      * @param response - the response from the node domain
      */
     function handleScopeData(response) {
@@ -488,6 +491,7 @@ define(function (require, exports, module) {
 
     /**
      * Get a Promise for the function type from TernJS.
+     * @private
      * @param {{type: string, name: string, offsetLines: number, text: string}} fileInfo
      * - type of update, name of file, and the text of the update.
      * For "full" updates, the whole text of the file is present. For "part" updates,
@@ -510,7 +514,7 @@ define(function (require, exports, module) {
     /**
      *  Given a starting and ending position, get a code fragment that is self contained
      *  enough to be compiled.
-     *
+     * @private
      * @param {!Session} session - the current session
      * @param {{line: number, ch: number}} start - the starting position of the changes
      * @return {{type: string, name: string, offsetLines: number, text: string}}
@@ -580,7 +584,7 @@ define(function (require, exports, module) {
      * Get an object that describes what tern needs to know about the updated
      * file to produce a hint. As a side-effect of this calls the document
      * changes are reset.
-     *
+     * @private
      * @param {!Session} session - the current session
      * @param {boolean=} preventPartialUpdates - if true, disallow partial updates.
      * Optional, defaults to false.
@@ -619,7 +623,7 @@ define(function (require, exports, module) {
 
     /**
      *  Get the current offset. The offset is adjusted for "part" updates.
-     *
+     * @private
      * @param {!Session} session - the current session
      * @param {{type: string, name: string, offsetLines: number, text: string}} fileInfo
      * - type of update, name of file, and the text of the update.
@@ -680,7 +684,7 @@ define(function (require, exports, module) {
     /**
      * Handle the response from the tern node domain when
      * it responds with the list of completions
-     *
+     * @private
      * @param {{file: string, offset: {line: number, ch: number}, completions:Array.<string>,
      *          properties:Array.<string>}} response - the response from node domain
      */
@@ -711,7 +715,7 @@ define(function (require, exports, module) {
     /**
      * Handle the response from the tern node domain when
      * it responds to the get guesses message.
-     *
+     * @private
      * @param {{file: string, type: string, offset: {line: number, ch: number},
      *      properties: Array.<string>}} response -
      *      the response from node domain contains the guesses for a
@@ -731,7 +735,7 @@ define(function (require, exports, module) {
     /**
      * Handle the response from the tern node domain when
      * it responds to the update file message.
-     *
+     * @private
      * @param {{path: string, type: string}} response - the response from node domain
      */
     function handleUpdateFile(response) {
@@ -747,7 +751,7 @@ define(function (require, exports, module) {
 
     /**
      * Handle timed out inference
-     *
+     * @private
      * @param {{path: string, type: string}} response - the response from node domain
      */
     function handleTimedOut(response) {
@@ -809,7 +813,6 @@ define(function (require, exports, module) {
      * Encapsulate all the logic to talk to the tern module.  This will create
      * a new instance of a TernModule, which the rest of the hinting code can use to talk
      * to the tern node domain, without worrying about initialization, priming the pump, etc.
-     *
      */
     function TernModule() {
         var ternPromise         = null,
@@ -833,7 +836,7 @@ define(function (require, exports, module) {
         /**
          *  Determine whether the current set of files are using modules to pull in
          *  additional files.
-         *
+         * @private
          * @return {boolean} - true if more files than the current directory have
          * been read in.
          */
@@ -857,6 +860,7 @@ define(function (require, exports, module) {
         /**
          * Send a message to the tern node domain - this is only for messages that
          * need to be sent before and while the addFilesPromise is being resolved.
+         * @private
          */
         function _postMessageByPass(msg) {
             ternPromise.done(function () {
@@ -869,7 +873,7 @@ define(function (require, exports, module) {
 
         /**
          *  Update tern with the new contents of a given file.
-         *
+         * @private
          * @param {Document} document - the document to update
          * @return {jQuery.Promise} - the promise for the request
          */
@@ -887,7 +891,7 @@ define(function (require, exports, module) {
 
         /**
          * Handle a request from the tern node domain for text of a file
-         *
+         * @private
          * @param {{file:string}} request - the request from the tern node domain.  Should be an Object containing the name
          *      of the file tern wants the contents of
          */
@@ -907,7 +911,7 @@ define(function (require, exports, module) {
              * Helper function to get the text of a given document and send it to tern.
              * If DocumentManager successfully gets the file's text then we'll send it to the tern node domain.
              * The Promise for getDocumentText() is returned so that custom fail functions can be used.
-             *
+             * @private
              * @param {string} filePath - the path of the file to get the text of
              * @return {jQuery.Promise} - the Promise returned from DocumentMangaer.getDocumentText()
              */
@@ -937,6 +941,7 @@ define(function (require, exports, module) {
              * name we are looking for.  This is so we can find requirejs modules
              * when the baseUrl is unknown, or when the project root is not the same
              * as the script root (e.g. if you open the 'brackets' dir instead of 'brackets/src' dir).
+             * @private
              */
             function findNameInProject() {
                 // check for any files in project that end with the right path.
@@ -981,7 +986,7 @@ define(function (require, exports, module) {
 
         /**
          *  Prime the pump for a fast first lookup.
-         *
+         * @private
          * @param {string} path - full path of file
          * @return {jQuery.Promise} - the promise for the request
          */
@@ -998,7 +1003,7 @@ define(function (require, exports, module) {
         /**
          * Handle the response from the tern node domain when
          * it responds to the prime pump message.
-         *
+         * @private
          * @param {{path: string, type: string}} response - the response from node domain
          */
         function handlePrimePumpCompletion(response) {
@@ -1016,7 +1021,7 @@ define(function (require, exports, module) {
          *  Add new files to tern, keeping any previous files.
          *  The tern server must be initialized before making
          *  this call.
-         *
+         * @private
          * @param {Array.<string>} files - array of file to add to tern.
          * @return {boolean} - true if more files may be added, false if maximum has been reached.
          */
@@ -1053,7 +1058,7 @@ define(function (require, exports, module) {
         /**
          *  Add the files in the directory and subdirectories of a given directory
          *  to tern.
-         *
+         * @private
          * @param {string} dir - the root directory to add.
          * @param {function ()} doneCallback - called when all files have been
          * added to tern.
@@ -1087,6 +1092,7 @@ define(function (require, exports, module) {
 
         /**
          * Init the Tern module that does all the code hinting work.
+         * @private
          */
         function initTernModule() {
             let moduleDeferred = $.Deferred();
@@ -1147,6 +1153,7 @@ define(function (require, exports, module) {
 
         /**
          * Create a new tern server.
+         * @private
          */
         function initTernServer(dir, files) {
             initTernModule();
@@ -1171,7 +1178,7 @@ define(function (require, exports, module) {
         /**
          *  We can skip tern initialization if we are opening a file that has
          *  already been added to tern.
-         *
+         * @private
          * @param {string} newFile - full path of new file being opened in the editor.
          * @return {boolean} - true if tern initialization should be skipped,
          * false otherwise.
@@ -1183,7 +1190,7 @@ define(function (require, exports, module) {
 
         /**
          *  Do the work to initialize a code hinting session.
-         *
+         * @private
          * @param {Session} session - the active hinting session (TODO: currently unused)
          * @param {!Document} document - the document the editor has changed to
          * @param {?Document} previousDocument - the document the editor has changed from
@@ -1314,6 +1321,7 @@ define(function (require, exports, module) {
          *
          * We can clean up the node tern server we use to calculate hints now, since
          * we know we will need to re-init it in any new project that is opened.
+         * @private
          */
         function resetModule() {
             function resetTernServer() {
@@ -1354,7 +1362,7 @@ define(function (require, exports, module) {
      * ```
      * This function is also used in unit testing with the "force" flag to
      * reset the module for each test to start with a clean environment.
-     *
+     * @private
      * @param {Session} session
      * @param {Document} document
      * @param {boolean} force true to force a reset regardless of how long since the last one
@@ -1472,6 +1480,7 @@ define(function (require, exports, module) {
      *  Track the update area of the current document so we can tell if we can send
      *  partial updates to tern or not.
      * @param {{from: {line: number, ch: number}, to: {line: number, ch: number}, text: string[]}} changeList - The document changes from the current change event
+     * @private
      */
     function trackChange(changeList) {
         var changed = documentChanges, i;
@@ -1499,11 +1508,11 @@ define(function (require, exports, module) {
         }
     }
 
-    /*
+    /**
      * Called each time the file associated with the active editor changes.
      * Marks the file as being dirty.
      *
-     * @param {from: {line:number, ch: number}, to: {line:number, ch: number}}
+     * @param {{line:number, ch: number}} changeList {from: {line:number, ch: number}, to: {line:number, ch:number}}
      */
     function handleFileChange(changeList) {
         isDocumentDirty = true;
@@ -1547,7 +1556,10 @@ define(function (require, exports, module) {
         initPreferences(projectRootPath);
     }
 
-    /** Used to avoid timing bugs in unit tests */
+    /**
+     * Used to avoid timing bugs in unit tests
+     * @private
+     */
     function _readyPromise() {
         return deferredPreferences;
     }

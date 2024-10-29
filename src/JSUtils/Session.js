@@ -177,7 +177,7 @@ define(function (require, exports, module) {
 
     /**
      * Get the token before the one at the given cursor position
-     *
+     * @private
      * @param {{line: number, ch: number}} cursor - cursor position after
      *      which a token should be retrieved
      * @return {Object} - the CodeMirror token before the one at the given
@@ -323,7 +323,7 @@ define(function (require, exports, module) {
     };
 
     /**
-     *
+     * @private
      * @param {Object} token - a CodeMirror token
      * @return {*} - the lexical state of the token
      */
@@ -359,7 +359,7 @@ define(function (require, exports, module) {
 
         /**
          * Test if the cursor is on a function identifier
-         *
+         * @private
          * @return {Object} - lexical state if on a function identifier, null otherwise.
          */
         function isOnFunctionIdentifier() {
@@ -383,7 +383,7 @@ define(function (require, exports, module) {
 
         /**
          * Test is a lexical state is in a function call.
-         *
+         * @private
          * @param {Object} lex - lexical state.
          * @return {Object | Boolean}
          *
@@ -529,7 +529,7 @@ define(function (require, exports, module) {
 
         /**
          *  Is the origin one of the builtin files.
-         *
+         * @private
          * @param {String} origin
          */
         function isBuiltin(origin) {
@@ -541,7 +541,7 @@ define(function (require, exports, module) {
          *  The hints are returned in the format of the matcher.
          *  The matcher returns the value in the "label" property,
          *  the match score in "matchGoodness" property.
-         *
+         * @private
          * @param {Array} hints - array of hints
          * @param {StringMatcher} matcher
          * @return {Array} - array of matching hints.

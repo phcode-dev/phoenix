@@ -53,6 +53,7 @@ define(function (require, exports, module) {
 
     /**
      * The contents of this directory. This "private" property is used by FileSystem.
+     * @private
      * @type {Array<FileSystemEntry>}
      */
     Directory.prototype._contents = null;
@@ -60,12 +61,14 @@ define(function (require, exports, module) {
     /**
      * The stats for the contents of this directory, such that this._contentsStats[i]
      * corresponds to this._contents[i].
+     * @private
      * @type {Array.<FileSystemStats>}
      */
     Directory.prototype._contentsStats = null;
 
     /**
      * The stats errors for the contents of this directory.
+     * @private
      * @type {Object.<string, string>} Full paths are mapped to FileSystemError strings.
      */
     Directory.prototype._contentsStatsErrors = null;

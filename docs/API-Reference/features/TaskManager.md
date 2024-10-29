@@ -6,27 +6,26 @@ const TaskManager = brackets.getModule("features/TaskManager")
 <a name="module_features/TaskManager"></a>
 
 ## features/TaskManager
-TaskManager module deals with managing long running tasks in phcode. It handles the `Tasks` dropdown in the statusbar where the user can see all running tasks, monitor its progress and close/pause the execution of the task ifsupported by the task.
+TaskManager module deals with managing long running tasks in phcode. It handles the `Tasks` dropdown in the status
+bar where the user can see all running tasks, monitor its progress and close/pause the execution of the task if
+supported by the task.
 
 
 * [features/TaskManager](#module_features/TaskManager)
-    * [.renderSpinnerIcon()](#module_features/TaskManager..renderSpinnerIcon)
     * [.addNewTask(taskTitle, message, [iconHTML], [options])](#module_features/TaskManager..addNewTask) ⇒ <code>TaskObject</code>
     * [.TaskObject](#module_features/TaskManager..TaskObject) : <code>Object</code>
 
-<a name="module_features/TaskManager..renderSpinnerIcon"></a>
-
-### features/TaskManager.renderSpinnerIcon()
-determines what the spinner icon to show(green-for success), red-fail, blue normal based on the activetasks in list and renders. IF the active tasks has already  been notified, it wont notify again.
-
-**Kind**: inner method of [<code>features/TaskManager</code>](#module_features/TaskManager)  
 <a name="module_features/TaskManager..addNewTask"></a>
 
 ### features/TaskManager.addNewTask(taskTitle, message, [iconHTML], [options]) ⇒ <code>TaskObject</code>
-The addNewTask is designed for adding new tasks to the task management system. This function is central tomanaging long-running tasks, providing a way to visually represent task progress, status, and control actionsdirectly from the UI in the status bar.
+The addNewTask is designed for adding new tasks to the task management system. This function is central to
+managing long-running tasks, providing a way to visually represent task progress, status, and control actions
+directly from the UI in the status bar.
 
 **Kind**: inner method of [<code>features/TaskManager</code>](#module_features/TaskManager)  
-**Returns**: <code>TaskObject</code> - Returns a task object with methods for updating the task's state and UI representation,such as `setProgressPercent`, `setMessage`, `setSucceeded`, `setFailed`, and control visibility methodslike `showStopIcon`, `hideStopIcon`, etc.  
+**Returns**: <code>TaskObject</code> - Returns a task object with methods for updating the task's state and UI representation,
+such as `setProgressPercent`, `setMessage`, `setSucceeded`, `setFailed`, and control visibility methods
+like `showStopIcon`, `hideStopIcon`, etc.  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -44,7 +43,29 @@ The addNewTask is designed for adding new tasks to the task management system. T
 
 **Example**  
 ```js
-// Example: Adding a new task with initial progress and attaching event handlersconst task = TaskManager.addNewTask(  'Data Processing',  'Processing data...',  '<i class="fa fa-spinner fa-spin"></i>',  {    onPauseClick: () => console.log('Task paused'),    onPlayClick: () => console.log('Task resumed'),    onStopClick: () => console.log('Task stopped'),    onRetryClick: () => console.log('Task retried'),    onSelect: () => console.log('Task selected'),    progressPercent: 20  });// Updating task progresstask.setProgressPercent(60);// Updating task messagetask.setMessage('60% completed');// Marking task as succeededtask.setSucceeded();
+// Example: Adding a new task with initial progress and attaching event handlers
+const task = TaskManager.addNewTask(
+  'Data Processing',
+  'Processing data...',
+  '<i class="fa fa-spinner fa-spin"></i>',
+  {
+    onPauseClick: () => console.log('Task paused'),
+    onPlayClick: () => console.log('Task resumed'),
+    onStopClick: () => console.log('Task stopped'),
+    onRetryClick: () => console.log('Task retried'),
+    onSelect: () => console.log('Task selected'),
+    progressPercent: 20
+  }
+);
+
+// Updating task progress
+task.setProgressPercent(60);
+
+// Updating task message
+task.setMessage('60% completed');
+
+// Marking task as succeeded
+task.setSucceeded();
 ```
 <a name="module_features/TaskManager..TaskObject"></a>
 
