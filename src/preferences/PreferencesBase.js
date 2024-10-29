@@ -22,9 +22,6 @@
 /*global appshell */
 /*unittests: Preferences Base */
 
-// @INCLUDE_IN_API_DOCS
-
-
 /**
  * Infrastructure for the preferences system.
  *

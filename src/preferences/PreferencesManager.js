@@ -19,6 +19,8 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /*global define, console */
 /*unittests: Preferences Manager */
 
@@ -120,6 +122,7 @@ define(function (require, exports, module) {
 
     /**
      * Context to look up preferences in the current project.
+     *
      * @type {Object}
      */
     var CURRENT_PROJECT = {};
@@ -220,6 +223,7 @@ define(function (require, exports, module) {
 
     /**
      * @private
+     *
      * This function is used internally to set the current language of the document.
      * Both at the moment of opening the file and when the language is manually
      * overriden.
@@ -313,9 +317,33 @@ define(function (require, exports, module) {
 
     // Context names for preference lookups
     exports.CURRENT_PROJECT     = CURRENT_PROJECT;
+
+    /**
+     * State project context
+     *
+     * @type {string}
+     */
     exports.STATE_PROJECT_CONTEXT = StateManager.PROJECT_CONTEXT;
+
+    /**
+     * State global context
+     *
+     * @type {string}
+     */
     exports.STATE_GLOBAL_CONTEXT = StateManager.GLOBAL_CONTEXT;
+
+    /**
+     * Project then global context
+     *
+     * @type {string}
+     */
     exports.STATE_PROJECT_THEN_GLOBAL_CONTEXT = StateManager.PROJECT_THEN_GLOBAL_CONTEXT;
+
+    /**
+     * Project scope
+     *
+     * @type {Object}
+     */
     exports.PROJECT_SCOPE = { location: { scope: "project" } };
 
     exports.ready               = PreferencesImpl.managerReady;
