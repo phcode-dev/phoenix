@@ -27,6 +27,30 @@ Cached copy of the scopeOrder with the project Scope
 Cached copy of the scopeOrder without the project Scope
 
 **Kind**: global variable  
+<a name="STATE_PROJECT_CONTEXT"></a>
+
+## STATE\_PROJECT\_CONTEXT : <code>string</code>
+State project context
+
+**Kind**: global variable  
+<a name="STATE_GLOBAL_CONTEXT"></a>
+
+## STATE\_GLOBAL\_CONTEXT : <code>string</code>
+State global context
+
+**Kind**: global variable  
+<a name="STATE_PROJECT_THEN_GLOBAL_CONTEXT"></a>
+
+## STATE\_PROJECT\_THEN\_GLOBAL\_CONTEXT : <code>string</code>
+Project then global context
+
+**Kind**: global variable  
+<a name="PROJECT_SCOPE"></a>
+
+## PROJECT\_SCOPE : <code>Object</code>
+Project scope
+
+**Kind**: global variable  
 <a name="getUserPrefFile"></a>
 
 ## getUserPrefFile() ⇒ <code>string</code>
