@@ -131,14 +131,12 @@ define(function (require, exports, module) {
 
     /**
      * The clickable button. Available as soon as the DropdownButton is constructed.
-     * @private
      * @type {!jQueryObject}
      */
     DropdownButton.prototype.$button = null;
 
     /**
      * The dropdown element. Only non-null while open.
-     * @private
      * @type {?jQueryObject}
      */
     DropdownButton.prototype.$dropdown = null;

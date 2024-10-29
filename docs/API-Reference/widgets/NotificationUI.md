@@ -46,8 +46,8 @@ The `createFromTemplate` API can be configured with numerous options. See API op
 
 * [widgets/NotificationUI](#module_widgets/NotificationUI)
     * [.API](#module_widgets/NotificationUI..API)
-    * [.NOTIFICATION_STYLES_CSS_CLASS](#module_widgets/NotificationUI..NOTIFICATION_STYLES_CSS_CLASS) : <code>object</code>
-    * [.CLOSE_REASON](#module_widgets/NotificationUI..CLOSE_REASON) : <code>object</code>
+    * [.NOTIFICATION_STYLES_CSS_CLASS](#module_widgets/NotificationUI..NOTIFICATION_STYLES_CSS_CLASS) : <code>enum</code>
+    * [.CLOSE_REASON](#module_widgets/NotificationUI..CLOSE_REASON) : <code>enum</code>
     * [.createFromTemplate(template, [elementID], [options])](#module_widgets/NotificationUI..createFromTemplate) ⇒ <code>Notification</code>
     * [.createToastFromTemplate(title, template, [options])](#module_widgets/NotificationUI..createToastFromTemplate) ⇒ <code>Notification</code>
 
@@ -59,16 +59,34 @@ This section outlines the properties and methods available in this module
 **Kind**: inner property of [<code>widgets/NotificationUI</code>](#module_widgets/NotificationUI)  
 <a name="module_widgets/NotificationUI..NOTIFICATION_STYLES_CSS_CLASS"></a>
 
-### widgets/NotificationUI.NOTIFICATION\_STYLES\_CSS\_CLASS : <code>object</code>
+### widgets/NotificationUI.NOTIFICATION\_STYLES\_CSS\_CLASS : <code>enum</code>
 CSS class names for notification styles.
 
-**Kind**: inner constant of [<code>widgets/NotificationUI</code>](#module_widgets/NotificationUI)  
+**Kind**: inner enum of [<code>widgets/NotificationUI</code>](#module_widgets/NotificationUI)  
+**Properties**
+
+| Name | Type | Default |
+| --- | --- | --- |
+| INFO | <code>string</code> | <code>&quot;style-info&quot;</code> | 
+| WARNING | <code>string</code> | <code>&quot;style-warning&quot;</code> | 
+| SUCCESS | <code>string</code> | <code>&quot;style-success&quot;</code> | 
+| ERROR | <code>string</code> | <code>&quot;style-error&quot;</code> | 
+| DANGER | <code>string</code> | <code>&quot;style-danger&quot;</code> | 
+
 <a name="module_widgets/NotificationUI..CLOSE_REASON"></a>
 
-### widgets/NotificationUI.CLOSE\_REASON : <code>object</code>
+### widgets/NotificationUI.CLOSE\_REASON : <code>enum</code>
 Closing notification reason.
 
-**Kind**: inner constant of [<code>widgets/NotificationUI</code>](#module_widgets/NotificationUI)  
+**Kind**: inner enum of [<code>widgets/NotificationUI</code>](#module_widgets/NotificationUI)  
+**Properties**
+
+| Name | Type | Default |
+| --- | --- | --- |
+| TIMEOUT | <code>string</code> | <code>&quot;closeTimeout&quot;</code> | 
+| CLICK_DISMISS | <code>string</code> | <code>&quot;clickDismiss&quot;</code> | 
+| CLOSE_BTN_CLICK | <code>string</code> | <code>&quot;closeBtnClick&quot;</code> | 
+
 <a name="module_widgets/NotificationUI..createFromTemplate"></a>
 
 ### widgets/NotificationUI.createFromTemplate(template, [elementID], [options]) ⇒ <code>Notification</code>

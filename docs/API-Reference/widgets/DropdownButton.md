@@ -52,6 +52,8 @@ DropdownButton dispatches the following events:
 * [DropdownButton(label, items, [itemRenderer], [options])](#DropdownButton)
     * [.items](#DropdownButton+items) : <code>Array.&lt;\*&gt;</code>
     * [.itemsSearchFilterText](#DropdownButton+itemsSearchFilterText) : <code>null</code>
+    * [.$button](#DropdownButton+$button) : <code>jQueryObject</code>
+    * [.$dropdown](#DropdownButton+$dropdown) : <code>jQueryObject</code>
     * [.dropdownExtraClasses](#DropdownButton+dropdownExtraClasses) : <code>string</code>
     * [.setButtonLabel(label)](#DropdownButton+setButtonLabel)
     * [.isOpen()](#DropdownButton+isOpen)
@@ -74,6 +76,18 @@ Items in dropdown list - may be changed any time dropdown isn't open
 ### dropdownButton.itemsSearchFilterText : <code>null</code>
 This is filter text corresponding to each items. it will be used to filter the items based on
 the keyboard key presses the user does to enter search filter in popup.
+
+**Kind**: instance property of [<code>DropdownButton</code>](#DropdownButton)  
+<a name="DropdownButton+$button"></a>
+
+### dropdownButton.$button : <code>jQueryObject</code>
+The clickable button. Available as soon as the DropdownButton is constructed.
+
+**Kind**: instance property of [<code>DropdownButton</code>](#DropdownButton)  
+<a name="DropdownButton+$dropdown"></a>
+
+### dropdownButton.$dropdown : <code>jQueryObject</code>
+The dropdown element. Only non-null while open.
 
 **Kind**: instance property of [<code>DropdownButton</code>](#DropdownButton)  
 <a name="DropdownButton+dropdownExtraClasses"></a>

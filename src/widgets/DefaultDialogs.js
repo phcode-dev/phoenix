@@ -19,16 +19,50 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 define(function (require, exports, module) {
 
+    /**
+     * Constants representing dialog IDs
+     * These IDs are used to identify different types of dialogs
+     *
+     * @module DefaultDialogs
+     */
 
     /**
-     * List of constants for the default dialogs IDs.
+     * ID for error dialog
+     * @constant {string}
      */
-    exports.DIALOG_ID_ERROR             = "error-dialog";
-    exports.DIALOG_ID_INFO              = "error-dialog"; // uses the same template for now--could be different in future
-    exports.DIALOG_ID_SAVE_CLOSE        = "save-close-dialog";
-    exports.DIALOG_ID_EXT_CHANGED       = "ext-changed-dialog";
-    exports.DIALOG_ID_EXT_DELETED       = "ext-deleted-dialog";
+    exports.DIALOG_ID_ERROR = "error-dialog";
+
+    /**
+     * ID for information dialog (currently uses the same template as DIALOG_ID_ERROR)
+     * @constant {string}
+     */
+    exports.DIALOG_ID_INFO = "error-dialog"; // uses the same template for now--could be different in future
+
+    /**
+     * ID for save and close dialog
+     * @constant {string}
+     */
+    exports.DIALOG_ID_SAVE_CLOSE = "save-close-dialog";
+
+    /**
+     * ID for `external change detected` dialog
+     * @constant {string}
+     */
+    exports.DIALOG_ID_EXT_CHANGED = "ext-changed-dialog";
+
+    /**
+     * ID for `external deletion detected` dialog
+     * @constant {string}
+     */
+    exports.DIALOG_ID_EXT_DELETED = "ext-deleted-dialog";
+
+    /**
+     * ID for `change extensions` dialog
+     * @constant {string}
+     */
     exports.DIALOG_ID_CHANGE_EXTENSIONS = "change-marked-extensions";
 });
