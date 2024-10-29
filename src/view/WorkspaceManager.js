@@ -548,6 +548,16 @@ define(function (require, exports, module) {
     exports.EVENT_WORKSPACE_UPDATE_LAYOUT   = EVENT_WORKSPACE_UPDATE_LAYOUT;
     exports.EVENT_WORKSPACE_PANEL_SHOWN     = EVENT_WORKSPACE_PANEL_SHOWN;
     exports.EVENT_WORKSPACE_PANEL_HIDDEN    = EVENT_WORKSPACE_PANEL_HIDDEN;
+
+    /**
+     * Constant representing the type of bottom panel
+     * @type {string}
+     */
     exports.PANEL_TYPE_BOTTOM_PANEL         = PanelView.PANEL_TYPE_BOTTOM_PANEL;
+
+    /**
+     * Constant representing the type of plugin panel
+     * @type {string}
+     */
     exports.PANEL_TYPE_PLUGIN_PANEL         = PluginPanelView.PANEL_TYPE_PLUGIN_PANEL;
 });

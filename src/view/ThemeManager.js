@@ -21,6 +21,8 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /*jslint regexp: true */
 /*global less, path, Phoenix */
 
@@ -48,8 +50,19 @@ define(function (require, exports, module) {
         scrollbarsRegex = /((?:[^}|,]*)::-webkit-scrollbar(?:[^{]*)[{](?:[^}]*?)[}])/mgi,
         stylesPath      = FileUtils.getNativeBracketsDirectoryPath() + "/styles/";
 
-    const EVENT_THEME_CHANGE = "themeChange",
-        EVENT_THEME_LOADED = "themeLoaded";
+    /**
+     * Event when theme is changed
+     * @type {string}
+     * @const
+     */
+    const EVENT_THEME_CHANGE = "themeChange";
+
+    /**
+     * Event when theme is loaded
+     * @type {string}
+     * @const
+     */
+    const EVENT_THEME_LOADED = "themeLoaded";
 
     /**
      * @private
@@ -71,6 +84,7 @@ define(function (require, exports, module) {
 
     /**
      * @constructor
+     * @private
      * Theme contains all the essential bit to load a theme from disk, display a theme in the settings
      * dialog, and to properly add a theme into CodeMirror along with the rest of brackets.
      *
@@ -375,7 +389,7 @@ define(function (require, exports, module) {
 
     /**
      * Loads a theme from a url.
-     *
+     * @private
      * @param {string} url is the full http/https url of the theme file
      * @param {Object} options is an optional parameter to specify metadata
      *    for the theme.
