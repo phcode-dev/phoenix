@@ -19,6 +19,8 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /**
  * Utilities for creating and managing standard modal dialogs.
  */
@@ -38,27 +40,72 @@ define(function (require, exports, module) {
         Mustache          = require("thirdparty/mustache/mustache");
 
     /**
-     * Dialog Buttons IDs
-     * @const {string}
+     * `CANCEL` dialog button ID
+     * @type {string}
+     * @const
      */
-    let DIALOG_BTN_CANCEL           = "cancel",
-        DIALOG_BTN_OK               = "ok",
-        DIALOG_BTN_DONTSAVE         = "dontsave",
-        DIALOG_BTN_SAVE_AS          = "save_as",
-        DIALOG_CANCELED             = "_canceled",
-        DIALOG_BTN_DOWNLOAD         = "download";
+    let DIALOG_BTN_CANCEL = "cancel";
 
     /**
-     * Dialog Buttons Class Names
-     * @const {string}
+     * `OK` dialog button ID
+     * @type {string}
+     * @const
      */
-    let DIALOG_BTN_CLASS_PRIMARY    = "primary",
-        DIALOG_BTN_CLASS_NORMAL     = "",
-        DIALOG_BTN_CLASS_LEFT       = "left";
+    let DIALOG_BTN_OK = "ok";
+
+    /**
+     * `DONT SAVE` dialog button ID
+     * @type {string}
+     * @const
+     */
+    let DIALOG_BTN_DONTSAVE = "dontsave";
+
+    /**
+     * `SAVE AS` dialog button ID
+     * @type {string}
+     * @const
+     */
+    let DIALOG_BTN_SAVE_AS = "save_as";
+
+    /**
+     * `CANCELED` dialog button ID
+     * @type {string}
+     * @const
+     */
+    let DIALOG_CANCELED = "_canceled";
+
+    /**
+     * `DOWNLOAD` dialog button ID
+     * @type {string}
+     * @const
+     */
+    let DIALOG_BTN_DOWNLOAD = "download";
+
+    /**
+     * Primary button class name
+     * @type {string}
+     * @const
+     */
+    let DIALOG_BTN_CLASS_PRIMARY = "primary";
+
+    /**
+     * Normal button class name
+     * @type {string}
+     * @const
+     */
+    let DIALOG_BTN_CLASS_NORMAL = "";
+
+    /**
+     * Left-aligned button class name
+     * @type {string}
+     * @const
+     */
+     let DIALOG_BTN_CLASS_LEFT = "left";
 
     /**
      * The z-index used for the dialogs. Each new dialog increase this number by 2
      * @type {number}
+     * @private
      */
     let zIndex = 1050;
 
@@ -74,7 +121,7 @@ define(function (require, exports, module) {
 
     /**
      * @private
-     * Dismises a modal dialog
+     * Dismisses a modal dialog
      * @param {$.Element} $dlg
      * @param {string} buttonId
      */
@@ -151,6 +198,7 @@ define(function (require, exports, module) {
 
     /**
      * Handles the keyDown event for the dialogs
+     * @private
      * @param {$.Event} e
      * @param {boolean} autoDismiss
      * @return {boolean}
@@ -240,6 +288,7 @@ define(function (require, exports, module) {
     /**
      * The dialog jQuery element
      * @type {$.Element}
+     * @private
      */
     Dialog.prototype.getElement = function () {
         return this._$dlg;
@@ -248,7 +297,7 @@ define(function (require, exports, module) {
     /**
      * Determines whether the dialog is currently shown. Note that even if other dialogs occlude this dialog when
      * multiple dialogs are shown, this will still return true.
-     *
+     * @private
      * @returns {boolean} true if the dialog is visible, false otherwise.
      */
     Dialog.prototype.isVisible = function () {
@@ -257,6 +306,7 @@ define(function (require, exports, module) {
 
     /**
      * The dialog promise
+     * @private
      * @type {$.Promise}
      */
     Dialog.prototype.getPromise = function () {
@@ -265,6 +315,7 @@ define(function (require, exports, module) {
 
     /**
      * Closes the dialog if is visible
+     * @private
      */
     Dialog.prototype.close = function () {
         if (this._$dlg.is(":visible")) {   // Bootstrap breaks if try to hide dialog that's already hidden
@@ -274,6 +325,7 @@ define(function (require, exports, module) {
 
     /**
      * Adds a done callback to the dialog promise
+     * @private
      */
     Dialog.prototype.done = function (callback) {
         this._promise.done(callback);
@@ -282,6 +334,7 @@ define(function (require, exports, module) {
 
     /**
      * Don't allow dialog to exceed viewport size
+     * @private
      */
     function setDialogMaxSize() {
         let maxWidth, maxHeight,
@@ -435,6 +488,14 @@ define(function (require, exports, module) {
         return showModalDialogUsingTemplate(template, autoDismiss);
     }
 
+    /**
+     * Display a confirmation dialog with `OK` and `CANCEL` button
+     *
+     * @param {string} title dialog title
+     * @param {string} message message to display in the dialog
+     * @param {boolean=} autoDismiss whether to automatically dismiss the dialog or not
+     * @return {Dialog} the created dialog instance
+     */
     function showConfirmDialog(title, message, autoDismiss) {
         const buttons = [
             { className: DIALOG_BTN_CLASS_NORMAL, id: DIALOG_BTN_CANCEL, text: Strings.CANCEL },
@@ -444,10 +505,26 @@ define(function (require, exports, module) {
         return showModalDialog(DefaultDialogs.DIALOG_ID_INFO, title, message, buttons, autoDismiss);
     }
 
+    /**
+     * Display information dialog
+     *
+     * @param {string} title dialog title
+     * @param {string} message message to display in the dialog
+     * @param {boolean=} autoDismiss whether to automatically dismiss the dialog or not
+     * @return {Dialog} the created dialog instance
+     */
     function showInfoDialog(title, message, autoDismiss) {
         return showModalDialog(DefaultDialogs.DIALOG_ID_INFO, title, message, null, autoDismiss);
     }
 
+    /**
+     * Display error dialog
+     *
+     * @param {string} title dialog title
+     * @param {string} message message to display in the dialog
+     * @param {boolean=} autoDismiss whether to automatically dismiss the dialog or not
+     * @return {Dialog} the created dialog instance
+     */
     function showErrorDialog(title, message, autoDismiss) {
         return showModalDialog(DefaultDialogs.DIALOG_ID_ERROR, title, message, null, autoDismiss);
     }

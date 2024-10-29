@@ -75,7 +75,7 @@ define(function (require, exports, module) {
 
     /**
      * CSS class names for notification styles.
-     * @type {object}
+     * @enum {string}
      * @const
      */
     const NOTIFICATION_STYLES_CSS_CLASS = {
@@ -88,7 +88,7 @@ define(function (require, exports, module) {
 
     /**
      * Closing notification reason.
-     * @type {object}
+     * @enum {string}
      * @const
      */
     const CLOSE_REASON ={
