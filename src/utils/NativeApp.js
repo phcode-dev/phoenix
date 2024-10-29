@@ -19,6 +19,8 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /**
  * Virtualized NativeApp apis that works cross-platform, and in the browser.
  */
@@ -114,6 +116,9 @@ define(function (require, exports, module) {
         return brackets.app.openURLInDefaultBrowser(url, tabIdentifier);
     }
 
+    /**
+     * Gets the path to the application's support directory
+     */
     function getApplicationSupportDirectory() {
         return brackets.app.getApplicationSupportDirectory();
     }

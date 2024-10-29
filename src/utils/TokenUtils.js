@@ -19,6 +19,8 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /**
  * Functions for iterating through tokens in the current editor buffer. Useful for doing
  * light parsing that can rely purely on information gathered by the code coloring mechanism.
@@ -40,8 +42,9 @@ define(function (require, exports, module) {
         }
     }
 
-    /*
+    /**
      * Caches the tokens for the given editor/line if needed
+     * @private
      * @param {!CodeMirror} cm
      * @param {!number} line
      * @return {Array.<Object>} (Cached) array of tokens
@@ -64,7 +67,7 @@ define(function (require, exports, module) {
         return cache.tokens;
     }
 
-    /*
+    /**
      * Like cm.getTokenAt, but with caching. Way more performant for long lines.
      * @param {!CodeMirror} cm
      * @param {!{ch:number, line:number}} pos
@@ -203,7 +206,7 @@ define(function (require, exports, module) {
      * @param {!CodeMirror} cm CodeMirror instance
      * @param {!{line:number, ch:number}} pos Position to query for mode
      * @param {boolean} precise If given, results in more current results. Suppresses caching.
-     * @return {mode:{Object}, name:string}
+     * @return {{mode:{object}, name:string}}
      */
     function getModeAt(cm, pos, precise) {
         precise = precise || true;
