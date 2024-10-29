@@ -11,6 +11,8 @@ const QuickSearchField = brackets.getModule("search/QuickSearchField")
 * [QuickSearchField](#QuickSearchField)
     * [new QuickSearchField($input)](#new_QuickSearchField_new)
     * [.options](#QuickSearchField+options) : <code>Object</code>
+    * [.$input](#QuickSearchField+$input) : <code>jQueryObject</code>
+    * [.$positionEl](#QuickSearchField+$positionEl) : <code>jQueryObject</code>
     * [.updateResults()](#QuickSearchField+updateResults)
     * [.setText(value)](#QuickSearchField+setText)
     * [.destroy()](#QuickSearchField+destroy)
@@ -39,6 +41,14 @@ Attaches to an existing "input" tag
 <a name="QuickSearchField+options"></a>
 
 ### quickSearchField.options : <code>Object</code>
+**Kind**: instance property of [<code>QuickSearchField</code>](#QuickSearchField)  
+<a name="QuickSearchField+$input"></a>
+
+### quickSearchField.$input : <code>jQueryObject</code>
+**Kind**: instance property of [<code>QuickSearchField</code>](#QuickSearchField)  
+<a name="QuickSearchField+$positionEl"></a>
+
+### quickSearchField.$positionEl : <code>jQueryObject</code>
 **Kind**: instance property of [<code>QuickSearchField</code>](#QuickSearchField)  
 <a name="QuickSearchField+updateResults"></a>
 
