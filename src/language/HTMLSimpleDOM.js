@@ -19,6 +19,8 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /*unittests: HTML Instrumentation*/
 
 define(function (require, exports, module) {
@@ -37,6 +39,8 @@ define(function (require, exports, module) {
      * tags to close. This mostly comes from the HTML5 spec section on omitted close tags:
      * http://www.w3.org/html/wg/drafts/html/master/syntax.html#optional-tags
      * This doesn't handle general content model violations.
+     *
+     * @private
      */
     var openImpliesClose = {
         li: { li: true },
@@ -92,6 +96,8 @@ define(function (require, exports, module) {
     /**
      * A list of elements which are automatically closed when their parent is closed:
      * http://www.w3.org/html/wg/drafts/html/master/syntax.html#optional-tags
+     *
+     * @private
      */
     var optionalClose = {
         html: true,
@@ -120,6 +126,8 @@ define(function (require, exports, module) {
     /**
      * A list of tags that are self-closing (do not contain other elements).
      * Mostly taken from http://www.w3.org/html/wg/drafts/html/master/syntax.html#void-elements
+     *
+     * @private
      */
     var voidElements = {
         area: true,

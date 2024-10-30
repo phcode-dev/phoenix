@@ -43,11 +43,38 @@ define(function (require, exports, module) {
         _ = require("thirdparty/lodash");
 
     const MAX_CONTENT_LENGTH = 10 * 1024 * 1024; // 10MB
-    // Constants
-    const SELECTOR = "selector",
-        PROP_NAME = "prop.name",
-        PROP_VALUE = "prop.value",
-        IMPORT_URL = "import.url";
+
+    /**
+     * CSS selector, used to target specific elements
+     *
+     * @type {string}
+     * @constant
+     */
+    const SELECTOR = "selector";
+
+    /**
+     * name of the property
+     *
+     * @type {string}
+     * @constant
+     */
+    const PROP_NAME = "prop.name";
+
+    /**
+     * value of the specified property
+     *
+     * @type {string}
+     * @constant
+     */
+    const PROP_VALUE = "prop.value";
+
+    /**
+     * url for import
+     *
+     * @type {string}
+     * @constant
+     */
+    const IMPORT_URL = "import.url";
 
     /**
      * List of all bracket pairs that is keyed by opening brackets, and the inverted list
@@ -2062,6 +2089,12 @@ define(function (require, exports, module) {
     }
 
     let globalPrecacheRun = 0;
+
+    /**
+     * Responsible to get all the CSS selectors in project
+     *
+     * @param {Object} options
+     */
     function getAllCssSelectorsInProject(options = {
         includeClasses: true,
         includeIDs: true,
