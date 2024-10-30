@@ -9,6 +9,30 @@ const CSSUtils = brackets.getModule("language/CSSUtils")
 Set of utilities for simple parsing of CSS text.
 
 **Kind**: global variable  
+<a name="SELECTOR"></a>
+
+## SELECTOR : <code>string</code>
+CSS selector, used to target specific elements
+
+**Kind**: global constant  
+<a name="PROP_NAME"></a>
+
+## PROP\_NAME : <code>string</code>
+name of the property
+
+**Kind**: global constant  
+<a name="PROP_VALUE"></a>
+
+## PROP\_VALUE : <code>string</code>
+value of the specified property
+
+**Kind**: global constant  
+<a name="IMPORT_URL"></a>
+
+## IMPORT\_URL : <code>string</code>
+url for import
+
+**Kind**: global constant  
 <a name="isCSSPreprocessorFile"></a>
 
 ## isCSSPreprocessorFile(filePath) ⇒ <code>boolean</code>
@@ -188,6 +212,17 @@ selector(s) for the first rule.
 | Param | Type | Description |
 | --- | --- | --- |
 | range | <code>TextRange</code> | The range to extract the selector(s) from. |
+
+<a name="getAllCssSelectorsInProject"></a>
+
+## getAllCssSelectorsInProject(options)
+Responsible to get all the CSS selectors in project
+
+**Kind**: global function  
+
+| Param | Type |
+| --- | --- |
+| options | <code>Object</code> | 
 
 <a name="SelectorInfo"></a>
 

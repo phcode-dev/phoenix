@@ -442,7 +442,6 @@ define(function (require, exports, module) {
 
     /**
      * Model for a language.
-     * @private
      * @constructor
      */
     function Language() {
@@ -518,7 +517,6 @@ define(function (require, exports, module) {
 
     /**
      * Returns the identifier for this language.
-     * @private
      * @return {string} The identifier
      */
     Language.prototype.getId = function () {
@@ -548,7 +546,6 @@ define(function (require, exports, module) {
 
     /**
      * Returns the human-readable name of this language.
-     * @private
      * @return {string} The name
      */
     Language.prototype.getName = function () {
@@ -572,7 +569,6 @@ define(function (require, exports, module) {
 
     /**
      * Returns the CodeMirror mode for this language.
-     * @private
      * @return {string} The mode
      */
     Language.prototype.getMode = function () {
@@ -641,7 +637,6 @@ define(function (require, exports, module) {
 
     /**
      * Returns an array of file extensions for this language.
-     * @private
      * @return {Array.<string>} File extensions used by this language
      */
     Language.prototype.getFileExtensions = function () {
@@ -651,7 +646,6 @@ define(function (require, exports, module) {
 
     /**
      * Returns an array of file names for extensionless files that use this language.
-     * @private
      * @return {Array.<string>} Extensionless file names used by this language
      */
     Language.prototype.getFileNames = function () {
@@ -661,7 +655,6 @@ define(function (require, exports, module) {
 
     /**
      * Adds one or more file extensions to this language.
-     * @private
      * @param {!string|Array.<string>} extension A file extension (or array thereof) used by this language
      */
     Language.prototype.addFileExtension = function (extension) {
@@ -701,7 +694,6 @@ define(function (require, exports, module) {
 
     /**
      * Unregisters one or more file extensions from this language.
-     * @private
      * @param {!string|Array.<string>} extension File extension (or array thereof) to stop using for this language
      */
     Language.prototype.removeFileExtension = function (extension) {
@@ -732,7 +724,6 @@ define(function (require, exports, module) {
 
     /**
      * Adds one or more file names to the language which is used to match files that don't have extensions like "Makefile" for example.
-     * @private
      * @param {!string|Array.<string>} extension An extensionless file name (or array thereof) used by this language
      */
     Language.prototype.addFileName = function (name) {
@@ -762,7 +753,6 @@ define(function (require, exports, module) {
 
     /**
      * Unregisters one or more file names from this language.
-     * @private
      * @param {!string|Array.<string>} extension An extensionless file name (or array thereof) used by this language
      */
     Language.prototype.removeFileName = function (name) {
@@ -788,7 +778,6 @@ define(function (require, exports, module) {
 
     /**
      * Returns whether the line comment syntax is defined for this language.
-     * @private
      * @return {boolean} Whether line comments are supported
      */
     Language.prototype.hasLineCommentSyntax = function () {
@@ -797,7 +786,6 @@ define(function (require, exports, module) {
 
     /**
      * Returns an array of prefixes to use for line comments.
-     * @private
      * @return {Array.<string>} The prefixes
      */
     Language.prototype.getLineCommentPrefixes = function () {
@@ -806,7 +794,6 @@ define(function (require, exports, module) {
 
     /**
      * Sets the prefixes to use for line comments in this language or prints an error to the console.
-     * @private
      * @param {!(string|Array.<string>)} prefix Prefix string or an array of prefix strings
      *   to use for line comments (e.g. "//" or ["//", "#"])
      * @return {boolean} Whether the syntax was valid and set or not
@@ -832,7 +819,6 @@ define(function (require, exports, module) {
 
     /**
      * Returns whether the block comment syntax is defined for this language.
-     * @private
      * @return {boolean} Whether block comments are supported
      */
     Language.prototype.hasBlockCommentSyntax = function () {
@@ -841,7 +827,6 @@ define(function (require, exports, module) {
 
     /**
      * Returns the prefix to use for block comments.
-     * @private
      * @return {string} The prefix
      */
     Language.prototype.getBlockCommentPrefix = function () {
@@ -850,7 +835,6 @@ define(function (require, exports, module) {
 
     /**
      * Returns the suffix to use for block comments.
-     * @private
      * @return {string} The suffix
      */
     Language.prototype.getBlockCommentSuffix = function () {
@@ -859,7 +843,6 @@ define(function (require, exports, module) {
 
     /**
      * Sets the prefix and suffix to use for blocks comments in this language or prints an error to the console.
-     * @private
      * @param {!string} prefix Prefix string to use for block comments (e.g. "< !--")
      * @param {!string} suffix Suffix string to use for block comments (e.g. "-->")
      * @return {boolean} Whether the syntax was valid and set or not
@@ -878,7 +861,6 @@ define(function (require, exports, module) {
     /**
      * Returns either a language associated with the mode or the fallback language.
      * Used to disambiguate modes used by multiple languages.
-     * @private
      * @param {!string} mode The mode to associate the language with
      * @return {Language} This language if it uses the mode, or whatever {@link #_getLanguageForMode} returns
      */
@@ -912,7 +894,6 @@ define(function (require, exports, module) {
 
     /**
      * Determines whether this is the fallback language or not
-     * @private
      * @return {boolean} True if this is the fallback language, false otherwise
      */
     Language.prototype.isFallbackLanguage = function () {
@@ -923,7 +904,6 @@ define(function (require, exports, module) {
      * Trigger the "languageModified" event if this language is registered already
      * @private
      * @see #_triggerLanguageModified
-     * @private
      */
     Language.prototype._wasModified = function () {
         if (_languages[this._id]) {
@@ -933,7 +913,6 @@ define(function (require, exports, module) {
 
     /**
      * Indicates whether or not the language is binary (e.g., image or audio).
-     * @private
      * @return {boolean}
      */
     Language.prototype.isBinary = function () {
