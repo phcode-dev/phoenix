@@ -37,6 +37,8 @@ define(function (require, exports, module) {
 
     /**
      * Positions shadow background elements to indicate vertical scrolling.
+     *
+     * @private
      * @param {!DOMElement} $displayElement the DOMElement that displays the shadow
      * @param {!Object} $scrollElement the object that is scrolled
      * @param {!DOMElement} $shadowTop div .scroller-shadow.top
@@ -501,6 +503,9 @@ define(function (require, exports, module) {
         return null;
     }
 
+    /**
+     * Hides the main toolbar
+     */
     function hideMainToolBar() {
         $("#main-toolbar").addClass("forced-hidden");
         $(".main-view .content").each(function (index, element) {
@@ -508,6 +513,9 @@ define(function (require, exports, module) {
         });
     }
 
+    /**
+     * Shows the main toolbar
+     */
     function showMainToolBar() {
         $("#main-toolbar").removeClass("forced-hidden");
         $(".main-view .content").each(function (index, element) {

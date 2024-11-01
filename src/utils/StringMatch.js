@@ -33,14 +33,16 @@ define(function (require, exports, module) {
      * Performs matching that is useful for QuickOpen and similar searches.
      */
 
-    /** Object representing a search result with associated metadata (added as extra ad hoc fields) */
+    /**
+     * Object representing a search result with associated metadata (added as extra ad hoc fields)
+     */
     function SearchResult(label) {
         this.label = label;
     }
 
 
 
-    /*
+    /**
      * Identifies the "special" characters in the given string.
      * Special characters for matching purposes are:
      *
@@ -56,7 +58,8 @@ define(function (require, exports, module) {
      * beginning of the last path segment. (This is used to allow scanning of
      * the last segment's specials separately.)
      *
-     * @param {string} input string to break apart (e.g. filename that is being searched)
+     * @private
+     * @param {string} str input string to break apart (e.g. filename that is being searched)
      * @return {{specials:Array.<number>, lastSegmentSpecialsIndex:number}}
      */
     function findSpecialCharacters(str) {
@@ -146,7 +149,7 @@ define(function (require, exports, module) {
         }
     }
 
-    /*
+    /**
      * Finds the best matches between the query and the string. The query is
      * compared with str (usually a lower case string with a lower case
      * query).
@@ -203,7 +206,7 @@ define(function (require, exports, module) {
      *
      * * When `deadBranches[queryCounter] = strCounter` it means if we're still trying to match
      *   `queryLower[queryCounter]` and we get to `str[strCounter]`, there's no way we can match the
-     *   remainer of `queryLower` with the remainder of `str` -- either using specials-only or
+     *   remainder of `queryLower` with the remainder of `str` -- either using specials-only or
      *   full any-char matching.
      *
      * * We know this because deadBranches[] is set in backtrack(), and we don't get to backtrack() unless
@@ -214,6 +217,7 @@ define(function (require, exports, module) {
      *      (i.e. backtrack() due to `strCounter > deadBranches[queryCounter]`, yet
      *      `queryCounter < query.length`)
      *
+     * @private
      * @param {string} query the search string (generally lower cased)
      * @param {string} str the string to compare with (generally lower cased)
      * @param {string} originalQuery the "non-normalized" query string (used to detect case match priority)
@@ -388,7 +392,7 @@ define(function (require, exports, module) {
     }
 
 
-    /*
+    /**
      * Seek out the best match in the last segment (generally the filename).
      * Matches in the filename are preferred, but the query entered could match
      * any part of the path. So, we find the best match we can get in the filename
@@ -400,6 +404,7 @@ define(function (require, exports, module) {
      * result can optionally include a remainder, which is the characters
      * at the beginning of the query which did not match in the last segment.
      *
+     * @private
      * @param {string} query the search string (generally lower cased)
      * @param {string} str the string to compare with (generally lower cased)
      * @param {string} originalQuery the "non-normalized" query string (used to detect case match priority)
@@ -447,12 +452,13 @@ define(function (require, exports, module) {
 
     }
 
-    /*
+    /**
      * Implements the top-level search algorithm. Search the last segment first,
      * then search the rest of the string with the remainder.
      *
      * The parameters and return value are the same as for getMatchRanges.
      *
+     * @private
      * @param {string} queryLower the search string (will be searched lower case)
      * @param {string} compareLower the lower-cased string to search
      * @param {string} originalQuery the "non-normalized" query string (used to detect case match priority)
@@ -500,6 +506,7 @@ define(function (require, exports, module) {
     /**
      * Converts a list of matches into a form suitable for returning from stringMatch.
      *
+     * @private
      * @param {Array.<SpecialMatch|NormalMatch>} matchList to convert
      * @param {string} original string
      * @param {int} character index where last segment begins
@@ -695,12 +702,13 @@ define(function (require, exports, module) {
         return result;
     }
 
-    /*
+    /**
      * If we short circuit normal matching to produce a prefix match,
      * this function will generate the appropriate SearchResult.
      * This function assumes that the prefix match check has already
      * been performed.
      *
+     * @private
      * @param {string} str  The string with the prefix match for the query
      * @param {string} query  The query that matched the beginning of str
      * @return {{ranges:{text:string, matched:boolean, includesLastSegment:boolean}, matchGoodness:int, scoreDebug: Object}} ranges has a matching range for beginning of str
@@ -829,6 +837,8 @@ define(function (require, exports, module) {
 
     /**
      * Computes the most relevant ordering for code hints.
+     *
+     * @private
      * @param {Array} result - The array of results to be ordered.
      * @param {string} query - The query string used for matching.
      * @param {Array<string>} [prefixListLower] - Optional array of result values,
@@ -923,7 +933,7 @@ define(function (require, exports, module) {
         return orderedResults;
     }
 
-    /*
+    /**
      * Match str against the query using the QuickOpen algorithm provided by
      * the functions above. The general idea is to prefer matches of "special" characters and,
      * optionally, matches that occur in the "last segment" (generally, the filename). stringMatch
@@ -1149,6 +1159,8 @@ define(function (require, exports, module) {
     /**
      * Map from search-result string to the findSpecialCharacters() result for that string - easy to cache
      * since this info doesn't change as the query changes.
+     *
+     * @private
      * @type {{string: {specials:Array.<number>, lastSegmentSpecialsIndex:number}}}
      */
     StringMatcher.prototype._specialsCache = null;
@@ -1156,6 +1168,8 @@ define(function (require, exports, module) {
     /**
      * Set of search-result strings that we know don't match the query _lastQuery - or any other query with
      * that prefix.
+     *
+     * @private
      * @type {{string: boolean}}
      */
     StringMatcher.prototype._noMatchCache = null;

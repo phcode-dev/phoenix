@@ -43,24 +43,97 @@
  */
 define(function (require, exports, module) {
 
-
-    var DIRECTION_VERTICAL = "vert";
-    var DIRECTION_HORIZONTAL = "horz";
-
-    var POSITION_TOP = "top";
-    var POSITION_BOTTOM = "bottom";
-    var POSITION_LEFT = "left";
-    var POSITION_RIGHT = "right";
-    var PREFS_PURE_CODE = "noDistractions";
-
     // Minimum size (height or width) for autodiscovered resizable panels
     var DEFAULT_MIN_SIZE = 100;
 
-    const EVENT_PANEL_COLLAPSED = 'panelCollapsed',
-        EVENT_PANEL_EXPANDED = 'panelExpanded',
-        EVENT_PANEL_RESIZE_START = 'panelResizeStart',
-        EVENT_PANEL_RESIZE_UPDATE = 'panelResizeUpdate',
-        EVENT_PANEL_RESIZE_END = 'panelResizeEnd';
+    /**
+     * Represents the vertical direction.
+     *
+     * @type {string}
+     */
+    var DIRECTION_VERTICAL = "vert";
+
+    /**
+     * Represents the horizontal direction.
+     *
+     * @type {string}
+     */
+    var DIRECTION_HORIZONTAL = "horz";
+
+    /**
+     * Indicates the top position.
+     *
+     * @type {string}
+     */
+    var POSITION_TOP = "top";
+
+    /**
+     * Indicates the bottom position.
+     *
+     * @type {string}
+     */
+    var POSITION_BOTTOM = "bottom";
+
+    /**
+     * Indicates the left position.
+     *
+     * @type {string}
+     */
+    var POSITION_LEFT = "left";
+
+    /**
+     * Indicates the right position.
+     *
+     * @type {string}
+     */
+    var POSITION_RIGHT = "right";
+
+    /**
+     * Preference for a distraction-free mode.
+     *
+     * @type {string}
+     */
+    var PREFS_PURE_CODE = "noDistractions";
+
+    /**
+     * Event triggered when a panel is collapsed.
+     *
+     * @type {string}
+     * @constant
+     */
+    const EVENT_PANEL_COLLAPSED = 'panelCollapsed';
+
+    /**
+     * Event triggered when a panel is expanded.
+     *
+     * @type {string}
+     * @constant
+     */
+    const EVENT_PANEL_EXPANDED = 'panelExpanded';
+
+    /**
+     * Event triggered at the start of panel resizing.
+     *
+     * @type {string}
+     * @constant
+     */
+    const EVENT_PANEL_RESIZE_START = 'panelResizeStart';
+
+    /**
+     * Event triggered during panel resizing updates.
+     *
+     * @type {string}
+     * @constant
+     */
+    const EVENT_PANEL_RESIZE_UPDATE = 'panelResizeUpdate';
+
+    /**
+     * Event triggered at the end of panel resizing.
+     *
+     * @type {string}
+     * @constant
+     */
+    const EVENT_PANEL_RESIZE_END = 'panelResizeEnd';
 
     // Load dependent modules
     var AppInit                 = require("utils/AppInit"),
@@ -76,6 +149,7 @@ define(function (require, exports, module) {
 
     /**
      * Shows a resizable element.
+     *
      * @param {DOMNode} element Html element to show if possible
      */
     function show(element) {
@@ -87,6 +161,7 @@ define(function (require, exports, module) {
 
     /**
      * Hides a resizable element.
+     *
      * @param {DOMNode} element Html element to hide if possible
      */
     function hide(element) {
@@ -99,6 +174,7 @@ define(function (require, exports, module) {
     /**
      * Changes the visibility state of a resizable element. The toggle
      * functionality is added when an element is made resizable.
+     *
      * @param {DOMNode} element Html element to toggle
      */
     function toggle(element) {
@@ -111,6 +187,7 @@ define(function (require, exports, module) {
 
     /**
      * Removes the resizability of an element if it's resizable
+     *
      * @param {DOMNode} element Html element in which to remove sizing
      */
     function removeSizable(element) {
@@ -123,6 +200,7 @@ define(function (require, exports, module) {
     /**
      * Updates the sizing div by resyncing to the sizing edge of the element
      * Call this method after manually changing the size of the element
+     *
      * @param {DOMNode} element Html element whose sizer should be resynchronized
      */
     function resyncSizer(element) {
@@ -134,6 +212,7 @@ define(function (require, exports, module) {
 
     /**
      * Returns the visibility state of a resizable element.
+     *
      * @param {DOMNode} element Html element to toggle
      * @return {boolean} true if element is visible, false if it is not visible
      */

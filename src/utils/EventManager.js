@@ -84,6 +84,7 @@ define(function (require, exports, module) {
 
     /**
      * Returns true is an EventHandler of the given name exists.
+     *
      * @param {string} handlerName
      * @return {boolean}
      * @type {function}
@@ -126,6 +127,7 @@ define(function (require, exports, module) {
      * bringing in a cross-origin ifrmame say [`http://mydomain.com`], you should add it to the whitelist by setting
      * `window.Phoenix.TRUSTED_ORIGINS ["http://mydomain.com"] = true;`
      *
+     * @private
      * @function
      * @global
      * @listens window#message
@@ -177,6 +179,12 @@ define(function (require, exports, module) {
         triggerEvent(handlerName, eventName, event);
     };
 
+    /**
+     * add or remove a domain, in the list of trusted origin
+     *
+     * @param {string} origin - the origin to be added or removed
+     * @param {boolean} isTrusted - if `true` adds the origin to the list, else removes it.
+     */
     function setTrustedOrigin(origin, isTrusted) {
         if(!isTrusted){
             delete eventTrustedOrigins[origin];

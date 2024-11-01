@@ -37,6 +37,8 @@ define(function (require, exports, module) {
      * Trim the stack so that it does not have the call to this module,
      * and all the calls to require.js to load the extension that shows
      * this deprecation warning.
+     *
+     * @private
      */
     function _trimStack(stack) {
         var indexOfFirstRequireJSline;
@@ -58,6 +60,7 @@ define(function (require, exports, module) {
     /**
      * Show deprecation warning with the call stack if it
      * has never been displayed before.
+     *
      * @param {!string} message The deprecation message to be displayed.
      * @param {boolean=} oncePerCaller If true, displays the message once for each unique call location.
      *     If false (the default), only displays the message once no matter where it's called from.
@@ -126,8 +129,10 @@ define(function (require, exports, module) {
 
     /**
      * Create a deprecation warning and action for updated constants
-     * @param {!string} old Menu Id
-     * @param {!string} new Menu Id
+     *
+     * @param {Object} obj
+     * @param {!string} oldId Menu Id
+     * @param {!string} newId Menu Id
      */
     function deprecateConstant(obj, oldId, newId) {
         var warning     = "Use Menus." + newId + " instead of Menus." + oldId,
