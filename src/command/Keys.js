@@ -19,12 +19,20 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /*global Phoenix*/
 
 /**
  * Initializes the default brackets menu items.
  */
 define(function (require, exports, module) {
+
+    /**
+     * Defines common keyboard key identifiers for use in keyboard event handling.
+     *
+     * @enum {string} KEY
+     */
     const KEY = {
         ENTER: "Enter",
         RETURN: "Return",

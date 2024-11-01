@@ -3,6 +3,110 @@
 const CommandManager = brackets.getModule("command/CommandManager")
 ```
 
+<a name="Command"></a>
+
+## Command
+**Kind**: global class  
+
+* [Command](#Command)
+    * [new Command(name, id, commandFn, [options])](#new_Command_new)
+    * [.getID()](#Command+getID) ⇒ <code>string</code>
+    * [.execute()](#Command+execute) ⇒ <code>$.Promise</code>
+    * [.getEnabled()](#Command+getEnabled) ⇒ <code>boolean</code>
+    * [.setEnabled(enabled)](#Command+setEnabled)
+    * [.setChecked(checked)](#Command+setChecked)
+    * [.getChecked()](#Command+getChecked) ⇒ <code>boolean</code>
+    * [.setName(name)](#Command+setName)
+    * [.getName()](#Command+getName) ⇒ <code>string</code>
+
+<a name="new_Command_new"></a>
+
+### new Command(name, id, commandFn, [options])
+Events:
+- enabledStateChange
+- checkedStateChange
+- keyBindingAdded
+- keyBindingRemoved
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>string</code> | text that will be displayed in the UI to represent command |
+| id | <code>string</code> |  |
+| commandFn | <code>function</code> | the function that is called when the command is executed. TODO: where should this be triggered, The Command or Exports? |
+| [options] |  |  |
+
+<a name="Command+getID"></a>
+
+### command.getID() ⇒ <code>string</code>
+Get command id
+
+**Kind**: instance method of [<code>Command</code>](#Command)  
+<a name="Command+execute"></a>
+
+### command.execute() ⇒ <code>$.Promise</code>
+Executes the command. Additional arguments are passed to the executing function
+
+**Kind**: instance method of [<code>Command</code>](#Command)  
+**Returns**: <code>$.Promise</code> - a jQuery promise that will be resolved when the command completes.  
+<a name="Command+getEnabled"></a>
+
+### command.getEnabled() ⇒ <code>boolean</code>
+Is command enabled?
+
+**Kind**: instance method of [<code>Command</code>](#Command)  
+<a name="Command+setEnabled"></a>
+
+### command.setEnabled(enabled)
+Sets enabled state of Command and dispatches "enabledStateChange"
+when the enabled state changes.
+
+**Kind**: instance method of [<code>Command</code>](#Command)  
+
+| Param | Type |
+| --- | --- |
+| enabled | <code>boolean</code> | 
+
+<a name="Command+setChecked"></a>
+
+### command.setChecked(checked)
+Sets enabled state of Command and dispatches "checkedStateChange"
+when the enabled state changes.
+
+**Kind**: instance method of [<code>Command</code>](#Command)  
+
+| Param | Type |
+| --- | --- |
+| checked | <code>boolean</code> | 
+
+<a name="Command+getChecked"></a>
+
+### command.getChecked() ⇒ <code>boolean</code>
+Is command checked?
+
+**Kind**: instance method of [<code>Command</code>](#Command)  
+<a name="Command+setName"></a>
+
+### command.setName(name)
+Sets the name of the Command and dispatches "nameChange" so that
+UI that reflects the command name can update.
+
+Note, a Command name can appear in either HTML or native UI
+so HTML tags should not be used. To add a Unicode character,
+use \uXXXX instead of an HTML entity.
+
+**Kind**: instance method of [<code>Command</code>](#Command)  
+
+| Param | Type |
+| --- | --- |
+| name | <code>string</code> | 
+
+<a name="Command+getName"></a>
+
+### command.getName() ⇒ <code>string</code>
+Get command name
+
+**Kind**: instance method of [<code>Command</code>](#Command)  
 <a name="EventDispatcher"></a>
 
 ## EventDispatcher
@@ -40,7 +144,7 @@ Other trigger types.
 **Kind**: global constant  
 <a name="register"></a>
 
-## register(name, id, commandFn, [options]) ⇒ [<code>Command</code>](#new_Command_new)
+## register(name, id, commandFn, [options]) ⇒ [<code>Command</code>](#Command)
 Registers a global command.
 
 **Kind**: global function  
@@ -55,7 +159,7 @@ Registers a global command.
 
 <a name="registerInternal"></a>
 
-## registerInternal(id, commandFn) ⇒ [<code>Command</code>](#new_Command_new)
+## registerInternal(id, commandFn) ⇒ [<code>Command</code>](#Command)
 Registers a global internal only command.
 
 **Kind**: global function  
@@ -67,7 +171,7 @@ Registers a global internal only command.
 
 <a name="get"></a>
 
-## get(id) ⇒ [<code>Command</code>](#new_Command_new)
+## get(id) ⇒ [<code>Command</code>](#Command)
 Retrieves a Command object by id
 
 **Kind**: global function  

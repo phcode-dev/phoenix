@@ -84,7 +84,6 @@ define(function (require, exports, module) {
      * - keyBindingRemoved
      *
      * @constructor
-     * @private
      * @param {string} name - text that will be displayed in the UI to represent command
      * @param {string} id
      * @param {function} commandFn - the function that is called when the command is executed.
@@ -104,7 +103,7 @@ define(function (require, exports, module) {
 
     /**
      * Get command id
-     * @private
+     *
      * @return {string}
      */
     Command.prototype.getID = function () {
@@ -113,7 +112,7 @@ define(function (require, exports, module) {
 
     /**
      * Executes the command. Additional arguments are passed to the executing function
-     * @private
+     *
      * @return {$.Promise} a jQuery promise that will be resolved when the command completes.
      */
     Command.prototype.execute = function () {
@@ -142,7 +141,7 @@ define(function (require, exports, module) {
 
     /**
      * Is command enabled?
-     * @private
+     *
      * @return {boolean}
      */
     Command.prototype.getEnabled = function () {
@@ -152,7 +151,7 @@ define(function (require, exports, module) {
     /**
      * Sets enabled state of Command and dispatches "enabledStateChange"
      * when the enabled state changes.
-     * @private
+     *
      * @param {boolean} enabled
      */
     Command.prototype.setEnabled = function (enabled) {
@@ -167,7 +166,7 @@ define(function (require, exports, module) {
     /**
      * Sets enabled state of Command and dispatches "checkedStateChange"
      * when the enabled state changes.
-     * @private
+     *
      * @param {boolean} checked
      */
     Command.prototype.setChecked = function (checked) {
@@ -181,7 +180,7 @@ define(function (require, exports, module) {
 
     /**
      * Is command checked?
-     * @private
+     *
      * @return {boolean}
      */
     Command.prototype.getChecked = function () {
@@ -195,7 +194,7 @@ define(function (require, exports, module) {
      * Note, a Command name can appear in either HTML or native UI
      * so HTML tags should not be used. To add a Unicode character,
      * use \uXXXX instead of an HTML entity.
-     * @private
+     *
      * @param {string} name
      */
     Command.prototype.setName = function (name) {
@@ -209,7 +208,7 @@ define(function (require, exports, module) {
 
     /**
      * Get command name
-     * @private
+     *
      * @return {string}
      */
     Command.prototype.getName = function () {
@@ -220,6 +219,7 @@ define(function (require, exports, module) {
 
     /**
      * Registers a global command.
+     *
      * @param {string} name - text that will be displayed in the UI to represent command
      * @param {string} id - unique identifier for command.
      *      Core commands in Brackets use a simple command title as an id, for example "open.file".
@@ -255,6 +255,7 @@ define(function (require, exports, module) {
 
     /**
      * Registers a global internal only command.
+     *
      * @param {string} id - unique identifier for command.
      *      Core commands in Brackets use a simple command title as an id, for example "app.abort_quit".
      *      Extensions should use the following format: "author.myextension.mycommandname".
