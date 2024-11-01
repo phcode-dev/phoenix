@@ -19,6 +19,8 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /*globals path, logger*/
 /*jslint regexp: true */
 /*unittests: KeyBindingManager */
@@ -56,17 +58,50 @@ define(function (require, exports, module) {
     let KEYMAP_FILENAME     = "keymap.json",
         _userKeyMapFilePath = path.normalize(brackets.app.getApplicationSupportDirectory() + "/" + KEYMAP_FILENAME);
 
-    const EVENT_KEY_BINDING_ADDED = "keyBindingAdded",
-        EVENT_KEY_BINDING_REMOVED = "keyBindingRemoved",
-        EVENT_NEW_PRESET = "newPreset",
-        EVENT_PRESET_CHANGED = "presetChanged";
+    /**
+     * key binding add event
+     *
+     * @const
+     * @type {string}
+     */
+    const EVENT_KEY_BINDING_ADDED = "keyBindingAdded";
 
+    /**
+     * key binding remove event
+     *
+     * @const
+     * @type {string}
+     */
+    const EVENT_KEY_BINDING_REMOVED = "keyBindingRemoved";
+
+    /**
+     * new preset event
+     *
+     * @const
+     * @type {string}
+     */
+    const EVENT_NEW_PRESET = "newPreset";
+
+    /**
+     * preset change event
+     *
+     * @const
+     * @type {string}
+     */
+    const EVENT_PRESET_CHANGED = "presetChanged";
+
+    /**
+     * @const
+     * @type {Object}
+     */
     const KEY = Keys.KEY;
+
     const knownBindableCommands = new Set();
 
     /**
-     * @private
      * Forward declaration for JSLint.
+     *
+     * @private
      * @type {Function}
      */
     let _loadUserKeyMap = _.debounce(_loadUserKeyMapImmediate, 200);
@@ -78,8 +113,9 @@ define(function (require, exports, module) {
     const PREF_TRIPLE_CTRL_KEY_PRESS_ENABLED = "tripleCtrlPalette";
 
     /**
-     * @private
      * Maps normalized shortcut descriptor to key binding info.
+     *
+     * @private
      * @type {!Object.<string, {commandID: string, key: string, displayKey: string}>}
      */
     let _keyMap            = {},    // For the actual key bindings including user specified ones
@@ -92,8 +128,9 @@ define(function (require, exports, module) {
      */
 
     /**
-     * @private
      * Maps shortcut descriptor to a command id.
+     *
+     * @private
      * @type {UserKeyBinding}
      */
     let _originalUserKeyMap = {},
@@ -101,23 +138,26 @@ define(function (require, exports, module) {
         _customKeyMapCache = {};
 
     /**
-     * @private
      * Maps commandID to the list of shortcuts that are bound to it.
+     *
+     * @private
      * @type {!Object.<string, Array.<{key: string, displayKey: string}>>}
      */
     let _commandMap  = {};
 
     /**
-     * @private
      * An array of command ID for all the available commands including the commands
      * of installed extensions.
+     *
+     * @private
      * @type {Array.<string>}
      */
     let _allCommands = [];
 
     /**
+     * Maps key names to the corresponding unicode symbols
+     *
      * @private
-     * Maps key names to the corresponding unicode symols
      * @type {{key: string, displayKey: string}}
      */
     let _displayKeyMap        = { "up": "\u2191",
@@ -134,33 +174,36 @@ define(function (require, exports, module) {
             "PageUp", "PageDown", "Home", "End", "Insert", "Delete"];
 
     /**
-     * @private
      * Flag to show key binding errors in the key map file. Default is true and
      * it will be set to false when reloading without extensions. This flag is not
      * used to suppress errors in loading or parsing the key map file. So if the key
      * map file is corrupt, then the error dialog still shows up.
      *
+     * @private
      * @type {boolean}
      */
     let _showErrors = true;
 
     /**
-     * @private
      * Allow clients to toggle key binding
+     *
+     * @private
      * @type {boolean}
      */
     let _enabled = true;
 
     /**
-     * @private
      * Stack of registered global keydown hooks.
+     *
+     * @private
      * @type {Array.<function(Event): boolean>}
      */
     let _globalKeydownHooks = [];
 
     /**
-     * @private
      * States of Ctrl key down detection
+     *
+     * @private
      * @enum {number}
      */
     let CtrlDownStates = {
@@ -170,52 +213,56 @@ define(function (require, exports, module) {
     };
 
     /**
-     * @private
      * Flags used to determine whether right Alt key is pressed. When it is pressed,
      * the following two keydown events are triggered in that specific order.
      *
      *    1. _ctrlDown - flag used to record { ctrlKey: true, keyIdentifier: "Control", ... } keydown event
      *    2. _altGrDown - flag used to record { ctrlKey: true, altKey: true, keyIdentifier: "Alt", ... } keydown event
      *
+     * @private
      * @type {CtrlDownStates|boolean}
      */
     let _ctrlDown = CtrlDownStates.NOT_YET_DETECTED,
         _altGrDown = false;
 
     /**
-     * @private
      * Used to record the timeStamp property of the last keydown event.
+     *
+     * @private
      * @type {number}
      */
     let _lastTimeStamp;
 
     /**
-     * @private
      * Used to record the keyIdentifier property of the last keydown event.
+     *
+     * @private
      * @type {string}
      */
     let _lastKeyIdentifier;
 
-    /*
-     * @private
+    /**
      * Constant used for checking the interval between Control keydown event and Alt keydown event.
      * If the right Alt key is down we get Control keydown followed by Alt keydown within 30 ms. if
      * the user is pressing Control key and then Alt key, the interval will be larger than 30 ms.
+     *
+     * @private
      * @type {number}
      */
     let MAX_INTERVAL_FOR_CTRL_ALT_KEYS = 30;
 
     /**
-     * @private
      * Forward declaration for JSLint.
+     *
+     * @private
      * @type {Function}
      */
     let _onCtrlUp;
 
     /**
-     * @private
      * Resets all the flags and removes _onCtrlUp event listener.
      *
+     * @private
      */
     function _quitAltGrMode() {
         _enabled = true;
@@ -227,11 +274,11 @@ define(function (require, exports, module) {
     }
 
     /**
-     * @private
      * Detects the release of AltGr key by checking all keyup events
      * until we receive one with ctrl key code. Once detected, reset
      * all the flags and also remove this event listener.
      *
+     * @private
      * @param {!KeyboardEvent} e keyboard event object
      */
     _onCtrlUp = function (e) {
@@ -242,7 +289,6 @@ define(function (require, exports, module) {
     };
 
     /**
-     * @private
      * Detects whether AltGr key is pressed. When it is pressed, the first keydown event has
      * ctrlKey === true with keyIdentifier === "Control". The next keydown event with
      * altKey === true, ctrlKey === true and keyIdentifier === "Alt" is sent within 30 ms. Then
@@ -257,6 +303,7 @@ define(function (require, exports, module) {
      * When we detect the addition of Ctrl key besides AltGr key, we also quit AltGr mode and re-enable
      * KeyBindingManager.
      *
+     * @private
      * @param {!KeyboardEvent} e keyboard event object
      */
     function _detectAltGrKeyDown(e) {
@@ -309,9 +356,10 @@ define(function (require, exports, module) {
     }
 
     /**
-     * @private
      * Initialize an empty keymap as the current keymap. It overwrites the current keymap if there is one.
      * builds the keyDescriptor string from the given parts
+     *
+     * @private
      * @param {boolean} hasCtrl Is Ctrl key enabled
      * @param {boolean} hasAlt Is Alt key enabled
      * @param {boolean} hasShift Is Shift key enabled
@@ -353,7 +401,9 @@ define(function (require, exports, module) {
 
     /**
      * normalizes the incoming key descriptor so the modifier keys are always specified in the correct order
-     * @param {string} The string for a key descriptor, can be in any order, the result will be Ctrl-Alt-Shift-<Key>
+     *
+     * @private
+     * @param {string} origDescriptor The string for a key descriptor, can be in any order, the result will be Ctrl-Alt-Shift-<Key>
      * @return {string} The normalized key descriptor or null if the descriptor invalid
      */
     function normalizeKeyDescriptorString(origDescriptor) {
@@ -498,8 +548,9 @@ define(function (require, exports, module) {
     }
 
     /**
-     * @private
      * Looks for keycodes that have os-inconsistent keys and fixes them.
+     *
+     * @private
      * @return {string} If the key is OS-inconsistent, the correct key; otherwise, the original key.
      **/
     function _mapKeycodeToKey(event) {
@@ -529,6 +580,8 @@ define(function (require, exports, module) {
 
     /**
      * Takes a keyboard event and translates it into a key in a key map
+     *
+     * @private
      */
     function _translateKeyboardEvent(event) {
         let hasMacCtrl = (brackets.platform === "mac") ? (event.ctrlKey) : false,
@@ -541,6 +594,7 @@ define(function (require, exports, module) {
 
     /**
      * Convert normalized key representation to display appropriate for platform.
+     *
      * @param {!string} descriptor Normalized key descriptor.
      * @return {!string} Display/Operating system appropriate string
      */
@@ -623,13 +677,12 @@ define(function (require, exports, module) {
     }
 
     /**
-     * @private
-     *
      * Updates _allCommands array and _defaultKeyMap with the new key binding
      * if it is not yet in the _allCommands array. _allCommands array is initialized
      * only in extensionsLoaded event. So any new commands or key bindings added after
      * that will be updated here.
      *
+     * @private
      * @param {{commandID: string, key: string, displayKey:string, explicitPlatform: string}} newBinding
      */
     function _updateCommandAndKeyMaps(newBinding) {
@@ -836,8 +889,8 @@ define(function (require, exports, module) {
     /**
      * Returns a copy of the current key map. If the optional 'defaults' parameter is true,
      * then a copy of the default key map is returned.
-     * @param {boolean=} defaults true if the caller wants a copy of the default key map.
-     *                            Otherwise, the current active key map is returned.
+     *
+     * @param {boolean=} defaults true if the caller wants a copy of the default key map. Otherwise, the current active key map is returned.
      * @return {!Object.<string, {commandID: string, key: string, displayKey: string}>}
      */
     function getKeymap(defaults) {
@@ -854,7 +907,9 @@ define(function (require, exports, module) {
     /**
      * If there is a registered and enabled key event, we always mark the event as processed
      * except the ones in UN_SWALLOWED_EVENTS.
-     * @type {(string)[]}
+     *
+     * @private
+     * @type {Array.<string>}
      */
     const UN_SWALLOWED_EVENTS = _makeMapFromArray({}, [
         Commands.EDIT_SELECT_ALL,
@@ -877,7 +932,8 @@ define(function (require, exports, module) {
     /**
      * Process the keybinding for the current key.
      *
-     * @param {string} A key-description string.
+     * @private
+     * @param {string} key A key-description string.
      * @return {boolean} true if the key was processed, false otherwise
      */
     function _handleKey(key) {
@@ -910,10 +966,10 @@ define(function (require, exports, module) {
     }
 
     /**
-     * @private
-     *
      * Sort objects by platform property. Objects with a platform property come
      * before objects without a platform property.
+     *
+     * @private
      */
     function _sortByPlatform(a, b) {
         let a1 = (a.platform) ? 1 : 0,
@@ -1029,6 +1085,8 @@ define(function (require, exports, module) {
     const _handledCommands = {};
     /**
      * Adds default key bindings when commands are registered to CommandManager
+     *
+     * @private
      * @param {$.Event} event jQuery event
      * @param {Command} command Newly registered command
      */
@@ -1185,6 +1243,8 @@ define(function (require, exports, module) {
     /**
      * Handles a given keydown event, checking global hooks first before
      * deciding to handle it ourselves.
+     *
+     * @private
      * @param {Event} event The keydown event to handle.
      */
     function _handleKeyEvent(event) {
@@ -1233,10 +1293,10 @@ define(function (require, exports, module) {
     });
 
     /**
-     * @private
      * Displays an error dialog and also opens the user key map file for editing only if
      * the error is not the loading file error.
      *
+     * @private
      * @param {?string} err Error type returned from JSON parser or open file operation
      * @param {string=} message Error message to be displayed in the dialog
      */
@@ -1265,10 +1325,10 @@ define(function (require, exports, module) {
     }
 
     /**
-     * @private
-     *
      * Checks whether the given command ID is a special command that the user can't bind
      * to another shortcut.
+     *
+     * @private
      * @param {!string} commandID A string referring to a specific command
      * @return {boolean} true if normalizedKey is a special command, false otherwise.
      */
@@ -1281,10 +1341,10 @@ define(function (require, exports, module) {
     }
 
     /**
-     * @private
-     *
      * Checks whether the given key combination is a shortcut of a special command
      * or a Mac system command that the user can't reassign to another command.
+     *
+     * @private
      * @param {!string} normalizedKey A key combination string used for a keyboard shortcut
      * @return {boolean} true if normalizedKey is a restricted shortcut, false otherwise.
      */
@@ -1306,9 +1366,9 @@ define(function (require, exports, module) {
     }
 
     /**
-     * @private
-     *
      * Creates a bullet list item for any item in the given list.
+     *
+     * @private
      * @param {Array.<string>} list An array of strings to be converted into a
      * message string with a bullet list.
      * @return {string} the html text version of the list
@@ -1323,12 +1383,11 @@ define(function (require, exports, module) {
     }
 
     /**
-     * @private
-     *
      * Gets the corresponding unicode symbol of an arrow key for display in the menu.
+     *
+     * @private
      * @param {string} key The non-modifier key used in the shortcut. It does not need to be normalized.
-     * @return {string} An empty string if key is not one of those we want to show with the unicode symbol.
-     *                  Otherwise, the corresponding unicode symbol is returned.
+     * @return {string} An empty string if key is not one of those we want to show with the unicode symbol. Otherwise, the corresponding unicode symbol is returned.
      */
     function _getDisplayKey(key) {
         let displayKey = "",
@@ -1340,8 +1399,6 @@ define(function (require, exports, module) {
     }
 
     /**
-     * @private
-     *
      * Applies each user key binding to all the affected commands and updates _keyMap.
      * Shows errors in a dialog and then opens the user key map file if any of the following
      * is detected while applying the user key bindings.
@@ -1351,6 +1408,8 @@ define(function (require, exports, module) {
      *     - The same key combination is listed for multiple key bindings.
      *     - A key binding has any invalid key syntax.
      *     - A key binding is referring to a non-existent command ID.
+     *
+     * @private
      */
     function _applyUserKeyBindings() {
         let remappedCommands   = [],
@@ -1469,10 +1528,10 @@ define(function (require, exports, module) {
     }
 
     /**
-     * @private
-     *
      * Restores the default key bindings for all the commands that are modified by each key binding
      * specified in _customKeyMapCache (old version) but no longer specified in _customKeyMap (new version).
+     *
+     * @private
      */
     function _undoPriorUserKeyBindings() {
         _.forEach(_customKeyMapCache, function (commandID, key) {
@@ -1509,12 +1568,11 @@ define(function (require, exports, module) {
     }
 
     /**
-     * @private
-     *
      * Gets the full file path to the user key map file. In testing environment
      * a different file path is returned so that running integration tests won't
      * pop up the error dialog showing the errors from the actual user key map file.
      *
+     * @private
      * @return {string} full file path to the user key map file.
      */
     function _getUserKeyMapFilePath() {
@@ -1571,13 +1629,12 @@ define(function (require, exports, module) {
     }
 
     /**
-     * @private
-     *
      * Reads in the user key map file and parses its content into JSON.
      * Returns the user key bindings if JSON has "overrides".
      * Otherwise, returns an empty object or an error if the file
      * cannot be parsed or loaded.
      *
+     * @private
      * @return {$.Promise} a jQuery promise that will be resolved with the JSON
      * object if the user key map file has "overrides" property or an empty JSON.
      * If the key map file cannot be read or cannot be parsed by the JSON parser,
@@ -1621,6 +1678,7 @@ define(function (require, exports, module) {
     /**
      * This can be used by extensions to register new kepmap packs that can be listed in the keyboard shortcuts panel
      * under use preset dropdown. For EG. distribute a `netbeans editor` shortcuts pack via extension.
+     *
      * @param {string} packID - A unique ID for the pack. Use `extensionID.name` format to avoid collisions.
      * @param {string} packName - A name for the pack.
      * @param {Object} keyMap - a keymap of the format {`Ctrl-Alt-L`: `file.liveFilePreview`} depending on the platform.
@@ -1642,6 +1700,12 @@ define(function (require, exports, module) {
         exports.trigger(EVENT_NEW_PRESET, packID);
     }
 
+    /**
+     * Responsible to get all the custom keymap packs
+     *
+     * @returns {Array.<Object>} an array of all the custom keymap packs,
+     * each pack is an object with keys: `packID`, `packageName` & `keyMap`
+     */
     function getAllCustomKeymapPacks() {
         const packDetails = [];
         for(let packID of Object.keys(_registeredCustomKeyMaps)){
@@ -1654,6 +1718,11 @@ define(function (require, exports, module) {
         return packDetails;
     }
 
+    /**
+     * To get the current custom keymap pack
+     *
+     * @returns {Object} the current custom keymap pack
+     */
     function getCurrentCustomKeymapPack() {
         return _registeredCustomKeyMaps[_customKeymapIDInUse];
     }
@@ -1662,6 +1731,7 @@ define(function (require, exports, module) {
      * Determines the origin of a custom keyboard shortcut is from user keymap.json or a custom keymap preset.
      * If it is neither (Eg. phoenix default shortcuts, will return null.)
      *
+     * @private
      * @param {string} shortcut - The keyboard shortcut to check.
      * @returns {string|null} - The origin of the custom shortcut, or null if it is not a custom shortcut.
      */
@@ -1679,6 +1749,7 @@ define(function (require, exports, module) {
 
     /**
      * internal use, this is for setting the current custom keyboard pack.
+     *
      * @param packID
      * @private
      */
@@ -1740,8 +1811,6 @@ define(function (require, exports, module) {
     }
 
     /**
-     * @private
-     *
      * Reads in the user key bindings and updates the key map with each user key
      * binding by removing the existing one assigned to each key and adding
      * new one for the specified command id. Shows errors and opens the user
@@ -1749,7 +1818,9 @@ define(function (require, exports, module) {
      *
      * This function is wrapped with debounce so that its execution is always delayed
      * by 200 ms. The delay is required because when this function is called some
-     * extensions may still be adding some commands and their key bindings asychronously.
+     * extensions may still be adding some commands and their key bindings asynchronously.
+     *
+     * @private
      */
     function _loadUserKeyMapImmediate() {
         return new Promise((resolve, reject)=>{
@@ -1779,6 +1850,7 @@ define(function (require, exports, module) {
 
     /**
      * resets all user defined shortcuts
+     *
      * @return {Promise|Promise<void>|*}
      */
     function resetUserShortcutsAsync() {
@@ -1798,10 +1870,10 @@ define(function (require, exports, module) {
     }
 
     /**
-     * @private
-     *
      * Opens the existing key map file or creates a new one with default content
      * if it does not exist.
+     *
+     * @private
      */
     function _openUserKeyMap() {
         let userKeyMapPath = _getUserKeyMapFilePath(),
@@ -1831,10 +1903,10 @@ define(function (require, exports, module) {
     });
 
     /**
-     * @private
-     *
      * Initializes _allCommands array and _defaultKeyMap so that we can use them for
      * detecting non-existent commands and restoring the original key binding.
+     *
+     * @private
      */
     function _initCommandAndKeyMaps() {
         _allCommands = CommandManager.getAll();
@@ -1844,11 +1916,10 @@ define(function (require, exports, module) {
     }
 
     /**
-     * @private
-     *
      * Sets the full file path to the user key map file. Only used by unit tests
      * to load a test file instead of the actual user key map file.
      *
+     * @private
      * @param {string} fullPath file path to the user key map file.
      */
     function _setUserKeyMapFilePath(fullPath) {
@@ -1877,6 +1948,11 @@ define(function (require, exports, module) {
         _loadUserKeyMap();
     });
 
+    /**
+     * Whether the keyboard is in overlay mode or not
+     *
+     * @returns {boolean} True if in overlay mode else false
+     */
     function isInOverlayMode() {
         return KeyboardOverlayMode.isInOverlayMode();
     }
@@ -1942,6 +2018,12 @@ define(function (require, exports, module) {
     let keyboardShortcutCaptureInProgress = null,
         keyboardShortcutDialog = null,
         capturedShortcut = null;
+
+    /**
+     * to display the shortcut selection dialog
+     *
+     * @param command
+     */
     function showShortcutSelectionDialog(command) {
         Metrics.countEvent(Metrics.EVENT_TYPE.KEYBOARD, 'shortcut', "DialogShown");
         if(_isSpecialCommand(command.getID())){
@@ -1988,6 +2070,7 @@ define(function (require, exports, module) {
 
     /**
      * Returns true the given command id can be overriden by user.
+     *
      * @param commandId
      * @return {boolean}
      */
@@ -1999,6 +2082,7 @@ define(function (require, exports, module) {
      * gets a list of commands that are known to have had a key binding in this session. Note that this will contain
      * commands that may not currently have a key binding. IT is mainly used in keyboard shortcuts panel to list items
      * that can be assigned a key binding.
+     *
      * @type {Set<string>}
      * @private
      */

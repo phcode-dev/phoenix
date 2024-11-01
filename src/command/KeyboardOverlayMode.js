@@ -19,6 +19,8 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /*global Phoenix*/
 
 /**
@@ -68,6 +70,9 @@ define(function (require, exports, module) {
         }
     }
 
+    /**
+     * Responsible to start the overlay mode
+     */
     function startOverlayMode() {
         overlayOrderCentralElement = calculateUINavOrder();
         currentOverlayElement = overlayOrderCentralElement;
@@ -110,6 +115,10 @@ define(function (require, exports, module) {
         return secondPane;
     }
 
+    /**
+     * Responsible to exit the overlay mode.
+     * restores focus to previously active pane
+     */
     function exitOverlayMode() {
         const overlay = document.getElementById(CONTROL_NAV_OVERLAY_ID);
         overlay.classList.add('forced-hidden'); // Remove the class that hides the overlay
@@ -120,6 +129,12 @@ define(function (require, exports, module) {
         document.removeEventListener('click', exitOverlayMode, true);
     }
 
+    /**
+     * Handles the keyboard navigation in overlay mode
+     * Process the arrow keys to move between panes, Enter to select a pane, and Escape to exit overlay mode
+     *
+     * @param {KeyboardEvent} event
+     */
     function processOverlayKeyboardEvent(event) {
         const upElement = currentOverlayElement.up;
         const downElement = currentOverlayElement.down;
@@ -171,6 +186,11 @@ define(function (require, exports, module) {
         return true;
     }
 
+    /**
+     * to check whether in overlay mode or not
+     *
+     * @returns {boolean} returns true if in overlay mode otherwise false
+     */
     function isInOverlayMode() {
         return overlayMode;
     }
