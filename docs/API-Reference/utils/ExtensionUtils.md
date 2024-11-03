@@ -34,21 +34,6 @@ Appends a "link" tag to the document's head.
 | url | <code>string</code> | URL to a style sheet |
 | [deferred] | <code>$.Deferred</code> | Optionally check for load and error events |
 
-<a name="isAbsolutePathOrUrl"></a>
-
-## isAbsolutePathOrUrl(pathOrUrl) ⇒ <code>boolean</code>
-getModuleUrl returns different urls for win platform
-so that's why we need a different check here
-
-**Kind**: global function  
-**Returns**: <code>boolean</code> - returns true if pathOrUrl is absolute url on win platform
-                   or when it's absolute path on other platforms  
-**See**: #getModuleUrl  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| pathOrUrl | <code>string</code> | that should be checked if it's absolute |
-
 <a name="parseLessCode"></a>
 
 ## parseLessCode(code, url) ⇒ <code>$.Promise</code>
@@ -120,24 +105,9 @@ Loads a style sheet (CSS or LESS) relative to the extension module.
 | module | <code>module</code> | Module provided by RequireJS |
 | path | <code>string</code> | Relative path from the extension folder to a CSS or LESS file |
 
-<a name="_loadExtensionMetadata"></a>
-
-## \_loadExtensionMetadata(baseExtensionUrl, extensionName) ⇒ <code>$.Promise</code>
-Loads the package.json file in the given extension folder as well as any additional
-metadata.
-
-**Kind**: global function  
-**Returns**: <code>$.Promise</code> - A promise object that is resolved with the parsed contents of the package.json file,
-    or rejected if there is no package.json with the boolean indicating whether .disabled file exists.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| baseExtensionUrl | <code>string</code> | The extension folder. |
-| extensionName | <code>string</code> | optional extension name |
-
 <a name="loadMetadata"></a>
 
-## loadMetadata(metadataURL) ⇒ <code>$.Promise</code>
+## loadMetadata(metadataURL, extensionName) ⇒ <code>$.Promise</code>
 Loads the package.json file in the given extension folder as well as any additional
 metadata for default extensions in the source directory.
 
@@ -152,4 +122,5 @@ disabled might be set.
 | Param | Type | Description |
 | --- | --- | --- |
 | metadataURL | <code>string</code> | The extension folder/base url for default extensions. |
+| extensionName | <code>string</code> | name of the extension |
 

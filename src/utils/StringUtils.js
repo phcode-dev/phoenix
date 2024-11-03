@@ -56,18 +56,30 @@ define(function (require, exports, module) {
         });
     }
 
+    /**
+     * Regex escape
+     *
+     * @param {string} str
+     * @returns {string}
+     */
     function regexEscape(str) {
         return str.replace(/([.?*+\^$\[\]\\(){}|\-])/g, "\\$1");
     }
 
-    // Periods (aka "dots") are allowed in HTML identifiers, but jQuery interprets
-    // them as the start of a class selector, so they need to be escaped
+    /**
+     * Periods (aka "dots") are allowed in HTML identifiers, but jQuery interprets
+     * them as the start of a class selector, so they need to be escaped
+     *
+     * @param {string} str
+     * @returns {string}
+     */
     function jQueryIdEscape(str) {
         return str.replace(/\./g, "\\.");
     }
 
     /**
      * Splits the text by new line characters and returns an array of lines
+     *
      * @param {string} text
      * @return {Array.<string>} lines
      */
@@ -119,6 +131,7 @@ define(function (require, exports, module) {
 
     /**
      * Returns true if the given string starts with the given prefix.
+     *
      * @param   {String} str
      * @param   {String} prefix
      * @return {Boolean}
@@ -137,6 +150,14 @@ define(function (require, exports, module) {
         return str.indexOf(suffix, str.length - suffix.length) !== -1;
     }
 
+    /**
+     * sort two urls alphabetically
+     * ensure folders appear before files on windows
+     *
+     * @param {string} a
+     * @param {string} b
+     * @returns {number}
+     */
     function urlSort(a, b) {
         var a2, b2;
         function isFile(s) {
@@ -161,6 +182,7 @@ define(function (require, exports, module) {
 
     /**
      * Return an escaped path or URL string that can be broken near path separators.
+     *
      * @param {string} url the path or URL to format
      * @return {string} the formatted path or URL
      */
@@ -207,6 +229,7 @@ define(function (require, exports, module) {
 
     /**
      * Truncate text to specified length.
+     *
      * @param {string} str Text to be truncated.
      * @param {number} len Length to which text should be truncated
      * @return {?string} Returns truncated text only if it was changed
@@ -271,6 +294,12 @@ define(function (require, exports, module) {
         return randomId;
     }
 
+    /**
+     * Check if value is a valid number
+     *
+     * @param {string} value
+     * @returns {boolean} true if value is valid number, else false
+     */
     function isNumber(value) {
         return parseFloat(value).toString() === value;
     }

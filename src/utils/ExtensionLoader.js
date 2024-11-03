@@ -63,10 +63,31 @@ define(function (require, exports, module) {
 
     // default async initExtension timeout
     var EXTENSION_LOAD_TIMOUT_SECONDS = 60,
-        INIT_EXTENSION_TIMEOUT = EXTENSION_LOAD_TIMOUT_SECONDS * 1000,
-        EVENT_EXTENSION_LOADED = "load",
-        EVENT_EXTENSION_DISABLED = "disabled",
-        EVENT_EXTENSION_LOAD_FAILED = "loadFailed";
+        INIT_EXTENSION_TIMEOUT = EXTENSION_LOAD_TIMOUT_SECONDS * 1000;
+
+    /**
+     * Extension loaded event
+     *
+     * @const
+     * @type {string}
+     */
+    const EVENT_EXTENSION_LOADED = "load";
+
+    /**
+     * Extension disabled event
+     *
+     * @const
+     * @type {string}
+     */
+    const EVENT_EXTENSION_DISABLED = "disabled";
+
+    /**
+     * Extension load failed event
+     *
+     * @const
+     * @type {string}
+     */
+     const EVENT_EXTENSION_LOAD_FAILED = "loadFailed";
 
     var _init       = false,
         _extensions = {},
@@ -75,6 +96,8 @@ define(function (require, exports, module) {
 
     /**
      * Stores require.js contexts of extensions
+     *
+     * @private
      * @type {Object.<string, Object>}
      */
     var contexts    = {};
@@ -96,14 +119,24 @@ define(function (require, exports, module) {
 
     /**
      * Returns the path to the default extensions directory relative to Phoenix base URL
+     *
+     * @private
      */
     const DEFAULT_EXTENSIONS_PATH_BASE = "extensions/default";
+
+    /**
+     * Responsible to get the default extension path
+     *
+     * @returns {string}
+     */
     function getDefaultExtensionPath() {
         return window.PhoenixBaseURL + DEFAULT_EXTENSIONS_PATH_BASE;
     }
 
     /**
      * Returns the full path to the development extensions directory.
+     *
+     * @private
      */
     function _getExtensionPath() {
         return pathLib.normalize(Phoenix.VFS.getExtensionDir());
@@ -111,6 +144,8 @@ define(function (require, exports, module) {
 
     /**
      * Returns the full path to the development extensions directory.
+     *
+     * @private
      */
     function getDevExtensionPath() {
         return pathLib.normalize(Phoenix.VFS.getDevExtensionDir());
@@ -129,7 +164,7 @@ define(function (require, exports, module) {
     /**
      * Returns the require.js require context used to load an extension
      *
-     * @param {!string} name, used to identify the extension
+     * @param {!string} name used to identify the extension
      * @return {!Object} A require.js require object used to load the extension, or undefined if
      * there is no require object with that name
      */
@@ -138,8 +173,9 @@ define(function (require, exports, module) {
     }
 
     /**
-     * @private
      * Get timeout value for rejecting an extension's async initExtension promise.
+     *
+     * @private
      * @return {number} Timeout in milliseconds
      */
     function _getInitExtensionTimeout() {
@@ -147,8 +183,9 @@ define(function (require, exports, module) {
     }
 
     /**
-     * @private
      * Set timeout for rejecting an extension's async initExtension promise.
+     *
+     * @private
      * @param {number} value Timeout in milliseconds
      */
     function _setInitExtensionTimeout(value) {
@@ -156,8 +193,9 @@ define(function (require, exports, module) {
     }
 
     /**
-     * @private
      * Loads optional requirejs-config.json file for an extension
+     *
+     * @private
      * @param {Object} baseConfig
      * @return {$.Promise}
      */
@@ -200,8 +238,9 @@ define(function (require, exports, module) {
     }
 
     /**
-     * @private
      * Loads optional requirejs-config.json file for an extension
+     *
+     * @private
      * @param {Object} baseConfig
      * @return {$.Promise}
      */
@@ -223,7 +262,8 @@ define(function (require, exports, module) {
     /**
      * Loads the extension module that lives at baseUrl into its own Require.js context
      *
-     * @param {!string} name, used to identify the extension
+     * @private
+     * @param {!string} name used to identify the extension
      * @param {!{baseUrl: string}} config object with baseUrl property containing absolute path of extension
      * @param {string} entryPoint name of the main js file to load
      * @param {Object} metadata
@@ -347,9 +387,9 @@ define(function (require, exports, module) {
     /**
      * Loads the extension that lives at baseUrl into its own Require.js context
      *
-     * @param {!string} name, used to identify the extension
+     * @param {!string} name used to identify the extension
      * @param {!{baseUrl: string}} config object with baseUrl property containing absolute path of extension
-     * @param {!string} entryPoint, name of the main js file to load
+     * @param {!string} entryPoint name of the main js file to load
      * @return {!$.Promise} A promise object that is resolved when the extension is loaded, or rejected
      *              if the extension fails to load or throws an exception immediately when loaded.
      *              (Note: if extension contains a JS syntax error, promise is resolved not rejected).
@@ -387,9 +427,10 @@ define(function (require, exports, module) {
     /**
      * Runs unit tests for the extension that lives at baseUrl into its own Require.js context
      *
-     * @param {!string} name, used to identify the extension
+     * @private
+     * @param {!string} name used to identify the extension
      * @param {!{baseUrl: string}} config object with baseUrl property containing absolute path of extension
-     * @param {!string} entryPoint, name of the main js file to load
+     * @param {!string} entryPoint name of the main js file to load
      * @return {!$.Promise} A promise object that is resolved when all extensions complete loading.
      */
     function _testExtensionByURL(name, config, entryPoint) {
@@ -422,9 +463,9 @@ define(function (require, exports, module) {
     /**
      * Runs unit tests for the extension that lives at baseUrl into its own Require.js context
      *
-     * @param {!string} name, used to identify the extension
+     * @param {!string} name used to identify the extension
      * @param {!{baseUrl: string}} config object with baseUrl property containing absolute path of extension
-     * @param {!string} entryPoint, name of the main js file to load
+     * @param {!string} entryPoint name of the main js file to load
      * @return {!$.Promise} A promise object that is resolved when all extensions complete loading.
      */
     function testExtension(name, config, entryPoint) {
@@ -501,9 +542,9 @@ define(function (require, exports, module) {
 
 
     /**
-     * @private
      * Loads a file entryPoint from each extension folder within the baseUrl into its own Require.js context
      *
+     * @private
      * @param {!string} directory an absolute native path that contains a directory of extensions.
      *                  each subdirectory is interpreted as an independent extension
      * @param {!string} entryPoint Module name to load (without .js suffix)
@@ -572,7 +613,7 @@ define(function (require, exports, module) {
     /**
      * Loads the extension that lives at baseUrl into its own Require.js context
      *
-     * @param {!string} directory, an absolute native path that contains a directory of extensions.
+     * @param {!string} directory an absolute native path that contains a directory of extensions.
      *                  each subdirectory is interpreted as an independent extension
      * @return {!$.Promise} A promise object that is resolved when all extensions complete loading.
      */
@@ -582,6 +623,7 @@ define(function (require, exports, module) {
 
     /**
      * Loads a given extension at the path from virtual fs. Used by `debug menu> load project as extension`
+     *
      * @param directory
      * @return {!Promise}
      */
@@ -598,7 +640,7 @@ define(function (require, exports, module) {
     /**
      * Runs unit test for the extension that lives at baseUrl into its own Require.js context
      *
-     * @param {!string} directory, an absolute native path that contains a directory of extensions.
+     * @param {!string} directory an absolute native path that contains a directory of extensions.
      *                  each subdirectory is interpreted as an independent extension
      * @return {!$.Promise} A promise object that is resolved when all extensions complete loading.
      */
@@ -702,6 +744,12 @@ define(function (require, exports, module) {
     // eg: extensionPath = /tauri/home/home/.local/share/io.phcode.dev/assets/extensions/devTemp/theme/14/theme.css
     // eg: customExtensionLoadPath = /tauri/home/home/.local/share/io.phcode.dev/assets/extensions/devTemp/theme/14
     // eg: srcBasePath = /tauri/home/home/myExtension
+    /**
+     * To get the source path for extension
+     *
+     * @param extensionPath
+     * @returns {string}
+     */
     function getSourcePathForExtension(extensionPath) {
         const devTempExtDir = `${Phoenix.VFS.getDevTempExtensionDir()}/`;
         if(extensionPath.startsWith(devTempExtDir)) {
