@@ -68,9 +68,10 @@ Remove a key binding from _keymap
 
 <a name="getKeymap"></a>
 
-## getKeymap([defaults]) ⇒ <code>Object.&lt;string, {commandID: string, key: string, displayKey: string}&gt;</code>
+## getKeymap([defaults]) ⇒ <code>Object</code>
 Returns a copy of the current key map. If the optional 'defaults' parameter is true,
 then a copy of the default key map is returned.
+In the default keymap each key is associated with an object containing `commandID`, `key`, and `displayKey`.
 
 **Kind**: global function  
 
