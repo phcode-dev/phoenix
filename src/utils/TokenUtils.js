@@ -19,6 +19,8 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /**
  * Functions for iterating through tokens in the current editor buffer. Useful for doing
  * light parsing that can rely purely on information gathered by the code coloring mechanism.
@@ -40,8 +42,10 @@ define(function (require, exports, module) {
         }
     }
 
-    /*
+    /**
      * Caches the tokens for the given editor/line if needed
+     *
+     * @private
      * @param {!CodeMirror} cm
      * @param {!number} line
      * @return {Array.<Object>} (Cached) array of tokens
@@ -64,8 +68,9 @@ define(function (require, exports, module) {
         return cache.tokens;
     }
 
-    /*
+    /**
      * Like cm.getTokenAt, but with caching. Way more performant for long lines.
+     *
      * @param {!CodeMirror} cm
      * @param {!{ch:number, line:number}} pos
      * @param {boolean} precise If given, results in more current results. Suppresses caching.
@@ -82,7 +87,7 @@ define(function (require, exports, module) {
         return token || cm.getTokenAt(pos, precise); // fall back to CMs getTokenAt, for example in an empty line
     }
 
-   /**
+    /**
      * Creates a context object for the given editor and position, suitable for passing to the
      * move functions.
      * @param {!CodeMirror} cm
@@ -167,7 +172,7 @@ define(function (require, exports, module) {
         return (ctx.pos.ch >= eol || ctx.token.end >= eol) && (ctx.pos.line >= ctx.editor.lineCount() - 1);
     }
 
-   /**
+    /**
      * Moves the given context in the given direction, skipping any whitespace it hits.
      * @param {function} moveFxn the function to move the context
      * @param {!{editor:!CodeMirror, pos:!{ch:number, line:number}, token:Object}} ctx
@@ -203,7 +208,7 @@ define(function (require, exports, module) {
      * @param {!CodeMirror} cm CodeMirror instance
      * @param {!{line:number, ch:number}} pos Position to query for mode
      * @param {boolean} precise If given, results in more current results. Suppresses caching.
-     * @return {mode:{Object}, name:string}
+     * @return {{mode:{Object}, name:string}}
      */
     function getModeAt(cm, pos, precise) {
         precise = precise || true;
@@ -215,7 +220,7 @@ define(function (require, exports, module) {
         }
 
         name = (modeData.name === "xml") ?
-                modeData.configuration : modeData.name;
+            modeData.configuration : modeData.name;
 
         return {mode: modeData, name: name};
     }

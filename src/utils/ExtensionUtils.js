@@ -72,6 +72,8 @@ define(function (require, exports, module) {
     /**
      * getModuleUrl returns different urls for win platform
      * so that's why we need a different check here
+     *
+     * @private
      * @see #getModuleUrl
      * @param {!string} pathOrUrl that should be checked if it's absolute
      * @return {!boolean} returns true if pathOrUrl is absolute url on win platform
@@ -132,7 +134,7 @@ define(function (require, exports, module) {
      * @param {!module} module Module provided by RequireJS
      * @param {?string} path Relative path from the extension folder to a file
      * @return {!string} The path to the module's folder
-     **/
+     */
     function getModulePath(module, path) {
         var modulePath = module.uri.substr(0, module.uri.lastIndexOf("/") + 1);
         if (path) {
@@ -148,7 +150,7 @@ define(function (require, exports, module) {
      * @param {!module} module Module provided by RequireJS
      * @param {?string} path Relative path from the extension folder to a file
      * @return {!string} The URL to the module's folder
-     **/
+     */
     function getModuleUrl(module, path) {
         return encodeURI(getModulePath(module, path));
     }
@@ -161,7 +163,7 @@ define(function (require, exports, module) {
      * @param {!module} module Module provided by RequireJS
      * @param {!string} path Relative path from the extension folder to a file
      * @return {!$.Promise} A promise object that is resolved with the contents of the requested file
-     **/
+     */
     function loadFile(module, path) {
         var url     = PathUtils.isAbsoluteUrl(path) ? path : getModuleUrl(module, path);
         let result = new $.Deferred();
@@ -226,6 +228,7 @@ define(function (require, exports, module) {
      * Loads the package.json file in the given extension folder as well as any additional
      * metadata.
      *
+     * @private
      * @param {string} baseExtensionUrl The extension folder.
      * @param {?string} extensionName optional extension name
      * @return {$.Promise} A promise object that is resolved with the parsed contents of the package.json file,
@@ -241,18 +244,18 @@ define(function (require, exports, module) {
             .then(function (packageResult) {
                 json = packageResult;
             }).always(function () {
-                // if we don't have any metadata for the extension
-                // we should still create an empty one, so we can attach
-                // disabled property on it in case it's disabled
-                let disabled,
-                    defaultDisabled = JSON.parse(PhStore.getItem(Package.DEFAULT_DISABLED_EXTENSIONS_KEY) || "[]");
-                if (Array.isArray(defaultDisabled) && defaultDisabled.indexOf(baseExtensionUrl) !== -1) {
-                    console.warn("Extension has been disabled on startup: " + baseExtensionUrl);
-                    disabled = true;
-                }
-                json.disabled = disabled;
-                result.resolve(json);
-            });
+            // if we don't have any metadata for the extension
+            // we should still create an empty one, so we can attach
+            // disabled property on it in case it's disabled
+            let disabled,
+                defaultDisabled = JSON.parse(PhStore.getItem(Package.DEFAULT_DISABLED_EXTENSIONS_KEY) || "[]");
+            if (Array.isArray(defaultDisabled) && defaultDisabled.indexOf(baseExtensionUrl) !== -1) {
+                console.warn("Extension has been disabled on startup: " + baseExtensionUrl);
+                disabled = true;
+            }
+            json.disabled = disabled;
+            result.resolve(json);
+        });
 
         return result.promise();
     }
@@ -266,6 +269,7 @@ define(function (require, exports, module) {
      * disabled might be set.
      *
      * @param {string} metadataURL The extension folder/base url for default extensions.
+     * @param {string} extensionName name of the extension
      * @return {$.Promise} A promise object that is resolved with the parsed contents of the package.json file,
      *     or rejected if there is no package.json with the boolean indicating whether .disabled file exists.
      */

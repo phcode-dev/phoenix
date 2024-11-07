@@ -1,23 +1,23 @@
- /*
- * GNU AGPL-3.0 License
- *
- * Copyright (c) 2021 - present core.ai . All rights reserved.
- * Original work Copyright (c) 2013 - 2021 Adobe Systems Incorporated. All rights reserved.
- *
- * This program is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
- * for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see https://opensource.org/licenses/AGPL-3.0.
- *
- */
+/*
+* GNU AGPL-3.0 License
+*
+* Copyright (c) 2021 - present core.ai . All rights reserved.
+* Original work Copyright (c) 2013 - 2021 Adobe Systems Incorporated. All rights reserved.
+*
+* This program is free software: you can redistribute it and/or modify it
+* under the terms of the GNU Affero General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+* FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
+* for more details.
+*
+* You should have received a copy of the GNU Affero General Public License
+* along with this program. If not, see https://opensource.org/licenses/AGPL-3.0.
+*
+*/
 
 // @INCLUDE_IN_API_DOCS
 
@@ -63,8 +63,9 @@ define(function (require, exports, module) {
         this.scrolling = false;
 
         /**
-         * @private
          * The selected position in the list; otherwise -1.
+         *
+         * @private
          * @type {number}
          */
         this._selectedIndex = -1;
@@ -79,6 +80,7 @@ define(function (require, exports, module) {
         /**
          * Convert keydown events into hint list navigation actions.
          *
+         * @private
          * @param {KeyboardEvent} event
          * @return {boolean} true if key was handled, otherwise false.
          */
@@ -110,7 +112,7 @@ define(function (require, exports, module) {
                     self._tryToSelect(self.$items.length - 1, -1);
 
                 } else if (self._selectedIndex !== -1 &&
-                        (keyCode === KeyEvent.DOM_VK_RETURN)) {
+                    (keyCode === KeyEvent.DOM_VK_RETURN)) {
 
                     // Trigger a click handler to commmit the selected item
                     self._selectionHandler();
@@ -133,6 +135,8 @@ define(function (require, exports, module) {
 
         /**
          * PopUpManager callback
+         *
+         * @private
          */
         function closeCallback() {
             KeyBindingManager.removeGlobalKeydownHook(_keydownHook);
@@ -158,6 +162,8 @@ define(function (require, exports, module) {
 
     /**
      * Cleanup
+     *
+     * @private
      */
     DropdownEventHandler.prototype._cleanup = function () {
         if (this.$list) {
@@ -171,6 +177,8 @@ define(function (require, exports, module) {
     /**
      * Try to select item at the given index. If it's disabled or a divider, keep trying by incrementing
      * index by 'direction' each time (wrapping around if needed).
+     *
+     * @private
      * @param {number} index  If out of bounds, index either wraps around to remain in range (e.g. -1 yields
      *                      last item, length+1 yields 2nd item) or if noWrap set, clips instead (e.g. -1 yields
      *                      first item, length+1 yields last item).
@@ -207,6 +215,7 @@ define(function (require, exports, module) {
     };
 
     /**
+     * @private
      * @return {number} The number of items per scroll page.
      */
     DropdownEventHandler.prototype._itemsPerPage = function () {
@@ -227,6 +236,8 @@ define(function (require, exports, module) {
 
     /**
      * Call selectionCallback with selected index
+     *
+     * @private
      */
     DropdownEventHandler.prototype._selectionHandler = function () {
 
@@ -241,7 +252,8 @@ define(function (require, exports, module) {
     /**
      * Call selectionCallback with selected item
      *
-     * @param {jQueryObject} $item
+     * @private
+     * @param {jQueryObject} $link
      */
     DropdownEventHandler.prototype._clickHandler = function ($link) {
 
@@ -289,6 +301,8 @@ define(function (require, exports, module) {
 
     /**
      * Register mouse event handlers
+     *
+     * @private
      */
     DropdownEventHandler.prototype._registerMouseEvents = function () {
         var self = this;
@@ -321,6 +335,7 @@ define(function (require, exports, module) {
 
     /**
      * Re-register mouse event handlers
+     *
      * @param {!jQueryObject} $list  newly updated list object
      */
     DropdownEventHandler.prototype.reRegisterMouseHandlers = function ($list) {

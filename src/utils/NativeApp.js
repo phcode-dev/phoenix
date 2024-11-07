@@ -19,6 +19,8 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /**
  * Virtualized NativeApp apis that works cross-platform, and in the browser.
  */
@@ -30,8 +32,9 @@ define(function (require, exports, module) {
         FileSystemError = require("filesystem/FileSystemError");
 
     /**
-     * @private
      * Map an fs error code to a FileError.
+     *
+     * @private
      */
     function _browserErrToFileError(err) {
         if (err === brackets.fs.ERR_CODES.NOT_FOUND) {
@@ -46,6 +49,7 @@ define(function (require, exports, module) {
 
     /** openLiveBrowser
      * Open the given URL in the user's system browser, optionally enabling debugging.
+     *
      * @param {string} url The URL to open.
      * @param {boolean=} enableRemoteDebugging Whether to turn on remote debugging. Default false.
      * @return {$.Promise}
@@ -95,6 +99,7 @@ define(function (require, exports, module) {
 
     /** closeAllLiveBrowsers
      * Closes all the browsers that were tracked on open
+     *
      * TODO: does not seem to work on Windows
      * @return {$.Promise}
      */
@@ -106,6 +111,7 @@ define(function (require, exports, module) {
 
     /**
      * Opens a URL in the system default browser.
+     *
      * @param {string} url
      * @param {string?} tabIdentifier - An optional tab identifier can be set to group the tabs. Maps to target option
      *              in browser. Doesn't do anything in tauri.
@@ -114,6 +120,9 @@ define(function (require, exports, module) {
         return brackets.app.openURLInDefaultBrowser(url, tabIdentifier);
     }
 
+    /**
+     * Gets the path to the application's support directory
+     */
     function getApplicationSupportDirectory() {
         return brackets.app.getApplicationSupportDirectory();
     }

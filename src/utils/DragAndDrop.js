@@ -1,23 +1,23 @@
- /*
- * GNU AGPL-3.0 License
- *
- * Copyright (c) 2021 - present core.ai . All rights reserved.
- * Original work Copyright (c) 2013 - 2021 Adobe Systems Incorporated. All rights reserved.
- *
- * This program is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
- * for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see https://opensource.org/licenses/AGPL-3.0.
- *
- */
+/*
+* GNU AGPL-3.0 License
+*
+* Copyright (c) 2021 - present core.ai . All rights reserved.
+* Original work Copyright (c) 2013 - 2021 Adobe Systems Incorporated. All rights reserved.
+*
+* This program is free software: you can redistribute it and/or modify it
+* under the terms of the GNU Affero General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful, but WITHOUT
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+* FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
+* for more details.
+*
+* You should have received a copy of the GNU Affero General Public License
+* along with this program. If not, see https://opensource.org/licenses/AGPL-3.0.
+*
+*/
 
 // @INCLUDE_IN_API_DOCS
 
@@ -46,6 +46,7 @@ define(function (require, exports, module) {
 
     /**
      * Returns true if the drag and drop items contains valid drop objects.
+     *
      * @param {Array.<DataTransferItem>} items Array of items being dragged
      * @return {boolean} True if one or more items can be dropped.
      */
@@ -74,6 +75,8 @@ define(function (require, exports, module) {
      * Determines if the event contains a type list that has a URI-list.
      * If it does and contains an empty file list, then what is being dropped is a URL.
      * If that is true then we stop the event propagation and default behavior to save Brackets editor from the browser taking over.
+     *
+     * @private
      * @param {Array.<File>} files Array of File objects from the event datastructure. URLs are the only drop item that would contain a URI-list.
      * @param {event} event The event datastucture containing datatransfer information about the drag/drop event. Contains a type list which may or may not hold a URI-list depending on what was dragged/dropped. Interested if it does.
      */
@@ -97,7 +100,8 @@ define(function (require, exports, module) {
 
     /**
      * Open dropped files
-     * @param {Array.<string>} files Array of files dropped on the application.
+     *
+     * @param {Array.<string>} paths Array of file paths dropped on the application.
      * @return {Promise} Promise that is resolved if all files are opened, or rejected
      *     if there was an error.
      */

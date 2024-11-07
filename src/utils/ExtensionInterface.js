@@ -62,9 +62,20 @@
  */
 
 define(function (require, exports, module) {
+
+    /**
+     * Extension interface registered event
+     *
+     * @const
+     * @type {string}
+     */
     const EVENT_EXTENSION_INTERFACE_REGISTERED = "extensionInterfaceRegistered";
 
-    /* standard named interfaces registered by default extensions*/
+    /**
+     * standard named interfaces registered by default extensions
+     *
+     * @private
+     */
     const _DEFAULT_EXTENSIONS_INTERFACE_NAMES = {
         PHOENIX_LIVE_PREVIEW: "Extn.Phoenix.livePreview"
     };
@@ -90,6 +101,7 @@ define(function (require, exports, module) {
 
     /**
      * Returns true is an interface of the given name exists.
+     *
      * @param {string} extensionInterfaceName
      * @return {boolean}
      * @type {function}
