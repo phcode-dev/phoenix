@@ -980,10 +980,12 @@ define(function (require, exports, module) {
 
     /**
      * Add one or more key bindings to a particular Command.
+     * Returns record(s) for valid key binding(s).
      *
      * @param {!string | Command} command - A command ID or command object
-     * @param {?({key: string, displayKey: string}|Array.<{key: string, displayKey: string, platform: string}>)} keyBindings
-     *     A single key binding or an array of keybindings. Example:
+     * @param {{key: string, displayKey:string, platform: string}} keyBindings
+     *     A single key binding or an array of keybindings.
+     *     In an array of keybinding `platform` property is also available. Example:
      *     "Shift-Cmd-F". Mac and Win key equivalents are automatically
      *     mapped to each other. Use displayKey property to display a different
      *     string (e.g. "CMD+" instead of "CMD=").
@@ -993,8 +995,7 @@ define(function (require, exports, module) {
      *     NOTE: If platform is not specified, Ctrl will be replaced by Cmd for "mac" platform
      * @param {object?} options
      * @param {boolean?} options.isMenuShortcut this allows alt-key shortcuts to be registered.
-     * @return {{key: string, displayKey:String}|Array.<{key: string, displayKey:String}>}
-     *     Returns record(s) for valid key binding(s)
+     * @return {{key: string, displayKey:string}}
      */
     function addBinding(command, keyBindings, platform, options={}) {
         let commandID = "",
@@ -1045,7 +1046,7 @@ define(function (require, exports, module) {
      * Retrieve key bindings currently associated with a command
      *
      * @param {!string | Command} command - A command ID or command object
-     * @return {!Array.<{{key: string, displayKey: string}}>} An array of associated key bindings.
+     * @return {Array.<Object>} The object has two properties `key` and `displayKey`
      */
     function getKeyBindings(command) {
         let bindings    = [],

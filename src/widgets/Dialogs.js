@@ -552,7 +552,7 @@ define(function (require, exports, module) {
     });
 
     /**
-     * Ensures that all <a> tags with a URL have a tooltip showing the same URL
+     * Ensures that all anchor tags with a URL have a tooltip showing the same URL
      * @param {!jQueryObject|Dialog} elementOrDialog  Dialog intance, or root of other DOM tree to add tooltips to
      */
     function addLinkTooltips(elementOrDialog) {
