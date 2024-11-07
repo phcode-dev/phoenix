@@ -1683,7 +1683,7 @@ define(function (require, exports, module) {
      *
      * @param {string} packID - A unique ID for the pack. Use `extensionID.name` format to avoid collisions.
      * @param {string} packName - A name for the pack.
-     * @param {Object} keyMap - a keymap of the format {`Ctrl-Alt-L`: `file.liveFilePreview`} depending on the platform.
+     * @param {Object} keyMap - a keymap of the format `{'Ctrl-Alt-L': 'file.liveFilePreview'}` depending on the platform.
      * The extension should decide the correct keymap based on the platform before calling this function.
      */
     function registerCustomKeymapPack(packID, packName, keyMap) {

@@ -180,7 +180,7 @@ under use preset dropdown. For EG. distribute a `netbeans editor` shortcuts pack
 | --- | --- | --- |
 | packID | <code>string</code> | A unique ID for the pack. Use `extensionID.name` format to avoid collisions. |
 | packName | <code>string</code> | A name for the pack. |
-| keyMap | <code>Object</code> | a keymap of the format {`Ctrl-Alt-L`: `file.liveFilePreview`} depending on the platform. The extension should decide the correct keymap based on the platform before calling this function. |
+| keyMap | <code>Object</code> | a keymap of the format `{'Ctrl-Alt-L': 'file.liveFilePreview'}` depending on the platform. The extension should decide the correct keymap based on the platform before calling this function. |
 
 <a name="getAllCustomKeymapPacks"></a>
 
