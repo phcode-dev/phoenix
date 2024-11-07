@@ -200,7 +200,7 @@ Marks the file as being dirty.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| changeList | <code>Object</code> | {from: {line:number, ch: number}, to: {line:number, ch:number}} |
+| changeList | <code>Object</code> | An object representing the change range with `from` and `to` properties, each containing `line` and `ch` numbers. |
 
 <a name="handleEditorChange"></a>
 

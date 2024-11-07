@@ -72,7 +72,7 @@ The template can either be a string or a jQuery object representing a DOM node t
 
 <a name="showModalDialog"></a>
 
-## showModalDialog(dlgClass, [title], [message], [buttons], [autoDismiss]) ⇒ [<code>Dialog</code>](#new_Dialog_new)
+## showModalDialog(dlgClass, [title], [message], buttons, [autoDismiss]) ⇒ [<code>Dialog</code>](#new_Dialog_new)
 Creates a new general purpose modal dialog using the default template and the template variables given
 as parameters as described.
 
@@ -83,7 +83,7 @@ as parameters as described.
 | dlgClass | <code>string</code> | A class name identifier for the dialog. Typically one of DefaultDialogs.* |
 | [title] | <code>string</code> | The title of the dialog. Can contain HTML markup. Defaults to "". |
 | [message] | <code>string</code> | The message to display in the dialog. Can contain HTML markup. Defaults to "". |
-| [buttons] | <code>Array.&lt;{className: string, id: string, text: string, tooltip:string}&gt;</code> | An array of buttons where each button      has a class, id tooltip, and text property. The id is used in "data-button-id". Defaults to a single Ok button.      Typically className is one of DIALOG_BTN_CLASS_*, id is one of DIALOG_BTN_* |
+| buttons | <code>Array.&lt;Object&gt;</code> | An array of buttons where each button      has a class, id tooltip, and text property. The id is used in "data-button-id". Defaults to a single Ok button.      Typically className is one of DIALOG_BTN_CLASS_*, id is one of DIALOG_BTN_* |
 | [autoDismiss] | <code>boolean</code> | Whether to automatically dismiss the dialog when one of the buttons      is clicked. Default true. If false, you'll need to manually handle button clicks and the Esc      key, and dismiss the dialog yourself when ready by calling `close()` on the returned dialog. |
 
 <a name="showConfirmDialog"></a>
