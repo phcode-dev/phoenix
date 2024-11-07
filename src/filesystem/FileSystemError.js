@@ -24,7 +24,6 @@
 define(function (require, exports, module) {
 
     /**
-     * @module FileSystemError FileSystemError
      *
      *
      * FileSystemError describes the errors that can occur when using the FileSystem, File,
@@ -33,6 +32,7 @@ define(function (require, exports, module) {
      * Error values are strings. Any "falsy" value: null, undefined or "" means "no error".
      *
      * Enumerated File System Errors
+     *
      * ```js
      *         UNKNOWN: "Unknown",
      *         INVALID_PARAMS: "InvalidParams",
@@ -52,6 +52,8 @@ define(function (require, exports, module) {
      *         DECODE_FILE_FAILED: "DecodeFileFailed",
      *         UNSUPPORTED_UTF16_ENCODING: "UnsupportedUTF16Encoding"
      *  ```
+     *
+     * @module FileSystemError
      */
     module.exports = {
         UNKNOWN: "Unknown",
