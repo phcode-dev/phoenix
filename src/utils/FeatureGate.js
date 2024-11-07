@@ -60,9 +60,16 @@
  */
 
 define(function (require, exports, module) {
-    const FEATURE_REGISTERED = "featureGateRegistered",
-        ENABLED = 'enabled',
-        DISABLED = 'disabled';
+    /**
+     * Feature gate registered
+     *
+     * @const
+     * @type {string}
+     */
+    const FEATURE_REGISTERED = "featureGateRegistered";
+
+    const ENABLED = 'enabled';
+    const DISABLED = 'disabled';
 
     let EventDispatcher = require("utils/EventDispatcher");
 
@@ -89,6 +96,7 @@ define(function (require, exports, module) {
 
     /**
      * Returns an array of all named registered feature gates.
+     *
      * @return {string[]} list of registered features
      * @type {function}
      */
@@ -103,6 +111,7 @@ define(function (require, exports, module) {
      * if(FeatureGate.isFeatureEnabled(FEATURE_NEW_COLORS)){
      *    // do fancy colors here
      * }
+     *
      * @param {string} featureName
      * @return {boolean}
      * @type {function}

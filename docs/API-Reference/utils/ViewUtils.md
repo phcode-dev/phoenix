@@ -3,21 +3,6 @@
 const ViewUtils = brackets.getModule("utils/ViewUtils")
 ```
 
-<a name="_updateScrollerShadow"></a>
-
-## \_updateScrollerShadow($displayElement, $scrollElement, $shadowTop, $shadowBottom, isPositionFixed)
-Positions shadow background elements to indicate vertical scrolling.
-
-**Kind**: global function  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| $displayElement | <code>DOMElement</code> | the DOMElement that displays the shadow |
-| $scrollElement | <code>Object</code> | the object that is scrolled |
-| $shadowTop | <code>DOMElement</code> | div .scroller-shadow.top |
-| $shadowBottom | <code>DOMElement</code> | div .scroller-shadow.bottom |
-| isPositionFixed | <code>boolean</code> | When using absolute position, top remains at 0. |
-
 <a name="addScrollerShadow"></a>
 
 ## addScrollerShadow(displayElement, scrollElement, showBottom)
@@ -59,7 +44,13 @@ Utility function to replace jQuery.toggleClass when used with the second argumen
 <a name="sidebarList"></a>
 
 ## sidebarList(scrollElement, selectedClassName)
-Within a scrolling DOMElement, creates and positions a styled selectiondiv to align a single selected list item from a ul list element.Assumptions:- scrollerElement is a child of the #sidebar div- ul list element fires a "selectionChanged" event after the  selectedClassName is assigned to a new list item
+Within a scrolling DOMElement, creates and positions a styled selection
+div to align a single selected list item from a ul list element.
+
+Assumptions:
+- scrollerElement is a child of the #sidebar div
+- ul list element fires a "selectionChanged" event after the
+  selectedClassName is assigned to a new list item
 
 **Kind**: global function  
 
@@ -84,7 +75,17 @@ Determine how much of an element rect is clipped in view.
 <a name="scrollElementIntoView"></a>
 
 ## scrollElementIntoView($view, $element, scrollHorizontal)
-Within a scrolling DOMElement, if necessary, scroll element into viewport.To Perform the minimum amount of scrolling necessary, cases should be handled as follows:- element already completely in view : no scrolling- element above    viewport          : scroll view so element is at top- element left of  viewport          : scroll view so element is at left- element below    viewport          : scroll view so element is at bottom- element right of viewport          : scroll view so element is at rightAssumptions:- $view is a scrolling container
+Within a scrolling DOMElement, if necessary, scroll element into viewport.
+
+To Perform the minimum amount of scrolling necessary, cases should be handled as follows:
+- element already completely in view : no scrolling
+- element above    viewport          : scroll view so element is at top
+- element left of  viewport          : scroll view so element is at left
+- element below    viewport          : scroll view so element is at bottom
+- element right of viewport          : scroll view so element is at right
+
+Assumptions:
+- $view is a scrolling container
 
 **Kind**: global function  
 
@@ -109,7 +110,8 @@ HTML formats a file entry name  for display in the sidebar.
 <a name="getDirNamesForDuplicateFiles"></a>
 
 ## getDirNamesForDuplicateFiles(files) ⇒ <code>Array.&lt;string&gt;</code>
-Determine the minimum directory path to distinguish duplicate file namesfor each file in list.
+Determine the minimum directory path to distinguish duplicate file names
+for each file in list.
 
 **Kind**: global function  
 **Returns**: <code>Array.&lt;string&gt;</code> - directory paths to match list of files  
@@ -118,3 +120,15 @@ Determine the minimum directory path to distinguish duplicate file namesfor eac
 | --- | --- | --- |
 | files | <code>Array.&lt;File&gt;</code> | list of Files with the same filename |
 
+<a name="hideMainToolBar"></a>
+
+## hideMainToolBar()
+Hides the main toolbar
+
+**Kind**: global function  
+<a name="showMainToolBar"></a>
+
+## showMainToolBar()
+Shows the main toolbar
+
+**Kind**: global function  

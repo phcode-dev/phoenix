@@ -19,6 +19,12 @@
  *
  */
 
+/**
+ * This is deprecated; use browser APIs instead for working with URLs.
+ *
+ * @deprecated
+ */
+
 define(function (require, exports, module) {
 
 

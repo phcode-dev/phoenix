@@ -5,10 +5,76 @@ const Resizer = brackets.getModule("utils/Resizer")
 
 <a name="DIRECTION_VERTICAL"></a>
 
-## DIRECTION\_VERTICAL
-Resizer is a Module utility to inject resizing capabilities to any elementinside Brackets.On initialization, Resizer discovers all nodes tagged as "vert-resizable"and "horz-resizable" to add the resizer handler. Additionally, "top-resizer","bottom-resizer", "left-resizer" and "right-resizer" classes control theposition of the resizer on the element.An element can be made resizable at any time using the `makeResizable()` API.Panel sizes are saved via preferences and restored when the DOM node becomes resizableagain in a subsequent launch.The resizable elements trigger a panelResizeStart, panelResizeUpdate and panelResizeEndevent that can be used to create performance optimizations (such as hiding/showing elementswhile resizing), custom layout logic, etc. See makeResizable() for details on the events.A resizable element can be collapsed/expanded using the `show`, `hide` and `toggle` APIs orvia user action. This triggers panelCollapsed/panelExpanded events - see makeResizable().
+## DIRECTION\_VERTICAL : <code>string</code>
+Represents the vertical direction.
 
 **Kind**: global variable  
+<a name="DIRECTION_HORIZONTAL"></a>
+
+## DIRECTION\_HORIZONTAL : <code>string</code>
+Represents the horizontal direction.
+
+**Kind**: global variable  
+<a name="POSITION_TOP"></a>
+
+## POSITION\_TOP : <code>string</code>
+Indicates the top position.
+
+**Kind**: global variable  
+<a name="POSITION_BOTTOM"></a>
+
+## POSITION\_BOTTOM : <code>string</code>
+Indicates the bottom position.
+
+**Kind**: global variable  
+<a name="POSITION_LEFT"></a>
+
+## POSITION\_LEFT : <code>string</code>
+Indicates the left position.
+
+**Kind**: global variable  
+<a name="POSITION_RIGHT"></a>
+
+## POSITION\_RIGHT : <code>string</code>
+Indicates the right position.
+
+**Kind**: global variable  
+<a name="PREFS_PURE_CODE"></a>
+
+## PREFS\_PURE\_CODE : <code>string</code>
+Preference for a distraction-free mode.
+
+**Kind**: global variable  
+<a name="EVENT_PANEL_COLLAPSED"></a>
+
+## EVENT\_PANEL\_COLLAPSED : <code>string</code>
+Event triggered when a panel is collapsed.
+
+**Kind**: global constant  
+<a name="EVENT_PANEL_EXPANDED"></a>
+
+## EVENT\_PANEL\_EXPANDED : <code>string</code>
+Event triggered when a panel is expanded.
+
+**Kind**: global constant  
+<a name="EVENT_PANEL_RESIZE_START"></a>
+
+## EVENT\_PANEL\_RESIZE\_START : <code>string</code>
+Event triggered at the start of panel resizing.
+
+**Kind**: global constant  
+<a name="EVENT_PANEL_RESIZE_UPDATE"></a>
+
+## EVENT\_PANEL\_RESIZE\_UPDATE : <code>string</code>
+Event triggered during panel resizing updates.
+
+**Kind**: global constant  
+<a name="EVENT_PANEL_RESIZE_END"></a>
+
+## EVENT\_PANEL\_RESIZE\_END : <code>string</code>
+Event triggered at the end of panel resizing.
+
+**Kind**: global constant  
 <a name="show"></a>
 
 ## show(element)
@@ -34,7 +100,8 @@ Hides a resizable element.
 <a name="toggle"></a>
 
 ## toggle(element)
-Changes the visibility state of a resizable element. The togglefunctionality is added when an element is made resizable.
+Changes the visibility state of a resizable element. The toggle
+functionality is added when an element is made resizable.
 
 **Kind**: global function  
 
@@ -56,7 +123,8 @@ Removes the resizability of an element if it's resizable
 <a name="resyncSizer"></a>
 
 ## resyncSizer(element)
-Updates the sizing div by resyncing to the sizing edge of the elementCall this method after manually changing the size of the element
+Updates the sizing div by resyncing to the sizing edge of the element
+Call this method after manually changing the size of the element
 
 **Kind**: global function  
 
@@ -79,7 +147,25 @@ Returns the visibility state of a resizable element.
 <a name="makeResizable"></a>
 
 ## makeResizable(element, direction, position, minSize, collapsible, forceLeft, createdByWorkspaceManager, usePercentages, forceRight, _attachToParent, [initialSize])
-Adds resizing and (optionally) expand/collapse capabilities to a given html element. The element's size& visibility are automatically saved & restored as a view-state preference.Resizing can be configured in two directions: - Vertical ("vert"): Resizes the height of the element - Horizontal ("horz"): Resizes the width of the elementResizer handlers can be positioned on the element at: - Top ("top") or bottom ("bottom") for vertical resizing - Left ("left") or right ("right") for horizontal resizingA resizable element triggers the following events while resizing: - panelResizeStart: When the resize starts. Passed the new size. - panelResizeUpdate: When the resize gets updated. Passed the new size. - panelResizeEnd: When the resize ends. Passed the final size. - panelCollapsed: When the panel gets collapsed (or hidden). Passed the last size     before collapse. May occur without any resize events. - panelExpanded: When the panel gets expanded (or shown). Passed the initial size.     May occur without any resize events.
+Adds resizing and (optionally) expand/collapse capabilities to a given html element. The element's size
+& visibility are automatically saved & restored as a view-state preference.
+
+Resizing can be configured in two directions:
+ - Vertical ("vert"): Resizes the height of the element
+ - Horizontal ("horz"): Resizes the width of the element
+
+Resizer handlers can be positioned on the element at:
+ - Top ("top") or bottom ("bottom") for vertical resizing
+ - Left ("left") or right ("right") for horizontal resizing
+
+A resizable element triggers the following events while resizing:
+ - panelResizeStart: When the resize starts. Passed the new size.
+ - panelResizeUpdate: When the resize gets updated. Passed the new size.
+ - panelResizeEnd: When the resize ends. Passed the final size.
+ - panelCollapsed: When the panel gets collapsed (or hidden). Passed the last size
+     before collapse. May occur without any resize events.
+ - panelExpanded: When the panel gets expanded (or shown). Passed the initial size.
+     May occur without any resize events.
 
 **Kind**: global function  
 

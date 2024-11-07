@@ -36,6 +36,8 @@ define(function (require, exports, module) {
 
     /**
      * Flag to enable/disable performance data gathering. Default is true (enabled)
+     *
+     * @private
      * @type {boolean} enabled
      */
     var enabled = brackets && !!brackets.app.getTimeSinceStartup;
@@ -45,12 +47,16 @@ define(function (require, exports, module) {
      * test (passed to markStart/addMeasurement), and the value is the time, in
      * milliseconds, that it took to run the test. If multiple runs of the same test
      * are made, the value is an Array with each run stored as an entry in the Array.
+     *
+     * @private
      */
     var perfData = {};
 
     /**
      * Active tests. This is a hash of all tests that have had markStart() called,
      * but have not yet had addMeasurement() called.
+     *
+     * @private
      */
     var activeTests = {};
 
@@ -58,20 +64,23 @@ define(function (require, exports, module) {
      * Updatable tests. This is a hash of all tests that have had markStart() called,
      * and have had updateMeasurement() called. Caller must explicitly remove tests
      * from this list using finalizeMeasurement()
+     *
+     * @private
      */
     var updatableTests = {};
 
     /**
-     * @private
      * Keeps the track of measurements sequence number for re-entrant sequences with
      * the same name currently running. Entries are created and deleted as needed.
+     *
+     * @private
      */
     var _reentTests = {};
 
     /**
-     * @private
      * A unique key to log performance data
      *
+     * @private
      * @param {(string|undefined)} id Unique ID for this measurement name
      * @param {!string} name A short name for this measurement
      * @param {?number} reent Sequence identifier for parallel tests of the same name
@@ -89,6 +98,8 @@ define(function (require, exports, module) {
     /**
      * Override toString() to allow using PerfMeasurement as an array key without
      * explicit conversion.
+     *
+     * @private
      */
     PerfMeasurement.prototype.toString = function () {
         return this.name;
@@ -109,8 +120,9 @@ define(function (require, exports, module) {
     }
 
     /**
-     * @private
      * Generates PerfMeasurements based on the name or array of names.
+     *
+     * @private
      */
     function _generatePerfMeasurements(name) {
         // always convert it to array so that the rest of the routines could rely on it
@@ -131,9 +143,9 @@ define(function (require, exports, module) {
     }
 
     /**
-     * @private
      * Helper function for markStart()
      *
+     * @private
      * @param {Object} id  Timer id.
      * @param {number} time  Timer start time.
      */
@@ -305,6 +317,8 @@ define(function (require, exports, module) {
     /**
      * return single value, or comma separated values for an array or return aggregated values with
      * "min value, average, max value, standard deviation"
+     *
+     * @private
      * @param   {Array}    entry          An array or a single value
      * @param   {Boolean} aggregateStats If set, the returned value will be aggregated in the form -
      *                                   "min(avg)max[standard deviation]"
@@ -340,6 +354,7 @@ define(function (require, exports, module) {
 
     /**
      * Returns the performance data as a tab delimited string
+     *
      * @return {string}
      */
     function getDelimitedPerfData() {
@@ -353,7 +368,8 @@ define(function (require, exports, module) {
 
     /**
      * Returns the measured value for the given measurement name.
-     * @param {Object} id The measurement to retreive.
+     *
+     * @param {Object} id The measurement to retrieve.
      */
     function getData(id) {
         if (!id) {
@@ -365,6 +381,7 @@ define(function (require, exports, module) {
 
     /**
      * Returns the Performance metrics to be logged for health report
+     *
      * @return {Object} An object with the health data logs to be sent
      */
     function getHealthReport() {
@@ -388,6 +405,11 @@ define(function (require, exports, module) {
         return healthReport;
     }
 
+    /**
+     * To search data given the regular expression
+     * @param {RegExp} regExp the regular expression
+     * @returns {Array}
+     */
     function searchData(regExp) {
         var keys = Object.keys(perfData).filter(function (key) {
             return regExp.test(key);

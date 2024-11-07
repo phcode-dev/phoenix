@@ -308,7 +308,10 @@ define(function (require, exports, module) {
         return masterDeferred.promise();
     }
 
-    /** Value passed to fail() handlers that have been triggered due to withTimeout()'s timeout */
+    /**
+     * Value passed to fail() handlers that have been triggered due to withTimeout()'s timeout
+     * @type {Object}
+     */
     var ERROR_TIMEOUT = {};
 
     /**
@@ -435,7 +438,7 @@ define(function (require, exports, module) {
                 try {
                     var responseOrPromise = nextFunction.apply(null, args);
                     if (responseOrPromise.hasOwnProperty("done") &&
-                            responseOrPromise.hasOwnProperty("fail")) {
+                        responseOrPromise.hasOwnProperty("fail")) {
                         responseOrPromise.done(function () {
                             chainHelper(index, arguments);
                         });
@@ -509,6 +512,7 @@ define(function (require, exports, module) {
      * queue at any time. If the queue is empty and nothing is currently executing when an operation is added,
      * it will execute immediately. Otherwise, it will execute when the last operation currently in the queue
      * has finished.
+     *
      * @constructor
      */
     function PromiseQueue() {
@@ -547,6 +551,7 @@ define(function (require, exports, module) {
      * finished. The operation must return a promise that will be resolved or rejected when it's finished;
      * the queue will continue with the next operation regardless of whether the current operation's promise
      * is resolved or rejected.
+     *
      * @param {function(): $.Promise} op The operation to add to the queue.
      */
     PromiseQueue.prototype.add = function (op) {
@@ -568,8 +573,9 @@ define(function (require, exports, module) {
     };
 
     /**
-     * @private
      * Pulls the next operation off the queue and executes it.
+     *
+     * @private
      */
     PromiseQueue.prototype._doNext = function () {
         var self = this;

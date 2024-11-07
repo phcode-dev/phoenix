@@ -31,6 +31,7 @@ define(function (require, exports, module) {
     /**
      * Sorted array of all the color names in the CSS Color Module Level 3 (http://www.w3.org/TR/css3-color/)
      * and "rebeccapurple" from CSS Color Module Level 4
+     *
      * @const @type {Array}
      */
     const COLOR_NAMES = ["aliceblue", "antiquewhite", "aqua", "aquamarine", "azure", "beige", "bisque", "black",
@@ -60,13 +61,15 @@ define(function (require, exports, module) {
      * rgb()/rgba() function format, hsl()/hsla() function format, 0x notation format
      * or color name format according to CSS Color Module Level 3 (http://www.w3.org/TR/css3-color/)
      * or "rebeccapurple" from CSS Color Module Level 4.
+     *
      * @const @type {RegExp}
      */
-    // use RegExp.source of the RegExp literal to avoid doubled backslashes
+        // use RegExp.source of the RegExp literal to avoid doubled backslashes
     var COLOR_REGEX = new RegExp(/0x([a-f0-9]{6})\b|0x([a-f0-9]{8})\b|#[a-f0-9]{6}\b|#[a-f0-9]{8}\b|#[a-f0-9]{3}\b|#[a-f0-9]{4}\b|\brgb\(\s*(?:[0-9]{1,2}|1[0-9]{2}|2[0-4][0-9]|25[0-5])\b\s*,\s*(?:[0-9]{1,2}|1[0-9]{2}|2[0-4][0-9]|25[0-5])\b\s*,\s*(?:[0-9]{1,2}|1[0-9]{2}|2[0-4][0-9]|25[0-5])\b\s*\)|\brgb\(\s*(?:[0-9]{1,2}%|100%)\s*,\s*(?:[0-9]{1,2}%|100%)\s*,\s*(?:[0-9]{1,2}%|100%)\s*\)|\brgba\(\s*(?:[0-9]{1,2}|1[0-9]{2}|2[0-4][0-9]|25[0-5])\b\s*,\s*(?:[0-9]{1,2}|1[0-9]{2}|2[0-4][0-9]|25[0-5])\b\s*,\s*(?:[0-9]{1,2}|1[0-9]{2}|2[0-4][0-9]|25[0-5])\b\s*,\s*(?:1|1\.0|0|0?\.[0-9]{1,3})\s*\)|\brgba\(\s*(?:[0-9]{1,2}%|100%)\s*,\s*(?:[0-9]{1,2}%|100%)\s*,\s*(?:[0-9]{1,2}%|100%)\s*,\s*(?:1|1\.0|0|0?\.[0-9]{1,3})\s*\)|\bhsl\(\s*(?:[0-9]{1,3})\b\s*,\s*(?:[0-9]{1,2}|100)\b%\s*,\s*(?:[0-9]{1,2}|100)\b%\s*\)|\bhsla\(\s*(?:[0-9]{1,3})\b\s*,\s*(?:[0-9]{1,2}|100)\b%\s*,\s*(?:[0-9]{1,2}|100)\b%\s*,\s*(?:1|1\.0|0|0?\.[0-9]{1,3})\s*\)|\b/.source + COLOR_NAMES.join("\\b|\\b") + "\\b", "gi");
 
-    /*
+    /**
      * Adds a color swatch to code hints where this is supported.
+     *
      * @param {!jQuery} $hintObj - list item where the swatch will be in
      * @param {?string} color - color the swatch should have, or null to add extra left margin to
      *      align with the other hints

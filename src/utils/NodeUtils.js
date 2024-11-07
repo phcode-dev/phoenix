@@ -19,6 +19,8 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 /**
  * Generic node util APIs connector. see `src-node/utils.js` for node peer
  */
@@ -34,6 +36,14 @@ define(function (require, exports, module) {
         utilsConnector = NodeConnector.createNodeConnector(UTILS_NODE_CONNECTOR, exports);
     }
 
+    /**
+     * Fetches text content from a URL
+     * This is only available in the native app
+     *
+     * @param {string} url
+     * @param {string} encoding
+     * @return {Promise<string>}
+     */
     async function fetchURLText(url, encoding) {
         if(!Phoenix.isNativeApp) {
             throw new Error("node not available in browser");
@@ -44,6 +54,8 @@ define(function (require, exports, module) {
 
     /**
      * updates the localized strings in brackets `Strings` to node.
+     *
+     * @private
      * @return {Promise<boolean>} Promise resolves to true if strings was updated in node, else false(in browser.)
      */
     async function _updateNodeLocaleStrings() {
@@ -55,6 +67,12 @@ define(function (require, exports, module) {
         return true;
     }
 
+    /**
+     * Gets the version of the Phoenix binary
+     * This is only available in the native app
+     *
+     * @return {Promise<string>}
+     */
     async function getPhoenixBinaryVersion() {
         if(!Phoenix.isNativeApp) {
             throw new Error("getPhoenixBinaryVersion not available in browser");
@@ -64,6 +82,12 @@ define(function (require, exports, module) {
         return utilsConnector.execPeer("getPhoenixBinaryVersion", phoenixBinPath);
     }
 
+    /**
+     * Retrieves the Linux OS flavor name
+     * This is only available in the native app on Linux
+     *
+     * @return {Promise<string|null>}
+     */
     async function getLinuxOSFlavorName() {
         if(Phoenix.platform !== "linux" || !Phoenix.isNativeApp) {
             return null;
@@ -71,6 +95,13 @@ define(function (require, exports, module) {
         return utilsConnector.execPeer("getLinuxOSFlavorName");
     }
 
+    /**
+     * Opens a URL in the default browser.
+     * This is only available in the native app.
+     *
+     * @param {string} url
+     * @param {string} browserName
+     */
     async function openUrlInBrowser(url, browserName) {
         if(!Phoenix.isNativeApp) {
             throw new Error("openUrlInBrowser not available in browser");
@@ -95,6 +126,13 @@ define(function (require, exports, module) {
         return utilsConnector.execPeer("_npmInstallInFolder", {moduleNativeDir});
     }
 
+    /**
+     * Gets an environment variable's value
+     * This is only available in the native app
+     *
+     * @param {string} varName
+     * @return {Promise<string>}
+     */
     async function getEnvironmentVariable(varName) {
         if(!Phoenix.isNativeApp) {
             throw new Error("getEnvironmentVariable not available in browser");
@@ -102,6 +140,14 @@ define(function (require, exports, module) {
         return utilsConnector.execPeer("getEnvironmentVariable", varName);
     }
 
+    /**
+     * Runs ESLint on a file
+     * This is only available in the native app
+     *
+     * @param {string} text
+     * @param {string} fullFilePath
+     * @param {string} projectFullPath
+     */
     async function ESLintFile(text, fullFilePath, projectFullPath) {
         if(!Phoenix.isNativeApp) {
             throw new Error("ESLintFile not available in browser");
@@ -149,6 +195,12 @@ define(function (require, exports, module) {
     exports.openUrlInBrowser = openUrlInBrowser;
     exports.ESLintFile = ESLintFile;
     exports.getEnvironmentVariable = getEnvironmentVariable;
+
+    /**
+     * checks if Node connector is ready
+     *
+     * @return {boolean} returns true if it's ready, otherwise false
+     */
     exports.isNodeReady = NodeConnector.isNodeReady;
 
     window.NodeUtils = exports;
