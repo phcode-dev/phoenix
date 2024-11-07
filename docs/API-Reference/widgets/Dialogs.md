@@ -144,7 +144,7 @@ be called with the special buttonId DIALOG_CANCELED (note: callback is run async
 <a name="addLinkTooltips"></a>
 
 ## addLinkTooltips(elementOrDialog)
-Ensures that all <a> tags with a URL have a tooltip showing the same URL
+Ensures that all anchor tags with a URL have a tooltip showing the same URL
 
 **Kind**: global function  
 
