@@ -889,9 +889,10 @@ define(function (require, exports, module) {
     /**
      * Returns a copy of the current key map. If the optional 'defaults' parameter is true,
      * then a copy of the default key map is returned.
+     * In the default keymap each key is associated with an object containing `commandID`, `key`, and `displayKey`.
      *
      * @param {boolean=} defaults true if the caller wants a copy of the default key map. Otherwise, the current active key map is returned.
-     * @return {!Object.<string, {commandID: string, key: string, displayKey: string}>}
+     * @return {Object}
      */
     function getKeymap(defaults) {
         return $.extend({}, defaults ? _defaultKeyMap : _keyMap);
@@ -1239,7 +1240,7 @@ define(function (require, exports, module) {
             document.body.classList.add('hide-cursor');
         }
     }
-    
+
     /**
      * Handles a given keydown event, checking global hooks first before
      * deciding to handle it ourselves.

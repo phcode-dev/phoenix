@@ -1511,8 +1511,7 @@ define(function (require, exports, module) {
     /**
      * Called each time the file associated with the active editor changes.
      * Marks the file as being dirty.
-     *
-     * @param {{line:number, ch: number}} changeList {from: {line:number, ch: number}, to: {line:number, ch:number}}
+    * @param {{line:number, ch: number}} changeList - An object representing the change range with `from` and `to` properties, each containing `line` and `ch` numbers.
      */
     function handleFileChange(changeList) {
         isDocumentDirty = true;
