@@ -19,13 +19,12 @@
  *
  */
 
-/**
- * The FileSystemStats represents a particular FileSystemEntry's stats.
- */
+// @INCLUDE_IN_API_DOCS
+
 define(function (require, exports, module) {
 
-
     /**
+     * The FileSystemStats represents a particular FileSystemEntry's stats.
      * @constructor
      * @param {{isFile: boolean, mtime: Date, size: Number, realPath: ?string, hash: object}} options
      */
@@ -54,22 +53,52 @@ define(function (require, exports, module) {
 
     // Add "isFile", "isDirectory", "mtime" and "size" getters
     Object.defineProperties(FileSystemStats.prototype, {
+        /**
+         * Whether or not this is a stats object for a file
+         *
+         * @type {boolean}
+         */
         "isFile": {
             get: function () { return this._isFile; },
             set: function () { throw new Error("Cannot set isFile"); }
         },
+
+        /**
+         * Whether or not this is a stats object for a directory
+         *
+         * @type {boolean}
+         */
         "isDirectory": {
             get: function () { return this._isDirectory; },
             set: function () { throw new Error("Cannot set isDirectory"); }
         },
+
+        /**
+         * Modification time for a file
+         *
+         * @type {Date}
+         */
         "mtime": {
             get: function () { return this._mtime; },
             set: function () { throw new Error("Cannot set mtime"); }
         },
+
+        /**
+         * Size in bytes of a file
+         *
+         * @type {Number}
+         */
         "size": {
             get: function () { return this._size; },
             set: function () { throw new Error("Cannot set size"); }
         },
+
+        /**
+         * The canonical path of this file or directory ONLY if it is a symbolic link,
+         * and null otherwise.
+         *
+         * @type {?string}
+         */
         "realPath": {
             get: function () { return this._realPath; },
             set: function () { throw new Error("Cannot set realPath"); }
@@ -78,30 +107,40 @@ define(function (require, exports, module) {
 
     /**
      * Whether or not this is a stats object for a file
+     *
+     * @private
      * @type {boolean}
      */
     FileSystemStats.prototype._isFile = false;
 
     /**
      * Whether or not this is a stats object for a directory
+     *
+     * @private
      * @type {boolean}
      */
     FileSystemStats.prototype._isDirectory = false;
 
     /**
      * Modification time for a file
+     *
+     * @private
      * @type {Date}
      */
     FileSystemStats.prototype._mtime = null;
 
     /**
      * Size in bytes of a file
+     *
+     * @private
      * @type {Number}
      */
     FileSystemStats.prototype._size = null;
 
     /**
      * Consistency hash for a file
+     *
+     * @private
      * @type {object}
      */
     FileSystemStats.prototype._hash = null;
@@ -110,6 +149,7 @@ define(function (require, exports, module) {
      * The canonical path of this file or directory ONLY if it is a symbolic link,
      * and null otherwise.
      *
+     * @private
      * @type {?string}
      */
     FileSystemStats.prototype._realPath = null;

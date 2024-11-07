@@ -19,10 +19,12 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 define(function (require, exports, module) {
 
 
-    /*
+    /**
      * Represents file or directory structure watched by the FileSystem. If the
      * entry is a directory, all children (that pass the supplied filter function)
      * are also watched. A WatchedRoot object begins and ends its life in the
@@ -44,8 +46,28 @@ define(function (require, exports, module) {
     }
 
     // Status constants
+    /**
+     * WatchedRoot inactive
+     *
+     * @const
+     * @type {number}
+     */
     WatchedRoot.INACTIVE = 0;
+
+    /**
+     * WatchedRoot starting
+     *
+     * @const
+     * @type {number}
+     */
     WatchedRoot.STARTING = 1;
+
+    /**
+     * WatchedRoot active
+     *
+     * @const
+     * @type {number}
+     */
     WatchedRoot.ACTIVE = 2;
 
     /**
