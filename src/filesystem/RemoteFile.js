@@ -19,6 +19,8 @@
  *
  */
 
+// @INCLUDE_IN_API_DOCS
+
 define(function (require, exports, module) {
 
 
@@ -31,7 +33,8 @@ define(function (require, exports, module) {
     /**
      * Create a new file stat. See the FileSystemStats class for more details.
      *
-     * @param {!string} fullPath The full path for this File.
+     * @private
+     * @param {!string} uri The full path for this File.
      * @return {FileSystemStats} stats.
      */
     function _getStats(uri) {
@@ -137,6 +140,7 @@ define(function (require, exports, module) {
 
     /**
      * Cached contents of this file. This value is nullable but should NOT be undefined.
+     *
      * @private
      * @type {?string}
      */
@@ -159,6 +163,7 @@ define(function (require, exports, module) {
     /**
      * Clear any cached data for this file. Note that this explicitly does NOT
      * clear the file's hash.
+     *
      * @private
      */
     RemoteFile.prototype._clearCachedData = function () {
@@ -254,18 +259,39 @@ define(function (require, exports, module) {
         callback(FileSystemError.NOT_FOUND);
     };
 
+    /**
+     * Check if the remote file exists or not
+     *
+     * @param {function (err?, ?string, string=, FileSystemStats=)} callback
+     */
     RemoteFile.prototype.exists = function (callback) {
         callback(null, true);
     };
 
+    /**
+     * Unlink the remote file
+     *
+     * @param {function (err?, ?string, string=, FileSystemStats=)} callback
+     */
     RemoteFile.prototype.unlink = function (callback) {
         callback(FileSystemError.NOT_FOUND);
     };
 
+
+    /**
+     * Rename the remote file
+     *
+     * @param {function (err?, ?string, string=, FileSystemStats=)} callback
+     */
     RemoteFile.prototype.rename = function (newName, callback) {
         callback(FileSystemError.NOT_FOUND);
     };
 
+    /**
+     * Move the remote file to trash
+     *
+     * @param {function (err?, ?string, string=, FileSystemStats=)} callback
+     */
     RemoteFile.prototype.moveToTrash = function (callback) {
         callback(FileSystemError.NOT_FOUND);
     };

@@ -22,6 +22,9 @@
  */
 
 /* eslint-disable indent */
+
+// @INCLUDE_IN_API_DOCS
+
 define(function (require, exports, module) {
 
 
@@ -29,6 +32,7 @@ define(function (require, exports, module) {
 
     /**
      * Comparator to sort providers from high to low priority
+     * @private
      */
     function _providerSort(a, b) {
         return b.priority - a.priority;
@@ -108,6 +112,13 @@ define(function (require, exports, module) {
     };
 
 
+    /**
+     * Gets the list of providers for a specific language ID, including global providers.
+     * Filters out providers that are disabled in the preferences.
+     *
+     * @param {string} languageId language ID for which to get the providers
+     * @return {Array.<Object>} sorted list of active providers for given language
+     */
     RegistrationHandler.prototype.getProvidersForLanguageId = function (languageId) {
         var providers = (this._providers[languageId] || []).concat(this._providers.all || [])
             .sort(_providerSort);
