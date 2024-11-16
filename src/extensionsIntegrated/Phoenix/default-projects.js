@@ -58,6 +58,7 @@ define(function (require, exports, module) {
      * https://github.com/orgs/phcode-dev/discussions/1930
      * Strange_insults.html uses some words inappropriate for a school setting. so we delete the file as well
      * as it was installed wrongly previously.
+     * This code can be removed after June 2025 to give 6 months for users to update.
      */
     async function removeOffendingFile() {
         let offendingFilePath = ProjectManager.getExploreProjectPath() + "/strange_insults.html";
