@@ -23,6 +23,7 @@
 define(function (require, exports, module) {
     const ProjectManager          = require("project/ProjectManager"),
         Strings     = require("strings"),
+        FileSystem = require("filesystem/FileSystem"),
         ZipUtils = require("utils/ZipUtils");
 
     async function setupStartupProject(forceCreate) {
@@ -52,6 +53,20 @@ define(function (require, exports, module) {
             });
         });
     }
+
+    /**
+     * https://github.com/orgs/phcode-dev/discussions/1930
+     * Strange_insults.html uses some words inappropriate for a school setting. so we delete the file as well
+     * as it was installed wrongly previously.
+     */
+    async function removeOffendingFile() {
+        let offendingFilePath = ProjectManager.getExploreProjectPath() + "/strange_insults.html";
+        let exists = await Phoenix.VFS.existsAsync(offendingFilePath);
+        if(exists){
+            FileSystem.getFileForPath(offendingFilePath).unlink();
+        }
+    }
+
     async function setupExploreProject() {
         let exploreProjectPath = ProjectManager.getExploreProjectPath();
         let exists = await Phoenix.VFS.existsAsync(exploreProjectPath);
@@ -75,5 +90,6 @@ define(function (require, exports, module) {
             // clicks to open explore project.
             setupExploreProject();
         }
+        removeOffendingFile();
     };
 });
