@@ -176,9 +176,9 @@ define(function (require, exports, module) {
             });
 
             it("should registry update cache registry locally", async function () {
-                localStorage.removeItem(ExtensionManager.EXTENSION_REGISTRY_LOCAL_STORAGE_KEY);
+                await ExtensionManager._removeCachedRegistry();
                 await awaitsForDone(ExtensionManager.downloadRegistry(true), "fetching registry");
-                expect(localStorage.getItem(ExtensionManager.EXTENSION_REGISTRY_LOCAL_STORAGE_KEY)).not.toBeNull();
+                expect(await ExtensionManager._getCachedRegistry()).not.toBeNull();
             });
 
             it("should fail if it can't access the registry", async function () {
@@ -419,7 +419,7 @@ define(function (require, exports, module) {
                 var model;
 
                 beforeEach(async function () {
-                    localStorage.removeItem(ExtensionManager.EXTENSION_REGISTRY_LOCAL_STORAGE_KEY);
+                    await ExtensionManager._removeCachedRegistry();
                     mockRegistry = JSON.parse(mockRegistryForSearch);
                     model = new ExtensionManagerViewModel.RegistryViewModel();
                     await awaitsForDone(model.initialize(), "model initialization");
@@ -515,7 +515,7 @@ define(function (require, exports, module) {
                 var model;
 
                 beforeEach(async function () {
-                    localStorage.removeItem(ExtensionManager.EXTENSION_REGISTRY_LOCAL_STORAGE_KEY);
+                    await ExtensionManager._removeCachedRegistry();
                     mockRegistry = JSON.parse(mockRegistryThemesText);
                     model = new ExtensionManagerViewModel.ThemesViewModel();
                     await awaitsForDone(model.initialize(), "model initialization");
