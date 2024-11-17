@@ -61,8 +61,10 @@ define(function (require, exports, module) {
     // next update. This migration code can be removed after July 2025(6 Months).
     localStorage.removeItem(EXTENSION_REGISTRY_LOCAL_STORAGE_KEY);
 
+    const REGISTRY_CACHE_FILE = Phoenix.isTestWindow ?
+        "test_registry_cache.json" : "registry_cache.json";
     const REGISTRY_CACHE_PATH = path.normalize(
-        Phoenix.app.getExtensionsDirectory() + "/" + "registry_cache.json");
+        Phoenix.app.getExtensionsDirectory() + "/" + REGISTRY_CACHE_FILE);
     function _getCachedRegistry() {
         // never rejects
         return new Promise((resolve) => {
@@ -87,6 +89,11 @@ define(function (require, exports, module) {
                     resolve();
                 });
         });
+    }
+
+    function _removeCachedRegistry() {
+        const registryFile = FileSystem.getFileForPath(REGISTRY_CACHE_PATH);
+        return registryFile.unlinkAsync();
     }
 
     // semver.browser is an AMD-compatible module
@@ -964,6 +971,8 @@ define(function (require, exports, module) {
     exports._reset                  = _reset;
     exports._setExtensions          = _setExtensions;
     if(Phoenix.isTestWindow){
-        exports.EXTENSION_REGISTRY_LOCAL_STORAGE_KEY = EXTENSION_REGISTRY_LOCAL_STORAGE_KEY;
+        exports._getCachedRegistry = _getCachedRegistry;
+        exports._putCachedRegistry = _putCachedRegistry;
+        exports._removeCachedRegistry = _removeCachedRegistry;
     }
 });
