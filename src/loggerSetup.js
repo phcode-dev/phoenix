@@ -72,8 +72,8 @@
         },
         /**
          * By default all uncaught exceptions and promise rejections are sent to logger utility. But in some cases
-         * you may want to sent handled errors too if it is critical. use this function to report those
-         * @param {Error} error
+         * you may want to log error without having an error object with you.
+         *
          * @param {string} [message] optional message
          */
         reportErrorMessage: function (message) {

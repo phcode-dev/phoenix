@@ -20,7 +20,7 @@
  */
 
 /*jslint regexp: true */
-/*global Phoenix*/
+/*global path, logger*/
 /*unittests: ExtensionManager*/
 
 /**
@@ -44,6 +44,7 @@ define(function (require, exports, module) {
         ExtensionLoader     = require("utils/ExtensionLoader"),
         ExtensionUtils      = require("utils/ExtensionUtils"),
         FileSystem          = require("filesystem/FileSystem"),
+        FileUtils           = require("file/FileUtils"),
         PreferencesManager  = require("preferences/PreferencesManager"),
         Strings             = require("strings"),
         StringUtils         = require("utils/StringUtils"),
@@ -54,6 +55,40 @@ define(function (require, exports, module) {
             "test_extension_registry" : "extension_registry",
         EXTENSION_REGISTRY_LOCAL_STORAGE_VERSION_KEY = Phoenix.isTestWindow ?
             "test_extension_registry_version" : "extension_registry_version";
+
+    // earlier, we used to cache the full uncompressed registry in ls which has a usual size limit of 5mb, and the
+    // registry takes a few MB. So we moved this storage and this will clear local storage on any existing installs on
+    // next update. This migration code can be removed after July 2025(6 Months).
+    localStorage.removeItem(EXTENSION_REGISTRY_LOCAL_STORAGE_KEY);
+
+    const REGISTRY_CACHE_PATH = path.normalize(
+        Phoenix.app.getExtensionsDirectory() + "/" + "registry_cache.json");
+    function _getCachedRegistry() {
+        // never rejects
+        return new Promise((resolve) => {
+            const registryFile = FileSystem.getFileForPath(REGISTRY_CACHE_PATH);
+            FileUtils.readAsText(registryFile)
+                .done(resolve)
+                .fail(function (err) {
+                    console.error(`Registry cache not found ${REGISTRY_CACHE_PATH}`, err);
+                    resolve(null);
+                });
+        });
+    }
+
+    function _putCachedRegistry(registryFileText) {
+        // never rejects
+        return new Promise((resolve) => {
+            const registryFile = FileSystem.getFileForPath(REGISTRY_CACHE_PATH);
+            FileUtils.writeText(registryFile, registryFileText)
+                .done(resolve)
+                .fail(function (err) {
+                    logger.reportError(err, `Registry cache write error ${REGISTRY_CACHE_PATH}`);
+                    resolve();
+                });
+        });
+    }
+
     // semver.browser is an AMD-compatible module
     var semver = require("thirdparty/semver.browser");
 
@@ -223,29 +258,33 @@ define(function (require, exports, module) {
                     if(registryVersion.version !== parseInt(currentRegistryVersion)){
                         resolve(registryVersion.version);
                     } else {
-                        const registryJson = localStorage.getItem(EXTENSION_REGISTRY_LOCAL_STORAGE_KEY);
-                        if(!registryJson) {
-                            resolve(registryVersion.version);
-                            // if we dont have anything, best to atlest try to fetch the registry now.
-                            return;
-                        }
-                        reject();
+                        _getCachedRegistry() // never rejects
+                            .then(registryJson => {
+                                if(!registryJson) {
+                                    resolve(registryVersion.version);
+                                    // if we dont have anything, best to atlest try to fetch the registry now.
+                                    return;
+                                }
+                                reject();
+                            });
                     }
                 })
                 .fail(function (err) {
                     console.error("error Fetching Extension Registry version", err);
-                    const registryJson = localStorage.getItem(EXTENSION_REGISTRY_LOCAL_STORAGE_KEY);
-                    if(!registryJson) {
-                        resolve(1); // if we dont have anything, best to atlest try to fetch the registry now.
-                        return;
-                    }
-                    reject();
+                    _getCachedRegistry() // never rejects
+                        .then(registryJson => {
+                            if(!registryJson) {
+                                resolve(1); // if we dont have anything, best to atlest try to fetch the registry now.
+                                return;
+                            }
+                            reject();
+                        });
                 });
         });
     }
 
-    function _patchDownloadCounts() {
-        let registryJson = localStorage.getItem(EXTENSION_REGISTRY_LOCAL_STORAGE_KEY);
+    async function _patchDownloadCounts() {
+        let registryJson = await _getCachedRegistry();
         if(!registryJson){
             return;
         }
@@ -253,8 +292,8 @@ define(function (require, exports, module) {
             url: brackets.config.extension_registry_popularity,
             dataType: "json",
             cache: false
-        }).done(function (popularity) {
-            registryJson = localStorage.getItem(EXTENSION_REGISTRY_LOCAL_STORAGE_KEY);
+        }).done(async function (popularity) {
+            registryJson = await _getCachedRegistry();
             let registry = JSON.parse(registryJson);
             for(let key of Object.keys(popularity)){
                 if(registry[key]) {
@@ -264,7 +303,7 @@ define(function (require, exports, module) {
                         || null;
                 }
             }
-            localStorage.setItem(EXTENSION_REGISTRY_LOCAL_STORAGE_KEY, JSON.stringify(registry));
+            _putCachedRegistry(JSON.stringify(registry));
         });
     }
 
@@ -308,6 +347,7 @@ define(function (require, exports, module) {
         pendingDownloadRegistry = new $.Deferred();
 
         function _updateRegistry(newVersion) {
+            console.log("downloading extension registry: ", newVersion, brackets.config.extension_registry);
             $.ajax({
                 url: brackets.config.extension_registry,
                 dataType: "json",
@@ -316,20 +356,20 @@ define(function (require, exports, module) {
                 .done(function (registry) {
                     registry = _filterIncompatibleEntries(registry);
                     localStorage.setItem(EXTENSION_REGISTRY_LOCAL_STORAGE_VERSION_KEY, newVersion);
-                    localStorage.setItem(EXTENSION_REGISTRY_LOCAL_STORAGE_KEY, JSON.stringify(registry));
-                    if(!pendingDownloadRegistry.alreadyResolvedFromCache){
-                        _populateExtensions(registry);
-                        pendingDownloadRegistry.resolve();
-                    }
+                    _putCachedRegistry(JSON.stringify(registry)).then(()=>{
+                        if(!pendingDownloadRegistry.alreadyResolvedFromCache){
+                            _populateExtensions(registry);
+                            pendingDownloadRegistry.resolve();
+                        }
+                    }).finally(()=>{
+                        pendingDownloadRegistry = null;
+                    });
                 })
                 .fail(function (err) {
                     console.error("error Fetching Extension Registry", err);
                     if(!pendingDownloadRegistry.alreadyResolvedFromCache){
                         pendingDownloadRegistry.reject();
                     }
-                })
-                .always(function () {
-                    // Make sure to clean up the pending registry so that new requests can be made.
                     pendingDownloadRegistry = null;
                 });
         }
@@ -339,26 +379,28 @@ define(function (require, exports, module) {
             return pendingDownloadRegistry.promise();
         }
 
-        const registryJson = localStorage.getItem(EXTENSION_REGISTRY_LOCAL_STORAGE_KEY);
-        if(registryJson) {
-            // we always immediately but after the promise chain is setup after function return (some bug sigh)
-            // resolve for ui responsiveness and then check for updates.
-            setTimeout(()=>{
-                Metrics.countEvent(Metrics.EVENT_TYPE.EXTENSIONS, "registry", "cachedUse");
-                let registry = JSON.parse(registryJson);
-                registry = _filterIncompatibleEntries(registry);
-                _populateExtensions(registry);
-                pendingDownloadRegistry.resolve();
-            }, 0);
-            pendingDownloadRegistry.alreadyResolvedFromCache = true;
-        }
-        // check for latest updates even if we have cache
-        _shouldUpdateExtensionRegistry()
-            .then(_updateRegistry)
-            .catch(()=>{
-                pendingDownloadRegistry = null;
+        _getCachedRegistry() // never rejects
+            .then(registryJson => {
+                if(registryJson) {
+                    // we always immediately but after the promise chain is setup after function return (some bug sigh)
+                    // resolve for ui responsiveness and then check for updates.
+                    setTimeout(()=>{
+                        Metrics.countEvent(Metrics.EVENT_TYPE.EXTENSIONS, "registry", "cachedUse");
+                        let registry = JSON.parse(registryJson);
+                        registry = _filterIncompatibleEntries(registry);
+                        _populateExtensions(registry);
+                        pendingDownloadRegistry.resolve();
+                    }, 0);
+                    pendingDownloadRegistry.alreadyResolvedFromCache = true;
+                }
+                // check for latest updates even if we have cache
+                _shouldUpdateExtensionRegistry()
+                    .then(_updateRegistry)
+                    .catch(()=>{
+                        console.log("Registry update skipped");
+                    });
+                _patchDownloadCounts();
             });
-        _patchDownloadCounts();
 
         return pendingDownloadRegistry.promise();
     }
