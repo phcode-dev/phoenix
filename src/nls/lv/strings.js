@@ -337,6 +337,8 @@ define({
   "STATUSBAR_TASKS_PAUSE": "Pauze",
   "STATUSBAR_TASKS_STOP": "Stop",
   "STATUSBAR_TASKS_RESTART": "Restartēt",
+  "STATUSBAR_SHOW_PANELS": "Rādīt paneļus",
+  "STATUSBAR_SHOW_GIT": "Git panelis",
   "ERRORS_NO_FILE": "Nav atvērts fails",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} problēmas — {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} problēmas, {1} labojamas — {2}",

@@ -337,6 +337,8 @@ define({
   "STATUSBAR_TASKS_PAUSE": "Pauză",
   "STATUSBAR_TASKS_STOP": "Stop",
   "STATUSBAR_TASKS_RESTART": "Repornire",
+  "STATUSBAR_SHOW_PANELS": "Afișați panouri",
+  "STATUSBAR_SHOW_GIT": "Panoul Git",
   "ERRORS_NO_FILE": "Niciun fișier deschis",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Probleme - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} Probleme, {1} Remediabil - {2}",

@@ -337,6 +337,8 @@ define({
   "STATUSBAR_TASKS_PAUSE": "Berhenti sebentar",
   "STATUSBAR_TASKS_STOP": "Berhenti",
   "STATUSBAR_TASKS_RESTART": "Mengulang kembali",
+  "STATUSBAR_SHOW_PANELS": "Tampilkan Panel",
+  "STATUSBAR_SHOW_GIT": "Panel Git",
   "ERRORS_NO_FILE": "Tidak Ada File yang Terbuka",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Masalah - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} Masalah, {1} Dapat Diperbaiki - {2}",

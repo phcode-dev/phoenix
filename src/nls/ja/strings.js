@@ -337,6 +337,8 @@ define({
   "STATUSBAR_TASKS_PAUSE": "一時停止",
   "STATUSBAR_TASKS_STOP": "停止",
   "STATUSBAR_TASKS_RESTART": "再起動",
+  "STATUSBAR_SHOW_PANELS": "パネルを表示",
+  "STATUSBAR_SHOW_GIT": "Git パネル",
   "ERRORS_NO_FILE": "ファイルが開いていません",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} の問題 - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} の問題、{1} は修正可能 - {2}",
