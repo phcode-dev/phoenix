@@ -698,6 +698,7 @@
     https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script#attr-defer
     -->
     <!-- Import the phoenix browser virtual file system -->
+    <script src="thirdparty/highlight.js/highlight.min.js"></script>
     <script src="phoenix/shell.js" type="module" defer></script>
     <script src="phoenix/virtual-server-loader.js" type="module" defer></script>
 <!--    node loader should come only after fs libs are loaded as we init fs libs with node fs urls-->
@@ -707,6 +708,7 @@
 
     <!-- CSS/LESS -->
 
+    <link rel="stylesheet" type="text/css" href="thirdparty/highlight.js/styles/github.min.css">
     <link rel="stylesheet" type="text/css" href="thirdparty/fontawesome/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="thirdparty/devicon/devicon.min.css">
     <link rel="stylesheet" type="text/css" href="thirdparty/file-icons/ffont.css">
@@ -854,6 +856,17 @@
         <!-- View Panes are programatically created here -->
         </div>
         <div id="status-bar" class="statusbar no-focus">
+            <div id="status-phoenix">
+                <div id="status-menu" class="forced-hidden">
+                    <i class="fa-solid fa-chevron-up"></i>
+                </div>
+                <div class="status-tab forced-hidden">
+                    <i class="fa-solid fa-terminal"></i>
+                </div>
+                <div class="status-tab forced-hidden git-status-icon">
+                    <i class="fa-solid fa-code-branch"></i>
+                </div>
+            </div>
             <div id="status-indicators" class="indicators">
                 <div id="status-indent">
                     <div id="indent-type"></div>

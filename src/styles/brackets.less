@@ -304,6 +304,7 @@ a, img {
 #status-info {
     color: @bc-text;
     white-space: nowrap;
+    cursor: pointer;
 
     .dark & {
         color: @dark-bc-text;
@@ -326,7 +327,7 @@ a, img {
     display: none !important;
 }
 
-#status-indicators{
+#status-indicators, #status-phoenix{
     background: @bc-bg-status-bar;
     color: @bc-text;
     position: absolute;
@@ -394,6 +395,33 @@ a, img {
         }
     }
 
+}
+
+#status-phoenix {
+    right: unset;
+    left: 0;
+    > div {
+        border-left: unset;
+        border-right: 1px solid @bc-panel-border;
+
+        .dark & {
+            border-left: unset;
+            border-right: 1px solid @dark-bc-panel-separator;
+        }
+        float: left;
+        padding: unset;
+        width: 35px;
+        text-align: center;
+    }
+}
+
+
+#status-menu:hover, .status-tab:hover{
+    background-color: @bc-status-btn-hover;
+    .dark & {
+        background-color: @dark-bc-status-btn-hover;
+    }
+    cursor: pointer;
 }
 
 #status-indent > * {
