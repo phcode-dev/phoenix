@@ -339,6 +339,17 @@ define(function (require, exports, module) {
         return filteredRegistry;
     }
 
+    function _getTaskManager() {
+        if(Phoenix.isTestWindow){
+            return {
+                close: ()=>{}
+            };
+        }
+        return TaskManager.addNewTask(Strings.EXTENSIONS_REGISTRY_TASK_TITLE,
+            Strings.EXTENSIONS_REGISTRY_TASK_MESSAGE,
+            `<i class="fa-solid fa-list"></i>`);
+    }
+
     /**
      * Downloads the registry of Brackets extensions and stores the information in our
      * extension info.
@@ -356,9 +367,7 @@ define(function (require, exports, module) {
 
         function _updateRegistry(newVersion) {
             console.log("downloading extension registry: ", newVersion, brackets.config.extension_registry);
-            const downloadTask = TaskManager.addNewTask(Strings.EXTENSIONS_REGISTRY_TASK_TITLE,
-                Strings.EXTENSIONS_REGISTRY_TASK_MESSAGE,
-                `<i class="fa-solid fa-list"></i>`);
+            const downloadTask = _getTaskManager();
             $.ajax({
                 url: brackets.config.extension_registry,
                 dataType: "json",
