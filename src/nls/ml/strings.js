@@ -690,6 +690,8 @@ define({
   "EXTENSIONS_UPDATES_TITLE": "അപ്ഡേറ്റുകൾ",
   "EXTENSIONS_LAST_UPDATED": "അവസാനമായി പുതുക്കിയത്",
   "EXTENSIONS_DOWNLOADS": "ഡൗൺലോഡുകൾ",
+  "EXTENSIONS_REGISTRY_TASK_TITLE": "വിപുലീകരണ ലിസ്റ്റ് അപ്ഡേറ്റ് ചെയ്യുന്നു",
+  "EXTENSIONS_REGISTRY_TASK_MESSAGE": "ഡൗൺലോഡ് ചെയ്യുന്നു...",
   "INLINE_EDITOR_NO_MATCHES": "പൊരുത്തങ്ങളൊന്നും ലഭ്യമല്ല.",
   "INLINE_EDITOR_HIDDEN_MATCHES": "എല്ലാ മത്സരങ്ങളും തകർന്നു. പൊരുത്തങ്ങൾ കാണുന്നതിന് വലതുവശത്ത് ലിസ്റ്റുചെയ്തിരിക്കുന്ന ഫയലുകൾ വികസിപ്പിക്കുക.",
   "CSS_QUICK_EDIT_NO_MATCHES": "നിങ്ങളുടെ തിരഞ്ഞെടുപ്പുമായി പൊരുത്തപ്പെടുന്ന CSS നിയമങ്ങളൊന്നും നിലവിലില്ല.<br> ഒരെണ്ണം സൃഷ്ടിക്കാൻ &quot;പുതിയ നിയമം&quot; ക്ലിക്ക് ചെയ്യുക.",

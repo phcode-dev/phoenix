@@ -690,6 +690,8 @@ define({
   "EXTENSIONS_UPDATES_TITLE": "التحديثات",
   "EXTENSIONS_LAST_UPDATED": "آخر تحديث",
   "EXTENSIONS_DOWNLOADS": "التحميلات",
+  "EXTENSIONS_REGISTRY_TASK_TITLE": "تحديث قائمة الامتدادات",
+  "EXTENSIONS_REGISTRY_TASK_MESSAGE": "جاري التحميل…",
   "INLINE_EDITOR_NO_MATCHES": "لا توجد مباريات متاحة.",
   "INLINE_EDITOR_HIDDEN_MATCHES": "تم تصغير جميع المباريات. قم بتوسيع الملفات المدرجة على اليمين لعرض التطابقات.",
   "CSS_QUICK_EDIT_NO_MATCHES": "لا توجد قواعد CSS حالية تطابق اختيارك.<br> انقر على &quot;قاعدة جديدة&quot; لإنشاء واحدة.",

@@ -690,6 +690,8 @@ define({
   "EXTENSIONS_UPDATES_TITLE": "بروزرسانی ها",
   "EXTENSIONS_LAST_UPDATED": "اخرین به روز رسانی",
   "EXTENSIONS_DOWNLOADS": "دانلودها",
+  "EXTENSIONS_REGISTRY_TASK_TITLE": "در حال به روز رسانی لیست برنامه های افزودنی",
+  "EXTENSIONS_REGISTRY_TASK_MESSAGE": "در حال دانلود…",
   "INLINE_EDITOR_NO_MATCHES": "هیچ مورد سازگاری در دسترس نیست.",
   "INLINE_EDITOR_HIDDEN_MATCHES": "تمام سازگاری ها فرو ریخته هستند. گسترش فایل های ذکر شده در سمت راست جهت نمایش سازگاری.",
   "CSS_QUICK_EDIT_NO_MATCHES": "هیچ قائده منطبقی برای CSSها نسبت به موردی که انتخاب کرده اید وجود ندارد.<br> از گزینه \"قائده جدید\" برای تعریف یک قائده جدید استفاده کنید.",

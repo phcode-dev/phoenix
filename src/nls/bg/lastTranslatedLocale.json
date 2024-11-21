@@ -670,6 +670,8 @@
   "EXTENSIONS_UPDATES_TITLE": "Обновления",
   "EXTENSIONS_LAST_UPDATED": "Последна актуализация",
   "EXTENSIONS_DOWNLOADS": "Изтегляния",
+  "EXTENSIONS_REGISTRY_TASK_TITLE": "Списъкът с разширения се актуализира",
+  "EXTENSIONS_REGISTRY_TASK_MESSAGE": "Изтегля се...",
   "INLINE_EDITOR_NO_MATCHES": "Няма съвпадения.",
   "INLINE_EDITOR_HIDDEN_MATCHES": "Всички съвпадения бяха свити. Разширете файловете, изредени вдясно, за да видите съвпаденията.",
   "CSS_QUICK_EDIT_NO_MATCHES": "Няма съществуващи правила за CSS, които да отговарят на избора Ви.<br> Натиснете „Ново правило“, за да създадете такова.",

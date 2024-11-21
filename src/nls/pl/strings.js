@@ -690,6 +690,8 @@ define({
   "EXTENSIONS_UPDATES_TITLE": "Aktualizacje",
   "EXTENSIONS_LAST_UPDATED": "Ostatnia aktualizacja",
   "EXTENSIONS_DOWNLOADS": "Ilość pobrań",
+  "EXTENSIONS_REGISTRY_TASK_TITLE": "Aktualizowanie listy rozszerzeń",
+  "EXTENSIONS_REGISTRY_TASK_MESSAGE": "Ściąganie…",
   "INLINE_EDITOR_NO_MATCHES": "Brak wyników.",
   "INLINE_EDITOR_HIDDEN_MATCHES": "Wszystkie wyniki zostały zwinięte. Rozwiń listę plików po prawej, by pokazać wyniki.",
   "CSS_QUICK_EDIT_NO_MATCHES": "Brak reguł.<br> Kliknij \"Nowa reguła\", aby ją utworzyć.",

@@ -690,6 +690,8 @@ define({
   "EXTENSIONS_UPDATES_TITLE": "Frissítések",
   "EXTENSIONS_LAST_UPDATED": "Utolsó frissítés",
   "EXTENSIONS_DOWNLOADS": "Letöltések",
+  "EXTENSIONS_REGISTRY_TASK_TITLE": "A bővítmények listájának frissítése",
+  "EXTENSIONS_REGISTRY_TASK_MESSAGE": "Letöltés…",
   "INLINE_EDITOR_NO_MATCHES": "Nincs találat.",
   "INLINE_EDITOR_HIDDEN_MATCHES": "Minden meccs összeomlott. Bontsa ki a jobb oldalon felsorolt fájlokat az egyezések megtekintéséhez.",
   "CSS_QUICK_EDIT_NO_MATCHES": "Nincsenek a kiválasztottnak megfelelő CSS-szabályok.<br> Kattintson az &quot;Új szabály&quot; gombra, hogy létrehozzon egyet.",

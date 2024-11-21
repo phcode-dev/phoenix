@@ -690,6 +690,8 @@ define({
   "EXTENSIONS_UPDATES_TITLE": "Aktualizace",
   "EXTENSIONS_LAST_UPDATED": "Naposledy aktualizováno",
   "EXTENSIONS_DOWNLOADS": "Stahování",
+  "EXTENSIONS_REGISTRY_TASK_TITLE": "Aktualizace seznamu rozšíření",
+  "EXTENSIONS_REGISTRY_TASK_MESSAGE": "Stahování…",
   "INLINE_EDITOR_NO_MATCHES": "Žádné dostupné shody.",
   "INLINE_EDITOR_HIDDEN_MATCHES": "Všechny shody jsou sbalené. Pro prohlédnutí shod rozbalte soubory zobrazené vpravo.",
   "CSS_QUICK_EDIT_NO_MATCHES": "Neexistují žádné CSS předpisy odpovídající vašemu výběru.<br>Pro vytvoření předpisu klikněte na \"Nový předpis\".",

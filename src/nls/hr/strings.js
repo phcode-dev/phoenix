@@ -690,6 +690,8 @@ define({
   "EXTENSIONS_UPDATES_TITLE": "Obnovljene verzije",
   "EXTENSIONS_LAST_UPDATED": "Zadnje ažurirano",
   "EXTENSIONS_DOWNLOADS": "Preuzimanja",
+  "EXTENSIONS_REGISTRY_TASK_TITLE": "Ažuriranje popisa proširenja",
+  "EXTENSIONS_REGISTRY_TASK_MESSAGE": "Preuzimanje...",
   "INLINE_EDITOR_NO_MATCHES": "Poklapanja nisu nađena.",
   "INLINE_EDITOR_HIDDEN_MATCHES": "Sve šibice su srušene. Proširite datoteke navedene desno da biste vidjeli podudaranja.",
   "CSS_QUICK_EDIT_NO_MATCHES": "Nema postojećih CSS pravila koji odgovaraju vašem odabiru.<br> Kliknite \"New Rule\" da biste ih stvorili.",

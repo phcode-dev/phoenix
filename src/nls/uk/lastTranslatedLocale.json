@@ -670,6 +670,8 @@
   "EXTENSIONS_UPDATES_TITLE": "Оновлення",
   "EXTENSIONS_LAST_UPDATED": "Останнє оновлення",
   "EXTENSIONS_DOWNLOADS": "Завантаження",
+  "EXTENSIONS_REGISTRY_TASK_TITLE": "Оновлення списку розширень",
+  "EXTENSIONS_REGISTRY_TASK_MESSAGE": "Завантаження…",
   "INLINE_EDITOR_NO_MATCHES": "Нічого не знайдено.",
   "INLINE_EDITOR_HIDDEN_MATCHES": "Всі збіги згорнуто. Розгортайте файли наведені справа, аби переглянути збіги.",
   "CSS_QUICK_EDIT_NO_MATCHES": "Жодне правило CSS, що відповідає виділенню.<br> Натисніть 'Нове правило' для створення. ",

@@ -670,6 +670,8 @@
   "EXTENSIONS_UPDATES_TITLE": "업데이트",
   "EXTENSIONS_LAST_UPDATED": "마지막 업데이트",
   "EXTENSIONS_DOWNLOADS": "다운로드",
+  "EXTENSIONS_REGISTRY_TASK_TITLE": "확장 목록 업데이트",
+  "EXTENSIONS_REGISTRY_TASK_MESSAGE": "다운로드 중…",
   "INLINE_EDITOR_NO_MATCHES": "일치하는 항목이 없습니다.",
   "INLINE_EDITOR_HIDDEN_MATCHES": "All matches are collapsed. Expand the files listed at right to view matches.",
   "CSS_QUICK_EDIT_NO_MATCHES": "선택 일치하는 기존 CSS 규칙이 없습니다. <br> 「새 규칙」을 클릭하여 규칙을 작성하세요.",

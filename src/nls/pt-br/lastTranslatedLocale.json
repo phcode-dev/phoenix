@@ -670,6 +670,8 @@
   "EXTENSIONS_UPDATES_TITLE": "Atualizações",
   "EXTENSIONS_LAST_UPDATED": "Ultima atualização",
   "EXTENSIONS_DOWNLOADS": "Transferências",
+  "EXTENSIONS_REGISTRY_TASK_TITLE": "Atualizando a lista de extensões",
+  "EXTENSIONS_REGISTRY_TASK_MESSAGE": "Baixando…",
   "INLINE_EDITOR_NO_MATCHES": "Nenhum resultado.",
   "INLINE_EDITOR_HIDDEN_MATCHES": "Todas as correspondências foram ocultadas. Expanda os arquivos listados na direita para ver os resultados.",
   "CSS_QUICK_EDIT_NO_MATCHES": "Nenhuma regra CSS corresponde à sua seleção.<br> Clique em \"Nova regra\" para criar uma.",

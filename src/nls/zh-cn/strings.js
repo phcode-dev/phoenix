@@ -690,6 +690,8 @@ define({
   "EXTENSIONS_UPDATES_TITLE": "升级",
   "EXTENSIONS_LAST_UPDATED": "最近更新时间",
   "EXTENSIONS_DOWNLOADS": "下载",
+  "EXTENSIONS_REGISTRY_TASK_TITLE": "更新扩展列表",
+  "EXTENSIONS_REGISTRY_TASK_MESSAGE": "正在下载…",
   "INLINE_EDITOR_NO_MATCHES": "未找到匹配项。",
   "INLINE_EDITOR_HIDDEN_MATCHES": "所有匹配项已折叠。展开右侧列出的文件以查看匹配项。",
   "CSS_QUICK_EDIT_NO_MATCHES": "符合选择的 CSS 规则不存在。<br> 点击 \"新 CSS 规则\" 来创建。",

@@ -690,6 +690,8 @@ define({
   "EXTENSIONS_UPDATES_TITLE": "Αναβαθμίσεις",
   "EXTENSIONS_LAST_UPDATED": "Τελευταία ενημέρωση",
   "EXTENSIONS_DOWNLOADS": "Λήψεις",
+  "EXTENSIONS_REGISTRY_TASK_TITLE": "Ενημέρωση λίστας επεκτάσεων",
+  "EXTENSIONS_REGISTRY_TASK_MESSAGE": "Λήψη…",
   "INLINE_EDITOR_NO_MATCHES": "Δεν υπάρχουν διαθέσιμες αντιστοιχίες.",
   "INLINE_EDITOR_HIDDEN_MATCHES": "Όλοι οι αγώνες έχουν καταρρεύσει. Αναπτύξτε τα αρχεία που αναφέρονται στα δεξιά για να δείτε τις αντιστοιχίσεις.",
   "CSS_QUICK_EDIT_NO_MATCHES": "Δεν υπάρχουν κανόνες CSS που να ταιριάζουν με την επιλογή σας.<br> Κάντε κλικ στο \"Νέος Κανόνας\" για να δημιουργήσετε ένα νέο.",

@@ -690,6 +690,8 @@ define({
   "EXTENSIONS_UPDATES_TITLE": "Atualizações",
   "EXTENSIONS_LAST_UPDATED": "Ultima atualização",
   "EXTENSIONS_DOWNLOADS": "Transferências",
+  "EXTENSIONS_REGISTRY_TASK_TITLE": "Atualizando a lista de extensões",
+  "EXTENSIONS_REGISTRY_TASK_MESSAGE": "Baixando…",
   "INLINE_EDITOR_NO_MATCHES": "Não há correspondências disponíveis.",
   "INLINE_EDITOR_HIDDEN_MATCHES": "Todas as correspondências são recolhidas. Expanda os arquivos listados à direita para ver as correspondências.",
   "CSS_QUICK_EDIT_NO_MATCHES": "Não há regras CSS existentes que correspondam à sua seleção.<br> Clique em &quot;Nova regra&quot; para criar uma.",

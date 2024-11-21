@@ -670,6 +670,8 @@
   "EXTENSIONS_UPDATES_TITLE": "Atjauninājumi",
   "EXTENSIONS_LAST_UPDATED": "Pēdējoreiz atjaunots",
   "EXTENSIONS_DOWNLOADS": "Lejupielādes",
+  "EXTENSIONS_REGISTRY_TASK_TITLE": "Notiek paplašinājumu saraksta atjaunināšana",
+  "EXTENSIONS_REGISTRY_TASK_MESSAGE": "Notiek lejupielāde…",
   "INLINE_EDITOR_NO_MATCHES": "Nav sakritību.",
   "INLINE_EDITOR_HIDDEN_MATCHES": "Visas sakritības ir sakļautas. Izvērsiet labajā pusē uzskaitītās datnes, lai apskatītu sakritības.",
   "CSS_QUICK_EDIT_NO_MATCHES": "Neeksistē tādas CSS kārtulas, kas atbilstu izvēlētajam.<br> Nospiediet \"Jauna kārtula\", lai to izveidotu.",
