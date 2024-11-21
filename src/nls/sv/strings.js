@@ -690,6 +690,8 @@ define({
   "EXTENSIONS_UPDATES_TITLE": "Uppdateringar",
   "EXTENSIONS_LAST_UPDATED": "Senast uppdaterad",
   "EXTENSIONS_DOWNLOADS": "Nedladdningar",
+  "EXTENSIONS_REGISTRY_TASK_TITLE": "Uppdaterar tilläggslistan",
+  "EXTENSIONS_REGISTRY_TASK_MESSAGE": "Laddar ned...",
   "INLINE_EDITOR_NO_MATCHES": "Inga träffar tillgängliga.",
   "INLINE_EDITOR_HIDDEN_MATCHES": "Alla träffar är minimerade. Expandera filerna listade till höger för att visa träffar.",
   "CSS_QUICK_EDIT_NO_MATCHES": "Det finns inga CSS-regler som matchar din markering.<br> Klicka på \"Ny regel\" för att skapa en.",

@@ -670,6 +670,8 @@
   "EXTENSIONS_UPDATES_TITLE": "Pembaruan",
   "EXTENSIONS_LAST_UPDATED": "Terakhir Diperbarui",
   "EXTENSIONS_DOWNLOADS": "Unduhan",
+  "EXTENSIONS_REGISTRY_TASK_TITLE": "Memperbarui Daftar Ekstensi",
+  "EXTENSIONS_REGISTRY_TASK_MESSAGE": "Sedang mengunduh…",
   "INLINE_EDITOR_NO_MATCHES": "Tidak ada hasil.",
   "INLINE_EDITOR_HIDDEN_MATCHES": "Semua hasil disembunyikan. Perbesar file yang ditampilkan di sebelah kanan untuk menampilkannya.",
   "CSS_QUICK_EDIT_NO_MATCHES": "Tidak ada aturan CSS yang cocok dengan kriteria Anda.<br> Klik \"Aturan Baru\" untuk membuat baru.",

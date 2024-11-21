@@ -690,6 +690,8 @@ define({
   "EXTENSIONS_UPDATES_TITLE": "Ажурирања",
   "EXTENSIONS_LAST_UPDATED": "Последње измене",
   "EXTENSIONS_DOWNLOADS": "Преузимања",
+  "EXTENSIONS_REGISTRY_TASK_TITLE": "Ажурирање листе екстензија",
+  "EXTENSIONS_REGISTRY_TASK_MESSAGE": "Преузимање…",
   "INLINE_EDITOR_NO_MATCHES": "Нема поклапања.",
   "INLINE_EDITOR_HIDDEN_MATCHES": "Сва поклапања су скривена. Раширите датотеке излистане на десној страни како бисте видели поклапања.",
   "CSS_QUICK_EDIT_NO_MATCHES": "Не постоје CSS правила која се поклапају са Вашом селекцијом.<br> Кликните \"Ново правило\" како бисте креирали ново.",

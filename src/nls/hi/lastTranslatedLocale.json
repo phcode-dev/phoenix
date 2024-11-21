@@ -670,6 +670,8 @@
   "EXTENSIONS_UPDATES_TITLE": "अपडेट",
   "EXTENSIONS_LAST_UPDATED": "आखरी अपडेट",
   "EXTENSIONS_DOWNLOADS": "डाउनलोड",
+  "EXTENSIONS_REGISTRY_TASK_TITLE": "एक्सटेंशन सूची अपडेट करना",
+  "EXTENSIONS_REGISTRY_TASK_MESSAGE": "डाउनलोड हो रहा है…",
   "INLINE_EDITOR_NO_MATCHES": "कोई मैच उपलब्ध नहीं है।",
   "INLINE_EDITOR_HIDDEN_MATCHES": "सभी मैच ध्वस्त हो गए हैं। मैच देखने के लिए दाईं ओर सूचीबद्ध फाइलों का विस्तार करें।",
   "CSS_QUICK_EDIT_NO_MATCHES": "आपके चयन से मेल खाने वाला कोई मौजूदा CSS नियम नहीं है।<br> एक बनाने के लिए &quot;नया नियम&quot; पर क्लिक करें।",

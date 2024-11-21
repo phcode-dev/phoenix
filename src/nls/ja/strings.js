@@ -690,6 +690,8 @@ define({
   "EXTENSIONS_UPDATES_TITLE": "アップデート",
   "EXTENSIONS_LAST_UPDATED": "最終更新日",
   "EXTENSIONS_DOWNLOADS": "ダウンロード",
+  "EXTENSIONS_REGISTRY_TASK_TITLE": "拡張機能リストの更新",
+  "EXTENSIONS_REGISTRY_TASK_MESSAGE": "ダウンロード中…",
   "INLINE_EDITOR_NO_MATCHES": "一致するものがありません。",
   "INLINE_EDITOR_HIDDEN_MATCHES": "一致項目はすべて縮小されています。一致項目を表示するには、右側にリストされているファイルを展開してください。",
   "CSS_QUICK_EDIT_NO_MATCHES": "選択に一致する既存の CSS ルールがありません。<br>「新規ルール」をクリックしてルールを作成してください。",

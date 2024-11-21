@@ -690,6 +690,8 @@ define({
   "EXTENSIONS_UPDATES_TITLE": "更新",
   "EXTENSIONS_LAST_UPDATED": "最近更新時間",
   "EXTENSIONS_DOWNLOADS": "下載",
+  "EXTENSIONS_REGISTRY_TASK_TITLE": "更新擴充列表",
+  "EXTENSIONS_REGISTRY_TASK_MESSAGE": "正在下載...",
   "INLINE_EDITOR_NO_MATCHES": "找不到符合的。",
   "INLINE_EDITOR_HIDDEN_MATCHES": "所有符合項目都被收合起來了。展開右側清單中的檔案檢視符合項目。",
   "CSS_QUICK_EDIT_NO_MATCHES": "既有 CSS 中沒有符合您選取內容的規則。<br> 按一下「新增規則」 建立一組。",

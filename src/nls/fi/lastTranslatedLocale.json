@@ -670,6 +670,8 @@
   "EXTENSIONS_UPDATES_TITLE": "Päivitykset",
   "EXTENSIONS_LAST_UPDATED": "Päivitetty",
   "EXTENSIONS_DOWNLOADS": "Lataukset",
+  "EXTENSIONS_REGISTRY_TASK_TITLE": "Päivitetään laajennusluetteloa",
+  "EXTENSIONS_REGISTRY_TASK_MESSAGE": "Ladataan…",
   "INLINE_EDITOR_NO_MATCHES": "Vastineita ei saatavilla.",
   "INLINE_EDITOR_HIDDEN_MATCHES": "Kaikki vastineet on pienennetty. Laajenna oikealla listatut tiedostot, niin näet vastineet.",
   "CSS_QUICK_EDIT_NO_MATCHES": "Valintaasi vastaavia CSS-sääntöjä ei ole.<br> Luo sellainen napsauttamalla ”Uusi sääntö”.",

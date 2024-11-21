@@ -670,6 +670,8 @@
   "EXTENSIONS_UPDATES_TITLE": "Mises à jour",
   "EXTENSIONS_LAST_UPDATED": "Dernière mise à jour",
   "EXTENSIONS_DOWNLOADS": "Téléchargements",
+  "EXTENSIONS_REGISTRY_TASK_TITLE": "Mise à jour de la liste des extensions",
+  "EXTENSIONS_REGISTRY_TASK_MESSAGE": "Téléchargement…",
   "INLINE_EDITOR_NO_MATCHES": "Aucun résultat.",
   "INLINE_EDITOR_HIDDEN_MATCHES": "Tous les résultats sont réduits. Développez les fichiers dans la liste de droite pour voir le détail.",
   "CSS_QUICK_EDIT_NO_MATCHES": "Aucune règle CSS existante ne correspond à votre sélection.<br> Cliquez sur « Nouvelle règle » pour en créer une.",

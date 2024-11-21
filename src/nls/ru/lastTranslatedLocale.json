@@ -670,6 +670,8 @@
   "EXTENSIONS_UPDATES_TITLE": "Обновления",
   "EXTENSIONS_LAST_UPDATED": "Последнее обновление",
   "EXTENSIONS_DOWNLOADS": "Загрузки",
+  "EXTENSIONS_REGISTRY_TASK_TITLE": "Обновление списка расширений",
+  "EXTENSIONS_REGISTRY_TASK_MESSAGE": "Загрузка…",
   "INLINE_EDITOR_NO_MATCHES": "Совпадений не найдено.",
   "INLINE_EDITOR_HIDDEN_MATCHES": "Все матчи свернуты. Разверните файлы, перечисленные справа, чтобы просмотреть совпадения.",
   "CSS_QUICK_EDIT_NO_MATCHES": "Существующих правил CSS соответвующих выделенному тексту не определено. <br> Выберите \"Новое правило\" чтобы создать новое.",

@@ -670,6 +670,8 @@
   "EXTENSIONS_UPDATES_TITLE": "Opdateringer",
   "EXTENSIONS_LAST_UPDATED": "Sidst opdateret",
   "EXTENSIONS_DOWNLOADS": "Downloads",
+  "EXTENSIONS_REGISTRY_TASK_TITLE": "Opdatering af udvidelsesliste",
+  "EXTENSIONS_REGISTRY_TASK_MESSAGE": "Downloader...",
   "INLINE_EDITOR_NO_MATCHES": "Ingen forekomster.",
   "INLINE_EDITOR_HIDDEN_MATCHES": "Alle kampe er kollapset. Udvid filerne til højre for at se matches.",
   "CSS_QUICK_EDIT_NO_MATCHES": "Der eksisterer ingen CSS-regler, som matcher det markerede element.<br> Klik \"Ny regel\" for at oprette en.",

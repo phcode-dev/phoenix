@@ -690,6 +690,8 @@ define({
   "EXTENSIONS_UPDATES_TITLE": "Actualizaciones",
   "EXTENSIONS_LAST_UPDATED": "Última actualización",
   "EXTENSIONS_DOWNLOADS": "Descargas",
+  "EXTENSIONS_REGISTRY_TASK_TITLE": "Actualizando la lista de extensiones",
+  "EXTENSIONS_REGISTRY_TASK_MESSAGE": "Descargando…",
   "INLINE_EDITOR_NO_MATCHES": "No hay coincidencias disponibles.",
   "INLINE_EDITOR_HIDDEN_MATCHES": "Todas las coincidencias están colapsadas. Expanda los archivos listados a la derecha para ver coincidencias.",
   "CSS_QUICK_EDIT_NO_MATCHES": "No hay reglas de CSS existentes que coincidan con tu selección.<br> Haz clic en \"Nueva regla\" para crear una.",

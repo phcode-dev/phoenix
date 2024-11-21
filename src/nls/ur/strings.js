@@ -690,6 +690,8 @@ define({
   "EXTENSIONS_UPDATES_TITLE": "تازہ ترین",
   "EXTENSIONS_LAST_UPDATED": "آخری تازہ کاری",
   "EXTENSIONS_DOWNLOADS": "ڈاؤن لوڈ",
+  "EXTENSIONS_REGISTRY_TASK_TITLE": "توسیعی فہرست کو اپ ڈیٹ کیا جا رہا ہے۔",
+  "EXTENSIONS_REGISTRY_TASK_MESSAGE": "ڈاؤن لوڈ ہو رہا ہے…",
   "INLINE_EDITOR_NO_MATCHES": "کوئی مماثلتیں دستیاب نہیں ہیں۔",
   "INLINE_EDITOR_HIDDEN_MATCHES": "تمام میچز ختم ہو گئے ہیں۔ میچ دیکھنے کے لیے دائیں جانب درج فائلوں کو پھیلائیں۔",
   "CSS_QUICK_EDIT_NO_MATCHES": "CSS کے کوئی موجودہ اصول نہیں ہیں جو آپ کے انتخاب سے مماثل ہوں۔<br> ایک بنانے کے لیے &quot;نیا اصول&quot; پر کلک کریں۔",

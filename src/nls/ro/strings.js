@@ -690,6 +690,8 @@ define({
   "EXTENSIONS_UPDATES_TITLE": "Actualizări",
   "EXTENSIONS_LAST_UPDATED": "Ultima actualizare",
   "EXTENSIONS_DOWNLOADS": "Descărcări",
+  "EXTENSIONS_REGISTRY_TASK_TITLE": "Actualizarea listei de extensii",
+  "EXTENSIONS_REGISTRY_TASK_MESSAGE": "Se descarcă...",
   "INLINE_EDITOR_NO_MATCHES": "Nicio potrivire disponibilă.",
   "INLINE_EDITOR_HIDDEN_MATCHES": "Toate potrivirile sunt reduse. Extinde fișierele afișate pe dreapta pentru a vedea potrivirile.",
   "CSS_QUICK_EDIT_NO_MATCHES": "Nu există nicio regulă CSS care să se potrivească selecției.<br>Clic pe \"Regulă nouă\" pentru a crea una.",

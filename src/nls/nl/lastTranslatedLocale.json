@@ -670,6 +670,8 @@
   "EXTENSIONS_UPDATES_TITLE": "Updates",
   "EXTENSIONS_LAST_UPDATED": "Laatst bijgewerkt",
   "EXTENSIONS_DOWNLOADS": "Downloads",
+  "EXTENSIONS_REGISTRY_TASK_TITLE": "Extensielijst bijwerken",
+  "EXTENSIONS_REGISTRY_TASK_MESSAGE": "Downloaden…",
   "INLINE_EDITOR_NO_MATCHES": "Geen overeenkomsten beschikbaar.",
   "INLINE_EDITOR_HIDDEN_MATCHES": "Alle overeenkomsten zijn samengevouwen. Vouw alle bestanden uit in het overzicht rechts om overeenkomsten te zien.",
   "CSS_QUICK_EDIT_NO_MATCHES": "Er zijn geen bestaande CSS regels die overeenkomsten met jouw selectie.<br> Klik \"Nieuwe regel\" om te maken.",

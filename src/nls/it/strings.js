@@ -690,6 +690,8 @@ define({
   "EXTENSIONS_UPDATES_TITLE": "Aggiornamenti",
   "EXTENSIONS_LAST_UPDATED": "Ultimo aggiornamento",
   "EXTENSIONS_DOWNLOADS": "Download",
+  "EXTENSIONS_REGISTRY_TASK_TITLE": "Aggiornamento dell'elenco delle estensioni",
+  "EXTENSIONS_REGISTRY_TASK_MESSAGE": "Scaricamento in corso…",
   "INLINE_EDITOR_NO_MATCHES": "Nessuna corrispondenza disponibile.",
   "INLINE_EDITOR_HIDDEN_MATCHES": "Tutte le corrispondenze sono crollate. Espandere i file elencati a destra per vedere le corrispondenze",
   "CSS_QUICK_EDIT_NO_MATCHES": "Non ci sono regole CSS esistenti che corrispondano alla tua selezione.<br />Clicca \"Nuova Regola\" per crearne una.",

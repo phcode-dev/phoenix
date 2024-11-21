@@ -690,6 +690,8 @@ define({
   "EXTENSIONS_UPDATES_TITLE": "Aktualizácie",
   "EXTENSIONS_LAST_UPDATED": "Naposledy aktualizovaný",
   "EXTENSIONS_DOWNLOADS": "K stiahnutiu",
+  "EXTENSIONS_REGISTRY_TASK_TITLE": "Aktualizácia zoznamu rozšírení",
+  "EXTENSIONS_REGISTRY_TASK_MESSAGE": "Sťahuje sa…",
   "INLINE_EDITOR_NO_MATCHES": "Nie sú k dispozícii žiadne zhody.",
   "INLINE_EDITOR_HIDDEN_MATCHES": "Všetky zápasy sú zrútené. Ak chcete zobraziť zhody, rozbaľte súbory uvedené vpravo.",
   "CSS_QUICK_EDIT_NO_MATCHES": "Vášmu výberu nezodpovedajú žiadne existujúce pravidlá CSS.<br> Kliknutím na „Nové pravidlo“ vytvoríte pravidlo.",

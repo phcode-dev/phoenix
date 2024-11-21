@@ -670,6 +670,8 @@
   "EXTENSIONS_UPDATES_TITLE": "Güncellemeler",
   "EXTENSIONS_LAST_UPDATED": "Son güncelleme",
   "EXTENSIONS_DOWNLOADS": "İndirilenler",
+  "EXTENSIONS_REGISTRY_TASK_TITLE": "Uzantı Listesini Güncelleme",
+  "EXTENSIONS_REGISTRY_TASK_MESSAGE": "İndiriliyor…",
   "INLINE_EDITOR_NO_MATCHES": "Maç yok.",
   "INLINE_EDITOR_HIDDEN_MATCHES": "Tüm maçlar çöktü. Eşleşmeleri görüntülemek için sağda listelenen dosyaları genişletin.",
   "CSS_QUICK_EDIT_NO_MATCHES": "Seçiminizle eşleşen mevcut CSS kuralı yok.<br> Bir tane oluşturmak için &quot;Yeni Kural&quot; ı tıklayın.",
