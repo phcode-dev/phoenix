@@ -79,6 +79,7 @@ test/thirdparty/jasmine-reporters
 !/src/extensions/dev/README.*
 
 /src/extensions/disabled
+/src/extensions/registry
 
 # ignore .disabled file for default extensions
 /src/extensions/default/*/.disabled
