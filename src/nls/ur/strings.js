@@ -337,6 +337,8 @@ define({
   "STATUSBAR_TASKS_PAUSE": "توقف",
   "STATUSBAR_TASKS_STOP": "رک جاؤ",
   "STATUSBAR_TASKS_RESTART": "دوبارہ شروع کریں",
+  "STATUSBAR_SHOW_PANELS": "پینلز دکھائیں۔",
+  "STATUSBAR_SHOW_GIT": "گٹ پینل",
   "ERRORS_NO_FILE": "کوئی فائل نہیں کھلی۔",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} مسائل - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} مسائل، {1} قابل حل - {2}",
