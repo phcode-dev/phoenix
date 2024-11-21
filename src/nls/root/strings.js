@@ -811,6 +811,8 @@ define({
     "EXTENSIONS_UPDATES_TITLE": "Updates",
     "EXTENSIONS_LAST_UPDATED": "Last Updated",
     "EXTENSIONS_DOWNLOADS": "Downloads",
+    "EXTENSIONS_REGISTRY_TASK_TITLE": "Updating Extension List",
+    "EXTENSIONS_REGISTRY_TASK_MESSAGE": "Downloading\u2026",
 
     "INLINE_EDITOR_NO_MATCHES": "No matches available.",
     "INLINE_EDITOR_HIDDEN_MATCHES": "All matches are collapsed. Expand the files listed at right to view matches.",

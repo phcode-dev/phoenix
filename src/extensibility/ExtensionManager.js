@@ -49,6 +49,7 @@ define(function (require, exports, module) {
         Strings             = require("strings"),
         StringUtils         = require("utils/StringUtils"),
         ThemeManager        = require("view/ThemeManager"),
+        TaskManager    = require("features/TaskManager"),
         Metrics = require("utils/Metrics");
 
     const EXTENSION_REGISTRY_LOCAL_STORAGE_KEY = Phoenix.isTestWindow ?
@@ -355,6 +356,9 @@ define(function (require, exports, module) {
 
         function _updateRegistry(newVersion) {
             console.log("downloading extension registry: ", newVersion, brackets.config.extension_registry);
+            const downloadTask = TaskManager.addNewTask(Strings.EXTENSIONS_REGISTRY_TASK_TITLE,
+                Strings.EXTENSIONS_REGISTRY_TASK_MESSAGE,
+                `<i class="fa-solid fa-list"></i>`);
             $.ajax({
                 url: brackets.config.extension_registry,
                 dataType: "json",
@@ -371,9 +375,11 @@ define(function (require, exports, module) {
                         }
                     }).finally(()=>{
                         pendingDownloadRegistry = null;
+                        downloadTask.close();
                     });
                 })
                 .fail(function (err) {
+                    downloadTask.close();
                     console.error("error Fetching Extension Registry", err);
                     if(!pendingDownloadRegistry.alreadyResolvedFromCache){
                         pendingDownloadRegistry.reject();
