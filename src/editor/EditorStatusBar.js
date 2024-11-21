@@ -630,5 +630,7 @@ define(function (require, exports, module) {
         LanguageManager.on("languageAdded languageModified", _populateLanguageDropdown);
         _onActiveEditorChange(null, EditorManager.getActiveEditor(), null);
         StatusBar.show();
+        $("#status-menu").attr("title", Strings.STATUSBAR_SHOW_PANELS);
+        $(".git-status-icon").attr("title", Strings.STATUSBAR_SHOW_GIT);
     });
 });

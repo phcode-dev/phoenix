@@ -99,6 +99,7 @@ async function openURLInPhoenixWindow(url, {
 
 Phoenix.libs = {
     LRUCache,
+    hljs: window.hljs,
     iconv: fs.utils.iconv,
     picomatch: fs.utils.picomatch
 };
