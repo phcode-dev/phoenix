@@ -214,7 +214,7 @@ define(function (require, exports, module) {
         }
     }
 
-    function _showGeneralSurvey(surveyURL) {
+    function _showGeneralSurvey(surveyURL, delayOverride) {
         let surveyVersion = 6; // increment this if you want to show this again
         if(userAlreadyDidAction.generalSurveyShownVersion === surveyVersion) {
             return;
@@ -237,7 +237,7 @@ define(function (require, exports, module) {
             }, 200);
             userAlreadyDidAction.generalSurveyShownVersion = surveyVersion;
             PhStore.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
-        }, GENERAL_SURVEY_TIME);
+        }, delayOverride || GENERAL_SURVEY_TIME);
     }
 
     // a power user is someone who has used Phoenix at least 3 days or 8 hours in the last two weeks
@@ -295,12 +295,13 @@ define(function (require, exports, module) {
         return resizeObserver;
     }
 
-    function _showPowerUserSurvey(surveyURL) {
+    function _showPowerUserSurvey(surveyURL, intervalOverride) {
         if(_isPowerUser()) {
+            const intervalDays = intervalOverride || POWER_USER_SURVEY_INTERVAL_DAYS;
             Metrics.countEvent(Metrics.EVENT_TYPE.USER, "power", "user", 1);
             let lastShownDate = userAlreadyDidAction.lastShownPowerSurveyDate;
             let nextShowDate = new Date(lastShownDate);
-            nextShowDate.setUTCDate(nextShowDate.getUTCDate() + POWER_USER_SURVEY_INTERVAL_DAYS);
+            nextShowDate.setUTCDate(nextShowDate.getUTCDate() + intervalDays);
             let currentDate = new Date();
             if(currentDate < nextShowDate){
                 return;
@@ -338,11 +339,14 @@ define(function (require, exports, module) {
             if(!Phoenix.isNativeApp && surveyJSON.browser) {
                 surveyJSON = {
                     newUser: surveyJSON.browser.newUser || surveyJSON.newUser,
-                    powerUser: surveyJSON.browser.powerUser || surveyJSON.powerUser
+                    newUserShowDelayMS: surveyJSON.browser.newUserShowDelayMS || surveyJSON.newUserShowDelayMS,
+                    powerUser: surveyJSON.browser.powerUser || surveyJSON.powerUser,
+                    powerUserShowIntervalDays: surveyJSON.browser.powerUserShowIntervalDays
+                        || surveyJSON.powerUserShowIntervalDays
                 };
             }
-            surveyJSON.newUser && _showGeneralSurvey(surveyJSON.newUser);
-            surveyJSON.powerUser && _showPowerUserSurvey(surveyJSON.powerUser);
+            surveyJSON.newUser && _showGeneralSurvey(surveyJSON.newUser, surveyJSON.newUserShowDelayMS);
+            surveyJSON.powerUser && _showPowerUserSurvey(surveyJSON.powerUser, surveyJSON.powerUserShowIntervalDays);
         } catch (e) {
             console.error("Error fetching survey link", surveyLinksURL, e);
             Metrics.countEvent(Metrics.EVENT_TYPE.USER, "survey", "fetchError", 1);
