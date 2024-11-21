@@ -22,27 +22,37 @@
 
 const { src, dest, series } = require('gulp');
 const fs = require("fs");
+const path = require('path');
 
 // removed require('merge-stream') node module. it gives wired glob behavior and some files goes missing
 const rename = require("gulp-rename");
 
 
 // individual third party copy
-function copyLicence(path, name) {
+function copyLicence(filePath, name) {
     console.log(`Copying licence file ${name}.markdown`);
-    return src(path)
+    return src(filePath)
         .pipe(rename(`${name}.markdown`))
         .pipe(dest('src/thirdparty/licences/'));
 }
 
-function renameFile(path, newName, destPath) {
-    console.log(`Renaming file ${path} to ${newName}`);
-    return src(path)
+function renameFile(filePath, newName, destPath) {
+    console.log(`Renaming file ${filePath} to ${newName}`);
+    return src(filePath)
         .pipe(rename(newName))
         .pipe(dest(destPath));
 }
 
+function ensureDirectoryExists(filePath) {
+    const dir = path.dirname(filePath);
+    if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+    }
+}
+
 function downloadFile(url, outputPath) {
+    console.log(`Downloading file ${url} to ${outputPath}`);
+    ensureDirectoryExists(outputPath);
     return fetch(url)
         .then(x => {
             if(x.status !== 200){
@@ -76,6 +86,11 @@ function _createListDirJson(dirPath, jsonFileName) {
     fs.writeFileSync(`${dirPath}/${jsonFileName}`, JSON.stringify(filenames));
 }
 
+function _getConfigJSON() {
+    let configPath = "src/config.json";
+    console.log("Reading phoenix Config :", configPath);
+    return JSON.parse(fs.readFileSync(configPath, "utf8"));
+}
 
 /**
  * Add thirdparty libs copied to gitignore except the licence file.
@@ -107,6 +122,13 @@ let copyThirdPartyLibs = series(
         'src/thirdparty/bugsnag-performance.min.js'),
     downloadFile.bind(downloadFile, 'https://d2wy8f7a9ursnm.cloudfront.net/v2/bugsnag-performance.min.js.map',
         'src/thirdparty/bugsnag-performance.min.js.map'),
+    // phoenix extension registry cache for first time load
+    downloadFile.bind(downloadFile, _getConfigJSON().config.extension_registry,
+        'src/extensions/registry/registry.json'),
+    downloadFile.bind(downloadFile, _getConfigJSON().config.extension_registry_version,
+        'src/extensions/registry/registry_version.json'),
+    downloadFile.bind(downloadFile, _getConfigJSON().config.extension_registry_popularity,
+        'src/extensions/registry/popularity.json'),
     // tern js
     copyFiles.bind(copyFiles, ['node_modules/tern/defs/**/*'], 'src/thirdparty/tern/defs'),
     copyFiles.bind(copyFiles, ['node_modules/tern/lib/**/*'], 'src/thirdparty/tern/lib'),
