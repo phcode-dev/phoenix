@@ -41,11 +41,17 @@
  */
 
 
-@import (less) "./brackets_core_ui_variables.css";
+:root {
+  --bc-toast-danger-bg-color: #FF5C33;
+  --bc-toast-error-bg-color: #f74687;
+  --bc-toast-success-bg-color: #82b839;
+  --bc-toast-warning-bg-color: #FFAA00;
+  --bc-toast-info-bg-color: #60A3D9;
+}
 
-// DEPRECATION WARNING: This file is here for legacy reasons and will be removed as we migrate entirely to css variables
-// this is necessary for extension them-ability.
-// Please use brackets_core_ui_variables.css for defining new style variables
+// WARNING: Use the above css variables section!!! This file uses less variables for legacy reasons
+// and we will migrate to css variables above. This is necessary for extension them-ability.
+// Please use css variables above for defining new style variables
 
 // General
 @bc-bg-highlight:               #e0f0fa;
