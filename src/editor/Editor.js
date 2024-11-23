@@ -435,6 +435,19 @@ define(function (require, exports, module) {
                 return $(this.getRootElement());
             }
         });
+
+        const $cmElement = this.$el;
+        $cmElement[0].addEventListener("wheel", (event) => {
+            const $editor = $cmElement.find(".CodeMirror-scroll");
+            // we need to slow down the scroll by the factor of line height. else the scrolling is too fast.
+            // this became a problem after we added the custom line height feature causing jumping scrolls esp in safari
+            // and mac if we dont do this scroll scaling.
+            const lineHeight = parseFloat(getComputedStyle($editor[0]).lineHeight);
+            const scrollDelta = event.deltaY;
+            const defaultHeight = 14, scrollScaleFactor = lineHeight/defaultHeight;
+            $editor[0].scrollTop += (scrollDelta/scrollScaleFactor/2);
+            event.preventDefault();
+        });
     }
 
     EventDispatcher.makeEventDispatcher(Editor.prototype);
