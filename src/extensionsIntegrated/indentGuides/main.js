@@ -36,7 +36,8 @@ define(function (require, exports, module) {
 
     const COMMAND_NAME    = Strings.CMD_TOGGLE_INDENT_GUIDES,
         COMMAND_ID      = Commands.TOGGLE_INDENT_GUIDES,
-        GUIDE_CLASS     = "phcode-indent-guides";
+        GUIDE_CLASS     = "phcode-indent-guides",
+        GUIDE_CLASS_NONE     = "phcode-indent-guides-none";
 
     const PREFERENCES_EDITOR_INDENT_GUIDES = "editor.indentGuides",
         PREFERENCES_EDITOR_INDENT_HIDE_FIRST = "editor.indentHideFirst";
@@ -54,40 +55,42 @@ define(function (require, exports, module) {
     });
 
     // CodeMirror overlay code
-    const indentGuidesOverlay = {
-        token: function (stream, _state) {
-            let char        = "",
-                colNum      = 0,
-                spaceUnits  = 0,
-                isTabStart  = false;
+    function _createOverlayObject(spaceUnits) {
+        return {
+            _spaceUnits: spaceUnits,
+            _cmRefreshPending: false,
+            token: function (stream, _state) {
+                let char        = "",
+                    colNum      = 0,
+                    isTabStart  = false;
 
-            char    = stream.next();
-            colNum  = stream.column();
+                char    = stream.next();
+                colNum  = stream.column();
 
-            // Check for "hide first guide" preference
-            if ((hideFirst) && (colNum === 0)) {
+                // Check for "hide first guide" preference
+                if ((hideFirst) && (colNum === 0)) {
+                    return null;
+                }
+
+                if (char === "\t") {
+                    return enabled? GUIDE_CLASS : GUIDE_CLASS_NONE;
+                }
+
+                if (char !== " ") {
+                    stream.skipToEnd();
+                    return null;
+                }
+
+                isTabStart = (colNum % this._spaceUnits) === 0 ? true : false;
+
+                if ((char === " ") && (isTabStart)) {
+                    return enabled? GUIDE_CLASS : GUIDE_CLASS_NONE;
+                }
                 return null;
-            }
-
-            if (char === "\t") {
-                return GUIDE_CLASS;
-            }
-
-            if (char !== " ") {
-                stream.skipToEnd();
-                return null;
-            }
-
-            spaceUnits = Editor.getSpaceUnits();
-            isTabStart = (colNum % spaceUnits) ? false : true;
-
-            if ((char === " ") && (isTabStart)) {
-                return GUIDE_CLASS;
-            }
-            return null;
-        },
-        flattenSpans: false
-    };
+            },
+            flattenSpans: false
+        };
+    }
 
     function applyPreferences() {
         enabled     = PreferencesManager.get(PREFERENCES_EDITOR_INDENT_GUIDES);
@@ -95,28 +98,46 @@ define(function (require, exports, module) {
     }
 
     function updateUI() {
-        const editor  = EditorManager.getActiveEditor(),
-            cm      = editor ? editor._codeMirror : null;
-
-        // Update CodeMirror overlay if editor is available
-        if (cm) {
-            if(editor._overlayPresent){
-                if(!enabled){
-                    cm.removeOverlay(indentGuidesOverlay);
-                    editor._overlayPresent = false;
-                    cm.refresh();
-                }
-            } else if(enabled){
-                cm.removeOverlay(indentGuidesOverlay);
-                cm.addOverlay(indentGuidesOverlay);
-                editor._overlayPresent = true;
-                cm.refresh();
-            }
+        const editor  = EditorManager.getActiveEditor();
+        if(!editor || !editor._codeMirror) {
+            return;
         }
+        const cm = editor._codeMirror;
+        if(!editor.__indentGuidesOverlay) {
+            editor.__indentGuidesOverlay = _createOverlayObject(Editor.getSpaceUnits(editor.document.file.fullPath));
+        }
+        function _reRenderOverlay() {
+            cm.removeOverlay(editor.__indentGuidesOverlay);
+            cm.addOverlay(editor.__indentGuidesOverlay);
+        }
+        editor.off(Editor.EVENT_OPTION_CHANGE+".indentGuide");
+        editor.on(Editor.EVENT_OPTION_CHANGE+".indentGuide", ()=>{
+            const newSpaceUnits = Editor.getSpaceUnits(editor.document.file.fullPath);
+            if(newSpaceUnits !== editor.__indentGuidesOverlay._spaceUnits){
+                editor.__indentGuidesOverlay._spaceUnits = newSpaceUnits;
+                if(EditorManager.getActiveEditor() === editor){
+                    console.log("space units changed, refreshing indent guides for",
+                        newSpaceUnits, editor.document.file.fullPath);
+                    _reRenderOverlay();
+                }
+            }
+        });
 
-        // Update menu
-        CommandManager.get(COMMAND_ID)
-            .setChecked(enabled);
+        let shouldRerender = false;
+        if(!cm.__indentGuidesOverlayAttached){
+            cm.addOverlay(editor.__indentGuidesOverlay);
+            cm.__indentGuidesOverlayAttached = editor.__indentGuidesOverlay;
+            cm.__overlayEnabled = enabled;
+        } else if(cm.__indentGuidesOverlayAttached &&
+            cm.__indentGuidesOverlayAttached !== editor.__indentGuidesOverlay) {
+            cm.removeOverlay(cm.__indentGuidesOverlayAttached);
+            cm.addOverlay(editor.__indentGuidesOverlay);
+            cm.__overlayEnabled = enabled;
+        } else if (shouldRerender || cm.__overlayEnabled !== enabled) {
+            cm.__overlayEnabled = enabled;
+            _reRenderOverlay();
+            console.log("Refreshing indent guides");
+        }
     }
 
     function handleToggleGuides() {
@@ -127,6 +148,8 @@ define(function (require, exports, module) {
     function preferenceChanged() {
         applyPreferences();
         updateUI();
+        CommandManager.get(COMMAND_ID)
+            .setChecked(enabled);
     }
 
     // Initialize extension

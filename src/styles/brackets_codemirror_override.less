@@ -289,9 +289,18 @@ span.cm-emstrong {
     font-weight: normal;
 }
 
-.cm-phcode-indent-guides {
-    position: relative;
-    background-repeat: repeat-y;
-    background-image: url('images/indent-guide-line.svg');
+.cm-phcode-indent-guides::before {
+    content: " ";
+    width: 1px;
     display: inline-block;
+    position: relative;
+    border-left: 1px solid rgba(128, 128, 128, 0.3);
+}
+
+.cm-phcode-indent-guides-none::before {
+    content: " ";
+    width: 1px;
+    display: inline-block;
+    position: relative;
+    border-left: 1px solid transparent;
 }
