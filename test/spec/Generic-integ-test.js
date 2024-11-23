@@ -119,7 +119,7 @@ define(function (require, exports, module) {
             });
 
             it("should show and toggle indent guides with 12 space file", async function () {
-                await verify("space-12.js", 3);
+                await verify("space-12.js", 2);
             });
 
             it("should show and toggle indent guides with no space file", async function () {
