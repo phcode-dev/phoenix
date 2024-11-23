@@ -445,7 +445,7 @@ define(function (require, exports, module) {
             const lineHeight = parseFloat(getComputedStyle($editor[0]).lineHeight);
             const scrollDelta = event.deltaY;
             const defaultHeight = 14, scrollScaleFactor = lineHeight/defaultHeight;
-            $editor[0].scrollTop += (scrollDelta/scrollScaleFactor/2);
+            $editor[0].scrollTop += (scrollDelta/scrollScaleFactor);
             event.preventDefault();
         });
     }
