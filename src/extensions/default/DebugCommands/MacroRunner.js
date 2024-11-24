@@ -51,6 +51,7 @@ define(function (require, exports, module) {
         Commands = brackets.getModule("command/Commands"),
         PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
         Editor = brackets.getModule("editor/Editor"),
+        Dialogs = brackets.getModule("widgets/Dialogs"),
         _ = brackets.getModule("thirdparty/lodash"),
         ProjectManager = brackets.getModule("project/ProjectManager");
 
@@ -312,6 +313,12 @@ define(function (require, exports, module) {
         }
     }
 
+    function validateNotEqual(obj1, obj2) {
+        if(_.isEqual(obj1, obj2)){
+            throw new Error(`validateEqual: expected ${JSON.stringify(obj1)} to NOT equal ${JSON.stringify(obj2)}`);
+        }
+    }
+
     /**
      * validates if the given mark type is present in the specified selections
      * @param {string} markType
@@ -343,8 +350,8 @@ define(function (require, exports, module) {
         return jsPromise(CommandManager.execute(Commands.FILE_CLOSE_ALL, { _forceClose: true }));
     }
 
-    function execCommand(commandID, args) {
-        return jsPromise(CommandManager.execute(commandID, args));
+    function execCommand(commandID, arg) {
+        return jsPromise(CommandManager.execute(commandID, arg));
     }
 
     function undo() {
@@ -383,9 +390,236 @@ define(function (require, exports, module) {
         }
     };
 
+    /**
+     * Waits for a polling function to succeed or until a timeout is reached.
+     * The polling function is periodically invoked to check for success, and
+     * the function rejects with a timeout message if the timeout duration elapses.
+     *
+     * @param {function} pollFn - A function that returns `true` or a promise resolving to `true`/`false`
+     *                            to indicate success and stop waiting.
+     *                            The function will be called repeatedly until it succeeds or times out.
+     * @param {string|function} _timeoutMessageOrMessageFn - A helpful string message or an async function
+     *                                                       that returns a string message to reject with in case of timeout.
+     *                                                       Example:
+     *                                                       - String: "Condition not met within the allowed time."
+     *                                                       - Function: `async () => "Timeout while waiting for the process to complete."`
+     * @param {number} [timeoutms=2000] - The maximum time to wait in milliseconds before timing out. Defaults to 2 seconds.
+     * @param {number} [pollInterval=10] - The interval in milliseconds at which `pollFn` is invoked. Defaults to 10ms.
+     * @returns {Promise<void>} A promise that resolves when `pollFn` succeeds or rejects with a timeout message.
+     *
+     * @throws {Error} If `timeoutms` or `pollInterval` is not a number.
+     *
+     * @example
+     * // Example 1: Using a string as the timeout message
+     * awaitsFor(
+     *   () => document.getElementById("element") !== null,
+     *   "Element did not appear within the allowed time.",
+     *   5000,
+     *   100
+     * ).then(() => {
+     *   console.log("Element appeared!");
+     * }).catch(err => {
+     *   console.error(err.message);
+     * });
+     *
+     * @example
+     * // Example 2: Using a function as the timeout message
+     * awaitsFor(
+     *  () => document.getElementById("element") !== null,
+     *   async () => {
+     *     const el = document.getElementById("element");
+     *     return `expected ${el} to be null`;
+     *   },
+     *   10000,
+     *   500
+     * ).then(() => {
+     *   console.log("Element appeared!");
+     * }).catch(err => {
+     *   console.error(err.message);
+     * });
+     */
+    function awaitsFor(pollFn, _timeoutMessageOrMessageFn, timeoutms = 2000, pollInterval = 10){
+        if(typeof  _timeoutMessageOrMessageFn === "number"){
+            timeoutms = _timeoutMessageOrMessageFn;
+            pollInterval = timeoutms;
+        }
+        if(!(typeof  timeoutms === "number" && typeof  pollInterval === "number")){
+            throw new Error("awaitsFor: invalid parameters when awaiting for " + _timeoutMessageOrMessageFn);
+        }
+
+        async function _getExpectMessage(_timeoutMessageOrMessageFn) {
+            try{
+                if(typeof _timeoutMessageOrMessageFn === "function") {
+                    _timeoutMessageOrMessageFn = _timeoutMessageOrMessageFn();
+                    if(_timeoutMessageOrMessageFn instanceof Promise){
+                        _timeoutMessageOrMessageFn = await _timeoutMessageOrMessageFn;
+                    }
+                }
+            } catch (e) {
+                _timeoutMessageOrMessageFn = "Error executing expected message function:" + e.stack;
+            }
+            return _timeoutMessageOrMessageFn;
+        }
+
+        function _timeoutPromise(promise, ms) {
+            const timeout = new Promise((_, reject) => {
+                setTimeout(async () => {
+                    _timeoutMessageOrMessageFn = await _getExpectMessage(_timeoutMessageOrMessageFn);
+                    reject(new Error(_timeoutMessageOrMessageFn || `Promise timed out after ${ms}ms`));
+                }, ms);
+            });
+
+            return Promise.race([promise, timeout]);
+        }
+
+        return new Promise((resolve, reject)=>{
+            let startTime = Date.now(),
+                lapsedTime;
+            async function pollingFn() {
+                try{
+                    let result = pollFn();
+
+                    // If pollFn returns a promise, await it
+                    if (Object.prototype.toString.call(result) === "[object Promise]") {
+                        // we cant simply check for result instanceof Promise as the Promise may be returned from
+                        // an iframe and iframe has a different instance of Promise than this js context.
+                        result = await _timeoutPromise(result, timeoutms);
+                    }
+
+                    if (result) {
+                        resolve();
+                        return;
+                    }
+                    lapsedTime = Date.now() - startTime;
+                    if(lapsedTime>timeoutms){
+                        _timeoutMessageOrMessageFn = await _getExpectMessage(_timeoutMessageOrMessageFn);
+                        reject("awaitsFor timed out waiting for - " + _timeoutMessageOrMessageFn);
+                        return;
+                    }
+                    setTimeout(pollingFn, pollInterval);
+                } catch (e) {
+                    reject(e);
+                }
+            }
+            pollingFn();
+        });
+    }
+
+    async function waitForModalDialog(dialogClass, friendlyName, timeout = 2000) {
+        dialogClass = dialogClass || "";
+        friendlyName = friendlyName || dialogClass || "Modal Dialog";
+        await awaitsFor(()=>{
+            let $dlg = $(`.modal.instance${dialogClass}`);
+            return $dlg.length >= 1;
+        }, `Waiting for Modal Dialog to show ${friendlyName}`, timeout);
+    }
+
+    async function waitForModalDialogClosed(dialogClass, friendlyName, timeout = 2000) {
+        dialogClass = dialogClass || "";
+        friendlyName = friendlyName || dialogClass || "Modal Dialog";
+        await awaitsFor(()=>{
+            let $dlg = $(`.modal.instance${dialogClass}`);
+            return $dlg.length === 0;
+        }, `Waiting for Modal Dialog to not there ${friendlyName}`, timeout);
+    }
+
+    /** Clicks on a button within a specified dialog.
+     * This function identifies a dialog using its class and locates a button either by its selector or button ID.
+     * Validation to ensure the dialog and button exist and that the button is enabled before attempting to click.
+     *
+     * @param {string} selectorOrButtonID - The selector or button ID to identify the button to be clicked.
+     *                                       Example (as selector): ".my-button-class".
+     *                                       Example (as button ID): "ok".
+     * @param {string} dialogClass - The class of the dialog (optional). If omitted, defaults to an empty string.
+     *                               Example: "my-dialog-class".
+     * @param {boolean} isButtonID - If `true`, `selectorOrButtonid` is treated as a button ID.
+     *                                If `false`, it is treated as a jQuery selector. Default is `false`.
+     *
+     * @throws {Error} Throws an error if:
+     *   - The specified dialog does not exist.
+     *   - Multiple buttons match the given selector or ID.
+     *   - No button matches the given selector or ID.
+     *   - The button is disabled and cannot be clicked.
+     *
+     */
+    function _clickDialogButtonWithSelector(selectorOrButtonID, dialogClass, isButtonID) {
+        dialogClass = dialogClass || "";
+        const $dlg = $(`.modal.instance${dialogClass}`);
+
+        if(!$dlg.length){
+            throw new Error(`No such dialog present: "${dialogClass}"`);
+        }
+
+        const $button = isButtonID ?
+            $dlg.find(".dialog-button[data-button-id='" + selectorOrButtonID + "']") :
+            $dlg.find(selectorOrButtonID);
+        if($button.length > 1){
+            throw new Error(`Multiple button in dialog "${selectorOrButtonID}"`);
+        } else if(!$button.length){
+            throw new Error(`No such button in dialog "${selectorOrButtonID}"`);
+        }
+
+        if($button.prop("disabled")) {
+            throw new Error(`Cannot click, button is disabled. "${selectorOrButtonID}"`);
+        }
+
+        $button.click();
+    }
+
+    /**
+     * Clicks on a button within a specified dialog using its button ID.
+     *
+     * @param {string} buttonID - The unique ID of the button to be clicked. usually One of the
+     *                            __PR.Dialogs.DIALOG_BTN_* symbolic constants or a custom id. You can find the button
+     *                            id in the dialog by inspecting the button and checking its `data-button-id` attribute
+     *                            Example: __PR.Dialogs.DIALOG_BTN_OK.
+     * @param {string} [dialogClass] - The class of the dialog containing the button. Optional, if only one dialog
+     *                               is present, you can omit this.
+     *                               Example: "my-dialog-class".
+     * @throws {Error} Throws an error if:
+     *   - The specified dialog does not exist.
+     *   - No button matches the given button ID.
+     *   - Multiple buttons match the given button ID.
+     *   - The button is disabled and cannot be clicked.
+     *
+     * @example
+     * // Example: Click a button by its ID
+     * __PR.clickDialogButtonID(__PR.Dialogs.DIALOG_BTN_OK, "my-dialog-class");
+     * __PR.clickDialogButtonID(__PR.Dialogs.DIALOG_BTN_OK); // if only 1 dialog is present, can omit the dialog class
+     * __PR.clickDialogButtonID("customBtnID", "my-dialog-class");
+     */
+    function clickDialogButtonID(buttonID, dialogClass) {
+        _clickDialogButtonWithSelector(buttonID, dialogClass, true);
+    }
+
+    /**
+     * Clicks on a button within a specified dialog using a selector.
+     *
+     * @param {string} buttonSelector - A jQuery selector to identify the button to be clicked.
+     *                                   Example: ".showImageBtn".
+     * @param {string} [dialogClass] - The class of the dialog containing the button. Optional, if only one dialog
+     *                               is present, you can omit this.
+     *                               Example: "my-dialog-class".
+     * @throws {Error} Throws an error if:
+     *   - The specified dialog does not exist.
+     *   - No button matches the given selector.
+     *   - Multiple buttons match the given selector.
+     *   - The button is disabled and cannot be clicked.
+     *
+     * @example
+     * // Example: Click a button using a selector
+     * __PR.clickDialogButton(".showImageBtn", "my-dialog-class");
+     * __PR.clickDialogButton(".showImageBtn"); // if only 1 dialog is present, can omit the dialog class
+     */
+    function clickDialogButton(buttonSelector, dialogClass) {
+        _clickDialogButtonWithSelector(buttonSelector, dialogClass, false);
+    }
+
     const __PR= {
         openFile, setCursors, expectCursorsToBe, keydown, typeAtCursor, validateText, validateAllMarks, validateMarks,
-        closeFile, closeAll, undo, redo, setPreference, getPreference, validateEqual, EDITING
+        closeFile, closeAll, undo, redo, setPreference, getPreference, validateEqual, validateNotEqual, execCommand,
+        awaitsFor, waitForModalDialog, waitForModalDialogClosed, clickDialogButtonID, clickDialogButton,
+        EDITING, $, Commands, Dialogs
     };
 
     async function runMacro(macroText) {

@@ -191,6 +191,7 @@ function awaits(waitTimeMs){
 window.jsPromise = jsPromise;
 window.awaitsFor = awaitsFor;
 window.awaits = awaits;
+window.delay = awaits;
 /**
  * A safe way to return null on promise fail. This will never reject or throw.
  * @param promise

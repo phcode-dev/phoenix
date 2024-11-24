@@ -59,6 +59,17 @@ window.catchToNull = function (promise, logError) {
     });
 };
 
+/**
+ * global util to wait for a period of time
+ * @param waitTimeMs - max time to wait for in ms.
+ * @returns {Promise}
+ */
+window.delay = function (waitTimeMs){
+    return new Promise((resolve)=>{
+        setTimeout(resolve, waitTimeMs);
+    });
+};
+
 // splash screen updates for initial install which could take time, or slow networks.
 let trackedScriptCount = 0;
 function _setSplashScreenStatusUpdate(message1, message2) {
