@@ -30,6 +30,7 @@ define(function (require, exports, module) {
         MainViewManager,      // loaded from brackets.test
         CommandManager,
         Commands,
+        __PR,
         SpecRunnerUtils  = require("spec/SpecRunnerUtils");
 
 
@@ -48,6 +49,7 @@ define(function (require, exports, module) {
             MainViewManager = testWindow.brackets.test.MainViewManager;
             CommandManager = testWindow.brackets.test.CommandManager;
             Commands = testWindow.brackets.test.Commands;
+            __PR = testWindow.__PR;
         }, 30000);
 
         afterAll(async function () {
@@ -58,6 +60,7 @@ define(function (require, exports, module) {
             MainViewManager = null;
             CommandManager = null;
             Commands = null;
+            __PR = null;
             await SpecRunnerUtils.closeTestWindow();
         }, 30000);
 
@@ -132,6 +135,58 @@ define(function (require, exports, module) {
 
             it("should show and toggle indent guides with 12 tabs", async function () {
                 await verify("tab-12.js", 12);
+            });
+        });
+
+        describe("Theme settings", function () {
+            let currentProjectPath;
+            beforeAll(async function () {
+                currentProjectPath = await SpecRunnerUtils.getTestPath("/spec/EditorOptionHandlers-test-files");
+                await SpecRunnerUtils.loadProjectInTestWindow(currentProjectPath);
+                await _openProjectFile("test.html");
+            });
+
+            it("should preview line height changes on slider input and restore original on cancel", async function () {
+                await __PR.execCommand(__PR.Commands.CMD_THEMES_OPEN_SETTINGS);
+                await __PR.waitForModalDialog(".themeSettings");
+                const currentLineHeight = getComputedStyle(__PR.$(".CodeMirror-scroll")[0]).lineHeight;
+                __PR.$('.fontLineHeightSlider').val(2).trigger('input');
+                let newLineHeight = getComputedStyle(__PR.$(".CodeMirror-scroll")[0]).lineHeight;
+                __PR.validateNotEqual(currentLineHeight, newLineHeight);
+
+                __PR.clickDialogButtonID(__PR.Dialogs.DIALOG_BTN_CANCEL);
+                await __PR.waitForModalDialogClosed(".themeSettings");
+                await __PR.awaitsFor(()=>{
+                    const lineHeight = getComputedStyle(__PR.$(".CodeMirror-scroll")[0]).lineHeight;
+                    return currentLineHeight === lineHeight;
+                }, "Waiting for font size to be restored on cancel");
+            });
+
+            it("should save and apply line height changes", async function () {
+                await __PR.execCommand(__PR.Commands.CMD_THEMES_OPEN_SETTINGS);
+                await __PR.waitForModalDialog(".themeSettings");
+                const originalLineHeight = getComputedStyle(__PR.$(".CodeMirror-scroll")[0]).lineHeight;
+                const originalVal = __PR.$('.fontLineHeightSlider').val();
+                __PR.$('.fontLineHeightSlider').val(2).trigger('input');
+                let newLineHeight = getComputedStyle(__PR.$(".CodeMirror-scroll")[0]).lineHeight;
+                __PR.validateNotEqual(originalLineHeight, newLineHeight);
+                __PR.clickDialogButtonID("save");
+                await __PR.waitForModalDialogClosed(".themeSettings");
+
+                // now open theme settings again and restore old line height
+                await __PR.execCommand(__PR.Commands.CMD_THEMES_OPEN_SETTINGS);
+                await __PR.waitForModalDialog(".themeSettings");
+                __PR.validateEqual(__PR.$('.fontLineHeightSlider').val(), "2");
+                __PR.$('.fontLineHeightSlider').val(originalVal).trigger('input');
+                newLineHeight = getComputedStyle(__PR.$(".CodeMirror-scroll")[0]).lineHeight;
+                __PR.validateEqual(originalLineHeight, newLineHeight);
+                __PR.clickDialogButtonID("save");
+                await __PR.waitForModalDialogClosed(".themeSettings");
+
+                await __PR.awaitsFor(()=>{
+                    newLineHeight = getComputedStyle(__PR.$(".CodeMirror-scroll")[0]).lineHeight;
+                    return originalLineHeight === newLineHeight;
+                }, "Waiting for font size to be restored on cancel");
             });
         });
 
