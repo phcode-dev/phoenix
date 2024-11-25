@@ -3,18 +3,13 @@
 # Newly Added Features
 
 We are continuously adding features every week to improve the life of web developers.
-<a href="https://github.com/phcode-dev/phoenix/releases" target="_blank">Check out our release page!</a>
+<a href="https://github.com/phcode-dev/phoenix/releases" target="_blank">Check out our release page to see the full list of changes!</a>
 
 Here's a list of top features recently added to Phoenix:
 
-<h2><a target="_blank" href="https://docs.phcode.dev/docs/editing-text#indent-guide-lines">Indent Guide Lines</a></h2>
-
-Phoenix Code now supports indent guidelines to help you better visualize code structure. This feature can
-be toggled via `View > Indent Guide Lines`.
-
-![image](https://github.com/user-attachments/assets/3d9d0c55-3c9e-4ab3-bbc0-53b563d19e39)
-
 <h2><a target="_blank" href="https://docs.phcode.dev/docs/editing-text#line-height">Customizable Editor Line Height</a></h2>
+
+`Added on November, 2024`
 
 Theme Settings (`View > Themes...`) now has a new `Line Height` slider. Adjust the editor line height between 1x and 3x to find your
 perfect balance of readability and screen real estate.
@@ -22,6 +17,15 @@ perfect balance of readability and screen real estate.
 Also added a `Get More...` button to the Themes dialog, linking directly to the themes section in Extension Manager.
 
 ![image](https://github.com/user-attachments/assets/97a46d9a-e971-401d-8a77-015afa6d5972)
+
+<h2><a target="_blank" href="https://docs.phcode.dev/docs/editing-text#indent-guide-lines">Indent Guide Lines</a></h2>
+
+`Added on October, 2024`
+
+Phoenix Code now supports indent guidelines to help you better visualize code structure. This feature can
+be toggled via `View > Indent Guide Lines`.
+
+![image](https://github.com/user-attachments/assets/3d9d0c55-3c9e-4ab3-bbc0-53b563d19e39)
 
 <h2><a target="_blank" href="https://docs.phcode.dev/docs/editing-text/#auto-space-detection">Auto Tab and Spacing Detection</a></h2>
 
