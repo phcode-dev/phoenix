@@ -21,7 +21,7 @@
 
 // @INCLUDE_IN_API_DOCS
 
-/*
+/**
  * __CodeHintManager Overview:__
  *
  * The CodeHintManager mediates the interaction between the editor and a
@@ -226,7 +226,11 @@
  * the fallback behavior is determined by the CodeHintManager. The default
  * behavior is to insert a tab character, but this can be changed with the
  * insertHintOnTab Preference.
+ *
+ * @module CodeHintManager
  */
+
+
 define(function (require, exports, module) {
 
 
