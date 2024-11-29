@@ -25,16 +25,25 @@ define(function (require, exports, module) {
 
     // Brackets modules.
     var _ = brackets.getModule("thirdparty/lodash"),
-        EditorManager   = brackets.getModule('editor/EditorManager'),
-        ExtensionUtils          = brackets.getModule("utils/ExtensionUtils"),
-        ColorUtils   = brackets.getModule('utils/ColorUtils'),
+        EditorManager = brackets.getModule('editor/EditorManager'),
+        ExtensionUtils = brackets.getModule("utils/ExtensionUtils"),
+        ColorUtils = brackets.getModule('utils/ColorUtils'),
         AppInit = brackets.getModule("utils/AppInit"),
+        PreferencesManager = brackets.getModule("preferences/PreferencesManager"),
+        Strings = brackets.getModule("strings"),
 
         // Extension variables.
         COLOR_REGEX = ColorUtils.COLOR_REGEX,    // used to match color
         gutterName = "CodeMirror-colorGutter";
 
     ExtensionUtils.loadStyleSheet(module, "main.css");
+
+    const PREFERENCES_CSS_COLOR_PREVIEW = "CSSColorPreview";
+    let enabled = true;
+
+    PreferencesManager.definePreference(PREFERENCES_CSS_COLOR_PREVIEW, "boolean", enabled, {
+        description: Strings.DESCRIPTION_CSS_COLOR_PREVIEW
+    });
 
     var CssColorPreview = {
 
@@ -45,6 +54,11 @@ define(function (require, exports, module) {
 
         // show color preview
         showColorMarks: function() {
+            // Check if the extension is enabled
+            if (!enabled) {
+                CssColorPreview.removeColorMarks();
+                return;
+            }
 
             var editor = CssColorPreview.getEditor();
             if(editor) {
@@ -127,26 +141,48 @@ define(function (require, exports, module) {
         },
 
         showGutters: function(editor, _results) {
-
-            if(editor){
+            if(editor && enabled){
                 CssColorPreview.initGutter(editor);
                 var cm = editor._codeMirror;
                 cm.clearGutter(gutterName); // clear color markers
-                cm.colorGutters = _.sortBy(_results, "lineNumber");
 
-                cm.colorGutters.forEach(function (obj) {
-                    var $marker = $("<i>")
-                        .addClass("ico-cssColorPreview")
-                        .html("&nbsp;").css('background-color', obj.colorValue);
-                    cm.setGutterMarker(obj.lineNumber, gutterName, $marker[0]);
-                });
+                // Only add markers if enabled
+                if (enabled) {
+                    cm.colorGutters = _.sortBy(_results, "lineNumber");
 
+                    cm.colorGutters.forEach(function (obj) {
+                        var $marker = $("<i>")
+                            .addClass("ico-cssColorPreview")
+                            .html("&nbsp;").css('background-color', obj.colorValue);
+                        cm.setGutterMarker(obj.lineNumber, gutterName, $marker[0]);
+                    });
+                }
+            }
+        },
+
+        // Method to remove colors when disabled
+        removeColorMarks: function() {
+            var editor = CssColorPreview.getEditor();
+            if (editor) {
+                var cm = editor._codeMirror;
+                cm.clearGutter(gutterName);
             }
         }
     };
 
+    function preferenceChanged() {
+        let value = PreferencesManager.get(PREFERENCES_CSS_COLOR_PREVIEW);
+        enabled = value;
+        if (!value) {
+            CssColorPreview.removeColorMarks();
+        } else {
+            CssColorPreview.showColorMarks();
+        }
+    }
+
     // init after appReady
     AppInit.appReady(function() {
+        PreferencesManager.on("change", PREFERENCES_CSS_COLOR_PREVIEW, preferenceChanged);
         setTimeout(CssColorPreview.init, 1000);
     });
 
