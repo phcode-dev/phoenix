@@ -128,6 +128,17 @@ define(function (require, exports, module) {
                     CssColorPreview.showColorMarks();
                 }
             });
+
+            // Handle the currently active editor at initialization
+            const activeEditor = EditorManager.getActiveEditor();
+            if (activeEditor) {
+                const cm = activeEditor._codeMirror;
+                if (cm) {
+                    cm.on("change", CssColorPreview.onChanged);
+                }
+                CssColorPreview.showColorMarks();
+            }
+
         },
 
         initGutter: function (editor) {
