@@ -19,6 +19,7 @@
  *
  */
 
+
 /* Displays a color preview in the gutter for any file containing color values */
 
 define(function (require, exports, module) {
@@ -48,12 +49,12 @@ define(function (require, exports, module) {
     var CssColorPreview = {
 
         // Get editor
-        getEditor: function() {
+        getEditor: function () {
             return EditorManager.getActiveEditor();
         },
 
         // show color preview
-        showColorMarks: function() {
+        showColorMarks: function () {
             // Check if the extension is enabled
             if (!enabled) {
                 CssColorPreview.removeColorMarks();
@@ -61,29 +62,29 @@ define(function (require, exports, module) {
             }
 
             var editor = CssColorPreview.getEditor();
-            if(editor) {
+            if (editor) {
 
                 var cm = editor._codeMirror;
                 var nLen = cm.lineCount();
                 var aColors = [];
 
                 // match colors and push into an array
-                for(var i = 0; i < nLen; i++) {
+                for (var i = 0; i < nLen; i++) {
                     var lineText = cm.getLine(i);
 
-                    if( (lineText.indexOf('/*')!==-1) || (lineText.indexOf('*/')!==-1) ){
+                    if ((lineText.indexOf('/*') !== -1) || (lineText.indexOf('*/') !== -1)) {
                         continue;
                     } else {
                         var regx = /:.*?;/g;
                         lineText = lineText.match(regx);
-                        if(lineText){
-                            var tempItem = lineText[0].match(COLOR_REGEX);
-                            // todo current support one color to show only
-                            if(tempItem){
-                                var tempColor = tempItem[0];
+                        if (lineText) {
+                            var tempColors = lineText[0].match(COLOR_REGEX);
+                            // Support up to 4 colors
+                            if (tempColors && tempColors.length > 0) {
+                                var colors = tempColors.slice(0, 4);
                                 aColors.push({
                                     lineNumber: i,
-                                    colorValue: tempColor
+                                    colorValues: colors
                                 });
                             }
                         }
@@ -98,7 +99,7 @@ define(function (require, exports, module) {
             CssColorPreview.showColorMarks();
         },
 
-        init: function() {
+        init: function () {
             CssColorPreview.showColorMarks();
             CssColorPreview.registerHandlers();
         },
@@ -108,7 +109,7 @@ define(function (require, exports, module) {
             EditorManager.off("activeEditorChange", CssColorPreview.onChanged);
 
             // Add listener for all editor changes
-            EditorManager.on("activeEditorChange", function(event, newEditor, oldEditor) {
+            EditorManager.on("activeEditorChange", function (event, newEditor, oldEditor) {
                 if (newEditor) {
                     // Unbind the previous editor's change event if it exists
                     if (oldEditor) {
@@ -129,7 +130,7 @@ define(function (require, exports, module) {
             });
         },
 
-        initGutter: function(editor) {
+        initGutter: function (editor) {
 
             var cm = editor._codeMirror;
             var gutters = cm.getOption("gutters").slice(0);
@@ -140,8 +141,8 @@ define(function (require, exports, module) {
             }
         },
 
-        showGutters: function(editor, _results) {
-            if(editor && enabled){
+        showGutters: function (editor, _results) {
+            if (editor && enabled) {
                 CssColorPreview.initGutter(editor);
                 var cm = editor._codeMirror;
                 cm.clearGutter(gutterName); // clear color markers
@@ -151,17 +152,49 @@ define(function (require, exports, module) {
                     cm.colorGutters = _.sortBy(_results, "lineNumber");
 
                     cm.colorGutters.forEach(function (obj) {
-                        var $marker = $("<i>")
-                            .addClass("ico-cssColorPreview")
-                            .html("&nbsp;").css('background-color', obj.colorValue);
-                        cm.setGutterMarker(obj.lineNumber, gutterName, $marker[0]);
+                        let $marker;
+
+                        if (obj.colorValues.length === 1) {
+                            // Single color preview
+                            $marker = $("<i>")
+                                .addClass("ico-cssColorPreview")
+                                .css('background-color', obj.colorValues[0]);
+
+                            cm.setGutterMarker(obj.lineNumber, gutterName, $marker[0]);
+                        } else {
+                            // Multiple colors preview
+                            $marker = $("<div>").addClass("ico-multiple-cssColorPreview");
+
+                            // Positions for up to 4 colors in grid
+                            const positions = [
+                                { top: 0, left: 0 },
+                                { top: 0, right: 0 },
+                                { bottom: 0, right: 0 },
+                                { bottom: 0, left: 0 }
+                            ];
+
+                            obj.colorValues.forEach((color, index) => {
+                                if (index < 4) {
+                                    const $colorBox = $("<div>")
+                                        .addClass("color-box")
+                                        .css({
+                                            'background-color': color,
+                                            ...positions[index]
+                                        });
+                                    $marker.append($colorBox);
+                                }
+                            });
+
+                            cm.setGutterMarker(obj.lineNumber, gutterName, $marker[0]);
+                        }
                     });
                 }
+
             }
         },
 
         // Method to remove colors when disabled
-        removeColorMarks: function() {
+        removeColorMarks: function () {
             var editor = CssColorPreview.getEditor();
             if (editor) {
                 var cm = editor._codeMirror;
@@ -181,7 +214,7 @@ define(function (require, exports, module) {
     }
 
     // init after appReady
-    AppInit.appReady(function() {
+    AppInit.appReady(function () {
         PreferencesManager.on("change", PREFERENCES_CSS_COLOR_PREVIEW, preferenceChanged);
         setTimeout(CssColorPreview.init, 1000);
     });

@@ -1,10 +1,30 @@
+/* Single color preview */
 .ico-cssColorPreview {
-    border: solid 1px rgba(0,0,0,.2);
+    border: solid 1px rgba(0, 0, 0, 0.2);
     display: inline-block;
-    height: 7px;
-    width: 7px;
-    margin-left: 3px;
-    vertical-align: middle;
-    position: relative;
+    height: 14px;
+    width: 14px;
+    margin-left: 6px;
+    position: absolute;
+    top: 8px;
     z-index: 99999;
+}
+
+/* Multiple colors preview container (this is a div) */
+.ico-multiple-cssColorPreview {
+    position: relative;
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-left: 6px;
+    border: solid 1px rgba(0, 0, 0, 0.2);
+    z-index: 99999;
+}
+
+/* For individual color boxes, they will be added inside the main .ico-multiple-cssColorPreview div */
+.ico-multiple-cssColorPreview .color-box {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    box-sizing: border-box;
 }
