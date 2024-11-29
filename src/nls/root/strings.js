@@ -1250,5 +1250,6 @@ define({
     "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Print trailing commas wherever possible in multi-line comma-separated syntactic structures",
     // indent guides extension
     "DESCRIPTION_INDENT_GUIDES_ENABLED": "true to show indent guide lines, else false.",
-    "DESCRIPTION_HIDE_FIRST": "true to show the first Indent Guide line else false."
+    "DESCRIPTION_HIDE_FIRST": "true to show the first Indent Guide line else false.",
+    "DESCRIPTION_CSS_COLOR_PREVIEW": "true to display color previews in the gutter, else false."
 });
