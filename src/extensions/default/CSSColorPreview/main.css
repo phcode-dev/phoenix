@@ -1,0 +1,10 @@
+.ico-cssColorPreview {
+    border: solid 1px rgba(0,0,0,.2);
+    display: inline-block;
+    height: 7px;
+    width: 7px;
+    margin-left: 3px;
+    vertical-align: middle;
+    position: relative;
+    z-index: 99999;
+}
