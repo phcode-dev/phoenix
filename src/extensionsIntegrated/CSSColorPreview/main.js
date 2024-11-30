@@ -31,6 +31,7 @@ define(function (require, exports, module) {
         ColorUtils          = require('utils/ColorUtils'),
         AppInit             = require("utils/AppInit"),
         PreferencesManager  = require("preferences/PreferencesManager"),
+        MainViewManager     = require("view/MainViewManager"),
         Strings             = require("strings");
 
     // Extension variables.
@@ -47,6 +48,46 @@ define(function (require, exports, module) {
     });
 
     /**
+     * Responsible to get all the colors and their respective line numbers.
+     *
+     * @param {Editor} editor
+     * @return {Array.<Object>} an array of objects with all the line nos and,
+     *  the colors to be added on those lines
+     */
+    function _getAllColorsAndLineNums(editor) {
+
+        const cm = editor._codeMirror;
+        const nLen = cm.lineCount();
+        const aColors = [];
+
+        // match colors and push into an array
+        for (let i = 0; i < nLen; i++) {
+            let lineText = cm.getLine(i);
+
+            if ((lineText.indexOf('/*') !== -1) || (lineText.indexOf('*/') !== -1)) {
+                continue;
+            } else {
+                let regx = /:[^;]*;/g;
+
+                lineText = lineText.match(regx);
+                if (lineText) {
+                    let tempColors = lineText[0].match(COLOR_REGEX);
+                    // Support up to 4 colors
+                    if (tempColors && tempColors.length > 0) {
+                        let colors = tempColors.slice(0, 4);
+                        aColors.push({
+                            lineNumber: i,
+                            colorValues: colors
+                        });
+                    }
+                }
+            }
+        }
+
+        return aColors;
+    }
+
+    /**
      * Gets all the colors that are to be displayed
      *
      * Makes sure that the feature is enabled and editor is active, if yes:
@@ -61,47 +102,47 @@ define(function (require, exports, module) {
         const editor = EditorManager.getActiveEditor();
         if (editor) {
 
-            const cm = editor._codeMirror;
-            const nLen = cm.lineCount();
-            const aColors = [];
-
-            // match colors and push into an array
-            for (let i = 0; i < nLen; i++) {
-                let lineText = cm.getLine(i);
-
-                if ((lineText.indexOf('/*') !== -1) || (lineText.indexOf('*/') !== -1)) {
-                    continue;
-                } else {
-                    let regx = /:[^;]*;/g;
-
-                    lineText = lineText.match(regx);
-                    if (lineText) {
-                        let tempColors = lineText[0].match(COLOR_REGEX);
-                        // Support up to 4 colors
-                        if (tempColors && tempColors.length > 0) {
-                            let colors = tempColors.slice(0, 4);
-                            aColors.push({
-                                lineNumber: i,
-                                colorValues: colors
-                            });
-                        }
-                    }
-                }
-            }
-
+            const aColors = _getAllColorsAndLineNums(editor);
             showGutters(editor, aColors);
+
         }
     }
 
+
     /**
-     * To remove the color marks from the gutter
+     * To add the color marks on the gutter of all the active editors
+     * This function is called when the user toggles the
+     * CssColorPreview preference and set it to true
+     */
+    function addColorMarksToAllEditors() {
+
+        const allActiveEditors = MainViewManager.getAllViewedEditors();
+
+        allActiveEditors.forEach((activeEditor) => {
+            const currEditor = activeEditor.editor;
+            if(currEditor) {
+
+                const aColors = _getAllColorsAndLineNums(currEditor);
+                showGutters(currEditor, aColors);
+
+            }
+        });
+    }
+
+    /**
+     * To remove the color marks from the gutter of all the active editors
      */
     function removeColorMarks() {
-        const editor = EditorManager.getActiveEditor();
-        if (editor) {
-            const cm = editor._codeMirror;
-            cm.clearGutter(gutterName);
-        }
+
+        const allActiveEditors = MainViewManager.getAllViewedEditors();
+
+        allActiveEditors.forEach((activeEditor) => {
+            const currEditor = activeEditor.editor;
+            if(currEditor) {
+                const cm = currEditor._codeMirror;
+                cm.clearGutter(gutterName);
+            }
+        });
     }
 
     /**
@@ -225,9 +266,11 @@ define(function (require, exports, module) {
         const value = PreferencesManager.get(PREFERENCES_CSS_COLOR_PREVIEW);
         enabled = value;
         if (!value) {
+            // to dynamically remove color to all active editors
             removeColorMarks();
         } else {
-            showColorMarks();
+            // to dynamically add color to all active editors
+            addColorMarksToAllEditors();
         }
     }
 
@@ -242,7 +285,8 @@ define(function (require, exports, module) {
      * Driver function, runs at the start of the program
      */
     function init() {
-        showColorMarks();
+        // preferenceChanged calls 'showColorMarks' or 'removeColorMarks'
+        preferenceChanged();
         registerHandlers();
     }
 
