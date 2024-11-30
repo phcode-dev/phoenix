@@ -1066,5 +1066,6 @@ define({
   "BEAUTIFY_OPTION_PROSE_WRAP": "Zabalte prózu, pokud přesahuje šířku tisku do souborů značek",
   "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Pokud je to možné, vytiskněte koncové čárky ve víceřádkových syntaktických strukturách oddělených čárkami",
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "true pro zobrazení vodicích čar odsazení, jinak false.",
-  "DESCRIPTION_HIDE_FIRST": "true pro zobrazení prvního vodícího řádku odsazení, jinak false."
+  "DESCRIPTION_HIDE_FIRST": "true pro zobrazení prvního vodícího řádku odsazení, jinak false.",
+  "DESCRIPTION_CSS_COLOR_PREVIEW": "true pro zobrazení náhledů barev v okapu, jinak false."
 });

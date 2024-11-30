@@ -1066,5 +1066,6 @@ define({
   "BEAUTIFY_OPTION_PROSE_WRAP": "Prosa umbrechen, wenn sie die Druckbreite in Markdown-Dateien überschreitet",
   "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Geben Sie, wo immer möglich, nachgestellte Kommas in mehrzeiligen, durch Kommas getrennten syntaktischen Strukturen aus",
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "„True“, um Einzugshilfslinien anzuzeigen, sonst „False“.",
-  "DESCRIPTION_HIDE_FIRST": "„True“, um die erste Einzugshilfszeile anzuzeigen, andernfalls „False“."
+  "DESCRIPTION_HIDE_FIRST": "„True“, um die erste Einzugshilfszeile anzuzeigen, andernfalls „False“.",
+  "DESCRIPTION_CSS_COLOR_PREVIEW": "„true“, um Farbvorschauen im Rand anzuzeigen, sonst „false“."
 });

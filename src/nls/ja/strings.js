@@ -1066,5 +1066,6 @@ define({
   "BEAUTIFY_OPTION_PROSE_WRAP": "マークダウンファイルの印刷幅を超える場合は文章を折り返す",
   "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "複数行のコンマ区切りの構文構造では、可能な限り末尾のコンマを出力します",
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "インデントガイドラインを表示する場合は true、それ以外の場合は false です。",
-  "DESCRIPTION_HIDE_FIRST": "最初のインデント ガイドラインを表示する場合は true、そうでない場合は false です。"
+  "DESCRIPTION_HIDE_FIRST": "最初のインデント ガイドラインを表示する場合は true、そうでない場合は false です。",
+  "DESCRIPTION_CSS_COLOR_PREVIEW": "ガターにカラープレビューを表示する場合は true、それ以外の場合は false です。"
 });

@@ -1066,5 +1066,6 @@ define({
   "BEAUTIFY_OPTION_PROSE_WRAP": "نثر کو لپیٹیں اگر یہ مارک ڈاؤن فائلوں میں پرنٹ کی چوڑائی سے زیادہ ہے۔",
   "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "ملٹی لائن کوما سے الگ کردہ نحوی ڈھانچے میں جہاں بھی ممکن ہو ٹریلنگ کوما پرنٹ کریں",
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "انڈینٹ گائیڈ لائنز دکھانے کے لیے true، ورنہ غلط۔",
-  "DESCRIPTION_HIDE_FIRST": "پہلی انڈینٹ گائیڈ لائن کو دکھانے کے لیے صحیح ورنہ غلط۔"
+  "DESCRIPTION_HIDE_FIRST": "پہلی انڈینٹ گائیڈ لائن کو دکھانے کے لیے صحیح ورنہ غلط۔",
+  "DESCRIPTION_CSS_COLOR_PREVIEW": "گٹر میں رنگین مناظر ظاہر کرنے کے لیے درست، ورنہ غلط۔"
 });

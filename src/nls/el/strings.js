@@ -1066,5 +1066,6 @@ define({
   "BEAUTIFY_OPTION_PROSE_WRAP": "Τυλίξτε πρόζα εάν υπερβαίνει το πλάτος εκτύπωσης στα αρχεία σήμανσης",
   "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Εκτυπώστε τελικά κόμματα όπου είναι δυνατόν σε συντακτικές δομές πολλαπλών γραμμών διαχωρισμένων με κόμματα",
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "true για να εμφανίζει τις κατευθυντήριες γραμμές εσοχή, αλλιώς false.",
-  "DESCRIPTION_HIDE_FIRST": "true για να εμφανίζεται η πρώτη γραμμή Οδηγού εσοχής αλλιώς false."
+  "DESCRIPTION_HIDE_FIRST": "true για να εμφανίζεται η πρώτη γραμμή Οδηγού εσοχής αλλιώς false.",
+  "DESCRIPTION_CSS_COLOR_PREVIEW": "true για την εμφάνιση προεπισκοπήσεων χρωμάτων στην υδρορροή, αλλιώς false."
 });

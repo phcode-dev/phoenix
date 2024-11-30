@@ -1066,5 +1066,6 @@ define({
   "BEAUTIFY_OPTION_PROSE_WRAP": "Kääri proosa, jos se ylittää painoleveyden merkintätiedostoissa",
   "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Tulosta loppupilkut aina kun mahdollista monirivisissä pilkuilla erotetuissa syntaktisissa rakenteissa",
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "tosi näyttääksesi sisennyksen ohjeviivat, muuten epätosi.",
-  "DESCRIPTION_HIDE_FIRST": "tosi näyttääksesi ensimmäisen sisennyksen ohjeviivan, muuten epätosi."
+  "DESCRIPTION_HIDE_FIRST": "tosi näyttääksesi ensimmäisen sisennyksen ohjeviivan, muuten epätosi.",
+  "DESCRIPTION_CSS_COLOR_PREVIEW": "tosi näyttääksesi värien esikatselun kourussa, muuten false."
 });

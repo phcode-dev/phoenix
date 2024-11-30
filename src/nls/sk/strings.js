@@ -1066,5 +1066,6 @@ define({
   "BEAUTIFY_OPTION_PROSE_WRAP": "Zabaľte prózu, ak presahuje šírku tlače do súborov značiek",
   "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Vždy, keď je to možné, tlačte koncové čiarky vo viacriadkových syntaktických štruktúrach oddelených čiarkami",
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "true, ak chcete zobraziť vodiace čiary odsadenia, inak nepravda.",
-  "DESCRIPTION_HIDE_FIRST": "true, aby sa zobrazil prvý vodiaci riadok odsadenia, inak je nepravda."
+  "DESCRIPTION_HIDE_FIRST": "true, aby sa zobrazil prvý vodiaci riadok odsadenia, inak je nepravda.",
+  "DESCRIPTION_CSS_COLOR_PREVIEW": "true na zobrazenie náhľadov farieb v odkvape, inak false."
 });

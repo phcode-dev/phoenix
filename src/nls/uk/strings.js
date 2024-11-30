@@ -1066,5 +1066,6 @@ define({
   "BEAUTIFY_OPTION_PROSE_WRAP": "Оберніть прозу, якщо вона перевищує ширину друку у файлах розмітки",
   "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Друк завершальних ком, де це можливо, у багаторядкових синтаксичних структурах, розділених комами",
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "true, щоб показувати напрямні лінії відступу, інакше, false.",
-  "DESCRIPTION_HIDE_FIRST": "true, щоб показати перший напрямний рядок відступу, else false."
+  "DESCRIPTION_HIDE_FIRST": "true, щоб показати перший напрямний рядок відступу, else false.",
+  "DESCRIPTION_CSS_COLOR_PREVIEW": "true для відображення попереднього перегляду кольорів у каналі, інакше false."
 });

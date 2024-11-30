@@ -1066,5 +1066,6 @@ define({
   "BEAUTIFY_OPTION_PROSE_WRAP": "Bungkus prosa jika melebihi lebar cetak dalam file penurunan harga",
   "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Cetak tanda koma sedapat mungkin dalam struktur sintaksis multi-baris yang dipisahkan koma",
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "benar untuk memperlihatkan garis panduan indentasi, jika tidak, salah.",
-  "DESCRIPTION_HIDE_FIRST": "benar untuk menampilkan baris Panduan Indentasi pertama, jika tidak salah."
+  "DESCRIPTION_HIDE_FIRST": "benar untuk menampilkan baris Panduan Indentasi pertama, jika tidak salah.",
+  "DESCRIPTION_CSS_COLOR_PREVIEW": "benar untuk menampilkan pratinjau warna di selokan, jika tidak, salah."
 });

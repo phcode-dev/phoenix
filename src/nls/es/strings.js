@@ -1066,5 +1066,6 @@ define({
   "BEAUTIFY_OPTION_PROSE_WRAP": "Envuelva la prosa si excede el ancho de impresión en los archivos de rebajas",
   "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Imprima comas finales siempre que sea posible en estructuras sintácticas separadas por comas de varias líneas",
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "verdadero para mostrar líneas guía de sangría, de lo contrario falso.",
-  "DESCRIPTION_HIDE_FIRST": "verdadero para mostrar la primera línea de la Guía de sangría, de lo contrario falso."
+  "DESCRIPTION_HIDE_FIRST": "verdadero para mostrar la primera línea de la Guía de sangría, de lo contrario falso.",
+  "DESCRIPTION_CSS_COLOR_PREVIEW": "verdadero para mostrar vistas previas de color en el margen, de lo contrario falso."
 });

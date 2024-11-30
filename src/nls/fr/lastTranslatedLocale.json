@@ -1046,5 +1046,6 @@
   "BEAUTIFY_OPTION_PROSE_WRAP": "Enveloppez la prose si elle dépasse la largeur d'impression dans les fichiers Markdown",
   "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Imprimer des virgules de fin dans la mesure du possible dans des structures syntaxiques multilignes séparées par des virgules",
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "vrai pour afficher les lignes de guide d'indentation, sinon faux.",
-  "DESCRIPTION_HIDE_FIRST": "vrai pour afficher la première ligne du guide d'indentation, sinon faux."
+  "DESCRIPTION_HIDE_FIRST": "vrai pour afficher la première ligne du guide d'indentation, sinon faux.",
+  "DESCRIPTION_CSS_COLOR_PREVIEW": "vrai pour afficher les aperçus des couleurs dans la gouttière, sinon faux."
 }

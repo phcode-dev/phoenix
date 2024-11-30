@@ -1066,5 +1066,6 @@ define({
   "BEAUTIFY_OPTION_PROSE_WRAP": "İşaretleme dosyalarında baskı genişliğini aşarsa düzyazıyı sarın",
   "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Çok satırlı virgülle ayrılmış sözdizimsel yapılarda mümkün olan her yerde sondaki virgülleri yazdırın",
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "girinti kılavuz çizgilerini göstermek için true, aksi takdirde false.",
-  "DESCRIPTION_HIDE_FIRST": "İlk Girinti Kılavuzu satırını göstermek için doğru, aksi takdirde yanlış."
+  "DESCRIPTION_HIDE_FIRST": "İlk Girinti Kılavuzu satırını göstermek için doğru, aksi takdirde yanlış.",
+  "DESCRIPTION_CSS_COLOR_PREVIEW": "oluklarda renkli önizlemeleri görüntülemek için true, aksi takdirde false değerini kullanın."
 });

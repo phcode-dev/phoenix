@@ -1066,5 +1066,6 @@ define({
   "BEAUTIFY_OPTION_PROSE_WRAP": "Zamotajte prozu ako premašuje širinu ispisa u datotekama za označavanje",
   "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Ispis zareza na kraju gdje god je to moguće u sintaktičkim strukturama s više redaka odvojenih zarezima",
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "true za prikaz uvlačnih linija smjernica, inače false.",
-  "DESCRIPTION_HIDE_FIRST": "true za prikaz prve linije smjernice za uvlačenje else false."
+  "DESCRIPTION_HIDE_FIRST": "true za prikaz prve linije smjernice za uvlačenje else false.",
+  "DESCRIPTION_CSS_COLOR_PREVIEW": "true za prikaz pregleda boja u oluku, inače false."
 });

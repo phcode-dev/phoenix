@@ -1046,5 +1046,6 @@
   "BEAUTIFY_OPTION_PROSE_WRAP": "Slå in prosa om den överskrider utskriftsbredden i markdown-filer",
   "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Skriv ut avslutande kommatecken där det är möjligt i flerrads kommaseparerade syntaktiska strukturer",
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "sant för att visa indragsriktlinjer, annars falskt.",
-  "DESCRIPTION_HIDE_FIRST": "sant för att visa den första indragslinjen annars falsk."
+  "DESCRIPTION_HIDE_FIRST": "sant för att visa den första indragslinjen annars falsk.",
+  "DESCRIPTION_CSS_COLOR_PREVIEW": "sant för att visa färgförhandsvisningar i rännstenen, annars falskt."
 }
