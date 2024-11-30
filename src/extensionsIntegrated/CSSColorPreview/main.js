@@ -25,28 +25,30 @@
 define(function (require, exports, module) {
 
     // Brackets modules.
-    var _ = brackets.getModule("thirdparty/lodash"),
-        EditorManager = brackets.getModule('editor/EditorManager'),
-        ExtensionUtils = brackets.getModule("utils/ExtensionUtils"),
-        ColorUtils = brackets.getModule('utils/ColorUtils'),
-        AppInit = brackets.getModule("utils/AppInit"),
-        PreferencesManager = brackets.getModule("preferences/PreferencesManager"),
-        Strings = brackets.getModule("strings"),
+    const _                 = require("thirdparty/lodash"),
+        EditorManager       = require('editor/EditorManager'),
+        ExtensionUtils      = require("utils/ExtensionUtils"),
+        ColorUtils          = require('utils/ColorUtils'),
+        AppInit             = require("utils/AppInit"),
+        PreferencesManager  = require("preferences/PreferencesManager"),
+        Strings             = require("strings");
 
-        // Extension variables.
-        COLOR_REGEX = ColorUtils.COLOR_REGEX,    // used to match color
-        gutterName = "CodeMirror-colorGutter";
+    // Extension variables.
+    const COLOR_REGEX       = ColorUtils.COLOR_REGEX,    // used to match color
+        gutterName          = "CodeMirror-colorGutter";
+
 
     ExtensionUtils.loadStyleSheet(module, "main.css");
 
+    // For preferences settings, to toggle this feature on/off
     const PREFERENCES_CSS_COLOR_PREVIEW = "CSSColorPreview";
-    let enabled = true;
+    let enabled = true; // by default:- on
 
     PreferencesManager.definePreference(PREFERENCES_CSS_COLOR_PREVIEW, "boolean", enabled, {
         description: Strings.DESCRIPTION_CSS_COLOR_PREVIEW
     });
 
-    var CssColorPreview = {
+    const CssColorPreview = {
 
         // Get editor
         getEditor: function () {
@@ -61,27 +63,27 @@ define(function (require, exports, module) {
                 return;
             }
 
-            var editor = CssColorPreview.getEditor();
+            const editor = CssColorPreview.getEditor();
             if (editor) {
 
-                var cm = editor._codeMirror;
-                var nLen = cm.lineCount();
-                var aColors = [];
+                const cm = editor._codeMirror;
+                const nLen = cm.lineCount();
+                const aColors = [];
 
                 // match colors and push into an array
-                for (var i = 0; i < nLen; i++) {
-                    var lineText = cm.getLine(i);
+                for (let i = 0; i < nLen; i++) {
+                    let lineText = cm.getLine(i);
 
                     if ((lineText.indexOf('/*') !== -1) || (lineText.indexOf('*/') !== -1)) {
                         continue;
                     } else {
-                        var regx = /:.*?;/g;
+                        let regx = /:.*?;/g;
                         lineText = lineText.match(regx);
                         if (lineText) {
-                            var tempColors = lineText[0].match(COLOR_REGEX);
+                            let tempColors = lineText[0].match(COLOR_REGEX);
                             // Support up to 4 colors
                             if (tempColors && tempColors.length > 0) {
-                                var colors = tempColors.slice(0, 4);
+                                let colors = tempColors.slice(0, 4);
                                 aColors.push({
                                     lineNumber: i,
                                     colorValues: colors
@@ -113,14 +115,14 @@ define(function (require, exports, module) {
                 if (newEditor) {
                     // Unbind the previous editor's change event if it exists
                     if (oldEditor) {
-                        var oldCM = oldEditor._codeMirror;
+                        const oldCM = oldEditor._codeMirror;
                         if (oldCM) {
                             oldCM.off("change", CssColorPreview.onChanged);
                         }
                     }
 
                     // Bind change event to the new editor
-                    var cm = newEditor._codeMirror;
+                    const cm = newEditor._codeMirror;
                     if (cm) {
                         cm.on("change", CssColorPreview.onChanged);
                     }
@@ -143,9 +145,9 @@ define(function (require, exports, module) {
 
         initGutter: function (editor) {
 
-            var cm = editor._codeMirror;
-            var gutters = cm.getOption("gutters").slice(0);
-            var str = gutters.join('');
+            const cm = editor._codeMirror;
+            const gutters = cm.getOption("gutters").slice(0);
+            let str = gutters.join('');
             if (str.indexOf(gutterName) === -1) {
                 gutters.unshift(gutterName);
                 cm.setOption("gutters", gutters);
@@ -155,7 +157,7 @@ define(function (require, exports, module) {
         showGutters: function (editor, _results) {
             if (editor && enabled) {
                 CssColorPreview.initGutter(editor);
-                var cm = editor._codeMirror;
+                const cm = editor._codeMirror;
                 cm.clearGutter(gutterName); // clear color markers
 
                 // Only add markers if enabled
@@ -206,16 +208,16 @@ define(function (require, exports, module) {
 
         // Method to remove colors when disabled
         removeColorMarks: function () {
-            var editor = CssColorPreview.getEditor();
+            const editor = CssColorPreview.getEditor();
             if (editor) {
-                var cm = editor._codeMirror;
+                const cm = editor._codeMirror;
                 cm.clearGutter(gutterName);
             }
         }
     };
 
     function preferenceChanged() {
-        let value = PreferencesManager.get(PREFERENCES_CSS_COLOR_PREVIEW);
+        const value = PreferencesManager.get(PREFERENCES_CSS_COLOR_PREVIEW);
         enabled = value;
         if (!value) {
             CssColorPreview.removeColorMarks();

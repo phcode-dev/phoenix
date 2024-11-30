@@ -42,4 +42,5 @@ define(function (require, exports, module) {
     require("./appUpdater/main");
     require("./HtmlTagSyncEdit/main");
     require("./indentGuides/main");
+    require("./CSSColorPreview/main");
 });
