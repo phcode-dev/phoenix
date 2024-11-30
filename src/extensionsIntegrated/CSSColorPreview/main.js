@@ -77,7 +77,8 @@ define(function (require, exports, module) {
                     if ((lineText.indexOf('/*') !== -1) || (lineText.indexOf('*/') !== -1)) {
                         continue;
                     } else {
-                        let regx = /:.*?;/g;
+                        let regx = /:[^;]*;/g;
+
                         lineText = lineText.match(regx);
                         if (lineText) {
                             let tempColors = lineText[0].match(COLOR_REGEX);
