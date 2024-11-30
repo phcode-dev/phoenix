@@ -1066,5 +1066,6 @@ define({
   "BEAUTIFY_OPTION_PROSE_WRAP": "لف النثر إذا تجاوز عرض الطباعة في ملفات مارك داون",
   "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "اطبع الفواصل اللاحقة كلما أمكن ذلك في هياكل نحوية متعددة الأسطر مفصولة بفواصل",
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "صحيح لإظهار خطوط إرشاد المسافة البادئة، وإلا فهو خطأ.",
-  "DESCRIPTION_HIDE_FIRST": "صحيح لإظهار أول سطر من دليل المسافة البادئة، وإلا فهو خطأ."
+  "DESCRIPTION_HIDE_FIRST": "صحيح لإظهار أول سطر من دليل المسافة البادئة، وإلا فهو خطأ.",
+  "DESCRIPTION_CSS_COLOR_PREVIEW": "صحيح لعرض معاينات الألوان في الهامش، وإلا فهو خطأ."
 });

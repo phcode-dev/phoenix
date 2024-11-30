@@ -1066,5 +1066,6 @@ define({
   "BEAUTIFY_OPTION_PROSE_WRAP": "Enrole prosa se exceder a largura de impressão em arquivos de remarcação",
   "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Imprima vírgulas à direita sempre que possível em estruturas sintáticas de várias linhas separadas por vírgulas",
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "true para mostrar linhas de guia de recuo, caso contrário false.",
-  "DESCRIPTION_HIDE_FIRST": "true para mostrar a primeira linha do Guia de Recuo, caso contrário false."
+  "DESCRIPTION_HIDE_FIRST": "true para mostrar a primeira linha do Guia de Recuo, caso contrário false.",
+  "DESCRIPTION_CSS_COLOR_PREVIEW": "true para exibir visualizações de cores na medianiz, caso contrário false."
 });

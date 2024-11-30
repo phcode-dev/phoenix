@@ -1066,5 +1066,6 @@ define({
   "BEAUTIFY_OPTION_PROSE_WRAP": "Indpak prosa, hvis den overskrider printbredden i markdown-filer",
   "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Udskriv efterstillede kommaer, hvor det er muligt, i kommaseparerede syntaktiske strukturer med flere linjer",
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "sandt for at vise indrykke hjælpelinjer, ellers falsk.",
-  "DESCRIPTION_HIDE_FIRST": "sand for at vise den første indrykningslinje ellers falsk."
+  "DESCRIPTION_HIDE_FIRST": "sand for at vise den første indrykningslinje ellers falsk.",
+  "DESCRIPTION_CSS_COLOR_PREVIEW": "sand for at vise farveforhåndsvisninger i rendestenen, ellers falsk."
 });

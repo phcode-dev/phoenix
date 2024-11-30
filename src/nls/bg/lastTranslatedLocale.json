@@ -1046,5 +1046,6 @@
   "BEAUTIFY_OPTION_PROSE_WRAP": "Обвийте прозата, ако надвишава ширината на печат във файловете за маркиране",
   "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Отпечатване на запетая в края, където е възможно, в многоредови синтактични структури, разделени със запетая",
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "true за показване на направляващи линии за отстъп, в противен случай е false.",
-  "DESCRIPTION_HIDE_FIRST": "true за показване на първия направляващ ред за отстъпи else false."
+  "DESCRIPTION_HIDE_FIRST": "true за показване на първия направляващ ред за отстъпи else false.",
+  "DESCRIPTION_CSS_COLOR_PREVIEW": "true за показване на цветни визуализации в канавката, иначе false."
 }

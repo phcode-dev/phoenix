@@ -1046,5 +1046,6 @@
   "BEAUTIFY_OPTION_PROSE_WRAP": "Zawijaj prozę, jeśli przekracza szerokość wydruku w plikach przecen",
   "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Drukuj końcowe przecinki tam, gdzie to możliwe, w wielowierszowych strukturach składniowych oddzielonych przecinkami",
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "true, aby wyświetlić linie pomocnicze wcięcia, w przeciwnym wypadku false.",
-  "DESCRIPTION_HIDE_FIRST": "true, aby wyświetlić pierwszą linię prowadnicy wcięcia, w przeciwnym wypadku false."
+  "DESCRIPTION_HIDE_FIRST": "true, aby wyświetlić pierwszą linię prowadnicy wcięcia, w przeciwnym wypadku false.",
+  "DESCRIPTION_CSS_COLOR_PREVIEW": "true, aby wyświetlić podgląd kolorów w rynnie, w przeciwnym wypadku false."
 }

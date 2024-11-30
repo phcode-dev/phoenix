@@ -1066,5 +1066,6 @@ define({
   "BEAUTIFY_OPTION_PROSE_WRAP": "Aptiniet prozu, ja tas pārsniedz drukas platumu atzīmes failos",
   "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Drukājiet beigu komatus, kur vien iespējams, vairāku rindiņu komatu atdalītās sintaktiskās struktūrās",
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "patiess, lai parādītu vadlīniju atkāpi, pretējā gadījumā nepatiesi.",
-  "DESCRIPTION_HIDE_FIRST": "patiess, lai parādītu pirmo atkāpes vadlīniju līniju, pretējā gadījumā nepatiesi."
+  "DESCRIPTION_HIDE_FIRST": "patiess, lai parādītu pirmo atkāpes vadlīniju līniju, pretējā gadījumā nepatiesi.",
+  "DESCRIPTION_CSS_COLOR_PREVIEW": "patiess, lai notekcaurulē parādītu krāsu priekšskatījumus, pretējā gadījumā nepatiesi."
 });

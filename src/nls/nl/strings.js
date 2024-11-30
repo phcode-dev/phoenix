@@ -1066,5 +1066,6 @@ define({
   "BEAUTIFY_OPTION_PROSE_WRAP": "Wikkel proza als het de afdrukbreedte overschrijdt in markdown-bestanden",
   "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Print volgkomma's waar mogelijk in syntactische structuren met meerdere regels, gescheiden door komma's",
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "true om inspringingsrichtlijnen weer te geven, anders false.",
-  "DESCRIPTION_HIDE_FIRST": "true om de eerste Indent Guide-regel weer te geven, anders false."
+  "DESCRIPTION_HIDE_FIRST": "true om de eerste Indent Guide-regel weer te geven, anders false.",
+  "DESCRIPTION_CSS_COLOR_PREVIEW": "true om kleurvoorbeelden in de goot weer te geven, anders false."
 });
