@@ -2,7 +2,10 @@
 // Check `extensionsIntegrated/CSSColorPreview for more reference
 /* Single color preview */
 .ico-cssColorPreview {
-    border: solid 1px rgba(0, 0, 0, 0.2);
+    border: solid 1px rgba(255, 255, 255, 0.2);
+    .dark & {
+        border: solid 1px rgba(0, 0, 0, 0.2);
+    }
     display: inline-block;
     top: .1em;
     height:.7em;
@@ -13,13 +16,16 @@
 
 /* Multiple colors preview container (this is a div) */
 .ico-multiple-cssColorPreview {
+    border: solid 1px rgba(255, 255, 255, 0.2);
+    .dark & {
+        border: solid 1px rgba(0, 0, 0, 0.2);
+    }
     position: relative;
     display: inline-block;
     top: .1em;
     width: .7em;
     height:.7em;
     margin-left: .15em;
-    border: solid 1px rgba(0, 0, 0, 0.2);
 }
 
 /* For individual color boxes, they will be added inside the main .ico-multiple-cssColorPreview div */
