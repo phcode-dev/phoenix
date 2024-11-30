@@ -1066,5 +1066,6 @@ define({
   "BEAUTIFY_OPTION_PROSE_WRAP": "Csomagolja be a prózát, ha meghaladja a nyomtatási szélességet a leíró fájlokban",
   "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "A többsoros, vesszővel elválasztott szintaktikai struktúrákban lehetőség szerint nyomtasson záró vesszőt",
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "igaz a behúzás irányvonalainak megjelenítéséhez, különben hamis.",
-  "DESCRIPTION_HIDE_FIRST": "igaz, hogy az első behúzás segédvonalat mutassa, különben hamis."
+  "DESCRIPTION_HIDE_FIRST": "igaz, hogy az első behúzás segédvonalat mutassa, különben hamis.",
+  "DESCRIPTION_CSS_COLOR_PREVIEW": "igaz a színes előnézetek megjelenítéséhez az ereszcsatornában, egyébként hamis."
 });

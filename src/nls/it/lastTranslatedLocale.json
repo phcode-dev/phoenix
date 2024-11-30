@@ -1046,5 +1046,6 @@
   "BEAUTIFY_OPTION_PROSE_WRAP": "Avvolgi la prosa se supera la larghezza di stampa nei file markdown",
   "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Stampa le virgole finali, ove possibile, in strutture sintattiche separate da virgole su più righe",
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "true per mostrare le linee guida di rientro, altrimenti false.",
-  "DESCRIPTION_HIDE_FIRST": "true per mostrare la prima riga della guida di rientro, altrimenti false."
+  "DESCRIPTION_HIDE_FIRST": "true per mostrare la prima riga della guida di rientro, altrimenti false.",
+  "DESCRIPTION_CSS_COLOR_PREVIEW": "true per visualizzare le anteprime dei colori nella spaziatura, altrimenti false."
 }

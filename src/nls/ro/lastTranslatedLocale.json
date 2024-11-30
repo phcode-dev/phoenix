@@ -1046,5 +1046,6 @@
   "BEAUTIFY_OPTION_PROSE_WRAP": "Înfășurați proza dacă depășește lățimea de tipărire în fișierele de reducere",
   "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "Tipăriți virgulele finale ori de câte ori este posibil în structuri sintactice separate prin virgulă cu mai multe linii",
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "adevărat pentru a afișa liniile de ghidare de indentare, altfel fals.",
-  "DESCRIPTION_HIDE_FIRST": "true pentru a afișa prima linie de ghidare de indentare, altfel false."
+  "DESCRIPTION_HIDE_FIRST": "true pentru a afișa prima linie de ghidare de indentare, altfel false.",
+  "DESCRIPTION_CSS_COLOR_PREVIEW": "true pentru a afișa previzualizările de culoare în jgheab, altfel false."
 }

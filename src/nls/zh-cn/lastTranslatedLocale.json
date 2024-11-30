@@ -1046,5 +1046,6 @@
   "BEAUTIFY_OPTION_PROSE_WRAP": "如果散文超过 Markdown 文件中的打印宽度，则包装散文",
   "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "在多行逗号分隔的句法结构中尽可能打印尾随逗号",
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "如果为 true，则显示缩进指导线，否则为 false。",
-  "DESCRIPTION_HIDE_FIRST": "true 则显示第一个缩进指引线，否则为 false。"
+  "DESCRIPTION_HIDE_FIRST": "true 则显示第一个缩进指引线，否则为 false。",
+  "DESCRIPTION_CSS_COLOR_PREVIEW": "如果为 true，则在边缘显示颜色预览，否则为 false。"
 }

@@ -1066,5 +1066,6 @@ define({
   "BEAUTIFY_OPTION_PROSE_WRAP": "如果散文超過 Markdown 文件中的打印寬度，則包裝散文",
   "BEAUTIFY_OPTION_PRINT_TRAILING_COMMAS": "在多行逗號分隔的句法結構中盡可能打印尾隨逗號",
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "true 則顯示縮排引導線，否則 false。",
-  "DESCRIPTION_HIDE_FIRST": "true 則顯示第一個縮排引導線，否則 false。"
+  "DESCRIPTION_HIDE_FIRST": "true 則顯示第一個縮排引導線，否則 false。",
+  "DESCRIPTION_CSS_COLOR_PREVIEW": "true 則在裝訂線中顯示顏色預覽，否則 false。"
 });
