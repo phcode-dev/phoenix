@@ -36,6 +36,7 @@
         "husky": "^7.0.4",
         "jasmine-core": "^4.2.0",
         "jasmine-reporters": "^2.5.0",
+        "jsdoc-to-markdown": "^9.1.1",
         "readable-stream": "^3.6.0",
         "through2": "^4.0.2"
     },
