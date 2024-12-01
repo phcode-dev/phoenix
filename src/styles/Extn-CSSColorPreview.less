@@ -1,6 +1,13 @@
 // These styles are for CssColorPreview feature
 // Check `extensionsIntegrated/CSSColorPreview for more reference
 /* Single color preview */
+
+.CodeMirror .CodeMirror-colorGutter {
+    width: 1em;
+    background-color: transparent;
+    text-align: center;
+}
+
 .ico-cssColorPreview {
     border: solid 1px rgba(255, 255, 255, 0.2);
     .dark & {
@@ -10,7 +17,6 @@
     top: .1em;
     height:.7em;
     width: .7em;
-    margin-left: .15em;
     position: relative;
 }
 
@@ -22,16 +28,15 @@
     }
     position: relative;
     display: inline-block;
-    top: .1em;
-    width: .7em;
-    height:.7em;
-    margin-left: .15em;
+    top: .2em;
+    width: .9em;
+    height:.9em;
 }
 
 /* For individual color boxes, they will be added inside the main .ico-multiple-cssColorPreview div */
 .ico-multiple-cssColorPreview .color-box {
     position: absolute;
-    width: .3em;
-    height: .3em;
+    width: .4em;
+    height: .4em;
     box-sizing: border-box;
 }

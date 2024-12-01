@@ -30,13 +30,17 @@ define(function (require, exports, module) {
         EditorManager       = require('editor/EditorManager'),
         ColorUtils          = require('utils/ColorUtils'),
         AppInit             = require("utils/AppInit"),
+        Editor              = require("editor/Editor").Editor,
         PreferencesManager  = require("preferences/PreferencesManager"),
         MainViewManager     = require("view/MainViewManager"),
         Strings             = require("strings");
 
     // Extension variables.
     const COLOR_REGEX       = ColorUtils.COLOR_REGEX,    // used to match color
-        gutterName          = "CodeMirror-colorGutter";
+        GUTTER_NAME          = "CodeMirror-colorGutter",
+        COLOR_PREVIEW_GUTTER_PRIORITY = 200,
+        COLOR_LANGUAGES= ["css", "scss", "less", "sass", "stylus", "html", "svg", "jsx", "tsx",
+            "php", "ejs", "erb_html", "pug"];
 
 
     // For preferences settings, to toggle this feature on/off
@@ -101,10 +105,7 @@ define(function (require, exports, module) {
 
         const editor = EditorManager.getActiveEditor();
         if (editor) {
-
-            const aColors = _getAllColorsAndLineNums(editor);
-            showGutters(editor, aColors);
-
+            showGutters(editor, _getAllColorsAndLineNums(editor));
         }
     }
 
@@ -115,16 +116,13 @@ define(function (require, exports, module) {
      * CssColorPreview preference and set it to true
      */
     function addColorMarksToAllEditors() {
-
         const allActiveEditors = MainViewManager.getAllViewedEditors();
 
         allActiveEditors.forEach((activeEditor) => {
             const currEditor = activeEditor.editor;
             if(currEditor) {
-
                 const aColors = _getAllColorsAndLineNums(currEditor);
                 showGutters(currEditor, aColors);
-
             }
         });
     }
@@ -139,8 +137,7 @@ define(function (require, exports, module) {
         allActiveEditors.forEach((activeEditor) => {
             const currEditor = activeEditor.editor;
             if(currEditor) {
-                const cm = currEditor._codeMirror;
-                cm.clearGutter(gutterName);
+                currEditor.clearGutter(GUTTER_NAME);
             }
         });
     }
@@ -155,7 +152,8 @@ define(function (require, exports, module) {
         if (editor && enabled) {
             initGutter(editor);
             const cm = editor._codeMirror;
-            cm.clearGutter(gutterName); // clear color markers
+            editor.clearGutter(GUTTER_NAME); // clear color markers
+            _addDummyGutterMarkerIfNotExist(editor, editor.getCursorPos().line);
 
             // Only add markers if enabled
             if (enabled) {
@@ -170,7 +168,7 @@ define(function (require, exports, module) {
                             .addClass("ico-cssColorPreview")
                             .css('background-color', obj.colorValues[0]);
 
-                        cm.setGutterMarker(obj.lineNumber, gutterName, $marker[0]);
+                        editor.setGutterMarker(obj.lineNumber, GUTTER_NAME, $marker[0]);
                     } else {
                         // Multiple colors preview
                         $marker = $("<div>").addClass("ico-multiple-cssColorPreview");
@@ -195,7 +193,7 @@ define(function (require, exports, module) {
                             }
                         });
 
-                        cm.setGutterMarker(obj.lineNumber, gutterName, $marker[0]);
+                        editor.setGutterMarker(obj.lineNumber, GUTTER_NAME, $marker[0]);
                     }
                 });
             }
@@ -209,14 +207,25 @@ define(function (require, exports, module) {
      * @param {activeEditor} editor
      */
     function initGutter(editor) {
-
-        const cm = editor._codeMirror;
-        const gutters = cm.getOption("gutters").slice(0);
-        let str = gutters.join('');
-        if (str.indexOf(gutterName) === -1) {
-            gutters.unshift(gutterName);
-            cm.setOption("gutters", gutters);
+        if (!Editor.isGutterRegistered(GUTTER_NAME)) {
+            // we should restrict the languages here to Editor.registerGutter(..., ["css", "less", "scss", etc..]);
+            // TODO we should show the gutter in those languages only if a color is present in that file.
+            Editor.registerGutter(GUTTER_NAME, COLOR_PREVIEW_GUTTER_PRIORITY, COLOR_LANGUAGES);
         }
+    }
+
+    function _addDummyGutterMarkerIfNotExist(editor, line) {
+        let marker = editor.getGutterMarker(line, GUTTER_NAME);
+        if(!marker){
+            let $marker = $('<div>')
+                .addClass(GUTTER_NAME);
+            editor.setGutterMarker(line, GUTTER_NAME, $marker[0]);
+        }
+    }
+
+    function _cursorActivity(_evt, editor){
+        // this is to prevent a gutter gap in the active line if there is no color on this line.
+        _addDummyGutterMarkerIfNotExist(editor, editor.getCursorPos().line);
     }
 
     /**
@@ -229,6 +238,8 @@ define(function (require, exports, module) {
         // Add listener for all editor changes
         EditorManager.on("activeEditorChange", function (event, newEditor, oldEditor) {
             if (newEditor) {
+                newEditor.off("cursorActivity.colorPreview");
+                newEditor.on("cursorActivity.colorPreview", _cursorActivity);
                 // Unbind the previous editor's change event if it exists
                 if (oldEditor) {
                     const oldCM = oldEditor._codeMirror;
