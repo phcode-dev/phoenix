@@ -238,6 +238,7 @@ define(function (require, exports, module) {
         // Add listener for all editor changes
         EditorManager.on("activeEditorChange", function (event, newEditor, oldEditor) {
             if (newEditor) {
+                // todo: only attach if the color gutter is present as we disable it in certain languages
                 newEditor.off("cursorActivity.colorPreview");
                 newEditor.on("cursorActivity.colorPreview", _cursorActivity);
                 // Unbind the previous editor's change event if it exists

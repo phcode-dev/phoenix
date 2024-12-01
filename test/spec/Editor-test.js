@@ -2084,7 +2084,8 @@ define(function (require, exports, module) {
             var leftGutter = "left",
                 rightGutter = "right",
                 lineNumberGutter = "CodeMirror-linenumbers",
-                codeInspectionGutter = "code-inspection-gutter";
+                codeInspectionGutter = "code-inspection-gutter",
+                colorGutter = "CodeMirror-colorGutter";
 
             beforeEach(function () {
                 createTestEditor("hello\nworld\nyo", "javascript");
@@ -2110,7 +2111,7 @@ define(function (require, exports, module) {
                     return gutter.name;
                 });
                 expect(gutters).toEqual(expectedGutters);
-                expect(registeredGutters).toEqual([...expectedGutters, codeInspectionGutter]);
+                expect(registeredGutters).toEqual([...expectedGutters, colorGutter, codeInspectionGutter]);
             });
 
             it("should isGutterRegistered work on multiple gutters", function () {
@@ -2124,19 +2125,25 @@ define(function (require, exports, module) {
                 var secondRightGutter = "second-right";
                 Editor.registerGutter(secondRightGutter, 101);
                 var expectedGutters = [leftGutter, lineNumberGutter, rightGutter, secondRightGutter];
-                var gutters  = myEditor._codeMirror.getOption("gutters");
+                var guttersInEditor  = myEditor._codeMirror.getOption("gutters");
                 var registeredGutters = Editor.getRegisteredGutters().map(function (gutter) {
                     return gutter.name;
                 });
-                expect(gutters).toEqual(expectedGutters);
-                expect(registeredGutters).toEqual(expectedGutters);
+                // registered color gutter is disabled in javascript files
+                expect(guttersInEditor.includes(colorGutter)).toBeFalse();
+                expect(registeredGutters.includes(colorGutter)).toBeTrue();
+                const allNonColorRegisteredGutters = registeredGutters.filter(function (gutter) {
+                    return gutter !== colorGutter;
+                });
+                expect(guttersInEditor).toEqual(expectedGutters);
+                expect(allNonColorRegisteredGutters).toEqual(expectedGutters);
             });
 
             it("should have only gutters registered with the intended languageIds ", function () {
                 var lessOnlyGutter = "less-only-gutter";
                 Editor.registerGutter(lessOnlyGutter, 101, ["less"]);
                 var expectedGutters = [leftGutter, lineNumberGutter, rightGutter];
-                var expectedRegisteredGutters = [leftGutter, lineNumberGutter, rightGutter, lessOnlyGutter];
+                var expectedRegisteredGutters = [leftGutter, lineNumberGutter, rightGutter, lessOnlyGutter, colorGutter];
                 var gutters  = myEditor._codeMirror.getOption("gutters");
                 var registeredGutters = Editor.getRegisteredGutters().map(function (gutter) {
                     return gutter.name;
@@ -2150,12 +2157,12 @@ define(function (require, exports, module) {
                 Editor.unregisterGutter(rightGutter);
                 Editor.registerGutter(leftGutter, 1);
                 var expectedGutters = [leftGutter, lineNumberGutter];
-                var gutters  = myEditor._codeMirror.getOption("gutters");
+                var guttersInEditor  = myEditor._codeMirror.getOption("gutters");
                 var registeredGutters = Editor.getRegisteredGutters().map(function (gutter) {
                     return gutter.name;
                 });
-                expect(gutters).toEqual(expectedGutters);
-                expect(registeredGutters).toEqual(expectedGutters);
+                expect(guttersInEditor).toEqual(expectedGutters); // js files dont have color gutter
+                expect(registeredGutters).toEqual([...expectedGutters, colorGutter]);
             });
 
             it("should set gutter marker correctly", function () {
