@@ -1131,6 +1131,17 @@ define(function (require, exports, module) {
     };
 
     /**
+     * Retrieves a single line text
+     * @param {number} lineNumber - The lineNumber to extract text from
+     * @returns {string|null} The text at the given position if within bounds,
+     *                        otherwise `null` if the position is out of range.
+     */
+    Editor.prototype.getLine = function (lineNumber) {
+        const retrievedText = this._codeMirror.getLine(lineNumber);
+        return retrievedText === undefined ? null : retrievedText;
+    };
+
+    /**
      * Retrieves a single character previous to the specified position in the editor in the same line if possible.
      * x|y where `|` is the cursor, will return x
      *
