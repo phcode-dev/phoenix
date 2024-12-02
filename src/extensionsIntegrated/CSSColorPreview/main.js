@@ -149,19 +149,14 @@ define(function (require, exports, module) {
      * @param {Editor} editor the codemirror instance
      * @param {Number} lineNumber the line number that is clicked
      * @param {string} colorValue the color value clicked
-     * @param {boolean} dontEdit if set to true,color editor won't be opened
      */
-    function _colorIconClicked(editor, lineNumber, colorValue, dontEdit) {
+    function _colorIconClicked(editor, lineNumber, colorValue) {
         const lineText = editor.getLine(lineNumber);
         const colorIndex = lineText.indexOf(colorValue);
         const currentPos = editor.getCursorPos(false, "start");
         if(!(currentPos.line === lineNumber && currentPos.ch === colorIndex)) {
             editor.setCursorPos(lineNumber, colorIndex);
             editor.focus();
-        }
-
-        if(dontEdit){
-            return;
         }
 
         // Added a 50ms delay with setTimeout to make sure the quick edit menu toggles correctly.
@@ -200,7 +195,7 @@ define(function (require, exports, module) {
                         $marker.click((event)=>{
                             event.preventDefault();
                             event.stopPropagation();
-                            _colorIconClicked(editor, obj.lineNumber, obj.colorValues[0], false);
+                            _colorIconClicked(editor, obj.lineNumber, obj.colorValues[0]);
                         });
                     } else {
                         // Multiple colors preview
@@ -225,7 +220,7 @@ define(function (require, exports, module) {
                                 $colorBox.click((event)=>{
                                     event.preventDefault();
                                     event.stopPropagation();
-                                    _colorIconClicked(editor, obj.lineNumber, color, false);
+                                    _colorIconClicked(editor, obj.lineNumber, color);
                                 });
                                 $marker.append($colorBox);
                             }
