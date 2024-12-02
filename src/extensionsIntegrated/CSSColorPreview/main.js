@@ -146,39 +146,29 @@ define(function (require, exports, module) {
 
     /**
      * To move the cursor to the color text and display the color quick edit
-     * @param {CodeMirror} codeMirror the codemirror instance
+     * @param {Editor} editor the codemirror instance
      * @param {Number} lineNumber the line number that is clicked
-     * @param {String} gutter the gutter name
+     * @param {string} colorValue the color value clicked
+     * @param {boolean} dontEdit if set to true,color editor won't be opened
      */
-    function colorIconClicked(codeMirror, lineNumber, gutter) {
-        const editor = EditorManager.getActiveEditor();
-
-        if(gutter === GUTTER_NAME) {
-
-            let colorValue;
-
-            for(let i of codeMirror.colorGutters) {
-                if(i.lineNumber === lineNumber) {
-                    colorValue = i.colorValues[0];
-                }
-            }
-
-            const lineText = editor.getLine(lineNumber);
-            const colorIndex = lineText.indexOf(colorValue);
-
-            if (colorIndex !== -1) {
-                // Place cursor at the start of the color text
-                if (editor) {
-                    editor.setCursorPos(lineNumber, colorIndex);
-
-                    // Added a 50ms delay with setTimeout to make sure the quick edit menu toggles correctly.
-                    // Without it, closing the menu trigger text selection, reopening the menu.
-                    setTimeout(() => {
-                        CommandManager.execute(Commands.TOGGLE_QUICK_EDIT);
-                    }, 50);
-                }
-            }
+    function _colorIconClicked(editor, lineNumber, colorValue, dontEdit) {
+        const lineText = editor.getLine(lineNumber);
+        const colorIndex = lineText.indexOf(colorValue);
+        const currentPos = editor.getCursorPos(false, "start");
+        if(!(currentPos.line === lineNumber && currentPos.ch === colorIndex)) {
+            editor.setCursorPos(lineNumber, colorIndex);
+            editor.focus();
         }
+
+        if(dontEdit){
+            return;
+        }
+
+        // Added a 50ms delay with setTimeout to make sure the quick edit menu toggles correctly.
+        // Without it, closing the menu trigger text selection, reopening the menu.
+        setTimeout(() => {
+            CommandManager.execute(Commands.TOGGLE_QUICK_EDIT);
+        }, 50);
     }
 
     /**
@@ -194,17 +184,12 @@ define(function (require, exports, module) {
             editor.clearGutter(GUTTER_NAME); // clear color markers
             _addDummyGutterMarkerIfNotExist(editor, editor.getCursorPos().line);
 
-            cm.on("gutterClick", (codeMirror, lineNumber, gutter) => {
-                colorIconClicked(codeMirror, lineNumber, gutter);
-            });
-
             // Only add markers if enabled
             if (enabled) {
                 cm.colorGutters = _.sortBy(_results, "lineNumber");
 
                 cm.colorGutters.forEach(function (obj) {
                     let $marker;
-
                     if (obj.colorValues.length === 1) {
                         // Single color preview
                         $marker = $("<i>")
@@ -212,6 +197,11 @@ define(function (require, exports, module) {
                             .css('background-color', obj.colorValues[0]);
 
                         editor.setGutterMarker(obj.lineNumber, GUTTER_NAME, $marker[0]);
+                        $marker.click((event)=>{
+                            event.preventDefault();
+                            event.stopPropagation();
+                            _colorIconClicked(editor, obj.lineNumber, obj.colorValues[0], false);
+                        });
                     } else {
                         // Multiple colors preview
                         $marker = $("<div>").addClass("ico-multiple-cssColorPreview");
@@ -232,6 +222,11 @@ define(function (require, exports, module) {
                                         'background-color': color,
                                         ...positions[index]
                                     });
+                                $colorBox.click((event)=>{
+                                    event.preventDefault();
+                                    event.stopPropagation();
+                                    _colorIconClicked(editor, obj.lineNumber, color, false);
+                                });
                                 $marker.append($colorBox);
                             }
                         });

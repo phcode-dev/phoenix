@@ -18,6 +18,7 @@
     height:.7em;
     width: .7em;
     position: relative;
+    pointer-events: auto;
 }
 
 /* Multiple colors preview container (this is a div) */
@@ -31,6 +32,16 @@
     top: .2em;
     width: .9em;
     height:.9em;
+    pointer-events: auto;
+    transition: all 0.3s ease;
+}
+
+.ico-multiple-cssColorPreview:hover {
+    top: -.8em;
+    width: 2em;
+    height:2em;
+    pointer-events: auto;
+    transition: all 0.3s ease;
 }
 
 /* For individual color boxes, they will be added inside the main .ico-multiple-cssColorPreview div */
@@ -39,4 +50,13 @@
     width: .4em;
     height: .4em;
     box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+.ico-multiple-cssColorPreview:hover .color-box {
+    position: absolute;
+    width: calc(1em - 1px);
+    height: calc(1em - 1px);
+    box-sizing: border-box;
+    transition: all 0.3s ease;
 }
