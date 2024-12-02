@@ -449,7 +449,13 @@ define(function (require, exports, module) {
                 });
             });
 
-            describe("getCursorPos", function () {
+            describe("getCursorPos and getLine", function () {
+                it("should getLine work correctly", function () {
+                    expect(myEditor.getLine(0)).toEqual("this is line 0");
+                    expect(myEditor.getLine(10000)).toEqual(null);
+                    expect(myEditor.getLine(-1)).toEqual(null);
+                });
+
                 it("should return a single cursor", function () {
                     myEditor._codeMirror.setCursor(0, 2);
                     expect(myEditor.getCursorPos().line).toEqual(0);
