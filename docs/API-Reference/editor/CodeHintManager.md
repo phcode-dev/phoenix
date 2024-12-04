@@ -86,12 +86,12 @@ can access the editor in future calls to getHints and insertHints.
 param {'Editor'} editor
 A non-null editor object for the active window.
 
-param {string} implicitChar
+param {String} implicitChar
 Either null, if the hinting request was explicit, or a single character
 that represents the last insertion and that indicates an implicit
 hinting request.
 
-return {boolean}
+return {Boolean}
 Determines whether the current provider is able to provide hints for
 the given editor context and, in case implicitChar is non- null,
 whether it is appropriate to do so.
@@ -152,7 +152,7 @@ once for each such editor change. Consequently, the provider may also
 assume that the document will not be changed outside of the editor
 during a session.
 
-param {string} implicitChar
+param {String} implicitChar
 Either null, if the request to update the hint list was a result of
 navigation, or a single character that represents the last insertion.
 
@@ -195,17 +195,17 @@ or not the end of the session should be immediately followed by a new
 explicit hinting request, which may result in a new hinting session
 being opened with some provider, but not necessarily the current one.
 
-param {string} hint
+param {String} hint
 The hint to be inserted into the editor context for the current session.
 
-return {boolean}
+return {Boolean}
 Indicates whether the manager should follow hint insertion with an
 explicit hint request.
 
 
 __CodeHintProvider.insertHintOnTab__
 
-type {boolean} insertHintOnTab
+type {Boolean} insertHintOnTab
 Indicates whether the CodeHintManager should request that the provider of
 the current session insert the currently selected hint on tab key events,
 or if instead a tab character should be inserted into the editor. If omitted,
