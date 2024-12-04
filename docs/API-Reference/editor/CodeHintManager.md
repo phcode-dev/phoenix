@@ -205,7 +205,7 @@ explicit hint request.
 
 __CodeHintProvider.insertHintOnTab__
 
-type {?boolean} insertHintOnTab
+type {boolean} insertHintOnTab
 Indicates whether the CodeHintManager should request that the provider of
 the current session insert the currently selected hint on tab key events,
 or if instead a tab character should be inserted into the editor. If omitted,
