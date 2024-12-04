@@ -156,11 +156,13 @@ param {string} implicitChar
 Either null, if the request to update the hint list was a result of
 navigation, or a single character that represents the last insertion.
 
+```js
     return {jQuery.Deferred|{
          hints: Array.<string|jQueryObject>,
          match: string,
          selectInitial: boolean,
          handleWideResults: boolean}}
+```
 
 Null if the provider wishes to end the hinting session. Otherwise, a
 response object, possibly deferred, that provides 1. a sorted array
