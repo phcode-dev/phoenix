@@ -47,6 +47,7 @@ const Editor = brackets.getModule("editor/Editor")
         * [.charCoords(pos, [mode])](#Editor+charCoords) ⇒ <code>Object</code>
         * [.getToken([cursor], [precise])](#Editor+getToken) ⇒ <code>Object</code>
         * [.getCharacterAtPosition(pos)](#Editor+getCharacterAtPosition) ⇒ <code>string</code> \| <code>null</code>
+        * [.getLine(lineNumber)](#Editor+getLine) ⇒ <code>string</code> \| <code>null</code>
         * [.getPrevCharacterAtPosition(pos)](#Editor+getPrevCharacterAtPosition) ⇒ <code>string</code> \| <code>null</code>
         * [.getNextToken([cursor], [skipWhitespace], [precise])](#Editor+getNextToken) ⇒ <code>Object</code>
         * [.getPreviousToken([cursor], [skipWhitespace], [precise])](#Editor+getPreviousToken) ⇒ <code>Object</code>
@@ -553,6 +554,19 @@ x|y where `|` is the cursor, will return y
 | Param | Type | Description |
 | --- | --- | --- |
 | pos | <code>CodeMirror.Position</code> | The position from which to retrieve the character.                                    This should be an object with `line` and `ch` properties. |
+
+<a name="Editor+getLine"></a>
+
+### editor.getLine(lineNumber) ⇒ <code>string</code> \| <code>null</code>
+Retrieves a single line text
+
+**Kind**: instance method of [<code>Editor</code>](#Editor)  
+**Returns**: <code>string</code> \| <code>null</code> - The text at the given position if within bounds,
+                       otherwise `null` if the position is out of range.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| lineNumber | <code>number</code> | The lineNumber to extract text from |
 
 <a name="Editor+getPrevCharacterAtPosition"></a>
 
