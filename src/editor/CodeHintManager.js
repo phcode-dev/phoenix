@@ -63,13 +63,13 @@
  *
  * A code hint provider should implement the following three functions:
  *
- * - `CodeHintProvider.hasHints(editor, implicitChar)`
- * - `CodeHintProvider.getHints(implicitChar)`
- * - `CodeHintProvider.insertHint(hint)`
+ * - `CodeHintProvider.hasHints('editor', 'implicitChar')`
+ * - `CodeHintProvider.getHints('implicitChar')`
+ * - `CodeHintProvider.insertHint('hint')`
  *
  * The behavior of these three functions is described in detail below.
  *
- * __CodeHintProvider.hasHints(editor, implicitChar)__
+ * __CodeHintProvider.hasHints('editor', 'implicitChar')__
  *
  * The method by which a provider indicates intent to provide hints for a
  * given editor. The manager calls this method both when hints are
@@ -99,7 +99,7 @@
  * particular, it should keep a reference to the editor object so that it
  * can access the editor in future calls to getHints and insertHints.
  *
- * param {Editor} editor
+ * param {'Editor'} editor
  * A non-null editor object for the active window.
  *
  * param {string} implicitChar
@@ -113,7 +113,7 @@
  * whether it is appropriate to do so.
  *
  *
- * __CodeHintProvider.getHints(implicitChar)__
+ * __CodeHintProvider.getHints('implicitChar')__
  *
  * The method by which a provider provides hints for the editor context
  * associated with the current session. The getHints method is called only
@@ -199,7 +199,7 @@
  * a more sophisticated matching algorithm.
  *
  *
- * __CodeHintProvider.insertHint(hint)__
+ * __CodeHintProvider.insertHint('hint')__
  *
  * The method by which a provider inserts a hint into the editor context
  * associated with the current session. The provider may assume that the
