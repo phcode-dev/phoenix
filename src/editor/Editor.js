@@ -2520,12 +2520,8 @@ define(function (require, exports, module) {
         }
     };
 
-    /**
-     * Renders all registered gutters
-     * @private
-     */
-    Editor.prototype._renderGutters = function () {
-        var languageId = this.document.getLanguage().getId();
+    Editor.prototype._getRegisteredGutters = function () {
+        const languageId = this.document.getLanguage().getId();
 
         function _filterByLanguages(gutter) {
             return !gutter.languages || gutter.languages.indexOf(languageId) > -1;
@@ -2539,19 +2535,26 @@ define(function (require, exports, module) {
             return gutter.name;
         }
 
-        var gutters = registeredGutters.map(_getName),
-            rootElement = this.getRootElement();
-
         // If the line numbers gutter has not been explicitly registered and the CodeMirror lineNumbes option is
         // set to true, we explicitly add the line numbers gutter. This case occurs the first time the editor loads
         // and showLineNumbers is set to true in preferences
+        const gutters = registeredGutters.map(_getName);
         if (gutters.indexOf(LINE_NUMBER_GUTTER) < 0 && this._codeMirror.getOption(cmOptions[SHOW_LINE_NUMBERS])) {
             registeredGutters.push({ name: LINE_NUMBER_GUTTER, priority: LINE_NUMBER_GUTTER_PRIORITY });
         }
 
-        gutters = registeredGutters.sort(_sortByPriority)
+        return  registeredGutters.sort(_sortByPriority)
             .filter(_filterByLanguages)
             .map(_getName);
+    };
+
+    /**
+     * Renders all registered gutters
+     * @private
+     */
+    Editor.prototype._renderGutters = function () {
+        const rootElement = this.getRootElement();
+        const gutters = this._getRegisteredGutters();
 
         this._codeMirror.setOption("gutters", gutters);
         this._codeMirror.refresh();
@@ -2601,6 +2604,16 @@ define(function (require, exports, module) {
      */
     Editor.prototype.clearGutterMarker = function (lineNumber, gutterName) {
         this.setGutterMarker(lineNumber, gutterName, null);
+    };
+
+    /**
+     * Returns true if this editor has the named gutter activated. gutters are considered active if the gutter is
+     * registered for the language of the file currently shown in the editor.
+     * @param {string} gutterName The name of the gutter to check
+     */
+    Editor.prototype.isGutterActive = function (gutterName) {
+        const gutters = this._getRegisteredGutters();
+        return gutters.includes(gutterName);
     };
 
     /**

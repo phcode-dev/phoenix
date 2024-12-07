@@ -100,7 +100,6 @@ define(function (require, exports, module) {
      */
     function showColorMarks() {
         if (!enabled) {
-            removeColorMarks();
             return;
         }
 
@@ -127,22 +126,6 @@ define(function (require, exports, module) {
             }
         });
     }
-
-    /**
-     * To remove the color marks from the gutter of all the active editors
-     */
-    function removeColorMarks() {
-
-        const allActiveEditors = MainViewManager.getAllViewedEditors();
-
-        allActiveEditors.forEach((activeEditor) => {
-            const currEditor = activeEditor.editor;
-            if(currEditor) {
-                currEditor.clearGutter(GUTTER_NAME);
-            }
-        });
-    }
-
 
     /**
      * To move the cursor to the color text and display the color quick edit
@@ -173,8 +156,8 @@ define(function (require, exports, module) {
      *   all the line numbers and the colors to be displayed on that line.
      */
     function showGutters(editor, _results) {
+        // TODO we should show the gutter in those languages only if a color is present in that file.
         if (editor && enabled) {
-            initGutter(editor);
             const cm = editor._codeMirror;
             editor.clearGutter(GUTTER_NAME); // clear color markers
             _addDummyGutterMarkerIfNotExist(editor, editor.getCursorPos().line);
@@ -234,19 +217,6 @@ define(function (require, exports, module) {
         }
     }
 
-
-    /**
-     * Initialize the gutter
-     * @param {activeEditor} editor
-     */
-    function initGutter(editor) {
-        if (!Editor.isGutterRegistered(GUTTER_NAME)) {
-            // we should restrict the languages here to Editor.registerGutter(..., ["css", "less", "scss", etc..]);
-            // TODO we should show the gutter in those languages only if a color is present in that file.
-            Editor.registerGutter(GUTTER_NAME, COLOR_PREVIEW_GUTTER_PRIORITY, COLOR_LANGUAGES);
-        }
-    }
-
     function _addDummyGutterMarkerIfNotExist(editor, line) {
         let marker = editor.getGutterMarker(line, GUTTER_NAME);
         if(!marker){
@@ -270,8 +240,7 @@ define(function (require, exports, module) {
 
         // Add listener for all editor changes
         EditorManager.on("activeEditorChange", function (event, newEditor, oldEditor) {
-            if (newEditor) {
-                // todo: only attach if the color gutter is present as we disable it in certain languages
+            if (newEditor && newEditor.isGutterActive(GUTTER_NAME)) {
                 newEditor.off("cursorActivity.colorPreview");
                 newEditor.on("cursorActivity.colorPreview", _cursorActivity);
                 // Unbind the previous editor's change event if it exists
@@ -289,6 +258,7 @@ define(function (require, exports, module) {
                 }
 
                 showColorMarks();
+                _cursorActivity(null, newEditor);
             }
         });
 
@@ -311,9 +281,9 @@ define(function (require, exports, module) {
         const value = PreferencesManager.get(PREFERENCES_CSS_COLOR_PREVIEW);
         enabled = value;
         if (!value) {
-            // to dynamically remove color to all active editors
-            removeColorMarks();
+            Editor.unregisterGutter(GUTTER_NAME);
         } else {
+            Editor.registerGutter(GUTTER_NAME, COLOR_PREVIEW_GUTTER_PRIORITY, COLOR_LANGUAGES);
             // to dynamically add color to all active editors
             addColorMarksToAllEditors();
         }
@@ -326,19 +296,11 @@ define(function (require, exports, module) {
         showColorMarks();
     }
 
-    /**
-     * Driver function, runs at the start of the program
-     */
-    function init() {
-        // preferenceChanged calls 'showColorMarks' or 'removeColorMarks'
-        preferenceChanged();
-        registerHandlers();
-    }
-
     // init after appReady
     AppInit.appReady(function () {
         PreferencesManager.on("change", PREFERENCES_CSS_COLOR_PREVIEW, preferenceChanged);
-        init();
+        preferenceChanged();
+        registerHandlers();
     });
 });
 
