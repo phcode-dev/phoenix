@@ -53,44 +53,6 @@ define(function (require, exports, module) {
         description: Strings.DESCRIPTION_CSS_COLOR_PREVIEW
     });
 
-    /**
-     * Responsible to get all the colors and their respective line numbers.
-     *
-     * @param {Editor} editor
-     * @return {Array.<Object>} an array of objects with all the line nos and,
-     *  the colors to be added on those lines
-     */
-    function _getAllColorsAndLineNums(editor) {
-
-        const nLen = editor.lineCount();
-        const aColors = [];
-
-        // match colors and push into an array
-        for (let i = 0; i < nLen; i++) {
-            let lineText = editor.getLine(i);
-
-            if ((lineText.indexOf('/*') !== -1) || (lineText.indexOf('*/') !== -1)) {
-                continue;
-            } else {
-                let regx = /:[^;]*;/g;
-
-                lineText = lineText.match(regx);
-                if (lineText) {
-                    let tempColors = lineText[0].match(COLOR_REGEX);
-                    // Support up to 4 colors
-                    if (tempColors && tempColors.length > 0) {
-                        let colors = tempColors.slice(0, 4);
-                        aColors.push({
-                            lineNumber: i,
-                            colorValues: colors
-                        });
-                    }
-                }
-            }
-        }
-
-        return aColors;
-    }
 
     /**
      * Gets all the colors that are to be displayed
@@ -168,15 +130,22 @@ define(function (require, exports, module) {
 
     /**
      * To display the color marks on the gutter
+     *
      * @param {activeEditor} editor
      * @param {Array.<object>} _results An array of objects which stores
      *   all the line numbers and the colors to be displayed on that line.
+     * @param {Boolean} update marks whether this function is called when some lines
+     *  are updated or when the whole file is re-updated. Defaults to false.
      */
-    function showGutters(editor, _results) {
+    function showGutters(editor, _results, update = false) {
         if (editor && enabled) {
             initGutter(editor);
             const cm = editor._codeMirror;
-            editor.clearGutter(GUTTER_NAME); // clear color markers
+            // if the file is updated we don't need to clear the gutter
+            // as it will clear all the existing markers.
+            if(!update) {
+                editor.clearGutter(GUTTER_NAME); // clear color markers
+            }
             _addDummyGutterMarkerIfNotExist(editor, editor.getCursorPos().line);
 
             // Only add markers if enabled
@@ -320,10 +289,127 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Function that gets triggered when any change occurs on the editor
+     * Detects valid colors in a given line of text
+     *
+     * @param {Editor} editor - The editor instance
+     * @param {number} lineNumber - The line number to check
+     * @return {Array<{color: string, index: number}>} An array of valid color values with their indices
      */
-    function onChanged() {
-        showColorMarks();
+    function detectValidColorsInLine(editor, lineNumber) {
+        const lineText = editor.getLine(lineNumber);
+        const valueRegex = /:[^;]*;/g;
+        const validColors = [];
+
+        // Find all property value sections in the line
+        const lineMatches = [...lineText.matchAll(valueRegex)];
+
+        for (const lineMatch of lineMatches) {
+            // Find colors within each property value
+            const colorMatches = [...lineMatch[0].matchAll(COLOR_REGEX)];
+
+            colorMatches.forEach(colorMatch => {
+                const colorIndex = lineMatch.index + colorMatch.index;
+
+                // Check if the color is within a comment
+                const token = editor.getToken({ line: lineNumber, ch: colorIndex }, true);
+
+                // If the token is not a comment, add the color
+                if (token.type !== "comment") {
+                    validColors.push({
+                        color: colorMatch[0],
+                        index: colorIndex
+                    });
+                }
+            });
+        }
+
+        // Return up to 4 colors
+        return validColors.slice(0, 4).map(item => item.color);
+    }
+
+    /**
+     * Responsible to get all the colors and their respective line numbers.
+     *
+     * @param {Editor} editor
+     * @return {Array.<Object>} an array of objects with all the line nos and,
+     *  the colors to be added on those lines
+     */
+    function _getAllColorsAndLineNums(editor) {
+        const nLen = editor.lineCount();
+        const aColors = [];
+
+        // Match colors and push into an array
+        for (let i = 0; i < nLen; i++) {
+            const colors = detectValidColorsInLine(editor, i);
+
+            // If valid colors found, add to the results
+            if (colors.length > 0) {
+                aColors.push({
+                    lineNumber: i,
+                    colorValues: colors
+                });
+            }
+        }
+
+        return aColors;
+    }
+
+
+    /**
+     * Responsible to update the color marks only on the modified lines
+     *
+     * @param {Editor} editor the editor instance
+     * @param {Number} fromLineNumber modification start from line number
+     * @param {Number} toLineNumber modification upto line number
+     * @return {Array.<Object>} an array of objects with all the line nos and,
+     *  the colors to be added on those lines
+     */
+    function updateColorMarks(editor, fromLineNumber, toLineNumber) {
+        const aColors = [];
+
+        // Match colors and push into an array for modified lines
+        for (let i = fromLineNumber; i <= toLineNumber; i++) {
+            const colors = detectValidColorsInLine(editor, i);
+
+            // If no valid colors, clear the gutter marker
+            if (colors.length === 0) {
+                editor.setGutterMarker(i, GUTTER_NAME, "");
+            } else {
+                aColors.push({
+                    lineNumber: i,
+                    colorValues: colors
+                });
+            }
+        }
+
+        return aColors;
+    }
+
+
+    /**
+     * Function that gets triggered when any change occurs on the editor
+     *
+     * @param {Editor} instance the codemirror instance
+     * @param {Object} changeObj an object that has properties regarding the line changed and type of change
+     */
+    function onChanged(instance, changeObj) {
+
+        const editor = EditorManager.getActiveEditor();
+
+        // for insertion and deletion, update the changed lines
+        if(changeObj.origin === '+input' || changeObj.origin === '+delete') {
+            // make sure that the required properties exist and in the form they are expected to be
+            if(changeObj.from.line && changeObj.to.line && changeObj.from.line <= changeObj.to.line) {
+                const aColors = updateColorMarks(editor, changeObj.from.line, changeObj.to.line);
+                showGutters(editor, aColors, true);
+            } else {
+                showColorMarks();
+            }
+
+        } else { // for any complex operation like, cut, paste etc, we re-update the whole file
+            showColorMarks();
+        }
+
     }
 
     /**
