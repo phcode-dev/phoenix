@@ -96,7 +96,9 @@
 .CodeMirror-matchingtag {
     /* Ensure visibility against gray inline editor background */
     background-color: @matching-tags;
-    display: inline-block;
+    --border-height: calc((var(--editor-line-height) *1em - 1em) / 2);
+    border-top: var(--border-height) solid @matching-tags;
+    border-bottom: var(--border-height) solid @matching-tags;
 }
 
 .CodeMirror-overwrite .CodeMirror-cursor {

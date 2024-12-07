@@ -21,3 +21,12 @@
 
 // This is the default theme and doesn't need to do anything!
 /* Default theme empty. See brackets_theme_default.less to change theme css*/
+
+@matching-bracket: #cfead6;
+
+.CodeMirror-matchingtag {
+  background: @matching-bracket;
+  --border-height: calc((var(--editor-line-height) *1em - 1em) / 2);
+  border-top: var(--border-height) solid @matching-bracket;
+  border-bottom: var(--border-height) solid @matching-bracket;
+}
