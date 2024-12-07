@@ -266,6 +266,12 @@ define(function (require, exports, module) {
      */
     function detectValidColorsInLine(editor, lineNumber) {
         const lineText = editor.getLine(lineNumber);
+
+        // to make sure that code doesn't break when lineText is null.
+        if (!lineText) {
+            return [];
+        }
+
         const valueRegex = /:[^;]*;/g;
         const validColors = [];
 
