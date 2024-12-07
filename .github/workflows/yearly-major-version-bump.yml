@@ -19,7 +19,6 @@ jobs:
           git status
           phoenix_version=`node -p "require('./package.json').apiVersion"`
           echo "PHOENIX_VERSION=${phoenix_version}" >> $GITHUB_ENV
-          echo "SKIP_TEST_RUN_GITHUB=yes" >> $GITHUB_ENV
         shell: bash
 
       - name: Create Bump patch version Pull Request
