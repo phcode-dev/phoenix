@@ -110,6 +110,7 @@ const Editor = brackets.getModule("editor/Editor")
         * [.setGutterMarker(lineNumber, gutterName, marker)](#Editor+setGutterMarker)
         * [.getGutterMarker(lineNumber, gutterName)](#Editor+getGutterMarker)
         * [.clearGutterMarker(lineNumber, gutterName)](#Editor+clearGutterMarker)
+        * [.isGutterActive(gutterName)](#Editor+isGutterActive)
         * [.clearGutter(gutterName)](#Editor+clearGutter)
     * _static_
         * [.getMarkOptionUnderlineError](#Editor.getMarkOptionUnderlineError)
@@ -1269,6 +1270,18 @@ on the line.
 | --- | --- | --- |
 | lineNumber | <code>number</code> | The line number for the inserted gutter marker |
 | gutterName | <code>string</code> | The name of the gutter |
+
+<a name="Editor+isGutterActive"></a>
+
+### editor.isGutterActive(gutterName)
+Returns true if this editor has the named gutter activated. gutters are considered active if the gutter is
+registered for the language of the file currently shown in the editor.
+
+**Kind**: instance method of [<code>Editor</code>](#Editor)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| gutterName | <code>string</code> | The name of the gutter to check |
 
 <a name="Editor+clearGutter"></a>
 
