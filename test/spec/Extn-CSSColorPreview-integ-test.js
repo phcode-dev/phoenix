@@ -43,7 +43,7 @@ define(function (require, exports, module) {
             testProjectFolder = await SpecRunnerUtils.getTempTestDirectory(testRootSpec);
             await SpecRunnerUtils.loadProjectInTestWindow(testProjectFolder);
             __PR = testWindow.__PR;
-            EditorManager = testWindow.EditorManager;
+            EditorManager = testWindow.brackets.test.EditorManager;
         }, 30000);
 
         afterAll(async function () {
