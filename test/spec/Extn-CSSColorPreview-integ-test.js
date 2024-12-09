@@ -214,7 +214,39 @@ define(function (require, exports, module) {
                 await __PR.closeFile();
             });
 
-            // todo test code changes, code changes at end of file, toggle color edit
+            it(`should toggle quick edit on single colors ${fileName}`, async function () {
+                const editor = await init();
+                let gutterMarker = editor.getGutterMarker(8, GUTTER_NAME);
+                __PR.validateEqual(areColorsEqual($(gutterMarker), "blue"), true);
+                gutterMarker.click();
+                await __PR.awaitsFor(()=>{
+                    return __PR.$(".CodeMirror-linewidget").length === 1;
+                }, "quick edit to appear");
+                gutterMarker.click();
+                await __PR.awaitsFor(()=>{
+                    return __PR.$(".CodeMirror-linewidget").length === 0;
+                }, "quick edit to go");
+                await __PR.closeFile();
+            });
+
+            it(`should toggle quick edit on multiple colors ${fileName}`, async function () {
+                const editor = await init();
+                let gutterMarker = editor.getGutterMarker(15, GUTTER_NAME);
+                const individualColors = $(gutterMarker).find(".color-box");
+                individualColors[0].click();
+                await __PR.awaitsFor(()=>{
+                    return __PR.$(".CodeMirror-linewidget").length === 1 &&
+                        areColorsEqual(__PR.$(".CodeMirror-linewidget").find(".original-color")[0], "#ff0090");
+                }, "quick edit to color #ff0090 appear");
+                individualColors[2].click();
+                await __PR.awaitsFor(()=>{
+                    return __PR.$(".CodeMirror-linewidget").length === 1 &&
+                        areColorsEqual(__PR.$(".CodeMirror-linewidget").find(".original-color")[0], "#954e3e");
+                }, "quick edit to color #954e3e appear");
+                await __PR.closeFile();
+            });
+
+            // todo test code changes, code changes at end of file
         }
 
         const htmlFiles = ["a.html", "a.htm", "a.xhtml", "a.php", "a.jsp", "a.jsx", "a.tsx"];
