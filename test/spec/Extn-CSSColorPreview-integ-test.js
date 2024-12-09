@@ -179,7 +179,42 @@ define(function (require, exports, module) {
                 await __PR.closeFile();
             });
 
-            // todo test beautify, code changes, code changes at end of file, toggle color edit
+            function _verifyExpectedColors(editor, lines) {
+                let gutterMarker = editor.getGutterMarker(lines[0], GUTTER_NAME);
+                __PR.validateEqual(areColorsEqual($(gutterMarker), "blue"), true);
+                gutterMarker = editor.getGutterMarker(lines[1], GUTTER_NAME);
+                __PR.validateEqual(areColorsEqual($(gutterMarker), "#00ff8c"), true);
+
+                // multiple colors
+                validateMultipleColors(editor, lines[2], ["#00ff8c", "red"]);
+                validateMultipleColors(editor, lines[3], ["#b7ff00", "green", "#3e4395"]);
+                validateMultipleColors(editor, lines[4], ["#ff0090", "#802095", "#954e3e", "#454e3e"]);
+                validateMultipleColors(editor, lines[5], ["#ff0090", "#802095", "#954e3e", "#454e3e"]);
+            }
+
+            it(`should show color previews after beautify HTML code in ${fileName}`, async function () {
+                if(["a.php", "a.jsx", "a.tsx"].includes(fileName) || fileName === "a.sass"){
+                    // the test sass, jsx, tsx and php files cant be beautified, so ignoring for now
+                    return;
+                }
+                const editor = await init();
+                await __PR.execCommand(__PR.Commands.EDIT_BEAUTIFY_CODE);
+                if(baseFileName === "base.css"){
+                    await __PR.awaitsFor(()=>{
+                        return editor.getLine(0) === ".class-one {";
+                    }, "for beautify complete");
+                    _verifyExpectedColors(editor, [8, 12, 15, 18, 21, 24]);
+                    await __PR.closeFile();
+                    return;
+                }
+                await __PR.awaitsFor(()=>{
+                    return editor.getLine(2) === "    <head>";
+                }, "for beautify complete");
+                _verifyExpectedColors(editor, [8, 12, 13, 14, 15, 16]);
+                await __PR.closeFile();
+            });
+
+            // todo test code changes, code changes at end of file, toggle color edit
         }
 
         const htmlFiles = ["a.html", "a.htm", "a.xhtml", "a.php", "a.jsp", "a.jsx", "a.tsx"];
