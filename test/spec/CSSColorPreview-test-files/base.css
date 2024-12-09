@@ -1,0 +1,16 @@
+
+.class-one {
+    width: 100px;
+}
+
+
+.class-two {/*color:red;*/}
+.color-one {
+    color: blue /*color:red;*/
+}
+
+.class-3 {color: #00ff8c;}
+.class-4 {color: #00ff8c red;}
+.class-5 {color: #b7ff00 green #3e4395;}
+.class-6 {color: #ff0090 #802095 #954e3e #454e3e;}
+.class-6 {color: #ff0090 #802095 #954e3e #454e3e #150e3e;}

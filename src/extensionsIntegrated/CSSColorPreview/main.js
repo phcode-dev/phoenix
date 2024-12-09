@@ -117,7 +117,7 @@ define(function (require, exports, module) {
     /**
      * To display the color marks on the gutter
      *
-     * @param {activeEditor} editor
+     * @param {Editor} editor
      * @param {Array.<object>} _results An array of objects which stores
      *   all the line numbers and the colors to be displayed on that line.
      * @param {Boolean} update marks whether this function is called when some lines
@@ -125,65 +125,66 @@ define(function (require, exports, module) {
      */
     function showGutters(editor, _results, update = false) {
         if (editor && enabled) {
-            // if the file is updated we don't need to clear the gutter
-            // as it will clear all the existing markers.
-            if(!update) {
-                editor.clearGutter(GUTTER_NAME); // clear color markers
-            }
-            _addDummyGutterMarkerIfNotExist(editor, editor.getCursorPos().line);
+            editor.operation(()=>{
+                // if the file is updated we don't need to clear the gutter
+                // as it will clear all the existing markers.
+                if(!update) {
+                    editor.clearGutter(GUTTER_NAME); // clear color markers
+                }
+                _addDummyGutterMarkerIfNotExist(editor, editor.getCursorPos().line);
 
-            // Only add markers if enabled
-            if (enabled) {
-                const colorGutters = _.sortBy(_results, "lineNumber");
+                // Only add markers if enabled
+                if (enabled) {
+                    const colorGutters = _.sortBy(_results, "lineNumber");
 
-                colorGutters.forEach(function (obj) {
-                    let $marker;
-                    if (obj.colorValues.length === 1) {
-                        // Single color preview
-                        $marker = $("<i>")
-                            .addClass(SINGLE_COLOR_PREVIEW_CLASS)
-                            .css('background-color', obj.colorValues[0]);
+                    colorGutters.forEach(function (obj) {
+                        let $marker;
+                        if (obj.colorValues.length === 1) {
+                            // Single color preview
+                            $marker = $("<i>")
+                                .addClass(SINGLE_COLOR_PREVIEW_CLASS)
+                                .css('background-color', obj.colorValues[0]);
 
-                        editor.setGutterMarker(obj.lineNumber, GUTTER_NAME, $marker[0]);
-                        $marker.click((event)=>{
-                            event.preventDefault();
-                            event.stopPropagation();
-                            _colorIconClicked(editor, obj.lineNumber, obj.colorValues[0]);
-                        });
-                    } else {
-                        // Multiple colors preview
-                        $marker = $("<div>").addClass(MULTI_COLOR_PREVIEW_CLASS);
+                            editor.setGutterMarker(obj.lineNumber, GUTTER_NAME, $marker[0]);
+                            $marker.click((event)=>{
+                                event.preventDefault();
+                                event.stopPropagation();
+                                _colorIconClicked(editor, obj.lineNumber, obj.colorValues[0]);
+                            });
+                        } else {
+                            // Multiple colors preview
+                            $marker = $("<div>").addClass(MULTI_COLOR_PREVIEW_CLASS);
 
-                        // Positions for up to 4 colors in grid
-                        const positions = [
-                            { top: 0, left: 0 },
-                            { top: 0, right: 0 },
-                            { bottom: 0, right: 0 },
-                            { bottom: 0, left: 0 }
-                        ];
+                            // Positions for up to 4 colors in grid
+                            const positions = [
+                                { top: 0, left: 0 },
+                                { top: 0, right: 0 },
+                                { bottom: 0, right: 0 },
+                                { bottom: 0, left: 0 }
+                            ];
 
-                        obj.colorValues.forEach((color, index) => {
-                            if (index < 4) {
-                                const $colorBox = $("<div>")
-                                    .addClass("color-box")
-                                    .css({
-                                        'background-color': color,
-                                        ...positions[index]
+                            obj.colorValues.forEach((color, index) => {
+                                if (index < 4) {
+                                    const $colorBox = $("<div>")
+                                        .addClass("color-box")
+                                        .css({
+                                            'background-color': color,
+                                            ...positions[index]
+                                        });
+                                    $colorBox.click((event)=>{
+                                        event.preventDefault();
+                                        event.stopPropagation();
+                                        _colorIconClicked(editor, obj.lineNumber, color);
                                     });
-                                $colorBox.click((event)=>{
-                                    event.preventDefault();
-                                    event.stopPropagation();
-                                    _colorIconClicked(editor, obj.lineNumber, color);
-                                });
-                                $marker.append($colorBox);
-                            }
-                        });
+                                    $marker.append($colorBox);
+                                }
+                            });
 
-                        editor.setGutterMarker(obj.lineNumber, GUTTER_NAME, $marker[0]);
-                    }
-                });
-            }
-
+                            editor.setGutterMarker(obj.lineNumber, GUTTER_NAME, $marker[0]);
+                        }
+                    });
+                }
+            });
         }
     }
 
@@ -249,6 +250,35 @@ define(function (require, exports, module) {
         }
     }
 
+    const STYLE_PARSE_LANGUAGES = {
+        php: true,
+        jsx: true,
+        tsx: true
+    };
+    function _isInStyleAttr(editor, token) {
+        while(token.type === "string") {
+            const currentToken = token;
+            token = editor.getPreviousToken({line: token.line, ch: token.start}, true);
+            if(currentToken.line === token.line &&
+                currentToken.start === token.start && currentToken.end === token.end) {
+                // reached start of file
+                break;
+            }
+        }
+        return token.type === "attribute" && token.string === "style";
+    }
+
+    function _shouldProcessToken(editor, token, pos) {
+        const languageID = editor.document.getLanguage().getId();
+        if(languageID === "html") {
+            return editor.getLanguageForPosition(pos).getId() === "css";
+        } else if (STYLE_PARSE_LANGUAGES[languageID]) {
+            // unfortunately the codemirror mode doesn't support css detection in attributes in php files right now
+            return token.type !== "comment" && _isInStyleAttr(editor, token);
+        }
+        return token.type !== "comment";
+    }
+
     /**
      * Detects valid colors in a given line of text
      *
@@ -264,7 +294,7 @@ define(function (require, exports, module) {
             return [];
         }
 
-        const valueRegex = /:[^;]*;/g;
+        const valueRegex = /:[^;]*;?/g; // the last semi colon is optional.
         const validColors = [];
 
         // Find all property value sections in the line
@@ -281,7 +311,7 @@ define(function (require, exports, module) {
                 const token = editor.getToken({ line: lineNumber, ch: colorIndex }, true);
 
                 // If the token is not a comment, add the color
-                if (token.type !== "comment") {
+                if (_shouldProcessToken(editor, token, { line: lineNumber, ch: colorIndex })) {
                     validColors.push({
                         color: colorMatch[0],
                         index: colorIndex
@@ -356,19 +386,26 @@ define(function (require, exports, module) {
     /**
      * Function that gets triggered when any change occurs on the editor
      *
-     * @param {Editor} instance the codemirror instance
-     * @param {Object} changeObj an object that has properties regarding the line changed and type of change
+     * @param _evt unused event detail
+     * @param {Editor} instance the editor instance
+     * @param {Object} changeList an object that has properties regarding the line changed and type of change
      */
-    function onChanged(instance, changeObj) {
-
-        const editor = EditorManager.getActiveEditor();
-
+    function onChanged(_evt, instance, changeList) {
         // for insertion and deletion, update the changed lines
-        if(changeObj.origin === '+input' || changeObj.origin === '+delete') {
-            // make sure that the required properties exist and in the form they are expected to be
+        if(!changeList || !changeList.length) {
+            return;
+        }
+        const changeObj = changeList[0];
+        if(changeList.length === 1 && changeObj.origin === '+input' || changeObj.origin === '+delete') {
+            // we only do the diff updates on single key type input/delete and not bulk changes
+            // somehow the performance degrades if we do the diff logic on large blocks.
             if(changeObj.from.line && changeObj.to.line && changeObj.from.line <= changeObj.to.line) {
-                const aColors = updateColorMarks(editor, changeObj.from.line, changeObj.to.line);
-                showGutters(editor, aColors, true);
+                let toLine = changeObj.to.line;
+                if(changeObj.text && changeObj.text.length) {
+                    toLine = changeObj.from.line + changeObj.text.length;
+                }
+                const aColors = updateColorMarks(instance, changeObj.from.line, Math.max(changeObj.to.line, toLine));
+                showGutters(instance, aColors, true);
             } else {
                 showColorMarks();
             }
@@ -376,7 +413,6 @@ define(function (require, exports, module) {
         } else { // for any complex operation like, cut, paste etc, we re-update the whole file
             showColorMarks();
         }
-
     }
 
     // init after appReady
