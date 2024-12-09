@@ -10,7 +10,7 @@ concurrency:
 jobs:
   playwright-firefox-linux:
     timeout-minutes: 90
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@v3
     - name: setup node
