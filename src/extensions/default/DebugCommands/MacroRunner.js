@@ -361,9 +361,10 @@ define(function (require, exports, module) {
         }
     }
 
-    function validateEqual(obj1, obj2) {
+    function validateEqual(obj1, obj2, message = "") {
         if(!_.isEqual(obj1, obj2)){
-            throw new Error(`validateEqual: expected ${JSON.stringify(obj1)} to equal ${JSON.stringify(obj2)}`);
+            throw new Error(`validateEqual: ${ message ? message + "\n" : ""
+            } expected ${JSON.stringify(obj1)} to equal ${JSON.stringify(obj2)}`);
         }
     }
 
