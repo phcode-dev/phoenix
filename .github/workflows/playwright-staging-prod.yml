@@ -7,7 +7,7 @@ on:
 jobs:
   playwrightChromiumLinux:
     timeout-minutes: 90
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
       - name: setup node
@@ -166,7 +166,7 @@ jobs:
 
   playwrightFirefoxLinux:
     timeout-minutes: 90
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
       - name: setup node
