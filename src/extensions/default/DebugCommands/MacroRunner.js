@@ -50,6 +50,7 @@ define(function (require, exports, module) {
         KeyEvent = brackets.getModule("utils/KeyEvent"),
         Commands = brackets.getModule("command/Commands"),
         FileSystem = brackets.getModule("filesystem/FileSystem"),
+        MainViewManager = brackets.getModule("view/MainViewManager"),
         FileUtils   = brackets.getModule("file/FileUtils"),
         PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
         Editor = brackets.getModule("editor/Editor"),
@@ -425,6 +426,14 @@ define(function (require, exports, module) {
         return PreferencesManager.get(key);
     }
 
+    // Helper function to get full path (reusing existing openFile logic)
+    function _getFullPath(filePath) {
+        if(filePath.startsWith('/')) {
+            return filePath;
+        }
+        return path.join(ProjectManager.getProjectRoot().fullPath, filePath);
+    }
+
     const EDITING = {
         setEditorSpacing: function (useTabs, spaceOrTabCount, isAutoMode) {
             const activeEditor = EditorManager.getActiveEditor();
@@ -442,6 +451,85 @@ define(function (require, exports, module) {
             } else {
                 Editor.Editor.setSpaceUnits(spaceOrTabCount, fullPath);
             }
+        },
+        /**
+         * Split the editor pane vertically
+         */
+        splitVertical: function() {
+            CommandManager.execute(Commands.CMD_SPLITVIEW_VERTICAL);
+        },
+
+        /**
+         * Split the editor pane horizontally
+         */
+        splitHorizontal: function() {
+            CommandManager.execute(Commands.CMD_SPLITVIEW_HORIZONTAL);
+        },
+
+        /**
+         * Remove split pane and return to single pane view
+         */
+        splitNone: function() {
+            CommandManager.execute(Commands.CMD_SPLITVIEW_NONE);
+        },
+        /**
+         * Gets the editor in the first pane (left/top)
+         * @return {?Editor} The editor in first pane or null if not available
+         */
+        getFirstPaneEditor: function() {
+            return MainViewManager.getCurrentlyViewedEditor("first-pane");
+        },
+
+        /**
+         * Gets the editor in the second pane (right/bottom)
+         * @return {?Editor} The editor in second pane or null if not available
+         */
+        getSecondPaneEditor: function() {
+            return MainViewManager.getCurrentlyViewedEditor("second-pane");
+        },
+
+        /**
+         * Checks if the view is currently split
+         * @return {boolean} True if view is split, false otherwise
+         */
+        isSplit: function() {
+            return MainViewManager.getPaneCount() > 1;
+        },
+        /**
+         * Opens a file in the first pane (left/top)
+         * @param {string} filePath - Project relative or absolute file path
+         * @returns {Promise} A promise that resolves when the file is opened
+         */
+        openFileInFirstPane: function(filePath) {
+            return jsPromise(CommandManager.execute(Commands.FILE_OPEN, {
+                fullPath: _getFullPath(filePath),
+                paneId: "first-pane"
+            }));
+        },
+
+        /**
+         * Opens a file in the second pane (right/bottom)
+         * @param {string} filePath - Project relative or absolute file path
+         * @returns {Promise} A promise that resolves when the file is opened
+         */
+        openFileInSecondPane: function(filePath) {
+            return jsPromise(CommandManager.execute(Commands.FILE_OPEN, {
+                fullPath: _getFullPath(filePath),
+                paneId: "second-pane"
+            }));
+        },
+        /**
+         * Focus the first pane (left/top)
+         */
+        focusFirstPane: function() {
+            MainViewManager.setActivePaneId("first-pane");
+        },
+
+        /**
+         * Focus the second pane (right/bottom)
+         */
+        focusSecondPane: function() {
+            MainViewManager.setActivePaneId("second-pane");
         }
     };
 

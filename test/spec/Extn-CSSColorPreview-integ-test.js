@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, beforeAll, afterAll, beforeEach, awaitsForDone, awaits, awaitsFor, path, jsPromise */
+/*global describe, it, beforeAll, afterAll*/
 
 define(function (require, exports, module) {
 
@@ -48,6 +48,7 @@ define(function (require, exports, module) {
 
         afterAll(async function () {
             await __PR.closeAll();
+            await __PR.EDITING.splitNone();
             testWindow    = null;
             __PR          = null;
             EditorManager = null;
@@ -277,8 +278,6 @@ define(function (require, exports, module) {
                 _verifyExpectedColors(editor, [8, 11, 12, 13, 14, 15]);
                 await __PR.closeFile();
             });
-
-            // todo test preference change, multi pane tests
         }
 
         const htmlFiles = ["a.html", "a.htm", "a.xhtml", "a.php", "a.jsp", "a.jsx", "a.tsx"];
@@ -289,5 +288,36 @@ define(function (require, exports, module) {
         for (let cssFile of cssFiles){
             testFile("base.css", cssFile);
         }
+
+        it(`Changing preferences should enable or disable the color box`, async function () {
+            const htmlText = await __PR.readTextFile("base.html");
+            await __PR.writeTextFile("b.html", htmlText, true);
+            await __PR.writeTextFile("c.html", htmlText, true);
+            await __PR.EDITING.splitVertical();
+            await __PR.EDITING.openFileInSecondPane("b.html");
+            await __PR.EDITING.openFileInFirstPane("c.html");
+            __PR.EDITING.focusFirstPane();
+            let editor = EditorManager.getActiveEditor();
+            __PR.validateEqual(editor.isGutterActive(GUTTER_NAME), true);
+            validateSingleColor(editor, 8, "blue");
+
+            __PR.setPreference("colorPreview", false);
+            __PR.validateEqual(editor.isGutterActive(GUTTER_NAME), false);
+            validateNoColors(editor, 8);
+            __PR.EDITING.focusSecondPane();
+            editor = EditorManager.getActiveEditor();
+            __PR.validateEqual(editor.isGutterActive(GUTTER_NAME), false);
+            validateNoColors(editor, 8);
+
+            __PR.setPreference("colorPreview", true);
+            __PR.validateEqual(editor.isGutterActive(GUTTER_NAME), true);
+            validateSingleColor(editor, 8, "blue");
+            __PR.EDITING.focusSecondPane();
+            editor = EditorManager.getActiveEditor();
+            __PR.validateEqual(editor.isGutterActive(GUTTER_NAME), true);
+            validateSingleColor(editor, 8, "blue");
+
+            await __PR.closeFile();
+        });
     });
 });
