@@ -40,13 +40,16 @@ define(function (require, exports, module) {
     // Extension variables.
     const COLOR_REGEX       = ColorUtils.COLOR_REGEX,    // used to match color
         GUTTER_NAME          = "CodeMirror-colorGutter",
+        DUMMY_GUTTER_CLASS   = "CodeMirror-colorGutter-none",
+        SINGLE_COLOR_PREVIEW_CLASS   = "ico-cssColorPreview",
+        MULTI_COLOR_PREVIEW_CLASS   = "ico-multiple-cssColorPreview",
         COLOR_PREVIEW_GUTTER_PRIORITY = 200,
         COLOR_LANGUAGES= ["css", "scss", "less", "sass", "stylus", "html", "svg", "jsx", "tsx",
             "php", "ejs", "erb_html", "pug"];
 
 
     // For preferences settings, to toggle this feature on/off
-    const PREFERENCES_CSS_COLOR_PREVIEW = "CSSColorPreview";
+    const PREFERENCES_CSS_COLOR_PREVIEW = "colorPreview";
     let enabled = true; // by default:- on
 
     PreferencesManager.definePreference(PREFERENCES_CSS_COLOR_PREVIEW, "boolean", enabled, {
@@ -138,7 +141,7 @@ define(function (require, exports, module) {
                     if (obj.colorValues.length === 1) {
                         // Single color preview
                         $marker = $("<i>")
-                            .addClass("ico-cssColorPreview")
+                            .addClass(SINGLE_COLOR_PREVIEW_CLASS)
                             .css('background-color', obj.colorValues[0]);
 
                         editor.setGutterMarker(obj.lineNumber, GUTTER_NAME, $marker[0]);
@@ -149,7 +152,7 @@ define(function (require, exports, module) {
                         });
                     } else {
                         // Multiple colors preview
-                        $marker = $("<div>").addClass("ico-multiple-cssColorPreview");
+                        $marker = $("<div>").addClass(MULTI_COLOR_PREVIEW_CLASS);
 
                         // Positions for up to 4 colors in grid
                         const positions = [
@@ -188,7 +191,7 @@ define(function (require, exports, module) {
         let marker = editor.getGutterMarker(line, GUTTER_NAME);
         if(!marker){
             let $marker = $('<div>')
-                .addClass(GUTTER_NAME);
+                .addClass(DUMMY_GUTTER_CLASS);
             editor.setGutterMarker(line, GUTTER_NAME, $marker[0]);
         }
     }
