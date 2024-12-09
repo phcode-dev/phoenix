@@ -95,8 +95,17 @@ define(function (require, exports, module) {
             }
         }
 
+        function validateNoColors(editor, lineNumber) {
+            const gutterMarker = editor.getGutterMarker(lineNumber, GUTTER_NAME);
+            if(gutterMarker) {
+                __PR.validateEqual(gutterMarker.classList.contains(DUMMY_GUTTER_CLASS), true);
+                return;
+            }
+            __PR.validateEqual(!!gutterMarker, false);
+        }
+
         function testFile(baseFileName, fileName) {
-            it(`should color gutter appear as expected ${fileName}`, async function () {
+            async function init() {
                 const htmlText = await __PR.readTextFile(baseFileName);
                 await __PR.writeTextFile(fileName, htmlText, true);
                 await __PR.openFile(fileName);
@@ -105,6 +114,11 @@ define(function (require, exports, module) {
 
                 // the line with cursor if there is no color should have a dummy color gutter
                 __PR.setCursors(["1:1"]);
+                return editor;
+            }
+
+            it(`should color gutter appear as expected ${fileName}`, async function () {
+                const editor = await init();
                 let gutterMarker = editor.getGutterMarker(0, GUTTER_NAME);
                 __PR.validateEqual(gutterMarker.classList.contains(DUMMY_GUTTER_CLASS), true);
 
@@ -131,14 +145,7 @@ define(function (require, exports, module) {
             });
 
             it(`should color gutter show correct colors in box ${fileName}`, async function () {
-                const htmlText = await __PR.readTextFile(baseFileName);
-                await __PR.writeTextFile(fileName, htmlText, true);
-                await __PR.openFile(fileName);
-                const editor = EditorManager.getActiveEditor();
-                __PR.validateEqual(editor.isGutterActive(GUTTER_NAME), true);
-
-                // the line with cursor if there is no color should have a dummy color gutter
-                __PR.setCursors(["1:1"]);
+                const editor = await init();
                 let gutterMarker = editor.getGutterMarker(8, GUTTER_NAME);
                 __PR.validateEqual(areColorsEqual($(gutterMarker), "blue"), true);
                 gutterMarker = editor.getGutterMarker(11, GUTTER_NAME);
@@ -152,7 +159,27 @@ define(function (require, exports, module) {
                 await __PR.closeFile();
             });
 
-            // todo test beautify, block comment, line comment, comment at end of file, code changes, toggle color edit
+            it(`should block commenting remove color previews in ${fileName}`, async function () {
+                if(fileName === "a.sass"){
+                    // block commenting in sass is not supported for the test file, so omitting that test
+                    return;
+                }
+                const editor = await init();
+                __PR.setCursors(["12:1-16:85"]);
+                await __PR.execCommand(__PR.Commands.EDIT_BLOCK_COMMENT);
+                let gutterMarker = editor.getGutterMarker(8, GUTTER_NAME);
+                __PR.validateEqual(areColorsEqual($(gutterMarker), "blue"), true);
+
+                // multiple colors
+                validateNoColors(editor, 11);
+                validateNoColors(editor, 12);
+                validateNoColors(editor, 13);
+                validateNoColors(editor, 14);
+                validateNoColors(editor, 15);
+                await __PR.closeFile();
+            });
+
+            // todo test beautify, code changes, code changes at end of file, toggle color edit
         }
 
         const htmlFiles = ["a.html", "a.htm", "a.xhtml", "a.php", "a.jsp", "a.jsx", "a.tsx"];
