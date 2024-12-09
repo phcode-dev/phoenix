@@ -63,6 +63,38 @@ define(function (require, exports, module) {
             await __PR.closeFile();
         });
 
+        function parseColorToRGB(color) {
+            // Create a temporary element to leverage the browser’s color parsing
+            const temp = document.createElement("div");
+            temp.style.color = color;
+            document.body.appendChild(temp);
+
+            // Compute the color set by the browser
+            const parsedColor = window.getComputedStyle(temp).color; // returns in rgb(...) format
+            document.body.removeChild(temp);
+
+            return parsedColor;
+        }
+
+        function areColorsEqual($element, color) {
+            const elem = $element instanceof $ ? $element[0] : $element;
+            const computedStyle = window.getComputedStyle(elem);
+
+            const elementColor = computedStyle.backgroundColor;  // typically returns "rgb(r, g, b)"
+            const normalizedGivenColor = parseColorToRGB(color); // convert given color to "rgb(r, g, b)"
+
+            return elementColor === normalizedGivenColor;
+        }
+
+        function validateMultipleColors(editor, lineNumber, colors) {
+            const gutterMarker = $(editor.getGutterMarker(lineNumber, GUTTER_NAME)).find(".color-box");
+            let numColors = gutterMarker.length;
+            __PR.validateEqual(numColors, colors.length);
+            for(let i=0; i<numColors; i++) {
+                __PR.validateEqual(areColorsEqual($(gutterMarker[i]), colors[i]), true);
+            }
+        }
+
         function testHTMLFile(fileName) {
             it(`should color gutter appear as expected ${fileName}`, async function () {
                 const htmlText = await __PR.readTextFile("base.html");
@@ -94,10 +126,34 @@ define(function (require, exports, module) {
                 await __PR.closeFile();
 
             });
+
+            it(`should color gutter show correct colors in box ${fileName}`, async function () {
+                const htmlText = await __PR.readTextFile("base.html");
+                await __PR.writeTextFile(fileName, htmlText, true);
+                await __PR.openFile(fileName);
+                const editor = EditorManager.getActiveEditor();
+                __PR.validateEqual(editor.isGutterActive(GUTTER_NAME), true);
+
+                // the line with cursor if there is no color should have a dummy color gutter
+                __PR.setCursors(["1:1"]);
+                let gutterMarker = editor.getGutterMarker(8, GUTTER_NAME);
+                __PR.validateEqual(areColorsEqual($(gutterMarker), "blue"), true);
+                gutterMarker = editor.getGutterMarker(11, GUTTER_NAME);
+                __PR.validateEqual(areColorsEqual($(gutterMarker), "#00ff8c"), true);
+
+                // multiple colors
+                validateMultipleColors(editor, 12, ["#00ff8c", "red"]);
+                validateMultipleColors(editor, 13, ["#b7ff00", "green", "#3e4395"]);
+                validateMultipleColors(editor, 14, ["#ff0090", "#802095", "#954e3e", "#454e3e"]);
+                validateMultipleColors(editor, 15, ["#ff0090", "#802095", "#954e3e", "#454e3e"]);
+                await __PR.closeFile();
+            });
+
+            // todo test beautify, block comment, line comment, comment at end of file, code changes, toggle color edit
         }
 
         const htmlFiles = ["a.html", "a.htm", "a.xhtml", "a.php", "a.jsp"];
-        for(let htmlFile of htmlFiles){
+        for (let htmlFile of htmlFiles){
             testHTMLFile(htmlFile);
         }
     });
