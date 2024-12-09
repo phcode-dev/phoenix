@@ -95,6 +95,11 @@ define(function (require, exports, module) {
             }
         }
 
+        function validateSingleColor(editor, lineNumber, color) {
+            let gutterMarker = editor.getGutterMarker(lineNumber, GUTTER_NAME);
+            __PR.validateEqual(areColorsEqual($(gutterMarker), color), true);
+        }
+
         function validateNoColors(editor, lineNumber) {
             const gutterMarker = editor.getGutterMarker(lineNumber, GUTTER_NAME);
             if(gutterMarker) {
@@ -146,10 +151,8 @@ define(function (require, exports, module) {
 
             it(`should color gutter show correct colors in box ${fileName}`, async function () {
                 const editor = await init();
-                let gutterMarker = editor.getGutterMarker(8, GUTTER_NAME);
-                __PR.validateEqual(areColorsEqual($(gutterMarker), "blue"), true);
-                gutterMarker = editor.getGutterMarker(11, GUTTER_NAME);
-                __PR.validateEqual(areColorsEqual($(gutterMarker), "#00ff8c"), true);
+                validateSingleColor(editor, 8, "blue");
+                validateSingleColor(editor, 11, "#00ff8c");
 
                 // multiple colors
                 validateMultipleColors(editor, 12, ["#00ff8c", "red"]);
@@ -246,7 +249,36 @@ define(function (require, exports, module) {
                 await __PR.closeFile();
             });
 
-            // todo test code changes, code changes at end of file
+            it(`should update colors on typing ${fileName}`, async function () {
+                const editor = await init();
+                validateSingleColor(editor, 8, "blue");
+
+                if(baseFileName === "base.css"){
+                    __PR.setCursors(["9:16"]);
+                } else {
+                    __PR.setCursors(["9:23"]);
+                }
+                __PR.typeAtCursor(" red");
+                validateMultipleColors(editor, 8, ["blue", "red"]);
+                await __PR.undo();
+                validateSingleColor(editor, 8, "blue");
+                __PR.typeAtCursor("x");
+                validateNoColors(editor, 8);
+                await __PR.closeFile();
+            });
+
+            it(`should deleting at end of file and appending should bring back color ${fileName}`, async function () {
+                const editor = await init();
+
+                __PR.setCursors(["12:1-19:1"]);
+                __PR.keydown(["BACK_SPACE"]); // this will delete the colors at end of file
+                __PR.validateEqual(editor.lineCount(), 12);
+                await __PR.undo();
+                _verifyExpectedColors(editor, [8, 11, 12, 13, 14, 15]);
+                await __PR.closeFile();
+            });
+
+            // todo test preference change, multi pane tests
         }
 
         const htmlFiles = ["a.html", "a.htm", "a.xhtml", "a.php", "a.jsp", "a.jsx", "a.tsx"];
