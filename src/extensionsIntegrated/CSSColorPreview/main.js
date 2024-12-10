@@ -46,7 +46,8 @@ define(function (require, exports, module) {
         MULTI_COLOR_PREVIEW_CLASS   = "ico-multiple-cssColorPreview",
         COLOR_PREVIEW_GUTTER_PRIORITY = 200,
         COLOR_LANGUAGES= ["css", "scss", "less", "sass", "stylus", "html", "svg", "jsx", "tsx",
-            "php", "ejs", "erb_html", "pug"];
+            "php", "ejs", "erb_html", "pug"],
+        COLOR_LANGUAGES_SET = new Set(COLOR_LANGUAGES);
 
 
     // For preferences settings, to toggle this feature on/off
@@ -59,7 +60,7 @@ define(function (require, exports, module) {
         description: Strings.DESCRIPTION_CSS_COLOR_PREVIEW
     });
 
-    PreferencesManager.definePreference(PREFERENCES_INLINE_COLOR_PREVIEW, "boolean", enabled, {
+    PreferencesManager.definePreference(PREFERENCES_INLINE_COLOR_PREVIEW, "boolean", inlinePreviewEnabled, {
         description: Strings.DESCRIPTION_CSS_COLOR_PREVIEW_INLINE
     });
 
@@ -76,7 +77,7 @@ define(function (require, exports, module) {
         }
 
         const editor = EditorManager.getActiveEditor();
-        if (editor) {
+        if (editor && editor.isGutterActive(GUTTER_NAME)) {
             showGutters(editor, _getAllColorsAndLineNums(editor));
         }
     }
@@ -217,6 +218,10 @@ define(function (require, exports, module) {
     function _applyInlineColor(editor, line) {
         editor._currentlyColorMarkedLine = line;
         editor.clearAllMarks(COLOR_MARK_NAME);
+        const editorLanguage = editor.document.getLanguage().getId();
+        if(!COLOR_LANGUAGES_SET.has(editorLanguage)) {
+            return;
+        }
         const colors = detectValidColorsInLine(editor, line);
         for(let color of colors){
             _colorMark(editor, {line, ch: color.index}, {line, ch: color.index + color.color.length},
@@ -230,10 +235,7 @@ define(function (require, exports, module) {
         if(enabled){
             _addDummyGutterMarkerIfNotExist(editor, line);
         }
-        if(!inlinePreviewEnabled){
-            return;
-        }
-        if(editor.hasSelection()){
+        if(editor.hasSelection() || !inlinePreviewEnabled){
             if(editor._currentlyColorMarkedLine === line){
                 editor._currentlyColorMarkedLine = null;
                 editor.clearAllMarks(COLOR_MARK_NAME);
@@ -255,7 +257,7 @@ define(function (require, exports, module) {
 
         // Add listener for all editor changes
         EditorManager.on("activeEditorChange", function (event, newEditor, oldEditor) {
-            if (newEditor && newEditor.isGutterActive(GUTTER_NAME)) {
+            if (newEditor) {
                 newEditor.off("cursorActivity.colorPreview");
                 newEditor.on("cursorActivity.colorPreview", _cursorActivity);
                 // Unbind the previous editor's change event if it exists
@@ -435,13 +437,16 @@ define(function (require, exports, module) {
      */
     function onChanged(_evt, instance, changeList) {
         // for insertion and deletion, update the changed lines
-        if(!changeList || !changeList.length || !enabled) {
+        if(!changeList || !changeList.length) {
             return;
         }
         const changeObj = changeList[0];
         instance._currentlyColorMarkedLine = null;
         if(inlinePreviewEnabled && changeObj.origin && changeObj.origin.startsWith("+InlineColorEditor")){
             _applyInlineColor(instance, instance.getCursorPos().line);
+        }
+        if(!enabled){
+            return;
         }
         if(changeList.length === 1 && changeObj.origin === '+input' || changeObj.origin === '+delete') {
             // we only do the diff updates on single key type input/delete and not bulk changes
