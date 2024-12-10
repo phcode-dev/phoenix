@@ -1491,13 +1491,34 @@ define(function (require, exports, module) {
     };
 
     /**
-     * Clears all mark of the given type. If nothing is given, clears all marks(Don't use this API without types!).
+     * Clears all marks of the given type. If a lineNumbers array is given, only clears marks on those lines.
+     * If no markType or lineNumbers are given, clears all marks (use cautiously).
      * @param {string} [markType] - Optional, if given will only delete marks of that type. Else delete everything.
+     * @param {number[]} [lineNumbers] - Optional, array of line numbers where marks should be cleared.
      */
-    Editor.prototype.clearAllMarks = function (markType) {
+    Editor.prototype.clearAllMarks = function (markType, lineNumbers) {
         const self = this;
+
         self._codeMirror.operation(function () {
             let marks = self.getAllMarks(markType);
+
+            if (lineNumbers && Array.isArray(lineNumbers)) {
+                // Filter marks to only those within the specified line numbers
+                marks = marks.filter(function (mark) {
+                    const range = mark.find(); // Get the range of the mark
+                    if (!range) {
+                        return false;
+                    }
+
+                    const startLine = range.from.line;
+                    const endLine = range.to.line;
+
+                    // Check if the mark overlaps with any of the specified lines
+                    return lineNumbers.some(line => line >= startLine && line <= endLine);
+                });
+            }
+
+            // Clear the filtered marks
             for (let mark of marks) {
                 mark.clear();
             }
