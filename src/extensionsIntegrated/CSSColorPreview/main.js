@@ -43,6 +43,7 @@ define(function (require, exports, module) {
         DUMMY_GUTTER_CLASS   = "CodeMirror-colorGutter-none",
         SINGLE_COLOR_PREVIEW_CLASS   = "ico-cssColorPreview",
         MULTI_COLOR_PREVIEW_CLASS   = "ico-multiple-cssColorPreview",
+        COLOR_MARK_NAME = "colorMarker",
         COLOR_PREVIEW_GUTTER_PRIORITY = 200,
         COLOR_LANGUAGES= ["css", "scss", "less", "sass", "stylus", "html", "svg", "jsx", "tsx",
             "php", "ejs", "erb_html", "pug"];
@@ -69,7 +70,7 @@ define(function (require, exports, module) {
         }
 
         const editor = EditorManager.getActiveEditor();
-        if (editor) {
+        if (editor && editor.isGutterActive(GUTTER_NAME)) {
             showGutters(editor, _getAllColorsAndLineNums(editor));
         }
     }
@@ -143,13 +144,13 @@ define(function (require, exports, module) {
                             // Single color preview
                             $marker = $("<i>")
                                 .addClass(SINGLE_COLOR_PREVIEW_CLASS)
-                                .css('background-color', obj.colorValues[0]);
+                                .css('background-color', obj.colorValues[0].color);
 
                             editor.setGutterMarker(obj.lineNumber, GUTTER_NAME, $marker[0]);
                             $marker.click((event)=>{
                                 event.preventDefault();
                                 event.stopPropagation();
-                                _colorIconClicked(editor, obj.lineNumber, obj.colorValues[0]);
+                                _colorIconClicked(editor, obj.lineNumber, obj.colorValues[0].color);
                             });
                         } else {
                             // Multiple colors preview
@@ -168,13 +169,13 @@ define(function (require, exports, module) {
                                     const $colorBox = $("<div>")
                                         .addClass("color-box")
                                         .css({
-                                            'background-color': color,
+                                            'background-color': color.color,
                                             ...positions[index]
                                         });
                                     $colorBox.click((event)=>{
                                         event.preventDefault();
                                         event.stopPropagation();
-                                        _colorIconClicked(editor, obj.lineNumber, color);
+                                        _colorIconClicked(editor, obj.lineNumber, color.color);
                                     });
                                     $marker.append($colorBox);
                                 }
@@ -182,6 +183,16 @@ define(function (require, exports, module) {
 
                             editor.setGutterMarker(obj.lineNumber, GUTTER_NAME, $marker[0]);
                         }
+                        $marker.mouseenter(event=>{
+                            event.preventDefault();
+                            event.stopPropagation();
+                            _applyInlineColor(editor, obj.lineNumber);
+                        });
+                        $marker.mouseleave(event=>{
+                            event.preventDefault();
+                            event.stopPropagation();
+                            editor.clearAllMarks(COLOR_MARK_NAME);
+                        });
                     });
                 }
             });
@@ -200,6 +211,10 @@ define(function (require, exports, module) {
     function _cursorActivity(_evt, editor){
         // this is to prevent a gutter gap in the active line if there is no color on this line.
         _addDummyGutterMarkerIfNotExist(editor, editor.getCursorPos().line);
+        if(editor._currentlyColorMarkedLine){
+            editor.clearAllMarks(COLOR_MARK_NAME);
+            editor._currentlyColorMarkedLine = null;
+        }
     }
 
     /**
@@ -232,6 +247,26 @@ define(function (require, exports, module) {
             activeEditor.on("change", onChanged);
             showColorMarks();
             _cursorActivity(null, activeEditor);
+        }
+    }
+
+    function _colorMark(editor, from, to, color) {
+        editor.markText(COLOR_MARK_NAME, from, to, {
+            css: `
+      --bg-color-mark: ${color};
+      background: var(--bg-color-mark);
+      color: lch(from var(--bg-color-mark) calc((50 - l) * infinity) 0 0);
+    `
+        });
+    }
+
+    function _applyInlineColor(editor, line) {
+        editor._currentlyColorMarkedLine = line;
+        editor.clearAllMarks(COLOR_MARK_NAME);
+        const colors = detectValidColorsInLine(editor, line);
+        for(let color of colors){
+            _colorMark(editor, {line, ch: color.index}, {line, ch: color.index + color.color.length},
+                color.color);
         }
     }
 
@@ -321,7 +356,7 @@ define(function (require, exports, module) {
         }
 
         // Return up to 4 colors
-        return validColors.slice(0, 4).map(item => item.color);
+        return validColors;
     }
 
     /**
