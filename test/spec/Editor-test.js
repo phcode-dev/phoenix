@@ -2458,6 +2458,33 @@ define(function (require, exports, module) {
                 expect(mark.length).toBe(0);
             });
 
+            it("should clearAllMarks clear marks with and without markType on given line only", function () {
+                myEditor.markToken("token", {line: 0, ch: 1});
+                myEditor.markToken("token", {line: 1, ch: 1});
+
+                let mark = myEditor.getAllMarks();
+                expect(mark.length).toBe(2);
+                expect([mark[0].type, mark[1].type].includes("range")).toBeTrue();
+
+                // clear mark without markType
+                myEditor.clearAllMarks(null, [0]);
+                mark = myEditor.getAllMarks();
+                expect(mark.length).toBe(1);
+                expect(mark[0].type).toBe("range");
+                expect(mark[0].find().from.line).toBe(1);
+
+                // mark again
+                myEditor.markToken("token", {line: 3, ch: 1});
+                myEditor.markToken("markToDelete", {line: 2, ch: 1});
+                myEditor.clearAllMarks("markToDelete", [2]);
+                mark = myEditor.getAllMarks();
+                expect(mark.length).toBe(2);
+                expect(mark[0].type).toBe("range");
+                expect(mark[1].type).toBe("range");
+                expect(mark[0].find().from.line).toBe(1);
+                expect(mark[1].find().from.line).toBe(3);
+            });
+
             it("should clearAllMarks clear bookmarks and range marks with markType", function () {
                 myEditor.setBookmark("book", {line: 0, ch: 3});
                 myEditor.markToken("token", {line: 0, ch: 1});
