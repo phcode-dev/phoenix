@@ -40,6 +40,7 @@ define(function (require, exports, module) {
     // Extension variables.
     const COLOR_REGEX       = ColorUtils.COLOR_REGEX,    // used to match color
         GUTTER_NAME          = "CodeMirror-colorGutter",
+        COLOR_MARK_NAME      = "colorMarker",
         DUMMY_GUTTER_CLASS   = "CodeMirror-colorGutter-none",
         SINGLE_COLOR_PREVIEW_CLASS   = "ico-cssColorPreview",
         MULTI_COLOR_PREVIEW_CLASS   = "ico-multiple-cssColorPreview",
@@ -50,10 +51,16 @@ define(function (require, exports, module) {
 
     // For preferences settings, to toggle this feature on/off
     const PREFERENCES_CSS_COLOR_PREVIEW = "colorPreview";
-    let enabled = true; // by default:- on
+    const PREFERENCES_INLINE_COLOR_PREVIEW = "colorPreviewInline";
+    let enabled = true, // by default:- on
+        inlinePreviewEnabled = false;
 
     PreferencesManager.definePreference(PREFERENCES_CSS_COLOR_PREVIEW, "boolean", enabled, {
         description: Strings.DESCRIPTION_CSS_COLOR_PREVIEW
+    });
+
+    PreferencesManager.definePreference(PREFERENCES_INLINE_COLOR_PREVIEW, "boolean", enabled, {
+        description: Strings.DESCRIPTION_CSS_COLOR_PREVIEW_INLINE
     });
 
 
@@ -114,6 +121,16 @@ define(function (require, exports, module) {
         }, 50);
     }
 
+    function _colorMark(editor, from, to, color) {
+        editor.markText(COLOR_MARK_NAME, from, to, {
+            css: `
+      --bg-color-mark: ${color};
+      background: var(--bg-color-mark);
+      color: lch(from var(--bg-color-mark) calc((50 - l) * infinity) 0 0);
+    `
+        });
+    }
+
     /**
      * To display the color marks on the gutter
      *
@@ -143,13 +160,13 @@ define(function (require, exports, module) {
                             // Single color preview
                             $marker = $("<i>")
                                 .addClass(SINGLE_COLOR_PREVIEW_CLASS)
-                                .css('background-color', obj.colorValues[0]);
+                                .css('background-color', obj.colorValues[0].color);
 
                             editor.setGutterMarker(obj.lineNumber, GUTTER_NAME, $marker[0]);
                             $marker.click((event)=>{
                                 event.preventDefault();
                                 event.stopPropagation();
-                                _colorIconClicked(editor, obj.lineNumber, obj.colorValues[0]);
+                                _colorIconClicked(editor, obj.lineNumber, obj.colorValues[0].color);
                             });
                         } else {
                             // Multiple colors preview
@@ -168,13 +185,13 @@ define(function (require, exports, module) {
                                     const $colorBox = $("<div>")
                                         .addClass("color-box")
                                         .css({
-                                            'background-color': color,
+                                            'background-color': color.color,
                                             ...positions[index]
                                         });
                                     $colorBox.click((event)=>{
                                         event.preventDefault();
                                         event.stopPropagation();
-                                        _colorIconClicked(editor, obj.lineNumber, color);
+                                        _colorIconClicked(editor, obj.lineNumber, color.color);
                                     });
                                     $marker.append($colorBox);
                                 }
@@ -197,9 +214,36 @@ define(function (require, exports, module) {
         }
     }
 
+    function _applyInlineColor(editor, line) {
+        editor._currentlyColorMarkedLine = line;
+        editor.clearAllMarks(COLOR_MARK_NAME);
+        const colors = detectValidColorsInLine(editor, line);
+        for(let color of colors){
+            _colorMark(editor, {line, ch: color.index}, {line, ch: color.index + color.color.length},
+                color.color);
+        }
+    }
+
     function _cursorActivity(_evt, editor){
         // this is to prevent a gutter gap in the active line if there is no color on this line.
-        _addDummyGutterMarkerIfNotExist(editor, editor.getCursorPos().line);
+        const line = editor.getCursorPos().line;
+        if(enabled){
+            _addDummyGutterMarkerIfNotExist(editor, line);
+        }
+        if(!inlinePreviewEnabled){
+            return;
+        }
+        if(editor.hasSelection()){
+            if(editor._currentlyColorMarkedLine === line){
+                editor._currentlyColorMarkedLine = null;
+                editor.clearAllMarks(COLOR_MARK_NAME);
+            }
+            return;
+        }
+        if(editor._currentlyColorMarkedLine === line) {
+            return;
+        }
+        _applyInlineColor(editor, line);
     }
 
     /**
@@ -320,8 +364,7 @@ define(function (require, exports, module) {
             });
         }
 
-        // Return up to 4 colors
-        return validColors.slice(0, 4).map(item => item.color);
+        return validColors;
     }
 
     /**
@@ -392,10 +435,14 @@ define(function (require, exports, module) {
      */
     function onChanged(_evt, instance, changeList) {
         // for insertion and deletion, update the changed lines
-        if(!changeList || !changeList.length) {
+        if(!changeList || !changeList.length || !enabled) {
             return;
         }
         const changeObj = changeList[0];
+        instance._currentlyColorMarkedLine = null;
+        if(inlinePreviewEnabled && changeObj.origin && changeObj.origin.startsWith("+InlineColorEditor")){
+            _applyInlineColor(instance, instance.getCursorPos().line);
+        }
         if(changeList.length === 1 && changeObj.origin === '+input' || changeObj.origin === '+delete') {
             // we only do the diff updates on single key type input/delete and not bulk changes
             // somehow the performance degrades if we do the diff logic on large blocks.
@@ -415,10 +462,29 @@ define(function (require, exports, module) {
         }
     }
 
+    function inlinePreferenceChanged() {
+        inlinePreviewEnabled = PreferencesManager.get(PREFERENCES_INLINE_COLOR_PREVIEW);
+        const allActiveEditors = MainViewManager.getAllViewedEditors();
+
+        allActiveEditors.forEach((activeEditor) => {
+            const currEditor = activeEditor.editor;
+            if(!currEditor){
+                return;
+            }
+            if(!inlinePreviewEnabled) {
+                currEditor.clearAllMarks(COLOR_MARK_NAME);
+            } else {
+                _applyInlineColor(currEditor, currEditor.getCursorPos().line);
+            }
+        });
+    }
+
     // init after appReady
     AppInit.appReady(function () {
         PreferencesManager.on("change", PREFERENCES_CSS_COLOR_PREVIEW, preferenceChanged);
+        PreferencesManager.on("change", PREFERENCES_INLINE_COLOR_PREVIEW, inlinePreferenceChanged);
         preferenceChanged();
+        inlinePreferenceChanged();
         registerHandlers();
     });
 });

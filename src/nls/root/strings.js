@@ -1251,5 +1251,6 @@ define({
     // indent guides extension
     "DESCRIPTION_INDENT_GUIDES_ENABLED": "true to show indent guide lines, else false.",
     "DESCRIPTION_HIDE_FIRST": "true to show the first Indent Guide line else false.",
-    "DESCRIPTION_CSS_COLOR_PREVIEW": "true to display color previews in the gutter, else false."
+    "DESCRIPTION_CSS_COLOR_PREVIEW": "true to display color previews in the gutter, else false.",
+    "DESCRIPTION_CSS_COLOR_PREVIEW_INLINE": "When true, color codes in the editor will display a colored background behind them, making it easy to visualize colors while editing CSS, else false."
 });
