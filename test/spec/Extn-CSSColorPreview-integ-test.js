@@ -306,7 +306,7 @@ define(function (require, exports, module) {
             it(`should deleting at end of file and appending should bring back color ${fileName}`, async function () {
                 const editor = await init();
 
-                __PR.setCursors(["12:1-19:1"]);
+                __PR.setCursors(["12:1-33:1"]);
                 __PR.keydown(["BACK_SPACE"]); // this will delete the colors at end of file
                 __PR.validateEqual(editor.lineCount(), 12);
                 await __PR.undo();
