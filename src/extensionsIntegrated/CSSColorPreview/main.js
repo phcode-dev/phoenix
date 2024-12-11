@@ -230,6 +230,7 @@ define(function (require, exports, module) {
         // Add listener for all editor changes
         EditorManager.on("activeEditorChange", function (event, newEditor, oldEditor) {
             if (newEditor && newEditor.isGutterActive(GUTTER_NAME)) {
+                console.time("xxxxxxxxxxx");
                 newEditor.off("cursorActivity.colorPreview");
                 newEditor.on("cursorActivity.colorPreview", _cursorActivity);
                 // Unbind the previous editor's change event if it exists
@@ -240,6 +241,7 @@ define(function (require, exports, module) {
                 newEditor.on("change", onChanged);
                 showColorMarks();
                 _cursorActivity(null, newEditor);
+                console.timeEnd("xxxxxxxxxxx");
             }
         });
 
@@ -317,6 +319,16 @@ define(function (require, exports, module) {
         return token.type !== "comment";
     }
 
+    function isAlphanumeric(char) {
+        return /^[a-z0-9-@$]$/i.test(char);
+    }
+    function _isColor(segment, colorInSegment, colorIndex) {
+        const previousChar = colorIndex === 0 ? "" :  segment.charAt(colorIndex-1);
+        const endIndex = colorIndex + colorInSegment.length;
+        const nextChar = endIndex === segment.length ? "" :  segment.charAt(endIndex);
+        return !isAlphanumeric(previousChar) && !isAlphanumeric(nextChar);
+    }
+
     /**
      * Detects valid colors in a given line of text
      *
@@ -329,7 +341,7 @@ define(function (require, exports, module) {
         const languageID = editor.document.getLanguage().getId();
 
         // to make sure that code doesn't break when lineText is null.
-        if (!lineText) {
+        if (!lineText || lineText.length > 1000) { // too long lines we cant scan, maybe minified?
             return [];
         }
 
@@ -345,6 +357,10 @@ define(function (require, exports, module) {
 
             colorMatches.forEach(colorMatch => {
                 const colorIndex = lineMatch.index + colorMatch.index;
+                // this will also allow color name like vars eg: --red-main or @heading-green. we need to omit those
+                if(!_isColor(lineMatch[0], colorMatch[0], colorMatch.index)) {
+                    return;
+                }
 
                 // Check if the color is within a comment
                 const token = editor.getToken({ line: lineNumber, ch: colorIndex }, true);

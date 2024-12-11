@@ -107,7 +107,7 @@ const Editor = brackets.getModule("editor/Editor")
         * [.getLanguageForPosition()](#Editor+getLanguageForPosition) ⇒ <code>Language</code>
         * [.getModeForDocument()](#Editor+getModeForDocument) ⇒ <code>Object</code> \| <code>String</code>
         * [.updateLayout([forceRefresh])](#Editor+updateLayout)
-        * [.setGutterMarker(lineNumber, gutterName, marker)](#Editor+setGutterMarker)
+        * [.setGutterMarker(lineNumber, gutterName, marker)](#Editor+setGutterMarker) ⇒ <code>Object</code>
         * [.getGutterMarker(lineNumber, gutterName)](#Editor+getGutterMarker)
         * [.clearGutterMarker(lineNumber, gutterName)](#Editor+clearGutterMarker)
         * [.isGutterActive(gutterName)](#Editor+isGutterActive)
@@ -1237,10 +1237,12 @@ should not be used on inline editors
 
 <a name="Editor+setGutterMarker"></a>
 
-### editor.setGutterMarker(lineNumber, gutterName, marker)
+### editor.setGutterMarker(lineNumber, gutterName, marker) ⇒ <code>Object</code>
 Sets the marker for the specified gutter on the specified line number
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
+**Returns**: <code>Object</code> - lineHandle   this can be used to track the gutter line as the line number
+                                 changes as the user edits code.  
 
 | Param | Type | Description |
 | --- | --- | --- |
