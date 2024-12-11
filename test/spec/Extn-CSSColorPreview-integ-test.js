@@ -19,14 +19,14 @@
  *
  */
 
-/*global describe, it, beforeAll, afterAll*/
+/*global describe, it, beforeAll, afterAll, beforeEach*/
 
 define(function (require, exports, module) {
 
 
     var SpecRunnerUtils = require("spec/SpecRunnerUtils");
 
-    describe("integration:ColorPreview in gutter", function () {
+    describe("integration:ColorPreview in gutter - needs focus", function () {
         const testRootSpec = "/spec/CSSColorPreview-test-files/";
         const GUTTER_NAME = "CodeMirror-colorGutter",
             SINGLE_COLOR_PREVIEW_CLASS   = "ico-cssColorPreview",
@@ -54,6 +54,10 @@ define(function (require, exports, module) {
             EditorManager = null;
             await SpecRunnerUtils.closeTestWindow();
         }, 30000);
+
+        beforeEach(async function () {
+            await __PR.closeAll();
+        });
 
         it("should color gutter not appear in cpp files", async function () {
             const fileName = "a.cpp";
@@ -204,16 +208,24 @@ define(function (require, exports, module) {
                 const editor = await init();
                 await __PR.execCommand(__PR.Commands.EDIT_BEAUTIFY_CODE);
                 if(baseFileName === "base.css"){
-                    await __PR.awaitsFor(()=>{
-                        return editor.getLine(0) === ".class-one {";
-                    }, "for beautify complete");
+                    await __PR.awaitsFor(async ()=>{
+                        if(editor.getLine(0) !== ".class-one {"){
+                            await __PR.execCommand(__PR.Commands.EDIT_BEAUTIFY_CODE);
+                            return false;
+                        }
+                        return true;
+                    }, "for beautify complete", 2000, 50);
                     _verifyExpectedColors(editor, [8, 12, 15, 18, 21, 24]);
                     await __PR.closeFile();
                     return;
                 }
-                await __PR.awaitsFor(()=>{
-                    return editor.getLine(2) === "    <head>";
-                }, "for beautify complete");
+                await __PR.awaitsFor(async ()=>{
+                    if(editor.getLine(2) !== "    <head>"){
+                        await __PR.execCommand(__PR.Commands.EDIT_BEAUTIFY_CODE);
+                        return false;
+                    }
+                    return true;
+                }, "for beautify complete", 2000, 50);
                 _verifyExpectedColors(editor, [8, 12, 13, 14, 15, 16]);
                 await __PR.closeFile();
             });
@@ -236,6 +248,29 @@ define(function (require, exports, module) {
             it(`should toggle quick edit on multiple colors ${fileName}`, async function () {
                 const editor = await init();
                 let gutterMarker = editor.getGutterMarker(15, GUTTER_NAME);
+                const individualColors = $(gutterMarker).find(".color-box");
+                individualColors[0].click();
+                await __PR.awaitsFor(()=>{
+                    return __PR.$(".CodeMirror-linewidget").length === 1 &&
+                        areColorsEqual(__PR.$(".CodeMirror-linewidget").find(".original-color")[0], "#ff0090");
+                }, "quick edit to color #ff0090 appear");
+                individualColors[2].click();
+                await __PR.awaitsFor(()=>{
+                    return __PR.$(".CodeMirror-linewidget").length === 1 &&
+                        areColorsEqual(__PR.$(".CodeMirror-linewidget").find(".original-color")[0], "#954e3e");
+                }, "quick edit to color #954e3e appear");
+                await __PR.closeFile();
+            });
+
+            it(`should color gutter track correct line numbers after deleting lines in ${fileName}`, async function () {
+                const editor = await init();
+                validateMultipleColors(editor, 12, ["#00ff8c", "red"]);
+
+                __PR.setCursors(["6:1-10:2"]);
+                __PR.keydown(["BACK_SPACE"]); // this will delete the selected lines
+
+                // now the color gutter should account for the missing lines
+                let gutterMarker = editor.getGutterMarker(11, GUTTER_NAME);
                 const individualColors = $(gutterMarker).find(".color-box");
                 individualColors[0].click();
                 await __PR.awaitsFor(()=>{

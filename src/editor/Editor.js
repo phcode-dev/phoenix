@@ -2592,6 +2592,8 @@ define(function (require, exports, module) {
      * @param   {number}   lineNumber The line number for the inserted gutter marker
      * @param   {string}   gutterName The name of the gutter
      * @param   {object}   marker     The dom element representing the marker to the inserted in the gutter
+     * @returns {{lineNo : function}}   lineHandle   this can be used to track the gutter line as the line number
+     *                                  changes as the user edits code.
      */
     Editor.prototype.setGutterMarker = function (lineNumber, gutterName, marker) {
         if (!Editor.isGutterRegistered(gutterName)) {
@@ -2599,7 +2601,7 @@ define(function (require, exports, module) {
             return;
         }
 
-        this._codeMirror.setGutterMarker(lineNumber, gutterName, marker);
+        return this._codeMirror.setGutterMarker(lineNumber, gutterName, marker);
     };
 
     /**
