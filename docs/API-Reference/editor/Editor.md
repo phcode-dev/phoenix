@@ -59,7 +59,7 @@ const Editor = brackets.getModule("editor/Editor")
         * [.getMarksAfter(position, markType)](#Editor+getMarksAfter) ⇒ <code>Array.&lt;TextMarker&gt;</code>
         * [.getMarksBefore(position, markType)](#Editor+getMarksBefore) ⇒ <code>Array.&lt;TextMarker&gt;</code>
         * [.getAllMarks([markType])](#Editor+getAllMarks) ⇒ <code>Array.&lt;TextMarker&gt;</code>
-        * [.clearAllMarks([markType])](#Editor+clearAllMarks)
+        * [.clearAllMarks([markType], [lineNumbers])](#Editor+clearAllMarks)
         * [.isSamePosition(position1, position2)](#Editor+isSamePosition) ⇒ <code>boolean</code>
         * [.getHistory()](#Editor+getHistory) ⇒ <code>Array</code>
         * [.setHistory()](#Editor+setHistory)
@@ -729,14 +729,16 @@ Returns an array containing all marked ranges in the document.
 
 <a name="Editor+clearAllMarks"></a>
 
-### editor.clearAllMarks([markType])
-Clears all mark of the given type. If nothing is given, clears all marks(Don't use this API without types!).
+### editor.clearAllMarks([markType], [lineNumbers])
+Clears all marks of the given type. If a lineNumbers array is given, only clears marks on those lines.
+If no markType or lineNumbers are given, clears all marks (use cautiously).
 
 **Kind**: instance method of [<code>Editor</code>](#Editor)  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | [markType] | <code>string</code> | Optional, if given will only delete marks of that type. Else delete everything. |
+| [lineNumbers] | <code>Array.&lt;number&gt;</code> | Optional, array of line numbers where marks should be cleared. |
 
 <a name="Editor+isSamePosition"></a>
 

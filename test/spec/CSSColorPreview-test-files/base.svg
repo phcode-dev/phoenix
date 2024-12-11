@@ -1,0 +1,26 @@
+<svg width="200px" height="100px" xmlns="http://www.w3.org/2000/svg">
+    <rect width="100%" height="100%" fill="#7f6ad3" />
+    <circle cx="50" cy="50" r="40">
+        <animate attributeName="fill" from="red" to="blue" dur="2s" repeatCount="indefinite" />
+    </circle>
+    <symbol id="mySymbol">
+        <circle cx="10" cy="10" r="10" fill="red" stroke="#00ff00" />
+    </symbol>
+    <use href="#mySymbol" x="20" y="20" />
+    <filter id="floodFilter">
+        <feFlood flood-color='yellow' flood-opacity="0.5" />
+    </filter>
+    <rect width="100" height="100" filter="url(#floodFilter)" />
+    <style>
+        .my-rect {
+        fill: coral;
+        stroke: navy;
+        }
+    </style>
+    <rect class="my-rect" x="100" y="100" width="100" height="100" />
+    <linearGradient id="grad1">
+        <stop offset="0%" stop-color="red" />
+        <stop offset="100%" stop-color="blue" />
+    </linearGradient>
+    <rect x="10" y="100" width="100" height="100" fill="url(#grad1)" />
+</svg>
