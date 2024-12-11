@@ -142,22 +142,24 @@ define(function (require, exports, module) {
                     const colorGutters = _.sortBy(_results, "lineNumber");
 
                     colorGutters.forEach(function (obj) {
+                        let lineHandle;
                         let $marker;
                         if (obj.colorValues.length === 1) {
                             // Single color preview
                             $marker = $("<i>")
                                 .addClass(SINGLE_COLOR_PREVIEW_CLASS)
                                 .css('background-color', obj.colorValues[0].color);
+                            lineHandle = editor.setGutterMarker(obj.lineNumber, GUTTER_NAME, $marker[0]);
 
-                            editor.setGutterMarker(obj.lineNumber, GUTTER_NAME, $marker[0]);
                             $marker.click((event)=>{
                                 event.preventDefault();
                                 event.stopPropagation();
-                                _colorIconClicked(editor, obj.lineNumber, obj.colorValues[0].color);
+                                _colorIconClicked(editor, lineHandle.lineNo(), obj.colorValues[0].color);
                             });
                         } else {
                             // Multiple colors preview
                             $marker = $("<div>").addClass(MULTI_COLOR_PREVIEW_CLASS);
+                            lineHandle = editor.setGutterMarker(obj.lineNumber, GUTTER_NAME, $marker[0]);
 
                             // Positions for up to 4 colors in grid
                             const positions = [
@@ -178,18 +180,16 @@ define(function (require, exports, module) {
                                     $colorBox.click((event)=>{
                                         event.preventDefault();
                                         event.stopPropagation();
-                                        _colorIconClicked(editor, obj.lineNumber, color.color);
+                                        _colorIconClicked(editor, lineHandle.lineNo(), color.color);
                                     });
                                     $marker.append($colorBox);
                                 }
                             });
-
-                            editor.setGutterMarker(obj.lineNumber, GUTTER_NAME, $marker[0]);
                         }
                         $marker.mouseenter(event=>{
                             event.preventDefault();
                             event.stopPropagation();
-                            _applyInlineColor(editor, obj.lineNumber);
+                            _applyInlineColor(editor, lineHandle.lineNo());
                         });
                         $marker.mouseleave(event=>{
                             event.preventDefault();
