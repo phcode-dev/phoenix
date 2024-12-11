@@ -48,6 +48,9 @@ define(function (require, exports, module) {
         COLOR_LANGUAGES= ["css", "scss", "less", "sass", "stylus", "html", "svg", "jsx", "tsx",
             "php", "ejs", "erb_html", "pug"];
 
+    const SVG_REGEX = /(:[^;]*;?|(?:fill|stroke|stop-color|flood-color|lighting-color|background-color|border-color|from|to)\s*=\s*(['"]?)[^'";]*\2)/g,
+        CSS_REGEX = /:[^;]*;?/g; // the last semi colon is optional.
+
 
     // For preferences settings, to toggle this feature on/off
     const PREFERENCES_CSS_COLOR_PREVIEW = "colorPreview";
@@ -323,13 +326,14 @@ define(function (require, exports, module) {
      */
     function detectValidColorsInLine(editor, lineNumber) {
         const lineText = editor.getLine(lineNumber);
+        const languageID = editor.document.getLanguage().getId();
 
         // to make sure that code doesn't break when lineText is null.
         if (!lineText) {
             return [];
         }
 
-        const valueRegex = /:[^;]*;?/g; // the last semi colon is optional.
+        const valueRegex = languageID === "svg" ? SVG_REGEX: CSS_REGEX;
         const validColors = [];
 
         // Find all property value sections in the line

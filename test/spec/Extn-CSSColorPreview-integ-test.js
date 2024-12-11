@@ -319,5 +319,27 @@ define(function (require, exports, module) {
 
             await __PR.closeFile();
         });
+
+        it(`should color gutter appear for SVG files`, async function () {
+            await __PR.openFile("base.svg");
+            const editor = EditorManager.getActiveEditor();
+            __PR.validateEqual(editor.isGutterActive(GUTTER_NAME), true);
+
+            // the line with cursor if there is no color should have a dummy color gutter
+            __PR.setCursors(["1:1"]);
+            for(let i in [0, 2, 4, 5, 7, 8, 9, 11, 12, 13, 14, 17, 18, 19, 20]){
+                validateNoColors(editor, i);
+            }
+            validateSingleColor(editor, 1, "#7f6ad3"); // fill attr
+            validateMultipleColors(editor, 3, ["red", "blue"]); // from, to attrs
+            validateMultipleColors(editor, 6, ["red", "#00ff00"]); // stroke attr
+            validateSingleColor(editor, 10, "yellow"); // flood-color attr
+            validateSingleColor(editor, 15, "coral"); // in css style tags
+            validateSingleColor(editor, 16, "navy"); // in css style tag
+            validateSingleColor(editor, 21, "red"); // stop-color attr
+            validateSingleColor(editor, 22, "blue"); // stop-color attr
+            await __PR.closeFile();
+
+        });
     });
 });
