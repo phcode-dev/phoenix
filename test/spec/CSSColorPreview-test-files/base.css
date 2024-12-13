@@ -16,5 +16,5 @@
 .class-6 {color: #ff0090 #802095 #954e3e #454e3e #150e3e;}
 
 .class-vars {
-    color: var(--slight-red); background-color: @blue-light; color: var(--red); background-color: @blue;
+    color: var(--slight-red); background-color: @blue-light; color: var(--red); background-color: @blue; color: $white;
 }

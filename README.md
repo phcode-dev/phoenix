@@ -1,8 +1,9 @@
 # Welcome to Phoenix!
 
-**Website: https://phcode.dev**
+**Website: https://phcode.io**
 
-Phoenix is a modern open-source and [free software](https://www.gnu.org/philosophy/free-sw.en.html) code editor for the web, built for the browser.
+Phoenix is a modern open-source and [free software](https://www.gnu.org/philosophy/free-sw.en.html) text editor
+designed to make coding as simple and fun as playing a video game.
 
 #### Code Guardian
 [![Phoenix build verification](https://github.com/phcode-dev/phoenix/actions/workflows/build_verify.yml/badge.svg)](https://github.com/phcode-dev/phoenix/actions/workflows/build_verify.yml)
@@ -27,7 +28,7 @@ Phoenix is a modern open-source and [free software](https://www.gnu.org/philosop
 <img src="https://assets-global.website-files.com/607f4f6df411bd01527dc7d5/63bc40cd9d502eda8ea74ce7_Bugsnag%20Full%20Color.svg" alt="bugsnag" style="width:200px;"/>
 </a>
 
-#### Development status:  Stable/Release-candidate.
+#### Development status:  Stable/Active.
 
 ![Screenshot from 2022-09-20 13-35-03](https://user-images.githubusercontent.com/5336369/191202975-6069d270-526a-443d-bd76-903353ae1222.png)
 
