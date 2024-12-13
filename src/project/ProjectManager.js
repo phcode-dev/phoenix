@@ -739,6 +739,7 @@ define(function (require, exports, module) {
             entryType = isFolder ? Strings.DIRECTORY : Strings.FILE,
             title,
             message;
+        path = Phoenix.app.getDisplayPath(path);
         path = StringUtils.breakableUrl(path);
 
         switch (errType) {
@@ -1312,7 +1313,9 @@ define(function (require, exports, module) {
                         // which is now partially torn down (see #6574).
                         model.projectRoot = null;
 
-                        _loadProject(getWelcomeProjectPath()).always(function () {
+                        _loadProject(getPlaceholderProjectPath()).always(function () {
+                            // we dont load any other project here as the saved project state will not get restored
+                            // if we load an actual project at this time.
                             // Make sure not to reject the original deferred until the fallback
                             // project is loaded, so we don't violate expectations that there is always
                             // a current project before continuing after _loadProject().
@@ -1409,6 +1412,33 @@ define(function (require, exports, module) {
             || window.showOpenFilePicker; // fs access file picker
     }
 
+    function _openProject(path, result) {
+        // Confirm any unsaved changes first. We run the command in "prompt-only" mode, meaning it won't
+        // actually close any documents even on success; we'll do that manually after the user also oks
+        // the folder-browse dialog.
+        CommandManager.execute(Commands.FILE_CLOSE_ALL, { promptOnly: true })
+            .done(function () {
+                if (path) {
+                    // use specified path
+                    _loadProject(path).then(result.resolve, result.reject);
+                } else {
+                    // Pop up a folder browse dialog
+                    FileSystem.showOpenDialog(false, true, Strings.CHOOSE_FOLDER, model.projectRoot.fullPath, null,
+                        function (err, files) {
+                            if (!err && files.length > 0) {
+                                // Load the new project into the folder tree
+                                _loadProject(files[0]).then(result.resolve, result.reject);
+                            } else {
+                                result.reject();
+                            }
+                        });
+                }
+            })
+            .fail(function () {
+                result.reject();
+            });
+    }
+
     /**
      * Open a new project. Currently, Brackets must always have a project open, so
      * this method handles both closing the current project and opening a new project.
@@ -1422,7 +1452,7 @@ define(function (require, exports, module) {
      */
     function openProject(path) {
 
-        var result = new $.Deferred();
+        const result = new $.Deferred();
 
         if(!path && !_filePickerSupported()){
             Dialogs.showModalDialog(
@@ -1434,29 +1464,24 @@ define(function (require, exports, module) {
             return result.promise();
         }
 
-        // Confirm any unsaved changes first. We run the command in "prompt-only" mode, meaning it won't
-        // actually close any documents even on success; we'll do that manually after the user also oks
-        // the folder-browse dialog.
-        CommandManager.execute(Commands.FILE_CLOSE_ALL, { promptOnly: true })
-            .done(function () {
-                if (path) {
-                    // use specified path
-                    _loadProject(path).then(result.resolve, result.reject);
-                } else {
-                    // Pop up a folder browse dialog
-                    FileSystem.showOpenDialog(false, true, Strings.CHOOSE_FOLDER, model.projectRoot.fullPath, null, function (err, files) {
-                        if (!err && files.length > 0) {
-                            // Load the new project into the folder tree
-                            _loadProject(files[0]).then(result.resolve, result.reject);
-                        } else {
-                            result.reject();
-                        }
-                    });
-                }
-            })
-            .fail(function () {
-                result.reject();
-            });
+        if(!path){
+            _openProject(null, result);
+            return result.promise();
+        }
+
+        const rootEntry = FileSystem.getDirectoryForPath(path);
+        rootEntry.exists(function (err, exists) {
+            if (exists) {
+                _openProject(path, result);
+                return;
+            }
+            console.error("error project open path doesnt exist: ", path, err);
+            exports.trigger(EVENT_PROJECT_OPEN_FAILED, path);
+            _showErrorDialog(ERR_TYPE_LOADING_PROJECT_NATIVE, true, FileSystemError.NOT_FOUND, path)
+                .done(function () {
+                    result.reject();
+                });
+        });
 
         // if fail, don't open new project: user canceled (or we failed to save its unsaved changes)
         return result.promise();

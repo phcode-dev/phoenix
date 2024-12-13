@@ -230,7 +230,6 @@ define(function (require, exports, module) {
         // Add listener for all editor changes
         EditorManager.on("activeEditorChange", function (event, newEditor, oldEditor) {
             if (newEditor && newEditor.isGutterActive(GUTTER_NAME)) {
-                console.time("xxxxxxxxxxx");
                 newEditor.off("cursorActivity.colorPreview");
                 newEditor.on("cursorActivity.colorPreview", _cursorActivity);
                 // Unbind the previous editor's change event if it exists
@@ -241,7 +240,6 @@ define(function (require, exports, module) {
                 newEditor.on("change", onChanged);
                 showColorMarks();
                 _cursorActivity(null, newEditor);
-                console.timeEnd("xxxxxxxxxxx");
             }
         });
 

@@ -363,7 +363,7 @@ define(function (require, exports, module) {
                     }
                     FileSystem.resolve(fullPath, function (err, item) {
                         if (err) {
-                            recentProjects.splice(index, 1);
+                            removeFromRecentProject(fullPath);
                         }
                         reject();
                     });
