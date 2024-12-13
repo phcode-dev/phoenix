@@ -1468,6 +1468,12 @@ define(function (require, exports, module) {
             _openProject(null, result);
             return result.promise();
         }
+        const rootPath = ProjectModel._ensureTrailingSlash(path);
+        if(rootPath === getWelcomeProjectPath()) {
+            // welcome project path is always guaranteed to be present!
+            _openProject(rootPath, result);
+            return result.promise();
+        }
 
         const rootEntry = FileSystem.getDirectoryForPath(path);
         rootEntry.exists(function (err, exists) {
