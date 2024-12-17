@@ -835,7 +835,8 @@ define(function (require, exports, module) {
                 return;
             }
 
-            if (event.button !== LEFT_MOUSE_BUTTON) {
+            if (event.button !== LEFT_MOUSE_BUTTON
+                || (brackets.platform === "mac" && event.ctrlKey)) { // in mac ctrl-click is context menu
                 return;
             }
 

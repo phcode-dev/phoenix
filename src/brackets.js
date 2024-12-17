@@ -470,6 +470,11 @@ define(function (require, exports, module) {
         // jQuery hides non-left clicks from such event handlers, yet middle-clicks still cause CEF to
         // navigate. Also, a capture handler is more reliable than bubble.
         window.document.body.addEventListener("click", function (e) {
+            // Don't interfere with context menu clicks
+            if (e.button === 2 || (brackets.platform === "mac" && e.ctrlKey)) {
+                return;
+            }
+
             // Check parents too, in case link has inline formatting tags
             let node = e.target, url;
             while (node) {

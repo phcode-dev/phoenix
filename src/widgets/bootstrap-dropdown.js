@@ -156,7 +156,15 @@
    * =================================== */
 
   $(document)
-    .on('click.dropdown.data-api', clearMenus)
+      .on('click.dropdown.data-api', function(e) {
+          // Don't clear menus if this is a context menu click in mac/safari
+          // In Chrome, Ctrl+Click = context menu event and doesn't trigger the normal click handlers
+          // In Safari, Cmd+Click generates both a context menu event AND a regular click event so this check
+          if (e.button === 2 || (brackets.platform === "mac" && e.ctrlKey)) {
+              return;
+          }
+          clearMenus();
+      })
     .on('click.dropdown.data-api', '.dropdown form', function (e) { e.stopPropagation() })
     .on('click.dropdown-menu', function (e) { e.stopPropagation() })
     .on('click.dropdown.data-api'  , toggle, Dropdown.prototype.toggle)
