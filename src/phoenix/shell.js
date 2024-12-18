@@ -19,7 +19,7 @@
 // jshint ignore: start
 /*eslint no-console: 0*/
 /*eslint strict: ["error", "global"]*/
-/*global Phoenix, fs*/
+/*global fs, path*/
 
 
 /** Setup phoenix shell components
@@ -334,7 +334,7 @@ Phoenix.app = {
         if (fullVFSPath.startsWith(Phoenix.VFS.getMountDir())) {
             return fullVFSPath.replace(Phoenix.VFS.getMountDir(), "");
         }
-        return window.Strings.STORED_IN_YOUR_BROWSER;
+        return `${path.basename(fullVFSPath)} - ${window.Strings.STORED_IN_YOUR_BROWSER}`;
     },
     getDisplayPath: function (fullOrRelativeVFSPath) {
         if(!fullOrRelativeVFSPath){
