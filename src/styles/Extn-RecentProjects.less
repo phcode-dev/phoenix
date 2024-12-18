@@ -45,18 +45,27 @@
 }
 
 #project-dropdown-toggle {
-    display: inline-block;
+    display: flex;
     /* adjust margins to keep position #project-title position stable after extension is loaded */
-    margin: -3px 5px -2px -6px;
     overflow: hidden;
-    padding: 0 5px;
     white-space: nowrap;
+    padding: 2px 5px;
+    margin-left: -5px;
+    .dropdown-arrow {
+        display: inline-block;
+        width: 7px;
+        height: 5px;
+        margin-left: 4px;
+        position: relative;
+        top: 7px;
+    }
 }
 
 #project-title {
-    /* vertical align center text */
-    height: 21px;
-    line-height: 21px;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1 1 0;
 }
 
 #project-dropdown-toggle:hover .dropdown-arrow {
