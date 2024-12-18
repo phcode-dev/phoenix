@@ -110,8 +110,8 @@ define(function (require, exports, module) {
             expect(brackets.app.getDisplayLocation("/mnt/apple")).toBe("apple");
             expect(brackets.app.getDisplayLocation("/mnt/apple/x/")).toBe("apple/x/");
             // filer paths
-            expect(brackets.app.getDisplayLocation("/x/apple")).toBe(Strings.STORED_IN_YOUR_BROWSER);
-            expect(brackets.app.getDisplayLocation("/y/apple/x/")).toBe(Strings.STORED_IN_YOUR_BROWSER);
+            expect(brackets.app.getDisplayLocation("/x/apple")).toBe("apple - "+ Strings.STORED_IN_YOUR_BROWSER);
+            expect(brackets.app.getDisplayLocation("/y/apple/x/")).toBe("x - " + Strings.STORED_IN_YOUR_BROWSER);
         });
 
         it("should getDisplayLocation return correct path in tauri", function () {

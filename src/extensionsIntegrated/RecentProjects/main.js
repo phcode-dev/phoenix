@@ -548,9 +548,7 @@ define(function (require, exports, module) {
     });
 
     AppInit.htmlReady(function () {
-        $("#project-title")
-            .wrap("<div id='project-dropdown-toggle' class='btn-alt-quiet'></div>")
-            .after("<span class='dropdown-arrow'></span>");
+        $("#project-dropdown-toggle .dropdown-arrow").removeClass("forced-hidden");
 
         var cmenuAdapter = {
             open: showDropdown,
