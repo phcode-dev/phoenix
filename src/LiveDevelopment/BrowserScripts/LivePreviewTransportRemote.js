@@ -304,17 +304,19 @@
             // an iframe(except for the intel mac bug)
             // in normal browsers, we dont need to do this and the borwser will do its thing.
             const href = getAbsoluteUrl(targetElement.getAttribute('href'));
-            window.parent.postMessage({
-                handlerName: "ph-liveServer",
-                eventName: 'embeddedIframeHrefClick',
-                href: href
-            }, "*");
-            // in intel mac desktop, tauri seems to open in browser
-            // causing 2 tabs to open. in m1 macs its not there. so we prevent default behavior.
-            event.stopImmediatePropagation();
-            event.preventDefault();
+            if (!event.defaultPrevented) {
+                window.parent.postMessage({
+                    handlerName: "ph-liveServer",
+                    eventName: 'embeddedIframeHrefClick',
+                    href: href
+                }, "*");
+                // in intel mac desktop, tauri seems to open in browser
+                // causing 2 tabs to open. in m1 macs its not there. so we prevent default behavior.
+                event.stopImmediatePropagation();
+                event.preventDefault();
+            }
         }
-    }, true);
+    });
     document.addEventListener('contextmenu', function(event) {
         (document.activeElement || document.body).focus();
     });
