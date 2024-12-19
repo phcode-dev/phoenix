@@ -55,7 +55,7 @@ define(function (require, exports, module) {
         lastTypedText = "",
         lastTypedTextWasRegexp = false,
         lastClosedQuery = null;
-    const MAX_HISTORY_RESULTS = 50;
+    const MAX_HISTORY_RESULTS = 25;
     const PREF_MAX_HISTORY = "maxSearchHistory";
 
     const INSTANT_SEARCH_INTERVAL_MS = 50;
