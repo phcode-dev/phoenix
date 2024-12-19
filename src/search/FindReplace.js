@@ -619,6 +619,9 @@ define(function (require, exports, module) {
             // 3rd arg: prefer to avoid scrolling if result is anywhere within view, since in this case user
             // is in the middle of typing, not navigating explicitly; viewport jumping would be distracting.
             findNext(editor, false, true, state.searchStartPos);
+        } else {
+            // Blank or invalid query: just jump back to initial pos
+            editor._codeMirror.setCursor(state.searchStartPos);
         }
 
         editor.lastParsedQuery = state.parsedQuery;
