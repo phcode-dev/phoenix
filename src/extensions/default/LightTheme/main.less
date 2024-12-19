@@ -24,7 +24,7 @@
 
 @matching-bracket: #cfead6;
 
-.CodeMirror-matchingtag {
+.CodeMirror-matchingtag:not(.CodeMirror-searching) {
   background: @matching-bracket;
   --border-height: calc((var(--editor-line-height) *1em - 1em) / 2);
   border-top: var(--border-height) solid @matching-bracket;

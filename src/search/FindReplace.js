@@ -400,6 +400,45 @@ define(function (require, exports, module) {
         }
     }
 
+    function _markCurrentPos(editor) {
+        var cm = editor._codeMirror;
+        const pos = editor.getCursorPos(false, "start");
+        cm.operation(function () {
+            var state = getSearchState(cm);
+            clearCurrentMatchHighlight(cm, state);
+
+            let curIndex = editor.indexFromPos(pos);
+            curIndex = curIndex >= 1 ? curIndex-- : 0;
+            let thisMatch = _getNextMatch(editor, false, editor.posFromIndex(curIndex));
+            if (thisMatch) {
+                let previousMatch = _getNextMatch(editor, true, thisMatch.start);
+                if(previousMatch){
+                    const start = editor.indexFromPos(previousMatch.start), end = editor.indexFromPos(previousMatch.end);
+                    if(curIndex >= start && curIndex <= end) {
+                        thisMatch = previousMatch;
+                    }
+                }
+                // Update match index indicators - only possible if we have resultSet saved (missing if FIND_MAX_FILE_SIZE threshold hit)
+                if (state.resultSet.length) {
+                    _updateFindBarWithMatchInfo(state,
+                        {from: thisMatch.start, to: thisMatch.end}, false);
+                    // Update current-tickmark indicator - only if highlighting enabled (disabled if FIND_HIGHLIGHT_MAX threshold hit)
+                    if (state.marked.length) {
+                        ScrollTrackMarkers.markCurrent(state.matchIndex);  // _updateFindBarWithMatchInfo() has updated this index
+                    }
+                }
+
+                // Only mark text with "current match" highlight if search bar still open
+                if (findBar && !findBar.isClosed()) {
+                    // If highlighting disabled, apply both match AND current-match styles for correct appearance
+                    var curentMatchClassName = state.marked.length ? "searching-current-match" : "CodeMirror-searching searching-current-match";
+                    state.markedCurrent = cm.markText(thisMatch.start, thisMatch.end,
+                        { className: curentMatchClassName, startStyle: "searching-first", endStyle: "searching-last" });
+                }
+            }
+        });
+    }
+
     /**
      * Selects the next match (or prev match, if searchBackwards==true) starting from either the current position
      * (if pos unspecified) or the given position (if pos specified explicitly). The starting position
@@ -574,11 +613,13 @@ define(function (require, exports, module) {
         setQueryInfo(state, findBar.getQueryInfo(false));
         updateResultSet(editor);
 
-        if (state.parsedQuery) {
+        if(initial){
+            _markCurrentPos(editor);
+        } else if (state.parsedQuery && !initial) {
             // 3rd arg: prefer to avoid scrolling if result is anywhere within view, since in this case user
             // is in the middle of typing, not navigating explicitly; viewport jumping would be distracting.
             findNext(editor, false, true, state.searchStartPos);
-        } else if (!initial) {
+        } else {
             // Blank or invalid query: just jump back to initial pos
             editor._codeMirror.setCursor(state.searchStartPos);
         }

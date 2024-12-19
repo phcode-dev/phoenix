@@ -90,7 +90,7 @@ define(function (require, exports, module) {
         ];
 
 
-        var testWindow, twCommandManager, twEditorManager, twFindInFiles, tw$;
+        var testWindow, twCommandManager, twEditorManager, twFindInFiles, tw$, __PR;
         var myDocument, myEditor;
 
         // Helper functions for testing cursor position / selection range
@@ -305,18 +305,18 @@ define(function (require, exports, module) {
 
                 twCommandManager.execute(Commands.CMD_FIND);
                 // The previous search term "b" was pre-filled, so the editor was centered there already
-                expect(myEditor.centerOnCursor.calls.count()).toEql(1);
+                expect(myEditor.centerOnCursor.calls.count()).toEql(0);
 
                 enterSearchText("foo");
                 expectHighlightedMatches(fooExpectedMatches);
                 expectSelection(fooExpectedMatches[0]);
                 expectMatchIndex(0, 4);
-                expect(myEditor.centerOnCursor.calls.count()).toEql(2);
+                expect(myEditor.centerOnCursor.calls.count()).toEql(1);
 
                 twCommandManager.execute(Commands.CMD_FIND_NEXT);
                 expectSelection(fooExpectedMatches[1]);
                 expectMatchIndex(1, 4);
-                expect(myEditor.centerOnCursor.calls.count()).toEql(3);
+                expect(myEditor.centerOnCursor.calls.count()).toEql(2);
                 twCommandManager.execute(Commands.CMD_FIND_NEXT);
                 expectSelection(fooExpectedMatches[2]);
                 expectMatchIndex(2, 4);
@@ -329,7 +329,7 @@ define(function (require, exports, module) {
                 twCommandManager.execute(Commands.CMD_FIND_NEXT);
                 expectSelection(fooExpectedMatches[0]);
                 expectMatchIndex(0, 4);
-                expect(myEditor.centerOnCursor.calls.count()).toEql(6);
+                expect(myEditor.centerOnCursor.calls.count()).toEql(5);
             });
 
             it("should find all case-insensitive matches with mixed-case text", async function () {
@@ -337,18 +337,18 @@ define(function (require, exports, module) {
 
                 twCommandManager.execute(Commands.CMD_FIND);
                 // The previous search term "foo" was pre-filled, so the editor was centered there already
-                expect(myEditor.centerOnCursor.calls.count()).toEql(1);
+                expect(myEditor.centerOnCursor.calls.count()).toEql(0);
 
                 enterSearchText("Foo");
                 expectHighlightedMatches(fooExpectedMatches);
                 expectSelection(fooExpectedMatches[0]);
                 expectMatchIndex(0, 4);
-                expect(myEditor.centerOnCursor.calls.count()).toEql(2);
+                expect(myEditor.centerOnCursor.calls.count()).toEql(1);
 
                 twCommandManager.execute(Commands.CMD_FIND_NEXT);
                 expectSelection(fooExpectedMatches[1]);
                 expectMatchIndex(1, 4);
-                expect(myEditor.centerOnCursor.calls.count()).toEql(3);
+                expect(myEditor.centerOnCursor.calls.count()).toEql(2);
                 twCommandManager.execute(Commands.CMD_FIND_NEXT);
                 expectSelection(fooExpectedMatches[2]);
                 expectMatchIndex(2, 4);
@@ -361,7 +361,7 @@ define(function (require, exports, module) {
                 twCommandManager.execute(Commands.CMD_FIND_NEXT);
                 expectSelection(fooExpectedMatches[0]);
                 expectMatchIndex(0, 4);
-                expect(myEditor.centerOnCursor.calls.count()).toEql(6);
+                expect(myEditor.centerOnCursor.calls.count()).toEql(5);
             });
 
             it("should find all case-sensitive matches with mixed-case text", async function () {
@@ -454,7 +454,7 @@ define(function (require, exports, module) {
 
                 twCommandManager.execute(Commands.CMD_FIND);
                 // The previous search term "Foo" was pre-filled, so the editor was centered there already
-                expect(myEditor.centerOnCursor.calls.count()).toEql(1);
+                expect(myEditor.centerOnCursor.calls.count()).toEql(0);
 
                 enterSearchText("foo");
                 pressEscape();
@@ -463,12 +463,12 @@ define(function (require, exports, module) {
                 await waitsForSearchBarClose();
 
                 expectSelection({start: {line: LINE_FIRST_REQUIRE, ch: 8}, end: {line: LINE_FIRST_REQUIRE, ch: 11}});
-                expect(myEditor.centerOnCursor.calls.count()).toEql(2);
+                expect(myEditor.centerOnCursor.calls.count()).toEql(1);
 
                 // Simple linear Find Next
                 twCommandManager.execute(Commands.CMD_FIND_NEXT);
                 expectSelection({start: {line: LINE_FIRST_REQUIRE, ch: 31}, end: {line: LINE_FIRST_REQUIRE, ch: 34}});
-                expect(myEditor.centerOnCursor.calls.count()).toEql(3);
+                expect(myEditor.centerOnCursor.calls.count()).toEql(2);
                 twCommandManager.execute(Commands.CMD_FIND_NEXT);
                 expectSelection({start: {line: 6, ch: 17}, end: {line: 6, ch: 20}});
                 twCommandManager.execute(Commands.CMD_FIND_NEXT);
@@ -565,13 +565,42 @@ define(function (require, exports, module) {
                 expectSearchBarOpen();
                 expect(getSearchField().val()).toEql("Foo");
                 expectHighlightedMatches(capitalFooSelections);
+                // not select anything by default at start
+                twCommandManager.execute(Commands.CMD_FIND_NEXT);
                 expectSelection(capitalFooSelections[0]);
                 expectMatchIndex(0, 3);
-                expect(myEditor.centerOnCursor.calls.count()).toEql(3);
+                expect(myEditor.centerOnCursor.calls.count()).toEql(2);
 
                 twCommandManager.execute(Commands.CMD_FIND_NEXT);
                 expectSelection(capitalFooSelections[1]);
                 expectMatchIndex(1, 3);
+            });
+
+            it("should highlight the current position match properly", async function () {
+                myEditor.setCursorPos(0, 0);
+
+                twCommandManager.execute(Commands.CMD_FIND);
+
+                enterSearchText("Foo");
+                pressEscape();
+
+                await waitsForSearchBarClose();
+
+                // Open search bar a second time
+                myEditor.setCursorPos(2, 8); // |Foo
+                twCommandManager.execute(Commands.CMD_FIND);
+
+                expectSearchBarOpen();
+                expect(getSearchField().val()).toEql("Foo");
+                expectMatchIndex(0, 4);
+
+                myEditor.setCursorPos(2, 9); // F|oo
+                twCommandManager.execute(Commands.CMD_FIND);
+                expectMatchIndex(0, 4);
+
+                myEditor.setCursorPos(2, 11); // Foo|
+                twCommandManager.execute(Commands.CMD_FIND);
+                expectMatchIndex(0, 4);
             });
 
             it("should open search bar on Find Next with no previous search", async function () {
@@ -806,6 +835,10 @@ define(function (require, exports, module) {
                 myEditor.setCursorPos(LINE_FIRST_REQUIRE, 0);
 
                 twCommandManager.execute(Commands.CMD_FIND);
+                // just executing find will load the search string from history(last search string) and it will not set
+                // selection so that the user can press escape and carry on from his cursor. the selection is set only
+                // on interacting with the find workflow
+                twCommandManager.execute(Commands.CMD_FIND_NEXT);
                 expectSelection({start: {line: LINE_FIRST_REQUIRE, ch: CH_REQUIRE_START}, end: {line: LINE_FIRST_REQUIRE, ch: CH_REQUIRE_PAREN}});
 
                 twCommandManager.execute(Commands.CMD_FIND_NEXT);

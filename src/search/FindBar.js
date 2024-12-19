@@ -53,8 +53,9 @@ define(function (require, exports, module) {
     let intervalId = 0,
         lastQueriedText = "",
         lastTypedText = "",
-        lastTypedTextWasRegexp = false;
-    const MAX_HISTORY_RESULTS = 50;
+        lastTypedTextWasRegexp = false,
+        lastClosedQuery = null;
+    const MAX_HISTORY_RESULTS = 25;
     const PREF_MAX_HISTORY = "maxSearchHistory";
 
     const INSTANT_SEARCH_INTERVAL_MS = 50;
@@ -631,6 +632,12 @@ define(function (require, exports, module) {
     FindBar.prototype.close = function (suppressAnimation) {
         lastQueriedText = "";
         if (this._modalBar) {
+            lastClosedQuery = {
+                query: this.$("#find-what").val() || "",
+                replaceText: this.getReplaceText(),
+                isCaseSensitive: this.$("#find-case-sensitive").is(".active"),
+                isRegexp: this.$("#find-regexp").is(".active")
+            };
             this._addElementToSearchHistory($("#find-what").val(), $("#fif-filter-input").val());
             // 1st arg = restore scroll pos; 2nd arg = no animation, since getting replaced immediately
             this._modalBar.close(true, !suppressAnimation);
@@ -656,7 +663,9 @@ define(function (require, exports, module) {
      * @return {{query: string, caseSensitive: boolean, isRegexp: boolean}}
      */
     FindBar.prototype.getQueryInfo = function (usePlatformLineEndings = true) {
-        let query = this.$("#find-what").val() || "";
+        const $findWhat = this.$("#find-what");
+        const findTextArea = $findWhat[0];
+        let query = $findWhat.val() || "";
         const lineEndings = FileUtils.sniffLineEndings(query);
         if (usePlatformLineEndings && lineEndings === FileUtils.LINE_ENDINGS_LF && brackets.platform === "win") {
             query = query.replace(/\n/g, "\r\n");
@@ -664,7 +673,8 @@ define(function (require, exports, module) {
         return {
             query: query,
             isCaseSensitive: this.$("#find-case-sensitive").is(".active"),
-            isRegexp: this.$("#find-regexp").is(".active")
+            isRegexp: this.$("#find-regexp").is(".active"),
+            isQueryTextSelected: findTextArea.selectionStart !== findTextArea.selectionEnd
         };
     };
 
@@ -851,7 +861,7 @@ define(function (require, exports, module) {
      * @private
      * @static
      * @param {?FindBar} currentFindBar - The currently open Find Bar, if any.
-     * @param {?Editor} activeEditor - The active editor, if any.
+     * @param {?Editor} editor - The active editor, if any.
      * @return {{query: string, replaceText: string}} An object containing the query and replacement text
      *     to prepopulate the Find Bar.
      */
@@ -872,11 +882,31 @@ define(function (require, exports, module) {
                     return !bar.isClosed();
                 }
             );
+            // this happens when the find in files bar is opened and we are trying to open single file search or
+            // vice versa. we need to detect the other findbar and determine what is the search term to use
 
-            if (openedFindBar) {
+            //debugger
+            const currentQueryInfo = openedFindBar && openedFindBar.getQueryInfo();
+            if(!openedFindBar && selection){
+                // when no findbar is open, the selected text always takes precedence in both single and multi file
+                query = selection;
+            } else if(openedFindBar && selection && currentQueryInfo && !currentQueryInfo.isRegexp && currentQueryInfo.isQueryTextSelected) {
+                // we are switching between single<>multi file search without the user editing the search text in between
+                // while there is an active selection, the selection takes precedence.
+                query = selection;
+                replaceText = openedFindBar.getReplaceText();
+            } else if (openedFindBar) {
+                // there is no selection and we are switching between single<>multi file search, copy the
+                // current query from the open findbar as is
                 query = openedFindBar.getQueryInfo().query;
                 replaceText = openedFindBar.getReplaceText();
+            }  else if (lastClosedQuery) {
+                // these is no open find bar currently and there is no selection, but there is a last saved query, so
+                // load the last query. this happenes on all freash search cases apart from the very first time
+                query = lastClosedQuery.query;
+                replaceText = lastClosedQuery.replaceText;
             } else if (editor) {
+                // the very first query after app start, nothing to restore.
                 query = (!lastTypedTextWasRegexp && selection) || lastQueriedText || lastTypedText;
             }
         }

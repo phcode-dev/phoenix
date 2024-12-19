@@ -49,7 +49,8 @@ define(function (require, exports, module) {
             ProjectManager,
             SearchResultsView,
             testWindow,
-            $;
+            $,
+            __PR;
 
         beforeAll(async function () {
             await SpecRunnerUtils.createTempDirectory();
@@ -71,6 +72,7 @@ define(function (require, exports, module) {
             SearchResultsView   = testWindow.brackets.test.SearchResultsView;
             $                   = testWindow.$;
             PreferencesManager  = testWindow.brackets.test.PreferencesManager;
+            __PR                = testWindow.__PR;
             PreferencesManager.set("findInFiles.nodeSearch", false);
             PreferencesManager.set("findInFiles.instantSearch", false);
             PreferencesManager.set("maxSearchHistory", 5);
@@ -89,6 +91,8 @@ define(function (require, exports, module) {
             $                   = null;
             testWindow          = null;
             PreferencesManager  = null;
+            __PR                = null;
+
             await SpecRunnerUtils.closeTestWindow();
             await SpecRunnerUtils.removeTempDirectory();
         }, 30000);
@@ -125,6 +129,10 @@ define(function (require, exports, module) {
             });
         }
 
+        function getSearchField() {
+            return $("#find-what");
+        }
+
         async function closeSearchBar() {
             FindInFilesUI._closeFindBar();
             await waitForSearchBarClose();
@@ -135,6 +143,12 @@ define(function (require, exports, module) {
                 return FindInFiles.isProjectIndexingComplete();
             }, "indexing complete", 20000);
             var $searchField = $("#find-what");
+            FindInFiles._searchDone = false;
+            // if the search str is same as previous string, fif will not do any search as its already loaded
+            $searchField.val("another_str_to_trigger_fif").trigger("input");
+            await awaitsFor(function () {
+                return FindInFiles._searchDone;
+            }, "Find in Files done");
             FindInFiles._searchDone = false;
             $searchField.val(searchString).trigger("input");
             await awaitsFor(function () {
@@ -549,15 +563,43 @@ define(function (require, exports, module) {
                 expect(Object.keys(FindInFiles.searchModel.results).length).not.toBe(0);
 
                 await closeSearchBar();
-                await openSearchBar(fileEntry);
 
-                // Search model shouldn't be cleared from merely reopening search bar
+                // Search model shouldn't be cleared after search bar closed
                 expect(Object.keys(FindInFiles.searchModel.results).length).not.toBe(0);
+
+                await openSearchBar(fileEntry);
+                // opening searchbar will also trigger a search with last searched string
+
+                await awaitsFor(function () {
+                    return Object.keys(FindInFiles.searchModel.results).length;
+                }, "waiting for search results to be there");
 
                 await closeSearchBar();
 
                 // Search model shouldn't be cleared after search bar closed without running a search
                 expect(Object.keys(FindInFiles.searchModel.results).length).not.toBe(0);
+            });
+
+            it("should switch between find replace and find in files with selection work as expected", async function () {
+                await closeSearchBar();
+                const filePath = testPath + "/foo.js";
+                await __PR.openFile(filePath);
+                __PR.setCursors(["7:5-7:13"]); // select text: function
+                CommandManager.execute(Commands.CMD_FIND);
+
+                expect(getSearchField().val()).toEql("function");
+
+                CommandManager.execute(Commands.CMD_FIND_IN_FILES);
+                await awaitsFor(()=>{
+                    return $("#find-in-files-results .contracting-col").text() === "function";
+                }, ()=>{
+                    return `Find in files search to be function but got${$("#find-in-files-results .contracting-col").text()}`;
+                });
+
+                __PR.setCursors(["5:15-5:22"]); // select text: require
+                CommandManager.execute(Commands.CMD_FIND);
+                expect(getSearchField().val()).toEql("require");
+                await openSearchBar();
             });
         });
     });

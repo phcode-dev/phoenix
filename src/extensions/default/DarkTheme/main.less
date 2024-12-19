@@ -93,7 +93,7 @@
     color: @foreground !important;
 }
 
-.CodeMirror-matchingtag {
+.CodeMirror-matchingtag:not(.CodeMirror-searching) {
     /* Ensure visibility against gray inline editor background */
     background-color: @matching-tags;
     --border-height: calc((var(--editor-line-height) *1em - 1em) / 2);
