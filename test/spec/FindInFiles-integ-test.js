@@ -136,6 +136,12 @@ define(function (require, exports, module) {
             }, "indexing complete", 20000);
             var $searchField = $("#find-what");
             FindInFiles._searchDone = false;
+            // if the search str is same as previous string, fif will not do any search as its already loaded
+            $searchField.val("another_str_to_trigger_fif").trigger("input");
+            await awaitsFor(function () {
+                return FindInFiles._searchDone;
+            }, "Find in Files done");
+            FindInFiles._searchDone = false;
             $searchField.val(searchString).trigger("input");
             await awaitsFor(function () {
                 return FindInFiles._searchDone;
@@ -549,10 +555,16 @@ define(function (require, exports, module) {
                 expect(Object.keys(FindInFiles.searchModel.results).length).not.toBe(0);
 
                 await closeSearchBar();
-                await openSearchBar(fileEntry);
 
-                // Search model shouldn't be cleared from merely reopening search bar
+                // Search model shouldn't be cleared after search bar closed
                 expect(Object.keys(FindInFiles.searchModel.results).length).not.toBe(0);
+
+                await openSearchBar(fileEntry);
+                // opening searchbar will also trigger a search with last searched string
+
+                await awaitsFor(function () {
+                    return Object.keys(FindInFiles.searchModel.results).length;
+                }, "waiting for search results to be there");
 
                 await closeSearchBar();
 
