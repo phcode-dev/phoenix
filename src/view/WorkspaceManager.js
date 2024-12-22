@@ -520,7 +520,8 @@ define(function (require, exports, module) {
             // handled by the inline widget itself first.
             return;
         }
-        if(focussedEditor.canConsumeEscapeKeyEvent()){
+        const dropdownOpen = $(".dropdown.open").is(":visible");
+        if(dropdownOpen || focussedEditor.canConsumeEscapeKeyEvent()){
             return;
         }
 
