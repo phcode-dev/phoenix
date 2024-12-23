@@ -231,11 +231,11 @@ define(function (require, exports, module) {
      *
      */
     function dismissHint(editor) {
+        popupShown = false;
         if (hintState.visible) {
             $hintContainer.hide();
             $hintContent.empty();
             hintState = {};
-            popupShown = false;
 
             if (editor) {
                 editor.off("cursorActivity.ParameterHinting", handleCursorActivity);
