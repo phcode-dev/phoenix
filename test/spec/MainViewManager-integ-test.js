@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, beforeEach, beforeAll, afterAll, afterEach, it, expect, awaitsForDone, spyOn, jasmine, Phoenix */
+/*global describe, beforeEach, beforeAll, afterAll, it, expect, awaitsForDone, spyOn, jasmine, awaitsFor */
 
 define(function (require, exports, module) {
 
@@ -1007,6 +1007,28 @@ define(function (require, exports, module) {
 
                 // cleanup
                 expect(WorkspaceManager.removeEscapeKeyEventHandler("x")).toBeTrue();
+            });
+
+            it("should not dismiss any panel if codehints are visible", async function () {
+                panel1.show();
+                panel2.hide();
+                expect(panel1.isVisible()).toBeTrue();
+
+                expect(MainViewManager.getActivePaneId()).toEqual("first-pane");
+                promise = MainViewManager._open(MainViewManager.FIRST_PANE, FileSystem.getFileForPath(testPath + "/test.js"));
+                await awaitsForDone(promise, "MainViewManager.doOpen");
+                let editor = EditorManager.getActiveEditor();
+                editor.setCursorPos(0, 0);
+                await awaitsForDone(CommandManager.execute(Commands.SHOW_CODE_HINTS));
+                await awaitsFor(function () {
+                    return testWindow.$(".codehint-menu").is(":visible");
+                }, "codehints to be shown");
+
+                SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_ESCAPE, "keydown", _$("#editor-holder")[0]);
+                await awaitsFor(function () {
+                    return !testWindow.$(".codehint-menu").is(":visible");
+                }, "codehints to be dismissed on escape press");
+                expect(panel1.isVisible()).toBeTrue();
             });
 
             it("should escape close bottom panel one by one", async function () {
