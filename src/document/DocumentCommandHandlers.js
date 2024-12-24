@@ -2252,7 +2252,7 @@ define(function (require, exports, module) {
 
     // Set some command strings
     var quitString  = Strings.CMD_QUIT,
-        showInOS    = Strings.CMD_SHOW_IN_OS;
+        showInOS    = Strings.CMD_SHOW_IN_FILE_MANAGER;
     if (brackets.platform === "win") {
         quitString  = Strings.CMD_EXIT;
         showInOS    = Strings.CMD_SHOW_IN_EXPLORER;
