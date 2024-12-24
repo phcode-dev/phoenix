@@ -267,6 +267,12 @@ define(function (require, exports, module) {
     /** Submenu for zoom options */
     exports.VIEW_ZOOM_SUBMENU           = "zoom-view-submenu";
 
+    /** Submenu for Open in project context menu */
+    exports.OPEN_IN_SUBMENU             = "file-open-in-submenu";
+
+    /** Submenu for Open in working set context menu */
+    exports.OPEN_IN_SUBMENU_WS          = "file-open-in-submenu-ws";
+
     /** Increases editor font size */
     exports.VIEW_INCREASE_FONT_SIZE     = "view.increaseFontSize";      // ViewCommandHandlers.js       _handleIncreaseFontSize()
 

@@ -495,6 +495,7 @@ define({
     "CMD_FILE_REFRESH": "Refresh File Tree",
     "CMD_FILE_SHOW_FOLDERS_FIRST": "Sort Folders First",
     "CMD_QUIT": "Quit",
+    "CMD_OPEN_IN": "Open In",
     // Used in native File menu on Windows
     "CMD_EXIT": "Exit",
 
@@ -594,9 +595,9 @@ define({
     "CMD_NEXT_DOC_LIST_ORDER": "Next Document in List",
     "CMD_PREV_DOC_LIST_ORDER": "Previous Document in List",
     "CMD_SHOW_IN_TREE": "Show in File Tree",
-    "CMD_SHOW_IN_EXPLORER": "Show in Explorer",
-    "CMD_SHOW_IN_FINDER": "Show in Finder",
-    "CMD_SHOW_IN_OS": "Show in OS Files",
+    "CMD_SHOW_IN_EXPLORER": "Windows File Explorer",
+    "CMD_SHOW_IN_FINDER": "macOS Finder",
+    "CMD_SHOW_IN_FILE_MANAGER": "File Manager",
     "CMD_SWITCH_PANE_FOCUS": "Switch Pane Focus",
 
     // Debug menu commands

@@ -297,7 +297,8 @@ define(function (require, exports, module) {
         workingset_cmenu.addMenuItem(Commands.FILE_SAVE);
         workingset_cmenu.addMenuItem(Commands.NAVIGATE_SHOW_IN_FILE_TREE);
         if(Phoenix.isNativeApp){
-            workingset_cmenu.addMenuItem(Commands.NAVIGATE_SHOW_IN_OS);
+            let subMenu = workingset_cmenu.addSubMenu(Strings.CMD_OPEN_IN, Commands.OPEN_IN_SUBMENU_WS);
+            subMenu.addMenuItem(Commands.NAVIGATE_SHOW_IN_OS);
         }
         workingset_cmenu.addMenuDivider();
         workingset_cmenu.addMenuItem(Commands.FILE_COPY);
@@ -331,7 +332,8 @@ define(function (require, exports, module) {
         project_cmenu.addMenuItem(Commands.FILE_NEW);
         project_cmenu.addMenuItem(Commands.FILE_NEW_FOLDER);
         if(Phoenix.isNativeApp){
-            project_cmenu.addMenuItem(Commands.NAVIGATE_SHOW_IN_OS);
+            let subMenu = project_cmenu.addSubMenu(Strings.CMD_OPEN_IN, Commands.OPEN_IN_SUBMENU);
+            subMenu.addMenuItem(Commands.NAVIGATE_SHOW_IN_OS);
         }
         project_cmenu.addMenuDivider();
         project_cmenu.addMenuItem(Commands.FILE_CUT);
