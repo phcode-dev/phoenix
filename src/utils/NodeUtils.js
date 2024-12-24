@@ -159,6 +159,23 @@ define(function (require, exports, module) {
         });
     }
 
+    /**
+     * Runs ESLint on a file
+     * This is only available in the native app
+     *
+     * @param {string} cwd the working directory of terminal
+     * @param {boolean} [usePowerShell]
+     */
+    async function openNativeTerminal(cwd, usePowerShell = false) {
+        if(!Phoenix.isNativeApp) {
+            throw new Error("openNativeTerminal not available in browser");
+        }
+        return utilsConnector.execPeer("openNativeTerminal", {
+            cwd: window.fs.getTauriPlatformPath(cwd),
+            usePowerShell
+        });
+    }
+
     if(NodeConnector.isNodeAvailable()) {
         // todo we need to update the strings if a user extension adds its translations. Since we dont support
         // node extensions for now, should consider when we support node extensions.
@@ -195,6 +212,7 @@ define(function (require, exports, module) {
     exports.openUrlInBrowser = openUrlInBrowser;
     exports.ESLintFile = ESLintFile;
     exports.getEnvironmentVariable = getEnvironmentVariable;
+    exports.openNativeTerminal = openNativeTerminal;
 
     /**
      * checks if Node connector is ready
