@@ -58,7 +58,7 @@ define(function (require, exports, module) {
                     return err;
                 }
                 _setContextMenuItemsVisible(isPresent, [Commands.FILE_RENAME,
-                    Commands.NAVIGATE_SHOW_IN_FILE_TREE, Commands.NAVIGATE_SHOW_IN_OS]);
+                    Commands.NAVIGATE_SHOW_IN_FILE_TREE, Commands.NAVIGATE_SHOW_IN_OS, Commands.NAVIGATE_OPEN_IN_TERMINAL]);
             });
         }
     }
@@ -299,6 +299,10 @@ define(function (require, exports, module) {
         if(Phoenix.isNativeApp){
             let subMenu = workingset_cmenu.addSubMenu(Strings.CMD_OPEN_IN, Commands.OPEN_IN_SUBMENU_WS);
             subMenu.addMenuItem(Commands.NAVIGATE_SHOW_IN_OS);
+            subMenu.addMenuItem(Commands.NAVIGATE_OPEN_IN_TERMINAL);
+            if (brackets.platform === "win") {
+                subMenu.addMenuItem(Commands.NAVIGATE_OPEN_IN_POWERSHELL);
+            }
         }
         workingset_cmenu.addMenuDivider();
         workingset_cmenu.addMenuItem(Commands.FILE_COPY);
@@ -334,6 +338,10 @@ define(function (require, exports, module) {
         if(Phoenix.isNativeApp){
             let subMenu = project_cmenu.addSubMenu(Strings.CMD_OPEN_IN, Commands.OPEN_IN_SUBMENU);
             subMenu.addMenuItem(Commands.NAVIGATE_SHOW_IN_OS);
+            subMenu.addMenuItem(Commands.NAVIGATE_OPEN_IN_TERMINAL);
+            if (brackets.platform === "win") {
+                subMenu.addMenuItem(Commands.NAVIGATE_OPEN_IN_POWERSHELL);
+            }
         }
         project_cmenu.addMenuDivider();
         project_cmenu.addMenuItem(Commands.FILE_CUT);

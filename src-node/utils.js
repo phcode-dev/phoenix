@@ -3,6 +3,7 @@ const { exec, execFile } = require('child_process');
 const fs = require('fs');
 const fsPromise = require('fs').promises;
 const path = require('path');
+const os = require('os');
 const {lintFile} = require("./ESLint/service");
 let openModule, open; // dynamic import when needed
 
@@ -146,6 +147,86 @@ async function _npmInstallInFolder({moduleNativeDir}) {
     });
 }
 
+/**
+ * If it's a dir that exists, returns that
+ * If it's a file, it returns the parent directory if it exists
+ * If no parent exists, it returns the original path.
+ *
+ * @param {string} cwd - The path to validate.
+ * @returns {string} - An existing directory or the original path.
+ */
+function _getValidDirectory(cwd) {
+    let currentPath = path.resolve(cwd);
+    const exists = fs.existsSync(currentPath);
+
+    if (exists) {
+        const isPathDir = fs.statSync(currentPath).isDirectory();
+        if(isPathDir){
+            return currentPath;
+        }
+        return path.dirname(currentPath);
+    }
+
+    currentPath = path.dirname(currentPath);
+    if(fs.existsSync(currentPath)){
+        return currentPath;
+    }
+
+    // If no valid directory is found, fallback to the original cwd
+    return cwd;
+}
+
+/**
+ * Opens a native terminal window with the specified current working directory.
+ * Returns a Promise that resolves if the terminal starts successfully, or rejects if it fails.
+ *
+ * @param {string} cwd - The directory to open the terminal in.
+ * @param {boolean} usePowerShell - Whether to use PowerShell instead of cmd on Windows.
+ * @returns {Promise<void>} - Resolves if the terminal starts, rejects otherwise.
+ */
+function openNativeTerminal({cwd, usePowerShell = false}) {
+    return new Promise((resolve, reject) => {
+        const platform = os.platform();
+        cwd = _getValidDirectory(cwd);
+        let command;
+
+        if (platform === 'win32') {
+            if (usePowerShell) {
+                command = `start powershell -NoExit -Command "Set-Location -Path '${cwd}'"`;
+            } else {
+                command = `start cmd /K "cd /D ${cwd}"`;
+            }
+        } else if (platform === 'darwin') {
+            command = `open -a Terminal "${cwd}"`;
+        } else {
+            command = `
+                if command -v gnome-terminal > /dev/null 2>&1; then
+                    gnome-terminal --working-directory="${cwd}";
+                elif command -v konsole > /dev/null 2>&1; then
+                    konsole --workdir "${cwd}";
+                elif command -v xfce4-terminal > /dev/null 2>&1; then
+                    xfce4-terminal --working-directory="${cwd}";
+                elif command -v xterm > /dev/null 2>&1; then
+                    xterm -e "cd '${cwd}' && bash";
+                else
+                    echo "No supported terminal emulator found.";
+                    exit 1;
+                fi
+            `;
+        }
+
+        // Execute the terminal command
+        exec(command, (error) => {
+            if (error) {
+                reject(new Error(`Failed to start terminal: ${error.message}`));
+            } else {
+                resolve();
+            }
+        });
+    });
+}
+
+
 async function ESLintFile({text, fullFilePath, projectFullPath}) {
     return lintFile(text, fullFilePath, projectFullPath);
 }
@@ -161,5 +242,6 @@ exports.getLinuxOSFlavorName = getLinuxOSFlavorName;
 exports.openUrlInBrowser = openUrlInBrowser;
 exports.getEnvironmentVariable = getEnvironmentVariable;
 exports.ESLintFile = ESLintFile;
+exports.openNativeTerminal = openNativeTerminal;
 exports._loadNodeExtensionModule = _loadNodeExtensionModule;
 exports._npmInstallInFolder = _npmInstallInFolder;

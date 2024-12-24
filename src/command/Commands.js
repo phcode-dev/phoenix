@@ -340,6 +340,12 @@ define(function (require, exports, module) {
     /** Shows current file in OS file explorer */
     exports.NAVIGATE_SHOW_IN_OS         = "navigate.showInOS";          // DocumentCommandHandlers.js   handleShowInOS()
 
+    /** Shows current file in OS Terminal */
+    exports.NAVIGATE_OPEN_IN_TERMINAL         = "navigate.openInTerminal";
+
+    /** Shows current file in open powershell in Windows os */
+    exports.NAVIGATE_OPEN_IN_POWERSHELL         = "navigate.openInPowerShell";
+
     /** Opens quick open dialog */
     exports.NAVIGATE_QUICK_OPEN         = "navigate.quickOpen";         // QuickOpen.js                 doFileSearch()
 

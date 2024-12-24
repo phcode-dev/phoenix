@@ -58,6 +58,7 @@ define(function (require, exports, module) {
         LanguageManager     = require("language/LanguageManager"),
         NewFileContentManager     = require("features/NewFileContentManager"),
         NodeConnector = require("NodeConnector"),
+        NodeUtils           = require("utils/NodeUtils"),
         _                   = require("thirdparty/lodash");
 
     /**
@@ -1959,6 +1960,20 @@ define(function (require, exports, module) {
         }
     }
 
+    function openDefaultTerminal() {
+        const entry = ProjectManager.getSelectedItem();
+        if (entry && entry.fullPath) {
+            NodeUtils.openNativeTerminal(entry.fullPath);
+        }
+    }
+
+    function openPowerShell() {
+        const entry = ProjectManager.getSelectedItem();
+        if (entry && entry.fullPath) {
+            NodeUtils.openNativeTerminal(entry.fullPath, true);
+        }
+    }
+
     function raceAgainstTime(promise, timeout = 2000) {
         const timeoutPromise = new Promise((_resolve, reject) => {
             setTimeout(() => {
@@ -2251,11 +2266,13 @@ define(function (require, exports, module) {
     exports._parseDecoratedPath = _parseDecoratedPath;
 
     // Set some command strings
-    var quitString  = Strings.CMD_QUIT,
-        showInOS    = Strings.CMD_SHOW_IN_FILE_MANAGER;
+    let quitString  = Strings.CMD_QUIT,
+        showInOS    = Strings.CMD_SHOW_IN_FILE_MANAGER,
+        defaultTerminal    = Strings.CMD_OPEN_IN_TERMINAL;
     if (brackets.platform === "win") {
         quitString  = Strings.CMD_EXIT;
         showInOS    = Strings.CMD_SHOW_IN_EXPLORER;
+        defaultTerminal    = Strings.CMD_OPEN_IN_CMD;
     } else if (brackets.platform === "mac") {
         showInOS    = Strings.CMD_SHOW_IN_FINDER;
     }
@@ -2304,6 +2321,10 @@ define(function (require, exports, module) {
 
     // Special Commands
     CommandManager.register(showInOS,                                Commands.NAVIGATE_SHOW_IN_OS,            handleShowInOS);
+    CommandManager.register(defaultTerminal,                         Commands.NAVIGATE_OPEN_IN_TERMINAL,      openDefaultTerminal);
+    if (brackets.platform === "win") {
+        CommandManager.register(Strings.CMD_OPEN_IN_POWER_SHELL,     Commands.NAVIGATE_OPEN_IN_POWERSHELL,    openPowerShell);
+    }
     CommandManager.register(Strings.CMD_NEW_BRACKETS_WINDOW,         Commands.FILE_NEW_WINDOW,                handleFileNewWindow);
     CommandManager.register(quitString,                              Commands.FILE_QUIT,                      handleFileCloseWindow);
     CommandManager.register(Strings.CMD_SHOW_IN_TREE,                Commands.NAVIGATE_SHOW_IN_FILE_TREE,     handleShowInTree);
