@@ -147,7 +147,7 @@ define(function (require, exports, module) {
 
         if (this.$list) {
             this._registerMouseEvents();
-            PopUpManager.addPopUp(this.$list, closeCallback, true);
+            PopUpManager.addPopUp(this.$list, closeCallback, true, {closeCurrentPopups: true});
         }
     };
 

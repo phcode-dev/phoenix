@@ -484,7 +484,7 @@ define(function (require, exports, module) {
             })
             .appendTo($("body"));
 
-        PopUpManager.addPopUp($dropdown, cleanupDropdown, true);
+        PopUpManager.addPopUp($dropdown, cleanupDropdown, true, {closeCurrentPopups: true});
 
         // TODO: should use capture, otherwise clicking on the menus doesn't close it. More fallout
         // from the fact that we can't use the Boostrap (1.4) dropdowns.
