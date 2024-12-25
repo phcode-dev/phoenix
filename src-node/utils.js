@@ -226,6 +226,40 @@ function openNativeTerminal({cwd, usePowerShell = false}) {
     });
 }
 
+/**
+ * Opens a file in the default application for its type on Windows, macOS, and Linux.
+ *
+ * @param {string} fullPath - The path to the file/folder to open.
+ * @returns {Promise<void>} - Resolves if the file/folder is opened successfully, rejects otherwise.
+ */
+function openInDefaultApp(fullPath) {
+    return new Promise((resolve, reject) => {
+        const platform = os.platform();
+        let command;
+
+        if (platform === 'win32') {
+            // Windows: Use 'start' command
+            command = `start "" "${fullPath}"`;
+        } else if (platform === 'darwin') {
+            // macOS: Use 'open' command
+            command = `open "${fullPath}"`;
+        } else {
+            // Linux: Use 'xdg-open' command
+            command = `xdg-open "${fullPath}"`;
+        }
+
+        // Execute the command
+        exec(command, (error) => {
+            if (error) {
+                reject(new Error(`Failed to open file: ${error.message}`));
+            } else {
+                resolve();
+            }
+        });
+    });
+}
+
+
 
 async function ESLintFile({text, fullFilePath, projectFullPath}) {
     return lintFile(text, fullFilePath, projectFullPath);
@@ -243,5 +277,6 @@ exports.openUrlInBrowser = openUrlInBrowser;
 exports.getEnvironmentVariable = getEnvironmentVariable;
 exports.ESLintFile = ESLintFile;
 exports.openNativeTerminal = openNativeTerminal;
+exports.openInDefaultApp = openInDefaultApp;
 exports._loadNodeExtensionModule = _loadNodeExtensionModule;
 exports._npmInstallInFolder = _npmInstallInFolder;

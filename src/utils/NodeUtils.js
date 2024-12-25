@@ -176,6 +176,19 @@ define(function (require, exports, module) {
         });
     }
 
+    /**
+     * Opens a file in the default application for its type on Windows, macOS, and Linux.
+     *
+     * @param {string} fullPath - The path to the file/folder to open.
+     * @returns {Promise<void>} - Resolves if the file/folder is opened successfully, rejects otherwise.
+     */
+    async function openInDefaultApp(fullPath) {
+        if(!Phoenix.isNativeApp) {
+            throw new Error("openInDefaultApp not available in browser");
+        }
+        return utilsConnector.execPeer("openInDefaultApp", window.fs.getTauriPlatformPath(fullPath));
+    }
+
     if(NodeConnector.isNodeAvailable()) {
         // todo we need to update the strings if a user extension adds its translations. Since we dont support
         // node extensions for now, should consider when we support node extensions.
@@ -213,6 +226,7 @@ define(function (require, exports, module) {
     exports.ESLintFile = ESLintFile;
     exports.getEnvironmentVariable = getEnvironmentVariable;
     exports.openNativeTerminal = openNativeTerminal;
+    exports.openInDefaultApp = openInDefaultApp;
 
     /**
      * checks if Node connector is ready

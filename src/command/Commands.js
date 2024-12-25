@@ -346,6 +346,9 @@ define(function (require, exports, module) {
     /** Shows current file in open powershell in Windows os */
     exports.NAVIGATE_OPEN_IN_POWERSHELL         = "navigate.openInPowerShell";
 
+    /** Open current file in the default associated app in the os */
+    exports.NAVIGATE_OPEN_IN_DEFAULT_APP        = "navigate.openInDefaultApp";
+
     /** Opens quick open dialog */
     exports.NAVIGATE_QUICK_OPEN         = "navigate.quickOpen";         // QuickOpen.js                 doFileSearch()
 
