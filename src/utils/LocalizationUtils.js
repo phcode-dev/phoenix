@@ -102,11 +102,46 @@ define(function (require, exports, module) {
         }
     }
 
+    /**
+     * Returns an intelligent date string.
+     * - For dates within the last 30 days or the future: relative time (e.g., "2 days ago", "in 3 hours").
+     * - For dates earlier this year: formatted date (e.g., "Jan 5").
+     * - For dates not in the current year: formatted date with year (e.g., "Jan 5, 2023").
+     *
+     * @param {Date} date - The date to compare and format.
+     * @param {string} [lang] - Optional language code to use for formatting (e.g., 'en', 'fr').
+     * @returns {string} - An intelligently formatted date string.
+     */
+    function dateTimeFromNowFriendly(date, lang) {
+        const now = new Date();
+        const diffInMilliseconds = date - now;
+        const diffInDays = Math.floor(diffInMilliseconds / (1000 * 60 * 60 * 24));
+
+        // If within the last 30 days or the future, use relative time
+        if (Math.abs(diffInDays) <= 30) {
+            return dateTimeFromNow(date, lang);
+        }
+
+        // If in the current year, format as "MMM DD"
+        const currentYear = now.getFullYear();
+        const dateYear = date.getFullYear();
+
+        const languageOption = [lang || brackets.getLocale() || "en", "en"];
+
+        if (currentYear === dateYear) {
+            return new Intl.DateTimeFormat(languageOption, { month: "short", day: "numeric" }).format(date);
+        }
+
+        // For dates in previous years, format as "MMM DD, YYYY"
+        return new Intl.DateTimeFormat(languageOption,
+            { month: "short", day: "numeric", year: "numeric" }).format(date);
+    }
 
     // Define public API
     exports.getLocalizedLabel = getLocalizedLabel;
     exports.getFormattedDateTime = getFormattedDateTime;
     exports.dateTimeFromNow = dateTimeFromNow;
+    exports.dateTimeFromNowFriendly = dateTimeFromNowFriendly;
     // public constants
     exports.DATE_TIME_STYLE = DATE_TIME_STYLE;
 });

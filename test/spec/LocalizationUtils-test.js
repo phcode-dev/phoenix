@@ -193,5 +193,79 @@ define(function (require, exports, module) {
                 expect(result).toBe("now");
             });
         });
+
+        describe("dateTimeFromNowFriendly", function () {
+            it("should use relative time for dates within the last 30 days", function () {
+                const testDate = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000); // 3 days ago
+                const result = LocalizationUtils.dateTimeFromNowFriendly(testDate, "en");
+                expect(result).toBe("3 days ago");
+            });
+
+            it("should use relative time for dates in the future within 30 days", function () {
+                const testDate = new Date(Date.now() + 5 * 24 * 60 * 60 * 1000); // 5 days in the future
+                const result = LocalizationUtils.dateTimeFromNowFriendly(testDate, "en");
+                expect(result).toBe("in 5 days");
+            });
+
+            it("should use formatted date without year for dates earlier this year", function () {
+                const now = new Date();
+                const testDate = new Date(now.getFullYear(), 1, 15); // Feb 15 of current year
+                const result = LocalizationUtils.dateTimeFromNowFriendly(testDate, "en");
+                expect(result).toBe("Feb 15");
+            });
+
+            it("should use formatted date with year for dates in previous years", function () {
+                const testDate = new Date(2022, 6, 4); // July 4, 2022
+                const result = LocalizationUtils.dateTimeFromNowFriendly(testDate, "en");
+                expect(result).toBe("Jul 4, 2022");
+            });
+
+            it("should use formatted date with year for future dates in upcoming years", function () {
+                const testDate = new Date(new Date().getFullYear() + 2, 0, 1); // Jan 1, two years from now
+                const result = LocalizationUtils.dateTimeFromNowFriendly(testDate, "en");
+                expect(result).toBe("Jan 1, " + (new Date().getFullYear() + 2));
+            });
+
+            it("should handle relative time for today", function () {
+                const now = new Date();
+                const result = LocalizationUtils.dateTimeFromNowFriendly(now, "en");
+                expect(result).toBe("now");
+            });
+
+            // Relative time tests
+            it("should use relative time for dates within the last 30 days (de locale)", function () {
+                const testDate = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000); // 3 days ago
+                const result = LocalizationUtils.dateTimeFromNowFriendly(testDate, "de");
+                expect(result).toBe("vor 3 Tagen");
+            });
+
+            it("should use relative time for dates in the future within 30 days (de locale)", function () {
+                const testDate = new Date(Date.now() + 5 * 24 * 60 * 60 * 1000); // 5 days in the future
+                const result = LocalizationUtils.dateTimeFromNowFriendly(testDate, "de");
+                expect(result).toBe("in 5 Tagen");
+            });
+
+            // Current year tests
+            it("should use formatted date without year for dates earlier this year (de locale)", function () {
+                const now = new Date();
+                const testDate = new Date(now.getFullYear(), 1, 15); // Feb 15 of current year
+                const result = LocalizationUtils.dateTimeFromNowFriendly(testDate, "de");
+                expect(result).toBe("15. Feb.");
+            });
+
+            // Non-current year tests
+            it("should use formatted date with year for dates in previous years (de locale)", function () {
+                const testDate = new Date(2022, 6, 4); // July 4, 2022
+                const result = LocalizationUtils.dateTimeFromNowFriendly(testDate, "de");
+                expect(result).toBe("4. Juli 2022");
+            });
+
+            it("should use formatted date with year for future dates in upcoming years (de locale)", function () {
+                const testDate = new Date(new Date().getFullYear() + 2, 0, 1); // Jan 1, two years from now
+                const result = LocalizationUtils.dateTimeFromNowFriendly(testDate, "de");
+                expect(result).toBe(`1. Jan. ${new Date().getFullYear() + 2}`);
+            });
+        });
+
     });
 }); 

@@ -45,3 +45,19 @@ Returns a relative time string (e.g., "2 days ago", "in 3 hours") based on the d
 | [date] | <code>Date</code> | The date to compare with the current date and time. If not given, defaults to now. |
 | [lang] | <code>string</code> | Optional language code to use for formatting (e.g., 'en', 'fr').                          If not provided, defaults to the application locale or 'en'. |
 
+<a name="dateTimeFromNowFriendly"></a>
+
+## dateTimeFromNowFriendly(date, [lang]) ⇒ <code>string</code>
+Returns an intelligent date string.
+- For dates within the last 30 days or the future: relative time (e.g., "2 days ago", "in 3 hours").
+- For dates earlier this year: formatted date (e.g., "Jan 5").
+- For dates not in the current year: formatted date with year (e.g., "Jan 5, 2023").
+
+**Kind**: global function  
+**Returns**: <code>string</code> - - An intelligently formatted date string.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| date | <code>Date</code> | The date to compare and format. |
+| [lang] | <code>string</code> | Optional language code to use for formatting (e.g., 'en', 'fr'). |
+
