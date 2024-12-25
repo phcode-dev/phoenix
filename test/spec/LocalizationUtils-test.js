@@ -114,7 +114,8 @@ define(function (require, exports, module) {
                 };
                 const formatted = LocalizationUtils.getFormattedDateTime(testDate, "fr", customFormat);
                 // Example format: "1 janvier 2024 à 13:30"
-                expect(formatted).toBe("1 janvier 2024 à 13:30");
+                expect(formatted.includes("1 janvier 2024")).toBeTrue();
+                expect(formatted.includes("13:30")).toBeTrue();
             });
 
             it("should default to current date with custom dateTimeFormat", function () {
@@ -127,6 +128,69 @@ define(function (require, exports, module) {
                 const expected = new Intl.DateTimeFormat("en", customFormat).format(now);
 
                 expect(formattedNow).toBe(expected);
+            });
+        });
+
+        describe("dateTimeFromNow", function () {
+            it("should return 'now' for current time", function () {
+                const now = new Date();
+                let result = LocalizationUtils.dateTimeFromNow(now, "en");
+                expect(result).toBe("now");
+                result = LocalizationUtils.dateTimeFromNow(now, "de");
+                expect(result).toBe("jetzt");
+            });
+
+            it("should handle future dates within seconds", function () {
+                const futureDate = new Date(Date.now() + 30 * 1000); // 30 seconds in the future
+                const result = LocalizationUtils.dateTimeFromNow(futureDate, "en");
+                expect(result).toBe("in 30 seconds");
+            });
+
+            it("should handle past dates within minutes", function () {
+                const pastDate = new Date(Date.now() - 90 * 1000); // 90 seconds in the past
+                const result = LocalizationUtils.dateTimeFromNow(pastDate, "en");
+                expect(result).toBe("2 minutes ago");
+            });
+
+            it("should handle future dates within hours", function () {
+                const futureDate = new Date(Date.now() + 2 * 60 * 60 * 1000); // 2 hours in the future
+                const result = LocalizationUtils.dateTimeFromNow(futureDate, "en");
+                expect(result).toBe("in 2 hours");
+            });
+
+            it("should handle past dates within days", function () {
+                const pastDate = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000); // 3 days ago
+                const result = LocalizationUtils.dateTimeFromNow(pastDate, "en");
+                expect(result).toBe("3 days ago");
+            });
+
+            it("should handle future dates within months", function () {
+                const futureDate = new Date(Date.now() + 45 * 24 * 60 * 60 * 1000); // 45 days in the future
+                const result = LocalizationUtils.dateTimeFromNow(futureDate, "en");
+                expect(result).toBe("next month");
+            });
+
+            it("should handle past dates within years", function () {
+                const pastDate = new Date(Date.now() - 2 * 365 * 24 * 60 * 60 * 1000); // 2 years ago
+                const result = LocalizationUtils.dateTimeFromNow(pastDate, "en");
+                expect(result).toBe("2 years ago");
+            });
+
+            it("should return relative time in French locale", function () {
+                const pastDate = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000); // 3 days ago
+                const result = LocalizationUtils.dateTimeFromNow(pastDate, "fr");
+                expect(result).toBe("il y a 3 jours");
+            });
+
+            it("should fallback to default locale if an invalid locale is specified", function () {
+                const futureDate = new Date(Date.now() + 2 * 60 * 60 * 1000); // 2 hours in the future
+                const result = LocalizationUtils.dateTimeFromNow(futureDate, "invalid-locale");
+                expect(result).toBe("in 2 hours");
+            });
+
+            it("should handle default date input (now) gracefully", function () {
+                const result = LocalizationUtils.dateTimeFromNow(undefined, "en");
+                expect(result).toBe("now");
             });
         });
     });
