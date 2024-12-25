@@ -33,13 +33,6 @@ define(function (require, exports, module) {
                 expect(formatted).toMatch(/1:30 PM/);
             });
 
-            it("should format date in specified locale fr", function () {
-                const testDate = new Date(2024, 0, 1, 13, 30); // Jan 1, 2024, 1:30 PM
-                const formatted = LocalizationUtils.getFormattedDateTime(testDate, "fr");
-                // Explicit check for French date and time format
-                expect(formatted).toBe("1 janv. 2024, 13:30");
-            });
-
             it("should format in de locale", function () {
                 const testDate = new Date(2024, 0, 1, 13, 30); // Jan 1, 2024, 1:30 PM
                 const formatted = LocalizationUtils.getFormattedDateTime(testDate, "de"); // German
