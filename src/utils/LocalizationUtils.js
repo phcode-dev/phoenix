@@ -71,9 +71,42 @@ define(function (require, exports, module) {
         return Intl.DateTimeFormat([lang || brackets.getLocale() || "en", "en"], dateTimeFormat).format(date);
     }
 
+    /**
+     * Returns a relative time string (e.g., "2 days ago", "in 3 hours") based on the difference between the given date and now.
+     *
+     * @param {Date} [date] - The date to compare with the current date and time. If not given, defaults to now.
+     * @param {string} [lang] - Optional language code to use for formatting (e.g., 'en', 'fr').
+     *                          If not provided, defaults to the application locale or 'en'.
+     * @returns {string} - A human-readable relative time string (e.g., "2 days ago", "in 3 hours").
+     */
+    function dateTimeFromNow(date, lang) {
+        date = date || new Date();
+        const now = new Date();
+        const diffInSeconds = Math.floor((date - now) / 1000);
+
+        const rtf = new Intl.RelativeTimeFormat([lang || brackets.getLocale() || "en", "en"],
+            { numeric: 'auto' });
+
+        if (Math.abs(diffInSeconds) < 60) {
+            return rtf.format(diffInSeconds, 'second');
+        } else if (Math.abs(diffInSeconds) < 3600) {
+            return rtf.format(Math.floor(diffInSeconds / 60), 'minute');
+        } else if (Math.abs(diffInSeconds) < 86400) {
+            return rtf.format(Math.floor(diffInSeconds / 3600), 'hour');
+        } else if (Math.abs(diffInSeconds) < 2592000) {
+            return rtf.format(Math.floor(diffInSeconds / 86400), 'day');
+        } else if (Math.abs(diffInSeconds) < 31536000) {
+            return rtf.format(Math.floor(diffInSeconds / 2592000), 'month');
+        } else {
+            return rtf.format(Math.floor(diffInSeconds / 31536000), 'year');
+        }
+    }
+
+
     // Define public API
     exports.getLocalizedLabel = getLocalizedLabel;
     exports.getFormattedDateTime = getFormattedDateTime;
+    exports.dateTimeFromNow = dateTimeFromNow;
     // public constants
     exports.DATE_TIME_STYLE = DATE_TIME_STYLE;
 });
