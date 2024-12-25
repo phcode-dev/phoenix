@@ -598,9 +598,10 @@ define({
     "CMD_SHOW_IN_EXPLORER": "Windows File Explorer",
     "CMD_SHOW_IN_FINDER": "macOS Finder",
     "CMD_SHOW_IN_FILE_MANAGER": "File Manager",
-    "CMD_OPEN_IN_TERMINAL": "Terminal",
+    "CMD_OPEN_IN_TERMINAL_DO_NOT_TRANSLATE": "Terminal",
     "CMD_OPEN_IN_CMD": "Command Prompt",
     "CMD_OPEN_IN_POWER_SHELL": "Power Shell",
+    "CMD_OPEN_IN_DEFAULT_APP": "System Default App",
     "CMD_SWITCH_PANE_FOCUS": "Switch Pane Focus",
 
     // Debug menu commands

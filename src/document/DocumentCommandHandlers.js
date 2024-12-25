@@ -1974,6 +1974,13 @@ define(function (require, exports, module) {
         }
     }
 
+    function openDefaultApp() {
+        const entry = ProjectManager.getSelectedItem();
+        if (entry && entry.fullPath) {
+            NodeUtils.openInDefaultApp(entry.fullPath, true);
+        }
+    }
+
     function raceAgainstTime(promise, timeout = 2000) {
         const timeoutPromise = new Promise((_resolve, reject) => {
             setTimeout(() => {
@@ -2268,7 +2275,7 @@ define(function (require, exports, module) {
     // Set some command strings
     let quitString  = Strings.CMD_QUIT,
         showInOS    = Strings.CMD_SHOW_IN_FILE_MANAGER,
-        defaultTerminal    = Strings.CMD_OPEN_IN_TERMINAL;
+        defaultTerminal    = Strings.CMD_OPEN_IN_TERMINAL_DO_NOT_TRANSLATE;
     if (brackets.platform === "win") {
         quitString  = Strings.CMD_EXIT;
         showInOS    = Strings.CMD_SHOW_IN_EXPLORER;
@@ -2325,6 +2332,7 @@ define(function (require, exports, module) {
     if (brackets.platform === "win") {
         CommandManager.register(Strings.CMD_OPEN_IN_POWER_SHELL,     Commands.NAVIGATE_OPEN_IN_POWERSHELL,    openPowerShell);
     }
+    CommandManager.register(Strings.CMD_OPEN_IN_DEFAULT_APP,         Commands.NAVIGATE_OPEN_IN_DEFAULT_APP,   openDefaultApp);
     CommandManager.register(Strings.CMD_NEW_BRACKETS_WINDOW,         Commands.FILE_NEW_WINDOW,                handleFileNewWindow);
     CommandManager.register(quitString,                              Commands.FILE_QUIT,                      handleFileCloseWindow);
     CommandManager.register(Strings.CMD_SHOW_IN_TREE,                Commands.NAVIGATE_SHOW_IN_FILE_TREE,     handleShowInTree);
