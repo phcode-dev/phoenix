@@ -477,6 +477,18 @@ Zooms out the editor view
 Submenu for zoom options
 
 **Kind**: global variable  
+<a name="OPEN_IN_SUBMENU"></a>
+
+## OPEN\_IN\_SUBMENU
+Submenu for Open in project context menu
+
+**Kind**: global variable  
+<a name="OPEN_IN_SUBMENU_WS"></a>
+
+## OPEN\_IN\_SUBMENU\_WS
+Submenu for Open in working set context menu
+
+**Kind**: global variable  
 <a name="VIEW_INCREASE_FONT_SIZE"></a>
 
 ## VIEW\_INCREASE\_FONT\_SIZE
@@ -601,6 +613,24 @@ Shows current file in file tree
 
 ## NAVIGATE\_SHOW\_IN\_OS
 Shows current file in OS file explorer
+
+**Kind**: global variable  
+<a name="NAVIGATE_OPEN_IN_TERMINAL"></a>
+
+## NAVIGATE\_OPEN\_IN\_TERMINAL
+Shows current file in OS Terminal
+
+**Kind**: global variable  
+<a name="NAVIGATE_OPEN_IN_POWERSHELL"></a>
+
+## NAVIGATE\_OPEN\_IN\_POWERSHELL
+Shows current file in open powershell in Windows os
+
+**Kind**: global variable  
+<a name="NAVIGATE_OPEN_IN_DEFAULT_APP"></a>
+
+## NAVIGATE\_OPEN\_IN\_DEFAULT\_APP
+Open current file in the default associated app in the os
 
 **Kind**: global variable  
 <a name="NAVIGATE_QUICK_OPEN"></a>

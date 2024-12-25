@@ -82,3 +82,28 @@ This is only available in the native app
 | fullFilePath | <code>string</code> | 
 | projectFullPath | <code>string</code> | 
 
+<a name="openNativeTerminal"></a>
+
+## openNativeTerminal(cwd, [usePowerShell])
+Runs ESLint on a file
+This is only available in the native app
+
+**Kind**: global function  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| cwd | <code>string</code> |  | the working directory of terminal |
+| [usePowerShell] | <code>boolean</code> | <code>false</code> |  |
+
+<a name="openInDefaultApp"></a>
+
+## openInDefaultApp(fullPath) ⇒ <code>Promise.&lt;void&gt;</code>
+Opens a file in the default application for its type on Windows, macOS, and Linux.
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;void&gt;</code> - - Resolves if the file/folder is opened successfully, rejects otherwise.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| fullPath | <code>string</code> | The path to the file/folder to open. |
+

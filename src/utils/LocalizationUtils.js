@@ -19,15 +19,13 @@
  *
  */
 
-/**
- *  Utilities functions related to localization/i18n
- */
+// @INCLUDE_IN_API_DOCS
+
 define(function (require, exports, module) {
 
+    const Strings = require("strings");
 
-    var Strings = require("strings");
-
-    /*
+    /**
      * Converts a language code to its written name, if possible.
      * If not possible, the language code is simply returned.
      *
@@ -41,7 +39,41 @@ define(function (require, exports, module) {
         return i18n === undefined ? locale : i18n;
     }
 
+    const DATE_TIME_STYLE = {
+        FULL: "full",
+        LONG: "long",
+        MEDIUM: "medium",
+        SHORT: "short"
+    };
+
+    /**
+     * Formats a given date object into a locale-aware date and time string.
+     *
+     * @param {Date} [date] - The date object to format. If not provided, the current date and time will be used.
+     * @param {string} [lang] - Optional language code to use for formatting (e.g., 'en', 'fr').
+     *                          If not provided, defaults to the application locale or 'en'.
+     * @param {Object} [dateTimeFormat] - Optional object specifying the date and time formatting options.
+     *                                    Defaults to { dateStyle: 'medium', timeStyle: 'short' }.
+     * @param {string} [dateTimeFormat.dateStyle] - Specifies the date format style. One of: DATE_TIME_STYLE.*
+     * @param {string} [dateTimeFormat.timeStyle] - Specifies the time format style. One of: DATE_TIME_STYLE.*
+     * @returns {string} - The formatted date and time string (e.g., "Dec 24, 2024, 10:30 AM").
+     */
+    function getFormattedDateTime(date, lang, dateTimeFormat) {
+        if(!date){
+            date = new Date();
+        }
+        if(!dateTimeFormat){
+            dateTimeFormat = {
+                dateStyle: DATE_TIME_STYLE.MEDIUM,
+                timeStyle: DATE_TIME_STYLE.SHORT
+            };
+        }
+        return Intl.DateTimeFormat([lang || brackets.getLocale() || "en", "en"], dateTimeFormat).format(date);
+    }
 
     // Define public API
     exports.getLocalizedLabel = getLocalizedLabel;
+    exports.getFormattedDateTime = getFormattedDateTime;
+    // public constants
+    exports.DATE_TIME_STYLE = DATE_TIME_STYLE;
 });

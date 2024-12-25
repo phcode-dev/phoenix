@@ -22,7 +22,8 @@ Add Esc key handling for a popup DOM element.
 | removeHandler | <code>function</code> | Pop-up specific remove (e.g. display:none or DOM removal) |
 | autoRemove | <code>Boolean</code> | Specify true to indicate the PopUpManager should      remove the popup from the _popUps array when the popup is closed. Specify false      when the popup is always persistant in the _popUps array. |
 | options | <code>object</code> |  |
-| options.popupManagesFocus | <code>boolean</code> | set to true if the popup manages focus restore on close |
+| [options.popupManagesFocus] | <code>boolean</code> | set to true if the popup manages focus restore on close |
+| [options.closeCurrentPopups] | <code>boolean</code> | set to true if you want to dismiss all exiting popups before              adding this. Useful when this should be the only popup visible. |
 
 <a name="removePopUp"></a>
 
