@@ -118,6 +118,7 @@ define(function (require, exports, module) {
     require("spec/TaskManager-integ-test");
     require("spec/Generic-integ-test");
     require("spec/spacing-auto-detect-integ-test");
+    require("spec/LocalizationUtils-test");
     // Integrated extension tests
     require("spec/Extn-InAppNotifications-integ-test");
     require("spec/Extn-RemoteFileAdapter-integ-test");
