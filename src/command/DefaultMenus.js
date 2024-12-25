@@ -42,7 +42,12 @@ define(function (require, exports, module) {
      */
     function _setContextMenuItemsVisible(enabled, items) {
         items.forEach(function (item) {
-            CommandManager.get(item).setEnabled(enabled);
+            const command = CommandManager.get(item);
+            if(command) {
+                // some commands may be only selectively present in browser or in some oses.
+                // Eg. NAVIGATE_OPEN_IN_POWERSHELL is only present in Windows desktop apps
+                command.setEnabled(enabled);
+            }
         });
     }
 
