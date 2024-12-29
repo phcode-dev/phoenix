@@ -34,7 +34,7 @@ Formats a given date object into a locale-aware date and time string.
 
 <a name="dateTimeFromNow"></a>
 
-## dateTimeFromNow([date], [lang]) ⇒ <code>string</code>
+## dateTimeFromNow([date], [lang], [fromDate]) ⇒ <code>string</code>
 Returns a relative time string (e.g., "2 days ago", "in 3 hours") based on the difference between the given date and now.
 
 **Kind**: global function  
@@ -44,6 +44,7 @@ Returns a relative time string (e.g., "2 days ago", "in 3 hours") based on the d
 | --- | --- | --- |
 | [date] | <code>Date</code> | The date to compare with the current date and time. If not given, defaults to now. |
 | [lang] | <code>string</code> | Optional language code to use for formatting (e.g., 'en', 'fr').                          If not provided, defaults to the application locale or 'en'. |
+| [fromDate] | <code>string</code> | Optional date to use instead of now to compute the relative dateTime from. |
 
 <a name="dateTimeFromNowFriendly"></a>
 

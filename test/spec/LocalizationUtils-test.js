@@ -132,64 +132,118 @@ define(function (require, exports, module) {
         });
 
         describe("dateTimeFromNow", function () {
-            it("should return 'now' for current time", function () {
-                const now = new Date();
+            // we take a reference date for tests stability. due to use of math.trunk, using date.now will
+            // sometimes lead to valid time jumps in tests. so we just take a reference time fixed to not account for
+            // any time taken in compute for tests.
+            const refDate = Date.now();
+            function referenceDate({
+                   seconds = 0,
+                   minutes = 0,
+                   hours = 0,
+                   days = 0,
+                   months = 0,
+                   years = 0
+               } = {}) {
+                const date = new Date(refDate); // Original reference date
+
+                // Add time components
+                date.setSeconds(date.getSeconds() + seconds);
+                date.setMinutes(date.getMinutes() + minutes);
+                date.setHours(date.getHours() + hours);
+                date.setDate(date.getDate() + days);
+                date.setMonth(date.getMonth() + months);
+                date.setFullYear(date.getFullYear() + years);
+
+                return date;
+            }
+
+            it("should return 'now' for current time without specifying fromTime", function () {
+                let now = new Date();
                 let result = LocalizationUtils.dateTimeFromNow(now, "en");
                 expect(result).toBe("now");
                 result = LocalizationUtils.dateTimeFromNow(now, "de");
                 expect(result).toBe("jetzt");
             });
 
+            it("should return 'now' for current time within 3 seconds of time", function () {
+                let now = referenceDate();
+                let result = LocalizationUtils.dateTimeFromNow(now, "en", referenceDate());
+                expect(result).toBe("now");
+                now = referenceDate({seconds: 1});
+                result = LocalizationUtils.dateTimeFromNow(now, "en", referenceDate());
+                expect(result).toBe("now");
+                now = referenceDate({seconds: 2});
+                result = LocalizationUtils.dateTimeFromNow(now, "en", referenceDate());
+                expect(result).toBe("now");
+                result = LocalizationUtils.dateTimeFromNow(now, "de", referenceDate());
+                expect(result).toBe("jetzt");
+                now = referenceDate({seconds: 1});
+                result = LocalizationUtils.dateTimeFromNow(now, "de", referenceDate());
+                expect(result).toBe("jetzt");
+                now = referenceDate({seconds: 2});
+                result = LocalizationUtils.dateTimeFromNow(now, "de", referenceDate());
+                expect(result).toBe("jetzt");
+            });
+
             it("should handle future dates within seconds", function () {
-                const futureDate = new Date(Date.now() + 30 * 1000); // 30 seconds in the future
-                const result = LocalizationUtils.dateTimeFromNow(futureDate, "en");
+                const futureDate = referenceDate({seconds: 30}); // 30 seconds in the future
+                const result = LocalizationUtils.dateTimeFromNow(futureDate, "en", referenceDate());
                 expect(result).toBe("in 30 seconds");
             });
 
             it("should handle past dates within minutes", function () {
-                const pastDate = new Date(Date.now() - 90 * 1000); // 90 seconds in the past
-                const result = LocalizationUtils.dateTimeFromNow(pastDate, "en");
+                const pastDate = referenceDate({seconds: -90}); // 90 seconds in the past
+                const result = LocalizationUtils.dateTimeFromNow(pastDate, "en", referenceDate());
+                expect(result).toBe("1 minute ago");
+            });
+
+            it("should handle past and future dates similarly", function () {
+                const pastDate = referenceDate({seconds: -130}); // 2 minutes and 10 secs
+                let result = LocalizationUtils.dateTimeFromNow(pastDate, "en", referenceDate());
                 expect(result).toBe("2 minutes ago");
+                const futureDate = referenceDate({seconds: 130});  // 2 minutes and 10 secs
+                result = LocalizationUtils.dateTimeFromNow(futureDate, "en", referenceDate());
+                expect(result).toBe("in 2 minutes");
             });
 
             it("should handle future dates within hours", function () {
-                const futureDate = new Date(Date.now() + 2 * 60 * 60 * 1000); // 2 hours in the future
-                const result = LocalizationUtils.dateTimeFromNow(futureDate, "en");
+                const futureDate = referenceDate({hours: 2}); // 2 hours in the future
+                const result = LocalizationUtils.dateTimeFromNow(futureDate, "en", referenceDate());
                 expect(result).toBe("in 2 hours");
             });
 
             it("should handle past dates within days", function () {
-                const pastDate = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000); // 3 days ago
-                const result = LocalizationUtils.dateTimeFromNow(pastDate, "en");
+                const pastDate = referenceDate({ days: -3 }); // 3 days ago
+                const result = LocalizationUtils.dateTimeFromNow(pastDate, "en", referenceDate());
                 expect(result).toBe("3 days ago");
             });
 
             it("should handle future dates within months", function () {
-                const futureDate = new Date(Date.now() + 45 * 24 * 60 * 60 * 1000); // 45 days in the future
-                const result = LocalizationUtils.dateTimeFromNow(futureDate, "en");
+                const futureDate = referenceDate({ days: 45 }); // 45 days in the future
+                const result = LocalizationUtils.dateTimeFromNow(futureDate, "en", referenceDate());
                 expect(result).toBe("next month");
             });
 
             it("should handle past dates within years", function () {
-                const pastDate = new Date(Date.now() - 2 * 365 * 24 * 60 * 60 * 1000); // 2 years ago
-                const result = LocalizationUtils.dateTimeFromNow(pastDate, "en");
+                const pastDate = referenceDate({ years: -2 }); // 2 years ago
+                const result = LocalizationUtils.dateTimeFromNow(pastDate, "en", referenceDate());
                 expect(result).toBe("2 years ago");
             });
 
             it("should return relative time in French locale", function () {
-                const pastDate = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000); // 3 days ago
-                const result = LocalizationUtils.dateTimeFromNow(pastDate, "fr");
+                const pastDate = referenceDate({ days: -3 }); // 3 days ago
+                const result = LocalizationUtils.dateTimeFromNow(pastDate, "fr", referenceDate());
                 expect(result).toBe("il y a 3 jours");
             });
 
             it("should fallback to default locale if an invalid locale is specified", function () {
-                const futureDate = new Date(Date.now() + 2 * 60 * 60 * 1000); // 2 hours in the future
-                const result = LocalizationUtils.dateTimeFromNow(futureDate, "invalid-locale");
+                const futureDate = referenceDate({ hours: 2 }); // 2 hours in the future
+                const result = LocalizationUtils.dateTimeFromNow(futureDate, "invalid-locale", referenceDate());
                 expect(result).toBe("in 2 hours");
             });
 
             it("should handle default date input (now) gracefully", function () {
-                const result = LocalizationUtils.dateTimeFromNow(undefined, "en");
+                const result = LocalizationUtils.dateTimeFromNow();
                 expect(result).toBe("now");
             });
         });
