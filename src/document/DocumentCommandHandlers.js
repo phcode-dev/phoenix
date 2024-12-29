@@ -1957,6 +1957,9 @@ define(function (require, exports, module) {
         if (entry) {
             brackets.app.openPathInFileBrowser(entry.fullPath)
                 .catch(err=>console.error("Error showing '" + entry.fullPath + "' in OS folder:", err));
+        } else {
+            brackets.app.openPathInFileBrowser(ProjectManager.getProjectRoot().fullPath)
+                .catch(err=>console.error("Error showing '" + ProjectManager.getProjectRoot().fullPath + "' in OS folder:", err));
         }
     }
 
@@ -1964,6 +1967,8 @@ define(function (require, exports, module) {
         const entry = ProjectManager.getSelectedItem();
         if (entry && entry.fullPath) {
             NodeUtils.openNativeTerminal(entry.fullPath);
+        } else {
+            NodeUtils.openNativeTerminal(ProjectManager.getProjectRoot().fullPath);
         }
     }
 
@@ -1971,13 +1976,17 @@ define(function (require, exports, module) {
         const entry = ProjectManager.getSelectedItem();
         if (entry && entry.fullPath) {
             NodeUtils.openNativeTerminal(entry.fullPath, true);
+        } else {
+            NodeUtils.openNativeTerminal(ProjectManager.getProjectRoot().fullPath, true);
         }
     }
 
     function openDefaultApp() {
         const entry = ProjectManager.getSelectedItem();
         if (entry && entry.fullPath) {
-            NodeUtils.openInDefaultApp(entry.fullPath, true);
+            NodeUtils.openInDefaultApp(entry.fullPath);
+        } else {
+            NodeUtils.openInDefaultApp(ProjectManager.getProjectRoot().fullPath);
         }
     }
 
