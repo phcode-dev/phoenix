@@ -77,28 +77,31 @@ define(function (require, exports, module) {
      * @param {Date} [date] - The date to compare with the current date and time. If not given, defaults to now.
      * @param {string} [lang] - Optional language code to use for formatting (e.g., 'en', 'fr').
      *                          If not provided, defaults to the application locale or 'en'.
+     * @param {Date} [fromDate] - Optional date to use instead of now to compute the relative dateTime from.
      * @returns {string} - A human-readable relative time string (e.g., "2 days ago", "in 3 hours").
      */
-    function dateTimeFromNow(date, lang) {
+    function dateTimeFromNow(date, lang, fromDate) {
         date = date || new Date();
-        const now = new Date();
-        const diffInSeconds = Math.floor((date - now) / 1000);
+        fromDate = fromDate || new Date();
+        const diffInSeconds = Math.floor((date - fromDate) / 1000);
 
         const rtf = new Intl.RelativeTimeFormat([lang || brackets.getLocale() || "en", "en"],
             { numeric: 'auto' });
-
-        if (Math.abs(diffInSeconds) < 60) {
+        if (Math.abs(diffInSeconds) < 3) {
+            // we consider diffs less than 3 seconds to be always 'now', for better UX and for unit tests stability.
+            return rtf.format(0, 'second');
+        } else if (Math.abs(diffInSeconds) < 60) {
             return rtf.format(diffInSeconds, 'second');
         } else if (Math.abs(diffInSeconds) < 3600) {
-            return rtf.format(Math.floor(diffInSeconds / 60), 'minute');
+            return rtf.format(Math.trunc(diffInSeconds / 60), 'minute');
         } else if (Math.abs(diffInSeconds) < 86400) {
-            return rtf.format(Math.floor(diffInSeconds / 3600), 'hour');
+            return rtf.format(Math.trunc(diffInSeconds / 3600), 'hour');
         } else if (Math.abs(diffInSeconds) < 2592000) {
-            return rtf.format(Math.floor(diffInSeconds / 86400), 'day');
+            return rtf.format(Math.trunc(diffInSeconds / 86400), 'day');
         } else if (Math.abs(diffInSeconds) < 31536000) {
-            return rtf.format(Math.floor(diffInSeconds / 2592000), 'month');
+            return rtf.format(Math.trunc(diffInSeconds / 2592000), 'month');
         } else {
-            return rtf.format(Math.floor(diffInSeconds / 31536000), 'year');
+            return rtf.format(Math.trunc(diffInSeconds / 31536000), 'year');
         }
     }
 
@@ -115,7 +118,7 @@ define(function (require, exports, module) {
     function dateTimeFromNowFriendly(date, lang) {
         const now = new Date();
         const diffInMilliseconds = date - now;
-        const diffInDays = Math.floor(diffInMilliseconds / (1000 * 60 * 60 * 24));
+        const diffInDays = Math.trunc(diffInMilliseconds / (1000 * 60 * 60 * 24));
 
         // If within the last 30 days or the future, use relative time
         if (Math.abs(diffInDays) <= 30) {
