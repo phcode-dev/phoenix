@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, beforeAll, afterAll, awaitsFor, awaitsForDone */
+/*global describe, it, expect, beforeAll, afterAll, awaitsFor, awaitsForDone, awaits */
 
 define(function (require, exports, module) {
     // Recommended to avoid reloading the integration test window Phoenix instance for each test.
@@ -66,12 +66,20 @@ define(function (require, exports, module) {
 
         function tripleControlEvent() {
             keyboardType(Keys.KEY.CONTROL);
+            keyboardType(Keys.KEY.CONTROL, "keyup");
+            keyboardType(Keys.KEY.CONTROL);
+            keyboardType(Keys.KEY.CONTROL, "keyup");
+            keyboardType(Keys.KEY.CONTROL);
+        }
+
+        function tripleControlContinuousEvent() {
+            keyboardType(Keys.KEY.CONTROL);
             keyboardType(Keys.KEY.CONTROL);
             keyboardType(Keys.KEY.CONTROL);
         }
 
-        function keyboardType(key) {
-            const ctrlEvent = new KeyboardEvent("keydown", {
+        function keyboardType(key, type) {
+            const ctrlEvent = new KeyboardEvent(type || "keydown", {
                 key: key,
                 bubbles: true, // Event bubbles up through the DOM
                 cancelable: true, // Event can be canceled,
@@ -116,6 +124,17 @@ define(function (require, exports, module) {
             await awaitsFor(()=>{
                 return !testWindow.$('#ctrl-nav-overlay').is(":visible");
             }, "overlay to be closed");
+        });
+
+        it("Should not show overlay on triple control continuous press", async function () {
+            MainViewManager.setLayoutScheme(1, 1);
+            await openAnyFile();
+            await awaitsFor(()=>{
+                return !testWindow.$('#ctrl-nav-overlay').is(":visible");
+            }, "overlay to be not visible");
+            tripleControlContinuousEvent();
+            await awaits(20); // give some time so that we are sure that the overlay didn't come up.
+            expect(testWindow.$('#ctrl-nav-overlay').is(":visible")).toBeFalse();
         });
 
         async function _verifyMenuNav() {
