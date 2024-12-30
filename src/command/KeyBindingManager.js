@@ -1174,13 +1174,20 @@ define(function (require, exports, module) {
         Control: true,
         Meta: true
     };
+    let isCtrlDepressed = false; // flag set to true if the user keeps the ctrl key pressed without releasing
     function _detectTripleCtrlKeyPress(event) {
+        const isCtrlKeyPressStart = !isCtrlDepressed;
+        if (ctrlKeyCodes[event.code] && ctrlKeyCodes[event.key]) {
+            isCtrlDepressed = true;
+        }
         if(PreferencesManager && !PreferencesManager.get(PREF_TRIPLE_CTRL_KEY_PRESS_ENABLED)){
             return false;
         }
         const currentTime = new Date().getTime(); // Get the current time
-        if (ctrlKeyCodes[event.code] && ctrlKeyCodes[event.key] && !event.shiftKey && !event.altKey) {
+        if (ctrlKeyCodes[event.code] && ctrlKeyCodes[event.key] && !event.shiftKey && !event.altKey
+            && isCtrlKeyPressStart) {
             pressCount++;
+            isCtrlDepressed = true;
             if(pressCount === PRESS_ACTIVATE_COUNT && (currentTime - lastCtrlKeyPressTime) <= doublePressInterval) {
                 KeyboardOverlayMode.startOverlayMode();
                 event.stopPropagation();
@@ -1280,6 +1287,15 @@ define(function (require, exports, module) {
         window.document.body.addEventListener(
             "keydown",
             _handleKeyEvent,
+            true
+        );
+        window.document.body.addEventListener(
+            "keyup",
+            (event)=>{
+                if (ctrlKeyCodes[event.code] && ctrlKeyCodes[event.key]) {
+                    isCtrlDepressed = false;
+                }
+            },
             true
         );
         document.body.addEventListener('mousemove', ()=>{
