@@ -181,7 +181,7 @@ function _sendEvent(nodeConnectorID, eventName, dataObjectToSend = null, dataBuf
 
 function _sendError(defaultWS, metadata, err= { }, defaultMessage = "Operation failed! ") {
     metadata.error = {
-        message: err.message || defaultMessage,
+        message: typeof err === "string" ? err : err.message || defaultMessage,
         code: err.code,
         stack: err.stack
     };
