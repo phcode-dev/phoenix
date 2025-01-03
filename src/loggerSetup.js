@@ -98,9 +98,12 @@
             LOCAL_STORAGE_KEYS: {
                 // change these keys in devEnable.html too
                 LOG_TO_CONSOLE_KEY: "logToConsole",
-                LOG_LIVE_PREVIEW: "logLivePreview"
+                LOG_LIVE_PREVIEW: "logLivePreview",
+                // these need not be dev enable for now
+                LOG_GIT: "logGitDebugMode"
             },
             healthDataDisabled: false,
+            logGit: false,
             logLivePreview: false // logLivePreview will be setup below
         },
         livePreview: {
@@ -163,6 +166,8 @@
 
     logger.loggingOptions.logLivePreview = window.isLoggingEnabled(
         logger.loggingOptions.LOCAL_STORAGE_KEYS.LOG_LIVE_PREVIEW);
+    logger.loggingOptions.logGit = window.isLoggingEnabled(
+        logger.loggingOptions.LOCAL_STORAGE_KEYS.LOG_GIT);
 
     function _shouldDiscardError(errors = []) {
         if(!window.Phoenix || !window.Phoenix.VFS){
