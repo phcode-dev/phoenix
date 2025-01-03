@@ -59,7 +59,9 @@ window.logger = {
 
     loggingOptions: {
         LOCAL_STORAGE_KEYS: {
-            LOG_LIVE_PREVIEW: "logLivePreview"
+            LOG_LIVE_PREVIEW: "logLivePreview",
+            // these need not be dev enable for now
+            LOG_GIT: "logGitDebugMode"
         },
         healthDataDisabled: false,
         logLivePreview: false // logLivePreview will be setup below

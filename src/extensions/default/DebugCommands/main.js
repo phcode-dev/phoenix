@@ -80,6 +80,7 @@ define(function (require, exports, module) {
         DEBUG_ENABLE_PHNODE_INSPECTOR         = "debug.enablePhNodeInspector",
         DEBUG_GET_PHNODE_INSPECTOR_URL        = "debug.getPhNodeInspectorURL",
         DEBUG_LIVE_PREVIEW_LOGGING            = "debug.livePreviewLogging",
+        DEBUG_GIT_EXTENSION_LOGGING           = "debug.gitLogging",
         DEBUG_OPEN_VFS                        = "debug.openVFS",
         DEBUG_OPEN_EXTENSION_FOLDER           = "debug.openExtensionFolders",
         DEBUG_OPEN_VIRTUAL_SERVER             = "debug.openVirtualServer",
@@ -88,7 +89,8 @@ define(function (require, exports, module) {
         DEBUG_DRAG_AND_DROP                   = "debug.dragAndDrop";
 
     const LOG_TO_CONSOLE_KEY = logger.loggingOptions.LOCAL_STORAGE_KEYS.LOG_TO_CONSOLE_KEY,
-        LOG_LIVE_PREVIEW_KEY = logger.loggingOptions.LOCAL_STORAGE_KEYS.LOG_LIVE_PREVIEW;
+        LOG_LIVE_PREVIEW_KEY = logger.loggingOptions.LOCAL_STORAGE_KEYS.LOG_LIVE_PREVIEW,
+        LOG_GIT_KEY = logger.loggingOptions.LOCAL_STORAGE_KEYS.LOG_GIT;
 
     // define a preference to turn off opening preferences in split-view.
     var prefs = PreferencesManager.getExtensionPrefs("preferencesView");
@@ -697,7 +699,9 @@ define(function (require, exports, module) {
         CommandManager.get(DEBUG_ENABLE_LOGGING).setChecked(isLogging);
         CommandManager.get(DEBUG_LIVE_PREVIEW_LOGGING).setEnabled(isLogging);
         logger.loggingOptions.logLivePreview = window.isLoggingEnabled(LOG_LIVE_PREVIEW_KEY);
+        logger.loggingOptions.logGit = window.isLoggingEnabled(LOG_GIT_KEY);
         CommandManager.get(DEBUG_LIVE_PREVIEW_LOGGING).setChecked(logger.loggingOptions.logLivePreview);
+        CommandManager.get(DEBUG_GIT_EXTENSION_LOGGING).setChecked(logger.loggingOptions.logGit);
         CommandManager.get(DEBUG_ENABLE_PHNODE_INSPECTOR).setChecked(NodeConnector.isInspectEnabled());
     }
 
@@ -732,6 +736,11 @@ define(function (require, exports, module) {
 
     function _handleLivePreviewLogging() {
         window.toggleLoggingKey(LOG_LIVE_PREVIEW_KEY);
+        _updateLogToConsoleMenuItemChecked();
+    }
+
+    function _handleGitLogging() {
+        window.toggleLoggingKey(LOG_GIT_KEY);
         _updateLogToConsoleMenuItemChecked();
     }
 
@@ -787,6 +796,7 @@ define(function (require, exports, module) {
     CommandManager.register(Strings.CMD_ENABLE_PHNODE_INSPECTOR, DEBUG_ENABLE_PHNODE_INSPECTOR, _handlePhNodeInspectEnable);
     CommandManager.register(Strings.CMD_GET_PHNODE_INSPECTOR_URL, DEBUG_GET_PHNODE_INSPECTOR_URL, _handleGetPhNodeInspectURL);
     CommandManager.register(Strings.CMD_ENABLE_LIVE_PREVIEW_LOGS, DEBUG_LIVE_PREVIEW_LOGGING, _handleLivePreviewLogging);
+    CommandManager.register(Strings.CMD_ENABLE_GIT_LOGS, DEBUG_GIT_EXTENSION_LOGGING, _handleGitLogging);
     CommandManager.register(Strings.CMD_OPEN_VFS, DEBUG_OPEN_VFS,   _openVFS);
     CommandManager.register(Strings.CMD_OPEN_EXTENSIONS_FOLDER, DEBUG_OPEN_EXTENSION_FOLDER,   _openExtensionsFolder);
     CommandManager.register(Strings.CMD_OPEN_VIRTUAL_SERVER, DEBUG_OPEN_VIRTUAL_SERVER,   _openVirtualServer);
@@ -823,6 +833,9 @@ define(function (require, exports, module) {
         hideWhenCommandDisabled: true
     });
     diagnosticsSubmenu.addMenuItem(DEBUG_LIVE_PREVIEW_LOGGING);
+    if(Phoenix.isNativeApp) {
+        diagnosticsSubmenu.addMenuItem(DEBUG_GIT_EXTENSION_LOGGING);
+    }
     diagnosticsSubmenu.addMenuDivider();
     diagnosticsSubmenu.addMenuItem(DEBUG_SHOW_PERF_DATA);
     diagnosticsSubmenu.addMenuItem(DEBUG_OPEN_VFS);

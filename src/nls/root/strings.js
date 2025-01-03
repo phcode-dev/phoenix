@@ -852,6 +852,7 @@ define({
     "CMD_ENABLE_PHNODE_INSPECTOR": "Enable PhNode Inspector",
     "CMD_GET_PHNODE_INSPECTOR_URL": "How to Inspect PhNode",
     "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Live Preview Logs",
+    "CMD_ENABLE_GIT_LOGS": "Git Verbose Logs",
     "CMD_OPEN_BRACKETS_SOURCE": "Open {APP_NAME} Source",
 
     "CREATING_LAUNCH_SCRIPT_TITLE": "{APP_NAME} Command Line Shortcut",
