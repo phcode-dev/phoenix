@@ -721,6 +721,7 @@ define({
   "CMD_ENABLE_PHNODE_INSPECTOR": "پی ایچ نوڈ انسپکٹر کو فعال کریں۔",
   "CMD_GET_PHNODE_INSPECTOR_URL": "پی ایچ نوڈ کا معائنہ کیسے کریں۔",
   "CMD_ENABLE_LIVE_PREVIEW_LOGS": "لائیو پیش نظارہ لاگز",
+  "CMD_ENABLE_GIT_LOGS": "گٹ وربوز لاگز",
   "CMD_OPEN_BRACKETS_SOURCE": "{APP_NAME} سورس کھولیں۔",
   "CREATING_LAUNCH_SCRIPT_TITLE": "{APP_NAME} کمانڈ لائن شارٹ کٹ",
   "ERROR_CREATING_LAUNCH_SCRIPT": "کمانڈ لائن شارٹ کٹ انسٹال کرتے وقت ایک خرابی پیش آگئی۔ براہ کرم <a href='https://github.com/adobe/brackets/wiki/Command-Line-Arguments#troubleshooting'>ان ٹربل شوٹنگ تجاویز</a> کو آزمائیں۔<br/><br/> وجہ: {0}",

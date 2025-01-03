@@ -701,6 +701,7 @@
   "CMD_ENABLE_PHNODE_INSPECTOR": "啟用 PhNode 檢查器",
   "CMD_GET_PHNODE_INSPECTOR_URL": "如何檢查 PhNode",
   "CMD_ENABLE_LIVE_PREVIEW_LOGS": "實時預覽日誌",
+  "CMD_ENABLE_GIT_LOGS": "Git 詳細日誌",
   "CMD_OPEN_BRACKETS_SOURCE": "開啟 {APP_NAME} 原始碼",
   "CREATING_LAUNCH_SCRIPT_TITLE": "{APP_NAME} 命令列捷徑",
   "ERROR_CREATING_LAUNCH_SCRIPT": "安裝命令列捷徑時發生錯誤。請嘗試<a href='https://github.com/adobe/brackets/wiki/Command-Line-Arguments#troubleshooting'>這些疑難排解建議</a>。<br/><br/>原因: {0}",

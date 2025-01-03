@@ -721,6 +721,7 @@ define({
   "CMD_ENABLE_PHNODE_INSPECTOR": "Aktivera PhNode Inspector",
   "CMD_GET_PHNODE_INSPECTOR_URL": "Hur man inspekterar PhNode",
   "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Live Preview-loggar",
+  "CMD_ENABLE_GIT_LOGS": "Git Verbose Loggar",
   "CMD_OPEN_BRACKETS_SOURCE": "Öppna Brackets källkod",
   "CREATING_LAUNCH_SCRIPT_TITLE": "{APP_NAME} kommandotolk-genväg",
   "ERROR_CREATING_LAUNCH_SCRIPT": "Ett fel inträffade under installationen av kommandotolk-genvägen. Vänligen prova <a href='https://github.com/adobe/brackets/wiki/Command-Line-Arguments#troubleshooting'>dessa felsökningsförslag</a>.<br/><br/>Anledning: {0}",

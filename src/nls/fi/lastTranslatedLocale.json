@@ -701,6 +701,7 @@
   "CMD_ENABLE_PHNODE_INSPECTOR": "Ota PhNode Inspector käyttöön",
   "CMD_GET_PHNODE_INSPECTOR_URL": "Kuinka tarkastaa PhNode",
   "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Live-esikatselulokit",
+  "CMD_ENABLE_GIT_LOGS": "Git Verbose Logs",
   "CMD_OPEN_BRACKETS_SOURCE": "Avaa {APP_NAME}in lähdekoodi",
   "CREATING_LAUNCH_SCRIPT_TITLE": "{APP_NAME}in komentorivin oikotie",
   "ERROR_CREATING_LAUNCH_SCRIPT": "Tapahtui virhe asennettaessa komentorivin oikotietä. Kokeile <a href='https://github.com/adobe/brackets/wiki/Command-Line-Arguments#troubleshooting'>näitä vianmääritysohjeita</a>.<br/><br/>Syy: {0}",

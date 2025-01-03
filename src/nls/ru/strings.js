@@ -721,6 +721,7 @@ define({
   "CMD_ENABLE_PHNODE_INSPECTOR": "Включить инспектор PhNode",
   "CMD_GET_PHNODE_INSPECTOR_URL": "Как проверить PhNode",
   "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Журналы просмотра в реальном времени",
+  "CMD_ENABLE_GIT_LOGS": "Подробные логи Git",
   "CMD_OPEN_BRACKETS_SOURCE": "Откройте источник {APP_NAME}",
   "CREATING_LAUNCH_SCRIPT_TITLE": "Ярлык командной строки {APP_NAME}",
   "ERROR_CREATING_LAUNCH_SCRIPT": "Произошла ошибка при установке ярлыка командной строки. Пожалуйста, попробуйте <a href='https://github.com/adobe/brackets/wiki/Command-Line-Arguments#troubleshooting'>эти рекомендации по устранению неполадок</a> .<br/><br/> Причина: {0}",

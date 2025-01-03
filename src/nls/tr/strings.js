@@ -721,6 +721,7 @@ define({
   "CMD_ENABLE_PHNODE_INSPECTOR": "PhNode Inspector'ı etkinleştir",
   "CMD_GET_PHNODE_INSPECTOR_URL": "PhNode Nasıl Denetlenir",
   "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Canlı Önizleme Günlükleri",
+  "CMD_ENABLE_GIT_LOGS": "Git Ayrıntılı Günlükleri",
   "CMD_OPEN_BRACKETS_SOURCE": "{APP_NAME} Kaynağını Aç",
   "CREATING_LAUNCH_SCRIPT_TITLE": "{APP_NAME} Komut Satırı Kısayolu",
   "ERROR_CREATING_LAUNCH_SCRIPT": "Komut satırı kısayolu yüklenirken bir hata oluştu. Lütfen <a href='https://github.com/adobe/brackets/wiki/Command-Line-Arguments#troubleshooting'>bu sorun giderme önerilerini</a> deneyin.<br/><br/> Neden: {0}",
