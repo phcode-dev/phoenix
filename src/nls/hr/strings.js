@@ -721,6 +721,7 @@ define({
   "CMD_ENABLE_PHNODE_INSPECTOR": "Omogući PhNode Inspector",
   "CMD_GET_PHNODE_INSPECTOR_URL": "Kako pregledati PhNode",
   "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Dnevnici pregleda uživo",
+  "CMD_ENABLE_GIT_LOGS": "Git Verbose Dnevnici",
   "CMD_OPEN_BRACKETS_SOURCE": "Otvori Brackets izvor",
   "CREATING_LAUNCH_SCRIPT_TITLE": "{APP_NAME} Prečac naredbenog retka",
   "ERROR_CREATING_LAUNCH_SCRIPT": "Došlo je do pogreške prilikom instaliranja prečaca naredbenog retka. Isprobajte <a href='https://github.com/adobe/brackets/wiki/Command-Line-Arguments#troubleshooting'>ove prijedloge za rješavanje problema</a> .<br/><br/> Razlog: {0}",

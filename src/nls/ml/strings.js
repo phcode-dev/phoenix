@@ -721,6 +721,7 @@ define({
   "CMD_ENABLE_PHNODE_INSPECTOR": "PhNode ഇൻസ്പെക്ടർ പ്രവർത്തനക്ഷമമാക്കുക",
   "CMD_GET_PHNODE_INSPECTOR_URL": "PhNode എങ്ങനെ പരിശോധിക്കാം",
   "CMD_ENABLE_LIVE_PREVIEW_LOGS": "തത്സമയ പ്രിവ്യൂ ലോഗുകൾ",
+  "CMD_ENABLE_GIT_LOGS": "Git വെർബോസ് ലോഗുകൾ",
   "CMD_OPEN_BRACKETS_SOURCE": "{APP_NAME} ഉറവിടം തുറക്കുക",
   "CREATING_LAUNCH_SCRIPT_TITLE": "{APP_NAME} കമാൻഡ് ലൈൻ കുറുക്കുവഴി",
   "ERROR_CREATING_LAUNCH_SCRIPT": "കമാൻഡ് ലൈൻ കുറുക്കുവഴി ഇൻസ്റ്റാൾ ചെയ്യുമ്പോൾ ഒരു പിശക് സംഭവിച്ചു. ദയവായി <a href='https://github.com/adobe/brackets/wiki/Command-Line-Arguments#troubleshooting'>ഈ ട്രബിൾഷൂട്ടിംഗ് നിർദ്ദേശങ്ങൾ</a> പരീക്ഷിക്കുക.<br/><br/> കാരണം: {0}",

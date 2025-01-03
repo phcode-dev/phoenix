@@ -721,6 +721,7 @@ define({
   "CMD_ENABLE_PHNODE_INSPECTOR": "Aktivieren Sie PhNode Inspector",
   "CMD_GET_PHNODE_INSPECTOR_URL": "So überprüfen Sie PhNode",
   "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Live-Vorschauprotokolle",
+  "CMD_ENABLE_GIT_LOGS": "Ausführliche Git-Protokolle",
   "CMD_OPEN_BRACKETS_SOURCE": "{APP_NAME}-Quellcode anzeigen",
   "CREATING_LAUNCH_SCRIPT_TITLE": "{APP_NAME}-Befehlszeilenverknüpfung",
   "ERROR_CREATING_LAUNCH_SCRIPT": "Beim Einrichten der Befehlszeilenverknüpfung ist ein Fehler aufgetreten. Bitte probieren Sie <a href='https://github.com/adobe/brackets/wiki/Command-Line-Arguments#troubleshooting'>diese Schritte zur Fehlerbehebung</a>.<br/><br/>Fehler: {0}",

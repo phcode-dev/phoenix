@@ -721,6 +721,7 @@ define({
   "CMD_ENABLE_PHNODE_INSPECTOR": "Activați PhNode Inspector",
   "CMD_GET_PHNODE_INSPECTOR_URL": "Cum să inspectați PhNode",
   "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Jurnalele de previzualizare live",
+  "CMD_ENABLE_GIT_LOGS": "Jurnalele Git Verbose",
   "CMD_OPEN_BRACKETS_SOURCE": "Deschide sursa Brackets",
   "CREATING_LAUNCH_SCRIPT_TITLE": "Comandă rapidă pentru linia de comandă {APP_NAME}",
   "ERROR_CREATING_LAUNCH_SCRIPT": "A apărut o eroare la instalarea comenzii rapide pentru linia de comandă. Vă rugăm să încercați <a href='https://github.com/adobe/brackets/wiki/Command-Line-Arguments#troubleshooting'>aceste sugestii de depanare</a> .<br/><br/> Motiv: {0}",

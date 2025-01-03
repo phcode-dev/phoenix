@@ -721,6 +721,7 @@ define({
   "CMD_ENABLE_PHNODE_INSPECTOR": "Aktifkan Inspektur PhNode",
   "CMD_GET_PHNODE_INSPECTOR_URL": "Cara Memeriksa PhNode",
   "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Log Pratinjau Langsung",
+  "CMD_ENABLE_GIT_LOGS": "Catatan Log Verbose Git",
   "CMD_OPEN_BRACKETS_SOURCE": "Buka Kode Sumber Brackets",
   "CREATING_LAUNCH_SCRIPT_TITLE": "Pintasan Baris Perintah {APP_NAME}",
   "ERROR_CREATING_LAUNCH_SCRIPT": "Terjadi kesalahan saat menginstal pintasan baris perintah. Silakan coba <a href='https://github.com/adobe/brackets/wiki/Command-Line-Arguments#troubleshooting'>saran pemecahan masalah ini</a> .<br/><br/> Alasan: {0}",

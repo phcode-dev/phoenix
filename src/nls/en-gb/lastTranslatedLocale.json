@@ -701,6 +701,7 @@
   "CMD_ENABLE_PHNODE_INSPECTOR": "Enable PhNode Inspector",
   "CMD_GET_PHNODE_INSPECTOR_URL": "How to Inspect PhNode",
   "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Live Preview Logs",
+  "CMD_ENABLE_GIT_LOGS": "Git Verbose Logs",
   "CMD_OPEN_BRACKETS_SOURCE": "Open {APP_NAME} Source",
   "CREATING_LAUNCH_SCRIPT_TITLE": "{APP_NAME} Command Line Shortcut",
   "ERROR_CREATING_LAUNCH_SCRIPT": "An error occurred while installing the command line shortcut. Please try <a href='https://github.com/adobe/brackets/wiki/Command-Line-Arguments#troubleshooting'>these troubleshooting suggestions</a>.<br/><br/>Reason: {0}",

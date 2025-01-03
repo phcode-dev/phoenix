@@ -721,6 +721,7 @@ define({
   "CMD_ENABLE_PHNODE_INSPECTOR": "启用 PhNode 检查器",
   "CMD_GET_PHNODE_INSPECTOR_URL": "如何检查 PhNode",
   "CMD_ENABLE_LIVE_PREVIEW_LOGS": "实时预览日志",
+  "CMD_ENABLE_GIT_LOGS": "Git 详细日志",
   "CMD_OPEN_BRACKETS_SOURCE": "打开 Brackets 源码",
   "CREATING_LAUNCH_SCRIPT_TITLE": "{APP_NAME} 命令行快捷方式",
   "ERROR_CREATING_LAUNCH_SCRIPT": "安装命令行快捷方式时发生错误。 请尝试<a href='https://github.com/adobe/brackets/wiki/Command-Line-Arguments#troubleshooting'>这些故障排除建议</a>.<br/><br/>原因: {0}",

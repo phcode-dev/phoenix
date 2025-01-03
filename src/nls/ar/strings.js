@@ -721,6 +721,7 @@ define({
   "CMD_ENABLE_PHNODE_INSPECTOR": "تمكين PhNode المفتش",
   "CMD_GET_PHNODE_INSPECTOR_URL": "كيفية فحص PhNode",
   "CMD_ENABLE_LIVE_PREVIEW_LOGS": "سجلات المعاينة الحية",
+  "CMD_ENABLE_GIT_LOGS": "سجلات Git المفصلة",
   "CMD_OPEN_BRACKETS_SOURCE": "افتح مصدر {APP_NAME}",
   "CREATING_LAUNCH_SCRIPT_TITLE": "اختصار سطر أوامر {APP_NAME}",
   "ERROR_CREATING_LAUNCH_SCRIPT": "حدث خطأ أثناء تثبيت اختصار سطر الأوامر. يرجى محاولة <a href='https://github.com/adobe/brackets/wiki/Command-Line-Arguments#troubleshooting'>هذه الاقتراحات استكشاف الأخطاء وإصلاحها</a> .<br/><br/> السبب: {0}",

@@ -701,6 +701,7 @@
   "CMD_ENABLE_PHNODE_INSPECTOR": "Aktiver PhNode Inspector",
   "CMD_GET_PHNODE_INSPECTOR_URL": "Sådan inspiceres PhNode",
   "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Live Preview Logs",
+  "CMD_ENABLE_GIT_LOGS": "Git Verbose Logs",
   "CMD_OPEN_BRACKETS_SOURCE": "Åbn {APP_NAME}-kilden",
   "CREATING_LAUNCH_SCRIPT_TITLE": "{APP_NAME} Kommandolinjegenvej",
   "ERROR_CREATING_LAUNCH_SCRIPT": "Der opstod en fejl under installation af kommandolinjegenvejen. Prøv venligst <a href='https://github.com/adobe/brackets/wiki/Command-Line-Arguments#troubleshooting'>disse fejlfindingsforslag</a> .<br/><br/> Årsag: {0}",

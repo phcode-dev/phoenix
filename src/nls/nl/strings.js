@@ -721,6 +721,7 @@ define({
   "CMD_ENABLE_PHNODE_INSPECTOR": "Schakel PhNode Inspector in",
   "CMD_GET_PHNODE_INSPECTOR_URL": "PhNode inspecteren",
   "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Live voorbeeldlogboeken",
+  "CMD_ENABLE_GIT_LOGS": "Uitgebreide Git-logboeken",
   "CMD_OPEN_BRACKETS_SOURCE": "Open broncode van {APP_NAME}",
   "CREATING_LAUNCH_SCRIPT_TITLE": "{APP_NAME} Command Line Shortcut",
   "ERROR_CREATING_LAUNCH_SCRIPT": "Er is een fout opgetreden bij het installeren van de opdrachtprompt snelkoppeling. Kijk op <a href='https://github.com/adobe/brackets/wiki/Command-Line-Arguments#troubleshooting'>deze pagina</a> voor mogelijke foutoplossing.<br/><br/>Reden: {0}",

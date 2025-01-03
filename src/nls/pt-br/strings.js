@@ -721,6 +721,7 @@ define({
   "CMD_ENABLE_PHNODE_INSPECTOR": "Habilitar Inspetor PhNode",
   "CMD_GET_PHNODE_INSPECTOR_URL": "Como inspecionar PhNode",
   "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Registros de visualização ao vivo",
+  "CMD_ENABLE_GIT_LOGS": "Logs detalhados do Git",
   "CMD_OPEN_BRACKETS_SOURCE": "Abrir local do Brackets",
   "CREATING_LAUNCH_SCRIPT_TITLE": "Atalho de {APP_NAME} na linha de comando",
   "ERROR_CREATING_LAUNCH_SCRIPT": "Um erro ocorreu enquanto um atalho de linha de comando estava sendo instalado. Por favor, tente <a href='https://github.com/adobe/brackets/wiki/Command-Line-Arguments#troubleshooting'>estas sugestões de resolução</a>.<br/><br/>Razão: {0}",

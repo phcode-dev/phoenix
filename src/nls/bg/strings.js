@@ -721,6 +721,7 @@ define({
   "CMD_ENABLE_PHNODE_INSPECTOR": "Активирайте PhNode Inspector",
   "CMD_GET_PHNODE_INSPECTOR_URL": "Как да проверите PhNode",
   "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Журнали за предварителен преглед на живо",
+  "CMD_ENABLE_GIT_LOGS": "Git Verbose Logs",
   "CMD_OPEN_BRACKETS_SOURCE": "Отваряне на изходния код на {APP_NAME}",
   "CREATING_LAUNCH_SCRIPT_TITLE": "Пряк път към {APP_NAME} за командния ред",
   "ERROR_CREATING_LAUNCH_SCRIPT": "Възникна грешка при инсталирането на прекия път за командния ред. Моля, прегледайте <a href='https://github.com/adobe/brackets/wiki/Command-Line-Arguments#troubleshooting'>тези съвети за отстраняване на проблемите</a>.<br/><br/>Причина: {0}",

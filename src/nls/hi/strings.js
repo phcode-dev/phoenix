@@ -721,6 +721,7 @@ define({
   "CMD_ENABLE_PHNODE_INSPECTOR": "PhNode इंस्पेक्टर सक्षम करें",
   "CMD_GET_PHNODE_INSPECTOR_URL": "PhNode का निरीक्षण कैसे करें",
   "CMD_ENABLE_LIVE_PREVIEW_LOGS": "लाइव पूर्वावलोकन लॉग",
+  "CMD_ENABLE_GIT_LOGS": "Git वर्बोज़ लॉग्स",
   "CMD_OPEN_BRACKETS_SOURCE": "{APP_NAME} स्रोत खोलें",
   "CREATING_LAUNCH_SCRIPT_TITLE": "{APP_NAME} कमांड लाइन शॉर्टकट",
   "ERROR_CREATING_LAUNCH_SCRIPT": "कमांड लाइन शॉर्टकट स्थापित करते समय एक त्रुटि हुई। कृपया <a href='https://github.com/adobe/brackets/wiki/Command-Line-Arguments#troubleshooting'>इन समस्या निवारण सुझावों</a> का प्रयास करें।<br/><br/> कारण: {0}",

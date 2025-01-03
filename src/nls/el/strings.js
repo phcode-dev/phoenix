@@ -721,6 +721,7 @@ define({
   "CMD_ENABLE_PHNODE_INSPECTOR": "Ενεργοποιήστε το PhNode Inspector",
   "CMD_GET_PHNODE_INSPECTOR_URL": "Πώς να επιθεωρήσετε το PhNode",
   "CMD_ENABLE_LIVE_PREVIEW_LOGS": "Ζωντανά αρχεία καταγραφής προεπισκόπησης",
+  "CMD_ENABLE_GIT_LOGS": "Git Verbose Logs",
   "CMD_OPEN_BRACKETS_SOURCE": "Άνοιξε τον κώδικα του {APP_NAME}",
   "CREATING_LAUNCH_SCRIPT_TITLE": "{APP_NAME} Συντόμευση γραμμής εντολών",
   "ERROR_CREATING_LAUNCH_SCRIPT": "Ένα σφάλμα προέκυψε κατά την εγκατάσταση της συντόμευσης για την γραμμή εντολών. Παρακαλώ δοκίμασε <a href='https://github.com/adobe/brackets/wiki/Command-Line-Arguments#troubleshooting'>αυτές τις προτείνομενες λύσεις</a>.<br/><br/>Αιτιολογία: {0}",
