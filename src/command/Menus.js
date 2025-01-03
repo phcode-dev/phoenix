@@ -99,6 +99,24 @@ define(function (require, exports, module) {
      */
     const EVENT_BEFORE_SUB_MENU_CLOSE = "beforeSubMenuClose";
 
+    /**
+     * Event triggered when a menu or menu is added
+     * @event EVENT_MENU_ADDED
+     */
+    const EVENT_MENU_ADDED = "menuAdded";
+
+    /**
+     * Event triggered when a menu or submenu is added
+     * @event EVENT_SUB_MENU_ADDED
+     */
+    const EVENT_SUB_MENU_ADDED = "subMenuAdded";
+
+    /**
+     * Event triggered when a menu item is added
+     * @event EVENT_MENU_ITEM_ADDED
+     */
+    const EVENT_MENU_ITEM_ADDED = "menuItemAdded";
+
 
 
     // Define each section as a separate constant
@@ -761,6 +779,9 @@ define(function (require, exports, module) {
             menuItem._nameChanged();
         }
 
+        const menuId = self.id;
+        exports.trigger(EVENT_MENU_ITEM_ADDED, menuId, commandID, menuItem);
+
         return menuItem;
     };
 
@@ -909,6 +930,8 @@ define(function (require, exports, module) {
         let $relativeElement = this._getRelativeMenuItem(relativeID, position);
         _insertInList($("li#" + StringUtils.jQueryIdEscape(this.id) + " > ul.dropdown-menu"),
             $menuItem, position, $relativeElement);
+
+        exports.trigger(EVENT_SUB_MENU_ADDED, id, menu);
 
         return menu;
     };
@@ -1302,6 +1325,7 @@ define(function (require, exports, module) {
         PopUpManager.addPopUp($popUp, closeAll, false);
 
         _addAltMenuShortcut(name, id);
+        exports.trigger(EVENT_MENU_ADDED, id, menu);
 
         return menu;
     }
@@ -1713,6 +1737,8 @@ define(function (require, exports, module) {
         });
     });
 
+    EventDispatcher.makeEventDispatcher(exports);
+
     // Deprecated menu ids
     DeprecationWarning.deprecateConstant(ContextMenuIds, "WORKING_SET_MENU", "WORKING_SET_CONTEXT_MENU");
     DeprecationWarning.deprecateConstant(ContextMenuIds, "WORKING_SET_SETTINGS_MENU", "WORKING_SET_CONFIG_MENU");
@@ -1747,4 +1773,7 @@ define(function (require, exports, module) {
     exports.EVENT_BEFORE_CONTEXT_MENU_CLOSE = EVENT_BEFORE_CONTEXT_MENU_CLOSE;
     exports.EVENT_BEFORE_SUB_MENU_OPEN = EVENT_BEFORE_SUB_MENU_OPEN;
     exports.EVENT_BEFORE_SUB_MENU_CLOSE = EVENT_BEFORE_SUB_MENU_CLOSE;
+    exports.EVENT_MENU_ADDED = EVENT_MENU_ADDED;
+    exports.EVENT_SUB_MENU_ADDED = EVENT_SUB_MENU_ADDED;
+    exports.EVENT_MENU_ITEM_ADDED = EVENT_MENU_ITEM_ADDED;
 });

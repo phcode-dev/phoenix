@@ -60,18 +60,30 @@ define(function (require, exports, module) {
                 return testWindow.$("#titlebar > ul.nav").children();
             }
 
-            it("should add new menu in last position of list", async function () {
+            it("should add new menu in last position of list and get menu events", async function () {
+                const testMenuID = "menu-unittest1";
+                let idAdded, menuAdded;
+                Menus.on(Menus.EVENT_MENU_ADDED+".test1", (_evt, _id, _menu)=>{
+                    if(_id !== testMenuID) {
+                        return;
+                    }
+                    idAdded = _id;
+                    menuAdded = _menu;
+                });
                 var $listItems = getTopMenus();
                 expect($listItems.length).toBeGreaterThan(0);
 
                 var menuCountOriginal = $listItems.length;
-                var menu = Menus.addMenu("Custom1", "menu-unittest1");
+                var menu = Menus.addMenu("Custom1", testMenuID);
                 expect(menu).toBeTruthy();
                 expect(menu).toBeDefined();
 
                 $listItems = getTopMenus(); // refresh
                 expect($listItems.length).toBe(menuCountOriginal + 1);
-                expect($($listItems[menuCountOriginal]).attr("id")).toBe("menu-unittest1");
+                expect($($listItems[menuCountOriginal]).attr("id")).toBe(testMenuID);
+                expect(idAdded).toBe(testMenuID);
+                expect(menuAdded.id).toBe(testMenuID);
+                Menus.off(Menus.EVENT_MENU_ADDED+".test1");
             });
 
             it("should add new menu in first position of list", async function () {
@@ -157,21 +169,37 @@ define(function (require, exports, module) {
         describe("Add Menu Items", function () {
 
             it("should add new menu items", async function () {
-                var menu = Menus.addMenu("MenuItem Menu 0", "menuitem-unittest0");
+                const utMenuID = "menuitem-unittest0";
+                var menu = Menus.addMenu("MenuItem Menu 0", utMenuID);
                 var listSelector = "#menuitem-unittest0 > ul";
                 var $listItems = testWindow.$(listSelector).children();
                 expect($listItems.length).toBe(0);
 
+                const testCmd = "Menu-test.command00";
+                let addedOnMenu, commandItemAdded, menuItemAdded;
+                Menus.on(Menus.EVENT_MENU_ITEM_ADDED+".addTest", (_evt, _menuID, _cmdID, _menuItem)=>{
+                    if(_cmdID !== testCmd) {
+                        return;
+                    }
+                    addedOnMenu = _menuID;
+                    commandItemAdded = _cmdID;
+                    menuItemAdded = _menuItem;
+                });
 
                 // add new menu item to empty menu
-                CommandManager.register("Brackets Test Command Custom 0", "Menu-test.command00", function () {});
-                var menuItem = menu.addMenuItem("Menu-test.command00");
+                CommandManager.register("Brackets Test Command Custom 0", testCmd, function () {});
+                var menuItem = menu.addMenuItem(testCmd);
                 expect(menuItem).toBeTruthy();
                 expect(menuItem).toBeDefined();
 
                 $listItems = testWindow.$(listSelector).children();
                 expect($listItems.length).toBe(1);
                 expect($($listItems[0]).length).toBe(1);
+
+                expect(addedOnMenu).toBe(utMenuID);
+                expect(commandItemAdded).toBe(testCmd);
+                expect(menuItemAdded.getCommand().getID()).toBe(testCmd);
+                Menus.off(Menus.EVENT_MENU_ITEM_ADDED+".addTest");
 
                 // Periods (aka "dots") are allowed in HTML identifiers, but jQuery interprets
                 // them as the start of a class selector, so they need to be escaped
@@ -659,13 +687,24 @@ define(function (require, exports, module) {
             describe("Add a context submenu", function() {
                 it("should add new context submenu", async function() {
                     menuId = "context-menu-custom-addSubmenu-1";
+                    subMenuId = "submenu-custom-addSubmenu-1";
+                    let idAdded, menuAdded;
+                    Menus.on(Menus.EVENT_SUB_MENU_ADDED+".subTest", (_evt, _id, _menu)=>{
+                        if(_id !== subMenuId) {
+                            return;
+                        }
+                        idAdded = _id;
+                        menuAdded = _menu;
+                    });
                     menu = Menus.registerContextMenu(menuId);
 
-                    subMenuId = "submenu-custom-addSubmenu-1";
                     subMenu = menu.addSubMenu("submenu", subMenuId);
 
                     expect(subMenu).toBeTruthy();
                     expect(subMenu.parentMenuItem).toBeTruthy();
+                    expect(idAdded).toBe(subMenuId);
+                    expect(menuAdded.id).toBe(subMenuId);
+                    Menus.off(Menus.EVENT_MENU_ADDED+".subTest");
 
                     // check if new submenu is empty
                     var children = testWindow.$("#submenu-custom-addSubmenu-1 > ul").children();
