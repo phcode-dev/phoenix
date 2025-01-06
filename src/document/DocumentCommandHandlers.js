@@ -1916,9 +1916,13 @@ define(function (require, exports, module) {
         return Strings.MOVE_TO_TRASH;
     }
 
-    /** Delete file command handler  **/
-    function handleFileDelete() {
-        const entry = ProjectManager.getSelectedItem();
+    /** Delete file command handler
+     *
+     * @param {{file: File}} [commandData]  Optional bag of arguments:
+     *      file - File to delete; assumes the current document if not specified.
+     *  **/
+    function handleFileDelete(commandData={}) {
+        const entry = commandData.file || ProjectManager.getSelectedItem();
         const canMoveToTrash = Phoenix.app.canMoveToTrash(entry.fullPath);
         Dialogs.showModalDialog(
             DefaultDialogs.DIALOG_ID_EXT_DELETED,
