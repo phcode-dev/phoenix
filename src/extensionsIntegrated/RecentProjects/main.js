@@ -31,7 +31,6 @@ define(function (require, exports, module) {
         Commands                = require("command/Commands"),
         CommandManager          = require("command/CommandManager"),
         Menus                   = require("command/Menus"),
-        MainViewManager         = require("view/MainViewManager"),
         FileSystem              = require("filesystem/FileSystem"),
         AppInit                 = require("utils/AppInit"),
         KeyEvent                = require("utils/KeyEvent"),
@@ -47,16 +46,11 @@ define(function (require, exports, module) {
     ExtensionInterface.registerExtensionInterface(RECENT_PROJECTS_INTERFACE, exports);
     const RECENT_PROJECT_STATE = "recentProjects";
 
-    /** @const {string} Recent Projects commands ID */
-    let TOGGLE_DROPDOWN = "recentProjects.toggle";
-
     /** @const {number} Maximum number of displayed recent projects */
     var MAX_PROJECTS = 20;
 
     /** @type {$.Element} jQuery elements used for the dropdown menu */
-    var $dropdownItem,
-        $dropdown,
-        $links;
+    let $dropdown;
 
     /**
      * Get the stored list of recent projects, fixing up paths as appropriate.
@@ -110,155 +104,27 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Selects the next or previous item in the list
-     * @param {number} direction  +1 for next, -1 for prev
-     */
-    function selectNextItem(direction) {
-        let $links   = $dropdown.find("a:visible"),
-            index    = $dropdownItem ? $links.index($dropdownItem) : (direction > 0 ? -1 : 0),
-            $newItem = $links.eq((index + direction) % $links.length);
-
-        if(searchStr && $links.length === 1){
-            // no search result, only the top search field visible
-            return;
-        }
-        if($newItem.parent().hasClass("sticky-li-top")) {
-            if(index === -1){
-                index = 0;
-            }
-            $newItem = $links.eq((index + direction) % $links.length);
-        }
-        if ($dropdownItem) {
-            $dropdownItem.removeClass("selected");
-        }
-        $newItem.addClass("selected");
-
-        $dropdownItem = $newItem;
-    }
-
-    let searchStr ="";
-    /**
-     * hides all elements in popup that doesn't match the given search string, also shows the search bar in popup
-     * @param searchString
-     */
-    function filterDropdown(searchString) {
-        searchStr = searchString;
-        const $stickyLi = $dropdown.find('li.sticky-li-top');
-        if(searchString){
-            $stickyLi.removeClass("forced-hidden");
-        } else {
-            $stickyLi.addClass("forced-hidden");
-        }
-
-        $dropdown.find('li').each(function(index, li) {
-            if(index === 0){
-                // this is the top search box itself
-                return;
-            }
-            const $li = $(li);
-            if(!$li.text().toLowerCase().includes(searchString.toLowerCase())){
-                $li.addClass("forced-hidden");
-            } else {
-                $li.removeClass("forced-hidden");
-            }
-        });
-
-        if(searchString) {
-            $stickyLi.removeClass('forced-hidden');
-            $stickyLi.find('.searchTextSpan').text(searchString);
-        } else {
-            $stickyLi.addClass('forced-hidden');
-        }
-    }
-
-    /**
-     * Deletes the selected item and
-     * move the focus to next item in list.
-     *
-     * @return {boolean} TRUE if project is removed
-     */
-    function removeSelectedItem(e) {
-        var recentProjects = getRecentProjects(),
-            $cacheItem = $dropdownItem,
-            index = recentProjects.indexOf($cacheItem.data("path"));
-
-        // When focus is not on project item
-        if (index === -1) {
-            return false;
-        }
-
-        // remove project
-        recentProjects.splice(index, 1);
-        PreferencesManager.setViewState(RECENT_PROJECT_STATE, recentProjects);
-
-        if (recentProjects.length === 1) {
-            $dropdown.find(".divider").remove();
-        }
-        selectNextItem(+1);
-        $cacheItem.closest("li").remove();
-        return true;
-    }
-
-    /**
      * Handles the Key Down events
      * @param {KeyboardEvent} event
+     * @param $popUp
      * @return {boolean} True if the key was handled
      */
-    function keydownHook(event) {
-        var keyHandled = false;
+    function _handlePopupKeyEvents(event, $popUp) {
+        if(event.keyCode === KeyEvent.DOM_VK_DELETE){
+            event.stopPropagation();
+            const $selectedItem = $popUp.find(".selected");
+            if ($selectedItem.length && $selectedItem.data("path")) {
+                // Remove the project from the preferences.
+                removeFromRecentProject($selectedItem.data("path"));
+                PopUpManager.selectNextItem(+1, $popUp);
+                $selectedItem.closest("li").remove();
 
-        switch (event.keyCode) {
-        case KeyEvent.DOM_VK_UP:
-            selectNextItem(-1);
-            keyHandled = true;
-            break;
-        case KeyEvent.DOM_VK_DOWN:
-            selectNextItem(+1);
-            keyHandled = true;
-            break;
-        case KeyEvent.DOM_VK_ENTER:
-        case KeyEvent.DOM_VK_RETURN:
-            if ($dropdownItem) {
-                $dropdownItem.trigger("click");
+                if (getRecentProjects().length === 1) {
+                    $dropdown.find(".divider").remove();
+                }
             }
-            keyHandled = true;
-            break;
-        case KeyEvent.DOM_VK_DELETE:
-            if ($dropdownItem) {
-                removeSelectedItem(event);
-            }
-            keyHandled = true;
-            break;
+            return true;
         }
-
-        if(keyHandled){
-            event.stopImmediatePropagation();
-            event.preventDefault();
-            return keyHandled;
-        } else if((event.ctrlKey || event.metaKey) && event.key === 'v') {
-            Phoenix.app.clipboardReadText().then(text=>{
-                searchStr += text;
-                filterDropdown(searchStr);
-            });
-            keyHandled = true;
-        } else if (event.key.length === 1) {
-            searchStr += event.key;
-            keyHandled = true;
-        } else if (event.key === 'Backspace') {
-            // Remove the last character when Backspace is pressed
-            searchStr  = searchStr.slice(0, -1);
-            keyHandled = true;
-        } else {
-            // bubble up, not for us to handle
-            return false;
-        }
-        filterDropdown(searchStr);
-
-        if (keyHandled) {
-            event.stopImmediatePropagation();
-            event.preventDefault();
-        }
-        return keyHandled;
     }
 
 
@@ -272,7 +138,6 @@ define(function (require, exports, module) {
         if ($dropdown) {
             PopUpManager.removePopUp($dropdown);
         }
-        searchStr = "";
     }
 
     /**
@@ -284,9 +149,6 @@ define(function (require, exports, module) {
         $("#project-files-container").off("scroll", closeDropdown);
         $("#titlebar .nav").off("click", closeDropdown);
         $dropdown = null;
-
-        $(window).off("keydown", keydownHook);
-        searchStr = "";
     }
 
     function openProjectWithPath(fullPath) {
@@ -345,19 +207,6 @@ define(function (require, exports, module) {
                     CommandManager.execute(Commands.FILE_DOWNLOAD_PROJECT);
                 }
 
-            })
-            .on("mouseenter", "a", function () {
-                if ($dropdownItem) {
-                    $dropdownItem.removeClass("selected");
-                }
-                $dropdownItem = $(this).addClass("selected");
-            })
-            .on("mouseleave", "a", function () {
-                var $link = $(this).removeClass("selected");
-
-                if ($link.get(0) === $dropdownItem.get(0)) {
-                    $dropdownItem = null;
-                }
             });
     }
 
@@ -428,6 +277,10 @@ define(function (require, exports, module) {
             .appendTo($("body"));
 
         PopUpManager.addPopUp($dropdown, cleanupDropdown, true, {closeCurrentPopups: true});
+        PopUpManager.handleSelectionEvents($dropdown, {
+            enableSearchFilter: true,
+            keyboardEventHandler: _handlePopupKeyEvents
+        });
 
         // TODO: should use capture, otherwise clicking on the menus doesn't close it. More fallout
         // from the fact that we can't use the Boostrap (1.4) dropdowns.
@@ -448,37 +301,7 @@ define(function (require, exports, module) {
         $("#titlebar .nav").on("click", closeDropdown);
 
         _handleListEvents();
-        $(window).on("keydown", keydownHook);
     }
-
-
-    /**
-     * Show or hide the recent projects dropdown from the toogle command.
-     */
-    function handleKeyEvent() {
-        if (!$dropdown) {
-            if (!SidebarView.isVisible()) {
-                SidebarView.show();
-            }
-
-            $("#project-dropdown-toggle").trigger("click");
-
-            $dropdown.focus();
-            $links = $dropdown.find("a");
-            // By default, select the most recent project (which is at the top of the list underneath Open Folder),
-            // but if there are none, select Open Folder instead.
-            $dropdownItem = $links.eq($links.length > 1 ? 1 : 0);
-            $dropdownItem.addClass("selected");
-
-            // If focusing the dropdown caused a modal bar to close, we need to refocus the dropdown
-            window.setTimeout(function () {
-                $dropdown.focus();
-            }, 0);
-        }
-    }
-
-    // Register command handlers
-    CommandManager.register(Strings.CMD_TOGGLE_RECENT_PROJECTS, TOGGLE_DROPDOWN, handleKeyEvent);
 
     // Initialize extension
     AppInit.appReady(function () {

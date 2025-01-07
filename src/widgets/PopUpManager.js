@@ -88,6 +88,19 @@ define(function (require, exports, module) {
         $popUp.off("keydown", _processSelectionEvent);
         $popUp.on("keydown", _processSelectionEvent);
         $popUp.focus();
+        function _selectItem() {
+            $popUp.find(".selected").removeClass("selected");
+            $(this).addClass("selected");
+        }
+        function _unselectItem() {
+            $(this).removeClass("selected");
+        }
+        $popUp
+            .off("mouseenter", "a", _selectItem)
+            .off("mouseleave", "a", _unselectItem);
+        $popUp
+            .on("mouseenter", "a", _selectItem)
+            .on("mouseleave", "a", _unselectItem);
     }
 
     /**
@@ -207,7 +220,7 @@ define(function (require, exports, module) {
 
 
     /**
-     * Selects the next or previous item in the list
+     * Selects the next or previous item in the popup.
      * @param {number} direction  +1 for next, -1 for prev
      * @param $popUp
      */
@@ -246,7 +259,7 @@ define(function (require, exports, module) {
             return false;
         }
         if(keyboardEventHandler) {
-            const processed = keyboardEventHandler(event);
+            const processed = keyboardEventHandler(event, $popUp);
             if(processed){
                 return true;
             }
@@ -367,6 +380,7 @@ define(function (require, exports, module) {
 
     exports.addPopUp            = addPopUp;
     exports.handleSelectionEvents = handleSelectionEvents;
+    exports.selectNextItem = selectNextItem;
     exports.removePopUp         = removePopUp;
     exports.closeAllPopups      = closeAllPopups;
     exports.listenToContextMenu = listenToContextMenu;

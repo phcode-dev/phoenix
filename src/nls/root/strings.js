@@ -954,7 +954,7 @@ define({
     "TOOLTIP_CLICK_TO_EDIT_COLOR": "Click here to edit color",
 
     // extensions/default/RecentProjects
-    "CMD_TOGGLE_RECENT_PROJECTS": "Recent Projects",
+    "CMD_RECENT_PROJECTS": "Recent Projects",
     "REMOVE_FROM_RECENT_PROJECTS": "Remove from Recent Projects",
 
     // extensions/default/MDNDocs
