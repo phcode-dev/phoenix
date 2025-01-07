@@ -95,24 +95,6 @@ define(function (require, exports, module) {
         PreferencesManager.setViewState(RECENT_PROJECT_STATE, recentProjects);
     }
 
-    /**
-     * Check the list of items to see if any of them are hovered, and if so trigger a mouseenter.
-     * Normally the mouseenter event handles this, but when a previous item is deleted and the next
-     * item moves up to be underneath the mouse, we don't get a mouseenter event for that item.
-     */
-    function checkHovers(pageX, pageY) {
-        $dropdown.children().each(function () {
-            var offset = $(this).offset(),
-                width  = $(this).outerWidth(),
-                height = $(this).outerHeight();
-
-            if (pageX >= offset.left && pageX <= offset.left + width &&
-                    pageY >= offset.top && pageY <= offset.top + height) {
-                $(".recent-folder-link", this).triggerHandler("mouseenter");
-            }
-        });
-    }
-
     function removeFromRecentProject(fullPath) {
         fullPath = FileUtils.stripTrailingSlash(fullPath);
         let recentProjects = getRecentProjects(),
@@ -126,44 +108,6 @@ define(function (require, exports, module) {
         }
         PreferencesManager.setViewState(RECENT_PROJECT_STATE, newProjects);
     }
-
-    /**
-     * Create the "delete" button that shows up when you hover over a project.
-     */
-    function renderDelete() {
-        return $("<div id='recent-folder-delete' class='trash-icon'>&times;</div>")
-            .mouseup(function (e) {
-                // Don't let the click bubble upward.
-                e.stopPropagation();
-
-                // Remove the project from the preferences.
-                removeFromRecentProject($(this).parent().data("path"));
-                $(this).closest("li").remove();
-                checkHovers(e.pageX, e.pageY);
-
-                if (getRecentProjects().length === 1) {
-                    $dropdown.find(".divider").remove();
-                }
-            });
-    }
-
-    /**
-     * Hide the delete button.
-     */
-    function removeDeleteButton() {
-        $("#recent-folder-delete").remove();
-    }
-
-    /**
-     * Show the delete button over a given target.
-     */
-    function addDeleteButton($target) {
-        removeDeleteButton();
-        renderDelete()
-            .css("top", $target.position().top + 6)
-            .appendTo($target);
-    }
-
 
     /**
      * Selects the next or previous item in the list
@@ -190,7 +134,6 @@ define(function (require, exports, module) {
         $newItem.addClass("selected");
 
         $dropdownItem = $newItem;
-        removeDeleteButton();
     }
 
     let searchStr ="";
@@ -247,7 +190,6 @@ define(function (require, exports, module) {
         // remove project
         recentProjects.splice(index, 1);
         PreferencesManager.setViewState(RECENT_PROJECT_STATE, recentProjects);
-        checkHovers(e.pageX, e.pageY);
 
         if (recentProjects.length === 1) {
             $dropdown.find(".divider").remove();
@@ -374,6 +316,18 @@ define(function (require, exports, module) {
      */
     function _handleListEvents() {
         $dropdown
+            .on("click", ".recent-project-delete", function (e) {
+                // Don't let the click bubble upward.
+                e.stopPropagation();
+
+                // Remove the project from the preferences.
+                removeFromRecentProject($(this).parent().data("path"));
+                $(this).closest("li").remove();
+
+                if (getRecentProjects().length === 1) {
+                    $dropdown.find(".divider").remove();
+                }
+            })
             .on("click", "a", function () {
                 var $link = $(this),
                     id    = $link.attr("id"),
@@ -397,21 +351,12 @@ define(function (require, exports, module) {
                     $dropdownItem.removeClass("selected");
                 }
                 $dropdownItem = $(this).addClass("selected");
-
-                if ($dropdownItem.hasClass("recent-folder-link")) {
-                    // Note: we can't depend on the event here because this can be triggered
-                    // manually from checkHovers().
-                    addDeleteButton($(this));
-                }
             })
             .on("mouseleave", "a", function () {
                 var $link = $(this).removeClass("selected");
 
                 if ($link.get(0) === $dropdownItem.get(0)) {
                     $dropdownItem = null;
-                }
-                if ($link.hasClass("recent-folder-link")) {
-                    removeDeleteButton();
                 }
             });
     }
