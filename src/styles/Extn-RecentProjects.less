@@ -99,6 +99,16 @@
 
 #project-dropdown.dropdown-menu li a {
     padding: 5px 15px;
+    position: relative;
+}
+
+.recent-project-delete {
+    visibility: hidden;
+}
+
+.recent-folder-link:hover > .recent-project-delete {
+    top: 26%;
+    visibility: visible;
 }
 
 #project-dropdown.dropdown-menu .recent-folder-link, #project-dropdown.dropdown-menu #open-folder-link #new-project-link #download-project-link{
