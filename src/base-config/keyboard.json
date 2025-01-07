@@ -338,10 +338,5 @@
     ],
     "help.docs": [
         "Shift-F1"
-    ],
-    "recentProjects.toggle": [
-        {
-            "key": "Ctrl-Alt-R"
-        }
     ]
 }
