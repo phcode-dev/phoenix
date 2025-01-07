@@ -284,8 +284,8 @@ define(function (require, exports, module) {
         case KeyEvent.DOM_VK_DELETE:
             if ($dropdownItem) {
                 removeSelectedItem(event);
-                keyHandled = true;
             }
+            keyHandled = true;
             break;
         }
 

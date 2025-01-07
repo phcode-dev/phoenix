@@ -34,7 +34,8 @@ define(function (require, exports, module) {
         MainViewManager     = require("view/MainViewManager"),
         KeyEvent        = require("utils/KeyEvent");
 
-    let _popUps = [], addPopupInProgress = false;
+    let _popUps = [], addPopupInProgress = false,
+        currentEventPopups = [];
 
     /**
      * Add Esc key handling for a popup DOM element.
@@ -66,6 +67,26 @@ define(function (require, exports, module) {
         addPopupInProgress = false;
     }
 
+    function handleSelectionEvents($popUp, options = {}) {
+        const {keyboardEventHandler, enableSearchFilter} = options;
+        currentEventPopups.push({
+            $popUp,
+            keyboardEventHandler,
+            enableSearchFilter
+        });
+        if(currentEventPopups.length > 1){
+            console.error(`${currentEventPopups.length} popups are visible while handling keyboard events!`,
+                "Possible popup event handler leak. Only 1 popup event handler is expected at this time.");
+        }
+        if(enableSearchFilter && !$popUp.find(".sticky-li-top").length) {
+            $popUp.prepend(
+                `<li class="sticky-li-top forced-hidden">
+                    <a class='stylesheet-link'><i class="fa fa-search" aria-hidden="true"></i>&nbsp;&nbsp;
+                    <span class="searchTextSpan"></span></a>
+                </li>`);
+        }
+    }
+
     /**
      * Remove Esc key handling for a pop-up. Removes the pop-up from the DOM
      * if the pop-up is currently visible and was not originally attached.
@@ -89,6 +110,11 @@ define(function (require, exports, module) {
             MainViewManager.focusActivePane();
         }
 
+        let handlerIndex = currentEventPopups.findIndex(item => item.$popUp.is($popUp));
+        if(handlerIndex >= 0){
+            currentEventPopups.splice(handlerIndex, 1);
+            searchStr = "";
+        }
         // check index after removeHandler is done processing to protect
         // against recursive calls
         let index = _popUps.indexOf($popUp[0]);
@@ -126,6 +152,7 @@ define(function (require, exports, module) {
                     }
 
                     removePopUp($popUp);
+                    return true;
                 }
 
                 break;
@@ -133,7 +160,114 @@ define(function (require, exports, module) {
         }
     }
 
+    let searchStr ="";
+    /**
+     * hides all elements in popup that doesn't match the given search string, also shows the search bar in popup
+     * @param $popup
+     * @param searchString
+     */
+    function _filterDropdown($popup, searchString) {
+        searchStr = searchString;
+        const $stickyLi = $popup.find('li.sticky-li-top');
+        if(!$stickyLi.length){
+            console.error("Search filter element not found! Please call" +
+                " PopUpManager.handleSelectionEvents with enableSearchFilter option.");
+            return;
+        }
+        if(searchString){
+            $stickyLi.removeClass("forced-hidden");
+        } else {
+            $stickyLi.addClass("forced-hidden");
+        }
+
+        $popup.find('li').each(function(index, li) {
+            if(index === 0){
+                // this is the top search box itself
+                return;
+            }
+            const $li = $(li);
+            if(!$li.text().toLowerCase().includes(searchString.toLowerCase())){
+                $li.addClass("forced-hidden");
+            } else {
+                $li.removeClass("forced-hidden");
+            }
+        });
+
+        if(searchString) {
+            $stickyLi.removeClass('forced-hidden');
+            $stickyLi.find('.searchTextSpan').text(searchString);
+        } else {
+            $stickyLi.addClass('forced-hidden');
+        }
+    }
+
+    function _processSelectionEvent(event) {
+        const {$popUp, keyboardEventHandler} = currentEventPopups[currentEventPopups.length - 1];
+        if(!$popUp || !$popUp.is(":visible")){
+            return false;
+        }
+        if(keyboardEventHandler) {
+            const processed = keyboardEventHandler(event);
+            if(processed){
+                return true;
+            }
+        }
+        var keyHandled = false;
+
+        switch (event.keyCode) {
+        case KeyEvent.DOM_VK_UP:
+            //selectNextItem(-1);
+            keyHandled = true;
+            break;
+        case KeyEvent.DOM_VK_DOWN:
+            //selectNextItem(+1);
+            keyHandled = true;
+            break;
+        case KeyEvent.DOM_VK_ENTER:
+        case KeyEvent.DOM_VK_RETURN:
+            // if ($dropdownItem) {
+            //     $dropdownItem.trigger("click");
+            // }
+            keyHandled = true;
+            break;
+        }
+
+        if(keyHandled){
+            event.stopImmediatePropagation();
+            event.preventDefault();
+            return keyHandled;
+        } else if((event.ctrlKey || event.metaKey) && event.key === 'v') {
+            Phoenix.app.clipboardReadText().then(text=>{
+                searchStr += text;
+                _filterDropdown($popUp, searchStr);
+            });
+            keyHandled = true;
+        } else if (event.key.length === 1) {
+            searchStr += event.key;
+            keyHandled = true;
+        } else if (event.key === 'Backspace') {
+            // Remove the last character when Backspace is pressed
+            searchStr  = searchStr.slice(0, -1);
+            keyHandled = true;
+        } else {
+            // bubble up, not for us to handle
+            return false;
+        }
+        _filterDropdown($popUp, searchStr);
+
+        if (keyHandled) {
+            event.stopImmediatePropagation();
+            event.preventDefault();
+        }
+        return keyHandled;
+    }
+
     function _keydownCaptureListener(keyEvent) {
+        if(currentEventPopups.length) {
+            if(_processSelectionEvent(keyEvent)){
+                return true;
+            }
+        }
         // Escape key or Alt key (Windows-only)
         if (keyEvent.keyCode !== KeyEvent.DOM_VK_ESCAPE &&
             !(keyEvent.keyCode === KeyEvent.DOM_VK_ALT && brackets.platform === "win")) {
@@ -145,7 +279,7 @@ define(function (require, exports, module) {
             return;
         }
 
-        removeCurrentPopUp(keyEvent);
+        return removeCurrentPopUp(keyEvent);
     }
 
     /**
@@ -197,6 +331,7 @@ define(function (require, exports, module) {
     EventDispatcher.makeEventDispatcher(exports);
 
     exports.addPopUp            = addPopUp;
+    exports.handleSelectionEvents = handleSelectionEvents;
     exports.removePopUp         = removePopUp;
     exports.closeAllPopups      = closeAllPopups;
     exports.listenToContextMenu = listenToContextMenu;
