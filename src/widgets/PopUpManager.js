@@ -201,6 +201,41 @@ define(function (require, exports, module) {
         }
     }
 
+
+    /**
+     * Selects the next or previous item in the list
+     * @param {number} direction  +1 for next, -1 for prev
+     * @param $popUp
+     */
+    function selectNextItem(direction, $popUp) {
+        const $selectedItem = $popUp.find(".selected");
+        let $links   = $popUp.find("a:visible").not(function() {
+                return $(this).closest('.sticky-li-top').length > 0;
+            }),
+            nextIndex    = 0;
+        const selectedIndex = $links.index($selectedItem);
+        if(selectedIndex >= 0){
+            // the selected item is visible, move from this index
+            nextIndex = (selectedIndex + direction) % $links.length;
+        } else if(direction === -1) {
+            // nothing is selected and reverse direction, select the last element
+            nextIndex = $links.length - 1;
+        } else {
+            // nothing is selected, select the first element
+            nextIndex = 0;
+        }
+        if(searchStr && $links.length === 0){
+            // no search result, only the top search field visible
+            return;
+        }
+
+        const $newItem = $links.eq(nextIndex);
+        if ($selectedItem) {
+            $selectedItem.removeClass("selected");
+        }
+        $newItem.addClass("selected");
+    }
+
     function _processSelectionEvent(event) {
         const {$popUp, keyboardEventHandler} = currentEventPopups[currentEventPopups.length - 1];
         if(!$popUp || !$popUp.is(":visible")){
@@ -216,18 +251,19 @@ define(function (require, exports, module) {
 
         switch (event.keyCode) {
         case KeyEvent.DOM_VK_UP:
-            //selectNextItem(-1);
+            selectNextItem(-1, $popUp);
             keyHandled = true;
             break;
         case KeyEvent.DOM_VK_DOWN:
-            //selectNextItem(+1);
+            selectNextItem(+1, $popUp);
             keyHandled = true;
             break;
         case KeyEvent.DOM_VK_ENTER:
         case KeyEvent.DOM_VK_RETURN:
-            // if ($dropdownItem) {
-            //     $dropdownItem.trigger("click");
-            // }
+            const $dropdownItem = $popUp.find(".selected");
+            if ($dropdownItem) {
+                $dropdownItem.trigger("click");
+            }
             keyHandled = true;
             break;
         }
