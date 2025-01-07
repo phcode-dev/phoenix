@@ -24,10 +24,8 @@
 define(function (require, exports, module) {
 
 
-    var SpecRunnerUtils = require("spec/SpecRunnerUtils"),
-        FileUtils       = require("file/FileUtils"),
-        KeyEvent        = require("utils/KeyEvent"),
-        _               = require("thirdparty/lodash");
+    const SpecRunnerUtils = require("spec/SpecRunnerUtils"),
+        KeyEvent        = require("utils/KeyEvent");
 
     describe("integration:Recent Projects", function () {
         const testFolder = SpecRunnerUtils.getTestPath("/spec/LiveDevelopment-MultiBrowser-test-files"),
@@ -36,17 +34,12 @@ define(function (require, exports, module) {
         const testFolderProjectName = "LiveDevelopment-MultiBrowser-test-files",
             prettierTestFolderProjectName = "prettier-test-files",
             jsUtilsTestFolderProjectName = "JSUtils-test-files";
-        let extensionPath = FileUtils.getNativeModuleDirectoryPath(module),
-            testWindow,
-            $,
-            CommandManager,
-            PreferencesManager;
+        let testWindow,
+            $;
 
         beforeAll(async function () {
             testWindow = await SpecRunnerUtils.createTestWindowAndRun();
             $ = testWindow.$;
-            CommandManager  = testWindow.brackets.test.CommandManager;
-            PreferencesManager = testWindow.brackets.test.PreferencesManager;
         }, 30000);
 
         afterAll(async function () {
@@ -55,7 +48,9 @@ define(function (require, exports, module) {
         }, 30000);
 
         async function openRecentProjectDropDown() {
-            CommandManager.execute("recentProjects.toggle");
+            if(!$("#project-dropdown").is(":visible")){
+                $("#project-dropdown-toggle").click();
+            }
             await awaitsFor(function () {
                 return $("#project-dropdown").is(":visible");
             });
