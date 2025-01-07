@@ -34,7 +34,7 @@ define(function (require, exports, module) {
         MainViewManager     = require("view/MainViewManager"),
         KeyEvent        = require("utils/KeyEvent");
 
-    let _popUps = [];
+    let _popUps = [], addPopupInProgress = false;
 
     /**
      * Add Esc key handling for a popup DOM element.
@@ -53,6 +53,7 @@ define(function (require, exports, module) {
     function addPopUp($popUp, removeHandler, autoRemove, options) {
         autoRemove = autoRemove || false;
         options = options || {};
+        addPopupInProgress = true;
         if(options.closeCurrentPopups) {
             closeAllPopups();
         }
@@ -62,6 +63,7 @@ define(function (require, exports, module) {
         $popUp.data("PopUpManager-autoRemove", autoRemove);
         $popUp.data("PopUpManager-popupManagesFocus", popupManagesFocus);
         $popUp.data("PopUpManager-removeHandler", removeHandler);
+        addPopupInProgress = false;
     }
 
     /**
@@ -78,6 +80,13 @@ define(function (require, exports, module) {
             if (removeHandler) {
                 removeHandler();
             }
+        }
+        let popupManagesFocus = $popUp.data("PopUpManager-popupManagesFocus");
+        if(!popupManagesFocus && !addPopupInProgress){
+            // We need to have a focus manager to correctly manage focus
+            // between editors and other UI elements.
+            // For now we set focus here if the popup doesnt manage the focus itself
+            MainViewManager.focusActivePane();
         }
 
         // check index after removeHandler is done processing to protect
@@ -116,15 +125,7 @@ define(function (require, exports, module) {
                         keyEvent.stopImmediatePropagation();
                     }
 
-                    let popupManagesFocus = $popUp.data("PopUpManager-popupManagesFocus");
                     removePopUp($popUp);
-
-                    if(!popupManagesFocus){
-                        // We need to have a focus manager to correctly manage focus
-                        // between editors and other UI elements.
-                        // For now we set focus here if the popup doesnt manage the focus itself
-                        MainViewManager.focusActivePane();
-                    }
                 }
 
                 break;

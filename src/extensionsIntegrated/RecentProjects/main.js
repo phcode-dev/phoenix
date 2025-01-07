@@ -343,8 +343,6 @@ define(function (require, exports, module) {
         $("#titlebar .nav").off("click", closeDropdown);
         $dropdown = null;
 
-        MainViewManager.focusActivePane();
-
         $(window).off("keydown", keydownHook);
         searchStr = "";
     }
