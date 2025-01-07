@@ -85,6 +85,9 @@ define(function (require, exports, module) {
                     <span class="searchTextSpan"></span></a>
                 </li>`);
         }
+        $popUp.off("keydown", _processSelectionEvent);
+        $popUp.on("keydown", _processSelectionEvent);
+        $popUp.focus();
     }
 
     /**
@@ -114,6 +117,7 @@ define(function (require, exports, module) {
         if(handlerIndex >= 0){
             currentEventPopups.splice(handlerIndex, 1);
             searchStr = "";
+            $popUp.off("keydown", _processSelectionEvent);
         }
         // check index after removeHandler is done processing to protect
         // against recursive calls
@@ -299,11 +303,6 @@ define(function (require, exports, module) {
     }
 
     function _keydownCaptureListener(keyEvent) {
-        if(currentEventPopups.length) {
-            if(_processSelectionEvent(keyEvent)){
-                return true;
-            }
-        }
         // Escape key or Alt key (Windows-only)
         if (keyEvent.keyCode !== KeyEvent.DOM_VK_ESCAPE &&
             !(keyEvent.keyCode === KeyEvent.DOM_VK_ALT && brackets.platform === "win")) {
