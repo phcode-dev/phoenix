@@ -221,7 +221,7 @@ define(function (require, exports, module) {
     }
 
     function _createFileEntries($mrofList) {
-        var data, fileEntry, $link, $newItem;
+        var data, fileEntry, $link, $newItem, $removeBtn;
         // Iterate over the MROF list and create the pop over UI items
 
         // If we are in split view we might want to show the panes corresponding to the entries
@@ -270,35 +270,41 @@ define(function (require, exports, module) {
                 ViewUtils.getFileEntryDisplay({name: FileUtils.getBaseName(value.file)})
             );
 
-            // Create remove button
-            var $removeBtn = $("<span class='remove-file'>&times;</span>").on("click", function(e) {
-                e.preventDefault();
-                e.stopPropagation();
+            // Create remove button only for files not in working set
+            $removeBtn = null;
+            if (indxInWS === -1) {
+                $removeBtn = $("<span class='remove-file'>&times;</span>").on("click", function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
 
-                // Find and remove the entry from _mrofList
-                var filePath = $(this).parent().data("path");
-                var paneId = $(this).parent().data("paneId");
+                    // Find and remove the entry from _mrofList
+                    var filePath = $(this).parent().data("path");
+                    var paneId = $(this).parent().data("paneId");
 
-                _mrofList = _mrofList.filter(function(entry) {
-                    return !(entry && entry.file === filePath && entry.paneId === paneId);
+                    _mrofList = _mrofList.filter(function(entry) {
+                        return !(entry && entry.file === filePath && entry.paneId === paneId);
+                    });
+
+                    // Remove the list item from UI
+                    $(this).parent().remove();
+
+                    // Update preferences
+                    PreferencesManager.setViewState(
+                        OPEN_FILES_VIEW_STATE,
+                        _mrofList,
+                        PreferencesManager.STATE_PROJECT_CONTEXT
+                    );
                 });
-
-                // Remove the list item from UI
-                $(this).parent().remove();
-
-                // Update preferences
-                PreferencesManager.setViewState(
-                    OPEN_FILES_VIEW_STATE,
-                    _mrofList,
-                    PreferencesManager.STATE_PROJECT_CONTEXT
-                );
-            });
+            }
 
             // Use the file icon providers
             WorkingSetView.useIconProviders(data, $link);
 
-            // Create list item with link and remove button
-            $newItem = $("<li></li>").append($link).append($removeBtn);
+            // Create list item with link and conditionally add remove button
+            $newItem = $("<li></li>").append($link);
+            if ($removeBtn) {
+                $newItem.append($removeBtn);
+            }
 
             if (indxInWS !== -1) { // in working set show differently
                 $newItem.addClass("working-set");
