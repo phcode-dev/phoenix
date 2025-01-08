@@ -801,7 +801,7 @@ define({
   "CMD_ENABLE_QUICK_VIEW": "Activare Quick View",
   "CMD_ENABLE_SELECTION_VIEW": "Vizualizare selecție",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Faceți clic aici pentru a edita culoarea",
-  "CMD_TOGGLE_RECENT_PROJECTS": "Proiecte recente",
+  "CMD_RECENT_PROJECTS": "Proiecte recente",
   "REMOVE_FROM_RECENT_PROJECTS": "Eliminați din proiecte recente",
   "DOCS_MORE_LINK": "Vezi mai mult",
   "DOCS_MORE_LINK_MDN_TITLE": "Faceți clic pentru a citi documentația",

@@ -801,7 +801,7 @@ define({
   "CMD_ENABLE_QUICK_VIEW": "Rychlý náhled",
   "CMD_ENABLE_SELECTION_VIEW": "Zobrazení výběru",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Klikněte zde pro úpravu barvy",
-  "CMD_TOGGLE_RECENT_PROJECTS": "Nedávné projekty",
+  "CMD_RECENT_PROJECTS": "Nedávné projekty",
   "REMOVE_FROM_RECENT_PROJECTS": "Odebrat z nedávných projektů",
   "DOCS_MORE_LINK": "Více",
   "DOCS_MORE_LINK_MDN_TITLE": "Klikněte a přečtěte si dokumentaci",

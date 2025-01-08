@@ -801,7 +801,7 @@ define({
   "CMD_ENABLE_QUICK_VIEW": "Quick View vid hover",
   "CMD_ENABLE_SELECTION_VIEW": "Urvalsvy",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Klicka här för att redigera färg",
-  "CMD_TOGGLE_RECENT_PROJECTS": "Senaste projekt",
+  "CMD_RECENT_PROJECTS": "Senaste projekt",
   "REMOVE_FROM_RECENT_PROJECTS": "Ta bort från senaste projekt",
   "DOCS_MORE_LINK": "Läs mer",
   "DOCS_MORE_LINK_MDN_TITLE": "Klicka för att läsa dokumentation",

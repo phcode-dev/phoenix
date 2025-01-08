@@ -801,7 +801,7 @@ define({
   "CMD_ENABLE_QUICK_VIEW": "Lyn-visning af det du peger på",
   "CMD_ENABLE_SELECTION_VIEW": "Udvalgsvisning",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Klik her for at redigere farve",
-  "CMD_TOGGLE_RECENT_PROJECTS": "Seneste projekter",
+  "CMD_RECENT_PROJECTS": "Seneste projekter",
   "REMOVE_FROM_RECENT_PROJECTS": "Fjern fra Seneste projekter",
   "DOCS_MORE_LINK": "Læs mere",
   "DOCS_MORE_LINK_MDN_TITLE": "Klik for at læse dokumentation",

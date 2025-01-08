@@ -801,7 +801,7 @@ define({
   "CMD_ENABLE_QUICK_VIEW": "Quick Edit al passaggio del mouse",
   "CMD_ENABLE_SELECTION_VIEW": "Vista di selezione",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Fare clic qui per modificare il colore",
-  "CMD_TOGGLE_RECENT_PROJECTS": "Progetti recenti",
+  "CMD_RECENT_PROJECTS": "Progetti recenti",
   "REMOVE_FROM_RECENT_PROJECTS": "Rimuovi dai progetti recenti",
   "DOCS_MORE_LINK": "Leggi tutto",
   "DOCS_MORE_LINK_MDN_TITLE": "Fare clic per leggere la documentazione",

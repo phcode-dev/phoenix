@@ -801,7 +801,7 @@ define({
   "CMD_ENABLE_QUICK_VIEW": "Γρήγορη Προβολή στο Hover",
   "CMD_ENABLE_SELECTION_VIEW": "Προβολή επιλογής",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Κάντε κλικ εδώ για να επεξεργαστείτε το χρώμα",
-  "CMD_TOGGLE_RECENT_PROJECTS": "Πρόσφατα Project",
+  "CMD_RECENT_PROJECTS": "Πρόσφατα Project",
   "REMOVE_FROM_RECENT_PROJECTS": "Κατάργηση από Πρόσφατα Έργα",
   "DOCS_MORE_LINK": "Διαβάστε Περισσότερα",
   "DOCS_MORE_LINK_MDN_TITLE": "Κάντε κλικ για να διαβάσετε την Τεκμηρίωση",
