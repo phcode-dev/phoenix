@@ -801,7 +801,7 @@ define({
   "CMD_ENABLE_QUICK_VIEW": "QuickView 사용",
   "CMD_ENABLE_SELECTION_VIEW": "선택 보기",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "색상을 수정하려면 여기를 클릭하세요.",
-  "CMD_TOGGLE_RECENT_PROJECTS": "최근에 사용한 프로젝트",
+  "CMD_RECENT_PROJECTS": "최근에 사용한 프로젝트",
   "REMOVE_FROM_RECENT_PROJECTS": "최근 프로젝트에서 제거",
   "DOCS_MORE_LINK": "상세 정보",
   "DOCS_MORE_LINK_MDN_TITLE": "문서를 읽으려면 클릭하세요.",

@@ -801,7 +801,7 @@ define({
   "CMD_ENABLE_QUICK_VIEW": "نظرة سريعة على Hover",
   "CMD_ENABLE_SELECTION_VIEW": "عرض التحديد",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "انقر هنا لتعديل اللون",
-  "CMD_TOGGLE_RECENT_PROJECTS": "مشاريع حديثه",
+  "CMD_RECENT_PROJECTS": "المشاريع الأخيرة",
   "REMOVE_FROM_RECENT_PROJECTS": "إزالة من المشاريع الأخيرة",
   "DOCS_MORE_LINK": "اقرأ أكثر",
   "DOCS_MORE_LINK_MDN_TITLE": "انقر لقراءة الوثائق",

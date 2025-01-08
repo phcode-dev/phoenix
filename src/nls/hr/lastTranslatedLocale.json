@@ -781,7 +781,7 @@
   "CMD_ENABLE_QUICK_VIEW": "Brzi 'lebdeći' (hover) prikaz",
   "CMD_ENABLE_SELECTION_VIEW": "Pregled odabira",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Kliknite ovdje za uređivanje boje",
-  "CMD_TOGGLE_RECENT_PROJECTS": "Nedavni projekti",
+  "CMD_RECENT_PROJECTS": "Nedavni projekti",
   "REMOVE_FROM_RECENT_PROJECTS": "Ukloni iz nedavnih projekata",
   "DOCS_MORE_LINK": "Pročitaj više",
   "DOCS_MORE_LINK_MDN_TITLE": "Kliknite za čitanje dokumentacije",

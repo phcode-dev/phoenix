@@ -801,7 +801,7 @@ define({
   "CMD_ENABLE_QUICK_VIEW": "ہوور پر فوری منظر",
   "CMD_ENABLE_SELECTION_VIEW": "انتخاب کا منظر",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "رنگ میں ترمیم کرنے کے لیے یہاں کلک کریں۔",
-  "CMD_TOGGLE_RECENT_PROJECTS": "حالیہ پروجیکٹس",
+  "CMD_RECENT_PROJECTS": "حالیہ پروجیکٹس",
   "REMOVE_FROM_RECENT_PROJECTS": "حالیہ پروجیکٹس سے ہٹا دیں۔",
   "DOCS_MORE_LINK": "مزید پڑھ",
   "DOCS_MORE_LINK_MDN_TITLE": "دستاویز پڑھنے کے لیے کلک کریں۔",

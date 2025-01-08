@@ -801,7 +801,7 @@ define({
   "CMD_ENABLE_QUICK_VIEW": "Pikanäkymä osoitettaessa",
   "CMD_ENABLE_SELECTION_VIEW": "Valintanäkymä",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Napsauta tästä muokataksesi väriä",
-  "CMD_TOGGLE_RECENT_PROJECTS": "Viimeaikaiset projektit",
+  "CMD_RECENT_PROJECTS": "Viimeaikaiset projektit",
   "REMOVE_FROM_RECENT_PROJECTS": "Poista viimeaikaisista projekteista",
   "DOCS_MORE_LINK": "Lue lisää",
   "DOCS_MORE_LINK_MDN_TITLE": "Napsauta lukeaksesi dokumentaatiota",

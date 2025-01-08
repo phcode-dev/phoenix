@@ -781,7 +781,7 @@
   "CMD_ENABLE_QUICK_VIEW": "Gyors Nézet rámutatáskor",
   "CMD_ENABLE_SELECTION_VIEW": "Kijelölés nézet",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Kattintson ide a szín szerkesztéséhez",
-  "CMD_TOGGLE_RECENT_PROJECTS": "Legutóbbi projektek",
+  "CMD_RECENT_PROJECTS": "Legutóbbi projektek",
   "REMOVE_FROM_RECENT_PROJECTS": "Eltávolítás a legutóbbi projektekből",
   "DOCS_MORE_LINK": "Olvasd tovább",
   "DOCS_MORE_LINK_MDN_TITLE": "Kattintson a Dokumentáció elolvasásához",

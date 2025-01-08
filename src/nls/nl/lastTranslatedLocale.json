@@ -781,7 +781,7 @@
   "CMD_ENABLE_QUICK_VIEW": "Snel bekijken bij muis over",
   "CMD_ENABLE_SELECTION_VIEW": "Selectieweergave",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "Klik hier om de kleur te bewerken",
-  "CMD_TOGGLE_RECENT_PROJECTS": "Recente projecten",
+  "CMD_RECENT_PROJECTS": "Recente projecten",
   "REMOVE_FROM_RECENT_PROJECTS": "Verwijderen uit recente projecten",
   "DOCS_MORE_LINK": "Lees meer",
   "DOCS_MORE_LINK_MDN_TITLE": "Klik om documentatie te lezen",

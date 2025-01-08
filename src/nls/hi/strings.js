@@ -801,7 +801,7 @@ define({
   "CMD_ENABLE_QUICK_VIEW": "होवर पर त्वरित दृश्य",
   "CMD_ENABLE_SELECTION_VIEW": "चयन दृश्य",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "रंग संपादित करने के लिए यहां क्लिक करें",
-  "CMD_TOGGLE_RECENT_PROJECTS": "हाल ही में की परियोजनाएं",
+  "CMD_RECENT_PROJECTS": "हाल की परियोजनाएं",
   "REMOVE_FROM_RECENT_PROJECTS": "हाल की परियोजनाओं से हटाएँ",
   "DOCS_MORE_LINK": "अधिक पढ़ें",
   "DOCS_MORE_LINK_MDN_TITLE": "दस्तावेज़ पढ़ने के लिए क्लिक करें",

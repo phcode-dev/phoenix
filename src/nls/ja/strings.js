@@ -801,7 +801,7 @@ define({
   "CMD_ENABLE_QUICK_VIEW": "ホバー・クイックビュー",
   "CMD_ENABLE_SELECTION_VIEW": "選択ビュー",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "ここをクリックして色を編集します",
-  "CMD_TOGGLE_RECENT_PROJECTS": "最近使用したプロジェクト",
+  "CMD_RECENT_PROJECTS": "最近使用したプロジェクト",
   "REMOVE_FROM_RECENT_PROJECTS": "最近のプロジェクトから削除",
   "DOCS_MORE_LINK": "詳細",
   "DOCS_MORE_LINK_MDN_TITLE": "クリックしてドキュメントを読む",

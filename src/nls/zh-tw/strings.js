@@ -801,7 +801,7 @@ define({
   "CMD_ENABLE_QUICK_VIEW": "游標停留時快速檢視",
   "CMD_ENABLE_SELECTION_VIEW": "選擇視圖",
   "TOOLTIP_CLICK_TO_EDIT_COLOR": "單擊此處編輯顏色",
-  "CMD_TOGGLE_RECENT_PROJECTS": "最近開啟的專案",
+  "CMD_RECENT_PROJECTS": "最近開啟的專案",
   "REMOVE_FROM_RECENT_PROJECTS": "從最近的項目中刪除",
   "DOCS_MORE_LINK": "更多資訊",
   "DOCS_MORE_LINK_MDN_TITLE": "點擊閱讀文檔",
