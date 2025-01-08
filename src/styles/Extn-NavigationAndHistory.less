@@ -238,11 +238,7 @@
   border-top: 1px solid #343434;
 }
 
-#mrof-list li {
-  position: relative;
-}
-
-.remove-file {
+#mrof-container #mrof-list > li .remove-file {
   color: #adb9bd;
   position: absolute;
   left: 6px;
@@ -255,12 +251,12 @@
   display: none;
 }
 
-#mrof-list li:hover .remove-file {
+#mrof-container #mrof-list > li:hover .remove-file {
   color: #fff;
   display: block;
 }
 
-.remove-file:hover {
+#mrof-container #mrof-list > li .remove-file:hover {
   color: #fff;
   opacity: 1;
 }
