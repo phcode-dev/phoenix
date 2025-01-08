@@ -237,3 +237,26 @@
   background-color: #2c2c2c;
   border-top: 1px solid #343434;
 }
+
+#mrof-list li {
+  position: relative;
+}
+
+.remove-file {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  opacity: 0.6;
+  font-size: 18px;
+  display: none;
+}
+
+#mrof-list li:hover .remove-file {
+  display: block;
+}
+
+.remove-file:hover {
+  opacity: 1;
+}

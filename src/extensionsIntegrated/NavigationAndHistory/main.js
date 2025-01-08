@@ -239,33 +239,66 @@ define(function (require, exports, module) {
                 // Try to see if we have same doc split
                 // Check existing list for this doc path and active pane entry
                 var entryIndex = _.findIndex(_mrofList, function (record) {
-                    return (record && record.file === value.file && record.paneId === MainViewManager.getActivePaneId());
+                    return (
+                        record &&
+                        record.file === value.file &&
+                        record.paneId === MainViewManager.getActivePaneId()
+                    );
                 });
 
                 // If found don't process this entry, as the document is already present in active pane
                 if (entryIndex >= 0) {
                     return true;
                 }
-                    // Process this for active pane id
+                // Process this for active pane id
                 value.paneId = MainViewManager.getActivePaneId();
 
             }
 
             var indxInWS = MainViewManager.findInWorkingSet(value.paneId, value.file);
 
-            data = {fullPath: value.file,
+            data = {
+                fullPath: value.file,
                 name: FileUtils.getBaseName(value.file),
-                isFile: true};
+                isFile: true
+            };
 
             fileEntry = FileSystem.getFileForPath(value.file);
 
             // Create new list item with a link
-            $link = $("<a href='#' class='mroitem'></a>").html(ViewUtils.getFileEntryDisplay({name: FileUtils.getBaseName(value.file)}));
+            $link = $("<a href='#' class='mroitem'></a>").html(
+                ViewUtils.getFileEntryDisplay({name: FileUtils.getBaseName(value.file)})
+            );
+
+            // Create remove button
+            var $removeBtn = $("<span class='remove-file'>&times;</span>").on("click", function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                // Find and remove the entry from _mrofList
+                var filePath = $(this).parent().data("path");
+                var paneId = $(this).parent().data("paneId");
+
+                _mrofList = _mrofList.filter(function(entry) {
+                    return !(entry && entry.file === filePath && entry.paneId === paneId);
+                });
+
+                // Remove the list item from UI
+                $(this).parent().remove();
+
+                // Update preferences
+                PreferencesManager.setViewState(
+                    OPEN_FILES_VIEW_STATE,
+                    _mrofList,
+                    PreferencesManager.STATE_PROJECT_CONTEXT
+                );
+            });
 
             // Use the file icon providers
             WorkingSetView.useIconProviders(data, $link);
 
-            $newItem = $("<li></li>").append($link);
+            // Create list item with link and remove button
+            $newItem = $("<li></li>").append($link).append($removeBtn);
 
             if (indxInWS !== -1) { // in working set show differently
                 $newItem.addClass("working-set");
@@ -285,7 +318,7 @@ define(function (require, exports, module) {
             // Use the class providers(git e.t.c)
             WorkingSetView.useClassProviders(data, $newItem);
 
-            // If a file is dirty , mark it in the list
+            // If a file is dirty, mark it in the list
             if (_isOpenAndDirty(fileEntry)) {
                 $(dirtyDotTemplate).prependTo($newItem);
             }
