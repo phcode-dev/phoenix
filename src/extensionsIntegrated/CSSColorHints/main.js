@@ -1,25 +1,3 @@
-/*
- * GNU AGPL-3.0 License
- *
- * Copyright (c) 2021 - present core.ai . All rights reserved.
- * Original work Copyright (c) 2024 [cmgddd](https://github.com/cmgddd/Brackets-css-color-preview). All rights reserved.
- *
- * This program is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
- * for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see https://opensource.org/licenses/AGPL-3.0.
- *
- */
-
-
 
 define(function (require, exports, module) {
 
@@ -33,6 +11,8 @@ define(function (require, exports, module) {
         MainViewManager = require("view/MainViewManager"),
         Commands = require("command/Commands"),
         CommandManager = require("command/CommandManager"),
+        CSSUtils = require("language/CSSUtils"),
+        CodeHintManager = require("editor/CodeHintManager"),
         Strings = require("strings");
 
     // Extension variables.
@@ -43,6 +23,9 @@ define(function (require, exports, module) {
     const SVG_REGEX = /(:[^;]*;?|(?:fill|stroke|stop-color|flood-color|lighting-color|background-color|border-color|from|to)\s*=\s*(['"]?)[^'";]*\2)/g,
         CSS_REGEX = /:[^;]*;?/g; // the last semi colon is optional.
 
+    let editor = null;
+    let typed = "";
+    let cursorInfo = null;
 
     function _isAlphanumeric(char) {
         return /^[a-z0-9-@$]$/i.test(char);
@@ -95,10 +78,67 @@ define(function (require, exports, module) {
         return allColors;
     }
 
+    /**
+ * Creates HTML preview for a color hint
+ */
+    function createColorPreview(color) {
+        return `<div style='display: inline-block; margin-right: 5px; height: 10px; width: 10px; background: ${color};'></div>${color}`;
+    }
+
+    /**
+     * Checks if hints should be shown
+     */
+    function hasHints(editorInstance, implicitChar) {
+        editor = editorInstance;
+        return implicitChar ? implicitChar === "#" : false;
+    }
+
+    /**
+     * Returns the list of hints
+     */
+    function getHints(implicitChar) {
+        const cursor = editor.getCursorPos();
+        cursorInfo = CSSUtils.getInfoAtPos(editor, cursor);
+
+        if (!cursorInfo.values[0]) {
+            return null;
+        }
+
+        typed = cursorInfo.values[0].trim();
+
+        // Get all colors and create previews
+        const colors = _getAllColors(editor);
+        const filter = typed.substr(1).toLowerCase();
+
+        const hints = Array.from(colors)
+            .filter(color => color.toLowerCase().includes(filter))
+            .map(color => createColorPreview(color));
+
+        return {
+            hints: hints,
+            match: null,
+            selectInitial: true,
+            handleWideResults: false
+        };
+    }
+
+    /**
+     * Inserts the selected color
+     */
+    function insertHint(hint) {
+        const offset = cursorInfo.offset - 1;
+        const color = hint.substring(hint.lastIndexOf(">") + 1);
+        const pos = editor.getCursorPos();
+        const start = { line: pos.line, ch: pos.ch - offset };
+
+        editor._codeMirror.replaceRange(color, start, pos);
+    }
+
 
     /**
      * Function that gets triggered when any change occurs on the editor
      *
+     * @param _evt unused event detail
      * @param {Editor} editor the editor instance
      */
     function onChanged(_evt, editor) {
@@ -146,7 +186,14 @@ define(function (require, exports, module) {
 
     // init after appReady
     AppInit.appReady(function () {
-        registerHandlers();
+        // registerHandlers();
+        const hintProvider = {
+            hasHints: hasHints,
+            getHints: getHints,
+            insertHint: insertHint
+        };
+
+        CodeHintManager.registerHintProvider(hintProvider, ["css", "scss", "less", "sass", "stylus", "html", "svg", "jsx", "tsx"], 0);
     });
 });
 
