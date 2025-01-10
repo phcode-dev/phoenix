@@ -36,7 +36,6 @@ define(function (require, exports, module) {
     let editor = null;
     let cursorInfo = null;
 
-    // Add helper functions from the second file
     function _isAlphanumeric(char) {
         return /^[a-z0-9-@$]$/i.test(char);
     }
@@ -66,7 +65,6 @@ define(function (require, exports, module) {
             const colorMatches = lineText.match(ColorUtils.COLOR_REGEX);
             if (colorMatches) {
                 colorMatches.forEach(color => {
-                    // Replace isValidColor with _isColor check
                     const colorIndex = lineText.indexOf(color);
                     if (colorIndex !== -1 && _isColor(lineText, color, colorIndex)) {
                         allColors.add(color);
@@ -106,7 +104,8 @@ define(function (require, exports, module) {
             hints: hints.map(hint => {
                 const $hintObj = $('<span>')
                     .addClass("brackets-css-hints")
-                    .text(hint.text);
+                    .text(hint.text)
+                    .data("color", hint.color); // Store the color data directly on the element
 
                 return ColorUtils.formatColorHint($hintObj, hint.color);
             }),
@@ -117,14 +116,30 @@ define(function (require, exports, module) {
     }
 
     function insertHint(hint) {
-        const color = $(hint).data("color") || hint.text;
-        const cursor = editor.getCursorPos();
-        const start = {
-            line: cursor.line,
-            ch: cursor.ch - (cursorInfo.offset || 0)
-        };
-        editor._codeMirror.replaceRange(color, start, cursor);
-        return false;
+        if (!hint || !editor || !cursorInfo) {
+            return false;
+        }
+
+        try {
+            // Get the color value either from the data attribute or the text content
+            const color = $(hint).data("color") || $(hint).text() || "";
+            
+            if (!color) {
+                return false;
+            }
+
+            const cursor = editor.getCursorPos();
+            const start = {
+                line: cursor.line,
+                ch: cursor.ch - (cursorInfo.offset || 0)
+            };
+            
+            editor._codeMirror.replaceRange(color, start, cursor);
+            return false;
+        } catch (e) {
+            console.error("Error inserting color hint:", e);
+            return false;
+        }
     }
 
     AppInit.appReady(function () {
