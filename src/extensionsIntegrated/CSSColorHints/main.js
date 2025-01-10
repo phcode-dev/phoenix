@@ -1,7 +1,5 @@
-
 define(function (require, exports, module) {
-
-    // Brackets modules.
+    // Brackets modules
     const _ = require("thirdparty/lodash"),
         EditorManager = require('editor/EditorManager'),
         ColorUtils = require('utils/ColorUtils'),
@@ -12,21 +10,33 @@ define(function (require, exports, module) {
         Commands = require("command/Commands"),
         CommandManager = require("command/CommandManager"),
         CSSUtils = require("language/CSSUtils"),
-        CodeHintManager = require("editor/CodeHintManager"),
-        Strings = require("strings");
+        CodeHintManager = require("editor/CodeHintManager");
 
-    // Extension variables.
-    const COLOR_REGEX = ColorUtils.COLOR_REGEX,    // used to match color
-        COLOR_LANGUAGES = ["css", "scss", "less", "sass", "stylus", "html", "svg", "jsx", "tsx",
-            "php", "ejs", "erb_html", "pug"];
-
-    const SVG_REGEX = /(:[^;]*;?|(?:fill|stroke|stop-color|flood-color|lighting-color|background-color|border-color|from|to)\s*=\s*(['"]?)[^'";]*\2)/g,
-        CSS_REGEX = /:[^;]*;?/g; // the last semi colon is optional.
+    const COLOR_PROPERTIES = [
+        "color",
+        "background-color",
+        "border-color",
+        "border-top-color",
+        "border-right-color",
+        "border-bottom-color",
+        "border-left-color",
+        "outline-color",
+        "text-decoration-color",
+        "text-emphasis-color",
+        "text-shadow",
+        "box-shadow",
+        "background",
+        "border",
+        "border-top",
+        "border-right",
+        "border-bottom",
+        "border-left"
+    ];
 
     let editor = null;
-    let typed = "";
     let cursorInfo = null;
 
+    // Add helper functions from the second file
     function _isAlphanumeric(char) {
         return /^[a-z0-9-@$]$/i.test(char);
     }
@@ -38,162 +48,91 @@ define(function (require, exports, module) {
         return !_isAlphanumeric(previousChar) && !_isAlphanumeric(nextChar);
     }
 
-    /**
-     * Detects all valid colors in the entire file.
-     *
-     * @param {Editor} editor - The editor instance
-     * @return {Set<string>} A set of unique valid color values in the file
-     */
+    function _isColorProperty(propertyName) {
+        return COLOR_PROPERTIES.includes(propertyName.toLowerCase());
+    }
+
     function _getAllColors(editor) {
+        const allColors = new Set();
         const nLen = editor.lineCount();
 
-        // store the colors that are used in the file
-        const allColors = new Set();
-
-        // Loop through all lines in the file
         for (let i = 0; i < nLen; i++) {
             const lineText = editor.getLine(i);
-            const languageID = editor.document.getLanguage().getId();
-
-            // Skip null or excessively long lines
             if (!lineText || lineText.length > 1000) {
                 continue;
             }
 
-            const valueRegex = languageID === "svg" ? SVG_REGEX : CSS_REGEX;
-
-            // Find all color matches in the line
-            const colorMatches = [...lineText.matchAll(valueRegex)].flatMap(match =>
-                [...match[0].matchAll(COLOR_REGEX)].map(colorMatch => colorMatch[0])
-            );
-
-            // Add only valid colors to the set
-            colorMatches.forEach(color => {
-                if (_isColor(lineText, color)) {
-                    allColors.add(color);
-                }
-            });
+            // Match color values
+            const colorMatches = lineText.match(ColorUtils.COLOR_REGEX);
+            if (colorMatches) {
+                colorMatches.forEach(color => {
+                    // Replace isValidColor with _isColor check
+                    const colorIndex = lineText.indexOf(color);
+                    if (colorIndex !== -1 && _isColor(lineText, color, colorIndex)) {
+                        allColors.add(color);
+                    }
+                });
+            }
         }
 
         return allColors;
     }
 
-    /**
- * Creates HTML preview for a color hint
- */
-    function createColorPreview(color) {
-        return `<div style='display: inline-block; margin-right: 5px; height: 10px; width: 10px; background: ${color};'></div>${color}`;
-    }
-
-    /**
-     * Checks if hints should be shown
-     */
     function hasHints(editorInstance, implicitChar) {
         editor = editorInstance;
-        return implicitChar ? implicitChar === "#" : false;
-    }
-
-    /**
-     * Returns the list of hints
-     */
-    function getHints(implicitChar) {
         const cursor = editor.getCursorPos();
         cursorInfo = CSSUtils.getInfoAtPos(editor, cursor);
 
-        if (!cursorInfo.values[0]) {
-            return null;
-        }
+        return (cursorInfo.context === CSSUtils.PROP_VALUE &&
+                (implicitChar === ":" || !implicitChar) &&
+                _isColorProperty(cursorInfo.name));
+    }
 
-        typed = cursorInfo.values[0].trim();
-
-        // Get all colors and create previews
+    function getHints() {
         const colors = _getAllColors(editor);
-        const filter = typed.substr(1).toLowerCase();
+        // Add common color keywords
+        ColorUtils.COLOR_NAMES.forEach(color => colors.add(color));
+        // Add special color values
+        colors.add('transparent');
+        colors.add('currentColor');
 
-        const hints = Array.from(colors)
-            .filter(color => color.toLowerCase().includes(filter))
-            .map(color => createColorPreview(color));
+        const hints = Array.from(colors).map(color => ({
+            text: color,
+            color: color,
+            stringRanges: [{text: color, matched: false}]
+        }));
 
         return {
-            hints: hints,
+            hints: hints.map(hint => {
+                const $hintObj = $('<span>')
+                    .addClass("brackets-css-hints")
+                    .text(hint.text);
+
+                return ColorUtils.formatColorHint($hintObj, hint.color);
+            }),
             match: null,
             selectInitial: true,
             handleWideResults: false
         };
     }
 
-    /**
-     * Inserts the selected color
-     */
     function insertHint(hint) {
-        const offset = cursorInfo.offset - 1;
-        const color = hint.substring(hint.lastIndexOf(">") + 1);
-        const pos = editor.getCursorPos();
-        const start = { line: pos.line, ch: pos.ch - offset };
-
-        editor._codeMirror.replaceRange(color, start, pos);
+        const color = $(hint).data("color") || hint.text;
+        const cursor = editor.getCursorPos();
+        const start = {
+            line: cursor.line,
+            ch: cursor.ch - (cursorInfo.offset || 0)
+        };
+        editor._codeMirror.replaceRange(color, start, cursor);
+        return false;
     }
 
-
-    /**
-     * Function that gets triggered when any change occurs on the editor
-     *
-     * @param _evt unused event detail
-     * @param {Editor} editor the editor instance
-     */
-    function onChanged(_evt, editor) {
-        console.log('------------------------------');
-        console.log('------------------------------');
-        console.log(editor);
-        console.log('------------------------------');
-        console.log('------------------------------');
-
-        const allColors = _getAllColors(editor);
-
-        console.log('------------------------------');
-        console.log('------------------------------');
-        console.log(allColors);
-        console.log('------------------------------');
-        console.log('------------------------------');
-    }
-
-    /**
-     * Register all the required handlers
-     */
-    function registerHandlers() {
-        // Remove previous listeners to avoid multiple binding issue
-        EditorManager.off("activeEditorChange", onChanged);
-
-        // Add listener for all editor changes
-        EditorManager.on("activeEditorChange", function (event, newEditor, oldEditor) {
-            if (newEditor) {
-                // Unbind the previous editor's change event if it exists
-                if (oldEditor) {
-                    oldEditor.off("change", onChanged);
-                }
-                newEditor.off("change", onChanged);
-                newEditor.on("change", onChanged);
-            }
-        });
-
-        // Handle the currently active editor at initialization
-        const activeEditor = EditorManager.getActiveEditor();
-        if (activeEditor) {
-            activeEditor.off("change", onChanged);
-            activeEditor.on("change", onChanged);
-        }
-    }
-
-    // init after appReady
     AppInit.appReady(function () {
-        // registerHandlers();
         const hintProvider = {
             hasHints: hasHints,
             getHints: getHints,
             insertHint: insertHint
         };
-
-        CodeHintManager.registerHintProvider(hintProvider, ["css", "scss", "less", "sass", "stylus", "html", "svg", "jsx", "tsx"], 0);
+        CodeHintManager.registerHintProvider(hintProvider, ["css", "scss", "less", "sass", "stylus", "html", "svg", "jsx", "tsx"], 2);
     });
 });
-
