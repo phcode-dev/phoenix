@@ -1,14 +1,7 @@
 define(function (require, exports, module) {
     // Brackets modules
-    const _ = require("thirdparty/lodash"),
-        EditorManager = require('editor/EditorManager'),
-        ColorUtils = require('utils/ColorUtils'),
+    const ColorUtils = require('utils/ColorUtils'),
         AppInit = require("utils/AppInit"),
-        Editor = require("editor/Editor").Editor,
-        PreferencesManager = require("preferences/PreferencesManager"),
-        MainViewManager = require("view/MainViewManager"),
-        Commands = require("command/Commands"),
-        CommandManager = require("command/CommandManager"),
         CSSUtils = require("language/CSSUtils"),
         CodeHintManager = require("editor/CodeHintManager");
 
@@ -32,6 +25,8 @@ define(function (require, exports, module) {
         "border-bottom",
         "border-left"
     ];
+
+    const languages = ["css", "scss", "less", "sass", "stylus", "html", "svg", "jsx", "tsx"];
 
     let editor = null;
     let cursorInfo = null;
@@ -123,7 +118,7 @@ define(function (require, exports, module) {
         try {
             // Get the color value either from the data attribute or the text content
             const color = $(hint).data("color") || $(hint).text() || "";
-            
+
             if (!color) {
                 return false;
             }
@@ -133,7 +128,7 @@ define(function (require, exports, module) {
                 line: cursor.line,
                 ch: cursor.ch - (cursorInfo.offset || 0)
             };
-            
+
             editor._codeMirror.replaceRange(color, start, cursor);
             return false;
         } catch (e) {
@@ -148,6 +143,8 @@ define(function (require, exports, module) {
             getHints: getHints,
             insertHint: insertHint
         };
-        CodeHintManager.registerHintProvider(hintProvider, ["css", "scss", "less", "sass", "stylus", "html", "svg", "jsx", "tsx"], 2);
+
+        // the third param `2` is for priority that it will be displayed over other hints
+        CodeHintManager.registerHintProvider(hintProvider, languages, 2);
     });
 });
