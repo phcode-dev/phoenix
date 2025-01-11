@@ -68,6 +68,11 @@
             if(result.messages && result.messages.length) {
                 for(let message of result.messages){
                     errors.push({
+                        // The starting position of the error (0-based line and column index)
+                        startPos: {line: (message.line || 1) - 1, ch: (message.column || 1) - 1},
+                        // The length (in characters) of the error from the starting position. this is an offset
+                        // than can span multiple lines.
+                        highlightOffset: (message.size || 1),
                         start: message.offset,
                         end: message.offset + (message.size || 1) - 1,
                         severity: message.severity,

@@ -195,5 +195,14 @@ define(function (require, exports, module) {
                 await SpecRunnerUtils.deletePathAsync(testProjectsFolder + testFile, true, FileSystem);
             }, 5000);
         }
+
+        it(`should lint non active html files`, async function () {
+            const htmlPath = path.join(testProjectsFolder, "simple1.html");
+            const codeInspectionResults = await jsPromise(
+                CodeInspection.inspectFile(FileSystem.getFileForPath(htmlPath)));
+            expect(codeInspectionResults[0].result.errors.length).toBe(1);
+            expect(codeInspectionResults[0].result.errors[0].pos).toEql({line: 1, ch: 1});
+            expect(codeInspectionResults[0].result.errors[0].endPos).toEql({line: 1, ch: 5});
+        }, 5000);
     });
 });
