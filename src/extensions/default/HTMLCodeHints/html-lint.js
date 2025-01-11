@@ -92,17 +92,24 @@ define(function (require, exports, module) {
                 configID,
                 config: projectSpecificOptions
             }).then(lintResult =>{
-                const editor = EditorManager.getCurrentFullEditor();
+                let editor = EditorManager.getCurrentFullEditor();
                 if(!editor || editor.document.file.fullPath !== fullPath) {
-                    reject(new Error("Lint failed as  "+ ProjectManager.getProjectRelativeOrDisplayPath(fullPath)
-                        + " is not active."));
-                    return;
+                    // this is not the active editor the lint is about. so the html validate api sends the startPos of
+                    // the error, but doesn't send the end pos, instead it sends the end offset. We need end line:ch pos
+                    //to highlight error properly, and computing that needs an editor(or we need to impl that logic)
+                    // so for now, we use the active editor if there is one to properly underline errors, and if we
+                    // cant find the active editor, we will do an approximation on the current line
+                    editor = null;
                 }
                 if (lintResult && lintResult.length) {
                     lintResult = lintResult.map(function (lintError) {
                         return {
-                            pos: editor.posFromIndex(lintError.start),
-                            endPos: editor.posFromIndex(lintError.end),
+                            pos: editor ? editor.posFromIndex(lintError.start) : lintError.startPos,
+                            endPos: editor ?  editor.posFromIndex(lintError.end): {
+                                line: lintError.startPos.line,
+                                // highlightOffset can span multiple lines, so this is at best an approximation
+                                ch: lintError.startPos.ch + lintError.highlightOffset
+                            },
                             message: `${lintError.message} (${lintError.ruleId})`,
                             type: getTypeFromSeverity(lintError.severity),
                             moreInfoURL: lintError.ruleUrl
