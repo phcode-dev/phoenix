@@ -337,8 +337,6 @@ define({
   "STATUSBAR_TASKS_PAUSE": "Пауза",
   "STATUSBAR_TASKS_STOP": "Зауставити",
   "STATUSBAR_TASKS_RESTART": "Поново покренути",
-  "STATUSBAR_SHOW_PANELS": "Прикажи панеле",
-  "STATUSBAR_SHOW_GIT": "Гит Панел",
   "ERRORS_NO_FILE": "Нема отворених датотека",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Проблеми – {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} Проблеми, {1} Поправљиви - {2}",

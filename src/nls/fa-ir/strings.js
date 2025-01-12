@@ -337,8 +337,6 @@ define({
   "STATUSBAR_TASKS_PAUSE": "مکث کنید",
   "STATUSBAR_TASKS_STOP": "متوقف کردن",
   "STATUSBAR_TASKS_RESTART": "راه اندازی مجدد",
-  "STATUSBAR_SHOW_PANELS": "نمایش پانل ها",
-  "STATUSBAR_SHOW_GIT": "پنل گیت",
   "ERRORS_NO_FILE": "هیچ فایلی باز نمی شود",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} مشکلات - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} مشکلات، {1} قابل رفع - {2}",
