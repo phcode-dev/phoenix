@@ -860,14 +860,9 @@
         </div>
         <div id="status-bar" class="statusbar no-focus">
             <div id="status-phoenix">
-                <div id="status-menu" class="forced-hidden">
-                    <i class="fa-solid fa-chevron-up"></i>
-                </div>
-                <div class="status-tab forced-hidden">
-                    <i class="fa-solid fa-terminal"></i>
-                </div>
-                <div class="status-tab forced-hidden git-status-icon">
-                    <i class="fa-solid fa-code-branch"></i>
+                <div id="status-info" class="info" >
+                    <div id="status-cursor"></div>
+                    <div id="status-file"></div>
                 </div>
             </div>
             <div id="status-indicators" class="indicators">
@@ -880,10 +875,6 @@
                 <div id="status-language"></div>
                 <div id="status-encoding"></div>
                 <div id="status-overwrite"></div>
-                <div id="status-info" class="info" >
-                    <div id="status-cursor"></div>
-                    <div id="status-file"></div>
-                </div>
                 <div id="status-tasks" class="forced-hidden global-indicator">
                     <div class="spinner spin"></div>
                 </div>
