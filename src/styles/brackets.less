@@ -368,7 +368,7 @@ a, img {
     /* dropdown button styling */
     .btn-status-bar {
         border: 0;
-        background-color: inherit;
+        background-color: unset;
         color: inherit;
         font: inherit;
         height: inherit;
@@ -406,23 +406,31 @@ a, img {
         border-right: 1px solid @bc-panel-border;
 
         .dark & {
-            border-left: unset;
             border-right: 1px solid @dark-bc-panel-separator;
         }
         float: left;
-        padding: unset;
-        width: 35px;
         text-align: center;
+    }
+    > div:hover{
+        background-color: @bc-status-btn-hover;
+        .dark & {
+            background-color: @dark-bc-status-btn-hover;
+        }
+        cursor: pointer;
+    }
+    > div:only-child {
+        border-right: unset;
     }
 }
 
-
-#status-menu:hover, .status-tab:hover{
-    background-color: @bc-status-btn-hover;
-    .dark & {
-        background-color: @dark-bc-status-btn-hover;
+#status-indicators {
+    > div:hover{
+        background-color: @bc-status-btn-hover;
+        .dark & {
+            background-color: @dark-bc-status-btn-hover;
+        }
+        cursor: pointer;
     }
-    cursor: pointer;
 }
 
 #status-indent > * {
@@ -472,7 +480,6 @@ a, img {
 }
 
 #status-overwrite {
-    transition: background-color 3s;
     background-color: rgba(255, 255, 255, 0);
     color: @bc-text;
     cursor: pointer;
@@ -621,8 +628,24 @@ a, img {
 }
 
 #status-overwrite.flash {
-    transition: background-color 1s;
-    background-color: rgb(120, 178, 242);
+    animation: brightenFade 2s ease-in-out;
+}
+
+@keyframes brightenFade {
+    0% {
+        background-color: transparent;
+    }
+    15% {
+        background-color: rgb(120, 178, 242);
+        color: black;
+    }
+    30% {
+        background-color: rgb(120, 178, 242);
+        color: black;
+    }
+    100% {
+        background-color: transparent;
+    }
 }
 
 

@@ -425,8 +425,6 @@ define({
     "STATUSBAR_TASKS_PAUSE": "Pause",
     "STATUSBAR_TASKS_STOP": "Stop",
     "STATUSBAR_TASKS_RESTART": "Restart",
-    "STATUSBAR_SHOW_PANELS": "Show Panels",
-    "STATUSBAR_SHOW_GIT": "Git Panel",
 
     // CodeInspection: errors/warnings
     "ERRORS_NO_FILE": "No File Open",
