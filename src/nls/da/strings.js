@@ -337,8 +337,6 @@ define({
   "STATUSBAR_TASKS_PAUSE": "Pause",
   "STATUSBAR_TASKS_STOP": "Hold op",
   "STATUSBAR_TASKS_RESTART": "Genstart",
-  "STATUSBAR_SHOW_PANELS": "Vis paneler",
-  "STATUSBAR_SHOW_GIT": "Git Panel",
   "ERRORS_NO_FILE": "Ingen fil åben",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Problemer - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} Problemer, {1} Kan løses - {2}",

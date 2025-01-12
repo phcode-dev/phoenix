@@ -337,8 +337,6 @@ define({
   "STATUSBAR_TASKS_PAUSE": "Szünet",
   "STATUSBAR_TASKS_STOP": "Állj meg",
   "STATUSBAR_TASKS_RESTART": "Újrakezd",
-  "STATUSBAR_SHOW_PANELS": "Panelek megjelenítése",
-  "STATUSBAR_SHOW_GIT": "Git Panel",
   "ERRORS_NO_FILE": "Nincs fájl megnyitva",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Problémák - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} Problémák, {1} Javítható - {2}",

@@ -337,8 +337,6 @@ define({
   "STATUSBAR_TASKS_PAUSE": "暫停",
   "STATUSBAR_TASKS_STOP": "停止",
   "STATUSBAR_TASKS_RESTART": "重新開始",
-  "STATUSBAR_SHOW_PANELS": "顯示面板",
-  "STATUSBAR_SHOW_GIT": "Git 面板",
   "ERRORS_NO_FILE": "沒有開啟文件",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} 問題 - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} 問題，{1} 可修復 - {2}",

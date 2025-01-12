@@ -337,8 +337,6 @@ define({
   "STATUSBAR_TASKS_PAUSE": "Παύση",
   "STATUSBAR_TASKS_STOP": "Να σταματήσει",
   "STATUSBAR_TASKS_RESTART": "Επανεκκίνηση",
-  "STATUSBAR_SHOW_PANELS": "Εμφάνιση πλαισίων",
-  "STATUSBAR_SHOW_GIT": "Πίνακας Git",
   "ERRORS_NO_FILE": "Κανένα αρχείο ανοιχτό",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Προβλήματα - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} Προβλήματα, {1} Διορθώνονται - {2}",

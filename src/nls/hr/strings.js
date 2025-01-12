@@ -337,8 +337,6 @@ define({
   "STATUSBAR_TASKS_PAUSE": "Pauza",
   "STATUSBAR_TASKS_STOP": "Stop",
   "STATUSBAR_TASKS_RESTART": "Ponovno pokretanje",
-  "STATUSBAR_SHOW_PANELS": "Prikaži ploče",
-  "STATUSBAR_SHOW_GIT": "Git ploča",
   "ERRORS_NO_FILE": "Nema otvorene datoteke",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Problemi - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} Problemi, {1} Popravljivi - {2}",

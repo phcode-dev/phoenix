@@ -337,8 +337,6 @@ define({
   "STATUSBAR_TASKS_PAUSE": "Пауза",
   "STATUSBAR_TASKS_STOP": "СТІЙ",
   "STATUSBAR_TASKS_RESTART": "Перезапустіть",
-  "STATUSBAR_SHOW_PANELS": "Показати панелі",
-  "STATUSBAR_SHOW_GIT": "Панель Git",
   "ERRORS_NO_FILE": "Файл не відкрито",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Проблеми - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} Проблеми, {1} Виправні - {2}",

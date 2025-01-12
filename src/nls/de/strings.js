@@ -337,8 +337,6 @@ define({
   "STATUSBAR_TASKS_PAUSE": "Pause",
   "STATUSBAR_TASKS_STOP": "Stoppen",
   "STATUSBAR_TASKS_RESTART": "Neu starten",
-  "STATUSBAR_SHOW_PANELS": "Bedienfelder anzeigen",
-  "STATUSBAR_SHOW_GIT": "Git-Panel",
   "ERRORS_NO_FILE": "Keine Datei geöffnet",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Probleme - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} Probleme, {1} Behebbar - {2}",
