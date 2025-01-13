@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="../../thirdparty/fontawesome/css/all.min.css">
     <script src="assets/js/phoenix.js"></script>
     <script src="assets/js/new-github-project.js"></script>
+    <script src="assets/js/new-git-project.js"></script>
     <style>
         #messageDisplay span {
             width: 100%;
@@ -47,12 +48,12 @@
 
     <div class="website-main-content">
         <div class="website-detail d-flex align-items-center">
-            <span class="localize">{{GIT_REPO_URL}}</span>
-            <input id="websiteURLInput" class="w-100" type="text" name="web-url" value="https://github.com/phcode-dev/HTML-Starter-Templates"/>
+            <span class="label-clone"></span>
+            <input id="websiteURLInput" class="w-100" type="text" name="web-url" value="" spellcheck="false" autocomplete="off"/>
         </div>
         <div id="projectLocation" class="website-detail d-flex align-items-center">
             <span class="localize">{{LOCATION}}</span>
-            <input id="locationInput" class="w-100" type="button" name="web-url" value="">
+            <input id="locationInput" class="w-100" style="text-wrap: inherit;" type="button" name="web-url" value="">
         </div>
         <div class="website-detail d-flex align-items-center">
             <span></span>

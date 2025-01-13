@@ -18,7 +18,7 @@
  *
  */
 
-/*global Phoenix*/
+/*global path*/
 
 define(function (require, exports, module) {
     const Dialogs = require("widgets/Dialogs"),
@@ -376,9 +376,9 @@ define(function (require, exports, module) {
         });
     }
 
-    function showFolderSelect() {
+    function showFolderSelect(initialPath = "") {
         return new Promise((resolve, reject)=>{
-            FileSystem.showOpenDialog(false, true, Strings.CHOOSE_FOLDER, '', null, function (err, files) {
+            FileSystem.showOpenDialog(false, true, Strings.CHOOSE_FOLDER, initialPath, null, function (err, files) {
                 if(err || files.length !== 1){
                     reject();
                     return;
@@ -386,6 +386,67 @@ define(function (require, exports, module) {
                 resolve(files[0]);
             });
         });
+    }
+
+    function _getGitFolderName(gitURL) {
+        if (typeof gitURL !== 'string' || !gitURL.trim()) {
+            return "";
+        }
+        // Remove trailing `.git` if it exists and split the URL
+        const parts = gitURL.replace(/\.git$/, '').split('/');
+        // Return the last segment as the project folder name
+        return parts[parts.length - 1];
+    }
+
+    async function _dirExists(fullPath) {
+        try {
+            const {entry} = await FileSystem.resolveAsync(fullPath);
+            return entry.isDirectory;
+        } catch (e) {
+            return false;
+        }
+    }
+
+    /**
+     * Determines which directory to use for a Git clone operation:
+     *  1. If the selected directory is empty, returns that directory.
+     *  2. Otherwise, checks/creates a child directory named after the Git project.
+     *     - If that child directory is (or becomes) empty, returns its entry.
+     *     - If it is not empty, returns null.
+     *
+     * @param {string} selectedDir - The full path to the user-selected directory.
+     * @param {string} gitURL - The Git clone URL (used to derive the child folder name).
+     * @returns {Promise<{error, }>} error string to show to user and the path to clone.
+     */
+    async function getGitCloneDir(selectedDir, gitURL) {
+        const selectedDirExists = await _dirExists(selectedDir);
+        if (!selectedDirExists) {
+            return {error: Strings.ERROR_GIT_FOLDER_NOT_EXIST, clonePath: selectedDir};
+        }
+
+        const {entry: selectedEntry} = await FileSystem.resolveAsync(selectedDir);
+        if (await selectedEntry.isEmptyAsync()) {
+            return {clonePath: selectedDir};
+        }
+
+        // If not empty, compute the child directory path
+        const folderName = _getGitFolderName(gitURL);
+        if(!folderName){
+            return {error: Strings.ERROR_GIT_FOLDER_NOT_EMPTY, clonePath: selectedDir};
+        }
+
+        const childDirPath = path.join(selectedDir, folderName);
+        const childDirExists = await _dirExists(childDirPath);
+        if (!childDirExists) {
+            return {clonePath: childDirPath};
+        }
+        // The child directory exists; check if it is empty
+        const {entry: childEntry} = await FileSystem.resolveAsync(childDirPath);
+        const isChildEmpty = await childEntry.isEmptyAsync();
+        if(isChildEmpty){
+            return {clonePath: childDirPath};
+        }
+        return {error: Strings.ERROR_GIT_FOLDER_NOT_EMPTY, clonePath: childDirPath};
     }
 
     function showAboutBox() {
@@ -398,6 +459,7 @@ define(function (require, exports, module) {
     exports.downloadAndOpenProject = downloadAndOpenProject;
     exports.showFolderSelect = showFolderSelect;
     exports.showErrorDialogue = showErrorDialogue;
+    exports.getGitCloneDir = getGitCloneDir;
     exports.setupExploreProject = defaultProjects.setupExploreProject;
     exports.setupStartupProject = defaultProjects.setupStartupProject;
     exports.alreadyExists = window.Phoenix.VFS.existsAsync;
