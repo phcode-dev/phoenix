@@ -130,6 +130,7 @@ function browserInit() {
         if(!window.showDirectoryPicker){ // fs access apis not present
             $(document.getElementById("projectLocation")).addClass("forced-hidden");
         }
+        $(".label-clone").text(Strings.GIT_REPO_URL);
         createProjectBtn = document.getElementById("createProjectBtn");
         websiteURLInput = document.getElementById("websiteURLInput");
         locationInput = document.getElementById("locationInput");
@@ -137,6 +138,7 @@ function browserInit() {
         $(websiteURLInput).keyup(_validate);
         locationInput.value = Strings.PLEASE_SELECT_A_FOLDER;
         locationInput.onclick = _selectFolder;
+        websiteURLInput.value = "https://github.com/phcode-dev/HTML-Starter-Templates";
         _validate();
     }
     window.initGitProject = initGitProject;
