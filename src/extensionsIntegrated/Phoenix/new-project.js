@@ -18,7 +18,7 @@
  *
  */
 
-/*global path*/
+/*global path, jsPromise*/
 
 define(function (require, exports, module) {
     const Dialogs = require("widgets/Dialogs"),
@@ -388,6 +388,25 @@ define(function (require, exports, module) {
         });
     }
 
+    async function gitClone(url, cloneDIR) {
+        try{
+            const cloneFolderExists = await _dirExists(cloneDIR);
+            if(!cloneFolderExists) {
+                await Phoenix.VFS.ensureExistsDirAsync(cloneDIR);
+            }
+            await jsPromise(ProjectManager.openProject(cloneDIR));
+            CommandManager.execute("git-clone-url", url, cloneDIR );
+        } catch (e) {
+            setTimeout(async ()=>{
+                // we need this timeout as when user clicks clone in new project dialog, it will immediately
+                // close the error dialog too as it dismisses itself.
+                showErrorDialogue(Strings.ERROR_CLONING_TITLE, e.message || e);
+            }, 100);
+            console.error("git clone failed: ", url, cloneDIR, e);
+            Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "gitClone", "fail");
+        }
+    }
+
     function _getGitFolderName(gitURL) {
         if (typeof gitURL !== 'string' || !gitURL.trim()) {
             return "";
@@ -460,6 +479,7 @@ define(function (require, exports, module) {
     exports.showFolderSelect = showFolderSelect;
     exports.showErrorDialogue = showErrorDialogue;
     exports.getGitCloneDir = getGitCloneDir;
+    exports.gitClone = gitClone;
     exports.setupExploreProject = defaultProjects.setupExploreProject;
     exports.setupStartupProject = defaultProjects.setupStartupProject;
     exports.alreadyExists = window.Phoenix.VFS.existsAsync;

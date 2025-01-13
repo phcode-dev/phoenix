@@ -74,7 +74,7 @@ function desktopInit() {
             return;
         }
         const {clonePath, error} = await newProjectExtension.getGitCloneDir(newPath, websiteURLInput.value);
-        locationInput.fullPath = clonePath;
+        locationInput.clonePath = clonePath;
         locationInput.value = window.top.Phoenix.fs.getTauriPlatformPath(clonePath);
         locationInput.error = error;
         locationInput.originalPath = newPath;
@@ -91,7 +91,7 @@ function desktopInit() {
 
     function _createProjectClicked() {
         localStorage.setItem(LAST_GIT_CLONE_BASE_DIR, locationInput.originalPath);
-        //newProjectExtension.gitClone(websiteURLInput.value, locationInput.value);
+        newProjectExtension.gitClone(websiteURLInput.value, locationInput.clonePath);
         Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "git.Click", "create");
         newProjectExtension.closeDialogue();
     }
