@@ -1198,6 +1198,7 @@ define({
     "ERROR_GIT_URL_INVALID": "Please enter a valid Git clone URL.",
     "ERROR_GIT_FOLDER_NOT_EMPTY": "The Selected folder cannot be used for Git clone as it is not empty or is unreadable.",
     "ERROR_GIT_FOLDER_NOT_EXIST": "The Selected folder cannot be used for Git clone as it does not exist.",
+    "ERROR_CLONING_TITLE": "Git clone Failed",
     "DOWNLOADING": "Downloading...",
     "DOWNLOADING_FILE": "Downloading {0}...",
     "EXTRACTING_FILES_PROGRESS": "Extracting {0} of {1} files.",
