@@ -909,6 +909,12 @@ img {
     margin-bottom: 30px;
 }
 
+.project-bottom {
+    border-top: 3px solid rgba(255, 255, 255, 0.1);
+    padding-top: 20px;
+    margin-top: auto;
+}
+
 .new-project-content {
     overflow-y: auto;
 }

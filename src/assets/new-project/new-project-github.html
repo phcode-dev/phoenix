@@ -11,9 +11,14 @@
     <link rel="stylesheet" href="../../thirdparty/fontawesome/css/all.min.css">
     <script src="assets/js/phoenix.js"></script>
     <script src="assets/js/new-github-project.js"></script>
+    <style>
+        #messageDisplay span {
+            width: 100%;
+        }
+    </style>
 </head>
-<body id="top" onload="init(); initGithubProject();">
-<div class="code-editor-card">
+<body id="top" onload="init(); initGitProject();">
+<div class="code-editor-card d-flex flex-column">
     <div class="project-top d-flex align-items-center justify-content-between">
         <div class="editor-left d-flex align-items-center">
             <a href="code-editor.html" class="back-btn">
@@ -24,7 +29,7 @@
 
             </a>
             <div class="project-title localize">
-                {{NEW_PROJECT_FROM_GITHUB}}
+                {{NEW_PROJECT_FROM_GIT}}
             </div>
         </div>
         <div class="editor-right">
@@ -42,15 +47,21 @@
 
     <div class="website-main-content">
         <div class="website-detail d-flex align-items-center">
-            <span class="localize">{{GITHUB_REPO_URL}}</span>
-            <input id="websiteURLInput" class="" type="text" name="web-url" value="https://github.com/Metroxe/one-html-page-challenge"/>
-            <button id="createProjectBtn" class="create-btn localize">{{CREATE_PROJECT}}</button>
+            <span class="localize">{{GIT_REPO_URL}}</span>
+            <input id="websiteURLInput" class="w-100" type="text" name="web-url" value="https://github.com/phcode-dev/HTML-Starter-Templates"/>
         </div>
         <div id="projectLocation" class="website-detail d-flex align-items-center">
             <span class="localize">{{LOCATION}}</span>
-            <input id="locationInput" type="button" name="web-url" value="">
+            <input id="locationInput" class="w-100" type="button" name="web-url" value="">
+        </div>
+        <div class="website-detail d-flex align-items-center">
+            <span></span>
+            <span id="messageDisplay" class="w-100"></span>
         </div>
 
+    </div>
+    <div class="project-bottom d-flex flex-row-reverse">
+        <button id="createProjectBtn" class="create-btn localize" style="width: 30%">{{CREATE_PROJECT}}</button>
     </div>
 </div>
 
