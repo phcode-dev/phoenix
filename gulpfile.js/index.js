@@ -789,12 +789,49 @@ function _renameExtensionConcatAsExtensionJSInDist(extensionName) {
     });
 }
 
+const minifyableExtensions = ["CloseOthers", "CodeFolding", "DebugCommands", "Git",
+    "HealthData", "JavaScriptCodeHints", "JavaScriptRefactoring", "QuickView"];
+// extensions that nned not be minified either coz they are single file extensions or some other reason.
+const nonMinifyExtensions = ["CSSAtRuleCodeHints", "CSSCodeHints",
+    "CSSPseudoSelectorHints", "DarkTheme", "HandlebarsSupport", "HTMLCodeHints", "HtmlEntityCodeHints",
+    "InlineColorEditor", "InlineTimingFunctionEditor", "JavaScriptQuickEdit", "JSLint",
+    "LightTheme", "MDNDocs", "Phoenix-prettier", "PrefsCodeHints", "SVGCodeHints", "UrlCodeHints"
+];
 async function makeConcatExtensions() {
-    await makeExtensionConcatJS("Git");
+    let content = JSON.parse(fs.readFileSync(`src/extensions/default/DefaultExtensions.json`,
+        "utf8"));
+    const allExtensions = [...content.defaultExtensionsList, ...content.desktopOnly];
+
+    // 3) Validate no unknown extensions are present
+    const knownExtensions = [
+        ...minifyableExtensions,
+        ...nonMinifyExtensions
+    ];
+
+    const unknownExtensions = allExtensions.filter(
+        (ext) => !knownExtensions.includes(ext)
+    );
+
+    if (unknownExtensions.length > 0) {
+        throw new Error(
+            `New extension(s) detected: ${unknownExtensions.join(", ")}. ` +
+            `Please add them to either minifyableExtensions or ` +
+            `nonMinifyExtensions array.`
+        );
+    }
+
+    // 4) Run concatenation for all concat-enabled extensions
+    for (const extension of minifyableExtensions) {
+        await makeExtensionConcatJS(extension);
+    }
+
+    console.log("All extensions concatenated and minified!");
 }
 
 async function _renameConcatExtensionsinDist() {
-    await _renameExtensionConcatAsExtensionJSInDist("Git");
+    for (const extension of minifyableExtensions) {
+        await _renameExtensionConcatAsExtensionJSInDist(extension);
+    }
 }
 
 function createCacheManifest(srcFolder) {
