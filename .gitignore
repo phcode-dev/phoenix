@@ -3,6 +3,8 @@ Thumbs.db
 # ignore jenkins build info
 /build.prop
 
+/src/extensions/default/*/extension-min.js
+
 # ignore node_modules created by gulp and other build scripts
 /node_modules
 /npm-debug.log

@@ -66,7 +66,8 @@ function cleanUnwantedFilesInDist() {
         'dist/nls/*/expertTranslations.json',
         'dist/nls/*/lastTranslated.json',
         'dist/nls/*/lastTranslatedLocale.json',
-        'dist/nls/*/*.js.map'
+        'dist/nls/*/*.js.map',
+        'dist/extensions/default/*/unittests.js.map'
     ]);
 }
 
@@ -633,6 +634,169 @@ function _renameBracketsConcatAsBracketsJSInDist() {
     });
 }
 
+/**
+ * This function concatenates all JS files inside a single extension folder,
+ * rewriting its define() calls to include the correct AMD module name,
+ * and inlining `require("text!...")` contents where possible.
+ *
+ * @param {string} extensionName - e.g. 'ext_name' for src/extensions/default/ext_name
+ * @returns {Promise<void>}
+ */
+function makeExtensionConcatJS(extensionName) {
+    return new Promise((resolve, reject) => {
+        try {
+            const srcDir = 'src/extensions/default/';
+            const extensionDir = `src/extensions/default/${extensionName}/`;
+            const extensionMinFile = path.join(extensionDir, 'extension-min.js');
+            console.log("Concatenating extension: ", extensionDir);
+
+            if (fs.existsSync(extensionMinFile)) {
+                fs.unlinkSync(extensionMinFile);
+            }
+            // For example, we can store the final concatenated content here:
+            // We start by reading the "main.js" for the extension.
+            // You could also do something else if you want an empty string or an existing extension "entry" file.
+            let concatenatedFile = fs.readFileSync(
+                path.join(extensionDir, 'main.js'),
+                'utf8'
+            );
+
+            // Let's gather all .js files
+            // (We are reusing your existing listAllJsFilesRecursively logic).
+            const files = listAllJsFilesRecursively(extensionDir);
+
+            let mergeCount = 0;
+
+            // Optional: track any files you don't want to merge
+            const DO_NOT_CONCATENATE = [
+                // put full paths here if you have any special exceptions
+            ];
+            const notConcatenatedJS = [];
+
+            for (let file of files) {
+                file = file.replaceAll('\\', '/'); // Windows path fix to web-like
+                console.log("the replace: ", file, extensionDir, srcDir);
+                const relPath = file.replace(extensionDir, ''); // e.g. ext_name/someFile.js
+
+                // Skip the extension’s main.js because we already loaded it at the top
+                if (file.endsWith('main.js') || file.endsWith("unittests.js")) {
+                    continue;
+                }
+
+                if (DO_NOT_CONCATENATE.includes(file)) {
+                    notConcatenatedJS.push(file);
+                    continue;
+                }
+
+                let content = fs.readFileSync(file, 'utf8');
+
+                // Check for the number of `define(` calls.
+                const defineCount = content.split('define(').length - 1;
+                // If no define calls, we choose to skip for AMD concatenation
+                if (defineCount === 0) {
+                    notConcatenatedJS.push(file);
+                    continue;
+                }
+                if (defineCount !== 1) {
+                    throw new Error(
+                        `Multiple define statements detected in extension file: ${file}`
+                    );
+                }
+
+                // Insert the AMD module name: define("ext_name/someFile", [deps], function(...){...});
+                // remove .js extension for the define ID
+                const defineId = relPath.replace('.js', '');
+                // Replace first occurrence of define( with define("<the-id>",
+                content = content.replace(
+                    'define(',
+                    `define("${defineId}", `
+                );
+
+                // inline text requires
+                content = inlineTextRequire(file, content, extensionDir);
+
+                concatenatedFile += '\n' + content;
+                mergeCount++;
+            }
+
+            console.log(
+                `Concatenated ${mergeCount} files into extension-min.js for extension: ${extensionName}`
+            );
+            console.log('Skipped these JS files:', notConcatenatedJS);
+
+            // Finally, write to src/extensions/ext_name/extension-min.js
+            fs.writeFileSync(extensionMinFile, concatenatedFile);
+
+            resolve();
+        } catch (err) {
+            console.error(err);
+            reject(err);
+        }
+    });
+}
+
+/**
+ * Similar to _renameBracketsConcatAsBracketsJSInDist,
+ * but this one handles each extension’s final output in dist.
+ *
+ * @param {string} extensionName - e.g. 'ext_name'
+ * @returns {Promise<void>}
+ */
+function _renameExtensionConcatAsExtensionJSInDist(extensionName) {
+    return new Promise((resolve, reject) => {
+        try {
+            const srcExtensionDir = `src/extensions/default/${extensionName}/`;
+            const srcExtensionConcatFile = path.join(srcExtensionDir, 'extension-min.js');
+            const distExtensionDir = path.join('dist/extensions/default', extensionName);
+            const extMinFile = path.join(distExtensionDir, 'main.js');
+            const extMinFileMap = path.join(distExtensionDir, 'main.js.map');
+            const extSrcFile = path.join(distExtensionDir, 'extension-min.js');
+            const extSrcFileMap = path.join(distExtensionDir, 'extension-min.js.map');
+
+            // Make sure extension-min.js exists in dist.
+            if (!fs.existsSync(extSrcFile)) {
+                return reject(
+                    new Error(
+                        `No extension-min.js found for ${extensionName} in ${extSrcFile}.`
+                    )
+                );
+            }
+
+            if (fs.existsSync(srcExtensionConcatFile)) {
+                fs.unlinkSync(srcExtensionConcatFile);
+            }
+            if (fs.existsSync(extMinFile)) {
+                fs.unlinkSync(extMinFile);
+            }
+            fs.copyFileSync(extSrcFile, extMinFile);
+
+            if (fs.existsSync(extMinFileMap)) {
+                fs.unlinkSync(extMinFileMap);
+            }
+            if (fs.existsSync(extSrcFileMap)) {
+                fs.copyFileSync(extSrcFileMap, extMinFileMap);
+            }
+
+            fs.unlinkSync(extSrcFile);
+            if (fs.existsSync(extSrcFileMap)) {
+                fs.unlinkSync(extSrcFileMap);
+            }
+
+            resolve();
+        } catch (err) {
+            reject(err);
+        }
+    });
+}
+
+async function makeConcatExtensions() {
+    await makeExtensionConcatJS("Git");
+}
+
+async function _renameConcatExtensionsinDist() {
+    await _renameExtensionConcatAsExtensionJSInDist("Git");
+}
+
 function createCacheManifest(srcFolder) {
     return new Promise((resolve, reject)=>{
         _listFilesInDir(srcFolder).then((files)=>{
@@ -751,16 +915,16 @@ exports.buildDebug = series(copyThirdPartyLibs.copyAllDebug, makeLoggerConfig, z
 exports.clean = series(cleanDist);
 exports.reset = series(cleanAll);
 
-exports.releaseDev = series(cleanDist, exports.buildDebug, makeBracketsConcatJS, _compileLessSrc,
-    makeDistAll, cleanUnwantedFilesInDist, releaseDev,
+exports.releaseDev = series(cleanDist, exports.buildDebug, makeBracketsConcatJS, makeConcatExtensions, _compileLessSrc,
+    makeDistAll, cleanUnwantedFilesInDist, releaseDev, _renameConcatExtensionsinDist,
     createDistCacheManifest, createDistTest, _cleanReleaseBuildArtefactsInSrc);
-exports.releaseStaging = series(cleanDist, exports.build, makeBracketsConcatJS, _compileLessSrc,
+exports.releaseStaging = series(cleanDist, exports.build, makeBracketsConcatJS, makeConcatExtensions, _compileLessSrc,
     makeDistNonJS, makeJSDist, makeJSPrettierDist, makeNonMinifyDist, cleanUnwantedFilesInDist,
-    _renameBracketsConcatAsBracketsJSInDist, _patchMinifiedCSSInDistIndex, releaseStaging,
+    _renameBracketsConcatAsBracketsJSInDist, _renameConcatExtensionsinDist, _patchMinifiedCSSInDistIndex, releaseStaging,
     createDistCacheManifest, createDistTest, _cleanReleaseBuildArtefactsInSrc);
-exports.releaseProd = series(cleanDist, exports.build, makeBracketsConcatJS, _compileLessSrc,
+exports.releaseProd = series(cleanDist, exports.build, makeBracketsConcatJS, makeConcatExtensions, _compileLessSrc,
     makeDistNonJS, makeJSDist, makeJSPrettierDist, makeNonMinifyDist, cleanUnwantedFilesInDist,
-    _renameBracketsConcatAsBracketsJSInDist, _patchMinifiedCSSInDistIndex, releaseProd,
+    _renameBracketsConcatAsBracketsJSInDist, _renameConcatExtensionsinDist, _patchMinifiedCSSInDistIndex, releaseProd,
     createDistCacheManifest, createDistTest, _cleanReleaseBuildArtefactsInSrc);
 exports.releaseWebCache = series(makeDistWebCache);
 exports.serve = series(exports.build, serve);
