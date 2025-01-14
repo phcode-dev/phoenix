@@ -1,0 +1,76 @@
+<div id="git-panel" class="git bottom-panel vert-resizable top-resizer no-focus">
+    <div class="toolbar simple-toolbar-layout mainToolbar">
+
+        <!-- on left -->
+        <input type="checkbox" class="check-all git-available" />
+        <div class="btn-group git-available">
+            <button title="{{S.TOOLTIP_COMMIT}}" class="btn small git-commit" disabled><i class="octicon octicon-git-commit"></i><span>{{S.BUTTON_COMMIT}}</span></button>
+        </div>
+        <div class="git-available padding-right-small">
+            <div class="btn-group git-rebase">
+                <button title="{{S.TOOLTIP_REBASE_CONTINUE}}" class="btn small git-rebase-continue">
+                    <i class="octicon octicon-git-commit"></i><span>{{S.BUTTON_REBASE_CONTINUE}}</span>
+                </button>
+                <button title="{{S.TOOLTIP_REBASE_SKIP}}" class="btn small git-rebase-skip">
+                    <span>{{S.BUTTON_REBASE_SKIP}}</span>
+                </button>
+                <button title="{{S.TOOLTIP_REBASE_ABORT}}" class="btn small git-rebase-abort">
+                    <span>{{S.BUTTON_REBASE_ABORT}}</span>
+                </button>
+                <!--
+                <button title="{{S.TOOLTIP_FIND_CONFLICTS}}" class="btn small git-find-conflicts">
+                    <span>{{S.BUTTON_FIND_CONFLICTS}}</span>
+                </button>
+                -->
+            </div>
+        </div>
+        <div class="git-available padding-right-small">
+            <div class="btn-group git-merge">
+                <button title="{{S.TOOLTIP_COMMIT}}" class="btn small git-commit-merge">
+                    <i class="octicon octicon-git-commit"></i><span>{{S.BUTTON_COMMIT}}</span>
+                </button>
+                <button title="{{S.TOOLTIP_MERGE_ABORT}}" class="btn small git-merge-abort">
+                    <span>{{S.BUTTON_MERGE_ABORT}}</span>
+                </button>
+                <!--
+                <button title="{{S.TOOLTIP_FIND_CONFLICTS}}" class="btn small git-find-conflicts">
+                    <span>{{S.BUTTON_FIND_CONFLICTS}}</span>
+                </button>
+                -->
+            </div>
+        </div>
+        <div class="btn-group git-available hide-when-x-small">
+            <button title="{{S.GOTO_PREVIOUS_GIT_CHANGE}}" class="btn small git-prev-gutter"><i class="octicon octicon-arrow-up"></i></button>
+            <button title="{{S.GOTO_NEXT_GIT_CHANGE}}" class="btn small git-next-gutter"><i class="octicon octicon-arrow-down"></i></button>
+        </div>
+        <div class="btn-group git-available hide-when-x-small">
+            <button title="{{S.TOOLTIP_SHOW_HISTORY}}" class="btn small git-history-toggle"><i class="octicon octicon-history"></i></button>
+            <button title="{{S.TOOLTIP_SHOW_FILE_HISTORY}}" class="btn small git-file-history"><i class="octicon octicon-file-text"></i></button>
+        </div>
+        <div class="btn-group git-not-available">
+          <button title="{{S.TOOLTIP_INIT}}" class="btn small git-init"><i class="octicon octicon-repo-create"></i><span>{{S.GIT_INIT}}</span></button>
+          <button title="{{S.TOOLTIP_CLONE}}" class="btn small git-clone"><i class="octicon octicon-repo-clone"></i><span>{{S.GIT_CLONE}}</span></button>
+        </div>
+        <!-- this should be last on left -->
+        <div class="btn-group git-available hide-when-x-small">
+            <button title="{{S.TOOLTIP_REFRESH_PANEL}}" class="btn small git-refresh git-icon"><i class="octicon octicon-sync"></i></button>
+        </div>
+        <!-- on right -->
+        <div class="git-right-icons hide-when-small">
+            <div class="btn-group git-available dropup">
+                <ul class="dropdown-menu git-remotes-dropdown"></ul>
+                <button type="button" class="git-remotes btn small dropdown-toggle" data-toggle="dropdown" title="{{S.TOOLTIP_PICK_REMOTE}}">
+                    <span class="caret"></span>
+                    <span class="git-selected-remote">&mdash;</span>
+                </button>
+                <button title="{{S.TOOLTIP_FETCH}}" class="btn small git-fetch"><i class="octicon octicon-cloud-download"></i></button>
+                <button title="{{S.TOOLTIP_PULL}}" class="btn small git-pull"><i class="octicon octicon-repo-pull"></i></button>
+                <button title="{{S.TOOLTIP_PUSH}}" class="btn small git-push"><i class="octicon octicon-repo-push"></i></button>
+            </div>
+        </div>
+        <div class="git-more-options-btn btn-alt-quiet"><i class="fa-solid fa-ellipsis-vertical"></i></div>
+        <a href="#" class="close">&times;</a>
+
+    </div>
+    <div class="table-container" style="height: calc(100% - 42px);"></div>
+</div>

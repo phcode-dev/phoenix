@@ -1,0 +1,49 @@
+<div class="modal git">
+    <div class="modal-header">
+        <h1 class="dialog-title">{{Strings.MERGE_BRANCH}} "{{fromBranch}}"</h1>
+    </div>
+    <div class="modal-body tab-content">
+        <form>
+            <div>
+                <label>{{Strings.TARGET_BRANCH}}:</label>
+                <div>
+                    <select disabled name="branch-target">
+                        {{#branches}}
+                        <option value="{{name}}" remote="{{remote}}" {{#currentBranch}}selected{{/currentBranch}}>
+                        {{name}}
+                        </option>
+                        {{/branches}}
+                    </select>
+                </div>
+            </div>
+            <div>
+                <label>{{Strings.MERGE_MESSAGE}}:</label>
+                <div>
+                    <div class="input-append">
+                        <input name="merge-message" type="text" placeholder="default" autocomplete="off">
+                        <button class="btn fill-pr" type="button">PR</button>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <label>
+                        <input type="checkbox" name="use-rebase"> {{Strings.USE_REBASE}}
+                    </label>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <label>
+                        <input type="checkbox" name="use-noff"> {{Strings.USE_NOFF}}
+                    </label>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="modal-footer">
+        <button data-button-id="cancel" class="dialog-button btn cancel btn-80" >{{Strings.BUTTON_CANCEL}}</button>
+        <button data-button-id="ok"     class="dialog-button btn primary btn-80">{{Strings.BUTTON_OK}}</button>
+    </div>
+</div>

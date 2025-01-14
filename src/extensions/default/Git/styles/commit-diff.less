@@ -1,0 +1,168 @@
+// main: brackets-git.less
+
+.commit-diff {
+    @lineHeight: 15px;
+    color: @diff-gray-text;
+    .selectable-text();
+
+    .dark & {
+        background-color: @dark-diff-lgray-bg;
+        border: 1px solid @dark-bc-btn-border;
+        color: @dark-diff-gray-text;
+    }
+
+    code, pre {
+        background-color: @diff-lgray-bg;
+        color: @diff-gray-text;
+        border: none;
+        padding: 0 3px;
+        margin: 0;
+
+        .dark & {
+            background-color: @dark-diff-lgray-bg;
+            color: @dark-diff-gray-text;
+        }
+    }
+    background-color: @diff-lgray-bg;
+    border: 1px solid @bc-btn-border;
+    border-radius: 3px;
+    margin-bottom: 1em;
+    overflow: auto;
+    padding: 0;
+
+    // FIXME: this part will be removed after github.com/adobe/brackets/issues/7673
+    table:not(.table-striped) {
+        > tbody {
+            > tr:nth-child(even), tr:nth-child(odd) {
+                > td,
+                > th {
+                    background-color: transparent;
+                }
+            }
+        }
+    }
+    table {
+        width: 100%;
+        cursor: text;
+        tbody {
+            tr.meta-file {
+                th {
+                    border-top: 0;
+                    color: @blue-text;
+                    padding: @lineHeight / 2;
+                    text-align: left;
+
+                    .dark & {
+                        color: @dark-blue-text;
+                    }
+                }
+                &:not(:first-child) {
+                    border-top: 1px dashed @bc-btn-border;
+
+                    .dark & {
+                        border-top: 1px dashed @dark-bc-btn-border;
+                    }
+                }
+            }
+            tr.separator {
+                height: @lineHeight;
+                &:first-child, &:last-child {
+                    display: none;
+                }
+            }
+            tr {
+                td {
+                    border-width: 0px;
+                    padding: 0 8px;
+                    &.row-num {
+                        width: 1px;
+                        border-right: 1px solid;
+                        border-color: @diff-gray-border;
+                        text-align: right;
+                        color: @bc-text;
+                        .user-select(none);
+
+                        .dark & {
+                            border-color: @dark-diff-gray-border;
+                            color: @dark-bc-text;
+                        }
+                    }
+                    pre {
+                        white-space: nowrap;
+                        .trailingWhitespace {
+                            background-color: @diff-red-bg;
+
+                            .dark & {
+                                background-color: @dark-diff-red-bg;
+                            }
+                        }
+                    }
+                }
+                &.added {
+                    &, & pre {
+                        background-color: @diff-lgreen-bg;
+
+                        .dark & {
+                            background-color: @dark-diff-lgreen-bg;
+                        }
+                    }
+                    pre:before {
+                        content: "+";
+                    }
+                    .row-num {
+                        background-color: @diff-green-bg !important; //FIXME: `!important` will be removed after github.com/adobe/brackets/issues/7673
+                        border-color: @diff-green-border;
+
+                        .dark & {
+                             background-color: @dark-diff-green-bg !important; //FIXME: `!important` will be removed after github.com/adobe/brackets/issues/7673
+                            border-color: @dark-diff-green-border;
+                        }
+                    }
+                }
+                &.removed {
+                    &, & pre {
+                        background-color: @diff-lred-bg;
+
+                        .dark & {
+                            background-color: @dark-diff-lred-bg;
+                        }
+                    }
+                    pre:before {
+                        content: "-";
+                    }
+                    .row-num {
+                        background-color: @diff-red-bg !important; //FIXME: `!important` will be removed after github.com/adobe/brackets/issues/7673
+                        border-color: @diff-red-border;
+
+                        .dark & {
+                            background-color: @dark-diff-red-bg !important;
+                            border-color: @dark-diff-red-border;
+                        }
+                    }
+                }
+                &.unchanged {
+                    pre:before {
+                        content: "\0A0"; // &nbsp;
+                    }
+                }
+                &.diffCmd {
+                    color: @blue-text;
+                }
+                &.position {
+                    td {
+                        padding: 8px;
+                    }
+                    &, & pre {
+                        color: @diff-gray-text;
+                        background-color: @diff-lgray-bg;
+
+                        .dark & {
+                            color: @dark-diff-gray-text;
+                            background-color: @dark-diff-lgray-bg;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

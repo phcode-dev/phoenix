@@ -1,0 +1,32 @@
+<div class="modal git">
+    <div class="modal-header">
+        <h1 class="dialog-title">{{Strings.CREATE_NEW_BRANCH_TITLE}}</h1>
+    </div>
+    <div class="modal-body tab-content">
+
+        <form>
+            <div>
+                <label>{{Strings.ORIGIN_BRANCH}}:</label>
+                <div>
+                    <div class="input-append">
+                        <select class="branchSelect" name="branch-origin"></select>
+                        <button class="btn fetchBranches" type="button">
+                            <i class="octicon octicon-sync"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <label>{{Strings.BRANCH_NAME}}:</label>
+                <div>
+                    <input name="branch-name" type="text" autocomplete="off" spellcheck="false" />
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <div class="modal-footer">
+        <button data-button-id="cancel" class="dialog-button btn cancel" >{{Strings.BUTTON_CANCEL}}</button>
+        <button data-button-id="ok"     class="dialog-button btn primary">{{Strings.BUTTON_OK}}</button>
+    </div>
+</div>

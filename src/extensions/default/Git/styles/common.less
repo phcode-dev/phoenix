@@ -1,0 +1,124 @@
+// main: brackets-git.less
+.git {
+    hr {
+        margin: 12px auto;
+        width: 95%;
+        height: 1px;
+        border: none;
+        background-color: @bc-panel-separator;
+
+        .dark & {
+            background-color: @dark-bc-panel-separator;
+        }
+    }
+
+    /* radio buttons until they are styled in brackets */
+    input[type="radio"] {
+        margin: 0;
+    }
+    input[type="radio"] {
+        height: 13px;
+        width: 13px;
+        vertical-align: middle;
+        border: 1px solid @bc-btn-border;
+        border-radius: 13px;
+        background-color: @bc-btn-bg;
+        -webkit-appearance: none;
+        box-shadow: inset 0 1px 0 @bc-highlight;
+
+        .dark & {
+            border: 1px solid @dark-bc-btn-border;
+            background-color: @dark-bc-btn-bg;
+            box-shadow: inset 0 1px 0 @dark-bc-highlight;
+        }
+    }
+    input[type="radio"]:active:not(:disabled) {
+        background-color: @bc-btn-bg-down;
+        box-shadow: inset 0 1px 0 @bc-shadow-small;
+
+        .dark & {
+            background-color: @dark-bc-btn-bg-down;
+            box-shadow: inset 0 1px 0 @dark-bc-shadow-small;
+        }
+    }
+    input[type="radio"]:focus {
+        outline:none;
+        border: 1px solid @bc-btn-border-focused;
+        box-shadow: 0 0 0 1px @bc-btn-border-focused-glow;
+
+        .dark & {
+            border: 1px solid @dark-bc-btn-border-focused;
+            box-shadow: 0 0 0 1px @dark-bc-btn-border-focused-glow;
+        }
+    }
+    input[type="radio"]:checked:before {
+        font-weight: bold;
+        color: @bc-text;
+        content: '\25cf';
+        -webkit-margin-start: 0;
+        position: relative;
+        left: 2px;
+        top: -4px;
+        font-size: 12px;
+
+        .dark & {
+            color: @dark-bc-text;
+        }
+    }
+    /* /radio buttons */
+
+    .text-bold {
+        font-weight: 500;
+    }
+    .text-quiet {
+        color: @bc-text-quiet;
+
+        .dark & {
+            color: @dark-bc-text-quiet;
+        }
+    }
+
+    @small: 5px;
+
+    .padding-right-small {
+        padding-right: @small;
+    }
+}
+
+// Additional icons for GitHub Octicon iconic font
+.octicon {
+    &.octicon-expand, &.octicon-collapse {
+        position: relative;
+        width: 12px;
+        height: 12px;
+        zoom: 1.3;
+        &:before, &:after {
+            position: absolute;
+        }
+        &:before {
+            -webkit-transform: rotate(135deg);
+        }
+        &:after {
+            -webkit-transform: rotate(315deg);
+        }
+    }
+    &.octicon-expand {
+        &:before, &:after {
+            content: "\F071";
+        }
+        &:before {
+            top: -5px;
+            left: 5px;
+        }
+    }
+    &.octicon-collapse {
+        -webkit-transform: translateY(1px);
+        &:before, &:after {
+            content: "\F0A1";
+        }
+        &:before {
+            top: -6px;
+            left: 6px;
+        }
+    }
+}

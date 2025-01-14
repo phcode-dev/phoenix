@@ -1,0 +1,12 @@
+{{#commits}}
+<tr class="history-commit" x-hash="{{hash}}">
+    <td>
+        <div class="commit-author-avatar">
+            <span style="{{cssAvatar}}">{{avatarLetter}}</span>
+        </div>
+    </td>
+    <td><span title="{{date.title}}">{{date.shown}}</span> {{Strings.HISTORY_COMMIT_BY}} <span class="commit-author">{{author}}</span></td>
+    <td class="commit-title"><span class="commit-subject">{{subject}} </span>{{#hasTag}}<span class="commit-tags" title="{{tags}}"><i class="octicon octicon-tag"></i>{{tags}}</span>{{/hasTag}}</td>
+    <td>{{hashShort}}</td>
+</tr>
+{{/commits}}

@@ -1,0 +1,46 @@
+<div id="history-viewer">
+    <div class="header">
+        <div>
+            <a href="#" class="close">&times;</a>
+        </div>
+        <div class="author-line">
+            <span class="commit-author">
+                <div class="commit-author-avatar">
+                    <span class="text" style="{{commit.cssAvatar}}">{{commit.avatarLetter}}</span>
+                </div>
+                <span class="commit-author-name">{{commit.author}}</span>
+                <span class="commit-author-email">&lt;{{commit.email}}&gt;</span>
+            </span>
+            <span class="commit-time" title="{{commit.date.title}}">
+                <i class="octicon octicon-calendar"></i>&nbsp;
+                <span class="selectable-text">{{commit.date.shown}}</span>
+            </span>
+            <span class="commit-hash" data-hash="{{commit.hash}}">
+                <i class="octicon octicon-git-commit"></i>&nbsp;<span class="selectable-text">{{commit.hashShort}}</span>
+                <a href="#" class="git-extend-sha">&hellip;</a>
+            </span>
+            <div class="actions">
+                <span class="toggle-diffs">
+                    <i class="octicon octicon-expand collapse"></i>
+                    <i class="octicon octicon-collapse expand"></i>
+                    <span class="expand">{{Strings.EXPAND_ALL}}</span>
+                    <span class="collapse">{{Strings.COLLAPSE_ALL}}</span>
+                </span>
+            </div>
+        </div>
+        <div>
+            <h1 class="commit-title selectable-text"><span>{{commit.subject}}</span></h1>
+        </div>
+    </div>
+    <div class="body">
+        <div class="commitBody">{{{bodyMarkdown}}}</div>
+        <div class="table-striped tab-content">
+            <div class="commit-files">
+                <ul class="nav nav-tabs nav-stacked filesContainer"></ul>
+                <button class="btn loadMore">
+                    Load more files from this commit
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

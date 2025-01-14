@@ -1,0 +1,40 @@
+<div id="git-commit-dialog" class="modal">
+    <div class="modal-header">
+        <button class="extendedCommit btn pull-right">{{Strings.EXTENDED_COMMIT_MESSAGE}}</button>
+        <label class="checkbox pull-right" style="line-height: 28px; margin-right: 50px;">
+            <input class="amend-commit" type="checkbox" style="margin-top: 10px;" /> {{Strings.AMEND_COMMIT}}
+        </label>
+        <h1 class="dialog-title">{{Strings.GIT_COMMIT}}</h1>
+    </div>
+    <div class="modal-body table-striped tab-content">
+        <div>
+            <div class="accordion">
+                <!-- Hidden checkbox to toggle the accordion -->
+                <input type="checkbox" id="codeInspectionToggle" class="accordion-toggle" />
+                <label for="codeInspectionToggle" class="accordion-header">
+                    <span class="accordion-title">{{Strings.CODE_INSPECTION_IN_PROGRESS}}</span>
+                    <i class="fas fa-chevron-down"></i>
+                    <div class="accordion-progress-bar">
+                        <div class="accordion-progress-bar-inner"></div>
+                    </div>
+                </label>
+                <div class="accordion-content lint-errors">
+                    {{Strings.PLEASE_WAIT}}
+                </div>
+            </div>
+        </div>
+        <div class="commit-diff"></div>
+        <div class="commit-message-box">
+            <input name="commit-message" type="text" placeholder="{{Strings.COMMIT_MESSAGE_PLACEHOLDER}}" autocomplete="off" />
+            <textarea name="commit-message" type="text" placeholder="{{Strings.COMMIT_MESSAGE_PLACEHOLDER}}" autocomplete="off" style="display: none;"></textarea>
+            <input name="commit-message-count" readonly="readonly" type="text" tabindex="-1" />
+        </div>
+    </div>
+    <div class="modal-footer">
+        <label class="checkbox pull-left" style="line-height: 28px; margin-right: 50px;">
+            <input class="commit-no-verify" type="checkbox" style="margin-top: 10px;" /> {{Strings.SKIP_COMMIT_CHECKS}}
+        </label>
+        <button data-button-id="cancel" class="dialog-button btn cancel btn-80" >{{Strings.BUTTON_CANCEL}}</button>
+        <button data-button-id="ok"     class="dialog-button btn primary btn-80">{{Strings.BUTTON_OK}}</button>
+    </div>
+</div>
