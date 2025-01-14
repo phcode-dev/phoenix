@@ -1,0 +1,18 @@
+<ul>
+    {{#lintResults}}
+    {{#hasErrors}}
+    <li>
+        {{filename}}
+        <ul>
+            {{#errors}}
+            <li>
+                <a class="lint-error-commit-link" data-file="{{file}}" data-line="{{line}}" data-ch="{{ch}}" style="cursor: pointer">
+                    {{errorLineMessage}}
+                </a>
+            </li>
+            {{/errors}}
+        </ul>
+    </li>
+    {{/hasErrors}}
+    {{/lintResults}}
+</ul>

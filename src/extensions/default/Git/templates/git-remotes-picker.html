@@ -1,0 +1,10 @@
+<!-- List of remotes defined for the current local repository -->
+{{#remotes}}
+<li class="remote">
+    <a href="#" data-remote-name="{{name}}" data-type="git" class="remote-name">
+        {{#deletable}}<span class="trash-icon hover-icon remove-remote">&times;</span>{{/deletable}}
+        <span class="change-remote">{{name}}</span>
+    </a>
+</li>
+{{/remotes}}
+<li><a class="git-remote-new"><span>{{Strings.CREATE_NEW_REMOTE}}</span></a></li>

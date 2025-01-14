@@ -1,0 +1,10 @@
+{
+  "name": "phcode-git-core",
+  "title": "Phoenix Code Git",
+  "version": "1.0.0",
+  "engines": {
+    "brackets": ">=4.0.0"
+  },
+  "description": "Integration of Git into Phoenix Code",
+  "dependencies": {}
+}

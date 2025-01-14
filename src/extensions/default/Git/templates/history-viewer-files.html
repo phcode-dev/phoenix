@@ -1,0 +1,12 @@
+{{#files}}
+    <li x-file="{{file}}">
+        <a>
+            <i class="caret caret-right closed"></i>
+            <i class="caret opened"></i>
+            {{name}}<span class="extension">{{extension}}</span>
+            <i class="octicon octicon-eye openFile" title="{{Strings.VIEW_THIS_FILE}}"></i>
+            {{#useDifftool}}<i class="octicon octicon-diff difftool" title="{{Strings.DIFFTOOL}}"></i>{{/useDifftool}}
+        </a>
+        <div class="commit-diff"></div>
+    </li>
+{{/files}}

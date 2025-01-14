@@ -1,0 +1,66 @@
+<div id="git-clone-dialog" class="git modal">
+    <div class="modal-header">
+        <h1 class="dialog-title">{{Strings.CLONE_REPOSITORY}}</h1>
+    </div>
+    <div class="modal-body">
+
+        <label for="git-clone-url">{{Strings.ENTER_REMOTE_GIT_URL}}</label>
+        <input type="text" class="stringInput" id="git-clone-url" autocomplete="off" spellcheck="false" />
+
+        <hr>
+
+        <div class="accordion">
+            <!-- Hidden checkbox to toggle the accordion -->
+            <input type="checkbox" id="advancedAccordionToggle" class="accordion-toggle" />
+
+            <!-- Accordion Header -->
+            <label for="advancedAccordionToggle" class="accordion-header">
+                {{Strings.MORE_OPTIONS}}
+                <i class="fas fa-chevron-down"></i>
+            </label>
+
+            <!-- Accordion Content -->
+            <div class="accordion-content">
+                <label class="text-bold">
+                    {{Strings.CREDENTIALS}}
+                </label>
+                <div>
+                    <label class="text-quiet">
+                        {{Strings.SAVE_CREDENTIALS_HELP}}
+                    </label>
+                </div>
+
+                <div>
+                    <label>
+                        {{Strings.USERNAME}}:
+                    </label>
+                    <label>
+                        <input type="text" name="username" value="{{config.remoteUsername}}" autocomplete="off" spellcheck="false"/>
+                    </label>
+                </div>
+
+                <div>
+                    <label>
+                        {{Strings.PASSWORD}}:
+                    </label>
+                    <label>
+                        <input type="password" name="password" value="{{config.remotePassword}}" autocomplete="off" spellcheck="false"/>
+                    </label>
+                </div>
+
+                <div>
+                    <label>
+                        <input type="checkbox" name="saveToUrl" />
+                        {{Strings.SAVE_CREDENTIALS_IN_URL}}
+                    </label>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="modal-footer">
+        <button class="dialog-button btn" data-button-id="cancel">{{Strings.CANCEL}}</button>
+        <button class="dialog-button btn primary" data-button-id="ok">{{Strings.OK}}</button>
+    </div>
+</div>

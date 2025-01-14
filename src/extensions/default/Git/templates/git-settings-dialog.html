@@ -1,0 +1,109 @@
+<div id="git-settings-dialog" class="git modal">
+    <div class="modal-header">
+        <h1 class="dialog-title">{{Strings.GIT_SETTINGS_TITLE}}</h1>
+    </div>
+    <div class="modal-body" style="max-height: fit-content;">
+        <div>
+            <label for="git-settings-enableGit">
+                <input id="git-settings-enableGit" type="checkbox" settingsProperty="enableGit" />
+                {{Strings.ENABLE_GIT}}&nbsp;&nbsp;<i title="{{Strings.REQUIRES_APP_RESTART_SETTING}}" class="settings-info-i fa-solid fa-circle-info"></i>
+            </label>
+        </div>
+        <div class="git-settings-content {{#gitDisabled}}forced-inVisible{{/gitDisabled}}">
+            <!-- #features -->
+            <div>
+                <div>
+                    <label for="git-settings-stripWhitespaceFromCommits">
+                        <input id="git-settings-stripWhitespaceFromCommits" type="checkbox" settingsProperty="stripWhitespaceFromCommits" />
+                        {{Strings.STRIP_WHITESPACE_FROM_COMMITS}}
+                    </label>
+                </div>
+                <div>
+                    <label for="git-settings-addEndlineToTheEndOfFile">
+                        <input id="git-settings-addEndlineToTheEndOfFile" type="checkbox" settingsProperty="addEndlineToTheEndOfFile" />
+                        {{Strings.ADD_ENDLINE_TO_THE_END_OF_FILE}}
+                    </label>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <label for="git-settings-removeByteOrderMark">
+                        <input id="git-settings-removeByteOrderMark" type="checkbox" settingsProperty="removeByteOrderMark" />
+                        {{Strings.REMOVE_BOM}}
+                    </label>
+                </div>
+                <div>
+                    <label for="git-settings-normalizeLineEndings">
+                        <input id="git-settings-normalizeLineEndings" type="checkbox" settingsProperty="normalizeLineEndings" />
+                        {{Strings.NORMALIZE_LINE_ENDINGS}}
+                    </label>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <label for="git-settings-useGitGutter">
+                        <input id="git-settings-useGitGutter" type="checkbox" settingsProperty="useGitGutter" />
+                        {{Strings.USE_GIT_GUTTER}}&nbsp;&nbsp;<i title="{{Strings.REQUIRES_APP_RESTART_SETTING}}" class="settings-info-i fa-solid fa-circle-info"></i>
+                    </label>
+                </div>
+                <div>
+                    <label for="git-settings-markModifiedInTree">
+                        <input id="git-settings-markModifiedInTree" type="checkbox" settingsProperty="markModifiedInTree" />
+                        {{Strings.MARK_MODIFIED_FILES_IN_TREE}}&nbsp;&nbsp;<i title="{{Strings.REQUIRES_APP_RESTART_SETTING}}" class="settings-info-i fa-solid fa-circle-info"></i>
+                    </label>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <label for="git-settings-useVerboseDiff">
+                        <input id="git-settings-useVerboseDiff" type="checkbox" settingsProperty="useVerboseDiff" />
+                        {{Strings.USE_VERBOSE_DIFF}}
+                    </label>
+                </div>
+                <div>
+                    <label for="git-settings-useDifftool">
+                        <input id="git-settings-useDifftool" type="checkbox" settingsProperty="useDifftool" />
+                        {{Strings.USE_DIFFTOOL}}
+                    </label>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <label for="git-settings-clearWhitespaceOnSave">
+                        <input id="git-settings-clearWhitespaceOnSave" type="checkbox" settingsProperty="clearWhitespaceOnSave" />
+                        {{Strings.CLEAR_WHITESPACE_ON_FILE_SAVE}}
+                    </label>
+                </div>
+            </div>
+            <!-- /features -->
+            <!-- #gitConfig -->
+            <h4>{{Strings.SYSTEM_CONFIGURATION}}</h4>
+            <div class="row-fluid">
+                {{#gitNotFound}}
+                <div class="alert alert-warning">
+                    {{Strings.GIT_NOT_FOUND_MESSAGE}}
+                </div>
+                {{/gitNotFound}}
+                <label for="git-settings-gitPath">
+                    {{Strings.PATH_TO_GIT_EXECUTABLE}}:&nbsp;&nbsp;
+                    {{#gitNotFound}}
+                    <i title="{{Strings.REQUIRES_APP_RESTART_SETTING}}" class="settings-info-i fa-solid fa-circle-info"></i>
+                    {{/gitNotFound}}
+                </label>
+                <input id="git-settings-gitPath" type="text" settingsProperty="gitPath" autocomplete="off" spellcheck="false"/>
+            </div>
+            <div class="row-fluid">
+                <label for="git-settings-gitTimeout">{{Strings.DEFAULT_GIT_TIMEOUT}}:</label>
+                <input id="git-settings-gitTimeout" type="number" settingsProperty="gitTimeout" />
+            </div>
+            <!-- /gitConfig -->
+        </div>
+
+
+    </div>
+    <div class="modal-footer">
+        <button data-button-id="defaults"  class="dialog-button btn left"          >{{Strings.BUTTON_DEFAULTS}}</button>
+        <button data-button-id="cancel"    class="dialog-button btn cancel btn-80" >{{Strings.BUTTON_CANCEL}}</button>
+        <button data-button-id="ok"        class="dialog-button btn primary btn-80">{{Strings.BUTTON_SAVE}}</button>
+    </div>
+</div>

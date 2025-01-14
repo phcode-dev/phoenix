@@ -1,0 +1,673 @@
+@import "colors.less";
+@import "common.less";
+@import "mixins.less";
+@import "code-mirror.less";
+@import "history.less";
+@import "commit-diff.less";
+@import "dialogs-all.less";
+@import "brackets/brackets_core_ui_variables.less";
+
+@gutterWidth: 0.65em; // using ems so that it'll be scalable on cmd +/-
+
+#editor-holder {
+    .git.spinner {
+        display: none;
+        z-index: 1000;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        &.spin {
+            display: block;
+        }
+    }
+}
+
+/* Project tree */
+.jstree-brackets, .open-files-container {
+    li.git-modified > a:before {
+        content: "|";
+        color: @orange;
+        position: absolute;
+        margin-left: -4px;
+    }
+    li.git-new > a:before {
+        content: "|";
+        color: @green;
+        position: absolute;
+        margin-left: -4px;
+    }
+    li.git-ignored > a {
+        color: @moreDarkGrey !important;
+        font-style: italic;
+        > span.extension {
+            color: @moreDarkGrey !important;
+        }
+    }
+}
+
+/* Branch information */
+#git-branch-dropdown-toggle {
+    display: flex;
+    /* adjust margins to keep position #project-title position stable after extension is loaded */
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 1px 5px;
+    margin-left: -5px;
+    .dropdown-arrow {
+        display: inline-block;
+        width: 7px;
+        height: 5px;
+        margin-left: 4px;
+        position: relative;
+        top: 7px;
+    }
+}
+
+#git-branch {
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1 1 0;
+    .octicon {
+        line-height: unset;
+        font-size: small;
+    }
+}
+
+#git-branch-dropdown {
+    margin-left: -12px;
+    position: absolute;
+    display: block;
+    max-width: none;
+    z-index: 100;
+    overflow-y: auto;
+    &:focus {
+        outline: none;
+    }
+
+    a,
+    a:hover {
+        color: @bc-menu-text;
+
+        .dark & {
+            color: @dark-bc-menu-text;
+        }
+    }
+    .git-branch-new, .git-branch-link {
+        padding: 5px 26px 5px 26px;
+    }
+    .git-branch-link {
+        position: relative;
+        .switch-branch {
+            display: inline-block;
+            width: 100%;
+            padding: 5px 0;
+            margin: -5px 0;
+        }
+        .trash-icon, .merge-branch {
+            position: absolute;
+            opacity: 0;
+            top: 27%;
+            background-image: none !important;
+            width: 16px;
+            height: 16px;
+            font-size: 20px;
+            color: rgba(0, 0, 0, 0.5);
+            line-height: 15px;
+            text-align: center;
+            &:hover {
+                color: rgba(0, 0, 0, 1);
+            }
+        }
+        .trash-icon, .merge-branch {
+            &:hover {
+                color: rgba(0, 0, 0, 1);
+            }
+        }
+        &:hover {
+            .trash-icon, .merge-branch {
+                opacity: 1;
+            }
+        }
+        .merge-branch {
+            right: 5px;
+        }
+    }
+    a {
+        padding: 5px 15px;
+        &.selected {
+            background: @bc-bg-highlight;
+
+            .dark & {
+                background: @dark-bc-bg-highlight;
+            }
+        }
+        &:not(.selected):hover {
+            background: none;
+        }
+    }
+    .divider {
+        margin: 5px 1px;
+    }
+}
+
+.hide-overflow {
+    overflow: hidden !important;
+}
+
+/* Extension panel */
+#git-panel {
+    position: relative;
+
+    .toolbar {
+        overflow: visible;
+        .close {
+            position: absolute;
+            top: 22px;
+            margin-top: -10px;
+        }
+    }
+    .git-more-options-btn {
+        position: absolute;
+        right: 25px;
+        top: 8px;
+        padding: 4px 8px 2px 8px;
+        opacity: .7;
+        .dark & {
+            opacity: .5;
+        }
+    }
+    .git-more-options-btn:hover {
+        opacity: .9;
+        .dark & {
+            opacity: .8;
+        }
+    }
+    table {
+        margin-bottom: 0;
+    }
+    .git-edited-list td {
+        vertical-align: middle;
+    }
+    tr.selected {
+        font-weight: 400;
+    }
+    td {
+        &.checkbox-column {
+            vertical-align: middle;
+            width: 13px;
+        }
+        &.icons-column {
+            padding-left: 13px;
+            width: 1px;
+        }
+        &.status-column {
+            width: 100px;
+        }
+        &:last-child {
+            width: 250px;
+            text-align: right;
+            padding-right: 20px;
+        }
+    }
+    .check-all {
+        margin-left: 7px;
+        margin-right: 10px;
+    }
+    .mainToolbar {
+        .btn-group {
+            line-height: 1;
+            button {
+                height: 26px;
+            }
+        }
+    }
+    .btn-git-diff, .btn-git-undo, .btn-git-delete {
+        padding: 2px 5px;
+        font-size: 12px;
+        line-height: 1em;
+        border-radius: 3px;
+        margin: 0 6px 0 0;
+    }
+    .nothing-to-commit {
+        padding: 15px;
+    }
+    .git-right-icons {
+        position:absolute;
+        right: 55px;
+        top: 5px;
+    }
+    .octicon:not(:only-child) {
+        margin-right: 5px;
+        vertical-align: -1px;
+    }
+    .btn-group.open .dropdown-toggle {
+        background-color: @bc-btn-bg;
+        box-shadow: inset 0 1px 0 @bc-btn-bg-down;
+        color: @bc-text;
+
+        .dark & {
+            background-color: @dark-bc-btn-bg;
+            box-shadow: inset 0 1px 0 @dark-bc-btn-bg-down;
+            color: @dark-bc-text;
+        }
+    }
+    .git-remotes {
+        border-radius: 4px 0 0 4px;
+        padding-bottom: 5px;
+        .caret {
+            border-bottom-color: @bc-text;
+            margin: 7px 5px auto 0px;
+
+            .dark & {
+                border-bottom-color: @dark-bc-text;
+            }
+        }
+    }
+    .git-remotes-dropdown {
+        // don't mess with this, the dropdown menu is at the top so it should grow from bottom left to top right.
+        -webkit-transform-origin: 0 100%;
+    }
+    .git-remotes-dropdown a {
+        .change-remote {
+            display: inline-block;
+            width: 100%;
+        }
+        .hover-icon {
+            opacity: 0;
+            background-image: none !important;
+            width: 16px;
+            height: 16px;
+            font-size: 20px;
+            color: rgba(0, 0, 0, 0.5);
+            line-height: 15px;
+            text-align: center;
+            &:hover {
+                color: rgba(0, 0, 0, 1);
+            }
+        }
+        &:hover .hover-icon {
+            opacity: 1;
+        }
+        &[class$="-remote-new"] {
+            font-style: italic;
+        }
+    }
+
+    .dropdown-menu();
+
+    // class for buttons that are performing an action
+    .btn-loading, .btn-loading:active {
+        background-size: 30px 30px;
+        background-image: linear-gradient(
+            45deg,
+            rgba(0,0,0,0.1)   25%,
+            transparent       25%,
+            transparent       50%,
+            rgba(0,0,0,0.1)   50%,
+            rgba(0,0,0,0.1)   75%,
+            transparent       75%,
+            transparent
+            );
+        background-repeat: repeat;
+        -webkit-animation: btn-loading 1s linear infinite;
+    }
+
+    @-webkit-keyframes btn-loading {
+        0% { background-position: 0 0; }
+        100% { background-position: 60px 30px; }
+    }
+
+    .spinner {
+        display: none;
+        z-index: 1000;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        &.spin {
+            display: block;
+        }
+    }
+
+    .git-file-history:active,
+    .git-history-toggle:active,
+    .btn.active:active {
+        background-color: @bc-bg-highlight-selected !important;
+
+        .dark & {
+            background-color: @dark-bc-bg-highlight-selected !important;
+        }
+    }
+
+    .btn.active:not([disabled]) {
+        background-color: @bc-bg-highlight-selected;
+        color: @bc-text-link;
+
+        .dark & {
+            background-color: @dark-bc-bg-highlight-selected;
+            color: @dark-bc-text-alt;
+        }
+    }
+}
+
+/* Toolbar icon */
+#git-toolbar-icon {
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    background: url("icons/git-icon.svg") no-repeat 0 0;
+    &.dirty {
+        background-position: -24px 0;
+    }
+    &.on {
+        background-position: 0 -24px;
+    }
+    &.on.dirty {
+        background-position: -24px -24px;
+    }
+    &.ok {
+        background-position: 0 -48px;
+    }
+    &.ok.dirty {
+        background-position: -24px -48px;
+    }
+}
+
+/* Dialogs */
+#git-settings-dialog,
+#git-question-dialog,
+#git-commit-dialog,
+#git-clone-dialog,
+#git-diff-dialog {
+    .invalid {
+        border-color: @red;
+    }
+    input[type=text], input[type=password], textarea {
+        .sane-box-model;
+        width: 100%;
+        height: 2em;
+    }
+    .btn-80 {
+        min-width: 80px;
+    }
+}
+
+#git-settings-dialog {
+    .modal-body {
+        min-height: 410px; // this needs to be set to a height that'll prevent the dialog to change size when tabs are being switched.
+    }
+    .nav-tabs {
+        border-bottom: 1px solid @bc-panel-separator;
+
+        .dark & {
+            border-bottom: 1px solid @dark-bc-panel-separator;
+        }
+
+        a {
+            color: @bc-text;
+            border: 1px solid transparent;
+
+            .dark & {
+                color: @dark-bc-text;
+            }
+        }
+        a:hover {
+            background-color: rgba(0, 0, 0, 0.04);
+        }
+        > .active > a {
+            background-color: @bc-panel-bg !important;
+            border: 1px solid @bc-btn-border;
+            border-bottom: 1px solid @bc-panel-bg !important;
+
+            .dark & {
+                background-color: @dark-bc-panel-bg !important;
+                border: 1px solid @dark-bc-btn-border;
+                border-bottom: 1px solid @dark-bc-panel-bg !important;
+            }
+        }
+    }
+    .tab-content {
+        margin-top: 1em;
+    }
+    select {
+        width: 280px;
+    }
+    .settings-info-i {
+        font-size: 12px;
+        color: #0078D4;
+    }
+}
+
+#git-commit-dialog, #git-diff-dialog {
+    .modal-body {
+        .flex-box(column);
+        .commit-diff {
+            // shrink up to min-width
+            .flex-item(0, 1);
+            min-height: 100px;
+        }
+    }
+}
+
+#git-commit-dialog {
+    .modal-body {
+        .accordion {
+            margin-top: 0;
+            margin-bottom: 1em;
+        }
+        .lint-errors {
+
+            background-color: @bc-menu-bg;
+            border: 1px solid @bc-panel-separator;
+
+            .dark & {
+                background-color: @dark-diff-lgray-bg;
+                border: 1px solid @dark-bc-btn-border;
+                color: @dark-diff-gray-text;
+            }
+
+            border-radius: 3px;
+            // no grow, no shrink
+            .flex-item(0, 0);
+            max-height: 150px;
+            overflow: auto;
+            b {
+                color: @red-text;
+            }
+        }
+        .commit-message-box {
+            position: relative;
+            // no grow, no shrink
+            .flex-item(0, 0);
+            textarea[name="commit-message"] {
+                height: 6em;
+            }
+            input[name="commit-message"] {
+                padding-right: 60px;
+            }
+            input[name="commit-message-count"] {
+                position: absolute;
+                right: 0;
+                width: 50px;
+                top: 0;
+                border-top-left-radius:0;
+                border-bottom-left-radius:0;
+                text-align: center;
+                color: @bc-panel-separator;
+                &.over50 {
+                    color: @orange-text;
+                }
+                &.over100 {
+                    color: @red-text;
+                }
+            }
+        }
+    }
+}
+
+#git-commit-diff-dialog {
+    -webkit-animation: none;
+    animation: none;
+    min-width: 800px;
+    .modal-body {
+        .flex-box();
+        .commit-files {
+            .flex-item(0, 0);
+            margin-right: 10px;
+            width: 200px;
+            word-wrap: break-word;
+            overflow-y: auto;
+            .commit-label {
+                display: block;
+                font-weight: 500;
+                margin: 0 0 1em;
+            }
+            .extension {
+                color: @bc-panel-separator;
+            }
+        }
+        .commit-diff {
+            // shrink up to min-width
+            .flex-item(1, 1);
+        }
+        ul.nav-stacked {
+            a {
+                border: none;
+                border-radius: 0;
+                color: @bc-text;
+                cursor: pointer;
+
+                .dark & {
+                    color: @dark-bc-text;
+                }
+            }
+            a:hover {
+                background-color: @bc-bg-highlight;
+
+                .dark & {
+                    background-color: @dark-bc-bg-highlight;
+                }
+            }
+            .active {
+                background-color: #eee;
+            }
+        }
+    }
+}
+
+pre.git-output {
+    font-size: 12px;
+    line-height: 18px;
+    background-color: @bc-input-bg;
+    border: 1px solid @bc-btn-border;
+    border-radius: @bc-border-radius;
+    color: @bc-text;
+
+    .dark & {
+        background-color: @dark-bc-input-bg;
+        border: 1px solid @dark-bc-btn-border;
+        color: @dark-bc-text;
+    }
+}
+
+/* Accordion Styles */
+.accordion {
+    border: 1px solid @bc-section-separator;
+    .dark & {
+        border: 1px solid @dark-bc-section-separator;
+    }
+    border-radius: 4px;
+    margin: 10px 0;
+}
+
+.accordion-header {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    cursor: pointer;
+    margin: 0;
+    font-size: 16px;
+
+    .accordion-progress-bar {
+        position: absolute;
+        bottom: 0; /* Align with the bottom border */
+        left: 0;
+        width: 100%;
+        height: 2px; /* Thin progress bar */
+        background: transparent; /* Background of the progress bar container */
+        overflow: hidden; /* Ensure inner progress doesn't overflow */
+    }
+
+    .accordion-progress-bar-inner {
+        width: 0; /* Start at 0% */
+        height: 100%;
+        background: #007bff; /* Progress bar color */
+        transition: width 0.3s ease; /* Smooth animation for progress updates */
+    }
+}
+
+.accordion-header i {
+    transition: transform 0.3s ease;
+}
+
+/* Rotate the icon when expanded */
+.accordion-toggle:checked + .accordion-header i {
+    transform: rotate(180deg);
+}
+
+.accordion-content {
+    display: none;
+    padding: 15px;
+    border-top: 1px solid @bc-section-separator;
+    .dark & {
+        border-top: 1px solid @dark-bc-section-separator;
+    }
+}
+
+/* Show the content when the checkbox is checked */
+.accordion-toggle:checked + .accordion-header + .accordion-content {
+    display: block;
+}
+
+/* Hide the checkbox */
+.accordion-toggle {
+    display: none;
+}
+
+/*
+these mixins were copied out from the Brackets,
+because there's no way to import them right now
+*/
+
+// https://developer.mozilla.org/en-US/docs/Web/CSS/box-sizing
+.sane-box-model {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+// https://developer.mozilla.org/en-US/docs/Web/CSS/user-select
+.user-select(@type: none) {
+    -webkit-user-select: @type;
+    -khtml-user-select: @type;
+    -moz-user-select: @type;
+    -ms-user-select: @type;
+    -o-user-select: @type;
+    user-select: @type;
+}
+
+// https://developer.mozilla.org/en-US/docs/Web/CSS/flex-direction
+.flex-box(@direction: row) {
+    display: -webkit-flex;
+    -webkit-flex-direction: @direction;
+    display: flex;
+    flex-direction: @direction;
+}
+
+// https://developer.mozilla.org/en-US/docs/Web/CSS/flex
+.flex-item(@grow: 0, @shrink: 1, @basis: auto) {
+    -webkit-flex: @grow @shrink @basis;
+    flex: @grow @shrink @basis;
+}
