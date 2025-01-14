@@ -68,6 +68,7 @@ const NodeConnector = require("./node-connector");
 const LivePreview = require("./live-preview");
 require("./test-connection");
 require("./utils");
+require("./git/cli");
 function randomNonce(byteLength) {
     const randomBuffer = new Uint8Array(byteLength);
     crypto.getRandomValues(randomBuffer);
