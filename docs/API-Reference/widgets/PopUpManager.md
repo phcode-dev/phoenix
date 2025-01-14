@@ -28,8 +28,7 @@ Add Esc key handling for a popup DOM element.
 <a name="removePopUp"></a>
 
 ## removePopUp($popUp)
-Remove Esc key handling for a pop-up. Removes the pop-up from the DOM
-if the pop-up is currently visible and was not originally attached.
+Remove Esc key handling for a pop-up. Removes the pop-up from the DOMif the pop-up is currently visible and was not originally attached.
 
 **Kind**: global function  
 
@@ -37,12 +36,34 @@ if the pop-up is currently visible and was not originally attached.
 | --- | --- |
 | $popUp | <code>jQuery</code> | 
 
+<a name="_filterDropdown"></a>
+
+## \_filterDropdown($popup, searchString)
+hides all elements in popup that doesn't match the given search string, also shows the search bar in popup
+
+**Kind**: global function  
+
+| Param |
+| --- |
+| $popup | 
+| searchString | 
+
+<a name="selectNextItem"></a>
+
+## selectNextItem(direction, $popUp)
+Selects the next or previous item in the popup.
+
+**Kind**: global function  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| direction | <code>number</code> | +1 for next, -1 for prev |
+| $popUp |  |  |
+
 <a name="listenToContextMenu"></a>
 
 ## listenToContextMenu(contextMenu)
-Context menus are also created in AppInit.htmlReady(), so they may not
-yet have been created when we get our AppInit.htmlReady() callback, so
-we provide this method to tell us when to start listening for their events
+Context menus are also created in AppInit.htmlReady(), so they may notyet have been created when we get our AppInit.htmlReady() callback, sowe provide this method to tell us when to start listening for their events
 
 **Kind**: global function  
 
