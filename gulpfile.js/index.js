@@ -61,6 +61,15 @@ function cleanAll() {
     ]);
 }
 
+function cleanUnwantedFilesInDist() {
+    return del([
+        'dist/nls/*/expertTranslations.json',
+        'dist/nls/*/lastTranslated.json',
+        'dist/nls/*/lastTranslatedLocale.json',
+        'dist/nls/*/*.js.map'
+    ]);
+}
+
 /**
  * TODO: Release scripts to merge and min src js/css/html resources into dist.
  * Links that might help:
@@ -380,11 +389,25 @@ const ALLOWED_EXTENSIONS_TO_CACHE = ["js", "html", "htm", "xml", "xhtml", "mjs",
 const DISALLOWED_EXTENSIONS_TO_CACHE = ["map", "nuspec", "partial", "pre", "post",
     "webmanifest", "rb", "ts"];
 
+const EXCLUDE_PATTERNS_FROM_CACHE = [
+    /src\/nls\/.*expertTranslations\.json$/,
+    /src\/nls\/.*lastTranslated\.json$/,
+    /src\/nls\/.*lastTranslatedLocale\.json$/,
+    /extensions\/registry\/registry\.json$/
+];
+
 function _isCacheableFile(path) {
     if(path.indexOf(".") === -1){
         // no extension. dont cache
         return false;
     }
+    for (const pattern of EXCLUDE_PATTERNS_FROM_CACHE) {
+        if (pattern.test(path)) {
+            // If the path matches any excluded pattern, do not cache
+            return false;
+        }
+    }
+
     let ext = path.split(".");
     ext = ext[ext.length - 1];
     if(ALLOWED_EXTENSIONS_TO_CACHE.includes(ext.toLocaleString())){
@@ -422,11 +445,23 @@ function _getFileDetails(path) {
 
 function _computeCacheManifest(baseDir, filePaths) {
     let manifest = {}, fileDetails, totalSize = 0;
+    let fileSizes = [];
     for(let filePath of filePaths){
         fileDetails = _getFileDetails(baseDir + "/" + filePath);
         manifest[filePath] = fileDetails.hash;
         totalSize += fileDetails.sizeBytes;
+        fileSizes.push({ path: filePath, sizeBytes: fileDetails.sizeBytes });
     }
+
+    // Sort files by size in descending order
+    fileSizes.sort((a, b) => b.sizeBytes - a.sizeBytes);
+
+    // Log file sizes in descending order. uncomment to debug large cache size
+    // console.log("Files sorted by size (in bytes):");
+    // for (let file of fileSizes) {
+    //     console.log(`${file.path}: ${file.sizeBytes} bytes`);
+    // }
+
     totalSize = Math.round(totalSize/1024); // KB
     console.log("Total size of cache in KB: ", totalSize);
     if(totalSize > 75000){
@@ -717,14 +752,14 @@ exports.clean = series(cleanDist);
 exports.reset = series(cleanAll);
 
 exports.releaseDev = series(cleanDist, exports.buildDebug, makeBracketsConcatJS, _compileLessSrc,
-    makeDistAll, releaseDev,
+    makeDistAll, cleanUnwantedFilesInDist, releaseDev,
     createDistCacheManifest, createDistTest, _cleanReleaseBuildArtefactsInSrc);
 exports.releaseStaging = series(cleanDist, exports.build, makeBracketsConcatJS, _compileLessSrc,
-    makeDistNonJS, makeJSDist, makeJSPrettierDist, makeNonMinifyDist,
+    makeDistNonJS, makeJSDist, makeJSPrettierDist, makeNonMinifyDist, cleanUnwantedFilesInDist,
     _renameBracketsConcatAsBracketsJSInDist, _patchMinifiedCSSInDistIndex, releaseStaging,
     createDistCacheManifest, createDistTest, _cleanReleaseBuildArtefactsInSrc);
 exports.releaseProd = series(cleanDist, exports.build, makeBracketsConcatJS, _compileLessSrc,
-    makeDistNonJS, makeJSDist, makeJSPrettierDist, makeNonMinifyDist,
+    makeDistNonJS, makeJSDist, makeJSPrettierDist, makeNonMinifyDist, cleanUnwantedFilesInDist,
     _renameBracketsConcatAsBracketsJSInDist, _patchMinifiedCSSInDistIndex, releaseProd,
     createDistCacheManifest, createDistTest, _cleanReleaseBuildArtefactsInSrc);
 exports.releaseWebCache = series(makeDistWebCache);
