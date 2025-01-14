@@ -2221,9 +2221,24 @@ dt,
     border: none;
 
     .dark & {
-        color: @dark-bc-warning-bg;
+        background: @dark-bc-warning-bg;
+        border-radius: 2px;
+        color: @dark-bc-warning-text;
     }
 }
+
+.alert.alert-warning {
+    text-shadow: none;
+    background-color: @bc-warning-bg;
+    border: none;
+
+    .dark & {
+        background: @dark-bc-warning-bg-low;
+        border-radius: 2px;
+        color: @dark-bc-warning-text-low;
+    }
+}
+
 .alert h4 {
     // Specified for the h4 to prevent conflicts of changing @headingsColor
     color: @bc-warning-bg;
