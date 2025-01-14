@@ -54,8 +54,22 @@ define(function (require, exports, module) {
         UrlParams      = require("utils/UrlParams").UrlParams,
         NodeUtils = require("utils/NodeUtils"),
         PathUtils      = require("thirdparty/path-utils/path-utils"),
-        DefaultExtensionsList = JSON.parse(require("text!extensions/default/DefaultExtensions.json"))
-            .defaultExtensionsList;
+        DefaultExtensions = JSON.parse(require("text!extensions/default/DefaultExtensions.json"));
+
+    const desktopOnlyExtensions = DefaultExtensions.desktopOnly;
+    const DefaultExtensionsList = Phoenix.isNativeApp ?
+        [...DefaultExtensions.defaultExtensionsList, ...desktopOnlyExtensions]:
+        DefaultExtensions.defaultExtensionsList;
+
+    if(Phoenix.isTestWindow) {
+        // we dont load the heavy weight git extension by default for tests as huge number
+        // of tests written before git integration and too hard to fix those failing tests for now.
+        // we will just have new tests from git specific workflows.
+        const index = DefaultExtensionsList.indexOf("Git");
+        if(index !== -1) {
+            DefaultExtensionsList.splice(index, 1);
+        }
+    }
 
     const customExtensionLoadPaths = {};
 
