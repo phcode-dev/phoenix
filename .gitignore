@@ -4,6 +4,7 @@ Thumbs.db
 /build.prop
 
 /src/extensions/default/*/extension-min.js
+/src/extensions/default/Git/styles/git-styles-min.css*
 
 # ignore node_modules created by gulp and other build scripts
 /node_modules

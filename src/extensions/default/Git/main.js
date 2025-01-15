@@ -31,7 +31,11 @@ define(function (require, exports, module) {
     require(modules);
 
     // Load CSS
-    ExtensionUtils.loadStyleSheet(module, "styles/git-styles.less");
+    if(Phoenix.config.environment === "dev"){
+        ExtensionUtils.loadStyleSheet(module, "styles/git-styles.less");
+    } else {
+        ExtensionUtils.loadStyleSheet(module, "styles/git-styles-min.css");
+    }
 
     AppInit.appReady(function () {
         Main.init().then((enabled)=>{
