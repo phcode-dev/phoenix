@@ -1,14 +1,11 @@
 define(function (require, exports) {
 
-    var _                          = brackets.getModule("thirdparty/lodash"),
-        Dialogs                    = brackets.getModule("widgets/Dialogs"),
+    const Dialogs                    = brackets.getModule("widgets/Dialogs"),
         Mustache                   = brackets.getModule("thirdparty/mustache/mustache"),
         Metrics                    = brackets.getModule("utils/Metrics"),
         Strings                    = brackets.getModule("strings"),
         Utils                      = require("src/Utils"),
         errorDialogTemplate        = require("text!templates/git-error-dialog.html");
-
-    var errorQueue = [];
 
     function errorToString(err) {
         return Utils.encodeSensitiveInformation(err.toString());
@@ -34,9 +31,8 @@ define(function (require, exports) {
     };
 
     exports.logError = function (err) {
-        var msg = err && err.stack ? err.stack : err;
+        const msg = err && err.stack ? err.stack : err;
         Utils.consoleError("[brackets-git] " + msg);
-        errorQueue.push(err);
         return err;
     };
 

@@ -12,6 +12,7 @@ define(function (require, exports) {
         StringUtils             = brackets.getModule("utils/StringUtils"),
         DocumentManager         = brackets.getModule("document/DocumentManager"),
         Strings                 = brackets.getModule("strings"),
+        Metrics                 = brackets.getModule("utils/Metrics"),
         MainViewManager         = brackets.getModule("view/MainViewManager");
 
     var Git                     = require("src/git/Git"),
@@ -19,7 +20,7 @@ define(function (require, exports) {
         EventEmitter            = require("src/EventEmitter"),
         ErrorHandler            = require("src/ErrorHandler"),
         Panel                   = require("src/Panel"),
-        Setup                         = require("src/utils/Setup"),
+        Setup                   = require("src/utils/Setup"),
         Preferences             = require("src/Preferences"),
         ProgressDialog          = require("src/dialogs/Progress"),
         Utils                   = require("src/Utils"),
@@ -105,22 +106,25 @@ define(function (require, exports) {
                     if (useRebase) {
 
                         Git.rebaseInit(fromBranch).catch(function (err) {
+                            Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'rebase', "fail");
                             throw ErrorHandler.showError(err, Strings.ERROR_REBASE_FAILED);
                         }).then(function (stdout) {
+                            Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'rebase', "success");
                             Utils.showOutput(stdout || Strings.GIT_REBASE_SUCCESS, Strings.REBASE_RESULT).finally(function () {
                                 EventEmitter.emit(Events.REFRESH_ALL);
                             });
-
-                        });
+                        }).catch(console.error);
                     } else {
 
                         Git.mergeBranch(fromBranch, mergeMsg, useNoff).catch(function (err) {
+                            Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'merge', "fail");
                             throw ErrorHandler.showError(err, Strings.ERROR_MERGE_FAILED);
                         }).then(function (stdout) {
+                            Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'merge', "success");
                             Utils.showOutput(stdout || Strings.GIT_MERGE_SUCCESS, Strings.MERGE_RESULT).finally(function () {
                                 EventEmitter.emit(Events.REFRESH_ALL);
                             });
-                        });
+                        }).catch(console.error);
                     }
                 }
             });
@@ -218,8 +222,10 @@ define(function (require, exports) {
                             track       = !!isRemote;
 
                         Git.createBranch(branchName, originName, track).catch(function (err) {
+                            Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'branch', "createFail");
                             throw ErrorHandler.showError(err, Strings.ERROR_CREATE_BRANCH);
                         }).then(function () {
+                            Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'branch', "create");
                             EventEmitter.emit(Events.REFRESH_ALL);
                         });
                     }
@@ -246,8 +252,10 @@ define(function (require, exports) {
                             }).then(function (response) {
                                 if (response === true) {
                                     return Git.forceBranchDelete(branchName).then(function (output) {
+                                        Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'branch', "delete");
                                         return Utils.showOutput(output || Strings.GIT_BRANCH_DELETE_SUCCESS);
                                     }).catch(function (err) {
+                                        Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'branch', "deleteFail");
                                         ErrorHandler.showError(err, Strings.ERROR_BRANCH_DELETE_FORCED);
                                     });
                                 }
@@ -273,12 +281,15 @@ define(function (require, exports) {
 
             Git.getCurrentBranchName().then(function (oldBranchName) {
                 Git.checkout(newBranchName).then(function () {
+                    Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'branch', "switch");
                     return closeNotExistingFiles(oldBranchName, newBranchName);
                 }).catch(function (err) {
-                    throw ErrorHandler.showError(err, Strings.ERROR_SWITCHING_BRANCHES);
+                    Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'branch', "switchFail");
+                    ErrorHandler.showError(err, Strings.ERROR_SWITCHING_BRANCHES);
                 });
             }).catch(function (err) {
-                throw ErrorHandler.showError(err, Strings.ERROR_GETTING_CURRENT_BRANCH);
+                Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'branch', "switchFail");
+                ErrorHandler.showError(err, Strings.ERROR_GETTING_CURRENT_BRANCH);
             });
 
         });
@@ -483,7 +494,7 @@ define(function (require, exports) {
                 }
             });
         }).catch(function (err) {
-            throw ErrorHandler.showError(err);
+            ErrorHandler.showError(err);
         });
     }
 
