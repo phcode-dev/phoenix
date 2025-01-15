@@ -32,7 +32,6 @@ define(function (require, exports, module) {
 
     // Load CSS
     ExtensionUtils.loadStyleSheet(module, "styles/brackets-git.less");
-    ExtensionUtils.loadStyleSheet(module, "styles/fonts/octicon.less");
 
     AppInit.appReady(function () {
         Main.init().then((enabled)=>{
