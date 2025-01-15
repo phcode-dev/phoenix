@@ -458,7 +458,7 @@ define(function (require, exports) {
                     var MAX_LEN = 18;
 
                     const tooltip = StringUtils.format(Strings.ON_BRANCH, branchName);
-                    const html = `<i class='octicon octicon-git-branch'></i> ${
+                    const html = `<i class="fas fa-code-branch"></i> ${
                         branchName.length > MAX_LEN ? branchName.substring(0, MAX_LEN) + "\u2026" : branchName
                     }`;
                     $gitBranchName
@@ -491,7 +491,7 @@ define(function (require, exports) {
         // Add branch name to project tree
         const $html = $(`<div id='git-branch-dropdown-toggle' class='btn-alt-quiet'>
             <span id='git-branch'>
-                <i class='octicon octicon-git-branch'></i>
+                <i class="fas fa-code-branch"></i>
             </span>
             <span class="dropdown-arrow"></span>
             </div>`);
