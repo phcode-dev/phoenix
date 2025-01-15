@@ -113,11 +113,12 @@ define(function (require, exports, module) {
      *
      * @param {Date} date - The date to compare and format.
      * @param {string} [lang] - Optional language code to use for formatting (e.g., 'en', 'fr').
+     * @param {Date} [fromDate] - Optional date to use instead of now to compute the relative dateTime from.
      * @returns {string} - An intelligently formatted date string.
      */
-    function dateTimeFromNowFriendly(date, lang) {
-        const now = new Date();
-        const diffInMilliseconds = date - now;
+    function dateTimeFromNowFriendly(date, lang, fromDate) {
+        fromDate = fromDate || new Date();
+        const diffInMilliseconds = date - fromDate;
         const diffInDays = Math.trunc(diffInMilliseconds / (1000 * 60 * 60 * 24));
 
         // If within the last 30 days or the future, use relative time
@@ -126,7 +127,7 @@ define(function (require, exports, module) {
         }
 
         // If in the current year, format as "MMM DD"
-        const currentYear = now.getFullYear();
+        const currentYear = fromDate.getFullYear();
         const dateYear = date.getFullYear();
 
         const languageOption = [lang || brackets.getLocale() || "en", "en"];

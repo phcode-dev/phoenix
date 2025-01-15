@@ -262,9 +262,9 @@ define(function (require, exports, module) {
             });
 
             it("should use formatted date without year for dates earlier this year", function () {
-                const now = new Date();
-                const testDate = new Date(now.getFullYear(), 1, 15); // Feb 15 of current year
-                const result = LocalizationUtils.dateTimeFromNowFriendly(testDate, "en");
+                const testDate = new Date(2024, 1, 15);
+                const fromDate = new Date(2024, 11, 15);
+                const result = LocalizationUtils.dateTimeFromNowFriendly(testDate, "en", fromDate);
                 expect(result).toBe("Feb 15");
             });
 
@@ -301,9 +301,9 @@ define(function (require, exports, module) {
 
             // Current year tests
             it("should use formatted date without year for dates earlier this year (de locale)", function () {
-                const now = new Date();
-                const testDate = new Date(now.getFullYear(), 1, 15); // Feb 15 of current year
-                const result = LocalizationUtils.dateTimeFromNowFriendly(testDate, "de");
+                const testDate = new Date(2024, 1, 15);
+                const fromDate = new Date(2024, 10, 15);
+                const result = LocalizationUtils.dateTimeFromNowFriendly(testDate, "de", fromDate);
                 expect(result).toBe("15. Feb.");
             });
 
@@ -322,4 +322,4 @@ define(function (require, exports, module) {
         });
 
     });
-}); 
+});
