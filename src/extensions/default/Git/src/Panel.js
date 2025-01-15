@@ -601,54 +601,60 @@ define(function (require, exports) {
         let totalFiles = gitStatusResults.length,
             filesDone = 0;
 
+        function showProgress() {
+            const $progressBar = $dialog.find('.accordion-progress-bar-inner');
+            if ($progressBar.length) {
+                $progressBar[0].style.width = `${filesDone/totalFiles*100}%`;
+            }
+            if(filesDone === totalFiles){
+                $dialog.find('.accordion-progress-bar').addClass("forced-inVisible");
+            }
+            const progressString = StringUtils.format(Strings.CODE_INSPECTION_DONE_FILES, filesDone, totalFiles);
+            $dialog.find(".lint-errors").html(progressString);
+        }
+
         const codeInspectionPromises = gitStatusResults.map(function (fileObj) {
             const isDeleted = fileObj.status.indexOf(Git.FILE_STATUS.DELETED) !== -1;
+            if(isDeleted){
+                filesDone++;
+                showProgress();
+                return;
+            }
 
             // Do a code inspection for the file, if it was not deleted
-            if (!isDeleted) {
-                return new Promise((resolve) => {
-                    // Delay lintFile execution to give the event loop some breathing room
-                    setTimeout(() => {
-                        lintFile(fileObj.file)
-                            .catch(function () {
-                                return [
-                                    {
-                                        provider: { name: "See console [F12] for details" },
-                                        result: {
-                                            errors: [
-                                                {
-                                                    pos: { line: 0, ch: 0 },
-                                                    message: "CodeInspection failed to execute for this file."
-                                                }
-                                            ]
-                                        }
+            return new Promise((resolve) => {
+                // Delay lintFile execution to give the event loop some breathing room
+                setTimeout(() => {
+                    lintFile(fileObj.file)
+                        .catch(function () {
+                            return [
+                                {
+                                    provider: { name: "See console [F12] for details" },
+                                    result: {
+                                        errors: [
+                                            {
+                                                pos: { line: 0, ch: 0 },
+                                                message: "CodeInspection failed to execute for this file."
+                                            }
+                                        ]
                                     }
-                                ];
-                            })
-                            .then(function (result) {
-                                if (result) {
-                                    lintResults.push({
-                                        filename: fileObj.file,
-                                        result: result
-                                    });
                                 }
-                                resolve();
-                            }).finally(()=>{
-                                filesDone++;
-                                const $progressBar = $dialog.find('.accordion-progress-bar-inner');
-                                if ($progressBar.length) {
-                                    $progressBar[0].style.width = `${filesDone/totalFiles*100}%`;
-                                }
-                                if(filesDone === totalFiles){
-                                    $dialog.find('.accordion-progress-bar').addClass("forced-inVisible");
-                                }
-                                const progressString = StringUtils.format(Strings.CODE_INSPECTION_DONE_FILES, filesDone, totalFiles);
-                                $dialog.find(".lint-errors").html(progressString);
-
-                            });
-                    }, 0); // Delay of 0ms to defer to the next tick of the event loop
-                });
-            }
+                            ];
+                        })
+                        .then(function (result) {
+                            if (result) {
+                                lintResults.push({
+                                    filename: fileObj.file,
+                                    result: result
+                                });
+                            }
+                            resolve();
+                        }).finally(()=>{
+                            filesDone++;
+                            showProgress();
+                        });
+                }, 0); // Delay of 0ms to defer to the next tick of the event loop
+            });
         });
 
         return Promise.all(_.compact(codeInspectionPromises)).then(function () {

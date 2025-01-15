@@ -31,7 +31,7 @@ define(function (require, exports, module) {
     require(modules);
 
     // Load CSS
-    ExtensionUtils.loadStyleSheet(module, "styles/brackets-git.less");
+    ExtensionUtils.loadStyleSheet(module, "styles/git-styles.less");
 
     AppInit.appReady(function () {
         Main.init().then((enabled)=>{
