@@ -2,17 +2,18 @@
 define(function (require) {
 
     // Brackets modules
-    const FileSystem      = brackets.getModule("filesystem/FileSystem"),
+    const FileSystem    = brackets.getModule("filesystem/FileSystem"),
         FileUtils       = brackets.getModule("file/FileUtils"),
         ProjectManager  = brackets.getModule("project/ProjectManager"),
         CommandManager  = brackets.getModule("command/CommandManager"),
-        StringUtils           = brackets.getModule("utils/StringUtils");
+        Metrics         = brackets.getModule("utils/Metrics"),
+        Strings         = brackets.getModule("strings"),
+        StringUtils     = brackets.getModule("utils/StringUtils");
 
     // Local modules
-    const ErrorHandler    = require("src/ErrorHandler"),
+    const ErrorHandler  = require("src/ErrorHandler"),
         Events          = require("src/Events"),
         EventEmitter    = require("src/EventEmitter"),
-        Strings             = brackets.getModule("strings"),
         ExpectedError   = require("src/ExpectedError"),
         ProgressDialog  = require("src/dialogs/Progress"),
         CloneDialog     = require("src/dialogs/Clone"),
@@ -73,8 +74,10 @@ define(function (require) {
             return stageGitIgnore("Initial staging");
         }).catch(function (err) {
             ErrorHandler.showError(err, Strings.INIT_NEW_REPO_FAILED, true);
+            Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'init', "fail");
         }).then(function () {
             EventEmitter.emit(Events.REFRESH_ALL);
+            Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'init', "success");
         });
     }
 
@@ -140,8 +143,11 @@ define(function (require) {
                 // when dialog is cancelled, there's no error
                 if (err) { ErrorHandler.showError(err, Strings.GIT_CLONE_REMOTE_FAILED); }
             });
+        }).then(()=>{
+            Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'clone', "success");
         }).catch(function (err) {
             ErrorHandler.showError(err);
+            Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'clone', "fail");
         }).finally(function () {
             $cloneButton.prop("disabled", false);
         });

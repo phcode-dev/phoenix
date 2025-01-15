@@ -6,6 +6,7 @@ define(function (require, exports) {
         Menus             = brackets.getModule("command/Menus"),
         FileSystem        = brackets.getModule("filesystem/FileSystem"),
         Mustache          = brackets.getModule("thirdparty/mustache/mustache"),
+        Metrics           = brackets.getModule("utils/Metrics"),
         ProjectManager    = brackets.getModule("project/ProjectManager");
 
     const Constants       = require("src/Constants"),
@@ -421,6 +422,7 @@ define(function (require, exports) {
     EventEmitter.on(Events.GIT_ENABLED, function () {
         _enableAllCommands(true);
         gitEnabled = true;
+        Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'enabled', "project");
     });
     EventEmitter.on(Events.GIT_DISABLED, function () {
         _enableAllCommands(false);

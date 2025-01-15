@@ -3,7 +3,7 @@ define(function (require, exports) {
     var _                          = brackets.getModule("thirdparty/lodash"),
         Dialogs                    = brackets.getModule("widgets/Dialogs"),
         Mustache                   = brackets.getModule("thirdparty/mustache/mustache"),
-        NativeApp                  = brackets.getModule("utils/NativeApp"),
+        Metrics                    = brackets.getModule("utils/Metrics"),
         Strings                    = brackets.getModule("strings"),
         Utils                      = require("src/Utils"),
         errorDialogTemplate        = require("text!templates/git-error-dialog.html");
@@ -41,6 +41,7 @@ define(function (require, exports) {
     };
 
     exports.showError = function (err, title, dontStripError) {
+        Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'dialog', "errorShow");
         if (err.__shown) { return err; }
 
         exports.logError(err);
