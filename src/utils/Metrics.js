@@ -426,6 +426,33 @@ define(function (require, exports, module) {
         valueEvent(EVENT_TYPE.PERFORMANCE, "ms", action, Number(durationMs));
     }
 
+    /**
+     * Get the range name for a given number.
+     *
+     * The function returns the first range that the number fits into, based on predefined ranges:
+     * 0, 10, 25, 50, 100, 250, 500, 1000, 5000, 10000, and "10000+" for numbers exceeding 10000.
+     *
+     * @param {number} number - The number to determine the range for.
+     * @returns {string} The range name that the number belongs to.
+     */
+    function getRangeName(number) {
+        // Define the ranges
+        const ranges = [0, 5, 10, 25, 50, 100, 250, 500, 1000, 5000, 10000];
+
+        // Iterate through the ranges and return the first range that is greater than or equal to the number
+        // small array, linear scan is most efficient than binary search in most cases comparing the overheads and
+        // maintainability
+        for (let i = 0; i < ranges.length; i++) {
+            if (number <= ranges[i]) {
+                return ""+ranges[i];
+            }
+        }
+
+        // If the number exceeds the largest range, return "10000+"
+        return "10000+";
+    }
+
+
     // Define public API
     exports.init               = init;
     exports.setDisabled        = setDisabled;
@@ -436,6 +463,7 @@ define(function (require, exports, module) {
     exports.valueEvent         = valueEvent;
     exports.logPerformanceTime = logPerformanceTime;
     exports.flushMetrics       = flushMetrics;
+    exports.getRangeName       = getRangeName;
     exports.EVENT_TYPE = EVENT_TYPE;
     exports.AUDIT_TYPE_COUNT = AUDIT_TYPE_COUNT;
     exports.AUDIT_TYPE_VALUE = AUDIT_TYPE_VALUE;

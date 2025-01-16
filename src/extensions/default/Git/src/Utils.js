@@ -23,6 +23,8 @@ define(function (require, exports, module) {
         Constants       = require("src/Constants"),
         Strings         = brackets.getModule("strings");
 
+    const FORMAT_DIFF_TOO_LARGE = "<div>" + Strings.DIFF_TOO_LONG + "</div>";
+
     // Module variables
     const formatDiffTemplate      = require("text!templates/format-diff.html"),
         questionDialogTemplate  = require("text!templates/git-question-dialog.html"),
@@ -69,7 +71,7 @@ define(function (require, exports, module) {
         var diffSplit = diff.split("\n");
 
         if (diffSplit.length > DIFF_MAX_LENGTH) {
-            return "<div>" + Strings.DIFF_TOO_LONG + "</div>";
+            return "" + FORMAT_DIFF_TOO_LARGE; // create new str to return
         }
 
         diffSplit.forEach(function (line) {
@@ -585,6 +587,7 @@ define(function (require, exports, module) {
     }
 
     // Public API
+    exports.FORMAT_DIFF_TOO_LARGE       = FORMAT_DIFF_TOO_LARGE;
     exports.formatDiff                  = formatDiff;
     exports.getProjectRoot              = getProjectRoot;
     exports.getExtensionDirectory       = getExtensionDirectory;

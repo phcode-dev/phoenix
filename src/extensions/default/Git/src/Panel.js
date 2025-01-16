@@ -18,6 +18,7 @@ define(function (require, exports) {
         ProjectManager     = brackets.getModule("project/ProjectManager"),
         StringUtils        = brackets.getModule("utils/StringUtils"),
         Strings            = brackets.getModule("strings"),
+        Metrics            = brackets.getModule("utils/Metrics"),
         Constants          = require("src/Constants"),
         Git                = require("src/git/Git"),
         Events             = require("./Events"),
@@ -87,6 +88,8 @@ define(function (require, exports) {
         const compiledTemplate = Mustache.render(gitCommitDialogTemplate, {Strings: Strings}),
             dialog           = Dialogs.showModalDialogUsingTemplate(compiledTemplate),
             $dialog          = dialog.getElement();
+        Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'commit', "showDialog");
+        let totalLintErrors = 0;
         inspectFiles(files, $dialog).then(function (lintResults) {
             // Flatten the error structure from various providers
             lintResults = lintResults || [];
@@ -111,7 +114,10 @@ define(function (require, exports) {
                     ErrorHandler.logError("[brackets-git] lintResults contain object in unexpected format: " + JSON.stringify(lintResult));
                 }
                 lintResult.hasErrors = lintResult.errors.length > 0;
+                totalLintErrors += lintResult.errors.length;
             });
+
+            Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'commit', "lintErr" + Metrics.getRangeName(totalLintErrors));
 
             // Filter out only results with errors to show
             lintResults = _.filter(lintResults, function (lintResult) {
@@ -152,7 +158,11 @@ define(function (require, exports) {
         _makeDialogBig($dialog);
 
         // Show nicely colored commit diff
-        $dialog.find(".commit-diff").append(Utils.formatDiff(stagedDiff));
+        const diff = Utils.formatDiff(stagedDiff);
+        if(diff === Utils.FORMAT_DIFF_TOO_LARGE) {
+            Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'commit', "diffTooLarge");
+        }
+        $dialog.find(".commit-diff").append(diff);
 
         // Enable / Disable amend checkbox
         var toggleAmendCheckbox = function (bool) {
@@ -343,8 +353,10 @@ define(function (require, exports) {
             }
 
             ErrorHandler.showError(err, Strings.ERROR_GIT_COMMIT_FAILED);
+            Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'commit', "fail");
 
         }).finally(function () {
+            Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'commit', "success");
             EventEmitter.emit(Events.GIT_COMMITED);
             refresh();
         });
@@ -599,8 +611,8 @@ define(function (require, exports) {
     function inspectFiles(gitStatusResults, $dialog) {
         const lintResults = [];
         let totalFiles = gitStatusResults.length,
+            totalFilesLinted = 0,
             filesDone = 0;
-
         function showProgress() {
             const $progressBar = $dialog.find('.accordion-progress-bar-inner');
             if ($progressBar.length) {
@@ -651,6 +663,7 @@ define(function (require, exports) {
                             resolve();
                         }).finally(()=>{
                             filesDone++;
+                            totalFilesLinted++;
                             showProgress();
                         });
                 }, 0); // Delay of 0ms to defer to the next tick of the event loop
@@ -658,6 +671,8 @@ define(function (require, exports) {
         });
 
         return Promise.all(_.compact(codeInspectionPromises)).then(function () {
+            Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'commit', "files" + Metrics.getRangeName(totalFiles));
+            Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'commit', "lint" + Metrics.getRangeName(totalFilesLinted));
             return lintResults;
         });
     }
