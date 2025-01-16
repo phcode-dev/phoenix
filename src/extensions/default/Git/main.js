@@ -18,6 +18,7 @@ define(function (require, exports, module) {
         Events          = require("src/Events"),
         Main            = require("src/Main"),
         Preferences     = require("src/Preferences"),
+        Git             = require("src/git/Git"),
         BracketsEvents     = require("src/BracketsEvents");
 
     // Load extension modules that are not included by core
@@ -49,7 +50,8 @@ define(function (require, exports, module) {
     if (typeof window === "object") {
         window.phoenixGitEvents = {
             EventEmitter: EventEmitter,
-            Events: Events
+            Events: Events,
+            Git
         };
     }
 });
