@@ -78,29 +78,6 @@ define(function (require, exports, module) {
                 $gitIcon = $("#git-toolbar-icon");
             });
 
-            it("should git username and email be valid", async function () {
-                const tempUser = "phcodeTestGitUser";
-                const tempEmail = "phcodeTestGitUser@gmail.com";
-                // username validate
-                let currentVal = await testWindow.phoenixGitEvents.Git.getConfig("user.name");
-                if(!currentVal) {
-                    await testWindow.phoenixGitEvents.Git.setConfig("user.name", tempUser, true);
-                    currentVal = await testWindow.phoenixGitEvents.Git.getConfig("user.name");
-                    expect(currentVal).toBe(tempUser);
-                } else {
-                    expect(currentVal).toBeDefined();
-                }
-                // email validate
-                currentVal = await testWindow.phoenixGitEvents.Git.getConfig("user.email");
-                if(!currentVal) {
-                    await testWindow.phoenixGitEvents.Git.setConfig("user.email", tempEmail, true);
-                    currentVal = await testWindow.phoenixGitEvents.Git.getConfig("user.email");
-                    expect(currentVal).toBe(tempEmail);
-                } else {
-                    expect(currentVal).toBeDefined();
-                }
-            });
-
             it("should only git settings, init and clone commands be enabled in non-git repos", async function () {
                 await forCommandEnabled(Commands.CMD_GIT_INIT);
                 await forCommandEnabled(Commands.CMD_GIT_CLONE);
@@ -150,7 +127,6 @@ define(function (require, exports, module) {
                 }
             }
 
-
             it("Should clicking on file in git panel should open it", async function () {
                 await showGitPanel();
                 clickOpenFile(0);
@@ -161,6 +137,29 @@ define(function (require, exports, module) {
                     }
                     return editor.document.file.fullPath.endsWith(".gitignore");
                 }, "first file to open");
+            });
+
+            it("should git username and email be valid", async function () {
+                const tempUser = "phcodeTestGitUser";
+                const tempEmail = "phcodeTestGitUser@gmail.com";
+                // username validate
+                let currentVal = await testWindow.phoenixGitEvents.Git.getConfig("user.name");
+                if(!currentVal) {
+                    await testWindow.phoenixGitEvents.Git.setConfig("user.name", tempUser, true);
+                    currentVal = await testWindow.phoenixGitEvents.Git.getConfig("user.name");
+                    expect(currentVal).toBe(tempUser);
+                } else {
+                    expect(currentVal).toBeDefined();
+                }
+                // email validate
+                currentVal = await testWindow.phoenixGitEvents.Git.getConfig("user.email");
+                if(!currentVal) {
+                    await testWindow.phoenixGitEvents.Git.setConfig("user.email", tempEmail, true);
+                    currentVal = await testWindow.phoenixGitEvents.Git.getConfig("user.email");
+                    expect(currentVal).toBe(tempEmail);
+                } else {
+                    expect(currentVal).toBeDefined();
+                }
             });
 
             async function commitAllBtnClick() {
