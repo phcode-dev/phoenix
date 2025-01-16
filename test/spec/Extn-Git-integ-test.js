@@ -97,6 +97,14 @@ define(function (require, exports, module) {
                 await __PR.execCommand(Commands.CMD_GIT_TOGGLE_PANEL);
                 expect($gitPanel.is(":visible")).toBeTrue();
                 expect($gitIcon.is(":visible")).toBeTrue();
+                // verify that only the init and clone button is visible
+                expect($gitPanel.find(".git-init").is(":visible")).toBeTrue();
+                expect($gitPanel.find(".git-clone").is(":visible")).toBeTrue();
+                // in non git repos the git buttons are not visible
+                expect($gitPanel.find(".git-commit").is(":visible")).toBeFalse();
+                expect($gitPanel.find(".git-prev-gutter").is(":visible")).toBeFalse();
+                expect($gitPanel.find(".git-file-history").is(":visible")).toBeFalse();
+                expect($gitPanel.find(".git-right-icons").is(":visible")).toBeFalse();
             });
 
             it("Should be able to initialize git repo", async function () {
@@ -105,6 +113,18 @@ define(function (require, exports, module) {
                 await awaitsFor(()=>{
                     return $gitPanel.find(".modified-file").length === 4;
                 }, "4 files to be added in modified files list", 10000);
+                expect($(".check-all").prop("checked")).toBeFalse();
+            });
+
+            it("Should be able to stage and commit initialized git repo", async function () {
+                await showGitPanel();
+                expect($(".check-all").prop("checked")).toBeFalse();
+                $(".check-all").click();
+                await awaitsFor(()=>{
+                    const checkboxes = document.querySelectorAll(".check-one");
+                    return Array.from(checkboxes).every(checkbox => checkbox.checked);
+                }, "All files to be staged for commit", 10000);
+                $(".git-commit").click();
             });
         });
 
