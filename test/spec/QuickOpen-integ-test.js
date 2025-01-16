@@ -182,5 +182,21 @@ define(function (require, exports, module) {
         it("can directly open a file in a given line and column, centering that line on the screen", async function () {
             await quickOpenTest("lines:150,20", null, "lotsOfLines.html", 150, 20);
         });
+
+        it("can open a file and jump to a line and column with no space after comma", async function () {
+            await quickOpenTest("lines", ":50,20", "lotsOfLines.html", 50, 20);
+        });
+
+        it("can open a file and jump to a line and column with space after comma", async function () {
+            await quickOpenTest("lines", ":50, 20", "lotsOfLines.html", 50, 20);
+        });
+
+        it("can directly open a file with line:column format", async function () {
+            await quickOpenTest("lines:150:20", null, "lotsOfLines.html", 150, 20);
+        });
+
+        it("can directly open a file with line:column format and spaces", async function () {
+            await quickOpenTest("lines:150: 20", null, "lotsOfLines.html", 150, 20);
+        });
     });
 });
