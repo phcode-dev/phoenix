@@ -59,8 +59,8 @@ define(function (require) {
                             EventEmitter.emit(Events.GIT_CHANGE_EMAIL, function () {
                                 Git.init().then(function (result) {
                                     resolve(result);
-                                }).catch(function (err) {
-                                    reject(err);
+                                }).catch(function (error) {
+                                    reject(error);
                                 });
                             });
                         });
@@ -71,13 +71,13 @@ define(function (require) {
                 });
             });
         }).then(function () {
+            Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'init', "success");
             return stageGitIgnore("Initial staging");
         }).catch(function (err) {
-            ErrorHandler.showError(err, Strings.INIT_NEW_REPO_FAILED, true);
+            ErrorHandler.showError(err, Strings.INIT_NEW_REPO_FAILED, {dontStripError: true});
             Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'init', "fail");
         }).then(function () {
             EventEmitter.emit(Events.REFRESH_ALL);
-            Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'init', "success");
         });
     }
 
@@ -102,7 +102,7 @@ define(function (require) {
                 const clonePath = Phoenix.app.getDisplayPath(Utils.getProjectRoot());
                 const err = new ExpectedError(
                     StringUtils.format(Strings.GIT_CLONE_ERROR_EXPLAIN, clonePath));
-                ErrorHandler.showError(err, Strings.GIT_CLONE_REMOTE_FAILED, true);
+                ErrorHandler.showError(err, Strings.GIT_CLONE_REMOTE_FAILED, {dontStripError: true});
                 return;
             }
             function _clone(cloneConfig) {
@@ -118,8 +118,11 @@ define(function (require) {
                     const tracker = ProgressDialog.newProgressTracker();
                     destPath = destPath ? fs.getTauriPlatformPath(destPath) : ".";
                     return ProgressDialog.show(Git.clone(remoteUrl, destPath, tracker), tracker);
+                }).then(()=>{
+                    Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'clone', "success");
                 }).catch(function (err) {
-                    ErrorHandler.showError(err, Strings.GIT_CLONE_REMOTE_FAILED);
+                    Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'clone', "fail");
+                    ErrorHandler.showError(err, Strings.GIT_CLONE_REMOTE_FAILED, {errorMetric: "clone"});
                 });
 
                 // restore original url if desired
@@ -143,11 +146,8 @@ define(function (require) {
                 // when dialog is cancelled, there's no error
                 if (err) { ErrorHandler.showError(err, Strings.GIT_CLONE_REMOTE_FAILED); }
             });
-        }).then(()=>{
-            Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'clone', "success");
         }).catch(function (err) {
             ErrorHandler.showError(err);
-            Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'clone', "fail");
         }).finally(function () {
             $cloneButton.prop("disabled", false);
         });

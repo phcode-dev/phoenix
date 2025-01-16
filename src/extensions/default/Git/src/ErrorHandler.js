@@ -36,8 +36,16 @@ define(function (require, exports) {
         return err;
     };
 
-    exports.showError = function (err, title, dontStripError) {
-        Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'dialog', "errorShow");
+    /**
+     *
+     * @param err
+     * @param title
+     * @param {dontStripError: boolean, errorMetric: string} options
+     */
+    exports.showError = function (err, title, options = {}) {
+        const dontStripError = options.dontStripError;
+        const errorMetric = options.errorMetric;
+        Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'dialogErr', errorMetric || "Show");
         if (err.__shown) { return err; }
 
         exports.logError(err);

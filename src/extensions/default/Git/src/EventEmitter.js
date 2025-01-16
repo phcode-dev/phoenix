@@ -1,15 +1,19 @@
 define(function (require, exports, module) {
-    const EventDispatcher = brackets.getModule("utils/EventDispatcher");
+    const EventDispatcher = brackets.getModule("utils/EventDispatcher"),
+        Metrics = brackets.getModule("utils/Metrics");
 
     const emInstance = {};
     EventDispatcher.makeEventDispatcher(emInstance);
 
-    function getEmitter(eventName) {
+    function getEmitter(eventName, optionalMetricToLog) {
         if (!eventName) {
             throw new Error("no event has been passed to get the emittor!");
         }
         return function () {
             emit(eventName, ...arguments);
+            if(optionalMetricToLog) {
+                Metrics.countEvent(Metrics.EVENT_TYPE.GIT, optionalMetricToLog[0], optionalMetricToLog[1]);
+            }
         };
     }
 

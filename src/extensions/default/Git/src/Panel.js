@@ -341,6 +341,8 @@ define(function (require, exports) {
             } else {
                 throw new ExpectedError(Strings.ERROR_MODIFIED_DIALOG_FILES);
             }
+        }).then(()=>{
+            Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'commit', "success");
         }).catch(function (err) {
             if (ErrorHandler.contains(err, "Please tell me who you are")) {
                 return new Promise((resolve)=>{
@@ -352,11 +354,10 @@ define(function (require, exports) {
                 });
             }
 
-            ErrorHandler.showError(err, Strings.ERROR_GIT_COMMIT_FAILED);
+            ErrorHandler.showError(err, Strings.ERROR_GIT_COMMIT_FAILED, {errorMetric: "commit"});
             Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'commit', "fail");
 
         }).finally(function () {
-            Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'commit', "success");
             EventEmitter.emit(Events.GIT_COMMITED);
             refresh();
         });
@@ -1236,7 +1237,7 @@ define(function (require, exports) {
                     });
                 }
             })
-            .on("click", ".git-refresh", EventEmitter.getEmitter(Events.REFRESH_ALL))
+            .on("click", ".git-refresh", EventEmitter.getEmitter(Events.REFRESH_ALL, ["panel", "refreshBtn"]))
             .on("click", ".git-commit", EventEmitter.getEmitter(Events.HANDLE_GIT_COMMIT))
             .on("click", ".git-rebase-continue", function (e) { handleRebase("continue", e); })
             .on("click", ".git-rebase-skip", function (e) { handleRebase("skip", e); })
@@ -1254,22 +1255,24 @@ define(function (require, exports) {
             })
             .on("click", ".git-file-history", EventEmitter.getEmitter(Events.HISTORY_SHOW_FILE))
             .on("click", ".git-history-toggle", EventEmitter.getEmitter(Events.HISTORY_SHOW_GLOBAL))
-            .on("click", ".git-fetch", EventEmitter.getEmitter(Events.HANDLE_FETCH))
+            .on("click", ".git-fetch", EventEmitter.getEmitter(Events.HANDLE_FETCH, ["panel", "fetchBtn"]))
             .on("click", ".git-push", function () {
+                Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'panel', "pushBtn");
                 var typeOfRemote = $(this).attr("x-selected-remote-type");
                 if (typeOfRemote === "git") {
                     EventEmitter.emit(Events.HANDLE_PUSH);
                 }
             })
-            .on("click", ".git-pull", EventEmitter.getEmitter(Events.HANDLE_PULL))
+            .on("click", ".git-pull", EventEmitter.getEmitter(Events.HANDLE_PULL, ["panel", "pullBtn"]))
             .on("click", ".git-init", EventEmitter.getEmitter(Events.HANDLE_GIT_INIT))
             .on("click", ".git-clone", EventEmitter.getEmitter(Events.HANDLE_GIT_CLONE))
-            .on("click", ".change-remote", EventEmitter.getEmitter(Events.HANDLE_REMOTE_PICK))
-            .on("click", ".remove-remote", EventEmitter.getEmitter(Events.HANDLE_REMOTE_DELETE))
-            .on("click", ".git-remote-new", EventEmitter.getEmitter(Events.HANDLE_REMOTE_CREATE))
+            .on("click", ".change-remote", EventEmitter.getEmitter(Events.HANDLE_REMOTE_PICK, ["panel", "changeRemote"]))
+            .on("click", ".remove-remote", EventEmitter.getEmitter(Events.HANDLE_REMOTE_DELETE, ["panel", "removeRemote"]))
+            .on("click", ".git-remote-new", EventEmitter.getEmitter(Events.HANDLE_REMOTE_CREATE, ["panel", "newRemote"]))
             .on("contextmenu", "tr", function (e) {
                 const $this = $(this);
                 if ($this.hasClass("history-commit")) {
+                    Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'cmenu', "history");
                     if(!$this.hasClass("selected")){
                         $this.click();
                     }
@@ -1279,6 +1282,7 @@ define(function (require, exports) {
 
                 $this.click();
                 setTimeout(function () {
+                    Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'cmenu', "filechanges");
                     Menus.getContextMenu(Constants.GIT_PANEL_CHANGES_CMENU).open(e);
                 }, 1);
             });
