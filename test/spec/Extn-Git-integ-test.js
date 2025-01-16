@@ -78,6 +78,29 @@ define(function (require, exports, module) {
                 $gitIcon = $("#git-toolbar-icon");
             });
 
+            it("should git username and email be valid", async function () {
+                const tempUser = "phcodeTestGitUser";
+                const tempEmail = "phcodeTestGitUser@gmail.com";
+                // username validate
+                let currentVal = await testWindow.phoenixGitEvents.Git.getConfig("user.name");
+                if(!currentVal) {
+                    await testWindow.phoenixGitEvents.Git.setConfig("user.name", tempUser, true);
+                    currentVal = await testWindow.phoenixGitEvents.Git.getConfig("user.name");
+                    expect(currentVal).toBe(tempUser);
+                } else {
+                    expect(currentVal).toBeDefined();
+                }
+                // email validate
+                currentVal = await testWindow.phoenixGitEvents.Git.getConfig("user.email");
+                if(!currentVal) {
+                    await testWindow.phoenixGitEvents.Git.setConfig("user.email", tempEmail, true);
+                    currentVal = await testWindow.phoenixGitEvents.Git.getConfig("user.email");
+                    expect(currentVal).toBe(tempEmail);
+                } else {
+                    expect(currentVal).toBeDefined();
+                }
+            });
+
             it("should only git settings, init and clone commands be enabled in non-git repos", async function () {
                 await forCommandEnabled(Commands.CMD_GIT_INIT);
                 await forCommandEnabled(Commands.CMD_GIT_CLONE);
@@ -255,6 +278,76 @@ define(function (require, exports, module) {
                     return $(".git-edited-list tr").length === 0;
                 }, "no files to be commited", 10000);
             });
+
+            async function waitForHistoryVisible(visible) {
+                await awaitsFor(() => {
+                    return $gitPanel.find("#git-history-list").is(":visible") === visible;
+                }, `History list to be visible: ${visible}`);
+            }
+
+            async function testHistoryToggle(whichHistory) {
+                const $historyToggleButton = $gitPanel.find(whichHistory);
+
+                $historyToggleButton.trigger("click");
+                await waitForHistoryVisible(true);
+
+                const $historyList = $gitPanel.find("#git-history-list");
+
+                // Check if the first and second commits are displayed
+                const $historyCommits = $historyList.find(".commit-subject");
+                expect($historyCommits.length).toBeGreaterThanOrEqual(2);
+
+                // Verify the content of the first and second commits
+                expect($historyCommits.eq(0).text().trim()).toBe("second commit");
+                expect($historyCommits.eq(1).text().trim()).toBe("first commit");
+
+                $historyToggleButton.trigger("click");
+                await waitForHistoryVisible(false);
+            }
+
+            it("should show history with first and second commit on clicking global history", async () => {
+                await testHistoryToggle(".git-history-toggle");
+            });
+
+            it("should show history with first and second commit on clicking global history", async () => {
+                await testHistoryToggle(".git-file-history");
+            });
+
+            async function waitForHistoryViewerVisible(visible) {
+                await awaitsFor(() => {
+                    return $("#history-viewer").is(":visible") === visible;
+                }, `History viewer to be visible: ${visible}`);
+            }
+
+            async function testHistoryViewerToggle(commitIndex) {
+                const $historyList = $gitPanel.find("#git-history-list");
+                const $commitRow = $historyList.find(".history-commit").eq(commitIndex);
+
+                // Ensure the commit row exists
+                expect($commitRow.length).toBe(1);
+
+                // Click the row to show the history viewer
+                $commitRow.trigger("click");
+                await waitForHistoryViewerVisible(true);
+
+                // Verify that the history viewer shows the correct commit
+                const $historyViewer = $("#editor-holder .git");
+                await awaitsFor(() => {
+                    return $historyViewer.find(".commit-title").text().trim().includes("first commit");
+                }, `History viewer to have commit detail`);
+
+                // Click the row again to dismiss the history viewer
+                $commitRow.trigger("click");
+                await waitForHistoryViewerVisible(false);
+            }
+
+            it("should show the history viewer when clicking the first commit row and dismiss it on clicking again", async () => {
+                const $historyToggleButton = $gitPanel.find(".git-history-toggle");
+                $historyToggleButton.trigger("click");
+                await waitForHistoryVisible(true); // Ensure the history list is visible
+                await testHistoryViewerToggle(1); // Test for the first commit row
+            });
+
         });
 
     });
