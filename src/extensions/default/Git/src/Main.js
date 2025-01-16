@@ -419,10 +419,17 @@ define(function (require, exports) {
     $(window).focus(refreshOnFocusChange);
 
     // Event handlers
+    let projectSwitched = true;
+    EventEmitter.on(Events.BRACKETS_PROJECT_CHANGE, function () {
+        // pressing refresh button will raise GIT_ENABLED event and we only want one enabled metric
+        // per project open.
+        projectSwitched = true;
+    });
     EventEmitter.on(Events.GIT_ENABLED, function () {
         _enableAllCommands(true);
         gitEnabled = true;
-        Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'enabled', "project");
+        projectSwitched && Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'enabled', "project");
+        projectSwitched = false;
     });
     EventEmitter.on(Events.GIT_DISABLED, function () {
         _enableAllCommands(false);
