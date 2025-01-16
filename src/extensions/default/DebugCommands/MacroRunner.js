@@ -758,10 +758,19 @@ define(function (require, exports, module) {
         _clickDialogButtonWithSelector(buttonSelector, dialogClass, false);
     }
 
+    /**
+     * Saves the currently active file
+     * @returns {Promise<void>} A promise that resolves when file is saved to disc
+     */
+    function saveActiveFile() {
+        return jsPromise(CommandManager.execute(Commands.FILE_SAVE));
+    }
+
     const __PR= {
         readTextFile, writeTextFile, deletePath,
         openFile, setCursors, expectCursorsToBe, keydown, typeAtCursor, validateText, validateAllMarks, validateMarks,
         closeFile, closeAll, undo, redo, setPreference, getPreference, validateEqual, validateNotEqual, execCommand,
+        saveActiveFile,
         awaitsFor, waitForModalDialog, waitForModalDialogClosed, clickDialogButtonID, clickDialogButton,
         EDITING, $, Commands, Dialogs
     };

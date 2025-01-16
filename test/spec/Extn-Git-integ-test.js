@@ -146,11 +146,18 @@ define(function (require, exports, module) {
                     $(".check-all").click();
                     await awaitsFor(()=>{
                         const checkboxes = document.querySelectorAll(".check-one");
-                        return Array.from(checkboxes).every(checkbox => checkbox.checked);
+                        const commitIsDisabled = $(".git-commit").prop("disabled");
+                        return Array.from(checkboxes).every(checkbox => checkbox.checked) && !commitIsDisabled;
                     }, "All files to be staged for commit", 10000);
                 }
                 $(".git-commit").click();
                 await __PR.waitForModalDialog("#git-commit-dialog");
+            }
+
+            async function commmitDlgWithMessage(message) {
+                $("input[name='commit-message']").val(message);
+                __PR.clickDialogButtonID(__PR.Dialogs.DIALOG_BTN_OK);
+                await __PR.waitForModalDialogClosed("#git-commit-dialog");
             }
 
             function expectTextToContain(srcText, list) {
@@ -192,6 +199,61 @@ define(function (require, exports, module) {
                 // dismiss dialog
                 __PR.clickDialogButtonID(__PR.Dialogs.DIALOG_BTN_CANCEL);
                 await __PR.waitForModalDialogClosed("#git-commit-dialog");
+            });
+
+            it("Should be able to commit the files", async function () {
+                await commitAllBtnClick();
+                await commmitDlgWithMessage("first commit");
+                await awaitsFor(()=>{
+                    return $(".git-edited-list tr").length === 0;
+                }, "no files to be commited", 10000);
+            });
+
+            it("Should editing new file and saving add it to changed files list", async function () {
+                __PR.setCursors(["5:15"]);
+                __PR.typeAtCursor("\nhelloIG");
+                await __PR.saveActiveFile();
+                await awaitsFor(()=>{
+                    return $(".git-edited-list tr").length === 1;
+                }, "new edited file to come up in status", 10000);
+
+                // now commit
+                await commitAllBtnClick();
+                await commmitDlgWithMessage("second commit");
+                await awaitsFor(()=>{
+                    return $(".git-edited-list tr").length === 0;
+                }, "no files to be commited", 10000);
+            });
+
+            async function gotoChange(line, direction) {
+                await awaitsFor(()=>{
+                    $(`.git-${direction}-gutter`).click();
+                    const editor = EditorManager.getActiveEditor();
+                    return editor.getCursorPos().line === line;
+                }, `should go to previous change ${line}`, 10000, 100);
+            }
+
+            it("Should be able to navigate to next and previous changes and then discard changes", async function () {
+                __PR.setCursors(["1:1"]);
+                __PR.typeAtCursor("changeLine1\n");
+                __PR.setCursors(["4:1"]);
+                __PR.typeAtCursor("changeLine2\n");
+                await __PR.saveActiveFile();
+                await awaitsFor(()=>{
+                    return $(".git-edited-list tr").length === 1;
+                }, "new edited file to come up in status", 10000);
+
+                // next previous buttons tests
+                await gotoChange(3, "prev");
+                await gotoChange(0, "prev");
+                await gotoChange(3, "next");
+
+                // discard all changes with panel button
+                $(".btn-git-undo").click();
+                __PR.clickDialogButtonID(__PR.Dialogs.DIALOG_BTN_OK);
+                await awaitsFor(()=>{
+                    return $(".git-edited-list tr").length === 0;
+                }, "no files to be commited", 10000);
             });
         });
 
