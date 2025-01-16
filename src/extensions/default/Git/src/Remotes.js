@@ -5,6 +5,8 @@ define(function (require) {
         DefaultDialogs  = brackets.getModule("widgets/DefaultDialogs"),
         Dialogs         = brackets.getModule("widgets/Dialogs"),
         Mustache        = brackets.getModule("thirdparty/mustache/mustache"),
+        Metrics         = brackets.getModule("utils/Metrics"),
+        Strings         = brackets.getModule("strings"),
         StringUtils     = brackets.getModule("utils/StringUtils");
 
     // Local modules
@@ -16,7 +18,6 @@ define(function (require) {
         ProgressDialog  = require("src/dialogs/Progress"),
         PullDialog      = require("src/dialogs/Pull"),
         PushDialog      = require("src/dialogs/Push"),
-        Strings             = brackets.getModule("strings"),
         Utils           = require("src/Utils");
 
     // Templates
@@ -237,11 +238,13 @@ define(function (require) {
                     return ProgressDialog.show(op, progressTracker)
                         .then(function (result) {
                             return ProgressDialog.waitForClose().then(function () {
+                                Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'push', "success");
                                 showPushResult(result);
                             });
                         })
                         .catch(function (err) {
-                            ErrorHandler.showError(err, Strings.ERROR_PUSHING_REMOTE);
+                            Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'push', "fail");
+                            ErrorHandler.showError(err, Strings.ERROR_PUSHING_REMOTE, {errorMetric: "push"});
                         });
                 });
                 // restore original url if desired
@@ -315,12 +318,14 @@ define(function (require) {
                                 // leaving the result as empty in stdout.
                                 // If we reach this point, the command has succeeded,
                                 // so we display a success message if `result` is "".
+                                Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'pull', "success");
                                 return Utils.showOutput(result || Strings.GIT_PULL_SUCCESS,
                                     Strings.GIT_PULL_RESPONSE);
                             });
                         })
                         .catch(function (err) {
-                            ErrorHandler.showError(err, Strings.ERROR_PULLING_REMOTE);
+                            Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'pull', "fail");
+                            ErrorHandler.showError(err, Strings.ERROR_PULLING_REMOTE, {errorMetric: "pull"});
                         });
                 });
                 // restore original url if desired
@@ -347,8 +352,12 @@ define(function (require) {
 
         const tracker = ProgressDialog.newProgressTracker();
         return ProgressDialog.show(Git.fetchAllRemotes(tracker), tracker)
+            .then(()=>{
+                Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'fetch', "success");
+            })
             .catch(function (err) {
-                ErrorHandler.showError(err);
+                Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'fetch', "fail");
+                ErrorHandler.showError(err, undefined, {errorMetric: "fetch"});
             })
             .then(ProgressDialog.waitForClose)
             .finally(function () {

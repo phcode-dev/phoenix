@@ -85,7 +85,7 @@ define(function (require, exports) {
                 .then(function () {
                     fillBranches(config, $dialog);
                 }).catch(function (err) {
-                    throw ErrorHandler.showError(err, Strings.ERROR_FETCH_REMOTE);
+                    ErrorHandler.showError(err, Strings.ERROR_FETCH_REMOTE);
                 });
         });
         fillBranches(config, $dialog);

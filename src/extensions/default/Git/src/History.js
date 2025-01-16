@@ -6,6 +6,7 @@ define(function (require) {
         FileUtils = brackets.getModule("file/FileUtils"),
         LocalizationUtils = brackets.getModule("utils/LocalizationUtils"),
         Strings = brackets.getModule("strings"),
+        Metrics = brackets.getModule("utils/Metrics"),
         Mustache = brackets.getModule("thirdparty/mustache/mustache");
 
     // Local modules
@@ -315,9 +316,11 @@ define(function (require) {
     });
     EventEmitter.on(Events.HISTORY_SHOW_FILE, function () {
         handleToggleHistory("FILE");
+        Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'panel', "fileHistory");
     });
     EventEmitter.on(Events.HISTORY_SHOW_GLOBAL, function () {
         handleToggleHistory("GLOBAL");
+        Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'panel', "history");
     });
     EventEmitter.on(Events.REFRESH_HISTORY, function () {
         handleToggleHistory("REFRESH");

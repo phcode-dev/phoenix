@@ -18,6 +18,7 @@ define(function (require, exports) {
         ProjectManager     = brackets.getModule("project/ProjectManager"),
         StringUtils        = brackets.getModule("utils/StringUtils"),
         Strings            = brackets.getModule("strings"),
+        Metrics            = brackets.getModule("utils/Metrics"),
         Constants          = require("src/Constants"),
         Git                = require("src/git/Git"),
         Events             = require("./Events"),
@@ -87,6 +88,8 @@ define(function (require, exports) {
         const compiledTemplate = Mustache.render(gitCommitDialogTemplate, {Strings: Strings}),
             dialog           = Dialogs.showModalDialogUsingTemplate(compiledTemplate),
             $dialog          = dialog.getElement();
+        Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'commit', "showDialog");
+        let totalLintErrors = 0;
         inspectFiles(files, $dialog).then(function (lintResults) {
             // Flatten the error structure from various providers
             lintResults = lintResults || [];
@@ -111,7 +114,10 @@ define(function (require, exports) {
                     ErrorHandler.logError("[brackets-git] lintResults contain object in unexpected format: " + JSON.stringify(lintResult));
                 }
                 lintResult.hasErrors = lintResult.errors.length > 0;
+                totalLintErrors += lintResult.errors.length;
             });
+
+            Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'commit', "lintErr" + Metrics.getRangeName(totalLintErrors));
 
             // Filter out only results with errors to show
             lintResults = _.filter(lintResults, function (lintResult) {
@@ -152,7 +158,11 @@ define(function (require, exports) {
         _makeDialogBig($dialog);
 
         // Show nicely colored commit diff
-        $dialog.find(".commit-diff").append(Utils.formatDiff(stagedDiff));
+        const diff = Utils.formatDiff(stagedDiff);
+        if(diff === Utils.FORMAT_DIFF_TOO_LARGE) {
+            Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'commit', "diffTooLarge");
+        }
+        $dialog.find(".commit-diff").append(diff);
 
         // Enable / Disable amend checkbox
         var toggleAmendCheckbox = function (bool) {
@@ -331,6 +341,8 @@ define(function (require, exports) {
             } else {
                 throw new ExpectedError(Strings.ERROR_MODIFIED_DIALOG_FILES);
             }
+        }).then(()=>{
+            Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'commit', "success");
         }).catch(function (err) {
             if (ErrorHandler.contains(err, "Please tell me who you are")) {
                 return new Promise((resolve)=>{
@@ -342,7 +354,8 @@ define(function (require, exports) {
                 });
             }
 
-            ErrorHandler.showError(err, Strings.ERROR_GIT_COMMIT_FAILED);
+            ErrorHandler.showError(err, Strings.ERROR_GIT_COMMIT_FAILED, {errorMetric: "commit"});
+            Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'commit', "fail");
 
         }).finally(function () {
             EventEmitter.emit(Events.GIT_COMMITED);
@@ -441,8 +454,15 @@ define(function (require, exports) {
                     dialog           = Dialogs.showModalDialogUsingTemplate(compiledTemplate),
                     $dialog          = dialog.getElement();
                 _makeDialogBig($dialog);
-                $dialog.find(".commit-diff").append(Utils.formatDiff(diff));
+                const diffVal = Utils.formatDiff(diff);
+                if(diffVal === Utils.FORMAT_DIFF_TOO_LARGE) {
+                    Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'diffBtn', "diffTooLarge");
+                } else {
+                    Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'diffBtn', "success");
+                }
+                $dialog.find(".commit-diff").append(Utils.formatDiff(diffVal));
             }).catch(function (err) {
+                Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'diffBtn', "error");
                 ErrorHandler.showError(err, Strings.ERROR_GIT_DIFF_FAILED);
             });
         }
@@ -599,8 +619,8 @@ define(function (require, exports) {
     function inspectFiles(gitStatusResults, $dialog) {
         const lintResults = [];
         let totalFiles = gitStatusResults.length,
+            totalFilesLinted = 0,
             filesDone = 0;
-
         function showProgress() {
             const $progressBar = $dialog.find('.accordion-progress-bar-inner');
             if ($progressBar.length) {
@@ -651,6 +671,7 @@ define(function (require, exports) {
                             resolve();
                         }).finally(()=>{
                             filesDone++;
+                            totalFilesLinted++;
                             showProgress();
                         });
                 }, 0); // Delay of 0ms to defer to the next tick of the event loop
@@ -658,6 +679,8 @@ define(function (require, exports) {
         });
 
         return Promise.all(_.compact(codeInspectionPromises)).then(function () {
+            Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'commit', "files" + Metrics.getRangeName(totalFiles));
+            Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'commit', "lint" + Metrics.getRangeName(totalFilesLinted));
             return lintResults;
         });
     }
@@ -1214,7 +1237,7 @@ define(function (require, exports) {
                     });
                 }
             })
-            .on("click", ".git-refresh", EventEmitter.getEmitter(Events.REFRESH_ALL))
+            .on("click", ".git-refresh", EventEmitter.getEmitter(Events.REFRESH_ALL, ["panel", "refreshBtn"]))
             .on("click", ".git-commit", EventEmitter.getEmitter(Events.HANDLE_GIT_COMMIT))
             .on("click", ".git-rebase-continue", function (e) { handleRebase("continue", e); })
             .on("click", ".git-rebase-skip", function (e) { handleRebase("skip", e); })
@@ -1222,26 +1245,34 @@ define(function (require, exports) {
             .on("click", ".git-commit-merge", commitMerge)
             .on("click", ".git-merge-abort", abortMerge)
             .on("click", ".git-find-conflicts", findConflicts)
-            .on("click", ".git-prev-gutter", GutterManager.goToPrev)
-            .on("click", ".git-next-gutter", GutterManager.goToNext)
+            .on("click", ".git-prev-gutter", ()=>{
+                Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'panel', "prevBtn");
+                GutterManager.goToPrev();
+            })
+            .on("click", ".git-next-gutter", ()=>{
+                Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'panel', "nextBtn");
+                GutterManager.goToNext();
+            })
             .on("click", ".git-file-history", EventEmitter.getEmitter(Events.HISTORY_SHOW_FILE))
             .on("click", ".git-history-toggle", EventEmitter.getEmitter(Events.HISTORY_SHOW_GLOBAL))
-            .on("click", ".git-fetch", EventEmitter.getEmitter(Events.HANDLE_FETCH))
+            .on("click", ".git-fetch", EventEmitter.getEmitter(Events.HANDLE_FETCH, ["panel", "fetchBtn"]))
             .on("click", ".git-push", function () {
+                Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'panel', "pushBtn");
                 var typeOfRemote = $(this).attr("x-selected-remote-type");
                 if (typeOfRemote === "git") {
                     EventEmitter.emit(Events.HANDLE_PUSH);
                 }
             })
-            .on("click", ".git-pull", EventEmitter.getEmitter(Events.HANDLE_PULL))
+            .on("click", ".git-pull", EventEmitter.getEmitter(Events.HANDLE_PULL, ["panel", "pullBtn"]))
             .on("click", ".git-init", EventEmitter.getEmitter(Events.HANDLE_GIT_INIT))
             .on("click", ".git-clone", EventEmitter.getEmitter(Events.HANDLE_GIT_CLONE))
-            .on("click", ".change-remote", EventEmitter.getEmitter(Events.HANDLE_REMOTE_PICK))
-            .on("click", ".remove-remote", EventEmitter.getEmitter(Events.HANDLE_REMOTE_DELETE))
-            .on("click", ".git-remote-new", EventEmitter.getEmitter(Events.HANDLE_REMOTE_CREATE))
+            .on("click", ".change-remote", EventEmitter.getEmitter(Events.HANDLE_REMOTE_PICK, ["panel", "changeRemote"]))
+            .on("click", ".remove-remote", EventEmitter.getEmitter(Events.HANDLE_REMOTE_DELETE, ["panel", "removeRemote"]))
+            .on("click", ".git-remote-new", EventEmitter.getEmitter(Events.HANDLE_REMOTE_CREATE, ["panel", "newRemote"]))
             .on("contextmenu", "tr", function (e) {
                 const $this = $(this);
                 if ($this.hasClass("history-commit")) {
+                    Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'cmenu', "history");
                     if(!$this.hasClass("selected")){
                         $this.click();
                     }
@@ -1251,6 +1282,7 @@ define(function (require, exports) {
 
                 $this.click();
                 setTimeout(function () {
+                    Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'cmenu', "filechanges");
                     Menus.getContextMenu(Constants.GIT_PANEL_CHANGES_CMENU).open(e);
                 }, 1);
             });

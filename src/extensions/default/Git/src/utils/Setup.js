@@ -1,7 +1,8 @@
 define(function (require, exports) {
 
     // Brackets modules
-    const _ = brackets.getModule("thirdparty/lodash");
+    const _ = brackets.getModule("thirdparty/lodash"),
+        Metrics = brackets.getModule("utils/Metrics");
 
     // Local modules
     const Cli         = require("src/Cli"),
@@ -110,10 +111,12 @@ define(function (require, exports) {
             getGitVersion().then(function (_version) {
                 extensionActivated = true;
                 resolve(extensionActivated);
+                Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'installed', "yes");
             }).catch(function (err) {
                 extensionActivated = false;
                 console.warn("Failed to launch Git executable. Deactivating Git extension. Is git installed?", err);
                 resolve(extensionActivated);
+                Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'installed', "no");
             });
         });
     }
