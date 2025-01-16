@@ -625,6 +625,23 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Loads the default extension located at given extensions/default/extensionFolderName . used for tests
+     *
+     * @private
+     * @param {string} extensionFolderName
+     * @return {!$.Promise} A promise object that is resolved when all extensions complete loading.
+     */
+    function _loadDefaultExtension(extensionFolderName) {
+        const extensionPath = getDefaultExtensionPath();
+
+        logger.leaveTrail("loading default extension: " + extensionFolderName);
+        var extConfig = {
+            baseUrl: extensionPath + "/" + extensionFolderName
+        };
+        return loadExtension(extensionFolderName, extConfig, 'main');
+    }
+
+    /**
      * Loads the extension that lives at baseUrl into its own Require.js context
      *
      * @param {!string} directory an absolute native path that contains a directory of extensions.
@@ -906,8 +923,11 @@ define(function (require, exports, module) {
     EventDispatcher.makeEventDispatcher(exports);
 
     // unit tests
-    exports._setInitExtensionTimeout = _setInitExtensionTimeout;
-    exports._getInitExtensionTimeout = _getInitExtensionTimeout;
+    if(Phoenix.isTestWindow) {
+        exports._loadDefaultExtension = _loadDefaultExtension;
+        exports._setInitExtensionTimeout = _setInitExtensionTimeout;
+        exports._getInitExtensionTimeout = _getInitExtensionTimeout;
+    }
 
     // private internal usage
     exports._DELETED_EXTENSION_FILE_MARKER = _DELETED_EXTENSION_FILE_MARKER;
