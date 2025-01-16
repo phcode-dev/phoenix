@@ -43,6 +43,12 @@ define(function (require, exports, module) {
         }, `Git ${commandID} to be ${enabled? "enabled" : "disabled"}`);
     }
 
+    async function showGitPanel() {
+        if(!$("#git-panel").is(":visible")) {
+            await __PR.execCommand(Commands.CMD_GIT_TOGGLE_PANEL);
+        }
+    }
+
     describe("LegacyInteg:Git Workflows test", function () {
 
         beforeAll(async function () {
@@ -63,7 +69,13 @@ define(function (require, exports, module) {
             }, "Git menus to be present", 10000);
         }, 30000);
 
-        describe("Init repo", function () {
+        describe("Init repo and do all tests", function () {
+            let $gitPanel, $gitIcon;
+            beforeAll(async function () {
+                $gitPanel = $("#git-panel");
+                $gitIcon = $("#git-toolbar-icon");
+            });
+
             it("should only git settings, init and clone commands be enabled in non-git repos", async function () {
                 await forCommandEnabled(Commands.CMD_GIT_INIT);
                 await forCommandEnabled(Commands.CMD_GIT_CLONE);
@@ -75,6 +87,24 @@ define(function (require, exports, module) {
                 await forCommandEnabled(Commands.CMD_GIT_FETCH, false);
                 await forCommandEnabled(Commands.CMD_GIT_PULL, false);
                 await forCommandEnabled(Commands.CMD_GIT_PUSH, false);
+            });
+
+            it("Should Git icon be hidden in non-git repo", async function () {
+                expect($gitIcon.is(":visible")).toBeFalse();
+            });
+
+            it("Should be able to show git panel in non-git repo, and icon will come up", async function () {
+                await __PR.execCommand(Commands.CMD_GIT_TOGGLE_PANEL);
+                expect($gitPanel.is(":visible")).toBeTrue();
+                expect($gitIcon.is(":visible")).toBeTrue();
+            });
+
+            it("Should be able to initialize git repo", async function () {
+                await showGitPanel();
+                $gitPanel.find(".git-init").click();
+                await awaitsFor(()=>{
+                    return $gitPanel.find(".modified-file").length === 4;
+                }, "4 files to be added in modified files list", 10000);
             });
         });
 
