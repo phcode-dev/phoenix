@@ -27,7 +27,7 @@ define(function (require, exports, module) {
         return;
     }
 
-    let $, __PR, testWindow, ExtensionLoader, Menus, Commands, CommandManager,
+    let $, __PR, testWindow, ExtensionLoader, Menus, Commands, CommandManager, EditorManager,
         SpecRunnerUtils     = require("spec/SpecRunnerUtils"),
         anotherTestFolder = SpecRunnerUtils.getTestPath("/spec/LowLevelFileIO-test-files");
 
@@ -60,6 +60,7 @@ define(function (require, exports, module) {
             ExtensionLoader = testWindow.brackets.test.ExtensionLoader;
             Commands = testWindow.brackets.test.Commands;
             CommandManager = testWindow.brackets.test.CommandManager;
+            EditorManager = testWindow.brackets.test.EditorManager;
             testPathGit = await SpecRunnerUtils.getTempTestDirectory("/spec/EditorCommandHandlers-test-files");
 
             await SpecRunnerUtils.loadProjectInTestWindow(testPathGit);
@@ -69,7 +70,8 @@ define(function (require, exports, module) {
             }, "Git menus to be present", 10000);
         }, 30000);
 
-        describe("Init repo and do all tests", function () {
+        describe("Init repo and do all tests in order", function () {
+            // ordering of tests in this matters and it may not run as individual tests.
             let $gitPanel, $gitIcon;
             beforeAll(async function () {
                 $gitPanel = $("#git-panel");
@@ -116,15 +118,80 @@ define(function (require, exports, module) {
                 expect($(".check-all").prop("checked")).toBeFalse();
             });
 
-            it("Should be able to stage and commit initialized git repo", async function () {
+            function clickOpenFile(elementNumber) {
+                const $elements = $gitPanel.find(".modified-file"); // Get all .modified-file elements
+                if (elementNumber >= 0 && elementNumber < $elements.length) {
+                    $($elements[elementNumber]).trigger("mousedown"); // Trigger mousedown on the specified element
+                } else {
+                    console.error("Invalid element number:", elementNumber); // Handle invalid index
+                }
+            }
+
+
+            it("Should clicking on file in git panel should open it", async function () {
                 await showGitPanel();
-                expect($(".check-all").prop("checked")).toBeFalse();
-                $(".check-all").click();
+                clickOpenFile(0);
                 await awaitsFor(()=>{
-                    const checkboxes = document.querySelectorAll(".check-one");
-                    return Array.from(checkboxes).every(checkbox => checkbox.checked);
-                }, "All files to be staged for commit", 10000);
+                    const editor = EditorManager.getActiveEditor();
+                    if(!editor){
+                        return false;
+                    }
+                    return editor.document.file.fullPath.endsWith(".gitignore");
+                }, "first file to open");
+            });
+
+            async function commitAllBtnClick() {
+                await showGitPanel();
+                if(!$(".check-all").prop("checked")) {
+                    $(".check-all").click();
+                    await awaitsFor(()=>{
+                        const checkboxes = document.querySelectorAll(".check-one");
+                        return Array.from(checkboxes).every(checkbox => checkbox.checked);
+                    }, "All files to be staged for commit", 10000);
+                }
                 $(".git-commit").click();
+                await __PR.waitForModalDialog("#git-commit-dialog");
+            }
+
+            function expectTextToContain(srcText, list) {
+                const nonEmptyLines = srcText
+                    .split("\n")             // Split the text into lines
+                    .map(line => line.trim()) // Trim each line
+                    .filter(line => line !== "").join("\n"); // Remove empty lines
+                for(const text of list) {
+                    expect(nonEmptyLines).toContain(text);
+                }
+            }
+
+            it("Should be able to stage, show commit dialog and cancel dialog on initialized git repo", async function () {
+                await commitAllBtnClick();
+                __PR.clickDialogButtonID(__PR.Dialogs.DIALOG_BTN_CANCEL);
+                await __PR.waitForModalDialogClosed("#git-commit-dialog");
+            });
+
+            it("Should git dialog show commit diff and lint errors", async function () {
+                await commitAllBtnClick();
+
+                // check lint errors
+                await awaitsFor(()=>{
+                    return $(".lint-errors").text().includes("test.html");
+                }, "lint errors to be shown", 10000);
+                expect($(".lint-errors").text()).toContain("<html> is missing required \"lang\" attribute");
+                expect($(".lint-errors").is(":visible")).toBeTrue();
+
+                // check commit diff
+                await awaitsFor(()=>{
+                    return $(".commit-diff").text().includes("test.html");
+                }, "commit-diff to be shown", 10000);
+                expectTextToContain($(".commit-diff").text(), [
+                    ".gitignore", "test.css", "test.html", "test.js",
+                    "/node_modules/", "color:", `<head>`,
+                    `console.log`
+                ]);
+
+                // dismiss dialog
+                __PR.clickDialogButtonID(__PR.Dialogs.DIALOG_BTN_CANCEL);
+                await __PR.waitForModalDialogClosed("#git-commit-dialog");
             });
         });
 
