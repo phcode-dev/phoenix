@@ -76,6 +76,14 @@ define(function (require, exports, module) {
     };
 
     /**
+     * Brackets well known submenus
+     * @enum {string}
+     */
+    let SubMenuIds = {
+        GIT_SUB_MENU: "git-submenu"
+    };
+
+    /**
      * Event triggered before the context menu opens.
      * @event EVENT_BEFORE_CONTEXT_MENU_OPEN
      */
@@ -252,6 +260,15 @@ define(function (require, exports, module) {
      */
     function getMenu(id) {
         return menuMap[id];
+    }
+
+    /**
+     * Retrieves the subMenu object for the corresponding id if present.
+     * @param {string} id
+     * @return {Menu}
+     */
+    function getSubMenu(id) {
+        return getContextMenu(id);
     }
 
     /**
@@ -1755,6 +1772,7 @@ define(function (require, exports, module) {
     exports.LAST_IN_SECTION = LAST_IN_SECTION;
     exports.DIVIDER = DIVIDER;
     exports.getMenu = getMenu;
+    exports.getSubMenu = getSubMenu;
     exports.getAllMenus = getAllMenus;
     exports.getMenuItem = getMenuItem;
     exports.getContextMenu = getContextMenu;
@@ -1768,6 +1786,7 @@ define(function (require, exports, module) {
     exports.Menu = Menu;
     exports.MenuItem = MenuItem;
     exports.ContextMenu = ContextMenu;
+    exports.SubMenuIds = SubMenuIds;
     // public events
     exports.EVENT_BEFORE_CONTEXT_MENU_OPEN = EVENT_BEFORE_CONTEXT_MENU_OPEN;
     exports.EVENT_BEFORE_CONTEXT_MENU_CLOSE = EVENT_BEFORE_CONTEXT_MENU_CLOSE;

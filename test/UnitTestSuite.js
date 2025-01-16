@@ -131,6 +131,7 @@ define(function (require, exports, module) {
     require("spec/Extn-CSSCodeHints-integ-test");
     require("spec/Extn-HTMLCodeHints-Lint-integ-test");
     require("spec/Extn-HtmlTagSyncEdit-integ-test");
+    require("spec/Extn-Git-integ-test");
     // Node Tests
     require("spec/NodeConnection-test");
     // todo TEST_MODERN
