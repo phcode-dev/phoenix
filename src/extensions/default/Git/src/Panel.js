@@ -453,8 +453,15 @@ define(function (require, exports) {
                     dialog           = Dialogs.showModalDialogUsingTemplate(compiledTemplate),
                     $dialog          = dialog.getElement();
                 _makeDialogBig($dialog);
-                $dialog.find(".commit-diff").append(Utils.formatDiff(diff));
+                const diffVal = Utils.formatDiff(diff);
+                if(diffVal === Utils.FORMAT_DIFF_TOO_LARGE) {
+                    Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'diffBtn', "diffTooLarge");
+                } else {
+                    Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'diffBtn', "success");
+                }
+                $dialog.find(".commit-diff").append(Utils.formatDiff(diffVal));
             }).catch(function (err) {
+                Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'diffBtn', "error");
                 ErrorHandler.showError(err, Strings.ERROR_GIT_DIFF_FAILED);
             });
         }
@@ -1237,8 +1244,14 @@ define(function (require, exports) {
             .on("click", ".git-commit-merge", commitMerge)
             .on("click", ".git-merge-abort", abortMerge)
             .on("click", ".git-find-conflicts", findConflicts)
-            .on("click", ".git-prev-gutter", GutterManager.goToPrev)
-            .on("click", ".git-next-gutter", GutterManager.goToNext)
+            .on("click", ".git-prev-gutter", ()=>{
+                Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'panel', "prevBtn");
+                GutterManager.goToPrev();
+            })
+            .on("click", ".git-next-gutter", ()=>{
+                Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'panel', "nextBtn");
+                GutterManager.goToNext();
+            })
             .on("click", ".git-file-history", EventEmitter.getEmitter(Events.HISTORY_SHOW_FILE))
             .on("click", ".git-history-toggle", EventEmitter.getEmitter(Events.HISTORY_SHOW_GLOBAL))
             .on("click", ".git-fetch", EventEmitter.getEmitter(Events.HANDLE_FETCH))

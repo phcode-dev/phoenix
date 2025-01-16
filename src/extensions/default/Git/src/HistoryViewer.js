@@ -5,6 +5,7 @@ define(function (require, exports) {
         Mustache        = brackets.getModule("thirdparty/mustache/mustache"),
         WorkspaceManager  = brackets.getModule("view/WorkspaceManager"),
         Strings           = brackets.getModule("strings"),
+        Metrics         = brackets.getModule("utils/Metrics"),
         marked          = brackets.getModule('thirdparty/marked.min').marked;
 
     const ErrorHandler  = require("src/ErrorHandler"),
@@ -232,6 +233,7 @@ define(function (require, exports) {
     }
 
     function show(commitInfo, doc, options) {
+        Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'history', "detailView");
         initialize();
 
         commit    = commitInfo;
