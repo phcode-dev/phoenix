@@ -435,6 +435,27 @@ define(function (require, exports, module) {
 
             });
 
+            it("should discard all changes since last commit", async () => {
+                await SpecRunnerUtils.loadProjectInTestWindow(testPathGit);
+                __PR.typeAtCursor("discardTest");
+                await __PR.saveActiveFile();
+                await __PR.openFile("test.js");
+                __PR.typeAtCursor("discardJSTest");
+                await __PR.saveActiveFile();
+                await awaitsFor(()=>{
+                    return $gitPanel.find(".modified-file").length === 2;
+                }, "2 files to be added in modified files list", 10000);
+
+                // now discard all changes
+                __PR.execCommand(Commands.CMD_GIT_DISCARD_ALL_CHANGES); // dont await here as
+                // it tracks full complete after dialog closed
+                await __PR.waitForModalDialog("#git-question-dialog");
+                __PR.clickDialogButtonID(__PR.Dialogs.DIALOG_BTN_OK);
+                await awaitsFor(()=>{
+                    return $gitPanel.find(".modified-file").length === 0;
+                }, "no files in modified files list", 10000);
+            });
+
         });
 
     });
