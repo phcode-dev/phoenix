@@ -91,14 +91,14 @@ define(function (require, exports, module) {
                 await forCommandEnabled(Commands.CMD_GIT_PUSH, !isNonGit);
             }
 
-            async function verifyNonGitPanelIcons(notGitProject) {
-                expect($gitPanel.find(".git-init").is(":visible")).toBe(notGitProject);
-                expect($gitPanel.find(".git-clone").is(":visible")).toBe(notGitProject);
+            async function verifyGitPanelIcons(isGitProject) {
+                expect($gitPanel.find(".git-init").is(":visible")).toBe(!isGitProject);
+                expect($gitPanel.find(".git-clone").is(":visible")).toBe(!isGitProject);
                 // in non git repos the git buttons are not visible
-                expect($gitPanel.find(".git-commit").is(":visible")).toBe(!notGitProject);
-                expect($gitPanel.find(".git-prev-gutter").is(":visible")).toBe(!notGitProject);
-                expect($gitPanel.find(".git-file-history").is(":visible")).toBe(!notGitProject);
-                expect($gitPanel.find(".git-right-icons").is(":visible")).toBe(!notGitProject);
+                expect($gitPanel.find(".git-commit").is(":visible")).toBe(isGitProject);
+                expect($gitPanel.find(".git-prev-gutter").is(":visible")).toBe(isGitProject);
+                expect($gitPanel.find(".git-file-history").is(":visible")).toBe(isGitProject);
+                expect($gitPanel.find(".git-right-icons").is(":visible")).toBe(isGitProject);
             }
 
             it("should only git settings, init and clone commands be enabled in non-git repos", async function () {
@@ -113,7 +113,7 @@ define(function (require, exports, module) {
                 await __PR.execCommand(Commands.CMD_GIT_TOGGLE_PANEL);
                 expect($gitPanel.is(":visible")).toBeTrue();
                 expect($gitIcon.is(":visible")).toBeTrue();
-                await verifyNonGitPanelIcons(true);
+                await verifyGitPanelIcons(false);
             });
 
             it("Should be able to initialize git repo", async function () {
@@ -391,7 +391,7 @@ define(function (require, exports, module) {
                 await waitForBranchDropdownVisible(false);
                 await waitForGitToolbarIconVisible(true);
                 await verifyRepoInNonGitState();
-                await verifyNonGitPanelIcons(true);
+                await verifyGitPanelIcons(false);
             });
 
             it("should switching back to git project show branch dropdown and show git panel controls", async () => {
@@ -399,7 +399,21 @@ define(function (require, exports, module) {
                 await waitForBranchDropdownVisible(true);
                 await waitForGitToolbarIconVisible(true);
                 await verifyRepoInNonGitState(false);
-                await verifyNonGitPanelIcons(false);
+                await verifyGitPanelIcons(true);
+            });
+
+            it("should switching to a non-git project while git panel hidden hide git toolbar icon", async () => {
+                await SpecRunnerUtils.loadProjectInTestWindow(nonGitReadOnlyTestFolder);
+                await __PR.execCommand(Commands.CMD_GIT_TOGGLE_PANEL);
+                expect($gitPanel.is(":visible")).toBeFalse();
+
+                await SpecRunnerUtils.loadProjectInTestWindow(nonGitReadOnlyTestFolder);
+                await waitForGitToolbarIconVisible(false);
+
+                await SpecRunnerUtils.loadProjectInTestWindow(testPathGit);
+                await waitForGitToolbarIconVisible(true);
+                await __PR.execCommand(Commands.CMD_GIT_TOGGLE_PANEL);
+
             });
 
         });
