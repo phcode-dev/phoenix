@@ -47,6 +47,7 @@ src/phoenix/virtualfs.js.map
 /src/thirdparty/file-icons
 /src/thirdparty/prettier
 /src/thirdparty/marked.min.js
+/src/thirdparty/emmet.js
 test/thirdparty/jasmine-core
 test/thirdparty/jasmine-reporters
 /src/thirdparty/bugsnag.min.js
