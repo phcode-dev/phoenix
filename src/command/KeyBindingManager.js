@@ -719,11 +719,19 @@ define(function (require, exports, module) {
             normalized,
             normalizedDisplay,
             explicitPlatform = keyBinding.platform || platform,
+            explicitBrowserOnly = keyBinding.browserOnly,
+            explicitNativeOnly = keyBinding.nativeOnly,
             targetPlatform,
             command,
             bindingsToDelete = [],
             existing;
 
+        if(Phoenix.isNativeApp && explicitBrowserOnly) {
+            return null;
+        }
+        if(!Phoenix.isNativeApp && explicitNativeOnly) {
+            return null;
+        }
         // For platform: "all", use explicit current platform
         if (explicitPlatform && explicitPlatform !== "all") {
             targetPlatform = explicitPlatform;
@@ -983,12 +991,13 @@ define(function (require, exports, module) {
      * Returns record(s) for valid key binding(s).
      *
      * @param {!string | Command} command - A command ID or command object
-     * @param {{key: string, displayKey:string, platform: string}} keyBindings
+     * @param {{key: string, displayKey:string, platform: string, browserOnly: boolean, nativeOnly:boolean}} keyBindings
      *     A single key binding or an array of keybindings.
      *     In an array of keybinding `platform` property is also available. Example:
      *     "Shift-Cmd-F". Mac and Win key equivalents are automatically
      *     mapped to each other. Use displayKey property to display a different
-     *     string (e.g. "CMD+" instead of "CMD=").
+     *     string (e.g. "CMD+" instead of "CMD="). if browserOnly is true, then the shortcut will only apply in browser
+     *     if nativeOnly is set, the shortcut will only apply in native apps
      * @param {?string} platform The target OS of the keyBindings either
      *     "mac", "win" or "linux". If undefined, all platforms not explicitly
      *     defined will use the key binding.
@@ -1022,7 +1031,7 @@ define(function (require, exports, module) {
             // process platform-specific bindings first
             keyBindings.sort(_sortByPlatform);
 
-            keyBindings.forEach(function addSingleBinding(keyBindingRequest) {
+            keyBindings.forEach(function (keyBindingRequest) {
                 // attempt to add keybinding
                 keyBinding = _addBinding(commandID, keyBindingRequest, {
                     platform: keyBindingRequest.platform,

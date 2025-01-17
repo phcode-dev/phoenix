@@ -26,7 +26,14 @@
         {
             "key": "Cmd-Alt-Left",
             "displayKey": "Cmd-Alt-←",
-            "platform": "mac"
+            "platform": "mac",
+            "nativeOnly": true
+        },
+        {
+            "key": "Ctrl-Alt-Left",
+            "displayKey": "Ctrl-Alt-←",
+            "platform": "mac",
+            "browserOnly": true
         }
     ],
     "navigation.jump.fwd":  [
@@ -38,7 +45,14 @@
         {
             "key": "Cmd-Alt-Right",
             "displayKey": "Cmd-Alt-→",
-            "platform": "mac"
+            "platform": "mac",
+            "nativeOnly": true
+        },
+        {
+            "key": "Ctrl-Alt-Right",
+            "displayKey": "Ctrl-Alt-→",
+            "platform": "mac",
+            "browserOnly": true
         }
     ]
 }
