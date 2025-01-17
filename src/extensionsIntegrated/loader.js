@@ -43,4 +43,5 @@ define(function (require, exports, module) {
     require("./HtmlTagSyncEdit/main");
     require("./indentGuides/main");
     require("./CSSColorPreview/main");
+    require("./Emmet/main");
 });
