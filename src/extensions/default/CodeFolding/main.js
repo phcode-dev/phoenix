@@ -49,8 +49,8 @@ define(function (require, exports, module) {
         GUTTER_NAME             = "CodeMirror-foldgutter",
         CODE_FOLDING_GUTTER_PRIORITY   = Editor.CODE_FOLDING_GUTTER_PRIORITY,
         codeFoldingMenuDivider  = "codefolding.divider",
-        collapseKey             = "Ctrl-Shift-[",
-        expandKey               = "Ctrl-Shift-]";
+        collapseKey             = "Ctrl-Shift-{",
+        expandKey               = "Ctrl-Shift-}";
 
     ExtensionUtils.loadStyleSheet(module, "main.less");
 
@@ -413,8 +413,8 @@ define(function (require, exports, module) {
         Menus.getMenu(Menus.AppMenuBar.VIEW_MENU).addMenuItem(EXPAND);
 
         //register keybindings
-        KeyBindingManager.addBinding(COLLAPSE, [{key: collapseKey}]);
-        KeyBindingManager.addBinding(EXPAND, [{key:expandKey}]);
+        KeyBindingManager.addBinding(COLLAPSE, [{key: collapseKey}, {key: collapseKey, platform: "mac"}]);
+        KeyBindingManager.addBinding(EXPAND, [{key:expandKey}, {key:expandKey, platform: "mac"}]);
 
 
         // Add gutters & restore saved expand/collapse state in all currently open editors
