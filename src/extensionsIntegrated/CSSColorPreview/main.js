@@ -248,6 +248,8 @@ define(function (require, exports, module) {
         if (activeEditor) {
             activeEditor.off("change", onChanged);
             activeEditor.on("change", onChanged);
+            activeEditor.off("cursorActivity.colorPreview");
+            activeEditor.on("cursorActivity.colorPreview", _cursorActivity);
             showColorMarks();
             _cursorActivity(null, activeEditor);
         }
