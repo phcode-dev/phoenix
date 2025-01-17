@@ -318,9 +318,12 @@ define(function (require, exports, module) {
                 }, `History viewer to be visible: ${visible}`);
             }
 
-            async function testHistoryViewerToggle(commitIndex) {
+            it("should show the history viewer when clicking the first commit row and dismiss it on clicking again", async () => {
+                const $historyToggleButton = $gitPanel.find(".git-history-toggle");
+                $historyToggleButton.trigger("click");
+                await waitForHistoryVisible(true); // Ensure the history list is visible
                 const $historyList = $gitPanel.find("#git-history-list");
-                const $commitRow = $historyList.find(".history-commit").eq(commitIndex);
+                const $commitRow = $historyList.find(".history-commit").eq(1);
 
                 // Ensure the commit row exists
                 expect($commitRow.length).toBe(1);
@@ -338,13 +341,30 @@ define(function (require, exports, module) {
                 // Click the row again to dismiss the history viewer
                 $commitRow.trigger("click");
                 await waitForHistoryViewerVisible(false);
-            }
+            });
 
-            it("should show the history viewer when clicking the first commit row and dismiss it on clicking again", async () => {
-                const $historyToggleButton = $gitPanel.find(".git-history-toggle");
-                $historyToggleButton.trigger("click");
-                await waitForHistoryVisible(true); // Ensure the history list is visible
-                await testHistoryViewerToggle(1); // Test for the first commit row
+            it("should be able to switch history", async () => {
+                const $historyList = $gitPanel.find("#git-history-list");
+
+                let $commitRow = $historyList.find(".history-commit").eq(1);
+                $commitRow.trigger("click");
+                await waitForHistoryViewerVisible(true);
+
+                // Verify that the history viewer shows the correct commit
+                await awaitsFor(() => {
+                    return $("#editor-holder .git").find(".commit-title").text().trim().includes("first commit");
+                }, `History viewer to have first commit detail`);
+
+                $commitRow = $historyList.find(".history-commit").eq(0);
+                $commitRow.trigger("click");
+                await waitForHistoryViewerVisible(true);
+                await awaitsFor(() => {
+                    return $("#editor-holder .git").find(".commit-title").text().trim().includes("second commit");
+                }, `History viewer to have second commit detail`);
+
+                // Click the row again to dismiss the history viewer
+                $commitRow.trigger("click");
+                await waitForHistoryViewerVisible(false);
             });
 
         });
