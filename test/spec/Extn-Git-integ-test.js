@@ -29,7 +29,7 @@ define(function (require, exports, module) {
 
     let $, __PR, testWindow, ExtensionLoader, Menus, Commands, CommandManager, EditorManager,
         SpecRunnerUtils     = require("spec/SpecRunnerUtils"),
-        anotherTestFolder = SpecRunnerUtils.getTestPath("/spec/LowLevelFileIO-test-files");
+        nonGitReadOnlyTestFolder = SpecRunnerUtils.getTestPath("/spec/LowLevelFileIO-test-files");
 
     let testPathGit;
 
@@ -78,17 +78,31 @@ define(function (require, exports, module) {
                 $gitIcon = $("#git-toolbar-icon");
             });
 
-            it("should only git settings, init and clone commands be enabled in non-git repos", async function () {
-                await forCommandEnabled(Commands.CMD_GIT_INIT);
-                await forCommandEnabled(Commands.CMD_GIT_CLONE);
-                await forCommandEnabled(Commands.CMD_GIT_SETTINGS_COMMAND_ID);
-                await forCommandEnabled(Commands.CMD_GIT_TOGGLE_PANEL);
+            async function verifyRepoInNonGitState(isNonGit = true) {
+                await forCommandEnabled(Commands.CMD_GIT_INIT, isNonGit);
+                await forCommandEnabled(Commands.CMD_GIT_CLONE, isNonGit);
+                await forCommandEnabled(Commands.CMD_GIT_SETTINGS_COMMAND_ID, true);
+                await forCommandEnabled(Commands.CMD_GIT_TOGGLE_PANEL, true);
                 // others are disabled
-                await forCommandEnabled(Commands.CMD_GIT_REFRESH, false);
-                await forCommandEnabled(Commands.CMD_GIT_REFRESH, false);
-                await forCommandEnabled(Commands.CMD_GIT_FETCH, false);
-                await forCommandEnabled(Commands.CMD_GIT_PULL, false);
-                await forCommandEnabled(Commands.CMD_GIT_PUSH, false);
+                await forCommandEnabled(Commands.CMD_GIT_REFRESH, !isNonGit);
+                await forCommandEnabled(Commands.CMD_GIT_REFRESH, !isNonGit);
+                await forCommandEnabled(Commands.CMD_GIT_FETCH, !isNonGit);
+                await forCommandEnabled(Commands.CMD_GIT_PULL, !isNonGit);
+                await forCommandEnabled(Commands.CMD_GIT_PUSH, !isNonGit);
+            }
+
+            async function verifyNonGitPanelIcons(notGitProject) {
+                expect($gitPanel.find(".git-init").is(":visible")).toBe(notGitProject);
+                expect($gitPanel.find(".git-clone").is(":visible")).toBe(notGitProject);
+                // in non git repos the git buttons are not visible
+                expect($gitPanel.find(".git-commit").is(":visible")).toBe(!notGitProject);
+                expect($gitPanel.find(".git-prev-gutter").is(":visible")).toBe(!notGitProject);
+                expect($gitPanel.find(".git-file-history").is(":visible")).toBe(!notGitProject);
+                expect($gitPanel.find(".git-right-icons").is(":visible")).toBe(!notGitProject);
+            }
+
+            it("should only git settings, init and clone commands be enabled in non-git repos", async function () {
+                await verifyRepoInNonGitState();
             });
 
             it("Should Git icon be hidden in non-git repo", async function () {
@@ -99,14 +113,7 @@ define(function (require, exports, module) {
                 await __PR.execCommand(Commands.CMD_GIT_TOGGLE_PANEL);
                 expect($gitPanel.is(":visible")).toBeTrue();
                 expect($gitIcon.is(":visible")).toBeTrue();
-                // verify that only the init and clone button is visible
-                expect($gitPanel.find(".git-init").is(":visible")).toBeTrue();
-                expect($gitPanel.find(".git-clone").is(":visible")).toBeTrue();
-                // in non git repos the git buttons are not visible
-                expect($gitPanel.find(".git-commit").is(":visible")).toBeFalse();
-                expect($gitPanel.find(".git-prev-gutter").is(":visible")).toBeFalse();
-                expect($gitPanel.find(".git-file-history").is(":visible")).toBeFalse();
-                expect($gitPanel.find(".git-right-icons").is(":visible")).toBeFalse();
+                await verifyNonGitPanelIcons(true);
             });
 
             it("Should be able to initialize git repo", async function () {
@@ -318,6 +325,18 @@ define(function (require, exports, module) {
                 }, `History viewer to be visible: ${visible}`);
             }
 
+            async function waitForBranchDropdownVisible(visible) {
+                await awaitsFor(() => {
+                    return $("#git-branch-dropdown-toggle").is(":visible") === visible;
+                }, `Branch Dropdown to be visible: ${visible}`);
+            }
+
+            async function waitForGitToolbarIconVisible(visible) {
+                await awaitsFor(() => {
+                    return $gitIcon.is(":visible") === visible;
+                }, `Git icon to be visible: ${visible}`);
+            }
+
             it("should show the history viewer when clicking the first commit row and dismiss it on clicking again", async () => {
                 const $historyToggleButton = $gitPanel.find(".git-history-toggle");
                 $historyToggleButton.trigger("click");
@@ -365,6 +384,22 @@ define(function (require, exports, module) {
                 // Click the row again to dismiss the history viewer
                 $commitRow.trigger("click");
                 await waitForHistoryViewerVisible(false);
+            });
+
+            it("should switching to a non-git project hide branch dropdown and move git panel to init state", async () => {
+                await SpecRunnerUtils.loadProjectInTestWindow(nonGitReadOnlyTestFolder);
+                await waitForBranchDropdownVisible(false);
+                await waitForGitToolbarIconVisible(true);
+                await verifyRepoInNonGitState();
+                await verifyNonGitPanelIcons(true);
+            });
+
+            it("should switching back to git project show branch dropdown and show git panel controls", async () => {
+                await SpecRunnerUtils.loadProjectInTestWindow(testPathGit);
+                await waitForBranchDropdownVisible(true);
+                await waitForGitToolbarIconVisible(true);
+                await verifyRepoInNonGitState(false);
+                await verifyNonGitPanelIcons(false);
             });
 
         });
