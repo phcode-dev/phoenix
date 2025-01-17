@@ -460,7 +460,7 @@ define(function (require, exports) {
                 } else {
                     Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'diffBtn', "success");
                 }
-                $dialog.find(".commit-diff").append(Utils.formatDiff(diffVal));
+                $dialog.find(".commit-diff").append(diffVal);
             }).catch(function (err) {
                 Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'diffBtn', "error");
                 ErrorHandler.showError(err, Strings.ERROR_GIT_DIFF_FAILED);
