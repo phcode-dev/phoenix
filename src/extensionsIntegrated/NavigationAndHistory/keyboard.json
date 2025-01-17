@@ -20,13 +20,25 @@
     "navigation.jump.back":  [
         {
             "key": "Alt-Left",
-            "displayKey": "Alt-←"
+            "displayKey": "Alt-←",
+            "platform": "win"
+        },
+        {
+            "key": "Cmd-Alt-Left",
+            "displayKey": "Cmd-Alt-←",
+            "platform": "mac"
         }
     ],
     "navigation.jump.fwd":  [
         {
             "key": "Alt-Right",
-            "displayKey": "Alt-→"
+            "displayKey": "Alt-→",
+            "platform": "win"
+        },
+        {
+            "key": "Cmd-Alt-Right",
+            "displayKey": "Cmd-Alt-→",
+            "platform": "mac"
         }
     ]
 }
