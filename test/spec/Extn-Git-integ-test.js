@@ -230,6 +230,25 @@ define(function (require, exports, module) {
                 await __PR.waitForModalDialogClosed("#git-commit-dialog");
             });
 
+            it("Should be able to show individual file diff from panel", async function () {
+                $($(".btn-git-diff")[0]).click();
+
+                // check commit diff
+                await awaitsFor(()=>{
+                    return $(".commit-diff").text().includes("gitignore");
+                }, "commit-diff to be shown", 10000);
+                expectTextToContain($(".commit-diff").text(), [
+                    "node_modules"
+                ]);
+                expectTextToContain($(".dialog-title").text(), [
+                    ".gitignore"
+                ]);
+
+                // dismiss dialog
+                __PR.clickDialogButtonID("close");
+                await __PR.waitForModalDialogClosed("#git-diff-dialog");
+            });
+
             it("Should be able to commit the files", async function () {
                 await commitAllBtnClick();
                 await commmitDlgWithMessage("first commit");
