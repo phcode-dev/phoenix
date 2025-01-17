@@ -456,7 +456,36 @@ define(function (require, exports, module) {
                 }, "no files in modified files list", 10000);
             });
 
-        });
+            const createdBranch = "createdBranch";
+            async function waitForBranchNameDropdown(expectedName) {
+                await awaitsFor(()=>{
+                    return $("#git-branch").text().trim().includes(expectedName);
+                }, `branch ${expectedName} to show in project`);
+            }
 
+            it("should be able to create a new branch", async () => {
+                $("#git-branch-dropdown-toggle").click();
+                await awaitsFor(()=>{
+                    return $(".git-branch-new").is(":visible");
+                }, "branch dropdown to show");
+                $(".git-branch-new").click();
+                await __PR.waitForModalDialog(".git");
+                $('input[name="branch-name"]').val(createdBranch);
+                __PR.clickDialogButtonID(__PR.Dialogs.DIALOG_BTN_OK);
+                await waitForBranchNameDropdown(createdBranch);
+            });
+
+            it("should be able to switch branch", async () => {
+                await waitForBranchNameDropdown(createdBranch);
+                $("#git-branch-dropdown-toggle").click();
+                await awaitsFor(()=>{
+                    return $(".git-branch-new").is(":visible");
+                }, "branch dropdown to show");
+
+                expect($(".switch-branch").text()).toContain("master");
+                $(".switch-branch").click();
+                await waitForBranchNameDropdown("master");
+            });
+        });
     });
 });
