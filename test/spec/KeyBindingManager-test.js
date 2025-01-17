@@ -368,6 +368,58 @@ define(function (require, exports, module) {
 
                 expect(KeyBindingManager.getKeymap()).toEqual(expected);
             });
+
+            it("should handle browserOnly and nativeOnly bindings correctly", function () {
+                // Test browser-only bindings
+                let result = KeyBindingManager.addBinding("test.browser", {
+                    key: "F6",
+                    browserOnly: true
+                });
+                let keymap = KeyBindingManager.getKeymap();
+                if(Phoenix.isNativeApp) {
+                    expect(result).toBeNull();
+                    expect(keymap["F6"]).not.toBeDefined();
+                } else {
+                    expect(result.key).toBe("F6");
+                    expect(keymap["F6"].key).toBe("F6");
+                }
+                // Test native-only bindings
+                result = KeyBindingManager.addBinding("test.native", {
+                    key: "F7",
+                    nativeOnly: true
+                });
+                keymap = KeyBindingManager.getKeymap();
+                if(!Phoenix.isNativeApp) {
+                    expect(result).toBeNull();
+                    expect(keymap["F7"]).not.toBeDefined();
+                } else {
+                    expect(result.key).toBe("F7");
+                    expect(keymap["F7"].key).toBe("F7");
+                }
+            });
+
+            it("should handle browserOnly and nativeOnly in multiple bindings", function () {
+                // Test browser-only bindings
+                let result = KeyBindingManager.addBinding("test.allPlats", [
+                    {key: "F6", browserOnly: true},
+                    {key: "F7", nativeOnly: true}
+                ]);
+                let keymap = KeyBindingManager.getKeymap();
+                expect(result.length).toBe(1);
+                if (Phoenix.isNativeApp) {
+                    // Native app environment
+                    expect(result[0].key).toBe("F7"); // Only native binding should be added
+                    expect(keymap["F7"]).toBeDefined();
+                    expect(keymap["F7"].key).toBe("F7");
+                    expect(keymap["F6"]).not.toBeDefined(); // Browser-only should not be defined
+                } else {
+                    // Browser environment
+                    expect(result[0].key).toBe("F6"); // Only browser binding should be added
+                    expect(keymap["F6"]).toBeDefined();
+                    expect(keymap["F6"].key).toBe("F6");
+                    expect(keymap["F7"]).not.toBeDefined(); // Native-only should not be defined
+                }
+            });
         });
 
         describe("removeBinding", function () {
