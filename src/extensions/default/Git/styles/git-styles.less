@@ -3,11 +3,14 @@
 // common
 @git-moreDarkGrey:               #868888;
 @git-green:                      #91CC41;
+@dark-git-green:                 #78A336;
 @git-red:                        #F74687;
+@dark-git-red:                   #D03A6F;
 @git-red-text:                   #F74687;
 @git-blue-text:                  #1976DD;
 @git-dark-blue-text:             #51c0ff;
 @git-orange:                     #E3B551;
+@dark-git-orange:                #C29844;
 @git-orange-text:                #e28200;
 
 // Diff colors ('d' for 'dark', `l` for "light")
@@ -291,41 +294,58 @@
 
 .CodeMirror {
     .brackets-git-gutter {
+        pointer-events: auto;
         width: @gutterWidth;
-        margin-left: 1px;
     }
     .brackets-git-gutter-added,
     .brackets-git-gutter-modified,
     .brackets-git-gutter-removed {
+        pointer-events: auto;
         background-size: @gutterWidth @gutterWidth;
         background-repeat: no-repeat;
-        font-size: 1em;
-        font-weight: bold;
         color: @bc-menu-bg;
 
+        border-left: 0.4em solid transparent;
+        transition: border-left-width 0.2s ease;
         .dark & {
             color: @dark-bc-menu-bg;
+            border-left-width: 0.3em;
         }
     }
     .brackets-git-gutter-added {
-        background-color: @git-green;
+        border-left-color: @git-green;
+        .dark & {
+            border-left-color: @dark-git-green;
+        }
     }
 
     .brackets-git-gutter-modified {
-        background-color: @git-orange;
+        border-left-color: @git-orange;
+        &:hover {
+            border-left-width: 2em;
+        }
+        .dark & {
+            border-left-color: @dark-git-orange;
+        }
     }
 
     .brackets-git-gutter-removed {
-        background-color: @git-red;
+        border-left-color: @git-red;
+        &:hover {
+            border-left-width: 2em;
+        }
+        .dark & {
+            border-left-color: @dark-git-red;
+        }
     }
 
     .brackets-git-gutter-deleted-lines {
         color: @bc-text;
-        background-color: lighten(@git-red, 25%);
+        border-left-color: lighten(@git-red, 25%);
         .selectable-text();
 
         .dark & {
-            background-color: darken(@git-red, 25%);
+            border-left-color: darken(@dark-git-red, 25%);
             color: @dark-bc-text;
         }
 
@@ -337,6 +357,10 @@
             padding: 1px;
             height: 1.2em;
             line-height: 0.5em;
+        }
+
+        &:hover {
+            border-left-width: 1em;
         }
     }
 }
@@ -814,7 +838,7 @@
 
 // main
 
-@gutterWidth: 0.65em; // using ems so that it'll be scalable on cmd +/-
+@gutterWidth: 1em; // using ems so that it'll be scalable on cmd +/-
 
 #editor-holder {
     .git.spinner {
