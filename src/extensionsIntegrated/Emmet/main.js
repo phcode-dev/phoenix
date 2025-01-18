@@ -38,7 +38,7 @@ define(function (require, exports, module) {
         while (start > 0) {
             const char = line.charAt(start - 1);
             // Include the valid Emmet characters such as : + * >
-            if (/[a-zA-Z0-9:+*>!\-@#]/.test(char)) {
+            if (/[a-zA-Z0-9:+*>!\-@.#]/.test(char)) {
                 start--;
             } else {
                 break;
