@@ -273,7 +273,7 @@ define(function (require, exports, module) {
             }
 
             // create entry for temporary file
-            var fileEntry = FileSystem.getFileForPath(folder + ".bracketsGitTemp");
+            var fileEntry = FileSystem.getFileForPath(folder + ".phoenixGitTemp");
 
             function finish(bool) {
                 // delete the temp file and resolve

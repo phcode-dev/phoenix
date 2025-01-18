@@ -606,10 +606,10 @@ define(function (require, exports) {
         } else {
             return new Promise(function (resolve, reject) {
                 // FUTURE: maybe use git commit --file=-
-                var fileEntry = FileSystem.getFileForPath(Preferences.get("currentGitRoot") + ".bracketsGitTemp");
+                var fileEntry = FileSystem.getFileForPath(Preferences.get("currentGitRoot") + ".phoenixGitTemp");
                 jsPromise(FileUtils.writeText(fileEntry, message))
                     .then(function () {
-                        args.push("-F", ".bracketsGitTemp");
+                        args.push("-F", ".phoenixGitTemp");
                         return git(args, {progressTracker});
                     })
                     .then(function (res) {
