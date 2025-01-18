@@ -22,24 +22,6 @@
 const fs = require('fs');
 const projectId = process.env.GCP_PROJECT_ID;
 const API_KEY = process.env.GCP_API_KEY;
-// Imports the Google Cloud client library
-const {Translate} = require('@google-cloud/translate').v2;
-
-// See git history for old impl using AWS translate. We moved to google translate for better quality of translations.
-const GoogleTranslate = new Translate({
-    projectId,
-    key: API_KEY
-});
-
-function _translateString(text, dstLang) {
-    return new Promise((resolve, reject)=>{
-        GoogleTranslate.translate(text, dstLang)
-            .then(([translation]) => {
-                resolve(translation);
-            })
-            .catch(reject);
-    });
-}
 
 function _getAllNLSFolders() {
     let names = fs.readdirSync('src/nls');
@@ -53,12 +35,12 @@ function _getAllNLSFolders() {
     return nlsFolders;
 }
 
-let definedStrings;
+let requireDefinedStrings;
 global.define = function (jsonObj) {
-    definedStrings = jsonObj;
+    requireDefinedStrings = jsonObj;
 };
 require("../src/nls/root/strings");
-let rootStrings = definedStrings;
+let rootStrings = requireDefinedStrings;
 
 function _getJson(filePath) {
     try {
@@ -101,30 +83,27 @@ function _isTranslatableKey(key) {
     return true;
 }
 
-/**
- * If there are any manual translations done in `<locale>/strings.js`, pass it on as existingTranslations.
- * Users can explicitly provide translations like these: https://github.com/phcode-dev/phoenix/pull/588 .
- * @param lang
- * @param existingTranslations
- * @private
- */
-function _updateExpertTranslationsDict(lang, existingTranslations, lastTranslated) {
-    let expertTranslations = _getJson(`src/nls/${lang}/expertTranslations.json`, 'utf8');
-    let lastTranslatedLocale = _getJson(`src/nls/${lang}/lastTranslatedLocale.json`, 'utf8');
-    let expertTranslationsUpdated = false;
-    for(let rootKey of Object.keys(existingTranslations)){
-        if(existingTranslations[rootKey] !== lastTranslatedLocale[rootKey]){
-            let englishString = lastTranslated[rootKey];
-            let userProvidedExpertTranslation = existingTranslations[rootKey];
-            expertTranslations[englishString] = userProvidedExpertTranslation;
-            expertTranslationsUpdated = true;
-        }
+async function coreAiTranslate(stringsToTranslate, lang) {
+    const translations = _getJson("/home/home/Downloads/full_transalation_phoenix.json", 'utf8');
+    // console.log("Translation output:  ", JSON.stringify(translations, null, 4)); todo uncomment
+    if(translations.failedLanguages.length){
+        const errorStr = `Error translating ${lang}. it has failures `;
+        console.error(errorStr);
+        fs.writeFileSync(`src/nls/errors.txt`, errorStr);
+        // this is oke to continue in case of partial translations.
     }
-    if(expertTranslationsUpdated){
-        fs.writeFileSync(
-            `src/nls/${lang}/expertTranslations.json`, JSON.stringify(expertTranslations, null, 2));
+    let translationForLanguage = translations.translations[lang];
+    if(!translationForLanguage) {
+        lang = lang.replaceAll("-", "_"); // pt_br and pt-br are same. maybe check output for the same
+        translationForLanguage = translations.translations[lang];
     }
-    return expertTranslations;
+    if(!translationForLanguage){
+        const errorStr = `Error translating. AI response doesnt have the language ${lang} translated!`;
+        console.error(errorStr);
+        fs.writeFileSync(`src/nls/errors.txt`, errorStr);
+        return {};
+    }
+    return translationForLanguage;
 }
 
 /**
@@ -158,11 +137,11 @@ async function _processLang(lang) {
     if(lang === 'root'){
         return;
     }
+    const expertTranslations = _getJson(`src/nls/${lang}/expertTranslations.json`, 'utf8');
     let lastTranslated = _getJson(`src/nls/${lang}/lastTranslated.json`, 'utf8');
     require(`../src/nls/${lang}/strings`);
-    let existingTranslations = definedStrings;
-    let expertTranslations = _updateExpertTranslationsDict(lang, existingTranslations, lastTranslated);
-    let translations = {}, newTranslationsInRoot={};
+    let localeStringsJS = requireDefinedStrings;
+    let translations = {}, updatedLastTranslatedJSON={}, pendingTranslate = {};
     for(let rootKey of Object.keys(rootStrings)){
         if(!_isTranslatableKey(rootKey)){
             continue; // move on to next string
@@ -170,24 +149,52 @@ async function _processLang(lang) {
         let englishStringToTranslate = rootStrings[rootKey];
         let lastTranslatedEnglishString = lastTranslated[rootKey];
         if(englishStringToTranslate === lastTranslatedEnglishString){
+            // we have already translated this in the last pass.
             // Load expert translation if there is one else we don't need to translate, use existing translation as is.
-            translations[rootKey] = expertTranslations[englishStringToTranslate] || existingTranslations[rootKey];
+            translations[rootKey] = expertTranslations[englishStringToTranslate] || localeStringsJS[rootKey];
+            updatedLastTranslatedJSON[rootKey] = englishStringToTranslate;
         } else {
+            // this is a new english string or there is a string change.
             if(expertTranslations[englishStringToTranslate]){
                 // prefer expert translations over machine translations
                 translations[rootKey] = expertTranslations[englishStringToTranslate];
+                updatedLastTranslatedJSON[rootKey] = englishStringToTranslate;
             } else {
-                let translatedText = await _translateString(englishStringToTranslate, lang);
-                console.log(lang, translatedText);
-                translations[rootKey] = translatedText;
+                pendingTranslate[rootKey] = englishStringToTranslate;
             }
         }
-        newTranslationsInRoot[rootKey] = englishStringToTranslate;
     }
+    //let translatedText = await _translateString(englishStringToTranslate, lang);
+    console.log(`Translating ${Object.keys(pendingTranslate).length} strings to`, lang);
+    const aiTranslations = await coreAiTranslate(pendingTranslate, lang);
+    const allRootKeys = new Set(Object.keys(rootStrings));
+    for(let rootKey of Object.keys(aiTranslations)){
+        if(!allRootKeys.has(rootKey)){
+            // AI hallucinated a root key?
+            const errorStr = `AI translated for a root key that doesnt exist!!! in ${lang}: ${rootKey} \nTranslation: ${aiTranslations[rootKey]}`;
+            console.error(errorStr);
+            fs.writeFileSync(`src/nls/errors.txt`, errorStr);
+            continue;
+        }
+        let englishStringToTranslate = rootStrings[rootKey];
+        const translatedText = aiTranslations[rootKey];
+        translations[rootKey] = translatedText;
+        updatedLastTranslatedJSON[rootKey] = englishStringToTranslate;
+    }
+    // now detect any keys that has not yet been translated
+    const allKeys = Object.keys(rootStrings);
+    const translatedKeys = Object.keys(translations);
+    const notTranslated = allKeys.filter(key => !translatedKeys.includes(key));
+    if(notTranslated.length){
+        const errorStr = `Some strings not translated in ${lang}\n${notTranslated}`;
+        console.error(errorStr);
+        fs.writeFileSync(`src/nls/errors.txt`, errorStr);
+    }
+
     let translatedStringsJSON = JSON.stringify(translations, null, 2);
     let fileToWrite = `${FILE_HEADER}${translatedStringsJSON}${FILE_FOOTER}`;
     fs.writeFileSync(`src/nls/${lang}/strings.js`, fileToWrite);
-    fs.writeFileSync(`src/nls/${lang}/lastTranslated.json`, JSON.stringify(newTranslationsInRoot, null, 2));
+    fs.writeFileSync(`src/nls/${lang}/lastTranslated.json`, JSON.stringify(updatedLastTranslatedJSON, null, 2));
     fs.writeFileSync(`src/nls/${lang}/lastTranslatedLocale.json`, JSON.stringify(translations, null, 2));
 }
 

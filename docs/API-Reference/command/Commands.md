@@ -885,3 +885,165 @@ Hides the sidebar
 Shows the sidebar
 
 **Kind**: global variable  
+<a name="CMD_GIT_INIT"></a>
+
+## CMD\_GIT\_INIT
+Initializes a new git repository
+
+**Kind**: global variable  
+<a name="CMD_GIT_CLONE"></a>
+
+## CMD\_GIT\_CLONE
+Clones a git repository
+
+**Kind**: global variable  
+<a name="CMD_GIT_CLONE_WITH_URL"></a>
+
+## CMD\_GIT\_CLONE\_WITH\_URL
+Clones a git repository with a specific URL
+
+**Kind**: global variable  
+<a name="CMD_GIT_SETTINGS_COMMAND_ID"></a>
+
+## CMD\_GIT\_SETTINGS\_COMMAND\_ID
+Opens git settings
+
+**Kind**: global variable  
+<a name="CMD_GIT_CLOSE_UNMODIFIED"></a>
+
+## CMD\_GIT\_CLOSE\_UNMODIFIED
+Closes unmodified files
+
+**Kind**: global variable  
+<a name="CMD_GIT_CHECKOUT"></a>
+
+## CMD\_GIT\_CHECKOUT
+Checks out a branch or commit
+
+**Kind**: global variable  
+<a name="CMD_GIT_RESET_HARD"></a>
+
+## CMD\_GIT\_RESET\_HARD
+Performs a hard reset
+
+**Kind**: global variable  
+<a name="CMD_GIT_RESET_SOFT"></a>
+
+## CMD\_GIT\_RESET\_SOFT
+Performs a soft reset
+
+**Kind**: global variable  
+<a name="CMD_GIT_RESET_MIXED"></a>
+
+## CMD\_GIT\_RESET\_MIXED
+Performs a mixed reset
+
+**Kind**: global variable  
+<a name="CMD_GIT_TOGGLE_PANEL"></a>
+
+## CMD\_GIT\_TOGGLE\_PANEL
+Toggles the git panel
+
+**Kind**: global variable  
+<a name="CMD_GIT_GOTO_NEXT_CHANGE"></a>
+
+## CMD\_GIT\_GOTO\_NEXT\_CHANGE
+Goes to next git change
+
+**Kind**: global variable  
+<a name="CMD_GIT_GOTO_PREVIOUS_CHANGE"></a>
+
+## CMD\_GIT\_GOTO\_PREVIOUS\_CHANGE
+Goes to previous git change
+
+**Kind**: global variable  
+<a name="CMD_GIT_COMMIT_CURRENT"></a>
+
+## CMD\_GIT\_COMMIT\_CURRENT
+Commits current file changes
+
+**Kind**: global variable  
+<a name="CMD_GIT_COMMIT_ALL"></a>
+
+## CMD\_GIT\_COMMIT\_ALL
+Commits all changes
+
+**Kind**: global variable  
+<a name="CMD_GIT_FETCH"></a>
+
+## CMD\_GIT\_FETCH
+Fetches from remote
+
+**Kind**: global variable  
+<a name="CMD_GIT_PULL"></a>
+
+## CMD\_GIT\_PULL
+Pulls from remote
+
+**Kind**: global variable  
+<a name="CMD_GIT_PUSH"></a>
+
+## CMD\_GIT\_PUSH
+Pushes to remote
+
+**Kind**: global variable  
+<a name="CMD_GIT_REFRESH"></a>
+
+## CMD\_GIT\_REFRESH
+Refreshes git status
+
+**Kind**: global variable  
+<a name="CMD_GIT_TAG"></a>
+
+## CMD\_GIT\_TAG
+Creates a git tag
+
+**Kind**: global variable  
+<a name="CMD_GIT_DISCARD_ALL_CHANGES"></a>
+
+## CMD\_GIT\_DISCARD\_ALL\_CHANGES
+Discards all changes
+
+**Kind**: global variable  
+<a name="CMD_GIT_UNDO_LAST_COMMIT"></a>
+
+## CMD\_GIT\_UNDO\_LAST\_COMMIT
+Undoes the last commit
+
+**Kind**: global variable  
+<a name="CMD_GIT_CHANGE_USERNAME"></a>
+
+## CMD\_GIT\_CHANGE\_USERNAME
+Changes git username
+
+**Kind**: global variable  
+<a name="CMD_GIT_CHANGE_EMAIL"></a>
+
+## CMD\_GIT\_CHANGE\_EMAIL
+Changes git email
+
+**Kind**: global variable  
+<a name="CMD_GIT_GERRIT_PUSH_REF"></a>
+
+## CMD\_GIT\_GERRIT\_PUSH\_REF
+Pushes to Gerrit code review
+
+**Kind**: global variable  
+<a name="CMD_GIT_AUTHORS_OF_SELECTION"></a>
+
+## CMD\_GIT\_AUTHORS\_OF\_SELECTION
+Shows authors of selected code
+
+**Kind**: global variable  
+<a name="CMD_GIT_AUTHORS_OF_FILE"></a>
+
+## CMD\_GIT\_AUTHORS\_OF\_FILE
+Shows authors of current file
+
+**Kind**: global variable  
+<a name="CMD_GIT_TOGGLE_UNTRACKED"></a>
+
+## CMD\_GIT\_TOGGLE\_UNTRACKED
+Toggles display of untracked files
+
+**Kind**: global variable  

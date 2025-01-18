@@ -75,6 +75,9 @@ test/thirdparty/jasmine-reporters
 /build/config.json
 /build/jsdoc.json
 
+# translations
+/src/nls/errors.txt
+
 
 # ignore everything in the dev extension directory EXCEPT the README
 # (so that the directory is non-empty and can be in git)
