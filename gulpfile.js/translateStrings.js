@@ -168,7 +168,7 @@ async function _processLang(lang) {
     console.log(`Translating ${Object.keys(pendingTranslate).length} strings to`, lang);
     const aiTranslations = await coreAiTranslate(pendingTranslate, lang);
     const allRootKeys = new Set(Object.keys(rootStrings));
-    for(let rootKey of Object.keys(aiTranslations)){
+    for(let rootKey of Object.keys(pendingTranslate)){
         if(!allRootKeys.has(rootKey)){
             // AI hallucinated a root key?
             const errorStr = `AI translated for a root key that doesnt exist!!! in ${lang}: ${rootKey} \nTranslation: ${aiTranslations[rootKey]}`;
