@@ -111,19 +111,14 @@ async function coreAiTranslate(stringsToTranslate, lang) {
  * 1. nls/<lang>/lastTranslated.json holds the last root english strings that was automatically translated. This will be
  * used to compare with the current `root/strings.js`. We can determine which strings have changed from the last locale
  * translation done and translate only those changed strings.
- * 2. nls/<lang>/lastTranslatedLocale.json same as `lastTranslated.json` but holds the locale translations instead of
- * english. Holds the last locale strings that was automatically translated.
- * 3. `expertTranslations.json` is a dictionary from english string to locale string that can be used to provide manual
+ * 2. `expertTranslations.json` is a dictionary from english string to locale string that can be used to provide manual
  * expert translations. When translating, we will check for an available translation in the expert translation json
  * before calling google/aws translate. This file is also auto updated when someone provides a translation override
  * in a specific locale.
  *
  * ## How we translate
  * First we deduce if there are any manual translations done in `<locale>/strings.js` as users can explicitly provide
- * translations like these: https://github.com/phcode-dev/phoenix/pull/588 . We check the `<lang>/strings.js` with
- * `<lang>/lastTranslatedLocale.json` to determine translation overrides and update the `expertTranslations.json`
- * dictionary with the overrides.
- *
+ * translations like these: https://github.com/phcode-dev/phoenix/pull/588 .
  * Then, we figure out the changed strings that needs translation by comparing `root/strings.js` with
  * `<lang>/lastTranslated.json`. Then we translate with aws/google translate.
  *
@@ -195,7 +190,6 @@ async function _processLang(lang) {
     let fileToWrite = `${FILE_HEADER}${translatedStringsJSON}${FILE_FOOTER}`;
     fs.writeFileSync(`src/nls/${lang}/strings.js`, fileToWrite);
     fs.writeFileSync(`src/nls/${lang}/lastTranslated.json`, JSON.stringify(updatedLastTranslatedJSON, null, 2));
-    fs.writeFileSync(`src/nls/${lang}/lastTranslatedLocale.json`, JSON.stringify(translations, null, 2));
 }
 
 async function translate() {

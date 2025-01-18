@@ -65,7 +65,6 @@ function cleanUnwantedFilesInDist() {
     return del([
         'dist/nls/*/expertTranslations.json',
         'dist/nls/*/lastTranslated.json',
-        'dist/nls/*/lastTranslatedLocale.json',
         'dist/nls/*/*.js.map',
         'dist/extensions/default/*/unittests.js.map'
     ]);
@@ -393,7 +392,6 @@ const DISALLOWED_EXTENSIONS_TO_CACHE = ["map", "nuspec", "partial", "pre", "post
 const EXCLUDE_PATTERNS_FROM_CACHE = [
     /src\/nls\/.*expertTranslations\.json$/,
     /src\/nls\/.*lastTranslated\.json$/,
-    /src\/nls\/.*lastTranslatedLocale\.json$/,
     /extensions\/registry\/registry\.json$/
 ];
 
