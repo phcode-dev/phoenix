@@ -1083,7 +1083,7 @@ define(function (require, exports) {
                 if ($this.attr("x-status") === Git.FILE_STATUS.DELETED) {
                     return;
                 }
-                FileViewController.addToWorkingSetAndSelect(Preferences.get("currentGitRoot") + $this.attr("x-file"));
+                FileViewController.openFileAndAddToWorkingSet(Preferences.get("currentGitRoot") + $this.attr("x-file"));
             });
 
     }
@@ -1316,6 +1316,7 @@ define(function (require, exports) {
             toggle(true);
         }
         _panelResized();
+        GutterManager.init();
     } // function init() {
 
     function enable() {
