@@ -185,6 +185,9 @@ function _isTranslatableKey(key) {
 }
 
 async function coreAiTranslate(stringsToTranslate, lang) {
+    if(!Object.keys(stringsToTranslate).length){
+        return {};
+    }
     const translationRequest = getTranslationrequest(stringsToTranslate, lang);
     const translations = await getTranslation(translationRequest);
     aggregateUtilizationMetrics(translations);
