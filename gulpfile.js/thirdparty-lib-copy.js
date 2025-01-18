@@ -149,6 +149,9 @@ let copyThirdPartyLibs = series(
     // jsHint
     copyFiles.bind(copyFiles, ['node_modules/jshint/dist/jshint.js'], 'src/thirdparty'),
     copyLicence.bind(copyLicence, 'node_modules/jshint/LICENSE', 'jshint'),
+    // emmet
+    copyFiles.bind(copyFiles, ['node_modules/emmet/dist/emmet.js'], 'src/thirdparty'),
+    copyLicence.bind(copyLicence, 'node_modules/emmet/LICENSE', 'emmet'),
     // underscore
     copyFiles.bind(copyFiles, ['node_modules/underscore/underscore-min.js'], 'src/thirdparty'),
     copyLicence.bind(copyLicence, 'node_modules/underscore/LICENSE', 'underscore'),
