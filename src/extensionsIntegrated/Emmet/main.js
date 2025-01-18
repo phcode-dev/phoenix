@@ -1,4 +1,3 @@
-
 define(function (require, exports, module) {
 
     const AppInit = require("utils/AppInit");
@@ -49,6 +48,31 @@ define(function (require, exports, module) {
 
 
     /**
+     * Responsible to create the configuration based on the file type.
+     * Config is an object with two properties, type & snytax.
+     * This is required by the Emmet API to distinguish between HTML & Stylesheets
+     *
+     * @param {Editor} editor - The editor instance
+     * @returns {Object} Object with two properties 'syntax' and 'type'
+     */
+    function createConfig(editor) {
+
+        const config = {};
+        const fileType = editor.document.getLanguage().getId();
+        if(fileType === 'css' || fileType === 'scss' || fileType === 'less') {
+            config.syntax = "css";
+            config.type = "stylesheet";
+        } else {
+            config.syntax = "html";
+            config.type = "markup";
+        }
+
+        return config;
+
+    }
+
+
+    /**
      * Register all the required handlers
      */
     function registerHandlers() {
@@ -79,7 +103,15 @@ define(function (require, exports, module) {
      * @param {Object} changeList an object that has properties regarding the line changed and type of change
      */
     function onChanged(_evt, instance, changeList) {
-        console.log(getWordBeforeCursor(instance));
+        // make sure that the feature is enabled
+        if(enabled) {
+            const word = getWordBeforeCursor(instance);
+            const config = createConfig(instance);
+
+            console.log(word);
+            console.log(config);
+        }
+
     }
 
     /**
