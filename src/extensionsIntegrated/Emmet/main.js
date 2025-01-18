@@ -38,7 +38,7 @@ define(function (require, exports, module) {
         while (start > 0) {
             const char = line.charAt(start - 1);
             // Include the valid Emmet characters such as : + * >
-            if (/[a-zA-Z0-9:+*>!\-@.#]/.test(char)) {
+            if (/[a-zA-Z0-9:+*>!\-@.#{}]/.test(char)) {
                 start--;
             } else {
                 break;
@@ -78,7 +78,7 @@ define(function (require, exports, module) {
     }
 
     /**
-     * 
+     * Responsible to expand the markup abbreviation
      *
      * @param {Editor} editor - The editor instance
      * @param {Object} word - The word object, refer to `getWordBeforeCursor` function
@@ -92,12 +92,33 @@ define(function (require, exports, module) {
 
         if (expanded) {
 
+            // this check is added because in some situations such as
+            // `ul>li{Hello}` and the cursor is before the closing braces right after 'o',
+            // then when this is expanded it results in an extra closing braces at the end.
+            // so we remove the extra '}' from the end
+            if (word.word.includes('{')) {
+                const pos = editor.getCursorPos();
+                const line = editor.document.getLine(pos.line);
+                const char = line.charAt(word.end.ch);
+
+                if (char === '}') {
+                    word.end.ch += 1;
+                    editor.document.replaceRange(
+                        expanded,
+                        word.start,
+                        word.end
+                    );
+                    return true;
+                }
+
+            }
             // replace the existing abbreviation with the expanded version
             editor.document.replaceRange(
                 expanded,
                 word.start,
                 word.end
             );
+
             return true;
         }
 
