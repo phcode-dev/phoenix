@@ -191,17 +191,13 @@ async function _processLang(lang) {
     fs.writeFileSync(`src/nls/${lang}/lastTranslatedLocale.json`, JSON.stringify(translations, null, 2));
 }
 
-let unsupportedLanguages = ['nb', 'gl'];
-
 async function translate() {
     console.log("please make sure that AWS/Google credentials are available as env vars.");
     return new Promise(async (resolve)=>{
         let langs = _getAllNLSFolders();
         console.log(langs);
         for(let lang of langs){
-            if(!unsupportedLanguages.includes(lang)){
-                _processLang(lang);
-            }
+            _processLang(lang);
         }
         resolve();
     });
