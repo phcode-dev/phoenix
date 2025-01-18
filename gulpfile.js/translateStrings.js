@@ -20,8 +20,109 @@
 
 /* eslint-env node */
 const fs = require('fs');
-const projectId = process.env.GCP_PROJECT_ID;
-const API_KEY = process.env.GCP_API_KEY;
+const CORE_AI_TRANSLATE_API_KEY = process.env.CORE_AI_TRANSLATE_API_KEY;
+
+// A global accumulator object initialized to zero
+const globalUtilizationMetrics = {
+    tokens: {
+        prompt: 0,
+        candidates: 0,
+        cachedContent: 0,
+        total: 0
+    },
+    characters: {
+        input: 0,
+        output: 0
+    },
+    costs: {
+        input: 0,
+        output: 0,
+        total: 0,
+        currency: "USD"// or set once, if you always expect the same currency
+    }
+};
+
+/**
+ * Aggregate the utilization metrics from a single object into a global accumulator.
+ * @param {object} obj - An object with `utilizationMetrics` (tokens, characters, costs).
+ * @returns {object} The updated global utilization metrics.
+ */
+function aggregateUtilizationMetrics(obj) {
+    if (!obj || !obj.utilizationMetrics) {
+        console.warn("Object missing 'utilizationMetrics' field, nothing to aggregate.");
+        return globalUtilizationMetrics;
+    }
+
+    const { tokens, characters, costs } = obj.utilizationMetrics;
+
+    // Safely add tokens
+    if (tokens) {
+        globalUtilizationMetrics.tokens.prompt += tokens.prompt || 0;
+        globalUtilizationMetrics.tokens.candidates += tokens.candidates || 0;
+        globalUtilizationMetrics.tokens.cachedContent += tokens.cachedContent || 0;
+        globalUtilizationMetrics.tokens.total += tokens.total || 0;
+    }
+
+    // Safely add characters
+    if (characters) {
+        globalUtilizationMetrics.characters.input += characters.input || 0;
+        globalUtilizationMetrics.characters.output += characters.output || 0;
+    }
+
+    // Safely add costs
+    if (costs) {
+        globalUtilizationMetrics.costs.input += costs.input || 0;
+        globalUtilizationMetrics.costs.output += costs.output || 0;
+        globalUtilizationMetrics.costs.total += costs.total || 0;
+        // currency is assumed to remain consistent; you could also check or update it if needed
+    }
+
+    return globalUtilizationMetrics;
+}
+
+function getTranslationrequest(stringsToTranslate, lang) {
+    return {
+        translationContext: "This is a bunch of strings extracted from a JavaScript file used to develop our product with is a text editor. Some strings may have HTML or templates(mustache library used). Please translate these strings accurately.",
+        "source": stringsToTranslate,
+        "provider": "vertex",
+        "sourceContext": {
+            // this is currently unused. you can provide context specific to the key in the source to give the AI
+            // additional context about the key for translation.
+        },
+        translationTargets: [lang] // multiple langs can be given here to translate at a time, for now using only one
+    };
+}
+
+/**
+ * Sends translation payload to the specified API and returns the result.
+ *
+ * @param {object} apiInput - The translation payload object.
+ * @returns {Promise<any>} The JSON-parsed response from the API.
+ */
+async function getTranslation(apiInput) {
+    const url = "https://translate.core.ai/translate";
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "authorization": `Basic ${CORE_AI_TRANSLATE_API_KEY}`
+            },
+            body: JSON.stringify(apiInput)
+        });
+
+        if (!response.ok) {
+            throw new Error(`Request failed with status ${response.status}`);
+        }
+
+        // Parse and return the JSON response
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Error translating:", error);
+        throw error;
+    }
+}
 
 function _getAllNLSFolders() {
     let names = fs.readdirSync('src/nls');
@@ -84,8 +185,11 @@ function _isTranslatableKey(key) {
 }
 
 async function coreAiTranslate(stringsToTranslate, lang) {
-    const translations = _getJson("/home/home/Downloads/full_transalation_phoenix.json", 'utf8');
-    // console.log("Translation output:  ", JSON.stringify(translations, null, 4)); todo uncomment
+    const translationRequest = getTranslationrequest(stringsToTranslate, lang);
+    const translations = await getTranslation(translationRequest);
+    aggregateUtilizationMetrics(translations);
+    console.log("Translation output:  ", JSON.stringify(translations, null, 4));
+    console.log("Aggregate utilization metrics: ", JSON.stringify(globalUtilizationMetrics, null, 4));
     if(translations.failedLanguages.length){
         const errorStr = `Error translating ${lang}. it has failures `;
         console.error(errorStr);
@@ -147,7 +251,14 @@ async function _processLang(lang) {
             // we have already translated this in the last pass.
             // Load expert translation if there is one else we don't need to translate, use existing translation as is.
             translations[rootKey] = expertTranslations[englishStringToTranslate] || localeStringsJS[rootKey];
-            updatedLastTranslatedJSON[rootKey] = englishStringToTranslate;
+            if(translations[rootKey]){
+                updatedLastTranslatedJSON[rootKey] = englishStringToTranslate;
+            } else {
+                // we dont have a last local translation in locale strings.js file to use. this cannot happen
+                // except in a translation reset pass where we delete all translations and restart like when we moved
+                // to core.ai auto translate.
+                pendingTranslate[rootKey] = englishStringToTranslate;
+            }
         } else {
             // this is a new english string or there is a string change.
             if(expertTranslations[englishStringToTranslate]){
@@ -173,11 +284,13 @@ async function _processLang(lang) {
         }
         let englishStringToTranslate = rootStrings[rootKey];
         const translatedText = aiTranslations[rootKey];
-        translations[rootKey] = translatedText;
-        updatedLastTranslatedJSON[rootKey] = englishStringToTranslate;
+        if(translatedText){
+            translations[rootKey] = translatedText;
+            updatedLastTranslatedJSON[rootKey] = englishStringToTranslate;
+        }
     }
     // now detect any keys that has not yet been translated
-    const allKeys = Object.keys(rootStrings);
+    const allKeys = Object.keys(rootStrings).filter(_isTranslatableKey);
     const translatedKeys = Object.keys(translations);
     const notTranslated = allKeys.filter(key => !translatedKeys.includes(key));
     if(notTranslated.length){
@@ -193,12 +306,12 @@ async function _processLang(lang) {
 }
 
 async function translate() {
-    console.log("please make sure that AWS/Google credentials are available as env vars.");
+    console.log("please make sure that core.ai lang translation service credentials are available as env vars.");
     return new Promise(async (resolve)=>{
         let langs = _getAllNLSFolders();
         console.log(langs);
         for(let lang of langs){
-            _processLang(lang);
+            await _processLang(lang);
         }
         resolve();
     });
