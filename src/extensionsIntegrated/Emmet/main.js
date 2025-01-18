@@ -20,8 +20,14 @@ define(function (require, exports, module) {
 
     /**
      * Responsible to get the current word before cursor
+     *
      * @param {Editor} editor - The editor instance
-     * @returns {string} word before cursor
+     * @returns {Object} an object in the format :
+     * {
+     *      word: "",   // the word before the cursor
+     *      start: {line: Number, ch: Number},
+     *      end: {line: Number, ch: Number}
+     * }
      */
     function getWordBeforeCursor(editor) {
         const pos = editor.getCursorPos();
@@ -31,8 +37,8 @@ define(function (require, exports, module) {
         // Look backwards
         while (start > 0) {
             const char = line.charAt(start - 1);
-            // Include ':' and other valid Emmet characters
-            if (/[a-zA-Z0-9:\-@#]/.test(char)) {
+            // Include the valid Emmet characters such as : + * >
+            if (/[a-zA-Z0-9:+*>!\-@#]/.test(char)) {
                 start--;
             } else {
                 break;
@@ -59,7 +65,7 @@ define(function (require, exports, module) {
 
         const config = {};
         const fileType = editor.document.getLanguage().getId();
-        if(fileType === 'css' || fileType === 'scss' || fileType === 'less') {
+        if (fileType === 'css' || fileType === 'scss' || fileType === 'less') {
             config.syntax = "css";
             config.type = "stylesheet";
         } else {
@@ -71,6 +77,33 @@ define(function (require, exports, module) {
 
     }
 
+    /**
+     * 
+     *
+     * @param {Editor} editor - The editor instance
+     * @param {Object} word - The word object, refer to `getWordBeforeCursor` function
+     * @param {Object} config - The config object, refer to `createConfig` function
+     * @returns {Boolean} True if the abbr is successfully expanded else False.
+     */
+    function expandMarkupAbbr(editor, word, config) {
+        // the Emmet api, this requires a string which is to be expanded and config object
+        // to differentiate between markup and stylesheets
+        const expanded = Emmet.expandAbbreviation(word.word, config);
+
+        if (expanded) {
+
+            // replace the existing abbreviation with the expanded version
+            editor.document.replaceRange(
+                expanded,
+                word.start,
+                word.end
+            );
+            return true;
+        }
+
+        return false;
+    }
+
 
     /**
      * Register all the required handlers
@@ -79,39 +112,56 @@ define(function (require, exports, module) {
         // Get the current active editor and attach the change listener
         const activeEditor = EditorManager.getActiveEditor();
         if (activeEditor) {
-            activeEditor.on("change", onChanged);
+            activeEditor.on("keydown", handleKeyEvent);
         }
 
         // Listen for active editor changes, to attach the handler to new editor
         EditorManager.on("activeEditorChange", function (event, newEditor, oldEditor) {
             if (oldEditor) {
                 // Remove listener from old editor
-                oldEditor.off("change", onChanged);
+                oldEditor.off("keydown", handleKeyEvent);
             }
             if (newEditor) {
                 // Add listener to new editor
-                newEditor.on("change", onChanged);
+                newEditor.on("keydown", handleKeyEvent);
             }
         });
     }
 
     /**
-     * Function that gets triggered when any change occurs on the editor
+     * Function that gets triggered when any key is pressed.
      *
-     * @param _evt unused event detail
-     * @param {Editor} instance the editor instance
-     * @param {Object} changeList an object that has properties regarding the line changed and type of change
+     * @param {Event} event - unused event detail
+     * @param {Editor} instance - the editor instance
+     * @param {Object} keyboardEvent - an object that has properties related to the keyboard,
+     *  mainly the key that is pressed (keyboardEvent.key)
+     * @returns {Boolean} True if abbreviation is expanded else false
      */
-    function onChanged(_evt, instance, changeList) {
+    function handleKeyEvent(event, instance, keyboardEvent) {
         // make sure that the feature is enabled
-        if(enabled) {
+        if (enabled) {
+            if (keyboardEvent.key !== "Tab") {
+                return false;
+            }
+
+            // the word and config both are objects. Refer to their respective functions for clear structure
             const word = getWordBeforeCursor(instance);
             const config = createConfig(instance);
 
-            console.log(word);
-            console.log(config);
-        }
+            if (config.type === "markup") {
 
+                // if abbreviation is expanded, we prevent the default working of the button
+                if (expandMarkupAbbr(instance, word, config)) {
+                    keyboardEvent.preventDefault();
+                    return true;
+                }
+            } else {
+                //
+            }
+
+            // Let the default behavior handle it
+            return false;
+        }
     }
 
     /**
