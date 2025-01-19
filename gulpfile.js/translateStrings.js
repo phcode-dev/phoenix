@@ -232,6 +232,22 @@ function shallowEqual(obj1, obj2) {
 }
 
 /**
+ * Returns a new object whose keys are sorted in ascending order.
+ *
+ * @param {Object} obj - The object to sort by keys.
+ * @returns {Object} sortedObj - A new object with sorted keys.
+ */
+function getSortedObject(obj) {
+    const sortedObj = {};
+    // Gather all keys, sort them, then build the new object in that order
+    const sortedKeys = Object.keys(obj).sort();
+    for (const key of sortedKeys) {
+        sortedObj[key] = obj[key];
+    }
+    return sortedObj;
+}
+
+/**
  * Auto translations scans the following files to determine which strings have changed and needs to be translated:
  * 1. nls/<lang>/lastTranslated.json holds the last root english strings that was automatically translated. This will be
  * used to compare with the current `root/strings.js`. We can determine which strings have changed from the last locale
@@ -326,7 +342,8 @@ async function _processLang(lang) {
         fs.writeFileSync(`src/nls/${lang}/strings.js`, fileToWrite);
     }
     if(!shallowEqual(updatedLastTranslatedJSON, lastTranslated)){
-        fs.writeFileSync(`src/nls/${lang}/lastTranslated.json`, JSON.stringify(updatedLastTranslatedJSON, null, 2));
+        const sortedList = getSortedObject(updatedLastTranslatedJSON);
+        fs.writeFileSync(`src/nls/${lang}/lastTranslated.json`, JSON.stringify(sortedList, null, 2));
     }
 }
 
