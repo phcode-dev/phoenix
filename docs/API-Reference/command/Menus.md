@@ -16,7 +16,17 @@ const Menus = brackets.getModule("command/Menus")
 <a name="new_MenuItem_new"></a>
 
 ### new MenuItem(id, command, [options])
-MenuItem represents a single menu item that executes a Command or a menu divider. MenuItemsmay have a sub-menu. A MenuItem may correspond to an HTML-basedmenu item or a native menu item if Brackets is running in a native application shellSince MenuItems may have a native implementation clients should create MenuItems throughaddMenuItem() and should NOT construct a MenuItem object directly.Clients should also not access HTML content of a menu directly and instead usethe MenuItem API to query and modify menus items.MenuItems are views on to Command objects so modify the underlying Command to modify thename, enabled, and checked state of a MenuItem. The MenuItem will update automatically
+MenuItem represents a single menu item that executes a Command or a menu divider. MenuItems
+may have a sub-menu. A MenuItem may correspond to an HTML-based
+menu item or a native menu item if Brackets is running in a native application shell
+
+Since MenuItems may have a native implementation clients should create MenuItems through
+addMenuItem() and should NOT construct a MenuItem object directly.
+Clients should also not access HTML content of a menu directly and instead use
+the MenuItem API to query and modify menus items.
+
+MenuItems are views on to Command objects so modify the underlying Command to modify the
+name, enabled, and checked state of a MenuItem. The MenuItem will update automatically
 
 
 | Param | Type | Description |
@@ -56,7 +66,13 @@ Returns the parent Menu for this MenuItem
 <a name="new_Menu_new"></a>
 
 ### new Menu(id)
-Menu represents a top-level menu in the menu bar. A Menu may correspond to an HTML-basedmenu or a native menu if Brackets is running in a native application shell.Since menus may have a native implementation clients should create Menus throughaddMenu() and should NOT construct a Menu object directly.Clients should also not access HTML content of a menu directly and instead usethe Menu API to query and modify menus.
+Menu represents a top-level menu in the menu bar. A Menu may correspond to an HTML-based
+menu or a native menu if Brackets is running in a native application shell.
+
+Since menus may have a native implementation clients should create Menus through
+addMenu() and should NOT construct a Menu object directly.
+Clients should also not access HTML content of a menu directly and instead use
+the Menu API to query and modify menus.
 
 
 | Param | Type |
@@ -66,7 +82,8 @@ Menu represents a top-level menu in the menu bar. A Menu may correspond to an HT
 <a name="Menu+removeMenuItem"></a>
 
 ### menu.removeMenuItem(command)
-Removes the specified menu item from this Menu. Key bindings are unaffected; use KeyBindingManagerdirectly to remove key bindings if desired.
+Removes the specified menu item from this Menu. Key bindings are unaffected; use KeyBindingManager
+directly to remove key bindings if desired.
 
 **Kind**: instance method of [<code>Menu</code>](#Menu)  
 
@@ -88,7 +105,17 @@ Removes the specified menu divider from this Menu.
 <a name="Menu+addMenuItem"></a>
 
 ### menu.addMenuItem(command, [keyBindings], [position], [relativeID], [options]) ⇒ [<code>MenuItem</code>](#MenuItem)
-Adds a new menu item with the specified id and display text. The insertion position isspecified via the relativeID and position arguments which describe a positionrelative to another MenuItem or MenuGroup. It is preferred that plug-insinsert new  MenuItems relative to a menu section rather than a specificMenuItem (see Menu Section Constants).TODO: Sub-menus are not yet supported, but when they are implemented this API willallow adding new MenuItems to sub-menus as well.Note, keyBindings are bound to Command objects not MenuItems. The provided keyBindings     will be bound to the supplied Command object rather than the MenuItem.
+Adds a new menu item with the specified id and display text. The insertion position is
+specified via the relativeID and position arguments which describe a position
+relative to another MenuItem or MenuGroup. It is preferred that plug-ins
+insert new  MenuItems relative to a menu section rather than a specific
+MenuItem (see Menu Section Constants).
+
+TODO: Sub-menus are not yet supported, but when they are implemented this API will
+allow adding new MenuItems to sub-menus as well.
+
+Note, keyBindings are bound to Command objects not MenuItems. The provided keyBindings
+     will be bound to the supplied Command object rather than the MenuItem.
 
 **Kind**: instance method of [<code>Menu</code>](#Menu)  
 **Returns**: [<code>MenuItem</code>](#MenuItem) - the newly created MenuItem  
@@ -118,7 +145,18 @@ Inserts divider item in menu.
 <a name="Menu+addSubMenu"></a>
 
 ### menu.addSubMenu(name, id, position, relativeID) ⇒ [<code>Menu</code>](#Menu)
-Creates a new submenu and a menuItem and adds the menuItem of the submenuto the menu and returns the submenu.A submenu will have the same structure of a menu with a additional fieldparentMenuItem which has the reference of the submenu's parent menuItem.A submenu will raise the following events:- beforeSubMenuOpen- beforeSubMenuCloseNote, This function will create only a context submenu.TODO: Make this function work for Menus
+Creates a new submenu and a menuItem and adds the menuItem of the submenu
+to the menu and returns the submenu.
+
+A submenu will have the same structure of a menu with a additional field
+parentMenuItem which has the reference of the submenu's parent menuItem.
+A submenu will raise the following events:
+- beforeSubMenuOpen
+- beforeSubMenuClose
+
+Note, This function will create only a context submenu.
+
+TODO: Make this function work for Menus
 
 **Kind**: instance method of [<code>Menu</code>](#Menu)  
 **Returns**: [<code>Menu</code>](#Menu) - the newly created submenu  
@@ -133,7 +171,11 @@ Creates a new submenu and a menuItem and adds the menuItem of the submenuto the
 <a name="Menu+removeSubMenu"></a>
 
 ### menu.removeSubMenu(subMenuID)
-Removes the specified submenu from this Menu.Note, this function will only remove context submenusTODO: Make this function work for Menus
+Removes the specified submenu from this Menu.
+
+Note, this function will only remove context submenus
+
+TODO: Make this function work for Menus
 
 **Kind**: instance method of [<code>Menu</code>](#Menu)  
 
@@ -172,12 +214,30 @@ Closes the submenu if the menu has a submenu open.
 <a name="new_ContextMenu_new"></a>
 
 ### new ContextMenu()
-Represents a context menu that can open at a specific location in the UI.Clients should not create this object directly and should instead use registerContextMenu()to create new ContextMenu objects.Context menus in brackets may be HTML-based or native so clients should not reach intothe HTML and should instead manipulate ContextMenus through the API.Events:- beforeContextMenuOpen- beforeContextMenuClose
+Represents a context menu that can open at a specific location in the UI.
+
+Clients should not create this object directly and should instead use registerContextMenu()
+to create new ContextMenu objects.
+
+Context menus in brackets may be HTML-based or native so clients should not reach into
+the HTML and should instead manipulate ContextMenus through the API.
+
+Events:
+- beforeContextMenuOpen
+- beforeContextMenuClose
 
 <a name="ContextMenu+open"></a>
 
 ### contextMenu.open(mouseOrLocation)
-Displays the ContextMenu at the specified location and dispatches the"beforeContextMenuOpen" event or "beforeSubMenuOpen" event (for submenus).The menu location may be adjusted to prevent clipping by the browser window.All other menus and ContextMenus will be closed before a new menuwill be closed before a new menu is shown (if the new menu is nota submenu).In case of submenus, the parentMenu of the submenu will not be closed when thesub menu is open.
+Displays the ContextMenu at the specified location and dispatches the
+"beforeContextMenuOpen" event or "beforeSubMenuOpen" event (for submenus).
+The menu location may be adjusted to prevent clipping by the browser window.
+All other menus and ContextMenus will be closed before a new menu
+will be closed before a new menu is shown (if the new menu is not
+a submenu).
+
+In case of submenus, the parentMenu of the submenu will not be closed when the
+sub menu is open.
 
 **Kind**: instance method of [<code>ContextMenu</code>](#ContextMenu)  
 
@@ -200,7 +260,8 @@ Detect if current context menu is already open
 <a name="Menu+removeMenuItem"></a>
 
 ### contextMenu.removeMenuItem(command)
-Removes the specified menu item from this Menu. Key bindings are unaffected; use KeyBindingManagerdirectly to remove key bindings if desired.
+Removes the specified menu item from this Menu. Key bindings are unaffected; use KeyBindingManager
+directly to remove key bindings if desired.
 
 **Kind**: instance method of [<code>ContextMenu</code>](#ContextMenu)  
 
@@ -222,7 +283,17 @@ Removes the specified menu divider from this Menu.
 <a name="Menu+addMenuItem"></a>
 
 ### contextMenu.addMenuItem(command, [keyBindings], [position], [relativeID], [options]) ⇒ [<code>MenuItem</code>](#MenuItem)
-Adds a new menu item with the specified id and display text. The insertion position isspecified via the relativeID and position arguments which describe a positionrelative to another MenuItem or MenuGroup. It is preferred that plug-insinsert new  MenuItems relative to a menu section rather than a specificMenuItem (see Menu Section Constants).TODO: Sub-menus are not yet supported, but when they are implemented this API willallow adding new MenuItems to sub-menus as well.Note, keyBindings are bound to Command objects not MenuItems. The provided keyBindings     will be bound to the supplied Command object rather than the MenuItem.
+Adds a new menu item with the specified id and display text. The insertion position is
+specified via the relativeID and position arguments which describe a position
+relative to another MenuItem or MenuGroup. It is preferred that plug-ins
+insert new  MenuItems relative to a menu section rather than a specific
+MenuItem (see Menu Section Constants).
+
+TODO: Sub-menus are not yet supported, but when they are implemented this API will
+allow adding new MenuItems to sub-menus as well.
+
+Note, keyBindings are bound to Command objects not MenuItems. The provided keyBindings
+     will be bound to the supplied Command object rather than the MenuItem.
 
 **Kind**: instance method of [<code>ContextMenu</code>](#ContextMenu)  
 **Returns**: [<code>MenuItem</code>](#MenuItem) - the newly created MenuItem  
@@ -252,7 +323,18 @@ Inserts divider item in menu.
 <a name="Menu+addSubMenu"></a>
 
 ### contextMenu.addSubMenu(name, id, position, relativeID) ⇒ [<code>Menu</code>](#Menu)
-Creates a new submenu and a menuItem and adds the menuItem of the submenuto the menu and returns the submenu.A submenu will have the same structure of a menu with a additional fieldparentMenuItem which has the reference of the submenu's parent menuItem.A submenu will raise the following events:- beforeSubMenuOpen- beforeSubMenuCloseNote, This function will create only a context submenu.TODO: Make this function work for Menus
+Creates a new submenu and a menuItem and adds the menuItem of the submenu
+to the menu and returns the submenu.
+
+A submenu will have the same structure of a menu with a additional field
+parentMenuItem which has the reference of the submenu's parent menuItem.
+A submenu will raise the following events:
+- beforeSubMenuOpen
+- beforeSubMenuClose
+
+Note, This function will create only a context submenu.
+
+TODO: Make this function work for Menus
 
 **Kind**: instance method of [<code>ContextMenu</code>](#ContextMenu)  
 **Returns**: [<code>Menu</code>](#Menu) - the newly created submenu  
@@ -267,7 +349,11 @@ Creates a new submenu and a menuItem and adds the menuItem of the submenuto the
 <a name="Menu+removeSubMenu"></a>
 
 ### contextMenu.removeSubMenu(subMenuID)
-Removes the specified submenu from this Menu.Note, this function will only remove context submenusTODO: Make this function work for Menus
+Removes the specified submenu from this Menu.
+
+Note, this function will only remove context submenus
+
+TODO: Make this function work for Menus
 
 **Kind**: instance method of [<code>ContextMenu</code>](#ContextMenu)  
 
@@ -284,7 +370,9 @@ Closes the submenu if the menu has a submenu open.
 <a name="ContextMenu.assignContextMenuToSelector"></a>
 
 ### ContextMenu.assignContextMenuToSelector()
-Associate a context menu to a DOM element.This static function take care of registering event handlers for the click eventlistener and passing the right "position" object to the Context#open method
+Associate a context menu to a DOM element.
+This static function take care of registering event handlers for the click event
+listener and passing the right "position" object to the Context#open method
 
 **Kind**: static method of [<code>ContextMenu</code>](#ContextMenu)  
 <a name="DIVIDER"></a>
@@ -328,10 +416,30 @@ Brackets Context Menu Constants
 | WORKING_SET_CONFIG_MENU | <code>string</code> | <code>&quot;workingset-configuration-menu&quot;</code> | 
 | SPLITVIEW_MENU | <code>string</code> | <code>&quot;splitview-menu&quot;</code> | 
 
+<a name="SubMenuIds"></a>
+
+## SubMenuIds : <code>enum</code>
+Brackets well known submenus
+
+**Kind**: global enum  
+**Properties**
+
+| Name | Type | Default |
+| --- | --- | --- |
+| GIT_SUB_MENU | <code>string</code> | <code>&quot;git-submenu&quot;</code> | 
+
 <a name="MenuSection"></a>
 
 ## MenuSection : <code>enum</code>
-Brackets Application Menu Section ConstantsIt is preferred that plug-ins specify the location of new MenuItemsin terms of a menu section rather than a specific MenuItem. This provideslooser coupling to Bracket's internal MenuItems and makes menu organizationmore semantic.Use these constants as the "relativeID" parameter when calling addMenuItem() andspecify a position of FIRST_IN_SECTION or LAST_IN_SECTION.Menu sections are denoted by dividers or the beginning/end of a menu
+Brackets Application Menu Section Constants
+It is preferred that plug-ins specify the location of new MenuItems
+in terms of a menu section rather than a specific MenuItem. This provides
+looser coupling to Bracket's internal MenuItems and makes menu organization
+more semantic.
+Use these constants as the "relativeID" parameter when calling addMenuItem() and
+specify a position of FIRST_IN_SECTION or LAST_IN_SECTION.
+
+Menu sections are denoted by dividers or the beginning/end of a menu
 
 **Kind**: global enum  
 **Properties**
@@ -365,13 +473,26 @@ Brackets Application Menu Section ConstantsIt is preferred that plug-ins specif
 <a name="BEFORE"></a>
 
 ## BEFORE : <code>enum</code>
-Insertion position constantsUsed by addMenu(), addMenuItem(), and addSubMenu() tospecify the relative position of a newly created menu object
+Insertion position constants
+Used by addMenu(), addMenuItem(), and addSubMenu() to
+specify the relative position of a newly created menu object
 
 **Kind**: global enum  
 <a name="getMenu"></a>
 
 ## getMenu(id) ⇒ [<code>Menu</code>](#Menu)
 Retrieves the Menu object for the corresponding id.
+
+**Kind**: global function  
+
+| Param | Type |
+| --- | --- |
+| id | <code>string</code> | 
+
+<a name="getSubMenu"></a>
+
+## getSubMenu(id) ⇒ [<code>Menu</code>](#Menu)
+Retrieves the subMenu object for the corresponding id if present.
 
 **Kind**: global function  
 
@@ -465,7 +586,24 @@ Removes a top-level menu from the application menu bar which may be native or HT
 <a name="registerContextMenu"></a>
 
 ## registerContextMenu(id) ⇒ [<code>ContextMenu</code>](#ContextMenu)
-Registers new context menu with Brackets.Extensions should generally use the predefined context menus built into Brackets. Use thisAPI to add a new context menu to UI that is specific to an extension.After registering  a new context menu clients should:     - use addMenuItem() to add items to the context menu     - call open() to show the context menu.     For example:     ```js     $("#my_ID").contextmenu(function (e) {         if (e.which === 3) {             my_cmenu.open(e);         }     });     ```To make menu items be contextual to things like selection, listen for the "beforeContextMenuOpen"to make changes to Command objects before the context menu is shown. MenuItems are views ofCommands, which control a MenuItem's name, enabled state, and checked state.
+Registers new context menu with Brackets.
+Extensions should generally use the predefined context menus built into Brackets. Use this
+API to add a new context menu to UI that is specific to an extension.
+
+After registering  a new context menu clients should:
+     - use addMenuItem() to add items to the context menu
+     - call open() to show the context menu.
+     For example:
+     ```js
+     $("#my_ID").contextmenu(function (e) {
+         if (e.which === 3) {
+             my_cmenu.open(e);
+         }
+     });
+     ```
+To make menu items be contextual to things like selection, listen for the "beforeContextMenuOpen"
+to make changes to Command objects before the context menu is shown. MenuItems are views of
+Commands, which control a MenuItem's name, enabled state, and checked state.
 
 **Kind**: global function  
 **Returns**: [<code>ContextMenu</code>](#ContextMenu) - the newly created context menu  

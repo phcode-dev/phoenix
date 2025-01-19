@@ -90,7 +90,7 @@ Returns record(s) for valid key binding(s).
 | Param | Type | Description |
 | --- | --- | --- |
 | command | <code>string</code> \| <code>Command</code> | A command ID or command object |
-| keyBindings | <code>Object</code> | A single key binding or an array of keybindings.     In an array of keybinding `platform` property is also available. Example:     "Shift-Cmd-F". Mac and Win key equivalents are automatically     mapped to each other. Use displayKey property to display a different     string (e.g. "CMD+" instead of "CMD="). |
+| keyBindings | <code>Object</code> | A single key binding or an array of keybindings.     In an array of keybinding `platform` property is also available. Example:     "Shift-Cmd-F". Mac and Win key equivalents are automatically     mapped to each other. Use displayKey property to display a different     string (e.g. "CMD+" instead of "CMD="). if browserOnly is true, then the shortcut will only apply in browser     if nativeOnly is set, the shortcut will only apply in native apps |
 | platform | <code>string</code> | The target OS of the keyBindings either     "mac", "win" or "linux". If undefined, all platforms not explicitly     defined will use the key binding.     NOTE: If platform is not specified, Ctrl will be replaced by Cmd for "mac" platform |
 | options | <code>object</code> |  |
 | options.isMenuShortcut | <code>boolean</code> | this allows alt-key shortcuts to be registered. |
