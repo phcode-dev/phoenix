@@ -1616,6 +1616,7 @@ define(function (require, exports, module) {
      * @private - tracks our closing state if we get called again
      */
     var _windowGoingAway = false;
+    let exitWaitPromises = [];
 
     /**
      * @private
@@ -1634,12 +1635,15 @@ define(function (require, exports, module) {
 
         return CommandManager.execute(Commands.FILE_CLOSE_ALL, { promptOnly: true })
             .done(function () {
+                exitWaitPromises = [];
                 _windowGoingAway = true;
 
                 // Give everyone a chance to save their state - but don't let any problems block
                 // us from quitting
                 try {
-                    ProjectManager.trigger("beforeAppClose");
+                    // if someone wats to do any deferred tasks, they should add
+                    // their promise to the wait promises list.
+                    ProjectManager.trigger("beforeAppClose", exitWaitPromises);
                 } catch (ex) {
                     console.error(ex);
                 }
@@ -2016,10 +2020,13 @@ define(function (require, exports, module) {
         _isReloading = true;
 
         return CommandManager.execute(Commands.FILE_CLOSE_ALL, { promptOnly: true }).done(function () {
+            exitWaitPromises = [];
             // Give everyone a chance to save their state - but don't let any problems block
             // us from quitting
             try {
-                ProjectManager.trigger("beforeAppClose");
+                // if someone wats to do any deferred tasks, they should add
+                // their promise to the wait promises list.
+                ProjectManager.trigger("beforeAppClose", exitWaitPromises);
             } catch (ex) {
                 console.error(ex);
             }
@@ -2037,7 +2044,8 @@ define(function (require, exports, module) {
 
             // Defer for a more successful reload - issue #11539
             window.setTimeout(function () {
-                raceAgainstTime(window.PhStore.flushDB()) // wither wait for flush or time this out
+                exitWaitPromises.push(window.PhStore.flushDB());
+                raceAgainstTime(Promise.all(exitWaitPromises)) // wither wait for flush or time this out
                     .finally(()=>{
                         raceAgainstTime(_safeNodeTerminate(), 4000)
                             .finally(()=>{
@@ -2210,7 +2218,8 @@ define(function (require, exports, module) {
             event.preventDefault();
             _handleWindowGoingAway(null, closeSuccess=>{
                 console.log('close success: ', closeSuccess);
-                raceAgainstTime(_safeFlushDB())
+                exitWaitPromises.push(_safeFlushDB());
+                raceAgainstTime(Promise.all(exitWaitPromises))
                     .finally(()=>{
                         raceAgainstTime(_safeNodeTerminate())
                             .finally(()=>{

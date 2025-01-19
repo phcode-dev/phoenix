@@ -33,7 +33,6 @@ define(function (require, exports, module) {
         const tempRestorePath = SpecRunnerUtils.getTestRoot() + "/navigationTestsRestore/";
 
         let FileViewController,     // loaded from brackets.test
-            ProjectManager,         // loaded from brackets.test;
             CommandManager,
             Commands,
             testWindow,
@@ -57,7 +56,6 @@ define(function (require, exports, module) {
             brackets            = testWindow.brackets;
             $                   = testWindow.$;
             FileViewController  = brackets.test.FileViewController;
-            ProjectManager      = brackets.test.ProjectManager;
             CommandManager      = brackets.test.CommandManager;
             Commands            = brackets.test.Commands;
             EditorManager       = brackets.test.EditorManager;
@@ -76,7 +74,6 @@ define(function (require, exports, module) {
 
         afterAll(async function () {
             FileViewController  = null;
-            ProjectManager      = null;
             testWindow = null;
             brackets = null;
             await deletePath(testPath);
@@ -124,13 +121,16 @@ define(function (require, exports, module) {
 
         }
 
+        // multiple , in file tested as we have , for `size,"content"` integrity checks
+        const unsavedTextFragment = "hello,this is ,a test";
+
         it("Should create restore folders and backup files", async function () {
             await initFileRestorer("file.js");
             let projectRestorePath = testWindow._FileRecoveryExtensionForTests.getProjectRestoreRoot(testPath);
 
             // now edit a file so that its backup is created
             let editor = EditorManager.getActiveEditor();
-            editor.document.setText("hello");
+            editor.document.setText(unsavedTextFragment);
             await SpecRunnerUtils.waitTillPathExists(projectRestorePath.fullPath, true);
             await SpecRunnerUtils.waitTillPathExists(projectRestorePath.fullPath + "file.js", false);
             await closeSession();
@@ -142,7 +142,7 @@ define(function (require, exports, module) {
 
             // now edit a file so that its backup is created
             let editor = EditorManager.getActiveEditor();
-            editor.document.setText("hello");
+            editor.document.setText(unsavedTextFragment);
             await SpecRunnerUtils.waitTillPathExists(projectRestorePath.fullPath + "toDelete1/file.js", false);
             await awaitsForDone(CommandManager.execute(Commands.FILE_SAVE_ALL), "saving all file");
             await SpecRunnerUtils.waitTillPathNotExists(projectRestorePath.fullPath + "toDelete1/file.js", false);
@@ -154,7 +154,7 @@ define(function (require, exports, module) {
             let projectRestorePath = testWindow._FileRecoveryExtensionForTests.getProjectRestoreRoot(testPath);
 
             // now edit a file so that its backup is created
-            const unsavedText = "hello" + Math.random();
+            const unsavedText = unsavedTextFragment + Math.random();
             let editor = EditorManager.getActiveEditor();
             editor.document.setText(unsavedText);
             await SpecRunnerUtils.waitTillPathExists(projectRestorePath.fullPath + "toDelete1/file.js", false);
@@ -186,7 +186,7 @@ define(function (require, exports, module) {
             let projectRestorePath = testWindow._FileRecoveryExtensionForTests.getProjectRestoreRoot(testPath);
 
             // now edit a file so that its backup is created
-            const unsavedText = "hello" + Math.random();
+            const unsavedText = unsavedTextFragment + Math.random();
             let editor = EditorManager.getActiveEditor();
             editor.document.setText(unsavedText);
             await SpecRunnerUtils.waitTillPathExists(projectRestorePath.fullPath + fileNameToRestore, false);
@@ -343,7 +343,7 @@ define(function (require, exports, module) {
             await openFile(file3);
             await _expectNavButton(false, true, "nav forward disabled due to new file open");
         }
-        
+
         it("Should navigate back and forward between text files", async function () {
             await navigateResetStack();
             await _validateNavForFiles("test.css", "test.html", "test.js");
