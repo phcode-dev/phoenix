@@ -53,7 +53,7 @@ define(function (require, exports, module) {
      * @param {string} [lang] - Optional language code to use for formatting (e.g., 'en', 'fr').
      *                          If not provided, defaults to the application locale or 'en'.
      * @param {Object} [dateTimeFormat] - Optional object specifying the date and time formatting options.
-     *                                    Defaults to { dateStyle: 'medium', timeStyle: 'short' }.
+     *                                    Defaults to `{ dateStyle: 'medium', timeStyle: 'short' }`.
      * @param {string} [dateTimeFormat.dateStyle] - Specifies the date format style. One of: DATE_TIME_STYLE.*
      * @param {string} [dateTimeFormat.timeStyle] - Specifies the time format style. One of: DATE_TIME_STYLE.*
      * @returns {string} - The formatted date and time string (e.g., "Dec 24, 2024, 10:30 AM").

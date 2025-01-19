@@ -28,7 +28,7 @@ Formats a given date object into a locale-aware date and time string.
 | --- | --- | --- |
 | [date] | <code>Date</code> | The date object to format. If not provided, the current date and time will be used. |
 | [lang] | <code>string</code> | Optional language code to use for formatting (e.g., 'en', 'fr').                          If not provided, defaults to the application locale or 'en'. |
-| [dateTimeFormat] | <code>Object</code> | Optional object specifying the date and time formatting options.                                    Defaults to { dateStyle: 'medium', timeStyle: 'short' }. |
+| [dateTimeFormat] | <code>Object</code> | Optional object specifying the date and time formatting options.                                    Defaults to `{ dateStyle: 'medium', timeStyle: 'short' }`. |
 | [dateTimeFormat.dateStyle] | <code>string</code> | Specifies the date format style. One of: DATE_TIME_STYLE.* |
 | [dateTimeFormat.timeStyle] | <code>string</code> | Specifies the time format style. One of: DATE_TIME_STYLE.* |
 
