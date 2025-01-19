@@ -162,20 +162,25 @@ define(function (require, exports, module) {
         if(!input){
             return null;
         }
-        const parts = input.split(',', 2);
+        // Find the first comma
+        const firstCommaIndex = input.indexOf(',');
 
-        if (parts.length !== 2) {
+        // If there's no comma or it's at the very beginning, the input is invalid
+        if (firstCommaIndex === -1 || firstCommaIndex === 0) {
             return null;
         }
 
+        // Extract the parts
+        const expectedLengthPart = input.slice(0, firstCommaIndex);
+        const actualString = input.slice(firstCommaIndex + 1);
+
         // Parse the length part (should be the first part before the comma)
-        const expectedLength = parseInt(parts[0], 10);
+        const expectedLength = parseInt(expectedLengthPart, 10);
         if (isNaN(expectedLength)) {
             return null;
         }
 
-        // The second part is the actual string after the comma
-        const actualString = parts[1];
+        // The second part is the actual string after the commas
         if (actualString.length === expectedLength) {
             return actualString;
         }
@@ -471,6 +476,14 @@ define(function (require, exports, module) {
             // for the startup project. So we call manually.
             projectOpened(null, currentProjectRoot);
         }
+        ProjectManager.on("beforeAppClose", (_evt, waitPromises)=>{
+            // this is a safe exit, we should delete all restore data.
+            let exitProjectRoot = ProjectManager.getProjectRoot();
+            if(exitProjectRoot) {
+                const restoreRoot = getProjectRestoreRoot(exitProjectRoot.fullPath);
+                waitPromises.push(silentlyRemoveDirectory(restoreRoot));
+            }
+        });
     }
 
     function init() {
