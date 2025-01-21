@@ -36,8 +36,28 @@ define(function (require, exports, module) {
         TEN_SECOND          = 10 * ONE_SECOND,
         ONE_MINUTE          = 60000,
         MAX_DAYS_TO_KEEP_COUNTS = 60,
-        // 'healthDataUsage' key is used in other places tho private to phoenix. search for other usage before rename
         USAGE_COUNTS_KEY    = "healthDataUsage";
+
+    /**
+     * A power user is someone who has used Phoenix at least 3 days or 8 hours in the last two weeks
+     * @returns {boolean}
+     */
+    function isPowerUser() {
+        let usageData = PreferencesManager.getViewState(USAGE_COUNTS_KEY) || {},
+            dateKeys = Object.keys(usageData),
+            dateBefore14Days = new Date(),
+            totalUsageMinutes = 0,
+            totalUsageDays = 0;
+        dateBefore14Days.setUTCDate(dateBefore14Days.getUTCDate()-14);
+        for(let dateKey of dateKeys){
+            let date = new Date(dateKey);
+            if(date >= dateBefore14Days) {
+                totalUsageDays ++;
+                totalUsageMinutes = totalUsageMinutes + usageData[dateKey];
+            }
+        }
+        return totalUsageDays >= 3 || (totalUsageMinutes/60) >= 8;
+    }
 
     let healthDataDisabled;
 
@@ -85,7 +105,9 @@ define(function (require, exports, module) {
     }
 
     AppInit.appReady(function () {
-        Metrics.init();
+        Metrics.init({
+            isPowerUserFn: isPowerUser
+        });
         healthDataDisabled = !prefs.get("healthDataTracking");
         Metrics.setDisabled(healthDataDisabled);
         SendToAnalytics.sendPlatformMetrics();

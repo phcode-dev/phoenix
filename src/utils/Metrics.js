@@ -46,7 +46,8 @@ define(function (require, exports, module) {
         loggedDataForAudit = new Map();
 
     let isFirstUseDay;
-    let userID;
+    let userID, isPowerUserFn;
+    let cachedIsPowerUser = false;
 
     function _setUserID() {
         const userIDKey = "phoenixUserPseudoID";
@@ -70,9 +71,11 @@ define(function (require, exports, module) {
         dayAfterFirstUse.setUTCDate(firstUseDay.getUTCDate() + 1);
         let today = new Date();
         isFirstUseDay = today < dayAfterFirstUse;
+        if(!isFirstUseDay){
+            setTimeout(_setFirstDayFlag, ONE_DAY);
+        }
     }
     _setFirstDayFlag();
-    setInterval(_setFirstDayFlag, ONE_DAY);
 
     /**
      * This section outlines the properties and methods available in this module
@@ -260,13 +263,20 @@ define(function (require, exports, module) {
      * and paid plans for GA starts at 100,000 USD.
      * @private
      */
-    function init(){
+    function init(initOptions = {}){
         if(initDone || window.testEnvironment){
             return;
         }
         _initGoogleAnalytics();
         _initCoreAnalytics();
         initDone = true;
+        if (initOptions.isPowerUserFn) {
+            isPowerUserFn = initOptions.isPowerUserFn;
+            cachedIsPowerUser = isPowerUserFn();  // only call once to avoid heavy computations repeatedly
+            setInterval(()=>{
+                cachedIsPowerUser = isPowerUserFn();
+            }, ONE_DAY);
+        }
     }
 
     // some events generate too many ga events that ga can't handle. ignore them.
@@ -351,7 +361,10 @@ define(function (require, exports, module) {
      * @type {function}
      */
     function countEvent(eventType, eventCategory, eventSubCategory, count= 1) {
-        if(!isFirstUseDay){
+        if(cachedIsPowerUser){
+            // emit power user metrics too
+            _countEvent(`P-${eventType}`, eventCategory, eventSubCategory, count);
+        } else if(!isFirstUseDay){
             // emit repeat user metrics too
             _countEvent(`R-${eventType}`, eventCategory, eventSubCategory, count);
         }
@@ -379,7 +392,10 @@ define(function (require, exports, module) {
      * @type {function}
      */
     function valueEvent(eventType, eventCategory, eventSubCategory, value) {
-        if(!isFirstUseDay){
+        if(cachedIsPowerUser){
+            // emit power user metrics too
+            _valueEvent(`P-${eventType}`, eventCategory, eventSubCategory, value);
+        } else if(!isFirstUseDay){
             // emit repeat user metrics too
             _valueEvent(`R-${eventType}`, eventCategory, eventSubCategory, value);
         }
@@ -452,6 +468,16 @@ define(function (require, exports, module) {
         return "10000+";
     }
 
+    /**
+     * A power user is someone who has used Phoenix at least 3 days or 8 hours in the last two weeks
+     * @returns {boolean}
+     */
+    function isPowerUser() {
+        if(!isPowerUserFn) {
+            throw new Error("PowerUser fn is not initialized in Metrics.");
+        }
+        return isPowerUserFn();
+    }
 
     // Define public API
     exports.init               = init;
@@ -464,6 +490,7 @@ define(function (require, exports, module) {
     exports.logPerformanceTime = logPerformanceTime;
     exports.flushMetrics       = flushMetrics;
     exports.getRangeName       = getRangeName;
+    exports.isPowerUser        = isPowerUser;
     exports.EVENT_TYPE = EVENT_TYPE;
     exports.AUDIT_TYPE_COUNT = AUDIT_TYPE_COUNT;
     exports.AUDIT_TYPE_VALUE = AUDIT_TYPE_VALUE;

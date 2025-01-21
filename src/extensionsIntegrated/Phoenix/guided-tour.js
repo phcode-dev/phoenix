@@ -28,7 +28,6 @@ define(function (require, exports, module) {
         Metrics = require("utils/Metrics"),
         Dialogs = require("widgets/Dialogs"),
         Mustache = require("thirdparty/mustache/mustache"),
-        PreferencesManager = require("preferences/PreferencesManager"),
         SurveyTemplate = require("text!./html/survey-template.html"),
         NOTIFICATION_BACKOFF = 10000,
         GUIDED_TOUR_LOCAL_STORAGE_KEY = "guidedTourActions";
@@ -41,8 +40,7 @@ define(function (require, exports, module) {
         POWER_USER_SURVEY_TIME = 10000, // 10 seconds to allow the survey to preload, but not
         // enough time to break user workflow
         ONE_MONTH_IN_DAYS = 30,
-        POWER_USER_SURVEY_INTERVAL_DAYS = 35,
-        USAGE_COUNTS_KEY    = "healthDataUsage"; // private to phoenix, set from health data extension
+        POWER_USER_SURVEY_INTERVAL_DAYS = 35;
 
     const userAlreadyDidAction = PhStore.getItem(GUIDED_TOUR_LOCAL_STORAGE_KEY)
         ? JSON.parse(PhStore.getItem(GUIDED_TOUR_LOCAL_STORAGE_KEY)) : {
@@ -240,24 +238,6 @@ define(function (require, exports, module) {
         }, delayOverride || GENERAL_SURVEY_TIME);
     }
 
-    // a power user is someone who has used Phoenix at least 3 days or 8 hours in the last two weeks
-    function _isPowerUser() {
-        let usageData = PreferencesManager.getViewState(USAGE_COUNTS_KEY) || {},
-            dateKeys = Object.keys(usageData),
-            dateBefore14Days = new Date(),
-            totalUsageMinutes = 0,
-            totalUsageDays = 0;
-        dateBefore14Days.setUTCDate(dateBefore14Days.getUTCDate()-14);
-        for(let dateKey of dateKeys){
-            let date = new Date(dateKey);
-            if(date >= dateBefore14Days) {
-                totalUsageDays ++;
-                totalUsageMinutes = totalUsageMinutes + usageData[dateKey];
-            }
-        }
-        return totalUsageDays >= 3 || (totalUsageMinutes/60) >= 8;
-    }
-
     function addSurveyIframe(surveyURL) {
         const $surveyFrame = $('<iframe>', {
             src: surveyURL,
@@ -296,7 +276,7 @@ define(function (require, exports, module) {
     }
 
     function _showPowerUserSurvey(surveyURL, intervalOverride) {
-        if(_isPowerUser()) {
+        if(Metrics.isPowerUser()) {
             const intervalDays = intervalOverride || POWER_USER_SURVEY_INTERVAL_DAYS;
             Metrics.countEvent(Metrics.EVENT_TYPE.USER, "power", "user", 1);
             let lastShownDate = userAlreadyDidAction.lastShownPowerSurveyDate;
