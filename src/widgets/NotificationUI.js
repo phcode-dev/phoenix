@@ -316,10 +316,11 @@ define(function (require, exports, module) {
      * The message can either be a string or a jQuery object representing a DOM node that is *not* in the current DOM.
      *
      * Creating a toast notification popup
+     *
+     * ```js
      * // note that you can even provide an HTML Element node with
      * // custom event handlers directly here instead of HTML text.
      * let notification1 = NotificationUI.createToastFromTemplate( "Title here",
-     * ```js
      *   "<div>Click me to locate the file in file tree</div>", {
      *       dismissOnClick: false,
      *       autoCloseTimeS: 300 // auto close the popup after 5 minutes
