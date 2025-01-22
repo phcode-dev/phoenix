@@ -37,7 +37,7 @@ define(function (require, exports, module) {
     // All popup notifications will show immediately on boot, we don't want to interrupt user amidst his work
     // by showing it at a later point in time.
     const GENERAL_SURVEY_TIME = 1200000, // 20 min
-        POWER_USER_SURVEY_TIME = 10000, // 10 seconds to allow the survey to preload, but not
+        SURVEY_PRELOAD_DELAY = 10000, // 10 seconds to allow the survey to preload, but not
         // enough time to break user workflow
         ONE_MONTH_IN_DAYS = 30,
         POWER_USER_SURVEY_INTERVAL_DAYS = 35;
@@ -212,27 +212,23 @@ define(function (require, exports, module) {
         }
     }
 
-    function _showGeneralSurvey(surveyURL, delayOverride) {
+    function _showFirstUseSurvey(surveyURL, delayOverride, title,  useDialog) {
         let surveyVersion = 6; // increment this if you want to show this again
         if(userAlreadyDidAction.generalSurveyShownVersion === surveyVersion) {
             return;
         }
-        const $surveyFrame = addSurveyIframe(surveyURL);
+        let $surveyFrame;
+        if(useDialog){
+            $surveyFrame = addSurveyIframe(surveyURL);
+        }
         setTimeout(()=>{
-            const templateVars = {
-                Strings: Strings
-            };
-            let positionObserver;
-            Metrics.countEvent(Metrics.EVENT_TYPE.USER, "survey", "generalShown", 1);
-            Dialogs.showModalDialogUsingTemplate(Mustache.render(SurveyTemplate, templateVars)).done(()=>{
-                positionObserver && positionObserver.disconnect();
-                $surveyFrame.remove();
-            });
-            setTimeout(()=>{
-                const $surveyFrameContainer = $('#surveyFrameContainer');
-                repositionIframe($surveyFrame, $surveyFrameContainer);
-                positionObserver = observerPositionChanges($surveyFrame, $surveyFrameContainer);
-            }, 200);
+            if(useDialog){
+                Metrics.countEvent(Metrics.EVENT_TYPE.USER, "survey", "firstDialog", 1);
+                _showDialogSurvey($surveyFrame);
+            } else {
+                Metrics.countEvent(Metrics.EVENT_TYPE.USER, "survey", "firstNotification", 1);
+                _showSurveyNotification(surveyURL, title);
+            }
             userAlreadyDidAction.generalSurveyShownVersion = surveyVersion;
             PhStore.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
         }, delayOverride || GENERAL_SURVEY_TIME);
@@ -275,38 +271,66 @@ define(function (require, exports, module) {
         return resizeObserver;
     }
 
-    function _showPowerUserSurvey(surveyURL, intervalOverride) {
-        if(Metrics.isPowerUser()) {
-            const intervalDays = intervalOverride || POWER_USER_SURVEY_INTERVAL_DAYS;
-            Metrics.countEvent(Metrics.EVENT_TYPE.USER, "power", "user", 1);
-            let lastShownDate = userAlreadyDidAction.lastShownPowerSurveyDate;
-            let nextShowDate = new Date(lastShownDate);
-            nextShowDate.setUTCDate(nextShowDate.getUTCDate() + intervalDays);
-            let currentDate = new Date();
-            if(currentDate < nextShowDate){
-                return;
-            }
+    function _showDialogSurvey($surveyFrame) {
+        const templateVars = {
+            Strings: Strings
+        };
+        let positionObserver;
+        Dialogs.showModalDialogUsingTemplate(Mustache.render(SurveyTemplate, templateVars))
+            .done(()=>{
+                positionObserver && positionObserver.disconnect();
+                $surveyFrame.remove();
+            });
+        const $surveyFrameContainer = $('#surveyFrameContainer');
+        setTimeout(()=>{
+            repositionIframe($surveyFrame, $surveyFrameContainer);
+            positionObserver = observerPositionChanges($surveyFrame, $surveyFrameContainer);
+        }, 200);
+    }
+
+    function _showSurveyNotification(surveyUrl, title) {
+        NotificationUI.createToastFromTemplate(
+            title || Strings.SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT,
+            `<div class="survey-notification-popup">
+                    <iframe src="${surveyUrl}" style="width: 500px; height: 645px;" frameborder="0"></iframe></div>`, {
+                toastStyle: `${NotificationUI.NOTIFICATION_STYLES_CSS_CLASS.INFO} survey-notification-big forced-hidden`,
+                dismissOnClick: false
+            });
+        setTimeout(()=>{
+            $('.survey-notification-big').removeClass('forced-hidden');
+        }, SURVEY_PRELOAD_DELAY);
+    }
+
+    function _showRepeatUserSurvey(surveyURL, intervalOverride, title, useDialog) {
+        let nextPowerSurveyShowDate = userAlreadyDidAction.nextPowerSurveyShowDate;
+        if(!nextPowerSurveyShowDate){
+            // first boot, we schedule the power user survey to happen in two weeks
+            let nextShowDate = new Date();
+            nextShowDate.setUTCDate(nextShowDate.getUTCDate() + 14); // the first time repeat survey always shows up
+            // always after 2 weeks.
+            userAlreadyDidAction.nextPowerSurveyShowDate = nextShowDate.getTime();
+            PhStore.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
+            return;
+        }
+        const intervalDays = intervalOverride || POWER_USER_SURVEY_INTERVAL_DAYS;
+        let nextShowDate = new Date(nextPowerSurveyShowDate);
+        let currentDate = new Date();
+        if(currentDate < nextShowDate){
+            return;
+        }
+        if(useDialog){
             const $surveyFrame = addSurveyIframe(surveyURL);
             setTimeout(()=>{
-                Metrics.countEvent(Metrics.EVENT_TYPE.USER, "survey", "powerShown", 1);
-                const templateVars = {
-                    Strings: Strings
-                };
-                let positionObserver;
-                Dialogs.showModalDialogUsingTemplate(Mustache.render(SurveyTemplate, templateVars))
-                    .done(()=>{
-                        positionObserver && positionObserver.disconnect();
-                        $surveyFrame.remove();
-                    });
-                const $surveyFrameContainer = $('#surveyFrameContainer');
-                setTimeout(()=>{
-                    repositionIframe($surveyFrame, $surveyFrameContainer);
-                    positionObserver = observerPositionChanges($surveyFrame, $surveyFrameContainer);
-                }, 200);
-                userAlreadyDidAction.lastShownPowerSurveyDate = Date.now();
-                PhStore.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
-            }, POWER_USER_SURVEY_TIME);
+                Metrics.countEvent(Metrics.EVENT_TYPE.USER, "survey", "powerDialog", 1);
+                _showDialogSurvey($surveyFrame);
+            }, SURVEY_PRELOAD_DELAY);
+        } else {
+            Metrics.countEvent(Metrics.EVENT_TYPE.USER, "survey", "powerNotification", 1);
+            _showSurveyNotification(surveyURL, title);
         }
+        nextShowDate.setUTCDate(nextShowDate.getUTCDate() + intervalDays);
+        userAlreadyDidAction.nextPowerSurveyShowDate = nextShowDate.getTime();
+        PhStore.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
     }
 
     async function _showSurveys() {
@@ -319,14 +343,20 @@ define(function (require, exports, module) {
             if(!Phoenix.isNativeApp && surveyJSON.browser) {
                 surveyJSON = {
                     newUser: surveyJSON.browser.newUser || surveyJSON.newUser,
+                    newUserTitle: surveyJSON.browser.newUserTitle || surveyJSON.newUserTitle,
                     newUserShowDelayMS: surveyJSON.browser.newUserShowDelayMS || surveyJSON.newUserShowDelayMS,
+                    newUserUseDialog: surveyJSON.browser.newUserUseDialog || surveyJSON.newUserUseDialog,
                     powerUser: surveyJSON.browser.powerUser || surveyJSON.powerUser,
+                    powerUserTitle: surveyJSON.browser.powerUserTitle || surveyJSON.powerUserTitle,
                     powerUserShowIntervalDays: surveyJSON.browser.powerUserShowIntervalDays
-                        || surveyJSON.powerUserShowIntervalDays
+                        || surveyJSON.powerUserShowIntervalDays,
+                    powerUserUseDialog: surveyJSON.browser.powerUserUseDialog || surveyJSON.powerUserUseDialog
                 };
             }
-            surveyJSON.newUser && _showGeneralSurvey(surveyJSON.newUser, surveyJSON.newUserShowDelayMS);
-            surveyJSON.powerUser && _showPowerUserSurvey(surveyJSON.powerUser, surveyJSON.powerUserShowIntervalDays);
+            surveyJSON.newUser && _showFirstUseSurvey(surveyJSON.newUser, surveyJSON.newUserShowDelayMS,
+                surveyJSON.newUserTitle, surveyJSON.newUserUseDialog);
+            surveyJSON.powerUser && _showRepeatUserSurvey(surveyJSON.powerUser, surveyJSON.powerUserShowIntervalDays,
+                surveyJSON.powerUserTitle, surveyJSON.powerUserUseDialog);
         } catch (e) {
             console.error("Error fetching survey link", surveyLinksURL, e);
             Metrics.countEvent(Metrics.EVENT_TYPE.USER, "survey", "fetchError", 1);

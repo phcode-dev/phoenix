@@ -3267,7 +3267,7 @@ label input {
 }
 
 .notification-popup-close-button {
-    font-size: 16px;
+    font-size: 24px;
     font-weight: 900;
     position: absolute;
     top: 0;
@@ -3556,4 +3556,12 @@ label input {
     display: flex;
     flex-direction: column;
     justify-content: space-between
+}
+
+.notification-popup-container.survey-notification-big {
+    margin-left: -274px;
+    background-color: #f3f5f9; // match with survey planet
+    .notification-popup-close-button:hover {
+        color: @bc-primary-btn-border-focused-glow;
+    }
 }
