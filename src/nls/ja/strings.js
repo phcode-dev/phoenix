@@ -743,7 +743,6 @@ define({
   "HEALTH_DATA_NOTIFICATION": "Health Report Preferences",
   "HEALTH_FIRST_POPUP_TITLE": "プライバシーに関するお知らせ",
   "HEALTH_DATA_DO_TRACK": "{APP_NAME} の利用状況に関する匿名情報を共有する",
-  "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} は<strong>個人を特定できる情報を一切収集または処理しませんが</strong>、お客様のプライバシー保護のため、<strong>匿名の利用統計情報を収集しています</strong>。匿名データは GDPR/CCPA の通知要件から除外されていますが、匿名データの収集についてもオプトアウトを選択できる必要があると考えています。<br><br> <strong>ヘルプ > 健全性レポート</strong>を選択することで、データの確認や<strong>匿名データの共有を停止する</strong>ことができます。これらの<strong>匿名の</strong>アプリ利用統計情報とエラーレポートは、{APP_NAME} の操作性を向上させるための機能の優先順位付け、バグの発見、ユーザビリティの問題の特定に役立ちます。このデータがなければ、お客様にとってどのような機能を構築する価値があるのかがわかりません！<br><br>",
   "HEALTH_DATA_PREVIEW": "{APP_NAME} の正常性レポート",
   "HEALTH_DATA_PREVIEW_INTRO": "<p>{APP_NAME} は<strong>個人を特定できる情報を一切収集または処理しませんが</strong>、<strong>匿名の利用統計情報を収集しています</strong>。お客様のプライバシー保護のためです。これらの<strong>匿名の</strong>アプリ利用統計情報とエラーレポートは、{APP_NAME} の操作性を向上させるための機能の優先順位付け、バグの発見、ユーザビリティの問題の特定に役立ちます。</p> <p>以下は、有効になっている<em>場合</em>に、次回の健全性レポートで送信されるデータのプレビューです。（「重大なエラーをキャッチしました」とマークされたエラーログについては、開発者コンソールも参照してください。）</p>",
   "INLINE_TIMING_EDITOR_TIME": "時間",
@@ -1036,9 +1035,6 @@ define({
   "PREVIEW": "プレビュー",
   "BUILD_WEBSITE": "ウェブサイトをビルド",
   "VIEW_MORE": "もっと見る…",
-  "NEW_PROJECT_NOTIFICATION": "このアイコンをクリックすると`新規プロジェクト`ウィンドウが再び開きます。</br> 最近のプロジェクト、フォルダを開く、またはテンプレートからプロジェクトを開始できます。</br> <img src=\"styles/images/new_project.png\">  <br/> <a href='#' style='float:right;'>OK</a>",
-  "BEAUTIFY_CODE_NOTIFICATION": "ここをクリックするか、<b>`{0}`</b>を押してコードを整形します。</br> <img src=\"styles/images/beautify.gif\">  <br/> <a href='#' style='float:right;'>OK</a>",
-  "DEFAULT_PROJECT_NOTIFICATION": "ここをクリックしてphoenixの<br/><b>デフォルトプロジェクト</b>を開きます。</br> <a href='#' style='float:right;'>OK</a>",
   "DIRECTORY_REPLACE_MESSAGE": "選択したフォルダ <span class='dialog-filename'>{0}</span> は空ではありません。本当にフォルダの内容をプロジェクトで置き換えますか？",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "ここをクリックして、HTMLファイル内のこの&lt;span&gt;を探します",
   "BUILD_WEBSITE_SECTION": "ウェブサイトをビルド",
@@ -1342,5 +1338,11 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "{0} に対してリモートが選択されていません！",
   "ERROR_BRANCH_LIST": "ブランチ一覧の取得に失敗しました。",
   "ERROR_FETCH_REMOTE": "リモート情報の取得に失敗しました。",
-  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "次に実装してほしい機能に投票してください！"
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "次に実装してほしい機能に投票してください！",
+  "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME}は<strong>個人を特定できる情報は一切収集または処理しませんが</strong>、お客様のプライバシー保護のため、<strong>匿名の利用状況統計を収集しています</strong>。匿名データはGDPR/CCPAの通知要件から除外されていますが、匿名データの収集をオプトアウトする選択肢も必要だと考えています。<br><br> <strong>ヘルプ > ヘルスレポート</strong>を選択することで、データの確認や<strong>匿名データの共有を停止する</strong>ことができます。これらの<strong>匿名の</strong>アプリ利用状況統計とエラーレポートは、{APP_NAME}におけるお客様のエクスペリエンス向上のため、機能の優先順位付け、バグの発見、ユーザビリティの問題の特定に役立ちます。このデータがなければ、お客様にとってどのような機能を構築する価値があるのかがわかりません。<br>",
+  "NEW_PROJECT_NOTIFICATION": "このアイコンをクリックすると、「プロジェクトを開始」ウィンドウが再び開きます。</br> 最近のプロジェクトの表示、フォルダを開く、またはテンプレートからプロジェクトを開始できます。</br> <img src=\"styles/images/new_project.png\">",
+  "BEAUTIFY_CODE_NOTIFICATION": "ここをクリックするか、<b>`{0}`</b>を押してコードを整形します。</br> <img src=\"styles/images/beautify.gif\">",
+  "DEFAULT_PROJECT_NOTIFICATION": "ここをクリックして、{APP_NAME}の<br/><b>デフォルトプロジェクト</b>を開きます。</br> <a href='#' style='float:right;'>OK</a>",
+  "GIT_TOAST_TITLE": "Phoenix CodeのGit機能を試す",
+  "GIT_TOAST_MESSAGE": "Gitパネルアイコンをクリックしてリポジトリを管理します。コミット、プッシュ、プル、プロジェクト履歴の表示をすべて1か所で行えます。<br><a href='https://docs.phcode.dev/docs/Features/git'>Gitパネルの詳細はこちら →</a>"
 });

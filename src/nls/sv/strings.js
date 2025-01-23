@@ -743,7 +743,6 @@ define({
   "HEALTH_DATA_NOTIFICATION": "Hälsorapport inställningar",
   "HEALTH_FIRST_POPUP_TITLE": "Sekretessmeddelande",
   "HEALTH_DATA_DO_TRACK": "Dela anonym information om hur jag använder {APP_NAME}",
-  "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>samlar inte in eller behandlar någon personligt identifierbar information</strong>, men <strong>samlar in anonym användningsstatistik</strong> för att skydda din integritet. Anonym data är undantagen från GDPR/CCPA-anmälningskrav, men vi anser att du bör ha möjlighet att välja bort insamling av anonym data också.<br><br> Du kan se dina data eller <strong>välja att inte dela någon anonym data</strong> genom att välja <strong>Hjälp > Hälsorapport</strong>. Denna <strong>anonyma</strong> statistik över appanvändning och felrapporter hjälper oss att prioritera funktioner, hitta buggar och upptäcka användbarhetsproblem för att förbättra din upplevelse med {APP_NAME}. Utan dessa data skulle vi inte veta vilka funktioner det är värt att bygga för dig! <br><br>",
   "HEALTH_DATA_PREVIEW": "{APP_NAME} Hälsorapport",
   "HEALTH_DATA_PREVIEW_INTRO": "<p>{APP_NAME} <strong>samlar inte in eller behandlar någon personligt identifierbar information</strong>, men <strong>samlar in anonym användningsstatistik</strong> för att skydda din integritet. Denna <strong>anonyma</strong> statistik över appanvändning och felrapporter hjälper oss att prioritera funktioner, hitta buggar och upptäcka användbarhetsproblem för att förbättra din upplevelse med {APP_NAME}.</p> <p>Nedan visas en förhandsgranskning av de data som kommer att skickas i din nästa hälsorapport <em>om</em> den är aktiverad. (Se även utvecklarkonsolen för felloggar markerade 'Caught Critical error'.)</p>",
   "INLINE_TIMING_EDITOR_TIME": "Tid",
@@ -1036,9 +1035,6 @@ define({
   "PREVIEW": "Förhandsgranska",
   "BUILD_WEBSITE": "Skapa webbplats",
   "VIEW_MORE": "Visa mer...",
-  "NEW_PROJECT_NOTIFICATION": "Klicka på den här ikonen för att öppna fönstret `Nytt projekt` igen.</br> Se Senaste projekt, Öppna mapp eller starta projekt från mallar.</br> <img src=\"styles/images/new_project.png\">  <br/> <a href='#' style='float:right;'>ok</a>",
-  "BEAUTIFY_CODE_NOTIFICATION": "Klicka här eller tryck på <b>`{0}`</b> för att formattera kod. </br> <img src=\"styles/images/beautify.gif\">  <br/> <a href='#' style='float:right;'>ok</a>",
-  "DEFAULT_PROJECT_NOTIFICATION": "Klicka här för att öppna <br/><b>standardprojektet</b> i phoenix. </br> <a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Den valda mappen <span class='dialog-filename'>{0}</span> är inte tom. Är du säker på att du vill ersätta mappens innehåll med projektet?",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "Klicka här för att hitta detta &lt;span&gt; i HTML-filen",
   "BUILD_WEBSITE_SECTION": "Skapa webbplats",
@@ -1342,5 +1338,11 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "Ingen fjärranslutning har valts för {0}!",
   "ERROR_BRANCH_LIST": "Det gick inte att hämta grenlistan",
   "ERROR_FETCH_REMOTE": "Det gick inte att hämta information om fjärranslutning",
-  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Rösta på funktionerna du vill se härnäst!"
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Rösta på funktionerna du vill se härnäst!",
+  "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>samlar inte in eller behandlar någon personligt identifierbar information</strong>, men <strong>samlar in anonym användningsstatistik</strong> för att skydda din integritet. Anonyma data är undantagna från GDPR/CCPA-anmälningskrav, men vi anser att du bör ha möjlighet att välja bort insamling av anonyma data också.<br><br> Du kan se dina data eller <strong>välja att inte dela några anonyma data</strong> genom att välja <strong>Hjälp > Hälsorapport</strong>. Denna <strong>anonyma</strong> statistik över appanvändning och felrapporter hjälper oss att prioritera funktioner, hitta buggar och upptäcka användbarhetsproblem för att förbättra din upplevelse med {APP_NAME}. Utan dessa data skulle vi inte veta vilka funktioner det är värt att bygga för dig! <br>",
+  "NEW_PROJECT_NOTIFICATION": "Klicka på den här ikonen för att öppna fönstret `Starta projekt` igen.</br> Se Senaste projekt, Öppna mapp eller starta projekt från mallar.</br> <img src=\"styles/images/new_project.png\">",
+  "BEAUTIFY_CODE_NOTIFICATION": "Klicka här eller tryck på <b>`{0}`</b> för att snygga till koden. </br> <img src=\"styles/images/beautify.gif\">",
+  "DEFAULT_PROJECT_NOTIFICATION": "Klicka här för att öppna <br/><b>standardprojektet</b> i {APP_NAME}. </br> <a href='#' style='float:right;'>ok</a>",
+  "GIT_TOAST_TITLE": "Utforska Git-funktioner i Phoenix Code",
+  "GIT_TOAST_MESSAGE": "Klicka på Git-panelens ikon för att hantera din repository. Committa, pusha, pulla och se din projekthistorik enkelt – allt på ett ställe.<br><a href='https://docs.phcode.dev/docs/Features/git'>Läs mer om Git-panelen →</a>"
 });

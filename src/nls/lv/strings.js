@@ -743,7 +743,6 @@ define({
   "HEALTH_DATA_NOTIFICATION": "Veselības atskaites iestatījumi",
   "HEALTH_FIRST_POPUP_TITLE": "Paziņojums par privātumu",
   "HEALTH_DATA_DO_TRACK": "Kopīgot anonīmu informāciju par to, kā es izmantoju {APP_NAME}",
-  "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>nevāc un neapstrādā nekādu personiski identificējamu informāciju</strong>, bet <strong>vāc anonīmu lietošanas statistiku</strong>, lai aizsargātu jūsu privātumu. Anonīmi dati ir atbrīvoti no GDPR/CCPA paziņošanas prasībām, taču mēs uzskatām, ka jums ir jābūt iespējai atteikties arī no anonīmu datu vākšanas.<br><br> Jūs varat apskatīt savus datus vai <strong>izvēlēties nekopīgot nekādus anonīmus datus</strong>, atlasot <strong>Palīdzība > Veselības ziņojums</strong>. Šī <strong>anonīmā</strong> lietotnes lietošanas statistika un kļūdu ziņojumi palīdz noteikt prioritātes funkcijām, atrast kļūdas un noteikt lietojamības problēmas, lai uzlabotu jūsu pieredzi ar {APP_NAME}. Bez šiem datiem mēs nezinātu, kādas funkcijas ir vērts jums izstrādāt! <br><br>",
   "HEALTH_DATA_PREVIEW": "{APP_NAME} veselības atskaite",
   "HEALTH_DATA_PREVIEW_INTRO": "<p>{APP_NAME} <strong>nevāc un neapstrādā nekādu personiski identificējamu informāciju</strong>, bet <strong>vāc anonīmu lietošanas statistiku</strong>, lai aizsargātu jūsu privātumu. Šī <strong>anonīmā</strong> lietotnes lietošanas statistika un kļūdu ziņojumi palīdz noteikt prioritātes funkcijām, atrast kļūdas un noteikt lietojamības problēmas, lai uzlabotu jūsu pieredzi ar {APP_NAME}.</p> <p>Zemāk ir redzams priekšskatījums datiem, kas tiks nosūtīti jūsu nākamajā veselības ziņojumā, <em>ja</em> tas ir iespējots. (Skatīt arī izstrātāja konsoli kļūdu žurnāliem, kas atzīmēti ar 'Caught Critical error'.)</p>",
   "INLINE_TIMING_EDITOR_TIME": "Laiks",
@@ -1036,9 +1035,6 @@ define({
   "PREVIEW": "Priekšskatījums",
   "BUILD_WEBSITE": "Izveidot vietni",
   "VIEW_MORE": "Skatīt vairāk...",
-  "NEW_PROJECT_NOTIFICATION": "Noklikšķiniet uz šīs ikonas, lai vēlreiz atvērtu logu `Jauns projekts`.</br> Skatiet nesenus projektus, atveriet mapi vai sāciet projektus no veidnēm.</br> <img src=\"styles/images/new_project.png\">  <br/> <a href='#' style='float:right;'>labi</a>",
-  "BEAUTIFY_CODE_NOTIFICATION": "Noklikšķiniet šeit vai nospiediet <b>`{0}`</b>, lai formatētu kodu. </br> <img src=\"styles/images/beautify.gif\">  <br/> <a href='#' style='float:right;'>labi</a>",
-  "DEFAULT_PROJECT_NOTIFICATION": "Noklikšķiniet šeit, lai atvērtu <br/><b>noklusējuma projektu</b> programmā phoenix. </br> <a href='#' style='float:right;'>labi</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Izvēlētā mape <span class='dialog-filename'>{0}</span> nav tukša. Vai tiešām vēlaties aizstāt mapes saturu ar projektu?",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "Noklikšķiniet šeit, lai atrastu šo &lt;span&gt; HTML failā",
   "BUILD_WEBSITE_SECTION": "Izveidot vietni",
@@ -1342,5 +1338,11 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "{0} nav izvēlēta attālā krātuve!",
   "ERROR_BRANCH_LIST": "Neizdevās iegūt zaru sarakstu",
   "ERROR_FETCH_REMOTE": "Neizdevās iegūt informāciju par attālo krātuvi",
-  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Nobalsot par funkcijām, kuras vēlaties redzēt nākamreiz!"
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Nobalsot par funkcijām, kuras vēlaties redzēt nākamreiz!",
+  "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>nevāc un neapstrādā nekādu personu identificējošu informāciju</strong>, bet <strong>vāc anonīmu lietošanas statistiku</strong>, lai aizsargātu jūsu privātumu. Anonīmi dati ir atbrīvoti no GDPR/CCPA paziņošanas prasībām, taču mēs uzskatām, ka jums ir jābūt iespējai atteikties arī no anonīmu datu vākšanas.<br><br> Jūs varat apskatīt savus datus vai <strong>izvēlēties nekopīgot anonīmus datus</strong>, atlasot <strong>Palīdzība > Statusa pārskats</strong>. Šī <strong>anonīmā</strong> lietotnes lietošanas statistika un kļūdu ziņojumi palīdz noteikt funkciju prioritātes, atrast kļūdas un pamanīt lietojamības problēmas, lai uzlabotu jūsu pieredzi ar {APP_NAME}. Bez šiem datiem mēs nezinātu, kādas funkcijas ir vērts jums izstrādāt! <br>",
+  "NEW_PROJECT_NOTIFICATION": "Noklikšķiniet uz šīs ikonas, lai vēlreiz atvērtu logu `Sākt projektu`.</br> Skatiet nesenus projektus, atveriet mapi vai sāciet projektus no veidnēm.</br> <img src=\"styles/images/new_project.png\">",
+  "BEAUTIFY_CODE_NOTIFICATION": "Noklikšķiniet šeit vai nospiediet <b>`{0}`</b>, lai formatētu kodu. </br> <img src=\"styles/images/beautify.gif\">",
+  "DEFAULT_PROJECT_NOTIFICATION": "Noklikšķiniet šeit, lai atvērtu <br/><b>noklusējuma projektu</b> {APP_NAME}. </br> <a href='#' style='float:right;'>labi</a>",
+  "GIT_TOAST_TITLE": "Izpētiet Git funkcijas Phoenix Code",
+  "GIT_TOAST_MESSAGE": "Noklikšķiniet uz Git paneļa ikonas, lai pārvaldītu savu repozitoriju. Ērti veiciet commit, push, pull un skatiet sava projekta vēsturi — viss vienā vietā.<br><a href='https://docs.phcode.dev/docs/Features/git'>Uzziniet vairāk par Git paneli →</a>"
 });

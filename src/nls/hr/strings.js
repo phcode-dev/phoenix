@@ -743,7 +743,6 @@ define({
   "HEALTH_DATA_NOTIFICATION": "Postavke izvješća o stanju",
   "HEALTH_FIRST_POPUP_TITLE": "Obavijest o privatnosti",
   "HEALTH_DATA_DO_TRACK": "Dijeli anonimne informacije o tome kako koristim {APP_NAME}",
-  "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>ne prikuplja niti obrađuje nikakve osobne podatke</strong>, već <strong>prikuplja anonimne statistike korištenja</strong> kako bi zaštitio vašu privatnost. Anonimni podaci su izuzeti od zahtjeva za obavijesti GDPR/CCPA, ali vjerujemo da trebate imati mogućnost isključivanja prikupljanja anonimnih podataka.<br><br> Možete vidjeti svoje podatke ili <strong>odabrati da ne dijelite nikakve anonimne podatke</strong> odabirom <strong>Pomoć > Izvješće o stanju</strong>. Ove <strong>anonimne</strong> statistike korištenja aplikacije i izvješća o pogreškama pomažu u određivanju prioriteta značajki, pronalaženju grešaka i uočavanju problema s uporabom radi poboljšanja vašeg iskustva s {APP_NAME}. Bez ovih podataka ne bismo znali koje značajke vrijedi izraditi za vas! <br><br>",
   "HEALTH_DATA_PREVIEW": "Izvješće o stanju {APP_NAME}",
   "HEALTH_DATA_PREVIEW_INTRO": "<p>{APP_NAME} <strong>ne prikuplja niti obrađuje nikakve osobne podatke</strong>, već <strong>prikuplja anonimne statistike korištenja</strong> kako bi zaštitio vašu privatnost. Ove <strong>anonimne</strong> statistike korištenja aplikacije i izvješća o pogreškama pomažu u određivanju prioriteta značajki, pronalaženju grešaka i uočavanju problema s uporabom radi poboljšanja vašeg iskustva s {APP_NAME}.</p> <p>Ispod je pregled podataka koji će biti poslani u vašem sljedećem Izvješću o stanju <em>ako</em> je omogućeno. (Također pogledajte konzolu za razvojne programere za zapisnike pogrešaka označene s 'Uhvaćena kritična pogreška'.)</p>",
   "INLINE_TIMING_EDITOR_TIME": "Vrijeme",
@@ -1036,9 +1035,6 @@ define({
   "PREVIEW": "Pregled",
   "BUILD_WEBSITE": "Izradi web-stranicu",
   "VIEW_MORE": "Prikaži više...",
-  "NEW_PROJECT_NOTIFICATION": "Kliknite ovu ikonu da biste ponovno otvorili prozor `Novi projekt`.</br> Pogledajte Nedavne projekte, Otvorite mapu ili započnite projekte iz predložaka.</br> <img src=\"styles/images/new_project.png\">  <br/> <a href='#' style='float:right;'>u redu</a>",
-  "BEAUTIFY_CODE_NOTIFICATION": "Kliknite ovdje ili pritisnite <b>`{0}`</b> za Uređivanje koda. </br> <img src=\"styles/images/beautify.gif\">  <br/> <a href='#' style='float:right;'>u redu</a>",
-  "DEFAULT_PROJECT_NOTIFICATION": "Kliknite ovdje da biste otvorili <br/><b>zadani projekt</b> u phoenixu. </br> <a href='#' style='float:right;'>u redu</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Odabrana mapa <span class='dialog-filename'>{0}</span> nije prazna. Jeste li sigurni da želite zamijeniti sadržaj mape s projektom?",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "Kliknite ovdje da biste pronašli ovaj &lt;span&gt; u HTML datoteci",
   "BUILD_WEBSITE_SECTION": "Izrada web-stranice",
@@ -1342,5 +1338,11 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "Nije odabran udaljeni repozitorij za {0}!",
   "ERROR_BRANCH_LIST": "Dohvaćanje popisa grana nije uspjelo",
   "ERROR_FETCH_REMOTE": "Dohvaćanje informacija o udaljenom repozitoriju nije uspjelo",
-  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Glasajte za značajke koje želite vidjeti sljedeće!"
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Glasajte za značajke koje želite vidjeti sljedeće!",
+  "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>ne prikuplja niti obrađuje nikakve osobne podatke</strong>, ali <strong>prikuplja anonimnu statistiku korištenja</strong> kako bi zaštitio vašu privatnost. Anonimni podaci su izuzeti od zahtjeva za obavijestima GDPR/CCPA, ali vjerujemo da trebate imati mogućnost isključivanja prikupljanja anonimnih podataka.<br><br> Možete vidjeti svoje podatke ili <strong>odabrati da ne dijelite nikakve anonimne podatke</strong> odabirom <strong>Pomoć > Izvješće o zdravlju</strong>. Ova <strong>anonimna</strong> statistika korištenja aplikacije i izvješća o pogreškama pomažu u određivanju prioriteta značajki, pronalaženju grešaka i uočavanju problema s upotrebljivošću radi poboljšanja vašeg iskustva s {APP_NAME}. Bez ovih podataka ne bismo znali koje značajke vrijedi izraditi za vas! <br>",
+  "NEW_PROJECT_NOTIFICATION": "Kliknite ovu ikonu da biste ponovno otvorili prozor `Pokreni projekt`.</br> Pogledajte Nedavne projekte, Otvorite mapu ili pokrenite projekte iz predložaka.</br> <img src=\"styles/images/new_project.png\">",
+  "BEAUTIFY_CODE_NOTIFICATION": "Kliknite ovdje ili pritisnite <b>`{0}`</b> za uljepšavanje koda. </br> <img src=\"styles/images/beautify.gif\">",
+  "DEFAULT_PROJECT_NOTIFICATION": "Kliknite ovdje da biste otvorili <br/><b>zadani projekt</b> u {APP_NAME}. </br> <a href='#' style='float:right;'>u redu</a>",
+  "GIT_TOAST_TITLE": "Istražite Git značajke u Phoenix Codeu",
+  "GIT_TOAST_MESSAGE": "Kliknite ikonu Git panela za upravljanje svojim repozitorijem. Jednostavno potvrdite (commit), pošaljite (push), preuzmite (pull) i pregledajte povijest svog projekta - sve na jednom mjestu.<br><a href='https://docs.phcode.dev/docs/Features/git'>Saznajte više o Git panelu →</a>"
 });

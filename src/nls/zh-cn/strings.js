@@ -743,7 +743,6 @@ define({
   "HEALTH_DATA_NOTIFICATION": "健康报告首选项",
   "HEALTH_FIRST_POPUP_TITLE": "隐私声明",
   "HEALTH_DATA_DO_TRACK": "分享我使用 {APP_NAME} 的匿名信息",
-  "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>不会收集或处理任何个人身份信息</strong>，但会<strong>收集匿名使用统计数据</strong>来保护您的隐私。匿名数据不受 GDPR/CCPA 通知要求的约束，但我们认为您也需要选择退出匿名数据收集。<br><br>您可以通过选择<strong>帮助 > 健康报告</strong>来查看您的数据或<strong>选择不共享任何匿名数据</strong>。这些<strong>匿名</strong>应用使用统计数据和错误报告有助于确定功能优先级、查找错误和发现可用性问题，从而改善您使用 {APP_NAME} 的体验。如果没有这些数据，我们将不知道哪些功能值得为您构建！<br><br>",
   "HEALTH_DATA_PREVIEW": "{APP_NAME} 健康报告",
   "HEALTH_DATA_PREVIEW_INTRO": "<p>{APP_NAME} <strong>不会收集或处理任何个人身份信息</strong>，但会<strong>收集匿名使用统计数据</strong>来保护您的隐私。这些<strong>匿名</strong>应用使用统计数据和错误报告有助于确定功能优先级、查找错误和发现可用性问题，从而改善您使用 {APP_NAME} 的体验。</p> <p>以下是您的下一个健康报告<em>如果</em>启用将发送的数据预览。（另请参阅开发者控制台中标记为“Caught Critical error”的错误日志。）</p>",
   "INLINE_TIMING_EDITOR_TIME": "时间",
@@ -1036,9 +1035,6 @@ define({
   "PREVIEW": "预览",
   "BUILD_WEBSITE": "构建网站",
   "VIEW_MORE": "查看更多...",
-  "NEW_PROJECT_NOTIFICATION": "点击此图标可再次打开“新建项目”窗口。</br>查看最近项目、打开文件夹或从模板启动项目。</br> <img src=\"styles/images/new_project.png\">  <br/> <a href='#' style='float:right;'>确定</a>",
-  "BEAUTIFY_CODE_NOTIFICATION": "点击此处或按<b>`{0}`</b>美化代码。</br> <img src=\"styles/images/beautify.gif\">  <br/> <a href='#' style='float:right;'>确定</a>",
-  "DEFAULT_PROJECT_NOTIFICATION": "点击此处在 Phoenix 中打开<br/><b>默认项目</b>。</br> <a href='#' style='float:right;'>确定</a>",
   "DIRECTORY_REPLACE_MESSAGE": "所选文件夹 <span class='dialog-filename'>{0}</span> 不为空。您确定要用项目替换文件夹内容吗？",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "点击此处可在 HTML 文件中找到此 &lt;span&gt;",
   "BUILD_WEBSITE_SECTION": "构建网站",
@@ -1342,5 +1338,11 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "未为 {0} 选择远程仓库！",
   "ERROR_BRANCH_LIST": "获取分支列表失败",
   "ERROR_FETCH_REMOTE": "获取远程仓库信息失败",
-  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "为您希望看到的下一个功能投票！"
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "为您希望看到的下一个功能投票！",
+  "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>不会收集或处理任何个人身份信息</strong>，但<strong>会收集匿名的使用统计数据</strong>以保护您的隐私。匿名数据不受 GDPR/CCPA 通知要求的约束，但我们认为您也需要有选择退出匿名数据收集的权利。<br><br>您可以通过选择<strong>帮助 > 健康报告</strong>来查看您的数据或<strong>选择不共享任何匿名数据</strong>。这些<strong>匿名的</strong>应用使用统计数据和错误报告有助于确定功能优先级、查找错误和发现可用性问题，从而改善您使用 {APP_NAME} 的体验。如果没有这些数据，我们将无法了解哪些功能值得为您构建！<br>",
+  "NEW_PROJECT_NOTIFICATION": "点击此图标可再次打开“新建项目”窗口。</br>查看最近项目、打开文件夹或从模板启动项目。</br> <img src=\"styles/images/new_project.png\">",
+  "BEAUTIFY_CODE_NOTIFICATION": "点击此处或按 <b>`{0}`</b> 美化代码。</br> <img src=\"styles/images/beautify.gif\">",
+  "DEFAULT_PROJECT_NOTIFICATION": "点击此处在 {APP_NAME} 中打开<br/><b>默认项目</b>。</br> <a href='#' style='float:right;'>确定</a>",
+  "GIT_TOAST_TITLE": "探索 Phoenix Code 中的 Git 功能",
+  "GIT_TOAST_MESSAGE": "点击 Git 面板图标即可管理您的代码仓库。轻松提交、推送、拉取和查看项目历史记录，一切尽在一处。<br><a href='https://docs.phcode.dev/docs/Features/git'>了解更多关于 Git 面板的信息 →</a>"
 });

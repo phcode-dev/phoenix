@@ -743,7 +743,6 @@ define({
   "HEALTH_DATA_NOTIFICATION": "Preferenze Health Data",
   "HEALTH_FIRST_POPUP_TITLE": "Informativa sulla privacy",
   "HEALTH_DATA_DO_TRACK": "Condividi informazioni anonime su come utilizzo {APP_NAME}",
-  "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>non raccoglie né elabora alcuna informazione personale identificabile</strong>, ma <strong>raccoglie statistiche di utilizzo anonime</strong> per tutelare la tua privacy. I dati anonimi sono esenti dai requisiti di notifica GDPR/CCPA, ma crediamo che tu debba avere la possibilità di scegliere di non partecipare alla raccolta di dati anonimi.<br><br> Puoi visualizzare i tuoi dati o <strong>scegliere di non condividere alcun dato anonimo</strong> selezionando <strong>Aiuto > Rapporto sull'integrità</strong>. Queste statistiche di utilizzo dell'app e i rapporti sugli errori <strong>anonimi</strong> ci aiutano a dare priorità alle funzionalità, a trovare bug e a individuare problemi di usabilità per migliorare la tua esperienza con {APP_NAME}. Senza questi dati, non sapremmo quali funzionalità vale la pena sviluppare per te! <br><br>",
   "HEALTH_DATA_PREVIEW": "Anteprima Health Data",
   "HEALTH_DATA_PREVIEW_INTRO": "<p>{APP_NAME} <strong>non raccoglie né elabora alcuna informazione personale identificabile</strong>, ma <strong>raccoglie statistiche di utilizzo anonime</strong> per tutelare la tua privacy. Queste statistiche di utilizzo dell'app e i rapporti sugli errori <strong>anonimi</strong> ci aiutano a dare priorità alle funzionalità, a trovare bug e a individuare problemi di usabilità per migliorare la tua esperienza con {APP_NAME}.</p> <p>Di seguito è riportata un'anteprima dei dati che verranno inviati nel tuo prossimo Rapporto sull'integrità <em>se</em> abilitato. (Vedi anche la console per sviluppatori per i registri degli errori contrassegnati come \"Errore critico rilevato\".)</p>",
   "INLINE_TIMING_EDITOR_TIME": "Tempo",
@@ -1036,9 +1035,6 @@ define({
   "PREVIEW": "Anteprima",
   "BUILD_WEBSITE": "Crea sito web",
   "VIEW_MORE": "Vedi altro...",
-  "NEW_PROJECT_NOTIFICATION": "Fai clic su questa icona per aprire nuovamente la finestra `Nuovo progetto`.</br> Vedi Progetti recenti, Apri cartella o avvia progetti da modelli.</br> <img src=\"styles/images/new_project.png\">  <br/> <a href='#' style='float:right;'>ok</a>",
-  "BEAUTIFY_CODE_NOTIFICATION": "Fai clic qui o premi <b>`{0}`</b> per formattare il codice. </br> <img src=\"styles/images/beautify.gif\">  <br/> <a href='#' style='float:right;'>ok</a>",
-  "DEFAULT_PROJECT_NOTIFICATION": "Fai clic qui per aprire il <br/><b>progetto predefinito</b> in Phoenix. </br> <a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "La cartella selezionata <span class='dialog-filename'>{0}</span> non è vuota. Sei sicuro di voler sostituire il contenuto della cartella con il progetto?",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "Fai clic qui per individuare questo &lt;span&gt; nel file HTML",
   "BUILD_WEBSITE_SECTION": "Crea sito web",
@@ -1342,5 +1338,11 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "Nessun remote selezionato per {0}!",
   "ERROR_BRANCH_LIST": "Impossibile ottenere l'elenco dei branch",
   "ERROR_FETCH_REMOTE": "Recupero delle informazioni del remote non riuscito",
-  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vota per le funzionalità che desideri vedere in futuro!"
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vota per le funzionalità che desideri vedere in futuro!",
+  "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>non raccoglie né elabora alcuna informazione personale identificativa</strong>, ma <strong>raccoglie statistiche di utilizzo anonime</strong> per tutelare la tua privacy. I dati anonimi sono esenti dai requisiti di notifica GDPR/CCPA, ma crediamo che tu debba avere la possibilità di scegliere di non condividere i dati anonimi.<br><br> Puoi visualizzare i tuoi dati o <strong>scegliere di non condividere alcun dato anonimo</strong> selezionando <strong>Aiuto > Report di integrità</strong>. Queste statistiche di utilizzo dell'app e i report sugli errori <strong>anonimi</strong> ci aiutano a dare priorità alle funzionalità, a trovare bug e a individuare problemi di usabilità per migliorare la tua esperienza con {APP_NAME}. Senza questi dati, non sapremmo quali funzionalità vale la pena sviluppare per te! <br>",
+  "NEW_PROJECT_NOTIFICATION": "Fai clic su questa icona per aprire nuovamente la finestra `Avvia progetto`.</br> Visualizza i progetti recenti, apri una cartella o avvia progetti da modelli.</br> <img src=\"styles/images/new_project.png\">",
+  "BEAUTIFY_CODE_NOTIFICATION": "Fai clic qui o premi <b>`{0}`</b> per formattare il codice. </br> <img src=\"styles/images/beautify.gif\">",
+  "DEFAULT_PROJECT_NOTIFICATION": "Fai clic qui per aprire il <br/><b>progetto predefinito</b> in {APP_NAME}. </br> <a href='#' style='float:right;'>ok</a>",
+  "GIT_TOAST_TITLE": "Esplora le funzionalità Git in Phoenix Code",
+  "GIT_TOAST_MESSAGE": "Fai clic sull'icona del pannello Git per gestire il tuo repository. Esegui commit, push, pull e visualizza la cronologia del tuo progetto, tutto in un unico posto.<br><a href='https://docs.phcode.dev/docs/Features/git'>Scopri di più sul pannello Git →</a>"
 });

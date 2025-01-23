@@ -743,7 +743,6 @@ define({
   "HEALTH_DATA_NOTIFICATION": "Statusbericht-Einstellungen",
   "HEALTH_FIRST_POPUP_TITLE": "Datenschutzhinweis",
   "HEALTH_DATA_DO_TRACK": "Anonyme Informationen über meine Nutzung von {APP_NAME} teilen",
-  "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>erfasst oder verarbeitet keine personenbezogenen Daten</strong>, sondern <strong>erfasst anonyme Nutzungsstatistiken</strong>, um Ihre Privatsphäre zu schützen. Anonyme Daten sind von den Benachrichtigungsanforderungen der DSGVO/CCPA ausgenommen, aber wir glauben, dass Sie die Möglichkeit haben sollten, auch die Erfassung anonymer Daten abzulehnen.<br><br> Sie können Ihre Daten einsehen oder <strong>die Weitergabe anonymer Daten ablehnen</strong>, indem Sie <strong>Hilfe > Zustandsbericht</strong> auswählen. Diese <strong>anonymen</strong> Nutzungsstatistiken und Fehlerberichte der App helfen uns, Funktionen zu priorisieren, Fehler zu finden und Usability-Probleme zu erkennen, um Ihre Erfahrung mit {APP_NAME} zu verbessern. Ohne diese Daten wüssten wir nicht, welche Funktionen es sich lohnt, für Sie zu entwickeln! <br><br>",
   "HEALTH_DATA_PREVIEW": "{APP_NAME}-Statusbericht",
   "HEALTH_DATA_PREVIEW_INTRO": "<p>{APP_NAME} <strong>erfasst oder verarbeitet keine personenbezogenen Daten</strong>, sondern <strong>erfasst anonyme Nutzungsstatistiken</strong>, um Ihre Privatsphäre zu schützen. Diese <strong>anonymen</strong> Nutzungsstatistiken und Fehlerberichte der App helfen uns, Funktionen zu priorisieren, Fehler zu finden und Usability-Probleme zu erkennen, um Ihre Erfahrung mit {APP_NAME} zu verbessern.</p> <p>Im Folgenden finden Sie eine Vorschau der Daten, die in Ihrem nächsten Zustandsbericht gesendet werden, <em>falls</em> dieser aktiviert ist. (Siehe auch die Entwicklerkonsole für Fehlerprotokolle mit der Kennzeichnung 'Schwerwiegender Fehler abgefangen'.)</p>",
   "INLINE_TIMING_EDITOR_TIME": "Zeit",
@@ -1036,9 +1035,6 @@ define({
   "PREVIEW": "Vorschau",
   "BUILD_WEBSITE": "Webseite erstellen",
   "VIEW_MORE": "Mehr anzeigen...",
-  "NEW_PROJECT_NOTIFICATION": "Klicken Sie auf dieses Symbol, um das Fenster `Neues Projekt` erneut zu öffnen.</br> Sehen Sie sich die letzten Projekte an, öffnen Sie einen Ordner oder starten Sie Projekte aus Vorlagen.</br> <img src=\"styles/images/new_project.png\">  <br/> <a href='#' style='float:right;'>OK</a>",
-  "BEAUTIFY_CODE_NOTIFICATION": "Klicken Sie hier oder drücken Sie <b>`{0}`</b>, um den Code zu verschönern. </br> <img src=\"styles/images/beautify.gif\">  <br/> <a href='#' style='float:right;'>OK</a>",
-  "DEFAULT_PROJECT_NOTIFICATION": "Klicken Sie hier, um das <br/><b>Standardprojekt</b> in Phoenix zu öffnen. </br> <a href='#' style='float:right;'>OK</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Der ausgewählte Ordner <span class='dialog-filename'>{0}</span> ist nicht leer. Möchten Sie den Ordnerinhalt wirklich mit dem Projekt ersetzen?",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "Klicken Sie hier, um dies &lt;span&gt; in der HTML-Datei zu finden",
   "BUILD_WEBSITE_SECTION": "Webseite erstellen",
@@ -1342,5 +1338,11 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "Für {0} wurde kein Remote ausgewählt!",
   "ERROR_BRANCH_LIST": "Abrufen der Branch-Liste fehlgeschlagen",
   "ERROR_FETCH_REMOTE": "Abrufen der Remote-Informationen fehlgeschlagen",
-  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Stimmen Sie für die Funktionen ab, die Sie als Nächstes sehen möchten!"
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Stimmen Sie für die Funktionen ab, die Sie als Nächstes sehen möchten!",
+  "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>sammelt oder verarbeitet keine personenbezogenen Daten</strong>, aber <strong>erhebt anonyme Nutzungsstatistiken</strong>, um Ihre Privatsphäre zu schützen. Anonyme Daten sind von den Benachrichtigungsanforderungen der DSGVO/CCPA ausgenommen, aber wir glauben, dass Sie die Möglichkeit haben sollten, der Erfassung anonymer Daten zu widersprechen.<br><br> Sie können Ihre Daten einsehen oder <strong>die Weitergabe anonymer Daten deaktivieren</strong>, indem Sie <strong>Hilfe > Zustandsbericht</strong> auswählen. Diese <strong>anonymen</strong> App-Nutzungsstatistiken und Fehlerberichte helfen uns, Funktionen zu priorisieren, Fehler zu finden und Usability-Probleme zu erkennen, um Ihre Erfahrung mit {APP_NAME} zu verbessern. Ohne diese Daten wüssten wir nicht, welche Funktionen es sich lohnt, für Sie zu entwickeln! <br>",
+  "NEW_PROJECT_NOTIFICATION": "Klicken Sie auf dieses Symbol, um das Fenster „Projekt starten“ erneut zu öffnen.</br> Sehen Sie sich kürzlich bearbeitete Projekte an, öffnen Sie einen Ordner oder starten Sie Projekte aus Vorlagen.</br> <img src=\"styles/images/new_project.png\">",
+  "BEAUTIFY_CODE_NOTIFICATION": "Klicken Sie hier oder drücken Sie <b>`{0}`</b>, um Code zu verschönern. </br> <img src=\"styles/images/beautify.gif\">",
+  "DEFAULT_PROJECT_NOTIFICATION": "Klicken Sie hier, um das <br/><b>Standardprojekt</b> in {APP_NAME} zu öffnen. </br> <a href='#' style='float:right;'>OK</a>",
+  "GIT_TOAST_TITLE": "Git-Funktionen in Phoenix Code entdecken",
+  "GIT_TOAST_MESSAGE": "Klicken Sie auf das Git-Panel-Symbol, um Ihr Repository zu verwalten. Committen, Pushen, Pullen und die Anzeige Ihres Projektverlaufs – alles an einem Ort.<br><a href='https://docs.phcode.dev/docs/Features/git'>Mehr über das Git-Panel erfahren →</a>"
 });

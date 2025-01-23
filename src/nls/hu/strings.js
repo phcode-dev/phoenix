@@ -743,7 +743,6 @@ define({
   "HEALTH_DATA_NOTIFICATION": "Állapotjelentés beállításai",
   "HEALTH_FIRST_POPUP_TITLE": "Adatvédelmi nyilatkozat",
   "HEALTH_DATA_DO_TRACK": "Névtelen információk megosztása a(z) {APP_NAME} használatáról",
-  "HEALTH_DATA_NOTIFICATION_MESSAGE": "A(z) {APP_NAME} <strong>nem gyűjt és nem dolgoz fel semmilyen személyazonosító információt</strong>, de <strong>gyűjt névtelen használati statisztikákat</strong> az Ön adatainak védelme érdekében. A névtelen adatok mentesülnek a GDPR/CCPA értesítési követelményei alól, de úgy gondoljuk, hogy Önnek lehetősége kell legyen a névtelen adatgyűjtés letiltására is.<br><br> Megtekintheti adatait, vagy <strong>választhatja, hogy nem oszt meg semmilyen névtelen adatot</strong> a <strong>Súgó > Állapotjelentés</strong> menüpont kiválasztásával. Ezek a <strong>névtelen</strong> alkalmazáshasználati statisztikák és hibajelentések segítenek a funkciók rangsorolásában, a hibák megtalálásában és a használhatósági problémák felismerésében, hogy javítsuk a(z) {APP_NAME} használatával kapcsolatos élményét. Ezen adatok nélkül nem tudnánk, hogy milyen funkciókat érdemes fejlesztenünk az Ön számára! <br><br>",
   "HEALTH_DATA_PREVIEW": "{APP_NAME} állapotjelentés",
   "HEALTH_DATA_PREVIEW_INTRO": "<p>A(z) {APP_NAME} <strong>nem gyűjt és nem dolgoz fel semmilyen személyazonosító információt</strong>, de <strong>gyűjt névtelen használati statisztikákat</strong> az Ön adatainak védelme érdekében. Ezek a <strong>névtelen</strong> alkalmazáshasználati statisztikák és hibajelentések segítenek a funkciók rangsorolásában, a hibák megtalálásában és a használhatósági problémák felismerésében, hogy javítsuk a(z) {APP_NAME} használatával kapcsolatos élményét.</p> <p>Az alábbiakban megtekintheti a következő állapotjelentésben elküldendő adatok előnézetét, <em>amennyiben</em> az engedélyezve van. (A 'Kritikus hiba észlelése' jelzésű hibák naplóit a fejlesztői konzolban is megtekintheti.)</p>",
   "INLINE_TIMING_EDITOR_TIME": "Idő",
@@ -1036,9 +1035,6 @@ define({
   "PREVIEW": "Előnézet",
   "BUILD_WEBSITE": "Weboldal létrehozása",
   "VIEW_MORE": "Továbbiak...",
-  "NEW_PROJECT_NOTIFICATION": "Kattintson erre az ikonra az `Új projekt` ablak újbóli megnyitásához.</br> Tekintse meg a Legutóbbi projekteket, nyisson meg egy mappát, vagy indítson projekteket sablonokból.</br> <img src=\"styles/images/new_project.png\">  <br/> <a href='#' style='float:right;'>ok</a>",
-  "BEAUTIFY_CODE_NOTIFICATION": "Kattintson ide vagy nyomja meg a <b>`{0}`</b> billentyűt a kód formázásához. </br> <img src=\"styles/images/beautify.gif\">  <br/> <a href='#' style='float:right;'>ok</a>",
-  "DEFAULT_PROJECT_NOTIFICATION": "Kattintson ide az <br/><b>alapértelmezett projekt</b> megnyitásához a phoenixben. </br> <a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "A kiválasztott mappa <span class='dialog-filename'>{0}</span> nem üres. Biztosan felül akarja írni a mappa tartalmát a projekttel?",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "Kattintson ide a &lt;span&gt; megkereséséhez a HTML fájlban",
   "BUILD_WEBSITE_SECTION": "Weboldal létrehozása",
@@ -1342,5 +1338,11 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "Nincs kiválasztva távoli adattár a(z) {0} számára!",
   "ERROR_BRANCH_LIST": "Ágak listájának lekérése sikertelen",
   "ERROR_FETCH_REMOTE": "Távoli adattár információinak lekérése sikertelen",
-  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Szavazzon azokra a funkciókra, amelyeket a jövőben látni szeretne!"
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Szavazzon azokra a funkciókra, amelyeket a jövőben látni szeretne!",
+  "HEALTH_DATA_NOTIFICATION_MESSAGE": "A(z) {APP_NAME} <strong>nem gyűjt és nem dolgoz fel semmilyen személyazonosításra alkalmas információt</strong>, de <strong>gyűjt anonim használati statisztikákat</strong> az Ön adatainak védelme érdekében. Az anonim adatok mentesülnek a GDPR/CCPA értesítési követelményei alól, de úgy gondoljuk, hogy Önnek lehetősége kell legyen lemondani az anonim adatgyűjtésről is.<br><br> Megtekintheti adatait, vagy <strong>választhatja, hogy nem oszt meg semmilyen anonim adatot</strong> a <strong>Súgó > Állapotjelentés</strong> kiválasztásával. Ezek az <strong>anonim</strong> alkalmazáshasználati statisztikák és hibajelentések segítenek a funkciók priorizálásában, a hibák megtalálásában és a használhatósági problémák felderítésében, hogy javítsuk az Ön {APP_NAME} élményét. Ezen adatok nélkül nem tudnánk, hogy milyen funkciókat érdemes fejlesztenünk az Ön számára! <br>",
+  "NEW_PROJECT_NOTIFICATION": "Kattintson erre az ikonra a `Projekt indítása` ablak újbóli megnyitásához.</br> Tekintse meg a Legutóbbi projekteket, nyisson meg egy mappát, vagy indítson projekteket sablonokból.</br> <img src=\"styles/images/new_project.png\">",
+  "BEAUTIFY_CODE_NOTIFICATION": "Kattintson ide vagy nyomja meg a <b>`{0}`</b> billentyűt a kód formázásához. </br> <img src=\"styles/images/beautify.gif\">",
+  "DEFAULT_PROJECT_NOTIFICATION": "Kattintson ide az <br/><b>alapértelmezett projekt</b> megnyitásához a(z) {APP_NAME} alkalmazásban. </br> <a href='#' style='float:right;'>ok</a>",
+  "GIT_TOAST_TITLE": "Fedezd fel a Git funkciókat a Phoenix Code-ban",
+  "GIT_TOAST_MESSAGE": "Kattintson a Git panel ikonra a verziókövető rendszer kezeléséhez. Könnyedén végezhet commit, push és pull műveleteket, valamint megtekintheti a projekt előzményeit – mindezt egy helyen.<br><a href='https://docs.phcode.dev/docs/Features/git'>Tudj meg többet a Git panelről →</a>"
 });
