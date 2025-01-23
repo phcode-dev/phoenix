@@ -743,7 +743,6 @@ define({
   "HEALTH_DATA_NOTIFICATION": "Nastavenia hlásenia o stave",
   "HEALTH_FIRST_POPUP_TITLE": "Oznámenie o ochrane osobných údajov",
   "HEALTH_DATA_DO_TRACK": "Zdieľať anonymné informácie o tom, ako používam {APP_NAME}",
-  "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>nezbiera ani nespracováva žiadne osobné údaje</strong>, ale <strong>zbiera anonymné štatistiky používania</strong> na ochranu vášho súkromia. Anonymné údaje sú vyňaté z požiadaviek na oznámenie GDPR/CCPA, ale veríme, že by ste mali mať možnosť odmietnuť aj zhromažďovanie anonymných údajov.<br><br> Svoje údaje si môžete pozrieť alebo <strong>sa rozhodnúť nezdieľať žiadne anonymné údaje</strong> výberom možnosti <strong>Pomocník > Hlásenie o stave</strong>. Tieto <strong>anonymné</strong> štatistiky používania aplikácie a hlásenia o chybách pomáhajú uprednostňovať funkcie, nachádzať chyby a odhaľovať problémy s použiteľnosťou na zlepšenie vašej skúsenosti s aplikáciou {APP_NAME}. Bez týchto údajov by sme nevedeli, aké funkcie sa oplatí pre vás vyvíjať! <br><br>",
   "HEALTH_DATA_PREVIEW": "Hlásenie o stave {APP_NAME}",
   "HEALTH_DATA_PREVIEW_INTRO": "<p>{APP_NAME} <strong>nezbiera ani nespracováva žiadne osobné údaje</strong>, ale <strong>zbiera anonymné štatistiky používania</strong> na ochranu vášho súkromia. Tieto <strong>anonymné</strong> štatistiky používania aplikácie a hlásenia o chybách pomáhajú uprednostňovať funkcie, nachádzať chyby a odhaľovať problémy s použiteľnosťou na zlepšenie vašej skúsenosti s aplikáciou {APP_NAME}.</p> <p>Nižšie je uvedený náhľad údajov, ktoré budú odoslané vo vašom ďalšom hlásení o stave, <em>ak</em> je povolené. (Pozrite si aj konzolu pre vývojárov, kde nájdete záznamy chýb označené ako „Zachytená kritická chyba“.)</p>",
   "INLINE_TIMING_EDITOR_TIME": "Čas",
@@ -1036,9 +1035,6 @@ define({
   "PREVIEW": "Náhľad",
   "BUILD_WEBSITE": "Vytvoriť webovú stránku",
   "VIEW_MORE": "Zobraziť viac...",
-  "NEW_PROJECT_NOTIFICATION": "Kliknite na túto ikonu, ak chcete znova otvoriť okno `Nový projekt`.</br> Pozrite si Nedávne projekty, Otvorte priečinok alebo začnite projekty zo šablón.</br> <img src=\"styles/images/new_project.png\">  <br/> <a href='#' style='float:right;'>ok</a>",
-  "BEAUTIFY_CODE_NOTIFICATION": "Kliknite sem alebo stlačte <b>`{0}`</b> pre skrášlenie kódu. </br> <img src=\"styles/images/beautify.gif\">  <br/> <a href='#' style='float:right;'>ok</a>",
-  "DEFAULT_PROJECT_NOTIFICATION": "Kliknite sem pre otvorenie <br/><b>predvoleného projektu</b> vo phoenixe. </br> <a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Vybraný priečinok <span class='dialog-filename'>{0}</span> nie je prázdny. Ste si istý, že chcete nahradiť obsah priečinka projektom?",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "Kliknite sem pre nájdenie tohto &lt;span&gt; v HTML súbore",
   "BUILD_WEBSITE_SECTION": "Vytvorenie webovej stránky",
@@ -1342,5 +1338,11 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "Pre {0} nebol vybraný žiadny vzdialený repozitár!",
   "ERROR_BRANCH_LIST": "Získanie zoznamu vetiev zlyhalo",
   "ERROR_FETCH_REMOTE": "Získanie informácií o vzdialenom repozitári zlyhalo",
-  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Hlasujte za funkcie, ktoré chcete vidieť v ďalšej verzii!"
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Hlasujte za funkcie, ktoré chcete vidieť v ďalšej verzii!",
+  "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>nezbiera ani nespracováva žiadne osobné údaje</strong>, ale <strong>zbiera anonymné štatistiky používania</strong> na ochranu vášho súkromia. Anonymné údaje sú vyňaté z požiadaviek na oznámenie GDPR/CCPA, ale veríme, že by ste mali mať možnosť odmietnuť aj zber anonymných údajov.<br><br> Svoje údaje si môžete pozrieť alebo <strong>sa rozhodnúť nezdieľať žiadne anonymné údaje</strong> výberom možnosti <strong>Pomocník > Správa o stave</strong>. Tieto <strong>anonymné</strong> štatistiky používania aplikácie a hlásenia chýb nám pomáhajú uprednostňovať funkcie, nachádzať chyby a odhaľovať problémy s použiteľnosťou, aby sme zlepšili vašu skúsenosť s aplikáciou {APP_NAME}. Bez týchto údajov by sme nevedeli, aké funkcie sa pre vás oplatí vyvíjať! <br>",
+  "NEW_PROJECT_NOTIFICATION": "Kliknite na túto ikonu a znova otvorte okno `Spustiť projekt`.</br> Pozrite si Nedávne projekty, Otvorte priečinok alebo spustite projekty zo šablón.</br> <img src=\"styles/images/new_project.png\">",
+  "BEAUTIFY_CODE_NOTIFICATION": "Kliknite sem alebo stlačte <b>`{0}`</b> pre skrášlenie kódu. </br> <img src=\"styles/images/beautify.gif\">",
+  "DEFAULT_PROJECT_NOTIFICATION": "Kliknite sem pre otvorenie <br/><b>predvoleného projektu</b> v {APP_NAME}. </br> <a href='#' style='float:right;'>ok</a>",
+  "GIT_TOAST_TITLE": "Preskúmajte funkcie Gitu v Phoenix Code",
+  "GIT_TOAST_MESSAGE": "Kliknite na ikonu panela Git pre správu vášho repozitára. Jednoducho commitujte, pushujte, pullujte a prezerajte si históriu vášho projektu – všetko na jednom mieste.<br><a href='https://docs.phcode.dev/docs/Features/git'>Zistite viac o paneli Git →</a>"
 });

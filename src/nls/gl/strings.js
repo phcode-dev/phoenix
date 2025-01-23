@@ -743,7 +743,6 @@ define({
   "HEALTH_DATA_NOTIFICATION": "Preferencias do informe de saúde",
   "HEALTH_FIRST_POPUP_TITLE": "Aviso de privacidade",
   "HEALTH_DATA_DO_TRACK": "Compartir información anónima sobre como uso {APP_NAME}",
-  "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>non recompila nin procesa ningunha información persoal identificable</strong>, pero <strong>recopila estatísticas de uso anónimas</strong> para protexer a súa privacidade. Os datos anónimos están exentos dos requisitos de notificación do GDPR/CCPA, pero cremos que debe ter a opción de excluírse tamén da recompilación de datos anónimos.<br><br> Pode ver os seus datos ou <strong>escoller non compartir ningún dato anónimo</strong> seleccionando <strong>Axuda > Informe de saúde</strong>. Estas estatísticas de uso da aplicación e informes de erros <strong>anónimos</strong> axudan a priorizar as funcionalidades, atopar erros e detectar problemas de usabilidade para mellorar a súa experiencia con {APP_NAME}. Sen estes datos, non saberiamos que funcionalidades paga a pena construír para vostede! <br><br>",
   "HEALTH_DATA_PREVIEW": "Informe de saúde de {APP_NAME}",
   "HEALTH_DATA_PREVIEW_INTRO": "<p>{APP_NAME} <strong>non recompila nin procesa ningunha información persoal identificable</strong>, pero <strong>recopila estatísticas de uso anónimas</strong> para protexer a súa privacidade. Estas estatísticas de uso da aplicación e informes de erros <strong>anónimos</strong> axudan a priorizar as funcionalidades, atopar erros e detectar problemas de usabilidade para mellorar a súa experiencia con {APP_NAME}.</p> <p>A continuación móstrase unha vista previa dos datos que se enviarán no seu próximo Informe de saúde <em>se</em> está activado. (Vexa tamén a consola do programador para os rexistros de erros marcados como \"Erro crítico detectado\".)</p>",
   "INLINE_TIMING_EDITOR_TIME": "Tempo",
@@ -1036,9 +1035,6 @@ define({
   "PREVIEW": "Vista previa",
   "BUILD_WEBSITE": "Crear sitio web",
   "VIEW_MORE": "Ver máis...",
-  "NEW_PROJECT_NOTIFICATION": "Fai clic nesta icona para abrir de novo a xanela `Novo proxecto`.</br> Consulta os proxectos recentes, abre un cartafol ou inicia proxectos desde modelos.</br> <img src=\"styles/images/new_project.png\">  <br/> <a href='#' style='float:right;'>ok</a>",
-  "BEAUTIFY_CODE_NOTIFICATION": "Fai clic aquí ou preme <b>`{0}`</b> para embelecer o código. </br> <img src=\"styles/images/beautify.gif\">  <br/> <a href='#' style='float:right;'>ok</a>",
-  "DEFAULT_PROJECT_NOTIFICATION": "Fai clic aquí para abrir o <br/><b>proxecto predeterminado</b> en phoenix. </br> <a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "O cartafol seleccionado <span class='dialog-filename'>{0}</span> non está baleiro. Seguro que queres substituír o contido do cartafol co proxecto?",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "Fai clic aquí para localizar isto &lt;span&gt; no ficheiro HTML",
   "BUILD_WEBSITE_SECTION": "Crear sitio web",
@@ -1342,5 +1338,11 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "Non se seleccionou ningún remoto para {0}!",
   "ERROR_BRANCH_LIST": "Fallou a obtención da lista de ramas",
   "ERROR_FETCH_REMOTE": "Fallou a obtención da información do remoto",
-  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vota polas funcionalidades que queres ver a continuación!"
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vota polas funcionalidades que queres ver a continuación!",
+  "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>non recompila nin procesa ningunha información persoal identificable</strong>, pero <strong>recopila estatísticas de uso anónimas</strong> para protexer a súa privacidade. Os datos anónimos están exentos dos requisitos de notificación do GDPR/CCPA, pero cremos que debe ter a opción de excluírse tamén da recompilación de datos anónimos.<br><br> Pode ver os seus datos ou <strong>escoller non compartir ningún dato anónimo</strong> seleccionando <strong>Axuda > Informe de saúde</strong>. Estas estatísticas de uso da aplicación e informes de erros <strong>anónimos</strong> axudan a priorizar as funcionalidades, atopar erros e detectar problemas de usabilidade para mellorar a súa experiencia con {APP_NAME}. Sen estes datos, non saberiamos que funcionalidades paga a pena construír para vostede! <br>",
+  "NEW_PROJECT_NOTIFICATION": "Fai clic nesta icona para abrir de novo a xanela `Iniciar proxecto`.</br> Ver proxectos recentes, abrir cartafol ou iniciar proxectos desde modelos.</br> <img src=\"styles/images/new_project.png\">",
+  "BEAUTIFY_CODE_NOTIFICATION": "Fai clic aquí ou preme <b>`{0}`</b> para embelecer o código. </br> <img src=\"styles/images/beautify.gif\">",
+  "DEFAULT_PROJECT_NOTIFICATION": "Fai clic aquí para abrir o <br/><b>proxecto predeterminado</b> en {APP_NAME}. </br> <a href='#' style='float:right;'>Aceptar</a>",
+  "GIT_TOAST_TITLE": "Explora as funcionalidades de Git en Phoenix Code",
+  "GIT_TOAST_MESSAGE": "Fai clic na icona do panel de Git para xestionar o teu repositorio. Fai commits, envía (push), obtén (pull) e visualiza o historial do teu proxecto facilmente, todo nun mesmo lugar.<br><a href='https://docs.phcode.dev/docs/Features/git'>Aprende máis sobre o panel de Git →</a>"
 });

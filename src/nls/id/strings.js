@@ -743,7 +743,6 @@ define({
   "HEALTH_DATA_NOTIFICATION": "Preferensi Laporan Kesehatan",
   "HEALTH_FIRST_POPUP_TITLE": "Pemberitahuan Privasi",
   "HEALTH_DATA_DO_TRACK": "Bagikan informasi anonim tentang bagaimana saya menggunakan {APP_NAME}",
-  "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>tidak mengumpulkan atau memproses informasi identitas pribadi apa pun</strong>, tetapi <strong>mengumpulkan statistik penggunaan anonim</strong> untuk menjaga privasi Anda. Data anonim dikecualikan dari persyaratan pemberitahuan GDPR/CCPA, tetapi kami percaya Anda perlu memiliki pilihan untuk tidak ikut serta dalam pengumpulan data anonim juga.<br><br> Anda dapat melihat data Anda atau <strong>memilih untuk tidak membagikan data anonim apa pun</strong> dengan memilih <strong>Bantuan > Laporan Kesehatan</strong>. Statistik penggunaan aplikasi dan laporan kesalahan yang <strong>anonim</strong> ini membantu memprioritaskan fitur, menemukan bug, dan menemukan masalah kegunaan untuk meningkatkan pengalaman Anda dengan {APP_NAME}. Tanpa data ini, kami tidak akan tahu fitur apa yang layak dibuat untuk Anda! <br><br>",
   "HEALTH_DATA_PREVIEW": "Laporan Kesehatan {APP_NAME}",
   "HEALTH_DATA_PREVIEW_INTRO": "<p>{APP_NAME} <strong>tidak mengumpulkan atau memproses informasi identitas pribadi apa pun</strong>, tetapi <strong>mengumpulkan statistik penggunaan anonim</strong> untuk menjaga privasi Anda. Statistik penggunaan aplikasi dan laporan kesalahan yang <strong>anonim</strong> ini membantu memprioritaskan fitur, menemukan bug, dan menemukan masalah kegunaan untuk meningkatkan pengalaman Anda dengan {APP_NAME}.</p> <p>Berikut adalah pratinjau data yang akan dikirim dalam Laporan Kesehatan Anda berikutnya <em>jika</em> diaktifkan. (Lihat juga konsol pengembang untuk log kesalahan yang ditandai 'Caught Critical error'.)</p>",
   "INLINE_TIMING_EDITOR_TIME": "Waktu",
@@ -1036,9 +1035,6 @@ define({
   "PREVIEW": "Pratinjau",
   "BUILD_WEBSITE": "Bangun Situs Web",
   "VIEW_MORE": "Lihat Selengkapnya...",
-  "NEW_PROJECT_NOTIFICATION": "Klik ikon ini untuk membuka jendela `Proyek Baru` lagi.</br> Lihat Proyek Terbaru, Buka Folder atau mulai proyek dari template.</br> <img src=\"styles/images/new_project.png\">  <br/> <a href='#' style='float:right;'>ok</a>",
-  "BEAUTIFY_CODE_NOTIFICATION": "Klik di sini atau tekan <b>`{0}`</b> untuk Memperindah kode. </br> <img src=\"styles/images/beautify.gif\">  <br/> <a href='#' style='float:right;'>ok</a>",
-  "DEFAULT_PROJECT_NOTIFICATION": "Klik di sini untuk membuka <br/><b>proyek default</b> di phoenix. </br> <a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Folder yang dipilih <span class='dialog-filename'>{0}</span> tidak kosong. Apakah Anda yakin ingin mengganti isi folder dengan proyek ini?",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "Klik di sini untuk menemukan &lt;span&gt; ini di berkas HTML",
   "BUILD_WEBSITE_SECTION": "Bangun Situs Web",
@@ -1342,5 +1338,11 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "Tidak ada remote yang dipilih untuk {0}!",
   "ERROR_BRANCH_LIST": "Gagal mendapatkan daftar branch",
   "ERROR_FETCH_REMOTE": "Gagal mengambil informasi remote",
-  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Pilih fitur yang ingin Anda lihat selanjutnya!"
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Pilih fitur yang ingin Anda lihat selanjutnya!",
+  "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>tidak mengumpulkan atau memproses informasi identitas pribadi apa pun</strong>, tetapi <strong>mengumpulkan statistik penggunaan anonim</strong> untuk menjaga privasi Anda. Data anonim dikecualikan dari persyaratan pemberitahuan GDPR/CCPA, tetapi kami percaya Anda perlu memiliki pilihan untuk tidak ikut serta dalam pengumpulan data anonim juga.<br><br> Anda dapat melihat data Anda atau <strong>memilih untuk tidak membagikan data anonim apa pun</strong> dengan memilih <strong>Bantuan > Laporan Kesehatan</strong>. Statistik penggunaan aplikasi dan laporan kesalahan <strong>anonim</strong> ini membantu memprioritaskan fitur, menemukan bug, dan menemukan masalah kegunaan untuk meningkatkan pengalaman Anda dengan {APP_NAME}. Tanpa data ini, kami tidak akan tahu fitur apa yang layak dibuat untuk Anda! <br>",
+  "NEW_PROJECT_NOTIFICATION": "Klik ikon ini untuk membuka jendela `Mulai Proyek` lagi.</br> Lihat Proyek Terbaru, Buka Folder atau mulai proyek dari template.</br> <img src=\"styles/images/new_project.png\">",
+  "BEAUTIFY_CODE_NOTIFICATION": "Klik di sini atau tekan <b>`{0}`</b> untuk mempercantik kode. </br> <img src=\"styles/images/beautify.gif\">",
+  "DEFAULT_PROJECT_NOTIFICATION": "Klik di sini untuk membuka <br/><b>proyek default</b> di {APP_NAME}. </br> <a href='#' style='float:right;'>ok</a>",
+  "GIT_TOAST_TITLE": "Jelajahi Fitur Git di Phoenix Code",
+  "GIT_TOAST_MESSAGE": "Klik ikon panel Git untuk mengelola repositori Anda. Lakukan commit, push, pull, dan lihat riwayat proyek Anda dengan mudah—semua di satu tempat.<br><a href='https://docs.phcode.dev/docs/Features/git'>Pelajari lebih lanjut tentang panel Git →</a>"
 });

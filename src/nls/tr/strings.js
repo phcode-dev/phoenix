@@ -743,7 +743,6 @@ define({
   "HEALTH_DATA_NOTIFICATION": "Sistem Durumu Raporu Tercihleri",
   "HEALTH_FIRST_POPUP_TITLE": "Gizlilik Bildirimi",
   "HEALTH_DATA_DO_TRACK": "{APP_NAME} kullanımımla ilgili anonim bilgileri paylaş",
-  "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>kişisel olarak tanımlanabilir hiçbir bilgi toplamaz veya işlemez</strong>, ancak gizliliğinizi korumak için <strong>anonim kullanım istatistikleri toplar</strong>. Anonim veriler GDPR/CCPA bildirim gerekliliklerinden muaftır, ancak anonim veri toplamayı da reddetme seçeneğinizin olması gerektiğine inanıyoruz.<br><br> Verilerinizi görebilir veya <strong>anonim veri paylaşmamayı seçebilirsiniz</strong>, bunun için <strong>Yardım > Sistem Durumu Raporu</strong>'nu seçin. Bu <strong>anonim</strong> uygulama kullanım istatistikleri ve hata raporları, {APP_NAME} ile deneyiminizi iyileştirmek için özellikleri önceliklendirmeye, hataları bulmaya ve kullanılabilirlik sorunlarını tespit etmeye yardımcı olur. Bu veriler olmadan, sizin için hangi özellikleri geliştirmeye değer olduğunu bilemeyiz! <br><br>",
   "HEALTH_DATA_PREVIEW": "{APP_NAME} Sistem Durumu Raporu",
   "HEALTH_DATA_PREVIEW_INTRO": "<p>{APP_NAME} <strong>kişisel olarak tanımlanabilir hiçbir bilgi toplamaz veya işlemez</strong>, ancak gizliliğinizi korumak için <strong>anonim kullanım istatistikleri toplar</strong>. Bu <strong>anonim</strong> uygulama kullanım istatistikleri ve hata raporları, {APP_NAME} ile deneyiminizi iyileştirmek için özellikleri önceliklendirmeye, hataları bulmaya ve kullanılabilirlik sorunlarını tespit etmeye yardımcı olur.</p> <p>Aşağıda, etkinleştirilmiş <em>ise</em> bir sonraki Sistem Durumu Raporunuzda gönderilecek verilerin bir önizlemesi yer almaktadır. ('Caught Critical error' olarak işaretlenmiş hata günlükleri için geliştirici konsoluna da bakın.)</p>",
   "INLINE_TIMING_EDITOR_TIME": "Zaman",
@@ -1036,9 +1035,6 @@ define({
   "PREVIEW": "Önizleme",
   "BUILD_WEBSITE": "Web Sitesi Oluştur",
   "VIEW_MORE": "Daha Fazla...",
-  "NEW_PROJECT_NOTIFICATION": "`Yeni Proje` penceresini tekrar açmak için bu simgeye tıklayın.</br> Son Projelere bakın, Klasör Açın veya şablonlardan projeler başlatın.</br> <img src=\"styles/images/new_project.png\">  <br/> <a href='#' style='float:right;'>tamam</a>",
-  "BEAUTIFY_CODE_NOTIFICATION": "Kodu güzelleştirmek için buraya tıklayın veya <b>`{0}`</b> tuşuna basın. </br> <img src=\"styles/images/beautify.gif\">  <br/> <a href='#' style='float:right;'>tamam</a>",
-  "DEFAULT_PROJECT_NOTIFICATION": "phoenix'te <br/><b>varsayılan projeyi</b> açmak için buraya tıklayın. </br> <a href='#' style='float:right;'>tamam</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Seçilen klasör <span class='dialog-filename'>{0}</span> boş değil. Klasör içeriğini proje ile değiştirmek istediğinizden emin misiniz?",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "&lt;span&gt; öğesinin HTML dosyasındaki konumunu bulmak için buraya tıklayın",
   "BUILD_WEBSITE_SECTION": "Web Sitesi Oluştur",
@@ -1342,5 +1338,11 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "{0} için uzak depo seçilmedi!",
   "ERROR_BRANCH_LIST": "Dal listesi alınamadı",
   "ERROR_FETCH_REMOTE": "Uzak depo bilgileri alınamadı",
-  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Gelecekte görmek istediğiniz özellikler için oy verin!"
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Gelecekte görmek istediğiniz özellikler için oy verin!",
+  "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>kişisel olarak tanımlanabilir hiçbir bilgiyi toplamaz veya işlemez</strong>, ancak gizliliğinizi korumak için <strong>anonim kullanım istatistikleri toplar</strong>. Anonim veriler GDPR/CCPA bildirim gerekliliklerinden muaftır, ancak anonim veri toplamayı da devre dışı bırakma seçeneğinizin olması gerektiğine inanıyoruz.<br><br> Verilerinizi görebilir veya <strong>Yardım > Sağlık Raporu</strong>'nu seçerek <strong>hiçbir anonim veriyi paylaşmamayı seçebilirsiniz</strong>. Bu <strong>anonim</strong> uygulama kullanım istatistikleri ve hata raporları, {APP_NAME} ile deneyiminizi iyileştirmek için özellikleri önceliklendirmeye, hataları bulmaya ve kullanılabilirlik sorunlarını tespit etmeye yardımcı olur. Bu veriler olmadan, sizin için hangi özellikleri geliştirmeye değer olduğunu bilemeyiz! <br>",
+  "NEW_PROJECT_NOTIFICATION": "Bu simgeye tıklayarak `Proje Başlat` penceresini tekrar açın.</br> Son Projelere bakın, Klasör Açın veya şablonlardan projeler başlatın.</br> <img src=\"styles/images/new_project.png\">",
+  "BEAUTIFY_CODE_NOTIFICATION": "Kodu güzelleştirmek için buraya tıklayın veya <b>`{0}`</b> tuşuna basın. </br> <img src=\"styles/images/beautify.gif\">",
+  "DEFAULT_PROJECT_NOTIFICATION": "{APP_NAME}'de <br/><b>varsayılan projeyi</b> açmak için buraya tıklayın. </br> <a href='#' style='float:right;'>tamam</a>",
+  "GIT_TOAST_TITLE": "Phoenix Code'da Git Özelliklerini Keşfedin",
+  "GIT_TOAST_MESSAGE": "Deponuzu yönetmek için Git paneli simgesine tıklayın. Proje geçmişinizi kolayca işleyin, gönderin, çekin ve görüntüleyin—hepsi tek bir yerde.<br><a href='https://docs.phcode.dev/docs/Features/git'>Git paneli hakkında daha fazla bilgi edinin →</a>"
 });

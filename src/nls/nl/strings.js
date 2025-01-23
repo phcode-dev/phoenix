@@ -743,7 +743,6 @@ define({
   "HEALTH_DATA_NOTIFICATION": "Statusrapport instellingen",
   "HEALTH_FIRST_POPUP_TITLE": "Privacyverklaring",
   "HEALTH_DATA_DO_TRACK": "Deel anonieme informatie over hoe ik {APP_NAME} gebruik",
-  "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>verzamelt of verwerkt geen persoonlijk identificeerbare informatie</strong>, maar <strong>verzamelt anonieme gebruiksstatistieken</strong> om uw privacy te beschermen. Anonieme gegevens zijn vrijgesteld van GDPR/CCPA-meldingsvereisten, maar wij zijn van mening dat u ook de mogelijkheid moet hebben om u af te melden voor het verzamelen van anonieme gegevens.<br><br>U kunt uw gegevens bekijken of <strong>kiezen om geen anonieme gegevens te delen</strong> door <strong>Help > Gezondheidsrapport</strong> te selecteren. Deze <strong>anonieme</strong> gebruiksstatistieken en foutrapporten van de app helpen bij het prioriteren van functies, het vinden van bugs en het opsporen van problemen met de bruikbaarheid om uw ervaring met {APP_NAME} te verbeteren. Zonder deze gegevens zouden we niet weten welke functies het waard zijn om voor u te ontwikkelen! <br><br>",
   "HEALTH_DATA_PREVIEW": "{APP_NAME} statusrapport",
   "HEALTH_DATA_PREVIEW_INTRO": "<p>{APP_NAME} <strong>verzamelt of verwerkt geen persoonlijk identificeerbare informatie</strong>, maar <strong>verzamelt anonieme gebruiksstatistieken</strong> om uw privacy te beschermen. Deze <strong>anonieme</strong> gebruiksstatistieken en foutrapporten van de app helpen bij het prioriteren van functies, het vinden van bugs en het opsporen van problemen met de bruikbaarheid om uw ervaring met {APP_NAME} te verbeteren.</p> <p>Hieronder ziet u een voorbeeld van de gegevens die in uw volgende gezondheidsrapport worden verzonden <em>als</em> deze is ingeschakeld. (Zie ook de ontwikkelaarsconsole voor foutlogboeken gemarkeerd met 'Caught Critical error'.)</p>",
   "INLINE_TIMING_EDITOR_TIME": "Tijd",
@@ -1036,9 +1035,6 @@ define({
   "PREVIEW": "Voorbeeldweergave",
   "BUILD_WEBSITE": "Website bouwen",
   "VIEW_MORE": "Meer bekijken...",
-  "NEW_PROJECT_NOTIFICATION": "Klik op dit pictogram om het venster `Nieuw project` opnieuw te openen.</br> Bekijk Recente Projecten, Open Map of start projecten vanuit sjablonen.</br> <img src=\"styles/images/new_project.png\">  <br/> <a href='#' style='float:right;'>ok</a>",
-  "BEAUTIFY_CODE_NOTIFICATION": "Klik hier of druk op <b>`{0}`</b> om code te verfraaien. </br> <img src=\"styles/images/beautify.gif\">  <br/> <a href='#' style='float:right;'>ok</a>",
-  "DEFAULT_PROJECT_NOTIFICATION": "Klik hier om het <br/><b>standaardproject</b> in phoenix te openen. </br> <a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "De geselecteerde map <span class='dialog-filename'>{0}</span> is niet leeg. Weet u zeker dat u de inhoud van de map wilt vervangen door het project?",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "Klik hier om deze &lt;span&gt; in het HTML-bestand te vinden",
   "BUILD_WEBSITE_SECTION": "Website bouwen",
@@ -1342,5 +1338,11 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "Er is geen remote geselecteerd voor {0}!",
   "ERROR_BRANCH_LIST": "Ophalen van branch-lijst mislukt",
   "ERROR_FETCH_REMOTE": "Ophalen van remote-informatie mislukt",
-  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Stem op de functies die u graag wilt zien!"
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Stem op de functies die u graag wilt zien!",
+  "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>verzamelt of verwerkt geen persoonlijk identificeerbare informatie</strong>, maar <strong>verzamelt wel anonieme gebruiksstatistieken</strong> om uw privacy te beschermen. Anonieme gegevens zijn vrijgesteld van GDPR/CCPA-meldingsvereisten, maar wij vinden dat u de mogelijkheid moet hebben om u af te melden voor het verzamelen van anonieme gegevens.<br><br>U kunt uw gegevens bekijken of ervoor <strong>kiezen om geen anonieme gegevens te delen</strong> door <strong>Help > Statusrapport</strong> te selecteren. Deze <strong>anonieme</strong> gebruiksstatistieken en foutrapporten helpen bij het prioriteren van functies, het vinden van bugs en het opsporen van problemen met de bruikbaarheid om uw ervaring met {APP_NAME} te verbeteren. Zonder deze gegevens zouden we niet weten welke functies het waard zijn om voor u te ontwikkelen! <br>",
+  "NEW_PROJECT_NOTIFICATION": "Klik op dit pictogram om het venster `Project starten` opnieuw te openen.</br> Bekijk Recente Projecten, Open Map of start projecten vanuit sjablonen.</br> <img src=\"styles/images/new_project.png\">",
+  "BEAUTIFY_CODE_NOTIFICATION": "Klik hier of druk op <b>`{0}`</b> om code op te maken. </br> <img src=\"styles/images/beautify.gif\">",
+  "DEFAULT_PROJECT_NOTIFICATION": "Klik hier om het <br/><b>standaardproject</b> in {APP_NAME} te openen. </br> <a href='#' style='float:right;'>ok</a>",
+  "GIT_TOAST_TITLE": "Ontdek Git-functies in Phoenix Code",
+  "GIT_TOAST_MESSAGE": "Klik op het Git-paneelpictogram om uw repository te beheren. Commit, push, pull en bekijk uw projectgeschiedenis eenvoudig - alles op één plek.<br><a href='https://docs.phcode.dev/docs/Features/git'>Meer informatie over het Git-paneel →</a>"
 });
