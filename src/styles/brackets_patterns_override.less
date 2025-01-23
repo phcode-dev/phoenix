@@ -95,12 +95,23 @@ a:focus {
     top: 0;
     left: 0;
     background: #fd7e14;
-    color: white;
+    color: black;
     font-weight: bold;
-    padding: 5px;
+    padding: 9px 12px 9px 12px;
+    min-width: 200px;
+    max-width: 450px;
     border-radius: 4px;
     font-size: 90%;
     opacity: 0;
+    p {
+        margin-bottom: 5px;
+    }
+    a {
+        color: @bc-text-beige;
+    }
+    a:hover {
+        color: @bc-text-alt;
+    }
 }
 .notification-ui-hidden {
     opacity: 0;
@@ -111,6 +122,9 @@ a:focus {
     opacity: 1;
     transition: opacity 0.5s ease;
     transition-delay:0.2s;
+}
+.width-250 {
+    width: 250px;
 }
 /* working set drag ghost styles */
 

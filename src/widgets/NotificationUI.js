@@ -198,6 +198,7 @@ define(function (require, exports, module) {
      *   });
      * ```
      *
+     * @param {string} title The title for the notification.
      * @param {string|Element} template A string template or HTML Element to use as the dialog HTML.
      * @param {String} [elementID] optional id string if provided will show the notification pointing to the element.
      *   If no element is specified, it will be managed as a generic notification.
@@ -207,19 +208,21 @@ define(function (require, exports, module) {
      *       Values can be a mix of `['top', 'bottom', 'left', 'right']`
      *   * `autoCloseTimeS` - Time in seconds after which the notification should be auto closed. Default is never.
      *   * `dismissOnClick` - when clicked, the notification is closed. Default is true(dismiss).
+     *   * `toastStyle` - To style the toast notification for error, warning, info etc. Can be
+     *     one of `NotificationUI.NOTIFICATION_STYLES_CSS_CLASS.*` or your own css class name.
      * @return {Notification} Object with a done handler that resolves when the notification closes.
      * @type {function}
      */
-    function createFromTemplate(template, elementID, options= {}) {
+    function createFromTemplate(title, template, elementID, options= {}) {
         // https://floating-ui.com/docs/tutorial
         options.allowedPlacements = options.allowedPlacements || ['top', 'bottom', 'left', 'right'];
         options.dismissOnClick = options.dismissOnClick === undefined ? true : options.dismissOnClick;
         if(!elementID){
             elementID = 'notificationUIDefaultAnchor';
         }
-        const tooltip = _createDomElementWithArrowElement(template, elementID, options);
-        tooltip.addClass('notification-ui-visible');
-        let notification = (new Notification(tooltip, NOTIFICATION_TYPE_ARROW));
+        const $tooltip = _createDomElementWithArrowElement(title, template, elementID, options);
+        $tooltip.addClass('notification-ui-visible');
+        let notification = (new Notification($tooltip, NOTIFICATION_TYPE_ARROW));
 
         if(options.autoCloseTimeS){
             setTimeout(()=>{
@@ -228,10 +231,13 @@ define(function (require, exports, module) {
         }
 
         if(options.dismissOnClick){
-            tooltip.click(()=>{
+            $tooltip.click(()=>{
                 notification.close(CLOSE_REASON.CLICK_DISMISS);
             });
         }
+        $tooltip.find(".notification-popup-close-button").click(()=>{
+            notification.close(CLOSE_REASON.CLICK_DISMISS);
+        });
         return notification;
     }
 
@@ -287,7 +293,7 @@ define(function (require, exports, module) {
         WorkspaceManager.on(WorkspaceManager.EVENT_WORKSPACE_UPDATE_LAYOUT, tooltip.update);
     }
 
-    function _createDomElementWithArrowElement(domTemplate, elementID, options) {
+    function _createDomElementWithArrowElement(title, domTemplate, elementID, options) {
         notificationWidgetCount++;
         const onElement = document.getElementById(elementID);
         let arrowElement;
@@ -297,18 +303,29 @@ define(function (require, exports, module) {
         if (typeof domTemplate === 'string' || domTemplate instanceof String){
             textTemplate = domTemplate;
         }
-        let floatingDom = $(`<div id="${widgetID}" class="notification-ui-tooltip" role="tooltip">
-                                ${textTemplate||''}</div>`);
+        const styleClass = NOTIFICATION_STYLES_CSS_CLASS[options.toastStyle]
+            || options.toastStyle;
+        let $floatingDom = $(`<div id="${widgetID}" class="notification-ui-tooltip ${styleClass}" role="tooltip">
+        <div>
+            <p class='notification-popup-close-button arrow'>×</p>
+        </div>
+        <div >
+            <p class="notification-dialog-title">${title}</p>
+        </div>
+        <div>
+            <p class="notification-dialog-content">${textTemplate||''}</p>
+        </div></div>`);
         if(!textTemplate && domTemplate){
-            floatingDom.append($(domTemplate));
+            $floatingDom.find(".notification-dialog-content").append($(domTemplate));
         }
         if(onElement){
-            arrowElement = $(`<div id="${arrowID}" class="notification-ui-arrow"></div>`);
-            floatingDom.append(arrowElement);
+            arrowElement = $(`<div id="${arrowID}" class="notification-ui-arrow ${
+                NOTIFICATION_STYLES_CSS_CLASS[options.toastStyle] || ''}"></div>`);
+            $floatingDom.append(arrowElement);
         }
-        $("body").append(floatingDom);
-        _updatePositions(floatingDom[0], onElement, arrowElement[0], options);
-        return floatingDom;
+        $("body").append($floatingDom);
+        _updatePositions($floatingDom[0], onElement, arrowElement[0], options);
+        return $floatingDom;
     }
 
     /**
@@ -340,10 +357,11 @@ define(function (require, exports, module) {
     function createToastFromTemplate(title, template, options = {}) {
         options.dismissOnClick = options.dismissOnClick === undefined ? true : options.dismissOnClick;
         notificationWidgetCount++;
+        const styleClass = NOTIFICATION_STYLES_CSS_CLASS[options.toastStyle]
+            || options.toastStyle || NOTIFICATION_STYLES_CSS_CLASS.INFO;
         const widgetID = `notification-toast-${notificationWidgetCount}`,
             $NotificationPopup = $(Mustache.render(ToastPopupHtml, {id: widgetID, title: title,
-                containerStyle: NOTIFICATION_STYLES_CSS_CLASS[options.toastStyle]
-                        || options.toastStyle || NOTIFICATION_STYLES_CSS_CLASS.INFO}));
+                containerStyle: styleClass}));
         $NotificationPopup.find(".notification-dialog-content")
             .append($(template));
 

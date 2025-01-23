@@ -84,7 +84,7 @@ define(function (require, exports, module) {
                 userAlreadyDidAction.beautifyCodeShown =  true;
                 PhStore.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
                 Metrics.countEvent(Metrics.EVENT_TYPE.UI, "guide", "beautify");
-                currentlyShowingNotification = NotificationUI.createFromTemplate(
+                currentlyShowingNotification = NotificationUI.createFromTemplate( Strings.CMD_BEAUTIFY_CODE,
                     StringUtils.format(Strings.BEAUTIFY_CODE_NOTIFICATION, keyboardShortcut),
                     "editor-context-menu-edit.beautifyCode", {
                         allowedPlacements: ['left', 'right'],
@@ -113,7 +113,8 @@ define(function (require, exports, module) {
         userAlreadyDidAction.newProjectShown =  true;
         PhStore.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
         Metrics.countEvent(Metrics.EVENT_TYPE.UI, "guide", "newProj");
-        currentlyShowingNotification = NotificationUI.createFromTemplate(Strings.NEW_PROJECT_NOTIFICATION,
+        currentlyShowingNotification = NotificationUI.createFromTemplate(
+            Strings.START_PROJECT, Strings.NEW_PROJECT_NOTIFICATION,
             "newProject", {
                 allowedPlacements: ['top', 'bottom'],
                 autoCloseTimeS: 15,
