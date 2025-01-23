@@ -55,6 +55,24 @@ define(function (require, exports, module) {
         createProjectDialogueObj,
         downloadCancelled = false;
 
+    function _focusContentWindow() {
+        let attempts = 0;
+        const maxAttempts = 10; // 10 * 100ms = 1 second total scan time
+        const intervalId = setInterval(() => {
+            const frame = document.getElementById("newProjectFrame");
+            if (frame && frame.contentWindow) {
+                frame.contentWindow.focus();
+                clearInterval(intervalId);
+            }
+
+            attempts++;
+            if (attempts >= maxAttempts) {
+                clearInterval(intervalId);
+                console.warn("Could not find or focus on newProjectFrame");
+            }
+        }, 100);
+    }
+
     function _showNewProjectDialogue() {
         if(window.testEnvironment){
             return;
@@ -68,9 +86,7 @@ define(function (require, exports, module) {
         };
         let dialogueContents = Mustache.render(newProjectTemplate, templateVars);
         newProjectDialogueObj = Dialogs.showModalDialogUsingTemplate(dialogueContents, true);
-        setTimeout(()=>{
-            document.getElementById("newProjectFrame").contentWindow.focus();
-        }, 100);
+        _focusContentWindow();
         Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "dialogue", "open");
     }
 
