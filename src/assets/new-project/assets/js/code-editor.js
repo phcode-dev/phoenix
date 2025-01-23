@@ -121,7 +121,7 @@ function _showFirstTimeExperience() {
         createNotificationFromTemplate(Strings.DEFAULT_PROJECT_NOTIFICATION,
             "defaultProjectButton", {
                 allowedPlacements: ["left", "right"],
-                autoCloseTimeS: 15,
+                autoCloseTimeS: 600,
                 dismissOnClick: true
             });
         PhStore.setItem('notification.defaultProject.Shown', 'true');
