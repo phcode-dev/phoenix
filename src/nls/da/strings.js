@@ -743,6 +743,7 @@ define({
   "HEALTH_DATA_NOTIFICATION": "Indstillinger for sundhedsrapport",
   "HEALTH_FIRST_POPUP_TITLE": "Privatlivsmeddelelse",
   "HEALTH_DATA_DO_TRACK": "Del anonym information om hvordan jeg bruger {APP_NAME}",
+  "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>indsamler eller behandler ingen personligt identificerbare oplysninger</strong>, men <strong>indsamler anonyme brugsstatistikker</strong> for at beskytte dit privatliv. Anonyme data er undtaget fra GDPR/CCPA-anmeldelseskrav, men vi mener, at du skal have mulighed for at fravælge indsamling af anonyme data.<br><br> Du kan se dine data eller <strong>vælge ikke at dele anonyme data</strong> ved at vælge <strong>Hjælp > Sundhedsrapport</strong>. Disse <strong>anonyme</strong> statistikker over appbrug og fejlrapporter hjælper med at prioritere funktioner, finde fejl og identificere brugervenlighedsproblemer for at forbedre din oplevelse med {APP_NAME}. Uden disse data ville vi ikke vide, hvilke funktioner det er værd at bygge for dig! <br>",
   "HEALTH_DATA_PREVIEW": "{APP_NAME} sundhedsrapport",
   "HEALTH_DATA_PREVIEW_INTRO": "<p>{APP_NAME} <strong>indsamler eller behandler ingen personligt identificerbare oplysninger</strong>, men <strong>indsamler anonyme brugsstatistikker</strong> for at beskytte dit privatliv. Disse <strong>anonyme</strong> statistikker over appbrug og fejlrapporter hjælper med at prioritere funktioner, finde fejl og identificere brugervenlighedsproblemer for at forbedre din oplevelse med {APP_NAME}.</p> <p>Nedenfor er et eksempel på de data, der vil blive sendt i din næste sundhedsrapport, <em>hvis</em> den er aktiveret. (Se også udviklerkonsollen for fejllogger markeret 'Caught Critical error'.)</p>",
   "INLINE_TIMING_EDITOR_TIME": "Tid",
@@ -1035,6 +1036,8 @@ define({
   "PREVIEW": "Forhåndsvisning",
   "BUILD_WEBSITE": "Opbyg website",
   "VIEW_MORE": "Se mere...",
+  "NEW_PROJECT_NOTIFICATION": "Klik på dette ikon for at åbne vinduet `Start projekt` igen.</br> Se Seneste Projekter, Åbn Mappe eller start projekter fra skabeloner.</br> <img src=\"styles/images/new_project.png\">",
+  "BEAUTIFY_CODE_NOTIFICATION": "Klik her eller tryk på <b>`{0}`</b> for at formattere kode. </br> <img src=\"styles/images/beautify.gif\">",
   "DIRECTORY_REPLACE_MESSAGE": "Den valgte mappe <span class='dialog-filename'>{0}</span> er ikke tom. Er du sikker på, at du vil erstatte mappeindholdet med projektet?",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "Klik her for at finde denne &lt;span&gt; i HTML-filen",
   "BUILD_WEBSITE_SECTION": "Opbyg website",
@@ -1338,11 +1341,8 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "Ingen remote er valgt for {0}!",
   "ERROR_BRANCH_LIST": "Det lykkedes ikke at hente grenliste",
   "ERROR_FETCH_REMOTE": "Hentning af remote-information mislykkedes",
-  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Stem på de funktioner, du gerne vil se!",
-  "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>indsamler eller behandler ingen personligt identificerbare oplysninger</strong>, men <strong>indsamler anonyme brugsstatistikker</strong> for at beskytte dit privatliv. Anonyme data er undtaget fra GDPR/CCPA-anmeldelseskrav, men vi mener, at du skal have mulighed for at fravælge indsamling af anonyme data.<br><br> Du kan se dine data eller <strong>vælge ikke at dele anonyme data</strong> ved at vælge <strong>Hjælp > Sundhedsrapport</strong>. Disse <strong>anonyme</strong> statistikker over appbrug og fejlrapporter hjælper med at prioritere funktioner, finde fejl og identificere brugervenlighedsproblemer for at forbedre din oplevelse med {APP_NAME}. Uden disse data ville vi ikke vide, hvilke funktioner det er værd at bygge for dig! <br>",
-  "NEW_PROJECT_NOTIFICATION": "Klik på dette ikon for at åbne vinduet `Start projekt` igen.</br> Se Seneste Projekter, Åbn Mappe eller start projekter fra skabeloner.</br> <img src=\"styles/images/new_project.png\">",
-  "BEAUTIFY_CODE_NOTIFICATION": "Klik her eller tryk på <b>`{0}`</b> for at formattere kode. </br> <img src=\"styles/images/beautify.gif\">",
-  "DEFAULT_PROJECT_NOTIFICATION": "Klik her for at åbne <br/><b>standardprojektet</b> i {APP_NAME}. </br> <a href='#' style='float:right;'>ok</a>",
   "GIT_TOAST_TITLE": "Udforsk Git-funktioner i Phoenix Code",
-  "GIT_TOAST_MESSAGE": "Klik på Git-panelikonet for at administrere dit repository. Commit, push, pull og se din projekthistorik nemt – alt sammen på ét sted.<br><a href='https://docs.phcode.dev/docs/Features/git'>Læs mere om Git-panelet →</a>"
+  "GIT_TOAST_MESSAGE": "Klik på Git-panelikonet for at administrere dit repository. Commit, push, pull og se din projekthistorik nemt – alt sammen på ét sted.<br><a href='https://docs.phcode.dev/docs/Features/git'>Læs mere om Git-panelet →</a>",
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Stem på de funktioner, du gerne vil se!",
+  "DEFAULT_PROJECT_NOTIFICATION": "Åbn <b>Standardprojektet</b> i {APP_NAME} for at komme hurtigt i gang (ideelt som et kladde).</br></br>Eller åbn en mappe fra din computer med ikonet <strong>Åbn mappe</strong> nedenfor.<br><a href='#' style='float:right;'>ok</a>"
 });

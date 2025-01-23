@@ -422,6 +422,9 @@ define({
   "CMD_OPEN_LINE_BELOW": "往下新增一行",
   "CMD_TOGGLE_CLOSE_BRACKETS": "自動插入右括號",
   "CMD_SHOW_CODE_HINTS": "顯示程式提示",
+  "CMD_BEAUTIFY_CODE": "格式化程式碼",
+  "CMD_BEAUTIFY_CODE_ON_SAVE": "儲存後格式化程式碼",
+  "CMD_AUTO_RENAME_TAGS": "自動重新命名 HTML 標籤",
   "FIND_MENU": "尋找",
   "CMD_FIND": "尋找",
   "CMD_FIND_NEXT": "找下一個",
@@ -1035,7 +1038,6 @@ define({
   "VIEW_MORE": "查看更多…",
   "NEW_PROJECT_NOTIFICATION": "按一下此圖示即可再次開啟「開始專案」視窗。</br> 查看最近的專案、開啟資料夾或從範本開始專案。</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "按一下此處或按下 <b>`{0}`</b> 以美化程式碼。</br> <img src=\"styles/images/beautify.gif\">",
-  "DEFAULT_PROJECT_NOTIFICATION": "按一下此處即可在 {APP_NAME} 中開啟<br/><b>預設專案</b>。</br> <a href='#' style='float:right;'>確定</a>",
   "DIRECTORY_REPLACE_MESSAGE": "所選資料夾 <span class='dialog-filename'>{0}</span> 並非空的。您確定要用專案取代資料夾內容嗎？",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "點擊此處即可在 HTML 檔案中找到此 &lt;span&gt;",
   "BUILD_WEBSITE_SECTION": "建置網站",
@@ -1342,7 +1344,5 @@ define({
   "GIT_TOAST_TITLE": "在 Phoenix Code 中探索 Git 功能",
   "GIT_TOAST_MESSAGE": "按一下 Git 面板圖示即可管理您的儲存庫。輕鬆提交、推送、提取和檢視您的專案歷史記錄，一切盡在掌握之中。<br><a href='https://docs.phcode.dev/docs/Features/git'>深入瞭解 Git 面板 →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "投票選出您希望看到的下個功能！",
-  "CMD_BEAUTIFY_CODE": "格式化程式碼",
-  "CMD_BEAUTIFY_CODE_ON_SAVE": "儲存後格式化程式碼",
-  "CMD_AUTO_RENAME_TAGS": "自動重新命名 HTML 標籤"
+  "DEFAULT_PROJECT_NOTIFICATION": "在 {APP_NAME} 中開啟<b>預設專案</b>即可快速上手（適合做為草稿區）。</br></br>或者，使用下方的<strong>開啟資料夾</strong>圖示從您的電腦開啟資料夾。<br><a href='#' style='float:right;'>確定</a>"
 });

@@ -743,6 +743,7 @@ define({
   "HEALTH_DATA_NOTIFICATION": "Ustawienia raportowania",
   "HEALTH_FIRST_POPUP_TITLE": "Informacja o prywatności",
   "HEALTH_DATA_DO_TRACK": "Udostępniaj anonimowe informacje o tym, jak korzystam z {APP_NAME}",
+  "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>nie gromadzi ani nie przetwarza żadnych danych osobowych</strong>, ale <strong>zbiera anonimowe statystyki użytkowania</strong>, aby chronić Twoją prywatność. Anonimowe dane są zwolnione z wymogów powiadamiania RODO/CCPA, ale uważamy, że powinieneś mieć możliwość rezygnacji również z gromadzenia danych anonimowych.<br><br> Możesz zobaczyć swoje dane lub <strong>zrezygnować z udostępniania jakichkolwiek danych anonimowych</strong>, wybierając <strong>Pomoc > Raport o stanie</strong>. Te <strong>anonimowe</strong> statystyki użytkowania aplikacji i raporty o błędach pomagają nam ustalać priorytety funkcji, znajdować błędy i wykrywać problemy z użytecznością, aby poprawić Twoje wrażenia z korzystania z {APP_NAME}. Bez tych danych nie wiedzielibyśmy, jakie funkcje warto dla Ciebie tworzyć! <br>",
   "HEALTH_DATA_PREVIEW": "Raporty {APP_NAME}",
   "HEALTH_DATA_PREVIEW_INTRO": "<p>{APP_NAME} <strong>nie gromadzi ani nie przetwarza żadnych danych osobowych</strong>, ale <strong>gromadzi anonimowe statystyki użytkowania</strong>, aby chronić Twoją prywatność. Te <strong>anonimowe</strong> statystyki użytkowania aplikacji i raporty o błędach pomagają priorytetyzować funkcje, znajdować błędy i wykrywać problemy z użytecznością, aby poprawić komfort korzystania z {APP_NAME}.</p> <p>Poniżej znajduje się podgląd danych, które zostaną wysłane w następnym Raporcie o stanie, <em>jeśli</em> będzie on włączony. (Zobacz także konsolę deweloperską, aby sprawdzić logi błędów oznaczone jako 'Caught Critical error'.)</p>",
   "INLINE_TIMING_EDITOR_TIME": "Czas",
@@ -1035,6 +1036,8 @@ define({
   "PREVIEW": "Podgląd",
   "BUILD_WEBSITE": "Stwórz stronę internetową",
   "VIEW_MORE": "Zobacz więcej...",
+  "NEW_PROJECT_NOTIFICATION": "Kliknij tę ikonę, aby ponownie otworzyć okno `Rozpocznij projekt`.</br> Zobacz Ostatnie projekty, Otwórz folder lub rozpocznij projekty z szablonów.</br> <img src=\"styles/images/new_project.png\">",
+  "BEAUTIFY_CODE_NOTIFICATION": "Kliknij tutaj lub naciśnij <b>`{0}`</b>, aby upiększyć kod. </br> <img src=\"styles/images/beautify.gif\">",
   "DIRECTORY_REPLACE_MESSAGE": "Wybrany folder <span class='dialog-filename'>{0}</span> nie jest pusty. Czy na pewno chcesz zastąpić zawartość folderu projektem?",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "Kliknij tutaj, aby zlokalizować to &lt;span&gt; w pliku HTML",
   "BUILD_WEBSITE_SECTION": "Stwórz stronę internetową",
@@ -1338,11 +1341,8 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "Nie wybrano zdalnego repozytorium dla {0}!",
   "ERROR_BRANCH_LIST": "Pobieranie listy gałęzi nie powiodło się",
   "ERROR_FETCH_REMOTE": "Pobieranie informacji o zdalnym repozytorium nie powiodło się",
-  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Zagłosuj na funkcje, które chcesz zobaczyć w przyszłości!",
-  "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>nie gromadzi ani nie przetwarza żadnych danych osobowych</strong>, ale <strong>zbiera anonimowe statystyki użytkowania</strong>, aby chronić Twoją prywatność. Anonimowe dane są zwolnione z wymogów powiadamiania RODO/CCPA, ale uważamy, że powinieneś mieć możliwość rezygnacji również z gromadzenia danych anonimowych.<br><br> Możesz zobaczyć swoje dane lub <strong>zrezygnować z udostępniania jakichkolwiek danych anonimowych</strong>, wybierając <strong>Pomoc > Raport o stanie</strong>. Te <strong>anonimowe</strong> statystyki użytkowania aplikacji i raporty o błędach pomagają nam ustalać priorytety funkcji, znajdować błędy i wykrywać problemy z użytecznością, aby poprawić Twoje wrażenia z korzystania z {APP_NAME}. Bez tych danych nie wiedzielibyśmy, jakie funkcje warto dla Ciebie tworzyć! <br>",
-  "NEW_PROJECT_NOTIFICATION": "Kliknij tę ikonę, aby ponownie otworzyć okno `Rozpocznij projekt`.</br> Zobacz Ostatnie projekty, Otwórz folder lub rozpocznij projekty z szablonów.</br> <img src=\"styles/images/new_project.png\">",
-  "BEAUTIFY_CODE_NOTIFICATION": "Kliknij tutaj lub naciśnij <b>`{0}`</b>, aby upiększyć kod. </br> <img src=\"styles/images/beautify.gif\">",
-  "DEFAULT_PROJECT_NOTIFICATION": "Kliknij tutaj, aby otworzyć <br/><b>domyślny projekt</b> w {APP_NAME}. </br> <a href='#' style='float:right;'>ok</a>",
   "GIT_TOAST_TITLE": "Poznaj funkcje Gita w Phoenix Code",
-  "GIT_TOAST_MESSAGE": "Kliknij ikonę panelu Git, aby zarządzać swoim repozytorium. Łatwo zatwierdzaj, przesyłaj, pobieraj i przeglądaj historię swojego projektu — wszystko w jednym miejscu.<br><a href='https://docs.phcode.dev/docs/Features/git'>Dowiedz się więcej o panelu Git →</a>"
+  "GIT_TOAST_MESSAGE": "Kliknij ikonę panelu Git, aby zarządzać swoim repozytorium. Łatwo zatwierdzaj, przesyłaj, pobieraj i przeglądaj historię swojego projektu — wszystko w jednym miejscu.<br><a href='https://docs.phcode.dev/docs/Features/git'>Dowiedz się więcej o panelu Git →</a>",
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Zagłosuj na funkcje, które chcesz zobaczyć w przyszłości!",
+  "DEFAULT_PROJECT_NOTIFICATION": "Otwórz <b>Domyślny projekt</b> w {APP_NAME}, aby szybko rozpocząć (idealny jako brudnopis).</br></br>Możesz też otworzyć folder z komputera za pomocą ikony <strong>Otwórz folder</strong> poniżej.<br><a href='#' style='float:right;'>ok</a>"
 });

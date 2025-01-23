@@ -368,7 +368,7 @@
   "DEFAULT_PREFERENCES_JSON_DEFAULT": "Default",
   "DEFAULT_PREFERENCES_JSON_HEADER_COMMENT": "/*\n * This is a read-only file with the preferences supported\n * by {APP_NAME}.\n * Use this file as a reference to modify your preferences\n * file \"phcode.json\" opened in the other pane.\n * For more information on how to use preferences inside\n * {APP_NAME}, refer to the web page at https://github.com/adobe/brackets/wiki/How-to-Use-Brackets#preferences\n */",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "Click here to locate this &lt;span&gt; in the HTML file",
-  "DEFAULT_PROJECT_NOTIFICATION": "Click here to open the <br/><b>default project</b> in {APP_NAME}. </br> <a href='#' style='float:right;'>ok</a>",
+  "DEFAULT_PROJECT_NOTIFICATION": "Open the <b>Default Project</b> in {APP_NAME} to get started quickly (ideal as a scratch pad).</br></br>Or, open a folder from your computer with the <strong>Open Folder</strong> icon below.<br><a href='#' style='float:right;'>ok</a>",
   "DELETE": "Delete",
   "DELETE_FILE_BTN": "Delete file…",
   "DELETE_LOCAL_BRANCH": "Delete local branch",

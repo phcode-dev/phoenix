@@ -743,6 +743,7 @@ define({
   "HEALTH_DATA_NOTIFICATION": "Preferințe raport de sănătate",
   "HEALTH_FIRST_POPUP_TITLE": "Notificare privind confidențialitatea",
   "HEALTH_DATA_DO_TRACK": "Partajați informații anonime despre cum utilizez {APP_NAME}",
+  "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>nu colectează și nu procesează nicio informație de identificare personală</strong>, dar <strong>colectează statistici anonime de utilizare</strong> pentru a vă proteja confidențialitatea. Datele anonime sunt exceptate de la cerințele de notificare GDPR/CCPA, dar credem că trebuie să aveți opțiunea de a renunța și la colectarea datelor anonime.<br><br> Puteți vedea datele dvs. sau <strong>alege să nu partajați nicio dată anonimă</strong> selectând <strong>Ajutor > Raport de stare</strong>. Aceste statistici <strong>anonime</strong> de utilizare a aplicației și rapoartele de erori ajută la prioritizarea funcțiilor, la găsirea erorilor și la identificarea problemelor de utilizare pentru a vă îmbunătăți experiența cu {APP_NAME}. Fără aceste date, nu am ști ce funcții merită să construim pentru dvs.! <br>",
   "HEALTH_DATA_PREVIEW": "Raport de sănătate {APP_NAME}",
   "HEALTH_DATA_PREVIEW_INTRO": "<p>{APP_NAME} <strong>nu colectează și nu procesează nicio informație de identificare personală</strong>, dar <strong>colectează statistici anonime de utilizare</strong> pentru a vă proteja confidențialitatea. Aceste statistici <strong>anonime</strong> de utilizare a aplicației și rapoartele de erori ajută la prioritizarea funcțiilor, la găsirea erorilor și la identificarea problemelor de utilizare pentru a vă îmbunătăți experiența cu {APP_NAME}.</p> <p>Mai jos este o previzualizare a datelor care vor fi trimise în următorul dvs. Raport de sănătate <em>dacă</em> acesta este activat. (Consultați și consola dezvoltatorului pentru jurnalele de erori marcate cu „Eroare critică detectată”.)</p>",
   "INLINE_TIMING_EDITOR_TIME": "Timp",
@@ -1035,6 +1036,8 @@ define({
   "PREVIEW": "Previzualizare",
   "BUILD_WEBSITE": "Creează site web",
   "VIEW_MORE": "Vezi mai mult...",
+  "NEW_PROJECT_NOTIFICATION": "Faceți clic pe această pictogramă pentru a deschide din nou fereastra `Începeți proiect`. </br> Vedeți Proiecte recente, Deschideți folder sau începeți proiecte din șabloane. </br> <img src=\"styles/images/new_project.png\">",
+  "BEAUTIFY_CODE_NOTIFICATION": "Faceți clic aici sau apăsați <b>`{0}`</b> pentru a formata codul. </br> <img src=\"styles/images/beautify.gif\">",
   "DIRECTORY_REPLACE_MESSAGE": "Directorul selectat <span class='dialog-filename'>{0}</span> nu este gol. Sigur doriți să înlocuiți conținutul directorului cu proiectul?",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "Apasă aici pentru a localiza acest &lt;span&gt; în fișierul HTML",
   "BUILD_WEBSITE_SECTION": "Creează site web",
@@ -1338,11 +1341,8 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "Niciun depozit remote nu a fost selectat pentru {0}!",
   "ERROR_BRANCH_LIST": "Obținerea listei de branch-uri a eșuat",
   "ERROR_FETCH_REMOTE": "Obținerea informațiilor despre depozitul remote a eșuat",
-  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Votează pentru funcționalitățile pe care dorești să le vezi în continuare!",
-  "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>nu colectează și nu procesează nicio informație de identificare personală</strong>, dar <strong>colectează statistici anonime de utilizare</strong> pentru a vă proteja confidențialitatea. Datele anonime sunt exceptate de la cerințele de notificare GDPR/CCPA, dar credem că trebuie să aveți opțiunea de a renunța și la colectarea datelor anonime.<br><br> Puteți vedea datele dvs. sau <strong>alege să nu partajați nicio dată anonimă</strong> selectând <strong>Ajutor > Raport de stare</strong>. Aceste statistici <strong>anonime</strong> de utilizare a aplicației și rapoartele de erori ajută la prioritizarea funcțiilor, la găsirea erorilor și la identificarea problemelor de utilizare pentru a vă îmbunătăți experiența cu {APP_NAME}. Fără aceste date, nu am ști ce funcții merită să construim pentru dvs.! <br>",
-  "NEW_PROJECT_NOTIFICATION": "Faceți clic pe această pictogramă pentru a deschide din nou fereastra `Începeți proiect`. </br> Vedeți Proiecte recente, Deschideți folder sau începeți proiecte din șabloane. </br> <img src=\"styles/images/new_project.png\">",
-  "BEAUTIFY_CODE_NOTIFICATION": "Faceți clic aici sau apăsați <b>`{0}`</b> pentru a formata codul. </br> <img src=\"styles/images/beautify.gif\">",
-  "DEFAULT_PROJECT_NOTIFICATION": "Faceți clic aici pentru a deschide <br/><b>proiectul implicit</b> în {APP_NAME}. </br> <a href='#' style='float:right;'>ok</a>",
   "GIT_TOAST_TITLE": "Explorați funcțiile Git în Phoenix Code",
-  "GIT_TOAST_MESSAGE": "Faceți clic pe pictograma panoului Git pentru a vă gestiona depozitul. Efectuați ușor commit, push, pull și vizualizați istoricul proiectului dvs. - totul într-un singur loc.<br><a href='https://docs.phcode.dev/docs/Features/git'>Aflați mai multe despre panoul Git →</a>"
+  "GIT_TOAST_MESSAGE": "Faceți clic pe pictograma panoului Git pentru a vă gestiona depozitul. Efectuați ușor commit, push, pull și vizualizați istoricul proiectului dvs. - totul într-un singur loc.<br><a href='https://docs.phcode.dev/docs/Features/git'>Aflați mai multe despre panoul Git →</a>",
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Votează pentru funcționalitățile pe care dorești să le vezi în continuare!",
+  "DEFAULT_PROJECT_NOTIFICATION": "Deschideți <b>Proiectul Implicit</b> în {APP_NAME} pentru a începe rapid (ideal ca blocnotes).</br></br>Sau, deschideți un dosar de pe computer utilizând pictograma <strong>Deschidere Dosar</strong> de mai jos.<br><a href='#' style='float:right;'>ok</a>"
 });

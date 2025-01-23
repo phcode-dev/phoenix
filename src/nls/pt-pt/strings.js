@@ -743,6 +743,7 @@ define({
   "HEALTH_DATA_NOTIFICATION": "Preferências do Relatório de Estado",
   "HEALTH_FIRST_POPUP_TITLE": "Aviso de Privacidade",
   "HEALTH_DATA_DO_TRACK": "Partilhar informações anónimas sobre como uso o {APP_NAME}",
+  "HEALTH_DATA_NOTIFICATION_MESSAGE": "O {APP_NAME} <strong>não recolhe nem processa qualquer informação pessoalmente identificável</strong>, mas <strong>recolhe estatísticas de utilização anónimas</strong> para proteger a sua privacidade. Os dados anónimos estão isentos dos requisitos de notificação do RGPD/CCPA, mas acreditamos que deve ter a opção de recusar a recolha de dados anónimos também.<br><br> Pode ver os seus dados ou <strong>optar por não partilhar quaisquer dados anónimos</strong> selecionando <strong>Ajuda > Relatório de Funcionamento</strong>. Estas estatísticas de utilização da aplicação e relatórios de erros <strong>anónimos</strong> ajudam a priorizar funcionalidades, encontrar erros e detetar problemas de usabilidade para melhorar a sua experiência com o {APP_NAME}. Sem estes dados, não saberíamos que funcionalidades valem a pena desenvolver para si! <br>",
   "HEALTH_DATA_PREVIEW": "Relatório de Estado do {APP_NAME}",
   "HEALTH_DATA_PREVIEW_INTRO": "<p>O {APP_NAME} <strong>não recolhe nem processa qualquer informação pessoalmente identificável</strong>, mas <strong>recolhe estatísticas de utilização anónimas</strong> para proteger a sua privacidade. Estas estatísticas de utilização da aplicação e relatórios de erros <strong>anónimos</strong> ajudam a priorizar funcionalidades, encontrar erros e detetar problemas de usabilidade para melhorar a sua experiência com o {APP_NAME}.</p> <p>Abaixo encontra-se uma pré-visualização dos dados que serão enviados no seu próximo Relatório de Estado <em>se</em> este estiver ativado. (Consulte também a consola do programador para registos de erros marcados como 'Erro crítico detetado'.)</p>",
   "INLINE_TIMING_EDITOR_TIME": "Tempo",
@@ -1035,6 +1036,8 @@ define({
   "PREVIEW": "Pré-visualização",
   "BUILD_WEBSITE": "Criar Website",
   "VIEW_MORE": "Ver Mais...",
+  "NEW_PROJECT_NOTIFICATION": "Clique neste ícone para abrir novamente a janela `Iniciar Projeto`.</br> Veja Projetos Recentes, Abrir Pasta ou inicie projetos a partir de modelos.</br> <img src=\"styles/images/new_project.png\">",
+  "BEAUTIFY_CODE_NOTIFICATION": "Clique aqui ou pressione <b>`{0}`</b> para embelezar o código. </br> <img src=\"styles/images/beautify.gif\">",
   "DIRECTORY_REPLACE_MESSAGE": "A pasta selecionada <span class='dialog-filename'>{0}</span> não está vazia. Tem a certeza de que pretende substituir o conteúdo da pasta com o projeto?",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "Clique aqui para localizar isto &lt;span&gt; no ficheiro HTML",
   "BUILD_WEBSITE_SECTION": "Criar Website",
@@ -1338,11 +1341,8 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "Nenhum remoto foi selecionado para {0}!",
   "ERROR_BRANCH_LIST": "Falha ao obter a lista de ramos",
   "ERROR_FETCH_REMOTE": "Falha ao obter informações do remoto",
-  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vote nas funcionalidades que quer ver a seguir!",
-  "HEALTH_DATA_NOTIFICATION_MESSAGE": "O {APP_NAME} <strong>não recolhe nem processa qualquer informação pessoalmente identificável</strong>, mas <strong>recolhe estatísticas de utilização anónimas</strong> para proteger a sua privacidade. Os dados anónimos estão isentos dos requisitos de notificação do RGPD/CCPA, mas acreditamos que deve ter a opção de recusar a recolha de dados anónimos também.<br><br> Pode ver os seus dados ou <strong>optar por não partilhar quaisquer dados anónimos</strong> selecionando <strong>Ajuda > Relatório de Funcionamento</strong>. Estas estatísticas de utilização da aplicação e relatórios de erros <strong>anónimos</strong> ajudam a priorizar funcionalidades, encontrar erros e detetar problemas de usabilidade para melhorar a sua experiência com o {APP_NAME}. Sem estes dados, não saberíamos que funcionalidades valem a pena desenvolver para si! <br>",
-  "NEW_PROJECT_NOTIFICATION": "Clique neste ícone para abrir novamente a janela `Iniciar Projeto`.</br> Veja Projetos Recentes, Abrir Pasta ou inicie projetos a partir de modelos.</br> <img src=\"styles/images/new_project.png\">",
-  "BEAUTIFY_CODE_NOTIFICATION": "Clique aqui ou pressione <b>`{0}`</b> para embelezar o código. </br> <img src=\"styles/images/beautify.gif\">",
-  "DEFAULT_PROJECT_NOTIFICATION": "Clique aqui para abrir o <br/><b>projeto predefinido</b> no {APP_NAME}. </br> <a href='#' style='float:right;'>ok</a>",
   "GIT_TOAST_TITLE": "Explore as funcionalidades do Git no Phoenix Code",
-  "GIT_TOAST_MESSAGE": "Clique no ícone do painel Git para gerir o seu repositório. Efetue commits, pushes, pulls e veja o histórico do seu projeto com facilidade — tudo num só lugar.<br><a href='https://docs.phcode.dev/docs/Features/git'>Saiba mais sobre o painel Git →</a>"
+  "GIT_TOAST_MESSAGE": "Clique no ícone do painel Git para gerir o seu repositório. Efetue commits, pushes, pulls e veja o histórico do seu projeto com facilidade — tudo num só lugar.<br><a href='https://docs.phcode.dev/docs/Features/git'>Saiba mais sobre o painel Git →</a>",
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vote nas funcionalidades que quer ver a seguir!",
+  "DEFAULT_PROJECT_NOTIFICATION": "Abra o <b>Projeto Padrão</b> no {APP_NAME} para começar rapidamente (ideal como um bloco de notas).</br></br>Ou abra uma pasta do seu computador com o ícone <strong>Abrir Pasta</strong> abaixo.<br><a href='#' style='float:right;'>OK</a>"
 });
