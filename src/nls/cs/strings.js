@@ -743,6 +743,7 @@ define({
   "HEALTH_DATA_NOTIFICATION": "Nastavení hlášení o zdraví",
   "HEALTH_FIRST_POPUP_TITLE": "Oznámení o ochraně osobních údajů",
   "HEALTH_DATA_DO_TRACK": "Sdílet anonymní informace o tom, jak používám {APP_NAME}",
+  "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>nesbírá ani nezpracovává žádné osobně identifikovatelné informace</strong>, ale <strong>sbírá anonymní statistiky používání</strong>, aby chránil vaše soukromí. Anonymní data jsou vyňata z požadavků na oznámení GDPR/CCPA, ale věříme, že byste měli mít možnost odhlásit se i ze sběru anonymních dat.<br><br> Svá data si můžete prohlédnout nebo se <strong>rozhodnout nesdílet žádná anonymní data</strong> výběrem možnosti <strong>Nápověda > Zpráva o stavu</strong>. Tyto <strong>anonymní</strong> statistiky používání aplikace a zprávy o chybách nám pomáhají upřednostňovat funkce, nacházet chyby a odhalovat problémy s použitelností, abychom zlepšili vaši zkušenost s aplikací {APP_NAME}. Bez těchto dat bychom nevěděli, jaké funkce pro vás stojí za to vyvíjet! <br>",
   "HEALTH_DATA_PREVIEW": "Hlášení o zdraví {APP_NAME}",
   "HEALTH_DATA_PREVIEW_INTRO": "<p>{APP_NAME} <strong>neshromažďuje ani nezpracovává žádné osobní údaje</strong>, ale <strong>shromažďuje anonymní statistiky používání</strong> pro ochranu vašeho soukromí. Tyto <strong>anonymní</strong> statistiky používání aplikace a hlášení o chybách nám pomáhají upřednostňovat funkce, nacházet chyby a odhalovat problémy s použitelností pro zlepšení vaší zkušenosti s aplikací {APP_NAME}.</p> <p>Níže je uveden náhled dat, která budou odeslána ve vašem dalším hlášení o stavu, <em>pokud</em> je povoleno. (Viz také konzole pro vývojáře pro protokoly chyb označené 'Caught Critical error'.)</p>",
   "INLINE_TIMING_EDITOR_TIME": "Doba",
@@ -1035,6 +1036,8 @@ define({
   "PREVIEW": "Náhled",
   "BUILD_WEBSITE": "Vytvořit web",
   "VIEW_MORE": "Zobrazit více...",
+  "NEW_PROJECT_NOTIFICATION": "Klikněte na tuto ikonu pro opětovné otevření okna `Spustit projekt`.</br> Zobrazte si Nedávné projekty, Otevřít složku nebo spusťte projekty ze šablon.</br> <img src=\"styles/images/new_project.png\">",
+  "BEAUTIFY_CODE_NOTIFICATION": "Klikněte sem nebo stiskněte <b>`{0}`</b> pro formátování kódu. </br> <img src=\"styles/images/beautify.gif\">",
   "DIRECTORY_REPLACE_MESSAGE": "Vybraná složka <span class='dialog-filename'>{0}</span> není prázdná. Jste si jisti, že chcete nahradit obsah složky projektem?",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "Klikněte sem pro nalezení tohoto &lt;span&gt; v HTML souboru",
   "BUILD_WEBSITE_SECTION": "Vytvořit web",
@@ -1338,11 +1341,8 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "Nebyl vybrán žádný vzdálený repozitář pro {0}!",
   "ERROR_BRANCH_LIST": "Získání seznamu větví selhalo",
   "ERROR_FETCH_REMOTE": "Získání informací o vzdáleném repozitáři selhalo",
-  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Hlasujte pro funkce, které chcete vidět v další verzi!",
-  "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>nesbírá ani nezpracovává žádné osobně identifikovatelné informace</strong>, ale <strong>sbírá anonymní statistiky používání</strong>, aby chránil vaše soukromí. Anonymní data jsou vyňata z požadavků na oznámení GDPR/CCPA, ale věříme, že byste měli mít možnost odhlásit se i ze sběru anonymních dat.<br><br> Svá data si můžete prohlédnout nebo se <strong>rozhodnout nesdílet žádná anonymní data</strong> výběrem možnosti <strong>Nápověda > Zpráva o stavu</strong>. Tyto <strong>anonymní</strong> statistiky používání aplikace a zprávy o chybách nám pomáhají upřednostňovat funkce, nacházet chyby a odhalovat problémy s použitelností, abychom zlepšili vaši zkušenost s aplikací {APP_NAME}. Bez těchto dat bychom nevěděli, jaké funkce pro vás stojí za to vyvíjet! <br>",
-  "NEW_PROJECT_NOTIFICATION": "Klikněte na tuto ikonu pro opětovné otevření okna `Spustit projekt`.</br> Zobrazte si Nedávné projekty, Otevřít složku nebo spusťte projekty ze šablon.</br> <img src=\"styles/images/new_project.png\">",
-  "BEAUTIFY_CODE_NOTIFICATION": "Klikněte sem nebo stiskněte <b>`{0}`</b> pro formátování kódu. </br> <img src=\"styles/images/beautify.gif\">",
-  "DEFAULT_PROJECT_NOTIFICATION": "Klikněte sem pro otevření <br/><b>výchozího projektu</b> v {APP_NAME}. </br> <a href='#' style='float:right;'>ok</a>",
   "GIT_TOAST_TITLE": "Prozkoumejte funkce Gitu v Phoenix Code",
-  "GIT_TOAST_MESSAGE": "Klikněte na ikonu panelu Git pro správu vašeho repozitáře. Snadno commitujte, pushujte, pullujte a prohlížejte si historii projektu – vše na jednom místě.<br><a href='https://docs.phcode.dev/docs/Features/git'>Zjistěte více o panelu Git →</a>"
+  "GIT_TOAST_MESSAGE": "Klikněte na ikonu panelu Git pro správu vašeho repozitáře. Snadno commitujte, pushujte, pullujte a prohlížejte si historii projektu – vše na jednom místě.<br><a href='https://docs.phcode.dev/docs/Features/git'>Zjistěte více o panelu Git →</a>",
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Hlasujte pro funkce, které chcete vidět v další verzi!",
+  "DEFAULT_PROJECT_NOTIFICATION": "Otevřete <b>Výchozí projekt</b> v aplikaci {APP_NAME} pro rychlý start (ideální jako poznámkový blok).</br></br>Nebo otevřete složku z počítače pomocí ikony <strong>Otevřít složku</strong> níže.<br><a href='#' style='float:right;'>ok</a>"
 });

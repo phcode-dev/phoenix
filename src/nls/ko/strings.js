@@ -743,6 +743,7 @@ define({
   "HEALTH_DATA_NOTIFICATION": "상태 보고서 환경설정",
   "HEALTH_FIRST_POPUP_TITLE": "개인정보처리방침",
   "HEALTH_DATA_DO_TRACK": "{APP_NAME} 사용 방식에 대한 익명 정보 공유",
+  "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME}은 <strong>어떠한 개인 식별 정보도 수집하거나 처리하지 않습니다</strong>. 하지만 사용자의 개인 정보를 보호하기 위해 <strong>익명의 사용 통계를 수집합니다</strong>. 익명 데이터는 GDPR/CCPA 알림 요구 사항에서 제외되지만, 익명 데이터 수집을 거부할 수 있는 선택권을 제공해야 한다고 생각합니다.<br><br> <strong>도움말 > 상태 보고서</strong>를 선택하여 데이터를 확인하거나 <strong>익명 데이터를 공유하지 않도록 선택</strong>할 수 있습니다. 이러한 <strong>익명</strong> 앱 사용 통계 및 오류 보고서는 기능 우선 순위 지정, 버그 발견 및 사용성 문제 파악에 도움이 되어 {APP_NAME} 사용 환경을 개선하는 데 도움이 됩니다. 이 데이터가 없으면 어떤 기능을 개발해야 할지 알 수 없습니다! <br>",
   "HEALTH_DATA_PREVIEW": "{APP_NAME} 상태 보고서",
   "HEALTH_DATA_PREVIEW_INTRO": "<p>{APP_NAME}은 <strong>개인 식별 정보를 수집하거나 처리하지 않지만</strong>, 사용자의 개인정보를 보호하기 위해 <strong>익명 사용 통계를 수집합니다</strong>. 이러한 <strong>익명</strong> 앱 사용 통계 및 오류 보고서는 {APP_NAME} 사용 환경 개선을 위해 기능 우선순위 지정, 버그 찾기 및 사용성 문제 파악에 도움이 됩니다.</p> <p>다음은 활성화된 경우 다음 상태 보고서에 전송될 데이터의 미려보기입니다. ('심각한 오류 포착'으로 표시된 오류 로그는 개발자 콘솔에서도 확인할 수 있습니다.)</p>",
   "INLINE_TIMING_EDITOR_TIME": "시간",
@@ -1035,6 +1036,8 @@ define({
   "PREVIEW": "미리보기",
   "BUILD_WEBSITE": "웹사이트 빌드",
   "VIEW_MORE": "더 보기...",
+  "NEW_PROJECT_NOTIFICATION": "이 아이콘을 클릭하면 `프로젝트 시작` 창이 다시 열립니다.</br> 최근 프로젝트 보기, 폴더 열기 또는 템플릿에서 프로젝트 시작하기.</br> <img src=\"styles/images/new_project.png\">",
+  "BEAUTIFY_CODE_NOTIFICATION": "여기를 클릭하거나 <b>`{0}`</b>을 눌러 코드를 정리하세요. </br> <img src=\"styles/images/beautify.gif\">",
   "DIRECTORY_REPLACE_MESSAGE": "선택한 폴더 <span class='dialog-filename'>{0}</span>이 비어 있지 않습니다. 폴더 내용을 프로젝트로 바꾸시겠습니까?",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "HTML 파일에서 이 &lt;span&gt;의 위치를 찾으려면 여기를 클릭하세요.",
   "BUILD_WEBSITE_SECTION": "웹사이트 빌드",
@@ -1338,11 +1341,8 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "{0}에 대해 선택된 리모트가 없습니다!",
   "ERROR_BRANCH_LIST": "브랜치 목록 가져오기 실패",
   "ERROR_FETCH_REMOTE": "리모트 정보 가져오기 실패",
-  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "다음에 보고 싶은 기능에 투표하세요!",
-  "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME}은 <strong>어떠한 개인 식별 정보도 수집하거나 처리하지 않습니다</strong>. 하지만 사용자의 개인 정보를 보호하기 위해 <strong>익명의 사용 통계를 수집합니다</strong>. 익명 데이터는 GDPR/CCPA 알림 요구 사항에서 제외되지만, 익명 데이터 수집을 거부할 수 있는 선택권을 제공해야 한다고 생각합니다.<br><br> <strong>도움말 > 상태 보고서</strong>를 선택하여 데이터를 확인하거나 <strong>익명 데이터를 공유하지 않도록 선택</strong>할 수 있습니다. 이러한 <strong>익명</strong> 앱 사용 통계 및 오류 보고서는 기능 우선 순위 지정, 버그 발견 및 사용성 문제 파악에 도움이 되어 {APP_NAME} 사용 환경을 개선하는 데 도움이 됩니다. 이 데이터가 없으면 어떤 기능을 개발해야 할지 알 수 없습니다! <br>",
-  "NEW_PROJECT_NOTIFICATION": "이 아이콘을 클릭하면 `프로젝트 시작` 창이 다시 열립니다.</br> 최근 프로젝트 보기, 폴더 열기 또는 템플릿에서 프로젝트 시작하기.</br> <img src=\"styles/images/new_project.png\">",
-  "BEAUTIFY_CODE_NOTIFICATION": "여기를 클릭하거나 <b>`{0}`</b>을 눌러 코드를 정리하세요. </br> <img src=\"styles/images/beautify.gif\">",
-  "DEFAULT_PROJECT_NOTIFICATION": "여기를 클릭하여 {APP_NAME}에서 <br/><b>기본 프로젝트</b>를 여세요. </br> <a href='#' style='float:right;'>확인</a>",
   "GIT_TOAST_TITLE": "Phoenix Code의 Git 기능 살펴보기",
-  "GIT_TOAST_MESSAGE": "Git 패널 아이콘을 클릭하여 저장소를 관리하세요. 커밋, 푸시, 풀, 프로젝트 기록 보기를 한 곳에서 간편하게 수행할 수 있습니다.<br><a href='https://docs.phcode.dev/docs/Features/git'>Git 패널에 대해 자세히 알아보기 →</a>"
+  "GIT_TOAST_MESSAGE": "Git 패널 아이콘을 클릭하여 저장소를 관리하세요. 커밋, 푸시, 풀, 프로젝트 기록 보기를 한 곳에서 간편하게 수행할 수 있습니다.<br><a href='https://docs.phcode.dev/docs/Features/git'>Git 패널에 대해 자세히 알아보기 →</a>",
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "다음에 보고 싶은 기능에 투표하세요!",
+  "DEFAULT_PROJECT_NOTIFICATION": "시작하기 안내를 위해 {APP_NAME}에서 <b>기본 프로젝트</b>를 열어보세요(메모장으로 적합).</br></br>또는 아래의 <strong>폴더 열기</strong> 아이콘을 사용하여 컴퓨터에서 폴더를 열 수 있습니다.<br><a href='#' style='float:right;'>확인</a>"
 });

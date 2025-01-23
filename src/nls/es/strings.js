@@ -743,6 +743,7 @@ define({
   "HEALTH_DATA_NOTIFICATION": "Preferencias del reporte de estadísticas",
   "HEALTH_FIRST_POPUP_TITLE": "Aviso de privacidad",
   "HEALTH_DATA_DO_TRACK": "Compartir información anónima sobre cómo uso {APP_NAME}",
+  "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>no recopila ni procesa ninguna información de identificación personal</strong>, pero <strong>recopila estadísticas de uso anónimas</strong> para proteger su privacidad. Los datos anónimos están exentos de los requisitos de notificación de GDPR/CCPA, pero creemos que debe tener la opción de no participar en la recopilación de datos anónimos también.<br><br> Puede ver sus datos o <strong>optar por no compartir ningún dato anónimo</strong> seleccionando <strong>Ayuda > Informe de estado</strong>. Estas estadísticas de uso de la aplicación <strong>anónimas</strong> y los informes de errores ayudan a priorizar las funciones, encontrar errores y detectar problemas de usabilidad para mejorar su experiencia con {APP_NAME}. ¡Sin estos datos, no sabríamos qué funciones vale la pena desarrollar para usted! <br>",
   "HEALTH_DATA_PREVIEW": "Reporte de estadísticas de {APP_NAME}",
   "HEALTH_DATA_PREVIEW_INTRO": "<p>{APP_NAME} <strong>no recopila ni procesa ninguna información de identificación personal</strong>, pero <strong>recopila estadísticas de uso anónimas</strong> para proteger su privacidad. Estas estadísticas de uso de la aplicación <strong>anónimas</strong> y los informes de errores ayudan a priorizar las funciones, encontrar errores y detectar problemas de usabilidad para mejorar su experiencia con {APP_NAME}.</p> <p>A continuación se muestra una vista previa de los datos que se enviarán en su próximo Informe de estado <em>si</em> está habilitado. (Consulte también la consola del desarrollador para ver los registros de errores marcados como 'Error crítico detectado'.)</p>",
   "INLINE_TIMING_EDITOR_TIME": "Tiempo",
@@ -1035,6 +1036,8 @@ define({
   "PREVIEW": "Vista previa",
   "BUILD_WEBSITE": "Crear sitio web",
   "VIEW_MORE": "Ver más...",
+  "NEW_PROJECT_NOTIFICATION": "Haga clic en este icono para abrir la ventana `Iniciar proyecto` nuevamente.</br> Vea Proyectos recientes, Abrir carpeta o inicie proyectos desde plantillas.</br> <img src=\"styles/images/new_project.png\">",
+  "BEAUTIFY_CODE_NOTIFICATION": "Haga clic aquí o presione <b>`{0}`</b> para embellecer el código. </br> <img src=\"styles/images/beautify.gif\">",
   "DIRECTORY_REPLACE_MESSAGE": "La carpeta seleccionada <span class='dialog-filename'>{0}</span> no está vacía. ¿Está seguro de que desea reemplazar el contenido de la carpeta con el proyecto?",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "Haga clic aquí para ubicar esto &lt;span&gt; en el archivo HTML",
   "BUILD_WEBSITE_SECTION": "Crear sitio web",
@@ -1338,11 +1341,8 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "No se ha seleccionado ningún remoto para {0}.",
   "ERROR_BRANCH_LIST": "Error al obtener la lista de ramas.",
   "ERROR_FETCH_REMOTE": "Error al obtener la información del remoto.",
-  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "¡Vota por las funciones que quieres ver próximamente!",
-  "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>no recopila ni procesa ninguna información de identificación personal</strong>, pero <strong>recopila estadísticas de uso anónimas</strong> para proteger su privacidad. Los datos anónimos están exentos de los requisitos de notificación de GDPR/CCPA, pero creemos que debe tener la opción de no participar en la recopilación de datos anónimos también.<br><br> Puede ver sus datos o <strong>optar por no compartir ningún dato anónimo</strong> seleccionando <strong>Ayuda > Informe de estado</strong>. Estas estadísticas de uso de la aplicación <strong>anónimas</strong> y los informes de errores ayudan a priorizar las funciones, encontrar errores y detectar problemas de usabilidad para mejorar su experiencia con {APP_NAME}. ¡Sin estos datos, no sabríamos qué funciones vale la pena desarrollar para usted! <br>",
-  "NEW_PROJECT_NOTIFICATION": "Haga clic en este icono para abrir la ventana `Iniciar proyecto` nuevamente.</br> Vea Proyectos recientes, Abrir carpeta o inicie proyectos desde plantillas.</br> <img src=\"styles/images/new_project.png\">",
-  "BEAUTIFY_CODE_NOTIFICATION": "Haga clic aquí o presione <b>`{0}`</b> para embellecer el código. </br> <img src=\"styles/images/beautify.gif\">",
-  "DEFAULT_PROJECT_NOTIFICATION": "Haga clic aquí para abrir el <br/><b>proyecto predeterminado</b> en {APP_NAME}. </br> <a href='#' style='float:right;'>Aceptar</a>",
   "GIT_TOAST_TITLE": "Explora las funciones de Git en Phoenix Code",
-  "GIT_TOAST_MESSAGE": "Haga clic en el icono del panel de Git para administrar su repositorio. Confirme, envíe (push), extraiga (pull) y vea el historial de su proyecto fácilmente, todo en un solo lugar.<br><a href='https://docs.phcode.dev/docs/Features/git'>Obtenga más información sobre el panel de Git →</a>"
+  "GIT_TOAST_MESSAGE": "Haga clic en el icono del panel de Git para administrar su repositorio. Confirme, envíe (push), extraiga (pull) y vea el historial de su proyecto fácilmente, todo en un solo lugar.<br><a href='https://docs.phcode.dev/docs/Features/git'>Obtenga más información sobre el panel de Git →</a>",
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "¡Vota por las funciones que quieres ver próximamente!",
+  "DEFAULT_PROJECT_NOTIFICATION": "Abre el <b>Proyecto predeterminado</b> en {APP_NAME} para empezar rápidamente (ideal como bloc de notas).</br></br>O bien, abre una carpeta de tu ordenador con el icono <strong>Abrir carpeta</strong> que se muestra a continuación.<br><a href='#' style='float:right;'>Aceptar</a>"
 });

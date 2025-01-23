@@ -743,6 +743,7 @@ define({
   "HEALTH_DATA_NOTIFICATION": "Preferências do relatório de saúde",
   "HEALTH_FIRST_POPUP_TITLE": "Aviso de Privacidade",
   "HEALTH_DATA_DO_TRACK": "Compartilhar informações anônimas sobre como eu uso o {APP_NAME}",
+  "HEALTH_DATA_NOTIFICATION_MESSAGE": "O {APP_NAME} <strong>não coleta ou processa nenhuma informação pessoalmente identificável</strong>, mas <strong>coleta estatísticas anônimas de uso</strong> para proteger sua privacidade. Dados anônimos estão isentos dos requisitos de notificação da GDPR/CCPA, mas acreditamos que você precisa ter a opção de desativar a coleta de dados anônimos também.<br><br> Você pode ver seus dados ou <strong>optar por não compartilhar nenhum dado anônimo</strong> selecionando <strong>Ajuda > Relatório de Saúde</strong>. Essas estatísticas <strong>anônimas</strong> de uso do aplicativo e relatórios de erros ajudam a priorizar recursos, encontrar bugs e identificar problemas de usabilidade para melhorar sua experiência com o {APP_NAME}. Sem esses dados, não saberíamos quais recursos valem a pena desenvolver para você! <br>",
   "HEALTH_DATA_PREVIEW": "Relatório de saúde do {APP_NAME}",
   "HEALTH_DATA_PREVIEW_INTRO": "<p>O {APP_NAME} <strong>não coleta nem processa qualquer informação pessoal identificável</strong>, mas <strong>coleta estatísticas de uso anônimas</strong> para proteger sua privacidade. Essas estatísticas de uso do aplicativo e relatórios de erros <strong>anônimos</strong> ajudam a priorizar recursos, encontrar bugs e identificar problemas de usabilidade para melhorar sua experiência com o {APP_NAME}.</p> <p>Abaixo está uma prévia dos dados que serão enviados em seu próximo Relatório de Saúde <em>se</em> ele estiver ativado. (Veja também o console do desenvolvedor para logs de erro marcados como 'Erro crítico detectado'.)</p>",
   "INLINE_TIMING_EDITOR_TIME": "Tempo",
@@ -1035,6 +1036,8 @@ define({
   "PREVIEW": "Visualizar",
   "BUILD_WEBSITE": "Gerar Site",
   "VIEW_MORE": "Ver Mais...",
+  "NEW_PROJECT_NOTIFICATION": "Clique neste ícone para abrir a janela `Iniciar Projeto` novamente.</br> Veja Projetos Recentes, Abrir Pasta ou inicie projetos a partir de modelos.</br> <img src=\"styles/images/new_project.png\">",
+  "BEAUTIFY_CODE_NOTIFICATION": "Clique aqui ou pressione <b>`{0}`</b> para formatar o código. </br> <img src=\"styles/images/beautify.gif\">",
   "DIRECTORY_REPLACE_MESSAGE": "A pasta selecionada <span class='dialog-filename'>{0}</span> não está vazia. Tem certeza de que deseja substituir o conteúdo da pasta pelo projeto?",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "Clique aqui para localizar este &lt;span&gt; no arquivo HTML",
   "BUILD_WEBSITE_SECTION": "Gerar Site",
@@ -1338,11 +1341,8 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "Nenhum remoto foi selecionado para {0}!",
   "ERROR_BRANCH_LIST": "Falha ao obter a lista de branches",
   "ERROR_FETCH_REMOTE": "Falha ao buscar informações do remoto",
-  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vote nos recursos que você quer ver em seguida!",
-  "HEALTH_DATA_NOTIFICATION_MESSAGE": "O {APP_NAME} <strong>não coleta ou processa nenhuma informação pessoalmente identificável</strong>, mas <strong>coleta estatísticas anônimas de uso</strong> para proteger sua privacidade. Dados anônimos estão isentos dos requisitos de notificação da GDPR/CCPA, mas acreditamos que você precisa ter a opção de desativar a coleta de dados anônimos também.<br><br> Você pode ver seus dados ou <strong>optar por não compartilhar nenhum dado anônimo</strong> selecionando <strong>Ajuda > Relatório de Saúde</strong>. Essas estatísticas <strong>anônimas</strong> de uso do aplicativo e relatórios de erros ajudam a priorizar recursos, encontrar bugs e identificar problemas de usabilidade para melhorar sua experiência com o {APP_NAME}. Sem esses dados, não saberíamos quais recursos valem a pena desenvolver para você! <br>",
-  "NEW_PROJECT_NOTIFICATION": "Clique neste ícone para abrir a janela `Iniciar Projeto` novamente.</br> Veja Projetos Recentes, Abrir Pasta ou inicie projetos a partir de modelos.</br> <img src=\"styles/images/new_project.png\">",
-  "BEAUTIFY_CODE_NOTIFICATION": "Clique aqui ou pressione <b>`{0}`</b> para formatar o código. </br> <img src=\"styles/images/beautify.gif\">",
-  "DEFAULT_PROJECT_NOTIFICATION": "Clique aqui para abrir o <br/><b>projeto padrão</b> no {APP_NAME}. </br> <a href='#' style='float:right;'>ok</a>",
   "GIT_TOAST_TITLE": "Explore os Recursos do Git no Phoenix Code",
-  "GIT_TOAST_MESSAGE": "Clique no ícone do painel Git para gerenciar seu repositório. Faça commits, pushes, pulls e visualize o histórico do seu projeto com facilidade — tudo em um só lugar.<br><a href='https://docs.phcode.dev/docs/Features/git'>Saiba mais sobre o painel Git →</a>"
+  "GIT_TOAST_MESSAGE": "Clique no ícone do painel Git para gerenciar seu repositório. Faça commits, pushes, pulls e visualize o histórico do seu projeto com facilidade — tudo em um só lugar.<br><a href='https://docs.phcode.dev/docs/Features/git'>Saiba mais sobre o painel Git →</a>",
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vote nos recursos que você quer ver em seguida!",
+  "DEFAULT_PROJECT_NOTIFICATION": "Abra o <b>Projeto Padrão</b> no {APP_NAME} para começar rapidamente (ideal como um rascunho).</br></br>Ou abra uma pasta do seu computador com o ícone <strong>Abrir Pasta</strong> abaixo.<br><a href='#' style='float:right;'>ok</a>"
 });

@@ -743,6 +743,7 @@ define({
   "HEALTH_DATA_NOTIFICATION": "Health Report Preferences",
   "HEALTH_FIRST_POPUP_TITLE": "Privacy Notice",
   "HEALTH_DATA_DO_TRACK": "Share anonymous information on how I use {APP_NAME}",
+  "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>does not collect or process any personally identifiable information</strong>, but <strong>collects anonymous usage statistics</strong> to protect your privacy. Anonymous data is exempt from GDPR/CCPA notification requirements, but we believe you should have a choice to opt out of anonymous data collection as well.<br><br> You can see your data or <strong>choose not to share any anonymous data</strong> by selecting <strong>Help > Health Report</strong>. These <strong>anonymous</strong> app usage statistics and error reports help us prioritise features, find bugs, and spot usability issues to improve your experience with {APP_NAME}. Without this data, we wouldn't know what features are worth building for you! <br>",
   "HEALTH_DATA_PREVIEW": "{APP_NAME} Health Report",
   "HEALTH_DATA_PREVIEW_INTRO": "<p>{APP_NAME} <strong>does not collect or process any personally identifiable information</strong>, but <strong>collects anonymous usage statistics</strong> to guard your privacy. These <strong>anonymous</strong> app usage statistics and error reports help prioritise features, find bugs, and spot usability issues for improving your experience with {APP_NAME}.</p> <p>Below is a preview of the data that will be sent in your next Health Report <em>if</em> it is enabled. (Also see developer console for error logs marked 'Caught Critical error'.)</p>",
   "INLINE_TIMING_EDITOR_TIME": "Time",
@@ -1035,6 +1036,8 @@ define({
   "PREVIEW": "Preview",
   "BUILD_WEBSITE": "Build website",
   "VIEW_MORE": "See more…",
+  "NEW_PROJECT_NOTIFICATION": "Click this icon to open the `Start Project` window again.</br> See Recent Projects, Open Folder or start projects from templates.</br> <img src=\"styles/images/new_project.png\">",
+  "BEAUTIFY_CODE_NOTIFICATION": "Click here or press <b>`{0}`</b> to format code. </br> <img src=\"styles/images/beautify.gif\">",
   "DIRECTORY_REPLACE_MESSAGE": "The selected folder <span class='dialog-filename'>{0}</span> is not empty. Are you sure you want to replace the folder contents with the project?",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "Click here to locate this &lt;span&gt; in the HTML file",
   "BUILD_WEBSITE_SECTION": "Build website",
@@ -1338,11 +1341,8 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "No remote has been selected for {0}!",
   "ERROR_BRANCH_LIST": "Getting the branch list failed",
   "ERROR_FETCH_REMOTE": "Fetching remote information failed",
-  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vote for the features you'd like to see next!",
-  "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>does not collect or process any personally identifiable information</strong>, but <strong>collects anonymous usage statistics</strong> to protect your privacy. Anonymous data is exempt from GDPR/CCPA notification requirements, but we believe you should have a choice to opt out of anonymous data collection as well.<br><br> You can see your data or <strong>choose not to share any anonymous data</strong> by selecting <strong>Help > Health Report</strong>. These <strong>anonymous</strong> app usage statistics and error reports help us prioritise features, find bugs, and spot usability issues to improve your experience with {APP_NAME}. Without this data, we wouldn't know what features are worth building for you! <br>",
-  "NEW_PROJECT_NOTIFICATION": "Click this icon to open the `Start Project` window again.</br> See Recent Projects, Open Folder or start projects from templates.</br> <img src=\"styles/images/new_project.png\">",
-  "BEAUTIFY_CODE_NOTIFICATION": "Click here or press <b>`{0}`</b> to format code. </br> <img src=\"styles/images/beautify.gif\">",
-  "DEFAULT_PROJECT_NOTIFICATION": "Click here to open the <br/><b>default project</b> in {APP_NAME}. </br> <a href='#' style='float:right;'>OK</a>",
   "GIT_TOAST_TITLE": "Explore Git Features in Phoenix Code",
-  "GIT_TOAST_MESSAGE": "Click the Git panel icon to manage your repository. Easily commit, push, pull, and view your project history—all in one place.<br><a href='https://docs.phcode.dev/docs/Features/git'>Learn more about the Git panel →</a>"
+  "GIT_TOAST_MESSAGE": "Click the Git panel icon to manage your repository. Easily commit, push, pull, and view your project history—all in one place.<br><a href='https://docs.phcode.dev/docs/Features/git'>Learn more about the Git panel →</a>",
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vote for the features you'd like to see next!",
+  "DEFAULT_PROJECT_NOTIFICATION": "Open the <b>Default Project</b> in {APP_NAME} to get started quickly (ideal as a scratchpad).</br></br>Or, open a folder from your computer with the <strong>Open Folder</strong> icon below.<br><a href='#' style='float:right;'>OK</a>"
 });
