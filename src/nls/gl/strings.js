@@ -1341,5 +1341,6 @@ define({
   "ERROR_PUSHING_OPERATION": "Fallou a operación de envío",
   "ERROR_NO_REMOTE_SELECTED": "Non se seleccionou ningún remoto para {0}!",
   "ERROR_BRANCH_LIST": "Fallou a obtención da lista de ramas",
-  "ERROR_FETCH_REMOTE": "Fallou a obtención da información do remoto"
+  "ERROR_FETCH_REMOTE": "Fallou a obtención da información do remoto",
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vota polas funcionalidades que queres ver a continuación!"
 });

@@ -1341,5 +1341,6 @@ define({
   "ERROR_PUSHING_OPERATION": "Gönderme işlemi başarısız oldu",
   "ERROR_NO_REMOTE_SELECTED": "{0} için uzak depo seçilmedi!",
   "ERROR_BRANCH_LIST": "Dal listesi alınamadı",
-  "ERROR_FETCH_REMOTE": "Uzak depo bilgileri alınamadı"
+  "ERROR_FETCH_REMOTE": "Uzak depo bilgileri alınamadı",
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Gelecekte görmek istediğiniz özellikler için oy verin!"
 });

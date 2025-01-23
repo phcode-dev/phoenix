@@ -1341,5 +1341,6 @@ define({
   "ERROR_PUSHING_OPERATION": "Pushing operation failed",
   "ERROR_NO_REMOTE_SELECTED": "No remote has been selected for {0}!",
   "ERROR_BRANCH_LIST": "Getting the branch list failed",
-  "ERROR_FETCH_REMOTE": "Fetching remote information failed"
+  "ERROR_FETCH_REMOTE": "Fetching remote information failed",
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vote for the features you'd like to see next!"
 });

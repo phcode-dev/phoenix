@@ -1341,5 +1341,6 @@ define({
   "ERROR_PUSHING_OPERATION": "پُش آپریشن ناکام ہو گیا۔",
   "ERROR_NO_REMOTE_SELECTED": "{0} کے لیے کوئی ریموٹ منتخب نہیں کیا گیا ہے۔",
   "ERROR_BRANCH_LIST": "برانچ لسٹ حاصل کرنے میں ناکامی۔",
-  "ERROR_FETCH_REMOTE": "ریموٹ معلومات حاصل کرنے میں ناکامی۔"
+  "ERROR_FETCH_REMOTE": "ریموٹ معلومات حاصل کرنے میں ناکامی۔",
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "اپنی پسندیدہ خصوصیات کے لیے ووٹ دیں!"
 });

@@ -1341,5 +1341,6 @@ define({
   "ERROR_PUSHING_OPERATION": "Nosūtīšanas operācija neizdevās",
   "ERROR_NO_REMOTE_SELECTED": "{0} nav izvēlēta attālā krātuve!",
   "ERROR_BRANCH_LIST": "Neizdevās iegūt zaru sarakstu",
-  "ERROR_FETCH_REMOTE": "Neizdevās iegūt informāciju par attālo krātuvi"
+  "ERROR_FETCH_REMOTE": "Neizdevās iegūt informāciju par attālo krātuvi",
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Nobalsot par funkcijām, kuras vēlaties redzēt nākamreiz!"
 });

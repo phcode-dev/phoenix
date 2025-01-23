@@ -1341,5 +1341,6 @@ define({
   "ERROR_PUSHING_OPERATION": "Push-Vorgang fehlgeschlagen",
   "ERROR_NO_REMOTE_SELECTED": "Für {0} wurde kein Remote ausgewählt!",
   "ERROR_BRANCH_LIST": "Abrufen der Branch-Liste fehlgeschlagen",
-  "ERROR_FETCH_REMOTE": "Abrufen der Remote-Informationen fehlgeschlagen"
+  "ERROR_FETCH_REMOTE": "Abrufen der Remote-Informationen fehlgeschlagen",
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Stimmen Sie für die Funktionen ab, die Sie als Nächstes sehen möchten!"
 });

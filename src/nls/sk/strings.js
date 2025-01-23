@@ -1341,5 +1341,6 @@ define({
   "ERROR_PUSHING_OPERATION": "Operácia odoslania zlyhala",
   "ERROR_NO_REMOTE_SELECTED": "Pre {0} nebol vybraný žiadny vzdialený repozitár!",
   "ERROR_BRANCH_LIST": "Získanie zoznamu vetiev zlyhalo",
-  "ERROR_FETCH_REMOTE": "Získanie informácií o vzdialenom repozitári zlyhalo"
+  "ERROR_FETCH_REMOTE": "Získanie informácií o vzdialenom repozitári zlyhalo",
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Hlasujte za funkcie, ktoré chcete vidieť v ďalšej verzii!"
 });

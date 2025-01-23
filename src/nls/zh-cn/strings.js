@@ -1341,5 +1341,6 @@ define({
   "ERROR_PUSHING_OPERATION": "推送操作失败",
   "ERROR_NO_REMOTE_SELECTED": "未为 {0} 选择远程仓库！",
   "ERROR_BRANCH_LIST": "获取分支列表失败",
-  "ERROR_FETCH_REMOTE": "获取远程仓库信息失败"
+  "ERROR_FETCH_REMOTE": "获取远程仓库信息失败",
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "为您希望看到的下一个功能投票！"
 });

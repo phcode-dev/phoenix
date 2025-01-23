@@ -1341,5 +1341,6 @@ define({
   "ERROR_PUSHING_OPERATION": "Push-bewerking mislukt",
   "ERROR_NO_REMOTE_SELECTED": "Er is geen remote geselecteerd voor {0}!",
   "ERROR_BRANCH_LIST": "Ophalen van branch-lijst mislukt",
-  "ERROR_FETCH_REMOTE": "Ophalen van remote-informatie mislukt"
+  "ERROR_FETCH_REMOTE": "Ophalen van remote-informatie mislukt",
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Stem op de functies die u graag wilt zien!"
 });

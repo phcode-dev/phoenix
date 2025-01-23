@@ -1341,5 +1341,6 @@ define({
   "ERROR_PUSHING_OPERATION": "Operasi push gagal",
   "ERROR_NO_REMOTE_SELECTED": "Tidak ada remote yang dipilih untuk {0}!",
   "ERROR_BRANCH_LIST": "Gagal mendapatkan daftar branch",
-  "ERROR_FETCH_REMOTE": "Gagal mengambil informasi remote"
+  "ERROR_FETCH_REMOTE": "Gagal mengambil informasi remote",
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Pilih fitur yang ingin Anda lihat selanjutnya!"
 });

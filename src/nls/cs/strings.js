@@ -1341,5 +1341,6 @@ define({
   "ERROR_PUSHING_OPERATION": "Operace odeslání selhala",
   "ERROR_NO_REMOTE_SELECTED": "Nebyl vybrán žádný vzdálený repozitář pro {0}!",
   "ERROR_BRANCH_LIST": "Získání seznamu větví selhalo",
-  "ERROR_FETCH_REMOTE": "Získání informací o vzdáleném repozitáři selhalo"
+  "ERROR_FETCH_REMOTE": "Získání informací o vzdáleném repozitáři selhalo",
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Hlasujte pro funkce, které chcete vidět v další verzi!"
 });

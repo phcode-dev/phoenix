@@ -1341,5 +1341,6 @@ define({
   "ERROR_PUSHING_OPERATION": "Operacija slanja (push) nije uspjela",
   "ERROR_NO_REMOTE_SELECTED": "Nije odabran udaljeni repozitorij za {0}!",
   "ERROR_BRANCH_LIST": "Dohvaćanje popisa grana nije uspjelo",
-  "ERROR_FETCH_REMOTE": "Dohvaćanje informacija o udaljenom repozitoriju nije uspjelo"
+  "ERROR_FETCH_REMOTE": "Dohvaćanje informacija o udaljenom repozitoriju nije uspjelo",
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Glasajte za značajke koje želite vidjeti sljedeće!"
 });

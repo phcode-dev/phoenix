@@ -1341,5 +1341,6 @@ define({
   "ERROR_PUSHING_OPERATION": "Pushausoperaatio epäonnistui",
   "ERROR_NO_REMOTE_SELECTED": "Kohteelle {0} ei ole valittu etäyhteyttä!",
   "ERROR_BRANCH_LIST": "Haarojen listan haku epäonnistui",
-  "ERROR_FETCH_REMOTE": "Etäyhteyden tietojen haku epäonnistui"
+  "ERROR_FETCH_REMOTE": "Etäyhteyden tietojen haku epäonnistui",
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Äänestä ominaisuuksia, jotka haluat nähdä seuraavaksi!"
 });
