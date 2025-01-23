@@ -1126,8 +1126,15 @@ img {
     opacity: 0;
     font-size: 13px;
     font-weight: 500;
+    max-width: 300px;
     font-style: normal;
     font-stretch: normal;
+    a {
+        color: #333;
+    }
+    a:hover {
+        color: white;
+    }
 }
 .notification-ui-hidden {
     opacity: 0;
