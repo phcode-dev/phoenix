@@ -1341,5 +1341,6 @@ define({
   "ERROR_PUSHING_OPERATION": "Operațiunea de împingere (push) a eșuat",
   "ERROR_NO_REMOTE_SELECTED": "Niciun depozit remote nu a fost selectat pentru {0}!",
   "ERROR_BRANCH_LIST": "Obținerea listei de branch-uri a eșuat",
-  "ERROR_FETCH_REMOTE": "Obținerea informațiilor despre depozitul remote a eșuat"
+  "ERROR_FETCH_REMOTE": "Obținerea informațiilor despre depozitul remote a eșuat",
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Votează pentru funcționalitățile pe care dorești să le vezi în continuare!"
 });

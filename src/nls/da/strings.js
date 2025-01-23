@@ -1341,5 +1341,6 @@ define({
   "ERROR_PUSHING_OPERATION": "Push-handling mislykkedes",
   "ERROR_NO_REMOTE_SELECTED": "Ingen remote er valgt for {0}!",
   "ERROR_BRANCH_LIST": "Det lykkedes ikke at hente grenliste",
-  "ERROR_FETCH_REMOTE": "Hentning af remote-information mislykkedes"
+  "ERROR_FETCH_REMOTE": "Hentning af remote-information mislykkedes",
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Stem på de funktioner, du gerne vil se!"
 });

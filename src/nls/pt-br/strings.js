@@ -1341,5 +1341,6 @@ define({
   "ERROR_PUSHING_OPERATION": "Falha na operação de push",
   "ERROR_NO_REMOTE_SELECTED": "Nenhum remoto foi selecionado para {0}!",
   "ERROR_BRANCH_LIST": "Falha ao obter a lista de branches",
-  "ERROR_FETCH_REMOTE": "Falha ao buscar informações do remoto"
+  "ERROR_FETCH_REMOTE": "Falha ao buscar informações do remoto",
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vote nos recursos que você quer ver em seguida!"
 });

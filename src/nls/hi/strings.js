@@ -1341,5 +1341,6 @@ define({
   "ERROR_PUSHING_OPERATION": "पुश करने में विफलता",
   "ERROR_NO_REMOTE_SELECTED": "{0} के लिए कोई रिमोट चयनित नहीं है!",
   "ERROR_BRANCH_LIST": "शाखा सूची प्राप्त करने में विफलता",
-  "ERROR_FETCH_REMOTE": "रिमोट जानकारी प्राप्त करने में विफलता"
+  "ERROR_FETCH_REMOTE": "रिमोट जानकारी प्राप्त करने में विफलता",
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "उन विशेषताओं के लिए वोट करें जिन्हें आप आगे देखना चाहते हैं!"
 });

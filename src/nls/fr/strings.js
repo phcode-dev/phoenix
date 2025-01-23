@@ -1341,5 +1341,6 @@ define({
   "ERROR_PUSHING_OPERATION": "Échec de l'opération d'envoi (push)",
   "ERROR_NO_REMOTE_SELECTED": "Aucun dépôt distant n'a été sélectionné pour {0} !",
   "ERROR_BRANCH_LIST": "Échec de la récupération de la liste des branches",
-  "ERROR_FETCH_REMOTE": "Échec de la récupération des informations du dépôt distant"
+  "ERROR_FETCH_REMOTE": "Échec de la récupération des informations du dépôt distant",
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Votez pour les fonctionnalités que vous souhaitez voir apparaître !"
 });

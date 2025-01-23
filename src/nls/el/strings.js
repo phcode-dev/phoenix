@@ -1341,5 +1341,6 @@ define({
   "ERROR_PUSHING_OPERATION": "Αποτυχία λειτουργίας ώθησης (push)",
   "ERROR_NO_REMOTE_SELECTED": "Δεν έχει επιλεγεί απομακρυσμένο για το {0}!",
   "ERROR_BRANCH_LIST": "Αποτυχία λήψης λίστας κλάδων",
-  "ERROR_FETCH_REMOTE": "Αποτυχία λήψης πληροφοριών απομακρυσμένου"
+  "ERROR_FETCH_REMOTE": "Αποτυχία λήψης πληροφοριών απομακρυσμένου",
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Ψηφίστε για τις λειτουργίες που θέλετε να δείτε στη συνέχεια!"
 });

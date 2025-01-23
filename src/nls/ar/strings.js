@@ -1341,5 +1341,6 @@ define({
   "ERROR_PUSHING_OPERATION": "فشل عملية الدفع",
   "ERROR_NO_REMOTE_SELECTED": "لم يتم تحديد جهاز تحكم عن بعد لـ {0}!",
   "ERROR_BRANCH_LIST": "فشل عملية الحصول على قائمة الفروع",
-  "ERROR_FETCH_REMOTE": "فشل جلب معلومات جهاز التحكم عن بعد"
+  "ERROR_FETCH_REMOTE": "فشل جلب معلومات جهاز التحكم عن بعد",
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "صوت للميزات التي ترغب برؤيتها تالياً!"
 });

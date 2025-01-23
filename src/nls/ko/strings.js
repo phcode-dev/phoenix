@@ -1341,5 +1341,6 @@ define({
   "ERROR_PUSHING_OPERATION": "푸시 작업 실패",
   "ERROR_NO_REMOTE_SELECTED": "{0}에 대해 선택된 리모트가 없습니다!",
   "ERROR_BRANCH_LIST": "브랜치 목록 가져오기 실패",
-  "ERROR_FETCH_REMOTE": "리모트 정보 가져오기 실패"
+  "ERROR_FETCH_REMOTE": "리모트 정보 가져오기 실패",
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "다음에 보고 싶은 기능에 투표하세요!"
 });

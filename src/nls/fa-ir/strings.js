@@ -1341,5 +1341,6 @@ define({
   "ERROR_PUSHING_OPERATION": "عملیات پوش (Push) با شکست مواجه شد",
   "ERROR_NO_REMOTE_SELECTED": "هیچ ریموتی برای {0} انتخاب نشده است!",
   "ERROR_BRANCH_LIST": "دریافت لیست شاخه‌ها با شکست مواجه شد",
-  "ERROR_FETCH_REMOTE": "دریافت اطلاعات ریموت با شکست مواجه شد"
+  "ERROR_FETCH_REMOTE": "دریافت اطلاعات ریموت با شکست مواجه شد",
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "برای قابلیت‌هایی که می‌خواهید در آینده ببینید، رأی دهید!"
 });

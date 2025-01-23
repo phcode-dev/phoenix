@@ -1341,5 +1341,6 @@ define({
   "ERROR_PUSHING_OPERATION": "Operacja wysyłania nie powiodła się",
   "ERROR_NO_REMOTE_SELECTED": "Nie wybrano zdalnego repozytorium dla {0}!",
   "ERROR_BRANCH_LIST": "Pobieranie listy gałęzi nie powiodło się",
-  "ERROR_FETCH_REMOTE": "Pobieranie informacji o zdalnym repozytorium nie powiodło się"
+  "ERROR_FETCH_REMOTE": "Pobieranie informacji o zdalnym repozytorium nie powiodło się",
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Zagłosuj na funkcje, które chcesz zobaczyć w przyszłości!"
 });

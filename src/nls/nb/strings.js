@@ -1341,5 +1341,6 @@ define({
   "ERROR_PUSHING_OPERATION": "Pushing-operasjon mislyktes",
   "ERROR_NO_REMOTE_SELECTED": "Ingen eksternt repositorium er valgt for {0}!",
   "ERROR_BRANCH_LIST": "Kunne ikke hente grenliste",
-  "ERROR_FETCH_REMOTE": "Kunne ikke hente informasjon om eksternt repositorium"
+  "ERROR_FETCH_REMOTE": "Kunne ikke hente informasjon om eksternt repositorium",
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Stem på funksjonene du ønsker å se neste!"
 });

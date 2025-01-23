@@ -1341,5 +1341,6 @@ define({
   "ERROR_PUSHING_OPERATION": "Operazione di push non riuscita",
   "ERROR_NO_REMOTE_SELECTED": "Nessun remote selezionato per {0}!",
   "ERROR_BRANCH_LIST": "Impossibile ottenere l'elenco dei branch",
-  "ERROR_FETCH_REMOTE": "Recupero delle informazioni del remote non riuscito"
+  "ERROR_FETCH_REMOTE": "Recupero delle informazioni del remote non riuscito",
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vota per le funzionalità che desideri vedere in futuro!"
 });

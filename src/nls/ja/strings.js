@@ -1341,5 +1341,6 @@ define({
   "ERROR_PUSHING_OPERATION": "プッシュ操作に失敗しました。",
   "ERROR_NO_REMOTE_SELECTED": "{0} に対してリモートが選択されていません！",
   "ERROR_BRANCH_LIST": "ブランチ一覧の取得に失敗しました。",
-  "ERROR_FETCH_REMOTE": "リモート情報の取得に失敗しました。"
+  "ERROR_FETCH_REMOTE": "リモート情報の取得に失敗しました。",
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "次に実装してほしい機能に投票してください！"
 });

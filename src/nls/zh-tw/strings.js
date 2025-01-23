@@ -1341,5 +1341,6 @@ define({
   "ERROR_PUSHING_OPERATION": "推送操作失敗",
   "ERROR_NO_REMOTE_SELECTED": "{0} 尚未選取任何遠端！",
   "ERROR_BRANCH_LIST": "取得分支列表失敗",
-  "ERROR_FETCH_REMOTE": "擷取遠端資訊失敗"
+  "ERROR_FETCH_REMOTE": "擷取遠端資訊失敗",
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "投票選出您希望看到的下個功能！"
 });

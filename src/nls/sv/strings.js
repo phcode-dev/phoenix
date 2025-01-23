@@ -1341,5 +1341,6 @@ define({
   "ERROR_PUSHING_OPERATION": "Push-åtgärden misslyckades",
   "ERROR_NO_REMOTE_SELECTED": "Ingen fjärranslutning har valts för {0}!",
   "ERROR_BRANCH_LIST": "Det gick inte att hämta grenlistan",
-  "ERROR_FETCH_REMOTE": "Det gick inte att hämta information om fjärranslutning"
+  "ERROR_FETCH_REMOTE": "Det gick inte att hämta information om fjärranslutning",
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Rösta på funktionerna du vill se härnäst!"
 });

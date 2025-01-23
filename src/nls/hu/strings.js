@@ -1341,5 +1341,6 @@ define({
   "ERROR_PUSHING_OPERATION": "Küldési művelet sikertelen",
   "ERROR_NO_REMOTE_SELECTED": "Nincs kiválasztva távoli adattár a(z) {0} számára!",
   "ERROR_BRANCH_LIST": "Ágak listájának lekérése sikertelen",
-  "ERROR_FETCH_REMOTE": "Távoli adattár információinak lekérése sikertelen"
+  "ERROR_FETCH_REMOTE": "Távoli adattár információinak lekérése sikertelen",
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Szavazzon azokra a funkciókra, amelyeket a jövőben látni szeretne!"
 });

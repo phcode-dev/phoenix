@@ -1341,5 +1341,6 @@ define({
   "ERROR_PUSHING_OPERATION": "Error en la operación de subida.",
   "ERROR_NO_REMOTE_SELECTED": "No se ha seleccionado ningún remoto para {0}.",
   "ERROR_BRANCH_LIST": "Error al obtener la lista de ramas.",
-  "ERROR_FETCH_REMOTE": "Error al obtener la información del remoto."
+  "ERROR_FETCH_REMOTE": "Error al obtener la información del remoto.",
+  "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "¡Vota por las funciones que quieres ver próximamente!"
 });
