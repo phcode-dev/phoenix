@@ -878,7 +878,7 @@ define({
     "HEALTH_DATA_NOTIFICATION": "Health Report Preferences",
     "HEALTH_FIRST_POPUP_TITLE": "Privacy Notice",
     "HEALTH_DATA_DO_TRACK": "Share anonymous information on how I use {APP_NAME}",
-    "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>does not collect or process any personally identifiable information</strong>, but <strong>collects anonymous usage statistics</strong> to guard your privacy. Anonymous data is exempt from GDPR/CCPA notification requirements, but we believe you need to have a choice to opt out of anonymous data collection as well.<br><br> You can see your data or <strong>choose not to share any anonymous data</strong> by selecting <strong>Help > Health Report</strong>. These <strong>anonymous</strong> app usage statistics and error reports helps prioritize features, find bugs, and spot usability issues for improving your experience with {APP_NAME}. Without this data, we would not know what features it is worth building for you! <br><br>",
+    "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>does not collect or process any personally identifiable information</strong>, but <strong>collects anonymous usage statistics</strong> to guard your privacy. Anonymous data is exempt from GDPR/CCPA notification requirements, but we believe you need to have a choice to opt out of anonymous data collection as well.<br><br> You can see your data or <strong>choose not to share any anonymous data</strong> by selecting <strong>Help > Health Report</strong>. These <strong>anonymous</strong> app usage statistics and error reports helps prioritize features, find bugs, and spot usability issues for improving your experience with {APP_NAME}. Without this data, we would not know what features it is worth building for you! <br>",
     "HEALTH_DATA_PREVIEW": "{APP_NAME} Health Report",
     "HEALTH_DATA_PREVIEW_INTRO": "<p>{APP_NAME} <strong>does not collect or process any personally identifiable information</strong>, but <strong>collects anonymous usage statistics</strong> to guard your privacy. These <strong>anonymous</strong> app usage statistics and error reports helps prioritize features, find bugs, and spot usability issues for improving your experience with {APP_NAME}.</p> <p>Below is a preview of the data that will be sent in your next Health Report <em>if</em> it is enabled. (Also see developer console for error logs marked 'Caught Critical error'.)</p>",
 
@@ -1218,9 +1218,9 @@ define({
     "PREVIEW": "Preview",
     "BUILD_WEBSITE": "Build Website",
     "VIEW_MORE": "View More...",
-    "NEW_PROJECT_NOTIFICATION": "Click this icon to open the `New Project` window again.</br> See Recent Projects, Open Folder or start projects from templates.</br> <img src=\"styles/images/new_project.png\">  <br/> <a href='#' style='float:right;'>ok</a>",
-    "BEAUTIFY_CODE_NOTIFICATION": "Click here or press <b>`{0}`</b> to Beautify code. </br> <img src=\"styles/images/beautify.gif\">  <br/> <a href='#' style='float:right;'>ok</a>",
-    "DEFAULT_PROJECT_NOTIFICATION": "Click here to open the <br/><b>default project</b> in phoenix. </br> <a href='#' style='float:right;'>ok</a>",
+    "NEW_PROJECT_NOTIFICATION": "Click this icon to open the `Start Project` window again.</br> See Recent Projects, Open Folder or start projects from templates.</br> <img src=\"styles/images/new_project.png\">",
+    "BEAUTIFY_CODE_NOTIFICATION": "Click here or press <b>`{0}`</b> to beautify code. </br> <img src=\"styles/images/beautify.gif\">",
+    "DEFAULT_PROJECT_NOTIFICATION": "Click here to open the <br/><b>default project</b> in {APP_NAME}. </br> <a href='#' style='float:right;'>ok</a>",
     "DIRECTORY_REPLACE_MESSAGE": "The selected folder <span class='dialog-filename'>{0}</span> is not empty. Are you sure you want to replace the folder contents with the project?",
     "DEFAULT_PROJECT_HTML_CLICK_HERE": "Click here to locate this &lt;span&gt; in the HTML file",
     "BUILD_WEBSITE_SECTION": "Build Website",
@@ -1529,6 +1529,8 @@ define({
     "ERROR_NO_REMOTE_SELECTED": "No remote has been selected for {0}!",
     "ERROR_BRANCH_LIST": "Getting branch list failed",
     "ERROR_FETCH_REMOTE": "Fetching remote information failed",
+    "GIT_TOAST_TITLE": "Explore Git Features in Phoenix Code",
+    "GIT_TOAST_MESSAGE": "Click the Git panel icon to manage your repository. Easily commit, push, pull, and view your project history—all in one place.<br><a href='https://docs.phcode.dev/docs/Features/git'>Learn more about the Git panel →</a>",
 
     // surveys
     "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vote for the features you want to see next!"

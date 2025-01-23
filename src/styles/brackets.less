@@ -3215,35 +3215,35 @@ label input {
     color: black; // text color
 }
 
-.notification-popup-container.style-danger {
+.notification-ui-tooltip.style-danger, .notification-ui-arrow.style-danger, .notification-popup-container.style-danger {
     background: var(--bc-toast-danger-bg-color);
     a {
         color: white;
         cursor: pointer;
     }
 }
-.notification-popup-container.style-error {
+.notification-ui-tooltip.style-error, .notification-ui-arrow.style-error, .notification-popup-container.style-error {
     background: var(--bc-toast-error-bg-color);
     a {
         color: white;
         cursor: pointer;
     }
 }
-.notification-popup-container.style-info {
+.notification-ui-tooltip.style-info, .notification-ui-arrow.style-info, .notification-popup-container.style-info {
     background: var(--bc-toast-info-bg-color);
     a {
         color: blue;
         cursor: pointer;
     }
 }
-.notification-popup-container.style-success {
+.notification-ui-tooltip.style-success, .notification-ui-arrow.style-success, .notification-popup-container.style-success {
     background: var(--bc-toast-success-bg-color);
     a {
         color: darkblue;
         cursor: pointer;
     }
 }
-.notification-popup-container.style-warning {
+.notification-ui-tooltip.style-warning, .notification-ui-arrow.style-warning, .notification-popup-container.style-warning {
     background: var(--bc-toast-warning-bg-color);
     a {
         color: white;
@@ -3273,6 +3273,10 @@ label input {
     top: 0;
     right: 8px;
     cursor: pointer;
+    color: @notification-text;
+}
+.notification-popup-close-button.arrow {
+    top: 8px;
 }
 .notification-popup-close-button:hover {
     color: white;
@@ -3281,10 +3285,16 @@ label input {
 .notification-dialog-title {
     font-size: 16px;
     font-weight: bold;
+    padding-right: 25px;
 }
 
 .notification-dialog-content a {
-    color: #00ccff;
+    a {
+        color: @bc-text-beige;
+    }
+    a:hover {
+        color: @bc-text-alt;
+    }
 }
 
 .github-stars-button {
