@@ -422,6 +422,10 @@ define(function (require, exports, module) {
      * @return {string} Path of containing folder (including trailing "/"); or "" if path was the root
      */
     function getParentPath(fullPath) {
+        // Guard clause: ensure fullPath is a non-empty string
+        if (typeof fullPath !== "string" || !fullPath) {
+            return "";
+        }
         if (fullPath === "/") {
             return "";
         }
