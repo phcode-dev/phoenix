@@ -28,6 +28,7 @@ define(function (require, exports) {
         });
     }
 
+    // this should never reject for now, just show error message and bail out
     exports.collectInfo = function (config) {
         return Git.getCurrentUpstreamBranch().then(function (upstreamBranch) {
             config.currentTrackingBranch = upstreamBranch;

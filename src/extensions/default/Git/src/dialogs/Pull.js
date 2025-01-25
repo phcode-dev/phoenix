@@ -1,16 +1,16 @@
 define(function (require, exports) {
 
     // Brackets modules
-    var Dialogs = brackets.getModule("widgets/Dialogs"),
+    const Dialogs = brackets.getModule("widgets/Dialogs"),
         Mustache = brackets.getModule("thirdparty/mustache/mustache");
 
     // Local modules
-    var Preferences     = require("src/Preferences"),
+    const Preferences     = require("src/Preferences"),
         RemoteCommon    = require("src/dialogs/RemoteCommon"),
         Strings         = brackets.getModule("strings");
 
     // Templates
-    var template            = require("text!src/dialogs/templates/pull-dialog.html"),
+    const template            = require("text!src/dialogs/templates/pull-dialog.html"),
         remotesTemplate     = require("text!src/dialogs/templates/remotes-template.html");
 
     // Implementation
@@ -54,6 +54,7 @@ define(function (require, exports) {
     function show(pullConfig) {
         return new Promise((resolve, reject) => {
             pullConfig.pull = true;
+            // collectInfo never rejects
             RemoteCommon.collectInfo(pullConfig).then(()=>{
                 _show(pullConfig, resolve, reject);
             });
