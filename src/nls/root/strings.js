@@ -1529,6 +1529,7 @@ define({
     "ERROR_NO_REMOTE_SELECTED": "No remote has been selected for {0}!",
     "ERROR_BRANCH_LIST": "Getting branch list failed",
     "ERROR_FETCH_REMOTE": "Fetching remote information failed",
+    "ERROR_PREPARING_COMMIT_DIALOG": "Preparing commit dialog failed",
     "GIT_TOAST_TITLE": "Explore Git Features in Phoenix Code",
     "GIT_TOAST_MESSAGE": "Click the Git panel icon to manage your repository. Easily commit, push, pull, and view your project history—all in one place.<br><a href='https://docs.phcode.dev/docs/Features/git'>Learn more about the Git panel →</a>",
 

@@ -742,7 +742,7 @@ define(function (require, exports) {
         }
 
         p.catch(function (err) {
-            ErrorHandler.showError(err, "Preparing commit dialog failed");
+            ErrorHandler.showError(err, Strings.ERROR_PREPARING_COMMIT_DIALOG);
         }).finally(function () {
             Utils.unsetLoading($gitPanel.find(".git-commit"));
         });
@@ -956,7 +956,12 @@ define(function (require, exports) {
                 return Git.resetIndex();
             })
             .then(function () {
-                return handleGitCommit(lastCommitMessage[ProjectManager.getProjectRoot().fullPath], false, COMMIT_MODE.CURRENT);
+                return handleGitCommit(lastCommitMessage[ProjectManager.getProjectRoot().fullPath],
+                    false, COMMIT_MODE.CURRENT);
+            }).catch((err)=>{
+                console.error(err);
+                // rethrowing with stripped git error details as it may have sensitive info
+                throw new Error("Error commitCurrentFile in git panel.js. this should not have happened here.");
             });
     }
 
@@ -967,7 +972,12 @@ define(function (require, exports) {
                 return Git.resetIndex();
             })
             .then(function () {
-                return handleGitCommit(lastCommitMessage[ProjectManager.getProjectRoot().fullPath], false, COMMIT_MODE.ALL);
+                return handleGitCommit(lastCommitMessage[ProjectManager.getProjectRoot().fullPath],
+                    false, COMMIT_MODE.ALL);
+            }).catch((err)=>{
+                console.error(err);
+                // rethrowing with stripped git error details as it may have sensitive info
+                throw new Error("Error commitAllFiles in git panel.js. this should not have happened here.");
             });
     }
 
@@ -1232,13 +1242,20 @@ define(function (require, exports) {
             .on("click", ".check-all", function () {
                 if ($(this).is(":checked")) {
                     return Git.stageAll().then(function () {
-                        Git.status();
-                    });
-                } else {
-                    return Git.resetIndex().then(function () {
-                        Git.status();
+                        return Git.status();
+                    }).catch((err)=>{
+                        console.error(err);
+                        // rethrowing with stripped git error details as it may have sensitive info
+                        throw new Error("Error stage all by checkbox in git panel.js. this should not have happened");
                     });
                 }
+                return Git.resetIndex().then(function () {
+                    return Git.status();
+                }).catch((err)=>{
+                    console.error(err);
+                    // rethrowing with stripped git error details as it may have sensitive info
+                    throw new Error("Error unstage all by checkbox in git panel.js. this should not have happened");
+                });
             })
             .on("click", ".git-refresh", EventEmitter.getEmitter(Events.REFRESH_ALL, ["panel", "refreshBtn"]))
             .on("click", ".git-commit", EventEmitter.getEmitter(Events.HANDLE_GIT_COMMIT))
