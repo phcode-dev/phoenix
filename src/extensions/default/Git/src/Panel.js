@@ -1414,6 +1414,7 @@ define(function (require, exports) {
                 }
             );
         }
+        Metrics.countEvent(Metrics.EVENT_TYPE.GIT, 'project', "enabled");
         // Add info from Git to panel
         Git.getConfig("user.name").then(function (currentUserName) {
             EventEmitter.emit(Events.GIT_USERNAME_CHANGED, currentUserName);
