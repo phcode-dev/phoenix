@@ -18,7 +18,7 @@
  *
  */
 
-/*globals Bugsnag, AppConfig, Phoenix*/
+/*globals Bugsnag, AppConfig*/
 // window.AppConfig comes from appConfig.js built by gulp scripts at build time
 
 (function(){
@@ -32,7 +32,7 @@
         "https://dev.phcode.dev", // dev url
         "https://staging.phcode.dev" // staging url
     ];
-    let isBugsnagLoggableURL = false;
+    let isBugsnagLoggableURL = false; // to test bugsnag in dev builds, set this to true
     for(let loggableURL of loggableURLS){
         if(window.location.href.startsWith(loggableURL)){
             isBugsnagLoggableURL = true;
