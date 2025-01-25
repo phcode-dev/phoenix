@@ -1038,6 +1038,7 @@ define({
   "VIEW_MORE": "Daha Fazla...",
   "NEW_PROJECT_NOTIFICATION": "Bu simgeye tıklayarak `Proje Başlat` penceresini tekrar açın.</br> Son Projelere bakın, Klasör Açın veya şablonlardan projeler başlatın.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Kodu güzelleştirmek için buraya tıklayın veya <b>`{0}`</b> tuşuna basın. </br> <img src=\"styles/images/beautify.gif\">",
+  "DEFAULT_PROJECT_NOTIFICATION": "Hızlı başlangıç için {APP_NAME} uygulamasında <b>Varsayılan Proje</b>'yi açın (not defteri olarak idealdir).</br></br>Veya, aşağıdaki <strong>Klasör Aç</strong> simgesiyle bilgisayarınızdan bir klasör açın.<br><a href='#' style='float:right;'>tamam</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Seçilen klasör <span class='dialog-filename'>{0}</span> boş değil. Klasör içeriğini proje ile değiştirmek istediğinizden emin misiniz?",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "&lt;span&gt; öğesinin HTML dosyasındaki konumunu bulmak için buraya tıklayın",
   "BUILD_WEBSITE_SECTION": "Web Sitesi Oluştur",
@@ -1344,5 +1345,5 @@ define({
   "GIT_TOAST_TITLE": "Phoenix Code'da Git Özelliklerini Keşfedin",
   "GIT_TOAST_MESSAGE": "Deponuzu yönetmek için Git paneli simgesine tıklayın. Proje geçmişinizi kolayca işleyin, gönderin, çekin ve görüntüleyin—hepsi tek bir yerde.<br><a href='https://docs.phcode.dev/docs/Features/git'>Git paneli hakkında daha fazla bilgi edinin →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Gelecekte görmek istediğiniz özellikler için oy verin!",
-  "DEFAULT_PROJECT_NOTIFICATION": "Hızlı başlangıç için {APP_NAME} uygulamasında <b>Varsayılan Proje</b>'yi açın (not defteri olarak idealdir).</br></br>Veya, aşağıdaki <strong>Klasör Aç</strong> simgesiyle bilgisayarınızdan bir klasör açın.<br><a href='#' style='float:right;'>tamam</a>"
+  "ERROR_PREPARING_COMMIT_DIALOG": "Kaydetme iletişim kutusu hazırlanamadı"
 });

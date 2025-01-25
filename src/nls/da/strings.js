@@ -1038,6 +1038,7 @@ define({
   "VIEW_MORE": "Se mere...",
   "NEW_PROJECT_NOTIFICATION": "Klik på dette ikon for at åbne vinduet `Start projekt` igen.</br> Se Seneste Projekter, Åbn Mappe eller start projekter fra skabeloner.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Klik her eller tryk på <b>`{0}`</b> for at formattere kode. </br> <img src=\"styles/images/beautify.gif\">",
+  "DEFAULT_PROJECT_NOTIFICATION": "Åbn <b>Standardprojektet</b> i {APP_NAME} for at komme hurtigt i gang (ideelt som et kladde).</br></br>Eller åbn en mappe fra din computer med ikonet <strong>Åbn mappe</strong> nedenfor.<br><a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Den valgte mappe <span class='dialog-filename'>{0}</span> er ikke tom. Er du sikker på, at du vil erstatte mappeindholdet med projektet?",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "Klik her for at finde denne &lt;span&gt; i HTML-filen",
   "BUILD_WEBSITE_SECTION": "Opbyg website",
@@ -1344,5 +1345,5 @@ define({
   "GIT_TOAST_TITLE": "Udforsk Git-funktioner i Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klik på Git-panelikonet for at administrere dit repository. Commit, push, pull og se din projekthistorik nemt – alt sammen på ét sted.<br><a href='https://docs.phcode.dev/docs/Features/git'>Læs mere om Git-panelet →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Stem på de funktioner, du gerne vil se!",
-  "DEFAULT_PROJECT_NOTIFICATION": "Åbn <b>Standardprojektet</b> i {APP_NAME} for at komme hurtigt i gang (ideelt som et kladde).</br></br>Eller åbn en mappe fra din computer med ikonet <strong>Åbn mappe</strong> nedenfor.<br><a href='#' style='float:right;'>ok</a>"
+  "ERROR_PREPARING_COMMIT_DIALOG": "Forberedelse af commit-dialog mislykkedes"
 });

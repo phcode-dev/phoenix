@@ -1038,6 +1038,7 @@ define({
   "VIEW_MORE": "Skatīt vairāk...",
   "NEW_PROJECT_NOTIFICATION": "Noklikšķiniet uz šīs ikonas, lai vēlreiz atvērtu logu `Sākt projektu`.</br> Skatiet nesenus projektus, atveriet mapi vai sāciet projektus no veidnēm.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Noklikšķiniet šeit vai nospiediet <b>`{0}`</b>, lai formatētu kodu. </br> <img src=\"styles/images/beautify.gif\">",
+  "DEFAULT_PROJECT_NOTIFICATION": "Atveriet <b>Noklusējuma projektu</b> programmā {APP_NAME}, lai ātri sāktu darbu (ideāli piemērots kā piekrastes blociņš).</br></br>Vai arī atveriet mapi no sava datora, izmantojot zemāk redzamo ikonu <strong>Atvērt mapi</strong>.<br><a href='#' style='float:right;'>labi</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Izvēlētā mape <span class='dialog-filename'>{0}</span> nav tukša. Vai tiešām vēlaties aizstāt mapes saturu ar projektu?",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "Noklikšķiniet šeit, lai atrastu šo &lt;span&gt; HTML failā",
   "BUILD_WEBSITE_SECTION": "Izveidot vietni",
@@ -1344,5 +1345,5 @@ define({
   "GIT_TOAST_TITLE": "Izpētiet Git funkcijas Phoenix Code",
   "GIT_TOAST_MESSAGE": "Noklikšķiniet uz Git paneļa ikonas, lai pārvaldītu savu repozitoriju. Ērti veiciet commit, push, pull un skatiet sava projekta vēsturi — viss vienā vietā.<br><a href='https://docs.phcode.dev/docs/Features/git'>Uzziniet vairāk par Git paneli →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Nobalsot par funkcijām, kuras vēlaties redzēt nākamreiz!",
-  "DEFAULT_PROJECT_NOTIFICATION": "Atveriet <b>Noklusējuma projektu</b> programmā {APP_NAME}, lai ātri sāktu darbu (ideāli piemērots kā piekrastes blociņš).</br></br>Vai arī atveriet mapi no sava datora, izmantojot zemāk redzamo ikonu <strong>Atvērt mapi</strong>.<br><a href='#' style='float:right;'>labi</a>"
+  "ERROR_PREPARING_COMMIT_DIALOG": "Neizdevās sagatavot izmaiņu apstiprināšanas dialogu"
 });

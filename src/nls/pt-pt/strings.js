@@ -1038,6 +1038,7 @@ define({
   "VIEW_MORE": "Ver Mais...",
   "NEW_PROJECT_NOTIFICATION": "Clique neste ícone para abrir novamente a janela `Iniciar Projeto`.</br> Veja Projetos Recentes, Abrir Pasta ou inicie projetos a partir de modelos.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Clique aqui ou pressione <b>`{0}`</b> para embelezar o código. </br> <img src=\"styles/images/beautify.gif\">",
+  "DEFAULT_PROJECT_NOTIFICATION": "Abra o <b>Projeto Padrão</b> no {APP_NAME} para começar rapidamente (ideal como um bloco de notas).</br></br>Ou abra uma pasta do seu computador com o ícone <strong>Abrir Pasta</strong> abaixo.<br><a href='#' style='float:right;'>OK</a>",
   "DIRECTORY_REPLACE_MESSAGE": "A pasta selecionada <span class='dialog-filename'>{0}</span> não está vazia. Tem a certeza de que pretende substituir o conteúdo da pasta com o projeto?",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "Clique aqui para localizar isto &lt;span&gt; no ficheiro HTML",
   "BUILD_WEBSITE_SECTION": "Criar Website",
@@ -1344,5 +1345,5 @@ define({
   "GIT_TOAST_TITLE": "Explore as funcionalidades do Git no Phoenix Code",
   "GIT_TOAST_MESSAGE": "Clique no ícone do painel Git para gerir o seu repositório. Efetue commits, pushes, pulls e veja o histórico do seu projeto com facilidade — tudo num só lugar.<br><a href='https://docs.phcode.dev/docs/Features/git'>Saiba mais sobre o painel Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vote nas funcionalidades que quer ver a seguir!",
-  "DEFAULT_PROJECT_NOTIFICATION": "Abra o <b>Projeto Padrão</b> no {APP_NAME} para começar rapidamente (ideal como um bloco de notas).</br></br>Ou abra uma pasta do seu computador com o ícone <strong>Abrir Pasta</strong> abaixo.<br><a href='#' style='float:right;'>OK</a>"
+  "ERROR_PREPARING_COMMIT_DIALOG": "Falha ao preparar a janela de _commit_"
 });

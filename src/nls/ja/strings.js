@@ -1038,6 +1038,7 @@ define({
   "VIEW_MORE": "もっと見る…",
   "NEW_PROJECT_NOTIFICATION": "このアイコンをクリックすると、「プロジェクトを開始」ウィンドウが再び開きます。</br> 最近のプロジェクトの表示、フォルダを開く、またはテンプレートからプロジェクトを開始できます。</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "ここをクリックするか、<b>`{0}`</b>を押してコードを整形します。</br> <img src=\"styles/images/beautify.gif\">",
+  "DEFAULT_PROJECT_NOTIFICATION": "{APP_NAME}で<b>デフォルトプロジェクト</b>を開くとすぐに作業を開始できます（メモ帳として最適です）。</br></br>または、下の<strong>フォルダを開く</strong>アイコンをクリックしてコンピュータからフォルダを開きます。<br><a href='#' style='float:right;'>OK</a>",
   "DIRECTORY_REPLACE_MESSAGE": "選択したフォルダ <span class='dialog-filename'>{0}</span> は空ではありません。本当にフォルダの内容をプロジェクトで置き換えますか？",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "ここをクリックして、HTMLファイル内のこの&lt;span&gt;を探します",
   "BUILD_WEBSITE_SECTION": "ウェブサイトをビルド",
@@ -1344,5 +1345,5 @@ define({
   "GIT_TOAST_TITLE": "Phoenix CodeのGit機能を試す",
   "GIT_TOAST_MESSAGE": "Gitパネルアイコンをクリックしてリポジトリを管理します。コミット、プッシュ、プル、プロジェクト履歴の表示をすべて1か所で行えます。<br><a href='https://docs.phcode.dev/docs/Features/git'>Gitパネルの詳細はこちら →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "次に実装してほしい機能に投票してください！",
-  "DEFAULT_PROJECT_NOTIFICATION": "{APP_NAME}で<b>デフォルトプロジェクト</b>を開くとすぐに作業を開始できます（メモ帳として最適です）。</br></br>または、下の<strong>フォルダを開く</strong>アイコンをクリックしてコンピュータからフォルダを開きます。<br><a href='#' style='float:right;'>OK</a>"
+  "ERROR_PREPARING_COMMIT_DIALOG": "コミットダイアログの準備に失敗しました"
 });

@@ -1038,6 +1038,7 @@ define({
   "VIEW_MORE": "Lihat Selengkapnya...",
   "NEW_PROJECT_NOTIFICATION": "Klik ikon ini untuk membuka jendela `Mulai Proyek` lagi.</br> Lihat Proyek Terbaru, Buka Folder atau mulai proyek dari template.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Klik di sini atau tekan <b>`{0}`</b> untuk mempercantik kode. </br> <img src=\"styles/images/beautify.gif\">",
+  "DEFAULT_PROJECT_NOTIFICATION": "Buka <b>Proyek Default</b> di {APP_NAME} untuk memulai dengan cepat (ideal sebagai catatan sementara).</br></br>Atau, buka folder dari komputer Anda dengan ikon <strong>Buka Folder</strong> di bawah ini.<br><a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Folder yang dipilih <span class='dialog-filename'>{0}</span> tidak kosong. Apakah Anda yakin ingin mengganti isi folder dengan proyek ini?",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "Klik di sini untuk menemukan &lt;span&gt; ini di berkas HTML",
   "BUILD_WEBSITE_SECTION": "Bangun Situs Web",
@@ -1344,5 +1345,5 @@ define({
   "GIT_TOAST_TITLE": "Jelajahi Fitur Git di Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klik ikon panel Git untuk mengelola repositori Anda. Lakukan commit, push, pull, dan lihat riwayat proyek Anda dengan mudah—semua di satu tempat.<br><a href='https://docs.phcode.dev/docs/Features/git'>Pelajari lebih lanjut tentang panel Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Pilih fitur yang ingin Anda lihat selanjutnya!",
-  "DEFAULT_PROJECT_NOTIFICATION": "Buka <b>Proyek Default</b> di {APP_NAME} untuk memulai dengan cepat (ideal sebagai catatan sementara).</br></br>Atau, buka folder dari komputer Anda dengan ikon <strong>Buka Folder</strong> di bawah ini.<br><a href='#' style='float:right;'>ok</a>"
+  "ERROR_PREPARING_COMMIT_DIALOG": "Gagal mempersiapkan dialog commit"
 });

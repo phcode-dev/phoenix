@@ -1038,6 +1038,7 @@ define({
   "VIEW_MORE": "Näytä lisää...",
   "NEW_PROJECT_NOTIFICATION": "Napsauta tätä kuvaketta avataksesi `Aloita projekti` -ikkunan uudelleen.</br> Katso Viimeaikaiset projektit, Avaa kansio tai aloita projekteja mallipohjista.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Napsauta tästä tai paina <b>`{0}`</b> muotoillaksesi koodin. </br> <img src=\"styles/images/beautify.gif\">",
+  "DEFAULT_PROJECT_NOTIFICATION": "Avaa <b>oletusprojekti</b> {APP_NAME}:ssa päästäksesi nopeasti alkuun (sopii hyvin muistioksi).</br></br>Voit myös avata kansion tietokoneeltasi alla olevalla <strong>Avaa kansio</strong> -kuvakkeella.<br><a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Valittu kansio <span class='dialog-filename'>{0}</span> ei ole tyhjä. Oletko varma, että haluat korvata kansion sisällön projektilla?",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "Klikkaa tästä paikantaaksesi tämän &lt;span&gt; HTML-tiedostossa",
   "BUILD_WEBSITE_SECTION": "Rakenna verkkosivusto",
@@ -1344,5 +1345,5 @@ define({
   "GIT_TOAST_TITLE": "Tutustu Git-ominaisuuksiin Phoenix Codessa",
   "GIT_TOAST_MESSAGE": "Napsauta Git-paneelin kuvaketta hallitaksesi arkistoasi (repository). Tee commit, push ja pull helposti ja tarkastele projektihistoriaasi – kaikki yhdessä paikassa.<br><a href='https://docs.phcode.dev/docs/Features/git'>Lue lisää Git-paneelista →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Äänestä ominaisuuksia, jotka haluat nähdä seuraavaksi!",
-  "DEFAULT_PROJECT_NOTIFICATION": "Avaa <b>oletusprojekti</b> {APP_NAME}:ssa päästäksesi nopeasti alkuun (sopii hyvin muistioksi).</br></br>Voit myös avata kansion tietokoneeltasi alla olevalla <strong>Avaa kansio</strong> -kuvakkeella.<br><a href='#' style='float:right;'>ok</a>"
+  "ERROR_PREPARING_COMMIT_DIALOG": "Commit-valintaikkunan valmistelu epäonnistui"
 });

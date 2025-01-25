@@ -650,6 +650,7 @@
   "ERROR_PREFS_PROJECT_LINT": "Project Preferences",
   "ERROR_PREFS_PROJECT_LINT_MESSAGE": "Error: The project contains both `.brackets.json` and `.phcode.json` files, causing a conflict. Please delete either `.brackets.json` or `.phcode.json` and then reload the project.",
   "ERROR_PREFS_RESET_TITLE": "Settings Reset - Restart Required",
+  "ERROR_PREPARING_COMMIT_DIALOG": "Preparing commit dialog failed",
   "ERROR_PROJ_PREFS_CORRUPT": "Your project preferences file is not valid JSON. The file will be opened so that you can correct the format. You will need to reload the project for the changes to take effect.",
   "ERROR_PULLING_OPERATION": "Pulling operation failed",
   "ERROR_PULLING_REMOTE": "Pulling from remote failed",

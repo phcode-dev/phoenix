@@ -1038,6 +1038,7 @@ define({
   "VIEW_MORE": "Ver más...",
   "NEW_PROJECT_NOTIFICATION": "Haga clic en este icono para abrir la ventana `Iniciar proyecto` nuevamente.</br> Vea Proyectos recientes, Abrir carpeta o inicie proyectos desde plantillas.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Haga clic aquí o presione <b>`{0}`</b> para embellecer el código. </br> <img src=\"styles/images/beautify.gif\">",
+  "DEFAULT_PROJECT_NOTIFICATION": "Abre el <b>Proyecto predeterminado</b> en {APP_NAME} para empezar rápidamente (ideal como bloc de notas).</br></br>O bien, abre una carpeta de tu ordenador con el icono <strong>Abrir carpeta</strong> que se muestra a continuación.<br><a href='#' style='float:right;'>Aceptar</a>",
   "DIRECTORY_REPLACE_MESSAGE": "La carpeta seleccionada <span class='dialog-filename'>{0}</span> no está vacía. ¿Está seguro de que desea reemplazar el contenido de la carpeta con el proyecto?",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "Haga clic aquí para ubicar esto &lt;span&gt; en el archivo HTML",
   "BUILD_WEBSITE_SECTION": "Crear sitio web",
@@ -1344,5 +1345,5 @@ define({
   "GIT_TOAST_TITLE": "Explora las funciones de Git en Phoenix Code",
   "GIT_TOAST_MESSAGE": "Haga clic en el icono del panel de Git para administrar su repositorio. Confirme, envíe (push), extraiga (pull) y vea el historial de su proyecto fácilmente, todo en un solo lugar.<br><a href='https://docs.phcode.dev/docs/Features/git'>Obtenga más información sobre el panel de Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "¡Vota por las funciones que quieres ver próximamente!",
-  "DEFAULT_PROJECT_NOTIFICATION": "Abre el <b>Proyecto predeterminado</b> en {APP_NAME} para empezar rápidamente (ideal como bloc de notas).</br></br>O bien, abre una carpeta de tu ordenador con el icono <strong>Abrir carpeta</strong> que se muestra a continuación.<br><a href='#' style='float:right;'>Aceptar</a>"
+  "ERROR_PREPARING_COMMIT_DIALOG": "Error al preparar el diálogo de confirmación"
 });

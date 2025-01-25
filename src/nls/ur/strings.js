@@ -1038,6 +1038,7 @@ define({
   "VIEW_MORE": "مزید دیکھیں۔۔۔",
   "NEW_PROJECT_NOTIFICATION": "اس آئیکن پر کلک کریں تاکہ `اسٹارٹ پروجیکٹ` ونڈو دوبارہ کھل جائے۔</br> حالیہ پروجیکٹس دیکھیں، فولڈر کھولیں یا ٹیمپلیٹس سے پروجیکٹس شروع کریں۔</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "کوڈ کو خوبصورت بنانے کے لیے یہاں کلک کریں یا <b>`{0}`</b> دبائیں۔ </br> <img src=\"styles/images/beautify.gif\">",
+  "DEFAULT_PROJECT_NOTIFICATION": "جلدی شروع کرنے کے لیے {APP_NAME} میں <b>ڈیفالٹ پراجیکٹ</b> کھولیں (اسکریچ پیڈ کے طور پر بہترین)۔</br></br> یا، نیچے دیے گئے <strong>فولڈر کھولیں</strong> آئیکن سے اپنے کمپیوٹر سے ایک فولڈر کھولیں۔<br><a href='#' style='float:right;'>ٹھیک ہے</a>",
   "DIRECTORY_REPLACE_MESSAGE": "منتخب کردہ فولڈر <span class='dialog-filename'>{0}</span> خالی نہیں ہے۔ کیا آپ واقعی فولڈر کے مندرجات کو اس منصوبے سے تبدیل کرنا چاہتے ہیں؟",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "ایچ ٹی ایم ایل فائل میں اس &lt;span&gt; کو تلاش کرنے کے لیے یہاں کلک کریں۔",
   "BUILD_WEBSITE_SECTION": "ویب سائٹ بنائیں",
@@ -1344,5 +1345,5 @@ define({
   "GIT_TOAST_TITLE": "فینکس کوڈ میں گٹ فیچرز دریافت کریں",
   "GIT_TOAST_MESSAGE": "اپنی ذخیرہ گاہ (repository) کو منظم کرنے کے لیے گٹ پینل آئیکن پر کلک کریں۔ آسانی سے کامٹ، پش، پل کریں، اور اپنے پروجیکٹ کی تاریخ دیکھیں—سب ایک ہی جگہ پر۔<br><a href='https://docs.phcode.dev/docs/Features/git'>گٹ پینل کے بارے میں مزید جانیں →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "اپنی پسندیدہ خصوصیات کے لیے ووٹ دیں!",
-  "DEFAULT_PROJECT_NOTIFICATION": "جلدی شروع کرنے کے لیے {APP_NAME} میں <b>ڈیفالٹ پراجیکٹ</b> کھولیں (اسکریچ پیڈ کے طور پر بہترین)۔</br></br> یا، نیچے دیے گئے <strong>فولڈر کھولیں</strong> آئیکن سے اپنے کمپیوٹر سے ایک فولڈر کھولیں۔<br><a href='#' style='float:right;'>ٹھیک ہے</a>"
+  "ERROR_PREPARING_COMMIT_DIALOG": "کمیٹ ڈائیلاگ تیار کرنے میں ناکام"
 });

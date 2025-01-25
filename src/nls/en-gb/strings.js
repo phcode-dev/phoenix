@@ -1038,6 +1038,7 @@ define({
   "VIEW_MORE": "See more…",
   "NEW_PROJECT_NOTIFICATION": "Click this icon to open the `Start Project` window again.</br> See Recent Projects, Open Folder or start projects from templates.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Click here or press <b>`{0}`</b> to format code. </br> <img src=\"styles/images/beautify.gif\">",
+  "DEFAULT_PROJECT_NOTIFICATION": "Open the <b>Default Project</b> in {APP_NAME} to get started quickly (ideal as a scratchpad).</br></br>Or, open a folder from your computer with the <strong>Open Folder</strong> icon below.<br><a href='#' style='float:right;'>OK</a>",
   "DIRECTORY_REPLACE_MESSAGE": "The selected folder <span class='dialog-filename'>{0}</span> is not empty. Are you sure you want to replace the folder contents with the project?",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "Click here to locate this &lt;span&gt; in the HTML file",
   "BUILD_WEBSITE_SECTION": "Build website",
@@ -1344,5 +1345,5 @@ define({
   "GIT_TOAST_TITLE": "Explore Git Features in Phoenix Code",
   "GIT_TOAST_MESSAGE": "Click the Git panel icon to manage your repository. Easily commit, push, pull, and view your project history—all in one place.<br><a href='https://docs.phcode.dev/docs/Features/git'>Learn more about the Git panel →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vote for the features you'd like to see next!",
-  "DEFAULT_PROJECT_NOTIFICATION": "Open the <b>Default Project</b> in {APP_NAME} to get started quickly (ideal as a scratchpad).</br></br>Or, open a folder from your computer with the <strong>Open Folder</strong> icon below.<br><a href='#' style='float:right;'>OK</a>"
+  "ERROR_PREPARING_COMMIT_DIALOG": "Failed to prepare the commit dialogue"
 });

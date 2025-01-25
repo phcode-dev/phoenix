@@ -1038,6 +1038,7 @@ define({
   "VIEW_MORE": "مشاهده بیشتر...",
   "NEW_PROJECT_NOTIFICATION": "برای باز کردن مجدد پنجره «شروع پروژه» روی این آیکون کلیک کنید.</br> پروژه‌های اخیر را ببینید، پوشه را باز کنید یا پروژه‌ها را از روی قالب‌ها شروع کنید.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "برای قالب‌بندی کد، اینجا کلیک کنید یا <b>`{0}`</b> را فشار دهید. </br> <img src=\"styles/images/beautify.gif\">",
+  "DEFAULT_PROJECT_NOTIFICATION": "برای شروع سریع، <b>پروژه پیش‌فرض</b> را در {APP_NAME} باز کنید (به عنوان یک برگه یادداشت ایده‌آل است).</br></br>یا، با استفاده از آیکون <strong>باز کردن پوشه</strong> در پایین، یک پوشه از رایانه خود باز کنید.<br><a href='#' style='float:right;'>تأیید</a>",
   "DIRECTORY_REPLACE_MESSAGE": "پوشه انتخاب شده <span class='dialog-filename'>{0}</span> خالی نیست. آیا مطمئن هستید که می‌خواهید محتوای پوشه را با پروژه جایگزین کنید؟",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "برای یافتن این &lt;span&gt; در فایل HTML اینجا کلیک کنید",
   "BUILD_WEBSITE_SECTION": "ساخت وب‌سایت",
@@ -1344,5 +1345,5 @@ define({
   "GIT_TOAST_TITLE": "کاوش ویژگی‌های گیت در Phoenix Code",
   "GIT_TOAST_MESSAGE": "برای مدیریت مخزن خود روی آیکون پنل گیت کلیک کنید. به راحتی کامیت، پوش، پول و مشاهده تاریخچه پروژه خود را - همه در یک مکان - انجام دهید.<br><a href='https://docs.phcode.dev/docs/Features/git'>درباره پنل گیت بیشتر بدانید →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "برای قابلیت‌هایی که می‌خواهید در آینده ببینید، رأی دهید!",
-  "DEFAULT_PROJECT_NOTIFICATION": "برای شروع سریع، <b>پروژه پیش‌فرض</b> را در {APP_NAME} باز کنید (به عنوان یک برگه یادداشت ایده‌آل است).</br></br>یا، با استفاده از آیکون <strong>باز کردن پوشه</strong> در پایین، یک پوشه از رایانه خود باز کنید.<br><a href='#' style='float:right;'>تأیید</a>"
+  "ERROR_PREPARING_COMMIT_DIALOG": "خطا در آماده‌سازی پنجره ثبت کامیت"
 });

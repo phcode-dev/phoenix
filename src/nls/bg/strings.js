@@ -1038,6 +1038,7 @@ define({
   "VIEW_MORE": "Виж още...",
   "NEW_PROJECT_NOTIFICATION": "Щракнете върху тази икона, за да отворите отново прозореца „Стартиране на проект“.</br> Вижте Последни проекти, Отваряне на папка или стартирайте проекти от шаблони.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Щракнете тук или натиснете <b>`{0}`</b>, за да форматирате кода. </br> <img src=\"styles/images/beautify.gif\">",
+  "DEFAULT_PROJECT_NOTIFICATION": "Отворете <b>Примерния проект</b> в {APP_NAME} за бърз старт (идеален е като чернова).</br></br>Или отворете папка от вашия компютър с иконата <strong>Отваряне на папка</strong> по-долу.<br><a href='#' style='float:right;'>ок</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Избраната папка <span class='dialog-filename'>{0}</span> не е празна. Сигурни ли сте, че искате да замените съдържанието на папката с проекта?",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "Кликнете тук, за да намерите това &lt;span&gt; в HTML файла",
   "BUILD_WEBSITE_SECTION": "Създаване на уебсайт",
@@ -1344,5 +1345,5 @@ define({
   "GIT_TOAST_TITLE": "Разгледайте Git функциите в Phoenix Code",
   "GIT_TOAST_MESSAGE": "Щракнете върху иконата на Git панела, за да управлявате хранилището си. Лесно създавайте commit, push, pull и преглеждайте историята на проекта си – всичко на едно място.<br><a href='https://docs.phcode.dev/docs/Features/git'>Научете повече за Git панела →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Гласувайте за функциите, които искате да видите следващи!",
-  "DEFAULT_PROJECT_NOTIFICATION": "Отворете <b>Примерния проект</b> в {APP_NAME} за бърз старт (идеален е като чернова).</br></br>Или отворете папка от вашия компютър с иконата <strong>Отваряне на папка</strong> по-долу.<br><a href='#' style='float:right;'>ок</a>"
+  "ERROR_PREPARING_COMMIT_DIALOG": "Неуспешно подготвяне на диалогов прозорец за commit"
 });
