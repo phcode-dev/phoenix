@@ -52,6 +52,7 @@ define(function (require, exports) {
     function show(pushConfig) {
         return new Promise((resolve, reject) => {
             pushConfig.push = true;
+            // collectInfo never rejects
             RemoteCommon.collectInfo(pushConfig).then(()=>{
                 _show(pushConfig, resolve, reject);
             });
