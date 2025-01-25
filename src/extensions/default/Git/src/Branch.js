@@ -128,6 +128,11 @@ define(function (require, exports) {
                     }
                 }
             });
+        }).catch(err => {
+            console.error("Error Getting branches", err);
+            // we need to strip all user entered info from git thrown exception for get branches which shouldn't fail,
+            // so we throw a blank error for bugsnag
+            throw new Error("Failed to get getBranches while doMerge");
         });
     }
 
@@ -168,7 +173,7 @@ define(function (require, exports) {
 
             Git.getAllBranches().catch(function (err) {
                 ErrorHandler.showError(err);
-            }).then(function (branches) {
+            }).then(function (branches = []) {
 
                 var compiledTemplate = Mustache.render(newBranchTemplate, {
                     branches: branches,
@@ -335,7 +340,7 @@ define(function (require, exports) {
 
         Git.getBranches().catch(function (err) {
             ErrorHandler.showError(err, Strings.ERROR_GETTING_BRANCH_LIST);
-        }).then(function (branches) {
+        }).then(function (branches = []) {
             branches = branches.reduce(function (arr, branch) {
                 if (!branch.currentBranch && !branch.remote) {
                     arr.push(branch.name);
