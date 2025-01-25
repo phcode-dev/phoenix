@@ -85,16 +85,17 @@ define(function (require, exports) {
                 onProgress();
             }
 
+            let finalValue, finalError;
             function finish() {
                 finished = true;
                 if (dialog) {
                     dialog.close();
                 }
-                promise.then(function (val) {
-                    resolve(val);
-                }).catch(function (err) {
-                    reject(err);
-                });
+                if(finalError){
+                    reject(finalError);
+                } else {
+                    resolve(finalValue);
+                }
             }
 
             if (!options.preDelay) {
@@ -109,17 +110,24 @@ define(function (require, exports) {
             progressTracker.on(`${Events.GIT_PROGRESS_EVENT}.progressDlg`, (_evt, data)=>{
                 onProgress(data);
             });
-            promise.finally(function () {
-                progressTracker.off(`${Events.GIT_PROGRESS_EVENT}.progressDlg`);
-                onProgress("Finished!");
-                if (!options.postDelay || !dialog) {
-                    finish();
-                } else {
-                    setTimeout(function () {
+            promise
+                .then(val => {
+                    finalValue = val;
+                })
+                .catch(err => {
+                    finalError = err;
+                })
+                .finally(function () {
+                    progressTracker.off(`${Events.GIT_PROGRESS_EVENT}.progressDlg`);
+                    onProgress("Finished!");
+                    if (!options.postDelay || !dialog) {
                         finish();
-                    }, options.postDelay * 1000);
-                }
-            });
+                    } else {
+                        setTimeout(function () {
+                            finish();
+                        }, options.postDelay * 1000);
+                    }
+                });
 
         });
     }
