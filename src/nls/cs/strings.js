@@ -1038,6 +1038,7 @@ define({
   "VIEW_MORE": "Zobrazit více...",
   "NEW_PROJECT_NOTIFICATION": "Klikněte na tuto ikonu pro opětovné otevření okna `Spustit projekt`.</br> Zobrazte si Nedávné projekty, Otevřít složku nebo spusťte projekty ze šablon.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Klikněte sem nebo stiskněte <b>`{0}`</b> pro formátování kódu. </br> <img src=\"styles/images/beautify.gif\">",
+  "DEFAULT_PROJECT_NOTIFICATION": "Otevřete <b>Výchozí projekt</b> v aplikaci {APP_NAME} pro rychlý start (ideální jako poznámkový blok).</br></br>Nebo otevřete složku z počítače pomocí ikony <strong>Otevřít složku</strong> níže.<br><a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Vybraná složka <span class='dialog-filename'>{0}</span> není prázdná. Jste si jisti, že chcete nahradit obsah složky projektem?",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "Klikněte sem pro nalezení tohoto &lt;span&gt; v HTML souboru",
   "BUILD_WEBSITE_SECTION": "Vytvořit web",
@@ -1344,5 +1345,5 @@ define({
   "GIT_TOAST_TITLE": "Prozkoumejte funkce Gitu v Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klikněte na ikonu panelu Git pro správu vašeho repozitáře. Snadno commitujte, pushujte, pullujte a prohlížejte si historii projektu – vše na jednom místě.<br><a href='https://docs.phcode.dev/docs/Features/git'>Zjistěte více o panelu Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Hlasujte pro funkce, které chcete vidět v další verzi!",
-  "DEFAULT_PROJECT_NOTIFICATION": "Otevřete <b>Výchozí projekt</b> v aplikaci {APP_NAME} pro rychlý start (ideální jako poznámkový blok).</br></br>Nebo otevřete složku z počítače pomocí ikony <strong>Otevřít složku</strong> níže.<br><a href='#' style='float:right;'>ok</a>"
+  "ERROR_PREPARING_COMMIT_DIALOG": "Chyba při přípravě dialogu pro commit"
 });

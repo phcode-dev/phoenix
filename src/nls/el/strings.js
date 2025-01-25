@@ -1038,6 +1038,7 @@ define({
   "VIEW_MORE": "Δείτε Περισσότερα...",
   "NEW_PROJECT_NOTIFICATION": "Κάντε κλικ σε αυτό το εικονίδιο για να ανοίξετε ξανά το παράθυρο `Έναρξη Έργου`.</br> Δείτε τα Πρόσφατα Έργα, ανοίξτε Φάκελο ή ξεκινήστε έργα από πρότυπα.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Κάντε κλικ εδώ ή πατήστε <b>`{0}`</b> για να ομορφύνετε τον κώδικα. </br> <img src=\"styles/images/beautify.gif\">",
+  "DEFAULT_PROJECT_NOTIFICATION": "Ανοίξτε το <b>Προεπιλεγμένο Έργο</b> στο {APP_NAME} για να ξεκινήσετε γρήγορα (ιδανικό ως πρόχειρο).</br></br>Ή, ανοίξτε έναν φάκελο από τον υπολογιστή σας με το εικονίδιο <strong>Άνοιγμα Φακέλου</strong> παρακάτω.<br><a href='#' style='float:right;'>εντάξει</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Ο επιλεγμένος φάκελος <span class='dialog-filename'>{0}</span> δεν είναι κενός. Είστε σίγουροι ότι θέλετε να αντικαταστήσετε τα περιεχόμενα του φακέλου με το έργο;",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "Κάντε κλικ εδώ για να εντοπίσετε αυτό το &lt;span&gt; στο αρχείο HTML",
   "BUILD_WEBSITE_SECTION": "Δημιουργία Ιστοσελίδας",
@@ -1344,5 +1345,5 @@ define({
   "GIT_TOAST_TITLE": "Εξερευνήστε τις Λειτουργίες Git στο Phoenix Code",
   "GIT_TOAST_MESSAGE": "Κάντε κλικ στο εικονίδιο του πίνακα Git για να διαχειριστείτε το αποθετήριό σας. Κάντε εύκολα commit, push, pull και δείτε το ιστορικό του έργου σας—όλα σε ένα μέρος.<br><a href='https://docs.phcode.dev/docs/Features/git'>Μάθετε περισσότερα για τον πίνακα Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Ψηφίστε για τις λειτουργίες που θέλετε να δείτε στη συνέχεια!",
-  "DEFAULT_PROJECT_NOTIFICATION": "Ανοίξτε το <b>Προεπιλεγμένο Έργο</b> στο {APP_NAME} για να ξεκινήσετε γρήγορα (ιδανικό ως πρόχειρο).</br></br>Ή, ανοίξτε έναν φάκελο από τον υπολογιστή σας με το εικονίδιο <strong>Άνοιγμα Φακέλου</strong> παρακάτω.<br><a href='#' style='float:right;'>εντάξει</a>"
+  "ERROR_PREPARING_COMMIT_DIALOG": "Αποτυχία προετοιμασίας παραθύρου δημιουργίας commit"
 });

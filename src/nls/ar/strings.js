@@ -1038,6 +1038,7 @@ define({
   "VIEW_MORE": "عرض المزيد...",
   "NEW_PROJECT_NOTIFICATION": "انقر على هذا الرمز لفتح نافذة `بدء مشروع` مرة أخرى.</br> شاهد المشاريع الأخيرة، أو افتح مجلدًا أو ابدأ مشاريع من قوالب.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "انقر هنا أو اضغط على <b>`{0}`</b> لتحسين تنسيق الشفرة. </br> <img src=\"styles/images/beautify.gif\">",
+  "DEFAULT_PROJECT_NOTIFICATION": "افتح <b>المشروع الافتراضي</b> في {APP_NAME} للبدء بسرعة (مثالي كمسودة).<br><br>أو افتح مجلدًا من جهاز الكمبيوتر الخاص بك باستخدام رمز <strong>فتح مجلد</strong> أدناه.<br><a href='#' style='float:right;'>موافق</a>",
   "DIRECTORY_REPLACE_MESSAGE": "المجلد المحدد <span class='dialog-filename'>{0}</span> ليس فارغًا. هل أنت متأكد أنك تريد استبدال محتويات المجلد بالمشروع؟",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "انقر هنا لتحديد موقع هذا &lt;span&gt; في ملف HTML",
   "BUILD_WEBSITE_SECTION": "إنشاء موقع ويب",
@@ -1344,5 +1345,5 @@ define({
   "GIT_TOAST_TITLE": "استكشف ميزات Git في Phoenix Code",
   "GIT_TOAST_MESSAGE": "انقر على رمز لوحة Git لإدارة مستودعك. يمكنك بسهولة تنفيذ الالتزام والدفع والسحب وعرض سجل مشروعك - كل ذلك في مكان واحد.<br><a href='https://docs.phcode.dev/docs/Features/git'>تعرّف على المزيد حول لوحة Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "صوت للميزات التي ترغب برؤيتها تالياً!",
-  "DEFAULT_PROJECT_NOTIFICATION": "افتح <b>المشروع الافتراضي</b> في {APP_NAME} للبدء بسرعة (مثالي كمسودة).<br><br>أو افتح مجلدًا من جهاز الكمبيوتر الخاص بك باستخدام رمز <strong>فتح مجلد</strong> أدناه.<br><a href='#' style='float:right;'>موافق</a>"
+  "ERROR_PREPARING_COMMIT_DIALOG": "فشل تحضير مربع حوار الالتزام"
 });

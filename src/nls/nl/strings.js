@@ -1038,6 +1038,7 @@ define({
   "VIEW_MORE": "Meer bekijken...",
   "NEW_PROJECT_NOTIFICATION": "Klik op dit pictogram om het venster `Project starten` opnieuw te openen.</br> Bekijk Recente Projecten, Open Map of start projecten vanuit sjablonen.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Klik hier of druk op <b>`{0}`</b> om code op te maken. </br> <img src=\"styles/images/beautify.gif\">",
+  "DEFAULT_PROJECT_NOTIFICATION": "Open het <b>Standaardproject</b> in {APP_NAME} om snel aan de slag te gaan (ideaal als kladblok).</br></br>Of open een map van uw computer met het pictogram <strong>Map openen</strong> hieronder.<br><a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "De geselecteerde map <span class='dialog-filename'>{0}</span> is niet leeg. Weet u zeker dat u de inhoud van de map wilt vervangen door het project?",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "Klik hier om deze &lt;span&gt; in het HTML-bestand te vinden",
   "BUILD_WEBSITE_SECTION": "Website bouwen",
@@ -1344,5 +1345,5 @@ define({
   "GIT_TOAST_TITLE": "Ontdek Git-functies in Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klik op het Git-paneelpictogram om uw repository te beheren. Commit, push, pull en bekijk uw projectgeschiedenis eenvoudig - alles op één plek.<br><a href='https://docs.phcode.dev/docs/Features/git'>Meer informatie over het Git-paneel →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Stem op de functies die u graag wilt zien!",
-  "DEFAULT_PROJECT_NOTIFICATION": "Open het <b>Standaardproject</b> in {APP_NAME} om snel aan de slag te gaan (ideaal als kladblok).</br></br>Of open een map van uw computer met het pictogram <strong>Map openen</strong> hieronder.<br><a href='#' style='float:right;'>ok</a>"
+  "ERROR_PREPARING_COMMIT_DIALOG": "Voorbereiden commit-dialoogvenster mislukt"
 });

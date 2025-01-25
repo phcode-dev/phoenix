@@ -1038,6 +1038,7 @@ define({
   "VIEW_MORE": "और देखें...",
   "NEW_PROJECT_NOTIFICATION": "इस आइकन पर क्लिक करके `प्रोजेक्ट शुरू करें` विंडो फिर से खोलें।</br> हाल के प्रोजेक्ट देखें, फ़ोल्डर खोलें या टेम्प्लेट से प्रोजेक्ट शुरू करें।</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "कोड को सुंदर बनाने के लिए यहां क्लिक करें या <b>`{0}`</b> दबाएं। </br> <img src=\"styles/images/beautify.gif\">",
+  "DEFAULT_PROJECT_NOTIFICATION": "आरंभ करने के लिए {APP_NAME} में <b>डिफ़ॉल्ट प्रोजेक्ट</b> खोलें (स्क्रैच पैड के रूप में आदर्श)।</br></br>या, नीचे दिए गए <strong>फ़ोल्डर खोलें</strong> आइकन से अपने कंप्यूटर से एक फ़ोल्डर खोलें।<br><a href='#' style='float:right;'>ठीक है</a>",
   "DIRECTORY_REPLACE_MESSAGE": "चयनित फ़ोल्डर <span class='dialog-filename'>{0}</span> खाली नहीं है। क्या आप वाकई फ़ोल्डर की सामग्री को प्रोजेक्ट से बदलना चाहते हैं?",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "HTML फ़ाइल में इसे ढूंढने के लिए यहां क्लिक करें &lt;span&gt;",
   "BUILD_WEBSITE_SECTION": "वेबसाइट बनाएँ",
@@ -1344,5 +1345,5 @@ define({
   "GIT_TOAST_TITLE": "फ़ीनिक्स कोड में Git सुविधाओं का अन्वेषण करें",
   "GIT_TOAST_MESSAGE": "अपने रिपॉजिटरी को प्रबंधित करने के लिए Git पैनल आइकन पर क्लिक करें। आसानी से कमिट करें, पुश करें, पुल करें और अपने प्रोजेक्ट का इतिहास देखें—सब एक ही स्थान पर।<br><a href='https://docs.phcode.dev/docs/Features/git'>Git पैनल के बारे में अधिक जानें →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "उन विशेषताओं के लिए वोट करें जिन्हें आप आगे देखना चाहते हैं!",
-  "DEFAULT_PROJECT_NOTIFICATION": "आरंभ करने के लिए {APP_NAME} में <b>डिफ़ॉल्ट प्रोजेक्ट</b> खोलें (स्क्रैच पैड के रूप में आदर्श)।</br></br>या, नीचे दिए गए <strong>फ़ोल्डर खोलें</strong> आइकन से अपने कंप्यूटर से एक फ़ोल्डर खोलें।<br><a href='#' style='float:right;'>ठीक है</a>"
+  "ERROR_PREPARING_COMMIT_DIALOG": "कमिट डायलॉग तैयार करने में विफल रहा"
 });

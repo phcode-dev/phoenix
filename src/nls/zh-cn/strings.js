@@ -1038,6 +1038,7 @@ define({
   "VIEW_MORE": "查看更多...",
   "NEW_PROJECT_NOTIFICATION": "点击此图标可再次打开“新建项目”窗口。</br>查看最近项目、打开文件夹或从模板启动项目。</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "点击此处或按 <b>`{0}`</b> 美化代码。</br> <img src=\"styles/images/beautify.gif\">",
+  "DEFAULT_PROJECT_NOTIFICATION": "在 {APP_NAME} 中打开<b>默认项目</b>即可快速开始（非常适合用作暂存板）。</br></br>或者，使用下面的<strong>打开文件夹</strong>图标从您的计算机打开一个文件夹。<br><a href='#' style='float:right;'>确定</a>",
   "DIRECTORY_REPLACE_MESSAGE": "所选文件夹 <span class='dialog-filename'>{0}</span> 不为空。您确定要用项目替换文件夹内容吗？",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "点击此处可在 HTML 文件中找到此 &lt;span&gt;",
   "BUILD_WEBSITE_SECTION": "构建网站",
@@ -1344,5 +1345,5 @@ define({
   "GIT_TOAST_TITLE": "探索 Phoenix Code 中的 Git 功能",
   "GIT_TOAST_MESSAGE": "点击 Git 面板图标即可管理您的代码仓库。轻松提交、推送、拉取和查看项目历史记录，一切尽在一处。<br><a href='https://docs.phcode.dev/docs/Features/git'>了解更多关于 Git 面板的信息 →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "为您希望看到的下一个功能投票！",
-  "DEFAULT_PROJECT_NOTIFICATION": "在 {APP_NAME} 中打开<b>默认项目</b>即可快速开始（非常适合用作暂存板）。</br></br>或者，使用下面的<strong>打开文件夹</strong>图标从您的计算机打开一个文件夹。<br><a href='#' style='float:right;'>确定</a>"
+  "ERROR_PREPARING_COMMIT_DIALOG": "准备提交对话框失败"
 });

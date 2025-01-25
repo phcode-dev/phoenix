@@ -1038,6 +1038,7 @@ define({
   "VIEW_MORE": "Види више...",
   "NEW_PROJECT_NOTIFICATION": "Кликните на ову икону да бисте поново отворили прозор „Покрени пројекат”.</br> Погледајте Скорије пројекте, Отворите фасциклу или покрените пројекте из шаблона.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Кликните овде или притисните <b>`{0}`</b> да бисте улепшали код. </br> <img src=\"styles/images/beautify.gif\">",
+  "DEFAULT_PROJECT_NOTIFICATION": "Отворите <b>Подразумевани пројекат</b> у {APP_NAME} да бисте брзо почели (идеално као бележница).</br></br>Или отворите фасциклу са вашег рачунара помоћу иконе <strong>Отвори фасциклу</strong> испод.<br><a href='#' style='float:right;'>ок</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Изабрана фасцикла <span class='dialog-filename'>{0}</span> није празна. Да ли сте сигурни да желите да замените садржај фасцикле са пројектом?",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "Кликните овде да бисте лоцирали овај &lt;span&gt; у HTML датотеци",
   "BUILD_WEBSITE_SECTION": "Направи веб-сајт",
@@ -1344,5 +1345,5 @@ define({
   "GIT_TOAST_TITLE": "Истражите Гит функције у Phoenix Code-у",
   "GIT_TOAST_MESSAGE": "Кликните на икону Гит панела да бисте управљали својим спремиштем. Лако направите commit, push, pull и погледајте историју свог пројекта — све на једном месту.<br><a href='https://docs.phcode.dev/docs/Features/git'>Сазнајте више о Гит панелу →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Гласајте за функције које желите да видите у будућности!",
-  "DEFAULT_PROJECT_NOTIFICATION": "Отворите <b>Подразумевани пројекат</b> у {APP_NAME} да бисте брзо почели (идеално као бележница).</br></br>Или отворите фасциклу са вашег рачунара помоћу иконе <strong>Отвори фасциклу</strong> испод.<br><a href='#' style='float:right;'>ок</a>"
+  "ERROR_PREPARING_COMMIT_DIALOG": "Дошло је до грешке приликом припреме дијалога за креирање комита."
 });

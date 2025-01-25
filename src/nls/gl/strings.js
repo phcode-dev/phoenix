@@ -1038,6 +1038,7 @@ define({
   "VIEW_MORE": "Ver máis...",
   "NEW_PROJECT_NOTIFICATION": "Fai clic nesta icona para abrir de novo a xanela `Iniciar proxecto`.</br> Ver proxectos recentes, abrir cartafol ou iniciar proxectos desde modelos.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Fai clic aquí ou preme <b>`{0}`</b> para embelecer o código. </br> <img src=\"styles/images/beautify.gif\">",
+  "DEFAULT_PROJECT_NOTIFICATION": "Abre o <b>Proxecto predefinido</b> en {APP_NAME} para comezar rapidamente (ideal como borrador).</br></br>Ou abre un cartafol do teu computador co ícone <strong>Abrir cartafol</strong> a continuación.<br><a href='#' style='float:right;'>Aceptar</a>",
   "DIRECTORY_REPLACE_MESSAGE": "O cartafol seleccionado <span class='dialog-filename'>{0}</span> non está baleiro. Seguro que queres substituír o contido do cartafol co proxecto?",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "Fai clic aquí para localizar isto &lt;span&gt; no ficheiro HTML",
   "BUILD_WEBSITE_SECTION": "Crear sitio web",
@@ -1344,5 +1345,5 @@ define({
   "GIT_TOAST_TITLE": "Explora as funcionalidades de Git en Phoenix Code",
   "GIT_TOAST_MESSAGE": "Fai clic na icona do panel de Git para xestionar o teu repositorio. Fai commits, envía (push), obtén (pull) e visualiza o historial do teu proxecto facilmente, todo nun mesmo lugar.<br><a href='https://docs.phcode.dev/docs/Features/git'>Aprende máis sobre o panel de Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vota polas funcionalidades que queres ver a continuación!",
-  "DEFAULT_PROJECT_NOTIFICATION": "Abre o <b>Proxecto predefinido</b> en {APP_NAME} para comezar rapidamente (ideal como borrador).</br></br>Ou abre un cartafol do teu computador co ícone <strong>Abrir cartafol</strong> a continuación.<br><a href='#' style='float:right;'>Aceptar</a>"
+  "ERROR_PREPARING_COMMIT_DIALOG": "Produciuse un erro ao preparar o diálogo de confirmación"
 });

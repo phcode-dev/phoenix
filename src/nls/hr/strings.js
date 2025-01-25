@@ -1038,6 +1038,7 @@ define({
   "VIEW_MORE": "Prikaži više...",
   "NEW_PROJECT_NOTIFICATION": "Kliknite ovu ikonu da biste ponovno otvorili prozor `Pokreni projekt`.</br> Pogledajte Nedavne projekte, Otvorite mapu ili pokrenite projekte iz predložaka.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Kliknite ovdje ili pritisnite <b>`{0}`</b> za uljepšavanje koda. </br> <img src=\"styles/images/beautify.gif\">",
+  "DEFAULT_PROJECT_NOTIFICATION": "Otvorite <b>Zadani projekt</b> u {APP_NAME} za brzi početak (idealno kao radna bilježnica).</br></br>Ili otvorite mapu s računala pomoću ikone <strong>Otvori mapu</strong> ispod.<br><a href='#' style='float:right;'>u redu</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Odabrana mapa <span class='dialog-filename'>{0}</span> nije prazna. Jeste li sigurni da želite zamijeniti sadržaj mape s projektom?",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "Kliknite ovdje da biste pronašli ovaj &lt;span&gt; u HTML datoteci",
   "BUILD_WEBSITE_SECTION": "Izrada web-stranice",
@@ -1344,5 +1345,5 @@ define({
   "GIT_TOAST_TITLE": "Istražite Git značajke u Phoenix Codeu",
   "GIT_TOAST_MESSAGE": "Kliknite ikonu Git panela za upravljanje svojim repozitorijem. Jednostavno potvrdite (commit), pošaljite (push), preuzmite (pull) i pregledajte povijest svog projekta - sve na jednom mjestu.<br><a href='https://docs.phcode.dev/docs/Features/git'>Saznajte više o Git panelu →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Glasajte za značajke koje želite vidjeti sljedeće!",
-  "DEFAULT_PROJECT_NOTIFICATION": "Otvorite <b>Zadani projekt</b> u {APP_NAME} za brzi početak (idealno kao radna bilježnica).</br></br>Ili otvorite mapu s računala pomoću ikone <strong>Otvori mapu</strong> ispod.<br><a href='#' style='float:right;'>u redu</a>"
+  "ERROR_PREPARING_COMMIT_DIALOG": "Priprema dijaloga za commit nije uspjela"
 });

@@ -1038,6 +1038,7 @@ define({
   "VIEW_MORE": "Továbbiak...",
   "NEW_PROJECT_NOTIFICATION": "Kattintson erre az ikonra a `Projekt indítása` ablak újbóli megnyitásához.</br> Tekintse meg a Legutóbbi projekteket, nyisson meg egy mappát, vagy indítson projekteket sablonokból.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Kattintson ide vagy nyomja meg a <b>`{0}`</b> billentyűt a kód formázásához. </br> <img src=\"styles/images/beautify.gif\">",
+  "DEFAULT_PROJECT_NOTIFICATION": "Nyissa meg az <b>Alapértelmezett projektet</b> az {APP_NAME} alkalmazásban a gyors kezdéshez (ideális vázlatfüzetként).</br></br>Vagy nyisson meg egy mappát a számítógépéről az alábbi <strong>Mappa megnyitása</strong> ikonnal.<br><a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "A kiválasztott mappa <span class='dialog-filename'>{0}</span> nem üres. Biztosan felül akarja írni a mappa tartalmát a projekttel?",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "Kattintson ide a &lt;span&gt; megkereséséhez a HTML fájlban",
   "BUILD_WEBSITE_SECTION": "Weboldal létrehozása",
@@ -1344,5 +1345,5 @@ define({
   "GIT_TOAST_TITLE": "Fedezd fel a Git funkciókat a Phoenix Code-ban",
   "GIT_TOAST_MESSAGE": "Kattintson a Git panel ikonra a verziókövető rendszer kezeléséhez. Könnyedén végezhet commit, push és pull műveleteket, valamint megtekintheti a projekt előzményeit – mindezt egy helyen.<br><a href='https://docs.phcode.dev/docs/Features/git'>Tudj meg többet a Git panelről →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Szavazzon azokra a funkciókra, amelyeket a jövőben látni szeretne!",
-  "DEFAULT_PROJECT_NOTIFICATION": "Nyissa meg az <b>Alapértelmezett projektet</b> az {APP_NAME} alkalmazásban a gyors kezdéshez (ideális vázlatfüzetként).</br></br>Vagy nyisson meg egy mappát a számítógépéről az alábbi <strong>Mappa megnyitása</strong> ikonnal.<br><a href='#' style='float:right;'>ok</a>"
+  "ERROR_PREPARING_COMMIT_DIALOG": "A kommitdialógus előkészítése sikertelen volt"
 });

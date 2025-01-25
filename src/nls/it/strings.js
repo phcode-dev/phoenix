@@ -1038,6 +1038,7 @@ define({
   "VIEW_MORE": "Vedi altro...",
   "NEW_PROJECT_NOTIFICATION": "Fai clic su questa icona per aprire nuovamente la finestra `Avvia progetto`.</br> Visualizza i progetti recenti, apri una cartella o avvia progetti da modelli.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Fai clic qui o premi <b>`{0}`</b> per formattare il codice. </br> <img src=\"styles/images/beautify.gif\">",
+  "DEFAULT_PROJECT_NOTIFICATION": "Apri il <b>Progetto predefinito</b> in {APP_NAME} per iniziare rapidamente (ideale come blocco note).</br></br>Oppure, apri una cartella dal tuo computer con l'icona <strong>Apri cartella</strong> qui sotto.<br><a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "La cartella selezionata <span class='dialog-filename'>{0}</span> non è vuota. Sei sicuro di voler sostituire il contenuto della cartella con il progetto?",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "Fai clic qui per individuare questo &lt;span&gt; nel file HTML",
   "BUILD_WEBSITE_SECTION": "Crea sito web",
@@ -1344,5 +1345,5 @@ define({
   "GIT_TOAST_TITLE": "Esplora le funzionalità Git in Phoenix Code",
   "GIT_TOAST_MESSAGE": "Fai clic sull'icona del pannello Git per gestire il tuo repository. Esegui commit, push, pull e visualizza la cronologia del tuo progetto, tutto in un unico posto.<br><a href='https://docs.phcode.dev/docs/Features/git'>Scopri di più sul pannello Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vota per le funzionalità che desideri vedere in futuro!",
-  "DEFAULT_PROJECT_NOTIFICATION": "Apri il <b>Progetto predefinito</b> in {APP_NAME} per iniziare rapidamente (ideale come blocco note).</br></br>Oppure, apri una cartella dal tuo computer con l'icona <strong>Apri cartella</strong> qui sotto.<br><a href='#' style='float:right;'>ok</a>"
+  "ERROR_PREPARING_COMMIT_DIALOG": "Preparazione della finestra di commit non riuscita"
 });

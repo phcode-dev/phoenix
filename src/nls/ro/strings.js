@@ -1038,6 +1038,7 @@ define({
   "VIEW_MORE": "Vezi mai mult...",
   "NEW_PROJECT_NOTIFICATION": "Faceți clic pe această pictogramă pentru a deschide din nou fereastra `Începeți proiect`. </br> Vedeți Proiecte recente, Deschideți folder sau începeți proiecte din șabloane. </br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "Faceți clic aici sau apăsați <b>`{0}`</b> pentru a formata codul. </br> <img src=\"styles/images/beautify.gif\">",
+  "DEFAULT_PROJECT_NOTIFICATION": "Deschideți <b>Proiectul Implicit</b> în {APP_NAME} pentru a începe rapid (ideal ca blocnotes).</br></br>Sau, deschideți un dosar de pe computer utilizând pictograma <strong>Deschidere Dosar</strong> de mai jos.<br><a href='#' style='float:right;'>ok</a>",
   "DIRECTORY_REPLACE_MESSAGE": "Directorul selectat <span class='dialog-filename'>{0}</span> nu este gol. Sigur doriți să înlocuiți conținutul directorului cu proiectul?",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "Apasă aici pentru a localiza acest &lt;span&gt; în fișierul HTML",
   "BUILD_WEBSITE_SECTION": "Creează site web",
@@ -1344,5 +1345,5 @@ define({
   "GIT_TOAST_TITLE": "Explorați funcțiile Git în Phoenix Code",
   "GIT_TOAST_MESSAGE": "Faceți clic pe pictograma panoului Git pentru a vă gestiona depozitul. Efectuați ușor commit, push, pull și vizualizați istoricul proiectului dvs. - totul într-un singur loc.<br><a href='https://docs.phcode.dev/docs/Features/git'>Aflați mai multe despre panoul Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Votează pentru funcționalitățile pe care dorești să le vezi în continuare!",
-  "DEFAULT_PROJECT_NOTIFICATION": "Deschideți <b>Proiectul Implicit</b> în {APP_NAME} pentru a începe rapid (ideal ca blocnotes).</br></br>Sau, deschideți un dosar de pe computer utilizând pictograma <strong>Deschidere Dosar</strong> de mai jos.<br><a href='#' style='float:right;'>ok</a>"
+  "ERROR_PREPARING_COMMIT_DIALOG": "Pregătirea dialogului de commit a eșuat"
 });

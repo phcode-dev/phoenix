@@ -1038,6 +1038,7 @@ define({
   "VIEW_MORE": "더 보기...",
   "NEW_PROJECT_NOTIFICATION": "이 아이콘을 클릭하면 `프로젝트 시작` 창이 다시 열립니다.</br> 최근 프로젝트 보기, 폴더 열기 또는 템플릿에서 프로젝트 시작하기.</br> <img src=\"styles/images/new_project.png\">",
   "BEAUTIFY_CODE_NOTIFICATION": "여기를 클릭하거나 <b>`{0}`</b>을 눌러 코드를 정리하세요. </br> <img src=\"styles/images/beautify.gif\">",
+  "DEFAULT_PROJECT_NOTIFICATION": "시작하기 안내를 위해 {APP_NAME}에서 <b>기본 프로젝트</b>를 열어보세요(메모장으로 적합).</br></br>또는 아래의 <strong>폴더 열기</strong> 아이콘을 사용하여 컴퓨터에서 폴더를 열 수 있습니다.<br><a href='#' style='float:right;'>확인</a>",
   "DIRECTORY_REPLACE_MESSAGE": "선택한 폴더 <span class='dialog-filename'>{0}</span>이 비어 있지 않습니다. 폴더 내용을 프로젝트로 바꾸시겠습니까?",
   "DEFAULT_PROJECT_HTML_CLICK_HERE": "HTML 파일에서 이 &lt;span&gt;의 위치를 찾으려면 여기를 클릭하세요.",
   "BUILD_WEBSITE_SECTION": "웹사이트 빌드",
@@ -1344,5 +1345,5 @@ define({
   "GIT_TOAST_TITLE": "Phoenix Code의 Git 기능 살펴보기",
   "GIT_TOAST_MESSAGE": "Git 패널 아이콘을 클릭하여 저장소를 관리하세요. 커밋, 푸시, 풀, 프로젝트 기록 보기를 한 곳에서 간편하게 수행할 수 있습니다.<br><a href='https://docs.phcode.dev/docs/Features/git'>Git 패널에 대해 자세히 알아보기 →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "다음에 보고 싶은 기능에 투표하세요!",
-  "DEFAULT_PROJECT_NOTIFICATION": "시작하기 안내를 위해 {APP_NAME}에서 <b>기본 프로젝트</b>를 열어보세요(메모장으로 적합).</br></br>또는 아래의 <strong>폴더 열기</strong> 아이콘을 사용하여 컴퓨터에서 폴더를 열 수 있습니다.<br><a href='#' style='float:right;'>확인</a>"
+  "ERROR_PREPARING_COMMIT_DIALOG": "커밋 대화 상자 준비 실패"
 });
