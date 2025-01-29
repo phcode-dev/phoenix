@@ -7,6 +7,38 @@ We are continuously adding features every week to improve the life of web develo
 
 Here's a list of top features recently added to Phoenix:
 
+<h2><a target="_blank" href="https://docs.phcode.dev/docs/Features/git">Git for Desktop</a></h2>
+
+`Added on January, 2025`
+
+Git is finally here.  Integrated Git source control with a clean, intuitive interface.
+Stage changes, commit, and sync with a single click while keeping your focus on the code.
+Now available in the Windows, Mac and Linux desktop apps of Phoenix code.
+
+
+![Image](https://github.com/user-attachments/assets/aeacc7c0-3ee3-4a80-9b05-f2b48140bcdd)
+
+![Image](https://github.com/user-attachments/assets/6e7b9faf-d57b-448b-a5bb-a111c67489b5)
+
+
+<h2><a target="_blank" href="https://docs.phcode.dev/docs/editing-colors#color-preview">Color Previews</a></h2>
+
+`Added on December, 2024`
+
+Preview the color(s) used in the file in the gutter area. Hovering over a color box highlights the corresponding color
+text in the editor to quickly jump to editing that color.
+
+![image](https://github.com/user-attachments/assets/bedecc32-761b-448e-aced-61828ad3fec6)
+
+## Open in Terminal and File Explorer
+
+`Added on December, 2024`
+
+New "Open In" feature lets you instantly open directories and files in the system Terminal or File Explorer across
+Windows, macOS, and Linux desktop apps!
+
+![Image](https://github.com/user-attachments/assets/710330ae-8b34-4a51-a1f9-4c02736ed9bd)
+
 <h2><a target="_blank" href="https://docs.phcode.dev/docs/editing-text#line-height">Customizable Editor Line Height</a></h2>
 
 `Added on November, 2024`
@@ -98,7 +130,7 @@ CSS files and inline CSS styles/class names in HTML files. This provides an inst
 
 ![classLiveHints](https://github.com/phcode-dev/phoenix/assets/5336369/502c8751-5269-4c34-9178-5ad08f8ad837)
 
-<h2><a target="_blank" href="https://docs.phcode.dev/docs/Features/live-preview-settings/">Custom Live Preview Servers</a></h2>
+<h2><a target="_blank" href="https://docs.phcode.dev/docs/Features/Live%20Preview/live-preview-settings">Custom Live Preview Servers</a></h2>
 
 `Added on April, 2024`
 
