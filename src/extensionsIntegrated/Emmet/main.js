@@ -185,6 +185,36 @@ define(function (require, exports, module) {
     }
 
 
+
+    /**
+     * Find the position where cursor should be placed after expansion
+     * Looks for patterns like '><', '""', ''
+     *
+     * @param {Editor} editor - The editor instance
+     * @param {String} indentedAbbr - the indented abbreviation
+     * @param {Object} startPos - Starting position {line, ch} of the expansion
+     * @returns {Object | false} - Cursor position {line, ch} or false if no pattern found
+     */
+    function findCursorPosition(editor, indentedAbbr, startPos) {
+        const totalLines = startPos.line + indentedAbbr.split('\n').length;
+
+        for (let i = startPos.line; i < totalLines; i++) {
+            const line = editor.document.getLine(i);
+
+            for (let j = 0; j < line.length - 1; j++) {
+                const pair = line[j] + line[j + 1];
+
+                if (pair === '><' || pair === '""' || pair === "''") {
+                    return { line: i, ch: j + 1 };
+                }
+            }
+        }
+
+        return false;
+    }
+
+
+
     /**
      * This function is responsible to replace the abbreviation in the editor,
      * with its expanded version
@@ -217,22 +247,22 @@ define(function (require, exports, module) {
 
             if (char === '}') {
                 wordObj.end.ch += 1;
-                editor.document.replaceRange(
-                    indentedAbbr,
-                    wordObj.start,
-                    wordObj.end
-                );
-                return true;
             }
 
         }
 
-        // Replace the existing abbreviation with the expanded-indented version
+        // Replace the abbreviation
         editor.document.replaceRange(
             indentedAbbr,
             wordObj.start,
             wordObj.end
         );
+
+        // Calculate and set the new cursor position
+        const cursorPos = findCursorPosition(editor, indentedAbbr, wordObj.start);
+        if (cursorPos) {
+            editor.setCursorPos(cursorPos.line, cursorPos.ch);
+        }
     }
 
 
