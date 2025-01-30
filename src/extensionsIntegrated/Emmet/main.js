@@ -46,6 +46,7 @@ define(function (require, exports, module) {
      * A list of all those symbols which if present in a word, that word can be expanded
      */
     const positiveSymbols = [
+        '!',  // document generator
         '>',  // Child Selector
         '+',  // Adjacent Sibling Selector
         '^',  // Parent Selector
@@ -127,6 +128,64 @@ define(function (require, exports, module) {
 
 
     /**
+     * Calculate the indentation level for the current line
+     *
+     * @param {Editor} editor - the editor instance
+     * @param {Object} position - position object with line number
+     * @returns {String} - the indentation string
+     */
+    function getLineIndentation(editor, position) {
+        const line = editor.document.getLine(position.line);
+        const match = line.match(/^\s*/);
+        return match ? match[0] : '';
+    }
+
+
+    /**
+     * Adds proper indentation to multiline Emmet expansion
+     *
+     * @param {String} expandedText - the expanded Emmet abbreviation
+     * @param {String} baseIndent - the base indentation string
+     * @returns {String} - properly indented text
+     */
+    function addIndentation(expandedText, baseIndent) {
+        // Split into lines, preserve empty lines
+        const lines = expandedText.split(/(\r\n|\n)/g);
+
+        // Process each line
+        let result = '';
+        let isFirstLine = true;
+
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i];
+
+            // If it's a newline character, just add it
+            if (line === '\n' || line === '\r\n') {
+                result += line;
+                continue;
+            }
+
+            // Skip indenting empty lines
+            if (line.trim() === '') {
+                result += line;
+                continue;
+            }
+
+            // Don't indent the first line as it inherits the current indent
+            if (isFirstLine) {
+                result += line;
+                isFirstLine = false;
+            } else {
+                // Add base indent plus the existing indent in the expanded text
+                result += baseIndent + line;
+            }
+        }
+
+        return result;
+    }
+
+
+    /**
      * This function is responsible to replace the abbreviation in the editor,
      * with its expanded version
      *
@@ -140,7 +199,13 @@ define(function (require, exports, module) {
      * @param {String} expandedAbbr - the expanded version of abbr that will replace the abbr
      */
     function updateAbbrInEditor(editor, wordObj, expandedAbbr) {
+        // Get the current line's indentation
+        const baseIndent = getLineIndentation(editor, wordObj.start);
 
+        // Add proper indentation to the expanded abbreviation
+        const indentedAbbr = addIndentation(expandedAbbr, baseIndent);
+
+        // Handle the special case for curly braces
         // this check is added because in some situations such as
         // `ul>li{Hello}` and the cursor is before the closing braces right after 'o',
         // then when this is expanded it results in an extra closing braces at the end.
@@ -153,7 +218,7 @@ define(function (require, exports, module) {
             if (char === '}') {
                 wordObj.end.ch += 1;
                 editor.document.replaceRange(
-                    expandedAbbr,
+                    indentedAbbr,
                     wordObj.start,
                     wordObj.end
                 );
@@ -162,9 +227,9 @@ define(function (require, exports, module) {
 
         }
 
-        // replace the existing abbreviation with the expanded version
+        // Replace the existing abbreviation with the expanded-indented version
         editor.document.replaceRange(
-            expandedAbbr,
+            indentedAbbr,
             wordObj.start,
             wordObj.end
         );
