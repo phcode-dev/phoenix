@@ -16,8 +16,16 @@ define(function (require, exports, module) {
         description: Strings.DESCRIPTION_EMMET
     });
 
-
+    /**
+     * A list of all the markup snippets that can be expanded.
+     * For ex: 'link:css', 'iframe'
+     * They expand differently as compared to normal tags.
+     */
     const markupSnippetsList = Object.keys(Emmet.markupSnippets);
+
+    /**
+     * A list of all the HTML tags that expand like normal tags
+     */
     const htmlTags = [
         "a", "abbr", "address", "area", "article", "aside", "audio", "b", "base",
         "bdi", "bdo", "blockquote", "body", "br", "button", "canvas", "caption",
@@ -33,6 +41,32 @@ define(function (require, exports, module) {
         "tbody", "td", "template", "textarea", "tfoot", "th", "thead", "time",
         "title", "tr", "track", "u", "ul", "var", "video", "wbr"
     ];
+
+    /**
+     * A list of all those symbols which if present in a word, that word can be expanded
+     */
+    const positiveSymbols = [
+        '>',  // Child Selector
+        '+',  // Adjacent Sibling Selector
+        '^',  // Parent Selector
+        '*',  // Multiplication (Repeat Element)
+        '[',
+        ']', // Attributes
+        '{',
+        '}', // Text Content
+        '(',
+        ')', // Group
+        '&'   // Current Element Reference
+    ];
+
+    /**
+     * A list of all those symbols which if present in a word, that word cannot be expanded
+     */
+    const negativeSymbols = [
+        '/',     // closing tag
+        '<'    // tag inital
+    ];
+
 
 
     /**
@@ -76,8 +110,8 @@ define(function (require, exports, module) {
         // Look backwards
         while (start > 0) {
             const char = line.charAt(start - 1);
-            // Include the valid Emmet characters such as : + * >
-            if (/[a-zA-Z0-9:+*>!\-@#}{]/.test(char)) {
+            // Include all the valid emmet characters
+            if (/[a-zA-Z0-9:+*<>/!\-@#}{]/.test(char)) {
                 start--;
             } else {
                 break;
@@ -91,6 +125,20 @@ define(function (require, exports, module) {
         };
     }
 
+
+    /**
+     * This function is responsible to replace the abbreviation in the editor,
+     * with its expanded version
+     *
+     * @param {Editor} editor - the editor instance
+     * @param {Object} wordObj -  an object in the format :
+     * {
+     *      word: "",   // the word before the cursor
+     *      start: {line: Number, ch: Number},
+     *      end: {line: Number, ch: Number}
+     * }
+     * @param {String} expandedAbbr - the expanded version of abbr that will replace the abbr
+     */
     function updateAbbrInEditor(editor, wordObj, expandedAbbr) {
 
         // this check is added because in some situations such as
@@ -123,30 +171,63 @@ define(function (require, exports, module) {
     }
 
 
+    /**
+     * This function checks whether the abbreviation can be expanded or not.
+     * There are a lot of cases to check:
+     * There should not be any negative symbols
+     * The abbr should be either in htmlTags or in markupSnippetsList
+     * For other cases such as 'ul>li', we will check if there is any,
+     * positive word. This is done to handle complex abbreviations such as,
+     * 'ul>li' or 'li*3{Hello}'. So we check if the word includes any positive symbols.
+     *
+     * @param {Editor} editor - the editor instance
+     * @param {String} word - the abbr
+     * @param {Object} config - the config object, to make sure it is a valid file type,
+     * refer to createConfig function for more info about config object.
+     * @returns {String | false} - returns the expanded abbr, and if cannot be expanded, returns false
+     */
     function isExpandable(editor, word, config) {
 
-        if (markupSnippetsList.includes(word) || htmlTags.includes(word)) {
-            const expanded = Emmet.expandAbbreviation(word, config);
+        // make sure that word doesn't contain any negativeSymbols
+        if (negativeSymbols.some(symbol => word.includes(symbol))) {
+            return false;
+        }
 
-            if (word !== expanded) {
-                return expanded;
-            }
+        // the word must be either in markupSnippetsList, htmlList or it must have a positive symbol
+        if (markupSnippetsList.includes(word) ||
+            htmlTags.includes(word) ||
+            positiveSymbols.some(symbol => word.includes(symbol))) {
+            const expanded = Emmet.expandAbbreviation(word, config);
+            return expanded;
         }
 
         return false;
     }
 
 
+    /**
+     * Responsible to handle the flow of the program
+     *
+     * @param {Editor} editor - the editor instance
+     * @param {Object} keyboardEvent - the keyboard event object
+     */
     function driver(editor, keyboardEvent) {
         const config = createConfig(editor);
 
         if (config) {
+
+            // to make sure it is an html file
             if (config.syntax === "html") {
                 const wordObj = getWordBeforeCursor(editor);
-                if (wordObj.word) {
+
+                // make sure we donot have empty spaces
+                if (wordObj.word.trim()) {
+
                     const expandedAbbr = isExpandable(editor, wordObj.word, config);
                     if (expandedAbbr) {
                         updateAbbrInEditor(editor, wordObj, expandedAbbr);
+
+                        // prevent the default working of the 'tab' key
                         keyboardEvent.preventDefault();
                     }
                 }
@@ -168,11 +249,13 @@ define(function (require, exports, module) {
         if (!enabled) {
             return false;
         }
+
+        // if not a 'tab' key press, ignore
         if (keyboardEvent.key !== "Tab") {
             return false;
         }
 
-        // this function leads the process
+        // the function that drives the flow of the program
         driver(editor, keyboardEvent);
     }
 
