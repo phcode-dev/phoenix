@@ -210,6 +210,36 @@ define(function (require, exports, module) {
             }
         }
 
+        // Look for opening and closing tag pairs with empty line in between
+        // <body>
+        //      |
+        // </body>
+        // here in such scenarios, we want the cursor to be placed in between
+        // Look for opening and closing tag pairs with empty line in between
+        for (let i = startPos.line; i < totalLines; i++) {
+            const line = editor.document.getLine(i).trim();
+            if (line.endsWith('>') && line.includes('<') && !line.includes('</')) {
+                if (editor.document.getLine(i + 1) && !editor.document.getLine(i + 1).trim()) {
+                    const tempLine = editor.document.getLine(i + 2);
+                    if (tempLine) {
+                        const trimmedTempLine = tempLine.trim();
+                        if (trimmedTempLine.includes('</') && trimmedTempLine.startsWith('<')) {
+                            // Get the current line's indentation by counting spaces/tabs
+                            const openingTagLine = editor.document.getLine(i);
+                            const indentMatch = openingTagLine.match(/^[\s\t]*/)[0];
+                            // Add 4 more spaces (or equivalent tab) for inner content
+                            const extraIndent = '    ';  // 4 spaces for additional indentation
+
+                            return {
+                                line: i + 1,
+                                ch: indentMatch.length + extraIndent.length
+                            };
+                        }
+                    }
+                }
+            }
+        }
+
         return false;
     }
 
