@@ -46,6 +46,8 @@ define(function (require, exports, module) {
      * A list of all those symbols which if present in a word, that word can be expanded
      */
     const positiveSymbols = [
+        '.',  // classes
+        '#',  // ids
         '!',  // document generator
         '>',  // Child Selector
         '+',  // Adjacent Sibling Selector
@@ -125,7 +127,9 @@ define(function (require, exports, module) {
                 insideBraces = false;
             }
 
-            if (/[a-zA-Z0-9:+*<>/!\-@#}{]/.test(char) || (insideBraces && char === ' ')) {
+            if (/[a-zA-Z0-9:+*<>()/!$\-@#}{]/.test(char) ||
+                (char === '.' || char === '#') ||
+                (insideBraces && char === ' ')) {
                 start--;
             } else {
                 break;
@@ -217,7 +221,14 @@ define(function (require, exports, module) {
             for (let j = 0; j < line.length - 1; j++) {
                 const pair = line[j] + line[j + 1];
 
-                if (pair === '><' || pair === '""' || pair === "''") {
+                if (pair === '""' || pair === "''") {
+                    return { line: i, ch: j + 1 };
+                }
+            }
+            for (let j = 0; j < line.length - 1; j++) {
+                const pair = line[j] + line[j + 1];
+
+                if (pair === '><') {
                     return { line: i, ch: j + 1 };
                 }
             }
