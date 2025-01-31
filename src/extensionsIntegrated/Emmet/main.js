@@ -66,8 +66,7 @@ define(function (require, exports, module) {
      * A list of all those symbols which if present in a word, that word cannot be expanded
      */
     const negativeSymbols = [
-        '/',     // closing tag
-        '<'    // tag inital
+        '</'   // closing tag
     ];
 
 
@@ -110,6 +109,8 @@ define(function (require, exports, module) {
         const line = editor.document.getLine(pos.line);
         let start = pos.ch;
         let insideBraces = false;
+        // special chars that may be in emmet abbr
+        const specialChars = new Set(['.', '#', '[', ']', '"', '=', '//', ':', '-', ',']);
 
         // If the cursor is right before '}', move it inside
         if (line.charAt(start) === '}') {
@@ -121,14 +122,14 @@ define(function (require, exports, module) {
         while (start > 0) {
             const char = line.charAt(start - 1);
 
-            if (char === '}') {
+            if (char === '}' || char === ']') {
                 insideBraces = true;
-            } else if (char === '{') {
+            } else if (char === '{' || char === '[') {
                 insideBraces = false;
             }
 
             if (/[a-zA-Z0-9:+*<>()/!$\-@#}{]/.test(char) ||
-                (char === '.' || char === '#') ||
+                specialChars.has(char) ||
                 (insideBraces && char === ' ')) {
                 start--;
             } else {
@@ -289,18 +290,24 @@ define(function (require, exports, module) {
         // Add proper indentation to the expanded abbreviation
         const indentedAbbr = addIndentation(expandedAbbr, baseIndent);
 
-        // Handle the special case for curly braces
+        // Handle the special case for braces
         // this check is added because in some situations such as
         // `ul>li{Hello}` and the cursor is before the closing braces right after 'o',
         // then when this is expanded it results in an extra closing braces at the end.
-        // so we remove the extra '}' from the end
-        if (wordObj.word.includes('{')) {
+        // so we remove the extra closing brace from the end
+        if (wordObj.word.includes('{') || wordObj.word.includes('[')) {
             const pos = editor.getCursorPos();
             const line = editor.document.getLine(pos.line);
             const char = line.charAt(wordObj.end.ch);
+            const charsNext = line.charAt(wordObj.end.ch+1);
 
-            if (char === '}') {
+            if (char === '}' || char === ']') {
                 wordObj.end.ch += 1;
+            }
+
+            // sometimes at the end we get `"]` as extra with some abbreviations.
+            if(char === '"' && charsNext && charsNext === ']') {
+                wordObj.end.ch += 2;
             }
 
         }
@@ -346,8 +353,35 @@ define(function (require, exports, module) {
         if (markupSnippetsList.includes(word) ||
             htmlTags.includes(word) ||
             positiveSymbols.some(symbol => word.includes(symbol))) {
-            const expanded = Emmet.expandAbbreviation(word, config);
-            return expanded;
+
+            try {
+                const expanded = Emmet.expandAbbreviation(word, config);
+                return expanded;
+            } catch (error) {
+
+                // emmet api throws an error when abbr contains unclosed quotes, handling that case
+                const pos = editor.getCursorPos();
+                const line = editor.document.getLine(pos.line);
+                const nextChar = line.charAt(pos.ch);
+
+                if (nextChar) {
+                    // If the next character is a quote, add quote to abbr
+                    if (nextChar === '"' || nextChar === "'") {
+                        const modifiedWord = word + nextChar;
+
+                        try {
+                            const expandedModified = Emmet.expandAbbreviation(modifiedWord, config);
+                            return expandedModified;
+                        } catch (innerError) {
+                            // If it still fails, return false
+                            return false;
+                        }
+                    }
+                }
+
+                // If no quote is found or expansion fails, return false
+                return false;
+            }
         }
 
         return false;
