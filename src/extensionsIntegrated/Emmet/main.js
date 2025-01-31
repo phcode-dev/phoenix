@@ -107,12 +107,25 @@ define(function (require, exports, module) {
         const pos = editor.getCursorPos();
         const line = editor.document.getLine(pos.line);
         let start = pos.ch;
+        let insideBraces = false;
+
+        // If the cursor is right before '}', move it inside
+        if (line.charAt(start) === '}') {
+            start--;
+            insideBraces = true;
+        }
 
         // Look backwards
         while (start > 0) {
             const char = line.charAt(start - 1);
-            // Include all the valid emmet characters
-            if (/[a-zA-Z0-9:+*<>/!\-@#}{]/.test(char)) {
+
+            if (char === '}') {
+                insideBraces = true;
+            } else if (char === '{') {
+                insideBraces = false;
+            }
+
+            if (/[a-zA-Z0-9:+*<>/!\-@#}{]/.test(char) || (insideBraces && char === ' ')) {
                 start--;
             } else {
                 break;
