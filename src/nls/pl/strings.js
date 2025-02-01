@@ -1342,8 +1342,9 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "Nie wybrano zdalnego repozytorium dla {0}!",
   "ERROR_BRANCH_LIST": "Pobieranie listy gałęzi nie powiodło się",
   "ERROR_FETCH_REMOTE": "Pobieranie informacji o zdalnym repozytorium nie powiodło się",
+  "ERROR_PREPARING_COMMIT_DIALOG": "Przygotowanie okna dialogowego zatwierdzenia nie powiodło się",
   "GIT_TOAST_TITLE": "Poznaj funkcje Gita w Phoenix Code",
   "GIT_TOAST_MESSAGE": "Kliknij ikonę panelu Git, aby zarządzać swoim repozytorium. Łatwo zatwierdzaj, przesyłaj, pobieraj i przeglądaj historię swojego projektu — wszystko w jednym miejscu.<br><a href='https://docs.phcode.dev/docs/Features/git'>Dowiedz się więcej o panelu Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Zagłosuj na funkcje, które chcesz zobaczyć w przyszłości!",
-  "ERROR_PREPARING_COMMIT_DIALOG": "Przygotowanie okna dialogowego zatwierdzenia nie powiodło się"
+  "ERROR_STAGE_FAILED": "Nie udało się dodać plików do poczekalni Git"
 });

@@ -1342,8 +1342,9 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "Δεν έχει επιλεγεί απομακρυσμένο για το {0}!",
   "ERROR_BRANCH_LIST": "Αποτυχία λήψης λίστας κλάδων",
   "ERROR_FETCH_REMOTE": "Αποτυχία λήψης πληροφοριών απομακρυσμένου",
+  "ERROR_PREPARING_COMMIT_DIALOG": "Αποτυχία προετοιμασίας παραθύρου δημιουργίας commit",
   "GIT_TOAST_TITLE": "Εξερευνήστε τις Λειτουργίες Git στο Phoenix Code",
   "GIT_TOAST_MESSAGE": "Κάντε κλικ στο εικονίδιο του πίνακα Git για να διαχειριστείτε το αποθετήριό σας. Κάντε εύκολα commit, push, pull και δείτε το ιστορικό του έργου σας—όλα σε ένα μέρος.<br><a href='https://docs.phcode.dev/docs/Features/git'>Μάθετε περισσότερα για τον πίνακα Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Ψηφίστε για τις λειτουργίες που θέλετε να δείτε στη συνέχεια!",
-  "ERROR_PREPARING_COMMIT_DIALOG": "Αποτυχία προετοιμασίας παραθύρου δημιουργίας commit"
+  "ERROR_STAGE_FAILED": "Αποτυχία προσθήκης αρχείων στο Git"
 });

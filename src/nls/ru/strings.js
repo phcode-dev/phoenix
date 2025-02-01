@@ -1342,8 +1342,9 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "Для {0} не выбран удалённый репозиторий!",
   "ERROR_BRANCH_LIST": "Не удалось получить список веток",
   "ERROR_FETCH_REMOTE": "Не удалось получить информацию об удалённом репозитории",
+  "ERROR_PREPARING_COMMIT_DIALOG": "Не удалось подготовить диалог фиксации",
   "GIT_TOAST_TITLE": "Возможности Git в Phoenix Code",
   "GIT_TOAST_MESSAGE": "Нажмите на значок панели Git для управления вашим репозиторием. Легко выполняйте коммиты, отправляйте (push), получайте (pull) изменения и просматривайте историю вашего проекта — все в одном месте.<br><a href='https://docs.phcode.dev/docs/Features/git'>Узнать больше о панели Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Проголосуйте за функции, которые вы хотите увидеть в будущем!",
-  "ERROR_PREPARING_COMMIT_DIALOG": "Не удалось подготовить диалог фиксации"
+  "ERROR_STAGE_FAILED": "Не удалось проиндексировать файлы в Git"
 });

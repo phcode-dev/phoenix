@@ -1342,8 +1342,9 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "Nebyl vybrán žádný vzdálený repozitář pro {0}!",
   "ERROR_BRANCH_LIST": "Získání seznamu větví selhalo",
   "ERROR_FETCH_REMOTE": "Získání informací o vzdáleném repozitáři selhalo",
+  "ERROR_PREPARING_COMMIT_DIALOG": "Chyba při přípravě dialogu pro commit",
   "GIT_TOAST_TITLE": "Prozkoumejte funkce Gitu v Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klikněte na ikonu panelu Git pro správu vašeho repozitáře. Snadno commitujte, pushujte, pullujte a prohlížejte si historii projektu – vše na jednom místě.<br><a href='https://docs.phcode.dev/docs/Features/git'>Zjistěte více o panelu Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Hlasujte pro funkce, které chcete vidět v další verzi!",
-  "ERROR_PREPARING_COMMIT_DIALOG": "Chyba při přípravě dialogu pro commit"
+  "ERROR_STAGE_FAILED": "Nepodařilo se připravit soubory ke commitu v Gitu"
 });

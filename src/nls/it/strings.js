@@ -1342,8 +1342,9 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "Nessun remote selezionato per {0}!",
   "ERROR_BRANCH_LIST": "Impossibile ottenere l'elenco dei branch",
   "ERROR_FETCH_REMOTE": "Recupero delle informazioni del remote non riuscito",
+  "ERROR_PREPARING_COMMIT_DIALOG": "Preparazione della finestra di commit non riuscita",
   "GIT_TOAST_TITLE": "Esplora le funzionalità Git in Phoenix Code",
   "GIT_TOAST_MESSAGE": "Fai clic sull'icona del pannello Git per gestire il tuo repository. Esegui commit, push, pull e visualizza la cronologia del tuo progetto, tutto in un unico posto.<br><a href='https://docs.phcode.dev/docs/Features/git'>Scopri di più sul pannello Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vota per le funzionalità che desideri vedere in futuro!",
-  "ERROR_PREPARING_COMMIT_DIALOG": "Preparazione della finestra di commit non riuscita"
+  "ERROR_STAGE_FAILED": "Impossibile aggiungere i file all'indice di Git"
 });

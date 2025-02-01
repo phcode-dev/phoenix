@@ -1342,8 +1342,9 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "Ingen fjärranslutning har valts för {0}!",
   "ERROR_BRANCH_LIST": "Det gick inte att hämta grenlistan",
   "ERROR_FETCH_REMOTE": "Det gick inte att hämta information om fjärranslutning",
+  "ERROR_PREPARING_COMMIT_DIALOG": "Det gick inte att förbereda commit-dialogrutan",
   "GIT_TOAST_TITLE": "Utforska Git-funktioner i Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klicka på Git-panelens ikon för att hantera din repository. Committa, pusha, pulla och se din projekthistorik enkelt – allt på ett ställe.<br><a href='https://docs.phcode.dev/docs/Features/git'>Läs mer om Git-panelen →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Rösta på funktionerna du vill se härnäst!",
-  "ERROR_PREPARING_COMMIT_DIALOG": "Det gick inte att förbereda commit-dialogrutan"
+  "ERROR_STAGE_FAILED": "Det gick inte att lägga till filer i Git-index"
 });

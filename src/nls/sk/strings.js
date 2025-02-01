@@ -1342,8 +1342,9 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "Pre {0} nebol vybraný žiadny vzdialený repozitár!",
   "ERROR_BRANCH_LIST": "Získanie zoznamu vetiev zlyhalo",
   "ERROR_FETCH_REMOTE": "Získanie informácií o vzdialenom repozitári zlyhalo",
+  "ERROR_PREPARING_COMMIT_DIALOG": "Chyba pri príprave dialógového okna pre commit",
   "GIT_TOAST_TITLE": "Preskúmajte funkcie Gitu v Phoenix Code",
   "GIT_TOAST_MESSAGE": "Kliknite na ikonu panela Git pre správu vášho repozitára. Jednoducho commitujte, pushujte, pullujte a prezerajte si históriu vášho projektu – všetko na jednom mieste.<br><a href='https://docs.phcode.dev/docs/Features/git'>Zistite viac o paneli Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Hlasujte za funkcie, ktoré chcete vidieť v ďalšej verzii!",
-  "ERROR_PREPARING_COMMIT_DIALOG": "Chyba pri príprave dialógového okna pre commit"
+  "ERROR_STAGE_FAILED": "Nepodarilo sa pridať súbory do stagingu Gitu"
 });

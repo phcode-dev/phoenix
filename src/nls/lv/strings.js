@@ -1342,8 +1342,9 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "{0} nav izvēlēta attālā krātuve!",
   "ERROR_BRANCH_LIST": "Neizdevās iegūt zaru sarakstu",
   "ERROR_FETCH_REMOTE": "Neizdevās iegūt informāciju par attālo krātuvi",
+  "ERROR_PREPARING_COMMIT_DIALOG": "Neizdevās sagatavot izmaiņu apstiprināšanas dialogu",
   "GIT_TOAST_TITLE": "Izpētiet Git funkcijas Phoenix Code",
   "GIT_TOAST_MESSAGE": "Noklikšķiniet uz Git paneļa ikonas, lai pārvaldītu savu repozitoriju. Ērti veiciet commit, push, pull un skatiet sava projekta vēsturi — viss vienā vietā.<br><a href='https://docs.phcode.dev/docs/Features/git'>Uzziniet vairāk par Git paneli →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Nobalsot par funkcijām, kuras vēlaties redzēt nākamreiz!",
-  "ERROR_PREPARING_COMMIT_DIALOG": "Neizdevās sagatavot izmaiņu apstiprināšanas dialogu"
+  "ERROR_STAGE_FAILED": "Neizdevās iestudēt failus Gitā"
 });

@@ -1342,8 +1342,9 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "{0} 尚未選取任何遠端！",
   "ERROR_BRANCH_LIST": "取得分支列表失敗",
   "ERROR_FETCH_REMOTE": "擷取遠端資訊失敗",
+  "ERROR_PREPARING_COMMIT_DIALOG": "準備提交對話框失敗",
   "GIT_TOAST_TITLE": "在 Phoenix Code 中探索 Git 功能",
   "GIT_TOAST_MESSAGE": "按一下 Git 面板圖示即可管理您的儲存庫。輕鬆提交、推送、提取和檢視您的專案歷史記錄，一切盡在掌握之中。<br><a href='https://docs.phcode.dev/docs/Features/git'>深入瞭解 Git 面板 →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "投票選出您希望看到的下個功能！",
-  "ERROR_PREPARING_COMMIT_DIALOG": "準備提交對話框失敗"
+  "ERROR_STAGE_FAILED": "Git 檔案暫存失敗"
 });

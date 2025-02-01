@@ -1342,8 +1342,9 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "هیچ ریموتی برای {0} انتخاب نشده است!",
   "ERROR_BRANCH_LIST": "دریافت لیست شاخه‌ها با شکست مواجه شد",
   "ERROR_FETCH_REMOTE": "دریافت اطلاعات ریموت با شکست مواجه شد",
+  "ERROR_PREPARING_COMMIT_DIALOG": "خطا در آماده‌سازی پنجره ثبت کامیت",
   "GIT_TOAST_TITLE": "کاوش ویژگی‌های گیت در Phoenix Code",
   "GIT_TOAST_MESSAGE": "برای مدیریت مخزن خود روی آیکون پنل گیت کلیک کنید. به راحتی کامیت، پوش، پول و مشاهده تاریخچه پروژه خود را - همه در یک مکان - انجام دهید.<br><a href='https://docs.phcode.dev/docs/Features/git'>درباره پنل گیت بیشتر بدانید →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "برای قابلیت‌هایی که می‌خواهید در آینده ببینید، رأی دهید!",
-  "ERROR_PREPARING_COMMIT_DIALOG": "خطا در آماده‌سازی پنجره ثبت کامیت"
+  "ERROR_STAGE_FAILED": "خطا در مرحله‌بندی فایل‌ها در گیت"
 });

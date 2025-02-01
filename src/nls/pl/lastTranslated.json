@@ -677,6 +677,7 @@
   "ERROR_SAVE_FIRST": "Save the document first!",
   "ERROR_SAVING_FILE": "An error occurred when trying to save the file <span class='dialog-filename'>{0}</span>. {1}",
   "ERROR_SAVING_FILE_TITLE": "Error Saving File",
+  "ERROR_STAGE_FAILED": "Failed to stage files in Git",
   "ERROR_SWITCHING_BRANCHES": "Switching branches failed",
   "ERROR_TERMINAL_NOT_FOUND": "Terminal was not found for your OS, you can define a custom Terminal command in the settings",
   "ERROR_TERN_FAILED": "Unable to get data from Tern",

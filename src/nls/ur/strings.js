@@ -1342,8 +1342,9 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "{0} کے لیے کوئی ریموٹ منتخب نہیں کیا گیا ہے۔",
   "ERROR_BRANCH_LIST": "برانچ لسٹ حاصل کرنے میں ناکامی۔",
   "ERROR_FETCH_REMOTE": "ریموٹ معلومات حاصل کرنے میں ناکامی۔",
+  "ERROR_PREPARING_COMMIT_DIALOG": "کمیٹ ڈائیلاگ تیار کرنے میں ناکام",
   "GIT_TOAST_TITLE": "فینکس کوڈ میں گٹ فیچرز دریافت کریں",
   "GIT_TOAST_MESSAGE": "اپنی ذخیرہ گاہ (repository) کو منظم کرنے کے لیے گٹ پینل آئیکن پر کلک کریں۔ آسانی سے کامٹ، پش، پل کریں، اور اپنے پروجیکٹ کی تاریخ دیکھیں—سب ایک ہی جگہ پر۔<br><a href='https://docs.phcode.dev/docs/Features/git'>گٹ پینل کے بارے میں مزید جانیں →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "اپنی پسندیدہ خصوصیات کے لیے ووٹ دیں!",
-  "ERROR_PREPARING_COMMIT_DIALOG": "کمیٹ ڈائیلاگ تیار کرنے میں ناکام"
+  "ERROR_STAGE_FAILED": "گٹ میں فائلز کو اسٹیج کرنے میں ناکام"
 });

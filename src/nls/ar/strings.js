@@ -1342,8 +1342,9 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "لم يتم تحديد جهاز تحكم عن بعد لـ {0}!",
   "ERROR_BRANCH_LIST": "فشل عملية الحصول على قائمة الفروع",
   "ERROR_FETCH_REMOTE": "فشل جلب معلومات جهاز التحكم عن بعد",
+  "ERROR_PREPARING_COMMIT_DIALOG": "فشل تحضير مربع حوار الالتزام",
   "GIT_TOAST_TITLE": "استكشف ميزات Git في Phoenix Code",
   "GIT_TOAST_MESSAGE": "انقر على رمز لوحة Git لإدارة مستودعك. يمكنك بسهولة تنفيذ الالتزام والدفع والسحب وعرض سجل مشروعك - كل ذلك في مكان واحد.<br><a href='https://docs.phcode.dev/docs/Features/git'>تعرّف على المزيد حول لوحة Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "صوت للميزات التي ترغب برؤيتها تالياً!",
-  "ERROR_PREPARING_COMMIT_DIALOG": "فشل تحضير مربع حوار الالتزام"
+  "ERROR_STAGE_FAILED": "فشل تجهيز الملفات في Git"
 });

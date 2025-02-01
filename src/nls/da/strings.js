@@ -1342,8 +1342,9 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "Ingen remote er valgt for {0}!",
   "ERROR_BRANCH_LIST": "Det lykkedes ikke at hente grenliste",
   "ERROR_FETCH_REMOTE": "Hentning af remote-information mislykkedes",
+  "ERROR_PREPARING_COMMIT_DIALOG": "Forberedelse af commit-dialog mislykkedes",
   "GIT_TOAST_TITLE": "Udforsk Git-funktioner i Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klik på Git-panelikonet for at administrere dit repository. Commit, push, pull og se din projekthistorik nemt – alt sammen på ét sted.<br><a href='https://docs.phcode.dev/docs/Features/git'>Læs mere om Git-panelet →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Stem på de funktioner, du gerne vil se!",
-  "ERROR_PREPARING_COMMIT_DIALOG": "Forberedelse af commit-dialog mislykkedes"
+  "ERROR_STAGE_FAILED": "Kunne ikke stage filer i Git"
 });

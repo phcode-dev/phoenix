@@ -1342,8 +1342,9 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "Er is geen remote geselecteerd voor {0}!",
   "ERROR_BRANCH_LIST": "Ophalen van branch-lijst mislukt",
   "ERROR_FETCH_REMOTE": "Ophalen van remote-informatie mislukt",
+  "ERROR_PREPARING_COMMIT_DIALOG": "Voorbereiden commit-dialoogvenster mislukt",
   "GIT_TOAST_TITLE": "Ontdek Git-functies in Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klik op het Git-paneelpictogram om uw repository te beheren. Commit, push, pull en bekijk uw projectgeschiedenis eenvoudig - alles op één plek.<br><a href='https://docs.phcode.dev/docs/Features/git'>Meer informatie over het Git-paneel →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Stem op de functies die u graag wilt zien!",
-  "ERROR_PREPARING_COMMIT_DIALOG": "Voorbereiden commit-dialoogvenster mislukt"
+  "ERROR_STAGE_FAILED": "Bestanden konden niet worden gestaged in Git"
 });

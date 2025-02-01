@@ -1342,8 +1342,9 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "Nincs kiválasztva távoli adattár a(z) {0} számára!",
   "ERROR_BRANCH_LIST": "Ágak listájának lekérése sikertelen",
   "ERROR_FETCH_REMOTE": "Távoli adattár információinak lekérése sikertelen",
+  "ERROR_PREPARING_COMMIT_DIALOG": "A kommitdialógus előkészítése sikertelen volt",
   "GIT_TOAST_TITLE": "Fedezd fel a Git funkciókat a Phoenix Code-ban",
   "GIT_TOAST_MESSAGE": "Kattintson a Git panel ikonra a verziókövető rendszer kezeléséhez. Könnyedén végezhet commit, push és pull műveleteket, valamint megtekintheti a projekt előzményeit – mindezt egy helyen.<br><a href='https://docs.phcode.dev/docs/Features/git'>Tudj meg többet a Git panelről →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Szavazzon azokra a funkciókra, amelyeket a jövőben látni szeretne!",
-  "ERROR_PREPARING_COMMIT_DIALOG": "A kommitdialógus előkészítése sikertelen volt"
+  "ERROR_STAGE_FAILED": "Nem sikerült a fájlok staged állapotba állítása a Gitben"
 });
