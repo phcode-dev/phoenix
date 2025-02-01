@@ -1050,15 +1050,23 @@ define(function (require, exports) {
 
                 lastCheckOneClicked = file;
 
+                let stagePromise;
                 if (isChecked) {
-                    Git.stage(file, status === Git.FILE_STATUS.DELETED).then(function () {
-                        Git.status();
+                    stagePromise = Git.stage(file, status === Git.FILE_STATUS.DELETED).then(function () {
+                        return Git.status();
                     });
                 } else {
-                    Git.unstage(file).then(function () {
-                        Git.status();
+                    stagePromise = Git.unstage(file).then(function () {
+                        return Git.status();
                     });
                 }
+                stagePromise.catch((err)=>{
+                    ErrorHandler.showError(err, Strings.ERROR_STAGE_FAILED, {
+                        dontStripError: true,
+                        errorMetric: "stageOne",
+                        useNotification: true
+                    });
+                });
             })
             .on("dblclick", ".check-one", function (e) {
                 e.stopPropagation();
@@ -1244,9 +1252,19 @@ define(function (require, exports) {
                     return Git.stageAll().then(function () {
                         return Git.status();
                     }).catch((err)=>{
-                        console.error(err);
-                        // rethrowing with stripped git error details as it may have sensitive info
-                        throw new Error("Error stage all by checkbox in git panel.js. this should not have happened");
+                        // this usually happens hwen a git index is locked Eg. error.
+                        //  Error: Error: fatal: Unable to create 'E:/.../test-git/.git/index.lock': File exists.
+                        //
+                        // Another git process seems to be running in this repository, e.g.
+                        // an editor opened by 'git commit'. Please make sure all processes
+                        // are terminated then try again. If it still fails, a git process
+                        // may have crashed in this repository earlier:
+                        // remove the file manually to continue.
+                        ErrorHandler.showError(err, Strings.ERROR_STAGE_FAILED, {
+                            dontStripError: true,
+                            errorMetric: "stageAll",
+                            useNotification: true
+                        });
                     });
                 }
                 return Git.resetIndex().then(function () {

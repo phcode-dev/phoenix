@@ -127,6 +127,7 @@ define(function (require, exports, module) {
             endCB && endCB();
         }
         $NotificationPopup.removeClass("animateOpen");
+        $NotificationPopup.removeClass("instantOpen");
         $NotificationPopup
             .addClass("animateClose")
             .one("transitionend", cleanup)
@@ -187,10 +188,11 @@ define(function (require, exports, module) {
      * The template can either be a string or a jQuery object representing a DOM node that is *not* in the current DOM.
      *
      * Creating a notification popup
+     *
+     * ```js
      * // note that you can even provide an HTML Element node with
      * // custom event handlers directly here instead of HTML text.
      * let notification1 = NotificationUI.createFromTemplate(
-     * ```js
      *   "<div>Click me to locate the file in file tree</div>", "showInfileTree",{
      *       allowedPlacements: ['top', 'bottom'],
      *       dismissOnClick: false,
@@ -345,12 +347,13 @@ define(function (require, exports, module) {
      * ```
      * @param {string} title The title for the notification.
      * @param {string|Element} template A string template or HTML Element to use as the dialog HTML.
-     * @param {{dismissOnClick, autoCloseTimeS, toastStyle}} [options] optional, supported
+     * @param {{dismissOnClick, autoCloseTimeS, toastStyle, instantOpen}} [options] optional, supported
      *   * options are:
      *   * `autoCloseTimeS` - Time in seconds after which the notification should be auto closed. Default is never.
      *   * `dismissOnClick` - when clicked, the notification is closed. Default is true(dismiss).
      *   * `toastStyle` - To style the toast notification for error, warning, info etc. Can be
      *     one of `NotificationUI.NOTIFICATION_STYLES_CSS_CLASS.*` or your own css class name.
+     *   * `instantOpen` - To instantly open the popup without any open animation delays
      * @return {Notification} Object with a done handler that resolves when the notification closes.
      * @type {function}
      */
@@ -378,7 +381,7 @@ define(function (require, exports, module) {
         // Animate in
         // Must wait a cycle for the "display: none" to drop out before CSS transitions will work
         setTimeout(function () {
-            $NotificationPopup.addClass("animateOpen");
+            $NotificationPopup.addClass( options.instantOpen ? "instantOpen" : "animateOpen");
         }, 0);
 
         if(options.autoCloseTimeS){
