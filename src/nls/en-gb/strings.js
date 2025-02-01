@@ -1342,8 +1342,9 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "No remote has been selected for {0}!",
   "ERROR_BRANCH_LIST": "Getting the branch list failed",
   "ERROR_FETCH_REMOTE": "Fetching remote information failed",
+  "ERROR_PREPARING_COMMIT_DIALOG": "Failed to prepare the commit dialogue",
   "GIT_TOAST_TITLE": "Explore Git Features in Phoenix Code",
   "GIT_TOAST_MESSAGE": "Click the Git panel icon to manage your repository. Easily commit, push, pull, and view your project history—all in one place.<br><a href='https://docs.phcode.dev/docs/Features/git'>Learn more about the Git panel →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vote for the features you'd like to see next!",
-  "ERROR_PREPARING_COMMIT_DIALOG": "Failed to prepare the commit dialogue"
+  "ERROR_STAGE_FAILED": "Failed to stage files in Git"
 });

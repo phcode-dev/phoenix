@@ -1342,8 +1342,9 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "Няма избрано отдалечено хранилище за {0}!",
   "ERROR_BRANCH_LIST": "Получаването на списъка с клонове е неуспешно",
   "ERROR_FETCH_REMOTE": "Извличането на информация за отдалеченото хранилище е неуспешно",
+  "ERROR_PREPARING_COMMIT_DIALOG": "Неуспешно подготвяне на диалогов прозорец за commit",
   "GIT_TOAST_TITLE": "Разгледайте Git функциите в Phoenix Code",
   "GIT_TOAST_MESSAGE": "Щракнете върху иконата на Git панела, за да управлявате хранилището си. Лесно създавайте commit, push, pull и преглеждайте историята на проекта си – всичко на едно място.<br><a href='https://docs.phcode.dev/docs/Features/git'>Научете повече за Git панела →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Гласувайте за функциите, които искате да видите следващи!",
-  "ERROR_PREPARING_COMMIT_DIALOG": "Неуспешно подготвяне на диалогов прозорец за commit"
+  "ERROR_STAGE_FAILED": "Неуспешно добавяне на файлове в индекса на Git"
 });

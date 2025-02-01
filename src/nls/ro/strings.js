@@ -1342,8 +1342,9 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "Niciun depozit remote nu a fost selectat pentru {0}!",
   "ERROR_BRANCH_LIST": "Obținerea listei de branch-uri a eșuat",
   "ERROR_FETCH_REMOTE": "Obținerea informațiilor despre depozitul remote a eșuat",
+  "ERROR_PREPARING_COMMIT_DIALOG": "Pregătirea dialogului de commit a eșuat",
   "GIT_TOAST_TITLE": "Explorați funcțiile Git în Phoenix Code",
   "GIT_TOAST_MESSAGE": "Faceți clic pe pictograma panoului Git pentru a vă gestiona depozitul. Efectuați ușor commit, push, pull și vizualizați istoricul proiectului dvs. - totul într-un singur loc.<br><a href='https://docs.phcode.dev/docs/Features/git'>Aflați mai multe despre panoul Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Votează pentru funcționalitățile pe care dorești să le vezi în continuare!",
-  "ERROR_PREPARING_COMMIT_DIALOG": "Pregătirea dialogului de commit a eșuat"
+  "ERROR_STAGE_FAILED": "Eșuare la adăugarea fișierelor în indexul Git"
 });

@@ -1342,8 +1342,9 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "Ingen eksternt repositorium er valgt for {0}!",
   "ERROR_BRANCH_LIST": "Kunne ikke hente grenliste",
   "ERROR_FETCH_REMOTE": "Kunne ikke hente informasjon om eksternt repositorium",
+  "ERROR_PREPARING_COMMIT_DIALOG": "Klargjøring av commit-dialogen feilet",
   "GIT_TOAST_TITLE": "Utforsk Git-funksjoner i Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klikk på Git-panelikonet for å administrere repositoriet ditt. Utfør commit, push, pull og se prosjektloggen din – alt på ett sted.<br><a href='https://docs.phcode.dev/docs/Features/git'>Lær mer om Git-panelet →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Stem på funksjonene du ønsker å se neste!",
-  "ERROR_PREPARING_COMMIT_DIALOG": "Klargjøring av commit-dialogen feilet"
+  "ERROR_STAGE_FAILED": "Klarte ikke å legge til filer i Git-indeksen"
 });

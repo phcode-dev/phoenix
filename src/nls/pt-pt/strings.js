@@ -1342,8 +1342,9 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "Nenhum remoto foi selecionado para {0}!",
   "ERROR_BRANCH_LIST": "Falha ao obter a lista de ramos",
   "ERROR_FETCH_REMOTE": "Falha ao obter informações do remoto",
+  "ERROR_PREPARING_COMMIT_DIALOG": "Falha ao preparar a janela de _commit_",
   "GIT_TOAST_TITLE": "Explore as funcionalidades do Git no Phoenix Code",
   "GIT_TOAST_MESSAGE": "Clique no ícone do painel Git para gerir o seu repositório. Efetue commits, pushes, pulls e veja o histórico do seu projeto com facilidade — tudo num só lugar.<br><a href='https://docs.phcode.dev/docs/Features/git'>Saiba mais sobre o painel Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vote nas funcionalidades que quer ver a seguir!",
-  "ERROR_PREPARING_COMMIT_DIALOG": "Falha ao preparar a janela de _commit_"
+  "ERROR_STAGE_FAILED": "Falha ao indexar ficheiros no Git"
 });

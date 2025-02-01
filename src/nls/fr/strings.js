@@ -1342,8 +1342,9 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "Aucun dépôt distant n'a été sélectionné pour {0} !",
   "ERROR_BRANCH_LIST": "Échec de la récupération de la liste des branches",
   "ERROR_FETCH_REMOTE": "Échec de la récupération des informations du dépôt distant",
+  "ERROR_PREPARING_COMMIT_DIALOG": "Échec de la préparation de la boîte de dialogue de commit",
   "GIT_TOAST_TITLE": "Explorer les fonctionnalités Git dans Phoenix Code",
   "GIT_TOAST_MESSAGE": "Cliquez sur l'icône du panneau Git pour gérer votre dépôt. Validez, envoyez (push), récupérez (pull) et consultez l'historique de votre projet facilement, le tout au même endroit.<br><a href='https://docs.phcode.dev/docs/Features/git'>En savoir plus sur le panneau Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Votez pour les fonctionnalités que vous souhaitez voir apparaître !",
-  "ERROR_PREPARING_COMMIT_DIALOG": "Échec de la préparation de la boîte de dialogue de commit"
+  "ERROR_STAGE_FAILED": "Échec de l'indexation des fichiers dans Git"
 });

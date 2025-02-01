@@ -1342,8 +1342,9 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "未为 {0} 选择远程仓库！",
   "ERROR_BRANCH_LIST": "获取分支列表失败",
   "ERROR_FETCH_REMOTE": "获取远程仓库信息失败",
+  "ERROR_PREPARING_COMMIT_DIALOG": "准备提交对话框失败",
   "GIT_TOAST_TITLE": "探索 Phoenix Code 中的 Git 功能",
   "GIT_TOAST_MESSAGE": "点击 Git 面板图标即可管理您的代码仓库。轻松提交、推送、拉取和查看项目历史记录，一切尽在一处。<br><a href='https://docs.phcode.dev/docs/Features/git'>了解更多关于 Git 面板的信息 →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "为您希望看到的下一个功能投票！",
-  "ERROR_PREPARING_COMMIT_DIALOG": "准备提交对话框失败"
+  "ERROR_STAGE_FAILED": "Git 文件暂存失败"
 });

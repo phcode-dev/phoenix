@@ -1342,8 +1342,9 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "{0} için uzak depo seçilmedi!",
   "ERROR_BRANCH_LIST": "Dal listesi alınamadı",
   "ERROR_FETCH_REMOTE": "Uzak depo bilgileri alınamadı",
+  "ERROR_PREPARING_COMMIT_DIALOG": "Kaydetme iletişim kutusu hazırlanamadı",
   "GIT_TOAST_TITLE": "Phoenix Code'da Git Özelliklerini Keşfedin",
   "GIT_TOAST_MESSAGE": "Deponuzu yönetmek için Git paneli simgesine tıklayın. Proje geçmişinizi kolayca işleyin, gönderin, çekin ve görüntüleyin—hepsi tek bir yerde.<br><a href='https://docs.phcode.dev/docs/Features/git'>Git paneli hakkında daha fazla bilgi edinin →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Gelecekte görmek istediğiniz özellikler için oy verin!",
-  "ERROR_PREPARING_COMMIT_DIALOG": "Kaydetme iletişim kutusu hazırlanamadı"
+  "ERROR_STAGE_FAILED": "Git'te dosyalar hazırlama başarısız oldu"
 });

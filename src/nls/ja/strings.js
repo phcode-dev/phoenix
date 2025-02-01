@@ -1342,8 +1342,9 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "{0} に対してリモートが選択されていません！",
   "ERROR_BRANCH_LIST": "ブランチ一覧の取得に失敗しました。",
   "ERROR_FETCH_REMOTE": "リモート情報の取得に失敗しました。",
+  "ERROR_PREPARING_COMMIT_DIALOG": "コミットダイアログの準備に失敗しました",
   "GIT_TOAST_TITLE": "Phoenix CodeのGit機能を試す",
   "GIT_TOAST_MESSAGE": "Gitパネルアイコンをクリックしてリポジトリを管理します。コミット、プッシュ、プル、プロジェクト履歴の表示をすべて1か所で行えます。<br><a href='https://docs.phcode.dev/docs/Features/git'>Gitパネルの詳細はこちら →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "次に実装してほしい機能に投票してください！",
-  "ERROR_PREPARING_COMMIT_DIALOG": "コミットダイアログの準備に失敗しました"
+  "ERROR_STAGE_FAILED": "Gitでのファイルのステージングに失敗しました"
 });

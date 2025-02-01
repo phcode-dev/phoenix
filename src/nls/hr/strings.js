@@ -1342,8 +1342,9 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "Nije odabran udaljeni repozitorij za {0}!",
   "ERROR_BRANCH_LIST": "Dohvaćanje popisa grana nije uspjelo",
   "ERROR_FETCH_REMOTE": "Dohvaćanje informacija o udaljenom repozitoriju nije uspjelo",
+  "ERROR_PREPARING_COMMIT_DIALOG": "Priprema dijaloga za commit nije uspjela",
   "GIT_TOAST_TITLE": "Istražite Git značajke u Phoenix Codeu",
   "GIT_TOAST_MESSAGE": "Kliknite ikonu Git panela za upravljanje svojim repozitorijem. Jednostavno potvrdite (commit), pošaljite (push), preuzmite (pull) i pregledajte povijest svog projekta - sve na jednom mjestu.<br><a href='https://docs.phcode.dev/docs/Features/git'>Saznajte više o Git panelu →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Glasajte za značajke koje želite vidjeti sljedeće!",
-  "ERROR_PREPARING_COMMIT_DIALOG": "Priprema dijaloga za commit nije uspjela"
+  "ERROR_STAGE_FAILED": "Neuspješno dodavanje datoteka u pripremnu mapu Gita"
 });

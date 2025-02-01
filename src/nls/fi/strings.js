@@ -1342,8 +1342,9 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "Kohteelle {0} ei ole valittu etäyhteyttä!",
   "ERROR_BRANCH_LIST": "Haarojen listan haku epäonnistui",
   "ERROR_FETCH_REMOTE": "Etäyhteyden tietojen haku epäonnistui",
+  "ERROR_PREPARING_COMMIT_DIALOG": "Commit-valintaikkunan valmistelu epäonnistui",
   "GIT_TOAST_TITLE": "Tutustu Git-ominaisuuksiin Phoenix Codessa",
   "GIT_TOAST_MESSAGE": "Napsauta Git-paneelin kuvaketta hallitaksesi arkistoasi (repository). Tee commit, push ja pull helposti ja tarkastele projektihistoriaasi – kaikki yhdessä paikassa.<br><a href='https://docs.phcode.dev/docs/Features/git'>Lue lisää Git-paneelista →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Äänestä ominaisuuksia, jotka haluat nähdä seuraavaksi!",
-  "ERROR_PREPARING_COMMIT_DIALOG": "Commit-valintaikkunan valmistelu epäonnistui"
+  "ERROR_STAGE_FAILED": "Git-tiedostojen valmistelu epäonnistui"
 });

@@ -1342,8 +1342,9 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "Tidak ada remote yang dipilih untuk {0}!",
   "ERROR_BRANCH_LIST": "Gagal mendapatkan daftar branch",
   "ERROR_FETCH_REMOTE": "Gagal mengambil informasi remote",
+  "ERROR_PREPARING_COMMIT_DIALOG": "Gagal mempersiapkan dialog commit",
   "GIT_TOAST_TITLE": "Jelajahi Fitur Git di Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klik ikon panel Git untuk mengelola repositori Anda. Lakukan commit, push, pull, dan lihat riwayat proyek Anda dengan mudah—semua di satu tempat.<br><a href='https://docs.phcode.dev/docs/Features/git'>Pelajari lebih lanjut tentang panel Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Pilih fitur yang ingin Anda lihat selanjutnya!",
-  "ERROR_PREPARING_COMMIT_DIALOG": "Gagal mempersiapkan dialog commit"
+  "ERROR_STAGE_FAILED": "Gagal men-stage berkas di Git"
 });

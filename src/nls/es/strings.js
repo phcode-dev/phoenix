@@ -1342,8 +1342,9 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "No se ha seleccionado ningún remoto para {0}.",
   "ERROR_BRANCH_LIST": "Error al obtener la lista de ramas.",
   "ERROR_FETCH_REMOTE": "Error al obtener la información del remoto.",
+  "ERROR_PREPARING_COMMIT_DIALOG": "Error al preparar el diálogo de confirmación",
   "GIT_TOAST_TITLE": "Explora las funciones de Git en Phoenix Code",
   "GIT_TOAST_MESSAGE": "Haga clic en el icono del panel de Git para administrar su repositorio. Confirme, envíe (push), extraiga (pull) y vea el historial de su proyecto fácilmente, todo en un solo lugar.<br><a href='https://docs.phcode.dev/docs/Features/git'>Obtenga más información sobre el panel de Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "¡Vota por las funciones que quieres ver próximamente!",
-  "ERROR_PREPARING_COMMIT_DIALOG": "Error al preparar el diálogo de confirmación"
+  "ERROR_STAGE_FAILED": "Error al preparar los archivos en Git"
 });

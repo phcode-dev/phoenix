@@ -1342,8 +1342,9 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "{0} के लिए कोई रिमोट चयनित नहीं है!",
   "ERROR_BRANCH_LIST": "शाखा सूची प्राप्त करने में विफलता",
   "ERROR_FETCH_REMOTE": "रिमोट जानकारी प्राप्त करने में विफलता",
+  "ERROR_PREPARING_COMMIT_DIALOG": "कमिट डायलॉग तैयार करने में विफल रहा",
   "GIT_TOAST_TITLE": "फ़ीनिक्स कोड में Git सुविधाओं का अन्वेषण करें",
   "GIT_TOAST_MESSAGE": "अपने रिपॉजिटरी को प्रबंधित करने के लिए Git पैनल आइकन पर क्लिक करें। आसानी से कमिट करें, पुश करें, पुल करें और अपने प्रोजेक्ट का इतिहास देखें—सब एक ही स्थान पर।<br><a href='https://docs.phcode.dev/docs/Features/git'>Git पैनल के बारे में अधिक जानें →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "उन विशेषताओं के लिए वोट करें जिन्हें आप आगे देखना चाहते हैं!",
-  "ERROR_PREPARING_COMMIT_DIALOG": "कमिट डायलॉग तैयार करने में विफल रहा"
+  "ERROR_STAGE_FAILED": "गिट में फ़ाइलों को स्टेज करने में विफल।"
 });

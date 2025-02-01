@@ -1342,8 +1342,9 @@ define({
   "ERROR_NO_REMOTE_SELECTED": "Für {0} wurde kein Remote ausgewählt!",
   "ERROR_BRANCH_LIST": "Abrufen der Branch-Liste fehlgeschlagen",
   "ERROR_FETCH_REMOTE": "Abrufen der Remote-Informationen fehlgeschlagen",
+  "ERROR_PREPARING_COMMIT_DIALOG": "Fehler beim Vorbereiten des Commit-Dialogs",
   "GIT_TOAST_TITLE": "Git-Funktionen in Phoenix Code entdecken",
   "GIT_TOAST_MESSAGE": "Klicken Sie auf das Git-Panel-Symbol, um Ihr Repository zu verwalten. Committen, Pushen, Pullen und die Anzeige Ihres Projektverlaufs – alles an einem Ort.<br><a href='https://docs.phcode.dev/docs/Features/git'>Mehr über das Git-Panel erfahren →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Stimmen Sie für die Funktionen ab, die Sie als Nächstes sehen möchten!",
-  "ERROR_PREPARING_COMMIT_DIALOG": "Fehler beim Vorbereiten des Commit-Dialogs"
+  "ERROR_STAGE_FAILED": "Fehler beim Staging der Dateien in Git"
 });
