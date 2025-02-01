@@ -3258,6 +3258,13 @@ label input {
     transform: translateY(0);
 }
 
+.notification-popup-container.instantOpen {
+    opacity: 1;
+    transition: transform 100ms, opacity 100ms;
+    transition-delay: 100ms;
+    transform: translateY(0);
+}
+
 .notification-popup-container.animateClose {
     transition: transform 500ms, opacity 500ms;
 }

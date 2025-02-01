@@ -1513,6 +1513,7 @@ define({
     "ERROR_CREATE_TAG": "Create tag failed",
     "ERROR_CODE_INSPECTION_FAILED": "CodeInspection.inspectFile failed to execute for file",
     "ERROR_CANT_GET_STAGED_DIFF": "Cant get diff for staged files",
+    "ERROR_STAGE_FAILED": "Failed to stage files in Git",
     "ERROR_GIT_COMMIT_FAILED": "Git Commit failed",
     "ERROR_GIT_BLAME_FAILED": "Git Blame failed",
     "ERROR_GIT_DIFF_FAILED": "Git Diff failed",
