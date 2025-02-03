@@ -48,7 +48,7 @@ The `createFromTemplate` API can be configured with numerous options. See API op
     * [.API](#module_widgets/NotificationUI..API)
     * [.NOTIFICATION_STYLES_CSS_CLASS](#module_widgets/NotificationUI..NOTIFICATION_STYLES_CSS_CLASS) : <code>enum</code>
     * [.CLOSE_REASON](#module_widgets/NotificationUI..CLOSE_REASON) : <code>enum</code>
-    * [.createFromTemplate(template, [elementID], [options])](#module_widgets/NotificationUI..createFromTemplate) ⇒ <code>Notification</code>
+    * [.createFromTemplate(title, template, [elementID], [options])](#module_widgets/NotificationUI..createFromTemplate) ⇒ <code>Notification</code>
     * [.createToastFromTemplate(title, template, [options])](#module_widgets/NotificationUI..createToastFromTemplate) ⇒ <code>Notification</code>
 
 <a name="module_widgets/NotificationUI..API"></a>
@@ -89,15 +89,16 @@ Closing notification reason.
 
 <a name="module_widgets/NotificationUI..createFromTemplate"></a>
 
-### widgets/NotificationUI.createFromTemplate(template, [elementID], [options]) ⇒ <code>Notification</code>
+### widgets/NotificationUI.createFromTemplate(title, template, [elementID], [options]) ⇒ <code>Notification</code>
 Creates a new notification popup from given template.
 The template can either be a string or a jQuery object representing a DOM node that is *not* in the current DOM.
 
 Creating a notification popup
+
+```js
 // note that you can even provide an HTML Element node with
 // custom event handlers directly here instead of HTML text.
 let notification1 = NotificationUI.createFromTemplate(
-```js
   "<div>Click me to locate the file in file tree</div>", "showInfileTree",{
       allowedPlacements: ['top', 'bottom'],
       dismissOnClick: false,
@@ -110,9 +111,10 @@ let notification1 = NotificationUI.createFromTemplate(
 
 | Param | Type | Description |
 | --- | --- | --- |
+| title | <code>string</code> | The title for the notification. |
 | template | <code>string</code> \| <code>Element</code> | A string template or HTML Element to use as the dialog HTML. |
 | [elementID] | <code>String</code> | optional id string if provided will show the notification pointing to the element.   If no element is specified, it will be managed as a generic notification. |
-| [options] | <code>Object</code> | optional, supported   * options are:   * `allowedPlacements` - Optional String array with values restricting where the notification will be shown.       Values can be a mix of `['top', 'bottom', 'left', 'right']`   * `autoCloseTimeS` - Time in seconds after which the notification should be auto closed. Default is never.   * `dismissOnClick` - when clicked, the notification is closed. Default is true(dismiss). |
+| [options] | <code>Object</code> | optional, supported   * options are:   * `allowedPlacements` - Optional String array with values restricting where the notification will be shown.       Values can be a mix of `['top', 'bottom', 'left', 'right']`   * `autoCloseTimeS` - Time in seconds after which the notification should be auto closed. Default is never.   * `dismissOnClick` - when clicked, the notification is closed. Default is true(dismiss).   * `toastStyle` - To style the toast notification for error, warning, info etc. Can be     one of `NotificationUI.NOTIFICATION_STYLES_CSS_CLASS.*` or your own css class name. |
 
 <a name="module_widgets/NotificationUI..createToastFromTemplate"></a>
 
@@ -121,10 +123,11 @@ Creates a new toast notification popup from given title and html message.
 The message can either be a string or a jQuery object representing a DOM node that is *not* in the current DOM.
 
 Creating a toast notification popup
+
+```js
 // note that you can even provide an HTML Element node with
 // custom event handlers directly here instead of HTML text.
 let notification1 = NotificationUI.createToastFromTemplate( "Title here",
-```js
   "<div>Click me to locate the file in file tree</div>", {
       dismissOnClick: false,
       autoCloseTimeS: 300 // auto close the popup after 5 minutes
@@ -138,5 +141,5 @@ let notification1 = NotificationUI.createToastFromTemplate( "Title here",
 | --- | --- | --- |
 | title | <code>string</code> | The title for the notification. |
 | template | <code>string</code> \| <code>Element</code> | A string template or HTML Element to use as the dialog HTML. |
-| [options] | <code>Object</code> | optional, supported   * options are:   * `autoCloseTimeS` - Time in seconds after which the notification should be auto closed. Default is never.   * `dismissOnClick` - when clicked, the notification is closed. Default is true(dismiss).   * `toastStyle` - To style the toast notification for error, warning, info etc. Can be     one of `NotificationUI.NOTIFICATION_STYLES_CSS_CLASS.*` or your own css class name. |
+| [options] | <code>Object</code> | optional, supported   * options are:   * `autoCloseTimeS` - Time in seconds after which the notification should be auto closed. Default is never.   * `dismissOnClick` - when clicked, the notification is closed. Default is true(dismiss).   * `toastStyle` - To style the toast notification for error, warning, info etc. Can be     one of `NotificationUI.NOTIFICATION_STYLES_CSS_CLASS.*` or your own css class name.   * `instantOpen` - To instantly open the popup without any open animation delays |
 

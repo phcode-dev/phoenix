@@ -25,6 +25,7 @@ src/phoenix/virtualfs.js.map
 # Thirdparty libs
 !/src/thirdparty/licences
 /src/thirdparty/less.*
+/src/thirdparty/emmet.*
 /src/thirdparty/CodeMirror
 /src/thirdparty/acorn
 /src/thirdparty/tern

@@ -29,6 +29,7 @@
 import initVFS from "./init_vfs.js";
 import ERR_CODES from "./errno.js";
 import { LRUCache } from '../thirdparty/no-minify/lru-cache.js';
+import * as Emmet from '../thirdparty/emmet.es.js';
 
 initVFS();
 
@@ -99,6 +100,10 @@ async function openURLInPhoenixWindow(url, {
 
 Phoenix.libs = {
     LRUCache,
+    Emmet: {
+        expand: Emmet.default,
+        module: Emmet
+    },
     hljs: window.hljs,
     iconv: fs.utils.iconv,
     picomatch: fs.utils.picomatch
