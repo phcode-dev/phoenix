@@ -114,6 +114,10 @@ let copyThirdPartyLibs = series(
     // lessjs
     copyFiles.bind(copyFiles, ['node_modules/less/dist/less.min.js', 'node_modules/less/dist/less.min.js.map'],
         'src/thirdparty'),
+    // emmet
+    copyFiles.bind(copyFiles, ['node_modules/emmet/dist/emmet.es.js'],
+        'src/thirdparty'),
+    copyLicence.bind(copyLicence, 'node_modules/emmet/LICENSE', 'emmet'),
     // bugsnag
     copyFiles.bind(copyFiles, ['node_modules/@bugsnag/browser/dist/bugsnag.min.js',
         'node_modules/@bugsnag/browser/dist/bugsnag.min.js.map'], 'src/thirdparty'),
