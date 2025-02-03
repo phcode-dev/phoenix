@@ -293,16 +293,14 @@ span.cm-emstrong {
 
 .cm-phcode-indent-guides::before {
     content: " ";
-    width: 1px;
     display: inline-block;
-    position: relative;
-    border-left: 1px solid rgba(128, 128, 128, 0.3);
+    position: absolute;
+    box-shadow: inset 1px 0 0 rgba(128, 128, 128, 0.3);
 }
 
 .cm-phcode-indent-guides-none::before {
     content: " ";
-    width: 1px;
     display: inline-block;
-    position: relative;
-    border-left: 1px solid transparent;
+    position: absolute;
+    box-shadow: none;
 }
