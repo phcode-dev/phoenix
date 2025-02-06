@@ -3,6 +3,7 @@ define(function (require, exports, module) {
     const EditorManager = require("editor/EditorManager");
     const PreferencesManager = require("preferences/PreferencesManager");
     const Strings = require("strings");
+    const CodeHintManager = require("editor/CodeHintManager");
 
     const EXPAND_ABBR = Phoenix.libs.Emmet.expand;
     // const EMMET = Phoenix.libs.Emmet.module;
@@ -233,6 +234,64 @@ define(function (require, exports, module) {
     PreferencesManager.definePreference(PREFERENCES_EMMET, "boolean", enabled, {
         description: Strings.DESCRIPTION_EMMET
     });
+
+
+    /**
+     * @constructor
+     */
+    function EmmetMarkupHints() {
+    }
+
+    EmmetMarkupHints.prototype.hasHints = function (editor, implicitChar) {
+
+        this.editor = editor;
+
+        const wordObj = getWordBeforeCursor(editor);
+        const config = createConfig(editor);
+        if (config && config.syntax === "html") {
+
+            // make sure we donot have empty spaces
+            if (wordObj.word.trim()) {
+
+                const expandedAbbr = isExpandable(editor, wordObj.word, config);
+                if (expandedAbbr) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    };
+
+
+    EmmetMarkupHints.prototype.getHints = function (implicitChar) {
+        const wordObj = getWordBeforeCursor(this.editor);
+        const config = createConfig(this.editor);
+
+        const expandedAbbr = isExpandable(this.editor, wordObj.word, config);
+        if (!expandedAbbr) {
+            return null;
+        }
+
+        const result = [wordObj.word];
+
+        return {
+            hints: result,
+            match: null,
+            selectInitial: true,
+            defaultDescriptionWidth: true,
+            handleWideResults: false
+        };
+    };
+
+    EmmetMarkupHints.prototype.insertHint = function (completion) {
+        const wordObj = getWordBeforeCursor(this.editor);
+        const config = createConfig(this.editor);
+        const expandedAbbr = isExpandable(this.editor, wordObj.word, config);
+        updateAbbrInEditor(this.editor, wordObj, expandedAbbr);
+        return false;
+    };
+
 
     /**
      * Responsible to create the configuration based on the file type.
@@ -552,84 +611,6 @@ define(function (require, exports, module) {
 
 
     /**
-     * Responsible to handle the flow of the program
-     *
-     * @param {Editor} editor - the editor instance
-     * @param {Object} keyboardEvent - the keyboard event object
-     */
-    function driver(editor, keyboardEvent) {
-        const config = createConfig(editor);
-
-        if (config) {
-
-            // to make sure it is an html file
-            if (config.syntax === "html") {
-                const wordObj = getWordBeforeCursor(editor);
-
-                // make sure we donot have empty spaces
-                if (wordObj.word.trim()) {
-
-                    const expandedAbbr = isExpandable(editor, wordObj.word, config);
-                    if (expandedAbbr) {
-                        updateAbbrInEditor(editor, wordObj, expandedAbbr);
-
-                        // prevent the default working of the 'tab' key
-                        keyboardEvent.preventDefault();
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Function that gets triggered when any key is pressed.
-     * We only want to look for 'tab' key events
-     *
-     * @param {Event} event - unused event detail
-     * @param {Editor} editor - the editor instance
-     * @param {Object} keyboardEvent - an object that has properties related to the keyboard,
-     *  mainly the key that is pressed (keyboardEvent.key)
-     * @returns {Boolean} True if abbreviation is expanded else false
-     */
-    function handleKeyEvent(event, editor, keyboardEvent) {
-        if (!enabled) {
-            return false;
-        }
-
-        // if not a 'tab' key press, ignore
-        if (keyboardEvent.key !== "Tab") {
-            return false;
-        }
-
-        // the function that drives the flow of the program
-        driver(editor, keyboardEvent);
-    }
-
-    /**
-     * Register all the required handlers
-     */
-    function registerHandlers() {
-        // Get the current active editor and attach the change listener
-        const activeEditor = EditorManager.getActiveEditor();
-        if (activeEditor) {
-            activeEditor.on("keydown", handleKeyEvent);
-        }
-
-        // Listen for active editor changes, to attach the handler to new editor
-        EditorManager.on("activeEditorChange", function (event, newEditor, oldEditor) {
-            if (oldEditor) {
-                // Remove listener from old editor
-                oldEditor.off("keydown", handleKeyEvent);
-            }
-            if (newEditor) {
-                // Add listener to new editor
-                newEditor.off("change", handleKeyEvent);
-                newEditor.on("keydown", handleKeyEvent);
-            }
-        });
-    }
-
-    /**
      * Checks for preference changes, to enable/disable the feature
      */
     function preferenceChanged() {
@@ -642,7 +623,9 @@ define(function (require, exports, module) {
         PreferencesManager.on("change", PREFERENCES_EMMET, preferenceChanged);
         preferenceChanged();
 
-        registerHandlers();
+        var emmetMarkupHints = new EmmetMarkupHints();
+        CodeHintManager.registerHintProvider(emmetMarkupHints, ["html"], 2);
+
     });
 });
 
