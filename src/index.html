@@ -708,7 +708,10 @@
 
     <!-- CSS/LESS -->
 
-    <link rel="stylesheet" type="text/css" href="thirdparty/highlight.js/styles/github.min.css">
+<!--    The hljs color scheme is locked to dark github theme as it mainly used in sidebar which is always in dark mode.
+ For using a different theme in other places, import via main less by adding a code like:
+  .cssClassScope{@import url("thirdparty/highlight.js/styles/<theme.css>");}  -->
+    <link rel="stylesheet" type="text/css" href="thirdparty/highlight.js/styles/github-dark.min.css">
     <link rel="stylesheet" type="text/css" href="thirdparty/fontawesome/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="thirdparty/devicon/devicon.min.css">
     <link rel="stylesheet" type="text/css" href="thirdparty/file-icons/ffont.css">
