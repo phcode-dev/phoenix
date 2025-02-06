@@ -1326,6 +1326,7 @@ define({
   "ERROR_CREATE_TAG": "Tag-Erstellung fehlgeschlagen",
   "ERROR_CODE_INSPECTION_FAILED": "CodeInspection.inspectFile konnte für Datei nicht ausgeführt werden",
   "ERROR_CANT_GET_STAGED_DIFF": "Diff für bereitgestellte Dateien kann nicht abgerufen werden",
+  "ERROR_STAGE_FAILED": "Fehler beim Staging der Dateien in Git",
   "ERROR_GIT_COMMIT_FAILED": "Git-Commit fehlgeschlagen",
   "ERROR_GIT_BLAME_FAILED": "Git-Blame fehlgeschlagen",
   "ERROR_GIT_DIFF_FAILED": "Git-Diff fehlgeschlagen",
@@ -1346,5 +1347,5 @@ define({
   "GIT_TOAST_TITLE": "Git-Funktionen in Phoenix Code entdecken",
   "GIT_TOAST_MESSAGE": "Klicken Sie auf das Git-Panel-Symbol, um Ihr Repository zu verwalten. Committen, Pushen, Pullen und die Anzeige Ihres Projektverlaufs – alles an einem Ort.<br><a href='https://docs.phcode.dev/docs/Features/git'>Mehr über das Git-Panel erfahren →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Stimmen Sie für die Funktionen ab, die Sie als Nächstes sehen möchten!",
-  "ERROR_STAGE_FAILED": "Fehler beim Staging der Dateien in Git"
+  "CMD_REPORT_ISSUE": "Problem melden"
 });

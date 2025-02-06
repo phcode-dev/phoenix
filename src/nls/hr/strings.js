@@ -1326,6 +1326,7 @@ define({
   "ERROR_CREATE_TAG": "Kreiranje oznake nije uspjelo",
   "ERROR_CODE_INSPECTION_FAILED": "CodeInspection.inspectFile nije uspio izvršiti za datoteku",
   "ERROR_CANT_GET_STAGED_DIFF": "Ne mogu dohvatiti razlike za datoteke u pripremi",
+  "ERROR_STAGE_FAILED": "Neuspješno dodavanje datoteka u pripremnu mapu Gita",
   "ERROR_GIT_COMMIT_FAILED": "Git commit nije uspio",
   "ERROR_GIT_BLAME_FAILED": "Git Blame nije uspio",
   "ERROR_GIT_DIFF_FAILED": "Git Diff nije uspio",
@@ -1346,5 +1347,5 @@ define({
   "GIT_TOAST_TITLE": "Istražite Git značajke u Phoenix Codeu",
   "GIT_TOAST_MESSAGE": "Kliknite ikonu Git panela za upravljanje svojim repozitorijem. Jednostavno potvrdite (commit), pošaljite (push), preuzmite (pull) i pregledajte povijest svog projekta - sve na jednom mjestu.<br><a href='https://docs.phcode.dev/docs/Features/git'>Saznajte više o Git panelu →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Glasajte za značajke koje želite vidjeti sljedeće!",
-  "ERROR_STAGE_FAILED": "Neuspješno dodavanje datoteka u pripremnu mapu Gita"
+  "CMD_REPORT_ISSUE": "Prijavi problem"
 });

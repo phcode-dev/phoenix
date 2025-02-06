@@ -1326,6 +1326,7 @@ define({
   "ERROR_CREATE_TAG": "Falha ao criar tag",
   "ERROR_CODE_INSPECTION_FAILED": "CodeInspection.inspectFile falhou ao executar para o arquivo",
   "ERROR_CANT_GET_STAGED_DIFF": "Não foi possível obter o diff dos arquivos em stage",
+  "ERROR_STAGE_FAILED": "Falha ao indexar arquivos no Git",
   "ERROR_GIT_COMMIT_FAILED": "Commit Git falhou",
   "ERROR_GIT_BLAME_FAILED": "Git Blame falhou",
   "ERROR_GIT_DIFF_FAILED": "Git Diff falhou",
@@ -1346,5 +1347,5 @@ define({
   "GIT_TOAST_TITLE": "Explore os Recursos do Git no Phoenix Code",
   "GIT_TOAST_MESSAGE": "Clique no ícone do painel Git para gerenciar seu repositório. Faça commits, pushes, pulls e visualize o histórico do seu projeto com facilidade — tudo em um só lugar.<br><a href='https://docs.phcode.dev/docs/Features/git'>Saiba mais sobre o painel Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vote nos recursos que você quer ver em seguida!",
-  "ERROR_STAGE_FAILED": "Falha ao indexar arquivos no Git"
+  "CMD_REPORT_ISSUE": "Reportar um Problema"
 });

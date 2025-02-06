@@ -1326,6 +1326,7 @@ define({
   "ERROR_CREATE_TAG": "Създаването на етикет е неуспешно",
   "ERROR_CODE_INSPECTION_FAILED": "CodeInspection.inspectFile не можа да се изпълни за файл",
   "ERROR_CANT_GET_STAGED_DIFF": "Не може да се получи разлика за индексирани файлове",
+  "ERROR_STAGE_FAILED": "Неуспешно добавяне на файлове в индекса на Git",
   "ERROR_GIT_COMMIT_FAILED": "Git commit е неуспешен",
   "ERROR_GIT_BLAME_FAILED": "Git blame е неуспешен",
   "ERROR_GIT_DIFF_FAILED": "Git diff е неуспешен",
@@ -1346,5 +1347,5 @@ define({
   "GIT_TOAST_TITLE": "Разгледайте Git функциите в Phoenix Code",
   "GIT_TOAST_MESSAGE": "Щракнете върху иконата на Git панела, за да управлявате хранилището си. Лесно създавайте commit, push, pull и преглеждайте историята на проекта си – всичко на едно място.<br><a href='https://docs.phcode.dev/docs/Features/git'>Научете повече за Git панела →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Гласувайте за функциите, които искате да видите следващи!",
-  "ERROR_STAGE_FAILED": "Неуспешно добавяне на файлове в индекса на Git"
+  "CMD_REPORT_ISSUE": "Докладване на проблем"
 });

@@ -1326,6 +1326,7 @@ define({
   "ERROR_CREATE_TAG": "Vytvoření tagu se nezdařilo",
   "ERROR_CODE_INSPECTION_FAILED": "CodeInspection.inspectFile se nepodařilo spustit pro soubor",
   "ERROR_CANT_GET_STAGED_DIFF": "Nelze získat diff pro připravené soubory",
+  "ERROR_STAGE_FAILED": "Nepodařilo se připravit soubory ke commitu v Gitu",
   "ERROR_GIT_COMMIT_FAILED": "Git commit se nezdařil",
   "ERROR_GIT_BLAME_FAILED": "Git blame se nezdařil",
   "ERROR_GIT_DIFF_FAILED": "Git diff se nezdařil",
@@ -1346,5 +1347,5 @@ define({
   "GIT_TOAST_TITLE": "Prozkoumejte funkce Gitu v Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klikněte na ikonu panelu Git pro správu vašeho repozitáře. Snadno commitujte, pushujte, pullujte a prohlížejte si historii projektu – vše na jednom místě.<br><a href='https://docs.phcode.dev/docs/Features/git'>Zjistěte více o panelu Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Hlasujte pro funkce, které chcete vidět v další verzi!",
-  "ERROR_STAGE_FAILED": "Nepodařilo se připravit soubory ke commitu v Gitu"
+  "CMD_REPORT_ISSUE": "Nahlásit problém"
 });

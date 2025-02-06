@@ -258,6 +258,7 @@
   "CMD_REPLACE": "Replace",
   "CMD_REPLACE_IN_FILES": "Replace in Files",
   "CMD_REPLACE_IN_SUBTREE": "Replace in…",
+  "CMD_REPORT_ISSUE": "Report Issue",
   "CMD_RESTORE_FONT_SIZE": "Restore Font Size",
   "CMD_RUN_UNIT_TESTS": "Run {APP_NAME} Tests",
   "CMD_SCROLL_LINE_DOWN": "Scroll Line Down",

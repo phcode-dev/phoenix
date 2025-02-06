@@ -1326,6 +1326,7 @@ define({
   "ERROR_CREATE_TAG": "建立標籤失敗",
   "ERROR_CODE_INSPECTION_FAILED": "CodeInspection.inspectFile 無法執行檔案",
   "ERROR_CANT_GET_STAGED_DIFF": "無法取得已暫存檔案的差異",
+  "ERROR_STAGE_FAILED": "Git 檔案暫存失敗",
   "ERROR_GIT_COMMIT_FAILED": "Git 送交失敗",
   "ERROR_GIT_BLAME_FAILED": "Git 追溯失敗",
   "ERROR_GIT_DIFF_FAILED": "Git 比對失敗",
@@ -1346,5 +1347,5 @@ define({
   "GIT_TOAST_TITLE": "在 Phoenix Code 中探索 Git 功能",
   "GIT_TOAST_MESSAGE": "按一下 Git 面板圖示即可管理您的儲存庫。輕鬆提交、推送、提取和檢視您的專案歷史記錄，一切盡在掌握之中。<br><a href='https://docs.phcode.dev/docs/Features/git'>深入瞭解 Git 面板 →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "投票選出您希望看到的下個功能！",
-  "ERROR_STAGE_FAILED": "Git 檔案暫存失敗"
+  "CMD_REPORT_ISSUE": "回報問題"
 });

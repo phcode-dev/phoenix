@@ -1326,6 +1326,7 @@ define({
   "ERROR_CREATE_TAG": "Tag creation failed",
   "ERROR_CODE_INSPECTION_FAILED": "Code inspection failed for file",
   "ERROR_CANT_GET_STAGED_DIFF": "Can't get diff for staged files",
+  "ERROR_STAGE_FAILED": "Failed to stage files in Git",
   "ERROR_GIT_COMMIT_FAILED": "Git commit failed",
   "ERROR_GIT_BLAME_FAILED": "Git blame failed",
   "ERROR_GIT_DIFF_FAILED": "Git diff failed",
@@ -1346,5 +1347,5 @@ define({
   "GIT_TOAST_TITLE": "Explore Git Features in Phoenix Code",
   "GIT_TOAST_MESSAGE": "Click the Git panel icon to manage your repository. Easily commit, push, pull, and view your project history—all in one place.<br><a href='https://docs.phcode.dev/docs/Features/git'>Learn more about the Git panel →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vote for the features you'd like to see next!",
-  "ERROR_STAGE_FAILED": "Failed to stage files in Git"
+  "CMD_REPORT_ISSUE": "Report Issue"
 });

@@ -1326,6 +1326,7 @@ define({
   "ERROR_CREATE_TAG": "Не вдалося створити тег",
   "ERROR_CODE_INSPECTION_FAILED": "CodeInspection.inspectFile не виконався для файлу",
   "ERROR_CANT_GET_STAGED_DIFF": "Не вдалося отримати різницю для індексованих файлів",
+  "ERROR_STAGE_FAILED": "Не вдалося проіндексувати файли в Git",
   "ERROR_GIT_COMMIT_FAILED": "Помилка виконання Git Commit",
   "ERROR_GIT_BLAME_FAILED": "Помилка виконання Git Blame",
   "ERROR_GIT_DIFF_FAILED": "Помилка виконання Git Diff",
@@ -1346,5 +1347,5 @@ define({
   "GIT_TOAST_TITLE": "Ознайомтеся з функціями Git у Phoenix Code",
   "GIT_TOAST_MESSAGE": "Натисніть піктограму панелі Git, щоб керувати вашим репозиторієм. Легко виконуйте коміти, пуші, пули та переглядайте історію вашого проєкту — все в одному місці.<br><a href='https://docs.phcode.dev/docs/Features/git'>Дізнайтеся більше про панель Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Проголосуйте за функції, які ви хочете бачити наступними!",
-  "ERROR_STAGE_FAILED": "Не вдалося проіндексувати файли в Git"
+  "CMD_REPORT_ISSUE": "Повідомити про проблему"
 });

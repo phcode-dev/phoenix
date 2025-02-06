@@ -1326,6 +1326,7 @@ define({
   "ERROR_CREATE_TAG": "Креирање ознаке није успело",
   "ERROR_CODE_INSPECTION_FAILED": "CodeInspection.inspectFile није успео да се изврши за датотеку",
   "ERROR_CANT_GET_STAGED_DIFF": "Не могу да се добију разлике за индексиране датотеке",
+  "ERROR_STAGE_FAILED": "Није успело постављање фајлова у Git",
   "ERROR_GIT_COMMIT_FAILED": "Git потврда (commit) није успела",
   "ERROR_GIT_BLAME_FAILED": "Git приказ аутора (blame) није успео",
   "ERROR_GIT_DIFF_FAILED": "Git приказ разлика (diff) није успео",
@@ -1346,5 +1347,5 @@ define({
   "GIT_TOAST_TITLE": "Истражите Гит функције у Phoenix Code-у",
   "GIT_TOAST_MESSAGE": "Кликните на икону Гит панела да бисте управљали својим спремиштем. Лако направите commit, push, pull и погледајте историју свог пројекта — све на једном месту.<br><a href='https://docs.phcode.dev/docs/Features/git'>Сазнајте више о Гит панелу →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Гласајте за функције које желите да видите у будућности!",
-  "ERROR_STAGE_FAILED": "Није успело постављање фајлова у Git"
+  "CMD_REPORT_ISSUE": "Пријави проблем"
 });

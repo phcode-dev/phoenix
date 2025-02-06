@@ -1326,6 +1326,7 @@ define({
   "ERROR_CREATE_TAG": "ٹیگ بنانا ناکام",
   "ERROR_CODE_INSPECTION_FAILED": "CodeInspection.inspectFile فائل پر عمل کرنے میں ناکام",
   "ERROR_CANT_GET_STAGED_DIFF": "اسٹیجڈ فائلوں کے لیے فرق حاصل نہیں کر سکے",
+  "ERROR_STAGE_FAILED": "گٹ میں فائلز کو اسٹیج کرنے میں ناکام",
   "ERROR_GIT_COMMIT_FAILED": "گٹ کمٹ ناکام",
   "ERROR_GIT_BLAME_FAILED": "گٹ بلیم ناکام",
   "ERROR_GIT_DIFF_FAILED": "گٹ فرق ناکام ہوگیا۔",
@@ -1346,5 +1347,5 @@ define({
   "GIT_TOAST_TITLE": "فینکس کوڈ میں گٹ فیچرز دریافت کریں",
   "GIT_TOAST_MESSAGE": "اپنی ذخیرہ گاہ (repository) کو منظم کرنے کے لیے گٹ پینل آئیکن پر کلک کریں۔ آسانی سے کامٹ، پش، پل کریں، اور اپنے پروجیکٹ کی تاریخ دیکھیں—سب ایک ہی جگہ پر۔<br><a href='https://docs.phcode.dev/docs/Features/git'>گٹ پینل کے بارے میں مزید جانیں →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "اپنی پسندیدہ خصوصیات کے لیے ووٹ دیں!",
-  "ERROR_STAGE_FAILED": "گٹ میں فائلز کو اسٹیج کرنے میں ناکام"
+  "CMD_REPORT_ISSUE": "مسئلہ کی اطلاع دیں"
 });

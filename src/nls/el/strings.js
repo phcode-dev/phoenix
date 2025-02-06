@@ -1326,6 +1326,7 @@ define({
   "ERROR_CREATE_TAG": "Αποτυχία δημιουργίας ετικέτας",
   "ERROR_CODE_INSPECTION_FAILED": "Απέτυχε η εκτέλεση του CodeInspection.inspectFile για το αρχείο",
   "ERROR_CANT_GET_STAGED_DIFF": "Δεν είναι δυνατή η λήψη διαφορών για τα αρχεία προς καταχώρηση",
+  "ERROR_STAGE_FAILED": "Αποτυχία προσθήκης αρχείων στο Git",
   "ERROR_GIT_COMMIT_FAILED": "Αποτυχία καταχώρησης Git",
   "ERROR_GIT_BLAME_FAILED": "Αποτυχία Git Blame",
   "ERROR_GIT_DIFF_FAILED": "Αποτυχία Git Diff",
@@ -1346,5 +1347,5 @@ define({
   "GIT_TOAST_TITLE": "Εξερευνήστε τις Λειτουργίες Git στο Phoenix Code",
   "GIT_TOAST_MESSAGE": "Κάντε κλικ στο εικονίδιο του πίνακα Git για να διαχειριστείτε το αποθετήριό σας. Κάντε εύκολα commit, push, pull και δείτε το ιστορικό του έργου σας—όλα σε ένα μέρος.<br><a href='https://docs.phcode.dev/docs/Features/git'>Μάθετε περισσότερα για τον πίνακα Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Ψηφίστε για τις λειτουργίες που θέλετε να δείτε στη συνέχεια!",
-  "ERROR_STAGE_FAILED": "Αποτυχία προσθήκης αρχείων στο Git"
+  "CMD_REPORT_ISSUE": "Αναφορά Προβλήματος"
 });

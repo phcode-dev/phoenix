@@ -1326,6 +1326,7 @@ define({
   "ERROR_CREATE_TAG": "ایجاد برچسب ناموفق بود",
   "ERROR_CODE_INSPECTION_FAILED": "اجرای CodeInspection.inspectFile برای فایل ناموفق بود",
   "ERROR_CANT_GET_STAGED_DIFF": "دریافت تفاوت‌ها برای فایل‌های مرحله‌بندی‌شده امکان‌پذیر نیست",
+  "ERROR_STAGE_FAILED": "خطا در مرحله‌بندی فایل‌ها در گیت",
   "ERROR_GIT_COMMIT_FAILED": "انجام کامیت گیت ناموفق بود",
   "ERROR_GIT_BLAME_FAILED": "انجام Blame گیت ناموفق بود",
   "ERROR_GIT_DIFF_FAILED": "انجام Diff گیت ناموفق بود",
@@ -1346,5 +1347,5 @@ define({
   "GIT_TOAST_TITLE": "کاوش ویژگی‌های گیت در Phoenix Code",
   "GIT_TOAST_MESSAGE": "برای مدیریت مخزن خود روی آیکون پنل گیت کلیک کنید. به راحتی کامیت، پوش، پول و مشاهده تاریخچه پروژه خود را - همه در یک مکان - انجام دهید.<br><a href='https://docs.phcode.dev/docs/Features/git'>درباره پنل گیت بیشتر بدانید →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "برای قابلیت‌هایی که می‌خواهید در آینده ببینید، رأی دهید!",
-  "ERROR_STAGE_FAILED": "خطا در مرحله‌بندی فایل‌ها در گیت"
+  "CMD_REPORT_ISSUE": "گزارش مشکل"
 });

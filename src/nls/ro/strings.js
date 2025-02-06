@@ -1326,6 +1326,7 @@ define({
   "ERROR_CREATE_TAG": "Creare etichetă eșuată",
   "ERROR_CODE_INSPECTION_FAILED": "CodeInspection.inspectFile nu a reușit să se execute pentru fișierul",
   "ERROR_CANT_GET_STAGED_DIFF": "Nu se poate obține diff pentru fișierele pregătite",
+  "ERROR_STAGE_FAILED": "Eșuare la adăugarea fișierelor în indexul Git",
   "ERROR_GIT_COMMIT_FAILED": "Commit Git eșuat",
   "ERROR_GIT_BLAME_FAILED": "Blame Git eșuat",
   "ERROR_GIT_DIFF_FAILED": "Diff Git eșuat",
@@ -1346,5 +1347,5 @@ define({
   "GIT_TOAST_TITLE": "Explorați funcțiile Git în Phoenix Code",
   "GIT_TOAST_MESSAGE": "Faceți clic pe pictograma panoului Git pentru a vă gestiona depozitul. Efectuați ușor commit, push, pull și vizualizați istoricul proiectului dvs. - totul într-un singur loc.<br><a href='https://docs.phcode.dev/docs/Features/git'>Aflați mai multe despre panoul Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Votează pentru funcționalitățile pe care dorești să le vezi în continuare!",
-  "ERROR_STAGE_FAILED": "Eșuare la adăugarea fișierelor în indexul Git"
+  "CMD_REPORT_ISSUE": "Raportează o problemă"
 });

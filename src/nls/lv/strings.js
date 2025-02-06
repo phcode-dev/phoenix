@@ -1326,6 +1326,7 @@ define({
   "ERROR_CREATE_TAG": "Neizdevās izveidot tagu",
   "ERROR_CODE_INSPECTION_FAILED": "`CodeInspection.inspectFile` neizdevās izpildīt failam",
   "ERROR_CANT_GET_STAGED_DIFF": "Nevar iegūt izmaiņas sagatavotajiem failiem",
+  "ERROR_STAGE_FAILED": "Neizdevās iestudēt failus Gitā",
   "ERROR_GIT_COMMIT_FAILED": "Git commit neizdevās",
   "ERROR_GIT_BLAME_FAILED": "Git blame neizdevās",
   "ERROR_GIT_DIFF_FAILED": "Git diff neizdevās",
@@ -1346,5 +1347,5 @@ define({
   "GIT_TOAST_TITLE": "Izpētiet Git funkcijas Phoenix Code",
   "GIT_TOAST_MESSAGE": "Noklikšķiniet uz Git paneļa ikonas, lai pārvaldītu savu repozitoriju. Ērti veiciet commit, push, pull un skatiet sava projekta vēsturi — viss vienā vietā.<br><a href='https://docs.phcode.dev/docs/Features/git'>Uzziniet vairāk par Git paneli →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Nobalsot par funkcijām, kuras vēlaties redzēt nākamreiz!",
-  "ERROR_STAGE_FAILED": "Neizdevās iestudēt failus Gitā"
+  "CMD_REPORT_ISSUE": "Ziņot par problēmu"
 });

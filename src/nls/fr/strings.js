@@ -1326,6 +1326,7 @@ define({
   "ERROR_CREATE_TAG": "Échec de la création de l'étiquette",
   "ERROR_CODE_INSPECTION_FAILED": "Échec de l'exécution de CodeInspection.inspectFile pour le fichier",
   "ERROR_CANT_GET_STAGED_DIFF": "Impossible d'obtenir la différence pour les fichiers indexés",
+  "ERROR_STAGE_FAILED": "Échec de l'indexation des fichiers dans Git",
   "ERROR_GIT_COMMIT_FAILED": "Échec du commit Git",
   "ERROR_GIT_BLAME_FAILED": "Échec de Git Blame",
   "ERROR_GIT_DIFF_FAILED": "Échec de Git Diff",
@@ -1346,5 +1347,5 @@ define({
   "GIT_TOAST_TITLE": "Explorer les fonctionnalités Git dans Phoenix Code",
   "GIT_TOAST_MESSAGE": "Cliquez sur l'icône du panneau Git pour gérer votre dépôt. Validez, envoyez (push), récupérez (pull) et consultez l'historique de votre projet facilement, le tout au même endroit.<br><a href='https://docs.phcode.dev/docs/Features/git'>En savoir plus sur le panneau Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Votez pour les fonctionnalités que vous souhaitez voir apparaître !",
-  "ERROR_STAGE_FAILED": "Échec de l'indexation des fichiers dans Git"
+  "CMD_REPORT_ISSUE": "Signaler un problème"
 });

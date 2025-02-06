@@ -1326,6 +1326,7 @@ define({
   "ERROR_CREATE_TAG": "Klarte ikke å opprette tag",
   "ERROR_CODE_INSPECTION_FAILED": "CodeInspection.inspectFile mislyktes for filen",
   "ERROR_CANT_GET_STAGED_DIFF": "Kan ikke hente diff for indekserte filer",
+  "ERROR_STAGE_FAILED": "Klarte ikke å legge til filer i Git-indeksen",
   "ERROR_GIT_COMMIT_FAILED": "Git-commit mislyktes",
   "ERROR_GIT_BLAME_FAILED": "Git-blame mislyktes",
   "ERROR_GIT_DIFF_FAILED": "Git-diff mislyktes",
@@ -1346,5 +1347,5 @@ define({
   "GIT_TOAST_TITLE": "Utforsk Git-funksjoner i Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klikk på Git-panelikonet for å administrere repositoriet ditt. Utfør commit, push, pull og se prosjektloggen din – alt på ett sted.<br><a href='https://docs.phcode.dev/docs/Features/git'>Lær mer om Git-panelet →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Stem på funksjonene du ønsker å se neste!",
-  "ERROR_STAGE_FAILED": "Klarte ikke å legge til filer i Git-indeksen"
+  "CMD_REPORT_ISSUE": "Rapporter problem"
 });

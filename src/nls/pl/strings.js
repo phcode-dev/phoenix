@@ -1326,6 +1326,7 @@ define({
   "ERROR_CREATE_TAG": "Utworzenie tagu nie powiodło się",
   "ERROR_CODE_INSPECTION_FAILED": "Wykonanie CodeInspection.inspectFile nie powiodło się dla pliku",
   "ERROR_CANT_GET_STAGED_DIFF": "Nie można pobrać różnic dla plików dodanych do zatwierdzenia",
+  "ERROR_STAGE_FAILED": "Nie udało się dodać plików do poczekalni Git",
   "ERROR_GIT_COMMIT_FAILED": "Zatwierdzenie Git nie powiodło się",
   "ERROR_GIT_BLAME_FAILED": "Git Blame nie powiodło się",
   "ERROR_GIT_DIFF_FAILED": "Git Diff nie powiodło się",
@@ -1346,5 +1347,5 @@ define({
   "GIT_TOAST_TITLE": "Poznaj funkcje Gita w Phoenix Code",
   "GIT_TOAST_MESSAGE": "Kliknij ikonę panelu Git, aby zarządzać swoim repozytorium. Łatwo zatwierdzaj, przesyłaj, pobieraj i przeglądaj historię swojego projektu — wszystko w jednym miejscu.<br><a href='https://docs.phcode.dev/docs/Features/git'>Dowiedz się więcej o panelu Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Zagłosuj na funkcje, które chcesz zobaczyć w przyszłości!",
-  "ERROR_STAGE_FAILED": "Nie udało się dodać plików do poczekalni Git"
+  "CMD_REPORT_ISSUE": "Zgłoś problem"
 });
