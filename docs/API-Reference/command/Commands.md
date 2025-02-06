@@ -735,6 +735,12 @@ Opens support resources
 Opens feature suggestion page
 
 **Kind**: global variable  
+<a name="HELP_REPORT_ISSUE"></a>
+
+## HELP\_REPORT\_ISSUE
+Opens report issue page
+
+**Kind**: global variable  
 <a name="HELP_RELEASE_NOTES"></a>
 
 ## HELP\_RELEASE\_NOTES

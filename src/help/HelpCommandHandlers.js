@@ -164,6 +164,7 @@ define(function (require, exports, module) {
     CommandManager.register(Strings.CMD_DOCS,                   Commands.HELP_DOCS,                 _handleLinkMenuItem(brackets.config.docs_url));
     CommandManager.register(Strings.CMD_SUPPORT,                Commands.HELP_SUPPORT,              _handleLinkMenuItem(brackets.config.support_url));
     CommandManager.register(Strings.CMD_SUGGEST,                Commands.HELP_SUGGEST,              _handleLinkMenuItem(brackets.config.suggest_feature_url));
+    CommandManager.register(Strings.CMD_REPORT_ISSUE,           Commands.HELP_REPORT_ISSUE,         _handleLinkMenuItem(brackets.config.report_issue_url));
     CommandManager.register(Strings.CMD_RELEASE_NOTES,          Commands.HELP_RELEASE_NOTES,        _handleLinkMenuItem(brackets.config.release_notes_url));
     CommandManager.register(Strings.CMD_GET_INVOLVED,           Commands.HELP_GET_INVOLVED,         _handleLinkMenuItem(brackets.config.get_involved_url));
     CommandManager.register(Strings.CMD_SHOW_EXTENSIONS_FOLDER, Commands.HELP_SHOW_EXT_FOLDER,      _handleShowExtensionsFolder);

@@ -265,8 +265,12 @@ define(function (require, exports, module) {
         menu = Menus.addMenu(Strings.HELP_MENU, Menus.AppMenuBar.HELP_MENU);
         menu.addMenuItem(Commands.HELP_DOCS);
         menu.addMenuItem(Commands.HELP_SUPPORT);
+        menu.addMenuDivider();
         if (brackets.config.suggest_feature_url) {
             menu.addMenuItem(Commands.HELP_SUGGEST);
+        }
+        if (brackets.config.report_issue_url) {
+            menu.addMenuItem(Commands.HELP_REPORT_ISSUE);
         }
         if (brackets.config.get_involved_url) {
             menu.addMenuItem(Commands.HELP_GET_INVOLVED);
