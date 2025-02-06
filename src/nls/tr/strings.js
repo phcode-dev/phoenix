@@ -1326,6 +1326,7 @@ define({
   "ERROR_CREATE_TAG": "Etiket oluşturma başarısız oldu",
   "ERROR_CODE_INSPECTION_FAILED": "Dosya için CodeInspection.inspectFile yürütülemedi",
   "ERROR_CANT_GET_STAGED_DIFF": "Hazırlanan dosyalar için fark alınamıyor",
+  "ERROR_STAGE_FAILED": "Git'te dosyalar hazırlama başarısız oldu",
   "ERROR_GIT_COMMIT_FAILED": "Git Kaydı başarısız oldu",
   "ERROR_GIT_BLAME_FAILED": "Git Sorumlusu alınamadı",
   "ERROR_GIT_DIFF_FAILED": "Git Farkı alınamadı",
@@ -1346,5 +1347,5 @@ define({
   "GIT_TOAST_TITLE": "Phoenix Code'da Git Özelliklerini Keşfedin",
   "GIT_TOAST_MESSAGE": "Deponuzu yönetmek için Git paneli simgesine tıklayın. Proje geçmişinizi kolayca işleyin, gönderin, çekin ve görüntüleyin—hepsi tek bir yerde.<br><a href='https://docs.phcode.dev/docs/Features/git'>Git paneli hakkında daha fazla bilgi edinin →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Gelecekte görmek istediğiniz özellikler için oy verin!",
-  "ERROR_STAGE_FAILED": "Git'te dosyalar hazırlama başarısız oldu"
+  "CMD_REPORT_ISSUE": "Sorun Bildir"
 });

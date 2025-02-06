@@ -1326,6 +1326,7 @@ define({
   "ERROR_CREATE_TAG": "Vytvorenie značky zlyhalo",
   "ERROR_CODE_INSPECTION_FAILED": "CodeInspection.inspectFile zlyhal pri vykonávaní pre súbor",
   "ERROR_CANT_GET_STAGED_DIFF": "Neviem získať diff pre pridané súbory",
+  "ERROR_STAGE_FAILED": "Nepodarilo sa pridať súbory do stagingu Gitu",
   "ERROR_GIT_COMMIT_FAILED": "Git commit zlyhal",
   "ERROR_GIT_BLAME_FAILED": "Git blame zlyhal",
   "ERROR_GIT_DIFF_FAILED": "Git diff zlyhal",
@@ -1346,5 +1347,5 @@ define({
   "GIT_TOAST_TITLE": "Preskúmajte funkcie Gitu v Phoenix Code",
   "GIT_TOAST_MESSAGE": "Kliknite na ikonu panela Git pre správu vášho repozitára. Jednoducho commitujte, pushujte, pullujte a prezerajte si históriu vášho projektu – všetko na jednom mieste.<br><a href='https://docs.phcode.dev/docs/Features/git'>Zistite viac o paneli Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Hlasujte za funkcie, ktoré chcete vidieť v ďalšej verzii!",
-  "ERROR_STAGE_FAILED": "Nepodarilo sa pridať súbory do stagingu Gitu"
+  "CMD_REPORT_ISSUE": "Nahlásiť problém"
 });

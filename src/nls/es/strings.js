@@ -1326,6 +1326,7 @@ define({
   "ERROR_CREATE_TAG": "Error al crear la etiqueta",
   "ERROR_CODE_INSPECTION_FAILED": "CodeInspection.inspectFile no se pudo ejecutar para el archivo",
   "ERROR_CANT_GET_STAGED_DIFF": "No se puede obtener la diferencia para los archivos preparados",
+  "ERROR_STAGE_FAILED": "Error al preparar los archivos en Git",
   "ERROR_GIT_COMMIT_FAILED": "Error al realizar el commit de Git",
   "ERROR_GIT_BLAME_FAILED": "Error al obtener la información de autoría de Git (blame)",
   "ERROR_GIT_DIFF_FAILED": "Error al obtener la diferencia de Git (diff)",
@@ -1346,5 +1347,5 @@ define({
   "GIT_TOAST_TITLE": "Explora las funciones de Git en Phoenix Code",
   "GIT_TOAST_MESSAGE": "Haga clic en el icono del panel de Git para administrar su repositorio. Confirme, envíe (push), extraiga (pull) y vea el historial de su proyecto fácilmente, todo en un solo lugar.<br><a href='https://docs.phcode.dev/docs/Features/git'>Obtenga más información sobre el panel de Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "¡Vota por las funciones que quieres ver próximamente!",
-  "ERROR_STAGE_FAILED": "Error al preparar los archivos en Git"
+  "CMD_REPORT_ISSUE": "Informar de un problema"
 });

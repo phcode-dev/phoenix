@@ -1326,6 +1326,7 @@ define({
   "ERROR_CREATE_TAG": "فشل إنشاء وسم",
   "ERROR_CODE_INSPECTION_FAILED": "فشل تنفيذ CodeInspection.inspectFile للملف",
   "ERROR_CANT_GET_STAGED_DIFF": "تعذر الحصول على فرق الملفات المرحلية",
+  "ERROR_STAGE_FAILED": "فشل تجهيز الملفات في Git",
   "ERROR_GIT_COMMIT_FAILED": "فشل عملية الـ Git Commit",
   "ERROR_GIT_BLAME_FAILED": "فشل عملية Git Blame",
   "ERROR_GIT_DIFF_FAILED": "فشل مُقارنة Git",
@@ -1346,5 +1347,5 @@ define({
   "GIT_TOAST_TITLE": "استكشف ميزات Git في Phoenix Code",
   "GIT_TOAST_MESSAGE": "انقر على رمز لوحة Git لإدارة مستودعك. يمكنك بسهولة تنفيذ الالتزام والدفع والسحب وعرض سجل مشروعك - كل ذلك في مكان واحد.<br><a href='https://docs.phcode.dev/docs/Features/git'>تعرّف على المزيد حول لوحة Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "صوت للميزات التي ترغب برؤيتها تالياً!",
-  "ERROR_STAGE_FAILED": "فشل تجهيز الملفات في Git"
+  "CMD_REPORT_ISSUE": "الإبلاغ عن مشكلة"
 });

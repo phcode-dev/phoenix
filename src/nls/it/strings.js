@@ -1326,6 +1326,7 @@ define({
   "ERROR_CREATE_TAG": "Creazione tag non riuscita",
   "ERROR_CODE_INSPECTION_FAILED": "CodeInspection.inspectFile non è riuscito ad eseguire per il file",
   "ERROR_CANT_GET_STAGED_DIFF": "Impossibile ottenere le differenze per i file in staging",
+  "ERROR_STAGE_FAILED": "Impossibile aggiungere i file all'indice di Git",
   "ERROR_GIT_COMMIT_FAILED": "Commit Git non riuscito",
   "ERROR_GIT_BLAME_FAILED": "Blame Git non riuscito",
   "ERROR_GIT_DIFF_FAILED": "Diff Git non riuscito",
@@ -1346,5 +1347,5 @@ define({
   "GIT_TOAST_TITLE": "Esplora le funzionalità Git in Phoenix Code",
   "GIT_TOAST_MESSAGE": "Fai clic sull'icona del pannello Git per gestire il tuo repository. Esegui commit, push, pull e visualizza la cronologia del tuo progetto, tutto in un unico posto.<br><a href='https://docs.phcode.dev/docs/Features/git'>Scopri di più sul pannello Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vota per le funzionalità che desideri vedere in futuro!",
-  "ERROR_STAGE_FAILED": "Impossibile aggiungere i file all'indice di Git"
+  "CMD_REPORT_ISSUE": "Segnala un problema"
 });

@@ -1326,6 +1326,7 @@ define({
   "ERROR_CREATE_TAG": "Tunnisteen luonti epäonnistui",
   "ERROR_CODE_INSPECTION_FAILED": "CodeInspection.inspectFile-komennon suoritus epäonnistui tiedostolle",
   "ERROR_CANT_GET_STAGED_DIFF": "Ei voida hakea eroavaisuuksia valmisteltaville tiedostoille",
+  "ERROR_STAGE_FAILED": "Git-tiedostojen valmistelu epäonnistui",
   "ERROR_GIT_COMMIT_FAILED": "Git-komennon commit suoritus epäonnistui",
   "ERROR_GIT_BLAME_FAILED": "Git-komennon blame suoritus epäonnistui",
   "ERROR_GIT_DIFF_FAILED": "Git-komennon diff suoritus epäonnistui",
@@ -1346,5 +1347,5 @@ define({
   "GIT_TOAST_TITLE": "Tutustu Git-ominaisuuksiin Phoenix Codessa",
   "GIT_TOAST_MESSAGE": "Napsauta Git-paneelin kuvaketta hallitaksesi arkistoasi (repository). Tee commit, push ja pull helposti ja tarkastele projektihistoriaasi – kaikki yhdessä paikassa.<br><a href='https://docs.phcode.dev/docs/Features/git'>Lue lisää Git-paneelista →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Äänestä ominaisuuksia, jotka haluat nähdä seuraavaksi!",
-  "ERROR_STAGE_FAILED": "Git-tiedostojen valmistelu epäonnistui"
+  "CMD_REPORT_ISSUE": "Ilmoita ongelmasta"
 });

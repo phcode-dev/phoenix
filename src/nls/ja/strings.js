@@ -1326,6 +1326,7 @@ define({
   "ERROR_CREATE_TAG": "タグの作成に失敗しました",
   "ERROR_CODE_INSPECTION_FAILED": "ファイルに対する CodeInspection.inspectFile の実行に失敗しました",
   "ERROR_CANT_GET_STAGED_DIFF": "ステージングされたファイルの差分を取得できません",
+  "ERROR_STAGE_FAILED": "Gitでのファイルのステージングに失敗しました",
   "ERROR_GIT_COMMIT_FAILED": "Git コミットに失敗しました",
   "ERROR_GIT_BLAME_FAILED": "Git Blame に失敗しました",
   "ERROR_GIT_DIFF_FAILED": "Git 差分表示に失敗しました",
@@ -1346,5 +1347,5 @@ define({
   "GIT_TOAST_TITLE": "Phoenix CodeのGit機能を試す",
   "GIT_TOAST_MESSAGE": "Gitパネルアイコンをクリックしてリポジトリを管理します。コミット、プッシュ、プル、プロジェクト履歴の表示をすべて1か所で行えます。<br><a href='https://docs.phcode.dev/docs/Features/git'>Gitパネルの詳細はこちら →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "次に実装してほしい機能に投票してください！",
-  "ERROR_STAGE_FAILED": "Gitでのファイルのステージングに失敗しました"
+  "CMD_REPORT_ISSUE": "問題を報告"
 });

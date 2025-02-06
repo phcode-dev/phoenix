@@ -1326,6 +1326,7 @@ define({
   "ERROR_CREATE_TAG": "Címke létrehozása sikertelen",
   "ERROR_CODE_INSPECTION_FAILED": "A CodeInspection.inspectFile végrehajtása sikertelen a következő fájlnál:",
   "ERROR_CANT_GET_STAGED_DIFF": "Nem lehet diff-et lekérni a staged fájlokhoz",
+  "ERROR_STAGE_FAILED": "Nem sikerült a fájlok staged állapotba állítása a Gitben",
   "ERROR_GIT_COMMIT_FAILED": "Git commit sikertelen",
   "ERROR_GIT_BLAME_FAILED": "Git hibáztatás (blame) sikertelen",
   "ERROR_GIT_DIFF_FAILED": "Git diff sikertelen",
@@ -1346,5 +1347,5 @@ define({
   "GIT_TOAST_TITLE": "Fedezd fel a Git funkciókat a Phoenix Code-ban",
   "GIT_TOAST_MESSAGE": "Kattintson a Git panel ikonra a verziókövető rendszer kezeléséhez. Könnyedén végezhet commit, push és pull műveleteket, valamint megtekintheti a projekt előzményeit – mindezt egy helyen.<br><a href='https://docs.phcode.dev/docs/Features/git'>Tudj meg többet a Git panelről →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Szavazzon azokra a funkciókra, amelyeket a jövőben látni szeretne!",
-  "ERROR_STAGE_FAILED": "Nem sikerült a fájlok staged állapotba állítása a Gitben"
+  "CMD_REPORT_ISSUE": "Hiba bejelentése"
 });

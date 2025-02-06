@@ -1326,6 +1326,7 @@ define({
   "ERROR_CREATE_TAG": "Aanmaken tag mislukt",
   "ERROR_CODE_INSPECTION_FAILED": "CodeInspection.inspectFile kon niet worden uitgevoerd voor bestand",
   "ERROR_CANT_GET_STAGED_DIFF": "Kan geen diff ophalen voor gestaged bestanden",
+  "ERROR_STAGE_FAILED": "Bestanden konden niet worden gestaged in Git",
   "ERROR_GIT_COMMIT_FAILED": "Git-commit mislukt",
   "ERROR_GIT_BLAME_FAILED": "Git Blame mislukt",
   "ERROR_GIT_DIFF_FAILED": "Git Diff mislukt",
@@ -1346,5 +1347,5 @@ define({
   "GIT_TOAST_TITLE": "Ontdek Git-functies in Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klik op het Git-paneelpictogram om uw repository te beheren. Commit, push, pull en bekijk uw projectgeschiedenis eenvoudig - alles op één plek.<br><a href='https://docs.phcode.dev/docs/Features/git'>Meer informatie over het Git-paneel →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Stem op de functies die u graag wilt zien!",
-  "ERROR_STAGE_FAILED": "Bestanden konden niet worden gestaged in Git"
+  "CMD_REPORT_ISSUE": "Probleem melden"
 });

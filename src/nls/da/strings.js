@@ -1326,6 +1326,7 @@ define({
   "ERROR_CREATE_TAG": "Oprettelse af tag mislykkedes",
   "ERROR_CODE_INSPECTION_FAILED": "CodeInspection.inspectFile kunne ikke udføres for filen",
   "ERROR_CANT_GET_STAGED_DIFF": "Kan ikke hente diff for stagede filer",
+  "ERROR_STAGE_FAILED": "Kunne ikke stage filer i Git",
   "ERROR_GIT_COMMIT_FAILED": "Git-commit mislykkedes",
   "ERROR_GIT_BLAME_FAILED": "Git Blame mislykkedes",
   "ERROR_GIT_DIFF_FAILED": "Git Diff mislykkedes",
@@ -1346,5 +1347,5 @@ define({
   "GIT_TOAST_TITLE": "Udforsk Git-funktioner i Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klik på Git-panelikonet for at administrere dit repository. Commit, push, pull og se din projekthistorik nemt – alt sammen på ét sted.<br><a href='https://docs.phcode.dev/docs/Features/git'>Læs mere om Git-panelet →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Stem på de funktioner, du gerne vil se!",
-  "ERROR_STAGE_FAILED": "Kunne ikke stage filer i Git"
+  "CMD_REPORT_ISSUE": "Rapporter problem"
 });

@@ -1326,6 +1326,7 @@ define({
   "ERROR_CREATE_TAG": "टैग बनाना विफल रहा।",
   "ERROR_CODE_INSPECTION_FAILED": "फ़ाइल के लिए CodeInspection.inspectFile निष्पादित करने में विफल रहा।",
   "ERROR_CANT_GET_STAGED_DIFF": "स्टेज की गई फ़ाइलों के लिए अंतर प्राप्त नहीं कर सकते।",
+  "ERROR_STAGE_FAILED": "गिट में फ़ाइलों को स्टेज करने में विफल।",
   "ERROR_GIT_COMMIT_FAILED": "Git कमिट विफल रहा।",
   "ERROR_GIT_BLAME_FAILED": "Git ब्लेम विफल रहा।",
   "ERROR_GIT_DIFF_FAILED": "गिट डिफ विफल रहा",
@@ -1346,5 +1347,5 @@ define({
   "GIT_TOAST_TITLE": "फ़ीनिक्स कोड में Git सुविधाओं का अन्वेषण करें",
   "GIT_TOAST_MESSAGE": "अपने रिपॉजिटरी को प्रबंधित करने के लिए Git पैनल आइकन पर क्लिक करें। आसानी से कमिट करें, पुश करें, पुल करें और अपने प्रोजेक्ट का इतिहास देखें—सब एक ही स्थान पर।<br><a href='https://docs.phcode.dev/docs/Features/git'>Git पैनल के बारे में अधिक जानें →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "उन विशेषताओं के लिए वोट करें जिन्हें आप आगे देखना चाहते हैं!",
-  "ERROR_STAGE_FAILED": "गिट में फ़ाइलों को स्टेज करने में विफल।"
+  "CMD_REPORT_ISSUE": "समस्या की सूचना दें"
 });
