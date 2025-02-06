@@ -618,6 +618,7 @@ define({
     "CMD_SUPPORT": "{APP_NAME} Support",
     "CMD_DOCS": "Help, Getting Started",
     "CMD_SUGGEST": "Suggest a Feature",
+    "CMD_REPORT_ISSUE": "Report Issue",
     "CMD_RELEASE_NOTES": "Release Notes",
     "CMD_GET_INVOLVED": "Get Involved",
     "CMD_SHOW_EXTENSIONS_FOLDER": "Show Extensions Folder",

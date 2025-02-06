@@ -402,6 +402,9 @@ define(function (require, exports, module) {
     /** Opens feature suggestion page */
     exports.HELP_SUGGEST                = "help.suggest";               // HelpCommandHandlers.js       _handleLinkMenuItem()
 
+    /** Opens report issue page */
+    exports.HELP_REPORT_ISSUE           = "help.reportIssue";               // HelpCommandHandlers.js       _handleLinkMenuItem()
+
     /** Opens release notes */
     exports.HELP_RELEASE_NOTES          = "help.releaseNotes";          // HelpCommandHandlers.js       _handleLinkMenuItem()
 
