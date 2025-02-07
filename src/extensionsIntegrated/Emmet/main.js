@@ -612,7 +612,7 @@ define(function (require, exports, module) {
 
         // the word must be either in markupSnippetsList, htmlList or it must have a positive symbol
         if (markupSnippetsList.includes(word) ||
-            htmlTags.includes(word) ||
+            htmlTags.includes(word.toLowerCase()) ||
             positiveSymbols.some(symbol => word.includes(symbol))) {
 
             try {
