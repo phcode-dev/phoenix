@@ -1264,6 +1264,9 @@ define({
     "DESCRIPTION_HIDE_FIRST": "true to show the first Indent Guide line else false.",
     "DESCRIPTION_CSS_COLOR_PREVIEW": "true to display color previews in the gutter, else false.",
 
+    // Emmet
+    "DESCRIPTION_EMMET": "true to enable Emmet, else false.",
+
     // Git extension
     "ENABLE_GIT": "Enable Git",
     "ACTION": "Action",

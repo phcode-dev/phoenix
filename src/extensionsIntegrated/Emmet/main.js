@@ -243,19 +243,20 @@ define(function (require, exports, module) {
     }
 
     EmmetMarkupHints.prototype.hasHints = function (editor, implicitChar) {
+        if (enabled) {
+            this.editor = editor;
 
-        this.editor = editor;
+            const wordObj = getWordBeforeCursor(editor);
+            const config = createConfig(editor);
+            if (config && config.syntax === "html") {
 
-        const wordObj = getWordBeforeCursor(editor);
-        const config = createConfig(editor);
-        if (config && config.syntax === "html") {
+                // make sure we donot have empty spaces
+                if (wordObj.word.trim()) {
 
-            // make sure we donot have empty spaces
-            if (wordObj.word.trim()) {
-
-                const expandedAbbr = isExpandable(editor, wordObj.word, config);
-                if (expandedAbbr) {
-                    return true;
+                    const expandedAbbr = isExpandable(editor, wordObj.word, config);
+                    if (expandedAbbr) {
+                        return true;
+                    }
                 }
             }
         }
@@ -611,6 +612,9 @@ define(function (require, exports, module) {
         }
 
         // the word must be either in markupSnippetsList, htmlList or it must have a positive symbol
+        // convert to lowercase only for `htmlTags` because HTML tag names are case-insensitive,
+        // but `markupSnippetsList` expands abbreviations in a non-tag manner,
+        // where the expanded abbreviation is already in lowercase.
         if (markupSnippetsList.includes(word) ||
             htmlTags.includes(word.toLowerCase()) ||
             positiveSymbols.some(symbol => word.includes(symbol))) {
