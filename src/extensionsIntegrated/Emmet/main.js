@@ -31,16 +31,19 @@ define(function (require, exports, module) {
         negativeSymbols
     } = require('./emmet-snippets');
 
+
     /**
      * The Emmet api's
      */
     const EXPAND_ABBR = Phoenix.libs.Emmet.expand;
     // const EMMET = Phoenix.libs.Emmet.module;
 
+
     /**
      * A list of all the markup snippets that can be expanded.
      * For ex: 'link:css', 'iframe'
      * They expand differently as compared to normal tags.
+     * Refer to `./emmet-snippets.js` file for more info.
      */
     const markupSnippetsList = Object.keys(markupSnippets);
 
@@ -60,6 +63,14 @@ define(function (require, exports, module) {
     function EmmetMarkupHints() {
     }
 
+
+    /**
+     * Checks whether hints are available for the current word where cursor is present.
+     *
+     * @param {Editor} editor - the editor instance
+     * @param {String} implicitChar - unused param [didn't remove, as we might need it in future]
+     * @returns {Boolean} - true if the abbr can be expanded otherwise false.
+     */
     EmmetMarkupHints.prototype.hasHints = function (editor, implicitChar) {
         if (enabled) {
             this.editor = editor;
@@ -85,7 +96,9 @@ define(function (require, exports, module) {
 
     /**
      * Returns the Emmet hint for the current word before the cursor.
-     * The hint element will have an appended "E" icon to indicate it's an Emmet abbreviation.
+     * The hint element will have an appended "Emmet" icon at bottom-rigth to indicate it's an Emmet abbreviation.
+     *
+     * @param {String} implicitChar - unused param [didn't remove, as we might need it in future]
      */
     EmmetMarkupHints.prototype.getHints = function (implicitChar) {
         const wordObj = getWordBeforeCursor(this.editor);
@@ -132,7 +145,12 @@ define(function (require, exports, module) {
     }
 
 
-    EmmetMarkupHints.prototype.insertHint = function (completion) {
+    /**
+     * Responsible for updating the abbr with the expanded text in the editor.
+     * This function calls helper functions for this as there are,
+     * lot of complex cases that should be taken care of.
+     */
+    EmmetMarkupHints.prototype.insertHint = function () {
         const wordObj = getWordBeforeCursor(this.editor);
         const config = createConfig(this.editor);
         const expandedAbbr = isExpandable(this.editor, wordObj.word, config);
@@ -152,7 +170,7 @@ define(function (require, exports, module) {
     function createConfig(editor) {
         const fileType = editor.document.getLanguage().getId();
 
-        if (fileType === "html") {
+        if (fileType === "html" || fileType === "php" || fileType === "jsp") {
             return { syntax: "html", type: "markup" };
         }
 
@@ -162,6 +180,7 @@ define(function (require, exports, module) {
 
         return false;
     }
+
 
     /**
      * Determines whether a given character is allowed as part of an Emmet abbreviation
@@ -514,7 +533,7 @@ define(function (require, exports, module) {
         preferenceChanged();
 
         var emmetMarkupHints = new EmmetMarkupHints();
-        CodeHintManager.registerHintProvider(emmetMarkupHints, ["html"], 2);
+        CodeHintManager.registerHintProvider(emmetMarkupHints, ["html", "php", "jsp"], 2);
 
     });
 });
