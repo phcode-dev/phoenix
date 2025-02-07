@@ -1,6 +1,6 @@
 define(function (require, exports, module) {
     const AppInit = require("utils/AppInit");
-    const EditorManager = require("editor/EditorManager");
+    // const EditorManager = require("editor/EditorManager");
     const PreferencesManager = require("preferences/PreferencesManager");
     const Strings = require("strings");
     const CodeHintManager = require("editor/CodeHintManager");
@@ -294,8 +294,8 @@ define(function (require, exports, module) {
 
 
     /**
-     * Responsible to create the configuration based on the file type.
-     * Config is an object with two properties, type & snytax.
+     * Responsible to create the configuration based on the file type
+     * Config is an object with two properties, type & snytax
      * This is required by the Emmet API to distinguish between HTML & Stylesheets
      *
      * @param {Editor} editor - The editor instance
@@ -316,53 +316,92 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Responsible to get the current word before cursor
+     * Determines whether a given character is allowed as part of an Emmet abbreviation
      *
-     * @param {Editor} editor - The editor instance
-     * @returns {Object} an object in the format :
-     * {
-     *      word: "",   // the word before the cursor
-     *      start: {line: Number, ch: Number},
-     *      end: {line: Number, ch: Number}
-     * }
+     * @param {String} char - The character to test
+     * @param {Boolean} insideBraces - Flag indicating if we are inside braces (e.g. {} or [])
+     * @returns True if the character is valid for an abbreviation
      */
-    function getWordBeforeCursor(editor) {
-        const pos = editor.getCursorPos();
-        const line = editor.document.getLine(pos.line);
-        let start = pos.ch;
-        let insideBraces = false;
-        // special chars that may be in emmet abbr
-        const specialChars = new Set(['.', '#', '[', ']', '"', '=', '//', ':', '-', ',']);
+    function isEmmetChar(char, insideBraces) {
+        // Valid abbreviation characters: letters, digits, and some punctuation
+        // Adjust this regex or the list as needed for your implementation
+        const validPattern = /[a-zA-Z0-9:+*<>()/!$\-@#}{]/;
+        const specialChars = new Set(['.', '#', '[', ']', '"', '=', ':', ',', '-']);
+        return validPattern.test(char) || specialChars.has(char) || (insideBraces && char === ' ');
+    }
 
-        // If the cursor is right before '}', move it inside
-        if (line.charAt(start) === '}') {
+
+    /**
+     * Scans backwards from the given cursor position on a line to locate the start of the Emmet abbreviation
+     *
+     * @param {String} line - The full text of the current line
+     * @param {Number} cursorCh - The cursor's character (column) position on that line
+     * @returns The index (column) where the abbreviation starts
+     */
+    function findAbbreviationStart(line, cursorCh) {
+        let start = cursorCh;
+        let insideBraces = false;
+
+        // If the cursor is right before a closing brace, adjust it to be "inside" the braces
+        if (line.charAt(start) === '}' || line.charAt(start) === ']') {
             start--;
             insideBraces = true;
         }
 
-        // Look backwards
+        // Walk backwards from the cursor to find the boundary of the abbreviation
         while (start > 0) {
             const char = line.charAt(start - 1);
 
+            // Update our "inside braces" state based on the character
             if (char === '}' || char === ']') {
                 insideBraces = true;
             } else if (char === '{' || char === '[') {
                 insideBraces = false;
             }
 
-            if (/[a-zA-Z0-9:+*<>()/!$\-@#}{]/.test(char) ||
-                specialChars.has(char) ||
-                (insideBraces && char === ' ')) {
+            // If the character is valid as part of an Emmet abbreviation, continue scanning backwards
+            if (isEmmetChar(char, insideBraces)) {
                 start--;
             } else {
                 break;
             }
         }
+        return start;
+    }
+
+
+    /**
+     * Retrieves the Emmet abbreviation (i.e. the word before the cursor) from the current editor state
+     *
+     * @param {Editor} editor - The editor instance
+     * @returns An object with the abbreviation and its start/end positions
+     *
+     * Format:
+     * {
+     *   word: string,             // the extracted abbreviation
+     *   start: { line: number, ch: number },
+     *   end: { line: number, ch: number }
+     * }
+     */
+    function getWordBeforeCursor(editor) {
+        const pos = editor.getCursorPos();
+        const lineText = editor.document.getLine(pos.line);
+
+        // to determine where the abbreviation starts on the line
+        const abbreviationStart = findAbbreviationStart(lineText, pos.ch);
+
+        // Optionally, adjust the end position if the cursor is immediately before a closing brace.
+        let abbreviationEnd = pos.ch;
+        if (lineText.charAt(abbreviationEnd) === '}' || lineText.charAt(abbreviationEnd) === ']') {
+            abbreviationEnd++;
+        }
+
+        const word = lineText.substring(abbreviationStart, abbreviationEnd);
 
         return {
-            word: line.substring(start, pos.ch),
-            start: { line: pos.line, ch: start },
-            end: pos
+            word: word,
+            start: { line: pos.line, ch: abbreviationStart },
+            end: { line: pos.line, ch: abbreviationEnd }
         };
     }
 
