@@ -38,6 +38,12 @@ define(function (require, exports, module) {
         CSSProperties       = require("text!CSSProperties.json"),
         properties          = JSON.parse(CSSProperties);
 
+    /**
+     * Emmet API:
+     * This provides a function to expand abbreviations into full CSS properties.
+     */
+    const EXPAND_ABBR = Phoenix.libs.Emmet.expand;
+
     require("./css-lint");
 
     const BOOSTED_PROPERTIES = [
@@ -248,7 +254,7 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Returns a list of availble CSS propertyname or -value hints if possible for the current
+     * Returns a list of available CSS property name or -value hints if possible for the current
      * editor context.
      *
      * @param {Editor} implicitChar
@@ -377,8 +383,48 @@ define(function (require, exports, module) {
                 }
             }
 
+            // pushedHints stores all the hints that will be displayed to the user
+            // up until this much is the normal working of css code hints
+            let pushedHints = formatHints(result);
+
+            // needle gives the current word before cursor, make sure that it exists
+            // also needle shouldn't contain `-`, because for example if user typed:
+            // `box-siz` then in that case it is very obvious that user wants to type `box-sizing`
+            // but emmet expands it `box: siz;`. So we prevent calling emmet when needle has `-`.
+            if(needle && !needle.includes('-')) {
+                let expandedAbbr = EXPAND_ABBR(needle, { syntax: "css", type: "stylesheet" });
+                if(expandedAbbr && isEmmetExpandable(needle, expandedAbbr)) {
+
+                    // if the expandedAbbr doesn't have any numbers, we should split the expandedAbbr to,
+                    // get its first word before `:`.
+                    // For instance, `m` expands to `margin: ;`. Here the `: ;` is unnecessary.
+                    // Also, `bgc` expands to `background-color: #fff;`. Here we don't need the `: #fff;`
+                    // as we have cssIntelligence to display hints based on the property
+                    if(!isEmmetAbbrNumeric(expandedAbbr)) {
+                        expandedAbbr = expandedAbbr.split(':')[0];
+                    }
+
+                    if(pushedHints) {
+
+                        // to remove duplicate hints. one comes from emmet and other from default css hints.
+                        // we remove the default css hints and push emmet hint at the beginning.
+                        for(let i = 0; i < pushedHints.length; i++) {
+                            if(pushedHints[i][0].getAttribute('data-val') === expandedAbbr) {
+                                pushedHints.splice(i, 1);
+                                break;
+                            }
+                        }
+                        pushedHints.unshift(expandedAbbr);
+                    } else {
+                        pushedHints = expandedAbbr;
+                    }
+                }
+            }
+
+
+
             return {
-                hints: formatHints(result),
+                hints: pushedHints,
                 match: null, // the CodeHintManager should not format the results
                 selectInitial: selectInitial,
                 handleWideResults: false
@@ -386,6 +432,34 @@ define(function (require, exports, module) {
         }
         return null;
     };
+
+    /**
+     * Checks whether the emmet abbr should be expanded or not.
+     * For instance: EXPAND_ABBR function always expands a value passed to it.
+     * if we pass 'xyz', then there's no CSS property matching to it, but it still expands this to `xyz: ;`.
+     * So, make sure that `needle + ': ;'` doesn't add to expandedAbbr
+     *
+     * @param {String} needle the word before the cursor
+     * @param {String} expandedAbbr the expanded abbr returned by EXPAND_ABBR emmet api
+     * @returns {boolean} true if emmet should be expanded, otherwise false
+     */
+    function isEmmetExpandable(needle, expandedAbbr) {
+        return needle + ': ;' !== expandedAbbr;
+    }
+
+    /**
+     * Checks whether the expandedAbbr has any number.
+     * For instance: `m0` expands to `margin: 0;`, so we need to display the whole thing in the code hint
+     * Here, we also make sure that abbreviations which has `#`, `,` should not be included, because
+     * * `color` expands to `color: #000;` or `color: rgb(0, 0, 0)`. So this actually has numbers, but we don't want to display this.
+     *
+     * @param {String} expandedAbbr the expanded abbr returned by EXPAND_ABBR emmet api
+     * @returns {boolean} true if expandedAbbr has numbers (and doesn't include '#') otherwise false.
+     */
+    function isEmmetAbbrNumeric(expandedAbbr) {
+        return expandedAbbr.match(/\d/) !== null && !expandedAbbr.includes('#') && !expandedAbbr.includes(',');
+    }
+
 
     const HISTORY_PREFIX = "Live_hint_";
     let hintSessionId = 0, isInLiveHighlightSession = false;
