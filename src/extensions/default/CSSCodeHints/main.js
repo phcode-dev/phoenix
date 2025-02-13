@@ -384,7 +384,6 @@ define(function (require, exports, module) {
             }
 
             // pushedHints stores all the hints that will be displayed to the user
-            // up until this much is the normal working of css code hints
             let pushedHints = formatHints(result);
 
             // needle gives the current word before cursor, make sure that it exists
@@ -392,32 +391,47 @@ define(function (require, exports, module) {
             // `box-siz` then in that case it is very obvious that user wants to type `box-sizing`
             // but emmet expands it `box: siz;`. So we prevent calling emmet when needle has `-`.
             if(needle && !needle.includes('-')) {
-                let expandedAbbr = EXPAND_ABBR(needle, { syntax: "css", type: "stylesheet" });
-                if(expandedAbbr && isEmmetExpandable(needle, expandedAbbr)) {
 
-                    // if the expandedAbbr doesn't have any numbers, we should split the expandedAbbr to,
-                    // get its first word before `:`.
-                    // For instance, `m` expands to `margin: ;`. Here the `: ;` is unnecessary.
-                    // Also, `bgc` expands to `background-color: #fff;`. Here we don't need the `: #fff;`
-                    // as we have cssIntelligence to display hints based on the property
-                    if(!isEmmetAbbrNumeric(expandedAbbr)) {
-                        expandedAbbr = expandedAbbr.split(':')[0];
-                    }
+                // wrapped in try catch block because EXPAND_ABBR might throw error when it gets unexpected
+                // characters such as `, =, etc
+                try {
+                    let expandedAbbr = EXPAND_ABBR(needle, { syntax: "css", type: "stylesheet" });
+                    if(expandedAbbr && isEmmetExpandable(needle, expandedAbbr)) {
 
-                    if(pushedHints) {
-
-                        // to remove duplicate hints. one comes from emmet and other from default css hints.
-                        // we remove the default css hints and push emmet hint at the beginning.
-                        for(let i = 0; i < pushedHints.length; i++) {
-                            if(pushedHints[i][0].getAttribute('data-val') === expandedAbbr) {
-                                pushedHints.splice(i, 1);
-                                break;
-                            }
+                        // if the expandedAbbr doesn't have any numbers, we should split the expandedAbbr to,
+                        // get its first word before `:`.
+                        // For instance, `m` expands to `margin: ;`. Here the `: ;` is unnecessary.
+                        // Also, `bgc` expands to `background-color: #fff;`. Here we don't need the `: #fff;`
+                        // as we have cssIntelligence to display hints based on the property
+                        if(!isEmmetAbbrNumeric(expandedAbbr)) {
+                            expandedAbbr = expandedAbbr.split(':')[0];
                         }
-                        pushedHints.unshift(expandedAbbr);
-                    } else {
-                        pushedHints = expandedAbbr;
+
+                        // this displays an emmet icon at the side of the hint
+                        // this gives an idea to the user that the hint is coming from Emmet
+                        let $icon = $(`<span class="emmet-css-code-hint">Emmet</span>`);
+
+                        const $emmetHintObj = $(`<span data-val='${expandedAbbr}'></span>`).addClass("brackets-css-hints brackets-hints");
+                        $emmetHintObj.text(expandedAbbr);
+                        $emmetHintObj.append($icon);
+
+                        if(pushedHints) {
+
+                            // to remove duplicate hints. one comes from emmet and other from default css hints.
+                            // we remove the default css hints and push emmet hint at the beginning.
+                            for(let i = 0; i < pushedHints.length; i++) {
+                                if(pushedHints[i][0].getAttribute('data-val') === expandedAbbr) {
+                                    pushedHints.splice(i, 1);
+                                    break;
+                                }
+                            }
+                            pushedHints.unshift($emmetHintObj);
+                        } else {
+                            pushedHints = $emmetHintObj;
+                        }
                     }
+                } catch (e) {
+                    // pass
                 }
             }
 

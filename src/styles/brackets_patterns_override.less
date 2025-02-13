@@ -709,6 +709,24 @@ a:focus {
     }
 }
 
+.emmet-css-code-hint {
+  visibility: hidden;
+}
+
+.highlight .emmet-css-code-hint {
+  visibility: visible;
+  position: absolute;
+  right: 8px;
+  font-size: 0.7em;
+  font-weight: bold;
+  margin-top: 2px;
+  letter-spacing: 0.3px;
+  color: #2ea56c !important;
+  .dark& {
+    color: #146a41 !important;
+  }
+}
+
 #codehint-desc {
 	background: @bc-codehint-desc;
 	position: absolute;
