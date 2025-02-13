@@ -687,6 +687,12 @@ define(function (require, exports, module) {
             this.editor.setCursorPos(newCursor);
         }
 
+        // If the current line ends with a semicolon, the CSS property is fully specified,
+        // so we don't need to continue showing hints for its value.
+        if(this.editor.getLine(start.line).trim().endsWith(';')) {
+            keepHints = false;
+        }
+
         return keepHints;
     };
 
