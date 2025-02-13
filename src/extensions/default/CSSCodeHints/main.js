@@ -407,12 +407,35 @@ define(function (require, exports, module) {
                             expandedAbbr = expandedAbbr.split(':')[0];
                         }
 
+                        // token is required for highlighting the matched part. It gives access to
+                        // stringRanges property. Refer to `formatHints()` function in this file for more detail
+                        const [token] = StringMatch.codeHintsSort(needle, [expandedAbbr]);
+
                         // this displays an emmet icon at the side of the hint
                         // this gives an idea to the user that the hint is coming from Emmet
                         let $icon = $(`<span class="emmet-css-code-hint">Emmet</span>`);
 
-                        const $emmetHintObj = $(`<span data-val='${expandedAbbr}'></span>`).addClass("brackets-css-hints brackets-hints");
-                        $emmetHintObj.text(expandedAbbr);
+                        const $emmetHintObj = $("<span>")
+                            .addClass("brackets-css-hints brackets-hints")
+                            .attr("data-val", expandedAbbr);
+
+                        // for highlighting the already-typed characters
+                        if (token.stringRanges) {
+                            token.stringRanges.forEach(function (range) {
+                                if (range.matched) {
+                                    $emmetHintObj.append($("<span>")
+                                        .text(range.text)
+                                        .addClass("matched-hint"));
+                                } else {
+                                    $emmetHintObj.append(range.text);
+                                }
+                            });
+                        } else {
+                            // fallback
+                            $emmetHintObj.text(expandedAbbr);
+                        }
+
+                        // add the emmet icon to the final hint object
                         $emmetHintObj.append($icon);
 
                         if(pushedHints) {
@@ -434,8 +457,6 @@ define(function (require, exports, module) {
                     // pass
                 }
             }
-
-
 
             return {
                 hints: pushedHints,
