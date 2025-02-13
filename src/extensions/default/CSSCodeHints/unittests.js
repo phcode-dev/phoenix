@@ -170,8 +170,8 @@ define(function (require, exports, module) {
                 testEditor.setCursorPos({ line: 6, ch: 2 });
 
                 var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
-                verifyAttrHints(hintList, "background-color");  // filtered on "b" ,
-                // background color should come at top as its boosted for UX
+                verifyAttrHints(hintList, "bottom");  // filtered on "b" ,
+                // bottom should come at top as it is coming from emmet, and it has the highest priority
             });
 
             it("should list all prop-name hints starting with 'bord' ", function () {
@@ -459,7 +459,7 @@ define(function (require, exports, module) {
                 testEditor.setCursorPos({ line: 6, ch: 2 });
 
                 var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
-                verifyAttrHints(hintList, "background-color");  // filtered on "b"
+                verifyAttrHints(hintList, "bottom");  // filtered on "b"
             });
 
             it("should list all prop-name hints starting with 'bord' for style value context", function () {
