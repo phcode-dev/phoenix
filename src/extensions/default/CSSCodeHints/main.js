@@ -687,9 +687,11 @@ define(function (require, exports, module) {
             this.editor.setCursorPos(newCursor);
         }
 
-        // If the current line ends with a semicolon, the CSS property is fully specified,
+        // If the cursor is just after a semicolon that means that,
+        // the CSS property is fully specified,
         // so we don't need to continue showing hints for its value.
-        if(this.editor.getLine(start.line).trim().endsWith(';')) {
+        const cursorPos = this.editor.getCursorPos();
+        if(this.editor.getCharacterAtPosition({line: cursorPos.line, ch: cursorPos.ch - 1}) === ';') {
             keepHints = false;
         }
 
