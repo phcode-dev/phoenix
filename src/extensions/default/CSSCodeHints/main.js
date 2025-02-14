@@ -66,6 +66,13 @@ define(function (require, exports, module) {
     const cssWideKeywords = ['initial', 'inherit', 'unset', 'var()', 'calc()'];
     let computedProperties, computedPropertyKeys;
 
+    // Stores a list of all CSS properties along with their corresponding MDN URLs.
+    // This is used by Emmet code hints to ensure users can still access MDN documentation.
+    // the Emmet icon serves as a clickable link that redirects to the MDN page for the property (if available).
+    // This object follows the structure:
+    // { PROPERTY_NAME: MDN_URL }
+    const MDN_PROPERTIES_URLS = {};
+
     PreferencesManager.definePreference("codehint.CssPropHints", "boolean", true, {
         description: Strings.DESCRIPTION_CSS_PROP_HINTS
     });
@@ -380,6 +387,7 @@ define(function (require, exports, module) {
                 const propertyKey = computedPropertyKeys[resultItem.sourceIndex];
                 if(properties[propertyKey] && properties[propertyKey].MDN_URL){
                     resultItem.MDN_URL = properties[propertyKey].MDN_URL;
+                    MDN_PROPERTIES_URLS[propertyKey] = resultItem.MDN_URL;
                 }
             }
 
@@ -413,7 +421,13 @@ define(function (require, exports, module) {
 
                         // this displays an emmet icon at the side of the hint
                         // this gives an idea to the user that the hint is coming from Emmet
-                        let $icon = $(`<span class="emmet-css-code-hint">Emmet</span>`);
+                        let $icon = $(`<a class="emmet-css-code-hint" style="text-decoration: none">Emmet</a>`);
+
+                        // if MDN_URL is available for the property, add the href attribute to redirect to mdn
+                        if(MDN_PROPERTIES_URLS[expandedAbbr]) {
+                            $icon.attr("href", MDN_PROPERTIES_URLS[expandedAbbr]);
+                            $icon.attr("title", Strings.DOCS_MORE_LINK_MDN_TITLE);
+                        }
 
                         const $emmetHintObj = $("<span>")
                             .addClass("brackets-css-hints brackets-hints")
@@ -486,7 +500,7 @@ define(function (require, exports, module) {
      * Checks whether the expandedAbbr has any number.
      * For instance: `m0` expands to `margin: 0;`, so we need to display the whole thing in the code hint
      * Here, we also make sure that abbreviations which has `#`, `,` should not be included, because
-     * * `color` expands to `color: #000;` or `color: rgb(0, 0, 0)`. So this actually has numbers, but we don't want to display this.
+     * `color` expands to `color: #000;` or `color: rgb(0, 0, 0)`. So this actually has numbers, but we don't want to display this.
      *
      * @param {String} expandedAbbr the expanded abbr returned by EXPAND_ABBR emmet api
      * @returns {boolean} true if expandedAbbr has numbers (and doesn't include '#') otherwise false.
