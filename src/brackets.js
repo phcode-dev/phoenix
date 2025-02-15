@@ -121,6 +121,7 @@ define(function (require, exports, module) {
     // load modules for later use
     require("utils/Global");
     require("editor/CSSInlineEditor");
+    require("preferences/AllPreferences");
     require("project/WorkingSetSort");
     require("search/QuickOpen");
     require("search/QuickOpenHelper");

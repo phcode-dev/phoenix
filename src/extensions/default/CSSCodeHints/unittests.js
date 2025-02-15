@@ -110,6 +110,10 @@ define(function (require, exports, module) {
             expect(hintList[0]).toBe(expectedFirstHint);
         }
 
+        function verifySecondAttrHint(hintList, expectedSecondHint) {
+            expect(hintList.indexOf("div")).toBe(-1);
+            expect(hintList[1]).toBe(expectedSecondHint);
+        }
 
         function selectHint(provider, expectedHint, implicitChar) {
             var hintList = expectHints(provider, implicitChar);
@@ -170,8 +174,16 @@ define(function (require, exports, module) {
                 testEditor.setCursorPos({ line: 6, ch: 2 });
 
                 var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
-                verifyAttrHints(hintList, "background-color");  // filtered on "b" ,
-                // background color should come at top as its boosted for UX
+                verifyAttrHints(hintList, "bottom");  // filtered on "b" ,
+                // bottom should come at top as it is coming from emmet, and it has the highest priority
+            });
+
+            it("should list the second prop-name hint starting with 'b'", function () {
+                testEditor.setCursorPos({ line: 6, ch: 2 });
+
+                var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
+                verifySecondAttrHint(hintList, "background-color");  // filtered on "b" ,
+                // background-color should be displayed at second. as first will be bottom coming from emmet
             });
 
             it("should list all prop-name hints starting with 'bord' ", function () {
@@ -243,6 +255,15 @@ define(function (require, exports, module) {
                 testEditor = null;
                 testDocument = null;
             });
+
+            it("should expand m0 to margin: 0; when Emmet hint is used", function () {
+                testDocument.replaceRange("m0", { line: 6, ch: 2 });
+                testEditor.setCursorPos({ line: 6, ch: 4 });
+
+                selectHint(CSSCodeHints.cssPropHintProvider, "margin: 0;");
+                expect(testDocument.getLine(6)).toBe(" margin: 0;");
+            });
+
 
             it("should insert colon prop-name selected", function () {
                 // insert semicolon after previous rule to avoid incorrect tokenizing
@@ -459,7 +480,14 @@ define(function (require, exports, module) {
                 testEditor.setCursorPos({ line: 6, ch: 2 });
 
                 var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
-                verifyAttrHints(hintList, "background-color");  // filtered on "b"
+                verifyAttrHints(hintList, "bottom");  // filtered on "b"
+            });
+
+            it("should list the second prop-name hint starting with 'b' for style value context", function () {
+                testEditor.setCursorPos({ line: 6, ch: 2 });
+
+                var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
+                verifySecondAttrHint(hintList, "background-color");  // second result when filtered on "b"
             });
 
             it("should list all prop-name hints starting with 'bord' for style value context", function () {
