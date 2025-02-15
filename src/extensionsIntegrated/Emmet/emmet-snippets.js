@@ -28,6 +28,8 @@
  * 1. **markupSnippets**: An object that maps abbreviation keys to their expanded HTML markup.
  *    These are all the abbreviations that can be expanded into something other than the usual tags.
  *    When an abbreviation matching one of the markup snippets is passed to Emmet, it knows how to expand it.
+ *  These are sourced from `thirdparty/emmet.es.js`. To update this in future, refer to that file.
+ *
  *
  * 2. **htmlTags**: An array of standard HTML tags that are expanded by default.
  *    This list helps determine whether an abbreviation corresponds to a valid HTML element.

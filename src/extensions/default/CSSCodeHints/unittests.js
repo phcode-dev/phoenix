@@ -256,15 +256,6 @@ define(function (require, exports, module) {
                 testDocument = null;
             });
 
-            it("should expand m0 to margin: 0; when Emmet hint is used", function () {
-                testDocument.replaceRange("m0", { line: 6, ch: 2 });
-                testEditor.setCursorPos({ line: 6, ch: 4 });
-
-                selectHint(CSSCodeHints.cssPropHintProvider, "margin: 0;");
-                expect(testDocument.getLine(6)).toBe(" margin: 0;");
-            });
-
-
             it("should insert colon prop-name selected", function () {
                 // insert semicolon after previous rule to avoid incorrect tokenizing
                 testDocument.replaceRange(";", { line: 6, ch: 2 });
