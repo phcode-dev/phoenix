@@ -18,12 +18,14 @@
  * along with this program. If not, see https://opensource.org/licenses/AGPL-3.0.
  */
 
+/* Emmet for stylesheet is present inside `src/extensions/default/CSSCodeHints/main.js` */
 
 define(function (require, exports, module) {
     const AppInit = require("utils/AppInit");
     const PreferencesManager = require("preferences/PreferencesManager");
-    const Strings = require("strings");
     const CodeHintManager = require("editor/CodeHintManager");
+    const AllPreferences = require("preferences/AllPreferences");
+
     const {
         markupSnippets,
         htmlTags,
@@ -36,6 +38,8 @@ define(function (require, exports, module) {
      * The Emmet api's
      */
     const EXPAND_ABBR = Phoenix.libs.Emmet.expand;
+
+    // (leaving this for future, as we might need this when we extend the functionality of Emmet)
     // const EMMET = Phoenix.libs.Emmet.module;
 
 
@@ -48,14 +52,7 @@ define(function (require, exports, module) {
     const markupSnippetsList = Object.keys(markupSnippets);
 
 
-    // For preferences settings, to toggle this feature on/off
-    const PREFERENCES_EMMET = "emmet";
-    let enabled = true; // by default:- on
-
-    PreferencesManager.definePreference(PREFERENCES_EMMET, "boolean", enabled, {
-        description: Strings.DESCRIPTION_EMMET
-    });
-
+    let enabled = true; // whether Emmet is enabled or not in preferences
 
     /**
      * @constructor
@@ -520,16 +517,15 @@ define(function (require, exports, module) {
 
 
     /**
-     * Checks for preference changes, to enable/disable the feature
+     * Checks for preference changes, to enable/disable Emmet
      */
     function preferenceChanged() {
-        const value = PreferencesManager.get(PREFERENCES_EMMET);
-        enabled = value;
+        enabled = PreferencesManager.get(AllPreferences.EMMET);
     }
 
     AppInit.appReady(function () {
-        // Set up preferences
-        PreferencesManager.on("change", PREFERENCES_EMMET, preferenceChanged);
+
+        PreferencesManager.on("change", AllPreferences.EMMET, preferenceChanged);
         preferenceChanged();
 
         var emmetMarkupHints = new EmmetMarkupHints();
