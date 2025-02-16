@@ -94,6 +94,74 @@ define(function (require, exports, module) {
             expect(hintList[0]).toBe(expectedFirstHint);
         }
 
+        // Helper function for testing cursor position
+        function fixPos(pos) {
+            if (!("sticky" in pos)) {
+                pos.sticky = null;
+            }
+            return pos;
+        }
+
+
+        describe("Emmet hint provider", function () {
+
+            it("should display boiler plate code on ! press", function () {
+
+                let emmetBoilerPlate = "<!DOCTYPE html>\n" +
+                                       "<html lang=\"en\">\n" +
+                                       "<head>\n" +
+                                       " <meta charset=\"UTF-8\">\n" +
+                                       " <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+                                       " <title>Document</title>\n" +
+                                       "</head>\n" +
+                                       "<body>\n" +
+                                       "\n" +
+                                       "</body>\n" +
+                                       "</html>\n";
+
+                testDocument.setText("!");
+                testEditor.setCursorPos({ line: 0, ch: 1 });
+                let emmetHintList = expectHints(HTMLCodeHints.emmetHintProvider);
+                verifyTagHints(emmetHintList, emmetBoilerPlate);
+            });
+
+            it("should display doctype html initial line on !!! press", function () {
+
+                let emmetBoilerPlate = "<!DOCTYPE html>";
+
+                testDocument.setText("!!!");
+                testEditor.setCursorPos({ line: 0, ch: 3 });
+                let emmetHintList = expectHints(HTMLCodeHints.emmetHintProvider);
+                verifyTagHints(emmetHintList, emmetBoilerPlate);
+            });
+
+            it("should not display emmet hints on < key press", function () {
+                testDocument.setText("<");
+                testEditor.setCursorPos({ line: 0, ch: 1 });
+                expectNoHints(HTMLCodeHints.emmetHintProvider);
+            });
+
+            it("should add class name id name if abbr contains . and #", function () {
+
+                console.log('--------------------------');
+                console.log("reached here");
+                console.log('--------------------------');
+
+                testDocument.setText("div.hello#world");
+                testEditor.setCursorPos({ line: 0, ch: 15 });
+                let emmetHintList = expectHints(HTMLCodeHints.emmetHintProvider);
+                verifyTagHints(emmetHintList, "<div class=\"hello\" id=\"world\"></div>");
+            });
+
+            it(". should expand to a div with empty class name and set cursor in between quotes", function() {
+                testDocument.setText(".");
+                testEditor.setCursorPos({ line: 0, ch: 0 });
+                var hints = expectHints(HTMLCodeHints.emmetHintProvider);
+                HTMLCodeHints.emmetHintProvider.insertHint(hints[0]);
+                expect(fixPos(testEditor.getCursorPos())).toEql(fixPos({line: 0, ch: 12}));
+            });
+        });
+
 
         describe("Tag hint provider", function () {
 

@@ -1219,6 +1219,7 @@ define(function (require, exports, module) {
         CodeHintManager.registerHintProvider(emmetMarkupHints, ["html", "php", "jsp"], 0);
 
         // For unit testing
+        exports.emmetHintProvider = emmetMarkupHints;
         exports.tagHintProvider = tagHints;
         exports.attrHintProvider = attrHints;
     });
