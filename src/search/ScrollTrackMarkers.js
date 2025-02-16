@@ -104,9 +104,9 @@ define(function (require, exports, module) {
     }
 
 
-    function _getScrollbar(editor) {
+    function _getScrollbar(editorInstance) {
         // Be sure to select only the direct descendant, not also elements within nested inline editors
-        return $(editor.getRootElement()).children(".CodeMirror-vscrollbar");
+        return $(editorInstance.getRootElement()).children(".CodeMirror-vscrollbar");
     }
 
     /**
@@ -123,29 +123,47 @@ define(function (require, exports, module) {
             trackHt -= trackOffset * 2;
         } else {
             // No scrollbar: use the height of the entire code content
-            var codeContainer = $(editor.getRootElement()).find("> .CodeMirror-scroll > .CodeMirror-sizer > div > .CodeMirror-lines > div")[0];
+            var codeContainer = $(editor.getRootElement())
+                .find("> .CodeMirror-scroll > .CodeMirror-sizer > div > .CodeMirror-lines > div")[0];
             trackHt = codeContainer.offsetHeight;
             trackOffset = codeContainer.offsetTop;
         }
     }
 
+    function _getTop(editorInstance, pos) {
+        let cm = editorInstance._codeMirror,
+            editorHt = cm.getScrollerElement().scrollHeight,
+            cursorTop;
+
+        let wrapping = cm.getOption("lineWrapping"),
+            singleLineH = wrapping && cm.defaultTextHeight() * 1.5;
+        let curLine = pos.line;
+        let curLineObj = cm.getLineHandle(curLine);
+        if (wrapping && curLineObj.height > singleLineH) {
+            cursorTop = cm.charCoords(pos, "local").top;
+        } else {
+            cursorTop = cm.heightAtLine(curLineObj, "local");
+        }
+        // return top
+        return (Math.round(cursorTop / editorHt * trackHt) + trackOffset) - 1; // 1px Centering correction
+    }
+
+    const MARKER_HEIGHT = 2;
+
     /**
-     * Add all the given tickmarks to the DOM in a batch
+     * Add merged tickmarks to the scrollbar track
      * @private
      */
     function _renderMarks(posArray) {
-        var html = "",
-            cm = editor._codeMirror,
+        let cm = editor._codeMirror,
             editorHt = cm.getScrollerElement().scrollHeight;
 
-        // We've pretty much taken these vars and the getY function from CodeMirror's annotatescrollbar addon
-        // https://github.com/codemirror/CodeMirror/blob/master/addon/scroll/annotatescrollbar.js
-        var wrapping = cm.getOption("lineWrapping"),
+        let wrapping = cm.getOption("lineWrapping"),
             singleLineH = wrapping && cm.defaultTextHeight() * 1.5,
             curLine = null,
             curLineObj = null;
 
-        function getY(cm, pos) {
+        function getY(pos) {
             if (curLine !== pos.line) {
                 curLine = pos.line;
                 curLineObj = cm.getLineHandle(curLine);
@@ -156,13 +174,41 @@ define(function (require, exports, module) {
             return cm.heightAtLine(curLineObj, "local");
         }
 
-        posArray.forEach(function (pos) {
-            var cursorTop = getY(cm, pos),
-                top = Math.round(cursorTop / editorHt * trackHt) + trackOffset;
-            top--;  // subtract ~1/2 the ht of a tickmark to center it on ideal pos
+        var markPositions = [];
 
-            html += "<div class='tickmark' style='top:" + top + "px'></div>";
+        // Convert line positions to scrollbar positions
+        posArray.forEach(function (pos) {
+            var cursorTop = getY(pos),
+                top = Math.round(cursorTop / editorHt * trackHt) + trackOffset;
+            top--; // Centering correction
+            markPositions.push({ top: top, bottom: top + MARKER_HEIGHT }); // Default height is 2px
         });
+
+        // Sort positions by top coordinate
+        markPositions.sort((a, b) => a.top - b.top);
+
+        // Merge overlapping or adjacent tickmarks
+        var mergedMarks = [];
+        markPositions.forEach(({ top, bottom }) => {
+            if (mergedMarks.length > 0) {
+                let lastMark = mergedMarks[mergedMarks.length - 1];
+
+                if (top <= lastMark.bottom + 1) {
+                    // Extend the existing mark
+                    lastMark.bottom = Math.max(lastMark.bottom, bottom);
+                    lastMark.height = lastMark.bottom - lastMark.top; // Adjust height
+                    return;
+                }
+            }
+            // Create a new mark
+            mergedMarks.push({ top, bottom, height: bottom - top });
+        });
+
+        // Generate and insert tickmarks into the DOM
+        var html = mergedMarks.map(({ top, height }) =>
+            `<div class='tickmark' style='top:${top}px; height:${height}px;'></div>`
+        ).join("");
+
         $(".tickmark-track", editor.getRootElement()).append($(html));
     }
 
@@ -239,11 +285,15 @@ define(function (require, exports, module) {
     function markCurrent(index) {
         // Remove previous highlight first
         if ($markedTickmark) {
-            $markedTickmark.removeClass("tickmark-current");
+            $markedTickmark.remove();
             $markedTickmark = null;
         }
         if (index !== -1) {
-            $markedTickmark = $(".tickmark-track > .tickmark", editor.getRootElement()).eq(index).addClass("tickmark-current");
+            const parkPos = marks[index];
+            const top = _getTop(editor, parkPos);
+            $markedTickmark = $(
+                `<div class='tickmark tickmark-current' style='top:${top}px; height:${MARKER_HEIGHT}px;'></div>`);
+            $(".tickmark-track ").append($markedTickmark);
         }
     }
 
