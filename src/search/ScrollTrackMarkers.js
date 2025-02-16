@@ -23,57 +23,24 @@
  * Manages tickmarks shown along the scrollbar track.
  * NOT yet intended for use by anyone other than the FindReplace module.
  * It is assumed that markers are always clear()ed when switching editors.
+ *
+ * Modified to allow each Editor to store its own scroll track markers via
+ * `editor._scrollTrackMarker`.
  */
 define(function (require, exports, module) {
 
-
-    var _ = require("thirdparty/lodash");
-
-    var WorkspaceManager = require("view/WorkspaceManager");
-
+    const _                 = require("thirdparty/lodash"),
+        EditorManager = require("editor/EditorManager"),
+        WorkspaceManager  = require("view/WorkspaceManager");
 
     /**
-     * Editor the markers are currently shown for, or null if not shown
-     * @type {?Editor}
-     * @private
-     */
-    var editor;
-
-    /**
-     * Top of scrollbar track area, relative to top of scrollbar
+     * Vertical space above/below the scrollbar (set per OS).
+     * This remains global but applies to all editors.
      * @type {number}
-     * @private
      */
-    var trackOffset;
+    let scrollbarTrackOffset;
 
-    /**
-     * Height of scrollbar track area
-     * @type {number}
-     * @private
-     */
-    var trackHt;
-
-    /**
-     * Text positions of markers
-     * @type {!{line: number, ch: number}} Array
-     * @private
-     */
-    var marks = [];
-
-    /**
-     * Tickmark markCurrent() last called on, or null if never called / called with -1.
-     * @type {?jQueryObject}
-     * @private
-     */
-    var $markedTickmark;
-
-    /**
-     * Vertical space above and below the scrollbar
-     * @type {number}
-     * @private
-     */
-    var scrollbarTrackOffset;
-
+    // Initialize scrollbarTrackOffset based on platform
     switch (brackets.platform) {
     case "win": // Custom scrollbar CSS has no gap around the track
         scrollbarTrackOffset = 0;
@@ -81,236 +48,322 @@ define(function (require, exports, module) {
     case "mac": // Native scrollbar has padding around the track
         scrollbarTrackOffset = 4;
         break;
-    case "linux": // Custom scrollbar CSS has assymmetrical gap; this approximates it
+    case "linux": // Custom scrollbar CSS has asymmetrical gap; approximate it
         scrollbarTrackOffset = 2;
         break;
     }
 
     /**
-     * Vertical space above and below the scrollbar.
-     * @return {number} amount Value in pixels
+     * The (fixed) height of each individual tickmark.
+     * @const
+     */
+    const MARKER_HEIGHT = 2;
+
+    /**
+     * Returns the vertical space above and below the scrollbar, which depends
+     * on OS or may be altered by other CSS/extension changes.
+     * @return {number}
      */
     function getScrollbarTrackOffset() {
         return scrollbarTrackOffset;
     }
 
     /**
-     * Sets how much vertical space there's above and below the scrollbar, which depends
-     * on the OS and may also be affected by extensions
+     * Sets how much vertical space there is above and below the scrollbar.
      * @param {number} offset Value in pixels
      */
     function setScrollbarTrackOffset(offset) {
         scrollbarTrackOffset = offset;
     }
 
+    /**
+     * Helper: get or create the scrollTrackMarker state object for an editor.
+     * @param {!Editor} editor
+     * @return {Object} A state object stored in editorInstance._scrollTrackMarker
+     */
+    function _getMarkerState(editor) {
+        if (!editor._scrollTrackMarker) {
+            editor._scrollTrackMarker = {
+                // Track geometry
+                trackOffset: 0,
+                trackHt: 0,
 
-    function _getScrollbar(editorInstance) {
-        // Be sure to select only the direct descendant, not also elements within nested inline editors
-        return $(editorInstance.getRootElement()).children(".CodeMirror-vscrollbar");
+                // All marker positions
+                marks: [],
+
+                // The "current" marked tick
+                $markedTickmark: null,
+
+                // Whether the track is visible
+                visible: false,
+
+                // Handler for resizing
+                resizeHandler: null
+            };
+        }
+        return editor._scrollTrackMarker;
     }
 
     /**
-     * Measure scrollbar track
-     * @private
+     * Return the scrollbar element for the given editor.
+     * (Select only the direct descendant so we don't get nested inline editors).
+     * @param {!Editor} editor
+     * @return {jQueryObject}
      */
-    function _calcScaling() {
+    function _getScrollbar(editor) {
+        return $(editor.getRootElement()).children(".CodeMirror-vscrollbar");
+    }
+
+    /**
+     * Measure and store the scrollbar track geometry in editorInstance._scrollTrackMarker.
+     * @param {!Editor} editor
+     */
+    function _calcScaling(editor) {
+        var markerState = _getMarkerState(editor);
         var $sb = _getScrollbar(editor);
 
-        trackHt = $sb[0].offsetHeight;
-
-        if (trackHt > 0) {
-            trackOffset = getScrollbarTrackOffset();
-            trackHt -= trackOffset * 2;
+        var trackHeight = $sb[0].offsetHeight;
+        if (trackHeight > 0) {
+            markerState.trackOffset = getScrollbarTrackOffset();
+            markerState.trackHt = trackHeight - markerState.trackOffset * 2;
         } else {
             // No scrollbar: use the height of the entire code content
             var codeContainer = $(editor.getRootElement())
                 .find("> .CodeMirror-scroll > .CodeMirror-sizer > div > .CodeMirror-lines > div")[0];
-            trackHt = codeContainer.offsetHeight;
-            trackOffset = codeContainer.offsetTop;
+            markerState.trackHt = codeContainer.offsetHeight;
+            markerState.trackOffset = codeContainer.offsetTop;
         }
     }
-
-    function _getTop(editorInstance, pos) {
-        let cm = editorInstance._codeMirror,
-            editorHt = cm.getScrollerElement().scrollHeight,
-            cursorTop;
-
-        let wrapping = cm.getOption("lineWrapping"),
-            singleLineH = wrapping && cm.defaultTextHeight() * 1.5;
-        let curLine = pos.line;
-        let curLineObj = cm.getLineHandle(curLine);
-        if (wrapping && curLineObj.height > singleLineH) {
-            cursorTop = cm.charCoords(pos, "local").top;
-        } else {
-            cursorTop = cm.heightAtLine(curLineObj, "local");
-        }
-        // return top
-        return (Math.round(cursorTop / editorHt * trackHt) + trackOffset) - 1; // 1px Centering correction
-    }
-
-    const MARKER_HEIGHT = 2;
 
     /**
-     * Add merged tickmarks to the scrollbar track
-     * @private
+     * Compute the "top" position in the scrollbar track for a given text pos.
+     * @param {!Editor} editor
+     * @param {{line: number, ch: number}} pos
+     * @return {number} Y offset in scrollbar track
      */
-    function _renderMarks(posArray) {
-        let cm = editor._codeMirror,
-            editorHt = cm.getScrollerElement().scrollHeight;
+    function _getTop(editor, pos) {
+        var cm = editor._codeMirror;
+        var markerState = _getMarkerState(editor);
+        var editorHt = cm.getScrollerElement().scrollHeight;
+        var wrapping = cm.getOption("lineWrapping");
 
-        let wrapping = cm.getOption("lineWrapping"),
-            singleLineH = wrapping && cm.defaultTextHeight() * 1.5,
-            curLine = null,
-            curLineObj = null;
+        var cursorTop;
+        var singleLineH = wrapping && cm.defaultTextHeight() * 1.5;
+        var lineObj = cm.getLineHandle(pos.line);
+        if (wrapping && lineObj && lineObj.height > singleLineH) {
+            // For wrapped lines, measure the exact y-position of the character
+            cursorTop = cm.charCoords(pos, "local").top;
+        } else {
+            // For unwrapped lines or lines with default height
+            cursorTop = cm.heightAtLine(pos.line, "local");
+        }
+
+        var ratio = editorHt ? (cursorTop / editorHt) : 0;
+        // offset in the scrollbar track
+        return Math.round(ratio * markerState.trackHt) + markerState.trackOffset - 1;
+    }
+
+    /**
+     * Renders the given list of positions as merged tickmarks in the scrollbar track.
+     * @param {!Editor} editor
+     * @param {!Array.<{line: number, ch: number}>} posArray
+     */
+    function _renderMarks(editor, posArray) {
+        const cm = editor._codeMirror;
+        const markerState = _getMarkerState(editor);
+        const $track = $(".tickmark-track", editor.getRootElement());
+        const editorHt = cm.getScrollerElement().scrollHeight;
+
+        const wrapping = cm.getOption("lineWrapping"),
+            singleLineH = wrapping && cm.defaultTextHeight() * 1.5;
+
+        // For performance, precompute top for each mark
+        const markPositions = [];
+        let curLine = null, curLineObj = null;
 
         function getY(pos) {
             if (curLine !== pos.line) {
                 curLine = pos.line;
                 curLineObj = cm.getLineHandle(curLine);
             }
-            if (wrapping && curLineObj.height > singleLineH) {
+            if (wrapping && curLineObj && curLineObj.height > singleLineH) {
                 return cm.charCoords(pos, "local").top;
             }
             return cm.heightAtLine(curLineObj, "local");
         }
 
-        var markPositions = [];
-
-        // Convert line positions to scrollbar positions
         posArray.forEach(function (pos) {
-            var cursorTop = getY(pos),
-                top = Math.round(cursorTop / editorHt * trackHt) + trackOffset;
-            top--; // Centering correction
-            markPositions.push({ top: top, bottom: top + MARKER_HEIGHT }); // Default height is 2px
+            const y = getY(pos);
+            const ratio = editorHt ? (y / editorHt) : 0;
+            const top = Math.round(ratio * markerState.trackHt) + markerState.trackOffset - 1;
+            // default 2px height => from top..(top+2)
+            markPositions.push({ top: top, bottom: top + MARKER_HEIGHT });
         });
 
-        // Sort positions by top coordinate
-        markPositions.sort((a, b) => a.top - b.top);
+        // Sort them by top coordinate
+        markPositions.sort(function (a, b) { return a.top - b.top; });
 
-        // Merge overlapping or adjacent tickmarks
-        var mergedMarks = [];
-        markPositions.forEach(({ top, bottom }) => {
+        // Merge nearby or overlapping segments
+        const mergedMarks = [];
+        markPositions.forEach(function (m) {
             if (mergedMarks.length > 0) {
-                let lastMark = mergedMarks[mergedMarks.length - 1];
-
-                if (top <= lastMark.bottom + 1) {
-                    // Extend the existing mark
-                    lastMark.bottom = Math.max(lastMark.bottom, bottom);
-                    lastMark.height = lastMark.bottom - lastMark.top; // Adjust height
+                const last = mergedMarks[mergedMarks.length - 1];
+                // If overlapping or adjacent, merge them
+                if (m.top <= last.bottom + 1) {
+                    last.bottom = Math.max(last.bottom, m.bottom);
+                    last.height = last.bottom - last.top;
                     return;
                 }
             }
-            // Create a new mark
-            mergedMarks.push({ top, bottom, height: bottom - top });
+            m.height = m.bottom - m.top;
+            mergedMarks.push(m);
         });
 
-        // Generate and insert tickmarks into the DOM
-        var html = mergedMarks.map(({ top, height }) =>
-            `<div class='tickmark' style='top:${top}px; height:${height}px;'></div>`
-        ).join("");
+        // Build HTML
+        const html = mergedMarks.map(function (m) {
+            return "<div class='tickmark' style='top:" + m.top + "px; height:" + m.height + "px;'></div>";
+        }).join("");
 
-        $(".tickmark-track", editor.getRootElement()).append($(html));
+        // Append to track
+        $track.append($(html));
     }
 
-
     /**
-     * Clear any markers in the editor's tickmark track, but leave it visible. Safe to call when
-     * tickmark track is not visible also.
+     * Clear any markers in the editor's tickmark track, leaving it visible if it was shown.
+     * Safe to call when the tickmark track is not visible also.
+     * @param {!Editor} editor
      */
-    function clear() {
-        if (editor) {
-            $(".tickmark-track", editor.getRootElement()).empty();
-            marks = [];
-            $markedTickmark = null;
+    function clear(editor) {
+        if(!editor) {
+            console.error("Calling ScrollTrackMarkers.clear without editor instance is deprecated.");
+            editor = EditorManager.getActiveEditor();
+        }
+        const markerState = editor && editor._scrollTrackMarker;
+        if (!markerState) {
+            return;
+        }
+        $(".tickmark-track", editor.getRootElement()).empty();
+        markerState.marks = [];
+        if (markerState.$markedTickmark) {
+            markerState.$markedTickmark.remove();
+            markerState.$markedTickmark = null;
         }
     }
 
     /**
-     * Add or remove the tickmark track from the editor's UI
+     * Shows or hides the tickmark track for the given editor.
+     * @param {!Editor} editor
+     * @param {boolean} visible
      */
-    function setVisible(curEditor, visible) {
-        // short-circuit no-ops
-        if ((visible && curEditor === editor) || (!visible && !editor)) {
+    function setVisible(editor, visible) {
+        const markerState = _getMarkerState(editor);
+
+        // No-op if the current visibility state is the same
+        if (markerState.visible === visible) {
             return;
         }
 
+        markerState.visible = visible;
+
         if (visible) {
-            console.assert(!editor);
-            editor = curEditor;
+            // Create the container track if not present
+            const $scrollbar = _getScrollbar(editor);
+            const $overlay   = $("<div class='tickmark-track'></div>");
+            $scrollbar.parent().append($overlay);
 
-            // Don't support inline editors yet - search inside them is pretty screwy anyway (#2110)
-            if (editor.isTextSubset()) {
-                return;
-            }
+            // Calculate scaling
+            _calcScaling(editor);
 
-            var $sb = _getScrollbar(editor),
-                $overlay = $("<div class='tickmark-track'></div>");
-            $sb.parent().append($overlay);
-
-            _calcScaling();
-
-            // Update tickmarks during editor resize (whenever resizing has paused/stopped for > 1/3 sec)
-            WorkspaceManager.on("workspaceUpdateLayout.ScrollTrackMarkers", _.debounce(function () {
-                if (marks.length) {
-                    _calcScaling();
+            // Resize handler (debounced)
+            markerState.resizeHandler = _.debounce(function () {
+                if (markerState.marks.length) {
+                    _calcScaling(editor);
+                    // Re-render
                     $(".tickmark-track", editor.getRootElement()).empty();
-                    _renderMarks(marks);
+                    _renderMarks(editor, markerState.marks);
                 }
-            }, 300));
+            }, 300);
+
+            // Attach to workspace resizing
+            WorkspaceManager.on("workspaceUpdateLayout.ScrollTrackMarkers", markerState.resizeHandler);
 
         } else {
-            console.assert(editor === curEditor);
-            $(".tickmark-track", curEditor.getRootElement()).remove();
-            editor = null;
-            marks = [];
-            WorkspaceManager.off("workspaceUpdateLayout.ScrollTrackMarkers");
+            // Remove the track markup
+            $(".tickmark-track", editor.getRootElement()).remove();
+
+            // Detach resizing
+            if (markerState.resizeHandler) {
+                WorkspaceManager.off("workspaceUpdateLayout.ScrollTrackMarkers", markerState.resizeHandler);
+                markerState.resizeHandler = null;
+            }
+
+            // Clear marks data
+            markerState.marks = [];
+            markerState.$markedTickmark = null;
         }
     }
 
     /**
-     * Add tickmarks to the editor's tickmark track, if it's visible
-     * @param {!Editor} curEditor
-     * @param {!{line:Number, ch:Number}} posArray
+     * Adds tickmarks for the given positions into the editor's tickmark track, if visible.
+     * @param {!Editor} editor
+     * @param {!Array.<{line: number, ch: number}>} posArray
      */
-    function addTickmarks(curEditor, posArray) {
-        console.assert(editor === curEditor);
-
-        marks = marks.concat(posArray);
-        _renderMarks(posArray);
+    function addTickmarks(editor, posArray) {
+        const markerState = _getMarkerState(editor);
+        if (!markerState.visible) {
+            return;
+        }
+        // Concat new positions
+        markerState.marks = markerState.marks.concat(posArray);
+        _renderMarks(editor, posArray);
     }
 
     /**
-     * @param {number} index Either -1, or an index into the array passed to addTickmarks()
+     * Highlights the "current" tickmark at the given index (into the marks array provided to addTickmarks),
+     * or clears if `index === -1`.
+     * @param {number} index
+     * @param {!Editor} editor
      */
-    function markCurrent(index) {
-        // Remove previous highlight first
-        if ($markedTickmark) {
-            $markedTickmark.remove();
-            $markedTickmark = null;
+    function markCurrent(index, editor) {
+        if(!editor) {
+            throw new Error("Calling ScrollTrackMarkers.markCurrent without editor instance is deprecated.");
         }
-        if (index !== -1) {
-            const parkPos = marks[index];
-            const top = _getTop(editor, parkPos);
-            $markedTickmark = $(
-                `<div class='tickmark tickmark-current' style='top:${top}px; height:${MARKER_HEIGHT}px;'></div>`);
-            $(".tickmark-track ").append($markedTickmark);
+        const markerState = _getMarkerState(editor);
+        // Remove previous highlight
+        if (markerState.$markedTickmark) {
+            markerState.$markedTickmark.remove();
+            markerState.$markedTickmark = null;
         }
+        if (index === -1 || !markerState.marks[index]) {
+            return;
+        }
+
+        const top = _getTop(editor, markerState.marks[index]);
+        const $tick = $(
+            `<div class='tickmark tickmark-current' style='top: ${top}px; height: ${MARKER_HEIGHT}px;'></div>`);
+
+        $(".tickmark-track", editor.getRootElement()).append($tick);
+        markerState.$markedTickmark = $tick;
     }
 
-    // Private helper for unit tests
-    function _getTickmarks() {
-        return marks;
+    /**
+     * Private helper for unit tests
+     * @param {!Editor} editorInstance
+     * @return {!Array.<{line: number, ch: number}>}
+     */
+    function _getTickmarks(editorInstance) {
+        const markerState = editorInstance && editorInstance._scrollTrackMarker;
+        return markerState ? markerState.marks : [];
     }
-
 
     // For unit tests
-    exports._getTickmarks   = _getTickmarks;
+    exports._getTickmarks              = _getTickmarks;
 
-    exports.clear           = clear;
-    exports.setVisible      = setVisible;
-    exports.addTickmarks    = addTickmarks;
-    exports.markCurrent     = markCurrent;
-
-    exports.getScrollbarTrackOffset = getScrollbarTrackOffset;
-    exports.setScrollbarTrackOffset = setScrollbarTrackOffset;
+    // public API
+    exports.clear                      = clear;
+    exports.setVisible                 = setVisible;
+    exports.addTickmarks               = addTickmarks;
+    exports.markCurrent                = markCurrent;
+    exports.getScrollbarTrackOffset    = getScrollbarTrackOffset;
+    exports.setScrollbarTrackOffset    = setScrollbarTrackOffset;
 });
