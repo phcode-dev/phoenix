@@ -33,6 +33,11 @@ define(function (require, exports, module) {
         EditorManager = require("editor/EditorManager"),
         WorkspaceManager  = require("view/WorkspaceManager");
 
+    const TRACK_STYLES = {
+        LINE: "line",
+        ON_LEFT: "left"
+    };
+
     /**
      * Vertical space above/below the scrollbar (set per OS).
      * This remains global but applies to all editors.
@@ -57,24 +62,8 @@ define(function (require, exports, module) {
      * The (fixed) height of each individual tickmark.
      * @const
      */
-    const MARKER_HEIGHT = 2;
-
-    /**
-     * Returns the vertical space above and below the scrollbar, which depends
-     * on OS or may be altered by other CSS/extension changes.
-     * @return {number}
-     */
-    function getScrollbarTrackOffset() {
-        return scrollbarTrackOffset;
-    }
-
-    /**
-     * Sets how much vertical space there is above and below the scrollbar.
-     * @param {number} offset Value in pixels
-     */
-    function setScrollbarTrackOffset(offset) {
-        scrollbarTrackOffset = offset;
-    }
+    const MARKER_HEIGHT_LINE = 2;
+    const MARKER_HEIGHT_LEFT = 5;
 
     /**
      * Helper: get or create the scrollTrackMarker state object for an editor.
@@ -124,7 +113,7 @@ define(function (require, exports, module) {
 
         var trackHeight = $sb[0].offsetHeight;
         if (trackHeight > 0) {
-            markerState.trackOffset = getScrollbarTrackOffset();
+            markerState.trackOffset = scrollbarTrackOffset;
             markerState.trackHt = trackHeight - markerState.trackOffset * 2;
         } else {
             // No scrollbar: use the height of the entire code content
@@ -166,7 +155,7 @@ define(function (require, exports, module) {
     /**
      * Renders the given list of positions as merged tickmarks in the scrollbar track.
      * @param {!Editor} editor
-     * @param {!Array.<{line: number, ch: number}>} posArray
+     * @param {Array.<{line: number, ch: number}>} posArray
      */
     function _renderMarks(editor, posArray) {
         const cm = editor._codeMirror;
@@ -197,31 +186,47 @@ define(function (require, exports, module) {
             const ratio = editorHt ? (y / editorHt) : 0;
             const top = Math.round(ratio * markerState.trackHt) + markerState.trackOffset - 1;
             // default 2px height => from top..(top+2)
-            markPositions.push({ top: top, bottom: top + MARKER_HEIGHT });
+            let markerHeight = MARKER_HEIGHT_LINE, isLine  = true;
+            if(pos.options.trackStyle === TRACK_STYLES.ON_LEFT) {
+                markerHeight = MARKER_HEIGHT_LEFT;
+                isLine = false;
+            }
+            markPositions.push({ top: top, bottom: top + markerHeight, isLine,
+                cssColorClass: pos.options.cssColorClass || ""});
         });
 
         // Sort them by top coordinate
         markPositions.sort(function (a, b) { return a.top - b.top; });
 
         // Merge nearby or overlapping segments
-        const mergedMarks = [];
-        markPositions.forEach(function (m) {
+        const mergedLineMarks = [], mergedLeftMarks = [];
+        markPositions.forEach(function (mark) {
+            const mergedMarks = mark.isLine ? mergedLineMarks : mergedLeftMarks;
             if (mergedMarks.length > 0) {
                 const last = mergedMarks[mergedMarks.length - 1];
                 // If overlapping or adjacent, merge them
-                if (m.top <= last.bottom + 1) {
-                    last.bottom = Math.max(last.bottom, m.bottom);
+                if (mark.top <= last.bottom + 1) {
+                    last.bottom = Math.max(last.bottom, mark.bottom);
                     last.height = last.bottom - last.top;
                     return;
                 }
             }
-            m.height = m.bottom - m.top;
-            mergedMarks.push(m);
+            mark.height = mark.bottom - mark.top;
+            mergedMarks.push(mark);
         });
 
-        // Build HTML
-        const html = mergedMarks.map(function (m) {
-            return "<div class='tickmark' style='top:" + m.top + "px; height:" + m.height + "px;'></div>";
+        // Build HTML for horizontal marks
+        let html = mergedLineMarks.map(function (m) {
+            return `<div class='tickmark ${m.cssColorClass}' style='top: ${m.top}px; height: ${m.height}px;'></div>`;
+        }).join("");
+
+        // Append to track
+        $track.append($(html));
+
+        // Build HTML for hertical marks
+        html = mergedLeftMarks.map(function (m) {
+            return `<div class='tickmark tickmark-side ${
+                m.cssColorClass}' style='top: ${m.top}px; height: ${m.height}px;'></div>`;
         }).join("");
 
         // Append to track
@@ -229,26 +234,64 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Clear any markers in the editor's tickmark track, leaving it visible if it was shown.
-     * Safe to call when the tickmark track is not visible also.
+     * Clear tickmarks from the editor's tickmark track.
+     * - If `markName` is provided, only clears marks with that name.
+     * - If `markName` is omitted, clears **all unnamed marks** but leaves named marks.
+     * - To **clear all marks**, including named ones, use `clearAll()`.
      * @param {!Editor} editor
+     * @param {string} [markName] Optional. If given, only clears marks with that name.
      */
-    function clear(editor) {
-        if(!editor) {
-            console.error("Calling ScrollTrackMarkers.clear without editor instance is deprecated.");
+    function clear(editor, markName) {
+        if (!editor) {
+            console.error("Calling ScrollTrackMarkers.clear without an editor instance is deprecated.");
             editor = EditorManager.getActiveEditor();
         }
         const markerState = editor && editor._scrollTrackMarker;
         if (!markerState) {
             return;
         }
+
+        if (markName) {
+            // Filter out only the named marks that match the given `markName`
+            markerState.marks = markerState.marks.filter(mark => mark.options && mark.options.name !== markName);
+        } else {
+            // Remove only unnamed marks (marks where options.name is undefined or null)
+            markerState.marks = markerState.marks.filter(mark => mark.options && mark.options.name);
+        }
+
+        // Re-render the marks after clearing
         $(".tickmark-track", editor.getRootElement()).empty();
+        _renderMarks(editor, markerState.marks);
+
+        if (markerState.$markedTickmark && markName) {
+            markerState.$markedTickmark.remove();
+            markerState.$markedTickmark = null;
+        }
+    }
+
+    /**
+     * Clears all tickmarks from the editor's tickmark track, including named and unnamed marks.
+     * @param {!Editor} editor
+     */
+    function clearAll(editor) {
+        if (!editor) {
+            throw new Error("Called ScrollTrackMarkers.clearAll without an editor!");
+        }
+        const markerState = editor && editor._scrollTrackMarker;
+        if (!markerState) {
+            return;
+        }
+
+        // Completely remove all tickmarks
         markerState.marks = [];
+        $(".tickmark-track", editor.getRootElement()).empty();
+
         if (markerState.$markedTickmark) {
             markerState.$markedTickmark.remove();
             markerState.$markedTickmark = null;
         }
     }
+
 
     /**
      * Shows or hides the tickmark track for the given editor.
@@ -306,16 +349,22 @@ define(function (require, exports, module) {
     /**
      * Adds tickmarks for the given positions into the editor's tickmark track, if visible.
      * @param {!Editor} editor
-     * @param {!Array.<{line: number, ch: number}>} posArray
+     * @param {Array.<{line: number, ch: number}>} posArray
+     * @param {Object} [options]
+     * @param {string} [options.name] you can assign a name to marks and then use this name to selectively
+     *              these clear marks.
+     * @param {string} [options.trackStyle] one of TRACK_STYLES.*
+     * @param {string} [options.cssColorClass] a css class that should only override the --mark-color css var.
      */
-    function addTickmarks(editor, posArray) {
+    function addTickmarks(editor, posArray, options = {}) {
         const markerState = _getMarkerState(editor);
         if (!markerState.visible) {
             return;
         }
+        const newPosArray = posArray.map(pos => ({ ...pos, options }));
         // Concat new positions
-        markerState.marks = markerState.marks.concat(posArray);
-        _renderMarks(editor, posArray);
+        markerState.marks = markerState.marks.concat(newPosArray);
+        _renderMarks(editor, markerState.marks);
     }
 
     /**
@@ -340,7 +389,7 @@ define(function (require, exports, module) {
 
         const top = _getTop(editor, markerState.marks[index]);
         const $tick = $(
-            `<div class='tickmark tickmark-current' style='top: ${top}px; height: ${MARKER_HEIGHT}px;'></div>`);
+            `<div class='tickmark tickmark-current' style='top: ${top}px; height: ${MARKER_HEIGHT_LINE}px;'></div>`);
 
         $(".tickmark-track", editor.getRootElement()).append($tick);
         markerState.$markedTickmark = $tick;
@@ -361,9 +410,9 @@ define(function (require, exports, module) {
 
     // public API
     exports.clear                      = clear;
+    exports.clearAll                   = clearAll;
     exports.setVisible                 = setVisible;
     exports.addTickmarks               = addTickmarks;
     exports.markCurrent                = markCurrent;
-    exports.getScrollbarTrackOffset    = getScrollbarTrackOffset;
-    exports.setScrollbarTrackOffset    = setScrollbarTrackOffset;
+    exports.TRACK_STYLES = TRACK_STYLES;
 });

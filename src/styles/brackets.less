@@ -2617,12 +2617,13 @@ textarea.exclusions-editor {
     width: 12px;
     z-index: @z-index-cm-max;
     pointer-events: none;
+    --mark-color: #eddd23;
 
     .tickmark {
         position: absolute;
         width: 12px;
         height: 2px;
-        background-color: #eddd23;
+        background-color: var(--mark-color);
 
         opacity: 0.85;  // allow thumb to show through
         &.tickmark-current {
@@ -2630,18 +2631,18 @@ textarea.exclusions-editor {
             z-index: 1;  // ensure this one appears above overlapping sibling highlights
             opacity: 1;
         }
-    }
 
-    .tickmark-side {
-        position: absolute;
-        width: 12px;
-        height: 5px;
-        border-left: 2px solid;
-        border-left-color: #e0d123;
-        opacity: 0.85;  // allow thumb to show through
+        &.tickmark-side {
+            background-color: unset;
+            position: absolute;
+            width: 12px;
+            height: 5px;
+            border-left: 2px solid;
+            border-left-color: var(--mark-color);
+            opacity: 1;
+        }
     }
 }
-
 
 /* Quick Open search bar & dropdown */
 
