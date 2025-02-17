@@ -829,6 +829,69 @@ define(function (require, exports, module) {
                 expectNoHints(CSSCodeHints.cssPropHintProvider, " ");
             });
         });
+
+
+        const emmetContent = "body {\n" +
+                             "  m\n" +
+                             "  bgc\n" +
+                             "  m0\n" +
+                             "  pt10\n" +
+                             "  ma\n" +
+                             "}";
+
+        describe("Emmet hints for CSS", function () {
+
+            beforeEach(function () {
+                setupTest(emmetContent, "css");
+            });
+
+            afterEach(function () {
+                tearDownTest();
+            });
+
+            it("should display emmet hint margin when m is pressed", function () {
+                testEditor.setCursorPos({ line: 1, ch: 3 });
+                const hints = expectHints(CSSCodeHints.cssPropHintProvider);
+                verifyAttrHints(hints, "margin");
+                expect(hints.indexOf("margin")).toBe(0);
+            });
+
+            it("should display emmet hint background-color when bgc is pressed", function () {
+                testEditor.setCursorPos({ line: 2, ch: 5 });
+                const hints = expectHints(CSSCodeHints.cssPropHintProvider);
+                verifyAttrHints(hints, "background-color");
+                expect(hints.indexOf("background-color")).toBe(0);
+            });
+
+            it("should complete margin property when m0 is pressed", function () {
+                testEditor.setCursorPos({ line: 3, ch: 4 });
+                const hints = expectHints(CSSCodeHints.cssPropHintProvider);
+                verifyAttrHints(hints, "margin: 0;");
+                expect(hints.indexOf("margin: 0;")).toBe(0);
+
+                selectHint(CSSCodeHints.cssPropHintProvider, "margin: 0;");
+                expect(testDocument.getLine(3)).toBe("  margin: 0;");
+                expectCursorAt({ line: 3, ch: 12 });
+            });
+
+            it("should complete padding-top property when pt10 is pressed", function () {
+                testEditor.setCursorPos({ line: 4, ch: 6 });
+                const hints = expectHints(CSSCodeHints.cssPropHintProvider);
+                verifyAttrHints(hints, "padding-top: 10px;");
+                expect(hints.indexOf("padding-top: 10px;")).toBe(0);
+
+                selectHint(CSSCodeHints.cssPropHintProvider, "padding-top: 10px;");
+                expect(testDocument.getLine(4)).toBe("  padding-top: 10px;");
+                expectCursorAt({ line: 4, ch: 20 });
+            });
+
+            it("should not hint margin when ma is pressed", function () {
+                testEditor.setCursorPos({ line: 5, ch: 4 });
+                const hints = expectHints(CSSCodeHints.cssPropHintProvider);
+                expect(hints.indexOf("margin")).toBe(1); // this should not be 0, as max-width comes first
+            });
+
+        });
     });
 });
 
