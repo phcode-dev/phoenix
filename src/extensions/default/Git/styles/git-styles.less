@@ -292,6 +292,29 @@
 // codemirror
 // main: brackets-git.less
 
+.tickmark-track {
+    .brackets-git-added {
+        --mark-color: @git-green;
+        .dark & {
+            --mark-color: @dark-git-green;
+        }
+    }
+
+    .brackets-git-modified {
+        --mark-color: @git-orange;
+        .dark & {
+            --mark-color: @dark-git-orange;
+        }
+    }
+
+    .brackets-git-removed {
+        --mark-color: @git-red;
+        .dark & {
+            --mark-color: @dark-git-red;
+        }
+    }
+}
+
 .CodeMirror {
     .brackets-git-gutter {
         pointer-events: auto;
