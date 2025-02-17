@@ -44,11 +44,11 @@ define(function (require, exports, module) {
             // Load module instances from brackets.test
             ScrollTrackMarkers = testWindow.brackets.test.ScrollTrackMarkers;
             __PR = testWindow.__PR;
-            currentProjectPath = await SpecRunnerUtils.getTestPath("/spec/HTMLInstrumentation-test-files");
+            currentProjectPath = await SpecRunnerUtils.getTestPath("/spec/CSSUtils-test-files");
             await SpecRunnerUtils.loadProjectInTestWindow(currentProjectPath);
             await __PR.EDITING.splitHorizontal();
-            await __PR.EDITING.openFileInFirstPane("REC-widgets-20121127.html", true);
-            await __PR.EDITING.openFileInSecondPane("omitEndTags.html", true);
+            await __PR.EDITING.openFileInFirstPane("bootstrap.css", true);
+            await __PR.EDITING.openFileInSecondPane("variables.less", true);
             editor1Large = __PR.EDITING.getFirstPaneEditor();
             editor2 = __PR.EDITING.getSecondPaneEditor();
         }, 30000);
