@@ -459,8 +459,21 @@ define(function (require, exports, module) {
      * @returns {String | false} - returns the expanded abbr, and if cannot be expanded, returns false
      */
     function isExpandable(editor, word) {
+        const pos = editor.getCursorPos();
+        const line = editor.document.getLine(pos.line);
+
         // to prevent hints from appearing in <!DOCTYPE html> line. Also to prevent hints from appearing in comments
-        if(editor.getLine(editor.getCursorPos().line).includes('<!')) {
+        if(line.includes('<!')) {
+            return false;
+        }
+
+        // to show emmet hint when either a single or three exclamation mark(s) is present
+        if (line.includes('!!') && !line.includes('!!!')) {
+            return false;
+        }
+
+        // if more than three, then don't show emmet hint
+        if(line.includes('!!!!')) {
             return false;
         }
 
@@ -483,8 +496,6 @@ define(function (require, exports, module) {
             } catch (error) {
 
                 // emmet api throws an error when abbr contains unclosed quotes, handling that case
-                const pos = editor.getCursorPos();
-                const line = editor.document.getLine(pos.line);
                 const nextChar = line.charAt(pos.ch);
 
                 if (nextChar) {
