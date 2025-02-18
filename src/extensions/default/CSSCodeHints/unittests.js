@@ -110,6 +110,10 @@ define(function (require, exports, module) {
             expect(hintList[0]).toBe(expectedFirstHint);
         }
 
+        function verifySecondAttrHint(hintList, expectedSecondHint) {
+            expect(hintList.indexOf("div")).toBe(-1);
+            expect(hintList[1]).toBe(expectedSecondHint);
+        }
 
         function selectHint(provider, expectedHint, implicitChar) {
             var hintList = expectHints(provider, implicitChar);
@@ -170,8 +174,16 @@ define(function (require, exports, module) {
                 testEditor.setCursorPos({ line: 6, ch: 2 });
 
                 var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
-                verifyAttrHints(hintList, "background-color");  // filtered on "b" ,
-                // background color should come at top as its boosted for UX
+                verifyAttrHints(hintList, "bottom");  // filtered on "b" ,
+                // bottom should come at top as it is coming from emmet, and it has the highest priority
+            });
+
+            it("should list the second prop-name hint starting with 'b'", function () {
+                testEditor.setCursorPos({ line: 6, ch: 2 });
+
+                var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
+                verifySecondAttrHint(hintList, "background-color");  // filtered on "b" ,
+                // background-color should be displayed at second. as first will be bottom coming from emmet
             });
 
             it("should list all prop-name hints starting with 'bord' ", function () {
@@ -459,7 +471,14 @@ define(function (require, exports, module) {
                 testEditor.setCursorPos({ line: 6, ch: 2 });
 
                 var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
-                verifyAttrHints(hintList, "background-color");  // filtered on "b"
+                verifyAttrHints(hintList, "bottom");  // filtered on "b"
+            });
+
+            it("should list the second prop-name hint starting with 'b' for style value context", function () {
+                testEditor.setCursorPos({ line: 6, ch: 2 });
+
+                var hintList = expectHints(CSSCodeHints.cssPropHintProvider);
+                verifySecondAttrHint(hintList, "background-color");  // second result when filtered on "b"
             });
 
             it("should list all prop-name hints starting with 'bord' for style value context", function () {
@@ -810,6 +829,68 @@ define(function (require, exports, module) {
                 expectNoHints(CSSCodeHints.cssPropHintProvider, " ");
             });
         });
+
+
+        const emmetContent = "body {\n" +
+                             "  m\n" +
+                             "  bgc\n" +
+                             "  m0\n" +
+                             "  pt10\n" +
+                             "  ma\n" +
+                             "}";
+
+        describe("Emmet hints for CSS", function () {
+
+            beforeEach(function () {
+                setupTest(emmetContent, "css");
+            });
+
+            afterEach(function () {
+                tearDownTest();
+            });
+
+            it("should display emmet hint margin when m is pressed", function () {
+                testEditor.setCursorPos({ line: 1, ch: 3 });
+                const hints = expectHints(CSSCodeHints.cssPropHintProvider);
+                verifyAttrHints(hints, "margin");
+                expect(hints.indexOf("margin")).toBe(0);
+            });
+
+            it("should display emmet hint background-color when bgc is pressed", function () {
+                testEditor.setCursorPos({ line: 2, ch: 5 });
+                const hints = expectHints(CSSCodeHints.cssPropHintProvider);
+                verifyAttrHints(hints, "background-color");
+                expect(hints.indexOf("background-color")).toBe(0);
+            });
+
+            it("should complete margin property when m0 is pressed", function () {
+                testEditor.setCursorPos({ line: 3, ch: 4 });
+                const hints = expectHints(CSSCodeHints.cssPropHintProvider);
+                verifyAttrHints(hints, "margin: 0;");
+                expect(hints.indexOf("margin: 0;")).toBe(0);
+
+                selectHint(CSSCodeHints.cssPropHintProvider, "margin: 0;");
+                expect(testDocument.getLine(3)).toBe("  margin: 0;");
+                expectCursorAt({ line: 3, ch: 12 });
+            });
+
+            it("should complete padding-top property when pt10 is pressed", function () {
+                testEditor.setCursorPos({ line: 4, ch: 6 });
+                const hints = expectHints(CSSCodeHints.cssPropHintProvider);
+                verifyAttrHints(hints, "padding-top: 10px;");
+                expect(hints.indexOf("padding-top: 10px;")).toBe(0);
+
+                selectHint(CSSCodeHints.cssPropHintProvider, "padding-top: 10px;");
+                expect(testDocument.getLine(4)).toBe("  padding-top: 10px;");
+                expectCursorAt({ line: 4, ch: 20 });
+            });
+
+            it("should not hint margin when ma is pressed", function () {
+                testEditor.setCursorPos({ line: 5, ch: 4 });
+                const hints = expectHints(CSSCodeHints.cssPropHintProvider);
+                expect(hints.indexOf("margin")).toBe(1); // this should not be 0, as max-width comes first
+            });
+
+        });
     });
 });
-

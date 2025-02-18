@@ -248,6 +248,7 @@ define(function (require, exports, module) {
     require("worker/ExtensionsWorker");
     require("thirdparty/tinycolor");
     require("widgets/NotificationUI");
+    require("preferences/AllPreferences");
 
     // Load modules that self-register and just need to get included in the test-runner window
     require("document/ChangedDocumentTracker");

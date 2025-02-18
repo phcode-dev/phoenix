@@ -94,6 +94,14 @@ define(function (require, exports, module) {
             expect(hintList[0]).toBe(expectedFirstHint);
         }
 
+        // Helper function for testing cursor position
+        function fixPos(pos) {
+            if (!("sticky" in pos)) {
+                pos.sticky = null;
+            }
+            return pos;
+        }
+
 
         describe("Tag hint provider", function () {
 
@@ -681,6 +689,128 @@ define(function (require, exports, module) {
                 selectHint(HTMLCodeHints.attrHintProvider, "rtl");
                 expect(testDocument.getLine(7)).toBe("  <a dir=\"rtl\"><span class=\"foo\"></span></a>");
                 expectCursorAt({ line: 7, ch: 14 });          // cursor after the inserted value
+            });
+        });
+
+
+        describe("Emmet hint provider", function () {
+
+            it("should display emmet hint and expand to boilerplate code on ! press", function () {
+
+                let emmetBoilerPlate = [
+                    "<!DOCTYPE html>",
+                    "<html lang=\"en\">",
+                    "<head>",
+                    "	<meta charset=\"UTF-8\">",
+                    "	<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">",
+                    "	<title>Document</title>",
+                    "</head>",
+                    "<body>",
+                    "	",
+                    "</body>",
+                    "</html>"
+                ];
+
+                testDocument.setText("!");
+                testEditor.setCursorPos({ line: 0, ch: 1 });
+                const hints = expectHints(HTMLCodeHints.emmetHintProvider);
+
+                // get the hintText from the code hint
+                const hintText = hints[0][0].textContent;
+                expect(hintText).toBe("!Emmet"); // this should be same as the setText plus the Emmet
+
+                // also test after inserting the hint
+                HTMLCodeHints.emmetHintProvider.insertHint(hints[0]);
+
+                for(let i = 0; i <= 10; i++) {
+                    expect(testDocument.getLine(i)).toBe(emmetBoilerPlate[i]);
+                }
+
+                // make sure the cursor is between the body tag
+                expect(fixPos(testEditor.getCursorPos())).toEql(fixPos({line: 8, ch: 1}));
+            });
+
+
+            it("should display emmet hint and expand to doctype html initial line on !!! press", function () {
+
+                let emmetBoilerPlate = "<!DOCTYPE html>";
+
+                testDocument.setText("!!!");
+                testEditor.setCursorPos({ line: 0, ch: 3 });
+                const hints = expectHints(HTMLCodeHints.emmetHintProvider);
+
+                const hintText = hints[0][0].textContent;
+                expect(hintText).toBe("!!!Emmet");
+
+                HTMLCodeHints.emmetHintProvider.insertHint(hints[0]);
+                expect(testDocument.getLine(0)).toBe(emmetBoilerPlate);
+
+                expect(fixPos(testEditor.getCursorPos())).toEql(fixPos({line: 0, ch: 15}));
+            });
+
+            it("should not display hints when two or more than three exclamation marks are present", function () {
+                testDocument.setText("!!");
+                testEditor.setCursorPos({ line: 0, ch: 2 });
+                expectNoHints(HTMLCodeHints.emmetHintProvider);
+
+                testDocument.setText("!!!!");
+                testEditor.setCursorPos({ line: 0, ch: 4 });
+                expectNoHints(HTMLCodeHints.emmetHintProvider);
+            });
+
+            it("should not display emmet hints on < key press", function () {
+                testDocument.setText("<");
+                testEditor.setCursorPos({ line: 0, ch: 1 });
+                expectNoHints(HTMLCodeHints.emmetHintProvider);
+            });
+
+            it("should add class name id name if abbr contains . and #", function () {
+                testDocument.setText("div.hello#world");
+                testEditor.setCursorPos({ line: 0, ch: 15 });
+
+                const hints = expectHints(HTMLCodeHints.emmetHintProvider);
+
+                const hintText = hints[0][0].textContent;
+                expect(hintText).toBe("div.hello#worldEmmet");
+
+                HTMLCodeHints.emmetHintProvider.insertHint(hints[0]);
+                expect(testDocument.getLine(0)).toBe("<div class=\"hello\" id=\"world\"></div>");
+
+                expect(fixPos(testEditor.getCursorPos())).toEql(fixPos({line: 0, ch: 30}));
+            });
+
+            it("./# should expand to a div with empty class/id name and set cursor in between quotes", function() {
+                testDocument.setText(".");
+                testEditor.setCursorPos({ line: 0, ch: 1 });
+                let hints = expectHints(HTMLCodeHints.emmetHintProvider);
+
+                HTMLCodeHints.emmetHintProvider.insertHint(hints[0]);
+                expect(fixPos(testEditor.getCursorPos())).toEql(fixPos({line: 0, ch: 12}));
+
+                testDocument.setText("#");
+                testEditor.setCursorPos({ line: 0, ch: 1 });
+                hints = expectHints(HTMLCodeHints.emmetHintProvider);
+
+                HTMLCodeHints.emmetHintProvider.insertHint(hints[0]);
+                expect(fixPos(testEditor.getCursorPos())).toEql(fixPos({line: 0, ch: 9}));
+            });
+
+            it("should expand emmet snippet with * and {}", function() {
+                const emmetSnippetResult = "<ul>\n" +
+                    "	<li>hello world</li>\n" +
+                    "	<li>hello world</li>\n" +
+                    "	<li>hello world</li>\n" +
+                    "	<li>hello world</li>\n" +
+                    "</ul>";
+                testDocument.setText("ul>li*4{hello world}");
+                testEditor.setCursorPos({ line: 0, ch: 19 });
+                const hints = expectHints(HTMLCodeHints.emmetHintProvider);
+
+                const hintText = hints[0][0].textContent;
+                expect(hintText).toBe("ul>li*4{hello world}Emmet");
+
+                HTMLCodeHints.emmetHintProvider.insertHint(hints[0]);
+                expect(testDocument.getText()).toBe(emmetSnippetResult);
             });
         });
 

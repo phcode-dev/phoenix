@@ -35,8 +35,16 @@ define(function (require, exports, module) {
         KeyEvent            = brackets.getModule("utils/KeyEvent"),
         LiveDevelopment     = brackets.getModule("LiveDevelopment/main"),
         Metrics             = brackets.getModule("utils/Metrics"),
+        AllPreferences      = brackets.getModule("preferences/AllPreferences"),
         CSSProperties       = require("text!CSSProperties.json"),
         properties          = JSON.parse(CSSProperties);
+
+    /**
+     * Emmet API:
+     * This provides a function to expand abbreviations into full CSS properties.
+     */
+    const EXPAND_ABBR = Phoenix.libs.Emmet.expand;
+    let enabled = true; // whether Emmet is enabled or not in preferences
 
     require("./css-lint");
 
@@ -59,6 +67,13 @@ define(function (require, exports, module) {
     const MAX_CSS_HINTS = 50;
     const cssWideKeywords = ['initial', 'inherit', 'unset', 'var()', 'calc()'];
     let computedProperties, computedPropertyKeys;
+
+    // Stores a list of all CSS properties along with their corresponding MDN URLs.
+    // This is used by Emmet code hints to ensure users can still access MDN documentation.
+    // the Emmet icon serves as a clickable link that redirects to the MDN page for the property (if available).
+    // This object follows the structure:
+    // { PROPERTY_NAME: MDN_URL }
+    const MDN_PROPERTIES_URLS = {};
 
     PreferencesManager.definePreference("codehint.CssPropHints", "boolean", true, {
         description: Strings.DESCRIPTION_CSS_PROP_HINTS
@@ -248,7 +263,7 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Returns a list of availble CSS propertyname or -value hints if possible for the current
+     * Returns a list of available CSS property name or -value hints if possible for the current
      * editor context.
      *
      * @param {Editor} implicitChar
@@ -374,11 +389,97 @@ define(function (require, exports, module) {
                 const propertyKey = computedPropertyKeys[resultItem.sourceIndex];
                 if(properties[propertyKey] && properties[propertyKey].MDN_URL){
                     resultItem.MDN_URL = properties[propertyKey].MDN_URL;
+                    MDN_PROPERTIES_URLS[propertyKey] = resultItem.MDN_URL;
+                }
+            }
+
+            // pushedHints stores all the hints that will be displayed to the user
+            let pushedHints = formatHints(result);
+
+            // make sure that emmet feature is on in preferences
+            if(enabled) {
+
+                // needle gives the current word before cursor, make sure that it exists
+                // also needle shouldn't contain `-`, because for example if user typed:
+                // `box-siz` then in that case it is very obvious that user wants to type `box-sizing`
+                // but emmet expands it `box: siz;`. So we prevent calling emmet when needle has `-`.
+                if(needle && !needle.includes('-')) {
+
+                    // wrapped in try catch block because EXPAND_ABBR might throw error when it gets unexpected
+                    // characters such as `, =, etc
+                    try {
+                        let expandedAbbr = EXPAND_ABBR(needle, { syntax: "css", type: "stylesheet" });
+                        if(expandedAbbr && isEmmetExpandable(needle, expandedAbbr)) {
+
+                            // if the expandedAbbr doesn't have any numbers, we should split the expandedAbbr to,
+                            // get its first word before `:`.
+                            // For instance, `m` expands to `margin: ;`. Here the `: ;` is unnecessary.
+                            // Also, `bgc` expands to `background-color: #fff;`. Here we don't need the `: #fff;`
+                            // as we have cssIntelligence to display hints based on the property
+                            if(!isEmmetAbbrNumeric(expandedAbbr)) {
+                                expandedAbbr = expandedAbbr.split(':')[0];
+                            }
+
+                            // token is required for highlighting the matched part. It gives access to
+                            // stringRanges property. Refer to `formatHints()` function in this file for more detail
+                            const [token] = StringMatch.codeHintsSort(needle, [expandedAbbr]);
+
+                            // this displays an emmet icon at the side of the hint
+                            // this gives an idea to the user that the hint is coming from Emmet
+                            let $icon = $(`<a class="emmet-css-code-hint" style="text-decoration: none">Emmet</a>`);
+
+                            // if MDN_URL is available for the property, add the href attribute to redirect to mdn
+                            if(MDN_PROPERTIES_URLS[expandedAbbr]) {
+                                $icon.attr("href", MDN_PROPERTIES_URLS[expandedAbbr]);
+                                $icon.attr("title", Strings.DOCS_MORE_LINK_MDN_TITLE);
+                            }
+
+                            const $emmetHintObj = $("<span>")
+                                .addClass("brackets-css-hints brackets-hints")
+                                .attr("data-val", expandedAbbr);
+
+                            // for highlighting the already-typed characters
+                            if (token.stringRanges) {
+                                token.stringRanges.forEach(function (range) {
+                                    if (range.matched) {
+                                        $emmetHintObj.append($("<span>")
+                                            .text(range.text)
+                                            .addClass("matched-hint"));
+                                    } else {
+                                        $emmetHintObj.append(range.text);
+                                    }
+                                });
+                            } else {
+                                // fallback
+                                $emmetHintObj.text(expandedAbbr);
+                            }
+
+                            // add the emmet icon to the final hint object
+                            $emmetHintObj.append($icon);
+
+                            if(pushedHints) {
+
+                                // to remove duplicate hints. one comes from emmet and other from default css hints.
+                                // we remove the default css hints and push emmet hint at the beginning.
+                                for(let i = 0; i < pushedHints.length; i++) {
+                                    if(pushedHints[i][0].getAttribute('data-val') === expandedAbbr) {
+                                        pushedHints.splice(i, 1);
+                                        break;
+                                    }
+                                }
+                                pushedHints.unshift($emmetHintObj);
+                            } else {
+                                pushedHints = $emmetHintObj;
+                            }
+                        }
+                    } catch (e) {
+                        // pass
+                    }
                 }
             }
 
             return {
-                hints: formatHints(result),
+                hints: pushedHints,
                 match: null, // the CodeHintManager should not format the results
                 selectInitial: selectInitial,
                 handleWideResults: false
@@ -386,6 +487,34 @@ define(function (require, exports, module) {
         }
         return null;
     };
+
+    /**
+     * Checks whether the emmet abbr should be expanded or not.
+     * For instance: EXPAND_ABBR function always expands a value passed to it.
+     * if we pass 'xyz', then there's no CSS property matching to it, but it still expands this to `xyz: ;`.
+     * So, make sure that `needle + ': ;'` doesn't add to expandedAbbr
+     *
+     * @param {String} needle the word before the cursor
+     * @param {String} expandedAbbr the expanded abbr returned by EXPAND_ABBR emmet api
+     * @returns {boolean} true if emmet should be expanded, otherwise false
+     */
+    function isEmmetExpandable(needle, expandedAbbr) {
+        return needle + ': ;' !== expandedAbbr;
+    }
+
+    /**
+     * Checks whether the expandedAbbr has any number.
+     * For instance: `m0` expands to `margin: 0;`, so we need to display the whole thing in the code hint
+     * Here, we also make sure that abbreviations which has `#`, `,` should not be included, because
+     * `color` expands to `color: #000;` or `color: rgb(0, 0, 0)`. So this actually has numbers, but we don't want to display this.
+     *
+     * @param {String} expandedAbbr the expanded abbr returned by EXPAND_ABBR emmet api
+     * @returns {boolean} true if expandedAbbr has numbers (and doesn't include '#') otherwise false.
+     */
+    function isEmmetAbbrNumeric(expandedAbbr) {
+        return expandedAbbr.match(/\d/) !== null && !expandedAbbr.includes('#') && !expandedAbbr.includes(',');
+    }
+
 
     const HISTORY_PREFIX = "Live_hint_";
     let hintSessionId = 0, isInLiveHighlightSession = false;
@@ -578,12 +707,31 @@ define(function (require, exports, module) {
             this.editor.setCursorPos(newCursor);
         }
 
+        // If the cursor is just after a semicolon that means that,
+        // the CSS property is fully specified,
+        // so we don't need to continue showing hints for its value.
+        const cursorPos = this.editor.getCursorPos();
+        if(this.editor.getCharacterAtPosition({line: cursorPos.line, ch: cursorPos.ch - 1}) === ';') {
+            keepHints = false;
+        }
+
         return keepHints;
     };
+
+    /**
+     * Checks for preference changes, to enable/disable Emmet
+     */
+    function preferenceChanged() {
+        enabled = PreferencesManager.get(AllPreferences.EMMET);
+    }
+
 
     AppInit.appReady(function () {
         var cssPropHints = new CssPropHints();
         CodeHintManager.registerHintProvider(cssPropHints, ["css", "scss", "less"], 1);
+
+        PreferencesManager.on("change", AllPreferences.EMMET, preferenceChanged);
+        preferenceChanged();
 
         // For unit testing
         exports.cssPropHintProvider = cssPropHints;

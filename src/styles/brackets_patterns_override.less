@@ -703,9 +703,39 @@ a:focus {
     position: absolute;
     right: 0;
     margin-top:-2px;
-    color: #2ea56c !important;
+    color: @css-codehint-icon  !important;
     .dark& {
-        color: #146a41 !important;
+        color: @dark-css-codehint-icon !important;
+    }
+}
+
+.emmet-css-code-hint {
+  visibility: hidden;
+}
+
+.codehint-menu .dropdown-menu li .highlight .emmet-css-code-hint {
+  visibility: visible;
+  position: absolute;
+  right: 0;
+  margin-top: -2px;
+  font-size: 0.85em !important;
+  font-weight: @font-weight-semibold;
+  letter-spacing: 0.3px;
+  color: @css-codehint-icon !important;
+  .dark& {
+    color: @dark-css-codehint-icon !important;
+  }
+}
+
+.emmet-code-hint {
+    position: absolute;
+    font-size: 0.85em;
+    font-weight: @font-weight-semibold;
+    right: 4px;
+    bottom: 0px;
+    color: @css-codehint-icon !important;
+    .dark& {
+        color: @dark-css-codehint-icon !important;
     }
 }
 
