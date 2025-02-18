@@ -468,7 +468,7 @@ define(function (require, exports, module) {
             return null;
         }
 
-        // to show emmet hint when either a single or three exclamation mark(s) is present
+        // not to show emmet hint when either a single or three exclamation mark(s) is present
         if (line.includes('!!') && !line.includes('!!!')) {
             return null;
         }
