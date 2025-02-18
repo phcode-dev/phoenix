@@ -31,19 +31,52 @@
  * PreferencesManager.on("change", AllPreferences.EMMET, preferenceChanged);
    preferenceChanged();
  * ```
+ * NB: JSDOC/Comments marked with * are required for adding the option to Menu
  */
 
-   define(function (require, exports, module) {
+define(function (require, exports, module) {
     const PreferencesManager = require("preferences/PreferencesManager");
     const Strings = require("strings");
+    const Menus = require("command/Menus");
+    const AppInit = require("utils/AppInit");
+    const CommandManager = require("command/CommandManager");
+    const Commands = require("command/Commands");
+
+    // * list of all the commands
+    const EMMET_COMMAND_ID = "edit.emmet";
+    const EMMET_COMMAND_REGISTER = CommandManager.register(Strings.CMD_TOGGLE_EMMET, EMMET_COMMAND_ID, toggleEmmet);
+
+
 
     // list of all the preferences
     const PREFERENCES_LIST = {
         EMMET: "emmet"
     };
 
+
+    // define Emmet in preferences file
     PreferencesManager.definePreference(PREFERENCES_LIST.EMMET, "boolean", true, {
         description: Strings.DESCRIPTION_EMMET
+    });
+
+
+    // * emmet helper function to toggle emmet preferences
+    function toggleEmmet() {
+        PreferencesManager.set(PREFERENCES_LIST.EMMET, !PreferencesManager.get(PREFERENCES_LIST.EMMET));
+        EMMET_COMMAND_REGISTER.setChecked(PreferencesManager.get(PREFERENCES_LIST.EMMET));
+    }
+
+
+    AppInit.appReady(function () {
+        // * Register the command and add it to Menu bar
+        EMMET_COMMAND_REGISTER.setChecked(PreferencesManager.get(PREFERENCES_LIST.EMMET));
+        var menu = Menus.getMenu(Menus.AppMenuBar.EDIT_MENU);
+
+        // * a slight 10ms delay is added because the beautify command is not registered until then
+        setTimeout(function () {
+            menu.addMenuItem(EMMET_COMMAND_ID, "", Menus.AFTER, Commands.EDIT_BEAUTIFY_CODE_ON_SAVE);
+        }, 10);
+
     });
 
     module.exports = PREFERENCES_LIST;
