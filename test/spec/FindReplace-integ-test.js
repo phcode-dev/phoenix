@@ -401,7 +401,7 @@ define(function (require, exports, module) {
                 expect(marks.length).toEql(fooExpectedMatches.length);
 
                 marks.forEach(function (mark, index) {
-                    expect(mark.line).toEql(fooExpectedMatches[index].start.line);
+                    expect(mark.start.line).toEql(fooExpectedMatches[index].start.line);
                 });
             });
 
