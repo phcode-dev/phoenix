@@ -169,53 +169,50 @@ define(function (require, exports, module) {
      * @param {Array.<{line: number, ch: number}>} posArray
      */
     function _renderMarks(editor, posArray) {
-        const cm = editor._codeMirror;
-        const markerState = _getMarkerState(editor);
-        const $track = $(".tickmark-track", editor.getRootElement());
-        const editorHt = cm.getScrollerElement().scrollHeight;
+        const cm           = editor._codeMirror;
+        const markerState  = _getMarkerState(editor);
+        const $track       = $(".tickmark-track", editor.getRootElement());
+        const editorHt     = cm.getScrollerElement().scrollHeight;
+        const wrapping     = cm.getOption("lineWrapping");
 
-        const wrapping = cm.getOption("lineWrapping");
-        const singleLineH = wrapping && cm.defaultTextHeight() * 1.5;
-
-        // For performance, precompute top for each mark
+        // We'll collect all the normalized (top, bottom) positions here
         const markPositions = [];
-        let curLine = null, curLineObj = null;
-
-        function getY(pos) {
-            if (curLine !== pos.line) {
-                curLine = pos.line;
-                curLineObj = cm.getLineHandle(curLine);
-            }
-            if (wrapping && curLineObj && curLineObj.height > singleLineH) {
-                return cm.charCoords(pos, "local").top;
-            }
-            return cm.heightAtLine(curLineObj, "local");
-        }
 
         posArray.forEach(function (pos) {
-            const y = getY(pos);
-            const ratio = editorHt ? (y / editorHt) : 0;
-            const top = Math.round(ratio * markerState.trackHt) + markerState.trackOffset - 1;
+            // Extract the style info
+            const trackStyle     = pos.options.trackStyle || TRACK_STYLES.LINE;
+            const cssColorClass  = pos.options.cssColorClass || "";
 
-            let markerHeight = MARKER_HEIGHT_LINE;
-            let isLine = true;
-            if (pos.options.trackStyle === TRACK_STYLES.ON_LEFT) {
-                markerHeight = MARKER_HEIGHT_LEFT;
-                isLine = false;
-            }
+            // Decide which marker height to use
+            const isLineMarker   = (trackStyle === TRACK_STYLES.LINE);
+            const markerHeight   = isLineMarker ? MARKER_HEIGHT_LINE : MARKER_HEIGHT_LEFT;
+
+            // We'll measure the 'start' of the range and the 'end' of the range
+            const startPos       = pos.start || pos;   // Fallback, in case it's single
+            const endPos         = pos.end   || pos;   // Fallback, in case it's single
+
+            // Compute the top offset for the start
+            const startY = _computeY(startPos);
+            // Compute the top offset for the end
+            const endY   = _computeY(endPos);
+
+            // Put them in ascending order
+            const topY    = Math.min(startY, endY);
+            const bottomY = Math.max(startY, endY) + markerHeight;
 
             markPositions.push({
-                top: top,
-                bottom: top + markerHeight,
-                isLine: isLine,
-                cssColorClass: pos.options.cssColorClass || ""
+                top: topY,
+                bottom: bottomY,
+                isLine: isLineMarker,
+                cssColorClass
             });
         });
 
-        // Sort them by top coordinate
-        markPositions.sort(function (a, b) { return a.top - b.top; });
+        // Merge/condense overlapping or adjacent segments, same as before
+        markPositions.sort(function (a, b) {
+            return a.top - b.top;
+        });
 
-        // Merge nearby or overlapping segments
         const mergedLineMarks = [];
         const mergedLeftMarks = [];
 
@@ -234,19 +231,37 @@ define(function (require, exports, module) {
             mergedMarks.push(mark);
         });
 
-        // Build HTML for horizontal marks
+        // Now render them into the DOM
+        // (1) For the "line" style
         let html = mergedLineMarks.map(function (m) {
-            return `<div class='tickmark ${m.cssColorClass}' style='top: ${m.top}px; height: ${m.height}px;'></div>`;
+            return `<div class='tickmark ${m.cssColorClass}'
+                     style='top: ${m.top}px; height: ${m.height}px;'></div>`;
         }).join("");
         $track.append($(html));
 
-        // Build HTML for vertical marks
+        // (2) For the "left" style
         html = mergedLeftMarks.map(function (m) {
-            return `<div class='tickmark tickmark-side ${
-                m.cssColorClass}' style='top: ${m.top}px; height: ${m.height}px;'></div>`;
+            return `<div class='tickmark tickmark-side ${m.cssColorClass}'
+                     style='top: ${m.top}px; height: ${m.height}px;'></div>`;
         }).join("");
         $track.append($(html));
+
+        /**
+         * Helper function to compute Y offset for a given {line, ch} position
+         */
+        function _computeY(cmPos) {
+            if (wrapping) {
+                // For wrapped lines, measure the exact Y-position in the editor
+                return cm.charCoords(cmPos, "local").top / editorHt * markerState.trackHt
+                    + markerState.trackOffset - 1;
+            }
+            // For unwrapped lines, we can do a simpler approach
+            const cursorTop = cm.heightAtLine(cmPos.line, "local");
+            const ratio     = editorHt ? (cursorTop / editorHt) : 0;
+            return Math.round(ratio * markerState.trackHt) + markerState.trackOffset - 1;
+        }
     }
+
 
     /**
      * Private helper: Show the track if it's not already visible.
@@ -381,15 +396,84 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Adds tickmarks for the given positions into the editor's tickmark track.
+     * Merges an array of tickmark ranges if they are adjacent or overlapping in lines.
+     * All items are assumed to be in the shape:
+     *   {
+     *     start:  { line: number, ch: number },
+     *     end:    { line: number, ch: number },
+     *     options: Object
+     *   }
+     *
+     * @param {Array} markArray
+     * @return {Array} A new array with merged ranges.
+     */
+    function _mergeMarks(markArray) {
+        // 1) Sort by starting line (and ch if you want a finer sort)
+        markArray.sort((a, b) => {
+            if (a.start.line !== b.start.line) {
+                return a.start.line - b.start.line;
+            }
+            return a.start.ch - b.start.ch;
+        });
+
+        const merged = [];
+        let current  = null;
+
+        for (const mark of markArray) {
+            // If we're not currently building a merged range, start one
+            if (!current) {
+                current = {
+                    start: { ...mark.start },
+                    end: { ...mark.end   },
+                    options: mark.options
+                };
+            } else {
+                // Check if the new mark is adjacent or overlaps the current range
+                // i.e. if mark's start is <= current's end.line + 1
+                if (mark.start.line <= current.end.line + 1) {
+                    // Merge them by extending current.end if needed
+                    if (mark.end.line > current.end.line) {
+                        current.end.line = mark.end.line;
+                        current.end.ch   = mark.end.ch;
+                    } else if (mark.end.line === current.end.line && mark.end.ch > current.end.ch) {
+                        current.end.ch = mark.end.ch;
+                    }
+                    // If you need to unify other fields (like color classes),
+                    // decide how to handle current.options vs. mark.options here.
+                } else {
+                    // Not adjacent => push the old range and start a fresh one
+                    merged.push(current);
+                    current = {
+                        start: { ...mark.start },
+                        end: { ...mark.end   },
+                        options: mark.options
+                    };
+                }
+            }
+        }
+
+        // Flush any final in-progress range
+        if (current) {
+            merged.push(current);
+        }
+
+        return merged;
+    }
+
+    /**
+     * Adds tickmarks or range-markers for the given positions (or ranges) into the editor's tickmark track.
      * If the track was not visible and new marks are added, it is automatically shown.
+     *
      * @param {!Editor} editor
-     * @param {Array.<{line: number, ch: number}>} posArray
+     * @param {Array.<{line: number, ch: number} | {start: {line, ch}, end: {line, ch}}>} posArray
+     *     Each element can be:
+     *       (A) a single point: `{ line: number, ch: number }`, or
+     *       (B) a range: `{ start: { line, ch }, end: { line, ch } }`
      * @param {Object} [options]
-     * @param {string} [options.name] you can assign a name to marks and then use this name to selectively
-     *              clear these marks.
-     * @param {string} [options.trackStyle] one of TRACK_STYLES.*
-     * @param {string} [options.cssColorClass] a css class that should override the --mark-color css var.
+     * @param {string} [options.name] Optionally assign a name to these marks and later selectively clear them.
+     * @param {string} [options.trackStyle] one of TRACK_STYLES.* (e.g., "line" or "left").
+     * @param {string} [options.cssColorClass] A CSS class that can override or extend styling.
+     * @param {string} [options.dontMerge] If set to true, will not merge nearby lines in posArray to single mark.
      */
     function addTickmarks(editor, posArray, options = {}) {
         const markerState = _getMarkerState(editor);
@@ -397,42 +481,58 @@ define(function (require, exports, module) {
             return;
         }
 
-        // Make sure we have a valid editor instance
-        if (!editor) {
-            console.error("Calling ScrollTrackMarkers.addTickmarks without an editor is deprecated.");
-            editor = EditorManager.getActiveEditor();
-        }
-
-        // If track was empty before, note it
+        // Keep track of whether the track was empty before adding marks
         const wasEmpty = (markerState.marks.length === 0);
 
-        // Normalize the new positions to include the same options object
-        const newPosArray = posArray.map(pos => ({ ...pos, options }));
+        // Normalize each incoming item so that every mark has both {start, end} internally
+        const newMarks = posArray.map(pos => {
+            // If this looks like { start: {...}, end: {...} }, use it directly
+            if (pos.start && pos.end) {
+                return {
+                    start: pos.start,
+                    end: pos.end,
+                    options
+                };
+            }
 
-        // Concat the new positions
-        markerState.marks = markerState.marks.concat(newPosArray);
+            // Otherwise assume it's a single point { line, ch }
+            // Treat it as a zero-length range
+            return {
+                start: pos,
+                end: pos,
+                options
+            };
+        });
 
-        // If we were empty and now have tickmarks, show track
+        const mergedMarks = options.dontMerge ? newMarks : _mergeMarks(newMarks);
+
+        // Concat the new marks onto the existing marks
+        markerState.marks = markerState.marks.concat(mergedMarks);
+
+        // If we were empty and now have marks, show the scroll track
         if (wasEmpty && markerState.marks.length > 0) {
             _showTrack(editor);
         }
 
-        // If track is visible, re-render
+        // If the track is visible, re-render everything
         if (markerState.visible) {
             $(".tickmark-track", editor.getRootElement()).empty();
             _renderMarks(editor, markerState.marks);
         }
     }
 
+
     /**
      * Highlights the "current" tickmark at the given index (into the marks array provided to addTickmarks),
      * or clears if `index === -1`.
      * @param {number} index
      * @param {!Editor} editor
+     * @private
      */
-    function markCurrent(index, editor) {
+    function _markCurrent(index, editor) {
         if (!editor) {
-            throw new Error("Calling ScrollTrackMarkers.markCurrent without editor instance is deprecated.");
+            throw new Error(
+                "Calling private API ScrollTrackMarkers._markCurrent without editor instance is deprecated.");
         }
         const markerState = _getMarkerState(editor);
 
@@ -446,7 +546,7 @@ define(function (require, exports, module) {
         }
 
         // Position the highlight
-        const top = _getTop(editor, markerState.marks[index]);
+        const top = _getTop(editor, markerState.marks[index].start);
         const $currentTick = $(
             `<div class='tickmark tickmark-current' style='top: ${top}px; height: ${MARKER_HEIGHT_LINE}px;'></div>`
         );
@@ -468,11 +568,15 @@ define(function (require, exports, module) {
     // For unit tests
     exports._getTickmarks  = _getTickmarks;
 
+    // private API
+    exports._markCurrent    = _markCurrent;
+
+    // deprecated public API
+    exports.setVisible     = setVisible; // Deprecated
+
     // Public API
+    exports.addTickmarks   = addTickmarks;
     exports.clear          = clear;
     exports.clearAll       = clearAll;
-    exports.setVisible     = setVisible; // Deprecated
-    exports.addTickmarks   = addTickmarks;
-    exports.markCurrent    = markCurrent;
     exports.TRACK_STYLES   = TRACK_STYLES;
 });

@@ -396,7 +396,7 @@ define(function (require, exports, module) {
     function clearCurrentMatchHighlight(editor, state) {
         if (state.markedCurrent) {
             state.markedCurrent.clear();
-            ScrollTrackMarkers.markCurrent(-1, editor);
+            ScrollTrackMarkers._markCurrent(-1, editor);
         }
     }
 
@@ -424,7 +424,7 @@ define(function (require, exports, module) {
                         {from: thisMatch.start, to: thisMatch.end}, false);
                     // Update current-tickmark indicator - only if highlighting enabled (disabled if FIND_HIGHLIGHT_MAX threshold hit)
                     if (state.marked.length) {
-                        ScrollTrackMarkers.markCurrent(state.matchIndex, editor);  // _updateFindBarWithMatchInfo() has updated this index
+                        ScrollTrackMarkers._markCurrent(state.matchIndex, editor);  // _updateFindBarWithMatchInfo() has updated this index
                     }
                 }
 
@@ -464,7 +464,7 @@ define(function (require, exports, module) {
                                                 {from: nextMatch.start, to: nextMatch.end}, searchBackwards);
                     // Update current-tickmark indicator - only if highlighting enabled (disabled if FIND_HIGHLIGHT_MAX threshold hit)
                     if (state.marked.length) {
-                        ScrollTrackMarkers.markCurrent(state.matchIndex, editor);  // _updateFindBarWithMatchInfo() has updated this index
+                        ScrollTrackMarkers._markCurrent(state.matchIndex, editor);  // _updateFindBarWithMatchInfo() has updated this index
                     }
                 }
 
@@ -522,8 +522,6 @@ define(function (require, exports, module) {
         } else {
             $(editor.getRootElement()).removeClass("find-highlighting");
         }
-
-        ScrollTrackMarkers.setVisible(editor, enabled);
     }
 
     /**
@@ -579,7 +577,9 @@ define(function (require, exports, module) {
                         return result.from;
                     });
 
-                    ScrollTrackMarkers.addTickmarks(editor, scrollTrackPositions);
+                    ScrollTrackMarkers.addTickmarks(editor, scrollTrackPositions, {
+                        dontMerge: true
+                    });
                 }
 
                 // Here we only update find bar with no result. In the case of a match
