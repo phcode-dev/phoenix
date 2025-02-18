@@ -1227,7 +1227,7 @@ define(function (require, exports, module) {
         preferenceChanged();
 
         var emmetMarkupHints = new EmmetMarkupHints();
-        CodeHintManager.registerHintProvider(emmetMarkupHints, ["html", "php", "jsp"], 0);
+        CodeHintManager.registerHintProvider(emmetMarkupHints, ["html", "php"], 0);
 
         // For unit testing
         exports.emmetHintProvider = emmetMarkupHints;
