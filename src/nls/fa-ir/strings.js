@@ -508,6 +508,7 @@ define({
   "CMD_SUPPORT": "{APP_NAME} پشتیبانی",
   "CMD_DOCS": "راهنما، شروع به کار",
   "CMD_SUGGEST": "پیشنهاد یک امکان جدید",
+  "CMD_REPORT_ISSUE": "گزارش مشکل",
   "CMD_RELEASE_NOTES": "نکات انتشار",
   "CMD_GET_INVOLVED": "درگیرش شوید",
   "CMD_SHOW_EXTENSIONS_FOLDER": "نمایش پوشه افزونه ها",
@@ -1347,5 +1348,5 @@ define({
   "GIT_TOAST_TITLE": "کاوش ویژگی‌های گیت در Phoenix Code",
   "GIT_TOAST_MESSAGE": "برای مدیریت مخزن خود روی آیکون پنل گیت کلیک کنید. به راحتی کامیت، پوش، پول و مشاهده تاریخچه پروژه خود را - همه در یک مکان - انجام دهید.<br><a href='https://docs.phcode.dev/docs/Features/git'>درباره پنل گیت بیشتر بدانید →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "برای قابلیت‌هایی که می‌خواهید در آینده ببینید، رأی دهید!",
-  "CMD_REPORT_ISSUE": "گزارش مشکل"
+  "DESCRIPTION_EMMET": "مقدار true برای فعال‌سازی Emmet، در غیر این صورت false."
 });

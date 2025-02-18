@@ -508,6 +508,7 @@ define({
   "CMD_SUPPORT": "{APP_NAME} サポート",
   "CMD_DOCS": "ヘルプ、はじめに",
   "CMD_SUGGEST": "機能改善の提案",
+  "CMD_REPORT_ISSUE": "問題を報告",
   "CMD_RELEASE_NOTES": "リリースノート",
   "CMD_GET_INVOLVED": "コミュニティに参加",
   "CMD_SHOW_EXTENSIONS_FOLDER": "拡張機能のフォルダーを開く",
@@ -1347,5 +1348,5 @@ define({
   "GIT_TOAST_TITLE": "Phoenix CodeのGit機能を試す",
   "GIT_TOAST_MESSAGE": "Gitパネルアイコンをクリックしてリポジトリを管理します。コミット、プッシュ、プル、プロジェクト履歴の表示をすべて1か所で行えます。<br><a href='https://docs.phcode.dev/docs/Features/git'>Gitパネルの詳細はこちら →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "次に実装してほしい機能に投票してください！",
-  "CMD_REPORT_ISSUE": "問題を報告"
+  "DESCRIPTION_EMMET": "Emmetを有効にするにはtrue、無効にするにはfalse。"
 });

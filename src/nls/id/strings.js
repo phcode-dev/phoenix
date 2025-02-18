@@ -508,6 +508,7 @@ define({
   "CMD_SUPPORT": "Bantuan {APP_NAME}",
   "CMD_DOCS": "Bantuan, Memulai",
   "CMD_SUGGEST": "Sarankan Fitur",
+  "CMD_REPORT_ISSUE": "Laporkan Masalah",
   "CMD_RELEASE_NOTES": "Catatan Rilis",
   "CMD_GET_INVOLVED": "Ikut Terlibat",
   "CMD_SHOW_EXTENSIONS_FOLDER": "Tampilkan Folder Ekstensi",
@@ -1347,5 +1348,5 @@ define({
   "GIT_TOAST_TITLE": "Jelajahi Fitur Git di Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klik ikon panel Git untuk mengelola repositori Anda. Lakukan commit, push, pull, dan lihat riwayat proyek Anda dengan mudah—semua di satu tempat.<br><a href='https://docs.phcode.dev/docs/Features/git'>Pelajari lebih lanjut tentang panel Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Pilih fitur yang ingin Anda lihat selanjutnya!",
-  "CMD_REPORT_ISSUE": "Laporkan Masalah"
+  "DESCRIPTION_EMMET": "`true` untuk mengaktifkan Emmet, selain itu `false`."
 });

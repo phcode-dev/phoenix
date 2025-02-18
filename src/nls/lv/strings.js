@@ -508,6 +508,7 @@ define({
   "CMD_SUPPORT": "{APP_NAME} palīdzība",
   "CMD_DOCS": "Palīdzība, Sākšana",
   "CMD_SUGGEST": "Ieteikt funkciju",
+  "CMD_REPORT_ISSUE": "Ziņot par problēmu",
   "CMD_RELEASE_NOTES": "Informācija par laidienu",
   "CMD_GET_INVOLVED": "Iesaistīties",
   "CMD_SHOW_EXTENSIONS_FOLDER": "Parādīt paplašinājumu mapi",
@@ -1347,5 +1348,5 @@ define({
   "GIT_TOAST_TITLE": "Izpētiet Git funkcijas Phoenix Code",
   "GIT_TOAST_MESSAGE": "Noklikšķiniet uz Git paneļa ikonas, lai pārvaldītu savu repozitoriju. Ērti veiciet commit, push, pull un skatiet sava projekta vēsturi — viss vienā vietā.<br><a href='https://docs.phcode.dev/docs/Features/git'>Uzziniet vairāk par Git paneli →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Nobalsot par funkcijām, kuras vēlaties redzēt nākamreiz!",
-  "CMD_REPORT_ISSUE": "Ziņot par problēmu"
+  "DESCRIPTION_EMMET": "Iestatiet uz “true”, lai iespējotu Emmet, citādi uz “false”."
 });

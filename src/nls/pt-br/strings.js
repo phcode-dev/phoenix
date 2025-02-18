@@ -508,6 +508,7 @@ define({
   "CMD_SUPPORT": "Ajuda do {APP_NAME}",
   "CMD_DOCS": "Ajuda, Primeiros Passos",
   "CMD_SUGGEST": "Sugira um recurso",
+  "CMD_REPORT_ISSUE": "Reportar um Problema",
   "CMD_RELEASE_NOTES": "Notas da versão",
   "CMD_GET_INVOLVED": "Envolva-se",
   "CMD_SHOW_EXTENSIONS_FOLDER": "Mostrar pasta de extensões",
@@ -1347,5 +1348,5 @@ define({
   "GIT_TOAST_TITLE": "Explore os Recursos do Git no Phoenix Code",
   "GIT_TOAST_MESSAGE": "Clique no ícone do painel Git para gerenciar seu repositório. Faça commits, pushes, pulls e visualize o histórico do seu projeto com facilidade — tudo em um só lugar.<br><a href='https://docs.phcode.dev/docs/Features/git'>Saiba mais sobre o painel Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vote nos recursos que você quer ver em seguida!",
-  "CMD_REPORT_ISSUE": "Reportar um Problema"
+  "DESCRIPTION_EMMET": "`true` para habilitar o Emmet, senão `false`."
 });

@@ -508,6 +508,7 @@ define({
   "CMD_SUPPORT": "Suport {APP_NAME}",
   "CMD_DOCS": "Ajutor, Noțiuni introductive",
   "CMD_SUGGEST": "Sugerează o funcționalitate",
+  "CMD_REPORT_ISSUE": "Raportează o problemă",
   "CMD_RELEASE_NOTES": "Notele ediției",
   "CMD_GET_INVOLVED": "Participă la proiect",
   "CMD_SHOW_EXTENSIONS_FOLDER": "Deschide dosarul cu extensii",
@@ -1347,5 +1348,5 @@ define({
   "GIT_TOAST_TITLE": "Explorați funcțiile Git în Phoenix Code",
   "GIT_TOAST_MESSAGE": "Faceți clic pe pictograma panoului Git pentru a vă gestiona depozitul. Efectuați ușor commit, push, pull și vizualizați istoricul proiectului dvs. - totul într-un singur loc.<br><a href='https://docs.phcode.dev/docs/Features/git'>Aflați mai multe despre panoul Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Votează pentru funcționalitățile pe care dorești să le vezi în continuare!",
-  "CMD_REPORT_ISSUE": "Raportează o problemă"
+  "DESCRIPTION_EMMET": "Adevărat pentru a activa Emmet, altfel fals."
 });

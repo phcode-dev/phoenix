@@ -411,6 +411,7 @@
   "DESCRIPTION_DRAG_AND_DROP_ENABLED": "true to enable drag and drop functionality for files and folders from the file explorer or Finder",
   "DESCRIPTION_DRAG_DROP_TEXT": "Enable/disable Drag & Drop functionality",
   "DESCRIPTION_EDITOR_LINE_HEIGHT": "Adjust the vertical spacing between lines of code in the editor. Choose a value between 1 and 3, default is 1.5",
+  "DESCRIPTION_EMMET": "true to enable Emmet, else false.",
   "DESCRIPTION_ESLINT_DISABLE": "true to disable ESLint linter in problems panel",
   "DESCRIPTION_ESLINT_DO_NPM_INSTALL": "Please run `npm install` on your project to enable ESLint",
   "DESCRIPTION_ESLINT_FAILED": "ESLint Failed ({0}). Make sure the project contains valid <a href='https://eslint.org/docs/latest/use/configure/configuration-files'>Configuration Files</a>",

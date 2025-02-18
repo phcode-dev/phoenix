@@ -508,6 +508,7 @@ define({
   "CMD_SUPPORT": "{APP_NAME} سپورٹ",
   "CMD_DOCS": "مدد، شروع کرنا",
   "CMD_SUGGEST": "خصوصیت تجویز کریں",
+  "CMD_REPORT_ISSUE": "مسئلہ کی اطلاع دیں",
   "CMD_RELEASE_NOTES": "ریلیز نوٹس",
   "CMD_GET_INVOLVED": "شامل ہوں",
   "CMD_SHOW_EXTENSIONS_FOLDER": "ایکسٹینشنز فولڈر دکھائیں",
@@ -1347,5 +1348,5 @@ define({
   "GIT_TOAST_TITLE": "فینکس کوڈ میں گٹ فیچرز دریافت کریں",
   "GIT_TOAST_MESSAGE": "اپنی ذخیرہ گاہ (repository) کو منظم کرنے کے لیے گٹ پینل آئیکن پر کلک کریں۔ آسانی سے کامٹ، پش، پل کریں، اور اپنے پروجیکٹ کی تاریخ دیکھیں—سب ایک ہی جگہ پر۔<br><a href='https://docs.phcode.dev/docs/Features/git'>گٹ پینل کے بارے میں مزید جانیں →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "اپنی پسندیدہ خصوصیات کے لیے ووٹ دیں!",
-  "CMD_REPORT_ISSUE": "مسئلہ کی اطلاع دیں"
+  "DESCRIPTION_EMMET": "ایمٹ فعال کرنے کے لیے صحیح، ورنہ غلط۔"
 });

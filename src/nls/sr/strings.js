@@ -508,6 +508,7 @@ define({
   "CMD_SUPPORT": "{APP_NAME} подршка",
   "CMD_DOCS": "Помоћ, почетак рада",
   "CMD_SUGGEST": "Предложи нову функционалност",
+  "CMD_REPORT_ISSUE": "Пријави проблем",
   "CMD_RELEASE_NOTES": "Белешке о тренутној верзији",
   "CMD_GET_INVOLVED": "Прикључи се развоју апликације",
   "CMD_SHOW_EXTENSIONS_FOLDER": "Прикажи директоријум са екстензијама",
@@ -1347,5 +1348,5 @@ define({
   "GIT_TOAST_TITLE": "Истражите Гит функције у Phoenix Code-у",
   "GIT_TOAST_MESSAGE": "Кликните на икону Гит панела да бисте управљали својим спремиштем. Лако направите commit, push, pull и погледајте историју свог пројекта — све на једном месту.<br><a href='https://docs.phcode.dev/docs/Features/git'>Сазнајте више о Гит панелу →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Гласајте за функције које желите да видите у будућности!",
-  "CMD_REPORT_ISSUE": "Пријави проблем"
+  "DESCRIPTION_EMMET": "Вредност `true` укључује Emmet, иначе `false`."
 });
