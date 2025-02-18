@@ -524,6 +524,7 @@ define({
     "CMD_BEAUTIFY_CODE": "Beautify Code",
     "CMD_BEAUTIFY_CODE_ON_SAVE": "Beautify Code After Save",
     "CMD_AUTO_RENAME_TAGS": "Auto Rename HTML Tags",
+    "CMD_TOGGLE_EMMET": "Emmet",
 
     // Search menu commands
     "FIND_MENU": "Find",
