@@ -508,6 +508,7 @@ define({
   "CMD_SUPPORT": "{APP_NAME} 支援",
   "CMD_DOCS": "說明、入門指南",
   "CMD_SUGGEST": "功能建議",
+  "CMD_REPORT_ISSUE": "回報問題",
   "CMD_RELEASE_NOTES": "版本資訊",
   "CMD_GET_INVOLVED": "參與",
   "CMD_SHOW_EXTENSIONS_FOLDER": "顯示擴充功能資料夾",
@@ -1347,5 +1348,5 @@ define({
   "GIT_TOAST_TITLE": "在 Phoenix Code 中探索 Git 功能",
   "GIT_TOAST_MESSAGE": "按一下 Git 面板圖示即可管理您的儲存庫。輕鬆提交、推送、提取和檢視您的專案歷史記錄，一切盡在掌握之中。<br><a href='https://docs.phcode.dev/docs/Features/git'>深入瞭解 Git 面板 →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "投票選出您希望看到的下個功能！",
-  "CMD_REPORT_ISSUE": "回報問題"
+  "DESCRIPTION_EMMET": "啟用 Emmet 請設為 true，否則為 false。"
 });

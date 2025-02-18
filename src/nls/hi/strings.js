@@ -508,6 +508,7 @@ define({
   "CMD_SUPPORT": "{APP_NAME} सहायता",
   "CMD_DOCS": "सहायता, आरंभ करना",
   "CMD_SUGGEST": "एक सुविधा का सुझाव दें",
+  "CMD_REPORT_ISSUE": "समस्या की सूचना दें",
   "CMD_RELEASE_NOTES": "रिलीज़ नोट्स",
   "CMD_GET_INVOLVED": "शामिल हों",
   "CMD_SHOW_EXTENSIONS_FOLDER": "एक्सटेंशन फ़ोल्डर दिखाएँ",
@@ -1347,5 +1348,5 @@ define({
   "GIT_TOAST_TITLE": "फ़ीनिक्स कोड में Git सुविधाओं का अन्वेषण करें",
   "GIT_TOAST_MESSAGE": "अपने रिपॉजिटरी को प्रबंधित करने के लिए Git पैनल आइकन पर क्लिक करें। आसानी से कमिट करें, पुश करें, पुल करें और अपने प्रोजेक्ट का इतिहास देखें—सब एक ही स्थान पर।<br><a href='https://docs.phcode.dev/docs/Features/git'>Git पैनल के बारे में अधिक जानें →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "उन विशेषताओं के लिए वोट करें जिन्हें आप आगे देखना चाहते हैं!",
-  "CMD_REPORT_ISSUE": "समस्या की सूचना दें"
+  "DESCRIPTION_EMMET": "एमेट को सक्षम करने के लिए सही (true), अन्यथा गलत (false)।"
 });

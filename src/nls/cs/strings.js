@@ -508,6 +508,7 @@ define({
   "CMD_SUPPORT": "{APP_NAME} Podpora",
   "CMD_DOCS": "Nápověda, Začínáme",
   "CMD_SUGGEST": "Navrhněte funkci",
+  "CMD_REPORT_ISSUE": "Nahlásit problém",
   "CMD_RELEASE_NOTES": "Poznámky k verzi",
   "CMD_GET_INVOLVED": "Zapojte se",
   "CMD_SHOW_EXTENSIONS_FOLDER": "Zobrazit složku s doplňky",
@@ -1347,5 +1348,5 @@ define({
   "GIT_TOAST_TITLE": "Prozkoumejte funkce Gitu v Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klikněte na ikonu panelu Git pro správu vašeho repozitáře. Snadno commitujte, pushujte, pullujte a prohlížejte si historii projektu – vše na jednom místě.<br><a href='https://docs.phcode.dev/docs/Features/git'>Zjistěte více o panelu Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Hlasujte pro funkce, které chcete vidět v další verzi!",
-  "CMD_REPORT_ISSUE": "Nahlásit problém"
+  "DESCRIPTION_EMMET": "`true` pro povolení Emmetu, jinak `false`."
 });

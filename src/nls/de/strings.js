@@ -508,6 +508,7 @@ define({
   "CMD_SUPPORT": "{APP_NAME}-Support",
   "CMD_DOCS": "Hilfe, Erste Schritte",
   "CMD_SUGGEST": "Ein Feature vorschlagen",
+  "CMD_REPORT_ISSUE": "Problem melden",
   "CMD_RELEASE_NOTES": "Versionshinweise",
   "CMD_GET_INVOLVED": "Mach mit",
   "CMD_SHOW_EXTENSIONS_FOLDER": "Erweiterungen-Ordner anzeigen",
@@ -1347,5 +1348,5 @@ define({
   "GIT_TOAST_TITLE": "Git-Funktionen in Phoenix Code entdecken",
   "GIT_TOAST_MESSAGE": "Klicken Sie auf das Git-Panel-Symbol, um Ihr Repository zu verwalten. Committen, Pushen, Pullen und die Anzeige Ihres Projektverlaufs – alles an einem Ort.<br><a href='https://docs.phcode.dev/docs/Features/git'>Mehr über das Git-Panel erfahren →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Stimmen Sie für die Funktionen ab, die Sie als Nächstes sehen möchten!",
-  "CMD_REPORT_ISSUE": "Problem melden"
+  "DESCRIPTION_EMMET": "`true`, um Emmet zu aktivieren, sonst `false`."
 });

@@ -508,6 +508,7 @@ define({
   "CMD_SUPPORT": "{APP_NAME} támogatás",
   "CMD_DOCS": "Súgó, Első lépések",
   "CMD_SUGGEST": "Javaslat új funkcióra",
+  "CMD_REPORT_ISSUE": "Hiba bejelentése",
   "CMD_RELEASE_NOTES": "Kiadási megjegyzések",
   "CMD_GET_INVOLVED": "Közreműködés",
   "CMD_SHOW_EXTENSIONS_FOLDER": "Bővítmények mappa megjelenítése",
@@ -1347,5 +1348,5 @@ define({
   "GIT_TOAST_TITLE": "Fedezd fel a Git funkciókat a Phoenix Code-ban",
   "GIT_TOAST_MESSAGE": "Kattintson a Git panel ikonra a verziókövető rendszer kezeléséhez. Könnyedén végezhet commit, push és pull műveleteket, valamint megtekintheti a projekt előzményeit – mindezt egy helyen.<br><a href='https://docs.phcode.dev/docs/Features/git'>Tudj meg többet a Git panelről →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Szavazzon azokra a funkciókra, amelyeket a jövőben látni szeretne!",
-  "CMD_REPORT_ISSUE": "Hiba bejelentése"
+  "DESCRIPTION_EMMET": "Igaz értékkel engedélyezhető az Emmet, egyébként hamis."
 });

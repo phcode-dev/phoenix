@@ -508,6 +508,7 @@ define({
   "CMD_SUPPORT": "{APP_NAME} Desteği",
   "CMD_DOCS": "Yardım, Başlarken",
   "CMD_SUGGEST": "Yeni Özellik Öner",
+  "CMD_REPORT_ISSUE": "Sorun Bildir",
   "CMD_RELEASE_NOTES": "Sürüm Notları",
   "CMD_GET_INVOLVED": "Projeye Dahil Ol",
   "CMD_SHOW_EXTENSIONS_FOLDER": "Eklentiler Klasörünü Göster",
@@ -1347,5 +1348,5 @@ define({
   "GIT_TOAST_TITLE": "Phoenix Code'da Git Özelliklerini Keşfedin",
   "GIT_TOAST_MESSAGE": "Deponuzu yönetmek için Git paneli simgesine tıklayın. Proje geçmişinizi kolayca işleyin, gönderin, çekin ve görüntüleyin—hepsi tek bir yerde.<br><a href='https://docs.phcode.dev/docs/Features/git'>Git paneli hakkında daha fazla bilgi edinin →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Gelecekte görmek istediğiniz özellikler için oy verin!",
-  "CMD_REPORT_ISSUE": "Sorun Bildir"
+  "DESCRIPTION_EMMET": "Emmet'i etkinleştirmek için true, devre dışı bırakmak için false."
 });

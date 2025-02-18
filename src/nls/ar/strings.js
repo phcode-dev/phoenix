@@ -508,6 +508,7 @@ define({
   "CMD_SUPPORT": "دعم {APP_NAME}",
   "CMD_DOCS": "مساعدة، البدء",
   "CMD_SUGGEST": "اقتراح ميزة",
+  "CMD_REPORT_ISSUE": "الإبلاغ عن مشكلة",
   "CMD_RELEASE_NOTES": "ملاحظات الإصدار",
   "CMD_GET_INVOLVED": "المشاركة",
   "CMD_SHOW_EXTENSIONS_FOLDER": "إظهار مجلد الإضافات",
@@ -1347,5 +1348,5 @@ define({
   "GIT_TOAST_TITLE": "استكشف ميزات Git في Phoenix Code",
   "GIT_TOAST_MESSAGE": "انقر على رمز لوحة Git لإدارة مستودعك. يمكنك بسهولة تنفيذ الالتزام والدفع والسحب وعرض سجل مشروعك - كل ذلك في مكان واحد.<br><a href='https://docs.phcode.dev/docs/Features/git'>تعرّف على المزيد حول لوحة Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "صوت للميزات التي ترغب برؤيتها تالياً!",
-  "CMD_REPORT_ISSUE": "الإبلاغ عن مشكلة"
+  "DESCRIPTION_EMMET": "صحيح لتمكين Emmet، وإلا خطأ."
 });

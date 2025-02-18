@@ -508,6 +508,7 @@ define({
   "CMD_SUPPORT": "{APP_NAME}-forum",
   "CMD_DOCS": "Hjälp, Kom igång",
   "CMD_SUGGEST": "Föreslå en funktion",
+  "CMD_REPORT_ISSUE": "Rapportera problem",
   "CMD_RELEASE_NOTES": "Versionsinformation",
   "CMD_GET_INVOLVED": "Engagera dig",
   "CMD_SHOW_EXTENSIONS_FOLDER": "Visa tilläggsmapp",
@@ -1347,5 +1348,5 @@ define({
   "GIT_TOAST_TITLE": "Utforska Git-funktioner i Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klicka på Git-panelens ikon för att hantera din repository. Committa, pusha, pulla och se din projekthistorik enkelt – allt på ett ställe.<br><a href='https://docs.phcode.dev/docs/Features/git'>Läs mer om Git-panelen →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Rösta på funktionerna du vill se härnäst!",
-  "CMD_REPORT_ISSUE": "Rapportera problem"
+  "DESCRIPTION_EMMET": "Sant för att aktivera Emmet, annars falskt."
 });

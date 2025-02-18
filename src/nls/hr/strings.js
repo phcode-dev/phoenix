@@ -508,6 +508,7 @@ define({
   "CMD_SUPPORT": "{APP_NAME} Podrška (na engleskom)",
   "CMD_DOCS": "Pomoć, Početak rada",
   "CMD_SUGGEST": "Predloži mogućnost / značajku",
+  "CMD_REPORT_ISSUE": "Prijavi problem",
   "CMD_RELEASE_NOTES": "Bilješke o trenutnoj verziji",
   "CMD_GET_INVOLVED": "Uključi se",
   "CMD_SHOW_EXTENSIONS_FOLDER": "Prikaži direktorij sa ekstenzijama",
@@ -1347,5 +1348,5 @@ define({
   "GIT_TOAST_TITLE": "Istražite Git značajke u Phoenix Codeu",
   "GIT_TOAST_MESSAGE": "Kliknite ikonu Git panela za upravljanje svojim repozitorijem. Jednostavno potvrdite (commit), pošaljite (push), preuzmite (pull) i pregledajte povijest svog projekta - sve na jednom mjestu.<br><a href='https://docs.phcode.dev/docs/Features/git'>Saznajte više o Git panelu →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Glasajte za značajke koje želite vidjeti sljedeće!",
-  "CMD_REPORT_ISSUE": "Prijavi problem"
+  "DESCRIPTION_EMMET": "`true` za uključivanje Emmeta, inače `false`."
 });
