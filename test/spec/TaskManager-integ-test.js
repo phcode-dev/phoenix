@@ -24,8 +24,7 @@
 define(function (require, exports, module) {
     // Recommended to avoid reloading the integration test window Phoenix instance for each test.
 
-    const SpecRunnerUtils     = require("spec/SpecRunnerUtils"),
-        Strings             = require("strings");
+    const SpecRunnerUtils     = require("spec/SpecRunnerUtils");
 
     const testPath = SpecRunnerUtils.getTestPath("/spec/JSUtils-test-files");
 
@@ -34,6 +33,7 @@ define(function (require, exports, module) {
         MainViewManager,
         TaskManager,
         StatusBar,
+        Strings,
         PreferencesManager,
         CommandManager,
         Commands,
@@ -56,6 +56,7 @@ define(function (require, exports, module) {
             TaskManager         = brackets.test.TaskManager;
             StatusBar           = brackets.test.StatusBar;
             PreferencesManager  = brackets.test.PreferencesManager;
+            Strings             = testWindow.Strings;
 
             await SpecRunnerUtils.loadProjectInTestWindow(testPath);
         }, 30000);
