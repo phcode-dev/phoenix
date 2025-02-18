@@ -26,6 +26,7 @@ define(function (require, exports, module) {
 
     var AppInit             = brackets.getModule("utils/AppInit"),
         CodeHintManager     = brackets.getModule("editor/CodeHintManager"),
+        EditorManager       = brackets.getModule("editor/EditorManager"),
         CSSUtils            = brackets.getModule("language/CSSUtils"),
         PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
         TokenUtils          = brackets.getModule("utils/TokenUtils"),
@@ -90,6 +91,62 @@ define(function (require, exports, module) {
         this.primaryTriggerKeys = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-()";
         this.secondaryTriggerKeys = ":";
         this.exclusion = null;
+    }
+
+    function isAlphanumeric(char) {
+        return /^[a-z0-9-@$]$/i.test(char);
+    }
+
+    function isValidColor(text, colorMatch) {
+        const colorIndex = colorMatch.index;
+        const previousChar = colorIndex === 0 ? "" : text.charAt(colorIndex - 1);
+        const endIndex = colorIndex + colorMatch[0].length;
+        const nextChar = endIndex === text.length ? "" : text.charAt(endIndex);
+        return !isAlphanumeric(previousChar) && !isAlphanumeric(nextChar);
+    }
+
+    function updateColorList(colorList, color, lineNumber) {
+        const existingColor = colorList.find(item => item.color === color);
+        if (existingColor) {
+            existingColor.count++;
+            if (!existingColor.lines.includes(lineNumber)) {
+                existingColor.lines.push(lineNumber);
+            }
+        } else {
+            colorList.push({
+                color: color,
+                lines: [lineNumber],
+                count: 1
+            });
+        }
+    }
+
+    function getAllColorsInFile() {
+        const editor = EditorManager.getActiveEditor();
+        const nLen = editor.lineCount();
+
+        const colorList = [];
+
+        for (let i = 0; i < nLen; i++) {
+            const lineText = editor.getLine(i);
+
+            if (!lineText || lineText.length > 1000) {
+                continue;
+            }
+
+            const matches = [...lineText.matchAll(ColorUtils.COLOR_REGEX)];
+
+            for (const match of matches) {
+                if (isValidColor(lineText, match)) {
+                    const token = editor.getToken({ line: i, ch: match.index });
+                    if (token && token.type !== "comment") {
+                        updateColorList(colorList, match[0], i);
+                    }
+                }
+            }
+        }
+
+        return colorList;
     }
 
     /**
@@ -298,6 +355,10 @@ define(function (require, exports, module) {
             result,
             selectInitial = false;
 
+        let previouslyUsedColors = [];
+
+
+
         // Clear the exclusion if the user moves the cursor with left/right arrow key.
         this.updateExclusion(true);
 
@@ -339,6 +400,22 @@ define(function (require, exports, module) {
             let isColorSwatch = false;
             if (type === "color") {
                 isColorSwatch = true;
+
+
+                const colorList = getAllColorsInFile();
+
+                // Convert COLOR_LIST to previouslyUsedColors format and sort by count
+                previouslyUsedColors = colorList
+                    .sort((a, b) => b.count - a.count) // Sort in descending order by count
+                    .map(item => item.color); // Extract only the colors
+
+                // Combine default hex, rgb colors with existing color names
+                valueArray = previouslyUsedColors.concat(
+                    ColorUtils.COLOR_NAMES.map(function (color) {
+                        return { text: color, color: color };
+                    })
+                );
+
                 valueArray = valueArray.concat(ColorUtils.COLOR_NAMES.map(function (color) {
                     return { text: color, color: color };
                 }));
@@ -351,6 +428,7 @@ define(function (require, exports, module) {
 
             result = StringMatch.codeHintsSort(valueNeedle, valueArray, {
                 limit: MAX_CSS_HINTS,
+                boostPrefixList: previouslyUsedColors, // for named colors to make them appear before other color hints
                 onlyContiguous: isColorSwatch // for color swatches, when searching for `ora` we should
                 // only hint <ora>nge and not <o>lived<ra>b (green shade)
             });
