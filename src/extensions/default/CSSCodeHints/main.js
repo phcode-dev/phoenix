@@ -582,7 +582,8 @@ define(function (require, exports, module) {
      * Checks whether the expandedAbbr has any number.
      * For instance: `m0` expands to `margin: 0;`, so we need to display the whole thing in the code hint
      * Here, we also make sure that abbreviations which has `#`, `,` should not be included, because
-     * `color` expands to `color: #000;` or `color: rgb(0, 0, 0)`. So this actually has numbers, but we don't want to display this.
+     * `color` expands to `color: #000;` or `color: rgb(0, 0, 0)`.
+     * So this actually has numbers, but we don't want to display this.
      *
      * @param {String} expandedAbbr the expanded abbr returned by EXPAND_ABBR emmet api
      * @returns {boolean} true if expandedAbbr has numbers (and doesn't include '#') otherwise false.
@@ -738,12 +739,18 @@ define(function (require, exports, module) {
 
             var parenMatch = hint.match(/\(.*?\)/);
             if (parenMatch) {
-                // value has (...), so place cursor inside opening paren
-                // and keep hints open
-                adjustCursor = true;
-                newCursor = { line: cursor.line,
-                    ch: start.ch + parenMatch.index + 1 };
-                keepHints = true;
+                // Only adjust cursor for non-color values
+                if (!hint.startsWith('rgb') &&
+                    !hint.startsWith('rgba') &&
+                    !hint.startsWith('hsl') &&
+                    !hint.startsWith('hsla')) {
+                    // value has (...), so place cursor inside opening paren
+                    // and keep hints open
+                    adjustCursor = true;
+                    newCursor = { line: cursor.line,
+                        ch: start.ch + parenMatch.index + 1 };
+                    keepHints = true;
+                }
             }
         }
 
