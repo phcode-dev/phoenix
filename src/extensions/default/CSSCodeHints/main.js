@@ -416,9 +416,6 @@ define(function (require, exports, module) {
                     })
                 );
 
-                valueArray = valueArray.concat(ColorUtils.COLOR_NAMES.map(function (color) {
-                    return { text: color, color: color };
-                }));
                 valueArray.push("transparent", "currentColor");
             }
 
