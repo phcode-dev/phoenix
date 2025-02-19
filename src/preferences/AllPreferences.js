@@ -44,8 +44,7 @@ define(function (require, exports, module) {
 
     // * list of all the commands
     const EMMET_COMMAND_ID = "edit.emmet";
-    const EMMET_COMMAND_REGISTER = CommandManager.register(Strings.CMD_TOGGLE_EMMET, EMMET_COMMAND_ID, toggleEmmet);
-
+    const emmetCommand = CommandManager.register(Strings.CMD_TOGGLE_EMMET, EMMET_COMMAND_ID, toggleEmmet);
 
 
     // list of all the preferences
@@ -63,13 +62,13 @@ define(function (require, exports, module) {
     // * emmet helper function to toggle emmet preferences
     function toggleEmmet() {
         PreferencesManager.set(PREFERENCES_LIST.EMMET, !PreferencesManager.get(PREFERENCES_LIST.EMMET));
-        EMMET_COMMAND_REGISTER.setChecked(PreferencesManager.get(PREFERENCES_LIST.EMMET));
+        emmetCommand.setChecked(PreferencesManager.get(PREFERENCES_LIST.EMMET));
     }
 
 
     AppInit.appReady(function () {
         // * Register the command and add it to Menu bar
-        EMMET_COMMAND_REGISTER.setChecked(PreferencesManager.get(PREFERENCES_LIST.EMMET));
+        emmetCommand.setChecked(PreferencesManager.get(PREFERENCES_LIST.EMMET));
         var menu = Menus.getMenu(Menus.AppMenuBar.EDIT_MENU);
 
         // * a slight 10ms delay is added because the beautify command is not registered until then
