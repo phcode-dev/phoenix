@@ -71,11 +71,7 @@ define(function (require, exports, module) {
         emmetCommand.setChecked(PreferencesManager.get(PREFERENCES_LIST.EMMET));
         var menu = Menus.getMenu(Menus.AppMenuBar.EDIT_MENU);
 
-        // * a slight 10ms delay is added because the beautify command is not registered until then
-        setTimeout(function () {
-            menu.addMenuItem(EMMET_COMMAND_ID, "", Menus.AFTER, Commands.EDIT_BEAUTIFY_CODE_ON_SAVE);
-        }, 10);
-
+        menu.addMenuItem(EMMET_COMMAND_ID);
     });
 
     module.exports = PREFERENCES_LIST;
