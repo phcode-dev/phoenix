@@ -467,7 +467,7 @@ define(function (require, exports, module) {
             return false;
         }
 
-        // to show emmet hint when either a single or three exclamation mark(s) is present
+        // not to show emmet hint when either a single or three exclamation mark(s) is present
         if (line.includes('!!') && !line.includes('!!!')) {
             return false;
         }
@@ -1227,7 +1227,7 @@ define(function (require, exports, module) {
         preferenceChanged();
 
         var emmetMarkupHints = new EmmetMarkupHints();
-        CodeHintManager.registerHintProvider(emmetMarkupHints, ["html", "php", "jsp"], 0);
+        CodeHintManager.registerHintProvider(emmetMarkupHints, ["html", "php"], 0);
 
         // For unit testing
         exports.emmetHintProvider = emmetMarkupHints;
