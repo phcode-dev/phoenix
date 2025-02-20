@@ -70,22 +70,32 @@ define(function (require, exports, module) {
      * Asynchronously reads a file as UTF-8 encoded text.
      * @param {!File} file File to read
      * @param {boolean?} bypassCache - an optional argument, if specified will read from disc instead of using cache.
+     * @param {object} [options]
+     * @param {boolean} [options.ignoreFileSizeLimits]. Will read larger files than 16MB limit. will bypassCache +
+     *          won't cache if enabled.
+     * @param {boolean} [options.doNotCache] will not cache if enabled. Auto-enabled if ignoreFileSizeLimits = true
      * @return {$.Promise} a jQuery promise that will be resolved with the
      *  file's text content plus its timestamp, or rejected with a FileSystemError string
      *  constant if the file can not be read.
      */
-    function readAsText(file, bypassCache) {
+    function readAsText(file, bypassCache, options = {}) {
         const result = new $.Deferred();
+        let doNotCache = options.doNotCache;
+        if(options.ignoreFileSizeLimits) {
+            bypassCache = true;
+            doNotCache = true;
+        }
 
-        file.read({bypassCache: bypassCache}, function (err, data, _encoding, stat) {
-            if(!err && typeof data !== "string"){
-                result.reject(FileSystemError.UNSUPPORTED_ENCODING);
-            } else if (!err) {
-                result.resolve(data, stat.mtime);
-            } else {
-                result.reject(err);
-            }
-        });
+        file.read({ bypassCache: bypassCache, ignoreFileSizeLimits: options.ignoreFileSizeLimits, doNotCache},
+            function (err, data, _encoding, stat) {
+                if(!err && typeof data !== "string"){
+                    result.reject(FileSystemError.UNSUPPORTED_ENCODING);
+                } else if (!err) {
+                    result.resolve(data, stat.mtime);
+                } else {
+                    result.reject(err);
+                }
+            });
 
         return result.promise();
     }

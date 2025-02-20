@@ -551,7 +551,7 @@ define(function (require, exports, module) {
      * If both calls fail, the error from the read call is passed back.
      *
      * @param {string} path
-     * @param {{encoding: string=, stat: FileSystemStats=}} options
+     * @param {{encoding: string=, stat: FileSystemStats=, ignoreFileSizeLimits: boolean=}} options
      * @param {function(?string, string=, FileSystemStats=)} callback
      */
     function readFile(path, options, callback) {
@@ -562,7 +562,7 @@ define(function (require, exports, module) {
         // callback to be executed when the call to stat completes
         //  or immediately if a stat object was passed as an argument
         function doReadFile(stat) {
-            if (stat.size > (FileUtils.MAX_FILE_SIZE)) {
+            if (!options.ignoreFileSizeLimits && stat.size > (FileUtils.MAX_FILE_SIZE)) {
                 callback(FileSystemError.EXCEEDS_MAX_FILE_SIZE);
             } else {
                 appshell.fs.readFile(path, encoding, function (_err, _data, encoding, preserveBOM) {
