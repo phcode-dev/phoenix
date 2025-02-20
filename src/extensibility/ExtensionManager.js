@@ -70,7 +70,7 @@ define(function (require, exports, module) {
         // never rejects
         return new Promise((resolve) => {
             const registryFile = FileSystem.getFileForPath(REGISTRY_CACHE_PATH);
-            FileUtils.readAsText(registryFile)
+            FileUtils.readAsText(registryFile, true, {ignoreFileSizeLimits: true})
                 .done(resolve)
                 .fail(function (err) {
                     console.error(`Registry cache not found ${REGISTRY_CACHE_PATH}`, err);
