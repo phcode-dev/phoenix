@@ -33,7 +33,6 @@ define(function (require, exports, module) {
         CSSUtils            = brackets.getModule("language/CSSUtils"),
         StringMatch         = brackets.getModule("utils/StringMatch"),
         LiveDevelopment     = brackets.getModule("LiveDevelopment/main"),
-        AllPreferences      = brackets.getModule("preferences/AllPreferences"),
         KeyEvent            = brackets.getModule("utils/KeyEvent"),
         Metrics             = brackets.getModule("utils/Metrics"),
         HTMLTags            = require("text!HtmlTags.json"),
@@ -467,7 +466,7 @@ define(function (require, exports, module) {
             return false;
         }
 
-        // to show emmet hint when either a single or three exclamation mark(s) is present
+        // not to show emmet hint when either a single or three exclamation mark(s) is present
         if (line.includes('!!') && !line.includes('!!!')) {
             return false;
         }
@@ -1206,7 +1205,7 @@ define(function (require, exports, module) {
      * Checks for preference changes, to enable/disable Emmet
      */
     function preferenceChanged() {
-        enabled = PreferencesManager.get(AllPreferences.EMMET);
+        enabled = PreferencesManager.get("emmet");
     }
 
 
@@ -1223,11 +1222,11 @@ define(function (require, exports, module) {
         CodeHintManager.registerHintProvider(attrHints, ["html"], 0);
         NewFileContentManager.registerContentProvider(newDocContentProvider, ["html"], 0);
 
-        PreferencesManager.on("change", AllPreferences.EMMET, preferenceChanged);
+        PreferencesManager.on("change", "emmet", preferenceChanged);
         preferenceChanged();
 
         var emmetMarkupHints = new EmmetMarkupHints();
-        CodeHintManager.registerHintProvider(emmetMarkupHints, ["html", "php", "jsp"], 0);
+        CodeHintManager.registerHintProvider(emmetMarkupHints, ["html", "php"], 0);
 
         // For unit testing
         exports.emmetHintProvider = emmetMarkupHints;

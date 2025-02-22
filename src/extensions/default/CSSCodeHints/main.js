@@ -35,7 +35,6 @@ define(function (require, exports, module) {
         KeyEvent            = brackets.getModule("utils/KeyEvent"),
         LiveDevelopment     = brackets.getModule("LiveDevelopment/main"),
         Metrics             = brackets.getModule("utils/Metrics"),
-        AllPreferences      = brackets.getModule("preferences/AllPreferences"),
         CSSProperties       = require("text!CSSProperties.json"),
         properties          = JSON.parse(CSSProperties);
 
@@ -73,7 +72,7 @@ define(function (require, exports, module) {
     // the Emmet icon serves as a clickable link that redirects to the MDN page for the property (if available).
     // This object follows the structure:
     // { PROPERTY_NAME: MDN_URL }
-    const MDN_PROPERTIES_URLS = {};
+    const mdnPropertiesUrls = {};
 
     PreferencesManager.definePreference("codehint.CssPropHints", "boolean", true, {
         description: Strings.DESCRIPTION_CSS_PROP_HINTS
@@ -389,7 +388,7 @@ define(function (require, exports, module) {
                 const propertyKey = computedPropertyKeys[resultItem.sourceIndex];
                 if(properties[propertyKey] && properties[propertyKey].MDN_URL){
                     resultItem.MDN_URL = properties[propertyKey].MDN_URL;
-                    MDN_PROPERTIES_URLS[propertyKey] = resultItem.MDN_URL;
+                    mdnPropertiesUrls[propertyKey] = resultItem.MDN_URL;
                 }
             }
 
@@ -429,8 +428,8 @@ define(function (require, exports, module) {
                             let $icon = $(`<a class="emmet-css-code-hint" style="text-decoration: none">Emmet</a>`);
 
                             // if MDN_URL is available for the property, add the href attribute to redirect to mdn
-                            if(MDN_PROPERTIES_URLS[expandedAbbr]) {
-                                $icon.attr("href", MDN_PROPERTIES_URLS[expandedAbbr]);
+                            if(mdnPropertiesUrls[expandedAbbr]) {
+                                $icon.attr("href", mdnPropertiesUrls[expandedAbbr]);
                                 $icon.attr("title", Strings.DOCS_MORE_LINK_MDN_TITLE);
                             }
 
@@ -722,7 +721,7 @@ define(function (require, exports, module) {
      * Checks for preference changes, to enable/disable Emmet
      */
     function preferenceChanged() {
-        enabled = PreferencesManager.get(AllPreferences.EMMET);
+        enabled = PreferencesManager.get("emmet");
     }
 
 
@@ -730,7 +729,7 @@ define(function (require, exports, module) {
         var cssPropHints = new CssPropHints();
         CodeHintManager.registerHintProvider(cssPropHints, ["css", "scss", "less"], 1);
 
-        PreferencesManager.on("change", AllPreferences.EMMET, preferenceChanged);
+        PreferencesManager.on("change", "emmet", preferenceChanged);
         preferenceChanged();
 
         // For unit testing

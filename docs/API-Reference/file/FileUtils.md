@@ -26,7 +26,7 @@ file size (in bytes)
 **Kind**: global constant  
 <a name="readAsText"></a>
 
-## readAsText(file, bypassCache) ⇒ <code>$.Promise</code>
+## readAsText(file, bypassCache, [options]) ⇒ <code>$.Promise</code>
 Asynchronously reads a file as UTF-8 encoded text.
 
 **Kind**: global function  
@@ -38,6 +38,9 @@ Asynchronously reads a file as UTF-8 encoded text.
 | --- | --- | --- |
 | file | <code>File</code> | File to read |
 | bypassCache | <code>boolean</code> | an optional argument, if specified will read from disc instead of using cache. |
+| [options] | <code>object</code> |  |
+| [options.ignoreFileSizeLimits] | <code>boolean</code> | Will read larger files than 16MB limit. will bypassCache +          won't cache if enabled. |
+| [options.doNotCache] | <code>boolean</code> | will not cache if enabled. Auto-enabled if ignoreFileSizeLimits = true |
 
 <a name="writeText"></a>
 
