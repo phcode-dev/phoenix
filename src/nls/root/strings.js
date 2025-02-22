@@ -1446,6 +1446,8 @@ define({
     "TOOLTIP_REFRESH_PANEL": "Refresh panel",
     "TOOLTIP_SHOW_FILE_HISTORY": "Show file history",
     "TOOLTIP_SHOW_HISTORY": "Show history",
+    "GIT_SHOW_FILE_HISTORY": "File Commit history",
+    "GIT_SHOW_HISTORY": "Commit history",
     "UNDO_CHANGES": "Discard changes",
     "UNDO_CHANGES_BTN": "Discard changes\u2026",
     "UNDO_LAST_LOCAL_COMMIT": "Undo last local (not pushed) commit\u2026",

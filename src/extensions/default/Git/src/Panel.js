@@ -1348,6 +1348,14 @@ define(function (require, exports) {
         CommandManager.register(Strings.HIDE_UNTRACKED, Constants.CMD_GIT_TOGGLE_UNTRACKED, handleToggleUntracked);
         CommandManager.register(Strings.GIT_INIT, Constants.CMD_GIT_INIT, EventEmitter.getEmitter(Events.HANDLE_GIT_INIT));
         CommandManager.register(Strings.GIT_CLONE, Constants.CMD_GIT_CLONE, EventEmitter.getEmitter(Events.HANDLE_GIT_CLONE));
+        CommandManager.register(Strings.GIT_SHOW_HISTORY, Constants.CMD_GIT_HISTORY_GLOBAL, ()=>{
+            toggle(true);
+            EventEmitter.emit(Events.HISTORY_SHOW_GLOBAL);
+        });
+        CommandManager.register(Strings.GIT_SHOW_FILE_HISTORY, Constants.CMD_GIT_HISTORY_FILE, ()=>{
+            toggle(true);
+            EventEmitter.emit(Events.HISTORY_SHOW_FILE);
+        });
 
         // Show gitPanel when appropriate
         if (Preferences.get("panelEnabled") && Setup.isExtensionActivated()) {

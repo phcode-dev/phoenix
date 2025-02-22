@@ -568,6 +568,12 @@ define(function (require, exports, module) {
     /** Toggles display of untracked files */
     exports.CMD_GIT_TOGGLE_UNTRACKED = "git-toggle-untracked";
 
+    /** Toggles global history view in history panel */
+    exports.CMD_GIT_HISTORY_GLOBAL = "git-history-global";
+
+    /** Toggles file history view in history panel */
+    exports.CMD_GIT_HISTORY_FILE = "git-history-file";
+
     // DEPRECATED: Working Set Commands
     DeprecationWarning.deprecateConstant(exports, "SORT_WORKINGSET_BY_ADDED",   "CMD_WORKINGSET_SORT_BY_ADDED");
     DeprecationWarning.deprecateConstant(exports, "SORT_WORKINGSET_BY_NAME",    "CMD_WORKINGSET_SORT_BY_NAME");
