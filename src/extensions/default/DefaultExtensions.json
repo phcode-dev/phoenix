@@ -33,7 +33,8 @@
    "note": "This is only to for legacy extensions that havent been updated for a long time, remove flag unconditionally if instructed by the extension author, but inform of the issues in extension.",
    "extensionIDs": [
      "brackets-beautify", "beautify.io", "hirse.beautify", "jsbeautifier", "sizuhiko.brackets.prettier", "pretty_json",
-     "bib-locked-live-preview", "brackets-display-shortcuts", "changing-tags", "brackets-indent-guides"
+     "bib-locked-live-preview", "brackets-display-shortcuts", "changing-tags", "brackets-indent-guides", "brackets-emmet",
+     "github-Pluto-custom-line-height"
    ]
  }
 }
