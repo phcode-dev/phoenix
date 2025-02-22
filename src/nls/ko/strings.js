@@ -1078,6 +1078,7 @@ define({
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "들여쓰기 안내선을 표시하려면 true, 표시하지 않으려면 false입니다.",
   "DESCRIPTION_HIDE_FIRST": "첫 번째 들여쓰기 안내선을 표시하려면 true, 표시하지 않으려면 false입니다.",
   "DESCRIPTION_CSS_COLOR_PREVIEW": "거터에 색상 미리보기를 표시하려면 true, 표시하지 않으려면 false입니다.",
+  "DESCRIPTION_EMMET": "에밋을 활성화하려면 true, 비활성화하려면 false입니다.",
   "ENABLE_GIT": "깃 활성화",
   "ACTION": "동작",
   "STATUSBAR_SHOW_GIT": "Git 패널",
@@ -1348,5 +1349,6 @@ define({
   "GIT_TOAST_TITLE": "Phoenix Code의 Git 기능 살펴보기",
   "GIT_TOAST_MESSAGE": "Git 패널 아이콘을 클릭하여 저장소를 관리하세요. 커밋, 푸시, 풀, 프로젝트 기록 보기를 한 곳에서 간편하게 수행할 수 있습니다.<br><a href='https://docs.phcode.dev/docs/Features/git'>Git 패널에 대해 자세히 알아보기 →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "다음에 보고 싶은 기능에 투표하세요!",
-  "DESCRIPTION_EMMET": "에밋을 활성화하려면 true, 비활성화하려면 false입니다."
+  "GIT_SHOW_FILE_HISTORY": "파일 커밋 내역",
+  "GIT_SHOW_HISTORY": "커밋 내역"
 });

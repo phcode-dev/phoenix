@@ -1078,6 +1078,7 @@ define({
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "`true` za prikaz linija uvlačenja, inače `false`.",
   "DESCRIPTION_HIDE_FIRST": "`true` za prikaz prve linije uvlačenja, inače `false`.",
   "DESCRIPTION_CSS_COLOR_PREVIEW": "`true` za prikaz pregleda boja u margini, inače `false`.",
+  "DESCRIPTION_EMMET": "`true` za uključivanje Emmeta, inače `false`.",
   "ENABLE_GIT": "Omogući Git",
   "ACTION": "Radnja",
   "STATUSBAR_SHOW_GIT": "Git panel",
@@ -1348,5 +1349,6 @@ define({
   "GIT_TOAST_TITLE": "Istražite Git značajke u Phoenix Codeu",
   "GIT_TOAST_MESSAGE": "Kliknite ikonu Git panela za upravljanje svojim repozitorijem. Jednostavno potvrdite (commit), pošaljite (push), preuzmite (pull) i pregledajte povijest svog projekta - sve na jednom mjestu.<br><a href='https://docs.phcode.dev/docs/Features/git'>Saznajte više o Git panelu →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Glasajte za značajke koje želite vidjeti sljedeće!",
-  "DESCRIPTION_EMMET": "`true` za uključivanje Emmeta, inače `false`."
+  "GIT_SHOW_FILE_HISTORY": "Povijest commitova datoteke",
+  "GIT_SHOW_HISTORY": "Povijest commitova"
 });

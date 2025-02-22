@@ -1078,6 +1078,7 @@ define({
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "インデントガイドを表示する場合はtrue、それ以外の場合はfalse。",
   "DESCRIPTION_HIDE_FIRST": "最初のインデントガイドを表示する場合はtrue、それ以外の場合はfalse。",
   "DESCRIPTION_CSS_COLOR_PREVIEW": "ガターにカラープレビューを表示する場合はtrue、それ以外の場合はfalse。",
+  "DESCRIPTION_EMMET": "Emmetを有効にするにはtrue、無効にするにはfalse。",
   "ENABLE_GIT": "Gitを有効化",
   "ACTION": "アクション",
   "STATUSBAR_SHOW_GIT": "Git パネル",
@@ -1348,5 +1349,6 @@ define({
   "GIT_TOAST_TITLE": "Phoenix CodeのGit機能を試す",
   "GIT_TOAST_MESSAGE": "Gitパネルアイコンをクリックしてリポジトリを管理します。コミット、プッシュ、プル、プロジェクト履歴の表示をすべて1か所で行えます。<br><a href='https://docs.phcode.dev/docs/Features/git'>Gitパネルの詳細はこちら →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "次に実装してほしい機能に投票してください！",
-  "DESCRIPTION_EMMET": "Emmetを有効にするにはtrue、無効にするにはfalse。"
+  "GIT_SHOW_FILE_HISTORY": "ファイルのコミット履歴",
+  "GIT_SHOW_HISTORY": "コミット履歴"
 });

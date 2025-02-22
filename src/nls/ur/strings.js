@@ -1078,6 +1078,7 @@ define({
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "انڈینٹ گائیڈ لائنز دکھانے کے لیے 'صحیح'، ورنہ 'غلط'۔",
   "DESCRIPTION_HIDE_FIRST": "پہلی انڈینٹ گائیڈ لائن دکھانے کے لیے 'صحیح'، ورنہ 'غلط'۔",
   "DESCRIPTION_CSS_COLOR_PREVIEW": "گٹر میں رنگوں کا پیش نظارہ دکھانے کے لیے 'صحیح'، ورنہ 'غلط'۔",
+  "DESCRIPTION_EMMET": "ایمٹ فعال کرنے کے لیے صحیح، ورنہ غلط۔",
   "ENABLE_GIT": "گٹ فعال کریں",
   "ACTION": "عمل",
   "STATUSBAR_SHOW_GIT": "گٹ پینل",
@@ -1348,5 +1349,6 @@ define({
   "GIT_TOAST_TITLE": "فینکس کوڈ میں گٹ فیچرز دریافت کریں",
   "GIT_TOAST_MESSAGE": "اپنی ذخیرہ گاہ (repository) کو منظم کرنے کے لیے گٹ پینل آئیکن پر کلک کریں۔ آسانی سے کامٹ، پش، پل کریں، اور اپنے پروجیکٹ کی تاریخ دیکھیں—سب ایک ہی جگہ پر۔<br><a href='https://docs.phcode.dev/docs/Features/git'>گٹ پینل کے بارے میں مزید جانیں →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "اپنی پسندیدہ خصوصیات کے لیے ووٹ دیں!",
-  "DESCRIPTION_EMMET": "ایمٹ فعال کرنے کے لیے صحیح، ورنہ غلط۔"
+  "GIT_SHOW_FILE_HISTORY": "فائل کی کمٹ ہسٹری",
+  "GIT_SHOW_HISTORY": "کمٹ ہسٹری"
 });
