@@ -58,4 +58,6 @@ define(function (require, exports) {
     exports.CMD_GIT_AUTHORS_OF_SELECTION = Commands.CMD_GIT_AUTHORS_OF_SELECTION;
     exports.CMD_GIT_AUTHORS_OF_FILE = Commands.CMD_GIT_AUTHORS_OF_FILE;
     exports.CMD_GIT_TOGGLE_UNTRACKED = Commands.CMD_GIT_TOGGLE_UNTRACKED;
+    exports.CMD_GIT_HISTORY_GLOBAL = Commands.CMD_GIT_HISTORY_GLOBAL;
+    exports.CMD_GIT_HISTORY_FILE = Commands.CMD_GIT_HISTORY_FILE;
 });
