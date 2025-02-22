@@ -53,7 +53,7 @@ define(function (require, exports, module) {
     /**
      * The Emmet api's
      */
-    const EXPAND_ABBR = Phoenix.libs.Emmet.expand;
+    const expandAbbr = Phoenix.libs.Emmet.expand;
 
     /**
      * A list of all the markup snippets that can be expanded.
@@ -98,7 +98,7 @@ define(function (require, exports, module) {
             // make sure we donot have empty spaces
             if (wordObj.word.trim()) {
 
-                const expandedAbbr = isExpandable(editor, wordObj.word);
+                const expandedAbbr = _isExpandable(editor, wordObj.word);
                 if (expandedAbbr) {
                     return true;
                 }
@@ -119,7 +119,7 @@ define(function (require, exports, module) {
         const wordObj = getWordBeforeCursor(this.editor);
 
         // Check if the abbreviation is expandable
-        const expandedAbbr = isExpandable(this.editor, wordObj.word);
+        const expandedAbbr = _isExpandable(this.editor, wordObj.word);
         if (!expandedAbbr) {
             return null;
         }
@@ -166,8 +166,9 @@ define(function (require, exports, module) {
      */
     EmmetMarkupHints.prototype.insertHint = function () {
         const wordObj = getWordBeforeCursor(this.editor);
-        const expandedAbbr = isExpandable(this.editor, wordObj.word);
-        updateAbbrInEditor(this.editor, wordObj, expandedAbbr);
+        const expandedAbbr = _isExpandable(this.editor, wordObj.word);
+        _updateAbbrInEditor(this.editor, wordObj, expandedAbbr);
+        Metrics.countEvent(Metrics.EVENT_TYPE.CODE_HINTS, "emmet", "htmlInsert");
         return false;
     };
 
@@ -179,7 +180,7 @@ define(function (require, exports, module) {
      * @param {Boolean} insideBraces - Flag indicating if we are inside braces (e.g. {} or [])
      * @returns True if the character is valid for an abbreviation
      */
-    function isEmmetChar(char, insideBraces) {
+    function _isEmmetChar(char, insideBraces) {
         // Valid abbreviation characters: letters, digits, and some punctuation
         // Adjust this regex or the list as needed for your implementation
         const validPattern = /[a-zA-Z0-9:+*<>()/!$\-@#}{]/;
@@ -195,7 +196,7 @@ define(function (require, exports, module) {
      * @param {Number} cursorCh - The cursor's character (column) position on that line
      * @returns The index (column) where the abbreviation starts
      */
-    function findAbbreviationStart(line, cursorCh) {
+    function _findAbbreviationStart(line, cursorCh) {
         let start = cursorCh;
         let insideBraces = false;
 
@@ -217,7 +218,7 @@ define(function (require, exports, module) {
             }
 
             // If the character is valid as part of an Emmet abbreviation, continue scanning backwards
-            if (isEmmetChar(char, insideBraces)) {
+            if (_isEmmetChar(char, insideBraces)) {
                 start--;
             } else {
                 break;
@@ -245,7 +246,7 @@ define(function (require, exports, module) {
         const lineText = editor.document.getLine(pos.line);
 
         // to determine where the abbreviation starts on the line
-        const abbreviationStart = findAbbreviationStart(lineText, pos.ch);
+        const abbreviationStart = _findAbbreviationStart(lineText, pos.ch);
 
         // Optionally, adjust the end position if the cursor is immediately before a closing brace.
         let abbreviationEnd = pos.ch;
@@ -401,7 +402,7 @@ define(function (require, exports, module) {
      * }
      * @param {String} expandedAbbr - the expanded version of abbr that will replace the abbr
      */
-    function updateAbbrInEditor(editor, wordObj, expandedAbbr) {
+    function _updateAbbrInEditor(editor, wordObj, expandedAbbr) {
         // Get the current line's indentation
         const baseIndent = getLineIndentation(editor, wordObj.start);
 
@@ -456,30 +457,30 @@ define(function (require, exports, module) {
      *
      * @param {Editor} editor - the editor instance
      * @param {String} word - the abbr
-     * @returns {String | false} - returns the expanded abbr, and if cannot be expanded, returns false
+     * @returns {String | null} - returns the expanded abbr, and if cannot be expanded, returns null
      */
-    function isExpandable(editor, word) {
+    function _isExpandable(editor, word) {
         const pos = editor.getCursorPos();
         const line = editor.document.getLine(pos.line);
 
         // to prevent hints from appearing in <!DOCTYPE html> line. Also to prevent hints from appearing in comments
         if(line.includes('<!')) {
-            return false;
+            return null;
         }
 
         // to show emmet hint when either a single or three exclamation mark(s) is present
         if (line.includes('!!') && !line.includes('!!!')) {
-            return false;
+            return null;
         }
 
         // if more than three, then don't show emmet hint
         if(line.includes('!!!!')) {
-            return false;
+            return null;
         }
 
         // make sure that word doesn't contain any negativeSymbols
         if (negativeSymbols.some(symbol => word.includes(symbol))) {
-            return false;
+            return null;
         }
 
         // the word must be either in markupSnippetsList, htmlList or it must have a positive symbol
@@ -491,8 +492,7 @@ define(function (require, exports, module) {
             positiveSymbols.some(symbol => word.includes(symbol))) {
 
             try {
-                const expanded = EXPAND_ABBR(word, { syntax: "html", type: "markup" });
-                return expanded;
+                return  expandAbbr(word, { syntax: "html", type: "markup" }); // expanded
             } catch (error) {
 
                 // emmet api throws an error when abbr contains unclosed quotes, handling that case
@@ -504,21 +504,20 @@ define(function (require, exports, module) {
                         const modifiedWord = word + nextChar;
 
                         try {
-                            const expandedModified = EXPAND_ABBR(modifiedWord, { syntax: "html", type: "markup" });
-                            return expandedModified;
+                            return expandAbbr(modifiedWord, { syntax: "html", type: "markup" }); //expandedModified
                         } catch (innerError) {
                             // If it still fails, return false
-                            return false;
+                            return null;
                         }
                     }
                 }
 
                 // If no quote is found or expansion fails, return false
-                return false;
+                return null;
             }
         }
 
-        return false;
+        return null;
     }
 
 
