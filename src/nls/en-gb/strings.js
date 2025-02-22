@@ -1078,6 +1078,7 @@ define({
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "`true` to show indent guide lines, otherwise `false`.",
   "DESCRIPTION_HIDE_FIRST": "`true` to show the first indent guide line, otherwise `false`.",
   "DESCRIPTION_CSS_COLOR_PREVIEW": "`true` to display colour previews in the gutter, otherwise `false`.",
+  "DESCRIPTION_EMMET": "`true` to enable Emmet, otherwise `false`.",
   "ENABLE_GIT": "Enable Git",
   "ACTION": "Action",
   "STATUSBAR_SHOW_GIT": "Git Panel",
@@ -1348,5 +1349,6 @@ define({
   "GIT_TOAST_TITLE": "Explore Git Features in Phoenix Code",
   "GIT_TOAST_MESSAGE": "Click the Git panel icon to manage your repository. Easily commit, push, pull, and view your project history—all in one place.<br><a href='https://docs.phcode.dev/docs/Features/git'>Learn more about the Git panel →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vote for the features you'd like to see next!",
-  "DESCRIPTION_EMMET": "`true` to enable Emmet, otherwise `false`."
+  "GIT_SHOW_FILE_HISTORY": "File commit history",
+  "GIT_SHOW_HISTORY": "Commit history"
 });

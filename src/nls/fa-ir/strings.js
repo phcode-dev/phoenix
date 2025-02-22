@@ -1078,6 +1078,7 @@ define({
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "مقدار «درست» برای نمایش خطوط راهنمای تورفتگی، در غیر این صورت «نادرست».",
   "DESCRIPTION_HIDE_FIRST": "مقدار «درست» برای نمایش اولین خط راهنمای تورفتگی، در غیر این صورت «نادرست».",
   "DESCRIPTION_CSS_COLOR_PREVIEW": "مقدار «درست» برای نمایش پیش‌نمایش رنگ‌ها در حاشیه، در غیر این صورت «نادرست».",
+  "DESCRIPTION_EMMET": "مقدار true برای فعال‌سازی Emmet، در غیر این صورت false.",
   "ENABLE_GIT": "فعال کردن گیت",
   "ACTION": "اقدام",
   "STATUSBAR_SHOW_GIT": "پنل گیت",
@@ -1348,5 +1349,6 @@ define({
   "GIT_TOAST_TITLE": "کاوش ویژگی‌های گیت در Phoenix Code",
   "GIT_TOAST_MESSAGE": "برای مدیریت مخزن خود روی آیکون پنل گیت کلیک کنید. به راحتی کامیت، پوش، پول و مشاهده تاریخچه پروژه خود را - همه در یک مکان - انجام دهید.<br><a href='https://docs.phcode.dev/docs/Features/git'>درباره پنل گیت بیشتر بدانید →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "برای قابلیت‌هایی که می‌خواهید در آینده ببینید، رأی دهید!",
-  "DESCRIPTION_EMMET": "مقدار true برای فعال‌سازی Emmet، در غیر این صورت false."
+  "GIT_SHOW_FILE_HISTORY": "تاریخچه‌ی کامیت‌های فایل",
+  "GIT_SHOW_HISTORY": "تاریخچه‌ی کامیت‌ها"
 });

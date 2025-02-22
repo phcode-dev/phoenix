@@ -1078,6 +1078,7 @@ define({
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "Отображать направляющие отступов: `true` – да, `false` – нет.",
   "DESCRIPTION_HIDE_FIRST": "Отображать первую направляющую отступа: `true` – да, `false` – нет.",
   "DESCRIPTION_CSS_COLOR_PREVIEW": "Отображать цветовые превью в поле редактора: `true` – да, `false` – нет.",
+  "DESCRIPTION_EMMET": "`true` для включения Emmet, иначе `false`.",
   "ENABLE_GIT": "Включить Git",
   "ACTION": "Действие",
   "STATUSBAR_SHOW_GIT": "Панель Git",
@@ -1348,5 +1349,6 @@ define({
   "GIT_TOAST_TITLE": "Возможности Git в Phoenix Code",
   "GIT_TOAST_MESSAGE": "Нажмите на значок панели Git для управления вашим репозиторием. Легко выполняйте коммиты, отправляйте (push), получайте (pull) изменения и просматривайте историю вашего проекта — все в одном месте.<br><a href='https://docs.phcode.dev/docs/Features/git'>Узнать больше о панели Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Проголосуйте за функции, которые вы хотите увидеть в будущем!",
-  "DESCRIPTION_EMMET": "`true` для включения Emmet, иначе `false`."
+  "GIT_SHOW_FILE_HISTORY": "История коммитов файла",
+  "GIT_SHOW_HISTORY": "История коммитов"
 });

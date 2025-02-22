@@ -1078,6 +1078,7 @@ define({
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "`Verdadero` para mostrar las líneas guía de sangría, `falso` en caso contrario.",
   "DESCRIPTION_HIDE_FIRST": "`Verdadero` para mostrar la primera línea guía de sangría, `falso` en caso contrario.",
   "DESCRIPTION_CSS_COLOR_PREVIEW": "`Verdadero` para mostrar vistas previas de color en el medianil, `falso` en caso contrario.",
+  "DESCRIPTION_EMMET": "`true` para habilitar Emmet, si no `false`.",
   "ENABLE_GIT": "Habilitar Git",
   "ACTION": "Acción",
   "STATUSBAR_SHOW_GIT": "Panel de Git",
@@ -1348,5 +1349,6 @@ define({
   "GIT_TOAST_TITLE": "Explora las funciones de Git en Phoenix Code",
   "GIT_TOAST_MESSAGE": "Haga clic en el icono del panel de Git para administrar su repositorio. Confirme, envíe (push), extraiga (pull) y vea el historial de su proyecto fácilmente, todo en un solo lugar.<br><a href='https://docs.phcode.dev/docs/Features/git'>Obtenga más información sobre el panel de Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "¡Vota por las funciones que quieres ver próximamente!",
-  "DESCRIPTION_EMMET": "`true` para habilitar Emmet, si no `false`."
+  "GIT_SHOW_FILE_HISTORY": "Historial de commits del archivo",
+  "GIT_SHOW_HISTORY": "Historial de commits"
 });

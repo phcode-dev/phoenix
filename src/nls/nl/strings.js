@@ -1078,6 +1078,7 @@ define({
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "`true` om inspringhulplijnen te tonen, anders `false`.",
   "DESCRIPTION_HIDE_FIRST": "`true` om de eerste inspringhulplijn te tonen, anders `false`.",
   "DESCRIPTION_CSS_COLOR_PREVIEW": "`true` om kleurvoorbeelden in de gutter weer te geven, anders `false`.",
+  "DESCRIPTION_EMMET": "`true` om Emmet in te schakelen, anders `false`.",
   "ENABLE_GIT": "Git inschakelen",
   "ACTION": "Actie",
   "STATUSBAR_SHOW_GIT": "Git-paneel",
@@ -1348,5 +1349,6 @@ define({
   "GIT_TOAST_TITLE": "Ontdek Git-functies in Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klik op het Git-paneelpictogram om uw repository te beheren. Commit, push, pull en bekijk uw projectgeschiedenis eenvoudig - alles op één plek.<br><a href='https://docs.phcode.dev/docs/Features/git'>Meer informatie over het Git-paneel →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Stem op de functies die u graag wilt zien!",
-  "DESCRIPTION_EMMET": "`true` om Emmet in te schakelen, anders `false`."
+  "GIT_SHOW_FILE_HISTORY": "Bestandsgeschiedenis",
+  "GIT_SHOW_HISTORY": "Commitgeschiedenis"
 });

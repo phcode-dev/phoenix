@@ -1078,6 +1078,7 @@ define({
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "`true` for å vise innrykkingslinjer, ellers `false`.",
   "DESCRIPTION_HIDE_FIRST": "`true` for å vise den første innrykkingslinjen, ellers `false`.",
   "DESCRIPTION_CSS_COLOR_PREVIEW": "`true` for å vise fargeforhåndsvisninger i margen, ellers `false`.",
+  "DESCRIPTION_EMMET": "`true` for å aktivere Emmet, ellers `false`.",
   "ENABLE_GIT": "Aktiver Git",
   "ACTION": "Handling",
   "STATUSBAR_SHOW_GIT": "Git-panel",
@@ -1348,5 +1349,6 @@ define({
   "GIT_TOAST_TITLE": "Utforsk Git-funksjoner i Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klikk på Git-panelikonet for å administrere repositoriet ditt. Utfør commit, push, pull og se prosjektloggen din – alt på ett sted.<br><a href='https://docs.phcode.dev/docs/Features/git'>Lær mer om Git-panelet →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Stem på funksjonene du ønsker å se neste!",
-  "DESCRIPTION_EMMET": "`true` for å aktivere Emmet, ellers `false`."
+  "GIT_SHOW_FILE_HISTORY": "Filhistorikk for commit",
+  "GIT_SHOW_HISTORY": "Commit-historikk"
 });

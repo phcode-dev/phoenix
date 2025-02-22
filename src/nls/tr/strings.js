@@ -1078,6 +1078,7 @@ define({
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "Girinti kılavuz çizgilerini göstermek için doğru, aksi takdirde yanlış.",
   "DESCRIPTION_HIDE_FIRST": "İlk Girinti Kılavuzu çizgisini göstermek için doğru, aksi takdirde yanlış.",
   "DESCRIPTION_CSS_COLOR_PREVIEW": "Kenar boşluğunda renk önizlemelerini görüntülemek için doğru, aksi takdirde yanlış.",
+  "DESCRIPTION_EMMET": "Emmet'i etkinleştirmek için true, devre dışı bırakmak için false.",
   "ENABLE_GIT": "Git'i Etkinleştir",
   "ACTION": "Eylem",
   "STATUSBAR_SHOW_GIT": "Git Paneli",
@@ -1348,5 +1349,6 @@ define({
   "GIT_TOAST_TITLE": "Phoenix Code'da Git Özelliklerini Keşfedin",
   "GIT_TOAST_MESSAGE": "Deponuzu yönetmek için Git paneli simgesine tıklayın. Proje geçmişinizi kolayca işleyin, gönderin, çekin ve görüntüleyin—hepsi tek bir yerde.<br><a href='https://docs.phcode.dev/docs/Features/git'>Git paneli hakkında daha fazla bilgi edinin →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Gelecekte görmek istediğiniz özellikler için oy verin!",
-  "DESCRIPTION_EMMET": "Emmet'i etkinleştirmek için true, devre dışı bırakmak için false."
+  "GIT_SHOW_FILE_HISTORY": "Dosya İşleme Geçmişi",
+  "GIT_SHOW_HISTORY": "İşleme Geçmişi"
 });

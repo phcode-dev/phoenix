@@ -1078,6 +1078,7 @@ define({
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "显示缩进参考线：`true` 显示，`false` 不显示。",
   "DESCRIPTION_HIDE_FIRST": "显示第一条缩进参考线：`true` 显示，`false` 不显示。",
   "DESCRIPTION_CSS_COLOR_PREVIEW": "在边栏中显示颜色预览：`true` 显示，`false` 不显示。",
+  "DESCRIPTION_EMMET": "启用 Emmet 输入 true，否则输入 false。",
   "ENABLE_GIT": "启用 Git",
   "ACTION": "操作",
   "STATUSBAR_SHOW_GIT": "Git 面板",
@@ -1348,5 +1349,6 @@ define({
   "GIT_TOAST_TITLE": "探索 Phoenix Code 中的 Git 功能",
   "GIT_TOAST_MESSAGE": "点击 Git 面板图标即可管理您的代码仓库。轻松提交、推送、拉取和查看项目历史记录，一切尽在一处。<br><a href='https://docs.phcode.dev/docs/Features/git'>了解更多关于 Git 面板的信息 →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "为您希望看到的下一个功能投票！",
-  "DESCRIPTION_EMMET": "启用 Emmet 输入 true，否则输入 false。"
+  "GIT_SHOW_FILE_HISTORY": "文件提交历史",
+  "GIT_SHOW_HISTORY": "提交历史"
 });

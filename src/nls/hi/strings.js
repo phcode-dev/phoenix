@@ -1078,6 +1078,7 @@ define({
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "इंडेंट गाइड लाइन दिखाने के लिए `true`, अन्यथा `false`।",
   "DESCRIPTION_HIDE_FIRST": "पहली इंडेंट गाइड लाइन दिखाने के लिए `true`, अन्यथा `false`।",
   "DESCRIPTION_CSS_COLOR_PREVIEW": "गटर में रंग पूर्वावलोकन प्रदर्शित करने के लिए `true`, अन्यथा `false`।",
+  "DESCRIPTION_EMMET": "एमेट को सक्षम करने के लिए सही (true), अन्यथा गलत (false)।",
   "ENABLE_GIT": "गिट सक्षम करें",
   "ACTION": "क्रिया",
   "STATUSBAR_SHOW_GIT": "गिट पैनल",
@@ -1348,5 +1349,6 @@ define({
   "GIT_TOAST_TITLE": "फ़ीनिक्स कोड में Git सुविधाओं का अन्वेषण करें",
   "GIT_TOAST_MESSAGE": "अपने रिपॉजिटरी को प्रबंधित करने के लिए Git पैनल आइकन पर क्लिक करें। आसानी से कमिट करें, पुश करें, पुल करें और अपने प्रोजेक्ट का इतिहास देखें—सब एक ही स्थान पर।<br><a href='https://docs.phcode.dev/docs/Features/git'>Git पैनल के बारे में अधिक जानें →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "उन विशेषताओं के लिए वोट करें जिन्हें आप आगे देखना चाहते हैं!",
-  "DESCRIPTION_EMMET": "एमेट को सक्षम करने के लिए सही (true), अन्यथा गलत (false)।"
+  "GIT_SHOW_FILE_HISTORY": "फ़ाइल कमिट इतिहास",
+  "GIT_SHOW_HISTORY": "कमिट इतिहास"
 });

@@ -1078,6 +1078,7 @@ define({
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "Näytä sisennyksen apuviivat: tosi, muuten epätosi.",
   "DESCRIPTION_HIDE_FIRST": "Näytä ensimmäinen sisennyksen apuviiva: tosi, muuten epätosi.",
   "DESCRIPTION_CSS_COLOR_PREVIEW": "Näytä värien esikatselut reunassa: tosi, muuten epätosi.",
+  "DESCRIPTION_EMMET": "Emmetin käyttöön ottamiseksi aseta arvoksi `true`, muuten `false`.",
   "ENABLE_GIT": "Ota Git käyttöön",
   "ACTION": "Toiminto",
   "STATUSBAR_SHOW_GIT": "Git-paneeli",
@@ -1348,5 +1349,6 @@ define({
   "GIT_TOAST_TITLE": "Tutustu Git-ominaisuuksiin Phoenix Codessa",
   "GIT_TOAST_MESSAGE": "Napsauta Git-paneelin kuvaketta hallitaksesi arkistoasi (repository). Tee commit, push ja pull helposti ja tarkastele projektihistoriaasi – kaikki yhdessä paikassa.<br><a href='https://docs.phcode.dev/docs/Features/git'>Lue lisää Git-paneelista →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Äänestä ominaisuuksia, jotka haluat nähdä seuraavaksi!",
-  "DESCRIPTION_EMMET": "Emmetin käyttöön ottamiseksi aseta arvoksi `true`, muuten `false`."
+  "GIT_SHOW_FILE_HISTORY": "Tiedoston commit-historia",
+  "GIT_SHOW_HISTORY": "Commit-historia"
 });

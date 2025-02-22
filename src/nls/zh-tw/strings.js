@@ -1078,6 +1078,7 @@ define({
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "顯示縮排引導線：勾選為顯示，取消勾選則不顯示。",
   "DESCRIPTION_HIDE_FIRST": "顯示第一條縮排引導線：勾選為顯示，取消勾選則不顯示。",
   "DESCRIPTION_CSS_COLOR_PREVIEW": "在側邊顯示顏色預覽：勾選為顯示，取消勾選則不顯示。",
+  "DESCRIPTION_EMMET": "啟用 Emmet 請設為 true，否則為 false。",
   "ENABLE_GIT": "啟用 Git",
   "ACTION": "動作",
   "STATUSBAR_SHOW_GIT": "Git 面板",
@@ -1348,5 +1349,6 @@ define({
   "GIT_TOAST_TITLE": "在 Phoenix Code 中探索 Git 功能",
   "GIT_TOAST_MESSAGE": "按一下 Git 面板圖示即可管理您的儲存庫。輕鬆提交、推送、提取和檢視您的專案歷史記錄，一切盡在掌握之中。<br><a href='https://docs.phcode.dev/docs/Features/git'>深入瞭解 Git 面板 →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "投票選出您希望看到的下個功能！",
-  "DESCRIPTION_EMMET": "啟用 Emmet 請設為 true，否則為 false。"
+  "GIT_SHOW_FILE_HISTORY": "檔案提交紀錄",
+  "GIT_SHOW_HISTORY": "提交紀錄"
 });
