@@ -43,7 +43,7 @@ define(function (require, exports, module) {
      * Emmet API:
      * This provides a function to expand abbreviations into full CSS properties.
      */
-    const EXPAND_ABBR = Phoenix.libs.Emmet.expand;
+    const expandAbbr = Phoenix.libs.Emmet.expand;
     let enabled = true; // whether Emmet is enabled or not in preferences
 
     require("./css-lint");
@@ -408,15 +408,15 @@ define(function (require, exports, module) {
                     // wrapped in try catch block because EXPAND_ABBR might throw error when it gets unexpected
                     // characters such as `, =, etc
                     try {
-                        let expandedAbbr = EXPAND_ABBR(needle, { syntax: "css", type: "stylesheet" });
-                        if(expandedAbbr && isEmmetExpandable(needle, expandedAbbr)) {
+                        let expandedAbbr = expandAbbr(needle, { syntax: "css", type: "stylesheet" });
+                        if(expandedAbbr && _isEmmetExpandable(needle, expandedAbbr)) {
 
                             // if the expandedAbbr doesn't have any numbers, we should split the expandedAbbr to,
                             // get its first word before `:`.
                             // For instance, `m` expands to `margin: ;`. Here the `: ;` is unnecessary.
                             // Also, `bgc` expands to `background-color: #fff;`. Here we don't need the `: #fff;`
                             // as we have cssIntelligence to display hints based on the property
-                            if(!isEmmetAbbrNumeric(expandedAbbr)) {
+                            if(!_isEmmetAbbrNumeric(expandedAbbr)) {
                                 expandedAbbr = expandedAbbr.split(':')[0];
                             }
 
@@ -436,7 +436,8 @@ define(function (require, exports, module) {
 
                             const $emmetHintObj = $("<span>")
                                 .addClass("brackets-css-hints brackets-hints")
-                                .attr("data-val", expandedAbbr);
+                                .attr("data-val", expandedAbbr)
+                                .attr("data-isEmmet", true);
 
                             // for highlighting the already-typed characters
                             if (token.stringRanges) {
@@ -498,7 +499,7 @@ define(function (require, exports, module) {
      * @param {String} expandedAbbr the expanded abbr returned by EXPAND_ABBR emmet api
      * @returns {boolean} true if emmet should be expanded, otherwise false
      */
-    function isEmmetExpandable(needle, expandedAbbr) {
+    function _isEmmetExpandable(needle, expandedAbbr) {
         return needle + ': ;' !== expandedAbbr;
     }
 
@@ -511,7 +512,7 @@ define(function (require, exports, module) {
      * @param {String} expandedAbbr the expanded abbr returned by EXPAND_ABBR emmet api
      * @returns {boolean} true if expandedAbbr has numbers (and doesn't include '#') otherwise false.
      */
-    function isEmmetAbbrNumeric(expandedAbbr) {
+    function _isEmmetAbbrNumeric(expandedAbbr) {
         return expandedAbbr.match(/\d/) !== null && !expandedAbbr.includes('#') && !expandedAbbr.includes(',');
     }
 
@@ -597,6 +598,7 @@ define(function (require, exports, module) {
             ctx;
 
         if (hint.jquery) {
+            hint.data("isEmmet") && Metrics.countEvent(Metrics.EVENT_TYPE.CODE_HINTS, "emmet", "cssInsert");
             hint = hint.data("val") + ""; // font-weight: 400, 400 is returned as number so,
         }
 
