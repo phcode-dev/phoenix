@@ -1078,6 +1078,7 @@ define({
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "`true` pro zobrazení vodicích čar odsazení, jinak `false`.",
   "DESCRIPTION_HIDE_FIRST": "`true` pro zobrazení první vodicí čáry odsazení, jinak `false`.",
   "DESCRIPTION_CSS_COLOR_PREVIEW": "`true` pro zobrazení náhledů barev v postranním panelu, jinak `false`.",
+  "DESCRIPTION_EMMET": "`true` pro povolení Emmetu, jinak `false`.",
   "ENABLE_GIT": "Povolit Git",
   "ACTION": "Akce",
   "STATUSBAR_SHOW_GIT": "Panel Git",
@@ -1348,5 +1349,6 @@ define({
   "GIT_TOAST_TITLE": "Prozkoumejte funkce Gitu v Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klikněte na ikonu panelu Git pro správu vašeho repozitáře. Snadno commitujte, pushujte, pullujte a prohlížejte si historii projektu – vše na jednom místě.<br><a href='https://docs.phcode.dev/docs/Features/git'>Zjistěte více o panelu Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Hlasujte pro funkce, které chcete vidět v další verzi!",
-  "DESCRIPTION_EMMET": "`true` pro povolení Emmetu, jinak `false`."
+  "GIT_SHOW_FILE_HISTORY": "Historie commitů souboru",
+  "GIT_SHOW_HISTORY": "Historie commitů"
 });

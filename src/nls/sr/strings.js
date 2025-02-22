@@ -1078,6 +1078,7 @@ define({
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "Тачно за приказивање водича за увлачење, иначе нетачно.",
   "DESCRIPTION_HIDE_FIRST": "Тачно за приказивање прве линије водича за увлачење, иначе нетачно.",
   "DESCRIPTION_CSS_COLOR_PREVIEW": "Тачно за приказивање прегледа боја у маргини, иначе нетачно.",
+  "DESCRIPTION_EMMET": "Вредност `true` укључује Emmet, иначе `false`.",
   "ENABLE_GIT": "Омогући Гит",
   "ACTION": "Акција",
   "STATUSBAR_SHOW_GIT": "Гит Панел",
@@ -1348,5 +1349,6 @@ define({
   "GIT_TOAST_TITLE": "Истражите Гит функције у Phoenix Code-у",
   "GIT_TOAST_MESSAGE": "Кликните на икону Гит панела да бисте управљали својим спремиштем. Лако направите commit, push, pull и погледајте историју свог пројекта — све на једном месту.<br><a href='https://docs.phcode.dev/docs/Features/git'>Сазнајте више о Гит панелу →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Гласајте за функције које желите да видите у будућности!",
-  "DESCRIPTION_EMMET": "Вредност `true` укључује Emmet, иначе `false`."
+  "GIT_SHOW_FILE_HISTORY": "Историјат измена датотеке",
+  "GIT_SHOW_HISTORY": "Историјат измена (commit-ова)"
 });

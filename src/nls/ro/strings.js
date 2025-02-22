@@ -1078,6 +1078,7 @@ define({
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "Adevărat pentru a afișa liniile de ghidare pentru indentare, altfel fals.",
   "DESCRIPTION_HIDE_FIRST": "Adevărat pentru a afișa prima linie de ghidare pentru indentare, altfel fals.",
   "DESCRIPTION_CSS_COLOR_PREVIEW": "Adevărat pentru a afișa previzualizări de culori în jgheab, altfel fals.",
+  "DESCRIPTION_EMMET": "Adevărat pentru a activa Emmet, altfel fals.",
   "ENABLE_GIT": "Activează Git",
   "ACTION": "Acțiune",
   "STATUSBAR_SHOW_GIT": "Panou Git",
@@ -1348,5 +1349,6 @@ define({
   "GIT_TOAST_TITLE": "Explorați funcțiile Git în Phoenix Code",
   "GIT_TOAST_MESSAGE": "Faceți clic pe pictograma panoului Git pentru a vă gestiona depozitul. Efectuați ușor commit, push, pull și vizualizați istoricul proiectului dvs. - totul într-un singur loc.<br><a href='https://docs.phcode.dev/docs/Features/git'>Aflați mai multe despre panoul Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Votează pentru funcționalitățile pe care dorești să le vezi în continuare!",
-  "DESCRIPTION_EMMET": "Adevărat pentru a activa Emmet, altfel fals."
+  "GIT_SHOW_FILE_HISTORY": "Istoricul commit-urilor fișierului",
+  "GIT_SHOW_HISTORY": "Istoricul commit-urilor"
 });

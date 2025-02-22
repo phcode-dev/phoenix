@@ -1078,6 +1078,7 @@ define({
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "صحيح لإظهار خطوط دليل المسافة البادئة، وإلا خطأ.",
   "DESCRIPTION_HIDE_FIRST": "صحيح لإظهار أول خط لدليل المسافة البادئة، وإلا خطأ.",
   "DESCRIPTION_CSS_COLOR_PREVIEW": "صحيح لعرض معاينات الألوان في الهامش، وإلا خطأ.",
+  "DESCRIPTION_EMMET": "صحيح لتمكين Emmet، وإلا خطأ.",
   "ENABLE_GIT": "تفعيل Git",
   "ACTION": "إجراء",
   "STATUSBAR_SHOW_GIT": "لوحة Git",
@@ -1348,5 +1349,6 @@ define({
   "GIT_TOAST_TITLE": "استكشف ميزات Git في Phoenix Code",
   "GIT_TOAST_MESSAGE": "انقر على رمز لوحة Git لإدارة مستودعك. يمكنك بسهولة تنفيذ الالتزام والدفع والسحب وعرض سجل مشروعك - كل ذلك في مكان واحد.<br><a href='https://docs.phcode.dev/docs/Features/git'>تعرّف على المزيد حول لوحة Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "صوت للميزات التي ترغب برؤيتها تالياً!",
-  "DESCRIPTION_EMMET": "صحيح لتمكين Emmet، وإلا خطأ."
+  "GIT_SHOW_FILE_HISTORY": "سجل التزامات الملف",
+  "GIT_SHOW_HISTORY": "سجل الالتزامات"
 });

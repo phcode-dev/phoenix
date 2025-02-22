@@ -1078,6 +1078,7 @@ define({
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "`true` untuk menampilkan garis panduan indentasi, selain itu `false`.",
   "DESCRIPTION_HIDE_FIRST": "`true` untuk menampilkan garis panduan indentasi pertama, selain itu `false`.",
   "DESCRIPTION_CSS_COLOR_PREVIEW": "`true` untuk menampilkan pratinjau warna di gutter, selain itu `false`.",
+  "DESCRIPTION_EMMET": "`true` untuk mengaktifkan Emmet, selain itu `false`.",
   "ENABLE_GIT": "Aktifkan Git",
   "ACTION": "Tindakan",
   "STATUSBAR_SHOW_GIT": "Panel Git",
@@ -1348,5 +1349,6 @@ define({
   "GIT_TOAST_TITLE": "Jelajahi Fitur Git di Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klik ikon panel Git untuk mengelola repositori Anda. Lakukan commit, push, pull, dan lihat riwayat proyek Anda dengan mudah—semua di satu tempat.<br><a href='https://docs.phcode.dev/docs/Features/git'>Pelajari lebih lanjut tentang panel Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Pilih fitur yang ingin Anda lihat selanjutnya!",
-  "DESCRIPTION_EMMET": "`true` untuk mengaktifkan Emmet, selain itu `false`."
+  "GIT_SHOW_FILE_HISTORY": "Riwayat Komit Berkas",
+  "GIT_SHOW_HISTORY": "Riwayat Komit"
 });

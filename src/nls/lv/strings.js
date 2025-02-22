@@ -1078,6 +1078,7 @@ define({
   "DESCRIPTION_INDENT_GUIDES_ENABLED": "`true`, lai rādītu atkāpju līnijas, citādi `false`.",
   "DESCRIPTION_HIDE_FIRST": "`true`, lai rādītu pirmo atkāpju līniju, citādi `false`.",
   "DESCRIPTION_CSS_COLOR_PREVIEW": "`true`, lai rādītu krāsu priekšskatījumus malā, citādi `false`.",
+  "DESCRIPTION_EMMET": "Iestatiet uz “true”, lai iespējotu Emmet, citādi uz “false”.",
   "ENABLE_GIT": "Iespējot Git",
   "ACTION": "Darbība",
   "STATUSBAR_SHOW_GIT": "Git panelis",
@@ -1348,5 +1349,6 @@ define({
   "GIT_TOAST_TITLE": "Izpētiet Git funkcijas Phoenix Code",
   "GIT_TOAST_MESSAGE": "Noklikšķiniet uz Git paneļa ikonas, lai pārvaldītu savu repozitoriju. Ērti veiciet commit, push, pull un skatiet sava projekta vēsturi — viss vienā vietā.<br><a href='https://docs.phcode.dev/docs/Features/git'>Uzziniet vairāk par Git paneli →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Nobalsot par funkcijām, kuras vēlaties redzēt nākamreiz!",
-  "DESCRIPTION_EMMET": "Iestatiet uz “true”, lai iespējotu Emmet, citādi uz “false”."
+  "GIT_SHOW_FILE_HISTORY": "Faila paveikšanas vēsture",
+  "GIT_SHOW_HISTORY": "Paveikšanas vēsture"
 });
