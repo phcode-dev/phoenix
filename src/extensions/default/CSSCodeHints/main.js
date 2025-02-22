@@ -26,6 +26,7 @@ define(function (require, exports, module) {
 
     var AppInit             = brackets.getModule("utils/AppInit"),
         CodeHintManager     = brackets.getModule("editor/CodeHintManager"),
+        EditorManager       = brackets.getModule("editor/EditorManager"),
         CSSUtils            = brackets.getModule("language/CSSUtils"),
         PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
         TokenUtils          = brackets.getModule("utils/TokenUtils"),
@@ -90,6 +91,62 @@ define(function (require, exports, module) {
         this.primaryTriggerKeys = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-()";
         this.secondaryTriggerKeys = ":";
         this.exclusion = null;
+    }
+
+    function isAlphanumeric(char) {
+        return /^[a-z0-9-@$]$/i.test(char);
+    }
+
+    function isValidColor(text, colorMatch) {
+        const colorIndex = colorMatch.index;
+        const previousChar = colorIndex === 0 ? "" : text.charAt(colorIndex - 1);
+        const endIndex = colorIndex + colorMatch[0].length;
+        const nextChar = endIndex === text.length ? "" : text.charAt(endIndex);
+        return !isAlphanumeric(previousChar) && !isAlphanumeric(nextChar);
+    }
+
+    function updateColorList(colorList, color, lineNumber) {
+        const existingColor = colorList.find(item => item.color === color);
+        if (existingColor) {
+            existingColor.count++;
+            if (!existingColor.lines.includes(lineNumber)) {
+                existingColor.lines.push(lineNumber);
+            }
+        } else {
+            colorList.push({
+                color: color,
+                lines: [lineNumber],
+                count: 1
+            });
+        }
+    }
+
+    function getAllColorsInFile() {
+        const editor = EditorManager.getActiveEditor();
+        const nLen = editor.lineCount();
+
+        const colorList = [];
+
+        for (let i = 0; i < nLen; i++) {
+            const lineText = editor.getLine(i);
+
+            if (!lineText || lineText.length > 1000) {
+                continue;
+            }
+
+            const matches = [...lineText.matchAll(ColorUtils.COLOR_REGEX)];
+
+            for (const match of matches) {
+                if (isValidColor(lineText, match)) {
+                    const token = editor.getToken({ line: i, ch: match.index });
+                    if (token && token.type !== "comment") {
+                        updateColorList(colorList, match[0], i);
+                    }
+                }
+            }
+        }
+
+        return colorList;
     }
 
     /**
@@ -298,6 +355,10 @@ define(function (require, exports, module) {
             result,
             selectInitial = false;
 
+        let previouslyUsedColors = [];
+
+
+
         // Clear the exclusion if the user moves the cursor with left/right arrow key.
         this.updateExclusion(true);
 
@@ -339,9 +400,22 @@ define(function (require, exports, module) {
             let isColorSwatch = false;
             if (type === "color") {
                 isColorSwatch = true;
-                valueArray = valueArray.concat(ColorUtils.COLOR_NAMES.map(function (color) {
-                    return { text: color, color: color };
-                }));
+
+
+                const colorList = getAllColorsInFile();
+
+                // Convert COLOR_LIST to previouslyUsedColors format and sort by count
+                previouslyUsedColors = colorList
+                    .sort((a, b) => b.count - a.count) // Sort in descending order by count
+                    .map(item => item.color); // Extract only the colors
+
+                // Combine default hex, rgb colors with existing color names
+                valueArray = previouslyUsedColors.concat(
+                    ColorUtils.COLOR_NAMES.map(function (color) {
+                        return { text: color, color: color };
+                    })
+                );
+
                 valueArray.push("transparent", "currentColor");
             }
 
@@ -351,6 +425,7 @@ define(function (require, exports, module) {
 
             result = StringMatch.codeHintsSort(valueNeedle, valueArray, {
                 limit: MAX_CSS_HINTS,
+                boostPrefixList: previouslyUsedColors, // for named colors to make them appear before other color hints
                 onlyContiguous: isColorSwatch // for color swatches, when searching for `ora` we should
                 // only hint <ora>nge and not <o>lived<ra>b (green shade)
             });
@@ -506,7 +581,8 @@ define(function (require, exports, module) {
      * Checks whether the expandedAbbr has any number.
      * For instance: `m0` expands to `margin: 0;`, so we need to display the whole thing in the code hint
      * Here, we also make sure that abbreviations which has `#`, `,` should not be included, because
-     * `color` expands to `color: #000;` or `color: rgb(0, 0, 0)`. So this actually has numbers, but we don't want to display this.
+     * `color` expands to `color: #000;` or `color: rgb(0, 0, 0)`.
+     * So this actually has numbers, but we don't want to display this.
      *
      * @param {String} expandedAbbr the expanded abbr returned by EXPAND_ABBR emmet api
      * @returns {boolean} true if expandedAbbr has numbers (and doesn't include '#') otherwise false.
@@ -661,12 +737,18 @@ define(function (require, exports, module) {
 
             var parenMatch = hint.match(/\(.*?\)/);
             if (parenMatch) {
-                // value has (...), so place cursor inside opening paren
-                // and keep hints open
-                adjustCursor = true;
-                newCursor = { line: cursor.line,
-                    ch: start.ch + parenMatch.index + 1 };
-                keepHints = true;
+                // Only adjust cursor for non-color values
+                if (!hint.startsWith('rgb') &&
+                    !hint.startsWith('rgba') &&
+                    !hint.startsWith('hsl') &&
+                    !hint.startsWith('hsla')) {
+                    // value has (...), so place cursor inside opening paren
+                    // and keep hints open
+                    adjustCursor = true;
+                    newCursor = { line: cursor.line,
+                        ch: start.ch + parenMatch.index + 1 };
+                    keepHints = true;
+                }
             }
         }
 
