@@ -35,7 +35,6 @@ define(function (require, exports, module) {
         KeyEvent            = brackets.getModule("utils/KeyEvent"),
         LiveDevelopment     = brackets.getModule("LiveDevelopment/main"),
         Metrics             = brackets.getModule("utils/Metrics"),
-        AllPreferences      = brackets.getModule("preferences/AllPreferences"),
         CSSProperties       = require("text!CSSProperties.json"),
         properties          = JSON.parse(CSSProperties);
 
@@ -724,7 +723,7 @@ define(function (require, exports, module) {
      * Checks for preference changes, to enable/disable Emmet
      */
     function preferenceChanged() {
-        enabled = PreferencesManager.get(AllPreferences.EMMET);
+        enabled = PreferencesManager.get("emmet");
     }
 
 
@@ -732,7 +731,7 @@ define(function (require, exports, module) {
         var cssPropHints = new CssPropHints();
         CodeHintManager.registerHintProvider(cssPropHints, ["css", "scss", "less"], 1);
 
-        PreferencesManager.on("change", AllPreferences.EMMET, preferenceChanged);
+        PreferencesManager.on("change", "emmet", preferenceChanged);
         preferenceChanged();
 
         // For unit testing
