@@ -310,12 +310,7 @@ define(function (require, exports, module) {
                 }, `History list to be visible: ${visible}`);
             }
 
-            async function testHistoryToggle(whichHistory) {
-                const $historyToggleButton = $gitPanel.find(whichHistory);
-
-                $historyToggleButton.trigger("click");
-                await waitForHistoryVisible(true);
-
+            function _verifyHistoryCommits() {
                 const $historyList = $gitPanel.find("#git-history-list");
 
                 // Check if the first and second commits are displayed
@@ -325,6 +320,15 @@ define(function (require, exports, module) {
                 // Verify the content of the first and second commits
                 expect($historyCommits.eq(0).text().trim()).toBe("second commit");
                 expect($historyCommits.eq(1).text().trim()).toBe("first commit");
+            }
+
+            async function testHistoryToggle(whichHistory) {
+                const $historyToggleButton = $gitPanel.find(whichHistory);
+
+                $historyToggleButton.trigger("click");
+                await waitForHistoryVisible(true);
+
+                _verifyHistoryCommits();
 
                 $historyToggleButton.trigger("click");
                 await waitForHistoryVisible(false);
@@ -336,6 +340,20 @@ define(function (require, exports, module) {
 
             it("should show history with first and second commit on clicking global history", async () => {
                 await testHistoryToggle(".git-file-history");
+            });
+
+            it("should show history commands work as expected", async () => {
+                await waitForHistoryVisible(false);
+
+                await __PR.execCommand(Commands.CMD_GIT_HISTORY_GLOBAL);
+                await waitForHistoryVisible(true);
+                _verifyHistoryCommits();
+                await __PR.execCommand(Commands.CMD_GIT_TOGGLE_PANEL);
+                await waitForHistoryVisible(false);
+
+                await __PR.execCommand(Commands.CMD_GIT_HISTORY_FILE);
+                await waitForHistoryVisible(true);
+                _verifyHistoryCommits();
             });
 
             async function waitForHistoryViewerVisible(visible) {
