@@ -27,39 +27,39 @@ define(function (require, exports, module) {
 
 
     // Load dependent modules
-    const AppInit             = require("utils/AppInit"),
-        CommandManager      = require("command/CommandManager"),
-        Commands            = require("command/Commands"),
-        DeprecationWarning  = require("utils/DeprecationWarning"),
-        EventDispatcher     = require("utils/EventDispatcher"),
-        ProjectManager      = require("project/ProjectManager"),
-        DocumentManager     = require("document/DocumentManager"),
-        MainViewManager     = require("view/MainViewManager"),
-        EditorManager       = require("editor/EditorManager"),
-        FileSystem          = require("filesystem/FileSystem"),
-        FileSystemError     = require("filesystem/FileSystemError"),
-        FileUtils           = require("file/FileUtils"),
-        FileViewController  = require("project/FileViewController"),
-        InMemoryFile        = require("document/InMemoryFile"),
-        StringUtils         = require("utils/StringUtils"),
-        Async               = require("utils/Async"),
-        Metrics             = require("utils/Metrics"),
-        Dialogs             = require("widgets/Dialogs"),
-        DefaultDialogs      = require("widgets/DefaultDialogs"),
-        Strings             = require("strings"),
-        PopUpManager        = require("widgets/PopUpManager"),
-        PreferencesManager  = require("preferences/PreferencesManager"),
-        PerfUtils           = require("utils/PerfUtils"),
-        KeyEvent            = require("utils/KeyEvent"),
-        Menus               = require("command/Menus"),
-        UrlParams           = require("utils/UrlParams").UrlParams,
-        StatusBar           = require("widgets/StatusBar"),
-        WorkspaceManager    = require("view/WorkspaceManager"),
-        LanguageManager     = require("language/LanguageManager"),
-        NewFileContentManager     = require("features/NewFileContentManager"),
+    const AppInit = require("utils/AppInit"),
+        CommandManager = require("command/CommandManager"),
+        Commands = require("command/Commands"),
+        DeprecationWarning = require("utils/DeprecationWarning"),
+        EventDispatcher = require("utils/EventDispatcher"),
+        ProjectManager = require("project/ProjectManager"),
+        DocumentManager = require("document/DocumentManager"),
+        MainViewManager = require("view/MainViewManager"),
+        EditorManager = require("editor/EditorManager"),
+        FileSystem = require("filesystem/FileSystem"),
+        FileSystemError = require("filesystem/FileSystemError"),
+        FileUtils = require("file/FileUtils"),
+        FileViewController = require("project/FileViewController"),
+        InMemoryFile = require("document/InMemoryFile"),
+        StringUtils = require("utils/StringUtils"),
+        Async = require("utils/Async"),
+        Metrics = require("utils/Metrics"),
+        Dialogs = require("widgets/Dialogs"),
+        DefaultDialogs = require("widgets/DefaultDialogs"),
+        Strings = require("strings"),
+        PopUpManager = require("widgets/PopUpManager"),
+        PreferencesManager = require("preferences/PreferencesManager"),
+        PerfUtils = require("utils/PerfUtils"),
+        KeyEvent = require("utils/KeyEvent"),
+        Menus = require("command/Menus"),
+        UrlParams = require("utils/UrlParams").UrlParams,
+        StatusBar = require("widgets/StatusBar"),
+        WorkspaceManager = require("view/WorkspaceManager"),
+        LanguageManager = require("language/LanguageManager"),
+        NewFileContentManager = require("features/NewFileContentManager"),
         NodeConnector = require("NodeConnector"),
-        NodeUtils           = require("utils/NodeUtils"),
-        _                   = require("thirdparty/lodash");
+        NodeUtils = require("utils/NodeUtils"),
+        _ = require("thirdparty/lodash");
 
     /**
      * Handlers for commands related to document handling (opening, saving, etc.)
@@ -140,6 +140,30 @@ define(function (require, exports, module) {
     });
     EventDispatcher.makeEventDispatcher(exports);
 
+
+    PreferencesManager.definePreference("emmet", "boolean", true, {
+        description: Strings.DESCRIPTION_EMMET
+    });
+
+    // Register the Emmet toggle command
+    const EMMET_COMMAND_ID = "edit.emmet";
+    const emmetCommand = CommandManager.register(Strings.CMD_TOGGLE_EMMET, EMMET_COMMAND_ID, toggleEmmet);
+
+    // Set initial state based on the preference
+    emmetCommand.setChecked(PreferencesManager.get("emmet"));
+
+    // Helper function to toggle the Emmet preference
+    function toggleEmmet() {
+        PreferencesManager.set("emmet", !PreferencesManager.get("emmet"));
+        emmetCommand.setChecked(PreferencesManager.get("emmet"));
+    }
+
+    // Listen for any change in the "emmet" preference and update the menu's toggle state
+    // this is needed because else the menu is not getting updated when the preference is changed
+    PreferencesManager.on("change", "emmet", function () {
+        emmetCommand.setChecked(PreferencesManager.get("emmet"));
+    });
+
     /**
      * Event triggered when File Save is cancelled, when prompted to save dirty files
      */
@@ -169,9 +193,9 @@ define(function (require, exports, module) {
         METRIC_FILE_OPEN_WS = "fileAddWorkingSet";
     function _dpIfDefaultProjectEvent(eventCategory, filePath) {
         const projectRootPath = ProjectManager.getProjectRoot().fullPath;
-        if(filePath && filePath.startsWith(projectRootPath)){
+        if (filePath && filePath.startsWith(projectRootPath)) {
             const relativePath = path.relative(projectRootPath, filePath);
-            if(DEFAULT_PROJECT_FILES[relativePath] || relativePath.startsWith("images")){
+            if (DEFAULT_PROJECT_FILES[relativePath] || relativePath.startsWith("images")) {
                 return eventCategory === METRIC_FILE_SAVE ? "defaultFileSave" : "defaultFileOp";
             }
         }
@@ -190,7 +214,7 @@ define(function (require, exports, module) {
 
         Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR,
             _dpIfDefaultProjectEvent("fileEncoding", filePath), encoding || 'UTF-8');
-        if(addedToWorkingSet){
+        if (addedToWorkingSet) {
             Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR,
                 _dpIfDefaultProjectEvent(METRIC_FILE_OPEN_WS, filePath), language._name.toLowerCase());
         } else {
@@ -229,14 +253,14 @@ define(function (require, exports, module) {
 
         function _sendData(fileSizeInKB) {
             let subType = "",
-                fileSizeInMB = fileSizeInKB/1024;
+                fileSizeInMB = fileSizeInKB / 1024;
 
-            if(fileSizeInMB <= 1) {
+            if (fileSizeInMB <= 1) {
                 // We don't log exact file sizes for privacy.
-                if(fileSizeInKB < 0) {
+                if (fileSizeInKB < 0) {
                     subType = "";
                 }
-                if(fileSizeInKB <= 10) {
+                if (fileSizeInKB <= 10) {
                     subType = "0_to_10KB";
                 } else if (fileSizeInKB <= 50) {
                     subType = "10_to_50KB";
@@ -249,11 +273,11 @@ define(function (require, exports, module) {
                 }
 
             } else {
-                if(fileSizeInMB <= 2) {
+                if (fileSizeInMB <= 2) {
                     subType = "1_to_2MB";
-                } else if(fileSizeInMB <= 5) {
+                } else if (fileSizeInMB <= 5) {
                     subType = "2_to_5MB";
-                } else if(fileSizeInMB <= 10) {
+                } else if (fileSizeInMB <= 10) {
                     subType = "5_to_10MB";
                 } else {
                     subType = "Above_10MB";
@@ -265,9 +289,9 @@ define(function (require, exports, module) {
                 `${language._name.toLowerCase()}.${subType}`);
         }
 
-        file.stat(function(err, fileStat) {
-            if(!err) {
-                size = fileStat.size.valueOf()/1024;
+        file.stat(function (err, fileStat) {
+            if (!err) {
+                size = fileStat.size.valueOf() / 1024;
             }
             _sendData(size);
         });
@@ -278,15 +302,15 @@ define(function (require, exports, module) {
      * @private
      */
     function _updateTitle() {
-        var currentDoc          = DocumentManager.getCurrentDocument(),
-            windowTitle         = brackets.config.app_title,
+        var currentDoc = DocumentManager.getCurrentDocument(),
+            windowTitle = brackets.config.app_title,
             currentlyViewedFile = MainViewManager.getCurrentlyViewedFile(MainViewManager.ACTIVE_PANE),
             currentlyViewedPath = currentlyViewedFile && currentlyViewedFile.fullPath,
-            readOnlyString      = (currentlyViewedFile && currentlyViewedFile.readOnly) ? "[Read Only] - " : "";
+            readOnlyString = (currentlyViewedFile && currentlyViewedFile.readOnly) ? "[Read Only] - " : "";
 
 
         if (currentlyViewedPath) {
-            if(!Phoenix.isNativeApp) {
+            if (!Phoenix.isNativeApp) {
                 // in native app, the app titlebar will have the file name and the title text section in not there.
                 _$title.text(_currentTitlePath);
             }
@@ -552,7 +576,7 @@ define(function (require, exports, module) {
      * @return {{path: string, line: ?number, column: ?number}}
      */
     function _parseDecoratedPath(path) {
-        var result = {path: path, line: null, column: null};
+        var result = { path: path, line: null, column: null };
         if (path) {
             // If the path has a trailing :lineNumber and :columnNumber, strip
             // these off and assign to result.line and result.column.
@@ -611,8 +635,8 @@ define(function (require, exports, module) {
 
                     // setCursorPos expects line/column numbers as 0-origin, so we subtract 1
                     EditorManager.getCurrentFullEditor().setCursorPos(fileInfo.line - 1,
-                                                                      fileInfo.column - 1,
-                                                                      true);
+                        fileInfo.column - 1,
+                        true);
                 }
 
                 result.resolve(file);
@@ -724,8 +748,8 @@ define(function (require, exports, module) {
      *   the given base name
      */
     function _getUntitledFileSuggestion(dir, baseFileName, isFolder) {
-        var suggestedName   = baseFileName + "-" + _nextUntitledIndexToUse++,
-            deferred        = $.Deferred();
+        var suggestedName = baseFileName + "-" + _nextUntitledIndexToUse++,
+            deferred = $.Deferred();
 
         if (_nextUntitledIndexToUse > 9999) {
             //we've tried this enough
@@ -733,7 +757,7 @@ define(function (require, exports, module) {
         } else {
             var path = dir.fullPath + suggestedName,
                 entry = isFolder ? FileSystem.getDirectoryForPath(path)
-                                 : FileSystem.getFileForPath(path);
+                    : FileSystem.getFileForPath(path);
 
             entry.exists(function (err, exists) {
                 if (err || exists) {
@@ -790,12 +814,12 @@ define(function (require, exports, module) {
         function createWithSuggestedName(suggestedName) {
             return ProjectManager.createNewItem(baseDirEntry, suggestedName, false, isFolder)
                 .done(function (fileOrStatus) {
-                    if(!(typeof fileOrStatus === 'object' && fileOrStatus.isFile && fileOrStatus.fullPath)){
+                    if (!(typeof fileOrStatus === 'object' && fileOrStatus.isFile && fileOrStatus.fullPath)) {
                         return;
                     }
                     DocumentManager.getDocumentForPath(fileOrStatus.fullPath)
-                        .done(doc =>{
-                            NewFileContentManager.getInitialContentForFile(fileOrStatus.fullPath).then(content =>{
+                        .done(doc => {
+                            NewFileContentManager.getInitialContentForFile(fileOrStatus.fullPath).then(content => {
                                 doc.setText(content);
                             });
                         })
@@ -894,7 +918,7 @@ define(function (require, exports, module) {
         }
 
         function handleContentsModified() {
-            if(alwaysOverwriteTillProjectSwitch){
+            if (alwaysOverwriteTillProjectSwitch) {
                 doSave(docToSave, true).then(result.resolve, result.reject);
                 return;
             }
@@ -937,8 +961,8 @@ define(function (require, exports, module) {
                         doSave(docToSave, true).then(result.resolve, result.reject);
                     } else if (id === Dialogs.DIALOG_BTN_SAVE_AS) {
                         // Let the user choose a different path at which to write the file
-                        handleFileSaveAs({doc: docToSave}).then(result.resolve, result.reject);
-                    } else if (id === 'alwaysOverwrite'){
+                        handleFileSaveAs({ doc: docToSave }).then(result.resolve, result.reject);
+                    } else if (id === 'alwaysOverwrite') {
                         alwaysOverwriteTillProjectSwitch = true;
                         doSave(docToSave, true).then(result.resolve, result.reject);
                     }
@@ -1074,7 +1098,7 @@ define(function (require, exports, module) {
 
                 if (FileViewController.getFileSelectionFocus() === FileViewController.PROJECT_MANAGER) {
                     // If selection is in the tree, leave workingset unchanged - even if orig file is in the list
-                    setTimeout(()=>{
+                    setTimeout(() => {
                         fileOpenPromise = FileViewController
                             .openAndSelectDocument(path, FileViewController.PROJECT_MANAGER);
                         // always configure editor after file is opened
@@ -1092,7 +1116,7 @@ define(function (require, exports, module) {
                     MainViewManager._removeView(info.paneId, doc.file, true);
 
                     // Add new file to workingset, and ensure we now redraw (even if index hasn't changed)
-                    fileOpenPromise = handleFileAddToWorkingSetAndOpen({fullPath: path, paneId: info.paneId, index: info.index, forceRedraw: true});
+                    fileOpenPromise = handleFileAddToWorkingSetAndOpen({ fullPath: path, paneId: info.paneId, index: info.index, forceRedraw: true });
                     // always configure editor after file is opened
                     fileOpenPromise.always(function () {
                         _configureEditorAndResolve();
@@ -1255,7 +1279,7 @@ define(function (require, exports, module) {
 
                 var doc = DocumentManager.getOpenDocumentForPath(file.fullPath);
                 if (doc) {
-                    var savePromise = handleFileSave({doc: doc});
+                    var savePromise = handleFileSave({ doc: doc });
                     savePromise
                         .done(function (newFile) {
                             filesAfterSave.push(newFile);
@@ -1267,7 +1291,7 @@ define(function (require, exports, module) {
                         });
                     return savePromise;
                 }
-                    // workingset entry that was never actually opened - ignore
+                // workingset entry that was never actually opened - ignore
                 filesAfterSave.push(file);
                 return (new $.Deferred()).resolve().promise();
 
@@ -1328,24 +1352,24 @@ define(function (require, exports, module) {
     }
 
     function _addToClosedFilesHistory(filePath, paneID) {
-        closedFilesHistory.set(filePath, {paneID, closeTime: Date.now()});
+        closedFilesHistory.set(filePath, { paneID, closeTime: Date.now() });
         _enableOrDisableReopenClosedCmd();
     }
 
     function handleReopenClosed() {
         // find the file that was most recently closed
         let leastRecentlyClosedPath, leastRecentlyClosedTime, paneToUse;
-        for(let closedFilePath of closedFilesHistory.keys()){
+        for (let closedFilePath of closedFilesHistory.keys()) {
             const currentScan = closedFilesHistory.get(closedFilePath);
-            if(!leastRecentlyClosedPath || leastRecentlyClosedTime < currentScan.closeTime) {
+            if (!leastRecentlyClosedPath || leastRecentlyClosedTime < currentScan.closeTime) {
                 leastRecentlyClosedPath = closedFilePath;
                 leastRecentlyClosedTime = currentScan.closeTime;
                 paneToUse = currentScan.paneID;
             }
         }
-        if(leastRecentlyClosedPath) {
+        if (leastRecentlyClosedPath) {
             closedFilesHistory.delete(leastRecentlyClosedPath);
-            if(MainViewManager.getPaneCount() === 1) {
+            if (MainViewManager.getPaneCount() === 1) {
                 paneToUse = MainViewManager.ACTIVE_PANE;
             }
             _enableOrDisableReopenClosedCmd();
@@ -1377,10 +1401,10 @@ define(function (require, exports, module) {
             activePaneID = MainViewManager.getActivePaneId();
 
         if (commandData) {
-            file        = commandData.file;
-            promptOnly  = commandData.promptOnly;
+            file = commandData.file;
+            promptOnly = commandData.promptOnly;
             _forceClose = commandData._forceClose;
-            paneId      = commandData.paneId || paneId;
+            paneId = commandData.paneId || paneId;
             _spawnedRequest = commandData.spawnedRequest || false;
         }
 
@@ -1389,7 +1413,7 @@ define(function (require, exports, module) {
             if (!promptOnly) {
                 MainViewManager._close(paneId, file);
                 let paneClosing = paneId;
-                if(paneId === MainViewManager.ACTIVE_PANE){
+                if (paneId === MainViewManager.ACTIVE_PANE) {
                     paneClosing = activePaneID;
                 }
                 _addToClosedFilesHistory(file.fullPath, paneClosing);
@@ -1448,7 +1472,7 @@ define(function (require, exports, module) {
                         result.reject();
                     } else if (id === Dialogs.DIALOG_BTN_OK) {
                         // "Save" case: wait until we confirm save has succeeded before closing
-                        handleFileSave({doc: doc})
+                        handleFileSave({ doc: doc })
                             .done(function (newFile) {
                                 doClose(newFile);
                                 result.resolve();
@@ -1497,7 +1521,7 @@ define(function (require, exports, module) {
      * @return {jQuery.Promise} promise that is resolved or rejected when the function finishes.
      */
     function _closeList(list, promptOnly, _forceClose) {
-        var result      = new $.Deferred(),
+        var result = new $.Deferred(),
             unsavedDocs = [];
 
         list.forEach(function (file) {
@@ -1593,7 +1617,7 @@ define(function (require, exports, module) {
      */
     function handleFileCloseAll(commandData) {
         return _closeList(MainViewManager.getAllOpenFiles(),
-                                    (commandData && commandData.promptOnly), (commandData && commandData._forceClose));
+            (commandData && commandData.promptOnly), (commandData && commandData._forceClose));
     }
 
 
@@ -1685,9 +1709,9 @@ define(function (require, exports, module) {
             function (closeSuccess) {
                 console.log('close success: ', closeSuccess);
                 raceAgainstTime(window.PhStore.flushDB())
-                    .finally(()=>{
+                    .finally(() => {
                         raceAgainstTime(_safeNodeTerminate())
-                            .finally(()=>{
+                            .finally(() => {
                                 Phoenix.app.closeWindow();
                             });
                     });
@@ -1698,7 +1722,7 @@ define(function (require, exports, module) {
         );
     }
 
-    function newPhoenixWindow(cliArgsArray = null, cwd=null) {
+    function newPhoenixWindow(cliArgsArray = null, cwd = null) {
         let width = window.innerWidth;
         let height = window.innerHeight;
         Phoenix.app.openNewPhoenixEditorWindow(width, height, cliArgsArray, cwd);
@@ -1706,7 +1730,7 @@ define(function (require, exports, module) {
 
     async function _fileExists(fullPath) {
         try {
-            const {entry} = await FileSystem.resolveAsync(fullPath);
+            const { entry } = await FileSystem.resolveAsync(fullPath);
             return entry.isFile;
         } catch (e) {
             return false;
@@ -1714,15 +1738,15 @@ define(function (require, exports, module) {
     }
 
     async function _tryToOpenFile(absOrRelativePath, cwdIfRelativePath) {
-        try{
+        try {
             let fileToOpen;
-            if(cwdIfRelativePath){
+            if (cwdIfRelativePath) {
                 fileToOpen = window.path.join(Phoenix.VFS.getTauriVirtualPath(cwdIfRelativePath), absOrRelativePath);
             } else {
                 fileToOpen = Phoenix.VFS.getTauriVirtualPath(absOrRelativePath);
             }
             let isFile = await _fileExists(fileToOpen);
-            if(isFile){
+            if (isFile) {
                 await jsPromise(FileViewController.openFileAndAddToWorkingSet(fileToOpen));
                 return true;
             }
@@ -1732,48 +1756,48 @@ define(function (require, exports, module) {
         return false;
     }
 
-    async function _openFilesPassedInFromCLI(args=null, cwd="") {
-        if(!args){
-            const cliArgs= await Phoenix.app.getCommandLineArgs();
+    async function _openFilesPassedInFromCLI(args = null, cwd = "") {
+        if (!args) {
+            const cliArgs = await Phoenix.app.getCommandLineArgs();
             args = cliArgs && cliArgs.args;
             cwd = cliArgs && cliArgs.cwd;
         }
-        if(!args || args.length <= 1){
+        if (!args || args.length <= 1) {
             return;
         }
 
         let openCount = 0;
-        for(let i=1; i<args.length; i++) { // the first arg is the executable path itself, ignore that
+        for (let i = 1; i < args.length; i++) { // the first arg is the executable path itself, ignore that
             const fileArg = args[i];
             let isOpened = await _tryToOpenFile(fileArg);
-            if(!isOpened){
+            if (!isOpened) {
                 // if here, then, this maybe a relative file path or not a file at all. check if relative path
                 await _tryToOpenFile(fileArg, cwd);
             }
-            if(isOpened){
+            if (isOpened) {
                 openCount++;
             }
         }
-        if(openCount){
+        if (openCount) {
             exports.trigger(_EVENT_OPEN_WITH_FILE_FROM_OS);
             _filesOpenedFromOsCount++;
             Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, 'openWith', "file", openCount);
         }
     }
 
-    async function _safeCheckFileAndGetVirtualPath(absOrRelativePath, relativeToDir=null) {
-        try{
+    async function _safeCheckFileAndGetVirtualPath(absOrRelativePath, relativeToDir = null) {
+        try {
             let fileToCheck;
-            if(!relativeToDir){
+            if (!relativeToDir) {
                 fileToCheck = Phoenix.VFS.getTauriVirtualPath(absOrRelativePath);
                 const fileExists = await _fileExists(fileToCheck);
-                if(fileExists){
+                if (fileExists) {
                     return fileToCheck;
                 }
             } else {
                 fileToCheck = window.path.join(Phoenix.VFS.getTauriVirtualPath(relativeToDir), absOrRelativePath);
                 const fileExists = await _fileExists(fileToCheck);
-                if(fileExists){
+                if (fileExists) {
                     return fileToCheck;
                 }
             }
@@ -1785,19 +1809,19 @@ define(function (require, exports, module) {
 
     async function _singleInstanceHandler(args, cwd) {
         const isPrimary = await Phoenix.app.isPrimaryDesktopPhoenixWindow();
-        if(!isPrimary){
+        if (!isPrimary) {
             // only primary phoenix windows can open a new window, else every window is going to make its own
             // window and cause a runaway phoenix window explosion.
             return;
         }
-        if(args.length > 1) {
+        if (args.length > 1) {
             // check if the second arg is a file, if so we just open it and the remaining files in this window
             let fileToOpen = await _safeCheckFileAndGetVirtualPath(args[1]);
-            if(!fileToOpen){
+            if (!fileToOpen) {
                 // maybe relative path?
                 fileToOpen = await _safeCheckFileAndGetVirtualPath(args[1], cwd);
             }
-            if(fileToOpen) {
+            if (fileToOpen) {
                 Metrics.countEvent(Metrics.EVENT_TYPE.PLATFORM, 'openWith', "file");
                 await _openFilesPassedInFromCLI(args, cwd);
                 await Phoenix.app.focusWindow();
@@ -1861,8 +1885,10 @@ define(function (require, exports, module) {
                 paneId = result.paneId;
 
             MainViewManager.beginTraversal();
-            CommandManager.execute(Commands.FILE_OPEN, {fullPath: file.fullPath,
-                paneId: paneId });
+            CommandManager.execute(Commands.FILE_OPEN, {
+                fullPath: file.fullPath,
+                paneId: paneId
+            });
 
             // Listen for ending of Ctrl+Tab sequence
             if (!_addedNavKeyHandler) {
@@ -1895,26 +1921,26 @@ define(function (require, exports, module) {
     /** Show in File Tree command handler **/
     function handleShowInTree() {
         let activeFile = MainViewManager.getCurrentlyViewedFile(MainViewManager.ACTIVE_PANE);
-        if(activeFile){
+        if (activeFile) {
             ProjectManager.showInTree(activeFile);
         }
     }
 
     function _getDeleteMessageTemplate(isFile, canMoveToTrash) {
-        if(!Phoenix.isNativeApp || !canMoveToTrash){
+        if (!Phoenix.isNativeApp || !canMoveToTrash) {
             return isFile ? Strings.CONFIRM_FILE_DELETE : Strings.CONFIRM_FOLDER_DELETE;
         }
-        if(Phoenix.platform === "win") {
+        if (Phoenix.platform === "win") {
             return isFile ? Strings.CONFIRM_FILE_DELETE_RECYCLE_BIN : Strings.CONFIRM_FOLDER_DELETE_RECYCLE_BIN;
         }
         return isFile ? Strings.CONFIRM_FILE_DELETE_TRASH : Strings.CONFIRM_FOLDER_DELETE_TRASH;
     }
 
     function _getDeleteButtonString(canMoveToTrash) {
-        if(!Phoenix.isNativeApp || !canMoveToTrash){
+        if (!Phoenix.isNativeApp || !canMoveToTrash) {
             return Strings.DELETE;
         }
-        if(Phoenix.platform === "win") {
+        if (Phoenix.platform === "win") {
             return Strings.MOVE_TO_RECYCLE_BIN;
         }
         return Strings.MOVE_TO_TRASH;
@@ -1925,7 +1951,7 @@ define(function (require, exports, module) {
      * @param {{file: File}} [commandData]  Optional bag of arguments:
      *      file - File to delete; assumes the current document if not specified.
      *  **/
-    function handleFileDelete(commandData={}) {
+    function handleFileDelete(commandData = {}) {
         const entry = commandData.file || ProjectManager.getSelectedItem();
         const canMoveToTrash = Phoenix.app.canMoveToTrash(entry.fullPath);
         Dialogs.showModalDialog(
@@ -1950,7 +1976,7 @@ define(function (require, exports, module) {
         )
             .done(function (id) {
                 if (id === Dialogs.DIALOG_BTN_OK) {
-                    if(Phoenix.isNativeApp && canMoveToTrash) {
+                    if (Phoenix.isNativeApp && canMoveToTrash) {
                         ProjectManager.moveToTrash(entry);
                         return;
                     }
@@ -1964,10 +1990,10 @@ define(function (require, exports, module) {
         var entry = ProjectManager.getSelectedItem();
         if (entry) {
             brackets.app.openPathInFileBrowser(entry.fullPath)
-                .catch(err=>console.error("Error showing '" + entry.fullPath + "' in OS folder:", err));
+                .catch(err => console.error("Error showing '" + entry.fullPath + "' in OS folder:", err));
         } else {
             brackets.app.openPathInFileBrowser(ProjectManager.getProjectRoot().fullPath)
-                .catch(err=>console.error("Error showing '" + ProjectManager.getProjectRoot().fullPath + "' in OS folder:", err));
+                .catch(err => console.error("Error showing '" + ProjectManager.getProjectRoot().fullPath + "' in OS folder:", err));
         }
     }
 
@@ -2046,9 +2072,9 @@ define(function (require, exports, module) {
             window.setTimeout(function () {
                 exitWaitPromises.push(window.PhStore.flushDB());
                 raceAgainstTime(Promise.all(exitWaitPromises)) // wither wait for flush or time this out
-                    .finally(()=>{
+                    .finally(() => {
                         raceAgainstTime(_safeNodeTerminate(), 4000)
-                            .finally(()=>{
+                            .finally(() => {
                                 window.location.href = href;
                             });
                     });
@@ -2065,9 +2091,9 @@ define(function (require, exports, module) {
      * @param {Array<String>|string} loadDevExtensionPath If specified, will load the extension from the path. IF
      * and empty array is specified, it will unload all dev extensions on reload.
      */
-    function handleReload(loadWithoutExtensions=false, loadDevExtensionPath=[]) {
-        var href    = window.location.href,
-            params  = new UrlParams();
+    function handleReload(loadWithoutExtensions = false, loadDevExtensionPath = []) {
+        var href = window.location.href,
+            params = new UrlParams();
 
         // Make sure the Reload Without User Extensions parameter is removed
         params.parse();
@@ -2091,7 +2117,7 @@ define(function (require, exports, module) {
             if (params.get("reloadWithoutUserExts")) {
                 params.remove("reloadWithoutUserExts");
             }
-            if(loadDevExtensionPath && loadDevExtensionPath.length){
+            if (loadDevExtensionPath && loadDevExtensionPath.length) {
                 params.put("loadDevExtensionPath", loadDevExtensionPath);
                 // since we are loading a development extension, we have to enable detailed logs too on reload
                 params.put(logger.loggingOptions.LOCAL_STORAGE_KEYS.LOG_TO_CONSOLE_KEY, "true");
@@ -2125,17 +2151,17 @@ define(function (require, exports, module) {
     **/
 
     function attachBrowserUnloadHandler() {
-        window.onbeforeunload = function(e) {
+        window.onbeforeunload = function (e) {
             PreferencesManager.setViewState("windowClosingTime", new Date().getTime());
-            _handleWindowGoingAway(null, closeSuccess=>{
+            _handleWindowGoingAway(null, closeSuccess => {
                 console.log('close success: ', closeSuccess);
-            }, closeFail=>{
+            }, closeFail => {
                 console.log('close fail: ', closeFail);
             });
             var openDocs = DocumentManager.getAllOpenDocuments();
 
             // Detect any unsaved changes
-            openDocs = openDocs.filter(function(doc) {
+            openDocs = openDocs.filter(function (doc) {
                 return doc && doc.isDirty;
             });
 
@@ -2151,7 +2177,7 @@ define(function (require, exports, module) {
 
     async function _safeFlushDB() {
         // close should not be interrupted.
-        try{
+        try {
             await window.PhStore.flushDB();
         } catch (e) {
             console.error(e);
@@ -2162,23 +2188,23 @@ define(function (require, exports, module) {
     async function _safeNodeTerminate() {
         // close should not be interrupted.
         nodeTerminateDueToShutdown = true;
-        try{
+        try {
             await NodeConnector.terminateNode();
         } catch (e) {
             console.error(e);
         }
     }
-    if(window.nodeTerminationPromise) {
+    if (window.nodeTerminationPromise) {
         window.nodeTerminationPromise
-            .then(()=>{
-                if(nodeTerminateDueToShutdown){
+            .then(() => {
+                if (nodeTerminateDueToShutdown) {
                     return; // normal shutdown
                 }
                 Metrics.countEvent(Metrics.EVENT_TYPE.NODEJS, 'crash', Phoenix.platform);
                 window.fs.forceUseNodeWSEndpoint(false);
                 Dialogs
                     .showErrorDialog(Strings.ERROR_NODE_JS_CRASH_TITLE, Strings.ERROR_NODE_JS_CRASH_MESSAGE)
-                    .done(()=>{
+                    .done(() => {
                         handleReload();
                     });
             });
@@ -2187,47 +2213,47 @@ define(function (require, exports, module) {
     let closeInProgress;
     let closeClickCounter = 0;
     const CLOSE_TIMER_RESET_INTERVAL = 4000;
-    let closeTimer = setTimeout(()=>{
+    let closeTimer = setTimeout(() => {
         closeClickCounter = 0;
         closeTimer = null;
     }, CLOSE_TIMER_RESET_INTERVAL);
 
     function _forceQuitIfNeeded() {
         closeClickCounter++;
-        if(closeTimer){
+        if (closeTimer) {
             clearTimeout(closeTimer);
         }
-        closeTimer = setInterval(()=>{
+        closeTimer = setInterval(() => {
             closeClickCounter = 0;
             closeTimer = null;
         }, CLOSE_TIMER_RESET_INTERVAL);
-        if(closeClickCounter >= 2) {
+        if (closeClickCounter >= 2) {
             // the user clicked the close button 2 times in the last 4 secs, he's desperate, close the window now!.
             Phoenix.app.closeWindow(true);
         }
     }
     function attachTauriUnloadHandler() {
-        window.__TAURI__.window.appWindow.onCloseRequested((event)=>{
+        window.__TAURI__.window.appWindow.onCloseRequested((event) => {
             _forceQuitIfNeeded();
-            if(closeInProgress){
+            if (closeInProgress) {
                 event.preventDefault();
                 return;
             }
             closeInProgress = true;
             PreferencesManager.setViewState("windowClosingTime", new Date().getTime());
             event.preventDefault();
-            _handleWindowGoingAway(null, closeSuccess=>{
+            _handleWindowGoingAway(null, closeSuccess => {
                 console.log('close success: ', closeSuccess);
                 exitWaitPromises.push(_safeFlushDB());
                 raceAgainstTime(Promise.all(exitWaitPromises))
-                    .finally(()=>{
+                    .finally(() => {
                         raceAgainstTime(_safeNodeTerminate())
-                            .finally(()=>{
+                            .finally(() => {
                                 closeInProgress = false;
                                 Phoenix.app.closeWindow();
                             });
                     });
-            }, closeFail=>{
+            }, closeFail => {
                 console.log('close fail: ', closeFail);
                 closeInProgress = false;
             });
@@ -2236,7 +2262,7 @@ define(function (require, exports, module) {
 
     let isTestWindow = (new window.URLSearchParams(window.location.search || "")).get("testEnvironment");
     if (!isTestWindow) {
-        if(Phoenix.isNativeApp) {
+        if (Phoenix.isNativeApp) {
             attachTauriUnloadHandler();
         } else {
             attachBrowserUnloadHandler();
@@ -2246,15 +2272,15 @@ define(function (require, exports, module) {
     /** Do some initialization when the DOM is ready **/
     AppInit.htmlReady(function () {
         // If in Reload Without User Extensions mode, update UI and log console message
-        var params      = new UrlParams(),
-            $icon       = $("#toolbar-extension-manager"),
-            $indicator  = $("<div>" + Strings.STATUSBAR_USER_EXTENSIONS_DISABLED + "</div>");
+        var params = new UrlParams(),
+            $icon = $("#toolbar-extension-manager"),
+            $indicator = $("<div>" + Strings.STATUSBAR_USER_EXTENSIONS_DISABLED + "</div>");
 
         params.parse();
 
         if (params.get("reloadWithoutUserExts") === "true") {
             CommandManager.get(Commands.FILE_EXTENSION_MANAGER).setEnabled(false);
-            $icon.css({display: "none"});
+            $icon.css({ display: "none" });
             StatusBar.addIndicator("status-user-exts", $indicator, true);
             console.log("Brackets reloaded with extensions disabled");
         }
@@ -2266,7 +2292,7 @@ define(function (require, exports, module) {
         _$dirtydot = $(".dirty-dot", _$titleWrapper);
     });
 
-    if(Phoenix.isSpecRunnerWindow){
+    if (Phoenix.isSpecRunnerWindow) {
         _$titleContainerToolbar = $("#titlebar");
         _$titleWrapper = $(".title-wrapper");
         _$title = $(".title");
@@ -2274,16 +2300,16 @@ define(function (require, exports, module) {
     }
 
     let firstProjectOpenHandled = false;
-    ProjectManager.on(ProjectManager.EVENT_AFTER_PROJECT_OPEN, ()=>{
+    ProjectManager.on(ProjectManager.EVENT_AFTER_PROJECT_OPEN, () => {
         closedFilesHistory = new Map();
         _enableOrDisableReopenClosedCmd();
-        if(firstProjectOpenHandled){
+        if (firstProjectOpenHandled) {
             return;
         }
         firstProjectOpenHandled = true;
         Phoenix.app.setSingleInstanceCLIArgsHandler(_singleInstanceHandler);
         _openFilesPassedInFromCLI()
-            .finally(()=>{
+            .finally(() => {
                 // in mac, this is not exactly correct. This event will get triggered on startup, but mac will only
                 // raise events in the background and there is no way for us to know when the mac open with events
                 // come. Use this event carefully in mac.
@@ -2295,15 +2321,15 @@ define(function (require, exports, module) {
     exports._parseDecoratedPath = _parseDecoratedPath;
 
     // Set some command strings
-    let quitString  = Strings.CMD_QUIT,
-        showInOS    = Strings.CMD_SHOW_IN_FILE_MANAGER,
-        defaultTerminal    = Strings.CMD_OPEN_IN_TERMINAL_DO_NOT_TRANSLATE;
+    let quitString = Strings.CMD_QUIT,
+        showInOS = Strings.CMD_SHOW_IN_FILE_MANAGER,
+        defaultTerminal = Strings.CMD_OPEN_IN_TERMINAL_DO_NOT_TRANSLATE;
     if (brackets.platform === "win") {
-        quitString  = Strings.CMD_EXIT;
-        showInOS    = Strings.CMD_SHOW_IN_EXPLORER;
-        defaultTerminal    = Strings.CMD_OPEN_IN_CMD;
+        quitString = Strings.CMD_EXIT;
+        showInOS = Strings.CMD_SHOW_IN_EXPLORER;
+        defaultTerminal = Strings.CMD_OPEN_IN_CMD;
     } else if (brackets.platform === "mac") {
-        showInOS    = Strings.CMD_SHOW_IN_FINDER;
+        showInOS = Strings.CMD_SHOW_IN_FINDER;
     }
 
     // private api
@@ -2318,56 +2344,56 @@ define(function (require, exports, module) {
 
 
     // Deprecated commands
-    CommandManager.register(Strings.CMD_ADD_TO_WORKING_SET,          Commands.FILE_ADD_TO_WORKING_SET,        handleFileAddToWorkingSet);
-    CommandManager.register(Strings.CMD_FILE_OPEN,                   Commands.FILE_OPEN,                      handleDocumentOpen);
+    CommandManager.register(Strings.CMD_ADD_TO_WORKING_SET, Commands.FILE_ADD_TO_WORKING_SET, handleFileAddToWorkingSet);
+    CommandManager.register(Strings.CMD_FILE_OPEN, Commands.FILE_OPEN, handleDocumentOpen);
 
     // New commands
-    CommandManager.register(Strings.CMD_ADD_TO_WORKING_SET,          Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN, handleFileAddToWorkingSetAndOpen);
-    CommandManager.register(Strings.CMD_FILE_OPEN,                   Commands.CMD_OPEN,                       handleFileOpen);
+    CommandManager.register(Strings.CMD_ADD_TO_WORKING_SET, Commands.CMD_ADD_TO_WORKINGSET_AND_OPEN, handleFileAddToWorkingSetAndOpen);
+    CommandManager.register(Strings.CMD_FILE_OPEN, Commands.CMD_OPEN, handleFileOpen);
 
     // File Commands
-    CommandManager.register(Strings.CMD_FILE_NEW_UNTITLED,           Commands.FILE_NEW_UNTITLED,              handleFileNew);
-    CommandManager.register(Strings.CMD_FILE_NEW,                    Commands.FILE_NEW,                       handleFileNewInProject);
-    CommandManager.register(Strings.CMD_FILE_NEW_FOLDER,             Commands.FILE_NEW_FOLDER,                handleNewFolderInProject);
-    CommandManager.register(Strings.CMD_FILE_SAVE,                   Commands.FILE_SAVE,                      handleFileSave);
-    CommandManager.register(Strings.CMD_FILE_SAVE_ALL,               Commands.FILE_SAVE_ALL,                  handleFileSaveAll);
-    CommandManager.register(Strings.CMD_FILE_SAVE_AS,                Commands.FILE_SAVE_AS,                   handleFileSaveAs);
-    CommandManager.register(Strings.CMD_FILE_RENAME,                 Commands.FILE_RENAME,                    handleFileRename);
-    CommandManager.register(Strings.CMD_FILE_DELETE,                 Commands.FILE_DELETE,                    handleFileDelete);
+    CommandManager.register(Strings.CMD_FILE_NEW_UNTITLED, Commands.FILE_NEW_UNTITLED, handleFileNew);
+    CommandManager.register(Strings.CMD_FILE_NEW, Commands.FILE_NEW, handleFileNewInProject);
+    CommandManager.register(Strings.CMD_FILE_NEW_FOLDER, Commands.FILE_NEW_FOLDER, handleNewFolderInProject);
+    CommandManager.register(Strings.CMD_FILE_SAVE, Commands.FILE_SAVE, handleFileSave);
+    CommandManager.register(Strings.CMD_FILE_SAVE_ALL, Commands.FILE_SAVE_ALL, handleFileSaveAll);
+    CommandManager.register(Strings.CMD_FILE_SAVE_AS, Commands.FILE_SAVE_AS, handleFileSaveAs);
+    CommandManager.register(Strings.CMD_FILE_RENAME, Commands.FILE_RENAME, handleFileRename);
+    CommandManager.register(Strings.CMD_FILE_DELETE, Commands.FILE_DELETE, handleFileDelete);
 
     // Close Commands
-    CommandManager.register(Strings.CMD_FILE_CLOSE,                  Commands.FILE_CLOSE,                     handleFileClose);
-    CommandManager.register(Strings.CMD_FILE_CLOSE_ALL,              Commands.FILE_CLOSE_ALL,                 handleFileCloseAll);
-    CommandManager.register(Strings.CMD_FILE_CLOSE_LIST,             Commands.FILE_CLOSE_LIST,                handleFileCloseList);
-    CommandManager.register(Strings.CMD_REOPEN_CLOSED,               Commands.FILE_REOPEN_CLOSED,             handleReopenClosed);
+    CommandManager.register(Strings.CMD_FILE_CLOSE, Commands.FILE_CLOSE, handleFileClose);
+    CommandManager.register(Strings.CMD_FILE_CLOSE_ALL, Commands.FILE_CLOSE_ALL, handleFileCloseAll);
+    CommandManager.register(Strings.CMD_FILE_CLOSE_LIST, Commands.FILE_CLOSE_LIST, handleFileCloseList);
+    CommandManager.register(Strings.CMD_REOPEN_CLOSED, Commands.FILE_REOPEN_CLOSED, handleReopenClosed);
 
     // Traversal
-    CommandManager.register(Strings.CMD_NEXT_DOC,                    Commands.NAVIGATE_NEXT_DOC,              handleGoNextDoc);
-    CommandManager.register(Strings.CMD_PREV_DOC,                    Commands.NAVIGATE_PREV_DOC,              handleGoPrevDoc);
+    CommandManager.register(Strings.CMD_NEXT_DOC, Commands.NAVIGATE_NEXT_DOC, handleGoNextDoc);
+    CommandManager.register(Strings.CMD_PREV_DOC, Commands.NAVIGATE_PREV_DOC, handleGoPrevDoc);
 
-    CommandManager.register(Strings.CMD_NEXT_DOC_LIST_ORDER,         Commands.NAVIGATE_NEXT_DOC_LIST_ORDER,   handleGoNextDocListOrder);
-    CommandManager.register(Strings.CMD_PREV_DOC_LIST_ORDER,         Commands.NAVIGATE_PREV_DOC_LIST_ORDER,   handleGoPrevDocListOrder);
+    CommandManager.register(Strings.CMD_NEXT_DOC_LIST_ORDER, Commands.NAVIGATE_NEXT_DOC_LIST_ORDER, handleGoNextDocListOrder);
+    CommandManager.register(Strings.CMD_PREV_DOC_LIST_ORDER, Commands.NAVIGATE_PREV_DOC_LIST_ORDER, handleGoPrevDocListOrder);
 
     // Special Commands
-    CommandManager.register(showInOS,                                Commands.NAVIGATE_SHOW_IN_OS,            handleShowInOS);
-    CommandManager.register(defaultTerminal,                         Commands.NAVIGATE_OPEN_IN_TERMINAL,      openDefaultTerminal);
+    CommandManager.register(showInOS, Commands.NAVIGATE_SHOW_IN_OS, handleShowInOS);
+    CommandManager.register(defaultTerminal, Commands.NAVIGATE_OPEN_IN_TERMINAL, openDefaultTerminal);
     if (brackets.platform === "win") {
-        CommandManager.register(Strings.CMD_OPEN_IN_POWER_SHELL,     Commands.NAVIGATE_OPEN_IN_POWERSHELL,    openPowerShell);
+        CommandManager.register(Strings.CMD_OPEN_IN_POWER_SHELL, Commands.NAVIGATE_OPEN_IN_POWERSHELL, openPowerShell);
     }
-    CommandManager.register(Strings.CMD_OPEN_IN_DEFAULT_APP,         Commands.NAVIGATE_OPEN_IN_DEFAULT_APP,   openDefaultApp);
-    CommandManager.register(Strings.CMD_NEW_BRACKETS_WINDOW,         Commands.FILE_NEW_WINDOW,                handleFileNewWindow);
-    CommandManager.register(quitString,                              Commands.FILE_QUIT,                      handleFileCloseWindow);
-    CommandManager.register(Strings.CMD_SHOW_IN_TREE,                Commands.NAVIGATE_SHOW_IN_FILE_TREE,     handleShowInTree);
+    CommandManager.register(Strings.CMD_OPEN_IN_DEFAULT_APP, Commands.NAVIGATE_OPEN_IN_DEFAULT_APP, openDefaultApp);
+    CommandManager.register(Strings.CMD_NEW_BRACKETS_WINDOW, Commands.FILE_NEW_WINDOW, handleFileNewWindow);
+    CommandManager.register(quitString, Commands.FILE_QUIT, handleFileCloseWindow);
+    CommandManager.register(Strings.CMD_SHOW_IN_TREE, Commands.NAVIGATE_SHOW_IN_FILE_TREE, handleShowInTree);
 
     // These commands have no UI representation and are only used internally
-    CommandManager.registerInternal(Commands.APP_ABORT_QUIT,            handleAbortQuit);
-    CommandManager.registerInternal(Commands.APP_BEFORE_MENUPOPUP,      handleBeforeMenuPopup);
-    CommandManager.registerInternal(Commands.FILE_CLOSE_WINDOW,         handleFileCloseWindow);
-    CommandManager.registerInternal(Commands.APP_RELOAD,                handleReload);
-    CommandManager.registerInternal(Commands.APP_RELOAD_WITHOUT_EXTS,   handleReloadWithoutExts);
+    CommandManager.registerInternal(Commands.APP_ABORT_QUIT, handleAbortQuit);
+    CommandManager.registerInternal(Commands.APP_BEFORE_MENUPOPUP, handleBeforeMenuPopup);
+    CommandManager.registerInternal(Commands.FILE_CLOSE_WINDOW, handleFileCloseWindow);
+    CommandManager.registerInternal(Commands.APP_RELOAD, handleReload);
+    CommandManager.registerInternal(Commands.APP_RELOAD_WITHOUT_EXTS, handleReloadWithoutExts);
 
     // Listen for changes that require updating the editor titlebar
-    ProjectManager.on("projectOpen", ()=>{
+    ProjectManager.on("projectOpen", () => {
         alwaysOverwriteTillProjectSwitch = false;
         _updateTitle();
     });

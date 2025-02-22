@@ -33,7 +33,6 @@ define(function (require, exports, module) {
         CSSUtils            = brackets.getModule("language/CSSUtils"),
         StringMatch         = brackets.getModule("utils/StringMatch"),
         LiveDevelopment     = brackets.getModule("LiveDevelopment/main"),
-        AllPreferences      = brackets.getModule("preferences/AllPreferences"),
         KeyEvent            = brackets.getModule("utils/KeyEvent"),
         Metrics             = brackets.getModule("utils/Metrics"),
         HTMLTags            = require("text!HtmlTags.json"),
@@ -1206,7 +1205,7 @@ define(function (require, exports, module) {
      * Checks for preference changes, to enable/disable Emmet
      */
     function preferenceChanged() {
-        enabled = PreferencesManager.get(AllPreferences.EMMET);
+        enabled = PreferencesManager.get("emmet");
     }
 
 
@@ -1223,7 +1222,7 @@ define(function (require, exports, module) {
         CodeHintManager.registerHintProvider(attrHints, ["html"], 0);
         NewFileContentManager.registerContentProvider(newDocContentProvider, ["html"], 0);
 
-        PreferencesManager.on("change", AllPreferences.EMMET, preferenceChanged);
+        PreferencesManager.on("change", "emmet", preferenceChanged);
         preferenceChanged();
 
         var emmetMarkupHints = new EmmetMarkupHints();

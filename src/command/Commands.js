@@ -215,6 +215,8 @@ define(function (require, exports, module) {
     /** Toggles code beautification on save */
     exports.EDIT_BEAUTIFY_CODE_ON_SAVE  = "edit.beautifyOnSave";         // CodeHintManager.js           _startNewSession()
 
+    exports.EDIT_EMMET                 = "edit.emmet";                 // HTMLCodeHints CSSCodeHints
+
     /** Opens find dialog */
     exports.CMD_FIND                    = "cmd.find";                   // FindReplace.js               _launchFind()
 
