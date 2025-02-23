@@ -24,21 +24,21 @@
 define(function (require, exports, module) {
 
 
-    var AppInit             = brackets.getModule("utils/AppInit"),
-        CodeHintManager     = brackets.getModule("editor/CodeHintManager"),
-        EditorManager       = brackets.getModule("editor/EditorManager"),
-        CSSUtils            = brackets.getModule("language/CSSUtils"),
-        PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
-        TokenUtils          = brackets.getModule("utils/TokenUtils"),
-        StringMatch         = brackets.getModule("utils/StringMatch"),
-        ColorUtils          = brackets.getModule("utils/ColorUtils"),
-        Strings             = brackets.getModule("strings"),
-        KeyEvent            = brackets.getModule("utils/KeyEvent"),
-        LiveDevelopment     = brackets.getModule("LiveDevelopment/main"),
-        Metrics             = brackets.getModule("utils/Metrics"),
-        AllPreferences      = brackets.getModule("preferences/AllPreferences"),
-        CSSProperties       = require("text!CSSProperties.json"),
-        properties          = JSON.parse(CSSProperties);
+    var AppInit = brackets.getModule("utils/AppInit"),
+        CodeHintManager = brackets.getModule("editor/CodeHintManager"),
+        EditorManager = brackets.getModule("editor/EditorManager"),
+        CSSUtils = brackets.getModule("language/CSSUtils"),
+        PreferencesManager = brackets.getModule("preferences/PreferencesManager"),
+        TokenUtils = brackets.getModule("utils/TokenUtils"),
+        StringMatch = brackets.getModule("utils/StringMatch"),
+        ColorUtils = brackets.getModule("utils/ColorUtils"),
+        Strings = brackets.getModule("strings"),
+        KeyEvent = brackets.getModule("utils/KeyEvent"),
+        LiveDevelopment = brackets.getModule("LiveDevelopment/main"),
+        Metrics = brackets.getModule("utils/Metrics"),
+        AllPreferences = brackets.getModule("preferences/AllPreferences"),
+        CSSProperties = require("text!CSSProperties.json"),
+        properties = JSON.parse(CSSProperties);
 
     /**
      * Emmet API:
@@ -139,7 +139,20 @@ define(function (require, exports, module) {
             for (const match of matches) {
                 if (isValidColor(lineText, match)) {
                     const token = editor.getToken({ line: i, ch: match.index });
-                    if (token && token.type !== "comment") {
+
+                    // this check is added to filter out non-required colors. For ex:
+                    // the color should not be inside a commented line
+                    // the color should not be written as a plain text (in html files)
+                    // like <p>Red is bad.</p>, we need to ignore this Red
+                    if (
+                        token &&
+                        (
+                            // If we're in an HTML file (token.state.htmlState exists),
+                            // then only process if inside a <style> tag.
+                            (token.state && token.state.htmlState ? token.state.htmlState.context.tagName === "style" : true)
+                        ) &&
+                        token.type !== "comment"
+                    ) {
                         updateColorList(colorList, match[0], i);
                     }
                 }
@@ -209,7 +222,7 @@ define(function (require, exports, module) {
             }
 
             return (this.primaryTriggerKeys.indexOf(implicitChar) !== -1) ||
-                   (this.secondaryTriggerKeys.indexOf(implicitChar) !== -1);
+                (this.secondaryTriggerKeys.indexOf(implicitChar) !== -1);
         } else if (this.info.context === CSSUtils.PROP_NAME) {
             if (this.info.offset === 0) {
                 this.exclusion = this.info.name;
@@ -250,7 +263,7 @@ define(function (require, exports, module) {
      */
     function formatHints(hints, isColorSwatch) {
         hints = vendorPrefixesAndGenericToEnd(hints);
-        if(hints.length > MAX_CSS_HINTS) {
+        if (hints.length > MAX_CSS_HINTS) {
             hints = hints.splice(0, MAX_CSS_HINTS);
         }
         return hints.map(function (token) {
@@ -274,7 +287,7 @@ define(function (require, exports, module) {
             if (isColorSwatch) {
                 $hintObj = ColorUtils.formatColorHint($hintObj, token.color || token.label || token.value);
             }
-            if(token.MDN_URL) {
+            if (token.MDN_URL) {
                 const $mdn = $(`<a class="css-code-hint-info" style="text-decoration: none;"
                 href="${token.MDN_URL}" title="${Strings.DOCS_MORE_LINK_MDN_TITLE}">
                 <i class="fa-solid fa-circle-info"></i></a>`);
@@ -302,16 +315,16 @@ define(function (require, exports, module) {
             auto: true
         };
         computedProperties = {};
-        for(let propertyKey of Object.keys(properties)) {
+        for (let propertyKey of Object.keys(properties)) {
             const property = properties[propertyKey];
-            if(property.type === "color" || !property.values || !property.values.length
+            if (property.type === "color" || !property.values || !property.values.length
                 || propertyKey === "font-family") {
                 computedProperties[propertyKey] = propertyKey;
                 continue;
             }
             computedProperties[propertyKey] = propertyKey;
-            for(let value of property.values) {
-                if(!blacklistedValues[value]){
+            for (let value of property.values) {
+                if (!blacklistedValues[value]) {
                     computedProperties[`${propertyKey}: ${value};`] = propertyKey;
                 }
             }
@@ -391,7 +404,7 @@ define(function (require, exports, module) {
                 valueNeedle = valueNeedle.substr(0, this.info.offset);
             }
 
-            if(!properties[needle].injectedCSSDefaults){
+            if (!properties[needle].injectedCSSDefaults) {
                 uniqueMerge(properties[needle].values, cssWideKeywords);
                 properties[needle].injectedCSSDefaults = true;
             }
@@ -450,7 +463,7 @@ define(function (require, exports, module) {
 
             lastContext = CSSUtils.PROP_NAME;
             needle = needle.substr(0, this.info.offset);
-            if(!computedProperties){
+            if (!computedProperties) {
                 _computeProperties();
             }
 
@@ -460,9 +473,9 @@ define(function (require, exports, module) {
                 boostPrefixList: BOOSTED_PROPERTIES
             });
 
-            for(let resultItem of result) {
+            for (let resultItem of result) {
                 const propertyKey = computedPropertyKeys[resultItem.sourceIndex];
-                if(properties[propertyKey] && properties[propertyKey].MDN_URL){
+                if (properties[propertyKey] && properties[propertyKey].MDN_URL) {
                     resultItem.MDN_URL = properties[propertyKey].MDN_URL;
                     MDN_PROPERTIES_URLS[propertyKey] = resultItem.MDN_URL;
                 }
@@ -472,26 +485,26 @@ define(function (require, exports, module) {
             let pushedHints = formatHints(result);
 
             // make sure that emmet feature is on in preferences
-            if(enabled) {
+            if (enabled) {
 
                 // needle gives the current word before cursor, make sure that it exists
                 // also needle shouldn't contain `-`, because for example if user typed:
                 // `box-siz` then in that case it is very obvious that user wants to type `box-sizing`
                 // but emmet expands it `box: siz;`. So we prevent calling emmet when needle has `-`.
-                if(needle && !needle.includes('-')) {
+                if (needle && !needle.includes('-')) {
 
                     // wrapped in try catch block because EXPAND_ABBR might throw error when it gets unexpected
                     // characters such as `, =, etc
                     try {
                         let expandedAbbr = expandAbbr(needle, { syntax: "css", type: "stylesheet" });
-                        if(expandedAbbr && _isEmmetExpandable(needle, expandedAbbr)) {
+                        if (expandedAbbr && _isEmmetExpandable(needle, expandedAbbr)) {
 
                             // if the expandedAbbr doesn't have any numbers, we should split the expandedAbbr to,
                             // get its first word before `:`.
                             // For instance, `m` expands to `margin: ;`. Here the `: ;` is unnecessary.
                             // Also, `bgc` expands to `background-color: #fff;`. Here we don't need the `: #fff;`
                             // as we have cssIntelligence to display hints based on the property
-                            if(!_isEmmetAbbrNumeric(expandedAbbr)) {
+                            if (!_isEmmetAbbrNumeric(expandedAbbr)) {
                                 expandedAbbr = expandedAbbr.split(':')[0];
                             }
 
@@ -504,7 +517,7 @@ define(function (require, exports, module) {
                             let $icon = $(`<a class="emmet-css-code-hint" style="text-decoration: none">Emmet</a>`);
 
                             // if MDN_URL is available for the property, add the href attribute to redirect to mdn
-                            if(MDN_PROPERTIES_URLS[expandedAbbr]) {
+                            if (MDN_PROPERTIES_URLS[expandedAbbr]) {
                                 $icon.attr("href", MDN_PROPERTIES_URLS[expandedAbbr]);
                                 $icon.attr("title", Strings.DOCS_MORE_LINK_MDN_TITLE);
                             }
@@ -533,12 +546,12 @@ define(function (require, exports, module) {
                             // add the emmet icon to the final hint object
                             $emmetHintObj.append($icon);
 
-                            if(pushedHints) {
+                            if (pushedHints) {
 
                                 // to remove duplicate hints. one comes from emmet and other from default css hints.
                                 // we remove the default css hints and push emmet hint at the beginning.
-                                for(let i = 0; i < pushedHints.length; i++) {
-                                    if(pushedHints[i][0].getAttribute('data-val') === expandedAbbr) {
+                                for (let i = 0; i < pushedHints.length; i++) {
+                                    if (pushedHints[i][0].getAttribute('data-val') === expandedAbbr) {
                                         pushedHints.splice(i, 1);
                                         break;
                                     }
@@ -597,7 +610,7 @@ define(function (require, exports, module) {
     let hintSessionId = 0, isInLiveHighlightSession = false;
 
     CssPropHints.prototype.onClose = function () {
-        if(isInLiveHighlightSession) {
+        if (isInLiveHighlightSession) {
             this.editor.restoreHistoryPoint(`${HISTORY_PREFIX}${hintSessionId}`);
             isInLiveHighlightSession = false;
         }
@@ -605,46 +618,46 @@ define(function (require, exports, module) {
     };
 
     CssPropHints.prototype.onHighlight = function ($highlightedEl, _$descriptionElem, reason) {
-        if(!reason){
+        if (!reason) {
             console.error("OnHighlight called without reason, should never happen!");
             hintSessionId++;
             return;
         }
         const currentLivePreviewDetails = LiveDevelopment.getLivePreviewDetails();
-        if(!(currentLivePreviewDetails && currentLivePreviewDetails.liveDocument)) {
+        if (!(currentLivePreviewDetails && currentLivePreviewDetails.liveDocument)) {
             // css live hints only for live previewed page and related files
             return;
         }
         const currentlyEditedFile = this.editor.document.file.fullPath;
         const livePreviewedFile = currentLivePreviewDetails.liveDocument.doc.file.fullPath;
-        if(currentlyEditedFile !== livePreviewedFile) {
+        if (currentlyEditedFile !== livePreviewedFile) {
             const isRelatedFile = currentLivePreviewDetails.liveDocument.isRelated &&
                 currentLivePreviewDetails.liveDocument.isRelated(currentlyEditedFile);
-            if(!isRelatedFile) {
+            if (!isRelatedFile) {
                 // file is neither current html file being live previewed, or any of its
                 // related file. we dont show hints in the case
                 return;
             }
         }
-        if(reason.source === CodeHintManager.SELECTION_REASON.SESSION_START){
+        if (reason.source === CodeHintManager.SELECTION_REASON.SESSION_START) {
             hintSessionId++;
             this.editor.createHistoryRestorePoint(`${HISTORY_PREFIX}${hintSessionId}`);
             return;
         }
-        if(reason.source !== CodeHintManager.SELECTION_REASON.KEYBOARD_NAV){
+        if (reason.source !== CodeHintManager.SELECTION_REASON.KEYBOARD_NAV) {
             return;
         }
         const event = reason.event;
-        if(!(event.keyCode === KeyEvent.DOM_VK_UP ||
+        if (!(event.keyCode === KeyEvent.DOM_VK_UP ||
             event.keyCode === KeyEvent.DOM_VK_DOWN ||
             event.keyCode === KeyEvent.DOM_VK_PAGE_UP ||
-            event.keyCode === KeyEvent.DOM_VK_PAGE_DOWN)){
+            event.keyCode === KeyEvent.DOM_VK_PAGE_DOWN)) {
             return;
         }
         Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "cssHint", "preview");
         const $hintItem = $highlightedEl.find(".brackets-css-hints");
         const highligtedValue = $highlightedEl.find(".brackets-css-hints").data("val");
-        if(!highligtedValue || !$hintItem.is(":visible")){
+        if (!highligtedValue || !$hintItem.is(":visible")) {
             return;
         }
         isInLiveHighlightSession = true;
@@ -666,8 +679,8 @@ define(function (require, exports, module) {
     CssPropHints.prototype.insertHint = function (hint, isLiveHighlight) {
         var offset = this.info.offset,
             cursor = this.editor.getCursorPos(),
-            start = {line: -1, ch: -1},
-            end = {line: -1, ch: -1},
+            start = { line: -1, ch: -1 },
+            end = { line: -1, ch: -1 },
             keepHints = false,
             adjustCursor = false,
             newCursor,
@@ -700,8 +713,10 @@ define(function (require, exports, module) {
                     // the cursor before that space.
                     hint += " ";
                     adjustCursor = true;
-                    newCursor = { line: cursor.line,
-                        ch: start.ch + hint.length - 1 };
+                    newCursor = {
+                        line: cursor.line,
+                        ch: start.ch + hint.length - 1
+                    };
                     this.exclusion = null;
                 }
             } else {
@@ -718,13 +733,15 @@ define(function (require, exports, module) {
                 }
                 if (TokenUtils.moveSkippingWhitespace(TokenUtils.moveNextToken, ctx) && ctx.token.string === ":") {
                     adjustCursor = true;
-                    newCursor = { line: cursor.line,
-                        ch: cursor.ch + (hint.length - this.info.name.length) };
+                    newCursor = {
+                        line: cursor.line,
+                        ch: cursor.ch + (hint.length - this.info.name.length)
+                    };
                     // Adjust cursor to the position after any whitespace that follows the colon, if there is any.
                     if (TokenUtils.moveNextToken(ctx) && ctx.token.string.length > 0 && !/\S/.test(ctx.token.string)) {
                         newCursor.ch += ctx.token.string.length;
                     }
-                } else if(!hint.endsWith(";")){
+                } else if (!hint.endsWith(";")) {
                     hint += ": ";
                 }
             }
@@ -747,21 +764,23 @@ define(function (require, exports, module) {
                     // value has (...), so place cursor inside opening paren
                     // and keep hints open
                     adjustCursor = true;
-                    newCursor = { line: cursor.line,
-                        ch: start.ch + parenMatch.index + 1 };
+                    newCursor = {
+                        line: cursor.line,
+                        ch: start.ch + parenMatch.index + 1
+                    };
                     keepHints = true;
                 }
             }
         }
 
-        if(isLiveHighlight) {
+        if (isLiveHighlight) {
             // this is via user press up and down arrows when code hints is visible
-            if(this.info.context !== CSSUtils.PROP_VALUE && !hint.endsWith(";")) {
+            if (this.info.context !== CSSUtils.PROP_VALUE && !hint.endsWith(";")) {
                 // we only do live hints for css property values. else UX is jarring.
                 // property full statements hints like "display: flex;" will be live previewed tho
                 return keepHints;
             }
-            if(!this.editor.hasSelection()){
+            if (!this.editor.hasSelection()) {
                 this.editor.setSelection(start, end);
             }
             this.editor.replaceSelection(hint, 'around', "liveHints");
@@ -769,13 +788,13 @@ define(function (require, exports, module) {
         }
 
         // this is commit flow
-        if(isInLiveHighlightSession) {
+        if (isInLiveHighlightSession) {
             // end previous highlight session.
             isInLiveHighlightSession = false;
             hintSessionId++;
         }
 
-        if(this.editor.hasSelection()){
+        if (this.editor.hasSelection()) {
             // this is when user commits
             this.editor.replaceSelection(hint, 'end');
             return keepHints;
@@ -795,7 +814,7 @@ define(function (require, exports, module) {
         // the CSS property is fully specified,
         // so we don't need to continue showing hints for its value.
         const cursorPos = this.editor.getCursorPos();
-        if(this.editor.getCharacterAtPosition({line: cursorPos.line, ch: cursorPos.ch - 1}) === ';') {
+        if (this.editor.getCharacterAtPosition({ line: cursorPos.line, ch: cursorPos.ch - 1 }) === ';') {
             keepHints = false;
         }
 
