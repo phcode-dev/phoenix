@@ -10,13 +10,18 @@ const File = brackets.getModule("filesystem/File")
 
 * [File](#File)
     * [new File(fullPath, fileSystem)](#new_File_new)
-    * [.read([options], callback)](#File+read)
+    * [.read(options, callback)](#File+read)
     * [.write(data, [options], [callback])](#File+write)
 
 <a name="new_File_new"></a>
 
 ### new File(fullPath, fileSystem)
-Model for a File.This class should *not* be instantiated directly. Use FileSystem.getFileForPath,FileSystem.resolve, or Directory.getContents to create an instance of this class.See the FileSystem class for more details.
+Model for a File.
+
+This class should *not* be instantiated directly. Use FileSystem.getFileForPath,
+FileSystem.resolve, or Directory.getContents to create an instance of this class.
+
+See the FileSystem class for more details.
 
 
 | Param | Type | Description |
@@ -26,14 +31,17 @@ Model for a File.This class should *not* be instantiated directly. Use FileSys
 
 <a name="File+read"></a>
 
-### file.read([options], callback)
+### file.read(options, callback)
 Read a file.
 
 **Kind**: instance method of [<code>File</code>](#File)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| [options] | <code>Object</code> | properties \{encoding: 'one of format supported here: https://developer.mozilla.org/en-US/docs/Web/API/TextDecoder/encoding'} |
+| options | <code>Object</code> |  |
+| [options.encoding] | <code>string</code> | 'one of format supported here:        https://developer.mozilla.org/en-US/docs/Web/API/TextDecoder/encoding' |
+| [options.ignoreFileSizeLimits] | <code>boolean</code> | by default max file size that can be read is 16MB. |
+| [options.doNotCache] | <code>boolean</code> | will not cache if enabled. Auto-enabled if ignoreFileSizeLimits = true |
 | callback | <code>function</code> | Callback that is passed the              FileSystemError string or the file's contents and its stats. |
 
 <a name="File+write"></a>

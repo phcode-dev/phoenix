@@ -1053,3 +1053,15 @@ Shows authors of current file
 Toggles display of untracked files
 
 **Kind**: global variable  
+<a name="CMD_GIT_HISTORY_GLOBAL"></a>
+
+## CMD\_GIT\_HISTORY\_GLOBAL
+Toggles global history view in history panel
+
+**Kind**: global variable  
+<a name="CMD_GIT_HISTORY_FILE"></a>
+
+## CMD\_GIT\_HISTORY\_FILE
+Toggles file history view in history panel
+
+**Kind**: global variable  

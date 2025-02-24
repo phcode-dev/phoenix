@@ -215,6 +215,8 @@ define(function (require, exports, module) {
     /** Toggles code beautification on save */
     exports.EDIT_BEAUTIFY_CODE_ON_SAVE  = "edit.beautifyOnSave";         // CodeHintManager.js           _startNewSession()
 
+    exports.EDIT_EMMET                 = "edit.emmet";                 // HTMLCodeHints CSSCodeHints
+
     /** Opens find dialog */
     exports.CMD_FIND                    = "cmd.find";                   // FindReplace.js               _launchFind()
 
@@ -580,4 +582,3 @@ define(function (require, exports, module) {
     DeprecationWarning.deprecateConstant(exports, "SORT_WORKINGSET_BY_TYPE",    "CMD_WORKINGSET_SORT_BY_TYPE");
     DeprecationWarning.deprecateConstant(exports, "SORT_WORKINGSET_AUTO",       "CMD_WORKING_SORT_TOGGLE_AUTO");
 });
-
