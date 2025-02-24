@@ -185,6 +185,8 @@ define(function (require, exports, module) {
         menu.addMenuItem(Commands.SHOW_CODE_HINTS);
         menu.addMenuDivider();
         menu.addMenuItem(Commands.TOGGLE_CLOSE_BRACKETS);
+        menu.addMenuItem(Commands.EDIT_EMMET);
+
 
         /*
          * Find menu

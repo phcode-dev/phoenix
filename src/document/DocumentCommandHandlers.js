@@ -140,6 +140,30 @@ define(function (require, exports, module) {
     });
     EventDispatcher.makeEventDispatcher(exports);
 
+
+    PreferencesManager.definePreference("emmet", "boolean", true, {
+        description: Strings.DESCRIPTION_EMMET
+    });
+
+    // Register the Emmet toggle command
+    const EMMET_COMMAND_ID = "edit.emmet";
+    const emmetCommand = CommandManager.register(Strings.CMD_TOGGLE_EMMET, EMMET_COMMAND_ID, toggleEmmet);
+
+    // Set initial state based on the preference
+    emmetCommand.setChecked(PreferencesManager.get("emmet"));
+
+    // Helper function to toggle the Emmet preference
+    function toggleEmmet() {
+        PreferencesManager.set("emmet", !PreferencesManager.get("emmet"));
+        emmetCommand.setChecked(PreferencesManager.get("emmet"));
+    }
+
+    // Listen for any change in the "emmet" preference and update the menu's toggle state
+    // this is needed because else the menu is not getting updated when the preference is changed
+    PreferencesManager.on("change", "emmet", function () {
+        emmetCommand.setChecked(PreferencesManager.get("emmet"));
+    });
+
     /**
      * Event triggered when File Save is cancelled, when prompted to save dirty files
      */
