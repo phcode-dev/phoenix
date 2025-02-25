@@ -287,6 +287,7 @@
   "CMD_THEMES": "Themes…",
   "CMD_TOGGLE_ACTIVE_LINE": "Highlight Active Line",
   "CMD_TOGGLE_CLOSE_BRACKETS": "Auto Close Braces",
+  "CMD_TOGGLE_EMMET": "Emmet",
   "CMD_TOGGLE_FULLSCREEN": "Fullscreen",
   "CMD_TOGGLE_INDENT_GUIDES": "Indent Guide Lines",
   "CMD_TOGGLE_LINE_NUMBERS": "Line Numbers",

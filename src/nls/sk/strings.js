@@ -1257,6 +1257,8 @@ define({
   "TOOLTIP_REFRESH_PANEL": "Obnoviť panel",
   "TOOLTIP_SHOW_FILE_HISTORY": "Zobraziť históriu súboru",
   "TOOLTIP_SHOW_HISTORY": "Zobraziť históriu",
+  "GIT_SHOW_FILE_HISTORY": "História commitov súboru",
+  "GIT_SHOW_HISTORY": "História commitov",
   "UNDO_CHANGES": "Zahodiť zmeny",
   "UNDO_CHANGES_BTN": "Zahodiť zmeny…",
   "UNDO_LAST_LOCAL_COMMIT": "Vrátiť späť posledný lokálny (neodoslaný) commit…",
@@ -1349,6 +1351,5 @@ define({
   "GIT_TOAST_TITLE": "Preskúmajte funkcie Gitu v Phoenix Code",
   "GIT_TOAST_MESSAGE": "Kliknite na ikonu panela Git pre správu vášho repozitára. Jednoducho commitujte, pushujte, pullujte a prezerajte si históriu vášho projektu – všetko na jednom mieste.<br><a href='https://docs.phcode.dev/docs/Features/git'>Zistite viac o paneli Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Hlasujte za funkcie, ktoré chcete vidieť v ďalšej verzii!",
-  "GIT_SHOW_FILE_HISTORY": "História commitov súboru",
-  "GIT_SHOW_HISTORY": "História commitov"
+  "CMD_TOGGLE_EMMET": "Emmet"
 });

@@ -1257,6 +1257,8 @@ define({
   "TOOLTIP_REFRESH_PANEL": "Päivitä paneeli",
   "TOOLTIP_SHOW_FILE_HISTORY": "Näytä tiedoston historia",
   "TOOLTIP_SHOW_HISTORY": "Näytä historia",
+  "GIT_SHOW_FILE_HISTORY": "Tiedoston commit-historia",
+  "GIT_SHOW_HISTORY": "Commit-historia",
   "UNDO_CHANGES": "Hylkää muutokset",
   "UNDO_CHANGES_BTN": "Hylkää muutokset…",
   "UNDO_LAST_LOCAL_COMMIT": "Peru viimeisin paikallinen (ei pushattu) commit…",
@@ -1349,6 +1351,5 @@ define({
   "GIT_TOAST_TITLE": "Tutustu Git-ominaisuuksiin Phoenix Codessa",
   "GIT_TOAST_MESSAGE": "Napsauta Git-paneelin kuvaketta hallitaksesi arkistoasi (repository). Tee commit, push ja pull helposti ja tarkastele projektihistoriaasi – kaikki yhdessä paikassa.<br><a href='https://docs.phcode.dev/docs/Features/git'>Lue lisää Git-paneelista →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Äänestä ominaisuuksia, jotka haluat nähdä seuraavaksi!",
-  "GIT_SHOW_FILE_HISTORY": "Tiedoston commit-historia",
-  "GIT_SHOW_HISTORY": "Commit-historia"
+  "CMD_TOGGLE_EMMET": "Emmet"
 });

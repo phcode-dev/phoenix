@@ -1257,6 +1257,8 @@ define({
   "TOOLTIP_REFRESH_PANEL": "Segarkan panel",
   "TOOLTIP_SHOW_FILE_HISTORY": "Tampilkan riwayat berkas",
   "TOOLTIP_SHOW_HISTORY": "Tampilkan riwayat",
+  "GIT_SHOW_FILE_HISTORY": "Riwayat Komit Berkas",
+  "GIT_SHOW_HISTORY": "Riwayat Komit",
   "UNDO_CHANGES": "Buang perubahan",
   "UNDO_CHANGES_BTN": "Buang perubahan…",
   "UNDO_LAST_LOCAL_COMMIT": "Batalkan commit lokal terakhir (belum di-push)…",
@@ -1349,6 +1351,5 @@ define({
   "GIT_TOAST_TITLE": "Jelajahi Fitur Git di Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klik ikon panel Git untuk mengelola repositori Anda. Lakukan commit, push, pull, dan lihat riwayat proyek Anda dengan mudah—semua di satu tempat.<br><a href='https://docs.phcode.dev/docs/Features/git'>Pelajari lebih lanjut tentang panel Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Pilih fitur yang ingin Anda lihat selanjutnya!",
-  "GIT_SHOW_FILE_HISTORY": "Riwayat Komit Berkas",
-  "GIT_SHOW_HISTORY": "Riwayat Komit"
+  "CMD_TOGGLE_EMMET": "Emmet"
 });

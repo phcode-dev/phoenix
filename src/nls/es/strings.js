@@ -1257,6 +1257,8 @@ define({
   "TOOLTIP_REFRESH_PANEL": "Actualizar panel",
   "TOOLTIP_SHOW_FILE_HISTORY": "Mostrar historial del archivo",
   "TOOLTIP_SHOW_HISTORY": "Mostrar historial",
+  "GIT_SHOW_FILE_HISTORY": "Historial de commits del archivo",
+  "GIT_SHOW_HISTORY": "Historial de commits",
   "UNDO_CHANGES": "Descartar cambios",
   "UNDO_CHANGES_BTN": "Descartar cambios…",
   "UNDO_LAST_LOCAL_COMMIT": "Deshacer último commit local (no subido)…",
@@ -1349,6 +1351,5 @@ define({
   "GIT_TOAST_TITLE": "Explora las funciones de Git en Phoenix Code",
   "GIT_TOAST_MESSAGE": "Haga clic en el icono del panel de Git para administrar su repositorio. Confirme, envíe (push), extraiga (pull) y vea el historial de su proyecto fácilmente, todo en un solo lugar.<br><a href='https://docs.phcode.dev/docs/Features/git'>Obtenga más información sobre el panel de Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "¡Vota por las funciones que quieres ver próximamente!",
-  "GIT_SHOW_FILE_HISTORY": "Historial de commits del archivo",
-  "GIT_SHOW_HISTORY": "Historial de commits"
+  "CMD_TOGGLE_EMMET": "Emmet"
 });

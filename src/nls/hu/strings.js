@@ -1257,6 +1257,8 @@ define({
   "TOOLTIP_REFRESH_PANEL": "Panel frissítése",
   "TOOLTIP_SHOW_FILE_HISTORY": "Fájlelőzmények megjelenítése",
   "TOOLTIP_SHOW_HISTORY": "Előzmények megjelenítése",
+  "GIT_SHOW_FILE_HISTORY": "Fájl commit előzményei",
+  "GIT_SHOW_HISTORY": "Commit előzmények",
   "UNDO_CHANGES": "Módosítások elvetése",
   "UNDO_CHANGES_BTN": "Módosítások elvetése…",
   "UNDO_LAST_LOCAL_COMMIT": "Utolsó helyi (nem küldött) commit visszavonása…",
@@ -1349,6 +1351,5 @@ define({
   "GIT_TOAST_TITLE": "Fedezd fel a Git funkciókat a Phoenix Code-ban",
   "GIT_TOAST_MESSAGE": "Kattintson a Git panel ikonra a verziókövető rendszer kezeléséhez. Könnyedén végezhet commit, push és pull műveleteket, valamint megtekintheti a projekt előzményeit – mindezt egy helyen.<br><a href='https://docs.phcode.dev/docs/Features/git'>Tudj meg többet a Git panelről →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Szavazzon azokra a funkciókra, amelyeket a jövőben látni szeretne!",
-  "GIT_SHOW_FILE_HISTORY": "Fájl commit előzményei",
-  "GIT_SHOW_HISTORY": "Commit előzmények"
+  "CMD_TOGGLE_EMMET": "Emmet"
 });

@@ -1257,6 +1257,8 @@ define({
   "TOOLTIP_REFRESH_PANEL": "Oppdater panel",
   "TOOLTIP_SHOW_FILE_HISTORY": "Vis filhistorikk",
   "TOOLTIP_SHOW_HISTORY": "Vis historikk",
+  "GIT_SHOW_FILE_HISTORY": "Filhistorikk for commit",
+  "GIT_SHOW_HISTORY": "Commit-historikk",
   "UNDO_CHANGES": "Forkast endringer",
   "UNDO_CHANGES_BTN": "Forkast endringer…",
   "UNDO_LAST_LOCAL_COMMIT": "Angre siste lokale (ikke pushet) commit…",
@@ -1349,6 +1351,5 @@ define({
   "GIT_TOAST_TITLE": "Utforsk Git-funksjoner i Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klikk på Git-panelikonet for å administrere repositoriet ditt. Utfør commit, push, pull og se prosjektloggen din – alt på ett sted.<br><a href='https://docs.phcode.dev/docs/Features/git'>Lær mer om Git-panelet →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Stem på funksjonene du ønsker å se neste!",
-  "GIT_SHOW_FILE_HISTORY": "Filhistorikk for commit",
-  "GIT_SHOW_HISTORY": "Commit-historikk"
+  "CMD_TOGGLE_EMMET": "Emmet"
 });

@@ -1257,6 +1257,8 @@ define({
   "TOOLTIP_REFRESH_PANEL": "Оновити панель",
   "TOOLTIP_SHOW_FILE_HISTORY": "Показати історію файлу",
   "TOOLTIP_SHOW_HISTORY": "Показати історію",
+  "GIT_SHOW_FILE_HISTORY": "Історія комітів файлу",
+  "GIT_SHOW_HISTORY": "Історія комітів",
   "UNDO_CHANGES": "Відкинути зміни",
   "UNDO_CHANGES_BTN": "Відкинути зміни…",
   "UNDO_LAST_LOCAL_COMMIT": "Скасувати останній локальний (не відправлений) коміт…",
@@ -1349,6 +1351,5 @@ define({
   "GIT_TOAST_TITLE": "Ознайомтеся з функціями Git у Phoenix Code",
   "GIT_TOAST_MESSAGE": "Натисніть піктограму панелі Git, щоб керувати вашим репозиторієм. Легко виконуйте коміти, пуші, пули та переглядайте історію вашого проєкту — все в одному місці.<br><a href='https://docs.phcode.dev/docs/Features/git'>Дізнайтеся більше про панель Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Проголосуйте за функції, які ви хочете бачити наступними!",
-  "GIT_SHOW_FILE_HISTORY": "Історія комітів файлу",
-  "GIT_SHOW_HISTORY": "Історія комітів"
+  "CMD_TOGGLE_EMMET": "Еммет"
 });

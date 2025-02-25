@@ -1257,6 +1257,8 @@ define({
   "TOOLTIP_REFRESH_PANEL": "پینل تازہ کریں۔",
   "TOOLTIP_SHOW_FILE_HISTORY": "فائل کی تاریخ دکھائیں۔",
   "TOOLTIP_SHOW_HISTORY": "تاریخ دکھائیں۔",
+  "GIT_SHOW_FILE_HISTORY": "فائل کی کمٹ ہسٹری",
+  "GIT_SHOW_HISTORY": "کمٹ ہسٹری",
   "UNDO_CHANGES": "تبدیلیاں رد کریں۔",
   "UNDO_CHANGES_BTN": "تبدیلیاں رد کریں۔۔۔",
   "UNDO_LAST_LOCAL_COMMIT": "آخری مقامی (پُش نہ کی گئی) کمٹ منسوخ کریں۔۔۔",
@@ -1349,6 +1351,5 @@ define({
   "GIT_TOAST_TITLE": "فینکس کوڈ میں گٹ فیچرز دریافت کریں",
   "GIT_TOAST_MESSAGE": "اپنی ذخیرہ گاہ (repository) کو منظم کرنے کے لیے گٹ پینل آئیکن پر کلک کریں۔ آسانی سے کامٹ، پش، پل کریں، اور اپنے پروجیکٹ کی تاریخ دیکھیں—سب ایک ہی جگہ پر۔<br><a href='https://docs.phcode.dev/docs/Features/git'>گٹ پینل کے بارے میں مزید جانیں →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "اپنی پسندیدہ خصوصیات کے لیے ووٹ دیں!",
-  "GIT_SHOW_FILE_HISTORY": "فائل کی کمٹ ہسٹری",
-  "GIT_SHOW_HISTORY": "کمٹ ہسٹری"
+  "CMD_TOGGLE_EMMET": "ایمٹ"
 });

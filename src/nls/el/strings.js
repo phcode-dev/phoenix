@@ -1257,6 +1257,8 @@ define({
   "TOOLTIP_REFRESH_PANEL": "Ανανέωση πίνακα",
   "TOOLTIP_SHOW_FILE_HISTORY": "Εμφάνιση ιστορικού αρχείου",
   "TOOLTIP_SHOW_HISTORY": "Εμφάνιση ιστορικού",
+  "GIT_SHOW_FILE_HISTORY": "Ιστορικό commit αρχείου",
+  "GIT_SHOW_HISTORY": "Ιστορικό commit",
   "UNDO_CHANGES": "Απόρριψη αλλαγών",
   "UNDO_CHANGES_BTN": "Απόρριψη αλλαγών…",
   "UNDO_LAST_LOCAL_COMMIT": "Αναίρεση τελευταίας τοπικής (μην προωθημένης) commit…",
@@ -1349,6 +1351,5 @@ define({
   "GIT_TOAST_TITLE": "Εξερευνήστε τις Λειτουργίες Git στο Phoenix Code",
   "GIT_TOAST_MESSAGE": "Κάντε κλικ στο εικονίδιο του πίνακα Git για να διαχειριστείτε το αποθετήριό σας. Κάντε εύκολα commit, push, pull και δείτε το ιστορικό του έργου σας—όλα σε ένα μέρος.<br><a href='https://docs.phcode.dev/docs/Features/git'>Μάθετε περισσότερα για τον πίνακα Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Ψηφίστε για τις λειτουργίες που θέλετε να δείτε στη συνέχεια!",
-  "GIT_SHOW_FILE_HISTORY": "Ιστορικό commit αρχείου",
-  "GIT_SHOW_HISTORY": "Ιστορικό commit"
+  "CMD_TOGGLE_EMMET": "Emmet"
 });
