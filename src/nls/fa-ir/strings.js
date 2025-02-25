@@ -1257,6 +1257,8 @@ define({
   "TOOLTIP_REFRESH_PANEL": "به‌روزرسانی پنل",
   "TOOLTIP_SHOW_FILE_HISTORY": "نمایش تاریخچه فایل",
   "TOOLTIP_SHOW_HISTORY": "نمایش تاریخچه",
+  "GIT_SHOW_FILE_HISTORY": "تاریخچه‌ی کامیت‌های فایل",
+  "GIT_SHOW_HISTORY": "تاریخچه‌ی کامیت‌ها",
   "UNDO_CHANGES": "لغو تغییرات",
   "UNDO_CHANGES_BTN": "لغو تغییرات…",
   "UNDO_LAST_LOCAL_COMMIT": "بازگرداندن آخرین commit محلی (ارسال نشده)…",
@@ -1349,6 +1351,5 @@ define({
   "GIT_TOAST_TITLE": "کاوش ویژگی‌های گیت در Phoenix Code",
   "GIT_TOAST_MESSAGE": "برای مدیریت مخزن خود روی آیکون پنل گیت کلیک کنید. به راحتی کامیت، پوش، پول و مشاهده تاریخچه پروژه خود را - همه در یک مکان - انجام دهید.<br><a href='https://docs.phcode.dev/docs/Features/git'>درباره پنل گیت بیشتر بدانید →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "برای قابلیت‌هایی که می‌خواهید در آینده ببینید، رأی دهید!",
-  "GIT_SHOW_FILE_HISTORY": "تاریخچه‌ی کامیت‌های فایل",
-  "GIT_SHOW_HISTORY": "تاریخچه‌ی کامیت‌ها"
+  "CMD_TOGGLE_EMMET": "امت"
 });

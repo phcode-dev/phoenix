@@ -1257,6 +1257,8 @@ define({
   "TOOLTIP_REFRESH_PANEL": "पैनल रीफ़्रेश करें",
   "TOOLTIP_SHOW_FILE_HISTORY": "फ़ाइल इतिहास दिखाएँ",
   "TOOLTIP_SHOW_HISTORY": "इतिहास दिखाएँ",
+  "GIT_SHOW_FILE_HISTORY": "फ़ाइल कमिट इतिहास",
+  "GIT_SHOW_HISTORY": "कमिट इतिहास",
   "UNDO_CHANGES": "परिवर्तन रद्द करें",
   "UNDO_CHANGES_BTN": "परिवर्तन रद्द करें…",
   "UNDO_LAST_LOCAL_COMMIT": "अंतिम स्थानीय (पुश नहीं की गई) कमिट पूर्ववत करें…",
@@ -1349,6 +1351,5 @@ define({
   "GIT_TOAST_TITLE": "फ़ीनिक्स कोड में Git सुविधाओं का अन्वेषण करें",
   "GIT_TOAST_MESSAGE": "अपने रिपॉजिटरी को प्रबंधित करने के लिए Git पैनल आइकन पर क्लिक करें। आसानी से कमिट करें, पुश करें, पुल करें और अपने प्रोजेक्ट का इतिहास देखें—सब एक ही स्थान पर।<br><a href='https://docs.phcode.dev/docs/Features/git'>Git पैनल के बारे में अधिक जानें →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "उन विशेषताओं के लिए वोट करें जिन्हें आप आगे देखना चाहते हैं!",
-  "GIT_SHOW_FILE_HISTORY": "फ़ाइल कमिट इतिहास",
-  "GIT_SHOW_HISTORY": "कमिट इतिहास"
+  "CMD_TOGGLE_EMMET": "एमेट"
 });

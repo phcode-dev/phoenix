@@ -1257,6 +1257,8 @@ define({
   "TOOLTIP_REFRESH_PANEL": "تحديث اللوحة",
   "TOOLTIP_SHOW_FILE_HISTORY": "إظهار سجل الملف",
   "TOOLTIP_SHOW_HISTORY": "إظهار السجل",
+  "GIT_SHOW_FILE_HISTORY": "سجل التزامات الملف",
+  "GIT_SHOW_HISTORY": "سجل الالتزامات",
   "UNDO_CHANGES": "تجاهل التغييرات",
   "UNDO_CHANGES_BTN": "تجاهل التغييرات…",
   "UNDO_LAST_LOCAL_COMMIT": "التراجع عن آخر إيداع محلي (غير مدفوع)…",
@@ -1349,6 +1351,5 @@ define({
   "GIT_TOAST_TITLE": "استكشف ميزات Git في Phoenix Code",
   "GIT_TOAST_MESSAGE": "انقر على رمز لوحة Git لإدارة مستودعك. يمكنك بسهولة تنفيذ الالتزام والدفع والسحب وعرض سجل مشروعك - كل ذلك في مكان واحد.<br><a href='https://docs.phcode.dev/docs/Features/git'>تعرّف على المزيد حول لوحة Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "صوت للميزات التي ترغب برؤيتها تالياً!",
-  "GIT_SHOW_FILE_HISTORY": "سجل التزامات الملف",
-  "GIT_SHOW_HISTORY": "سجل الالتزامات"
+  "CMD_TOGGLE_EMMET": "إيميت"
 });

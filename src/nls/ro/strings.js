@@ -1257,6 +1257,8 @@ define({
   "TOOLTIP_REFRESH_PANEL": "Reîmprospătează panoul",
   "TOOLTIP_SHOW_FILE_HISTORY": "Afișează istoricul fișierului",
   "TOOLTIP_SHOW_HISTORY": "Afișează istoricul",
+  "GIT_SHOW_FILE_HISTORY": "Istoricul commit-urilor fișierului",
+  "GIT_SHOW_HISTORY": "Istoricul commit-urilor",
   "UNDO_CHANGES": "Renunță la modificări",
   "UNDO_CHANGES_BTN": "Renunță la modificări…",
   "UNDO_LAST_LOCAL_COMMIT": "Anulează ultima confirmare locală (neîncărcată)…",
@@ -1349,6 +1351,5 @@ define({
   "GIT_TOAST_TITLE": "Explorați funcțiile Git în Phoenix Code",
   "GIT_TOAST_MESSAGE": "Faceți clic pe pictograma panoului Git pentru a vă gestiona depozitul. Efectuați ușor commit, push, pull și vizualizați istoricul proiectului dvs. - totul într-un singur loc.<br><a href='https://docs.phcode.dev/docs/Features/git'>Aflați mai multe despre panoul Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Votează pentru funcționalitățile pe care dorești să le vezi în continuare!",
-  "GIT_SHOW_FILE_HISTORY": "Istoricul commit-urilor fișierului",
-  "GIT_SHOW_HISTORY": "Istoricul commit-urilor"
+  "CMD_TOGGLE_EMMET": "Emmet"
 });

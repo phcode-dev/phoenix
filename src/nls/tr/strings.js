@@ -1257,6 +1257,8 @@ define({
   "TOOLTIP_REFRESH_PANEL": "Paneli Yenile",
   "TOOLTIP_SHOW_FILE_HISTORY": "Dosya geçmişini göster",
   "TOOLTIP_SHOW_HISTORY": "Geçmişi göster",
+  "GIT_SHOW_FILE_HISTORY": "Dosya İşleme Geçmişi",
+  "GIT_SHOW_HISTORY": "İşleme Geçmişi",
   "UNDO_CHANGES": "Değişiklikleri iptal et",
   "UNDO_CHANGES_BTN": "Değişiklikleri iptal et…",
   "UNDO_LAST_LOCAL_COMMIT": "Son yerel (gönderilmemiş) commit'i geri al…",
@@ -1349,6 +1351,5 @@ define({
   "GIT_TOAST_TITLE": "Phoenix Code'da Git Özelliklerini Keşfedin",
   "GIT_TOAST_MESSAGE": "Deponuzu yönetmek için Git paneli simgesine tıklayın. Proje geçmişinizi kolayca işleyin, gönderin, çekin ve görüntüleyin—hepsi tek bir yerde.<br><a href='https://docs.phcode.dev/docs/Features/git'>Git paneli hakkında daha fazla bilgi edinin →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Gelecekte görmek istediğiniz özellikler için oy verin!",
-  "GIT_SHOW_FILE_HISTORY": "Dosya İşleme Geçmişi",
-  "GIT_SHOW_HISTORY": "İşleme Geçmişi"
+  "CMD_TOGGLE_EMMET": "Emmet"
 });

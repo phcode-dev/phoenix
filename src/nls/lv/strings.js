@@ -1257,6 +1257,8 @@ define({
   "TOOLTIP_REFRESH_PANEL": "Atsvaidzināt paneli",
   "TOOLTIP_SHOW_FILE_HISTORY": "Rādīt faila vēsturi",
   "TOOLTIP_SHOW_HISTORY": "Rādīt vēsturi",
+  "GIT_SHOW_FILE_HISTORY": "Faila paveikšanas vēsture",
+  "GIT_SHOW_HISTORY": "Paveikšanas vēsture",
   "UNDO_CHANGES": "Atcelt izmaiņas",
   "UNDO_CHANGES_BTN": "Atcelt izmaiņas…",
   "UNDO_LAST_LOCAL_COMMIT": "Atcelt pēdējo lokālo (nenosūtīto) commit…",
@@ -1349,6 +1351,5 @@ define({
   "GIT_TOAST_TITLE": "Izpētiet Git funkcijas Phoenix Code",
   "GIT_TOAST_MESSAGE": "Noklikšķiniet uz Git paneļa ikonas, lai pārvaldītu savu repozitoriju. Ērti veiciet commit, push, pull un skatiet sava projekta vēsturi — viss vienā vietā.<br><a href='https://docs.phcode.dev/docs/Features/git'>Uzziniet vairāk par Git paneli →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Nobalsot par funkcijām, kuras vēlaties redzēt nākamreiz!",
-  "GIT_SHOW_FILE_HISTORY": "Faila paveikšanas vēsture",
-  "GIT_SHOW_HISTORY": "Paveikšanas vēsture"
+  "CMD_TOGGLE_EMMET": "Emmet"
 });

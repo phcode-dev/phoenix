@@ -1257,6 +1257,8 @@ define({
   "TOOLTIP_REFRESH_PANEL": "Обнови панела",
   "TOOLTIP_SHOW_FILE_HISTORY": "Покажи историята на файла",
   "TOOLTIP_SHOW_HISTORY": "Покажи историята",
+  "GIT_SHOW_FILE_HISTORY": "История на файловите къмити",
+  "GIT_SHOW_HISTORY": "История на къмитите",
   "UNDO_CHANGES": "Отмени промените",
   "UNDO_CHANGES_BTN": "Отмени промените…",
   "UNDO_LAST_LOCAL_COMMIT": "Отмени последното локално (неизпратено) commit-ване…",
@@ -1349,6 +1351,5 @@ define({
   "GIT_TOAST_TITLE": "Разгледайте Git функциите в Phoenix Code",
   "GIT_TOAST_MESSAGE": "Щракнете върху иконата на Git панела, за да управлявате хранилището си. Лесно създавайте commit, push, pull и преглеждайте историята на проекта си – всичко на едно място.<br><a href='https://docs.phcode.dev/docs/Features/git'>Научете повече за Git панела →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Гласувайте за функциите, които искате да видите следващи!",
-  "GIT_SHOW_FILE_HISTORY": "История на файловите къмити",
-  "GIT_SHOW_HISTORY": "История на къмитите"
+  "CMD_TOGGLE_EMMET": "Емет"
 });

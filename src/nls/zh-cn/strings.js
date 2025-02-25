@@ -1257,6 +1257,8 @@ define({
   "TOOLTIP_REFRESH_PANEL": "刷新面板",
   "TOOLTIP_SHOW_FILE_HISTORY": "显示文件历史记录",
   "TOOLTIP_SHOW_HISTORY": "显示历史记录",
+  "GIT_SHOW_FILE_HISTORY": "文件提交历史",
+  "GIT_SHOW_HISTORY": "提交历史",
   "UNDO_CHANGES": "丢弃更改",
   "UNDO_CHANGES_BTN": "丢弃更改…",
   "UNDO_LAST_LOCAL_COMMIT": "撤销上次本地（未推送）提交…",
@@ -1349,6 +1351,5 @@ define({
   "GIT_TOAST_TITLE": "探索 Phoenix Code 中的 Git 功能",
   "GIT_TOAST_MESSAGE": "点击 Git 面板图标即可管理您的代码仓库。轻松提交、推送、拉取和查看项目历史记录，一切尽在一处。<br><a href='https://docs.phcode.dev/docs/Features/git'>了解更多关于 Git 面板的信息 →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "为您希望看到的下一个功能投票！",
-  "GIT_SHOW_FILE_HISTORY": "文件提交历史",
-  "GIT_SHOW_HISTORY": "提交历史"
+  "CMD_TOGGLE_EMMET": "Emmet（代码补全）"
 });

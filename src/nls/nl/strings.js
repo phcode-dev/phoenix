@@ -1257,6 +1257,8 @@ define({
   "TOOLTIP_REFRESH_PANEL": "Paneel vernieuwen",
   "TOOLTIP_SHOW_FILE_HISTORY": "Bestandsgeschiedenis weergeven",
   "TOOLTIP_SHOW_HISTORY": "Geschiedenis weergeven",
+  "GIT_SHOW_FILE_HISTORY": "Bestandsgeschiedenis",
+  "GIT_SHOW_HISTORY": "Commitgeschiedenis",
   "UNDO_CHANGES": "Wijzigingen verwerpen",
   "UNDO_CHANGES_BTN": "Wijzigingen verwerpen…",
   "UNDO_LAST_LOCAL_COMMIT": "Laatste lokale (niet gepushte) commit ongedaan maken…",
@@ -1349,6 +1351,5 @@ define({
   "GIT_TOAST_TITLE": "Ontdek Git-functies in Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klik op het Git-paneelpictogram om uw repository te beheren. Commit, push, pull en bekijk uw projectgeschiedenis eenvoudig - alles op één plek.<br><a href='https://docs.phcode.dev/docs/Features/git'>Meer informatie over het Git-paneel →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Stem op de functies die u graag wilt zien!",
-  "GIT_SHOW_FILE_HISTORY": "Bestandsgeschiedenis",
-  "GIT_SHOW_HISTORY": "Commitgeschiedenis"
+  "CMD_TOGGLE_EMMET": "Emmet"
 });

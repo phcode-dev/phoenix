@@ -1257,6 +1257,8 @@ define({
   "TOOLTIP_REFRESH_PANEL": "パネルを更新",
   "TOOLTIP_SHOW_FILE_HISTORY": "ファイルの履歴を表示",
   "TOOLTIP_SHOW_HISTORY": "履歴を表示",
+  "GIT_SHOW_FILE_HISTORY": "ファイルのコミット履歴",
+  "GIT_SHOW_HISTORY": "コミット履歴",
   "UNDO_CHANGES": "変更を破棄",
   "UNDO_CHANGES_BTN": "変更を破棄…",
   "UNDO_LAST_LOCAL_COMMIT": "直前のローカルコミット（プッシュされていない）を元に戻す…",
@@ -1349,6 +1351,5 @@ define({
   "GIT_TOAST_TITLE": "Phoenix CodeのGit機能を試す",
   "GIT_TOAST_MESSAGE": "Gitパネルアイコンをクリックしてリポジトリを管理します。コミット、プッシュ、プル、プロジェクト履歴の表示をすべて1か所で行えます。<br><a href='https://docs.phcode.dev/docs/Features/git'>Gitパネルの詳細はこちら →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "次に実装してほしい機能に投票してください！",
-  "GIT_SHOW_FILE_HISTORY": "ファイルのコミット履歴",
-  "GIT_SHOW_HISTORY": "コミット履歴"
+  "CMD_TOGGLE_EMMET": "Emmet"
 });

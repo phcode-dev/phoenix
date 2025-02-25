@@ -1257,6 +1257,8 @@ define({
   "TOOLTIP_REFRESH_PANEL": "重新整理面板",
   "TOOLTIP_SHOW_FILE_HISTORY": "顯示檔案歷史紀錄",
   "TOOLTIP_SHOW_HISTORY": "顯示歷史紀錄",
+  "GIT_SHOW_FILE_HISTORY": "檔案提交紀錄",
+  "GIT_SHOW_HISTORY": "提交紀錄",
   "UNDO_CHANGES": "捨棄變更",
   "UNDO_CHANGES_BTN": "捨棄變更…",
   "UNDO_LAST_LOCAL_COMMIT": "復原上次的本地（尚未推送的）提交…",
@@ -1349,6 +1351,5 @@ define({
   "GIT_TOAST_TITLE": "在 Phoenix Code 中探索 Git 功能",
   "GIT_TOAST_MESSAGE": "按一下 Git 面板圖示即可管理您的儲存庫。輕鬆提交、推送、提取和檢視您的專案歷史記錄，一切盡在掌握之中。<br><a href='https://docs.phcode.dev/docs/Features/git'>深入瞭解 Git 面板 →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "投票選出您希望看到的下個功能！",
-  "GIT_SHOW_FILE_HISTORY": "檔案提交紀錄",
-  "GIT_SHOW_HISTORY": "提交紀錄"
+  "CMD_TOGGLE_EMMET": "Emmet (保留原文，因 Emmet 為專有名詞)"
 });
