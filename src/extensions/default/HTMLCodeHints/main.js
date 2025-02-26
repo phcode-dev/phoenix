@@ -482,13 +482,15 @@ define(function (require, exports, module) {
             return null;
         }
 
-        // the word must be either in markupSnippetsList, htmlList or it must have a positive symbol
+        // the word must be either in markupSnippetsList, htmlList or it must have a positive symbol or lorem text
         // convert to lowercase only for `htmlTags` because HTML tag names are case-insensitive,
         // but `markupSnippetsList` expands abbreviations in a non-tag manner,
         // where the expanded abbreviation is already in lowercase.
         if (markupSnippetsList.includes(word) ||
             htmlTags.includes(word.toLowerCase()) ||
-            positiveSymbols.some(symbol => word.includes(symbol))) {
+            positiveSymbols.some(symbol => word.includes(symbol)) ||
+            word.toLowerCase().includes('lorem')
+        ) {
 
             try {
                 return  expandAbbr(word, { syntax: "html", type: "markup" }); // expanded
