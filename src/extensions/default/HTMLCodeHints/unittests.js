@@ -26,25 +26,25 @@ define(function (require, exports, module) {
 
     // Modules from the SpecRunner window
     const SpecRunnerUtils = brackets.getModule("spec/SpecRunnerUtils"),
-        Editor          = brackets.getModule("editor/Editor").Editor,
-        HTMLCodeHints   = require("main");
+        Editor = brackets.getModule("editor/Editor").Editor,
+        HTMLCodeHints = require("main");
 
     require("integ-tests");
 
     describe("unit: HTML Code Hinting", function () {
 
         var defaultContent = "<!doctype html>\n" +
-                             "<html>\n" +
-                             "<style type=\"text/css\">\n" +
-                             "</style>\n" +
-                             "<body>\n" +
-                             "  <h1 id='foo'>Heading</h1>\n" +       // tag without whitespace
-                             "  <h3 id  = 'bar' >Subheading</h3>\n" + // tag with whitespace
-                             "  <p></p>\n" +                         // tag without attributes
-                             "  <h5 id='aaa' class='bbb'></h5>\n" +  // tag with two attributes
-                             "  <div \n" +                           // incomplete tag
-                             "</body>\n" +
-                             "</html>\n";
+            "<html>\n" +
+            "<style type=\"text/css\">\n" +
+            "</style>\n" +
+            "<body>\n" +
+            "  <h1 id='foo'>Heading</h1>\n" +       // tag without whitespace
+            "  <h3 id  = 'bar' >Subheading</h3>\n" + // tag with whitespace
+            "  <p></p>\n" +                         // tag without attributes
+            "  <h5 id='aaa' class='bbb'></h5>\n" +  // tag with two attributes
+            "  <div \n" +                           // incomplete tag
+            "</body>\n" +
+            "</html>\n";
 
         var testDocument, testEditor;
 
@@ -108,14 +108,14 @@ define(function (require, exports, module) {
             it("should not hint within <style> block", function () {  // (bug #1277)
                 // Replace default test content with code containing a <style> block
                 testDocument.setText("<!doctype html>\n" +
-                                     "<html>\n" +
-                                     "<head>\n" +
-                                     "  <style>\n" +
-                                     "  </style>\n" +
-                                     "</head>\n" +
-                                     "<body>\n" +
-                                     "</body>\n" +
-                                     "</html>\n");
+                    "<html>\n" +
+                    "<head>\n" +
+                    "  <style>\n" +
+                    "  </style>\n" +
+                    "</head>\n" +
+                    "<body>\n" +
+                    "</body>\n" +
+                    "</html>\n");
 
                 testEditor.setCursorPos({ line: 3, ch: 9 });        // cursor after the > in "<style>"
                 expectNoHints(HTMLCodeHints.tagHintProvider);
@@ -722,12 +722,12 @@ define(function (require, exports, module) {
                 // also test after inserting the hint
                 HTMLCodeHints.emmetHintProvider.insertHint(hints[0]);
 
-                for(let i = 0; i <= 10; i++) {
+                for (let i = 0; i <= 10; i++) {
                     expect(testDocument.getLine(i)).toBe(emmetBoilerPlate[i]);
                 }
 
                 // make sure the cursor is between the body tag
-                expect(fixPos(testEditor.getCursorPos())).toEql(fixPos({line: 8, ch: 1}));
+                expect(fixPos(testEditor.getCursorPos())).toEql(fixPos({ line: 8, ch: 1 }));
             });
 
 
@@ -745,7 +745,7 @@ define(function (require, exports, module) {
                 HTMLCodeHints.emmetHintProvider.insertHint(hints[0]);
                 expect(testDocument.getLine(0)).toBe(emmetBoilerPlate);
 
-                expect(fixPos(testEditor.getCursorPos())).toEql(fixPos({line: 0, ch: 15}));
+                expect(fixPos(testEditor.getCursorPos())).toEql(fixPos({ line: 0, ch: 15 }));
             });
 
             it("should not display hints when two or more than three exclamation marks are present", function () {
@@ -776,26 +776,26 @@ define(function (require, exports, module) {
                 HTMLCodeHints.emmetHintProvider.insertHint(hints[0]);
                 expect(testDocument.getLine(0)).toBe("<div class=\"hello\" id=\"world\"></div>");
 
-                expect(fixPos(testEditor.getCursorPos())).toEql(fixPos({line: 0, ch: 30}));
+                expect(fixPos(testEditor.getCursorPos())).toEql(fixPos({ line: 0, ch: 30 }));
             });
 
-            it("./# should expand to a div with empty class/id name and set cursor in between quotes", function() {
+            it("./# should expand to a div with empty class/id name and set cursor in between quotes", function () {
                 testDocument.setText(".");
                 testEditor.setCursorPos({ line: 0, ch: 1 });
                 let hints = expectHints(HTMLCodeHints.emmetHintProvider);
 
                 HTMLCodeHints.emmetHintProvider.insertHint(hints[0]);
-                expect(fixPos(testEditor.getCursorPos())).toEql(fixPos({line: 0, ch: 12}));
+                expect(fixPos(testEditor.getCursorPos())).toEql(fixPos({ line: 0, ch: 12 }));
 
                 testDocument.setText("#");
                 testEditor.setCursorPos({ line: 0, ch: 1 });
                 hints = expectHints(HTMLCodeHints.emmetHintProvider);
 
                 HTMLCodeHints.emmetHintProvider.insertHint(hints[0]);
-                expect(fixPos(testEditor.getCursorPos())).toEql(fixPos({line: 0, ch: 9}));
+                expect(fixPos(testEditor.getCursorPos())).toEql(fixPos({ line: 0, ch: 9 }));
             });
 
-            it("should expand emmet snippet with * and {}", function() {
+            it("should expand emmet snippet with * and {}", function () {
                 const emmetSnippetResult = "<ul>\n" +
                     "	<li>hello world</li>\n" +
                     "	<li>hello world</li>\n" +
@@ -811,6 +811,40 @@ define(function (require, exports, module) {
 
                 HTMLCodeHints.emmetHintProvider.insertHint(hints[0]);
                 expect(testDocument.getText()).toBe(emmetSnippetResult);
+            });
+
+            it("should show emmet hint when lorem is typed and expand to lorem text", function () {
+                testDocument.setText("lorem");
+                testEditor.setCursorPos({ line: 0, ch: 5 });
+                const hints = expectHints(HTMLCodeHints.emmetHintProvider);
+
+                const hintText = hints[0][0].textContent;
+                expect(hintText).toBe("loremEmmet");
+
+                HTMLCodeHints.emmetHintProvider.insertHint(hints[0]);
+
+                let text = testDocument.getText().toLowerCase();
+                text = text.split(" ")[0];
+                // add an extra space at the end to make sure that content after that is also present
+                // we cannot check with exact text because it generates randomly
+                text += ' ';
+                expect(text).toBe("lorem ");
+            });
+
+            it("should show emmet hint when lorem is typed along with some number and expand it", function () {
+                testDocument.setText("lorem1");
+                testEditor.setCursorPos({ line: 0, ch: 6 });
+                const hints = expectHints(HTMLCodeHints.emmetHintProvider);
+
+                const hintText = hints[0][0].textContent;
+                expect(hintText).toBe("lorem1Emmet");
+
+                HTMLCodeHints.emmetHintProvider.insertHint(hints[0]);
+
+                let text = testDocument.getText().toLowerCase();
+                // lorem1 expands to lorem.
+                // 1 here refers to the number of words
+                expect(text).toBe("lorem.");
             });
         });
 
