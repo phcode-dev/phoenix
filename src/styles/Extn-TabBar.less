@@ -21,7 +21,7 @@
 .tab {
     display: inline-flex;
     align-items: center;
-    padding: 0 12px;
+    padding: 0 8px;
     padding-top: 1px;
     height: 100%;
     background-color: #2D2D2D;
@@ -83,4 +83,29 @@
 
 .tab.dirty .tab-icon {
     margin-left: 10px;
+}
+
+.tab-close {
+    font-size: 12px;
+    font-weight: lighter;
+    padding: 1px 4px 0.4px 4px;
+    margin-left: 3px;
+    color: #808080;
+    transition: all 0.2s ease;
+    border-radius: 3px;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.tab:hover .tab-close,
+.tab.active .tab-close {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.tab-close:hover {
+    color: #CCCCCC;
+    background-color: rgba(255, 255, 255, 0.1);
 }

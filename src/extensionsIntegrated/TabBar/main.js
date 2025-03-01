@@ -101,12 +101,12 @@ define(function (require, exports, module) {
         // Create the tab element with the structure we need
         // tab name is written as a separate div because it may include directory info which we style differently
         const $tab = $(
-            `<div class="tab ${isActive ? 'active' : ''} 
-            ${isDirty ? 'dirty' : ''}" 
+            `<div class="tab ${isActive ? 'active' : ''}" 
             data-path="${entry.path}" 
             title="${entry.path}">
             <div class="tab-icon"></div>
             <div class="tab-name"></div>
+            <div class="tab-close"><i class="fa-solid fa-xmark"></i></div>
         </div>`);
 
         // Add the file icon
@@ -211,14 +211,66 @@ define(function (require, exports, module) {
 
 
     /**
-     * handle click events on the tabs to open the file
+     * Handle close button click on tabs
+     * This function will remove the file from the working set
+     *
+     * @param {String} filePath - path of the file to close
+     */
+    function handleTabClose(filePath) {
+        // Logic: First open the file we want to close, then close it and finally restore focus
+        // Why? Because FILE_CLOSE removes the currently active file from the working set
+
+        // Get the current active editor to restore focus later
+        const currentActiveEditor = EditorManager.getActiveEditor();
+        const currentActivePath = currentActiveEditor ? currentActiveEditor.document.file.fullPath : null;
+
+        // Only need to open the file first if it's not the currently active one
+        if (currentActivePath !== filePath) {
+            // open the file we want to close
+            CommandManager.execute(Commands.FILE_OPEN, { fullPath: filePath })
+                .done(function () {
+                    // close it
+                    CommandManager.execute(Commands.FILE_CLOSE)
+                        .done(function () {
+                            // If we had a different file active before, restore focus to it
+                            if (currentActivePath && currentActivePath !== filePath) {
+                                CommandManager.execute(Commands.FILE_OPEN, { fullPath: currentActivePath });
+                            }
+                        })
+                        .fail(function (error) {
+                            console.error("Failed to close file:", filePath, error);
+                        });
+                })
+                .fail(function (error) {
+                    console.error("Failed to open file for closing:", filePath, error);
+                });
+        } else {
+            // if it's already the active file, just close it
+            CommandManager.execute(Commands.FILE_CLOSE)
+                .fail(function (error) {
+                    console.error("Failed to close file:", filePath, error);
+                });
+        }
+    }
+
+
+    /**
+     * handle click events on the tabs to open the file or close the tab
      */
     function handleTabClick() {
 
         // delegate event handling for both tab bars
         $(document).on("click", ".tab", function (event) {
-            // Skip if this is a click on a close button or other control
-            if ($(event.target).hasClass('tab-close') || $(event.target).closest('.tab-close').length) {
+            // check if the clicked element is the close button
+            if ($(event.target).hasClass('fa-xmark') || $(event.target).closest('.tab-close').length) {
+                // Get the file path from the data-path attribute of the parent tab
+                const filePath = $(this).attr("data-path");
+                if (filePath) {
+                    handleTabClose(filePath);
+                    // Prevent default behavior
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
                 return;
             }
 
@@ -297,3 +349,6 @@ define(function (require, exports, module) {
         handleTabClick();
     });
 });
+
+
+// TODO: Bug (when we have two panes and one pane gets empty by closing all files in it, the other pane tab bar also gets removed)
