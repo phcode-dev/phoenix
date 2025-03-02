@@ -6,6 +6,7 @@ define(function (require, exports, module) {
     const PreferencesManager = require("preferences/PreferencesManager");
     const CommandManager = require("command/CommandManager");
     const Commands = require("command/Commands");
+    const DocumentManager = require("document/DocumentManager");
 
 
     const Helper = require("./helper");
@@ -101,7 +102,7 @@ define(function (require, exports, module) {
         // Create the tab element with the structure we need
         // tab name is written as a separate div because it may include directory info which we style differently
         const $tab = $(
-            `<div class="tab ${isActive ? 'active' : ''}" 
+            `<div class="tab ${isActive ? 'active' : ''} ${isDirty ? 'dirty' : ''}" 
             data-path="${entry.path}" 
             title="${entry.path}">
             <div class="tab-icon"></div>
@@ -353,7 +354,6 @@ define(function (require, exports, module) {
         MainViewManager.off("activePaneChange paneCreate paneDestroy paneLayoutChange", createTabBar);
         MainViewManager.on("activePaneChange paneCreate paneDestroy paneLayoutChange", createTabBar);
 
-
         // editor handlers
         EditorManager.off("activeEditorChange", createTabBar);
         EditorManager.on("activeEditorChange", createTabBar);
@@ -362,6 +362,13 @@ define(function (require, exports, module) {
         MainViewManager.on("workingSetAdd", workingSetChanged);
         MainViewManager.on("workingSetRemove", workingSetChanged);
         MainViewManager.on("workingSetSort", workingSetChanged);
+
+        // file dirty flag change handler
+        DocumentManager.on("dirtyFlagChange", function (event, doc) {
+            const filePath = doc.file.fullPath;
+            const $tab = $tabBar.find(`.tab[data-path="${filePath}"]`);
+            $tab.toggleClass('dirty', doc.isDirty);
+        });
     }
 
 
