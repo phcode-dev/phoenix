@@ -139,7 +139,16 @@ define(function (require, exports, module) {
         // this populates the working sets
         getAllFilesFromWorkingSet();
 
-        // make sure there is atleast one file in the first pane working set
+        // if no files are present in a pane, we want to hide the tab bar for that pane
+        if(firstPaneWorkingSet.length === 0) {
+            Helper._hideTabBar($('#phoenix-tab-bar'));
+        }
+
+        if(secondPaneWorkingSet.length === 0) {
+            Helper._hideTabBar($('#phoenix-tab-bar-2'));
+        }
+
+        // to add tabs one by one to the tab bar
         if (firstPaneWorkingSet.length > 0) {
             for (let i = 0; i < firstPaneWorkingSet.length; i++) {
                 // Note: here we add the element to the tab bar directly and not the tab-container
@@ -159,7 +168,7 @@ define(function (require, exports, module) {
      * Creates the tab bar and adds it to the DOM
      */
     function createTabBar() {
-        if (!Preference.tabBarEnabled || !EditorManager.getActiveEditor()) {
+        if (!Preference.tabBarEnabled) {
             return;
         }
 
@@ -349,6 +358,3 @@ define(function (require, exports, module) {
         handleTabClick();
     });
 });
-
-
-// TODO: Bug (when we have two panes and one pane gets empty by closing all files in it, the other pane tab bar also gets removed)
