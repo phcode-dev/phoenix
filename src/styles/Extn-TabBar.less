@@ -14,6 +14,10 @@
     transition: height 0.3s ease;
 }
 
+.phoenix-tab-bar::-webkit-scrollbar {
+    height: 4px;
+}
+
 .phoenix-tab-bar .hover {
     background-color: #333;
 }
@@ -66,7 +70,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    height: 2px;
+    height: 2.2px;
     background-color: #75BEFF;
 }
 
@@ -87,10 +91,11 @@
 
 .tab-close {
     font-size: 12px;
-    font-weight: lighter;
+    font-weight: 300;
     padding: 1px 4px 0.4px 4px;
-    margin-left: 3px;
-    color: #808080;
+    margin-left: 4px;
+    margin-top: -1px;
+    color: #CCC;
     transition: all 0.2s ease;
     border-radius: 3px;
     visibility: hidden;
@@ -106,6 +111,5 @@
 }
 
 .tab-close:hover {
-    color: #CCCCCC;
     background-color: rgba(255, 255, 255, 0.1);
 }
