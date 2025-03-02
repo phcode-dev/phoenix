@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, beforeEach, afterEach, fs, path, Phoenix, jasmine*/
+/*global describe, it, expect, beforeEach, afterEach, fs, path, jasmine, expectAsync*/
 
 define(function (require, exports, module) {
     if(!window.__TAURI__) {
@@ -134,6 +134,144 @@ define(function (require, exports, module) {
                     await tauriWindows[i].close();
                 }
             }, 120000);
+        });
+
+        describe("Credentials OTP API Tests", function () {
+            const scopeName = "testScope";
+            const sessionID = "test-session-123";
+            const otpSeed = "test-secret-seed";
+
+            beforeEach(async function () {
+                // Cleanup before running tests
+                await window.__TAURI__.invoke("delete_credential", { scopeName }).catch(() => {});
+            });
+
+            afterEach(async function () {
+                // Cleanup after tests
+                await window.__TAURI__.invoke("delete_credential", { scopeName }).catch(() => {});
+            });
+
+            describe("Credential Storage & OTP Generation", function () {
+                it("Should store credentials successfully", async function () {
+                    await expectAsync(
+                        window.__TAURI__.invoke("store_credential", { scopeName, sessionId: sessionID, otpSeed })
+                    ).toBeResolved();
+                });
+
+                it("Should retrieve a valid OTP after storing credentials", async function () {
+                    await window.__TAURI__.invoke("store_credential", { scopeName, sessionId: sessionID, otpSeed });
+
+                    const response = await window.__TAURI__.invoke("get_credential_otp", { scopeName });
+                    expect(response).toBeDefined();
+                    expect(response.session_id).toEqual(sessionID);
+                    expect(response.totp).toMatch(/^\d{6}$/); // OTP should be a 6-digit number
+                });
+
+                it("Should retrieve a valid OTP after storing uuid as seed", async function () {
+                    const newSession = crypto.randomUUID();
+                    await window.__TAURI__.invoke("store_credential",
+                        { scopeName, sessionId: newSession, otpSeed: crypto.randomUUID() });
+
+                    const response = await window.__TAURI__.invoke("get_credential_otp", { scopeName });
+                    expect(response).toBeDefined();
+                    expect(response.session_id).toEqual(newSession);
+                    expect(response.totp).toMatch(/^\d{6}$/); // OTP should be a 6-digit number
+                });
+
+                it("Should return an error if credentials do not exist", async function () {
+                    const response = await window.__TAURI__.invoke("get_credential_otp", { scopeName });
+                    expect(response).toEqual({ err_code: "NO_ENTRY" });
+                });
+
+                it("Should delete stored credentials", async function () {
+                    await window.__TAURI__.invoke("store_credential", { scopeName, sessionId: sessionID, otpSeed });
+
+                    // Ensure credential exists
+                    const responseBeforeDelete = await window.__TAURI__.invoke("get_credential_otp", { scopeName });
+                    expect(responseBeforeDelete.session_id).toEqual(sessionID);
+
+                    // Delete credential
+                    await expectAsync(
+                        window.__TAURI__.invoke("delete_credential", { scopeName })
+                    ).toBeResolved();
+
+                    // Ensure credential is deleted
+                    const responseAfterDelete = await window.__TAURI__.invoke("get_credential_otp", { scopeName });
+                    expect(responseAfterDelete).toEqual({ err_code: "NO_ENTRY" });
+                });
+
+                it("Should handle deletion of non-existent credentials gracefully", async function () {
+                    let error;
+                    try {
+                        await window.__TAURI__.invoke("delete_credential", { scopeName });
+                    } catch (err) {
+                        error = err;
+                    }
+
+                    // The test should fail if no error was thrown
+                    expect(error).toBeDefined();
+
+                    // Check for OS-specific error messages
+                    const expectedErrors = [
+                        "No matching entry found in secure storage", // Common error on Linux/macOS
+                        "The specified item could not be found in the keychain", // macOS Keychain
+                        "Element not found" // Windows Credential Manager
+                    ];
+
+                    const isExpectedError = expectedErrors.some(msg => error.includes(msg));
+                    expect(isExpectedError).toBeTrue();
+                });
+
+                it("Should reject storing an empty seed", async function () {
+                    let error;
+                    try {
+                        await window.__TAURI__.invoke("store_credential",
+                            { scopeName, sessionId: sessionID, otpSeed: "" });
+                    } catch (err) {
+                        error = err;
+                    }
+                    expect(error).toBeDefined();
+                    expect(error).toContain("SEED_TOO_SHORT");
+                });
+
+                it("Should reject storing a seed that is too short", async function () {
+                    let error;
+                    try {
+                        await window.__TAURI__.invoke("store_credential",
+                            { scopeName, sessionId: sessionID, otpSeed: "12345" });
+                    } catch (err) {
+                        error = err;
+                    }
+                    expect(error).toBeDefined();
+                    expect(error).toContain("SEED_TOO_SHORT");
+                });
+
+                it("Should overwrite existing credentials when storing with the same scope", async function () {
+                    const oldSeed = crypto.randomUUID();
+                    await window.__TAURI__.invoke("store_credential",
+                        { scopeName, sessionId: "old-session", otpSeed: oldSeed });
+
+                    const responseBefore = await window.__TAURI__.invoke("get_credential_otp", { scopeName });
+                    expect(responseBefore.session_id).toEqual("old-session");
+
+                    // Store new credentials with the same scope
+                    await window.__TAURI__.invoke("store_credential", { scopeName, sessionId: sessionID, otpSeed });
+
+                    const responseAfter = await window.__TAURI__.invoke("get_credential_otp", { scopeName });
+                    expect(responseAfter.session_id).toEqual(sessionID);
+                });
+
+                it("Should correctly encode and decode Base32 seed", async function () {
+                    const base32Seed = "JBSWY3DPEHPK3PXP"; // Valid Base32 seed
+                    await window.__TAURI__.invoke("store_credential",
+                        { scopeName, sessionId: sessionID, otpSeed: base32Seed });
+
+                    const response = await window.__TAURI__.invoke("get_credential_otp", { scopeName });
+                    expect(response).toBeDefined();
+                    expect(response.session_id).toEqual(sessionID);
+                    expect(response.totp).toMatch(/^\d{6}$/);
+                });
+            });
         });
     });
 });
