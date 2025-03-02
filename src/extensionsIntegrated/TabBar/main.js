@@ -140,11 +140,11 @@ define(function (require, exports, module) {
         getAllFilesFromWorkingSet();
 
         // if no files are present in a pane, we want to hide the tab bar for that pane
-        if(firstPaneWorkingSet.length === 0) {
+        if (firstPaneWorkingSet.length === 0 && ($('#phoenix-tab-bar'))) {
             Helper._hideTabBar($('#phoenix-tab-bar'));
         }
 
-        if(secondPaneWorkingSet.length === 0) {
+        if (secondPaneWorkingSet.length === 0 && ($('#phoenix-tab-bar-2'))) {
             Helper._hideTabBar($('#phoenix-tab-bar-2'));
         }
 
@@ -320,8 +320,7 @@ define(function (require, exports, module) {
         // when working set changes, recreate the tab bar
         MainViewManager.on("workingSetAdd", workingSetChanged);
         MainViewManager.on("workingSetRemove", workingSetChanged);
-        MainViewManager.on("workingSetListChange", workingSetChanged);
-
+        MainViewManager.on("workingSetSort", workingSetChanged);
     }
 
 

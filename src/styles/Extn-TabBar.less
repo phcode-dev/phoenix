@@ -12,6 +12,7 @@
     overflow-y: hidden;
     white-space: nowrap;
     transition: height 0.3s ease;
+    scroll-behavior: smooth;
 }
 
 .phoenix-tab-bar::-webkit-scrollbar {
@@ -34,6 +35,12 @@
     position: relative;
     flex: 0 0 auto;
     min-width: fit-content;
+    user-select: none;
+    transition: transform 60ms ease, opacity 60ms ease;
+}
+
+.tab, .tab-close, .tab-icon, .tab-name {
+    transition: all 120ms ease-out;
 }
 
 .tab-icon {
@@ -62,6 +69,7 @@
 
 .tab:hover {
     background-color: #4d4949;
+    cursor: pointer;
 }
 
 .tab.active::after {
@@ -111,5 +119,42 @@
 }
 
 .tab-close:hover {
+    cursor: pointer;
     background-color: rgba(255, 255, 255, 0.1);
+}
+
+.tab.dragging {
+    opacity: 0.7;
+    transform: scale(0.95);
+    cursor: grabbing !important;
+    z-index: 10000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.tab.drag-target {
+    background-color: #383838;
+}
+
+.tab-drag-indicator {
+    position: fixed;
+    width: 2px;
+    background-color: #75BEFF;
+    pointer-events: none;
+    z-index: 10001;
+    box-shadow: 0 0 3px rgba(117, 190, 255, 0.5);
+    display: none;
+    animation: pulse 1.5s infinite;
+}
+
+
+@keyframes pulse {
+    0% {
+        opacity: 0.7;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.7;
+    }
 }
