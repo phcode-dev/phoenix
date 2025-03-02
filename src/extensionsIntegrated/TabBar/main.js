@@ -106,7 +106,7 @@ define(function (require, exports, module) {
             title="${entry.path}">
             <div class="tab-icon"></div>
             <div class="tab-name"></div>
-            <div class="tab-close"><i class="fa-solid fa-xmark"></i></div>
+            <div class="tab-close"><i class="fa-solid fa-times"></i></div>
         </div>`);
 
         // Add the file icon
@@ -271,7 +271,7 @@ define(function (require, exports, module) {
         // delegate event handling for both tab bars
         $(document).on("click", ".tab", function (event) {
             // check if the clicked element is the close button
-            if ($(event.target).hasClass('fa-xmark') || $(event.target).closest('.tab-close').length) {
+            if ($(event.target).hasClass('fa-times') || $(event.target).closest('.tab-close').length) {
                 // Get the file path from the data-path attribute of the parent tab
                 const filePath = $(this).attr("data-path");
                 if (filePath) {
