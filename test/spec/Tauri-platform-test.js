@@ -151,6 +151,14 @@ define(function (require, exports, module) {
                 await window.__TAURI__.invoke("delete_credential", { scopeName }).catch(() => {});
             });
 
+            if(Phoenix.isTestWindowGitHubActions && Phoenix.platform === "linux"){
+                // Credentials test doesn't work in GitHub actions in linux desktop as the runner cant reach key ring.
+                it("Should not run in github actions in linux desktop", async function () {
+                    expect(1).toEqual(1);
+                });
+                return;
+            }
+
             describe("Credential Storage & OTP Generation", function () {
                 it("Should store credentials successfully", async function () {
                     await expectAsync(
