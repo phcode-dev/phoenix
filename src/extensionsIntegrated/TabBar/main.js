@@ -140,6 +140,9 @@ define(function (require, exports, module) {
         getAllFilesFromWorkingSet();
 
         // if no files are present in a pane, we want to hide the tab bar for that pane
+        const $firstTabBar = $('#phoenix-tab-bar');
+        const $secondTabBar = $('#phoenix-tab-bar-2');
+
         if (firstPaneWorkingSet.length === 0 && ($('#phoenix-tab-bar'))) {
             Helper._hideTabBar($('#phoenix-tab-bar'));
         }
@@ -148,18 +151,56 @@ define(function (require, exports, module) {
             Helper._hideTabBar($('#phoenix-tab-bar-2'));
         }
 
-        // to add tabs one by one to the tab bar
-        if (firstPaneWorkingSet.length > 0) {
-            for (let i = 0; i < firstPaneWorkingSet.length; i++) {
-                // Note: here we add the element to the tab bar directly and not the tab-container
-                $('#phoenix-tab-bar').append(createTab(firstPaneWorkingSet[i]));
-            }
+        // get the count of tabs that we want to display in the tab bar (from preference settings)
+        // from preference settings or working set whichever smaller
+        let tabsCountP1 = Math.min(firstPaneWorkingSet.length, Preference.tabBarNumberOfTabs);
+        let tabsCountP2 = Math.min(secondPaneWorkingSet.length, Preference.tabBarNumberOfTabs);
+
+        // the value is generally '-1', but we check for less than 0 so that it can handle edge cases gracefully
+        // if the value is negative then we display all tabs
+        if (Preference.tabBarNumberOfTabs < 0) {
+            tabsCountP1 = firstPaneWorkingSet.length;
+            tabsCountP2 = secondPaneWorkingSet.length;
         }
 
-        if (secondPaneWorkingSet.length > 0) {
-            for (let i = 0; i < secondPaneWorkingSet.length; i++) {
-                $('#phoenix-tab-bar-2').append(createTab(secondPaneWorkingSet[i]));
+        // get the active editor and path once to reuse for both panes
+        const activeEditor = EditorManager.getActiveEditor();
+        const activePath = activeEditor ? activeEditor.document.file.fullPath : null;
+
+        // handle the first pane tabs
+        if (firstPaneWorkingSet.length > 0 && tabsCountP1 > 0 && $firstTabBar.length) {
+            // get the top n entries for the first pane
+            let displayedEntries = firstPaneWorkingSet.slice(0, tabsCountP1);
+
+            // if the active file isn't already visible but exists in the working set, force-include it
+            if (activePath && !displayedEntries.some(entry => entry.path === activePath)) {
+                let activeEntry = firstPaneWorkingSet.find(entry => entry.path === activePath);
+                if (activeEntry) {
+                    // replace the last tab with the active file.
+                    displayedEntries[displayedEntries.length - 1] = activeEntry;
+                }
             }
+
+            // add each tab to the first pane's tab bar
+            displayedEntries.forEach(function (entry) {
+                $firstTabBar.append(createTab(entry));
+            });
+        }
+
+        // for second pane tabs
+        if (secondPaneWorkingSet.length > 0 && tabsCountP2 > 0 && $secondTabBar.length) {
+            let displayedEntries2 = secondPaneWorkingSet.slice(0, tabsCountP2);
+
+            if (activePath && !displayedEntries2.some(entry => entry.path === activePath)) {
+                let activeEntry = secondPaneWorkingSet.find(entry => entry.path === activePath);
+                if (activeEntry) {
+                    displayedEntries2[displayedEntries2.length - 1] = activeEntry;
+                }
+            }
+
+            displayedEntries2.forEach(function (entry) {
+                $secondTabBar.append(createTab(entry));
+            });
         }
     }
 
@@ -168,7 +209,7 @@ define(function (require, exports, module) {
      * Creates the tab bar and adds it to the DOM
      */
     function createTabBar() {
-        if (!Preference.tabBarEnabled) {
+        if (!Preference.tabBarEnabled || Preference.numberOfTabs === 0) {
             return;
         }
 
@@ -327,14 +368,13 @@ define(function (require, exports, module) {
     /**
      * This is called when the tab bar preference is changed
      * It takes care of creating or cleaning up the tab bar
-     *
-     * TODO: handle the number of tabs functionality
      */
     function preferenceChanged() {
         Preference.tabBarEnabled = PreferencesManager.get(Preference.PREFERENCES_TAB_BAR).showTabBar;
         Preference.tabBarNumberOfTabs = PreferencesManager.get(Preference.PREFERENCES_TAB_BAR).numberOfTabs;
 
-        if (Preference.tabBarEnabled) {
+        // preference should be enabled and number of tabs should be greater than 0
+        if (Preference.tabBarEnabled && Preference.tabBarNumberOfTabs !== 0) {
             createTabBar();
         } else {
             cleanupTabBar();
