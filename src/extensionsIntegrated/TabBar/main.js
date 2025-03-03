@@ -1,3 +1,4 @@
+/* eslint-disable no-invalid-this */
 define(function (require, exports, module) {
     const AppInit = require("utils/AppInit");
     const MainViewManager = require("view/MainViewManager");
@@ -11,6 +12,7 @@ define(function (require, exports, module) {
 
     const Helper = require("./helper");
     const Preference = require("./preference");
+    const MoreOptions = require("./more-options");
     const TabBarHTML = require("text!./html/tabbar-pane.html");
     const TabBarHTML2 = require("text!./html/tabbar-second-pane.html");
 
@@ -306,7 +308,7 @@ define(function (require, exports, module) {
 
 
     /**
-     * handle click events on the tabs to open the file or close the tab
+     * handle click events on the tabs to open the file
      */
     function handleTabClick() {
 
@@ -402,5 +404,7 @@ define(function (require, exports, module) {
 
         // handle when a single tab gets clicked
         handleTabClick();
+
+        MoreOptions.handleMoreOptionsClick();
     });
 });
