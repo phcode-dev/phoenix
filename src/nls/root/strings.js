@@ -426,6 +426,10 @@ define({
     "STATUSBAR_TASKS_STOP": "Stop",
     "STATUSBAR_TASKS_RESTART": "Restart",
 
+    // Tab bar Strings
+    "CLOSE_ALL_TABS": "Close All Tabs",
+    "CLOSE_UNMODIFIED_TABS": "Close Unmodified Tabs",
+
     // CodeInspection: errors/warnings
     "ERRORS_NO_FILE": "No File Open",
     "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Problems - {1}",

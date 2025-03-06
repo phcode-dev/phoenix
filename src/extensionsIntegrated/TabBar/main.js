@@ -147,11 +147,11 @@ define(function (require, exports, module) {
         const $secondTabBar = $('#phoenix-tab-bar-2');
 
         if (firstPaneWorkingSet.length === 0 && ($('#phoenix-tab-bar'))) {
-            Helper._hideTabBar($('#phoenix-tab-bar'));
+            Helper._hideTabBar($('#phoenix-tab-bar'), $('#tab-bar-more-options'));
         }
 
         if (secondPaneWorkingSet.length === 0 && ($('#phoenix-tab-bar-2'))) {
-            Helper._hideTabBar($('#phoenix-tab-bar-2'));
+            Helper._hideTabBar($('#phoenix-tab-bar-2'), $('#tab-bar-more-options-2'));
         }
 
         // get the count of tabs that we want to display in the tab bar (from preference settings)
@@ -371,6 +371,16 @@ define(function (require, exports, module) {
             const $tab = $tabBar.find(`.tab[data-path="${filePath}"]`);
             $tab.toggleClass('dirty', doc.isDirty);
         });
+
+        // handle click events on the tab bar more options button
+        $(document).on("click", ".tab-bar-more-options", function (event) {
+            event.stopPropagation();
+            MoreOptions.showMoreOptionsContextMenu("first-pane");
+        });
+        $(document).on("click", ".tab-bar-more-options-2", function (event) {
+            event.stopPropagation();
+            MoreOptions.showMoreOptionsContextMenu("second-pane");
+        });
     }
 
 
@@ -404,7 +414,5 @@ define(function (require, exports, module) {
 
         // handle when a single tab gets clicked
         handleTabClick();
-
-        MoreOptions.handleMoreOptionsClick();
     });
 });

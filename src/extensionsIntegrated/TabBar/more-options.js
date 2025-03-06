@@ -1,36 +1,65 @@
+/*
+ * This file manages the more options context menu.
+ * The more option button is present at the right side of the tab bar.
+ * When clicked, it will show the more options context menu.
+ * which will have various options related to the tab bar
+ */
 define(function (require, exports, module) {
-    const DropdownButton = brackets.getModule("widgets/DropdownButton");
+    const DropdownButton = require("widgets/DropdownButton");
+    const Strings = require("strings");
+    const MainViewManager = require("view/MainViewManager");
+    const CommandManager = require("command/CommandManager");
+    const Commands = require("command/Commands");
 
-    function showMoreOptionsContextMenu(x, y) {
-        const items = [
-            "close all tabs",
-            "close unmodified tabs"
-        ];
+    // List of items to show in the context menu
+    // Strings defined in `src/nls/root/strings.js`
+    const items = [
+        Strings.CLOSE_ALL_TABS,
+        Strings.CLOSE_UNMODIFIED_TABS
+    ];
+
+
+    /**
+     * This function is called when the close all tabs option is selected from the context menu
+     * This will close all tabs no matter whether they are in first pane or second pane
+     */
+    function handleCloseAllTabs() {
+        CommandManager.execute(Commands.FILE_CLOSE_ALL);
+    }
+
+
+    /**
+     * This function is called when the more options button is clicked
+     * This will show the more options context menu
+     * @param {String} paneId - the id of the pane ["first-pane", "second-pane"]
+     */
+    function showMoreOptionsContextMenu(paneId) {
 
         const dropdown = new DropdownButton.DropdownButton("", items);
 
-        $(".tab-bar-more-options").append(dropdown.$button);
+        // we need to determine which pane the tab belongs to show the context menu at the right place
+        if (paneId === "first-pane") {
+            $("#tab-bar-more-options").append(dropdown.$button);
+        } else {
+            $("#tab-bar-more-options-2").append(dropdown.$button);
+        }
+
         dropdown.showDropdown();
 
-        dropdown.$button.on(DropdownButton.EVENT_SELECTED, function (e, item, index) {
-            console.log("Selected item:", item);
-            // TODO: Add the logic here
-            // check for index and then call the items
+        // handle the option selection
+        dropdown.on("select", function (e, item, index) {
+            if (index === 0) {
+                handleCloseAllTabs(paneId);
+            }
         });
 
-        $(document).one("click", function () {
-            dropdown.closeDropdown();
+        dropdown.$button.css({
+            display: "none"
         });
-    }
 
-    function handleMoreOptionsClick() {
-        $(document).on("click", ".tab-bar-more-options", function (event) {
-            event.stopPropagation();
-            showMoreOptionsContextMenu(event.pageX, event.pageY);
-        });
     }
 
     module.exports = {
-        handleMoreOptionsClick
+        showMoreOptionsContextMenu
     };
 });
