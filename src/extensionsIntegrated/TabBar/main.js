@@ -148,11 +148,11 @@ define(function (require, exports, module) {
         const $secondTabBar = $('#phoenix-tab-bar-2');
 
         if (Global.firstPaneWorkingSet.length === 0 && ($('#phoenix-tab-bar'))) {
-            Helper._hideTabBar($('#phoenix-tab-bar'), $('#tab-bar-more-options'));
+            Helper._hideTabBar($('#phoenix-tab-bar'));
         }
 
         if (Global.secondPaneWorkingSet.length === 0 && ($('#phoenix-tab-bar-2'))) {
-            Helper._hideTabBar($('#phoenix-tab-bar-2'), $('#tab-bar-more-options-2'));
+            Helper._hideTabBar($('#phoenix-tab-bar-2'));
         }
 
         // get the count of tabs that we want to display in the tab bar (from preference settings)
@@ -345,6 +345,19 @@ define(function (require, exports, module) {
                 event.stopPropagation();
             }
         });
+
+        // Add contextmenu (right-click) handler
+        $(document).on("contextmenu", ".tab", function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            // Determine which pane the tab belongs to
+            const isSecondPane = $(this).closest("#phoenix-tab-bar-2").length > 0;
+            const paneId = isSecondPane ? "second-pane" : "first-pane";
+
+            // Show context menu at mouse position
+            MoreOptions.showMoreOptionsContextMenu(paneId, event.pageX, event.pageY);
+        });
     }
 
 
@@ -396,16 +409,6 @@ define(function (require, exports, module) {
                     break;
                 }
             }
-        });
-
-        // handle click events on the tab bar more options button
-        $(document).on("click", ".tab-bar-more-options", function (event) {
-            event.stopPropagation();
-            MoreOptions.showMoreOptionsContextMenu("first-pane");
-        });
-        $(document).on("click", ".tab-bar-more-options-2", function (event) {
-            event.stopPropagation();
-            MoreOptions.showMoreOptionsContextMenu("second-pane");
         });
     }
 

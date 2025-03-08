@@ -51,20 +51,26 @@ define(function (require, exports, module) {
 
 
     /**
-     * This function is called when the more options button is clicked
+     * This function is called when a tab is right-clicked
      * This will show the more options context menu
+     *
      * @param {String} paneId - the id of the pane ["first-pane", "second-pane"]
+     * @param {Number} x - the x coordinate for positioning the menu
+     * @param {Number} y - the y coordinate for positioning the menu
      */
-    function showMoreOptionsContextMenu(paneId) {
-
+    function showMoreOptionsContextMenu(paneId, x, y) {
         const dropdown = new DropdownButton.DropdownButton("", items);
 
-        // we need to determine which pane the tab belongs to show the context menu at the right place
-        if (paneId === "first-pane") {
-            $("#tab-bar-more-options").append(dropdown.$button);
-        } else {
-            $("#tab-bar-more-options-2").append(dropdown.$button);
-        }
+        // Append to document body for absolute positioning
+        $("body").append(dropdown.$button);
+
+        // Position the dropdown at the mouse coordinates
+        dropdown.$button.css({
+            position: "absolute",
+            left: x + "px",
+            top: y + "px",
+            zIndex: 1000
+        });
 
         dropdown.showDropdown();
 
@@ -72,17 +78,17 @@ define(function (require, exports, module) {
         dropdown.on("select", function (e, item, index) {
             if (index === 0) {
                 handleCloseAllTabs();
-            } else if(index === 1) {
+            } else if (index === 1) {
                 handleCloseUnmodifiedTabs();
-            } else if(index === 2) {
+            } else if (index === 2) {
                 reopenClosedFile();
             }
         });
 
+        // Remove the button after the dropdown is hidden
         dropdown.$button.css({
             display: "none"
         });
-
     }
 
     module.exports = {

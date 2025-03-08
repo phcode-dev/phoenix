@@ -10,7 +10,6 @@ define(function (require, exports, module) {
     /**
      * Shows the tab bar, when its hidden.
      * Its only shown when tab bar is enabled and there is atleast one working file
-     * We need to show both the tab bar and the more options
      *
      * @param {$.Element} $tabBar - The tab bar element
      * @param {$.Element} $moreOptions - The more options element
@@ -18,9 +17,6 @@ define(function (require, exports, module) {
     function _showTabBar($tabBar, $moreOptions) {
         if ($tabBar) {
             $tabBar.show();
-            if($moreOptions) {
-                $moreOptions.show();
-            }
             // when we add/remove something from the editor, the editor shifts up/down which leads to blank space
             // so we need to recompute the layout to make sure things are in the right place
             WorkspaceManager.recomputeLayout(true);
@@ -30,7 +26,6 @@ define(function (require, exports, module) {
     /**
      * Hides the tab bar.
      * Its hidden when tab bar feature is disabled or there are no working files
-     * Both the tab bar and the more options should be hidden to hide the tab bar container
      *
      * @param {$.Element} $tabBar - The tab bar element
      * @param {$.Element} $moreOptions - The more options element
@@ -38,9 +33,6 @@ define(function (require, exports, module) {
     function _hideTabBar($tabBar, $moreOptions) {
         if ($tabBar) {
             $tabBar.hide();
-            if($moreOptions) {
-                $moreOptions.hide();
-            }
             WorkspaceManager.recomputeLayout(true);
         }
     }
