@@ -429,6 +429,7 @@ define({
     // Tab bar Strings
     "CLOSE_ALL_TABS": "Close All Tabs",
     "CLOSE_UNMODIFIED_TABS": "Close Unmodified Tabs",
+    "REOPEN_CLOSED_FILE": "Reopen Closed File",
 
     // CodeInspection: errors/warnings
     "ERRORS_NO_FILE": "No File Open",
