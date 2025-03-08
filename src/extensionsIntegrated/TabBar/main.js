@@ -9,27 +9,13 @@ define(function (require, exports, module) {
     const Commands = require("command/Commands");
     const DocumentManager = require("document/DocumentManager");
 
-
+    const Global = require("./global");
     const Helper = require("./helper");
     const Preference = require("./preference");
     const MoreOptions = require("./more-options");
     const TabBarHTML = require("text!./html/tabbar-pane.html");
     const TabBarHTML2 = require("text!./html/tabbar-second-pane.html");
 
-
-    /**
-     * This array's represents the current working set
-     * It holds all the working set items that are to be displayed in the tab bar
-     * Properties of each object:
-     * path: {String} full path of the file
-     * name: {String} name of the file
-     * isFile: {Boolean} whether the file is a file or a directory
-     * isDirty: {Boolean} whether the file is dirty
-     * isPinned: {Boolean} whether the file is pinned
-     * displayName: {String} name to display in the tab (may include directory info for duplicate files)
-     */
-    let firstPaneWorkingSet = [];
-    let secondPaneWorkingSet = [];
 
 
     /**
@@ -48,8 +34,8 @@ define(function (require, exports, module) {
      * This is placed here instead of helper.js because it modifies the working sets
      */
     function getAllFilesFromWorkingSet() {
-        firstPaneWorkingSet = [];
-        secondPaneWorkingSet = [];
+        Global.firstPaneWorkingSet = [];
+        Global.secondPaneWorkingSet = [];
 
         // this gives the list of panes. When both panes are open, it will be ['first-pane', 'second-pane']
         const paneList = MainViewManager.getPaneIdList();
@@ -63,21 +49,36 @@ define(function (require, exports, module) {
             for (let i = 0; i < currFirstPaneWorkingSet.length; i++) {
                 // MainViewManager.getWorkingSet gives the working set of the first pane,
                 // but it has lot of details we don't need. Hence we use Helper._getRequiredDataFromEntry
-                firstPaneWorkingSet.push(Helper._getRequiredDataFromEntry(currFirstPaneWorkingSet[i]));
+                Global.firstPaneWorkingSet.push(Helper._getRequiredDataFromEntry(currFirstPaneWorkingSet[i]));
             }
             // if there are duplicate file names, we update the displayName to include the directory
-            Helper._handleDuplicateFileNames(firstPaneWorkingSet);
+            Helper._handleDuplicateFileNames(Global.firstPaneWorkingSet);
 
             // check if second pane is open
             if (paneList.length > 1) {
                 const currSecondPaneWorkingSet = MainViewManager.getWorkingSet(paneList[1]);
 
                 for (let i = 0; i < currSecondPaneWorkingSet.length; i++) {
-                    secondPaneWorkingSet.push(Helper._getRequiredDataFromEntry(currSecondPaneWorkingSet[i]));
+                    Global.secondPaneWorkingSet.push(Helper._getRequiredDataFromEntry(currSecondPaneWorkingSet[i]));
                 }
-                Helper._handleDuplicateFileNames(secondPaneWorkingSet);
-
+                Helper._handleDuplicateFileNames(Global.secondPaneWorkingSet);
             }
+
+            // Update dirty status for files in the first pane working set
+            Global.firstPaneWorkingSet.forEach(function (entry) {
+                const doc = DocumentManager.getOpenDocumentForPath(entry.path);
+                if (doc) {
+                    entry.isDirty = doc.isDirty;
+                }
+            });
+
+            // Update dirty status for files in the second pane working set
+            Global.secondPaneWorkingSet.forEach(function (entry) {
+                const doc = DocumentManager.getOpenDocumentForPath(entry.path);
+                if (doc) {
+                    entry.isDirty = doc.isDirty;
+                }
+            });
         }
     }
 
@@ -146,24 +147,24 @@ define(function (require, exports, module) {
         const $firstTabBar = $('#phoenix-tab-bar');
         const $secondTabBar = $('#phoenix-tab-bar-2');
 
-        if (firstPaneWorkingSet.length === 0 && ($('#phoenix-tab-bar'))) {
+        if (Global.firstPaneWorkingSet.length === 0 && ($('#phoenix-tab-bar'))) {
             Helper._hideTabBar($('#phoenix-tab-bar'), $('#tab-bar-more-options'));
         }
 
-        if (secondPaneWorkingSet.length === 0 && ($('#phoenix-tab-bar-2'))) {
+        if (Global.secondPaneWorkingSet.length === 0 && ($('#phoenix-tab-bar-2'))) {
             Helper._hideTabBar($('#phoenix-tab-bar-2'), $('#tab-bar-more-options-2'));
         }
 
         // get the count of tabs that we want to display in the tab bar (from preference settings)
         // from preference settings or working set whichever smaller
-        let tabsCountP1 = Math.min(firstPaneWorkingSet.length, Preference.tabBarNumberOfTabs);
-        let tabsCountP2 = Math.min(secondPaneWorkingSet.length, Preference.tabBarNumberOfTabs);
+        let tabsCountP1 = Math.min(Global.firstPaneWorkingSet.length, Preference.tabBarNumberOfTabs);
+        let tabsCountP2 = Math.min(Global.secondPaneWorkingSet.length, Preference.tabBarNumberOfTabs);
 
         // the value is generally '-1', but we check for less than 0 so that it can handle edge cases gracefully
         // if the value is negative then we display all tabs
         if (Preference.tabBarNumberOfTabs < 0) {
-            tabsCountP1 = firstPaneWorkingSet.length;
-            tabsCountP2 = secondPaneWorkingSet.length;
+            tabsCountP1 = Global.firstPaneWorkingSet.length;
+            tabsCountP2 = Global.secondPaneWorkingSet.length;
         }
 
         // get the active editor and path once to reuse for both panes
@@ -171,13 +172,13 @@ define(function (require, exports, module) {
         const activePath = activeEditor ? activeEditor.document.file.fullPath : null;
 
         // handle the first pane tabs
-        if (firstPaneWorkingSet.length > 0 && tabsCountP1 > 0 && $firstTabBar.length) {
+        if (Global.firstPaneWorkingSet.length > 0 && tabsCountP1 > 0 && $firstTabBar.length) {
             // get the top n entries for the first pane
-            let displayedEntries = firstPaneWorkingSet.slice(0, tabsCountP1);
+            let displayedEntries = Global.firstPaneWorkingSet.slice(0, tabsCountP1);
 
             // if the active file isn't already visible but exists in the working set, force-include it
             if (activePath && !displayedEntries.some(entry => entry.path === activePath)) {
-                let activeEntry = firstPaneWorkingSet.find(entry => entry.path === activePath);
+                let activeEntry = Global.firstPaneWorkingSet.find(entry => entry.path === activePath);
                 if (activeEntry) {
                     // replace the last tab with the active file.
                     displayedEntries[displayedEntries.length - 1] = activeEntry;
@@ -191,11 +192,11 @@ define(function (require, exports, module) {
         }
 
         // for second pane tabs
-        if (secondPaneWorkingSet.length > 0 && tabsCountP2 > 0 && $secondTabBar.length) {
-            let displayedEntries2 = secondPaneWorkingSet.slice(0, tabsCountP2);
+        if (Global.secondPaneWorkingSet.length > 0 && tabsCountP2 > 0 && $secondTabBar.length) {
+            let displayedEntries2 = Global.secondPaneWorkingSet.slice(0, tabsCountP2);
 
             if (activePath && !displayedEntries2.some(entry => entry.path === activePath)) {
-                let activeEntry = secondPaneWorkingSet.find(entry => entry.path === activePath);
+                let activeEntry = Global.secondPaneWorkingSet.find(entry => entry.path === activePath);
                 if (activeEntry) {
                     displayedEntries2[displayedEntries2.length - 1] = activeEntry;
                 }
@@ -368,8 +369,33 @@ define(function (require, exports, module) {
         // file dirty flag change handler
         DocumentManager.on("dirtyFlagChange", function (event, doc) {
             const filePath = doc.file.fullPath;
+
+            // Update UI
             const $tab = $tabBar.find(`.tab[data-path="${filePath}"]`);
             $tab.toggleClass('dirty', doc.isDirty);
+
+            // Also update the $tab2 if it exists
+            if ($tabBar2) {
+                const $tab2 = $tabBar2.find(`.tab[data-path="${filePath}"]`);
+                $tab2.toggleClass('dirty', doc.isDirty);
+            }
+
+            // Update the working set data
+            // First pane
+            for (let i = 0; i < Global.firstPaneWorkingSet.length; i++) {
+                if (Global.firstPaneWorkingSet[i].path === filePath) {
+                    Global.firstPaneWorkingSet[i].isDirty = doc.isDirty;
+                    break;
+                }
+            }
+
+            // Second pane
+            for (let i = 0; i < Global.secondPaneWorkingSet.length; i++) {
+                if (Global.secondPaneWorkingSet[i].path === filePath) {
+                    Global.secondPaneWorkingSet[i].isDirty = doc.isDirty;
+                    break;
+                }
+            }
         });
 
         // handle click events on the tab bar more options button

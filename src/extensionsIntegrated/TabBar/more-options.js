@@ -11,11 +11,15 @@ define(function (require, exports, module) {
     const CommandManager = require("command/CommandManager");
     const Commands = require("command/Commands");
 
+    const Global = require("./global");
+    const Helper = require("./helper");
+
     // List of items to show in the context menu
     // Strings defined in `src/nls/root/strings.js`
     const items = [
         Strings.CLOSE_ALL_TABS,
-        Strings.CLOSE_UNMODIFIED_TABS
+        Strings.CLOSE_UNMODIFIED_TABS,
+        Strings.REOPEN_CLOSED_FILE
     ];
 
 
@@ -25,6 +29,24 @@ define(function (require, exports, module) {
      */
     function handleCloseAllTabs() {
         CommandManager.execute(Commands.FILE_CLOSE_ALL);
+    }
+
+    /**
+     * Called when the close unmodified tabs option is selected from the context menu
+     * This will close all tabs that are not modified
+     * TODO: implement the functionality
+     */
+    function handleCloseUnmodifiedTabs() {
+
+        // pass
+    }
+
+    /**
+     * Called when the reopen closed file option is selected from the context menu
+     * This just calls the reopen closed file command. everthing else is handled there
+     */
+    function reopenClosedFile() {
+        CommandManager.execute(Commands.FILE_REOPEN_CLOSED);
     }
 
 
@@ -49,7 +71,11 @@ define(function (require, exports, module) {
         // handle the option selection
         dropdown.on("select", function (e, item, index) {
             if (index === 0) {
-                handleCloseAllTabs(paneId);
+                handleCloseAllTabs();
+            } else if(index === 1) {
+                handleCloseUnmodifiedTabs();
+            } else if(index === 2) {
+                reopenClosedFile();
             }
         });
 
