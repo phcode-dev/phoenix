@@ -13,6 +13,7 @@ define(function (require, exports, module) {
     const Helper = require("./helper");
     const Preference = require("./preference");
     const MoreOptions = require("./more-options");
+    const Overflow = require("./overflow");
     const TabBarHTML = require("text!./html/tabbar-pane.html");
     const TabBarHTML2 = require("text!./html/tabbar-second-pane.html");
 
@@ -148,11 +149,11 @@ define(function (require, exports, module) {
         const $secondTabBar = $('#phoenix-tab-bar-2');
 
         if (Global.firstPaneWorkingSet.length === 0 && ($('#phoenix-tab-bar'))) {
-            Helper._hideTabBar($('#phoenix-tab-bar'));
+            Helper._hideTabBar($('#phoenix-tab-bar'), $('#overflow-button'));
         }
 
         if (Global.secondPaneWorkingSet.length === 0 && ($('#phoenix-tab-bar-2'))) {
-            Helper._hideTabBar($('#phoenix-tab-bar-2'));
+            Helper._hideTabBar($('#phoenix-tab-bar-2'), $('#overflow-button-2'));
         }
 
         // get the count of tabs that we want to display in the tab bar (from preference settings)
@@ -188,6 +189,7 @@ define(function (require, exports, module) {
             // add each tab to the first pane's tab bar
             displayedEntries.forEach(function (entry) {
                 $firstTabBar.append(createTab(entry));
+                Overflow.toggleOverflowVisibility("first-pane");
             });
         }
 
@@ -204,6 +206,7 @@ define(function (require, exports, module) {
 
             displayedEntries2.forEach(function (entry) {
                 $secondTabBar.append(createTab(entry));
+                Overflow.toggleOverflowVisibility("second-pane");
             });
         }
     }
@@ -251,16 +254,6 @@ define(function (require, exports, module) {
         }
         // Also check for any orphaned tab bars that might exist
         $(".tab-bar-container").remove();
-    }
-
-
-    /**
-     * When any change is made to the working set, we just recreate the tab bar
-     * The changes may be adding/removing a file or changing the active file
-     */
-    function workingSetChanged() {
-        cleanupTabBar();
-        createTabBar();
     }
 
 
@@ -375,9 +368,17 @@ define(function (require, exports, module) {
         EditorManager.on("activeEditorChange", createTabBar);
 
         // when working set changes, recreate the tab bar
-        MainViewManager.on("workingSetAdd", workingSetChanged);
-        MainViewManager.on("workingSetRemove", workingSetChanged);
-        MainViewManager.on("workingSetSort", workingSetChanged);
+        // we listen to all of these events to ensure that the tab bar is always up to date
+        // refer to `MainViewManager.js` for more details
+        MainViewManager.on("workingSetAdd", createTabBar);
+        MainViewManager.on("workingSetRemove", createTabBar);
+        MainViewManager.on("workingSetSort", createTabBar);
+        MainViewManager.on("workingSetMove", createTabBar);
+        MainViewManager.on("workingSetAddList", createTabBar);
+        MainViewManager.on("workingSetRemoveList", createTabBar);
+        MainViewManager.on("workingSetUpdate", createTabBar);
+        MainViewManager.on("_workingSetDisableAutoSort", createTabBar);
+
 
         // file dirty flag change handler
         DocumentManager.on("dirtyFlagChange", function (event, doc) {
@@ -443,5 +444,7 @@ define(function (require, exports, module) {
 
         // handle when a single tab gets clicked
         handleTabClick();
+
+        Overflow.init();
     });
 });

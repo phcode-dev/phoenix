@@ -12,11 +12,14 @@ define(function (require, exports, module) {
      * Its only shown when tab bar is enabled and there is atleast one working file
      *
      * @param {$.Element} $tabBar - The tab bar element
-     * @param {$.Element} $moreOptions - The more options element
+     * @param {$.Element} $overflowButton - The overflow button element
      */
-    function _showTabBar($tabBar, $moreOptions) {
+    function _showTabBar($tabBar, $overflowButton) {
         if ($tabBar) {
             $tabBar.show();
+            if($overflowButton) {
+                $overflowButton.show();
+            }
             // when we add/remove something from the editor, the editor shifts up/down which leads to blank space
             // so we need to recompute the layout to make sure things are in the right place
             WorkspaceManager.recomputeLayout(true);
@@ -26,13 +29,17 @@ define(function (require, exports, module) {
     /**
      * Hides the tab bar.
      * Its hidden when tab bar feature is disabled or there are no working files
+     * both the tab bar and the overflow button are to be hidden to hide the tab bar container
      *
      * @param {$.Element} $tabBar - The tab bar element
-     * @param {$.Element} $moreOptions - The more options element
+     * @param {$.Element} $overflowButton - The overflow button element
      */
-    function _hideTabBar($tabBar, $moreOptions) {
+    function _hideTabBar($tabBar, $overflowButton) {
         if ($tabBar) {
             $tabBar.hide();
+            if($overflowButton) {
+                $overflowButton.hide();
+            }
             WorkspaceManager.recomputeLayout(true);
         }
     }
