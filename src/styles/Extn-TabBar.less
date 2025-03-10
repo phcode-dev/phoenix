@@ -1,0 +1,262 @@
+.tab-bar-container {
+    display: flex;
+    align-items: center;
+    background-color: #1E1E1E;
+    border-bottom: 1px solid #333;
+    position: relative;
+    overflow: hidden;
+}
+
+
+.phoenix-tab-bar {
+    flex: 1;
+    height: 2rem;
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    transition: height 0.3s ease;
+    scroll-behavior: smooth;
+    background-color: #1E1E1E;
+}
+
+
+.phoenix-tab-bar::-webkit-scrollbar {
+    height: 0.25rem;
+}
+
+.overflow-button,
+.overflow-button-2 {
+    display: flex;
+    align-items: center;
+    height: 2rem;
+    padding: 0 0.5rem;
+    cursor: pointer;
+    position: relative;
+    z-index: 2;
+    margin-left: auto;
+}
+
+.overflow-button.hidden,
+.overflow-button-2.hidden {
+    display: none;
+}
+
+
+.overflow-button:hover,
+.overflow-button-2:hover {
+    background-color: #333;
+}
+
+
+.overflow-button::before,
+.overflow-button-2::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -1rem;
+    width: 1rem;
+    height: 100%;
+    pointer-events: none;
+    background: linear-gradient(to right, rgba(30, 30, 30, 0), #1E1E1E);
+}
+
+
+.tab {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 0.5rem;
+    height: 100%;
+    background-color: #2D2D2D;
+    border-right: 1px solid #333;
+    cursor: pointer;
+    position: relative;
+    flex: 0 0 auto;
+    min-width: fit-content;
+    user-select: none;
+    transition: transform 60ms ease, opacity 60ms ease;
+}
+
+
+.tab,
+.tab-close,
+.tab-icon,
+.tab-name {
+    transition: all 120ms ease-out;
+}
+
+
+.tab-icon {
+    display: flex;
+    align-items: center;
+    margin-bottom: -2px;
+}
+
+
+.tab-name {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.75rem;
+    letter-spacing: 0.4px;
+    word-spacing: 0.75px;
+}
+
+
+.tab .tab-dirname {
+    font-size: 0.65rem;
+    opacity: 0.7;
+    font-weight: normal;
+}
+
+
+.tab.active {
+    background-color: #3D3D3D;
+}
+
+
+.tab:hover {
+    background-color: #4d4949;
+    cursor: pointer;
+}
+
+
+.tab.active::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 0.15rem;
+    background-color: #75BEFF;
+}
+
+
+.tab.dirty::before {
+    content: "•";
+    color: #8D8D8E;
+    font-size: 1.6rem;
+    margin-right: 0.25rem;
+    position: absolute;
+    left: 0.3rem;
+    top: 0.25rem;
+}
+
+.tab.dirty .tab-icon {
+    margin-left: 1rem;
+}
+
+
+.tab-close {
+    font-size: 0.75rem;
+    font-weight: 300;
+    padding: 0.2rem 0.5rem;
+    margin-left: 0.5rem;
+    margin-top: -0.1rem;
+    color: #CCC;
+    transition: all 0.2s ease;
+    border-radius: 0.25rem;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+}
+
+
+.tab:hover .tab-close,
+.tab.active .tab-close {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+
+.tab-close:hover {
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+
+.tab.dragging {
+    opacity: 0.7;
+    transform: scale(0.95);
+    cursor: grabbing !important;
+    z-index: 10000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.tab.drag-target {
+    background-color: #383838;
+}
+
+
+.tab-drag-indicator {
+    position: fixed;
+    width: 2px;
+    background-color: #75BEFF;
+    pointer-events: none;
+    z-index: 10001;
+    box-shadow: 0 0 3px rgba(117, 190, 255, 0.5);
+    display: none;
+    animation: pulse 1.5s infinite;
+}
+
+
+@keyframes pulse {
+    0% {
+        opacity: 0.7;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.7;
+    }
+}
+
+.dropdown-tab-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    cursor: pointer;
+}
+
+.dropdown-tab-item:hover {
+    background-color: #2A3B50;
+}
+
+.tab-icon-container {
+    margin-right: 0.25rem;
+    display: inline-flex;
+    align-items: center;
+}
+
+.tab-name-container {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tab-dirty-icon {
+    color: #8D8D8E;
+    font-size: 1.6rem;
+    margin-right: 0.25rem;
+    position: absolute;
+    left: 0.3rem;
+    top: 0.25rem;
+}
+
+.tab-close-icon-overflow {
+    font-size: 0.75rem;
+    font-weight: 300;
+    padding: 0.3rem 0.6rem;
+    margin-left: 0.5rem;
+    margin-top: -0.1rem;
+    color: #CCC;
+    transition: all 0.2s ease;
+    border-radius: 0.25rem;
+}
+
+.tab-close-icon-overflow .fa-solid.fa-times:hover {
+    color: #FFF;
+}
