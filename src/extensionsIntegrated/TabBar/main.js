@@ -369,50 +369,6 @@ define(function (require, exports, module) {
 
 
     /**
-     * Handle close button click on tabs
-     * This function will remove the file from the working set
-     *
-     * @param {String} filePath - path of the file to close
-     */
-    function handleTabClose(filePath) {
-        // Logic: First open the file we want to close, then close it and finally restore focus
-        // Why? Because FILE_CLOSE removes the currently active file from the working set
-
-        // Get the current active editor to restore focus later
-        const currentActiveEditor = EditorManager.getActiveEditor();
-        const currentActivePath = currentActiveEditor ? currentActiveEditor.document.file.fullPath : null;
-
-        // Only need to open the file first if it's not the currently active one
-        if (currentActivePath !== filePath) {
-            // open the file we want to close
-            CommandManager.execute(Commands.FILE_OPEN, { fullPath: filePath })
-                .done(function () {
-                    // close it
-                    CommandManager.execute(Commands.FILE_CLOSE)
-                        .done(function () {
-                            // If we had a different file active before, restore focus to it
-                            if (currentActivePath && currentActivePath !== filePath) {
-                                CommandManager.execute(Commands.FILE_OPEN, { fullPath: currentActivePath });
-                            }
-                        })
-                        .fail(function (error) {
-                            console.error("Failed to close file:", filePath, error);
-                        });
-                })
-                .fail(function (error) {
-                    console.error("Failed to open file for closing:", filePath, error);
-                });
-        } else {
-            // if it's already the active file, just close it
-            CommandManager.execute(Commands.FILE_CLOSE)
-                .fail(function (error) {
-                    console.error("Failed to close file:", filePath, error);
-                });
-        }
-    }
-
-
-    /**
      * handle click events on the tabs to open the file
      */
     function handleTabClick() {
@@ -423,8 +379,20 @@ define(function (require, exports, module) {
             if ($(event.target).hasClass('fa-times') || $(event.target).closest('.tab-close').length) {
                 // Get the file path from the data-path attribute of the parent tab
                 const filePath = $(this).attr("data-path");
+
                 if (filePath) {
-                    handleTabClose(filePath);
+                    // determine the pane inside which the tab belongs
+                    const isSecondPane = $(this).closest("#phoenix-tab-bar-2").length > 0;
+                    const paneId = isSecondPane ? "second-pane" : "first-pane";
+
+                    // get the file object
+                    const fileObj = FileSystem.getFileForPath(filePath);
+                    // close the file
+                    CommandManager.execute(
+                        Commands.FILE_CLOSE,
+                        { file: fileObj, paneId: paneId }
+                    );
+
                     // Prevent default behavior
                     event.preventDefault();
                     event.stopPropagation();
@@ -450,17 +418,20 @@ define(function (require, exports, module) {
             }
         });
 
-        // Add contextmenu (right-click) handler
+        // Add the contextmenu (right-click) handler
         $(document).on("contextmenu", ".tab", function (event) {
             event.preventDefault();
             event.stopPropagation();
 
-            // Determine which pane the tab belongs to
+            // get the file path from the data-path attribute
+            const filePath = $(this).attr("data-path");
+
+            // determine which pane the tab belongs to
             const isSecondPane = $(this).closest("#phoenix-tab-bar-2").length > 0;
             const paneId = isSecondPane ? "second-pane" : "first-pane";
 
-            // Show context menu at mouse position
-            MoreOptions.showMoreOptionsContextMenu(paneId, event.pageX, event.pageY);
+            // show the context menu at mouse position
+            MoreOptions.showMoreOptionsContextMenu(paneId, event.pageX, event.pageY, filePath);
         });
     }
 
