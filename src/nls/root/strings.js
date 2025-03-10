@@ -427,6 +427,8 @@ define({
     "STATUSBAR_TASKS_RESTART": "Restart",
 
     // Tab bar Strings
+    "CLOSE_TAB": "Close Tab",
+    "CLOSE_ACTIVE_TAB": "Close Active Tab",
     "CLOSE_ALL_TABS": "Close All Tabs",
     "CLOSE_UNMODIFIED_TABS": "Close Unmodified Tabs",
     "REOPEN_CLOSED_FILE": "Reopen Closed File",

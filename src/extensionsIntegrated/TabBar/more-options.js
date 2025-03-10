@@ -1,49 +1,83 @@
 /*
  * This file manages the more options context menu.
- * The more option button is present at the right side of the tab bar.
- * When clicked, it will show the more options context menu.
- * which will have various options related to the tab bar
+ * The more options context menu is shown when a tab is right-clicked
  */
 define(function (require, exports, module) {
     const DropdownButton = require("widgets/DropdownButton");
     const Strings = require("strings");
-    const MainViewManager = require("view/MainViewManager");
     const CommandManager = require("command/CommandManager");
     const Commands = require("command/Commands");
+    const FileSystem = require("filesystem/FileSystem");
 
-    const Global = require("./global");
-    const Helper = require("./helper");
 
     // List of items to show in the context menu
     // Strings defined in `src/nls/root/strings.js`
     const items = [
+        Strings.CLOSE_TAB,
+        Strings.CLOSE_ACTIVE_TAB,
         Strings.CLOSE_ALL_TABS,
         Strings.CLOSE_UNMODIFIED_TABS,
+        "---",
         Strings.REOPEN_CLOSED_FILE
     ];
 
 
     /**
-     * This function is called when the close all tabs option is selected from the context menu
+     * "CLOSE TAB"
+     * this function handles the closing of the tab that was right-clicked
+     *
+     * @param {String} filePath - path of the file to close
+     * @param {String} paneId - the id of the pane in which the file is present
+     */
+    function handleCloseTab(filePath, paneId) {
+        if (filePath) {
+            // Get the file object using FileSystem
+            const fileObj = FileSystem.getFileForPath(filePath);
+
+            // Execute close command with file object and pane ID
+            CommandManager.execute(
+                Commands.FILE_CLOSE,
+                { file: fileObj, paneId: paneId }
+            );
+        }
+    }
+
+
+    /**
+     * "CLOSE ACTIVE TAB"
+     * this closes the currently active tab
+     * doesn't matter if the context menu is opened from this tab or some other tab
+     */
+    function handleCloseActiveTab() {
+        // This simply executes the FILE_CLOSE command without parameters
+        // which will close the currently active file
+        CommandManager.execute(Commands.FILE_CLOSE);
+    }
+
+
+    /**
+     * "CLOSE ALL TABS"
      * This will close all tabs no matter whether they are in first pane or second pane
      */
     function handleCloseAllTabs() {
         CommandManager.execute(Commands.FILE_CLOSE_ALL);
     }
 
+
     /**
-     * Called when the close unmodified tabs option is selected from the context menu
+     * "CLOSE UNMODIFIED TABS"
      * This will close all tabs that are not modified
      * TODO: implement the functionality
      */
     function handleCloseUnmodifiedTabs() {
-
         // pass
     }
 
+
     /**
-     * Called when the reopen closed file option is selected from the context menu
+     * "REOPEN CLOSED FILE"
      * This just calls the reopen closed file command. everthing else is handled there
+     * TODO: disable the command if there are no closed files, look into the file menu
      */
     function reopenClosedFile() {
         CommandManager.execute(Commands.FILE_REOPEN_CLOSED);
@@ -57,8 +91,9 @@ define(function (require, exports, module) {
      * @param {String} paneId - the id of the pane ["first-pane", "second-pane"]
      * @param {Number} x - the x coordinate for positioning the menu
      * @param {Number} y - the y coordinate for positioning the menu
+     * @param {String} filePath - [optional] the path of the file that was right-clicked
      */
-    function showMoreOptionsContextMenu(paneId, x, y) {
+    function showMoreOptionsContextMenu(paneId, x, y, filePath) {
         const dropdown = new DropdownButton.DropdownButton("", items);
 
         // Append to document body for absolute positioning
@@ -76,19 +111,45 @@ define(function (require, exports, module) {
 
         // handle the option selection
         dropdown.on("select", function (e, item, index) {
-            if (index === 0) {
-                handleCloseAllTabs();
-            } else if (index === 1) {
-                handleCloseUnmodifiedTabs();
-            } else if (index === 2) {
-                reopenClosedFile();
-            }
+            _handleSelection(index, filePath, paneId);
         });
 
         // Remove the button after the dropdown is hidden
         dropdown.$button.css({
             display: "none"
         });
+    }
+
+    /**
+     * Handles the selection of an option in the more options context menu
+     *
+     * @param {Number} index - the index of the selected option
+     * @param {String} filePath - the path of the file that was right-clicked
+     * @param {String} paneId - the id of the pane ["first-pane", "second-pane"]
+     */
+    function _handleSelection(index, filePath, paneId) {
+        switch (index) {
+        case 0:
+            // Close tab (the one that was right-clicked)
+            handleCloseTab(filePath, paneId);
+            break;
+        case 1:
+            // Close active tab
+            handleCloseActiveTab();
+            break;
+        case 2:
+            // Close all tabs
+            handleCloseAllTabs();
+            break;
+        case 3:
+            // Close unmodified tabs
+            handleCloseUnmodifiedTabs();
+            break;
+        case 5:
+            // Reopen closed file
+            reopenClosedFile();
+            break;
+        }
     }
 
     module.exports = {
