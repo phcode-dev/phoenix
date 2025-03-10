@@ -6,6 +6,7 @@ define(function (require, exports, module) {
     const CommandManager = require("command/CommandManager");
     const Commands = require("command/Commands");
     const EditorManager = require("editor/EditorManager");
+    const FileSystem = require("filesystem/FileSystem");
 
 
     /**
@@ -104,6 +105,10 @@ define(function (require, exports, module) {
         // first, remove any existing dropdown menus to prevent duplicates
         $(".dropdown-overflow-menu").remove();
 
+        // Create a map to track tabs that are being closed
+        // Using paths as keys for quick lookup
+        const closingTabPaths = {};
+
         // create the dropdown
         const dropdown = new DropdownButton.DropdownButton("", hiddenTabs, function (item, index) {
             const iconHtml = item.$icon[0].outerHTML; // the file icon
@@ -112,9 +117,9 @@ define(function (require, exports, module) {
                 : ''; // to display the dirty icon in the overflow menu
 
             const closeIconHtml =
-                `<span class="tab-close-icon-overflow" data-tab-path="${item.path}">
-                    &times;
-                </span>`;
+                `<span class="tab-close-icon-overflow" data-tab-path="${item.path}" data-tab-index="${index}">
+                <i class="fa-solid fa-times"></i>
+            </span>`;
 
             // return html for this item
             return {
@@ -129,7 +134,7 @@ define(function (require, exports, module) {
             };
         });
 
-        // add the custom classes for stlying the dropdown
+        // add the custom classes for styling the dropdown
         dropdown.dropdownExtraClasses = "dropdown-overflow-menu";
         dropdown.$button.addClass("btn-overflow-tabs");
 
@@ -144,12 +149,46 @@ define(function (require, exports, module) {
             zIndex: 1000
         });
 
-        // not sure why we need this but without it, the dropdown doesn't work
+
+        // custom handler for close button clicks - must be set up BEFORE showing dropdown
+        // using one because we only want to run this handler once
+        $(document).one("mousedown", ".tab-close-icon-overflow", function (e) {
+            // store the path of the tab being closed
+            const tabPath = $(this).data("tab-path");
+            closingTabPaths[tabPath] = true;
+
+            // we don't stop propagation here - let the event bubble up
+            // because we want the tab click handler to run as we are not closing the tab here
+            // Why all this is done instead of simply closing the tab?
+            // There was no way to stop the tab click handler from running.
+            // Tried propagating the event, and all other stuff but that didn't work.
+            // So what used to happen was that the tab used to get closed but then appeared again
+
+            // But we do prevent the default action
+            e.preventDefault();
+        });
+
         dropdown.showDropdown();
 
         // handle the option selection
-        // the file that is selected will be opened
         dropdown.on("select", function (e, item, index) {
+            // check if this tab was marked for closing
+            if (closingTabPaths[item.path]) {
+                // this tab is being closed, so handle the close operation
+                const file = FileSystem.getFileForPath(item.path);
+
+                if (file) {
+                    // use setTimeout to ensure this happens after all event handlers
+                    setTimeout(function () {
+                        CommandManager.execute(Commands.FILE_CLOSE, { file: file, paneId: paneId });
+                        // clean up
+                        delete closingTabPaths[item.path];
+                    }, 0);
+                }
+
+                return false;
+            }
+            // regular tab selection - open the file
             const filePath = item.path;
             if (filePath) {
                 // Set the active pane and open the file
@@ -160,7 +199,7 @@ define(function (require, exports, module) {
 
         // clean up when the dropdown is closed
         dropdown.$button.on("dropdown-closed", function () {
-            $(document).off("click", ".tab-close-icon-overflow");
+            $(document).off("mousedown", ".tab-close-icon-overflow");
             dropdown.$button.remove();
         });
 
@@ -208,12 +247,12 @@ define(function (require, exports, module) {
             // get the current scroll position
             const currentScroll = $tabBarElement.scrollLeft();
 
-            // Check if the active tab is fully visible
+            // Adjust scroll position if the tab is off-screen
             if (tabLeftRelative < 0) {
-                // tab is scrolled too far to the left
+                // tab is too far to the left
                 $tabBarElement.scrollLeft(currentScroll + tabLeftRelative - 10); // 10px padding
             } else if (tabRightRelative > tabBarVisibleWidth) {
-                // tab is scrolled too far to the right - make sure it's visible
+                // tab is too far to the right
                 const scrollAdjustment = tabRightRelative - tabBarVisibleWidth + 10; // 10px padding
                 $tabBarElement.scrollLeft(currentScroll + scrollAdjustment);
             }

@@ -191,7 +191,9 @@ define(function (require, exports, module) {
             displayedEntries.forEach(function (entry) {
                 $firstTabBar.append(createTab(entry));
                 Overflow.toggleOverflowVisibility("first-pane");
-                Overflow.scrollToActiveTab($firstTabBar);
+                setTimeout(function () {
+                    Overflow.scrollToActiveTab($firstTabBar);
+                }, 0);
             });
         }
 
@@ -209,7 +211,9 @@ define(function (require, exports, module) {
             displayedEntries2.forEach(function (entry) {
                 $secondTabBar.append(createTab(entry));
                 Overflow.toggleOverflowVisibility("second-pane");
-                Overflow.scrollToActiveTab($firstTabBar);
+                setTimeout(function () {
+                    Overflow.scrollToActiveTab($secondTabBar);
+                }, 0);
             });
         }
     }
@@ -341,12 +345,16 @@ define(function (require, exports, module) {
         // Now that tabs are updated, scroll to the active tab if necessary.
         if ($firstTabBar.length) {
             Overflow.toggleOverflowVisibility("first-pane");
-            Overflow.scrollToActiveTab($firstTabBar);
+            setTimeout(function () {
+                Overflow.scrollToActiveTab($firstTabBar);
+            }, 0);
         }
 
         if ($secondTabBar.length) {
             Overflow.toggleOverflowVisibility("second-pane");
-            Overflow.scrollToActiveTab($secondTabBar);
+            setTimeout(function () {
+                Overflow.scrollToActiveTab($secondTabBar);
+            }, 0);
         }
     }
 
@@ -449,13 +457,28 @@ define(function (require, exports, module) {
         EditorManager.on("activeEditorChange", updateTabs);
 
         // For working set changes, update only the tabs.
+        MainViewManager.off("workingSetAdd", updateTabs);
         MainViewManager.on("workingSetAdd", updateTabs);
+
+        MainViewManager.off("workingSetRemove", updateTabs);
         MainViewManager.on("workingSetRemove", updateTabs);
+
+        MainViewManager.off("workingSetSort", updateTabs);
         MainViewManager.on("workingSetSort", updateTabs);
+
+        MainViewManager.off("workingSetMove", updateTabs);
         MainViewManager.on("workingSetMove", updateTabs);
+
+        MainViewManager.off("workingSetAddList", updateTabs);
         MainViewManager.on("workingSetAddList", updateTabs);
+
+        MainViewManager.off("workingSetRemoveList", updateTabs);
         MainViewManager.on("workingSetRemoveList", updateTabs);
+
+        MainViewManager.off("workingSetUpdate", updateTabs);
         MainViewManager.on("workingSetUpdate", updateTabs);
+
+        MainViewManager.off("_workingSetDisableAutoSort", updateTabs);
         MainViewManager.on("_workingSetDisableAutoSort", updateTabs);
 
         // file dirty flag change remains unchanged.
