@@ -8,6 +8,7 @@ define(function (require, exports, module) {
     const CommandManager = require("command/CommandManager");
     const Commands = require("command/Commands");
     const DocumentManager = require("document/DocumentManager");
+    const WorkspaceManager = require("view/WorkspaceManager");
 
     const Global = require("./global");
     const Helper = require("./helper");
@@ -141,7 +142,7 @@ define(function (require, exports, module) {
      * Sets up the tab bar
      */
     function setupTabBar() {
-        // this populates the working sets
+        // this populates the working sets present in `global.js`
         getAllFilesFromWorkingSet();
 
         // if no files are present in a pane, we want to hide the tab bar for that pane
@@ -190,6 +191,7 @@ define(function (require, exports, module) {
             displayedEntries.forEach(function (entry) {
                 $firstTabBar.append(createTab(entry));
                 Overflow.toggleOverflowVisibility("first-pane");
+                Overflow.scrollToActiveTab($firstTabBar);
             });
         }
 
@@ -207,6 +209,7 @@ define(function (require, exports, module) {
             displayedEntries2.forEach(function (entry) {
                 $secondTabBar.append(createTab(entry));
                 Overflow.toggleOverflowVisibility("second-pane");
+                Overflow.scrollToActiveTab($firstTabBar);
             });
         }
     }
@@ -225,18 +228,126 @@ define(function (require, exports, module) {
 
         if ($('.not-editor').length === 1) {
             $tabBar = $(TabBarHTML);
-            // since we need to add the tab bar before the editor area, we target the `.not-editor` class
-            $(".not-editor").before($tabBar);
+            // since we need to add the tab bar before the editor area, we target the `#editor-holder` class and prepend
+            $("#editor-holder").prepend($tabBar);
+            setTimeout(function () {
+                WorkspaceManager.recomputeLayout(true);
+            }, 0);
+
         } else if ($('.not-editor').length === 2) {
             $tabBar = $(TabBarHTML);
             $tabBar2 = $(TabBarHTML2);
 
             // eq(0) is for the first pane and eq(1) is for the second pane
+            // here #editor-holder cannot be used as in split view, we only have one #editor-holder
+            // so, right now we are using .not-editor. Maybe we need to look for some better selector
+            // TODO: Fix bug where the tab bar gets hidden inside the editor in horizontal split
             $(".not-editor").eq(0).before($tabBar);
             $(".not-editor").eq(1).before($tabBar2);
+            setTimeout(function () {
+                WorkspaceManager.recomputeLayout(true);
+            }, 0);
         }
 
         setupTabBar();
+    }
+
+
+    /**
+     * This function updates the tabs in the tab bar
+     * It is called when the working set changes. So instead of creating a new tab bar, we just update the existing one
+     */
+    function updateTabs() {
+        // Get all files from the working set. refer to `global.js`
+        getAllFilesFromWorkingSet();
+
+        // When there is only one file, we enforce the creation of the tab bar
+        // this is done because, given the situation:
+        // In a vertical split, when no files are present in 'second-pane' so the tab bar is hidden.
+        // Now, when the user adds a file in 'second-pane', the tab bar should be shown but since updateTabs() only,
+        // updates the tabs, so the tab bar never gets created.
+        if (Global.firstPaneWorkingSet.length === 1 || Global.secondPaneWorkingSet.length === 1) {
+            createTabBar();
+            return;
+        }
+
+        const $firstTabBar = $('#phoenix-tab-bar');
+        // Update first pane's tabs
+        if ($firstTabBar.length) {
+            $firstTabBar.empty();
+            if (Global.firstPaneWorkingSet.length > 0) {
+
+                // get the count of tabs that we want to display in the tab bar (from preference settings)
+                // from preference settings or working set whichever smaller
+                let tabsCountP1 = Math.min(Global.firstPaneWorkingSet.length, Preference.tabBarNumberOfTabs);
+
+                // the value is generally '-1', but we check for less than 0 so that it can handle edge cases gracefully
+                // if the value is negative then we display all tabs
+                if (Preference.tabBarNumberOfTabs < 0) {
+                    tabsCountP1 = Global.firstPaneWorkingSet.length;
+                }
+
+                let displayedEntries = Global.firstPaneWorkingSet.slice(0, tabsCountP1);
+
+                const activeEditor = EditorManager.getActiveEditor();
+                const activePath = activeEditor ? activeEditor.document.file.fullPath : null;
+                if (activePath && !displayedEntries.some(entry => entry.path === activePath)) {
+                    let activeEntry = Global.firstPaneWorkingSet.find(entry => entry.path === activePath);
+                    if (activeEntry) {
+                        displayedEntries[displayedEntries.length - 1] = activeEntry;
+                    }
+                }
+                displayedEntries.forEach(function (entry) {
+                    $firstTabBar.append(createTab(entry));
+                });
+            }
+        }
+
+        const $secondTabBar = $('#phoenix-tab-bar-2');
+        // Update second pane's tabs
+        if ($secondTabBar.length) {
+            $secondTabBar.empty();
+            if (Global.secondPaneWorkingSet.length > 0) {
+
+                let tabsCountP2 = Math.min(Global.secondPaneWorkingSet.length, Preference.tabBarNumberOfTabs);
+                if (Preference.tabBarNumberOfTabs < 0) {
+                    tabsCountP2 = Global.secondPaneWorkingSet.length;
+                }
+
+                let displayedEntries2 = Global.secondPaneWorkingSet.slice(0, tabsCountP2);
+                const activeEditor = EditorManager.getActiveEditor();
+                const activePath = activeEditor ? activeEditor.document.file.fullPath : null;
+                if (activePath && !displayedEntries2.some(entry => entry.path === activePath)) {
+                    let activeEntry = Global.secondPaneWorkingSet.find(entry => entry.path === activePath);
+                    if (activeEntry) {
+                        displayedEntries2[displayedEntries2.length - 1] = activeEntry;
+                    }
+                }
+                displayedEntries2.forEach(function (entry) {
+                    $secondTabBar.append(createTab(entry));
+                });
+            }
+        }
+
+        // if no files are present in a pane, we want to hide the tab bar for that pane
+        if (Global.firstPaneWorkingSet.length === 0 && ($('#phoenix-tab-bar'))) {
+            Helper._hideTabBar($('#phoenix-tab-bar'), $('#overflow-button'));
+        }
+
+        if (Global.secondPaneWorkingSet.length === 0 && ($('#phoenix-tab-bar-2'))) {
+            Helper._hideTabBar($('#phoenix-tab-bar-2'), $('#overflow-button-2'));
+        }
+
+        // Now that tabs are updated, scroll to the active tab if necessary.
+        if ($firstTabBar.length) {
+            Overflow.toggleOverflowVisibility("first-pane");
+            Overflow.scrollToActiveTab($firstTabBar);
+        }
+
+        if ($secondTabBar.length) {
+            Overflow.toggleOverflowVisibility("second-pane");
+            Overflow.scrollToActiveTab($secondTabBar);
+        }
     }
 
 
@@ -358,29 +469,25 @@ define(function (require, exports, module) {
      * Registers the event handlers
      */
     function registerHandlers() {
-
-        // pane handlers
+        // For pane changes, still recreate the entire tab bar container.
         MainViewManager.off("activePaneChange paneCreate paneDestroy paneLayoutChange", createTabBar);
         MainViewManager.on("activePaneChange paneCreate paneDestroy paneLayoutChange", createTabBar);
 
-        // editor handlers
-        EditorManager.off("activeEditorChange", createTabBar);
-        EditorManager.on("activeEditorChange", createTabBar);
+        // For editor changes, update only the tabs.
+        EditorManager.off("activeEditorChange", updateTabs);
+        EditorManager.on("activeEditorChange", updateTabs);
 
-        // when working set changes, recreate the tab bar
-        // we listen to all of these events to ensure that the tab bar is always up to date
-        // refer to `MainViewManager.js` for more details
-        MainViewManager.on("workingSetAdd", createTabBar);
-        MainViewManager.on("workingSetRemove", createTabBar);
-        MainViewManager.on("workingSetSort", createTabBar);
-        MainViewManager.on("workingSetMove", createTabBar);
-        MainViewManager.on("workingSetAddList", createTabBar);
-        MainViewManager.on("workingSetRemoveList", createTabBar);
-        MainViewManager.on("workingSetUpdate", createTabBar);
-        MainViewManager.on("_workingSetDisableAutoSort", createTabBar);
+        // For working set changes, update only the tabs.
+        MainViewManager.on("workingSetAdd", updateTabs);
+        MainViewManager.on("workingSetRemove", updateTabs);
+        MainViewManager.on("workingSetSort", updateTabs);
+        MainViewManager.on("workingSetMove", updateTabs);
+        MainViewManager.on("workingSetAddList", updateTabs);
+        MainViewManager.on("workingSetRemoveList", updateTabs);
+        MainViewManager.on("workingSetUpdate", updateTabs);
+        MainViewManager.on("_workingSetDisableAutoSort", updateTabs);
 
-
-        // file dirty flag change handler
+        // file dirty flag change remains unchanged.
         DocumentManager.on("dirtyFlagChange", function (event, doc) {
             const filePath = doc.file.fullPath;
 
