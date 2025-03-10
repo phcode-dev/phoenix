@@ -213,3 +213,51 @@
         opacity: 0.7;
     }
 }
+
+.dropdown-tab-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    cursor: pointer;
+}
+
+.dropdown-tab-item:hover {
+    background-color: #2A3B50;
+}
+
+.tab-icon-container {
+    margin-right: 0.25rem;
+    display: inline-flex;
+    align-items: center;
+}
+
+.tab-name-container {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tab-dirty-icon {
+    color: #8D8D8E;
+    font-size: 1.6rem;
+    margin-right: 0.25rem;
+    position: absolute;
+    left: 0.3rem;
+    top: 0.25rem;
+}
+
+.tab-close-icon-overflow {
+    font-size: 0.75rem;
+    font-weight: 300;
+    padding: 0.2rem 0.5rem;
+    margin-left: 0.5rem;
+    margin-top: -0.1rem;
+    color: #CCC;
+    transition: all 0.2s ease;
+    border-radius: 0.25rem;
+    pointer-events: none;
+}
+
+.tab-close-icon-overflow:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
