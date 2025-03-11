@@ -113,8 +113,8 @@ define(function (require, exports, module) {
         const dropdown = new DropdownButton.DropdownButton("", hiddenTabs, function (item, index) {
             const iconHtml = item.$icon[0].outerHTML; // the file icon
             const dirtyHtml = item.isDirty
-                ? '<span class="tab-dirty-icon">•</span>'
-                : ''; // to display the dirty icon in the overflow menu
+                ? '<span class="tab-dirty-icon-overflow">•</span>'
+                : '<span class="tab-dirty-icon-overflow empty"></span>'; // adding an empty span for better alignment
 
             const closeIconHtml =
                 `<span class="tab-close-icon-overflow" data-tab-path="${item.path}" data-tab-index="${index}">
@@ -125,12 +125,14 @@ define(function (require, exports, module) {
             return {
                 html:
                     `<div class="dropdown-tab-item" data-tab-path="${item.path}">
-                        <span class="tab-icon-container">${iconHtml}</span>
-                        <span class="tab-name-container">${item.name}</span>
-                        ${dirtyHtml}
+                        <div class="tab-info-container">
+                            ${dirtyHtml}
+                            <span class="tab-icon-container">${iconHtml}</span>
+                            <span class="tab-name-container">${item.name}</span>
+                        </div>
                         ${closeIconHtml}
                     </div>`,
-                enabled: true  // make sure items are enabled
+                enabled: true
             };
         });
 

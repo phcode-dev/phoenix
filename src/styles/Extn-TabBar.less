@@ -217,12 +217,18 @@
 .dropdown-tab-item {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
     cursor: pointer;
+    justify-content: space-between;
 }
 
 .dropdown-tab-item:hover {
     background-color: #2A3B50;
+}
+
+.tab-info-container {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
 }
 
 .tab-icon-container {
@@ -237,13 +243,18 @@
     text-overflow: ellipsis;
 }
 
-.tab-dirty-icon {
+.tab-dirty-icon-overflow {
     color: #8D8D8E;
-    font-size: 1.6rem;
+    font-size: 1.2rem;
+    width: 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     margin-right: 0.25rem;
-    position: absolute;
-    left: 0.3rem;
-    top: 0.25rem;
+}
+
+.tab-dirty-icon-overflow.empty {
+    visibility: hidden;
 }
 
 .tab-close-icon-overflow {
