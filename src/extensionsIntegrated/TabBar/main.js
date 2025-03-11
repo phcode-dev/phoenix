@@ -15,6 +15,7 @@ define(function (require, exports, module) {
     const Preference = require("./preference");
     const MoreOptions = require("./more-options");
     const Overflow = require("./overflow");
+    const DragDrop = require("./drag-drop");
     const TabBarHTML = require("text!./html/tabbar-pane.html");
     const TabBarHTML2 = require("text!./html/tabbar-second-pane.html");
 
@@ -356,6 +357,9 @@ define(function (require, exports, module) {
                 Overflow.scrollToActiveTab($secondTabBar);
             }, 0);
         }
+
+        // handle drag and drop
+        DragDrop.init($('#phoenix-tab-bar'), $('#phoenix-tab-bar-2'));
     }
 
 
@@ -547,5 +551,6 @@ define(function (require, exports, module) {
         handleTabClick();
 
         Overflow.init();
+        DragDrop.init($('#phoenix-tab-bar'), $('#phoenix-tab-bar-2'));
     });
 });
