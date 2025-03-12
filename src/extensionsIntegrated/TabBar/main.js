@@ -461,29 +461,23 @@ define(function (require, exports, module) {
         EditorManager.on("activeEditorChange", updateTabs);
 
         // For working set changes, update only the tabs.
-        MainViewManager.off("workingSetAdd", updateTabs);
-        MainViewManager.on("workingSetAdd", updateTabs);
+        const events = [
+            "workingSetAdd",
+            "workingSetRemove",
+            "workingSetSort",
+            "workingSetMove",
+            "workingSetAddList",
+            "workingSetRemoveList",
+            "workingSetUpdate",
+            "_workingSetDisableAutoSort"
+        ];
+        MainViewManager.off(events.join(" "), updateTabs);
+        MainViewManager.on(events.join(" "), updateTabs);
 
-        MainViewManager.off("workingSetRemove", updateTabs);
-        MainViewManager.on("workingSetRemove", updateTabs);
-
-        MainViewManager.off("workingSetSort", updateTabs);
-        MainViewManager.on("workingSetSort", updateTabs);
-
-        MainViewManager.off("workingSetMove", updateTabs);
-        MainViewManager.on("workingSetMove", updateTabs);
-
-        MainViewManager.off("workingSetAddList", updateTabs);
-        MainViewManager.on("workingSetAddList", updateTabs);
-
-        MainViewManager.off("workingSetRemoveList", updateTabs);
-        MainViewManager.on("workingSetRemoveList", updateTabs);
-
-        MainViewManager.off("workingSetUpdate", updateTabs);
-        MainViewManager.on("workingSetUpdate", updateTabs);
-
-        MainViewManager.off("_workingSetDisableAutoSort", updateTabs);
-        MainViewManager.on("_workingSetDisableAutoSort", updateTabs);
+        // When the sidebar UI changes, update the tabs to ensure the overflow menu is correct.
+        // Without this, if the sidebar is hidden, and **all tabs become visible**, the overflow icon still appears.
+        $("#sidebar").off("panelCollapsed panelExpanded panelResizeEnd", updateTabs);
+        $("#sidebar").on("panelCollapsed panelExpanded panelResizeEnd", updateTabs);
 
         // file dirty flag change remains unchanged.
         DocumentManager.on("dirtyFlagChange", function (event, doc) {
