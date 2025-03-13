@@ -479,6 +479,10 @@ define(function (require, exports, module) {
         $("#sidebar").off("panelCollapsed panelExpanded panelResizeEnd", updateTabs);
         $("#sidebar").on("panelCollapsed panelExpanded panelResizeEnd", updateTabs);
 
+        // also update the tabs when the main plugin panel resizes
+        // main-plugin-panel[0] = live preview panel
+        new ResizeObserver(updateTabs).observe($("#main-plugin-panel")[0]);
+
         // file dirty flag change remains unchanged.
         DocumentManager.on("dirtyFlagChange", function (event, doc) {
             const filePath = doc.file.fullPath;
