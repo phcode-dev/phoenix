@@ -233,8 +233,9 @@ define(function (require, exports, module) {
 
         if ($('.not-editor').length === 1) {
             $tabBar = $(TabBarHTML);
-            // since we need to add the tab bar before the editor area, we target the `#editor-holder` class and prepend
-            $("#editor-holder").prepend($tabBar);
+            // since we need to add the tab bar before the editor which has .not-editor class
+            // we target the `.not-editor` class and add the tab bar before it
+            $(".not-editor").before($tabBar);
             setTimeout(function () {
                 WorkspaceManager.recomputeLayout(true);
             }, 0);
@@ -452,9 +453,13 @@ define(function (require, exports, module) {
      * Registers the event handlers
      */
     function registerHandlers() {
-        // For pane changes, still recreate the entire tab bar container.
-        MainViewManager.off("activePaneChange paneCreate paneDestroy paneLayoutChange", createTabBar);
-        MainViewManager.on("activePaneChange paneCreate paneDestroy paneLayoutChange", createTabBar);
+        // For pane layout changes, recreate the entire tab bar container
+        MainViewManager.off("paneCreate paneDestroy paneLayoutChange", createTabBar);
+        MainViewManager.on("paneCreate paneDestroy paneLayoutChange", createTabBar);
+
+        // For active pane changes, update only the tabs
+        MainViewManager.off("activePaneChange", updateTabs);
+        MainViewManager.on("activePaneChange", updateTabs);
 
         // For editor changes, update only the tabs.
         EditorManager.off("activeEditorChange", updateTabs);
@@ -474,8 +479,7 @@ define(function (require, exports, module) {
         MainViewManager.off(events.join(" "), updateTabs);
         MainViewManager.on(events.join(" "), updateTabs);
 
-        // When the sidebar UI changes, update the tabs to ensure the overflow menu is correct.
-        // Without this, if the sidebar is hidden, and **all tabs become visible**, the overflow icon still appears.
+        // When the sidebar UI changes, update the tabs to ensure the overflow menu is correct
         $("#sidebar").off("panelCollapsed panelExpanded panelResizeEnd", updateTabs);
         $("#sidebar").on("panelCollapsed panelExpanded panelResizeEnd", updateTabs);
 
@@ -483,7 +487,7 @@ define(function (require, exports, module) {
         // main-plugin-panel[0] = live preview panel
         new ResizeObserver(updateTabs).observe($("#main-plugin-panel")[0]);
 
-        // file dirty flag change remains unchanged.
+        // File dirty flag change handling
         DocumentManager.on("dirtyFlagChange", function (event, doc) {
             const filePath = doc.file.fullPath;
 

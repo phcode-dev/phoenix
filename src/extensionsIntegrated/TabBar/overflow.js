@@ -249,14 +249,20 @@ define(function (require, exports, module) {
             // get the current scroll position
             const currentScroll = $tabBarElement.scrollLeft();
 
-            // Adjust scroll position if the tab is off-screen
+            // animate the scroll change over 5 for a very fast effect
             if (tabLeftRelative < 0) {
-                // tab is too far to the left
-                $tabBarElement.scrollLeft(currentScroll + tabLeftRelative - 10); // 10px padding
+                // Tab is too far to the left
+                $tabBarElement.animate(
+                    { scrollLeft: currentScroll + tabLeftRelative - 10 },
+                    5
+                );
             } else if (tabRightRelative > tabBarVisibleWidth) {
-                // tab is too far to the right
-                const scrollAdjustment = tabRightRelative - tabBarVisibleWidth + 10; // 10px padding
-                $tabBarElement.scrollLeft(currentScroll + scrollAdjustment);
+                // Tab is too far to the right
+                const scrollAdjustment = tabRightRelative - tabBarVisibleWidth + 10;
+                $tabBarElement.animate(
+                    { scrollLeft: currentScroll + scrollAdjustment },
+                    5
+                );
             }
         }
     }
