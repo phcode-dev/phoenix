@@ -92,17 +92,22 @@ define(function (require, exports, module) {
      * Note: this creates a tab (for a single file) not the tab bar
      *
      * @param {Object} entry - the working set entry
+     * @param {String} paneId - the pane id 'first-pane' or 'second-pane'
      * @returns {$.Element} the tab element
      */
-    function createTab(entry) {
-        if (!$tabBar) {
+    function createTab(entry, paneId) {
+        if (!$tabBar || !paneId) {
             return;
         }
 
         // set up all the necessary properties
         const activeEditor = EditorManager.getActiveEditor();
         const activePath = activeEditor ? activeEditor.document.file.fullPath : null;
-        const isActive = entry.path === activePath; // if the file is the currently active file
+
+        const currentActivePane = MainViewManager.getActivePaneId();
+        // if the file is the currently active file
+        // also verify that the tab belongs to the active pane
+        const isActive = (entry.path === activePath && paneId === currentActivePane);
         const isDirty = Helper._isFileModified(FileSystem.getFileForPath(entry.path)); // if the file is dirty
 
         // Create the tab element with the structure we need
@@ -190,7 +195,7 @@ define(function (require, exports, module) {
 
             // add each tab to the first pane's tab bar
             displayedEntries.forEach(function (entry) {
-                $firstTabBar.append(createTab(entry));
+                $firstTabBar.append(createTab(entry, "first-pane"));
                 Overflow.toggleOverflowVisibility("first-pane");
                 setTimeout(function () {
                     Overflow.scrollToActiveTab($firstTabBar);
@@ -210,7 +215,7 @@ define(function (require, exports, module) {
             }
 
             displayedEntries2.forEach(function (entry) {
-                $secondTabBar.append(createTab(entry));
+                $secondTabBar.append(createTab(entry, "second-pane"));
                 Overflow.toggleOverflowVisibility("second-pane");
                 setTimeout(function () {
                     Overflow.scrollToActiveTab($secondTabBar);
@@ -304,7 +309,7 @@ define(function (require, exports, module) {
                     }
                 }
                 displayedEntries.forEach(function (entry) {
-                    $firstTabBar.append(createTab(entry));
+                    $firstTabBar.append(createTab(entry, "first-pane"));
                 });
             }
         }
@@ -330,7 +335,7 @@ define(function (require, exports, module) {
                     }
                 }
                 displayedEntries2.forEach(function (entry) {
-                    $secondTabBar.append(createTab(entry));
+                    $secondTabBar.append(createTab(entry, "second-pane"));
                 });
             }
         }
@@ -344,19 +349,30 @@ define(function (require, exports, module) {
             Helper._hideTabBar($('#phoenix-tab-bar-2'), $('#overflow-button-2'));
         }
 
+        const activePane = MainViewManager.getActivePaneId();
+
         // Now that tabs are updated, scroll to the active tab if necessary.
         if ($firstTabBar.length) {
             Overflow.toggleOverflowVisibility("first-pane");
-            setTimeout(function () {
-                Overflow.scrollToActiveTab($firstTabBar);
-            }, 0);
+
+            // we scroll only in the active pane
+            // this is because, lets say we have a same file in both the panes
+            // then when the file is opened in one of the pane and is towards the end of the tab bar,
+            // then we need to show the scrolling animation only on that pane and not on both the panes
+            if (activePane === "first-pane") {
+                setTimeout(function () {
+                    Overflow.scrollToActiveTab($firstTabBar);
+                }, 0);
+            }
         }
 
         if ($secondTabBar.length) {
             Overflow.toggleOverflowVisibility("second-pane");
-            setTimeout(function () {
-                Overflow.scrollToActiveTab($secondTabBar);
-            }, 0);
+            if (activePane === "second-pane") {
+                setTimeout(function () {
+                    Overflow.scrollToActiveTab($secondTabBar);
+                }, 0);
+            }
         }
 
         // handle drag and drop
@@ -417,12 +433,6 @@ define(function (require, exports, module) {
             const filePath = $(this).attr("data-path");
 
             if (filePath) {
-                // we need to determine which pane the tab belongs to
-                const isSecondPane = $(this).closest("#phoenix-tab-bar-2").length > 0;
-                const paneId = isSecondPane ? "second-pane" : "first-pane";
-
-                // Set the active pane and open the file
-                MainViewManager.setActivePaneId(paneId);
                 CommandManager.execute(Commands.FILE_OPEN, { fullPath: filePath });
 
                 // Prevent default behavior
