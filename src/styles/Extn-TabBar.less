@@ -10,7 +10,7 @@
 
 .phoenix-tab-bar {
     flex: 1;
-    height: 2rem;
+    height: 2.2rem;
     display: flex;
     overflow-x: auto;
     overflow-y: hidden;
@@ -94,11 +94,17 @@
 
 
 .tab-name {
+    color: #aaa;
     display: inline-flex;
     align-items: center;
-    font-size: 0.75rem;
+    font-size: 0.9rem;
     letter-spacing: 0.4px;
     word-spacing: 0.75px;
+    white-space: nowrap;
+}
+
+.tab.active .tab-name {
+    color: #dedede;
 }
 
 
@@ -126,7 +132,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    height: 0.15rem;
+    height: 0.12rem;
     background-color: #75BEFF;
 }
 
@@ -135,26 +141,23 @@
     content: "•";
     color: #8D8D8E;
     font-size: 1.6rem;
-    margin-right: 0.25rem;
     position: absolute;
-    left: 0.3rem;
-    top: 0.25rem;
+    left: 0.4rem;
+    top: 0.3rem;
 }
 
 .tab.dirty .tab-icon {
-    margin-left: 1rem;
+    margin-left: 0.8rem;
 }
 
 
 .tab-close {
     font-size: 0.75rem;
-    font-weight: 300;
-    padding: 0.2rem 0.5rem;
-    margin-left: 0.5rem;
-    margin-top: -0.1rem;
+    padding: 0.08rem 0.4rem;
+    margin-left: 0.25rem;
     color: #CCC;
     transition: all 0.2s ease;
-    border-radius: 0.25rem;
+    border-radius: 0.2rem;
     visibility: hidden;
     opacity: 0;
     pointer-events: none;
@@ -163,7 +166,7 @@
 
 .tab:hover .tab-close,
 .tab.active .tab-close {
-    visibility: visible;
+    visibility: visible;;
     opacity: 1;
     pointer-events: auto;
 }
@@ -245,12 +248,10 @@
 
 .tab-dirty-icon-overflow {
     color: #8D8D8E;
-    font-size: 1.2rem;
+    font-size: 1.6rem;
     width: 0.2rem;
     display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 0.25rem;
+    margin: 0.125rem 0.6rem 0.4rem -0.2rem;
 }
 
 .tab-dirty-icon-overflow.empty {
