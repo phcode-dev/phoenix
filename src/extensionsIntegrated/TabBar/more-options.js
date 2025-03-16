@@ -8,7 +8,9 @@ define(function (require, exports, module) {
     const CommandManager = require("command/CommandManager");
     const Commands = require("command/Commands");
     const FileSystem = require("filesystem/FileSystem");
+    const MainViewManager = require("view/MainViewManager");
 
+    const Global = require("./global");
 
     // List of items to show in the context menu
     // Strings defined in `src/nls/root/strings.js`
@@ -67,10 +69,37 @@ define(function (require, exports, module) {
     /**
      * "CLOSE UNMODIFIED TABS"
      * This will close all tabs that are not modified
-     * TODO: implement the functionality
      */
     function handleCloseUnmodifiedTabs() {
-        // pass
+        const paneList = MainViewManager.getPaneIdList();
+
+        // for the first pane
+        if (paneList.length > 0 && Global.firstPaneWorkingSet.length > 0) {
+            // get all those entries that are not dirty
+            const unmodifiedEntries = Global.firstPaneWorkingSet.filter(entry => !entry.isDirty);
+
+            // close each unmodified file in the first pane
+            unmodifiedEntries.forEach(entry => {
+                const fileObj = FileSystem.getFileForPath(entry.path);
+                CommandManager.execute(
+                    Commands.FILE_CLOSE,
+                    { file: fileObj, paneId: "first-pane" }
+                );
+            });
+        }
+
+        // for second pane
+        if (paneList.length > 1 && Global.secondPaneWorkingSet.length > 0) {
+            const unmodifiedEntries = Global.secondPaneWorkingSet.filter(entry => !entry.isDirty);
+
+            unmodifiedEntries.forEach(entry => {
+                const fileObj = FileSystem.getFileForPath(entry.path);
+                CommandManager.execute(
+                    Commands.FILE_CLOSE,
+                    { file: fileObj, paneId: "second-pane" }
+                );
+            });
+        }
     }
 
 
