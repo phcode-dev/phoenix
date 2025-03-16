@@ -243,6 +243,7 @@ define(function (require, exports, module) {
             setTimeout(function () {
                 $(".not-editor").before($tabBar);
                 WorkspaceManager.recomputeLayout(true);
+                updateTabs();
             }, 0);
 
         } else if ($('.not-editor').length === 2) {
@@ -257,6 +258,7 @@ define(function (require, exports, module) {
                 $(".not-editor").eq(0).before($tabBar);
                 $(".not-editor").eq(1).before($tabBar2);
                 WorkspaceManager.recomputeLayout(true);
+                updateTabs();
             }, 0);
         }
 
@@ -277,9 +279,14 @@ define(function (require, exports, module) {
         // In a vertical split, when no files are present in 'second-pane' so the tab bar is hidden.
         // Now, when the user adds a file in 'second-pane', the tab bar should be shown but since updateTabs() only,
         // updates the tabs, so the tab bar never gets created.
-        if (Global.firstPaneWorkingSet.length === 1 || Global.secondPaneWorkingSet.length === 1) {
+        if (Global.firstPaneWorkingSet.length === 1 &&
+            (!$('#phoenix-tab-bar').length || $('#phoenix-tab-bar').is(':hidden'))) {
             createTabBar();
-            return;
+        }
+
+        if (Global.secondPaneWorkingSet.length === 1 &&
+            (!$('#phoenix-tab-bar-2').length || $('#phoenix-tab-bar-2').is(':hidden'))) {
+            createTabBar();
         }
 
         const $firstTabBar = $('#phoenix-tab-bar');
