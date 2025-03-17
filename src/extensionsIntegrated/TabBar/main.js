@@ -239,27 +239,20 @@ define(function (require, exports, module) {
         if ($('.not-editor').length === 1) {
             $tabBar = $(TabBarHTML);
             // since we need to add the tab bar before the editor which has .not-editor class
-            // we target the `.not-editor` class and add the tab bar before it
-            setTimeout(function () {
-                $(".not-editor").before($tabBar);
-                WorkspaceManager.recomputeLayout(true);
-                updateTabs();
-            }, 0);
+            $(".not-editor").before($tabBar);
+            WorkspaceManager.recomputeLayout(true);
+            updateTabs();
 
         } else if ($('.not-editor').length === 2) {
             $tabBar = $(TabBarHTML);
             $tabBar2 = $(TabBarHTML2);
 
             // eq(0) is for the first pane and eq(1) is for the second pane
-            // here #editor-holder cannot be used as in split view, we only have one #editor-holder
-            // so, right now we are using .not-editor. Maybe we need to look for some better selector
             // TODO: Fix bug where the tab bar gets hidden inside the editor in horizontal split
-            setTimeout(function () {
-                $(".not-editor").eq(0).before($tabBar);
-                $(".not-editor").eq(1).before($tabBar2);
-                WorkspaceManager.recomputeLayout(true);
-                updateTabs();
-            }, 0);
+            $(".not-editor").eq(0).before($tabBar);
+            $(".not-editor").eq(1).before($tabBar2);
+            WorkspaceManager.recomputeLayout(true);
+            updateTabs();
         }
 
         setupTabBar();
