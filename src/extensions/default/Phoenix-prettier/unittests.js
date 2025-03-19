@@ -32,6 +32,10 @@ define(function (require, exports, module) {
 
     const PLATFORM_LINE_ENDINGS = (FileUtils.getPlatformLineEndings() === 'CRLF' ? "\r\n" : "\n");
 
+    function normalizeLineEndings(str) {
+        return str.replace(/\r\n/g, "\n");
+    }
+
     require("./main");
 
     const jsFile = require("text!../../../../test/spec/prettier-test-files/js/test.js"),
@@ -154,7 +158,9 @@ define(function (require, exports, module) {
                 createMockEditor(jsFile, "javascript", "/test.js");
                 testEditor.setSelection({line: 4, ch: 0}, {line: 6, ch: 0});
                 await BeautificationManager.beautifyEditor(testEditor);
-                expect(testEditor.document.getText(true)+ PLATFORM_LINE_ENDINGS).toBe(jsPrettySelectionOffset);
+                const actual = normalizeLineEndings(testEditor.document.getText(true) + PLATFORM_LINE_ENDINGS);
+                const expected = normalizeLineEndings(jsPrettySelectionOffset);
+                expect(actual).toBe(expected);
             });
 
             it("should not beautify editor on incomplete syntax selection for js", async function () {
@@ -209,7 +215,9 @@ define(function (require, exports, module) {
                 createMockEditor(htmlFile, "html", "/test.html");
                 testEditor.setSelection({line: 4, ch: 0}, {line: 6, ch: 0});
                 await BeautificationManager.beautifyEditor(testEditor);
-                expect(testEditor.document.getText(true)+ PLATFORM_LINE_ENDINGS).toBe(htmlPrettySelectionOffset);
+                const actual = normalizeLineEndings(testEditor.document.getText(true) + PLATFORM_LINE_ENDINGS);
+                const expected = normalizeLineEndings(htmlPrettySelectionOffset);
+                expect(actual).toBe(expected);
             });
 
             it("should not beautify editor on incomplete syntax selection for html", async function () {
