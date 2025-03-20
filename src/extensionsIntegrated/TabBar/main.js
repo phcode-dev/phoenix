@@ -1,5 +1,6 @@
 /* eslint-disable no-invalid-this */
 define(function (require, exports, module) {
+    const _ = require("thirdparty/lodash");
     const AppInit = require("utils/AppInit");
     const MainViewManager = require("view/MainViewManager");
     const EditorManager = require("editor/EditorManager");
@@ -473,7 +474,11 @@ define(function (require, exports, module) {
 
         // For editor changes, update only the tabs.
         EditorManager.off("activeEditorChange", updateTabs);
-        EditorManager.on("activeEditorChange", updateTabs);
+        // debounce is used to prevent rapid consecutive calls to updateTabs,
+        // which was causing integration tests to fail in Firefox. Without it,
+        // the event fires too frequently when switching editors, leading to unexpected behavior
+        const debounceUpdateTabs = _.debounce(updateTabs, 2);
+        EditorManager.on("activeEditorChange", debounceUpdateTabs);
 
         // For working set changes, update only the tabs.
         const events = [
