@@ -146,87 +146,6 @@ define(function (require, exports, module) {
 
 
     /**
-     * Sets up the tab bar
-     */
-    function setupTabBar() {
-        // this populates the working sets present in `global.js`
-        getAllFilesFromWorkingSet();
-
-        // if no files are present in a pane, we want to hide the tab bar for that pane
-        const $firstTabBar = $('#phoenix-tab-bar');
-        const $secondTabBar = $('#phoenix-tab-bar-2');
-
-        if (Global.firstPaneWorkingSet.length === 0 && ($('#phoenix-tab-bar'))) {
-            Helper._hideTabBar($('#phoenix-tab-bar'), $('#overflow-button'));
-        }
-
-        if (Global.secondPaneWorkingSet.length === 0 && ($('#phoenix-tab-bar-2'))) {
-            Helper._hideTabBar($('#phoenix-tab-bar-2'), $('#overflow-button-2'));
-        }
-
-        // get the count of tabs that we want to display in the tab bar (from preference settings)
-        // from preference settings or working set whichever smaller
-        let tabsCountP1 = Math.min(Global.firstPaneWorkingSet.length, Preference.tabBarNumberOfTabs);
-        let tabsCountP2 = Math.min(Global.secondPaneWorkingSet.length, Preference.tabBarNumberOfTabs);
-
-        // the value is generally '-1', but we check for less than 0 so that it can handle edge cases gracefully
-        // if the value is negative then we display all tabs
-        if (Preference.tabBarNumberOfTabs < 0) {
-            tabsCountP1 = Global.firstPaneWorkingSet.length;
-            tabsCountP2 = Global.secondPaneWorkingSet.length;
-        }
-
-        // get the active editor and path once to reuse for both panes
-        const activeEditor = EditorManager.getActiveEditor();
-        const activePath = activeEditor ? activeEditor.document.file.fullPath : null;
-
-        // handle the first pane tabs
-        if (Global.firstPaneWorkingSet.length > 0 && tabsCountP1 > 0 && $firstTabBar.length) {
-            // get the top n entries for the first pane
-            let displayedEntries = Global.firstPaneWorkingSet.slice(0, tabsCountP1);
-
-            // if the active file isn't already visible but exists in the working set, force-include it
-            if (activePath && !displayedEntries.some(entry => entry.path === activePath)) {
-                let activeEntry = Global.firstPaneWorkingSet.find(entry => entry.path === activePath);
-                if (activeEntry) {
-                    // replace the last tab with the active file.
-                    displayedEntries[displayedEntries.length - 1] = activeEntry;
-                }
-            }
-
-            // add each tab to the first pane's tab bar
-            displayedEntries.forEach(function (entry) {
-                $firstTabBar.append(createTab(entry, "first-pane"));
-                Overflow.toggleOverflowVisibility("first-pane");
-                setTimeout(function () {
-                    Overflow.scrollToActiveTab($firstTabBar);
-                }, 0);
-            });
-        }
-
-        // for second pane tabs
-        if (Global.secondPaneWorkingSet.length > 0 && tabsCountP2 > 0 && $secondTabBar.length) {
-            let displayedEntries2 = Global.secondPaneWorkingSet.slice(0, tabsCountP2);
-
-            if (activePath && !displayedEntries2.some(entry => entry.path === activePath)) {
-                let activeEntry = Global.secondPaneWorkingSet.find(entry => entry.path === activePath);
-                if (activeEntry) {
-                    displayedEntries2[displayedEntries2.length - 1] = activeEntry;
-                }
-            }
-
-            displayedEntries2.forEach(function (entry) {
-                $secondTabBar.append(createTab(entry, "second-pane"));
-                Overflow.toggleOverflowVisibility("second-pane");
-                setTimeout(function () {
-                    Overflow.scrollToActiveTab($secondTabBar);
-                }, 0);
-            });
-        }
-    }
-
-
-    /**
      * Creates the tab bar and adds it to the DOM
      */
     function createTabBar() {
@@ -255,8 +174,6 @@ define(function (require, exports, module) {
             WorkspaceManager.recomputeLayout(true);
             updateTabs();
         }
-
-        setupTabBar();
     }
 
 
@@ -507,29 +424,33 @@ define(function (require, exports, module) {
             const filePath = doc.file.fullPath;
 
             // Update UI
-            const $tab = $tabBar.find(`.tab[data-path="${filePath}"]`);
-            $tab.toggleClass('dirty', doc.isDirty);
+            if ($tabBar) {
+                const $tab = $tabBar.find(`.tab[data-path="${filePath}"]`);
+                $tab.toggleClass('dirty', doc.isDirty);
+
+
+                // Update the working set data
+                // First pane
+                for (let i = 0; i < Global.firstPaneWorkingSet.length; i++) {
+                    if (Global.firstPaneWorkingSet[i].path === filePath) {
+                        Global.firstPaneWorkingSet[i].isDirty = doc.isDirty;
+                        break;
+                    }
+                }
+            }
+
 
             // Also update the $tab2 if it exists
             if ($tabBar2) {
                 const $tab2 = $tabBar2.find(`.tab[data-path="${filePath}"]`);
                 $tab2.toggleClass('dirty', doc.isDirty);
-            }
 
-            // Update the working set data
-            // First pane
-            for (let i = 0; i < Global.firstPaneWorkingSet.length; i++) {
-                if (Global.firstPaneWorkingSet[i].path === filePath) {
-                    Global.firstPaneWorkingSet[i].isDirty = doc.isDirty;
-                    break;
-                }
-            }
-
-            // Second pane
-            for (let i = 0; i < Global.secondPaneWorkingSet.length; i++) {
-                if (Global.secondPaneWorkingSet[i].path === filePath) {
-                    Global.secondPaneWorkingSet[i].isDirty = doc.isDirty;
-                    break;
+                // Second pane
+                for (let i = 0; i < Global.secondPaneWorkingSet.length; i++) {
+                    if (Global.secondPaneWorkingSet[i].path === filePath) {
+                        Global.secondPaneWorkingSet[i].isDirty = doc.isDirty;
+                        break;
+                    }
                 }
             }
         });
