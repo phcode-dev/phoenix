@@ -260,6 +260,10 @@ define(function (require, exports, module) {
     /** Toggles sidebar visibility */
     exports.VIEW_HIDE_SIDEBAR           = "view.toggleSidebar";         // SidebarView.js               toggle()
 
+    /** Toggles tabbar visibility */
+    exports.TOGGLE_TABBAR            = "view.toggleTabbar";
+    // extensionsIntegrated/TabBar/main.js
+
     /** Zooms in the editor view */
     exports.VIEW_ZOOM_IN                = "view.zoomIn";                // ViewCommandHandlers.js       _handleZoomIn()
 
