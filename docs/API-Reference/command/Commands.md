@@ -459,6 +459,12 @@ Opens theme settings
 Toggles sidebar visibility
 
 **Kind**: global variable  
+<a name="TOGGLE_TABBAR"></a>
+
+## TOGGLE\_TABBAR
+Toggles tabbar visibility
+
+**Kind**: global variable  
 <a name="VIEW_ZOOM_IN"></a>
 
 ## VIEW\_ZOOM\_IN
