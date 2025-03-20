@@ -1,7 +1,6 @@
 
 /*
  * This script contains the preference settings for the tab bar.
- * TODO: It also will have the tab bar options that will be added in menu bar and other places.
  */
 define(function (require, exports, module) {
     const PreferencesManager = require("preferences/PreferencesManager");

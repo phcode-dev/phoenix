@@ -10,6 +10,8 @@ define(function (require, exports, module) {
     const Commands = require("command/Commands");
     const DocumentManager = require("document/DocumentManager");
     const WorkspaceManager = require("view/WorkspaceManager");
+    const Menus = require("command/Menus");
+    const Strings = require("strings");
 
     const Global = require("./global");
     const Helper = require("./helper");
@@ -458,14 +460,18 @@ define(function (require, exports, module) {
 
 
     /**
-     * This is called when the tab bar preference is changed
+     * This is called when the tab bar preference is changed either,
+     * from the preferences file or the menu bar
      * It takes care of creating or cleaning up the tab bar
      */
     function preferenceChanged() {
-        Preference.tabBarEnabled = PreferencesManager.get(Preference.PREFERENCES_TAB_BAR).showTabBar;
-        Preference.tabBarNumberOfTabs = PreferencesManager.get(Preference.PREFERENCES_TAB_BAR).numberOfTabs;
+        const prefs = PreferencesManager.get(Preference.PREFERENCES_TAB_BAR);
+        Preference.tabBarEnabled = prefs.showTabBar;
+        Preference.tabBarNumberOfTabs = prefs.numberOfTabs;
 
-        // preference should be enabled and number of tabs should be greater than 0
+        // Update menu checkmark
+        CommandManager.get(Commands.TOGGLE_TABBAR).setChecked(prefs.showTabBar);
+
         if (Preference.tabBarEnabled && Preference.tabBarNumberOfTabs !== 0) {
             createTabBar();
         } else {
@@ -473,9 +479,31 @@ define(function (require, exports, module) {
         }
     }
 
+    /**
+     * Registers the commands,
+     * for toggling the tab bar from the menu bar
+     */
+    function _registerCommands() {
+        CommandManager.register(
+            Strings.CMD_TOGGLE_TABBAR,
+            Commands.TOGGLE_TABBAR,
+            () => {
+                const currentPref = PreferencesManager.get(Preference.PREFERENCES_TAB_BAR);
+                PreferencesManager.set(Preference.PREFERENCES_TAB_BAR, {
+                    ...currentPref,
+                    showTabBar: !currentPref.showTabBar
+                });
+            }
+        );
+    }
 
 
     AppInit.appReady(function () {
+        _registerCommands();
+
+        // add the toggle tab bar command to the view menu
+        const viewMenu = Menus.getMenu(Menus.AppMenuBar.VIEW_MENU);
+        viewMenu.addMenuItem(Commands.TOGGLE_TABBAR, "", Menus.AFTER, Commands.VIEW_HIDE_SIDEBAR);
 
         PreferencesManager.on("change", Preference.PREFERENCES_TAB_BAR, preferenceChanged);
         // calling preference changed here itself to check if the tab bar is enabled,
