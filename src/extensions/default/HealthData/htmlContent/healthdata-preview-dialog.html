@@ -9,6 +9,10 @@
 	            <input type="checkbox" data-target="hdPref" {{#hdPref}}checked{{/hdPref}} />
 	            {{Strings.HEALTH_DATA_DO_TRACK}}
 	        </label>
+			<div style="display: flex; align-items: flex-start; gap: 8px; padding: 8px 10px; border-left: 3px solid #aaa; font-size: 13px; color: #666; margin: 8px 0;">
+				<span style="flex-shrink: 0;">ℹ️</span>
+				<span>{{Strings.HEALTH_DATA_PREVIEW_NECESSARY}}</span>
+			</div>
     	</div>
 	    <div class="dialog-message preview-content-container">
 	        <p class="preview-content">{{{content}}}</p>

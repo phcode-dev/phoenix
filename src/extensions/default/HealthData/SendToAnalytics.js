@@ -21,13 +21,15 @@
  *
  */
 
-/*global Phoenix*/
+/*global AppConfig*/
 define(function (require, exports, module) {
     const Metrics = brackets.getModule("utils/Metrics"),
         PreferencesManager  = brackets.getModule("preferences/PreferencesManager"),
         PerfUtils           = brackets.getModule("utils/PerfUtils"),
         NodeUtils           = brackets.getModule("utils/NodeUtils"),
         themesPref          = PreferencesManager.getExtensionPrefs("themes");
+
+    const BugsnagPerformance = window.BugsnagPerformance;
 
     const PLATFORM = Metrics.EVENT_TYPE.PLATFORM,
         PERFORMANCE = Metrics.EVENT_TYPE.PERFORMANCE,
@@ -133,17 +135,34 @@ define(function (require, exports, module) {
         _sendStorageMetrics();
     }
 
+    let bugsnagPerformanceInited = false;
+    function _initBugsnagPerformance() {
+        bugsnagPerformanceInited = true;
+        BugsnagPerformance.start({
+            apiKey: '94ef94f4daf871ca0f2fc912c6d4764d',
+            appVersion: AppConfig.version,
+            releaseStage: window.__TAURI__ ?
+                `tauri-${AppConfig.config.bugsnagEnv}-${Phoenix.platform}` : AppConfig.config.bugsnagEnv,
+            autoInstrumentRouteChanges: false,
+            autoInstrumentNetworkRequests: false,
+            autoInstrumentFullPageLoads: false
+        });
+    }
+
     function _bugsnagPerformance(key, valueMs) {
-        if(Metrics.isDisabled() || !window.BugsnagPerformance || Phoenix.isTestWindow){
+        if(Metrics.isDisabled() || !BugsnagPerformance || Phoenix.isTestWindow){
             return;
+        }
+        if(!bugsnagPerformanceInited) {
+            _initBugsnagPerformance();
         }
         let activityStartTime = new Date();
         let activityEndTime = new Date(activityStartTime.getTime() + valueMs);
-        window.BugsnagPerformance
+        BugsnagPerformance
             .startSpan(key, { startTime: activityStartTime })
             .end(activityEndTime);
     }
-    
+
     // Performance
     function sendStartupPerformanceMetrics() {
         const healthReport = PerfUtils.getHealthReport();
