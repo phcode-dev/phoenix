@@ -241,7 +241,10 @@ define(function (require, exports, module) {
 
 
     /**
-     * Scrolls the tab bar to the active tab
+     * Scrolls the tab bar to the active tab.
+     * When scrolling the tab bar, we calculate the distance we need to scroll and based on that distance,
+     * we set the duration.
+     * This ensures that the scrolling speed is consistent no matter the distance or number of tabs present in tab bar.
      *
      * @param {JQuery} $tabBarElement - The tab bar element,
      * this is either $('#phoenix-tab-bar') or $('phoenix-tab-bar-2')
@@ -263,7 +266,8 @@ define(function (require, exports, module) {
 
         if ($activeTab.length) {
             // get the tab bar container's dimensions
-            const tabBarRect = $tabBarElement[0].getBoundingClientRect();
+            const tabBar = $tabBarElement[0];
+            const tabBarRect = tabBar.getBoundingClientRect();
             const tabBarVisibleWidth = tabBarRect.width;
 
             // get the active tab's dimensions
@@ -273,23 +277,36 @@ define(function (require, exports, module) {
             const tabLeftRelative = tabRect.left - tabBarRect.left;
             const tabRightRelative = tabRect.right - tabBarRect.left;
 
-            // get the current scroll position
-            const currentScroll = $tabBarElement.scrollLeft();
+            // get current scroll position
+            const currentScroll = tabBar.scrollLeft;
+            let targetScroll = currentScroll;
+            let scrollDistance = 0;
 
-            // animate the scroll change over 400ms for a very fast effect
+            // calculate needed scroll adjustment
             if (tabLeftRelative < 0) {
-                // Tab is too far to the left
-                $tabBarElement.animate(
-                    { scrollLeft: currentScroll + tabLeftRelative - 10 },
-                    400
-                );
+                targetScroll = currentScroll + tabLeftRelative - 10;
             } else if (tabRightRelative > tabBarVisibleWidth) {
-                // Tab is too far to the right
                 const scrollAdjustment = tabRightRelative - tabBarVisibleWidth + 10;
-                $tabBarElement.animate(
-                    { scrollLeft: currentScroll + scrollAdjustment },
-                    400
+                targetScroll = currentScroll + scrollAdjustment;
+            }
+
+            // calculate the scroll distance in pixels
+            scrollDistance = Math.abs(targetScroll - currentScroll);
+
+            // calculate duration based on distance (0.2ms per pixel + 100ms base)
+            // min 100ms, max 400ms
+            let duration = Math.min(Math.max(scrollDistance * 0.2, 100), 400);
+
+            // only animate if we need to move more than 5 pixels
+            // otherwise, we can just jump
+            if (scrollDistance > 5) {
+                $tabBarElement.stop(true).animate(
+                    { scrollLeft: targetScroll },
+                    duration,
+                    'linear'
                 );
+            } else {
+                tabBar.scrollLeft = targetScroll;
             }
         }
     }
