@@ -341,6 +341,7 @@
             } else if (navigator.platform && navigator.platform.indexOf("Linux") >= 0) {
                 platform = "linux";
             }
+            // window.Phoenix should never be reassigned as code may cache references to this object.
             window.Phoenix = {
                 PHOENIX_INSTANCE_ID: "PH-" + Math.round( Math.random()*1000000000000),
                 browser: getBrowserDetails(),
@@ -372,6 +373,12 @@
             Phoenix.isSupportedBrowser = Phoenix.isNativeApp ||
                 (Phoenix.browser.isDeskTop && ("serviceWorker" in navigator));
             window.testEnvironment = window.Phoenix.isTestWindow;
+            const healthDisabled = localStorage.getItem("PH_HEALTH_DISABLED");
+            window.Phoenix.healthTrackingDisabled = (healthDisabled === "true");
+            window.Phoenix._setHealthTrackingDisabled = function (isDisabled) {
+                window.Phoenix.healthTrackingDisabled = isDisabled;
+                localStorage.setItem("PH_HEALTH_DISABLED", String(isDisabled));
+            };
 
             // now setup PhoenixBaseURL, which if of the form https://phcode.dev/ or tauri://localhost/
             const url = new URL(window.location.href);
@@ -394,14 +401,6 @@
     <script src="appConfig.js"></script>
     <script type="module">
         import BugsnagPerformance from "./thirdparty/bugsnag-performance.min.js";
-        BugsnagPerformance.start({
-            apiKey: '94ef94f4daf871ca0f2fc912c6d4764d',
-            appVersion: AppConfig.version,
-            releaseStage: window.__TAURI__ ? `tauri-${AppConfig.config.bugsnagEnv}-${Phoenix.platform}` : AppConfig.config.bugsnagEnv,
-            autoInstrumentRouteChanges: false,
-            autoInstrumentNetworkRequests: false,
-            autoInstrumentFullPageLoads: false
-        });
         window.BugsnagPerformance = BugsnagPerformance;
     </script>
     <script src="loggerSetup.js"></script>

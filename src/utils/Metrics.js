@@ -403,6 +403,7 @@ define(function (require, exports, module) {
     }
 
     function setDisabled(shouldDisable) {
+        Phoenix._setHealthTrackingDisabled(shouldDisable);
         disabled = shouldDisable;
     }
 

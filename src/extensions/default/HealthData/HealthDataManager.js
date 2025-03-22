@@ -109,6 +109,19 @@ define(function (require, exports, module) {
             isPowerUserFn: isPowerUser
         });
         healthDataDisabled = !prefs.get("healthDataTracking");
+        if (healthDataDisabled && !Phoenix.healthTrackingDisabled) {
+            // Phoenix.healthTrackingDisabled is initialized at boot using localStorage.
+            // However, there's a theoretical edge case where the browser may have cleared
+            // localStorage, causing a mismatch between the boot-time flag and the actual
+            // persisted user preference.
+            //
+            // This means we might unintentionally log some metrics during the short window
+            // before the real preference is loaded and applied.
+            //
+            // To track this discrepancy, we emit a one-time metric just before disabling tracking,
+            // so we’re aware of this inconsistency and can address it if needed.
+            Metrics.countEvent(Metrics.PLATFORM, "metricBoot", "disableErr");
+        }
         Metrics.setDisabled(healthDataDisabled);
         SendToAnalytics.sendPlatformMetrics();
         SendToAnalytics.sendThemesMetrics();

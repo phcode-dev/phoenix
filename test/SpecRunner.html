@@ -293,6 +293,12 @@
       Phoenix.isSupportedBrowser = Phoenix.isNativeApp ||
               (Phoenix.browser.isDeskTop && ("serviceWorker" in navigator));
       window.testEnvironment = window.Phoenix.isTestWindow;
+      const healthDisabled = localStorage.getItem("PH_HEALTH_DISABLED");
+      window.Phoenix.healthTrackingDisabled = (healthDisabled === "true");
+      window.Phoenix._setHealthTrackingDisabled = function (isDisabled) {
+        window.Phoenix.healthTrackingDisabled = isDisabled;
+        localStorage.setItem("PH_HEALTH_DISABLED", String(isDisabled));
+      };
 
       // now setup PhoenixBaseURL, which if of the form https://phcode.dev/ or tauri://localhost/
       const url = new URL(window.location.href);
