@@ -276,20 +276,13 @@ define(function (require, exports, module) {
             // get the current scroll position
             const currentScroll = $tabBarElement.scrollLeft();
 
-            // animate the scroll change over 5 for a very fast effect
             if (tabLeftRelative < 0) {
                 // Tab is too far to the left
-                $tabBarElement.animate(
-                    { scrollLeft: currentScroll + tabLeftRelative - 10 },
-                    5
-                );
+                $tabBarElement.scrollLeft(currentScroll + tabLeftRelative - 10);
             } else if (tabRightRelative > tabBarVisibleWidth) {
                 // Tab is too far to the right
                 const scrollAdjustment = tabRightRelative - tabBarVisibleWidth + 10;
-                $tabBarElement.animate(
-                    { scrollLeft: currentScroll + scrollAdjustment },
-                    5
-                );
+                $tabBarElement.scrollLeft(currentScroll + scrollAdjustment);
             }
         }
     }
