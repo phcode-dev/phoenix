@@ -425,6 +425,7 @@ define({
   "CMD_BEAUTIFY_CODE": "美化代码",
   "CMD_BEAUTIFY_CODE_ON_SAVE": "保存时美化代码",
   "CMD_AUTO_RENAME_TAGS": "自动重命名 HTML 标签",
+  "CMD_TOGGLE_EMMET": "Emmet（代码补全）",
   "FIND_MENU": "查找",
   "CMD_FIND": "查找",
   "CMD_FIND_NEXT": "查找下一个",
@@ -1351,5 +1352,13 @@ define({
   "GIT_TOAST_TITLE": "探索 Phoenix Code 中的 Git 功能",
   "GIT_TOAST_MESSAGE": "点击 Git 面板图标即可管理您的代码仓库。轻松提交、推送、拉取和查看项目历史记录，一切尽在一处。<br><a href='https://docs.phcode.dev/docs/Features/git'>了解更多关于 Git 面板的信息 →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "为您希望看到的下一个功能投票！",
-  "CMD_TOGGLE_EMMET": "Emmet（代码补全）"
+  "CLOSE_TAB": "关闭标签页",
+  "CLOSE_ACTIVE_TAB": "关闭活动标签页",
+  "CLOSE_ALL_TABS": "关闭所有标签页",
+  "CLOSE_UNMODIFIED_TABS": "关闭未修改的标签页",
+  "REOPEN_CLOSED_FILE": "重新打开已关闭的文件",
+  "CMD_TOGGLE_TABBAR": "切换标签栏",
+  "DESCRIPTION_TABBAR": "设置标签栏设置。",
+  "DESCRIPTION_SHOW_TABBAR": "显示标签栏则为 true，否则为 false。",
+  "DESCRIPTION_NUMBER_OF_TABS": "标签栏中显示的标签页数量。设置为 -1 以显示所有标签页"
 });

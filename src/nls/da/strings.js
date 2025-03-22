@@ -425,6 +425,7 @@ define({
   "CMD_BEAUTIFY_CODE": "Formatér kode",
   "CMD_BEAUTIFY_CODE_ON_SAVE": "Formatér kode efter lagring",
   "CMD_AUTO_RENAME_TAGS": "Omdøb HTML-tags automatisk",
+  "CMD_TOGGLE_EMMET": "Emmet",
   "FIND_MENU": "Søg",
   "CMD_FIND": "Søg",
   "CMD_FIND_NEXT": "Find næste",
@@ -1351,5 +1352,13 @@ define({
   "GIT_TOAST_TITLE": "Udforsk Git-funktioner i Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klik på Git-panelikonet for at administrere dit repository. Commit, push, pull og se din projekthistorik nemt – alt sammen på ét sted.<br><a href='https://docs.phcode.dev/docs/Features/git'>Læs mere om Git-panelet →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Stem på de funktioner, du gerne vil se!",
-  "CMD_TOGGLE_EMMET": "Emmet"
+  "CLOSE_TAB": "Luk fane",
+  "CLOSE_ACTIVE_TAB": "Luk aktiv fane",
+  "CLOSE_ALL_TABS": "Luk alle faner",
+  "CLOSE_UNMODIFIED_TABS": "Luk uændrede faner",
+  "REOPEN_CLOSED_FILE": "Genåbn lukket fil",
+  "CMD_TOGGLE_TABBAR": "Skift fanebjælke",
+  "DESCRIPTION_TABBAR": "Indstil fanebjælkens indstillinger.",
+  "DESCRIPTION_SHOW_TABBAR": "Sandt for at vise fanebjælken, ellers falsk.",
+  "DESCRIPTION_NUMBER_OF_TABS": "Antallet af faner, der skal vises i fanebjælken. Indstil til -1 for at vise alle faner"
 });

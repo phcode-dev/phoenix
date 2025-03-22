@@ -425,6 +425,7 @@ define({
   "CMD_BEAUTIFY_CODE": "Percantik Kode",
   "CMD_BEAUTIFY_CODE_ON_SAVE": "Percantik Kode Setelah Disimpan",
   "CMD_AUTO_RENAME_TAGS": "Ubah Nama Tag HTML Otomatis",
+  "CMD_TOGGLE_EMMET": "Emmet",
   "FIND_MENU": "Temukan",
   "CMD_FIND": "Temukan",
   "CMD_FIND_NEXT": "Temukan Berikutnya",
@@ -1351,5 +1352,13 @@ define({
   "GIT_TOAST_TITLE": "Jelajahi Fitur Git di Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klik ikon panel Git untuk mengelola repositori Anda. Lakukan commit, push, pull, dan lihat riwayat proyek Anda dengan mudah—semua di satu tempat.<br><a href='https://docs.phcode.dev/docs/Features/git'>Pelajari lebih lanjut tentang panel Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Pilih fitur yang ingin Anda lihat selanjutnya!",
-  "CMD_TOGGLE_EMMET": "Emmet"
+  "CLOSE_TAB": "Tutup Tab",
+  "CLOSE_ACTIVE_TAB": "Tutup Tab Aktif",
+  "CLOSE_ALL_TABS": "Tutup Semua Tab",
+  "CLOSE_UNMODIFIED_TABS": "Tutup Tab yang Tidak Dimodifikasi",
+  "REOPEN_CLOSED_FILE": "Buka Kembali File yang Ditutup",
+  "CMD_TOGGLE_TABBAR": "Alihkan Bilah Tab",
+  "DESCRIPTION_TABBAR": "Atur pengaturan bilah tab.",
+  "DESCRIPTION_SHOW_TABBAR": "`true` untuk menampilkan bilah tab, selain itu `false`.",
+  "DESCRIPTION_NUMBER_OF_TABS": "Jumlah tab yang akan ditampilkan di bilah tab. Atur ke -1 untuk menampilkan semua tab."
 });

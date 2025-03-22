@@ -425,6 +425,7 @@ define({
   "CMD_BEAUTIFY_CODE": "کوڈ کو خوبصورت بنائیں",
   "CMD_BEAUTIFY_CODE_ON_SAVE": "محفوظ کرنے کے بعد کوڈ کو خوبصورت بنائیں",
   "CMD_AUTO_RENAME_TAGS": "ایچ ٹی ایم ایل ٹیگز کا نام خودکار تبدیل کریں",
+  "CMD_TOGGLE_EMMET": "ایمٹ",
   "FIND_MENU": "تلاش کریں",
   "CMD_FIND": "تلاش کریں",
   "CMD_FIND_NEXT": "اگلا تلاش کریں",
@@ -1351,5 +1352,13 @@ define({
   "GIT_TOAST_TITLE": "فینکس کوڈ میں گٹ فیچرز دریافت کریں",
   "GIT_TOAST_MESSAGE": "اپنی ذخیرہ گاہ (repository) کو منظم کرنے کے لیے گٹ پینل آئیکن پر کلک کریں۔ آسانی سے کامٹ، پش، پل کریں، اور اپنے پروجیکٹ کی تاریخ دیکھیں—سب ایک ہی جگہ پر۔<br><a href='https://docs.phcode.dev/docs/Features/git'>گٹ پینل کے بارے میں مزید جانیں →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "اپنی پسندیدہ خصوصیات کے لیے ووٹ دیں!",
-  "CMD_TOGGLE_EMMET": "ایمٹ"
+  "CLOSE_TAB": "ٹیب بند کریں",
+  "CLOSE_ACTIVE_TAB": "موجودہ ٹیب بند کریں",
+  "CLOSE_ALL_TABS": "تمام ٹیبز بند کریں",
+  "CLOSE_UNMODIFIED_TABS": "غیر ترمیم شدہ ٹیبز بند کریں",
+  "REOPEN_CLOSED_FILE": "بند فائل دوبارہ کھولیں",
+  "CMD_TOGGLE_TABBAR": "ٹیب بار ٹوگل کریں",
+  "DESCRIPTION_TABBAR": "ٹیب بار کی ترتیبات مقرر کریں۔",
+  "DESCRIPTION_SHOW_TABBAR": "ٹیب بار دکھانے کے لیے true، ورنہ false۔",
+  "DESCRIPTION_NUMBER_OF_TABS": "ٹیب بار میں دکھانے کے لیے ٹیبز کی تعداد۔ تمام ٹیبز دکھانے کے لیے -1 پر سیٹ کریں۔"
 });

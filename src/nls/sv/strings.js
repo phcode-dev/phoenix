@@ -425,6 +425,7 @@ define({
   "CMD_BEAUTIFY_CODE": "Formattera kod",
   "CMD_BEAUTIFY_CODE_ON_SAVE": "Formattera kod efter sparning",
   "CMD_AUTO_RENAME_TAGS": "Byt namn på HTML-taggar automatiskt",
+  "CMD_TOGGLE_EMMET": "Emmet",
   "FIND_MENU": "Sök",
   "CMD_FIND": "Sök",
   "CMD_FIND_NEXT": "Sök nästa",
@@ -1351,5 +1352,13 @@ define({
   "GIT_TOAST_TITLE": "Utforska Git-funktioner i Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klicka på Git-panelens ikon för att hantera din repository. Committa, pusha, pulla och se din projekthistorik enkelt – allt på ett ställe.<br><a href='https://docs.phcode.dev/docs/Features/git'>Läs mer om Git-panelen →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Rösta på funktionerna du vill se härnäst!",
-  "CMD_TOGGLE_EMMET": "Emmet"
+  "CLOSE_TAB": "Stäng flik",
+  "CLOSE_ACTIVE_TAB": "Stäng aktiv flik",
+  "CLOSE_ALL_TABS": "Stäng alla flikar",
+  "CLOSE_UNMODIFIED_TABS": "Stäng oförändrade flikar",
+  "REOPEN_CLOSED_FILE": "Återöppna stängd fil",
+  "CMD_TOGGLE_TABBAR": "Växla flikrad",
+  "DESCRIPTION_TABBAR": "Ange inställningar för flikraden.",
+  "DESCRIPTION_SHOW_TABBAR": "Sant för att visa flikraden, annars falskt.",
+  "DESCRIPTION_NUMBER_OF_TABS": "Antalet flikar som ska visas i flikraden. Ange -1 för att visa alla flikar."
 });

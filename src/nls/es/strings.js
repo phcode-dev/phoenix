@@ -425,6 +425,7 @@ define({
   "CMD_BEAUTIFY_CODE": "Embellecer código",
   "CMD_BEAUTIFY_CODE_ON_SAVE": "Embellecer código al guardar",
   "CMD_AUTO_RENAME_TAGS": "Renombrar etiquetas HTML automáticamente",
+  "CMD_TOGGLE_EMMET": "Emmet",
   "FIND_MENU": "Buscar",
   "CMD_FIND": "Buscar",
   "CMD_FIND_NEXT": "Buscar siguiente",
@@ -1351,5 +1352,13 @@ define({
   "GIT_TOAST_TITLE": "Explora las funciones de Git en Phoenix Code",
   "GIT_TOAST_MESSAGE": "Haga clic en el icono del panel de Git para administrar su repositorio. Confirme, envíe (push), extraiga (pull) y vea el historial de su proyecto fácilmente, todo en un solo lugar.<br><a href='https://docs.phcode.dev/docs/Features/git'>Obtenga más información sobre el panel de Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "¡Vota por las funciones que quieres ver próximamente!",
-  "CMD_TOGGLE_EMMET": "Emmet"
+  "CLOSE_TAB": "Cerrar pestaña",
+  "CLOSE_ACTIVE_TAB": "Cerrar pestaña activa",
+  "CLOSE_ALL_TABS": "Cerrar todas las pestañas",
+  "CLOSE_UNMODIFIED_TABS": "Cerrar pestañas sin modificar",
+  "REOPEN_CLOSED_FILE": "Reabrir archivo cerrado",
+  "CMD_TOGGLE_TABBAR": "Mostrar/Ocultar barra de pestañas",
+  "DESCRIPTION_TABBAR": "Configurar los ajustes de la barra de pestañas.",
+  "DESCRIPTION_SHOW_TABBAR": "`true` para mostrar la barra de pestañas, `false` para ocultarla.",
+  "DESCRIPTION_NUMBER_OF_TABS": "El número de pestañas a mostrar en la barra de pestañas.  Establecer en -1 para mostrar todas las pestañas."
 });

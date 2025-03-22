@@ -425,6 +425,7 @@ define({
   "CMD_BEAUTIFY_CODE": "Uredi kod",
   "CMD_BEAUTIFY_CODE_ON_SAVE": "Uredi kod nakon spremanja",
   "CMD_AUTO_RENAME_TAGS": "Automatsko preimenovanje HTML oznaka",
+  "CMD_TOGGLE_EMMET": "Emmet",
   "FIND_MENU": "Pronađi",
   "CMD_FIND": "Pronađi",
   "CMD_FIND_NEXT": "Pronađi sljedeće",
@@ -1351,5 +1352,13 @@ define({
   "GIT_TOAST_TITLE": "Istražite Git značajke u Phoenix Codeu",
   "GIT_TOAST_MESSAGE": "Kliknite ikonu Git panela za upravljanje svojim repozitorijem. Jednostavno potvrdite (commit), pošaljite (push), preuzmite (pull) i pregledajte povijest svog projekta - sve na jednom mjestu.<br><a href='https://docs.phcode.dev/docs/Features/git'>Saznajte više o Git panelu →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Glasajte za značajke koje želite vidjeti sljedeće!",
-  "CMD_TOGGLE_EMMET": "Emmet"
+  "CLOSE_TAB": "Zatvori karticu",
+  "CLOSE_ACTIVE_TAB": "Zatvori aktivnu karticu",
+  "CLOSE_ALL_TABS": "Zatvori sve kartice",
+  "CLOSE_UNMODIFIED_TABS": "Zatvori nepromijenjene kartice",
+  "REOPEN_CLOSED_FILE": "Ponovno otvori zatvorenu datoteku",
+  "CMD_TOGGLE_TABBAR": "Uključi/isključi traku kartica",
+  "DESCRIPTION_TABBAR": "Postavi postavke trake kartica.",
+  "DESCRIPTION_SHOW_TABBAR": "Vrijednost \"true\" za prikaz trake kartica, inače \"false\".",
+  "DESCRIPTION_NUMBER_OF_TABS": "Broj kartica za prikaz u traci kartica. Postavite na -1 za prikaz svih kartica"
 });

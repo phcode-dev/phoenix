@@ -425,6 +425,7 @@ define({
   "CMD_BEAUTIFY_CODE": "Embelecer código",
   "CMD_BEAUTIFY_CODE_ON_SAVE": "Embelecer código despois de gardar",
   "CMD_AUTO_RENAME_TAGS": "Renomear etiquetas HTML automaticamente",
+  "CMD_TOGGLE_EMMET": "Emmet",
   "FIND_MENU": "Buscar",
   "CMD_FIND": "Buscar",
   "CMD_FIND_NEXT": "Buscar seguinte",
@@ -1351,5 +1352,13 @@ define({
   "GIT_TOAST_TITLE": "Explora as funcionalidades de Git en Phoenix Code",
   "GIT_TOAST_MESSAGE": "Fai clic na icona do panel de Git para xestionar o teu repositorio. Fai commits, envía (push), obtén (pull) e visualiza o historial do teu proxecto facilmente, todo nun mesmo lugar.<br><a href='https://docs.phcode.dev/docs/Features/git'>Aprende máis sobre o panel de Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vota polas funcionalidades que queres ver a continuación!",
-  "CMD_TOGGLE_EMMET": "Emmet"
+  "CLOSE_TAB": "Pechar lapela",
+  "CLOSE_ACTIVE_TAB": "Pechar a lapela activa",
+  "CLOSE_ALL_TABS": "Pechar todas as lapelas",
+  "CLOSE_UNMODIFIED_TABS": "Pechar as lapelas sen modificar",
+  "REOPEN_CLOSED_FILE": "Reabrir o ficheiro pechado",
+  "CMD_TOGGLE_TABBAR": "Alternar a barra de lapelas",
+  "DESCRIPTION_TABBAR": "Configurar os axustes da barra de lapelas.",
+  "DESCRIPTION_SHOW_TABBAR": "\"true\" para mostrar a barra de lapelas, se non \"false\".",
+  "DESCRIPTION_NUMBER_OF_TABS": "O número de lapelas a mostrar na barra de lapelas. Establécese en -1 para mostrar todas as lapelas"
 });

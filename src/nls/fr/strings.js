@@ -425,6 +425,7 @@ define({
   "CMD_BEAUTIFY_CODE": "Embellir le code",
   "CMD_BEAUTIFY_CODE_ON_SAVE": "Embellir le code après l'enregistrement",
   "CMD_AUTO_RENAME_TAGS": "Renommer automatiquement les balises HTML",
+  "CMD_TOGGLE_EMMET": "Emmet",
   "FIND_MENU": "Rechercher",
   "CMD_FIND": "Rechercher",
   "CMD_FIND_NEXT": "Rechercher suivant",
@@ -1351,5 +1352,13 @@ define({
   "GIT_TOAST_TITLE": "Explorer les fonctionnalités Git dans Phoenix Code",
   "GIT_TOAST_MESSAGE": "Cliquez sur l'icône du panneau Git pour gérer votre dépôt. Validez, envoyez (push), récupérez (pull) et consultez l'historique de votre projet facilement, le tout au même endroit.<br><a href='https://docs.phcode.dev/docs/Features/git'>En savoir plus sur le panneau Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Votez pour les fonctionnalités que vous souhaitez voir apparaître !",
-  "CMD_TOGGLE_EMMET": "Emmet"
+  "CLOSE_TAB": "Fermer l'onglet",
+  "CLOSE_ACTIVE_TAB": "Fermer l'onglet actif",
+  "CLOSE_ALL_TABS": "Fermer tous les onglets",
+  "CLOSE_UNMODIFIED_TABS": "Fermer les onglets non modifiés",
+  "REOPEN_CLOSED_FILE": "Rouvrir le fichier fermé",
+  "CMD_TOGGLE_TABBAR": "Afficher/Masquer la barre d'onglets",
+  "DESCRIPTION_TABBAR": "Définir les paramètres de la barre d'onglets.",
+  "DESCRIPTION_SHOW_TABBAR": "`true` pour afficher la barre d'onglets, sinon `false`.",
+  "DESCRIPTION_NUMBER_OF_TABS": "Le nombre d'onglets à afficher dans la barre d'onglets. Définissez sur -1 pour afficher tous les onglets."
 });

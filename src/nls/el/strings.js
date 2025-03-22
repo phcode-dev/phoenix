@@ -425,6 +425,7 @@ define({
   "CMD_BEAUTIFY_CODE": "Καλλωπισμός Κώδικα",
   "CMD_BEAUTIFY_CODE_ON_SAVE": "Καλλωπισμός Κώδικα Μετά την Αποθήκευση",
   "CMD_AUTO_RENAME_TAGS": "Αυτόματη Μετονομασία Ετικετών HTML",
+  "CMD_TOGGLE_EMMET": "Emmet",
   "FIND_MENU": "Εύρεση",
   "CMD_FIND": "Εύρεση",
   "CMD_FIND_NEXT": "Εύρεση Επόμενου",
@@ -1351,5 +1352,13 @@ define({
   "GIT_TOAST_TITLE": "Εξερευνήστε τις Λειτουργίες Git στο Phoenix Code",
   "GIT_TOAST_MESSAGE": "Κάντε κλικ στο εικονίδιο του πίνακα Git για να διαχειριστείτε το αποθετήριό σας. Κάντε εύκολα commit, push, pull και δείτε το ιστορικό του έργου σας—όλα σε ένα μέρος.<br><a href='https://docs.phcode.dev/docs/Features/git'>Μάθετε περισσότερα για τον πίνακα Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Ψηφίστε για τις λειτουργίες που θέλετε να δείτε στη συνέχεια!",
-  "CMD_TOGGLE_EMMET": "Emmet"
+  "CLOSE_TAB": "Κλείσιμο Καρτέλας",
+  "CLOSE_ACTIVE_TAB": "Κλείσιμο Ενεργής Καρτέλας",
+  "CLOSE_ALL_TABS": "Κλείσιμο Όλων των Καρτελών",
+  "CLOSE_UNMODIFIED_TABS": "Κλείσιμο μη Τροποποιημένων Καρτελών",
+  "REOPEN_CLOSED_FILE": "Άνοιγμα ξανά Κλειστού Αρχείου",
+  "CMD_TOGGLE_TABBAR": "Εμφάνιση/Απόκρυψη Γραμμής Καρτελών",
+  "DESCRIPTION_TABBAR": "Ρύθμιση των ρυθμίσεων της γραμμής καρτελών.",
+  "DESCRIPTION_SHOW_TABBAR": "true για εμφάνιση της γραμμής καρτελών, αλλιώς false.",
+  "DESCRIPTION_NUMBER_OF_TABS": "Ο αριθμός των καρτελών που θα εμφανίζονται στη γραμμή καρτελών. Ορίστε -1 για εμφάνιση όλων των καρτελών"
 });

@@ -425,6 +425,7 @@ define({
   "CMD_BEAUTIFY_CODE": "Форматирай код",
   "CMD_BEAUTIFY_CODE_ON_SAVE": "Форматирай код след запис",
   "CMD_AUTO_RENAME_TAGS": "Автоматично преименуване на HTML тагове",
+  "CMD_TOGGLE_EMMET": "Емет",
   "FIND_MENU": "Търсене",
   "CMD_FIND": "Търсене",
   "CMD_FIND_NEXT": "Търсене на следващото",
@@ -1351,5 +1352,13 @@ define({
   "GIT_TOAST_TITLE": "Разгледайте Git функциите в Phoenix Code",
   "GIT_TOAST_MESSAGE": "Щракнете върху иконата на Git панела, за да управлявате хранилището си. Лесно създавайте commit, push, pull и преглеждайте историята на проекта си – всичко на едно място.<br><a href='https://docs.phcode.dev/docs/Features/git'>Научете повече за Git панела →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Гласувайте за функциите, които искате да видите следващи!",
-  "CMD_TOGGLE_EMMET": "Емет"
+  "CLOSE_TAB": "Затвори раздел",
+  "CLOSE_ACTIVE_TAB": "Затвори активния раздел",
+  "CLOSE_ALL_TABS": "Затвори всички раздели",
+  "CLOSE_UNMODIFIED_TABS": "Затвори непроменените раздели",
+  "REOPEN_CLOSED_FILE": "Отвори отново затворения файл",
+  "CMD_TOGGLE_TABBAR": "Превключи лентата с раздели",
+  "DESCRIPTION_TABBAR": "Задай настройките на лентата с раздели.",
+  "DESCRIPTION_SHOW_TABBAR": "`true` за да се показва лентата с раздели, иначе `false`.",
+  "DESCRIPTION_NUMBER_OF_TABS": "Броят на разделите, които да се показват в лентата с раздели. Задайте на -1, за да се показват всички раздели."
 });

@@ -425,6 +425,7 @@ define({
   "CMD_BEAUTIFY_CODE": "格式化程式碼",
   "CMD_BEAUTIFY_CODE_ON_SAVE": "儲存後格式化程式碼",
   "CMD_AUTO_RENAME_TAGS": "自動重新命名 HTML 標籤",
+  "CMD_TOGGLE_EMMET": "Emmet (保留原文，因 Emmet 為專有名詞)",
   "FIND_MENU": "尋找",
   "CMD_FIND": "尋找",
   "CMD_FIND_NEXT": "找下一個",
@@ -1351,5 +1352,13 @@ define({
   "GIT_TOAST_TITLE": "在 Phoenix Code 中探索 Git 功能",
   "GIT_TOAST_MESSAGE": "按一下 Git 面板圖示即可管理您的儲存庫。輕鬆提交、推送、提取和檢視您的專案歷史記錄，一切盡在掌握之中。<br><a href='https://docs.phcode.dev/docs/Features/git'>深入瞭解 Git 面板 →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "投票選出您希望看到的下個功能！",
-  "CMD_TOGGLE_EMMET": "Emmet (保留原文，因 Emmet 為專有名詞)"
+  "CLOSE_TAB": "關閉分頁",
+  "CLOSE_ACTIVE_TAB": "關閉目前分頁",
+  "CLOSE_ALL_TABS": "關閉所有分頁",
+  "CLOSE_UNMODIFIED_TABS": "關閉未修改的分頁",
+  "REOPEN_CLOSED_FILE": "重新開啟已關閉的檔案",
+  "CMD_TOGGLE_TABBAR": "切換分頁列顯示",
+  "DESCRIPTION_TABBAR": "設定分頁列設定。",
+  "DESCRIPTION_SHOW_TABBAR": "顯示分頁列設為 true，隱藏則設為 false。",
+  "DESCRIPTION_NUMBER_OF_TABS": "分頁列中顯示的分頁數量。設為 -1 則顯示所有分頁。"
 });

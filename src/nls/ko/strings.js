@@ -425,6 +425,7 @@ define({
   "CMD_BEAUTIFY_CODE": "코드 정리",
   "CMD_BEAUTIFY_CODE_ON_SAVE": "저장 후 코드 정리",
   "CMD_AUTO_RENAME_TAGS": "HTML 태그 자동 이름 바꾸기",
+  "CMD_TOGGLE_EMMET": "에밋",
   "FIND_MENU": "찾기",
   "CMD_FIND": "찾기",
   "CMD_FIND_NEXT": "다음 찾기",
@@ -1351,5 +1352,13 @@ define({
   "GIT_TOAST_TITLE": "Phoenix Code의 Git 기능 살펴보기",
   "GIT_TOAST_MESSAGE": "Git 패널 아이콘을 클릭하여 저장소를 관리하세요. 커밋, 푸시, 풀, 프로젝트 기록 보기를 한 곳에서 간편하게 수행할 수 있습니다.<br><a href='https://docs.phcode.dev/docs/Features/git'>Git 패널에 대해 자세히 알아보기 →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "다음에 보고 싶은 기능에 투표하세요!",
-  "CMD_TOGGLE_EMMET": "에밋"
+  "CLOSE_TAB": "탭 닫기",
+  "CLOSE_ACTIVE_TAB": "현재 탭 닫기",
+  "CLOSE_ALL_TABS": "모든 탭 닫기",
+  "CLOSE_UNMODIFIED_TABS": "수정되지 않은 탭 닫기",
+  "REOPEN_CLOSED_FILE": "닫힌 파일 다시 열기",
+  "CMD_TOGGLE_TABBAR": "탭 표시줄 전환",
+  "DESCRIPTION_TABBAR": "탭 표시줄 설정을 지정합니다.",
+  "DESCRIPTION_SHOW_TABBAR": "탭 표시줄을 표시하려면 true, 그렇지 않으면 false입니다.",
+  "DESCRIPTION_NUMBER_OF_TABS": "탭 표시줄에 표시할 탭 수입니다. 모든 탭을 표시하려면 -1로 설정합니다."
 });
