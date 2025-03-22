@@ -425,6 +425,7 @@ define({
   "CMD_BEAUTIFY_CODE": "Formatar Código",
   "CMD_BEAUTIFY_CODE_ON_SAVE": "Formatar Código ao Salvar",
   "CMD_AUTO_RENAME_TAGS": "Renomear Tags HTML Automaticamente",
+  "CMD_TOGGLE_EMMET": "Emmet",
   "FIND_MENU": "Localizar",
   "CMD_FIND": "Localizar",
   "CMD_FIND_NEXT": "Localizar próximo",
@@ -1351,5 +1352,13 @@ define({
   "GIT_TOAST_TITLE": "Explore os Recursos do Git no Phoenix Code",
   "GIT_TOAST_MESSAGE": "Clique no ícone do painel Git para gerenciar seu repositório. Faça commits, pushes, pulls e visualize o histórico do seu projeto com facilidade — tudo em um só lugar.<br><a href='https://docs.phcode.dev/docs/Features/git'>Saiba mais sobre o painel Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vote nos recursos que você quer ver em seguida!",
-  "CMD_TOGGLE_EMMET": "Emmet"
+  "CLOSE_TAB": "Fechar Guia",
+  "CLOSE_ACTIVE_TAB": "Fechar Guia Ativa",
+  "CLOSE_ALL_TABS": "Fechar Todas as Guias",
+  "CLOSE_UNMODIFIED_TABS": "Fechar Guias Não Modificadas",
+  "REOPEN_CLOSED_FILE": "Reabrir Arquivo Fechado",
+  "CMD_TOGGLE_TABBAR": "Alternar Barra de Guias",
+  "DESCRIPTION_TABBAR": "Definir as configurações da barra de guias.",
+  "DESCRIPTION_SHOW_TABBAR": "`true` para mostrar a barra de guias, senão `false`.",
+  "DESCRIPTION_NUMBER_OF_TABS": "O número de guias a serem exibidas na barra de guias. Defina como -1 para mostrar todas as guias"
 });

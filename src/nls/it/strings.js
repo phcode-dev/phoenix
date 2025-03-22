@@ -425,6 +425,7 @@ define({
   "CMD_BEAUTIFY_CODE": "Formatta codice",
   "CMD_BEAUTIFY_CODE_ON_SAVE": "Formatta codice dopo il salvataggio",
   "CMD_AUTO_RENAME_TAGS": "Rinomina tag HTML automaticamente",
+  "CMD_TOGGLE_EMMET": "Emmet",
   "FIND_MENU": "Cerca",
   "CMD_FIND": "Cerca",
   "CMD_FIND_NEXT": "Cerca il successivo",
@@ -1351,5 +1352,13 @@ define({
   "GIT_TOAST_TITLE": "Esplora le funzionalità Git in Phoenix Code",
   "GIT_TOAST_MESSAGE": "Fai clic sull'icona del pannello Git per gestire il tuo repository. Esegui commit, push, pull e visualizza la cronologia del tuo progetto, tutto in un unico posto.<br><a href='https://docs.phcode.dev/docs/Features/git'>Scopri di più sul pannello Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vota per le funzionalità che desideri vedere in futuro!",
-  "CMD_TOGGLE_EMMET": "Emmet"
+  "CLOSE_TAB": "Chiudi scheda",
+  "CLOSE_ACTIVE_TAB": "Chiudi scheda attiva",
+  "CLOSE_ALL_TABS": "Chiudi tutte le schede",
+  "CLOSE_UNMODIFIED_TABS": "Chiudi schede non modificate",
+  "REOPEN_CLOSED_FILE": "Riapri file chiuso",
+  "CMD_TOGGLE_TABBAR": "Mostra/Nascondi barra delle schede",
+  "DESCRIPTION_TABBAR": "Imposta le impostazioni della barra delle schede.",
+  "DESCRIPTION_SHOW_TABBAR": "`true` per mostrare la barra delle schede, altrimenti `false`.",
+  "DESCRIPTION_NUMBER_OF_TABS": "Il numero di schede da mostrare nella barra delle schede. Impostare a -1 per mostrare tutte le schede"
 });

@@ -425,6 +425,7 @@ define({
   "CMD_BEAUTIFY_CODE": "Форматировать код",
   "CMD_BEAUTIFY_CODE_ON_SAVE": "Форматировать код после сохранения",
   "CMD_AUTO_RENAME_TAGS": "Автоматически переименовывать HTML-теги",
+  "CMD_TOGGLE_EMMET": "Эммет",
   "FIND_MENU": "Найти",
   "CMD_FIND": "Найти",
   "CMD_FIND_NEXT": "Найти след.",
@@ -1351,5 +1352,13 @@ define({
   "GIT_TOAST_TITLE": "Возможности Git в Phoenix Code",
   "GIT_TOAST_MESSAGE": "Нажмите на значок панели Git для управления вашим репозиторием. Легко выполняйте коммиты, отправляйте (push), получайте (pull) изменения и просматривайте историю вашего проекта — все в одном месте.<br><a href='https://docs.phcode.dev/docs/Features/git'>Узнать больше о панели Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Проголосуйте за функции, которые вы хотите увидеть в будущем!",
-  "CMD_TOGGLE_EMMET": "Эммет"
+  "CLOSE_TAB": "Закрыть вкладку",
+  "CLOSE_ACTIVE_TAB": "Закрыть активную вкладку",
+  "CLOSE_ALL_TABS": "Закрыть все вкладки",
+  "CLOSE_UNMODIFIED_TABS": "Закрыть неизменённые вкладки",
+  "REOPEN_CLOSED_FILE": "Повторно открыть закрытый файл",
+  "CMD_TOGGLE_TABBAR": "Переключить панель вкладок",
+  "DESCRIPTION_TABBAR": "Настроить параметры панели вкладок.",
+  "DESCRIPTION_SHOW_TABBAR": "`true` для отображения панели вкладок, иначе `false`.",
+  "DESCRIPTION_NUMBER_OF_TABS": "Количество вкладок, отображаемых на панели вкладок. Значение -1 отображает все вкладки."
 });

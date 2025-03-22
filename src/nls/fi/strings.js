@@ -425,6 +425,7 @@ define({
   "CMD_BEAUTIFY_CODE": "Kaunista koodi",
   "CMD_BEAUTIFY_CODE_ON_SAVE": "Kaunista koodi tallennuksen jälkeen",
   "CMD_AUTO_RENAME_TAGS": "Nimeä HTML-tagit automaattisesti uudelleen",
+  "CMD_TOGGLE_EMMET": "Emmet",
   "FIND_MENU": "Etsi",
   "CMD_FIND": "Etsi",
   "CMD_FIND_NEXT": "Etsi seuraava",
@@ -1351,5 +1352,13 @@ define({
   "GIT_TOAST_TITLE": "Tutustu Git-ominaisuuksiin Phoenix Codessa",
   "GIT_TOAST_MESSAGE": "Napsauta Git-paneelin kuvaketta hallitaksesi arkistoasi (repository). Tee commit, push ja pull helposti ja tarkastele projektihistoriaasi – kaikki yhdessä paikassa.<br><a href='https://docs.phcode.dev/docs/Features/git'>Lue lisää Git-paneelista →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Äänestä ominaisuuksia, jotka haluat nähdä seuraavaksi!",
-  "CMD_TOGGLE_EMMET": "Emmet"
+  "CLOSE_TAB": "Sulje välilehti",
+  "CLOSE_ACTIVE_TAB": "Sulje aktiivinen välilehti",
+  "CLOSE_ALL_TABS": "Sulje kaikki välilehdet",
+  "CLOSE_UNMODIFIED_TABS": "Sulje muokkaamattomat välilehdet",
+  "REOPEN_CLOSED_FILE": "Avaa suljettu tiedosto uudelleen",
+  "CMD_TOGGLE_TABBAR": "Näytä/piilota välilehtipalkki",
+  "DESCRIPTION_TABBAR": "Määritä välilehtipalkin asetukset.",
+  "DESCRIPTION_SHOW_TABBAR": "Aseta arvoksi `true` näyttääksesi välilehtipalkin, muuten `false`.",
+  "DESCRIPTION_NUMBER_OF_TABS": "Näytettävien välilehtien määrä välilehtipalkissa. Aseta arvoksi -1 näyttääksesi kaikki välilehdet."
 });

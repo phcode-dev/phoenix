@@ -425,6 +425,7 @@ define({
   "CMD_BEAUTIFY_CODE": "Kodu Güzelleştir",
   "CMD_BEAUTIFY_CODE_ON_SAVE": "Kaydettikten Sonra Kodu Güzelleştir",
   "CMD_AUTO_RENAME_TAGS": "HTML Etiketlerini Otomatik Yeniden Adlandır",
+  "CMD_TOGGLE_EMMET": "Emmet",
   "FIND_MENU": "Bul",
   "CMD_FIND": "Bul",
   "CMD_FIND_NEXT": "Sonrakini Bul",
@@ -1351,5 +1352,13 @@ define({
   "GIT_TOAST_TITLE": "Phoenix Code'da Git Özelliklerini Keşfedin",
   "GIT_TOAST_MESSAGE": "Deponuzu yönetmek için Git paneli simgesine tıklayın. Proje geçmişinizi kolayca işleyin, gönderin, çekin ve görüntüleyin—hepsi tek bir yerde.<br><a href='https://docs.phcode.dev/docs/Features/git'>Git paneli hakkında daha fazla bilgi edinin →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Gelecekte görmek istediğiniz özellikler için oy verin!",
-  "CMD_TOGGLE_EMMET": "Emmet"
+  "CLOSE_TAB": "Sekmeyi Kapat",
+  "CLOSE_ACTIVE_TAB": "Aktif Sekmeyi Kapat",
+  "CLOSE_ALL_TABS": "Tüm Sekmeleri Kapat",
+  "CLOSE_UNMODIFIED_TABS": "Değiştirilmemiş Sekmeleri Kapat",
+  "REOPEN_CLOSED_FILE": "Kapalı Dosyayı Yeniden Aç",
+  "CMD_TOGGLE_TABBAR": "Sekme Çubuğunu Aç/Kapat",
+  "DESCRIPTION_TABBAR": "Sekme çubuğu ayarlarını belirleyin.",
+  "DESCRIPTION_SHOW_TABBAR": "Sekme çubuğunu göstermek için \"true\", gizlemek için \"false\".",
+  "DESCRIPTION_NUMBER_OF_TABS": "Sekme çubuğunda gösterilecek sekme sayısı. Tüm sekmeleri göstermek için -1 olarak ayarlayın."
 });

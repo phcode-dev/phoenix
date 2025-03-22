@@ -425,6 +425,7 @@ define({
   "CMD_BEAUTIFY_CODE": "زیبا سازی کد",
   "CMD_BEAUTIFY_CODE_ON_SAVE": "زیبا سازی کد پس از ذخیره",
   "CMD_AUTO_RENAME_TAGS": "تغییر نام خودکار برچسب‌های HTML",
+  "CMD_TOGGLE_EMMET": "امت",
   "FIND_MENU": "یافتن",
   "CMD_FIND": "یافتن",
   "CMD_FIND_NEXT": "یافتن بعدی",
@@ -1351,5 +1352,13 @@ define({
   "GIT_TOAST_TITLE": "کاوش ویژگی‌های گیت در Phoenix Code",
   "GIT_TOAST_MESSAGE": "برای مدیریت مخزن خود روی آیکون پنل گیت کلیک کنید. به راحتی کامیت، پوش، پول و مشاهده تاریخچه پروژه خود را - همه در یک مکان - انجام دهید.<br><a href='https://docs.phcode.dev/docs/Features/git'>درباره پنل گیت بیشتر بدانید →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "برای قابلیت‌هایی که می‌خواهید در آینده ببینید، رأی دهید!",
-  "CMD_TOGGLE_EMMET": "امت"
+  "CLOSE_TAB": "بستن برگه",
+  "CLOSE_ACTIVE_TAB": "بستن برگه فعال",
+  "CLOSE_ALL_TABS": "بستن همه برگه‌ها",
+  "CLOSE_UNMODIFIED_TABS": "بستن برگه‌های بدون تغییر",
+  "REOPEN_CLOSED_FILE": "باز کردن مجدد فایل بسته شده",
+  "CMD_TOGGLE_TABBAR": "نمایش/عدم نمایش نوار برگه‌ها",
+  "DESCRIPTION_TABBAR": "تنظیمات نوار برگه‌ها را تعیین کنید.",
+  "DESCRIPTION_SHOW_TABBAR": "مقدار «درست» برای نمایش نوار برگه‌ها و مقدار «نادرست» برای عدم نمایش.",
+  "DESCRIPTION_NUMBER_OF_TABS": "تعداد برگه‌هایی که در نوار برگه‌ها نمایش داده می‌شوند. مقدار ۱- برای نمایش همه برگه‌ها."
 });

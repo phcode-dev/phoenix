@@ -425,6 +425,7 @@ define({
   "CMD_BEAUTIFY_CODE": "Улепшај код",
   "CMD_BEAUTIFY_CODE_ON_SAVE": "Улепшај код након чувања",
   "CMD_AUTO_RENAME_TAGS": "Аутоматско преименовање HTML ознака",
+  "CMD_TOGGLE_EMMET": "Емет",
   "FIND_MENU": "Пронађи",
   "CMD_FIND": "Пронађи",
   "CMD_FIND_NEXT": "Пронађи следеће",
@@ -1351,5 +1352,13 @@ define({
   "GIT_TOAST_TITLE": "Истражите Гит функције у Phoenix Code-у",
   "GIT_TOAST_MESSAGE": "Кликните на икону Гит панела да бисте управљали својим спремиштем. Лако направите commit, push, pull и погледајте историју свог пројекта — све на једном месту.<br><a href='https://docs.phcode.dev/docs/Features/git'>Сазнајте више о Гит панелу →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Гласајте за функције које желите да видите у будућности!",
-  "CMD_TOGGLE_EMMET": "Емет"
+  "CLOSE_TAB": "Затвори картицу",
+  "CLOSE_ACTIVE_TAB": "Затвори активну картицу",
+  "CLOSE_ALL_TABS": "Затвори све картице",
+  "CLOSE_UNMODIFIED_TABS": "Затвори непромењене картице",
+  "REOPEN_CLOSED_FILE": "Поново отвори затворену датотеку",
+  "CMD_TOGGLE_TABBAR": "Прикажи/сакриј траку са картицама",
+  "DESCRIPTION_TABBAR": "Подешавање траке са картицама.",
+  "DESCRIPTION_SHOW_TABBAR": "`true` за приказивање траке са картицама, иначе `false`.",
+  "DESCRIPTION_NUMBER_OF_TABS": "Број картица које се приказују у траци. Поставите на -1 да бисте приказали све картице."
 });

@@ -425,6 +425,7 @@ define({
   "CMD_BEAUTIFY_CODE": "Formatuj kod",
   "CMD_BEAUTIFY_CODE_ON_SAVE": "Formatuj kod po zapisaniu",
   "CMD_AUTO_RENAME_TAGS": "Automatycznie zmieniaj nazwy tagów HTML",
+  "CMD_TOGGLE_EMMET": "Emmet",
   "FIND_MENU": "Znajdź",
   "CMD_FIND": "Znajdź",
   "CMD_FIND_NEXT": "Znajdź następny",
@@ -1351,5 +1352,13 @@ define({
   "GIT_TOAST_TITLE": "Poznaj funkcje Gita w Phoenix Code",
   "GIT_TOAST_MESSAGE": "Kliknij ikonę panelu Git, aby zarządzać swoim repozytorium. Łatwo zatwierdzaj, przesyłaj, pobieraj i przeglądaj historię swojego projektu — wszystko w jednym miejscu.<br><a href='https://docs.phcode.dev/docs/Features/git'>Dowiedz się więcej o panelu Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Zagłosuj na funkcje, które chcesz zobaczyć w przyszłości!",
-  "CMD_TOGGLE_EMMET": "Emmet"
+  "CLOSE_TAB": "Zamknij kartę",
+  "CLOSE_ACTIVE_TAB": "Zamknij aktywną kartę",
+  "CLOSE_ALL_TABS": "Zamknij wszystkie karty",
+  "CLOSE_UNMODIFIED_TABS": "Zamknij niezmodyfikowane karty",
+  "REOPEN_CLOSED_FILE": "Ponownie otwórz zamknięty plik",
+  "CMD_TOGGLE_TABBAR": "Przełącz pasek kart",
+  "DESCRIPTION_TABBAR": "Ustawienia paska kart.",
+  "DESCRIPTION_SHOW_TABBAR": "`true`, aby pokazać pasek kart, w przeciwnym razie `false`.",
+  "DESCRIPTION_NUMBER_OF_TABS": "Liczba kart do wyświetlenia na pasku kart. Ustaw na -1, aby wyświetlić wszystkie karty."
 });

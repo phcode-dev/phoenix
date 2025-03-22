@@ -425,6 +425,7 @@ define({
   "CMD_BEAUTIFY_CODE": "Code opmaken",
   "CMD_BEAUTIFY_CODE_ON_SAVE": "Code opmaken na opslaan",
   "CMD_AUTO_RENAME_TAGS": "HTML-tags automatisch hernoemen",
+  "CMD_TOGGLE_EMMET": "Emmet",
   "FIND_MENU": "Zoek",
   "CMD_FIND": "Zoek",
   "CMD_FIND_NEXT": "Zoek volgende",
@@ -1351,5 +1352,13 @@ define({
   "GIT_TOAST_TITLE": "Ontdek Git-functies in Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klik op het Git-paneelpictogram om uw repository te beheren. Commit, push, pull en bekijk uw projectgeschiedenis eenvoudig - alles op één plek.<br><a href='https://docs.phcode.dev/docs/Features/git'>Meer informatie over het Git-paneel →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Stem op de functies die u graag wilt zien!",
-  "CMD_TOGGLE_EMMET": "Emmet"
+  "CLOSE_TAB": "Tabblad sluiten",
+  "CLOSE_ACTIVE_TAB": "Actief tabblad sluiten",
+  "CLOSE_ALL_TABS": "Alle tabbladen sluiten",
+  "CLOSE_UNMODIFIED_TABS": "Niet-gewijzigde tabbladen sluiten",
+  "REOPEN_CLOSED_FILE": "Gesloten bestand opnieuw openen",
+  "CMD_TOGGLE_TABBAR": "Tabbalk in-/uitschakelen",
+  "DESCRIPTION_TABBAR": "Stel de instellingen van de tabbalk in.",
+  "DESCRIPTION_SHOW_TABBAR": "`true` om de tabbalk weer te geven, anders `false`.",
+  "DESCRIPTION_NUMBER_OF_TABS": "Het aantal tabbladen dat in de tabbalk wordt weergegeven. Stel in op -1 om alle tabbladen weer te geven."
 });

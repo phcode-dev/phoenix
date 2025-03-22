@@ -425,6 +425,7 @@ define({
   "CMD_BEAUTIFY_CODE": "Kód formázása",
   "CMD_BEAUTIFY_CODE_ON_SAVE": "Kód formázása mentés után",
   "CMD_AUTO_RENAME_TAGS": "HTML-címkék automatikus átnevezése",
+  "CMD_TOGGLE_EMMET": "Emmet",
   "FIND_MENU": "Keres",
   "CMD_FIND": "Keres",
   "CMD_FIND_NEXT": "Következő találat",
@@ -1351,5 +1352,13 @@ define({
   "GIT_TOAST_TITLE": "Fedezd fel a Git funkciókat a Phoenix Code-ban",
   "GIT_TOAST_MESSAGE": "Kattintson a Git panel ikonra a verziókövető rendszer kezeléséhez. Könnyedén végezhet commit, push és pull műveleteket, valamint megtekintheti a projekt előzményeit – mindezt egy helyen.<br><a href='https://docs.phcode.dev/docs/Features/git'>Tudj meg többet a Git panelről →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Szavazzon azokra a funkciókra, amelyeket a jövőben látni szeretne!",
-  "CMD_TOGGLE_EMMET": "Emmet"
+  "CLOSE_TAB": "Fül bezárása",
+  "CLOSE_ACTIVE_TAB": "Aktív fül bezárása",
+  "CLOSE_ALL_TABS": "Összes fül bezárása",
+  "CLOSE_UNMODIFIED_TABS": "Nem módosított fülek bezárása",
+  "REOPEN_CLOSED_FILE": "Bezárt fájl újranyitása",
+  "CMD_TOGGLE_TABBAR": "Fülsáv be/kikapcsolása",
+  "DESCRIPTION_TABBAR": "A fülsáv beállításainak megadása.",
+  "DESCRIPTION_SHOW_TABBAR": "`true` a fülsáv megjelenítéséhez, egyébként `false`.",
+  "DESCRIPTION_NUMBER_OF_TABS": "A fülsávon megjelenítendő fülek száma. Állítsa -1-re az összes fül megjelenítéséhez."
 });

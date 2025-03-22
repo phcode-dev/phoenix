@@ -425,6 +425,7 @@ define({
   "CMD_BEAUTIFY_CODE": "कोड सुंदर बनाएँ",
   "CMD_BEAUTIFY_CODE_ON_SAVE": "सहेजने के बाद कोड सुंदर बनाएँ",
   "CMD_AUTO_RENAME_TAGS": "HTML टैग का नाम स्वतः बदलें",
+  "CMD_TOGGLE_EMMET": "एमेट",
   "FIND_MENU": "खोजें",
   "CMD_FIND": "खोजें",
   "CMD_FIND_NEXT": "अगला खोजें",
@@ -1351,5 +1352,13 @@ define({
   "GIT_TOAST_TITLE": "फ़ीनिक्स कोड में Git सुविधाओं का अन्वेषण करें",
   "GIT_TOAST_MESSAGE": "अपने रिपॉजिटरी को प्रबंधित करने के लिए Git पैनल आइकन पर क्लिक करें। आसानी से कमिट करें, पुश करें, पुल करें और अपने प्रोजेक्ट का इतिहास देखें—सब एक ही स्थान पर।<br><a href='https://docs.phcode.dev/docs/Features/git'>Git पैनल के बारे में अधिक जानें →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "उन विशेषताओं के लिए वोट करें जिन्हें आप आगे देखना चाहते हैं!",
-  "CMD_TOGGLE_EMMET": "एमेट"
+  "CLOSE_TAB": "टैब बंद करें",
+  "CLOSE_ACTIVE_TAB": "सक्रिय टैब बंद करें",
+  "CLOSE_ALL_TABS": "सभी टैब बंद करें",
+  "CLOSE_UNMODIFIED_TABS": "बिना बदलाव वाले टैब बंद करें",
+  "REOPEN_CLOSED_FILE": "बंद की गई फ़ाइल फिर से खोलें",
+  "CMD_TOGGLE_TABBAR": "टैब बार टॉगल करें",
+  "DESCRIPTION_TABBAR": "टैब बार सेटिंग सेट करें।",
+  "DESCRIPTION_SHOW_TABBAR": "टैब बार दिखाने के लिए true, अन्यथा false।",
+  "DESCRIPTION_NUMBER_OF_TABS": "टैब बार में दिखाने के लिए टैब की संख्या। सभी टैब दिखाने के लिए -1 पर सेट करें।"
 });

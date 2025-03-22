@@ -425,6 +425,7 @@ define({
   "CMD_BEAUTIFY_CODE": "コードを整形",
   "CMD_BEAUTIFY_CODE_ON_SAVE": "保存時にコードを整形",
   "CMD_AUTO_RENAME_TAGS": "HTMLタグを自動リネーム",
+  "CMD_TOGGLE_EMMET": "Emmet",
   "FIND_MENU": "検索",
   "CMD_FIND": "検索",
   "CMD_FIND_NEXT": "次を検索",
@@ -1351,5 +1352,13 @@ define({
   "GIT_TOAST_TITLE": "Phoenix CodeのGit機能を試す",
   "GIT_TOAST_MESSAGE": "Gitパネルアイコンをクリックしてリポジトリを管理します。コミット、プッシュ、プル、プロジェクト履歴の表示をすべて1か所で行えます。<br><a href='https://docs.phcode.dev/docs/Features/git'>Gitパネルの詳細はこちら →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "次に実装してほしい機能に投票してください！",
-  "CMD_TOGGLE_EMMET": "Emmet"
+  "CLOSE_TAB": "タブを閉じる",
+  "CLOSE_ACTIVE_TAB": "アクティブなタブを閉じる",
+  "CLOSE_ALL_TABS": "すべてのタブを閉じる",
+  "CLOSE_UNMODIFIED_TABS": "変更されていないタブを閉じる",
+  "REOPEN_CLOSED_FILE": "閉じたファイルを再度開く",
+  "CMD_TOGGLE_TABBAR": "タブバーの表示/非表示を切り替え",
+  "DESCRIPTION_TABBAR": "タブバーの設定を行います。",
+  "DESCRIPTION_SHOW_TABBAR": "タブバーを表示する場合はtrue、それ以外の場合はfalse。",
+  "DESCRIPTION_NUMBER_OF_TABS": "タブバーに表示するタブの数。すべてのタブを表示する場合は-1を設定します。"
 });

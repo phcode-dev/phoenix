@@ -425,6 +425,7 @@ define({
   "CMD_BEAUTIFY_CODE": "Beautify Code",
   "CMD_BEAUTIFY_CODE_ON_SAVE": "Beautify Code After Saving",
   "CMD_AUTO_RENAME_TAGS": "Auto-rename HTML Tags",
+  "CMD_TOGGLE_EMMET": "Emmet",
   "FIND_MENU": "Find",
   "CMD_FIND": "Find",
   "CMD_FIND_NEXT": "Find Next",
@@ -1351,5 +1352,13 @@ define({
   "GIT_TOAST_TITLE": "Explore Git Features in Phoenix Code",
   "GIT_TOAST_MESSAGE": "Click the Git panel icon to manage your repository. Easily commit, push, pull, and view your project history—all in one place.<br><a href='https://docs.phcode.dev/docs/Features/git'>Learn more about the Git panel →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vote for the features you'd like to see next!",
-  "CMD_TOGGLE_EMMET": "Emmet"
+  "CLOSE_TAB": "Close Tab",
+  "CLOSE_ACTIVE_TAB": "Close Active Tab",
+  "CLOSE_ALL_TABS": "Close All Tabs",
+  "CLOSE_UNMODIFIED_TABS": "Close Unmodified Tabs",
+  "REOPEN_CLOSED_FILE": "Reopen Closed File",
+  "CMD_TOGGLE_TABBAR": "Toggle Tab Bar",
+  "DESCRIPTION_TABBAR": "Set the tab bar settings.",
+  "DESCRIPTION_SHOW_TABBAR": "`true` to show the tab bar, otherwise `false`.",
+  "DESCRIPTION_NUMBER_OF_TABS": "The number of tabs to show in the tab bar. Set to `-1` to show all tabs."
 });

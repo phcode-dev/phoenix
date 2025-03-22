@@ -425,6 +425,7 @@ define({
   "CMD_BEAUTIFY_CODE": "تنسيق الشفرة",
   "CMD_BEAUTIFY_CODE_ON_SAVE": "تنسيق الشفرة بعد الحفظ",
   "CMD_AUTO_RENAME_TAGS": "إعادة تسمية وسوم HTML تلقائيًا",
+  "CMD_TOGGLE_EMMET": "إيميت",
   "FIND_MENU": "بحث",
   "CMD_FIND": "بحث",
   "CMD_FIND_NEXT": "البحث التالي",
@@ -1351,5 +1352,13 @@ define({
   "GIT_TOAST_TITLE": "استكشف ميزات Git في Phoenix Code",
   "GIT_TOAST_MESSAGE": "انقر على رمز لوحة Git لإدارة مستودعك. يمكنك بسهولة تنفيذ الالتزام والدفع والسحب وعرض سجل مشروعك - كل ذلك في مكان واحد.<br><a href='https://docs.phcode.dev/docs/Features/git'>تعرّف على المزيد حول لوحة Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "صوت للميزات التي ترغب برؤيتها تالياً!",
-  "CMD_TOGGLE_EMMET": "إيميت"
+  "CLOSE_TAB": "إغلاق علامة التبويب",
+  "CLOSE_ACTIVE_TAB": "إغلاق علامة التبويب النشطة",
+  "CLOSE_ALL_TABS": "إغلاق جميع علامات التبويب",
+  "CLOSE_UNMODIFIED_TABS": "إغلاق علامات التبويب غير المعدلة",
+  "REOPEN_CLOSED_FILE": "إعادة فتح الملف المغلق",
+  "CMD_TOGGLE_TABBAR": "تبديل شريط علامات التبويب",
+  "DESCRIPTION_TABBAR": "ضبط إعدادات شريط علامات التبويب.",
+  "DESCRIPTION_SHOW_TABBAR": "صحيح لإظهار شريط علامات التبويب، وإلا خطأ.",
+  "DESCRIPTION_NUMBER_OF_TABS": "عدد علامات التبويب التي سيتم عرضها في شريط علامات التبويب.  اضبط على -1 لعرض جميع علامات التبويب"
 });

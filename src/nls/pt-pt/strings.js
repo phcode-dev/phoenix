@@ -425,6 +425,7 @@ define({
   "CMD_BEAUTIFY_CODE": "Embelezar Código",
   "CMD_BEAUTIFY_CODE_ON_SAVE": "Embelezar Código Após Guardar",
   "CMD_AUTO_RENAME_TAGS": "Renomear Tags HTML Automaticamente",
+  "CMD_TOGGLE_EMMET": "Emmet",
   "FIND_MENU": "Encontrar",
   "CMD_FIND": "Encontrar",
   "CMD_FIND_NEXT": "Encontrar próximo",
@@ -1351,5 +1352,13 @@ define({
   "GIT_TOAST_TITLE": "Explore as funcionalidades do Git no Phoenix Code",
   "GIT_TOAST_MESSAGE": "Clique no ícone do painel Git para gerir o seu repositório. Efetue commits, pushes, pulls e veja o histórico do seu projeto com facilidade — tudo num só lugar.<br><a href='https://docs.phcode.dev/docs/Features/git'>Saiba mais sobre o painel Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vote nas funcionalidades que quer ver a seguir!",
-  "CMD_TOGGLE_EMMET": "Emmet"
+  "CLOSE_TAB": "Fechar Separador",
+  "CLOSE_ACTIVE_TAB": "Fechar Separador Ativo",
+  "CLOSE_ALL_TABS": "Fechar Todos os Separadores",
+  "CLOSE_UNMODIFIED_TABS": "Fechar Separadores Não Modificados",
+  "REOPEN_CLOSED_FILE": "Reabrir Ficheiro Fechado",
+  "CMD_TOGGLE_TABBAR": "Alternar Barra de Separadores",
+  "DESCRIPTION_TABBAR": "Definir as definições da barra de separadores.",
+  "DESCRIPTION_SHOW_TABBAR": "`true` para mostrar a barra de separadores, caso contrário `false`.",
+  "DESCRIPTION_NUMBER_OF_TABS": "O número de separadores a mostrar na barra de separadores. Defina como -1 para mostrar todos os separadores"
 });

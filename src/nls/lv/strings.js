@@ -425,6 +425,7 @@ define({
   "CMD_BEAUTIFY_CODE": "Formatēt kodu",
   "CMD_BEAUTIFY_CODE_ON_SAVE": "Formatēt kodu pēc saglabāšanas",
   "CMD_AUTO_RENAME_TAGS": "Automātiski pārdēvēt HTML tagus",
+  "CMD_TOGGLE_EMMET": "Emmet",
   "FIND_MENU": "Meklēt",
   "CMD_FIND": "Meklēt",
   "CMD_FIND_NEXT": "Meklēt nākamo",
@@ -1351,5 +1352,13 @@ define({
   "GIT_TOAST_TITLE": "Izpētiet Git funkcijas Phoenix Code",
   "GIT_TOAST_MESSAGE": "Noklikšķiniet uz Git paneļa ikonas, lai pārvaldītu savu repozitoriju. Ērti veiciet commit, push, pull un skatiet sava projekta vēsturi — viss vienā vietā.<br><a href='https://docs.phcode.dev/docs/Features/git'>Uzziniet vairāk par Git paneli →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Nobalsot par funkcijām, kuras vēlaties redzēt nākamreiz!",
-  "CMD_TOGGLE_EMMET": "Emmet"
+  "CLOSE_TAB": "Aizvērt cilni",
+  "CLOSE_ACTIVE_TAB": "Aizvērt aktīvo cilni",
+  "CLOSE_ALL_TABS": "Aizvērt visas cilnes",
+  "CLOSE_UNMODIFIED_TABS": "Aizvērt nemodificētās cilnes",
+  "REOPEN_CLOSED_FILE": "Atvērt slēgto failu atkārtoti",
+  "CMD_TOGGLE_TABBAR": "Pārslēgt cilņu joslu",
+  "DESCRIPTION_TABBAR": "Iestatīt cilņu joslas iestatījumus.",
+  "DESCRIPTION_SHOW_TABBAR": "“true”, lai rādītu cilņu joslu, citādi “false”.",
+  "DESCRIPTION_NUMBER_OF_TABS": "Cilņu skaits, kas jāparāda cilņu joslā. Iestatiet uz -1, lai rādītu visas cilnes."
 });

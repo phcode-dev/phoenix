@@ -425,6 +425,7 @@ define({
   "CMD_BEAUTIFY_CODE": "Formatează codul",
   "CMD_BEAUTIFY_CODE_ON_SAVE": "Formatează codul după salvare",
   "CMD_AUTO_RENAME_TAGS": "Redenumire automată a etichetelor HTML",
+  "CMD_TOGGLE_EMMET": "Emmet",
   "FIND_MENU": "Caută",
   "CMD_FIND": "Caută",
   "CMD_FIND_NEXT": "Caută următorul",
@@ -1351,5 +1352,13 @@ define({
   "GIT_TOAST_TITLE": "Explorați funcțiile Git în Phoenix Code",
   "GIT_TOAST_MESSAGE": "Faceți clic pe pictograma panoului Git pentru a vă gestiona depozitul. Efectuați ușor commit, push, pull și vizualizați istoricul proiectului dvs. - totul într-un singur loc.<br><a href='https://docs.phcode.dev/docs/Features/git'>Aflați mai multe despre panoul Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Votează pentru funcționalitățile pe care dorești să le vezi în continuare!",
-  "CMD_TOGGLE_EMMET": "Emmet"
+  "CLOSE_TAB": "Închide fila",
+  "CLOSE_ACTIVE_TAB": "Închide fila activă",
+  "CLOSE_ALL_TABS": "Închide toate filele",
+  "CLOSE_UNMODIFIED_TABS": "Închide filele nemodificate",
+  "REOPEN_CLOSED_FILE": "Redeschide fișierul închis",
+  "CMD_TOGGLE_TABBAR": "Comută bara de file",
+  "DESCRIPTION_TABBAR": "Setează setările barei de file.",
+  "DESCRIPTION_SHOW_TABBAR": "`true` pentru a afișa bara de file, altfel `false`.",
+  "DESCRIPTION_NUMBER_OF_TABS": "Numărul de file de afișat în bara de file. Setează la -1 pentru a afișa toate filele."
 });

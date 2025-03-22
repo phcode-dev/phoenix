@@ -425,6 +425,7 @@ define({
   "CMD_BEAUTIFY_CODE": "Formátovat kód",
   "CMD_BEAUTIFY_CODE_ON_SAVE": "Formátovat kód po uložení",
   "CMD_AUTO_RENAME_TAGS": "Automatické přejmenování HTML tagů",
+  "CMD_TOGGLE_EMMET": "Emmet",
   "FIND_MENU": "Najít",
   "CMD_FIND": "Najít",
   "CMD_FIND_NEXT": "Najít další",
@@ -1351,5 +1352,13 @@ define({
   "GIT_TOAST_TITLE": "Prozkoumejte funkce Gitu v Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klikněte na ikonu panelu Git pro správu vašeho repozitáře. Snadno commitujte, pushujte, pullujte a prohlížejte si historii projektu – vše na jednom místě.<br><a href='https://docs.phcode.dev/docs/Features/git'>Zjistěte více o panelu Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Hlasujte pro funkce, které chcete vidět v další verzi!",
-  "CMD_TOGGLE_EMMET": "Emmet"
+  "CLOSE_TAB": "Zavřít kartu",
+  "CLOSE_ACTIVE_TAB": "Zavřít aktivní kartu",
+  "CLOSE_ALL_TABS": "Zavřít všechny karty",
+  "CLOSE_UNMODIFIED_TABS": "Zavřít nezměněné karty",
+  "REOPEN_CLOSED_FILE": "Znovu otevřít zavřený soubor",
+  "CMD_TOGGLE_TABBAR": "Přepnout panel karet",
+  "DESCRIPTION_TABBAR": "Nastavení panelu karet.",
+  "DESCRIPTION_SHOW_TABBAR": "`true` pro zobrazení panelu karet, jinak `false`.",
+  "DESCRIPTION_NUMBER_OF_TABS": "Počet karet zobrazených v panelu karet. Hodnota -1 zobrazí všechny karty."
 });
