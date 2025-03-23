@@ -169,6 +169,32 @@
     background-color: #75BEFF;
 }
 
+.tab.active-in-inactive-pane {
+    background-color: #fff;
+}
+
+.dark .tab.active-in-inactive-pane {
+    background-color: #3D3D3D;
+}
+
+.tab.active-in-inactive-pane::after {
+    display: none;
+}
+
+.tab.active-in-inactive-pane::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 0.12rem;
+    background-color: #b4b2b2;
+}
+
+.dark .tab.active-in-inactive-pane::before {
+    background-color: #666;
+}
+
 .tab.dirty::before {
     content: "•";
     color: #888;
