@@ -2,7 +2,7 @@
     display: flex;
     align-items: center;
     background-color: #f5f5f5;
-    border-bottom: 1px solid #ddd;
+    border-bottom: none;
     position: relative;
     overflow: hidden;
     z-index: 2;
@@ -10,7 +10,7 @@
 
 .dark .tab-bar-container {
     background-color: #1E1E1E;
-    border-bottom: 1px solid #333;
+    border-bottom: none;
 }
 
 .phoenix-tab-bar {
@@ -82,8 +82,8 @@
     align-items: center;
     padding: 0 0.5rem 0 0.85rem;
     height: 100%;
-    background-color: #F8F8F8;
-    border-right: 1px solid #ddd;
+    background-color: #f1f1f1;
+    border-right: 1px solid rgba(0, 0, 0, 0.05);
     cursor: pointer;
     position: relative;
     flex: 0 0 auto;
@@ -93,8 +93,8 @@
 }
 
 .dark .tab {
-    background-color: #2D2D2D;
-    border-right: 1px solid #333;
+    background-color: #292929;
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .tab,
@@ -143,22 +143,22 @@
 }
 
 .dark .tab.active {
-    background-color: #3D3D3D;
+    background-color: #1D1F21;
 }
 
 .tab:hover {
-    background-color: #f0f0f0;
+    background-color: #e0e0e0;
     cursor: pointer;
 }
 
 .dark .tab:hover {
-    background-color: #4d4949;
+    background-color: #3b3a3a;
 }
 
 .tab.active::after {
     content: "";
     position: absolute;
-    bottom: 0;
+    top: 0;
     left: 0;
     right: 0;
     height: 0.12rem;
@@ -170,28 +170,24 @@
 }
 
 .tab.active-in-inactive-pane {
-    background-color: #fff;
+    background-color: #fafafa;
 }
 
 .dark .tab.active-in-inactive-pane {
-    background-color: #3D3D3D;
+    background-color: #252729;
 }
 
 .tab.active-in-inactive-pane::after {
-    display: none;
-}
-
-.tab.active-in-inactive-pane::before {
     content: "";
     position: absolute;
-    bottom: 0;
+    top: 0;
     left: 0;
     right: 0;
     height: 0.12rem;
     background-color: #b4b2b2;
 }
 
-.dark .tab.active-in-inactive-pane::before {
+.dark .tab.active-in-inactive-pane::after {
     background-color: #666;
 }
 
