@@ -527,6 +527,34 @@ define(function (require, exports, module) {
         );
     }
 
+    /**
+     * this function sets up mouse wheel scrolling functionality for the tab bars
+     * when the mouse wheel is scrolled up, the tab bar will scroll to the left
+     * when its scrolled down, the tab bar will scroll to the right
+     */
+    function setupTabBarScrolling() {
+
+        // common  handler for both the tab bars
+        function handleMouseWheel(e) {
+            // get the tab bar element that is being scrolled
+            const $scrolledTabBar = $(this);
+
+            // A negative deltaY means scrolling up so we need to scroll to the left,
+            // positive means scrolling down so we need to scroll to the right
+            // here we calculate the scroll amount (pixels)
+            // and multiply by 2.5 for increasing the scroll amount
+            const scrollAmount = e.originalEvent.deltaY * 2.5;
+
+            // calculate the new scroll position
+            const newScrollLeft = $scrolledTabBar.scrollLeft() + scrollAmount;
+
+            // apply the new scroll position
+            $scrolledTabBar.scrollLeft(newScrollLeft);
+        }
+
+        // attach the wheel event handler to both tab bars
+        $(document).on('wheel', '#phoenix-tab-bar, #phoenix-tab-bar-2', handleMouseWheel);
+    }
 
     AppInit.appReady(function () {
         _registerCommands();
@@ -548,5 +576,8 @@ define(function (require, exports, module) {
 
         Overflow.init();
         DragDrop.init($('#phoenix-tab-bar'), $('#phoenix-tab-bar-2'));
+
+        // setup the mouse wheel scrolling
+        setupTabBarScrolling();
     });
 });
