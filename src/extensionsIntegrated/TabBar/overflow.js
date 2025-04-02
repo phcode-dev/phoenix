@@ -254,13 +254,23 @@ define(function (require, exports, module) {
             return;
         }
 
-        // make sure there is an active editor
+        let activePath;
+
+        // get the active file
         const activeEditor = EditorManager.getActiveEditor();
-        if (!activeEditor || !activeEditor.document || !activeEditor.document.file) {
-            return;
+        if (activeEditor && activeEditor.document && activeEditor.document.file) {
+            activePath = activeEditor.document.file.fullPath;
+        } else {
+            // If there is no active editor, we need to check if its an image file
+            const currentFile = MainViewManager.getCurrentlyViewedFile();
+            if (currentFile) {
+                activePath = currentFile.fullPath;
+            } else {
+                // if not an image file, not a text file, we don't need to scroll
+                return;
+            }
         }
 
-        const activePath = activeEditor.document.file.fullPath;
         // get the active tab. the active tab is the tab that is currently open
         const $activeTab = $tabBarElement.find(`.tab[data-path="${activePath}"]`);
 
