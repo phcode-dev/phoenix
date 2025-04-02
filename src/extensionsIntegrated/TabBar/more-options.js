@@ -37,6 +37,8 @@ define(function (require, exports, module) {
     const items = [
         Strings.CLOSE_TAB,
         Strings.CLOSE_ACTIVE_TAB,
+        Strings.CLOSE_TABS_TO_THE_LEFT,
+        Strings.CLOSE_TABS_TO_THE_RIGHT,
         Strings.CLOSE_ALL_TABS,
         Strings.CLOSE_UNMODIFIED_TABS,
         "---",
@@ -122,6 +124,78 @@ define(function (require, exports, module) {
         }
     }
 
+    /**
+     * "CLOSE TABS TO THE LEFT"
+     * This function is responsible for closing all tabs to the left of the right-clicked tab
+     *
+     * @param {String} filePath - path of the file that was right-clicked
+     * @param {String} paneId - the id of the pane in which the file is present
+     */
+    function handleCloseTabsToTheLeft(filePath, paneId) {
+        if (!filePath) {
+            return;
+        }
+
+        let workingSet;
+        workingSet = paneId === "first-pane" ? Global.firstPaneWorkingSet : Global.secondPaneWorkingSet;
+        if (!workingSet) {
+            return;
+        }
+
+        // find the index of the current file in the working set
+        const currentIndex = workingSet.findIndex(entry => entry.path === filePath);
+
+        if (currentIndex > 0) { // we only proceed if there are tabs to the left
+            // get all files to the left of the current file
+            const filesToClose = workingSet.slice(0, currentIndex);
+
+            // Close each file, starting from the rightmost [to avoid index shifts]
+            for (let i = filesToClose.length - 1; i >= 0; i--) {
+                const fileObj = FileSystem.getFileForPath(filesToClose[i].path);
+                CommandManager.execute(
+                    Commands.FILE_CLOSE,
+                    { file: fileObj, paneId: paneId }
+                );
+            }
+        }
+    }
+
+
+    /**
+     * "CLOSE TABS TO THE RIGHT"
+     * This function is responsible for closing all tabs to the right of the right-clicked tab
+     *
+     * @param {String} filePath - path of the file that was right-clicked
+     * @param {String} paneId - the id of the pane in which the file is present
+     */
+    function handleCloseTabsToTheRight(filePath, paneId) {
+        if (!filePath) {
+            return;
+        }
+
+        let workingSet;
+        workingSet = paneId === "first-pane" ? Global.firstPaneWorkingSet : Global.secondPaneWorkingSet;
+        if (!workingSet) {
+            return;
+        }
+
+        // get the index of the current file in the working set
+        const currentIndex = workingSet.findIndex(entry => entry.path === filePath);
+        // only proceed if there are tabs to the right
+        if (currentIndex !== -1 && currentIndex < workingSet.length - 1) {
+            // get all files to the right of the current file
+            const filesToClose = workingSet.slice(currentIndex + 1);
+
+            for (let i = filesToClose.length - 1; i >= 0; i--) {
+                const fileObj = FileSystem.getFileForPath(filesToClose[i].path);
+                CommandManager.execute(
+                    Commands.FILE_CLOSE,
+                    { file: fileObj, paneId: paneId }
+                );
+            }
+        }
+    }
+
 
     /**
      * "REOPEN CLOSED FILE"
@@ -187,14 +261,22 @@ define(function (require, exports, module) {
             handleCloseActiveTab();
             break;
         case 2:
+            // Close tabs to the left
+            handleCloseTabsToTheLeft(filePath, paneId);
+            break;
+        case 3:
+            // Close tabs to the right
+            handleCloseTabsToTheRight(filePath, paneId);
+            break;
+        case 4:
             // Close all tabs
             handleCloseAllTabs();
             break;
-        case 3:
+        case 5:
             // Close unmodified tabs
             handleCloseUnmodifiedTabs();
             break;
-        case 5:
+        case 6:
             // Reopen closed file
             reopenClosedFile();
             break;
