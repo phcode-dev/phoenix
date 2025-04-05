@@ -754,6 +754,7 @@ define({
   "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>kişisel olarak tanımlanabilir hiçbir bilgiyi toplamaz veya işlemez</strong>, ancak gizliliğinizi korumak için <strong>anonim kullanım istatistikleri toplar</strong>. Anonim veriler GDPR/CCPA bildirim gerekliliklerinden muaftır, ancak anonim veri toplamayı da devre dışı bırakma seçeneğinizin olması gerektiğine inanıyoruz.<br><br> Verilerinizi görebilir veya <strong>Yardım > Sağlık Raporu</strong>'nu seçerek <strong>hiçbir anonim veriyi paylaşmamayı seçebilirsiniz</strong>. Bu <strong>anonim</strong> uygulama kullanım istatistikleri ve hata raporları, {APP_NAME} ile deneyiminizi iyileştirmek için özellikleri önceliklendirmeye, hataları bulmaya ve kullanılabilirlik sorunlarını tespit etmeye yardımcı olur. Bu veriler olmadan, sizin için hangi özellikleri geliştirmeye değer olduğunu bilemeyiz! <br>",
   "HEALTH_DATA_PREVIEW": "{APP_NAME} Sistem Durumu Raporu",
   "HEALTH_DATA_PREVIEW_INTRO": "<p>{APP_NAME} <strong>kişisel olarak tanımlanabilir hiçbir bilgi toplamaz veya işlemez</strong>, ancak gizliliğinizi korumak için <strong>anonim kullanım istatistikleri toplar</strong>. Bu <strong>anonim</strong> uygulama kullanım istatistikleri ve hata raporları, {APP_NAME} ile deneyiminizi iyileştirmek için özellikleri önceliklendirmeye, hataları bulmaya ve kullanılabilirlik sorunlarını tespit etmeye yardımcı olur.</p> <p>Aşağıda, etkinleştirilmiş <em>ise</em> bir sonraki Sistem Durumu Raporunuzda gönderilecek verilerin bir önizlemesi yer almaktadır. ('Caught Critical error' olarak işaretlenmiş hata günlükleri için geliştirici konsoluna da bakın.)</p>",
+  "HEALTH_DATA_PREVIEW_NECESSARY": "Güvenlik/uygulama güncellemeleri, analiz kitaplığı başlatma, kullanıcı sayıları ve kullanım süresi, gerekli uygulama sağlık göstergeleri olarak her zaman anonim şekilde toplanır. Bunlar toplu istatistiklerdir ve hiçbir kişisel veri gönderilmez/kaydedilmez.",
   "INLINE_TIMING_EDITOR_TIME": "Zaman",
   "INLINE_TIMING_EDITOR_PROGRESSION": "İlerleme",
   "BEZIER_EDITOR_INFO": "<kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd> Seçili noktayı taşı<br><kbd class='text'>Shift</kbd> On birim taşı<br><kbd class='text'>Tab</kbd> Noktalar arasında geçiş yap",
@@ -1361,5 +1362,6 @@ define({
   "GIT_TOAST_TITLE": "Phoenix Code'da Git Özelliklerini Keşfedin",
   "GIT_TOAST_MESSAGE": "Deponuzu yönetmek için Git paneli simgesine tıklayın. Proje geçmişinizi kolayca işleyin, gönderin, çekin ve görüntüleyin—hepsi tek bir yerde.<br><a href='https://docs.phcode.dev/docs/Features/git'>Git paneli hakkında daha fazla bilgi edinin →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Gelecekte görmek istediğiniz özellikler için oy verin!",
-  "HEALTH_DATA_PREVIEW_NECESSARY": "Güvenlik/uygulama güncellemeleri, analiz kitaplığı başlatma, kullanıcı sayıları ve kullanım süresi, gerekli uygulama sağlık göstergeleri olarak her zaman anonim şekilde toplanır. Bunlar toplu istatistiklerdir ve hiçbir kişisel veri gönderilmez/kaydedilmez."
+  "CLOSE_TABS_TO_THE_RIGHT": "Sağdaki Sekmeleri Kapat",
+  "CLOSE_TABS_TO_THE_LEFT": "Soldaki Sekmeleri Kapat"
 });

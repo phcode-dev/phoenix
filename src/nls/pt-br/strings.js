@@ -754,6 +754,7 @@ define({
   "HEALTH_DATA_NOTIFICATION_MESSAGE": "O {APP_NAME} <strong>não coleta ou processa nenhuma informação pessoalmente identificável</strong>, mas <strong>coleta estatísticas anônimas de uso</strong> para proteger sua privacidade. Dados anônimos estão isentos dos requisitos de notificação da GDPR/CCPA, mas acreditamos que você precisa ter a opção de desativar a coleta de dados anônimos também.<br><br> Você pode ver seus dados ou <strong>optar por não compartilhar nenhum dado anônimo</strong> selecionando <strong>Ajuda > Relatório de Saúde</strong>. Essas estatísticas <strong>anônimas</strong> de uso do aplicativo e relatórios de erros ajudam a priorizar recursos, encontrar bugs e identificar problemas de usabilidade para melhorar sua experiência com o {APP_NAME}. Sem esses dados, não saberíamos quais recursos valem a pena desenvolver para você! <br>",
   "HEALTH_DATA_PREVIEW": "Relatório de saúde do {APP_NAME}",
   "HEALTH_DATA_PREVIEW_INTRO": "<p>O {APP_NAME} <strong>não coleta nem processa qualquer informação pessoal identificável</strong>, mas <strong>coleta estatísticas de uso anônimas</strong> para proteger sua privacidade. Essas estatísticas de uso do aplicativo e relatórios de erros <strong>anônimos</strong> ajudam a priorizar recursos, encontrar bugs e identificar problemas de usabilidade para melhorar sua experiência com o {APP_NAME}.</p> <p>Abaixo está uma prévia dos dados que serão enviados em seu próximo Relatório de Saúde <em>se</em> ele estiver ativado. (Veja também o console do desenvolvedor para logs de erro marcados como 'Erro crítico detectado'.)</p>",
+  "HEALTH_DATA_PREVIEW_NECESSARY": "Atualizações de segurança/aplicativo, inicialização da biblioteca de análises, contagem de usuários e tempo de uso são sempre coletados anonimamente como indicadores essenciais de funcionamento do aplicativo. São estatísticas agregadas e nenhum dado pessoal é enviado/registrado.",
   "INLINE_TIMING_EDITOR_TIME": "Tempo",
   "INLINE_TIMING_EDITOR_PROGRESSION": "Progresso",
   "BEZIER_EDITOR_INFO": "<kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd> Move o ponto selecionado<br><kbd class='text'>Shift</kbd> Move dez unidades<br><kbd class='text'>Tab</kbd> Troca pontos",
@@ -1361,5 +1362,6 @@ define({
   "GIT_TOAST_TITLE": "Explore os Recursos do Git no Phoenix Code",
   "GIT_TOAST_MESSAGE": "Clique no ícone do painel Git para gerenciar seu repositório. Faça commits, pushes, pulls e visualize o histórico do seu projeto com facilidade — tudo em um só lugar.<br><a href='https://docs.phcode.dev/docs/Features/git'>Saiba mais sobre o painel Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vote nos recursos que você quer ver em seguida!",
-  "HEALTH_DATA_PREVIEW_NECESSARY": "Atualizações de segurança/aplicativo, inicialização da biblioteca de análises, contagem de usuários e tempo de uso são sempre coletados anonimamente como indicadores essenciais de funcionamento do aplicativo. São estatísticas agregadas e nenhum dado pessoal é enviado/registrado."
+  "CLOSE_TABS_TO_THE_RIGHT": "Fechar abas à direita",
+  "CLOSE_TABS_TO_THE_LEFT": "Fechar abas à esquerda"
 });

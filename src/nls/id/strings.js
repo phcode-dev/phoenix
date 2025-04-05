@@ -754,6 +754,7 @@ define({
   "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>tidak mengumpulkan atau memproses informasi identitas pribadi apa pun</strong>, tetapi <strong>mengumpulkan statistik penggunaan anonim</strong> untuk menjaga privasi Anda. Data anonim dikecualikan dari persyaratan pemberitahuan GDPR/CCPA, tetapi kami percaya Anda perlu memiliki pilihan untuk tidak ikut serta dalam pengumpulan data anonim juga.<br><br> Anda dapat melihat data Anda atau <strong>memilih untuk tidak membagikan data anonim apa pun</strong> dengan memilih <strong>Bantuan > Laporan Kesehatan</strong>. Statistik penggunaan aplikasi dan laporan kesalahan <strong>anonim</strong> ini membantu memprioritaskan fitur, menemukan bug, dan menemukan masalah kegunaan untuk meningkatkan pengalaman Anda dengan {APP_NAME}. Tanpa data ini, kami tidak akan tahu fitur apa yang layak dibuat untuk Anda! <br>",
   "HEALTH_DATA_PREVIEW": "Laporan Kesehatan {APP_NAME}",
   "HEALTH_DATA_PREVIEW_INTRO": "<p>{APP_NAME} <strong>tidak mengumpulkan atau memproses informasi identitas pribadi apa pun</strong>, tetapi <strong>mengumpulkan statistik penggunaan anonim</strong> untuk menjaga privasi Anda. Statistik penggunaan aplikasi dan laporan kesalahan yang <strong>anonim</strong> ini membantu memprioritaskan fitur, menemukan bug, dan menemukan masalah kegunaan untuk meningkatkan pengalaman Anda dengan {APP_NAME}.</p> <p>Berikut adalah pratinjau data yang akan dikirim dalam Laporan Kesehatan Anda berikutnya <em>jika</em> diaktifkan. (Lihat juga konsol pengembang untuk log kesalahan yang ditandai 'Caught Critical error'.)</p>",
+  "HEALTH_DATA_PREVIEW_NECESSARY": "Pembaruan keamanan/aplikasi, inisialisasi pustaka analitik, jumlah pengguna, dan waktu penggunaan selalu dikumpulkan secara anonim sebagai indikator kesehatan aplikasi yang diperlukan. Data ini berupa statistik agregat dan tidak ada data pribadi yang dikirim/dicatat.",
   "INLINE_TIMING_EDITOR_TIME": "Waktu",
   "INLINE_TIMING_EDITOR_PROGRESSION": "Progres",
   "BEZIER_EDITOR_INFO": "<kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd> Pindahkan titik yang dipilih<br><kbd class='text'>Shift</kbd> Pindahkan 10 unit<br><kbd class='text'>Tab</kbd> Tukar titik",
@@ -1361,5 +1362,6 @@ define({
   "GIT_TOAST_TITLE": "Jelajahi Fitur Git di Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klik ikon panel Git untuk mengelola repositori Anda. Lakukan commit, push, pull, dan lihat riwayat proyek Anda dengan mudah—semua di satu tempat.<br><a href='https://docs.phcode.dev/docs/Features/git'>Pelajari lebih lanjut tentang panel Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Pilih fitur yang ingin Anda lihat selanjutnya!",
-  "HEALTH_DATA_PREVIEW_NECESSARY": "Pembaruan keamanan/aplikasi, inisialisasi pustaka analitik, jumlah pengguna, dan waktu penggunaan selalu dikumpulkan secara anonim sebagai indikator kesehatan aplikasi yang diperlukan. Data ini berupa statistik agregat dan tidak ada data pribadi yang dikirim/dicatat."
+  "CLOSE_TABS_TO_THE_RIGHT": "Tutup Tab di Sebelah Kanan",
+  "CLOSE_TABS_TO_THE_LEFT": "Tutup Tab di Sebelah Kiri"
 });

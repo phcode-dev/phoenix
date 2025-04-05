@@ -754,6 +754,7 @@ define({
   "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>不會收集或處理任何個人識別資訊</strong>，但<strong>會收集匿名使用統計數據</strong>以保護您的隱私。匿名數據不受 GDPR/CCPA 通知要求的約束，但我們認為您也需要有選擇退出匿名數據收集的權利。<br><br>您可以透過選擇<strong>說明 > 健康報告</strong>來查看您的數據或<strong>選擇不分享任何匿名數據</strong>。這些<strong>匿名</strong>應用程式使用統計數據和錯誤報告有助於我們排定功能優先順序、找出錯誤並發現可用性問題，以改善您使用 {APP_NAME} 的體驗。沒有這些數據，我們就不知道哪些功能值得為您打造！<br>",
   "HEALTH_DATA_PREVIEW": "{APP_NAME} 狀況報告",
   "HEALTH_DATA_PREVIEW_INTRO": "<p>{APP_NAME} <strong>不會收集或處理任何個人識別資訊</strong>，但<strong>會收集匿名使用統計資料</strong>以保障您的隱私。這些<strong>匿名</strong>應用程式使用統計資料和錯誤報告有助於我們排定功能優先順序、找出錯誤並發現可用性問題，以改善您使用 {APP_NAME} 的體驗。</p> <p>以下是<em>如果</em>已啟用健康報告，將在您的下次健康報告中傳送的資料預覽。（另請參閱開發人員主控台，查看標記為「攔截到嚴重錯誤」的錯誤日誌。）</p>",
+  "HEALTH_DATA_PREVIEW_NECESSARY": "安全性/應用程式更新、分析程式庫初始化、使用者人數和使用時間等應用程式健康指標，皆以匿名方式收集。這些皆為彙總統計數據，不會傳送/記錄任何個人資料。",
   "INLINE_TIMING_EDITOR_TIME": "時間",
   "INLINE_TIMING_EDITOR_PROGRESSION": "進度",
   "BEZIER_EDITOR_INFO": "<kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd> 移動選取的控制點<br><kbd class='text'>Shift</kbd> 移動 10 個單位<br><kbd class='text'>Tab</kbd> 切換控制點",
@@ -1361,5 +1362,6 @@ define({
   "GIT_TOAST_TITLE": "在 Phoenix Code 中探索 Git 功能",
   "GIT_TOAST_MESSAGE": "按一下 Git 面板圖示即可管理您的儲存庫。輕鬆提交、推送、提取和檢視您的專案歷史記錄，一切盡在掌握之中。<br><a href='https://docs.phcode.dev/docs/Features/git'>深入瞭解 Git 面板 →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "投票選出您希望看到的下個功能！",
-  "HEALTH_DATA_PREVIEW_NECESSARY": "安全性/應用程式更新、分析程式庫初始化、使用者人數和使用時間等應用程式健康指標，皆以匿名方式收集。這些皆為彙總統計數據，不會傳送/記錄任何個人資料。"
+  "CLOSE_TABS_TO_THE_RIGHT": "關閉右側分頁",
+  "CLOSE_TABS_TO_THE_LEFT": "關閉左側分頁"
 });

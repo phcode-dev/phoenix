@@ -754,6 +754,7 @@ define({
   "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>does not collect or process any personally identifiable information</strong>, but <strong>collects anonymous usage statistics</strong> to protect your privacy. Anonymous data is exempt from GDPR/CCPA notification requirements, but we believe you should have a choice to opt out of anonymous data collection as well.<br><br> You can see your data or <strong>choose not to share any anonymous data</strong> by selecting <strong>Help > Health Report</strong>. These <strong>anonymous</strong> app usage statistics and error reports help us prioritise features, find bugs, and spot usability issues to improve your experience with {APP_NAME}. Without this data, we wouldn't know what features are worth building for you! <br>",
   "HEALTH_DATA_PREVIEW": "{APP_NAME} Health Report",
   "HEALTH_DATA_PREVIEW_INTRO": "<p>{APP_NAME} <strong>does not collect or process any personally identifiable information</strong>, but <strong>collects anonymous usage statistics</strong> to guard your privacy. These <strong>anonymous</strong> app usage statistics and error reports help prioritise features, find bugs, and spot usability issues for improving your experience with {APP_NAME}.</p> <p>Below is a preview of the data that will be sent in your next Health Report <em>if</em> it is enabled. (Also see developer console for error logs marked 'Caught Critical error'.)</p>",
+  "HEALTH_DATA_PREVIEW_NECESSARY": "Security/app updates, analytics library initialisation, user counts, and usage time are always anonymously collected as necessary app health indicators. These are aggregate statistics and no personal data is sent/logged.",
   "INLINE_TIMING_EDITOR_TIME": "Time",
   "INLINE_TIMING_EDITOR_PROGRESSION": "Progression",
   "BEZIER_EDITOR_INFO": "<kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd> Move selected point<br><kbd class='text'>Shift</kbd> Move by ten units<br><kbd class='text'>Tab</kbd> Switch points",
@@ -1361,5 +1362,6 @@ define({
   "GIT_TOAST_TITLE": "Explore Git Features in Phoenix Code",
   "GIT_TOAST_MESSAGE": "Click the Git panel icon to manage your repository. Easily commit, push, pull, and view your project history—all in one place.<br><a href='https://docs.phcode.dev/docs/Features/git'>Learn more about the Git panel →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vote for the features you'd like to see next!",
-  "HEALTH_DATA_PREVIEW_NECESSARY": "Security/app updates, analytics library initialisation, user counts, and usage time are always anonymously collected as necessary app health indicators. These are aggregate statistics and no personal data is sent/logged."
+  "CLOSE_TABS_TO_THE_RIGHT": "Close tabs to the right",
+  "CLOSE_TABS_TO_THE_LEFT": "Close tabs to the left"
 });

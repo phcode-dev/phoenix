@@ -754,6 +754,7 @@ define({
   "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>samler ikke inn eller behandler noen personlig identifiserbar informasjon</strong>, men <strong>samler inn anonym bruksstatistikk</strong> for å beskytte personvernet ditt. Anonyme data er unntatt fra GDPR/CCPA-varslingsplikten, men vi mener du bør ha muligheten til å velge bort innsamling av anonyme data også.<br><br> Du kan se dataene dine eller <strong>velge å ikke dele noen anonyme data</strong> ved å velge <strong>Hjelp > Helse-rapport</strong>. Denne <strong>anonyme</strong> statistikken over appbruk og feilrapporter hjelper oss med å prioritere funksjoner, finne feil og oppdage brukervennlighetsproblemer for å forbedre din opplevelse med {APP_NAME}. Uten disse dataene ville vi ikke visst hvilke funksjoner det er verdt å bygge for deg! <br>",
   "HEALTH_DATA_PREVIEW": "{APP_NAME} helserapport",
   "HEALTH_DATA_PREVIEW_INTRO": "<p>{APP_NAME} <strong>samler ikke inn eller behandler noen personlig identifiserbar informasjon</strong>, men <strong>samler inn anonym bruksstatistikk</strong> for å beskytte personvernet ditt. Denne <strong>anonyme</strong> statistikken over appbruk og feilrapporter hjelper oss med å prioritere funksjoner, finne feil og oppdage bruksproblemer for å forbedre opplevelsen din med {APP_NAME}.</p> <p>Nedenfor er en forhåndsvisning av dataene som vil bli sendt i din neste helserapport <em>hvis</em> den er aktivert. (Se også utviklerkonsollen for feillogger merket 'Caught Critical error'.)</p>",
+  "HEALTH_DATA_PREVIEW_NECESSARY": "Sikkerhets-/appoppdateringer, initialisering av analyseverktøy, brukerantall og brukstid samles alltid inn anonymt som nødvendige indikatorer for appens helse. Dette er aggregert statistikk, og ingen personlige data sendes/logges.",
   "INLINE_TIMING_EDITOR_TIME": "Tid",
   "INLINE_TIMING_EDITOR_PROGRESSION": "Progresjon",
   "BEZIER_EDITOR_INFO": "<kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd> Flytt valgt punkt<br><kbd class='text'>Shift</kbd> Flytt med ti enheter<br><kbd class='text'>Tab</kbd> Bytt punkter",
@@ -1361,5 +1362,6 @@ define({
   "GIT_TOAST_TITLE": "Utforsk Git-funksjoner i Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klikk på Git-panelikonet for å administrere repositoriet ditt. Utfør commit, push, pull og se prosjektloggen din – alt på ett sted.<br><a href='https://docs.phcode.dev/docs/Features/git'>Lær mer om Git-panelet →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Stem på funksjonene du ønsker å se neste!",
-  "HEALTH_DATA_PREVIEW_NECESSARY": "Sikkerhets-/appoppdateringer, initialisering av analyseverktøy, brukerantall og brukstid samles alltid inn anonymt som nødvendige indikatorer for appens helse. Dette er aggregert statistikk, og ingen personlige data sendes/logges."
+  "CLOSE_TABS_TO_THE_RIGHT": "Lukk faner til høyre",
+  "CLOSE_TABS_TO_THE_LEFT": "Lukk faner til venstre"
 });

@@ -754,6 +754,7 @@ define({
   "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>ne prikuplja niti obrađuje nikakve osobne podatke</strong>, ali <strong>prikuplja anonimnu statistiku korištenja</strong> kako bi zaštitio vašu privatnost. Anonimni podaci su izuzeti od zahtjeva za obavijestima GDPR/CCPA, ali vjerujemo da trebate imati mogućnost isključivanja prikupljanja anonimnih podataka.<br><br> Možete vidjeti svoje podatke ili <strong>odabrati da ne dijelite nikakve anonimne podatke</strong> odabirom <strong>Pomoć > Izvješće o zdravlju</strong>. Ova <strong>anonimna</strong> statistika korištenja aplikacije i izvješća o pogreškama pomažu u određivanju prioriteta značajki, pronalaženju grešaka i uočavanju problema s upotrebljivošću radi poboljšanja vašeg iskustva s {APP_NAME}. Bez ovih podataka ne bismo znali koje značajke vrijedi izraditi za vas! <br>",
   "HEALTH_DATA_PREVIEW": "Izvješće o stanju {APP_NAME}",
   "HEALTH_DATA_PREVIEW_INTRO": "<p>{APP_NAME} <strong>ne prikuplja niti obrađuje nikakve osobne podatke</strong>, već <strong>prikuplja anonimne statistike korištenja</strong> kako bi zaštitio vašu privatnost. Ove <strong>anonimne</strong> statistike korištenja aplikacije i izvješća o pogreškama pomažu u određivanju prioriteta značajki, pronalaženju grešaka i uočavanju problema s uporabom radi poboljšanja vašeg iskustva s {APP_NAME}.</p> <p>Ispod je pregled podataka koji će biti poslani u vašem sljedećem Izvješću o stanju <em>ako</em> je omogućeno. (Također pogledajte konzolu za razvojne programere za zapisnike pogrešaka označene s 'Uhvaćena kritična pogreška'.)</p>",
+  "HEALTH_DATA_PREVIEW_NECESSARY": "Sigurnosna ažuriranja/ažuriranja aplikacije, inicijalizacija analitičke biblioteke, broj korisnika i vrijeme korištenja uvijek se anonimno prikupljaju kao nužni pokazatelji ispravnosti aplikacije. Radi se o agregiranoj statistici i nikakvi osobni podaci se ne šalju/zapisuju.",
   "INLINE_TIMING_EDITOR_TIME": "Vrijeme",
   "INLINE_TIMING_EDITOR_PROGRESSION": "Napredak",
   "BEZIER_EDITOR_INFO": "<kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd> Pomakni odabranu točku<br><kbd class='text'>Shift</kbd> Pomakni za 10 jedinica<br><kbd class='text'>Tab</kbd> Zamijeni točke.",
@@ -1361,5 +1362,6 @@ define({
   "GIT_TOAST_TITLE": "Istražite Git značajke u Phoenix Codeu",
   "GIT_TOAST_MESSAGE": "Kliknite ikonu Git panela za upravljanje svojim repozitorijem. Jednostavno potvrdite (commit), pošaljite (push), preuzmite (pull) i pregledajte povijest svog projekta - sve na jednom mjestu.<br><a href='https://docs.phcode.dev/docs/Features/git'>Saznajte više o Git panelu →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Glasajte za značajke koje želite vidjeti sljedeće!",
-  "HEALTH_DATA_PREVIEW_NECESSARY": "Sigurnosna ažuriranja/ažuriranja aplikacije, inicijalizacija analitičke biblioteke, broj korisnika i vrijeme korištenja uvijek se anonimno prikupljaju kao nužni pokazatelji ispravnosti aplikacije. Radi se o agregiranoj statistici i nikakvi osobni podaci se ne šalju/zapisuju."
+  "CLOSE_TABS_TO_THE_RIGHT": "Zatvori kartice desno",
+  "CLOSE_TABS_TO_THE_LEFT": "Zatvori kartice lijevo"
 });

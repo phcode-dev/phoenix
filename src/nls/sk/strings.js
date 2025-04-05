@@ -754,6 +754,7 @@ define({
   "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>nezbiera ani nespracováva žiadne osobné údaje</strong>, ale <strong>zbiera anonymné štatistiky používania</strong> na ochranu vášho súkromia. Anonymné údaje sú vyňaté z požiadaviek na oznámenie GDPR/CCPA, ale veríme, že by ste mali mať možnosť odmietnuť aj zber anonymných údajov.<br><br> Svoje údaje si môžete pozrieť alebo <strong>sa rozhodnúť nezdieľať žiadne anonymné údaje</strong> výberom možnosti <strong>Pomocník > Správa o stave</strong>. Tieto <strong>anonymné</strong> štatistiky používania aplikácie a hlásenia chýb nám pomáhajú uprednostňovať funkcie, nachádzať chyby a odhaľovať problémy s použiteľnosťou, aby sme zlepšili vašu skúsenosť s aplikáciou {APP_NAME}. Bez týchto údajov by sme nevedeli, aké funkcie sa pre vás oplatí vyvíjať! <br>",
   "HEALTH_DATA_PREVIEW": "Hlásenie o stave {APP_NAME}",
   "HEALTH_DATA_PREVIEW_INTRO": "<p>{APP_NAME} <strong>nezbiera ani nespracováva žiadne osobné údaje</strong>, ale <strong>zbiera anonymné štatistiky používania</strong> na ochranu vášho súkromia. Tieto <strong>anonymné</strong> štatistiky používania aplikácie a hlásenia o chybách pomáhajú uprednostňovať funkcie, nachádzať chyby a odhaľovať problémy s použiteľnosťou na zlepšenie vašej skúsenosti s aplikáciou {APP_NAME}.</p> <p>Nižšie je uvedený náhľad údajov, ktoré budú odoslané vo vašom ďalšom hlásení o stave, <em>ak</em> je povolené. (Pozrite si aj konzolu pre vývojárov, kde nájdete záznamy chýb označené ako „Zachytená kritická chyba“.)</p>",
+  "HEALTH_DATA_PREVIEW_NECESSARY": "Aktualizácie zabezpečenia/aplikácie, inicializácia analytickej knižnice, počty používateľov a čas používania sa vždy anonymne zhromažďujú ako nevyhnutné indikátory stavu aplikácie. Ide o súhrnné štatistiky a žiadne osobné údaje sa neodosielajú/nezaznamenávajú.",
   "INLINE_TIMING_EDITOR_TIME": "Čas",
   "INLINE_TIMING_EDITOR_PROGRESSION": "Postup",
   "BEZIER_EDITOR_INFO": "<kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd> Presunúť vybraný bod<br><kbd class='text'>Shift</kbd> Presunúť o desať jednotiek<br><kbd class='text'>Tab</kbd> Prepínať body",
@@ -1361,5 +1362,6 @@ define({
   "GIT_TOAST_TITLE": "Preskúmajte funkcie Gitu v Phoenix Code",
   "GIT_TOAST_MESSAGE": "Kliknite na ikonu panela Git pre správu vášho repozitára. Jednoducho commitujte, pushujte, pullujte a prezerajte si históriu vášho projektu – všetko na jednom mieste.<br><a href='https://docs.phcode.dev/docs/Features/git'>Zistite viac o paneli Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Hlasujte za funkcie, ktoré chcete vidieť v ďalšej verzii!",
-  "HEALTH_DATA_PREVIEW_NECESSARY": "Aktualizácie zabezpečenia/aplikácie, inicializácia analytickej knižnice, počty používateľov a čas používania sa vždy anonymne zhromažďujú ako nevyhnutné indikátory stavu aplikácie. Ide o súhrnné štatistiky a žiadne osobné údaje sa neodosielajú/nezaznamenávajú."
+  "CLOSE_TABS_TO_THE_RIGHT": "Zatvoriť karty napravo",
+  "CLOSE_TABS_TO_THE_LEFT": "Zatvoriť karty naľavo"
 });

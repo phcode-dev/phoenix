@@ -754,6 +754,7 @@ define({
   "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>ei kerää tai käsittele mitään henkilötietoja</strong>, mutta <strong>kerää anonyymejä käyttötilastoja</strong> yksityisyytesi suojaamiseksi. Anonyymi data ei kuulu GDPR/CCPA-ilmoitusvaatimusten piiriin, mutta uskomme, että sinulla tulee olla mahdollisuus kieltäytyä myös anonyymin datan keräämisestä.<br><br> Voit tarkastella dataasi tai <strong>valita, ettet jaa anonyymiä dataa</strong> valitsemalla <strong>Ohje > Terveysraportti</strong>. Nämä <strong>anonyymit</strong> sovelluksen käyttötilastot ja virheraporttien avulla voimme priorisoida ominaisuuksia, löytää bugeja ja havaita käytettävyysongelmia parantaaksemme {APP_NAME}-kokemustasi. Ilman tätä dataa emme tietäisi, mitä ominaisuuksia kannattaa rakentaa sinulle! <br>",
   "HEALTH_DATA_PREVIEW": "{APP_NAME}in terveydentilaraportti",
   "HEALTH_DATA_PREVIEW_INTRO": "<p>{APP_NAME} <strong>ei kerää tai käsittele mitään henkilötietoja</strong>, mutta <strong>kerää anonyymejä käyttötilastoja</strong> yksityisyytesi suojaamiseksi. Nämä <strong>anonyymit</strong> sovelluksen käyttötilastot ja virheilmoitukset auttavat meitä priorisoimaan ominaisuuksia, löytämään virheitä ja havaitsemaan käytettävyysongelmia {APP_NAME}-kokemuksesi parantamiseksi.</p> <p>Alla on esikatselu tiedoista, jotka lähetetään seuraavassa käyttöraportissasi, <em>jos</em> se on käytössä. (Katso myös kehittäjäkonsolin virhelokit, jotka on merkitty 'Caught Critical error'.)</p>",
+  "HEALTH_DATA_PREVIEW_NECESSARY": "Sovelluksen tietoturva-/sovelluspäivitykset, analytiikkakirjaston alustus, käyttäjämäärät ja käyttöaika kerätään aina nimettömästi sovelluksen terveydentilan mittareina. Nämä ovat koottuja tilastoja, eikä henkilökohtaisia tietoja lähetetä/kirjata.",
   "INLINE_TIMING_EDITOR_TIME": "Aika",
   "INLINE_TIMING_EDITOR_PROGRESSION": "Edistyminen",
   "BEZIER_EDITOR_INFO": "<kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd> Siirrä valittua pistettä<br><kbd class='text'>Vaihto</kbd> Siirrä kymmenen yksikköä<br><kbd class='text'>Tab</kbd> Vaihda pisteitä",
@@ -1361,5 +1362,6 @@ define({
   "GIT_TOAST_TITLE": "Tutustu Git-ominaisuuksiin Phoenix Codessa",
   "GIT_TOAST_MESSAGE": "Napsauta Git-paneelin kuvaketta hallitaksesi arkistoasi (repository). Tee commit, push ja pull helposti ja tarkastele projektihistoriaasi – kaikki yhdessä paikassa.<br><a href='https://docs.phcode.dev/docs/Features/git'>Lue lisää Git-paneelista →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Äänestä ominaisuuksia, jotka haluat nähdä seuraavaksi!",
-  "HEALTH_DATA_PREVIEW_NECESSARY": "Sovelluksen tietoturva-/sovelluspäivitykset, analytiikkakirjaston alustus, käyttäjämäärät ja käyttöaika kerätään aina nimettömästi sovelluksen terveydentilan mittareina. Nämä ovat koottuja tilastoja, eikä henkilökohtaisia tietoja lähetetä/kirjata."
+  "CLOSE_TABS_TO_THE_RIGHT": "Sulje välilehdet oikealta",
+  "CLOSE_TABS_TO_THE_LEFT": "Sulje välilehdet vasemmalta"
 });

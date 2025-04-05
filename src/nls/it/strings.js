@@ -754,6 +754,7 @@ define({
   "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>non raccoglie né elabora alcuna informazione personale identificativa</strong>, ma <strong>raccoglie statistiche di utilizzo anonime</strong> per tutelare la tua privacy. I dati anonimi sono esenti dai requisiti di notifica GDPR/CCPA, ma crediamo che tu debba avere la possibilità di scegliere di non condividere i dati anonimi.<br><br> Puoi visualizzare i tuoi dati o <strong>scegliere di non condividere alcun dato anonimo</strong> selezionando <strong>Aiuto > Report di integrità</strong>. Queste statistiche di utilizzo dell'app e i report sugli errori <strong>anonimi</strong> ci aiutano a dare priorità alle funzionalità, a trovare bug e a individuare problemi di usabilità per migliorare la tua esperienza con {APP_NAME}. Senza questi dati, non sapremmo quali funzionalità vale la pena sviluppare per te! <br>",
   "HEALTH_DATA_PREVIEW": "Anteprima Health Data",
   "HEALTH_DATA_PREVIEW_INTRO": "<p>{APP_NAME} <strong>non raccoglie né elabora alcuna informazione personale identificabile</strong>, ma <strong>raccoglie statistiche di utilizzo anonime</strong> per tutelare la tua privacy. Queste statistiche di utilizzo dell'app e i rapporti sugli errori <strong>anonimi</strong> ci aiutano a dare priorità alle funzionalità, a trovare bug e a individuare problemi di usabilità per migliorare la tua esperienza con {APP_NAME}.</p> <p>Di seguito è riportata un'anteprima dei dati che verranno inviati nel tuo prossimo Rapporto sull'integrità <em>se</em> abilitato. (Vedi anche la console per sviluppatori per i registri degli errori contrassegnati come \"Errore critico rilevato\".)</p>",
+  "HEALTH_DATA_PREVIEW_NECESSARY": "Aggiornamenti di sicurezza/app, inizializzazione della libreria di analisi, conteggio utenti e tempo di utilizzo vengono sempre raccolti in forma anonima come indicatori di stato dell'app. Si tratta di statistiche aggregate e nessun dato personale viene inviato/registrato.",
   "INLINE_TIMING_EDITOR_TIME": "Tempo",
   "INLINE_TIMING_EDITOR_PROGRESSION": "Progresso",
   "BEZIER_EDITOR_INFO": "<kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd> Sposta punto selezionato<br><kbd class='text'>Maiuscola</kbd> Muovi di dieci unità",
@@ -1361,5 +1362,6 @@ define({
   "GIT_TOAST_TITLE": "Esplora le funzionalità Git in Phoenix Code",
   "GIT_TOAST_MESSAGE": "Fai clic sull'icona del pannello Git per gestire il tuo repository. Esegui commit, push, pull e visualizza la cronologia del tuo progetto, tutto in un unico posto.<br><a href='https://docs.phcode.dev/docs/Features/git'>Scopri di più sul pannello Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vota per le funzionalità che desideri vedere in futuro!",
-  "HEALTH_DATA_PREVIEW_NECESSARY": "Aggiornamenti di sicurezza/app, inizializzazione della libreria di analisi, conteggio utenti e tempo di utilizzo vengono sempre raccolti in forma anonima come indicatori di stato dell'app. Si tratta di statistiche aggregate e nessun dato personale viene inviato/registrato."
+  "CLOSE_TABS_TO_THE_RIGHT": "Chiudi schede a destra",
+  "CLOSE_TABS_TO_THE_LEFT": "Chiudi schede a sinistra"
 });
