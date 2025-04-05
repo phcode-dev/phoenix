@@ -754,6 +754,7 @@ define({
   "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>不会收集或处理任何个人身份信息</strong>，但<strong>会收集匿名的使用统计数据</strong>以保护您的隐私。匿名数据不受 GDPR/CCPA 通知要求的约束，但我们认为您也需要有选择退出匿名数据收集的权利。<br><br>您可以通过选择<strong>帮助 > 健康报告</strong>来查看您的数据或<strong>选择不共享任何匿名数据</strong>。这些<strong>匿名的</strong>应用使用统计数据和错误报告有助于确定功能优先级、查找错误和发现可用性问题，从而改善您使用 {APP_NAME} 的体验。如果没有这些数据，我们将无法了解哪些功能值得为您构建！<br>",
   "HEALTH_DATA_PREVIEW": "{APP_NAME} 健康报告",
   "HEALTH_DATA_PREVIEW_INTRO": "<p>{APP_NAME} <strong>不会收集或处理任何个人身份信息</strong>，但会<strong>收集匿名使用统计数据</strong>来保护您的隐私。这些<strong>匿名</strong>应用使用统计数据和错误报告有助于确定功能优先级、查找错误和发现可用性问题，从而改善您使用 {APP_NAME} 的体验。</p> <p>以下是您的下一个健康报告<em>如果</em>启用将发送的数据预览。（另请参阅开发者控制台中标记为“Caught Critical error”的错误日志。）</p>",
+  "HEALTH_DATA_PREVIEW_NECESSARY": "安全/应用更新、分析库初始化、用户数量和使用时间等应用健康指标将以匿名方式收集。这些是聚合统计数据，不会发送/记录任何个人数据。",
   "INLINE_TIMING_EDITOR_TIME": "时间",
   "INLINE_TIMING_EDITOR_PROGRESSION": "进程",
   "BEZIER_EDITOR_INFO": "<kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd> 移动选中点<br><kbd class='text'>Shift</kbd> 10倍移动<br><kbd class='text'>Tab</kbd> 切换点",
@@ -1361,5 +1362,6 @@ define({
   "GIT_TOAST_TITLE": "探索 Phoenix Code 中的 Git 功能",
   "GIT_TOAST_MESSAGE": "点击 Git 面板图标即可管理您的代码仓库。轻松提交、推送、拉取和查看项目历史记录，一切尽在一处。<br><a href='https://docs.phcode.dev/docs/Features/git'>了解更多关于 Git 面板的信息 →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "为您希望看到的下一个功能投票！",
-  "HEALTH_DATA_PREVIEW_NECESSARY": "安全/应用更新、分析库初始化、用户数量和使用时间等应用健康指标将以匿名方式收集。这些是聚合统计数据，不会发送/记录任何个人数据。"
+  "CLOSE_TABS_TO_THE_RIGHT": "关闭右侧标签页",
+  "CLOSE_TABS_TO_THE_LEFT": "关闭左侧标签页"
 });

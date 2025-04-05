@@ -754,6 +754,7 @@ define({
   "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>verzamelt of verwerkt geen persoonlijk identificeerbare informatie</strong>, maar <strong>verzamelt wel anonieme gebruiksstatistieken</strong> om uw privacy te beschermen. Anonieme gegevens zijn vrijgesteld van GDPR/CCPA-meldingsvereisten, maar wij vinden dat u de mogelijkheid moet hebben om u af te melden voor het verzamelen van anonieme gegevens.<br><br>U kunt uw gegevens bekijken of ervoor <strong>kiezen om geen anonieme gegevens te delen</strong> door <strong>Help > Statusrapport</strong> te selecteren. Deze <strong>anonieme</strong> gebruiksstatistieken en foutrapporten helpen bij het prioriteren van functies, het vinden van bugs en het opsporen van problemen met de bruikbaarheid om uw ervaring met {APP_NAME} te verbeteren. Zonder deze gegevens zouden we niet weten welke functies het waard zijn om voor u te ontwikkelen! <br>",
   "HEALTH_DATA_PREVIEW": "{APP_NAME} statusrapport",
   "HEALTH_DATA_PREVIEW_INTRO": "<p>{APP_NAME} <strong>verzamelt of verwerkt geen persoonlijk identificeerbare informatie</strong>, maar <strong>verzamelt anonieme gebruiksstatistieken</strong> om uw privacy te beschermen. Deze <strong>anonieme</strong> gebruiksstatistieken en foutrapporten van de app helpen bij het prioriteren van functies, het vinden van bugs en het opsporen van problemen met de bruikbaarheid om uw ervaring met {APP_NAME} te verbeteren.</p> <p>Hieronder ziet u een voorbeeld van de gegevens die in uw volgende gezondheidsrapport worden verzonden <em>als</em> deze is ingeschakeld. (Zie ook de ontwikkelaarsconsole voor foutlogboeken gemarkeerd met 'Caught Critical error'.)</p>",
+  "HEALTH_DATA_PREVIEW_NECESSARY": "Beveiligings-/app-updates, initialisatie van de analysebibliotheek, gebruikersaantallen en gebruikstijd worden altijd anoniem verzameld als noodzakelijke indicatoren voor de app-status. Dit zijn geaggregeerde statistieken en er worden geen persoonlijke gegevens verzonden/gelogd.",
   "INLINE_TIMING_EDITOR_TIME": "Tijd",
   "INLINE_TIMING_EDITOR_PROGRESSION": "Voortgang",
   "BEZIER_EDITOR_INFO": "<kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd> Verplaats geselecteerde punt<br><kbd class='text'>Shift</kbd> Verplaats met 10 units<br><kbd class='text'>Tab</kbd> Verwissel punten",
@@ -1361,5 +1362,6 @@ define({
   "GIT_TOAST_TITLE": "Ontdek Git-functies in Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klik op het Git-paneelpictogram om uw repository te beheren. Commit, push, pull en bekijk uw projectgeschiedenis eenvoudig - alles op één plek.<br><a href='https://docs.phcode.dev/docs/Features/git'>Meer informatie over het Git-paneel →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Stem op de functies die u graag wilt zien!",
-  "HEALTH_DATA_PREVIEW_NECESSARY": "Beveiligings-/app-updates, initialisatie van de analysebibliotheek, gebruikersaantallen en gebruikstijd worden altijd anoniem verzameld als noodzakelijke indicatoren voor de app-status. Dit zijn geaggregeerde statistieken en er worden geen persoonlijke gegevens verzonden/gelogd."
+  "CLOSE_TABS_TO_THE_RIGHT": "Tabbladen rechts sluiten",
+  "CLOSE_TABS_TO_THE_LEFT": "Tabbladen links sluiten"
 });

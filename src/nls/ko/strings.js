@@ -754,6 +754,7 @@ define({
   "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME}은 <strong>어떠한 개인 식별 정보도 수집하거나 처리하지 않습니다</strong>. 하지만 사용자의 개인 정보를 보호하기 위해 <strong>익명의 사용 통계를 수집합니다</strong>. 익명 데이터는 GDPR/CCPA 알림 요구 사항에서 제외되지만, 익명 데이터 수집을 거부할 수 있는 선택권을 제공해야 한다고 생각합니다.<br><br> <strong>도움말 > 상태 보고서</strong>를 선택하여 데이터를 확인하거나 <strong>익명 데이터를 공유하지 않도록 선택</strong>할 수 있습니다. 이러한 <strong>익명</strong> 앱 사용 통계 및 오류 보고서는 기능 우선 순위 지정, 버그 발견 및 사용성 문제 파악에 도움이 되어 {APP_NAME} 사용 환경을 개선하는 데 도움이 됩니다. 이 데이터가 없으면 어떤 기능을 개발해야 할지 알 수 없습니다! <br>",
   "HEALTH_DATA_PREVIEW": "{APP_NAME} 상태 보고서",
   "HEALTH_DATA_PREVIEW_INTRO": "<p>{APP_NAME}은 <strong>개인 식별 정보를 수집하거나 처리하지 않지만</strong>, 사용자의 개인정보를 보호하기 위해 <strong>익명 사용 통계를 수집합니다</strong>. 이러한 <strong>익명</strong> 앱 사용 통계 및 오류 보고서는 {APP_NAME} 사용 환경 개선을 위해 기능 우선순위 지정, 버그 찾기 및 사용성 문제 파악에 도움이 됩니다.</p> <p>다음은 활성화된 경우 다음 상태 보고서에 전송될 데이터의 미려보기입니다. ('심각한 오류 포착'으로 표시된 오류 로그는 개발자 콘솔에서도 확인할 수 있습니다.)</p>",
+  "HEALTH_DATA_PREVIEW_NECESSARY": "앱 상태 지표를 위해 보안/앱 업데이트, 분석 라이브러리 초기화, 사용자 수 및 사용 시간이 항상 익명으로 수집됩니다. 이는 집계된 통계이며 개인 데이터는 전송/기록되지 않습니다.",
   "INLINE_TIMING_EDITOR_TIME": "시간",
   "INLINE_TIMING_EDITOR_PROGRESSION": "진행",
   "BEZIER_EDITOR_INFO": "<kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd> Move selected point<br><kbd class='text'>Shift</kbd> Move by ten units<br><kbd class='text'>Tab</kbd> Switch points",
@@ -1361,5 +1362,6 @@ define({
   "GIT_TOAST_TITLE": "Phoenix Code의 Git 기능 살펴보기",
   "GIT_TOAST_MESSAGE": "Git 패널 아이콘을 클릭하여 저장소를 관리하세요. 커밋, 푸시, 풀, 프로젝트 기록 보기를 한 곳에서 간편하게 수행할 수 있습니다.<br><a href='https://docs.phcode.dev/docs/Features/git'>Git 패널에 대해 자세히 알아보기 →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "다음에 보고 싶은 기능에 투표하세요!",
-  "HEALTH_DATA_PREVIEW_NECESSARY": "앱 상태 지표를 위해 보안/앱 업데이트, 분석 라이브러리 초기화, 사용자 수 및 사용 시간이 항상 익명으로 수집됩니다. 이는 집계된 통계이며 개인 데이터는 전송/기록되지 않습니다."
+  "CLOSE_TABS_TO_THE_RIGHT": "오른쪽 탭 닫기",
+  "CLOSE_TABS_TO_THE_LEFT": "왼쪽 탭 닫기"
 });

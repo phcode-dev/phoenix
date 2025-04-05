@@ -123,6 +123,8 @@
   "CLOSE_ALL_TABS": "Close All Tabs",
   "CLOSE_DONT_SAVE": "Close (Don't Save)",
   "CLOSE_TAB": "Close Tab",
+  "CLOSE_TABS_TO_THE_LEFT": "Close Tabs to the Left",
+  "CLOSE_TABS_TO_THE_RIGHT": "Close Tabs to the Right",
   "CLOSE_UNMODIFIED_TABS": "Close Unmodified Tabs",
   "CMD_ABOUT": "About {APP_TITLE}",
   "CMD_ADD_CUR_TO_NEXT_LINE": "Add Cursor to Next Line",

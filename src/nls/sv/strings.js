@@ -754,6 +754,7 @@ define({
   "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>samlar inte in eller behandlar någon personligt identifierbar information</strong>, men <strong>samlar in anonym användningsstatistik</strong> för att skydda din integritet. Anonyma data är undantagna från GDPR/CCPA-anmälningskrav, men vi anser att du bör ha möjlighet att välja bort insamling av anonyma data också.<br><br> Du kan se dina data eller <strong>välja att inte dela några anonyma data</strong> genom att välja <strong>Hjälp > Hälsorapport</strong>. Denna <strong>anonyma</strong> statistik över appanvändning och felrapporter hjälper oss att prioritera funktioner, hitta buggar och upptäcka användbarhetsproblem för att förbättra din upplevelse med {APP_NAME}. Utan dessa data skulle vi inte veta vilka funktioner det är värt att bygga för dig! <br>",
   "HEALTH_DATA_PREVIEW": "{APP_NAME} Hälsorapport",
   "HEALTH_DATA_PREVIEW_INTRO": "<p>{APP_NAME} <strong>samlar inte in eller behandlar någon personligt identifierbar information</strong>, men <strong>samlar in anonym användningsstatistik</strong> för att skydda din integritet. Denna <strong>anonyma</strong> statistik över appanvändning och felrapporter hjälper oss att prioritera funktioner, hitta buggar och upptäcka användbarhetsproblem för att förbättra din upplevelse med {APP_NAME}.</p> <p>Nedan visas en förhandsgranskning av de data som kommer att skickas i din nästa hälsorapport <em>om</em> den är aktiverad. (Se även utvecklarkonsolen för felloggar markerade 'Caught Critical error'.)</p>",
+  "HEALTH_DATA_PREVIEW_NECESSARY": "Säkerhets-/appuppdateringar, initiering av analysbibliotek, användarantal och användningstid samlas alltid in anonymt som nödvändiga apphälsoindikatorer. Dessa är aggregerad statistik och inga personuppgifter skickas/loggas.",
   "INLINE_TIMING_EDITOR_TIME": "Tid",
   "INLINE_TIMING_EDITOR_PROGRESSION": "Progression",
   "BEZIER_EDITOR_INFO": "<kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd> Flytta markerad punkt<br><kbd class='text'>Shift</kbd> Flytta tio enheter",
@@ -1361,5 +1362,6 @@ define({
   "GIT_TOAST_TITLE": "Utforska Git-funktioner i Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klicka på Git-panelens ikon för att hantera din repository. Committa, pusha, pulla och se din projekthistorik enkelt – allt på ett ställe.<br><a href='https://docs.phcode.dev/docs/Features/git'>Läs mer om Git-panelen →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Rösta på funktionerna du vill se härnäst!",
-  "HEALTH_DATA_PREVIEW_NECESSARY": "Säkerhets-/appuppdateringar, initiering av analysbibliotek, användarantal och användningstid samlas alltid in anonymt som nödvändiga apphälsoindikatorer. Dessa är aggregerad statistik och inga personuppgifter skickas/loggas."
+  "CLOSE_TABS_TO_THE_RIGHT": "Stäng flikar till höger",
+  "CLOSE_TABS_TO_THE_LEFT": "Stäng flikar till vänster"
 });

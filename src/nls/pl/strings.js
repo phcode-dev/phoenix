@@ -754,6 +754,7 @@ define({
   "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME} <strong>nie gromadzi ani nie przetwarza żadnych danych osobowych</strong>, ale <strong>zbiera anonimowe statystyki użytkowania</strong>, aby chronić Twoją prywatność. Anonimowe dane są zwolnione z wymogów powiadamiania RODO/CCPA, ale uważamy, że powinieneś mieć możliwość rezygnacji również z gromadzenia danych anonimowych.<br><br> Możesz zobaczyć swoje dane lub <strong>zrezygnować z udostępniania jakichkolwiek danych anonimowych</strong>, wybierając <strong>Pomoc > Raport o stanie</strong>. Te <strong>anonimowe</strong> statystyki użytkowania aplikacji i raporty o błędach pomagają nam ustalać priorytety funkcji, znajdować błędy i wykrywać problemy z użytecznością, aby poprawić Twoje wrażenia z korzystania z {APP_NAME}. Bez tych danych nie wiedzielibyśmy, jakie funkcje warto dla Ciebie tworzyć! <br>",
   "HEALTH_DATA_PREVIEW": "Raporty {APP_NAME}",
   "HEALTH_DATA_PREVIEW_INTRO": "<p>{APP_NAME} <strong>nie gromadzi ani nie przetwarza żadnych danych osobowych</strong>, ale <strong>gromadzi anonimowe statystyki użytkowania</strong>, aby chronić Twoją prywatność. Te <strong>anonimowe</strong> statystyki użytkowania aplikacji i raporty o błędach pomagają priorytetyzować funkcje, znajdować błędy i wykrywać problemy z użytecznością, aby poprawić komfort korzystania z {APP_NAME}.</p> <p>Poniżej znajduje się podgląd danych, które zostaną wysłane w następnym Raporcie o stanie, <em>jeśli</em> będzie on włączony. (Zobacz także konsolę deweloperską, aby sprawdzić logi błędów oznaczone jako 'Caught Critical error'.)</p>",
+  "HEALTH_DATA_PREVIEW_NECESSARY": "Aktualizacje zabezpieczeń/aplikacji, inicjalizacja biblioteki analitycznej, liczba użytkowników i czas użytkowania są zawsze anonimowo zbierane jako niezbędne wskaźniki kondycji aplikacji. Są to zagregowane statystyki i żadne dane osobowe nie są wysyłane/logowane.",
   "INLINE_TIMING_EDITOR_TIME": "Czas",
   "INLINE_TIMING_EDITOR_PROGRESSION": "Postęp",
   "BEZIER_EDITOR_INFO": "<kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd> Przenieś zaznaczony punkt<br><kbd class='text'>Shift</kbd> Przenieś o 10 jednostek<br><kbd class='text'>Tab</kbd> Zmień punkt",
@@ -1361,5 +1362,6 @@ define({
   "GIT_TOAST_TITLE": "Poznaj funkcje Gita w Phoenix Code",
   "GIT_TOAST_MESSAGE": "Kliknij ikonę panelu Git, aby zarządzać swoim repozytorium. Łatwo zatwierdzaj, przesyłaj, pobieraj i przeglądaj historię swojego projektu — wszystko w jednym miejscu.<br><a href='https://docs.phcode.dev/docs/Features/git'>Dowiedz się więcej o panelu Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Zagłosuj na funkcje, które chcesz zobaczyć w przyszłości!",
-  "HEALTH_DATA_PREVIEW_NECESSARY": "Aktualizacje zabezpieczeń/aplikacji, inicjalizacja biblioteki analitycznej, liczba użytkowników i czas użytkowania są zawsze anonimowo zbierane jako niezbędne wskaźniki kondycji aplikacji. Są to zagregowane statystyki i żadne dane osobowe nie są wysyłane/logowane."
+  "CLOSE_TABS_TO_THE_RIGHT": "Zamknij karty po prawej",
+  "CLOSE_TABS_TO_THE_LEFT": "Zamknij karty po lewej"
 });

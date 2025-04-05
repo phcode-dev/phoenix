@@ -754,6 +754,7 @@ define({
   "HEALTH_DATA_NOTIFICATION_MESSAGE": "{APP_NAME}は<strong>個人を特定できる情報は一切収集または処理しませんが</strong>、お客様のプライバシー保護のため、<strong>匿名の利用状況統計を収集しています</strong>。匿名データはGDPR/CCPAの通知要件から除外されていますが、匿名データの収集をオプトアウトする選択肢も必要だと考えています。<br><br> <strong>ヘルプ > ヘルスレポート</strong>を選択することで、データの確認や<strong>匿名データの共有を停止する</strong>ことができます。これらの<strong>匿名の</strong>アプリ利用状況統計とエラーレポートは、{APP_NAME}におけるお客様のエクスペリエンス向上のため、機能の優先順位付け、バグの発見、ユーザビリティの問題の特定に役立ちます。このデータがなければ、お客様にとってどのような機能を構築する価値があるのかがわかりません。<br>",
   "HEALTH_DATA_PREVIEW": "{APP_NAME} の正常性レポート",
   "HEALTH_DATA_PREVIEW_INTRO": "<p>{APP_NAME} は<strong>個人を特定できる情報を一切収集または処理しませんが</strong>、<strong>匿名の利用統計情報を収集しています</strong>。お客様のプライバシー保護のためです。これらの<strong>匿名の</strong>アプリ利用統計情報とエラーレポートは、{APP_NAME} の操作性を向上させるための機能の優先順位付け、バグの発見、ユーザビリティの問題の特定に役立ちます。</p> <p>以下は、有効になっている<em>場合</em>に、次回の健全性レポートで送信されるデータのプレビューです。（「重大なエラーをキャッチしました」とマークされたエラーログについては、開発者コンソールも参照してください。）</p>",
+  "HEALTH_DATA_PREVIEW_NECESSARY": "セキュリティ/アプリの更新、分析ライブラリの初期化、ユーザー数、および使用時間は、アプリの正常性指標として必要な範囲で常に匿名で収集されます。これらは集計統計であり、個人データは送信/記録されません。",
   "INLINE_TIMING_EDITOR_TIME": "時間",
   "INLINE_TIMING_EDITOR_PROGRESSION": "進行",
   "BEZIER_EDITOR_INFO": "<kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd> 選択したポイントを移動<br><kbd class='text'>Shift</kbd> 10 単位ずつ移動<br><kbd class='text'>Tab</kbd> ポイントを切り替え",
@@ -1361,5 +1362,6 @@ define({
   "GIT_TOAST_TITLE": "Phoenix CodeのGit機能を試す",
   "GIT_TOAST_MESSAGE": "Gitパネルアイコンをクリックしてリポジトリを管理します。コミット、プッシュ、プル、プロジェクト履歴の表示をすべて1か所で行えます。<br><a href='https://docs.phcode.dev/docs/Features/git'>Gitパネルの詳細はこちら →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "次に実装してほしい機能に投票してください！",
-  "HEALTH_DATA_PREVIEW_NECESSARY": "セキュリティ/アプリの更新、分析ライブラリの初期化、ユーザー数、および使用時間は、アプリの正常性指標として必要な範囲で常に匿名で収集されます。これらは集計統計であり、個人データは送信/記録されません。"
+  "CLOSE_TABS_TO_THE_RIGHT": "右側のタブを閉じる",
+  "CLOSE_TABS_TO_THE_LEFT": "左側のタブを閉じる"
 });
