@@ -49,6 +49,11 @@ define(function (require, exports) {
 
     function _cursorActivity(_evt, editor){
         // this is to prevent a gutter gap in the active line if there is no color on this line.
+        if (editor.hasSelection()){
+            // we dont show the gutter gap color when there is a selection. also adding dummy gutter is expensive
+            // and make test selection with cursor choppy
+            return;
+        }
         _addDummyGutterMarkerIfNotExist(editor._codeMirror, editor.getCursorPos().line);
     }
 
