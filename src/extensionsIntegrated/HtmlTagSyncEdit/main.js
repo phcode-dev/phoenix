@@ -237,7 +237,7 @@ define(function (require, exports, module) {
 
     function cursorActivity() {
         const cursor = activeEditor.getCursorPos();
-        if(activeEditor.hasMultipleCursors()){
+        if(activeEditor.hasMultipleCursors() || activeEditor.hasSelection()){
             clearRenameMarkers();
             return;
         }
