@@ -393,10 +393,10 @@ define(function (require, exports, module) {
                 // determine the pane inside which the tab belongs
                 const isSecondPane = $(this).closest("#phoenix-tab-bar-2").length > 0;
                 const paneId = isSecondPane ? "second-pane" : "first-pane";
-                const activeEditor = EditorManager.getActiveEditor();
                 const currentActivePane = MainViewManager.getActivePaneId();
                 const isPaneActive = (paneId === currentActivePane);
-                if(isPaneActive && activeEditor && activeEditor.document.file.fullPath === filePath) {
+                const currentFile = MainViewManager.getCurrentlyViewedFile(currentActivePane);
+                if(isPaneActive && currentFile && currentFile.fullPath === filePath) {
                     return;
                 }
                 CommandManager.execute(Commands.FILE_OPEN, { fullPath: filePath, paneId: paneId });
@@ -423,25 +423,23 @@ define(function (require, exports, module) {
     }
 
 
+    // debounce is used to prevent rapid consecutive calls to updateTabs,
+    // which was causing integration tests to fail in Firefox. Without it,
+    // the event fires too frequently when switching editors, leading to unexpected behavior
+    const debounceUpdateTabs = _.debounce(updateTabs, 2);
+
     /**
      * Registers the event handlers
      */
-    function registerHandlers() {
+    function _registerHandlers() {
         // For pane layout changes, recreate the entire tab bar container
-        MainViewManager.off("paneCreate paneDestroy paneLayoutChange", createTabBar);
         MainViewManager.on("paneCreate paneDestroy paneLayoutChange", createTabBar);
 
         // For active pane changes, update only the tabs
-        MainViewManager.off("activePaneChange", updateTabs);
         MainViewManager.on("activePaneChange", updateTabs);
 
         // For editor changes, update only the tabs.
-        EditorManager.off("activeEditorChange", updateTabs);
-        // debounce is used to prevent rapid consecutive calls to updateTabs,
-        // which was causing integration tests to fail in Firefox. Without it,
-        // the event fires too frequently when switching editors, leading to unexpected behavior
-        const debounceUpdateTabs = _.debounce(updateTabs, 2);
-        EditorManager.on("activeEditorChange", debounceUpdateTabs);
+        MainViewManager.on(MainViewManager.EVENT_CURRENT_FILE_CHANGE, debounceUpdateTabs);
 
         // For working set changes, update only the tabs.
         const events = [
@@ -583,7 +581,7 @@ define(function (require, exports, module) {
         preferenceChanged();
 
         // this should be called at the last as everything should be setup before registering handlers
-        registerHandlers();
+        _registerHandlers();
 
         // handle when a single tab gets clicked
         handleTabClick();
