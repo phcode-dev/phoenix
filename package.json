@@ -8,28 +8,28 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/phcode-dev/phoenix.git",
+        "url": "git+https://github.com/phcode-dev/phoenix.git",
         "branch": "",
         "SHA": ""
     },
     "devDependencies": {
-        "@commitlint/cli": "^16.0.2",
+        "@commitlint/cli": "^19.8.0",
         "@commitlint/config-conventional": "^16.0.0",
         "@playwright/test": "^1.38.1",
         "del": "^6.0.0",
         "eslint": "^8.18.0",
         "glob": "^8.1.0",
-        "gulp": "^4.0.2",
+        "gulp": "^5.0.0",
         "gulp-concat": "^2.6.1",
         "gulp-cssnano": "^2.1.3",
         "gulp-flatten": "^0.4.0",
         "gulp-if": "^3.0.0",
-        "gulp-minify": "^3.1.0",
+        "gulp-minify": "^3.0.0",
         "gulp-rename": "^2.0.0",
-        "gulp-sourcemaps": "^3.0.0",
+        "gulp-sourcemaps": "^2.6.5",
         "gulp-uglify": "^3.0.2",
         "gulp-useref": "^5.0.0",
-        "gulp-webserver": "^0.9.1",
+        "gulp-webserver": "^0.1.0",
         "gulp-zip": "^5.1.0",
         "http-server": "14.1.0",
         "husky": "^7.0.4",
@@ -71,7 +71,7 @@
         "_patchVersionBump": "gulp patchVersionBump",
         "_minorVersionBump": "gulp minorVersionBump",
         "_majorVersionBump": "gulp majorVersionBump",
-        "serve": "http-server . -p 8000 -c-1",
+        "serve": "http-server . -p 8000 -c-1 --cors",
         "_serveWithWebCacheHelp": "echo !!!Make sure to npm run release:dev/stageing/prod before testing the cache!!!",
         "serveWithWebCache": "npm run _releaseWebCache && npm run _serveWithWebCacheHelp && http-server ./dist -p 8000 -c-1",
         "serveExternal": "http-server . -p 8000 -a 0.0.0.0 --log-ip true -c-1",
@@ -95,6 +95,7 @@
         "@pixelbrackets/gfm-stylesheet": "^1.1.0",
         "@prettier/plugin-php": "^0.22.2",
         "@uiw/file-icons": "^1.3.2",
+        "acorn-walk": "^8.3.4",
         "bootstrap": "^5.1.3",
         "browser-mime": "^1.0.1",
         "codemirror": "^5.65.16",
@@ -104,6 +105,7 @@
         "file-saver": "^2.0.5",
         "idb-keyval": "^6.2.1",
         "jshint": "^2.13.5",
+        "json-server": "^1.0.0-beta.3",
         "jszip": "^3.8.0",
         "less": "^4.1.3",
         "lodash": "^4.17.21",
@@ -116,5 +118,16 @@
         "tern": "^0.24.3",
         "tinycolor2": "^1.4.2",
         "underscore": "^1.13.4"
+    },
+    "description": "**Website: https://phcode.io**",
+    "main": ".eslintrc.js",
+    "directories": {
+        "doc": "docs",
+        "test": "test"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/phcode-dev/phoenix/issues"
     }
 }
