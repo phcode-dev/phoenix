@@ -1225,8 +1225,13 @@ define(function (require, exports, module) {
      * @private
      */
     Pane.prototype._updateHeaderHeight = function () {
-        var paneContentHeight = this.$el.height();
+        const $el = this.$el;
+        const $tabBar = $el.find(".tab-bar-container");
+        let paneContentHeight = $el.height();
 
+        if($tabBar.length > 0 && $tabBar.is(":visible")) {
+            paneContentHeight = paneContentHeight - $tabBar.height();
+        }
         // Adjust pane content height for header
         if (MainViewManager.getPaneCount() > 1) {
             this.$header.show();

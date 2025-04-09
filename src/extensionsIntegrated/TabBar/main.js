@@ -188,21 +188,22 @@ define(function (require, exports, module) {
         // clean up any existing tab bars first and start fresh
         cleanupTabBar();
 
-        if ($('.not-editor').length === 1) {
+        const $paneHeader = $('.pane-header');
+        if ($paneHeader.length === 1) {
             $tabBar = $(TabBarHTML);
             // since we need to add the tab bar before the editor which has .not-editor class
-            $(".not-editor").before($tabBar);
+            $(".pane-header").after($tabBar);
             WorkspaceManager.recomputeLayout(true);
             updateTabs();
 
-        } else if ($('.not-editor').length === 2) {
+        } else if ($paneHeader.length === 2) {
             $tabBar = $(TabBarHTML);
             $tabBar2 = $(TabBarHTML2);
 
             // eq(0) is for the first pane and eq(1) is for the second pane
             // TODO: Fix bug where the tab bar gets hidden inside the editor in horizontal split
-            $(".not-editor").eq(0).before($tabBar);
-            $(".not-editor").eq(1).before($tabBar2);
+            $paneHeader.eq(0).after($tabBar);
+            $paneHeader.eq(1).after($tabBar2);
             WorkspaceManager.recomputeLayout(true);
             updateTabs();
         }
@@ -344,6 +345,7 @@ define(function (require, exports, module) {
         }
         // Also check for any orphaned tab bars that might exist
         $(".tab-bar-container").remove();
+        WorkspaceManager.recomputeLayout(true);
     }
 
 
@@ -353,7 +355,7 @@ define(function (require, exports, module) {
     function handleTabClick() {
 
         // delegate event handling for both tab bars
-        $(document).on("click", ".tab", function (event) {
+        $(document).on("click", ".phoenix-tab-bar .tab", function (event) {
             // check if the clicked element is the close button
             if ($(event.target).hasClass('fa-times') || $(event.target).closest('.tab-close').length) {
                 // Get the file path from the data-path attribute of the parent tab
@@ -376,23 +378,35 @@ define(function (require, exports, module) {
                     event.preventDefault();
                     event.stopPropagation();
                 }
+            }
+        });
+
+        // delegate event handling for both tab bars
+        $(document).on("mousedown", ".phoenix-tab-bar .tab", function (event) {
+            if ($(event.target).hasClass('fa-times') || $(event.target).closest('.tab-close').length) {
                 return;
             }
-
             // Get the file path from the data-path attribute
             const filePath = $(this).attr("data-path");
 
             if (filePath) {
-                CommandManager.execute(Commands.FILE_OPEN, { fullPath: filePath });
+                // determine the pane inside which the tab belongs
+                const isSecondPane = $(this).closest("#phoenix-tab-bar-2").length > 0;
+                const paneId = isSecondPane ? "second-pane" : "first-pane";
+                const activeEditor = EditorManager.getActiveEditor();
+                const currentActivePane = MainViewManager.getActivePaneId();
+                const isPaneActive = (paneId === currentActivePane);
+                if(isPaneActive && activeEditor && activeEditor.document.file.fullPath === filePath) {
+                    return;
+                }
+                CommandManager.execute(Commands.FILE_OPEN, { fullPath: filePath, paneId: paneId });
 
-                // Prevent default behavior
-                event.preventDefault();
-                event.stopPropagation();
+                // We dont prevent default behavior here to enable drag and drop of this tab
             }
         });
 
         // Add the contextmenu (right-click) handler
-        $(document).on("contextmenu", ".tab", function (event) {
+        $(document).on("contextmenu", ".phoenix-tab-bar .tab", function (event) {
             event.preventDefault();
             event.stopPropagation();
 
