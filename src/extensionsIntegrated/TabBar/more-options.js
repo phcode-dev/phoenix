@@ -28,7 +28,6 @@ define(function (require, exports, module) {
     const CommandManager = require("command/CommandManager");
     const Commands = require("command/Commands");
     const FileSystem = require("filesystem/FileSystem");
-    const MainViewManager = require("view/MainViewManager");
 
     const Global = require("./global");
 
@@ -36,7 +35,6 @@ define(function (require, exports, module) {
     // Strings defined in `src/nls/root/strings.js`
     const items = [
         Strings.CLOSE_TAB,
-        Strings.CLOSE_ACTIVE_TAB,
         Strings.CLOSE_TABS_TO_THE_LEFT,
         Strings.CLOSE_TABS_TO_THE_RIGHT,
         Strings.CLOSE_ALL_TABS,
@@ -247,8 +245,8 @@ define(function (require, exports, module) {
         dropdown.showDropdown();
 
         // handle the option selection
-        dropdown.on("select", function (e, item, index) {
-            _handleSelection(index, filePath, paneId);
+        dropdown.on("select", function (e, item) {
+            _handleSelection(item, filePath, paneId);
         });
 
         // Remove the button after the dropdown is hidden
@@ -260,40 +258,30 @@ define(function (require, exports, module) {
     /**
      * Handles the selection of an option in the more options context menu
      *
-     * @param {Number} index - the index of the selected option
+     * @param {String} item - the item being selected
      * @param {String} filePath - the path of the file that was right-clicked
      * @param {String} paneId - the id of the pane ["first-pane", "second-pane"]
      */
-    function _handleSelection(index, filePath, paneId) {
-        switch (index) {
-            case 0:
-                // Close tab (the one that was right-clicked)
-                handleCloseTab(filePath, paneId);
-                break;
-            case 1:
-                // Close active tab
-                handleCloseActiveTab();
-                break;
-            case 2:
-                // Close tabs to the left
-                handleCloseTabsToTheLeft(filePath, paneId);
-                break;
-            case 3:
-                // Close tabs to the right
-                handleCloseTabsToTheRight(filePath, paneId);
-                break;
-            case 4:
-                // Close all tabs
-                handleCloseAllTabs(paneId);
-                break;
-            case 5:
-                // Close unmodified tabs
-                handleCloseUnmodifiedTabs(paneId);
-                break;
-            case 6:
-                // Reopen closed file
-                reopenClosedFile();
-                break;
+    function _handleSelection(item, filePath, paneId) {
+        switch (item) {
+        case Strings.CLOSE_TAB:
+            handleCloseTab(filePath, paneId);
+            break;
+        case Strings.CLOSE_TABS_TO_THE_LEFT:
+            handleCloseTabsToTheLeft(filePath, paneId);
+            break;
+        case Strings.CLOSE_TABS_TO_THE_RIGHT:
+            handleCloseTabsToTheRight(filePath, paneId);
+            break;
+        case Strings.CLOSE_ALL_TABS:
+            handleCloseAllTabs(paneId);
+            break;
+        case Strings.CLOSE_UNMODIFIED_TABS:
+            handleCloseUnmodifiedTabs(paneId);
+            break;
+        case Strings.REOPEN_CLOSED_FILE:
+            reopenClosedFile();
+            break;
         }
     }
 

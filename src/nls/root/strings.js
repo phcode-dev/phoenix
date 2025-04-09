@@ -428,7 +428,6 @@ define({
 
     // Tab bar Strings
     "CLOSE_TAB": "Close Tab",
-    "CLOSE_ACTIVE_TAB": "Close Active Tab",
     "CLOSE_TABS_TO_THE_RIGHT": "Close Tabs to the Right",
     "CLOSE_TABS_TO_THE_LEFT": "Close Tabs to the Left",
     "CLOSE_ALL_TABS": "Close All Tabs",
