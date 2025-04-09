@@ -428,7 +428,6 @@ define({
 
     // Tab bar Strings
     "CLOSE_TAB": "Close Tab",
-    "CLOSE_ACTIVE_TAB": "Close Active Tab",
     "CLOSE_TABS_TO_THE_RIGHT": "Close Tabs to the Right",
     "CLOSE_TABS_TO_THE_LEFT": "Close Tabs to the Left",
     "CLOSE_ALL_TABS": "Close All Tabs",
@@ -554,7 +553,7 @@ define({
     "CMD_HIDE_SIDEBAR": "Hide Sidebar",
     "CMD_SHOW_SIDEBAR": "Show Sidebar",
     "CMD_TOGGLE_SIDEBAR": "Toggle Sidebar",
-    "CMD_TOGGLE_TABBAR": "Toggle Tab Bar",
+    "CMD_TOGGLE_TABBAR": "File Tab Bar",
     "CMD_TOGGLE_PANELS": "Toggle Panels",
     "CMD_TOGGLE_PURE_CODE": "No Distractions",
     "CMD_TOGGLE_FULLSCREEN": "Fullscreen",
