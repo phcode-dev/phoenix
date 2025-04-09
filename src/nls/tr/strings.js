@@ -338,7 +338,8 @@ define({
   "STATUSBAR_TASKS_STOP": "Durdur",
   "STATUSBAR_TASKS_RESTART": "Yeniden Başlat",
   "CLOSE_TAB": "Sekmeyi Kapat",
-  "CLOSE_ACTIVE_TAB": "Aktif Sekmeyi Kapat",
+  "CLOSE_TABS_TO_THE_RIGHT": "Sağdaki Sekmeleri Kapat",
+  "CLOSE_TABS_TO_THE_LEFT": "Soldaki Sekmeleri Kapat",
   "CLOSE_ALL_TABS": "Tüm Sekmeleri Kapat",
   "CLOSE_UNMODIFIED_TABS": "Değiştirilmemiş Sekmeleri Kapat",
   "REOPEN_CLOSED_FILE": "Kapalı Dosyayı Yeniden Aç",
@@ -447,7 +448,6 @@ define({
   "CMD_HIDE_SIDEBAR": "Kenar Çubuğunu Gizle",
   "CMD_SHOW_SIDEBAR": "Kenar Çubuğunu Göster",
   "CMD_TOGGLE_SIDEBAR": "Kenar Çubuğunu Aç/Kapat",
-  "CMD_TOGGLE_TABBAR": "Sekme Çubuğunu Aç/Kapat",
   "CMD_TOGGLE_PANELS": "Panelleri Aç/Kapat",
   "CMD_TOGGLE_PURE_CODE": "Dikkat Dağıtıcı Olmadan",
   "CMD_TOGGLE_FULLSCREEN": "Tam Ekran",
@@ -1362,6 +1362,5 @@ define({
   "GIT_TOAST_TITLE": "Phoenix Code'da Git Özelliklerini Keşfedin",
   "GIT_TOAST_MESSAGE": "Deponuzu yönetmek için Git paneli simgesine tıklayın. Proje geçmişinizi kolayca işleyin, gönderin, çekin ve görüntüleyin—hepsi tek bir yerde.<br><a href='https://docs.phcode.dev/docs/Features/git'>Git paneli hakkında daha fazla bilgi edinin →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Gelecekte görmek istediğiniz özellikler için oy verin!",
-  "CLOSE_TABS_TO_THE_RIGHT": "Sağdaki Sekmeleri Kapat",
-  "CLOSE_TABS_TO_THE_LEFT": "Soldaki Sekmeleri Kapat"
+  "CMD_TOGGLE_TABBAR": "Dosya Sekme Çubuğu"
 });

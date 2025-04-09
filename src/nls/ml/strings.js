@@ -338,7 +338,8 @@ define({
   "STATUSBAR_TASKS_STOP": "നിർത്തുക",
   "STATUSBAR_TASKS_RESTART": "പുനരാരംഭിക്കുക",
   "CLOSE_TAB": "ടാബ് അടയ്ക്കുക",
-  "CLOSE_ACTIVE_TAB": "സജീവമായ ടാബ് അടയ്ക്കുക",
+  "CLOSE_TABS_TO_THE_RIGHT": "വലതുവശത്തുള്ള ടാബുകൾ അടയ്ക്കുക",
+  "CLOSE_TABS_TO_THE_LEFT": "ഇടതുവശത്തുള്ള ടാബുകൾ അടയ്ക്കുക",
   "CLOSE_ALL_TABS": "എല്ലാ ടാബുകളും അടയ്ക്കുക",
   "CLOSE_UNMODIFIED_TABS": "മാറ്റം വരുത്താത്ത ടാബുകൾ അടയ്ക്കുക",
   "REOPEN_CLOSED_FILE": "അടച്ച ഫയൽ വീണ്ടും തുറക്കുക",
@@ -447,7 +448,6 @@ define({
   "CMD_HIDE_SIDEBAR": "സൈഡ്‌ബാർ മറയ്ക്കുക",
   "CMD_SHOW_SIDEBAR": "സൈഡ്‌ബാർ കാണിക്കുക",
   "CMD_TOGGLE_SIDEBAR": "സൈഡ്‌ബാർ ടോഗിൾ ചെയ്യുക",
-  "CMD_TOGGLE_TABBAR": "ടാബ് ബാർ ടോഗിൾ ചെയ്യുക",
   "CMD_TOGGLE_PANELS": "പാനലുകൾ ടോഗിൾ ചെയ്യുക",
   "CMD_TOGGLE_PURE_CODE": "ശ്രദ്ധാശൈഥില്യങ്ങൾ ഒഴിവാക്കുക",
   "CMD_TOGGLE_FULLSCREEN": "പൂർണ്ണ സ്‌ക്രീൻ",
@@ -1362,6 +1362,5 @@ define({
   "GIT_TOAST_TITLE": "ഫീനിക്സ് കോഡിലെ ഗിറ്റ് സവിശേഷതകൾ പര്യവേക്ഷണം ചെയ്യുക",
   "GIT_TOAST_MESSAGE": "നിങ്ങളുടെ റെപ്പോസിറ്ററി കൈകാര്യം ചെയ്യാൻ ഗിറ്റ് പാനൽ ഐക്കണിൽ ക്ലിക്ക് ചെയ്യുക. എളുപ്പത്തിൽ കമ്മിറ്റ് ചെയ്യുക, പുഷ് ചെയ്യുക, പുൾ ചെയ്യുക, നിങ്ങളുടെ പ്രോജക്റ്റ് ചരിത്രം കാണുക—എല്ലാം ഒരിടത്ത്.<br><a href='https://docs.phcode.dev/docs/Features/git'>ഗിറ്റ് പാനലിനെക്കുറിച്ച് കൂടുതലറിയുക →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "നിങ്ങൾക്ക് അടുത്തതായി കാണാൻ ആഗ്രഹിക്കുന്ന സവിശേഷതകൾക്ക് വോട്ട് ചെയ്യുക!",
-  "CLOSE_TABS_TO_THE_RIGHT": "വലതുവശത്തുള്ള ടാബുകൾ അടയ്ക്കുക",
-  "CLOSE_TABS_TO_THE_LEFT": "ഇടതുവശത്തുള്ള ടാബുകൾ അടയ്ക്കുക"
+  "CMD_TOGGLE_TABBAR": "ഫയൽ ടാബ് ബാർ"
 });

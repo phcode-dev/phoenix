@@ -338,7 +338,8 @@ define({
   "STATUSBAR_TASKS_STOP": "توقف",
   "STATUSBAR_TASKS_RESTART": "راه‌اندازی مجدد",
   "CLOSE_TAB": "بستن برگه",
-  "CLOSE_ACTIVE_TAB": "بستن برگه فعال",
+  "CLOSE_TABS_TO_THE_RIGHT": "بستن تب‌های سمت راست",
+  "CLOSE_TABS_TO_THE_LEFT": "بستن تب‌های سمت چپ",
   "CLOSE_ALL_TABS": "بستن همه برگه‌ها",
   "CLOSE_UNMODIFIED_TABS": "بستن برگه‌های بدون تغییر",
   "REOPEN_CLOSED_FILE": "باز کردن مجدد فایل بسته شده",
@@ -447,7 +448,6 @@ define({
   "CMD_HIDE_SIDEBAR": "پنهان کردن نوار کناری",
   "CMD_SHOW_SIDEBAR": "نمایش نوار کناری",
   "CMD_TOGGLE_SIDEBAR": "تغییر وضعیت نوار کناری",
-  "CMD_TOGGLE_TABBAR": "نمایش/عدم نمایش نوار برگه‌ها",
   "CMD_TOGGLE_PANELS": "تغییر وضعیت پنل‌ها",
   "CMD_TOGGLE_PURE_CODE": "بدون حواس‌پرتی",
   "CMD_TOGGLE_FULLSCREEN": "تمام صفحه",
@@ -1362,6 +1362,5 @@ define({
   "GIT_TOAST_TITLE": "کاوش ویژگی‌های گیت در Phoenix Code",
   "GIT_TOAST_MESSAGE": "برای مدیریت مخزن خود روی آیکون پنل گیت کلیک کنید. به راحتی کامیت، پوش، پول و مشاهده تاریخچه پروژه خود را - همه در یک مکان - انجام دهید.<br><a href='https://docs.phcode.dev/docs/Features/git'>درباره پنل گیت بیشتر بدانید →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "برای قابلیت‌هایی که می‌خواهید در آینده ببینید، رأی دهید!",
-  "CLOSE_TABS_TO_THE_RIGHT": "بستن تب‌های سمت راست",
-  "CLOSE_TABS_TO_THE_LEFT": "بستن تب‌های سمت چپ"
+  "CMD_TOGGLE_TABBAR": "نوار برگه‌های فایل"
 });

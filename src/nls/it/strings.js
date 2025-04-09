@@ -338,7 +338,8 @@ define({
   "STATUSBAR_TASKS_STOP": "Interrompi",
   "STATUSBAR_TASKS_RESTART": "Riavvia",
   "CLOSE_TAB": "Chiudi scheda",
-  "CLOSE_ACTIVE_TAB": "Chiudi scheda attiva",
+  "CLOSE_TABS_TO_THE_RIGHT": "Chiudi schede a destra",
+  "CLOSE_TABS_TO_THE_LEFT": "Chiudi schede a sinistra",
   "CLOSE_ALL_TABS": "Chiudi tutte le schede",
   "CLOSE_UNMODIFIED_TABS": "Chiudi schede non modificate",
   "REOPEN_CLOSED_FILE": "Riapri file chiuso",
@@ -447,7 +448,6 @@ define({
   "CMD_HIDE_SIDEBAR": "Nascondi barra laterale",
   "CMD_SHOW_SIDEBAR": "Mostra barra laterale",
   "CMD_TOGGLE_SIDEBAR": "Apri/Chiudi la barra laterale",
-  "CMD_TOGGLE_TABBAR": "Mostra/Nascondi barra delle schede",
   "CMD_TOGGLE_PANELS": "Apri/Chiudi i pannelli",
   "CMD_TOGGLE_PURE_CODE": "Nessuna distrazione",
   "CMD_TOGGLE_FULLSCREEN": "Schermo intero",
@@ -1362,6 +1362,5 @@ define({
   "GIT_TOAST_TITLE": "Esplora le funzionalità Git in Phoenix Code",
   "GIT_TOAST_MESSAGE": "Fai clic sull'icona del pannello Git per gestire il tuo repository. Esegui commit, push, pull e visualizza la cronologia del tuo progetto, tutto in un unico posto.<br><a href='https://docs.phcode.dev/docs/Features/git'>Scopri di più sul pannello Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vota per le funzionalità che desideri vedere in futuro!",
-  "CLOSE_TABS_TO_THE_RIGHT": "Chiudi schede a destra",
-  "CLOSE_TABS_TO_THE_LEFT": "Chiudi schede a sinistra"
+  "CMD_TOGGLE_TABBAR": "Barra delle schede dei file"
 });

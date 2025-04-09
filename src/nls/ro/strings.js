@@ -338,7 +338,8 @@ define({
   "STATUSBAR_TASKS_STOP": "Oprește",
   "STATUSBAR_TASKS_RESTART": "Repornește",
   "CLOSE_TAB": "Închide fila",
-  "CLOSE_ACTIVE_TAB": "Închide fila activă",
+  "CLOSE_TABS_TO_THE_RIGHT": "Închide filele din dreapta",
+  "CLOSE_TABS_TO_THE_LEFT": "Închide filele din stânga",
   "CLOSE_ALL_TABS": "Închide toate filele",
   "CLOSE_UNMODIFIED_TABS": "Închide filele nemodificate",
   "REOPEN_CLOSED_FILE": "Redeschide fișierul închis",
@@ -447,7 +448,6 @@ define({
   "CMD_HIDE_SIDEBAR": "Ascunde bara laterală",
   "CMD_SHOW_SIDEBAR": "Arată bara laterală",
   "CMD_TOGGLE_SIDEBAR": "Comută bara laterală",
-  "CMD_TOGGLE_TABBAR": "Comută bara de file",
   "CMD_TOGGLE_PANELS": "Comută panourile",
   "CMD_TOGGLE_PURE_CODE": "Fără distragere",
   "CMD_TOGGLE_FULLSCREEN": "Ecran complet",
@@ -1362,6 +1362,5 @@ define({
   "GIT_TOAST_TITLE": "Explorați funcțiile Git în Phoenix Code",
   "GIT_TOAST_MESSAGE": "Faceți clic pe pictograma panoului Git pentru a vă gestiona depozitul. Efectuați ușor commit, push, pull și vizualizați istoricul proiectului dvs. - totul într-un singur loc.<br><a href='https://docs.phcode.dev/docs/Features/git'>Aflați mai multe despre panoul Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Votează pentru funcționalitățile pe care dorești să le vezi în continuare!",
-  "CLOSE_TABS_TO_THE_RIGHT": "Închide filele din dreapta",
-  "CLOSE_TABS_TO_THE_LEFT": "Închide filele din stânga"
+  "CMD_TOGGLE_TABBAR": "Bară Tab-uri Fișiere"
 });

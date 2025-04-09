@@ -338,7 +338,8 @@ define({
   "STATUSBAR_TASKS_STOP": "إيقاف",
   "STATUSBAR_TASKS_RESTART": "إعادة تشغيل",
   "CLOSE_TAB": "إغلاق علامة التبويب",
-  "CLOSE_ACTIVE_TAB": "إغلاق علامة التبويب النشطة",
+  "CLOSE_TABS_TO_THE_RIGHT": "إغلاق علامات التبويب على اليمين",
+  "CLOSE_TABS_TO_THE_LEFT": "إغلاق علامات التبويب على اليسار",
   "CLOSE_ALL_TABS": "إغلاق جميع علامات التبويب",
   "CLOSE_UNMODIFIED_TABS": "إغلاق علامات التبويب غير المعدلة",
   "REOPEN_CLOSED_FILE": "إعادة فتح الملف المغلق",
@@ -447,7 +448,6 @@ define({
   "CMD_HIDE_SIDEBAR": "إخفاء الشريط الجانبي",
   "CMD_SHOW_SIDEBAR": "إظهار الشريط الجانبي",
   "CMD_TOGGLE_SIDEBAR": "تبديل الشريط الجانبي",
-  "CMD_TOGGLE_TABBAR": "تبديل شريط علامات التبويب",
   "CMD_TOGGLE_PANELS": "تبديل الألواح",
   "CMD_TOGGLE_PURE_CODE": "بدون تشتيت",
   "CMD_TOGGLE_FULLSCREEN": "ملء الشاشة",
@@ -1362,6 +1362,5 @@ define({
   "GIT_TOAST_TITLE": "استكشف ميزات Git في Phoenix Code",
   "GIT_TOAST_MESSAGE": "انقر على رمز لوحة Git لإدارة مستودعك. يمكنك بسهولة تنفيذ الالتزام والدفع والسحب وعرض سجل مشروعك - كل ذلك في مكان واحد.<br><a href='https://docs.phcode.dev/docs/Features/git'>تعرّف على المزيد حول لوحة Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "صوت للميزات التي ترغب برؤيتها تالياً!",
-  "CLOSE_TABS_TO_THE_RIGHT": "إغلاق علامات التبويب على اليمين",
-  "CLOSE_TABS_TO_THE_LEFT": "إغلاق علامات التبويب على اليسار"
+  "CMD_TOGGLE_TABBAR": "شريط تبويب الملف"
 });

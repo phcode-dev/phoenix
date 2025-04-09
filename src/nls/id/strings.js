@@ -338,7 +338,8 @@ define({
   "STATUSBAR_TASKS_STOP": "Hentikan",
   "STATUSBAR_TASKS_RESTART": "Mulai Ulang",
   "CLOSE_TAB": "Tutup Tab",
-  "CLOSE_ACTIVE_TAB": "Tutup Tab Aktif",
+  "CLOSE_TABS_TO_THE_RIGHT": "Tutup Tab di Sebelah Kanan",
+  "CLOSE_TABS_TO_THE_LEFT": "Tutup Tab di Sebelah Kiri",
   "CLOSE_ALL_TABS": "Tutup Semua Tab",
   "CLOSE_UNMODIFIED_TABS": "Tutup Tab yang Tidak Dimodifikasi",
   "REOPEN_CLOSED_FILE": "Buka Kembali File yang Ditutup",
@@ -447,7 +448,6 @@ define({
   "CMD_HIDE_SIDEBAR": "Sembunyikan Sidebar",
   "CMD_SHOW_SIDEBAR": "Tampilkan Sidebar",
   "CMD_TOGGLE_SIDEBAR": "Buka/Tutup Bilah Samping",
-  "CMD_TOGGLE_TABBAR": "Alihkan Bilah Tab",
   "CMD_TOGGLE_PANELS": "Buka/Tutup Panel",
   "CMD_TOGGLE_PURE_CODE": "Tanpa Distraksi",
   "CMD_TOGGLE_FULLSCREEN": "Layar Penuh",
@@ -1362,6 +1362,5 @@ define({
   "GIT_TOAST_TITLE": "Jelajahi Fitur Git di Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klik ikon panel Git untuk mengelola repositori Anda. Lakukan commit, push, pull, dan lihat riwayat proyek Anda dengan mudah—semua di satu tempat.<br><a href='https://docs.phcode.dev/docs/Features/git'>Pelajari lebih lanjut tentang panel Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Pilih fitur yang ingin Anda lihat selanjutnya!",
-  "CLOSE_TABS_TO_THE_RIGHT": "Tutup Tab di Sebelah Kanan",
-  "CLOSE_TABS_TO_THE_LEFT": "Tutup Tab di Sebelah Kiri"
+  "CMD_TOGGLE_TABBAR": "Bilah Tab Berkas"
 });

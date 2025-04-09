@@ -338,7 +338,8 @@ define({
   "STATUSBAR_TASKS_STOP": "बंद करो",
   "STATUSBAR_TASKS_RESTART": "पुनः प्रारंभ करें",
   "CLOSE_TAB": "टैब बंद करें",
-  "CLOSE_ACTIVE_TAB": "सक्रिय टैब बंद करें",
+  "CLOSE_TABS_TO_THE_RIGHT": "दाईं ओर के टैब बंद करें",
+  "CLOSE_TABS_TO_THE_LEFT": "बाईं ओर के टैब बंद करें",
   "CLOSE_ALL_TABS": "सभी टैब बंद करें",
   "CLOSE_UNMODIFIED_TABS": "बिना बदलाव वाले टैब बंद करें",
   "REOPEN_CLOSED_FILE": "बंद की गई फ़ाइल फिर से खोलें",
@@ -447,7 +448,6 @@ define({
   "CMD_HIDE_SIDEBAR": "साइडबार छिपाएँ",
   "CMD_SHOW_SIDEBAR": "साइडबार दिखाएँ",
   "CMD_TOGGLE_SIDEBAR": "साइडबार टॉगल करें",
-  "CMD_TOGGLE_TABBAR": "टैब बार टॉगल करें",
   "CMD_TOGGLE_PANELS": "पैनल टॉगल करें",
   "CMD_TOGGLE_PURE_CODE": "कोई विकर्षण नहीं",
   "CMD_TOGGLE_FULLSCREEN": "फ़ुलस्क्रीन",
@@ -1362,6 +1362,5 @@ define({
   "GIT_TOAST_TITLE": "फ़ीनिक्स कोड में Git सुविधाओं का अन्वेषण करें",
   "GIT_TOAST_MESSAGE": "अपने रिपॉजिटरी को प्रबंधित करने के लिए Git पैनल आइकन पर क्लिक करें। आसानी से कमिट करें, पुश करें, पुल करें और अपने प्रोजेक्ट का इतिहास देखें—सब एक ही स्थान पर।<br><a href='https://docs.phcode.dev/docs/Features/git'>Git पैनल के बारे में अधिक जानें →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "उन विशेषताओं के लिए वोट करें जिन्हें आप आगे देखना चाहते हैं!",
-  "CLOSE_TABS_TO_THE_RIGHT": "दाईं ओर के टैब बंद करें",
-  "CLOSE_TABS_TO_THE_LEFT": "बाईं ओर के टैब बंद करें"
+  "CMD_TOGGLE_TABBAR": "फ़ाइल टैब बार"
 });
