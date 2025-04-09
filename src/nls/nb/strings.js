@@ -338,7 +338,8 @@ define({
   "STATUSBAR_TASKS_STOP": "Stopp",
   "STATUSBAR_TASKS_RESTART": "Start på nytt",
   "CLOSE_TAB": "Lukk fane",
-  "CLOSE_ACTIVE_TAB": "Lukk aktiv fane",
+  "CLOSE_TABS_TO_THE_RIGHT": "Lukk faner til høyre",
+  "CLOSE_TABS_TO_THE_LEFT": "Lukk faner til venstre",
   "CLOSE_ALL_TABS": "Lukk alle faner",
   "CLOSE_UNMODIFIED_TABS": "Lukk uendrede faner",
   "REOPEN_CLOSED_FILE": "Åpne lukket fil på nytt",
@@ -447,7 +448,6 @@ define({
   "CMD_HIDE_SIDEBAR": "Gjem sidestolpe",
   "CMD_SHOW_SIDEBAR": "Vis sidestolpe",
   "CMD_TOGGLE_SIDEBAR": "Bytt sidepanel",
-  "CMD_TOGGLE_TABBAR": "Vis/skjul fanelinje",
   "CMD_TOGGLE_PANELS": "Bytt paneler",
   "CMD_TOGGLE_PURE_CODE": "Ingen distraksjoner",
   "CMD_TOGGLE_FULLSCREEN": "Fullskjerm",
@@ -1362,6 +1362,5 @@ define({
   "GIT_TOAST_TITLE": "Utforsk Git-funksjoner i Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klikk på Git-panelikonet for å administrere repositoriet ditt. Utfør commit, push, pull og se prosjektloggen din – alt på ett sted.<br><a href='https://docs.phcode.dev/docs/Features/git'>Lær mer om Git-panelet →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Stem på funksjonene du ønsker å se neste!",
-  "CLOSE_TABS_TO_THE_RIGHT": "Lukk faner til høyre",
-  "CLOSE_TABS_TO_THE_LEFT": "Lukk faner til venstre"
+  "CMD_TOGGLE_TABBAR": "Filfanelinje"
 });

@@ -338,7 +338,8 @@ define({
   "STATUSBAR_TASKS_STOP": "روکیں",
   "STATUSBAR_TASKS_RESTART": "دوبارہ شروع کریں",
   "CLOSE_TAB": "ٹیب بند کریں",
-  "CLOSE_ACTIVE_TAB": "موجودہ ٹیب بند کریں",
+  "CLOSE_TABS_TO_THE_RIGHT": "دائیں جانب والے ٹیبز بند کریں",
+  "CLOSE_TABS_TO_THE_LEFT": "بائیں جانب والے ٹیبز بند کریں",
   "CLOSE_ALL_TABS": "تمام ٹیبز بند کریں",
   "CLOSE_UNMODIFIED_TABS": "غیر ترمیم شدہ ٹیبز بند کریں",
   "REOPEN_CLOSED_FILE": "بند فائل دوبارہ کھولیں",
@@ -447,7 +448,6 @@ define({
   "CMD_HIDE_SIDEBAR": "سائڈبار چھپائیں",
   "CMD_SHOW_SIDEBAR": "سائڈبار دکھائیں",
   "CMD_TOGGLE_SIDEBAR": "سائڈبار ٹوگل کریں",
-  "CMD_TOGGLE_TABBAR": "ٹیب بار ٹوگل کریں",
   "CMD_TOGGLE_PANELS": "پینلز ٹوگل کریں",
   "CMD_TOGGLE_PURE_CODE": "کوئی خلفشار نہیں",
   "CMD_TOGGLE_FULLSCREEN": "فل سکرین",
@@ -1362,6 +1362,5 @@ define({
   "GIT_TOAST_TITLE": "فینکس کوڈ میں گٹ فیچرز دریافت کریں",
   "GIT_TOAST_MESSAGE": "اپنی ذخیرہ گاہ (repository) کو منظم کرنے کے لیے گٹ پینل آئیکن پر کلک کریں۔ آسانی سے کامٹ، پش، پل کریں، اور اپنے پروجیکٹ کی تاریخ دیکھیں—سب ایک ہی جگہ پر۔<br><a href='https://docs.phcode.dev/docs/Features/git'>گٹ پینل کے بارے میں مزید جانیں →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "اپنی پسندیدہ خصوصیات کے لیے ووٹ دیں!",
-  "CLOSE_TABS_TO_THE_RIGHT": "دائیں جانب والے ٹیبز بند کریں",
-  "CLOSE_TABS_TO_THE_LEFT": "بائیں جانب والے ٹیبز بند کریں"
+  "CMD_TOGGLE_TABBAR": "فائل ٹیب بار"
 });

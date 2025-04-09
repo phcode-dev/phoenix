@@ -338,7 +338,8 @@ define({
   "STATUSBAR_TASKS_STOP": "Zaustavi",
   "STATUSBAR_TASKS_RESTART": "Ponovo pokreni",
   "CLOSE_TAB": "Zatvori karticu",
-  "CLOSE_ACTIVE_TAB": "Zatvori aktivnu karticu",
+  "CLOSE_TABS_TO_THE_RIGHT": "Zatvori kartice desno",
+  "CLOSE_TABS_TO_THE_LEFT": "Zatvori kartice lijevo",
   "CLOSE_ALL_TABS": "Zatvori sve kartice",
   "CLOSE_UNMODIFIED_TABS": "Zatvori nepromijenjene kartice",
   "REOPEN_CLOSED_FILE": "Ponovno otvori zatvorenu datoteku",
@@ -447,7 +448,6 @@ define({
   "CMD_HIDE_SIDEBAR": "Sakrij bočnu traku",
   "CMD_SHOW_SIDEBAR": "Prikaži bočnu traku",
   "CMD_TOGGLE_SIDEBAR": "Toggle bočnu traku",
-  "CMD_TOGGLE_TABBAR": "Uključi/isključi traku kartica",
   "CMD_TOGGLE_PANELS": "Toggle panele",
   "CMD_TOGGLE_PURE_CODE": "Bez odvraćanja pažnje",
   "CMD_TOGGLE_FULLSCREEN": "Preko cijelog zaslona",
@@ -1362,6 +1362,5 @@ define({
   "GIT_TOAST_TITLE": "Istražite Git značajke u Phoenix Codeu",
   "GIT_TOAST_MESSAGE": "Kliknite ikonu Git panela za upravljanje svojim repozitorijem. Jednostavno potvrdite (commit), pošaljite (push), preuzmite (pull) i pregledajte povijest svog projekta - sve na jednom mjestu.<br><a href='https://docs.phcode.dev/docs/Features/git'>Saznajte više o Git panelu →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Glasajte za značajke koje želite vidjeti sljedeće!",
-  "CLOSE_TABS_TO_THE_RIGHT": "Zatvori kartice desno",
-  "CLOSE_TABS_TO_THE_LEFT": "Zatvori kartice lijevo"
+  "CMD_TOGGLE_TABBAR": "Traka kartica datoteka"
 });

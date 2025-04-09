@@ -338,7 +338,8 @@ define({
   "STATUSBAR_TASKS_STOP": "Leállítás",
   "STATUSBAR_TASKS_RESTART": "Újraindítás",
   "CLOSE_TAB": "Fül bezárása",
-  "CLOSE_ACTIVE_TAB": "Aktív fül bezárása",
+  "CLOSE_TABS_TO_THE_RIGHT": "Jobb oldali fülek bezárása",
+  "CLOSE_TABS_TO_THE_LEFT": "Bal oldali fülek bezárása",
   "CLOSE_ALL_TABS": "Összes fül bezárása",
   "CLOSE_UNMODIFIED_TABS": "Nem módosított fülek bezárása",
   "REOPEN_CLOSED_FILE": "Bezárt fájl újranyitása",
@@ -447,7 +448,6 @@ define({
   "CMD_HIDE_SIDEBAR": "Oldalsáv Elrejtése",
   "CMD_SHOW_SIDEBAR": "Oldalsáv Mutatása",
   "CMD_TOGGLE_SIDEBAR": "Oldalsáv ki/bekapcsolása",
-  "CMD_TOGGLE_TABBAR": "Fülsáv be/kikapcsolása",
   "CMD_TOGGLE_PANELS": "Panelek ki/bekapcsolása",
   "CMD_TOGGLE_PURE_CODE": "Figyelemelterelések nélkül",
   "CMD_TOGGLE_FULLSCREEN": "Teljes képernyő",
@@ -1362,6 +1362,5 @@ define({
   "GIT_TOAST_TITLE": "Fedezd fel a Git funkciókat a Phoenix Code-ban",
   "GIT_TOAST_MESSAGE": "Kattintson a Git panel ikonra a verziókövető rendszer kezeléséhez. Könnyedén végezhet commit, push és pull műveleteket, valamint megtekintheti a projekt előzményeit – mindezt egy helyen.<br><a href='https://docs.phcode.dev/docs/Features/git'>Tudj meg többet a Git panelről →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Szavazzon azokra a funkciókra, amelyeket a jövőben látni szeretne!",
-  "CLOSE_TABS_TO_THE_RIGHT": "Jobb oldali fülek bezárása",
-  "CLOSE_TABS_TO_THE_LEFT": "Bal oldali fülek bezárása"
+  "CMD_TOGGLE_TABBAR": "Fájlfül sáv"
 });

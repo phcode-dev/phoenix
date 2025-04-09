@@ -338,7 +338,8 @@ define({
   "STATUSBAR_TASKS_STOP": "Stop",
   "STATUSBAR_TASKS_RESTART": "Restart",
   "CLOSE_TAB": "Close Tab",
-  "CLOSE_ACTIVE_TAB": "Close Active Tab",
+  "CLOSE_TABS_TO_THE_RIGHT": "Close tabs to the right",
+  "CLOSE_TABS_TO_THE_LEFT": "Close tabs to the left",
   "CLOSE_ALL_TABS": "Close All Tabs",
   "CLOSE_UNMODIFIED_TABS": "Close Unmodified Tabs",
   "REOPEN_CLOSED_FILE": "Reopen Closed File",
@@ -447,7 +448,6 @@ define({
   "CMD_HIDE_SIDEBAR": "Hide Sidebar",
   "CMD_SHOW_SIDEBAR": "Show sidebar",
   "CMD_TOGGLE_SIDEBAR": "Toggle sidebar",
-  "CMD_TOGGLE_TABBAR": "Toggle Tab Bar",
   "CMD_TOGGLE_PANELS": "Toggle panels",
   "CMD_TOGGLE_PURE_CODE": "No distractions",
   "CMD_TOGGLE_FULLSCREEN": "Fullscreen",
@@ -1362,6 +1362,5 @@ define({
   "GIT_TOAST_TITLE": "Explore Git Features in Phoenix Code",
   "GIT_TOAST_MESSAGE": "Click the Git panel icon to manage your repository. Easily commit, push, pull, and view your project history—all in one place.<br><a href='https://docs.phcode.dev/docs/Features/git'>Learn more about the Git panel →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vote for the features you'd like to see next!",
-  "CLOSE_TABS_TO_THE_RIGHT": "Close tabs to the right",
-  "CLOSE_TABS_TO_THE_LEFT": "Close tabs to the left"
+  "CMD_TOGGLE_TABBAR": "File Tab Bar"
 });

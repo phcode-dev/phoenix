@@ -338,7 +338,8 @@ define({
   "STATUSBAR_TASKS_STOP": "停止",
   "STATUSBAR_TASKS_RESTART": "重启",
   "CLOSE_TAB": "关闭标签页",
-  "CLOSE_ACTIVE_TAB": "关闭活动标签页",
+  "CLOSE_TABS_TO_THE_RIGHT": "关闭右侧标签页",
+  "CLOSE_TABS_TO_THE_LEFT": "关闭左侧标签页",
   "CLOSE_ALL_TABS": "关闭所有标签页",
   "CLOSE_UNMODIFIED_TABS": "关闭未修改的标签页",
   "REOPEN_CLOSED_FILE": "重新打开已关闭的文件",
@@ -447,7 +448,6 @@ define({
   "CMD_HIDE_SIDEBAR": "隐藏边栏",
   "CMD_SHOW_SIDEBAR": "显示边栏",
   "CMD_TOGGLE_SIDEBAR": "显示/隐藏边栏",
-  "CMD_TOGGLE_TABBAR": "切换标签栏",
   "CMD_TOGGLE_PANELS": "显示/隐藏面板",
   "CMD_TOGGLE_PURE_CODE": "无干扰模式",
   "CMD_TOGGLE_FULLSCREEN": "全屏",
@@ -1362,6 +1362,5 @@ define({
   "GIT_TOAST_TITLE": "探索 Phoenix Code 中的 Git 功能",
   "GIT_TOAST_MESSAGE": "点击 Git 面板图标即可管理您的代码仓库。轻松提交、推送、拉取和查看项目历史记录，一切尽在一处。<br><a href='https://docs.phcode.dev/docs/Features/git'>了解更多关于 Git 面板的信息 →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "为您希望看到的下一个功能投票！",
-  "CLOSE_TABS_TO_THE_RIGHT": "关闭右侧标签页",
-  "CLOSE_TABS_TO_THE_LEFT": "关闭左侧标签页"
+  "CMD_TOGGLE_TABBAR": "文件标签栏"
 });

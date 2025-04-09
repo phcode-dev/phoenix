@@ -338,7 +338,8 @@ define({
   "STATUSBAR_TASKS_STOP": "Stoppa",
   "STATUSBAR_TASKS_RESTART": "Starta om",
   "CLOSE_TAB": "Stäng flik",
-  "CLOSE_ACTIVE_TAB": "Stäng aktiv flik",
+  "CLOSE_TABS_TO_THE_RIGHT": "Stäng flikar till höger",
+  "CLOSE_TABS_TO_THE_LEFT": "Stäng flikar till vänster",
   "CLOSE_ALL_TABS": "Stäng alla flikar",
   "CLOSE_UNMODIFIED_TABS": "Stäng oförändrade flikar",
   "REOPEN_CLOSED_FILE": "Återöppna stängd fil",
@@ -447,7 +448,6 @@ define({
   "CMD_HIDE_SIDEBAR": "Dölj sidomeny",
   "CMD_SHOW_SIDEBAR": "Visa sidomeny",
   "CMD_TOGGLE_SIDEBAR": "Växla på/av sidomeny",
-  "CMD_TOGGLE_TABBAR": "Växla flikrad",
   "CMD_TOGGLE_PANELS": "Växla på/av paneler",
   "CMD_TOGGLE_PURE_CODE": "Inga distraktioner",
   "CMD_TOGGLE_FULLSCREEN": "Helskärm",
@@ -1362,6 +1362,5 @@ define({
   "GIT_TOAST_TITLE": "Utforska Git-funktioner i Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klicka på Git-panelens ikon för att hantera din repository. Committa, pusha, pulla och se din projekthistorik enkelt – allt på ett ställe.<br><a href='https://docs.phcode.dev/docs/Features/git'>Läs mer om Git-panelen →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Rösta på funktionerna du vill se härnäst!",
-  "CLOSE_TABS_TO_THE_RIGHT": "Stäng flikar till höger",
-  "CLOSE_TABS_TO_THE_LEFT": "Stäng flikar till vänster"
+  "CMD_TOGGLE_TABBAR": "Flikfält för filer"
 });
