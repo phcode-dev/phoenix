@@ -240,6 +240,45 @@
     background-color: rgba(255, 255, 255, 0.1);
 }
 
+.tab.placeholder .tab-name {
+    font-style: italic;
+    color: #888;
+}
+
+.dark .tab.placeholder .tab-name {
+    color: #888;
+}
+
+.tab.placeholder.active .tab-name {
+    color: #666;
+}
+
+.dark .tab.placeholder.active .tab-name {
+    color: #aaa;
+}
+
+.tab.placeholder::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 0.12rem;
+    background-color: #b4b2b2;
+}
+
+.dark .tab.placeholder::after {
+    background-color: #666;
+}
+
+.tab.placeholder.active::after {
+    background-color: #0078D7;
+}
+
+.dark .tab.placeholder.active::after {
+    background-color: #75BEFF;
+}
+
 .tab.dragging {
     opacity: 0.7;
     transform: scale(0.95);

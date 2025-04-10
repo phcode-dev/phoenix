@@ -23,7 +23,6 @@ define(function (require, exports, module) {
     const _ = require("thirdparty/lodash");
     const AppInit = require("utils/AppInit");
     const MainViewManager = require("view/MainViewManager");
-    const EditorManager = require("editor/EditorManager");
     const FileSystem = require("filesystem/FileSystem");
     const PreferencesManager = require("preferences/PreferencesManager");
     const CommandManager = require("command/CommandManager");
@@ -135,16 +134,20 @@ define(function (require, exports, module) {
         const isPaneActive = (paneId === currentActivePane);
 
         const isDirty = Helper._isFileModified(FileSystem.getFileForPath(entry.path));
+        const isPlaceholder = entry.isPlaceholder === true;
 
-        // create tab with active class
+        // create tab with all the appropriate classes
         const $tab = $(
             `<div class="tab 
-                ${isActive ? 'active' : ''} 
-                ${isDirty ? 'dirty' : ''}" data-path="${entry.path}" title="${entry.path}">
-                <div class="tab-icon"></div>
-                <div class="tab-name"></div>
-                <div class="tab-close"><i class="fa-solid fa-times"></i></div>
-            </div>`
+            ${isActive ? 'active' : ''} 
+            ${isDirty ? 'dirty' : ''}
+            ${isPlaceholder ? 'placeholder' : ''}" 
+            data-path="${entry.path}" 
+            title="${entry.path}">
+            <div class="tab-icon"></div>
+            <div class="tab-name"></div>
+            <div class="tab-close"><i class="fa-solid fa-times"></i></div>
+        </div>`
         );
 
         // Add the file icon
@@ -228,6 +231,35 @@ define(function (require, exports, module) {
             createTabBar();
         }
 
+        // Check for active files not in working set in any pane
+        const activePane = MainViewManager.getActivePaneId();
+        const firstPaneFile = MainViewManager.getCurrentlyViewedFile("first-pane");
+        const secondPaneFile = MainViewManager.getCurrentlyViewedFile("second-pane");
+
+        // when a file is opened from the filetree and is not present in the working set, then it is a placeholder
+        let firstPanePlaceholder = null;
+        let secondPanePlaceholder = null;
+
+        // Check if active file in first pane is not in the working set
+        if (firstPaneFile &&
+            !Global.firstPaneWorkingSet.some(entry => entry.path === firstPaneFile.fullPath)) {
+            firstPanePlaceholder = {
+                path: firstPaneFile.fullPath,
+                name: firstPaneFile.name,
+                isPlaceholder: true
+            };
+        }
+
+        // Check if active file in second pane is not in the working set
+        if (secondPaneFile &&
+            !Global.secondPaneWorkingSet.some(entry => entry.path === secondPaneFile.fullPath)) {
+            secondPanePlaceholder = {
+                path: secondPaneFile.fullPath,
+                name: secondPaneFile.name,
+                isPlaceholder: true
+            };
+        }
+
         if (Global.secondPaneWorkingSet.length === 1 &&
             (!$('#phoenix-tab-bar-2').length || $('#phoenix-tab-bar-2').is(':hidden'))) {
             createTabBar();
@@ -237,7 +269,7 @@ define(function (require, exports, module) {
         // Update first pane's tabs
         if ($firstTabBar.length) {
             $firstTabBar.empty();
-            if (Global.firstPaneWorkingSet.length > 0) {
+            if (Global.firstPaneWorkingSet.length > 0 || firstPanePlaceholder) {
 
                 // get the count of tabs that we want to display in the tab bar (from preference settings)
                 // from preference settings or working set whichever smaller
@@ -251,17 +283,15 @@ define(function (require, exports, module) {
 
                 let displayedEntries = Global.firstPaneWorkingSet.slice(0, tabsCountP1);
 
-                const activeEditor = EditorManager.getActiveEditor();
-                const activePath = activeEditor ? activeEditor.document.file.fullPath : null;
-                if (activePath && !displayedEntries.some(entry => entry.path === activePath)) {
-                    let activeEntry = Global.firstPaneWorkingSet.find(entry => entry.path === activePath);
-                    if (activeEntry) {
-                        displayedEntries[displayedEntries.length - 1] = activeEntry;
-                    }
-                }
+                // Add working set tabs
                 displayedEntries.forEach(function (entry) {
                     $firstTabBar.append(createTab(entry, "first-pane"));
                 });
+
+                // Add placeholder tab if needed
+                if (firstPanePlaceholder) {
+                    $firstTabBar.append(createTab(firstPanePlaceholder, "first-pane"));
+                }
             }
         }
 
@@ -269,7 +299,7 @@ define(function (require, exports, module) {
         // Update second pane's tabs
         if ($secondTabBar.length) {
             $secondTabBar.empty();
-            if (Global.secondPaneWorkingSet.length > 0) {
+            if (Global.secondPaneWorkingSet.length > 0 || secondPanePlaceholder) {
 
                 let tabsCountP2 = Math.min(Global.secondPaneWorkingSet.length, Preference.tabBarNumberOfTabs);
                 if (Preference.tabBarNumberOfTabs < 0) {
@@ -277,30 +307,27 @@ define(function (require, exports, module) {
                 }
 
                 let displayedEntries2 = Global.secondPaneWorkingSet.slice(0, tabsCountP2);
-                const activeEditor = EditorManager.getActiveEditor();
-                const activePath = activeEditor ? activeEditor.document.file.fullPath : null;
-                if (activePath && !displayedEntries2.some(entry => entry.path === activePath)) {
-                    let activeEntry = Global.secondPaneWorkingSet.find(entry => entry.path === activePath);
-                    if (activeEntry) {
-                        displayedEntries2[displayedEntries2.length - 1] = activeEntry;
-                    }
-                }
+
+                // Add working set tabs
                 displayedEntries2.forEach(function (entry) {
                     $secondTabBar.append(createTab(entry, "second-pane"));
                 });
+
+                // Add placeholder tab if needed
+                if (secondPanePlaceholder) {
+                    $secondTabBar.append(createTab(secondPanePlaceholder, "second-pane"));
+                }
             }
         }
 
-        // if no files are present in a pane, we want to hide the tab bar for that pane
-        if (Global.firstPaneWorkingSet.length === 0 && ($('#phoenix-tab-bar'))) {
+        // if no files are present in a pane and no placeholder, we want to hide the tab bar for that pane
+        if (Global.firstPaneWorkingSet.length === 0 && !firstPanePlaceholder && ($('#phoenix-tab-bar'))) {
             Helper._hideTabBar($('#phoenix-tab-bar'), $('#overflow-button'));
         }
 
-        if (Global.secondPaneWorkingSet.length === 0 && ($('#phoenix-tab-bar-2'))) {
+        if (Global.secondPaneWorkingSet.length === 0 && !secondPanePlaceholder && ($('#phoenix-tab-bar-2'))) {
             Helper._hideTabBar($('#phoenix-tab-bar-2'), $('#overflow-button-2'));
         }
-
-        const activePane = MainViewManager.getActivePaneId();
 
         // Now that tabs are updated, scroll to the active tab if necessary.
         if ($firstTabBar.length) {
@@ -396,7 +423,15 @@ define(function (require, exports, module) {
                 const currentActivePane = MainViewManager.getActivePaneId();
                 const isPaneActive = (paneId === currentActivePane);
                 const currentFile = MainViewManager.getCurrentlyViewedFile(currentActivePane);
-                if(isPaneActive && currentFile && currentFile.fullPath === filePath) {
+
+                // Check if this is a placeholder tab
+                if ($(this).hasClass('placeholder')) {
+                    // Add the file to the working set when placeholder tab is clicked
+                    const fileObj = FileSystem.getFileForPath(filePath);
+                    MainViewManager.addToWorkingSet(paneId, fileObj);
+                }
+
+                if (isPaneActive && currentFile && currentFile.fullPath === filePath) {
                     return;
                 }
                 CommandManager.execute(Commands.FILE_OPEN, { fullPath: filePath, paneId: paneId });
