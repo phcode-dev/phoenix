@@ -177,6 +177,13 @@ define(function (require, exports, module) {
             $tab.addClass('active-in-inactive-pane');
         }
 
+        // if this is a placeholder tab in inactive pane, we need to use the brown styling
+        // instead of the blue one for active tabs
+        if (isPlaceholder && isActive && !isPaneActive) {
+            $tab.removeClass('active');
+            $tab.addClass('active-in-inactive-pane');
+        }
+
         return $tab;
     }
 
