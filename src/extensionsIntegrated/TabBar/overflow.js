@@ -75,6 +75,7 @@ define(function (require, exports, module) {
                     name: $tab.find('.tab-name').text(),
                     isActive: $tab.hasClass('active'),
                     isDirty: $tab.hasClass('dirty'),
+                    isPlaceholder: $tab.hasClass('placeholder'),
                     $icon: $tab.find('.tab-icon').clone()
                 };
 
@@ -148,17 +149,22 @@ define(function (require, exports, module) {
                 <i class="fa-solid fa-times"></i>
             </span>`;
 
+            // add placeholder class to style it differently
+            const placeholderClass = item.isPlaceholder ? ' placeholder-name' : '';
+
             // return html for this item
             return {
                 html:
-                    `<div class="dropdown-tab-item" data-tab-path="${item.path}">
-                        <div class="tab-info-container">
-                            ${dirtyHtml}
-                            <span class="tab-icon-container">${iconHtml}</span>
-                            <span class="tab-name-container">${item.name}</span>
-                        </div>
-                        ${closeIconHtml}
-                    </div>`,
+                    `<div class="dropdown-tab-item${item.isPlaceholder
+                        ? ' placeholder-item' : ''
+                    }" data-tab-path="${item.path}">
+                <div class="tab-info-container">
+                    ${dirtyHtml}
+                    <span class="tab-icon-container">${iconHtml}</span>
+                    <span class="tab-name-container${placeholderClass}">${item.name}</span>
+                </div>
+                ${closeIconHtml}
+            </div>`,
                 enabled: true
             };
         });
@@ -223,6 +229,14 @@ define(function (require, exports, module) {
                 // Set the active pane and open the file
                 MainViewManager.setActivePaneId(paneId);
                 CommandManager.execute(Commands.FILE_OPEN, { fullPath: filePath });
+
+                // get the tab bar element based on paneId and scroll to the active tab
+                // we use setTimeout to ensure that the DOM has updated after the file open command
+                setTimeout(function () {
+                    const $tabBarElement = paneId === "first-pane" ?
+                        $("#phoenix-tab-bar") : $("#phoenix-tab-bar-2");
+                    scrollToActiveTab($tabBarElement);
+                }, 100);
             }
         });
 
