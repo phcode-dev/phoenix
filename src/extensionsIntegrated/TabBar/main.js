@@ -25,6 +25,7 @@ define(function (require, exports, module) {
     const MainViewManager = require("view/MainViewManager");
     const FileSystem = require("filesystem/FileSystem");
     const PreferencesManager = require("preferences/PreferencesManager");
+    const FileUtils = require("file/FileUtils");
     const CommandManager = require("command/CommandManager");
     const Commands = require("command/Commands");
     const DocumentManager = require("document/DocumentManager");
@@ -236,7 +237,8 @@ define(function (require, exports, module) {
             firstPanePlaceholder = {
                 path: firstPaneFile.fullPath,
                 name: firstPaneFile.name,
-                isPlaceholder: true
+                isPlaceholder: true,
+                displayName: firstPaneFile.name // for now we initialize with name, will check for duplicates later
             };
         }
 
@@ -246,11 +248,46 @@ define(function (require, exports, module) {
             secondPanePlaceholder = {
                 path: secondPaneFile.fullPath,
                 name: secondPaneFile.name,
-                isPlaceholder: true
+                isPlaceholder: true,
+                displayName: secondPaneFile.name
             };
         }
 
-        // create the tab bar if there's a placeholder or a file in the working set
+        // check for duplicate file names between placeholder tabs and working set entries
+        if (firstPanePlaceholder) {
+            // if any working set file has the same name as the placeholder
+            const hasDuplicate = Global.firstPaneWorkingSet.some(entry =>
+                entry.name === firstPanePlaceholder.name
+            );
+
+            if (hasDuplicate) {
+                // extract directory name from path
+                const path = firstPanePlaceholder.path;
+                const parentDir = FileUtils.getDirectoryPath(path);
+                const dirParts = parentDir.split("/");
+                const parentDirName = dirParts[dirParts.length - 2] || "";
+
+                // Update displayName with directory
+                firstPanePlaceholder.displayName = parentDirName + "/" + firstPanePlaceholder.name;
+            }
+        }
+
+        if (secondPanePlaceholder) {
+            const hasDuplicate = Global.secondPaneWorkingSet.some(entry =>
+                entry.name === secondPanePlaceholder.name
+            );
+
+            if (hasDuplicate) {
+                const path = secondPanePlaceholder.path;
+                const parentDir = FileUtils.getDirectoryPath(path);
+                const dirParts = parentDir.split("/");
+                const parentDirName = dirParts[dirParts.length - 2] || "";
+
+                secondPanePlaceholder.displayName = parentDirName + "/" + secondPanePlaceholder.name;
+            }
+        }
+
+        // Create tab bar if there's a placeholder or a file in the working set
         if ((Global.firstPaneWorkingSet.length > 0 || firstPanePlaceholder) &&
             (!$('#phoenix-tab-bar').length || $('#phoenix-tab-bar').is(':hidden'))) {
             createTabBar();
