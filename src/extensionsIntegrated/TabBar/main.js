@@ -221,16 +221,6 @@ define(function (require, exports, module) {
         // Get all files from the working set. refer to `global.js`
         getAllFilesFromWorkingSet();
 
-        // When there is only one file, we enforce the creation of the tab bar
-        // this is done because, given the situation:
-        // In a vertical split, when no files are present in 'second-pane' so the tab bar is hidden.
-        // Now, when the user adds a file in 'second-pane', the tab bar should be shown but since updateTabs() only,
-        // updates the tabs, so the tab bar never gets created.
-        if (Global.firstPaneWorkingSet.length === 1 &&
-            (!$('#phoenix-tab-bar').length || $('#phoenix-tab-bar').is(':hidden'))) {
-            createTabBar();
-        }
-
         // Check for active files not in working set in any pane
         const activePane = MainViewManager.getActivePaneId();
         const firstPaneFile = MainViewManager.getCurrentlyViewedFile("first-pane");
@@ -260,7 +250,13 @@ define(function (require, exports, module) {
             };
         }
 
-        if (Global.secondPaneWorkingSet.length === 1 &&
+        // create the tab bar if there's a placeholder or a file in the working set
+        if ((Global.firstPaneWorkingSet.length > 0 || firstPanePlaceholder) &&
+            (!$('#phoenix-tab-bar').length || $('#phoenix-tab-bar').is(':hidden'))) {
+            createTabBar();
+        }
+
+        if ((Global.secondPaneWorkingSet.length > 0 || secondPanePlaceholder) &&
             (!$('#phoenix-tab-bar-2').length || $('#phoenix-tab-bar-2').is(':hidden'))) {
             createTabBar();
         }
