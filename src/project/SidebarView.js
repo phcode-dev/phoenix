@@ -38,15 +38,16 @@
 define(function (require, exports, module) {
 
 
-    var AppInit         = require("utils/AppInit"),
-        ProjectManager  = require("project/ProjectManager"),
-        WorkingSetView  = require("project/WorkingSetView"),
-        MainViewManager = require("view/MainViewManager"),
-        CommandManager  = require("command/CommandManager"),
-        Commands        = require("command/Commands"),
-        Strings         = require("strings"),
-        Resizer         = require("utils/Resizer"),
-        _               = require("thirdparty/lodash");
+    var AppInit             = require("utils/AppInit"),
+        ProjectManager      = require("project/ProjectManager"),
+        PreferencesManager  = require("preferences/PreferencesManager"),
+        WorkingSetView      = require("project/WorkingSetView"),
+        MainViewManager     = require("view/MainViewManager"),
+        CommandManager      = require("command/CommandManager"),
+        Commands            = require("command/Commands"),
+        Strings             = require("strings"),
+        Resizer             = require("utils/Resizer"),
+        _                   = require("thirdparty/lodash");
 
     // These vars are initialized by the htmlReady handler
     // below since they refer to DOM elements
@@ -244,6 +245,23 @@ define(function (require, exports, module) {
 
         // Tooltips
         $splitViewMenu.attr("title", Strings.GEAR_MENU_TOOLTIP);
+
+        // Define the preference to decide whether to hide the working set or not
+        PreferencesManager.definePreference("hideWorkingSet", "boolean", false, {
+            description: Strings.DESCRIPTION_HIDE_WORKING_SET
+        })
+            .on("change", function () {
+                // 'working-set-list-container' is the id of the main working set element which we need to hide/show
+                const $workingSet = $(document.getElementById("working-set-list-container"));
+                const getPref = PreferencesManager.get("hideWorkingSet");
+
+                if(getPref) {
+                    // refer to brackets.less file for styles
+                    $workingSet.addClass("working-set-hidden");
+                } else {
+                    $workingSet.removeClass("working-set-hidden");
+                }
+            });
     });
 
     ProjectManager.on("projectOpen", _updateProjectTitle);
