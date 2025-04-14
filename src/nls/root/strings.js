@@ -1278,6 +1278,9 @@ define({
     // Emmet
     "DESCRIPTION_EMMET": "true to enable Emmet, else false.",
 
+    // Hide/Show working set (that is displayed in the sidebar)
+    "DESCRIPTION_HIDE_WORKING_SET": "true to hide the working set, false to display it.",
+
     // Tabbar
     "DESCRIPTION_TABBAR": "Set the tab bar settings.",
     "DESCRIPTION_SHOW_TABBAR": "true to show the tab bar, else false.",
