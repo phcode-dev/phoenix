@@ -45,12 +45,14 @@ define(function main(require, exports, module) {
         EventDispatcher      = require("utils/EventDispatcher");
 
     const EVENT_LIVE_HIGHLIGHT_PREF_CHANGED = "liveHighlightPrefChange";
+    const EVENT_WORD_NAVIGATION_PREF_CHANGED = "wordNavigationPrefChange";
 
     var params = new UrlParams();
     var config = {
         experimental: false, // enable experimental features
         debug: true, // enable debug output and helpers
         highlight: true, // enable highlighting?
+        wordNavigation: false, // enable word-level navigation?
         highlightConfig: { // the highlight configuration for the Inspector
             borderColor:  {r: 255, g: 229, b: 153, a: 0.66},
             contentColor: {r: 111, g: 168, b: 220, a: 0.55},
@@ -227,6 +229,17 @@ define(function main(require, exports, module) {
         PreferencesManager.setViewState("livedevHighlight", config.highlight);
     }
 
+    function _updateWordNavigationCheckmark() {
+        CommandManager.get(Commands.FILE_LIVE_WORD_NAVIGATION).setChecked(config.wordNavigation);
+        exports.trigger(EVENT_WORD_NAVIGATION_PREF_CHANGED, config.wordNavigation);
+    }
+
+    function toggleWordNavigation() {
+        config.wordNavigation = !config.wordNavigation;
+        _updateWordNavigationCheckmark();
+        PreferencesManager.setViewState("livedevWordNavigation", config.wordNavigation);
+    }
+
     /** Setup window references to useful LiveDevelopment modules */
     function _setupDebugHelpers() {
         window.report = function report(params) { window.params = params; console.info(params); };
@@ -302,13 +315,22 @@ define(function main(require, exports, module) {
             _updateHighlightCheckmark();
         });
 
+    PreferencesManager.stateManager.definePreference("livedevWordNavigation", "boolean", false)
+        .on("change", function () {
+            config.wordNavigation = PreferencesManager.getViewState("livedevWordNavigation");
+            _updateWordNavigationCheckmark();
+        });
+
     config.highlight = PreferencesManager.getViewState("livedevHighlight");
+    config.wordNavigation = PreferencesManager.getViewState("livedevWordNavigation");
 
     // init commands
     CommandManager.register(Strings.CMD_LIVE_HIGHLIGHT, Commands.FILE_LIVE_HIGHLIGHT, togglePreviewHighlight);
+    CommandManager.register(Strings.CMD_LIVE_WORD_NAVIGATION, Commands.FILE_LIVE_WORD_NAVIGATION, toggleWordNavigation);
     CommandManager.register(Strings.CMD_RELOAD_LIVE_PREVIEW, Commands.CMD_RELOAD_LIVE_PREVIEW, _handleReloadLivePreviewCommand);
 
     CommandManager.get(Commands.FILE_LIVE_HIGHLIGHT).setEnabled(false);
+    CommandManager.get(Commands.FILE_LIVE_WORD_NAVIGATION).setEnabled(false);
 
     EventDispatcher.makeEventDispatcher(exports);
 
@@ -318,6 +340,7 @@ define(function main(require, exports, module) {
     exports.EVENT_LIVE_PREVIEW_CLICKED = MultiBrowserLiveDev.EVENT_LIVE_PREVIEW_CLICKED;
     exports.EVENT_LIVE_PREVIEW_RELOAD = MultiBrowserLiveDev.EVENT_LIVE_PREVIEW_RELOAD;
     exports.EVENT_LIVE_HIGHLIGHT_PREF_CHANGED = EVENT_LIVE_HIGHLIGHT_PREF_CHANGED;
+    exports.EVENT_WORD_NAVIGATION_PREF_CHANGED = EVENT_WORD_NAVIGATION_PREF_CHANGED;
 
     // Export public functions
     exports.openLivePreview = openLivePreview;
@@ -327,6 +350,7 @@ define(function main(require, exports, module) {
     exports.setLivePreviewPinned = setLivePreviewPinned;
     exports.setLivePreviewTransportBridge = setLivePreviewTransportBridge;
     exports.togglePreviewHighlight = togglePreviewHighlight;
+    exports.toggleWordNavigation = toggleWordNavigation;
     exports.getConnectionIds = MultiBrowserLiveDev.getConnectionIds;
     exports.getLivePreviewDetails = MultiBrowserLiveDev.getLivePreviewDetails;
 });

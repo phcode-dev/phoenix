@@ -100,3 +100,16 @@
 .pointer-icon {
     background: url("./images/sprites.svg#pointer-icon") center no-repeat;
 }
+
+.text-icon { /* Locate Section-Level HTML Text */
+    background-image: url("./images/sprites.svg#text-icon");
+    background-repeat: no-repeat;
+    background-size: 35px 35px;
+    background-position: 15% 35%;
+}
+
+.text-fill-icon { /* Locate Word-Level HTML Text */
+    background: url("./images/sprites.svg#text-fill-icon") center no-repeat;
+    background-size: 35px 35px;
+    background-position: 15% 30%;
+}

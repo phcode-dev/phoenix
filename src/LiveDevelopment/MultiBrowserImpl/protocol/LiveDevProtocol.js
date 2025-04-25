@@ -147,31 +147,335 @@ define(function (require, exports, module) {
         }
     }
 
-    function _tagSelectedInLivePreview(tagId, nodeName, contentEditable, allSelectors) {
+    function _findWordInEditor(editor, word, nodeName, tagId, wordContext, wordOccurrenceIndex) {
+
+        if (!editor || !word) {
+
+            return false;
+        }
+
+        const codeMirror = editor._codeMirror;
+
+        // First try to find the word within the context of the clicked element
+        if (tagId) {
+
+            // Get the position of the tag in the editor
+            const tagPosition = HTMLInstrumentation.getPositionFromTagId(editor, parseInt(tagId, 10));
+
+            if (tagPosition) {
+                // Find the opening and closing tags to determine the element's content boundaries
+                let openTagEndLine = tagPosition.line;
+                let openTagEndCh = tagPosition.ch;
+                let closeTagStartLine = -1;
+                let closeTagStartCh = -1;
+
+                // Find the end of the opening tag (>)
+                let foundOpenTagEnd = false;
+                for (let line = openTagEndLine; line < codeMirror.lineCount() && !foundOpenTagEnd; line++) {
+                    const lineText = codeMirror.getLine(line);
+                    let startCh = (line === openTagEndLine) ? openTagEndCh : 0;
+
+                    const gtIndex = lineText.indexOf('>', startCh);
+                    if (gtIndex !== -1) {
+                        openTagEndLine = line;
+                        openTagEndCh = gtIndex + 1; // Position after the >
+                        foundOpenTagEnd = true;
+                    }
+                }
+
+                if (!foundOpenTagEnd) {
+                    return false;
+                }
+
+                // Check if this is a self-closing tag
+                const lineWithOpenTag = codeMirror.getLine(openTagEndLine);
+                const isSelfClosing = lineWithOpenTag.substring(0, openTagEndCh).includes('/>');
+
+                if (!isSelfClosing) {
+                    // Find the closing tag
+                    const closeTagRegex = new RegExp(`</${nodeName}[^>]*>`, 'i');
+                    let searchStartPos = {line: openTagEndLine, ch: openTagEndCh};
+
+                    // Create a search cursor to find the closing tag
+                    const closeTagCursor = codeMirror.getSearchCursor(closeTagRegex, searchStartPos);
+                    if (closeTagCursor.findNext()) {
+                        closeTagStartLine = closeTagCursor.from().line;
+                        closeTagStartCh = closeTagCursor.from().ch;
+                    } else {
+                        // If we can't find the closing tag, we'll just search in a reasonable range after the opening tag
+                        closeTagStartLine = Math.min(openTagEndLine + 10, codeMirror.lineCount() - 1);
+                        closeTagStartCh = codeMirror.getLine(closeTagStartLine).length;
+                    }
+                } else {
+                    // For self-closing tags, there's no content to search
+                    return false;
+                }
+
+                // Prioritize finding the word by its occurrence index within the element
+                if (typeof wordOccurrenceIndex === 'number') {
+
+                    // Create a word regex that matches the exact word
+                    const wordRegex = new RegExp("\\b" + word + "\\b", "g");
+
+                    // Create a search cursor limited to the element's content
+                    const wordCursor = codeMirror.getSearchCursor(
+                        wordRegex,
+                        {line: openTagEndLine, ch: openTagEndCh},
+                        {line: closeTagStartLine, ch: closeTagStartCh}
+                    );
+
+                    let currentOccurrence = 0;
+                    let found = false;
+
+                    // Find the specific occurrence of the word
+                    while (wordCursor.findNext()) {
+                        if (currentOccurrence === wordOccurrenceIndex) {
+                            const wordPos = wordCursor.from();
+                            editor.setCursorPos(wordPos.line, wordPos.ch, true);
+                            found = true;
+                            break;
+                        }
+                        currentOccurrence++;
+                    }
+
+                    if (found) {
+                        return true;
+                    }
+
+                }
+
+                // If occurrence index search failed or no occurrence index available, try context as a fallback
+                if (wordContext) {
+
+                    // Escape special regex characters in the context and word
+                    const escapedContext = wordContext.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+                    // Create a regex that matches the context
+                    const contextRegex = new RegExp(escapedContext, "g");
+
+                    // Create a search cursor limited to the element's content
+                    const contextCursor = codeMirror.getSearchCursor(
+                        contextRegex,
+                        {line: openTagEndLine, ch: openTagEndCh},
+                        {line: closeTagStartLine, ch: closeTagStartCh}
+                    );
+
+                    if (contextCursor.findNext()) {
+                        // Found the context within the element
+                        const contextPos = contextCursor.from();
+                        const contextText = codeMirror.getRange(
+                            contextCursor.from(),
+                            contextCursor.to()
+                        );
+
+                        // Find the position of the word within the context
+                        const wordIndex = wordContext.indexOf(word);
+                        if (wordIndex !== -1) {
+                            const wordPos = {
+                                line: contextPos.line,
+                                ch: contextPos.ch + wordIndex
+                            };
+
+                            editor.setCursorPos(wordPos.line, wordPos.ch, true);
+                            return true;
+                        }
+                    }
+                }
+
+                // If both occurrence index and context search failed, search for any occurrence of the word
+
+                // Create a word regex that matches the exact word
+                const wordRegex = new RegExp("\\b" + word + "\\b", "g");
+
+                // Create a search cursor limited to the element's content
+                const wordCursor = codeMirror.getSearchCursor(
+                    wordRegex,
+                    {line: openTagEndLine, ch: openTagEndCh},
+                    {line: closeTagStartLine, ch: closeTagStartCh}
+                );
+
+                // If we have an occurrence index, find the specific occurrence of the word
+                if (typeof wordOccurrenceIndex === 'number') {
+
+                    let currentOccurrence = 0;
+                    let found = false;
+
+                    // Find the specific occurrence of the word
+                    while (wordCursor.findNext()) {
+                        if (currentOccurrence === wordOccurrenceIndex) {
+                            const wordPos = wordCursor.from();
+                            editor.setCursorPos(wordPos.line, wordPos.ch, true);
+                            found = true;
+                            break;
+                        }
+                        currentOccurrence++;
+                    }
+
+                    if (found) {
+                        return true;
+                    }
+
+                }
+                // If no occurrence index or the specific occurrence wasn't found, just find the first occurrence
+                else {
+                    if (wordCursor.findNext()) {
+                        const wordPos = wordCursor.from();
+                        editor.setCursorPos(wordPos.line, wordPos.ch, true);
+                        return true;
+                    }
+                }
+
+                // If exact word search failed, try a more flexible search within the element
+
+                const flexWordRegex = new RegExp(word, "g");
+                const flexWordCursor = codeMirror.getSearchCursor(
+                    flexWordRegex,
+                    {line: openTagEndLine, ch: openTagEndCh},
+                    {line: closeTagStartLine, ch: closeTagStartCh}
+                );
+
+                if (flexWordCursor.findNext()) {
+                    const flexWordPos = flexWordCursor.from();
+                    editor.setCursorPos(flexWordPos.line, flexWordPos.ch, true);
+                    return true;
+                }
+            }
+        }
+
+        // If we couldn't find the word in the tag's context, try a document-wide search
+        // Prioritize finding the word by its occurrence index in the entire document
+        if (typeof wordOccurrenceIndex === 'number') {
+
+            // Create a word regex that matches the exact word
+            const wordRegex = new RegExp("\\b" + word + "\\b", "g");
+            const wordCursor = codeMirror.getSearchCursor(wordRegex);
+
+            let currentOccurrence = 0;
+            let found = false;
+
+            // Find the specific occurrence of the word
+            while (wordCursor.findNext()) {
+                if (currentOccurrence === wordOccurrenceIndex) {
+                    const wordPos = wordCursor.from();
+                    editor.setCursorPos(wordPos.line, wordPos.ch, true);
+                    found = true;
+                    break;
+                }
+                currentOccurrence++;
+            }
+
+            if (found) {
+                return true;
+            }
+
+        }
+
+        // If occurrence index search failed or no occurrence index available, try context as a fallback
+        if (wordContext) {
+
+            // Escape special regex characters in the context
+            const escapedContext = wordContext.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+            // Create a regex that matches the context with the word
+            const contextRegex = new RegExp(escapedContext, "g");
+
+            const contextCursor = codeMirror.getSearchCursor(contextRegex);
+            let contextFound = contextCursor.findNext();
+
+            if (contextFound) {
+                // Find the position of the word within the context
+                const contextMatch = contextCursor.from();
+                const wordInContextIndex = wordContext.indexOf(word);
+
+                if (wordInContextIndex !== -1) {
+                    // Calculate the exact position of the word within the found context
+                    const line = contextMatch.line;
+                    const ch = contextMatch.ch + wordInContextIndex;
+
+                    editor.setCursorPos(line, ch, true);
+                    return true;
+                }
+            }
+        }
+
+        // If both occurrence index and context search failed, fall back to a simple search
+
+        // Try to find the first occurrence of the exact word
+        const wordRegex = new RegExp("\\b" + word + "\\b", "g");
+
+        const cursor = codeMirror.getSearchCursor(wordRegex);
+        let foundFirstOccurrence = cursor.findNext();
+
+        if (foundFirstOccurrence) {
+            const position = {line: cursor.from().line, ch: cursor.from().ch};
+            editor.setCursorPos(position.line, position.ch, true);
+            return true;
+        }
+
+        // If exact word not found, try a more flexible search
+        const flexibleRegex = new RegExp(word, "g");
+
+        const flexCursor = codeMirror.getSearchCursor(flexibleRegex);
+        let flexibleFound = flexCursor.findNext();
+
+        if (flexibleFound) {
+            const position = {line: flexCursor.from().line, ch: flexCursor.from().ch};
+            editor.setCursorPos(position.line, position.ch, true);
+            return true;
+        }
+
+        return false;
+    }
+
+    function _tagSelectedInLivePreview(tagId, nodeName, contentEditable, allSelectors, clickedWord, wordContext, wordOccurrenceIndex) {
+
         const highlightPref = PreferencesManager.getViewState("livedevHighlight");
-        if(!highlightPref){
-            // live preview highlight and reverse highlight feature is disabled
+        const wordNavPref = PreferencesManager.getViewState("livedevWordNavigation");
+
+
+        if(!highlightPref && !wordNavPref){
+            // Both live preview highlight and word navigation are disabled
             return;
         }
         const liveDoc = LiveDevMultiBrowser.getCurrentLiveDoc(),
             activeEditor = EditorManager.getActiveEditor(), // this can be an inline editor
             activeFullEditor = EditorManager.getCurrentFullEditor();
+
+
         const liveDocPath = liveDoc ? liveDoc.doc.file.fullPath : null,
             activeEditorPath = activeEditor ? activeEditor.document.file.fullPath : null,
             activeFullEditorPath = activeFullEditor ? activeFullEditor.document.file.fullPath : null;
+
         if(!liveDocPath){
             activeEditor && activeEditor.focus(); // restore focus from live preview
             return;
         }
         const allOpenFileCount = MainViewManager.getWorkingSetSize(MainViewManager.ALL_PANES);
+
         function selectInHTMLEditor(fullHtmlEditor) {
+
+            // If word navigation is enabled and we have a clicked word, try to find it
+            if (wordNavPref && clickedWord && fullHtmlEditor) {
+                const masterEditor = fullHtmlEditor.document._masterEditor || fullHtmlEditor;
+
+                const wordFound = _findWordInEditor(masterEditor, clickedWord, nodeName, tagId, wordContext, wordOccurrenceIndex);
+
+                if (wordFound) {
+                    _focusEditorIfNeeded(masterEditor, nodeName, contentEditable);
+                    return;
+                }
+            }
+
+            // Fall back to tag-based navigation if word navigation fails or is disabled
             const position = HTMLInstrumentation.getPositionFromTagId(fullHtmlEditor, parseInt(tagId, 10));
+
             if(position && fullHtmlEditor) {
                 const masterEditor = fullHtmlEditor.document._masterEditor || fullHtmlEditor;
                 masterEditor.setCursorPos(position.line, position.ch, true);
                 _focusEditorIfNeeded(masterEditor, nodeName, contentEditable);
             }
         }
+
         if(liveDocPath === activeFullEditorPath) {
             // if the active pane is the html being live previewed, select that.
             selectInHTMLEditor(activeFullEditor);
@@ -180,7 +484,18 @@ define(function (require, exports, module) {
             // then we dont need to open the html live doc. For less files, we dont check if its related as
             // its not directly linked usually and needs a compile step. so we just do a fuzzy search.
             _focusEditorIfNeeded(activeEditor, nodeName, contentEditable);
-            _searchAndCursorIfCSS(activeEditor, allSelectors, nodeName);
+
+            // Try word-level navigation first if enabled
+            if (wordNavPref && clickedWord) {
+                const wordFound = _findWordInEditor(activeEditor, clickedWord, nodeName, tagId, wordContext, wordOccurrenceIndex);
+                if (!wordFound) {
+                    // Fall back to CSS selector search if word not found
+                    _searchAndCursorIfCSS(activeEditor, allSelectors, nodeName);
+                }
+            } else {
+                // Use traditional CSS selector search
+                _searchAndCursorIfCSS(activeEditor, allSelectors, nodeName);
+            }
             // in this case, see if we need to do any css reverse highlight magic here
         } else if(!allOpenFileCount){
             // no open editor in any panes, then open the html file directly.
@@ -204,9 +519,11 @@ define(function (require, exports, module) {
      * @param {string} msg The message that was sent, in JSON string format
      */
     function _receive(clientId, msgStr) {
+
         var msg = JSON.parse(msgStr),
-            event = msg.method || "event",
             deferred;
+
+
         if (msg.id) {
             deferred = _responseDeferreds[msg.id];
             if (deferred) {
@@ -218,12 +535,13 @@ define(function (require, exports, module) {
                 }
             }
         } else if (msg.clicked && msg.tagId) {
-            _tagSelectedInLivePreview(msg.tagId, msg.nodeName, msg.contentEditable, msg.allSelectors);
+            _tagSelectedInLivePreview(msg.tagId, msg.nodeName, msg.contentEditable, msg.allSelectors,
+                                     msg.clickedWord, msg.wordContext, msg.wordOccurrenceIndex);
             exports.trigger(EVENT_LIVE_PREVIEW_CLICKED, msg);
         } else {
             // enrich received message with clientId
             msg.clientId = clientId;
-            exports.trigger(event, msg);
+            exports.trigger(msg.method || "event", msg);
         }
     }
 
@@ -295,13 +613,13 @@ define(function (require, exports, module) {
         _transport = transport;
 
         _transport
-            .on("connect.livedev", function (event, msg) {
+            .on("connect.livedev", function (_, msg) {
                 _connect(msg[0], msg[1]);
             })
-            .on("message.livedev", function (event, msg) {
+            .on("message.livedev", function (_, msg) {
                 _receive(msg[0], msg[1]);
             })
-            .on("close.livedev", function (event, msg) {
+            .on("close.livedev", function (_, msg) {
                 _close(msg[0]);
             });
         _transport.start();
@@ -386,7 +704,8 @@ define(function (require, exports, module) {
                     url: url,
                     text: text
                 }
-            }
+            },
+            clients
         );
     }
 
@@ -422,7 +741,7 @@ define(function (require, exports, module) {
             {
                 method: "Page.reload",
                 params: {
-                    ignoreCache: true
+                    ignoreCache: ignoreCache || true
                 }
             },
             clients

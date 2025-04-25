@@ -165,6 +165,12 @@ Reloads live preview
 Toggles live highlight
 
 **Kind**: global variable  
+<a name="FILE_LIVE_WORD_NAVIGATION"></a>
+
+## FILE\_LIVE\_WORD\_NAVIGATION
+Toggles word-level navigation in live preview
+
+**Kind**: global variable  
 <a name="FILE_PROJECT_SETTINGS"></a>
 
 ## FILE\_PROJECT\_SETTINGS

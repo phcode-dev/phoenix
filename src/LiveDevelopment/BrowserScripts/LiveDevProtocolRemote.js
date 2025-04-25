@@ -383,11 +383,145 @@
 
 
     /**
+    * Gets the word at the clicked position along with additional information
+    * @param {Element} element - The element that was clicked
+    * @param {MouseEvent} event - The click event
+    * @return {Object|null} - Object containing the word and additional info, or null if not found
+    */
+    function getClickedWord(element, event) {
+
+        // Try to find the clicked position within the element
+        const range = document.caretRangeFromPoint(event.clientX, event.clientY);
+        if (!range) {
+            return null;
+        }
+
+        const textNode = range.startContainer;
+        const offset = range.startOffset;
+
+        // Check if we have a text node
+        if (textNode.nodeType !== Node.TEXT_NODE) {
+
+            // If the element itself contains text, try to extract a word from it
+            if (element.textContent && element.textContent.trim()) {
+                const text = element.textContent.trim();
+
+                // Simple word extraction - get the first word
+                const match = text.match(/\b(\w+)\b/);
+                if (match) {
+                    const word = match[1];
+
+                    // Since we're just getting the first word, it's the first occurrence
+                    return {
+                        word: word,
+                        occurrenceIndex: 0,
+                        context: text.substring(0, Math.min(40, text.length))
+                    };
+                }
+            }
+
+            return null;
+        }
+
+        const nodeText = textNode.textContent;
+
+        // Function to extract a word and its occurrence index
+        function extractWordAndOccurrence(text, wordStart, wordEnd) {
+            const word = text.substring(wordStart, wordEnd);
+
+            // Calculate which occurrence of this word it is
+            const textBeforeWord = text.substring(0, wordStart);
+            const regex = new RegExp("\\b" + word + "\\b", "g");
+            let occurrenceIndex = 0;
+            let match;
+
+            while ((match = regex.exec(textBeforeWord)) !== null) {
+                occurrenceIndex++;
+            }
+
+
+            // Get context around the word (up to 20 chars before and after)
+            const contextStart = Math.max(0, wordStart - 20);
+            const contextEnd = Math.min(text.length, wordEnd + 20);
+            const context = text.substring(contextStart, contextEnd);
+
+            return {
+                word: word,
+                occurrenceIndex: occurrenceIndex,
+                context: context
+            };
+        }
+
+        // If we're at a space or the text is empty, try to find a nearby word
+        if (nodeText.length === 0 || (offset < nodeText.length && /\s/.test(nodeText[offset]))) {
+
+            // Look for the nearest word
+            let leftPos = offset - 1;
+            let rightPos = offset;
+
+            // Check to the left
+            while (leftPos >= 0 && /\s/.test(nodeText[leftPos])) {
+                leftPos--;
+            }
+
+            // Check to the right
+            while (rightPos < nodeText.length && /\s/.test(nodeText[rightPos])) {
+                rightPos++;
+            }
+
+            // If we found a non-space character to the left, extract that word
+            if (leftPos >= 0) {
+                let wordStart = leftPos;
+                while (wordStart > 0 && /\w/.test(nodeText[wordStart - 1])) {
+                    wordStart--;
+                }
+
+                return extractWordAndOccurrence(nodeText, wordStart, leftPos + 1);
+            }
+
+            // If we found a non-space character to the right, extract that word
+            if (rightPos < nodeText.length) {
+                let wordEnd = rightPos;
+                while (wordEnd < nodeText.length && /\w/.test(nodeText[wordEnd])) {
+                    wordEnd++;
+                }
+
+                return extractWordAndOccurrence(nodeText, rightPos, wordEnd);
+            }
+
+            return null;
+        }
+
+        // Find word boundaries
+        let startPos = offset;
+        let endPos = offset;
+
+        // Move start position to the beginning of the word
+        while (startPos > 0 && /\w/.test(nodeText[startPos - 1])) {
+            startPos--;
+        }
+
+        // Move end position to the end of the word
+        while (endPos < nodeText.length && /\w/.test(nodeText[endPos])) {
+            endPos++;
+        }
+
+
+        // Extract the word and its occurrence index
+        if (endPos > startPos) {
+            return extractWordAndOccurrence(nodeText, startPos, endPos);
+        }
+
+        return null;
+    }
+
+    /**
     * Sends the message containing tagID which is being clicked
     * to the editor in order to change the cursor position to
     * the HTML tag corresponding to the clicked element.
     */
     function onDocumentClick(event) {
+
         // Get the user's current selection
         const selection = window.getSelection();
 
@@ -399,8 +533,14 @@
             return;
         }
         var element = event.target;
+
         if (element && element.hasAttribute('data-brackets-id')) {
-            MessageBroker.send({
+
+            // Get the clicked word and its information
+            const clickedWordInfo = getClickedWord(element, event);
+
+            // Prepare the message with the clicked word information
+            const message = {
                 "tagId": element.getAttribute('data-brackets-id'),
                 "nodeID": element.id,
                 "nodeClassList": element.classList,
@@ -408,7 +548,17 @@
                 "allSelectors": _getAllInheritedSelectorsInOrder(element),
                 "contentEditable": element.contentEditable === 'true',
                 "clicked": true
-            });
+            };
+
+            // Add word information if available
+            if (clickedWordInfo) {
+                message.clickedWord = clickedWordInfo.word;
+                message.wordContext = clickedWordInfo.context;
+                message.wordOccurrenceIndex = clickedWordInfo.occurrenceIndex;
+            }
+
+            MessageBroker.send(message);
+        } else {
         }
     }
     window.document.addEventListener("click", onDocumentClick);
