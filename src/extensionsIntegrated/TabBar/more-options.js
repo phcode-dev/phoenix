@@ -69,18 +69,6 @@ define(function (require, exports, module) {
 
 
     /**
-     * "CLOSE ACTIVE TAB"
-     * this closes the currently active tab
-     * doesn't matter if the context menu is opened from this tab or some other tab
-     */
-    function handleCloseActiveTab() {
-        // This simply executes the FILE_CLOSE command without parameters
-        // which will close the currently active file
-        CommandManager.execute(Commands.FILE_CLOSE);
-    }
-
-
-    /**
      * "CLOSE ALL TABS"
      * This will close all tabs in the specified pane
      *
