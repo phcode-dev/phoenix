@@ -40,6 +40,9 @@ define(function (require, exports, module) {
         Strings.CLOSE_ALL_TABS,
         Strings.CLOSE_UNMODIFIED_TABS,
         "---",
+        Strings.RENAME_TAB_FILE,
+        Strings.DELETE_TAB_FILE,
+        "---",
         Strings.REOPEN_CLOSED_FILE
     ];
 
@@ -220,6 +223,43 @@ define(function (require, exports, module) {
 
 
     /**
+     * "RENAME FILE"
+     * This function handles the renaming of the file that was right-clicked
+     *
+     * @param {String} filePath - path of the file to rename
+     */
+    function handleFileRename(filePath) {
+        if (filePath) {
+            // First ensure the sidebar is visible so users can see the rename action
+            CommandManager.execute(Commands.SHOW_SIDEBAR);
+
+            // Get the file object using FileSystem
+            const fileObj = FileSystem.getFileForPath(filePath);
+
+            // Execute the rename command with the file object
+            CommandManager.execute(Commands.FILE_RENAME, {file: fileObj});
+        }
+    }
+
+
+    /**
+     * "DELETE FILE"
+     * This function handles the deletion of the file that was right-clicked
+     *
+     * @param {String} filePath - path of the file to delete
+     */
+    function handleFileDelete(filePath) {
+        if (filePath) {
+            // Get the file object using FileSystem
+            const fileObj = FileSystem.getFileForPath(filePath);
+
+            // Execute the delete command with the file object
+            CommandManager.execute(Commands.FILE_DELETE, {file: fileObj});
+        }
+    }
+
+
+    /**
      * This function is called when a tab is right-clicked
      * This will show the more options context menu
      *
@@ -278,6 +318,12 @@ define(function (require, exports, module) {
             break;
         case Strings.CLOSE_UNMODIFIED_TABS:
             handleCloseUnmodifiedTabs(paneId);
+            break;
+        case Strings.RENAME_TAB_FILE:
+            handleFileRename(filePath);
+            break;
+        case Strings.DELETE_TAB_FILE:
+            handleFileDelete(filePath);
             break;
         case Strings.REOPEN_CLOSED_FILE:
             reopenClosedFile();
