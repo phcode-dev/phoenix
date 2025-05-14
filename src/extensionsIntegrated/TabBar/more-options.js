@@ -282,7 +282,12 @@ define(function (require, exports, module) {
             zIndex: 1000
         });
 
+        // Add a custom class to override the max-height, not sure why a scroll bar was coming but this did the trick
+        dropdown.dropdownExtraClasses = "tabbar-context-menu";
+
         dropdown.showDropdown();
+
+        $(".tabbar-context-menu").css("max-height", "200px");
 
         // handle the option selection
         dropdown.on("select", function (e, item) {
