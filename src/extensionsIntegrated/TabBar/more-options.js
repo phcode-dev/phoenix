@@ -42,10 +42,10 @@ define(function (require, exports, module) {
         "---",
         Strings.RENAME_TAB_FILE,
         Strings.DELETE_TAB_FILE,
+        Strings.SHOW_IN_FILE_TREE,
         "---",
         Strings.REOPEN_CLOSED_FILE
     ];
-
 
     /**
      * "CLOSE TAB"
@@ -60,13 +60,9 @@ define(function (require, exports, module) {
             const fileObj = FileSystem.getFileForPath(filePath);
 
             // Execute close command with file object and pane ID
-            CommandManager.execute(
-                Commands.FILE_CLOSE,
-                { file: fileObj, paneId: paneId }
-            );
+            CommandManager.execute(Commands.FILE_CLOSE, { file: fileObj, paneId: paneId });
         }
     }
-
 
     /**
      * "CLOSE ALL TABS"
@@ -88,13 +84,9 @@ define(function (require, exports, module) {
         // close each file in the pane, start from the rightmost [to avoid index shifts]
         for (let i = workingSet.length - 1; i >= 0; i--) {
             const fileObj = FileSystem.getFileForPath(workingSet[i].path);
-            CommandManager.execute(
-                Commands.FILE_CLOSE,
-                { file: fileObj, paneId: paneId }
-            );
+            CommandManager.execute(Commands.FILE_CLOSE, { file: fileObj, paneId: paneId });
         }
     }
-
 
     /**
      * "CLOSE UNMODIFIED TABS"
@@ -114,18 +106,14 @@ define(function (require, exports, module) {
         }
 
         // get all those entries that are not dirty
-        const unmodifiedEntries = workingSet.filter(entry => !entry.isDirty);
+        const unmodifiedEntries = workingSet.filter((entry) => !entry.isDirty);
 
         // close each unmodified file in the pane
         for (let i = unmodifiedEntries.length - 1; i >= 0; i--) {
             const fileObj = FileSystem.getFileForPath(unmodifiedEntries[i].path);
-            CommandManager.execute(
-                Commands.FILE_CLOSE,
-                { file: fileObj, paneId: paneId }
-            );
+            CommandManager.execute(Commands.FILE_CLOSE, { file: fileObj, paneId: paneId });
         }
     }
-
 
     /**
      * "CLOSE TABS TO THE LEFT"
@@ -146,23 +134,20 @@ define(function (require, exports, module) {
         }
 
         // find the index of the current file in the working set
-        const currentIndex = workingSet.findIndex(entry => entry.path === filePath);
+        const currentIndex = workingSet.findIndex((entry) => entry.path === filePath);
 
-        if (currentIndex > 0) { // we only proceed if there are tabs to the left
+        if (currentIndex > 0) {
+            // we only proceed if there are tabs to the left
             // get all files to the left of the current file
             const filesToClose = workingSet.slice(0, currentIndex);
 
             // Close each file, starting from the rightmost [to avoid index shifts]
             for (let i = filesToClose.length - 1; i >= 0; i--) {
                 const fileObj = FileSystem.getFileForPath(filesToClose[i].path);
-                CommandManager.execute(
-                    Commands.FILE_CLOSE,
-                    { file: fileObj, paneId: paneId }
-                );
+                CommandManager.execute(Commands.FILE_CLOSE, { file: fileObj, paneId: paneId });
             }
         }
     }
-
 
     /**
      * "CLOSE TABS TO THE RIGHT"
@@ -183,7 +168,7 @@ define(function (require, exports, module) {
         }
 
         // get the index of the current file in the working set
-        const currentIndex = workingSet.findIndex(entry => entry.path === filePath);
+        const currentIndex = workingSet.findIndex((entry) => entry.path === filePath);
         // only proceed if there are tabs to the right
         if (currentIndex !== -1 && currentIndex < workingSet.length - 1) {
             // get all files to the right of the current file
@@ -191,14 +176,10 @@ define(function (require, exports, module) {
 
             for (let i = filesToClose.length - 1; i >= 0; i--) {
                 const fileObj = FileSystem.getFileForPath(filesToClose[i].path);
-                CommandManager.execute(
-                    Commands.FILE_CLOSE,
-                    { file: fileObj, paneId: paneId }
-                );
+                CommandManager.execute(Commands.FILE_CLOSE, { file: fileObj, paneId: paneId });
             }
         }
     }
-
 
     /**
      * "REOPEN CLOSED FILE"
@@ -208,7 +189,6 @@ define(function (require, exports, module) {
     function reopenClosedFile() {
         CommandManager.execute(Commands.FILE_REOPEN_CLOSED);
     }
-
 
     /**
      * "RENAME FILE"
@@ -225,10 +205,9 @@ define(function (require, exports, module) {
             const fileObj = FileSystem.getFileForPath(filePath);
 
             // Execute the rename command with the file object
-            CommandManager.execute(Commands.FILE_RENAME, {file: fileObj});
+            CommandManager.execute(Commands.FILE_RENAME, { file: fileObj });
         }
     }
-
 
     /**
      * "DELETE FILE"
@@ -242,10 +221,28 @@ define(function (require, exports, module) {
             const fileObj = FileSystem.getFileForPath(filePath);
 
             // Execute the delete command with the file object
-            CommandManager.execute(Commands.FILE_DELETE, {file: fileObj});
+            CommandManager.execute(Commands.FILE_DELETE, { file: fileObj });
         }
     }
 
+    /**
+     * "SHOW IN FILE TREE"
+     * This function handles showing the file in the file tree
+     *
+     * @param {String} filePath - path of the file to show in file tree
+     */
+    function handleShowInFileTree(filePath) {
+        if (filePath) {
+            // First ensure the sidebar is visible so users can see the file in the tree
+            CommandManager.execute(Commands.SHOW_SIDEBAR);
+
+            // Get the file object using FileSystem
+            const fileObj = FileSystem.getFileForPath(filePath);
+
+            // Execute the show in tree command with the file object
+            CommandManager.execute(Commands.NAVIGATE_SHOW_IN_FILE_TREE, { file: fileObj });
+        }
+    }
 
     /**
      * This function is called when a tab is right-clicked
@@ -317,6 +314,9 @@ define(function (require, exports, module) {
             break;
         case Strings.DELETE_TAB_FILE:
             handleFileDelete(filePath);
+            break;
+        case Strings.SHOW_IN_FILE_TREE:
+            handleShowInFileTree(filePath);
             break;
         case Strings.REOPEN_CLOSED_FILE:
             reopenClosedFile();
