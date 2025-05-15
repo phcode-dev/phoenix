@@ -272,7 +272,7 @@ define(function (require, exports, module) {
 
         dropdown.showDropdown();
 
-        $(".tabbar-context-menu").css("max-height", "200px");
+        $(".tabbar-context-menu").css("max-height", "300px");
 
         // handle the option selection
         dropdown.on("select", function (e, item) {
