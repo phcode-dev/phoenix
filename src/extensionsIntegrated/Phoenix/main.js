@@ -32,7 +32,8 @@ define(function (require, exports, module) {
         Strings      = require("strings"),
         Dialogs      = require("widgets/Dialogs"),
         NotificationUI  = require("widgets/NotificationUI"),
-        DefaultDialogs = require("widgets/DefaultDialogs");
+        DefaultDialogs = require("widgets/DefaultDialogs"),
+        ProfileMenu = require("./profile-menu");
 
     const PERSIST_STORAGE_DIALOG_DELAY_SECS = 60000;
     let $icon;
@@ -48,7 +49,7 @@ define(function (require, exports, module) {
             })
             .appendTo($("#main-toolbar .bottom-buttons"));
         $icon.on('click', ()=>{
-            console.log("User profile button was clicked");
+            ProfileMenu.init();
         });
     }
     function _showUnSupportedBrowserDialogue() {
