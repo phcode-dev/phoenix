@@ -38,17 +38,17 @@ define(function (require, exports, module) {
     let $icon;
 
     function _addToolbarIcon() {
-        const helpButtonID = "help-button";
+        const helpButtonID = "user-profile-button";
         $icon = $("<a>")
             .attr({
                 id: helpButtonID,
                 href: "#",
-                class: "help",
-                title: Strings.CMD_SUPPORT
+                class: "user",
+                title: Strings.CMD_USER_PROFILE
             })
             .appendTo($("#main-toolbar .bottom-buttons"));
         $icon.on('click', ()=>{
-            Phoenix.app.openURLInDefaultBrowser(brackets.config.support_url);
+            console.log("User profile button was clicked");
         });
     }
     function _showUnSupportedBrowserDialogue() {

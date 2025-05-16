@@ -626,6 +626,7 @@ define({
     "CMD_AUTO_UPDATE": "Auto Update",
     "CMD_HOW_TO_USE_BRACKETS": "How to Use {APP_NAME}",
     "CMD_SUPPORT": "{APP_NAME} Support",
+    "CMD_USER_PROFILE": "User Profile",
     "CMD_DOCS": "Help, Getting Started",
     "CMD_SUGGEST": "Suggest a Feature",
     "CMD_REPORT_ISSUE": "Report Issue",
