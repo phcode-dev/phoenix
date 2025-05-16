@@ -1,4 +1,7 @@
 define(function (require, exports, module) {
+    const Mustache = require("thirdparty/mustache/mustache");
+
+    // HTML templates
     const loginTemplate = require("text!./html/login-dialog.html");
     const profileTemplate = require("text!./html/profile-panel.html");
 
@@ -9,7 +12,27 @@ define(function (require, exports, module) {
     let isPopupVisible = false;
 
     // if user is logged in we show the profile menu, otherwise we show the login menu
-    const isLoggedIn = false;
+    const isLoggedIn = true;
+
+    const defaultLoginData = {
+        welcomeTitle: "Welcome to Phoenix Code",
+        signInBtnText: "Sign in to your account",
+        supportBtnText: "Contact support"
+    };
+
+    const defaultProfileData = {
+        initials: "CA",
+        userName: "Charly A.",
+        planName: "Paid Plan",
+        quotaLabel: "AI quota used",
+        quotaUsed: "7,000",
+        quotaTotal: "10,000",
+        quotaUnit: "tokens",
+        quotaPercent: 70,
+        accountBtnText: "Account details",
+        supportBtnText: "Contact support",
+        signOutBtnText: "Sign out"
+    };
 
     function _handleSignInBtnClick() {
         console.log("User clicked sign in button");
@@ -88,21 +111,28 @@ define(function (require, exports, module) {
 
     /**
      * Shows the sign-in popup when the user is not logged in
+     * @param {Object} loginData - Data to populate the template (optional)
      */
-    function showLoginPopup() {
+    function showLoginPopup(loginData) {
         // If popup is already visible, just close it
         if (isPopupVisible) {
             closePopup();
             return;
         }
 
+        // Merge provided data with defaults
+        const templateData = $.extend({}, defaultLoginData, loginData || {});
+
         // create the popup element
         closePopup(); // close any existing popup first
-        $popup = $(loginTemplate);
+
+        // Render template with data
+        const renderedTemplate = Mustache.render(loginTemplate, templateData);
+        $popup = $(renderedTemplate);
+
         $("body").append($popup);
         isPopupVisible = true;
 
-        // Position the popup
         positionPopup();
 
         // event handlers for buttons
@@ -125,16 +155,24 @@ define(function (require, exports, module) {
 
     /**
      * Shows the user profile popup when the user is logged in
+     * @param {Object} profileData - Data to populate the template (optional)
      */
-    function showProfilePopup() {
+    function showProfilePopup(profileData) {
         // If popup is already visible, just close it
         if (isPopupVisible) {
             closePopup();
             return;
         }
 
+        // Merge provided data with defaults
+        const templateData = $.extend({}, defaultProfileData, profileData || {});
+
         closePopup();
-        $popup = $(profileTemplate);
+
+        // Render template with data
+        const renderedTemplate = Mustache.render(profileTemplate, templateData);
+        $popup = $(renderedTemplate);
+
         $("body").append($popup);
         isPopupVisible = true;
         positionPopup();
@@ -164,8 +202,9 @@ define(function (require, exports, module) {
     /**
      * Toggle the profile popup based on the user's login status
      * this function is called inside the src/extensionsIntegrated/Phoenix/main.js when user clicks on the profile icon
+     * @param {Object} data - Data to populate the templates (optional)
      */
-    function init() {
+    function init(data) {
         // check if the popup is already visible or not. if visible close it
         if (isPopupVisible) {
             closePopup();
@@ -173,9 +212,9 @@ define(function (require, exports, module) {
         }
 
         if (isLoggedIn) {
-            showProfilePopup();
+            showProfilePopup(data);
         } else {
-            showLoginPopup();
+            showLoginPopup(data);
         }
 
         // handle window resize to reposition popup
