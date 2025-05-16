@@ -1,0 +1,39 @@
+<div class="profile-popup">
+    <div class="popup-header">
+        <div class="user-profile-header">
+            <div class="user-avatar">
+                {{initials}}
+            </div>
+            <div class="user-info">
+                <div class="user-name">{{userName}}</div>
+                <div class="user-plan">{{planName}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="popup-body">
+        <div class="quota-section">
+            <div class="quota-header">
+                <span>{{quotaLabel}}</span>
+                <span>{{quotaUsed}} / {{quotaTotal}} {{quotaUnit}}</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: {{quotaPercent}}%;"></div>
+            </div>
+        </div>
+
+        <button id="phoenix-account-btn" class="btn btn-default menu-button">
+            <i class="fa fa-user"></i>
+            {{accountBtnText}}
+        </button>
+
+        <button id="phoenix-support-btn" class="btn btn-default menu-button">
+            <i class="fa fa-question-circle"></i>
+            {{supportBtnText}}
+        </button>
+
+        <button id="phoenix-signout-btn" class="btn btn-default menu-button signout">
+            <i class="fa fa-sign-out-alt"></i>
+            {{signOutBtnText}}
+        </button>
+    </div>
+</div>

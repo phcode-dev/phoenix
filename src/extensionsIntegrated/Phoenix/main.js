@@ -32,23 +32,24 @@ define(function (require, exports, module) {
         Strings      = require("strings"),
         Dialogs      = require("widgets/Dialogs"),
         NotificationUI  = require("widgets/NotificationUI"),
-        DefaultDialogs = require("widgets/DefaultDialogs");
+        DefaultDialogs = require("widgets/DefaultDialogs"),
+        ProfileMenu = require("./profile-menu");
 
     const PERSIST_STORAGE_DIALOG_DELAY_SECS = 60000;
     let $icon;
 
     function _addToolbarIcon() {
-        const helpButtonID = "help-button";
+        const helpButtonID = "user-profile-button";
         $icon = $("<a>")
             .attr({
                 id: helpButtonID,
                 href: "#",
-                class: "help",
-                title: Strings.CMD_SUPPORT
+                class: "user",
+                title: Strings.CMD_USER_PROFILE
             })
             .appendTo($("#main-toolbar .bottom-buttons"));
         $icon.on('click', ()=>{
-            Phoenix.app.openURLInDefaultBrowser(brackets.config.support_url);
+            ProfileMenu.init();
         });
     }
     function _showUnSupportedBrowserDialogue() {
