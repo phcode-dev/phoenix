@@ -12,7 +12,7 @@ define(function (require, exports, module) {
     let isPopupVisible = false;
 
     // if user is logged in we show the profile menu, otherwise we show the login menu
-    const isLoggedIn = true;
+    const isLoggedIn = false;
 
     const defaultLoginData = {
         welcomeTitle: "Welcome to Phoenix Code",
