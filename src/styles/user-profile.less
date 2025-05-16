@@ -1,29 +1,246 @@
+@import "brackets_variables.less";
+
 .profile-popup {
-    background-color: #2c2c2c;
-    color: #ffffff;
-    border-radius: 6px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    background-color: @bc-menu-bg;
+    color: @bc-menu-text;
+    border-radius: @bc-border-radius;
+    box-shadow: 0 3px 9px @bc-shadow;
     width: 300px;
     overflow: hidden;
     position: absolute;
-    z-index: 9999;
+    z-index: @z-index-brackets-context-menu-base;
+    animation: dropdown 90ms cubic-bezier(0, .97, .2, .99);
+    transform-origin: 0 0;
 
     .popup-header {
-        padding: 15px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 12px 15px;
+        border-bottom: 1px solid @bc-menu-separator;
     }
 
     .popup-body {
-        padding: 15px;
+        padding: 12px 15px;
     }
 
     .popup-title {
         margin: 0;
-        font-size: 18px;
-        font-weight: normal;
+        font-size: 16px;
+        font-weight: @font-weight-semibold;
+        color: @bc-menu-text;
+    }
+
+    .user-profile-header {
+        display: flex;
+        align-items: center;
+    }
+
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: @bc-primary-btn-bg;
+        color: @bc-text-alt;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+        font-weight: @font-weight-semibold;
+        font-size: 16px;
+    }
+
+    .user-info {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .user-name {
+        font-weight: @font-weight-semibold;
+        color: @bc-menu-text;
+    }
+
+    .user-plan {
+        color: #3c3;
+        font-size: 16px;
+    }
+
+    .quota-section {
+        margin-bottom: 20px;
+    }
+
+    .quota-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px;
+        font-size: 13px;
+    }
+
+    .progress-bar {
+        width: 100%;
+        height: 8px;
+        background-color: @bc-input-bg;
+        border-radius: 4px;
+        overflow: hidden;
+
+        .progress-fill {
+            height: 100%;
+            background-color: @bc-primary-btn-bg;
+            border-radius: 4px;
+        }
+    }
+
+    .support-link {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .menu-button {
+        width: 100%;
+        text-align: left;
+        padding: 8px 12px;
+
+        i {
+            margin-right: 8px;
+            width: 20px;
+            text-align: center;
+        }
+
+        &.signout {
+            color: #f55;
+        }
+    }
+
+    .btn {
+        margin: 5px 0;
+        transition: background-color 0.2s ease;
+
+        &.btn-primary {
+            background-color: @bc-primary-btn-bg;
+            border: 1px solid @bc-primary-btn-border;
+            box-shadow: inset 0 1px 0 @bc-highlight;
+            color: @bc-text-alt;
+            width: 100%;
+            padding: 10px 0;
+
+            i {
+                margin-right: 5px;
+            }
+
+            &:hover {
+                background-color: lighten(@bc-primary-btn-bg, 10%);
+            }
+
+            &:active {
+                background-color: @bc-primary-btn-bg-down;
+                box-shadow: inset 0 1px 0 @bc-shadow-small;
+            }
+        }
+
+        &.btn-default {
+            background-color: @bc-btn-bg;
+            border: 1px solid @bc-btn-border;
+            box-shadow: inset 0 1px 0 @bc-highlight;
+
+            &:hover {
+                background-color: lighten(@bc-btn-bg, 10%);
+            }
+
+            &:active {
+                background-color: @bc-btn-bg-down;
+                box-shadow: inset 0 1px 0 @bc-shadow-small;
+            }
+        }
+
+        &.btn-link {
+            background: none;
+            border: none;
+            box-shadow: none;
+            color: @bc-text-thin-quiet;
+
+            i {
+                margin-right: 5px;
+            }
+
+            &:hover {
+                color: @bc-text;
+                text-decoration: none;
+            }
+        }
     }
 }
 
 .dark .profile-popup {
-    background-color: #1d1f21;
+    background-color: @dark-bc-menu-bg;
+    color: @dark-bc-menu-text;
+    box-shadow: 0 3px 9px @dark-bc-shadow;
+
+    .popup-header {
+        border-bottom: 1px solid @dark-bc-menu-separator;
+    }
+
+    .popup-title {
+        color: @dark-bc-menu-text;
+    }
+
+    .user-avatar {
+        background-color: @dark-bc-primary-btn-bg;
+        color: @dark-bc-text-alt;
+    }
+
+    .user-name {
+        color: @dark-bc-menu-text;
+    }
+
+    .progress-bar {
+        background-color: @dark-bc-input-bg;
+
+        .progress-fill {
+            background-color: @dark-bc-primary-btn-bg;
+        }
+    }
+
+    .btn {
+        &.btn-primary {
+            background-color: @dark-bc-primary-btn-bg;
+            border: 1px solid @dark-bc-primary-btn-border;
+            box-shadow: inset 0 1px 0 @dark-bc-highlight;
+            color: @dark-bc-text-alt;
+
+            &:hover {
+                background-color: lighten(@dark-bc-primary-btn-bg, 10%);
+            }
+
+            &:active {
+                background-color: @dark-bc-primary-btn-bg-down;
+                box-shadow: inset 0 1px 0 @dark-bc-shadow-small;
+            }
+        }
+
+        &.btn-default {
+            background-color: @dark-bc-btn-bg;
+            border: 1px solid @dark-bc-btn-border;
+            box-shadow: inset 0 1px 0 @dark-bc-highlight;
+            color: @dark-bc-text;
+
+            &:hover {
+                background-color: lighten(@dark-bc-btn-bg, 10%);
+            }
+
+            &:active {
+                background-color: @dark-bc-btn-bg-down;
+                box-shadow: inset 0 1px 0 @dark-bc-shadow-small;
+            }
+        }
+
+        &.btn-link {
+            color: @dark-bc-text-thin-quiet;
+
+            &:hover {
+                color: @dark-bc-text;
+            }
+        }
+    }
+}
+
+@keyframes dropdown {
+    0%   { opacity: 0.5; transform: translate3d(0, 0, 0) scale(0.5); }
+    100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
 }
