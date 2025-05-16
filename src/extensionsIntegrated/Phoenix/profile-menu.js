@@ -1,5 +1,6 @@
 define(function (require, exports, module) {
     const Mustache = require("thirdparty/mustache/mustache");
+    const PopUpManager = require("widgets/PopUpManager");
 
     // HTML templates
     const loginTemplate = require("text!./html/login-dialog.html");
@@ -57,25 +58,9 @@ define(function (require, exports, module) {
      */
     function closePopup() {
         if ($popup) {
-            $popup.remove();
+            PopUpManager.removePopUp($popup);
             $popup = null;
             isPopupVisible = false;
-
-            // remove global click handler
-            $(document).off("click.profilePopup");
-        }
-    }
-
-    /**
-     * handle clicks outside the popup to close it
-     */
-    function handleDocumentClick(e) {
-        // If popup exists and click is outside the popup
-        if ($popup && $popup.length && !$popup[0].contains(e.target)) {
-            // If the click is not on the user-profile-button (which would toggle the popup)
-            if (e.target.id !== "user-profile-button" && !$(e.target).closest("#user-profile-button").length) {
-                closePopup();
-            }
         }
     }
 
@@ -135,6 +120,12 @@ define(function (require, exports, module) {
 
         positionPopup();
 
+        PopUpManager.addPopUp($popup, function() {
+            $popup.remove();
+            $popup = null;
+            isPopupVisible = false;
+        }, true, { closeCurrentPopups: true });
+
         // event handlers for buttons
         $popup.find("#phoenix-signin-btn").on("click", function () {
             _handleSignInBtnClick();
@@ -146,11 +137,12 @@ define(function (require, exports, module) {
             closePopup();
         });
 
-        // Set up global click handler to close popup when clicking outside
-        // Delay attaching to avoid immediate closing
-        setTimeout(function () {
-            $(document).on("click.profilePopup", handleDocumentClick);
-        }, 0);
+        // handle window resize to reposition popup
+        $(window).on("resize.profilePopup", function () {
+            if (isPopupVisible) {
+                positionPopup();
+            }
+        });
     }
 
     /**
@@ -177,6 +169,12 @@ define(function (require, exports, module) {
         isPopupVisible = true;
         positionPopup();
 
+        PopUpManager.addPopUp($popup, function() {
+            $popup.remove();
+            $popup = null;
+            isPopupVisible = false;
+        }, true, { closeCurrentPopups: true });
+
         $popup.find("#phoenix-account-btn").on("click", function () {
             _handleAccountDetailsBtnClick();
             closePopup();
@@ -192,11 +190,12 @@ define(function (require, exports, module) {
             closePopup();
         });
 
-        // Set up global click handler to close popup when clicking outside
-        // Delay attaching to avoid immediate closing
-        setTimeout(function () {
-            $(document).on("click.profilePopup", handleDocumentClick);
-        }, 0);
+        // handle window resize to reposition popup
+        $(window).on("resize.profilePopup", function () {
+            if (isPopupVisible) {
+                positionPopup();
+            }
+        });
     }
 
     /**
@@ -216,13 +215,6 @@ define(function (require, exports, module) {
         } else {
             showLoginPopup(data);
         }
-
-        // handle window resize to reposition popup
-        $(window).on("resize.profilePopup", function () {
-            if (isPopupVisible) {
-                positionPopup();
-            }
-        });
     }
 
     exports.init = init;
