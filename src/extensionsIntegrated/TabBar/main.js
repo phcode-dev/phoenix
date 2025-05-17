@@ -42,8 +42,6 @@ define(function (require, exports, module) {
     const TabBarHTML = require("text!./html/tabbar-pane.html");
     const TabBarHTML2 = require("text!./html/tabbar-second-pane.html");
 
-
-
     /**
      * This holds the tab bar element
      * For tab bar structure, refer to `./html/tabbar-pane.html` and `./html/tabbar-second-pane.html`
@@ -53,7 +51,6 @@ define(function (require, exports, module) {
      */
     let $tabBar = null;
     let $tabBar2 = null;
-
 
     /**
      * This function is responsible to take all the files from the working set and gets the working sets ready
@@ -68,7 +65,6 @@ define(function (require, exports, module) {
 
         // to make sure atleast one pane is open
         if (paneList && paneList.length > 0) {
-
             // this gives the working set of the first pane
             const currFirstPaneWorkingSet = MainViewManager.getWorkingSet(paneList[0]);
 
@@ -108,8 +104,6 @@ define(function (require, exports, module) {
         }
     }
 
-
-
     /**
      * Responsible for creating the tab element
      * Note: this creates a tab (for a single file) not the tab bar
@@ -128,11 +122,11 @@ define(function (require, exports, module) {
         const activePathInPane = activeFileInPane ? activeFileInPane.fullPath : null;
 
         // Check if this file is active in its pane
-        const isActive = (entry.path === activePathInPane);
+        const isActive = entry.path === activePathInPane;
 
         // Current active pane (used to determine whether to add the blue underline)
         const currentActivePane = MainViewManager.getActivePaneId();
-        const isPaneActive = (paneId === currentActivePane);
+        const isPaneActive = paneId === currentActivePane;
 
         const isDirty = Helper._isFileModified(FileSystem.getFileForPath(entry.path));
         const isPlaceholder = entry.isPlaceholder === true;
@@ -140,9 +134,9 @@ define(function (require, exports, module) {
         // create tab with all the appropriate classes
         const $tab = $(
             `<div class="tab 
-            ${isActive ? 'active' : ''} 
-            ${isDirty ? 'dirty' : ''}
-            ${isPlaceholder ? 'placeholder' : ''}" 
+            ${isActive ? "active" : ""}
+            ${isDirty ? "dirty" : ""}
+            ${isPlaceholder ? "placeholder" : ""}"
             data-path="${entry.path}" 
             title="${entry.path}">
             <div class="tab-icon"></div>
@@ -153,13 +147,13 @@ define(function (require, exports, module) {
 
         // Add the file icon
         const $icon = Helper._getFileIcon(entry);
-        $tab.find('.tab-icon').append($icon);
+        $tab.find(".tab-icon").append($icon);
 
         // Check if we have a directory part in the displayName
-        const $tabName = $tab.find('.tab-name');
+        const $tabName = $tab.find(".tab-name");
         if (entry.displayName && entry.displayName !== entry.name) {
             // Split the displayName into directory and filename parts
-            const parts = entry.displayName.split('/');
+            const parts = entry.displayName.split("/");
             const dirName = parts[0];
             const fileName = parts[1];
 
@@ -174,39 +168,38 @@ define(function (require, exports, module) {
         if (isActive && !isPaneActive) {
             // if it's active but in a non-active pane, we add a special class
             // to style differently in CSS to indicate that it's active but not in the active pane
-            $tab.addClass('active-in-inactive-pane');
+            $tab.addClass("active-in-inactive-pane");
         }
 
         // if this is a placeholder tab in inactive pane, we need to use the brown styling
         // instead of the blue one for active tabs
         if (isPlaceholder && isActive && !isPaneActive) {
-            $tab.removeClass('active');
-            $tab.addClass('active-in-inactive-pane');
+            $tab.removeClass("active");
+            $tab.addClass("active-in-inactive-pane");
         }
 
         return $tab;
     }
 
-
     /**
      * Creates the tab bar and adds it to the DOM
      */
     function createTabBar() {
-        if (!Preference.tabBarEnabled || Preference.numberOfTabs === 0) {
+        if (!Preference.tabBarEnabled || Preference.tabBarNumberOfTabs === 0) {
+            cleanupTabBar();
             return;
         }
 
         // clean up any existing tab bars first and start fresh
         cleanupTabBar();
 
-        const $paneHeader = $('.pane-header');
+        const $paneHeader = $(".pane-header");
         if ($paneHeader.length === 1) {
             $tabBar = $(TabBarHTML);
             // since we need to add the tab bar before the editor which has .not-editor class
             $(".pane-header").after($tabBar);
             WorkspaceManager.recomputeLayout(true);
             updateTabs();
-
         } else if ($paneHeader.length === 2) {
             $tabBar = $(TabBarHTML);
             $tabBar2 = $(TabBarHTML2);
@@ -220,7 +213,6 @@ define(function (require, exports, module) {
         }
     }
 
-
     /**
      * This function updates the tabs in the tab bar
      * It is called when the working set changes. So instead of creating a new tab bar, we just update the existing one
@@ -228,6 +220,12 @@ define(function (require, exports, module) {
     function updateTabs() {
         // Get all files from the working set. refer to `global.js`
         getAllFilesFromWorkingSet();
+
+        // just to make sure that the number of tabs is not set to 0
+        if (Preference.tabBarNumberOfTabs === 0) {
+            cleanupTabBar();
+            return;
+        }
 
         // Check for active files not in working set in any pane
         const activePane = MainViewManager.getActivePaneId();
@@ -239,8 +237,7 @@ define(function (require, exports, module) {
         let secondPanePlaceholder = null;
 
         // Check if active file in first pane is not in the working set
-        if (firstPaneFile &&
-            !Global.firstPaneWorkingSet.some(entry => entry.path === firstPaneFile.fullPath)) {
+        if (firstPaneFile && !Global.firstPaneWorkingSet.some((entry) => entry.path === firstPaneFile.fullPath)) {
             firstPanePlaceholder = {
                 path: firstPaneFile.fullPath,
                 name: firstPaneFile.name,
@@ -250,8 +247,7 @@ define(function (require, exports, module) {
         }
 
         // Check if active file in second pane is not in the working set
-        if (secondPaneFile &&
-            !Global.secondPaneWorkingSet.some(entry => entry.path === secondPaneFile.fullPath)) {
+        if (secondPaneFile && !Global.secondPaneWorkingSet.some((entry) => entry.path === secondPaneFile.fullPath)) {
             secondPanePlaceholder = {
                 path: secondPaneFile.fullPath,
                 name: secondPaneFile.name,
@@ -263,9 +259,7 @@ define(function (require, exports, module) {
         // check for duplicate file names between placeholder tabs and working set entries
         if (firstPanePlaceholder) {
             // if any working set file has the same name as the placeholder
-            const hasDuplicate = Global.firstPaneWorkingSet.some(entry =>
-                entry.name === firstPanePlaceholder.name
-            );
+            const hasDuplicate = Global.firstPaneWorkingSet.some((entry) => entry.name === firstPanePlaceholder.name);
 
             if (hasDuplicate) {
                 // extract directory name from path
@@ -280,9 +274,7 @@ define(function (require, exports, module) {
         }
 
         if (secondPanePlaceholder) {
-            const hasDuplicate = Global.secondPaneWorkingSet.some(entry =>
-                entry.name === secondPanePlaceholder.name
-            );
+            const hasDuplicate = Global.secondPaneWorkingSet.some((entry) => entry.name === secondPanePlaceholder.name);
 
             if (hasDuplicate) {
                 const path = secondPanePlaceholder.path;
@@ -295,22 +287,25 @@ define(function (require, exports, module) {
         }
 
         // Create tab bar if there's a placeholder or a file in the working set
-        if ((Global.firstPaneWorkingSet.length > 0 || firstPanePlaceholder) &&
-            (!$('#phoenix-tab-bar').length || $('#phoenix-tab-bar').is(':hidden'))) {
+        if (
+            (Global.firstPaneWorkingSet.length > 0 || firstPanePlaceholder) &&
+            (!$("#phoenix-tab-bar").length || $("#phoenix-tab-bar").is(":hidden"))
+        ) {
             createTabBar();
         }
 
-        if ((Global.secondPaneWorkingSet.length > 0 || secondPanePlaceholder) &&
-            (!$('#phoenix-tab-bar-2').length || $('#phoenix-tab-bar-2').is(':hidden'))) {
+        if (
+            (Global.secondPaneWorkingSet.length > 0 || secondPanePlaceholder) &&
+            (!$("#phoenix-tab-bar-2").length || $("#phoenix-tab-bar-2").is(":hidden"))
+        ) {
             createTabBar();
         }
 
-        const $firstTabBar = $('#phoenix-tab-bar');
+        const $firstTabBar = $("#phoenix-tab-bar");
         // Update first pane's tabs
         if ($firstTabBar.length) {
             $firstTabBar.empty();
             if (Global.firstPaneWorkingSet.length > 0 || firstPanePlaceholder) {
-
                 // get the count of tabs that we want to display in the tab bar (from preference settings)
                 // from preference settings or working set whichever smaller
                 let tabsCountP1 = Math.min(Global.firstPaneWorkingSet.length, Preference.tabBarNumberOfTabs);
@@ -321,7 +316,28 @@ define(function (require, exports, module) {
                     tabsCountP1 = Global.firstPaneWorkingSet.length;
                 }
 
-                let displayedEntries = Global.firstPaneWorkingSet.slice(0, tabsCountP1);
+                let displayedEntries = [];
+
+                // check if active file is in the working set but would be excluded by tab count
+                if (firstPaneFile && Preference.tabBarNumberOfTabs > 0) {
+                    const activeFileIndex = Global.firstPaneWorkingSet.findIndex(
+                        (entry) => entry.path === firstPaneFile.fullPath
+                    );
+
+                    if (activeFileIndex >= 0 && activeFileIndex >= Preference.tabBarNumberOfTabs) {
+                        // active file is in working set but would be excluded by tab count
+                        // Show active file and one less from the top N files
+                        displayedEntries = [
+                            ...Global.firstPaneWorkingSet.slice(0, Preference.tabBarNumberOfTabs - 1),
+                            Global.firstPaneWorkingSet[activeFileIndex]
+                        ];
+                    } else {
+                        // Active file is either not in working set or already included in top N files
+                        displayedEntries = Global.firstPaneWorkingSet.slice(0, tabsCountP1);
+                    }
+                } else {
+                    displayedEntries = Global.firstPaneWorkingSet.slice(0, tabsCountP1);
+                }
 
                 // Add working set tabs
                 displayedEntries.forEach(function (entry) {
@@ -335,18 +351,34 @@ define(function (require, exports, module) {
             }
         }
 
-        const $secondTabBar = $('#phoenix-tab-bar-2');
+        const $secondTabBar = $("#phoenix-tab-bar-2");
         // Update second pane's tabs
         if ($secondTabBar.length) {
             $secondTabBar.empty();
             if (Global.secondPaneWorkingSet.length > 0 || secondPanePlaceholder) {
-
                 let tabsCountP2 = Math.min(Global.secondPaneWorkingSet.length, Preference.tabBarNumberOfTabs);
                 if (Preference.tabBarNumberOfTabs < 0) {
                     tabsCountP2 = Global.secondPaneWorkingSet.length;
                 }
 
-                let displayedEntries2 = Global.secondPaneWorkingSet.slice(0, tabsCountP2);
+                let displayedEntries2 = [];
+
+                if (secondPaneFile && Preference.tabBarNumberOfTabs > 0) {
+                    const activeFileIndex = Global.secondPaneWorkingSet.findIndex(
+                        (entry) => entry.path === secondPaneFile.fullPath
+                    );
+
+                    if (activeFileIndex >= 0 && activeFileIndex >= Preference.tabBarNumberOfTabs) {
+                        displayedEntries2 = [
+                            ...Global.secondPaneWorkingSet.slice(0, Preference.tabBarNumberOfTabs - 1),
+                            Global.secondPaneWorkingSet[activeFileIndex]
+                        ];
+                    } else {
+                        displayedEntries2 = Global.secondPaneWorkingSet.slice(0, tabsCountP2);
+                    }
+                } else {
+                    displayedEntries2 = Global.secondPaneWorkingSet.slice(0, tabsCountP2);
+                }
 
                 // Add working set tabs
                 displayedEntries2.forEach(function (entry) {
@@ -361,12 +393,12 @@ define(function (require, exports, module) {
         }
 
         // if no files are present in a pane and no placeholder, we want to hide the tab bar for that pane
-        if (Global.firstPaneWorkingSet.length === 0 && !firstPanePlaceholder && ($('#phoenix-tab-bar'))) {
-            Helper._hideTabBar($('#phoenix-tab-bar'), $('#overflow-button'));
+        if (Global.firstPaneWorkingSet.length === 0 && !firstPanePlaceholder && $("#phoenix-tab-bar")) {
+            Helper._hideTabBar($("#phoenix-tab-bar"), $("#overflow-button"));
         }
 
-        if (Global.secondPaneWorkingSet.length === 0 && !secondPanePlaceholder && ($('#phoenix-tab-bar-2'))) {
-            Helper._hideTabBar($('#phoenix-tab-bar-2'), $('#overflow-button-2'));
+        if (Global.secondPaneWorkingSet.length === 0 && !secondPanePlaceholder && $("#phoenix-tab-bar-2")) {
+            Helper._hideTabBar($("#phoenix-tab-bar-2"), $("#overflow-button-2"));
         }
 
         // Now that tabs are updated, scroll to the active tab if necessary.
@@ -394,9 +426,8 @@ define(function (require, exports, module) {
         }
 
         // handle drag and drop
-        DragDrop.init($('#phoenix-tab-bar'), $('#phoenix-tab-bar-2'));
+        DragDrop.init($("#phoenix-tab-bar"), $("#phoenix-tab-bar-2"));
     }
-
 
     /**
      * Removes existing tab bar and cleans up
@@ -415,16 +446,14 @@ define(function (require, exports, module) {
         WorkspaceManager.recomputeLayout(true);
     }
 
-
     /**
      * handle click events on the tabs to open the file
      */
     function handleTabClick() {
-
         // delegate event handling for both tab bars
         $(document).on("click", ".phoenix-tab-bar .tab", function (event) {
             // check if the clicked element is the close button
-            if ($(event.target).hasClass('fa-times') || $(event.target).closest('.tab-close').length) {
+            if ($(event.target).hasClass("fa-times") || $(event.target).closest(".tab-close").length) {
                 // Get the file path from the data-path attribute of the parent tab
                 const filePath = $(this).attr("data-path");
 
@@ -436,10 +465,7 @@ define(function (require, exports, module) {
                     // get the file object
                     const fileObj = FileSystem.getFileForPath(filePath);
                     // close the file
-                    CommandManager.execute(
-                        Commands.FILE_CLOSE,
-                        { file: fileObj, paneId: paneId }
-                    );
+                    CommandManager.execute(Commands.FILE_CLOSE, { file: fileObj, paneId: paneId });
 
                     // Prevent default behavior
                     event.preventDefault();
@@ -450,7 +476,7 @@ define(function (require, exports, module) {
 
         // delegate event handling for both tab bars
         $(document).on("mousedown", ".phoenix-tab-bar .tab", function (event) {
-            if ($(event.target).hasClass('fa-times') || $(event.target).closest('.tab-close').length) {
+            if ($(event.target).hasClass("fa-times") || $(event.target).closest(".tab-close").length) {
                 return;
             }
             // Get the file path from the data-path attribute
@@ -461,11 +487,11 @@ define(function (require, exports, module) {
                 const isSecondPane = $(this).closest("#phoenix-tab-bar-2").length > 0;
                 const paneId = isSecondPane ? "second-pane" : "first-pane";
                 const currentActivePane = MainViewManager.getActivePaneId();
-                const isPaneActive = (paneId === currentActivePane);
+                const isPaneActive = paneId === currentActivePane;
                 const currentFile = MainViewManager.getCurrentlyViewedFile(currentActivePane);
 
                 // Check if this is a placeholder tab
-                if ($(this).hasClass('placeholder')) {
+                if ($(this).hasClass("placeholder")) {
                     // Add the file to the working set when placeholder tab is clicked
                     const fileObj = FileSystem.getFileForPath(filePath);
                     MainViewManager.addToWorkingSet(paneId, fileObj);
@@ -496,7 +522,6 @@ define(function (require, exports, module) {
             MoreOptions.showMoreOptionsContextMenu(paneId, event.pageX, event.pageY, filePath);
         });
     }
-
 
     // debounce is used to prevent rapid consecutive calls to updateTabs,
     // which was causing integration tests to fail in Firefox. Without it,
@@ -545,8 +570,7 @@ define(function (require, exports, module) {
             // Update UI
             if ($tabBar) {
                 const $tab = $tabBar.find(`.tab[data-path="${filePath}"]`);
-                $tab.toggleClass('dirty', doc.isDirty);
-
+                $tab.toggleClass("dirty", doc.isDirty);
 
                 // Update the working set data
                 // First pane
@@ -558,11 +582,10 @@ define(function (require, exports, module) {
                 }
             }
 
-
             // Also update the $tab2 if it exists
             if ($tabBar2) {
                 const $tab2 = $tabBar2.find(`.tab[data-path="${filePath}"]`);
-                $tab2.toggleClass('dirty', doc.isDirty);
+                $tab2.toggleClass("dirty", doc.isDirty);
 
                 // Second pane
                 for (let i = 0; i < Global.secondPaneWorkingSet.length; i++) {
@@ -574,7 +597,6 @@ define(function (require, exports, module) {
             }
         });
     }
-
 
     /**
      * This is called when the tab bar preference is changed either,
@@ -601,17 +623,13 @@ define(function (require, exports, module) {
      * for toggling the tab bar from the menu bar
      */
     function _registerCommands() {
-        CommandManager.register(
-            Strings.CMD_TOGGLE_TABBAR,
-            Commands.TOGGLE_TABBAR,
-            () => {
-                const currentPref = PreferencesManager.get(Preference.PREFERENCES_TAB_BAR);
-                PreferencesManager.set(Preference.PREFERENCES_TAB_BAR, {
-                    ...currentPref,
-                    showTabBar: !currentPref.showTabBar
-                });
-            }
-        );
+        CommandManager.register(Strings.CMD_TOGGLE_TABBAR, Commands.TOGGLE_TABBAR, () => {
+            const currentPref = PreferencesManager.get(Preference.PREFERENCES_TAB_BAR);
+            PreferencesManager.set(Preference.PREFERENCES_TAB_BAR, {
+                ...currentPref,
+                showTabBar: !currentPref.showTabBar
+            });
+        });
     }
 
     /**
@@ -620,7 +638,6 @@ define(function (require, exports, module) {
      * when its scrolled down, the tab bar will scroll to the right
      */
     function setupTabBarScrolling() {
-
         // common  handler for both the tab bars
         function handleMouseWheel(e) {
             // get the tab bar element that is being scrolled
@@ -640,7 +657,7 @@ define(function (require, exports, module) {
         }
 
         // attach the wheel event handler to both tab bars
-        $(document).on('wheel', '#phoenix-tab-bar, #phoenix-tab-bar-2', handleMouseWheel);
+        $(document).on("wheel", "#phoenix-tab-bar, #phoenix-tab-bar-2", handleMouseWheel);
     }
 
     AppInit.appReady(function () {
@@ -662,7 +679,7 @@ define(function (require, exports, module) {
         handleTabClick();
 
         Overflow.init();
-        DragDrop.init($('#phoenix-tab-bar'), $('#phoenix-tab-bar-2'));
+        DragDrop.init($("#phoenix-tab-bar"), $("#phoenix-tab-bar-2"));
 
         // setup the mouse wheel scrolling
         setupTabBarScrolling();
