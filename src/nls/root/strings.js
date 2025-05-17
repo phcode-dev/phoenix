@@ -433,6 +433,9 @@ define({
     "CLOSE_ALL_TABS": "Close All Tabs",
     "CLOSE_UNMODIFIED_TABS": "Close Unmodified Tabs",
     "REOPEN_CLOSED_FILE": "Reopen Closed File",
+    "RENAME_TAB_FILE": "Rename File",
+    "DELETE_TAB_FILE": "Delete File",
+    "SHOW_IN_FILE_TREE": "Show in File Tree",
 
     // CodeInspection: errors/warnings
     "ERRORS_NO_FILE": "No File Open",

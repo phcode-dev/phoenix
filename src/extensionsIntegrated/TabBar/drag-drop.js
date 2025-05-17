@@ -18,7 +18,6 @@
  *
  */
 
-
 /* This file houses the functionality for dragging and dropping tabs */
 /* eslint-disable no-invalid-this */
 define(function (require, exports, module) {
@@ -40,7 +39,6 @@ define(function (require, exports, module) {
     let scrollInterval = null;
     let dragSourcePane = null;
 
-
     /**
      * Initialize drag and drop functionality for tab bars
      * This is called from `main.js`
@@ -59,13 +57,12 @@ define(function (require, exports, module) {
         // Create drag indicator element if it doesn't exist
         if (!dragIndicator) {
             dragIndicator = $('<div class="tab-drag-indicator"></div>');
-            $('body').append(dragIndicator);
+            $("body").append(dragIndicator);
         }
 
         // add initialization for empty panes
         initEmptyPaneDropTargets();
     }
-
 
     /**
      * Setup drag and drop for a specific tab bar
@@ -93,7 +90,6 @@ define(function (require, exports, module) {
         $tabs.on("dragend", handleDragEnd);
     }
 
-
     /**
      * Setup container-level drag events
      * This enables dropping tabs in empty spaces and auto-scrolling
@@ -103,12 +99,62 @@ define(function (require, exports, module) {
      */
     function setupContainerDrag(containerSelector) {
         const $container = $(containerSelector);
+        let lastKnownMousePosition = { x: 0 };
+        const boundaryTolerance = 50; // px tolerance outside the container that still allows dropping
+
+        // create a larger drop zone around the container
+        // this is done to make sure that even if the tab is not exactly over the tab bar, we still allow drag-drop
+        const createOuterDropZone = () => {
+            if (draggedTab && !$("#tab-drag-extended-zone").length) {
+                // an invisible larger zone around the container that can still receive drops
+                const containerRect = $container[0].getBoundingClientRect();
+                const $outerZone = $('<div id="tab-drag-extended-zone"></div>').css({
+                    position: "fixed",
+                    top: containerRect.top - boundaryTolerance,
+                    left: containerRect.left - boundaryTolerance,
+                    width: containerRect.width + boundaryTolerance * 2,
+                    height: containerRect.height + boundaryTolerance * 2,
+                    zIndex: 9999,
+                    pointerEvents: "all"
+                });
+
+                $("body").append($outerZone);
+
+                $outerZone.on("dragover", function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    lastKnownMousePosition.x = e.originalEvent.clientX;
+
+                    autoScrollContainer($container[0], lastKnownMousePosition.x);
+
+                    updateDragIndicatorFromOuterZone($container, lastKnownMousePosition.x);
+
+                    return false;
+                });
+
+                $outerZone.on("drop", function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    // to handle drop the same way as if it happened in the container
+                    handleOuterZoneDrop($container, lastKnownMousePosition.x);
+
+                    return false;
+                });
+            }
+        };
+
+        const removeOuterDropZone = () => {
+            $("#tab-drag-extended-zone").remove();
+        };
 
         // When dragging over the container but not directly over a tab element
         $container.on("dragover", function (e) {
             if (e.preventDefault) {
                 e.preventDefault();
             }
+
+            lastKnownMousePosition.x = e.originalEvent.clientX;
 
             // Clear any existing scroll interval
             if (scrollInterval) {
@@ -120,29 +166,34 @@ define(function (require, exports, module) {
 
             // Set up interval for continuous scrolling while dragging near the edge
             scrollInterval = setInterval(() => {
-                if (draggedTab) { // Only continue scrolling if still dragging
-                    autoScrollContainer(this, e.originalEvent.clientX);
+                if (draggedTab) {
+                    // Only continue scrolling if still dragging
+                    autoScrollContainer(this, lastKnownMousePosition.x);
                 } else {
                     clearInterval(scrollInterval);
                     scrollInterval = null;
                 }
             }, 16); // this is almost about 60fps
 
-
             // if the target is not a tab, update the drag indicator using the container bounds
-            if ($(e.target).closest('.tab').length === 0) {
+            if ($(e.target).closest(".tab").length === 0) {
                 const containerRect = this.getBoundingClientRect();
                 const mouseX = e.originalEvent.clientX;
 
                 // determine if dropping on left or right half of container
-                const onLeftSide = mouseX < (containerRect.left + containerRect.width / 2);
+                const onLeftSide = mouseX < containerRect.left + containerRect.width / 2;
 
-                const $tabs = $container.find('.tab');
+                const $tabs = $container.find(".tab");
                 if ($tabs.length) {
                     // choose the first tab for left drop, last tab for right drop
                     const targetTab = onLeftSide ? $tabs.first()[0] : $tabs.last()[0];
                     updateDragIndicator(targetTab, onLeftSide);
                 }
+            }
+
+            // Create the extended drop zone if we're actively dragging
+            if (draggedTab) {
+                createOuterDropZone();
             }
         });
 
@@ -153,14 +204,15 @@ define(function (require, exports, module) {
             }
             // hide the drag indicator
             updateDragIndicator(null);
+            removeOuterDropZone();
 
             // get container dimensions to determine drop position
             const containerRect = this.getBoundingClientRect();
             const mouseX = e.originalEvent.clientX;
             // determine if dropping on left or right half of container
-            const onLeftSide = mouseX < (containerRect.left + containerRect.width / 2);
+            const onLeftSide = mouseX < containerRect.left + containerRect.width / 2;
 
-            const $tabs = $container.find('.tab');
+            const $tabs = $container.find(".tab");
             if ($tabs.length) {
                 // If dropping on left half, target the first tab; otherwise, target the last tab
                 const targetTab = onLeftSide ? $tabs.first()[0] : $tabs.last()[0];
@@ -184,8 +236,86 @@ define(function (require, exports, module) {
                 }
             }
         });
-    }
 
+        /**
+         * Updates the drag indicator when mouse is in the extended zone (outside actual tab bar)
+         * @param {jQuery} $container - The tab bar container
+         * @param {number} mouseX - Current mouse X position
+         */
+        function updateDragIndicatorFromOuterZone($container, mouseX) {
+            const containerRect = $container[0].getBoundingClientRect();
+            const $tabs = $container.find(".tab");
+
+            if ($tabs.length) {
+                // Determine if dropping on left half or right half
+                let onLeftSide = true;
+                let targetTab;
+
+                // If beyond the right edge, use the last tab
+                if (mouseX > containerRect.right) {
+                    targetTab = $tabs.last()[0];
+                    onLeftSide = false;
+                }
+                // If beyond the left edge, use the first tab
+                else if (mouseX < containerRect.left) {
+                    targetTab = $tabs.first()[0];
+                    onLeftSide = true;
+                }
+                // If within bounds, find the closest tab
+                else {
+                    onLeftSide = mouseX < containerRect.left + containerRect.width / 2;
+                    targetTab = onLeftSide ? $tabs.first()[0] : $tabs.last()[0];
+                }
+
+                updateDragIndicator(targetTab, onLeftSide);
+            }
+        }
+
+        /**
+         * Handles drops that occur in the extended drop zone
+         * @param {jQuery} $container - The tab bar container
+         * @param {number} mouseX - Current mouse X position
+         */
+        function handleOuterZoneDrop($container, mouseX) {
+            const containerRect = $container[0].getBoundingClientRect();
+            const $tabs = $container.find(".tab");
+
+            if ($tabs.length && draggedTab) {
+                // Determine drop position similar to updateDragIndicatorFromOuterZone
+                let onLeftSide = true;
+                let targetTab;
+
+                if (mouseX > containerRect.right) {
+                    targetTab = $tabs.last()[0];
+                    onLeftSide = false;
+                } else if (mouseX < containerRect.left) {
+                    targetTab = $tabs.first()[0];
+                    onLeftSide = true;
+                } else {
+                    onLeftSide = mouseX < containerRect.left + containerRect.width / 2;
+                    targetTab = onLeftSide ? $tabs.first()[0] : $tabs.last()[0];
+                }
+
+                // Process the drop
+                const isSecondPane = $container.attr("id") === "phoenix-tab-bar-2";
+                const targetPaneId = isSecondPane ? "second-pane" : "first-pane";
+                const draggedPath = $(draggedTab).attr("data-path");
+                const targetPath = $(targetTab).attr("data-path");
+
+                if (dragSourcePane !== targetPaneId) {
+                    // cross-pane drop
+                    moveTabBetweenPanes(dragSourcePane, targetPaneId, draggedPath, targetPath, onLeftSide);
+                } else {
+                    // same pane drop
+                    moveWorkingSetItem(targetPaneId, draggedPath, targetPath, onLeftSide);
+                }
+            }
+
+            // Clean up
+            updateDragIndicator(null);
+            removeOuterDropZone();
+        }
+    }
 
     /**
      * enhanced auto-scroll function for container when the mouse is near its left or right edge
@@ -196,34 +326,37 @@ define(function (require, exports, module) {
      */
     function autoScrollContainer(container, mouseX) {
         const rect = container.getBoundingClientRect();
-        const edgeThreshold = 50; // teh threshold distance from the edge
+        const edgeThreshold = 100; // Increased threshold for edge detection (was 50)
+        const outerThreshold = 50; // Distance outside the container that still triggers scrolling
 
-        // Calculate distance from edges
-        const distanceFromLeft = mouseX - rect.left;
-        const distanceFromRight = rect.right - mouseX;
+        // Calculate distance from edges, allowing for mouse to be slightly outside bounds
+        const distanceFromLeft = mouseX - (rect.left - outerThreshold);
+        const distanceFromRight = rect.right + outerThreshold - mouseX;
 
         // Determine scroll speed based on distance from edge (closer = faster scroll)
         let scrollSpeed = 0;
 
-        if (distanceFromLeft < edgeThreshold) {
-            // exponential scroll speed: faster as you get closer to the edge
-            scrollSpeed = -Math.pow(1 - (distanceFromLeft / edgeThreshold), 2) * 15;
-        } else if (distanceFromRight < edgeThreshold) {
-            scrollSpeed = Math.pow(1 - (distanceFromRight / edgeThreshold), 2) * 15;
+        // Only activate scrolling when within the threshold (including the outer buffer)
+        if (distanceFromLeft < edgeThreshold + outerThreshold && mouseX < rect.right) {
+            // Non-linear scroll speed: faster as you get closer to the edge
+            scrollSpeed = -Math.pow(1 - distanceFromLeft / (edgeThreshold + outerThreshold), 2) * 25;
+        } else if (distanceFromRight < edgeThreshold + outerThreshold && mouseX > rect.left) {
+            scrollSpeed = Math.pow(1 - distanceFromRight / (edgeThreshold + outerThreshold), 2) * 25;
         }
 
-        // apply scrolling if needed
+        // Apply scrolling if needed
         if (scrollSpeed !== 0) {
             container.scrollLeft += scrollSpeed;
 
             // If we're already at the edge, don't keep trying to scroll
-            if ((scrollSpeed < 0 && container.scrollLeft <= 0) ||
-                (scrollSpeed > 0 && container.scrollLeft >= container.scrollWidth - container.clientWidth)) {
+            if (
+                (scrollSpeed < 0 && container.scrollLeft <= 0) ||
+                (scrollSpeed > 0 && container.scrollLeft >= container.scrollWidth - container.clientWidth)
+            ) {
                 return;
             }
         }
     }
-
 
     /**
      * Handle the start of a drag operation
@@ -237,14 +370,14 @@ define(function (require, exports, module) {
 
         // set data transfer (required for Firefox)
         // Firefox requires data to be set for the drag operation to work
-        e.originalEvent.dataTransfer.effectAllowed = 'move';
-        e.originalEvent.dataTransfer.setData('text/html', this.innerHTML);
+        e.originalEvent.dataTransfer.effectAllowed = "move";
+        e.originalEvent.dataTransfer.setData("text/html", this.innerHTML);
 
         // Store which pane this tab came from
         dragSourcePane = $(this).closest("#phoenix-tab-bar-2").length > 0 ? "second-pane" : "first-pane";
 
         // Add dragging class for styling
-        $(this).addClass('dragging');
+        $(this).addClass("dragging");
 
         // Use a timeout to let the dragging class apply before taking measurements
         // This ensures visual updates are applied before we calculate positions
@@ -252,7 +385,6 @@ define(function (require, exports, module) {
             updateDragIndicator(null);
         }, 0);
     }
-
 
     /**
      * Handle the dragover event to enable drop
@@ -264,20 +396,19 @@ define(function (require, exports, module) {
         if (e.preventDefault) {
             e.preventDefault(); // Allows us to drop
         }
-        e.originalEvent.dataTransfer.dropEffect = 'move';
+        e.originalEvent.dataTransfer.dropEffect = "move";
 
         // Update the drag indicator position
         // We need to determine if it should be on the left or right side of the target tab
         const targetRect = this.getBoundingClientRect();
         const mouseX = e.originalEvent.clientX;
-        const midPoint = targetRect.left + (targetRect.width / 2);
+        const midPoint = targetRect.left + targetRect.width / 2;
         const onLeftSide = mouseX < midPoint;
 
         updateDragIndicator(this, onLeftSide);
 
         return false;
     }
-
 
     /**
      * Handle entering a potential drop target
@@ -287,9 +418,8 @@ define(function (require, exports, module) {
      */
     function handleDragEnter(e) {
         dragOverTab = this;
-        $(this).addClass('drag-target');
+        $(this).addClass("drag-target");
     }
-
 
     /**
      * Handle leaving a potential drop target
@@ -302,13 +432,12 @@ define(function (require, exports, module) {
         // Only remove the class if we're truly leaving this tab
         // This prevents flickering when moving over child elements
         if (!$(this).is(relatedTarget) && !$(this).has(relatedTarget).length) {
-            $(this).removeClass('drag-target');
+            $(this).removeClass("drag-target");
             if (dragOverTab === this) {
                 dragOverTab = null;
             }
         }
     }
-
 
     /**
      * Handle dropping a tab onto a target
@@ -333,7 +462,7 @@ define(function (require, exports, module) {
             // Determine if we're dropping to the left or right of the target
             const targetRect = this.getBoundingClientRect();
             const mouseX = e.originalEvent.clientX;
-            const midPoint = targetRect.left + (targetRect.width / 2);
+            const midPoint = targetRect.left + targetRect.width / 2;
             const onLeftSide = mouseX < midPoint;
 
             // Check if dragging between different panes
@@ -348,7 +477,6 @@ define(function (require, exports, module) {
         return false;
     }
 
-
     /**
      * Handle the end of a drag operation
      * Cleans up classes and resets state variables
@@ -356,7 +484,7 @@ define(function (require, exports, module) {
      * @param {Event} e - The event object
      */
     function handleDragEnd(e) {
-        $(".tab").removeClass('dragging drag-target');
+        $(".tab").removeClass("dragging drag-target");
         updateDragIndicator(null);
         draggedTab = null;
         dragOverTab = null;
@@ -367,12 +495,15 @@ define(function (require, exports, module) {
             clearInterval(scrollInterval);
             scrollInterval = null;
         }
-    }
 
+        // Remove the extended drop zone if it exists
+        $("#tab-drag-extended-zone").remove();
+    }
 
     /**
      * Update the drag indicator position and visibility
      * The indicator shows where the tab will be dropped
+     * Ensures the indicator stays within the bounds of the tab bar
      *
      * @param {HTMLElement} targetTab - The tab being dragged over, or null to hide
      * @param {Boolean} onLeftSide - Whether the indicator should be on the left or right side
@@ -382,20 +513,30 @@ define(function (require, exports, module) {
             dragIndicator.hide();
             return;
         }
+
         // Get the target tab's position and size
         const targetRect = targetTab.getBoundingClientRect();
+
+        // Find the containing tab bar to ensure the indicator stays within bounds
+        const $tabBar = $(targetTab).closest("#phoenix-tab-bar, #phoenix-tab-bar-2");
+        const tabBarRect = $tabBar[0] ? $tabBar[0].getBoundingClientRect() : null;
+
         if (onLeftSide) {
             // Position indicator at the left edge of the target tab
+            // Ensure it doesn't go beyond the tab bar's left edge
+            const leftPos = tabBarRect ? Math.max(targetRect.left, tabBarRect.left) : targetRect.left;
             dragIndicator.css({
                 top: targetRect.top,
-                left: targetRect.left,
+                left: leftPos,
                 height: targetRect.height
             });
         } else {
             // Position indicator at the right edge of the target tab
+            // Ensure it doesn't go beyond the tab bar's right edge
+            const rightPos = tabBarRect ? Math.min(targetRect.right, tabBarRect.right) : targetRect.right;
             dragIndicator.css({
                 top: targetRect.top,
-                left: targetRect.right,
+                left: rightPos,
                 height: targetRect.height
             });
         }
@@ -478,10 +619,7 @@ define(function (require, exports, module) {
         // Only continue if we found the dragged file
         if (draggedIndex !== -1 && draggedFile) {
             // Remove the file from source pane
-            CommandManager.execute(
-                Commands.FILE_CLOSE,
-                { file: draggedFile, paneId: sourcePaneId }
-            );
+            CommandManager.execute(Commands.FILE_CLOSE, { file: draggedFile, paneId: sourcePaneId });
 
             // Calculate where to add it in the target pane
             let targetInsertIndex;
@@ -521,7 +659,6 @@ define(function (require, exports, module) {
         setupEmptyPaneDropTarget($secondPaneHolder, "second-pane");
     }
 
-
     /**
      * sets up the whole pane as a drop target when it has no tabs
      *
@@ -546,7 +683,7 @@ define(function (require, exports, module) {
                 $(this).addClass("empty-pane-drop-target");
 
                 // set the drop effect
-                e.originalEvent.dataTransfer.dropEffect = 'move';
+                e.originalEvent.dataTransfer.dropEffect = "move";
             }
         });
 
@@ -571,8 +708,8 @@ define(function (require, exports, module) {
                 const draggedPath = $(draggedTab).attr("data-path");
 
                 // Determine source pane
-                const sourcePaneId = $(draggedTab)
-                    .closest("#phoenix-tab-bar-2").length > 0 ? "second-pane" : "first-pane";
+                const sourcePaneId =
+                    $(draggedTab).closest("#phoenix-tab-bar-2").length > 0 ? "second-pane" : "first-pane";
 
                 // we don't want to do anything if dropping in the same pane
                 if (sourcePaneId !== paneId) {
@@ -589,10 +726,7 @@ define(function (require, exports, module) {
 
                     if (draggedFile) {
                         // close in the source pane
-                        CommandManager.execute(
-                            Commands.FILE_CLOSE,
-                            { file: draggedFile, paneId: sourcePaneId }
-                        );
+                        CommandManager.execute(Commands.FILE_CLOSE, { file: draggedFile, paneId: sourcePaneId });
 
                         // and open in the target pane
                         MainViewManager.addToWorkingSet(paneId, draggedFile);
@@ -608,7 +742,6 @@ define(function (require, exports, module) {
             }
         });
     }
-
 
     module.exports = {
         init
