@@ -307,30 +307,30 @@
 .tab-drag-indicator {
     position: fixed;
     width: 2px;
-    background-color: #0078D7;
+    background-color: rgba(0, 120, 215, 0.7);
     pointer-events: none;
     z-index: 10001;
-    box-shadow: 0 0 3px rgba(0, 120, 215, 0.5);
+    box-shadow: 0 0 3px rgba(0, 120, 215, 0.4);
     display: none;
-    animation: pulse 1.5s infinite;
+    animation: pulse 2s infinite;
 }
 
 .dark .tab-drag-indicator {
-    background-color: #75BEFF;
-    box-shadow: 0 0 3px rgba(117, 190, 255, 0.5);
+    background-color: rgba(117, 190, 255, 0.7);
+    box-shadow: 0 0 3px rgba(117, 190, 255, 0.4);
 }
 
 @keyframes pulse {
     0% {
-        opacity: 0.7;
+        opacity: 0.5;
     }
 
     50% {
-        opacity: 1;
+        opacity: 0.7;
     }
 
     100% {
-        opacity: 0.7;
+        opacity: 0.5;
     }
 }
 
@@ -413,4 +413,10 @@
 .dropdown-tab-item.placeholder-item .tab-name-container,
 .tab-name-container.placeholder-name {
     font-style: italic;
+}
+
+/* this is for invisible extended drag zone for tabs */
+#tab-drag-extended-zone {
+    background-color: transparent;
+    pointer-events: all;
 }
