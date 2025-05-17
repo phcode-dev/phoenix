@@ -138,7 +138,7 @@ define(function (require, exports, module) {
             ${isDirty ? "dirty" : ""}
             ${isPlaceholder ? "placeholder" : ""}"
             data-path="${entry.path}" 
-            title="${entry.path}">
+            title="${Phoenix.app.getDisplayPath(entry.path)}">
             <div class="tab-icon"></div>
             <div class="tab-name"></div>
             <div class="tab-close"><i class="fa-solid fa-times"></i></div>
