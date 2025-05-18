@@ -137,6 +137,8 @@
     font-size: 0.7rem;
     opacity: 0.7;
     font-weight: normal;
+    position: relative;
+    top: 0.1rem;
 }
 
 .tab.active {
@@ -195,10 +197,10 @@
 .tab::before {
     content: "•";
     color: transparent;
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     position: absolute;
     left: 0.4rem;
-    top: 0.25rem;
+    top: 0.33rem;
 }
 
 .tab.dirty::before {
@@ -215,7 +217,7 @@
 
 .tab-close {
     font-size: 0.75rem;
-    padding: 0.08rem 0.4rem;
+    padding: 0.1rem 0.4rem;
     margin-left: 0.25rem;
     color: #666;
     transition: all 0.2s ease;
@@ -419,4 +421,30 @@
 #tab-drag-extended-zone {
     background-color: transparent;
     pointer-events: all;
+}
+
+/* ------ for the git status markers -------------- */
+.tab-git-status {
+    font-size: 0.9rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 0.33rem;
+}
+
+.git-modified .tab-git-status {
+    color: #E3B551;
+}
+
+.dark .git-modified .tab-git-status {
+    color: #E3B551;
+}
+
+.git-new .tab-git-status {
+    color: #91CC41;
+}
+
+.dark .git-new .tab-git-status {
+    color: #91CC41;
 }
