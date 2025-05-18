@@ -131,16 +131,39 @@ define(function (require, exports, module) {
         const isDirty = Helper._isFileModified(FileSystem.getFileForPath(entry.path));
         const isPlaceholder = entry.isPlaceholder === true;
 
+        let gitStatus = ""; // this will be shown in the tooltip when a tab is hovered
+        let gitStatusClass = ""; // for styling
+        let gitStatusLetter = ""; // shown in the tab, either U or M
+
+        if (window.phoenixGitEvents && window.phoenixGitEvents.TabBarIntegration) {
+            const TabBarIntegration = window.phoenixGitEvents.TabBarIntegration;
+
+            // find the Git status
+            // if untracked we add the git-new class and U char
+            // if modified we add the git-modified class and M char
+            if (TabBarIntegration.isUntracked(entry.path)) {
+                gitStatus = "Untracked";
+                gitStatusClass = "git-new";
+                gitStatusLetter = "U";
+            } else if (TabBarIntegration.isModified(entry.path)) {
+                gitStatus = "Modified";
+                gitStatusClass = "git-modified";
+                gitStatusLetter = "M";
+            }
+        }
+
         // create tab with all the appropriate classes
         const $tab = $(
             `<div class="tab 
             ${isActive ? "active" : ""}
             ${isDirty ? "dirty" : ""}
-            ${isPlaceholder ? "placeholder" : ""}"
+            ${isPlaceholder ? "placeholder" : ""}
+            ${gitStatusClass}"
             data-path="${entry.path}" 
-            title="${Phoenix.app.getDisplayPath(entry.path)}">
+            title="${Phoenix.app.getDisplayPath(entry.path)}${gitStatus ? " (" + gitStatus + ")" : ""}">
             <div class="tab-icon"></div>
             <div class="tab-name"></div>
+            ${gitStatusLetter ? `<div class="tab-git-status">${gitStatusLetter}</div>` : ""}
             <div class="tab-close"><i class="fa-solid fa-times"></i></div>
         </div>`
         );
@@ -540,6 +563,12 @@ define(function (require, exports, module) {
 
         // For editor changes, update only the tabs.
         MainViewManager.on(MainViewManager.EVENT_CURRENT_FILE_CHANGE, debounceUpdateTabs);
+
+        // to listen for the Git status changes
+        // make sure that the git extension is available
+        if (window.phoenixGitEvents && window.phoenixGitEvents.EventEmitter) {
+            window.phoenixGitEvents.EventEmitter.on("GIT_FILE_STATUS_CHANGED", debounceUpdateTabs);
+        }
 
         // For working set changes, update only the tabs.
         const events = [
