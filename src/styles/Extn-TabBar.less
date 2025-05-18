@@ -424,27 +424,26 @@
 }
 
 /* ------ for the git status markers -------------- */
-.tab-git-status {
-    font-size: 0.9rem;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: 0.33rem;
+.tab.git-modified > .tab-icon:before {
+    content: "|";
+    color: #E3B551;
+    position: absolute;
+    margin-left: -4px;
+    margin-bottom: 5px;
 }
 
-.git-modified .tab-git-status {
+.dark .tab.git-modified > .tab-icon:before {
     color: #E3B551;
 }
 
-.dark .git-modified .tab-git-status {
-    color: #E3B551;
-}
-
-.git-new .tab-git-status {
+.tab.git-new > .tab-icon:before {
+    content: "|";
     color: #91CC41;
+    position: absolute;
+    margin-left: -4px;
+    margin-bottom: 5px;
 }
 
-.dark .git-new .tab-git-status {
+.dark .tab.git-new > .tab-icon:before {
     color: #91CC41;
 }

@@ -163,7 +163,6 @@ define(function (require, exports, module) {
             title="${Phoenix.app.getDisplayPath(entry.path)}${gitStatus ? " (" + gitStatus + ")" : ""}">
             <div class="tab-icon"></div>
             <div class="tab-name"></div>
-            ${gitStatusLetter ? `<div class="tab-git-status">${gitStatusLetter}</div>` : ""}
             <div class="tab-close"><i class="fa-solid fa-times"></i></div>
         </div>`
         );
