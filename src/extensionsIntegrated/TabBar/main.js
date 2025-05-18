@@ -133,7 +133,6 @@ define(function (require, exports, module) {
 
         let gitStatus = ""; // this will be shown in the tooltip when a tab is hovered
         let gitStatusClass = ""; // for styling
-        let gitStatusLetter = ""; // shown in the tab, either U or M
 
         if (window.phoenixGitEvents && window.phoenixGitEvents.TabBarIntegration) {
             const TabBarIntegration = window.phoenixGitEvents.TabBarIntegration;
@@ -144,11 +143,9 @@ define(function (require, exports, module) {
             if (TabBarIntegration.isUntracked(entry.path)) {
                 gitStatus = "Untracked";
                 gitStatusClass = "git-new";
-                gitStatusLetter = "U";
             } else if (TabBarIntegration.isModified(entry.path)) {
                 gitStatus = "Modified";
                 gitStatusClass = "git-modified";
-                gitStatusLetter = "M";
             }
         }
 

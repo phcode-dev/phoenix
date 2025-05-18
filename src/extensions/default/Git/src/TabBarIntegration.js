@@ -28,13 +28,11 @@ define(function (require) {
         if (!status) {
             return false;
         }
-        return (
-            status.some(
-                (statusType) =>
-                    statusType === Git.FILE_STATUS.MODIFIED ||
-                    statusType === Git.FILE_STATUS.RENAMED ||
-                    statusType === Git.FILE_STATUS.COPIED
-            ) && !status.includes(Git.FILE_STATUS.STAGED)
+        return status.some(
+            (statusType) =>
+                statusType === Git.FILE_STATUS.MODIFIED ||
+                statusType === Git.FILE_STATUS.RENAMED ||
+                statusType === Git.FILE_STATUS.COPIED
         );
     }
 
@@ -50,7 +48,11 @@ define(function (require) {
             return false;
         }
 
-        return status.includes(Git.FILE_STATUS.UNTRACKED);
+        // return true if it's untracked or if it's newly added (which means it was untracked before staging)
+        return (
+            status.includes(Git.FILE_STATUS.UNTRACKED) ||
+            (status.includes(Git.FILE_STATUS.ADDED) && status.includes(Git.FILE_STATUS.STAGED))
+        );
     }
 
 
