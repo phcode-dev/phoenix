@@ -27,7 +27,8 @@ define(function (require, exports, module) {
         "src/History",
         "src/NoRepo",
         "src/ProjectTreeMarks",
-        "src/Remotes"
+        "src/Remotes",
+        "src/TabBarIntegration"
     ];
     require(modules);
 
@@ -48,10 +49,12 @@ define(function (require, exports, module) {
 
     // export API's for other extensions
     if (typeof window === "object") {
+        const TabBarIntegration = require("src/TabBarIntegration");
         window.phoenixGitEvents = {
             EventEmitter: EventEmitter,
             Events: Events,
-            Git
+            Git,
+            TabBarIntegration
         };
     }
 });
