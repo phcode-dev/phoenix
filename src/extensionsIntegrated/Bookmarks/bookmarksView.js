@@ -1,27 +1,24 @@
 define(function (require, exports, module) {
-    var CommandManager = require("command/CommandManager"),
-        Commands = require("command/Commands"),
-        ProjectManager = require("project/ProjectManager"),
-        WorkspaceManager = require("view/WorkspaceManager"),
-        MainViewManger = require("view/MainViewManager"),
-        Strings = require("strings"),
-        bookmarksPanelTemplate = require("text!./htmlContent/bookmarks-panel.html"),
-        bookmarksListTemplate = require("text!./htmlContent/bookmarks-list.html"),
-        Mustache = require("thirdparty/mustache/mustache");
+    const CommandManager = require("command/CommandManager");
+    const Commands = require("command/Commands");
+    const ProjectManager = require("project/ProjectManager");
+    const WorkspaceManager = require("view/WorkspaceManager");
+    const MainViewManger = require("view/MainViewManager");
+    const Strings = require("strings");
+    const Mustache = require("thirdparty/mustache/mustache");
+
+    const bookmarksPanelTemplate = require("text!./htmlContent/bookmarks-panel.html");
+    const bookmarksListTemplate = require("text!./htmlContent/bookmarks-list.html");
 
     /**
-     * @const
      * Debounce time for document changes updating the search results view.
-     * @type {number}
      */
-    var UPDATE_TIMEOUT = 400;
+    const UPDATE_TIMEOUT = 400;
 
     /**
-     * @const
      * MainViewManager events
-     * @type {string}
      */
-    var MVM_EVENTS = `workingSetAdd
+    const MVM_EVENTS = `workingSetAdd
         workingSetAddList
         workingSetMove
         workingSetRemove
@@ -41,7 +38,7 @@ define(function (require, exports, module) {
      * @param {function=} beforeRender - function to call before rendering the view
      */
     function BookmarksView(model, beforeRender) {
-        var panelHtml = Mustache.render(bookmarksPanelTemplate, {
+        const panelHtml = Mustache.render(bookmarksPanelTemplate, {
             Strings: Strings
         });
 
@@ -72,7 +69,7 @@ define(function (require, exports, module) {
      * Handles when model changes. Updates the view, buffering changes if necessary so as not to churn too much.
      */
     BookmarksView.prototype._handleModelChange = function () {
-        var self = this;
+        const self = this;
         if (self._ignoreModelChangeEvents) {
             return;
         }
@@ -96,7 +93,7 @@ define(function (require, exports, module) {
      * Adds the listeners for close and clicking on a bookmark in the list
      */
     BookmarksView.prototype._addPanelListeners = function () {
-        var self = this;
+        const self = this;
         this._$panel
             .off(".bookmarks") // Remove the old events
             .on("click.bookmarks", ".close", function () {
@@ -104,7 +101,7 @@ define(function (require, exports, module) {
             })
             // Add the click event listener directly on the table parent
             .on("click.bookmarks .table-container", function (e) {
-                var $row = $(e.target).closest("tr");
+                const $row = $(e.target).closest("tr");
 
                 if ($row.length) {
                     if (self._$selectedRow) {
@@ -113,7 +110,7 @@ define(function (require, exports, module) {
                     $row.addClass("selected");
                     self._$selectedRow = $row;
 
-                    var fullPathAndLineNo = $row.find(".bookmark-result").text();
+                    const fullPathAndLineNo = $row.find(".bookmark-result").text();
 
                     CommandManager.execute(Commands.FILE_OPEN, { fullPath: fullPathAndLineNo });
                 }
@@ -147,7 +144,7 @@ define(function (require, exports, module) {
      * Shows the current set of results.
      */
     BookmarksView.prototype._render = function () {
-        var self = this,
+        const self = this,
             bookmarks = [];
 
         if (this._beforeRender) {
@@ -196,7 +193,7 @@ define(function (require, exports, module) {
         // In general this shouldn't get called if the panel is closed, but in case some
         // asynchronous process kicks this (e.g. a debounced model change), we double-check.
         if (this._panel.isVisible()) {
-            var scrollTop = this._$table.scrollTop(),
+            let scrollTop = this._$table.scrollTop(),
                 index = this._$selectedRow ? this._$selectedRow.index() : null;
             this._render();
             this._$table.scrollTop(scrollTop);
@@ -237,6 +234,5 @@ define(function (require, exports, module) {
         return this._panel && this._panel.isVisible();
     };
 
-    // Public API
     exports.BookmarksView = BookmarksView;
 });

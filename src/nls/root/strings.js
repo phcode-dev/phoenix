@@ -434,6 +434,12 @@ define({
     "CLOSE_UNMODIFIED_TABS": "Close Unmodified Tabs",
     "REOPEN_CLOSED_FILE": "Reopen Closed File",
 
+    // Bookmarks extension strings
+    "TOGGLE_BOOKMARK": "Toggle Bookmark",
+    "GOTO_PREV_BOOKMARK": "Go to Previous Bookmark",
+    "GOTO_NEXT_BOOKMARK": "Go to Next Bookmark",
+    "TOGGLE_BOOKMARKS_PANEL": "Toggle Bookmarks panel",
+
     // CodeInspection: errors/warnings
     "ERRORS_NO_FILE": "No File Open",
     "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Problems - {1}",

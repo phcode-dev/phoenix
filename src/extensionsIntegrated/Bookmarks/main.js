@@ -1,41 +1,33 @@
 define(function (require, exports, module) {
-    var PreferencesManager = require("preferences/PreferencesManager"),
-        CommandManager = require("command/CommandManager"),
-        Menus = require("command/Menus"),
-        DocumentManager = require("document/DocumentManager"),
-        EditorManager = require("editor/EditorManager"),
-        _ = require("thirdparty/lodash");
-
     const AppInit = require("utils/AppInit");
+    const PreferencesManager = require("preferences/PreferencesManager");
+    const CommandManager = require("command/CommandManager");
+    const Menus = require("command/Menus");
+    const DocumentManager = require("document/DocumentManager");
+    const EditorManager = require("editor/EditorManager");
+    const Strings = require("strings");
+    const _ = require("thirdparty/lodash");
 
-    var BookmarksView = require("./bookmarksView").BookmarksView;
+    const BookmarksView = require("./bookmarksView").BookmarksView;
 
-    /** @const {string} Extension Command ID */
-    var MY_MODULENAME = "bracketsEditorBookmarks";
-    var CMD_TOGGLE_BOOKMARK = "bracketsEditorBookmarks.toggleBookmark",
-        CMD_GOTO_NEXT_BOOKMARK = "bracketsEditorBookmarks.gotoNextBookmark",
-        CMD_GOTO_PREV_BOOKMARK = "bracketsEditorBookmarks.gotoPrevBookmark",
-        CMD_TOGGLE_BOOKKMARK_VIEW = "bracketsEditorBookmarks.toggleBookmarksPanel";
+    // command IDs
+    const MY_MODULENAME = "bracketsEditorBookmarks";
+    const CMD_TOGGLE_BOOKMARK = "bracketsEditorBookmarks.toggleBookmark";
+    const CMD_GOTO_NEXT_BOOKMARK = "bracketsEditorBookmarks.gotoNextBookmark";
+    const CMD_GOTO_PREV_BOOKMARK = "bracketsEditorBookmarks.gotoPrevBookmark";
+    const CMD_TOGGLE_BOOKKMARK_VIEW = "bracketsEditorBookmarks.toggleBookmarksPanel";
 
-    const ExtensionStrings = {
-        TOGGLE_BOOKMARK: "Toggle Bookmark",
-        GOTO_PREV_BOOKMARK: "Go to previous Bookmark",
-        GOTO_NEXT_BOOKMARK: "Go to next Bookmark",
-        TOGGLE_BOOKMARKS_PANEL: "Toggle Bookmarks panel"
-    };
-
-    /* Our extension's preferences */
-    var prefs = PreferencesManager.getExtensionPrefs(MY_MODULENAME);
+    const prefs = PreferencesManager.getExtensionPrefs(MY_MODULENAME);
 
     // Bookmarks Data Model
-    var _bookmarks = {};
-
+    const _bookmarks = {};
     // Bookmarks Panel
-    var _bookmarksPanel = null;
+    let _bookmarksPanel = null;
 
     /**
      * Saves bookmarks to the data model for the specified editor instance
-     * @param {Editor=} editor - brackets editor instance. current editor if null
+     *
+     * @param {Editor} editor - the editor instance
      * @return {?Array.<Number>} array of cached bookmarked line numbers
      */
     function saveBookmarks(editor) {
@@ -43,14 +35,14 @@ define(function (require, exports, module) {
             editor = EditorManager.getCurrentFullEditor();
         }
         if (editor) {
-            var i,
+            let i,
                 fullPath = editor.document.file.fullPath,
                 cm = editor._codeMirror,
                 lineCount = cm.doc.lineCount(),
                 bookmarkedLines = [];
 
             for (i = 0; i < lineCount; i++) {
-                var lineInfo = cm.lineInfo(i);
+                let lineInfo = cm.lineInfo(i);
 
                 if (lineInfo.wrapClass && lineInfo.wrapClass.indexOf("bookmark") >= 0) {
                     bookmarkedLines.push(i);
@@ -75,14 +67,15 @@ define(function (require, exports, module) {
 
     /**
      * Updates bookmarks for the current editor if necessary
-     * @param {Editor=} editor - brackets editor instance. current editor if null
+     *
+     * @param {Editor} editor - the editor instance
      * @return {Boolean} true if there are bookmarks for the current editor, false if not
      */
     function updateBookmarksForCurrentEditor() {
-        var result = false,
+        let result = false,
             editor = EditorManager.getCurrentFullEditor();
         if (editor) {
-            var fullPath = editor.document.file.fullPath,
+            let fullPath = editor.document.file.fullPath,
                 bm = _bookmarks[fullPath];
 
             // if there was already data then we
@@ -106,7 +99,8 @@ define(function (require, exports, module) {
      *          (for traversal or to update the bookmarks panel),
      *          updateBookmarksForCurrentEditor is called which updates
      *          incrementally the bookmarks for the current file
-     * @param {!Editor} editor - brackets editor instance
+     *
+     * @param {!Editor} editor - the editor instance
      */
     function resetBookmarks(editor) {
         if (editor) {
@@ -117,14 +111,15 @@ define(function (require, exports, module) {
 
     /**
      * Loads the cached bookmarks into the specified editor instance
-     * @param {Editor=} editor - brackets editor instance. current editor if null
+     *
+     * @param {Editor} editor - brackets editor instance. current editor if null
      */
     function loadBookmarks(editor) {
         if (!editor) {
             editor = EditorManager.getCurrentFullEditor();
         }
         if (editor) {
-            var cm = editor._codeMirror,
+            let cm = editor._codeMirror,
                 bm = _bookmarks[editor.document.file.fullPath];
 
             if (bm) {
@@ -139,10 +134,11 @@ define(function (require, exports, module) {
 
     /**
      * Removes all bookmarks from the editor
+     *
      * @param {!Editor} editor - brackets editor instance.
      */
     function clearBookmarks(editor) {
-        var i,
+        let i,
             cm = editor._codeMirror,
             lineCount = cm.doc.lineCount();
 
@@ -170,6 +166,7 @@ define(function (require, exports, module) {
 
     /**
      * Reloads the bookmark model, clearing the current bookmarks
+     *
      * @param {!Editor} editor - brackets editor instance.
      */
     function reloadModel() {
@@ -193,18 +190,19 @@ define(function (require, exports, module) {
 
     /**
      * Moves the cursor position of the current editor to the next bookmark
+     *
      * @param {!Editor} editor - brackets editor instance
      */
     function gotoNextBookmark(forward) {
         if (updateBookmarksForCurrentEditor()) {
-            var editor = EditorManager.getCurrentFullEditor(),
+            let editor = EditorManager.getCurrentFullEditor(),
                 cursor = editor.getCursorPos(),
                 bm = _bookmarks[editor.document.file.fullPath];
 
-            var doJump = function (lineNo) {
+            let doJump = function (lineNo) {
                 editor.setCursorPos(lineNo, 0);
 
-                var cm = editor._codeMirror;
+                let cm = editor._codeMirror;
                 cm.addLineClass(lineNo, "wrap", "bookmark-notify");
                 setTimeout(function () {
                     cm.removeLineClass(lineNo, "wrap", "bookmark-notify");
@@ -212,7 +210,7 @@ define(function (require, exports, module) {
             };
 
             // find next bookmark
-            var index;
+            let index;
             for (
                 index = forward ? 0 : bm.length - 1;
                 forward ? index < bm.length : index >= 0;
@@ -251,9 +249,9 @@ define(function (require, exports, module) {
      * Toogles the bookmarked state of the current line of the current editor
      */
     function toggleBookmark() {
-        var editor = EditorManager.getCurrentFullEditor();
+        let editor = EditorManager.getCurrentFullEditor();
         if (editor) {
-            var cursor = editor.getCursorPos(),
+            let cursor = editor.getCursorPos(),
                 lineNo = cursor.line,
                 cm = editor._codeMirror,
                 lineInfo = cm.lineInfo(cursor.line);
@@ -269,6 +267,7 @@ define(function (require, exports, module) {
 
     /**
      * Creates the bookmarks panel if it's truly needed
+     *
      * @param {Boolean} panelRequired - true if panel is required. False if not
      */
     function createBookmarksPanelIfNecessary(panelRequired) {
@@ -283,6 +282,7 @@ define(function (require, exports, module) {
 
     /**
      * Shows the bookmarks panel
+     *
      * @param {Boolean} show - true to show the panel, false to hide it
      * @param {{show:string=}=} options - undefined, {show: undefined|"opened"|"project"|"all"}, defaults to "opened"
      */
@@ -333,32 +333,20 @@ define(function (require, exports, module) {
 
     AppInit.appReady(function () {
         // register our commands
-        CommandManager.register(ExtensionStrings.TOGGLE_BOOKMARK, CMD_TOGGLE_BOOKMARK, toggleBookmark);
-        CommandManager.register(
-            ExtensionStrings.GOTO_PREV_BOOKMARK,
-            CMD_GOTO_PREV_BOOKMARK,
-            _.partial(gotoNextBookmark, false)
-        );
-        CommandManager.register(
-            ExtensionStrings.GOTO_NEXT_BOOKMARK,
-            CMD_GOTO_NEXT_BOOKMARK,
-            _.partial(gotoNextBookmark, true)
-        );
+        CommandManager.register(Strings.TOGGLE_BOOKMARK, CMD_TOGGLE_BOOKMARK, toggleBookmark);
+        CommandManager.register(Strings.GOTO_PREV_BOOKMARK, CMD_GOTO_PREV_BOOKMARK, _.partial(gotoNextBookmark, false));
+        CommandManager.register(Strings.GOTO_NEXT_BOOKMARK, CMD_GOTO_NEXT_BOOKMARK, _.partial(gotoNextBookmark, true));
 
         // add our menu items
-        var menu = Menus.getMenu(Menus.AppMenuBar.NAVIGATE_MENU);
+        let menu = Menus.getMenu(Menus.AppMenuBar.NAVIGATE_MENU);
 
         menu.addMenuDivider();
-        menu.addMenuItem(CMD_TOGGLE_BOOKMARK, "Ctrl-Shift-K");
-        menu.addMenuItem(CMD_GOTO_NEXT_BOOKMARK, "Ctrl-P");
-        menu.addMenuItem(CMD_GOTO_PREV_BOOKMARK, "Ctrl-Shift-P");
+        menu.addMenuItem(CMD_TOGGLE_BOOKMARK, "Ctrl-Alt-B");
+        menu.addMenuItem(CMD_GOTO_NEXT_BOOKMARK, "Ctrl-Alt-N");
+        menu.addMenuItem(CMD_GOTO_PREV_BOOKMARK, "Ctrl-Alt-P");
 
         menu = Menus.getMenu(Menus.AppMenuBar.VIEW_MENU);
-        CommandManager.register(
-            ExtensionStrings.TOGGLE_BOOKMARKS_PANEL,
-            CMD_TOGGLE_BOOKKMARK_VIEW,
-            toggleBookmarksPanel
-        );
+        CommandManager.register(Strings.TOGGLE_BOOKMARKS_PANEL, CMD_TOGGLE_BOOKKMARK_VIEW, toggleBookmarksPanel);
         menu.addMenuDivider();
         menu.addMenuItem(CMD_TOGGLE_BOOKKMARK_VIEW);
 
