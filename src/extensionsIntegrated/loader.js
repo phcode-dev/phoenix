@@ -44,4 +44,5 @@ define(function (require, exports, module) {
     require("./indentGuides/main");
     require("./CSSColorPreview/main");
     require("./TabBar/main");
+    require("./Bookmarks/main");
 });
