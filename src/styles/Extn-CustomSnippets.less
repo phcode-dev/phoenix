@@ -1,0 +1,110 @@
+#custom-snippets-panel {
+    background-color: @bc-panel-bg;
+    position: relative;
+
+    .dark & {
+        background-color: @dark-bc-panel-bg;
+    }
+}
+
+#custom-snippets-toolbar {
+    background-color: @bc-panel-bg-promoted;
+    padding: 5px 8px;
+
+    .dark & {
+        background-color: @dark-bc-panel-bg-promoted;
+    }
+}
+
+
+#custom-snippets-toolbar .custom-snippets-btn-group.right button {
+    height: 26px;
+    border-radius: 4px;
+    font-size: 12px;
+    background-color: @bc-btn-bg;
+    color: @bc-text;
+    border: 1px solid @bc-btn-border;
+    box-shadow: inset 0 1px @bc-highlight;
+
+    .dark & {
+        background-color: @dark-bc-btn-bg;
+        color: @dark-bc-text;
+        border: 1px solid @dark-bc-btn-border;
+        box-shadow: inset 0 1px @dark-bc-highlight;
+    }
+}
+
+#close-custom-snippets-panel-btn {
+    position: absolute;
+    top: 9px;
+    right: 7px;
+}
+
+#close-custom-snippets-panel-btn button {
+    // remove all the default styling
+    background: transparent;
+    border: none;
+    outline: none;
+
+    font-size: 13px;
+    opacity: 0.7;
+    color: @bc-text;
+
+    .dark & {
+        color: @dark-bc-text;
+    }
+}
+
+#close-custom-panel-btn button:hover {
+    opacity: 0.9;
+}
+
+#custom-snippets-list.hidden {
+    display: none;
+}
+
+#custom-snippets-add-new.hidden {
+    display: none;
+}
+
+.custom-snippet-btn.hidden {
+    display: none;
+}
+
+#no-snippets-wrapper.hidden {
+    display: none;
+}
+
+#snippets-list-wrapper.hidden {
+    display: none;
+}
+
+#snippet-item {
+    background-color: burlywood;
+    display: flex;
+    color: black;
+    justify-content: space-between;
+    padding: 4px 10px;
+    margin-bottom: 10px;
+}
+
+#abbreviation-error-message {
+    color: #f44336;
+    font-size: 12px;
+    margin-top: 3px;
+    margin-left: 5px;
+    padding: 3px 5px;
+    background-color: rgba(244, 67, 54, 0.1);
+    border-radius: 3px;
+    animation: fadeIn 0.3s ease;
+}
+
+.error-input {
+    border-color: #f44336 !important;
+    box-shadow: 0 0 3px rgba(244, 67, 54, 0.5) !important;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
