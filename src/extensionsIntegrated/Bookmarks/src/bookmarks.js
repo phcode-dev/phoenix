@@ -13,10 +13,11 @@ define(function (require, exports, module) {
     /**
      * This function toggles a bookmark on a specific line
      *
+     * @private
      * @param {Editor} editor - The current editor instance
      * @param {number} line - The line number to toggle bookmark on
      */
-    function toggleLineBookmark(editor, line) {
+    function _toggleLineBookmark(editor, line) {
         if (Helper.hasBookmark(editor, line, GUTTER_NAME)) {
             editor.setGutterMarker(line, GUTTER_NAME, "");
         } else {
@@ -38,9 +39,19 @@ define(function (require, exports, module) {
 
         // process each unique line
         uniqueLines.forEach((line) => {
-            toggleLineBookmark(editor, line);
+            _toggleLineBookmark(editor, line);
         });
     }
 
+    function goToNextBookmark() {
+        //
+    }
+
+    function goToPrevBookmark() {
+        //
+    }
+
     exports.toggleBookmark = toggleBookmark;
+    exports.goToNextBookmark = goToNextBookmark;
+    exports.goToPrevBookmark = goToPrevBookmark;
 });
