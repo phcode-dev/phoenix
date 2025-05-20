@@ -1,18 +1,31 @@
 define(function (require, exports, module) {
-    const EditorManager = require("editor/EditorManager"),
-        Editor = require("editor/Editor").Editor;
+    const EditorManager = require("editor/EditorManager");
+    const Editor = require("editor/Editor").Editor;
+
+    const Helper = require("./helper");
 
     const GUTTER_NAME = "CodeMirror-bookmarkGutter",
         BOOKMARK_PRIORITY = 100;
-
-    // the bookmark svg icon
-    const bookmarkSvg = require("text!styles/images/bookmark.svg");
 
     // initialize the bookmark gutter
     Editor.registerGutter(GUTTER_NAME, BOOKMARK_PRIORITY);
 
     /**
-     * This function is responsible to toggle a bookmark at the current cursor position
+     * This function toggles a bookmark on a specific line
+     *
+     * @param {Editor} editor - The current editor instance
+     * @param {number} line - The line number to toggle bookmark on
+     */
+    function toggleLineBookmark(editor, line) {
+        if (Helper.hasBookmark(editor, line, GUTTER_NAME)) {
+            editor.setGutterMarker(line, GUTTER_NAME, "");
+        } else {
+            editor.setGutterMarker(line, GUTTER_NAME, Helper.createBookmarkMarker());
+        }
+    }
+
+    /**
+     * This function is responsible to toggle bookmarks at the current cursor position(s)
      */
     function toggleBookmark() {
         const editor = EditorManager.getFocusedEditor();
@@ -20,20 +33,13 @@ define(function (require, exports, module) {
             return;
         }
 
-        const selection = editor.getSelection();
-        const currentLine = selection.start.line;
+        const selections = editor.getSelections();
+        const uniqueLines = Helper.getUniqueLines(selections);
 
-        // check whether there's already a bookmark on this line
-        const marker = editor.getGutterMarker(currentLine, GUTTER_NAME);
-
-        if (marker) {
-            // remove bookmark if exists
-            editor.setGutterMarker(currentLine, GUTTER_NAME, "");
-        } else {
-            // add the bookmark
-            const $marker = $("<div>").addClass("bookmark-icon").html(bookmarkSvg);
-            editor.setGutterMarker(currentLine, GUTTER_NAME, $marker[0]);
-        }
+        // process each unique line
+        uniqueLines.forEach((line) => {
+            toggleLineBookmark(editor, line);
+        });
     }
 
     exports.toggleBookmark = toggleBookmark;
