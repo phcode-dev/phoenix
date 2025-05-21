@@ -343,6 +343,7 @@ define({
   "CLOSE_ALL_TABS": "關閉所有分頁",
   "CLOSE_UNMODIFIED_TABS": "關閉未修改的分頁",
   "REOPEN_CLOSED_FILE": "重新開啟已關閉的檔案",
+  "SHOW_IN_FILE_TREE": "在檔案樹中顯示",
   "ERRORS_NO_FILE": "尚未開啟檔案",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} 個問題 - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} 個問題，其中 {1} 個可修復 - {2}",
@@ -448,6 +449,7 @@ define({
   "CMD_HIDE_SIDEBAR": "隱藏側欄",
   "CMD_SHOW_SIDEBAR": "顯示側欄",
   "CMD_TOGGLE_SIDEBAR": "切換側邊欄",
+  "CMD_TOGGLE_TABBAR": "檔案標籤列",
   "CMD_TOGGLE_PANELS": "切換面板",
   "CMD_TOGGLE_PURE_CODE": "專注模式",
   "CMD_TOGGLE_FULLSCREEN": "全螢幕",
@@ -1362,5 +1364,6 @@ define({
   "GIT_TOAST_TITLE": "在 Phoenix Code 中探索 Git 功能",
   "GIT_TOAST_MESSAGE": "按一下 Git 面板圖示即可管理您的儲存庫。輕鬆提交、推送、提取和檢視您的專案歷史記錄，一切盡在掌握之中。<br><a href='https://docs.phcode.dev/docs/Features/git'>深入瞭解 Git 面板 →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "投票選出您希望看到的下個功能！",
-  "CMD_TOGGLE_TABBAR": "檔案標籤列"
+  "RENAME_TAB_FILE": "重新命名檔案",
+  "DELETE_TAB_FILE": "刪除檔案"
 });

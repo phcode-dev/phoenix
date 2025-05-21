@@ -343,6 +343,7 @@ define({
   "CLOSE_ALL_TABS": "Затвори све картице",
   "CLOSE_UNMODIFIED_TABS": "Затвори непромењене картице",
   "REOPEN_CLOSED_FILE": "Поново отвори затворену датотеку",
+  "SHOW_IN_FILE_TREE": "Прикажи у стаблу датотека",
   "ERRORS_NO_FILE": "Нема отворених датотека",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} проблема - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} проблема, {1} се може поправити - {2}",
@@ -448,6 +449,7 @@ define({
   "CMD_HIDE_SIDEBAR": "Сакриј споредну траку",
   "CMD_SHOW_SIDEBAR": "Прикажи споредну траку",
   "CMD_TOGGLE_SIDEBAR": "Укључи/искључи бочну траку",
+  "CMD_TOGGLE_TABBAR": "Трака са картицама датотека",
   "CMD_TOGGLE_PANELS": "Укључи/искључи панеле",
   "CMD_TOGGLE_PURE_CODE": "Без ометања",
   "CMD_TOGGLE_FULLSCREEN": "Цео екран",
@@ -1362,5 +1364,6 @@ define({
   "GIT_TOAST_TITLE": "Истражите Гит функције у Phoenix Code-у",
   "GIT_TOAST_MESSAGE": "Кликните на икону Гит панела да бисте управљали својим спремиштем. Лако направите commit, push, pull и погледајте историју свог пројекта — све на једном месту.<br><a href='https://docs.phcode.dev/docs/Features/git'>Сазнајте више о Гит панелу →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Гласајте за функције које желите да видите у будућности!",
-  "CMD_TOGGLE_TABBAR": "Трака са картицама датотека"
+  "RENAME_TAB_FILE": "Преименуј датотеку",
+  "DELETE_TAB_FILE": "Обриши датотеку"
 });

@@ -343,6 +343,7 @@ define({
   "CLOSE_ALL_TABS": "Sulje kaikki välilehdet",
   "CLOSE_UNMODIFIED_TABS": "Sulje muokkaamattomat välilehdet",
   "REOPEN_CLOSED_FILE": "Avaa suljettu tiedosto uudelleen",
+  "SHOW_IN_FILE_TREE": "Näytä tiedostopuussa",
   "ERRORS_NO_FILE": "Ei avoinna olevaa tiedostoa",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} ongelmaa - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} ongelmaa, {1} korjattavissa - {2}",
@@ -448,6 +449,7 @@ define({
   "CMD_HIDE_SIDEBAR": "Piilota sivupalkki",
   "CMD_SHOW_SIDEBAR": "Näytä sivupalkki",
   "CMD_TOGGLE_SIDEBAR": "Näytä tai piilota sivupalkki",
+  "CMD_TOGGLE_TABBAR": "Tiedostovälilehtirivi",
   "CMD_TOGGLE_PANELS": "Näytä tai piilota paneelit",
   "CMD_TOGGLE_PURE_CODE": "Ei häiriötekijöitä",
   "CMD_TOGGLE_FULLSCREEN": "Koko näyttö",
@@ -1362,5 +1364,6 @@ define({
   "GIT_TOAST_TITLE": "Tutustu Git-ominaisuuksiin Phoenix Codessa",
   "GIT_TOAST_MESSAGE": "Napsauta Git-paneelin kuvaketta hallitaksesi arkistoasi (repository). Tee commit, push ja pull helposti ja tarkastele projektihistoriaasi – kaikki yhdessä paikassa.<br><a href='https://docs.phcode.dev/docs/Features/git'>Lue lisää Git-paneelista →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Äänestä ominaisuuksia, jotka haluat nähdä seuraavaksi!",
-  "CMD_TOGGLE_TABBAR": "Tiedostovälilehtirivi"
+  "RENAME_TAB_FILE": "Nimeä tiedosto uudelleen",
+  "DELETE_TAB_FILE": "Poista tiedosto"
 });

@@ -343,6 +343,7 @@ define({
   "CLOSE_ALL_TABS": "Fermer tous les onglets",
   "CLOSE_UNMODIFIED_TABS": "Fermer les onglets non modifiés",
   "REOPEN_CLOSED_FILE": "Rouvrir le fichier fermé",
+  "SHOW_IN_FILE_TREE": "Afficher dans l’arborescence de fichiers",
   "ERRORS_NO_FILE": "Aucun fichier ouvert",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Problèmes - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} problèmes, {1} corrigeable(s) - {2}",
@@ -448,6 +449,7 @@ define({
   "CMD_HIDE_SIDEBAR": "Masquer la barre latérale",
   "CMD_SHOW_SIDEBAR": "Afficher la barre latérale",
   "CMD_TOGGLE_SIDEBAR": "Afficher/Masquer la barre latérale",
+  "CMD_TOGGLE_TABBAR": "Barre d'onglets des fichiers",
   "CMD_TOGGLE_PANELS": "Afficher/Masquer les panneaux",
   "CMD_TOGGLE_PURE_CODE": "Pas de distraction",
   "CMD_TOGGLE_FULLSCREEN": "Plein écran",
@@ -1362,5 +1364,6 @@ define({
   "GIT_TOAST_TITLE": "Explorer les fonctionnalités Git dans Phoenix Code",
   "GIT_TOAST_MESSAGE": "Cliquez sur l'icône du panneau Git pour gérer votre dépôt. Validez, envoyez (push), récupérez (pull) et consultez l'historique de votre projet facilement, le tout au même endroit.<br><a href='https://docs.phcode.dev/docs/Features/git'>En savoir plus sur le panneau Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Votez pour les fonctionnalités que vous souhaitez voir apparaître !",
-  "CMD_TOGGLE_TABBAR": "Barre d'onglets des fichiers"
+  "RENAME_TAB_FILE": "Renommer le fichier",
+  "DELETE_TAB_FILE": "Supprimer le fichier"
 });

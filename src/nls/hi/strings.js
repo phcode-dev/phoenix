@@ -448,6 +448,7 @@ define({
   "CMD_HIDE_SIDEBAR": "साइडबार छिपाएँ",
   "CMD_SHOW_SIDEBAR": "साइडबार दिखाएँ",
   "CMD_TOGGLE_SIDEBAR": "साइडबार टॉगल करें",
+  "CMD_TOGGLE_TABBAR": "फ़ाइल टैब बार",
   "CMD_TOGGLE_PANELS": "पैनल टॉगल करें",
   "CMD_TOGGLE_PURE_CODE": "कोई विकर्षण नहीं",
   "CMD_TOGGLE_FULLSCREEN": "फ़ुलस्क्रीन",
@@ -1362,5 +1363,7 @@ define({
   "GIT_TOAST_TITLE": "फ़ीनिक्स कोड में Git सुविधाओं का अन्वेषण करें",
   "GIT_TOAST_MESSAGE": "अपने रिपॉजिटरी को प्रबंधित करने के लिए Git पैनल आइकन पर क्लिक करें। आसानी से कमिट करें, पुश करें, पुल करें और अपने प्रोजेक्ट का इतिहास देखें—सब एक ही स्थान पर।<br><a href='https://docs.phcode.dev/docs/Features/git'>Git पैनल के बारे में अधिक जानें →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "उन विशेषताओं के लिए वोट करें जिन्हें आप आगे देखना चाहते हैं!",
-  "CMD_TOGGLE_TABBAR": "फ़ाइल टैब बार"
+  "RENAME_TAB_FILE": "फ़ाइल का नाम बदलें",
+  "DELETE_TAB_FILE": "फ़ाइल हटाएँ",
+  "SHOW_IN_FILE_TREE": "फ़ाइल ट्री में दिखाएँ"
 });

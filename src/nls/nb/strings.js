@@ -343,6 +343,7 @@ define({
   "CLOSE_ALL_TABS": "Lukk alle faner",
   "CLOSE_UNMODIFIED_TABS": "Lukk uendrede faner",
   "REOPEN_CLOSED_FILE": "Åpne lukket fil på nytt",
+  "SHOW_IN_FILE_TREE": "Vis i filtre",
   "ERRORS_NO_FILE": "Ingen fil åpen",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} problemer - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} problemer, {1} kan fikses - {2}",
@@ -448,6 +449,7 @@ define({
   "CMD_HIDE_SIDEBAR": "Gjem sidestolpe",
   "CMD_SHOW_SIDEBAR": "Vis sidestolpe",
   "CMD_TOGGLE_SIDEBAR": "Bytt sidepanel",
+  "CMD_TOGGLE_TABBAR": "Filfanelinje",
   "CMD_TOGGLE_PANELS": "Bytt paneler",
   "CMD_TOGGLE_PURE_CODE": "Ingen distraksjoner",
   "CMD_TOGGLE_FULLSCREEN": "Fullskjerm",
@@ -1362,5 +1364,6 @@ define({
   "GIT_TOAST_TITLE": "Utforsk Git-funksjoner i Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klikk på Git-panelikonet for å administrere repositoriet ditt. Utfør commit, push, pull og se prosjektloggen din – alt på ett sted.<br><a href='https://docs.phcode.dev/docs/Features/git'>Lær mer om Git-panelet →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Stem på funksjonene du ønsker å se neste!",
-  "CMD_TOGGLE_TABBAR": "Filfanelinje"
+  "RENAME_TAB_FILE": "Gi nytt navn til fil",
+  "DELETE_TAB_FILE": "Slett fil"
 });

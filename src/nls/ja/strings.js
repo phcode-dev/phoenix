@@ -343,6 +343,7 @@ define({
   "CLOSE_ALL_TABS": "すべてのタブを閉じる",
   "CLOSE_UNMODIFIED_TABS": "変更されていないタブを閉じる",
   "REOPEN_CLOSED_FILE": "閉じたファイルを再度開く",
+  "SHOW_IN_FILE_TREE": "ファイルツリー内で表示",
   "ERRORS_NO_FILE": "ファイルが開かれていません",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} 個の問題 - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0}件の問題、{1}件修正可能 - {2}",
@@ -448,6 +449,7 @@ define({
   "CMD_HIDE_SIDEBAR": "サイドバーを隠す",
   "CMD_SHOW_SIDEBAR": "サイドバーを表示する",
   "CMD_TOGGLE_SIDEBAR": "サイドバーの切り替え",
+  "CMD_TOGGLE_TABBAR": "ファイルタブバー",
   "CMD_TOGGLE_PANELS": "パネルの表示切り替え",
   "CMD_TOGGLE_PURE_CODE": "簡易表示",
   "CMD_TOGGLE_FULLSCREEN": "全画面表示",
@@ -1362,5 +1364,6 @@ define({
   "GIT_TOAST_TITLE": "Phoenix CodeのGit機能を試す",
   "GIT_TOAST_MESSAGE": "Gitパネルアイコンをクリックしてリポジトリを管理します。コミット、プッシュ、プル、プロジェクト履歴の表示をすべて1か所で行えます。<br><a href='https://docs.phcode.dev/docs/Features/git'>Gitパネルの詳細はこちら →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "次に実装してほしい機能に投票してください！",
-  "CMD_TOGGLE_TABBAR": "ファイルタブバー"
+  "RENAME_TAB_FILE": "ファイル名変更",
+  "DELETE_TAB_FILE": "ファイル削除"
 });

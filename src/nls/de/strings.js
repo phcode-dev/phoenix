@@ -343,6 +343,7 @@ define({
   "CLOSE_ALL_TABS": "Alle Tabs schließen",
   "CLOSE_UNMODIFIED_TABS": "Nicht geänderte Tabs schließen",
   "REOPEN_CLOSED_FILE": "Geschlossene Datei erneut öffnen",
+  "SHOW_IN_FILE_TREE": "Im Dateibaum anzeigen",
   "ERRORS_NO_FILE": "Keine Datei geöffnet",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Probleme - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} Probleme, {1} davon behebbar - {2}",
@@ -448,6 +449,7 @@ define({
   "CMD_HIDE_SIDEBAR": "Seitenleiste verbergen",
   "CMD_SHOW_SIDEBAR": "Seitenleiste zeigen",
   "CMD_TOGGLE_SIDEBAR": "Seitenleiste anzeigen/verbergen",
+  "CMD_TOGGLE_TABBAR": "Dateileisten-Registerkarte",
   "CMD_TOGGLE_PANELS": "Panels anzeigen/verbergen",
   "CMD_TOGGLE_PURE_CODE": "Ablenkungsfreier Modus",
   "CMD_TOGGLE_FULLSCREEN": "Vollbild",
@@ -1362,5 +1364,6 @@ define({
   "GIT_TOAST_TITLE": "Git-Funktionen in Phoenix Code entdecken",
   "GIT_TOAST_MESSAGE": "Klicken Sie auf das Git-Panel-Symbol, um Ihr Repository zu verwalten. Committen, Pushen, Pullen und die Anzeige Ihres Projektverlaufs – alles an einem Ort.<br><a href='https://docs.phcode.dev/docs/Features/git'>Mehr über das Git-Panel erfahren →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Stimmen Sie für die Funktionen ab, die Sie als Nächstes sehen möchten!",
-  "CMD_TOGGLE_TABBAR": "Dateileisten-Registerkarte"
+  "RENAME_TAB_FILE": "Datei umbenennen",
+  "DELETE_TAB_FILE": "Datei löschen"
 });

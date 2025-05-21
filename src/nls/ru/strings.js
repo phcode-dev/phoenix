@@ -343,6 +343,7 @@ define({
   "CLOSE_ALL_TABS": "Закрыть все вкладки",
   "CLOSE_UNMODIFIED_TABS": "Закрыть неизменённые вкладки",
   "REOPEN_CLOSED_FILE": "Повторно открыть закрытый файл",
+  "SHOW_IN_FILE_TREE": "Показать в дереве проекта",
   "ERRORS_NO_FILE": "Нет открытого файла",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} проблем - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} проблем, {1} можно исправить - {2}",
@@ -448,6 +449,7 @@ define({
   "CMD_HIDE_SIDEBAR": "Скрыть боковую панель",
   "CMD_SHOW_SIDEBAR": "Показать боковую панель",
   "CMD_TOGGLE_SIDEBAR": "Переключить боковую панель",
+  "CMD_TOGGLE_TABBAR": "Панель вкладок файлов",
   "CMD_TOGGLE_PANELS": "Переключить панели",
   "CMD_TOGGLE_PURE_CODE": "Без отвлечений",
   "CMD_TOGGLE_FULLSCREEN": "Полноэкранный режим",
@@ -1362,5 +1364,6 @@ define({
   "GIT_TOAST_TITLE": "Возможности Git в Phoenix Code",
   "GIT_TOAST_MESSAGE": "Нажмите на значок панели Git для управления вашим репозиторием. Легко выполняйте коммиты, отправляйте (push), получайте (pull) изменения и просматривайте историю вашего проекта — все в одном месте.<br><a href='https://docs.phcode.dev/docs/Features/git'>Узнать больше о панели Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Проголосуйте за функции, которые вы хотите увидеть в будущем!",
-  "CMD_TOGGLE_TABBAR": "Панель вкладок файлов"
+  "RENAME_TAB_FILE": "Переименовать файл",
+  "DELETE_TAB_FILE": "Удалить файл"
 });

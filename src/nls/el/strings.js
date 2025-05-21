@@ -343,6 +343,7 @@ define({
   "CLOSE_ALL_TABS": "Κλείσιμο Όλων των Καρτελών",
   "CLOSE_UNMODIFIED_TABS": "Κλείσιμο μη Τροποποιημένων Καρτελών",
   "REOPEN_CLOSED_FILE": "Άνοιγμα ξανά Κλειστού Αρχείου",
+  "SHOW_IN_FILE_TREE": "Προβολή στο Δέντρο Αρχείων",
   "ERRORS_NO_FILE": "Δεν Υπάρχει Ανοιχτό Αρχείο",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Προβλήματα - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} Προβλήματα, {1} Διορθώσιμα - {2}",
@@ -448,6 +449,7 @@ define({
   "CMD_HIDE_SIDEBAR": "Απόκρυψη Πλευρικής Εργαλειοθήκης",
   "CMD_SHOW_SIDEBAR": "Προβολή Πλευρικής Εργαλειοθήκης",
   "CMD_TOGGLE_SIDEBAR": "Εναλλαγή Πλευρικής Γραμμής",
+  "CMD_TOGGLE_TABBAR": "Γραμμή καρτελών αρχείων",
   "CMD_TOGGLE_PANELS": "Εναλλαγή Πλαισίων",
   "CMD_TOGGLE_PURE_CODE": "Χωρίς Περισπασμούς",
   "CMD_TOGGLE_FULLSCREEN": "Πλήρης Οθόνη",
@@ -1362,5 +1364,6 @@ define({
   "GIT_TOAST_TITLE": "Εξερευνήστε τις Λειτουργίες Git στο Phoenix Code",
   "GIT_TOAST_MESSAGE": "Κάντε κλικ στο εικονίδιο του πίνακα Git για να διαχειριστείτε το αποθετήριό σας. Κάντε εύκολα commit, push, pull και δείτε το ιστορικό του έργου σας—όλα σε ένα μέρος.<br><a href='https://docs.phcode.dev/docs/Features/git'>Μάθετε περισσότερα για τον πίνακα Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Ψηφίστε για τις λειτουργίες που θέλετε να δείτε στη συνέχεια!",
-  "CMD_TOGGLE_TABBAR": "Γραμμή καρτελών αρχείων"
+  "RENAME_TAB_FILE": "Μετονομασία Αρχείου",
+  "DELETE_TAB_FILE": "Διαγραφή Αρχείου"
 });

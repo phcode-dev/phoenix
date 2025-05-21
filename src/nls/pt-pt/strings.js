@@ -343,6 +343,7 @@ define({
   "CLOSE_ALL_TABS": "Fechar Todos os Separadores",
   "CLOSE_UNMODIFIED_TABS": "Fechar Separadores Não Modificados",
   "REOPEN_CLOSED_FILE": "Reabrir Ficheiro Fechado",
+  "SHOW_IN_FILE_TREE": "Mostrar na lista de pastas",
   "ERRORS_NO_FILE": "Nenhum Ficheiro Aberto",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Problemas - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} Problemas, {1} Corrigíveis - {2}",
@@ -448,6 +449,7 @@ define({
   "CMD_HIDE_SIDEBAR": "Esconder barra lateral",
   "CMD_SHOW_SIDEBAR": "Mostrar barra lateral",
   "CMD_TOGGLE_SIDEBAR": "Alternar Barra Lateral",
+  "CMD_TOGGLE_TABBAR": "Barra de Separadores de Ficheiros",
   "CMD_TOGGLE_PANELS": "Alternar Painéis",
   "CMD_TOGGLE_PURE_CODE": "Sem Distrações",
   "CMD_TOGGLE_FULLSCREEN": "Ecrã Inteiro",
@@ -1362,5 +1364,6 @@ define({
   "GIT_TOAST_TITLE": "Explore as funcionalidades do Git no Phoenix Code",
   "GIT_TOAST_MESSAGE": "Clique no ícone do painel Git para gerir o seu repositório. Efetue commits, pushes, pulls e veja o histórico do seu projeto com facilidade — tudo num só lugar.<br><a href='https://docs.phcode.dev/docs/Features/git'>Saiba mais sobre o painel Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vote nas funcionalidades que quer ver a seguir!",
-  "CMD_TOGGLE_TABBAR": "Barra de Separadores de Ficheiros"
+  "RENAME_TAB_FILE": "Renomear Ficheiro",
+  "DELETE_TAB_FILE": "Eliminar Ficheiro"
 });

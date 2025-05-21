@@ -343,6 +343,7 @@ define({
   "CLOSE_ALL_TABS": "Zamknij wszystkie karty",
   "CLOSE_UNMODIFIED_TABS": "Zamknij niezmodyfikowane karty",
   "REOPEN_CLOSED_FILE": "Ponownie otwórz zamknięty plik",
+  "SHOW_IN_FILE_TREE": "Pokaż w drzewie katalogów",
   "ERRORS_NO_FILE": "Brak otwartego pliku",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} problemów - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} problemów, {1} do naprawienia - {2}",
@@ -448,6 +449,7 @@ define({
   "CMD_HIDE_SIDEBAR": "Ukryj pasek boczny",
   "CMD_SHOW_SIDEBAR": "Pokaż pasek boczny",
   "CMD_TOGGLE_SIDEBAR": "Przełącz pasek boczny",
+  "CMD_TOGGLE_TABBAR": "Pasek kart plików",
   "CMD_TOGGLE_PANELS": "Przełącz panele",
   "CMD_TOGGLE_PURE_CODE": "Tryb bez przeszkadzania",
   "CMD_TOGGLE_FULLSCREEN": "Pełny ekran",
@@ -1362,5 +1364,6 @@ define({
   "GIT_TOAST_TITLE": "Poznaj funkcje Gita w Phoenix Code",
   "GIT_TOAST_MESSAGE": "Kliknij ikonę panelu Git, aby zarządzać swoim repozytorium. Łatwo zatwierdzaj, przesyłaj, pobieraj i przeglądaj historię swojego projektu — wszystko w jednym miejscu.<br><a href='https://docs.phcode.dev/docs/Features/git'>Dowiedz się więcej o panelu Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Zagłosuj na funkcje, które chcesz zobaczyć w przyszłości!",
-  "CMD_TOGGLE_TABBAR": "Pasek kart plików"
+  "RENAME_TAB_FILE": "Zmień nazwę pliku",
+  "DELETE_TAB_FILE": "Usuń plik"
 });

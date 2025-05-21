@@ -343,6 +343,7 @@ define({
   "CLOSE_ALL_TABS": "Zatvoriť všetky karty",
   "CLOSE_UNMODIFIED_TABS": "Zatvoriť neuložené karty",
   "REOPEN_CLOSED_FILE": "Znova otvoriť zatvorený súbor",
+  "SHOW_IN_FILE_TREE": "Zobraziť stromovú štruktúru",
   "ERRORS_NO_FILE": "Žiadny otvorený súbor",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} problémov - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} problémov, {1} opraviteľných - {2}",
@@ -448,6 +449,7 @@ define({
   "CMD_HIDE_SIDEBAR": "Skryť bočný panel",
   "CMD_SHOW_SIDEBAR": "Zobraziť bočný panel",
   "CMD_TOGGLE_SIDEBAR": "Prepnúť bočný panel",
+  "CMD_TOGGLE_TABBAR": "Panel so záložkami súborov",
   "CMD_TOGGLE_PANELS": "Prepnúť panely",
   "CMD_TOGGLE_PURE_CODE": "Bez rušenia",
   "CMD_TOGGLE_FULLSCREEN": "Celá obrazovka",
@@ -1362,5 +1364,6 @@ define({
   "GIT_TOAST_TITLE": "Preskúmajte funkcie Gitu v Phoenix Code",
   "GIT_TOAST_MESSAGE": "Kliknite na ikonu panela Git pre správu vášho repozitára. Jednoducho commitujte, pushujte, pullujte a prezerajte si históriu vášho projektu – všetko na jednom mieste.<br><a href='https://docs.phcode.dev/docs/Features/git'>Zistite viac o paneli Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Hlasujte za funkcie, ktoré chcete vidieť v ďalšej verzii!",
-  "CMD_TOGGLE_TABBAR": "Panel so záložkami súborov"
+  "RENAME_TAB_FILE": "Premenovať súbor",
+  "DELETE_TAB_FILE": "Zmazať súbor"
 });

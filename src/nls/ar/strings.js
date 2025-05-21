@@ -448,6 +448,7 @@ define({
   "CMD_HIDE_SIDEBAR": "إخفاء الشريط الجانبي",
   "CMD_SHOW_SIDEBAR": "إظهار الشريط الجانبي",
   "CMD_TOGGLE_SIDEBAR": "تبديل الشريط الجانبي",
+  "CMD_TOGGLE_TABBAR": "شريط تبويب الملف",
   "CMD_TOGGLE_PANELS": "تبديل الألواح",
   "CMD_TOGGLE_PURE_CODE": "بدون تشتيت",
   "CMD_TOGGLE_FULLSCREEN": "ملء الشاشة",
@@ -1362,5 +1363,7 @@ define({
   "GIT_TOAST_TITLE": "استكشف ميزات Git في Phoenix Code",
   "GIT_TOAST_MESSAGE": "انقر على رمز لوحة Git لإدارة مستودعك. يمكنك بسهولة تنفيذ الالتزام والدفع والسحب وعرض سجل مشروعك - كل ذلك في مكان واحد.<br><a href='https://docs.phcode.dev/docs/Features/git'>تعرّف على المزيد حول لوحة Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "صوت للميزات التي ترغب برؤيتها تالياً!",
-  "CMD_TOGGLE_TABBAR": "شريط تبويب الملف"
+  "RENAME_TAB_FILE": "إعادة تسمية الملف",
+  "DELETE_TAB_FILE": "حذف الملف",
+  "SHOW_IN_FILE_TREE": "إظهار في شجرة الملفات"
 });

@@ -343,6 +343,7 @@ define({
   "CLOSE_ALL_TABS": "Alle tabbladen sluiten",
   "CLOSE_UNMODIFIED_TABS": "Niet-gewijzigde tabbladen sluiten",
   "REOPEN_CLOSED_FILE": "Gesloten bestand opnieuw openen",
+  "SHOW_IN_FILE_TREE": "Toon in bestandsboom",
   "ERRORS_NO_FILE": "Geen bestand geopend",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} problemen - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} problemen, {1} oplosbaar - {2}",
@@ -448,6 +449,7 @@ define({
   "CMD_HIDE_SIDEBAR": "Verberg zijbalk",
   "CMD_SHOW_SIDEBAR": "Toon zijbalk",
   "CMD_TOGGLE_SIDEBAR": "Zijbalk wisselen",
+  "CMD_TOGGLE_TABBAR": "Tabbalk Bestand",
   "CMD_TOGGLE_PANELS": "Panelen wisselen",
   "CMD_TOGGLE_PURE_CODE": "Geen afleidingen",
   "CMD_TOGGLE_FULLSCREEN": "Volledig scherm",
@@ -1362,5 +1364,6 @@ define({
   "GIT_TOAST_TITLE": "Ontdek Git-functies in Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klik op het Git-paneelpictogram om uw repository te beheren. Commit, push, pull en bekijk uw projectgeschiedenis eenvoudig - alles op één plek.<br><a href='https://docs.phcode.dev/docs/Features/git'>Meer informatie over het Git-paneel →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Stem op de functies die u graag wilt zien!",
-  "CMD_TOGGLE_TABBAR": "Tabbalk Bestand"
+  "RENAME_TAB_FILE": "Bestand hernoemen",
+  "DELETE_TAB_FILE": "Bestand verwijderen"
 });
