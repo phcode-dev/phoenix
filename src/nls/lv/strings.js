@@ -448,6 +448,7 @@ define({
   "CMD_HIDE_SIDEBAR": "Slēpt sānjoslu",
   "CMD_SHOW_SIDEBAR": "Rādīt sānjoslu",
   "CMD_TOGGLE_SIDEBAR": "Rādīt/slēpt sānjoslu",
+  "CMD_TOGGLE_TABBAR": "Failu cilņu josla",
   "CMD_TOGGLE_PANELS": "Rādīt/slēpt paneļus",
   "CMD_TOGGLE_PURE_CODE": "Rādīt/slēpt palīgjoslas",
   "CMD_TOGGLE_FULLSCREEN": "Pilnekrāna režīms",
@@ -1362,5 +1363,5 @@ define({
   "GIT_TOAST_TITLE": "Izpētiet Git funkcijas Phoenix Code",
   "GIT_TOAST_MESSAGE": "Noklikšķiniet uz Git paneļa ikonas, lai pārvaldītu savu repozitoriju. Ērti veiciet commit, push, pull un skatiet sava projekta vēsturi — viss vienā vietā.<br><a href='https://docs.phcode.dev/docs/Features/git'>Uzziniet vairāk par Git paneli →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Nobalsot par funkcijām, kuras vēlaties redzēt nākamreiz!",
-  "CMD_TOGGLE_TABBAR": "Failu cilņu josla"
+  "CMD_USER_PROFILE": "Lietotāja profils"
 });
