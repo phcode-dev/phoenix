@@ -2286,6 +2286,18 @@ dt,
     }
 }
 
+.alert.alert-success {
+    text-shadow: none;
+    background-color: @successBackground;
+    border: none;
+
+    .dark & {
+        background: @dark-bc-success-bg;
+        border-radius: 2px;
+        color: @dark-bc-text;
+    }
+}
+
 .alert h4 {
     // Specified for the h4 to prevent conflicts of changing @headingsColor
     color: @bc-warning-bg;

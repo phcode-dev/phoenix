@@ -40,9 +40,9 @@ define(function (require, exports, module) {
         Strings.CLOSE_ALL_TABS,
         Strings.CLOSE_UNMODIFIED_TABS,
         "---",
-        Strings.RENAME_TAB_FILE,
-        Strings.DELETE_TAB_FILE,
-        Strings.SHOW_IN_FILE_TREE,
+        Strings.CMD_FILE_RENAME,
+        Strings.CMD_FILE_DELETE,
+        Strings.CMD_SHOW_IN_TREE,
         "---",
         Strings.REOPEN_CLOSED_FILE
     ];
@@ -309,13 +309,13 @@ define(function (require, exports, module) {
         case Strings.CLOSE_UNMODIFIED_TABS:
             handleCloseUnmodifiedTabs(paneId);
             break;
-        case Strings.RENAME_TAB_FILE:
+        case Strings.CMD_FILE_RENAME:
             handleFileRename(filePath);
             break;
-        case Strings.DELETE_TAB_FILE:
+        case Strings.CMD_FILE_DELETE:
             handleFileDelete(filePath);
             break;
-        case Strings.SHOW_IN_FILE_TREE:
+        case Strings.CMD_SHOW_IN_TREE:
             handleShowInFileTree(filePath);
             break;
         case Strings.REOPEN_CLOSED_FILE:
