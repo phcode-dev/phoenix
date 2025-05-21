@@ -15,6 +15,9 @@ define(function (require, exports, module) {
     // if user is logged in we show the profile menu, otherwise we show the login menu
     let isLoggedIn = false;
 
+    // this is to handle document click events to close popup
+    let documentClickHandler = null;
+
     const defaultLoginData = {
         welcomeTitle: "Welcome to Phoenix Code",
         signInBtnText: "Sign in to your account",
@@ -68,6 +71,12 @@ define(function (require, exports, module) {
             $popup = null;
             isPopupVisible = false;
         }
+
+        // we need to remove document click handler if it already exists
+        if (documentClickHandler) {
+            $(document).off("mousedown", documentClickHandler);
+            documentClickHandler = null;
+        }
     }
 
     /**
@@ -98,6 +107,29 @@ define(function (require, exports, module) {
                 left: left + "px"
             });
         }
+    }
+
+    /**
+     * this function is responsible to set up a click handler to close the popup when clicking outside
+     */
+    function _setupDocumentClickHandler() {
+        // remove any existing handlers
+        if (documentClickHandler) {
+            $(document).off("mousedown", documentClickHandler);
+        }
+
+        // add the new click handler
+        documentClickHandler = function (event) {
+            // if the click is outside the popup and not on the profile button (which toggles the popup)
+            if ($popup && !$popup[0].contains(event.target) && !$("#user-profile-button")[0].contains(event.target)) {
+                closePopup();
+            }
+        };
+
+        // this is needed so we don't close the popup immediately as the profile button is clicked
+        setTimeout(function() {
+            $(document).on("mousedown", documentClickHandler);
+        }, 100);
     }
 
     /**
@@ -148,6 +180,8 @@ define(function (require, exports, module) {
                 positionPopup();
             }
         });
+
+        _setupDocumentClickHandler();
     }
 
     /**
@@ -200,6 +234,8 @@ define(function (require, exports, module) {
                 positionPopup();
             }
         });
+
+        _setupDocumentClickHandler();
     }
 
     /**
