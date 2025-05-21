@@ -79,11 +79,13 @@
         background-color: @bc-input-bg;
         border-radius: 4px;
         overflow: hidden;
+        border: 1px solid @bc-btn-border;
+        box-sizing: border-box;
 
         .progress-fill {
             height: 100%;
             background-color: @bc-primary-btn-bg;
-            border-radius: 4px;
+            border-radius: 3px;
         }
     }
 
@@ -179,6 +181,7 @@
 
     .progress-bar {
         background-color: @dark-bc-input-bg;
+        border-color: @dark-bc-btn-border;
 
         .progress-fill {
             background-color: @dark-bc-primary-btn-bg;
