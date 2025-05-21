@@ -96,6 +96,7 @@
         width: 100%;
         text-align: left;
         padding: 8px 12px;
+        margin: 3px 0;
 
         i {
             margin-right: 8px;
@@ -108,11 +109,28 @@
         }
     }
 
-    .btn {
-        margin: 5px 0;
+    .btn.dialog-button {
+        background-color: @bc-btn-bg;
+        color: @bc-text;
+        border: 1px solid @bc-btn-border;
+        border-radius: @bc-border-radius;
+        box-shadow: inset 0 1px @bc-highlight-hard;
+        font-size: (@baseFontSize + 1);
+        font-weight: @font-weight-semibold;
+        margin: 3px 0;
         transition: background-color 0.2s ease;
 
-        &.btn-primary {
+        &:not(:disabled):not(.disabled):hover {
+            background-color: lighten(@bc-btn-bg, 5%);
+            color: @bc-text;
+        }
+
+        &:active:not([disabled]) {
+            background-color: @bc-btn-bg-down;
+            box-shadow: inset 0 1px 0 @bc-shadow-small;
+        }
+
+        &.primary {
             background-color: @bc-primary-btn-bg;
             border: 1px solid @bc-primary-btn-border;
             box-shadow: inset 0 1px 0 @bc-highlight;
@@ -124,44 +142,14 @@
                 margin-right: 5px;
             }
 
-            &:hover {
+            &:not(:disabled):not(.disabled):hover {
                 background-color: lighten(@bc-primary-btn-bg, 10%);
+                color: @bc-text-alt;
             }
 
-            &:active {
+            &:active:not([disabled]) {
                 background-color: @bc-primary-btn-bg-down;
                 box-shadow: inset 0 1px 0 @bc-shadow-small;
-            }
-        }
-
-        &.btn-default {
-            background-color: @bc-btn-bg;
-            border: 1px solid @bc-btn-border;
-            box-shadow: inset 0 1px 0 @bc-highlight;
-
-            &:hover {
-                background-color: lighten(@bc-btn-bg, 10%);
-            }
-
-            &:active {
-                background-color: @bc-btn-bg-down;
-                box-shadow: inset 0 1px 0 @bc-shadow-small;
-            }
-        }
-
-        &.btn-link {
-            background: none;
-            border: none;
-            box-shadow: none;
-            color: @bc-text-thin-quiet;
-
-            i {
-                margin-right: 5px;
-            }
-
-            &:hover {
-                color: @bc-text;
-                text-decoration: none;
             }
         }
     }
@@ -197,44 +185,36 @@
         }
     }
 
-    .btn {
-        &.btn-primary {
+    .btn.dialog-button {
+        background-color: @dark-bc-btn-bg;
+        border: 1px solid @dark-bc-btn-border;
+        box-shadow: inset 0 1px 0 @dark-bc-highlight;
+        color: @dark-bc-text;
+
+        &:not(:disabled):not(.disabled):hover {
+            background-color: lighten(@dark-bc-btn-bg, 10%);
+            color: @dark-bc-text;
+        }
+
+        &:active:not([disabled]) {
+            background-color: @dark-bc-btn-bg-down;
+            box-shadow: inset 0 1px 0 @dark-bc-shadow-small;
+        }
+
+        &.primary {
             background-color: @dark-bc-primary-btn-bg;
             border: 1px solid @dark-bc-primary-btn-border;
             box-shadow: inset 0 1px 0 @dark-bc-highlight;
             color: @dark-bc-text-alt;
 
-            &:hover {
+            &:not(:disabled):not(.disabled):hover {
                 background-color: lighten(@dark-bc-primary-btn-bg, 10%);
+                color: @dark-bc-text-alt;
             }
 
-            &:active {
+            &:active:not([disabled]) {
                 background-color: @dark-bc-primary-btn-bg-down;
                 box-shadow: inset 0 1px 0 @dark-bc-shadow-small;
-            }
-        }
-
-        &.btn-default {
-            background-color: @dark-bc-btn-bg;
-            border: 1px solid @dark-bc-btn-border;
-            box-shadow: inset 0 1px 0 @dark-bc-highlight;
-            color: @dark-bc-text;
-
-            &:hover {
-                background-color: lighten(@dark-bc-btn-bg, 10%);
-            }
-
-            &:active {
-                background-color: @dark-bc-btn-bg-down;
-                box-shadow: inset 0 1px 0 @dark-bc-shadow-small;
-            }
-        }
-
-        &.btn-link {
-            color: @dark-bc-text-thin-quiet;
-
-            &:hover {
-                color: @dark-bc-text;
             }
         }
     }
