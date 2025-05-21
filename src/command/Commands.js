@@ -451,6 +451,12 @@ define(function (require, exports, module) {
     /** Toggles automatic working set sorting */
     exports.CMD_WORKING_SORT_TOGGLE_AUTO  = "cmd.sortWorkingSetToggleAuto";  // WorkingSetSort.js       _handleToggleAutoSort()
 
+    /** Toggles working set visibility */
+    exports.CMD_TOGGLE_SHOW_WORKING_SET  = "cmd.toggleShowWorkingSet";      // SidebarView.js       _handleToggleWorkingSet()
+
+    /** Toggles file tabs visibility */
+    exports.CMD_TOGGLE_SHOW_FILE_TABS  = "cmd.toggleShowFileTabs";          // SidebarView.js       _handleToggleFileTabs()
+
     /** Opens keyboard navigation UI overlay */
     exports.CMD_KEYBOARD_NAV_UI_OVERLAY  = "cmd.keyboardNavUI";  // WorkingSetSort.js       _handleToggleAutoSort()
 

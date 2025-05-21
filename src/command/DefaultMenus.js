@@ -345,6 +345,9 @@ define(function (require, exports, module) {
         splitview_menu.addMenuDivider();
         splitview_menu.addMenuItem(Commands.CMD_WORKING_SORT_TOGGLE_AUTO);
         splitview_menu.addMenuItem(Commands.FILE_SHOW_FOLDERS_FIRST);
+        splitview_menu.addMenuDivider();
+        splitview_menu.addMenuItem(Commands.CMD_TOGGLE_SHOW_WORKING_SET);
+        splitview_menu.addMenuItem(Commands.CMD_TOGGLE_SHOW_FILE_TABS);
 
         var project_cmenu = Menus.registerContextMenu(Menus.ContextMenuIds.PROJECT_MENU);
         project_cmenu.addMenuItem(Commands.FILE_NEW);

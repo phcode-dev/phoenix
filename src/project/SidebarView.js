@@ -59,7 +59,9 @@ define(function (require, exports, module) {
 
     var _cmdSplitNone,
         _cmdSplitVertical,
-        _cmdSplitHorizontal;
+        _cmdSplitHorizontal,
+        _cmdToggleWorkingSet,
+        _cmdToggleFileTabs;
 
     /**
      * @private
@@ -179,6 +181,31 @@ define(function (require, exports, module) {
         MainViewManager.setLayoutScheme(2, 1);
     }
 
+    /**
+     * Handle Toggle Working Set Command
+     * @private
+     */
+    function _handleToggleWorkingSet() {
+        const isCurrentlyHidden = PreferencesManager.get("hideWorkingSet");
+        const willBeShown = isCurrentlyHidden;
+        PreferencesManager.set("hideWorkingSet", !willBeShown);
+        CommandManager.get(Commands.CMD_TOGGLE_SHOW_WORKING_SET).setChecked(willBeShown);
+    }
+
+    /**
+     * Handle Toggle File Tabs Command
+     * @private
+     */
+    function _handleToggleFileTabs() {
+        const prefs = PreferencesManager.get("tabBar.options");
+        const willBeShown = !prefs.showTabBar;
+        PreferencesManager.set("tabBar.options", {
+            showTabBar: willBeShown,
+            numberOfTabs: prefs.numberOfTabs
+        });
+        CommandManager.get(Commands.CMD_TOGGLE_SHOW_FILE_TABS).setChecked(willBeShown);
+    }
+
     // Initialize items dependent on HTML DOM
     AppInit.htmlReady(function () {
         $sidebar                  = $("#sidebar");
@@ -246,6 +273,17 @@ define(function (require, exports, module) {
         // Tooltips
         $splitViewMenu.attr("title", Strings.GEAR_MENU_TOOLTIP);
 
+        _cmdToggleWorkingSet.setChecked(!PreferencesManager.get("hideWorkingSet"));
+        _cmdToggleFileTabs.setChecked(PreferencesManager.get("tabBar.options").showTabBar);
+
+        // to listen for tab bar preference changes from the preferences file
+        // because if user toggles the state of tab bar visibility either from the view menu or the preferences file
+        // we need to update the checked state here too
+        PreferencesManager.on("change", "tabBar.options", function () {
+            const prefs = PreferencesManager.get("tabBar.options");
+            _cmdToggleFileTabs.setChecked(prefs.showTabBar);
+        });
+
         // Define the preference to decide whether to hide the working set or not
         PreferencesManager.definePreference("hideWorkingSet", "boolean", false, {
             description: Strings.DESCRIPTION_HIDE_WORKING_SET
@@ -273,6 +311,8 @@ define(function (require, exports, module) {
     _cmdSplitNone       = CommandManager.register(Strings.CMD_SPLITVIEW_NONE,       Commands.CMD_SPLITVIEW_NONE,       _handleSplitViewNone);
     _cmdSplitVertical   = CommandManager.register(Strings.CMD_SPLITVIEW_VERTICAL,   Commands.CMD_SPLITVIEW_VERTICAL,   _handleSplitViewVertical);
     _cmdSplitHorizontal = CommandManager.register(Strings.CMD_SPLITVIEW_HORIZONTAL, Commands.CMD_SPLITVIEW_HORIZONTAL, _handleSplitViewHorizontal);
+    _cmdToggleWorkingSet = CommandManager.register(Strings.CMD_TOGGLE_SHOW_WORKING_SET, Commands.CMD_TOGGLE_SHOW_WORKING_SET, _handleToggleWorkingSet);
+    _cmdToggleFileTabs = CommandManager.register(Strings.CMD_TOGGLE_SHOW_FILE_TABS, Commands.CMD_TOGGLE_SHOW_FILE_TABS, _handleToggleFileTabs);
 
     CommandManager.register(Strings.CMD_TOGGLE_SIDEBAR, Commands.VIEW_HIDE_SIDEBAR, toggle);
     CommandManager.register(Strings.CMD_SHOW_SIDEBAR, Commands.SHOW_SIDEBAR, show);
