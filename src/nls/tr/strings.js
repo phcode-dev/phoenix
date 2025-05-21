@@ -448,6 +448,7 @@ define({
   "CMD_HIDE_SIDEBAR": "Kenar Çubuğunu Gizle",
   "CMD_SHOW_SIDEBAR": "Kenar Çubuğunu Göster",
   "CMD_TOGGLE_SIDEBAR": "Kenar Çubuğunu Aç/Kapat",
+  "CMD_TOGGLE_TABBAR": "Dosya Sekme Çubuğu",
   "CMD_TOGGLE_PANELS": "Panelleri Aç/Kapat",
   "CMD_TOGGLE_PURE_CODE": "Dikkat Dağıtıcı Olmadan",
   "CMD_TOGGLE_FULLSCREEN": "Tam Ekran",
@@ -1362,5 +1363,5 @@ define({
   "GIT_TOAST_TITLE": "Phoenix Code'da Git Özelliklerini Keşfedin",
   "GIT_TOAST_MESSAGE": "Deponuzu yönetmek için Git paneli simgesine tıklayın. Proje geçmişinizi kolayca işleyin, gönderin, çekin ve görüntüleyin—hepsi tek bir yerde.<br><a href='https://docs.phcode.dev/docs/Features/git'>Git paneli hakkında daha fazla bilgi edinin →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Gelecekte görmek istediğiniz özellikler için oy verin!",
-  "CMD_TOGGLE_TABBAR": "Dosya Sekme Çubuğu"
+  "CMD_USER_PROFILE": "Kullanıcı Profili"
 });

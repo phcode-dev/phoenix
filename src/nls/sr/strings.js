@@ -448,6 +448,7 @@ define({
   "CMD_HIDE_SIDEBAR": "Сакриј споредну траку",
   "CMD_SHOW_SIDEBAR": "Прикажи споредну траку",
   "CMD_TOGGLE_SIDEBAR": "Укључи/искључи бочну траку",
+  "CMD_TOGGLE_TABBAR": "Трака са картицама датотека",
   "CMD_TOGGLE_PANELS": "Укључи/искључи панеле",
   "CMD_TOGGLE_PURE_CODE": "Без ометања",
   "CMD_TOGGLE_FULLSCREEN": "Цео екран",
@@ -1362,5 +1363,5 @@ define({
   "GIT_TOAST_TITLE": "Истражите Гит функције у Phoenix Code-у",
   "GIT_TOAST_MESSAGE": "Кликните на икону Гит панела да бисте управљали својим спремиштем. Лако направите commit, push, pull и погледајте историју свог пројекта — све на једном месту.<br><a href='https://docs.phcode.dev/docs/Features/git'>Сазнајте више о Гит панелу →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Гласајте за функције које желите да видите у будућности!",
-  "CMD_TOGGLE_TABBAR": "Трака са картицама датотека"
+  "CMD_USER_PROFILE": "Кориснички профил"
 });

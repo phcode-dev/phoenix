@@ -448,6 +448,7 @@ define({
   "CMD_HIDE_SIDEBAR": "Gjem sidestolpe",
   "CMD_SHOW_SIDEBAR": "Vis sidestolpe",
   "CMD_TOGGLE_SIDEBAR": "Bytt sidepanel",
+  "CMD_TOGGLE_TABBAR": "Filfanelinje",
   "CMD_TOGGLE_PANELS": "Bytt paneler",
   "CMD_TOGGLE_PURE_CODE": "Ingen distraksjoner",
   "CMD_TOGGLE_FULLSCREEN": "Fullskjerm",
@@ -1362,5 +1363,5 @@ define({
   "GIT_TOAST_TITLE": "Utforsk Git-funksjoner i Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klikk på Git-panelikonet for å administrere repositoriet ditt. Utfør commit, push, pull og se prosjektloggen din – alt på ett sted.<br><a href='https://docs.phcode.dev/docs/Features/git'>Lær mer om Git-panelet →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Stem på funksjonene du ønsker å se neste!",
-  "CMD_TOGGLE_TABBAR": "Filfanelinje"
+  "CMD_USER_PROFILE": "Brukerprofil"
 });

@@ -448,6 +448,7 @@ define({
   "CMD_HIDE_SIDEBAR": "Esconder barra lateral",
   "CMD_SHOW_SIDEBAR": "Mostrar barra lateral",
   "CMD_TOGGLE_SIDEBAR": "Alternar Barra Lateral",
+  "CMD_TOGGLE_TABBAR": "Barra de Abas de Arquivos",
   "CMD_TOGGLE_PANELS": "Alternar Painéis",
   "CMD_TOGGLE_PURE_CODE": "Sem Distração",
   "CMD_TOGGLE_FULLSCREEN": "Tela Cheia",
@@ -1362,5 +1363,5 @@ define({
   "GIT_TOAST_TITLE": "Explore os Recursos do Git no Phoenix Code",
   "GIT_TOAST_MESSAGE": "Clique no ícone do painel Git para gerenciar seu repositório. Faça commits, pushes, pulls e visualize o histórico do seu projeto com facilidade — tudo em um só lugar.<br><a href='https://docs.phcode.dev/docs/Features/git'>Saiba mais sobre o painel Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vote nos recursos que você quer ver em seguida!",
-  "CMD_TOGGLE_TABBAR": "Barra de Abas de Arquivos"
+  "CMD_USER_PROFILE": "Perfil do Usuário"
 });
