@@ -13,7 +13,7 @@ define(function (require, exports, module) {
     let isPopupVisible = false;
 
     // if user is logged in we show the profile menu, otherwise we show the login menu
-    const isLoggedIn = false;
+    let isLoggedIn = false;
 
     const defaultLoginData = {
         welcomeTitle: "Welcome to Phoenix Code",
@@ -37,10 +37,16 @@ define(function (require, exports, module) {
 
     function _handleSignInBtnClick() {
         console.log("User clicked sign in button");
+        closePopup(); // need to close the current popup to show the new one
+        isLoggedIn = true;
+        showProfilePopup();
     }
 
     function _handleSignOutBtnClick() {
         console.log("User clicked sign out");
+        closePopup();
+        isLoggedIn = false;
+        showLoginPopup();
     }
 
     function _handleContactSupportBtnClick() {
@@ -129,7 +135,6 @@ define(function (require, exports, module) {
         // event handlers for buttons
         $popup.find("#phoenix-signin-btn").on("click", function () {
             _handleSignInBtnClick();
-            closePopup();
         });
 
         $popup.find("#phoenix-support-btn").on("click", function () {
@@ -187,7 +192,6 @@ define(function (require, exports, module) {
 
         $popup.find("#phoenix-signout-btn").on("click", function () {
             _handleSignOutBtnClick();
-            closePopup();
         });
 
         // handle window resize to reposition popup
