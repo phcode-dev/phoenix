@@ -188,7 +188,7 @@ define(function (require, exports, module) {
     function _handleToggleWorkingSet() {
         const isCurrentlyShown = PreferencesManager.get("showWorkingSet");
         PreferencesManager.set("showWorkingSet", !isCurrentlyShown);
-        CommandManager.get(Commands.CMD_TOGGLE_SHOW_WORKING_SET).setChecked(isCurrentlyShown);
+        CommandManager.get(Commands.CMD_TOGGLE_SHOW_WORKING_SET).setChecked(!isCurrentlyShown);
     }
 
     /**
@@ -212,6 +212,12 @@ define(function (require, exports, module) {
         $projectTitle             = $sidebar.find("#project-title");
         $projectFilesContainer    = $sidebar.find("#project-files-container");
         $workingSetViewsContainer = $sidebar.find("#working-set-list-container");
+
+        // apply working set visibility immediately
+        // this is needed because otherwise when the working set is hidden there is a flashing issue
+        if (!PreferencesManager.get("showWorkingSet")) {
+            $workingSetViewsContainer.addClass("working-set-hidden");
+        }
 
         // init
         $sidebar.on("panelResizeStart", function (evt, width) {
@@ -298,6 +304,9 @@ define(function (require, exports, module) {
                 } else {
                     $workingSet.addClass("working-set-hidden");
                 }
+
+                // update the menu item checked state to match the preference
+                _cmdToggleWorkingSet.setChecked(getPref);
             });
     });
 
