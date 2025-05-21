@@ -448,6 +448,7 @@ define({
   "CMD_HIDE_SIDEBAR": "사이드 바 숨기기",
   "CMD_SHOW_SIDEBAR": "사이드 바 표시",
   "CMD_TOGGLE_SIDEBAR": "사이드바 표시 전환",
+  "CMD_TOGGLE_TABBAR": "파일 탭 표시줄",
   "CMD_TOGGLE_PANELS": "패널 표시 전환",
   "CMD_TOGGLE_PURE_CODE": "코드만 보기",
   "CMD_TOGGLE_FULLSCREEN": "전체 화면",
@@ -1362,5 +1363,5 @@ define({
   "GIT_TOAST_TITLE": "Phoenix Code의 Git 기능 살펴보기",
   "GIT_TOAST_MESSAGE": "Git 패널 아이콘을 클릭하여 저장소를 관리하세요. 커밋, 푸시, 풀, 프로젝트 기록 보기를 한 곳에서 간편하게 수행할 수 있습니다.<br><a href='https://docs.phcode.dev/docs/Features/git'>Git 패널에 대해 자세히 알아보기 →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "다음에 보고 싶은 기능에 투표하세요!",
-  "CMD_TOGGLE_TABBAR": "파일 탭 표시줄"
+  "CMD_USER_PROFILE": "사용자 프로필"
 });

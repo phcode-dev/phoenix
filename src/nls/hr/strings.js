@@ -448,6 +448,7 @@ define({
   "CMD_HIDE_SIDEBAR": "Sakrij bočnu traku",
   "CMD_SHOW_SIDEBAR": "Prikaži bočnu traku",
   "CMD_TOGGLE_SIDEBAR": "Toggle bočnu traku",
+  "CMD_TOGGLE_TABBAR": "Traka kartica datoteka",
   "CMD_TOGGLE_PANELS": "Toggle panele",
   "CMD_TOGGLE_PURE_CODE": "Bez odvraćanja pažnje",
   "CMD_TOGGLE_FULLSCREEN": "Preko cijelog zaslona",
@@ -1362,5 +1363,5 @@ define({
   "GIT_TOAST_TITLE": "Istražite Git značajke u Phoenix Codeu",
   "GIT_TOAST_MESSAGE": "Kliknite ikonu Git panela za upravljanje svojim repozitorijem. Jednostavno potvrdite (commit), pošaljite (push), preuzmite (pull) i pregledajte povijest svog projekta - sve na jednom mjestu.<br><a href='https://docs.phcode.dev/docs/Features/git'>Saznajte više o Git panelu →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Glasajte za značajke koje želite vidjeti sljedeće!",
-  "CMD_TOGGLE_TABBAR": "Traka kartica datoteka"
+  "CMD_USER_PROFILE": "Korisnički profil"
 });

@@ -448,6 +448,7 @@ define({
   "CMD_HIDE_SIDEBAR": "Ascunde bara laterală",
   "CMD_SHOW_SIDEBAR": "Arată bara laterală",
   "CMD_TOGGLE_SIDEBAR": "Comută bara laterală",
+  "CMD_TOGGLE_TABBAR": "Bară Tab-uri Fișiere",
   "CMD_TOGGLE_PANELS": "Comută panourile",
   "CMD_TOGGLE_PURE_CODE": "Fără distragere",
   "CMD_TOGGLE_FULLSCREEN": "Ecran complet",
@@ -1362,5 +1363,5 @@ define({
   "GIT_TOAST_TITLE": "Explorați funcțiile Git în Phoenix Code",
   "GIT_TOAST_MESSAGE": "Faceți clic pe pictograma panoului Git pentru a vă gestiona depozitul. Efectuați ușor commit, push, pull și vizualizați istoricul proiectului dvs. - totul într-un singur loc.<br><a href='https://docs.phcode.dev/docs/Features/git'>Aflați mai multe despre panoul Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Votează pentru funcționalitățile pe care dorești să le vezi în continuare!",
-  "CMD_TOGGLE_TABBAR": "Bară Tab-uri Fișiere"
+  "CMD_USER_PROFILE": "Profil utilizator"
 });

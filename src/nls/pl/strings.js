@@ -448,6 +448,7 @@ define({
   "CMD_HIDE_SIDEBAR": "Ukryj pasek boczny",
   "CMD_SHOW_SIDEBAR": "Pokaż pasek boczny",
   "CMD_TOGGLE_SIDEBAR": "Przełącz pasek boczny",
+  "CMD_TOGGLE_TABBAR": "Pasek kart plików",
   "CMD_TOGGLE_PANELS": "Przełącz panele",
   "CMD_TOGGLE_PURE_CODE": "Tryb bez przeszkadzania",
   "CMD_TOGGLE_FULLSCREEN": "Pełny ekran",
@@ -1362,5 +1363,5 @@ define({
   "GIT_TOAST_TITLE": "Poznaj funkcje Gita w Phoenix Code",
   "GIT_TOAST_MESSAGE": "Kliknij ikonę panelu Git, aby zarządzać swoim repozytorium. Łatwo zatwierdzaj, przesyłaj, pobieraj i przeglądaj historię swojego projektu — wszystko w jednym miejscu.<br><a href='https://docs.phcode.dev/docs/Features/git'>Dowiedz się więcej o panelu Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Zagłosuj na funkcje, które chcesz zobaczyć w przyszłości!",
-  "CMD_TOGGLE_TABBAR": "Pasek kart plików"
+  "CMD_USER_PROFILE": "Profil użytkownika"
 });
