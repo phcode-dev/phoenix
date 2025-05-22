@@ -514,6 +514,7 @@ define({
   "CMD_AUTO_UPDATE": "自動更新",
   "CMD_HOW_TO_USE_BRACKETS": "如何使用 {APP_NAME}",
   "CMD_SUPPORT": "{APP_NAME} 支援",
+  "CMD_USER_PROFILE": "使用者設定檔",
   "CMD_DOCS": "說明、入門指南",
   "CMD_SUGGEST": "功能建議",
   "CMD_REPORT_ISSUE": "回報問題",
@@ -1363,5 +1364,7 @@ define({
   "GIT_TOAST_TITLE": "在 Phoenix Code 中探索 Git 功能",
   "GIT_TOAST_MESSAGE": "按一下 Git 面板圖示即可管理您的儲存庫。輕鬆提交、推送、提取和檢視您的專案歷史記錄，一切盡在掌握之中。<br><a href='https://docs.phcode.dev/docs/Features/git'>深入瞭解 Git 面板 →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "投票選出您希望看到的下個功能！",
-  "CMD_USER_PROFILE": "使用者設定檔"
+  "CMD_TOGGLE_SHOW_WORKING_SET": "顯示工作集",
+  "CMD_TOGGLE_SHOW_FILE_TABS": "顯示檔案標籤列",
+  "DESCRIPTION_SHOW_WORKING_SET": "顯示工作集設為 true，隱藏設為 false。"
 });

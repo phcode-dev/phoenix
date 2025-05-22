@@ -514,6 +514,7 @@ define({
   "CMD_AUTO_UPDATE": "Автоматичне оновлення",
   "CMD_HOW_TO_USE_BRACKETS": "Як використовувати {APP_NAME}",
   "CMD_SUPPORT": "Підтримка {APP_NAME}",
+  "CMD_USER_PROFILE": "Профіль користувача",
   "CMD_DOCS": "Довідка, початок роботи",
   "CMD_SUGGEST": "Запропонувати ідею",
   "CMD_REPORT_ISSUE": "Повідомити про проблему",
@@ -1363,5 +1364,7 @@ define({
   "GIT_TOAST_TITLE": "Ознайомтеся з функціями Git у Phoenix Code",
   "GIT_TOAST_MESSAGE": "Натисніть піктограму панелі Git, щоб керувати вашим репозиторієм. Легко виконуйте коміти, пуші, пули та переглядайте історію вашого проєкту — все в одному місці.<br><a href='https://docs.phcode.dev/docs/Features/git'>Дізнайтеся більше про панель Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Проголосуйте за функції, які ви хочете бачити наступними!",
-  "CMD_USER_PROFILE": "Профіль користувача"
+  "CMD_TOGGLE_SHOW_WORKING_SET": "Показати робочий набір",
+  "CMD_TOGGLE_SHOW_FILE_TABS": "Показати панель вкладок файлів",
+  "DESCRIPTION_SHOW_WORKING_SET": "`true` для відображення робочого набору, `false` для його приховування."
 });

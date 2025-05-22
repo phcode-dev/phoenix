@@ -514,6 +514,7 @@ define({
   "CMD_AUTO_UPDATE": "التحديث التلقائي",
   "CMD_HOW_TO_USE_BRACKETS": "كيفية استخدام {APP_NAME}",
   "CMD_SUPPORT": "دعم {APP_NAME}",
+  "CMD_USER_PROFILE": "ملف تعريف المستخدم",
   "CMD_DOCS": "مساعدة، البدء",
   "CMD_SUGGEST": "اقتراح ميزة",
   "CMD_REPORT_ISSUE": "الإبلاغ عن مشكلة",
@@ -1363,5 +1364,7 @@ define({
   "GIT_TOAST_TITLE": "استكشف ميزات Git في Phoenix Code",
   "GIT_TOAST_MESSAGE": "انقر على رمز لوحة Git لإدارة مستودعك. يمكنك بسهولة تنفيذ الالتزام والدفع والسحب وعرض سجل مشروعك - كل ذلك في مكان واحد.<br><a href='https://docs.phcode.dev/docs/Features/git'>تعرّف على المزيد حول لوحة Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "صوت للميزات التي ترغب برؤيتها تالياً!",
-  "CMD_USER_PROFILE": "ملف تعريف المستخدم"
+  "CMD_TOGGLE_SHOW_WORKING_SET": "إظهار مجموعة العمل",
+  "CMD_TOGGLE_SHOW_FILE_TABS": "إظهار شريط علامات تبويب الملفات",
+  "DESCRIPTION_SHOW_WORKING_SET": "صحيح لإظهار مجموعة العمل، خطأ لإخفائها."
 });

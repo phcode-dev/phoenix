@@ -514,6 +514,7 @@ define({
   "CMD_AUTO_UPDATE": "自動更新",
   "CMD_HOW_TO_USE_BRACKETS": "{APP_NAME} の使用方法",
   "CMD_SUPPORT": "{APP_NAME} サポート",
+  "CMD_USER_PROFILE": "ユーザープロフィール",
   "CMD_DOCS": "ヘルプ、はじめに",
   "CMD_SUGGEST": "機能改善の提案",
   "CMD_REPORT_ISSUE": "問題を報告",
@@ -1363,5 +1364,7 @@ define({
   "GIT_TOAST_TITLE": "Phoenix CodeのGit機能を試す",
   "GIT_TOAST_MESSAGE": "Gitパネルアイコンをクリックしてリポジトリを管理します。コミット、プッシュ、プル、プロジェクト履歴の表示をすべて1か所で行えます。<br><a href='https://docs.phcode.dev/docs/Features/git'>Gitパネルの詳細はこちら →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "次に実装してほしい機能に投票してください！",
-  "CMD_USER_PROFILE": "ユーザープロフィール"
+  "CMD_TOGGLE_SHOW_WORKING_SET": "作業セットを表示",
+  "CMD_TOGGLE_SHOW_FILE_TABS": "ファイルタブバーを表示",
+  "DESCRIPTION_SHOW_WORKING_SET": "作業セットを表示する場合はtrue、非表示にする場合はfalse。"
 });

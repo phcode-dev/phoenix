@@ -514,6 +514,7 @@ define({
   "CMD_AUTO_UPDATE": "Automatikus frissítés",
   "CMD_HOW_TO_USE_BRACKETS": "{APP_NAME} használata",
   "CMD_SUPPORT": "{APP_NAME} támogatás",
+  "CMD_USER_PROFILE": "Felhasználói profil",
   "CMD_DOCS": "Súgó, Első lépések",
   "CMD_SUGGEST": "Javaslat új funkcióra",
   "CMD_REPORT_ISSUE": "Hiba bejelentése",
@@ -1363,5 +1364,7 @@ define({
   "GIT_TOAST_TITLE": "Fedezd fel a Git funkciókat a Phoenix Code-ban",
   "GIT_TOAST_MESSAGE": "Kattintson a Git panel ikonra a verziókövető rendszer kezeléséhez. Könnyedén végezhet commit, push és pull műveleteket, valamint megtekintheti a projekt előzményeit – mindezt egy helyen.<br><a href='https://docs.phcode.dev/docs/Features/git'>Tudj meg többet a Git panelről →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Szavazzon azokra a funkciókra, amelyeket a jövőben látni szeretne!",
-  "CMD_USER_PROFILE": "Felhasználói profil"
+  "CMD_TOGGLE_SHOW_WORKING_SET": "Munkakészlet megjelenítése",
+  "CMD_TOGGLE_SHOW_FILE_TABS": "Fájlfülek sávjának megjelenítése",
+  "DESCRIPTION_SHOW_WORKING_SET": "`true` a munkakészlet megjelenítéséhez, `false` az elrejtéséhez."
 });

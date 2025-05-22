@@ -514,6 +514,7 @@ define({
   "CMD_AUTO_UPDATE": "स्वतः अपडेट",
   "CMD_HOW_TO_USE_BRACKETS": "{APP_NAME} का उपयोग कैसे करें",
   "CMD_SUPPORT": "{APP_NAME} सहायता",
+  "CMD_USER_PROFILE": "उपयोगकर्ता प्रोफ़ाइल",
   "CMD_DOCS": "सहायता, आरंभ करना",
   "CMD_SUGGEST": "एक सुविधा का सुझाव दें",
   "CMD_REPORT_ISSUE": "समस्या की सूचना दें",
@@ -1363,5 +1364,7 @@ define({
   "GIT_TOAST_TITLE": "फ़ीनिक्स कोड में Git सुविधाओं का अन्वेषण करें",
   "GIT_TOAST_MESSAGE": "अपने रिपॉजिटरी को प्रबंधित करने के लिए Git पैनल आइकन पर क्लिक करें। आसानी से कमिट करें, पुश करें, पुल करें और अपने प्रोजेक्ट का इतिहास देखें—सब एक ही स्थान पर।<br><a href='https://docs.phcode.dev/docs/Features/git'>Git पैनल के बारे में अधिक जानें →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "उन विशेषताओं के लिए वोट करें जिन्हें आप आगे देखना चाहते हैं!",
-  "CMD_USER_PROFILE": "उपयोगकर्ता प्रोफ़ाइल"
+  "CMD_TOGGLE_SHOW_WORKING_SET": "कार्यशील सेट दिखाएँ",
+  "CMD_TOGGLE_SHOW_FILE_TABS": "फ़ाइल टैब बार दिखाएँ",
+  "DESCRIPTION_SHOW_WORKING_SET": "कार्यशील सेट दिखाने के लिए `true`, छिपाने के लिए `false`।"
 });

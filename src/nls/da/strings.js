@@ -514,6 +514,7 @@ define({
   "CMD_AUTO_UPDATE": "Automatisk opdatering",
   "CMD_HOW_TO_USE_BRACKETS": "Sådan bruger du {APP_NAME}",
   "CMD_SUPPORT": "{APP_NAME} support",
+  "CMD_USER_PROFILE": "Brugerprofil",
   "CMD_DOCS": "Hjælp, Kom godt i gang",
   "CMD_SUGGEST": "Foreslå en funktion",
   "CMD_REPORT_ISSUE": "Rapporter problem",
@@ -1363,5 +1364,7 @@ define({
   "GIT_TOAST_TITLE": "Udforsk Git-funktioner i Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klik på Git-panelikonet for at administrere dit repository. Commit, push, pull og se din projekthistorik nemt – alt sammen på ét sted.<br><a href='https://docs.phcode.dev/docs/Features/git'>Læs mere om Git-panelet →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Stem på de funktioner, du gerne vil se!",
-  "CMD_USER_PROFILE": "Brugerprofil"
+  "CMD_TOGGLE_SHOW_WORKING_SET": "Vis arbejdsmappe",
+  "CMD_TOGGLE_SHOW_FILE_TABS": "Vis fane-bjælke for filer",
+  "DESCRIPTION_SHOW_WORKING_SET": "`true` for at vise arbejdsmappen, `false` for at skjule den."
 });

@@ -514,6 +514,7 @@ define({
   "CMD_AUTO_UPDATE": "Automatická aktualizácia",
   "CMD_HOW_TO_USE_BRACKETS": "Ako používať {APP_NAME}",
   "CMD_SUPPORT": "Podpora pre {APP_NAME}",
+  "CMD_USER_PROFILE": "Profil používateľa",
   "CMD_DOCS": "Pomocník, Začíname",
   "CMD_SUGGEST": "Navrhnúť funkciu",
   "CMD_REPORT_ISSUE": "Nahlásiť problém",
@@ -1363,5 +1364,7 @@ define({
   "GIT_TOAST_TITLE": "Preskúmajte funkcie Gitu v Phoenix Code",
   "GIT_TOAST_MESSAGE": "Kliknite na ikonu panela Git pre správu vášho repozitára. Jednoducho commitujte, pushujte, pullujte a prezerajte si históriu vášho projektu – všetko na jednom mieste.<br><a href='https://docs.phcode.dev/docs/Features/git'>Zistite viac o paneli Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Hlasujte za funkcie, ktoré chcete vidieť v ďalšej verzii!",
-  "CMD_USER_PROFILE": "Profil používateľa"
+  "CMD_TOGGLE_SHOW_WORKING_SET": "Zobraziť pracovnú sadu",
+  "CMD_TOGGLE_SHOW_FILE_TABS": "Zobraziť panel so záložkami súborov",
+  "DESCRIPTION_SHOW_WORKING_SET": "Pravda pre zobrazenie pracovnej sady, nepravda pre jej skrytie."
 });

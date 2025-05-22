@@ -514,6 +514,7 @@ define({
   "CMD_AUTO_UPDATE": "Αυτόματη Ενημέρωση",
   "CMD_HOW_TO_USE_BRACKETS": "Πώς να Χρησιμοποιήσετε το {APP_NAME}",
   "CMD_SUPPORT": "Υποστήριξη {APP_NAME}",
+  "CMD_USER_PROFILE": "Προφίλ Χρήστη",
   "CMD_DOCS": "Βοήθεια, Ξεκινώντας",
   "CMD_SUGGEST": "Πρότεινε Feature",
   "CMD_REPORT_ISSUE": "Αναφορά Προβλήματος",
@@ -1363,5 +1364,7 @@ define({
   "GIT_TOAST_TITLE": "Εξερευνήστε τις Λειτουργίες Git στο Phoenix Code",
   "GIT_TOAST_MESSAGE": "Κάντε κλικ στο εικονίδιο του πίνακα Git για να διαχειριστείτε το αποθετήριό σας. Κάντε εύκολα commit, push, pull και δείτε το ιστορικό του έργου σας—όλα σε ένα μέρος.<br><a href='https://docs.phcode.dev/docs/Features/git'>Μάθετε περισσότερα για τον πίνακα Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Ψηφίστε για τις λειτουργίες που θέλετε να δείτε στη συνέχεια!",
-  "CMD_USER_PROFILE": "Προφίλ Χρήστη"
+  "CMD_TOGGLE_SHOW_WORKING_SET": "Εμφάνιση Ενεργού Σετ",
+  "CMD_TOGGLE_SHOW_FILE_TABS": "Εμφάνιση Γραμμής Καρτελών Αρχείων",
+  "DESCRIPTION_SHOW_WORKING_SET": "true για εμφάνιση του ενεργού σετ, false για απόκρυψη."
 });

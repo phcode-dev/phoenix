@@ -514,6 +514,7 @@ define({
   "CMD_AUTO_UPDATE": "Otomatik Güncelleme",
   "CMD_HOW_TO_USE_BRACKETS": "{APP_NAME} Nasıl Kullanılır",
   "CMD_SUPPORT": "{APP_NAME} Desteği",
+  "CMD_USER_PROFILE": "Kullanıcı Profili",
   "CMD_DOCS": "Yardım, Başlarken",
   "CMD_SUGGEST": "Yeni Özellik Öner",
   "CMD_REPORT_ISSUE": "Sorun Bildir",
@@ -1363,5 +1364,7 @@ define({
   "GIT_TOAST_TITLE": "Phoenix Code'da Git Özelliklerini Keşfedin",
   "GIT_TOAST_MESSAGE": "Deponuzu yönetmek için Git paneli simgesine tıklayın. Proje geçmişinizi kolayca işleyin, gönderin, çekin ve görüntüleyin—hepsi tek bir yerde.<br><a href='https://docs.phcode.dev/docs/Features/git'>Git paneli hakkında daha fazla bilgi edinin →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Gelecekte görmek istediğiniz özellikler için oy verin!",
-  "CMD_USER_PROFILE": "Kullanıcı Profili"
+  "CMD_TOGGLE_SHOW_WORKING_SET": "Çalışma Kümesini Göster",
+  "CMD_TOGGLE_SHOW_FILE_TABS": "Dosya Sekme Çubuğunu Göster",
+  "DESCRIPTION_SHOW_WORKING_SET": "Çalışma kümesini göstermek için doğru, gizlemek için yanlış."
 });

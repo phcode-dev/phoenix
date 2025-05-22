@@ -514,6 +514,7 @@ define({
   "CMD_AUTO_UPDATE": "Automatsko ažuriranje",
   "CMD_HOW_TO_USE_BRACKETS": "Kako koristiti {APP_NAME}",
   "CMD_SUPPORT": "{APP_NAME} Podrška (na engleskom)",
+  "CMD_USER_PROFILE": "Korisnički profil",
   "CMD_DOCS": "Pomoć, Početak rada",
   "CMD_SUGGEST": "Predloži mogućnost / značajku",
   "CMD_REPORT_ISSUE": "Prijavi problem",
@@ -1363,5 +1364,7 @@ define({
   "GIT_TOAST_TITLE": "Istražite Git značajke u Phoenix Codeu",
   "GIT_TOAST_MESSAGE": "Kliknite ikonu Git panela za upravljanje svojim repozitorijem. Jednostavno potvrdite (commit), pošaljite (push), preuzmite (pull) i pregledajte povijest svog projekta - sve na jednom mjestu.<br><a href='https://docs.phcode.dev/docs/Features/git'>Saznajte više o Git panelu →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Glasajte za značajke koje želite vidjeti sljedeće!",
-  "CMD_USER_PROFILE": "Korisnički profil"
+  "CMD_TOGGLE_SHOW_WORKING_SET": "Prikaži radni skup",
+  "CMD_TOGGLE_SHOW_FILE_TABS": "Prikaži traku kartica datoteka",
+  "DESCRIPTION_SHOW_WORKING_SET": "Vrijednost `true` prikazuje radni skup, vrijednost `false` ga skriva."
 });
