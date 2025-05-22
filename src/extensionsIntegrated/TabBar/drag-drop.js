@@ -671,11 +671,7 @@ define(function (require, exports, module) {
 
         // Handle drag over empty pane
         $paneHolder.on("dragover dragenter", function (e) {
-            // we only want to process if this pane is empty (has no tab bar or has hidden tab bar)
-            const $tabBar = paneId === "first-pane" ? $("#phoenix-tab-bar") : $("#phoenix-tab-bar-2");
-            const isEmptyPane = !$tabBar.length || $tabBar.is(":hidden") || $tabBar.children(".tab").length === 0;
-
-            if (isEmptyPane && draggedTab) {
+            if (draggedTab) {
                 e.preventDefault();
                 e.stopPropagation();
 
@@ -697,7 +693,7 @@ define(function (require, exports, module) {
             const $tabBar = paneId === "first-pane" ? $("#phoenix-tab-bar") : $("#phoenix-tab-bar-2");
             const isEmptyPane = !$tabBar.length || $tabBar.is(":hidden") || $tabBar.children(".tab").length === 0;
 
-            if (isEmptyPane && draggedTab) {
+            if (draggedTab) {
                 e.preventDefault();
                 e.stopPropagation();
 
@@ -711,9 +707,11 @@ define(function (require, exports, module) {
                 const sourcePaneId =
                     $(draggedTab).closest("#phoenix-tab-bar-2").length > 0 ? "second-pane" : "first-pane";
 
-                // we don't want to do anything if dropping in the same pane
-                if (sourcePaneId !== paneId) {
+                // we only want to proceed if we're not dropping in the same pane or,
+                // allow if it's the same pane with existing tabs
+                if (sourcePaneId !== paneId || !isEmptyPane) {
                     const sourceWorkingSet = MainViewManager.getWorkingSet(sourcePaneId);
+                    const targetWorkingSet = MainViewManager.getWorkingSet(paneId);
                     let draggedFile = null;
 
                     // Find the dragged file in the source pane
@@ -725,12 +723,47 @@ define(function (require, exports, module) {
                     }
 
                     if (draggedFile) {
-                        // close in the source pane
-                        CommandManager.execute(Commands.FILE_CLOSE, { file: draggedFile, paneId: sourcePaneId });
+                        if (sourcePaneId !== paneId) {
+                            // If different panes, close in source pane
+                            CommandManager.execute(Commands.FILE_CLOSE, { file: draggedFile, paneId: sourcePaneId });
 
-                        // and open in the target pane
-                        MainViewManager.addToWorkingSet(paneId, draggedFile);
-                        CommandManager.execute(Commands.FILE_OPEN, { fullPath: draggedPath, paneId: paneId });
+                            // For non-empty panes, find current active file to place tab after it
+                            if (!isEmptyPane && targetWorkingSet.length > 0) {
+                                const currentActiveFile = MainViewManager.getCurrentlyViewedFile(paneId);
+
+                                if (currentActiveFile) {
+                                    // Find index of current active file
+                                    let targetIndex = -1;
+                                    for (let i = 0; i < targetWorkingSet.length; i++) {
+                                        if (targetWorkingSet[i].fullPath === currentActiveFile.fullPath) {
+                                            targetIndex = i;
+                                            break;
+                                        }
+                                    }
+
+                                    if (targetIndex !== -1) {
+                                        // Add after current active file
+                                        MainViewManager.addToWorkingSet(paneId, draggedFile, targetIndex + 1);
+                                    } else {
+                                        // Fallback to adding at the end
+                                        MainViewManager.addToWorkingSet(paneId, draggedFile);
+                                    }
+                                } else {
+                                    // No active file, add to the end
+                                    MainViewManager.addToWorkingSet(paneId, draggedFile);
+                                }
+                            } else {
+                                // Empty pane, just add it
+                                MainViewManager.addToWorkingSet(paneId, draggedFile);
+                            }
+
+                            // Open file in target pane
+                            CommandManager.execute(Commands.FILE_OPEN, { fullPath: draggedPath, paneId: paneId });
+                        } else if (isEmptyPane) {
+                            // Same pane, empty pane case (should never happen but kept for safety)
+                            MainViewManager.addToWorkingSet(paneId, draggedFile);
+                            CommandManager.execute(Commands.FILE_OPEN, { fullPath: draggedPath, paneId: paneId });
+                        }
                     }
                 }
 
