@@ -1,7 +1,7 @@
 @import "brackets_variables.less";
 
 .profile-popup {
-    background-color: @bc-menu-bg;
+    background-color: @bc-panel-bg;
     color: @bc-menu-text;
     border-radius: @bc-border-radius;
     box-shadow: 0 3px 9px @bc-shadow;
@@ -59,6 +59,7 @@
 
     .user-plan {
         color: #3c3;
+        //color: #2b7d2b;
         font-size: 16px;
     }
 
@@ -76,7 +77,7 @@
     .progress-bar {
         width: 100%;
         height: 8px;
-        background-color: @bc-input-bg;
+        background-color: #fff;
         border-radius: 4px;
         overflow: hidden;
         border: 1px solid @bc-btn-border;
@@ -90,8 +91,9 @@
     }
 
     .support-link {
-        margin-top: 20px;
+        margin-top: 6px;
         text-align: center;
+        width: 100%;
     }
 
     .menu-button {
@@ -107,7 +109,34 @@
         }
 
         &.signout {
-            color: #f55;
+            color: #d44;
+        }
+    }
+
+    .text-link {
+        background: none;
+        border: none;
+        box-shadow: none;
+        cursor: pointer;
+        color: @bc-text-medium;
+        font-size: (@baseFontSize + 1);
+        padding: 8px 12px;
+        margin: 3px 0;
+        width: 100%;
+        text-align: center;
+        transition: color 0.2s ease;
+
+        i {
+            margin-right: 5px;
+        }
+
+        &:hover, &:focus {
+            color: @bc-text-emphasized;
+            outline: none;
+        }
+
+        &.menu-button {
+            text-align: left;
         }
     }
 
@@ -158,7 +187,7 @@
 }
 
 .dark .profile-popup {
-    background-color: @dark-bc-menu-bg;
+    background-color: @dark-bc-panel-bg;
     color: @dark-bc-menu-text;
     box-shadow: 0 3px 9px @dark-bc-shadow;
 
@@ -185,6 +214,14 @@
 
         .progress-fill {
             background-color: @dark-bc-primary-btn-bg;
+        }
+    }
+
+    .text-link {
+        color: @dark-bc-text-thin-quiet;
+
+        &:hover, &:focus {
+            color: lighten(@dark-bc-text-thin-quiet, 30%);
         }
     }
 
