@@ -514,6 +514,7 @@ define({
   "CMD_AUTO_UPDATE": "Automaattinen päivitys",
   "CMD_HOW_TO_USE_BRACKETS": "Kuinka käyttää {APP_NAME}iä",
   "CMD_SUPPORT": "{APP_NAME}-tuki",
+  "CMD_USER_PROFILE": "Käyttäjäprofiili",
   "CMD_DOCS": "Ohje, aloittaminen",
   "CMD_SUGGEST": "Ehdota ominaisuutta",
   "CMD_REPORT_ISSUE": "Ilmoita ongelmasta",
@@ -1363,5 +1364,7 @@ define({
   "GIT_TOAST_TITLE": "Tutustu Git-ominaisuuksiin Phoenix Codessa",
   "GIT_TOAST_MESSAGE": "Napsauta Git-paneelin kuvaketta hallitaksesi arkistoasi (repository). Tee commit, push ja pull helposti ja tarkastele projektihistoriaasi – kaikki yhdessä paikassa.<br><a href='https://docs.phcode.dev/docs/Features/git'>Lue lisää Git-paneelista →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Äänestä ominaisuuksia, jotka haluat nähdä seuraavaksi!",
-  "CMD_USER_PROFILE": "Käyttäjäprofiili"
+  "CMD_TOGGLE_SHOW_WORKING_SET": "Näytä työjoukko",
+  "CMD_TOGGLE_SHOW_FILE_TABS": "Näytä tiedostovälilehtirivi",
+  "DESCRIPTION_SHOW_WORKING_SET": "`true` näyttää työjoukon, `false` piilottaa sen."
 });

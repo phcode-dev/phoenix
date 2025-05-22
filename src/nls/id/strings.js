@@ -514,6 +514,7 @@ define({
   "CMD_AUTO_UPDATE": "Pembaruan Otomatis",
   "CMD_HOW_TO_USE_BRACKETS": "Bagaimana Menggunakan {APP_NAME}",
   "CMD_SUPPORT": "Bantuan {APP_NAME}",
+  "CMD_USER_PROFILE": "Profil Pengguna",
   "CMD_DOCS": "Bantuan, Memulai",
   "CMD_SUGGEST": "Sarankan Fitur",
   "CMD_REPORT_ISSUE": "Laporkan Masalah",
@@ -1363,5 +1364,7 @@ define({
   "GIT_TOAST_TITLE": "Jelajahi Fitur Git di Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klik ikon panel Git untuk mengelola repositori Anda. Lakukan commit, push, pull, dan lihat riwayat proyek Anda dengan mudah—semua di satu tempat.<br><a href='https://docs.phcode.dev/docs/Features/git'>Pelajari lebih lanjut tentang panel Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Pilih fitur yang ingin Anda lihat selanjutnya!",
-  "CMD_USER_PROFILE": "Profil Pengguna"
+  "CMD_TOGGLE_SHOW_WORKING_SET": "Tampilkan Set Kerja",
+  "CMD_TOGGLE_SHOW_FILE_TABS": "Tampilkan Bilah Tab Berkas",
+  "DESCRIPTION_SHOW_WORKING_SET": "`true` untuk menampilkan set kerja, `false` untuk menyembunyikannya."
 });

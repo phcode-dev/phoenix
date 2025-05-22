@@ -514,6 +514,7 @@ define({
   "CMD_AUTO_UPDATE": "Aggiornamento automatico",
   "CMD_HOW_TO_USE_BRACKETS": "Come usare {APP_NAME}",
   "CMD_SUPPORT": "Supporto per {APP_NAME}",
+  "CMD_USER_PROFILE": "Profilo utente",
   "CMD_DOCS": "Aiuto, Guida introduttiva",
   "CMD_SUGGEST": "Suggerisci una funzionalità",
   "CMD_REPORT_ISSUE": "Segnala un problema",
@@ -1363,5 +1364,7 @@ define({
   "GIT_TOAST_TITLE": "Esplora le funzionalità Git in Phoenix Code",
   "GIT_TOAST_MESSAGE": "Fai clic sull'icona del pannello Git per gestire il tuo repository. Esegui commit, push, pull e visualizza la cronologia del tuo progetto, tutto in un unico posto.<br><a href='https://docs.phcode.dev/docs/Features/git'>Scopri di più sul pannello Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vota per le funzionalità che desideri vedere in futuro!",
-  "CMD_USER_PROFILE": "Profilo utente"
+  "CMD_TOGGLE_SHOW_WORKING_SET": "Mostra set di lavoro",
+  "CMD_TOGGLE_SHOW_FILE_TABS": "Mostra barra delle schede dei file",
+  "DESCRIPTION_SHOW_WORKING_SET": "`true` per mostrare il set di lavoro, `false` per nasconderlo."
 });

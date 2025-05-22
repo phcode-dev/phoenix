@@ -514,6 +514,7 @@ define({
   "CMD_AUTO_UPDATE": "자동 업데이트",
   "CMD_HOW_TO_USE_BRACKETS": "{APP_NAME} 사용법",
   "CMD_SUPPORT": "{APP_NAME} 지원",
+  "CMD_USER_PROFILE": "사용자 프로필",
   "CMD_DOCS": "도움말, 시작하기",
   "CMD_SUGGEST": "기능 제안",
   "CMD_REPORT_ISSUE": "문제 신고",
@@ -1363,5 +1364,7 @@ define({
   "GIT_TOAST_TITLE": "Phoenix Code의 Git 기능 살펴보기",
   "GIT_TOAST_MESSAGE": "Git 패널 아이콘을 클릭하여 저장소를 관리하세요. 커밋, 푸시, 풀, 프로젝트 기록 보기를 한 곳에서 간편하게 수행할 수 있습니다.<br><a href='https://docs.phcode.dev/docs/Features/git'>Git 패널에 대해 자세히 알아보기 →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "다음에 보고 싶은 기능에 투표하세요!",
-  "CMD_USER_PROFILE": "사용자 프로필"
+  "CMD_TOGGLE_SHOW_WORKING_SET": "작업 세트 표시",
+  "CMD_TOGGLE_SHOW_FILE_TABS": "파일 탭 표시줄 표시",
+  "DESCRIPTION_SHOW_WORKING_SET": "작업 세트를 표시하려면 true, 숨기려면 false입니다."
 });

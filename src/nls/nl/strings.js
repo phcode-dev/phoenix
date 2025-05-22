@@ -514,6 +514,7 @@ define({
   "CMD_AUTO_UPDATE": "Automatisch bijwerken",
   "CMD_HOW_TO_USE_BRACKETS": "Hoe gebruik je {APP_NAME}",
   "CMD_SUPPORT": "{APP_NAME} ondersteuning",
+  "CMD_USER_PROFILE": "Gebruikersprofiel",
   "CMD_DOCS": "Help, aan de slag",
   "CMD_SUGGEST": "Stel een nieuwe functie voor",
   "CMD_REPORT_ISSUE": "Probleem melden",
@@ -1363,5 +1364,7 @@ define({
   "GIT_TOAST_TITLE": "Ontdek Git-functies in Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klik op het Git-paneelpictogram om uw repository te beheren. Commit, push, pull en bekijk uw projectgeschiedenis eenvoudig - alles op één plek.<br><a href='https://docs.phcode.dev/docs/Features/git'>Meer informatie over het Git-paneel →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Stem op de functies die u graag wilt zien!",
-  "CMD_USER_PROFILE": "Gebruikersprofiel"
+  "CMD_TOGGLE_SHOW_WORKING_SET": "Werkset tonen",
+  "CMD_TOGGLE_SHOW_FILE_TABS": "Bestandstabbalk tonen",
+  "DESCRIPTION_SHOW_WORKING_SET": "`true` om de werkset te tonen, `false` om deze te verbergen."
 });

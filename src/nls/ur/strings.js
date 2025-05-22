@@ -514,6 +514,7 @@ define({
   "CMD_AUTO_UPDATE": "خودکار اپ ڈیٹ",
   "CMD_HOW_TO_USE_BRACKETS": "{APP_NAME} استعمال کرنے کا طریقہ",
   "CMD_SUPPORT": "{APP_NAME} سپورٹ",
+  "CMD_USER_PROFILE": "صارف کا پروفائل",
   "CMD_DOCS": "مدد، شروع کرنا",
   "CMD_SUGGEST": "خصوصیت تجویز کریں",
   "CMD_REPORT_ISSUE": "مسئلہ کی اطلاع دیں",
@@ -1363,5 +1364,7 @@ define({
   "GIT_TOAST_TITLE": "فینکس کوڈ میں گٹ فیچرز دریافت کریں",
   "GIT_TOAST_MESSAGE": "اپنی ذخیرہ گاہ (repository) کو منظم کرنے کے لیے گٹ پینل آئیکن پر کلک کریں۔ آسانی سے کامٹ، پش، پل کریں، اور اپنے پروجیکٹ کی تاریخ دیکھیں—سب ایک ہی جگہ پر۔<br><a href='https://docs.phcode.dev/docs/Features/git'>گٹ پینل کے بارے میں مزید جانیں →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "اپنی پسندیدہ خصوصیات کے لیے ووٹ دیں!",
-  "CMD_USER_PROFILE": "صارف کا پروفائل"
+  "CMD_TOGGLE_SHOW_WORKING_SET": "ورکنگ سیٹ دکھائیں",
+  "CMD_TOGGLE_SHOW_FILE_TABS": "فائل ٹیب بار دکھائیں",
+  "DESCRIPTION_SHOW_WORKING_SET": "ورکنگ سیٹ دکھانے کے لیے صحیح، چھپانے کے لیے غلط۔"
 });

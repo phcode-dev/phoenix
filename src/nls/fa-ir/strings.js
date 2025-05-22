@@ -514,6 +514,7 @@ define({
   "CMD_AUTO_UPDATE": "به‌روزرسانی خودکار",
   "CMD_HOW_TO_USE_BRACKETS": "چگونگی استفاده از {APP_NAME}",
   "CMD_SUPPORT": "{APP_NAME} پشتیبانی",
+  "CMD_USER_PROFILE": "پروفایل کاربر",
   "CMD_DOCS": "راهنما، شروع به کار",
   "CMD_SUGGEST": "پیشنهاد یک امکان جدید",
   "CMD_REPORT_ISSUE": "گزارش مشکل",
@@ -1363,5 +1364,7 @@ define({
   "GIT_TOAST_TITLE": "کاوش ویژگی‌های گیت در Phoenix Code",
   "GIT_TOAST_MESSAGE": "برای مدیریت مخزن خود روی آیکون پنل گیت کلیک کنید. به راحتی کامیت، پوش، پول و مشاهده تاریخچه پروژه خود را - همه در یک مکان - انجام دهید.<br><a href='https://docs.phcode.dev/docs/Features/git'>درباره پنل گیت بیشتر بدانید →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "برای قابلیت‌هایی که می‌خواهید در آینده ببینید، رأی دهید!",
-  "CMD_USER_PROFILE": "پروفایل کاربر"
+  "CMD_TOGGLE_SHOW_WORKING_SET": "نمایش مجموعه کاری",
+  "CMD_TOGGLE_SHOW_FILE_TABS": "نمایش نوار تب فایل‌ها",
+  "DESCRIPTION_SHOW_WORKING_SET": "مقدار «درست» برای نمایش مجموعه کاری و مقدار «نادرست» برای مخفی کردن آن."
 });

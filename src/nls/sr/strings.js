@@ -514,6 +514,7 @@ define({
   "CMD_AUTO_UPDATE": "Аутоматско ажурирање",
   "CMD_HOW_TO_USE_BRACKETS": "Корисничко упутство за {APP_NAME}",
   "CMD_SUPPORT": "{APP_NAME} подршка",
+  "CMD_USER_PROFILE": "Кориснички профил",
   "CMD_DOCS": "Помоћ, почетак рада",
   "CMD_SUGGEST": "Предложи нову функционалност",
   "CMD_REPORT_ISSUE": "Пријави проблем",
@@ -1363,5 +1364,7 @@ define({
   "GIT_TOAST_TITLE": "Истражите Гит функције у Phoenix Code-у",
   "GIT_TOAST_MESSAGE": "Кликните на икону Гит панела да бисте управљали својим спремиштем. Лако направите commit, push, pull и погледајте историју свог пројекта — све на једном месту.<br><a href='https://docs.phcode.dev/docs/Features/git'>Сазнајте више о Гит панелу →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Гласајте за функције које желите да видите у будућности!",
-  "CMD_USER_PROFILE": "Кориснички профил"
+  "CMD_TOGGLE_SHOW_WORKING_SET": "Прикажи радни скуп",
+  "CMD_TOGGLE_SHOW_FILE_TABS": "Прикажи траку картица датотека",
+  "DESCRIPTION_SHOW_WORKING_SET": "`true` за приказ радног скупа, `false` за сакривање."
 });
