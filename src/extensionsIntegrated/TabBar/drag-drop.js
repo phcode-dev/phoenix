@@ -635,13 +635,8 @@ define(function (require, exports, module) {
             // Add to the target pane at the calculated position
             MainViewManager.addToWorkingSet(targetPaneId, draggedFile, targetInsertIndex);
 
-            // If the tab was the active one in the source pane,
-            // make it active in the target pane too
-            const activeFile = MainViewManager.getCurrentlyViewedFile(sourcePaneId);
-            if (activeFile && activeFile.fullPath === draggedPath) {
-                // Open the file in the target pane and make it active
-                CommandManager.execute(Commands.FILE_OPEN, { fullPath: draggedPath, paneId: targetPaneId });
-            }
+            // we always need to make the dragged tab active in the target pane when moving between panes
+            CommandManager.execute(Commands.FILE_OPEN, { fullPath: draggedPath, paneId: targetPaneId });
         }
     }
 
