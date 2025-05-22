@@ -40,6 +40,27 @@ define(function (require, exports, module) {
     let dragSourcePane = null;
 
     /**
+     * this function is responsible to make sure that all the drag state is properly cleaned up
+     * it is needed to make sure that the tab bar doesn't get unresponsive
+     * because of handlers not being attached properly
+     */
+    function cleanupDragState() {
+        $(".tab").removeClass("dragging drag-target");
+        $(".empty-pane-drop-target").removeClass("empty-pane-drop-target");
+        updateDragIndicator(null);
+        draggedTab = null;
+        dragOverTab = null;
+        dragSourcePane = null;
+
+        if (scrollInterval) {
+            clearInterval(scrollInterval);
+            scrollInterval = null;
+        }
+
+        $("#tab-drag-extended-zone").remove();
+    }
+
+    /**
      * Initialize drag and drop functionality for tab bars
      * This is called from `main.js`
      * This function sets up event listeners for both panes' tab bars
@@ -202,9 +223,6 @@ define(function (require, exports, module) {
             if (e.preventDefault) {
                 e.preventDefault();
             }
-            // hide the drag indicator
-            updateDragIndicator(null);
-            removeOuterDropZone();
 
             // get container dimensions to determine drop position
             const containerRect = this.getBoundingClientRect();
@@ -235,6 +253,9 @@ define(function (require, exports, module) {
                     }
                 }
             }
+
+            // ensure all drag state is cleaned up
+            cleanupDragState();
         });
 
         /**
@@ -311,9 +332,7 @@ define(function (require, exports, module) {
                 }
             }
 
-            // Clean up
-            updateDragIndicator(null);
-            removeOuterDropZone();
+            cleanupDragState();
         }
     }
 
@@ -449,7 +468,6 @@ define(function (require, exports, module) {
         if (e.stopPropagation) {
             e.stopPropagation(); // Stops browser from redirecting
         }
-        updateDragIndicator(null);
 
         // Only process the drop if the dragged tab is different from the drop target
         if (draggedTab !== this) {
@@ -474,6 +492,8 @@ define(function (require, exports, module) {
                 moveWorkingSetItem(targetPaneId, draggedPath, targetPath, onLeftSide);
             }
         }
+
+        cleanupDragState();
         return false;
     }
 
@@ -484,20 +504,7 @@ define(function (require, exports, module) {
      * @param {Event} e - The event object
      */
     function handleDragEnd(e) {
-        $(".tab").removeClass("dragging drag-target");
-        updateDragIndicator(null);
-        draggedTab = null;
-        dragOverTab = null;
-        dragSourcePane = null;
-
-        // Clear scroll interval if it exists
-        if (scrollInterval) {
-            clearInterval(scrollInterval);
-            scrollInterval = null;
-        }
-
-        // Remove the extended drop zone if it exists
-        $("#tab-drag-extended-zone").remove();
+        cleanupDragState();
     }
 
     /**
@@ -762,11 +769,7 @@ define(function (require, exports, module) {
                     }
                 }
 
-                // reset all drag state stuff
-                updateDragIndicator(null);
-                draggedTab = null;
-                dragOverTab = null;
-                dragSourcePane = null;
+                cleanupDragState();
             }
         });
     }
