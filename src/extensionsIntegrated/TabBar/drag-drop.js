@@ -47,7 +47,17 @@ define(function (require, exports, module) {
     function cleanupDragState() {
         $(".tab").removeClass("dragging drag-target");
         $(".empty-pane-drop-target").removeClass("empty-pane-drop-target");
-        updateDragIndicator(null);
+
+        // this is to make sure that the drag indicator is hidden and remove any inline styles
+        if (dragIndicator) {
+            dragIndicator.hide().css({
+                top: '',
+                left: '',
+                height: ''
+            });
+        }
+
+        // Reset all drag state variables
         draggedTab = null;
         dragOverTab = null;
         dragSourcePane = null;
@@ -58,6 +68,17 @@ define(function (require, exports, module) {
         }
 
         $("#tab-drag-extended-zone").remove();
+
+        // this is needed to make sure that all the drag-active styling are properly hidden
+        // it is required because noticed a bug where sometimes some styles remain when drop fails
+        $(".phoenix-tab-bar").removeClass("drag-active");
+
+        setTimeout(() => {
+            // a double check just to make sure that the drag indicator is still hidden
+            if (dragIndicator && dragIndicator.is(':visible')) {
+                dragIndicator.hide();
+            }
+        }, 5);
     }
 
     /**
@@ -83,6 +104,9 @@ define(function (require, exports, module) {
 
         // add initialization for empty panes
         initEmptyPaneDropTargets();
+
+        // Set up global drag cleanup handlers to ensure drag state is always cleaned up
+        setupGlobalDragCleanup();
     }
 
     /**
@@ -163,10 +187,6 @@ define(function (require, exports, module) {
                     return false;
                 });
             }
-        };
-
-        const removeOuterDropZone = () => {
-            $("#tab-drag-extended-zone").remove();
         };
 
         // When dragging over the container but not directly over a tab element
@@ -276,14 +296,10 @@ define(function (require, exports, module) {
                 if (mouseX > containerRect.right) {
                     targetTab = $tabs.last()[0];
                     onLeftSide = false;
-                }
-                // If beyond the left edge, use the first tab
-                else if (mouseX < containerRect.left) {
+                } else if (mouseX < containerRect.left) { // If beyond the left edge, use the first tab
                     targetTab = $tabs.first()[0];
                     onLeftSide = true;
-                }
-                // If within bounds, find the closest tab
-                else {
+                } else { // If within bounds, find the closest tab
                     onLeftSide = mouseX < containerRect.left + containerRect.width / 2;
                     targetTab = onLeftSide ? $tabs.first()[0] : $tabs.last()[0];
                 }
@@ -384,6 +400,10 @@ define(function (require, exports, module) {
      * @param {Event} e - The event object
      */
     function handleDragStart(e) {
+        if (draggedTab) {
+            cleanupDragState();
+        }
+
         // store reference to the dragged tab
         draggedTab = this;
 
@@ -401,7 +421,10 @@ define(function (require, exports, module) {
         // Use a timeout to let the dragging class apply before taking measurements
         // This ensures visual updates are applied before we calculate positions
         setTimeout(() => {
-            updateDragIndicator(null);
+            // Ensure the drag indicator is properly hidden at the start
+            if (dragIndicator) {
+                dragIndicator.hide();
+            }
         }, 0);
     }
 
@@ -465,36 +488,43 @@ define(function (require, exports, module) {
      * @param {Event} e - The event object
      */
     function handleDrop(e) {
-        if (e.stopPropagation) {
-            e.stopPropagation(); // Stops browser from redirecting
-        }
-
-        // Only process the drop if the dragged tab is different from the drop target
-        if (draggedTab !== this) {
-            // Determine which pane the drop target belongs to
-            const isSecondPane = $(this).closest("#phoenix-tab-bar-2").length > 0;
-            const targetPaneId = isSecondPane ? "second-pane" : "first-pane";
-            const draggedPath = $(draggedTab).attr("data-path");
-            const targetPath = $(this).attr("data-path");
-
-            // Determine if we're dropping to the left or right of the target
-            const targetRect = this.getBoundingClientRect();
-            const mouseX = e.originalEvent.clientX;
-            const midPoint = targetRect.left + targetRect.width / 2;
-            const onLeftSide = mouseX < midPoint;
-
-            // Check if dragging between different panes
-            if (dragSourcePane !== targetPaneId) {
-                // Move the tab between panes
-                moveTabBetweenPanes(dragSourcePane, targetPaneId, draggedPath, targetPath, onLeftSide);
-            } else {
-                // Move within the same pane
-                moveWorkingSetItem(targetPaneId, draggedPath, targetPath, onLeftSide);
+        try {
+            if (e.stopPropagation) {
+                e.stopPropagation(); // Stops browser from redirecting
             }
-        }
 
-        cleanupDragState();
-        return false;
+            // Only process the drop if the dragged tab is different from the drop target
+            if (draggedTab !== this) {
+                // Determine which pane the drop target belongs to
+                const isSecondPane = $(this).closest("#phoenix-tab-bar-2").length > 0;
+                const targetPaneId = isSecondPane ? "second-pane" : "first-pane";
+                const draggedPath = $(draggedTab).attr("data-path");
+                const targetPath = $(this).attr("data-path");
+
+                // Determine if we're dropping to the left or right of the target
+                const targetRect = this.getBoundingClientRect();
+                const mouseX = e.originalEvent.clientX;
+                const midPoint = targetRect.left + targetRect.width / 2;
+                const onLeftSide = mouseX < midPoint;
+
+                // Check if dragging between different panes
+                if (dragSourcePane !== targetPaneId) {
+                    // Move the tab between panes
+                    moveTabBetweenPanes(dragSourcePane, targetPaneId, draggedPath, targetPath, onLeftSide);
+                } else {
+                    // Move within the same pane
+                    moveWorkingSetItem(targetPaneId, draggedPath, targetPath, onLeftSide);
+                }
+            }
+
+            cleanupDragState();
+            return false;
+        } catch (error) {
+            console.error("Error during tab drop operation:", error);
+            // Ensure cleanup happens even if there's an error
+            cleanupDragState();
+            return false;
+        }
     }
 
     /**
@@ -504,7 +534,50 @@ define(function (require, exports, module) {
      * @param {Event} e - The event object
      */
     function handleDragEnd(e) {
-        cleanupDragState();
+        setTimeout(() => {
+            cleanupDragState();
+        }, 10);
+    }
+
+    /**
+     * Global document event listeners to ensure drag state is always cleaned up
+     * This handles cases where drag operations fail or are cancelled outside
+     * the normal tab bar drop zones
+     */
+    function setupGlobalDragCleanup() {
+        // Listen for drags ending anywhere on the document
+        $(document).on('dragend', function(e) {
+            // Only clean up if we were tracking a drag operation
+            if (draggedTab) {
+                setTimeout(() => {
+                    cleanupDragState();
+                }, 10);
+            }
+        });
+
+        // Listen for global mouse up events to catch cancelled drags
+        $(document).on('mouseup', function(e) {
+            // If we have an active drag but mouse is released, clean up
+            if (draggedTab && !e.originalEvent.dataTransfer) {
+                setTimeout(() => {
+                    cleanupDragState();
+                }, 10);
+            }
+        });
+
+        // Listen for ESC key to cancel drag operations
+        $(document).on('keydown', function(e) {
+            if (e.key === 'Escape' && draggedTab) {
+                cleanupDragState();
+            }
+        });
+
+        // Listen for page visibility changes (like alt-tab) to clean up
+        $(document).on('visibilitychange', function() {
+            if (document.hidden && draggedTab) {
+                cleanupDragState();
+            }
+        });
     }
 
     /**
@@ -599,51 +672,81 @@ define(function (require, exports, module) {
      * @param {Boolean} beforeTarget - Whether to place before or after the target
      */
     function moveTabBetweenPanes(sourcePaneId, targetPaneId, draggedPath, targetPath, beforeTarget) {
-        const sourceWorkingSet = MainViewManager.getWorkingSet(sourcePaneId);
-        const targetWorkingSet = MainViewManager.getWorkingSet(targetPaneId);
+        try {
+            const sourceWorkingSet = MainViewManager.getWorkingSet(sourcePaneId);
+            const targetWorkingSet = MainViewManager.getWorkingSet(targetPaneId);
 
-        let draggedIndex = -1;
-        let targetIndex = -1;
-        let draggedFile = null;
+            let draggedIndex = -1;
+            let targetIndex = -1;
+            let draggedFile = null;
 
-        // Find the dragged file and its index in the source pane
-        for (let i = 0; i < sourceWorkingSet.length; i++) {
-            if (sourceWorkingSet[i].fullPath === draggedPath) {
-                draggedIndex = i;
-                draggedFile = sourceWorkingSet[i];
-                break;
-            }
-        }
-
-        // Find the target index in the target pane
-        for (let i = 0; i < targetWorkingSet.length; i++) {
-            if (targetWorkingSet[i].fullPath === targetPath) {
-                targetIndex = i;
-                break;
-            }
-        }
-
-        // Only continue if we found the dragged file
-        if (draggedIndex !== -1 && draggedFile) {
-            // Remove the file from source pane
-            CommandManager.execute(Commands.FILE_CLOSE, { file: draggedFile, paneId: sourcePaneId });
-
-            // Calculate where to add it in the target pane
-            let targetInsertIndex;
-
-            if (targetIndex !== -1) {
-                // We have a specific target index to aim for
-                targetInsertIndex = beforeTarget ? targetIndex : targetIndex + 1;
-            } else {
-                // No specific target, add to end of the working set
-                targetInsertIndex = targetWorkingSet.length;
+            // Find the dragged file and its index in the source pane
+            for (let i = 0; i < sourceWorkingSet.length; i++) {
+                if (sourceWorkingSet[i].fullPath === draggedPath) {
+                    draggedIndex = i;
+                    draggedFile = sourceWorkingSet[i];
+                    break;
+                }
             }
 
-            // Add to the target pane at the calculated position
-            MainViewManager.addToWorkingSet(targetPaneId, draggedFile, targetInsertIndex);
+            // Find the target index in the target pane
+            for (let i = 0; i < targetWorkingSet.length; i++) {
+                if (targetWorkingSet[i].fullPath === targetPath) {
+                    targetIndex = i;
+                    break;
+                }
+            }
 
-            // we always need to make the dragged tab active in the target pane when moving between panes
-            CommandManager.execute(Commands.FILE_OPEN, { fullPath: draggedPath, paneId: targetPaneId });
+            // Only continue if we found the dragged file
+            if (draggedIndex !== -1 && draggedFile) {
+                // Check if the dragged file is currently active in the source pane
+                const currentActiveFileInSource = MainViewManager.getCurrentlyViewedFile(sourcePaneId);
+                const isActiveFileBeingMoved = currentActiveFileInSource &&
+                                              currentActiveFileInSource.fullPath === draggedPath;
+
+                // If the active file is being moved and there are other files in the source pane,
+                // switch to another file first to prevent placeholder creation
+                if (isActiveFileBeingMoved && sourceWorkingSet.length > 1) {
+                    // Find another file to make active (prefer the next file, or previous if this is the last)
+                    let newActiveIndex = draggedIndex + 1;
+                    if (newActiveIndex >= sourceWorkingSet.length) {
+                        newActiveIndex = draggedIndex - 1;
+                    }
+
+                    if (newActiveIndex >= 0 && newActiveIndex < sourceWorkingSet.length) {
+                        const newActiveFile = sourceWorkingSet[newActiveIndex];
+                        // Open the new active file in the source pane before removing the dragged file
+                        CommandManager.execute(Commands.FILE_OPEN, {
+                            fullPath: newActiveFile.fullPath,
+                            paneId: sourcePaneId
+                        });
+                    }
+                }
+
+                // Remove the file from source pane
+                CommandManager.execute(Commands.FILE_CLOSE, { file: draggedFile, paneId: sourcePaneId });
+
+                // Calculate where to add it in the target pane
+                let targetInsertIndex;
+
+                if (targetIndex !== -1) {
+                    // We have a specific target index to aim for
+                    targetInsertIndex = beforeTarget ? targetIndex : targetIndex + 1;
+                } else {
+                    // No specific target, add to end of the working set
+                    targetInsertIndex = targetWorkingSet.length;
+                }
+
+                // Add to the target pane at the calculated position
+                MainViewManager.addToWorkingSet(targetPaneId, draggedFile, targetInsertIndex);
+
+                // we always need to make the dragged tab active in the target pane when moving between panes
+                CommandManager.execute(Commands.FILE_OPEN, { fullPath: draggedPath, paneId: targetPaneId });
+            }
+        } catch (error) {
+            console.error("Error during cross-pane tab move:", error);
+            // Even if there's an error, ensure the drag state is cleaned up
+            cleanupDragState();
         }
     }
 
@@ -726,6 +829,40 @@ define(function (require, exports, module) {
 
                     if (draggedFile) {
                         if (sourcePaneId !== paneId) {
+                            // Check if the dragged file is currently active in the source pane
+                            const currentActiveFileInSource = MainViewManager.getCurrentlyViewedFile(sourcePaneId);
+                            const isActiveFileBeingMoved = currentActiveFileInSource &&
+                                                          currentActiveFileInSource.fullPath === draggedPath;
+
+                            // If the active file is being moved and there are other files in the source pane,
+                            // switch to another file first to prevent placeholder creation
+                            if (isActiveFileBeingMoved && sourceWorkingSet.length > 1) {
+                                // Find another file to make active
+                                let draggedIndex = -1;
+                                for (let i = 0; i < sourceWorkingSet.length; i++) {
+                                    if (sourceWorkingSet[i].fullPath === draggedPath) {
+                                        draggedIndex = i;
+                                        break;
+                                    }
+                                }
+
+                                if (draggedIndex !== -1) {
+                                    let newActiveIndex = draggedIndex + 1;
+                                    if (newActiveIndex >= sourceWorkingSet.length) {
+                                        newActiveIndex = draggedIndex - 1;
+                                    }
+
+                                    if (newActiveIndex >= 0 && newActiveIndex < sourceWorkingSet.length) {
+                                        const newActiveFile = sourceWorkingSet[newActiveIndex];
+                                        // Open the new active file in the source pane before removing the dragged file
+                                        CommandManager.execute(Commands.FILE_OPEN, {
+                                            fullPath: newActiveFile.fullPath,
+                                            paneId: sourcePaneId
+                                        });
+                                    }
+                                }
+                            }
+
                             // If different panes, close in source pane
                             CommandManager.execute(Commands.FILE_CLOSE, { file: draggedFile, paneId: sourcePaneId });
 
