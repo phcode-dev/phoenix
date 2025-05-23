@@ -824,6 +824,18 @@ Sorts working set by file type
 ## CMD\_WORKING\_SORT\_TOGGLE\_AUTO
 Toggles automatic working set sorting
 
+**Kind**: global variable
+<a name="CMD_TOGGLE_SHOW_WORKING_SET"></a>
+
+## CMD\_TOGGLE\_SHOW\_WORKING\_SET
+Toggles working set visibility
+
+**Kind**: global variable
+<a name="CMD_TOGGLE_SHOW_FILE_TABS"></a>
+
+## CMD\_TOGGLE\_SHOW\_FILE\_TABS
+Toggles file tabs visibility
+
 **Kind**: global variable  
 <a name="CMD_TOGGLE_SHOW_WORKING_SET"></a>
 
