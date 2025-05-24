@@ -10,6 +10,7 @@ define(function (require, exports, module) {
     const SnippetCodeHints = require("./src/snippetCodeHints");
     const Helper = require("./src/helper");
     const UIHelper = require("./src/UIHelper");
+    const SnippetsState = require("./src/snippetsState");
 
     const snippetsPanelTpl = require("text!./htmlContent/snippets-panel.html");
     // the html content of the panel will be stored in this variable
@@ -35,6 +36,7 @@ define(function (require, exports, module) {
 
         // also register the handlers
         _registerHandlers();
+        SnippetsList.showSnippetsList(); // to show the snippets list in the snippets panel
     }
 
     /**
@@ -47,6 +49,7 @@ define(function (require, exports, module) {
             customSnippetsPanel.hide();
         } else {
             customSnippetsPanel.show();
+            SnippetsList.showSnippetsList(); // we just remake the snippets list UI to make sure it is always on point
         }
     }
 
@@ -127,6 +130,6 @@ define(function (require, exports, module) {
         $snippetsPanel = $(snippetsPanelTpl);
         _addToMenu();
         SnippetCodeHints.init();
-        SnippetsList.showSnippetsList();
+        SnippetsState.loadSnippetsFromState();
     });
 });

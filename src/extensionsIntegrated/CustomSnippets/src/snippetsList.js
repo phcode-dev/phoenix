@@ -6,7 +6,8 @@
 
 /* eslint-disable no-invalid-this */
 define(function (require, exports, module) {
-    const Driver = require("./driver");
+    const Global = require("./global");
+    const SnippetsState = require("./snippetsState");
     const UIHelper = require("./UIHelper");
 
     /**
@@ -54,7 +55,7 @@ define(function (require, exports, module) {
      */
     function showSnippetsList() {
         UIHelper.clearSnippetsList(); // to clear existing snippets list, as we'll rebuild it
-        const snippetList = Driver.SnippetHintsList; // gets the list of the snippets, this is an array of objects
+        const snippetList = Global.SnippetHintsList; // gets the list of the snippets, this is an array of objects
 
         // if there are no snippets available, we show the message that no snippets are present
         // refer to html file
@@ -79,14 +80,17 @@ define(function (require, exports, module) {
         const $snippetItem = $(this).closest("#snippet-item");
         const snippetItem = $snippetItem.data("snippet"); // this gives the actual object with all the keys and vals
 
-        const index = Driver.SnippetHintsList.findIndex((s) => s.abbreviation === snippetItem.abbreviation);
+        const index = Global.SnippetHintsList.findIndex((s) => s.abbreviation === snippetItem.abbreviation);
 
         if (index !== -1) {
-            Driver.SnippetHintsList.splice(index, 1); // removes it from the actual array
+            Global.SnippetHintsList.splice(index, 1); // removes it from the actual array
             $snippetItem.remove(); // remove from the dom
 
+            // save to preferences after deleting snippet
+            SnippetsState.saveSnippetsToState();
+
             // if snippetHintsList is now empty we need to show the empty snippet message
-            if (Driver.SnippetHintsList.length === 0) {
+            if (Global.SnippetHintsList.length === 0) {
                 UIHelper.showEmptySnippetMessage();
             }
         }
