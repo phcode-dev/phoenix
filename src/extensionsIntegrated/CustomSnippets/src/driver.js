@@ -100,6 +100,20 @@ define(function (require, exports, module) {
         }
 
         try {
+            // check if the response already contains custom snippet hints to avoid duplicates
+            // this is needed because sometimes when there are no default hints present then the
+            // SnippetCodeHints.js shows some hints, so we don't want to duplicate hints
+            if (Array.isArray(response.hints) && response.hints.length > 0) {
+                const hasCustomSnippets = response.hints.some(hint => {
+                    return (hint && hint.hasClass && hint.hasClass('emmet-hint')) ||
+                           (hint && hint.attr && hint.attr('data-isCustomSnippet'));
+                });
+
+                if (hasCustomSnippets) {
+                    return response; // already has custom snippets, don't need to add again
+                }
+            }
+
             const wordInfo = getWordBeforeCursor();
             if (!wordInfo || !wordInfo.word) {
                 return response;
@@ -118,7 +132,8 @@ define(function (require, exports, module) {
             // the logic is:
             // lets say we have 2 snippets 'clg' ang 'clgi'
             // now if user types 'cl' in the editor then we don't show the snippets
-            // but when user types 'clg' then we show the clg snippet and we also check if there are any more snippets starting with this and we show all of them
+            // but when user types 'clg' then we show the clg snippet
+            // and we also check if there are any more snippets starting with this and we show all of them
             const hasExactMatch = SnippetHintsList.some((snippet) => {
                 if (snippet.abbreviation.toLowerCase() === needle) {
                     if (snippet.fileExtension.toLowerCase() === "all") {
