@@ -1,5 +1,6 @@
 define(function (require, exports, module) {
     const StringMatch = require("utils/StringMatch");
+    const Global = require("./global");
 
     /**
      * This function is responsible to get the snippet data from all the required input fields
@@ -39,6 +40,73 @@ define(function (require, exports, module) {
         const hasAbbr = $abbrInput.val().trim().length > 0;
         const hasTemplate = $templateInput.val().trim().length > 0;
         $saveBtn.prop("disabled", !(hasAbbr && hasTemplate));
+    }
+
+    /**
+     * Gets the current file extension from the editor
+     * @param {Editor} editor - The editor instance
+     * @returns {string|null} - The file extension or null if not available
+     */
+    function getCurrentFileExtension(editor) {
+        const filePath = editor.document?.file?.fullPath;
+        if (filePath) {
+            return filePath.substring(filePath.lastIndexOf(".")).toLowerCase();
+        }
+        return null;
+    }
+
+    /**
+     * Checks if a snippet is supported in the given file extension
+     * @param {Object} snippet - The snippet object
+     * @param {string|null} fileExtension - The current file extension
+     * @returns {boolean} - True if the snippet is supported
+     */
+    function isSnippetSupportedInFile(snippet, fileExtension) {
+        if (snippet.fileExtension.toLowerCase() === "all") {
+            return true;
+        }
+
+        if (fileExtension) {
+            const supportedExtensions = snippet.fileExtension
+                .toLowerCase()
+                .split(",")
+                .map((ext) => ext.trim());
+            return supportedExtensions.some((ext) => ext === fileExtension);
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if there's at least one exact match for the query
+     * @param {string} query - The search query
+     * @param {string|null} fileExtension - The current file extension
+     * @returns {boolean} - True if there's an exact match
+     */
+    function hasExactMatchingSnippet(query, fileExtension) {
+        const queryLower = query.toLowerCase();
+        return Global.SnippetHintsList.some((snippet) => {
+            if (snippet.abbreviation.toLowerCase() === queryLower) {
+                return isSnippetSupportedInFile(snippet, fileExtension);
+            }
+            return false;
+        });
+    }
+
+    /**
+     * Gets all snippets that match the query (prefix matches)
+     * @param {string} query - The search query
+     * @param {string|null} fileExtension - The current file extension
+     * @returns {Array} - Array of matching snippets
+     */
+    function getMatchingSnippets(query, fileExtension) {
+        const queryLower = query.toLowerCase();
+        return Global.SnippetHintsList.filter((snippet) => {
+            if (snippet.abbreviation.toLowerCase().startsWith(queryLower)) {
+                return isSnippetSupportedInFile(snippet, fileExtension);
+            }
+            return false;
+        });
     }
 
     /**
@@ -100,4 +168,8 @@ define(function (require, exports, module) {
     exports.createHintItem = createHintItem;
     exports.clearAllInputFields = clearAllInputFields;
     exports.getSnippetData = getSnippetData;
+    exports.getCurrentFileExtension = getCurrentFileExtension;
+    exports.isSnippetSupportedInFile = isSnippetSupportedInFile;
+    exports.hasExactMatchingSnippet = hasExactMatchingSnippet;
+    exports.getMatchingSnippets = getMatchingSnippets;
 });
