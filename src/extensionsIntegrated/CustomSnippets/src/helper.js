@@ -1,4 +1,6 @@
 define(function (require, exports, module) {
+    const StringMatch = require("utils/StringMatch");
+
     /**
      * This function is responsible to get the snippet data from all the required input fields
      * it is called when the save button is clicked
@@ -45,14 +47,35 @@ define(function (require, exports, module) {
      * to give users an idea that this hint is coming from snippets
      * this function is called inside the 'getHints' method in the codeHints.js file
      * @param   {String} abbr - the abbreviation text that is to be displayed in the code hint
+     * @param   {String} query - the query string typed by the user for highlighting matching characters
      * @returns {JQuery} - the jquery item that has the abbr text and the Snippet icon
      */
-    function createHintItem(abbr) {
+    function createHintItem(abbr, query) {
         var $hint = $("<span>")
             .addClass("brackets-css-hints brackets-hints")
             .attr("data-val", abbr)
-            .attr("data-isCustomSnippet", true)
-            .text(abbr);
+            .attr("data-isCustomSnippet", true);
+
+        // create highlighting for matching characters like other hint providers
+        if (query && query.length > 0) {
+            // use the StringMatch to get proper highlighting ranges
+            const matchResult = StringMatch.stringMatch(abbr, query, {preferPrefixMatches: true});
+            if (matchResult && matchResult.stringRanges) {
+                matchResult.stringRanges.forEach(function (item) {
+                    if (item.matched) {
+                        $hint.append($("<span>")
+                            .text(item.text)
+                            .addClass("matched-hint"));
+                    } else {
+                        $hint.append(item.text);
+                    }
+                });
+            } else {
+                $hint.text(abbr);
+            }
+        } else {
+            $hint.text(abbr);
+        }
 
         // style in brackets_patterns_override.less file
         // using the same style as the emmet one

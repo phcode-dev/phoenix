@@ -74,10 +74,10 @@ define(function (require, exports, module) {
     /**
      * This function is called from CodeHintManager.js because of how Phoenix handles hinting.
      *
-     * Here’s the problem:
+     * Here's the problem:
      * When a provider returns true for `hasHints`, it locks in that provider for the entire hinting session
-     * until it returns false. If the user types something like ‘clg’, and the default JavaScript provider
-     * is already active, the CodeHintManager won’t even ask the custom snippets provider if it has hints.
+     * until it returns false. If the user types something like 'clg', and the default JavaScript provider
+     * is already active, the CodeHintManager won't even ask the custom snippets provider if it has hints.
      *
      * To fix that, what we did is that when hints are shown we just ask the custom snippets if it has any relevant hint
      * If it does, this function prepends them to the existing list of hints.
@@ -169,7 +169,7 @@ define(function (require, exports, module) {
             // if we have matching snippets, prepend them to the hints
             if (matchingSnippets.length > 0) {
                 const customSnippetHints = matchingSnippets.map((snippet) => {
-                    return Helper.createHintItem(snippet.abbreviation);
+                    return Helper.createHintItem(snippet.abbreviation, needle);
                 });
 
                 // create a new response with custom snippets at the top
