@@ -79,7 +79,123 @@ define(function (require, exports, module) {
         };
     }
 
+    /**
+     * This function is called from CodeHintManager.js because of how Phoenix handles hinting.
+     *
+     * Here’s the problem:
+     * When a provider returns true for `hasHints`, it locks in that provider for the entire hinting session
+     * until it returns false. If the user types something like ‘clg’, and the default JavaScript provider
+     * is already active, the CodeHintManager won’t even ask the custom snippets provider if it has hints.
+     *
+     * To fix that, what we did is that when hints are shown we just ask the custom snippets if it has any relevant hint
+     * If it does, this function prepends them to the existing list of hints.
+     *
+     * @param {Object} response - The original hint response from the current provider
+     * @param {Editor} editor - The current editor instance
+     * @return {Object} - The modified response with custom snippets added to the front
+     */
+    function prependCustomSnippets(response, editor) {
+        if (!response || !response.hints) {
+            return response;
+        }
+
+        try {
+            const wordInfo = getWordBeforeCursor();
+            if (!wordInfo || !wordInfo.word) {
+                return response;
+            }
+
+            const needle = wordInfo.word.toLowerCase();
+
+            // get the current file extension
+            const filePath = editor.document?.file?.fullPath;
+            let fileExtension = null;
+            if (filePath) {
+                fileExtension = filePath.substring(filePath.lastIndexOf(".")).toLowerCase();
+            }
+
+            // first, check if there's at least one exact match - only show snippets if there is
+            // the logic is:
+            // lets say we have 2 snippets 'clg' ang 'clgi'
+            // now if user types 'cl' in the editor then we don't show the snippets
+            // but when user types 'clg' then we show the clg snippet and we also check if there are any more snippets starting with this and we show all of them
+            const hasExactMatch = SnippetHintsList.some((snippet) => {
+                if (snippet.abbreviation.toLowerCase() === needle) {
+                    if (snippet.fileExtension.toLowerCase() === "all") {
+                        return true;
+                    }
+
+                    // check if current file extension is supported
+                    if (fileExtension) {
+                        const supportedExtensions = snippet.fileExtension
+                            .toLowerCase()
+                            .split(",")
+                            .map((ext) => ext.trim());
+                        return supportedExtensions.some((ext) => ext === fileExtension);
+                    }
+                }
+                return false;
+            });
+
+            if (!hasExactMatch) {
+                return response;
+            }
+
+            // now find all matching snippets (including prefix matches)
+            const matchingSnippets = SnippetHintsList.filter((snippet) => {
+                if (snippet.abbreviation.toLowerCase().startsWith(needle)) {
+                    if (snippet.fileExtension.toLowerCase() === "all") {
+                        return true;
+                    }
+
+                    if (fileExtension) {
+                        const supportedExtensions = snippet.fileExtension
+                            .toLowerCase()
+                            .split(",")
+                            .map((ext) => ext.trim());
+                        return supportedExtensions.some((ext) => ext === fileExtension);
+                    }
+                }
+                return false;
+            });
+
+            // if we have matching snippets, prepend them to the hints
+            if (matchingSnippets.length > 0) {
+                const customSnippetHints = matchingSnippets.map((snippet) => {
+                    const $snippetHintObj = $("<span>")
+                        .addClass("brackets-snippets-hints brackets-hints")
+                        .attr("data-val", snippet.abbreviation)
+                        .attr("data-isCustomSnippet", true);
+
+                    // add the abbreviation text
+                    $snippetHintObj.append(snippet.abbreviation);
+
+                    // add custom snippet icon (using emmet class as we need it exactly how Emmet does it)
+                    let $icon = $(`<span class="emmet-code-hint">Snippet</span>`);
+                    $snippetHintObj.append($icon);
+
+                    return $snippetHintObj;
+                });
+
+                // create a new response with custom snippets at the top
+                const newResponse = $.extend({}, response);
+                if (Array.isArray(response.hints)) {
+                    newResponse.hints = customSnippetHints.concat(response.hints);
+                } else {
+                    newResponse.hints = customSnippetHints.concat([response.hints]);
+                }
+
+                return newResponse;
+            }
+        } catch (e) {
+            console.log("Error checking custom snippets:", e);
+        }
+
+        return response;
+    }
+
     exports.SnippetHintsList = SnippetHintsList;
     exports.getWordBeforeCursor = getWordBeforeCursor;
     exports.handleSaveBtnClick = handleSaveBtnClick;
+    exports.prependCustomSnippets = prependCustomSnippets;
 });
