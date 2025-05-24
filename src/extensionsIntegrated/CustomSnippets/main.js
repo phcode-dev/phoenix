@@ -7,7 +7,7 @@ define(function (require, exports, module) {
 
     const Driver = require("./src/driver");
     const SnippetsList = require("./src/snippetsList");
-    const CodeHints = require("./src/codeHints");
+    const SnippetCodeHints = require("./src/snippetCodeHints");
     const Helper = require("./src/helper");
     const UIHelper = require("./src/UIHelper");
 
@@ -126,7 +126,7 @@ define(function (require, exports, module) {
         CommandManager.register(MENU_ITEM_NAME, MY_COMMAND_ID, showCustomSnippetsPanel);
         $snippetsPanel = $(snippetsPanelTpl);
         _addToMenu();
-        CodeHints.init();
+        SnippetCodeHints.init();
         SnippetsList.showSnippetsList();
     });
 });
