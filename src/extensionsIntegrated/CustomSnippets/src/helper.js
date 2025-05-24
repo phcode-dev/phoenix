@@ -48,11 +48,15 @@ define(function (require, exports, module) {
      * @returns {JQuery} - the jquery item that has the abbr text and the Snippet icon
      */
     function createHintItem(abbr) {
-        var $hint = $("<span>").addClass("emmet-hint").text(abbr);
+        var $hint = $("<span>")
+            .addClass("brackets-css-hints brackets-hints")
+            .attr("data-val", abbr)
+            .attr("data-isCustomSnippet", true)
+            .text(abbr);
 
         // style in brackets_patterns_override.less file
         // using the same style as the emmet one
-        let $icon = $(`<span class="emmet-code-hint">Snippet</span>`);
+        let $icon = $(`<a href="#" class="custom-snippet-code-hint" style="text-decoration: none">Snippet</a>`);
         $hint.append($icon);
 
         return $hint;
