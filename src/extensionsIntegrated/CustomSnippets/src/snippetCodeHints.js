@@ -80,7 +80,7 @@ define(function (require, exports, module) {
         const matchedItem = Global.SnippetHintsList.find((snippet) => snippet.abbreviation === word);
 
         if (matchedItem) {
-            const $hintItem = Helper.createHintItem(matchedItem.abbreviation);
+            const $hintItem = Helper.createHintItem(matchedItem.abbreviation, word);
             result.push($hintItem);
             return {
                 hints: result,
