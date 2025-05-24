@@ -756,6 +756,23 @@ a:focus {
     white-space: nowrap;
     vertical-align: top;
     line-height: inherit;
+
+.custom-snippet-code-hint {
+    visibility: hidden;
+}
+
+.codehint-menu .dropdown-menu li .highlight .custom-snippet-code-hint {
+    visibility: visible;
+    position: absolute;
+    right: 0;
+    margin-top: -2px;
+    font-size: 0.85em !important;
+    font-weight: @font-weight-semibold;
+    letter-spacing: 0.3px;
+    color: @css-codehint-icon !important;
+    .dark& {
+      color: @dark-css-codehint-icon !important;
+    }
 }
 
 #codehint-desc {
