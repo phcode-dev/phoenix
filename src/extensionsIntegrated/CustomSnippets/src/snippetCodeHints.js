@@ -29,34 +29,16 @@ define(function (require, exports, module) {
         }
 
         // extract the actual word, because getWordBeforeCursor returns an object
-        const word = Driver.getWordBeforeCursor().word;
-
-        const matchedItem = Global.SnippetHintsList.find((snippet) => snippet.abbreviation === word);
-
-        if (matchedItem) {
-            // If fileExtension is "all", we need to show the hint in all the files
-            if (matchedItem.fileExtension.toLowerCase() === "all") {
-                return true;
-            }
-
-            // get current file extension
-            const filePath = editor.document?.file?.fullPath;
-            if (filePath) {
-                const fileExtension = filePath.substring(filePath.lastIndexOf(".")).toLowerCase();
-
-                // Check if snippet's fileExtension includes current file extension
-                // Snippet's fileExtension is expected to be comma-separated list like ".js, .html"
-                const supportedExtensions = matchedItem.fileExtension
-                    .toLowerCase()
-                    .split(",")
-                    .map((ext) => ext.trim());
-
-                // this returns true if current file's extension is in the list of supported extensions
-                return supportedExtensions.some((ext) => ext === fileExtension);
-            }
+        const wordInfo = Driver.getWordBeforeCursor();
+        if (!wordInfo || !wordInfo.word) {
+            return false;
         }
 
-        return false;
+        const word = wordInfo.word.toLowerCase();
+        const fileExtension = Helper.getCurrentFileExtension(editor);
+
+        // check if there's at least one exact match - this is the same logic as in driver.js
+        return Helper.hasExactMatchingSnippet(word, fileExtension);
     };
 
     /**
@@ -76,12 +58,23 @@ define(function (require, exports, module) {
     SnippetHints.prototype.getHints = function (implicitChar) {
         const result = [];
 
-        const word = Driver.getWordBeforeCursor().word;
-        const matchedItem = Global.SnippetHintsList.find((snippet) => snippet.abbreviation === word);
+        const wordInfo = Driver.getWordBeforeCursor();
+        if (!wordInfo || !wordInfo.word) {
+            return null;
+        }
 
-        if (matchedItem) {
-            const $hintItem = Helper.createHintItem(matchedItem.abbreviation, word);
-            result.push($hintItem);
+        const word = wordInfo.word.toLowerCase();
+        const fileExtension = Helper.getCurrentFileExtension(this.editor);
+
+        // find all matching snippets (including prefix matches) - same logic as driver.js
+        const matchingSnippets = Helper.getMatchingSnippets(word, fileExtension);
+
+        if (matchingSnippets.length > 0) {
+            matchingSnippets.forEach((snippet) => {
+                const $hintItem = Helper.createHintItem(snippet.abbreviation, wordInfo.word);
+                result.push($hintItem);
+            });
+
             return {
                 hints: result,
                 selectInitial: true,
@@ -99,7 +92,7 @@ define(function (require, exports, module) {
     SnippetHints.prototype.insertHint = function (hint) {
         const cursor = this.editor.getCursorPos();
         const word = Driver.getWordBeforeCursor();
-        const start = { line: word.line, ch: word.ch };
+        const start = { line: word.line, ch: word.ch + 1 };
         const end = cursor;
 
         const matchedItem = Global.SnippetHintsList.find((snippet) => snippet.abbreviation === word.word);
