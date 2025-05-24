@@ -177,19 +177,7 @@ define(function (require, exports, module) {
             // if we have matching snippets, prepend them to the hints
             if (matchingSnippets.length > 0) {
                 const customSnippetHints = matchingSnippets.map((snippet) => {
-                    const $snippetHintObj = $("<span>")
-                        .addClass("brackets-snippets-hints brackets-hints")
-                        .attr("data-val", snippet.abbreviation)
-                        .attr("data-isCustomSnippet", true);
-
-                    // add the abbreviation text
-                    $snippetHintObj.append(snippet.abbreviation);
-
-                    // add custom snippet icon (using emmet class as we need it exactly how Emmet does it)
-                    let $icon = $(`<span class="emmet-code-hint">Snippet</span>`);
-                    $snippetHintObj.append($icon);
-
-                    return $snippetHintObj;
+                    return Helper.createHintItem(snippet.abbreviation);
                 });
 
                 // create a new response with custom snippets at the top
