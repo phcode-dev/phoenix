@@ -1,21 +1,10 @@
 define(function (require, exports, module) {
     const EditorManager = require("editor/EditorManager");
 
+    const Global = require("./global");
     const Helper = require("./helper");
     const UIHelper = require("./UIHelper");
-
-    /**
-     * This is an array of objects. this will store the list of all the snippets
-     * it is an array of objects stored in the format
-     * [{
-     * abbreviation: 'clg',
-     * description: 'console log shortcut',
-     * templateText: 'console.log()',
-     * fileExtension: '.js, .css'
-     * }]
-     */
-    const SnippetHintsList = [];
-
+    const SnippetsState = require("./snippetsState");
 
     /**
      * This function handles the save button click handler
@@ -24,9 +13,10 @@ define(function (require, exports, module) {
     function handleSaveBtnClick() {
         const snippetData = Helper.getSnippetData();
         if (shouldAddSnippetToList(snippetData)) {
-            SnippetHintsList.push(snippetData);
+            Global.SnippetHintsList.push(snippetData);
             Helper.clearAllInputFields();
             Helper.toggleSaveButtonDisability();
+            SnippetsState.saveSnippetsToState();
         } else {
             UIHelper.showDuplicateAbbreviationError(snippetData.abbreviation);
         }
@@ -39,7 +29,9 @@ define(function (require, exports, module) {
      * @returns {boolean} - true if we can add the new snippet to the list otherwise false
      */
     function shouldAddSnippetToList(snippetData) {
-        const matchedItem = SnippetHintsList.find((snippet) => snippet.abbreviation === snippetData.abbreviation);
+        const matchedItem = Global.SnippetHintsList.find(
+            (snippet) => snippet.abbreviation === snippetData.abbreviation
+        );
 
         if (matchedItem) {
             return false;
@@ -134,7 +126,7 @@ define(function (require, exports, module) {
             // now if user types 'cl' in the editor then we don't show the snippets
             // but when user types 'clg' then we show the clg snippet
             // and we also check if there are any more snippets starting with this and we show all of them
-            const hasExactMatch = SnippetHintsList.some((snippet) => {
+            const hasExactMatch = Global.SnippetHintsList.some((snippet) => {
                 if (snippet.abbreviation.toLowerCase() === needle) {
                     if (snippet.fileExtension.toLowerCase() === "all") {
                         return true;
@@ -157,7 +149,7 @@ define(function (require, exports, module) {
             }
 
             // now find all matching snippets (including prefix matches)
-            const matchingSnippets = SnippetHintsList.filter((snippet) => {
+            const matchingSnippets = Global.SnippetHintsList.filter((snippet) => {
                 if (snippet.abbreviation.toLowerCase().startsWith(needle)) {
                     if (snippet.fileExtension.toLowerCase() === "all") {
                         return true;
@@ -197,7 +189,6 @@ define(function (require, exports, module) {
         return response;
     }
 
-    exports.SnippetHintsList = SnippetHintsList;
     exports.getWordBeforeCursor = getWordBeforeCursor;
     exports.handleSaveBtnClick = handleSaveBtnClick;
     exports.prependCustomSnippets = prependCustomSnippets;

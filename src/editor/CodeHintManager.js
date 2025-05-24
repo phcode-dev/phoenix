@@ -269,13 +269,16 @@ define(function (require, exports, module) {
     // custom snippets integration
     // this is to check whether user has set any custom snippets as we need to show it at the first
     let customSnippetsDriver = null;
+    let customSnippetsGlobal = null;
 
-    // load custom snippets driver
+    // load custom snippets driver and global
     try {
         customSnippetsDriver = require("../extensionsIntegrated/CustomSnippets/src/driver");
+        customSnippetsGlobal = require("../extensionsIntegrated/CustomSnippets/src/global");
     } catch (e) {
         // if unable to load we just set it to null to prevent other parts of the code from breaking
         customSnippetsDriver = null;
+        customSnippetsGlobal = null;
     }
 
     PreferencesManager.definePreference("showCodeHints", "boolean", true, {
@@ -474,7 +477,7 @@ define(function (require, exports, module) {
                 _beginSession(previousEditor);
             } else if (response.hasOwnProperty("hints")) { // a synchronous response
                 // prepend custom snippets to the response
-                if(customSnippetsDriver && customSnippetsDriver.SnippetHintsList) {
+                if(customSnippetsDriver && customSnippetsGlobal && customSnippetsGlobal.SnippetHintsList) {
                     response = customSnippetsDriver.prependCustomSnippets(response, sessionEditor);
                 }
 
@@ -495,7 +498,7 @@ define(function (require, exports, module) {
                         return;
                     }
                     // prepend custom snippets to the response
-                    if (customSnippetsDriver && customSnippetsDriver.SnippetHintsList) {
+                    if (customSnippetsDriver && customSnippetsGlobal && customSnippetsGlobal.SnippetHintsList) {
                         response = customSnippetsDriver.prependCustomSnippets(response, sessionEditor);
                     }
 
@@ -571,8 +574,8 @@ define(function (require, exports, module) {
                 if (hint && hint.jquery && hint.attr("data-isCustomSnippet")) {
                     // handle custom snippet insertion
                     const abbreviation = hint.attr("data-val");
-                    if (customSnippetsDriver && customSnippetsDriver.SnippetHintsList) {
-                        const matchedSnippet = customSnippetsDriver.SnippetHintsList.find(
+                    if (customSnippetsDriver && customSnippetsGlobal && customSnippetsGlobal.SnippetHintsList) {
+                        const matchedSnippet = customSnippetsGlobal.SnippetHintsList.find(
                             (snippet) => snippet.abbreviation === abbreviation
                         );
                         if (matchedSnippet) {
