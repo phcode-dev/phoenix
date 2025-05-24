@@ -112,59 +112,15 @@ define(function (require, exports, module) {
             }
 
             const needle = wordInfo.word.toLowerCase();
+            const fileExtension = Helper.getCurrentFileExtension(editor);
 
-            // get the current file extension
-            const filePath = editor.document?.file?.fullPath;
-            let fileExtension = null;
-            if (filePath) {
-                fileExtension = filePath.substring(filePath.lastIndexOf(".")).toLowerCase();
-            }
-
-            // first, check if there's at least one exact match - only show snippets if there is
-            // the logic is:
-            // lets say we have 2 snippets 'clg' ang 'clgi'
-            // now if user types 'cl' in the editor then we don't show the snippets
-            // but when user types 'clg' then we show the clg snippet
-            // and we also check if there are any more snippets starting with this and we show all of them
-            const hasExactMatch = Global.SnippetHintsList.some((snippet) => {
-                if (snippet.abbreviation.toLowerCase() === needle) {
-                    if (snippet.fileExtension.toLowerCase() === "all") {
-                        return true;
-                    }
-
-                    // check if current file extension is supported
-                    if (fileExtension) {
-                        const supportedExtensions = snippet.fileExtension
-                            .toLowerCase()
-                            .split(",")
-                            .map((ext) => ext.trim());
-                        return supportedExtensions.some((ext) => ext === fileExtension);
-                    }
-                }
-                return false;
-            });
-
-            if (!hasExactMatch) {
+            // check if there's at least one exact match - only show snippets if there is
+            if (!Helper.hasExactMatchingSnippet(needle, fileExtension)) {
                 return response;
             }
 
-            // now find all matching snippets (including prefix matches)
-            const matchingSnippets = Global.SnippetHintsList.filter((snippet) => {
-                if (snippet.abbreviation.toLowerCase().startsWith(needle)) {
-                    if (snippet.fileExtension.toLowerCase() === "all") {
-                        return true;
-                    }
-
-                    if (fileExtension) {
-                        const supportedExtensions = snippet.fileExtension
-                            .toLowerCase()
-                            .split(",")
-                            .map((ext) => ext.trim());
-                        return supportedExtensions.some((ext) => ext === fileExtension);
-                    }
-                }
-                return false;
-            });
+            // get all matching snippets (including prefix matches)
+            const matchingSnippets = Helper.getMatchingSnippets(needle, fileExtension);
 
             // if we have matching snippets, prepend them to the hints
             if (matchingSnippets.length > 0) {
