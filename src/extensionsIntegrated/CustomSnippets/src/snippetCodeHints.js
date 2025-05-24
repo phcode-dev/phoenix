@@ -1,6 +1,7 @@
 define(function (require, exports, module) {
     const CodeHintManager = require("editor/CodeHintManager");
 
+    const Global = require("./global");
     const Driver = require("./driver");
     const Helper = require("./helper");
 
@@ -30,7 +31,7 @@ define(function (require, exports, module) {
         // extract the actual word, because getWordBeforeCursor returns an object
         const word = Driver.getWordBeforeCursor().word;
 
-        const matchedItem = Driver.SnippetHintsList.find((snippet) => snippet.abbreviation === word);
+        const matchedItem = Global.SnippetHintsList.find((snippet) => snippet.abbreviation === word);
 
         if (matchedItem) {
             // If fileExtension is "all", we need to show the hint in all the files
@@ -76,7 +77,7 @@ define(function (require, exports, module) {
         const result = [];
 
         const word = Driver.getWordBeforeCursor().word;
-        const matchedItem = Driver.SnippetHintsList.find((snippet) => snippet.abbreviation === word);
+        const matchedItem = Global.SnippetHintsList.find((snippet) => snippet.abbreviation === word);
 
         if (matchedItem) {
             const $hintItem = Helper.createHintItem(matchedItem.abbreviation);
@@ -101,7 +102,7 @@ define(function (require, exports, module) {
         const start = { line: word.line, ch: word.ch };
         const end = cursor;
 
-        const matchedItem = Driver.SnippetHintsList.find((snippet) => snippet.abbreviation === word.word);
+        const matchedItem = Global.SnippetHintsList.find((snippet) => snippet.abbreviation === word.word);
         this.editor.document.replaceRange(matchedItem.templateText, start, end);
 
         return false;
