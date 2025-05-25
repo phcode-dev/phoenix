@@ -11,7 +11,7 @@ define(function (require, exports, module) {
     function getSnippetData() {
         // get the values from all the input fields
         const abbreviation = $("#abbr-box").val().trim();
-        const description = $("#desc-box").val().trim() || "No Description";
+        const description = $("#desc-box").val().trim();
         const templateText = $("#template-text-box").val().trim();
         const fileExtension = $("#file-extn-box").val().trim() || "all";
 
@@ -32,14 +32,16 @@ define(function (require, exports, module) {
     function toggleSaveButtonDisability() {
         // these are the required fields
         const $abbrInput = $("#abbr-box");
+        const $descInput = $("#desc-box");
         const $templateInput = $("#template-text-box");
 
         const $saveBtn = $("#save-custom-snippet-btn").find("button");
 
         // make sure that the required fields has some value
         const hasAbbr = $abbrInput.val().trim().length > 0;
+        const hasDesc = $descInput.val().trim().length > 0;
         const hasTemplate = $templateInput.val().trim().length > 0;
-        $saveBtn.prop("disabled", !(hasAbbr && hasTemplate));
+        $saveBtn.prop("disabled", !(hasAbbr && hasDesc && hasTemplate));
     }
 
     /**
@@ -116,9 +118,10 @@ define(function (require, exports, module) {
      * this function is called inside the 'getHints' method in the codeHints.js file
      * @param   {String} abbr - the abbreviation text that is to be displayed in the code hint
      * @param   {String} query - the query string typed by the user for highlighting matching characters
+     * @param   {String} description - the description of the snippet to be displayed
      * @returns {JQuery} - the jquery item that has the abbr text and the Snippet icon
      */
-    function createHintItem(abbr, query) {
+    function createHintItem(abbr, query, description) {
         var $hint = $("<span>")
             .addClass("brackets-css-hints brackets-hints")
             .attr("data-val", abbr)
@@ -149,6 +152,12 @@ define(function (require, exports, module) {
         // using the same style as the emmet one
         let $icon = $(`<a href="#" class="custom-snippet-code-hint" style="text-decoration: none">Snippet</a>`);
         $hint.append($icon);
+
+        if (description && description.trim() !== "") {
+            // gave this the same class as the jshint-jsdoc to make sure that the styling is consistent
+            const $desc = $(`<span class="jshint-jsdoc">${description.trim()}</span>`);
+            $hint.append($desc);
+        }
 
         return $hint;
     }

@@ -71,7 +71,7 @@ define(function (require, exports, module) {
 
         if (matchingSnippets.length > 0) {
             matchingSnippets.forEach((snippet) => {
-                const $hintItem = Helper.createHintItem(snippet.abbreviation, wordInfo.word);
+                const $hintItem = Helper.createHintItem(snippet.abbreviation, wordInfo.word, snippet.description);
                 result.push($hintItem);
             });
 
