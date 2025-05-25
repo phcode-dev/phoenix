@@ -775,6 +775,35 @@ a:focus {
     }
 }
 
+.custom-snippets-hint {
+    min-width: 200px !important;
+    max-width: 350px !important;
+    display: inline-block !important;
+}
+
+.snippet-description {
+    display: none;
+    color: grey;
+    word-wrap: break-word;
+    white-space: normal;
+    max-height: 2.2em;
+    overflow: hidden;
+    box-sizing: border-box;
+    text-overflow: ellipsis;
+    line-height: 1em;
+    padding-top: 2px !important;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+
+    .dark & {
+        color: #ccc;
+    }
+}
+
+.highlight .snippet-description {
+    display: block;
+}
+
 #codehint-desc {
 	background: @bc-codehint-desc;
 	position: absolute;
