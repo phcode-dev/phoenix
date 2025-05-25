@@ -95,6 +95,7 @@ define(function (require, exports, module) {
         const $closePanelBtn = $("#close-custom-snippets-panel-btn");
         const $saveCustomSnippetBtn = $("#save-custom-snippet-btn");
         const $abbrInput = $("#abbr-box");
+        const $descInput = $("#desc-box");
         const $templateInput = $("#template-text-box");
         const $addSnippetBtn = $("#add-snippet-btn");
         const $addNewSnippetBtn = $("#add-new-snippet-btn");
@@ -122,6 +123,7 @@ define(function (require, exports, module) {
         });
 
         $abbrInput.on("input", Helper.toggleSaveButtonDisability);
+        $descInput.on("input", Helper.toggleSaveButtonDisability);
         $templateInput.on("input", Helper.toggleSaveButtonDisability);
     }
 
