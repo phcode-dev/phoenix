@@ -123,7 +123,7 @@ define(function (require, exports, module) {
      */
     function createHintItem(abbr, query, description) {
         var $hint = $("<span>")
-            .addClass("brackets-css-hints brackets-hints")
+            .addClass("brackets-css-hints brackets-hints custom-snippets-hint")
             .attr("data-val", abbr)
             .attr("data-isCustomSnippet", true);
 
@@ -148,14 +148,12 @@ define(function (require, exports, module) {
             $hint.text(abbr);
         }
 
-        // style in brackets_patterns_override.less file
-        // using the same style as the emmet one
+        // the codehints related style is written in brackets_patterns_override.less file
         let $icon = $(`<a href="#" class="custom-snippet-code-hint" style="text-decoration: none">Snippet</a>`);
         $hint.append($icon);
 
         if (description && description.trim() !== "") {
-            // gave this the same class as the jshint-jsdoc to make sure that the styling is consistent
-            const $desc = $(`<span class="jshint-jsdoc">${description.trim()}</span>`);
+            const $desc = $(`<span class="snippet-description">${description.trim()}</span>`);
             $hint.append($desc);
         }
 
