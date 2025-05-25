@@ -125,7 +125,7 @@ define(function (require, exports, module) {
             // if we have matching snippets, prepend them to the hints
             if (matchingSnippets.length > 0) {
                 const customSnippetHints = matchingSnippets.map((snippet) => {
-                    return Helper.createHintItem(snippet.abbreviation, needle);
+                    return Helper.createHintItem(snippet.abbreviation, needle, snippet.description);
                 });
 
                 // create a new response with custom snippets at the top
