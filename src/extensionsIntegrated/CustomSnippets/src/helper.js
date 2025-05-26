@@ -129,6 +129,11 @@ define(function (require, exports, module) {
             .attr("data-val", abbr)
             .attr("data-isCustomSnippet", true);
 
+        // add the tooltip for the description shown when the hint is hovered
+        if (description && description.trim() !== "") {
+            $hint.attr("title", description.trim());
+        }
+
         // create highlighting for matching characters like other hint providers
         if (query && query.length > 0) {
             // use the StringMatch to get proper highlighting ranges
@@ -155,7 +160,12 @@ define(function (require, exports, module) {
         $hint.append($icon);
 
         if (description && description.trim() !== "") {
-            const $desc = $(`<span class="snippet-description">${description.trim()}</span>`);
+            const fullDescription = description.trim();
+            // truncate description if longer than 70 characters
+            const displayDescription =
+                fullDescription.length > 70 ? fullDescription.substring(0, 70) + "..." : fullDescription;
+
+            const $desc = $(`<span class="snippet-description">${displayDescription}</span>`);
             $hint.append($desc);
         }
 
