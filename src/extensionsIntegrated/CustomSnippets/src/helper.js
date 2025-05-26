@@ -13,7 +13,7 @@ define(function (require, exports, module) {
         const abbreviation = $("#abbr-box").val().trim();
         const description = $("#desc-box").val().trim();
         const templateText = $("#template-text-box").val().trim();
-        const fileExtension = $("#file-extn-box").val().trim() || "all";
+        const fileExtension = $("#file-extn-box").val().trim();
 
         return {
             abbreviation: abbreviation,
@@ -34,6 +34,7 @@ define(function (require, exports, module) {
         const $abbrInput = $("#abbr-box");
         const $descInput = $("#desc-box");
         const $templateInput = $("#template-text-box");
+        const $fileExtnInput = $("#file-extn-box");
 
         const $saveBtn = $("#save-custom-snippet-btn").find("button");
 
@@ -41,7 +42,8 @@ define(function (require, exports, module) {
         const hasAbbr = $abbrInput.val().trim().length > 0;
         const hasDesc = $descInput.val().trim().length > 0;
         const hasTemplate = $templateInput.val().trim().length > 0;
-        $saveBtn.prop("disabled", !(hasAbbr && hasDesc && hasTemplate));
+        const hasFileExtn = $fileExtnInput.val().trim().length > 0;
+        $saveBtn.prop("disabled", !(hasAbbr && hasDesc && hasTemplate && hasFileExtn));
     }
 
     /**
