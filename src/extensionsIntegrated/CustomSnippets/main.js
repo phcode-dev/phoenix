@@ -97,6 +97,7 @@ define(function (require, exports, module) {
         const $abbrInput = $("#abbr-box");
         const $descInput = $("#desc-box");
         const $templateInput = $("#template-text-box");
+        const $fileExtnInput = $("#file-extn-box");
         const $addSnippetBtn = $("#add-snippet-btn");
         const $addNewSnippetBtn = $("#add-new-snippet-btn");
         const $backToListMenuBtn = $("#back-to-list-menu-btn");
@@ -125,6 +126,7 @@ define(function (require, exports, module) {
         $abbrInput.on("input", Helper.toggleSaveButtonDisability);
         $descInput.on("input", Helper.toggleSaveButtonDisability);
         $templateInput.on("input", Helper.toggleSaveButtonDisability);
+        $fileExtnInput.on("input", Helper.toggleSaveButtonDisability);
     }
 
     AppInit.appReady(function () {
