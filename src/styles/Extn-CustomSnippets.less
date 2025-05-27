@@ -10,17 +10,53 @@
 #custom-snippets-toolbar {
     background-color: @bc-panel-bg-promoted;
     padding: 5px 8px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    border-bottom: 1px solid @bc-panel-separator;
+    box-shadow:
+        inset 0 1px 0 @bc-highlight,
+        0 -1px 3px @bc-shadow-small;
 
     .dark & {
         background-color: @dark-bc-panel-bg-promoted;
+        border-bottom: 1px solid @dark-bc-panel-separator;
+        box-shadow:
+            inset 0 1px 0 @dark-bc-highlight,
+            0 -1px 3px @dark-bc-shadow-small;
     }
 }
 
+.toolbar-left-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+}
 
-#custom-snippets-toolbar .custom-snippets-btn-group.right button {
+.toolbar-title {
+    color: @bc-text;
+    font-size: 15px;
+    font-weight: 500;
+
+    .dark & {
+        color: @dark-bc-text;
+    }
+}
+
+.snippets-count {
+    color: @bc-text;
+    font-size: 15px;
+    font-weight: 500;
+
+    .dark & {
+        color: @dark-bc-text;
+    }
+}
+
+.custom-snippet-btn button {
     height: 26px;
     border-radius: 4px;
-    font-size: 12px;
     background-color: @bc-btn-bg;
     color: @bc-text;
     border: 1px solid @bc-btn-border;
@@ -79,13 +115,202 @@
     display: none;
 }
 
+#custom-snippets-panel .resizable-content {
+    overflow-y: scroll;
+    overflow-x: auto;
+}
+
+#snippets-list-wrapper {
+    padding: 0;
+}
+
 #snippet-item {
-    background-color: burlywood;
     display: flex;
-    color: black;
-    justify-content: space-between;
-    padding: 4px 10px;
-    margin-bottom: 10px;
+    align-items: center;
+    padding: 3px 12px 3px 16px;
+    margin: 0;
+    border-bottom: 1px solid transparent;
+    background-color: @bc-panel-bg;
+    color: @bc-text;
+    line-height: 16px;
+    position: relative;
+    cursor: default;
+    transition: background-color 0.1s ease;
+
+    .dark & {
+        background-color: @dark-bc-panel-bg;
+        color: @dark-bc-text;
+    }
+
+    &:hover {
+        background-color: @bc-bg-highlight;
+        color: @bc-menu-text;
+
+        .dark & {
+            background-color: @dark-bc-bg-highlight;
+            color: @dark-bc-menu-text;
+        }
+
+        .delete-snippet-btn {
+            opacity: 1;
+        }
+    }
+
+    &:nth-child(odd) {
+        background-color: @bc-panel-bg-alt;
+
+        .dark & {
+            background-color: @dark-bc-panel-bg-alt;
+        }
+
+        &:hover {
+            background-color: @bc-bg-highlight;
+
+            .dark & {
+                background-color: @dark-bc-bg-highlight;
+            }
+        }
+    }
+}
+
+#snippet-abbr {
+    flex: 0 0 140px;
+    color: @bc-text;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    .dark & {
+        color: @dark-bc-text;
+    }
+}
+
+#snippet-template {
+    flex: 2.5;
+    margin: 0 12px;
+    color: @bc-text-thin;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    .dark & {
+        color: @dark-bc-text-thin;
+    }
+}
+
+#snippet-description {
+    flex: 1.3;
+    margin: 0 12px;
+    color: @bc-text-thin-quiet;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    .dark & {
+        color: @dark-bc-text-thin-quiet;
+    }
+}
+
+#snippet-files {
+    flex: 0 0 120px;
+    color: @bc-text-thin-quiet;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    .dark & {
+        color: @dark-bc-text-thin-quiet;
+    }
+}
+
+.delete-snippet-btn {
+    flex: 0 0 20px;
+    color: @bc-text-thin-quiet;
+    cursor: pointer;
+    opacity: 0.3;
+    transition: opacity 0.1s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+
+    .dark & {
+        color: @dark-bc-text-thin-quiet;
+    }
+
+    &:hover {
+        color: @bc-text;
+        opacity: 1;
+
+        .dark & {
+            color: @dark-bc-text;
+        }
+    }
+
+    i {
+        width: 12px;
+        height: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+#no-snippets-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: calc(100% - 40px);
+    text-align: center;
+    color: @bc-text-thin-quiet;
+    padding: 20px;
+
+    .dark & {
+        color: @dark-bc-text-thin-quiet;
+    }
+}
+
+#no-snippets-message {
+    margin-bottom: 20px;
+    color: @bc-text-thin;
+
+    .dark & {
+        color: @dark-bc-text-thin;
+    }
+}
+
+#add-snippet-btn button {
+    background-color: @bc-btn-bg;
+    border: 1px solid @bc-btn-border;
+    border-radius: 3px;
+    color: @bc-text;
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: background-color 0.1s ease;
+
+    .dark & {
+        background-color: @dark-bc-btn-bg;
+        border-color: @dark-bc-btn-border;
+        color: @dark-bc-text;
+    }
+
+    &:hover {
+        background-color: darken(@bc-btn-bg, 5%);
+
+        .dark & {
+            background-color: lighten(@dark-bc-btn-bg, 5%);
+        }
+    }
+
+    &:active {
+        background-color: darken(@bc-btn-bg, 10%);
+
+        .dark & {
+            background-color: lighten(@dark-bc-btn-bg, 10%);
+        }
+    }
 }
 
 #abbreviation-error-message {
@@ -105,8 +330,12 @@
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 #template-text-box {
