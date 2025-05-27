@@ -5,6 +5,7 @@ define(function (require, exports, module) {
     const Helper = require("./helper");
     const UIHelper = require("./UIHelper");
     const SnippetsState = require("./snippetsState");
+    const SnippetsList = require("./snippetsList");
 
     /**
      * This function handles the save button click handler
@@ -17,6 +18,10 @@ define(function (require, exports, module) {
             Helper.clearAllInputFields();
             Helper.toggleSaveButtonDisability();
             SnippetsState.saveSnippetsToState();
+
+            // we need to move back to snippets list view after a snippet is saved
+            UIHelper.showSnippetListMenu();
+            SnippetsList.showSnippetsList();
         } else {
             UIHelper.showDuplicateAbbreviationError(snippetData.abbreviation);
         }
