@@ -47,12 +47,14 @@ define(function (require, exports, module) {
         const $snippetListMenu = $("#custom-snippets-list");
         const $backToListMenuBtn = $("#back-to-list-menu-btn");
         const $addNewSnippetBtn = $("#add-new-snippet-btn");
+        const $filterSnippetsPanel = $("#filter-snippets-panel");
 
         $addSnippetMenu.removeClass("hidden");
         $snippetListMenu.addClass("hidden");
 
         $backToListMenuBtn.removeClass("hidden");
         $addNewSnippetBtn.addClass("hidden");
+        $filterSnippetsPanel.addClass("hidden");
     }
 
     /**
@@ -65,12 +67,14 @@ define(function (require, exports, module) {
         const $snippetListMenu = $("#custom-snippets-list");
         const $backToListMenuBtn = $("#back-to-list-menu-btn");
         const $addNewSnippetBtn = $("#add-new-snippet-btn");
+        const $filterSnippetsPanel = $("#filter-snippets-panel");
 
         $addSnippetMenu.addClass("hidden");
         $snippetListMenu.removeClass("hidden");
 
         $backToListMenuBtn.addClass("hidden");
         $addNewSnippetBtn.removeClass("hidden");
+        $filterSnippetsPanel.removeClass("hidden");
     }
 
     /**
