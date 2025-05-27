@@ -174,7 +174,8 @@
 }
 
 #snippet-abbr {
-    flex: 0 0 140px;
+    flex: 1;
+    min-width: 80px;
     color: @bc-text;
     white-space: nowrap;
     overflow: hidden;
@@ -187,6 +188,7 @@
 
 #snippet-template {
     flex: 2.5;
+    min-width: 100px;
     margin: 0 12px;
     color: @bc-text-thin;
     white-space: nowrap;
@@ -199,7 +201,8 @@
 }
 
 #snippet-description {
-    flex: 1.3;
+    flex: 1.5;
+    min-width: 80px;
     margin: 0 12px;
     color: @bc-text-thin-quiet;
     white-space: nowrap;
@@ -212,7 +215,8 @@
 }
 
 #snippet-files {
-    flex: 0 0 120px;
+    flex: 0.8;
+    min-width: 60px;
     color: @bc-text-thin-quiet;
     text-align: center;
     white-space: nowrap;
