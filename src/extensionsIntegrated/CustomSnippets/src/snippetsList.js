@@ -10,6 +10,7 @@ define(function (require, exports, module) {
     const SnippetsState = require("./snippetsState");
     const UIHelper = require("./UIHelper");
     const FilterSnippets = require("./filterSnippets");
+    const Helper = require("./helper");
 
     /**
      * This function is responsible to create a snippet item
@@ -58,17 +59,38 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Updates the snippets count which is displayed in the toolbar at the left side
+     * Shows the appropriate empty state message based on context
+     * the context might be either one of the two cases:
+     * when no snippets are added
+     * or
+     * when no snippets match the filtered text
      * @private
      */
-    function _updateSnippetsCount() {
-        const count = Global.SnippetHintsList.length;
-        const $countSpan = $("#snippets-count");
-        if (count > 0) {
-            $countSpan.text(`(${count})`);
+    function _showEmptyState() {
+        UIHelper.showEmptySnippetMessage();
+        const $emptyMessage = $("#no-snippets-message");
+        const $filterInput = $("#filter-snippets-input");
+        const filterText = $filterInput.val().trim();
+
+        if (filterText) {
+            $emptyMessage.text(`No snippets match "${filterText}"`);
         } else {
-            $countSpan.text("");
+            $emptyMessage.text("No custom snippets added yet!");
         }
+    }
+
+    /**
+     * this function is responsible to render the filtered snippets list
+     * @private
+     * @param {Array} filteredSnippets - array of filtered snippet objects
+     */
+    function _renderSnippetsList(filteredSnippets) {
+        UIHelper.showSnippetsList(); // show the snippets list wrapper
+
+        // add each filtered snippet to the list
+        filteredSnippets.forEach(function(snippetItem) {
+            _createSnippetItem(snippetItem);
+        });
     }
 
     /**
@@ -77,42 +99,28 @@ define(function (require, exports, module) {
      * refer to '_registerHandlers' function inside the main.js file
      */
     function showSnippetsList() {
-        UIHelper.clearSnippetsList(); // to clear existing snippets list, as we'll rebuild it
-        const snippetList = Global.SnippetHintsList; // gets the list of the snippets, this is an array of objects
+        UIHelper.clearSnippetsList(); // clear existing snippets list, as we'll rebuild it
+        const snippetList = Global.SnippetHintsList; // get the list of snippets
 
-        _updateSnippetsCount();
+        Helper.updateSnippetsCount();
 
-        // if there are no snippets available, we show the message that no snippets are present
-        // refer to html file
+        // handle empty snippets case
         if (snippetList.length === 0) {
-            UIHelper.showEmptySnippetMessage();
-        } else {
-            // Apply filter to the snippets list
-            const filteredSnippets = FilterSnippets.filterSnippets(snippetList);
-
-            // Check if we have any snippets after filtering
-            if (filteredSnippets.length === 0) {
-                // Show a message indicating no matches found
-                UIHelper.showEmptySnippetMessage();
-                const $emptyMessage = $("#no-snippets-message");
-                const $filterInput = $("#filter-snippets-input");
-                const filterText = $filterInput.val().trim();
-
-                if (filterText) {
-                    $emptyMessage.text(`No snippets match "${filterText}"`);
-                } else {
-                    $emptyMessage.text("No custom snippets added yet!");
-                }
-            } else {
-                UIHelper.showSnippetsList(); // to remove the hidden class from the snippets list wrapper
-
-                // rebuild the snippets menu with filtered results
-                for (let i = 0; i < filteredSnippets.length; i++) {
-                    const snippetItem = filteredSnippets[i];
-                    _createSnippetItem(snippetItem);
-                }
-            }
+            _showEmptyState();
+            return;
         }
+
+        // apply the filtering and get results
+        const filteredSnippets = FilterSnippets.filterSnippets(snippetList);
+
+        // if there are no matches after filtering
+        if (filteredSnippets.length === 0) {
+            _showEmptyState();
+            return;
+        }
+
+        // render the filtered snippets
+        _renderSnippetsList(filteredSnippets);
     }
 
     /**

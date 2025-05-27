@@ -183,6 +183,20 @@ define(function (require, exports, module) {
         $("#file-extn-box").val("");
     }
 
+    /**
+     * Updates the snippets count which is displayed in the toolbar at the left side
+     * @private
+     */
+    function updateSnippetsCount() {
+        const count = Global.SnippetHintsList.length;
+        const $countSpan = $("#snippets-count");
+        if (count > 0) {
+            $countSpan.text(`(${count})`);
+        } else {
+            $countSpan.text("");
+        }
+    }
+
     exports.toggleSaveButtonDisability = toggleSaveButtonDisability;
     exports.createHintItem = createHintItem;
     exports.clearAllInputFields = clearAllInputFields;
@@ -191,4 +205,5 @@ define(function (require, exports, module) {
     exports.isSnippetSupportedInFile = isSnippetSupportedInFile;
     exports.hasExactMatchingSnippet = hasExactMatchingSnippet;
     exports.getMatchingSnippets = getMatchingSnippets;
+    exports.updateSnippetsCount = updateSnippetsCount;
 });
