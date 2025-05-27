@@ -1,3 +1,4 @@
+/* eslint-disable no-invalid-this */
 define(function (require, exports, module) {
     const AppInit = require("utils/AppInit");
     const CommandManager = require("command/CommandManager");
@@ -36,6 +37,8 @@ define(function (require, exports, module) {
 
         // also register the handlers
         _registerHandlers();
+
+        $("#filter-snippets-input").val("");
         SnippetsList.showSnippetsList(); // to show the snippets list in the snippets panel
     }
 
@@ -49,6 +52,8 @@ define(function (require, exports, module) {
             customSnippetsPanel.hide();
         } else {
             customSnippetsPanel.show();
+
+            $("#filter-snippets-input").val("");
             SnippetsList.showSnippetsList(); // we just remake the snippets list UI to make sure it is always on point
         }
     }
@@ -101,6 +106,7 @@ define(function (require, exports, module) {
         const $addSnippetBtn = $("#add-snippet-btn");
         const $addNewSnippetBtn = $("#add-new-snippet-btn");
         const $backToListMenuBtn = $("#back-to-list-menu-btn");
+        const $filterInput = $("#filter-snippets-input");
 
         $addSnippetBtn.on("click", function () {
             UIHelper.showAddSnippetMenu();
@@ -127,6 +133,17 @@ define(function (require, exports, module) {
         $descInput.on("input", Helper.toggleSaveButtonDisability);
         $templateInput.on("input", Helper.toggleSaveButtonDisability);
         $fileExtnInput.on("input", Helper.toggleSaveButtonDisability);
+
+        // filter input event handler
+        $filterInput.on("keyup input", function (event) {
+            // if user presses 'esc' we clear the input field
+            if (event && event.key === 'Escape') {
+                $(this).val("");
+                SnippetsList.showSnippetsList();
+                return;
+            }
+            SnippetsList.showSnippetsList();
+        });
     }
 
     AppInit.appReady(function () {

@@ -9,6 +9,7 @@ define(function (require, exports, module) {
     const Global = require("./global");
     const SnippetsState = require("./snippetsState");
     const UIHelper = require("./UIHelper");
+    const FilterSnippets = require("./filterSnippets");
 
     /**
      * This function is responsible to create a snippet item
@@ -86,12 +87,30 @@ define(function (require, exports, module) {
         if (snippetList.length === 0) {
             UIHelper.showEmptySnippetMessage();
         } else {
-            UIHelper.showSnippetsList(); // to remove the hidden class from the snippets list wrapper
+            // Apply filter to the snippets list
+            const filteredSnippets = FilterSnippets.filterSnippets(snippetList);
 
-            // rebuild the snippets menu
-            for (let i = 0; i < snippetList.length; i++) {
-                const snippetItem = snippetList[i];
-                _createSnippetItem(snippetItem);
+            // Check if we have any snippets after filtering
+            if (filteredSnippets.length === 0) {
+                // Show a message indicating no matches found
+                UIHelper.showEmptySnippetMessage();
+                const $emptyMessage = $("#no-snippets-message");
+                const $filterInput = $("#filter-snippets-input");
+                const filterText = $filterInput.val().trim();
+
+                if (filterText) {
+                    $emptyMessage.text(`No snippets match "${filterText}"`);
+                } else {
+                    $emptyMessage.text("No custom snippets added yet!");
+                }
+            } else {
+                UIHelper.showSnippetsList(); // to remove the hidden class from the snippets list wrapper
+
+                // rebuild the snippets menu with filtered results
+                for (let i = 0; i < filteredSnippets.length; i++) {
+                    const snippetItem = filteredSnippets[i];
+                    _createSnippetItem(snippetItem);
+                }
             }
         }
     }
@@ -108,17 +127,10 @@ define(function (require, exports, module) {
 
         if (index !== -1) {
             Global.SnippetHintsList.splice(index, 1); // removes it from the actual array
-            $snippetItem.remove(); // remove from the dom
-
             // save to preferences after deleting snippet
             SnippetsState.saveSnippetsToState();
-
-            _updateSnippetsCount();
-
-            // if snippetHintsList is now empty we need to show the empty snippet message
-            if (Global.SnippetHintsList.length === 0) {
-                UIHelper.showEmptySnippetMessage();
-            }
+            // Refresh the entire list to properly handle filtering
+            showSnippetsList();
         }
     }
 
