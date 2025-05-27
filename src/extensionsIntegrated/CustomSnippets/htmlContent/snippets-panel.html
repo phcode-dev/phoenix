@@ -1,7 +1,8 @@
 <div id="custom-snippets-panel" class="custom-snippets-panel bottom-panel vert-resizable top-resizer no-focus">
     <!--the toolbar at the top-->
     <div id="custom-snippets-toolbar" class="custom-snippets-toolbar">
-        <div class="custom-snippets-btn-group right">
+        <div class="toolbar-left-section">
+            <div class="toolbar-title">Custom Snippets <span id="snippets-count" class="snippets-count"></span></div>
             <div id="add-new-snippet-btn" class="custom-snippet-btn">
                 <button title="Add new snippet">
                     <i class="fas fa-plus"></i>
@@ -13,70 +14,70 @@
                 </button>
             </div>
         </div>
-        <div class="custom-snippets-btn-group left">
-            <div id="close-custom-snippets-panel-btn">
-                <button><i class="fas fa-times"></i></button>
-            </div>
+        <div id="close-custom-snippets-panel-btn">
+            <button><i class="fas fa-times"></i></button>
         </div>
     </div>
 
-    <!--this will display the list of all the already existing snippets-->
-    <div id="custom-snippets-list" class="custom-snippes-list">
-        <div id="no-snippets-wrapper" class="no-snippets-wrapper">
-            <div id="no-snippets-message">No custom snippets added yet!</div>
-            <div id="add-snippet-btn">
-                <button>Add Snippet</button>
+    <div class="resizable-content">
+        <!--this will display the list of all the already existing snippets-->
+        <div id="custom-snippets-list" class="custom-snippes-list">
+            <div id="no-snippets-wrapper" class="no-snippets-wrapper">
+                <div id="no-snippets-message">No custom snippets added yet!</div>
+                <div id="add-snippet-btn">
+                    <button>Add Snippet</button>
+                </div>
+            </div>
+
+            <div id="snippets-list-wrapper" class="snippets-list-wrapper hidden">
+                <!--leaving here for format reference-->
+                <!--
+                <div id="snippet-item">
+                    <div id="snippet-abbr">
+                        clg
+                    </div>
+                    <div id="snippet-template">
+                        console.log()
+                    </div>
+                    <div id="snippet-description">
+                        console log shortcut
+                    </div>
+                    <div id="snippet-files">
+                        all
+                    </div>
+                    <div id="delete-snippet-btn" class="delete-snippet-btn">
+                        <i class="fas fa-trash"></i>
+                    </div>
+                </div>
+                -->
             </div>
         </div>
 
-        <div id="snippets-list-wrapper" class="snippets-list-wrapper hidden">
-            <!--leaving here for format reference-->
-            <!--
-            <div id="snippet-item">
-                <div id="snippet-abbr">
-                    clg
-                </div>
-                <div id="snippet-template">
-                    console.log()
-                </div>
-                <div id="snippet-description">
-                    console log shortcut
-                </div>
-                <div id="snippet-files">
-                    all
-                </div>
-                <div id="delete-snippet-btn" class="delete-snippet-btn">
-                    <i class="fas fa-trash"></i>
-                </div>
+        <!--this view will open up when user clicks on add a new snippet button-->
+        <div id="custom-snippets-add-new" class="custom-snippets-add-new hidden">
+            <div id="abbr-box-wrapper">
+                <label for="abbr-box">Abbreviation: </label>
+                <input id="abbr-box" type="text" placeholder="clg" autocomplete="off" />
             </div>
-            -->
-        </div>
-    </div>
 
-    <!--this view will open up when user clicks on add a new snippet button-->
-    <div id="custom-snippets-add-new" class="custom-snippets-add-new hidden">
-        <div id="abbr-box-wrapper">
-            <label for="abbr-box">Abbreviation: </label>
-            <input id="abbr-box" type="text" placeholder="clg" autocomplete="off" />
-        </div>
+            <div id="desc-box-wrapper">
+                <label for="desc-box">Description: </label>
+                <input id="desc-box" type="text" placeholder="console log shortcut" autocomplete="off" />
+            </div>
 
-        <div id="desc-box-wrapper">
-            <label for="desc-box">Description: </label>
-            <input id="desc-box" type="text" placeholder="console log shortcut" autocomplete="off" />
-        </div>
+            <div id="template-text-box-wrapper">
+                <label for="template-text-box">Template Text: </label>
+                <textarea id="template-text-box" placeholder="console.log();" autocomplete="off"></textarea>
+            </div>
 
-        <div id="template-text-box-wrapper">
-            <label for="template-text-box">Template Text: </label>
-            <textarea id="template-text-box" placeholder="console.log();" autocomplete="off"></textarea>
-        </div>
+            <div id="file-extn-box-wrapper">
+                <label for="file-extn-box">File Extension: </label>
+                <input id="file-extn-box" type="text" placeholder=".js, .html or all" autocomplete="off" />
+            </div>
 
-        <div id="file-extn-box-wrapper">
-            <label for="file-extn-box">File Extension: </label>
-            <input id="file-extn-box" type="text" placeholder=".js, .html or all" autocomplete="off" />
-        </div>
-
-        <div id="save-custom-snippet-btn">
-            <button disabled>Save</button>
+            <div id="save-custom-snippet-btn">
+                <button disabled>Save</button>
+            </div>
         </div>
     </div>
 </div>
