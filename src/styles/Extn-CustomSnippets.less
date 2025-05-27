@@ -71,15 +71,21 @@
 }
 
 .filter-snippets-panel {
+    display: inline-block;
     position: absolute;
     top: 6px;
     right: 40px;
+}
+
+.filter-snippets-panel.hidden {
+    display: none;
 }
 
 .filter-snippets-panel #filter-snippets-input {
     height: 14px;
     width: 220px;
 }
+
 
 #close-custom-snippets-panel-btn {
     position: absolute;
