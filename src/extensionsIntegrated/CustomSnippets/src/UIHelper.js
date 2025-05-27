@@ -75,6 +75,8 @@ define(function (require, exports, module) {
         $backToListMenuBtn.addClass("hidden");
         $addNewSnippetBtn.removeClass("hidden");
         $filterSnippetsPanel.removeClass("hidden");
+
+        $("#filter-snippets-input").val("");
     }
 
     /**
