@@ -338,6 +338,28 @@ define(function (require, exports, module) {
         }
     }
 
+    /**
+     * this function is responsible to handle tab key press in textarea to insert tab character instead of moving focus
+     *
+     * @param {Event} e - The keydown event
+     * @param {HTMLElement} textarea - The textarea element
+     */
+    function handleTextareaTabKey(e, textarea) {
+        // check if the key that is pressed is a tab key
+        if (e.keyCode === 9 || e.which === 9) {
+            e.preventDefault(); // to prevent focus change
+
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const value = textarea.value;
+
+            // to insert the tab character
+            textarea.value = value.substring(0, start) + "\t" + value.substring(end);
+            textarea.selectionStart = textarea.selectionEnd = start + 1;
+            $(textarea).trigger('input');
+        }
+    }
+
     exports.toggleSaveButtonDisability = toggleSaveButtonDisability;
     exports.createHintItem = createHintItem;
     exports.clearAllInputFields = clearAllInputFields;
@@ -355,4 +377,5 @@ define(function (require, exports, module) {
     exports.getEditSnippetData = getEditSnippetData;
     exports.toggleEditSaveButtonDisability = toggleEditSaveButtonDisability;
     exports.clearEditInputFields = clearEditInputFields;
+    exports.handleTextareaTabKey = handleTextareaTabKey;
 });
