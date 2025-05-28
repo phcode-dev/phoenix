@@ -181,6 +181,62 @@ define(function (require, exports, module) {
     }
 
     /**
+     * This function populates the edit form with snippet data
+     * @param {Object} snippetData - The snippet object to edit
+     */
+    function populateEditForm(snippetData) {
+        $("#edit-abbr-box").val(snippetData.abbreviation);
+        $("#edit-desc-box").val(snippetData.description || "");
+        $("#edit-template-text-box").val(snippetData.templateText);
+        $("#edit-file-extn-box").val(snippetData.fileExtension === "all" ? "" : snippetData.fileExtension);
+    }
+
+    /**
+     * This function is responsible to get the snippet data from all the edit form input fields
+     * @returns {object} - a snippet object
+     */
+    function getEditSnippetData() {
+        // get the values from all the edit input fields
+        const abbreviation = $("#edit-abbr-box").val().trim();
+        const description = $("#edit-desc-box").val().trim();
+        const templateText = $("#edit-template-text-box").val().trim();
+        const fileExtension = $("#edit-file-extn-box").val().trim();
+
+        return {
+            abbreviation: abbreviation,
+            description: description || "", // allow empty description
+            templateText: templateText,
+            fileExtension: fileExtension || "all" // default to "all" if empty
+        };
+    }
+
+    /**
+     * This function is responsible to enable/disable the save button in edit mode
+     */
+    function toggleEditSaveButtonDisability() {
+        // abbreviation and template text are required fields
+        const $abbrInput = $("#edit-abbr-box");
+        const $templateInput = $("#edit-template-text-box");
+
+        const $saveBtn = $("#save-edit-snippet-btn");
+
+        // make sure that the required fields has some value
+        const hasAbbr = $abbrInput.val().trim().length > 0;
+        const hasTemplate = $templateInput.val().trim().length > 0;
+        $saveBtn.prop("disabled", !(hasAbbr && hasTemplate));
+    }
+
+    /**
+     * This function clears all the edit form input fields
+     */
+    function clearEditInputFields() {
+        $("#edit-abbr-box").val("");
+        $("#edit-desc-box").val("");
+        $("#edit-template-text-box").val("");
+        $("#edit-file-extn-box").val("");
+    }
+
+    /**
      * Updates the snippets count which is displayed in the toolbar at the left side
      * @private
      */
@@ -216,7 +272,13 @@ define(function (require, exports, module) {
         let value = $input.val();
         const sanitizedValue = sanitizeFileExtensionInput(value);
         $input.val(sanitizedValue);
-        toggleSaveButtonDisability();
+
+        // determine which save button to toggle based on input field
+        if ($input.attr("id") === "edit-file-extn-box") {
+            toggleEditSaveButtonDisability();
+        } else {
+            toggleSaveButtonDisability();
+        }
     }
 
     /**
@@ -268,7 +330,12 @@ define(function (require, exports, module) {
         const newPos = start + sanitized.length;
         input.setSelectionRange(newPos, newPos);
 
-        toggleSaveButtonDisability();
+        // determine which save button to toggle based on input field
+        if ($input.attr("id") === "edit-file-extn-box") {
+            toggleEditSaveButtonDisability();
+        } else {
+            toggleSaveButtonDisability();
+        }
     }
 
     exports.toggleSaveButtonDisability = toggleSaveButtonDisability;
@@ -284,4 +351,8 @@ define(function (require, exports, module) {
     exports.handleFileExtensionInput = handleFileExtensionInput;
     exports.handleFileExtensionKeypress = handleFileExtensionKeypress;
     exports.handleFileExtensionPaste = handleFileExtensionPaste;
+    exports.populateEditForm = populateEditForm;
+    exports.getEditSnippetData = getEditSnippetData;
+    exports.toggleEditSaveButtonDisability = toggleEditSaveButtonDisability;
+    exports.clearEditInputFields = clearEditInputFields;
 });
