@@ -112,10 +112,30 @@ define(function (require, exports, module) {
         }
     }
 
+    /**
+     * Shows the snippets list header
+     * this is called when there are snippets to display
+     */
+    function showSnippetsListHeader() {
+        const $snippetsListHeader = $("#snippets-list-header");
+        $snippetsListHeader.removeClass("hidden");
+    }
+
+    /**
+     * Hides the snippets list header
+     * this is called when there are no snippets to display (either none exist or all filtered out)
+     */
+    function hideSnippetsListHeader() {
+        const $snippetsListHeader = $("#snippets-list-header");
+        $snippetsListHeader.addClass("hidden");
+    }
+
     exports.showEmptySnippetMessage = showEmptySnippetMessage;
     exports.showSnippetsList = showSnippetsList;
     exports.clearSnippetsList = clearSnippetsList;
     exports.showAddSnippetMenu = showAddSnippetMenu;
     exports.showSnippetListMenu = showSnippetListMenu;
     exports.showDuplicateAbbreviationError = showDuplicateAbbreviationError;
+    exports.showSnippetsListHeader = showSnippetsListHeader;
+    exports.hideSnippetsListHeader = hideSnippetsListHeader;
 });
