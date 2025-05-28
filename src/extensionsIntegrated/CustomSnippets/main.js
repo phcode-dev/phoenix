@@ -39,6 +39,7 @@ define(function (require, exports, module) {
         _registerHandlers();
 
         $("#filter-snippets-input").val("");
+        UIHelper.initializeListViewToolbarTitle();
         SnippetsList.showSnippetsList(); // to show the snippets list in the snippets panel
     }
 
@@ -54,6 +55,7 @@ define(function (require, exports, module) {
             customSnippetsPanel.show();
 
             $("#filter-snippets-input").val("");
+            UIHelper.initializeListViewToolbarTitle();
             SnippetsList.showSnippetsList(); // we just remake the snippets list UI to make sure it is always on point
         }
     }

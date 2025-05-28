@@ -1,5 +1,7 @@
 /* eslint-disable no-invalid-this */
 define(function (require, exports, module) {
+    const Global = require("./global");
+
     /**
      * This function is called when there are no available snippets to display
      * this is called inside the 'showSnippetsList' function inside the snippetsList.js file
@@ -48,6 +50,7 @@ define(function (require, exports, module) {
         const $backToListMenuBtn = $("#back-to-list-menu-btn");
         const $addNewSnippetBtn = $("#add-new-snippet-btn");
         const $filterSnippetsPanel = $("#filter-snippets-panel");
+        const $toolbarTitle = $(".toolbar-title");
 
         $addSnippetMenu.removeClass("hidden");
         $snippetListMenu.addClass("hidden");
@@ -55,12 +58,14 @@ define(function (require, exports, module) {
         $backToListMenuBtn.removeClass("hidden");
         $addNewSnippetBtn.addClass("hidden");
         $filterSnippetsPanel.addClass("hidden");
+
+        $toolbarTitle.html('Add Snippet <span id="snippets-count" class="snippets-count"></span>');
     }
 
     /**
-     * This function is to show the snippets list menu
-     * this menu is loaded by default when user opens up the panel
-     * it displays the list of all the snippets available
+     * This function is responsible to show the snippet list menu
+     * snippet list menu is the menu which shows the list of all the snippets
+     * this is called when user clicks on the back button from add snippet menu
      */
     function showSnippetListMenu() {
         const $addSnippetMenu = $("#custom-snippets-add-new");
@@ -69,6 +74,7 @@ define(function (require, exports, module) {
         const $backToListMenuBtn = $("#back-to-list-menu-btn");
         const $addNewSnippetBtn = $("#add-new-snippet-btn");
         const $filterSnippetsPanel = $("#filter-snippets-panel");
+        const $toolbarTitle = $(".toolbar-title");
 
         $addSnippetMenu.addClass("hidden");
         $editSnippetMenu.addClass("hidden");
@@ -78,29 +84,34 @@ define(function (require, exports, module) {
         $addNewSnippetBtn.removeClass("hidden");
         $filterSnippetsPanel.removeClass("hidden");
 
+        // add the snippet count in the toolbar (the no. of snippets added)
+        const snippetCount = Global.SnippetHintsList.length;
+        $toolbarTitle.html(`Custom Snippets <span id="snippets-count" class="snippets-count">(${snippetCount})</span>`);
+
         $("#filter-snippets-input").val("");
     }
 
     /**
      * This function is responsible to show the edit snippet menu
      * edit snippet menu is the menu which allows users to edit an existing snippet
-     * this is called when user clicks on a snippet item (excluding delete button)
      */
     function showEditSnippetMenu() {
-        const $addSnippetMenu = $("#custom-snippets-add-new");
         const $editSnippetMenu = $("#custom-snippets-edit");
         const $snippetListMenu = $("#custom-snippets-list");
         const $backToListMenuBtn = $("#back-to-list-menu-btn");
         const $addNewSnippetBtn = $("#add-new-snippet-btn");
         const $filterSnippetsPanel = $("#filter-snippets-panel");
+        const $toolbarTitle = $(".toolbar-title");
 
-        $addSnippetMenu.addClass("hidden");
         $editSnippetMenu.removeClass("hidden");
         $snippetListMenu.addClass("hidden");
 
         $backToListMenuBtn.removeClass("hidden");
         $addNewSnippetBtn.addClass("hidden");
         $filterSnippetsPanel.addClass("hidden");
+
+        // Update toolbar title
+        $toolbarTitle.html('Edit Snippet <span id="snippets-count" class="snippets-count"></span>');
     }
 
     /**
@@ -154,6 +165,16 @@ define(function (require, exports, module) {
         $snippetsListHeader.addClass("hidden");
     }
 
+    /**
+     * Initializes the toolbar title for the list view
+     * This is called when the panel is first opened to ensure the snippet count is displayed
+     */
+    function initializeListViewToolbarTitle() {
+        const $toolbarTitle = $(".toolbar-title");
+        const snippetCount = Global.SnippetHintsList.length;
+        $toolbarTitle.html(`Custom Snippets <span id="snippets-count" class="snippets-count">(${snippetCount})</span>`);
+    }
+
     exports.showEmptySnippetMessage = showEmptySnippetMessage;
     exports.showSnippetsList = showSnippetsList;
     exports.clearSnippetsList = clearSnippetsList;
@@ -163,4 +184,5 @@ define(function (require, exports, module) {
     exports.showDuplicateAbbreviationError = showDuplicateAbbreviationError;
     exports.showSnippetsListHeader = showSnippetsListHeader;
     exports.hideSnippetsListHeader = hideSnippetsListHeader;
+    exports.initializeListViewToolbarTitle = initializeListViewToolbarTitle;
 });
