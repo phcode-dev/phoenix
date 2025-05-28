@@ -130,7 +130,6 @@ define(function (require, exports, module) {
         });
 
         $abbrInput.on("input", Helper.toggleSaveButtonDisability);
-        $descInput.on("input", Helper.toggleSaveButtonDisability);
         $templateInput.on("input", Helper.toggleSaveButtonDisability);
 
         $fileExtnInput.on("input", function () {

@@ -17,9 +17,9 @@ define(function (require, exports, module) {
 
         return {
             abbreviation: abbreviation,
-            description: description,
+            description: description || "", // allow empty description
             templateText: templateText,
-            fileExtension: fileExtension
+            fileExtension: fileExtension || "all" // default to "all" if empty
         };
     }
 
@@ -30,20 +30,17 @@ define(function (require, exports, module) {
      * this is called inside the '_registerHandlers' function in the main.js file
      */
     function toggleSaveButtonDisability() {
-        // these are the required fields
+        // abbreviation and template text are required fields
+        // they both should have some value only then save button will be enabled
         const $abbrInput = $("#abbr-box");
-        const $descInput = $("#desc-box");
         const $templateInput = $("#template-text-box");
-        const $fileExtnInput = $("#file-extn-box");
 
         const $saveBtn = $("#save-custom-snippet-btn").find("button");
 
         // make sure that the required fields has some value
         const hasAbbr = $abbrInput.val().trim().length > 0;
-        const hasDesc = $descInput.val().trim().length > 0;
         const hasTemplate = $templateInput.val().trim().length > 0;
-        const hasFileExtn = $fileExtnInput.val().trim().length > 0;
-        $saveBtn.prop("disabled", !(hasAbbr && hasDesc && hasTemplate && hasFileExtn));
+        $saveBtn.prop("disabled", !(hasAbbr && hasTemplate));
     }
 
     /**
