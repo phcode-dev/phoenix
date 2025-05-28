@@ -108,6 +108,12 @@ define(function (require, exports, module) {
         const $backToListMenuBtn = $("#back-to-list-menu-btn");
         const $filterInput = $("#filter-snippets-input");
 
+        const $editAbbrInput = $("#edit-abbr-box");
+        const $editTemplateInput = $("#edit-template-text-box");
+        const $editFileExtnInput = $("#edit-file-extn-box");
+        const $saveEditSnippetBtn = $("#save-edit-snippet-btn");
+        const $resetSnippetBtn = $("#reset-snippet-btn");
+
         $addSnippetBtn.on("click", function () {
             UIHelper.showAddSnippetMenu();
         });
@@ -140,6 +146,27 @@ define(function (require, exports, module) {
         });
         $fileExtnInput.on("paste", function (e) {
             Helper.handleFileExtensionPaste(e, $(this));
+        });
+
+        $editAbbrInput.on("input", Helper.toggleEditSaveButtonDisability);
+        $editTemplateInput.on("input", Helper.toggleEditSaveButtonDisability);
+
+        $editFileExtnInput.on("input", function () {
+            Helper.handleFileExtensionInput($(this));
+        });
+        $editFileExtnInput.on("keypress", function (e) {
+            Helper.handleFileExtensionKeypress(e, this);
+        });
+        $editFileExtnInput.on("paste", function (e) {
+            Helper.handleFileExtensionPaste(e, $(this));
+        });
+
+        $saveEditSnippetBtn.on("click", function () {
+            Driver.handleEditSaveBtnClick();
+        });
+
+        $resetSnippetBtn.on("click", function () {
+            Driver.handleResetBtnClick();
         });
 
         // filter input event handler
