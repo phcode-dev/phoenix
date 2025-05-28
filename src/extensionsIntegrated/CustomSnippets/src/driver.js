@@ -13,6 +13,14 @@ define(function (require, exports, module) {
      */
     function handleSaveBtnClick() {
         const snippetData = Helper.getSnippetData();
+
+        if (!snippetData.abbreviation || !snippetData.abbreviation.trim()) {
+            return;
+        }
+        if (!snippetData.templateText || !snippetData.templateText.trim()) {
+            return;
+        }
+
         if (shouldAddSnippetToList(snippetData)) {
             Global.SnippetHintsList.push(snippetData);
             Helper.clearAllInputFields();
@@ -35,6 +43,13 @@ define(function (require, exports, module) {
         const $editView = $("#custom-snippets-edit");
         const originalSnippet = $editView.data("originalSnippet");
         const snippetIndex = $editView.data("snippetIndex");
+
+        if (!editedData.abbreviation || !editedData.abbreviation.trim()) {
+            return;
+        }
+        if (!editedData.templateText || !editedData.templateText.trim()) {
+            return;
+        }
 
         // check if abbreviation changed and if new abbreviation already exists
         if (editedData.abbreviation !== originalSnippet.abbreviation) {

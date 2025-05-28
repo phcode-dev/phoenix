@@ -35,7 +35,7 @@ define(function (require, exports, module) {
         const $abbrInput = $("#abbr-box");
         const $templateInput = $("#template-text-box");
 
-        const $saveBtn = $("#save-custom-snippet-btn").find("button");
+        const $saveBtn = $("#save-custom-snippet-btn button");
 
         // make sure that the required fields has some value
         const hasAbbr = $abbrInput.val().trim().length > 0;
