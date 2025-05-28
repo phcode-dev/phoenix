@@ -138,6 +138,10 @@ define(function (require, exports, module) {
         $abbrInput.on("input", Helper.toggleSaveButtonDisability);
         $templateInput.on("input", Helper.toggleSaveButtonDisability);
 
+        $templateInput.on("keydown", function (e) {
+            Helper.handleTextareaTabKey(e, this);
+        });
+
         $fileExtnInput.on("input", function () {
             Helper.handleFileExtensionInput($(this));
         });
@@ -150,6 +154,10 @@ define(function (require, exports, module) {
 
         $editAbbrInput.on("input", Helper.toggleEditSaveButtonDisability);
         $editTemplateInput.on("input", Helper.toggleEditSaveButtonDisability);
+
+        $editTemplateInput.on("keydown", function (e) {
+            Helper.handleTextareaTabKey(e, this);
+        });
 
         $editFileExtnInput.on("input", function () {
             Helper.handleFileExtensionInput($(this));
