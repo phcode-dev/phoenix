@@ -368,19 +368,31 @@
 }
 
 #abbreviation-error-message {
-    color: #f44336;
+    color: @bc-error;
     font-size: 12px;
-    margin-top: 3px;
-    margin-left: 5px;
-    padding: 3px 5px;
-    background-color: rgba(244, 67, 54, 0.1);
-    border-radius: 3px;
+    margin-top: 6px;
+    margin-left: 0;
+    padding: 6px 8px;
+    background-color: rgba(247, 70, 135, 0.1);
+    border: 1px solid @bc-error;
+    border-radius: @bc-border-radius;
     animation: fadeIn 0.3s ease;
+
+    .dark & {
+        color: @dark-bc-error;
+        background-color: rgba(247, 70, 135, 0.15);
+        border: 1px solid @dark-bc-error;
+    }
 }
 
 .error-input {
-    border-color: #f44336 !important;
-    box-shadow: 0 0 3px rgba(244, 67, 54, 0.5) !important;
+    border-color: @bc-error !important;
+    box-shadow: 0 0 0 1px @bc-error !important;
+
+    .dark & {
+        border-color: @dark-bc-error !important;
+        box-shadow: 0 0 0 1px @dark-bc-error !important;
+    }
 }
 
 @keyframes fadeIn {
@@ -396,11 +408,229 @@
     width: 100%;
     min-height: 150px;
     max-height: 150px;
-    resize: none;
+    resize: none !important;
     padding: 6px 8px;
     box-sizing: border-box;
     margin: 0;
     white-space: pre;
     overflow-wrap: normal;
     word-break: normal;
+}
+
+#custom-snippets-add-new {
+    padding: 8px;
+    background-color: @bc-panel-bg;
+    border-top: 1px solid @bc-panel-separator;
+
+    .dark & {
+        background-color: @dark-bc-panel-bg;
+        border-top: 1px solid @dark-bc-panel-separator;
+    }
+
+    #abbr-box-wrapper,
+    #desc-box-wrapper,
+    #template-text-box-wrapper,
+    #file-extn-box-wrapper {
+        margin-bottom: 12px;
+
+        &:last-of-type {
+            margin-bottom: 8px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: @bc-text;
+
+            .dark & {
+                color: @dark-bc-text;
+            }
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            background-color: @bc-input-bg;
+            border: 1px solid @bc-btn-border;
+            color: @bc-text-thin;
+            box-shadow: inset 0 1px 0 @bc-shadow-small;
+            border-radius: @bc-border-radius;
+            padding: 8px 10px;
+            box-sizing: border-box;
+            transition:
+                border linear 180ms,
+                box-shadow linear 180ms;
+
+            .dark & {
+                background-color: @dark-bc-input-bg;
+                border: 1px solid @dark-bc-btn-border;
+                color: @dark-bc-text-thin;
+                box-shadow: inset 0 1px 0 @dark-bc-shadow-small;
+            }
+
+            &::-webkit-input-placeholder {
+                color: @bc-text-thin-quiet;
+
+                .dark & {
+                    color: @dark-bc-text-thin-quiet;
+                }
+            }
+
+            &:focus {
+                outline: none;
+                background-color: @bc-input-bg;
+                text-shadow: none;
+                border: 1px solid @bc-btn-border-focused;
+                box-shadow:
+                    inset 0 1px 0 @bc-shadow-small,
+                    0 0 0 1px @bc-btn-border-focused-glow;
+
+                .dark & {
+                    background-color: @dark-bc-input-bg;
+                    border: 1px solid @dark-bc-btn-border-focused;
+                    box-shadow:
+                        inset 0 1px 0 @dark-bc-shadow-small,
+                        0 0 0 1px @dark-bc-btn-border-focused-glow;
+                }
+            }
+
+            &:disabled {
+                opacity: @bc-disabled-opacity;
+                cursor: default;
+
+                .dark & {
+                    opacity: @dark-bc-disabled-opacity;
+                }
+            }
+        }
+
+        input {
+            padding: 4px 10px;
+            height: 32px;
+        }
+    }
+
+    .form-row {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 12px;
+
+        #abbr-box-wrapper {
+            flex: 0 0 35%;
+            margin-bottom: 0;
+        }
+
+        #desc-box-wrapper {
+            flex: 0 0 63%;
+            margin-bottom: 0;
+        }
+    }
+
+    #file-extn-box-wrapper {
+        label {
+            display: inline-block;
+            margin-bottom: 0;
+            margin-right: 8px;
+            line-height: 40px;
+            vertical-align: top;
+            min-width: 100px;
+        }
+
+        input {
+            display: inline-block;
+            width: 200px;
+            vertical-align: top;
+        }
+    }
+
+    #template-text-box-wrapper {
+        textarea {
+            min-height: 100px;
+            max-height: 180px;
+            resize: vertical;
+            line-height: 1.4;
+            white-space: pre;
+            overflow-wrap: normal;
+            word-break: normal;
+        }
+    }
+
+    #save-custom-snippet-btn {
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid @bc-panel-separator;
+        text-align: right;
+
+        .dark & {
+            border-top: 1px solid @dark-bc-panel-separator;
+        }
+
+        button {
+            background-color: @bc-primary-btn-bg;
+            border: 1px solid @bc-primary-btn-border;
+            border-radius: @bc-border-radius;
+            color: @bc-text-alt;
+            padding: 8px 20px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            box-shadow: inset 0 1px 0 @bc-highlight;
+            min-width: 80px;
+            font-weight: @font-weight-semibold;
+            text-shadow: 0 -1px 0 @bc-shadow-small;
+
+            .dark & {
+                background-color: @dark-bc-primary-btn-bg;
+                border: 1px solid @dark-bc-primary-btn-border;
+                color: @dark-bc-text-alt;
+                box-shadow: inset 0 1px 0 @dark-bc-highlight;
+                text-shadow: 0 -1px 0 @dark-bc-shadow-small;
+            }
+
+            &:hover:not(:disabled) {
+                background-color: lighten(@bc-primary-btn-bg, 10%);
+
+                .dark & {
+                    background-color: lighten(@dark-bc-primary-btn-bg, 10%);
+                }
+            }
+
+            &:focus {
+                outline: none;
+                border: 1px solid @bc-primary-btn-border;
+                box-shadow:
+                    inset 0 1px 0 @bc-highlight,
+                    0 0 0 1px @bc-primary-btn-border-focused-glow;
+
+                .dark & {
+                    border: 1px solid @dark-bc-primary-btn-border;
+                    box-shadow:
+                        inset 0 1px 0 @dark-bc-highlight,
+                        0 0 0 1px @dark-bc-btn-border-focused-glow;
+                }
+            }
+
+            &:disabled {
+                opacity: @bc-disabled-opacity;
+                cursor: default;
+                background-color: @bc-primary-btn-bg;
+                box-shadow: inset 0 1px 0 @bc-highlight;
+
+                .dark & {
+                    opacity: @dark-bc-disabled-opacity;
+                    background-color: @dark-bc-primary-btn-bg;
+                    box-shadow: inset 0 1px 0 @dark-bc-highlight;
+                }
+            }
+
+            &:active:not(:disabled) {
+                background-color: @bc-primary-btn-bg-down;
+                box-shadow: inset 0 1px 0 @bc-shadow-small;
+
+                .dark & {
+                    background-color: @dark-bc-primary-btn-bg-down;
+                    box-shadow: inset 0 1px 0 @dark-bc-shadow-small;
+                }
+            }
+        }
+    }
 }
