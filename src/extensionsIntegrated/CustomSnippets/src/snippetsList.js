@@ -112,8 +112,6 @@ define(function (require, exports, module) {
         UIHelper.clearSnippetsList(); // clear existing snippets list, as we'll rebuild it
         const snippetList = Global.SnippetHintsList; // get the list of snippets
 
-        Helper.updateSnippetsCount();
-
         // handle empty snippets case
         if (snippetList.length === 0) {
             _showEmptyState();
