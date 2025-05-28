@@ -132,12 +132,21 @@ define(function (require, exports, module) {
         $abbrInput.on("input", Helper.toggleSaveButtonDisability);
         $descInput.on("input", Helper.toggleSaveButtonDisability);
         $templateInput.on("input", Helper.toggleSaveButtonDisability);
-        $fileExtnInput.on("input", Helper.toggleSaveButtonDisability);
+
+        $fileExtnInput.on("input", function () {
+            Helper.handleFileExtensionInput($(this));
+        });
+        $fileExtnInput.on("keypress", function (e) {
+            Helper.handleFileExtensionKeypress(e, this);
+        });
+        $fileExtnInput.on("paste", function (e) {
+            Helper.handleFileExtensionPaste(e, $(this));
+        });
 
         // filter input event handler
         $filterInput.on("keyup input", function (event) {
             // if user presses 'esc' we clear the input field
-            if (event && event.key === 'Escape') {
+            if (event && event.key === "Escape") {
                 $(this).val("");
                 SnippetsList.showSnippetsList();
                 return;

@@ -197,6 +197,83 @@ define(function (require, exports, module) {
         }
     }
 
+    /**
+     * validates and sanitizes file extension input
+     *
+     * @param {string} value - The input value to sanitize
+     * @returns {string} - The sanitized value
+     */
+    function sanitizeFileExtensionInput(value) {
+        value = value.replace(/[^a-zA-Z,.\s]/g, ""); // we only allow a-z, A-Z, comma, dot, space
+        value = value.replace(/\.{2,}/g, "."); // don't allow 2 consecutive dots
+        value = value.replace(/(\.)\1+/g, "$1"); // prevent two dots next to each other
+        return value;
+    }
+
+    /**
+     * handles file extension input event with validation
+     *
+     * @param {jQuery} $input - The input element
+     */
+    function handleFileExtensionInput($input) {
+        let value = $input.val();
+        const sanitizedValue = sanitizeFileExtensionInput(value);
+        $input.val(sanitizedValue);
+        toggleSaveButtonDisability();
+    }
+
+    /**
+     * Handles file extension keypress event validation
+     *
+     * @param {Event} e - The keypress event
+     * @param {HTMLElement} input - The input element
+     * @returns {boolean} - Whether to allow the keypress
+     */
+    function handleFileExtensionKeypress(e, input) {
+        const char = String.fromCharCode(e.which);
+        const allowed = /^[a-zA-Z,.\s]$/;
+
+        // prevent two consecutive dots
+        if (char === "." && input.value.slice(-1) === ".") {
+            e.preventDefault();
+            return false;
+        }
+
+        if (!allowed.test(char)) {
+            e.preventDefault();
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Handles file extension paste event with validation
+     *
+     * @param {Event} e - The paste event
+     * @param {jQuery} $input - The input element
+     */
+    function handleFileExtensionPaste(e, $input) {
+        e.preventDefault();
+
+        const clipboardData = (e.originalEvent || e).clipboardData.getData("text");
+        let sanitized = sanitizeFileExtensionInput(clipboardData);
+
+        // insert sanitized value at current cursor position
+        const input = $input[0];
+        const start = input.selectionStart;
+        const end = input.selectionEnd;
+        const currentValue = input.value;
+
+        input.value = currentValue.substring(0, start) + sanitized + currentValue.substring(end);
+
+        // move the cursor to the end of the inserted text
+        const newPos = start + sanitized.length;
+        input.setSelectionRange(newPos, newPos);
+
+        toggleSaveButtonDisability();
+    }
+
     exports.toggleSaveButtonDisability = toggleSaveButtonDisability;
     exports.createHintItem = createHintItem;
     exports.clearAllInputFields = clearAllInputFields;
@@ -206,4 +283,8 @@ define(function (require, exports, module) {
     exports.hasExactMatchingSnippet = hasExactMatchingSnippet;
     exports.getMatchingSnippets = getMatchingSnippets;
     exports.updateSnippetsCount = updateSnippetsCount;
+    exports.sanitizeFileExtensionInput = sanitizeFileExtensionInput;
+    exports.handleFileExtensionInput = handleFileExtensionInput;
+    exports.handleFileExtensionKeypress = handleFileExtensionKeypress;
+    exports.handleFileExtensionPaste = handleFileExtensionPaste;
 });
