@@ -70,23 +70,39 @@
         <div id="custom-snippets-add-new" class="custom-snippets-add-new hidden">
             <div class="form-row">
                 <div id="abbr-box-wrapper">
-                    <label for="abbr-box">Abbreviation: </label>
+                    <label for="abbr-box"
+                           title="Enter a short abbreviation (e.g., 'clg', 'fn', 'div'). This is what you'll type to trigger the snippet."
+                           data-placement="top">
+                        Abbreviation:
+                    </label>
                     <input id="abbr-box" type="text" placeholder="clg" autocomplete="off" />
                 </div>
 
                 <div id="desc-box-wrapper">
-                    <label for="desc-box">Description: </label>
+                    <label for="desc-box"
+                           title="Brief description of what this snippet does (e.g., 'console log shortcut', 'function template')."
+                           data-placement="top">
+                        Description:
+                    </label>
                     <input id="desc-box" type="text" placeholder="console log shortcut" autocomplete="off" />
                 </div>
             </div>
 
             <div id="template-text-box-wrapper">
-                <label for="template-text-box">Template Text: </label>
-                <textarea id="template-text-box" placeholder="console.log();" autocomplete="off"></textarea>
+                <label for="template-text-box"
+                       title="The actual code that will be inserted. Use ${cursor} to set cursor position after insertion."
+                       data-placement="top">
+                    Template Text:
+                </label>
+                <textarea id="template-text-box" placeholder="console.log(${cursor});" autocomplete="off"></textarea>
             </div>
 
             <div id="file-extn-box-wrapper">
-                <label for="file-extn-box">File Extension: </label>
+                <label for="file-extn-box"
+                       title="Specify file types where this snippet should be available (e.g., '.js', '.html', '.css') or 'all' for all files."
+                       data-placement="top">
+                    File Extension:
+                </label>
                 <input id="file-extn-box" type="text" placeholder=".js, .html or all" autocomplete="off" />
             </div>
 

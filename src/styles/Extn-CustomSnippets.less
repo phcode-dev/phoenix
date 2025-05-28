@@ -441,9 +441,19 @@
             display: block;
             margin-bottom: 6px;
             color: @bc-text;
+            cursor: pointer;
+            transition: color 0.2s ease;
 
             .dark & {
                 color: @dark-bc-text;
+            }
+
+            &:hover {
+                color: @bc-text-emphasized;
+
+                .dark & {
+                    color: @dark-bc-text-emphasized;
+                }
             }
         }
 
