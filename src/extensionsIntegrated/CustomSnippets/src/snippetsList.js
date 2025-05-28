@@ -20,7 +20,7 @@ define(function (require, exports, module) {
     function _createSnippetItem(snippetItem) {
         // the main snippet item container,
         // all the items like abbr, description and all that will be appended into this
-        const $snippetItem = $("<div>").attr("data-abbr", snippetItem.abbreviation).attr("id", "snippet-item");
+        const $snippetItem = $("<div>").attr("data-abbr", snippetItem.abbreviation).addClass("snippet-item");
 
         const $snippetAbbr = $("<div>")
             .text(snippetItem.abbreviation)
@@ -138,7 +138,7 @@ define(function (require, exports, module) {
      */
     function deleteSnippet() {
         // get the element
-        const $snippetItem = $(this).closest("#snippet-item");
+        const $snippetItem = $(this).closest(".snippet-item");
         const snippetItem = $snippetItem.data("snippet"); // this gives the actual object with all the keys and vals
 
         const index = Global.SnippetHintsList.findIndex((s) => s.abbreviation === snippetItem.abbreviation);
@@ -157,14 +157,48 @@ define(function (require, exports, module) {
      * @private
      */
     function _registerHandlers() {
-        const $deleteSnippetBtn = $(".delete-snippet-btn");
+        const $snippetsListWrapper = $("#snippets-list-wrapper");
 
-        $deleteSnippetBtn.off("click");
-        $deleteSnippetBtn.on("click", function () {
+        $snippetsListWrapper.off("click.deleteSnippet");
+        $snippetsListWrapper.on("click.deleteSnippet", ".delete-snippet-btn", function (e) {
+            e.stopPropagation(); // prevent triggering the edit handler
             deleteSnippet.call(this);
         });
+
+        // Use event delegation for snippet item clicks to enable editing
+        $snippetsListWrapper.off("click.editSnippet");
+        $snippetsListWrapper.on("click.editSnippet", ".snippet-item", function (e) {
+            // don't trigger edit if clicking on delete button
+            if ($(e.target).closest(".delete-snippet-btn").length === 0) {
+                editSnippet.call(this);
+            }
+        });
+    }
+
+    /**
+     * This function handles editing a snippet when the snippet item is clicked
+     */
+    function editSnippet() {
+        // get the snippet data from the clicked item
+        const $snippetItem = $(this).closest(".snippet-item");
+        const snippetItem = $snippetItem.data("snippet");
+
+        // populate the edit form with current snippet data
+        Helper.populateEditForm(snippetItem);
+
+        // store the original data for reset functionality
+        $("#custom-snippets-edit").data("originalSnippet", snippetItem);
+        $("#custom-snippets-edit").data("snippetIndex",
+            Global.SnippetHintsList.findIndex(s => s.abbreviation === snippetItem.abbreviation));
+
+        // show the edit form
+        UIHelper.showEditSnippetMenu();
+
+        // enable the save button based on current data
+        Helper.toggleEditSaveButtonDisability();
     }
 
     exports.showSnippetsList = showSnippetsList;
     exports.deleteSnippet = deleteSnippet;
+    exports.editSnippet = editSnippet;
 });

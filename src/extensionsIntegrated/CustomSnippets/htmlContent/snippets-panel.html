@@ -110,5 +110,51 @@
                 <button disabled>Save</button>
             </div>
         </div>
+
+        <!--this view will open up when user clicks on a snippet item to edit it-->
+        <div id="custom-snippets-edit" class="custom-snippets-edit hidden">
+            <div class="form-row">
+                <div id="edit-abbr-box-wrapper">
+                    <label for="edit-abbr-box"
+                           title="Enter a short abbreviation (e.g., 'clg', 'fn', 'div'). This is what you'll type to trigger the snippet."
+                           data-placement="top">
+                        Abbreviation:
+                    </label>
+                    <input id="edit-abbr-box" type="text" placeholder="clg" autocomplete="off" />
+                </div>
+
+                <div id="edit-desc-box-wrapper">
+                    <label for="edit-desc-box"
+                           title="Brief description of what this snippet does. Leave empty if no description needed."
+                           data-placement="top">
+                        Description (optional):
+                    </label>
+                    <input id="edit-desc-box" type="text" placeholder="console log shortcut (optional)" autocomplete="off" />
+                </div>
+            </div>
+
+            <div id="edit-template-text-box-wrapper">
+                <label for="edit-template-text-box"
+                       title="The actual code that will be inserted. Use ${cursor} to set cursor position after insertion."
+                       data-placement="top">
+                    Template Text:
+                </label>
+                <textarea id="edit-template-text-box" placeholder="console.log(${cursor});" autocomplete="off"></textarea>
+            </div>
+
+            <div id="edit-file-extn-box-wrapper">
+                <label for="edit-file-extn-box"
+                       title="Specify file types where this snippet should be available (e.g., '.js', '.html', '.css'). Leave empty to make it available for all files."
+                       data-placement="top">
+                    File Extension (optional):
+                </label>
+                <input id="edit-file-extn-box" type="text" placeholder="Leave empty for all files, or specify like .js, .html" autocomplete="off" />
+            </div>
+
+            <div id="edit-snippet-buttons">
+                <button id="reset-snippet-btn">Reset</button>
+                <button id="save-edit-snippet-btn" disabled>Save</button>
+            </div>
+        </div>
     </div>
 </div>
