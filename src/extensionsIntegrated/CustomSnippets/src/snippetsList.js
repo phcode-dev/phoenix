@@ -68,6 +68,7 @@ define(function (require, exports, module) {
      */
     function _showEmptyState() {
         UIHelper.showEmptySnippetMessage();
+        UIHelper.hideSnippetsListHeader();
         const $emptyMessage = $("#no-snippets-message");
         const $filterInput = $("#filter-snippets-input");
         const filterText = $filterInput.val().trim();
@@ -86,6 +87,7 @@ define(function (require, exports, module) {
      */
     function _renderSnippetsList(filteredSnippets) {
         UIHelper.showSnippetsList(); // show the snippets list wrapper
+        UIHelper.showSnippetsListHeader(); // show header when there are snippets to display
 
         // add each filtered snippet to the list
         filteredSnippets.forEach(function(snippetItem) {
