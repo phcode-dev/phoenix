@@ -1,4 +1,3 @@
-
 /*
  * This file handles the display and management of the snippets list that is shown in the UI
  * Note: when there are no snippets present, a message like no snippets are added yet is shown. refer to the html file
@@ -34,9 +33,18 @@ define(function (require, exports, module) {
             .attr("title", `Template: ${snippetItem.templateText}`);
 
         const $snippetDescription = $("<div>")
-            .text(snippetItem.description || "No description")
+            .text(
+                snippetItem.description && snippetItem.description.trim() !== ""
+                    ? snippetItem.description
+                    : "No description"
+            )
             .attr("id", "snippet-description")
-            .attr("title", `Description: ${snippetItem.description}`);
+            .attr(
+                "title",
+                snippetItem.description && snippetItem.description.trim() !== ""
+                    ? `Description: ${snippetItem.description}`
+                    : "No description provided"
+            );
 
         const $snippetFiles = $("<div>")
             .text(snippetItem.fileExtension || "all")
@@ -90,7 +98,7 @@ define(function (require, exports, module) {
         UIHelper.showSnippetsListHeader(); // show header when there are snippets to display
 
         // add each filtered snippet to the list
-        filteredSnippets.forEach(function(snippetItem) {
+        filteredSnippets.forEach(function (snippetItem) {
             _createSnippetItem(snippetItem);
         });
     }
