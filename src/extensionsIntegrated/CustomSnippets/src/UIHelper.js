@@ -64,12 +64,14 @@ define(function (require, exports, module) {
      */
     function showSnippetListMenu() {
         const $addSnippetMenu = $("#custom-snippets-add-new");
+        const $editSnippetMenu = $("#custom-snippets-edit");
         const $snippetListMenu = $("#custom-snippets-list");
         const $backToListMenuBtn = $("#back-to-list-menu-btn");
         const $addNewSnippetBtn = $("#add-new-snippet-btn");
         const $filterSnippetsPanel = $("#filter-snippets-panel");
 
         $addSnippetMenu.addClass("hidden");
+        $editSnippetMenu.addClass("hidden");
         $snippetListMenu.removeClass("hidden");
 
         $backToListMenuBtn.addClass("hidden");
@@ -77,6 +79,28 @@ define(function (require, exports, module) {
         $filterSnippetsPanel.removeClass("hidden");
 
         $("#filter-snippets-input").val("");
+    }
+
+    /**
+     * This function is responsible to show the edit snippet menu
+     * edit snippet menu is the menu which allows users to edit an existing snippet
+     * this is called when user clicks on a snippet item (excluding delete button)
+     */
+    function showEditSnippetMenu() {
+        const $addSnippetMenu = $("#custom-snippets-add-new");
+        const $editSnippetMenu = $("#custom-snippets-edit");
+        const $snippetListMenu = $("#custom-snippets-list");
+        const $backToListMenuBtn = $("#back-to-list-menu-btn");
+        const $addNewSnippetBtn = $("#add-new-snippet-btn");
+        const $filterSnippetsPanel = $("#filter-snippets-panel");
+
+        $addSnippetMenu.addClass("hidden");
+        $editSnippetMenu.removeClass("hidden");
+        $snippetListMenu.addClass("hidden");
+
+        $backToListMenuBtn.removeClass("hidden");
+        $addNewSnippetBtn.addClass("hidden");
+        $filterSnippetsPanel.addClass("hidden");
     }
 
     /**
@@ -135,6 +159,7 @@ define(function (require, exports, module) {
     exports.clearSnippetsList = clearSnippetsList;
     exports.showAddSnippetMenu = showAddSnippetMenu;
     exports.showSnippetListMenu = showSnippetListMenu;
+    exports.showEditSnippetMenu = showEditSnippetMenu;
     exports.showDuplicateAbbreviationError = showDuplicateAbbreviationError;
     exports.showSnippetsListHeader = showSnippetsListHeader;
     exports.hideSnippetsListHeader = hideSnippetsListHeader;

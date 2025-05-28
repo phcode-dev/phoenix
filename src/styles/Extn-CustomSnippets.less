@@ -120,6 +120,10 @@
     display: none;
 }
 
+#custom-snippets-edit.hidden {
+    display: none;
+}
+
 .custom-snippet-btn.hidden {
     display: none;
 }
@@ -184,7 +188,7 @@
     text-align: center;
 }
 
-#snippet-item {
+.snippet-item {
     display: flex;
     align-items: center;
     padding: 4px 12px 4px 16px;
@@ -194,7 +198,7 @@
     color: @bc-text;
     line-height: 16px;
     position: relative;
-    cursor: default;
+    cursor: pointer;
     transition: background-color 0.1s ease;
 
     .dark & {
@@ -596,6 +600,292 @@
                 color: @dark-bc-text-alt;
                 box-shadow: inset 0 1px 0 @dark-bc-highlight;
                 text-shadow: 0 -1px 0 @dark-bc-shadow-small;
+            }
+
+            &:hover:not(:disabled) {
+                background-color: lighten(@bc-primary-btn-bg, 10%);
+
+                .dark & {
+                    background-color: lighten(@dark-bc-primary-btn-bg, 10%);
+                }
+            }
+
+            &:focus {
+                outline: none;
+                border: 1px solid @bc-primary-btn-border;
+                box-shadow:
+                    inset 0 1px 0 @bc-highlight,
+                    0 0 0 1px @bc-primary-btn-border-focused-glow;
+
+                .dark & {
+                    border: 1px solid @dark-bc-primary-btn-border;
+                    box-shadow:
+                        inset 0 1px 0 @dark-bc-highlight,
+                        0 0 0 1px @dark-bc-btn-border-focused-glow;
+                }
+            }
+
+            &:disabled {
+                opacity: @bc-disabled-opacity;
+                cursor: default;
+                background-color: @bc-primary-btn-bg;
+                box-shadow: inset 0 1px 0 @bc-highlight;
+
+                .dark & {
+                    opacity: @dark-bc-disabled-opacity;
+                    background-color: @dark-bc-primary-btn-bg;
+                    box-shadow: inset 0 1px 0 @dark-bc-highlight;
+                }
+            }
+
+            &:active:not(:disabled) {
+                background-color: @bc-primary-btn-bg-down;
+                box-shadow: inset 0 1px 0 @bc-shadow-small;
+
+                .dark & {
+                    background-color: @dark-bc-primary-btn-bg-down;
+                    box-shadow: inset 0 1px 0 @dark-bc-shadow-small;
+                }
+            }
+        }
+    }
+}
+
+#custom-snippets-edit {
+    padding: 8px;
+    background-color: @bc-panel-bg;
+    border-top: 1px solid @bc-panel-separator;
+
+    .dark & {
+        background-color: @dark-bc-panel-bg;
+        border-top: 1px solid @dark-bc-panel-separator;
+    }
+
+    #edit-abbr-box-wrapper,
+    #edit-desc-box-wrapper,
+    #edit-template-text-box-wrapper,
+    #edit-file-extn-box-wrapper {
+        margin-bottom: 12px;
+
+        &:last-of-type {
+            margin-bottom: 8px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: @bc-text;
+            cursor: pointer;
+            transition: color 0.2s ease;
+
+            .dark & {
+                color: @dark-bc-text;
+            }
+
+            &:hover {
+                color: @bc-text-emphasized;
+
+                .dark & {
+                    color: @dark-bc-text-emphasized;
+                }
+            }
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            background-color: @bc-input-bg;
+            border: 1px solid @bc-btn-border;
+            color: @bc-text-thin;
+            box-shadow: inset 0 1px 0 @bc-shadow-small;
+            border-radius: @bc-border-radius;
+            padding: 8px 10px;
+            box-sizing: border-box;
+            transition:
+                border linear 180ms,
+                box-shadow linear 180ms;
+
+            .dark & {
+                background-color: @dark-bc-input-bg;
+                border: 1px solid @dark-bc-btn-border;
+                color: @dark-bc-text-thin;
+                box-shadow: inset 0 1px 0 @dark-bc-shadow-small;
+            }
+
+            &::-webkit-input-placeholder {
+                color: @bc-text-thin-quiet;
+                opacity: 0.6;
+
+                .dark & {
+                    color: @dark-bc-text-thin-quiet;
+                    opacity: 0.7;
+                }
+            }
+
+            &:focus {
+                outline: none;
+                background-color: @bc-input-bg;
+                text-shadow: none;
+                border: 1px solid @bc-btn-border-focused;
+                box-shadow:
+                    inset 0 1px 0 @bc-shadow-small,
+                    0 0 0 1px @bc-btn-border-focused-glow;
+
+                .dark & {
+                    background-color: @dark-bc-input-bg;
+                    border: 1px solid @dark-bc-btn-border-focused;
+                    box-shadow:
+                        inset 0 1px 0 @dark-bc-shadow-small,
+                        0 0 0 1px @dark-bc-btn-border-focused-glow;
+                }
+            }
+
+            &:disabled {
+                opacity: @bc-disabled-opacity;
+                cursor: default;
+
+                .dark & {
+                    opacity: @dark-bc-disabled-opacity;
+                }
+            }
+        }
+
+        input {
+            padding: 4px 10px;
+            height: 32px;
+        }
+    }
+
+    .form-row {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 12px;
+
+        #edit-abbr-box-wrapper {
+            flex: 0 0 35%;
+            margin-bottom: 0;
+        }
+
+        #edit-desc-box-wrapper {
+            flex: 0 0 63%;
+            margin-bottom: 0;
+        }
+    }
+
+    #edit-file-extn-box-wrapper {
+        label {
+            display: inline-block;
+            margin-bottom: 0;
+            margin-right: 8px;
+            line-height: 40px;
+            vertical-align: top;
+            min-width: 100px;
+        }
+
+        input {
+            display: inline-block;
+            width: 320px;
+            vertical-align: top;
+        }
+    }
+
+    #edit-template-text-box-wrapper {
+        textarea {
+            min-height: 100px;
+            max-height: 180px;
+            resize: vertical;
+            line-height: 1.4;
+            white-space: pre;
+            overflow-wrap: normal;
+            word-break: normal;
+        }
+    }
+
+    #edit-snippet-buttons {
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid @bc-panel-separator;
+        text-align: right;
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+
+        .dark & {
+            border-top: 1px solid @dark-bc-panel-separator;
+        }
+
+        button {
+            border-radius: @bc-border-radius;
+            padding: 8px 20px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            min-width: 80px;
+            font-weight: @font-weight-semibold;
+            text-shadow: 0 -1px 0 @bc-shadow-small;
+
+            .dark & {
+                text-shadow: 0 -1px 0 @dark-bc-shadow-small;
+            }
+        }
+
+        #reset-snippet-btn {
+            background-color: @bc-btn-bg;
+            border: 1px solid @bc-btn-border;
+            color: @bc-text;
+            box-shadow: inset 0 1px 0 @bc-highlight;
+
+            .dark & {
+                background-color: @dark-bc-btn-bg;
+                border: 1px solid @dark-bc-btn-border;
+                color: @dark-bc-text;
+                box-shadow: inset 0 1px 0 @dark-bc-highlight;
+            }
+
+            &:hover {
+                background-color: lighten(@bc-btn-bg, 5%);
+
+                .dark & {
+                    background-color: lighten(@dark-bc-btn-bg, 5%);
+                }
+            }
+
+            &:focus {
+                outline: none;
+                border: 1px solid @bc-btn-border-focused;
+                box-shadow:
+                    inset 0 1px 0 @bc-highlight,
+                    0 0 0 1px @bc-btn-border-focused-glow;
+
+                .dark & {
+                    border: 1px solid @dark-bc-btn-border-focused;
+                    box-shadow:
+                        inset 0 1px 0 @dark-bc-highlight,
+                        0 0 0 1px @dark-bc-btn-border-focused-glow;
+                }
+            }
+
+            &:active {
+                background-color: @bc-btn-bg-down;
+                box-shadow: inset 0 1px 0 @bc-shadow-small;
+
+                .dark & {
+                    background-color: @dark-bc-btn-bg-down;
+                    box-shadow: inset 0 1px 0 @dark-bc-shadow-small;
+                }
+            }
+        }
+
+        #save-edit-snippet-btn {
+            background-color: @bc-primary-btn-bg;
+            border: 1px solid @bc-primary-btn-border;
+            color: @bc-text-alt;
+            box-shadow: inset 0 1px 0 @bc-highlight;
+
+            .dark & {
+                background-color: @dark-bc-primary-btn-bg;
+                border: 1px solid @dark-bc-primary-btn-border;
+                color: @dark-bc-text-alt;
+                box-shadow: inset 0 1px 0 @dark-bc-highlight;
             }
 
             &:hover:not(:disabled) {

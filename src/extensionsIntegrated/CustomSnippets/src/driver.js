@@ -28,6 +28,57 @@ define(function (require, exports, module) {
     }
 
     /**
+     * This function handles the save button click for editing a snippet
+     */
+    function handleEditSaveBtnClick() {
+        const editedData = Helper.getEditSnippetData();
+        const $editView = $("#custom-snippets-edit");
+        const originalSnippet = $editView.data("originalSnippet");
+        const snippetIndex = $editView.data("snippetIndex");
+
+        // check if abbreviation changed and if new abbreviation already exists
+        if (editedData.abbreviation !== originalSnippet.abbreviation) {
+            const existingSnippet = Global.SnippetHintsList.find(
+                (snippet) => snippet.abbreviation === editedData.abbreviation
+            );
+            if (existingSnippet) {
+                UIHelper.showDuplicateAbbreviationError(editedData.abbreviation);
+                return;
+            }
+        }
+
+        // update the snippet in the list
+        if (snippetIndex !== -1) {
+            Global.SnippetHintsList[snippetIndex] = editedData;
+            SnippetsState.saveSnippetsToState();
+
+            // clear the stored data
+            $editView.removeData("originalSnippet");
+            $editView.removeData("snippetIndex");
+
+            // go back to snippets list
+            UIHelper.showSnippetListMenu();
+            SnippetsList.showSnippetsList();
+        }
+    }
+
+    /**
+     * This function handles the reset button click for editing a snippet
+     * It restores the original snippet data in the edit form
+     */
+    function handleResetBtnClick() {
+        const $editView = $("#custom-snippets-edit");
+        const originalSnippet = $editView.data("originalSnippet");
+
+        if (originalSnippet) {
+            // restore original data in the form
+            Helper.populateEditForm(originalSnippet);
+            // update save button state
+            Helper.toggleEditSaveButtonDisability();
+        }
+    }
+
+    /**
      * This function is to check whether we can add the new snippet to the snippets list
      * because we don't want to add the new snippet if a snippet already exists with the same abbreviation
      * @param   {object}  snippetData - the snippet data object
@@ -152,5 +203,7 @@ define(function (require, exports, module) {
 
     exports.getWordBeforeCursor = getWordBeforeCursor;
     exports.handleSaveBtnClick = handleSaveBtnClick;
+    exports.handleEditSaveBtnClick = handleEditSaveBtnClick;
+    exports.handleResetBtnClick = handleResetBtnClick;
     exports.prependCustomSnippets = prependCustomSnippets;
 });
