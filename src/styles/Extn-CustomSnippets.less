@@ -580,6 +580,21 @@
         .dark & {
             border-top: 1px solid @dark-bc-panel-separator;
         }
+
+        button:disabled {
+            pointer-events: none !important;
+
+            &:hover,
+            &:focus,
+            &:active,
+            &:visited {
+                background: inherit !important;
+                color: inherit !important;
+                border-color: inherit !important;
+                box-shadow: inherit !important;
+                transform: none !important;
+            }
+        }
     }
 }
 
@@ -744,6 +759,21 @@
 
         .dark & {
             border-top: 1px solid @dark-bc-panel-separator;
+        }
+
+        button:disabled {
+            pointer-events: none !important;
+
+            &:hover,
+            &:focus,
+            &:active,
+            &:visited {
+                background: inherit !important;
+                color: inherit !important;
+                border-color: inherit !important;
+                box-shadow: inherit !important;
+                transform: none !important;
+            }
         }
     }
 }
