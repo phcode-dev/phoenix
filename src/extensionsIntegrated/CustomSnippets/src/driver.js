@@ -124,7 +124,7 @@ define(function (require, exports, module) {
         const pos = editor.getCursorPos();
         let word = ""; // this will store the actual word before the cursor
         let i = pos.ch - 1; // index of the char right before the cursor
-        const breakWordAt = ["", " "]; // we need to break the loop when we encounter this char's
+        const breakWordAt = ["", " ", "\t"]; // we need to break the loop when we encounter this char's
 
         while (i >= 0) {
             const char = editor.getCharacterAtPosition({ line: pos.line, ch: i });
