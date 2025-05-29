@@ -145,6 +145,8 @@ define(function (require, exports, module) {
             Global.SnippetHintsList.splice(index, 1); // removes it from the actual array
             // save to preferences after deleting snippet
             SnippetsState.saveSnippetsToState();
+            // update the snippets count in toolbar
+            Helper.updateSnippetsCount();
             // Refresh the entire list to properly handle filtering
             showSnippetsList();
         }
