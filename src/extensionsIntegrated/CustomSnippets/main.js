@@ -12,6 +12,7 @@ define(function (require, exports, module) {
     const Helper = require("./src/helper");
     const UIHelper = require("./src/UIHelper");
     const SnippetsState = require("./src/snippetsState");
+    const SnippetCursorManager = require("./src/snippetCursorManager");
 
     const snippetsPanelTpl = require("text!./htmlContent/snippets-panel.html");
     // the html content of the panel will be stored in this variable
@@ -197,5 +198,6 @@ define(function (require, exports, module) {
         _addToMenu();
         SnippetCodeHints.init();
         SnippetsState.loadSnippetsFromState();
+        SnippetCursorManager.registerHandlers();
     });
 });
