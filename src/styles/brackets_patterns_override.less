@@ -727,20 +727,25 @@ a:focus {
   }
 }
 
-.emmet-hint {
-    margin-right: 48px !important;
+.emmet-code-hint {
+    visibility: hidden;
 }
 
-.emmet-code-hint {
+.codehint-menu .dropdown-menu li a.highlight .emmet-code-hint {
+    visibility: visible;
     position: absolute;
-    font-size: 0.85em;
+    right: 1rem;
+    font-size: 0.85em !important;
     font-weight: @font-weight-semibold;
-    right: 4px;
-    bottom: 0px;
+    letter-spacing: 0.3px;
     color: @css-codehint-icon !important;
     .dark& {
         color: @dark-css-codehint-icon !important;
     }
+}
+
+.emmet-hint {
+    margin-right: 48px !important;
 }
 
 #codehint-desc {
