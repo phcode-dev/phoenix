@@ -4,6 +4,7 @@ define(function (require, exports, module) {
     const Global = require("./global");
     const Driver = require("./driver");
     const Helper = require("./helper");
+    const SnippetCursorManager = require("./snippetCursorManager");
 
     /**
      * Constructor
@@ -96,7 +97,9 @@ define(function (require, exports, module) {
         const end = cursor;
 
         const matchedItem = Global.SnippetHintsList.find((snippet) => snippet.abbreviation === word.word);
-        this.editor.document.replaceRange(matchedItem.templateText, start, end);
+
+        // Use the new cursor manager for snippet insertion with tab stops
+        SnippetCursorManager.insertSnippetWithTabStops(this.editor, matchedItem.templateText, start, end);
 
         return false;
     };
