@@ -270,15 +270,18 @@ define(function (require, exports, module) {
     // this is to check whether user has set any custom snippets as we need to show it at the first
     let customSnippetsDriver = null;
     let customSnippetsGlobal = null;
+    let customSnippetsCursorManager = null;
 
     // load custom snippets driver and global
     try {
         customSnippetsDriver = require("../extensionsIntegrated/CustomSnippets/src/driver");
         customSnippetsGlobal = require("../extensionsIntegrated/CustomSnippets/src/global");
+        customSnippetsCursorManager = require("../extensionsIntegrated/CustomSnippets/src/snippetCursorManager");
     } catch (e) {
         // if unable to load we just set it to null to prevent other parts of the code from breaking
         customSnippetsDriver = null;
         customSnippetsGlobal = null;
+        customSnippetsCursorManager = null;
     }
 
     PreferencesManager.definePreference("showCodeHints", "boolean", true, {
@@ -579,11 +582,22 @@ define(function (require, exports, module) {
                             (snippet) => snippet.abbreviation === abbreviation
                         );
                         if (matchedSnippet) {
-                            // replace the typed abbreviation with the template text
+                            // replace the typed abbreviation with the template text using cursor manager
                             const wordInfo = customSnippetsDriver.getWordBeforeCursor();
                             const start = { line: wordInfo.line, ch: wordInfo.ch + 1 };
                             const end = sessionEditor.getCursorPos();
-                            sessionEditor.document.replaceRange(matchedSnippet.templateText, start, end);
+
+                            if (customSnippetsCursorManager) {
+                                customSnippetsCursorManager.insertSnippetWithTabStops(
+                                    sessionEditor,
+                                    matchedSnippet.templateText,
+                                    start,
+                                    end
+                                );
+                            } else {
+                                // insert snippet just by replacing range if cursor manager is not available
+                                sessionEditor.document.replaceRange(matchedSnippet.templateText, start, end);
+                            }
                             _endSession();
                             return;
                         }
