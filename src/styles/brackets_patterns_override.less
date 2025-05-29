@@ -602,7 +602,9 @@ a:focus {
     .dropdown-menu {
         box-shadow: 0 3px 9px @bc-shadow;
         max-height: 160px;
+        max-width: 400px;
         overflow-y: auto;
+        overflow-x: hidden;
         padding: 0;
 
         .dark & {
@@ -746,6 +748,16 @@ a:focus {
 
 .emmet-hint {
     margin-right: 48px !important;
+}
+
+.emmet-text-content {
+    display: inline-block;
+    max-width: 320px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: top;
+    line-height: inherit;
 }
 
 #codehint-desc {
