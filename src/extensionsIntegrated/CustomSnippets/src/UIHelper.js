@@ -86,7 +86,8 @@ define(function (require, exports, module) {
 
         // add the snippet count in the toolbar (the no. of snippets added)
         const snippetCount = Global.SnippetHintsList.length;
-        $toolbarTitle.html(`Custom Snippets <span id="snippets-count" class="snippets-count">(${snippetCount})</span>`);
+        const countText = snippetCount > 0 ? `(${snippetCount})` : "";
+        $toolbarTitle.html(`Custom Snippets <span id="snippets-count" class="snippets-count">${countText}</span>`);
 
         $("#filter-snippets-input").val("");
     }
@@ -172,7 +173,8 @@ define(function (require, exports, module) {
     function initializeListViewToolbarTitle() {
         const $toolbarTitle = $(".toolbar-title");
         const snippetCount = Global.SnippetHintsList.length;
-        $toolbarTitle.html(`Custom Snippets <span id="snippets-count" class="snippets-count">(${snippetCount})</span>`);
+        const countText = snippetCount > 0 ? `(${snippetCount})` : "";
+        $toolbarTitle.html(`Custom Snippets <span id="snippets-count" class="snippets-count">${countText}</span>`);
     }
 
     exports.showEmptySnippetMessage = showEmptySnippetMessage;
