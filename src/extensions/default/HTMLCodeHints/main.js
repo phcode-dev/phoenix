@@ -143,15 +143,20 @@ define(function (require, exports, module) {
      * @returns {jQuery} - A jQuery element representing the formatted hint.
      */
     function formatEmmetHint(abbr) {
-        // Create the main container for the hint text.
+        // Create the main container for the hint
         var $hint = $("<span>")
-            .addClass("emmet-hint")
+            .addClass("emmet-hint");
+
+        // Create a wrapper for the text content
+        var $textContent = $("<span>")
+            .addClass("emmet-text-content")
             .text(abbr);
 
         // style in brackets_patterns_override.less file
         let $icon = $(`<span class="emmet-code-hint">Emmet</span>`);
 
-        // Append the icon to the hint element
+        // Append both text content and icon to the main container
+        $hint.append($textContent);
         $hint.append($icon);
 
         return $hint;
