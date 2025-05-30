@@ -31,6 +31,9 @@
     "file.previewHighlight":  [
         "Ctrl-Shift-C"
     ],
+    "file.previewWordNavigation":  [
+        "Ctrl-Shift-W"
+    ],
     "file.quit":  [
         "Ctrl-Q"
     ],
