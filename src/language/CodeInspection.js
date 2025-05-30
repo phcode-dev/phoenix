@@ -84,7 +84,9 @@ define(function (require, exports, module) {
         /** Maintainability issue, probable error / bad smell, etc. */
         WARNING: "warning",
         /** Inspector unable to continue, code too complex for static analysis, etc. Not counted in err/warn tally. */
-        META: "meta"
+        META: "meta",
+        /** For spelling or grammatical error */
+        SPELL: "spell"
     };
 
     function _getIconClassForType(type, isFixable) {
@@ -98,6 +100,9 @@ define(function (require, exports, module) {
         case Type.META: return isFixable ?
             "line-icon-problem_type_info fa-solid fa-wrench":
             "line-icon-problem_type_info fa-solid fa-info-circle";
+        case Type.SPELL: return isFixable ?
+            "line-icon-problem_type_spell fa-solid fa-wrench":
+            "line-icon-problem_type_spell fa-solid fa-book";
         default: return isFixable ?
             "line-icon-problem_type_info fa-solid fa-wrench":
             "line-icon-problem_type_info fa-solid fa-info-circle";
@@ -430,6 +435,7 @@ define(function (require, exports, module) {
         case Type.ERROR: return Editor.getMarkOptionUnderlineError();
         case Type.WARNING: return Editor.getMarkOptionUnderlineWarn();
         case Type.META: return Editor.getMarkOptionUnderlineInfo();
+        case Type.SPELL: return Editor.getMarkOptionUnderlineSpellcheck();
         }
     }
 
@@ -438,6 +444,7 @@ define(function (require, exports, module) {
         case Type.ERROR: return 3;
         case Type.WARNING: return 2;
         case Type.META: return 1;
+        case Type.SPELL: return 1;
         }
     }
 
