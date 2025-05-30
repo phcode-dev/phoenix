@@ -441,10 +441,10 @@ define(function (require, exports, module) {
 
     function _getMarkTypePriority(type){
         switch (type) {
-        case Type.ERROR: return 3;
-        case Type.WARNING: return 2;
+        case Type.ERROR: return 4;
+        case Type.WARNING: return 3;
+        case Type.SPELL: return 2;
         case Type.META: return 1;
-        case Type.SPELL: return 1;
         }
     }
 
