@@ -266,6 +266,24 @@ define(function (require, exports, module) {
         codeHintsEnabled = true,
         codeHintOpened   = false;
 
+    // custom snippets integration
+    // this is to check whether user has set any custom snippets as we need to show it at the first
+    let customSnippetsDriver = null;
+    let customSnippetsGlobal = null;
+    let customSnippetsCursorManager = null;
+
+    // load custom snippets driver and global
+    try {
+        customSnippetsDriver = require("../extensionsIntegrated/CustomSnippets/src/driver");
+        customSnippetsGlobal = require("../extensionsIntegrated/CustomSnippets/src/global");
+        customSnippetsCursorManager = require("../extensionsIntegrated/CustomSnippets/src/snippetCursorManager");
+    } catch (e) {
+        // if unable to load we just set it to null to prevent other parts of the code from breaking
+        customSnippetsDriver = null;
+        customSnippetsGlobal = null;
+        customSnippetsCursorManager = null;
+    }
+
     PreferencesManager.definePreference("showCodeHints", "boolean", true, {
         description: Strings.DESCRIPTION_SHOW_CODE_HINTS
     });
@@ -461,6 +479,11 @@ define(function (require, exports, module) {
                 _endSession();
                 _beginSession(previousEditor);
             } else if (response.hasOwnProperty("hints")) { // a synchronous response
+                // prepend custom snippets to the response
+                if(customSnippetsDriver && customSnippetsGlobal && customSnippetsGlobal.SnippetHintsList) {
+                    response = customSnippetsDriver.prependCustomSnippets(response, sessionEditor);
+                }
+
                 if (hintList.isOpen()) {
                     // the session is open
                     hintList.update(response);
@@ -476,6 +499,10 @@ define(function (require, exports, module) {
                     // will get cleared up.
                     if (!hintList) {
                         return;
+                    }
+                    // prepend custom snippets to the response
+                    if (customSnippetsDriver && customSnippetsGlobal && customSnippetsGlobal.SnippetHintsList) {
+                        response = customSnippetsDriver.prependCustomSnippets(response, sessionEditor);
                     }
 
                     if (hintList.isOpen()) {
@@ -546,6 +573,38 @@ define(function (require, exports, module) {
                 }
             });
             hintList.onSelect(function (hint) {
+                // check if the hint is a custom snippet
+                if (hint && hint.jquery && hint.attr("data-isCustomSnippet")) {
+                    // handle custom snippet insertion
+                    const abbreviation = hint.attr("data-val");
+                    if (customSnippetsDriver && customSnippetsGlobal && customSnippetsGlobal.SnippetHintsList) {
+                        const matchedSnippet = customSnippetsGlobal.SnippetHintsList.find(
+                            (snippet) => snippet.abbreviation === abbreviation
+                        );
+                        if (matchedSnippet) {
+                            // replace the typed abbreviation with the template text using cursor manager
+                            const wordInfo = customSnippetsDriver.getWordBeforeCursor();
+                            const start = { line: wordInfo.line, ch: wordInfo.ch + 1 };
+                            const end = sessionEditor.getCursorPos();
+
+                            if (customSnippetsCursorManager) {
+                                customSnippetsCursorManager.insertSnippetWithTabStops(
+                                    sessionEditor,
+                                    matchedSnippet.templateText,
+                                    start,
+                                    end
+                                );
+                            } else {
+                                // insert snippet just by replacing range if cursor manager is not available
+                                sessionEditor.document.replaceRange(matchedSnippet.templateText, start, end);
+                            }
+                            _endSession();
+                            return;
+                        }
+                    }
+                }
+
+                // Regular hint provider handling
                 var restart = sessionProvider.insertHint(hint),
                     previousEditor = sessionEditor;
                 _endSession();
