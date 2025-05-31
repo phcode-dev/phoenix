@@ -141,6 +141,10 @@ define(function (require, exports, module) {
         $abbrInput.on("input", Helper.toggleSaveButtonDisability);
         $templateInput.on("input", Helper.toggleSaveButtonDisability);
 
+        $abbrInput.on("keydown", function (e) {
+            Helper.validateAbbrInput(e, this);
+        });
+
         $templateInput.on("keydown", function (e) {
             Helper.handleTextareaTabKey(e, this);
         });
@@ -157,6 +161,10 @@ define(function (require, exports, module) {
 
         $editAbbrInput.on("input", Helper.toggleEditSaveButtonDisability);
         $editTemplateInput.on("input", Helper.toggleEditSaveButtonDisability);
+
+        $editAbbrInput.on("keydown", function (e) {
+            Helper.validateAbbrInput(e, this);
+        });
 
         $editTemplateInput.on("keydown", function (e) {
             Helper.handleTextareaTabKey(e, this);

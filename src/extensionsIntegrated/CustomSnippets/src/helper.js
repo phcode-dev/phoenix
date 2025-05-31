@@ -1,6 +1,7 @@
 define(function (require, exports, module) {
     const StringMatch = require("utils/StringMatch");
     const Global = require("./global");
+    const UIHelper = require("./UIHelper");
 
 
     /**
@@ -466,6 +467,45 @@ define(function (require, exports, module) {
         }
     }
 
+    function validateAbbrInput(e, abbrBox) {
+        // Prevent space character
+        if (e.key === ' ') {
+            e.preventDefault();
+
+            // Determine if this is the edit form or new form
+            const isEditForm = abbrBox.id === 'edit-abbr-box';
+            const inputId = isEditForm ? 'edit-abbr-box' : 'abbr-box';
+            const wrapperId = isEditForm ? 'edit-abbr-box-wrapper' : 'abbr-box-wrapper';
+            const errorId = isEditForm ? 'edit-abbreviation-space-error' : 'abbreviation-space-error';
+
+            UIHelper.showError(
+                inputId,
+                wrapperId,
+                "Space is not accepted as a valid abbreviation character.",
+                errorId
+            );
+            return;
+        }
+
+        // Check for character limit (30 characters)
+        if (abbrBox.value.length >= 30 && e.key.length === 1) {
+            e.preventDefault();
+
+            // Determine if this is the edit form or new form
+            const isEditForm = abbrBox.id === 'edit-abbr-box';
+            const inputId = isEditForm ? 'edit-abbr-box' : 'abbr-box';
+            const wrapperId = isEditForm ? 'edit-abbr-box-wrapper' : 'abbr-box-wrapper';
+            const errorId = isEditForm ? 'edit-abbreviation-length-error' : 'abbreviation-length-error';
+
+            UIHelper.showError(
+                inputId,
+                wrapperId,
+                "Abbreviation cannot be more than 30 characters.",
+                errorId
+            );
+        }
+    }
+
     exports.toggleSaveButtonDisability = toggleSaveButtonDisability;
     exports.createHintItem = createHintItem;
     exports.clearAllInputFields = clearAllInputFields;
@@ -487,4 +527,5 @@ define(function (require, exports, module) {
     exports.toggleEditSaveButtonDisability = toggleEditSaveButtonDisability;
     exports.clearEditInputFields = clearEditInputFields;
     exports.handleTextareaTabKey = handleTextareaTabKey;
+    exports.validateAbbrInput = validateAbbrInput;
 });
