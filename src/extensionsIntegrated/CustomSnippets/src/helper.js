@@ -2,6 +2,51 @@ define(function (require, exports, module) {
     const StringMatch = require("utils/StringMatch");
     const Global = require("./global");
 
+
+    /**
+     * map the language IDs to their file extensions for snippet matching
+     * this is needed because we expect the user to enter file extensions and not the file type inside the input field
+     *
+     * @param {string} languageId - The language ID from Phoenix
+     * @returns {string} - The equivalent file extension for snippet matching
+     */
+    function mapLanguageToExtension(languageId) {
+        const languageMap = {
+            'javascript': '.js',
+            'css': '.css',
+            'html': '.html',
+            'php': '.php',
+            'python': '.py',
+            'java': '.java',
+            'c': '.c',
+            'cpp': '.cpp',
+            'csharp': '.cs',
+            'typescript': '.ts',
+            'json': '.json',
+            'xml': '.xml',
+            'sql': '.sql',
+            'sass': '.sass',
+            'scss': '.scss',
+            'less': '.less',
+            'stylus': '.styl',
+            'coffeescript': '.coffee',
+            'markdown': '.md',
+            'yaml': '.yml',
+            'ruby': '.rb',
+            'go': '.go',
+            'rust': '.rs',
+            'swift': '.swift',
+            'kotlin': '.kt',
+            'dart': '.dart',
+            'vue': '.vue',
+            'jsx': '.jsx',
+            'tsx': '.tsx'
+        };
+
+        return languageMap[languageId] || languageId;
+    }
+
+
     /**
      * This function is responsible to get the snippet data from all the required input fields
      * it is called when the save button is clicked
@@ -44,6 +89,25 @@ define(function (require, exports, module) {
     }
 
     /**
+     * this function is responsible to get the current language context,
+     * from the editor at cursor position
+     *
+     * @param {Editor} editor - The editor instance
+     * @returns {string|null} - The language ID or null if not available
+     */
+    function getCurrentLanguageContext(editor) {
+        // first try to get the language at cursor pos
+        // if it for some reason fails, then just go for the file extension
+        try {
+            const language = editor.getLanguageForPosition();
+            const languageId = language ? language.getId() : null;
+            return languageId;
+        } catch (e) {
+            return getCurrentFileExtension(editor);
+        }
+    }
+
+    /**
      * Gets the current file extension from the editor
      * @param {Editor} editor - The editor instance
      * @returns {string|null} - The file extension or null if not available
@@ -54,6 +118,44 @@ define(function (require, exports, module) {
             return filePath.substring(filePath.lastIndexOf(".")).toLowerCase();
         }
         return null;
+    }
+
+    /**
+     * Checks if a snippet is supported in the given language context
+     * Falls back to file extension matching if language mapping isn't available
+     *
+     * @param {Object} snippet - The snippet object
+     * @param {string|null} languageContext - The current language context
+     * @param {Editor} editor - The editor instance for fallback
+     * @returns {boolean} - True if the snippet is supported
+     */
+    function isSnippetSupportedInLanguageContext(snippet, languageContext, editor) {
+        if (snippet.fileExtension.toLowerCase() === "all") {
+            return true;
+        }
+
+        if (languageContext) {
+            const effectiveExtension = mapLanguageToExtension(languageContext);
+
+            // if we have a proper mapping (starts with .), use language context matching
+            if (effectiveExtension.startsWith('.')) {
+                const supportedExtensions = snippet.fileExtension
+                    .toLowerCase()
+                    .split(",")
+                    .map((ext) => ext.trim());
+
+                return supportedExtensions.some((ext) => ext === effectiveExtension);
+            }
+        }
+
+        // this is just a fallback if language context matching failed
+        // file extension matching
+        if (editor) {
+            const fileExtension = getCurrentFileExtension(editor);
+            return isSnippetSupportedInFile(snippet, fileExtension);
+        }
+
+        return false;
     }
 
     /**
@@ -81,14 +183,16 @@ define(function (require, exports, module) {
     /**
      * Checks if there's at least one exact match for the query
      * @param {string} query - The search query
-     * @param {string|null} fileExtension - The current file extension
+     * @param {Editor} editor - The editor instance
      * @returns {boolean} - True if there's an exact match
      */
-    function hasExactMatchingSnippet(query, fileExtension) {
+    function hasExactMatchingSnippet(query, editor) {
         const queryLower = query.toLowerCase();
+        const languageContext = getCurrentLanguageContext(editor);
+
         return Global.SnippetHintsList.some((snippet) => {
             if (snippet.abbreviation.toLowerCase() === queryLower) {
-                return isSnippetSupportedInFile(snippet, fileExtension);
+                return isSnippetSupportedInLanguageContext(snippet, languageContext, editor);
             }
             return false;
         });
@@ -97,14 +201,16 @@ define(function (require, exports, module) {
     /**
      * Gets all snippets that match the query (prefix matches)
      * @param {string} query - The search query
-     * @param {string|null} fileExtension - The current file extension
+     * @param {Editor} editor - The editor instance
      * @returns {Array} - Array of matching snippets
      */
-    function getMatchingSnippets(query, fileExtension) {
+    function getMatchingSnippets(query, editor) {
         const queryLower = query.toLowerCase();
+        const languageContext = getCurrentLanguageContext(editor);
+
         return Global.SnippetHintsList.filter((snippet) => {
             if (snippet.abbreviation.toLowerCase().startsWith(queryLower)) {
-                return isSnippetSupportedInFile(snippet, fileExtension);
+                return isSnippetSupportedInLanguageContext(snippet, languageContext, editor);
             }
             return false;
         });
@@ -364,7 +470,10 @@ define(function (require, exports, module) {
     exports.createHintItem = createHintItem;
     exports.clearAllInputFields = clearAllInputFields;
     exports.getSnippetData = getSnippetData;
+    exports.getCurrentLanguageContext = getCurrentLanguageContext;
     exports.getCurrentFileExtension = getCurrentFileExtension;
+    exports.mapLanguageToExtension = mapLanguageToExtension;
+    exports.isSnippetSupportedInLanguageContext = isSnippetSupportedInLanguageContext;
     exports.isSnippetSupportedInFile = isSnippetSupportedInFile;
     exports.hasExactMatchingSnippet = hasExactMatchingSnippet;
     exports.getMatchingSnippets = getMatchingSnippets;
