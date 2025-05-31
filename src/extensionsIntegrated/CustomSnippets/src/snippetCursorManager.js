@@ -43,8 +43,12 @@ define(function (require, exports, module) {
 
         // sort the tab stops by number. note: 0 should come at last
         tabStops.sort((a, b) => {
-            if (a.number === 0) { return 1; }
-            if (b.number === 0) { return -1; }
+            if (a.number === 0) {
+                return 1;
+            }
+            if (b.number === 0) {
+                return -1;
+            }
             return a.number - b.number;
         });
 
@@ -84,8 +88,12 @@ define(function (require, exports, module) {
         }
 
         tabStops.sort((a, b) => {
-            if (a.number === 0) { return 1; }
-            if (b.number === 0) { return -1; }
+            if (a.number === 0) {
+                return 1;
+            }
+            if (b.number === 0) {
+                return -1;
+            }
             return a.number - b.number;
         });
 
@@ -215,7 +223,6 @@ define(function (require, exports, module) {
         }
         endSnippetSession();
         return false;
-
     }
 
     /**
@@ -295,7 +302,9 @@ define(function (require, exports, module) {
      * @returns {boolean}
      */
     function isCursorInSnippetLines(cursorPos) {
-        if (!activeSnippetSession) { return false; }
+        if (!activeSnippetSession) {
+            return false;
+        }
 
         return cursorPos.line >= activeSnippetSession.startLine && cursorPos.line <= activeSnippetSession.endLine;
     }
@@ -381,26 +390,28 @@ define(function (require, exports, module) {
         }
     }
 
-
     /**
      * This function is responsible to register all the required handers
      * we need this to set up all the event listeners for cursor navigation
      */
     function registerHandlers() {
-
         // register the event handler for snippet cursor navigation
         const editorHolder = $("#editor-holder")[0];
         if (editorHolder) {
-            editorHolder.addEventListener("keydown", function(event) {
-                const editor = EditorManager.getActiveEditor();
-                if (editor) {
-                    handleKeyEvent(null, editor, event);
-                }
-            }, true);
+            editorHolder.addEventListener(
+                "keydown",
+                function (event) {
+                    const editor = EditorManager.getActiveEditor();
+                    if (editor) {
+                        handleKeyEvent(null, editor, event);
+                    }
+                },
+                true
+            );
         }
 
         // Listen for editor changes to end snippet sessions
-        EditorManager.on("activeEditorChange", function(event, current, previous) {
+        EditorManager.on("activeEditorChange", function (event, current, previous) {
             if (isInSnippetSession()) {
                 endSnippetSession();
             }
@@ -420,7 +431,7 @@ define(function (require, exports, module) {
         }
 
         // Register for editor changes
-        EditorManager.on("activeEditorChange", function(event, current, previous) {
+        EditorManager.on("activeEditorChange", function (event, current, previous) {
             if (previous) {
                 previous.off("cursorActivity", handleCursorActivity);
             }
@@ -432,7 +443,6 @@ define(function (require, exports, module) {
             }
         });
     }
-
 
     exports.parseTemplateText = parseTemplateText;
     exports.insertSnippetWithTabStops = insertSnippetWithTabStops;
