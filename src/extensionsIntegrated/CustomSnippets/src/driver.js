@@ -183,15 +183,14 @@ define(function (require, exports, module) {
             }
 
             const needle = wordInfo.word.toLowerCase();
-            const fileExtension = Helper.getCurrentFileExtension(editor);
 
-            // check if there's at least one exact match - only show snippets if there is
-            if (!Helper.hasExactMatchingSnippet(needle, fileExtension)) {
+            // check if there's at least one exact match using language context detection
+            if (!Helper.hasExactMatchingSnippet(needle, editor)) {
                 return response;
             }
 
-            // get all matching snippets (including prefix matches)
-            const matchingSnippets = Helper.getMatchingSnippets(needle, fileExtension);
+            // get all matching snippets using language context detection
+            const matchingSnippets = Helper.getMatchingSnippets(needle, editor);
 
             // if we have matching snippets, prepend them to the hints
             if (matchingSnippets.length > 0) {
