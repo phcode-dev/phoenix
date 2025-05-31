@@ -506,6 +506,90 @@ define(function (require, exports, module) {
         }
     }
 
+    /**
+     * Handles abbreviation paste event with validation
+     * @param {Event} e - The paste event
+     * @param {jQuery} $input - The input element
+     */
+    function handleAbbrPaste(e, $input) {
+        e.preventDefault();
+
+        const clipboardData = (e.originalEvent || e).clipboardData.getData("text");
+
+        // Remove spaces and limit to 30 characters
+        let sanitized = clipboardData.replace(/\s/g, ""); // Remove all spaces
+        let wasTruncated = false;
+        let hadSpaces = clipboardData !== sanitized;
+
+        if (sanitized.length > 30) {
+            sanitized = sanitized.substring(0, 30);
+            wasTruncated = true;
+        }
+
+        // Insert sanitized value at current cursor position
+        const input = $input[0];
+        const start = input.selectionStart;
+        const end = input.selectionEnd;
+        const currentValue = input.value;
+
+        // Check if the final result would exceed 30 characters
+        const beforeCursor = currentValue.substring(0, start);
+        const afterCursor = currentValue.substring(end);
+        const finalValue = beforeCursor + sanitized + afterCursor;
+
+        if (finalValue.length > 30) {
+            // Trim the sanitized content to fit within the limit
+            const availableSpace = 30 - (beforeCursor.length + afterCursor.length);
+            if (availableSpace > 0) {
+                sanitized = sanitized.substring(0, availableSpace);
+                wasTruncated = true;
+            } else {
+                sanitized = ""; // No space available
+                wasTruncated = true;
+            }
+        }
+
+        // Insert the final sanitized value
+        input.value = beforeCursor + sanitized + afterCursor;
+
+        // Move the cursor to the end of the inserted text
+        const newPos = start + sanitized.length;
+        input.setSelectionRange(newPos, newPos);
+
+        // Show appropriate error message
+        if (wasTruncated || hadSpaces) {
+            const isEditForm = $input.attr("id") === 'edit-abbr-box';
+            const inputId = isEditForm ? 'edit-abbr-box' : 'abbr-box';
+            const wrapperId = isEditForm ? 'edit-abbr-box-wrapper' : 'abbr-box-wrapper';
+
+            // Prioritize length error over space error if both occurred
+            if (wasTruncated) {
+                const errorId = isEditForm ? 'edit-abbreviation-paste-length-error' : 'abbreviation-paste-length-error';
+                UIHelper.showError(
+                    inputId,
+                    wrapperId,
+                    "Abbreviation cannot be more than 30 characters.",
+                    errorId
+                );
+            } else if (hadSpaces) {
+                const errorId = isEditForm ? 'edit-abbreviation-paste-space-error' : 'abbreviation-paste-space-error';
+                UIHelper.showError(
+                    inputId,
+                    wrapperId,
+                    "Space is not accepted as a valid abbreviation character.",
+                    errorId
+                );
+            }
+        }
+
+        // Determine which save button to toggle based on input field
+        if ($input.attr("id") === "edit-abbr-box") {
+            toggleEditSaveButtonDisability();
+        } else {
+            toggleSaveButtonDisability();
+        }
+    }
+
     exports.toggleSaveButtonDisability = toggleSaveButtonDisability;
     exports.createHintItem = createHintItem;
     exports.clearAllInputFields = clearAllInputFields;
@@ -528,4 +612,5 @@ define(function (require, exports, module) {
     exports.clearEditInputFields = clearEditInputFields;
     exports.handleTextareaTabKey = handleTextareaTabKey;
     exports.validateAbbrInput = validateAbbrInput;
+    exports.handleAbbrPaste = handleAbbrPaste;
 });
