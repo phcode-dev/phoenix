@@ -3,7 +3,6 @@ define(function (require, exports, module) {
     const Global = require("./global");
     const UIHelper = require("./UIHelper");
 
-
     /**
      * map the language IDs to their file extensions for snippet matching
      * this is needed because we expect the user to enter file extensions and not the file type inside the input field
@@ -13,40 +12,39 @@ define(function (require, exports, module) {
      */
     function mapLanguageToExtension(languageId) {
         const languageMap = {
-            'javascript': '.js',
-            'css': '.css',
-            'html': '.html',
-            'php': '.php',
-            'python': '.py',
-            'java': '.java',
-            'c': '.c',
-            'cpp': '.cpp',
-            'csharp': '.cs',
-            'typescript': '.ts',
-            'json': '.json',
-            'xml': '.xml',
-            'sql': '.sql',
-            'sass': '.sass',
-            'scss': '.scss',
-            'less': '.less',
-            'stylus': '.styl',
-            'coffeescript': '.coffee',
-            'markdown': '.md',
-            'yaml': '.yml',
-            'ruby': '.rb',
-            'go': '.go',
-            'rust': '.rs',
-            'swift': '.swift',
-            'kotlin': '.kt',
-            'dart': '.dart',
-            'vue': '.vue',
-            'jsx': '.jsx',
-            'tsx': '.tsx'
+            javascript: ".js",
+            css: ".css",
+            html: ".html",
+            php: ".php",
+            python: ".py",
+            java: ".java",
+            c: ".c",
+            cpp: ".cpp",
+            csharp: ".cs",
+            typescript: ".ts",
+            json: ".json",
+            xml: ".xml",
+            sql: ".sql",
+            sass: ".sass",
+            scss: ".scss",
+            less: ".less",
+            stylus: ".styl",
+            coffeescript: ".coffee",
+            markdown: ".md",
+            yaml: ".yml",
+            ruby: ".rb",
+            go: ".go",
+            rust: ".rs",
+            swift: ".swift",
+            kotlin: ".kt",
+            dart: ".dart",
+            vue: ".vue",
+            jsx: ".jsx",
+            tsx: ".tsx"
         };
 
         return languageMap[languageId] || languageId;
     }
-
 
     /**
      * This function is responsible to get the snippet data from all the required input fields
@@ -139,7 +137,7 @@ define(function (require, exports, module) {
             const effectiveExtension = mapLanguageToExtension(languageContext);
 
             // if we have a proper mapping (starts with .), use language context matching
-            if (effectiveExtension.startsWith('.')) {
+            if (effectiveExtension.startsWith(".")) {
                 const supportedExtensions = snippet.fileExtension
                     .toLowerCase()
                     .split(",")
@@ -241,13 +239,11 @@ define(function (require, exports, module) {
         // create highlighting for matching characters like other hint providers
         if (query && query.length > 0) {
             // use the StringMatch to get proper highlighting ranges
-            const matchResult = StringMatch.stringMatch(abbr, query, {preferPrefixMatches: true});
+            const matchResult = StringMatch.stringMatch(abbr, query, { preferPrefixMatches: true });
             if (matchResult && matchResult.stringRanges) {
                 matchResult.stringRanges.forEach(function (item) {
                     if (item.matched) {
-                        $hint.append($("<span>")
-                            .text(item.text)
-                            .addClass("matched-hint"));
+                        $hint.append($("<span>").text(item.text).addClass("matched-hint"));
                     } else {
                         $hint.append(item.text);
                     }
@@ -463,7 +459,7 @@ define(function (require, exports, module) {
             // to insert the tab character
             textarea.value = value.substring(0, start) + "\t" + value.substring(end);
             textarea.selectionStart = textarea.selectionEnd = start + 1;
-            $(textarea).trigger('input');
+            $(textarea).trigger("input");
         }
     }
 
@@ -475,10 +471,31 @@ define(function (require, exports, module) {
 
         // Allow navigation and function keys
         const allowedKeys = [
-            'Backspace', 'Delete', 'Tab', 'Escape', 'Enter',
-            'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown',
-            'Home', 'End', 'PageUp', 'PageDown',
-            'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12'
+            "Backspace",
+            "Delete",
+            "Tab",
+            "Escape",
+            "Enter",
+            "ArrowLeft",
+            "ArrowRight",
+            "ArrowUp",
+            "ArrowDown",
+            "Home",
+            "End",
+            "PageUp",
+            "PageDown",
+            "F1",
+            "F2",
+            "F3",
+            "F4",
+            "F5",
+            "F6",
+            "F7",
+            "F8",
+            "F9",
+            "F10",
+            "F11",
+            "F12"
         ];
 
         if (allowedKeys.includes(e.key)) {
@@ -486,40 +503,34 @@ define(function (require, exports, module) {
         }
 
         // Prevent space character
-        if (e.key === ' ') {
+        if (e.key === " ") {
             e.preventDefault();
 
             // Determine if this is the edit form or new form
-            const isEditForm = abbrBox.id === 'edit-abbr-box';
-            const inputId = isEditForm ? 'edit-abbr-box' : 'abbr-box';
-            const wrapperId = isEditForm ? 'edit-abbr-box-wrapper' : 'abbr-box-wrapper';
-            const errorId = isEditForm ? 'edit-abbreviation-space-error' : 'abbreviation-space-error';
+            const isEditForm = abbrBox.id === "edit-abbr-box";
+            const inputId = isEditForm ? "edit-abbr-box" : "abbr-box";
+            const wrapperId = isEditForm ? "edit-abbr-box-wrapper" : "abbr-box-wrapper";
+            const errorId = isEditForm ? "edit-abbreviation-space-error" : "abbreviation-space-error";
 
-            UIHelper.showError(
-                inputId,
-                wrapperId,
-                "Space is not accepted as a valid abbreviation character.",
-                errorId
-            );
+            UIHelper.showError(inputId, wrapperId, "Space is not accepted as a valid abbreviation character.", errorId);
             return;
         }
 
         // Check for character limit (30 characters) - only for printable characters
-        if (abbrBox.value.length >= 30 && e.key.length === 1 && e.key.match(/[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/)) {
+        if (
+            abbrBox.value.length >= 30 &&
+            e.key.length === 1 &&
+            e.key.match(/[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/)
+        ) {
             e.preventDefault();
 
             // Determine if this is the edit form or new form
-            const isEditForm = abbrBox.id === 'edit-abbr-box';
-            const inputId = isEditForm ? 'edit-abbr-box' : 'abbr-box';
-            const wrapperId = isEditForm ? 'edit-abbr-box-wrapper' : 'abbr-box-wrapper';
-            const errorId = isEditForm ? 'edit-abbreviation-length-error' : 'abbreviation-length-error';
+            const isEditForm = abbrBox.id === "edit-abbr-box";
+            const inputId = isEditForm ? "edit-abbr-box" : "abbr-box";
+            const wrapperId = isEditForm ? "edit-abbr-box-wrapper" : "abbr-box-wrapper";
+            const errorId = isEditForm ? "edit-abbreviation-length-error" : "abbreviation-length-error";
 
-            UIHelper.showError(
-                inputId,
-                wrapperId,
-                "Abbreviation cannot be more than 30 characters.",
-                errorId
-            );
+            UIHelper.showError(inputId, wrapperId, "Abbreviation cannot be more than 30 characters.", errorId);
         }
     }
 
@@ -575,21 +586,16 @@ define(function (require, exports, module) {
 
         // Show appropriate error message
         if (wasTruncated || hadSpaces) {
-            const isEditForm = $input.attr("id") === 'edit-abbr-box';
-            const inputId = isEditForm ? 'edit-abbr-box' : 'abbr-box';
-            const wrapperId = isEditForm ? 'edit-abbr-box-wrapper' : 'abbr-box-wrapper';
+            const isEditForm = $input.attr("id") === "edit-abbr-box";
+            const inputId = isEditForm ? "edit-abbr-box" : "abbr-box";
+            const wrapperId = isEditForm ? "edit-abbr-box-wrapper" : "abbr-box-wrapper";
 
             // Prioritize length error over space error if both occurred
             if (wasTruncated) {
-                const errorId = isEditForm ? 'edit-abbreviation-paste-length-error' : 'abbreviation-paste-length-error';
-                UIHelper.showError(
-                    inputId,
-                    wrapperId,
-                    "Abbreviation cannot be more than 30 characters.",
-                    errorId
-                );
+                const errorId = isEditForm ? "edit-abbreviation-paste-length-error" : "abbreviation-paste-length-error";
+                UIHelper.showError(inputId, wrapperId, "Abbreviation cannot be more than 30 characters.", errorId);
             } else if (hadSpaces) {
-                const errorId = isEditForm ? 'edit-abbreviation-paste-space-error' : 'abbreviation-paste-space-error';
+                const errorId = isEditForm ? "edit-abbreviation-paste-space-error" : "abbreviation-paste-space-error";
                 UIHelper.showError(
                     inputId,
                     wrapperId,
