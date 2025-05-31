@@ -16,16 +16,13 @@ define(function (require, exports, module) {
         const $wrapper = $(`#${wrapperId}`);
 
         // Remove any existing error messages in this wrapper
-        $wrapper.find('.error-message').remove();
+        $wrapper.find(".error-message").remove();
 
         // Remove error styling from the input field
         $inputField.removeClass("error-input");
 
         // Now show the new error message
-        const $errorMessage = $("<div>")
-            .attr("id", errorId)
-            .addClass("error-message")
-            .text(errorMessage);
+        const $errorMessage = $("<div>").attr("id", errorId).addClass("error-message").text(errorMessage);
 
         $wrapper.append($errorMessage);
 
@@ -166,16 +163,11 @@ define(function (require, exports, module) {
      * @param {boolean} isEditForm - Whether this is for the edit form (optional, defaults to false)
      */
     function showDuplicateAbbreviationError(abbreviation, isEditForm = false) {
-        const inputId = isEditForm ? 'edit-abbr-box' : 'abbr-box';
-        const wrapperId = isEditForm ? 'edit-abbr-box-wrapper' : 'abbr-box-wrapper';
-        const errorId = isEditForm ? 'edit-abbreviation-duplicate-error' : 'abbreviation-duplicate-error';
+        const inputId = isEditForm ? "edit-abbr-box" : "abbr-box";
+        const wrapperId = isEditForm ? "edit-abbr-box-wrapper" : "abbr-box-wrapper";
+        const errorId = isEditForm ? "edit-abbreviation-duplicate-error" : "abbreviation-duplicate-error";
 
-        showError(
-            inputId,
-            wrapperId,
-            `A snippet with abbreviation "${abbreviation}" already exists.`,
-            errorId
-        );
+        showError(inputId, wrapperId, `A snippet with abbreviation "${abbreviation}" already exists.`, errorId);
     }
 
     /**

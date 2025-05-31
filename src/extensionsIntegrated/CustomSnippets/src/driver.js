@@ -169,9 +169,11 @@ define(function (require, exports, module) {
             // this is needed because sometimes when there are no default hints present then the
             // SnippetCodeHints.js shows some hints, so we don't want to duplicate hints
             if (Array.isArray(response.hints) && response.hints.length > 0) {
-                const hasCustomSnippets = response.hints.some(hint => {
-                    return (hint && hint.hasClass && hint.hasClass('emmet-hint')) ||
-                           (hint && hint.attr && hint.attr('data-isCustomSnippet'));
+                const hasCustomSnippets = response.hints.some((hint) => {
+                    return (
+                        (hint && hint.hasClass && hint.hasClass("emmet-hint")) ||
+                        (hint && hint.attr && hint.attr("data-isCustomSnippet"))
+                    );
                 });
 
                 if (hasCustomSnippets) {

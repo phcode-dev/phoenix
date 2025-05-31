@@ -188,8 +188,10 @@ define(function (require, exports, module) {
 
         // store the original data for reset functionality
         $("#custom-snippets-edit").data("originalSnippet", snippetItem);
-        $("#custom-snippets-edit").data("snippetIndex",
-            Global.SnippetHintsList.findIndex(s => s.abbreviation === snippetItem.abbreviation));
+        $("#custom-snippets-edit").data(
+            "snippetIndex",
+            Global.SnippetHintsList.findIndex((s) => s.abbreviation === snippetItem.abbreviation)
+        );
 
         // show the edit form
         UIHelper.showEditSnippetMenu();
