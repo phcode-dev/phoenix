@@ -34,6 +34,7 @@ Values for problem's 'type' property
     * [.ERROR](#Type.ERROR)
     * [.WARNING](#Type.WARNING)
     * [.META](#Type.META)
+    * [.SPELL](#Type.SPELL)
 
 <a name="Type.ERROR"></a>
 
@@ -51,6 +52,12 @@ Maintainability issue, probable error / bad smell, etc.
 
 ### Type.META
 Inspector unable to continue, code too complex for static analysis, etc. Not counted in err/warn tally.
+
+**Kind**: static property of [<code>Type</code>](#Type)
+<a name="Type.SPELL"></a>
+
+### Type.SPELL
+For spelling or grammatical error
 
 **Kind**: static property of [<code>Type</code>](#Type)  
 <a name="getProvidersForPath"></a>
