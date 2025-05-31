@@ -31,7 +31,8 @@ define(function (require, exports, module) {
             UIHelper.showSnippetListMenu();
             SnippetsList.showSnippetsList();
         } else {
-            UIHelper.showDuplicateAbbreviationError(snippetData.abbreviation);
+            // false since this is from addSnippet and not from editSnippet
+            UIHelper.showDuplicateAbbreviationError(snippetData.abbreviation, false);
         }
     }
 
@@ -57,7 +58,8 @@ define(function (require, exports, module) {
                 (snippet) => snippet.abbreviation === editedData.abbreviation
             );
             if (existingSnippet) {
-                UIHelper.showDuplicateAbbreviationError(editedData.abbreviation);
+                // true since this is from editSnippet and not from addSnippet
+                UIHelper.showDuplicateAbbreviationError(editedData.abbreviation, true);
                 return;
             }
         }

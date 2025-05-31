@@ -3,6 +3,50 @@ define(function (require, exports, module) {
     const Global = require("./global");
 
     /**
+     * this is a generic function to show error messages for input fields
+     *
+     * @param {string} inputId - input field id
+     * @param {string} wrapperId - wrapper element id
+     * @param {string} errorMessage - error message to display
+     * @param {string} errorId - Unique ID for the error message element
+     */
+    function showError(inputId, wrapperId, errorMessage, errorId) {
+        // First, clear any existing error messages for this input field
+        const $inputField = $(`#${inputId}`);
+        const $wrapper = $(`#${wrapperId}`);
+
+        // Remove any existing error messages in this wrapper
+        $wrapper.find('.error-message').remove();
+
+        // Remove error styling from the input field
+        $inputField.removeClass("error-input");
+
+        // Now show the new error message
+        const $errorMessage = $("<div>")
+            .attr("id", errorId)
+            .addClass("error-message")
+            .text(errorMessage);
+
+        $wrapper.append($errorMessage);
+
+        // highlight the input field with error
+        $inputField.addClass("error-input");
+
+        // to automatically remove it after 5 seconds
+        setTimeout(function () {
+            $(`#${errorId}`).fadeOut(function () {
+                $(this).remove();
+            });
+            $inputField.removeClass("error-input");
+        }, 5000);
+
+        $inputField.one("input", function () {
+            $(`#${errorId}`).remove();
+            $(this).removeClass("error-input");
+        });
+    }
+
+    /**
      * This function is called when there are no available snippets to display
      * this is called inside the 'showSnippetsList' function inside the snippetsList.js file
      * in that case we need to show the empty snippet message
@@ -119,33 +163,19 @@ define(function (require, exports, module) {
      * Shows an error message when a snippet with the same abbreviation already exists
      * and user is trying to add a new one
      * @param {string} abbreviation - The abbreviation that's duplicated
+     * @param {boolean} isEditForm - Whether this is for the edit form (optional, defaults to false)
      */
-    function showDuplicateAbbreviationError(abbreviation) {
-        // just make sure that the error message is not already displaying
-        if ($("#abbreviation-error-message").length === 0) {
-            const $errorMessage = $("<div>")
-                .attr("id", "abbreviation-error-message")
-                .addClass("error-message")
-                .text(`A snippet with abbreviation "${abbreviation}" already exists.`);
+    function showDuplicateAbbreviationError(abbreviation, isEditForm = false) {
+        const inputId = isEditForm ? 'edit-abbr-box' : 'abbr-box';
+        const wrapperId = isEditForm ? 'edit-abbr-box-wrapper' : 'abbr-box-wrapper';
+        const errorId = isEditForm ? 'edit-abbreviation-duplicate-error' : 'abbreviation-duplicate-error';
 
-            $("#abbr-box-wrapper").append($errorMessage);
-
-            // highlight the abbreviation input with error
-            $("#abbr-box").addClass("error-input");
-
-            // automatically remove it after 5 seconds
-            setTimeout(function () {
-                $("#abbreviation-error-message").fadeOut(function () {
-                    $(this).remove();
-                });
-                $("#abbr-box").removeClass("error-input");
-            }, 5000);
-
-            $("#abbr-box").one("input", function () {
-                $("#abbreviation-error-message").remove();
-                $(this).removeClass("error-input");
-            });
-        }
+        showError(
+            inputId,
+            wrapperId,
+            `A snippet with abbreviation "${abbreviation}" already exists.`,
+            errorId
+        );
     }
 
     /**
@@ -187,4 +217,5 @@ define(function (require, exports, module) {
     exports.showSnippetsListHeader = showSnippetsListHeader;
     exports.hideSnippetsListHeader = hideSnippetsListHeader;
     exports.initializeListViewToolbarTitle = initializeListViewToolbarTitle;
+    exports.showError = showError;
 });
