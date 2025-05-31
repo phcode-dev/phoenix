@@ -144,6 +144,9 @@ define(function (require, exports, module) {
         $abbrInput.on("keydown", function (e) {
             Helper.validateAbbrInput(e, this);
         });
+        $abbrInput.on("paste", function (e) {
+            Helper.handleAbbrPaste(e, $(this));
+        });
 
         $templateInput.on("keydown", function (e) {
             Helper.handleTextareaTabKey(e, this);
@@ -164,6 +167,9 @@ define(function (require, exports, module) {
 
         $editAbbrInput.on("keydown", function (e) {
             Helper.validateAbbrInput(e, this);
+        });
+        $editAbbrInput.on("paste", function (e) {
+            Helper.handleAbbrPaste(e, $(this));
         });
 
         $editTemplateInput.on("keydown", function (e) {
