@@ -112,6 +112,7 @@ define(function (require, exports, module) {
         const $filterInput = $("#filter-snippets-input");
 
         const $editAbbrInput = $("#edit-abbr-box");
+        const $editDescInput = $("#edit-desc-box");
         const $editTemplateInput = $("#edit-template-text-box");
         const $editFileExtnInput = $("#edit-file-extn-box");
         const $saveEditSnippetBtn = $("#save-edit-snippet-btn");
@@ -148,6 +149,13 @@ define(function (require, exports, module) {
             Helper.handleAbbrPaste(e, $(this));
         });
 
+        $descInput.on("keydown", function (e) {
+            Helper.validateDescInput(e, this);
+        });
+        $descInput.on("paste", function (e) {
+            Helper.handleDescPaste(e, $(this));
+        });
+
         $templateInput.on("keydown", function (e) {
             Helper.handleTextareaTabKey(e, this);
         });
@@ -170,6 +178,13 @@ define(function (require, exports, module) {
         });
         $editAbbrInput.on("paste", function (e) {
             Helper.handleAbbrPaste(e, $(this));
+        });
+
+        $editDescInput.on("keydown", function (e) {
+            Helper.validateDescInput(e, this);
+        });
+        $editDescInput.on("paste", function (e) {
+            Helper.handleDescPaste(e, $(this));
         });
 
         $editTemplateInput.on("keydown", function (e) {
