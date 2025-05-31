@@ -3,6 +3,35 @@ define(function (require, exports, module) {
     const Global = require("./global");
     const UIHelper = require("./UIHelper");
 
+    // list of all the navigation and function keys that are allowed inside the input fields
+    const ALLOWED_NAVIGATION_KEYS = [
+        "Backspace",
+        "Delete",
+        "Tab",
+        "Escape",
+        "Enter",
+        "ArrowLeft",
+        "ArrowRight",
+        "ArrowUp",
+        "ArrowDown",
+        "Home",
+        "End",
+        "PageUp",
+        "PageDown",
+        "F1",
+        "F2",
+        "F3",
+        "F4",
+        "F5",
+        "F6",
+        "F7",
+        "F8",
+        "F9",
+        "F10",
+        "F11",
+        "F12"
+    ];
+
     /**
      * map the language IDs to their file extensions for snippet matching
      * this is needed because we expect the user to enter file extensions and not the file type inside the input field
@@ -470,36 +499,8 @@ define(function (require, exports, module) {
         }
 
         // Allow navigation and function keys
-        const allowedKeys = [
-            "Backspace",
-            "Delete",
-            "Tab",
-            "Escape",
-            "Enter",
-            "ArrowLeft",
-            "ArrowRight",
-            "ArrowUp",
-            "ArrowDown",
-            "Home",
-            "End",
-            "PageUp",
-            "PageDown",
-            "F1",
-            "F2",
-            "F3",
-            "F4",
-            "F5",
-            "F6",
-            "F7",
-            "F8",
-            "F9",
-            "F10",
-            "F11",
-            "F12"
-        ];
-
-        if (allowedKeys.includes(e.key)) {
-            return; // Allow these keys to work normally
+        if (ALLOWED_NAVIGATION_KEYS.includes(e.key)) {
+            return;
         }
 
         // Prevent space character
@@ -531,6 +532,35 @@ define(function (require, exports, module) {
             const errorId = isEditForm ? "edit-abbreviation-length-error" : "abbreviation-length-error";
 
             UIHelper.showError(inputId, wrapperId, "Abbreviation cannot be more than 30 characters.", errorId);
+        }
+    }
+
+    function validateDescInput(e, descBox) {
+        // Allow keyboard shortcuts and navigation keys
+        if (e.ctrlKey || e.metaKey || e.altKey) {
+            return;
+        }
+
+        // Allow navigation and function keys
+        if (ALLOWED_NAVIGATION_KEYS.includes(e.key)) {
+            return;
+        }
+
+        // Check for character limit (70 characters) - only for printable characters (spaces allowed)
+        if (
+            descBox.value.length >= 70 &&
+            e.key.length === 1 &&
+            e.key.match(/[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?\ ]/)
+        ) {
+            e.preventDefault();
+
+            // Determine if this is the edit form or new form
+            const isEditForm = descBox.id === "edit-desc-box";
+            const inputId = isEditForm ? "edit-desc-box" : "desc-box";
+            const wrapperId = isEditForm ? "edit-desc-box-wrapper" : "desc-box-wrapper";
+            const errorId = isEditForm ? "edit-description-length-error" : "description-length-error";
+
+            UIHelper.showError(inputId, wrapperId, "Description cannot be more than 70 characters.", errorId);
         }
     }
 
@@ -613,6 +643,73 @@ define(function (require, exports, module) {
         }
     }
 
+    /**
+     * Handles description paste event with validation
+     * @param {Event} e - The paste event
+     * @param {jQuery} $input - The input element
+     */
+    function handleDescPaste(e, $input) {
+        e.preventDefault();
+
+        const clipboardData = (e.originalEvent || e).clipboardData.getData("text");
+
+        // Keep spaces but limit to 70 characters
+        let sanitized = clipboardData;
+        let wasTruncated = false;
+
+        if (sanitized.length > 70) {
+            sanitized = sanitized.substring(0, 70);
+            wasTruncated = true;
+        }
+
+        // Insert sanitized value at current cursor position
+        const input = $input[0];
+        const start = input.selectionStart;
+        const end = input.selectionEnd;
+        const currentValue = input.value;
+
+        // Check if the final result would exceed 70 characters
+        const beforeCursor = currentValue.substring(0, start);
+        const afterCursor = currentValue.substring(end);
+        const finalValue = beforeCursor + sanitized + afterCursor;
+
+        if (finalValue.length > 70) {
+            // Trim the sanitized content to fit within the limit
+            const availableSpace = 70 - (beforeCursor.length + afterCursor.length);
+            if (availableSpace > 0) {
+                sanitized = sanitized.substring(0, availableSpace);
+                wasTruncated = true;
+            } else {
+                sanitized = ""; // No space available
+                wasTruncated = true;
+            }
+        }
+
+        // Insert the final sanitized value
+        input.value = beforeCursor + sanitized + afterCursor;
+
+        // Move the cursor to the end of the inserted text
+        const newPos = start + sanitized.length;
+        input.setSelectionRange(newPos, newPos);
+
+        // Show error message if content was truncated
+        if (wasTruncated) {
+            const isEditForm = $input.attr("id") === "edit-desc-box";
+            const inputId = isEditForm ? "edit-desc-box" : "desc-box";
+            const wrapperId = isEditForm ? "edit-desc-box-wrapper" : "desc-box-wrapper";
+            const errorId = isEditForm ? "edit-description-paste-length-error" : "description-paste-length-error";
+
+            UIHelper.showError(inputId, wrapperId, "Description cannot be more than 70 characters.", errorId);
+        }
+
+        // Determine which save button to toggle based on input field
+        if ($input.attr("id") === "edit-desc-box") {
+            toggleEditSaveButtonDisability();
+        } else {
+            toggleSaveButtonDisability();
+        }
+    }
+
     exports.toggleSaveButtonDisability = toggleSaveButtonDisability;
     exports.createHintItem = createHintItem;
     exports.clearAllInputFields = clearAllInputFields;
@@ -635,5 +732,7 @@ define(function (require, exports, module) {
     exports.clearEditInputFields = clearEditInputFields;
     exports.handleTextareaTabKey = handleTextareaTabKey;
     exports.validateAbbrInput = validateAbbrInput;
+    exports.validateDescInput = validateDescInput;
     exports.handleAbbrPaste = handleAbbrPaste;
+    exports.handleDescPaste = handleDescPaste;
 });
