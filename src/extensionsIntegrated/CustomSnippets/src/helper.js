@@ -468,6 +468,23 @@ define(function (require, exports, module) {
     }
 
     function validateAbbrInput(e, abbrBox) {
+        // Allow keyboard shortcuts and navigation keys
+        if (e.ctrlKey || e.metaKey || e.altKey) {
+            return;
+        }
+
+        // Allow navigation and function keys
+        const allowedKeys = [
+            'Backspace', 'Delete', 'Tab', 'Escape', 'Enter',
+            'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown',
+            'Home', 'End', 'PageUp', 'PageDown',
+            'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12'
+        ];
+
+        if (allowedKeys.includes(e.key)) {
+            return; // Allow these keys to work normally
+        }
+
         // Prevent space character
         if (e.key === ' ') {
             e.preventDefault();
@@ -487,8 +504,8 @@ define(function (require, exports, module) {
             return;
         }
 
-        // Check for character limit (30 characters)
-        if (abbrBox.value.length >= 30 && e.key.length === 1) {
+        // Check for character limit (30 characters) - only for printable characters
+        if (abbrBox.value.length >= 30 && e.key.length === 1 && e.key.match(/[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/)) {
             e.preventDefault();
 
             // Determine if this is the edit form or new form
