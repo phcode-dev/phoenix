@@ -36,10 +36,9 @@ define(function (require, exports, module) {
         }
 
         const word = wordInfo.word.toLowerCase();
-        const fileExtension = Helper.getCurrentFileExtension(editor);
 
-        // check if there's at least one exact match - this is the same logic as in driver.js
-        return Helper.hasExactMatchingSnippet(word, fileExtension);
+        // check if there's at least one exact match using language context detection
+        return Helper.hasExactMatchingSnippet(word, editor);
     };
 
     /**
@@ -65,10 +64,9 @@ define(function (require, exports, module) {
         }
 
         const word = wordInfo.word.toLowerCase();
-        const fileExtension = Helper.getCurrentFileExtension(this.editor);
 
-        // find all matching snippets (including prefix matches) - same logic as driver.js
-        const matchingSnippets = Helper.getMatchingSnippets(word, fileExtension);
+        // find all matching snippets using language context detection
+        const matchingSnippets = Helper.getMatchingSnippets(word, this.editor);
 
         if (matchingSnippets.length > 0) {
             matchingSnippets.forEach((snippet) => {
