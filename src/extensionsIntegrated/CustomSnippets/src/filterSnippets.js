@@ -34,7 +34,7 @@ define(function (require, exports, module) {
         const template = (snippet.templateText || "").toLowerCase();
         const fileExt = (snippet.fileExtension || "").toLowerCase();
 
-        filterTerms.forEach(function(term) {
+        filterTerms.forEach(function (term) {
             // abbreviation matching. this has the highest priority
             if (abbr.indexOf(term) === 0) {
                 score += 1000; // exact start match in abbreviation
@@ -82,17 +82,17 @@ define(function (require, exports, module) {
         const filterTerms = filterText.split(/\s+/);
 
         // filter snippets that match all terms
-        const matchingSnippets = snippetList.filter(function(snippet) {
+        const matchingSnippets = snippetList.filter(function (snippet) {
             const filterString = _createFilterString(snippet);
 
             // all terms must match (AND logic)
-            return filterTerms.every(function(term) {
+            return filterTerms.every(function (term) {
                 return filterString.indexOf(term) > -1;
             });
         });
 
         // sort by relevance (higher priority scores first)
-        return matchingSnippets.sort(function(a, b) {
+        return matchingSnippets.sort(function (a, b) {
             const scoreA = _calculateMatchPriority(a, filterTerms);
             const scoreB = _calculateMatchPriority(b, filterTerms);
             return scoreB - scoreA; // in descending order (highest score will be at first)
