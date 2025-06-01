@@ -425,22 +425,18 @@
         border-top: 1px solid @dark-bc-panel-separator;
     }
 
-    #abbr-box-wrapper,
-    #desc-box-wrapper,
-    #template-text-box-wrapper,
-    #file-extn-box-wrapper {
-        margin-bottom: 12px;
-
-        &:last-of-type {
-            margin-bottom: 8px;
-        }
+    .field-wrapper {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+        gap: 12px;
 
         label {
-            display: block;
-            margin-bottom: 6px;
+            flex: 0 0 120px;
             color: @bc-text;
             cursor: pointer;
             transition: color 0.2s ease;
+            margin: 0;
 
             .dark & {
                 color: @dark-bc-text;
@@ -457,13 +453,13 @@
 
         input,
         textarea {
-            width: 100%;
+            flex: 1;
             background-color: @bc-input-bg;
             border: 1px solid @bc-btn-border;
             color: @bc-text-thin;
             box-shadow: inset 0 1px 0 @bc-shadow-small;
             border-radius: @bc-border-radius;
-            padding: 8px 10px;
+            padding: 4px 8px;
             box-sizing: border-box;
             transition:
                 border linear 180ms,
@@ -515,59 +511,27 @@
         }
 
         input {
-            padding: 4px 10px;
-            height: 32px;
-        }
-    }
-
-    .form-row {
-        display: flex;
-        gap: 12px;
-        margin-bottom: 12px;
-
-        #abbr-box-wrapper {
-            flex: 0 0 35%;
-            margin-bottom: 0;
+            height: 28px;
         }
 
-        #desc-box-wrapper {
-            flex: 0 0 63%;
-            margin-bottom: 0;
-        }
-    }
-
-    #file-extn-box-wrapper {
-        label {
-            display: inline-block;
-            margin-bottom: 0;
-            margin-right: 8px;
-            line-height: 40px;
-            vertical-align: top;
-            min-width: 100px;
-        }
-
-        input {
-            display: inline-block;
-            width: 320px;
-            vertical-align: top;
-        }
-    }
-
-    #template-text-box-wrapper {
         textarea {
-            min-height: 100px;
-            max-height: 180px;
-            resize: none !important;
+            min-height: 80px;
+            max-height: 120px;
+            resize: none;
             line-height: 1.4;
             white-space: pre-wrap;
             overflow-wrap: break-word;
             word-break: break-word;
         }
+
+        &:last-of-type {
+            margin-bottom: 12px;
+        }
     }
 
     #save-custom-snippet-btn {
-        margin-top: 12px;
-        padding-top: 12px;
+        margin-top: 8px;
+        padding-top: 8px;
         border-top: 1px solid @bc-panel-separator;
         text-align: right;
 
@@ -602,22 +566,18 @@
         border-top: 1px solid @dark-bc-panel-separator;
     }
 
-    #edit-abbr-box-wrapper,
-    #edit-desc-box-wrapper,
-    #edit-template-text-box-wrapper,
-    #edit-file-extn-box-wrapper {
-        margin-bottom: 12px;
-
-        &:last-of-type {
-            margin-bottom: 8px;
-        }
+    .field-wrapper {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+        gap: 12px;
 
         label {
-            display: block;
-            margin-bottom: 6px;
+            flex: 0 0 120px;
             color: @bc-text;
             cursor: pointer;
             transition: color 0.2s ease;
+            margin: 0;
 
             .dark & {
                 color: @dark-bc-text;
@@ -634,13 +594,13 @@
 
         input,
         textarea {
-            width: 100%;
+            flex: 1;
             background-color: @bc-input-bg;
             border: 1px solid @bc-btn-border;
             color: @bc-text-thin;
             box-shadow: inset 0 1px 0 @bc-shadow-small;
             border-radius: @bc-border-radius;
-            padding: 8px 10px;
+            padding: 4px 8px;
             box-sizing: border-box;
             transition:
                 border linear 180ms,
@@ -692,59 +652,27 @@
         }
 
         input {
-            padding: 4px 10px;
-            height: 32px;
-        }
-    }
-
-    .form-row {
-        display: flex;
-        gap: 12px;
-        margin-bottom: 12px;
-
-        #edit-abbr-box-wrapper {
-            flex: 0 0 35%;
-            margin-bottom: 0;
+            height: 28px;
         }
 
-        #edit-desc-box-wrapper {
-            flex: 0 0 63%;
-            margin-bottom: 0;
-        }
-    }
-
-    #edit-file-extn-box-wrapper {
-        label {
-            display: inline-block;
-            margin-bottom: 0;
-            margin-right: 8px;
-            line-height: 40px;
-            vertical-align: top;
-            min-width: 100px;
-        }
-
-        input {
-            display: inline-block;
-            width: 320px;
-            vertical-align: top;
-        }
-    }
-
-    #edit-template-text-box-wrapper {
         textarea {
-            min-height: 100px;
-            max-height: 180px;
-            resize: none !important;
+            min-height: 80px;
+            max-height: 120px;
+            resize: none;
             line-height: 1.4;
             white-space: pre-wrap;
             overflow-wrap: break-word;
             word-break: break-word;
         }
+
+        &:last-of-type {
+            margin-bottom: 12px;
+        }
     }
 
     #edit-snippet-buttons {
-        margin-top: 12px;
-        padding-top: 12px;
+        margin-top: 8px;
+        padding-top: 8px;
         border-top: 1px solid @bc-panel-separator;
         text-align: right;
         display: flex;
@@ -807,12 +735,35 @@
             }
         }
     }
+
+    #custom-snippets-add-new,
+    #custom-snippets-edit {
+        .field-wrapper {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 4px;
+
+            label {
+                flex: none;
+                margin-bottom: 4px;
+            }
+        }
+    }
 }
 
 @media (max-width: 400px) {
     #custom-snippets-toolbar {
         .title-wrapper {
             margin-bottom: 4px;
+        }
+    }
+
+    #custom-snippets-add-new,
+    #custom-snippets-edit {
+        padding: 6px;
+
+        .field-wrapper {
+            margin-bottom: 6px;
         }
     }
 }
