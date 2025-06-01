@@ -1,8 +1,7 @@
 <div id="custom-snippets-panel" class="custom-snippets-panel bottom-panel vert-resizable top-resizer no-focus">
-    <!--the toolbar at the top-->
-    <div id="custom-snippets-toolbar" class="custom-snippets-toolbar">
-        <div class="toolbar-left-section">
-            <div class="toolbar-title">Custom Snippets <span id="snippets-count" class="snippets-count"></span></div>
+    <div id="custom-snippets-toolbar" class="toolbar simple-toolbar-layout">
+        <div class="title-wrapper">
+            <span class="title toolbar-title">Custom Snippets <span id="snippets-count" class="snippets-count"></span></span>
             <div id="add-new-snippet-btn" class="custom-snippet-btn">
                 <button title="Add new snippet">
                     <i class="fas fa-plus"></i>
@@ -14,13 +13,13 @@
                 </button>
             </div>
         </div>
-
-        <div id="filter-snippets-panel" class="filter-snippets-panel">
-            <input id="filter-snippets-input" type="text" placeholder="Filter..." autocomplete="off" />
-        </div>
-
-        <div id="close-custom-snippets-panel-btn">
-            <button><i class="fas fa-times"></i></button>
+        <div class="buttons">
+            <div id="filter-snippets-panel" class="filter-snippets-panel">
+                <input id="filter-snippets-input" type="text" placeholder="Filter..." autocomplete="off" />
+            </div>
+            <div id="close-custom-snippets-panel-btn">
+                <button><i class="fas fa-times"></i></button>
+            </div>
         </div>
     </div>
 
