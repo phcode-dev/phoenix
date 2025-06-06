@@ -330,9 +330,9 @@ define(function (require, exports, module) {
 
         if (description && description.trim() !== "") {
             const fullDescription = description.trim();
-            // truncate description if longer than 70 characters
+            // truncate description if longer than 80 characters
             const displayDescription =
-                fullDescription.length > 70 ? fullDescription.substring(0, 70) + "..." : fullDescription;
+                fullDescription.length > 80 ? fullDescription.substring(0, 80) + "..." : fullDescription;
 
             const $desc = $(`<span class="snippet-description">${displayDescription}</span>`);
             $hint.append($desc);
@@ -586,9 +586,9 @@ define(function (require, exports, module) {
             return;
         }
 
-        // Check for character limit (70 characters) - only for printable characters (spaces allowed)
+        // Check for character limit (80 characters) - only for printable characters (spaces allowed)
         if (
-            descBox.value.length >= 70 &&
+            descBox.value.length >= 80 &&
             e.key.length === 1 &&
             e.key.match(/[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?\ ]/)
         ) {
@@ -600,7 +600,7 @@ define(function (require, exports, module) {
             const wrapperId = isEditForm ? "edit-desc-box-wrapper" : "desc-box-wrapper";
             const errorId = isEditForm ? "edit-description-length-error" : "description-length-error";
 
-            UIHelper.showError(inputId, wrapperId, "Description cannot be more than 70 characters.", errorId);
+            UIHelper.showError(inputId, wrapperId, "Description cannot be more than 80 characters.", errorId);
         }
     }
 
@@ -693,12 +693,12 @@ define(function (require, exports, module) {
 
         const clipboardData = (e.originalEvent || e).clipboardData.getData("text");
 
-        // Keep spaces but limit to 70 characters
+        // Keep spaces but limit to 80 characters
         let sanitized = clipboardData;
         let wasTruncated = false;
 
-        if (sanitized.length > 70) {
-            sanitized = sanitized.substring(0, 70);
+        if (sanitized.length > 80) {
+            sanitized = sanitized.substring(0, 80);
             wasTruncated = true;
         }
 
@@ -708,14 +708,14 @@ define(function (require, exports, module) {
         const end = input.selectionEnd;
         const currentValue = input.value;
 
-        // Check if the final result would exceed 70 characters
+        // Check if the final result would exceed 80 characters
         const beforeCursor = currentValue.substring(0, start);
         const afterCursor = currentValue.substring(end);
         const finalValue = beforeCursor + sanitized + afterCursor;
 
-        if (finalValue.length > 70) {
+        if (finalValue.length > 80) {
             // Trim the sanitized content to fit within the limit
-            const availableSpace = 70 - (beforeCursor.length + afterCursor.length);
+            const availableSpace = 80 - (beforeCursor.length + afterCursor.length);
             if (availableSpace > 0) {
                 sanitized = sanitized.substring(0, availableSpace);
                 wasTruncated = true;
@@ -739,7 +739,7 @@ define(function (require, exports, module) {
             const wrapperId = isEditForm ? "edit-desc-box-wrapper" : "desc-box-wrapper";
             const errorId = isEditForm ? "edit-description-paste-length-error" : "description-paste-length-error";
 
-            UIHelper.showError(inputId, wrapperId, "Description cannot be more than 70 characters.", errorId);
+            UIHelper.showError(inputId, wrapperId, "Description cannot be more than 80 characters.", errorId);
         }
 
         // Determine which save button to toggle based on input field
