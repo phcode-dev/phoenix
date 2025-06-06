@@ -141,6 +141,58 @@ define(function (require, exports, module) {
     }
 
     /**
+     * this function is responsible to calculate the indentation level for the current line
+     *
+     * @param {Editor} editor - the editor instance
+     * @param {Object} position - position object with line number
+     * @returns {String} - the indentation string
+     */
+    function getLineIndentation(editor, position) {
+        const line = editor.document.getLine(position.line);
+        const match = line.match(/^\s*/);
+        return match ? match[0] : '';
+    }
+
+    /**
+     * this function is to add proper indentation to multiline snippet text
+     *
+     * @param {String} templateText - the template text with multiple lines
+     * @param {String} baseIndent - the base indentation string from the current cursor position
+     * @returns {String} - properly indented text
+     */
+    function addIndentationToSnippet(templateText, baseIndent) {
+        const lines = templateText.split(/(\r\n|\n)/g);
+
+        let result = '';
+        let isFirstLine = true;
+
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i];
+
+            if (line === '\n' || line === '\r\n') {
+                result += line;
+                continue;
+            }
+
+            if (line.trim() === '') {
+                result += line;
+                continue;
+            }
+
+            // we don't want to indent the first line as it inherits the current indent
+            if (isFirstLine) {
+                result += line;
+                isFirstLine = false;
+            } else {
+                // add base indent plus the existing indent in the template text
+                result += baseIndent + line;
+            }
+        }
+
+        return result;
+    }
+
+    /**
      * Insert snippet with tab stops and start navigation session
      * this is the main function that handles snippet insertion with cursor positioning
      *
@@ -152,10 +204,16 @@ define(function (require, exports, module) {
     function insertSnippetWithTabStops(editor, templateText, startPos, endPos) {
         const parsed = parseTemplateText(templateText);
 
-        editor.document.replaceRange(parsed.text, startPos, endPos);
+        // Get the current line's indentation to apply to all subsequent lines
+        const baseIndent = getLineIndentation(editor, startPos);
+
+        // Apply proper indentation to the snippet text for multi-line snippets
+        const indentedText = addIndentationToSnippet(parsed.text, baseIndent);
+
+        editor.document.replaceRange(indentedText, startPos, endPos);
 
         // calculate snippet bounds
-        const lines = parsed.text.split("\n");
+        const lines = indentedText.split("\n");
         const startLine = startPos.line;
         const endLine = startPos.line + lines.length - 1;
 
