@@ -250,17 +250,37 @@ define(function (require, exports, module) {
      * Gets all snippets that match the query (prefix matches)
      * @param {string} query - The search query
      * @param {Editor} editor - The editor instance
-     * @returns {Array} - Array of matching snippets
+     * @returns {Array} - an array of matching snippets, sorted with exact matches first
      */
     function getMatchingSnippets(query, editor) {
         const queryLower = query.toLowerCase();
         const languageContext = getCurrentLanguageContext(editor);
 
-        return Global.SnippetHintsList.filter((snippet) => {
+        const matchingSnippets = Global.SnippetHintsList.filter((snippet) => {
             if (snippet.abbreviation.toLowerCase().startsWith(queryLower)) {
                 return isSnippetSupportedInLanguageContext(snippet, languageContext, editor);
             }
             return false;
+        });
+
+        // sort snippets so that the exact matches will appear over the partial matches
+        return matchingSnippets.sort((a, b) => {
+            const aLower = a.abbreviation.toLowerCase();
+            const bLower = b.abbreviation.toLowerCase();
+
+            // check if either is an exact match
+            const aExact = aLower === queryLower;
+            const bExact = bLower === queryLower;
+
+            // because exact matches appear first
+            if (aExact && !bExact) {
+                return -1;
+            }
+            if (bExact && !aExact) {
+                return 1;
+            }
+
+            return aLower.localeCompare(bLower);
         });
     }
 
