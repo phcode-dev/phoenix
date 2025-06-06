@@ -161,7 +161,7 @@ define(function (require, exports, module) {
      * @returns {string|null} - The file extension or null if not available
      */
     function getCurrentFileExtension(editor) {
-        const filePath = editor.document?.file?.fullPath;
+        const filePath = editor && editor.document && editor.document.file ? editor.document.file.fullPath : undefined;
         if (filePath) {
             return filePath.substring(filePath.lastIndexOf(".")).toLowerCase();
         }
