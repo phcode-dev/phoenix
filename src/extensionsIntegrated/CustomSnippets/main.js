@@ -6,13 +6,13 @@ define(function (require, exports, module) {
     const Commands = require("command/Commands");
     const WorkspaceManager = require("view/WorkspaceManager");
 
-    const Driver = require("./src/driver");
-    const SnippetsList = require("./src/snippetsList");
-    const SnippetCodeHints = require("./src/snippetCodeHints");
-    const Helper = require("./src/helper");
-    const UIHelper = require("./src/UIHelper");
-    const SnippetsState = require("./src/snippetsState");
-    const SnippetCursorManager = require("./src/snippetCursorManager");
+    const Driver = require("./driver");
+    const SnippetsList = require("./snippetsList");
+    const SnippetCodeHints = require("./snippetCodeHints");
+    const Helper = require("./helper");
+    const UIHelper = require("./UIHelper");
+    const SnippetsState = require("./snippetsState");
+    const SnippetCursorManager = require("./snippetCursorManager");
 
     const snippetsPanelTpl = require("text!./htmlContent/snippets-panel.html");
     // the html content of the panel will be stored in this variable

@@ -274,9 +274,9 @@ define(function (require, exports, module) {
 
     // load custom snippets driver and global
     try {
-        customSnippetsDriver = require("../extensionsIntegrated/CustomSnippets/src/driver");
-        customSnippetsGlobal = require("../extensionsIntegrated/CustomSnippets/src/global");
-        customSnippetsCursorManager = require("../extensionsIntegrated/CustomSnippets/src/snippetCursorManager");
+        customSnippetsDriver = require("../extensionsIntegrated/CustomSnippets/driver");
+        customSnippetsGlobal = require("../extensionsIntegrated/CustomSnippets/global");
+        customSnippetsCursorManager = require("../extensionsIntegrated/CustomSnippets/snippetCursorManager");
     } catch (e) {
         // if unable to load we just set it to null to prevent other parts of the code from breaking
         customSnippetsDriver = null;
