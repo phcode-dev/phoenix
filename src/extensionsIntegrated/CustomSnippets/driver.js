@@ -164,84 +164,10 @@ define(function (require, exports, module) {
         };
     }
 
-    /**
-     * This function is called from CodeHintManager.js because of how Phoenix handles hinting.
-     *
-     * Here's the problem:
-     * When a provider returns true for `hasHints`, it locks in that provider for the entire hinting session
-     * until it returns false. If the user types something like 'clg', and the default JavaScript provider
-     * is already active, the CodeHintManager won't even ask the custom snippets provider if it has hints.
-     *
-     * To fix that, what we did is that when hints are shown we just ask the custom snippets if it has any relevant hint
-     * If it does, this function prepends them to the existing list of hints.
-     *
-     * @param {Object} response - The original hint response from the current provider
-     * @param {Editor} editor - The current editor instance
-     * @return {Object} - The modified response with custom snippets added to the front
-     */
-    function prependCustomSnippets(response, editor) {
-        if (!response || !response.hints) {
-            return response;
-        }
 
-        try {
-            // check if the response already contains custom snippet hints to avoid duplicates
-            // this is needed because sometimes when there are no default hints present then the
-            // SnippetCodeHints.js shows some hints, so we don't want to duplicate hints
-            if (Array.isArray(response.hints) && response.hints.length > 0) {
-                const hasCustomSnippets = response.hints.some((hint) => {
-                    return (
-                        (hint && hint.hasClass && hint.hasClass("emmet-hint")) ||
-                        (hint && hint.attr && hint.attr("data-isCustomSnippet"))
-                    );
-                });
-
-                if (hasCustomSnippets) {
-                    return response; // already has custom snippets, don't need to add again
-                }
-            }
-
-            const wordInfo = getWordBeforeCursor();
-            if (!wordInfo || !wordInfo.word) {
-                return response;
-            }
-
-            const needle = wordInfo.word.toLowerCase();
-
-            // check if there's at least one exact match using language context detection
-            if (!Helper.hasExactMatchingSnippet(needle, editor)) {
-                return response;
-            }
-
-            // get all matching snippets using language context detection
-            const matchingSnippets = Helper.getMatchingSnippets(needle, editor);
-
-            // if we have matching snippets, prepend them to the hints
-            if (matchingSnippets.length > 0) {
-                const customSnippetHints = matchingSnippets.map((snippet) => {
-                    return Helper.createHintItem(snippet.abbreviation, needle, snippet.description);
-                });
-
-                // create a new response with custom snippets at the top
-                const newResponse = $.extend({}, response);
-                if (Array.isArray(response.hints)) {
-                    newResponse.hints = customSnippetHints.concat(response.hints);
-                } else {
-                    newResponse.hints = customSnippetHints.concat([response.hints]);
-                }
-
-                return newResponse;
-            }
-        } catch (e) {
-            console.log("Error checking custom snippets:", e);
-        }
-
-        return response;
-    }
 
     exports.getWordBeforeCursor = getWordBeforeCursor;
     exports.handleSaveBtnClick = handleSaveBtnClick;
     exports.handleEditSaveBtnClick = handleEditSaveBtnClick;
     exports.handleResetBtnClick = handleResetBtnClick;
-    exports.prependCustomSnippets = prependCustomSnippets;
 });

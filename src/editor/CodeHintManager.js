@@ -266,23 +266,8 @@ define(function (require, exports, module) {
         codeHintsEnabled = true,
         codeHintOpened   = false;
 
-    // custom snippets integration
-    // this is to check whether user has set any custom snippets as we need to show it at the first
-    let customSnippetsDriver = null;
-    let customSnippetsGlobal = null;
-    let customSnippetsCursorManager = null;
-
-    // load custom snippets driver and global
-    try {
-        customSnippetsDriver = require("../extensionsIntegrated/CustomSnippets/driver");
-        customSnippetsGlobal = require("../extensionsIntegrated/CustomSnippets/global");
-        customSnippetsCursorManager = require("../extensionsIntegrated/CustomSnippets/snippetCursorManager");
-    } catch (e) {
-        // if unable to load we just set it to null to prevent other parts of the code from breaking
-        customSnippetsDriver = null;
-        customSnippetsGlobal = null;
-        customSnippetsCursorManager = null;
-    }
+    // API for extensions to show hints at the top
+    let hintsAtTopHandler = null;
 
     PreferencesManager.definePreference("showCodeHints", "boolean", true, {
         description: Strings.DESCRIPTION_SHOW_CODE_HINTS
@@ -479,9 +464,13 @@ define(function (require, exports, module) {
                 _endSession();
                 _beginSession(previousEditor);
             } else if (response.hasOwnProperty("hints")) { // a synchronous response
-                // prepend custom snippets to the response
-                if(customSnippetsDriver && customSnippetsGlobal && customSnippetsGlobal.SnippetHintsList) {
-                    response = customSnippetsDriver.prependCustomSnippets(response, sessionEditor);
+                // allow extensions to modify the response by adding hints at the top
+                if (hintsAtTopHandler) {
+                    if (typeof hintsAtTopHandler === 'function') {
+                        response = hintsAtTopHandler(response, sessionEditor);
+                    } else if (hintsAtTopHandler.prepend) {
+                        response = hintsAtTopHandler.prepend(response, sessionEditor);
+                    }
                 }
 
                 if (hintList.isOpen()) {
@@ -500,9 +489,13 @@ define(function (require, exports, module) {
                     if (!hintList) {
                         return;
                     }
-                    // prepend custom snippets to the response
-                    if (customSnippetsDriver && customSnippetsGlobal && customSnippetsGlobal.SnippetHintsList) {
-                        response = customSnippetsDriver.prependCustomSnippets(response, sessionEditor);
+                    // allow extensions to modify the response by adding hints at the top
+                    if (hintsAtTopHandler) {
+                        if (typeof hintsAtTopHandler === 'function') {
+                            hints = hintsAtTopHandler(hints, sessionEditor);
+                        } else if (hintsAtTopHandler.prepend) {
+                            hints = hintsAtTopHandler.prepend(hints, sessionEditor);
+                        }
                     }
 
                     if (hintList.isOpen()) {
@@ -573,43 +566,20 @@ define(function (require, exports, module) {
                 }
             });
             hintList.onSelect(function (hint) {
-                // check if the hint is a custom snippet
-                if (hint && hint.jquery && hint.attr("data-isCustomSnippet")) {
-                    // handle custom snippet insertion
-                    const abbreviation = hint.attr("data-val");
-                    if (customSnippetsDriver && customSnippetsGlobal && customSnippetsGlobal.SnippetHintsList) {
-                        const matchedSnippet = customSnippetsGlobal.SnippetHintsList.find(
-                            (snippet) => snippet.abbreviation === abbreviation
-                        );
-                        if (matchedSnippet) {
-                            // replace the typed abbreviation with the template text using cursor manager
-                            const wordInfo = customSnippetsDriver.getWordBeforeCursor();
-                            const start = { line: wordInfo.line, ch: wordInfo.ch + 1 };
-                            const end = sessionEditor.getCursorPos();
-
-                            if (customSnippetsCursorManager) {
-                                customSnippetsCursorManager.insertSnippetWithTabStops(
-                                    sessionEditor,
-                                    matchedSnippet.templateText,
-                                    start,
-                                    end
-                                );
-                            } else {
-                                // insert snippet just by replacing range if cursor manager is not available
-                                sessionEditor.document.replaceRange(matchedSnippet.templateText, start, end);
-                            }
-                            _endSession();
-                            return;
-                        }
-                    }
+                // allow extensions to handle special hint selections
+                var handled = false;
+                if (hintsAtTopHandler && hintsAtTopHandler.handleHintSelection) {
+                    handled = hintsAtTopHandler.handleHintSelection(hint, sessionEditor, _endSession);
                 }
 
-                // Regular hint provider handling
-                var restart = sessionProvider.insertHint(hint),
-                    previousEditor = sessionEditor;
-                _endSession();
-                if (restart) {
-                    _beginSession(previousEditor);
+                if (!handled) {
+                    // Regular hint provider handling
+                    var restart = sessionProvider.insertHint(hint),
+                        previousEditor = sessionEditor;
+                    _endSession();
+                    if (restart) {
+                        _beginSession(previousEditor);
+                    }
                 }
             });
             hintList.onClose(()=>{
@@ -757,6 +727,27 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Register a handler to modify hints at the top of the hint list.
+     * This API allows extensions to prepend their own hints to the standard hint list.
+     *
+     * @param {Function|Object} handler - Either a function that takes (response, editor) and returns
+     * a modified response, or an object with:
+     *   - prepend: function(response, editor) - modify the hint response
+     *   - handleHintSelection: function(hint, editor, endSession) - handle hint selection
+     * returns true if handled, false otherwise
+     */
+    function showHintsAtTop(handler) {
+        hintsAtTopHandler = handler;
+    }
+
+    /**
+     * Unregister the hints at top handler.
+     */
+    function clearHintsAtTop() {
+        hintsAtTopHandler = null;
+    }
+
+    /**
      * Explicitly start a new session. If we have an existing session,
      * then close the current one and restart a new one.
      * @private
@@ -839,6 +830,8 @@ define(function (require, exports, module) {
     exports.isOpen                  = isOpen;
     exports.registerHintProvider    = registerHintProvider;
     exports.hasValidExclusion       = hasValidExclusion;
+    exports.showHintsAtTop          = showHintsAtTop;
+    exports.clearHintsAtTop         = clearHintsAtTop;
 
     exports.SELECTION_REASON        = CodeHintListModule._SELECTION_REASON;
 });
