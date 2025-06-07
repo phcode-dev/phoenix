@@ -110,6 +110,7 @@ define(function (require, exports, module) {
         $panel,
         $pinUrlBtn,
         $highlightBtn,
+        $wordNavigationBtn,
         $livePreviewPopBtn,
         $reloadBtn,
         $chromeButton,
@@ -141,6 +142,11 @@ define(function (require, exports, module) {
 
     function _isLiveHighlightEnabled() {
         return CommandManager.get(Commands.FILE_LIVE_HIGHLIGHT).getChecked();
+    }
+
+    function _isWordNavigationEnabled() {
+        const isEnabled = CommandManager.get(Commands.FILE_LIVE_WORD_NAVIGATION).getChecked();
+        return isEnabled;
     }
 
     function _getTrustProjectPage() {
@@ -301,6 +307,21 @@ define(function (require, exports, module) {
         Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "HighlightBtn", "click");
     }
 
+    function _updateWordNavigationToggleStatus() {
+        let isWordNavigationEnabled = _isWordNavigationEnabled();
+
+        if(isWordNavigationEnabled){
+            $wordNavigationBtn.removeClass('text-icon').addClass('text-fill-icon');
+        } else {
+            $wordNavigationBtn.removeClass('text-fill-icon').addClass('text-icon');
+        }
+    }
+
+    function _toggleWordNavigation() {
+        LiveDevelopment.toggleWordNavigation();
+        Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "WordNavigationBtn", "click");
+    }
+
     const ALLOWED_BROWSERS_NAMES = [`chrome`, `firefox`, `safari`, `edge`, `browser`, `browserPrivate`];
     function _popoutLivePreview(browserName) {
         // We cannot use $iframe.src here if panel is hidden
@@ -373,6 +394,7 @@ define(function (require, exports, module) {
             livePreview: Strings.LIVE_DEV_STATUS_TIP_OUT_OF_SYNC,
             clickToReload: Strings.LIVE_DEV_CLICK_TO_RELOAD_PAGE,
             toggleLiveHighlight: Strings.LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT,
+            toggleWordNavigation: Strings.LIVE_DEV_TOGGLE_WORD_NAVIGATION,
             livePreviewSettings: Strings.LIVE_DEV_SETTINGS,
             clickToPopout: Strings.LIVE_DEV_CLICK_POPOUT,
             openInChrome: Strings.LIVE_DEV_OPEN_CHROME,
@@ -389,6 +411,7 @@ define(function (require, exports, module) {
         $iframe = $panel.find("#panel-live-preview-frame");
         $pinUrlBtn = $panel.find("#pinURLButton");
         $highlightBtn = $panel.find("#highlightLPButton");
+        $wordNavigationBtn = $panel.find("#wordNavigationLPButton");
         $reloadBtn = $panel.find("#reloadLivePreviewButton");
         $livePreviewPopBtn = $panel.find("#livePreviewPopoutButton");
         $chromeButton = $panel.find("#chromeButton");
@@ -457,8 +480,10 @@ define(function (require, exports, module) {
 
         WorkspaceManager.recomputeLayout(false);
         _updateLiveHighlightToggleStatus();
+        _updateWordNavigationToggleStatus();
         $pinUrlBtn.click(_togglePinUrl);
         $highlightBtn.click(_toggleLiveHighlights);
+        $wordNavigationBtn.click(_toggleWordNavigation);
         $livePreviewPopBtn.click(_popoutLivePreview);
         $reloadBtn.click(()=>{
             _loadPreview(true, true);
@@ -475,6 +500,16 @@ define(function (require, exports, module) {
         }
         // panel-live-preview-title
         let previewDetails = await StaticServer.getPreviewDetails();
+
+        // Show or hide word navigation button based on file type
+        // Only show for HTML files where word navigation makes sense
+        if (previewDetails && $wordNavigationBtn) {
+            if (previewDetails.isHTMLFile) {
+                $wordNavigationBtn.removeClass('forced-hidden');
+            } else {
+                $wordNavigationBtn.addClass('forced-hidden');
+            }
+        }
         if(urlPinned && !force) {
             return;
         }
@@ -831,6 +866,7 @@ define(function (require, exports, module) {
         LiveDevelopment.openLivePreview();
         LiveDevelopment.on(LiveDevelopment.EVENT_OPEN_PREVIEW_URL, _openLivePreviewURL);
         LiveDevelopment.on(LiveDevelopment.EVENT_LIVE_HIGHLIGHT_PREF_CHANGED, _updateLiveHighlightToggleStatus);
+        LiveDevelopment.on(LiveDevelopment.EVENT_WORD_NAVIGATION_PREF_CHANGED, _updateWordNavigationToggleStatus);
         LiveDevelopment.on(LiveDevelopment.EVENT_LIVE_PREVIEW_RELOAD, ()=>{
             // Usually, this event is listened by live preview iframes/tabs and they initiate a location.reload.
             // But in firefox, the embedded iframe will throw a 404 when we try to reload from within the iframe as
