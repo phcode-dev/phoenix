@@ -29,6 +29,7 @@ define(function (require, exports, module) {
     const Driver = require("./driver");
     const SnippetsList = require("./snippetsList");
     const SnippetCodeHints = require("./snippetCodeHints");
+    const CodeHintIntegration = require("./codeHintIntegration");
     const Helper = require("./helper");
     const UIHelper = require("./UIHelper");
     const SnippetsState = require("./snippetsState");
@@ -246,6 +247,7 @@ define(function (require, exports, module) {
         $snippetsPanel = $(snippetsPanelTpl);
         _addToMenu();
         SnippetCodeHints.init();
+        CodeHintIntegration.init();
         SnippetsState.loadSnippetsFromState();
         SnippetCursorManager.registerHandlers();
     });
