@@ -266,6 +266,9 @@ define(function (require, exports, module) {
         codeHintsEnabled = true,
         codeHintOpened   = false;
 
+    // API for extensions to show hints at the top
+    let hintsAtTopHandler = null;
+
     PreferencesManager.definePreference("showCodeHints", "boolean", true, {
         description: Strings.DESCRIPTION_SHOW_CODE_HINTS
     });
@@ -461,6 +464,15 @@ define(function (require, exports, module) {
                 _endSession();
                 _beginSession(previousEditor);
             } else if (response.hasOwnProperty("hints")) { // a synchronous response
+                // allow extensions to modify the response by adding hints at the top
+                if (hintsAtTopHandler) {
+                    if (typeof hintsAtTopHandler === 'function') {
+                        response = hintsAtTopHandler(response, sessionEditor);
+                    } else if (hintsAtTopHandler.prepend) {
+                        response = hintsAtTopHandler.prepend(response, sessionEditor);
+                    }
+                }
+
                 if (hintList.isOpen()) {
                     // the session is open
                     hintList.update(response);
@@ -476,6 +488,14 @@ define(function (require, exports, module) {
                     // will get cleared up.
                     if (!hintList) {
                         return;
+                    }
+                    // allow extensions to modify the response by adding hints at the top
+                    if (hintsAtTopHandler) {
+                        if (typeof hintsAtTopHandler === 'function') {
+                            hints = hintsAtTopHandler(hints, sessionEditor);
+                        } else if (hintsAtTopHandler.prepend) {
+                            hints = hintsAtTopHandler.prepend(hints, sessionEditor);
+                        }
                     }
 
                     if (hintList.isOpen()) {
@@ -546,11 +566,20 @@ define(function (require, exports, module) {
                 }
             });
             hintList.onSelect(function (hint) {
-                var restart = sessionProvider.insertHint(hint),
-                    previousEditor = sessionEditor;
-                _endSession();
-                if (restart) {
-                    _beginSession(previousEditor);
+                // allow extensions to handle special hint selections
+                var handled = false;
+                if (hintsAtTopHandler && hintsAtTopHandler.handleHintSelection) {
+                    handled = hintsAtTopHandler.handleHintSelection(hint, sessionEditor, _endSession);
+                }
+
+                if (!handled) {
+                    // Regular hint provider handling
+                    var restart = sessionProvider.insertHint(hint),
+                        previousEditor = sessionEditor;
+                    _endSession();
+                    if (restart) {
+                        _beginSession(previousEditor);
+                    }
                 }
             });
             hintList.onClose(()=>{
@@ -698,6 +727,27 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Register a handler to modify hints at the top of the hint list.
+     * This API allows extensions to prepend their own hints to the standard hint list.
+     *
+     * @param {Function|Object} handler - Either a function that takes (response, editor) and returns
+     * a modified response, or an object with:
+     *   - prepend: function(response, editor) - modify the hint response
+     *   - handleHintSelection: function(hint, editor, endSession) - handle hint selection
+     * returns true if handled, false otherwise
+     */
+    function showHintsAtTop(handler) {
+        hintsAtTopHandler = handler;
+    }
+
+    /**
+     * Unregister the hints at top handler.
+     */
+    function clearHintsAtTop() {
+        hintsAtTopHandler = null;
+    }
+
+    /**
      * Explicitly start a new session. If we have an existing session,
      * then close the current one and restart a new one.
      * @private
@@ -780,6 +830,8 @@ define(function (require, exports, module) {
     exports.isOpen                  = isOpen;
     exports.registerHintProvider    = registerHintProvider;
     exports.hasValidExclusion       = hasValidExclusion;
+    exports.showHintsAtTop          = showHintsAtTop;
+    exports.clearHintsAtTop         = clearHintsAtTop;
 
     exports.SELECTION_REASON        = CodeHintListModule._SELECTION_REASON;
 });
