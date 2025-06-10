@@ -138,8 +138,11 @@ define(function (require, exports, module) {
 
         describe("Credentials OTP API Tests", function () {
             const scopeName = "testScope";
-            const sessionID = "test-session-123";
-            const otpSeed = "test-secret-seed";
+            const trustRing = window.specRunnerTestKernalModeTrust;
+
+            function decryptCreds(creds) {
+                return trustRing.AESDecryptString(creds, trustRing.aesKeys.key, trustRing.aesKeys.iv);
+            }
 
             beforeEach(async function () {
                 // Cleanup before running tests
@@ -161,42 +164,43 @@ define(function (require, exports, module) {
 
             describe("Credential Storage & OTP Generation", function () {
                 it("Should store credentials successfully", async function () {
+                    const randomUUID = crypto.randomUUID();
                     await expectAsync(
-                        window.__TAURI__.invoke("store_credential", { scopeName, sessionId: sessionID, otpSeed })
+                        window.__TAURI__.invoke("store_credential", { scopeName, secretVal: randomUUID })
                     ).toBeResolved();
                 });
 
-                it("Should retrieve a valid OTP after storing credentials", async function () {
-                    await window.__TAURI__.invoke("store_credential", { scopeName, sessionId: sessionID, otpSeed });
+                it("Should get credentials as encrypted string", async function () {
+                    const randomUUID = crypto.randomUUID();
+                    await window.__TAURI__.invoke("store_credential", { scopeName, secretVal: randomUUID });
 
-                    const response = await window.__TAURI__.invoke("get_credential_otp", { scopeName });
+                    const response = await window.__TAURI__.invoke("get_credential", { scopeName });
                     expect(response).toBeDefined();
-                    expect(response.session_id).toEqual(sessionID);
-                    expect(response.totp).toMatch(/^\d{6}$/); // OTP should be a 6-digit number
+                    expect(response).not.toEqual(randomUUID);
                 });
 
-                it("Should retrieve a valid OTP after storing uuid as seed", async function () {
-                    const newSession = crypto.randomUUID();
-                    await window.__TAURI__.invoke("store_credential",
-                        { scopeName, sessionId: newSession, otpSeed: crypto.randomUUID() });
+                it("Should retrieve and decrypt set credentials with kernal mode keys", async function () {
+                    const randomUUID = crypto.randomUUID();
+                    await window.__TAURI__.invoke("store_credential", { scopeName, secretVal: randomUUID });
 
-                    const response = await window.__TAURI__.invoke("get_credential_otp", { scopeName });
-                    expect(response).toBeDefined();
-                    expect(response.session_id).toEqual(newSession);
-                    expect(response.totp).toMatch(/^\d{6}$/); // OTP should be a 6-digit number
+                    const creds = await window.__TAURI__.invoke("get_credential", { scopeName });
+                    expect(creds).toBeDefined();
+                    const decryptedString = await decryptCreds(creds);
+                    expect(decryptedString).toEqual(randomUUID);
                 });
 
                 it("Should return an error if credentials do not exist", async function () {
-                    const response = await window.__TAURI__.invoke("get_credential_otp", { scopeName });
-                    expect(response).toEqual({ err_code: "NO_ENTRY" });
+                    const response = await window.__TAURI__.invoke("get_credential", { scopeName });
+                    expect(response).toBeNull();
                 });
 
                 it("Should delete stored credentials", async function () {
-                    await window.__TAURI__.invoke("store_credential", { scopeName, sessionId: sessionID, otpSeed });
+                    const randomUUID = crypto.randomUUID();
+                    await window.__TAURI__.invoke("store_credential", { scopeName, secretVal: randomUUID });
 
                     // Ensure credential exists
-                    const responseBeforeDelete = await window.__TAURI__.invoke("get_credential_otp", { scopeName });
-                    expect(responseBeforeDelete.session_id).toEqual(sessionID);
+                    let creds = await window.__TAURI__.invoke("get_credential", { scopeName });
+                    expect(creds).toBeDefined();
 
                     // Delete credential
                     await expectAsync(
@@ -204,8 +208,8 @@ define(function (require, exports, module) {
                     ).toBeResolved();
 
                     // Ensure credential is deleted
-                    const responseAfterDelete = await window.__TAURI__.invoke("get_credential_otp", { scopeName });
-                    expect(responseAfterDelete).toEqual({ err_code: "NO_ENTRY" });
+                    creds = await window.__TAURI__.invoke("get_credential", { scopeName });
+                    expect(creds).toBeNull();
                 });
 
                 it("Should handle deletion of non-existent credentials gracefully", async function () {
@@ -230,54 +234,89 @@ define(function (require, exports, module) {
                     expect(isExpectedError).toBeTrue();
                 });
 
-                it("Should reject storing an empty seed", async function () {
-                    let error;
-                    try {
-                        await window.__TAURI__.invoke("store_credential",
-                            { scopeName, sessionId: sessionID, otpSeed: "" });
-                    } catch (err) {
-                        error = err;
-                    }
-                    expect(error).toBeDefined();
-                    expect(error).toContain("SEED_TOO_SHORT");
-                });
-
-                it("Should reject storing a seed that is too short", async function () {
-                    let error;
-                    try {
-                        await window.__TAURI__.invoke("store_credential",
-                            { scopeName, sessionId: sessionID, otpSeed: "12345" });
-                    } catch (err) {
-                        error = err;
-                    }
-                    expect(error).toBeDefined();
-                    expect(error).toContain("SEED_TOO_SHORT");
-                });
-
                 it("Should overwrite existing credentials when storing with the same scope", async function () {
-                    const oldSeed = crypto.randomUUID();
-                    await window.__TAURI__.invoke("store_credential",
-                        { scopeName, sessionId: "old-session", otpSeed: oldSeed });
+                    const oldUUID = crypto.randomUUID();
+                    await window.__TAURI__.invoke("store_credential", { scopeName, secretVal: oldUUID });
 
-                    const responseBefore = await window.__TAURI__.invoke("get_credential_otp", { scopeName });
-                    expect(responseBefore.session_id).toEqual("old-session");
+                    let creds = await window.__TAURI__.invoke("get_credential", { scopeName });
+                    expect(creds).toBeDefined();
+                    let response = await decryptCreds(creds);
+                    expect(response).toEqual(oldUUID);
 
                     // Store new credentials with the same scope
-                    await window.__TAURI__.invoke("store_credential", { scopeName, sessionId: sessionID, otpSeed });
+                    const newUUID = crypto.randomUUID();
+                    await window.__TAURI__.invoke("store_credential", { scopeName, secretVal: newUUID });
 
-                    const responseAfter = await window.__TAURI__.invoke("get_credential_otp", { scopeName });
-                    expect(responseAfter.session_id).toEqual(sessionID);
+                    creds = await window.__TAURI__.invoke("get_credential", { scopeName });
+                    expect(creds).toBeDefined();
+                    response = await decryptCreds(creds);
+                    expect(response).toEqual(newUUID);
                 });
 
-                it("Should correctly encode and decode Base32 seed", async function () {
-                    const base32Seed = "JBSWY3DPEHPK3PXP"; // Valid Base32 seed
-                    await window.__TAURI__.invoke("store_credential",
-                        { scopeName, sessionId: sessionID, otpSeed: base32Seed });
+                // trustRing.getPhoenixAPIKey and set tests
+                async function setSomeKey() {
+                    const randomCred = crypto.randomUUID();
+                    await trustRing.setPhoenixAPIKey(randomCred);
+                    const savedCred = await trustRing.getPhoenixAPIKey();
+                    expect(savedCred).toEqual(randomCred);
+                    return savedCred;
+                }
 
-                    const response = await window.__TAURI__.invoke("get_credential_otp", { scopeName });
-                    expect(response).toBeDefined();
-                    expect(response.session_id).toEqual(sessionID);
-                    expect(response.totp).toMatch(/^\d{6}$/);
+                it("Should get and set API key in kernal mode trust ring", async function () {
+                    await setSomeKey();
+                });
+
+                it("Should get and set empty string API key in kernal mode trust ring", async function () {
+                    const randomCred = "";
+                    await trustRing.setPhoenixAPIKey(randomCred);
+                    const savedCred = await trustRing.getPhoenixAPIKey();
+                    expect(savedCred).toEqual(randomCred);
+                });
+
+                it("Should remove API key in kernal mode trust ring work as expected", async function () {
+                    await setSomeKey();
+                    await trustRing.removePhoenixAPIKey();
+                    const cred = await trustRing.getPhoenixAPIKey();
+                    expect(cred).toBeNull();
+                });
+
+                // trust key management
+                it("Should not be able to set trust key if one is already set", async function () {
+                    const kv = trustRing.generateRandomKeyAndIV();
+                    let error;
+                    try {
+                        await window.__TAURI__.tauri.invoke("trust_window_aes_key", kv);
+                    } catch (err) {
+                        error = err;
+                    }
+                    expect(error).toContain("Trust has already been established for this window.");
+                });
+
+                it("Should be able to remove trust key with key and iv", async function () {
+                    await window.__TAURI__.tauri.invoke("remove_trust_window_aes_key", trustRing.aesKeys);
+                    let error;
+                    try {
+                        await window.__TAURI__.tauri.invoke("remove_trust_window_aes_key", trustRing.aesKeys);
+                    } catch (err) {
+                        error = err;
+                    }
+                    expect(error).toContain("No trust association found for this window.");
+                    // reinstate trust
+                    await window.__TAURI__.tauri.invoke("trust_window_aes_key", trustRing.aesKeys);
+                });
+
+                it("Should getPhoenixAPIKey not work without trust", async function () {
+                    await setSomeKey();
+                    await window.__TAURI__.tauri.invoke("remove_trust_window_aes_key", trustRing.aesKeys);
+                    let error;
+                    try {
+                        await trustRing.getPhoenixAPIKey();
+                    } catch (err) {
+                        error = err;
+                    }
+                    expect(error).toContain("Trust needs to be first established");
+                    // reinstate trust
+                    await window.__TAURI__.tauri.invoke("trust_window_aes_key", trustRing.aesKeys);
                 });
             });
         });

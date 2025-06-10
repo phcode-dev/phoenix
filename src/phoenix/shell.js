@@ -30,7 +30,10 @@ import initVFS from "./init_vfs.js";
 import ERR_CODES from "./errno.js";
 import { LRUCache } from '../thirdparty/no-minify/lru-cache.js';
 import * as Emmet from '../thirdparty/emmet.es.js';
+import {initTrustRing} from "./trust_ring.js";
 
+initTrustRing()
+    .catch(console.error);
 initVFS();
 
 // We can only have a maximum of 30 windows that have access to tauri apis
