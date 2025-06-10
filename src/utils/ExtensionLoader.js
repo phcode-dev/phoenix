@@ -902,6 +902,10 @@ define(function (require, exports, module) {
         var disabledExtensionPath = extensionPath.replace(/\/user$/, "/disabled");
         FileSystem.getDirectoryForPath(disabledExtensionPath).create();
 
+        // just before extensions are loaded, we need to delete the boot time trust ring keys so that extensions
+        // won't have keys to enter kernal mode in the app.
+        delete window.KernalModeTrust;
+
         var promise = Async.doInParallel(paths, function (extPath) {
             if(extPath === "default"){
                 return loadAllDefaultExtensions();
