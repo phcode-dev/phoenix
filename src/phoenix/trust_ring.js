@@ -1,3 +1,102 @@
+/*
+ * GNU AGPL-3.0 License
+ *
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License along
+ * with this program. If not, see https://opensource.org/licenses/AGPL-3.0.
+ *
+ */
+
+/**
+ * KernalModeTrust is a security mechanism in Phoenix that provides a trust base for core components before any
+ * extensions are loaded. It establishes a secure communication channel between core modules and the Tauri shell,
+ * preventing unauthorized access to sensitive information by extensions or other potentially malicious code.
+ *
+ * ## Purpose
+ *
+ * The primary purposes of KernalModeTrust are:
+ *
+ * 1. **Secure Boot Process**: Ensures that the application can only boot with a properly initialized trust ring.
+ * 2. **Secure Communication**: Enables core modules to communicate securely without worrying about interception by
+ *    extensions.
+ * 3. **API Key Management**: Provides secure storage and retrieval of Phoenix API keys.
+ * 4. **Security Boundary**: Creates a clear security boundary between trusted core components and potentially untrusted
+ *    extensions.
+ *
+ * ## Implementation Details
+ *
+ * ### Trust Ring Initialization
+ *
+ * The trust ring is initialized at boot time before any extensions are loaded:
+ *
+ * 1. Random AES-256 keys and initialization vectors (IV) are generated using the Web Crypto API.
+ * 2. These cryptographic materials are stored in the `window.KernalModeTrust` object.
+ * 3. The trust relationship is established with the Tauri backend via the `initTrustRing()` function.
+ *
+ * The trust ring has several important security characteristics:
+ *
+ * 1. **Memory-Only Storage**: The random AES key-based trust ring is only kept in memory and never persisted to disk.
+ * 2. **One-Time Use**: The trust ring is designed for one-time use and is discarded after serving its purpose.
+ * 3. **Session Lifetime**: It is maintained in memory only until the end of the Phoenix session.
+ * 4. **Tauri Communication**: The trust keys are communicated to the Tauri shell at boot time.
+ * 5. **API Response Encryption**: Once an AES key is trusted by the Tauri shell, all sensitive API responses will be
+ *   encrypted with this key. This means extensions can still call sensitive APIs but will receive only encrypted
+ *   garbage responses without access to the trust key.
+ *
+ * ### Security Model
+ *
+ * KernalModeTrust implements a strict security model:
+ *
+ * 1. **Boot-time Only Access**: The trust ring is only available to code that loads before any extensions.
+ * 2. **One-time Trust**: For a given Tauri window, the trust ring can only be set once.
+ * 3. **Deliberate Removal**: Before extensions are loaded, `window.KernalModeTrust` is deleted to prevent extensions
+ *    from accessing it.
+ * 4. **Dismantling Before Restart**: The trust ring must be dismantled before restarting the application. This is a
+ *    critical security requirement. If not dismantled, the old trust keys will still be in place when the page reloads,
+ *    but the application will lose access to them (as they were only stored in memory). As a result, the Tauri shell
+ *    will not trust any sensitive API calls from the reloaded page, as these calls will rely on the old keys that the
+ *    new page instance cannot access. This security measure intentionally prevents any page reload from maintaining
+ *    trust without explicitly dismantling the old trust ring first, ensuring that malicious code cannot bypass
+ *    security by simply reloading the window.
+ *
+ * ### Cryptographic Implementation
+ *
+ * KernalModeTrust uses strong cryptography:
+ *
+ * 1. **AES-256 Encryption**: Uses AES-256 in GCM mode for secure encryption/decryption.
+ * 2. **Random Key Generation**: Cryptographically secure random number generation for keys and IVs.
+ * 3. **Secure Key Storage**: Keys are stored securely in the Tauri backend(which is stored in OS keychain).
+ *
+ * ## Security Considerations
+ *
+ * 1. **Extension Isolation**: Extensions should never have access to KernalModeTrust to prevent potential security
+ *    breaches.
+ *
+ * 2. **One-time Trust**: The trust ring can only be set once per Tauri window, preventing malicious code from replacing
+ *    it.
+ *
+ * 3. **Complete Dismantling**: When dismantling the keyring, it's recommended to reload the page immediately to prevent
+ *    any potential exploitation of the system.
+ *
+ * 4. **Test Environment Handling**: Special handling exists for test environments to ensure tests can run properly
+ *    without compromising security.
+ *
+ * ## Conclusion
+ *
+ * KernalModeTrust is a critical security component in Phoenix that establishes a trust boundary between core components
+ * and extensions. By providing secure communication channels and API key management, it helps maintain the overall
+ * security posture of the application.
+ * */
+
 // Generate random AES-256 key and GCM nonce/IV
 function generateRandomKeyAndIV() {
     // Generate 32 random bytes for AES-256 key
