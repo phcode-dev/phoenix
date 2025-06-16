@@ -20,9 +20,11 @@
 
 define(function (require, exports, module) {
     const CodeHintManager = require("editor/CodeHintManager");
+    const EditorManager = require("editor/EditorManager");
 
     const Global = require("./global");
     const Driver = require("./driver");
+    const Helper = require("./helper");
     const SnippetCursorManager = require("./snippetCursorManager");
 
     /**
@@ -31,80 +33,78 @@ define(function (require, exports, module) {
      */
     const CustomSnippetsHandler = {
         /**
-         * Prepend custom snippets to the hint response
-         * @param {Object} response - The original hint response from the current provider
+         * Determines whether any custom snippets hints are available
          * @param {Editor} editor - The current editor instance
-         * @return {Object} - The modified response with custom snippets added to the front
+         * @param {string} implicitChar - The last character typed (null if explicit request)
+         * @return {boolean} - true if hints are available, false otherwise
          */
-        prepend: function (response, editor) {
-            if (!response || !response.hints) {
-                return response;
+        hasHints: function (editor, implicitChar) {
+            // We only show hints for implicit requests (when user is typing)
+            if (implicitChar === null) {
+                return false;
             }
 
             try {
-                // check if the response already contains custom snippet hints to avoid duplicates
-                // this is needed because sometimes when there are no default hints present then the
-                // SnippetCodeHints.js shows some hints, so we don't want to duplicate hints
-                if (Array.isArray(response.hints) && response.hints.length > 0) {
-                    const hasCustomSnippets = response.hints.some((hint) => {
-                        return (
-                            (hint && hint.hasClass && hint.hasClass("emmet-hint")) ||
-                            (hint && hint.attr && hint.attr("data-isCustomSnippet"))
-                        );
-                    });
-
-                    if (hasCustomSnippets) {
-                        return response; // already has custom snippets, don't need to add again
-                    }
+                const needle = Driver.getWordBeforeCursor();
+                if (!needle || !needle.word) {
+                    return false;
                 }
 
-                const wordInfo = Driver.getWordBeforeCursor();
-                if (!wordInfo || !wordInfo.word) {
-                    return response;
-                }
-
-                const needle = wordInfo.word.toLowerCase();
-                const Helper = require("./helper");
-
-                // check if there's at least one exact match using language context detection
-                if (!Helper.hasExactMatchingSnippet(needle, editor)) {
-                    return response;
-                }
-
-                // get all matching snippets using language context detection
-                const matchingSnippets = Helper.getMatchingSnippets(needle, editor);
-
-                // if we have matching snippets, prepend them to the hints
-                if (matchingSnippets.length > 0) {
-                    const customSnippetHints = matchingSnippets.map((snippet) => {
-                        return Helper.createHintItem(snippet.abbreviation, needle, snippet.description);
-                    });
-
-                    // create a new response with custom snippets at the top
-                    const newResponse = $.extend({}, response);
-                    if (Array.isArray(response.hints)) {
-                        newResponse.hints = customSnippetHints.concat(response.hints);
-                    } else {
-                        newResponse.hints = customSnippetHints.concat([response.hints]);
-                    }
-
-                    return newResponse;
-                }
+                // Check if there's at least one exact match using language context detection
+                const hasMatch = Helper.hasExactMatchingSnippet(needle.word.toLowerCase(), editor);
+                return hasMatch;
             } catch (e) {
-                console.log("Error checking custom snippets:", e);
+                return false;
             }
-
-            return response;
         },
 
         /**
-         * Handle selection of custom snippet hints
-         * @param {jQuery} hint - The selected hint element
+         * Get custom snippet hints to show at the top of the hint list
          * @param {Editor} editor - The current editor instance
-         * @param {Function} endSession - Function to end the current hint session
+         * @param {string} implicitChar - The last character typed (null if explicit request)
+         * @return {Object} - The hint response object with hints array
+         */
+        getHints: function (editor, implicitChar) {
+            try {
+                const needle = Driver.getWordBeforeCursor();
+                if (!needle || !needle.word) {
+                    return null;
+                }
+
+                const word = needle.word.toLowerCase();
+
+                // Check if there's at least one exact match using language context detection
+                if (!Helper.hasExactMatchingSnippet(word, editor)) {
+                    return null;
+                }
+
+                // Get all matching snippets using language context detection
+                const matchingSnippets = Helper.getMatchingSnippets(word, editor);
+
+                if (matchingSnippets.length > 0) {
+                    const customSnippetHints = matchingSnippets.map((snippet) => {
+                        return Helper.createHintItem(snippet.abbreviation, needle.word, snippet.description);
+                    });
+
+                    return {
+                        hints: customSnippetHints,
+                        selectInitial: true,
+                        handleWideResults: false
+                    };
+                }
+            } catch (e) {
+                console.log("Error getting custom snippets:", e);
+            }
+
+            return null;
+        },
+
+        /**
+         * Handle insertion of custom snippet hints
+         * @param {jQuery} hint - The selected hint element
          * @return {boolean} - true if handled, false otherwise
          */
-        handleHintSelection: function (hint, editor, endSession) {
+        insertHint: function (hint) {
             // check if the hint is a custom snippet
             if (hint && hint.jquery && hint.attr("data-isCustomSnippet")) {
                 // handle custom snippet insertion
@@ -114,15 +114,23 @@ define(function (require, exports, module) {
                         (snippet) => snippet.abbreviation === abbreviation
                     );
                     if (matchedSnippet) {
-                        // replace the typed abbreviation with the template text using cursor manager
-                        const wordInfo = Driver.getWordBeforeCursor();
-                        const start = { line: wordInfo.line, ch: wordInfo.ch + 1 };
-                        const end = editor.getCursorPos();
+                        // Get current editor from EditorManager since it's not passed
+                        const editor = EditorManager.getFocusedEditor();
 
-                        SnippetCursorManager.insertSnippetWithTabStops(editor, matchedSnippet.templateText, start, end);
+                        if (editor) {
+                            // replace the typed abbreviation with the template text using cursor manager
+                            const wordInfo = Driver.getWordBeforeCursor();
+                            const start = { line: wordInfo.line, ch: wordInfo.ch + 1 };
+                            const end = editor.getCursorPos();
 
-                        endSession();
-                        return true; // handled
+                            SnippetCursorManager.insertSnippetWithTabStops(
+                                editor,
+                                matchedSnippet.templateText,
+                                start,
+                                end
+                            );
+                            return true; // handled
+                        }
                     }
                 }
             }
@@ -140,14 +148,5 @@ define(function (require, exports, module) {
         CodeHintManager.showHintsAtTop(CustomSnippetsHandler);
     }
 
-    /**
-     * Clean up the integration
-     * This should be called when the extension is being disabled/unloaded
-     */
-    function cleanup() {
-        CodeHintManager.clearHintsAtTop();
-    }
-
     exports.init = init;
-    exports.cleanup = cleanup;
 });

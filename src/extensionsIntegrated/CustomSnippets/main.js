@@ -28,7 +28,6 @@ define(function (require, exports, module) {
 
     const Driver = require("./driver");
     const SnippetsList = require("./snippetsList");
-    const SnippetCodeHints = require("./snippetCodeHints");
     const CodeHintIntegration = require("./codeHintIntegration");
     const Helper = require("./helper");
     const UIHelper = require("./UIHelper");
@@ -246,7 +245,6 @@ define(function (require, exports, module) {
         CommandManager.register(MENU_ITEM_NAME, MY_COMMAND_ID, showCustomSnippetsPanel);
         $snippetsPanel = $(snippetsPanelTpl);
         _addToMenu();
-        SnippetCodeHints.init();
         CodeHintIntegration.init();
         SnippetsState.loadSnippetsFromState();
         SnippetCursorManager.registerHandlers();
