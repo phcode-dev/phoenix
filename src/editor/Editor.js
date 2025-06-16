@@ -445,11 +445,11 @@ define(function (require, exports, module) {
             const lineHeight = parseFloat(getComputedStyle($editor[0]).lineHeight);
             const defaultHeight = 14, scrollScaleFactor = lineHeight/defaultHeight;
 
-            // when user is pressing the 'Shift' key or deltaX is present, we should handle horizontal scrolling
-            if (event.shiftKey || event.deltaX !== 0) {
+            // when user is pressing the 'Shift' key, we need to convert the vertical scroll to horizontal scroll
+            if (event.shiftKey) {
                 let horizontalDelta = event.deltaX;
 
-                if (event.shiftKey && event.deltaY !== 0) {
+                if (event.deltaY !== 0) {
                     horizontalDelta = event.deltaY;
                 }
 
@@ -459,6 +459,11 @@ define(function (require, exports, module) {
                     event.preventDefault();
                     return;
                 }
+            }
+
+            // apply horizontal scrolling if present. for the diagonal scrolling
+            if (event.deltaX !== 0) {
+                $editor[0].scrollLeft += event.deltaX;
             }
 
             // apply the vertical scrolling normally
