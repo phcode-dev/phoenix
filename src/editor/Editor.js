@@ -443,10 +443,30 @@ define(function (require, exports, module) {
             // this became a problem after we added the custom line height feature causing jumping scrolls esp in safari
             // and mac if we dont do this scroll scaling.
             const lineHeight = parseFloat(getComputedStyle($editor[0]).lineHeight);
-            const scrollDelta = event.deltaY;
             const defaultHeight = 14, scrollScaleFactor = lineHeight/defaultHeight;
-            $editor[0].scrollTop += (scrollDelta/scrollScaleFactor);
-            event.preventDefault();
+
+            // when user is pressing the 'Shift' key or deltaX is present, we should handle horizontal scrolling
+            if (event.shiftKey || event.deltaX !== 0) {
+                let horizontalDelta = event.deltaX;
+
+                if (event.shiftKey && event.deltaY !== 0) {
+                    horizontalDelta = event.deltaY;
+                }
+
+                // apply the horizontal scrolling
+                if (horizontalDelta !== 0) {
+                    $editor[0].scrollLeft += horizontalDelta;
+                    event.preventDefault();
+                    return;
+                }
+            }
+
+            // apply the vertical scrolling normally
+            if (event.deltaY !== 0) {
+                const scrollDelta = event.deltaY;
+                $editor[0].scrollTop += (scrollDelta/scrollScaleFactor);
+                event.preventDefault();
+            }
         });
     }
 
