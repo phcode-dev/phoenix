@@ -72,7 +72,7 @@ define(function (require, exports, module) {
     }
 
     function _handleContactSupportBtnClick() {
-        Phoenix.app.openURLInDefaultBrowser(brackets.config.support_url_account);
+        Phoenix.app.openURLInDefaultBrowser(brackets.config.support_url);
     }
 
     function _handleAccountDetailsBtnClick() {
