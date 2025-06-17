@@ -23,6 +23,7 @@ define(function (require, exports, module) {
         Dialogs = require("widgets/Dialogs"),
         DefaultDialogs = require("widgets/DefaultDialogs"),
         Strings = require("strings"),
+        NativeApp = require("utils/NativeApp"),
         ProfileMenu  = require("./profile-menu");
 
     const KernalModeTrust = window.KernalModeTrust;
@@ -122,6 +123,54 @@ define(function (require, exports, module) {
         // maybe some intermittent network error, ERR_RETRY_LATER is here. do nothing
     }
 
+    // never rejects.
+    async function _getAppAuthSession() {
+        const authPortURL = "9797/abc"; // todo autho auth later
+        const appName = encodeURIComponent(`${Strings.APP_NAME} Desktop on ${Phoenix.platform}`);
+        const resolveURL = `${Phoenix.config.account_url}getAppAuthSession?autoAuthPort=${authPortURL}&appName=${appName}`;
+        // {"isSuccess":true,"appSessionID":"a uuid...","validationCode":"SWXP07"}
+        try {
+            const response = await fetch(resolveURL);
+            if (response.ok) {
+                const {appSessionID, validationCode} = await response.json();
+                if(!appSessionID || !validationCode) {
+                    throw new Error("Invalid response from getAppAuthSession API endpoint" + resolveURL);
+                }
+                return {appSessionID, validationCode};
+            }
+            return null;
+        } catch (e) {
+            console.error(e, "Failed to call getAppAuthSession API endpoint", resolveURL);
+            // todo raise metrics/log
+            return null;
+        }
+    }
+
+    async function signInToAccount() {
+        if (!navigator.onLine) {
+            Dialogs.showModalDialog(
+                DefaultDialogs.DIALOG_ID_ERROR,
+                Strings.SIGNED_IN_OFFLINE_TITLE,
+                Strings.SIGNED_IN_OFFLINE_MESSAGE
+            );
+            return;
+        }
+        const appAuthSession = await _getAppAuthSession();
+        if(!appAuthSession) {
+            Dialogs.showModalDialog(
+                DefaultDialogs.DIALOG_ID_ERROR,
+                Strings.SIGNED_IN_FAILED_TITLE,
+                Strings.SIGNED_IN_FAILED_MESSAGE
+            );
+            return;
+        }
+        const {appSessionID, validationCode} = appAuthSession;
+        const appSignInURL = `${Phoenix.config.account_url}authorizeApp?appSessionID=${appSessionID}`;
+        // show a dialog here with the 6 letter validation code and a button to copy the validation code and another
+        // button to open the sign in code
+        NativeApp.openURLInDefaultBrowser(appSignInURL);
+    }
+
     function init() {
         ProfileMenu.init();
         if(!Phoenix.isNativeApp){
@@ -143,6 +192,8 @@ define(function (require, exports, module) {
 
     // kernal exports
     secureExports.isLoggedIn = isLoggedIn;
+    secureExports.signInToAccount = signInToAccount;
+
     // public exports
     exports.isLoggedIn = isLoggedIn;
 
