@@ -153,23 +153,19 @@ define(function (require, exports, module) {
 
     /**
      * Shows the sign-in popup when the user is not logged in
-     * @param {Object} loginData - Data to populate the template (optional)
      */
-    function showLoginPopup(loginData) {
+    function showLoginPopup() {
         // If popup is already visible, just close it
         if (isPopupVisible) {
             closePopup();
             return;
         }
 
-        // Merge provided data with defaults
-        const templateData = $.extend({}, defaultLoginData, loginData || {});
-
         // create the popup element
         closePopup(); // close any existing popup first
 
         // Render template with data
-        const renderedTemplate = Mustache.render(loginTemplate, templateData);
+        const renderedTemplate = Mustache.render(loginTemplate, {Strings});
         $popup = $(renderedTemplate);
 
         $("body").append($popup);
@@ -272,7 +268,7 @@ define(function (require, exports, module) {
         if (KernalModeTrust.loginService.isLoggedIn()) {
             showProfilePopup(data);
         } else {
-            showLoginPopup(data);
+            showLoginPopup();
         }
     }
 
