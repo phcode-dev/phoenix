@@ -64,7 +64,7 @@ define(function (require, exports, module) {
     function _handleSignInBtnClick() {
         console.log("User clicked sign in button");
         closePopup(); // need to close the current popup to show the new one
-        showProfilePopup();
+        KernalModeTrust.loginService.signInToAccount();
     }
 
     function _handleSignOutBtnClick() {
