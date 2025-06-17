@@ -139,6 +139,7 @@ define(function (require, exports, module) {
     require("widgets/InlineMenu");
     require("thirdparty/tinycolor");
     require("utils/LocalizationUtils");
+    require("services/login");
 
     // DEPRECATED: In future we want to remove the global CodeMirror, but for now we
     // expose our required CodeMirror globally so as to avoid breaking extensions in the

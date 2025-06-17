@@ -1,19 +1,42 @@
 define(function (require, exports, module) {
-    const Mustache = require("thirdparty/mustache/mustache");
-    const PopUpManager = require("widgets/PopUpManager");
+    const Mustache = require("thirdparty/mustache/mustache"),
+        PopUpManager = require("widgets/PopUpManager"),
+        Strings      = require("strings");
+
+    const KernalModeTrust = window.KernalModeTrust;
+    if(!KernalModeTrust){
+        // integrated extensions will have access to kernal mode, but not external extensions
+        throw new Error("profile menu should have access to KernalModeTrust. Cannot boot without trust ring");
+    }
+
+    let $icon;
+
+    function _createSVGIcon(initials, bgColor) {
+        return `<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="12" fill="${bgColor}"/>
+  <text x="50%" y="58%" text-anchor="middle" font-size="11" fill="#fff" font-family="Inter, sans-serif" dy=".1em">
+    ${initials}</text>
+        </svg>`;
+    }
+
+    function _updateProfileIcon(initials, bgColor) {
+        $icon.empty()
+            .append(_createSVGIcon(initials, bgColor));
+    }
+
+    function _removeProfileIcon() {
+        $icon.empty();
+    }
 
     // HTML templates
-    const loginTemplate = require("text!./html/login-dialog.html");
-    const profileTemplate = require("text!./html/profile-panel.html");
+    const loginTemplate = require("text!./html/login-popup.html");
+    const profileTemplate = require("text!./html/profile-popup.html");
 
     // for the popup DOM element
     let $popup = null;
 
     // this is to track whether the popup is visible or not
     let isPopupVisible = false;
-
-    // if user is logged in we show the profile menu, otherwise we show the login menu
-    let isLoggedIn = false;
 
     // this is to handle document click events to close popup
     let documentClickHandler = null;
@@ -41,14 +64,12 @@ define(function (require, exports, module) {
     function _handleSignInBtnClick() {
         console.log("User clicked sign in button");
         closePopup(); // need to close the current popup to show the new one
-        isLoggedIn = true;
         showProfilePopup();
     }
 
     function _handleSignOutBtnClick() {
         console.log("User clicked sign out");
         closePopup();
-        isLoggedIn = false;
         showLoginPopup();
     }
 
@@ -243,19 +264,56 @@ define(function (require, exports, module) {
      * this function is called inside the src/extensionsIntegrated/Phoenix/main.js when user clicks on the profile icon
      * @param {Object} data - Data to populate the templates (optional)
      */
-    function init(data) {
+    function togglePopup(data) {
         // check if the popup is already visible or not. if visible close it
         if (isPopupVisible) {
             closePopup();
             return;
         }
 
-        if (isLoggedIn) {
+        if (KernalModeTrust.loginService.isLoggedIn()) {
             showProfilePopup(data);
         } else {
             showLoginPopup(data);
         }
     }
 
+    function init() {
+        const helpButtonID = "user-profile-button";
+        $icon = $("<a>")
+            .attr({
+                id: helpButtonID,
+                href: "#",
+                class: "user",
+                title: Strings.CMD_USER_PROFILE
+            })
+            .appendTo($("#main-toolbar .bottom-buttons"));
+        // _updateProfileIcon("CA", "blue");
+        $icon.on('click', ()=>{
+            if(!Phoenix.isNativeApp){
+                // in browser app, we don't currently support login
+                Phoenix.app.openURLInDefaultBrowser("https://account.phcode.io");
+                return;
+            }
+            togglePopup();
+        });
+    }
+
+    function setNotLoggedIn() {
+        if (isPopupVisible) {
+            closePopup();
+        }
+        _removeProfileIcon();
+    }
+
+    function setLoggedIn(initial, color) {
+        if (isPopupVisible) {
+            closePopup();
+        }
+        _updateProfileIcon(initial, color);
+    }
+
     exports.init = init;
+    exports.setNotLoggedIn = setNotLoggedIn;
+    exports.setLoggedIn = setLoggedIn;
 });

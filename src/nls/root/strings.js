@@ -629,7 +629,7 @@ define({
     "CMD_AUTO_UPDATE": "Auto Update",
     "CMD_HOW_TO_USE_BRACKETS": "How to Use {APP_NAME}",
     "CMD_SUPPORT": "{APP_NAME} Support",
-    "CMD_USER_PROFILE": "User Profile",
+    "CMD_USER_PROFILE": "{APP_NAME} Account",
     "CMD_DOCS": "Help, Getting Started",
     "CMD_SUGGEST": "Suggest a Feature",
     "CMD_REPORT_ISSUE": "Report Issue",
@@ -1564,5 +1564,9 @@ define({
     "GIT_TOAST_MESSAGE": "Click the Git panel icon to manage your repository. Easily commit, push, pull, and view your project history—all in one place.<br><a href='https://docs.phcode.dev/docs/Features/git'>Learn more about the Git panel →</a>",
 
     // surveys
-    "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vote for the features you want to see next!"
+    "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vote for the features you want to see next!",
+
+    // login
+    "SIGNED_OUT": "You have been signed out.",
+    "SIGNED_OUT_MESSAGE": "You have been signed out of your {APP_NAME} account. Please sign in again to continue."
 });

@@ -139,6 +139,7 @@ define(function (require, exports, module) {
         describe("Credentials OTP API Tests", function () {
             const scopeName = "testScope";
             const trustRing = window.specRunnerTestKernalModeTrust;
+            const TEST_TRUST_KEY_NAME = "testTrustKey";
 
             function decryptCreds(creds) {
                 return trustRing.AESDecryptString(creds, trustRing.aesKeys.key, trustRing.aesKeys.iv);
@@ -253,11 +254,11 @@ define(function (require, exports, module) {
                     expect(response).toEqual(newUUID);
                 });
 
-                // trustRing.getPhoenixAPIKey and set tests
+                // trustRing.getCredential and set tests
                 async function setSomeKey() {
                     const randomCred = crypto.randomUUID();
-                    await trustRing.setPhoenixAPIKey(randomCred);
-                    const savedCred = await trustRing.getPhoenixAPIKey();
+                    await trustRing.setCredential(TEST_TRUST_KEY_NAME, randomCred);
+                    const savedCred = await trustRing.getCredential(TEST_TRUST_KEY_NAME);
                     expect(savedCred).toEqual(randomCred);
                     return savedCred;
                 }
@@ -268,15 +269,15 @@ define(function (require, exports, module) {
 
                 it("Should get and set empty string API key in kernal mode trust ring", async function () {
                     const randomCred = "";
-                    await trustRing.setPhoenixAPIKey(randomCred);
-                    const savedCred = await trustRing.getPhoenixAPIKey();
+                    await trustRing.setCredential(TEST_TRUST_KEY_NAME, randomCred);
+                    const savedCred = await trustRing.getCredential(TEST_TRUST_KEY_NAME);
                     expect(savedCred).toEqual(randomCred);
                 });
 
                 it("Should remove API key in kernal mode trust ring work as expected", async function () {
                     await setSomeKey();
-                    await trustRing.removePhoenixAPIKey();
-                    const cred = await trustRing.getPhoenixAPIKey();
+                    await trustRing.removeCredential(TEST_TRUST_KEY_NAME);
+                    const cred = await trustRing.getCredential(TEST_TRUST_KEY_NAME);
                     expect(cred).toBeNull();
                 });
 
@@ -305,12 +306,12 @@ define(function (require, exports, module) {
                     await window.__TAURI__.tauri.invoke("trust_window_aes_key", trustRing.aesKeys);
                 });
 
-                it("Should getPhoenixAPIKey not work without trust", async function () {
+                it("Should getCredential not work without trust", async function () {
                     await setSomeKey();
                     await window.__TAURI__.tauri.invoke("remove_trust_window_aes_key", trustRing.aesKeys);
                     let error;
                     try {
-                        await trustRing.getPhoenixAPIKey();
+                        await trustRing.getCredential(TEST_TRUST_KEY_NAME);
                     } catch (err) {
                         error = err;
                     }

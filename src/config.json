@@ -3,6 +3,7 @@
         "app_title": "Phoenix Code",
         "app_name_about": "Phoenix Code",
         "about_icon": "styles/images/phoenix-icon.svg",
+        "account_url": "https://account.phcode.io/",
         "how_to_use_url": "https://github.com/adobe/brackets/wiki/How-to-Use-Brackets",
         "docs_url": "https://docs.phcode.dev/",
         "support_url": "https://github.com/phcode-dev/phoenix/discussions",

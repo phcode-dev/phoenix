@@ -178,17 +178,18 @@ function _selectKeys() {
     return generateRandomKeyAndIV();
 }
 
-const PHCODE_API_KEY = "PHCODE_API_KEY";
+const CRED_KEY_API = "API_KEY";
 const { key, iv } = _selectKeys();
 // this key is set at boot time as a truct base for all the core components before any extensions are loaded.
 // just before extensions are loaded, this key is blanked. This can be used by core modules to talk with other
 // core modules securely without worrying about interception by extensions.
 // KernalModeTrust should only be available within all code that loads before the first default/any extension.
 window.KernalModeTrust = {
+    CRED_KEY_API,
     aesKeys: { key, iv },
-    setPhoenixAPIKey,
-    getPhoenixAPIKey,
-    removePhoenixAPIKey,
+    setCredential,
+    getCredential,
+    removeCredential,
     AESDecryptString,
     generateRandomKeyAndIV,
     dismantleKeyring
@@ -198,29 +199,38 @@ if(Phoenix.isSpecRunnerWindow){
 }
 // key is 64 hex characters, iv is 24 hex characters
 
-async function setPhoenixAPIKey(apiKey) {
+async function setCredential(credKey, secret) {
     if(!window.__TAURI__){
         throw new Error("Phoenix API key can only be set in tauri shell!");
     }
-    return window.__TAURI__.tauri.invoke("store_credential", {scopeName: PHCODE_API_KEY, secretVal: apiKey});
+    if(!credKey){
+        throw new Error("credKey is required to set credential!");
+    }
+    return window.__TAURI__.tauri.invoke("store_credential", {scopeName: credKey, secretVal: secret});
 }
 
-async function getPhoenixAPIKey() {
+async function getCredential(credKey) {
     if(!window.__TAURI__){
         throw new Error("Phoenix API key can only be get in tauri shell!");
     }
-    const encryptedKey = await window.__TAURI__.tauri.invoke("get_credential", {scopeName: PHCODE_API_KEY});
+    if(!credKey){
+        throw new Error("credKey is required to get credential!");
+    }
+    const encryptedKey = await window.__TAURI__.tauri.invoke("get_credential", {scopeName: credKey});
     if(!encryptedKey){
         return null;
     }
     return AESDecryptString(encryptedKey, key, iv);
 }
 
-async function removePhoenixAPIKey() {
+async function removeCredential(credKey) {
     if(!window.__TAURI__){
         throw new Error("Phoenix API key can only be set in tauri shell!");
     }
-    return window.__TAURI__.tauri.invoke("delete_credential", {scopeName: PHCODE_API_KEY});
+    if(!credKey){
+        throw new Error("credKey is required to remove credential!");
+    }
+    return window.__TAURI__.tauri.invoke("delete_credential", {scopeName: credKey});
 }
 
 let _dismatled = false;
