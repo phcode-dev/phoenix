@@ -1583,5 +1583,8 @@ define({
     "OPEN_SIGN_IN_URL": "Open Sign In Page",
     "PROFILE_POP_TITLE": "{APP_NAME} Account",
     "PROFILE_SIGN_IN": "Sign in to your account",
-    "CONTACT_SUPPORT": "Contact support"
+    "CONTACT_SUPPORT": "Contact support",
+    "SIGN_OUT": "Sign out",
+    "ACCOUNT_DETAILS": "Account Details",
+    "AI_QUOTA_USED": "AI quota used"
 });

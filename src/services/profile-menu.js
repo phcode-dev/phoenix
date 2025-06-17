@@ -41,26 +41,6 @@ define(function (require, exports, module) {
     // this is to handle document click events to close popup
     let documentClickHandler = null;
 
-    const defaultLoginData = {
-        welcomeTitle: "Welcome to Phoenix Code",
-        signInBtnText: "Sign in to your account",
-        supportBtnText: "Contact support"
-    };
-
-    const defaultProfileData = {
-        initials: "CA",
-        userName: "Charly A.",
-        planName: "Paid Plan",
-        quotaLabel: "AI quota used",
-        quotaUsed: "7,000",
-        quotaTotal: "10,000",
-        quotaUnit: "tokens",
-        quotaPercent: 70,
-        accountBtnText: "Account details",
-        supportBtnText: "Contact support",
-        signOutBtnText: "Sign out"
-    };
-
     function _handleSignInBtnClick() {
         closePopup(); // need to close the current popup to show the new one
         KernalModeTrust.loginService.signInToAccount();
@@ -201,19 +181,27 @@ define(function (require, exports, module) {
 
     /**
      * Shows the user profile popup when the user is logged in
-     * @param {Object} profileData - Data to populate the template (optional)
      */
-    function showProfilePopup(profileData) {
+    function showProfilePopup() {
         // If popup is already visible, just close it
         if (isPopupVisible) {
             closePopup();
             return;
         }
-
-        // Merge provided data with defaults
-        const templateData = $.extend({}, defaultProfileData, profileData || {});
-
-        closePopup();
+        const profileData = KernalModeTrust.loginService.getProfile();
+        const templateData = {
+            initials: profileData.profileIcon.initials,
+            avatarColor: profileData.profileIcon.color,
+            userName: profileData.firstName + " " + profileData.lastName,
+            email: profileData.email,
+            planClass: "user-plan-free",
+            planName: "Free Plan",
+            quotaUsed: "7,000",
+            quotaTotal: "10,000",
+            quotaUnit: "tokens",
+            quotaPercent: 70,
+            Strings: Strings
+        };
 
         // Render template with data
         const renderedTemplate = Mustache.render(profileTemplate, templateData);
@@ -255,10 +243,8 @@ define(function (require, exports, module) {
 
     /**
      * Toggle the profile popup based on the user's login status
-     * this function is called inside the src/extensionsIntegrated/Phoenix/main.js when user clicks on the profile icon
-     * @param {Object} data - Data to populate the templates (optional)
      */
-    function togglePopup(data) {
+    function togglePopup() {
         // check if the popup is already visible or not. if visible close it
         if (isPopupVisible) {
             closePopup();
@@ -266,7 +252,7 @@ define(function (require, exports, module) {
         }
 
         if (KernalModeTrust.loginService.isLoggedIn()) {
-            showProfilePopup(data);
+            showProfilePopup();
         } else {
             showLoginPopup();
         }
