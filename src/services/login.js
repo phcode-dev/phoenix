@@ -24,7 +24,9 @@ define(function (require, exports, module) {
         DefaultDialogs = require("widgets/DefaultDialogs"),
         Strings = require("strings"),
         NativeApp = require("utils/NativeApp"),
-        ProfileMenu  = require("./profile-menu");
+        ProfileMenu  = require("./profile-menu"),
+        Mustache = require("thirdparty/mustache/mustache"),
+        otpDialogTemplate = require("text!./html/otp-dialog.html");
 
     const KernalModeTrust = window.KernalModeTrust;
     if(!KernalModeTrust){
@@ -41,6 +43,14 @@ define(function (require, exports, module) {
 
     // just used as trigger to notify different windows about user profile changes
     const PREF_USER_PROFILE_VERSION = "userProfileVersion";
+
+    EventDispatcher.makeEventDispatcher(exports);
+    EventDispatcher.makeEventDispatcher(secureExports);
+
+    const _EVT_PAGE_FOCUSED = "page_focused";
+    $(window).focus(function () {
+        exports.trigger(_EVT_PAGE_FOCUSED);
+    });
 
 
     function isLoggedIn() {
@@ -112,6 +122,7 @@ define(function (require, exports, module) {
         }
         // some error happened.
         if(resolveResponse.err === ERR_INVALID) { // the api key is invalid, we need to logout and tell user
+            isLoggedInUser = false;
             ProfileMenu.setNotLoggedIn();
             Dialogs.showModalDialog(
                 DefaultDialogs.DIALOG_ID_ERROR,
@@ -166,8 +177,79 @@ define(function (require, exports, module) {
         }
         const {appSessionID, validationCode} = appAuthSession;
         const appSignInURL = `${Phoenix.config.account_url}authorizeApp?appSessionID=${appSessionID}`;
-        // show a dialog here with the 6 letter validation code and a button to copy the validation code and another
-        // button to open the sign in code
+
+        // Show dialog with validation code
+        const dialogData = {
+            validationCode: validationCode,
+            Strings: Strings
+        };
+
+        const $template = $(Mustache.render(otpDialogTemplate, dialogData));
+        const dialog = Dialogs.showModalDialogUsingTemplate($template);
+
+        // Set timeout to close dialog after 5 minutes, as validity is only 5 mins
+        const closeTimeout = setTimeout(() => {
+            dialog.close();
+        }, 5 * 60 * 1000);
+
+        // Handle button clicks
+        $template.on('click', '[data-button-id="copy"]', function() {
+            Phoenix.app.copyToClipboard(validationCode);
+
+            // Show "Copied" feedback
+            const $validationCodeSpan = $template.find('.validation-code span');
+            const originalText = $validationCodeSpan.text();
+
+            // Replace validation code with "Copied" text
+            $validationCodeSpan.text(Strings.VALIDATION_CODE_COPIED);
+
+            // Restore original validation code after 1.5 seconds
+            setTimeout(() => {
+                $validationCodeSpan.text(originalText);
+            }, 1500);
+        });
+
+        $template.on('click', '[data-button-id="open"]', function() {
+            NativeApp.openURLInDefaultBrowser(appSignInURL);
+        });
+        $template.on('click', '[data-button-id="cancel"]', function() {
+            dialog.close();
+        });
+
+        let checking = false, checkAgain = false;
+        async function checkLoginStatus() {
+            if(checking) {
+                checkAgain = true;
+                return;
+            }
+            checking = true;
+            try {
+                const resolveResponse = await _resolveAPIKey(appSessionID, validationCode);
+                if(resolveResponse.userDetails) {
+                    // the user has validated the creds
+                    userProfile = resolveResponse.userDetails;
+                    ProfileMenu.setLoggedIn(userProfile.profileIcon.initials, userProfile.profileIcon.color);
+                    await KernalModeTrust.setCredential(KernalModeTrust.CRED_KEY_API, JSON.stringify(userProfile));
+                    checkAgain = false;
+                    isLoggedInUser = true;
+                    dialog.close();
+                }
+            } catch (e) {
+                console.error("Failed to check login status.", e);
+            }
+            checking = false;
+            if(checkAgain) {
+                checkAgain = false;
+                setTimeout(checkLoginStatus, 100);
+            }
+        }
+        exports.on(_EVT_PAGE_FOCUSED, checkLoginStatus);
+
+        // Clean up when dialog is closed
+        dialog.done(function() {
+            exports.off(_EVT_PAGE_FOCUSED, checkLoginStatus);
+            clearTimeout(closeTimeout);
+        });
         NativeApp.openURLInDefaultBrowser(appSignInURL);
     }
 
@@ -187,8 +269,6 @@ define(function (require, exports, module) {
 
     // no sensitive apis or events should be triggered from the public exports of this module as extensions
     // can read them. Always use KernalModeTrust.loginService for sensitive apis.
-    EventDispatcher.makeEventDispatcher(exports);
-    EventDispatcher.makeEventDispatcher(secureExports);
 
     // kernal exports
     secureExports.isLoggedIn = isLoggedIn;
