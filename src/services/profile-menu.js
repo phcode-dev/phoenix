@@ -62,15 +62,13 @@ define(function (require, exports, module) {
     };
 
     function _handleSignInBtnClick() {
-        console.log("User clicked sign in button");
         closePopup(); // need to close the current popup to show the new one
         KernalModeTrust.loginService.signInToAccount();
     }
 
     function _handleSignOutBtnClick() {
-        console.log("User clicked sign out");
         closePopup();
-        showLoginPopup();
+        KernalModeTrust.loginService.signOutAccount();
     }
 
     function _handleContactSupportBtnClick() {

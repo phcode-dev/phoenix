@@ -1569,10 +1569,13 @@ define({
     // login
     "SIGNED_OUT": "You have been signed out.",
     "SIGNED_OUT_MESSAGE": "You have been signed out of your {APP_NAME} account. Please sign in again to continue.",
+    "SIGNED_OUT_MESSAGE_FRIENDLY": "Thank you for using {APP_NAME}. See you soon!",
     "SIGNED_IN_OFFLINE_TITLE": "Offline - Cannot Sign In",
     "SIGNED_IN_OFFLINE_MESSAGE": "Please connect to the internet to sign in to {APP_NAME}.",
     "SIGNED_IN_FAILED_TITLE": "Cannot Sign In",
     "SIGNED_IN_FAILED_MESSAGE": "Something went wrong while trying to sign in. Please try again.",
+    "SIGNED_OUT_FAILED_TITLE": "Failed to Sign Out",
+    "SIGNED_OUT_FAILED_MESSAGE": "Something went wrong while trying to sign out. Please try again.",
     "VALIDATION_CODE_TITLE": "Sign In Verification Code",
     "VALIDATION_CODE_MESSAGE": "Please use this Verification code to sign in to your {APP_NAME} account:",
     "COPY_VALIDATION_CODE": "Copy Code",

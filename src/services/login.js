@@ -94,6 +94,12 @@ define(function (require, exports, module) {
         }
     }
 
+    async function _resetAccountLogin() {
+        isLoggedInUser = false;
+        ProfileMenu.setNotLoggedIn();
+        await KernalModeTrust.removeCredential(KernalModeTrust.CRED_KEY_API);
+    }
+
     async function _verifyLogin() {
         const savedUserProfile = await KernalModeTrust.getCredential(KernalModeTrust.CRED_KEY_API);
         if(!savedUserProfile){
@@ -122,14 +128,13 @@ define(function (require, exports, module) {
         }
         // some error happened.
         if(resolveResponse.err === ERR_INVALID) { // the api key is invalid, we need to logout and tell user
-            isLoggedInUser = false;
-            ProfileMenu.setNotLoggedIn();
+            _resetAccountLogin()
+                .catch(console.error);
             Dialogs.showModalDialog(
                 DefaultDialogs.DIALOG_ID_ERROR,
                 Strings.SIGNED_OUT,
                 Strings.SIGNED_OUT_MESSAGE
             );
-            await KernalModeTrust.removeCredential(KernalModeTrust.CRED_KEY_API);
         }
         // maybe some intermittent network error, ERR_RETRY_LATER is here. do nothing
     }
@@ -253,6 +258,50 @@ define(function (require, exports, module) {
         NativeApp.openURLInDefaultBrowser(appSignInURL);
     }
 
+    async function signOutAccount() {
+        try {
+            const resolveURL = `${Phoenix.config.account_url}logoutSession`;
+            let input = {
+                appSessionID: userProfile.apiKey
+            };
+
+            const response = await fetch(resolveURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(input)
+            });
+
+            const result = await response.json();
+
+            if (!result.isSuccess) {
+                console.error('Error logging out', result);
+                Dialogs.showModalDialog(
+                    DefaultDialogs.DIALOG_ID_ERROR,
+                    Strings.SIGNED_OUT_FAILED_TITLE,
+                    Strings.SIGNED_OUT_FAILED_MESSAGE
+                );
+                return;
+                // todo raise metrics
+            }
+            await _resetAccountLogin();
+            Dialogs.showModalDialog(
+                DefaultDialogs.DIALOG_ID_INFO,
+                Strings.SIGNED_OUT,
+                Strings.SIGNED_OUT_MESSAGE_FRIENDLY
+            );
+        } catch (error) {
+            console.error("Network error. Could not log out session.", error);
+            Dialogs.showModalDialog(
+                DefaultDialogs.DIALOG_ID_ERROR,
+                Strings.SIGNED_OUT_FAILED_TITLE,
+                Strings.SIGNED_OUT_FAILED_MESSAGE
+            );
+            // todo raise metrics
+        }
+    }
+
     function init() {
         ProfileMenu.init();
         if(!Phoenix.isNativeApp){
@@ -273,6 +322,7 @@ define(function (require, exports, module) {
     // kernal exports
     secureExports.isLoggedIn = isLoggedIn;
     secureExports.signInToAccount = signInToAccount;
+    secureExports.signOutAccount = signOutAccount;
 
     // public exports
     exports.isLoggedIn = isLoggedIn;
