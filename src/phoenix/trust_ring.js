@@ -235,7 +235,7 @@ async function removeCredential(credKey) {
 
 let _dismatled = false;
 async function dismantleKeyring() {
-    if(!_dismatled){
+    if(_dismatled){
         throw new Error("Keyring can only be dismantled once!");
         // and once dismantled, the next line should be reload page. this is a strict security posture requirement to
         // prevent extensions from stealing sensitive info from system key ring as once the trust in invalidated,

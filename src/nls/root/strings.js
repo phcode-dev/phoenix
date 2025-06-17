@@ -1572,5 +1572,10 @@ define({
     "SIGNED_IN_OFFLINE_TITLE": "Offline - Cannot Sign In",
     "SIGNED_IN_OFFLINE_MESSAGE": "Please connect to the internet to sign in to {APP_NAME}.",
     "SIGNED_IN_FAILED_TITLE": "Cannot Sign In",
-    "SIGNED_IN_FAILED_MESSAGE": "Something went wrong while trying to sign in. Please try again."
+    "SIGNED_IN_FAILED_MESSAGE": "Something went wrong while trying to sign in. Please try again.",
+    "VALIDATION_CODE_TITLE": "Sign In Verification Code",
+    "VALIDATION_CODE_MESSAGE": "Please use this Verification code to sign in to your {APP_NAME} account:",
+    "COPY_VALIDATION_CODE": "Copy Code",
+    "VALIDATION_CODE_COPIED": "Copied",
+    "OPEN_SIGN_IN_URL": "Open Sign In Page"
 });
