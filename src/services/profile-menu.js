@@ -179,6 +179,31 @@ define(function (require, exports, module) {
         _setupDocumentClickHandler();
     }
 
+    let userEmail="";
+    class SecureEmail extends HTMLElement {
+        constructor() {
+            super();
+            // Create closed shadow root - this is for security that extensions wont be able to read email from DOM
+            const shadow = this.attachShadow({ mode: 'closed' });
+            // Create the email display with some obfuscation techniques
+            shadow.innerHTML = `<span>${userEmail}</span>`;
+        }
+    }
+    // Register the custom element
+    customElements.define('secure-email', SecureEmail);
+    let userName="";
+    class SecureName extends HTMLElement {
+        constructor() {
+            super();
+            // Create closed shadow root - this is for security that extensions wont be able to read name from DOM
+            const shadow = this.attachShadow({ mode: 'closed' });
+            // Create the email display with some obfuscation techniques
+            shadow.innerHTML = `<span>${userName}</span>`;
+        }
+    }
+    // Register the custom element
+    customElements.define('secure-name', SecureName);
+
     /**
      * Shows the user profile popup when the user is logged in
      */
@@ -189,12 +214,12 @@ define(function (require, exports, module) {
             return;
         }
         const profileData = KernalModeTrust.loginService.getProfile();
+        userEmail = profileData.email;
+        userName = profileData.firstName + " " + profileData.lastName;
         const templateData = {
             initials: profileData.profileIcon.initials,
             avatarColor: profileData.profileIcon.color,
-            userName: profileData.firstName + " " + profileData.lastName,
-            email: profileData.email,
-            planClass: "user-plan-free",
+            planClass: "user-plan-free", // "user-plan-paid" for paid plan
             planName: "Free Plan",
             quotaUsed: "7,000",
             quotaTotal: "10,000",
