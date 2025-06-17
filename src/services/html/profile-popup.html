@@ -1,19 +1,20 @@
 <div class="profile-popup">
     <div class="popup-header">
         <div class="user-profile-header">
-            <div class="user-avatar">
+            <div class="user-avatar" style="background-color: {{avatarColor}};">
                 {{initials}}
             </div>
             <div class="user-info">
                 <div class="user-name">{{userName}}</div>
-                <div class="user-plan">{{planName}}</div>
+                <div class="user-email">{{email}}</div>
+                <div class="{{planClass}}">{{planName}}</div>
             </div>
         </div>
     </div>
     <div class="popup-body">
         <div class="quota-section">
             <div class="quota-header">
-                <span>{{quotaLabel}}</span>
+                <span>{{Strings.AI_QUOTA_USED}}</span>
                 <span>{{quotaUsed}} / {{quotaTotal}} {{quotaUnit}}</span>
             </div>
             <div class="progress-bar">
@@ -23,18 +24,18 @@
 
         <button id="phoenix-account-btn" class="btn dialog-button menu-button">
             <i class="fa fa-user"></i>
-            {{accountBtnText}}
+            {{Strings.ACCOUNT_DETAILS}}
         </button>
 
         <button id="phoenix-signout-btn" class="btn dialog-button menu-button signout">
             <i class="fa fa-sign-out-alt"></i>
-            {{signOutBtnText}}
+            {{Strings.SIGN_OUT}}
         </button>
 
         <div class="support-link">
             <button id="phoenix-support-btn" class="text-link">
                 <i class="fa fa-question-circle"></i>
-                {{supportBtnText}}
+                {{Strings.CONTACT_SUPPORT}}
             </button>
         </div>
     </div>

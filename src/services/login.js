@@ -57,6 +57,10 @@ define(function (require, exports, module) {
         return isLoggedInUser;
     }
 
+    function getProfile() {
+        return userProfile;
+    }
+
     const ERR_RETRY_LATER = "retry_later";
     const ERR_INVALID = "invalid";
 
@@ -330,6 +334,7 @@ define(function (require, exports, module) {
     secureExports.isLoggedIn = isLoggedIn;
     secureExports.signInToAccount = signInToAccount;
     secureExports.signOutAccount = signOutAccount;
+    secureExports.getProfile = getProfile;
 
     // public exports
     exports.isLoggedIn = isLoggedIn;
