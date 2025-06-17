@@ -1580,5 +1580,8 @@ define({
     "VALIDATION_CODE_MESSAGE": "Please use this Verification code to sign in to your {APP_NAME} account:",
     "COPY_VALIDATION_CODE": "Copy Code",
     "VALIDATION_CODE_COPIED": "Copied",
-    "OPEN_SIGN_IN_URL": "Open Sign In Page"
+    "OPEN_SIGN_IN_URL": "Open Sign In Page",
+    "PROFILE_POP_TITLE": "{APP_NAME} Account",
+    "PROFILE_SIGN_IN": "Sign in to your account",
+    "CONTACT_SUPPORT": "Contact support"
 });
