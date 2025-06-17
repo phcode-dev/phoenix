@@ -98,6 +98,8 @@ define(function (require, exports, module) {
         isLoggedInUser = false;
         ProfileMenu.setNotLoggedIn();
         await KernalModeTrust.removeCredential(KernalModeTrust.CRED_KEY_API);
+        // bump the version so that in multi windows, the other window gets notified of the change
+        PreferencesManager.stateManager.set(PREF_USER_PROFILE_VERSION, crypto.randomUUID());
     }
 
     async function _verifyLogin() {
@@ -105,6 +107,7 @@ define(function (require, exports, module) {
         if(!savedUserProfile){
             console.log("No savedUserProfile found. Not logged in");
             ProfileMenu.setNotLoggedIn();
+            isLoggedInUser = false;
             return;
         }
         try {
@@ -124,6 +127,8 @@ define(function (require, exports, module) {
             userProfile = resolveResponse.userDetails;
             ProfileMenu.setLoggedIn(userProfile.profileIcon.initials, userProfile.profileIcon.color);
             await KernalModeTrust.setCredential(KernalModeTrust.CRED_KEY_API, JSON.stringify(userProfile));
+            // we dont need to bump the PREF_USER_PROFILE_VERSION here as its just a cred update
+            // (maybe name) and may lead to infi loops.
             return;
         }
         // some error happened.
@@ -235,6 +240,8 @@ define(function (require, exports, module) {
                     userProfile = resolveResponse.userDetails;
                     ProfileMenu.setLoggedIn(userProfile.profileIcon.initials, userProfile.profileIcon.color);
                     await KernalModeTrust.setCredential(KernalModeTrust.CRED_KEY_API, JSON.stringify(userProfile));
+                    // bump the version so that in multi windows, the other window gets notified of the change
+                    PreferencesManager.stateManager.set(PREF_USER_PROFILE_VERSION, crypto.randomUUID());
                     checkAgain = false;
                     isLoggedInUser = true;
                     dialog.close();
@@ -309,9 +316,9 @@ define(function (require, exports, module) {
             return;
         }
         _verifyLogin().catch(console.error);// todo raise metrics
-        const pref = PreferencesManager.stateManager.definePreference(PREF_USER_PROFILE_VERSION, 'string', '0')
-            .watchExternalChanges();
-
+        const pref = PreferencesManager.stateManager.definePreference(PREF_USER_PROFILE_VERSION, 'string', '0');
+        pref.watchExternalChanges();
+        pref.on('change', _verifyLogin);
     }
 
     init();
