@@ -48,6 +48,8 @@ jobs:
 
       - name: Run tauri unit tests
         uses: nick-fields/retry@v2
+        id: linuxRunUnit
+        continue-on-error: true
         with:
           timeout_minutes: 12
           max_attempts: 3
@@ -55,6 +57,8 @@ jobs:
 
       - name: Run tauri integration tests
         uses: nick-fields/retry@v2
+        id: linuxRunIntegration
+        continue-on-error: true
         with:
           timeout_minutes: 12
           max_attempts: 3
@@ -62,6 +66,8 @@ jobs:
 
       - name: Run tauri mainview tests
         uses: nick-fields/retry@v2
+        id: linuxRunMainview
+        continue-on-error: true
         with:
           timeout_minutes: 12
           max_attempts: 3
@@ -69,6 +75,8 @@ jobs:
 
       - name: Run tauri livepreview tests
         uses: nick-fields/retry@v2
+        id: linuxRunLivepreview
+        continue-on-error: true
         with:
           timeout_minutes: 12
           max_attempts: 3
@@ -76,7 +84,15 @@ jobs:
 
       - name: Run tauri LegacyInteg tests
         uses: nick-fields/retry@v2
+        id: linuxRunLegacyInteg
+        continue-on-error: true
         with:
           timeout_minutes: 20
           max_attempts: 3
           command: xvfb-run ../phoenix-desktop/src-tauri/target/debug/phoenix-test --run-tests=LegacyInteg -q
+
+      - name: Fail on test runs failed in Linux
+        if: steps.linuxRunUnit.outcome == 'failure' || steps.linuxRunIntegration.outcome == 'failure' || steps.linuxRunMainview.outcome == 'failure' || steps.linuxRunLivepreview.outcome == 'failure' || steps.linuxRunLegacyInteg.outcome == 'failure'
+        run: |
+          echo "Linux tests failed, marking step as failed"
+          exit 1
