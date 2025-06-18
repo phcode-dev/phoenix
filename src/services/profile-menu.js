@@ -190,7 +190,9 @@ define(function (require, exports, module) {
         }
     }
     // Register the custom element
-    customElements.define('secure-email', SecureEmail);
+    /* eslint-disable-next-line*/
+    customElements.define ('secure-email', SecureEmail); // space is must in define ( to prevent build fail
+
     let userName="";
     class SecureName extends HTMLElement {
         constructor() {
@@ -202,7 +204,9 @@ define(function (require, exports, module) {
         }
     }
     // Register the custom element
-    customElements.define('secure-name', SecureName);
+
+    /* eslint-disable-next-line*/
+    customElements.define ('secure-name', SecureName); // space is must in define ( to prevent build fail
 
     /**
      * Shows the user profile popup when the user is logged in
