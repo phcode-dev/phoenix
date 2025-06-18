@@ -26,6 +26,7 @@ define(function (require, exports, module) {
         NativeApp = require("utils/NativeApp"),
         ProfileMenu  = require("./profile-menu"),
         Mustache = require("thirdparty/mustache/mustache"),
+        NodeConnector = require("NodeConnector"),
         otpDialogTemplate = require("text!./html/otp-dialog.html");
 
     const KernalModeTrust = window.KernalModeTrust;
@@ -51,6 +52,13 @@ define(function (require, exports, module) {
     $(window).focus(function () {
         exports.trigger(_EVT_PAGE_FOCUSED);
     });
+
+    const AUTH_CONNECTOR_ID = "ph_auth";
+    const EVENT_CONNECTED = "connected";
+    let authNodeConnector;
+    if(Phoenix.isNativeApp) {
+        authNodeConnector = NodeConnector.createNodeConnector(AUTH_CONNECTOR_ID, exports);
+    }
 
 
     function isLoggedIn() {
@@ -148,9 +156,17 @@ define(function (require, exports, module) {
         // maybe some intermittent network error, ERR_RETRY_LATER is here. do nothing
     }
 
+    function _getAutoAuthPortURL() {
+        const localAutoAuthURL = KernalModeTrust.localAutoAuthURL; // Eg: http://localhost:33577/AutoAuthDI0zAUJo
+        if(!localAutoAuthURL) {
+            return "9797/urlDoesntExist";
+        }
+        return localAutoAuthURL.replace("http://localhost:", "");
+    }
+
     // never rejects.
     async function _getAppAuthSession() {
-        const authPortURL = "9797/abc"; // todo autho auth later
+        const authPortURL = _getAutoAuthPortURL();
         const appName = encodeURIComponent(`${Strings.APP_NAME} Desktop on ${Phoenix.platform}`);
         const resolveURL = `${Phoenix.config.account_url}getAppAuthSession?autoAuthPort=${authPortURL}&appName=${appName}`;
         // {"isSuccess":true,"appSessionID":"a uuid...","validationCode":"SWXP07"}
@@ -168,6 +184,20 @@ define(function (require, exports, module) {
             console.error(e, "Failed to call getAppAuthSession API endpoint", resolveURL);
             // todo raise metrics/log
             return null;
+        }
+    }
+
+    async function setAutoVerificationCode(validationCode) {
+        const TIMEOUT_MS = 1000;
+        try {
+            await Promise.race([
+                authNodeConnector.execPeer("setVerificationCode", validationCode),
+                new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), TIMEOUT_MS))
+            ]);
+        } catch (e) {
+            console.error("failed to send auth login verification code to node", e);
+            // we ignore this and continue for manual verification
+            // todo raise metrics
         }
     }
 
@@ -190,6 +220,7 @@ define(function (require, exports, module) {
             return;
         }
         const {appSessionID, validationCode} = appAuthSession;
+        await setAutoVerificationCode(validationCode);
         const appSignInURL = `${Phoenix.config.account_url}authorizeApp?appSessionID=${appSessionID}`;
 
         // Show dialog with validation code
@@ -260,10 +291,15 @@ define(function (require, exports, module) {
             }
         }
         exports.on(_EVT_PAGE_FOCUSED, checkLoginStatus);
+        async function _AutoSignedIn() {
+            await checkLoginStatus();
+        }
+        authNodeConnector.one(EVENT_CONNECTED, _AutoSignedIn);
 
         // Clean up when dialog is closed
         dialog.done(function() {
             exports.off(_EVT_PAGE_FOCUSED, checkLoginStatus);
+            authNodeConnector.off(EVENT_CONNECTED, _AutoSignedIn);
             clearTimeout(closeTimeout);
         });
         NativeApp.openURLInDefaultBrowser(appSignInURL);

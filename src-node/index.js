@@ -93,6 +93,7 @@ const PHOENIX_FS_URL = `/PhoenixFS${randomNonce(8)}`;
 const PHOENIX_STATIC_SERVER_URL = `/Static${randomNonce(8)}`;
 const PHOENIX_NODE_URL = `/PhoenixNode${randomNonce(8)}`;
 const PHOENIX_LIVE_PREVIEW_COMM_URL = `/PreviewComm${randomNonce(8)}`;
+const PHOENIX_AUTO_AUTH_URL = `/AutoAuth${randomNonce(8)}`;
 
 const savedConsoleLog = console.log;
 
@@ -190,7 +191,8 @@ function processCommand(line) {
                     phoenixFSURL: `ws://localhost:${port}${PHOENIX_FS_URL}`,
                     phoenixNodeURL: `ws://localhost:${port}${PHOENIX_NODE_URL}`,
                     staticServerURL: `http://localhost:${port}${PHOENIX_STATIC_SERVER_URL}`,
-                    livePreviewCommURL: `ws://localhost:${port}${PHOENIX_LIVE_PREVIEW_COMM_URL}`
+                    livePreviewCommURL: `ws://localhost:${port}${PHOENIX_LIVE_PREVIEW_COMM_URL}`,
+                    autoAuthURL: `http://localhost:${port}${PHOENIX_AUTO_AUTH_URL}`
                 }, jsonCmd.commandID);
             });
             return;
@@ -206,6 +208,67 @@ rl.on('line', (line) => {
 });
 
 const localhostOnly = 'localhost';
+
+const AUTH_CONNECTOR_ID = "ph_auth";
+const EVENT_CONNECTED = "connected";
+let verificationCode = null;
+async function setVerificationCode(code) {
+    verificationCode = code;
+}
+const nodeConnector = NodeConnector.createNodeConnector(AUTH_CONNECTOR_ID, {
+    setVerificationCode
+});
+
+const ALLOWED_ORIGIN = 'https://account.phcode.io';
+function autoAuth(req, res) {
+    const origin = req.headers.origin;
+    // localhost dev of loginService is not allowed here to not leak to production. So autoAuth is not available in
+    // dev builds.
+    const isAllowedOrigin = !origin || (ALLOWED_ORIGIN === origin);
+    if(!isAllowedOrigin){
+        res.writeHead(403, { 'Content-Type': 'text/plain' });
+        res.end('Forbidden origin');
+        return;
+    }
+    if (req.method === 'OPTIONS') {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+        res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+        res.setHeader('Access-Control-Allow-Credentials', 'true');
+        res.setHeader('Access-Control-Allow-Private-Network', 'true');
+        res.writeHead(204);
+        res.end();
+        return;
+    }
+    // Remove '/AutoAuth<rand>' from the beginning of the URL and construct file path
+    const url = new URL(req.url, `http://${req.headers.host}`);
+    const cleanPath = url.pathname.replace(PHOENIX_AUTO_AUTH_URL, '');
+    // Check if the request is for the autoVerifyCode endpoint
+    if (cleanPath === `/autoVerifyCode` && req.method === 'GET') {
+        origin && res.setHeader('Access-Control-Allow-Origin', origin);
+        if(!verificationCode) {
+            res.setHeader('Content-Type', 'text/plain');
+            res.writeHead(404);
+            res.end('Not Found');
+            return;
+        }
+        res.setHeader('Access-Control-Allow-Credentials', 'true');
+        res.setHeader('Access-Control-Allow-Private-Network', 'true');
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify({ code: verificationCode }));
+        verificationCode = null; // verification code is only returned once
+    } else if (cleanPath === `/appVerified` && req.method === 'GET') {
+        nodeConnector.triggerPeer(EVENT_CONNECTED, "ok");
+        origin && res.setHeader('Access-Control-Allow-Origin', origin);
+        res.setHeader('Access-Control-Allow-Credentials', 'true');
+        res.setHeader('Access-Control-Allow-Private-Network', 'true');
+        res.setHeader('Content-Type', 'application/json');
+        res.end("ok");
+    } else {
+        res.writeHead(404, { 'Content-Type': 'text/plain' });
+        res.end('Not Found');
+    }
+}
 
 // Create an HTTP server
 const server = http.createServer((req, res) => {
@@ -249,7 +312,9 @@ const server = http.createServer((req, res) => {
             }
         });
 
-    } else {
+    } else if (req.url.startsWith(PHOENIX_AUTO_AUTH_URL)) {
+        return autoAuth(req, res);
+    }else {
         res.writeHead(404, { 'Content-Type': 'text/plain' });
         res.end('Not Found');
     }
@@ -269,5 +334,6 @@ server.listen(0, localhostOnly, () => {
     savedConsoleLog(`Phoenix node tauri FS url is ws://localhost:${port}${PHOENIX_FS_URL}`);
     savedConsoleLog(`Phoenix node connector url is ws://localhost:${port}${PHOENIX_NODE_URL}`);
     savedConsoleLog(`Phoenix live preview comm url is ws://localhost:${port}${PHOENIX_LIVE_PREVIEW_COMM_URL}`);
+    savedConsoleLog(`Phoenix AutoAuth url is ws://localhost:${port}${PHOENIX_AUTO_AUTH_URL}`);
     serverPortResolve(port);
 });

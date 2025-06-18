@@ -9,7 +9,6 @@
     overflow: hidden;
     position: absolute;
     z-index: @z-index-brackets-context-menu-base;
-    animation: user-profile-dropdown-animation 90ms cubic-bezier(0, .97, .2, .99);
     transform-origin: 0 0;
 
     .popup-header {
@@ -112,6 +111,9 @@
         text-align: left;
         padding: 8px 12px;
         margin: 3px 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
         i {
             margin-right: 8px;
@@ -278,9 +280,4 @@
             }
         }
     }
-}
-
-@keyframes user-profile-dropdown-animation {
-    0%   { opacity: 0.5; transform: translate3d(0, 0, 0) scale(0.5); }
-    100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
 }
