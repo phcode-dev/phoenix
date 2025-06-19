@@ -1586,5 +1586,6 @@ define({
     "CONTACT_SUPPORT": "Contact support",
     "SIGN_OUT": "Sign out",
     "ACCOUNT_DETAILS": "Account Details",
-    "AI_QUOTA_USED": "AI quota used"
+    "AI_QUOTA_USED": "AI quota used",
+    "LOGIN_REFRESH": "Check Login Status"
 });

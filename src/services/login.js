@@ -269,8 +269,12 @@ define(function (require, exports, module) {
         $template.on('click', '[data-button-id="cancel"]', function() {
             dialog.close();
         });
+        $template.on('click', '[data-button-id="refresh"]', function() {
+            checkLoginStatus();
+        });
 
         let checking = false, checkAgain = false;
+        // never rejects
         async function checkLoginStatus() {
             if(checking) {
                 checkAgain = true;
