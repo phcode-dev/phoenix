@@ -87,4 +87,20 @@ jobs:
         if: steps.macRunUnit.outcome == 'failure' || steps.macRunIntegration.outcome == 'failure' || steps.macRunMainview.outcome == 'failure' || steps.macRunLivepreview.outcome == 'failure' || steps.macRunLegacyInteg.outcome == 'failure'
         run: |
           echo "Mac tests failed, marking step as failed"
+          echo "Failed tests:"
+          if [ "${{ steps.macRunUnit.outcome }}" == "failure" ]; then
+            echo "- Run tauri unit tests"
+          fi
+          if [ "${{ steps.macRunIntegration.outcome }}" == "failure" ]; then
+            echo "- Run tauri integration tests"
+          fi
+          if [ "${{ steps.macRunMainview.outcome }}" == "failure" ]; then
+            echo "- Run tauri mainview tests"
+          fi
+          if [ "${{ steps.macRunLivepreview.outcome }}" == "failure" ]; then
+            echo "- Run tauri livepreview tests"
+          fi
+          if [ "${{ steps.macRunLegacyInteg.outcome }}" == "failure" ]; then
+            echo "- Run tauri LegacyInteg tests"
+          fi
           exit 1
