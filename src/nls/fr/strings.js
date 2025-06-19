@@ -516,6 +516,7 @@ define({
   "CMD_AUTO_UPDATE": "Mise à jour automatique",
   "CMD_HOW_TO_USE_BRACKETS": "Comment utiliser {APP_NAME}",
   "CMD_SUPPORT": "Assistance {APP_NAME}",
+  "CMD_USER_PROFILE": "Compte {APP_NAME}",
   "CMD_DOCS": "Aide, Prise en main",
   "CMD_SUGGEST": "Suggérer une fonctionnalité",
   "CMD_REPORT_ISSUE": "Signaler un problème",
@@ -1366,7 +1367,6 @@ define({
   "GIT_TOAST_TITLE": "Explorer les fonctionnalités Git dans Phoenix Code",
   "GIT_TOAST_MESSAGE": "Cliquez sur l'icône du panneau Git pour gérer votre dépôt. Validez, envoyez (push), récupérez (pull) et consultez l'historique de votre projet facilement, le tout au même endroit.<br><a href='https://docs.phcode.dev/docs/Features/git'>En savoir plus sur le panneau Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Votez pour les fonctionnalités que vous souhaitez voir apparaître !",
-  "CMD_USER_PROFILE": "Compte {APP_NAME}",
   "SIGNED_OUT": "Vous avez été déconnecté(e).",
   "SIGNED_OUT_MESSAGE": "Vous avez été déconnecté(e) de votre compte {APP_NAME}. Veuillez vous reconnecter pour continuer.",
   "SIGNED_OUT_MESSAGE_FRIENDLY": "Merci d'avoir utilisé {APP_NAME}. À bientôt !",
@@ -1386,5 +1386,6 @@ define({
   "CONTACT_SUPPORT": "Contacter le support",
   "SIGN_OUT": "Se déconnecter",
   "ACCOUNT_DETAILS": "Détails du compte",
-  "AI_QUOTA_USED": "Quota IA utilisé"
+  "AI_QUOTA_USED": "Quota IA utilisé",
+  "LOGIN_REFRESH": "Vérifier l'état de la connexion"
 });

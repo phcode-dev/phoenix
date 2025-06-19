@@ -516,6 +516,7 @@ define({
   "CMD_AUTO_UPDATE": "خودکار اپ ڈیٹ",
   "CMD_HOW_TO_USE_BRACKETS": "{APP_NAME} استعمال کرنے کا طریقہ",
   "CMD_SUPPORT": "{APP_NAME} سپورٹ",
+  "CMD_USER_PROFILE": "{APP_NAME} اکاؤنٹ",
   "CMD_DOCS": "مدد، شروع کرنا",
   "CMD_SUGGEST": "خصوصیت تجویز کریں",
   "CMD_REPORT_ISSUE": "مسئلہ کی اطلاع دیں",
@@ -1366,7 +1367,6 @@ define({
   "GIT_TOAST_TITLE": "فینکس کوڈ میں گٹ فیچرز دریافت کریں",
   "GIT_TOAST_MESSAGE": "اپنی ذخیرہ گاہ (repository) کو منظم کرنے کے لیے گٹ پینل آئیکن پر کلک کریں۔ آسانی سے کامٹ، پش، پل کریں، اور اپنے پروجیکٹ کی تاریخ دیکھیں—سب ایک ہی جگہ پر۔<br><a href='https://docs.phcode.dev/docs/Features/git'>گٹ پینل کے بارے میں مزید جانیں →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "اپنی پسندیدہ خصوصیات کے لیے ووٹ دیں!",
-  "CMD_USER_PROFILE": "{APP_NAME} اکاؤنٹ",
   "SIGNED_OUT": "آپ سائن آؤٹ ہو گئے ہیں۔",
   "SIGNED_OUT_MESSAGE": "آپ اپنے {APP_NAME} اکاؤنٹ سے سائن آؤٹ ہو گئے ہیں۔ براہ کرم جاری رکھنے کے لیے دوبارہ سائن ان کریں۔",
   "SIGNED_OUT_MESSAGE_FRIENDLY": "{APP_NAME} استعمال کرنے کا شکریہ۔ جلد ملیں گے!",
@@ -1386,5 +1386,6 @@ define({
   "CONTACT_SUPPORT": "سپورٹ سے رابطہ کریں",
   "SIGN_OUT": "سائن آؤٹ کریں",
   "ACCOUNT_DETAILS": "اکاؤنٹ کی تفصیلات",
-  "AI_QUOTA_USED": "استعمال شدہ اے آئی کوٹہ"
+  "AI_QUOTA_USED": "استعمال شدہ اے آئی کوٹہ",
+  "LOGIN_REFRESH": "لاگ ان کی حیثیت چیک کریں"
 });

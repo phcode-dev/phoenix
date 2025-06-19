@@ -516,6 +516,7 @@ define({
   "CMD_AUTO_UPDATE": "Automatická aktualizace",
   "CMD_HOW_TO_USE_BRACKETS": "Jak používat {APP_NAME}",
   "CMD_SUPPORT": "{APP_NAME} Podpora",
+  "CMD_USER_PROFILE": "Účet {APP_NAME}",
   "CMD_DOCS": "Nápověda, Začínáme",
   "CMD_SUGGEST": "Navrhněte funkci",
   "CMD_REPORT_ISSUE": "Nahlásit problém",
@@ -1366,7 +1367,6 @@ define({
   "GIT_TOAST_TITLE": "Prozkoumejte funkce Gitu v Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klikněte na ikonu panelu Git pro správu vašeho repozitáře. Snadno commitujte, pushujte, pullujte a prohlížejte si historii projektu – vše na jednom místě.<br><a href='https://docs.phcode.dev/docs/Features/git'>Zjistěte více o panelu Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Hlasujte pro funkce, které chcete vidět v další verzi!",
-  "CMD_USER_PROFILE": "Účet {APP_NAME}",
   "SIGNED_OUT": "Byli jste odhlášeni.",
   "SIGNED_OUT_MESSAGE": "Byli jste odhlášeni ze svého účtu {APP_NAME}. Pro pokračování se prosím znovu přihlaste.",
   "SIGNED_OUT_MESSAGE_FRIENDLY": "Děkujeme, že používáte {APP_NAME}. Brzy na viděnou!",
@@ -1386,5 +1386,6 @@ define({
   "CONTACT_SUPPORT": "Kontaktovat podporu",
   "SIGN_OUT": "Odhlásit se",
   "ACCOUNT_DETAILS": "Detaily účtu",
-  "AI_QUOTA_USED": "Vyčerpána kvóta pro AI"
+  "AI_QUOTA_USED": "Vyčerpána kvóta pro AI",
+  "LOGIN_REFRESH": "Zkontrolovat stav přihlášení"
 });

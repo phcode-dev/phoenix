@@ -516,6 +516,7 @@ define({
   "CMD_AUTO_UPDATE": "Automatsko ažuriranje",
   "CMD_HOW_TO_USE_BRACKETS": "Kako koristiti {APP_NAME}",
   "CMD_SUPPORT": "{APP_NAME} Podrška (na engleskom)",
+  "CMD_USER_PROFILE": "{APP_NAME} račun",
   "CMD_DOCS": "Pomoć, Početak rada",
   "CMD_SUGGEST": "Predloži mogućnost / značajku",
   "CMD_REPORT_ISSUE": "Prijavi problem",
@@ -1366,7 +1367,6 @@ define({
   "GIT_TOAST_TITLE": "Istražite Git značajke u Phoenix Codeu",
   "GIT_TOAST_MESSAGE": "Kliknite ikonu Git panela za upravljanje svojim repozitorijem. Jednostavno potvrdite (commit), pošaljite (push), preuzmite (pull) i pregledajte povijest svog projekta - sve na jednom mjestu.<br><a href='https://docs.phcode.dev/docs/Features/git'>Saznajte više o Git panelu →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Glasajte za značajke koje želite vidjeti sljedeće!",
-  "CMD_USER_PROFILE": "{APP_NAME} račun",
   "SIGNED_OUT": "Odjavljeni ste.",
   "SIGNED_OUT_MESSAGE": "Odjavljeni ste iz svog {APP_NAME} računa. Prijavite se ponovno kako biste nastavili.",
   "SIGNED_OUT_MESSAGE_FRIENDLY": "Hvala vam što koristite {APP_NAME}. Vidimo se uskoro!",
@@ -1386,5 +1386,6 @@ define({
   "CONTACT_SUPPORT": "Kontaktirajte podršku",
   "SIGN_OUT": "Odjava",
   "ACCOUNT_DETAILS": "Podaci o računu",
-  "AI_QUOTA_USED": "Iskorištena AI kvota"
+  "AI_QUOTA_USED": "Iskorištena AI kvota",
+  "LOGIN_REFRESH": "Provjeri status prijave"
 });

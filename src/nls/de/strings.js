@@ -516,6 +516,7 @@ define({
   "CMD_AUTO_UPDATE": "Automatische Updates",
   "CMD_HOW_TO_USE_BRACKETS": "So verwendet man {APP_NAME}",
   "CMD_SUPPORT": "{APP_NAME}-Support",
+  "CMD_USER_PROFILE": "{APP_NAME}-Konto",
   "CMD_DOCS": "Hilfe, Erste Schritte",
   "CMD_SUGGEST": "Ein Feature vorschlagen",
   "CMD_REPORT_ISSUE": "Problem melden",
@@ -1366,7 +1367,6 @@ define({
   "GIT_TOAST_TITLE": "Git-Funktionen in Phoenix Code entdecken",
   "GIT_TOAST_MESSAGE": "Klicken Sie auf das Git-Panel-Symbol, um Ihr Repository zu verwalten. Committen, Pushen, Pullen und die Anzeige Ihres Projektverlaufs – alles an einem Ort.<br><a href='https://docs.phcode.dev/docs/Features/git'>Mehr über das Git-Panel erfahren →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Stimmen Sie für die Funktionen ab, die Sie als Nächstes sehen möchten!",
-  "CMD_USER_PROFILE": "{APP_NAME}-Konto",
   "SIGNED_OUT": "Sie wurden abgemeldet.",
   "SIGNED_OUT_MESSAGE": "Sie wurden von Ihrem {APP_NAME}-Konto abgemeldet. Bitte melden Sie sich erneut an, um fortzufahren.",
   "SIGNED_OUT_MESSAGE_FRIENDLY": "Vielen Dank, dass Sie {APP_NAME} verwendet haben. Bis bald!",
@@ -1386,5 +1386,6 @@ define({
   "CONTACT_SUPPORT": "Support kontaktieren",
   "SIGN_OUT": "Abmelden",
   "ACCOUNT_DETAILS": "Kontodetails",
-  "AI_QUOTA_USED": "Verbrauchte KI-Quote"
+  "AI_QUOTA_USED": "Verbrauchte KI-Quote",
+  "LOGIN_REFRESH": "Anmeldestatus überprüfen"
 });

@@ -516,6 +516,7 @@ define({
   "CMD_AUTO_UPDATE": "Auto Update",
   "CMD_HOW_TO_USE_BRACKETS": "How to Use {APP_NAME}",
   "CMD_SUPPORT": "{APP_NAME} Support",
+  "CMD_USER_PROFILE": "{APP_NAME} Account",
   "CMD_DOCS": "Help: Getting Started",
   "CMD_SUGGEST": "Suggest a Feature",
   "CMD_REPORT_ISSUE": "Report Issue",
@@ -1366,7 +1367,6 @@ define({
   "GIT_TOAST_TITLE": "Explore Git Features in Phoenix Code",
   "GIT_TOAST_MESSAGE": "Click the Git panel icon to manage your repository. Easily commit, push, pull, and view your project history—all in one place.<br><a href='https://docs.phcode.dev/docs/Features/git'>Learn more about the Git panel →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vote for the features you'd like to see next!",
-  "CMD_USER_PROFILE": "{APP_NAME} Account",
   "SIGNED_OUT": "You've been signed out.",
   "SIGNED_OUT_MESSAGE": "You've been signed out of your {APP_NAME} account. Please sign in again to continue.",
   "SIGNED_OUT_MESSAGE_FRIENDLY": "Thanks for using {APP_NAME}. See you soon!",
@@ -1386,5 +1386,6 @@ define({
   "CONTACT_SUPPORT": "Contact support",
   "SIGN_OUT": "Sign out",
   "ACCOUNT_DETAILS": "Account Details",
-  "AI_QUOTA_USED": "AI quota used"
+  "AI_QUOTA_USED": "AI quota used",
+  "LOGIN_REFRESH": "Check Login Status"
 });

@@ -516,6 +516,7 @@ define({
   "CMD_AUTO_UPDATE": "Otomatik Güncelleme",
   "CMD_HOW_TO_USE_BRACKETS": "{APP_NAME} Nasıl Kullanılır",
   "CMD_SUPPORT": "{APP_NAME} Desteği",
+  "CMD_USER_PROFILE": "{APP_NAME} Hesabı",
   "CMD_DOCS": "Yardım, Başlarken",
   "CMD_SUGGEST": "Yeni Özellik Öner",
   "CMD_REPORT_ISSUE": "Sorun Bildir",
@@ -1366,7 +1367,6 @@ define({
   "GIT_TOAST_TITLE": "Phoenix Code'da Git Özelliklerini Keşfedin",
   "GIT_TOAST_MESSAGE": "Deponuzu yönetmek için Git paneli simgesine tıklayın. Proje geçmişinizi kolayca işleyin, gönderin, çekin ve görüntüleyin—hepsi tek bir yerde.<br><a href='https://docs.phcode.dev/docs/Features/git'>Git paneli hakkında daha fazla bilgi edinin →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Gelecekte görmek istediğiniz özellikler için oy verin!",
-  "CMD_USER_PROFILE": "{APP_NAME} Hesabı",
   "SIGNED_OUT": "Oturumunuz kapatıldı.",
   "SIGNED_OUT_MESSAGE": "{APP_NAME} hesabınızdan çıkış yaptınız. Devam etmek için lütfen tekrar oturum açın.",
   "SIGNED_OUT_MESSAGE_FRIENDLY": "{APP_NAME}'i kullandığınız için teşekkürler. Yakında görüşürüz!",
@@ -1386,5 +1386,6 @@ define({
   "CONTACT_SUPPORT": "Destek ekibiyle iletişime geçin",
   "SIGN_OUT": "Oturumu kapat",
   "ACCOUNT_DETAILS": "Hesap Ayrıntıları",
-  "AI_QUOTA_USED": "Yapay Zeka kotası kullanıldı"
+  "AI_QUOTA_USED": "Yapay Zeka kotası kullanıldı",
+  "LOGIN_REFRESH": "Oturum Durumunu Kontrol Et"
 });

@@ -516,6 +516,7 @@ define({
   "CMD_AUTO_UPDATE": "به‌روزرسانی خودکار",
   "CMD_HOW_TO_USE_BRACKETS": "چگونگی استفاده از {APP_NAME}",
   "CMD_SUPPORT": "{APP_NAME} پشتیبانی",
+  "CMD_USER_PROFILE": "حساب کاربری {APP_NAME}",
   "CMD_DOCS": "راهنما، شروع به کار",
   "CMD_SUGGEST": "پیشنهاد یک امکان جدید",
   "CMD_REPORT_ISSUE": "گزارش مشکل",
@@ -1366,7 +1367,6 @@ define({
   "GIT_TOAST_TITLE": "کاوش ویژگی‌های گیت در Phoenix Code",
   "GIT_TOAST_MESSAGE": "برای مدیریت مخزن خود روی آیکون پنل گیت کلیک کنید. به راحتی کامیت، پوش، پول و مشاهده تاریخچه پروژه خود را - همه در یک مکان - انجام دهید.<br><a href='https://docs.phcode.dev/docs/Features/git'>درباره پنل گیت بیشتر بدانید →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "برای قابلیت‌هایی که می‌خواهید در آینده ببینید، رأی دهید!",
-  "CMD_USER_PROFILE": "حساب کاربری {APP_NAME}",
   "SIGNED_OUT": "از حساب کاربری خارج شدید.",
   "SIGNED_OUT_MESSAGE": "از حساب کاربری {APP_NAME} خود خارج شدید. لطفاً برای ادامه دوباره وارد شوید.",
   "SIGNED_OUT_MESSAGE_FRIENDLY": "از استفاده از {APP_NAME} متشکریم. به زودی می‌بینیمتان!",
@@ -1386,5 +1386,6 @@ define({
   "CONTACT_SUPPORT": "تماس با پشتیبانی",
   "SIGN_OUT": "خروج",
   "ACCOUNT_DETAILS": "جزئیات حساب کاربری",
-  "AI_QUOTA_USED": "سهمیه هوش مصنوعی استفاده شده"
+  "AI_QUOTA_USED": "سهمیه هوش مصنوعی استفاده شده",
+  "LOGIN_REFRESH": "بررسی وضعیت ورود"
 });

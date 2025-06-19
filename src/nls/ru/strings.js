@@ -516,6 +516,7 @@ define({
   "CMD_AUTO_UPDATE": "Автообновление",
   "CMD_HOW_TO_USE_BRACKETS": "Как использовать {APP_NAME}",
   "CMD_SUPPORT": "Поддержка {APP_NAME}",
+  "CMD_USER_PROFILE": "Учётная запись {APP_NAME}",
   "CMD_DOCS": "Справка, начало работы",
   "CMD_SUGGEST": "Предложить улучшение",
   "CMD_REPORT_ISSUE": "Сообщить о проблеме",
@@ -1366,7 +1367,6 @@ define({
   "GIT_TOAST_TITLE": "Возможности Git в Phoenix Code",
   "GIT_TOAST_MESSAGE": "Нажмите на значок панели Git для управления вашим репозиторием. Легко выполняйте коммиты, отправляйте (push), получайте (pull) изменения и просматривайте историю вашего проекта — все в одном месте.<br><a href='https://docs.phcode.dev/docs/Features/git'>Узнать больше о панели Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Проголосуйте за функции, которые вы хотите увидеть в будущем!",
-  "CMD_USER_PROFILE": "Учётная запись {APP_NAME}",
   "SIGNED_OUT": "Вы вышли из системы.",
   "SIGNED_OUT_MESSAGE": "Вы вышли из своей учётной записи {APP_NAME}. Пожалуйста, войдите снова, чтобы продолжить.",
   "SIGNED_OUT_MESSAGE_FRIENDLY": "Спасибо за использование {APP_NAME}. До скорой встречи!",
@@ -1386,5 +1386,6 @@ define({
   "CONTACT_SUPPORT": "Связаться с поддержкой",
   "SIGN_OUT": "Выйти",
   "ACCOUNT_DETAILS": "Сведения об учетной записи",
-  "AI_QUOTA_USED": "Использована квота ИИ"
+  "AI_QUOTA_USED": "Использована квота ИИ",
+  "LOGIN_REFRESH": "Проверить статус входа"
 });

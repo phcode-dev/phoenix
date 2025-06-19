@@ -516,6 +516,7 @@ define({
   "CMD_AUTO_UPDATE": "Automātiska atjaunināšana",
   "CMD_HOW_TO_USE_BRACKETS": "Kā lietot {APP_NAME}",
   "CMD_SUPPORT": "{APP_NAME} palīdzība",
+  "CMD_USER_PROFILE": "{APP_NAME} konts",
   "CMD_DOCS": "Palīdzība, Sākšana",
   "CMD_SUGGEST": "Ieteikt funkciju",
   "CMD_REPORT_ISSUE": "Ziņot par problēmu",
@@ -1366,7 +1367,6 @@ define({
   "GIT_TOAST_TITLE": "Izpētiet Git funkcijas Phoenix Code",
   "GIT_TOAST_MESSAGE": "Noklikšķiniet uz Git paneļa ikonas, lai pārvaldītu savu repozitoriju. Ērti veiciet commit, push, pull un skatiet sava projekta vēsturi — viss vienā vietā.<br><a href='https://docs.phcode.dev/docs/Features/git'>Uzziniet vairāk par Git paneli →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Nobalsot par funkcijām, kuras vēlaties redzēt nākamreiz!",
-  "CMD_USER_PROFILE": "{APP_NAME} konts",
   "SIGNED_OUT": "Jūs esat izrakstījies.",
   "SIGNED_OUT_MESSAGE": "Jūs esat izrakstījies no sava {APP_NAME} konta. Lūdzu, piesakieties vēlreiz, lai turpinātu.",
   "SIGNED_OUT_MESSAGE_FRIENDLY": "Paldies, ka izmantojāt {APP_NAME}. Uz tikšanos!",
@@ -1386,5 +1386,6 @@ define({
   "CONTACT_SUPPORT": "Sazināties ar atbalsta dienestu",
   "SIGN_OUT": "Izrakstīties",
   "ACCOUNT_DETAILS": "Konta informācija",
-  "AI_QUOTA_USED": "Izmantotā AI kvota"
+  "AI_QUOTA_USED": "Izmantotā AI kvota",
+  "LOGIN_REFRESH": "Pārbaudīt pieteikšanās statusu"
 });

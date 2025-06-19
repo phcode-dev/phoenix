@@ -516,6 +516,7 @@ define({
   "CMD_AUTO_UPDATE": "स्वतः अपडेट",
   "CMD_HOW_TO_USE_BRACKETS": "{APP_NAME} का उपयोग कैसे करें",
   "CMD_SUPPORT": "{APP_NAME} सहायता",
+  "CMD_USER_PROFILE": "{APP_NAME} खाता",
   "CMD_DOCS": "सहायता, आरंभ करना",
   "CMD_SUGGEST": "एक सुविधा का सुझाव दें",
   "CMD_REPORT_ISSUE": "समस्या की सूचना दें",
@@ -1366,7 +1367,6 @@ define({
   "GIT_TOAST_TITLE": "फ़ीनिक्स कोड में Git सुविधाओं का अन्वेषण करें",
   "GIT_TOAST_MESSAGE": "अपने रिपॉजिटरी को प्रबंधित करने के लिए Git पैनल आइकन पर क्लिक करें। आसानी से कमिट करें, पुश करें, पुल करें और अपने प्रोजेक्ट का इतिहास देखें—सब एक ही स्थान पर।<br><a href='https://docs.phcode.dev/docs/Features/git'>Git पैनल के बारे में अधिक जानें →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "उन विशेषताओं के लिए वोट करें जिन्हें आप आगे देखना चाहते हैं!",
-  "CMD_USER_PROFILE": "{APP_NAME} खाता",
   "SIGNED_OUT": "आप साइन आउट हो गए हैं।",
   "SIGNED_OUT_MESSAGE": "आप अपने {APP_NAME} खाते से साइन आउट हो गए हैं। कृपया जारी रखने के लिए फिर से साइन इन करें।",
   "SIGNED_OUT_MESSAGE_FRIENDLY": "{APP_NAME} का उपयोग करने के लिए धन्यवाद। जल्द ही फिर मिलेंगे!",
@@ -1386,5 +1386,6 @@ define({
   "CONTACT_SUPPORT": "सहायता से संपर्क करें",
   "SIGN_OUT": "साइन आउट करें",
   "ACCOUNT_DETAILS": "खाता विवरण",
-  "AI_QUOTA_USED": "एआई कोटा उपयोग किया गया"
+  "AI_QUOTA_USED": "एआई कोटा उपयोग किया गया",
+  "LOGIN_REFRESH": "लॉगिन स्थिति जांचें"
 });

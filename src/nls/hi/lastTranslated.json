@@ -1021,6 +1021,7 @@
   "LIVE_DEV_TOOLTIP_SHOW_IN_EDITOR": "{0} - Show in Editor…",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Getting preview from your custom server {0}",
   "LOCATION": "Location :",
+  "LOGIN_REFRESH": "Check Login Status",
   "MALFORMED_URL": "The URL is invalid. Please check that you entered it correctly.",
   "MARKED_FOR_DISABLING": "Marked for disabling",
   "MARKED_FOR_REMOVAL": "Marked for removal",

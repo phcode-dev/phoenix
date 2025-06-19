@@ -516,6 +516,7 @@ define({
   "CMD_AUTO_UPDATE": "Αυτόματη Ενημέρωση",
   "CMD_HOW_TO_USE_BRACKETS": "Πώς να Χρησιμοποιήσετε το {APP_NAME}",
   "CMD_SUPPORT": "Υποστήριξη {APP_NAME}",
+  "CMD_USER_PROFILE": "Λογαριασμός {APP_NAME}",
   "CMD_DOCS": "Βοήθεια, Ξεκινώντας",
   "CMD_SUGGEST": "Πρότεινε Feature",
   "CMD_REPORT_ISSUE": "Αναφορά Προβλήματος",
@@ -1366,7 +1367,6 @@ define({
   "GIT_TOAST_TITLE": "Εξερευνήστε τις Λειτουργίες Git στο Phoenix Code",
   "GIT_TOAST_MESSAGE": "Κάντε κλικ στο εικονίδιο του πίνακα Git για να διαχειριστείτε το αποθετήριό σας. Κάντε εύκολα commit, push, pull και δείτε το ιστορικό του έργου σας—όλα σε ένα μέρος.<br><a href='https://docs.phcode.dev/docs/Features/git'>Μάθετε περισσότερα για τον πίνακα Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Ψηφίστε για τις λειτουργίες που θέλετε να δείτε στη συνέχεια!",
-  "CMD_USER_PROFILE": "Λογαριασμός {APP_NAME}",
   "SIGNED_OUT": "Αποσυνδεθήκατε.",
   "SIGNED_OUT_MESSAGE": "Αποσυνδεθήκατε από τον λογαριασμό σας στο {APP_NAME}. Παρακαλούμε συνδεθείτε ξανά για να συνεχίσετε.",
   "SIGNED_OUT_MESSAGE_FRIENDLY": "Ευχαριστούμε που χρησιμοποιήσατε το {APP_NAME}. Τα λέμε σύντομα!",
@@ -1386,5 +1386,6 @@ define({
   "CONTACT_SUPPORT": "Επικοινωνία με την υποστήριξη",
   "SIGN_OUT": "Αποσύνδεση",
   "ACCOUNT_DETAILS": "Στοιχεία Λογαριασμού",
-  "AI_QUOTA_USED": "Χρήση ποσοστού AI"
+  "AI_QUOTA_USED": "Χρήση ποσοστού AI",
+  "LOGIN_REFRESH": "Έλεγχος Κατάστασης Σύνδεσης"
 });

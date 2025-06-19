@@ -516,6 +516,7 @@ define({
   "CMD_AUTO_UPDATE": "Automaattinen päivitys",
   "CMD_HOW_TO_USE_BRACKETS": "Kuinka käyttää {APP_NAME}iä",
   "CMD_SUPPORT": "{APP_NAME}-tuki",
+  "CMD_USER_PROFILE": "{APP_NAME}-tili",
   "CMD_DOCS": "Ohje, aloittaminen",
   "CMD_SUGGEST": "Ehdota ominaisuutta",
   "CMD_REPORT_ISSUE": "Ilmoita ongelmasta",
@@ -1366,7 +1367,6 @@ define({
   "GIT_TOAST_TITLE": "Tutustu Git-ominaisuuksiin Phoenix Codessa",
   "GIT_TOAST_MESSAGE": "Napsauta Git-paneelin kuvaketta hallitaksesi arkistoasi (repository). Tee commit, push ja pull helposti ja tarkastele projektihistoriaasi – kaikki yhdessä paikassa.<br><a href='https://docs.phcode.dev/docs/Features/git'>Lue lisää Git-paneelista →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Äänestä ominaisuuksia, jotka haluat nähdä seuraavaksi!",
-  "CMD_USER_PROFILE": "{APP_NAME}-tili",
   "SIGNED_OUT": "Olet kirjautunut ulos.",
   "SIGNED_OUT_MESSAGE": "Olet kirjautunut ulos {APP_NAME}-tilistäsi. Kirjaudu sisään uudelleen jatkaaksesi.",
   "SIGNED_OUT_MESSAGE_FRIENDLY": "Kiitos, että käytit {APP_NAME}a. Nähdään pian!",
@@ -1386,5 +1386,6 @@ define({
   "CONTACT_SUPPORT": "Ota yhteyttä tukeen",
   "SIGN_OUT": "Kirjaudu ulos",
   "ACCOUNT_DETAILS": "Tilin tiedot",
-  "AI_QUOTA_USED": "Käytetty tekoälykiintiö"
+  "AI_QUOTA_USED": "Käytetty tekoälykiintiö",
+  "LOGIN_REFRESH": "Tarkista kirjautumistila"
 });

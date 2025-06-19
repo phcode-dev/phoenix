@@ -516,6 +516,7 @@ define({
   "CMD_AUTO_UPDATE": "Actualizare automată",
   "CMD_HOW_TO_USE_BRACKETS": "Cum să folosești {APP_NAME}",
   "CMD_SUPPORT": "Suport {APP_NAME}",
+  "CMD_USER_PROFILE": "Cont {APP_NAME}",
   "CMD_DOCS": "Ajutor, Noțiuni introductive",
   "CMD_SUGGEST": "Sugerează o funcționalitate",
   "CMD_REPORT_ISSUE": "Raportează o problemă",
@@ -1366,7 +1367,6 @@ define({
   "GIT_TOAST_TITLE": "Explorați funcțiile Git în Phoenix Code",
   "GIT_TOAST_MESSAGE": "Faceți clic pe pictograma panoului Git pentru a vă gestiona depozitul. Efectuați ușor commit, push, pull și vizualizați istoricul proiectului dvs. - totul într-un singur loc.<br><a href='https://docs.phcode.dev/docs/Features/git'>Aflați mai multe despre panoul Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Votează pentru funcționalitățile pe care dorești să le vezi în continuare!",
-  "CMD_USER_PROFILE": "Cont {APP_NAME}",
   "SIGNED_OUT": "Sesiunea a fost închisă.",
   "SIGNED_OUT_MESSAGE": "Sesiunea contului tău {APP_NAME} a fost închisă. Te rugăm să te autentifici din nou pentru a continua.",
   "SIGNED_OUT_MESSAGE_FRIENDLY": "Îți mulțumim că folosești {APP_NAME}. Pe curând!",
@@ -1386,5 +1386,6 @@ define({
   "CONTACT_SUPPORT": "Contactează asistența",
   "SIGN_OUT": "Deconectare",
   "ACCOUNT_DETAILS": "Detalii cont",
-  "AI_QUOTA_USED": "Cotă AI utilizată"
+  "AI_QUOTA_USED": "Cotă AI utilizată",
+  "LOGIN_REFRESH": "Verificare stare autentificare"
 });

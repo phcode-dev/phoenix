@@ -516,6 +516,7 @@ define({
   "CMD_AUTO_UPDATE": "التحديث التلقائي",
   "CMD_HOW_TO_USE_BRACKETS": "كيفية استخدام {APP_NAME}",
   "CMD_SUPPORT": "دعم {APP_NAME}",
+  "CMD_USER_PROFILE": "حساب {APP_NAME}",
   "CMD_DOCS": "مساعدة، البدء",
   "CMD_SUGGEST": "اقتراح ميزة",
   "CMD_REPORT_ISSUE": "الإبلاغ عن مشكلة",
@@ -1366,7 +1367,6 @@ define({
   "GIT_TOAST_TITLE": "استكشف ميزات Git في Phoenix Code",
   "GIT_TOAST_MESSAGE": "انقر على رمز لوحة Git لإدارة مستودعك. يمكنك بسهولة تنفيذ الالتزام والدفع والسحب وعرض سجل مشروعك - كل ذلك في مكان واحد.<br><a href='https://docs.phcode.dev/docs/Features/git'>تعرّف على المزيد حول لوحة Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "صوت للميزات التي ترغب برؤيتها تالياً!",
-  "CMD_USER_PROFILE": "حساب {APP_NAME}",
   "SIGNED_OUT": "تم تسجيل خروجك.",
   "SIGNED_OUT_MESSAGE": "تم تسجيل خروجك من حساب {APP_NAME} الخاص بك. يُرجى تسجيل الدخول مرة أخرى للمتابعة.",
   "SIGNED_OUT_MESSAGE_FRIENDLY": "شكرًا لك على استخدام {APP_NAME}. نلتقي قريبًا!",
@@ -1386,5 +1386,6 @@ define({
   "CONTACT_SUPPORT": "تواصل مع الدعم",
   "SIGN_OUT": "تسجيل الخروج",
   "ACCOUNT_DETAILS": "تفاصيل الحساب",
-  "AI_QUOTA_USED": "حصة الذكاء الاصطناعي المستخدمة"
+  "AI_QUOTA_USED": "حصة الذكاء الاصطناعي المستخدمة",
+  "LOGIN_REFRESH": "تحقق من حالة تسجيل الدخول"
 });
