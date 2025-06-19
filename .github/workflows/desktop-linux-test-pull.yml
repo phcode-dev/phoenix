@@ -94,4 +94,20 @@ jobs:
         if: steps.linuxRunUnit.outcome == 'failure' || steps.linuxRunIntegration.outcome == 'failure' || steps.linuxRunMainview.outcome == 'failure' || steps.linuxRunLivepreview.outcome == 'failure' || steps.linuxRunLegacyInteg.outcome == 'failure'
         run: |
           echo "Linux tests failed, marking step as failed"
+          echo "Failed tests:"
+          if [ "${{ steps.linuxRunUnit.outcome }}" == "failure" ]; then
+            echo "- Run tauri unit tests"
+          fi
+          if [ "${{ steps.linuxRunIntegration.outcome }}" == "failure" ]; then
+            echo "- Run tauri integration tests"
+          fi
+          if [ "${{ steps.linuxRunMainview.outcome }}" == "failure" ]; then
+            echo "- Run tauri mainview tests"
+          fi
+          if [ "${{ steps.linuxRunLivepreview.outcome }}" == "failure" ]; then
+            echo "- Run tauri livepreview tests"
+          fi
+          if [ "${{ steps.linuxRunLegacyInteg.outcome }}" == "failure" ]; then
+            echo "- Run tauri LegacyInteg tests"
+          fi
           exit 1
