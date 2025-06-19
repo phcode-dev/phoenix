@@ -516,6 +516,7 @@ define({
   "CMD_AUTO_UPDATE": "Pembaruan Otomatis",
   "CMD_HOW_TO_USE_BRACKETS": "Bagaimana Menggunakan {APP_NAME}",
   "CMD_SUPPORT": "Bantuan {APP_NAME}",
+  "CMD_USER_PROFILE": "Akun {APP_NAME}",
   "CMD_DOCS": "Bantuan, Memulai",
   "CMD_SUGGEST": "Sarankan Fitur",
   "CMD_REPORT_ISSUE": "Laporkan Masalah",
@@ -1366,7 +1367,6 @@ define({
   "GIT_TOAST_TITLE": "Jelajahi Fitur Git di Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klik ikon panel Git untuk mengelola repositori Anda. Lakukan commit, push, pull, dan lihat riwayat proyek Anda dengan mudah—semua di satu tempat.<br><a href='https://docs.phcode.dev/docs/Features/git'>Pelajari lebih lanjut tentang panel Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Pilih fitur yang ingin Anda lihat selanjutnya!",
-  "CMD_USER_PROFILE": "Akun {APP_NAME}",
   "SIGNED_OUT": "Anda telah keluar.",
   "SIGNED_OUT_MESSAGE": "Anda telah keluar dari akun {APP_NAME} Anda. Silakan masuk lagi untuk melanjutkan.",
   "SIGNED_OUT_MESSAGE_FRIENDLY": "Terima kasih telah menggunakan {APP_NAME}. Sampai jumpa lagi!",
@@ -1386,5 +1386,6 @@ define({
   "CONTACT_SUPPORT": "Hubungi dukungan",
   "SIGN_OUT": "Keluar",
   "ACCOUNT_DETAILS": "Detail Akun",
-  "AI_QUOTA_USED": "Kuota AI terpakai"
+  "AI_QUOTA_USED": "Kuota AI terpakai",
+  "LOGIN_REFRESH": "Periksa Status Login"
 });

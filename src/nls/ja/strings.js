@@ -516,6 +516,7 @@ define({
   "CMD_AUTO_UPDATE": "自動更新",
   "CMD_HOW_TO_USE_BRACKETS": "{APP_NAME} の使用方法",
   "CMD_SUPPORT": "{APP_NAME} サポート",
+  "CMD_USER_PROFILE": "{APP_NAME}アカウント",
   "CMD_DOCS": "ヘルプ、はじめに",
   "CMD_SUGGEST": "機能改善の提案",
   "CMD_REPORT_ISSUE": "問題を報告",
@@ -1366,7 +1367,6 @@ define({
   "GIT_TOAST_TITLE": "Phoenix CodeのGit機能を試す",
   "GIT_TOAST_MESSAGE": "Gitパネルアイコンをクリックしてリポジトリを管理します。コミット、プッシュ、プル、プロジェクト履歴の表示をすべて1か所で行えます。<br><a href='https://docs.phcode.dev/docs/Features/git'>Gitパネルの詳細はこちら →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "次に実装してほしい機能に投票してください！",
-  "CMD_USER_PROFILE": "{APP_NAME}アカウント",
   "SIGNED_OUT": "サインアウトしました。",
   "SIGNED_OUT_MESSAGE": "{APP_NAME}アカウントからサインアウトしました。続行するにはもう一度サインインしてください。",
   "SIGNED_OUT_MESSAGE_FRIENDLY": "{APP_NAME}をご利用いただきありがとうございます。またのご利用をお待ちしております！",
@@ -1386,5 +1386,6 @@ define({
   "CONTACT_SUPPORT": "サポートに問い合わせる",
   "SIGN_OUT": "サインアウト",
   "ACCOUNT_DETAILS": "アカウントの詳細",
-  "AI_QUOTA_USED": "AI利用量"
+  "AI_QUOTA_USED": "AI利用量",
+  "LOGIN_REFRESH": "ログイン状態を確認"
 });

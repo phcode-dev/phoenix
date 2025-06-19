@@ -516,6 +516,7 @@ define({
   "CMD_AUTO_UPDATE": "Automatikus frissítés",
   "CMD_HOW_TO_USE_BRACKETS": "{APP_NAME} használata",
   "CMD_SUPPORT": "{APP_NAME} támogatás",
+  "CMD_USER_PROFILE": "{APP_NAME} fiók",
   "CMD_DOCS": "Súgó, Első lépések",
   "CMD_SUGGEST": "Javaslat új funkcióra",
   "CMD_REPORT_ISSUE": "Hiba bejelentése",
@@ -1366,7 +1367,6 @@ define({
   "GIT_TOAST_TITLE": "Fedezd fel a Git funkciókat a Phoenix Code-ban",
   "GIT_TOAST_MESSAGE": "Kattintson a Git panel ikonra a verziókövető rendszer kezeléséhez. Könnyedén végezhet commit, push és pull műveleteket, valamint megtekintheti a projekt előzményeit – mindezt egy helyen.<br><a href='https://docs.phcode.dev/docs/Features/git'>Tudj meg többet a Git panelről →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Szavazzon azokra a funkciókra, amelyeket a jövőben látni szeretne!",
-  "CMD_USER_PROFILE": "{APP_NAME} fiók",
   "SIGNED_OUT": "Kijelentkeztél.",
   "SIGNED_OUT_MESSAGE": "Kijelentkeztél a(z) {APP_NAME} fiókodból. Kérjük, jelentkezz be újra a folytatáshoz.",
   "SIGNED_OUT_MESSAGE_FRIENDLY": "Köszönjük, hogy a(z) {APP_NAME} alkalmazást használtad. Viszontlátásra!",
@@ -1386,5 +1386,6 @@ define({
   "CONTACT_SUPPORT": "Ügyfélszolgálattal való kapcsolatfelvétel",
   "SIGN_OUT": "Kijelentkezés",
   "ACCOUNT_DETAILS": "Fiókadatok",
-  "AI_QUOTA_USED": "Felhasznált MI-kvóta"
+  "AI_QUOTA_USED": "Felhasznált MI-kvóta",
+  "LOGIN_REFRESH": "Bejelentkezés állapotának ellenőrzése"
 });

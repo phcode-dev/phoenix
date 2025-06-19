@@ -516,6 +516,7 @@ define({
   "CMD_AUTO_UPDATE": "Автоматично обновяване",
   "CMD_HOW_TO_USE_BRACKETS": "Как се използва {APP_NAME}",
   "CMD_SUPPORT": "Поддръжка на {APP_NAME}",
+  "CMD_USER_PROFILE": "Профил в {APP_NAME}",
   "CMD_DOCS": "Помощ, Първи стъпки",
   "CMD_SUGGEST": "Предложете функционалност",
   "CMD_REPORT_ISSUE": "Докладване на проблем",
@@ -1366,7 +1367,6 @@ define({
   "GIT_TOAST_TITLE": "Разгледайте Git функциите в Phoenix Code",
   "GIT_TOAST_MESSAGE": "Щракнете върху иконата на Git панела, за да управлявате хранилището си. Лесно създавайте commit, push, pull и преглеждайте историята на проекта си – всичко на едно място.<br><a href='https://docs.phcode.dev/docs/Features/git'>Научете повече за Git панела →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Гласувайте за функциите, които искате да видите следващи!",
-  "CMD_USER_PROFILE": "Профил в {APP_NAME}",
   "SIGNED_OUT": "Излязохте от профила си.",
   "SIGNED_OUT_MESSAGE": "Излязохте от профила си в {APP_NAME}. Моля, влезте отново, за да продължите.",
   "SIGNED_OUT_MESSAGE_FRIENDLY": "Благодарим ви, че използвате {APP_NAME}. До скоро!",
@@ -1386,5 +1386,6 @@ define({
   "CONTACT_SUPPORT": "Свържете се с поддръжката",
   "SIGN_OUT": "Изход",
   "ACCOUNT_DETAILS": "Данни за акаунта",
-  "AI_QUOTA_USED": "Използвана AI квота"
+  "AI_QUOTA_USED": "Използвана AI квота",
+  "LOGIN_REFRESH": "Проверка на състоянието за вход"
 });

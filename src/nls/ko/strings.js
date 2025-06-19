@@ -516,6 +516,7 @@ define({
   "CMD_AUTO_UPDATE": "자동 업데이트",
   "CMD_HOW_TO_USE_BRACKETS": "{APP_NAME} 사용법",
   "CMD_SUPPORT": "{APP_NAME} 지원",
+  "CMD_USER_PROFILE": "{APP_NAME} 계정",
   "CMD_DOCS": "도움말, 시작하기",
   "CMD_SUGGEST": "기능 제안",
   "CMD_REPORT_ISSUE": "문제 신고",
@@ -1366,7 +1367,6 @@ define({
   "GIT_TOAST_TITLE": "Phoenix Code의 Git 기능 살펴보기",
   "GIT_TOAST_MESSAGE": "Git 패널 아이콘을 클릭하여 저장소를 관리하세요. 커밋, 푸시, 풀, 프로젝트 기록 보기를 한 곳에서 간편하게 수행할 수 있습니다.<br><a href='https://docs.phcode.dev/docs/Features/git'>Git 패널에 대해 자세히 알아보기 →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "다음에 보고 싶은 기능에 투표하세요!",
-  "CMD_USER_PROFILE": "{APP_NAME} 계정",
   "SIGNED_OUT": "로그아웃되었습니다.",
   "SIGNED_OUT_MESSAGE": "{APP_NAME} 계정에서 로그아웃되었습니다. 계속하려면 다시 로그인하세요.",
   "SIGNED_OUT_MESSAGE_FRIENDLY": "{APP_NAME}을(를) 이용해 주셔서 감사합니다. 다음에 또 만나요!",
@@ -1386,5 +1386,6 @@ define({
   "CONTACT_SUPPORT": "지원팀에 문의",
   "SIGN_OUT": "로그아웃",
   "ACCOUNT_DETAILS": "계정 세부정보",
-  "AI_QUOTA_USED": "사용된 AI 할당량"
+  "AI_QUOTA_USED": "사용된 AI 할당량",
+  "LOGIN_REFRESH": "로그인 상태 확인"
 });

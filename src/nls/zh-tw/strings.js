@@ -516,6 +516,7 @@ define({
   "CMD_AUTO_UPDATE": "自動更新",
   "CMD_HOW_TO_USE_BRACKETS": "如何使用 {APP_NAME}",
   "CMD_SUPPORT": "{APP_NAME} 支援",
+  "CMD_USER_PROFILE": "{APP_NAME} 帳號",
   "CMD_DOCS": "說明、入門指南",
   "CMD_SUGGEST": "功能建議",
   "CMD_REPORT_ISSUE": "回報問題",
@@ -1366,7 +1367,6 @@ define({
   "GIT_TOAST_TITLE": "在 Phoenix Code 中探索 Git 功能",
   "GIT_TOAST_MESSAGE": "按一下 Git 面板圖示即可管理您的儲存庫。輕鬆提交、推送、提取和檢視您的專案歷史記錄，一切盡在掌握之中。<br><a href='https://docs.phcode.dev/docs/Features/git'>深入瞭解 Git 面板 →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "投票選出您希望看到的下個功能！",
-  "CMD_USER_PROFILE": "{APP_NAME} 帳號",
   "SIGNED_OUT": "您已登出。",
   "SIGNED_OUT_MESSAGE": "您已登出 {APP_NAME} 帳號。請重新登入以繼續。",
   "SIGNED_OUT_MESSAGE_FRIENDLY": "感謝您使用 {APP_NAME}。下次見！",
@@ -1386,5 +1386,6 @@ define({
   "CONTACT_SUPPORT": "聯絡客服支援",
   "SIGN_OUT": "登出",
   "ACCOUNT_DETAILS": "帳號詳細資訊",
-  "AI_QUOTA_USED": "AI 配額已使用"
+  "AI_QUOTA_USED": "AI 配額已使用",
+  "LOGIN_REFRESH": "檢查登入狀態"
 });

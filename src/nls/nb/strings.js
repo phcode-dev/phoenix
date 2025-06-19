@@ -516,6 +516,7 @@ define({
   "CMD_AUTO_UPDATE": "Automatisk oppdatering",
   "CMD_HOW_TO_USE_BRACKETS": "Hvordan bruke {APP_NAME}",
   "CMD_SUPPORT": "{APP_NAME} support",
+  "CMD_USER_PROFILE": "{APP_NAME}-konto",
   "CMD_DOCS": "Hjelp, Kom i gang",
   "CMD_SUGGEST": "Foreslå en funksjonalitet",
   "CMD_REPORT_ISSUE": "Rapporter problem",
@@ -1366,7 +1367,6 @@ define({
   "GIT_TOAST_TITLE": "Utforsk Git-funksjoner i Phoenix Code",
   "GIT_TOAST_MESSAGE": "Klikk på Git-panelikonet for å administrere repositoriet ditt. Utfør commit, push, pull og se prosjektloggen din – alt på ett sted.<br><a href='https://docs.phcode.dev/docs/Features/git'>Lær mer om Git-panelet →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Stem på funksjonene du ønsker å se neste!",
-  "CMD_USER_PROFILE": "{APP_NAME}-konto",
   "SIGNED_OUT": "Du er logget ut.",
   "SIGNED_OUT_MESSAGE": "Du er logget ut av {APP_NAME}-kontoen din. Logg inn på nytt for å fortsette.",
   "SIGNED_OUT_MESSAGE_FRIENDLY": "Takk for at du bruker {APP_NAME}. Ser deg snart!",
@@ -1386,5 +1386,6 @@ define({
   "CONTACT_SUPPORT": "Kontakt kundestøtte",
   "SIGN_OUT": "Logg ut",
   "ACCOUNT_DETAILS": "Kontodetaljer",
-  "AI_QUOTA_USED": "AI-kvote brukt"
+  "AI_QUOTA_USED": "AI-kvote brukt",
+  "LOGIN_REFRESH": "Sjekk innloggingsstatus"
 });

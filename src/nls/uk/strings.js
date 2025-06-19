@@ -516,6 +516,7 @@ define({
   "CMD_AUTO_UPDATE": "Автоматичне оновлення",
   "CMD_HOW_TO_USE_BRACKETS": "Як використовувати {APP_NAME}",
   "CMD_SUPPORT": "Підтримка {APP_NAME}",
+  "CMD_USER_PROFILE": "Обліковий запис {APP_NAME}",
   "CMD_DOCS": "Довідка, початок роботи",
   "CMD_SUGGEST": "Запропонувати ідею",
   "CMD_REPORT_ISSUE": "Повідомити про проблему",
@@ -1366,7 +1367,6 @@ define({
   "GIT_TOAST_TITLE": "Ознайомтеся з функціями Git у Phoenix Code",
   "GIT_TOAST_MESSAGE": "Натисніть піктограму панелі Git, щоб керувати вашим репозиторієм. Легко виконуйте коміти, пуші, пули та переглядайте історію вашого проєкту — все в одному місці.<br><a href='https://docs.phcode.dev/docs/Features/git'>Дізнайтеся більше про панель Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Проголосуйте за функції, які ви хочете бачити наступними!",
-  "CMD_USER_PROFILE": "Обліковий запис {APP_NAME}",
   "SIGNED_OUT": "Ви вийшли з системи.",
   "SIGNED_OUT_MESSAGE": "Ви вийшли зі свого облікового запису {APP_NAME}. Будь ласка, увійдіть знову, щоб продовжити.",
   "SIGNED_OUT_MESSAGE_FRIENDLY": "Дякуємо за використання {APP_NAME}. До зустрічі!",
@@ -1386,5 +1386,6 @@ define({
   "CONTACT_SUPPORT": "Звернутися до служби підтримки",
   "SIGN_OUT": "Вийти",
   "ACCOUNT_DETAILS": "Дані облікового запису",
-  "AI_QUOTA_USED": "Використано квоту ШІ"
+  "AI_QUOTA_USED": "Використано квоту ШІ",
+  "LOGIN_REFRESH": "Перевірити статус входу"
 });
