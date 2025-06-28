@@ -1000,27 +1000,39 @@ define(function (require, exports, module) {
         }
     };
 
+
     /**
-     * Adds full directory names to elements representing passed files in working tree
+     * adds the directory name to external project files
+     * when the directory length is more than 3, we just show `...`
+     * otherwise the full path
      * @private
-     * @param {Array.<string>} filesPathList - list of fullPath strings
+     * @param {Array.<string>} externalProjectFiles - the list of the external project files
      */
-    WorkingSetView.prototype._addFullDirectoryNamesToWorkingTreeFiles = function (filesPathList) {
-        // filesList must have at least two files in it for this to make sense
-        if (!filesPathList.length) {
+    WorkingSetView.prototype._addDirectoryNameToExternalProjectFiles = function (externalProjectFiles) {
+        if(!externalProjectFiles.length) {
             return;
         }
 
-        // Go through open files and add directories to appropriate entries
         this.$openFilesContainer.find("ul > li").each(function () {
             const $li = $(this);
             let filePath = $li.data(_FILE_KEY).fullPath;
-            const io = filesPathList.indexOf(filePath);
+            const io = externalProjectFiles.indexOf(filePath);
             if (io !== -1) {
                 let dirPath = path.dirname(filePath);
-                dirPath = Phoenix.app.getDisplayPath(dirPath);
-                const $dir = $(`<span title='${Phoenix.app.getDisplayPath(filePath)}' class='directory'/>`)
-                    .html(" &mdash; " + dirPath);
+                // this will be displayed on hover
+                const displayPath = Phoenix.app.getDisplayPath(dirPath);
+
+                // use the platform specific separator for splitting
+                const separator = brackets.platform === "win" ? "\\" : "/";
+                let dirSplit = displayPath.split(separator);
+
+                let truncatedPath = displayPath; // truncatedPath value will be shown in the UI
+                if (dirSplit.length > 3) {
+                    truncatedPath = dirSplit[0] + separator + "\u2026" + separator + dirSplit[dirSplit.length - 1];
+                }
+
+                const $dir = $(`<span title='${displayPath}' class='directory'/>`)
+                    .html(" &mdash; " + truncatedPath);
                 $li.children("a").append($dir);
             }
         });
@@ -1084,7 +1096,7 @@ define(function (require, exports, module) {
             }
         });
 
-        self._addFullDirectoryNamesToWorkingTreeFiles(externalProjectFiles);
+        self._addDirectoryNameToExternalProjectFiles(externalProjectFiles);
 
         // Go through the map and solve the arrays with length over 1. Ignore the rest.
         _.forEach(map, function (value) {
