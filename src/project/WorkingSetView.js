@@ -1003,7 +1003,7 @@ define(function (require, exports, module) {
 
     /**
      * adds the directory name to external project files
-     * when the directory length is more than 3, we just show `...`
+     * when the directory length is more than 3, we show it in this format: `<root directory>/.../<parent directory>`
      * otherwise the full path
      * @private
      * @param {Array.<string>} externalProjectFiles - the list of the external project files
@@ -1028,7 +1028,9 @@ define(function (require, exports, module) {
 
                 let truncatedPath = displayPath; // truncatedPath value will be shown in the UI
                 if (dirSplit.length > 3) {
-                    truncatedPath = dirSplit[0] + separator + "\u2026" + separator + dirSplit[dirSplit.length - 1];
+                    // because sometimes dirSplit[0] is empty
+                    let rootDirName = dirSplit[0] ? dirSplit[0] : dirSplit[1];
+                    truncatedPath = rootDirName + separator + "\u2026" + separator + dirSplit[dirSplit.length - 1];
                 }
 
                 const $dir = $(`<span title='${displayPath}' class='directory'/>`)
