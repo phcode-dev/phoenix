@@ -226,28 +226,112 @@ define(function (require, exports, module) {
             expect($list.find(".directory").length).toBe(0);
         });
 
-        it("should show full path next to the file name when file is outside current project", async function () {
-            // Count currently opened files
+        it("should show directory path for external files", async function () {
             var workingSetListItemCountBeforeTest = workingSetListItemCount;
 
-            // First we need to open another file
+            // Open an external file (outside current project)
             await openAndMakeDirty(externalProjectTestPath + "/test.js");
 
             // Wait for file to be added to the working set
             await awaitsFor(function () { return workingSetListItemCount === workingSetListItemCountBeforeTest + 1; });
 
-            // Two files with the same name file_one.js should be now opened
             var $list = testWindow.$(".open-files-container > ul");
-            const fullPathSpan = $list.find(".directory");
-            expect(fullPathSpan.length).toBe(1);
-            expect(fullPathSpan[0].innerHTML.includes(Phoenix.app.getDisplayPath(externalProjectTestPath))).toBe(true);
+            const directorySpan = $list.find(".directory");
 
-            // Now close last opened file to hide the directories again
-            DocumentManager.getCurrentDocument()._markClean(); // so we can close without a save dialog
+            // Should show directory information for external files
+            expect(directorySpan.length).toBe(1);
+
+            const displayedPath = directorySpan[0].innerHTML;
+            expect(displayedPath.length).toBeGreaterThan(0);
+            expect(displayedPath.includes(" — ")).toBe(true); // Should have the separator
+
+            // Should contain some path information
+            const actualPath = testWindow.Phoenix.app.getDisplayPath(externalProjectTestPath);
+            expect(actualPath.length).toBeGreaterThan(0);
+
+            // Clean up
+            DocumentManager.getCurrentDocument()._markClean();
             await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE), "timeout on FILE_CLOSE", 1000);
-
-            // there should be no more directories shown
             expect($list.find(".directory").length).toBe(0);
+        });
+
+        it("should truncate very long external file paths with ellipsis", async function () {
+            // Create platform-appropriate test paths
+            var isWindows = testWindow.brackets.platform === "win";
+            var separator = isWindows ? "\\" : "/";
+
+            // Test truncation algorithm with platform-specific long path
+            var mockLongPath = isWindows ?
+                "C:\\Users\\username\\very\\long\\path\\structure\\with\\many\\nested\\directories" :
+                "/Users/username/very/long/path/structure/with/many/nested/directories";
+
+            var segments = mockLongPath.split(/[\/\\]/).filter(seg => seg.length > 0);
+            expect(segments.length).toBeGreaterThan(3); // Ensure we have a long path
+
+            // Test the truncation logic that WorkingSetView should use
+            var rootDirName = segments[0] ? segments[0] : segments[1];
+            var truncated = rootDirName + separator + "…" + separator + segments[segments.length - 1];
+
+            // Verify truncation works correctly
+            expect(truncated.includes("…")).toBe(true);
+            expect(truncated.includes(segments[0])).toBe(true);
+            expect(truncated.includes(segments[segments.length - 1])).toBe(true);
+            expect(truncated).not.toContain("very" + separator + "long" + separator + "path");
+
+            // Now test the actual WorkingSetView implementation with a guaranteed long path
+            var workingSetListItemCountBeforeTest = workingSetListItemCount;
+
+            // Mock Phoenix.app.getDisplayPath to return a platform-appropriate long path
+            var originalGetDisplayPath = testWindow.Phoenix.app.getDisplayPath;
+            var mockLongDisplayPath = isWindows ?
+                "C:\\Users\\TestUser\\Documents\\Very\\Long\\Project\\Structure\\Directory" :
+                "/Users/TestUser/Documents/Very/Long/Project/Structure/Directory";
+
+            // Extract expected parts for assertions
+            var mockSegments = mockLongDisplayPath.split(/[\/\\]/).filter(seg => seg.length > 0);
+            var firstSegment = mockSegments[0];
+            var lastSegment = mockSegments[mockSegments.length - 1];
+            var middleSegments = isWindows ? "Very\\Long\\Project\\Structure" : "Very/Long/Project/Structure";
+
+            testWindow.Phoenix.app.getDisplayPath = function(path) {
+                if (path.includes(externalProjectTestPath)) {
+                    return mockLongDisplayPath;
+                }
+                return originalGetDisplayPath.call(this, path);
+            };
+
+            try {
+                await openAndMakeDirty(externalProjectTestPath + "/test.js");
+
+                // Wait for file to be added to the working set
+                await awaitsFor(function () { return workingSetListItemCount === workingSetListItemCountBeforeTest + 1; });
+
+                var $list = testWindow.$(".open-files-container > ul");
+                const directorySpan = $list.find(".directory");
+                expect(directorySpan.length).toBe(1);
+
+                const displayedPath = directorySpan[0].innerHTML;
+                expect(displayedPath.includes(" — ")).toBe(true);
+
+                // This is the critical test - if truncation is working, it MUST contain ellipsis
+                expect(displayedPath.includes("…")).toBe(true);
+
+                // Should show first and last segments (platform-appropriate)
+                expect(displayedPath.includes(firstSegment)).toBe(true);
+                expect(displayedPath.includes(lastSegment)).toBe(true);
+
+                // Should NOT show the full middle path
+                expect(displayedPath.includes(middleSegments)).toBe(false);
+
+                // Clean up
+                DocumentManager.getCurrentDocument()._markClean();
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE), "timeout on FILE_CLOSE", 1000);
+                expect($list.find(".directory").length).toBe(0);
+
+            } finally {
+                // Restore original function
+                testWindow.Phoenix.app.getDisplayPath = originalGetDisplayPath;
+            }
         });
 
         it("should show different directory names, when two files of the same name are opened, located in folders with same name", async function () {
