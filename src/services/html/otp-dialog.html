@@ -1,0 +1,21 @@
+<div class="otp-dialog modal">
+    <div class="modal-header">
+        <h1 class="dialog-title">{{Strings.VALIDATION_CODE_TITLE}}</h1>
+    </div>
+    <div class="modal-body">
+        <div class="validation-code-container">
+            <p>{{Strings.VALIDATION_CODE_MESSAGE}}</p>
+            <div class="validation-code" style="font-size: 24px; font-weight: bold; text-align: center; margin: 20px 0; padding: 10px; border-radius: 4px; letter-spacing: 2px; display: flex; justify-content: center; align-items: center;">
+                <span>{{validationCode}}</span>
+                <i class="fas fa-copy" data-button-id="copy" style="margin-left: 10px; cursor: pointer;" title="{{Strings.COPY_VALIDATION_CODE}}"></i>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="left">
+            <button class="btn" data-button-id="refresh">{{Strings.LOGIN_REFRESH}}</button>
+        </div>
+        <button class="btn" data-button-id="cancel">{{Strings.CANCEL}}</button>
+        <button class="btn primary" data-button-id="open">{{Strings.OPEN_SIGN_IN_URL}}</button>
+    </div>
+</div>
