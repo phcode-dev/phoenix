@@ -1,0 +1,24 @@
+#collapse-folders {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.2em 0.4em;
+    position: absolute !important;
+    right: 0.5em;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+        opacity 0.2s ease-in-out,
+        visibility 0.2s ease-in-out;
+
+    .collapse-icon {
+        font-size: 0.5em;
+        line-height: 1;
+    }
+
+    &.show {
+        opacity: 1;
+        visibility: visible;
+    }
+}
