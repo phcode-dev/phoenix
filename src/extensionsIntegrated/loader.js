@@ -45,4 +45,5 @@ define(function (require, exports, module) {
     require("./CSSColorPreview/main");
     require("./TabBar/main");
     require("./CustomSnippets/main");
+    require("./CollapseFolders/main");
 });
