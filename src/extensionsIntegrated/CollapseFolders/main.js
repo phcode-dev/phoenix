@@ -87,6 +87,12 @@ define(function (require, exports, module) {
             return;
         }
 
+        // we need this check to see if on site load the mouse is already over the sidebar area or not
+        // because if it is, then we need to show the button
+        if ($sidebar.is(":hover")) {
+            $collapseBtn.addClass("show");
+        }
+
         $sidebar.on("mouseenter", function () {
             $collapseBtn.addClass("show");
         });
