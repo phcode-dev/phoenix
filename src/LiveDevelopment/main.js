@@ -79,14 +79,12 @@ define(function main(require, exports, module) {
             "opacity": 0.6
         },
         "paddingStyling": {
-            "border-width": "1px",
-            "border-style": "dashed",
-            "border-color": "rgba(0, 162, 255, 0.5)"
+            "background-color": "rgba(200, 249, 197, 0.7)"
         },
         "marginStyling": {
-            "background-color": "rgba(21, 165, 255, 0.58)"
+            "background-color": "rgba(249, 204, 157, 0.7)"
         },
-        "borderColor": "rgba(21, 165, 255, 0.85)",
+        "borderColor": "rgba(200, 249, 197, 0.85)",
         "showPaddingMargin": true
     }, {
         description: Strings.DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS
