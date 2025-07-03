@@ -298,6 +298,9 @@ define(function main(require, exports, module) {
         .on("change", function () {
             config.highlight = PreferencesManager.getViewState("livedevHighlight");
             _updateHighlightCheckmark();
+            if (MultiBrowserLiveDev && MultiBrowserLiveDev.status >= MultiBrowserLiveDev.STATUS_ACTIVE) {
+                MultiBrowserLiveDev.agents.remote.call("updateConfig",JSON.stringify(config));
+            }
         });
 
     config.highlight = PreferencesManager.getViewState("livedevHighlight");

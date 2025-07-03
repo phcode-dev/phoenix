@@ -212,6 +212,80 @@ function RemoteFunctions(config) {
 
     };
 
+    // Node info box to display DOM node ID and classes on hover
+    function NodeInfoBox(element) {
+        this.element = element;
+        this.remove = this.remove.bind(this);
+        this.create();
+    }
+
+    NodeInfoBox.prototype = {
+        create: function() {
+            // Remove existing info box if any
+            this.remove();
+
+            // compute the position on screen
+            var offset = _screenOffset(this.element),
+                x = offset.left,
+                y = offset.top - 30; // Position above the element
+
+            // create the container
+            this.body = window.document.createElement("div");
+            this.body.style.setProperty("z-index", 2147483647);
+            this.body.style.setProperty("position", "fixed");
+            this.body.style.setProperty("left", (offset.left) + "px");
+            this.body.style.setProperty("top", (offset.top - 30 < 0 ? offset.top + this.element.offsetHeight + 5 : offset.top - 30) + "px");
+            this.body.style.setProperty("font-size", "12px");
+            this.body.style.setProperty("font-family", "Arial, sans-serif");
+
+            // Style the info box with a blue background
+            this.body.style.setProperty("background", "#4285F4");
+            this.body.style.setProperty("color", "white");
+            this.body.style.setProperty("border-radius", "3px");
+            this.body.style.setProperty("padding", "5px 8px");
+            this.body.style.setProperty("box-shadow", "0 2px 5px rgba(0,0,0,0.2)");
+            this.body.style.setProperty("max-width", "300px");
+            this.body.style.setProperty("pointer-events", "none"); // Make it non-interactive
+
+            // Get element ID and classes
+            var id = this.element.id;
+            var classes = this.element.className ? this.element.className.split(/\s+/).filter(Boolean) : [];
+
+            // Create content for the info box
+            var content = "";
+
+            // Add element tag name
+            content += "<div style='font-weight: bold;'>" + this.element.tagName.toLowerCase() + "</div>";
+
+            // Add ID if present
+            if (id) {
+                content += "<div style='margin-top: 3px;'>#" + id + "</div>";
+            }
+
+            // Add classes (limit to 3 with dropdown indicator)
+            if (classes.length > 0) {
+                content += "<div style='margin-top: 3px;'>";
+                for (var i = 0; i < Math.min(classes.length, 3); i++) {
+                    content += "." + classes[i] + " ";
+                }
+                if (classes.length > 3) {
+                    content += "<span style='opacity: 0.8;'>+" + (classes.length - 3) + " more</span>";
+                }
+                content += "</div>";
+            }
+
+            this.body.innerHTML = content;
+            window.document.body.appendChild(this.body);
+        },
+
+        remove: function() {
+            if (this.body && this.body.parentNode) {
+                window.document.body.removeChild(this.body);
+                this.body = null;
+            }
+        }
+    };
+
     function Editor(element) {
         this.onBlur = this.onBlur.bind(this);
         this.onKeyPress = this.onKeyPress.bind(this);
@@ -565,6 +639,7 @@ function RemoteFunctions(config) {
     var _remoteHighlight;
     var _hoverHighlight;
     var _clickHighlight;
+    var _nodeInfoBox;
     var _setup = false;
 
 
@@ -572,7 +647,11 @@ function RemoteFunctions(config) {
 
     function onMouseOver(event) {
         if (_validEvent(event)) {
-            _localHighlight.add(event.target, true);
+            // Skip highlighting for HTML and BODY tags
+            if (event.target && event.target.nodeType === Node.ELEMENT_NODE &&
+                event.target.tagName !== "HTML" && event.target.tagName !== "BODY") {
+                _localHighlight.add(event.target, true);
+            }
         }
     }
 
@@ -590,13 +669,44 @@ function RemoteFunctions(config) {
     function onElementHover(event) {
         if (_hoverHighlight) {
             _hoverHighlight.clear();
-            _hoverHighlight.add(event.target, false);
+
+            // Skip highlighting for HTML and BODY tags
+            if (event.target && event.target.nodeType === Node.ELEMENT_NODE &&
+                event.target.tagName !== "HTML" && event.target.tagName !== "BODY") {
+                // Store original background color to restore on hover out
+                event.target._originalBackgroundColor = event.target.style.backgroundColor;
+                event.target.style.backgroundColor = "rgba(0, 162, 255, 0.2)";
+
+                _hoverHighlight.add(event.target, false);
+
+                // Create info box for the hovered element
+                if (_nodeInfoBox) {
+                    _nodeInfoBox.remove();
+                }
+                _nodeInfoBox = new NodeInfoBox(event.target);
+            }
         }
     }
 
-    function onElementHoverOut() {
+    function onElementHoverOut(event) {
         if (_hoverHighlight) {
             _hoverHighlight.clear();
+        }
+
+        // Restore original background color
+        if (event && event.target && event.target.nodeType === Node.ELEMENT_NODE) {
+            if (event.target._originalBackgroundColor !== undefined) {
+                event.target.style.backgroundColor = event.target._originalBackgroundColor;
+                delete event.target._originalBackgroundColor;
+            } else {
+                event.target.style.backgroundColor = "";
+            }
+        }
+
+        // Remove info box when mouse leaves the element
+        if (_nodeInfoBox) {
+            _nodeInfoBox.remove();
+            _nodeInfoBox = null;
         }
     }
 
@@ -665,6 +775,10 @@ function RemoteFunctions(config) {
         if (_hoverHighlight) {
             _hoverHighlight.clear();
         }
+        if (_nodeInfoBox) {
+            _nodeInfoBox.remove();
+            _nodeInfoBox = null;
+        }
     }
 
     // highlight a node
@@ -675,7 +789,11 @@ function RemoteFunctions(config) {
         if (clear) {
             _clickHighlight.clear();
         }
-        _clickHighlight.add(node, true);
+        // Skip highlighting for HTML and BODY tags
+        if (node && node.nodeType === Node.ELEMENT_NODE &&
+            node.tagName !== "HTML" && node.tagName !== "BODY") {
+            _clickHighlight.add(node, true);
+        }
     }
 
     // highlight a rule
@@ -1015,7 +1133,26 @@ function RemoteFunctions(config) {
     }
 
     function updateConfig(newConfig) {
+        var oldConfig = config;
         config = JSON.parse(newConfig);
+
+        if (config.highlight) {
+            // Add hover event listeners if highlight is enabled
+            window.document.removeEventListener("mouseover", onElementHover);
+            window.document.removeEventListener("mouseout", onElementHoverOut);
+            window.document.addEventListener("mouseover", onElementHover);
+            window.document.addEventListener("mouseout", onElementHoverOut);
+        } else {
+            // Remove hover event listeners if highlight is disabled
+            window.document.removeEventListener("mouseover", onElementHover);
+            window.document.removeEventListener("mouseout", onElementHoverOut);
+
+            // Remove info box if highlight is disabled
+            if (_nodeInfoBox) {
+                _nodeInfoBox.remove();
+                _nodeInfoBox = null;
+            }
+        }
         return JSON.stringify(config);
     }
 
