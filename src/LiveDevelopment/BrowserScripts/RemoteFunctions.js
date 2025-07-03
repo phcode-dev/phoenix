@@ -33,20 +33,20 @@ function RemoteFunctions(config) {
 
     var experimental;
     if (!config) {
-        experimental = false;    
+        experimental = false;
     } else {
-        experimental = config.experimental;    
+        experimental = config.experimental;
     }
     var req, timeout;
     var animateHighlight = function (time) {
         if(req) {
-            window.cancelAnimationFrame(req);	
+            window.cancelAnimationFrame(req);
             window.clearTimeout(timeout);
         }
         req = window.requestAnimationFrame(redrawHighlights);
 
         timeout = setTimeout(function () {
-            window.cancelAnimationFrame(req);	
+            window.cancelAnimationFrame(req);
             req = null;
         }, time * 1000);
     };
@@ -113,7 +113,7 @@ function RemoteFunctions(config) {
             element.removeAttribute(key);
         }
     }
-    
+
     // Checks if the element is in Viewport in the client browser
     function isInViewport(element) {
         var rect = element.getBoundingClientRect();
@@ -125,7 +125,7 @@ function RemoteFunctions(config) {
             rect.right <= (window.innerWidth || html.clientWidth)
         );
     }
-    
+
     // returns the distance from the top of the closest relatively positioned parent element
     function getDocumentOffsetTop(element) {
         return element.offsetTop + (element.offsetParent ? getDocumentOffsetTop(element.offsetParent) : 0);
@@ -273,7 +273,7 @@ function RemoteFunctions(config) {
                 animationDuration = parseFloat(elementStyling.getPropertyValue('animation-duration'));
 
             highlight.trackingElement = element; // save which node are we highlighting
-            
+
             if (transitionDuration) {
                 animateHighlight(transitionDuration);
             }
@@ -286,21 +286,21 @@ function RemoteFunctions(config) {
             if (elementBounds.width === 0 && elementBounds.height === 0) {
                 return;
             }
-            
+
             var realElBorder = {
               right: elementStyling.getPropertyValue('border-right-width'),
               left: elementStyling.getPropertyValue('border-left-width'),
               top: elementStyling.getPropertyValue('border-top-width'),
               bottom: elementStyling.getPropertyValue('border-bottom-width')
             };
-            
+
             var borderBox = elementStyling.boxSizing === 'border-box';
-            
+
             var innerWidth = parseFloat(elementStyling.width),
                 innerHeight = parseFloat(elementStyling.height),
                 outerHeight = innerHeight,
                 outerWidth = innerWidth;
-                
+
             if (!borderBox) {
                 innerWidth += parseFloat(elementStyling.paddingLeft) + parseFloat(elementStyling.paddingRight);
                 innerHeight += parseFloat(elementStyling.paddingTop) + parseFloat(elementStyling.paddingBottom);
@@ -309,49 +309,49 @@ function RemoteFunctions(config) {
                 outerHeight = innerHeight + parseFloat(realElBorder.bottom) + parseFloat(realElBorder.top);
             }
 
-          
+
             var visualisations = {
                 horizontal: "left, right",
                 vertical: "top, bottom"
             };
-          
+
             var drawPaddingRect = function(side) {
               var elStyling = {};
-                
+
               if (visualisations.horizontal.indexOf(side) >= 0) {
                 elStyling['width'] =  elementStyling.getPropertyValue('padding-' + side);
                 elStyling['height'] = innerHeight + "px";
                 elStyling['top'] = 0;
-                  
+
                   if (borderBox) {
                     elStyling['height'] = innerHeight - parseFloat(realElBorder.top) - parseFloat(realElBorder.bottom) + "px";
                   }
-                
+
               } else {
-                elStyling['height'] = elementStyling.getPropertyValue('padding-' + side);  
+                elStyling['height'] = elementStyling.getPropertyValue('padding-' + side);
                 elStyling['width'] = innerWidth + "px";
                 elStyling['left'] = 0;
-                  
+
                   if (borderBox) {
                     elStyling['width'] = innerWidth - parseFloat(realElBorder.left) - parseFloat(realElBorder.right) + "px";
                   }
               }
-                
+
               elStyling[side] = 0;
               elStyling['position'] = 'absolute';
-              
+
               return elStyling;
             };
-          
+
           var drawMarginRect = function(side) {
             var elStyling = {};
-            
+
             var margin = [];
             margin['right'] = parseFloat(elementStyling.getPropertyValue('margin-right'));
             margin['top'] = parseFloat(elementStyling.getPropertyValue('margin-top'));
             margin['bottom'] = parseFloat(elementStyling.getPropertyValue('margin-bottom'));
             margin['left'] = parseFloat(elementStyling.getPropertyValue('margin-left'));
-          
+
             if(visualisations['horizontal'].indexOf(side) >= 0) {
 
               elStyling['width'] = elementStyling.getPropertyValue('margin-' + side);
@@ -371,37 +371,37 @@ function RemoteFunctions(config) {
 
             var setVisibility = function (el) {
                 if (
-                    !config.remoteHighlight.showPaddingMargin || 
-                    parseInt(el.height, 10) <= 0 || 
-                    parseInt(el.width, 10) <= 0 
+                    !config.remoteHighlight.showPaddingMargin ||
+                    parseInt(el.height, 10) <= 0 ||
+                    parseInt(el.width, 10) <= 0
                 ) {
                     el.display = 'none';
                 } else {
                     el.display = 'block';
                 }
             };
-            
+
             var mainBoxStyles = config.remoteHighlight.stylesToSet;
-            
+
             var paddingVisualisations = [
               drawPaddingRect('top'),
               drawPaddingRect('right'),
               drawPaddingRect('bottom'),
-              drawPaddingRect('left')  
+              drawPaddingRect('left')
             ];
-                
+
             var marginVisualisations = [
               drawMarginRect('top'),
               drawMarginRect('right'),
               drawMarginRect('bottom'),
-              drawMarginRect('left')  
+              drawMarginRect('left')
             ];
-            
+
             var setupVisualisations = function (arr, config) {
                 var i;
                 for (i = 0; i < arr.length; i++) {
                     setVisibility(arr[i]);
-                    
+
                     // Applies to every visualisationElement (padding or margin div)
                     arr[i]["transform"] = "none";
                     var el = window.document.createElement("div"),
@@ -416,7 +416,7 @@ function RemoteFunctions(config) {
                     highlight.appendChild(el);
                 }
             };
-            
+
             setupVisualisations(
                 marginVisualisations,
                 config.remoteHighlight.marginStyling
@@ -425,11 +425,11 @@ function RemoteFunctions(config) {
                 paddingVisualisations,
                 config.remoteHighlight.paddingStyling
             );
-            
+
             highlight.className = HIGHLIGHT_CLASSNAME;
 
             var offset = _screenOffset(element);
-            		
+
             // some code to find element left/top was removed here. This seems to be relevant to box model
             // live highlights. firether reading: https://github.com/adobe/brackets/pull/13357/files
             // we removed this in phoenix because it was throwing the rendering of live highlight boxes in phonix
@@ -448,14 +448,14 @@ function RemoteFunctions(config) {
                 "position": "absolute",
                 "pointer-events": "none",
                 "box-shadow": "0 0 1px #fff",
-                "box-sizing": elementStyling.getPropertyValue('box-sizing'),		
-                "border-right": elementStyling.getPropertyValue('border-right'),		
-                "border-left": elementStyling.getPropertyValue('border-left'),		
-                "border-top": elementStyling.getPropertyValue('border-top'),		
+                "box-sizing": elementStyling.getPropertyValue('box-sizing'),
+                "border-right": elementStyling.getPropertyValue('border-right'),
+                "border-left": elementStyling.getPropertyValue('border-left'),
+                "border-top": elementStyling.getPropertyValue('border-top'),
                 "border-bottom": elementStyling.getPropertyValue('border-bottom'),
                 "border-color": config.remoteHighlight.borderColor
             };
-            
+
             var mergedStyles = Object.assign({}, stylesToSet,  config.remoteHighlight.stylesToSet);
 
             var animateStartValues = config.remoteHighlight.animateStartValue;
@@ -500,7 +500,7 @@ function RemoteFunctions(config) {
             if (this.trigger) {
                 _trigger(element, "highlight", 1);
             }
-            
+
             if ((!window.event || window.event instanceof MessageEvent) && !isInViewport(element)) {
                 var top = getDocumentOffsetTop(element);
                 if (top) {
@@ -563,6 +563,8 @@ function RemoteFunctions(config) {
 
     var _localHighlight;
     var _remoteHighlight;
+    var _hoverHighlight;
+    var _clickHighlight;
     var _setup = false;
 
 
@@ -583,6 +585,19 @@ function RemoteFunctions(config) {
     function onMouseMove(event) {
         onMouseOver(event);
         window.document.removeEventListener("mousemove", onMouseMove);
+    }
+
+    function onElementHover(event) {
+        if (_hoverHighlight) {
+            _hoverHighlight.clear();
+            _hoverHighlight.add(event.target, false);
+        }
+    }
+
+    function onElementHoverOut() {
+        if (_hoverHighlight) {
+            _hoverHighlight.clear();
+        }
     }
 
     function onClick(event) {
@@ -643,17 +658,24 @@ function RemoteFunctions(config) {
             _remoteHighlight.clear();
             _remoteHighlight = null;
         }
+        if (_clickHighlight) {
+            _clickHighlight.clear();
+            _clickHighlight = null;
+        }
+        if (_hoverHighlight) {
+            _hoverHighlight.clear();
+        }
     }
 
     // highlight a node
     function highlight(node, clear) {
-        if (!_remoteHighlight) {
-            _remoteHighlight = new Highlight("#cfc");
+        if (!_clickHighlight) {
+            _clickHighlight = new Highlight("#cfc");
         }
         if (clear) {
-            _remoteHighlight.clear();
+            _clickHighlight.clear();
         }
-        _remoteHighlight.add(node, true);
+        _clickHighlight.add(node, true);
     }
 
     // highlight a rule
@@ -663,13 +685,19 @@ function RemoteFunctions(config) {
         for (i = 0; i < nodes.length; i++) {
             highlight(nodes[i]);
         }
-        _remoteHighlight.selector = rule;
+        _clickHighlight.selector = rule;
     }
 
     // redraw active highlights
     function redrawHighlights() {
         if (_remoteHighlight) {
             _remoteHighlight.redraw();
+        }
+        if (_clickHighlight) {
+            _clickHighlight.redraw();
+        }
+        if (_hoverHighlight) {
+            _hoverHighlight.redraw();
         }
     }
 
@@ -683,7 +711,7 @@ function RemoteFunctions(config) {
         if (e.target === window.document) {
             redrawHighlights();
         } else {
-            if (_remoteHighlight || _localHighlight) {
+            if (_remoteHighlight || _localHighlight || _clickHighlight || _hoverHighlight) {
                 window.setTimeout(redrawHighlights, 0);
             }
         }
@@ -985,7 +1013,7 @@ function RemoteFunctions(config) {
     function getSimpleDOM() {
         return JSON.stringify(_domElementToJSON(window.document.documentElement));
     }
-    
+
     function updateConfig(newConfig) {
         config = JSON.parse(newConfig);
         return JSON.stringify(config);
@@ -993,6 +1021,16 @@ function RemoteFunctions(config) {
 
     // init
     _editHandler = new DOMEditHandler(window.document);
+
+    // Initialize hover highlight with Chrome-like colors
+    _hoverHighlight = new Highlight("#c8f9c5", true); // Green similar to Chrome's padding color
+
+    // Initialize click highlight with animation
+    _clickHighlight = new Highlight("#cfc", true); // Light green for click highlight
+
+    // Add event listeners for hover
+    window.document.addEventListener("mouseover", onElementHover);
+    window.document.addEventListener("mouseout", onElementHoverOut);
 
     if (experimental) {
         window.document.addEventListener("keydown", onKeyDown);
