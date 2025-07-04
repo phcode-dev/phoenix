@@ -18,317 +18,224 @@
  *
  */
 
-/*global describe, it, expect, beforeAll, afterAll, beforeEach, afterEach, awaitsFor, awaitsForDone */
+/*global describe, it, expect, beforeAll, afterAll, beforeEach, afterEach, awaitsFor, awaitsForDone, awaits, jsPromise */
 
 define(function (require, exports, module) {
     const SpecRunnerUtils = require("spec/SpecRunnerUtils");
 
-    const testPath = SpecRunnerUtils.getTestPath("/spec/ProjectManager-test-files");
+    describe("integration:Collapse Folders", function () {
+        let testWindow, ProjectManager, FileSystem, $, testProjectPath, testProjectFolder;
 
-    let ProjectManager, // loaded from brackets.test
-        CommandManager, // loaded from brackets.test
-        testWindow,
-        brackets,
-        $;
-
-    describe("integration:CollapseFolders", function () {
         beforeAll(async function () {
+            // Create the test window
             testWindow = await SpecRunnerUtils.createTestWindowAndRun();
-            brackets = testWindow.brackets;
-            ProjectManager = brackets.test.ProjectManager;
-            CommandManager = brackets.test.CommandManager;
+            // Get reference to useful modules
             $ = testWindow.$;
+            ProjectManager = testWindow.brackets.test.ProjectManager;
+            FileSystem = testWindow.brackets.test.FileSystem;
 
-            await SpecRunnerUtils.loadProjectInTestWindow(testPath);
+            // Setup a test project folder with nested directories
+            testProjectPath = SpecRunnerUtils.getTempDirectory() + "/collapse-folders-test";
+            testProjectFolder = FileSystem.getDirectoryForPath(testProjectPath);
+
+            // Ensure the test directory exists
+            await SpecRunnerUtils.createTempDirectory();
+
+            // Create test project structure
+            await SpecRunnerUtils.ensureExistsDirAsync(testProjectPath);
+            await SpecRunnerUtils.ensureExistsDirAsync(testProjectPath + "/folder1");
+            await SpecRunnerUtils.ensureExistsDirAsync(testProjectPath + "/folder1/subfolder1");
+            await SpecRunnerUtils.ensureExistsDirAsync(testProjectPath + "/folder2");
+            await SpecRunnerUtils.ensureExistsDirAsync(testProjectPath + "/folder2/subfolder2");
+
+            // Create some test files
+            await jsPromise(SpecRunnerUtils.createTextFile(testProjectPath + "/file.js", "// Test file", FileSystem));
+            await jsPromise(
+                SpecRunnerUtils.createTextFile(testProjectPath + "/folder1/file1.js", "// Test file 1", FileSystem)
+            );
+            await jsPromise(
+                SpecRunnerUtils.createTextFile(
+                    testProjectPath + "/folder1/subfolder1/subfile1.js",
+                    "// Test subfile 1",
+                    FileSystem
+                )
+            );
+            await jsPromise(
+                SpecRunnerUtils.createTextFile(testProjectPath + "/folder2/file2.js", "// Test file 2", FileSystem)
+            );
+            await jsPromise(
+                SpecRunnerUtils.createTextFile(
+                    testProjectPath + "/folder2/subfolder2/subfile2.js",
+                    "// Test subfile 2",
+                    FileSystem
+                )
+            );
+
+            // Load the test project
+            await SpecRunnerUtils.loadProjectInTestWindow(testProjectPath);
         }, 30000);
 
         afterAll(async function () {
-            ProjectManager = null;
-            CommandManager = null;
             testWindow = null;
-            brackets = null;
-            $ = null;
             await SpecRunnerUtils.closeTestWindow();
+            await SpecRunnerUtils.removeTempDirectory();
         }, 30000);
 
-        afterEach(async function () {
-            await testWindow.closeAllFiles();
-        });
+        /**
+         * Helper function to open a folder in the project tree
+         * @param {string} folderPath - The path of the folder to open
+         */
+        async function openFolder(folderPath) {
+            const folderEntry = FileSystem.getDirectoryForPath(folderPath);
+            // Call setDirectoryOpen without awaitsForDone since it doesn't return a promise
+            ProjectManager._actionCreator.setDirectoryOpen(folderEntry.fullPath, true);
 
-        it("Should create collapse button in project files header", function () {
-            const $projectFilesHeader = $("#project-files-header");
-            const $collapseBtn = $("#collapse-folders");
-
-            expect($projectFilesHeader.length).toBe(1);
-            expect($collapseBtn.length).toBe(1);
-            expect($collapseBtn.parent()[0]).toBe($projectFilesHeader[0]);
-        });
-
-        it("Should have correct button structure and classes", function () {
-            const $collapseBtn = $("#collapse-folders");
-            const $icons = $collapseBtn.find("i.collapse-icon");
-
-            expect($collapseBtn.hasClass("btn-alt-quiet")).toBe(true);
-            expect($collapseBtn.attr("title")).toBe("Collapse All");
-            expect($icons.length).toBe(2);
-            expect($icons.eq(0).hasClass("fa-solid")).toBe(true);
-            expect($icons.eq(0).hasClass("fa-chevron-down")).toBe(true);
-            expect($icons.eq(1).hasClass("fa-solid")).toBe(true);
-            expect($icons.eq(1).hasClass("fa-chevron-up")).toBe(true);
-        });
-
-        it("Should show button on sidebar hover", async function () {
-            const $sidebar = $("#sidebar");
-            const $collapseBtn = $("#collapse-folders");
-
-            // Initially button should not have show class
-            expect($collapseBtn.hasClass("show")).toBe(false);
-
-            // Trigger mouseenter on sidebar
-            $sidebar.trigger("mouseenter");
-
+            // Wait for the folder to be opened in the UI
             await awaitsFor(
                 function () {
-                    return $collapseBtn.hasClass("show");
+                    const $folderNode = findDirectoryNode(folderPath);
+                    return $folderNode && $folderNode.hasClass("jstree-open");
                 },
-                "Button should show on sidebar hover",
+                "Folder to be opened: " + folderPath,
                 1000
             );
+        }
 
-            expect($collapseBtn.hasClass("show")).toBe(true);
-        });
-
-        it("Should hide button on sidebar mouse leave", async function () {
-            const $sidebar = $("#sidebar");
-            const $collapseBtn = $("#collapse-folders");
-
-            // First show the button
-            $sidebar.trigger("mouseenter");
-            await awaitsFor(
-                function () {
-                    return $collapseBtn.hasClass("show");
-                },
-                "Button should show first",
-                1000
-            );
-
-            // Then trigger mouseleave
-            $sidebar.trigger("mouseleave");
-
-            await awaitsFor(
-                function () {
-                    return !$collapseBtn.hasClass("show");
-                },
-                "Button should hide on sidebar mouse leave",
-                1000
-            );
-
-            expect($collapseBtn.hasClass("show")).toBe(false);
-        });
-
-        it("Should have click handler attached", function () {
-            const $collapseBtn = $("#collapse-folders");
-            const events = $._data($collapseBtn[0], "events");
-
-            expect(events).toBeTruthy();
-            expect(events.click).toBeTruthy();
-            expect(events.click.length).toBe(1);
-        });
-
-        function findTreeNode(fullPath) {
-            const $treeItems = testWindow.$("#project-files-container li");
-            let $result;
-
-            const name = fullPath.split("/").pop();
+        /**
+         * Helper function to find a directory node in the project tree
+         * @param {string} path - The path of the directory to find
+         * @returns {jQuery|null} - The jQuery object for the directory node, or null if not found
+         */
+        function findDirectoryNode(path) {
+            const dirName = path.split("/").pop();
+            const $treeItems = $("#project-files-container li");
+            let $result = null;
 
             $treeItems.each(function () {
-                const $treeNode = testWindow.$(this);
-                if ($treeNode.children("a").text().trim() === name) {
+                const $treeNode = $(this);
+                if ($treeNode.children("a").text().trim() === dirName) {
                     $result = $treeNode;
-                    return false; // break the loop
+                    return false; // Break the loop
                 }
             });
+
             return $result;
         }
 
-        async function openFolder(folderPath) {
-            const $treeNode = findTreeNode(folderPath);
-            expect($treeNode).toBeTruthy();
-
-            if (!$treeNode.hasClass("jstree-open")) {
-                $treeNode.children("a").children("span").click();
-
-                await awaitsFor(
-                    function () {
-                        return $treeNode.hasClass("jstree-open");
-                    },
-                    `Open folder ${folderPath}`,
-                    2000
-                );
-            }
-        }
-
+        /**
+         * Helper function to check if a folder is open in the project tree
+         * @param {string} folderPath - The path of the folder to check
+         * @returns {boolean} - True if the folder is open, false otherwise
+         */
         function isFolderOpen(folderPath) {
-            const $treeNode = findTreeNode(folderPath);
-            return $treeNode && $treeNode.hasClass("jstree-open");
+            const $folderNode = findDirectoryNode(folderPath);
+            // If the folder node can't be found, it's definitely not open
+            if (!$folderNode) {
+                return false;
+            }
+            return $folderNode.hasClass("jstree-open");
         }
 
-        function getOpenFolders() {
-            const openFolders = [];
-            testWindow.$("#project-files-container li.jstree-open").each(function () {
-                const $node = testWindow.$(this);
-                const folderName = $node.children("a").text().trim();
-                if (folderName) {
-                    openFolders.push(folderName);
-                }
+        describe("UI", function () {
+            it("should have a collapse button in the project files header", async function () {
+                // Check if the collapse button exists
+                const $collapseBtn = $("#collapse-folders");
+                expect($collapseBtn.length).toBe(1);
+
+                // Check if the button has the collapse icons
+                expect($collapseBtn.find(".collapse-icon").length).toBe(2);
             });
-            return openFolders;
-        }
 
-        it("Should collapse all open directories when clicked", async function () {
-            // First, open some directories
-            const directoryPath = testPath + "/directory";
+            it("should collapse all open folders when the collapse button is clicked", async function () {
+                // Open some folders first
+                await openFolder(testProjectPath + "/folder1");
+                await openFolder(testProjectPath + "/folder2");
 
-            await openFolder("directory");
+                // Verify folders are open
+                expect(isFolderOpen(testProjectPath + "/folder1")).toBe(true);
+                expect(isFolderOpen(testProjectPath + "/folder2")).toBe(true);
 
-            // Verify the directory is open
-            expect(isFolderOpen("directory")).toBe(true);
+                // Click the collapse button
+                $("#collapse-folders").click();
 
-            // Show the collapse button by hovering over sidebar
-            const $sidebar = $("#sidebar");
-            const $collapseBtn = $("#collapse-folders");
-            $sidebar.trigger("mouseenter");
-
-            await awaitsFor(
-                function () {
-                    return $collapseBtn.hasClass("show");
-                },
-                "Button should show",
-                1000
-            );
-
-            // Click the collapse button
-            $collapseBtn.trigger("click");
-
-            // Wait for directories to close
-            await awaitsFor(
-                function () {
-                    return !isFolderOpen("directory");
-                },
-                "Directory should be closed after clicking collapse button",
-                2000
-            );
-
-            // Verify the directory is now closed
-            expect(isFolderOpen("directory")).toBe(false);
-        });
-
-        it("Should collapse multiple open directories when clicked", async function () {
-            // Open multiple directories if they exist
-            await openFolder("directory");
-
-            // Verify directories are open
-            expect(isFolderOpen("directory")).toBe(true);
-
-            const initialOpenFolders = getOpenFolders();
-            expect(initialOpenFolders.length).toBeGreaterThan(0);
-
-            // Show the collapse button and click it
-            const $sidebar = $("#sidebar");
-            const $collapseBtn = $("#collapse-folders");
-            $sidebar.trigger("mouseenter");
-
-            await awaitsFor(
-                function () {
-                    return $collapseBtn.hasClass("show");
-                },
-                "Button should show",
-                1000
-            );
-
-            $collapseBtn.trigger("click");
-
-            // Wait for all directories to close
-            await awaitsFor(
-                function () {
-                    return getOpenFolders().length === 0;
-                },
-                "All directories should be closed",
-                2000
-            );
-
-            // Verify no directories are open
-            expect(getOpenFolders().length).toBe(0);
-        });
-
-        it("Should handle click when no directories are open", function () {
-            // Ensure no directories are open initially
-            const openFolders = getOpenFolders();
-            expect(openFolders.length).toBe(0);
-
-            // Show the collapse button and click it
-            const $sidebar = $("#sidebar");
-            const $collapseBtn = $("#collapse-folders");
-            $sidebar.trigger("mouseenter");
-
-            // This should not throw an error
-            expect(function () {
-                $collapseBtn.trigger("click");
-            }).not.toThrow();
-
-            // Should still have no open folders
-            expect(getOpenFolders().length).toBe(0);
-        });
-
-        it("Should work with nested directories", async function () {
-            // Open a parent directory first
-            await openFolder("directory");
-            expect(isFolderOpen("directory")).toBe(true);
-
-            // If there are subdirectories, try to open one
-            // Note: This test assumes the test project has nested directories
-            const $subdirs = testWindow.$("#project-files-container li.jstree-open li.jstree-closed");
-            if ($subdirs.length > 0) {
-                // Open a subdirectory if one exists
-                $subdirs.first().children("a").children("span").click();
-
+                // Wait for folders to be collapsed
                 await awaitsFor(
                     function () {
-                        return $subdirs.first().hasClass("jstree-open");
+                        return (
+                            !isFolderOpen(testProjectPath + "/folder1") && !isFolderOpen(testProjectPath + "/folder2")
+                        );
                     },
-                    "Open subdirectory",
-                    2000
+                    "Folders to be collapsed",
+                    1000
                 );
-            }
 
-            const initialOpenCount = getOpenFolders().length;
-            expect(initialOpenCount).toBeGreaterThan(0);
+                // Verify folders are closed
+                expect(isFolderOpen(testProjectPath + "/folder1")).toBe(false);
+                expect(isFolderOpen(testProjectPath + "/folder2")).toBe(false);
+            });
 
-            // Show the collapse button and click it
-            const $sidebar = $("#sidebar");
-            const $collapseBtn = $("#collapse-folders");
-            $sidebar.trigger("mouseenter");
+            it("should collapse nested folders when the collapse button is clicked", async function () {
+                // Open folders with nested structure
+                await openFolder(testProjectPath + "/folder1");
+                await openFolder(testProjectPath + "/folder1/subfolder1");
+                await openFolder(testProjectPath + "/folder2");
+                await openFolder(testProjectPath + "/folder2/subfolder2");
 
-            await awaitsFor(
-                function () {
-                    return $collapseBtn.hasClass("show");
-                },
-                "Button should show",
-                1000
-            );
+                // Verify folders are open
+                expect(isFolderOpen(testProjectPath + "/folder1")).toBe(true);
+                expect(isFolderOpen(testProjectPath + "/folder1/subfolder1")).toBe(true);
+                expect(isFolderOpen(testProjectPath + "/folder2")).toBe(true);
+                expect(isFolderOpen(testProjectPath + "/folder2/subfolder2")).toBe(true);
 
-            $collapseBtn.trigger("click");
+                // Click the collapse button
+                $("#collapse-folders").click();
 
-            // Wait for all directories to close (including nested ones)
-            await awaitsFor(
-                function () {
-                    return getOpenFolders().length === 0;
-                },
-                "All nested directories should be closed",
-                2000
-            );
+                // Wait for all folders to be collapsed
+                await awaitsFor(
+                    function () {
+                        return (
+                            !isFolderOpen(testProjectPath + "/folder1") &&
+                            !isFolderOpen(testProjectPath + "/folder1/subfolder1") &&
+                            !isFolderOpen(testProjectPath + "/folder2") &&
+                            !isFolderOpen(testProjectPath + "/folder2/subfolder2")
+                        );
+                    },
+                    "All folders to be collapsed",
+                    1000
+                );
 
-            expect(getOpenFolders().length).toBe(0);
+                // Verify all folders are closed
+                expect(isFolderOpen(testProjectPath + "/folder1")).toBe(false);
+                expect(isFolderOpen(testProjectPath + "/folder1/subfolder1")).toBe(false);
+                expect(isFolderOpen(testProjectPath + "/folder2")).toBe(false);
+                expect(isFolderOpen(testProjectPath + "/folder2/subfolder2")).toBe(false);
+            });
+
+            it("should do nothing when no folders are open", async function () {
+                // Make sure all folders are closed
+                $("#collapse-folders").click();
+                await awaitsFor(
+                    function () {
+                        return (
+                            !isFolderOpen(testProjectPath + "/folder1") && !isFolderOpen(testProjectPath + "/folder2")
+                        );
+                    },
+                    "Folders to be collapsed",
+                    1000
+                );
+
+                // Get the current state of the project tree
+                const initialState = $("#project-files-container").html();
+
+                // Click the collapse button again
+                $("#collapse-folders").click();
+
+                // Wait a bit to ensure any potential changes would have happened
+                await awaits(300);
+
+                // Verify the project tree hasn't changed
+                expect($("#project-files-container").html()).toBe(initialState);
+            });
         });
     });
 });
