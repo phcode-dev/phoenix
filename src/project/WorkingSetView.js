@@ -1028,7 +1028,9 @@ define(function (require, exports, module) {
 
                 let truncatedPath = displayPath; // truncatedPath value will be shown in the UI
                 if (dirSplit.length > 3) {
-                    // because sometimes dirSplit[0] is empty
+                    // dirSplit[0] maybe empty sometimes:
+                    // - In browsers, for paths starting with "/" (e.g., "/fs/path/to/file")
+                    // - In desktop app, for absolute paths on Linux/Mac (e.g., "/root/fs/path/to/file")
                     let rootDirName = dirSplit[0] ? dirSplit[0] : dirSplit[1];
                     truncatedPath = rootDirName + separator + "\u2026" + separator + dirSplit[dirSplit.length - 1];
                 }

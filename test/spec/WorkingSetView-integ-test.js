@@ -241,13 +241,14 @@ define(function (require, exports, module) {
             // Should show directory information for external files
             expect(directorySpan.length).toBe(1);
 
-            const displayedPath = directorySpan[0].innerHTML;
-            expect(displayedPath.length).toBeGreaterThan(0);
-            expect(displayedPath.includes(" — ")).toBe(true); // Should have the separator
+            // Verify the title attribute contains the full display path
+            const fullDisplayPath = directorySpan.attr('title');
+            expect(fullDisplayPath).toBe(testWindow.Phoenix.app.getDisplayPath(externalProjectTestPath));
 
-            // Should contain some path information
-            const actualPath = testWindow.Phoenix.app.getDisplayPath(externalProjectTestPath);
-            expect(actualPath.length).toBeGreaterThan(0);
+            // Verify the displayed text contains the expected format
+            const displayedText = directorySpan.text();
+            expect(displayedText.length).toBeGreaterThan(0);
+            expect(displayedText.includes(" — ")).toBe(true); // Should have the separator
 
             // Clean up
             DocumentManager.getCurrentDocument()._markClean();
@@ -258,44 +259,46 @@ define(function (require, exports, module) {
         it("should truncate very long external file paths with ellipsis", async function () {
             // Create platform-appropriate test paths
             var isWindows = testWindow.brackets.platform === "win";
+            var isMac = testWindow.brackets.platform === "mac";
             var separator = isWindows ? "\\" : "/";
+            var isNativeApp = testWindow.Phoenix.isNativeApp;
 
-            // Test truncation algorithm with platform-specific long path
-            var mockLongPath = isWindows ?
-                "C:\\Users\\username\\very\\long\\path\\structure\\with\\many\\nested\\directories" :
-                "/Users/username/very/long/path/structure/with/many/nested/directories";
+            // Define expected path formats for different environments
+            var mockLongPath, expectedTruncatedPath;
 
-            var segments = mockLongPath.split(/[\/\\]/).filter(seg => seg.length > 0);
-            expect(segments.length).toBeGreaterThan(3); // Ensure we have a long path
-
-            // Test the truncation logic that WorkingSetView should use
-            var rootDirName = segments[0] ? segments[0] : segments[1];
-            var truncated = rootDirName + separator + "…" + separator + segments[segments.length - 1];
-
-            // Verify truncation works correctly
-            expect(truncated.includes("…")).toBe(true);
-            expect(truncated.includes(segments[0])).toBe(true);
-            expect(truncated.includes(segments[segments.length - 1])).toBe(true);
-            expect(truncated).not.toContain("very" + separator + "long" + separator + "path");
+            if (isNativeApp) {
+                // Desktop app path formats
+                if (isWindows) {
+                    mockLongPath = "C:\\Users\\TestUser\\Documents\\Very\\Long\\Project\\Structure\\Directory";
+                    expectedTruncatedPath = "C:" + separator + "…" + separator + "Directory";
+                } else if (isMac) {
+                    mockLongPath = "/Users/TestUser/Documents/Very/Long/Project/Structure/Directory";
+                    expectedTruncatedPath = "Users" + separator + "…" + separator + "Directory";
+                } else { // Linux
+                    mockLongPath = "/home/TestUser/Documents/Very/Long/Project/Structure/Directory";
+                    expectedTruncatedPath = "home" + separator + "…" + separator + "Directory";
+                }
+            } else {
+                // Browser path formats
+                if (isWindows) {
+                    // For default/internal projects in browser
+                    mockLongPath = "/fs/Users/TestUser/Documents/Very/Long/Project/Structure/Directory";
+                    expectedTruncatedPath = "fs" + separator + "…" + separator + "Directory";
+                } else {
+                    // For Mac/Linux in browser
+                    mockLongPath = "/fs/home/TestUser/Documents/Very/Long/Project/Structure/Directory";
+                    expectedTruncatedPath = "fs" + separator + "…" + separator + "Directory";
+                }
+            }
 
             // Now test the actual WorkingSetView implementation with a guaranteed long path
             var workingSetListItemCountBeforeTest = workingSetListItemCount;
 
-            // Mock Phoenix.app.getDisplayPath to return a platform-appropriate long path
+            // Mock Phoenix.app.getDisplayPath to return our test path
             var originalGetDisplayPath = testWindow.Phoenix.app.getDisplayPath;
-            var mockLongDisplayPath = isWindows ?
-                "C:\\Users\\TestUser\\Documents\\Very\\Long\\Project\\Structure\\Directory" :
-                "/Users/TestUser/Documents/Very/Long/Project/Structure/Directory";
-
-            // Extract expected parts for assertions
-            var mockSegments = mockLongDisplayPath.split(/[\/\\]/).filter(seg => seg.length > 0);
-            var firstSegment = mockSegments[0];
-            var lastSegment = mockSegments[mockSegments.length - 1];
-            var middleSegments = isWindows ? "Very\\Long\\Project\\Structure" : "Very/Long/Project/Structure";
-
             testWindow.Phoenix.app.getDisplayPath = function(path) {
                 if (path.includes(externalProjectTestPath)) {
-                    return mockLongDisplayPath;
+                    return mockLongPath;
                 }
                 return originalGetDisplayPath.call(this, path);
             };
@@ -310,18 +313,18 @@ define(function (require, exports, module) {
                 const directorySpan = $list.find(".directory");
                 expect(directorySpan.length).toBe(1);
 
-                const displayedPath = directorySpan[0].innerHTML;
-                expect(displayedPath.includes(" — ")).toBe(true);
+                // Verify the title attribute contains the full display path
+                const fullDisplayPath = directorySpan.attr('title');
+                expect(fullDisplayPath).toBe(mockLongPath);
+
+                // Get the displayed text
+                const displayedText = directorySpan.text();
 
                 // This is the critical test - if truncation is working, it MUST contain ellipsis
-                expect(displayedPath.includes("…")).toBe(true);
+                expect(displayedText.includes("…")).toBe(true);
 
-                // Should show first and last segments (platform-appropriate)
-                expect(displayedPath.includes(firstSegment)).toBe(true);
-                expect(displayedPath.includes(lastSegment)).toBe(true);
-
-                // Should NOT show the full middle path
-                expect(displayedPath.includes(middleSegments)).toBe(false);
+                // Should match our expected truncated path format
+                expect(displayedText.includes(expectedTruncatedPath)).toBe(true);
 
                 // Clean up
                 DocumentManager.getCurrentDocument()._markClean();
