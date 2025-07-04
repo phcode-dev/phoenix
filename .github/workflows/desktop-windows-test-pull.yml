@@ -113,5 +113,21 @@ jobs:
         if: steps.windowsRunUnit.outcome == 'failure' || steps.windowsRunIntegration.outcome == 'failure' || steps.windowsRunMainview.outcome == 'failure' || steps.windowsRunLivepreview.outcome == 'failure' || steps.windowsRunLegacyInteg.outcome == 'failure'
         run: |
           echo "Windows tests failed, marking step as failed"
+          echo "Failed tests:"
+          if "${{ steps.windowsRunUnit.outcome }}" == "failure" (
+            echo "- Run tauri unit tests"
+          )
+          if "${{ steps.windowsRunIntegration.outcome }}" == "failure" (
+            echo "- Run tauri integration tests"
+          )
+          if "${{ steps.windowsRunMainview.outcome }}" == "failure" (
+            echo "- Run tauri mainview tests"
+          )
+          if "${{ steps.windowsRunLivepreview.outcome }}" == "failure" (
+            echo "- Run tauri livepreview tests"
+          )
+          if "${{ steps.windowsRunLegacyInteg.outcome }}" == "failure" (
+            echo "- Run tauri LegacyInteg tests"
+          )
           exit 1
         shell: cmd

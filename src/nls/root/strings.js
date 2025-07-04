@@ -629,7 +629,7 @@ define({
     "CMD_AUTO_UPDATE": "Auto Update",
     "CMD_HOW_TO_USE_BRACKETS": "How to Use {APP_NAME}",
     "CMD_SUPPORT": "{APP_NAME} Support",
-    "CMD_USER_PROFILE": "User Profile",
+    "CMD_USER_PROFILE": "{APP_NAME} Account",
     "CMD_DOCS": "Help, Getting Started",
     "CMD_SUGGEST": "Suggest a Feature",
     "CMD_REPORT_ISSUE": "Report Issue",
@@ -1564,5 +1564,28 @@ define({
     "GIT_TOAST_MESSAGE": "Click the Git panel icon to manage your repository. Easily commit, push, pull, and view your project history—all in one place.<br><a href='https://docs.phcode.dev/docs/Features/git'>Learn more about the Git panel →</a>",
 
     // surveys
-    "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vote for the features you want to see next!"
+    "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vote for the features you want to see next!",
+
+    // login
+    "SIGNED_OUT": "You have been signed out.",
+    "SIGNED_OUT_MESSAGE": "You have been signed out of your {APP_NAME} account. Please sign in again to continue.",
+    "SIGNED_OUT_MESSAGE_FRIENDLY": "Thank you for using {APP_NAME}. See you soon!",
+    "SIGNED_IN_OFFLINE_TITLE": "Offline - Cannot Sign In",
+    "SIGNED_IN_OFFLINE_MESSAGE": "Please connect to the internet to sign in to {APP_NAME}.",
+    "SIGNED_IN_FAILED_TITLE": "Cannot Sign In",
+    "SIGNED_IN_FAILED_MESSAGE": "Something went wrong while trying to sign in. Please try again.",
+    "SIGNED_OUT_FAILED_TITLE": "Failed to Sign Out",
+    "SIGNED_OUT_FAILED_MESSAGE": "Something went wrong while trying to sign out. Please try again.",
+    "VALIDATION_CODE_TITLE": "Sign In Verification Code",
+    "VALIDATION_CODE_MESSAGE": "Please use this Verification code to sign in to your {APP_NAME} account:",
+    "COPY_VALIDATION_CODE": "Copy Code",
+    "VALIDATION_CODE_COPIED": "Copied",
+    "OPEN_SIGN_IN_URL": "Open Sign In Page",
+    "PROFILE_POP_TITLE": "{APP_NAME} Account",
+    "PROFILE_SIGN_IN": "Sign in to your account",
+    "CONTACT_SUPPORT": "Contact support",
+    "SIGN_OUT": "Sign out",
+    "ACCOUNT_DETAILS": "Account Details",
+    "AI_QUOTA_USED": "AI quota used",
+    "LOGIN_REFRESH": "Check Login Status"
 });

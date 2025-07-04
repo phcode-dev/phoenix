@@ -1,0 +1,171 @@
+<div id="custom-snippets-panel" class="custom-snippets-panel bottom-panel vert-resizable top-resizer no-focus">
+    <div id="custom-snippets-toolbar" class="toolbar simple-toolbar-layout">
+        <div class="title-wrapper">
+            <span class="title toolbar-title">Custom Snippets <span id="snippets-count" class="snippets-count"></span></span>
+            <div id="add-new-snippet-btn" class="custom-snippet-btn">
+                <button title="Add new snippet">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+            <div id="back-to-list-menu-btn" class="custom-snippet-btn hidden">
+                <button title="Back to snippets list">
+                    <i class="fas fa-chevron-left"></i> Back
+                </button>
+            </div>
+        </div>
+        <div class="buttons">
+            <div id="filter-snippets-panel" class="filter-snippets-panel">
+                <input id="filter-snippets-input" type="text" placeholder="Filter..." autocomplete="off" />
+            </div>
+            <div id="close-custom-snippets-panel-btn">
+                <button><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="resizable-content">
+        <!--this will display the list of all the already existing snippets-->
+        <div id="custom-snippets-list" class="custom-snippes-list">
+            <div id="no-snippets-wrapper" class="no-snippets-wrapper">
+                <div id="no-snippets-message">No custom snippets added yet!</div>
+                <div id="add-snippet-btn">
+                    <button>Add Snippet</button>
+                </div>
+            </div>
+
+            <div id="snippets-list-header" class="snippets-list-header">
+                <div id="snippet-abbr-header">Abbreviation</div>
+                <div id="snippet-template-header">Template Text</div>
+                <div id="snippet-description-header">Description</div>
+                <div id="snippet-file-extension-header">File Extension</div>
+                <div id="snippet-actions-header"></div>
+            </div>
+
+            <div id="snippets-list-wrapper" class="snippets-list-wrapper hidden">
+                <!--leaving here for format reference-->
+                <!--
+                <div id="snippet-item">
+                    <div id="snippet-abbr">
+                        clg
+                    </div>
+                    <div id="snippet-template">
+                        console.log()
+                    </div>
+                    <div id="snippet-description">
+                        console log shortcut
+                    </div>
+                    <div id="snippet-files">
+                        all
+                    </div>
+                    <div id="delete-snippet-btn" class="delete-snippet-btn">
+                        <i class="fas fa-trash"></i>
+                    </div>
+                </div>
+                -->
+            </div>
+        </div>
+
+        <!--this view will open up when user clicks on add a new snippet button-->
+        <div id="custom-snippets-add-new" class="custom-snippets-add-new hidden">
+            <div id="abbr-box-wrapper" class="field-wrapper">
+                <div class="field-row">
+                    <label for="abbr-box"
+                           title="Enter a short abbreviation (e.g., 'clg', 'fn', 'div'). This is what you'll type to trigger the snippet."
+                           data-placement="top">
+                        Abbreviation:
+                    </label>
+                    <input id="abbr-box" type="text" placeholder="clg" autocomplete="off" />
+                </div>
+            </div>
+
+            <div id="desc-box-wrapper" class="field-wrapper">
+                <div class="field-row">
+                    <label for="desc-box"
+                           title="Brief description of what this snippet does. Leave empty if no description needed."
+                           data-placement="top">
+                        Description:
+                    </label>
+                    <input id="desc-box" type="text" placeholder="console log shortcut (optional)" autocomplete="off" />
+                </div>
+            </div>
+
+            <div id="file-extn-box-wrapper" class="field-wrapper">
+                <div class="field-row">
+                    <label for="file-extn-box"
+                           title="Specify file types where this snippet should be available (e.g., '.js', '.html', '.css'). Leave empty to make it available for all files."
+                           data-placement="top">
+                        File Extension:
+                    </label>
+                    <input id="file-extn-box" type="text" placeholder="Leave empty for all files, or specify like .js, .html" autocomplete="off" />
+                </div>
+            </div>
+
+            <div id="template-text-box-wrapper" class="field-wrapper">
+                <div class="field-row">
+                    <label for="template-text-box"
+                           title="The actual code that will be inserted. Use ${1}, ${2}, ${3}, etc. for cursor positions. ${1} is the initial position, tab moves to ${2}, ${3}, etc. ${0} is the final position."
+                           data-placement="top">
+                        Template Text:
+                    </label>
+                    <textarea id="template-text-box" placeholder="console.log(${1});" autocomplete="off"></textarea>
+                </div>
+            </div>
+
+            <div id="save-custom-snippet-btn">
+                <button class="dialog-button btn primary" disabled>Save</button>
+            </div>
+        </div>
+
+        <!--this view will open up when user clicks on a snippet item to edit it-->
+        <div id="custom-snippets-edit" class="custom-snippets-edit hidden">
+            <div id="edit-abbr-box-wrapper" class="field-wrapper">
+                <div class="field-row">
+                    <label for="edit-abbr-box"
+                           title="Enter a short abbreviation (e.g., 'clg', 'fn', 'div'). This is what you'll type to trigger the snippet."
+                           data-placement="top">
+                        Abbreviation:
+                    </label>
+                    <input id="edit-abbr-box" type="text" placeholder="clg" autocomplete="off" />
+                </div>
+            </div>
+
+            <div id="edit-desc-box-wrapper" class="field-wrapper">
+                <div class="field-row">
+                    <label for="edit-desc-box"
+                           title="Brief description of what this snippet does. Leave empty if no description needed."
+                           data-placement="top">
+                        Description:
+                    </label>
+                    <input id="edit-desc-box" type="text" placeholder="console log shortcut (optional)" autocomplete="off" />
+                </div>
+            </div>
+
+            <div id="edit-file-extn-box-wrapper" class="field-wrapper">
+                <div class="field-row">
+                    <label for="edit-file-extn-box"
+                           title="Specify file types where this snippet should be available (e.g., '.js', '.html', '.css'). Leave empty to make it available for all files."
+                           data-placement="top">
+                        File Extension:
+                    </label>
+                    <input id="edit-file-extn-box" type="text" placeholder="Leave empty for all files, or specify like .js, .html" autocomplete="off" />
+                </div>
+            </div>
+
+            <div id="edit-template-text-box-wrapper" class="field-wrapper">
+                <div class="field-row">
+                    <label for="edit-template-text-box"
+                           title="The actual code that will be inserted. Use ${1}, ${2}, ${3}, etc. for cursor positions. ${1} is the initial position, tab moves to ${2}, ${3}, etc. ${0} is the final position."
+                           data-placement="top">
+                        Template Text:
+                    </label>
+                    <textarea id="edit-template-text-box" placeholder="console.log(${1});" autocomplete="off"></textarea>
+                </div>
+            </div>
+
+            <div id="edit-snippet-buttons">
+                <button id="reset-snippet-btn" class="dialog-button btn">Reset</button>
+                <button id="save-edit-snippet-btn" class="dialog-button btn primary" disabled>Save</button>
+            </div>
+        </div>
+    </div>
+</div>

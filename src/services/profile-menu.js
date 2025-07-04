@@ -1,10 +1,36 @@
 define(function (require, exports, module) {
-    const Mustache = require("thirdparty/mustache/mustache");
-    const PopUpManager = require("widgets/PopUpManager");
+    const Mustache = require("thirdparty/mustache/mustache"),
+        PopUpManager = require("widgets/PopUpManager"),
+        Strings      = require("strings");
+
+    const KernalModeTrust = window.KernalModeTrust;
+    if(!KernalModeTrust){
+        // integrated extensions will have access to kernal mode, but not external extensions
+        throw new Error("profile menu should have access to KernalModeTrust. Cannot boot without trust ring");
+    }
+
+    let $icon;
+
+    function _createSVGIcon(initials, bgColor) {
+        return `<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" fill="${bgColor}"/>
+  <text x="50%" y="58%" text-anchor="middle" font-size="11" fill="#fff" font-family="Inter, sans-serif" dy=".1em">
+    ${initials}</text>
+        </svg>`;
+    }
+
+    function _updateProfileIcon(initials, bgColor) {
+        $icon.empty()
+            .append(_createSVGIcon(initials, bgColor));
+    }
+
+    function _removeProfileIcon() {
+        $icon.empty();
+    }
 
     // HTML templates
-    const loginTemplate = require("text!./html/login-dialog.html");
-    const profileTemplate = require("text!./html/profile-panel.html");
+    const loginTemplate = require("text!./html/login-popup.html");
+    const profileTemplate = require("text!./html/profile-popup.html");
 
     // for the popup DOM element
     let $popup = null;
@@ -12,44 +38,17 @@ define(function (require, exports, module) {
     // this is to track whether the popup is visible or not
     let isPopupVisible = false;
 
-    // if user is logged in we show the profile menu, otherwise we show the login menu
-    let isLoggedIn = false;
-
     // this is to handle document click events to close popup
     let documentClickHandler = null;
 
-    const defaultLoginData = {
-        welcomeTitle: "Welcome to Phoenix Code",
-        signInBtnText: "Sign in to your account",
-        supportBtnText: "Contact support"
-    };
-
-    const defaultProfileData = {
-        initials: "CA",
-        userName: "Charly A.",
-        planName: "Paid Plan",
-        quotaLabel: "AI quota used",
-        quotaUsed: "7,000",
-        quotaTotal: "10,000",
-        quotaUnit: "tokens",
-        quotaPercent: 70,
-        accountBtnText: "Account details",
-        supportBtnText: "Contact support",
-        signOutBtnText: "Sign out"
-    };
-
     function _handleSignInBtnClick() {
-        console.log("User clicked sign in button");
         closePopup(); // need to close the current popup to show the new one
-        isLoggedIn = true;
-        showProfilePopup();
+        KernalModeTrust.loginService.signInToAccount();
     }
 
     function _handleSignOutBtnClick() {
-        console.log("User clicked sign out");
         closePopup();
-        isLoggedIn = false;
-        showLoginPopup();
+        KernalModeTrust.loginService.signOutAccount();
     }
 
     function _handleContactSupportBtnClick() {
@@ -57,7 +56,7 @@ define(function (require, exports, module) {
     }
 
     function _handleAccountDetailsBtnClick() {
-        console.log("User clicked account details");
+        Phoenix.app.openURLInDefaultBrowser(brackets.config.account_url);
     }
 
     /**
@@ -134,23 +133,19 @@ define(function (require, exports, module) {
 
     /**
      * Shows the sign-in popup when the user is not logged in
-     * @param {Object} loginData - Data to populate the template (optional)
      */
-    function showLoginPopup(loginData) {
+    function showLoginPopup() {
         // If popup is already visible, just close it
         if (isPopupVisible) {
             closePopup();
             return;
         }
 
-        // Merge provided data with defaults
-        const templateData = $.extend({}, defaultLoginData, loginData || {});
-
         // create the popup element
         closePopup(); // close any existing popup first
 
         // Render template with data
-        const renderedTemplate = Mustache.render(loginTemplate, templateData);
+        const renderedTemplate = Mustache.render(loginTemplate, {Strings});
         $popup = $(renderedTemplate);
 
         $("body").append($popup);
@@ -184,21 +179,58 @@ define(function (require, exports, module) {
         _setupDocumentClickHandler();
     }
 
+    let userEmail="";
+    class SecureEmail extends HTMLElement {
+        constructor() {
+            super();
+            // Create closed shadow root - this is for security that extensions wont be able to read email from DOM
+            const shadow = this.attachShadow({ mode: 'closed' });
+            // Create the email display with some obfuscation techniques
+            shadow.innerHTML = `<span>${userEmail}</span>`;
+        }
+    }
+    // Register the custom element
+    /* eslint-disable-next-line*/
+    customElements.define ('secure-email', SecureEmail); // space is must in define ( to prevent build fail
+
+    let userName="";
+    class SecureName extends HTMLElement {
+        constructor() {
+            super();
+            // Create closed shadow root - this is for security that extensions wont be able to read name from DOM
+            const shadow = this.attachShadow({ mode: 'closed' });
+            // Create the email display with some obfuscation techniques
+            shadow.innerHTML = `<span>${userName}</span>`;
+        }
+    }
+    // Register the custom element
+
+    /* eslint-disable-next-line*/
+    customElements.define ('secure-name', SecureName); // space is must in define ( to prevent build fail
+
     /**
      * Shows the user profile popup when the user is logged in
-     * @param {Object} profileData - Data to populate the template (optional)
      */
-    function showProfilePopup(profileData) {
+    function showProfilePopup() {
         // If popup is already visible, just close it
         if (isPopupVisible) {
             closePopup();
             return;
         }
-
-        // Merge provided data with defaults
-        const templateData = $.extend({}, defaultProfileData, profileData || {});
-
-        closePopup();
+        const profileData = KernalModeTrust.loginService.getProfile();
+        userEmail = profileData.email;
+        userName = profileData.firstName + " " + profileData.lastName;
+        const templateData = {
+            initials: profileData.profileIcon.initials,
+            avatarColor: profileData.profileIcon.color,
+            planClass: "user-plan-free", // "user-plan-paid" for paid plan
+            planName: "Free Plan",
+            quotaUsed: "7,000",
+            quotaTotal: "10,000",
+            quotaUnit: "tokens",
+            quotaPercent: 70,
+            Strings: Strings
+        };
 
         // Render template with data
         const renderedTemplate = Mustache.render(profileTemplate, templateData);
@@ -240,22 +272,57 @@ define(function (require, exports, module) {
 
     /**
      * Toggle the profile popup based on the user's login status
-     * this function is called inside the src/extensionsIntegrated/Phoenix/main.js when user clicks on the profile icon
-     * @param {Object} data - Data to populate the templates (optional)
      */
-    function init(data) {
+    function togglePopup() {
         // check if the popup is already visible or not. if visible close it
         if (isPopupVisible) {
             closePopup();
             return;
         }
 
-        if (isLoggedIn) {
-            showProfilePopup(data);
+        if (KernalModeTrust.loginService.isLoggedIn()) {
+            showProfilePopup();
         } else {
-            showLoginPopup(data);
+            showLoginPopup();
         }
     }
 
+    function init() {
+        const helpButtonID = "user-profile-button";
+        $icon = $("<a>")
+            .attr({
+                id: helpButtonID,
+                href: "#",
+                class: "user",
+                title: Strings.CMD_USER_PROFILE
+            })
+            .appendTo($("#main-toolbar .bottom-buttons"));
+        // _updateProfileIcon("CA", "blue");
+        $icon.on('click', ()=>{
+            if(!Phoenix.isNativeApp){
+                // in browser app, we don't currently support login
+                Phoenix.app.openURLInDefaultBrowser("https://account.phcode.io");
+                return;
+            }
+            togglePopup();
+        });
+    }
+
+    function setNotLoggedIn() {
+        if (isPopupVisible) {
+            closePopup();
+        }
+        _removeProfileIcon();
+    }
+
+    function setLoggedIn(initial, color) {
+        if (isPopupVisible) {
+            closePopup();
+        }
+        _updateProfileIcon(initial, color);
+    }
+
     exports.init = init;
+    exports.setNotLoggedIn = setNotLoggedIn;
+    exports.setLoggedIn = setLoggedIn;
 });
