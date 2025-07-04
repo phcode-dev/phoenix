@@ -71,35 +71,7 @@ define(function (require, exports, module) {
         `);
 
         $collapseBtn.on("click", handleCollapseBtnClick);
-
         $projectFilesHeader.append($collapseBtn); // append the btn to the project-files-header
-
-        _setupHoverBehavior($collapseBtn); // hover functionality to show/hide the button
-    }
-
-    /**
-     * This function is responsible for the hover behavior to show/hide the collapse button
-     * we only show the button when the cursor is over the sidebar area
-     */
-    function _setupHoverBehavior($collapseBtn) {
-        const $sidebar = $("#sidebar");
-        if ($sidebar.length === 0) {
-            return;
-        }
-
-        // we need this check to see if on site load the mouse is already over the sidebar area or not
-        // because if it is, then we need to show the button
-        if ($sidebar.is(":hover")) {
-            $collapseBtn.addClass("show");
-        }
-
-        $sidebar.on("mouseenter", function () {
-            $collapseBtn.addClass("show");
-        });
-
-        $sidebar.on("mouseleave", function () {
-            $collapseBtn.removeClass("show");
-        });
     }
 
     AppInit.appReady(function () {
