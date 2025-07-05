@@ -37,8 +37,8 @@ define(function (require, exports, module) {
         Strings.CLOSE_TAB,
         Strings.CLOSE_TABS_TO_THE_LEFT,
         Strings.CLOSE_TABS_TO_THE_RIGHT,
+        Strings.CLOSE_SAVED_TABS,
         Strings.CLOSE_ALL_TABS,
-        Strings.CLOSE_UNMODIFIED_TABS,
         "---",
         Strings.CMD_FILE_RENAME,
         Strings.CMD_FILE_DELETE,
@@ -89,12 +89,12 @@ define(function (require, exports, module) {
     }
 
     /**
-     * "CLOSE UNMODIFIED TABS"
-     * This will close all tabs that are not modified in the specified pane
+     * "CLOSE SAVED TABS"
+     * This will close all tabs that are not dirty in the specified pane
      *
      * @param {String} paneId - the id of the pane ["first-pane", "second-pane"]
      */
-    function handleCloseUnmodifiedTabs(paneId) {
+    function handleCloseSavedTabs(paneId) {
         if (!paneId) {
             return;
         }
@@ -108,7 +108,7 @@ define(function (require, exports, module) {
         // get all those entries that are not dirty
         const unmodifiedEntries = workingSet.filter((entry) => !entry.isDirty);
 
-        // close each unmodified file in the pane
+        // close each non-dirty file in the pane
         for (let i = unmodifiedEntries.length - 1; i >= 0; i--) {
             const fileObj = FileSystem.getFileForPath(unmodifiedEntries[i].path);
             CommandManager.execute(Commands.FILE_CLOSE, { file: fileObj, paneId: paneId });
@@ -306,8 +306,8 @@ define(function (require, exports, module) {
         case Strings.CLOSE_ALL_TABS:
             handleCloseAllTabs(paneId);
             break;
-        case Strings.CLOSE_UNMODIFIED_TABS:
-            handleCloseUnmodifiedTabs(paneId);
+        case Strings.CLOSE_SAVED_TABS:
+            handleCloseSavedTabs(paneId);
             break;
         case Strings.CMD_FILE_RENAME:
             handleFileRename(filePath);
