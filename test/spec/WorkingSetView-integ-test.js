@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, beforeEach, afterEach, awaitsFor, awaitsForDone, beforeAll, afterAll, awaits */
+/*global describe, it, expect, beforeEach, afterEach, awaitsFor, awaitsForDone, beforeAll, afterAll, awaits, path */
 
 define(function (require, exports, module) {
 
@@ -226,28 +226,33 @@ define(function (require, exports, module) {
             expect($list.find(".directory").length).toBe(0);
         });
 
-        it("should show full path next to the file name when file is outside current project", async function () {
-            // Count currently opened files
-            var workingSetListItemCountBeforeTest = workingSetListItemCount;
+        it("should show ellipsis on external project files", async function () {
+            // empty the working set
+            await testWindow.closeAllFiles();
+            workingSetListItemCount = 0;
 
-            // First we need to open another file
             await openAndMakeDirty(externalProjectTestPath + "/test.js");
 
-            // Wait for file to be added to the working set
-            await awaitsFor(function () { return workingSetListItemCount === workingSetListItemCountBeforeTest + 1; });
+            // wait for the file to add to the working set
+            await awaitsFor(function () { return workingSetListItemCount === 1; }, "Open file count to be 1");
 
-            // Two files with the same name file_one.js should be now opened
+            // get the directory path
             var $list = testWindow.$(".open-files-container > ul");
-            const fullPathSpan = $list.find(".directory");
-            expect(fullPathSpan.length).toBe(1);
-            expect(fullPathSpan[0].innerHTML.includes(Phoenix.app.getDisplayPath(externalProjectTestPath))).toBe(true);
+            const directorySpan = $list.find(".directory");
+            expect(directorySpan.length).toBe(1);
 
-            // Now close last opened file to hide the directories again
+            // get the text from the directory path
+            const directoryText = directorySpan[0].innerHTML;
+
+            // check if the directory path has ellipsis
+            expect(directoryText.includes("\u2026")).toBe(true);
+
+            // the title should contain the full path
+            expect(directorySpan.attr('title')).toBe(Phoenix.app.getDisplayPath(path.dirname(externalProjectTestPath + "/test.js")));
+
+            // Clean up
             DocumentManager.getCurrentDocument()._markClean(); // so we can close without a save dialog
             await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE), "timeout on FILE_CLOSE", 1000);
-
-            // there should be no more directories shown
-            expect($list.find(".directory").length).toBe(0);
         });
 
         it("should show different directory names, when two files of the same name are opened, located in folders with same name", async function () {
