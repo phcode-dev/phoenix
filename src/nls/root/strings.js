@@ -434,7 +434,7 @@ define({
     "CLOSE_TABS_TO_THE_RIGHT": "Close Tabs to the Right",
     "CLOSE_TABS_TO_THE_LEFT": "Close Tabs to the Left",
     "CLOSE_ALL_TABS": "Close All Tabs",
-    "CLOSE_UNMODIFIED_TABS": "Close Unmodified Tabs",
+    "CLOSE_SAVED_TABS": "Close Saved Tabs",
     "REOPEN_CLOSED_FILE": "Reopen Closed File",
 
     // CodeInspection: errors/warnings
