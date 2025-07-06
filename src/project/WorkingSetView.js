@@ -1017,40 +1017,49 @@ define(function (require, exports, module) {
             let filePath = $li.data(_FILE_KEY).fullPath;
             const io = externalProjectFiles.indexOf(filePath);
             if (io !== -1) {
+                const displayPath = Phoenix.app.getDisplayPath(filePath);
                 let dirPath = path.dirname(filePath);
-                // this will be displayed on hover
-                const displayPath = Phoenix.app.getDisplayPath(dirPath);
+                // this will be displayed on hover GetDisplayPath returns
+                // windows: C://some/path , linux/mac: /some/path
+                // a relative path of the form `folder/file.txt` (no-leading slash) for fs access paths- /mnt/paths
+                // or virtual path if its a browser indexed db - backed path like /fs/virtual/path
+                const displayDirPath = Phoenix.app.getDisplayPath(dirPath);
 
-                let separator;
-                if (Phoenix.isNativeApp) {
-                    separator = brackets.platform === "win" ? "\\" : "/";
+                let sep;
+                if (Phoenix.isNativeApp && brackets.platform === "win") {
+                    sep =  "\\";
                 } else {
-                    separator = "/";
+                    sep = "/";
                 }
 
-                let dirSplit = displayPath.split(separator);
+                // Split the path and filter out empty segments
+                let dirSplit = displayDirPath.split(sep).filter(segment => segment !== '');
 
-                let truncatedPath = displayPath; // truncatedPath value will be shown in the UI
+                let truncatedPath = displayDirPath; // truncatedPath value will be shown in the UI
                 if (dirSplit.length > 3) {
-                    let rootDirName;
+                    const rootDirName = dirSplit[0];
+                    const secondLastSegment = dirSplit[dirSplit.length - 2];
+                    const fileName = dirSplit[dirSplit.length - 1];
 
-                    if (Phoenix.isNativeApp) {
-                        // Desktop app paths
-                        // dirSplit[0] maybe empty sometimes for absolute paths on Linux/Mac eg: "/root/fs/path/to/file"
-                        rootDirName = dirSplit[0] ? dirSplit[0] : dirSplit[1];
+                    if (Phoenix.isNativeApp && brackets.platform === "win") {
+                        // Eg: C:\\long\path\to\file.txt - > C:\\...\to\file.txt
+                        truncatedPath = `${rootDirName}:${sep}${sep}\u2026${sep}${secondLastSegment}${sep}${fileName}`;
+                    } else if (Phoenix.isNativeApp) {
+                        // an absolute path of the form /abs/path/to/file in linux/mac desktop
+                        // Eg: /application/path/to/file.txt - > /application/.../to/file.txt
+                        truncatedPath = `${sep}${rootDirName}${sep}\u2026${sep}${secondLastSegment}${sep}${fileName}`;
+                    } else if (!Phoenix.isNativeApp && !displayDirPath.startsWith('/')){
+                        // browser fs access path: `folder/file.txt` (no-leading slash) fs access paths- /mnt/paths
+                        // Eg: opened/folder/path/to/file.txt - > opened/.../to/file.txt (no-leading slash)
+                        truncatedPath = `${rootDirName}${sep}\u2026${sep}${secondLastSegment}${sep}${fileName}`;
                     } else {
-                        // Browser paths - handle different formats
-                        if (displayPath.startsWith('/')) {
-                            // Internal/default projects: /fs/path/to/file
-                            // dirSplit[0] will be empty due to leading '/'
-                            rootDirName = dirSplit[1] || dirSplit[0];
-                        } else {
-                            // User-opened system folders: path/to/file (no leading '/')
-                            rootDirName = dirSplit[0];
-                        }
+                        //this is an internal indexed db backed virtual path. This can only happen if we allow virtual
+                        // project locations from one project to be opened in another. So just print the trim path
+                        // path in this case. In future, when we add this support, the get display path fn should be
+                        // modified to  give somethings like what we do for fs access path.
+                        // Eg: /application/path/to/file.txt - > /application/.../to/file.txt
+                        truncatedPath = `${sep}${rootDirName}${sep}\u2026${sep}${secondLastSegment}${sep}${fileName}`;
                     }
-
-                    truncatedPath = rootDirName + separator + "\u2026" + separator + dirSplit[dirSplit.length - 1];
                 }
 
                 const $dir = $(`<span title='${displayPath}' class='directory'/>`)

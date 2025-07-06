@@ -37,7 +37,7 @@ define(function (require, exports, module) {
     describe("mainview:WorkingSetView", function () {
 
         var testPath = SpecRunnerUtils.getTestPath("/spec/WorkingSetView-test-files"),
-            externalProjectTestPath = SpecRunnerUtils.getTestPath("/spec/MainViewManager-test-files"),
+            externalProjectTestPath = SpecRunnerUtils.getTestPath("/spec/MainViewFactory-test-files/css"),
             testWindow,
             workingSetListItemCount;
 
@@ -230,8 +230,19 @@ define(function (require, exports, module) {
             // empty the working set
             await testWindow.closeAllFiles();
             workingSetListItemCount = 0;
+            const virtualPath = externalProjectTestPath + "/tablet.css";
+            const hoverFullPath = Phoenix.app.getDisplayPath(virtualPath);
 
-            await openAndMakeDirty(externalProjectTestPath + "/test.js");
+            let sep;
+            if (Phoenix.isNativeApp && brackets.platform === "win") {
+                sep =  "\\";
+            } else {
+                sep = "/";
+            }
+            let dirSplit = Phoenix.app.getDisplayPath(virtualPath).split(sep).filter(segment => segment !== '');
+            const root = dirSplit[0];
+
+            await openAndMakeDirty(virtualPath);
 
             // wait for the file to add to the working set
             await awaitsFor(function () { return workingSetListItemCount === 1; }, "Open file count to be 1");
@@ -246,9 +257,17 @@ define(function (require, exports, module) {
 
             // check if the directory path has ellipsis
             expect(directoryText.includes("\u2026")).toBe(true);
+            if (!Phoenix.isNativeApp) {
+                expect(directoryText).toBe(' — /test/…/MainViewFactory-test-files/css');
+            } else if (brackets.platform === "linux" || brackets.platform === "mac") {
+                expect(directoryText).toBe(` — /${root}/…/MainViewFactory-test-files/css`);
+            } else {
+                // windows
+                expect(directoryText).toBe(` — ${root}:\\\\…\\MainViewFactory-test-files\\css`);
+            }
 
             // the title should contain the full path
-            expect(directorySpan.attr('title')).toBe(Phoenix.app.getDisplayPath(path.dirname(externalProjectTestPath + "/test.js")));
+            expect(directorySpan.attr('title')).toBe(hoverFullPath);
 
             // Clean up
             DocumentManager.getCurrentDocument()._markClean(); // so we can close without a save dialog
