@@ -536,6 +536,49 @@ define(function (require, exports, module) {
                 // Verify the tab for the previous active file is no longer active
                 expect(isTabActive(activeFile.fullPath)).toBe(false);
             });
+
+            it("should switch files properly when different tabs are clicked", async function () {
+                // Helper function to click a tab and verify it becomes active
+                async function clickTabAndVerify(filePath, description) {
+                    const $tab = getTab(filePath);
+                    expect($tab.length).toBe(1);
+                    $tab.trigger("mousedown");
+
+                    // Wait for the file to become active
+                    await awaitsFor(
+                        function () {
+                            return (
+                                isTabActive(filePath) && MainViewManager.getCurrentlyViewedFile().fullPath === filePath
+                            );
+                        },
+                        `${description} to become active after tab click`,
+                        1000
+                    );
+
+                    // Verify this tab is active and others are not
+                    const allPaths = [testFilePath, testFilePath2, testFilePath3];
+                    allPaths.forEach((path) => {
+                        expect(isTabActive(path)).toBe(path === filePath);
+                    });
+
+                    // Verify the correct file is loaded in the editor
+                    expect(MainViewManager.getCurrentlyViewedFile().fullPath).toBe(filePath);
+                }
+                // add a small timer to make sure that the tab bar is properly loaded
+                await awaits(100);
+
+                // Initially, verify the third file is active (last opened)
+                expect(isTabActive(testFilePath3)).toBe(true);
+                expect(MainViewManager.getCurrentlyViewedFile().fullPath).toBe(testFilePath3);
+
+                // Test clicking on each tab
+                await clickTabAndVerify(testFilePath, "First file");
+                await clickTabAndVerify(testFilePath2, "Second file");
+                await clickTabAndVerify(testFilePath3, "Third file");
+
+                // Click back on the first tab to ensure it still works
+                await clickTabAndVerify(testFilePath, "First file");
+            });
         });
 
         describe("Tab Items", function () {
