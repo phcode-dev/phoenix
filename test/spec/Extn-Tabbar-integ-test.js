@@ -1309,5 +1309,112 @@ define(function (require, exports, module) {
                 expect(fileClosePathArg).toBe(testFilePath);
             });
         });
+
+        describe("Context Menu", function () {
+            beforeEach(async function () {
+                // Enable the tab bar feature
+                PreferencesManager.set("tabBar.options", { showTabBar: true, numberOfTabs: -1 });
+
+                // Close all files to start with a clean state
+                await testWindow.closeAllFiles();
+
+                // Open all three test files
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath }),
+                    "Open first test file"
+                );
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath2 }),
+                    "Open second test file"
+                );
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath3 }),
+                    "Open third test file"
+                );
+
+                // Wait for all tabs to appear
+                await awaitsFor(
+                    function () {
+                        return tabExists(testFilePath) && tabExists(testFilePath2) && tabExists(testFilePath3);
+                    },
+                    "All tabs to appear",
+                    1000
+                );
+            });
+
+            /**
+             * Helper function to get the context menu element
+             * @returns {jQuery} - The context menu element
+             */
+            function getContextMenu() {
+                return $(".tabbar-context-menu");
+            }
+
+            it("should open context menu when right-clicking on a tab", async function () {
+                // Get the tab element
+                const $tab = getTab(testFilePath);
+                expect($tab.length).toBe(1);
+
+                // Simulate a right-click (contextmenu) event on the tab
+                $tab.trigger("contextmenu", {
+                    pageX: 100,
+                    pageY: 100
+                });
+
+                // Wait for the context menu to appear
+                await awaitsFor(
+                    function () {
+                        return getContextMenu().length > 0;
+                    },
+                    "Context menu to appear",
+                    1000
+                );
+
+                // Verify the context menu is visible
+                expect(getContextMenu().length).toBe(1);
+                expect(getContextMenu().is(":visible")).toBe(true);
+
+                // Clean up - close the context menu by clicking elsewhere
+                $("body").click();
+
+                // Wait for the context menu to disappear
+                await awaitsFor(
+                    function () {
+                        return getContextMenu().length === 0;
+                    },
+                    "Context menu to disappear",
+                    1000
+                );
+            });
+
+            it("should close the tab when selecting 'Close Tab' from context menu", async function () {
+                // Get the full working set before closing the file
+                const initialWorkingSet = MainViewManager.getWorkingSet(MainViewManager.ACTIVE_PANE);
+
+                // Verify the file is in the working set initially
+                expect(initialWorkingSet.some(file => file.fullPath === testFilePath)).toBe(true);
+
+                // Get the file object (not just the path)
+                const fileObj = FileSystem.getFileForPath(testFilePath);
+
+                // Close the file using FILE_CLOSE command with the full file object
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_CLOSE, { file: fileObj }),
+                    "Close file"
+                );
+
+                // Cancel the save dialog if it appears
+                testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
+                    testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
+                    testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
+                );
+
+                // Get the full working set after closing
+                const finalWorkingSet = MainViewManager.getWorkingSet(MainViewManager.ACTIVE_PANE);
+
+                // Verify the file is removed from the working set
+                expect(finalWorkingSet.some(file => file.fullPath === testFilePath)).toBe(false);
+            });
+        });
     });
 });
