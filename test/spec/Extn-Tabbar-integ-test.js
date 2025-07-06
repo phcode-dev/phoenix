@@ -195,6 +195,67 @@ define(function (require, exports, module) {
             return getTab(filePath).find(".tab-close").length > 0;
         }
 
+        /**
+         * Helper function to check if the overflow button is visible
+         * @returns {boolean} - True if the overflow button is visible, false otherwise
+         */
+        function isOverflowButtonVisible() {
+            return $("#overflow-button").is(":visible");
+        }
+
+        /**
+         * Helper function to get the overflow button element
+         * @returns {jQuery} - The overflow button element
+         */
+        function getOverflowButton() {
+            return $("#overflow-button");
+        }
+
+        /**
+         * Helper function to check if a tab is visible in the tab bar (not hidden by overflow)
+         * @param {string} filePath - The path of the file to check
+         * @returns {boolean} - True if the tab is visible, false otherwise
+         */
+        function isTabVisible(filePath) {
+            const $tab = getTab(filePath);
+            if (!$tab.length) {
+                return false;
+            }
+
+            const $tabBar = $("#phoenix-tab-bar");
+            const tabBarRect = $tabBar[0].getBoundingClientRect();
+            const tabRect = $tab[0].getBoundingClientRect();
+
+            // A tab is considered visible if it is completely within the tab bar's visible area
+            // with a small margin of error (2px)
+            return tabRect.left >= tabBarRect.left && tabRect.right <= tabBarRect.right + 2;
+        }
+
+        /**
+         * Helper function to get the overflow dropdown menu
+         * @returns {jQuery} - The overflow dropdown menu element
+         */
+        function getOverflowDropdown() {
+            return $(".dropdown-overflow-menu");
+        }
+
+        /**
+         * Helper function to get the items in the overflow dropdown
+         * @returns {jQuery} - The overflow dropdown items
+         */
+        function getOverflowDropdownItems() {
+            return $(".dropdown-overflow-menu .dropdown-tab-item");
+        }
+
+        /**
+         * Helper function to get a specific item in the overflow dropdown by file path
+         * @param {string} filePath - The path of the file to find
+         * @returns {jQuery} - The dropdown item element
+         */
+        function getOverflowDropdownItem(filePath) {
+            return $(`.dropdown-overflow-menu .dropdown-tab-item[data-tab-path="${filePath}"]`);
+        }
+
         describe("Visibility", function () {
             it("should show tab bar when the feature is enabled", async function () {
                 // Enable the tab bar feature
@@ -578,6 +639,269 @@ define(function (require, exports, module) {
 
                 // Click back on the first tab to ensure it still works
                 await clickTabAndVerify(testFilePath, "First file");
+            });
+        });
+
+        describe("Overflow", function () {
+            beforeEach(async function () {
+                // Enable the tab bar feature
+                PreferencesManager.set("tabBar.options", { showTabBar: true, numberOfTabs: -1 });
+
+                // Close all files to start with a clean state
+                await testWindow.closeAllFiles();
+            });
+
+            it("should show overflow button when there are too many tabs to fit", async function () {
+                // Create several test files to ensure overflow
+                const testFiles = [];
+                for (let i = 0; i < 15; i++) {
+                    const filePath = SpecRunnerUtils.getTempDirectory() + `/overflow-test-${i}.js`;
+                    testFiles.push(filePath);
+                    await jsPromise(SpecRunnerUtils.createTextFile(filePath, `// Overflow test file ${i}`, FileSystem));
+                }
+
+                // Open all the test files
+                for (const filePath of testFiles) {
+                    await awaitsForDone(
+                        CommandManager.execute(Commands.FILE_OPEN, { fullPath: filePath }),
+                        `Open file ${filePath}`
+                    );
+                }
+
+                // Wait for all tabs to appear
+                await awaitsFor(
+                    function () {
+                        return getTabCount() >= testFiles.length;
+                    },
+                    "All tabs to appear",
+                    1000
+                );
+
+                // Wait for the overflow button to appear
+                await awaitsFor(
+                    function () {
+                        return isOverflowButtonVisible();
+                    },
+                    "Overflow button to appear",
+                    1000
+                );
+
+                // Verify the overflow button is visible
+                expect(isOverflowButtonVisible()).toBe(true);
+
+                // Verify that some tabs are not visible
+                let visibleTabs = 0;
+                let hiddenTabs = 0;
+                for (const filePath of testFiles) {
+                    if (isTabVisible(filePath)) {
+                        visibleTabs++;
+                    } else {
+                        hiddenTabs++;
+                    }
+                }
+
+                // There should be at least one hidden tab
+                expect(hiddenTabs).toBeGreaterThan(0);
+                expect(visibleTabs + hiddenTabs).toBe(testFiles.length);
+
+                // Clean up - close all the test files
+                for (const filePath of testFiles) {
+                    const fileToClose = FileSystem.getFileForPath(filePath);
+                    const promise = CommandManager.execute(Commands.FILE_CLOSE, { file: fileToClose });
+                    testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
+                        testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
+                        testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
+                    );
+                    await awaitsForDone(promise, `Close file ${filePath}`);
+                }
+            });
+
+            it("should display dropdown with hidden tabs when overflow button is clicked", async function () {
+                // Create several test files to ensure overflow
+                const testFiles = [];
+                for (let i = 0; i < 15; i++) {
+                    const filePath = SpecRunnerUtils.getTempDirectory() + `/overflow-test-${i}.js`;
+                    testFiles.push(filePath);
+                    await jsPromise(SpecRunnerUtils.createTextFile(filePath, `// Overflow test file ${i}`, FileSystem));
+                }
+
+                // Open all the test files
+                for (const filePath of testFiles) {
+                    await awaitsForDone(
+                        CommandManager.execute(Commands.FILE_OPEN, { fullPath: filePath }),
+                        `Open file ${filePath}`
+                    );
+                }
+
+                // Wait for all tabs to appear
+                await awaitsFor(
+                    function () {
+                        return getTabCount() >= testFiles.length;
+                    },
+                    "All tabs to appear",
+                    1000
+                );
+
+                // Wait for the overflow button to appear
+                await awaitsFor(
+                    function () {
+                        return isOverflowButtonVisible();
+                    },
+                    "Overflow button to appear",
+                    1000
+                );
+
+                // Get the list of hidden tabs
+                const hiddenFiles = testFiles.filter((filePath) => !isTabVisible(filePath));
+                expect(hiddenFiles.length).toBeGreaterThan(0);
+
+                // Click the overflow button
+                getOverflowButton().click();
+
+                // Wait for the dropdown to appear
+                await awaitsFor(
+                    function () {
+                        return getOverflowDropdown().length > 0;
+                    },
+                    "Overflow dropdown to appear",
+                    1000
+                );
+
+                // Verify the dropdown is visible
+                expect(getOverflowDropdown().length).toBeGreaterThan(0);
+
+                // Verify the dropdown contains items for all hidden tabs
+                const dropdownItems = getOverflowDropdownItems();
+                expect(dropdownItems.length).toBe(hiddenFiles.length);
+
+                // Verify each hidden file has an item in the dropdown
+                for (const filePath of hiddenFiles) {
+                    const item = getOverflowDropdownItem(filePath);
+                    expect(item.length).toBe(1);
+                }
+
+                // Clean up - close the dropdown by clicking elsewhere
+                $("body").click();
+
+                // Wait for the dropdown to disappear
+                await awaitsFor(
+                    function () {
+                        return getOverflowDropdown().length === 0;
+                    },
+                    "Overflow dropdown to disappear",
+                    1000
+                );
+
+                // Clean up - close all the test files
+                for (const filePath of testFiles) {
+                    const fileToClose = FileSystem.getFileForPath(filePath);
+                    const promise = CommandManager.execute(Commands.FILE_CLOSE, { file: fileToClose });
+                    testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
+                        testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
+                        testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
+                    );
+                    await awaitsForDone(promise, `Close file ${filePath}`);
+                }
+            });
+
+            it("should make tab visible and file active when clicking on item in overflow dropdown", async function () {
+                // Create several test files to ensure overflow
+                const testFiles = [];
+                for (let i = 0; i < 15; i++) {
+                    const filePath = SpecRunnerUtils.getTempDirectory() + `/overflow-test-${i}.js`;
+                    testFiles.push(filePath);
+                    await jsPromise(SpecRunnerUtils.createTextFile(filePath, `// Overflow test file ${i}`, FileSystem));
+                }
+
+                // Open all the test files
+                for (const filePath of testFiles) {
+                    await awaitsForDone(
+                        CommandManager.execute(Commands.FILE_OPEN, { fullPath: filePath }),
+                        `Open file ${filePath}`
+                    );
+                }
+
+                // Wait for all tabs to appear
+                await awaitsFor(
+                    function () {
+                        return getTabCount() >= testFiles.length;
+                    },
+                    "All tabs to appear",
+                    1000
+                );
+
+                // Wait for the overflow button to appear
+                await awaitsFor(
+                    function () {
+                        return isOverflowButtonVisible();
+                    },
+                    "Overflow button to appear",
+                    1000
+                );
+
+                // Get the list of hidden tabs
+                const hiddenFiles = testFiles.filter((filePath) => !isTabVisible(filePath));
+                expect(hiddenFiles.length).toBeGreaterThan(0);
+
+                // Select a hidden file to test
+                const testHiddenFile = hiddenFiles[0];
+
+                // Click the overflow button
+                getOverflowButton().click();
+
+                // Wait for the dropdown to appear
+                await awaitsFor(
+                    function () {
+                        return getOverflowDropdown().length > 0;
+                    },
+                    "Overflow dropdown to appear",
+                    1000
+                );
+
+                // Get the dropdown item for the test file
+                const dropdownItem = getOverflowDropdownItem(testHiddenFile);
+                expect(dropdownItem.length).toBe(1);
+
+                // Click the dropdown item
+                dropdownItem.click();
+
+                // Wait for the file to become active
+                await awaitsFor(
+                    function () {
+                        return (
+                            isTabActive(testHiddenFile) &&
+                            MainViewManager.getCurrentlyViewedFile().fullPath === testHiddenFile
+                        );
+                    },
+                    "Hidden file to become active after dropdown item click",
+                    1000
+                );
+
+                // Verify the file is active
+                expect(isTabActive(testHiddenFile)).toBe(true);
+                expect(MainViewManager.getCurrentlyViewedFile().fullPath).toBe(testHiddenFile);
+
+                // Verify the tab is now visible (scrolled into view)
+                await awaitsFor(
+                    function () {
+                        return isTabVisible(testHiddenFile);
+                    },
+                    "Tab to become visible after dropdown item click",
+                    1000
+                );
+
+                expect(isTabVisible(testHiddenFile)).toBe(true);
+
+                // Clean up - close all the test files
+                for (const filePath of testFiles) {
+                    const fileToClose = FileSystem.getFileForPath(filePath);
+                    const promise = CommandManager.execute(Commands.FILE_CLOSE, { file: fileToClose });
+                    testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
+                        testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
+                        testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
+                    );
+                    await awaitsForDone(promise, `Close file ${filePath}`);
+                }
             });
         });
 
