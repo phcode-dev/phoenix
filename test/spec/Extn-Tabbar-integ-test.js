@@ -24,7 +24,7 @@ define(function (require, exports, module) {
     const SpecRunnerUtils = require("spec/SpecRunnerUtils");
 
     describe("integration:TabBar", function () {
-        let testWindow, PreferencesManager, $, FileSystem, MainViewManager, CommandManager, Commands, DocumentManager;
+        let testWindow, PreferencesManager, $, FileSystem, MainViewManager, CommandManager, Commands, DocumentManager, Strings;
         let testFilePath, testFilePath2, testFilePath3, testDuplicateDir1, testDuplicateDir2, testDuplicateName;
 
         beforeAll(async function () {
@@ -38,6 +38,7 @@ define(function (require, exports, module) {
             CommandManager = testWindow.brackets.test.CommandManager;
             Commands = testWindow.brackets.test.Commands;
             DocumentManager = testWindow.brackets.test.DocumentManager;
+            Strings = testWindow.Strings;
 
             // Create test files
             testFilePath = SpecRunnerUtils.getTempDirectory() + "/tabbar-test.js";
@@ -1388,20 +1389,30 @@ define(function (require, exports, module) {
             });
 
             it("should close the tab when selecting 'Close Tab' from context menu", async function () {
-                // Get the full working set before closing the file
-                const initialWorkingSet = MainViewManager.getWorkingSet(MainViewManager.ACTIVE_PANE);
+                // Get the tab element
+                const $tab = getTab(testFilePath);
 
-                // Verify the file is in the working set initially
-                expect(initialWorkingSet.some(file => file.fullPath === testFilePath)).toBe(true);
+                // Right-click on the tab to open context menu
+                $tab.trigger("contextmenu", {
+                    pageX: 100,
+                    pageY: 100
+                });
 
-                // Get the file object (not just the path)
-                const fileObj = FileSystem.getFileForPath(testFilePath);
-
-                // Close the file using FILE_CLOSE command with the full file object
-                await awaitsForDone(
-                    CommandManager.execute(Commands.FILE_CLOSE, { file: fileObj }),
-                    "Close file"
+                // Wait for context menu to appear
+                await awaitsFor(
+                    function () {
+                        return getContextMenu().length > 0;
+                    },
+                    "Context menu to appear",
+                    1000
                 );
+
+                // Find and click the "Close Tab" option
+                const $closeTabOption = getContextMenu().find('a.stylesheet-link').filter(function() {
+                    return $(this).text().trim() === Strings.CLOSE_TAB;
+                });
+                expect($closeTabOption.length).toBe(1);
+                $closeTabOption.click();
 
                 // Cancel the save dialog if it appears
                 testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
@@ -1409,11 +1420,14 @@ define(function (require, exports, module) {
                     testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
                 );
 
-                // Get the full working set after closing
-                const finalWorkingSet = MainViewManager.getWorkingSet(MainViewManager.ACTIVE_PANE);
-
-                // Verify the file is removed from the working set
-                expect(finalWorkingSet.some(file => file.fullPath === testFilePath)).toBe(false);
+                // Verify the tab is closed
+                await awaitsFor(
+                    function () {
+                        return !tabExists(testFilePath);
+                    },
+                    "Tab to be closed",
+                    1000
+                );
             });
         });
     });
