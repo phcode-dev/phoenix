@@ -201,7 +201,9 @@ define(function (require, exports, module) {
 
             await awaits(ProjectManager._RENDER_DEBOUNCE_TIME + 50);
 
-            expect($("#project-files-container ul input").val()).toBe(fileName);
+            await awaitsFor(function () {
+                return $("#project-files-container ul input").val() === fileName;
+            });
         });
 
         it("should show a directory name next to the file name when two files with same names are opened", async function () {

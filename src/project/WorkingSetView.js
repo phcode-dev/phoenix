@@ -1039,26 +1039,26 @@ define(function (require, exports, module) {
                 if (dirSplit.length > 3) {
                     const rootDirName = dirSplit[0];
                     const secondLastSegment = dirSplit[dirSplit.length - 2];
-                    const fileName = dirSplit[dirSplit.length - 1];
+                    const lastSeg = dirSplit[dirSplit.length - 1];
 
                     if (Phoenix.isNativeApp && brackets.platform === "win") {
-                        // Eg: C:\\long\path\to\file.txt - > C:\\...\to\file.txt
-                        truncatedPath = `${rootDirName}:${sep}${sep}\u2026${sep}${secondLastSegment}${sep}${fileName}`;
+                        // Eg: C:\\long\path\to\fileDir - > C:\\...\to\fileDir
+                        truncatedPath = `${rootDirName}:${sep}${sep}\u2026${sep}${secondLastSegment}${sep}${lastSeg}`;
                     } else if (Phoenix.isNativeApp) {
                         // an absolute path of the form /abs/path/to/file in linux/mac desktop
-                        // Eg: /application/path/to/file.txt - > /application/.../to/file.txt
-                        truncatedPath = `${sep}${rootDirName}${sep}\u2026${sep}${secondLastSegment}${sep}${fileName}`;
+                        // Eg: /application/path/to/fileDir - > /application/.../to/fileDir
+                        truncatedPath = `${sep}${rootDirName}${sep}\u2026${sep}${secondLastSegment}${sep}${lastSeg}`;
                     } else if (!Phoenix.isNativeApp && !displayDirPath.startsWith('/')){
-                        // browser fs access path: `folder/file.txt` (no-leading slash) fs access paths- /mnt/paths
-                        // Eg: opened/folder/path/to/file.txt - > opened/.../to/file.txt (no-leading slash)
-                        truncatedPath = `${rootDirName}${sep}\u2026${sep}${secondLastSegment}${sep}${fileName}`;
+                        // browser fs access path: `folder/fileDir` (no-leading slash) fs access paths- /mnt/paths
+                        // Eg: opened/folder/path/to/fileDir - > opened/.../to/fileDir (no-leading slash)
+                        truncatedPath = `${rootDirName}${sep}\u2026${sep}${secondLastSegment}${sep}${lastSeg}`;
                     } else {
                         //this is an internal indexed db backed virtual path. This can only happen if we allow virtual
                         // project locations from one project to be opened in another. So just print the trim path
                         // path in this case. In future, when we add this support, the get display path fn should be
                         // modified to  give somethings like what we do for fs access path.
-                        // Eg: /application/path/to/file.txt - > /application/.../to/file.txt
-                        truncatedPath = `${sep}${rootDirName}${sep}\u2026${sep}${secondLastSegment}${sep}${fileName}`;
+                        // Eg: /application/path/to/fileDir - > /application/.../to/fileDir
+                        truncatedPath = `${sep}${rootDirName}${sep}\u2026${sep}${secondLastSegment}${sep}${lastSeg}`;
                     }
                 }
 
