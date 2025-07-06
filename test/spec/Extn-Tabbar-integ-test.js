@@ -24,8 +24,8 @@ define(function (require, exports, module) {
     const SpecRunnerUtils = require("spec/SpecRunnerUtils");
 
     describe("integration:TabBar", function () {
-        let testWindow, PreferencesManager, $, FileSystem, MainViewManager, CommandManager, Commands, testFilePath;
-        let testFilePath2, testFilePath3;
+        let testWindow, PreferencesManager, $, FileSystem, MainViewManager, CommandManager, Commands, DocumentManager;
+        let testFilePath, testFilePath2, testFilePath3, testDuplicateDir1, testDuplicateDir2, testDuplicateName;
 
         beforeAll(async function () {
             // Create the test window
@@ -37,16 +37,39 @@ define(function (require, exports, module) {
             MainViewManager = testWindow.brackets.test.MainViewManager;
             CommandManager = testWindow.brackets.test.CommandManager;
             Commands = testWindow.brackets.test.Commands;
+            DocumentManager = testWindow.brackets.test.DocumentManager;
 
             // Create test files
             testFilePath = SpecRunnerUtils.getTempDirectory() + "/tabbar-test.js";
             testFilePath2 = SpecRunnerUtils.getTempDirectory() + "/tabbar-test2.js";
             testFilePath3 = SpecRunnerUtils.getTempDirectory() + "/tabbar-test3.js";
 
+            // Create files with the same name in different directories for testing duplicate name handling
+            testDuplicateDir1 = SpecRunnerUtils.getTempDirectory() + "/dir1";
+            testDuplicateDir2 = SpecRunnerUtils.getTempDirectory() + "/dir2";
+            testDuplicateName = "duplicate.js";
+
             await SpecRunnerUtils.createTempDirectory();
+            await SpecRunnerUtils.ensureExistsDirAsync(testDuplicateDir1);
+            await SpecRunnerUtils.ensureExistsDirAsync(testDuplicateDir2);
+
             await jsPromise(SpecRunnerUtils.createTextFile(testFilePath, "// Test file 1 for TabBar", FileSystem));
             await jsPromise(SpecRunnerUtils.createTextFile(testFilePath2, "// Test file 2 for TabBar", FileSystem));
             await jsPromise(SpecRunnerUtils.createTextFile(testFilePath3, "// Test file 3 for TabBar", FileSystem));
+            await jsPromise(
+                SpecRunnerUtils.createTextFile(
+                    testDuplicateDir1 + "/" + testDuplicateName,
+                    "// Duplicate file 1",
+                    FileSystem
+                )
+            );
+            await jsPromise(
+                SpecRunnerUtils.createTextFile(
+                    testDuplicateDir2 + "/" + testDuplicateName,
+                    "// Duplicate file 2",
+                    FileSystem
+                )
+            );
 
             // Open the first test file
             await awaitsForDone(
@@ -56,8 +79,8 @@ define(function (require, exports, module) {
         }, 30000);
 
         afterAll(async function () {
-            // Close all files
-            await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE_ALL), "Close all files");
+            // Close all files without prompting to save
+            await testWindow.closeAllFiles();
 
             testWindow = null;
             await SpecRunnerUtils.closeTestWindow();
@@ -88,6 +111,88 @@ define(function (require, exports, module) {
          */
         function isTabActive(filePath) {
             return $(`.tab[data-path="${filePath}"].active`).length > 0;
+        }
+
+        /**
+         * Helper function to get the tab element for a specific file
+         * @param {string} filePath - The path of the file
+         * @returns {jQuery} - The tab element
+         */
+        function getTab(filePath) {
+            return $(`.tab[data-path="${filePath}"]`);
+        }
+
+        /**
+         * Helper function to check if a tab has a dirty indicator
+         * @param {string} filePath - The path of the file to check
+         * @returns {boolean} - True if the tab has a dirty indicator, false otherwise
+         */
+        function isTabDirty(filePath) {
+            return getTab(filePath).hasClass("dirty");
+        }
+
+        /**
+         * Helper function to get the tab name element for a specific file
+         * @param {string} filePath - The path of the file
+         * @returns {jQuery} - The tab name element
+         */
+        function getTabName(filePath) {
+            return getTab(filePath).find(".tab-name");
+        }
+
+        /**
+         * Helper function to check if a tab has a directory name displayed
+         * @param {string} filePath - The path of the file to check
+         * @returns {boolean} - True if the tab has a directory name, false otherwise
+         */
+        function hasDirectoryName(filePath) {
+            return getTab(filePath).find(".tab-dirname").length > 0;
+        }
+
+        /**
+         * Helper function to get the directory name displayed in a tab
+         * @param {string} filePath - The path of the file
+         * @returns {string} - The directory name or empty string if not found
+         */
+        function getDirectoryName(filePath) {
+            const $dirName = getTab(filePath).find(".tab-dirname");
+            return $dirName.length ? $dirName.text() : "";
+        }
+
+        /**
+         * Helper function to check if a tab has a file icon
+         * @param {string} filePath - The path of the file to check
+         * @returns {boolean} - True if the tab has a file icon, false otherwise
+         */
+        function hasFileIcon(filePath) {
+            return getTab(filePath).find(".tab-icon i").length > 0;
+        }
+
+        /**
+         * Helper function to check if a tab has a git status indicator
+         * @param {string} filePath - The path of the file to check
+         * @returns {boolean} - True if the tab has a git status indicator, false otherwise
+         */
+        function hasGitStatus(filePath) {
+            return getTab(filePath).hasClass("git-new") || getTab(filePath).hasClass("git-modified");
+        }
+
+        /**
+         * Helper function to get the tooltip (title attribute) of a tab
+         * @param {string} filePath - The path of the file
+         * @returns {string} - The tooltip text
+         */
+        function getTabTooltip(filePath) {
+            return getTab(filePath).attr("title") || "";
+        }
+
+        /**
+         * Helper function to check if a tab has a close button
+         * @param {string} filePath - The path of the file to check
+         * @returns {boolean} - True if the tab has a close button, false otherwise
+         */
+        function hasCloseButton(filePath) {
+            return getTab(filePath).find(".tab-close").length > 0;
         }
 
         describe("Visibility", function () {
@@ -132,7 +237,7 @@ define(function (require, exports, module) {
                 PreferencesManager.set("tabBar.options", { showTabBar: true, numberOfTabs: -1 });
 
                 // Close all files to start with a clean state
-                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE_ALL), "Close all files");
+                await testWindow.closeAllFiles();
 
                 // Wait for the tab bar to update
                 await awaits(300);
@@ -229,10 +334,15 @@ define(function (require, exports, module) {
 
                 // Close the second test file
                 const fileToClose2 = FileSystem.getFileForPath(testFilePath2);
-                await awaitsForDone(
-                    CommandManager.execute(Commands.FILE_CLOSE, { file: fileToClose2 }),
-                    "Close second test file"
+                const promise2 = CommandManager.execute(Commands.FILE_CLOSE, { file: fileToClose2 });
+
+                // Cancel the save dialog if it appears
+                testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
+                    testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
+                    testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
                 );
+
+                await awaitsForDone(promise2, "Close second test file");
 
                 // Wait for the tab to disappear
                 await awaitsFor(
@@ -251,10 +361,15 @@ define(function (require, exports, module) {
 
                 // Close the first test file
                 const fileToClose1 = FileSystem.getFileForPath(testFilePath);
-                await awaitsForDone(
-                    CommandManager.execute(Commands.FILE_CLOSE, { file: fileToClose1 }),
-                    "Close first test file"
+                const promise1 = CommandManager.execute(Commands.FILE_CLOSE, { file: fileToClose1 });
+
+                // Cancel the save dialog if it appears
+                testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
+                    testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
+                    testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
                 );
+
+                await awaitsForDone(promise1, "Close first test file");
 
                 // Wait for the tab to disappear
                 await awaitsFor(
@@ -273,10 +388,15 @@ define(function (require, exports, module) {
 
                 // Close the third test file
                 const fileToClose3 = FileSystem.getFileForPath(testFilePath3);
-                await awaitsForDone(
-                    CommandManager.execute(Commands.FILE_CLOSE, { file: fileToClose3 }),
-                    "Close third test file"
+                const promise3 = CommandManager.execute(Commands.FILE_CLOSE, { file: fileToClose3 });
+
+                // Cancel the save dialog if it appears
+                testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
+                    testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
+                    testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
                 );
+
+                await awaitsForDone(promise3, "Close third test file");
 
                 // Wait for the tab to disappear
                 await awaitsFor(
@@ -301,7 +421,7 @@ define(function (require, exports, module) {
                 PreferencesManager.set("tabBar.options", { showTabBar: true, numberOfTabs: -1 });
 
                 // Close all files to start with a clean state
-                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE_ALL), "Close all files");
+                await testWindow.closeAllFiles();
 
                 // Open all three test files
                 await awaitsForDone(
@@ -415,6 +535,321 @@ define(function (require, exports, module) {
 
                 // Verify the tab for the previous active file is no longer active
                 expect(isTabActive(activeFile.fullPath)).toBe(false);
+            });
+        });
+
+        describe("Tab Items", function () {
+            beforeEach(async function () {
+                // Enable the tab bar feature
+                PreferencesManager.set("tabBar.options", { showTabBar: true, numberOfTabs: -1 });
+
+                // Close all files to start with a clean state
+                await testWindow.closeAllFiles();
+            });
+
+            it("should display the correct tab name", async function () {
+                // Open the first test file
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath }),
+                    "Open test file"
+                );
+
+                // Wait for the tab to appear
+                await awaitsFor(
+                    function () {
+                        return tabExists(testFilePath);
+                    },
+                    "Tab to appear",
+                    1000
+                );
+
+                // Get the filename from the path
+                const fileName = testFilePath.split("/").pop();
+
+                // Verify the tab name is correct
+                expect(getTabName(testFilePath).text()).toBe(fileName);
+            });
+
+            it("should display a file icon", async function () {
+                // Open the first test file
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath }),
+                    "Open test file"
+                );
+
+                // Wait for the tab to appear
+                await awaitsFor(
+                    function () {
+                        return tabExists(testFilePath);
+                    },
+                    "Tab to appear",
+                    1000
+                );
+
+                // Verify the tab has a file icon
+                expect(hasFileIcon(testFilePath)).toBe(true);
+            });
+
+            it("should display a dirty indicator when the file is modified and remove it when saved", async function () {
+                // Open the first test file
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath }),
+                    "Open test file"
+                );
+
+                // Wait for the tab to appear
+                await awaitsFor(
+                    function () {
+                        return tabExists(testFilePath);
+                    },
+                    "Tab to appear",
+                    1000
+                );
+
+                // Initially, the file should not be dirty
+                expect(isTabDirty(testFilePath)).toBe(false);
+
+                // Get the document and modify it
+                const doc = DocumentManager.getOpenDocumentForPath(testFilePath);
+                doc.setText("// Modified content");
+
+                // Wait for the dirty indicator to appear
+                await awaitsFor(
+                    function () {
+                        return isTabDirty(testFilePath);
+                    },
+                    "Dirty indicator to appear",
+                    1000
+                );
+
+                // Verify the tab has a dirty indicator
+                expect(isTabDirty(testFilePath)).toBe(true);
+
+                // Save the file
+                await awaitsForDone(CommandManager.execute(Commands.FILE_SAVE, { doc: doc }), "Save file");
+
+                // Wait for the dirty indicator to disappear
+                await awaitsFor(
+                    function () {
+                        return !isTabDirty(testFilePath);
+                    },
+                    "Dirty indicator to disappear",
+                    1000
+                );
+
+                // Verify the tab no longer has a dirty indicator
+                expect(isTabDirty(testFilePath)).toBe(false);
+
+                // Revert the changes for cleanup
+                doc.setText("// Test file 1 for TabBar");
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_SAVE, { doc: doc }),
+                    "Save file with original content"
+                );
+            });
+
+            it("should display directory name for files with the same name", async function () {
+                // Open both duplicate files
+                const duplicateFile1 = testDuplicateDir1 + "/" + testDuplicateName;
+                const duplicateFile2 = testDuplicateDir2 + "/" + testDuplicateName;
+
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: duplicateFile1 }),
+                    "Open first duplicate file"
+                );
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: duplicateFile2 }),
+                    "Open second duplicate file"
+                );
+
+                // Wait for both tabs to appear
+                await awaitsFor(
+                    function () {
+                        return tabExists(duplicateFile1) && tabExists(duplicateFile2);
+                    },
+                    "Both duplicate tabs to appear",
+                    1000
+                );
+
+                // Verify both tabs have directory names
+                expect(hasDirectoryName(duplicateFile1)).toBe(true);
+                expect(hasDirectoryName(duplicateFile2)).toBe(true);
+
+                // Verify the directory names are correct
+                expect(getDirectoryName(duplicateFile1)).toContain("dir1");
+                expect(getDirectoryName(duplicateFile2)).toContain("dir2");
+            });
+
+            it("should display the full file path in the tooltip", async function () {
+                // Open the first test file
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath }),
+                    "Open test file"
+                );
+
+                // Wait for the tab to appear
+                await awaitsFor(
+                    function () {
+                        return tabExists(testFilePath);
+                    },
+                    "Tab to appear",
+                    1000
+                );
+
+                // Verify the tooltip contains the full path
+                const tooltip = getTabTooltip(testFilePath);
+                expect(tooltip).toContain(Phoenix.app.getDisplayPath(testFilePath));
+            });
+
+            it("should display git change markers when git is enabled", async function () {
+                // Skip this test if Git integration is not available
+                if (!testWindow.brackets.test.Phoenix || !testWindow.brackets.test.Phoenix.app) {
+                    expect("Test skipped - Phoenix.app not available").toBe("Test skipped - Phoenix.app not available");
+                    return;
+                }
+
+                // Create a mock for the Git integration
+                if (!testWindow.phoenixGitEvents) {
+                    testWindow.phoenixGitEvents = {};
+                }
+
+                // Save the original Git integration if it exists
+                const originalGitEvents = testWindow.phoenixGitEvents.TabBarIntegration;
+
+                // Create a mock TabBarIntegration
+                testWindow.phoenixGitEvents.TabBarIntegration = {
+                    isUntracked: function (path) {
+                        return path === testFilePath; // Mark the first file as untracked
+                    },
+                    isModified: function (path) {
+                        return path === testFilePath2; // Mark the second file as modified
+                    }
+                };
+
+                // Make sure the EventEmitter exists
+                if (!testWindow.phoenixGitEvents.EventEmitter) {
+                    testWindow.phoenixGitEvents.EventEmitter = {
+                        on: function () {},
+                        emit: function () {}
+                    };
+                }
+
+                // Open the test files
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath }),
+                    "Open first test file"
+                );
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath2 }),
+                    "Open second test file"
+                );
+
+                // Trigger a Git status update
+                testWindow.phoenixGitEvents.EventEmitter.emit("GIT_FILE_STATUS_CHANGED");
+
+                // Wait for the tabs to update
+                await awaits(300);
+
+                // Verify the first file has the git-new class
+                const $tab1 = getTab(testFilePath);
+                expect($tab1.hasClass("git-new")).toBe(true);
+                expect(hasGitStatus(testFilePath)).toBe(true);
+
+                // Verify the second file has the git-modified class
+                const $tab2 = getTab(testFilePath2);
+                expect($tab2.hasClass("git-modified")).toBe(true);
+                expect(hasGitStatus(testFilePath2)).toBe(true);
+
+                // Verify the tooltips contain the Git status
+                expect(getTabTooltip(testFilePath)).toContain("Untracked");
+                expect(getTabTooltip(testFilePath2)).toContain("Modified");
+
+                // Restore the original Git integration
+                testWindow.phoenixGitEvents.TabBarIntegration = originalGitEvents;
+            });
+
+            it("should display a close button", async function () {
+                // Open the first test file
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath }),
+                    "Open test file"
+                );
+
+                // Wait for the tab to appear
+                await awaitsFor(
+                    function () {
+                        return tabExists(testFilePath);
+                    },
+                    "Tab to appear",
+                    1000
+                );
+
+                // Verify the tab has a close button
+                expect(hasCloseButton(testFilePath)).toBe(true);
+
+                // Verify the close button has the correct icon
+                const $closeButton = getTab(testFilePath).find(".tab-close");
+                expect($closeButton.find("i.fa-times").length).toBe(1);
+            });
+
+            it("should close the file when the close button is clicked", async function () {
+                // Open the first test file
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath }),
+                    "Open test file"
+                );
+
+                // Wait for the tab to appear
+                await awaitsFor(
+                    function () {
+                        return tabExists(testFilePath);
+                    },
+                    "Tab to appear",
+                    1000
+                );
+
+                // Get the close button
+                const $closeButton = getTab(testFilePath).find(".tab-close");
+
+                // Create a spy for the FILE_CLOSE command
+                const executeOriginal = CommandManager.execute;
+                let fileCloseCalled = false;
+                let fileClosePathArg = null;
+
+                CommandManager.execute = function (command, args) {
+                    if (command === Commands.FILE_CLOSE) {
+                        fileCloseCalled = true;
+                        if (args && args.file) {
+                            fileClosePathArg = args.file.fullPath;
+                        }
+                    }
+                    return executeOriginal.apply(CommandManager, arguments);
+                };
+
+                // Click the close button
+                $closeButton.click();
+
+                // Cancel the save dialog if it appears
+                testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
+                    testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
+                    testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
+                );
+
+                // Wait for the tab to disappear
+                await awaitsFor(
+                    function () {
+                        return !tabExists(testFilePath);
+                    },
+                    "Tab to disappear",
+                    1000
+                );
+
+                // Restore the original execute function
+                CommandManager.execute = executeOriginal;
+
+                // Verify the FILE_CLOSE command was called with the correct file
+                expect(fileCloseCalled).toBe(true);
+                expect(fileClosePathArg).toBe(testFilePath);
             });
         });
     });
