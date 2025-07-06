@@ -81,6 +81,15 @@ define(function (require, exports, module) {
             return $(".tab").length;
         }
 
+        /**
+         * Helper function to check if a tab for a specific file is active
+         * @param {string} filePath - The path of the file to check
+         * @returns {boolean} - True if the tab is active, false otherwise
+         */
+        function isTabActive(filePath) {
+            return $(`.tab[data-path="${filePath}"].active`).length > 0;
+        }
+
         describe("Visibility", function () {
             it("should show tab bar when the feature is enabled", async function () {
                 // Enable the tab bar feature
@@ -283,6 +292,129 @@ define(function (require, exports, module) {
                 expect(tabExists(testFilePath2)).toBe(false);
                 expect(tabExists(testFilePath3)).toBe(false);
                 expect(getTabCount()).toBe(0);
+            });
+        });
+
+        describe("Active Tab", function () {
+            beforeEach(async function () {
+                // Enable the tab bar feature
+                PreferencesManager.set("tabBar.options", { showTabBar: true, numberOfTabs: -1 });
+
+                // Close all files to start with a clean state
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE_ALL), "Close all files");
+
+                // Open all three test files
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath }),
+                    "Open first test file"
+                );
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath2 }),
+                    "Open second test file"
+                );
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath3 }),
+                    "Open third test file"
+                );
+
+                // Wait for all tabs to appear
+                await awaitsFor(
+                    function () {
+                        return tabExists(testFilePath) && tabExists(testFilePath2) && tabExists(testFilePath3);
+                    },
+                    "All tabs to appear",
+                    1000
+                );
+            });
+
+            it("should change active tab when switching files in the working set", async function () {
+                // Switch to the first file
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath }),
+                    "Switch to first file"
+                );
+
+                // Wait for the tab to become active
+                await awaitsFor(
+                    function () {
+                        return isTabActive(testFilePath);
+                    },
+                    "First tab to become active",
+                    1000
+                );
+
+                // Verify the first tab is active and others are not
+                expect(isTabActive(testFilePath)).toBe(true);
+                expect(isTabActive(testFilePath2)).toBe(false);
+                expect(isTabActive(testFilePath3)).toBe(false);
+
+                // Switch to the second file
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath2 }),
+                    "Switch to second file"
+                );
+
+                // Wait for the tab to become active
+                await awaitsFor(
+                    function () {
+                        return isTabActive(testFilePath2);
+                    },
+                    "Second tab to become active",
+                    1000
+                );
+
+                // Verify the second tab is active and others are not
+                expect(isTabActive(testFilePath)).toBe(false);
+                expect(isTabActive(testFilePath2)).toBe(true);
+                expect(isTabActive(testFilePath3)).toBe(false);
+
+                // Switch to the third file
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath3 }),
+                    "Switch to third file"
+                );
+
+                // Wait for the tab to become active
+                await awaitsFor(
+                    function () {
+                        return isTabActive(testFilePath3);
+                    },
+                    "Third tab to become active",
+                    1000
+                );
+
+                // Verify the third tab is active and others are not
+                expect(isTabActive(testFilePath)).toBe(false);
+                expect(isTabActive(testFilePath2)).toBe(false);
+                expect(isTabActive(testFilePath3)).toBe(true);
+            });
+
+            it("should display active tab correctly based on the active file in the working set", async function () {
+                // Get the currently active file
+                const activeFile = MainViewManager.getCurrentlyViewedFile();
+
+                // just a small timer because tab bar gets recreated
+                await awaits(100);
+
+                // Verify the tab for the active file is active
+                expect(isTabActive(activeFile.fullPath)).toBe(true);
+
+                // Switch to a different file
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath2 }),
+                    "Switch to second file"
+                );
+
+                // Get the new active file
+                const newActiveFile = MainViewManager.getCurrentlyViewedFile();
+
+                await awaits(100);
+
+                // Verify the tab for the new active file is active
+                expect(isTabActive(newActiveFile.fullPath)).toBe(true);
+
+                // Verify the tab for the previous active file is no longer active
+                expect(isTabActive(activeFile.fullPath)).toBe(false);
             });
         });
     });
