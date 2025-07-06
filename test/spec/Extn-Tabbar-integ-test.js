@@ -903,6 +903,96 @@ define(function (require, exports, module) {
                     await awaitsForDone(promise, `Close file ${filePath}`);
                 }
             });
+
+            it("should scroll tab bar to make selected file visible when selecting from working set", async function () {
+                // Create several test files to ensure overflow
+                const testFiles = [];
+                for (let i = 0; i < 15; i++) {
+                    const filePath = SpecRunnerUtils.getTempDirectory() + `/overflow-test-${i}.js`;
+                    testFiles.push(filePath);
+                    await jsPromise(SpecRunnerUtils.createTextFile(filePath, `// Overflow test file ${i}`, FileSystem));
+                }
+
+                // Open all the test files
+                for (const filePath of testFiles) {
+                    await awaitsForDone(
+                        CommandManager.execute(Commands.FILE_OPEN, { fullPath: filePath }),
+                        `Open file ${filePath}`
+                    );
+                }
+
+                // Wait for all tabs to appear
+                await awaitsFor(
+                    function () {
+                        return getTabCount() >= testFiles.length;
+                    },
+                    "All tabs to appear",
+                    1000
+                );
+
+                // Wait for the overflow button to appear
+                await awaitsFor(
+                    function () {
+                        return isOverflowButtonVisible();
+                    },
+                    "Overflow button to appear",
+                    1000
+                );
+
+                // Get the list of hidden tabs
+                const hiddenFiles = testFiles.filter((filePath) => !isTabVisible(filePath));
+                expect(hiddenFiles.length).toBeGreaterThan(0);
+
+                // Select a hidden file to test
+                const testHiddenFile = hiddenFiles[0];
+
+                // Verify the tab is not visible initially
+                expect(isTabVisible(testHiddenFile)).toBe(false);
+
+                // Select the file directly from the working set (not using the overflow dropdown)
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testHiddenFile }),
+                    "Open hidden file from working set"
+                );
+
+                // Wait for the file to become active
+                await awaitsFor(
+                    function () {
+                        return (
+                            isTabActive(testHiddenFile) &&
+                            MainViewManager.getCurrentlyViewedFile().fullPath === testHiddenFile
+                        );
+                    },
+                    "Hidden file to become active after selection from working set",
+                    1000
+                );
+
+                // Verify the file is active
+                expect(isTabActive(testHiddenFile)).toBe(true);
+                expect(MainViewManager.getCurrentlyViewedFile().fullPath).toBe(testHiddenFile);
+
+                // Verify the tab is now visible (scrolled into view)
+                await awaitsFor(
+                    function () {
+                        return isTabVisible(testHiddenFile);
+                    },
+                    "Tab to become visible after selection from working set",
+                    1000
+                );
+
+                expect(isTabVisible(testHiddenFile)).toBe(true);
+
+                // Clean up - close all the test files
+                for (const filePath of testFiles) {
+                    const fileToClose = FileSystem.getFileForPath(filePath);
+                    const promise = CommandManager.execute(Commands.FILE_CLOSE, { file: fileToClose });
+                    testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
+                        testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
+                        testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
+                    );
+                    await awaitsForDone(promise, `Close file ${filePath}`);
+                }
+            });
         });
 
         describe("Tab Items", function () {
