@@ -24,7 +24,15 @@ define(function (require, exports, module) {
     const SpecRunnerUtils = require("spec/SpecRunnerUtils");
 
     describe("integration:TabBar", function () {
-        let testWindow, PreferencesManager, $, FileSystem, MainViewManager, CommandManager, Commands, DocumentManager, Strings;
+        let testWindow,
+            PreferencesManager,
+            $,
+            FileSystem,
+            MainViewManager,
+            CommandManager,
+            Commands,
+            DocumentManager,
+            Strings;
         let testFilePath, testFilePath2, testFilePath3, testDuplicateDir1, testDuplicateDir2, testDuplicateName;
 
         beforeAll(async function () {
@@ -1408,9 +1416,11 @@ define(function (require, exports, module) {
                 );
 
                 // Find and click the "Close Tab" option
-                const $closeTabOption = getContextMenu().find('a.stylesheet-link').filter(function() {
-                    return $(this).text().trim() === Strings.CLOSE_TAB;
-                });
+                const $closeTabOption = getContextMenu()
+                    .find("a.stylesheet-link")
+                    .filter(function () {
+                        return $(this).text().trim() === Strings.CLOSE_TAB;
+                    });
                 expect($closeTabOption.length).toBe(1);
                 $closeTabOption.click();
 
@@ -1428,6 +1438,340 @@ define(function (require, exports, module) {
                     "Tab to be closed",
                     1000
                 );
+            });
+
+            it("should close tabs to the right when selecting 'Close tabs to the right' from context menu", async function () {
+                // Open all three test files
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath }),
+                    "Open first test file"
+                );
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath2 }),
+                    "Open second test file"
+                );
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath3 }),
+                    "Open third test file"
+                );
+
+                // Wait for all tabs to appear
+                await awaitsFor(
+                    function () {
+                        return tabExists(testFilePath) && tabExists(testFilePath2) && tabExists(testFilePath3);
+                    },
+                    "All tabs to appear",
+                    1000
+                );
+
+                // Verify all three tabs exist
+                expect(tabExists(testFilePath)).toBe(true);
+                expect(tabExists(testFilePath2)).toBe(true);
+                expect(tabExists(testFilePath3)).toBe(true);
+
+                // Get the first tab element
+                const $tab = getTab(testFilePath);
+
+                // Right-click on the first tab to open context menu
+                $tab.trigger("contextmenu", {
+                    pageX: 100,
+                    pageY: 100
+                });
+
+                // Wait for context menu to appear
+                await awaitsFor(
+                    function () {
+                        return getContextMenu().length > 0;
+                    },
+                    "Context menu to appear",
+                    1000
+                );
+
+                // Find and click the "Close tabs to the right" option
+                const $closeTabsToRightOption = getContextMenu()
+                    .find("a.stylesheet-link")
+                    .filter(function () {
+                        return $(this).text().trim() === Strings.CLOSE_TABS_TO_THE_RIGHT;
+                    });
+                expect($closeTabsToRightOption.length).toBe(1);
+                $closeTabsToRightOption.click();
+
+                // Cancel any save dialogs that might appear
+                testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
+                    testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
+                    testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
+                );
+
+                // Verify tabs to the right are closed
+                await awaitsFor(
+                    function () {
+                        return tabExists(testFilePath) && !tabExists(testFilePath2) && !tabExists(testFilePath3);
+                    },
+                    "Tabs to the right to be closed",
+                    1000
+                );
+
+                // Verify only the first tab remains
+                expect(tabExists(testFilePath)).toBe(true);
+                expect(tabExists(testFilePath2)).toBe(false);
+                expect(tabExists(testFilePath3)).toBe(false);
+                expect(getTabCount()).toBe(1);
+            });
+
+            it("should close tabs to the left when selecting 'Close tabs to the left' from context menu", async function () {
+                // Open all three test files
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath }),
+                    "Open first test file"
+                );
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath2 }),
+                    "Open second test file"
+                );
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath3 }),
+                    "Open third test file"
+                );
+
+                // Wait for all tabs to appear
+                await awaitsFor(
+                    function () {
+                        return tabExists(testFilePath) && tabExists(testFilePath2) && tabExists(testFilePath3);
+                    },
+                    "All tabs to appear",
+                    1000
+                );
+
+                // Verify all three tabs exist
+                expect(tabExists(testFilePath)).toBe(true);
+                expect(tabExists(testFilePath2)).toBe(true);
+                expect(tabExists(testFilePath3)).toBe(true);
+
+                // Get the third tab element
+                const $tab = getTab(testFilePath3);
+
+                // Right-click on the third tab to open context menu
+                $tab.trigger("contextmenu", {
+                    pageX: 100,
+                    pageY: 100
+                });
+
+                // Wait for context menu to appear
+                await awaitsFor(
+                    function () {
+                        return getContextMenu().length > 0;
+                    },
+                    "Context menu to appear",
+                    1000
+                );
+
+                // Find and click the "Close tabs to the left" option
+                const $closeTabsToLeftOption = getContextMenu()
+                    .find("a.stylesheet-link")
+                    .filter(function () {
+                        return $(this).text().trim() === Strings.CLOSE_TABS_TO_THE_LEFT;
+                    });
+                expect($closeTabsToLeftOption.length).toBe(1);
+                $closeTabsToLeftOption.click();
+
+                // Cancel any save dialogs that might appear
+                testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
+                    testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
+                    testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
+                );
+
+                // Verify tabs to the left are closed
+                await awaitsFor(
+                    function () {
+                        return !tabExists(testFilePath) && !tabExists(testFilePath2) && tabExists(testFilePath3);
+                    },
+                    "Tabs to the left to be closed",
+                    1000
+                );
+
+                // Verify only the third tab remains
+                expect(tabExists(testFilePath)).toBe(false);
+                expect(tabExists(testFilePath2)).toBe(false);
+                expect(tabExists(testFilePath3)).toBe(true);
+                expect(getTabCount()).toBe(1);
+            });
+
+            it("should close saved tabs when selecting 'Close saved tabs' from context menu", async function () {
+                // Open all three test files
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath }),
+                    "Open first test file"
+                );
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath2 }),
+                    "Open second test file"
+                );
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath3 }),
+                    "Open third test file"
+                );
+
+                // Wait for all tabs to appear
+                await awaitsFor(
+                    function () {
+                        return tabExists(testFilePath) && tabExists(testFilePath2) && tabExists(testFilePath3);
+                    },
+                    "All tabs to appear",
+                    1000
+                );
+
+                // Verify all three tabs exist
+                expect(tabExists(testFilePath)).toBe(true);
+                expect(tabExists(testFilePath2)).toBe(true);
+                expect(tabExists(testFilePath3)).toBe(true);
+
+                // Make the second file dirty
+                const doc2 = DocumentManager.getOpenDocumentForPath(testFilePath2);
+                doc2.setText("// Modified content");
+
+                // Wait for the dirty indicator to appear
+                await awaitsFor(
+                    function () {
+                        return isTabDirty(testFilePath2);
+                    },
+                    "Dirty indicator to appear",
+                    1000
+                );
+
+                // Verify the second tab is dirty
+                expect(isTabDirty(testFilePath2)).toBe(true);
+
+                // Get any tab element (we'll use the first)
+                const $tab = getTab(testFilePath);
+
+                // Right-click on the tab to open context menu
+                $tab.trigger("contextmenu", {
+                    pageX: 100,
+                    pageY: 100
+                });
+
+                // Wait for context menu to appear
+                await awaitsFor(
+                    function () {
+                        return getContextMenu().length > 0;
+                    },
+                    "Context menu to appear",
+                    1000
+                );
+
+                // Find and click the "Close saved tabs" option
+                const $closeSavedTabsOption = getContextMenu()
+                    .find("a.stylesheet-link")
+                    .filter(function () {
+                        return $(this).text().trim() === Strings.CLOSE_SAVED_TABS;
+                    });
+                expect($closeSavedTabsOption.length).toBe(1);
+                $closeSavedTabsOption.click();
+
+                // Cancel any save dialogs that might appear
+                testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
+                    testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
+                    testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
+                );
+
+                // Verify only the dirty tab remains
+                await awaitsFor(
+                    function () {
+                        return !tabExists(testFilePath) && tabExists(testFilePath2) && !tabExists(testFilePath3);
+                    },
+                    "Saved tabs to be closed",
+                    1000
+                );
+
+                expect(tabExists(testFilePath)).toBe(false);
+                expect(tabExists(testFilePath2)).toBe(true);
+                expect(tabExists(testFilePath3)).toBe(false);
+                expect(getTabCount()).toBe(1);
+                expect(isTabDirty(testFilePath2)).toBe(true);
+
+                // Clean up - revert changes to the second file
+                doc2.setText("// Test file 2 for TabBar");
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_SAVE, { doc: doc2 }),
+                    "Save file with original content"
+                );
+            });
+
+            it("should close all tabs when selecting 'Close all tabs' from context menu", async function () {
+                // Open all three test files
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath }),
+                    "Open first test file"
+                );
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath2 }),
+                    "Open second test file"
+                );
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath3 }),
+                    "Open third test file"
+                );
+
+                // Wait for all tabs to appear
+                await awaitsFor(
+                    function () {
+                        return tabExists(testFilePath) && tabExists(testFilePath2) && tabExists(testFilePath3);
+                    },
+                    "All tabs to appear",
+                    1000
+                );
+
+                // Verify all three tabs exist
+                expect(tabExists(testFilePath)).toBe(true);
+                expect(tabExists(testFilePath2)).toBe(true);
+                expect(tabExists(testFilePath3)).toBe(true);
+
+                // Get any tab element (we'll use the first)
+                const $tab = getTab(testFilePath);
+
+                // Right-click on the tab to open context menu
+                $tab.trigger("contextmenu", {
+                    pageX: 100,
+                    pageY: 100
+                });
+
+                // Wait for context menu to appear
+                await awaitsFor(
+                    function () {
+                        return getContextMenu().length > 0;
+                    },
+                    "Context menu to appear",
+                    1000
+                );
+
+                // Find and click the "Close all tabs" option
+                const $closeAllTabsOption = getContextMenu()
+                    .find("a.stylesheet-link")
+                    .filter(function () {
+                        return $(this).text().trim() === Strings.CLOSE_ALL_TABS;
+                    });
+                expect($closeAllTabsOption.length).toBe(1);
+                $closeAllTabsOption.click();
+
+                // Cancel any save dialogs that might appear
+                testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
+                    testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
+                    testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
+                );
+
+                // Verify all tabs are closed
+                await awaitsFor(
+                    function () {
+                        return !tabExists(testFilePath) && !tabExists(testFilePath2) && !tabExists(testFilePath3);
+                    },
+                    "All tabs to be closed",
+                    1000
+                );
+
+                expect(tabExists(testFilePath)).toBe(false);
+                expect(tabExists(testFilePath2)).toBe(false);
+                expect(tabExists(testFilePath3)).toBe(false);
+                expect(getTabCount()).toBe(0);
             });
         });
     });
