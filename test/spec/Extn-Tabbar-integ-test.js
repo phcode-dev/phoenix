@@ -1774,5 +1774,290 @@ define(function (require, exports, module) {
                 expect(getTabCount()).toBe(0);
             });
         });
+
+        describe("Split Panes", function () {
+            beforeEach(async function () {
+                // Enable the tab bar feature
+                PreferencesManager.set("tabBar.options", { showTabBar: true, numberOfTabs: -1 });
+
+                // Close all files to start with a clean state
+                await testWindow.closeAllFiles();
+
+                // Set up a horizontal split view (two columns)
+                MainViewManager.setLayoutScheme(1, 2);
+            });
+
+            afterEach(async function () {
+                // Reset to single pane layout
+                MainViewManager.setLayoutScheme(1, 1);
+            });
+
+            /**
+             * Helper function to check if the tab bar for a specific pane is visible
+             * @param {string} paneId - The pane ID ("first-pane" or "second-pane")
+             * @returns {boolean} - True if the tab bar is visible, false otherwise
+             */
+            function isTabBarVisible(paneId) {
+                const tabBarId = paneId === "first-pane" ? "#phoenix-tab-bar" : "#phoenix-tab-bar-2";
+                return $(tabBarId).is(":visible");
+            }
+
+            /**
+             * Helper function to get the tab count for a specific pane
+             * @param {string} paneId - The pane ID ("first-pane" or "second-pane")
+             * @returns {number} - The number of tabs in the pane
+             */
+            function getPaneTabCount(paneId) {
+                const tabBarId = paneId === "first-pane" ? "#phoenix-tab-bar" : "#phoenix-tab-bar-2";
+                return $(tabBarId).find(".tab").length;
+            }
+
+            /**
+             * Helper function to check if a tab for a specific file exists in a specific pane
+             * @param {string} filePath - The path of the file to check
+             * @param {string} paneId - The pane ID ("first-pane" or "second-pane")
+             * @returns {boolean} - True if the tab exists in the pane, false otherwise
+             */
+            function tabExistsInPane(filePath, paneId) {
+                const tabBarId = paneId === "first-pane" ? "#phoenix-tab-bar" : "#phoenix-tab-bar-2";
+                return $(tabBarId).find(`.tab[data-path="${filePath}"]`).length > 0;
+            }
+
+            it("should show tab bars in both panes when files are open in both", async function () {
+                // Open a file in the first pane
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath, paneId: "first-pane" }),
+                    "Open file in first pane"
+                );
+
+                // Open a different file in the second pane
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath2, paneId: "second-pane" }),
+                    "Open file in second pane"
+                );
+
+                // Wait for both tab bars to appear
+                await awaitsFor(
+                    function () {
+                        return isTabBarVisible("first-pane") && isTabBarVisible("second-pane");
+                    },
+                    "Both tab bars to appear",
+                    1000
+                );
+
+                // Verify both tab bars are visible
+                expect(isTabBarVisible("first-pane")).toBe(true);
+                expect(isTabBarVisible("second-pane")).toBe(true);
+
+                // Verify each pane has the correct tab
+                expect(tabExistsInPane(testFilePath, "first-pane")).toBe(true);
+                expect(tabExistsInPane(testFilePath2, "second-pane")).toBe(true);
+                expect(getPaneTabCount("first-pane")).toBe(1);
+                expect(getPaneTabCount("second-pane")).toBe(1);
+            });
+
+            it("should hide tab bar in a pane with no files", async function () {
+                // Open a file in the first pane only
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath, paneId: "first-pane" }),
+                    "Open file in first pane"
+                );
+
+                // Wait for the first tab bar to appear
+                await awaitsFor(
+                    function () {
+                        return isTabBarVisible("first-pane");
+                    },
+                    "First tab bar to appear",
+                    1000
+                );
+
+                // Verify first tab bar is visible and second is not
+                expect(isTabBarVisible("first-pane")).toBe(true);
+                expect(isTabBarVisible("second-pane")).toBe(false);
+
+                // Verify the first pane has the correct tab
+                expect(tabExistsInPane(testFilePath, "first-pane")).toBe(true);
+                expect(getPaneTabCount("first-pane")).toBe(1);
+            });
+
+            it("should update tab bars when moving files between panes", async function () {
+                // Open a file in the first pane
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath, paneId: "first-pane" }),
+                    "Open file in first pane"
+                );
+
+                // Wait for the first tab bar to appear
+                await awaitsFor(
+                    function () {
+                        return isTabBarVisible("first-pane");
+                    },
+                    "First tab bar to appear",
+                    1000
+                );
+
+                // Verify first tab bar is visible and second is not
+                expect(isTabBarVisible("first-pane")).toBe(true);
+                expect(isTabBarVisible("second-pane")).toBe(false);
+
+                // Move the file to the second pane
+                const fileObj = FileSystem.getFileForPath(testFilePath);
+                MainViewManager.addToWorkingSet("second-pane", fileObj);
+
+                // Remove from first pane
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_CLOSE, { file: fileObj, paneId: "first-pane" }),
+                    "Close file in first pane"
+                );
+
+                // Wait for the tab to appear in the second pane and disappear from the first
+                await awaitsFor(
+                    function () {
+                        return (
+                            !tabExistsInPane(testFilePath, "first-pane") && tabExistsInPane(testFilePath, "second-pane")
+                        );
+                    },
+                    "Tab to move to second pane",
+                    1000
+                );
+
+                // Verify the tab bars visibility has updated
+                expect(isTabBarVisible("first-pane")).toBe(false);
+                expect(isTabBarVisible("second-pane")).toBe(true);
+
+                // Verify the tab is now in the second pane
+                expect(tabExistsInPane(testFilePath, "first-pane")).toBe(false);
+                expect(tabExistsInPane(testFilePath, "second-pane")).toBe(true);
+                expect(getPaneTabCount("first-pane")).toBe(0);
+                expect(getPaneTabCount("second-pane")).toBe(1);
+            });
+
+            it("should hide tab bar when closing all files in a pane", async function () {
+                // Open files in both panes
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath, paneId: "first-pane" }),
+                    "Open file in first pane"
+                );
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath2, paneId: "second-pane" }),
+                    "Open file in second pane"
+                );
+
+                // Wait for both tab bars to appear
+                await awaitsFor(
+                    function () {
+                        return isTabBarVisible("first-pane") && isTabBarVisible("second-pane");
+                    },
+                    "Both tab bars to appear",
+                    1000
+                );
+
+                // Verify both tab bars are visible
+                expect(isTabBarVisible("first-pane")).toBe(true);
+                expect(isTabBarVisible("second-pane")).toBe(true);
+
+                // Close the file in the second pane
+                const fileToClose = FileSystem.getFileForPath(testFilePath2);
+                const promise = CommandManager.execute(Commands.FILE_CLOSE, {
+                    file: fileToClose,
+                    paneId: "second-pane"
+                });
+
+                // Cancel the save dialog if it appears
+                testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
+                    testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
+                    testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
+                );
+
+                await awaitsForDone(promise, "Close file in second pane");
+
+                // Wait for the second tab bar to disappear
+                await awaitsFor(
+                    function () {
+                        return !isTabBarVisible("second-pane");
+                    },
+                    "Second tab bar to disappear",
+                    1000
+                );
+
+                // Verify first tab bar is still visible but second is not
+                expect(isTabBarVisible("first-pane")).toBe(true);
+                expect(isTabBarVisible("second-pane")).toBe(false);
+
+                // Verify the tabs are in the correct panes
+                expect(tabExistsInPane(testFilePath, "first-pane")).toBe(true);
+                expect(tabExistsInPane(testFilePath2, "second-pane")).toBe(false);
+                expect(getPaneTabCount("first-pane")).toBe(1);
+                expect(getPaneTabCount("second-pane")).toBe(0);
+            });
+
+            it("should work correctly with vertical split layout", async function () {
+                // Change to vertical split layout (2 rows, 1 column)
+                MainViewManager.setLayoutScheme(2, 1);
+
+                // Open a file in the first pane
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath, paneId: "first-pane" }),
+                    "Open file in first pane"
+                );
+
+                // Open a different file in the second pane
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath2, paneId: "second-pane" }),
+                    "Open file in second pane"
+                );
+
+                // Wait for both tab bars to appear
+                await awaitsFor(
+                    function () {
+                        return isTabBarVisible("first-pane") && isTabBarVisible("second-pane");
+                    },
+                    "Both tab bars to appear",
+                    1000
+                );
+
+                // Verify both tab bars are visible
+                expect(isTabBarVisible("first-pane")).toBe(true);
+                expect(isTabBarVisible("second-pane")).toBe(true);
+
+                // Verify each pane has the correct tab
+                expect(tabExistsInPane(testFilePath, "first-pane")).toBe(true);
+                expect(tabExistsInPane(testFilePath2, "second-pane")).toBe(true);
+                expect(getPaneTabCount("first-pane")).toBe(1);
+                expect(getPaneTabCount("second-pane")).toBe(1);
+
+                // Close the file in the second pane
+                const fileToClose = FileSystem.getFileForPath(testFilePath2);
+                const promise = CommandManager.execute(Commands.FILE_CLOSE, {
+                    file: fileToClose,
+                    paneId: "second-pane"
+                });
+
+                // Cancel the save dialog if it appears
+                testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
+                    testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
+                    testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
+                );
+
+                await awaitsForDone(promise, "Close file in second pane");
+
+                // Wait for the second tab bar to disappear
+                await awaitsFor(
+                    function () {
+                        return !isTabBarVisible("second-pane");
+                    },
+                    "Second tab bar to disappear",
+                    1000
+                );
+
+                // Verify first tab bar is still visible but second is not
+                expect(isTabBarVisible("first-pane")).toBe(true);
+                expect(isTabBarVisible("second-pane")).toBe(false);
+
+                // Reset to horizontal split for other tests
+                MainViewManager.setLayoutScheme(1, 2);
+            });
+        });
     });
 });
