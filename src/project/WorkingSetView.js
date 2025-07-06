@@ -1042,8 +1042,8 @@ define(function (require, exports, module) {
                     const lastSeg = dirSplit[dirSplit.length - 1];
 
                     if (Phoenix.isNativeApp && brackets.platform === "win") {
-                        // Eg: C:\\long\path\to\fileDir - > C:\\...\to\fileDir
-                        truncatedPath = `${rootDirName}:${sep}${sep}\u2026${sep}${secondLastSegment}${sep}${lastSeg}`;
+                        // Eg: C:\long\path\to\fileDir - > C:\...\to\fileDir -- [rootDirName = c: here]
+                        truncatedPath = `${rootDirName}${sep}\u2026${sep}${secondLastSegment}${sep}${lastSeg}`;
                     } else if (Phoenix.isNativeApp) {
                         // an absolute path of the form /abs/path/to/file in linux/mac desktop
                         // Eg: /application/path/to/fileDir - > /application/.../to/fileDir

@@ -265,7 +265,7 @@ define(function (require, exports, module) {
                 expect(directoryText).toBe(` — /${root}/…/MainViewFactory-test-files/css`);
             } else {
                 // windows
-                expect(directoryText).toBe(` — ${root}:\\\\…\\MainViewFactory-test-files\\css`);
+                expect(directoryText).toBe(` — ${root}\\…\\MainViewFactory-test-files\\css`);
             }
 
             // the title should contain the full path
