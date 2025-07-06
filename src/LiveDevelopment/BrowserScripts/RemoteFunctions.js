@@ -1156,6 +1156,85 @@ function RemoteFunctions(config) {
         return JSON.stringify(config);
     }
 
+    // Function to handle direct editing of elements in the live preview
+    function startEditing(element) {
+        if (!element) {
+            return;
+        }
+
+        // Make the element editable
+        element.setAttribute("contenteditable", "true");
+        element.focus();
+
+        // Save the original content for potential cancellation
+        element._originalContent = element.innerHTML;
+
+        // Add event listeners for editing
+        function onBlur() {
+            finishEditing(element);
+        }
+
+        function onKeyDown(event) {
+            if (event.key === "Escape") {
+                // Cancel editing
+                element.innerHTML = element._originalContent;
+                finishEditing(element);
+                event.preventDefault();
+            } else if (event.key === "Enter" && !event.shiftKey) {
+                // Finish editing on Enter (unless Shift is held)
+                finishEditing(element);
+                event.preventDefault();
+            }
+        }
+
+        element.addEventListener("blur", onBlur);
+        element.addEventListener("keydown", onKeyDown);
+
+        // Store the event listeners for later removal
+        element._editListeners = {
+            blur: onBlur,
+            keydown: onKeyDown
+        };
+    }
+
+    // Function to finish editing and apply changes
+    function finishEditing(element) {
+        if (!element || !element.hasAttribute("contenteditable")) {
+            return;
+        }
+
+        // Remove contenteditable attribute
+        element.removeAttribute("contenteditable");
+
+        // Remove event listeners
+        if (element._editListeners) {
+            element.removeEventListener("blur", element._editListeners.blur);
+            element.removeEventListener("keydown", element._editListeners.keydown);
+            delete element._editListeners;
+        }
+
+        // Get the new content
+        const newContent = element.innerHTML;
+
+        // If content has changed, send the edit to the editor
+        if (newContent !== element._originalContent && element.hasAttribute("data-brackets-id")) {
+            const tagId = element.getAttribute("data-brackets-id");
+
+            // Create a text edit operation
+            // const edit = {
+            //     type: "textReplace",
+            //     parentID: element.parentNode.getAttribute("data-brackets-id"),
+            //     tagID: tagId,
+            //     content: newContent
+            // };
+            //
+            // todo: send the edited text to phoenix to change in text editor
+        }
+
+        // Clean up
+        delete element._originalContent;
+    }
+
     // init
     _editHandler = new DOMEditHandler(window.document);
 
@@ -1182,6 +1261,8 @@ function RemoteFunctions(config) {
         "redrawHighlights"      : redrawHighlights,
         "applyDOMEdits"         : applyDOMEdits,
         "getSimpleDOM"          : getSimpleDOM,
-        "updateConfig"          : updateConfig
+        "updateConfig"          : updateConfig,
+        "startEditing"          : startEditing,
+        "finishEditing"         : finishEditing
     };
 }
