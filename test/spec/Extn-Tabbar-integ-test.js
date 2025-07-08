@@ -1775,6 +1775,254 @@ define(function (require, exports, module) {
             });
         });
 
+        describe("Number of Tabs Preference", function () {
+            beforeEach(async function () {
+                // Enable the tab bar feature with default settings
+                PreferencesManager.set("tabBar.options", { showTabBar: true, numberOfTabs: -1 });
+
+                // Close all files to start with a clean state
+                await testWindow.closeAllFiles();
+            });
+
+            afterEach(async function () {
+                // Reset preferences to default
+                PreferencesManager.set("tabBar.options", { showTabBar: true, numberOfTabs: -1 });
+            });
+
+            it("should show all tabs when numberOfTabs is set to -1", async function () {
+                // Create several test files
+                const testFiles = [];
+                for (let i = 0; i < 10; i++) {
+                    const filePath = SpecRunnerUtils.getTempDirectory() + `/number-test-${i}.js`;
+                    testFiles.push(filePath);
+                    await jsPromise(SpecRunnerUtils.createTextFile(filePath, `// Number test file ${i}`, FileSystem));
+                }
+
+                // Open all the test files
+                for (const filePath of testFiles) {
+                    await awaitsForDone(
+                        CommandManager.execute(Commands.FILE_OPEN, { fullPath: filePath }),
+                        `Open file ${filePath}`
+                    );
+                }
+
+                // Wait for all tabs to appear
+                await awaitsFor(
+                    function () {
+                        return getTabCount() >= testFiles.length;
+                    },
+                    "All tabs to appear",
+                    1000
+                );
+
+                // Verify all tabs are shown
+                expect(getTabCount()).toBe(testFiles.length);
+
+                // Clean up - close all the test files
+                for (const filePath of testFiles) {
+                    const fileToClose = FileSystem.getFileForPath(filePath);
+                    const promise = CommandManager.execute(Commands.FILE_CLOSE, { file: fileToClose });
+                    testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
+                        testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
+                        testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
+                    );
+                    await awaitsForDone(promise, `Close file ${filePath}`);
+                }
+            });
+
+            it("should limit the number of tabs shown when numberOfTabs is set to a positive value", async function () {
+                // Set the preference to show only 5 tabs
+                PreferencesManager.set("tabBar.options", { showTabBar: true, numberOfTabs: 5 });
+
+                // Create several test files
+                const testFiles = [];
+                for (let i = 0; i < 10; i++) {
+                    const filePath = SpecRunnerUtils.getTempDirectory() + `/number-test-${i}.js`;
+                    testFiles.push(filePath);
+                    await jsPromise(SpecRunnerUtils.createTextFile(filePath, `// Number test file ${i}`, FileSystem));
+                }
+
+                // Open all the test files
+                for (const filePath of testFiles) {
+                    await awaitsForDone(
+                        CommandManager.execute(Commands.FILE_OPEN, { fullPath: filePath }),
+                        `Open file ${filePath}`
+                    );
+                }
+
+                // Wait for tabs to appear
+                await awaitsFor(
+                    function () {
+                        return getTabCount() > 0;
+                    },
+                    "Tabs to appear",
+                    1000
+                );
+
+                // Verify only 5 tabs are shown
+                expect(getTabCount()).toBe(5);
+
+                // Clean up - close all the test files
+                for (const filePath of testFiles) {
+                    const fileToClose = FileSystem.getFileForPath(filePath);
+                    const promise = CommandManager.execute(Commands.FILE_CLOSE, { file: fileToClose });
+                    testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
+                        testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
+                        testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
+                    );
+                    await awaitsForDone(promise, `Close file ${filePath}`);
+                }
+            });
+
+            it("should hide the tab bar when numberOfTabs is set to 0", async function () {
+                // First open some files with the default setting
+                const testFiles = [];
+                for (let i = 0; i < 3; i++) {
+                    const filePath = SpecRunnerUtils.getTempDirectory() + `/number-test-${i}.js`;
+                    testFiles.push(filePath);
+                    await jsPromise(SpecRunnerUtils.createTextFile(filePath, `// Number test file ${i}`, FileSystem));
+                }
+
+                // Open all the test files
+                for (const filePath of testFiles) {
+                    await awaitsForDone(
+                        CommandManager.execute(Commands.FILE_OPEN, { fullPath: filePath }),
+                        `Open file ${filePath}`
+                    );
+                }
+
+                // Wait for tabs to appear
+                await awaitsFor(
+                    function () {
+                        return getTabCount() > 0;
+                    },
+                    "Tabs to appear",
+                    1000
+                );
+
+                // Verify tab bar is visible
+                expect($("#phoenix-tab-bar").is(":visible")).toBe(true);
+
+                // Now set numberOfTabs to 0
+                PreferencesManager.set("tabBar.options", { showTabBar: true, numberOfTabs: 0 });
+
+                // Wait for tab bar to disappear
+                await awaitsFor(
+                    function () {
+                        return !$("#phoenix-tab-bar").is(":visible");
+                    },
+                    "Tab bar to disappear",
+                    1000
+                );
+
+                // Verify tab bar is hidden
+                expect($("#phoenix-tab-bar").is(":visible")).toBe(false);
+
+                // Clean up - close all the test files
+                for (const filePath of testFiles) {
+                    const fileToClose = FileSystem.getFileForPath(filePath);
+                    const promise = CommandManager.execute(Commands.FILE_CLOSE, { file: fileToClose });
+                    testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
+                        testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
+                        testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
+                    );
+                    await awaitsForDone(promise, `Close file ${filePath}`);
+                }
+            });
+
+            it("should apply numberOfTabs preference to both panes", async function () {
+                // Set up split pane layout
+                MainViewManager.setLayoutScheme(1, 2);
+
+                // Set the preference to show only 3 tabs
+                PreferencesManager.set("tabBar.options", { showTabBar: true, numberOfTabs: 3 });
+
+                // Create test files for first pane
+                const firstPaneFiles = [];
+                for (let i = 0; i < 5; i++) {
+                    const filePath = SpecRunnerUtils.getTempDirectory() + `/first-pane-${i}.js`;
+                    firstPaneFiles.push(filePath);
+                    await jsPromise(SpecRunnerUtils.createTextFile(filePath, `// First pane file ${i}`, FileSystem));
+                }
+
+                // Create test files for second pane
+                const secondPaneFiles = [];
+                for (let i = 0; i < 5; i++) {
+                    const filePath = SpecRunnerUtils.getTempDirectory() + `/second-pane-${i}.js`;
+                    secondPaneFiles.push(filePath);
+                    await jsPromise(SpecRunnerUtils.createTextFile(filePath, `// Second pane file ${i}`, FileSystem));
+                }
+
+                // Open files in first pane
+                for (const filePath of firstPaneFiles) {
+                    await awaitsForDone(
+                        CommandManager.execute(Commands.FILE_OPEN, { fullPath: filePath, paneId: "first-pane" }),
+                        `Open file ${filePath} in first pane`
+                    );
+                }
+
+                // Open files in second pane
+                for (const filePath of secondPaneFiles) {
+                    await awaitsForDone(
+                        CommandManager.execute(Commands.FILE_OPEN, { fullPath: filePath, paneId: "second-pane" }),
+                        `Open file ${filePath} in second pane`
+                    );
+                }
+
+                // Wait for both tab bars to appear
+                await awaitsFor(
+                    function () {
+                        return $("#phoenix-tab-bar").is(":visible") && $("#phoenix-tab-bar-2").is(":visible");
+                    },
+                    "Both tab bars to appear",
+                    1000
+                );
+
+                // Verify each pane shows only 3 tabs
+                expect($("#phoenix-tab-bar").find(".tab").length).toBe(3);
+                expect($("#phoenix-tab-bar-2").find(".tab").length).toBe(3);
+
+                // Change preference to show all tabs
+                PreferencesManager.set("tabBar.options", { showTabBar: true, numberOfTabs: -1 });
+
+                // Wait for all tabs to appear
+                await awaitsFor(
+                    function () {
+                        return (
+                            $("#phoenix-tab-bar").find(".tab").length === 5 &&
+                            $("#phoenix-tab-bar-2").find(".tab").length === 5
+                        );
+                    },
+                    "All tabs to appear in both panes",
+                    1000
+                );
+
+                // Verify all tabs are shown in both panes
+                expect($("#phoenix-tab-bar").find(".tab").length).toBe(5);
+                expect($("#phoenix-tab-bar-2").find(".tab").length).toBe(5);
+
+                // Change preference to hide tab bars
+                PreferencesManager.set("tabBar.options", { showTabBar: true, numberOfTabs: 0 });
+
+                // Wait for both tab bars to disappear
+                await awaitsFor(
+                    function () {
+                        return !$("#phoenix-tab-bar").is(":visible") && !$("#phoenix-tab-bar-2").is(":visible");
+                    },
+                    "Both tab bars to disappear",
+                    1000
+                );
+
+                // Verify both tab bars are hidden
+                expect($("#phoenix-tab-bar").is(":visible")).toBe(false);
+                expect($("#phoenix-tab-bar-2").is(":visible")).toBe(false);
+
+                // Clean up - close all files and reset to single pane
+                await testWindow.closeAllFiles();
+                MainViewManager.setLayoutScheme(1, 1);
+            });
+        });
+
         describe("Split Panes", function () {
             beforeEach(async function () {
                 // Enable the tab bar feature
