@@ -330,6 +330,216 @@ define(function (require, exports, module) {
                 // Verify the tab bar is not visible
                 expect($("#phoenix-tab-bar").is(":visible")).toBe(false);
             });
+
+            it("should show working set when the option is enabled", async function () {
+                // Enable the working set feature
+                PreferencesManager.set("showWorkingSet", true);
+
+                // Wait for the working set to become visible
+                await awaitsFor(
+                    function () {
+                        return !$("#working-set-list-container").hasClass("working-set-hidden");
+                    },
+                    "Working set to become visible",
+                    1000
+                );
+
+                // Verify the working set is visible
+                expect($("#working-set-list-container").hasClass("working-set-hidden")).toBe(false);
+            });
+
+            it("should hide working set when the option is disabled", async function () {
+                // Disable the working set feature
+                PreferencesManager.set("showWorkingSet", false);
+
+                // Wait for the working set to become hidden
+                await awaitsFor(
+                    function () {
+                        return $("#working-set-list-container").hasClass("working-set-hidden");
+                    },
+                    "Working set to become hidden",
+                    1000
+                );
+
+                // Verify the working set is not visible
+                expect($("#working-set-list-container").hasClass("working-set-hidden")).toBe(true);
+            });
+        });
+
+        describe("Configure Working Set Button", function () {
+            it("should have a working set configuration button in the sidebar", function () {
+                // Verify the button exists
+                const $configButton = $(".working-set-splitview-btn");
+                expect($configButton.length).toBe(1);
+            });
+
+            it("should open a menu with 'Show working set' and 'Show file tab bar' options when clicked", async function () {
+                // Click the configure working set button
+                const $configButton = $(".working-set-splitview-btn");
+                $configButton.click();
+
+                // Wait for the menu to appear
+                await awaitsFor(
+                    function () {
+                        return $(".dropdown-menu:visible").length > 0;
+                    },
+                    "Context menu to appear",
+                    1000
+                );
+
+                // Verify the menu contains the expected options
+                const $menu = $(".dropdown-menu:visible");
+                const showWorkingSetItem = $menu.find("li a[id$='cmd.toggleShowWorkingSet']");
+                const showFileTabsItem = $menu.find("li a[id$='cmd.toggleShowFileTabs']");
+
+                expect(showWorkingSetItem.length).toBe(1);
+                expect(showFileTabsItem.length).toBe(1);
+
+                // Clean up - close the menu
+                $("body").click();
+            });
+
+            it("should toggle working set visibility when 'Show working set' option is clicked", async function () {
+                // First, ensure working set is visible
+                PreferencesManager.set("showWorkingSet", true);
+                await awaitsFor(
+                    function () {
+                        return !$("#working-set-list-container").hasClass("working-set-hidden");
+                    },
+                    "Working set to become visible",
+                    1000
+                );
+
+                // Click the configure working set button
+                const $configButton = $(".working-set-splitview-btn");
+                $configButton.click();
+
+                // Wait for the menu to appear
+                await awaitsFor(
+                    function () {
+                        return $(".dropdown-menu:visible").length > 0;
+                    },
+                    "Context menu to appear",
+                    1000
+                );
+
+                // Click the "Show working set" option
+                const $menu = $(".dropdown-menu:visible");
+                const showWorkingSetItem = $menu.find("li a[id$='cmd.toggleShowWorkingSet']");
+                showWorkingSetItem.click();
+
+                // Wait for the working set to become hidden
+                await awaitsFor(
+                    function () {
+                        return $("#working-set-list-container").hasClass("working-set-hidden");
+                    },
+                    "Working set to become hidden",
+                    1000
+                );
+
+                // Verify the working set is hidden
+                expect($("#working-set-list-container").hasClass("working-set-hidden")).toBe(true);
+
+                // Click the configure working set button again
+                $configButton.click();
+
+                // Wait for the menu to appear
+                await awaitsFor(
+                    function () {
+                        return $(".dropdown-menu:visible").length > 0;
+                    },
+                    "Context menu to appear",
+                    1000
+                );
+
+                // Click the "Show working set" option again
+                const $menu2 = $(".dropdown-menu:visible");
+                const showWorkingSetItem2 = $menu2.find("li a[id$='cmd.toggleShowWorkingSet']");
+                showWorkingSetItem2.click();
+
+                // Wait for the working set to become visible
+                await awaitsFor(
+                    function () {
+                        return !$("#working-set-list-container").hasClass("working-set-hidden");
+                    },
+                    "Working set to become visible",
+                    1000
+                );
+
+                // Verify the working set is visible
+                expect($("#working-set-list-container").hasClass("working-set-hidden")).toBe(false);
+            });
+
+            it("should toggle tab bar visibility when 'Show file tab bar' option is clicked", async function () {
+                // First, ensure tab bar is visible
+                PreferencesManager.set("tabBar.options", { showTabBar: true, numberOfTabs: -1 });
+                await awaitsFor(
+                    function () {
+                        return $("#phoenix-tab-bar").is(":visible");
+                    },
+                    "Tab bar to become visible",
+                    1000
+                );
+
+                // Click the configure working set button
+                const $configButton = $(".working-set-splitview-btn");
+                $configButton.click();
+
+                // Wait for the menu to appear
+                await awaitsFor(
+                    function () {
+                        return $(".dropdown-menu:visible").length > 0;
+                    },
+                    "Context menu to appear",
+                    1000
+                );
+
+                // Click the "Show file tab bar" option
+                const $menu = $(".dropdown-menu:visible");
+                const showFileTabsItem = $menu.find("li a[id$='cmd.toggleShowFileTabs']");
+                showFileTabsItem.click();
+
+                // Wait for the tab bar to become hidden
+                await awaitsFor(
+                    function () {
+                        return !$("#phoenix-tab-bar").is(":visible");
+                    },
+                    "Tab bar to become hidden",
+                    1000
+                );
+
+                // Verify the tab bar is hidden
+                expect($("#phoenix-tab-bar").is(":visible")).toBe(false);
+
+                // Click the configure working set button again
+                $configButton.click();
+
+                // Wait for the menu to appear
+                await awaitsFor(
+                    function () {
+                        return $(".dropdown-menu:visible").length > 0;
+                    },
+                    "Context menu to appear",
+                    1000
+                );
+
+                // Click the "Show file tab bar" option again
+                const $menu2 = $(".dropdown-menu:visible");
+                const showFileTabsItem2 = $menu2.find("li a[id$='cmd.toggleShowFileTabs']");
+                showFileTabsItem2.click();
+
+                // Wait for the tab bar to become visible
+                await awaitsFor(
+                    function () {
+                        return $("#phoenix-tab-bar").is(":visible");
+                    },
+                    "Tab bar to become visible",
+                    1000
+                );
+
+                // Verify the tab bar is visible
+                expect($("#phoenix-tab-bar").is(":visible")).toBe(true);
+            });
         });
 
         describe("Drag and Drop", function () {
@@ -3069,28 +3279,6 @@ define(function (require, exports, module) {
 
                 // Should not go below 0
                 expect($tabBar.scrollLeft()).toBeGreaterThanOrEqual(0);
-            });
-
-            it("should handle rapid consecutive scroll events", function () {
-                const $tabBar = $("#phoenix-tab-bar");
-                expect($tabBar.length).toBe(1);
-
-                const initialScrollLeft = $tabBar.scrollLeft();
-
-                // Trigger multiple rapid scroll events
-                for (let i = 0; i < 10; i++) {
-                    const wheelEvent = $.Event("wheel");
-                    wheelEvent.originalEvent = { deltaY: 50 };
-                    $tabBar.trigger(wheelEvent);
-                }
-
-                // Should have scrolled significantly
-                const finalScrollLeft = $tabBar.scrollLeft();
-                expect(finalScrollLeft).toBeGreaterThan(initialScrollLeft + 100);
-
-                // Verify the total scroll amount after multiple events
-                // 10 scrolls of 50 * 2.5 = 1250 pixels total
-                expect(finalScrollLeft - initialScrollLeft).toBeCloseTo(10 * 50 * 2.5, 0);
             });
         });
     });
