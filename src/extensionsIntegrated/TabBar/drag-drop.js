@@ -784,7 +784,9 @@ define(function (require, exports, module) {
                 $(this).addClass("empty-pane-drop-target");
 
                 // set the drop effect
-                e.originalEvent.dataTransfer.dropEffect = "move";
+                if (e.originalEvent && e.originalEvent.dataTransfer) {
+                    e.originalEvent.dataTransfer.dropEffect = "move";
+                }
             }
         });
 

@@ -35,6 +35,37 @@ define(function (require, exports, module) {
             Strings;
         let testFilePath, testFilePath2, testFilePath3, testDuplicateDir1, testDuplicateDir2, testDuplicateName;
 
+        /**
+         * Helper function to check if the tab bar for a specific pane is visible
+         * @param {string} paneId - The pane ID ("first-pane" or "second-pane")
+         * @returns {boolean} - True if the tab bar is visible, false otherwise
+         */
+        function isTabBarVisible(paneId) {
+            const tabBarId = paneId === "first-pane" ? "#phoenix-tab-bar" : "#phoenix-tab-bar-2";
+            return $(tabBarId).is(":visible");
+        }
+
+        /**
+         * Helper function to get the tab count for a specific pane
+         * @param {string} paneId - The pane ID ("first-pane" or "second-pane")
+         * @returns {number} - The number of tabs in the pane
+         */
+        function getPaneTabCount(paneId) {
+            const tabBarId = paneId === "first-pane" ? "#phoenix-tab-bar" : "#phoenix-tab-bar-2";
+            return $(tabBarId).find(".tab").length;
+        }
+
+        /**
+         * Helper function to check if a tab for a specific file exists in a specific pane
+         * @param {string} filePath - The path of the file to check
+         * @param {string} paneId - The pane ID ("first-pane" or "second-pane")
+         * @returns {boolean} - True if the tab exists in the pane, false otherwise
+         */
+        function tabExistsInPane(filePath, paneId) {
+            const tabBarId = paneId === "first-pane" ? "#phoenix-tab-bar" : "#phoenix-tab-bar-2";
+            return $(tabBarId).find(`.tab[data-path="${filePath}"]`).length > 0;
+        }
+
         beforeAll(async function () {
             // Create the test window
             testWindow = await SpecRunnerUtils.createTestWindowAndRun();
@@ -298,6 +329,524 @@ define(function (require, exports, module) {
 
                 // Verify the tab bar is not visible
                 expect($("#phoenix-tab-bar").is(":visible")).toBe(false);
+            });
+        });
+
+        describe("Drag and Drop", function () {
+            beforeEach(async function () {
+                // Close all files and reset to single pane
+                await testWindow.closeAllFiles();
+                MainViewManager.setLayoutScheme(1, 1);
+
+                // Wait for cleanup to complete
+                await awaits(100);
+            });
+
+            it("should allow dragging and dropping a tab to the beginning of the tab bar", async function () {
+                // Enable the tab bar feature
+                PreferencesManager.set("tabBar.options", { showTabBar: true, numberOfTabs: -1 });
+
+                // Close all files to start with a clean state
+                await testWindow.closeAllFiles();
+
+                // Create and open multiple test files to work with
+                const testFiles = [];
+                for (let i = 0; i < 3; i++) {
+                    const filePath = SpecRunnerUtils.getTempDirectory() + `/drag-drop-test-${i}.js`;
+                    testFiles.push(filePath);
+                    await jsPromise(
+                        SpecRunnerUtils.createTextFile(filePath, `// Drag drop test file ${i}`, FileSystem)
+                    );
+                }
+
+                // Open all the test files
+                for (const filePath of testFiles) {
+                    await awaitsForDone(
+                        CommandManager.execute(Commands.FILE_OPEN, { fullPath: filePath }),
+                        `Open file ${filePath}`
+                    );
+                }
+
+                // Wait for all tabs to appear
+                await awaitsFor(
+                    function () {
+                        return getTabCount() === testFiles.length;
+                    },
+                    "All tabs to appear",
+                    1000
+                );
+
+                // Verify initial tab order
+                const initialWorkingSet = MainViewManager.getWorkingSet("first-pane");
+                expect(initialWorkingSet.length).toBe(testFiles.length);
+                expect(initialWorkingSet[0].fullPath).toBe(testFiles[0]);
+                expect(initialWorkingSet[1].fullPath).toBe(testFiles[1]);
+                expect(initialWorkingSet[2].fullPath).toBe(testFiles[2]);
+
+                // Get the source and target tabs
+                const sourceTab = getTab(testFiles[0]);
+                const targetTab = getTab(testFiles[2]);
+
+                // Simulate drag start on the first tab
+                const dragStartEvent = $.Event("dragstart", {
+                    originalEvent: {
+                        dataTransfer: {
+                            setData: function () {},
+                            effectAllowed: "move"
+                        }
+                    }
+                });
+                sourceTab.trigger(dragStartEvent);
+
+                // Simulate dragenter on the last tab
+                const dragEnterEvent = $.Event("dragenter");
+                targetTab.trigger(dragEnterEvent);
+
+                // Simulate drag over on the last tab
+                const dragOverEvent = $.Event("dragover", {
+                    originalEvent: {
+                        dataTransfer: {
+                            dropEffect: "move"
+                        },
+                        clientX: targetTab[0].getBoundingClientRect().left + 5 // Position near the left edge
+                    },
+                    preventDefault: function () {}
+                });
+                targetTab.trigger(dragOverEvent);
+
+                // Simulate drop on the last tab
+                const dropEvent = $.Event("drop", {
+                    originalEvent: {
+                        dataTransfer: {},
+                        clientX: targetTab[0].getBoundingClientRect().left + 5 // Position near the left edge
+                    },
+                    preventDefault: function () {},
+                    stopPropagation: function () {}
+                });
+                targetTab.trigger(dropEvent);
+
+                // Simulate dragend to complete the operation
+                const dragEndEvent = $.Event("dragend");
+                sourceTab.trigger(dragEndEvent);
+
+                // Wait for the working set to update
+                await awaitsFor(
+                    function () {
+                        const currentWorkingSet = MainViewManager.getWorkingSet("first-pane");
+                        // Check if the first file has moved to before the last file
+                        return (
+                            currentWorkingSet.length === testFiles.length &&
+                            currentWorkingSet[1].fullPath === testFiles[0]
+                        );
+                    },
+                    "Working set to update after drag and drop",
+                    1000
+                );
+
+                // Verify the new tab order
+                const finalWorkingSet = MainViewManager.getWorkingSet("first-pane");
+                expect(finalWorkingSet.length).toBe(testFiles.length);
+                expect(finalWorkingSet[0].fullPath).toBe(testFiles[1]);
+                expect(finalWorkingSet[1].fullPath).toBe(testFiles[0]);
+                expect(finalWorkingSet[2].fullPath).toBe(testFiles[2]);
+
+                // Clean up - close all the test files
+                for (const filePath of testFiles) {
+                    const fileToClose = FileSystem.getFileForPath(filePath);
+                    const promise = CommandManager.execute(Commands.FILE_CLOSE, { file: fileToClose });
+                    testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
+                        testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
+                        testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
+                    );
+                    await awaitsForDone(promise, `Close file ${filePath}`);
+                }
+            });
+
+            it("should allow dragging and dropping a tab in between other tabs", async function () {
+                // Enable the tab bar feature
+                PreferencesManager.set("tabBar.options", { showTabBar: true, numberOfTabs: -1 });
+
+                // Close all files to start with a clean state
+                await testWindow.closeAllFiles();
+
+                // Create and open multiple test files to work with
+                const testFiles = [];
+                for (let i = 0; i < 3; i++) {
+                    const filePath = SpecRunnerUtils.getTempDirectory() + `/drag-between-test-${i}.js`;
+                    testFiles.push(filePath);
+                    await jsPromise(
+                        SpecRunnerUtils.createTextFile(filePath, `// Drag between test file ${i}`, FileSystem)
+                    );
+                }
+
+                // Open all the test files
+                for (const filePath of testFiles) {
+                    await awaitsForDone(
+                        CommandManager.execute(Commands.FILE_OPEN, { fullPath: filePath }),
+                        `Open file ${filePath}`
+                    );
+                }
+
+                // Wait for all tabs to appear
+                await awaitsFor(
+                    function () {
+                        return getTabCount() === testFiles.length;
+                    },
+                    "All tabs to appear",
+                    1000
+                );
+
+                // Verify initial tab order
+                const initialWorkingSet = MainViewManager.getWorkingSet("first-pane");
+                expect(initialWorkingSet.length).toBe(testFiles.length);
+                expect(initialWorkingSet[0].fullPath).toBe(testFiles[0]);
+                expect(initialWorkingSet[1].fullPath).toBe(testFiles[1]);
+                expect(initialWorkingSet[2].fullPath).toBe(testFiles[2]);
+
+                // Get the source and target tabs - we'll drag the last tab to between the first and second tabs
+                const sourceTab = getTab(testFiles[2]); // Last tab
+                const targetTab = getTab(testFiles[1]); // Middle tab
+
+                // Simulate drag start on the last tab
+                const dragStartEvent = $.Event("dragstart", {
+                    originalEvent: {
+                        dataTransfer: {
+                            setData: function () {},
+                            effectAllowed: "move"
+                        }
+                    }
+                });
+                sourceTab.trigger(dragStartEvent);
+
+                // Simulate dragenter on the middle tab
+                const dragEnterEvent = $.Event("dragenter");
+                targetTab.trigger(dragEnterEvent);
+
+                // Simulate drag over on the middle tab - position near the left edge to drop before it
+                const dragOverEvent = $.Event("dragover", {
+                    originalEvent: {
+                        dataTransfer: {
+                            dropEffect: "move"
+                        },
+                        clientX: targetTab[0].getBoundingClientRect().left + 5 // Position near the left edge
+                    },
+                    preventDefault: function () {}
+                });
+                targetTab.trigger(dragOverEvent);
+
+                // Simulate drop on the middle tab
+                const dropEvent = $.Event("drop", {
+                    originalEvent: {
+                        dataTransfer: {},
+                        clientX: targetTab[0].getBoundingClientRect().left + 5 // Position near the left edge
+                    },
+                    preventDefault: function () {},
+                    stopPropagation: function () {}
+                });
+                targetTab.trigger(dropEvent);
+
+                // Simulate dragend to complete the operation
+                const dragEndEvent = $.Event("dragend");
+                sourceTab.trigger(dragEndEvent);
+
+                // Wait for the working set to update
+                await awaitsFor(
+                    function () {
+                        const currentWorkingSet = MainViewManager.getWorkingSet("first-pane");
+                        // Check if the last file has moved to between the first and second files
+                        return (
+                            currentWorkingSet.length === testFiles.length &&
+                            currentWorkingSet[1].fullPath === testFiles[2]
+                        );
+                    },
+                    "Working set to update after drag and drop",
+                    1000
+                );
+
+                // Verify the new tab order
+                const finalWorkingSet = MainViewManager.getWorkingSet("first-pane");
+                expect(finalWorkingSet.length).toBe(testFiles.length);
+                expect(finalWorkingSet[0].fullPath).toBe(testFiles[0]);
+                expect(finalWorkingSet[1].fullPath).toBe(testFiles[2]); // Last tab should now be in the middle
+                expect(finalWorkingSet[2].fullPath).toBe(testFiles[1]); // Middle tab should now be last
+
+                // Clean up - close all the test files
+                for (const filePath of testFiles) {
+                    const fileToClose = FileSystem.getFileForPath(filePath);
+                    const promise = CommandManager.execute(Commands.FILE_CLOSE, { file: fileToClose });
+                    testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
+                        testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
+                        testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
+                    );
+                    await awaitsForDone(promise, `Close file ${filePath}`);
+                }
+            });
+
+            it("should allow dragging a tab from one pane to another non-empty pane", async function () {
+                // Enable the tab bar feature
+                PreferencesManager.set("tabBar.options", { showTabBar: true, numberOfTabs: -1 });
+
+                // Close all files to start with a clean state
+                await testWindow.closeAllFiles();
+
+                // Set up a horizontal split view (two columns)
+                MainViewManager.setLayoutScheme(1, 2);
+
+                // Create test files for both panes
+                const firstPaneFiles = [];
+                for (let i = 0; i < 2; i++) {
+                    const filePath = SpecRunnerUtils.getTempDirectory() + `/first-pane-test-${i}.js`;
+                    firstPaneFiles.push(filePath);
+                    await jsPromise(
+                        SpecRunnerUtils.createTextFile(filePath, `// First pane test file ${i}`, FileSystem)
+                    );
+                }
+
+                const secondPaneFiles = [];
+                for (let i = 0; i < 2; i++) {
+                    const filePath = SpecRunnerUtils.getTempDirectory() + `/second-pane-test-${i}.js`;
+                    secondPaneFiles.push(filePath);
+                    await jsPromise(
+                        SpecRunnerUtils.createTextFile(filePath, `// Second pane test file ${i}`, FileSystem)
+                    );
+                }
+
+                // Open files in the first pane
+                for (const filePath of firstPaneFiles) {
+                    await awaitsForDone(
+                        CommandManager.execute(Commands.FILE_OPEN, { fullPath: filePath, paneId: "first-pane" }),
+                        `Open file ${filePath} in first pane`
+                    );
+                }
+
+                // Open files in the second pane
+                for (const filePath of secondPaneFiles) {
+                    await awaitsForDone(
+                        CommandManager.execute(Commands.FILE_OPEN, { fullPath: filePath, paneId: "second-pane" }),
+                        `Open file ${filePath} in second pane`
+                    );
+                }
+
+                // Wait for all tabs to appear in both panes
+                await awaitsFor(
+                    function () {
+                        return (
+                            getPaneTabCount("first-pane") === firstPaneFiles.length &&
+                            getPaneTabCount("second-pane") === secondPaneFiles.length
+                        );
+                    },
+                    "All tabs to appear in both panes",
+                    1000
+                );
+
+                // Verify initial tab counts
+                expect(getPaneTabCount("first-pane")).toBe(firstPaneFiles.length);
+                expect(getPaneTabCount("second-pane")).toBe(secondPaneFiles.length);
+
+                // Get the source tab from the first pane and target tab from the second pane
+                const sourceTab = $(`.tab[data-path="${firstPaneFiles[0]}"]`);
+                const targetTab = $(`.tab[data-path="${secondPaneFiles[0]}"]`);
+
+                // Simulate drag start on the source tab
+                const dragStartEvent = $.Event("dragstart", {
+                    originalEvent: {
+                        dataTransfer: {
+                            setData: function () {},
+                            effectAllowed: "move"
+                        }
+                    }
+                });
+                sourceTab.trigger(dragStartEvent);
+
+                // Simulate dragenter on the target tab
+                const dragEnterEvent = $.Event("dragenter");
+                targetTab.trigger(dragEnterEvent);
+
+                // Simulate drag over on the target tab
+                const dragOverEvent = $.Event("dragover", {
+                    originalEvent: {
+                        dataTransfer: {
+                            dropEffect: "move"
+                        },
+                        clientX: targetTab[0].getBoundingClientRect().left + 5 // Position near the left edge
+                    },
+                    preventDefault: function () {}
+                });
+                targetTab.trigger(dragOverEvent);
+
+                // Simulate drop on the target tab
+                const dropEvent = $.Event("drop", {
+                    originalEvent: {
+                        dataTransfer: {},
+                        clientX: targetTab[0].getBoundingClientRect().left + 5 // Position near the left edge
+                    },
+                    preventDefault: function () {},
+                    stopPropagation: function () {}
+                });
+                targetTab.trigger(dropEvent);
+
+                // Simulate dragend to complete the operation
+                const dragEndEvent = $.Event("dragend");
+                sourceTab.trigger(dragEndEvent);
+
+                // Wait for the tab to move to the second pane
+                await awaitsFor(
+                    function () {
+                        return (
+                            !tabExistsInPane(firstPaneFiles[0], "first-pane") &&
+                            tabExistsInPane(firstPaneFiles[0], "second-pane")
+                        );
+                    },
+                    "Tab to move from first pane to second pane",
+                    1000
+                );
+
+                // Verify the tab counts after the drag and drop
+                expect(getPaneTabCount("first-pane")).toBe(firstPaneFiles.length - 1);
+                expect(getPaneTabCount("second-pane")).toBe(secondPaneFiles.length + 1);
+
+                // Verify the tab is now in the second pane
+                expect(tabExistsInPane(firstPaneFiles[0], "first-pane")).toBe(false);
+                expect(tabExistsInPane(firstPaneFiles[0], "second-pane")).toBe(true);
+
+                // Clean up - close all files and reset to single pane
+                await testWindow.closeAllFiles();
+                MainViewManager.setLayoutScheme(1, 1);
+            });
+
+            it("should allow dragging a tab to an empty pane", async function () {
+                // Enable the tab bar feature
+                PreferencesManager.set("tabBar.options", { showTabBar: true, numberOfTabs: -1 });
+
+                // Close all files to start with a clean state
+                await testWindow.closeAllFiles();
+
+                // Set up a horizontal split view (two columns)
+                MainViewManager.setLayoutScheme(1, 2);
+
+                // Wait for layout to settle and ensure second pane is empty
+                await awaits(100);
+
+                // Force close any files that might be open in the second pane
+                const secondPaneWorkingSet = MainViewManager.getWorkingSet("second-pane");
+                for (const file of secondPaneWorkingSet) {
+                    await awaitsForDone(
+                        CommandManager.execute(Commands.FILE_CLOSE, { file: file, paneId: "second-pane" }),
+                        `Force close file ${file.fullPath} in second pane`
+                    );
+                }
+
+                // Create test files for the first pane
+                const firstPaneFiles = [];
+                for (let i = 0; i < 2; i++) {
+                    const filePath = SpecRunnerUtils.getTempDirectory() + `/first-pane-empty-test-${i}.js`;
+                    firstPaneFiles.push(filePath);
+                    await jsPromise(
+                        SpecRunnerUtils.createTextFile(filePath, `// First pane empty test file ${i}`, FileSystem)
+                    );
+                }
+
+                // Open files in the first pane only
+                for (const filePath of firstPaneFiles) {
+                    await awaitsForDone(
+                        CommandManager.execute(Commands.FILE_OPEN, { fullPath: filePath, paneId: "first-pane" }),
+                        `Open file ${filePath} in first pane`
+                    );
+                }
+
+                // Wait for all tabs to appear in the first pane
+                await awaitsFor(
+                    function () {
+                        return getPaneTabCount("first-pane") === firstPaneFiles.length;
+                    },
+                    "All tabs to appear in first pane",
+                    1000
+                );
+
+                // Ensure second pane is empty before proceeding
+                await awaitsFor(
+                    function () {
+                        return getPaneTabCount("second-pane") === 0 && !isTabBarVisible("second-pane");
+                    },
+                    "Second pane to be empty",
+                    1000
+                );
+
+                // Verify initial tab counts
+                expect(getPaneTabCount("first-pane")).toBe(firstPaneFiles.length);
+                expect(getPaneTabCount("second-pane")).toBe(0);
+                expect(isTabBarVisible("second-pane")).toBe(false);
+
+                // Get the source tab from the first pane
+                const sourceTab = $(`.tab[data-path="${firstPaneFiles[0]}"]`);
+
+                // Get the empty pane content area as the drop target
+                const emptyPaneTarget = $("#second-pane .pane-content");
+
+                // Simulate drag start on the source tab
+                const dragStartEvent = $.Event("dragstart", {
+                    originalEvent: {
+                        dataTransfer: {
+                            setData: function () {},
+                            effectAllowed: "move"
+                        }
+                    }
+                });
+                sourceTab.trigger(dragStartEvent);
+
+                // Simulate dragenter on the empty pane
+                const dragEnterEvent = $.Event("dragenter");
+                emptyPaneTarget.trigger(dragEnterEvent);
+
+                // Simulate drag over on the empty pane
+                const dragOverEvent = $.Event("dragover", {
+                    originalEvent: {
+                        dataTransfer: {
+                            dropEffect: "move"
+                        }
+                    },
+                    preventDefault: function () {}
+                });
+                emptyPaneTarget.trigger(dragOverEvent);
+
+                // Simulate drop on the empty pane
+                const dropEvent = $.Event("drop", {
+                    originalEvent: {
+                        dataTransfer: {}
+                    },
+                    preventDefault: function () {},
+                    stopPropagation: function () {}
+                });
+                emptyPaneTarget.trigger(dropEvent);
+
+                // Simulate dragend to complete the operation
+                const dragEndEvent = $.Event("dragend");
+                sourceTab.trigger(dragEndEvent);
+
+                // Wait for the tab to move to the second pane
+                await awaitsFor(
+                    function () {
+                        return (
+                            !tabExistsInPane(firstPaneFiles[0], "first-pane") &&
+                            tabExistsInPane(firstPaneFiles[0], "second-pane") &&
+                            isTabBarVisible("second-pane")
+                        );
+                    },
+                    "Tab to move from first pane to second pane and tab bar to appear",
+                    1000
+                );
+
+                // Verify the tab counts after the drag and drop
+                expect(getPaneTabCount("first-pane")).toBe(firstPaneFiles.length - 1);
+                expect(getPaneTabCount("second-pane")).toBe(1);
+
+                // Verify the tab is now in the second pane
+                expect(tabExistsInPane(firstPaneFiles[0], "first-pane")).toBe(false);
+                expect(tabExistsInPane(firstPaneFiles[0], "second-pane")).toBe(true);
+
+                // Clean up - close all files and reset to single pane
+                await testWindow.closeAllFiles();
+                MainViewManager.setLayoutScheme(1, 1);
             });
         });
 
@@ -2039,37 +2588,6 @@ define(function (require, exports, module) {
                 // Reset to single pane layout
                 MainViewManager.setLayoutScheme(1, 1);
             });
-
-            /**
-             * Helper function to check if the tab bar for a specific pane is visible
-             * @param {string} paneId - The pane ID ("first-pane" or "second-pane")
-             * @returns {boolean} - True if the tab bar is visible, false otherwise
-             */
-            function isTabBarVisible(paneId) {
-                const tabBarId = paneId === "first-pane" ? "#phoenix-tab-bar" : "#phoenix-tab-bar-2";
-                return $(tabBarId).is(":visible");
-            }
-
-            /**
-             * Helper function to get the tab count for a specific pane
-             * @param {string} paneId - The pane ID ("first-pane" or "second-pane")
-             * @returns {number} - The number of tabs in the pane
-             */
-            function getPaneTabCount(paneId) {
-                const tabBarId = paneId === "first-pane" ? "#phoenix-tab-bar" : "#phoenix-tab-bar-2";
-                return $(tabBarId).find(".tab").length;
-            }
-
-            /**
-             * Helper function to check if a tab for a specific file exists in a specific pane
-             * @param {string} filePath - The path of the file to check
-             * @param {string} paneId - The pane ID ("first-pane" or "second-pane")
-             * @returns {boolean} - True if the tab exists in the pane, false otherwise
-             */
-            function tabExistsInPane(filePath, paneId) {
-                const tabBarId = paneId === "first-pane" ? "#phoenix-tab-bar" : "#phoenix-tab-bar-2";
-                return $(tabBarId).find(`.tab[data-path="${filePath}"]`).length > 0;
-            }
 
             it("should show tab bars in both panes when files are open in both", async function () {
                 // Open a file in the first pane
