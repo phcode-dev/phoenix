@@ -2307,5 +2307,273 @@ define(function (require, exports, module) {
                 MainViewManager.setLayoutScheme(1, 2);
             });
         });
+
+        describe("Tab Bar Scrolling", function () {
+            let longTestFilePaths = [];
+
+            beforeEach(async function () {
+                // Create multiple test files to ensure scrolling is needed
+                longTestFilePaths = [];
+                for (let i = 1; i <= 15; i++) {
+                    const filePath = SpecRunnerUtils.getTempDirectory() + `/scroll-test-file-${i}.js`;
+                    longTestFilePaths.push(filePath);
+                    await jsPromise(
+                        SpecRunnerUtils.createTextFile(filePath, `// Test file ${i} for scrolling`, FileSystem)
+                    );
+                }
+
+                // Open all files to create many tabs
+                for (let filePath of longTestFilePaths) {
+                    await awaitsForDone(
+                        CommandManager.execute(Commands.FILE_OPEN, { fullPath: filePath }),
+                        `Open ${filePath}`
+                    );
+                }
+
+                // Wait for tabs to be rendered
+                await awaitsFor(
+                    function () {
+                        return getTabCount() >= 15;
+                    },
+                    "All tabs to be created",
+                    3000
+                );
+            });
+
+            afterEach(async function () {
+                // Close all test files
+                for (let filePath of longTestFilePaths) {
+                    const fileObj = FileSystem.getFileForPath(filePath);
+                    try {
+                        await awaitsForDone(
+                            CommandManager.execute(Commands.FILE_CLOSE, { file: fileObj }),
+                            `Close ${filePath}`
+                        );
+                    } catch (e) {
+                        // Ignore errors if file is already closed
+                    }
+                }
+            });
+
+            it("should scroll tab bar horizontally when mouse wheel is scrolled", function () {
+                const $tabBar = $("#phoenix-tab-bar");
+                expect($tabBar.length).toBe(1);
+
+                // Get initial scroll position
+                const initialScrollLeft = $tabBar.scrollLeft();
+
+                // Create a wheel event for scrolling down (should scroll right)
+                const wheelEventDown = $.Event("wheel");
+                wheelEventDown.originalEvent = { deltaY: 100 }; // Positive deltaY = scroll down/right
+
+                // Trigger the wheel event
+                $tabBar.trigger(wheelEventDown);
+
+                // Check that scroll position has changed to the right
+                const scrollAfterDown = $tabBar.scrollLeft();
+                expect(scrollAfterDown).toBeGreaterThan(initialScrollLeft);
+                // Verify the scroll amount is proportional to deltaY (implementation multiplies by 2.5)
+                expect(scrollAfterDown - initialScrollLeft).toBeCloseTo(100 * 2.5, 0);
+
+                // Create a wheel event for scrolling up (should scroll left)
+                const wheelEventUp = $.Event("wheel");
+                wheelEventUp.originalEvent = { deltaY: -100 }; // Negative deltaY = scroll up/left
+
+                // Trigger the wheel event
+                $tabBar.trigger(wheelEventUp);
+
+                // Check that scroll position has moved left from the previous position
+                const scrollAfterUp = $tabBar.scrollLeft();
+                expect(scrollAfterUp).toBeLessThan(scrollAfterDown);
+                // Verify the scroll amount is proportional to deltaY
+                expect(scrollAfterDown - scrollAfterUp).toBeCloseTo(100 * 2.5, 0);
+            });
+
+            it("should scroll tab bar with trackpad scrolling", function () {
+                const $tabBar = $("#phoenix-tab-bar");
+                expect($tabBar.length).toBe(1);
+
+                // Get initial scroll position
+                const initialScrollLeft = $tabBar.scrollLeft();
+
+                // Create a wheel event simulating trackpad scrolling (smaller deltaY values)
+                const trackpadEvent = $.Event("wheel");
+                trackpadEvent.originalEvent = { deltaY: 25 }; // Smaller value typical of trackpad
+
+                // Trigger the trackpad scrolling event multiple times
+                for (let i = 0; i < 4; i++) {
+                    $tabBar.trigger(trackpadEvent);
+                }
+
+                // Check that scroll position has changed
+                const scrollAfterTrackpad = $tabBar.scrollLeft();
+                expect(scrollAfterTrackpad).toBeGreaterThan(initialScrollLeft);
+                // Verify the total scroll amount after multiple small scrolls
+                // 4 scrolls of 25 * 2.5 = 250 pixels total
+                expect(scrollAfterTrackpad - initialScrollLeft).toBeCloseTo(4 * 25 * 2.5, 0);
+            });
+
+            it("should scroll second pane tab bar when it exists", async function () {
+                // Create the second pane first
+                MainViewManager.setLayoutScheme(1, 2);
+
+                // Wait for the layout to be created
+                await awaitsFor(
+                    function () {
+                        return MainViewManager.getPaneIdList().length === 2;
+                    },
+                    "Second pane to be created",
+                    1000
+                );
+
+                // Open a file in the second pane to create the second tab bar
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, {
+                        fullPath: longTestFilePaths[0],
+                        paneId: "second-pane"
+                    }),
+                    "Open file in second pane"
+                );
+
+                // Wait for second tab bar to appear
+                await awaitsFor(
+                    function () {
+                        return $("#phoenix-tab-bar-2").length > 0;
+                    },
+                    "Second tab bar to appear",
+                    1000
+                );
+
+                const $tabBar2 = $("#phoenix-tab-bar-2");
+                expect($tabBar2.length).toBe(1);
+
+                // Open multiple files in second pane to enable scrolling
+                for (let i = 1; i < 8; i++) {
+                    await awaitsForDone(
+                        CommandManager.execute(Commands.FILE_OPEN, {
+                            fullPath: longTestFilePaths[i],
+                            paneId: "second-pane"
+                        }),
+                        `Open file ${i} in second pane`
+                    );
+                }
+
+                // Wait for tabs to be rendered in second pane
+                await awaitsFor(
+                    function () {
+                        return $tabBar2.find(".tab").length >= 8;
+                    },
+                    "Tabs to be created in second pane",
+                    2000
+                );
+
+                // Get initial scroll position of second tab bar
+                const initialScrollLeft = $tabBar2.scrollLeft();
+
+                // Create a wheel event for scrolling
+                const wheelEvent = $.Event("wheel");
+                wheelEvent.originalEvent = { deltaY: 150 };
+
+                // Trigger the wheel event on second tab bar
+                $tabBar2.trigger(wheelEvent);
+
+                // Check that scroll position has changed
+                const scrollAfterWheel = $tabBar2.scrollLeft();
+                expect(scrollAfterWheel).toBeGreaterThan(initialScrollLeft);
+                // Verify the scroll amount is proportional to deltaY
+                expect(scrollAfterWheel - initialScrollLeft).toBeCloseTo(150 * 2.5, 0);
+
+                // Reset layout scheme back to single pane
+                MainViewManager.setLayoutScheme(1, 1);
+            });
+
+            it("should calculate correct scroll amount based on deltaY", function () {
+                const $tabBar = $("#phoenix-tab-bar");
+                expect($tabBar.length).toBe(1);
+
+                // Ensure the tab bar is scrollable by checking if scrollWidth > clientWidth
+                if ($tabBar[0].scrollWidth <= $tabBar[0].clientWidth) {
+                    // Skip test if tab bar is not scrollable
+                    return;
+                }
+
+                // Set initial scroll position to middle to allow scrolling in both directions
+                const maxScroll = $tabBar[0].scrollWidth - $tabBar[0].clientWidth;
+                const midScroll = Math.floor(maxScroll / 2);
+                $tabBar.scrollLeft(midScroll);
+
+                // Test positive deltaY (scroll right)
+                const initialScrollLeft = $tabBar.scrollLeft();
+                const wheelEventRight = $.Event("wheel");
+                wheelEventRight.originalEvent = { deltaY: 40 };
+                $tabBar.trigger(wheelEventRight);
+
+                const scrollAfterRight = $tabBar.scrollLeft();
+                expect(scrollAfterRight).toBeGreaterThan(initialScrollLeft);
+                expect(scrollAfterRight - initialScrollLeft).toBeCloseTo(40 * 2.5, 0);
+
+                // Reset and test negative deltaY (scroll left)
+                $tabBar.scrollLeft(midScroll);
+                const wheelEventLeft = $.Event("wheel");
+                wheelEventLeft.originalEvent = { deltaY: -40 };
+                $tabBar.trigger(wheelEventLeft);
+
+                const scrollAfterLeft = $tabBar.scrollLeft();
+                expect(scrollAfterLeft).toBeLessThan(midScroll);
+                expect(midScroll - scrollAfterLeft).toBeCloseTo(40 * 2.5, 0);
+            });
+
+            it("should not scroll beyond the scrollable bounds", function () {
+                const $tabBar = $("#phoenix-tab-bar");
+                expect($tabBar.length).toBe(1);
+
+                // Get the maximum scrollable width
+                const maxScrollLeft = $tabBar[0].scrollWidth - $tabBar[0].clientWidth;
+
+                // Scroll far to the right
+                $tabBar.scrollLeft(maxScrollLeft + 1000); // Try to scroll beyond max
+
+                // Create a wheel event to scroll further right
+                const wheelEventRight = $.Event("wheel");
+                wheelEventRight.originalEvent = { deltaY: 500 }; // Large scroll right
+                $tabBar.trigger(wheelEventRight);
+
+                // Should not exceed maximum scroll
+                expect($tabBar.scrollLeft()).toBeLessThanOrEqual(maxScrollLeft);
+
+                // Scroll far to the left
+                $tabBar.scrollLeft(-1000); // Try to scroll beyond minimum
+
+                // Create a wheel event to scroll further left
+                const wheelEventLeft = $.Event("wheel");
+                wheelEventLeft.originalEvent = { deltaY: -500 }; // Large scroll left
+                $tabBar.trigger(wheelEventLeft);
+
+                // Should not go below 0
+                expect($tabBar.scrollLeft()).toBeGreaterThanOrEqual(0);
+            });
+
+            it("should handle rapid consecutive scroll events", function () {
+                const $tabBar = $("#phoenix-tab-bar");
+                expect($tabBar.length).toBe(1);
+
+                const initialScrollLeft = $tabBar.scrollLeft();
+
+                // Trigger multiple rapid scroll events
+                for (let i = 0; i < 10; i++) {
+                    const wheelEvent = $.Event("wheel");
+                    wheelEvent.originalEvent = { deltaY: 50 };
+                    $tabBar.trigger(wheelEvent);
+                }
+
+                // Should have scrolled significantly
+                const finalScrollLeft = $tabBar.scrollLeft();
+                expect(finalScrollLeft).toBeGreaterThan(initialScrollLeft + 100);
+
+                // Verify the total scroll amount after multiple events
+                // 10 scrolls of 50 * 2.5 = 1250 pixels total
+                expect(finalScrollLeft - initialScrollLeft).toBeCloseTo(10 * 50 * 2.5, 0);
+            });
+        });
     });
 });
