@@ -122,6 +122,7 @@ define(function (require, exports, module) {
     function _registerHandlers() {
         const $closePanelBtn = $("#close-custom-snippets-panel-btn");
         const $saveCustomSnippetBtn = $("#save-custom-snippet-btn");
+        const $cancelCustomSnippetBtn = $("#cancel-custom-snippet-btn");
         const $abbrInput = $("#abbr-box");
         const $descInput = $("#desc-box");
         const $templateInput = $("#template-text-box");
@@ -157,6 +158,11 @@ define(function (require, exports, module) {
 
         $saveCustomSnippetBtn.on("click", function () {
             Driver.handleSaveBtnClick();
+        });
+
+        $cancelCustomSnippetBtn.on("click", function () {
+            UIHelper.showSnippetListMenu();
+            SnippetsList.showSnippetsList();
         });
 
         $abbrInput.on("input", Helper.toggleSaveButtonDisability);
