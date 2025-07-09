@@ -36,6 +36,175 @@ define(function (require, exports, module) {
         let testFilePath, testFilePath2, testFilePath3, testDuplicateDir1, testDuplicateDir2, testDuplicateName;
 
         /**
+         * Helper function to create multiple test files
+         * @param {number} count - Number of files to create
+         * @param {string} prefix - Prefix for the file names
+         * @param {string} content - Content template for the files (will be appended with file index)
+         * @returns {Promise<string[]>} - Array of file paths
+         */
+        async function createTestFiles(count, prefix, content) {
+            const testFiles = [];
+            for (let i = 0; i < count; i++) {
+                const filePath = SpecRunnerUtils.getTempDirectory() + `/${prefix}-${i}.js`;
+                testFiles.push(filePath);
+                await jsPromise(
+                    SpecRunnerUtils.createTextFile(
+                        filePath,
+                        content ? `${content} ${i}` : `// ${prefix} test file ${i}`,
+                        FileSystem
+                    )
+                );
+            }
+            return testFiles;
+        }
+
+        /**
+         * Helper function to open multiple files
+         * @param {string[]} filePaths - Array of file paths to open
+         * @param {string} [paneId] - Optional pane ID to open the files in
+         * @returns {Promise<void>}
+         */
+        async function openTestFiles(filePaths, paneId) {
+            for (const filePath of filePaths) {
+                const options = { fullPath: filePath };
+                if (paneId) {
+                    options.paneId = paneId;
+                }
+                await awaitsForDone(
+                    CommandManager.execute(Commands.FILE_OPEN, options),
+                    `Open file ${filePath}${paneId ? ` in ${paneId}` : ""}`
+                );
+            }
+        }
+
+        /**
+         * Helper function to wait for tabs to appear
+         * @param {string[]} filePaths - Array of file paths to wait for
+         * @param {string} [paneId] - Optional pane ID to check for tabs
+         * @returns {Promise<void>}
+         */
+        async function waitForTabs(filePaths, paneId) {
+            if (paneId) {
+                // Wait for tabs to appear in the specified pane
+                await awaitsFor(
+                    function () {
+                        return getPaneTabCount(paneId) >= filePaths.length;
+                    },
+                    `All tabs to appear in ${paneId}`,
+                    1000
+                );
+            } else if (filePaths.length === 1) {
+                // Wait for a single tab to appear
+                await awaitsFor(
+                    function () {
+                        return tabExists(filePaths[0]);
+                    },
+                    `Tab for ${filePaths[0]} to appear`,
+                    1000
+                );
+            } else {
+                // Wait for multiple tabs to appear
+                await awaitsFor(
+                    function () {
+                        return getTabCount() >= filePaths.length && filePaths.every((path) => tabExists(path));
+                    },
+                    "All tabs to appear",
+                    1000
+                );
+            }
+        }
+
+        /**
+         * Helper function to cancel the save dialog
+         * @returns {void}
+         */
+        function cancelSaveDialog() {
+            testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
+                testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
+                testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
+            );
+        }
+
+        /**
+         * Helper function to close files
+         * @param {string[]} filePaths - Array of file paths to close
+         * @param {string} [paneId] - Optional pane ID to close the files from
+         * @returns {Promise<void>}
+         */
+        async function closeTestFiles(filePaths, paneId) {
+            for (const filePath of filePaths) {
+                const fileToClose = FileSystem.getFileForPath(filePath);
+                const options = { file: fileToClose };
+                if (paneId) {
+                    options.paneId = paneId;
+                }
+                const promise = CommandManager.execute(Commands.FILE_CLOSE, options);
+                cancelSaveDialog();
+                await awaitsForDone(promise, `Close file ${filePath}`);
+            }
+        }
+
+        /**
+         * Helper function to simulate drag and drop between tabs
+         * @param {string} sourceFilePath - Path of the source file to drag
+         * @param {string} targetFilePath - Path of the target file to drop onto
+         * @param {boolean} [dropBefore=true] - Whether to drop before the target (true) or after (false)
+         * @returns {Promise<void>}
+         */
+        async function simulateTabDragAndDrop(sourceFilePath, targetFilePath, dropBefore = true) {
+            // Get the source and target tabs
+            const sourceTab = getTab(sourceFilePath);
+            const targetTab = getTab(targetFilePath);
+
+            // Simulate drag start on the source tab
+            const dragStartEvent = $.Event("dragstart", {
+                originalEvent: {
+                    dataTransfer: {
+                        setData: function () {},
+                        effectAllowed: "move"
+                    }
+                }
+            });
+            sourceTab.trigger(dragStartEvent);
+
+            // Simulate dragenter on the target tab
+            const dragEnterEvent = $.Event("dragenter");
+            targetTab.trigger(dragEnterEvent);
+
+            // Simulate drag over on the target tab
+            const targetRect = targetTab[0].getBoundingClientRect();
+            const dropX = dropBefore
+                ? targetRect.left + 5 // Position near the left edge to drop before
+                : targetRect.right - 5; // Position near the right edge to drop after
+
+            const dragOverEvent = $.Event("dragover", {
+                originalEvent: {
+                    dataTransfer: {
+                        dropEffect: "move"
+                    },
+                    clientX: dropX
+                },
+                preventDefault: function () {}
+            });
+            targetTab.trigger(dragOverEvent);
+
+            // Simulate drop on the target tab
+            const dropEvent = $.Event("drop", {
+                originalEvent: {
+                    dataTransfer: {},
+                    clientX: dropX
+                },
+                preventDefault: function () {},
+                stopPropagation: function () {}
+            });
+            targetTab.trigger(dropEvent);
+
+            // Simulate dragend to complete the operation
+            const dragEndEvent = $.Event("dragend");
+            sourceTab.trigger(dragEndEvent);
+        }
+
+        /**
          * Helper function to check if the tab bar for a specific pane is visible
          * @param {string} paneId - The pane ID ("first-pane" or "second-pane")
          * @returns {boolean} - True if the tab bar is visible, false otherwise
@@ -560,31 +729,9 @@ define(function (require, exports, module) {
                 await testWindow.closeAllFiles();
 
                 // Create and open multiple test files to work with
-                const testFiles = [];
-                for (let i = 0; i < 3; i++) {
-                    const filePath = SpecRunnerUtils.getTempDirectory() + `/drag-drop-test-${i}.js`;
-                    testFiles.push(filePath);
-                    await jsPromise(
-                        SpecRunnerUtils.createTextFile(filePath, `// Drag drop test file ${i}`, FileSystem)
-                    );
-                }
-
-                // Open all the test files
-                for (const filePath of testFiles) {
-                    await awaitsForDone(
-                        CommandManager.execute(Commands.FILE_OPEN, { fullPath: filePath }),
-                        `Open file ${filePath}`
-                    );
-                }
-
-                // Wait for all tabs to appear
-                await awaitsFor(
-                    function () {
-                        return getTabCount() === testFiles.length;
-                    },
-                    "All tabs to appear",
-                    1000
-                );
+                const testFiles = await createTestFiles(3, "drag-drop-test", "// Drag drop test file");
+                await openTestFiles(testFiles);
+                await waitForTabs(testFiles);
 
                 // Verify initial tab order
                 const initialWorkingSet = MainViewManager.getWorkingSet("first-pane");
@@ -593,51 +740,8 @@ define(function (require, exports, module) {
                 expect(initialWorkingSet[1].fullPath).toBe(testFiles[1]);
                 expect(initialWorkingSet[2].fullPath).toBe(testFiles[2]);
 
-                // Get the source and target tabs
-                const sourceTab = getTab(testFiles[0]);
-                const targetTab = getTab(testFiles[2]);
-
-                // Simulate drag start on the first tab
-                const dragStartEvent = $.Event("dragstart", {
-                    originalEvent: {
-                        dataTransfer: {
-                            setData: function () {},
-                            effectAllowed: "move"
-                        }
-                    }
-                });
-                sourceTab.trigger(dragStartEvent);
-
-                // Simulate dragenter on the last tab
-                const dragEnterEvent = $.Event("dragenter");
-                targetTab.trigger(dragEnterEvent);
-
-                // Simulate drag over on the last tab
-                const dragOverEvent = $.Event("dragover", {
-                    originalEvent: {
-                        dataTransfer: {
-                            dropEffect: "move"
-                        },
-                        clientX: targetTab[0].getBoundingClientRect().left + 5 // Position near the left edge
-                    },
-                    preventDefault: function () {}
-                });
-                targetTab.trigger(dragOverEvent);
-
-                // Simulate drop on the last tab
-                const dropEvent = $.Event("drop", {
-                    originalEvent: {
-                        dataTransfer: {},
-                        clientX: targetTab[0].getBoundingClientRect().left + 5 // Position near the left edge
-                    },
-                    preventDefault: function () {},
-                    stopPropagation: function () {}
-                });
-                targetTab.trigger(dropEvent);
-
-                // Simulate dragend to complete the operation
-                const dragEndEvent = $.Event("dragend");
-                sourceTab.trigger(dragEndEvent);
+                // Simulate drag and drop from first tab to last tab
+                await simulateTabDragAndDrop(testFiles[0], testFiles[2], true);
 
                 // Wait for the working set to update
                 await awaitsFor(
@@ -661,15 +765,7 @@ define(function (require, exports, module) {
                 expect(finalWorkingSet[2].fullPath).toBe(testFiles[2]);
 
                 // Clean up - close all the test files
-                for (const filePath of testFiles) {
-                    const fileToClose = FileSystem.getFileForPath(filePath);
-                    const promise = CommandManager.execute(Commands.FILE_CLOSE, { file: fileToClose });
-                    testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
-                        testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
-                        testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
-                    );
-                    await awaitsForDone(promise, `Close file ${filePath}`);
-                }
+                await closeTestFiles(testFiles);
             });
 
             it("should allow dragging and dropping a tab in between other tabs", async function () {
@@ -680,31 +776,9 @@ define(function (require, exports, module) {
                 await testWindow.closeAllFiles();
 
                 // Create and open multiple test files to work with
-                const testFiles = [];
-                for (let i = 0; i < 3; i++) {
-                    const filePath = SpecRunnerUtils.getTempDirectory() + `/drag-between-test-${i}.js`;
-                    testFiles.push(filePath);
-                    await jsPromise(
-                        SpecRunnerUtils.createTextFile(filePath, `// Drag between test file ${i}`, FileSystem)
-                    );
-                }
-
-                // Open all the test files
-                for (const filePath of testFiles) {
-                    await awaitsForDone(
-                        CommandManager.execute(Commands.FILE_OPEN, { fullPath: filePath }),
-                        `Open file ${filePath}`
-                    );
-                }
-
-                // Wait for all tabs to appear
-                await awaitsFor(
-                    function () {
-                        return getTabCount() === testFiles.length;
-                    },
-                    "All tabs to appear",
-                    1000
-                );
+                const testFiles = await createTestFiles(3, "drag-between-test", "// Drag between test file");
+                await openTestFiles(testFiles);
+                await waitForTabs(testFiles);
 
                 // Verify initial tab order
                 const initialWorkingSet = MainViewManager.getWorkingSet("first-pane");
@@ -713,51 +787,8 @@ define(function (require, exports, module) {
                 expect(initialWorkingSet[1].fullPath).toBe(testFiles[1]);
                 expect(initialWorkingSet[2].fullPath).toBe(testFiles[2]);
 
-                // Get the source and target tabs - we'll drag the last tab to between the first and second tabs
-                const sourceTab = getTab(testFiles[2]); // Last tab
-                const targetTab = getTab(testFiles[1]); // Middle tab
-
-                // Simulate drag start on the last tab
-                const dragStartEvent = $.Event("dragstart", {
-                    originalEvent: {
-                        dataTransfer: {
-                            setData: function () {},
-                            effectAllowed: "move"
-                        }
-                    }
-                });
-                sourceTab.trigger(dragStartEvent);
-
-                // Simulate dragenter on the middle tab
-                const dragEnterEvent = $.Event("dragenter");
-                targetTab.trigger(dragEnterEvent);
-
-                // Simulate drag over on the middle tab - position near the left edge to drop before it
-                const dragOverEvent = $.Event("dragover", {
-                    originalEvent: {
-                        dataTransfer: {
-                            dropEffect: "move"
-                        },
-                        clientX: targetTab[0].getBoundingClientRect().left + 5 // Position near the left edge
-                    },
-                    preventDefault: function () {}
-                });
-                targetTab.trigger(dragOverEvent);
-
-                // Simulate drop on the middle tab
-                const dropEvent = $.Event("drop", {
-                    originalEvent: {
-                        dataTransfer: {},
-                        clientX: targetTab[0].getBoundingClientRect().left + 5 // Position near the left edge
-                    },
-                    preventDefault: function () {},
-                    stopPropagation: function () {}
-                });
-                targetTab.trigger(dropEvent);
-
-                // Simulate dragend to complete the operation
-                const dragEndEvent = $.Event("dragend");
-                sourceTab.trigger(dragEndEvent);
+                // Simulate drag and drop from last tab to before the middle tab
+                await simulateTabDragAndDrop(testFiles[2], testFiles[1], true);
 
                 // Wait for the working set to update
                 await awaitsFor(
@@ -781,15 +812,7 @@ define(function (require, exports, module) {
                 expect(finalWorkingSet[2].fullPath).toBe(testFiles[1]); // Middle tab should now be last
 
                 // Clean up - close all the test files
-                for (const filePath of testFiles) {
-                    const fileToClose = FileSystem.getFileForPath(filePath);
-                    const promise = CommandManager.execute(Commands.FILE_CLOSE, { file: fileToClose });
-                    testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
-                        testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
-                        testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
-                    );
-                    await awaitsForDone(promise, `Close file ${filePath}`);
-                }
+                await closeTestFiles(testFiles);
             });
 
             it("should allow dragging a tab from one pane to another non-empty pane", async function () {
@@ -803,51 +826,16 @@ define(function (require, exports, module) {
                 MainViewManager.setLayoutScheme(1, 2);
 
                 // Create test files for both panes
-                const firstPaneFiles = [];
-                for (let i = 0; i < 2; i++) {
-                    const filePath = SpecRunnerUtils.getTempDirectory() + `/first-pane-test-${i}.js`;
-                    firstPaneFiles.push(filePath);
-                    await jsPromise(
-                        SpecRunnerUtils.createTextFile(filePath, `// First pane test file ${i}`, FileSystem)
-                    );
-                }
+                const firstPaneFiles = await createTestFiles(2, "first-pane-test", "// First pane test file");
+                const secondPaneFiles = await createTestFiles(2, "second-pane-test", "// Second pane test file");
 
-                const secondPaneFiles = [];
-                for (let i = 0; i < 2; i++) {
-                    const filePath = SpecRunnerUtils.getTempDirectory() + `/second-pane-test-${i}.js`;
-                    secondPaneFiles.push(filePath);
-                    await jsPromise(
-                        SpecRunnerUtils.createTextFile(filePath, `// Second pane test file ${i}`, FileSystem)
-                    );
-                }
-
-                // Open files in the first pane
-                for (const filePath of firstPaneFiles) {
-                    await awaitsForDone(
-                        CommandManager.execute(Commands.FILE_OPEN, { fullPath: filePath, paneId: "first-pane" }),
-                        `Open file ${filePath} in first pane`
-                    );
-                }
-
-                // Open files in the second pane
-                for (const filePath of secondPaneFiles) {
-                    await awaitsForDone(
-                        CommandManager.execute(Commands.FILE_OPEN, { fullPath: filePath, paneId: "second-pane" }),
-                        `Open file ${filePath} in second pane`
-                    );
-                }
+                // Open files in both panes
+                await openTestFiles(firstPaneFiles, "first-pane");
+                await openTestFiles(secondPaneFiles, "second-pane");
 
                 // Wait for all tabs to appear in both panes
-                await awaitsFor(
-                    function () {
-                        return (
-                            getPaneTabCount("first-pane") === firstPaneFiles.length &&
-                            getPaneTabCount("second-pane") === secondPaneFiles.length
-                        );
-                    },
-                    "All tabs to appear in both panes",
-                    1000
-                );
+                await waitForTabs(firstPaneFiles, "first-pane");
+                await waitForTabs(secondPaneFiles, "second-pane");
 
                 // Verify initial tab counts
                 expect(getPaneTabCount("first-pane")).toBe(firstPaneFiles.length);
@@ -947,31 +935,17 @@ define(function (require, exports, module) {
                 }
 
                 // Create test files for the first pane
-                const firstPaneFiles = [];
-                for (let i = 0; i < 2; i++) {
-                    const filePath = SpecRunnerUtils.getTempDirectory() + `/first-pane-empty-test-${i}.js`;
-                    firstPaneFiles.push(filePath);
-                    await jsPromise(
-                        SpecRunnerUtils.createTextFile(filePath, `// First pane empty test file ${i}`, FileSystem)
-                    );
-                }
+                const firstPaneFiles = await createTestFiles(
+                    2,
+                    "first-pane-empty-test",
+                    "// First pane empty test file"
+                );
 
                 // Open files in the first pane only
-                for (const filePath of firstPaneFiles) {
-                    await awaitsForDone(
-                        CommandManager.execute(Commands.FILE_OPEN, { fullPath: filePath, paneId: "first-pane" }),
-                        `Open file ${filePath} in first pane`
-                    );
-                }
+                await openTestFiles(firstPaneFiles, "first-pane");
 
                 // Wait for all tabs to appear in the first pane
-                await awaitsFor(
-                    function () {
-                        return getPaneTabCount("first-pane") === firstPaneFiles.length;
-                    },
-                    "All tabs to appear in first pane",
-                    1000
-                );
+                await waitForTabs(firstPaneFiles, "first-pane");
 
                 // Ensure second pane is empty before proceeding
                 await awaitsFor(
@@ -1073,59 +1047,26 @@ define(function (require, exports, module) {
             });
 
             it("should add tabs when files are added to the working set", async function () {
-                // Open the first test file
-                await awaitsForDone(
-                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath }),
-                    "Open first test file"
-                );
-
-                // Wait for the tab bar to update
-                await awaitsFor(
-                    function () {
-                        return tabExists(testFilePath);
-                    },
-                    "Tab for first file to appear",
-                    1000
-                );
+                // Open the first test file and wait for its tab to appear
+                await openTestFiles([testFilePath]);
+                await waitForTabs([testFilePath]);
 
                 // Verify the tab exists
                 expect(tabExists(testFilePath)).toBe(true);
                 expect(getTabCount()).toBe(1);
 
-                // Open the second test file
-                await awaitsForDone(
-                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath2 }),
-                    "Open second test file"
-                );
-
-                // Wait for the tab bar to update
-                await awaitsFor(
-                    function () {
-                        return tabExists(testFilePath2);
-                    },
-                    "Tab for second file to appear",
-                    1000
-                );
+                // Open the second test file and wait for its tab to appear
+                await openTestFiles([testFilePath2]);
+                await waitForTabs([testFilePath2]);
 
                 // Verify both tabs exist
                 expect(tabExists(testFilePath)).toBe(true);
                 expect(tabExists(testFilePath2)).toBe(true);
                 expect(getTabCount()).toBe(2);
 
-                // Open the third test file
-                await awaitsForDone(
-                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath3 }),
-                    "Open third test file"
-                );
-
-                // Wait for the tab bar to update
-                await awaitsFor(
-                    function () {
-                        return tabExists(testFilePath3);
-                    },
-                    "Tab for third file to appear",
-                    1000
-                );
+                // Open the third test file and wait for its tab to appear
+                await openTestFiles([testFilePath3]);
+                await waitForTabs([testFilePath3]);
 
                 // Verify all three tabs exist
                 expect(tabExists(testFilePath)).toBe(true);
@@ -1135,43 +1076,16 @@ define(function (require, exports, module) {
             });
 
             it("should remove tabs when files are removed from the working set", async function () {
-                // Open all three test files like in previous test
-                await awaitsForDone(
-                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath }),
-                    "Open first test file"
-                );
-                await awaitsForDone(
-                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath2 }),
-                    "Open second test file"
-                );
-                await awaitsForDone(
-                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath3 }),
-                    "Open third test file"
-                );
-
-                // Wait for all tabs to appear
-                await awaitsFor(
-                    function () {
-                        return tabExists(testFilePath) && tabExists(testFilePath2) && tabExists(testFilePath3);
-                    },
-                    "All tabs to appear",
-                    1000
-                );
+                // Open all three test files
+                const testFiles = [testFilePath, testFilePath2, testFilePath3];
+                await openTestFiles(testFiles);
+                await waitForTabs(testFiles);
 
                 // Verify all three tabs exist
                 expect(getTabCount()).toBe(3);
 
                 // Close the second test file
-                const fileToClose2 = FileSystem.getFileForPath(testFilePath2);
-                const promise2 = CommandManager.execute(Commands.FILE_CLOSE, { file: fileToClose2 });
-
-                // Cancel the save dialog if it appears
-                testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
-                    testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
-                    testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
-                );
-
-                await awaitsForDone(promise2, "Close second test file");
+                await closeTestFiles([testFilePath2]);
 
                 // Wait for the tab to disappear
                 await awaitsFor(
@@ -1189,16 +1103,7 @@ define(function (require, exports, module) {
                 expect(getTabCount()).toBe(2);
 
                 // Close the first test file
-                const fileToClose1 = FileSystem.getFileForPath(testFilePath);
-                const promise1 = CommandManager.execute(Commands.FILE_CLOSE, { file: fileToClose1 });
-
-                // Cancel the save dialog if it appears
-                testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
-                    testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
-                    testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
-                );
-
-                await awaitsForDone(promise1, "Close first test file");
+                await closeTestFiles([testFilePath]);
 
                 // Wait for the tab to disappear
                 await awaitsFor(
@@ -1216,16 +1121,7 @@ define(function (require, exports, module) {
                 expect(getTabCount()).toBe(1);
 
                 // Close the third test file
-                const fileToClose3 = FileSystem.getFileForPath(testFilePath3);
-                const promise3 = CommandManager.execute(Commands.FILE_CLOSE, { file: fileToClose3 });
-
-                // Cancel the save dialog if it appears
-                testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
-                    testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
-                    testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
-                );
-
-                await awaitsForDone(promise3, "Close third test file");
+                await closeTestFiles([testFilePath3]);
 
                 // Wait for the tab to disappear
                 await awaitsFor(
@@ -1253,89 +1149,36 @@ define(function (require, exports, module) {
                 await testWindow.closeAllFiles();
 
                 // Open all three test files
-                await awaitsForDone(
-                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath }),
-                    "Open first test file"
-                );
-                await awaitsForDone(
-                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath2 }),
-                    "Open second test file"
-                );
-                await awaitsForDone(
-                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath3 }),
-                    "Open third test file"
-                );
-
-                // Wait for all tabs to appear
-                await awaitsFor(
-                    function () {
-                        return tabExists(testFilePath) && tabExists(testFilePath2) && tabExists(testFilePath3);
-                    },
-                    "All tabs to appear",
-                    1000
-                );
+                const testFiles = [testFilePath, testFilePath2, testFilePath3];
+                await openTestFiles(testFiles);
+                await waitForTabs(testFiles);
             });
 
             it("should change active tab when switching files in the working set", async function () {
-                // Switch to the first file
-                await awaitsForDone(
-                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath }),
-                    "Switch to first file"
-                );
+                // Helper function to switch to a file and verify it's active
+                async function switchToFileAndVerify(filePath, description) {
+                    // Switch to the file
+                    await openTestFiles([filePath]);
 
-                // Wait for the tab to become active
-                await awaitsFor(
-                    function () {
-                        return isTabActive(testFilePath);
-                    },
-                    "First tab to become active",
-                    1000
-                );
+                    // Wait for the tab to become active
+                    await awaitsFor(
+                        function () {
+                            return isTabActive(filePath);
+                        },
+                        `${description} to become active`,
+                        1000
+                    );
 
-                // Verify the first tab is active and others are not
-                expect(isTabActive(testFilePath)).toBe(true);
-                expect(isTabActive(testFilePath2)).toBe(false);
-                expect(isTabActive(testFilePath3)).toBe(false);
+                    // Verify this tab is active and others are not
+                    expect(isTabActive(testFilePath)).toBe(filePath === testFilePath);
+                    expect(isTabActive(testFilePath2)).toBe(filePath === testFilePath2);
+                    expect(isTabActive(testFilePath3)).toBe(filePath === testFilePath3);
+                }
 
-                // Switch to the second file
-                await awaitsForDone(
-                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath2 }),
-                    "Switch to second file"
-                );
-
-                // Wait for the tab to become active
-                await awaitsFor(
-                    function () {
-                        return isTabActive(testFilePath2);
-                    },
-                    "Second tab to become active",
-                    1000
-                );
-
-                // Verify the second tab is active and others are not
-                expect(isTabActive(testFilePath)).toBe(false);
-                expect(isTabActive(testFilePath2)).toBe(true);
-                expect(isTabActive(testFilePath3)).toBe(false);
-
-                // Switch to the third file
-                await awaitsForDone(
-                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath3 }),
-                    "Switch to third file"
-                );
-
-                // Wait for the tab to become active
-                await awaitsFor(
-                    function () {
-                        return isTabActive(testFilePath3);
-                    },
-                    "Third tab to become active",
-                    1000
-                );
-
-                // Verify the third tab is active and others are not
-                expect(isTabActive(testFilePath)).toBe(false);
-                expect(isTabActive(testFilePath2)).toBe(false);
-                expect(isTabActive(testFilePath3)).toBe(true);
+                // Test switching to each file
+                await switchToFileAndVerify(testFilePath, "First tab");
+                await switchToFileAndVerify(testFilePath2, "Second tab");
+                await switchToFileAndVerify(testFilePath3, "Third tab");
             });
 
             it("should display active tab correctly based on the active file in the working set", async function () {
@@ -1349,10 +1192,7 @@ define(function (require, exports, module) {
                 expect(isTabActive(activeFile.fullPath)).toBe(true);
 
                 // Switch to a different file
-                await awaitsForDone(
-                    CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath2 }),
-                    "Switch to second file"
-                );
+                await openTestFiles([testFilePath2]);
 
                 // Get the new active file
                 const newActiveFile = MainViewManager.getCurrentlyViewedFile();
@@ -1421,29 +1261,13 @@ define(function (require, exports, module) {
 
             it("should show overflow button when there are too many tabs to fit", async function () {
                 // Create several test files to ensure overflow
-                const testFiles = [];
-                for (let i = 0; i < 15; i++) {
-                    const filePath = SpecRunnerUtils.getTempDirectory() + `/overflow-test-${i}.js`;
-                    testFiles.push(filePath);
-                    await jsPromise(SpecRunnerUtils.createTextFile(filePath, `// Overflow test file ${i}`, FileSystem));
-                }
+                const testFiles = await createTestFiles(15, "overflow-test", "// Overflow test file");
 
                 // Open all the test files
-                for (const filePath of testFiles) {
-                    await awaitsForDone(
-                        CommandManager.execute(Commands.FILE_OPEN, { fullPath: filePath }),
-                        `Open file ${filePath}`
-                    );
-                }
+                await openTestFiles(testFiles);
 
                 // Wait for all tabs to appear
-                await awaitsFor(
-                    function () {
-                        return getTabCount() >= testFiles.length;
-                    },
-                    "All tabs to appear",
-                    1000
-                );
+                await waitForTabs(testFiles);
 
                 // Wait for the overflow button to appear
                 await awaitsFor(
@@ -1473,42 +1297,18 @@ define(function (require, exports, module) {
                 expect(visibleTabs + hiddenTabs).toBe(testFiles.length);
 
                 // Clean up - close all the test files
-                for (const filePath of testFiles) {
-                    const fileToClose = FileSystem.getFileForPath(filePath);
-                    const promise = CommandManager.execute(Commands.FILE_CLOSE, { file: fileToClose });
-                    testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
-                        testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
-                        testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
-                    );
-                    await awaitsForDone(promise, `Close file ${filePath}`);
-                }
+                await closeTestFiles(testFiles);
             });
 
             it("should display dropdown with hidden tabs when overflow button is clicked", async function () {
                 // Create several test files to ensure overflow
-                const testFiles = [];
-                for (let i = 0; i < 15; i++) {
-                    const filePath = SpecRunnerUtils.getTempDirectory() + `/overflow-test-${i}.js`;
-                    testFiles.push(filePath);
-                    await jsPromise(SpecRunnerUtils.createTextFile(filePath, `// Overflow test file ${i}`, FileSystem));
-                }
+                const testFiles = await createTestFiles(15, "overflow-test", "// Overflow test file");
 
                 // Open all the test files
-                for (const filePath of testFiles) {
-                    await awaitsForDone(
-                        CommandManager.execute(Commands.FILE_OPEN, { fullPath: filePath }),
-                        `Open file ${filePath}`
-                    );
-                }
+                await openTestFiles(testFiles);
 
                 // Wait for all tabs to appear
-                await awaitsFor(
-                    function () {
-                        return getTabCount() >= testFiles.length;
-                    },
-                    "All tabs to appear",
-                    1000
-                );
+                await waitForTabs(testFiles);
 
                 // Wait for the overflow button to appear
                 await awaitsFor(
@@ -1561,42 +1361,18 @@ define(function (require, exports, module) {
                 );
 
                 // Clean up - close all the test files
-                for (const filePath of testFiles) {
-                    const fileToClose = FileSystem.getFileForPath(filePath);
-                    const promise = CommandManager.execute(Commands.FILE_CLOSE, { file: fileToClose });
-                    testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
-                        testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
-                        testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
-                    );
-                    await awaitsForDone(promise, `Close file ${filePath}`);
-                }
+                await closeTestFiles(testFiles);
             });
 
             it("should make tab visible and file active when clicking on item in overflow dropdown", async function () {
                 // Create several test files to ensure overflow
-                const testFiles = [];
-                for (let i = 0; i < 15; i++) {
-                    const filePath = SpecRunnerUtils.getTempDirectory() + `/overflow-test-${i}.js`;
-                    testFiles.push(filePath);
-                    await jsPromise(SpecRunnerUtils.createTextFile(filePath, `// Overflow test file ${i}`, FileSystem));
-                }
+                const testFiles = await createTestFiles(15, "overflow-test", "// Overflow test file");
 
                 // Open all the test files
-                for (const filePath of testFiles) {
-                    await awaitsForDone(
-                        CommandManager.execute(Commands.FILE_OPEN, { fullPath: filePath }),
-                        `Open file ${filePath}`
-                    );
-                }
+                await openTestFiles(testFiles);
 
                 // Wait for all tabs to appear
-                await awaitsFor(
-                    function () {
-                        return getTabCount() >= testFiles.length;
-                    },
-                    "All tabs to appear",
-                    1000
-                );
+                await waitForTabs(testFiles);
 
                 // Wait for the overflow button to appear
                 await awaitsFor(
@@ -1661,42 +1437,18 @@ define(function (require, exports, module) {
                 expect(isTabVisible(testHiddenFile)).toBe(true);
 
                 // Clean up - close all the test files
-                for (const filePath of testFiles) {
-                    const fileToClose = FileSystem.getFileForPath(filePath);
-                    const promise = CommandManager.execute(Commands.FILE_CLOSE, { file: fileToClose });
-                    testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
-                        testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
-                        testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
-                    );
-                    await awaitsForDone(promise, `Close file ${filePath}`);
-                }
+                await closeTestFiles(testFiles);
             });
 
             it("should scroll tab bar to make selected file visible when selecting from working set", async function () {
                 // Create several test files to ensure overflow
-                const testFiles = [];
-                for (let i = 0; i < 15; i++) {
-                    const filePath = SpecRunnerUtils.getTempDirectory() + `/overflow-test-${i}.js`;
-                    testFiles.push(filePath);
-                    await jsPromise(SpecRunnerUtils.createTextFile(filePath, `// Overflow test file ${i}`, FileSystem));
-                }
+                const testFiles = await createTestFiles(15, "overflow-test", "// Overflow test file");
 
                 // Open all the test files
-                for (const filePath of testFiles) {
-                    await awaitsForDone(
-                        CommandManager.execute(Commands.FILE_OPEN, { fullPath: filePath }),
-                        `Open file ${filePath}`
-                    );
-                }
+                await openTestFiles(testFiles);
 
                 // Wait for all tabs to appear
-                await awaitsFor(
-                    function () {
-                        return getTabCount() >= testFiles.length;
-                    },
-                    "All tabs to appear",
-                    1000
-                );
+                await waitForTabs(testFiles);
 
                 // Wait for the overflow button to appear
                 await awaitsFor(
@@ -1751,15 +1503,7 @@ define(function (require, exports, module) {
                 expect(isTabVisible(testHiddenFile)).toBe(true);
 
                 // Clean up - close all the test files
-                for (const filePath of testFiles) {
-                    const fileToClose = FileSystem.getFileForPath(filePath);
-                    const promise = CommandManager.execute(Commands.FILE_CLOSE, { file: fileToClose });
-                    testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
-                        testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
-                        testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
-                    );
-                    await awaitsForDone(promise, `Close file ${filePath}`);
-                }
+                await closeTestFiles(testFiles);
             });
         });
 
@@ -2055,10 +1799,7 @@ define(function (require, exports, module) {
                 $closeButton.click();
 
                 // Cancel the save dialog if it appears
-                testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
-                    testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
-                    testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
-                );
+                cancelSaveDialog();
 
                 // Wait for the tab to disappear
                 await awaitsFor(
@@ -2184,10 +1925,7 @@ define(function (require, exports, module) {
                 $closeTabOption.click();
 
                 // Cancel the save dialog if it appears
-                testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
-                    testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
-                    testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
-                );
+                cancelSaveDialog();
 
                 // Verify the tab is closed
                 await awaitsFor(
@@ -2256,10 +1994,7 @@ define(function (require, exports, module) {
                 $closeTabsToRightOption.click();
 
                 // Cancel any save dialogs that might appear
-                testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
-                    testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
-                    testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
-                );
+                cancelSaveDialog();
 
                 // Verify tabs to the right are closed
                 await awaitsFor(
@@ -2334,10 +2069,7 @@ define(function (require, exports, module) {
                 $closeTabsToLeftOption.click();
 
                 // Cancel any save dialogs that might appear
-                testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
-                    testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
-                    testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
-                );
+                cancelSaveDialog();
 
                 // Verify tabs to the left are closed
                 await awaitsFor(
@@ -2428,10 +2160,7 @@ define(function (require, exports, module) {
                 $closeSavedTabsOption.click();
 
                 // Cancel any save dialogs that might appear
-                testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
-                    testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
-                    testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
-                );
+                cancelSaveDialog();
 
                 // Verify only the dirty tab remains
                 await awaitsFor(
@@ -2513,10 +2242,7 @@ define(function (require, exports, module) {
                 $closeAllTabsOption.click();
 
                 // Cancel any save dialogs that might appear
-                testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
-                    testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
-                    testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
-                );
+                cancelSaveDialog();
 
                 // Verify all tabs are closed
                 await awaitsFor(
@@ -2581,10 +2307,7 @@ define(function (require, exports, module) {
                 for (const filePath of testFiles) {
                     const fileToClose = FileSystem.getFileForPath(filePath);
                     const promise = CommandManager.execute(Commands.FILE_CLOSE, { file: fileToClose });
-                    testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
-                        testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
-                        testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
-                    );
+                    cancelSaveDialog();
                     await awaitsForDone(promise, `Close file ${filePath}`);
                 }
             });
@@ -2625,10 +2348,7 @@ define(function (require, exports, module) {
                 for (const filePath of testFiles) {
                     const fileToClose = FileSystem.getFileForPath(filePath);
                     const promise = CommandManager.execute(Commands.FILE_CLOSE, { file: fileToClose });
-                    testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
-                        testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
-                        testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
-                    );
+                    cancelSaveDialog();
                     await awaitsForDone(promise, `Close file ${filePath}`);
                 }
             });
@@ -2681,10 +2401,7 @@ define(function (require, exports, module) {
                 for (const filePath of testFiles) {
                     const fileToClose = FileSystem.getFileForPath(filePath);
                     const promise = CommandManager.execute(Commands.FILE_CLOSE, { file: fileToClose });
-                    testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
-                        testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
-                        testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
-                    );
+                    cancelSaveDialog();
                     await awaitsForDone(promise, `Close file ${filePath}`);
                 }
             });
@@ -2941,10 +2658,7 @@ define(function (require, exports, module) {
                 });
 
                 // Cancel the save dialog if it appears
-                testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
-                    testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
-                    testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
-                );
+                cancelSaveDialog();
 
                 await awaitsForDone(promise, "Close file in second pane");
 
@@ -3011,10 +2725,7 @@ define(function (require, exports, module) {
                 });
 
                 // Cancel the save dialog if it appears
-                testWindow.brackets.test.Dialogs.cancelModalDialogIfOpen(
-                    testWindow.brackets.test.DefaultDialogs.DIALOG_ID_SAVE_CLOSE,
-                    testWindow.brackets.test.DefaultDialogs.DIALOG_BTN_DONTSAVE
-                );
+                cancelSaveDialog();
 
                 await awaitsForDone(promise, "Close file in second pane");
 
