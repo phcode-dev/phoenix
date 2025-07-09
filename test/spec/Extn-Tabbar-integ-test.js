@@ -90,8 +90,7 @@ define(function (require, exports, module) {
                     function () {
                         return getPaneTabCount(paneId) >= filePaths.length;
                     },
-                    `All tabs to appear in ${paneId}`,
-                    1000
+                    `All tabs to appear in ${paneId}`
                 );
             } else if (filePaths.length === 1) {
                 // Wait for a single tab to appear
@@ -99,8 +98,7 @@ define(function (require, exports, module) {
                     function () {
                         return tabExists(filePaths[0]);
                     },
-                    `Tab for ${filePaths[0]} to appear`,
-                    1000
+                    `Tab for ${filePaths[0]} to appear`
                 );
             } else {
                 // Wait for multiple tabs to appear
@@ -108,8 +106,7 @@ define(function (require, exports, module) {
                     function () {
                         return getTabCount() >= filePaths.length && filePaths.every((path) => tabExists(path));
                     },
-                    "All tabs to appear",
-                    1000
+                    "All tabs to appear"
                 );
             }
         }
@@ -285,7 +282,7 @@ define(function (require, exports, module) {
                 CommandManager.execute(Commands.FILE_OPEN, { fullPath: testFilePath }),
                 "Open test file"
             );
-        }, 30000);
+        }, 5000);
 
         afterAll(async function () {
             // Close all files without prompting to save
@@ -294,7 +291,7 @@ define(function (require, exports, module) {
             testWindow = null;
             await SpecRunnerUtils.closeTestWindow();
             await SpecRunnerUtils.removeTempDirectory();
-        }, 30000);
+        }, 5000);
 
         /**
          * Helper function to check if a tab for a specific file exists in the tab bar
@@ -475,8 +472,7 @@ define(function (require, exports, module) {
                     function () {
                         return $("#phoenix-tab-bar").is(":visible");
                     },
-                    "Tab bar to become visible",
-                    1000
+                    "Tab bar to become visible"
                 );
 
                 // Verify the tab bar is visible
@@ -492,8 +488,7 @@ define(function (require, exports, module) {
                     function () {
                         return !$("#phoenix-tab-bar").is(":visible");
                     },
-                    "Tab bar to become hidden",
-                    1000
+                    "Tab bar to become hidden"
                 );
 
                 // Verify the tab bar is not visible
@@ -509,8 +504,7 @@ define(function (require, exports, module) {
                     function () {
                         return !$("#working-set-list-container").hasClass("working-set-hidden");
                     },
-                    "Working set to become visible",
-                    1000
+                    "Working set to become visible"
                 );
 
                 // Verify the working set is visible
@@ -526,8 +520,7 @@ define(function (require, exports, module) {
                     function () {
                         return $("#working-set-list-container").hasClass("working-set-hidden");
                     },
-                    "Working set to become hidden",
-                    1000
+                    "Working set to become hidden"
                 );
 
                 // Verify the working set is not visible
@@ -552,8 +545,7 @@ define(function (require, exports, module) {
                     function () {
                         return $(".dropdown-menu:visible").length > 0;
                     },
-                    "Context menu to appear",
-                    1000
+                    "Context menu to appear"
                 );
 
                 // Verify the menu contains the expected options
@@ -575,8 +567,7 @@ define(function (require, exports, module) {
                     function () {
                         return !$("#working-set-list-container").hasClass("working-set-hidden");
                     },
-                    "Working set to become visible",
-                    1000
+                    "Working set to become visible"
                 );
 
                 // Click the configure working set button
@@ -588,8 +579,7 @@ define(function (require, exports, module) {
                     function () {
                         return $(".dropdown-menu:visible").length > 0;
                     },
-                    "Context menu to appear",
-                    1000
+                    "Context menu to appear"
                 );
 
                 // Click the "Show working set" option
@@ -602,8 +592,7 @@ define(function (require, exports, module) {
                     function () {
                         return $("#working-set-list-container").hasClass("working-set-hidden");
                     },
-                    "Working set to become hidden",
-                    1000
+                    "Working set to become hidden"
                 );
 
                 // Verify the working set is hidden
@@ -617,8 +606,7 @@ define(function (require, exports, module) {
                     function () {
                         return $(".dropdown-menu:visible").length > 0;
                     },
-                    "Context menu to appear",
-                    1000
+                    "Context menu to appear"
                 );
 
                 // Click the "Show working set" option again
@@ -631,8 +619,7 @@ define(function (require, exports, module) {
                     function () {
                         return !$("#working-set-list-container").hasClass("working-set-hidden");
                     },
-                    "Working set to become visible",
-                    1000
+                    "Working set to become visible"
                 );
 
                 // Verify the working set is visible
@@ -646,8 +633,7 @@ define(function (require, exports, module) {
                     function () {
                         return $("#phoenix-tab-bar").is(":visible");
                     },
-                    "Tab bar to become visible",
-                    1000
+                    "Tab bar to become visible"
                 );
 
                 // Click the configure working set button
@@ -659,8 +645,7 @@ define(function (require, exports, module) {
                     function () {
                         return $(".dropdown-menu:visible").length > 0;
                     },
-                    "Context menu to appear",
-                    1000
+                    "Context menu to appear"
                 );
 
                 // Click the "Show file tab bar" option
@@ -673,8 +658,7 @@ define(function (require, exports, module) {
                     function () {
                         return !$("#phoenix-tab-bar").is(":visible");
                     },
-                    "Tab bar to become hidden",
-                    1000
+                    "Tab bar to become hidden"
                 );
 
                 // Verify the tab bar is hidden
@@ -688,8 +672,7 @@ define(function (require, exports, module) {
                     function () {
                         return $(".dropdown-menu:visible").length > 0;
                     },
-                    "Context menu to appear",
-                    1000
+                    "Context menu to appear"
                 );
 
                 // Click the "Show file tab bar" option again
@@ -702,8 +685,7 @@ define(function (require, exports, module) {
                     function () {
                         return $("#phoenix-tab-bar").is(":visible");
                     },
-                    "Tab bar to become visible",
-                    1000
+                    "Tab bar to become visible"
                 );
 
                 // Verify the tab bar is visible
@@ -722,8 +704,7 @@ define(function (require, exports, module) {
                     function () {
                         return MainViewManager.getPaneCount() === 1 && getTabCount() === 0;
                     },
-                    "Cleanup to complete with single pane and no tabs",
-                    1000
+                    "Cleanup to complete with single pane and no tabs"
                 );
             });
 
@@ -759,8 +740,7 @@ define(function (require, exports, module) {
                             currentWorkingSet[1].fullPath === testFiles[0]
                         );
                     },
-                    "Working set to update after drag and drop",
-                    1000
+                    "Working set to update after drag and drop"
                 );
 
                 // Verify the new tab order
@@ -806,8 +786,7 @@ define(function (require, exports, module) {
                             currentWorkingSet[1].fullPath === testFiles[2]
                         );
                     },
-                    "Working set to update after drag and drop",
-                    1000
+                    "Working set to update after drag and drop"
                 );
 
                 // Verify the new tab order
@@ -901,8 +880,7 @@ define(function (require, exports, module) {
                             tabExistsInPane(firstPaneFiles[0], "second-pane")
                         );
                     },
-                    "Tab to move from first pane to second pane",
-                    1000
+                    "Tab to move from first pane to second pane"
                 );
 
                 // Verify the tab counts after the drag and drop
@@ -933,8 +911,7 @@ define(function (require, exports, module) {
                     function () {
                         return MainViewManager.getPaneCount() === 2;
                     },
-                    "Layout to settle with two panes",
-                    1000
+                    "Layout to settle with two panes"
                 );
 
                 // Verify both panes are empty
@@ -972,8 +949,7 @@ define(function (require, exports, module) {
                         function () {
                             return getPaneTabCount("second-pane") === 0;
                         },
-                        "Second pane to be empty after cleanup",
-                        2000
+                        "Second pane to be empty after cleanup"
                     );
                 }
 
@@ -1043,8 +1019,7 @@ define(function (require, exports, module) {
                             isTabBarVisible("second-pane")
                         );
                     },
-                    "Tab to move from first pane to second pane and tab bar to appear",
-                    2000
+                    "Tab to move from first pane to second pane and tab bar to appear"
                 );
 
                 // Verify the tab counts after the drag and drop
@@ -1074,8 +1049,7 @@ define(function (require, exports, module) {
                     function () {
                         return $("#phoenix-tab-bar").length > 0 && getTabCount() === 0;
                     },
-                    "Tab bar to update with no tabs",
-                    1000
+                    "Tab bar to update with no tabs"
                 );
             });
 
@@ -1125,8 +1099,7 @@ define(function (require, exports, module) {
                     function () {
                         return !tabExists(testFilePath2);
                     },
-                    "Tab for second file to disappear",
-                    1000
+                    "Tab for second file to disappear"
                 );
 
                 // Verify the second tab is removed
@@ -1143,8 +1116,7 @@ define(function (require, exports, module) {
                     function () {
                         return !tabExists(testFilePath);
                     },
-                    "Tab for first file to disappear",
-                    1000
+                    "Tab for first file to disappear"
                 );
 
                 // Verify the first tab is removed
@@ -1161,8 +1133,7 @@ define(function (require, exports, module) {
                     function () {
                         return !tabExists(testFilePath3);
                     },
-                    "Tab for third file to disappear",
-                    1000
+                    "Tab for third file to disappear"
                 );
 
                 // Verify all tabs are removed
@@ -1198,8 +1169,7 @@ define(function (require, exports, module) {
                         function () {
                             return isTabActive(filePath);
                         },
-                        `${description} to become active`,
-                        1000
+                        `${description} to become active`
                     );
 
                     // Verify this tab is active and others are not
@@ -1223,8 +1193,7 @@ define(function (require, exports, module) {
                     function () {
                         return $("#phoenix-tab-bar").length > 0 && activeFile && isTabActive(activeFile.fullPath);
                     },
-                    "Tab bar to be recreated and show active file",
-                    1000
+                    "Tab bar to be recreated and show active file"
                 );
 
                 // Verify the tab for the active file is active
@@ -1241,8 +1210,7 @@ define(function (require, exports, module) {
                     function () {
                         return newActiveFile && isTabActive(newActiveFile.fullPath);
                     },
-                    "Tab bar to update with new active file",
-                    1000
+                    "Tab bar to update with new active file"
                 );
 
                 // Verify the tab for the new active file is active
@@ -1266,8 +1234,7 @@ define(function (require, exports, module) {
                                 isTabActive(filePath) && MainViewManager.getCurrentlyViewedFile().fullPath === filePath
                             );
                         },
-                        `${description} to become active after tab click`,
-                        1000
+                        `${description} to become active after tab click`
                     );
 
                     // Verify this tab is active and others are not
@@ -1284,8 +1251,7 @@ define(function (require, exports, module) {
                     function () {
                         return $("#phoenix-tab-bar").length > 0 && getTabCount() === 3;
                     },
-                    "Tab bar to be properly loaded with all tabs",
-                    1000
+                    "Tab bar to be properly loaded with all tabs"
                 );
 
                 // Wait for the third file to become active
@@ -1297,8 +1263,7 @@ define(function (require, exports, module) {
                             MainViewManager.getCurrentlyViewedFile().fullPath === testFilePath3
                         );
                     },
-                    "Third file to become active",
-                    2000
+                    "Third file to become active"
                 );
 
                 // Initially, verify the third file is active (last opened)
@@ -1339,8 +1304,7 @@ define(function (require, exports, module) {
                     function () {
                         return isOverflowButtonVisible();
                     },
-                    "Overflow button to appear",
-                    1000
+                    "Overflow button to appear"
                 );
 
                 // Verify the overflow button is visible
@@ -1380,8 +1344,7 @@ define(function (require, exports, module) {
                     function () {
                         return isOverflowButtonVisible();
                     },
-                    "Overflow button to appear",
-                    1000
+                    "Overflow button to appear"
                 );
 
                 // Get the list of hidden tabs
@@ -1396,8 +1359,7 @@ define(function (require, exports, module) {
                     function () {
                         return getOverflowDropdown().length > 0;
                     },
-                    "Overflow dropdown to appear",
-                    1000
+                    "Overflow dropdown to appear"
                 );
 
                 // Verify the dropdown is visible
@@ -1421,8 +1383,7 @@ define(function (require, exports, module) {
                     function () {
                         return getOverflowDropdown().length === 0;
                     },
-                    "Overflow dropdown to disappear",
-                    1000
+                    "Overflow dropdown to disappear"
                 );
 
                 // Clean up - close all the test files
@@ -1444,8 +1405,7 @@ define(function (require, exports, module) {
                     function () {
                         return isOverflowButtonVisible();
                     },
-                    "Overflow button to appear",
-                    1000
+                    "Overflow button to appear"
                 );
 
                 // Get the list of hidden tabs
@@ -1463,8 +1423,7 @@ define(function (require, exports, module) {
                     function () {
                         return getOverflowDropdown().length > 0;
                     },
-                    "Overflow dropdown to appear",
-                    1000
+                    "Overflow dropdown to appear"
                 );
 
                 // Get the dropdown item for the test file
@@ -1482,8 +1441,7 @@ define(function (require, exports, module) {
                             MainViewManager.getCurrentlyViewedFile().fullPath === testHiddenFile
                         );
                     },
-                    "Hidden file to become active after dropdown item click",
-                    1000
+                    "Hidden file to become active after dropdown item click"
                 );
 
                 // Verify the file is active
@@ -1495,8 +1453,7 @@ define(function (require, exports, module) {
                     function () {
                         return isTabVisible(testHiddenFile);
                     },
-                    "Tab to become visible after dropdown item click",
-                    1000
+                    "Tab to become visible after dropdown item click"
                 );
 
                 expect(isTabVisible(testHiddenFile)).toBe(true);
@@ -1520,8 +1477,7 @@ define(function (require, exports, module) {
                     function () {
                         return isOverflowButtonVisible();
                     },
-                    "Overflow button to appear",
-                    1000
+                    "Overflow button to appear"
                 );
 
                 // Get the list of hidden tabs
@@ -1548,8 +1504,7 @@ define(function (require, exports, module) {
                             MainViewManager.getCurrentlyViewedFile().fullPath === testHiddenFile
                         );
                     },
-                    "Hidden file to become active after selection from working set",
-                    1000
+                    "Hidden file to become active after selection from working set"
                 );
 
                 // Verify the file is active
@@ -1561,8 +1516,7 @@ define(function (require, exports, module) {
                     function () {
                         return isTabVisible(testHiddenFile);
                     },
-                    "Tab to become visible after selection from working set",
-                    1000
+                    "Tab to become visible after selection from working set"
                 );
 
                 expect(isTabVisible(testHiddenFile)).toBe(true);
@@ -1593,8 +1547,7 @@ define(function (require, exports, module) {
                     function () {
                         return tabExists(testFilePath);
                     },
-                    "Tab to appear",
-                    1000
+                    "Tab to appear"
                 );
 
                 // Get the filename from the path
@@ -1616,8 +1569,7 @@ define(function (require, exports, module) {
                     function () {
                         return tabExists(testFilePath);
                     },
-                    "Tab to appear",
-                    1000
+                    "Tab to appear"
                 );
 
                 // Verify the tab has a file icon
@@ -1636,8 +1588,7 @@ define(function (require, exports, module) {
                     function () {
                         return tabExists(testFilePath);
                     },
-                    "Tab to appear",
-                    1000
+                    "Tab to appear"
                 );
 
                 // Initially, the file should not be dirty
@@ -1652,8 +1603,7 @@ define(function (require, exports, module) {
                     function () {
                         return isTabDirty(testFilePath);
                     },
-                    "Dirty indicator to appear",
-                    1000
+                    "Dirty indicator to appear"
                 );
 
                 // Verify the tab has a dirty indicator
@@ -1667,8 +1617,7 @@ define(function (require, exports, module) {
                     function () {
                         return !isTabDirty(testFilePath);
                     },
-                    "Dirty indicator to disappear",
-                    1000
+                    "Dirty indicator to disappear"
                 );
 
                 // Verify the tab no longer has a dirty indicator
@@ -1701,8 +1650,7 @@ define(function (require, exports, module) {
                     function () {
                         return tabExists(duplicateFile1) && tabExists(duplicateFile2);
                     },
-                    "Both duplicate tabs to appear",
-                    1000
+                    "Both duplicate tabs to appear"
                 );
 
                 // Verify both tabs have directory names
@@ -1726,8 +1674,7 @@ define(function (require, exports, module) {
                     function () {
                         return tabExists(testFilePath);
                     },
-                    "Tab to appear",
-                    1000
+                    "Tab to appear"
                 );
 
                 // Verify the tooltip contains the full path
@@ -1786,8 +1733,7 @@ define(function (require, exports, module) {
                     function () {
                         return hasGitStatus(testFilePath) && hasGitStatus(testFilePath2);
                     },
-                    "Tabs to update with Git status",
-                    1000
+                    "Tabs to update with Git status"
                 );
 
                 // Verify the first file has the git-new class
@@ -1820,8 +1766,7 @@ define(function (require, exports, module) {
                     function () {
                         return tabExists(testFilePath);
                     },
-                    "Tab to appear",
-                    1000
+                    "Tab to appear"
                 );
 
                 // Verify the tab has a close button
@@ -1844,8 +1789,7 @@ define(function (require, exports, module) {
                     function () {
                         return tabExists(testFilePath);
                     },
-                    "Tab to appear",
-                    1000
+                    "Tab to appear"
                 );
 
                 // Get the close button
@@ -1877,8 +1821,7 @@ define(function (require, exports, module) {
                     function () {
                         return !tabExists(testFilePath);
                     },
-                    "Tab to disappear",
-                    1000
+                    "Tab to disappear"
                 );
 
                 // Restore the original execute function
@@ -1917,8 +1860,7 @@ define(function (require, exports, module) {
                     function () {
                         return tabExists(testFilePath) && tabExists(testFilePath2) && tabExists(testFilePath3);
                     },
-                    "All tabs to appear",
-                    1000
+                    "All tabs to appear"
                 );
             });
 
@@ -1946,8 +1888,7 @@ define(function (require, exports, module) {
                     function () {
                         return getContextMenu().length > 0;
                     },
-                    "Context menu to appear",
-                    1000
+                    "Context menu to appear"
                 );
 
                 // Verify the context menu is visible
@@ -1962,8 +1903,7 @@ define(function (require, exports, module) {
                     function () {
                         return getContextMenu().length === 0;
                     },
-                    "Context menu to disappear",
-                    1000
+                    "Context menu to disappear"
                 );
             });
 
@@ -1982,8 +1922,7 @@ define(function (require, exports, module) {
                     function () {
                         return getContextMenu().length > 0;
                     },
-                    "Context menu to appear",
-                    1000
+                    "Context menu to appear"
                 );
 
                 // Find and click the "Close Tab" option
@@ -2003,8 +1942,7 @@ define(function (require, exports, module) {
                     function () {
                         return !tabExists(testFilePath);
                     },
-                    "Tab to be closed",
-                    1000
+                    "Tab to be closed"
                 );
             });
 
@@ -2028,8 +1966,7 @@ define(function (require, exports, module) {
                     function () {
                         return tabExists(testFilePath) && tabExists(testFilePath2) && tabExists(testFilePath3);
                     },
-                    "All tabs to appear",
-                    1000
+                    "All tabs to appear"
                 );
 
                 // Verify all three tabs exist
@@ -2051,8 +1988,7 @@ define(function (require, exports, module) {
                     function () {
                         return getContextMenu().length > 0;
                     },
-                    "Context menu to appear",
-                    1000
+                    "Context menu to appear"
                 );
 
                 // Find and click the "Close tabs to the right" option
@@ -2072,8 +2008,7 @@ define(function (require, exports, module) {
                     function () {
                         return tabExists(testFilePath) && !tabExists(testFilePath2) && !tabExists(testFilePath3);
                     },
-                    "Tabs to the right to be closed",
-                    1000
+                    "Tabs to the right to be closed"
                 );
 
                 // Verify only the first tab remains
@@ -2103,8 +2038,7 @@ define(function (require, exports, module) {
                     function () {
                         return tabExists(testFilePath) && tabExists(testFilePath2) && tabExists(testFilePath3);
                     },
-                    "All tabs to appear",
-                    1000
+                    "All tabs to appear"
                 );
 
                 // Verify all three tabs exist
@@ -2126,8 +2060,7 @@ define(function (require, exports, module) {
                     function () {
                         return getContextMenu().length > 0;
                     },
-                    "Context menu to appear",
-                    1000
+                    "Context menu to appear"
                 );
 
                 // Find and click the "Close tabs to the left" option
@@ -2147,8 +2080,7 @@ define(function (require, exports, module) {
                     function () {
                         return !tabExists(testFilePath) && !tabExists(testFilePath2) && tabExists(testFilePath3);
                     },
-                    "Tabs to the left to be closed",
-                    1000
+                    "Tabs to the left to be closed"
                 );
 
                 // Verify only the third tab remains
@@ -2178,8 +2110,7 @@ define(function (require, exports, module) {
                     function () {
                         return tabExists(testFilePath) && tabExists(testFilePath2) && tabExists(testFilePath3);
                     },
-                    "All tabs to appear",
-                    1000
+                    "All tabs to appear"
                 );
 
                 // Verify all three tabs exist
@@ -2196,8 +2127,7 @@ define(function (require, exports, module) {
                     function () {
                         return isTabDirty(testFilePath2);
                     },
-                    "Dirty indicator to appear",
-                    1000
+                    "Dirty indicator to appear"
                 );
 
                 // Verify the second tab is dirty
@@ -2217,8 +2147,7 @@ define(function (require, exports, module) {
                     function () {
                         return getContextMenu().length > 0;
                     },
-                    "Context menu to appear",
-                    1000
+                    "Context menu to appear"
                 );
 
                 // Find and click the "Close saved tabs" option
@@ -2238,8 +2167,7 @@ define(function (require, exports, module) {
                     function () {
                         return !tabExists(testFilePath) && tabExists(testFilePath2) && !tabExists(testFilePath3);
                     },
-                    "Saved tabs to be closed",
-                    1000
+                    "Saved tabs to be closed"
                 );
 
                 expect(tabExists(testFilePath)).toBe(false);
@@ -2276,8 +2204,7 @@ define(function (require, exports, module) {
                     function () {
                         return tabExists(testFilePath) && tabExists(testFilePath2) && tabExists(testFilePath3);
                     },
-                    "All tabs to appear",
-                    1000
+                    "All tabs to appear"
                 );
 
                 // Verify all three tabs exist
@@ -2299,8 +2226,7 @@ define(function (require, exports, module) {
                     function () {
                         return getContextMenu().length > 0;
                     },
-                    "Context menu to appear",
-                    1000
+                    "Context menu to appear"
                 );
 
                 // Find and click the "Close all tabs" option
@@ -2320,8 +2246,7 @@ define(function (require, exports, module) {
                     function () {
                         return !tabExists(testFilePath) && !tabExists(testFilePath2) && !tabExists(testFilePath3);
                     },
-                    "All tabs to be closed",
-                    1000
+                    "All tabs to be closed"
                 );
 
                 expect(tabExists(testFilePath)).toBe(false);
@@ -2367,8 +2292,7 @@ define(function (require, exports, module) {
                     function () {
                         return getTabCount() >= testFiles.length;
                     },
-                    "All tabs to appear",
-                    1000
+                    "All tabs to appear"
                 );
 
                 // Verify all tabs are shown
@@ -2408,8 +2332,7 @@ define(function (require, exports, module) {
                     function () {
                         return getTabCount() > 0;
                     },
-                    "Tabs to appear",
-                    1000
+                    "Tabs to appear"
                 );
 
                 // Verify only 5 tabs are shown
@@ -2446,8 +2369,7 @@ define(function (require, exports, module) {
                     function () {
                         return getTabCount() > 0;
                     },
-                    "Tabs to appear",
-                    1000
+                    "Tabs to appear"
                 );
 
                 // Verify tab bar is visible
@@ -2461,8 +2383,7 @@ define(function (require, exports, module) {
                     function () {
                         return !$("#phoenix-tab-bar").is(":visible");
                     },
-                    "Tab bar to disappear",
-                    1000
+                    "Tab bar to disappear"
                 );
 
                 // Verify tab bar is hidden
@@ -2521,8 +2442,7 @@ define(function (require, exports, module) {
                     function () {
                         return $("#phoenix-tab-bar").is(":visible") && $("#phoenix-tab-bar-2").is(":visible");
                     },
-                    "Both tab bars to appear",
-                    1000
+                    "Both tab bars to appear"
                 );
 
                 // Verify each pane shows only 3 tabs
@@ -2540,8 +2460,7 @@ define(function (require, exports, module) {
                             $("#phoenix-tab-bar-2").find(".tab").length === 5
                         );
                     },
-                    "All tabs to appear in both panes",
-                    1000
+                    "All tabs to appear in both panes"
                 );
 
                 // Verify all tabs are shown in both panes
@@ -2556,8 +2475,7 @@ define(function (require, exports, module) {
                     function () {
                         return !$("#phoenix-tab-bar").is(":visible") && !$("#phoenix-tab-bar-2").is(":visible");
                     },
-                    "Both tab bars to disappear",
-                    1000
+                    "Both tab bars to disappear"
                 );
 
                 // Verify both tab bars are hidden
@@ -2605,8 +2523,7 @@ define(function (require, exports, module) {
                     function () {
                         return isTabBarVisible("first-pane") && isTabBarVisible("second-pane");
                     },
-                    "Both tab bars to appear",
-                    1000
+                    "Both tab bars to appear"
                 );
 
                 // Verify both tab bars are visible
@@ -2632,8 +2549,7 @@ define(function (require, exports, module) {
                     function () {
                         return isTabBarVisible("first-pane");
                     },
-                    "First tab bar to appear",
-                    1000
+                    "First tab bar to appear"
                 );
 
                 // Verify first tab bar is visible and second is not
@@ -2657,8 +2573,7 @@ define(function (require, exports, module) {
                     function () {
                         return isTabBarVisible("first-pane");
                     },
-                    "First tab bar to appear",
-                    1000
+                    "First tab bar to appear"
                 );
 
                 // Verify first tab bar is visible and second is not
@@ -2682,8 +2597,7 @@ define(function (require, exports, module) {
                             !tabExistsInPane(testFilePath, "first-pane") && tabExistsInPane(testFilePath, "second-pane")
                         );
                     },
-                    "Tab to move to second pane",
-                    1000
+                    "Tab to move to second pane"
                 );
 
                 // Verify the tab bars visibility has updated
@@ -2713,8 +2627,7 @@ define(function (require, exports, module) {
                     function () {
                         return isTabBarVisible("first-pane") && isTabBarVisible("second-pane");
                     },
-                    "Both tab bars to appear",
-                    1000
+                    "Both tab bars to appear"
                 );
 
                 // Verify both tab bars are visible
@@ -2738,8 +2651,7 @@ define(function (require, exports, module) {
                     function () {
                         return !isTabBarVisible("second-pane");
                     },
-                    "Second tab bar to disappear",
-                    1000
+                    "Second tab bar to disappear"
                 );
 
                 // Verify first tab bar is still visible but second is not
@@ -2774,8 +2686,7 @@ define(function (require, exports, module) {
                     function () {
                         return isTabBarVisible("first-pane") && isTabBarVisible("second-pane");
                     },
-                    "Both tab bars to appear",
-                    1000
+                    "Both tab bars to appear"
                 );
 
                 // Verify both tab bars are visible
@@ -2805,8 +2716,7 @@ define(function (require, exports, module) {
                     function () {
                         return !isTabBarVisible("second-pane");
                     },
-                    "Second tab bar to disappear",
-                    1000
+                    "Second tab bar to disappear"
                 );
 
                 // Verify first tab bar is still visible but second is not
@@ -2845,8 +2755,7 @@ define(function (require, exports, module) {
                     function () {
                         return getTabCount() >= 15;
                     },
-                    "All tabs to be created",
-                    3000
+                    "All tabs to be created"
                 );
             });
 
@@ -2929,8 +2838,7 @@ define(function (require, exports, module) {
                     function () {
                         return MainViewManager.getPaneIdList().length === 2;
                     },
-                    "Second pane to be created",
-                    1000
+                    "Second pane to be created"
                 );
 
                 // Open a file in the second pane to create the second tab bar
@@ -2947,8 +2855,7 @@ define(function (require, exports, module) {
                     function () {
                         return $("#phoenix-tab-bar-2").length > 0;
                     },
-                    "Second tab bar to appear",
-                    1000
+                    "Second tab bar to appear"
                 );
 
                 const $tabBar2 = $("#phoenix-tab-bar-2");
@@ -2970,8 +2877,7 @@ define(function (require, exports, module) {
                     function () {
                         return $tabBar2.find(".tab").length >= 8;
                     },
-                    "Tabs to be created in second pane",
-                    2000
+                    "Tabs to be created in second pane"
                 );
 
                 // Get initial scroll position of second tab bar
