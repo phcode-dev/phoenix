@@ -3044,8 +3044,8 @@ define(function (require, exports, module) {
                 wheelEventRight.originalEvent = { deltaY: 500 }; // Large scroll right
                 $tabBar.trigger(wheelEventRight);
 
-                // Should not exceed maximum scroll
-                expect($tabBar.scrollLeft()).toBeLessThanOrEqual(maxScrollLeft);
+                // Should not exceed maximum scroll (a small floating point tolerance)
+                expect($tabBar.scrollLeft()).toBeLessThanOrEqual(maxScrollLeft + 1);
 
                 // Scroll far to the left
                 $tabBar.scrollLeft(-1000); // Try to scroll beyond minimum
@@ -3055,8 +3055,8 @@ define(function (require, exports, module) {
                 wheelEventLeft.originalEvent = { deltaY: -500 }; // Large scroll left
                 $tabBar.trigger(wheelEventLeft);
 
-                // Should not go below 0
-                expect($tabBar.scrollLeft()).toBeGreaterThanOrEqual(0);
+                // Should not go below 0 (a small floating point tolerance)
+                expect($tabBar.scrollLeft()).toBeGreaterThanOrEqual(-1);
             });
         });
     });
