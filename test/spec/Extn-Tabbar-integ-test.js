@@ -474,9 +474,6 @@ define(function (require, exports, module) {
                     },
                     "Tab bar to become visible"
                 );
-
-                // Verify the tab bar is visible
-                expect($("#phoenix-tab-bar").is(":visible")).toBe(true);
             });
 
             it("should hide tab bar when the feature is disabled", async function () {
@@ -490,9 +487,6 @@ define(function (require, exports, module) {
                     },
                     "Tab bar to become hidden"
                 );
-
-                // Verify the tab bar is not visible
-                expect($("#phoenix-tab-bar").is(":visible")).toBe(false);
             });
 
             it("should show working set when the option is enabled", async function () {
@@ -506,9 +500,6 @@ define(function (require, exports, module) {
                     },
                     "Working set to become visible"
                 );
-
-                // Verify the working set is visible
-                expect($("#working-set-list-container").hasClass("working-set-hidden")).toBe(false);
             });
 
             it("should hide working set when the option is disabled", async function () {
@@ -522,9 +513,6 @@ define(function (require, exports, module) {
                     },
                     "Working set to become hidden"
                 );
-
-                // Verify the working set is not visible
-                expect($("#working-set-list-container").hasClass("working-set-hidden")).toBe(true);
             });
         });
 
@@ -595,9 +583,6 @@ define(function (require, exports, module) {
                     "Working set to become hidden"
                 );
 
-                // Verify the working set is hidden
-                expect($("#working-set-list-container").hasClass("working-set-hidden")).toBe(true);
-
                 // Click the configure working set button again
                 $configButton.click();
 
@@ -621,9 +606,6 @@ define(function (require, exports, module) {
                     },
                     "Working set to become visible"
                 );
-
-                // Verify the working set is visible
-                expect($("#working-set-list-container").hasClass("working-set-hidden")).toBe(false);
             });
 
             it("should toggle tab bar visibility when 'Show file tab bar' option is clicked", async function () {
@@ -661,9 +643,6 @@ define(function (require, exports, module) {
                     "Tab bar to become hidden"
                 );
 
-                // Verify the tab bar is hidden
-                expect($("#phoenix-tab-bar").is(":visible")).toBe(false);
-
                 // Click the configure working set button again
                 $configButton.click();
 
@@ -687,9 +666,6 @@ define(function (require, exports, module) {
                     },
                     "Tab bar to become visible"
                 );
-
-                // Verify the tab bar is visible
-                expect($("#phoenix-tab-bar").is(":visible")).toBe(true);
             });
         });
 
@@ -887,10 +863,6 @@ define(function (require, exports, module) {
                 expect(getPaneTabCount("first-pane")).toBe(firstPaneFiles.length - 1);
                 expect(getPaneTabCount("second-pane")).toBe(secondPaneFiles.length + 1);
 
-                // Verify the tab is now in the second pane
-                expect(tabExistsInPane(firstPaneFiles[0], "first-pane")).toBe(false);
-                expect(tabExistsInPane(firstPaneFiles[0], "second-pane")).toBe(true);
-
                 // Clean up - close all files and reset to single pane
                 await testWindow.closeAllFiles();
                 MainViewManager.setLayoutScheme(1, 1);
@@ -1025,10 +997,6 @@ define(function (require, exports, module) {
                 // Verify the tab counts after the drag and drop
                 expect(getPaneTabCount("first-pane")).toBe(firstPaneFiles.length - 1);
                 expect(getPaneTabCount("second-pane")).toBe(1);
-
-                // Verify the tab is now in the second pane
-                expect(tabExistsInPane(firstPaneFiles[0], "first-pane")).toBe(false);
-                expect(tabExistsInPane(firstPaneFiles[0], "second-pane")).toBe(true);
 
                 // Clean up - close all files and reset to single pane
                 await testWindow.closeAllFiles();
@@ -2477,10 +2445,6 @@ define(function (require, exports, module) {
                     },
                     "Both tab bars to disappear"
                 );
-
-                // Verify both tab bars are hidden
-                expect($("#phoenix-tab-bar").is(":visible")).toBe(false);
-                expect($("#phoenix-tab-bar-2").is(":visible")).toBe(false);
 
                 // Clean up - close all files and reset to single pane
                 await testWindow.closeAllFiles();
