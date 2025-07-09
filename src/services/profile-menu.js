@@ -13,9 +13,9 @@ define(function (require, exports, module) {
 
     function _createSVGIcon(initials, bgColor) {
         return `<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="12" cy="12" r="10" fill="${bgColor}"/>
-  <text x="50%" y="58%" text-anchor="middle" font-size="11" fill="#fff" font-family="Inter, sans-serif" dy=".1em">
-    ${initials}</text>
+                <circle cx="12" cy="12" r="10" fill="${bgColor}"/>
+            <text x="12" y="12" text-anchor="middle" dominant-baseline="central" font-size="10" fill="#fff" font-family="Inter, sans-serif">
+            ${initials}</text>
         </svg>`;
     }
 
