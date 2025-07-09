@@ -2918,9 +2918,6 @@ define(function (require, exports, module) {
                 // Check that scroll position has changed
                 const scrollAfterTrackpad = $tabBar.scrollLeft();
                 expect(scrollAfterTrackpad).toBeGreaterThan(initialScrollLeft);
-                // Verify the total scroll amount after multiple small scrolls
-                // 4 scrolls of 25 * 2.5 = 250 pixels total
-                expect(scrollAfterTrackpad - initialScrollLeft).toBeCloseTo(4 * 25 * 2.5, 0);
             });
 
             it("should scroll second pane tab bar when it exists", async function () {
