@@ -718,7 +718,13 @@ define(function (require, exports, module) {
                 MainViewManager.setLayoutScheme(1, 1);
 
                 // Wait for cleanup to complete
-                await awaits(100);
+                await awaitsFor(
+                    function () {
+                        return MainViewManager.getPaneCount() === 1 && getTabCount() === 0;
+                    },
+                    "Cleanup to complete with single pane and no tabs",
+                    1000
+                );
             });
 
             it("should allow dragging and dropping a tab to the beginning of the tab bar", async function () {
@@ -923,7 +929,13 @@ define(function (require, exports, module) {
                 MainViewManager.setLayoutScheme(1, 2);
 
                 // Wait for layout to settle and ensure second pane is empty
-                await awaits(100);
+                await awaitsFor(
+                    function () {
+                        return MainViewManager.getPaneCount() === 2;
+                    },
+                    "Layout to settle with two panes",
+                    1000
+                );
 
                 // Force close any files that might be open in the second pane
                 const secondPaneWorkingSet = MainViewManager.getWorkingSet("second-pane");
@@ -933,6 +945,17 @@ define(function (require, exports, module) {
                         `Force close file ${file.fullPath} in second pane`
                     );
                 }
+
+                // Wait for the second pane to actually be empty after cleanup
+                await awaitsFor(
+                    function () {
+                        return getPaneTabCount("second-pane") === 0;
+                    },
+                    "Second pane to be cleaned up",
+                    2000
+                );
+
+                expect(getPaneTabCount("second-pane")).toBe(0);
 
                 // Create test files for the first pane
                 const firstPaneFiles = await createTestFiles(
@@ -946,6 +969,8 @@ define(function (require, exports, module) {
 
                 // Wait for all tabs to appear in the first pane
                 await waitForTabs(firstPaneFiles, "first-pane");
+
+                expect(getPaneTabCount("second-pane")).toBe(0);
 
                 // Ensure second pane is empty before proceeding
                 await awaitsFor(
@@ -1043,7 +1068,13 @@ define(function (require, exports, module) {
                 await testWindow.closeAllFiles();
 
                 // Wait for the tab bar to update
-                await awaits(300);
+                await awaitsFor(
+                    function () {
+                        return $("#phoenix-tab-bar").length > 0 && getTabCount() === 0;
+                    },
+                    "Tab bar to update with no tabs",
+                    1000
+                );
             });
 
             it("should add tabs when files are added to the working set", async function () {
@@ -1185,8 +1216,14 @@ define(function (require, exports, module) {
                 // Get the currently active file
                 const activeFile = MainViewManager.getCurrentlyViewedFile();
 
-                // just a small timer because tab bar gets recreated
-                await awaits(100);
+                // Wait for tab bar to be recreated and reflect the active file
+                await awaitsFor(
+                    function () {
+                        return $("#phoenix-tab-bar").length > 0 && activeFile && isTabActive(activeFile.fullPath);
+                    },
+                    "Tab bar to be recreated and show active file",
+                    1000
+                );
 
                 // Verify the tab for the active file is active
                 expect(isTabActive(activeFile.fullPath)).toBe(true);
@@ -1197,7 +1234,14 @@ define(function (require, exports, module) {
                 // Get the new active file
                 const newActiveFile = MainViewManager.getCurrentlyViewedFile();
 
-                await awaits(100);
+                // Wait for tab bar to update with the new active file
+                await awaitsFor(
+                    function () {
+                        return newActiveFile && isTabActive(newActiveFile.fullPath);
+                    },
+                    "Tab bar to update with new active file",
+                    1000
+                );
 
                 // Verify the tab for the new active file is active
                 expect(isTabActive(newActiveFile.fullPath)).toBe(true);
@@ -1233,8 +1277,25 @@ define(function (require, exports, module) {
                     // Verify the correct file is loaded in the editor
                     expect(MainViewManager.getCurrentlyViewedFile().fullPath).toBe(filePath);
                 }
-                // add a small timer to make sure that the tab bar is properly loaded
-                await awaits(100);
+                // Wait for the tab bar to be properly loaded
+                await awaitsFor(
+                    function () {
+                        return $("#phoenix-tab-bar").length > 0 && getTabCount() === 3;
+                    },
+                    "Tab bar to be properly loaded with all tabs",
+                    1000
+                );
+
+                // Wait for the third file to become active
+                await awaitsFor(
+                    function () {
+                        return isTabActive(testFilePath3) &&
+                               MainViewManager.getCurrentlyViewedFile() &&
+                               MainViewManager.getCurrentlyViewedFile().fullPath === testFilePath3;
+                    },
+                    "Third file to become active",
+                    2000
+                );
 
                 // Initially, verify the third file is active (last opened)
                 expect(isTabActive(testFilePath3)).toBe(true);
@@ -1716,8 +1777,14 @@ define(function (require, exports, module) {
                 // Trigger a Git status update
                 testWindow.phoenixGitEvents.EventEmitter.emit("GIT_FILE_STATUS_CHANGED");
 
-                // Wait for the tabs to update
-                await awaits(300);
+                // Wait for the tabs to update with Git status
+                await awaitsFor(
+                    function () {
+                        return hasGitStatus(testFilePath) && hasGitStatus(testFilePath2);
+                    },
+                    "Tabs to update with Git status",
+                    1000
+                );
 
                 // Verify the first file has the git-new class
                 const $tab1 = getTab(testFilePath);
