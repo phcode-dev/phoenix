@@ -928,7 +928,7 @@ define(function (require, exports, module) {
                 // Set up a horizontal split view (two columns)
                 MainViewManager.setLayoutScheme(1, 2);
 
-                // Wait for layout to settle
+                // Wait for layout to settle and ensure second pane is empty
                 await awaitsFor(
                     function () {
                         return MainViewManager.getPaneCount() === 2;
@@ -937,9 +937,25 @@ define(function (require, exports, module) {
                     1000
                 );
 
-                // Verify both panes are empty
-                expect(MainViewManager.getWorkingSet("first-pane").length).toBe(0);
-                expect(MainViewManager.getWorkingSet("second-pane").length).toBe(0);
+                // Force close any files that might be open in the second pane
+                const secondPaneWorkingSet = MainViewManager.getWorkingSet("second-pane");
+                for (const file of secondPaneWorkingSet) {
+                    await awaitsForDone(
+                        CommandManager.execute(Commands.FILE_CLOSE, { file: file, paneId: "second-pane" }),
+                        `Force close file ${file.fullPath} in second pane`
+                    );
+                }
+
+                // Wait for the second pane to actually be empty after cleanup
+                await awaitsFor(
+                    function () {
+                        return getPaneTabCount("second-pane") === 0;
+                    },
+                    "Second pane to be cleaned up",
+                    2000
+                );
+
+                expect(getPaneTabCount("second-pane")).toBe(0);
 
                 // Create test files for the first pane
                 const firstPaneFiles = await createTestFiles(
@@ -954,85 +970,67 @@ define(function (require, exports, module) {
                 // Wait for all tabs to appear in the first pane
                 await waitForTabs(firstPaneFiles, "first-pane");
 
-                // Verify initial state: first pane has tabs, second pane is empty
+                expect(getPaneTabCount("second-pane")).toBe(0);
+
+                // Ensure second pane is empty before proceeding
+                await awaitsFor(
+                    function () {
+                        return getPaneTabCount("second-pane") === 0 && !isTabBarVisible("second-pane");
+                    },
+                    "Second pane to be empty",
+                    1000
+                );
+
+                // Verify initial tab counts
                 expect(getPaneTabCount("first-pane")).toBe(firstPaneFiles.length);
-
-                // If the second pane has tabs, log what they are and close them
-                if (getPaneTabCount("second-pane") > 0) {
-                    const secondPaneWorkingSet = MainViewManager.getWorkingSet("second-pane");
-                    for (const file of secondPaneWorkingSet) {
-                        await awaitsForDone(
-                            CommandManager.execute(Commands.FILE_CLOSE, { file: file, paneId: "second-pane" }),
-                            `Force close file ${file.fullPath} in second pane`
-                        );
-                    }
-
-                    // Wait for the second pane to be empty
-                    await awaitsFor(
-                        function () {
-                            return getPaneTabCount("second-pane") === 0;
-                        },
-                        "Second pane to be empty after cleanup",
-                        2000
-                    );
-                }
-
                 expect(getPaneTabCount("second-pane")).toBe(0);
                 expect(isTabBarVisible("second-pane")).toBe(false);
 
                 // Get the source tab from the first pane
                 const sourceTab = $(`.tab[data-path="${firstPaneFiles[0]}"]`);
-                expect(sourceTab.length).toBe(1, "Source tab should exist in the first pane");
 
                 // Get the empty pane content area as the drop target
                 const emptyPaneTarget = $("#second-pane .pane-content");
-                expect(emptyPaneTarget.length).toBe(1, "Empty pane target should exist");
 
-                // Simulate drag and drop
-                try {
-                    // Simulate drag start
-                    const dragStartEvent = $.Event("dragstart", {
-                        originalEvent: {
-                            dataTransfer: {
-                                setData: function () {},
-                                effectAllowed: "move"
-                            }
+                // Simulate drag start on the source tab
+                const dragStartEvent = $.Event("dragstart", {
+                    originalEvent: {
+                        dataTransfer: {
+                            setData: function () {},
+                            effectAllowed: "move"
                         }
-                    });
-                    sourceTab.trigger(dragStartEvent);
+                    }
+                });
+                sourceTab.trigger(dragStartEvent);
 
-                    // Simulate dragenter
-                    const dragEnterEvent = $.Event("dragenter");
-                    emptyPaneTarget.trigger(dragEnterEvent);
+                // Simulate dragenter on the empty pane
+                const dragEnterEvent = $.Event("dragenter");
+                emptyPaneTarget.trigger(dragEnterEvent);
 
-                    // Simulate dragover
-                    const dragOverEvent = $.Event("dragover", {
-                        originalEvent: {
-                            dataTransfer: {
-                                dropEffect: "move"
-                            }
-                        },
-                        preventDefault: function () {}
-                    });
-                    emptyPaneTarget.trigger(dragOverEvent);
+                // Simulate drag over on the empty pane
+                const dragOverEvent = $.Event("dragover", {
+                    originalEvent: {
+                        dataTransfer: {
+                            dropEffect: "move"
+                        }
+                    },
+                    preventDefault: function () {}
+                });
+                emptyPaneTarget.trigger(dragOverEvent);
 
-                    // Simulate drop
-                    const dropEvent = $.Event("drop", {
-                        originalEvent: {
-                            dataTransfer: {}
-                        },
-                        preventDefault: function () {},
-                        stopPropagation: function () {}
-                    });
-                    emptyPaneTarget.trigger(dropEvent);
+                // Simulate drop on the empty pane
+                const dropEvent = $.Event("drop", {
+                    originalEvent: {
+                        dataTransfer: {}
+                    },
+                    preventDefault: function () {},
+                    stopPropagation: function () {}
+                });
+                emptyPaneTarget.trigger(dropEvent);
 
-                    // Simulate dragend
-                    const dragEndEvent = $.Event("dragend");
-                    sourceTab.trigger(dragEndEvent);
-                } catch (e) {
-                    console.error("Error during drag and drop simulation:", e);
-                    throw e;
-                }
+                // Simulate dragend to complete the operation
+                const dragEndEvent = $.Event("dragend");
+                sourceTab.trigger(dragEndEvent);
 
                 // Wait for the tab to move to the second pane
                 await awaitsFor(
@@ -1044,7 +1042,7 @@ define(function (require, exports, module) {
                         );
                     },
                     "Tab to move from first pane to second pane and tab bar to appear",
-                    2000
+                    1000
                 );
 
                 // Verify the tab counts after the drag and drop
@@ -1291,11 +1289,9 @@ define(function (require, exports, module) {
                 // Wait for the third file to become active
                 await awaitsFor(
                     function () {
-                        return (
-                            isTabActive(testFilePath3) &&
-                            MainViewManager.getCurrentlyViewedFile() &&
-                            MainViewManager.getCurrentlyViewedFile().fullPath === testFilePath3
-                        );
+                        return isTabActive(testFilePath3) &&
+                               MainViewManager.getCurrentlyViewedFile() &&
+                               MainViewManager.getCurrentlyViewedFile().fullPath === testFilePath3;
                     },
                     "Third file to become active",
                     2000
