@@ -331,6 +331,19 @@
     .dark & {
         color: @dark-bc-text-thin;
     }
+
+    a {
+        color: @bc-btn-border-focused;
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
+
+        .dark & {
+            color: @dark-bc-btn-border-focused;
+        }
+    }
 }
 
 #add-snippet-btn button {
