@@ -403,7 +403,7 @@
     color: @bc-text-thin-quiet;
     font-size: 12px;
     font-style: italic;
-    margin-left: 132px;
+    margin-left: 144px;
     padding: 0;
     background: none;
     border: none;
@@ -460,6 +460,8 @@
         display: flex;
         align-items: flex-start;
         margin-bottom: 8px;
+        margin-left: 12px;
+        margin-right: 8px;
         gap: 4px;
         flex-direction: column;
 
@@ -570,6 +572,8 @@
 
     #add-custom-snippet-panel-buttons {
         margin-top: 8px;
+        margin-left: 12px;
+        margin-right: 8px;
         padding-top: 8px;
         border-top: 1px solid @bc-panel-separator;
         text-align: right;
@@ -612,6 +616,8 @@
         display: flex;
         align-items: flex-start;
         margin-bottom: 8px;
+        margin-left: 12px;
+        margin-right: 8px;
         gap: 4px;
         flex-direction: column;
 
@@ -722,6 +728,8 @@
 
     #edit-snippet-buttons {
         margin-top: 8px;
+        margin-left: 12px;
+        margin-right: 8px;
         padding-top: 8px;
         border-top: 1px solid @bc-panel-separator;
         text-align: right;
@@ -789,6 +797,9 @@
     #custom-snippets-add-new,
     #custom-snippets-edit {
         .field-wrapper {
+            margin-left: 8px;
+            margin-right: 4px;
+
             .field-row {
                 flex-direction: column;
                 align-items: stretch;
@@ -799,10 +810,16 @@
                 }
             }
         }
+
+        #add-custom-snippet-panel-buttons,
+        #edit-snippet-buttons {
+            margin-left: 8px;
+            margin-right: 4px;
+        }
     }
 
     .error-message {
-        margin-left: 0;
+        margin-left: 8px;
     }
 }
 
@@ -819,6 +836,14 @@
 
         .field-wrapper {
             margin-bottom: 6px;
+            margin-left: 6px;
+            margin-right: 3px;
+        }
+
+        #add-custom-snippet-panel-buttons,
+        #edit-snippet-buttons {
+            margin-left: 6px;
+            margin-right: 3px;
         }
     }
 }
