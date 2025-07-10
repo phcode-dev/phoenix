@@ -72,8 +72,10 @@ define(function (require, exports, module) {
     function _togglePanelVisibility() {
         if (customSnippetsPanel.isVisible()) {
             customSnippetsPanel.hide();
+            CommandManager.get(MY_COMMAND_ID).setChecked(false);
         } else {
             customSnippetsPanel.show();
+            CommandManager.get(MY_COMMAND_ID).setChecked(true);
 
             $("#filter-snippets-input").val("");
             UIHelper.initializeListViewToolbarTitle();
@@ -89,6 +91,7 @@ define(function (require, exports, module) {
      */
     function _hidePanel() {
         customSnippetsPanel.hide();
+        CommandManager.get(MY_COMMAND_ID).setChecked(false);
     }
 
     /**
@@ -101,6 +104,7 @@ define(function (require, exports, module) {
         // if it is then we can just toggle its visibility
         if (!customSnippetsPanel) {
             _createPanel();
+            CommandManager.get(MY_COMMAND_ID).setChecked(true);
         } else {
             _togglePanelVisibility();
         }
