@@ -201,7 +201,9 @@ define(function (require, exports, module) {
         });
 
         $editAbbrInput.on("input", Helper.toggleEditSaveButtonDisability);
+        $editDescInput.on("input", Helper.toggleEditSaveButtonDisability);
         $editTemplateInput.on("input", Helper.toggleEditSaveButtonDisability);
+        $editFileExtnInput.on("input", Helper.toggleEditSaveButtonDisability);
 
         $editAbbrInput.on("keydown", function (e) {
             Helper.validateAbbrInput(e, this);
