@@ -104,7 +104,7 @@ define(function (require, exports, module) {
         if (filterText) {
             $emptyMessage.text(`No snippets match "${filterText}"`);
         } else {
-            $emptyMessage.text("No custom snippets added yet!");
+            $emptyMessage.html('Add your own code hints to speed up coding - <a href="https://docs.phcode.dev" target="_blank">Learn More</a>');
         }
     }
 
