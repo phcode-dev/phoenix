@@ -545,6 +545,7 @@
         textarea {
             min-height: 80px;
             max-height: 120px;
+            min-width: 156px;
             resize: none;
             line-height: 1.4;
             white-space: pre-wrap;
@@ -701,6 +702,7 @@
         textarea {
             min-height: 80px;
             max-height: 120px;
+            min-width: 156px;
             resize: none;
             line-height: 1.4;
             white-space: pre-wrap;
@@ -777,6 +779,15 @@
             .filter-snippets-panel #filter-snippets-input {
                 width: 100%;
                 min-width: auto;
+            }
+        }
+
+        #custom-snippets-add-new,
+        #custom-snippets-edit {
+            .field-wrapper {
+                textarea {
+                    min-width: auto;
+                }
             }
         }
     }
