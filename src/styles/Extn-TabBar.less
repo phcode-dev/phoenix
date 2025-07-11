@@ -23,6 +23,13 @@
     transition: height 0.3s ease;
     scroll-behavior: auto;
     background-color: #f5f5f5;
+
+    .bd-icon {
+        color: #666;
+        .dark & {
+            color: unset;
+        }
+    }
 }
 
 .dark .phoenix-tab-bar {
@@ -341,6 +348,12 @@
     align-items: center;
     cursor: pointer;
     justify-content: space-between;
+    .bd-icon {
+        color: #666;
+        .dark &, .selected & {
+            color: unset;
+        }
+    }
 }
 
 .dropdown-tab-item:hover {
