@@ -343,7 +343,6 @@ define({
   "CLOSE_TABS_TO_THE_RIGHT": "Stäng flikar till höger",
   "CLOSE_TABS_TO_THE_LEFT": "Stäng flikar till vänster",
   "CLOSE_ALL_TABS": "Stäng alla flikar",
-  "CLOSE_UNMODIFIED_TABS": "Stäng oförändrade flikar",
   "REOPEN_CLOSED_FILE": "Återöppna stängd fil",
   "ERRORS_NO_FILE": "Ingen fil öppen",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} problem - {1}",
@@ -1387,5 +1386,6 @@ define({
   "SIGN_OUT": "Logga ut",
   "ACCOUNT_DETAILS": "Kontodetaljer",
   "AI_QUOTA_USED": "Använd AI-kvot",
-  "LOGIN_REFRESH": "Kontrollera inloggningsstatus"
+  "LOGIN_REFRESH": "Kontrollera inloggningsstatus",
+  "CLOSE_SAVED_TABS": "Stäng sparade flikar"
 });

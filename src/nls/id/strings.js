@@ -343,7 +343,6 @@ define({
   "CLOSE_TABS_TO_THE_RIGHT": "Tutup Tab di Sebelah Kanan",
   "CLOSE_TABS_TO_THE_LEFT": "Tutup Tab di Sebelah Kiri",
   "CLOSE_ALL_TABS": "Tutup Semua Tab",
-  "CLOSE_UNMODIFIED_TABS": "Tutup Tab yang Tidak Dimodifikasi",
   "REOPEN_CLOSED_FILE": "Buka Kembali File yang Ditutup",
   "ERRORS_NO_FILE": "Tidak Ada Berkas yang Dibuka",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Masalah - {1}",
@@ -1387,5 +1386,6 @@ define({
   "SIGN_OUT": "Keluar",
   "ACCOUNT_DETAILS": "Detail Akun",
   "AI_QUOTA_USED": "Kuota AI terpakai",
-  "LOGIN_REFRESH": "Periksa Status Login"
+  "LOGIN_REFRESH": "Periksa Status Login",
+  "CLOSE_SAVED_TABS": "Tutup Tab yang Disimpan"
 });

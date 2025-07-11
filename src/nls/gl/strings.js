@@ -343,7 +343,6 @@ define({
   "CLOSE_TABS_TO_THE_RIGHT": "Pechar lapelas á dereita",
   "CLOSE_TABS_TO_THE_LEFT": "Pechar lapelas á esquerda",
   "CLOSE_ALL_TABS": "Pechar todas as lapelas",
-  "CLOSE_UNMODIFIED_TABS": "Pechar as lapelas sen modificar",
   "REOPEN_CLOSED_FILE": "Reabrir o ficheiro pechado",
   "ERRORS_NO_FILE": "Non hai ningún ficheiro aberto",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Problemas - {1}",
@@ -1387,5 +1386,6 @@ define({
   "SIGN_OUT": "Pechar sesión",
   "ACCOUNT_DETAILS": "Detalles da conta",
   "AI_QUOTA_USED": "Cota de IA usada",
-  "LOGIN_REFRESH": "Comprobar o estado do inicio de sesión"
+  "LOGIN_REFRESH": "Comprobar o estado do inicio de sesión",
+  "CLOSE_SAVED_TABS": "Pechar lapelas gardadas"
 });

@@ -343,7 +343,6 @@ define({
   "CLOSE_TABS_TO_THE_RIGHT": "關閉右側分頁",
   "CLOSE_TABS_TO_THE_LEFT": "關閉左側分頁",
   "CLOSE_ALL_TABS": "關閉所有分頁",
-  "CLOSE_UNMODIFIED_TABS": "關閉未修改的分頁",
   "REOPEN_CLOSED_FILE": "重新開啟已關閉的檔案",
   "ERRORS_NO_FILE": "尚未開啟檔案",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} 個問題 - {1}",
@@ -1387,5 +1386,6 @@ define({
   "SIGN_OUT": "登出",
   "ACCOUNT_DETAILS": "帳號詳細資訊",
   "AI_QUOTA_USED": "AI 配額已使用",
-  "LOGIN_REFRESH": "檢查登入狀態"
+  "LOGIN_REFRESH": "檢查登入狀態",
+  "CLOSE_SAVED_TABS": "關閉已儲存的索引標籤"
 });

@@ -343,7 +343,6 @@ define({
   "CLOSE_TABS_TO_THE_RIGHT": "Fechar Separadores à Direita",
   "CLOSE_TABS_TO_THE_LEFT": "Fechar Separadores à Esquerda",
   "CLOSE_ALL_TABS": "Fechar Todos os Separadores",
-  "CLOSE_UNMODIFIED_TABS": "Fechar Separadores Não Modificados",
   "REOPEN_CLOSED_FILE": "Reabrir Ficheiro Fechado",
   "ERRORS_NO_FILE": "Nenhum Ficheiro Aberto",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Problemas - {1}",
@@ -1387,5 +1386,6 @@ define({
   "SIGN_OUT": "Terminar Sessão",
   "ACCOUNT_DETAILS": "Detalhes da Conta",
   "AI_QUOTA_USED": "Quota de IA utilizada",
-  "LOGIN_REFRESH": "Verificar estado de início de sessão"
+  "LOGIN_REFRESH": "Verificar estado de início de sessão",
+  "CLOSE_SAVED_TABS": "Fechar Separadores Guardados"
 });

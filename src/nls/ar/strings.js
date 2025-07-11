@@ -343,7 +343,6 @@ define({
   "CLOSE_TABS_TO_THE_RIGHT": "إغلاق علامات التبويب على اليمين",
   "CLOSE_TABS_TO_THE_LEFT": "إغلاق علامات التبويب على اليسار",
   "CLOSE_ALL_TABS": "إغلاق جميع علامات التبويب",
-  "CLOSE_UNMODIFIED_TABS": "إغلاق علامات التبويب غير المعدلة",
   "REOPEN_CLOSED_FILE": "إعادة فتح الملف المغلق",
   "ERRORS_NO_FILE": "لا يوجد ملف مفتوح",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} مشاكل - {1}",
@@ -1387,5 +1386,6 @@ define({
   "SIGN_OUT": "تسجيل الخروج",
   "ACCOUNT_DETAILS": "تفاصيل الحساب",
   "AI_QUOTA_USED": "حصة الذكاء الاصطناعي المستخدمة",
-  "LOGIN_REFRESH": "تحقق من حالة تسجيل الدخول"
+  "LOGIN_REFRESH": "تحقق من حالة تسجيل الدخول",
+  "CLOSE_SAVED_TABS": "إغلاق علامات التبويب المحفوظة"
 });

@@ -343,7 +343,6 @@ define({
   "CLOSE_TABS_TO_THE_RIGHT": "Zamknij karty po prawej",
   "CLOSE_TABS_TO_THE_LEFT": "Zamknij karty po lewej",
   "CLOSE_ALL_TABS": "Zamknij wszystkie karty",
-  "CLOSE_UNMODIFIED_TABS": "Zamknij niezmodyfikowane karty",
   "REOPEN_CLOSED_FILE": "Ponownie otwórz zamknięty plik",
   "ERRORS_NO_FILE": "Brak otwartego pliku",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} problemów - {1}",
@@ -1387,5 +1386,6 @@ define({
   "SIGN_OUT": "Wyloguj się",
   "ACCOUNT_DETAILS": "Szczegóły konta",
   "AI_QUOTA_USED": "Wykorzystany limit AI",
-  "LOGIN_REFRESH": "Sprawdź status logowania"
+  "LOGIN_REFRESH": "Sprawdź status logowania",
+  "CLOSE_SAVED_TABS": "Zamknij zapisane karty"
 });

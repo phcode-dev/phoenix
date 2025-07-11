@@ -343,7 +343,6 @@ define({
   "CLOSE_TABS_TO_THE_RIGHT": "Zatvori kartice desno",
   "CLOSE_TABS_TO_THE_LEFT": "Zatvori kartice lijevo",
   "CLOSE_ALL_TABS": "Zatvori sve kartice",
-  "CLOSE_UNMODIFIED_TABS": "Zatvori nepromijenjene kartice",
   "REOPEN_CLOSED_FILE": "Ponovno otvori zatvorenu datoteku",
   "ERRORS_NO_FILE": "Nema otvorene datoteke",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} problema - {1}",
@@ -1387,5 +1386,6 @@ define({
   "SIGN_OUT": "Odjava",
   "ACCOUNT_DETAILS": "Podaci o računu",
   "AI_QUOTA_USED": "Iskorištena AI kvota",
-  "LOGIN_REFRESH": "Provjeri status prijave"
+  "LOGIN_REFRESH": "Provjeri status prijave",
+  "CLOSE_SAVED_TABS": "Zatvori spremljene kartice"
 });

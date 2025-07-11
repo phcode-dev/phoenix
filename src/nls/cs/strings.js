@@ -343,7 +343,6 @@ define({
   "CLOSE_TABS_TO_THE_RIGHT": "Zavřít karty napravo",
   "CLOSE_TABS_TO_THE_LEFT": "Zavřít karty nalevo",
   "CLOSE_ALL_TABS": "Zavřít všechny karty",
-  "CLOSE_UNMODIFIED_TABS": "Zavřít nezměněné karty",
   "REOPEN_CLOSED_FILE": "Znovu otevřít zavřený soubor",
   "ERRORS_NO_FILE": "Žádný otevřený soubor",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} problémů - {1}",
@@ -1387,5 +1386,6 @@ define({
   "SIGN_OUT": "Odhlásit se",
   "ACCOUNT_DETAILS": "Detaily účtu",
   "AI_QUOTA_USED": "Vyčerpána kvóta pro AI",
-  "LOGIN_REFRESH": "Zkontrolovat stav přihlášení"
+  "LOGIN_REFRESH": "Zkontrolovat stav přihlášení",
+  "CLOSE_SAVED_TABS": "Zavřít uložené karty"
 });

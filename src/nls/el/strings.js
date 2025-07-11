@@ -343,7 +343,6 @@ define({
   "CLOSE_TABS_TO_THE_RIGHT": "Κλείσιμο καρτελών στα δεξιά",
   "CLOSE_TABS_TO_THE_LEFT": "Κλείσιμο καρτελών στα αριστερά",
   "CLOSE_ALL_TABS": "Κλείσιμο Όλων των Καρτελών",
-  "CLOSE_UNMODIFIED_TABS": "Κλείσιμο μη Τροποποιημένων Καρτελών",
   "REOPEN_CLOSED_FILE": "Άνοιγμα ξανά Κλειστού Αρχείου",
   "ERRORS_NO_FILE": "Δεν Υπάρχει Ανοιχτό Αρχείο",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Προβλήματα - {1}",
@@ -1387,5 +1386,6 @@ define({
   "SIGN_OUT": "Αποσύνδεση",
   "ACCOUNT_DETAILS": "Στοιχεία Λογαριασμού",
   "AI_QUOTA_USED": "Χρήση ποσοστού AI",
-  "LOGIN_REFRESH": "Έλεγχος Κατάστασης Σύνδεσης"
+  "LOGIN_REFRESH": "Έλεγχος Κατάστασης Σύνδεσης",
+  "CLOSE_SAVED_TABS": "Κλείσιμο Αποθηκευμένων Καρτελών"
 });

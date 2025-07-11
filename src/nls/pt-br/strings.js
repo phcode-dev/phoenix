@@ -343,7 +343,6 @@ define({
   "CLOSE_TABS_TO_THE_RIGHT": "Fechar abas à direita",
   "CLOSE_TABS_TO_THE_LEFT": "Fechar abas à esquerda",
   "CLOSE_ALL_TABS": "Fechar Todas as Guias",
-  "CLOSE_UNMODIFIED_TABS": "Fechar Guias Não Modificadas",
   "REOPEN_CLOSED_FILE": "Reabrir Arquivo Fechado",
   "ERRORS_NO_FILE": "Nenhum Arquivo Aberto",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Problemas - {1}",
@@ -1387,5 +1386,6 @@ define({
   "SIGN_OUT": "Sair",
   "ACCOUNT_DETAILS": "Detalhes da Conta",
   "AI_QUOTA_USED": "Cota de IA usada",
-  "LOGIN_REFRESH": "Verificar Status de Login"
+  "LOGIN_REFRESH": "Verificar Status de Login",
+  "CLOSE_SAVED_TABS": "Fechar Abas Salvas"
 });

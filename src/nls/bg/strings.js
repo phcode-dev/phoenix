@@ -343,7 +343,6 @@ define({
   "CLOSE_TABS_TO_THE_RIGHT": "Затвори табовете отдясно",
   "CLOSE_TABS_TO_THE_LEFT": "Затвори табовете отляво",
   "CLOSE_ALL_TABS": "Затвори всички раздели",
-  "CLOSE_UNMODIFIED_TABS": "Затвори непроменените раздели",
   "REOPEN_CLOSED_FILE": "Отвори отново затворения файл",
   "ERRORS_NO_FILE": "Няма отворен файл",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} проблема - {1}",
@@ -1387,5 +1386,6 @@ define({
   "SIGN_OUT": "Изход",
   "ACCOUNT_DETAILS": "Данни за акаунта",
   "AI_QUOTA_USED": "Използвана AI квота",
-  "LOGIN_REFRESH": "Проверка на състоянието за вход"
+  "LOGIN_REFRESH": "Проверка на състоянието за вход",
+  "CLOSE_SAVED_TABS": "Затваряне на запазените раздели"
 });

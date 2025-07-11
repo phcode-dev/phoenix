@@ -343,7 +343,6 @@ define({
   "CLOSE_TABS_TO_THE_RIGHT": "Închide filele din dreapta",
   "CLOSE_TABS_TO_THE_LEFT": "Închide filele din stânga",
   "CLOSE_ALL_TABS": "Închide toate filele",
-  "CLOSE_UNMODIFIED_TABS": "Închide filele nemodificate",
   "REOPEN_CLOSED_FILE": "Redeschide fișierul închis",
   "ERRORS_NO_FILE": "Niciun fișier deschis",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Probleme - {1}",
@@ -1387,5 +1386,6 @@ define({
   "SIGN_OUT": "Deconectare",
   "ACCOUNT_DETAILS": "Detalii cont",
   "AI_QUOTA_USED": "Cotă AI utilizată",
-  "LOGIN_REFRESH": "Verificare stare autentificare"
+  "LOGIN_REFRESH": "Verificare stare autentificare",
+  "CLOSE_SAVED_TABS": "Închide filele salvate"
 });

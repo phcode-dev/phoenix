@@ -343,7 +343,6 @@ define({
   "CLOSE_TABS_TO_THE_RIGHT": "വലതുവശത്തുള്ള ടാബുകൾ അടയ്ക്കുക",
   "CLOSE_TABS_TO_THE_LEFT": "ഇടതുവശത്തുള്ള ടാബുകൾ അടയ്ക്കുക",
   "CLOSE_ALL_TABS": "എല്ലാ ടാബുകളും അടയ്ക്കുക",
-  "CLOSE_UNMODIFIED_TABS": "മാറ്റം വരുത്താത്ത ടാബുകൾ അടയ്ക്കുക",
   "REOPEN_CLOSED_FILE": "അടച്ച ഫയൽ വീണ്ടും തുറക്കുക",
   "ERRORS_NO_FILE": "ഫയൽ തുറന്നിട്ടില്ല",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} പ്രശ്നങ്ങൾ - {1}",
@@ -1387,5 +1386,6 @@ define({
   "SIGN_OUT": "സൈൻ ഔട്ട് ചെയ്യുക",
   "ACCOUNT_DETAILS": "അക്കൗണ്ട് വിശദാംശങ്ങൾ",
   "AI_QUOTA_USED": "എഐ ക്വാട്ട ഉപയോഗിച്ചു",
-  "LOGIN_REFRESH": "ലോഗിൻ സ്റ്റാറ്റസ് പരിശോധിക്കുക"
+  "LOGIN_REFRESH": "ലോഗിൻ സ്റ്റാറ്റസ് പരിശോധിക്കുക",
+  "CLOSE_SAVED_TABS": "സേവ് ചെയ്ത ടാബുകൾ അടയ്ക്കുക"
 });

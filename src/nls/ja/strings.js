@@ -343,7 +343,6 @@ define({
   "CLOSE_TABS_TO_THE_RIGHT": "右側のタブを閉じる",
   "CLOSE_TABS_TO_THE_LEFT": "左側のタブを閉じる",
   "CLOSE_ALL_TABS": "すべてのタブを閉じる",
-  "CLOSE_UNMODIFIED_TABS": "変更されていないタブを閉じる",
   "REOPEN_CLOSED_FILE": "閉じたファイルを再度開く",
   "ERRORS_NO_FILE": "ファイルが開かれていません",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} 個の問題 - {1}",
@@ -1387,5 +1386,6 @@ define({
   "SIGN_OUT": "サインアウト",
   "ACCOUNT_DETAILS": "アカウントの詳細",
   "AI_QUOTA_USED": "AI利用量",
-  "LOGIN_REFRESH": "ログイン状態を確認"
+  "LOGIN_REFRESH": "ログイン状態を確認",
+  "CLOSE_SAVED_TABS": "保存済みタブを閉じる"
 });

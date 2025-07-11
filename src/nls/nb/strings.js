@@ -343,7 +343,6 @@ define({
   "CLOSE_TABS_TO_THE_RIGHT": "Lukk faner til høyre",
   "CLOSE_TABS_TO_THE_LEFT": "Lukk faner til venstre",
   "CLOSE_ALL_TABS": "Lukk alle faner",
-  "CLOSE_UNMODIFIED_TABS": "Lukk uendrede faner",
   "REOPEN_CLOSED_FILE": "Åpne lukket fil på nytt",
   "ERRORS_NO_FILE": "Ingen fil åpen",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} problemer - {1}",
@@ -1387,5 +1386,6 @@ define({
   "SIGN_OUT": "Logg ut",
   "ACCOUNT_DETAILS": "Kontodetaljer",
   "AI_QUOTA_USED": "AI-kvote brukt",
-  "LOGIN_REFRESH": "Sjekk innloggingsstatus"
+  "LOGIN_REFRESH": "Sjekk innloggingsstatus",
+  "CLOSE_SAVED_TABS": "Lukk lagrede faner"
 });

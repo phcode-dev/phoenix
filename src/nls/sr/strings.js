@@ -343,7 +343,6 @@ define({
   "CLOSE_TABS_TO_THE_RIGHT": "Затвори картице десно",
   "CLOSE_TABS_TO_THE_LEFT": "Затвори картице лево",
   "CLOSE_ALL_TABS": "Затвори све картице",
-  "CLOSE_UNMODIFIED_TABS": "Затвори непромењене картице",
   "REOPEN_CLOSED_FILE": "Поново отвори затворену датотеку",
   "ERRORS_NO_FILE": "Нема отворених датотека",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} проблема - {1}",
@@ -1387,5 +1386,6 @@ define({
   "SIGN_OUT": "Одјавите се",
   "ACCOUNT_DETAILS": "Подаци о налогу",
   "AI_QUOTA_USED": "Искоришћена AI квота",
-  "LOGIN_REFRESH": "Провери статус пријаве"
+  "LOGIN_REFRESH": "Провери статус пријаве",
+  "CLOSE_SAVED_TABS": "Затвори сачуване картице"
 });

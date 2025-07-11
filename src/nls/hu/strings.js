@@ -343,7 +343,6 @@ define({
   "CLOSE_TABS_TO_THE_RIGHT": "Jobb oldali fülek bezárása",
   "CLOSE_TABS_TO_THE_LEFT": "Bal oldali fülek bezárása",
   "CLOSE_ALL_TABS": "Összes fül bezárása",
-  "CLOSE_UNMODIFIED_TABS": "Nem módosított fülek bezárása",
   "REOPEN_CLOSED_FILE": "Bezárt fájl újranyitása",
   "ERRORS_NO_FILE": "Nincs megnyitott fájl",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} probléma - {1}",
@@ -1387,5 +1386,6 @@ define({
   "SIGN_OUT": "Kijelentkezés",
   "ACCOUNT_DETAILS": "Fiókadatok",
   "AI_QUOTA_USED": "Felhasznált MI-kvóta",
-  "LOGIN_REFRESH": "Bejelentkezés állapotának ellenőrzése"
+  "LOGIN_REFRESH": "Bejelentkezés állapotának ellenőrzése",
+  "CLOSE_SAVED_TABS": "Mentett fülek bezárása"
 });

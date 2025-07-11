@@ -343,7 +343,6 @@ define({
   "CLOSE_TABS_TO_THE_RIGHT": "Tabbladen rechts sluiten",
   "CLOSE_TABS_TO_THE_LEFT": "Tabbladen links sluiten",
   "CLOSE_ALL_TABS": "Alle tabbladen sluiten",
-  "CLOSE_UNMODIFIED_TABS": "Niet-gewijzigde tabbladen sluiten",
   "REOPEN_CLOSED_FILE": "Gesloten bestand opnieuw openen",
   "ERRORS_NO_FILE": "Geen bestand geopend",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} problemen - {1}",
@@ -1387,5 +1386,6 @@ define({
   "SIGN_OUT": "Uitloggen",
   "ACCOUNT_DETAILS": "Accountgegevens",
   "AI_QUOTA_USED": "Verbruikt AI-quotum",
-  "LOGIN_REFRESH": "Aanmeldstatus controleren"
+  "LOGIN_REFRESH": "Aanmeldstatus controleren",
+  "CLOSE_SAVED_TABS": "Opgeslagen tabbladen sluiten"
 });

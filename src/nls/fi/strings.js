@@ -343,7 +343,6 @@ define({
   "CLOSE_TABS_TO_THE_RIGHT": "Sulje välilehdet oikealta",
   "CLOSE_TABS_TO_THE_LEFT": "Sulje välilehdet vasemmalta",
   "CLOSE_ALL_TABS": "Sulje kaikki välilehdet",
-  "CLOSE_UNMODIFIED_TABS": "Sulje muokkaamattomat välilehdet",
   "REOPEN_CLOSED_FILE": "Avaa suljettu tiedosto uudelleen",
   "ERRORS_NO_FILE": "Ei avoinna olevaa tiedostoa",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} ongelmaa - {1}",
@@ -1387,5 +1386,6 @@ define({
   "SIGN_OUT": "Kirjaudu ulos",
   "ACCOUNT_DETAILS": "Tilin tiedot",
   "AI_QUOTA_USED": "Käytetty tekoälykiintiö",
-  "LOGIN_REFRESH": "Tarkista kirjautumistila"
+  "LOGIN_REFRESH": "Tarkista kirjautumistila",
+  "CLOSE_SAVED_TABS": "Sulje tallennetut välilehdet"
 });

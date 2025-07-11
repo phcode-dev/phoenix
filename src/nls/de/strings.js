@@ -343,7 +343,6 @@ define({
   "CLOSE_TABS_TO_THE_RIGHT": "Rechts befindliche Tabs schließen",
   "CLOSE_TABS_TO_THE_LEFT": "Links befindliche Tabs schließen",
   "CLOSE_ALL_TABS": "Alle Tabs schließen",
-  "CLOSE_UNMODIFIED_TABS": "Nicht geänderte Tabs schließen",
   "REOPEN_CLOSED_FILE": "Geschlossene Datei erneut öffnen",
   "ERRORS_NO_FILE": "Keine Datei geöffnet",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Probleme - {1}",
@@ -1387,5 +1386,6 @@ define({
   "SIGN_OUT": "Abmelden",
   "ACCOUNT_DETAILS": "Kontodetails",
   "AI_QUOTA_USED": "Verbrauchte KI-Quote",
-  "LOGIN_REFRESH": "Anmeldestatus überprüfen"
+  "LOGIN_REFRESH": "Anmeldestatus überprüfen",
+  "CLOSE_SAVED_TABS": "Geschlossene Tabs wiederherstellen"
 });
