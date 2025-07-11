@@ -343,7 +343,6 @@ define({
   "CLOSE_TABS_TO_THE_RIGHT": "Закрити вкладки праворуч",
   "CLOSE_TABS_TO_THE_LEFT": "Закрити вкладки ліворуч",
   "CLOSE_ALL_TABS": "Закрити всі вкладки",
-  "CLOSE_UNMODIFIED_TABS": "Закрити незмінені вкладки",
   "REOPEN_CLOSED_FILE": "Відкрити закритий файл",
   "ERRORS_NO_FILE": "Немає відкритого файлу",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} проблем - {1}",
@@ -1387,5 +1386,6 @@ define({
   "SIGN_OUT": "Вийти",
   "ACCOUNT_DETAILS": "Дані облікового запису",
   "AI_QUOTA_USED": "Використано квоту ШІ",
-  "LOGIN_REFRESH": "Перевірити статус входу"
+  "LOGIN_REFRESH": "Перевірити статус входу",
+  "CLOSE_SAVED_TABS": "Закрити збережені вкладки"
 });

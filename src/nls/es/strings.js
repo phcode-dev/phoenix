@@ -343,7 +343,6 @@ define({
   "CLOSE_TABS_TO_THE_RIGHT": "Cerrar pestañas a la derecha",
   "CLOSE_TABS_TO_THE_LEFT": "Cerrar pestañas a la izquierda",
   "CLOSE_ALL_TABS": "Cerrar todas las pestañas",
-  "CLOSE_UNMODIFIED_TABS": "Cerrar pestañas sin modificar",
   "REOPEN_CLOSED_FILE": "Reabrir archivo cerrado",
   "ERRORS_NO_FILE": "No hay ningún archivo abierto",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Problemas - {1}",
@@ -1387,5 +1386,6 @@ define({
   "SIGN_OUT": "Cerrar sesión",
   "ACCOUNT_DETAILS": "Detalles de la cuenta",
   "AI_QUOTA_USED": "Cuota de IA utilizada",
-  "LOGIN_REFRESH": "Verificar estado del inicio de sesión"
+  "LOGIN_REFRESH": "Verificar estado del inicio de sesión",
+  "CLOSE_SAVED_TABS": "Cerrar pestañas guardadas"
 });

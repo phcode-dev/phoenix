@@ -343,7 +343,6 @@ define({
   "CLOSE_TABS_TO_THE_RIGHT": "दाईं ओर के टैब बंद करें",
   "CLOSE_TABS_TO_THE_LEFT": "बाईं ओर के टैब बंद करें",
   "CLOSE_ALL_TABS": "सभी टैब बंद करें",
-  "CLOSE_UNMODIFIED_TABS": "बिना बदलाव वाले टैब बंद करें",
   "REOPEN_CLOSED_FILE": "बंद की गई फ़ाइल फिर से खोलें",
   "ERRORS_NO_FILE": "कोई फ़ाइल नहीं खुली",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} समस्याएँ - {1}",
@@ -1387,5 +1386,6 @@ define({
   "SIGN_OUT": "साइन आउट करें",
   "ACCOUNT_DETAILS": "खाता विवरण",
   "AI_QUOTA_USED": "एआई कोटा उपयोग किया गया",
-  "LOGIN_REFRESH": "लॉगिन स्थिति जांचें"
+  "LOGIN_REFRESH": "लॉगिन स्थिति जांचें",
+  "CLOSE_SAVED_TABS": "सहेजे गए टैब बंद करें"
 });

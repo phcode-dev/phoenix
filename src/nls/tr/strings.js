@@ -343,7 +343,6 @@ define({
   "CLOSE_TABS_TO_THE_RIGHT": "Sağdaki Sekmeleri Kapat",
   "CLOSE_TABS_TO_THE_LEFT": "Soldaki Sekmeleri Kapat",
   "CLOSE_ALL_TABS": "Tüm Sekmeleri Kapat",
-  "CLOSE_UNMODIFIED_TABS": "Değiştirilmemiş Sekmeleri Kapat",
   "REOPEN_CLOSED_FILE": "Kapalı Dosyayı Yeniden Aç",
   "ERRORS_NO_FILE": "Açık Dosya Yok",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Sorun - {1}",
@@ -1387,5 +1386,6 @@ define({
   "SIGN_OUT": "Oturumu kapat",
   "ACCOUNT_DETAILS": "Hesap Ayrıntıları",
   "AI_QUOTA_USED": "Yapay Zeka kotası kullanıldı",
-  "LOGIN_REFRESH": "Oturum Durumunu Kontrol Et"
+  "LOGIN_REFRESH": "Oturum Durumunu Kontrol Et",
+  "CLOSE_SAVED_TABS": "Kaydedilen Sekmeleri Kapat"
 });

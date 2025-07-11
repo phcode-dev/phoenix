@@ -343,7 +343,6 @@ define({
   "CLOSE_TABS_TO_THE_RIGHT": "دائیں جانب والے ٹیبز بند کریں",
   "CLOSE_TABS_TO_THE_LEFT": "بائیں جانب والے ٹیبز بند کریں",
   "CLOSE_ALL_TABS": "تمام ٹیبز بند کریں",
-  "CLOSE_UNMODIFIED_TABS": "غیر ترمیم شدہ ٹیبز بند کریں",
   "REOPEN_CLOSED_FILE": "بند فائل دوبارہ کھولیں",
   "ERRORS_NO_FILE": "کوئی فائل کھلی نہیں",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} مسائل - {1}",
@@ -1387,5 +1386,6 @@ define({
   "SIGN_OUT": "سائن آؤٹ کریں",
   "ACCOUNT_DETAILS": "اکاؤنٹ کی تفصیلات",
   "AI_QUOTA_USED": "استعمال شدہ اے آئی کوٹہ",
-  "LOGIN_REFRESH": "لاگ ان کی حیثیت چیک کریں"
+  "LOGIN_REFRESH": "لاگ ان کی حیثیت چیک کریں",
+  "CLOSE_SAVED_TABS": "محفوظ ٹیبز بند کریں"
 });

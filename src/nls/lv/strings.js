@@ -343,7 +343,6 @@ define({
   "CLOSE_TABS_TO_THE_RIGHT": "Aizvērt cilnes pa labi",
   "CLOSE_TABS_TO_THE_LEFT": "Aizvērt cilnes pa kreisi",
   "CLOSE_ALL_TABS": "Aizvērt visas cilnes",
-  "CLOSE_UNMODIFIED_TABS": "Aizvērt nemodificētās cilnes",
   "REOPEN_CLOSED_FILE": "Atvērt slēgto failu atkārtoti",
   "ERRORS_NO_FILE": "Nav atvērts neviens fails",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} problēmas - {1}",
@@ -1387,5 +1386,6 @@ define({
   "SIGN_OUT": "Izrakstīties",
   "ACCOUNT_DETAILS": "Konta informācija",
   "AI_QUOTA_USED": "Izmantotā AI kvota",
-  "LOGIN_REFRESH": "Pārbaudīt pieteikšanās statusu"
+  "LOGIN_REFRESH": "Pārbaudīt pieteikšanās statusu",
+  "CLOSE_SAVED_TABS": "Aizvērt saglabātās cilnes"
 });

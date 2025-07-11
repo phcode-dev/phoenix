@@ -343,7 +343,6 @@ define({
   "CLOSE_TABS_TO_THE_RIGHT": "بستن تب‌های سمت راست",
   "CLOSE_TABS_TO_THE_LEFT": "بستن تب‌های سمت چپ",
   "CLOSE_ALL_TABS": "بستن همه برگه‌ها",
-  "CLOSE_UNMODIFIED_TABS": "بستن برگه‌های بدون تغییر",
   "REOPEN_CLOSED_FILE": "باز کردن مجدد فایل بسته شده",
   "ERRORS_NO_FILE": "فایلی باز نیست",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} مشکل - {1}",
@@ -1387,5 +1386,6 @@ define({
   "SIGN_OUT": "خروج",
   "ACCOUNT_DETAILS": "جزئیات حساب کاربری",
   "AI_QUOTA_USED": "سهمیه هوش مصنوعی استفاده شده",
-  "LOGIN_REFRESH": "بررسی وضعیت ورود"
+  "LOGIN_REFRESH": "بررسی وضعیت ورود",
+  "CLOSE_SAVED_TABS": "بستن برگه‌های ذخیره‌شده"
 });

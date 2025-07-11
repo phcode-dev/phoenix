@@ -343,7 +343,6 @@ define({
   "CLOSE_TABS_TO_THE_RIGHT": "오른쪽 탭 닫기",
   "CLOSE_TABS_TO_THE_LEFT": "왼쪽 탭 닫기",
   "CLOSE_ALL_TABS": "모든 탭 닫기",
-  "CLOSE_UNMODIFIED_TABS": "수정되지 않은 탭 닫기",
   "REOPEN_CLOSED_FILE": "닫힌 파일 다시 열기",
   "ERRORS_NO_FILE": "열려 있는 파일 없음",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0}개의 문제 - {1}",
@@ -1387,5 +1386,6 @@ define({
   "SIGN_OUT": "로그아웃",
   "ACCOUNT_DETAILS": "계정 세부정보",
   "AI_QUOTA_USED": "사용된 AI 할당량",
-  "LOGIN_REFRESH": "로그인 상태 확인"
+  "LOGIN_REFRESH": "로그인 상태 확인",
+  "CLOSE_SAVED_TABS": "저장된 탭 닫기"
 });

@@ -343,7 +343,6 @@ define({
   "CLOSE_TABS_TO_THE_RIGHT": "关闭右侧标签页",
   "CLOSE_TABS_TO_THE_LEFT": "关闭左侧标签页",
   "CLOSE_ALL_TABS": "关闭所有标签页",
-  "CLOSE_UNMODIFIED_TABS": "关闭未修改的标签页",
   "REOPEN_CLOSED_FILE": "重新打开已关闭的文件",
   "ERRORS_NO_FILE": "未打开文件",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} 个问题 - {1}",
@@ -1387,5 +1386,6 @@ define({
   "SIGN_OUT": "退出登录",
   "ACCOUNT_DETAILS": "帐户详情",
   "AI_QUOTA_USED": "AI 配额已用",
-  "LOGIN_REFRESH": "检查登录状态"
+  "LOGIN_REFRESH": "检查登录状态",
+  "CLOSE_SAVED_TABS": "关闭已保存的标签页"
 });

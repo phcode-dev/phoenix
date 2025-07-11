@@ -343,7 +343,6 @@ define({
   "CLOSE_TABS_TO_THE_RIGHT": "Chiudi schede a destra",
   "CLOSE_TABS_TO_THE_LEFT": "Chiudi schede a sinistra",
   "CLOSE_ALL_TABS": "Chiudi tutte le schede",
-  "CLOSE_UNMODIFIED_TABS": "Chiudi schede non modificate",
   "REOPEN_CLOSED_FILE": "Riapri file chiuso",
   "ERRORS_NO_FILE": "Nessun file aperto",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Problemi - {1}",
@@ -1387,5 +1386,6 @@ define({
   "SIGN_OUT": "Esci",
   "ACCOUNT_DETAILS": "Dettagli account",
   "AI_QUOTA_USED": "Quota IA utilizzata",
-  "LOGIN_REFRESH": "Verifica stato accesso"
+  "LOGIN_REFRESH": "Verifica stato accesso",
+  "CLOSE_SAVED_TABS": "Chiudi Schede Salvate"
 });

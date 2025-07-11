@@ -343,7 +343,6 @@ define({
   "CLOSE_TABS_TO_THE_RIGHT": "Fermer les onglets à droite",
   "CLOSE_TABS_TO_THE_LEFT": "Fermer les onglets à gauche",
   "CLOSE_ALL_TABS": "Fermer tous les onglets",
-  "CLOSE_UNMODIFIED_TABS": "Fermer les onglets non modifiés",
   "REOPEN_CLOSED_FILE": "Rouvrir le fichier fermé",
   "ERRORS_NO_FILE": "Aucun fichier ouvert",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Problèmes - {1}",
@@ -1387,5 +1386,6 @@ define({
   "SIGN_OUT": "Se déconnecter",
   "ACCOUNT_DETAILS": "Détails du compte",
   "AI_QUOTA_USED": "Quota IA utilisé",
-  "LOGIN_REFRESH": "Vérifier l'état de la connexion"
+  "LOGIN_REFRESH": "Vérifier l'état de la connexion",
+  "CLOSE_SAVED_TABS": "Fermer les onglets enregistrés"
 });

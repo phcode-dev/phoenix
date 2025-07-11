@@ -343,7 +343,6 @@ define({
   "CLOSE_TABS_TO_THE_RIGHT": "Close tabs to the right",
   "CLOSE_TABS_TO_THE_LEFT": "Close tabs to the left",
   "CLOSE_ALL_TABS": "Close All Tabs",
-  "CLOSE_UNMODIFIED_TABS": "Close Unmodified Tabs",
   "REOPEN_CLOSED_FILE": "Reopen Closed File",
   "ERRORS_NO_FILE": "No file open",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Problems - {1}",
@@ -1387,5 +1386,6 @@ define({
   "SIGN_OUT": "Sign out",
   "ACCOUNT_DETAILS": "Account Details",
   "AI_QUOTA_USED": "AI quota used",
-  "LOGIN_REFRESH": "Check Login Status"
+  "LOGIN_REFRESH": "Check Login Status",
+  "CLOSE_SAVED_TABS": "Close Saved Tabs"
 });
