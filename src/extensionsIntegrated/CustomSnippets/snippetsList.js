@@ -104,7 +104,9 @@ define(function (require, exports, module) {
         if (filterText) {
             $emptyMessage.text(`No snippets match "${filterText}"`);
         } else {
-            $emptyMessage.html('Add your own code hints to speed up coding - <a href="https://docs.phcode.dev" target="_blank">Learn More</a>');
+            $emptyMessage.html(
+                'Add your own code hints to speed up coding - <a href="https://docs.phcode.dev" target="_blank">Learn More</a>'
+            );
         }
     }
 
@@ -163,8 +165,16 @@ define(function (require, exports, module) {
 
         if (index !== -1) {
             Global.SnippetHintsList.splice(index, 1); // removes it from the actual array
-            // save to preferences after deleting snippet
-            SnippetsState.saveSnippetsToState();
+
+            // save to file storage
+            SnippetsState.saveSnippetsToState()
+                .then(function () {
+                    //
+                })
+                .catch(function (error) {
+                    console.error("failed to delete custom snippet correctly:", error);
+                });
+
             // update the snippets count in toolbar
             Helper.updateSnippetsCount();
             // Refresh the entire list to properly handle filtering
