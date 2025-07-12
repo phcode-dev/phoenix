@@ -116,19 +116,24 @@ define(function (require, exports, module) {
     }
 
     /**
-     * This function handles the reset button click for editing a snippet
-     * It restores the original snippet data in the edit form
+     * This function is responsible to handle the cancel button click in the edit-snippet panel
+     * this resets the format to the last saved values and then moves back to the snippets-list panel
      */
-    function handleResetBtnClick() {
+    function handleCancelEditBtnClick() {
         const $editView = $("#custom-snippets-edit");
         const originalSnippet = $editView.data("originalSnippet");
 
         if (originalSnippet) {
-            // restore original data in the form
+            // restore original data in the form to reset any changes
             Helper.populateEditForm(originalSnippet);
-            // update save button state
-            Helper.toggleEditSaveButtonDisability();
         }
+
+        $editView.removeData("originalSnippet");
+        $editView.removeData("snippetIndex");
+
+        // navigate back to snippets list
+        UIHelper.showSnippetListMenu();
+        SnippetsList.showSnippetsList();
     }
 
     /**
@@ -183,5 +188,5 @@ define(function (require, exports, module) {
     exports.getWordBeforeCursor = getWordBeforeCursor;
     exports.handleSaveBtnClick = handleSaveBtnClick;
     exports.handleEditSaveBtnClick = handleEditSaveBtnClick;
-    exports.handleResetBtnClick = handleResetBtnClick;
+    exports.handleCancelEditBtnClick = handleCancelEditBtnClick;
 });
