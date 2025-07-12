@@ -479,38 +479,6 @@ define(function (require, exports, module) {
         const hasAbbr = $abbrInput.val().trim().length > 0;
         const hasTemplate = $templateInput.val().trim().length > 0;
         $saveBtn.prop("disabled", !(hasAbbr && hasTemplate));
-
-        // Also toggle the reset button state
-        toggleResetButtonDisability();
-    }
-
-    /**
-     * This function checks if the snippet is in its default state and
-     * disables the reset button if it is
-     */
-    function toggleResetButtonDisability() {
-        const $editView = $("#custom-snippets-edit");
-        const originalSnippet = $editView.data("originalSnippet");
-        const $resetBtn = $("#reset-snippet-btn");
-
-        if (!originalSnippet) {
-            // If there's no original snippet data, disable the reset button
-            $resetBtn.prop("disabled", true);
-            return;
-        }
-
-        // Get current values from the form
-        const currentData = getEditSnippetData();
-
-        // Check if current values match original values
-        const isDefault =
-            currentData.abbreviation === originalSnippet.abbreviation &&
-            currentData.description === (originalSnippet.description || "") &&
-            currentData.templateText === originalSnippet.templateText &&
-            currentData.fileExtension === originalSnippet.fileExtension;
-
-        // Disable reset button if in default state
-        $resetBtn.prop("disabled", isDefault);
     }
 
     /**
@@ -884,7 +852,6 @@ define(function (require, exports, module) {
     exports.populateEditForm = populateEditForm;
     exports.getEditSnippetData = getEditSnippetData;
     exports.toggleEditSaveButtonDisability = toggleEditSaveButtonDisability;
-    exports.toggleResetButtonDisability = toggleResetButtonDisability;
     exports.clearEditInputFields = clearEditInputFields;
     exports.handleTextareaTabKey = handleTextareaTabKey;
     exports.validateAbbrInput = validateAbbrInput;

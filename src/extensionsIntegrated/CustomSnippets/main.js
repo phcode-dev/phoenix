@@ -141,7 +141,7 @@ define(function (require, exports, module) {
         const $editTemplateInput = $("#edit-template-text-box");
         const $editFileExtnInput = $("#edit-file-extn-box");
         const $saveEditSnippetBtn = $("#save-edit-snippet-btn");
-        const $resetSnippetBtn = $("#reset-snippet-btn");
+        const $cancelEditSnippetBtn = $("#cancel-edit-snippet-btn");
 
         $addSnippetBtn.on("click", function () {
             UIHelper.showAddSnippetMenu();
@@ -237,8 +237,8 @@ define(function (require, exports, module) {
             Driver.handleEditSaveBtnClick();
         });
 
-        $resetSnippetBtn.on("click", function () {
-            Driver.handleResetBtnClick();
+        $cancelEditSnippetBtn.on("click", function () {
+            Driver.handleCancelEditBtnClick();
         });
 
         // filter input event handler
