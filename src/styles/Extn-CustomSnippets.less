@@ -151,13 +151,14 @@
 }
 
 #snippets-list-header {
-    display: flex;
-    align-items: center;
-    padding: 6px 13px;
+    display: block;
+    padding: 4px 12px 4px 16px;
     margin: 0;
     border: none;
-    font-weight: 700;
     background-color: #c2c7c7;
+    font-size: 0;
+    white-space: nowrap;
+    line-height: 20px;
 
     .dark & {
         background-color: #202020;
@@ -166,41 +167,91 @@
 
 #snippet-abbr-header,
 #snippet-abbr {
-    flex: 1;
+    width: 15%;
     min-width: 80px;
+    display: inline-block;
+    vertical-align: middle;
+    box-sizing: border-box;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 #snippet-template-header,
 #snippet-template {
-    flex: 2.4;
-    min-width: 100px;
+    width: 35%;
+    min-width: 120px;
+    display: inline-block;
+    vertical-align: middle;
+    padding: 0 12px;
+    box-sizing: border-box;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 #snippet-description-header,
 #snippet-description {
-    flex: 1.5;
-    min-width: 80px;
+    width: 25%;
+    min-width: 100px;
+    display: inline-block;
+    vertical-align: middle;
+    padding: 0 12px;
+    box-sizing: border-box;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 #snippet-file-extension-header,
 #snippet-files {
-    flex: 0.8;
+    width: 15%;
     min-width: 60px;
+    display: inline-block;
+    vertical-align: middle;
     text-align: center;
+    box-sizing: border-box;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#snippet-actions-header {
+    width: 10%;
+    min-width: 40px;
+    display: inline-block;
+    vertical-align: middle;
+    box-sizing: border-box;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
 }
 
 .snippet-item {
-    display: flex;
-    align-items: center;
-    padding: 4px 12px 4px 16px;
+    display: block;
+    padding: 2px 12px 2px 16px;
     margin: 0;
     border-bottom: 1px solid transparent;
     background-color: @bc-panel-bg;
     color: @bc-text;
-    line-height: 16px;
     position: relative;
     cursor: pointer;
     transition: background-color 0.1s ease;
+    font-size: 0;
+    white-space: nowrap;
+    line-height: 20px;
 
     .dark & {
         background-color: @dark-bc-panel-bg;
@@ -238,11 +289,24 @@
     }
 }
 
+#snippet-abbr-header {
+    color: @bc-text;
+
+    .dark & {
+        color: @dark-bc-text;
+    }
+}
+
 #snippet-abbr {
     color: @bc-text;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+
+    .dark & {
+        color: @dark-bc-text;
+    }
+}
+
+#snippet-template-header {
+    color: @bc-text;
 
     .dark & {
         color: @dark-bc-text;
@@ -250,34 +314,39 @@
 }
 
 #snippet-template {
-    margin: 0 12px;
     color: @bc-text-thin;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 
     .dark & {
         color: @dark-bc-text-thin;
     }
 }
 
+#snippet-description-header {
+    color: @bc-text;
+
+    .dark & {
+        color: @dark-bc-text;
+    }
+}
+
 #snippet-description {
-    margin: 0 12px;
     color: @bc-text-thin-quiet;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 
     .dark & {
         color: @dark-bc-text-thin-quiet;
     }
 }
 
+#snippet-file-extension-header {
+    color: @bc-text;
+
+    .dark & {
+        color: @dark-bc-text;
+    }
+}
+
 #snippet-files {
     color: @bc-text-thin-quiet;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 
     .dark & {
         color: @dark-bc-text-thin-quiet;
@@ -285,15 +354,19 @@
 }
 
 .delete-snippet-btn {
+    width: 10%;
+    min-width: 40px;
+    display: inline-block;
+    vertical-align: middle;
+    box-sizing: border-box;
     color: @bc-text-thin-quiet;
     cursor: pointer;
     opacity: 0.3;
     transition: opacity 0.1s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.9rem;
-    padding: 3px 6px;
+    text-align: center;
+    font-size: 14px;
+    line-height: 20px;
+    padding: 0;
 
     .dark & {
         color: @dark-bc-text-thin-quiet;
@@ -309,11 +382,11 @@
     }
 
     i {
-        width: 12px;
-        height: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        display: inline-block;
+        text-align: center;
+        font-size: 12px;
+        line-height: 20px;
+        vertical-align: middle;
     }
 }
 
