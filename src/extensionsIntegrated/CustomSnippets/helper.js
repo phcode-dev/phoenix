@@ -96,6 +96,72 @@ define(function (require, exports, module) {
     }
 
     /**
+     * This function is to make sure file extensions are properly formatted with leading dots
+     * because user may provide values in not very consistent manner, we need to handle all those cases
+     * For ex: what we expect: `.js, .html, .css`
+     * what user may provide: `js, html, css` or: `js html css` or `.js.html.css` etc
+     *
+     * This function processes file extensions in various formats and ensures they:
+     * - Have a leading dot (if not empty or "all")
+     * - Are properly separated with commas and spaces
+     * - Don't contain empty or standalone dots
+     *
+     * @param {string} extension - The file extension(s) to process
+     * @returns {string} - The properly formatted file extension(s)
+     */
+    function processFileExtensionInput(extension) {
+        if (!extension || extension === "all") {
+            return extension;
+        }
+
+        // Step 1: normalize the input by converting spaces to commas if no commas exist
+        if (extension.includes(" ")) {
+            extension = extension.replace(/\s+/g, ",");
+        }
+
+        // Step 2: handle multiple extensions joined by dots (e.g., ".less.css.js")
+        // Only process if multiple dots exist and not already comma-separated
+        const dotCount = (extension.match(/\./g) || []).length;
+        if (dotCount > 1) {
+            // remove the leading dot if present for consistent processing
+            const extensionWithoutLeadingDot = extension.startsWith(".") ? extension.substring(1) : extension;
+
+            // split by dot, filter empty parts, add leading dot to each part
+            const parts = extensionWithoutLeadingDot
+                .split(".")
+                .filter((part) => part !== "")
+                .map((part) => "." + part);
+
+            return parts.join(", ");
+        }
+
+        // Step 3: process comma-separated extensions
+        if (extension.includes(",")) {
+            return extension
+                .split(",")
+                .map((ext) => {
+                    ext = ext.trim();
+                    // skip all the standalone dots or empty entries
+                    if (ext === "." || ext === "") {
+                        return "";
+                    }
+                    // Add leading dot if missing
+                    return ext.startsWith(".") ? ext : "." + ext;
+                })
+                .filter((ext) => ext !== "") // Remove empty entries
+                .join(", ");
+        }
+
+        // Step 4: Handle single extension
+        if (extension === ".") {
+            return ""; // remove standalone dot
+        }
+
+        // Add leading dot if missing
+        return extension.startsWith(".") ? extension : "." + extension;
+    }
+
+    /**
      * This function is responsible to get the snippet data from all the required input fields
      * it is called when the save button is clicked
      * @private
@@ -108,11 +174,14 @@ define(function (require, exports, module) {
         const templateText = $("#template-text-box").val().trim();
         const fileExtension = $("#file-extn-box").val().trim();
 
+        // process the file extension so that we can get the value in the required format
+        const processedFileExtension = processFileExtensionInput(fileExtension);
+
         return {
             abbreviation: abbreviation,
             description: description || "", // allow empty description
             templateText: templateText,
-            fileExtension: fileExtension || "all" // default to "all" if empty
+            fileExtension: processedFileExtension || "all" // default to "all" if empty
         };
     }
 
@@ -374,11 +443,14 @@ define(function (require, exports, module) {
         const templateText = $("#edit-template-text-box").val().trim();
         const fileExtension = $("#edit-file-extn-box").val().trim();
 
+        // process the file extension so that we can get the value in the required format
+        const processedFileExtension = processFileExtensionInput(fileExtension);
+
         return {
             abbreviation: abbreviation,
             description: description || "", // allow empty description
             templateText: templateText,
-            fileExtension: fileExtension || "all" // default to "all" if empty
+            fileExtension: processedFileExtension || "all" // default to "all" if empty
         };
     }
 
