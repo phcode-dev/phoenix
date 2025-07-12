@@ -19,45 +19,61 @@
  */
 
 define(function (require, exports, module) {
-    const PreferencesManager = require("preferences/PreferencesManager");
-
     const Global = require("./global");
+    const PreferencesBase = require("preferences/PreferencesBase");
 
-    // create extension preferences
-    const prefs = PreferencesManager.getExtensionPrefs("CustomSnippets");
+    const SNIPPETS_FILE_PATH = brackets.app.getApplicationSupportDirectory() + "/customSnippets.json";
 
-    // define preference for storing snippets
-    prefs.definePreference("snippetsList", "array", [], {
-        description: "List of custom code snippets"
+    // the file storage for storing the snippets
+    const fileStorage = new PreferencesBase.FileStorage(SNIPPETS_FILE_PATH, {
+        snippets: []
     });
 
     /**
-     * Load snippets from preferences
-     * This is called on startup to restore previously saved snippets
+     * This function is responsible to load snippets from file storage
+     * @returns {Promise} a promise that resolves when snippets are loaded
      */
     function loadSnippetsFromState() {
-        try {
-            const savedSnippets = prefs.get("snippetsList");
-            if (Array.isArray(savedSnippets)) {
-                // clear existing snippets and load from saved state
-                Global.SnippetHintsList.length = 0;
-                Global.SnippetHintsList.push(...savedSnippets);
-            }
-        } catch (e) {
-            console.error("something went wrong when trying to load custom snippets from preferences:", e);
-        }
+        return new Promise((resolve, reject) => {
+            fileStorage
+                .load()
+                .done(function (data) {
+                    if (data && data.snippets && Array.isArray(data.snippets)) {
+                        Global.SnippetHintsList = data.snippets;
+                    } else {
+                        // no snippets are present
+                        Global.SnippetHintsList = [];
+                    }
+                    resolve();
+                })
+                .fail(function (error) {
+                    console.error("unable to load snippets from file storage:", error);
+                    Global.SnippetHintsList = []; // since it failed we init a empty array
+                    reject(error);
+                });
+        });
     }
 
     /**
-     * Save snippets to preferences
-     * This is called whenever snippets are modified
+     * this function is responsible to save snippets to file storage
+     * @returns {Promise} a promise that resolves when snippets are saved
      */
     function saveSnippetsToState() {
-        try {
-            prefs.set("snippetsList", [...Global.SnippetHintsList]);
-        } catch (e) {
-            console.error("something went wrong when saving custom snippets to preferences:", e);
-        }
+        return new Promise((resolve, reject) => {
+            const dataToSave = {
+                snippets: Global.SnippetHintsList
+            };
+
+            fileStorage
+                .save(dataToSave)
+                .done(() => {
+                    resolve();
+                })
+                .fail((error) => {
+                    console.error("unable to save snippets to file storage:", error);
+                    reject(error);
+                });
+        });
     }
 
     exports.loadSnippetsFromState = loadSnippetsFromState;

@@ -258,7 +258,16 @@ define(function (require, exports, module) {
         $snippetsPanel = $(snippetsPanelTpl);
         _addToMenu();
         CodeHintIntegration.init();
-        SnippetsState.loadSnippetsFromState();
+
+        // load snippets from file storage
+        SnippetsState.loadSnippetsFromState()
+            .then(function () {
+                //
+            })
+            .catch(function (error) {
+                console.error("failed to load custom snippets:", error);
+            });
+
         SnippetCursorManager.registerHandlers();
     });
 });

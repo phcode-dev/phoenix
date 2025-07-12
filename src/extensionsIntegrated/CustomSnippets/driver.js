@@ -45,7 +45,15 @@ define(function (require, exports, module) {
             Global.SnippetHintsList.push(snippetData);
             Helper.clearAllInputFields();
             Helper.toggleSaveButtonDisability();
-            SnippetsState.saveSnippetsToState();
+
+            // save to file storage
+            SnippetsState.saveSnippetsToState()
+                .then(function () {
+                    //
+                })
+                .catch(function (error) {
+                    console.error("failed to save custom snippet correctly:", error);
+                });
 
             // we need to move back to snippets list view after a snippet is saved
             UIHelper.showSnippetListMenu();
@@ -87,7 +95,15 @@ define(function (require, exports, module) {
         // update the snippet in the list
         if (snippetIndex !== -1) {
             Global.SnippetHintsList[snippetIndex] = editedData;
-            SnippetsState.saveSnippetsToState();
+
+            // save to file storage
+            SnippetsState.saveSnippetsToState()
+                .then(function () {
+                    //
+                })
+                .catch(function (error) {
+                    console.error("failed to save custom snippet correctly:", error);
+                });
 
             // clear the stored data
             $editView.removeData("originalSnippet");
@@ -163,8 +179,6 @@ define(function (require, exports, module) {
             ch: i
         };
     }
-
-
 
     exports.getWordBeforeCursor = getWordBeforeCursor;
     exports.handleSaveBtnClick = handleSaveBtnClick;
