@@ -99,7 +99,7 @@ define(function (require, exports, module) {
      * This function is to make sure file extensions are properly formatted with leading dots
      * because user may provide values in not very consistent manner, we need to handle all those cases
      * For ex: what we expect: `.js, .html, .css`
-     * what user may provide: `js, html, css` or: `js html css` or `.js.html.css` etc
+     * what user may provide: `js, html, css` or: `js html css` etc
      *
      * This function processes file extensions in various formats and ensures they:
      * - Have a leading dot (if not empty or "all")
@@ -139,28 +139,12 @@ define(function (require, exports, module) {
                 .filter((ext) => ext !== "") // Remove empty entries
                 .join(", ");
         } else {
-            // Step 3: handle multiple extensions joined by dots (e.g., ".less.css.js")
-            // Only process if multiple dots exist and no commas
-            const dotCount = (extension.match(/\./g) || []).length;
-            if (dotCount > 1) {
-                // remove the leading dot if present for consistent processing
-                const extensionWithoutLeadingDot = extension.startsWith(".") ? extension.substring(1) : extension;
-
-                // split by dot, filter empty parts, add leading dot to each part
-                const parts = extensionWithoutLeadingDot
-                    .split(".")
-                    .filter((part) => part !== "")
-                    .map((part) => "." + part);
-
-                result = parts.join(", ");
+            // Step 3: Handle single extension
+            if (extension === ".") {
+                result = ""; // remove standalone dot
             } else {
-                // Step 4: Handle single extension
-                if (extension === ".") {
-                    result = ""; // remove standalone dot
-                } else {
-                    // Add leading dot if missing
-                    result = extension.startsWith(".") ? extension : "." + extension;
-                }
+                // Add leading dot if missing
+                result = extension.startsWith(".") ? extension : "." + extension;
             }
         }
 
