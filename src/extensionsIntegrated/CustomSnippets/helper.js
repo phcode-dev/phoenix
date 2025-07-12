@@ -96,6 +96,67 @@ define(function (require, exports, module) {
     }
 
     /**
+     * This function is to make sure file extensions are properly formatted with leading dots
+     * because user may provide values in not very consistent manner, we need to handle all those cases
+     * For ex: what we expect: `.js, .html, .css`
+     * what user may provide: `js, html, css` or: `js html css` etc
+     *
+     * This function processes file extensions in various formats and ensures they:
+     * - Have a leading dot (if not empty or "all")
+     * - Are properly separated with commas and spaces
+     * - Don't contain empty or standalone dots
+     * - No consecutive commas
+     *
+     * @param {string} extension - The file extension(s) to process
+     * @returns {string} - The properly formatted file extension(s)
+     */
+    function processFileExtensionInput(extension) {
+        if (!extension || extension === "all") {
+            return extension;
+        }
+
+        // Step 1: normalize the input by converting spaces to commas if no commas exist
+        if (extension.includes(" ")) {
+            extension = extension.replace(/\s+/g, ",");
+        }
+
+        let result = "";
+
+        // Step 2: process comma-separated extensions FIRST (before dot-separated)
+        // this prevents issues with inputs like ".js,.html,." or ".js,,.html"
+        if (extension.includes(",")) {
+            result = extension
+                .split(",")
+                .map((ext) => {
+                    ext = ext.trim();
+                    // skip all the standalone dots or empty entries
+                    if (ext === "." || ext === "") {
+                        return "";
+                    }
+                    // Add leading dot if missing
+                    return ext.startsWith(".") ? ext : "." + ext;
+                })
+                .filter((ext) => ext !== "") // Remove empty entries
+                .join(", ");
+        } else {
+            // Step 3: Handle single extension
+            if (extension === ".") {
+                result = ""; // remove standalone dot
+            } else {
+                // Add leading dot if missing
+                result = extension.startsWith(".") ? extension : "." + extension;
+            }
+        }
+
+        // this is just the final safeguard to remove any consecutive commas and clean up spacing
+        result = result.replace(/,\s*,+/g, ",").replace(/,\s*$/, "").replace(/^\s*,/, "").trim();
+        // remove trailing dots (like .css. -> .css)
+        result = result.endsWith('.') ? result.slice(0, -1) : result;
+
+        return result;
+    }
+
+    /**
      * This function is responsible to get the snippet data from all the required input fields
      * it is called when the save button is clicked
      * @private
@@ -108,11 +169,14 @@ define(function (require, exports, module) {
         const templateText = $("#template-text-box").val().trim();
         const fileExtension = $("#file-extn-box").val().trim();
 
+        // process the file extension so that we can get the value in the required format
+        const processedFileExtension = processFileExtensionInput(fileExtension);
+
         return {
             abbreviation: abbreviation,
             description: description || "", // allow empty description
             templateText: templateText,
-            fileExtension: fileExtension || "all" // default to "all" if empty
+            fileExtension: processedFileExtension || "all" // default to "all" if empty
         };
     }
 
@@ -128,7 +192,7 @@ define(function (require, exports, module) {
         const $abbrInput = $("#abbr-box");
         const $templateInput = $("#template-text-box");
 
-        const $saveBtn = $("#save-custom-snippet-btn button");
+        const $saveBtn = $("#save-custom-snippet-btn");
 
         // make sure that the required fields has some value
         const hasAbbr = $abbrInput.val().trim().length > 0;
@@ -374,11 +438,14 @@ define(function (require, exports, module) {
         const templateText = $("#edit-template-text-box").val().trim();
         const fileExtension = $("#edit-file-extn-box").val().trim();
 
+        // process the file extension so that we can get the value in the required format
+        const processedFileExtension = processFileExtensionInput(fileExtension);
+
         return {
             abbreviation: abbreviation,
             description: description || "", // allow empty description
             templateText: templateText,
-            fileExtension: fileExtension || "all" // default to "all" if empty
+            fileExtension: processedFileExtension || "all" // default to "all" if empty
         };
     }
 

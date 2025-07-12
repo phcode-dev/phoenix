@@ -45,12 +45,16 @@ define(function (require, exports, module) {
         const $snippetAbbr = $("<div>")
             .text(snippetItem.abbreviation)
             .attr("id", "snippet-abbr")
-            .attr("title", `Abbreviation: ${snippetItem.abbreviation}`);
+            .attr("title", `Click to edit abbreviation - ${snippetItem.abbreviation}`);
 
         const $snippetTemplate = $("<div>")
             .text(snippetItem.templateText)
             .attr("id", "snippet-template")
-            .attr("title", `Template: ${snippetItem.templateText}`);
+            .attr(
+                "title",
+                `Click to edit template text -
+${snippetItem.templateText}`
+            );
 
         const $snippetDescription = $("<div>")
             .text(
@@ -62,14 +66,14 @@ define(function (require, exports, module) {
             .attr(
                 "title",
                 snippetItem.description && snippetItem.description.trim() !== ""
-                    ? `Description: ${snippetItem.description}`
-                    : "No description provided"
+                    ? `Click to edit description - ${snippetItem.description}`
+                    : "Click to add description"
             );
 
         const $snippetFiles = $("<div>")
             .text(snippetItem.fileExtension || "all")
             .attr("id", "snippet-files")
-            .attr("title", `File extensions: ${snippetItem.fileExtension}`);
+            .attr("title", `Click to edit file extensions - ${snippetItem.fileExtension || "all"}`);
 
         const $deleteSnippet = $("<div>")
             .html(`<i class="fas fa-trash"></i>`)
@@ -104,7 +108,9 @@ define(function (require, exports, module) {
         if (filterText) {
             $emptyMessage.text(`No snippets match "${filterText}"`);
         } else {
-            $emptyMessage.text("No custom snippets added yet!");
+            $emptyMessage.html(
+                'Add your own code hints to speed up coding - <a href="https://docs.phcode.dev" target="_blank">Learn More</a>'
+            );
         }
     }
 
@@ -163,8 +169,16 @@ define(function (require, exports, module) {
 
         if (index !== -1) {
             Global.SnippetHintsList.splice(index, 1); // removes it from the actual array
-            // save to preferences after deleting snippet
-            SnippetsState.saveSnippetsToState();
+
+            // save to file storage
+            SnippetsState.saveSnippetsToState()
+                .then(function () {
+                    //
+                })
+                .catch(function (error) {
+                    console.error("failed to delete custom snippet correctly:", error);
+                });
+
             // update the snippets count in toolbar
             Helper.updateSnippetsCount();
             // Refresh the entire list to properly handle filtering

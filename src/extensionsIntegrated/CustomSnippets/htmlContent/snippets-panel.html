@@ -9,7 +9,8 @@
             </div>
             <div id="back-to-list-menu-btn" class="custom-snippet-btn hidden">
                 <button title="Back to snippets list">
-                    <i class="fas fa-chevron-left"></i> Back
+                    <i class="back-btn-left-icon fas fa-chevron-left"></i>
+                    <span class="back-btn-text">Back</span>
                 </button>
             </div>
         </div>
@@ -17,9 +18,7 @@
             <div id="filter-snippets-panel" class="filter-snippets-panel">
                 <input id="filter-snippets-input" type="text" placeholder="Filter..." autocomplete="off" />
             </div>
-            <div id="close-custom-snippets-panel-btn">
-                <button><i class="fas fa-times"></i></button>
-            </div>
+            <a href="#" class="close" id="close-custom-snippets-panel-btn">&times;</a>
         </div>
     </div>
 
@@ -111,8 +110,9 @@
                 </div>
             </div>
 
-            <div id="save-custom-snippet-btn">
-                <button class="dialog-button btn primary" disabled>Save</button>
+            <div id="add-custom-snippet-panel-buttons">
+                <button id="cancel-custom-snippet-btn" class="dialog-button btn">Cancel</button>
+                <button id="save-custom-snippet-btn" class="dialog-button btn primary" disabled>Save</button>
             </div>
         </div>
 
@@ -163,7 +163,7 @@
             </div>
 
             <div id="edit-snippet-buttons">
-                <button id="reset-snippet-btn" class="dialog-button btn">Reset</button>
+                <button id="cancel-edit-snippet-btn" class="dialog-button btn">Cancel</button>
                 <button id="save-edit-snippet-btn" class="dialog-button btn primary" disabled>Save</button>
             </div>
         </div>

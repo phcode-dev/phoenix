@@ -41,7 +41,7 @@ define(function (require, exports, module) {
     const MY_COMMAND_ID = "custom_snippets";
     const PANEL_ID = "customSnippets.panel";
     const MENU_ITEM_NAME = "Custom Snippets..."; // this name will appear as the menu item
-    const PANEL_MIN_SIZE = 100; // the minimum size more than which its height cannot be decreased
+    const PANEL_MIN_SIZE = 340; // the minimum size more than which its height cannot be decreased
 
     // this is to store the panel reference,
     // as we only need to create this once. rest of the time we can just toggle the visibility of the panel
@@ -72,8 +72,10 @@ define(function (require, exports, module) {
     function _togglePanelVisibility() {
         if (customSnippetsPanel.isVisible()) {
             customSnippetsPanel.hide();
+            CommandManager.get(MY_COMMAND_ID).setChecked(false);
         } else {
             customSnippetsPanel.show();
+            CommandManager.get(MY_COMMAND_ID).setChecked(true);
 
             $("#filter-snippets-input").val("");
             UIHelper.initializeListViewToolbarTitle();
@@ -89,6 +91,7 @@ define(function (require, exports, module) {
      */
     function _hidePanel() {
         customSnippetsPanel.hide();
+        CommandManager.get(MY_COMMAND_ID).setChecked(false);
     }
 
     /**
@@ -101,6 +104,7 @@ define(function (require, exports, module) {
         // if it is then we can just toggle its visibility
         if (!customSnippetsPanel) {
             _createPanel();
+            CommandManager.get(MY_COMMAND_ID).setChecked(true);
         } else {
             _togglePanelVisibility();
         }
@@ -122,6 +126,7 @@ define(function (require, exports, module) {
     function _registerHandlers() {
         const $closePanelBtn = $("#close-custom-snippets-panel-btn");
         const $saveCustomSnippetBtn = $("#save-custom-snippet-btn");
+        const $cancelCustomSnippetBtn = $("#cancel-custom-snippet-btn");
         const $abbrInput = $("#abbr-box");
         const $descInput = $("#desc-box");
         const $templateInput = $("#template-text-box");
@@ -136,7 +141,7 @@ define(function (require, exports, module) {
         const $editTemplateInput = $("#edit-template-text-box");
         const $editFileExtnInput = $("#edit-file-extn-box");
         const $saveEditSnippetBtn = $("#save-edit-snippet-btn");
-        const $resetSnippetBtn = $("#reset-snippet-btn");
+        const $cancelEditSnippetBtn = $("#cancel-edit-snippet-btn");
 
         $addSnippetBtn.on("click", function () {
             UIHelper.showAddSnippetMenu();
@@ -157,6 +162,11 @@ define(function (require, exports, module) {
 
         $saveCustomSnippetBtn.on("click", function () {
             Driver.handleSaveBtnClick();
+        });
+
+        $cancelCustomSnippetBtn.on("click", function () {
+            UIHelper.showSnippetListMenu();
+            SnippetsList.showSnippetsList();
         });
 
         $abbrInput.on("input", Helper.toggleSaveButtonDisability);
@@ -191,7 +201,9 @@ define(function (require, exports, module) {
         });
 
         $editAbbrInput.on("input", Helper.toggleEditSaveButtonDisability);
+        $editDescInput.on("input", Helper.toggleEditSaveButtonDisability);
         $editTemplateInput.on("input", Helper.toggleEditSaveButtonDisability);
+        $editFileExtnInput.on("input", Helper.toggleEditSaveButtonDisability);
 
         $editAbbrInput.on("keydown", function (e) {
             Helper.validateAbbrInput(e, this);
@@ -225,8 +237,8 @@ define(function (require, exports, module) {
             Driver.handleEditSaveBtnClick();
         });
 
-        $resetSnippetBtn.on("click", function () {
-            Driver.handleResetBtnClick();
+        $cancelEditSnippetBtn.on("click", function () {
+            Driver.handleCancelEditBtnClick();
         });
 
         // filter input event handler
@@ -246,7 +258,16 @@ define(function (require, exports, module) {
         $snippetsPanel = $(snippetsPanelTpl);
         _addToMenu();
         CodeHintIntegration.init();
-        SnippetsState.loadSnippetsFromState();
+
+        // load snippets from file storage
+        SnippetsState.loadSnippetsFromState()
+            .then(function () {
+                //
+            })
+            .catch(function (error) {
+                console.error("failed to load custom snippets:", error);
+            });
+
         SnippetCursorManager.registerHandlers();
     });
 });

@@ -227,6 +227,8 @@ insertHintOnTab Preference.
     * [.registerHintProvider(provider, languageIds, priority)](#module_CodeHintManager..registerHintProvider)
     * [.hasValidExclusion(exclusion, textAfterCursor)](#module_CodeHintManager..hasValidExclusion) ⇒ <code>boolean</code>
     * [.isOpen()](#module_CodeHintManager..isOpen) ⇒ <code>boolean</code>
+    * [.showHintsAtTop(handler)](#module_CodeHintManager..showHintsAtTop)
+    * [.clearHintsAtTop()](#module_CodeHintManager..clearHintsAtTop)
 
 <a name="module_CodeHintManager..registerHintProvider"></a>
 
@@ -263,3 +265,21 @@ Test if a hint popup is open.
 
 **Kind**: inner method of [<code>CodeHintManager</code>](#module_CodeHintManager)  
 **Returns**: <code>boolean</code> - - true if the hints are open, false otherwise.  
+<a name="module_CodeHintManager..showHintsAtTop"></a>
+
+### CodeHintManager.showHintsAtTop(handler)
+Register a handler to show hints at the top of the hint list.
+This API allows extensions to add their own hints at the top of the standard hint list.
+
+**Kind**: inner method of [<code>CodeHintManager</code>](#module_CodeHintManager)
+
+| Param | Type | Description |
+| --- | --- | --- |
+| handler | <code>Object</code> | A hint provider object with standard methods:   - hasHints: function(editor, implicitChar) - returns true if hints are available   - getHints: function(editor, implicitChar) - returns hint response object with hints array   - insertHint: function(hint) - handles hint insertion, returns true if handled |
+
+<a name="module_CodeHintManager..clearHintsAtTop"></a>
+
+### CodeHintManager.clearHintsAtTop()
+Unregister the hints at top handler.
+
+**Kind**: inner method of [<code>CodeHintManager</code>](#module_CodeHintManager)
