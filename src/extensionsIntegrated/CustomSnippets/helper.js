@@ -105,6 +105,7 @@ define(function (require, exports, module) {
      * - Have a leading dot (if not empty or "all")
      * - Are properly separated with commas and spaces
      * - Don't contain empty or standalone dots
+     * - No consecutive commas
      *
      * @param {string} extension - The file extension(s) to process
      * @returns {string} - The properly formatted file extension(s)
@@ -119,25 +120,12 @@ define(function (require, exports, module) {
             extension = extension.replace(/\s+/g, ",");
         }
 
-        // Step 2: handle multiple extensions joined by dots (e.g., ".less.css.js")
-        // Only process if multiple dots exist and not already comma-separated
-        const dotCount = (extension.match(/\./g) || []).length;
-        if (dotCount > 1) {
-            // remove the leading dot if present for consistent processing
-            const extensionWithoutLeadingDot = extension.startsWith(".") ? extension.substring(1) : extension;
+        let result = "";
 
-            // split by dot, filter empty parts, add leading dot to each part
-            const parts = extensionWithoutLeadingDot
-                .split(".")
-                .filter((part) => part !== "")
-                .map((part) => "." + part);
-
-            return parts.join(", ");
-        }
-
-        // Step 3: process comma-separated extensions
+        // Step 2: process comma-separated extensions FIRST (before dot-separated)
+        // this prevents issues with inputs like ".js,.html,." or ".js,,.html"
         if (extension.includes(",")) {
-            return extension
+            result = extension
                 .split(",")
                 .map((ext) => {
                     ext = ext.trim();
@@ -150,15 +138,36 @@ define(function (require, exports, module) {
                 })
                 .filter((ext) => ext !== "") // Remove empty entries
                 .join(", ");
+        } else {
+            // Step 3: handle multiple extensions joined by dots (e.g., ".less.css.js")
+            // Only process if multiple dots exist and no commas
+            const dotCount = (extension.match(/\./g) || []).length;
+            if (dotCount > 1) {
+                // remove the leading dot if present for consistent processing
+                const extensionWithoutLeadingDot = extension.startsWith(".") ? extension.substring(1) : extension;
+
+                // split by dot, filter empty parts, add leading dot to each part
+                const parts = extensionWithoutLeadingDot
+                    .split(".")
+                    .filter((part) => part !== "")
+                    .map((part) => "." + part);
+
+                result = parts.join(", ");
+            } else {
+                // Step 4: Handle single extension
+                if (extension === ".") {
+                    result = ""; // remove standalone dot
+                } else {
+                    // Add leading dot if missing
+                    result = extension.startsWith(".") ? extension : "." + extension;
+                }
+            }
         }
 
-        // Step 4: Handle single extension
-        if (extension === ".") {
-            return ""; // remove standalone dot
-        }
+        // this is just the final safeguard to remove any consecutive commas and clean up spacing
+        result = result.replace(/,\s*,+/g, ",").replace(/,\s*$/, "").replace(/^\s*,/, "").trim();
 
-        // Add leading dot if missing
-        return extension.startsWith(".") ? extension : "." + extension;
+        return result;
     }
 
     /**
