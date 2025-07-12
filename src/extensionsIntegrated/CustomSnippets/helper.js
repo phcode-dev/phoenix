@@ -166,6 +166,8 @@ define(function (require, exports, module) {
 
         // this is just the final safeguard to remove any consecutive commas and clean up spacing
         result = result.replace(/,\s*,+/g, ",").replace(/,\s*$/, "").replace(/^\s*,/, "").trim();
+        // remove trailing dots (like .css. -> .css)
+        result = result.endsWith('.') ? result.slice(0, -1) : result;
 
         return result;
     }
