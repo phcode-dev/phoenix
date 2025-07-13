@@ -20,14 +20,11 @@
 
 define(function (require, exports, module) {
     const Global = require("./global");
-    const PreferencesBase = require("preferences/PreferencesBase");
+    const FileSystem = require("filesystem/FileSystem");
+    const FileUtils = require("file/FileUtils");
+    const FileSystemError = require("filesystem/FileSystemError");
 
     const SNIPPETS_FILE_PATH = brackets.app.getApplicationSupportDirectory() + "/customSnippets.json";
-
-    // the file storage for storing the snippets
-    const fileStorage = new PreferencesBase.FileStorage(SNIPPETS_FILE_PATH, {
-        snippets: []
-    });
 
     /**
      * This function is responsible to load snippets from file storage
@@ -35,21 +32,38 @@ define(function (require, exports, module) {
      */
     function loadSnippetsFromState() {
         return new Promise((resolve, reject) => {
-            fileStorage
-                .load()
-                .done(function (data) {
-                    if (data && data.snippets && Array.isArray(data.snippets)) {
-                        Global.SnippetHintsList = data.snippets;
-                    } else {
-                        // no snippets are present
-                        Global.SnippetHintsList = [];
+            const file = FileSystem.getFileForPath(SNIPPETS_FILE_PATH);
+
+            // true is for bypassCache, to get the latest content always
+            const readPromise = FileUtils.readAsText(file, true);
+
+            readPromise
+                .done(function (text) {
+                    try {
+                        const data = JSON.parse(text);
+                        if (data && data.snippets && Array.isArray(data.snippets)) {
+                            Global.SnippetHintsList = data.snippets;
+                        } else {
+                            // no snippets are present
+                            Global.SnippetHintsList = [];
+                        }
+                        resolve();
+                    } catch (error) {
+                        console.error("Error parsing snippets JSON:", error);
+                        Global.SnippetHintsList = []; // fallback
+                        resolve();
                     }
-                    resolve();
                 })
                 .fail(function (error) {
-                    console.error("unable to load snippets from file storage:", error);
-                    Global.SnippetHintsList = []; // since it failed we init a empty array
-                    reject(error);
+                    if (error === FileSystemError.NOT_FOUND) {
+                        // file is not present, empty array
+                        Global.SnippetHintsList = [];
+                        resolve();
+                    } else {
+                        console.error("Unable to load snippets from file storage:", error);
+                        Global.SnippetHintsList = [];
+                        reject(error);
+                    }
                 });
         });
     }
@@ -64,13 +78,19 @@ define(function (require, exports, module) {
                 snippets: Global.SnippetHintsList
             };
 
-            fileStorage
-                .save(dataToSave)
-                .done(() => {
+            const file = FileSystem.getFileForPath(SNIPPETS_FILE_PATH);
+            // 2 is for pretty print
+            const jsonText = JSON.stringify(dataToSave, null, 2);
+
+            // true is allowBlindWrite to overwrite without checking file contents
+            const writePromise = FileUtils.writeText(file, jsonText, true);
+
+            writePromise
+                .done(function () {
                     resolve();
                 })
-                .fail((error) => {
-                    console.error("unable to save snippets to file storage:", error);
+                .fail(function (error) {
+                    console.error("Unable to save snippets to file storage:", error);
                     reject(error);
                 });
         });
