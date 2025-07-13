@@ -40,7 +40,7 @@ define(function (require, exports, module) {
 
     const MY_COMMAND_ID = "custom_snippets";
     const PANEL_ID = "customSnippets.panel";
-    const MENU_ITEM_NAME = "Custom Snippets..."; // this name will appear as the menu item
+    const MENU_ITEM_NAME = "Custom Snippets\u2026"; // this name will appear as the menu item
     const PANEL_MIN_SIZE = 340; // the minimum size more than which its height cannot be decreased
 
     // this is to store the panel reference,
