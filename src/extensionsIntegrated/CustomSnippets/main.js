@@ -277,7 +277,6 @@ define(function (require, exports, module) {
                 }
             })
             .catch(function (error) {
-                console.error("failed to load custom snippets:", error);
                 logger.reportError(error, "Custom Snippets: didn't load on app init");
             });
 

@@ -55,7 +55,6 @@ define(function (require, exports, module) {
             // save to file storage
             SnippetsState.saveSnippetsToState()
                 .catch(function (error) {
-                    console.error("failed to save custom snippet correctly:", error);
                     logger.reportError(error, "Custom Snippets: failed to save new snippet to file storage");
                 });
 
@@ -103,7 +102,6 @@ define(function (require, exports, module) {
             // save to file storage
             SnippetsState.saveSnippetsToState()
                 .catch(function (error) {
-                    console.error("failed to save custom snippet correctly:", error);
                     logger.reportError(error, "Custom Snippets: failed to save edited snippet to file storage");
                 });
 
