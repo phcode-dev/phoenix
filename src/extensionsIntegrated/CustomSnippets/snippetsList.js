@@ -25,6 +25,7 @@
 
 /* eslint-disable no-invalid-this */
 define(function (require, exports, module) {
+    const StringUtils = require("utils/StringUtils");
     const Metrics = require("utils/Metrics");
 
     const Global = require("./global");
@@ -48,12 +49,12 @@ define(function (require, exports, module) {
         const $snippetAbbr = $("<div>")
             .text(snippetItem.abbreviation)
             .attr("id", "snippet-abbr")
-            .attr("title", Strings.CUSTOM_SNIPPETS_EDIT_ABBR_TOOLTIP.replace("{0}", snippetItem.abbreviation));
+            .attr("title", StringUtils.format(Strings.CUSTOM_SNIPPETS_EDIT_ABBR_TOOLTIP, snippetItem.abbreviation));
 
         const $snippetTemplate = $("<div>")
             .text(snippetItem.templateText)
             .attr("id", "snippet-template")
-            .attr("title", Strings.CUSTOM_SNIPPETS_EDIT_TEMPLATE_TOOLTIP.replace("{0}", snippetItem.templateText));
+            .attr("title", StringUtils.format(Strings.CUSTOM_SNIPPETS_EDIT_TEMPLATE_TOOLTIP, snippetItem.templateText));
 
         const $snippetDescription = $("<div>")
             .text(
@@ -65,14 +66,14 @@ define(function (require, exports, module) {
             .attr(
                 "title",
                 snippetItem.description && snippetItem.description.trim() !== ""
-                    ? Strings.CUSTOM_SNIPPETS_EDIT_DESC_TOOLTIP.replace("{0}", snippetItem.description)
+                    ? StringUtils.format(Strings.CUSTOM_SNIPPETS_EDIT_DESC_TOOLTIP, snippetItem.description)
                     : Strings.CUSTOM_SNIPPETS_ADD_DESC_TOOLTIP
             );
 
         const $snippetFiles = $("<div>")
             .text(snippetItem.fileExtension || "all")
             .attr("id", "snippet-files")
-            .attr("title", Strings.CUSTOM_SNIPPETS_EDIT_FILE_EXT_TOOLTIP.replace("{0}", snippetItem.fileExtension || "all"));
+            .attr("title", StringUtils.format(Strings.CUSTOM_SNIPPETS_EDIT_FILE_EXT_TOOLTIP, snippetItem.fileExtension || "all"));
 
         const $deleteSnippet = $("<div>")
             .html(`<i class="fas fa-trash"></i>`)
@@ -105,7 +106,7 @@ define(function (require, exports, module) {
         const filterText = $filterInput.val().trim();
 
         if (filterText) {
-            $emptyMessage.text(Strings.CUSTOM_SNIPPETS_NO_MATCHES.replace("{0}", filterText));
+            $emptyMessage.text(StringUtils.format(Strings.CUSTOM_SNIPPETS_NO_MATCHES, filterText));
         } else {
             $emptyMessage.html(Strings.CUSTOM_SNIPPETS_LEARN_MORE);
         }

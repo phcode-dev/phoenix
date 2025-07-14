@@ -20,6 +20,7 @@
 
 /* eslint-disable no-invalid-this */
 define(function (require, exports, module) {
+    const StringUtils = require("utils/StringUtils");
     const Global = require("./global");
     const Strings = require("strings");
 
@@ -188,7 +189,7 @@ define(function (require, exports, module) {
         const wrapperId = isEditForm ? "edit-abbr-box-wrapper" : "abbr-box-wrapper";
         const errorId = isEditForm ? "edit-abbreviation-duplicate-error" : "abbreviation-duplicate-error";
 
-        showError(inputId, wrapperId, Strings.CUSTOM_SNIPPETS_DUPLICATE_ERROR.replace("{0}", abbreviation), errorId);
+        showError(inputId, wrapperId, StringUtils.format(Strings.CUSTOM_SNIPPETS_DUPLICATE_ERROR, abbreviation), errorId);
     }
 
     /**
