@@ -18,6 +18,7 @@
  *
  */
 
+/* global jsPromise */
 define(function (require, exports, module) {
     const Global = require("./global");
     const FileSystem = require("filesystem/FileSystem");
@@ -73,26 +74,15 @@ define(function (require, exports, module) {
      * @returns {Promise} a promise that resolves when snippets are saved
      */
     function saveSnippetsToState() {
-        return new Promise((resolve, reject) => {
-            const dataToSave = {
-                snippets: Global.SnippetHintsList
-            };
+        const dataToSave = {
+            snippets: Global.SnippetHintsList
+        };
 
-            const file = FileSystem.getFileForPath(SNIPPETS_FILE_PATH);
-            const jsonText = JSON.stringify(dataToSave);
+        const file = FileSystem.getFileForPath(SNIPPETS_FILE_PATH);
+        const jsonText = JSON.stringify(dataToSave);
 
-            // true is allowBlindWrite to overwrite without checking file contents
-            const writePromise = FileUtils.writeText(file, jsonText, true);
-
-            writePromise
-                .done(function () {
-                    resolve();
-                })
-                .fail(function (error) {
-                    console.error("Unable to save snippets to file storage:", error);
-                    reject(error);
-                });
-        });
+        // true is allowBlindWrite to overwrite without checking file contents
+        return jsPromise(FileUtils.writeText(file, jsonText, true));
     }
 
     exports.loadSnippetsFromState = loadSnippetsFromState;
