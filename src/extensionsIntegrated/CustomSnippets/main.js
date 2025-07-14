@@ -19,6 +19,7 @@
  */
 
 /* eslint-disable no-invalid-this */
+/* global logger */
 define(function (require, exports, module) {
     const AppInit = require("utils/AppInit");
     const CommandManager = require("command/CommandManager");
@@ -263,6 +264,7 @@ define(function (require, exports, module) {
         SnippetsState.loadSnippetsFromState()
             .catch(function (error) {
                 console.error("failed to load custom snippets:", error);
+                logger.reportError(error, "Custom Snippets: didn't load on app init");
             });
 
         SnippetCursorManager.registerHandlers();

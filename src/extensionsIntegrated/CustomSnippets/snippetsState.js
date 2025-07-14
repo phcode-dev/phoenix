@@ -18,7 +18,7 @@
  *
  */
 
-/* global jsPromise */
+/* global jsPromise, logger */
 define(function (require, exports, module) {
     const Global = require("./global");
     const FileSystem = require("filesystem/FileSystem");
@@ -51,6 +51,10 @@ define(function (require, exports, module) {
                         resolve();
                     } catch (error) {
                         console.error("Error parsing snippets JSON:", error);
+                        logger.reportError(
+                            error,
+                            "Custom Snippets: Failed to parse snippets JSON file. File might be corrupted."
+                        );
                         Global.SnippetHintsList = []; // fallback
                         resolve();
                     }
@@ -62,6 +66,7 @@ define(function (require, exports, module) {
                         resolve();
                     } else {
                         console.error("Unable to load snippets from file storage:", error);
+                        logger.reportError(error, "Custom Snippets: unexpected file system error loading snippets");
                         Global.SnippetHintsList = [];
                         reject(error);
                     }
