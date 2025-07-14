@@ -172,9 +172,6 @@ ${snippetItem.templateText}`
 
             // save to file storage
             SnippetsState.saveSnippetsToState()
-                .then(function () {
-                    //
-                })
                 .catch(function (error) {
                     console.error("failed to delete custom snippet correctly:", error);
                 });
