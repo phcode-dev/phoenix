@@ -20,6 +20,7 @@
 
 define(function (require, exports, module) {
     const StringMatch = require("utils/StringMatch");
+    const LanguageManager = require("language/LanguageManager");
     const Global = require("./global");
     const UIHelper = require("./UIHelper");
     const Strings = require("strings");
@@ -823,16 +824,26 @@ define(function (require, exports, module) {
             return "all";
         }
 
-        const ext = fileExtension.toLowerCase();
-        if (ext.includes(".js") || ext.includes(".ts")) {
+        // get the first extension for categorization
+        const firstExt = fileExtension.split(",")[0].trim();
+
+        let language = LanguageManager.getLanguageForExtension(firstExt);
+        if (!language) {
+            return "other";
+        }
+
+        let langId = language.getId();
+
+        if(["javascript", "typescript", "jsx", "tsx"].includes(langId)) {
             return "js";
         }
-        if (ext.includes("html") || ext.includes("htm")) {
-            return "html";
-        }
-        if (ext.includes("css") || ext.includes("less") || ext.includes("scss") || ext.includes("sass")) {
+        if(["css", "scss", "less", "stylus"].includes(langId)) {
             return "css";
         }
+        if(["html", "ejs", "erb_html"].includes(langId)) {
+            return "html";
+        }
+
         return "other";
     }
 
