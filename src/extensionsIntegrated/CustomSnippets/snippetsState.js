@@ -66,7 +66,7 @@ define(function (require, exports, module) {
                     } else {
                         logger.reportError(error, "Custom Snippets: unexpected file system error loading snippets");
                         Global.SnippetHintsList = [];
-                        reject(error);
+                        resolve();
                     }
                 });
         });
