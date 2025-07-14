@@ -79,8 +79,7 @@ define(function (require, exports, module) {
             };
 
             const file = FileSystem.getFileForPath(SNIPPETS_FILE_PATH);
-            // 2 is for pretty print
-            const jsonText = JSON.stringify(dataToSave, null, 2);
+            const jsonText = JSON.stringify(dataToSave);
 
             // true is allowBlindWrite to overwrite without checking file contents
             const writePromise = FileUtils.writeText(file, jsonText, true);
