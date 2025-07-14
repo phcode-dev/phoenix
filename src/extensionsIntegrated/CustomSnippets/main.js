@@ -259,7 +259,7 @@ define(function (require, exports, module) {
     AppInit.appReady(function () {
         CommandManager.register(MENU_ITEM_NAME, MY_COMMAND_ID, showCustomSnippetsPanel);
         // Render template with localized strings
-        const renderedHtml = Mustache.render(snippetsPanelTpl);
+        const renderedHtml = Mustache.render(snippetsPanelTpl, {Strings: Strings});
         $snippetsPanel = $(renderedHtml);
         _addToMenu();
         CodeHintIntegration.init();
