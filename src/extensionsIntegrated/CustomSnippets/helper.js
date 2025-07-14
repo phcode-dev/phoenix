@@ -22,6 +22,7 @@ define(function (require, exports, module) {
     const StringMatch = require("utils/StringMatch");
     const Global = require("./global");
     const UIHelper = require("./UIHelper");
+    const Strings = require("strings");
 
     // list of all the navigation and function keys that are allowed inside the input fields
     const ALLOWED_NAVIGATION_KEYS = [
@@ -389,7 +390,7 @@ define(function (require, exports, module) {
         }
 
         // the codehints related style is written in brackets_patterns_override.less file
-        let $icon = $(`<a href="#" class="custom-snippet-code-hint" style="text-decoration: none">Snippet</a>`);
+        let $icon = $(`<a href="#" class="custom-snippet-code-hint" style="text-decoration: none">${Strings.CUSTOM_SNIPPETS_HINT_LABEL}</a>`);
         $hint.append($icon);
 
         if (description && description.trim() !== "") {
@@ -620,7 +621,7 @@ define(function (require, exports, module) {
             const wrapperId = isEditForm ? "edit-abbr-box-wrapper" : "abbr-box-wrapper";
             const errorId = isEditForm ? "edit-abbreviation-space-error" : "abbreviation-space-error";
 
-            UIHelper.showError(inputId, wrapperId, "Space is not accepted as a valid abbreviation character.", errorId);
+            UIHelper.showError(inputId, wrapperId, Strings.CUSTOM_SNIPPETS_SPACE_ERROR, errorId);
             return;
         }
 
@@ -638,7 +639,7 @@ define(function (require, exports, module) {
             const wrapperId = isEditForm ? "edit-abbr-box-wrapper" : "abbr-box-wrapper";
             const errorId = isEditForm ? "edit-abbreviation-length-error" : "abbreviation-length-error";
 
-            UIHelper.showError(inputId, wrapperId, "Abbreviation cannot be more than 30 characters.", errorId);
+            UIHelper.showError(inputId, wrapperId, Strings.CUSTOM_SNIPPETS_ABBR_LENGTH_ERROR, errorId);
         }
     }
 
@@ -667,7 +668,7 @@ define(function (require, exports, module) {
             const wrapperId = isEditForm ? "edit-desc-box-wrapper" : "desc-box-wrapper";
             const errorId = isEditForm ? "edit-description-length-error" : "description-length-error";
 
-            UIHelper.showError(inputId, wrapperId, "Description cannot be more than 80 characters.", errorId);
+            UIHelper.showError(inputId, wrapperId, Strings.CUSTOM_SNIPPETS_DESC_LENGTH_ERROR, errorId);
         }
     }
 
@@ -730,15 +731,10 @@ define(function (require, exports, module) {
             // Prioritize length error over space error if both occurred
             if (wasTruncated) {
                 const errorId = isEditForm ? "edit-abbreviation-paste-length-error" : "abbreviation-paste-length-error";
-                UIHelper.showError(inputId, wrapperId, "Abbreviation cannot be more than 30 characters.", errorId);
+                UIHelper.showError(inputId, wrapperId, Strings.CUSTOM_SNIPPETS_ABBR_LENGTH_ERROR, errorId);
             } else if (hadSpaces) {
                 const errorId = isEditForm ? "edit-abbreviation-paste-space-error" : "abbreviation-paste-space-error";
-                UIHelper.showError(
-                    inputId,
-                    wrapperId,
-                    "Space is not accepted as a valid abbreviation character.",
-                    errorId
-                );
+                UIHelper.showError(inputId, wrapperId, Strings.CUSTOM_SNIPPETS_SPACE_ERROR, errorId);
             }
         }
 
@@ -806,7 +802,7 @@ define(function (require, exports, module) {
             const wrapperId = isEditForm ? "edit-desc-box-wrapper" : "desc-box-wrapper";
             const errorId = isEditForm ? "edit-description-paste-length-error" : "description-paste-length-error";
 
-            UIHelper.showError(inputId, wrapperId, "Description cannot be more than 80 characters.", errorId);
+            UIHelper.showError(inputId, wrapperId, Strings.CUSTOM_SNIPPETS_DESC_LENGTH_ERROR, errorId);
         }
 
         // Determine which save button to toggle based on input field

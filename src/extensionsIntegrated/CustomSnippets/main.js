@@ -26,6 +26,8 @@ define(function (require, exports, module) {
     const Menus = require("command/Menus");
     const Commands = require("command/Commands");
     const WorkspaceManager = require("view/WorkspaceManager");
+    const Strings = require("strings");
+    const Mustache = require("thirdparty/mustache/mustache");
 
     const Driver = require("./driver");
     const SnippetsList = require("./snippetsList");
@@ -41,7 +43,7 @@ define(function (require, exports, module) {
 
     const MY_COMMAND_ID = "custom_snippets";
     const PANEL_ID = "customSnippets.panel";
-    const MENU_ITEM_NAME = "Custom Snippets\u2026"; // this name will appear as the menu item
+    const MENU_ITEM_NAME = Strings.CUSTOM_SNIPPETS_MENU_ITEM_NAME; // this name will appear as the menu item
     const PANEL_MIN_SIZE = 340; // the minimum size more than which its height cannot be decreased
 
     // this is to store the panel reference,
@@ -256,7 +258,9 @@ define(function (require, exports, module) {
 
     AppInit.appReady(function () {
         CommandManager.register(MENU_ITEM_NAME, MY_COMMAND_ID, showCustomSnippetsPanel);
-        $snippetsPanel = $(snippetsPanelTpl);
+        // Render template with localized strings
+        const renderedHtml = Mustache.render(snippetsPanelTpl);
+        $snippetsPanel = $(renderedHtml);
         _addToMenu();
         CodeHintIntegration.init();
 
