@@ -28,6 +28,7 @@ define(function (require, exports, module) {
     const WorkspaceManager = require("view/WorkspaceManager");
     const Strings = require("strings");
     const Mustache = require("thirdparty/mustache/mustache");
+    const Metrics = require("utils/Metrics");
 
     const Driver = require("./driver");
     const SnippetsList = require("./snippetsList");
@@ -36,6 +37,7 @@ define(function (require, exports, module) {
     const UIHelper = require("./UIHelper");
     const SnippetsState = require("./snippetsState");
     const SnippetCursorManager = require("./snippetCursorManager");
+    const Global = require("./global");
 
     const snippetsPanelTpl = require("text!./htmlContent/snippets-panel.html");
     // the html content of the panel will be stored in this variable
@@ -266,6 +268,14 @@ define(function (require, exports, module) {
 
         // load snippets from file storage
         SnippetsState.loadSnippetsFromState()
+            .then(function () {
+                // track boot-time snippet count (only if user has snippets)
+                const snippetCount = Global.SnippetHintsList.length;
+                if (snippetCount > 0) {
+                    const countRange = Metrics.getRangeName(snippetCount);
+                    Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "snipt", `boot.${countRange}`);
+                }
+            })
             .catch(function (error) {
                 console.error("failed to load custom snippets:", error);
                 logger.reportError(error, "Custom Snippets: didn't load on app init");

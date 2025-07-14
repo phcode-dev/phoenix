@@ -21,6 +21,7 @@
 /* global logger */
 define(function (require, exports, module) {
     const EditorManager = require("editor/EditorManager");
+    const Metrics = require("utils/Metrics");
 
     const Global = require("./global");
     const Helper = require("./helper");
@@ -46,6 +47,10 @@ define(function (require, exports, module) {
             Global.SnippetHintsList.push(snippetData);
             Helper.clearAllInputFields();
             Helper.toggleSaveButtonDisability();
+
+            // snippet creating metrics
+            const fileCategory = Helper.categorizeFileExtensionForMetrics(snippetData.fileExtension);
+            Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "snipt", `add.${fileCategory}`);
 
             // save to file storage
             SnippetsState.saveSnippetsToState()
