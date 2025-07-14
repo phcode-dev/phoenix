@@ -50,7 +50,6 @@ define(function (require, exports, module) {
                         }
                         resolve();
                     } catch (error) {
-                        console.error("Error parsing snippets JSON:", error);
                         logger.reportError(
                             error,
                             "Custom Snippets: Failed to parse snippets JSON file. File might be corrupted."
@@ -65,7 +64,6 @@ define(function (require, exports, module) {
                         Global.SnippetHintsList = [];
                         resolve();
                     } else {
-                        console.error("Unable to load snippets from file storage:", error);
                         logger.reportError(error, "Custom Snippets: unexpected file system error loading snippets");
                         Global.SnippetHintsList = [];
                         reject(error);
