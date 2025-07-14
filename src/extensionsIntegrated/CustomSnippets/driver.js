@@ -18,6 +18,7 @@
  *
  */
 
+/* global logger */
 define(function (require, exports, module) {
     const EditorManager = require("editor/EditorManager");
 
@@ -50,6 +51,7 @@ define(function (require, exports, module) {
             SnippetsState.saveSnippetsToState()
                 .catch(function (error) {
                     console.error("failed to save custom snippet correctly:", error);
+                    logger.reportError(error, "Custom Snippets: failed to save new snippet to file storage");
                 });
 
             // we need to move back to snippets list view after a snippet is saved
@@ -97,6 +99,7 @@ define(function (require, exports, module) {
             SnippetsState.saveSnippetsToState()
                 .catch(function (error) {
                     console.error("failed to save custom snippet correctly:", error);
+                    logger.reportError(error, "Custom Snippets: failed to save edited snippet to file storage");
                 });
 
             // clear the stored data
