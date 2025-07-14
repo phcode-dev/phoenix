@@ -21,6 +21,7 @@
 /* eslint-disable no-invalid-this */
 define(function (require, exports, module) {
     const Global = require("./global");
+    const Strings = require("strings");
 
     /**
      * this is a generic function to show error messages for input fields
@@ -187,7 +188,7 @@ define(function (require, exports, module) {
         const wrapperId = isEditForm ? "edit-abbr-box-wrapper" : "abbr-box-wrapper";
         const errorId = isEditForm ? "edit-abbreviation-duplicate-error" : "abbreviation-duplicate-error";
 
-        showError(inputId, wrapperId, `A snippet with abbreviation "${abbreviation}" already exists.`, errorId);
+        showError(inputId, wrapperId, Strings.CUSTOM_SNIPPETS_DUPLICATE_ERROR.replace("{0}", abbreviation), errorId);
     }
 
     /**

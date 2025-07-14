@@ -30,6 +30,7 @@ define(function (require, exports, module) {
     const UIHelper = require("./UIHelper");
     const FilterSnippets = require("./filterSnippets");
     const Helper = require("./helper");
+    const Strings = require("strings");
 
     /**
      * This function is responsible to create a snippet item
@@ -45,35 +46,31 @@ define(function (require, exports, module) {
         const $snippetAbbr = $("<div>")
             .text(snippetItem.abbreviation)
             .attr("id", "snippet-abbr")
-            .attr("title", `Click to edit abbreviation - ${snippetItem.abbreviation}`);
+            .attr("title", Strings.CUSTOM_SNIPPETS_EDIT_ABBR_TOOLTIP.replace("{0}", snippetItem.abbreviation));
 
         const $snippetTemplate = $("<div>")
             .text(snippetItem.templateText)
             .attr("id", "snippet-template")
-            .attr(
-                "title",
-                `Click to edit template text -
-${snippetItem.templateText}`
-            );
+            .attr("title", Strings.CUSTOM_SNIPPETS_EDIT_TEMPLATE_TOOLTIP.replace("{0}", snippetItem.templateText));
 
         const $snippetDescription = $("<div>")
             .text(
                 snippetItem.description && snippetItem.description.trim() !== ""
                     ? snippetItem.description
-                    : "No description"
+                    : Strings.CUSTOM_SNIPPETS_NO_DESCRIPTION
             )
             .attr("id", "snippet-description")
             .attr(
                 "title",
                 snippetItem.description && snippetItem.description.trim() !== ""
-                    ? `Click to edit description - ${snippetItem.description}`
-                    : "Click to add description"
+                    ? Strings.CUSTOM_SNIPPETS_EDIT_DESC_TOOLTIP.replace("{0}", snippetItem.description)
+                    : Strings.CUSTOM_SNIPPETS_ADD_DESC_TOOLTIP
             );
 
         const $snippetFiles = $("<div>")
             .text(snippetItem.fileExtension || "all")
             .attr("id", "snippet-files")
-            .attr("title", `Click to edit file extensions - ${snippetItem.fileExtension || "all"}`);
+            .attr("title", Strings.CUSTOM_SNIPPETS_EDIT_FILE_EXT_TOOLTIP.replace("{0}", snippetItem.fileExtension || "all"));
 
         const $deleteSnippet = $("<div>")
             .html(`<i class="fas fa-trash"></i>`)
@@ -106,11 +103,9 @@ ${snippetItem.templateText}`
         const filterText = $filterInput.val().trim();
 
         if (filterText) {
-            $emptyMessage.text(`No snippets match "${filterText}"`);
+            $emptyMessage.text(Strings.CUSTOM_SNIPPETS_NO_MATCHES.replace("{0}", filterText));
         } else {
-            $emptyMessage.html(
-                'Add your own code hints to speed up coding - <a href="https://docs.phcode.dev" target="_blank">Learn More</a>'
-            );
+            $emptyMessage.html(Strings.CUSTOM_SNIPPETS_LEARN_MORE);
         }
     }
 

@@ -1,22 +1,22 @@
 <div id="custom-snippets-panel" class="custom-snippets-panel bottom-panel vert-resizable top-resizer no-focus">
     <div id="custom-snippets-toolbar" class="toolbar simple-toolbar-layout">
         <div class="title-wrapper">
-            <span class="title toolbar-title">Custom Snippets <span id="snippets-count" class="snippets-count"></span></span>
+            <span class="title toolbar-title">{{Strings.CUSTOM_SNIPPETS_PANEL_TITLE}} <span id="snippets-count" class="snippets-count"></span></span>
             <div id="add-new-snippet-btn" class="custom-snippet-btn">
-                <button title="Add new snippet">
+                <button title="{{Strings.CUSTOM_SNIPPETS_ADD_NEW_TITLE}}">
                     <i class="fas fa-plus"></i>
                 </button>
             </div>
             <div id="back-to-list-menu-btn" class="custom-snippet-btn hidden">
-                <button title="Back to snippets list">
+                <button title="{{Strings.CUSTOM_SNIPPETS_BACK_TO_LIST_TITLE}}">
                     <i class="back-btn-left-icon fas fa-chevron-left"></i>
-                    <span class="back-btn-text">Back</span>
+                    <span class="back-btn-text">{{Strings.CUSTOM_SNIPPETS_BACK}}</span>
                 </button>
             </div>
         </div>
         <div class="buttons">
             <div id="filter-snippets-panel" class="filter-snippets-panel">
-                <input id="filter-snippets-input" type="text" placeholder="Filter..." autocomplete="off" />
+                <input id="filter-snippets-input" type="text" placeholder="{{Strings.CUSTOM_SNIPPETS_FILTER_PLACEHOLDER}}" autocomplete="off" />
             </div>
             <a href="#" class="close" id="close-custom-snippets-panel-btn">&times;</a>
         </div>
@@ -26,17 +26,17 @@
         <!--this will display the list of all the already existing snippets-->
         <div id="custom-snippets-list" class="custom-snippes-list">
             <div id="no-snippets-wrapper" class="no-snippets-wrapper">
-                <div id="no-snippets-message">No custom snippets added yet!</div>
+                <div id="no-snippets-message">{{Strings.CUSTOM_SNIPPETS_NO_SNIPPETS_MESSAGE}}</div>
                 <div id="add-snippet-btn">
-                    <button>Add Snippet</button>
+                    <button>{{Strings.CUSTOM_SNIPPETS_ADD_SNIPPET_BTN}}</button>
                 </div>
             </div>
 
             <div id="snippets-list-header" class="snippets-list-header">
-                <div id="snippet-abbr-header">Abbreviation</div>
-                <div id="snippet-template-header">Template Text</div>
-                <div id="snippet-description-header">Description</div>
-                <div id="snippet-file-extension-header">File Extension</div>
+                <div id="snippet-abbr-header">{{Strings.CUSTOM_SNIPPETS_HEADER_ABBREVIATION}}</div>
+                <div id="snippet-template-header">{{Strings.CUSTOM_SNIPPETS_HEADER_TEMPLATE}}</div>
+                <div id="snippet-description-header">{{Strings.CUSTOM_SNIPPETS_HEADER_DESCRIPTION}}</div>
+                <div id="snippet-file-extension-header">{{Strings.CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION}}</div>
                 <div id="snippet-actions-header"></div>
             </div>
 
@@ -69,9 +69,9 @@
             <div id="abbr-box-wrapper" class="field-wrapper">
                 <div class="field-row">
                     <label for="abbr-box"
-                           title="Enter a short abbreviation (e.g., 'clg', 'fn', 'div'). This is what you'll type to trigger the snippet."
+                           title="{{Strings.CUSTOM_SNIPPETS_ABBR_INPUT_TOOLTIP}}"
                            data-placement="top">
-                        Abbreviation:
+                        {{Strings.CUSTOM_SNIPPETS_ABBREVIATION_LABEL}}
                     </label>
                     <input id="abbr-box" type="text" placeholder="clg" autocomplete="off" />
                 </div>
@@ -80,39 +80,39 @@
             <div id="desc-box-wrapper" class="field-wrapper">
                 <div class="field-row">
                     <label for="desc-box"
-                           title="Brief description of what this snippet does. Leave empty if no description needed."
+                           title="{{Strings.CUSTOM_SNIPPETS_DESC_INPUT_TOOLTIP}}"
                            data-placement="top">
-                        Description:
+                        {{Strings.CUSTOM_SNIPPETS_DESCRIPTION_LABEL}}
                     </label>
-                    <input id="desc-box" type="text" placeholder="console log shortcut (optional)" autocomplete="off" />
+                    <input id="desc-box" type="text" placeholder="{{Strings.CUSTOM_SNIPPETS_DESC_PLACEHOLDER}}" autocomplete="off" />
                 </div>
             </div>
 
             <div id="file-extn-box-wrapper" class="field-wrapper">
                 <div class="field-row">
                     <label for="file-extn-box"
-                           title="Specify file types where this snippet should be available (e.g., '.js', '.html', '.css'). Leave empty to make it available for all files."
+                           title="{{Strings.CUSTOM_SNIPPETS_FILE_EXT_INPUT_TOOLTIP}}"
                            data-placement="top">
-                        File Extension:
+                        {{Strings.CUSTOM_SNIPPETS_FILE_EXTENSION_LABEL}}
                     </label>
-                    <input id="file-extn-box" type="text" placeholder="Leave empty for all files, or specify like .js, .html" autocomplete="off" />
+                    <input id="file-extn-box" type="text" placeholder="{{Strings.CUSTOM_SNIPPETS_FILE_EXT_PLACEHOLDER}}" autocomplete="off" />
                 </div>
             </div>
 
             <div id="template-text-box-wrapper" class="field-wrapper">
                 <div class="field-row">
                     <label for="template-text-box"
-                           title="The actual code that will be inserted. Use ${1}, ${2}, ${3}, etc. for cursor positions. ${1} is the initial position, tab moves to ${2}, ${3}, etc. ${0} is the final position."
+                           title="{{Strings.CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP}}"
                            data-placement="top">
-                        Template Text:
+                        {{Strings.CUSTOM_SNIPPETS_TEMPLATE_TEXT_LABEL}}
                     </label>
-                    <textarea id="template-text-box" placeholder="console.log(${1});" autocomplete="off"></textarea>
+                    <textarea id="template-text-box" placeholder="{{Strings.CUSTOM_SNIPPETS_TEMPLATE_PLACEHOLDER}}" autocomplete="off"></textarea>
                 </div>
             </div>
 
             <div id="add-custom-snippet-panel-buttons">
-                <button id="cancel-custom-snippet-btn" class="dialog-button btn">Cancel</button>
-                <button id="save-custom-snippet-btn" class="dialog-button btn primary" disabled>Save</button>
+                <button id="cancel-custom-snippet-btn" class="dialog-button btn">{{Strings.CUSTOM_SNIPPETS_CANCEL}}</button>
+                <button id="save-custom-snippet-btn" class="dialog-button btn primary" disabled>{{Strings.CUSTOM_SNIPPETS_SAVE}}</button>
             </div>
         </div>
 
@@ -121,9 +121,9 @@
             <div id="edit-abbr-box-wrapper" class="field-wrapper">
                 <div class="field-row">
                     <label for="edit-abbr-box"
-                           title="Enter a short abbreviation (e.g., 'clg', 'fn', 'div'). This is what you'll type to trigger the snippet."
+                           title="{{Strings.CUSTOM_SNIPPETS_ABBR_INPUT_TOOLTIP}}"
                            data-placement="top">
-                        Abbreviation:
+                        {{Strings.CUSTOM_SNIPPETS_ABBREVIATION_LABEL}}
                     </label>
                     <input id="edit-abbr-box" type="text" placeholder="clg" autocomplete="off" />
                 </div>
@@ -132,39 +132,39 @@
             <div id="edit-desc-box-wrapper" class="field-wrapper">
                 <div class="field-row">
                     <label for="edit-desc-box"
-                           title="Brief description of what this snippet does. Leave empty if no description needed."
+                           title="{{Strings.CUSTOM_SNIPPETS_DESC_INPUT_TOOLTIP}}"
                            data-placement="top">
-                        Description:
+                        {{Strings.CUSTOM_SNIPPETS_DESCRIPTION_LABEL}}
                     </label>
-                    <input id="edit-desc-box" type="text" placeholder="console log shortcut (optional)" autocomplete="off" />
+                    <input id="edit-desc-box" type="text" placeholder="{{Strings.CUSTOM_SNIPPETS_DESC_PLACEHOLDER}}" autocomplete="off" />
                 </div>
             </div>
 
             <div id="edit-file-extn-box-wrapper" class="field-wrapper">
                 <div class="field-row">
                     <label for="edit-file-extn-box"
-                           title="Specify file types where this snippet should be available (e.g., '.js', '.html', '.css'). Leave empty to make it available for all files."
+                           title="{{Strings.CUSTOM_SNIPPETS_FILE_EXT_INPUT_TOOLTIP}}"
                            data-placement="top">
-                        File Extension:
+                        {{Strings.CUSTOM_SNIPPETS_FILE_EXTENSION_LABEL}}
                     </label>
-                    <input id="edit-file-extn-box" type="text" placeholder="Leave empty for all files, or specify like .js, .html" autocomplete="off" />
+                    <input id="edit-file-extn-box" type="text" placeholder="{{Strings.CUSTOM_SNIPPETS_FILE_EXT_PLACEHOLDER}}" autocomplete="off" />
                 </div>
             </div>
 
             <div id="edit-template-text-box-wrapper" class="field-wrapper">
                 <div class="field-row">
                     <label for="edit-template-text-box"
-                           title="The actual code that will be inserted. Use ${1}, ${2}, ${3}, etc. for cursor positions. ${1} is the initial position, tab moves to ${2}, ${3}, etc. ${0} is the final position."
+                           title="{{Strings.CUSTOM_SNIPPETS_TEMPLATE_INPUT_TOOLTIP}}"
                            data-placement="top">
-                        Template Text:
+                        {{Strings.CUSTOM_SNIPPETS_TEMPLATE_TEXT_LABEL}}
                     </label>
-                    <textarea id="edit-template-text-box" placeholder="console.log(${1});" autocomplete="off"></textarea>
+                    <textarea id="edit-template-text-box" placeholder="{{Strings.CUSTOM_SNIPPETS_TEMPLATE_PLACEHOLDER}}" autocomplete="off" />
                 </div>
             </div>
 
             <div id="edit-snippet-buttons">
-                <button id="cancel-edit-snippet-btn" class="dialog-button btn">Cancel</button>
-                <button id="save-edit-snippet-btn" class="dialog-button btn primary" disabled>Save</button>
+                <button id="cancel-edit-snippet-btn" class="dialog-button btn">{{Strings.CUSTOM_SNIPPETS_CANCEL}}</button>
+                <button id="save-edit-snippet-btn" class="dialog-button btn primary" disabled>{{Strings.CUSTOM_SNIPPETS_SAVE}}</button>
             </div>
         </div>
     </div>
