@@ -48,9 +48,6 @@ define(function (require, exports, module) {
 
             // save to file storage
             SnippetsState.saveSnippetsToState()
-                .then(function () {
-                    //
-                })
                 .catch(function (error) {
                     console.error("failed to save custom snippet correctly:", error);
                 });
@@ -98,9 +95,6 @@ define(function (require, exports, module) {
 
             // save to file storage
             SnippetsState.saveSnippetsToState()
-                .then(function () {
-                    //
-                })
                 .catch(function (error) {
                     console.error("failed to save custom snippet correctly:", error);
                 });

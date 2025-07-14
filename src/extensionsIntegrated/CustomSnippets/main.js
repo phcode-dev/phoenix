@@ -261,9 +261,6 @@ define(function (require, exports, module) {
 
         // load snippets from file storage
         SnippetsState.loadSnippetsFromState()
-            .then(function () {
-                //
-            })
             .catch(function (error) {
                 console.error("failed to load custom snippets:", error);
             });
