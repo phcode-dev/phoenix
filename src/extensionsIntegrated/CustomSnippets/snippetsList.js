@@ -25,6 +25,8 @@
 
 /* eslint-disable no-invalid-this */
 define(function (require, exports, module) {
+    const Metrics = require("utils/Metrics");
+
     const Global = require("./global");
     const SnippetsState = require("./snippetsState");
     const UIHelper = require("./UIHelper");
@@ -163,6 +165,10 @@ define(function (require, exports, module) {
         const index = Global.SnippetHintsList.findIndex((s) => s.abbreviation === snippetItem.abbreviation);
 
         if (index !== -1) {
+            // track the snippet deletion metrics before removing
+            const fileCategory = Helper.categorizeFileExtensionForMetrics(snippetItem.fileExtension);
+            Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "snipt", `del.${fileCategory}`);
+
             Global.SnippetHintsList.splice(index, 1); // removes it from the actual array
 
             // save to file storage

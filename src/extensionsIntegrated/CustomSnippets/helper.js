@@ -813,6 +813,29 @@ define(function (require, exports, module) {
         }
     }
 
+    /**
+     * Categorize file extension for metrics tracking
+     * @param {string} fileExtension - The file extension from snippet
+     * @returns {string} - Categorized extension for metrics
+     */
+    function categorizeFileExtensionForMetrics(fileExtension) {
+        if (!fileExtension || fileExtension === "all") {
+            return "all";
+        }
+
+        const ext = fileExtension.toLowerCase();
+        if (ext.includes(".js") || ext.includes(".ts")) {
+            return "js";
+        }
+        if (ext.includes("html") || ext.includes("htm")) {
+            return "html";
+        }
+        if (ext.includes("css") || ext.includes("less") || ext.includes("scss") || ext.includes("sass")) {
+            return "css";
+        }
+        return "other";
+    }
+
     exports.toggleSaveButtonDisability = toggleSaveButtonDisability;
     exports.createHintItem = createHintItem;
     exports.clearAllInputFields = clearAllInputFields;
@@ -832,6 +855,7 @@ define(function (require, exports, module) {
     exports.populateEditForm = populateEditForm;
     exports.getEditSnippetData = getEditSnippetData;
     exports.toggleEditSaveButtonDisability = toggleEditSaveButtonDisability;
+    exports.categorizeFileExtensionForMetrics = categorizeFileExtensionForMetrics;
     exports.clearEditInputFields = clearEditInputFields;
     exports.handleTextareaTabKey = handleTextareaTabKey;
     exports.validateAbbrInput = validateAbbrInput;

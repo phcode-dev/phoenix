@@ -21,6 +21,7 @@
 define(function (require, exports, module) {
     const CodeHintManager = require("editor/CodeHintManager");
     const EditorManager = require("editor/EditorManager");
+    const Metrics = require("utils/Metrics");
 
     const Global = require("./global");
     const Driver = require("./driver");
@@ -118,6 +119,10 @@ define(function (require, exports, module) {
                         const editor = EditorManager.getFocusedEditor();
 
                         if (editor) {
+                            // to track the usage metrics
+                            const fileCategory = Helper.categorizeFileExtensionForMetrics(matchedSnippet.fileExtension);
+                            Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "snipt", `use.${fileCategory}`);
+
                             // replace the typed abbreviation with the template text using cursor manager
                             const wordInfo = Driver.getWordBeforeCursor();
                             const start = { line: wordInfo.line, ch: wordInfo.ch + 1 };
