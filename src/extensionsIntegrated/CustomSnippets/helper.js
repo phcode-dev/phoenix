@@ -280,15 +280,9 @@ define(function (require, exports, module) {
      * @returns {string|null} - The language ID or null if not available
      */
     function getCurrentLanguageContext(editor) {
-        // first try to get the language at cursor pos
-        // if it for some reason fails, then just go for the file extension
-        try {
-            const language = editor.getLanguageForPosition();
-            const languageId = language ? language.getId() : null;
-            return languageId;
-        } catch (e) {
-            return getCurrentFileExtension(editor);
-        }
+        const language = editor.getLanguageForPosition();
+        const languageId = language ? language.getId() : null;
+        return languageId;
     }
 
     /**
