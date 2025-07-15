@@ -171,6 +171,7 @@ define(function (require, exports, module) {
             Metrics.countEvent(Metrics.EVENT_TYPE.EDITOR, "snipt", `del.${fileCategory}`);
 
             Global.SnippetHintsList.splice(index, 1); // removes it from the actual array
+            Helper.rebuildOptimizedStructures();
 
             // save to file storage
             SnippetsState.saveSnippetsToState()
