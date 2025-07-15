@@ -309,7 +309,10 @@ define(function (require, exports, module) {
      */
     function isSnippetSupportedInLanguageContext(snippet, languageContext, editor) {
         // Check for "all" languages support (both optimized and non-optimized)
-        if (snippet.supportsAllLanguages === true || snippet.fileExtension?.toLowerCase() === "all") {
+        if (
+            snippet.supportsAllLanguages === true ||
+            (snippet.fileExtension && snippet.fileExtension.toLowerCase() === "all")
+        ) {
             return true;
         }
 
