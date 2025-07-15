@@ -314,51 +314,31 @@ define(function (require, exports, module) {
      * @returns {boolean} - True if the snippet is supported
      */
     function isSnippetSupportedInLanguageContext(snippet, languageContext, editor) {
-        // first we need to try the optimizedSnippet
-        if (snippet.supportsAllLanguages !== undefined) {
-            if (snippet.supportsAllLanguages) {
-                return true;
-            }
-
-            if (languageContext) {
-                const effectiveExtension = mapLanguageToExtension(languageContext);
-                // if we have a proper mapping (starts with .), use language context matching
-                if (effectiveExtension.startsWith(".")) {
-                    return snippet.supportedLangSet.has(effectiveExtension);
-                }
-            }
-
-            // this is just a fallback if language context matching failed
-            // file extension matching
-            if (editor) {
-                const fileExtension = getCurrentFileExtension(editor);
-                return isSnippetSupportedInFile(snippet, fileExtension);
-            }
-
-            return false;
-        }
-
-        // for non-optimized snippets
-        if (snippet.fileExtension.toLowerCase() === "all") {
+        // Check for "all" languages support (both optimized and non-optimized)
+        if (snippet.supportsAllLanguages === true || snippet.fileExtension?.toLowerCase() === "all") {
             return true;
         }
 
+        // Try language context matching if available
         if (languageContext) {
             const effectiveExtension = mapLanguageToExtension(languageContext);
 
             // if we have a proper mapping (starts with .), use language context matching
             if (effectiveExtension.startsWith(".")) {
+                // Use optimized path if available
+                if (snippet.supportedLangSet) {
+                    return snippet.supportedLangSet.has(effectiveExtension);
+                }
+                // Fallback for non-optimized snippets
                 const supportedExtensions = snippet.fileExtension
                     .toLowerCase()
                     .split(",")
                     .map((ext) => ext.trim());
-
                 return supportedExtensions.some((ext) => ext === effectiveExtension);
             }
         }
 
-        // this is just a fallback if language context matching failed
-        // file extension matching
+        // final fallback for file extension matching if language context matching failed
         if (editor) {
             const fileExtension = getCurrentFileExtension(editor);
             return isSnippetSupportedInFile(snippet, fileExtension);
