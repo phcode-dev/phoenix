@@ -1592,6 +1592,8 @@ define({
     // Custom Snippets
     "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Custom Snippets\u2026",
     "CUSTOM_SNIPPETS_PANEL_TITLE": "Custom Snippets",
+    "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Add Snippet",
+    "CUSTOM_SNIPPETS_EDIT_PANEL_TITLE": "Edit Snippet",
     "CUSTOM_SNIPPETS_ADD_NEW_TITLE": "Add new snippet",
     "CUSTOM_SNIPPETS_BACK_TO_LIST_TITLE": "Back to snippets list",
     "CUSTOM_SNIPPETS_BACK": "Back",
