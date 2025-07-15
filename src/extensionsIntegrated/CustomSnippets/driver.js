@@ -45,6 +45,7 @@ define(function (require, exports, module) {
 
         if (shouldAddSnippetToList(snippetData)) {
             Global.SnippetHintsList.push(snippetData);
+            Helper.rebuildOptimizedStructures();
             Helper.clearAllInputFields();
             Helper.toggleSaveButtonDisability();
 
@@ -98,6 +99,7 @@ define(function (require, exports, module) {
         // update the snippet in the list
         if (snippetIndex !== -1) {
             Global.SnippetHintsList[snippetIndex] = editedData;
+            Helper.rebuildOptimizedStructures();
 
             // save to file storage
             SnippetsState.saveSnippetsToState()

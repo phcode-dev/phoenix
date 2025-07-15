@@ -24,6 +24,7 @@ define(function (require, exports, module) {
     const FileSystem = require("filesystem/FileSystem");
     const FileUtils = require("file/FileUtils");
     const FileSystemError = require("filesystem/FileSystemError");
+    const Helper = require("./helper");
 
     const SNIPPETS_FILE_PATH = brackets.app.getApplicationSupportDirectory() + "/customSnippets.json";
 
@@ -48,6 +49,8 @@ define(function (require, exports, module) {
                             // no snippets are present
                             Global.SnippetHintsList = [];
                         }
+                        // rebuild the optimized data structures after loading snippets
+                        Helper.rebuildOptimizedStructures();
                         resolve();
                     } catch (error) {
                         logger.reportError(
@@ -55,6 +58,7 @@ define(function (require, exports, module) {
                             "Custom Snippets: Failed to parse snippets JSON file. File might be corrupted."
                         );
                         Global.SnippetHintsList = []; // fallback
+                        Helper.rebuildOptimizedStructures();
                         resolve();
                     }
                 })
@@ -62,10 +66,12 @@ define(function (require, exports, module) {
                     if (error === FileSystemError.NOT_FOUND) {
                         // file is not present, empty array
                         Global.SnippetHintsList = [];
+                        Helper.rebuildOptimizedStructures();
                         resolve();
                     } else {
                         logger.reportError(error, "Custom Snippets: unexpected file system error loading snippets");
                         Global.SnippetHintsList = [];
+                        Helper.rebuildOptimizedStructures();
                         resolve();
                     }
                 });

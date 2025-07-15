@@ -53,6 +53,77 @@ define(function (require, exports, module) {
         "F12"
     ];
 
+    // Optimized data structures for fast snippet lookups
+    let snippetsByLanguage = new Map();
+    let snippetsByAbbreviation = new Map();
+    let allSnippetsOptimized = [];
+
+    /**
+     * Preprocesses a snippet to add optimized lookup properties
+     * @param {Object} snippet - The original snippet object
+     * @returns {Object} - The snippet with added optimization properties
+     */
+    function preprocessSnippet(snippet) {
+        const optimizedSnippet = { ...snippet };
+
+        // pre-compute lowercase abbreviation for faster matching
+        optimizedSnippet.abbreviationLower = snippet.abbreviation.toLowerCase();
+
+        // parse and create a Set of supported extensions for O(1) lookup
+        if (snippet.fileExtension.toLowerCase() === "all") {
+            optimizedSnippet.supportedLangSet = new Set(["all"]);
+            optimizedSnippet.supportsAllLanguages = true;
+        } else {
+            const extensions = snippet.fileExtension
+                .toLowerCase()
+                .split(",")
+                .map(ext => ext.trim())
+                .filter(ext => ext);
+            optimizedSnippet.supportedLangSet = new Set(extensions);
+            optimizedSnippet.supportsAllLanguages = false;
+        }
+
+        return optimizedSnippet;
+    }
+
+    /**
+     * Rebuilds optimized data structures from the current snippet list
+     * we call this function whenever snippets are loaded, added, modified, or deleted
+     * i.e. whenever the snippetList is updated
+     */
+    function rebuildOptimizedStructures() {
+        // clear existing structures
+        snippetsByLanguage.clear();
+        snippetsByAbbreviation.clear();
+        allSnippetsOptimized.length = 0;
+
+        // Process each snippet
+        Global.SnippetHintsList.forEach(snippet => {
+            const optimizedSnippet = preprocessSnippet(snippet);
+            allSnippetsOptimized.push(optimizedSnippet);
+
+            // Index by abbreviation (lowercase) for exact matches
+            snippetsByAbbreviation.set(optimizedSnippet.abbreviationLower, optimizedSnippet);
+
+            // Index by supported languages/extensions
+            if (optimizedSnippet.supportsAllLanguages) {
+                // Add to a special "all" key for universal snippets
+                if (!snippetsByLanguage.has("all")) {
+                    snippetsByLanguage.set("all", new Set());
+                }
+                snippetsByLanguage.get("all").add(optimizedSnippet);
+            } else {
+                // Add to each supported extension
+                optimizedSnippet.supportedLangSet.forEach(ext => {
+                    if (!snippetsByLanguage.has(ext)) {
+                        snippetsByLanguage.set(ext, new Set());
+                    }
+                    snippetsByLanguage.get(ext).add(optimizedSnippet);
+                });
+            }
+        });
+    }
+
     /**
      * map the language IDs to their file extensions for snippet matching
      * this is needed because we expect the user to enter file extensions and not the file type inside the input field
@@ -237,12 +308,37 @@ define(function (require, exports, module) {
      * Checks if a snippet is supported in the given language context
      * Falls back to file extension matching if language mapping isn't available
      *
-     * @param {Object} snippet - The snippet object
+     * @param {Object} snippet - The snippet object (optimized or regular)
      * @param {string|null} languageContext - The current language context
      * @param {Editor} editor - The editor instance for fallback
      * @returns {boolean} - True if the snippet is supported
      */
     function isSnippetSupportedInLanguageContext(snippet, languageContext, editor) {
+        // first we need to try the optimizedSnippet
+        if (snippet.supportsAllLanguages !== undefined) {
+            if (snippet.supportsAllLanguages) {
+                return true;
+            }
+
+            if (languageContext) {
+                const effectiveExtension = mapLanguageToExtension(languageContext);
+                // if we have a proper mapping (starts with .), use language context matching
+                if (effectiveExtension.startsWith(".")) {
+                    return snippet.supportedLangSet.has(effectiveExtension);
+                }
+            }
+
+            // this is just a fallback if language context matching failed
+            // file extension matching
+            if (editor) {
+                const fileExtension = getCurrentFileExtension(editor);
+                return isSnippetSupportedInFile(snippet, fileExtension);
+            }
+
+            return false;
+        }
+
+        // for non-optimized snippets
         if (snippet.fileExtension.toLowerCase() === "all") {
             return true;
         }
@@ -303,12 +399,12 @@ define(function (require, exports, module) {
         const queryLower = query.toLowerCase();
         const languageContext = getCurrentLanguageContext(editor);
 
-        return Global.SnippetHintsList.some((snippet) => {
-            if (snippet.abbreviation.toLowerCase() === queryLower) {
-                return isSnippetSupportedInLanguageContext(snippet, languageContext, editor);
-            }
-            return false;
-        });
+        const snippet = snippetsByAbbreviation.get(queryLower);
+        if (snippet) {
+            return isSnippetSupportedInLanguageContext(snippet, languageContext, editor);
+        }
+
+        return false;
     }
 
     /**
@@ -321,21 +417,41 @@ define(function (require, exports, module) {
         const queryLower = query.toLowerCase();
         const languageContext = getCurrentLanguageContext(editor);
 
-        const matchingSnippets = Global.SnippetHintsList.filter((snippet) => {
-            if (snippet.abbreviation.toLowerCase().startsWith(queryLower)) {
-                return isSnippetSupportedInLanguageContext(snippet, languageContext, editor);
+        // Get the candidate snippets for the current language/extension
+        let candidateSnippets = new Set();
+
+        // Add universal snippets (support "all" languages)
+        const universalSnippets = snippetsByLanguage.get("all");
+        if (universalSnippets) {
+            universalSnippets.forEach(snippet => candidateSnippets.add(snippet));
+        }
+
+        // Add language-specific snippets
+        if (languageContext) {
+            const effectiveExtension = mapLanguageToExtension(languageContext);
+            if (effectiveExtension.startsWith(".")) {
+                const languageSnippets = snippetsByLanguage.get(effectiveExtension);
+                if (languageSnippets) {
+                    languageSnippets.forEach(snippet => candidateSnippets.add(snippet));
+                }
             }
-            return false;
+        }
+
+        // Fallback: if we can't determine language, check all snippets
+        if (candidateSnippets.size === 0) {
+            candidateSnippets = new Set(allSnippetsOptimized);
+        }
+
+        // Filter candidates by prefix match using pre-computed lowercase abbreviations
+        const matchingSnippets = Array.from(candidateSnippets).filter((snippet) => {
+            return snippet.abbreviationLower.startsWith(queryLower);
         });
 
         // sort snippets so that the exact matches will appear over the partial matches
         return matchingSnippets.sort((a, b) => {
-            const aLower = a.abbreviation.toLowerCase();
-            const bLower = b.abbreviation.toLowerCase();
-
             // check if either is an exact match
-            const aExact = aLower === queryLower;
-            const bExact = bLower === queryLower;
+            const aExact = a.abbreviationLower === queryLower;
+            const bExact = b.abbreviationLower === queryLower;
 
             // because exact matches appear first
             if (aExact && !bExact) {
@@ -345,7 +461,7 @@ define(function (require, exports, module) {
                 return 1;
             }
 
-            return aLower.localeCompare(bLower);
+            return a.abbreviationLower.localeCompare(b.abbreviationLower);
         });
     }
 
@@ -834,6 +950,7 @@ define(function (require, exports, module) {
     exports.getCurrentLanguageContext = getCurrentLanguageContext;
     exports.getCurrentFileExtension = getCurrentFileExtension;
     exports.mapLanguageToExtension = mapLanguageToExtension;
+    exports.rebuildOptimizedStructures = rebuildOptimizedStructures;
     exports.isSnippetSupportedInLanguageContext = isSnippetSupportedInLanguageContext;
     exports.isSnippetSupportedInFile = isSnippetSupportedInFile;
     exports.hasExactMatchingSnippet = hasExactMatchingSnippet;
