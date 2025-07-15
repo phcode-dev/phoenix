@@ -20,7 +20,6 @@
 
 define(function (require, exports, module) {
     const StringMatch = require("utils/StringMatch");
-    const LanguageManager = require("language/LanguageManager");
     const Global = require("./global");
     const UIHelper = require("./UIHelper");
     const Strings = require("strings");
@@ -817,34 +816,15 @@ define(function (require, exports, module) {
     /**
      * Categorize file extension for metrics tracking
      * @param {string} fileExtension - The file extension from snippet
-     * @returns {string} - Categorized extension for metrics
+     * @returns {string} - "all" if snippet is enabled for all files, otherwise "file"
      */
     function categorizeFileExtensionForMetrics(fileExtension) {
         if (!fileExtension || fileExtension === "all") {
             return "all";
         }
 
-        // get the first extension for categorization
-        const firstExt = fileExtension.split(",")[0].trim();
-
-        let language = LanguageManager.getLanguageForExtension(firstExt);
-        if (!language) {
-            return "other";
-        }
-
-        let langId = language.getId();
-
-        if(["javascript", "typescript", "jsx", "tsx"].includes(langId)) {
-            return "js";
-        }
-        if(["css", "scss", "less", "stylus"].includes(langId)) {
-            return "css";
-        }
-        if(["html", "ejs", "erb_html"].includes(langId)) {
-            return "html";
-        }
-
-        return "other";
+        // if not enabled for "all", we just return "file"
+        return "file";
     }
 
     exports.toggleSaveButtonDisability = toggleSaveButtonDisability;
