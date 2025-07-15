@@ -122,7 +122,7 @@ define(function (require, exports, module) {
         $addNewSnippetBtn.addClass("hidden");
         $filterSnippetsPanel.addClass("hidden");
 
-        $toolbarTitle.html('Add Snippet <span id="snippets-count" class="snippets-count"></span>');
+        $toolbarTitle.html(`${Strings.CUSTOM_SNIPPETS_ADD_PANEL_TITLE} <span id="snippets-count" class="snippets-count"></span>`);
     }
 
     /**
@@ -150,7 +150,9 @@ define(function (require, exports, module) {
         // add the snippet count in the toolbar (the no. of snippets added)
         const snippetCount = Global.SnippetHintsList.length;
         const countText = snippetCount > 0 ? `(${snippetCount})` : "";
-        $toolbarTitle.html(`Custom Snippets <span id="snippets-count" class="snippets-count">${countText}</span>`);
+        $toolbarTitle.html(
+            `${Strings.CUSTOM_SNIPPETS_PANEL_TITLE} <span id="snippets-count" class="snippets-count">${countText}</span>`
+        );
 
         $("#filter-snippets-input").val("");
     }
@@ -175,7 +177,7 @@ define(function (require, exports, module) {
         $filterSnippetsPanel.addClass("hidden");
 
         // Update toolbar title
-        $toolbarTitle.html('Edit Snippet <span id="snippets-count" class="snippets-count"></span>');
+        $toolbarTitle.html(`${Strings.CUSTOM_SNIPPETS_EDIT_PANEL_TITLE} <span id="snippets-count" class="snippets-count"></span>`);
     }
 
     /**
@@ -218,7 +220,9 @@ define(function (require, exports, module) {
         const $toolbarTitle = $(".toolbar-title");
         const snippetCount = Global.SnippetHintsList.length;
         const countText = snippetCount > 0 ? `(${snippetCount})` : "";
-        $toolbarTitle.html(`Custom Snippets <span id="snippets-count" class="snippets-count">${countText}</span>`);
+        $toolbarTitle.html(
+            `${Strings.CUSTOM_SNIPPETS_PANEL_TITLE} <span id="snippets-count" class="snippets-count">${countText}</span>`
+        );
     }
 
     exports.showEmptySnippetMessage = showEmptySnippetMessage;
