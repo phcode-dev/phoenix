@@ -837,7 +837,7 @@ function RemoteFunctions(config) {
         }
 
         // Restore original background color
-        if (event && event.target && event.target.nodeType === Node.ELEMENT_NODE) {
+        if (event && event.target && event.target.nodeType === Node.ELEMENT_NODE && event.target.hasAttribute("data-brackets-id")) {
             if (event.target._originalBackgroundColor !== undefined) {
                 event.target.style.backgroundColor = event.target._originalBackgroundColor;
                 delete event.target._originalBackgroundColor;
