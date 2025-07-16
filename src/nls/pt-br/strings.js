@@ -1388,9 +1388,6 @@ define({
   "ACCOUNT_DETAILS": "Detalhes da Conta",
   "AI_QUOTA_USED": "Cota de IA usada",
   "LOGIN_REFRESH": "Verificar Status de Login",
-  "CUSTOM_SNIPPETS_CANCEL": "Cancelar",
-  "CUSTOM_SNIPPETS_SAVE": "Salvar",
-  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Sem descrição",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Trechos Personalizados…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Trechos Personalizados",
   "CUSTOM_SNIPPETS_ADD_NEW_TITLE": "Adicionar novo trecho",
@@ -1403,6 +1400,9 @@ define({
   "CUSTOM_SNIPPETS_TEMPLATE_TEXT_LABEL": "Texto do Modelo:",
   "CUSTOM_SNIPPETS_DESCRIPTION_LABEL": "Descrição:",
   "CUSTOM_SNIPPETS_FILE_EXTENSION_LABEL": "Extensão do arquivo:",
+  "CUSTOM_SNIPPETS_CANCEL": "Cancelar",
+  "CUSTOM_SNIPPETS_SAVE": "Salvar",
+  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Sem descrição",
   "CUSTOM_SNIPPETS_NO_MATCHES": "Nenhum snippet corresponde a \"{0}\"",
   "CUSTOM_SNIPPETS_LEARN_MORE": "Adicione suas próprias dicas de código para acelerar a codificação - <a href=\"https://docs.phcode.dev\" target=\"_blank\">Saiba mais</a>",
   "CUSTOM_SNIPPETS_DUPLICATE_ERROR": "Já existe um snippet com a abreviação \"{0}\".",
@@ -1425,5 +1425,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Abreviação",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Texto do Modelo",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Descrição",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extensão do Arquivo"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extensão do Arquivo",
+  "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Adicionar Snippet",
+  "CUSTOM_SNIPPETS_EDIT_PANEL_TITLE": "Editar Snippet"
 });

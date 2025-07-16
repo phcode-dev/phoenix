@@ -1388,9 +1388,6 @@ define({
   "ACCOUNT_DETAILS": "Kontooplysninger",
   "AI_QUOTA_USED": "Brugt AI-kvote",
   "LOGIN_REFRESH": "Tjek loginstatus",
-  "CUSTOM_SNIPPETS_CANCEL": "Annuller",
-  "CUSTOM_SNIPPETS_SAVE": "Gem",
-  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Ingen beskrivelse",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Brugerdefinerede snippets…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Brugerdefinerede snippets",
   "CUSTOM_SNIPPETS_ADD_NEW_TITLE": "Tilføj nyt snippet",
@@ -1403,6 +1400,9 @@ define({
   "CUSTOM_SNIPPETS_TEMPLATE_TEXT_LABEL": "Skabelontekst:",
   "CUSTOM_SNIPPETS_DESCRIPTION_LABEL": "Beskrivelse:",
   "CUSTOM_SNIPPETS_FILE_EXTENSION_LABEL": "Filtypenavn:",
+  "CUSTOM_SNIPPETS_CANCEL": "Annuller",
+  "CUSTOM_SNIPPETS_SAVE": "Gem",
+  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Ingen beskrivelse",
   "CUSTOM_SNIPPETS_NO_MATCHES": "Ingen snippets matcher \"{0}\"",
   "CUSTOM_SNIPPETS_LEARN_MORE": "Tilføj dine egne kodehints for at skrive kode hurtigere - <a href=\"https://docs.phcode.dev\" target=\"_blank\">Læs mere</a>",
   "CUSTOM_SNIPPETS_DUPLICATE_ERROR": "Et snippet med forkortelsen \"{0}\" findes allerede.",
@@ -1425,5 +1425,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Forkortelse",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Skabelontekst",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Beskrivelse",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Filtypenavn"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Filtypenavn",
+  "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Tilføj snippet",
+  "CUSTOM_SNIPPETS_EDIT_PANEL_TITLE": "Rediger snippet"
 });

@@ -1388,9 +1388,6 @@ define({
   "ACCOUNT_DETAILS": "Tilin tiedot",
   "AI_QUOTA_USED": "Käytetty tekoälykiintiö",
   "LOGIN_REFRESH": "Tarkista kirjautumistila",
-  "CUSTOM_SNIPPETS_CANCEL": "Peruuta",
-  "CUSTOM_SNIPPETS_SAVE": "Tallenna",
-  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Ei kuvausta",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Omat koodinpätkät…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Omat koodinpätkät",
   "CUSTOM_SNIPPETS_ADD_NEW_TITLE": "Lisää uusi koodinpätkä",
@@ -1403,6 +1400,9 @@ define({
   "CUSTOM_SNIPPETS_TEMPLATE_TEXT_LABEL": "Malliteksti:",
   "CUSTOM_SNIPPETS_DESCRIPTION_LABEL": "Kuvaus:",
   "CUSTOM_SNIPPETS_FILE_EXTENSION_LABEL": "Tiedostopääte:",
+  "CUSTOM_SNIPPETS_CANCEL": "Peruuta",
+  "CUSTOM_SNIPPETS_SAVE": "Tallenna",
+  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Ei kuvausta",
   "CUSTOM_SNIPPETS_NO_MATCHES": "Hakusanalla \"{0}\" ei löytynyt koodinpätkiä.",
   "CUSTOM_SNIPPETS_LEARN_MORE": "Lisää omia koodinpätkiäsi nopeuttaaksesi koodausta - <a href=\"https://docs.phcode.dev\" target=\"_blank\">Lue lisää</a>",
   "CUSTOM_SNIPPETS_DUPLICATE_ERROR": "Lyhenteellä \"{0}\" on jo olemassa koodinpätkä.",
@@ -1425,5 +1425,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Lyhenne",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Malliteksti",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Kuvaus",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Tiedostopääte"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Tiedostopääte",
+  "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Lisää koodinpätkä",
+  "CUSTOM_SNIPPETS_EDIT_PANEL_TITLE": "Muokkaa koodinpätkää"
 });

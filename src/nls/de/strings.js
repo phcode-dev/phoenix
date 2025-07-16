@@ -1388,9 +1388,6 @@ define({
   "ACCOUNT_DETAILS": "Kontodetails",
   "AI_QUOTA_USED": "Verbrauchte KI-Quote",
   "LOGIN_REFRESH": "Anmeldestatus überprüfen",
-  "CUSTOM_SNIPPETS_CANCEL": "Abbrechen",
-  "CUSTOM_SNIPPETS_SAVE": "Speichern",
-  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Keine Beschreibung",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Benutzerdefinierte Snippets…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Benutzerdefinierte Snippets",
   "CUSTOM_SNIPPETS_ADD_NEW_TITLE": "Neues Snippet hinzufügen",
@@ -1403,6 +1400,9 @@ define({
   "CUSTOM_SNIPPETS_TEMPLATE_TEXT_LABEL": "Vorlagentext:",
   "CUSTOM_SNIPPETS_DESCRIPTION_LABEL": "Beschreibung:",
   "CUSTOM_SNIPPETS_FILE_EXTENSION_LABEL": "Dateierweiterung:",
+  "CUSTOM_SNIPPETS_CANCEL": "Abbrechen",
+  "CUSTOM_SNIPPETS_SAVE": "Speichern",
+  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Keine Beschreibung",
   "CUSTOM_SNIPPETS_NO_MATCHES": "Keine Snippets entsprechen \"{0}\"",
   "CUSTOM_SNIPPETS_LEARN_MORE": "Füge deine eigenen Codehinweise hinzu, um schneller zu programmieren - <a href=\"https://docs.phcode.dev\" target=\"_blank\">Mehr erfahren</a>",
   "CUSTOM_SNIPPETS_DUPLICATE_ERROR": "Ein Snippet mit der Abkürzung \"{0}\" existiert bereits.",
@@ -1425,5 +1425,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Kürzel",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Vorlagentext",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Beschreibung",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Dateierweiterung"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Dateierweiterung",
+  "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Schnipsel hinzufügen",
+  "CUSTOM_SNIPPETS_EDIT_PANEL_TITLE": "Schnipsel bearbeiten"
 });

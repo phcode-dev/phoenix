@@ -1388,9 +1388,6 @@ define({
   "ACCOUNT_DETAILS": "계정 세부정보",
   "AI_QUOTA_USED": "사용된 AI 할당량",
   "LOGIN_REFRESH": "로그인 상태 확인",
-  "CUSTOM_SNIPPETS_CANCEL": "취소",
-  "CUSTOM_SNIPPETS_SAVE": "저장",
-  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "설명 없음",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "사용자 정의 스니펫…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "사용자 정의 스니펫",
   "CUSTOM_SNIPPETS_ADD_NEW_TITLE": "새 스니펫 추가",
@@ -1403,6 +1400,9 @@ define({
   "CUSTOM_SNIPPETS_TEMPLATE_TEXT_LABEL": "템플릿 텍스트:",
   "CUSTOM_SNIPPETS_DESCRIPTION_LABEL": "설명:",
   "CUSTOM_SNIPPETS_FILE_EXTENSION_LABEL": "파일 확장자:",
+  "CUSTOM_SNIPPETS_CANCEL": "취소",
+  "CUSTOM_SNIPPETS_SAVE": "저장",
+  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "설명 없음",
   "CUSTOM_SNIPPETS_NO_MATCHES": "\"{0}\"(와)과 일치하는 스니펫이 없습니다.",
   "CUSTOM_SNIPPETS_LEARN_MORE": "코딩 속도를 높이려면 나만의 코드 힌트를 추가하세요 - <a href=\"https://docs.phcode.dev\" target=\"_blank\">자세히 알아보기</a>",
   "CUSTOM_SNIPPETS_DUPLICATE_ERROR": "\"{0}\" 약어를 가진 스니펫이 이미 존재합니다.",
@@ -1425,5 +1425,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "약어",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "템플릿 텍스트",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "설명",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "파일 확장자"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "파일 확장자",
+  "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "스니펫 추가",
+  "CUSTOM_SNIPPETS_EDIT_PANEL_TITLE": "스니펫 편집"
 });

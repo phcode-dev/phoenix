@@ -1388,8 +1388,6 @@ define({
   "ACCOUNT_DETAILS": "Detalhes da Conta",
   "AI_QUOTA_USED": "Quota de IA utilizada",
   "LOGIN_REFRESH": "Verificar estado de início de sessão",
-  "CUSTOM_SNIPPETS_CANCEL": "Cancelar",
-  "CUSTOM_SNIPPETS_SAVE": "Guardar",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Fragmentos Personalizados…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Fragmentos Personalizados",
   "CUSTOM_SNIPPETS_ADD_NEW_TITLE": "Adicionar novo fragmento",
@@ -1402,6 +1400,8 @@ define({
   "CUSTOM_SNIPPETS_TEMPLATE_TEXT_LABEL": "Texto do Modelo:",
   "CUSTOM_SNIPPETS_DESCRIPTION_LABEL": "Descrição:",
   "CUSTOM_SNIPPETS_FILE_EXTENSION_LABEL": "Extensão do ficheiro:",
+  "CUSTOM_SNIPPETS_CANCEL": "Cancelar",
+  "CUSTOM_SNIPPETS_SAVE": "Guardar",
   "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Sem descrição",
   "CUSTOM_SNIPPETS_NO_MATCHES": "Nenhum snippet corresponde a \"{0}\"",
   "CUSTOM_SNIPPETS_LEARN_MORE": "Adicione as suas próprias sugestões de código para acelerar a codificação - <a href=\"https://docs.phcode.dev\" target=\"_blank\">Saiba mais</a>",
@@ -1425,5 +1425,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Abreviatura",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Texto do Modelo",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Descrição",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extensão de Ficheiro"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extensão de Ficheiro",
+  "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Adicionar Snippet",
+  "CUSTOM_SNIPPETS_EDIT_PANEL_TITLE": "Editar Snippet"
 });

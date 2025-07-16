@@ -1388,9 +1388,6 @@ define({
   "ACCOUNT_DETAILS": "Szczegóły konta",
   "AI_QUOTA_USED": "Wykorzystany limit AI",
   "LOGIN_REFRESH": "Sprawdź status logowania",
-  "CUSTOM_SNIPPETS_CANCEL": "Anuluj",
-  "CUSTOM_SNIPPETS_SAVE": "Zapisz",
-  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Brak opisu",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Własne fragmenty kodu…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Własne fragmenty kodu",
   "CUSTOM_SNIPPETS_ADD_NEW_TITLE": "Dodaj nowy fragment",
@@ -1403,6 +1400,9 @@ define({
   "CUSTOM_SNIPPETS_TEMPLATE_TEXT_LABEL": "Treść szablonu:",
   "CUSTOM_SNIPPETS_DESCRIPTION_LABEL": "Opis:",
   "CUSTOM_SNIPPETS_FILE_EXTENSION_LABEL": "Rozszerzenie pliku:",
+  "CUSTOM_SNIPPETS_CANCEL": "Anuluj",
+  "CUSTOM_SNIPPETS_SAVE": "Zapisz",
+  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Brak opisu",
   "CUSTOM_SNIPPETS_NO_MATCHES": "Brak fragmentów kodu pasujących do \"{0}\"",
   "CUSTOM_SNIPPETS_LEARN_MORE": "Dodaj własne podpowiedzi kodu, aby przyspieszyć kodowanie - <a href=\"https://docs.phcode.dev\" target=\"_blank\">Dowiedz się więcej</a>",
   "CUSTOM_SNIPPETS_DUPLICATE_ERROR": "Fragment kodu ze skrótem \"{0}\" już istnieje.",
@@ -1425,5 +1425,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Skrót",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Treść szablonu",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Opis",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Rozszerzenie pliku"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Rozszerzenie pliku",
+  "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Dodaj fragment kodu",
+  "CUSTOM_SNIPPETS_EDIT_PANEL_TITLE": "Edytuj fragment kodu"
 });

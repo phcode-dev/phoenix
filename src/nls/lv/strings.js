@@ -1388,9 +1388,6 @@ define({
   "ACCOUNT_DETAILS": "Konta informācija",
   "AI_QUOTA_USED": "Izmantotā AI kvota",
   "LOGIN_REFRESH": "Pārbaudīt pieteikšanās statusu",
-  "CUSTOM_SNIPPETS_CANCEL": "Atcelt",
-  "CUSTOM_SNIPPETS_SAVE": "Saglabāt",
-  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Nav apraksta",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Pielāgoti fragmenti…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Pielāgoti fragmenti",
   "CUSTOM_SNIPPETS_ADD_NEW_TITLE": "Pievienot jaunu fragmentu",
@@ -1403,6 +1400,9 @@ define({
   "CUSTOM_SNIPPETS_TEMPLATE_TEXT_LABEL": "Veidnes teksts:",
   "CUSTOM_SNIPPETS_DESCRIPTION_LABEL": "Apraksts:",
   "CUSTOM_SNIPPETS_FILE_EXTENSION_LABEL": "Faila paplašinājums:",
+  "CUSTOM_SNIPPETS_CANCEL": "Atcelt",
+  "CUSTOM_SNIPPETS_SAVE": "Saglabāt",
+  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Nav apraksta",
   "CUSTOM_SNIPPETS_NO_MATCHES": "Nav fragmentu, kas atbilst \"{0}\"",
   "CUSTOM_SNIPPETS_LEARN_MORE": "Pievienojiet savus koda padomus, lai paātrinātu kodēšanu - <a href=\"https://docs.phcode.dev\" target=\"_blank\">Uzzināt vairāk</a>",
   "CUSTOM_SNIPPETS_DUPLICATE_ERROR": "Fragments ar abreviatūru \"{0}\" jau pastāv.",
@@ -1425,5 +1425,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Saīsinājums",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Veidnes teksts",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Apraksts",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Faila paplašinājums"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Faila paplašinājums",
+  "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Pievienot fragmentu",
+  "CUSTOM_SNIPPETS_EDIT_PANEL_TITLE": "Rediģēt fragmentu"
 });

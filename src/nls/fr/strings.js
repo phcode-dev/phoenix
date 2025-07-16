@@ -1388,9 +1388,6 @@ define({
   "ACCOUNT_DETAILS": "Détails du compte",
   "AI_QUOTA_USED": "Quota IA utilisé",
   "LOGIN_REFRESH": "Vérifier l'état de la connexion",
-  "CUSTOM_SNIPPETS_CANCEL": "Annuler",
-  "CUSTOM_SNIPPETS_SAVE": "Enregistrer",
-  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Aucune description",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Extraits personnalisés…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Extraits personnalisés",
   "CUSTOM_SNIPPETS_ADD_NEW_TITLE": "Ajouter un extrait",
@@ -1403,6 +1400,9 @@ define({
   "CUSTOM_SNIPPETS_TEMPLATE_TEXT_LABEL": "Texte du modèle :",
   "CUSTOM_SNIPPETS_DESCRIPTION_LABEL": "Description :",
   "CUSTOM_SNIPPETS_FILE_EXTENSION_LABEL": "Extension du fichier :",
+  "CUSTOM_SNIPPETS_CANCEL": "Annuler",
+  "CUSTOM_SNIPPETS_SAVE": "Enregistrer",
+  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Aucune description",
   "CUSTOM_SNIPPETS_NO_MATCHES": "Aucun extrait ne correspond à « {0} »",
   "CUSTOM_SNIPPETS_LEARN_MORE": "Ajoutez vos propres conseils de code pour accélérer le codage - <a href=\"https://docs.phcode.dev\" target=\"_blank\">En savoir plus</a>",
   "CUSTOM_SNIPPETS_DUPLICATE_ERROR": "Un extrait avec l'abréviation « {0} » existe déjà.",
@@ -1425,5 +1425,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Abréviation",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Texte du modèle",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Description",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extension de fichier"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extension de fichier",
+  "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Ajouter un extrait de code",
+  "CUSTOM_SNIPPETS_EDIT_PANEL_TITLE": "Modifier un extrait de code"
 });

@@ -1388,9 +1388,6 @@ define({
   "ACCOUNT_DETAILS": "Подаци о налогу",
   "AI_QUOTA_USED": "Искоришћена AI квота",
   "LOGIN_REFRESH": "Провери статус пријаве",
-  "CUSTOM_SNIPPETS_CANCEL": "Откажи",
-  "CUSTOM_SNIPPETS_SAVE": "Сачувај",
-  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Не постоји опис",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Кориснички исечци…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Кориснички исечци",
   "CUSTOM_SNIPPETS_ADD_NEW_TITLE": "Додај нови исечак",
@@ -1403,6 +1400,9 @@ define({
   "CUSTOM_SNIPPETS_TEMPLATE_TEXT_LABEL": "Текст шаблона:",
   "CUSTOM_SNIPPETS_DESCRIPTION_LABEL": "Опис:",
   "CUSTOM_SNIPPETS_FILE_EXTENSION_LABEL": "Екстензија датотеке:",
+  "CUSTOM_SNIPPETS_CANCEL": "Откажи",
+  "CUSTOM_SNIPPETS_SAVE": "Сачувај",
+  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Не постоји опис",
   "CUSTOM_SNIPPETS_NO_MATCHES": "Нема фрагмената кода који одговарају \"{0}\"",
   "CUSTOM_SNIPPETS_LEARN_MORE": "Додајте сопствене фрагменте кода да бисте убрзали кодирање - <a href=\"https://docs.phcode.dev\" target=\"_blank\">Сазнајте више</a>",
   "CUSTOM_SNIPPETS_DUPLICATE_ERROR": "Фрагмент кода са скраћеницом \"{0}\" већ постоји.",
@@ -1425,5 +1425,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Скраћеница",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Текст шаблона",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Опис",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Екстензија датотеке"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Екстензија датотеке",
+  "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Додај исечак",
+  "CUSTOM_SNIPPETS_EDIT_PANEL_TITLE": "Измени исечак"
 });

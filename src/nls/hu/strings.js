@@ -1388,9 +1388,6 @@ define({
   "ACCOUNT_DETAILS": "Fiókadatok",
   "AI_QUOTA_USED": "Felhasznált MI-kvóta",
   "LOGIN_REFRESH": "Bejelentkezés állapotának ellenőrzése",
-  "CUSTOM_SNIPPETS_CANCEL": "Mégsem",
-  "CUSTOM_SNIPPETS_SAVE": "Mentés",
-  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Nincs leírás",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Egyéni kódrészletek…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Egyéni kódrészletek",
   "CUSTOM_SNIPPETS_ADD_NEW_TITLE": "Új kódrészlet hozzáadása",
@@ -1403,6 +1400,9 @@ define({
   "CUSTOM_SNIPPETS_TEMPLATE_TEXT_LABEL": "Sablon szövege:",
   "CUSTOM_SNIPPETS_DESCRIPTION_LABEL": "Leírás:",
   "CUSTOM_SNIPPETS_FILE_EXTENSION_LABEL": "Fájlkiterjesztés:",
+  "CUSTOM_SNIPPETS_CANCEL": "Mégsem",
+  "CUSTOM_SNIPPETS_SAVE": "Mentés",
+  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Nincs leírás",
   "CUSTOM_SNIPPETS_NO_MATCHES": "Nincsenek „{0}” kifejezésre illeszkedő kódrészletek.",
   "CUSTOM_SNIPPETS_LEARN_MORE": "Hozz létre saját kódrészleteket a gyorsabb kódolásért - <a href=\"https://docs.phcode.dev\" target=\"_blank\">Tudj meg többet</a>",
   "CUSTOM_SNIPPETS_DUPLICATE_ERROR": "Már létezik egy „{0}” rövidítésű kódrészlet.",
@@ -1425,5 +1425,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Rövidítés",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Sablonszöveg",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Leírás",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Fájlkiterjesztés"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Fájlkiterjesztés",
+  "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Kódrészlet hozzáadása",
+  "CUSTOM_SNIPPETS_EDIT_PANEL_TITLE": "Kódrészlet szerkesztése"
 });

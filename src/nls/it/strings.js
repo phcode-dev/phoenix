@@ -1388,9 +1388,6 @@ define({
   "ACCOUNT_DETAILS": "Dettagli account",
   "AI_QUOTA_USED": "Quota IA utilizzata",
   "LOGIN_REFRESH": "Verifica stato accesso",
-  "CUSTOM_SNIPPETS_CANCEL": "Annulla",
-  "CUSTOM_SNIPPETS_SAVE": "Salva",
-  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Nessuna descrizione",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Frammenti personalizzati…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Frammenti personalizzati",
   "CUSTOM_SNIPPETS_ADD_NEW_TITLE": "Aggiungi nuovo frammento",
@@ -1403,6 +1400,9 @@ define({
   "CUSTOM_SNIPPETS_TEMPLATE_TEXT_LABEL": "Testo del modello:",
   "CUSTOM_SNIPPETS_DESCRIPTION_LABEL": "Descrizione:",
   "CUSTOM_SNIPPETS_FILE_EXTENSION_LABEL": "Estensione file:",
+  "CUSTOM_SNIPPETS_CANCEL": "Annulla",
+  "CUSTOM_SNIPPETS_SAVE": "Salva",
+  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Nessuna descrizione",
   "CUSTOM_SNIPPETS_NO_MATCHES": "Nessuno snippet corrisponde a \"{0}\"",
   "CUSTOM_SNIPPETS_LEARN_MORE": "Aggiungi i tuoi suggerimenti di codice per velocizzare la programmazione - <a href=\"https://docs.phcode.dev\" target=\"_blank\">Scopri di più</a>",
   "CUSTOM_SNIPPETS_DUPLICATE_ERROR": "Esiste già uno snippet con l'abbreviazione \"{0}\".",
@@ -1425,5 +1425,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Abbreviazione",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Testo del Modello",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Descrizione",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Estensione del File"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Estensione del File",
+  "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Aggiungi snippet",
+  "CUSTOM_SNIPPETS_EDIT_PANEL_TITLE": "Modifica snippet"
 });

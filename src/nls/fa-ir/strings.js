@@ -1388,9 +1388,6 @@ define({
   "ACCOUNT_DETAILS": "جزئیات حساب کاربری",
   "AI_QUOTA_USED": "سهمیه هوش مصنوعی استفاده شده",
   "LOGIN_REFRESH": "بررسی وضعیت ورود",
-  "CUSTOM_SNIPPETS_CANCEL": "لغو",
-  "CUSTOM_SNIPPETS_SAVE": "ذخیره",
-  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "بدون شرح",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "قطعه‌کدهای سفارشی…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "قطعه‌کدهای سفارشی",
   "CUSTOM_SNIPPETS_ADD_NEW_TITLE": "افزودن قطعه‌کد جدید",
@@ -1403,6 +1400,9 @@ define({
   "CUSTOM_SNIPPETS_TEMPLATE_TEXT_LABEL": "متن الگو:",
   "CUSTOM_SNIPPETS_DESCRIPTION_LABEL": "شرح:",
   "CUSTOM_SNIPPETS_FILE_EXTENSION_LABEL": "پسوند فایل:",
+  "CUSTOM_SNIPPETS_CANCEL": "لغو",
+  "CUSTOM_SNIPPETS_SAVE": "ذخیره",
+  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "بدون شرح",
   "CUSTOM_SNIPPETS_NO_MATCHES": "هیچ قطعه کدی با \"{0}\" مطابقت ندارد.",
   "CUSTOM_SNIPPETS_LEARN_MORE": "подсказки کد خود را اضافه کنید تا سرعت کدنویسی را افزایش دهید - <a href=\"https://docs.phcode.dev\" target=\"_blank\">بیشتر بدانید</a>",
   "CUSTOM_SNIPPETS_DUPLICATE_ERROR": "قطعه کدی با مخفف \"{0}\" از قبل وجود دارد.",
@@ -1425,5 +1425,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "مخفف",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "متن الگو",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "توضیحات",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "پسوند فایل"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "پسوند فایل",
+  "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "افزودن قطعه کد",
+  "CUSTOM_SNIPPETS_EDIT_PANEL_TITLE": "ویرایش قطعه کد"
 });

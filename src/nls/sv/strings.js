@@ -1388,9 +1388,6 @@ define({
   "ACCOUNT_DETAILS": "Kontodetaljer",
   "AI_QUOTA_USED": "Använd AI-kvot",
   "LOGIN_REFRESH": "Kontrollera inloggningsstatus",
-  "CUSTOM_SNIPPETS_CANCEL": "Avbryt",
-  "CUSTOM_SNIPPETS_SAVE": "Spara",
-  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Ingen beskrivning",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Anpassade kodsnuttar…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Anpassade kodsnuttar",
   "CUSTOM_SNIPPETS_ADD_NEW_TITLE": "Lägg till ny kodsnutt",
@@ -1403,6 +1400,9 @@ define({
   "CUSTOM_SNIPPETS_TEMPLATE_TEXT_LABEL": "Malltext:",
   "CUSTOM_SNIPPETS_DESCRIPTION_LABEL": "Beskrivning:",
   "CUSTOM_SNIPPETS_FILE_EXTENSION_LABEL": "Filändelse:",
+  "CUSTOM_SNIPPETS_CANCEL": "Avbryt",
+  "CUSTOM_SNIPPETS_SAVE": "Spara",
+  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Ingen beskrivning",
   "CUSTOM_SNIPPETS_NO_MATCHES": "Inga snippets matchar \"{0}\"",
   "CUSTOM_SNIPPETS_LEARN_MORE": "Lägg till dina egna kodförslag för att snabba upp kodningen - <a href=\"https://docs.phcode.dev\" target=\"_blank\">Läs mer</a>",
   "CUSTOM_SNIPPETS_DUPLICATE_ERROR": "Ett snippet med förkortningen \"{0}\" finns redan.",
@@ -1425,5 +1425,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Förkortning",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Malltext",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Beskrivning",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Filändelse"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Filändelse",
+  "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Lägg till snippet",
+  "CUSTOM_SNIPPETS_EDIT_PANEL_TITLE": "Redigera snippet"
 });

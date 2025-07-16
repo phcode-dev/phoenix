@@ -1388,9 +1388,6 @@ define({
   "ACCOUNT_DETAILS": "Στοιχεία Λογαριασμού",
   "AI_QUOTA_USED": "Χρήση ποσοστού AI",
   "LOGIN_REFRESH": "Έλεγχος Κατάστασης Σύνδεσης",
-  "CUSTOM_SNIPPETS_CANCEL": "Ακύρωση",
-  "CUSTOM_SNIPPETS_SAVE": "Αποθήκευση",
-  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Δεν υπάρχει περιγραφή",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Προσαρμοσμένα αποσπάσματα…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Προσαρμοσμένα αποσπάσματα",
   "CUSTOM_SNIPPETS_ADD_NEW_TITLE": "Προσθήκη νέου αποσπάσματος",
@@ -1403,6 +1400,9 @@ define({
   "CUSTOM_SNIPPETS_TEMPLATE_TEXT_LABEL": "Κείμενο Προτύπου:",
   "CUSTOM_SNIPPETS_DESCRIPTION_LABEL": "Περιγραφή:",
   "CUSTOM_SNIPPETS_FILE_EXTENSION_LABEL": "Επέκταση Αρχείου:",
+  "CUSTOM_SNIPPETS_CANCEL": "Ακύρωση",
+  "CUSTOM_SNIPPETS_SAVE": "Αποθήκευση",
+  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Δεν υπάρχει περιγραφή",
   "CUSTOM_SNIPPETS_NO_MATCHES": "Δεν υπάρχουν αποσπάσματα κώδικα που να ταιριάζουν με \"{0}\"",
   "CUSTOM_SNIPPETS_LEARN_MORE": "Προσθέστε τις δικές σας υποδείξεις κώδικα για να επιταχύνετε τον προγραμματισμό - <a href=\"https://docs.phcode.dev\" target=\"_blank\">Μάθετε Περισσότερα</a>",
   "CUSTOM_SNIPPETS_DUPLICATE_ERROR": "Ένα απόσπασμα κώδικα με συντομογραφία \"{0}\" υπάρχει ήδη.",
@@ -1425,5 +1425,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Συντομογραφία",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Κείμενο Προτύπου",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Περιγραφή",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Επέκταση Αρχείου"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Επέκταση Αρχείου",
+  "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Προσθήκη Αποσπάσματος",
+  "CUSTOM_SNIPPETS_EDIT_PANEL_TITLE": "Επεξεργασία Αποσπάσματος"
 });

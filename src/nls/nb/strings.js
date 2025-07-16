@@ -1388,9 +1388,6 @@ define({
   "ACCOUNT_DETAILS": "Kontodetaljer",
   "AI_QUOTA_USED": "AI-kvote brukt",
   "LOGIN_REFRESH": "Sjekk innloggingsstatus",
-  "CUSTOM_SNIPPETS_CANCEL": "Avbryt",
-  "CUSTOM_SNIPPETS_SAVE": "Lagre",
-  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Ingen beskrivelse",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Egendefinerte kodesnutter…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Egendefinerte kodesnutter",
   "CUSTOM_SNIPPETS_ADD_NEW_TITLE": "Legg til ny kodesnutt",
@@ -1403,6 +1400,9 @@ define({
   "CUSTOM_SNIPPETS_TEMPLATE_TEXT_LABEL": "Maltekst:",
   "CUSTOM_SNIPPETS_DESCRIPTION_LABEL": "Beskrivelse:",
   "CUSTOM_SNIPPETS_FILE_EXTENSION_LABEL": "Filtype:",
+  "CUSTOM_SNIPPETS_CANCEL": "Avbryt",
+  "CUSTOM_SNIPPETS_SAVE": "Lagre",
+  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Ingen beskrivelse",
   "CUSTOM_SNIPPETS_NO_MATCHES": "Ingen snutter samsvarer med \"{0}\"",
   "CUSTOM_SNIPPETS_LEARN_MORE": "Legg til dine egne kodehint for raskere koding - <a href=\"https://docs.phcode.dev\" target=\"_blank\">Lær mer</a>",
   "CUSTOM_SNIPPETS_DUPLICATE_ERROR": "En snutt med forkortelsen \"{0}\" finnes allerede.",
@@ -1425,5 +1425,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Forkortelse",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Maltekst",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Beskrivelse",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Filtype"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Filtype",
+  "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Legg til snutt",
+  "CUSTOM_SNIPPETS_EDIT_PANEL_TITLE": "Rediger snutt"
 });

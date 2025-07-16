@@ -1388,9 +1388,6 @@ define({
   "ACCOUNT_DETAILS": "Podaci o računu",
   "AI_QUOTA_USED": "Iskorištena AI kvota",
   "LOGIN_REFRESH": "Provjeri status prijave",
-  "CUSTOM_SNIPPETS_CANCEL": "Otkaži",
-  "CUSTOM_SNIPPETS_SAVE": "Sačuvaj",
-  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Nema opisa",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Prilagođeni isječci…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Prilagođeni isječci",
   "CUSTOM_SNIPPETS_ADD_NEW_TITLE": "Dodaj novi isječak",
@@ -1403,6 +1400,9 @@ define({
   "CUSTOM_SNIPPETS_TEMPLATE_TEXT_LABEL": "Tekst predloška:",
   "CUSTOM_SNIPPETS_DESCRIPTION_LABEL": "Opis:",
   "CUSTOM_SNIPPETS_FILE_EXTENSION_LABEL": "Ekstenzija datoteke:",
+  "CUSTOM_SNIPPETS_CANCEL": "Otkaži",
+  "CUSTOM_SNIPPETS_SAVE": "Sačuvaj",
+  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Nema opisa",
   "CUSTOM_SNIPPETS_NO_MATCHES": "Nema isječaka koji odgovaraju \"{0}\"",
   "CUSTOM_SNIPPETS_LEARN_MORE": "Dodajte vlastite savjete za kod kako biste ubrzali kodiranje - <a href=\"https://docs.phcode.dev\" target=\"_blank\">Saznajte više</a>",
   "CUSTOM_SNIPPETS_DUPLICATE_ERROR": "Isječak s kraticom \"{0}\" već postoji.",
@@ -1425,5 +1425,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Kratica",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Tekst predloška",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Opis",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Ekstenzija datoteke"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Ekstenzija datoteke",
+  "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Dodaj isječak koda",
+  "CUSTOM_SNIPPETS_EDIT_PANEL_TITLE": "Uredi isječak koda"
 });

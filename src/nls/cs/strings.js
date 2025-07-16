@@ -1388,9 +1388,6 @@ define({
   "ACCOUNT_DETAILS": "Detaily účtu",
   "AI_QUOTA_USED": "Vyčerpána kvóta pro AI",
   "LOGIN_REFRESH": "Zkontrolovat stav přihlášení",
-  "CUSTOM_SNIPPETS_CANCEL": "Zrušit",
-  "CUSTOM_SNIPPETS_SAVE": "Uložit",
-  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Bez popisu",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Vlastní úryvky…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Vlastní úryvky",
   "CUSTOM_SNIPPETS_ADD_NEW_TITLE": "Přidat nový úryvek",
@@ -1403,6 +1400,9 @@ define({
   "CUSTOM_SNIPPETS_TEMPLATE_TEXT_LABEL": "Text šablony:",
   "CUSTOM_SNIPPETS_DESCRIPTION_LABEL": "Popis:",
   "CUSTOM_SNIPPETS_FILE_EXTENSION_LABEL": "Přípona souboru:",
+  "CUSTOM_SNIPPETS_CANCEL": "Zrušit",
+  "CUSTOM_SNIPPETS_SAVE": "Uložit",
+  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Bez popisu",
   "CUSTOM_SNIPPETS_NO_MATCHES": "Žádný úryvek neodpovídá \"{0}\"",
   "CUSTOM_SNIPPETS_LEARN_MORE": "Přidejte si vlastní nápovědy kódu pro rychlejší kódování - <a href=\"https://docs.phcode.dev\" target=\"_blank\">Více informací</a>",
   "CUSTOM_SNIPPETS_DUPLICATE_ERROR": "Úryvek se zkratkou \"{0}\" již existuje.",
@@ -1425,5 +1425,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Zkratka",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Text šablony",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Popis",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Přípona souboru"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Přípona souboru",
+  "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Přidat úryvek",
+  "CUSTOM_SNIPPETS_EDIT_PANEL_TITLE": "Upravit úryvek"
 });
