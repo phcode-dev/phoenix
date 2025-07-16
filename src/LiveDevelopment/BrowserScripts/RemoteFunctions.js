@@ -30,6 +30,9 @@
  */
 function RemoteFunctions(config) {
 
+    // this is responsible to make the advanced DOM features active or inactive
+    // TODO: give this var a better name
+    let isFlagActive = true;
 
     var experimental;
     if (!config) {
@@ -210,6 +213,98 @@ function RemoteFunctions(config) {
             window.document.removeEventListener("click", this.remove);
         }
 
+    };
+
+    /**
+     * This is for the advanced DOM options that appears when a DOM element is clicked
+     * advanced options like: 'select parent', 'duplicate', 'delete'
+     */
+    function NodeMoreOptionsBox(element) {
+        this.element = element;
+        this.remove = this.remove.bind(this);
+        this.create();
+    }
+
+    NodeMoreOptionsBox.prototype = {
+        create: function() {
+            // Remove existing more options box if any
+            this.remove();
+
+            // compute the position on screen (this gives us the left and the top offset)
+            var offset = _screenOffset(this.element);
+            // we need to fetch the height & width of the element to place the box at the correct position
+            var elementSize = this.element.getBoundingClientRect();
+
+            // for styling the svg's
+            if (!document.getElementById("node-more-options-style")) {
+                const style = document.createElement("style");
+                style.id = "node-more-options-style";
+                style.textContent = `
+                    .node-options span > svg {
+                        width: 16px;
+                        height: 16px;
+                        display: block;
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+
+            // create the container
+            this.body = window.document.createElement("div");
+            this.body.style.setProperty("z-index", 2147483647);
+            this.body.style.setProperty("position", "fixed");
+            this.body.style.setProperty("left", (offset.left + (elementSize.width - 40)) + "px");
+            this.body.style.setProperty("top", (offset.top - 30 < 0 ? offset.top + this.element.offsetHeight + 5 : offset.top - 30) + "px");
+            this.body.style.setProperty("font-size", "12px");
+            this.body.style.setProperty("font-family", "Arial, sans-serif");
+
+            // style the box with a blue background. this will appear on the right side of the clicked DOM element
+            this.body.style.setProperty("background", "#4285F4");
+            this.body.style.setProperty("color", "white");
+            this.body.style.setProperty("border-radius", "3px");
+            this.body.style.setProperty("padding", "5px 8px");
+            this.body.style.setProperty("box-shadow", "0 2px 5px rgba(0,0,0,0.2)");
+            this.body.style.setProperty("max-width", "82px");
+            this.body.style.setProperty("width", "82px");
+            this.body.style.setProperty("pointer-events", "none");
+
+            const ICONS = {
+                arrowUp: `<svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.59 5.58L20 12l-8-8-8 8z"/>
+                </svg>`,
+
+                copy: `<svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                </svg>`,
+
+                trash: `<svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M6 7V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2h3v2h-2l-1.5 12.5a2 2 0 0 1-2 1.5H8.5a2 2 0 0 1-2-1.5L5 9H3V7h3zm2 0h8V5H8v2z"/>
+                </svg>`
+            };
+
+            let content = `<div class="node-options" style="display: flex; gap: 8px; align-items: center;">
+                <span style="cursor: pointer; display: flex; align-items: center;" data-action="select-parent" title="Select Parent">
+                    ${ICONS.arrowUp}
+                </span>
+                <span style="cursor: pointer; display: flex; align-items: center;" data-action="duplicate" title="Duplicate">
+                    ${ICONS.copy}
+                </span>
+                <span style="cursor: pointer; display: flex; align-items: center;" data-action="delete" title="Delete">
+                    ${ICONS.trash}
+                </span>
+            </div>`;
+
+
+            this.body.innerHTML = content;
+            window.document.body.appendChild(this.body);
+        },
+
+        remove: function() {
+            if (this.body && this.body.parentNode) {
+                window.document.body.removeChild(this.body);
+                this.body = null;
+            }
+        }
     };
 
     // Node info box to display DOM node ID and classes on hover
@@ -640,6 +735,7 @@ function RemoteFunctions(config) {
     var _hoverHighlight;
     var _clickHighlight;
     var _nodeInfoBox;
+    var _nodeMoreOptionsBox;
     var _setup = false;
 
 
@@ -710,15 +806,20 @@ function RemoteFunctions(config) {
         }
     }
 
+    /**
+     * This function handles the click event on the live preview DOM element
+     * it is to show the advanced DOM manipulation options in the live preview
+     * @param {Event} event
+     */
     function onClick(event) {
-        if (_validEvent(event)) {
-            event.preventDefault();
-            event.stopPropagation();
-            if (event.altKey) {
-                _toggleEditor(event.target);
-            } else {
-                _toggleMenu(event.target);
+        // make sure that the feature is enabled and also the clicked element has the attribute 'data-brackets-id'
+        if(isFlagActive && event.target.hasAttribute('data-brackets-id')) {
+            console.log("event:", event);
+            if(_nodeMoreOptionsBox) {
+                _nodeMoreOptionsBox.remove();
+                _nodeMoreOptionsBox = null;
             }
+            _nodeMoreOptionsBox = new NodeMoreOptionsBox(event.target);
         }
     }
 
@@ -1247,6 +1348,7 @@ function RemoteFunctions(config) {
     // Add event listeners for hover
     window.document.addEventListener("mouseover", onElementHover);
     window.document.addEventListener("mouseout", onElementHoverOut);
+    window.document.addEventListener("click", onClick);
 
     if (experimental) {
         window.document.addEventListener("keydown", onKeyDown);
