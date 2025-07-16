@@ -1388,8 +1388,6 @@ define({
   "ACCOUNT_DETAILS": "Hesap Ayrıntıları",
   "AI_QUOTA_USED": "Yapay Zeka kotası kullanıldı",
   "LOGIN_REFRESH": "Oturum Durumunu Kontrol Et",
-  "CUSTOM_SNIPPETS_CANCEL": "İptal",
-  "CUSTOM_SNIPPETS_SAVE": "Kaydet",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Özel Parçacıklar…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Özel Parçacıklar",
   "CUSTOM_SNIPPETS_ADD_NEW_TITLE": "Yeni parçacık ekle",
@@ -1402,6 +1400,8 @@ define({
   "CUSTOM_SNIPPETS_TEMPLATE_TEXT_LABEL": "Şablon Metni:",
   "CUSTOM_SNIPPETS_DESCRIPTION_LABEL": "Açıklama:",
   "CUSTOM_SNIPPETS_FILE_EXTENSION_LABEL": "Dosya Uzantısı:",
+  "CUSTOM_SNIPPETS_CANCEL": "İptal",
+  "CUSTOM_SNIPPETS_SAVE": "Kaydet",
   "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Açıklama yok",
   "CUSTOM_SNIPPETS_NO_MATCHES": "\"{0}\" ile eşleşen snippet yok",
   "CUSTOM_SNIPPETS_LEARN_MORE": "Kodlamayı hızlandırmak için kendi kod ipuçlarınızı ekleyin - <a href=\"https://docs.phcode.dev\" target=\"_blank\">Daha Fazla Bilgi Edinin</a>",
@@ -1425,5 +1425,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Kısaltma",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Şablon Metni",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Açıklama",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Dosya Uzantısı"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Dosya Uzantısı",
+  "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Parça Ekle",
+  "CUSTOM_SNIPPETS_EDIT_PANEL_TITLE": "Parçayı Düzenle"
 });

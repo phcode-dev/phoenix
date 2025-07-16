@@ -1388,9 +1388,6 @@ define({
   "ACCOUNT_DETAILS": "Detalles da conta",
   "AI_QUOTA_USED": "Cota de IA usada",
   "LOGIN_REFRESH": "Comprobar o estado do inicio de sesión",
-  "CUSTOM_SNIPPETS_CANCEL": "Cancelar",
-  "CUSTOM_SNIPPETS_SAVE": "Gardar",
-  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Sen descripción",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Fragmentos personalizados…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Fragmentos personalizados",
   "CUSTOM_SNIPPETS_ADD_NEW_TITLE": "Engadir novo fragmento",
@@ -1403,6 +1400,9 @@ define({
   "CUSTOM_SNIPPETS_TEMPLATE_TEXT_LABEL": "Texto do modelo:",
   "CUSTOM_SNIPPETS_DESCRIPTION_LABEL": "Descrición:",
   "CUSTOM_SNIPPETS_FILE_EXTENSION_LABEL": "Extensión de ficheiro:",
+  "CUSTOM_SNIPPETS_CANCEL": "Cancelar",
+  "CUSTOM_SNIPPETS_SAVE": "Gardar",
+  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Sen descripción",
   "CUSTOM_SNIPPETS_NO_MATCHES": "Non hai fragmentos que coincidan con \"{0}\"",
   "CUSTOM_SNIPPETS_LEARN_MORE": "Engade as túas propias suxestións de código para acelerar a codificación - <a href=\"https://docs.phcode.dev\" target=\"_blank\">Máis información</a>",
   "CUSTOM_SNIPPETS_DUPLICATE_ERROR": "Xa existe un fragmento coa abreviatura \"{0}\".",
@@ -1425,5 +1425,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Abreviatura",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Texto do modelo",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Descrición",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extensión de ficheiro"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extensión de ficheiro",
+  "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Engadir Fragmento",
+  "CUSTOM_SNIPPETS_EDIT_PANEL_TITLE": "Editar Fragmento"
 });

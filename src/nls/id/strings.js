@@ -1388,9 +1388,6 @@ define({
   "ACCOUNT_DETAILS": "Detail Akun",
   "AI_QUOTA_USED": "Kuota AI terpakai",
   "LOGIN_REFRESH": "Periksa Status Login",
-  "CUSTOM_SNIPPETS_CANCEL": "Batal",
-  "CUSTOM_SNIPPETS_SAVE": "Simpan",
-  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Tanpa keterangan",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Cuplikan Kustom…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Cuplikan Kustom",
   "CUSTOM_SNIPPETS_ADD_NEW_TITLE": "Tambah cuplikan baru",
@@ -1403,6 +1400,9 @@ define({
   "CUSTOM_SNIPPETS_TEMPLATE_TEXT_LABEL": "Teks Template:",
   "CUSTOM_SNIPPETS_DESCRIPTION_LABEL": "Deskripsi:",
   "CUSTOM_SNIPPETS_FILE_EXTENSION_LABEL": "Ekstensi Berkas:",
+  "CUSTOM_SNIPPETS_CANCEL": "Batal",
+  "CUSTOM_SNIPPETS_SAVE": "Simpan",
+  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Tanpa keterangan",
   "CUSTOM_SNIPPETS_NO_MATCHES": "Tidak ada cuplikan yang cocok dengan \"{0}\"",
   "CUSTOM_SNIPPETS_LEARN_MORE": "Tambahkan petunjuk kode Anda sendiri untuk mempercepat pengkodean - <a href=\"https://docs.phcode.dev\" target=\"_blank\">Pelajari Lebih Lanjut</a>",
   "CUSTOM_SNIPPETS_DUPLICATE_ERROR": "Cuplikan dengan singkatan \"{0}\" sudah ada.",
@@ -1425,5 +1425,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Singkatan",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Teks Templat",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Deskripsi",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Ekstensi Berkas"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Ekstensi Berkas",
+  "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Tambah Cuplikan",
+  "CUSTOM_SNIPPETS_EDIT_PANEL_TITLE": "Edit Cuplikan"
 });

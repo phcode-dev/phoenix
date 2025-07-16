@@ -1425,5 +1425,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "ചുരുക്കെഴുത്ത്",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "ടെംപ്ലേറ്റ് ടെക്സ്റ്റ്",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "വിവരണം",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "ഫയൽ എക്സ്റ്റൻഷൻ"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "ഫയൽ എക്സ്റ്റൻഷൻ",
+  "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "സ്നിപ്പറ്റ് ചേർക്കുക",
+  "CUSTOM_SNIPPETS_EDIT_PANEL_TITLE": "സ്നിപ്പറ്റ് എഡിറ്റ് ചെയ്യുക"
 });

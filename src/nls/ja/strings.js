@@ -1388,9 +1388,6 @@ define({
   "ACCOUNT_DETAILS": "アカウントの詳細",
   "AI_QUOTA_USED": "AI利用量",
   "LOGIN_REFRESH": "ログイン状態を確認",
-  "CUSTOM_SNIPPETS_CANCEL": "キャンセル",
-  "CUSTOM_SNIPPETS_SAVE": "保存",
-  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "説明なし",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "カスタムスニペット…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "カスタムスニペット",
   "CUSTOM_SNIPPETS_ADD_NEW_TITLE": "新しいスニペットを追加",
@@ -1403,6 +1400,9 @@ define({
   "CUSTOM_SNIPPETS_TEMPLATE_TEXT_LABEL": "テンプレートテキスト：",
   "CUSTOM_SNIPPETS_DESCRIPTION_LABEL": "説明：",
   "CUSTOM_SNIPPETS_FILE_EXTENSION_LABEL": "ファイル拡張子：",
+  "CUSTOM_SNIPPETS_CANCEL": "キャンセル",
+  "CUSTOM_SNIPPETS_SAVE": "保存",
+  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "説明なし",
   "CUSTOM_SNIPPETS_NO_MATCHES": "「{0}」に一致するスニペットはありません",
   "CUSTOM_SNIPPETS_LEARN_MORE": "コーディングをスピードアップするための独自のコードヒントを追加する - <a href=\"https://docs.phcode.dev\" target=\"_blank\">詳細はこちら</a>",
   "CUSTOM_SNIPPETS_DUPLICATE_ERROR": "略語「{0}」のスニペットは既に存在します。",
@@ -1425,5 +1425,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "略語",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "テンプレートテキスト",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "説明",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "ファイル拡張子"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "ファイル拡張子",
+  "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "スニペットを追加",
+  "CUSTOM_SNIPPETS_EDIT_PANEL_TITLE": "スニペットを編集"
 });

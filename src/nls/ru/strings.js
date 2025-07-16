@@ -1388,9 +1388,6 @@ define({
   "ACCOUNT_DETAILS": "Сведения об учетной записи",
   "AI_QUOTA_USED": "Использована квота ИИ",
   "LOGIN_REFRESH": "Проверить статус входа",
-  "CUSTOM_SNIPPETS_CANCEL": "Отмена",
-  "CUSTOM_SNIPPETS_SAVE": "Сохранить",
-  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Описание отсутвует",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Пользовательские сниппеты…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Пользовательские сниппеты",
   "CUSTOM_SNIPPETS_ADD_NEW_TITLE": "Добавить новый сниппет",
@@ -1403,6 +1400,9 @@ define({
   "CUSTOM_SNIPPETS_TEMPLATE_TEXT_LABEL": "Текст шаблона:",
   "CUSTOM_SNIPPETS_DESCRIPTION_LABEL": "Описание:",
   "CUSTOM_SNIPPETS_FILE_EXTENSION_LABEL": "Расширение файла:",
+  "CUSTOM_SNIPPETS_CANCEL": "Отмена",
+  "CUSTOM_SNIPPETS_SAVE": "Сохранить",
+  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Описание отсутвует",
   "CUSTOM_SNIPPETS_NO_MATCHES": "Нет фрагментов, соответствующих \"{0}\"",
   "CUSTOM_SNIPPETS_LEARN_MORE": "Добавьте свои собственные подсказки кода, чтобы ускорить кодирование - <a href=\"https://docs.phcode.dev\" target=\"_blank\">Узнать больше</a>",
   "CUSTOM_SNIPPETS_DUPLICATE_ERROR": "Фрагмент с аббревиатурой \"{0}\" уже существует.",
@@ -1425,5 +1425,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Сокращение",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Текст шаблона",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Описание",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Расширение файла"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Расширение файла",
+  "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Добавить фрагмент",
+  "CUSTOM_SNIPPETS_EDIT_PANEL_TITLE": "Редактировать фрагмент"
 });

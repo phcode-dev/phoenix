@@ -1388,9 +1388,6 @@ define({
   "ACCOUNT_DETAILS": "Detalii cont",
   "AI_QUOTA_USED": "Cotă AI utilizată",
   "LOGIN_REFRESH": "Verificare stare autentificare",
-  "CUSTOM_SNIPPETS_CANCEL": "Revocare",
-  "CUSTOM_SNIPPETS_SAVE": "Salvează",
-  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Nicio descriere",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Fragmente de cod personalizate…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Fragmente de cod personalizate",
   "CUSTOM_SNIPPETS_ADD_NEW_TITLE": "Adaugă fragment nou",
@@ -1403,6 +1400,9 @@ define({
   "CUSTOM_SNIPPETS_TEMPLATE_TEXT_LABEL": "Text șablon:",
   "CUSTOM_SNIPPETS_DESCRIPTION_LABEL": "Descriere:",
   "CUSTOM_SNIPPETS_FILE_EXTENSION_LABEL": "Extensie fișier:",
+  "CUSTOM_SNIPPETS_CANCEL": "Revocare",
+  "CUSTOM_SNIPPETS_SAVE": "Salvează",
+  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Nicio descriere",
   "CUSTOM_SNIPPETS_NO_MATCHES": "Niciun fragment de cod nu corespunde cu \"{0}\"",
   "CUSTOM_SNIPPETS_LEARN_MORE": "Adăugați propriile sugestii de cod pentru a scrie mai rapid - <a href=\"https://docs.phcode.dev\" target=\"_blank\">Aflați mai multe</a>",
   "CUSTOM_SNIPPETS_DUPLICATE_ERROR": "Există deja un fragment de cod cu abrevierea \"{0}\".",
@@ -1425,5 +1425,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Abreviere",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Text șablon",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Descriere",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extensie fișier"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extensie fișier",
+  "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Adaugă fragment de cod",
+  "CUSTOM_SNIPPETS_EDIT_PANEL_TITLE": "Editează fragment de cod"
 });

@@ -1388,9 +1388,6 @@ define({
   "ACCOUNT_DETAILS": "Данни за акаунта",
   "AI_QUOTA_USED": "Използвана AI квота",
   "LOGIN_REFRESH": "Проверка на състоянието за вход",
-  "CUSTOM_SNIPPETS_CANCEL": "Отказ",
-  "CUSTOM_SNIPPETS_SAVE": "Запазване",
-  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Няма описание",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Персонализирани фрагменти…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Персонализирани фрагменти",
   "CUSTOM_SNIPPETS_ADD_NEW_TITLE": "Добавяне на нов фрагмент",
@@ -1403,6 +1400,9 @@ define({
   "CUSTOM_SNIPPETS_TEMPLATE_TEXT_LABEL": "Текст на шаблона:",
   "CUSTOM_SNIPPETS_DESCRIPTION_LABEL": "Описание:",
   "CUSTOM_SNIPPETS_FILE_EXTENSION_LABEL": "Разширение на файла:",
+  "CUSTOM_SNIPPETS_CANCEL": "Отказ",
+  "CUSTOM_SNIPPETS_SAVE": "Запазване",
+  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Няма описание",
   "CUSTOM_SNIPPETS_NO_MATCHES": "Няма съвпадения за \"{0}\"",
   "CUSTOM_SNIPPETS_LEARN_MORE": "Добавете свои собствени подсказки за код, за да ускорите писането - <a href=\"https://docs.phcode.dev\" target=\"_blank\">Научете повече</a>",
   "CUSTOM_SNIPPETS_DUPLICATE_ERROR": "Вече съществува фрагмент с абревиатура \"{0}\".",
@@ -1425,5 +1425,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Съкращение",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Текст на шаблон",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Описание",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Разширение на файл"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Разширение на файл",
+  "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Добавяне на фрагмент",
+  "CUSTOM_SNIPPETS_EDIT_PANEL_TITLE": "Редактиране на фрагмент"
 });

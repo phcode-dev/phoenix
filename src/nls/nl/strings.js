@@ -1388,9 +1388,6 @@ define({
   "ACCOUNT_DETAILS": "Accountgegevens",
   "AI_QUOTA_USED": "Verbruikt AI-quotum",
   "LOGIN_REFRESH": "Aanmeldstatus controleren",
-  "CUSTOM_SNIPPETS_CANCEL": "Annuleren",
-  "CUSTOM_SNIPPETS_SAVE": "Opslaan",
-  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Geen beschrijving",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Aangepaste fragmenten…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Aangepaste fragmenten",
   "CUSTOM_SNIPPETS_ADD_NEW_TITLE": "Nieuw fragment toevoegen",
@@ -1403,6 +1400,9 @@ define({
   "CUSTOM_SNIPPETS_TEMPLATE_TEXT_LABEL": "Sjabloontekst:",
   "CUSTOM_SNIPPETS_DESCRIPTION_LABEL": "Beschrijving:",
   "CUSTOM_SNIPPETS_FILE_EXTENSION_LABEL": "Bestandsextensie:",
+  "CUSTOM_SNIPPETS_CANCEL": "Annuleren",
+  "CUSTOM_SNIPPETS_SAVE": "Opslaan",
+  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Geen beschrijving",
   "CUSTOM_SNIPPETS_NO_MATCHES": "Geen snippets gevonden voor \"{0}\"",
   "CUSTOM_SNIPPETS_LEARN_MORE": "Voeg je eigen codehints toe om sneller te coderen - <a href=\"https://docs.phcode.dev\" target=\"_blank\">Meer informatie</a>",
   "CUSTOM_SNIPPETS_DUPLICATE_ERROR": "Er bestaat al een snippet met de afkorting \"{0}\".",
@@ -1425,5 +1425,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Afkorting",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Sjabloontekst",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Beschrijving",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Bestandsextensie"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Bestandsextensie",
+  "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Fragment toevoegen",
+  "CUSTOM_SNIPPETS_EDIT_PANEL_TITLE": "Fragment bewerken"
 });

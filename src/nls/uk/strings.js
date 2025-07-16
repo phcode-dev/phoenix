@@ -1388,9 +1388,6 @@ define({
   "ACCOUNT_DETAILS": "Дані облікового запису",
   "AI_QUOTA_USED": "Використано квоту ШІ",
   "LOGIN_REFRESH": "Перевірити статус входу",
-  "CUSTOM_SNIPPETS_CANCEL": "Скасувати",
-  "CUSTOM_SNIPPETS_SAVE": "Зберегти",
-  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Опис відсутній",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Власні сніпети…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Власні сніпети",
   "CUSTOM_SNIPPETS_ADD_NEW_TITLE": "Додати новий сніпет",
@@ -1403,6 +1400,9 @@ define({
   "CUSTOM_SNIPPETS_TEMPLATE_TEXT_LABEL": "Текст шаблону:",
   "CUSTOM_SNIPPETS_DESCRIPTION_LABEL": "Опис:",
   "CUSTOM_SNIPPETS_FILE_EXTENSION_LABEL": "Розширення файлу:",
+  "CUSTOM_SNIPPETS_CANCEL": "Скасувати",
+  "CUSTOM_SNIPPETS_SAVE": "Зберегти",
+  "CUSTOM_SNIPPETS_NO_DESCRIPTION": "Опис відсутній",
   "CUSTOM_SNIPPETS_NO_MATCHES": "Немає сніпетів, що відповідають \"{0}\"",
   "CUSTOM_SNIPPETS_LEARN_MORE": "Додайте власні підказки коду, щоб пришвидшити кодування - <a href=\"https://docs.phcode.dev\" target=\"_blank\">Дізнатися більше</a>",
   "CUSTOM_SNIPPETS_DUPLICATE_ERROR": "Сніпет зі скороченням \"{0}\" вже існує.",
@@ -1425,5 +1425,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Скорочення",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Текст шаблону",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Опис",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Розширення файлу"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Розширення файлу",
+  "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Додати фрагмент коду",
+  "CUSTOM_SNIPPETS_EDIT_PANEL_TITLE": "Редагувати фрагмент коду"
 });
