@@ -215,6 +215,37 @@ function RemoteFunctions(config) {
 
     };
 
+    // TODO: need to implement
+    function _handleSelectParentOptionClick(e) {
+        console.log("handle select parent option button was clicked");
+    }
+
+    // TODO: need to implement
+    function _handleDuplicateOptionClick(e) {
+        console.log("handle duplicate option button was clicked");
+    }
+
+    // TODO: need to implement
+    function _handleDeleteOptionClick(e) {
+        console.log("handle delete option button was clicked");
+    }
+
+
+    /**
+     * This function will get triggered when from the multiple advance DOM buttons, one is clicked
+     * this function just checks which exact button was clicked and call the required function
+     * @param {Event} e
+     * @param {String} action - the data-action attribute to differentiate between buttons
+     */
+    function handleOptionClick(e, action) {
+        if (action === "select-parent") {
+            _handleSelectParentOptionClick(e);
+        } else if (action === "duplicate") {
+            _handleDuplicateOptionClick(e);
+        } else if (action === "delete") {
+            _handleDeleteOptionClick(e);
+        }
+    }
     /**
      * This is for the advanced DOM options that appears when a DOM element is clicked
      * advanced options like: 'select parent', 'duplicate', 'delete'
@@ -266,7 +297,6 @@ function RemoteFunctions(config) {
             this.body.style.setProperty("box-shadow", "0 2px 5px rgba(0,0,0,0.2)");
             this.body.style.setProperty("max-width", "82px");
             this.body.style.setProperty("width", "82px");
-            this.body.style.setProperty("pointer-events", "none");
 
             const ICONS = {
                 arrowUp: `<svg viewBox="0 0 24 24" fill="currentColor">
@@ -294,9 +324,20 @@ function RemoteFunctions(config) {
                 </span>
             </div>`;
 
-
             this.body.innerHTML = content;
             window.document.body.appendChild(this.body);
+
+            // add the click handler to all the buttons
+            const spans = this.body.querySelectorAll('.node-options span');
+            spans.forEach(span => {
+                // to differentiate between each button click we can use the data-action attribute
+                span.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    event.preventDefault();
+                    const action = event.currentTarget.getAttribute('data-action');
+                    handleOptionClick(event, action);
+                });
+            });
         },
 
         remove: function() {
@@ -766,9 +807,15 @@ function RemoteFunctions(config) {
         if (_hoverHighlight) {
             _hoverHighlight.clear();
 
-            // Skip highlighting for HTML and BODY tags
-            if (event.target && event.target.nodeType === Node.ELEMENT_NODE &&
-                event.target.tagName !== "HTML" && event.target.tagName !== "BODY") {
+            // Skip highlighting for HTML and BODY tags and for DOM elements which doesn't have 'data-brackets-id'
+            // NOTE: Don't remove 'data-brackets-id' check else hover will also target internal live preview elements
+            if (
+                event.target &&
+                event.target.nodeType === Node.ELEMENT_NODE &&
+                event.target.tagName !== "HTML" &&
+                event.target.tagName !== "BODY" &&
+                event.target.hasAttribute("data-brackets-id")
+            ) {
                 // Store original background color to restore on hover out
                 event.target._originalBackgroundColor = event.target.style.backgroundColor;
                 event.target.style.backgroundColor = "rgba(0, 162, 255, 0.2)";
@@ -814,7 +861,7 @@ function RemoteFunctions(config) {
     function onClick(event) {
         // make sure that the feature is enabled and also the clicked element has the attribute 'data-brackets-id'
         if(isFlagActive && event.target.hasAttribute('data-brackets-id')) {
-            console.log("event:", event);
+            //console.log("event:", event);
             if(_nodeMoreOptionsBox) {
                 _nodeMoreOptionsBox.remove();
                 _nodeMoreOptionsBox = null;
