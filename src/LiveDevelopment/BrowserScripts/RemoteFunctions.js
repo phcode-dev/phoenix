@@ -288,7 +288,9 @@ function RemoteFunctions(config) {
             this.body.style.setProperty("left", elemBounds.left + (elemBounds.width - 40) + "px");
             this.body.style.setProperty(
                 "top",
-                (elemBounds.top - 30 < 0 ? elemBounds.top + elemBounds.offsetHeight + 5 : elemBounds.top - 30) + "px"
+                // if there's not enough space to show the box above the element,
+                // we show it below the element
+                (elemBounds.top - 30 < 0 ? elemBounds.top + elemBounds.height + 5 : elemBounds.top - 30) + "px"
             );
             this.body.style.setProperty("font-size", "12px");
             this.body.style.setProperty("font-family", "Arial, sans-serif");
