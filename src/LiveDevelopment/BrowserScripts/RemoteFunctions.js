@@ -265,10 +265,7 @@ function RemoteFunctions(config) {
             // Remove existing more options box if any
             this.remove();
 
-            // compute the position on screen (this gives us the left and the top offset)
-            var offset = _screenOffset(this.element);
-            // we need to fetch the height & width of the element to place the box at the correct position
-            var elementSize = this.element.getBoundingClientRect();
+            let elemBounds = this.element.getBoundingClientRect();
 
             // for styling the svg's
             if (!document.getElementById("node-more-options-style")) {
@@ -288,8 +285,11 @@ function RemoteFunctions(config) {
             this.body = window.document.createElement("div");
             this.body.style.setProperty("z-index", 2147483647);
             this.body.style.setProperty("position", "fixed");
-            this.body.style.setProperty("left", (offset.left + (elementSize.width - 40)) + "px");
-            this.body.style.setProperty("top", (offset.top - 30 < 0 ? offset.top + this.element.offsetHeight + 5 : offset.top - 30) + "px");
+            this.body.style.setProperty("left", elemBounds.left + (elemBounds.width - 40) + "px");
+            this.body.style.setProperty(
+                "top",
+                (elemBounds.top - 30 < 0 ? elemBounds.top + elemBounds.offsetHeight + 5 : elemBounds.top - 30) + "px"
+            );
             this.body.style.setProperty("font-size", "12px");
             this.body.style.setProperty("font-family", "Arial, sans-serif");
 
