@@ -376,42 +376,23 @@ function RemoteFunctions(config) {
             // Remove existing info box if any
             this.remove();
 
-            // compute the position on screen
-            var offset = _screenOffset(this.element),
-                x = offset.left,
-                y = offset.top - 30; // Position above the element
+            // this value decides where we need to show the box in the UI
+            // we are creating this here, because if the element has IDs and Classes then we need to increase the value
+            // so that the box doesn't obscure the element
+            let pushBoxUp = 29; // px value
 
-            // create the container
-            this.body = window.document.createElement("div");
-            this.body.style.setProperty("z-index", 2147483647);
-            this.body.style.setProperty("position", "fixed");
-            this.body.style.setProperty("left", (offset.left) + "px");
-            this.body.style.setProperty("top", (offset.top - 30 < 0 ? offset.top + this.element.offsetHeight + 5 : offset.top - 30) + "px");
-            this.body.style.setProperty("font-size", "12px");
-            this.body.style.setProperty("font-family", "Arial, sans-serif");
+            // get the ID and classes for that element, as we need to display it in the box
+            const id = this.element.id;
+            const classes = this.element.className ? this.element.className.split(/\s+/).filter(Boolean) : [];
 
-            // Style the info box with a blue background
-            this.body.style.setProperty("background", "#4285F4");
-            this.body.style.setProperty("color", "white");
-            this.body.style.setProperty("border-radius", "3px");
-            this.body.style.setProperty("padding", "5px 8px");
-            this.body.style.setProperty("box-shadow", "0 2px 5px rgba(0,0,0,0.2)");
-            this.body.style.setProperty("max-width", "300px");
-            this.body.style.setProperty("pointer-events", "none"); // Make it non-interactive
-
-            // Get element ID and classes
-            var id = this.element.id;
-            var classes = this.element.className ? this.element.className.split(/\s+/).filter(Boolean) : [];
-
-            // Create content for the info box
-            var content = "";
-
-            // Add element tag name
+            let content = ""; // this will hold the main content that will be displayed
+            // add element tag name
             content += "<div style='font-weight: bold;'>" + this.element.tagName.toLowerCase() + "</div>";
 
             // Add ID if present
             if (id) {
                 content += "<div style='margin-top: 3px;'>#" + id + "</div>";
+                pushBoxUp += 17;
             }
 
             // Add classes (limit to 3 with dropdown indicator)
@@ -424,7 +405,42 @@ function RemoteFunctions(config) {
                     content += "<span style='opacity: 0.8;'>+" + (classes.length - 3) + " more</span>";
                 }
                 content += "</div>";
+
+                pushBoxUp += 17;
             }
+
+            // compute the position on screen
+            var offset = _screenOffset(this.element),
+                x = offset.left,
+                y = offset.top - 30; // Position above the element
+
+            let elemBounds = this.element.getBoundingClientRect();
+
+            console.log("elemBounds: ", elemBounds);
+
+            // create the container
+            this.body = window.document.createElement("div");
+            this.body.style.setProperty("z-index", 2147483647);
+            this.body.style.setProperty("position", "fixed");
+            this.body.style.setProperty("left", (offset.left) + "px");
+            this.body.style.setProperty(
+                "top",
+                // if there's not enough space to show the box above the element,
+                // we show it below the element
+                (elemBounds.top - pushBoxUp < 0 ? elemBounds.top + elemBounds.height + 5 : elemBounds.top - pushBoxUp) +
+                    "px"
+            );
+            this.body.style.setProperty("font-size", "12px");
+            this.body.style.setProperty("font-family", "Arial, sans-serif");
+
+            // Style the info box with a blue background
+            this.body.style.setProperty("background", "#4285F4");
+            this.body.style.setProperty("color", "white");
+            this.body.style.setProperty("border-radius", "3px");
+            this.body.style.setProperty("padding", "5px 8px");
+            this.body.style.setProperty("box-shadow", "0 2px 5px rgba(0,0,0,0.2)");
+            this.body.style.setProperty("max-width", "300px");
+            this.body.style.setProperty("pointer-events", "none"); // Make it non-interactive
 
             this.body.innerHTML = content;
             window.document.body.appendChild(this.body);
