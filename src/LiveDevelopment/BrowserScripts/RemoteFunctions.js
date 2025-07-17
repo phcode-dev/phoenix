@@ -871,19 +871,19 @@ function RemoteFunctions(config) {
                 _nodeMoreOptionsBox = null;
             }
 
-            // to remove the border styling from the previously clicked element
-            if(previouslyClickedElement) {
-                if(previouslyClickedElement._originalBorder !== undefined) {
-                    previouslyClickedElement.style.border = previouslyClickedElement._originalBorder;
-                    delete previouslyClickedElement._originalBorder;
+            // to remove the outline styling from the previously clicked element
+            if (previouslyClickedElement) {
+                if (previouslyClickedElement._originalOutline !== undefined) {
+                    previouslyClickedElement.style.outline = previouslyClickedElement._originalOutline;
+                    delete previouslyClickedElement._originalOutline;
                 } else {
-                    previouslyClickedElement.style.border = "";
+                    previouslyClickedElement.style.outline = "";
                 }
             }
 
             _nodeMoreOptionsBox = new NodeMoreOptionsBox(event.target);
-            event.target._originalBorder = event.target.style.border;
-            event.target.style.border = "1px solid #4285F4";
+            event.target._originalOutline = event.target.style.outline;
+            event.target.style.outline = "1px solid #4285F4";
             previouslyClickedElement = event.target; // add the current element to the previouslyClickedElement
         }
     }
