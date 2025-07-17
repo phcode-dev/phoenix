@@ -34,6 +34,10 @@ function RemoteFunctions(config) {
     // TODO: give this var a better name
     let isFlagActive = true;
 
+    // this will store the element that was clicked previously (before the new click)
+    // we need this so that we can remove click styling from the previous element when a new element is clicked
+    let previouslyClickedElement = null;
+
     var experimental;
     if (!config) {
         experimental = false;
@@ -866,7 +870,21 @@ function RemoteFunctions(config) {
                 _nodeMoreOptionsBox.remove();
                 _nodeMoreOptionsBox = null;
             }
+
+            // to remove the border styling from the previously clicked element
+            if(previouslyClickedElement) {
+                if(previouslyClickedElement._originalBorder !== undefined) {
+                    previouslyClickedElement.style.border = previouslyClickedElement._originalBorder;
+                    delete previouslyClickedElement._originalBorder;
+                } else {
+                    previouslyClickedElement.style.border = "";
+                }
+            }
+
             _nodeMoreOptionsBox = new NodeMoreOptionsBox(event.target);
+            event.target._originalBorder = event.target.style.border;
+            event.target.style.border = "1px solid #4285F4";
+            previouslyClickedElement = event.target; // add the current element to the previouslyClickedElement
         }
     }
 
