@@ -285,7 +285,17 @@ function RemoteFunctions(config) {
             this.body = window.document.createElement("div");
             this.body.style.setProperty("z-index", 2147483647);
             this.body.style.setProperty("position", "fixed");
-            this.body.style.setProperty("left", elemBounds.left + (elemBounds.width - 40) + "px");
+
+            // the more options box width
+            const boxWidth = 82 + 16; // 82px width + 8px padding on each side
+            let leftPos = elemBounds.left + (elemBounds.width - 40); // the potential left position
+            // make sure that box wouldn't go out of the viewport
+            const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+            if (leftPos + boxWidth > viewportWidth) {
+                leftPos = viewportWidth - boxWidth;
+            }
+
+            this.body.style.setProperty("left", leftPos + "px");
             this.body.style.setProperty(
                 "top",
                 // if there's not enough space to show the box above the element,
@@ -302,7 +312,7 @@ function RemoteFunctions(config) {
             this.body.style.setProperty("padding", "5px 8px");
             this.body.style.setProperty("box-shadow", "0 2px 5px rgba(0,0,0,0.2)");
             this.body.style.setProperty("max-width", "82px");
-            this.body.style.setProperty("width", "82px");
+            this.body.style.setProperty("width", "82px"); // if changing this, also update the boxWidth variable
 
             const ICONS = {
                 arrowUp: `<svg viewBox="0 0 24 24" fill="currentColor">
