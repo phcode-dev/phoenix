@@ -128,6 +128,8 @@
         }
     };
 
+    global._Brackets_MessageBroker = MessageBroker;
+
     /**
      * Runtime Domain. Implements remote commands for "Runtime.*"
      */
