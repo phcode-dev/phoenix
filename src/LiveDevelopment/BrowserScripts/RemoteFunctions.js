@@ -232,16 +232,16 @@ function RemoteFunctions(config) {
     /**
      * This function gets called when the delete button is clicked
      * it sends a message to the editor using postMessage to delete the element from the source code
-     * @param {Event} e
+     * @param {Event} event
      * @param {DOMElement} element - the HTML DOM element that was clicked. it is to get the data-brackets-id attribute
      */
-    function _handleDeleteOptionClick(e, element) {
+    function _handleDeleteOptionClick(event, element) {
         const tagId = element.getAttribute("data-brackets-id");
         if (tagId) {
             window._Brackets_MessageBroker.send({
                 livePreviewEditEnabled: true,
                 element: element,
-                event: e,
+                event: event,
                 tagId: tagId,
                 delete: true
             });
