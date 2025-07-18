@@ -166,7 +166,7 @@ define(function (require, exports, module) {
         }
         const allOpenFileCount = MainViewManager.getWorkingSetSize(MainViewManager.ALL_PANES);
         function selectInHTMLEditor(fullHtmlEditor) {
-            const position = HTMLInstrumentation.getPositionFromTagId(fullHtmlEditor, parseInt(tagId, 10));
+            const position = HTMLInstrumentation.getPositionFromTagId(fullHtmlEditor, parseInt(tagId, 10)).from;
             if(position && fullHtmlEditor) {
                 const masterEditor = fullHtmlEditor.document._masterEditor || fullHtmlEditor;
                 masterEditor.setCursorPos(position.line, position.ch, true);
@@ -209,8 +209,10 @@ define(function (require, exports, module) {
             event = msg.method || "event",
             deferred;
         if (msg.livePreviewEditEnabled) {
-            LivePreviewEdit.deleteElementInSourceByTagId(msg);
-        } else if (msg.id) {
+            LivePreviewEdit.handleLivePreviewEditOperation(msg);
+        }
+
+        if (msg.id) {
             deferred = _responseDeferreds[msg.id];
             if (deferred) {
                 delete _responseDeferreds[msg.id];
