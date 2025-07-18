@@ -224,11 +224,6 @@ function RemoteFunctions(config) {
         console.log("handle select parent option button was clicked");
     }
 
-    // TODO: need to implement
-    function _handleDuplicateOptionClick(e) {
-        console.log("handle duplicate option button was clicked");
-    }
-
     /**
      * This function gets called when the delete button is clicked
      * it sends a message to the editor using postMessage to delete the element from the source code
@@ -242,11 +237,30 @@ function RemoteFunctions(config) {
                 livePreviewEditEnabled: true,
                 element: element,
                 event: event,
-                tagId: tagId,
+                tagId: Number(tagId),
                 delete: true
             });
         }
     }
+
+    /**
+     * For duplicate button. Read '_handleDeleteOptionClick' jsdoc to understand more on how this works
+     * @param {Event} event
+     * @param {DOMElement} element - the HTML DOM element that was clicked. it is to get the data-brackets-id attribute
+     */
+    function _handleDuplicateOptionClick(event, element) {
+        const tagId = element.getAttribute("data-brackets-id");
+        if (tagId) {
+            window._Brackets_MessageBroker.send({
+                livePreviewEditEnabled: true,
+                element: element,
+                event: event,
+                tagId: Number(tagId),
+                duplicate: true
+            });
+        }
+    }
+
 
     /**
      * This function will get triggered when from the multiple advance DOM buttons, one is clicked
