@@ -229,25 +229,39 @@ function RemoteFunctions(config) {
         console.log("handle duplicate option button was clicked");
     }
 
-    // TODO: need to implement
-    function _handleDeleteOptionClick(e) {
-        console.log("handle delete option button was clicked");
+    /**
+     * This function gets called when the delete button is clicked
+     * it sends a message to the editor using postMessage to delete the element from the source code
+     * @param {Event} e
+     * @param {DOMElement} element - the HTML DOM element that was clicked. it is to get the data-brackets-id attribute
+     */
+    function _handleDeleteOptionClick(e, element) {
+        const tagId = element.getAttribute("data-brackets-id");
+        if (tagId) {
+            window._Brackets_MessageBroker.send({
+                livePreviewEditEnabled: true,
+                element: element,
+                event: e,
+                tagId: tagId,
+                delete: true
+            });
+        }
     }
-
 
     /**
      * This function will get triggered when from the multiple advance DOM buttons, one is clicked
      * this function just checks which exact button was clicked and call the required function
      * @param {Event} e
      * @param {String} action - the data-action attribute to differentiate between buttons
+     * @param {DOMElement} element - the selected DOM element
      */
-    function handleOptionClick(e, action) {
+    function handleOptionClick(e, action, element) {
         if (action === "select-parent") {
-            _handleSelectParentOptionClick(e);
+            _handleSelectParentOptionClick(e, element);
         } else if (action === "duplicate") {
-            _handleDuplicateOptionClick(e);
+            _handleDuplicateOptionClick(e, element);
         } else if (action === "delete") {
-            _handleDeleteOptionClick(e);
+            _handleDeleteOptionClick(e, element);
         }
     }
     /**
@@ -288,7 +302,7 @@ function RemoteFunctions(config) {
 
             const boxWidth = 82;
 
-            this.body.style.setProperty("left", (elemBounds.left + (elemBounds.width - boxWidth)) + "px");
+            this.body.style.setProperty("left", (elemBounds.right - boxWidth) + "px");
             this.body.style.setProperty(
                 "top",
                 // if there's not enough space to show the box above the element,
@@ -343,7 +357,7 @@ function RemoteFunctions(config) {
                     event.stopPropagation();
                     event.preventDefault();
                     const action = event.currentTarget.getAttribute('data-action');
-                    handleOptionClick(event, action);
+                    handleOptionClick(event, action, this.element);
                 });
             });
         },
