@@ -358,6 +358,7 @@ function RemoteFunctions(config) {
                     event.preventDefault();
                     const action = event.currentTarget.getAttribute('data-action');
                     handleOptionClick(event, action, this.element);
+                    this.remove();
                 });
             });
         },
