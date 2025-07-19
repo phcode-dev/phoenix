@@ -219,11 +219,6 @@ function RemoteFunctions(config) {
 
     };
 
-    // TODO: need to implement
-    function _handleSelectParentOptionClick(e) {
-        console.log("handle select parent option button was clicked");
-    }
-
     /**
      * This function gets called when the delete button is clicked
      * it sends a message to the editor using postMessage to delete the element from the source code
@@ -244,7 +239,7 @@ function RemoteFunctions(config) {
     }
 
     /**
-     * For duplicate button. Read '_handleDeleteOptionClick' jsdoc to understand more on how this works
+     * this is for duplicate button. Read '_handleDeleteOptionClick' jsdoc to understand more on how this works
      * @param {Event} event
      * @param {DOMElement} element - the HTML DOM element that was clicked. it is to get the data-brackets-id attribute
      */
@@ -261,6 +256,32 @@ function RemoteFunctions(config) {
         }
     }
 
+    /**
+     * this is for select-parent button
+     * When user clicks on this option for a particular element, we get its parent element and trigger a click on it
+     * @param {Event} event
+     * @param {DOMElement} element - the HTML DOM element that was clicked. it is to get the data-brackets-id attribute
+     */
+    function _handleSelectParentOptionClick(event, element) {
+        if (!element) {
+            return;
+        }
+
+        const parentElement = element.parentElement;
+        if (!parentElement) {
+            return;
+        }
+
+        // we need to make sure that the parent element is not the body tag or the html.
+        // also we expect it to have the 'data-brackets-id'
+        if (
+            parentElement.tagName !== "BODY" &&
+            parentElement.tagName !== "HTML" &&
+            parentElement.hasAttribute("data-brackets-id")
+        ) {
+            parentElement.click();
+        }
+    }
 
     /**
      * This function will get triggered when from the multiple advance DOM buttons, one is clicked
