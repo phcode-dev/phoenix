@@ -310,87 +310,111 @@ function RemoteFunctions(config) {
     }
 
     NodeMoreOptionsBox.prototype = {
-        create: function() {
-            // Remove existing more options box if any
-            this.remove();
+        _style: function() {
+            this.body = window.document.createElement("div");
 
+            // this is shadow DOM.
+            // we need it because if we add the box directly to the DOM then users style might override it.
+            // {mode: "closed"} means that users will not be able to access the shadow DOM
+            const shadow = this.body.attachShadow({ mode: "closed" });
+
+            // the element that was clicked
             let elemBounds = this.element.getBoundingClientRect();
 
-            // for styling the svg's
-            if (!document.getElementById("node-more-options-style")) {
-                const style = document.createElement("style");
-                style.id = "node-more-options-style";
-                style.textContent = `
-                    .node-options span > svg {
-                        width: 16px;
-                        height: 16px;
-                        display: block;
-                    }
-                `;
-                document.head.appendChild(style);
-            }
-
-            // create the container
-            this.body = window.document.createElement("div");
-            this.body.style.setProperty("z-index", 2147483647);
-            this.body.style.setProperty("position", "fixed");
-
+            // the box width and the positions where it should be placed
             const boxWidth = 82;
+            const leftPos = (elemBounds.right - boxWidth);
+            const topPos = (elemBounds.top - 30 < 0 ? elemBounds.top + elemBounds.height + 5 : elemBounds.top - 30);
 
-            this.body.style.setProperty("left", (elemBounds.right - boxWidth) + "px");
-            this.body.style.setProperty(
-                "top",
-                // if there's not enough space to show the box above the element,
-                // we show it below the element
-                (elemBounds.top - 30 < 0 ? elemBounds.top + elemBounds.height + 5 : elemBounds.top - 30) + "px"
-            );
-            this.body.style.setProperty("font-size", "12px");
-            this.body.style.setProperty("font-family", "Arial, sans-serif");
-
-            // style the box with a blue background. this will appear on the right side of the clicked DOM element
-            this.body.style.setProperty("background", "#4285F4");
-            this.body.style.setProperty("color", "white");
-            this.body.style.setProperty("border-radius", "3px");
-            this.body.style.setProperty("padding", "5px 8px");
-            this.body.style.setProperty("box-shadow", "0 2px 5px rgba(0,0,0,0.2)");
-            this.body.style.setProperty("width", boxWidth + "px");
-
+            // the icons that is displayed in the box
             const ICONS = {
-                arrowUp: `<svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.59 5.58L20 12l-8-8-8 8z"/>
-                </svg>`,
+                arrowUp: `
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.59 5.58L20 12l-8-8-8 8z"/>
+                </svg>
+              `,
 
-                copy: `<svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
-                </svg>`,
+                copy: `
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0
+                  1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                </svg>
+              `,
 
-                trash: `<svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M6 7V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2h3v2h-2l-1.5 12.5a2 2 0 0 1-2 1.5H8.5a2 2 0 0 1-2-1.5L5 9H3V7h3zm2 0h8V5H8v2z"/>
-                </svg>`
+                trash: `
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M6 7V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2h3v2h-2l-1.5 12.5a2 2 0 0
+                  1-2 1.5H8.5a2 2 0 0 1-2-1.5L5 9H3V7h3zm2 0h8V5H8v2z"/>
+                </svg>
+              `
             };
 
-            let content = `<div class="node-options" style="display: flex; gap: 8px; align-items: center;">
-                <span style="cursor: pointer; display: flex; align-items: center;" data-action="select-parent" title="Select Parent">
+            let content = `<div class="node-options">
+                <span data-action="select-parent" title="Select Parent">
                     ${ICONS.arrowUp}
                 </span>
-                <span style="cursor: pointer; display: flex; align-items: center;" data-action="duplicate" title="Duplicate">
+                <span data-action="duplicate" title="Duplicate">
                     ${ICONS.copy}
                 </span>
-                <span style="cursor: pointer; display: flex; align-items: center;" data-action="delete" title="Delete">
+                <span data-action="delete" title="Delete">
                     ${ICONS.trash}
                 </span>
             </div>`;
 
-            this.body.innerHTML = content;
+            const styles = `
+                .box {
+                    background-color: #4285F4;
+                    color: white;
+                    border-radius: 3px;
+                    padding: 5px 8px;
+                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+                    font-size: 12px;
+                    font-family: Arial, sans-serif;
+                    z-index: 2147483647;
+                    position: fixed;
+                    left: ${leftPos}px;
+                    top: ${topPos}px;
+                    width: ${boxWidth}px;
+                    box-sizing: border-box;
+                }
+
+                .node-options {
+                    display: flex;
+                    gap: 8px;
+                    align-items: center;
+                }
+
+                .node-options span {
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                }
+
+                .node-options span > svg {
+                    width: 16px;
+                    height: 16px;
+                    display: block;
+                }
+            `;
+
+            // add everything to the shadow box
+            shadow.innerHTML = `<style>${styles}</style><div class="box">${content}</div>`;
+            this._shadow = shadow;
+        },
+
+        create: function() {
+            this.remove(); // remove existing box if already present
+            this._style(); // style the box
+
             window.document.body.appendChild(this.body);
 
-            // add the click handler to all the buttons
-            const spans = this.body.querySelectorAll('.node-options span');
+            // add click handler to all the buttons
+            const spans = this._shadow.querySelectorAll('.node-options span');
             spans.forEach(span => {
-                // to differentiate between each button click we can use the data-action attribute
                 span.addEventListener('click', (event) => {
                     event.stopPropagation();
                     event.preventDefault();
+                    // data-action is to differentiate between the buttons (duplicate, delete or select-parent)
                     const action = event.currentTarget.getAttribute('data-action');
                     handleOptionClick(event, action, this.element);
                     this.remove();
