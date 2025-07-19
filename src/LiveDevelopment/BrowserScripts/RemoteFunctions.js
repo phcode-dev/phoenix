@@ -323,8 +323,13 @@ function RemoteFunctions(config) {
 
             // the box width and the positions where it should be placed
             const boxWidth = 82;
-            const leftPos = (elemBounds.right - boxWidth);
-            const topPos = (elemBounds.top - 30 < 0 ? elemBounds.top + elemBounds.height + 5 : elemBounds.top - 30);
+            const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+            const leftPos = elemBounds.right - boxWidth + scrollLeft;
+            const topPos = (elemBounds.top - 30 < 0
+                ? elemBounds.top + elemBounds.height + 5
+                : elemBounds.top - 30) + scrollTop;
 
             // the icons that is displayed in the box
             const ICONS = {
@@ -371,7 +376,7 @@ function RemoteFunctions(config) {
                     font-size: 12px;
                     font-family: Arial, sans-serif;
                     z-index: 2147483647;
-                    position: fixed;
+                    position: absolute;
                     left: ${leftPos}px;
                     top: ${topPos}px;
                     width: ${boxWidth}px;
