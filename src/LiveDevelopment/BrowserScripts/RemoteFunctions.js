@@ -965,10 +965,10 @@ function RemoteFunctions(config) {
         if (event && event.target && event.target.nodeType === Node.ELEMENT_NODE && event.target.hasAttribute("data-brackets-id")) {
             if (event.target._originalBackgroundColor !== undefined) {
                 event.target.style.backgroundColor = event.target._originalBackgroundColor;
-                delete event.target._originalBackgroundColor;
             } else {
                 event.target.style.backgroundColor = "";
             }
+            delete event.target._originalBackgroundColor;
         }
 
         // Remove info box when mouse leaves the element
@@ -986,7 +986,6 @@ function RemoteFunctions(config) {
     function onClick(event) {
         // make sure that the feature is enabled and also the clicked element has the attribute 'data-brackets-id'
         if(isFlagActive && event.target.hasAttribute('data-brackets-id')) {
-            //console.log("event:", event);
             if(_nodeMoreOptionsBox) {
                 _nodeMoreOptionsBox.remove();
                 _nodeMoreOptionsBox = null;
@@ -996,10 +995,10 @@ function RemoteFunctions(config) {
             if (previouslyClickedElement) {
                 if (previouslyClickedElement._originalOutline !== undefined) {
                     previouslyClickedElement.style.outline = previouslyClickedElement._originalOutline;
-                    delete previouslyClickedElement._originalOutline;
                 } else {
                     previouslyClickedElement.style.outline = "";
                 }
+                delete previouslyClickedElement._originalOutline;
             }
 
             _nodeMoreOptionsBox = new NodeMoreOptionsBox(event.target);
