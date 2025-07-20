@@ -1553,16 +1553,14 @@ function RemoteFunctions(config) {
         // If content has changed, send the edit to the editor
         if (newContent !== element._originalContent && element.hasAttribute("data-brackets-id")) {
             const tagId = element.getAttribute("data-brackets-id");
-
-            // Create a text edit operation
-            // const edit = {
-            //     type: "textReplace",
-            //     parentID: element.parentNode.getAttribute("data-brackets-id"),
-            //     tagID: tagId,
-            //     content: newContent
-            // };
-            //
-            // todo: send the edited text to phoenix to change in text editor
+            window._Brackets_MessageBroker.send({
+                livePreviewEditEnabled: true,
+                element: element,
+                oldContent: element._originalContent,
+                newContent: newContent,
+                tagId: Number(tagId),
+                livePreviewTextEdit: true
+            });
         }
 
         // Clean up
