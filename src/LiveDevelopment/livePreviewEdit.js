@@ -3,6 +3,46 @@ define(function (require, exports, module) {
     const HTMLInstrumentation = require("LiveDevelopment/MultiBrowserImpl/language/HTMLInstrumentation");
 
     /**
+     * this function handles the text edit in the source code when user updates the text in the live preview
+     * @param {Object} message - the message object
+     *      {
+     *          livePreviewEditEnabled: true,
+                element: the DOM element that was modified,
+                oldContent: the text that was present before the edit,
+                newContent: the new text,
+                tagId: data-brackets-id of the DOM element,
+                livePreviewTextEdit: true
+            }
+    *
+    * The logic is: get the text in the editor using the tagId. split that text using the old content
+    * join the text back and add the new content in between
+    */
+    function _editTextInSource(message) {
+        const editor = EditorManager.getActiveEditor();
+        if (!editor || !message.tagId) {
+            return;
+        }
+
+        // this will give us the start pos and end pos of the DOM element in the source code
+        // can be referenced using range.from and range.to
+        const range = HTMLInstrumentation.getPositionFromTagId(editor, message.tagId);
+        if (!range) {
+            return;
+        }
+
+        // this is the actual source code for the element that we need to duplicate
+        const text = editor.getTextBetween(range.from, range.to);
+        // split the text as we want to remove the old content from the source code
+        // for ex: if we have <h1>hello</h1> then splitting from hello will give us [<h1>, </h1>]
+        const splittedText = text.split(message.oldContent);
+
+        // so now we just merge the whole thing back replacing the old content with the new one
+        const finalText = splittedText[0] + message.newContent + splittedText[1];
+
+        editor.replaceRange(finalText, range.from, range.to);
+    }
+
+    /**
      * This function is responsible to duplicate an element from the source code
      * @param {Number} tagId - the data-brackets-id of the DOM element
      */
@@ -67,13 +107,10 @@ define(function (require, exports, module) {
      * this object will be in the format
      * {
                 livePreviewEditEnabled: true,
-                element: element,
-                event: event,
                 tagId: tagId,
-                delete: true
+                delete || duplicate || livePreviewTextEdit: true
         }
-    * here element is the actual DOM element that is clicked, and tagId is the data-brackets-id
-    * and 'delete: true is just an example, it might be 'duplicate' or 'select-parent' also
+    * these are the main properties that are passed through the message
      */
     function handleLivePreviewEditOperation(message) {
         if (!message.element || !message.tagId) {
@@ -85,6 +122,8 @@ define(function (require, exports, module) {
             _deleteElementInSourceByTagId(message.tagId);
         } else if (message.duplicate) {
             _duplicateElementInSourceByTagId(message.tagId);
+        } else if (message.livePreviewTextEdit) {
+            _editTextInSource(message);
         }
     }
 
