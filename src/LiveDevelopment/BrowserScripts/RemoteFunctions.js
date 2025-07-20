@@ -299,6 +299,22 @@ function RemoteFunctions(config) {
             _handleDeleteOptionClick(e, element);
         }
     }
+
+    function _dragStartChores(element) {
+        element._originalDragOpacity = element.style.opacity;
+        element.style.opacity = 0.3;
+    }
+
+
+    function _dragEndChores(element) {
+        if (element._originalDragOpacity) {
+            element.style.opacity = element._originalDragOpacity;
+        } else {
+            element.style.opacity = 1;
+        }
+        delete element._originalDragOpacity;
+    }
+
     /**
      * This is for the advanced DOM options that appears when a DOM element is clicked
      * advanced options like: 'select parent', 'duplicate', 'delete'
@@ -310,6 +326,36 @@ function RemoteFunctions(config) {
     }
 
     NodeMoreOptionsBox.prototype = {
+        _registerDragDrop: function() {
+            this.element.setAttribute("draggable", true);
+
+            this.element.addEventListener("dragstart", (event) => {
+                event.stopPropagation();
+                event.dataTransfer.setData("text/plain", this.element.getAttribute("data-brackets-id"));
+                _dragStartChores(this.element);
+                console.log("pluto- dragstart: ", this.element.getAttribute("data-brackets-id"));
+            });
+
+            this.element.addEventListener("dragover", (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                console.log("pluto- dragover");
+            });
+
+            this.element.addEventListener("dragend", (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                _dragEndChores(this.element);
+                console.log("pluto- dragend");
+            });
+
+            this.element.addEventListener("drop", (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                console.log("pluto- drop");
+            });
+        },
+
         _style: function() {
             this.body = window.document.createElement("div");
 
@@ -425,6 +471,8 @@ function RemoteFunctions(config) {
                     this.remove();
                 });
             });
+
+            this._registerDragDrop();
         },
 
         remove: function() {
