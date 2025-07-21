@@ -62,20 +62,26 @@ define(function (require, exports, module) {
         // this is the actual source code for the element that we need to duplicate
         const text = editor.getTextBetween(range.from, range.to);
         // this is the indentation on the line
-        const indent = editor.getTextBetween({line: range.from.line, ch: 0}, range.from);
+        const indent = editor.getTextBetween({ line: range.from.line, ch: 0 }, range.from);
 
-        // this is the position where we need to insert
-        // we're giving the char as 0 because since we insert a new line using '\n'
-        // that's why writing any char value will not work, as the line is empty
-        // and codemirror doesn't allow to insert at a column (ch) greater than the length of the line
-        // So, the logic is to just append the indent before the text at this insertPos
-        const insertPos = {
-            line: range.from.line + (range.to.line - range.from.line + 1),
-            ch: 0
-        };
+        // make sure there is only indentation and no text before it
+        if (indent.trim() === "") {
+            // this is the position where we need to insert
+            // we're giving the char as 0 because since we insert a new line using '\n'
+            // that's why writing any char value will not work, as the line is empty
+            // and codemirror doesn't allow to insert at a column (ch) greater than the length of the line
+            // So, the logic is to just append the indent before the text at this insertPos
+            const insertPos = {
+                line: range.from.line + (range.to.line - range.from.line + 1),
+                ch: 0
+            };
 
-        editor.replaceRange('\n', range.to);
-        editor.replaceRange(indent + text, insertPos);
+            editor.replaceRange("\n", range.to);
+            editor.replaceRange(indent + text, insertPos);
+        } else {
+            // if there is some text, we just add the duplicated text right next to it
+            editor.replaceRange(text, range.from);
+        }
     }
 
     /**
