@@ -1,6 +1,6 @@
 define(function (require, exports, module) {
-    const EditorManager = require("editor/EditorManager");
     const HTMLInstrumentation = require("LiveDevelopment/MultiBrowserImpl/language/HTMLInstrumentation");
+    const LiveDevMultiBrowser = require("LiveDevelopment/LiveDevMultiBrowser");
 
     /**
      * this function handles the text edit in the source code when user updates the text in the live preview
@@ -18,7 +18,13 @@ define(function (require, exports, module) {
     * join the text back and add the new content in between
     */
     function _editTextInSource(message) {
-        const editor = EditorManager.getActiveEditor();
+        // this is to get the currently live document that is being served in the live preview
+        const currLiveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
+        if(!currLiveDoc) {
+            return;
+        }
+
+        const editor = currLiveDoc.editor;
         if (!editor || !message.tagId) {
             return;
         }
@@ -54,7 +60,13 @@ define(function (require, exports, module) {
      * @param {Number} tagId - the data-brackets-id of the DOM element
      */
     function _duplicateElementInSourceByTagId(tagId) {
-        const editor = EditorManager.getActiveEditor();
+        // this is to get the currently live document that is being served in the live preview
+        const currLiveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
+        if(!currLiveDoc) {
+            return;
+        }
+
+        const editor = currLiveDoc.editor;
         if (!editor || !tagId) {
             return;
         }
@@ -96,7 +108,13 @@ define(function (require, exports, module) {
      * @param {Number} tagId - the data-brackets-id of the DOM element
      */
     function _deleteElementInSourceByTagId(tagId) {
-        const editor = EditorManager.getActiveEditor();
+        // this is to get the currently live document that is being served in the live preview
+        const currLiveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
+        if(!currLiveDoc) {
+            return;
+        }
+
+        const editor = currLiveDoc.editor;
         if (!editor || !tagId) {
             return;
         }
