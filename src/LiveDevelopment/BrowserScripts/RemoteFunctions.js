@@ -1164,6 +1164,11 @@ function RemoteFunctions(config) {
         if (_hoverHighlight) {
             _hoverHighlight.redraw();
         }
+        if (_nodeMoreOptionsBox) {
+            const element = _nodeMoreOptionsBox.element;
+            _nodeMoreOptionsBox.remove();
+            _nodeMoreOptionsBox = new NodeMoreOptionsBox(element);
+        }
     }
 
     window.addEventListener("resize", redrawHighlights);
