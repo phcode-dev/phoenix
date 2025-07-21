@@ -32,14 +32,21 @@ define(function (require, exports, module) {
 
         // this is the actual source code for the element that we need to duplicate
         const text = editor.getTextBetween(range.from, range.to);
+        // remove the <b>, <i> and <u> tags from the text,
+        // this is done because we split the text using the textContent and not the innerHTML
+        // and textContent doesn't have all these tags
+        const cleanedText = text.replace(/<\/?(b|i|u)>/gi, "");
+
         // split the text as we want to remove the old content from the source code
         // for ex: if we have <h1>hello</h1> then splitting from hello will give us [<h1>, </h1>]
-        const splittedText = text.split(message.oldContent);
+        const splittedText = cleanedText.split(message.oldTextContent);
 
-        // so now we just merge the whole thing back replacing the old content with the new one
-        const finalText = splittedText[0] + message.newContent + splittedText[1];
-
-        editor.replaceRange(finalText, range.from, range.to);
+        // make sure that the split was successful
+        if (splittedText.length === 2) {
+            // so now we just merge the whole thing back replacing the old text content with the new one
+            const finalText = splittedText[0] + message.newContent + splittedText[1];
+            editor.replaceRange(finalText, range.from, range.to);
+        }
     }
 
     /**
