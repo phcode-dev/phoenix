@@ -53,7 +53,7 @@ define(function (require, exports, module) {
         StringUtils = require("utils/StringUtils"),
         FileViewController    = require("project/FileViewController"),
         MainViewManager     = require("view/MainViewManager"),
-        LivePreviewEdit     = require("LiveDevelopment/livePreviewEdit");
+        LivePreviewEdit     = require("LiveDevelopment/LivePreviewEdit");
 
     const LIVE_DEV_REMOTE_SCRIPTS_FILE_NAME = `phoenix_live_preview_scripts_instrumented_${StringUtils.randomString(8)}.js`;
     const LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME = `pageLoaderWorker_${StringUtils.randomString(8)}.js`;

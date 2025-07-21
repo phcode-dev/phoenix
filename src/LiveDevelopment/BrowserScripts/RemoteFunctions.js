@@ -227,7 +227,8 @@ function RemoteFunctions(config) {
      */
     function _handleDeleteOptionClick(event, element) {
         const tagId = element.getAttribute("data-brackets-id");
-        if (tagId) {
+
+        if (tagId && element.tagName !== "BODY" && element.tagName !== "HTML") {
             window._Brackets_MessageBroker.send({
                 livePreviewEditEnabled: true,
                 element: element,
@@ -235,6 +236,8 @@ function RemoteFunctions(config) {
                 tagId: Number(tagId),
                 delete: true
             });
+        } else {
+            console.error("The TagID might be unavailable or the element tag is directly body or html");
         }
     }
 
@@ -245,7 +248,8 @@ function RemoteFunctions(config) {
      */
     function _handleDuplicateOptionClick(event, element) {
         const tagId = element.getAttribute("data-brackets-id");
-        if (tagId) {
+
+        if (tagId && element.tagName !== "BODY" && element.tagName !== "HTML") {
             window._Brackets_MessageBroker.send({
                 livePreviewEditEnabled: true,
                 element: element,
@@ -253,6 +257,8 @@ function RemoteFunctions(config) {
                 tagId: Number(tagId),
                 duplicate: true
             });
+        } else {
+            console.error("The TagID might be unavailable or the element tag is directly body or html");
         }
     }
 
@@ -280,6 +286,8 @@ function RemoteFunctions(config) {
             parentElement.hasAttribute("data-brackets-id")
         ) {
             parentElement.click();
+        } else {
+            console.error("The TagID might be unavailable or the parent element tag is directly body or html");
         }
     }
 
@@ -1033,8 +1041,13 @@ function RemoteFunctions(config) {
      */
     function onClick(event) {
         // make sure that the feature is enabled and also the clicked element has the attribute 'data-brackets-id'
-        if(isFlagActive && event.target.hasAttribute('data-brackets-id')) {
-            if(_nodeMoreOptionsBox) {
+        if (
+            isFlagActive &&
+            event.target.hasAttribute("data-brackets-id") &&
+            event.target.tagName !== "BODY" &&
+            event.target.tagName !== "HTML"
+        ) {
+            if (_nodeMoreOptionsBox) {
                 _nodeMoreOptionsBox.remove();
                 _nodeMoreOptionsBox = null;
             }
