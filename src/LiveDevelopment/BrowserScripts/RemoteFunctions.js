@@ -1520,6 +1520,7 @@ function RemoteFunctions(config) {
 
         // Save the original content for potential cancellation
         element._originalContent = element.innerHTML;
+        element._originalTextContent = element.textContent;
 
         // Add event listeners for editing
         function onBlur() {
@@ -1549,6 +1550,53 @@ function RemoteFunctions(config) {
         };
     }
 
+    // this function is to remove the properties from elements before getting the innerHTML
+    // then add all the properties back to the elements
+    function cleanupElementProperties(element) {
+        // a temporary container to hold a clean copy
+        const tempContainer = document.createElement('div');
+        tempContainer.innerHTML = element.innerHTML;
+
+        // get all elements in the temporary container
+        const allElements = tempContainer.querySelectorAll('*');
+
+        // Store original attributes for later restoration
+        const originalAttributes = new Map();
+        const elementsInOriginal = element.querySelectorAll('*');
+
+        // Save original attributes
+        elementsInOriginal.forEach((el, index) => {
+            const attrs = {};
+            for (let i = 0; i < el.attributes.length; i++) {
+                const attr = el.attributes[i];
+                attrs[attr.name] = attr.value;
+            }
+            originalAttributes.set(index, attrs);
+        });
+
+        // Remove all attributes from elements in the temp container
+        allElements.forEach(el => {
+            while (el.attributes.length > 0) {
+                el.removeAttribute(el.attributes[0].name);
+            }
+        });
+
+        // Get the clean HTML content
+        const cleanContent = tempContainer.innerHTML;
+
+        // Restore original attributes to the actual elements
+        elementsInOriginal.forEach((el, index) => {
+            if (originalAttributes.has(index)) {
+                const attrs = originalAttributes.get(index);
+                for (const [name, value] of Object.entries(attrs)) {
+                    el.setAttribute(name, value);
+                }
+            }
+        });
+
+        return cleanContent;
+    }
+
     // Function to finish editing and apply changes
     function finishEditing(element) {
         if (!element || !element.hasAttribute("contenteditable")) {
@@ -1565,8 +1613,8 @@ function RemoteFunctions(config) {
             delete element._editListeners;
         }
 
-        // Get the new content
-        const newContent = element.innerHTML;
+        // Get the new content after cleaning up unwanted properties
+        const newContent = cleanupElementProperties(element);
 
         // If content has changed, send the edit to the editor
         if (newContent !== element._originalContent && element.hasAttribute("data-brackets-id")) {
@@ -1575,6 +1623,7 @@ function RemoteFunctions(config) {
                 livePreviewEditEnabled: true,
                 element: element,
                 oldContent: element._originalContent,
+                oldTextContent: element._originalTextContent,
                 newContent: newContent,
                 tagId: Number(tagId),
                 livePreviewTextEdit: true
@@ -1583,6 +1632,7 @@ function RemoteFunctions(config) {
 
         // Clean up
         delete element._originalContent;
+        delete element._originalTextContent;
     }
 
     // init
