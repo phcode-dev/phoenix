@@ -3,6 +3,25 @@ define(function (require, exports, module) {
     const LiveDevMultiBrowser = require("LiveDevelopment/LiveDevMultiBrowser");
 
     /**
+     * this is a helper function to find the content boundaries in HTML
+     * @param {string} html - The HTML string to parse
+     * @return {Object} - Object with openTag and closeTag properties
+     */
+    function _findContentBoundaries(html) {
+        const openTagEnd = html.indexOf('>') + 1;
+        const closeTagStart = html.lastIndexOf('<');
+
+        if (openTagEnd > 0 && closeTagStart > openTagEnd) {
+            return {
+                openTag: html.substring(0, openTagEnd),
+                closeTag: html.substring(closeTagStart)
+            };
+        }
+
+        return null;
+    }
+
+    /**
      * this function handles the text edit in the source code when user updates the text in the live preview
      * @param {Object} message - the message object
      *      {
@@ -18,40 +37,32 @@ define(function (require, exports, module) {
     * join the text back and add the new content in between
     */
     function _editTextInSource(message) {
-        // this is to get the currently live document that is being served in the live preview
         const currLiveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
-        if(!currLiveDoc) {
+        if(!currLiveDoc || !currLiveDoc.editor || !message.tagId) {
             return;
         }
 
         const editor = currLiveDoc.editor;
-        if (!editor || !message.tagId) {
-            return;
-        }
-
-        // this will give us the start pos and end pos of the DOM element in the source code
-        // can be referenced using range.from and range.to
         const range = HTMLInstrumentation.getPositionFromTagId(editor, message.tagId);
         if (!range) {
             return;
         }
 
-        // this is the actual source code for the element that we need to duplicate
         const text = editor.getTextBetween(range.from, range.to);
-        // remove the <b>, <i> and <u> tags from the text,
-        // this is done because we split the text using the textContent and not the innerHTML
-        // and textContent doesn't have all these tags
-        const cleanedText = text.replace(/<\/?(b|i|u)>/gi, "");
+        let splittedText;
 
-        // split the text as we want to remove the old content from the source code
-        // for ex: if we have <h1>hello</h1> then splitting from hello will give us [<h1>, </h1>]
-        const splittedText = cleanedText.split(message.oldTextContent);
+        // we need to find the content boundaries to find exactly where the content starts and where it ends
+        const boundaries = _findContentBoundaries(text);
+        if (boundaries) {
+            splittedText = [boundaries.openTag, boundaries.closeTag];
+        }
 
-        // make sure that the split was successful
-        if (splittedText.length === 2) {
-            // so now we just merge the whole thing back replacing the old text content with the new one
+        // if the text split was done successfully, apply the edit
+        if (splittedText && splittedText.length === 2) {
             const finalText = splittedText[0] + message.newContent + splittedText[1];
             editor.replaceRange(finalText, range.from, range.to);
+        } else {
+            console.error("Live preview text edit operation failed.");
         }
     }
 

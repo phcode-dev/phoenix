@@ -395,7 +395,7 @@
         var element = event.target;
         if (element && element.hasAttribute('data-brackets-id')) {
             // Check if it's a double-click for direct editing
-            if (event.detail === 2 && element.textContent && !['INPUT', 'TEXTAREA', 'SELECT'].includes(element.tagName)) {
+            if (event.detail === 2 && !['INPUT', 'TEXTAREA', 'SELECT'].includes(element.tagName)) {
                 // Double-click detected, enable direct editing
                 // Make the element editable
                 if (window._LD && window._LD.DOMEditHandler) {
