@@ -1047,6 +1047,7 @@ function RemoteFunctions(config) {
             event.target.tagName !== "BODY" &&
             event.target.tagName !== "HTML"
         ) {
+            event.stopPropagation();
             if (_nodeMoreOptionsBox) {
                 _nodeMoreOptionsBox.remove();
                 _nodeMoreOptionsBox = null;
@@ -1063,6 +1064,13 @@ function RemoteFunctions(config) {
             }
 
             _nodeMoreOptionsBox = new NodeMoreOptionsBox(event.target);
+
+            // show the info box when a DOM element is clicked
+            if (_nodeInfoBox) {
+                _nodeInfoBox.remove();
+            }
+            _nodeInfoBox = new NodeInfoBox(event.target);
+
             event.target._originalOutline = event.target.style.outline;
             event.target.style.outline = "1px solid #4285F4";
             previouslyClickedElement = event.target; // add the current element to the previouslyClickedElement
@@ -1122,10 +1130,6 @@ function RemoteFunctions(config) {
         if (_hoverHighlight) {
             _hoverHighlight.clear();
         }
-        if (_nodeInfoBox) {
-            _nodeInfoBox.remove();
-            _nodeInfoBox = null;
-        }
     }
 
     // highlight a node
@@ -1168,6 +1172,11 @@ function RemoteFunctions(config) {
             const element = _nodeMoreOptionsBox.element;
             _nodeMoreOptionsBox.remove();
             _nodeMoreOptionsBox = new NodeMoreOptionsBox(element);
+
+            if (_nodeInfoBox) {
+                _nodeInfoBox.remove();
+                _nodeInfoBox = new NodeInfoBox(element);
+            }
         }
     }
 
@@ -1499,10 +1508,14 @@ function RemoteFunctions(config) {
             window.document.removeEventListener("mouseover", onElementHover);
             window.document.removeEventListener("mouseout", onElementHoverOut);
 
-            // Remove info box if highlight is disabled
+            // Remove info box and more options box if highlight is disabled
             if (_nodeInfoBox) {
                 _nodeInfoBox.remove();
                 _nodeInfoBox = null;
+            }
+            if (_nodeMoreOptionsBox) {
+                _nodeMoreOptionsBox.remove();
+                _nodeMoreOptionsBox = null;
             }
         }
         return JSON.stringify(config);
