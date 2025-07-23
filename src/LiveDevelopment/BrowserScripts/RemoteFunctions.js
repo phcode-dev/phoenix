@@ -474,25 +474,6 @@ function RemoteFunctions(config) {
                     : elemBounds.top - 30) + scrollTop;
             }
 
-            const windowWidth = window.innerWidth;
-            const windowHeight = window.innerHeight;
-            // right edge
-            if (leftPos + boxWidth > windowWidth) {
-                leftPos = Math.max(10, windowWidth - boxWidth - 10);
-            }
-            // left edge
-            if (leftPos < 0) {
-                leftPos = 10;
-            }
-            // bottom edge
-            if (topPos + boxHeight > windowHeight) {
-                topPos = Math.max(10, windowHeight - boxHeight - 10);
-            }
-            // top edge
-            if (topPos < 0) {
-                topPos = 10;
-            }
-
             // the icons that is displayed in the box
             const ICONS = {
                 arrowUp: `
@@ -709,25 +690,6 @@ function RemoteFunctions(config) {
                         leftPos = elemBounds.right + 10 + scrollLeft;
                     }
                 }
-            }
-
-            const windowWidth = window.innerWidth;
-            const windowHeight = window.innerHeight;
-            // right edge
-            if (leftPos + boxWidth > windowWidth) {
-                leftPos = Math.max(10, windowWidth - boxWidth - 10);
-            }
-            // left edge
-            if (leftPos < 0) {
-                leftPos = 10;
-            }
-            // bottom edge
-            if (topPos + boxHeight > windowHeight) {
-                topPos = Math.max(10, windowHeight - boxHeight - 10);
-            }
-            // top edge
-            if (topPos < 0) {
-                topPos = 10;
             }
 
             const styles = `
