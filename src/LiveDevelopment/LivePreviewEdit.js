@@ -142,7 +142,8 @@ define(function (require, exports, module) {
 
     /**
      * This is the main function that is exported.
-     * it will be called by LiveDevProtocol when it receives a message from RemoteFunctions.js using MessageBroker
+     * it will be called by LiveDevProtocol when it receives a message from RemoteFunctions.js
+     * or LiveDevProtocolRemote.js (for undo) using MessageBroker
      * Refer to: `handleOptionClick` function in the RemoteFunctions.js and `_receive` function in LiveDevProtocol.js
      *
      * @param {Object} message - this is the object that is passed by RemoteFunctions.js using MessageBroker
@@ -151,11 +152,22 @@ define(function (require, exports, module) {
                 livePreviewEditEnabled: true,
                 tagId: tagId,
                 delete || duplicate || livePreviewTextEdit: true
+                undoLivePreviewOperation: true (this property is available only for undo operation)
         }
     * these are the main properties that are passed through the message
      */
     function handleLivePreviewEditOperation(message) {
         if (!message.element || !message.tagId) {
+            // check for undo
+            if(message.undoLivePreviewOperation) {
+                const currLiveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
+                if(!currLiveDoc || !currLiveDoc.editor) {
+                    return;
+                }
+
+                const editor = currLiveDoc.editor;
+                editor.undo();
+            }
             return;
         }
 
