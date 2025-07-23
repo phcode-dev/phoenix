@@ -442,6 +442,7 @@ function RemoteFunctions(config) {
 
             // the box width and the positions where it should be placed
             const boxWidth = 82;
+            const boxHeight = 40; // rough estimate for options box
             const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
@@ -456,8 +457,6 @@ function RemoteFunctions(config) {
 
             // default position (right aligned with element)
             let leftPos = elemBounds.right - boxWidth + scrollLeft;
-
-            // this will be calculated based on whether we have overlap issue or not
             let topPos;
 
             if (isOverlap) {
@@ -473,6 +472,25 @@ function RemoteFunctions(config) {
                 topPos = (elemBounds.top - 30 < 0
                     ? elemBounds.top + elemBounds.height + 5
                     : elemBounds.top - 30) + scrollTop;
+            }
+
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+            // right edge
+            if (leftPos + boxWidth > windowWidth) {
+                leftPos = Math.max(10, windowWidth - boxWidth - 10);
+            }
+            // left edge
+            if (leftPos < 0) {
+                leftPos = 10;
+            }
+            // bottom edge
+            if (topPos + boxHeight > windowHeight) {
+                topPos = Math.max(10, windowHeight - boxHeight - 10);
+            }
+            // top edge
+            if (topPos < 0) {
+                topPos = 10;
             }
 
             // the icons that is displayed in the box
@@ -656,6 +674,7 @@ function RemoteFunctions(config) {
             // Calculate estimated width based on character count
             // Formula: base padding + (character count * average character width)
             const boxWidth = basePadding + (charCount * avgCharWidth);
+            const boxHeight = 40 + (id ? 16 : 0) + (classes.length > 0 ? 16 : 0); // rough estimate
 
             // we need to check for overlap if this is from a click
             if (this.isFromClick) {
@@ -690,6 +709,25 @@ function RemoteFunctions(config) {
                         leftPos = elemBounds.right + 10 + scrollLeft;
                     }
                 }
+            }
+
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+            // right edge
+            if (leftPos + boxWidth > windowWidth) {
+                leftPos = Math.max(10, windowWidth - boxWidth - 10);
+            }
+            // left edge
+            if (leftPos < 0) {
+                leftPos = 10;
+            }
+            // bottom edge
+            if (topPos + boxHeight > windowHeight) {
+                topPos = Math.max(10, windowHeight - boxHeight - 10);
+            }
+            // top edge
+            if (topPos < 0) {
+                topPos = 10;
             }
 
             const styles = `
