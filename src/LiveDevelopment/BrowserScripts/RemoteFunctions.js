@@ -323,20 +323,65 @@ function RemoteFunctions(config) {
         delete element._originalDragOpacity;
     }
 
-    function checkOverlap(elemWidth, id, classes) {
-        if(elemWidth > 280) {
-            return false;
+    /**
+     * This function is to calculate the width of the info box based on the number of chars in the box
+     * @param {String} tagName - the element's tag name
+     * @param {String} id - the element's id
+     * @param {Array} classes - the array of class names
+     * @returns {Number} - the total char count
+     */
+    function _calculateInfoBoxCharCount(tagName, id, classes) {
+        // char count for tag name
+        let charCount = tagName.length;
+
+        // char count for id
+        if (id) {
+            charCount += id.length + 1; // +1 for #
         }
-        if(classes.length >= 3 && elemWidth <= 280) {
-            return true;
+
+        // char count for classes
+        if (classes.length > 0) {
+            for (let i = 0; i < Math.min(classes.length, 3); i++) {
+                charCount += classes[i].length + 1; // +1 for .
+            }
+
+            if (classes.length > 3) {
+                // "+ X more" for more than 3 classes
+                const moreText = `+${classes.length - 3} more`;
+                charCount += moreText.length;
+            }
         }
-        if((id || classes.length <= 2) && elemWidth <= 250) {
-            return true;
+        return charCount;
+    }
+
+    /**
+     * This function checks whether there is overlap between the info and the more options box
+     * @param {Number} elemWidth - the width of the DOM element
+     * @param {String} tagName - the element's tag name
+     * @param {String} id - the element's id
+     * @param {Array} classes - the array of class names
+     * @returns {Number} - the total char count
+     */
+    function checkOverlap(elemWidth, tagName, id, classes) {
+        const avgCharWidth = 7;
+        const basePadding = 16;
+
+        // char count for tag name, id, and classes
+        let charCount = _calculateInfoBoxCharCount(tagName, id, classes);
+
+        // calc estimate width based on the char count
+        const infoBoxWidth = basePadding + (charCount * avgCharWidth);
+
+        // more options box is 82px
+        const moreOptionsBoxWidth = 82;
+
+        // check if there's enough space for both boxes
+        // 20px buffer for spacing between boxes
+        if (elemWidth > (infoBoxWidth + moreOptionsBoxWidth + 20)) {
+            return false; // No overlap
         }
-        if(elemWidth <= 180) {
-            return true;
-        }
-        return false;
+
+        return true;
     }
 
     /**
@@ -401,8 +446,9 @@ function RemoteFunctions(config) {
             // because when we have classes and ids then the info box tends to stretch in width
             const id = this.element.id;
             const classes = this.element.className ? this.element.className.split(/\s+/).filter(Boolean) : [];
+            const tagName = this.element.tagName.toLowerCase();
 
-            const isOverlap = checkOverlap(elemBounds.width, id, classes);
+            const isOverlap = checkOverlap(elemBounds.width, tagName, id, classes);
 
             // default position (right aligned with element)
             let leftPos = elemBounds.right - boxWidth + scrollLeft;
@@ -591,13 +637,25 @@ function RemoteFunctions(config) {
                 ? elemBounds.top + elemBounds.height + 5
                 : elemBounds.top - pushBoxUp) + scrollTop;
 
+            const avgCharWidth = 7;
+            const basePadding = 16;
+
+            // Get the tag name
+            const tagName = this.element.tagName.toLowerCase();
+
+            // Count characters in tag name, id, and classes
+            let charCount = _calculateInfoBoxCharCount(tagName, id, classes);
+
+            // Calculate estimated width based on character count
+            // Formula: base padding + (character count * average character width)
+            const boxWidth = basePadding + (charCount * avgCharWidth);
+
             // we need to check for overlap if this is from a click
             if (this.isFromClick) {
-                const isOverlap = checkOverlap(elemBounds.width, id, classes);
+                const isOverlap = checkOverlap(elemBounds.width, tagName, id, classes);
 
                 if (isOverlap) {
                     const windowWidth = window.innerWidth;
-                    const boxWidth = 300; // max-width of the box
 
                     // Estimate the height of the info box based on its content
                     // base height for tag name + padding
@@ -616,10 +674,12 @@ function RemoteFunctions(config) {
                     // align with the bottom of the info box
                     topPos = (elemBounds.top + elemBounds.height - estimatedHeight) + scrollTop;
 
-                    // decide whether position at left or right
+                    // decide whether position at left or right based on available space
+                    // check if there's enough space on the left side
                     if (elemBounds.left > boxWidth + 10) {
                         leftPos = elemBounds.left - boxWidth - 10 + scrollLeft;
                     } else if (windowWidth - elemBounds.right > boxWidth + 10) {
+                        // position on the right
                         leftPos = elemBounds.right + 10 + scrollLeft;
                     }
                 }
@@ -638,7 +698,7 @@ function RemoteFunctions(config) {
                     position: absolute;
                     left: ${leftPos}px;
                     top: ${topPos}px;
-                    max-width: 300px;
+                    max-width: ${boxWidth}px;
                     box-sizing: border-box;
                     pointer-events: none;
                 }
