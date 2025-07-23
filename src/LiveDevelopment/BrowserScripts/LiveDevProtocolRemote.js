@@ -439,5 +439,14 @@
         }
     }
     window.document.addEventListener("click", onDocumentClick);
+    window.document.addEventListener("keydown", function (e) {
+        // for undo. refer to LivePreviewEdit.js file 'handleLivePreviewEditOperation' function
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "z") {
+            MessageBroker.send({
+                livePreviewEditEnabled: true,
+                undoLivePreviewOperation: true
+            });
+        }
+    });
 
 }(this));
