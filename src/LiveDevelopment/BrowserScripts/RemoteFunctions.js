@@ -323,6 +323,22 @@ function RemoteFunctions(config) {
         delete element._originalDragOpacity;
     }
 
+    function checkOverlap(elemWidth, id, classes) {
+        if(elemWidth > 280) {
+            return false;
+        }
+        if(classes.length >= 3 && elemWidth <= 280) {
+            return true;
+        }
+        if((id || classes.length <= 2) && elemWidth <= 250) {
+            return true;
+        }
+        if(elemWidth <= 180) {
+            return true;
+        }
+        return false;
+    }
+
     /**
      * This is for the advanced DOM options that appears when a DOM element is clicked
      * advanced options like: 'select parent', 'duplicate', 'delete'
@@ -380,10 +396,34 @@ function RemoteFunctions(config) {
             const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-            const leftPos = elemBounds.right - boxWidth + scrollLeft;
-            const topPos = (elemBounds.top - 30 < 0
-                ? elemBounds.top + elemBounds.height + 5
-                : elemBounds.top - 30) + scrollTop;
+            // get the ID and classes for the element
+            // we need this to check for overlap issue between the info box and this box
+            // because when we have classes and ids then the info box tends to stretch in width
+            const id = this.element.id;
+            const classes = this.element.className ? this.element.className.split(/\s+/).filter(Boolean) : [];
+
+            const isOverlap = checkOverlap(elemBounds.width, id, classes);
+
+            // default position (right aligned with element)
+            let leftPos = elemBounds.right - boxWidth + scrollLeft;
+
+            // this will be calculated based on whether we have overlap issue or not
+            let topPos;
+
+            if (isOverlap) {
+                if (elemBounds.top > 40) { // check if there's enough space at the top
+                    // place at the top
+                    topPos = elemBounds.top - 30 + scrollTop;
+                } else {
+                    // at the bottom
+                    topPos = elemBounds.top + elemBounds.height + 5 + scrollTop;
+                }
+            } else {
+                // no overlap, so it comes just above the element
+                topPos = (elemBounds.top - 30 < 0
+                    ? elemBounds.top + elemBounds.height + 5
+                    : elemBounds.top - 30) + scrollTop;
+            }
 
             // the icons that is displayed in the box
             const ICONS = {
@@ -492,8 +532,9 @@ function RemoteFunctions(config) {
     };
 
     // Node info box to display DOM node ID and classes on hover
-    function NodeInfoBox(element) {
+    function NodeInfoBox(element, isFromClick) {
         this.element = element;
+        this.isFromClick = isFromClick || false;
         this.remove = this.remove.bind(this);
         this.create();
     }
@@ -545,11 +586,44 @@ function RemoteFunctions(config) {
                 pushBoxUp += 16;
             }
 
-            // Now calculate topPos using the final pushBoxUp value
-            const leftPos = elemBounds.left + scrollLeft;
-            const topPos = (elemBounds.top - pushBoxUp < 0
+            let leftPos = elemBounds.left + scrollLeft;
+            let topPos = (elemBounds.top - pushBoxUp < 0
                 ? elemBounds.top + elemBounds.height + 5
                 : elemBounds.top - pushBoxUp) + scrollTop;
+
+            // we need to check for overlap if this is from a click
+            if (this.isFromClick) {
+                const isOverlap = checkOverlap(elemBounds.width, id, classes);
+
+                if (isOverlap) {
+                    const windowWidth = window.innerWidth;
+                    const boxWidth = 300; // max-width of the box
+
+                    // Estimate the height of the info box based on its content
+                    // base height for tag name + padding
+                    let estimatedHeight = 20;
+
+                    // height adjustment if ID is present
+                    if (id) {
+                        estimatedHeight += 15;
+                    }
+
+                    // height adjustment if classes are present
+                    if (classes.length > 0) {
+                        estimatedHeight += 15;
+                    }
+
+                    // align with the bottom of the info box
+                    topPos = (elemBounds.top + elemBounds.height - estimatedHeight) + scrollTop;
+
+                    // decide whether position at left or right
+                    if (elemBounds.left > boxWidth + 10) {
+                        leftPos = elemBounds.left - boxWidth - 10 + scrollLeft;
+                    } else if (windowWidth - elemBounds.right > boxWidth + 10) {
+                        leftPos = elemBounds.right + 10 + scrollLeft;
+                    }
+                }
+            }
 
             const styles = `
                 .box {
@@ -1007,7 +1081,10 @@ function RemoteFunctions(config) {
                 if (_nodeInfoBox) {
                     _nodeInfoBox.remove();
                 }
-                _nodeInfoBox = new NodeInfoBox(event.target);
+                // check if this element is already clicked (has more options box)
+                // this is needed so that we can check for overlapping issue among the boxes
+                const isAlreadyClicked = previouslyClickedElement === event.target && _nodeMoreOptionsBox !== null;
+                _nodeInfoBox = new NodeInfoBox(event.target, isAlreadyClicked);
             }
         }
     }
@@ -1069,11 +1146,11 @@ function RemoteFunctions(config) {
             if (_nodeInfoBox) {
                 _nodeInfoBox.remove();
             }
-            _nodeInfoBox = new NodeInfoBox(event.target);
+            _nodeInfoBox = new NodeInfoBox(event.target, true); // true means that the element was clicked
 
             event.target._originalOutline = event.target.style.outline;
             event.target.style.outline = "1px solid #4285F4";
-            previouslyClickedElement = event.target; // add the current element to the previouslyClickedElement
+            previouslyClickedElement = event.target;
         }
     }
 
@@ -1175,7 +1252,7 @@ function RemoteFunctions(config) {
 
             if (_nodeInfoBox) {
                 _nodeInfoBox.remove();
-                _nodeInfoBox = new NodeInfoBox(element);
+                _nodeInfoBox = new NodeInfoBox(element, true); // true means it came from a click
             }
         }
     }
