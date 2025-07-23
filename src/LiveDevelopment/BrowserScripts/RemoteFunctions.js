@@ -332,26 +332,27 @@ function RemoteFunctions(config) {
      */
     function _calculateInfoBoxCharCount(tagName, id, classes) {
         // char count for tag name
-        let charCount = tagName.length;
-
+        let tagNameCharCount = tagName.length;
+        let idNameCharCount = 0;
+        let classNameCharCount = 0;
         // char count for id
         if (id) {
-            charCount += id.length + 1; // +1 for #
+            idNameCharCount = id.length + 1; // +1 for #
         }
 
         // char count for classes
         if (classes.length > 0) {
             for (let i = 0; i < Math.min(classes.length, 3); i++) {
-                charCount += classes[i].length + 1; // +1 for .
+                classNameCharCount += classes[i].length + 1; // +1 for .
             }
 
             if (classes.length > 3) {
                 // "+ X more" for more than 3 classes
                 const moreText = `+${classes.length - 3} more`;
-                charCount += moreText.length;
+                classNameCharCount += moreText.length;
             }
         }
-        return charCount;
+        return Math.max(tagNameCharCount, idNameCharCount, classNameCharCount);
     }
 
     /**
@@ -363,11 +364,14 @@ function RemoteFunctions(config) {
      * @returns {Number} - the total char count
      */
     function checkOverlap(elemWidth, tagName, id, classes) {
-        const avgCharWidth = 7;
+        let avgCharWidth = 6;
         const basePadding = 16;
 
         // char count for tag name, id, and classes
         let charCount = _calculateInfoBoxCharCount(tagName, id, classes);
+        if(charCount <= 10) {
+            avgCharWidth = 7.5;
+        }
 
         // calc estimate width based on the char count
         const infoBoxWidth = basePadding + (charCount * avgCharWidth);
@@ -637,7 +641,7 @@ function RemoteFunctions(config) {
                 ? elemBounds.top + elemBounds.height + 5
                 : elemBounds.top - pushBoxUp) + scrollTop;
 
-            const avgCharWidth = 7;
+            let avgCharWidth = 6;
             const basePadding = 16;
 
             // Get the tag name
@@ -645,6 +649,9 @@ function RemoteFunctions(config) {
 
             // Count characters in tag name, id, and classes
             let charCount = _calculateInfoBoxCharCount(tagName, id, classes);
+            if(charCount <= 10) {
+                avgCharWidth = 7.5;
+            }
 
             // Calculate estimated width based on character count
             // Formula: base padding + (character count * average character width)
@@ -698,7 +705,7 @@ function RemoteFunctions(config) {
                     position: absolute;
                     left: ${leftPos}px;
                     top: ${topPos}px;
-                    max-width: ${boxWidth}px;
+                    max-width: fit-content;
                     box-sizing: border-box;
                     pointer-events: none;
                 }
