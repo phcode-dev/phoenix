@@ -323,6 +323,157 @@ function RemoteFunctions(config) {
         delete element._originalDragOpacity;
     }
 
+    // CSS class name for drop markers
+    let DROP_MARKER_CLASSNAME = "__brackets-drop-marker";
+
+    /**
+     * This function creates a marker to indicate a valid drop position
+     * @param {DOMElement} element - The element where the drop is possible
+     */
+    function _createDropMarker(element) {
+        // clean any existing marker from that element
+        _removeDropMarkerFromElement(element);
+
+        // create the marker element
+        let marker = window.document.createElement("div");
+        marker.className = DROP_MARKER_CLASSNAME;
+
+        // position the marker at the top of the element
+        let rect = element.getBoundingClientRect();
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        let scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+
+        // marker styling
+        marker.style.position = "absolute";
+        marker.style.top = (rect.top + scrollTop - 5) + "px";
+        marker.style.left = (rect.left + scrollLeft) + "px";
+        marker.style.width = rect.width + "px";
+        marker.style.height = "2px";
+        marker.style.backgroundColor = "#4285F4";
+        marker.style.zIndex = "2147483646";
+
+        element._dropMarker = marker; // we need this in the _removeDropMarkerFromElement function
+        window.document.body.appendChild(marker);
+    }
+
+    /**
+     * This function removes a drop marker from a specific element
+     * @param {DOMElement} element - The element to remove the marker from
+     */
+    function _removeDropMarkerFromElement(element) {
+        if (element._dropMarker && element._dropMarker.parentNode) {
+            element._dropMarker.parentNode.removeChild(element._dropMarker);
+            delete element._dropMarker;
+        }
+    }
+
+    /**
+     * this function is to clear all the drop markers from the document
+     */
+    function _clearDropMarkers() {
+        let markers = window.document.querySelectorAll("." + DROP_MARKER_CLASSNAME);
+        for (let i = 0; i < markers.length; i++) {
+            if (markers[i].parentNode) {
+                markers[i].parentNode.removeChild(markers[i]);
+            }
+        }
+
+        // Also clear any element references
+        let elements = window.document.querySelectorAll("[data-brackets-id]");
+        for (let j = 0; j < elements.length; j++) {
+            delete elements[j]._dropMarker;
+        }
+    }
+
+    /**
+     * Handle dragover events on the document
+     * Shows drop markers on valid drop targets
+     * @param {Event} event - The dragover event
+     */
+    function onDragOver(event) {
+        // we set this on dragStart
+        if (!window._currentDraggedElement) {
+            return;
+        }
+
+        event.preventDefault();
+
+        // get the element under the cursor
+        let target = document.elementFromPoint(event.clientX, event.clientY);
+        if (!target || target === window._currentDraggedElement) {
+            return;
+        }
+
+        // get the closest element with a data-brackets-id
+        while (target && !target.hasAttribute("data-brackets-id")) {
+            target = target.parentElement;
+        }
+
+        // skip if no valid target found or if it's the dragged element
+        if (!target || target === window._currentDraggedElement) {
+            return;
+        }
+
+        // Skip BODY and HTML tags
+        if (target.tagName === "BODY" || target.tagName === "HTML") {
+            return;
+        }
+
+        // before creating a drop marker, make sure that we clear all the drop markers
+        _clearDropMarkers();
+        _createDropMarker(target);
+    }
+
+    /**
+     * Handle drop events on the document
+     * Processes the drop of a dragged element onto a valid target
+     * @param {Event} event - The drop event
+     */
+    function onDrop(event) {
+        if (!window._currentDraggedElement) {
+            return;
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        // get the element under the cursor
+        let target = document.elementFromPoint(event.clientX, event.clientY);
+
+        // get the closest element with a data-brackets-id
+        while (target && !target.hasAttribute("data-brackets-id")) {
+            target = target.parentElement;
+        }
+
+        // skip if no valid target found or if it's the dragged element
+        if (!target || target === window._currentDraggedElement) {
+            return;
+        }
+
+        // Skip BODY and HTML tags
+        if (target.tagName === "BODY" || target.tagName === "HTML") {
+            return;
+        }
+
+        // IDs of the source and target elements
+        const sourceId = window._currentDraggedElement.getAttribute("data-brackets-id");
+        const targetId = target.getAttribute("data-brackets-id");
+
+        // send message to the editor
+        window._Brackets_MessageBroker.send({
+            livePreviewEditEnabled: true,
+            sourceElement: window._currentDraggedElement,
+            targetElement: target,
+            sourceId: Number(sourceId),
+            targetId: Number(targetId),
+            move: true
+        });
+
+        _clearDropMarkers();
+        _dragEndChores(window._currentDraggedElement);
+        delete window._currentDraggedElement;
+    }
+
     /**
      * This function is to calculate the width of the info box based on the number of chars in the box
      * @param {String} tagName - the element's tag name
@@ -406,26 +557,16 @@ function RemoteFunctions(config) {
                 event.stopPropagation();
                 event.dataTransfer.setData("text/plain", this.element.getAttribute("data-brackets-id"));
                 _dragStartChores(this.element);
-                console.log("pluto- dragstart: ", this.element.getAttribute("data-brackets-id"));
-            });
-
-            this.element.addEventListener("dragover", (event) => {
-                event.preventDefault();
-                event.stopPropagation();
-                console.log("pluto- dragover");
+                _clearDropMarkers();
+                window._currentDraggedElement = this.element;
             });
 
             this.element.addEventListener("dragend", (event) => {
                 event.preventDefault();
                 event.stopPropagation();
                 _dragEndChores(this.element);
-                console.log("pluto- dragend");
-            });
-
-            this.element.addEventListener("drop", (event) => {
-                event.preventDefault();
-                event.stopPropagation();
-                console.log("pluto- drop");
+                _clearDropMarkers();
+                delete window._currentDraggedElement;
             });
         },
 
@@ -1778,6 +1919,8 @@ function RemoteFunctions(config) {
     window.document.addEventListener("mouseover", onElementHover);
     window.document.addEventListener("mouseout", onElementHoverOut);
     window.document.addEventListener("click", onClick);
+    window.document.addEventListener("dragover", onDragOver);
+    window.document.addEventListener("drop", onDrop);
 
     if (experimental) {
         window.document.addEventListener("keydown", onKeyDown);
