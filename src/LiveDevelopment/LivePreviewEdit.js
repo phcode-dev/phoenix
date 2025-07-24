@@ -145,8 +145,9 @@ define(function (require, exports, module) {
      * it is called when there is drag-drop in the live preview
      * @param {Number} sourceId - the data-brackets-id of the element being moved
      * @param {Number} targetId - the data-brackets-id of the target element where to move
+     * @param {Boolean} insertAfter - whether to insert the source element after the target element
      */
-    function _moveElementInSource(sourceId, targetId) {
+    function _moveElementInSource(sourceId, targetId, insertAfter) {
         // this is to get the currently live document that is being served in the live preview
         const currLiveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
         if (!currLiveDoc) {
@@ -160,32 +161,44 @@ define(function (require, exports, module) {
 
         // position of source and target elements in the editor
         const sourceRange = HTMLInstrumentation.getPositionFromTagId(editor, sourceId);
+        const targetRange = HTMLInstrumentation.getPositionFromTagId(editor, targetId);
 
-        if (!sourceRange) {
+        if (!sourceRange || !targetRange) {
             return;
         }
 
         const sourceText = editor.getTextBetween(sourceRange.from, sourceRange.to);
+        const targetIndent = editor.getTextBetween({ line: targetRange.from.line, ch: 0 }, targetRange.from);
 
         // creating a batch operation so that undo in live preview works fine
         editor.document.batchOperation(function () {
             // first, we need to remove the source code from its initial position
             editor.replaceRange("", sourceRange.from, sourceRange.to);
 
-            // get the target range, this is where we want to insert the text
-            const targetRange = HTMLInstrumentation.getPositionFromTagId(editor, targetId);
-            if(!targetRange) {
+            // recalculate the target range, as the source text is not removed
+            const updatedTargetRange = HTMLInstrumentation.getPositionFromTagId(editor, targetId);
+            if (!updatedTargetRange) {
                 return;
             }
-            const targetText = editor.getTextBetween(targetRange.from, targetRange.to);
-            const targetIndent = editor.getTextBetween({ line: targetRange.from.line, ch: 0 }, targetRange.from);
 
-            // to check if there is only indentation and no text before it
-            if (targetIndent.trim() === "") {
-                const finalText = sourceText + '\n' + targetIndent + targetText;
-                editor.replaceRange(finalText, targetRange.from, targetRange.to);
+            if (insertAfter) {
+                const insertPos = {
+                    line: updatedTargetRange.to.line,
+                    ch: updatedTargetRange.to.ch
+                };
+
+                editor.replaceRange("\n" + targetIndent + sourceText, insertPos);
             } else {
-                editor.replaceRange(sourceText + targetText, targetRange.from, targetRange.to);
+                // insert before
+                const targetText = editor.getTextBetween(updatedTargetRange.from, updatedTargetRange.to);
+
+                // to check if there is only indentation and no text before it
+                if (targetIndent.trim() === "") {
+                    const finalText = sourceText + '\n' + targetIndent + targetText;
+                    editor.replaceRange(finalText, updatedTargetRange.from, updatedTargetRange.to);
+                } else {
+                    editor.replaceRange(sourceText + targetText, updatedTargetRange.from, updatedTargetRange.to);
+                }
             }
         });
     }
@@ -206,6 +219,7 @@ define(function (require, exports, module) {
 
                 sourceId: sourceId, (these are for move (drag & drop))
                 targetId: targetId,
+                insertAfter: boolean, (whether to insert after the target element)
                 move: true
         }
     * these are the main properties that are passed through the message
@@ -213,7 +227,7 @@ define(function (require, exports, module) {
     function handleLivePreviewEditOperation(message) {
         // handle move(drag & drop)
         if (message.move && message.sourceId && message.targetId) {
-            _moveElementInSource(message.sourceId, message.targetId);
+            _moveElementInSource(message.sourceId, message.targetId, message.insertAfter);
             return;
         }
 

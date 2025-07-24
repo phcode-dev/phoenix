@@ -329,8 +329,9 @@ function RemoteFunctions(config) {
     /**
      * This function creates a marker to indicate a valid drop position
      * @param {DOMElement} element - The element where the drop is possible
+     * @param {Boolean} showAtBottom - Whether to show the marker at the bottom of the element
      */
-    function _createDropMarker(element) {
+    function _createDropMarker(element, showAtBottom) {
         // clean any existing marker from that element
         _removeDropMarkerFromElement(element);
 
@@ -338,19 +339,25 @@ function RemoteFunctions(config) {
         let marker = window.document.createElement("div");
         marker.className = DROP_MARKER_CLASSNAME;
 
-        // position the marker at the top of the element
+        // position the marker at the top or bottom of the element
         let rect = element.getBoundingClientRect();
         let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         let scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
 
         // marker styling
         marker.style.position = "absolute";
-        marker.style.top = (rect.top + scrollTop - 5) + "px";
         marker.style.left = (rect.left + scrollLeft) + "px";
         marker.style.width = rect.width + "px";
         marker.style.height = "2px";
         marker.style.backgroundColor = "#4285F4";
         marker.style.zIndex = "2147483646";
+
+        // position the marker at the top or at the bottom of the element
+        if (showAtBottom) {
+            marker.style.top = (rect.bottom + scrollTop + 3) + "px";
+        } else {
+            marker.style.top = (rect.top + scrollTop - 5) + "px";
+        }
 
         element._dropMarker = marker; // we need this in the _removeDropMarkerFromElement function
         window.document.body.appendChild(marker);
@@ -419,9 +426,14 @@ function RemoteFunctions(config) {
             return;
         }
 
+        // check if the cursor is in the top half or bottom half of the target element
+        const rect = target.getBoundingClientRect();
+        const middleY = rect.top + (rect.height / 2);
+        const showAtBottom = event.clientY > middleY;
+
         // before creating a drop marker, make sure that we clear all the drop markers
         _clearDropMarkers();
-        _createDropMarker(target);
+        _createDropMarker(target, showAtBottom);
     }
 
     /**
@@ -455,6 +467,11 @@ function RemoteFunctions(config) {
             return;
         }
 
+        // check if the cursor is in the top half or bottom half of the target element
+        const rect = target.getBoundingClientRect();
+        const middleY = rect.top + (rect.height / 2);
+        const insertAfter = event.clientY > middleY;
+
         // IDs of the source and target elements
         const sourceId = window._currentDraggedElement.getAttribute("data-brackets-id");
         const targetId = target.getAttribute("data-brackets-id");
@@ -466,6 +483,7 @@ function RemoteFunctions(config) {
             targetElement: target,
             sourceId: Number(sourceId),
             targetId: Number(targetId),
+            insertAfter: insertAfter,
             move: true
         });
 
