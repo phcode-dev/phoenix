@@ -178,9 +178,15 @@ define(function (require, exports, module) {
                 return;
             }
             const targetText = editor.getTextBetween(targetRange.from, targetRange.to);
+            const targetIndent = editor.getTextBetween({ line: targetRange.from.line, ch: 0 }, targetRange.from);
 
-            // sourceText + targetText is done so that new source text can maintain the indentation
-            editor.replaceRange(sourceText + targetText, targetRange.from, targetRange.to);
+            // to check if there is only indentation and no text before it
+            if (targetIndent.trim() === "") {
+                const finalText = sourceText + '\n' + targetIndent + targetText;
+                editor.replaceRange(finalText, targetRange.from, targetRange.to);
+            } else {
+                editor.replaceRange(sourceText + targetText, targetRange.from, targetRange.to);
+            }
         });
     }
 
