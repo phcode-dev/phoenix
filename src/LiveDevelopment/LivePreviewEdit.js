@@ -8,8 +8,8 @@ define(function (require, exports, module) {
      * @return {Object} - Object with openTag and closeTag properties
      */
     function _findContentBoundaries(html) {
-        const openTagEnd = html.indexOf('>') + 1;
-        const closeTagStart = html.lastIndexOf('<');
+        const openTagEnd = html.indexOf(">") + 1;
+        const closeTagStart = html.lastIndexOf("<");
 
         if (openTagEnd > 0 && closeTagStart > openTagEnd) {
             return {
@@ -38,7 +38,7 @@ define(function (require, exports, module) {
     */
     function _editTextInSource(message) {
         const currLiveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
-        if(!currLiveDoc || !currLiveDoc.editor || !message.tagId) {
+        if (!currLiveDoc || !currLiveDoc.editor || !message.tagId) {
             return;
         }
 
@@ -73,7 +73,7 @@ define(function (require, exports, module) {
     function _duplicateElementInSourceByTagId(tagId) {
         // this is to get the currently live document that is being served in the live preview
         const currLiveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
-        if(!currLiveDoc) {
+        if (!currLiveDoc) {
             return;
         }
 
@@ -121,7 +121,7 @@ define(function (require, exports, module) {
     function _deleteElementInSourceByTagId(tagId) {
         // this is to get the currently live document that is being served in the live preview
         const currLiveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
-        if(!currLiveDoc) {
+        if (!currLiveDoc) {
             return;
         }
 
@@ -141,6 +141,50 @@ define(function (require, exports, module) {
     }
 
     /**
+     * This function is responsible for moving an element from one position to another in the source code
+     * it is called when there is drag-drop in the live preview
+     * @param {Number} sourceId - the data-brackets-id of the element being moved
+     * @param {Number} targetId - the data-brackets-id of the target element where to move
+     */
+    function _moveElementInSource(sourceId, targetId) {
+        // this is to get the currently live document that is being served in the live preview
+        const currLiveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
+        if (!currLiveDoc) {
+            return;
+        }
+
+        const editor = currLiveDoc.editor;
+        if (!editor || !sourceId || !targetId) {
+            return;
+        }
+
+        // position of source and target elements in the editor
+        const sourceRange = HTMLInstrumentation.getPositionFromTagId(editor, sourceId);
+
+        if (!sourceRange) {
+            return;
+        }
+
+        const sourceText = editor.getTextBetween(sourceRange.from, sourceRange.to);
+
+        // creating a batch operation so that undo in live preview works fine
+        editor.document.batchOperation(function () {
+            // first, we need to remove the source code from its initial position
+            editor.replaceRange("", sourceRange.from, sourceRange.to);
+
+            // get the target range, this is where we want to insert the text
+            const targetRange = HTMLInstrumentation.getPositionFromTagId(editor, targetId);
+            if(!targetRange) {
+                return;
+            }
+            const targetText = editor.getTextBetween(targetRange.from, targetRange.to);
+
+            // sourceText + targetText is done so that new source text can maintain the indentation
+            editor.replaceRange(sourceText + targetText, targetRange.from, targetRange.to);
+        });
+    }
+
+    /**
      * This is the main function that is exported.
      * it will be called by LiveDevProtocol when it receives a message from RemoteFunctions.js
      * or LiveDevProtocolRemote.js (for undo) using MessageBroker
@@ -153,15 +197,25 @@ define(function (require, exports, module) {
                 tagId: tagId,
                 delete || duplicate || livePreviewTextEdit: true
                 undoLivePreviewOperation: true (this property is available only for undo operation)
+
+                sourceId: sourceId, (these are for move (drag & drop))
+                targetId: targetId,
+                move: true
         }
     * these are the main properties that are passed through the message
      */
     function handleLivePreviewEditOperation(message) {
+        // handle move(drag & drop)
+        if (message.move && message.sourceId && message.targetId) {
+            _moveElementInSource(message.sourceId, message.targetId);
+            return;
+        }
+
         if (!message.element || !message.tagId) {
             // check for undo
-            if(message.undoLivePreviewOperation) {
+            if (message.undoLivePreviewOperation) {
                 const currLiveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
-                if(!currLiveDoc || !currLiveDoc.editor) {
+                if (!currLiveDoc || !currLiveDoc.editor) {
                     return;
                 }
 
