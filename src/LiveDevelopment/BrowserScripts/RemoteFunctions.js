@@ -732,7 +732,7 @@ function RemoteFunctions(config) {
         },
 
         remove: function() {
-            if (this.body && this.body.parentNode) {
+            if (this.body && this.body.parentNode && this.body.parentNode === window.document.body) {
                 window.document.body.removeChild(this.body);
                 this.body = null;
             }
@@ -896,7 +896,7 @@ function RemoteFunctions(config) {
         },
 
         remove: function() {
-            if (this.body && this.body.parentNode) {
+            if (this.body && this.body.parentNode && this.body.parentNode === window.document.body) {
                 window.document.body.removeChild(this.body);
                 this.body = null;
             }
