@@ -175,6 +175,13 @@ define(function (require, exports, module) {
             // first, we need to remove the source code from its initial position
             editor.replaceRange("", sourceRange.from, sourceRange.to);
 
+            // since we remove content from the source, we want to clear the extra line
+            if(sourceRange.from.line !== 0) {
+                const prevLineText = editor.getLine(sourceRange.from.line - 1);
+                const chPrevLine = prevLineText ? prevLineText.length : 0;
+                editor.replaceRange("", {line: sourceRange.from.line - 1, ch: chPrevLine}, sourceRange.from);
+            }
+
             // recalculate the target range, as the source text is not removed
             const updatedTargetRange = HTMLInstrumentation.getPositionFromTagId(editor, targetId);
             if (!updatedTargetRange) {
