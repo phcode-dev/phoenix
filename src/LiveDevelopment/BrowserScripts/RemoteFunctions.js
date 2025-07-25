@@ -1377,6 +1377,12 @@ function RemoteFunctions(config) {
             event.target._originalOutline = event.target.style.outline;
             event.target.style.outline = "1px solid #4285F4";
             previouslyClickedElement = event.target;
+        } else if ( // when user clicks on the HTML or the BODY tag, we want to remove the boxes
+            isFlagActive &&
+            _nodeMoreOptionsBox &&
+            (event.target.tagName === "HTML" || event.target.tagName === "BODY")
+        ) {
+            dismissMoreOptionsBox();
         }
     }
 
@@ -1394,6 +1400,9 @@ function RemoteFunctions(config) {
     }
 
     function onKeyDown(event) {
+        if ((event.key === "Escape" || event.key === "Esc")) {
+            dismissMoreOptionsBox();
+        }
         if (!_setup && _validEvent(event)) {
             window.document.addEventListener("keyup", onKeyUp);
             window.document.addEventListener("mouseover", onMouseOver);
@@ -1838,6 +1847,32 @@ function RemoteFunctions(config) {
         return JSON.stringify(config);
     }
 
+    /**
+     * This function is responsible to remove the more options box
+     * we do this either when user presses the Esc key or clicks on the HTML or Body tags
+     */
+    function dismissMoreOptionsBox() {
+        if (_nodeMoreOptionsBox) {
+            _nodeMoreOptionsBox.remove();
+            _nodeMoreOptionsBox = null;
+        }
+
+        if (_nodeInfoBox) {
+            _nodeInfoBox.remove();
+            _nodeInfoBox = null;
+        }
+
+        if (previouslyClickedElement) {
+            if (previouslyClickedElement._originalOutline !== undefined) {
+                previouslyClickedElement.style.outline = previouslyClickedElement._originalOutline;
+            } else {
+                previouslyClickedElement.style.outline = "";
+            }
+            delete previouslyClickedElement._originalOutline;
+            previouslyClickedElement = null;
+        }
+    }
+
     // Function to handle direct editing of elements in the live preview
     function startEditing(element) {
         if (!element) {
@@ -1989,10 +2024,7 @@ function RemoteFunctions(config) {
     window.document.addEventListener("click", onClick);
     window.document.addEventListener("dragover", onDragOver);
     window.document.addEventListener("drop", onDrop);
-
-    if (experimental) {
-        window.document.addEventListener("keydown", onKeyDown);
-    }
+    window.document.addEventListener("keydown", onKeyDown);
 
     return {
         "DOMEditHandler"        : DOMEditHandler,
