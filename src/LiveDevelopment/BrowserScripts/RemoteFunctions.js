@@ -1848,18 +1848,31 @@ function RemoteFunctions(config) {
     }
 
     /**
+     * This function checks if there are any live preview boxes currently visible
+     * @return {boolean} true if any boxes are visible, false otherwise
+     */
+    function hasVisibleLivePreviewBoxes() {
+        return _nodeMoreOptionsBox !== null || _nodeInfoBox !== null || previouslyClickedElement !== null;
+    }
+
+    /**
      * This function is responsible to remove the more options box
      * we do this either when user presses the Esc key or clicks on the HTML or Body tags
+     * @return {boolean} true if any boxes were dismissed, false otherwise
      */
     function dismissMoreOptionsBox() {
+        let dismissed = false;
+
         if (_nodeMoreOptionsBox) {
             _nodeMoreOptionsBox.remove();
             _nodeMoreOptionsBox = null;
+            dismissed = true;
         }
 
         if (_nodeInfoBox) {
             _nodeInfoBox.remove();
             _nodeInfoBox = null;
+            dismissed = true;
         }
 
         if (previouslyClickedElement) {
@@ -1870,7 +1883,10 @@ function RemoteFunctions(config) {
             }
             delete previouslyClickedElement._originalOutline;
             previouslyClickedElement = null;
+            dismissed = true;
         }
+
+        return dismissed;
     }
 
     // Function to handle direct editing of elements in the live preview
@@ -2037,6 +2053,8 @@ function RemoteFunctions(config) {
         "getSimpleDOM"          : getSimpleDOM,
         "updateConfig"          : updateConfig,
         "startEditing"          : startEditing,
-        "finishEditing"         : finishEditing
+        "finishEditing"         : finishEditing,
+        "dismissMoreOptionsBox" : dismissMoreOptionsBox,
+        "hasVisibleLivePreviewBoxes" : hasVisibleLivePreviewBoxes
     };
 }
