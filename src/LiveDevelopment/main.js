@@ -42,7 +42,8 @@ define(function main(require, exports, module) {
         Strings             = require("strings"),
         ExtensionUtils      = require("utils/ExtensionUtils"),
         StringUtils         = require("utils/StringUtils"),
-        EventDispatcher      = require("utils/EventDispatcher");
+        EventDispatcher      = require("utils/EventDispatcher"),
+        WorkspaceManager    = require("view/WorkspaceManager");
 
     const EVENT_LIVE_HIGHLIGHT_PREF_CHANGED = "liveHighlightPrefChange";
 
@@ -237,6 +238,19 @@ define(function main(require, exports, module) {
         }
     }
 
+    /**
+     * this function handles escape key for live preview to hide boxes if they are visible
+     * @param {Event} event
+     */
+    function _handleLivePreviewEscapeKey(event) {
+        // we only handle the escape keypress for live preview when its active
+        if (MultiBrowserLiveDev.status === MultiBrowserLiveDev.STATUS_ACTIVE) {
+            MultiBrowserLiveDev.dismissLivePreviewBoxes();
+        }
+        // returning false to let the editor also handle the escape key
+        return false;
+    }
+
     /** Initialize LiveDevelopment */
     AppInit.appReady(function () {
         params.parse();
@@ -291,6 +305,9 @@ define(function main(require, exports, module) {
             exports.trigger(exports.EVENT_LIVE_PREVIEW_RELOAD, clientDetails);
         });
 
+        // allow live preview to handle escape key event
+        // Escape is mainly to hide boxes if they are visible
+        WorkspaceManager.addEscapeKeyEventHandler("livePreview", _handleLivePreviewEscapeKey);
     });
 
     // init prefs
