@@ -1773,7 +1773,21 @@ function RemoteFunctions(config) {
         len = elem.attributes.length;
         for (i = 0; i < len; i++) {
             node = elem.attributes.item(i);
+
+            // skip internal attributes that shouldn't be serialized
+            if (node.name === "draggable" && node.value === "true") {
+                continue;
+            }
             value = (node.name === "data-brackets-id") ? parseInt(node.value, 10) : node.value;
+            // Clean internal style properties
+            if (node.name === "style") {
+                const cleanedStyle = _cleanInternalStyles(value);
+
+                if (cleanedStyle.trim() === '') {
+                    continue; // Skip empty style attribute
+                }
+                value = cleanedStyle;
+            }
             json.attributes[node.name] = value;
         }
 
@@ -1834,7 +1848,7 @@ function RemoteFunctions(config) {
         element.setAttribute("contenteditable", "true");
         element.focus();
 
-        element._originalContent = element.innerHTML;
+        element._originalContent = cleanupElementProperties(element);
 
         // Add event listeners for editing
         function onBlur() {
@@ -1864,6 +1878,30 @@ function RemoteFunctions(config) {
         };
     }
 
+    // Helper function to clean internal style properties
+    function _cleanInternalStyles(styleValue) {
+        if (typeof styleValue !== "string") {
+            return styleValue;
+        }
+
+        let cleanedStyle = styleValue;
+
+        // remove internal background color
+        cleanedStyle = cleanedStyle.replace(/background-color:\s*rgba\(0,\s*162,\s*255,\s*0\.2\)\s*;?\s*/gi, "");
+
+        // remove internal outline
+        cleanedStyle = cleanedStyle.replace(/outline:\s*rgb\(66,\s*133,\s*244\)\s+solid\s+1px\s*;?\s*/gi, "");
+        cleanedStyle = cleanedStyle.replace(/outline:\s*1px\s+solid\s+#4285F4\s*;?\s*/gi, "");
+
+        // clean up any extra spaces or semicolons
+        cleanedStyle = cleanedStyle
+            .replace(/;\s*;/g, ";")
+            .replace(/^\s*;\s*/, "")
+            .replace(/\s*;\s*$/, "");
+
+        return cleanedStyle;
+    }
+
     // this function is to remove the internal properties from elements before getting the innerHTML
     // then add all the properties back to the elements
     // internal properties such as 'data-brackets-id', 'data-ld-highlight' etc
@@ -1880,9 +1918,21 @@ function RemoteFunctions(config) {
                 el.removeAttribute('data-ld-highlight');
             }
 
-            // Remove empty style attribute
-            if (el.hasAttribute('style') && el.getAttribute('style').trim() === '') {
-                el.removeAttribute('style');
+            // remove the draggable attribute added internally
+            if (el.hasAttribute('draggable')) {
+                el.removeAttribute('draggable');
+            }
+
+            // remove internal style properties
+            if (el.hasAttribute('style')) {
+                const style = el.getAttribute('style');
+                const cleanedStyle = _cleanInternalStyles(style);
+
+                if (cleanedStyle.trim() === '') {
+                    el.removeAttribute('style');
+                } else {
+                    el.setAttribute('style', cleanedStyle);
+                }
             }
         });
 
