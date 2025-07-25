@@ -138,6 +138,13 @@ define(function (require, exports, module) {
         }
 
         editor.replaceRange("", range.from, range.to);
+
+        // since we remove content from the source, we want to clear the extra line
+        if(range.from.line !== 0) {
+            const prevLineText = editor.getLine(range.from.line - 1);
+            const chPrevLine = prevLineText ? prevLineText.length : 0;
+            editor.replaceRange("", {line: range.from.line - 1, ch: chPrevLine}, range.from);
+        }
     }
 
     /**
