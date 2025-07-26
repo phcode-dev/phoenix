@@ -613,6 +613,30 @@ function RemoteFunctions(config) {
     }
 
     /**
+     * this function is to check if an element should show the 'select-parent' option
+     * because we don't want to show the select parent option when the parent is directly the body/html tag
+     * or the parent doesn't have the 'data-brackets-id'
+     * @param {Element} element - DOM element to check
+     * @returns {boolean} - true if we should show the select parent option otherwise false
+     */
+    function _shouldShowSelectParentOption(element) {
+        if (!element || !element.parentElement) {
+            return false;
+        }
+
+        const parentElement = element.parentElement;
+
+        if (parentElement.tagName === "HTML" || parentElement.tagName === "BODY") {
+            return false;
+        }
+        if (!parentElement.hasAttribute("data-brackets-id")) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * This is for the advanced DOM options that appears when a DOM element is clicked
      * advanced options like: 'select parent', 'duplicate', 'delete'
      */
@@ -654,11 +678,29 @@ function RemoteFunctions(config) {
             // the element that was clicked
             let elemBounds = this.element.getBoundingClientRect();
 
-            // check if edit text option should be shown to determine box width
+            // check which options should be shown to determine box width
             const showEditTextOption = _shouldShowEditTextOption(this.element);
+            const showSelectParentOption = _shouldShowSelectParentOption(this.element);
 
-            // the box width and the positions where it should be placed
-            const boxWidth = showEditTextOption ? 106 : 82;
+            // calculate box width based on visible options
+            // NOTE: duplicate and delete buttons are always shown
+            let optionCount = 2;
+            if (showSelectParentOption) {
+                optionCount++;
+            }
+            if (showEditTextOption) {
+                optionCount++;
+            }
+
+            // box width we need to decide based on the no. of options
+            let boxWidth;
+            if (optionCount === 2) {
+                boxWidth = 52;
+            } else if (optionCount === 3) {
+                boxWidth = 82;
+            } else {
+                boxWidth = 106;
+            }
             const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
@@ -719,17 +761,23 @@ function RemoteFunctions(config) {
               `
             };
 
-            let content = `<div class="node-options">
-                <span data-action="select-parent" title="Select Parent">
+            let content = `<div class="node-options">`;
+
+            // Only include select parent option if element supports it
+            if (showSelectParentOption) {
+                content += `<span data-action="select-parent" title="Select Parent">
                     ${ICONS.arrowUp}
                 </span>`;
+            }
 
-            if (showEditTextOption) { // to check if the element is editable
+            // Only include edit text option if element supports it
+            if (showEditTextOption) {
                 content += `<span data-action="edit-text" title="Edit Text">
                     ${ICONS.edit}
                 </span>`;
             }
 
+            // Always include duplicate and delete options
             content += `<span data-action="duplicate" title="Duplicate">
                     ${ICONS.copy}
                 </span>
