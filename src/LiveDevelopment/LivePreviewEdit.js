@@ -11,7 +11,7 @@ define(function (require, exports, module) {
         const openTagEnd = html.indexOf(">") + 1;
         const closeTagStart = html.lastIndexOf("<");
 
-        if (openTagEnd > 0 && closeTagStart > openTagEnd) {
+        if (openTagEnd > 0 && closeTagStart >= openTagEnd) {
             return {
                 openTag: html.substring(0, openTagEnd),
                 closeTag: html.substring(closeTagStart)
