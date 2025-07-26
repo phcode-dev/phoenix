@@ -1403,7 +1403,6 @@ function RemoteFunctions(config) {
             window.document.removeEventListener("mouseover", onMouseOver);
             window.document.removeEventListener("mouseout", onMouseOut);
             window.document.removeEventListener("mousemove", onMouseMove);
-            window.document.removeEventListener("click", onClick);
             _localHighlight.clear();
             _localHighlight = undefined;
             _setup = false;
