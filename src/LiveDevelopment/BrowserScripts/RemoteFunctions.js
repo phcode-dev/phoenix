@@ -1028,42 +1028,6 @@ function RemoteFunctions(config) {
         }
     };
 
-    function Editor(element) {
-        this.onBlur = this.onBlur.bind(this);
-        this.onKeyPress = this.onKeyPress.bind(this);
-
-        this.element = element;
-        this.element.setAttribute("contenteditable", "true");
-        this.element.focus();
-        this.element.addEventListener("blur", this.onBlur);
-        this.element.addEventListener("keypress", this.onKeyPress);
-
-        this.revertText = this.element.innerHTML;
-
-        _trigger(this.element, "edit", 1);
-    }
-
-    Editor.prototype = {
-        onBlur: function (event) {
-            this.element.removeAttribute("contenteditable");
-            this.element.removeEventListener("blur", this.onBlur);
-            this.element.removeEventListener("keypress", this.onKeyPress);
-            _trigger(this.element, "edit", 0, true);
-        },
-
-        onKeyPress: function (event) {
-            switch (event.which) {
-            case 13: // return
-                this.element.blur();
-                break;
-            case 27: // esc
-                this.element.innerHTML = this.revertText;
-                this.element.blur();
-                break;
-            }
-        }
-    };
-
     function Highlight(color, trigger) {
         this.color = color;
         this.trigger = !!trigger;
@@ -1364,19 +1328,7 @@ function RemoteFunctions(config) {
         }
     };
 
-    var _currentEditor;
-    function _toggleEditor(element) {
-        _currentEditor = new Editor(element);
-    }
-
     var _currentMenu;
-    function _toggleMenu(element) {
-        if (_currentMenu) {
-            _currentMenu.remove();
-        }
-        _currentMenu = new Menu(element);
-    }
-
     var _localHighlight;
     var _remoteHighlight;
     var _hoverHighlight;
@@ -1477,6 +1429,8 @@ function RemoteFunctions(config) {
         ) {
             event.preventDefault();
             event.stopPropagation();
+            event.stopImmediatePropagation();
+
             if (_nodeMoreOptionsBox) {
                 _nodeMoreOptionsBox.remove();
                 _nodeMoreOptionsBox = null;
@@ -1512,6 +1466,26 @@ function RemoteFunctions(config) {
         }
     }
 
+    /**
+     * this function handles the double click event
+     * @param {Event} event
+     */
+    function onDoubleClick(event) {
+        if (
+            isFlagActive &&
+            event.target.hasAttribute("data-brackets-id") &&
+            event.target.tagName !== "BODY" &&
+            event.target.tagName !== "HTML"
+        ) {
+            // because we only want to allow double click text editing where we show the edit option
+            if (_shouldShowEditTextOption(event.target)) {
+                event.preventDefault();
+                event.stopPropagation();
+                startEditing(event.target);
+            }
+        }
+    }
+
     function onKeyUp(event) {
         if (_setup && !_validEvent(event)) {
             window.document.removeEventListener("keyup", onKeyUp);
@@ -1533,7 +1507,7 @@ function RemoteFunctions(config) {
             window.document.addEventListener("mouseover", onMouseOver);
             window.document.addEventListener("mouseout", onMouseOut);
             window.document.addEventListener("mousemove", onMouseMove);
-            window.document.addEventListener("click", onClick);
+            window.document.addEventListener("click", onClick, true);
             _localHighlight = new Highlight("#ecc", true);
             _setup = true;
         }
@@ -2162,7 +2136,8 @@ function RemoteFunctions(config) {
     // Add event listeners for hover
     window.document.addEventListener("mouseover", onElementHover);
     window.document.addEventListener("mouseout", onElementHoverOut);
-    window.document.addEventListener("click", onClick);
+    window.document.addEventListener("click", onClick, true);
+    window.document.addEventListener("dblclick", onDoubleClick);
     window.document.addEventListener("dragover", onDragOver);
     window.document.addEventListener("drop", onDrop);
     window.document.addEventListener("keydown", onKeyDown);
