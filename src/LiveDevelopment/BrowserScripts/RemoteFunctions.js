@@ -713,8 +713,15 @@ function RemoteFunctions(config) {
 
             const isOverlap = checkOverlap(elemBounds.width, tagName, id, classes);
 
-            // default position (right aligned with element)
-            let leftPos = elemBounds.right - boxWidth + scrollLeft;
+            const viewportWidth = window.innerWidth;
+            const idealLeftPos = elemBounds.right - boxWidth + scrollLeft;
+            const maxLeftPos = viewportWidth - boxWidth - 10 + scrollLeft;
+            // 10px is just the padding, because we want some space
+            const minLeftPos = 10 + scrollLeft;
+
+            // we'll use the position that keeps the box within viewport bounds
+            let leftPos = Math.min(idealLeftPos, maxLeftPos);
+            leftPos = Math.max(leftPos, minLeftPos);
             let topPos;
 
             if (isOverlap) {
