@@ -447,6 +447,14 @@
                 undoLivePreviewOperation: true
             });
         }
+
+        // for redo
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "y") {
+            MessageBroker.send({
+                livePreviewEditEnabled: true,
+                redoLivePreviewOperation: true
+            });
+        }
     });
 
 }(this));

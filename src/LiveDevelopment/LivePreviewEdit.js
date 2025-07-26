@@ -218,6 +218,25 @@ define(function (require, exports, module) {
     }
 
     /**
+     * This function is to handle the undo redo operation in the live preview
+     * @param {String} undoOrRedo - "undo" when to undo, and "redo" for redo
+     */
+    function handleUndoRedoOperation(undoOrRedo) {
+        const currLiveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
+        if (!currLiveDoc || !currLiveDoc.editor) {
+            return;
+        }
+
+        const editor = currLiveDoc.editor;
+
+        if (undoOrRedo === "undo") {
+            editor.undo();
+        } else if (undoOrRedo === "redo") {
+            editor.redo();
+        }
+    }
+
+    /**
      * This is the main function that is exported.
      * it will be called by LiveDevProtocol when it receives a message from RemoteFunctions.js
      * or LiveDevProtocolRemote.js (for undo) using MessageBroker
@@ -247,14 +266,8 @@ define(function (require, exports, module) {
 
         if (!message.element || !message.tagId) {
             // check for undo
-            if (message.undoLivePreviewOperation) {
-                const currLiveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
-                if (!currLiveDoc || !currLiveDoc.editor) {
-                    return;
-                }
-
-                const editor = currLiveDoc.editor;
-                editor.undo();
+            if (message.undoLivePreviewOperation || message.redoLivePreviewOperation) {
+                message.undoLivePreviewOperation ? handleUndoRedoOperation("undo") : handleUndoRedoOperation("redo");
             }
             return;
         }
