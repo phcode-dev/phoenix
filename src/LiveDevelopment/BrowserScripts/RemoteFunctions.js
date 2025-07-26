@@ -1507,7 +1507,7 @@ function RemoteFunctions(config) {
             window.document.addEventListener("mouseover", onMouseOver);
             window.document.addEventListener("mouseout", onMouseOut);
             window.document.addEventListener("mousemove", onMouseMove);
-            window.document.addEventListener("click", onClick, true);
+            window.document.addEventListener("click", onClick);
             _localHighlight = new Highlight("#ecc", true);
             _setup = true;
         }
@@ -2136,7 +2136,7 @@ function RemoteFunctions(config) {
     // Add event listeners for hover
     window.document.addEventListener("mouseover", onElementHover);
     window.document.addEventListener("mouseout", onElementHoverOut);
-    window.document.addEventListener("click", onClick, true);
+    window.document.addEventListener("click", onClick);
     window.document.addEventListener("dblclick", onDoubleClick);
     window.document.addEventListener("dragover", onDragOver);
     window.document.addEventListener("drop", onDrop);
