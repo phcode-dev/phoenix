@@ -94,24 +94,26 @@ define(function (require, exports, module) {
         // this is the indentation on the line
         const indent = editor.getTextBetween({ line: range.from.line, ch: 0 }, range.from);
 
-        // make sure there is only indentation and no text before it
-        if (indent.trim() === "") {
-            // this is the position where we need to insert
-            // we're giving the char as 0 because since we insert a new line using '\n'
-            // that's why writing any char value will not work, as the line is empty
-            // and codemirror doesn't allow to insert at a column (ch) greater than the length of the line
-            // So, the logic is to just append the indent before the text at this insertPos
-            const insertPos = {
-                line: range.from.line + (range.to.line - range.from.line + 1),
-                ch: 0
-            };
+        editor.document.batchOperation(function () {
+            // make sure there is only indentation and no text before it
+            if (indent.trim() === "") {
+                // this is the position where we need to insert
+                // we're giving the char as 0 because since we insert a new line using '\n'
+                // that's why writing any char value will not work, as the line is empty
+                // and codemirror doesn't allow to insert at a column (ch) greater than the length of the line
+                // So, the logic is to just append the indent before the text at this insertPos
+                const insertPos = {
+                    line: range.from.line + (range.to.line - range.from.line + 1),
+                    ch: 0
+                };
 
-            editor.replaceRange("\n", range.to);
-            editor.replaceRange(indent + text, insertPos);
-        } else {
-            // if there is some text, we just add the duplicated text right next to it
-            editor.replaceRange(text, range.from);
-        }
+                editor.replaceRange("\n", range.to);
+                editor.replaceRange(indent + text, insertPos);
+            } else {
+                // if there is some text, we just add the duplicated text right next to it
+                editor.replaceRange(text, range.from);
+            }
+        });
     }
 
     /**
@@ -137,14 +139,16 @@ define(function (require, exports, module) {
             return;
         }
 
-        editor.replaceRange("", range.from, range.to);
+        editor.document.batchOperation(function () {
+            editor.replaceRange("", range.from, range.to);
 
-        // since we remove content from the source, we want to clear the extra line
-        if(range.from.line !== 0) {
-            const prevLineText = editor.getLine(range.from.line - 1);
-            const chPrevLine = prevLineText ? prevLineText.length : 0;
-            editor.replaceRange("", {line: range.from.line - 1, ch: chPrevLine}, range.from);
-        }
+            // since we remove content from the source, we want to clear the extra line
+            if(range.from.line !== 0) {
+                const prevLineText = editor.getLine(range.from.line - 1);
+                const chPrevLine = prevLineText ? prevLineText.length : 0;
+                editor.replaceRange("", {line: range.from.line - 1, ch: chPrevLine}, range.from);
+            }
+        });
     }
 
     /**
