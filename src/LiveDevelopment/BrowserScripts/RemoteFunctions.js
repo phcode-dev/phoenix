@@ -1350,6 +1350,7 @@ function RemoteFunctions(config) {
             event.target.tagName !== "BODY" &&
             event.target.tagName !== "HTML"
         ) {
+            event.preventDefault();
             event.stopPropagation();
             if (_nodeMoreOptionsBox) {
                 _nodeMoreOptionsBox.remove();
