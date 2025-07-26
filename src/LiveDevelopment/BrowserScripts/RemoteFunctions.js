@@ -560,6 +560,59 @@ function RemoteFunctions(config) {
     }
 
     /**
+     * this function is to check if an element should show the edit text option
+     * it is needed because edit text option doesn't make sense with many elements like images, videos, hr tag etc
+     * @param {Element} element - DOM element to check
+     * @returns {boolean} - true if we should show the edit text option otherwise false
+     */
+    function _shouldShowEditTextOption(element) {
+        if (!element || !element.tagName) {
+            return false;
+        }
+
+        const tagName = element.tagName.toLowerCase();
+
+        // these are self-closing tags and don't allow any text content
+        const voidElements = [
+            "img",
+            "br",
+            "hr",
+            "input",
+            "meta",
+            "link",
+            "area",
+            "base",
+            "col",
+            "embed",
+            "source",
+            "track",
+            "wbr"
+        ];
+
+        // these elements are non-editable as they have their own mechanisms
+        const nonEditableElements = [
+            "script",
+            "style",
+            "noscript",
+            "canvas",
+            "svg",
+            "video",
+            "audio",
+            "iframe",
+            "object",
+            "button",
+            "select",
+            "textarea"
+        ];
+
+        if (voidElements.includes(tagName) || nonEditableElements.includes(tagName)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * This is for the advanced DOM options that appears when a DOM element is clicked
      * advanced options like: 'select parent', 'duplicate', 'delete'
      */
@@ -601,8 +654,11 @@ function RemoteFunctions(config) {
             // the element that was clicked
             let elemBounds = this.element.getBoundingClientRect();
 
+            // check if edit text option should be shown to determine box width
+            const showEditTextOption = _shouldShowEditTextOption(this.element);
+
             // the box width and the positions where it should be placed
-            const boxWidth = 106;
+            const boxWidth = showEditTextOption ? 106 : 82;
             const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
@@ -666,11 +722,15 @@ function RemoteFunctions(config) {
             let content = `<div class="node-options">
                 <span data-action="select-parent" title="Select Parent">
                     ${ICONS.arrowUp}
-                </span>
-                <span data-action="edit-text" title="Edit Text">
+                </span>`;
+
+            if (showEditTextOption) { // to check if the element is editable
+                content += `<span data-action="edit-text" title="Edit Text">
                     ${ICONS.edit}
-                </span>
-                <span data-action="duplicate" title="Duplicate">
+                </span>`;
+            }
+
+            content += `<span data-action="duplicate" title="Duplicate">
                     ${ICONS.copy}
                 </span>
                 <span data-action="delete" title="Delete">
