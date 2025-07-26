@@ -301,6 +301,8 @@ function RemoteFunctions(config) {
     function handleOptionClick(e, action, element) {
         if (action === "select-parent") {
             _handleSelectParentOptionClick(e, element);
+        } else if (action === "edit-text") {
+            startEditing(element);
         } else if (action === "duplicate") {
             _handleDuplicateOptionClick(e, element);
         } else if (action === "delete") {
@@ -545,8 +547,8 @@ function RemoteFunctions(config) {
         // calc estimate width based on the char count
         const infoBoxWidth = basePadding + (charCount * avgCharWidth);
 
-        // more options box is 82px
-        const moreOptionsBoxWidth = 82;
+        // more options box is 106px
+        const moreOptionsBoxWidth = 106;
 
         // check if there's enough space for both boxes
         // 20px buffer for spacing between boxes
@@ -600,8 +602,7 @@ function RemoteFunctions(config) {
             let elemBounds = this.element.getBoundingClientRect();
 
             // the box width and the positions where it should be placed
-            const boxWidth = 82;
-            const boxHeight = 40; // rough estimate for options box
+            const boxWidth = 106;
             const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
@@ -641,6 +642,12 @@ function RemoteFunctions(config) {
                 </svg>
               `,
 
+                edit: `
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                </svg>
+              `,
+
                 copy: `
                 <svg viewBox="0 0 24 24" fill="currentColor">
                   <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0
@@ -659,6 +666,9 @@ function RemoteFunctions(config) {
             let content = `<div class="node-options">
                 <span data-action="select-parent" title="Select Parent">
                     ${ICONS.arrowUp}
+                </span>
+                <span data-action="edit-text" title="Edit Text">
+                    ${ICONS.edit}
                 </span>
                 <span data-action="duplicate" title="Duplicate">
                     ${ICONS.copy}
