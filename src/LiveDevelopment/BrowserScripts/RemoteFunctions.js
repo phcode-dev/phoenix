@@ -860,6 +860,7 @@ function RemoteFunctions(config) {
             if (this.body && this.body.parentNode && this.body.parentNode === window.document.body) {
                 window.document.body.removeChild(this.body);
                 this.body = null;
+                _nodeMoreOptionsBox = null;
             }
         }
     };
