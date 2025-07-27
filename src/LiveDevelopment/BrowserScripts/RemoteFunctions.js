@@ -2036,6 +2036,7 @@ function RemoteFunctions(config) {
         // Make the element editable
         element.setAttribute("contenteditable", "true");
         element.focus();
+        dismissMoreOptionsBox();
 
         element._originalContent = cleanupElementProperties(element);
 
