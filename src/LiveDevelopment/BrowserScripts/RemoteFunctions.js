@@ -893,7 +893,7 @@ function RemoteFunctions(config) {
             // this value decides where we need to show the box in the UI
             // we are creating this here, because if the element has IDs and Classes then we need to increase the value
             // so that the box doesn't obscure the element
-            let pushBoxUp = 28; // px value
+            let pushBoxUp = 32; // px value
 
             // get the ID and classes for that element, as we need to display it in the box
             const id = this.element.id;
@@ -905,7 +905,7 @@ function RemoteFunctions(config) {
             // Add ID if present
             if (id) {
                 content += "<div class='id-name'>#" + id + "</div>";
-                pushBoxUp += 16;
+                pushBoxUp += 20;
             }
 
             // Add classes (limit to 3 with dropdown indicator)
@@ -918,7 +918,7 @@ function RemoteFunctions(config) {
                     content += "<span class='exceeded-classes'>+" + (classes.length - 3) + " more</span>";
                 }
                 content += "</div>";
-                pushBoxUp += 16;
+                pushBoxUp += 20;
             }
 
             let leftPos = elemBounds.left + scrollLeft;
@@ -941,7 +941,6 @@ function RemoteFunctions(config) {
             // Calculate estimated width based on character count
             // Formula: base padding + (character count * average character width)
             const boxWidth = basePadding + (charCount * avgCharWidth);
-            const boxHeight = 40 + (id ? 16 : 0) + (classes.length > 0 ? 16 : 0); // rough estimate
 
             // we need to check for overlap if this is from a click
             if (this.isFromClick) {
@@ -953,16 +952,16 @@ function RemoteFunctions(config) {
 
                     // Estimate the height of the info box based on its content
                     // base height for tag name + padding
-                    let estimatedHeight = 20;
+                    let estimatedHeight = 32;
 
                     // height adjustment if ID is present
                     if (id) {
-                        estimatedHeight += 15;
+                        estimatedHeight += 20;
                     }
 
                     // height adjustment if classes are present
                     if (classes.length > 0) {
-                        estimatedHeight += 15;
+                        estimatedHeight += 20;
                     }
 
                     // check if element is near bottom of viewport
@@ -2031,8 +2030,7 @@ function RemoteFunctions(config) {
      * This function is responsible to move the cursor to the end of the text content when we start editing
      * @param {DOMElement} element
      */
-    function moveCursorToEnd(element) {
-        const selection = window.getSelection();
+    function moveCursorToEnd(selection, element) {
         const range = document.createRange();
         range.selectNodeContents(element);
         range.collapse(false);
@@ -2050,7 +2048,12 @@ function RemoteFunctions(config) {
         element.setAttribute("contenteditable", "true");
         element.focus();
 
-        moveCursorToEnd(element);
+        // Move cursor to end if no existing selection
+        const selection = window.getSelection();
+        if (selection.rangeCount === 0 || selection.isCollapsed) {
+            moveCursorToEnd(selection, element);
+        }
+
         dismissMoreOptionsBox();
 
         element._originalContent = cleanupElementProperties(element);
