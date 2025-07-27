@@ -2027,6 +2027,19 @@ function RemoteFunctions(config) {
         return dismissed;
     }
 
+    /**
+     * This function is responsible to move the cursor to the end of the text content when we start editing
+     * @param {DOMElement} element
+     */
+    function moveCursorToEnd(element) {
+        const selection = window.getSelection();
+        const range = document.createRange();
+        range.selectNodeContents(element);
+        range.collapse(false);
+        selection.removeAllRanges();
+        selection.addRange(range);
+    }
+
     // Function to handle direct editing of elements in the live preview
     function startEditing(element) {
         if (!element) {
@@ -2036,6 +2049,8 @@ function RemoteFunctions(config) {
         // Make the element editable
         element.setAttribute("contenteditable", "true");
         element.focus();
+
+        moveCursorToEnd(element);
         dismissMoreOptionsBox();
 
         element._originalContent = cleanupElementProperties(element);
@@ -2137,6 +2152,7 @@ function RemoteFunctions(config) {
 
         // Remove contenteditable attribute
         element.removeAttribute("contenteditable");
+        dismissMoreOptionsBox();
 
         // Remove event listeners
         if (element._editListeners) {
