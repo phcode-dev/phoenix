@@ -948,6 +948,7 @@ function RemoteFunctions(config) {
 
                 if (isOverlap) {
                     const windowWidth = window.innerWidth;
+                    const viewportHeight = window.innerHeight;
 
                     // Estimate the height of the info box based on its content
                     // base height for tag name + padding
@@ -963,8 +964,20 @@ function RemoteFunctions(config) {
                         estimatedHeight += 15;
                     }
 
-                    // align with the bottom of the info box
+                    // check if element is near bottom of viewport
+                    const elementBottomFromViewportTop = elemBounds.bottom;
+                    const availableSpaceBelow = viewportHeight - elementBottomFromViewportTop;
+
+                    // align with the bottom of the info box (original behavior)
                     topPos = (elemBounds.top + elemBounds.height - estimatedHeight) + scrollTop;
+
+                    // If element is near bottom and there's not enough space below,
+                    // push the info box up a bit to prevent scrollbar
+                    if (availableSpaceBelow < estimatedHeight + 10) {
+                        // Push it up by the amount it would overflow
+                        const pushUpAmount = estimatedHeight - availableSpaceBelow;
+                        topPos -= pushUpAmount;
+                    }
 
                     // decide whether position at left or right based on available space
                     // check if there's enough space on the left side
