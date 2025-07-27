@@ -491,6 +491,7 @@ function RemoteFunctions(config) {
 
         _clearDropMarkers();
         _dragEndChores(window._currentDraggedElement);
+        dismissMoreOptionsBox();
         delete window._currentDraggedElement;
     }
 
