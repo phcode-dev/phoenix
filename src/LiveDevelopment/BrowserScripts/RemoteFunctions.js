@@ -2066,13 +2066,12 @@ function RemoteFunctions(config) {
         function onKeyDown(event) {
             if (event.key === "Escape") {
                 // Cancel editing
-                element.innerHTML = element._originalContent;
-                finishEditing(element);
                 event.preventDefault();
+                finishEditing(element);
             } else if (event.key === "Enter" && !event.shiftKey) {
                 // Finish editing on Enter (unless Shift is held)
-                finishEditing(element);
                 event.preventDefault();
+                finishEditing(element);
             }
         }
 
