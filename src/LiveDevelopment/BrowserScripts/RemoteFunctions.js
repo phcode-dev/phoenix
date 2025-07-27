@@ -991,6 +991,18 @@ function RemoteFunctions(config) {
                 }
             }
 
+            // to make sure that the info box stays under the viewport width
+            const viewportWidth = window.innerWidth;
+            const margin = 10;
+
+            // horizontal boundary checking
+            if (leftPos + boxWidth + margin > viewportWidth + scrollLeft) {
+                leftPos = viewportWidth + scrollLeft - boxWidth - margin;
+            }
+            if (leftPos < scrollLeft + margin) {
+                leftPos = scrollLeft + margin;
+            }
+
             const styles = `
                 .box {
                     background-color: #4285F4;
@@ -1583,17 +1595,8 @@ function RemoteFunctions(config) {
         _clickHighlight.selector = rule;
     }
 
-    // redraw active highlights
-    function redrawHighlights() {
-        if (_remoteHighlight) {
-            _remoteHighlight.redraw();
-        }
-        if (_clickHighlight) {
-            _clickHighlight.redraw();
-        }
-        if (_hoverHighlight) {
-            _hoverHighlight.redraw();
-        }
+    // recreate UI boxes (info box and more options box)
+    function redrawUIBoxes() {
         if (_nodeMoreOptionsBox) {
             const element = _nodeMoreOptionsBox.element;
             _nodeMoreOptionsBox.remove();
@@ -1606,7 +1609,26 @@ function RemoteFunctions(config) {
         }
     }
 
-    window.addEventListener("resize", redrawHighlights);
+    // redraw active highlights
+    function redrawHighlights() {
+        if (_remoteHighlight) {
+            _remoteHighlight.redraw();
+        }
+        if (_clickHighlight) {
+            _clickHighlight.redraw();
+        }
+        if (_hoverHighlight) {
+            _hoverHighlight.redraw();
+        }
+    }
+
+    // just a wrapper function when we need to redraw highlights as well as UI boxes
+    function redrawEverything() {
+        redrawHighlights();
+        redrawUIBoxes();
+    }
+
+    window.addEventListener("resize", redrawEverything);
     // Add a capture-phase scroll listener to update highlights when
     // any element scrolls.
 
@@ -1875,7 +1897,7 @@ function RemoteFunctions(config) {
         this.rememberedNodes = {};
 
         // update highlight after applying diffs
-        redrawHighlights();
+        redrawEverything();
     };
 
     function applyDOMEdits(edits) {
@@ -2164,6 +2186,7 @@ function RemoteFunctions(config) {
         "highlight"             : highlight,
         "highlightRule"         : highlightRule,
         "redrawHighlights"      : redrawHighlights,
+        "redrawEverything"      : redrawEverything,
         "applyDOMEdits"         : applyDOMEdits,
         "getSimpleDOM"          : getSimpleDOM,
         "updateConfig"          : updateConfig,
