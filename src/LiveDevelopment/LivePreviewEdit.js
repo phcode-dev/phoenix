@@ -1,6 +1,7 @@
 define(function (require, exports, module) {
     const HTMLInstrumentation = require("LiveDevelopment/MultiBrowserImpl/language/HTMLInstrumentation");
     const LiveDevMultiBrowser = require("LiveDevelopment/LiveDevMultiBrowser");
+    const CodeMirror = require("thirdparty/CodeMirror/lib/codemirror");
 
     /**
      * this is a helper function to find the content boundaries in HTML
@@ -82,36 +83,42 @@ define(function (require, exports, module) {
             return;
         }
 
-        // this will give us the start pos and end pos of the DOM element in the source code
-        // can be referenced using range.from and range.to
-        const range = HTMLInstrumentation.getPositionFromTagId(editor, tagId);
-        if (!range) {
+        // get the start range from the getPositionFromTagId function
+        // and we get the end range from the findMatchingTag function
+        // NOTE: we cannot get the end range from getPositionFromTagId
+        // because on non-beautified code getPositionFromTagId may not provide correct end position
+        const startRange = HTMLInstrumentation.getPositionFromTagId(editor, tagId);
+        const endRange = CodeMirror.findMatchingTag(editor._codeMirror, editor.getCursorPos());
+
+        if (!startRange || !endRange) {
             return;
         }
+        const startPos = startRange.from;
+        const endPos = endRange.close.to;
 
         // this is the actual source code for the element that we need to duplicate
-        const text = editor.getTextBetween(range.from, range.to);
+        const text = editor.getTextBetween(startPos, endPos);
         // this is the indentation on the line
-        const indent = editor.getTextBetween({ line: range.from.line, ch: 0 }, range.from);
+        const indent = editor.getTextBetween({ line: startPos.line, ch: 0 }, startPos);
 
         editor.document.batchOperation(function () {
             // make sure there is only indentation and no text before it
             if (indent.trim() === "") {
                 // this is the position where we need to insert
                 // we're giving the char as 0 because since we insert a new line using '\n'
-                // that's why writing any char value will not work, as the line is empty
+                // that's why writing any char value will not work, as the line is emptys
                 // and codemirror doesn't allow to insert at a column (ch) greater than the length of the line
                 // So, the logic is to just append the indent before the text at this insertPos
                 const insertPos = {
-                    line: range.from.line + (range.to.line - range.from.line + 1),
+                    line: startPos.line + (endPos.line - startPos.line + 1),
                     ch: 0
                 };
 
-                editor.replaceRange("\n", range.to);
+                editor.replaceRange("\n", endPos);
                 editor.replaceRange(indent + text, insertPos);
             } else {
                 // if there is some text, we just add the duplicated text right next to it
-                editor.replaceRange(text, range.from);
+                editor.replaceRange(text, startPos);
             }
         });
     }
@@ -132,21 +139,27 @@ define(function (require, exports, module) {
             return;
         }
 
-        // this will give us the start pos and end pos of the DOM element in the source code
-        // can be referenced using range.from and range.to
-        const range = HTMLInstrumentation.getPositionFromTagId(editor, tagId);
-        if (!range) {
+        // get the start range from the getPositionFromTagId function
+        // and we get the end range from the findMatchingTag function
+        // NOTE: we cannot get the end range from getPositionFromTagId
+        // because on non-beautified code getPositionFromTagId may not provide correct end position
+        const startRange = HTMLInstrumentation.getPositionFromTagId(editor, tagId);
+        const endRange = CodeMirror.findMatchingTag(editor._codeMirror, editor.getCursorPos());
+
+        if (!startRange || !endRange) {
             return;
         }
+        const startPos = startRange.from;
+        const endPos = endRange.close.to;
 
         editor.document.batchOperation(function () {
-            editor.replaceRange("", range.from, range.to);
+            editor.replaceRange("", startPos, endPos);
 
             // since we remove content from the source, we want to clear the extra line
-            if(range.from.line !== 0) {
-                const prevLineText = editor.getLine(range.from.line - 1);
+            if(startPos.line !== 0 && !(editor.getLine(startPos.line).trim())) {
+                const prevLineText = editor.getLine(startPos.line - 1);
                 const chPrevLine = prevLineText ? prevLineText.length : 0;
-                editor.replaceRange("", {line: range.from.line - 1, ch: chPrevLine}, range.from);
+                editor.replaceRange("", {line: startPos.line - 1, ch: chPrevLine}, startPos);
             }
         });
     }
