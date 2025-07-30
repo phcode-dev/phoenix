@@ -44,12 +44,24 @@ define(function (require, exports, module) {
         }
 
         const editor = currLiveDoc.editor;
-        const range = HTMLInstrumentation.getPositionFromTagId(editor, message.tagId);
-        if (!range) {
+        // get the start range from the getPositionFromTagId function
+        // and we get the end range from the findMatchingTag function
+        // NOTE: we cannot get the end range from getPositionFromTagId
+        // because on non-beautified code getPositionFromTagId may not provide correct end position
+        const startRange = HTMLInstrumentation.getPositionFromTagId(editor, message.tagId);
+        if(!startRange) {
             return;
         }
 
-        const text = editor.getTextBetween(range.from, range.to);
+        const endRange = CodeMirror.findMatchingTag(editor._codeMirror, startRange.from);
+        if (!endRange) {
+            return;
+        }
+
+        const startPos = startRange.from;
+        const endPos = endRange.close.to;
+
+        const text = editor.getTextBetween(startPos, endPos);
         let splittedText;
 
         // we need to find the content boundaries to find exactly where the content starts and where it ends
@@ -61,7 +73,7 @@ define(function (require, exports, module) {
         // if the text split was done successfully, apply the edit
         if (splittedText && splittedText.length === 2) {
             const finalText = splittedText[0] + message.newContent + splittedText[1];
-            editor.replaceRange(finalText, range.from, range.to);
+            editor.replaceRange(finalText, startPos, endPos);
         } else {
             console.error("Live preview text edit operation failed.");
         }
