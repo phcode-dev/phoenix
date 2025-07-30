@@ -185,6 +185,67 @@ define(function (require, exports, module) {
     }
 
     /**
+     * this function is to clean up the empty lines after an element is removed
+     * @param {Object} editor - the editor instance
+     * @param {Object} range - the range where element was removed
+     */
+    function _cleanupAfterRemoval(editor, range) {
+        const lineToCheck = range.from.line;
+
+        // check if the line where element was removed is now empty
+        if (lineToCheck < editor.lineCount()) {
+            const currentLineText = editor.getLine(lineToCheck);
+            if (currentLineText && currentLineText.trim() === "") {
+                // remove the empty line
+                const lineStart = { line: lineToCheck, ch: 0 };
+                const lineEnd = { line: lineToCheck + 1, ch: 0 };
+                editor.replaceRange("", lineStart, lineEnd);
+            }
+        }
+
+        // also we need to check the previous line if it became empty
+        if (lineToCheck > 0) {
+            const prevLineText = editor.getLine(lineToCheck - 1);
+            if (prevLineText && prevLineText.trim() === "") {
+                const lineStart = { line: lineToCheck - 1, ch: 0 };
+                const lineEnd = { line: lineToCheck, ch: 0 };
+                editor.replaceRange("", lineStart, lineEnd);
+            }
+        }
+    }
+
+    /**
+     * this function is to make sure that we insert elements with proper indentation
+     *
+     * @param {Object} editor - the editor instance
+     * @param {Object} insertPos - position where to insert
+     * @param {Boolean} insertAfterMode - whether to insert after the position
+     * @param {String} targetIndent - the indentation to use
+     * @param {String} sourceText - the text to insert
+     */
+    function _insertElementWithIndentation(editor, insertPos, insertAfterMode, targetIndent, sourceText) {
+        if (insertAfterMode) {
+            // Insert after the target element
+            editor.replaceRange("\n" + targetIndent + sourceText, insertPos);
+        } else {
+            // Insert before the target element
+            const insertLine = insertPos.line;
+            const lineStart = { line: insertLine, ch: 0 };
+
+            // Get current line content to preserve any existing indentation structure
+            const currentLine = editor.getLine(insertLine);
+
+            if (currentLine && currentLine.trim() === "") {
+                // the line is empty, replace it entirely
+                editor.replaceRange(targetIndent + sourceText, lineStart, { line: insertLine, ch: currentLine.length });
+            } else {
+                // the line has content, insert before it
+                editor.replaceRange(targetIndent + sourceText + "\n", lineStart);
+            }
+        }
+    }
+
+    /**
      * This function is responsible for moving an element from one position to another in the source code
      * it is called when there is drag-drop in the live preview
      * @param {Number} sourceId - the data-brackets-id of the element being moved
@@ -203,13 +264,39 @@ define(function (require, exports, module) {
             return;
         }
 
-        // position of source and target elements in the editor
-        const sourceRange = HTMLInstrumentation.getPositionFromTagId(editor, sourceId);
-        const targetRange = HTMLInstrumentation.getPositionFromTagId(editor, targetId);
-
-        if (!sourceRange || !targetRange) {
+        // get the start range from the getPositionFromTagId function
+        // and we get the end range from the findMatchingTag function
+        // NOTE: we cannot get the end range from getPositionFromTagId
+        // because on non-beautified code getPositionFromTagId may not provide correct end position
+        const sourceStartRange = HTMLInstrumentation.getPositionFromTagId(editor, sourceId);
+        if(!sourceStartRange) {
             return;
         }
+
+        const sourceEndRange = CodeMirror.findMatchingTag(editor._codeMirror, sourceStartRange.from);
+        if (!sourceEndRange) {
+            return;
+        }
+
+        const targetStartRange = HTMLInstrumentation.getPositionFromTagId(editor, targetId);
+        if(!targetStartRange) {
+            return;
+        }
+
+        const targetEndRange = CodeMirror.findMatchingTag(editor._codeMirror, targetStartRange.from);
+        if (!targetEndRange) {
+            return;
+        }
+
+        const sourceRange = {
+            from: sourceStartRange.from,
+            to: sourceEndRange.close.to
+        };
+
+        const targetRange = {
+            from: targetStartRange.from,
+            to: targetEndRange.close.to
+        };
 
         const sourceText = editor.getTextBetween(sourceRange.from, sourceRange.to);
         const targetIndent = editor.getTextBetween({ line: targetRange.from.line, ch: 0 }, targetRange.from);
@@ -223,57 +310,6 @@ define(function (require, exports, module) {
             sourceRange.from.line < targetRange.from.line ||
             (sourceRange.from.line === targetRange.from.line && sourceRange.from.ch < targetRange.from.ch);
 
-        // this function is to clean up the empty lines after an element is removed
-        function cleanupAfterRemoval(range) {
-            const lineToCheck = range.from.line;
-
-            // check if the line where element was removed is now empty
-            if (lineToCheck < editor.lineCount()) {
-                const currentLineText = editor.getLine(lineToCheck);
-                if (currentLineText && currentLineText.trim() === "") {
-                    // remove the empty line
-                    const lineStart = { line: lineToCheck, ch: 0 };
-                    const lineEnd = { line: lineToCheck + 1, ch: 0 };
-                    editor.replaceRange("", lineStart, lineEnd);
-                }
-            }
-
-            // also we need to check the previous line if it became empty
-            if (lineToCheck > 0) {
-                const prevLineText = editor.getLine(lineToCheck - 1);
-                if (prevLineText && prevLineText.trim() === "") {
-                    const lineStart = { line: lineToCheck - 1, ch: 0 };
-                    const lineEnd = { line: lineToCheck, ch: 0 };
-                    editor.replaceRange("", lineStart, lineEnd);
-                }
-            }
-        }
-
-        // this function is to make sure that we insert elements with proper indentation
-        function insertElementWithIndentation(insertPos, insertAfterMode, useTargetIndent) {
-            const indent = useTargetIndent ? targetIndent : targetIndent;
-
-            if (insertAfterMode) {
-                // Insert after the target element
-                editor.replaceRange("\n" + indent + sourceText, insertPos);
-            } else {
-                // Insert before the target element
-                const insertLine = insertPos.line;
-                const lineStart = { line: insertLine, ch: 0 };
-
-                // Get current line content to preserve any existing indentation structure
-                const currentLine = editor.getLine(insertLine);
-
-                if (currentLine && currentLine.trim() === "") {
-                    // the line is empty, replace it entirely
-                    editor.replaceRange(indent + sourceText, lineStart, { line: insertLine, ch: currentLine.length });
-                } else {
-                    // the line has content, insert before it
-                    editor.replaceRange(indent + sourceText + "\n", lineStart);
-                }
-            }
-        }
-
         // creating a batch operation so that undo in live preview works fine
         editor.document.batchOperation(function () {
             if (sourceBeforeTarget) {
@@ -283,17 +319,27 @@ define(function (require, exports, module) {
                         line: targetRange.to.line,
                         ch: targetRange.to.ch
                     };
-                    insertElementWithIndentation(insertPos, true, true);
+                    _insertElementWithIndentation(editor, insertPos, true, targetIndent, sourceText);
                 } else {
                     // insert before target
-                    insertElementWithIndentation(targetRange.from, false, true);
+                    _insertElementWithIndentation(editor, targetRange.from, false, targetIndent, sourceText);
                 }
 
                 // Now remove the source element (NOTE: the positions have shifted)
-                const updatedSourceRange = HTMLInstrumentation.getPositionFromTagId(editor, sourceId);
-                if (updatedSourceRange) {
-                    editor.replaceRange("", updatedSourceRange.from, updatedSourceRange.to);
-                    cleanupAfterRemoval(updatedSourceRange);
+                const updatedSourceStartRange = HTMLInstrumentation.getPositionFromTagId(editor, sourceId);
+                if (updatedSourceStartRange) {
+                    const updatedSourceEndRange = CodeMirror.findMatchingTag(
+                        editor._codeMirror, updatedSourceStartRange.from
+                    );
+
+                    if (updatedSourceEndRange) {
+                        const updatedSourceRange = {
+                            from: updatedSourceStartRange.from,
+                            to: updatedSourceEndRange.close.to
+                        };
+                        editor.replaceRange("", updatedSourceRange.from, updatedSourceRange.to);
+                        _cleanupAfterRemoval(editor, updatedSourceRange);
+                    }
                 }
             } else {
                 // This handles the case when target is before source: remove first, then insert
@@ -302,23 +348,36 @@ define(function (require, exports, module) {
 
                 // Remove the source element first
                 editor.replaceRange("", sourceRange.from, sourceRange.to);
-                cleanupAfterRemoval(originalSourceRange);
+                _cleanupAfterRemoval(editor, originalSourceRange);
 
                 // Recalculate target range after source removal as the positions have shifted
-                const updatedTargetRange = HTMLInstrumentation.getPositionFromTagId(editor, targetId);
-                if (!updatedTargetRange) {
+                const updatedTargetStartRange = HTMLInstrumentation.getPositionFromTagId(editor, targetId);
+                if (!updatedTargetStartRange) {
                     return;
                 }
+
+                const updatedTargetEndRange = CodeMirror.findMatchingTag(
+                    editor._codeMirror, updatedTargetStartRange.from
+                );
+
+                if (!updatedTargetEndRange) {
+                    return;
+                }
+
+                const updatedTargetRange = {
+                    from: updatedTargetStartRange.from,
+                    to: updatedTargetEndRange.close.to
+                };
 
                 if (insertAfter) {
                     const insertPos = {
                         line: updatedTargetRange.to.line,
                         ch: updatedTargetRange.to.ch
                     };
-                    insertElementWithIndentation(insertPos, true, true);
+                    _insertElementWithIndentation(editor, insertPos, true, targetIndent, sourceText);
                 } else {
                     // Insert before target
-                    insertElementWithIndentation(updatedTargetRange.from, false, true);
+                    _insertElementWithIndentation(editor, updatedTargetRange.from, false, targetIndent, sourceText);
                 }
             }
         });
