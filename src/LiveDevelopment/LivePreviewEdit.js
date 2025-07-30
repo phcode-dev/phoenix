@@ -88,11 +88,15 @@ define(function (require, exports, module) {
         // NOTE: we cannot get the end range from getPositionFromTagId
         // because on non-beautified code getPositionFromTagId may not provide correct end position
         const startRange = HTMLInstrumentation.getPositionFromTagId(editor, tagId);
-        const endRange = CodeMirror.findMatchingTag(editor._codeMirror, editor.getCursorPos());
-
-        if (!startRange || !endRange) {
+        if(!startRange) {
             return;
         }
+
+        const endRange = CodeMirror.findMatchingTag(editor._codeMirror, startRange.from);
+        if (!endRange) {
+            return;
+        }
+
         const startPos = startRange.from;
         const endPos = endRange.close.to;
 
@@ -144,11 +148,15 @@ define(function (require, exports, module) {
         // NOTE: we cannot get the end range from getPositionFromTagId
         // because on non-beautified code getPositionFromTagId may not provide correct end position
         const startRange = HTMLInstrumentation.getPositionFromTagId(editor, tagId);
-        const endRange = CodeMirror.findMatchingTag(editor._codeMirror, editor.getCursorPos());
-
-        if (!startRange || !endRange) {
+        if(!startRange) {
             return;
         }
+
+        const endRange = CodeMirror.findMatchingTag(editor._codeMirror, startRange.from);
+        if (!endRange) {
+            return;
+        }
+
         const startPos = startRange.from;
         const endPos = endRange.close.to;
 
