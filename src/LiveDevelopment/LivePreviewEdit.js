@@ -4,39 +4,131 @@ define(function (require, exports, module) {
     const CodeMirror = require("thirdparty/CodeMirror/lib/codemirror");
 
     /**
-     * this is a helper function to find the content boundaries in HTML
-     * @param {string} html - The HTML string to parse
-     * @return {Object} - Object with openTag and closeTag properties
+     * This function is to sync text content changes between the original source code
+     * and the live preview DOM after a text edit operation
+     *
+     * @param {String} oldContent - the original source code from the editor
+     * @param {String} newContent - the DOM element's outerHTML after editing in live preview
+     * @returns {String} - the updated content that should replace the original code in the editor
+     *
+     * NOTE: This function is a bit complex to read, read this jsdoc to understand the flow:
+     *
+     * First, we parse both the old and new content using DOMParser to get proper HTML DOM structures
+     * Then we compare each element and text node between the old and new content
+     *
+     * the main goal is that we ONLY want to update text content, and not element nodes or their attributes
+     * because if we allow element/attribute changes, the browser might try to fix the HTML
+     * to make it syntactically correct or to make it efficient, which would mess up the user's original code
+     * We don't want that - we need to respect how the user wrote their code
+     * For example: if user wrote <div style="color: red blue green yellow"></div>
+     * The browser sees this is invalid CSS and would remove the color attribute entirely
+     * We want to keep that invalid code as it is because it's what the user wanted to do
+     *
+     * Here's how the comparison works:
+     * - if both nodes are text: update the old text with the new text
+     * - if both nodes are elements: we recursively check their children (for nested content)
+     * - if old is text, new is element: replace text with element (like when user adds <br>)
+     * - if old is element, new is text: replace element with text (like when user removes <br>)
+     * note: when adding new elements (like <br> tags), we only copy the tag name and content,
+     *   never the attributes, to avoid internal Phoenix properties leaking into user's code
      */
-    function _findContentBoundaries(html) {
-        const openTagEnd = html.indexOf(">") + 1;
-        const closeTagStart = html.lastIndexOf("<");
+    function _syncTextContentChanges(oldContent, newContent) {
+        const parser = new DOMParser();
+        const oldDoc = parser.parseFromString(oldContent, "text/html");
+        const newDoc = parser.parseFromString(newContent, "text/html");
 
-        if (openTagEnd > 0 && closeTagStart >= openTagEnd) {
-            return {
-                openTag: html.substring(0, openTagEnd),
-                closeTag: html.substring(closeTagStart)
-            };
+        // as DOM parser will add the complete html structure with the HTML tags and all,
+        // so we just need to get the main content
+        const oldRoot = oldDoc.body;
+        const newRoot = newDoc.body;
+
+        // here oldNode and newNode are full HTML elements which are direct children of the body tag
+        function syncText(oldNode, newNode) {
+            if (!oldNode || !newNode) {
+                return;
+            }
+
+            // if both the oldNode and newNode has text, replace the old node's text content with the new one
+            if (oldNode.nodeType === Node.TEXT_NODE && newNode.nodeType === Node.TEXT_NODE) {
+                oldNode.nodeValue = newNode.nodeValue;
+
+            } else if (
+                // if both have element node, then we recursively get their child elements
+                // this is so that we can get & update the text content in deeply nested DOM
+                oldNode.nodeType === Node.ELEMENT_NODE &&
+                newNode.nodeType === Node.ELEMENT_NODE
+            ) {
+
+                const oldChildren = oldNode.childNodes;
+                const newChildren = newNode.childNodes;
+
+                const minLength = Math.min(oldChildren.length, newChildren.length);
+
+                for (let i = 0; i < minLength; i++) {
+                    syncText(oldChildren[i], newChildren[i]);
+                }
+
+                // append if there are any new nodes, this is mainly when <br> tags needs to be inserted
+                // as user pressed shift + enter to create empty lines in the new content
+                for (let i = minLength; i < newChildren.length; i++) {
+                    const newChild = newChildren[i];
+                    let cleanChild;
+
+                    if (newChild.nodeType === Node.ELEMENT_NODE) {
+                        // only the element name and not its attributes
+                        // this is to prevent internal properties like data-brackets-id, etc to appear in users code
+                        cleanChild = document.createElement(newChild.tagName);
+                        cleanChild.innerHTML = newChild.innerHTML;
+                    } else {
+                        // for text nodes, comment nodes, etc. clone normally
+                        cleanChild = newChild.cloneNode(true);
+                    }
+
+                    oldNode.appendChild(cleanChild);
+                }
+
+                // remove extra old nodes (maybe extra <br>'s were removed)
+                for (let i = oldChildren.length - 1; i >= newChildren.length; i--) {
+                    oldNode.removeChild(oldChildren[i]);
+                }
+
+            } else if (oldNode.nodeType === Node.TEXT_NODE && newNode.nodeType === Node.ELEMENT_NODE) {
+                // when old has text node and new has element node
+                // this generally happens when we remove the complete content which results in empty <br> tag
+                // for ex: <div>hello</div>, here if we remove the 'hello' from live preview then result will be
+                // <div><br></div>
+                const replacement = document.createElement(newNode.tagName);
+                replacement.innerHTML = newNode.innerHTML;
+                oldNode.parentNode.replaceChild(replacement, oldNode);
+            } else if (oldNode.nodeType === Node.ELEMENT_NODE && newNode.nodeType === Node.TEXT_NODE) {
+                // this is opposite of previous one when earlier it was just <br> or some tag
+                // and now we add text content in that
+                const replacement = document.createTextNode(newNode.nodeValue);
+                oldNode.parentNode.replaceChild(replacement, oldNode);
+            }
         }
 
-        return null;
+        const oldEls = oldRoot.children;
+        const newEls = newRoot.children;
+
+        for (let i = 0; i < Math.min(oldEls.length, newEls.length); i++) {
+            syncText(oldEls[i], newEls[i]);
+        }
+
+        return oldRoot.innerHTML;
     }
 
     /**
      * this function handles the text edit in the source code when user updates the text in the live preview
+     *
      * @param {Object} message - the message object
-     *      {
-     *          livePreviewEditEnabled: true,
-                element: the DOM element that was modified,
-                oldContent: the text that was present before the edit,
-                newContent: the new text,
-                tagId: data-brackets-id of the DOM element,
-                livePreviewTextEdit: true
-            }
-    *
-    * The logic is: get the text in the editor using the tagId. split that text using the old content
-    * join the text back and add the new content in between
-    */
+     *   - livePreviewEditEnabled: true
+     *   - livePreviewTextEdit: true
+     *   - element: element
+     *   - newContent: element.outerHTML (the edited content from live preview)
+     *   - tagId: Number (data-brackets-id of the edited element)
+     *   - isEditSuccessful: boolean (false when user pressed Escape to cancel, otherwise true always)
+     */
     function _editTextInSource(message) {
         const currLiveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
         if (!currLiveDoc || !currLiveDoc.editor || !message.tagId) {
@@ -44,6 +136,7 @@ define(function (require, exports, module) {
         }
 
         const editor = currLiveDoc.editor;
+
         // get the start range from the getPositionFromTagId function
         // and we get the end range from the findMatchingTag function
         // NOTE: we cannot get the end range from getPositionFromTagId
@@ -62,20 +155,22 @@ define(function (require, exports, module) {
         const endPos = endRange.close.to;
 
         const text = editor.getTextBetween(startPos, endPos);
-        let splittedText;
 
-        // we need to find the content boundaries to find exactly where the content starts and where it ends
-        const boundaries = _findContentBoundaries(text);
-        if (boundaries) {
-            splittedText = [boundaries.openTag, boundaries.closeTag];
-        }
-
-        // if the text split was done successfully, apply the edit
-        if (splittedText && splittedText.length === 2) {
-            const finalText = splittedText[0] + message.newContent + splittedText[1];
-            editor.replaceRange(finalText, startPos, endPos);
+        // if the edit was cancelled (mainly by pressing Escape key)
+        // we just replace the same text with itself
+        // this is a quick trick because as the code is changed for that element in the file,
+        // the live preview for that element gets refreshed and the changes are discarded in the live preview
+        if(!message.isEditSuccessful) {
+            editor.replaceRange(text, startPos, endPos);
         } else {
-            console.error("Live preview text edit operation failed.");
+
+            // if the edit operation was successful, we call a helper function that
+            // is responsible to provide the actual content that needs to be written in the editor
+            //
+            // text: the actual current source code in the editor
+            // message.newContent: the new content in the live preview after the edit operation
+            const finalText = _syncTextContentChanges(text, message.newContent);
+            editor.replaceRange(finalText, startPos, endPos);
         }
     }
 
