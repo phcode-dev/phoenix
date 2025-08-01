@@ -152,7 +152,8 @@ define(function (require, exports, module) {
         }
 
         const startPos = startRange.from;
-        const endPos = endRange.close.to;
+        // for empty tags endRange.close might not exist, for ex: img tag
+        const endPos = endRange.close ? endRange.close.to : endRange.open.to;
 
         const text = editor.getTextBetween(startPos, endPos);
 
@@ -205,7 +206,8 @@ define(function (require, exports, module) {
         }
 
         const startPos = startRange.from;
-        const endPos = endRange.close.to;
+        // for empty tags endRange.close might not exist, for ex: img tag
+        const endPos = endRange.close ? endRange.close.to : endRange.open.to;
 
         // this is the actual source code for the element that we need to duplicate
         const text = editor.getTextBetween(startPos, endPos);
@@ -265,7 +267,8 @@ define(function (require, exports, module) {
         }
 
         const startPos = startRange.from;
-        const endPos = endRange.close.to;
+        // for empty tags endRange.close might not exist, for ex: img tag
+        const endPos = endRange.close ? endRange.close.to : endRange.open.to;
 
         editor.document.batchOperation(function () {
             editor.replaceRange("", startPos, endPos);
@@ -385,12 +388,12 @@ define(function (require, exports, module) {
 
         const sourceRange = {
             from: sourceStartRange.from,
-            to: sourceEndRange.close.to
+            to: sourceEndRange.close ? sourceEndRange.close.to : sourceEndRange.open.to
         };
 
         const targetRange = {
             from: targetStartRange.from,
-            to: targetEndRange.close.to
+            to: targetEndRange.close ? targetEndRange.close.to : targetEndRange.open.to
         };
 
         const sourceText = editor.getTextBetween(sourceRange.from, sourceRange.to);
@@ -430,7 +433,9 @@ define(function (require, exports, module) {
                     if (updatedSourceEndRange) {
                         const updatedSourceRange = {
                             from: updatedSourceStartRange.from,
-                            to: updatedSourceEndRange.close.to
+                            to: updatedSourceEndRange.close
+                                ? updatedSourceEndRange.close.to
+                                : updatedSourceEndRange.open.to
                         };
                         editor.replaceRange("", updatedSourceRange.from, updatedSourceRange.to);
                         _cleanupAfterRemoval(editor, updatedSourceRange);
@@ -461,7 +466,7 @@ define(function (require, exports, module) {
 
                 const updatedTargetRange = {
                     from: updatedTargetStartRange.from,
-                    to: updatedTargetEndRange.close.to
+                    to: updatedTargetEndRange.close ? updatedTargetEndRange.close.to : updatedTargetEndRange.open.to
                 };
 
                 if (insertAfter) {
