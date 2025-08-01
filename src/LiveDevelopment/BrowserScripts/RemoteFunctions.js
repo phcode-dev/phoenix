@@ -38,12 +38,6 @@ function RemoteFunctions(config) {
     // we need this so that we can remove click styling from the previous element when a new element is clicked
     let previouslyClickedElement = null;
 
-    var experimental;
-    if (!config) {
-        experimental = false;
-    } else {
-        experimental = config.experimental;
-    }
     var req, timeout;
     var animateHighlight = function (time) {
         if(req) {
@@ -76,19 +70,6 @@ function RemoteFunctions(config) {
         }
     }
 
-    // determine the color for a type
-    function _typeColor(type, highlight) {
-        switch (type) {
-        case "html":
-            return highlight ? "#eec" : "#ffe";
-        case "css":
-            return highlight ? "#cee" : "#eff";
-        case "js":
-            return highlight ? "#ccf" : "#eef";
-        default:
-            return highlight ? "#ddd" : "#eee";
-        }
-    }
 
     // compute the screen offset of an element
     function _screenOffset(element) {
@@ -137,87 +118,6 @@ function RemoteFunctions(config) {
     function getDocumentOffsetTop(element) {
         return element.offsetTop + (element.offsetParent ? getDocumentOffsetTop(element.offsetParent) : 0);
     }
-
-    // construct the info menu
-    function Menu(element) {
-        this.element = element;
-        _trigger(this.element, "showgoto", 1, true);
-        window.setTimeout(window.remoteShowGoto);
-        this.remove = this.remove.bind(this);
-    }
-
-    Menu.prototype = {
-        onClick: function (url, event) {
-            event.preventDefault();
-            _trigger(this.element, "goto", url, true);
-            this.remove();
-        },
-
-        createBody: function () {
-            if (this.body) {
-                return;
-            }
-
-            // compute the position on screen
-            var offset = _screenOffset(this.element),
-                x = offset.left,
-                y = offset.top + this.element.offsetHeight;
-
-            // create the container
-            this.body = window.document.createElement("div");
-            this.body.style.setProperty("z-index", 2147483647);
-            this.body.style.setProperty("position", "absolute");
-            this.body.style.setProperty("left", x + "px");
-            this.body.style.setProperty("top", y + "px");
-            this.body.style.setProperty("font-size", "11pt");
-
-            // draw the background
-            this.body.style.setProperty("background", "#fff");
-            this.body.style.setProperty("border", "1px solid #888");
-            this.body.style.setProperty("-webkit-box-shadow", "2px 2px 6px 0px #ccc");
-            this.body.style.setProperty("border-radius", "6px");
-            this.body.style.setProperty("padding", "6px");
-        },
-
-        addItem: function (target) {
-            var item = window.document.createElement("div");
-            item.style.setProperty("padding", "2px 6px");
-            if (this.body.childNodes.length > 0) {
-                item.style.setProperty("border-top", "1px solid #ccc");
-            }
-            item.style.setProperty("cursor", "pointer");
-            item.style.setProperty("background", _typeColor(target.type));
-            item.innerHTML = target.name;
-            item.addEventListener("click", this.onClick.bind(this, target.url));
-
-            if (target.file) {
-                var file = window.document.createElement("i");
-                file.style.setProperty("float", "right");
-                file.style.setProperty("margin-left", "12px");
-                file.innerHTML = " " + target.file;
-                item.appendChild(file);
-            }
-            this.body.appendChild(item);
-        },
-
-        show: function () {
-            if (!this.body) {
-                this.createBody();
-            }
-            if (!this.body.parentNode) {
-                window.document.body.appendChild(this.body);
-            }
-            window.document.addEventListener("click", this.remove);
-        },
-
-        remove: function () {
-            if (this.body && this.body.parentNode) {
-                window.document.body.removeChild(this.body);
-            }
-            window.document.removeEventListener("click", this.remove);
-        }
-
-    };
 
     /**
      * This function gets called when the delete button is clicked
@@ -1354,9 +1254,7 @@ function RemoteFunctions(config) {
         }
     };
 
-    var _currentMenu;
     var _localHighlight;
-    var _remoteHighlight;
     var _hoverHighlight;
     var _clickHighlight;
     var _nodeInfoBox;
@@ -1541,25 +1439,9 @@ function RemoteFunctions(config) {
 
     /** Public Commands **********************************************************/
 
-    // show goto
-    function showGoto(targets) {
-        if (!_currentMenu) {
-            return;
-        }
-        _currentMenu.createBody();
-        var i;
-        for (i in targets) {
-            _currentMenu.addItem(targets[i]);
-        }
-        _currentMenu.show();
-    }
 
     // remove active highlights
     function hideHighlight() {
-        if (_remoteHighlight) {
-            _remoteHighlight.clear();
-            _remoteHighlight = null;
-        }
         if (_clickHighlight) {
             _clickHighlight.clear();
             _clickHighlight = null;
@@ -1610,9 +1492,6 @@ function RemoteFunctions(config) {
 
     // redraw active highlights
     function redrawHighlights() {
-        if (_remoteHighlight) {
-            _remoteHighlight.redraw();
-        }
         if (_clickHighlight) {
             _clickHighlight.redraw();
         }
@@ -1637,7 +1516,7 @@ function RemoteFunctions(config) {
         if (e.target === window.document) {
             redrawHighlights();
         } else {
-            if (_remoteHighlight || _localHighlight || _clickHighlight || _hoverHighlight) {
+            if (_localHighlight || _clickHighlight || _hoverHighlight) {
                 window.setTimeout(redrawHighlights, 0);
             }
         }
@@ -2082,7 +1961,6 @@ function RemoteFunctions(config) {
 
     return {
         "DOMEditHandler"        : DOMEditHandler,
-        "showGoto"              : showGoto,
         "hideHighlight"         : hideHighlight,
         "highlight"             : highlight,
         "highlightRule"         : highlightRule,
