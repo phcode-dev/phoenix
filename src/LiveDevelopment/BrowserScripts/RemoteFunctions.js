@@ -501,7 +501,6 @@ function RemoteFunctions(config) {
             "audio",
             "iframe",
             "object",
-            "button",
             "select",
             "textarea"
         ];
