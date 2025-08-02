@@ -1867,7 +1867,10 @@ function RemoteFunctions(config) {
 
     // Function to handle direct editing of elements in the live preview
     function startEditing(element) {
-        if (!element) {
+        if (!element
+            || element.tagName === "BODY"
+            || element.tagName === "HTML"
+            || !element.hasAttribute("data-brackets-id")) {
             return;
         }
 
