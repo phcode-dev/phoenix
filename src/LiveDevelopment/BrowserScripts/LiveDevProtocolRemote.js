@@ -128,6 +128,8 @@
         }
     };
 
+    global._Brackets_MessageBroker = MessageBroker;
+
     /**
      * Runtime Domain. Implements remote commands for "Runtime.*"
      */
@@ -390,27 +392,69 @@
     function onDocumentClick(event) {
         // Get the user's current selection
         const selection = window.getSelection();
-
-        // Check if there is a selection
-        if (selection.toString().length > 0) {
-            // if there is any selection like text or others, we don't see it as a live selection event
-            // Eg: user may selects ome text in live preview to copy, in which case we should nt treat it
-            // as a live select.
-            return;
-        }
         var element = event.target;
         if (element && element.hasAttribute('data-brackets-id')) {
-            MessageBroker.send({
-                "tagId": element.getAttribute('data-brackets-id'),
-                "nodeID": element.id,
-                "nodeClassList": element.classList,
-                "nodeName": element.nodeName,
-                "allSelectors": _getAllInheritedSelectorsInOrder(element),
-                "contentEditable": element.contentEditable === 'true',
-                "clicked": true
-            });
+            // Check if it's a double-click for direct editing
+            if (event.detail === 2 && !['INPUT', 'TEXTAREA', 'SELECT'].includes(element.tagName)) {
+                // Double-click detected, enable direct editing
+                // Make the element editable
+                if (window._LD && window._LD.DOMEditHandler) {
+                    // Use the existing DOMEditHandler to handle the edit
+                    window._LD.startEditing(element);
+                } else {
+                    MessageBroker.send({
+                        "tagId": element.getAttribute('data-brackets-id'),
+                        "nodeID": element.id,
+                        "nodeClassList": element.classList,
+                        "nodeName": element.nodeName,
+                        "allSelectors": _getAllInheritedSelectorsInOrder(element),
+                        "contentEditable": element.contentEditable === 'true',
+                        "clicked": true,
+                        "edit": true
+                    });
+                }
+
+                // Prevent default behavior and stop propagation
+                event.preventDefault();
+                event.stopPropagation();
+            } else {
+                // Regular click, just send the information
+                // Check if there is a selection
+                if (selection.toString().length > 0) {
+                    // if there is any selection like text or others, we don't see it as a live selection event
+                    // Eg: user may selects ome text in live preview to copy, in which case we should nt treat it
+                    // as a live select.
+                    return;
+                }
+                MessageBroker.send({
+                    "tagId": element.getAttribute('data-brackets-id'),
+                    "nodeID": element.id,
+                    "nodeClassList": element.classList,
+                    "nodeName": element.nodeName,
+                    "allSelectors": _getAllInheritedSelectorsInOrder(element),
+                    "contentEditable": element.contentEditable === 'true',
+                    "clicked": true
+                });
+            }
         }
     }
     window.document.addEventListener("click", onDocumentClick);
+    window.document.addEventListener("keydown", function (e) {
+        // for undo. refer to LivePreviewEdit.js file 'handleLivePreviewEditOperation' function
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "z") {
+            MessageBroker.send({
+                livePreviewEditEnabled: true,
+                undoLivePreviewOperation: true
+            });
+        }
+
+        // for redo
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "y") {
+            MessageBroker.send({
+                livePreviewEditEnabled: true,
+                redoLivePreviewOperation: true
+            });
+        }
+    });
 
 }(this));
