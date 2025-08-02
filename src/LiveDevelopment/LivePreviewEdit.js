@@ -4,112 +4,94 @@ define(function (require, exports, module) {
     const CodeMirror = require("thirdparty/CodeMirror/lib/codemirror");
 
     /**
-     * This function is to sync text content changes between the original source code
-     * and the live preview DOM after a text edit operation
+     * This function syncs text content changes between the original source code
+     * and the live preview DOM after a text edit in the browser
      *
+     * @private
      * @param {String} oldContent - the original source code from the editor
-     * @param {String} newContent - the DOM element's outerHTML after editing in live preview
-     * @returns {String} - the updated content that should replace the original code in the editor
+     * @param {String} newContent - the outerHTML after editing in live preview
+     * @returns {String} - the updated content that should replace the original editor code
      *
-     * NOTE: This function is a bit complex to read, read this jsdoc to understand the flow:
+     * NOTE: We don’t touch tag names or attributes —
+     * we only care about text changes or things like newlines, <br>, or formatting like <b>, <i>, etc.
      *
-     * First, we parse both the old and new content using DOMParser to get proper HTML DOM structures
-     * Then we compare each element and text node between the old and new content
+     * Here's the basic idea:
+     * - Parse both old and new HTML strings into DOM trees
+     * - Then walk both DOMs side by side and sync changes
      *
-     * the main goal is that we ONLY want to update text content, and not element nodes or their attributes
-     * because if we allow element/attribute changes, the browser might try to fix the HTML
-     * to make it syntactically correct or to make it efficient, which would mess up the user's original code
-     * We don't want that - we need to respect how the user wrote their code
-     * For example: if user wrote <div style="color: red blue green yellow"></div>
-     * The browser sees this is invalid CSS and would remove the color attribute entirely
-     * We want to keep that invalid code as it is because it's what the user wanted to do
+     * What we handle:
+     * - if both are text nodes → update the text if changed
+     * - if both are elements with same tag → go deeper and sync their children
+     * - if one is text and one is an element → replace (like when user adds/removes <br> or adds bold/italic)
+     * - if a node got added or removed → do that in the old DOM
      *
-     * Here's how the comparison works:
-     * - if both nodes are text: update the old text with the new text
-     * - if both nodes are elements: we recursively check their children (for nested content)
-     * - if old is text, new is element: replace text with element (like when user adds <br>)
-     * - if old is element, new is text: replace element with text (like when user removes <br>)
-     * note: when adding new elements (like <br> tags), we only copy the tag name and content,
-     *   never the attributes, to avoid internal Phoenix properties leaking into user's code
+     * We don’t recreate or touch existing elements unless absolutely needed,
+     * so all original user-written attributes and tag structure stay exactly the same.
+     *
+     * This avoids the browser trying to “fix” broken HTML (which we don’t want)
      */
     function _syncTextContentChanges(oldContent, newContent) {
         const parser = new DOMParser();
         const oldDoc = parser.parseFromString(oldContent, "text/html");
         const newDoc = parser.parseFromString(newContent, "text/html");
 
-        // as DOM parser will add the complete html structure with the HTML tags and all,
-        // so we just need to get the main content
         const oldRoot = oldDoc.body;
         const newRoot = newDoc.body;
 
-        // here oldNode and newNode are full HTML elements which are direct children of the body tag
         function syncText(oldNode, newNode) {
             if (!oldNode || !newNode) {
                 return;
             }
 
-            // if both the oldNode and newNode has text, replace the old node's text content with the new one
+            // when both are text nodes, we just need to replace the old text with the new one
             if (oldNode.nodeType === Node.TEXT_NODE && newNode.nodeType === Node.TEXT_NODE) {
-                oldNode.nodeValue = newNode.nodeValue;
-
-            } else if (
-                // if both have element node, then we recursively get their child elements
-                // this is so that we can get & update the text content in deeply nested DOM
-                oldNode.nodeType === Node.ELEMENT_NODE &&
-                newNode.nodeType === Node.ELEMENT_NODE
-            ) {
-
-                const oldChildren = oldNode.childNodes;
-                const newChildren = newNode.childNodes;
-
-                const minLength = Math.min(oldChildren.length, newChildren.length);
-
-                for (let i = 0; i < minLength; i++) {
-                    syncText(oldChildren[i], newChildren[i]);
+                if (oldNode.nodeValue !== newNode.nodeValue) {
+                    oldNode.nodeValue = newNode.nodeValue;
                 }
+                return;
+            }
 
-                // append if there are any new nodes, this is mainly when <br> tags needs to be inserted
-                // as user pressed shift + enter to create empty lines in the new content
-                for (let i = minLength; i < newChildren.length; i++) {
+            // when both are elements
+            if (oldNode.nodeType === Node.ELEMENT_NODE && newNode.nodeType === Node.ELEMENT_NODE) {
+                const oldChildren = Array.from(oldNode.childNodes);
+                const newChildren = Array.from(newNode.childNodes);
+
+                const maxLen = Math.max(oldChildren.length, newChildren.length);
+
+                for (let i = 0; i < maxLen; i++) {
+                    const oldChild = oldChildren[i];
                     const newChild = newChildren[i];
-                    let cleanChild;
 
-                    if (newChild.nodeType === Node.ELEMENT_NODE) {
-                        // only the element name and not its attributes
-                        // this is to prevent internal properties like data-brackets-id, etc to appear in users code
-                        cleanChild = document.createElement(newChild.tagName);
-                        cleanChild.innerHTML = newChild.innerHTML;
+                    if (!oldChild && newChild) {
+                        // if new child added → clone and insert
+                        oldNode.appendChild(newChild.cloneNode(true));
+                    } else if (oldChild && !newChild) {
+                        // if child removed → delete
+                        oldNode.removeChild(oldChild);
+                    } else if (
+                        oldChild.nodeType === newChild.nodeType &&
+                        oldChild.nodeType === Node.ELEMENT_NODE &&
+                        oldChild.tagName === newChild.tagName
+                    ) {
+                        // same element tag → sync recursively
+                        syncText(oldChild, newChild);
+                    } else if (
+                        oldChild.nodeType === Node.TEXT_NODE &&
+                        newChild.nodeType === Node.TEXT_NODE
+                    ) {
+                        if (oldChild.nodeValue !== newChild.nodeValue) {
+                            oldChild.nodeValue = newChild.nodeValue;
+                        }
                     } else {
-                        // for text nodes, comment nodes, etc. clone normally
-                        cleanChild = newChild.cloneNode(true);
+                        // different node types or tags → replace
+                        oldNode.replaceChild(newChild.cloneNode(true), oldChild);
                     }
-
-                    oldNode.appendChild(cleanChild);
                 }
-
-                // remove extra old nodes (maybe extra <br>'s were removed)
-                for (let i = oldChildren.length - 1; i >= newChildren.length; i--) {
-                    oldNode.removeChild(oldChildren[i]);
-                }
-
-            } else if (oldNode.nodeType === Node.TEXT_NODE && newNode.nodeType === Node.ELEMENT_NODE) {
-                // when old has text node and new has element node
-                // this generally happens when we remove the complete content which results in empty <br> tag
-                // for ex: <div>hello</div>, here if we remove the 'hello' from live preview then result will be
-                // <div><br></div>
-                const replacement = document.createElement(newNode.tagName);
-                replacement.innerHTML = newNode.innerHTML;
-                oldNode.parentNode.replaceChild(replacement, oldNode);
-            } else if (oldNode.nodeType === Node.ELEMENT_NODE && newNode.nodeType === Node.TEXT_NODE) {
-                // this is opposite of previous one when earlier it was just <br> or some tag
-                // and now we add text content in that
-                const replacement = document.createTextNode(newNode.nodeValue);
-                oldNode.parentNode.replaceChild(replacement, oldNode);
             }
         }
 
-        const oldEls = oldRoot.children;
-        const newEls = newRoot.children;
+        const oldEls = Array.from(oldRoot.children);
+        const newEls = Array.from(newRoot.children);
 
         for (let i = 0; i < Math.min(oldEls.length, newEls.length); i++) {
             syncText(oldEls[i], newEls[i]);
