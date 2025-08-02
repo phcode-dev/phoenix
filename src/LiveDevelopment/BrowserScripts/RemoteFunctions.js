@@ -395,71 +395,6 @@ function RemoteFunctions(config) {
     }
 
     /**
-     * This function is to calculate the width of the info box based on the number of chars in the box
-     * @param {String} tagName - the element's tag name
-     * @param {String} id - the element's id
-     * @param {Array} classes - the array of class names
-     * @returns {Number} - the total char count
-     */
-    function _calculateInfoBoxCharCount(tagName, id, classes) {
-        // char count for tag name
-        let tagNameCharCount = tagName.length;
-        let idNameCharCount = 0;
-        let classNameCharCount = 0;
-        // char count for id
-        if (id) {
-            idNameCharCount = id.length + 1; // +1 for #
-        }
-
-        // char count for classes
-        if (classes.length > 0) {
-            for (let i = 0; i < Math.min(classes.length, 3); i++) {
-                classNameCharCount += classes[i].length + 1; // +1 for .
-            }
-
-            if (classes.length > 3) {
-                // "+ X more" for more than 3 classes
-                const moreText = `+${classes.length - 3} more`;
-                classNameCharCount += moreText.length;
-            }
-        }
-        return Math.max(tagNameCharCount, idNameCharCount, classNameCharCount);
-    }
-
-    /**
-     * This function checks whether there is overlap between the info and the more options box
-     * @param {Number} elemWidth - the width of the DOM element
-     * @param {String} tagName - the element's tag name
-     * @param {String} id - the element's id
-     * @param {Array} classes - the array of class names
-     * @returns {Number} - the total char count
-     */
-    function checkOverlap(elemWidth, tagName, id, classes) {
-        let avgCharWidth = 6;
-        const basePadding = 16;
-
-        // char count for tag name, id, and classes
-        let charCount = _calculateInfoBoxCharCount(tagName, id, classes);
-        if(charCount <= 10) {
-            avgCharWidth = 7.5;
-        }
-
-        // calc estimate width based on the char count
-        const infoBoxWidth = basePadding + (charCount * avgCharWidth);
-
-        // more options box is 106px
-        const moreOptionsBoxWidth = 106;
-
-        // check if there's enough space for both boxes
-        // 20px buffer for spacing between boxes
-        if (elemWidth > (infoBoxWidth + moreOptionsBoxWidth + 20)) {
-            return false; // No overlap
-        }
-
-        return true;
-    }
-
-    /**
      * this function is to check if an element should show the edit text option
      * it is needed because edit text option doesn't make sense with many elements like images, videos, hr tag etc
      * @param {Element} element - DOM element to check
@@ -576,6 +511,10 @@ function RemoteFunctions(config) {
 
             let topPos = elemBounds.top - 30 + scrollTop;
             let leftPos = elemBounds.right - boxWidth + scrollLeft;
+
+            if (elemBounds.top - 30 < 0) {
+                topPos = elemBounds.top + elemBounds.height + 5 + scrollTop;
+            }
 
             return {topPos: topPos, leftPos: leftPos};
         },
@@ -769,8 +708,14 @@ function RemoteFunctions(config) {
             const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-            let topPos = elemBounds.top - this._calcHeight() + scrollTop;
+            const boxHeight = this._calcHeight();
+
+            let topPos = elemBounds.top - boxHeight + scrollTop;
             let leftPos = elemBounds.left + scrollLeft;
+
+            if (elemBounds.top - boxHeight < 0) {
+                topPos = elemBounds.top + elemBounds.height + 5 + scrollTop;
+            }
 
             return {topPos: topPos, leftPos: leftPos};
         },
