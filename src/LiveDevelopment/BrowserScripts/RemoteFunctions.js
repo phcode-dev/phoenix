@@ -64,10 +64,9 @@ function RemoteFunctions(config) {
         if (window.navigator.platform.substr(0, 3) === "Mac") {
             // Mac
             return event.metaKey;
-        } else {
-            // Windows
-            return event.ctrlKey;
         }
+        // Windows
+        return event.ctrlKey;
     }
 
 
@@ -567,6 +566,20 @@ function RemoteFunctions(config) {
             });
         },
 
+        // note: this box width is the width of the more options box
+        // we need this as the value is not consistent, it depends on the number of options we show in the box
+        _getBoxPosition: function(boxWidth) {
+            const elemBounds = this.element.getBoundingClientRect();
+
+            const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+            let topPos = elemBounds.top - 30 + scrollTop;
+            let leftPos = elemBounds.right - boxWidth + scrollLeft;
+
+            return {topPos: topPos, leftPos: leftPos};
+        },
+
         _style: function() {
             this.body = window.document.createElement("div");
 
@@ -574,9 +587,6 @@ function RemoteFunctions(config) {
             // we need it because if we add the box directly to the DOM then users style might override it.
             // {mode: "closed"} means that users will not be able to access the shadow DOM
             const shadow = this.body.attachShadow({ mode: "closed" });
-
-            // the element that was clicked
-            let elemBounds = this.element.getBoundingClientRect();
 
             // check which options should be shown to determine box width
             const showEditTextOption = _shouldShowEditTextOption(this.element);
@@ -600,43 +610,6 @@ function RemoteFunctions(config) {
                 boxWidth = 82;
             } else {
                 boxWidth = 106;
-            }
-            const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-            // get the ID and classes for the element
-            // we need this to check for overlap issue between the info box and this box
-            // because when we have classes and ids then the info box tends to stretch in width
-            const id = this.element.id;
-            const classes = this.element.className ? this.element.className.split(/\s+/).filter(Boolean) : [];
-            const tagName = this.element.tagName.toLowerCase();
-
-            const isOverlap = checkOverlap(elemBounds.width, tagName, id, classes);
-
-            const viewportWidth = window.innerWidth;
-            const idealLeftPos = elemBounds.right - boxWidth + scrollLeft;
-            const maxLeftPos = viewportWidth - boxWidth - 10 + scrollLeft;
-            // 10px is just the padding, because we want some space
-            const minLeftPos = 10 + scrollLeft;
-
-            // we'll use the position that keeps the box within viewport bounds
-            let leftPos = Math.min(idealLeftPos, maxLeftPos);
-            leftPos = Math.max(leftPos, minLeftPos);
-            let topPos;
-
-            if (isOverlap) {
-                if (elemBounds.top > 40) { // check if there's enough space at the top
-                    // place at the top
-                    topPos = elemBounds.top - 30 + scrollTop;
-                } else {
-                    // at the bottom
-                    topPos = elemBounds.top + elemBounds.height + 5 + scrollTop;
-                }
-            } else {
-                // no overlap, so it comes just above the element
-                topPos = (elemBounds.top - 30 < 0
-                    ? elemBounds.top + elemBounds.height + 5
-                    : elemBounds.top - 30) + scrollTop;
             }
 
             // the icons that is displayed in the box
@@ -693,6 +666,8 @@ function RemoteFunctions(config) {
                 </span>
             </div>`;
 
+            const boxPos = this._getBoxPosition(boxWidth);
+
             const styles = `
                 .box {
                     background-color: #4285F4;
@@ -704,8 +679,8 @@ function RemoteFunctions(config) {
                     font-family: Arial, sans-serif;
                     z-index: 2147483647;
                     position: absolute;
-                    left: ${leftPos}px;
-                    top: ${topPos}px;
+                    left: ${boxPos.leftPos}px;
+                    top: ${boxPos.topPos}px;
                     width: ${boxWidth}px;
                     box-sizing: border-box;
                 }
@@ -774,6 +749,32 @@ function RemoteFunctions(config) {
     }
 
     NodeInfoBox.prototype = {
+        _calcHeight: function() {
+            const element = this.element;
+
+            let baseHeight = 26.75;
+            if(element.id) {
+                baseHeight += 17.25;
+            }
+            if(element.className.length !== 0) {
+                baseHeight += 17.25;
+            }
+
+            return baseHeight;
+        },
+
+        _getBoxPosition: function() {
+            const elemBounds = this.element.getBoundingClientRect();
+
+            const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+            let topPos = elemBounds.top - this._calcHeight() + scrollTop;
+            let leftPos = elemBounds.left + scrollLeft;
+
+            return {topPos: topPos, leftPos: leftPos};
+        },
+
         _style: function() {
             this.body = window.document.createElement("div");
 
@@ -781,18 +782,6 @@ function RemoteFunctions(config) {
             // we need it because if we add the box directly to the DOM then users style might override it.
             // {mode: "closed"} means that users will not be able to access the shadow DOM
             const shadow = this.body.attachShadow({ mode: "closed" });
-
-            // the element that was clicked
-            let elemBounds = this.element.getBoundingClientRect();
-
-            // the positions where it should be placed
-            const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-            // this value decides where we need to show the box in the UI
-            // we are creating this here, because if the element has IDs and Classes then we need to increase the value
-            // so that the box doesn't obscure the element
-            let pushBoxUp = 32; // px value
 
             // get the ID and classes for that element, as we need to display it in the box
             const id = this.element.id;
@@ -804,7 +793,6 @@ function RemoteFunctions(config) {
             // Add ID if present
             if (id) {
                 content += "<div class='id-name'>#" + id + "</div>";
-                pushBoxUp += 20;
             }
 
             // Add classes (limit to 3 with dropdown indicator)
@@ -817,89 +805,9 @@ function RemoteFunctions(config) {
                     content += "<span class='exceeded-classes'>+" + (classes.length - 3) + " more</span>";
                 }
                 content += "</div>";
-                pushBoxUp += 20;
             }
 
-            let leftPos = elemBounds.left + scrollLeft;
-            let topPos = (elemBounds.top - pushBoxUp < 0
-                ? elemBounds.top + elemBounds.height + 5
-                : elemBounds.top - pushBoxUp) + scrollTop;
-
-            let avgCharWidth = 6;
-            const basePadding = 16;
-
-            // Get the tag name
-            const tagName = this.element.tagName.toLowerCase();
-
-            // Count characters in tag name, id, and classes
-            let charCount = _calculateInfoBoxCharCount(tagName, id, classes);
-            if(charCount <= 10) {
-                avgCharWidth = 7.5;
-            }
-
-            // Calculate estimated width based on character count
-            // Formula: base padding + (character count * average character width)
-            const boxWidth = basePadding + (charCount * avgCharWidth);
-
-            // we need to check for overlap if this is from a click
-            if (this.isFromClick) {
-                const isOverlap = checkOverlap(elemBounds.width, tagName, id, classes);
-
-                if (isOverlap) {
-                    const windowWidth = window.innerWidth;
-                    const viewportHeight = window.innerHeight;
-
-                    // Estimate the height of the info box based on its content
-                    // base height for tag name + padding
-                    let estimatedHeight = 32;
-
-                    // height adjustment if ID is present
-                    if (id) {
-                        estimatedHeight += 20;
-                    }
-
-                    // height adjustment if classes are present
-                    if (classes.length > 0) {
-                        estimatedHeight += 20;
-                    }
-
-                    // check if element is near bottom of viewport
-                    const elementBottomFromViewportTop = elemBounds.bottom;
-                    const availableSpaceBelow = viewportHeight - elementBottomFromViewportTop;
-
-                    // align with the bottom of the info box (original behavior)
-                    topPos = (elemBounds.top + elemBounds.height - estimatedHeight) + scrollTop;
-
-                    // If element is near bottom and there's not enough space below,
-                    // push the info box up a bit to prevent scrollbar
-                    if (availableSpaceBelow < estimatedHeight + 10) {
-                        // Push it up by the amount it would overflow
-                        const pushUpAmount = estimatedHeight - availableSpaceBelow;
-                        topPos -= pushUpAmount;
-                    }
-
-                    // decide whether position at left or right based on available space
-                    // check if there's enough space on the left side
-                    if (elemBounds.left > boxWidth + 10) {
-                        leftPos = elemBounds.left - boxWidth - 10 + scrollLeft;
-                    } else if (windowWidth - elemBounds.right > boxWidth + 10) {
-                        // position on the right
-                        leftPos = elemBounds.right + 10 + scrollLeft;
-                    }
-                }
-            }
-
-            // to make sure that the info box stays under the viewport width
-            const viewportWidth = window.innerWidth;
-            const margin = 10;
-
-            // horizontal boundary checking
-            if (leftPos + boxWidth + margin > viewportWidth + scrollLeft) {
-                leftPos = viewportWidth + scrollLeft - boxWidth - margin;
-            }
-            if (leftPos < scrollLeft + margin) {
-                leftPos = scrollLeft + margin;
-            }
+            const boxPos = this._getBoxPosition();
 
             const styles = `
                 .box {
@@ -912,8 +820,8 @@ function RemoteFunctions(config) {
                     font-family: Arial, sans-serif;
                     z-index: 2147483647;
                     position: absolute;
-                    left: ${leftPos}px;
-                    top: ${topPos}px;
+                    left: ${boxPos.leftPos}px;
+                    top: ${boxPos.topPos}px;
                     max-width: fit-content;
                     box-sizing: border-box;
                     pointer-events: none;
