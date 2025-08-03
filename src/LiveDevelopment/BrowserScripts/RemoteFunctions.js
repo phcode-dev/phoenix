@@ -687,6 +687,7 @@ function RemoteFunctions(config) {
             if (_nodeMoreOptionsBox && _nodeMoreOptionsBox._shadow) {
                 const moreOptionsBoxElement = _nodeMoreOptionsBox._shadow.querySelector('.phoenix-more-options-box');
                 if (moreOptionsBoxElement) {
+                    const moreOptionsBoxOffset = _screenOffset(moreOptionsBoxElement);
                     const moreOptionsBoxRect = moreOptionsBoxElement.getBoundingClientRect();
 
                     const infoBox = {
@@ -697,16 +698,18 @@ function RemoteFunctions(config) {
                     };
 
                     const moreOptionsBox = {
-                        left: moreOptionsBoxRect.left,
-                        top: moreOptionsBoxRect.top,
-                        right: moreOptionsBoxRect.right,
-                        bottom: moreOptionsBoxRect.bottom
+                        left: moreOptionsBoxOffset.left,
+                        top: moreOptionsBoxOffset.top,
+                        right: moreOptionsBoxOffset.left + moreOptionsBoxRect.width,
+                        bottom: moreOptionsBoxOffset.top + moreOptionsBoxRect.height
                     };
 
-                    return !(infoBox.right < moreOptionsBox.left ||
+                    const isOverlapping = !(infoBox.right < moreOptionsBox.left ||
                              moreOptionsBox.right < infoBox.left ||
                              infoBox.bottom < moreOptionsBox.top ||
                              moreOptionsBox.bottom < infoBox.top);
+
+                    return isOverlapping;
                 }
             }
             return false;
