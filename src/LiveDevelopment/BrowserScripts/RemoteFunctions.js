@@ -501,17 +501,15 @@ function RemoteFunctions(config) {
             });
         },
 
-        // note: this box width is the width of the more options box
-        // we need this as the value is not consistent, it depends on the number of options we show in the box
-        _getBoxPosition: function(boxWidth) {
+        _getBoxPosition: function(boxWidth, boxHeight) {
             const elemBounds = this.element.getBoundingClientRect();
             const offset = _screenOffset(this.element);
 
-            let topPos = offset.top - 30;
+            let topPos = offset.top - boxHeight - 6; // 6 for just some little space to breathe
             let leftPos = offset.left + elemBounds.width - boxWidth;
 
-            if (offset.top - 30 < 0) {
-                topPos = offset.top + elemBounds.height + 5;
+            if (offset.top - boxHeight < 0) {
+                topPos = offset.top + elemBounds.height + 6;
             }
 
             return {topPos: topPos, leftPos: leftPos};
@@ -522,32 +520,12 @@ function RemoteFunctions(config) {
 
             // this is shadow DOM.
             // we need it because if we add the box directly to the DOM then users style might override it.
-            // {mode: "closed"} means that users will not be able to access the shadow DOM
-            const shadow = this.body.attachShadow({ mode: "closed" });
+            // {mode: "open"} allows us to access the shadow DOM to get actual height/position of the boxes
+            const shadow = this.body.attachShadow({ mode: "open" });
 
             // check which options should be shown to determine box width
             const showEditTextOption = _shouldShowEditTextOption(this.element);
             const showSelectParentOption = _shouldShowSelectParentOption(this.element);
-
-            // calculate box width based on visible options
-            // NOTE: duplicate and delete buttons are always shown
-            let optionCount = 2;
-            if (showSelectParentOption) {
-                optionCount++;
-            }
-            if (showEditTextOption) {
-                optionCount++;
-            }
-
-            // box width we need to decide based on the no. of options
-            let boxWidth;
-            if (optionCount === 2) {
-                boxWidth = 48;
-            } else if (optionCount === 3) {
-                boxWidth = 72;
-            } else {
-                boxWidth = 96;
-            }
 
             // the icons that is displayed in the box
             const ICONS = {
@@ -603,10 +581,8 @@ function RemoteFunctions(config) {
                 </span>
             </div>`;
 
-            const boxPos = this._getBoxPosition(boxWidth);
-
             const styles = `
-                .box {
+                .phoenix-more-options-box {
                     background-color: #4285F4;
                     color: white;
                     border-radius: 3px;
@@ -615,9 +591,8 @@ function RemoteFunctions(config) {
                     font-family: Arial, sans-serif;
                     z-index: 2147483647;
                     position: absolute;
-                    left: ${boxPos.leftPos}px;
-                    top: ${boxPos.topPos}px;
-                    width: ${boxWidth}px;
+                    left: -1000px;
+                    top: -1000px;
                     box-sizing: border-box;
                 }
 
@@ -654,7 +629,7 @@ function RemoteFunctions(config) {
             `;
 
             // add everything to the shadow box
-            shadow.innerHTML = `<style>${styles}</style><div class="box">${content}</div>`;
+            shadow.innerHTML = `<style>${styles}</style><div class="phoenix-more-options-box">${content}</div>`;
             this._shadow = shadow;
         },
 
@@ -663,6 +638,16 @@ function RemoteFunctions(config) {
             this._style(); // style the box
 
             window.document.body.appendChild(this.body);
+
+            // get the actual rendered dimensions of the box and then we reposition it to the actual place
+            const boxElement = this._shadow.querySelector('.phoenix-more-options-box');
+            if (boxElement) {
+                const boxRect = boxElement.getBoundingClientRect();
+                const pos = this._getBoxPosition(boxRect.width, boxRect.height);
+
+                boxElement.style.left = pos.leftPos + 'px';
+                boxElement.style.top = pos.topPos + 'px';
+            }
 
             // add click handler to all the buttons
             const spans = this._shadow.querySelectorAll('.node-options span');
