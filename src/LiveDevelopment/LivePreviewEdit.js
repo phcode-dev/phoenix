@@ -38,6 +38,17 @@ define(function (require, exports, module) {
         const oldRoot = oldDoc.body;
         const newRoot = newDoc.body;
 
+        // this function is to remove the phoenix internal attributes from leaking into the user's source code
+        function cleanClonedElement(clonedElement) {
+            if (clonedElement.nodeType === Node.ELEMENT_NODE) {
+                clonedElement.removeAttribute("data-brackets-id");
+
+                const children = clonedElement.querySelectorAll("[data-brackets-id]");
+                children.forEach(child => child.removeAttribute("data-brackets-id"));
+            }
+            return clonedElement;
+        }
+
         function syncText(oldNode, newNode) {
             if (!oldNode || !newNode) {
                 return;
@@ -64,7 +75,8 @@ define(function (require, exports, module) {
 
                     if (!oldChild && newChild) {
                         // if new child added → clone and insert
-                        oldNode.appendChild(newChild.cloneNode(true));
+                        const cloned = newChild.cloneNode(true);
+                        oldNode.appendChild(cleanClonedElement(cloned));
                     } else if (oldChild && !newChild) {
                         // if child removed → delete
                         oldNode.removeChild(oldChild);
@@ -84,7 +96,8 @@ define(function (require, exports, module) {
                         }
                     } else {
                         // different node types or tags → replace
-                        oldNode.replaceChild(newChild.cloneNode(true), oldChild);
+                        const cloned = newChild.cloneNode(true);
+                        oldNode.replaceChild(cleanClonedElement(cloned), oldChild);
                     }
                 }
             }
