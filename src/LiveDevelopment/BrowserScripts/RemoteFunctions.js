@@ -508,8 +508,14 @@ function RemoteFunctions(config) {
             let topPos = offset.top - boxHeight - 6; // 6 for just some little space to breathe
             let leftPos = offset.left + elemBounds.width - boxWidth;
 
+            // Check if the box would go off the top of the viewport
             if (offset.top - boxHeight < 0) {
                 topPos = offset.top + elemBounds.height + 6;
+            }
+
+            // Check if the box would go off the left of the viewport
+            if (leftPos < 0) {
+                leftPos = offset.left;
             }
 
             return {topPos: topPos, leftPos: leftPos};
@@ -715,7 +721,7 @@ function RemoteFunctions(config) {
             return false;
         },
 
-        _getBoxPosition: function(boxHeight, overlap = false) {
+        _getBoxPosition: function(boxDimensions, overlap = false) {
             const elemBounds = this.element.getBoundingClientRect();
             const offset = _screenOffset(this.element);
             let topPos = 0;
@@ -724,12 +730,22 @@ function RemoteFunctions(config) {
             if (overlap) {
                 topPos = offset.top + 2;
                 leftPos = offset.left + elemBounds.width + 6;
+
+                // Check if overlap position would go off the right of the viewport
+                if (leftPos + boxDimensions.width > window.innerWidth) {
+                    leftPos = offset.left - boxDimensions.width - 6;
+                }
             } else {
-                topPos = offset.top - boxHeight - 6; // 6 for just some little space to breathes
+                topPos = offset.top - boxDimensions.height - 6; // 6 for just some little space to breathe
                 leftPos = offset.left;
 
-                if (offset.top - boxHeight < 0) {
+                if (offset.top - boxDimensions.height < 0) {
                     topPos = offset.top + elemBounds.height + 6;
+                }
+
+                // Check if the box would go off the right of the viewport
+                if (leftPos + boxDimensions.width > window.innerWidth) {
+                    leftPos = window.innerWidth - boxDimensions.width - 10;
                 }
             }
 
@@ -824,7 +840,7 @@ function RemoteFunctions(config) {
                     height: boxElement.getBoundingClientRect().height,
                     width: boxElement.getBoundingClientRect().width
                 };
-                const nodeInfoBoxPos = this._getBoxPosition(nodeInfoBoxDimensions.height);
+                const nodeInfoBoxPos = this._getBoxPosition(nodeInfoBoxDimensions, false);
 
                 boxElement.style.left = nodeInfoBoxPos.leftPos + 'px';
                 boxElement.style.top = nodeInfoBoxPos.topPos + 'px';
@@ -832,7 +848,7 @@ function RemoteFunctions(config) {
                 if(this.isFromClick) {
                     const isBoxOverlapping = this._checkOverlap(nodeInfoBoxPos, nodeInfoBoxDimensions);
                     if(isBoxOverlapping) {
-                        const newPos = this._getBoxPosition(nodeInfoBoxDimensions.height, true);
+                        const newPos = this._getBoxPosition(nodeInfoBoxDimensions, true);
                         boxElement.style.left = newPos.leftPos + 'px';
                         boxElement.style.top = newPos.topPos + 'px';
                     }
