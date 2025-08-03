@@ -544,11 +544,11 @@ function RemoteFunctions(config) {
             // box width we need to decide based on the no. of options
             let boxWidth;
             if (optionCount === 2) {
-                boxWidth = 52;
+                boxWidth = 48;
             } else if (optionCount === 3) {
-                boxWidth = 82;
+                boxWidth = 72;
             } else {
-                boxWidth = 106;
+                boxWidth = 96;
             }
 
             // the icons that is displayed in the box
@@ -612,7 +612,6 @@ function RemoteFunctions(config) {
                     background-color: #4285F4;
                     color: white;
                     border-radius: 3px;
-                    padding: 5px 8px;
                     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
                     font-size: 12px;
                     font-family: Arial, sans-serif;
@@ -626,14 +625,27 @@ function RemoteFunctions(config) {
 
                 .node-options {
                     display: flex;
-                    gap: 8px;
                     align-items: center;
                 }
 
                 .node-options span {
+                    padding: 4px 3.9px;
                     cursor: pointer;
                     display: flex;
                     align-items: center;
+                    border-radius: 0;
+                }
+
+                .node-options span:first-child {
+                    border-radius: 3px 0 0 3px;
+                }
+
+                .node-options span:last-child {
+                    border-radius: 0 3px 3px 0;
+                }
+
+                .node-options span:hover {
+                    background-color: rgba(255, 255, 255, 0.15);
                 }
 
                 .node-options span > svg {
