@@ -683,15 +683,51 @@ function RemoteFunctions(config) {
     }
 
     NodeInfoBox.prototype = {
-        _getBoxPosition: function(boxHeight) {
+        _checkOverlap: function(nodeInfoBoxPos, nodeInfoBoxDimensions) {
+            if (_nodeMoreOptionsBox && _nodeMoreOptionsBox._shadow) {
+                const moreOptionsBoxElement = _nodeMoreOptionsBox._shadow.querySelector('.phoenix-more-options-box');
+                if (moreOptionsBoxElement) {
+                    const moreOptionsBoxRect = moreOptionsBoxElement.getBoundingClientRect();
+
+                    const infoBox = {
+                        left: nodeInfoBoxPos.leftPos,
+                        top: nodeInfoBoxPos.topPos,
+                        right: nodeInfoBoxPos.leftPos + nodeInfoBoxDimensions.width,
+                        bottom: nodeInfoBoxPos.topPos + nodeInfoBoxDimensions.height
+                    };
+
+                    const moreOptionsBox = {
+                        left: moreOptionsBoxRect.left,
+                        top: moreOptionsBoxRect.top,
+                        right: moreOptionsBoxRect.right,
+                        bottom: moreOptionsBoxRect.bottom
+                    };
+
+                    return !(infoBox.right < moreOptionsBox.left ||
+                             moreOptionsBox.right < infoBox.left ||
+                             infoBox.bottom < moreOptionsBox.top ||
+                             moreOptionsBox.bottom < infoBox.top);
+                }
+            }
+            return false;
+        },
+
+        _getBoxPosition: function(boxHeight, overlap = false) {
             const elemBounds = this.element.getBoundingClientRect();
             const offset = _screenOffset(this.element);
+            let topPos = 0;
+            let leftPos = 0;
 
-            let topPos = offset.top - boxHeight - 6; // 6 for just some little space to breathes
-            let leftPos = offset.left;
+            if (overlap) {
+                topPos = offset.top + 2;
+                leftPos = offset.left + elemBounds.width + 6;
+            } else {
+                topPos = offset.top - boxHeight - 6; // 6 for just some little space to breathes
+                leftPos = offset.left;
 
-            if (offset.top - boxHeight < 0) {
-                topPos = offset.top + elemBounds.height + 6;
+                if (offset.top - boxHeight < 0) {
+                    topPos = offset.top + elemBounds.height + 6;
+                }
             }
 
             return {topPos: topPos, leftPos: leftPos};
@@ -781,11 +817,23 @@ function RemoteFunctions(config) {
             // get the actual rendered height of the box and then we reposition it to the actual place
             const boxElement = this._shadow.querySelector('.phoenix-node-info-box');
             if (boxElement) {
-                const nodeInfoBoxHeight = boxElement.getBoundingClientRect().height;
-                const pos = this._getBoxPosition(nodeInfoBoxHeight);
+                const nodeInfoBoxDimensions = {
+                    height: boxElement.getBoundingClientRect().height,
+                    width: boxElement.getBoundingClientRect().width
+                };
+                const nodeInfoBoxPos = this._getBoxPosition(nodeInfoBoxDimensions.height);
 
-                boxElement.style.left = pos.leftPos + 'px';
-                boxElement.style.top = pos.topPos + 'px';
+                boxElement.style.left = nodeInfoBoxPos.leftPos + 'px';
+                boxElement.style.top = nodeInfoBoxPos.topPos + 'px';
+
+                if(this.isFromClick) {
+                    const isBoxOverlapping = this._checkOverlap(nodeInfoBoxPos, nodeInfoBoxDimensions);
+                    if(isBoxOverlapping) {
+                        const newPos = this._getBoxPosition(nodeInfoBoxDimensions.height, true);
+                        boxElement.style.left = newPos.leftPos + 'px';
+                        boxElement.style.top = newPos.topPos + 'px';
+                    }
+                }
             }
         },
 
