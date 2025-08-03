@@ -505,15 +505,13 @@ function RemoteFunctions(config) {
         // we need this as the value is not consistent, it depends on the number of options we show in the box
         _getBoxPosition: function(boxWidth) {
             const elemBounds = this.element.getBoundingClientRect();
+            const offset = _screenOffset(this.element);
 
-            const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            let topPos = offset.top - 30;
+            let leftPos = offset.left + elemBounds.width - boxWidth;
 
-            let topPos = elemBounds.top - 30 + scrollTop;
-            let leftPos = elemBounds.right - boxWidth + scrollLeft;
-
-            if (elemBounds.top - 30 < 0) {
-                topPos = elemBounds.top + elemBounds.height + 5 + scrollTop;
+            if (offset.top - 30 < 0) {
+                topPos = offset.top + elemBounds.height + 5;
             }
 
             return {topPos: topPos, leftPos: leftPos};
@@ -700,33 +698,15 @@ function RemoteFunctions(config) {
     }
 
     NodeInfoBox.prototype = {
-        _calcHeight: function() {
-            const element = this.element;
-
-            let baseHeight = 26.75;
-            if(element.id) {
-                baseHeight += 17.25;
-            }
-            if(element.className.length !== 0) {
-                baseHeight += 17.25;
-            }
-
-            return baseHeight;
-        },
-
-        _getBoxPosition: function() {
+        _getBoxPosition: function(boxHeight) {
             const elemBounds = this.element.getBoundingClientRect();
+            const offset = _screenOffset(this.element);
 
-            const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            let topPos = offset.top - boxHeight - 6; // 6 for just some little space to breathes
+            let leftPos = offset.left;
 
-            const boxHeight = this._calcHeight();
-
-            let topPos = elemBounds.top - boxHeight + scrollTop;
-            let leftPos = elemBounds.left + scrollLeft;
-
-            if (elemBounds.top - boxHeight < 0) {
-                topPos = elemBounds.top + elemBounds.height + 5 + scrollTop;
+            if (offset.top - boxHeight < 0) {
+                topPos = offset.top + elemBounds.height + 6;
             }
 
             return {topPos: topPos, leftPos: leftPos};
@@ -737,8 +717,8 @@ function RemoteFunctions(config) {
 
             // this is shadow DOM.
             // we need it because if we add the box directly to the DOM then users style might override it.
-            // {mode: "closed"} means that users will not be able to access the shadow DOM
-            const shadow = this.body.attachShadow({ mode: "closed" });
+            // {mode: "open"} allows us to access the shadow DOM to get actual height/position of the boxes
+            const shadow = this.body.attachShadow({ mode: "open" });
 
             // get the ID and classes for that element, as we need to display it in the box
             const id = this.element.id;
@@ -764,10 +744,14 @@ function RemoteFunctions(config) {
                 content += "</div>";
             }
 
-            const boxPos = this._getBoxPosition();
+            // initially, we place our info box -1000px to the top but at the right left pos. this is done so that
+            // we can take the text-wrapping inside the info box in account when calculating the height
+            // after calculating the height of the box, we place it at the exact position above the element
+            const offset = _screenOffset(this.element);
+            const leftPos = offset.left;
 
             const styles = `
-                .box {
+                .phoenix-node-info-box {
                     background-color: #4285F4;
                     color: white;
                     border-radius: 3px;
@@ -777,9 +761,9 @@ function RemoteFunctions(config) {
                     font-family: Arial, sans-serif;
                     z-index: 2147483647;
                     position: absolute;
-                    left: ${boxPos.leftPos}px;
-                    top: ${boxPos.topPos}px;
-                    max-width: fit-content;
+                    left: ${leftPos}px;
+                    top: -1000px;
+                    max-width: 300px;
                     box-sizing: border-box;
                     pointer-events: none;
                 }
@@ -799,7 +783,7 @@ function RemoteFunctions(config) {
             `;
 
             // add everything to the shadow box
-            shadow.innerHTML = `<style>${styles}</style><div class="box">${content}</div>`;
+            shadow.innerHTML = `<style>${styles}</style><div class="phoenix-node-info-box">${content}</div>`;
             this._shadow = shadow;
         },
 
@@ -808,6 +792,16 @@ function RemoteFunctions(config) {
             this._style(); // style the box
 
             window.document.body.appendChild(this.body);
+
+            // get the actual rendered height of the box and then we reposition it to the actual place
+            const boxElement = this._shadow.querySelector('.phoenix-node-info-box');
+            if (boxElement) {
+                const nodeInfoBoxHeight = boxElement.getBoundingClientRect().height;
+                const pos = this._getBoxPosition(nodeInfoBoxHeight);
+
+                boxElement.style.left = pos.leftPos + 'px';
+                boxElement.style.top = pos.topPos + 'px';
+            }
         },
 
         remove: function() {
