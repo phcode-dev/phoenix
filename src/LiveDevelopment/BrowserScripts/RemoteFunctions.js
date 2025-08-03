@@ -30,9 +30,8 @@
  */
 function RemoteFunctions(config) {
 
-    // this is responsible to make the advanced DOM features active or inactive
-    // TODO: give this var a better name
-    let isFlagActive = true;
+    // this is responsible to make the advanced live preview features active or inactive
+    let isLPEditFeaturesActive = false;
 
     // this will store the element that was clicked previously (before the new click)
     // we need this so that we can remove click styling from the previous element when a new element is clicked
@@ -641,6 +640,11 @@ function RemoteFunctions(config) {
 
         create: function() {
             this.remove(); // remove existing box if already present
+
+            if(!isLPEditFeaturesActive) {
+                return;
+            }
+
             this._style(); // style the box
 
             window.document.body.appendChild(this.body);
@@ -829,6 +833,11 @@ function RemoteFunctions(config) {
 
         create: function() {
             this.remove(); // remove existing box if already present
+
+            if(!isLPEditFeaturesActive) {
+                return;
+            }
+
             this._style(); // style the box
 
             window.document.body.appendChild(this.body);
@@ -1196,7 +1205,7 @@ function RemoteFunctions(config) {
     }
 
     function onElementHover(event) {
-        if (_hoverHighlight) {
+        if (_hoverHighlight && isLPEditFeaturesActive) {
             _hoverHighlight.clear();
 
             // Skip highlighting for HTML and BODY tags and for DOM elements which doesn't have 'data-brackets-id'
@@ -1227,24 +1236,24 @@ function RemoteFunctions(config) {
     }
 
     function onElementHoverOut(event) {
-        if (_hoverHighlight) {
+        if (_hoverHighlight && isLPEditFeaturesActive) {
             _hoverHighlight.clear();
-        }
 
-        // Restore original background color
-        if (event && event.target && event.target.nodeType === Node.ELEMENT_NODE && event.target.hasAttribute("data-brackets-id")) {
-            if (event.target._originalBackgroundColor !== undefined) {
-                event.target.style.backgroundColor = event.target._originalBackgroundColor;
-            } else {
-                event.target.style.backgroundColor = "";
+            // Restore original background color
+            if (event && event.target && event.target.nodeType === Node.ELEMENT_NODE && event.target.hasAttribute("data-brackets-id")) {
+                if (event.target._originalBackgroundColor !== undefined) {
+                    event.target.style.backgroundColor = event.target._originalBackgroundColor;
+                } else {
+                    event.target.style.backgroundColor = "";
+                }
+                delete event.target._originalBackgroundColor;
             }
-            delete event.target._originalBackgroundColor;
-        }
 
-        // Remove info box when mouse leaves the element
-        if (_nodeInfoBox) {
-            _nodeInfoBox.remove();
-            _nodeInfoBox = null;
+            // Remove info box when mouse leaves the element
+            if (_nodeInfoBox) {
+                _nodeInfoBox.remove();
+                _nodeInfoBox = null;
+            }
         }
     }
 
@@ -1256,7 +1265,7 @@ function RemoteFunctions(config) {
     function onClick(event) {
         // make sure that the feature is enabled and also the clicked element has the attribute 'data-brackets-id'
         if (
-            isFlagActive &&
+            isLPEditFeaturesActive &&
             event.target.hasAttribute("data-brackets-id") &&
             event.target.tagName !== "BODY" &&
             event.target.tagName !== "HTML"
@@ -1292,7 +1301,6 @@ function RemoteFunctions(config) {
             event.target.style.outline = "1px solid #4285F4";
             previouslyClickedElement = event.target;
         } else if ( // when user clicks on the HTML or the BODY tag, we want to remove the boxes
-            isFlagActive &&
             _nodeMoreOptionsBox &&
             (event.target.tagName === "HTML" || event.target.tagName === "BODY")
         ) {
@@ -1306,7 +1314,7 @@ function RemoteFunctions(config) {
      */
     function onDoubleClick(event) {
         if (
-            isFlagActive &&
+            isLPEditFeaturesActive &&
             event.target.hasAttribute("data-brackets-id") &&
             event.target.tagName !== "BODY" &&
             event.target.tagName !== "HTML"
@@ -1778,7 +1786,8 @@ function RemoteFunctions(config) {
 
     // Function to handle direct editing of elements in the live preview
     function startEditing(element) {
-        if (!element
+        if (!isLPEditFeaturesActive
+            || !element
             || element.tagName === "BODY"
             || element.tagName === "HTML"
             || !element.hasAttribute("data-brackets-id")) {
@@ -1826,7 +1835,7 @@ function RemoteFunctions(config) {
     // Function to finish editing and apply changes
     // isEditSuccessful: this is a boolean value, defaults to true. false only when the edit operation is cancelled
     function finishEditing(element, isEditSuccessful = true) {
-        if (!element || !element.hasAttribute("contenteditable")) {
+        if (!isLPEditFeaturesActive || !element || !element.hasAttribute("contenteditable")) {
             return;
         }
 
@@ -1857,20 +1866,22 @@ function RemoteFunctions(config) {
     // init
     _editHandler = new DOMEditHandler(window.document);
 
-    // Initialize hover highlight with Chrome-like colors
-    _hoverHighlight = new Highlight("#c8f9c5", true); // Green similar to Chrome's padding color
+    if (isLPEditFeaturesActive) {
+        // Initialize hover highlight with Chrome-like colors
+        _hoverHighlight = new Highlight("#c8f9c5", true); // Green similar to Chrome's padding color
 
-    // Initialize click highlight with animation
-    _clickHighlight = new Highlight("#cfc", true); // Light green for click highlight
+        // Initialize click highlight with animation
+        _clickHighlight = new Highlight("#cfc", true); // Light green for click highlight
 
-    // Add event listeners for hover
-    window.document.addEventListener("mouseover", onElementHover);
-    window.document.addEventListener("mouseout", onElementHoverOut);
-    window.document.addEventListener("click", onClick);
-    window.document.addEventListener("dblclick", onDoubleClick);
-    window.document.addEventListener("dragover", onDragOver);
-    window.document.addEventListener("drop", onDrop);
-    window.document.addEventListener("keydown", onKeyDown);
+        window.document.addEventListener("mouseover", onElementHover);
+        window.document.addEventListener("mouseout", onElementHoverOut);
+        window.document.addEventListener("click", onClick);
+        window.document.addEventListener("dblclick", onDoubleClick);
+        window.document.addEventListener("dragover", onDragOver);
+        window.document.addEventListener("drop", onDrop);
+        window.document.addEventListener("keydown", onKeyDown);
+    }
+
 
     return {
         "DOMEditHandler"        : DOMEditHandler,
