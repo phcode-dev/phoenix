@@ -52,7 +52,6 @@ define(function main(require, exports, module) {
     const EVENT_LIVE_HIGHLIGHT_PREF_CHANGED = "liveHighlightPrefChange";
 
     const PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT = "livePreviewElementHighlights";
-    const elemHighlightsPrefValue = PreferencesManager.get(PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT);
 
     var params = new UrlParams();
     var config = {
@@ -67,7 +66,7 @@ define(function main(require, exports, module) {
             showInfo: true
         },
         isLPEditFeaturesActive: isLPEditFeaturesActive,
-        elemHighlights: elemHighlightsPrefValue
+        elemHighlights: "hover" // default value, this will get updated when the extension loads
     };
     // Status labels/styles are ordered: error, not connected, progress1, progress2, connected.
     var _status,
@@ -301,7 +300,18 @@ define(function main(require, exports, module) {
                 }
             });
 
+        // this function is responsible to update element highlight config
+        function updateElementHighlightConfig() {
+            const prefValue = PreferencesManager.get(PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT);
+            config.elemHighlights = prefValue || "hover";
+        }
+
+        PreferencesManager.on("change", PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT, function() {
+            updateElementHighlightConfig();
+        });
+
         MultiBrowserLiveDev.on(MultiBrowserLiveDev.EVENT_OPEN_PREVIEW_URL, function (event, previewDetails) {
+            updateElementHighlightConfig();
             exports.trigger(exports.EVENT_OPEN_PREVIEW_URL, previewDetails);
         });
         MultiBrowserLiveDev.on(MultiBrowserLiveDev.EVENT_CONNECTION_CLOSE, function (event, {clientId}) {
