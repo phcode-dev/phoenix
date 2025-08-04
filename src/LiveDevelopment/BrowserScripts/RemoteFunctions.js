@@ -1201,8 +1201,30 @@ function RemoteFunctions(config) {
         window.document.removeEventListener("mousemove", onMouseMove);
     }
 
+    // helper function to get the current elements highlight mode
+    // this is as per user settings (either click or hover)
+    function getHighlightMode() {
+        return config.elemHighlights ? config.elemHighlights.toLowerCase() : "hover";
+    }
+
+    // helper function to check if highlights should show on hover
+    function shouldShowHighlightOnHover() {
+        return getHighlightMode() !== "click";
+    }
+
+    // helper function to clear element background highlighting
+    function clearElementBackground(element) {
+        if (element._originalBackgroundColor !== undefined) {
+            element.style.backgroundColor = element._originalBackgroundColor;
+        } else {
+            element.style.backgroundColor = "";
+        }
+        delete element._originalBackgroundColor;
+    }
+
     function onElementHover(event) {
-        if (_hoverHighlight && config.isLPEditFeaturesActive) {
+        // this is to check the user's settings, if they want to show the elements highlights on hover or click
+        if (_hoverHighlight && config.isLPEditFeaturesActive && shouldShowHighlightOnHover()) {
             _hoverHighlight.clear();
 
             // Skip highlighting for HTML and BODY tags and for DOM elements which doesn't have 'data-brackets-id'
@@ -1233,17 +1255,18 @@ function RemoteFunctions(config) {
     }
 
     function onElementHoverOut(event) {
-        if (_hoverHighlight && config.isLPEditFeaturesActive) {
+        // this is to check the user's settings, if they want to show the elements highlights on hover or click
+        if (_hoverHighlight && config.isLPEditFeaturesActive && shouldShowHighlightOnHover()) {
             _hoverHighlight.clear();
 
             // Restore original background color
-            if (event && event.target && event.target.nodeType === Node.ELEMENT_NODE && event.target.hasAttribute("data-brackets-id")) {
-                if (event.target._originalBackgroundColor !== undefined) {
-                    event.target.style.backgroundColor = event.target._originalBackgroundColor;
-                } else {
-                    event.target.style.backgroundColor = "";
-                }
-                delete event.target._originalBackgroundColor;
+            if (
+                event &&
+                event.target &&
+                event.target.nodeType === Node.ELEMENT_NODE &&
+                event.target.hasAttribute("data-brackets-id")
+            ) {
+                clearElementBackground(event.target);
             }
 
             // Remove info box when mouse leaves the element
@@ -1284,6 +1307,11 @@ function RemoteFunctions(config) {
                     previouslyClickedElement.style.outline = "";
                 }
                 delete previouslyClickedElement._originalOutline;
+
+                // Remove highlighting from previously clicked element
+                if (getHighlightMode() === "click") {
+                    clearElementBackground(previouslyClickedElement);
+                }
             }
 
             _nodeMoreOptionsBox = new NodeMoreOptionsBox(event.target);
@@ -1296,6 +1324,18 @@ function RemoteFunctions(config) {
 
             event.target._originalOutline = event.target.style.outline;
             event.target.style.outline = "1px solid #4285F4";
+
+            // Add highlight for click mode
+            if (getHighlightMode() === "click") {
+                event.target._originalBackgroundColor = event.target.style.backgroundColor;
+                event.target.style.backgroundColor = "rgba(0, 162, 255, 0.2)";
+
+                if (_hoverHighlight) {
+                    _hoverHighlight.clear();
+                    _hoverHighlight.add(event.target, true); // true for animation
+                }
+            }
+
             previouslyClickedElement = event.target;
         } else if ( // when user clicks on the HTML or the BODY tag, we want to remove the boxes
             _nodeMoreOptionsBox &&
@@ -1724,6 +1764,37 @@ function RemoteFunctions(config) {
                 _nodeMoreOptionsBox = null;
             }
         }
+
+        // Handle element highlight mode changes for instant switching
+        const oldHighlightMode = oldConfig.elemHighlights ? oldConfig.elemHighlights.toLowerCase() : "hover";
+        const newHighlightMode = getHighlightMode();
+
+        if (oldHighlightMode !== newHighlightMode) {
+            // Clear any existing highlights when mode changes
+            if (_hoverHighlight) {
+                _hoverHighlight.clear();
+            }
+
+            // Clean up any previously highlighted elements
+            if (previouslyClickedElement) {
+                clearElementBackground(previouslyClickedElement);
+            }
+
+            // Remove info box when switching modes to avoid confusion
+            if (_nodeInfoBox && !_nodeMoreOptionsBox) {
+                _nodeInfoBox.remove();
+                _nodeInfoBox = null;
+            }
+
+            // Re-setup event listeners based on new mode to ensure proper behavior
+            if (config.highlight && config.isLPEditFeaturesActive) {
+                window.document.removeEventListener("mouseover", onElementHover);
+                window.document.removeEventListener("mouseout", onElementHoverOut);
+                window.document.addEventListener("mouseover", onElementHover);
+                window.document.addEventListener("mouseout", onElementHoverOut);
+            }
+        }
+
         return JSON.stringify(config);
     }
 
@@ -1762,6 +1833,16 @@ function RemoteFunctions(config) {
                 previouslyClickedElement.style.outline = "";
             }
             delete previouslyClickedElement._originalOutline;
+
+            // Clear click-mode highlighting
+            if (getHighlightMode() === "click") {
+                clearElementBackground(previouslyClickedElement);
+
+                if (_hoverHighlight) {
+                    _hoverHighlight.clear();
+                }
+            }
+
             previouslyClickedElement = null;
             dismissed = true;
         }
