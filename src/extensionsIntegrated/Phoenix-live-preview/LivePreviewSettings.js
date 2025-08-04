@@ -41,6 +41,7 @@
 
 define(function (require, exports, module) {
     const livePreviewSettings    = require("text!./livePreviewSettings.html"),
+        LiveDevelopmentMain = require("LiveDevelopment/main"),
         Dialogs             = require("widgets/Dialogs"),
         ProjectManager        = require("project/ProjectManager"),
         Strings = require("strings"),
@@ -87,7 +88,10 @@ define(function (require, exports, module) {
         description: Strings.LIVE_DEV_SETTINGS_FRAMEWORK_PREFERENCES,
         values: Object.keys(SUPPORTED_FRAMEWORKS)
     });
-    
+    PreferencesManager.definePreference(LiveDevelopmentMain.PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT, "string", "hover", {
+        description: "show live preview element highlights on 'hover' or 'click'. Defaults to 'hover'"
+    });
+
     async function detectFramework($frameworkSelect, $hotReloadChk) {
         for(let framework of Object.keys(SUPPORTED_FRAMEWORKS)){
             const configFile = SUPPORTED_FRAMEWORKS[framework].configFile,
@@ -130,7 +134,8 @@ define(function (require, exports, module) {
                 $hotReloadChk = $template.find("#hotReloadChk"),
                 $hotReloadLabel = $template.find("#hotReloadLabel"),
                 $frameworkLabel = $template.find("#frameworkLabel"),
-                $frameworkSelect = $template.find("#frameworkSelect");
+                $frameworkSelect = $template.find("#frameworkSelect"),
+                $elementHighlights = $template.find("#elementHighlightWrapper");
             $enableCustomServerChk.prop('checked', PreferencesManager.get(PREFERENCE_PROJECT_SERVER_ENABLED));
             $showLivePreviewAtStartup.prop('checked', PreferencesManager.get(PREFERENCE_SHOW_LIVE_PREVIEW_PANEL));
             $hotReloadChk.prop('checked', !!PreferencesManager.get(PREFERENCE_PROJECT_SERVER_HOT_RELOAD_SUPPORTED));
@@ -162,6 +167,12 @@ define(function (require, exports, module) {
                     $hotReloadLabel.addClass("forced-hidden");
                     $frameworkSelect.addClass("forced-hidden");
                     $frameworkLabel.addClass("forced-hidden");
+                }
+
+                if(LiveDevelopmentMain.isLPEditFeaturesActive) {
+                    $elementHighlights.removeClass("forced-hidden");
+                } else {
+                    $elementHighlights.addClass("forced-hidden");
                 }
             }
 

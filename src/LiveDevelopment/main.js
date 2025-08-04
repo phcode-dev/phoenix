@@ -45,7 +45,14 @@ define(function main(require, exports, module) {
         EventDispatcher      = require("utils/EventDispatcher"),
         WorkspaceManager    = require("view/WorkspaceManager");
 
+
+    // this is responsible to make the advanced live preview features active or inactive
+    let isLPEditFeaturesActive = true;
+
     const EVENT_LIVE_HIGHLIGHT_PREF_CHANGED = "liveHighlightPrefChange";
+
+    const PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT = "livePreviewElementHighlights";
+    const elemHighlightsPrefValue = PreferencesManager.get(PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT);
 
     var params = new UrlParams();
     var config = {
@@ -58,7 +65,9 @@ define(function main(require, exports, module) {
             marginColor:  {r: 246, g: 178, b: 107, a: 0.66},
             paddingColor: {r: 147, g: 196, b: 125, a: 0.66},
             showInfo: true
-        }
+        },
+        isLPEditFeaturesActive: isLPEditFeaturesActive,
+        elemHighlights: elemHighlightsPrefValue
     };
     // Status labels/styles are ordered: error, not connected, progress1, progress2, connected.
     var _status,
@@ -329,6 +338,9 @@ define(function main(require, exports, module) {
     CommandManager.get(Commands.FILE_LIVE_HIGHLIGHT).setEnabled(false);
 
     EventDispatcher.makeEventDispatcher(exports);
+
+    exports.isLPEditFeaturesActive = isLPEditFeaturesActive;
+    exports.PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT = PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT;
 
     // public events
     exports.EVENT_OPEN_PREVIEW_URL = MultiBrowserLiveDev.EVENT_OPEN_PREVIEW_URL;
