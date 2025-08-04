@@ -30,9 +30,6 @@
  */
 function RemoteFunctions(config) {
 
-    // this is responsible to make the advanced live preview features active or inactive
-    let isLPEditFeaturesActive = false;
-
     // this will store the element that was clicked previously (before the new click)
     // we need this so that we can remove click styling from the previous element when a new element is clicked
     let previouslyClickedElement = null;
@@ -641,7 +638,7 @@ function RemoteFunctions(config) {
         create: function() {
             this.remove(); // remove existing box if already present
 
-            if(!isLPEditFeaturesActive) {
+            if(!config.isLPEditFeaturesActive) {
                 return;
             }
 
@@ -834,7 +831,7 @@ function RemoteFunctions(config) {
         create: function() {
             this.remove(); // remove existing box if already present
 
-            if(!isLPEditFeaturesActive) {
+            if(!config.isLPEditFeaturesActive) {
                 return;
             }
 
@@ -1205,7 +1202,7 @@ function RemoteFunctions(config) {
     }
 
     function onElementHover(event) {
-        if (_hoverHighlight && isLPEditFeaturesActive) {
+        if (_hoverHighlight && config.isLPEditFeaturesActive) {
             _hoverHighlight.clear();
 
             // Skip highlighting for HTML and BODY tags and for DOM elements which doesn't have 'data-brackets-id'
@@ -1236,7 +1233,7 @@ function RemoteFunctions(config) {
     }
 
     function onElementHoverOut(event) {
-        if (_hoverHighlight && isLPEditFeaturesActive) {
+        if (_hoverHighlight && config.isLPEditFeaturesActive) {
             _hoverHighlight.clear();
 
             // Restore original background color
@@ -1265,7 +1262,7 @@ function RemoteFunctions(config) {
     function onClick(event) {
         // make sure that the feature is enabled and also the clicked element has the attribute 'data-brackets-id'
         if (
-            isLPEditFeaturesActive &&
+            config.isLPEditFeaturesActive &&
             event.target.hasAttribute("data-brackets-id") &&
             event.target.tagName !== "BODY" &&
             event.target.tagName !== "HTML"
@@ -1314,7 +1311,7 @@ function RemoteFunctions(config) {
      */
     function onDoubleClick(event) {
         if (
-            isLPEditFeaturesActive &&
+            config.isLPEditFeaturesActive &&
             event.target.hasAttribute("data-brackets-id") &&
             event.target.tagName !== "BODY" &&
             event.target.tagName !== "HTML"
@@ -1786,7 +1783,7 @@ function RemoteFunctions(config) {
 
     // Function to handle direct editing of elements in the live preview
     function startEditing(element) {
-        if (!isLPEditFeaturesActive
+        if (!config.isLPEditFeaturesActive
             || !element
             || element.tagName === "BODY"
             || element.tagName === "HTML"
@@ -1835,7 +1832,7 @@ function RemoteFunctions(config) {
     // Function to finish editing and apply changes
     // isEditSuccessful: this is a boolean value, defaults to true. false only when the edit operation is cancelled
     function finishEditing(element, isEditSuccessful = true) {
-        if (!isLPEditFeaturesActive || !element || !element.hasAttribute("contenteditable")) {
+        if (!config.isLPEditFeaturesActive || !element || !element.hasAttribute("contenteditable")) {
             return;
         }
 
@@ -1866,7 +1863,7 @@ function RemoteFunctions(config) {
     // init
     _editHandler = new DOMEditHandler(window.document);
 
-    if (isLPEditFeaturesActive) {
+    if (config.isLPEditFeaturesActive) {
         // Initialize hover highlight with Chrome-like colors
         _hoverHighlight = new Highlight("#c8f9c5", true); // Green similar to Chrome's padding color
 
