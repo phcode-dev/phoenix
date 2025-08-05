@@ -65,6 +65,19 @@ function RemoteFunctions(config) {
         return event.ctrlKey;
     }
 
+    // helper function to check if an element is inside the HEAD tag
+    // we need this because we don't wanna trigger the element highlights on head tag and its children
+    function _isInsideHeadTag(element) {
+        let parent = element;
+        while (parent && parent !== window.document) {
+            if (parent.tagName === "HEAD") {
+                return true;
+            }
+            parent = parent.parentElement;
+        }
+        return false;
+    }
+
 
     // compute the screen offset of an element
     function _screenOffset(element) {
@@ -123,7 +136,7 @@ function RemoteFunctions(config) {
     function _handleDeleteOptionClick(event, element) {
         const tagId = element.getAttribute("data-brackets-id");
 
-        if (tagId && element.tagName !== "BODY" && element.tagName !== "HTML") {
+        if (tagId && element.tagName !== "BODY" && element.tagName !== "HTML" && !_isInsideHeadTag(element)) {
             window._Brackets_MessageBroker.send({
                 livePreviewEditEnabled: true,
                 element: element,
@@ -144,7 +157,7 @@ function RemoteFunctions(config) {
     function _handleDuplicateOptionClick(event, element) {
         const tagId = element.getAttribute("data-brackets-id");
 
-        if (tagId && element.tagName !== "BODY" && element.tagName !== "HTML") {
+        if (tagId && element.tagName !== "BODY" && element.tagName !== "HTML" && !_isInsideHeadTag(element)) {
             window._Brackets_MessageBroker.send({
                 livePreviewEditEnabled: true,
                 element: element,
@@ -178,6 +191,7 @@ function RemoteFunctions(config) {
         if (
             parentElement.tagName !== "BODY" &&
             parentElement.tagName !== "HTML" &&
+            !_isInsideHeadTag(parentElement) &&
             parentElement.hasAttribute("data-brackets-id")
         ) {
             parentElement.click();
@@ -318,8 +332,8 @@ function RemoteFunctions(config) {
             return;
         }
 
-        // Skip BODY and HTML tags
-        if (target.tagName === "BODY" || target.tagName === "HTML") {
+        // Skip BODY, HTML tags and elements inside HEAD
+        if (target.tagName === "BODY" || target.tagName === "HTML" || _isInsideHeadTag(target)) {
             return;
         }
 
@@ -359,8 +373,8 @@ function RemoteFunctions(config) {
             return;
         }
 
-        // Skip BODY and HTML tags
-        if (target.tagName === "BODY" || target.tagName === "HTML") {
+        // Skip BODY, HTML tags and elements inside HEAD
+        if (target.tagName === "BODY" || target.tagName === "HTML" || _isInsideHeadTag(target)) {
             return;
         }
 
@@ -456,7 +470,7 @@ function RemoteFunctions(config) {
 
         const parentElement = element.parentElement;
 
-        if (parentElement.tagName === "HTML" || parentElement.tagName === "BODY") {
+        if (parentElement.tagName === "HTML" || parentElement.tagName === "BODY" || _isInsideHeadTag(parentElement)) {
             return false;
         }
         if (!parentElement.hasAttribute("data-brackets-id")) {
@@ -1193,9 +1207,9 @@ function RemoteFunctions(config) {
 
     function onMouseOver(event) {
         if (_validEvent(event)) {
-            // Skip highlighting for HTML and BODY tags
+            // Skip highlighting for HTML, BODY tags and elements inside HEAD
             if (event.target && event.target.nodeType === Node.ELEMENT_NODE &&
-                event.target.tagName !== "HTML" && event.target.tagName !== "BODY") {
+                event.target.tagName !== "HTML" && event.target.tagName !== "BODY" && !_isInsideHeadTag(event.target)) {
                 _localHighlight.add(event.target, true);
             }
         }
@@ -1238,13 +1252,15 @@ function RemoteFunctions(config) {
         if (_hoverHighlight && config.isLPEditFeaturesActive && shouldShowHighlightOnHover()) {
             _hoverHighlight.clear();
 
-            // Skip highlighting for HTML and BODY tags and for DOM elements which doesn't have 'data-brackets-id'
+            // Skip highlighting for HTML, BODY tags and elements inside HEAD
+            // and for DOM elements which doesn't have 'data-brackets-id'
             // NOTE: Don't remove 'data-brackets-id' check else hover will also target internal live preview elements
             if (
                 event.target &&
                 event.target.nodeType === Node.ELEMENT_NODE &&
                 event.target.tagName !== "HTML" &&
                 event.target.tagName !== "BODY" &&
+                !_isInsideHeadTag(event.target) &&
                 event.target.hasAttribute("data-brackets-id")
             ) {
                 // Store original background color to restore on hover out
@@ -1299,7 +1315,8 @@ function RemoteFunctions(config) {
             config.isLPEditFeaturesActive &&
             event.target.hasAttribute("data-brackets-id") &&
             event.target.tagName !== "BODY" &&
-            event.target.tagName !== "HTML"
+            event.target.tagName !== "HTML" &&
+            !_isInsideHeadTag(event.target)
         ) {
             event.preventDefault();
             event.stopPropagation();
@@ -1348,9 +1365,9 @@ function RemoteFunctions(config) {
             }
 
             previouslyClickedElement = event.target;
-        } else if ( // when user clicks on the HTML or the BODY tag, we want to remove the boxes
+        } else if ( // when user clicks on the HTML, BODY tags or elements inside HEAD, we want to remove the boxes
             _nodeMoreOptionsBox &&
-            (event.target.tagName === "HTML" || event.target.tagName === "BODY")
+            (event.target.tagName === "HTML" || event.target.tagName === "BODY" || _isInsideHeadTag(event.target))
         ) {
             dismissMoreOptionsBox();
         }
@@ -1365,7 +1382,8 @@ function RemoteFunctions(config) {
             config.isLPEditFeaturesActive &&
             event.target.hasAttribute("data-brackets-id") &&
             event.target.tagName !== "BODY" &&
-            event.target.tagName !== "HTML"
+            event.target.tagName !== "HTML" &&
+            !_isInsideHeadTag(event.target)
         ) {
             // because we only want to allow double click text editing where we show the edit option
             if (_shouldShowEditTextOption(event.target)) {
@@ -1425,9 +1443,9 @@ function RemoteFunctions(config) {
         if (clear) {
             _clickHighlight.clear();
         }
-        // Skip highlighting for HTML and BODY tags
+        // Skip highlighting for HTML, BODY tags and elements inside HEAD
         if (node && node.nodeType === Node.ELEMENT_NODE &&
-            node.tagName !== "HTML" && node.tagName !== "BODY") {
+            node.tagName !== "HTML" && node.tagName !== "BODY" && !_isInsideHeadTag(node)) {
             _clickHighlight.add(node, true);
         }
     }
@@ -1436,10 +1454,31 @@ function RemoteFunctions(config) {
     function highlightRule(rule) {
         hideHighlight();
         var i, nodes = window.document.querySelectorAll(rule);
+
         for (i = 0; i < nodes.length; i++) {
             highlight(nodes[i]);
         }
         _clickHighlight.selector = rule;
+
+        // trigger click on the first valid highlighted element
+        var foundValidElement = false;
+        for (i = 0; i < nodes.length; i++) {
+            if (nodes[i].hasAttribute("data-brackets-id") &&
+                nodes[i].tagName !== "HTML" &&
+                nodes[i].tagName !== "BODY" &&
+                !_isInsideHeadTag(nodes[i]) &&
+                nodes[i].tagName !== "BR"
+            ) {
+                nodes[i].click();
+                foundValidElement = true;
+                break;
+            }
+        }
+
+        // if no valid element present we dismiss the boxes
+        if (!foundValidElement) {
+            dismissMoreOptionsBox();
+        }
     }
 
     // recreate UI boxes (info box and more options box)
@@ -1879,6 +1918,7 @@ function RemoteFunctions(config) {
             || !element
             || element.tagName === "BODY"
             || element.tagName === "HTML"
+            || _isInsideHeadTag(element)
             || !element.hasAttribute("data-brackets-id")) {
             return;
         }
