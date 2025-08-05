@@ -1525,8 +1525,6 @@ function RemoteFunctions(config) {
                 window.setTimeout(redrawHighlights, 0);
             }
         }
-
-        dismissMoreOptionsBox();
     }
 
     window.addEventListener("scroll", _scrollHandler, true);
