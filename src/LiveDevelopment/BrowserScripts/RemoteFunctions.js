@@ -562,23 +562,23 @@ function RemoteFunctions(config) {
 
             // Only include select parent option if element supports it
             if (showSelectParentOption) {
-                content += `<span data-action="select-parent" title="Select Parent">
+                content += `<span data-action="select-parent" title="${config.strings.selectParent}">
                     ${ICONS.arrowUp}
                 </span>`;
             }
 
             // Only include edit text option if element supports it
             if (showEditTextOption) {
-                content += `<span data-action="edit-text" title="Edit Text">
+                content += `<span data-action="edit-text" title="${config.strings.editText}">
                     ${ICONS.edit}
                 </span>`;
             }
 
             // Always include duplicate and delete options
-            content += `<span data-action="duplicate" title="Duplicate">
+            content += `<span data-action="duplicate" title="${config.strings.duplicate}">
                     ${ICONS.copy}
                 </span>
-                <span data-action="delete" title="Delete">
+                <span data-action="delete" title="${config.strings.delete}">
                     ${ICONS.trash}
                 </span>
             </div>`;
