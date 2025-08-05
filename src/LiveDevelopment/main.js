@@ -66,7 +66,16 @@ define(function main(require, exports, module) {
             showInfo: true
         },
         isLPEditFeaturesActive: isLPEditFeaturesActive,
-        elemHighlights: "hover" // default value, this will get updated when the extension loads
+        elemHighlights: "hover", // default value, this will get updated when the extension loads
+        // this strings are used in RemoteFunctions.js
+        // we need to pass this through config as remoteFunctions runs in browser context and cannot
+        // directly reference Strings file
+        strings: {
+            selectParent: Strings.LIVE_DEV_MORE_OPTIONS_SELECT_PARENT,
+            editText: Strings.LIVE_DEV_MORE_OPTIONS_EDIT_TEXT,
+            duplicate: Strings.LIVE_DEV_MORE_OPTIONS_DUPLICATE,
+            delete: Strings.LIVE_DEV_MORE_OPTIONS_DELETE
+        }
     };
     // Status labels/styles are ordered: error, not connected, progress1, progress2, connected.
     var _status,

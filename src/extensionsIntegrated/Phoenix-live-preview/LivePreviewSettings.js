@@ -89,7 +89,7 @@ define(function (require, exports, module) {
         values: Object.keys(SUPPORTED_FRAMEWORKS)
     });
     PreferencesManager.definePreference(LiveDevelopmentMain.PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT, "string", "hover", {
-        description: "show live preview element highlights on 'hover' or 'click'. Defaults to 'hover'"
+        description: Strings.LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT_PREFERENCE
     });
 
     async function detectFramework($frameworkSelect, $hotReloadChk) {
