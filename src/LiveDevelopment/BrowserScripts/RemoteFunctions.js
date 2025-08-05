@@ -1944,22 +1944,25 @@ function RemoteFunctions(config) {
     // init
     _editHandler = new DOMEditHandler(window.document);
 
-    if (config.isLPEditFeaturesActive) {
-        // Initialize hover highlight with Chrome-like colors
-        _hoverHighlight = new Highlight("#c8f9c5", true); // Green similar to Chrome's padding color
+    function registerHandlers() {
+        if (config.isLPEditFeaturesActive) {
+            // Initialize hover highlight with Chrome-like colors
+            _hoverHighlight = new Highlight("#c8f9c5", true); // Green similar to Chrome's padding color
 
-        // Initialize click highlight with animation
-        _clickHighlight = new Highlight("#cfc", true); // Light green for click highlight
+            // Initialize click highlight with animation
+            _clickHighlight = new Highlight("#cfc", true); // Light green for click highlight
 
-        window.document.addEventListener("mouseover", onElementHover);
-        window.document.addEventListener("mouseout", onElementHoverOut);
-        window.document.addEventListener("click", onClick);
-        window.document.addEventListener("dblclick", onDoubleClick);
-        window.document.addEventListener("dragover", onDragOver);
-        window.document.addEventListener("drop", onDrop);
-        window.document.addEventListener("keydown", onKeyDown);
+            window.document.addEventListener("mouseover", onElementHover);
+            window.document.addEventListener("mouseout", onElementHoverOut);
+            window.document.addEventListener("click", onClick);
+            window.document.addEventListener("dblclick", onDoubleClick);
+            window.document.addEventListener("dragover", onDragOver);
+            window.document.addEventListener("drop", onDrop);
+            window.document.addEventListener("keydown", onKeyDown);
+        }
     }
 
+    registerHandlers();
 
     return {
         "DOMEditHandler"        : DOMEditHandler,
@@ -1973,6 +1976,7 @@ function RemoteFunctions(config) {
         "startEditing"          : startEditing,
         "finishEditing"         : finishEditing,
         "dismissMoreOptionsBox" : dismissMoreOptionsBox,
-        "hasVisibleLivePreviewBoxes" : hasVisibleLivePreviewBoxes
+        "hasVisibleLivePreviewBoxes" : hasVisibleLivePreviewBoxes,
+        "registerHandlers" : registerHandlers
     };
 }
