@@ -730,11 +730,22 @@ function RemoteFunctions(config) {
 
             if (overlap) {
                 topPos = offset.top + 2;
-                leftPos = offset.left + elemBounds.width + 6;
+                leftPos = offset.left + elemBounds.width + 6; // positioning at the right side
 
                 // Check if overlap position would go off the right of the viewport
                 if (leftPos + boxDimensions.width > window.innerWidth) {
-                    leftPos = offset.left - boxDimensions.width - 6;
+                    leftPos = offset.left - boxDimensions.width - 6; // positioning at the left side
+
+                    if (leftPos < 0) { // if left positioning not perfect, position at bottom
+                        topPos = offset.top + elemBounds.height + 6;
+                        leftPos = offset.left;
+
+                        // if bottom position not perfect, move at top above the more options box
+                        if (elemBounds.bottom + 6 + boxDimensions.height > window.innerHeight) {
+                            topPos = offset.top - boxDimensions.height - 34; // 34 is for moreOptions box height
+                            leftPos = offset.left;
+                        }
+                    }
                 }
             } else {
                 topPos = offset.top - boxDimensions.height - 6; // 6 for just some little space to breathe
