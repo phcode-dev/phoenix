@@ -719,6 +719,24 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Register event handlers in the remote browser for live preview functionality
+     */
+    function registerHandlers() {
+        if (_protocol) {
+            _protocol.evaluate("_LD.registerHandlers()");
+        }
+    }
+
+    /**
+     * Update configuration in the remote browser
+     */
+    function updateConfig(configJSON) {
+        if (_protocol) {
+            _protocol.evaluate("_LD.updateConfig('" + configJSON + "')");
+        }
+    }
+
+    /**
      * Originally unload and reload agents. It doesn't apply for this new implementation.
      * @return {jQuery.Promise} Already resolved promise.
      */
@@ -786,6 +804,8 @@ define(function (require, exports, module) {
     exports.redrawHighlight     = redrawHighlight;
     exports.hasVisibleLivePreviewBoxes = hasVisibleLivePreviewBoxes;
     exports.dismissLivePreviewBoxes = dismissLivePreviewBoxes;
+    exports.registerHandlers    = registerHandlers;
+    exports.updateConfig        = updateConfig;
     exports.init                = init;
     exports.isActive            = isActive;
     exports.setLivePreviewPinned= setLivePreviewPinned;

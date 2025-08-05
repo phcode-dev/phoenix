@@ -296,7 +296,7 @@ define(function main(require, exports, module) {
             .on("change", function () {
                 config.remoteHighlight = prefs.get(PREF_REMOTEHIGHLIGHT);
                 if (MultiBrowserLiveDev && MultiBrowserLiveDev.status >= MultiBrowserLiveDev.STATUS_ACTIVE) {
-                    MultiBrowserLiveDev.agents.remote.call("updateConfig",JSON.stringify(config));
+                    MultiBrowserLiveDev.updateConfig(JSON.stringify(config));
                 }
             });
 
@@ -304,6 +304,10 @@ define(function main(require, exports, module) {
         function updateElementHighlightConfig() {
             const prefValue = PreferencesManager.get(PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT);
             config.elemHighlights = prefValue || "hover";
+            if (MultiBrowserLiveDev && MultiBrowserLiveDev.status >= MultiBrowserLiveDev.STATUS_ACTIVE) {
+                MultiBrowserLiveDev.updateConfig(JSON.stringify(config));
+                MultiBrowserLiveDev.registerHandlers();
+            }
         }
 
         PreferencesManager.on("change", PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT, function() {
@@ -335,7 +339,7 @@ define(function main(require, exports, module) {
             config.highlight = PreferencesManager.getViewState("livedevHighlight");
             _updateHighlightCheckmark();
             if (MultiBrowserLiveDev && MultiBrowserLiveDev.status >= MultiBrowserLiveDev.STATUS_ACTIVE) {
-                MultiBrowserLiveDev.agents.remote.call("updateConfig",JSON.stringify(config));
+                MultiBrowserLiveDev.updateConfig(JSON.stringify(config));
             }
         });
 
