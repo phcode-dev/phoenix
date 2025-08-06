@@ -656,6 +656,14 @@ function RemoteFunctions(config) {
                 return;
             }
 
+            // this check because when there is no element on the visible viewport, we don't want to show the box
+            // for ex: when user clicks on a 'x' button and the button is responsible to hide a panel
+            // then clicking on that button shouldn't show the more options box
+            const elemBounds = this.element.getBoundingClientRect();
+            if(elemBounds.height === 0 && elemBounds.width === 0) {
+                return;
+            }
+
             this._style(); // style the box
 
             window.document.body.appendChild(this.body);
@@ -857,6 +865,14 @@ function RemoteFunctions(config) {
             this.remove(); // remove existing box if already present
 
             if(!config.isLPEditFeaturesActive) {
+                return;
+            }
+
+            // this check because when there is no element on the visible viewport, we don't want to show the box
+            // for ex: when user clicks on a 'x' button and the button is responsible to hide a panel
+            // then clicking on that button shouldn't show the more options box
+            const elemBounds = this.element.getBoundingClientRect();
+            if(elemBounds.height === 0 && elemBounds.width === 0) {
                 return;
             }
 
