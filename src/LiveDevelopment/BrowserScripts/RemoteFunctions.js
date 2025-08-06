@@ -1321,6 +1321,67 @@ function RemoteFunctions(config) {
     }
 
     /**
+     * this function is responsible to select an element in the live preview
+     * @param {Element} element - The DOM element to select
+     */
+    function _selectElement(element) {
+        // make sure that the feature is enabled and also the element has the attribute 'data-brackets-id'
+        if (
+            !config.isLPEditFeaturesActive ||
+            !element.hasAttribute("data-brackets-id") ||
+            element.tagName === "BODY" ||
+            element.tagName === "HTML" ||
+            _isInsideHeadTag(element)
+        ) {
+            return;
+        }
+
+        if (_nodeMoreOptionsBox) {
+            _nodeMoreOptionsBox.remove();
+            _nodeMoreOptionsBox = null;
+        }
+
+        // to remove the outline styling from the previously clicked element
+        if (previouslyClickedElement) {
+            if (previouslyClickedElement._originalOutline !== undefined) {
+                previouslyClickedElement.style.outline = previouslyClickedElement._originalOutline;
+            } else {
+                previouslyClickedElement.style.outline = "";
+            }
+            delete previouslyClickedElement._originalOutline;
+
+            // Remove highlighting from previously clicked element
+            if (getHighlightMode() === "click") {
+                clearElementBackground(previouslyClickedElement);
+            }
+        }
+
+        _nodeMoreOptionsBox = new NodeMoreOptionsBox(element);
+
+        // show the info box when a DOM element is selected
+        if (_nodeInfoBox) {
+            _nodeInfoBox.remove();
+        }
+        _nodeInfoBox = new NodeInfoBox(element, true); // true means that the element was selected
+
+        element._originalOutline = element.style.outline;
+        element.style.outline = "1px solid #4285F4";
+
+        // Add highlight for click mode
+        if (getHighlightMode() === "click") {
+            element._originalBackgroundColor = element.style.backgroundColor;
+            element.style.backgroundColor = "rgba(0, 162, 255, 0.2)";
+
+            if (_hoverHighlight) {
+                _hoverHighlight.clear();
+                _hoverHighlight.add(element, true); // true for animation
+            }
+        }
+
+        previouslyClickedElement = element;
+    }
+
+    /**
      * This function handles the click event on the live preview DOM element
      * it is to show the advanced DOM manipulation options in the live preview
      * @param {Event} event
@@ -1338,49 +1399,7 @@ function RemoteFunctions(config) {
             event.stopPropagation();
             event.stopImmediatePropagation();
 
-            if (_nodeMoreOptionsBox) {
-                _nodeMoreOptionsBox.remove();
-                _nodeMoreOptionsBox = null;
-            }
-
-            // to remove the outline styling from the previously clicked element
-            if (previouslyClickedElement) {
-                if (previouslyClickedElement._originalOutline !== undefined) {
-                    previouslyClickedElement.style.outline = previouslyClickedElement._originalOutline;
-                } else {
-                    previouslyClickedElement.style.outline = "";
-                }
-                delete previouslyClickedElement._originalOutline;
-
-                // Remove highlighting from previously clicked element
-                if (getHighlightMode() === "click") {
-                    clearElementBackground(previouslyClickedElement);
-                }
-            }
-
-            _nodeMoreOptionsBox = new NodeMoreOptionsBox(event.target);
-
-            // show the info box when a DOM element is clicked
-            if (_nodeInfoBox) {
-                _nodeInfoBox.remove();
-            }
-            _nodeInfoBox = new NodeInfoBox(event.target, true); // true means that the element was clicked
-
-            event.target._originalOutline = event.target.style.outline;
-            event.target.style.outline = "1px solid #4285F4";
-
-            // Add highlight for click mode
-            if (getHighlightMode() === "click") {
-                event.target._originalBackgroundColor = event.target.style.backgroundColor;
-                event.target.style.backgroundColor = "rgba(0, 162, 255, 0.2)";
-
-                if (_hoverHighlight) {
-                    _hoverHighlight.clear();
-                    _hoverHighlight.add(event.target, true); // true for animation
-                }
-            }
-
-            previouslyClickedElement = event.target;
+            _selectElement(event.target);
         } else if ( // when user clicks on the HTML, BODY tags or elements inside HEAD, we want to remove the boxes
             _nodeMoreOptionsBox &&
             (event.target.tagName === "HTML" || event.target.tagName === "BODY" || _isInsideHeadTag(event.target))
@@ -1476,7 +1495,7 @@ function RemoteFunctions(config) {
         }
         _clickHighlight.selector = rule;
 
-        // trigger click on the first valid highlighted element
+        // select the first valid highlighted element
         var foundValidElement = false;
         for (i = 0; i < nodes.length; i++) {
             if (nodes[i].hasAttribute("data-brackets-id") &&
@@ -1485,7 +1504,7 @@ function RemoteFunctions(config) {
                 !_isInsideHeadTag(nodes[i]) &&
                 nodes[i].tagName !== "BR"
             ) {
-                nodes[i].click();
+                _selectElement(nodes[i]);
                 foundValidElement = true;
                 break;
             }
