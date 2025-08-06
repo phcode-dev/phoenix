@@ -122,6 +122,36 @@ function RemoteFunctions(config) {
         );
     }
 
+    // Checks if an element is actually visible to the user (not hidden, collapsed, or off-screen)
+    function isElementVisible(element) {
+        // Check if element has zero dimensions (indicates it's hidden or collapsed)
+        const rect = element.getBoundingClientRect();
+        if (rect.width === 0 && rect.height === 0) {
+            return false;
+        }
+
+        // Check computed styles for visibility
+        const computedStyle = window.getComputedStyle(element);
+        if (computedStyle.display === 'none' ||
+            computedStyle.visibility === 'hidden' ||
+            computedStyle.opacity === '0') {
+            return false;
+        }
+
+        // Check if any parent element is hidden
+        let parent = element.parentElement;
+        while (parent && parent !== document.body) {
+            const parentStyle = window.getComputedStyle(parent);
+            if (parentStyle.display === 'none' ||
+                parentStyle.visibility === 'hidden') {
+                return false;
+            }
+            parent = parent.parentElement;
+        }
+
+        return true;
+    }
+
     // returns the distance from the top of the closest relatively positioned parent element
     function getDocumentOffsetTop(element) {
         return element.offsetTop + (element.offsetParent ? getDocumentOffsetTop(element.offsetParent) : 0);
@@ -656,11 +686,11 @@ function RemoteFunctions(config) {
                 return;
             }
 
-            // this check because when there is no element on the visible viewport, we don't want to show the box
+            // this check because when there is no element visible to the user, we don't want to show the box
             // for ex: when user clicks on a 'x' button and the button is responsible to hide a panel
             // then clicking on that button shouldn't show the more options box
-            const elemBounds = this.element.getBoundingClientRect();
-            if(elemBounds.height === 0 && elemBounds.width === 0) {
+            // also covers cases where elements are inside closed/collapsed menus
+            if(!isElementVisible(this.element)) {
                 return;
             }
 
@@ -868,11 +898,11 @@ function RemoteFunctions(config) {
                 return;
             }
 
-            // this check because when there is no element on the visible viewport, we don't want to show the box
+            // this check because when there is no element visible to the user, we don't want to show the box
             // for ex: when user clicks on a 'x' button and the button is responsible to hide a panel
             // then clicking on that button shouldn't show the more options box
-            const elemBounds = this.element.getBoundingClientRect();
-            if(elemBounds.height === 0 && elemBounds.width === 0) {
+            // also covers cases where elements are inside closed/collapsed menus
+            if(!isElementVisible(this.element)) {
                 return;
             }
 
@@ -1356,13 +1386,25 @@ function RemoteFunctions(config) {
             }
         }
 
-        _nodeMoreOptionsBox = new NodeMoreOptionsBox(element);
+        // make sure that the element is actually visible to the user
+        if (isElementVisible(element)) {
+            _nodeMoreOptionsBox = new NodeMoreOptionsBox(element);
 
-        // show the info box when a DOM element is selected
-        if (_nodeInfoBox) {
-            _nodeInfoBox.remove();
+            // show the info box when a DOM element is selected
+            if (_nodeInfoBox) {
+                _nodeInfoBox.remove();
+            }
+            _nodeInfoBox = new NodeInfoBox(element, true); // true means that the element was selected
+        } else {
+            // Element is hidden, so don't show UI boxes but still apply visual styling
+            _nodeMoreOptionsBox = null;
+
+            // Remove any existing info box since the element is not visible
+            if (_nodeInfoBox) {
+                _nodeInfoBox.remove();
+                _nodeInfoBox = null;
+            }
         }
-        _nodeInfoBox = new NodeInfoBox(element, true); // true means that the element was selected
 
         element._originalOutline = element.style.outline;
         element.style.outline = "1px solid #4285F4";
