@@ -251,7 +251,7 @@ function RemoteFunctions(config) {
 
     function _dragStartChores(element) {
         element._originalDragOpacity = element.style.opacity;
-        element.style.opacity = 0.3;
+        element.style.opacity = 0.4;
     }
 
 
@@ -264,40 +264,484 @@ function RemoteFunctions(config) {
         delete element._originalDragOpacity;
     }
 
-    // CSS class name for drop markers
-    let DROP_MARKER_CLASSNAME = "__brackets-drop-marker";
+    // CSS class names for drop markers
+    let DROP_MARKER_CLASSNAME = "__brackets-drop-marker-horizontal";
+    let DROP_MARKER_VERTICAL_CLASSNAME = "__brackets-drop-marker-vertical";
+    let DROP_MARKER_INSIDE_CLASSNAME = "__brackets-drop-marker-inside";
 
     /**
-     * This function creates a marker to indicate a valid drop position
-     * @param {DOMElement} element - The element where the drop is possible
-     * @param {Boolean} showAtBottom - Whether to show the marker at the bottom of the element
+     * This function is responsible to determine whether to show vertical/horizontal indicators
+     *
+     * @param {DOMElement} element - the target element
+     * @returns {String} 'vertical' or 'horizontal'
      */
-    function _createDropMarker(element, showAtBottom) {
+    function _getIndicatorType(element) {
+        // we need to check the parent element's property if its a flex container
+        const parent = element.parentElement;
+        if (!parent) {
+            return 'horizontal';
+        }
+
+        const parentStyle = window.getComputedStyle(parent);
+        const display = parentStyle.display;
+        const flexDirection = parentStyle.flexDirection;
+
+        if ((display === "flex" || display === "inline-flex") && flexDirection.startsWith("row")) {
+            return "vertical";
+        }
+
+        // default is horizontal
+        return 'horizontal';
+    }
+
+    /**
+     * this function is to determine if an element can accept children (inside drops)
+     *
+     * @param {DOMElement} element - The target element
+     * @returns {Boolean} true if element can accept children
+     */
+    function _canAcceptChildren(element) {
+        // self-closing elements, cannot have children
+        const voidElements = [
+            "IMG",
+            "BR",
+            "HR",
+            "INPUT",
+            "META",
+            "LINK",
+            "AREA",
+            "BASE",
+            "COL",
+            "EMBED",
+            "SOURCE",
+            "TRACK",
+            "WBR"
+        ];
+
+        // Elements that shouldn't accept visual children
+        const nonContainerElements = [
+            "SCRIPT", "STYLE", "NOSCRIPT", "CANVAS", "SVG", "VIDEO", "AUDIO", "IFRAME", "OBJECT"
+        ];
+
+        const tagName = element.tagName.toUpperCase();
+
+        if (voidElements.includes(tagName) || nonContainerElements.includes(tagName)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * it is to check if a source element can be placed inside a target element according to HTML rules
+     *
+     * @param {DOMElement} sourceElement - The element being dragged
+     * @param {DOMElement} targetElement - The target container element
+     * @returns {Boolean} true if the nesting is valid
+     */
+    function _isValidNesting(sourceElement, targetElement) {
+        const sourceTag = sourceElement.tagName.toUpperCase();
+        const targetTag = targetElement.tagName.toUpperCase();
+
+        // block elements, cannot come inside inline elements
+        const blockElements = [
+            "DIV",
+            "P",
+            "H1",
+            "H2",
+            "H3",
+            "H4",
+            "H5",
+            "H6",
+            "SECTION",
+            "ARTICLE",
+            "HEADER",
+            "FOOTER",
+            "NAV",
+            "ASIDE",
+            "MAIN",
+            "BLOCKQUOTE",
+            "PRE",
+            "TABLE",
+            "UL",
+            "OL",
+            "LI",
+            "DL",
+            "DT",
+            "DD",
+            "FORM",
+            "FIELDSET",
+            "ADDRESS",
+            "FIGURE",
+            "FIGCAPTION",
+            "DETAILS",
+            "SUMMARY"
+        ];
+
+        // inline elements that can't contain block elements
+        const inlineElements = [
+            "SPAN",
+            "A",
+            "STRONG",
+            "EM",
+            "B",
+            "I",
+            "U",
+            "SMALL",
+            "CODE",
+            "KBD",
+            "SAMP",
+            "VAR",
+            "SUB",
+            "SUP",
+            "MARK",
+            "DEL",
+            "INS",
+            "Q",
+            "CITE",
+            "ABBR",
+            "TIME",
+            "DATA",
+            "OUTPUT"
+        ];
+
+        // interactive elements that can't be nested inside each other
+        const interactiveElements = [
+            "A",
+            "BUTTON",
+            "INPUT",
+            "SELECT",
+            "TEXTAREA",
+            "LABEL",
+            "DETAILS",
+            "SUMMARY",
+            "AUDIO",
+            "VIDEO",
+            "EMBED",
+            "IFRAME",
+            "OBJECT"
+        ];
+
+        // Sectioning content - semantic HTML5 sections
+        const sectioningContent = ["ARTICLE", "ASIDE", "NAV", "SECTION"];
+
+        // Elements that can't contain themselves (prevent nesting)
+        const noSelfNesting = [
+            "P",
+            "A",
+            "BUTTON",
+            "LABEL",
+            "FORM",
+            "HEADER",
+            "FOOTER",
+            "NAV",
+            "MAIN",
+            "ASIDE",
+            "SECTION",
+            "ARTICLE",
+            "ADDRESS",
+            "H1",
+            "H2",
+            "H3",
+            "H4",
+            "H5",
+            "H6",
+            "FIGURE",
+            "FIGCAPTION",
+            "DETAILS",
+            "SUMMARY"
+        ];
+
+        // Special cases - elements that have specific content restrictions
+        const restrictedContainers = {
+            // List elements
+            UL: ["LI"],
+            OL: ["LI"],
+            DL: ["DT", "DD"],
+
+            // Table elements
+            TABLE: ["THEAD", "TBODY", "TFOOT", "TR", "CAPTION", "COLGROUP"],
+            THEAD: ["TR"],
+            TBODY: ["TR"],
+            TFOOT: ["TR"],
+            TR: ["TD", "TH"],
+            COLGROUP: ["COL"],
+
+            // Form elements
+            SELECT: ["OPTION", "OPTGROUP"],
+            OPTGROUP: ["OPTION"],
+            DATALIST: ["OPTION"],
+
+            // Media elements
+            PICTURE: ["SOURCE", "IMG"],
+            AUDIO: ["SOURCE", "TRACK"],
+            VIDEO: ["SOURCE", "TRACK"],
+
+            // Other specific containers
+            FIGURE: ["FIGCAPTION", "DIV", "P", "IMG", "CANVAS", "SVG", "TABLE", "PRE", "CODE"],
+            DETAILS: ["SUMMARY"] // SUMMARY should be the first child
+        };
+
+        // 1. Check self-nesting (elements that can't contain themselves)
+        if (noSelfNesting.includes(sourceTag) && sourceTag === targetTag) {
+            return false;
+        }
+
+        // 2. Check block elements inside inline elements
+        if (blockElements.includes(sourceTag) && inlineElements.includes(targetTag)) {
+            return false;
+        }
+
+        // 3. Check restricted containers (strict parent-child relationships)
+        if (restrictedContainers[targetTag]) {
+            return restrictedContainers[targetTag].includes(sourceTag);
+        }
+
+        // 4. Special case: P tags can't contain block elements (phrasing content only)
+        if (targetTag === "P" && blockElements.includes(sourceTag)) {
+            return false;
+        }
+
+        // 5. Interactive elements can't contain other interactive elements
+        if (interactiveElements.includes(targetTag) && interactiveElements.includes(sourceTag)) {
+            return false;
+        }
+
+        // 6. Semantic HTML5 sectioning rules
+        if (targetTag === "HEADER") {
+            // Header can't contain other headers, footers, or main
+            if (["HEADER", "FOOTER", "MAIN"].includes(sourceTag)) {
+                return false;
+            }
+        }
+
+        if (targetTag === "FOOTER") {
+            // Footer can't contain headers, footers, or main
+            if (["HEADER", "FOOTER", "MAIN"].includes(sourceTag)) {
+                return false;
+            }
+        }
+
+        if (targetTag === "MAIN") {
+            // Main can't contain other mains
+            if (sourceTag === "MAIN") {
+                return false;
+            }
+        }
+
+        if (targetTag === "ADDRESS") {
+            // Address can't contain sectioning content, headers, footers, or address
+            if (sectioningContent.includes(sourceTag) || ["HEADER", "FOOTER", "ADDRESS", "MAIN"].includes(sourceTag)) {
+                return false;
+            }
+        }
+
+        // 7. Form-related validation
+        if (targetTag === "FORM") {
+            // Form can't contain other forms
+            if (sourceTag === "FORM") {
+                return false;
+            }
+        }
+
+        if (targetTag === "FIELDSET") {
+            // Fieldset should have legend as first child (but we'll allow it anywhere for flexibility)
+            // No specific restrictions beyond normal content
+        }
+
+        if (targetTag === "LABEL") {
+            // Label can't contain other labels or form controls (except one input)
+            if (["LABEL", "BUTTON", "SELECT", "TEXTAREA"].includes(sourceTag)) {
+                return false;
+            }
+        }
+
+        // 8. Heading hierarchy validation (optional - can be strict or flexible)
+        if (["H1", "H2", "H3", "H4", "H5", "H6"].includes(targetTag)) {
+            // Headings can't contain block elements (should only contain phrasing content)
+            if (blockElements.includes(sourceTag)) {
+                return false;
+            }
+        }
+
+        // 9. List item specific rules
+        if (sourceTag === "LI") {
+            // LI can only be inside UL, OL, or MENU
+            if (!["UL", "OL", "MENU"].includes(targetTag)) {
+                return false;
+            }
+        }
+
+        if (["DT", "DD"].includes(sourceTag)) {
+            // DT and DD can only be inside DL
+            if (targetTag !== "DL") {
+                return false;
+            }
+        }
+
+        // 10. Table-related validation
+        if (["THEAD", "TBODY", "TFOOT"].includes(sourceTag)) {
+            if (targetTag !== "TABLE") {
+                return false;
+            }
+        }
+
+        if (sourceTag === "TR") {
+            if (!["TABLE", "THEAD", "TBODY", "TFOOT"].includes(targetTag)) {
+                return false;
+            }
+        }
+
+        if (["TD", "TH"].includes(sourceTag)) {
+            if (targetTag !== "TR") {
+                return false;
+            }
+        }
+
+        if (sourceTag === "CAPTION") {
+            if (targetTag !== "TABLE") {
+                return false;
+            }
+        }
+
+        // 11. Media and embedded content
+        if (["SOURCE", "TRACK"].includes(sourceTag)) {
+            if (!["AUDIO", "VIDEO", "PICTURE"].includes(targetTag)) {
+                return false;
+            }
+        }
+
+        // 12. Ruby annotation elements (if supported)
+        if (["RP", "RT"].includes(sourceTag)) {
+            if (targetTag !== "RUBY") {
+                return false;
+            }
+        }
+
+        // 13. Option elements
+        if (sourceTag === "OPTION") {
+            if (!["SELECT", "OPTGROUP", "DATALIST"].includes(targetTag)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * this function determines the drop zone based on cursor position relative to element
+     *
+     * @param {DOMElement} element - The target element
+     * @param {Number} clientX - x pos
+     * @param {Number} clientY - y pos
+     * @param {String} indicatorType - 'vertical' or 'horizontal'
+     * @param {DOMElement} sourceElement - The element being dragged (for validation)
+     * @returns {String} 'before', 'inside', or 'after'
+     */
+    function _getDropZone(element, clientX, clientY, indicatorType, sourceElement) {
+        const rect = element.getBoundingClientRect();
+        const canAcceptChildren = _canAcceptChildren(element);
+        const isValidNesting = sourceElement ? _isValidNesting(sourceElement, element) : true;
+
+        if (indicatorType === "vertical") {
+            const leftThird = rect.left + rect.width * 0.3;
+            const rightThird = rect.right - rect.width * 0.3;
+
+            if (clientX < leftThird) {
+                return "before";
+            } else if (clientX > rightThird) {
+                return "after";
+            } else if (canAcceptChildren && isValidNesting) {
+                return "inside";
+            }
+            // If can't accept children or invalid nesting, use middle as "after"
+            return clientX < rect.left + rect.width / 2 ? "before" : "after";
+        }
+
+        const topThird = rect.top + rect.height * 0.3;
+        const bottomThird = rect.bottom - rect.height * 0.3;
+
+        if (clientY < topThird) {
+            return "before";
+        } else if (clientY > bottomThird) {
+            return "after";
+        } else if (canAcceptChildren && isValidNesting) {
+            return "inside";
+        }
+        // If can't accept children or invalid nesting, use middle as "after"
+        return clientY < rect.top + rect.height / 2 ? "before" : "after";
+    }
+
+    /**
+     * this is to create a marker to indicate a valid drop position
+     *
+     * @param {DOMElement} element - The element where the drop is possible
+     * @param {String} dropZone - 'before', 'inside', or 'after'
+     * @param {String} indicatorType - 'vertical' or 'horizontal'
+     */
+    function _createDropMarker(element, dropZone, indicatorType = "horizontal") {
         // clean any existing marker from that element
         _removeDropMarkerFromElement(element);
 
         // create the marker element
         let marker = window.document.createElement("div");
-        marker.className = DROP_MARKER_CLASSNAME;
+
+        // Set marker class based on drop zone
+        if (dropZone === "inside") {
+            marker.className = DROP_MARKER_INSIDE_CLASSNAME;
+        } else {
+            marker.className = indicatorType === "vertical" ? DROP_MARKER_VERTICAL_CLASSNAME : DROP_MARKER_CLASSNAME;
+        }
 
         // position the marker at the top or bottom of the element
         let rect = element.getBoundingClientRect();
         let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         let scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
 
-        // marker styling
+        // base marker styling
         marker.style.position = "absolute";
-        marker.style.left = (rect.left + scrollLeft) + "px";
-        marker.style.width = rect.width + "px";
-        marker.style.height = "2px";
-        marker.style.backgroundColor = "#4285F4";
         marker.style.zIndex = "2147483646";
+        marker.style.borderRadius = "2px";
+        marker.style.pointerEvents = "none";
 
-        // position the marker at the top or at the bottom of the element
-        if (showAtBottom) {
-            marker.style.top = (rect.bottom + scrollTop + 3) + "px";
+        if (dropZone === "inside") {
+            // inside marker - outline around the element
+            marker.style.border = "1px dashed #4285F4";
+            marker.style.backgroundColor = "rgba(66, 133, 244, 0.05)";
+            marker.style.left = rect.left + scrollLeft + "px";
+            marker.style.top = rect.top + scrollTop + "px";
+            marker.style.width = rect.width + "px";
+            marker.style.height = rect.height + "px";
+            marker.style.animation = "insideMarkerPulse 1s ease-in-out infinite alternate";
         } else {
-            marker.style.top = (rect.top + scrollTop - 5) + "px";
+            // Before/After markers - lines
+            marker.style.background = "linear-gradient(90deg, #4285F4, #1976D2)";
+            marker.style.boxShadow = "0 0 8px rgba(66, 133, 244, 0.5)";
+            marker.style.animation = "dropMarkerPulse 0.8s ease-in-out infinite alternate";
+
+            if (indicatorType === "vertical") {
+                // Vertical marker (for flex row containers)
+                marker.style.width = "2px";
+                marker.style.height = rect.height + "px";
+                marker.style.top = rect.top + scrollTop + "px";
+
+                if (dropZone === "after") {
+                    marker.style.left = rect.right + scrollLeft + 3 + "px";
+                } else {
+                    marker.style.left = rect.left + scrollLeft - 5 + "px";
+                }
+            } else {
+                // Horizontal marker (for block/grid containers)
+                marker.style.width = rect.width + "px";
+                marker.style.height = "2px";
+                marker.style.left = rect.left + scrollLeft + "px";
+
+                if (dropZone === "after") {
+                    marker.style.top = rect.bottom + scrollTop + 3 + "px";
+                } else {
+                    marker.style.top = rect.top + scrollTop - 5 + "px";
+                }
+            }
         }
 
         element._dropMarker = marker; // we need this in the _removeDropMarkerFromElement function
@@ -319,10 +763,26 @@ function RemoteFunctions(config) {
      * this function is to clear all the drop markers from the document
      */
     function _clearDropMarkers() {
-        let markers = window.document.querySelectorAll("." + DROP_MARKER_CLASSNAME);
-        for (let i = 0; i < markers.length; i++) {
-            if (markers[i].parentNode) {
-                markers[i].parentNode.removeChild(markers[i]);
+        // Clear all types of markers
+        let horizontalMarkers = window.document.querySelectorAll("." + DROP_MARKER_CLASSNAME);
+        let verticalMarkers = window.document.querySelectorAll("." + DROP_MARKER_VERTICAL_CLASSNAME);
+        let insideMarkers = window.document.querySelectorAll("." + DROP_MARKER_INSIDE_CLASSNAME);
+
+        for (let i = 0; i < horizontalMarkers.length; i++) {
+            if (horizontalMarkers[i].parentNode) {
+                horizontalMarkers[i].parentNode.removeChild(horizontalMarkers[i]);
+            }
+        }
+
+        for (let i = 0; i < verticalMarkers.length; i++) {
+            if (verticalMarkers[i].parentNode) {
+                verticalMarkers[i].parentNode.removeChild(verticalMarkers[i]);
+            }
+        }
+
+        for (let i = 0; i < insideMarkers.length; i++) {
+            if (insideMarkers[i].parentNode) {
+                insideMarkers[i].parentNode.removeChild(insideMarkers[i]);
             }
         }
 
@@ -330,11 +790,14 @@ function RemoteFunctions(config) {
         let elements = window.document.querySelectorAll("[data-brackets-id]");
         for (let j = 0; j < elements.length; j++) {
             delete elements[j]._dropMarker;
+            // Remove any hover effects
+            elements[j].style.backgroundColor = "";
+            elements[j].style.transform = "";
         }
     }
 
     /**
-     * Handle dragover events on the document
+     * Handle dragover events on the document (throttled version)
      * Shows drop markers on valid drop targets
      * @param {Event} event - The dragover event
      */
@@ -367,14 +830,29 @@ function RemoteFunctions(config) {
             return;
         }
 
-        // check if the cursor is in the top half or bottom half of the target element
-        const rect = target.getBoundingClientRect();
-        const middleY = rect.top + (rect.height / 2);
-        const showAtBottom = event.clientY > middleY;
+        // Add subtle hover effect to target element
+        target.style.backgroundColor = "rgba(66, 133, 244, 0.1)";
+        target.style.transition = "background-color 0.2s ease";
+
+        // Determine indicator type and drop zone based on container layout and cursor position
+        const indicatorType = _getIndicatorType(target);
+        const dropZone = _getDropZone(
+            target, event.clientX, event.clientY, indicatorType, window._currentDraggedElement
+        );
 
         // before creating a drop marker, make sure that we clear all the drop markers
         _clearDropMarkers();
-        _createDropMarker(target, showAtBottom);
+        _createDropMarker(target, dropZone, indicatorType);
+    }
+
+    /**
+     * handles drag leave event. mainly to clear the drop markers
+     * @param {Event} event
+     */
+    function onDragLeave(event) {
+        if (!event.relatedTarget) {
+            _clearDropMarkers();
+        }
     }
 
     /**
@@ -400,33 +878,53 @@ function RemoteFunctions(config) {
 
         // skip if no valid target found or if it's the dragged element
         if (!target || target === window._currentDraggedElement) {
+            _clearDropMarkers();
+            _dragEndChores(window._currentDraggedElement);
+            dismissMoreOptionsBox();
+            delete window._currentDraggedElement;
             return;
         }
 
         // Skip BODY, HTML tags and elements inside HEAD
         if (target.tagName === "BODY" || target.tagName === "HTML" || _isInsideHeadTag(target)) {
+            _clearDropMarkers();
+            _dragEndChores(window._currentDraggedElement);
+            dismissMoreOptionsBox();
+            delete window._currentDraggedElement;
             return;
         }
 
-        // check if the cursor is in the top half or bottom half of the target element
-        const rect = target.getBoundingClientRect();
-        const middleY = rect.top + (rect.height / 2);
-        const insertAfter = event.clientY > middleY;
+        // Determine drop position based on container layout and cursor position
+        const indicatorType = _getIndicatorType(target);
+        const dropZone = _getDropZone(
+            target, event.clientX, event.clientY, indicatorType, window._currentDraggedElement
+        );
 
         // IDs of the source and target elements
         const sourceId = window._currentDraggedElement.getAttribute("data-brackets-id");
         const targetId = target.getAttribute("data-brackets-id");
 
-        // send message to the editor
-        window._Brackets_MessageBroker.send({
+        // Handle different drop zones
+        let messageData = {
             livePreviewEditEnabled: true,
             sourceElement: window._currentDraggedElement,
             targetElement: target,
             sourceId: Number(sourceId),
             targetId: Number(targetId),
-            insertAfter: insertAfter,
             move: true
-        });
+        };
+
+        if (dropZone === "inside") {
+            // For inside drops, we want to insert as a child of the target element
+            messageData.insertInside = true;
+            messageData.insertAfter = false; // Will be handled differently in backend
+        } else {
+            // For before/after drops, use the existing logic
+            messageData.insertAfter = dropZone === "after";
+        }
+
+        // send message to the editor
+        window._Brackets_MessageBroker.send(messageData);
 
         _clearDropMarkers();
         _dragEndChores(window._currentDraggedElement);
@@ -530,6 +1028,9 @@ function RemoteFunctions(config) {
                 _dragStartChores(this.element);
                 _clearDropMarkers();
                 window._currentDraggedElement = this.element;
+
+                // Add drag image styling
+                event.dataTransfer.effectAllowed = "move";
             });
 
             this.element.addEventListener("dragend", (event) => {
@@ -2087,6 +2588,7 @@ function RemoteFunctions(config) {
             window.document.addEventListener("dblclick", onDoubleClick);
             window.document.addEventListener("dragover", onDragOver);
             window.document.addEventListener("drop", onDrop);
+            window.document.addEventListener("dragleave", onDragLeave);
             window.document.addEventListener("keydown", onKeyDown);
         }
     }
