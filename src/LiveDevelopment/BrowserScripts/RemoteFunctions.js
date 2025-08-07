@@ -30,23 +30,20 @@
  */
 function RemoteFunctions(config) {
 
+    // this will store the element that was clicked previously (before the new click)
+    // we need this so that we can remove click styling from the previous element when a new element is clicked
+    let previouslyClickedElement = null;
 
-    var experimental;
-    if (!config) {
-        experimental = false;    
-    } else {
-        experimental = config.experimental;    
-    }
     var req, timeout;
     var animateHighlight = function (time) {
         if(req) {
-            window.cancelAnimationFrame(req);	
+            window.cancelAnimationFrame(req);
             window.clearTimeout(timeout);
         }
         req = window.requestAnimationFrame(redrawHighlights);
 
         timeout = setTimeout(function () {
-            window.cancelAnimationFrame(req);	
+            window.cancelAnimationFrame(req);
             req = null;
         }, time * 1000);
     };
@@ -63,25 +60,24 @@ function RemoteFunctions(config) {
         if (window.navigator.platform.substr(0, 3) === "Mac") {
             // Mac
             return event.metaKey;
-        } else {
-            // Windows
-            return event.ctrlKey;
         }
+        // Windows
+        return event.ctrlKey;
     }
 
-    // determine the color for a type
-    function _typeColor(type, highlight) {
-        switch (type) {
-        case "html":
-            return highlight ? "#eec" : "#ffe";
-        case "css":
-            return highlight ? "#cee" : "#eff";
-        case "js":
-            return highlight ? "#ccf" : "#eef";
-        default:
-            return highlight ? "#ddd" : "#eee";
+    // helper function to check if an element is inside the HEAD tag
+    // we need this because we don't wanna trigger the element highlights on head tag and its children
+    function _isInsideHeadTag(element) {
+        let parent = element;
+        while (parent && parent !== window.document) {
+            if (parent.tagName === "HEAD") {
+                return true;
+            }
+            parent = parent.parentElement;
         }
+        return false;
     }
+
 
     // compute the screen offset of an element
     function _screenOffset(element) {
@@ -113,7 +109,7 @@ function RemoteFunctions(config) {
             element.removeAttribute(key);
         }
     }
-    
+
     // Checks if the element is in Viewport in the client browser
     function isInViewport(element) {
         var rect = element.getBoundingClientRect();
@@ -125,125 +121,796 @@ function RemoteFunctions(config) {
             rect.right <= (window.innerWidth || html.clientWidth)
         );
     }
-    
+
+    // Checks if an element is actually visible to the user (not hidden, collapsed, or off-screen)
+    function isElementVisible(element) {
+        // Check if element has zero dimensions (indicates it's hidden or collapsed)
+        const rect = element.getBoundingClientRect();
+        if (rect.width === 0 && rect.height === 0) {
+            return false;
+        }
+
+        // Check computed styles for visibility
+        const computedStyle = window.getComputedStyle(element);
+        if (computedStyle.display === 'none' ||
+            computedStyle.visibility === 'hidden' ||
+            computedStyle.opacity === '0') {
+            return false;
+        }
+
+        // Check if any parent element is hidden
+        let parent = element.parentElement;
+        while (parent && parent !== document.body) {
+            const parentStyle = window.getComputedStyle(parent);
+            if (parentStyle.display === 'none' ||
+                parentStyle.visibility === 'hidden') {
+                return false;
+            }
+            parent = parent.parentElement;
+        }
+
+        return true;
+    }
+
     // returns the distance from the top of the closest relatively positioned parent element
     function getDocumentOffsetTop(element) {
         return element.offsetTop + (element.offsetParent ? getDocumentOffsetTop(element.offsetParent) : 0);
     }
 
-    // construct the info menu
-    function Menu(element) {
-        this.element = element;
-        _trigger(this.element, "showgoto", 1, true);
-        window.setTimeout(window.remoteShowGoto);
-        this.remove = this.remove.bind(this);
+    /**
+     * This function gets called when the delete button is clicked
+     * it sends a message to the editor using postMessage to delete the element from the source code
+     * @param {Event} event
+     * @param {DOMElement} element - the HTML DOM element that was clicked. it is to get the data-brackets-id attribute
+     */
+    function _handleDeleteOptionClick(event, element) {
+        const tagId = element.getAttribute("data-brackets-id");
+
+        if (tagId && element.tagName !== "BODY" && element.tagName !== "HTML" && !_isInsideHeadTag(element)) {
+            window._Brackets_MessageBroker.send({
+                livePreviewEditEnabled: true,
+                element: element,
+                event: event,
+                tagId: Number(tagId),
+                delete: true
+            });
+        } else {
+            console.error("The TagID might be unavailable or the element tag is directly body or html");
+        }
     }
 
-    Menu.prototype = {
-        onClick: function (url, event) {
-            event.preventDefault();
-            _trigger(this.element, "goto", url, true);
-            this.remove();
+    /**
+     * this is for duplicate button. Read '_handleDeleteOptionClick' jsdoc to understand more on how this works
+     * @param {Event} event
+     * @param {DOMElement} element - the HTML DOM element that was clicked. it is to get the data-brackets-id attribute
+     */
+    function _handleDuplicateOptionClick(event, element) {
+        const tagId = element.getAttribute("data-brackets-id");
+
+        if (tagId && element.tagName !== "BODY" && element.tagName !== "HTML" && !_isInsideHeadTag(element)) {
+            window._Brackets_MessageBroker.send({
+                livePreviewEditEnabled: true,
+                element: element,
+                event: event,
+                tagId: Number(tagId),
+                duplicate: true
+            });
+        } else {
+            console.error("The TagID might be unavailable or the element tag is directly body or html");
+        }
+    }
+
+    /**
+     * this is for select-parent button
+     * When user clicks on this option for a particular element, we get its parent element and trigger a click on it
+     * @param {Event} event
+     * @param {DOMElement} element - the HTML DOM element that was clicked. it is to get the data-brackets-id attribute
+     */
+    function _handleSelectParentOptionClick(event, element) {
+        if (!element) {
+            return;
+        }
+
+        const parentElement = element.parentElement;
+        if (!parentElement) {
+            return;
+        }
+
+        // we need to make sure that the parent element is not the body tag or the html.
+        // also we expect it to have the 'data-brackets-id'
+        if (
+            parentElement.tagName !== "BODY" &&
+            parentElement.tagName !== "HTML" &&
+            !_isInsideHeadTag(parentElement) &&
+            parentElement.hasAttribute("data-brackets-id")
+        ) {
+            parentElement.click();
+        } else {
+            console.error("The TagID might be unavailable or the parent element tag is directly body or html");
+        }
+    }
+
+    /**
+     * This function will get triggered when from the multiple advance DOM buttons, one is clicked
+     * this function just checks which exact button was clicked and call the required function
+     * @param {Event} e
+     * @param {String} action - the data-action attribute to differentiate between buttons
+     * @param {DOMElement} element - the selected DOM element
+     */
+    function handleOptionClick(e, action, element) {
+        if (action === "select-parent") {
+            _handleSelectParentOptionClick(e, element);
+        } else if (action === "edit-text") {
+            startEditing(element);
+        } else if (action === "duplicate") {
+            _handleDuplicateOptionClick(e, element);
+        } else if (action === "delete") {
+            _handleDeleteOptionClick(e, element);
+        }
+    }
+
+    function _dragStartChores(element) {
+        element._originalDragOpacity = element.style.opacity;
+        element.style.opacity = 0.3;
+    }
+
+
+    function _dragEndChores(element) {
+        if (element._originalDragOpacity) {
+            element.style.opacity = element._originalDragOpacity;
+        } else {
+            element.style.opacity = 1;
+        }
+        delete element._originalDragOpacity;
+    }
+
+    // CSS class name for drop markers
+    let DROP_MARKER_CLASSNAME = "__brackets-drop-marker";
+
+    /**
+     * This function creates a marker to indicate a valid drop position
+     * @param {DOMElement} element - The element where the drop is possible
+     * @param {Boolean} showAtBottom - Whether to show the marker at the bottom of the element
+     */
+    function _createDropMarker(element, showAtBottom) {
+        // clean any existing marker from that element
+        _removeDropMarkerFromElement(element);
+
+        // create the marker element
+        let marker = window.document.createElement("div");
+        marker.className = DROP_MARKER_CLASSNAME;
+
+        // position the marker at the top or bottom of the element
+        let rect = element.getBoundingClientRect();
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        let scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+
+        // marker styling
+        marker.style.position = "absolute";
+        marker.style.left = (rect.left + scrollLeft) + "px";
+        marker.style.width = rect.width + "px";
+        marker.style.height = "2px";
+        marker.style.backgroundColor = "#4285F4";
+        marker.style.zIndex = "2147483646";
+
+        // position the marker at the top or at the bottom of the element
+        if (showAtBottom) {
+            marker.style.top = (rect.bottom + scrollTop + 3) + "px";
+        } else {
+            marker.style.top = (rect.top + scrollTop - 5) + "px";
+        }
+
+        element._dropMarker = marker; // we need this in the _removeDropMarkerFromElement function
+        window.document.body.appendChild(marker);
+    }
+
+    /**
+     * This function removes a drop marker from a specific element
+     * @param {DOMElement} element - The element to remove the marker from
+     */
+    function _removeDropMarkerFromElement(element) {
+        if (element._dropMarker && element._dropMarker.parentNode) {
+            element._dropMarker.parentNode.removeChild(element._dropMarker);
+            delete element._dropMarker;
+        }
+    }
+
+    /**
+     * this function is to clear all the drop markers from the document
+     */
+    function _clearDropMarkers() {
+        let markers = window.document.querySelectorAll("." + DROP_MARKER_CLASSNAME);
+        for (let i = 0; i < markers.length; i++) {
+            if (markers[i].parentNode) {
+                markers[i].parentNode.removeChild(markers[i]);
+            }
+        }
+
+        // Also clear any element references
+        let elements = window.document.querySelectorAll("[data-brackets-id]");
+        for (let j = 0; j < elements.length; j++) {
+            delete elements[j]._dropMarker;
+        }
+    }
+
+    /**
+     * Handle dragover events on the document
+     * Shows drop markers on valid drop targets
+     * @param {Event} event - The dragover event
+     */
+    function onDragOver(event) {
+        // we set this on dragStart
+        if (!window._currentDraggedElement) {
+            return;
+        }
+
+        event.preventDefault();
+
+        // get the element under the cursor
+        let target = document.elementFromPoint(event.clientX, event.clientY);
+        if (!target || target === window._currentDraggedElement) {
+            return;
+        }
+
+        // get the closest element with a data-brackets-id
+        while (target && !target.hasAttribute("data-brackets-id")) {
+            target = target.parentElement;
+        }
+
+        // skip if no valid target found or if it's the dragged element
+        if (!target || target === window._currentDraggedElement) {
+            return;
+        }
+
+        // Skip BODY, HTML tags and elements inside HEAD
+        if (target.tagName === "BODY" || target.tagName === "HTML" || _isInsideHeadTag(target)) {
+            return;
+        }
+
+        // check if the cursor is in the top half or bottom half of the target element
+        const rect = target.getBoundingClientRect();
+        const middleY = rect.top + (rect.height / 2);
+        const showAtBottom = event.clientY > middleY;
+
+        // before creating a drop marker, make sure that we clear all the drop markers
+        _clearDropMarkers();
+        _createDropMarker(target, showAtBottom);
+    }
+
+    /**
+     * Handle drop events on the document
+     * Processes the drop of a dragged element onto a valid target
+     * @param {Event} event - The drop event
+     */
+    function onDrop(event) {
+        if (!window._currentDraggedElement) {
+            return;
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        // get the element under the cursor
+        let target = document.elementFromPoint(event.clientX, event.clientY);
+
+        // get the closest element with a data-brackets-id
+        while (target && !target.hasAttribute("data-brackets-id")) {
+            target = target.parentElement;
+        }
+
+        // skip if no valid target found or if it's the dragged element
+        if (!target || target === window._currentDraggedElement) {
+            return;
+        }
+
+        // Skip BODY, HTML tags and elements inside HEAD
+        if (target.tagName === "BODY" || target.tagName === "HTML" || _isInsideHeadTag(target)) {
+            return;
+        }
+
+        // check if the cursor is in the top half or bottom half of the target element
+        const rect = target.getBoundingClientRect();
+        const middleY = rect.top + (rect.height / 2);
+        const insertAfter = event.clientY > middleY;
+
+        // IDs of the source and target elements
+        const sourceId = window._currentDraggedElement.getAttribute("data-brackets-id");
+        const targetId = target.getAttribute("data-brackets-id");
+
+        // send message to the editor
+        window._Brackets_MessageBroker.send({
+            livePreviewEditEnabled: true,
+            sourceElement: window._currentDraggedElement,
+            targetElement: target,
+            sourceId: Number(sourceId),
+            targetId: Number(targetId),
+            insertAfter: insertAfter,
+            move: true
+        });
+
+        _clearDropMarkers();
+        _dragEndChores(window._currentDraggedElement);
+        dismissMoreOptionsBox();
+        delete window._currentDraggedElement;
+    }
+
+        // calc estimate width based on the char count
+        const infoBoxWidth = basePadding + (charCount * avgCharWidth);
+
+        // these elements are non-editable as they have their own mechanisms
+        const nonEditableElements = [
+            "script",
+            "style",
+            "noscript",
+            "canvas",
+            "svg",
+            "video",
+            "audio",
+            "iframe",
+            "object",
+            "select",
+            "textarea"
+        ];
+
+        if (voidElements.includes(tagName) || nonEditableElements.includes(tagName)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * this function is to check if an element should show the 'select-parent' option
+     * because we don't want to show the select parent option when the parent is directly the body/html tag
+     * or the parent doesn't have the 'data-brackets-id'
+     * @param {Element} element - DOM element to check
+     * @returns {boolean} - true if we should show the select parent option otherwise false
+     */
+    function _shouldShowSelectParentOption(element) {
+        if (!element || !element.parentElement) {
+            return false;
+        }
+
+        const parentElement = element.parentElement;
+
+        if (parentElement.tagName === "HTML" || parentElement.tagName === "BODY" || _isInsideHeadTag(parentElement)) {
+            return false;
+        }
+        if (!parentElement.hasAttribute("data-brackets-id")) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * This is for the advanced DOM options that appears when a DOM element is clicked
+     * advanced options like: 'select parent', 'duplicate', 'delete'
+     */
+    function NodeMoreOptionsBox(element) {
+        this.element = element;
+        this.remove = this.remove.bind(this);
+        this.create();
+    }
+
+    NodeMoreOptionsBox.prototype = {
+        _registerDragDrop: function() {
+            this.element.setAttribute("draggable", true);
+
+            this.element.addEventListener("dragstart", (event) => {
+                event.stopPropagation();
+                event.dataTransfer.setData("text/plain", this.element.getAttribute("data-brackets-id"));
+                _dragStartChores(this.element);
+                _clearDropMarkers();
+                window._currentDraggedElement = this.element;
+            });
+
+            this.element.addEventListener("dragend", (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                _dragEndChores(this.element);
+                _clearDropMarkers();
+                delete window._currentDraggedElement;
+            });
         },
 
-        createBody: function () {
-            if (this.body) {
+        _getBoxPosition: function(boxWidth, boxHeight) {
+            const elemBounds = this.element.getBoundingClientRect();
+            const offset = _screenOffset(this.element);
+
+            let topPos = offset.top - boxHeight - 6; // 6 for just some little space to breathe
+            let leftPos = offset.left + elemBounds.width - boxWidth;
+
+            // Check if the box would go off the top of the viewport
+            if (offset.top - boxHeight < 0) {
+                topPos = offset.top + elemBounds.height + 6;
+            }
+
+            // Check if the box would go off the left of the viewport
+            if (leftPos < 0) {
+                leftPos = offset.left;
+            }
+
+            return {topPos: topPos, leftPos: leftPos};
+        },
+
+        _style: function() {
+            this.body = window.document.createElement("div");
+
+            // this is shadow DOM.
+            // we need it because if we add the box directly to the DOM then users style might override it.
+            // {mode: "open"} allows us to access the shadow DOM to get actual height/position of the boxes
+            const shadow = this.body.attachShadow({ mode: "open" });
+
+            // check which options should be shown to determine box width
+            const showEditTextOption = _shouldShowEditTextOption(this.element);
+            const showSelectParentOption = _shouldShowSelectParentOption(this.element);
+
+            // the icons that is displayed in the box
+            const ICONS = {
+                arrowUp: `
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.59 5.58L20 12l-8-8-8 8z"/>
+                </svg>
+              `,
+
+                edit: `
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                </svg>
+              `,
+
+                duplicate: `
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M18 3H4C3.44772 3 3 3.44772 3 4V18C3 18.5523 2.55228 19 2 19C1.44772 19 1 18.5523 1 18V4C1 2.34315 2.34315 1 4 1H18C18.5523 1 19 1.44772 19 2C19 2.55228 18.5523 3 18 3Z"/>
+                  <path d="M13 11C13 10.4477 13.4477 10 14 10C14.5523 10 15 10.4477 15 11V13H17C17.5523 13 18 13.4477 18 14C18 14.5523 17.5523 15 17 15H15V17C15 17.5523 14.5523 18 14 18C13.4477 18 13 17.5523 13 17V15H11C10.4477 15 10 14.5523 10 14C10 13.4477 10.4477 13 11 13H13V11Z"/>
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M20 5C21.6569 5 23 6.34315 23 8V20C23 21.6569 21.6569 23 20 23H8C6.34315 23 5 21.6569 5 20V8C5 6.34315 6.34315 5 8 5H20ZM20 7C20.5523 7 21 7.44772 21 8V20C21 20.5523 20.5523 21 20 21H8C7.44772 21 7 20.5523 7 20V8C7 7.44772 7.44772 7 8 7H20Z"/>
+                </svg>
+              `,
+
+                trash: `
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M6 7V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2h3v2h-2l-1.5 12.5a2 2 0 0
+                  1-2 1.5H8.5a2 2 0 0 1-2-1.5L5 9H3V7h3zm2 0h8V5H8v2z"/>
+                </svg>
+              `
+            };
+
+            let content = `<div class="node-options">`;
+
+            // Only include select parent option if element supports it
+            if (showSelectParentOption) {
+                content += `<span data-action="select-parent" title="${config.strings.selectParent}">
+                    ${ICONS.arrowUp}
+                </span>`;
+            }
+
+            // Only include edit text option if element supports it
+            if (showEditTextOption) {
+                content += `<span data-action="edit-text" title="${config.strings.editText}">
+                    ${ICONS.edit}
+                </span>`;
+            }
+
+            // Always include duplicate and delete options
+            content += `<span data-action="duplicate" title="${config.strings.duplicate}">
+                    ${ICONS.duplicate}
+                </span>
+                <span data-action="delete" title="${config.strings.delete}">
+                    ${ICONS.trash}
+                </span>
+            </div>`;
+
+            const styles = `
+                .phoenix-more-options-box {
+                    background-color: #4285F4;
+                    color: white;
+                    border-radius: 3px;
+                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+                    font-size: 12px;
+                    font-family: Arial, sans-serif;
+                    z-index: 2147483647;
+                    position: absolute;
+                    left: -1000px;
+                    top: -1000px;
+                    box-sizing: border-box;
+                }
+
+                .node-options {
+                    display: flex;
+                    align-items: center;
+                }
+
+                .node-options span {
+                    padding: 4px 3.9px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    border-radius: 0;
+                }
+
+                .node-options span:first-child {
+                    border-radius: 3px 0 0 3px;
+                }
+
+                .node-options span:last-child {
+                    border-radius: 0 3px 3px 0;
+                }
+
+                .node-options span:hover {
+                    background-color: rgba(255, 255, 255, 0.15);
+                }
+
+                .node-options span > svg {
+                    width: 16px;
+                    height: 16px;
+                    display: block;
+                }
+            `;
+
+            // add everything to the shadow box
+            shadow.innerHTML = `<style>${styles}</style><div class="phoenix-more-options-box">${content}</div>`;
+            this._shadow = shadow;
+        },
+
+        create: function() {
+            this.remove(); // remove existing box if already present
+
+            if(!config.isLPEditFeaturesActive) {
                 return;
             }
 
-            // compute the position on screen
-            var offset = _screenOffset(this.element),
-                x = offset.left,
-                y = offset.top + this.element.offsetHeight;
+            // this check because when there is no element visible to the user, we don't want to show the box
+            // for ex: when user clicks on a 'x' button and the button is responsible to hide a panel
+            // then clicking on that button shouldn't show the more options box
+            // also covers cases where elements are inside closed/collapsed menus
+            if(!isElementVisible(this.element)) {
+                return;
+            }
 
-            // create the container
-            this.body = window.document.createElement("div");
-            this.body.style.setProperty("z-index", 2147483647);
-            this.body.style.setProperty("position", "absolute");
-            this.body.style.setProperty("left", x + "px");
-            this.body.style.setProperty("top", y + "px");
-            this.body.style.setProperty("font-size", "11pt");
+            this._style(); // style the box
 
-            // draw the background
-            this.body.style.setProperty("background", "#fff");
-            this.body.style.setProperty("border", "1px solid #888");
-            this.body.style.setProperty("-webkit-box-shadow", "2px 2px 6px 0px #ccc");
-            this.body.style.setProperty("border-radius", "6px");
-            this.body.style.setProperty("padding", "6px");
+            window.document.body.appendChild(this.body);
+
+            // get the actual rendered dimensions of the box and then we reposition it to the actual place
+            const boxElement = this._shadow.querySelector('.phoenix-more-options-box');
+            if (boxElement) {
+                const boxRect = boxElement.getBoundingClientRect();
+                const pos = this._getBoxPosition(boxRect.width, boxRect.height);
+
+                boxElement.style.left = pos.leftPos + 'px';
+                boxElement.style.top = pos.topPos + 'px';
+            }
+
+            // add click handler to all the buttons
+            const spans = this._shadow.querySelectorAll('.node-options span');
+            spans.forEach(span => {
+                span.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    event.preventDefault();
+                    // data-action is to differentiate between the buttons (duplicate, delete or select-parent)
+                    const action = event.currentTarget.getAttribute('data-action');
+                    handleOptionClick(event, action, this.element);
+                    this.remove();
+                });
+            });
+
+            this._registerDragDrop();
         },
 
-        addItem: function (target) {
-            var item = window.document.createElement("div");
-            item.style.setProperty("padding", "2px 6px");
-            if (this.body.childNodes.length > 0) {
-                item.style.setProperty("border-top", "1px solid #ccc");
-            }
-            item.style.setProperty("cursor", "pointer");
-            item.style.setProperty("background", _typeColor(target.type));
-            item.innerHTML = target.name;
-            item.addEventListener("click", this.onClick.bind(this, target.url));
-
-            if (target.file) {
-                var file = window.document.createElement("i");
-                file.style.setProperty("float", "right");
-                file.style.setProperty("margin-left", "12px");
-                file.innerHTML = " " + target.file;
-                item.appendChild(file);
-            }
-            this.body.appendChild(item);
-        },
-
-        show: function () {
-            if (!this.body) {
-                this.createBody();
-            }
-            if (!this.body.parentNode) {
-                window.document.body.appendChild(this.body);
-            }
-            window.document.addEventListener("click", this.remove);
-        },
-
-        remove: function () {
-            if (this.body && this.body.parentNode) {
+        remove: function() {
+            if (this.body && this.body.parentNode && this.body.parentNode === window.document.body) {
                 window.document.body.removeChild(this.body);
+                this.body = null;
+                _nodeMoreOptionsBox = null;
             }
-            window.document.removeEventListener("click", this.remove);
         }
-
     };
 
-    function Editor(element) {
-        this.onBlur = this.onBlur.bind(this);
-        this.onKeyPress = this.onKeyPress.bind(this);
-
+    // Node info box to display DOM node ID and classes on hover
+    function NodeInfoBox(element, isFromClick) {
         this.element = element;
-        this.element.setAttribute("contenteditable", "true");
-        this.element.focus();
-        this.element.addEventListener("blur", this.onBlur);
-        this.element.addEventListener("keypress", this.onKeyPress);
-
-        this.revertText = this.element.innerHTML;
-
-        _trigger(this.element, "edit", 1);
+        this.isFromClick = isFromClick || false;
+        this.remove = this.remove.bind(this);
+        this.create();
     }
 
-    Editor.prototype = {
-        onBlur: function (event) {
-            this.element.removeAttribute("contenteditable");
-            this.element.removeEventListener("blur", this.onBlur);
-            this.element.removeEventListener("keypress", this.onKeyPress);
-            _trigger(this.element, "edit", 0, true);
+    NodeInfoBox.prototype = {
+        _checkOverlap: function(nodeInfoBoxPos, nodeInfoBoxDimensions) {
+            if (_nodeMoreOptionsBox && _nodeMoreOptionsBox._shadow) {
+                const moreOptionsBoxElement = _nodeMoreOptionsBox._shadow.querySelector('.phoenix-more-options-box');
+                if (moreOptionsBoxElement) {
+                    const moreOptionsBoxOffset = _screenOffset(moreOptionsBoxElement);
+                    const moreOptionsBoxRect = moreOptionsBoxElement.getBoundingClientRect();
+
+                    const infoBox = {
+                        left: nodeInfoBoxPos.leftPos,
+                        top: nodeInfoBoxPos.topPos,
+                        right: nodeInfoBoxPos.leftPos + nodeInfoBoxDimensions.width,
+                        bottom: nodeInfoBoxPos.topPos + nodeInfoBoxDimensions.height
+                    };
+
+                    const moreOptionsBox = {
+                        left: moreOptionsBoxOffset.left,
+                        top: moreOptionsBoxOffset.top,
+                        right: moreOptionsBoxOffset.left + moreOptionsBoxRect.width,
+                        bottom: moreOptionsBoxOffset.top + moreOptionsBoxRect.height
+                    };
+
+                    const isOverlapping = !(infoBox.right < moreOptionsBox.left ||
+                             moreOptionsBox.right < infoBox.left ||
+                             infoBox.bottom < moreOptionsBox.top ||
+                             moreOptionsBox.bottom < infoBox.top);
+
+                    return isOverlapping;
+                }
+            }
+            return false;
         },
 
-        onKeyPress: function (event) {
-            switch (event.which) {
-            case 13: // return
-                this.element.blur();
-                break;
-            case 27: // esc
-                this.element.innerHTML = this.revertText;
-                this.element.blur();
-                break;
+        _getBoxPosition: function(boxDimensions, overlap = false) {
+            const elemBounds = this.element.getBoundingClientRect();
+            const offset = _screenOffset(this.element);
+            let topPos = 0;
+            let leftPos = 0;
+
+            if (overlap) {
+                topPos = offset.top + 2;
+                leftPos = offset.left + elemBounds.width + 6; // positioning at the right side
+
+                // Check if overlap position would go off the right of the viewport
+                if (leftPos + boxDimensions.width > window.innerWidth) {
+                    leftPos = offset.left - boxDimensions.width - 6; // positioning at the left side
+
+                    if (leftPos < 0) { // if left positioning not perfect, position at bottom
+                        topPos = offset.top + elemBounds.height + 6;
+                        leftPos = offset.left;
+
+                        // if bottom position not perfect, move at top above the more options box
+                        if (elemBounds.bottom + 6 + boxDimensions.height > window.innerHeight) {
+                            topPos = offset.top - boxDimensions.height - 34; // 34 is for moreOptions box height
+                            leftPos = offset.left;
+                        }
+                    }
+                }
+            } else {
+                topPos = offset.top - boxDimensions.height - 6; // 6 for just some little space to breathe
+                leftPos = offset.left;
+
+                if (offset.top - boxDimensions.height < 0) {
+                    topPos = offset.top + elemBounds.height + 6;
+                }
+
+                // Check if the box would go off the right of the viewport
+                if (leftPos + boxDimensions.width > window.innerWidth) {
+                    leftPos = window.innerWidth - boxDimensions.width - 10;
+                }
+            }
+
+            return {topPos: topPos, leftPos: leftPos};
+        },
+
+        _style: function() {
+            this.body = window.document.createElement("div");
+
+            // this is shadow DOM.
+            // we need it because if we add the box directly to the DOM then users style might override it.
+            // {mode: "open"} allows us to access the shadow DOM to get actual height/position of the boxes
+            const shadow = this.body.attachShadow({ mode: "open" });
+
+            // get the ID and classes for that element, as we need to display it in the box
+            const id = this.element.id;
+            const classes = this.element.className ? this.element.className.split(/\s+/).filter(Boolean) : [];
+
+            let content = ""; // this will hold the main content that will be displayed
+            content += "<div class='tag-name'>" + this.element.tagName.toLowerCase() + "</div>"; // add element tag name
+
+            // Add ID if present
+            if (id) {
+                content += "<div class='id-name'>#" + id + "</div>";
+            }
+
+            // Add classes (limit to 3 with dropdown indicator)
+            if (classes.length > 0) {
+                content += "<div class='class-name'>";
+                for (var i = 0; i < Math.min(classes.length, 3); i++) {
+                    content += "." + classes[i] + " ";
+                }
+                if (classes.length > 3) {
+                    content += "<span class='exceeded-classes'>+" + (classes.length - 3) + " more</span>";
+                }
+                content += "</div>";
+            }
+
+            // initially, we place our info box -1000px to the top but at the right left pos. this is done so that
+            // we can take the text-wrapping inside the info box in account when calculating the height
+            // after calculating the height of the box, we place it at the exact position above the element
+            const offset = _screenOffset(this.element);
+            const leftPos = offset.left;
+
+            const styles = `
+                .phoenix-node-info-box {
+                    background-color: #4285F4;
+                    color: white;
+                    border-radius: 3px;
+                    padding: 5px 8px;
+                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+                    font-size: 12px;
+                    font-family: Arial, sans-serif;
+                    z-index: 2147483647;
+                    position: absolute;
+                    left: ${leftPos}px;
+                    top: -1000px;
+                    max-width: 300px;
+                    box-sizing: border-box;
+                    pointer-events: none;
+                }
+
+                .tag-name {
+                    font-weight: bold;
+                }
+
+                .id-name,
+                .class-name {
+                    margin-top: 3px;
+                }
+
+                .exceeded-classes {
+                    opacity: 0.8;
+                }
+            `;
+
+            // add everything to the shadow box
+            shadow.innerHTML = `<style>${styles}</style><div class="phoenix-node-info-box">${content}</div>`;
+            this._shadow = shadow;
+        },
+
+        create: function() {
+            this.remove(); // remove existing box if already present
+
+            if(!config.isLPEditFeaturesActive) {
+                return;
+            }
+
+            // this check because when there is no element visible to the user, we don't want to show the box
+            // for ex: when user clicks on a 'x' button and the button is responsible to hide a panel
+            // then clicking on that button shouldn't show the more options box
+            // also covers cases where elements are inside closed/collapsed menus
+            if(!isElementVisible(this.element)) {
+                return;
+            }
+
+            this._style(); // style the box
+
+            window.document.body.appendChild(this.body);
+
+            // get the actual rendered height of the box and then we reposition it to the actual place
+            const boxElement = this._shadow.querySelector('.phoenix-node-info-box');
+            if (boxElement) {
+                const nodeInfoBoxDimensions = {
+                    height: boxElement.getBoundingClientRect().height,
+                    width: boxElement.getBoundingClientRect().width
+                };
+                const nodeInfoBoxPos = this._getBoxPosition(nodeInfoBoxDimensions, false);
+
+                boxElement.style.left = nodeInfoBoxPos.leftPos + 'px';
+                boxElement.style.top = nodeInfoBoxPos.topPos + 'px';
+
+                if(this.isFromClick) {
+                    const isBoxOverlapping = this._checkOverlap(nodeInfoBoxPos, nodeInfoBoxDimensions);
+                    if(isBoxOverlapping) {
+                        const newPos = this._getBoxPosition(nodeInfoBoxDimensions, true);
+                        boxElement.style.left = newPos.leftPos + 'px';
+                        boxElement.style.top = newPos.topPos + 'px';
+                    }
+                }
+            }
+        },
+
+        remove: function() {
+            if (this.body && this.body.parentNode && this.body.parentNode === window.document.body) {
+                window.document.body.removeChild(this.body);
+                this.body = null;
             }
         }
     };
@@ -273,7 +940,7 @@ function RemoteFunctions(config) {
                 animationDuration = parseFloat(elementStyling.getPropertyValue('animation-duration'));
 
             highlight.trackingElement = element; // save which node are we highlighting
-            
+
             if (transitionDuration) {
                 animateHighlight(transitionDuration);
             }
@@ -286,21 +953,21 @@ function RemoteFunctions(config) {
             if (elementBounds.width === 0 && elementBounds.height === 0) {
                 return;
             }
-            
+
             var realElBorder = {
               right: elementStyling.getPropertyValue('border-right-width'),
               left: elementStyling.getPropertyValue('border-left-width'),
               top: elementStyling.getPropertyValue('border-top-width'),
               bottom: elementStyling.getPropertyValue('border-bottom-width')
             };
-            
+
             var borderBox = elementStyling.boxSizing === 'border-box';
-            
+
             var innerWidth = parseFloat(elementStyling.width),
                 innerHeight = parseFloat(elementStyling.height),
                 outerHeight = innerHeight,
                 outerWidth = innerWidth;
-                
+
             if (!borderBox) {
                 innerWidth += parseFloat(elementStyling.paddingLeft) + parseFloat(elementStyling.paddingRight);
                 innerHeight += parseFloat(elementStyling.paddingTop) + parseFloat(elementStyling.paddingBottom);
@@ -309,49 +976,49 @@ function RemoteFunctions(config) {
                 outerHeight = innerHeight + parseFloat(realElBorder.bottom) + parseFloat(realElBorder.top);
             }
 
-          
+
             var visualisations = {
                 horizontal: "left, right",
                 vertical: "top, bottom"
             };
-          
+
             var drawPaddingRect = function(side) {
               var elStyling = {};
-                
+
               if (visualisations.horizontal.indexOf(side) >= 0) {
                 elStyling['width'] =  elementStyling.getPropertyValue('padding-' + side);
                 elStyling['height'] = innerHeight + "px";
                 elStyling['top'] = 0;
-                  
+
                   if (borderBox) {
                     elStyling['height'] = innerHeight - parseFloat(realElBorder.top) - parseFloat(realElBorder.bottom) + "px";
                   }
-                
+
               } else {
-                elStyling['height'] = elementStyling.getPropertyValue('padding-' + side);  
+                elStyling['height'] = elementStyling.getPropertyValue('padding-' + side);
                 elStyling['width'] = innerWidth + "px";
                 elStyling['left'] = 0;
-                  
+
                   if (borderBox) {
                     elStyling['width'] = innerWidth - parseFloat(realElBorder.left) - parseFloat(realElBorder.right) + "px";
                   }
               }
-                
+
               elStyling[side] = 0;
               elStyling['position'] = 'absolute';
-              
+
               return elStyling;
             };
-          
+
           var drawMarginRect = function(side) {
             var elStyling = {};
-            
+
             var margin = [];
             margin['right'] = parseFloat(elementStyling.getPropertyValue('margin-right'));
             margin['top'] = parseFloat(elementStyling.getPropertyValue('margin-top'));
             margin['bottom'] = parseFloat(elementStyling.getPropertyValue('margin-bottom'));
             margin['left'] = parseFloat(elementStyling.getPropertyValue('margin-left'));
-          
+
             if(visualisations['horizontal'].indexOf(side) >= 0) {
 
               elStyling['width'] = elementStyling.getPropertyValue('margin-' + side);
@@ -371,37 +1038,37 @@ function RemoteFunctions(config) {
 
             var setVisibility = function (el) {
                 if (
-                    !config.remoteHighlight.showPaddingMargin || 
-                    parseInt(el.height, 10) <= 0 || 
-                    parseInt(el.width, 10) <= 0 
+                    !config.remoteHighlight.showPaddingMargin ||
+                    parseInt(el.height, 10) <= 0 ||
+                    parseInt(el.width, 10) <= 0
                 ) {
                     el.display = 'none';
                 } else {
                     el.display = 'block';
                 }
             };
-            
+
             var mainBoxStyles = config.remoteHighlight.stylesToSet;
-            
+
             var paddingVisualisations = [
               drawPaddingRect('top'),
               drawPaddingRect('right'),
               drawPaddingRect('bottom'),
-              drawPaddingRect('left')  
+              drawPaddingRect('left')
             ];
-                
+
             var marginVisualisations = [
               drawMarginRect('top'),
               drawMarginRect('right'),
               drawMarginRect('bottom'),
-              drawMarginRect('left')  
+              drawMarginRect('left')
             ];
-            
+
             var setupVisualisations = function (arr, config) {
                 var i;
                 for (i = 0; i < arr.length; i++) {
                     setVisibility(arr[i]);
-                    
+
                     // Applies to every visualisationElement (padding or margin div)
                     arr[i]["transform"] = "none";
                     var el = window.document.createElement("div"),
@@ -416,7 +1083,7 @@ function RemoteFunctions(config) {
                     highlight.appendChild(el);
                 }
             };
-            
+
             setupVisualisations(
                 marginVisualisations,
                 config.remoteHighlight.marginStyling
@@ -425,11 +1092,11 @@ function RemoteFunctions(config) {
                 paddingVisualisations,
                 config.remoteHighlight.paddingStyling
             );
-            
+
             highlight.className = HIGHLIGHT_CLASSNAME;
 
             var offset = _screenOffset(element);
-            		
+
             // some code to find element left/top was removed here. This seems to be relevant to box model
             // live highlights. firether reading: https://github.com/adobe/brackets/pull/13357/files
             // we removed this in phoenix because it was throwing the rendering of live highlight boxes in phonix
@@ -448,14 +1115,14 @@ function RemoteFunctions(config) {
                 "position": "absolute",
                 "pointer-events": "none",
                 "box-shadow": "0 0 1px #fff",
-                "box-sizing": elementStyling.getPropertyValue('box-sizing'),		
-                "border-right": elementStyling.getPropertyValue('border-right'),		
-                "border-left": elementStyling.getPropertyValue('border-left'),		
-                "border-top": elementStyling.getPropertyValue('border-top'),		
+                "box-sizing": elementStyling.getPropertyValue('box-sizing'),
+                "border-right": elementStyling.getPropertyValue('border-right'),
+                "border-left": elementStyling.getPropertyValue('border-left'),
+                "border-top": elementStyling.getPropertyValue('border-top'),
                 "border-bottom": elementStyling.getPropertyValue('border-bottom'),
                 "border-color": config.remoteHighlight.borderColor
             };
-            
+
             var mergedStyles = Object.assign({}, stylesToSet,  config.remoteHighlight.stylesToSet);
 
             var animateStartValues = config.remoteHighlight.animateStartValue;
@@ -493,15 +1160,17 @@ function RemoteFunctions(config) {
             window.document.body.appendChild(highlight);
         },
 
-        add: function (element, doAnimation) {
+        // shouldAutoScroll is whether to scroll page to element if not in view
+        // true when user clicks on the source code of some element, in that case we want to scroll the live preview
+        add: function (element, doAnimation, shouldAutoScroll) {
             if (this._elementExists(element) || element === window.document) {
                 return;
             }
             if (this.trigger) {
                 _trigger(element, "highlight", 1);
             }
-            
-            if ((!window.event || window.event instanceof MessageEvent) && !isInViewport(element)) {
+
+            if (shouldAutoScroll && (!window.event || window.event instanceof MessageEvent) && !isInViewport(element)) {
                 var top = getDocumentOffsetTop(element);
                 if (top) {
                     top -= (window.innerHeight / 2);
@@ -543,26 +1212,16 @@ function RemoteFunctions(config) {
 
             this.clear();
             for (i = 0; i < highlighted.length; i++) {
-                this.add(highlighted[i], false);
+                this.add(highlighted[i], false, false); // 3rd arg is for auto-scroll
             }
         }
     };
 
-    var _currentEditor;
-    function _toggleEditor(element) {
-        _currentEditor = new Editor(element);
-    }
-
-    var _currentMenu;
-    function _toggleMenu(element) {
-        if (_currentMenu) {
-            _currentMenu.remove();
-        }
-        _currentMenu = new Menu(element);
-    }
-
     var _localHighlight;
-    var _remoteHighlight;
+    var _hoverHighlight;
+    var _clickHighlight;
+    var _nodeInfoBox;
+    var _nodeMoreOptionsBox;
     var _setup = false;
 
 
@@ -570,7 +1229,11 @@ function RemoteFunctions(config) {
 
     function onMouseOver(event) {
         if (_validEvent(event)) {
-            _localHighlight.add(event.target, true);
+            // Skip highlighting for HTML, BODY tags and elements inside HEAD
+            if (event.target && event.target.nodeType === Node.ELEMENT_NODE &&
+                event.target.tagName !== "HTML" && event.target.tagName !== "BODY" && !_isInsideHeadTag(event.target)) {
+                _localHighlight.add(event.target, true, false); // false means no-auto scroll
+            }
         }
     }
 
@@ -585,14 +1248,201 @@ function RemoteFunctions(config) {
         window.document.removeEventListener("mousemove", onMouseMove);
     }
 
+    // helper function to get the current elements highlight mode
+    // this is as per user settings (either click or hover)
+    function getHighlightMode() {
+        return config.elemHighlights ? config.elemHighlights.toLowerCase() : "hover";
+    }
+
+    // helper function to check if highlights should show on hover
+    function shouldShowHighlightOnHover() {
+        return getHighlightMode() !== "click";
+    }
+
+    // helper function to clear element background highlighting
+    function clearElementBackground(element) {
+        if (element._originalBackgroundColor !== undefined) {
+            element.style.backgroundColor = element._originalBackgroundColor;
+        } else {
+            element.style.backgroundColor = "";
+        }
+        delete element._originalBackgroundColor;
+    }
+
+    function onElementHover(event) {
+        // this is to check the user's settings, if they want to show the elements highlights on hover or click
+        if (_hoverHighlight && config.isLPEditFeaturesActive && shouldShowHighlightOnHover()) {
+            _hoverHighlight.clear();
+
+            // Skip highlighting for HTML, BODY tags and elements inside HEAD
+            // and for DOM elements which doesn't have 'data-brackets-id'
+            // NOTE: Don't remove 'data-brackets-id' check else hover will also target internal live preview elements
+            if (
+                event.target &&
+                event.target.nodeType === Node.ELEMENT_NODE &&
+                event.target.tagName !== "HTML" &&
+                event.target.tagName !== "BODY" &&
+                !_isInsideHeadTag(event.target) &&
+                event.target.hasAttribute("data-brackets-id")
+            ) {
+                // Store original background color to restore on hover out
+                event.target._originalBackgroundColor = event.target.style.backgroundColor;
+                event.target.style.backgroundColor = "rgba(0, 162, 255, 0.2)";
+
+                _hoverHighlight.add(event.target, false, false); // false means no auto-scroll
+
+                // Create info box for the hovered element
+                if (_nodeInfoBox) {
+                    _nodeInfoBox.remove();
+                }
+                // check if this element is already clicked (has more options box)
+                // this is needed so that we can check for overlapping issue among the boxes
+                const isAlreadyClicked = previouslyClickedElement === event.target && _nodeMoreOptionsBox !== null;
+                _nodeInfoBox = new NodeInfoBox(event.target, isAlreadyClicked);
+            }
+        }
+    }
+
+    function onElementHoverOut(event) {
+        // this is to check the user's settings, if they want to show the elements highlights on hover or click
+        if (_hoverHighlight && config.isLPEditFeaturesActive && shouldShowHighlightOnHover()) {
+            _hoverHighlight.clear();
+
+            // Restore original background color
+            if (
+                event &&
+                event.target &&
+                event.target.nodeType === Node.ELEMENT_NODE &&
+                event.target.hasAttribute("data-brackets-id")
+            ) {
+                clearElementBackground(event.target);
+            }
+
+            // Remove info box when mouse leaves the element
+            if (_nodeInfoBox) {
+                _nodeInfoBox.remove();
+                _nodeInfoBox = null;
+            }
+        }
+    }
+
+    /**
+     * this function is responsible to select an element in the live preview
+     * @param {Element} element - The DOM element to select
+     */
+    function _selectElement(element) {
+        // make sure that the feature is enabled and also the element has the attribute 'data-brackets-id'
+        if (
+            !config.isLPEditFeaturesActive ||
+            !element.hasAttribute("data-brackets-id") ||
+            element.tagName === "BODY" ||
+            element.tagName === "HTML" ||
+            _isInsideHeadTag(element)
+        ) {
+            return;
+        }
+
+        if (_nodeMoreOptionsBox) {
+            _nodeMoreOptionsBox.remove();
+            _nodeMoreOptionsBox = null;
+        }
+
+        // to remove the outline styling from the previously clicked element
+        if (previouslyClickedElement) {
+            if (previouslyClickedElement._originalOutline !== undefined) {
+                previouslyClickedElement.style.outline = previouslyClickedElement._originalOutline;
+            } else {
+                previouslyClickedElement.style.outline = "";
+            }
+            delete previouslyClickedElement._originalOutline;
+
+            // Remove highlighting from previously clicked element
+            if (getHighlightMode() === "click") {
+                clearElementBackground(previouslyClickedElement);
+            }
+        }
+
+        // make sure that the element is actually visible to the user
+        if (isElementVisible(element)) {
+            _nodeMoreOptionsBox = new NodeMoreOptionsBox(element);
+
+            // show the info box when a DOM element is selected
+            if (_nodeInfoBox) {
+                _nodeInfoBox.remove();
+            }
+            _nodeInfoBox = new NodeInfoBox(element, true); // true means that the element was selected
+        } else {
+            // Element is hidden, so don't show UI boxes but still apply visual styling
+            _nodeMoreOptionsBox = null;
+
+            // Remove any existing info box since the element is not visible
+            if (_nodeInfoBox) {
+                _nodeInfoBox.remove();
+                _nodeInfoBox = null;
+            }
+        }
+
+        element._originalOutline = element.style.outline;
+        element.style.outline = "1px solid #4285F4";
+
+        // Add highlight for click mode
+        if (getHighlightMode() === "click") {
+            element._originalBackgroundColor = element.style.backgroundColor;
+            element.style.backgroundColor = "rgba(0, 162, 255, 0.2)";
+
+            if (_hoverHighlight) {
+                _hoverHighlight.clear();
+                _hoverHighlight.add(element, true, false); // false means no auto-scroll
+            }
+        }
+
+        previouslyClickedElement = element;
+    }
+
+    /**
+     * This function handles the click event on the live preview DOM element
+     * it is to show the advanced DOM manipulation options in the live preview
+     * @param {Event} event
+     */
     function onClick(event) {
-        if (_validEvent(event)) {
+        // make sure that the feature is enabled and also the clicked element has the attribute 'data-brackets-id'
+        if (
+            config.isLPEditFeaturesActive &&
+            event.target.hasAttribute("data-brackets-id") &&
+            event.target.tagName !== "BODY" &&
+            event.target.tagName !== "HTML" &&
+            !_isInsideHeadTag(event.target)
+        ) {
             event.preventDefault();
             event.stopPropagation();
-            if (event.altKey) {
-                _toggleEditor(event.target);
-            } else {
-                _toggleMenu(event.target);
+            event.stopImmediatePropagation();
+
+            _selectElement(event.target);
+        } else if ( // when user clicks on the HTML, BODY tags or elements inside HEAD, we want to remove the boxes
+            _nodeMoreOptionsBox &&
+            (event.target.tagName === "HTML" || event.target.tagName === "BODY" || _isInsideHeadTag(event.target))
+        ) {
+            dismissMoreOptionsBox();
+        }
+    }
+
+    /**
+     * this function handles the double click event
+     * @param {Event} event
+     */
+    function onDoubleClick(event) {
+        if (
+            config.isLPEditFeaturesActive &&
+            event.target.hasAttribute("data-brackets-id") &&
+            event.target.tagName !== "BODY" &&
+            event.target.tagName !== "HTML" &&
+            !_isInsideHeadTag(event.target)
+        ) {
+            // because we only want to allow double click text editing where we show the edit option
+            if (_shouldShowEditTextOption(event.target)) {
+                event.preventDefault();
+                event.stopPropagation();
+                startEditing(event.target);
             }
         }
     }
@@ -603,7 +1453,6 @@ function RemoteFunctions(config) {
             window.document.removeEventListener("mouseover", onMouseOver);
             window.document.removeEventListener("mouseout", onMouseOut);
             window.document.removeEventListener("mousemove", onMouseMove);
-            window.document.removeEventListener("click", onClick);
             _localHighlight.clear();
             _localHighlight = undefined;
             _setup = false;
@@ -611,6 +1460,9 @@ function RemoteFunctions(config) {
     }
 
     function onKeyDown(event) {
+        if ((event.key === "Escape" || event.key === "Esc")) {
+            dismissMoreOptionsBox();
+        }
         if (!_setup && _validEvent(event)) {
             window.document.addEventListener("keyup", onKeyUp);
             window.document.addEventListener("mouseover", onMouseOver);
@@ -624,56 +1476,95 @@ function RemoteFunctions(config) {
 
     /** Public Commands **********************************************************/
 
-    // show goto
-    function showGoto(targets) {
-        if (!_currentMenu) {
-            return;
-        }
-        _currentMenu.createBody();
-        var i;
-        for (i in targets) {
-            _currentMenu.addItem(targets[i]);
-        }
-        _currentMenu.show();
-    }
 
     // remove active highlights
     function hideHighlight() {
-        if (_remoteHighlight) {
-            _remoteHighlight.clear();
-            _remoteHighlight = null;
+        if (_clickHighlight) {
+            _clickHighlight.clear();
+            _clickHighlight = null;
+        }
+        if (_hoverHighlight) {
+            _hoverHighlight.clear();
         }
     }
 
     // highlight a node
     function highlight(node, clear) {
-        if (!_remoteHighlight) {
-            _remoteHighlight = new Highlight("#cfc");
+        if (!_clickHighlight) {
+            _clickHighlight = new Highlight("#cfc");
         }
         if (clear) {
-            _remoteHighlight.clear();
+            _clickHighlight.clear();
         }
-        _remoteHighlight.add(node, true);
+        // Skip highlighting for HTML, BODY tags and elements inside HEAD
+        if (node && node.nodeType === Node.ELEMENT_NODE &&
+            node.tagName !== "HTML" && node.tagName !== "BODY" && !_isInsideHeadTag(node)) {
+            _clickHighlight.add(node, true, true); // 3rd arg is for auto-scroll
+        }
     }
 
     // highlight a rule
     function highlightRule(rule) {
         hideHighlight();
         var i, nodes = window.document.querySelectorAll(rule);
+
         for (i = 0; i < nodes.length; i++) {
             highlight(nodes[i]);
         }
-        _remoteHighlight.selector = rule;
+        _clickHighlight.selector = rule;
+
+        // select the first valid highlighted element
+        var foundValidElement = false;
+        for (i = 0; i < nodes.length; i++) {
+            if (nodes[i].hasAttribute("data-brackets-id") &&
+                nodes[i].tagName !== "HTML" &&
+                nodes[i].tagName !== "BODY" &&
+                !_isInsideHeadTag(nodes[i]) &&
+                nodes[i].tagName !== "BR"
+            ) {
+                _selectElement(nodes[i]);
+                foundValidElement = true;
+                break;
+            }
+        }
+
+        // if no valid element present we dismiss the boxes
+        if (!foundValidElement) {
+            dismissMoreOptionsBox();
+        }
+    }
+
+    // recreate UI boxes (info box and more options box)
+    function redrawUIBoxes() {
+        if (_nodeMoreOptionsBox) {
+            const element = _nodeMoreOptionsBox.element;
+            _nodeMoreOptionsBox.remove();
+            _nodeMoreOptionsBox = new NodeMoreOptionsBox(element);
+
+            if (_nodeInfoBox) {
+                _nodeInfoBox.remove();
+                _nodeInfoBox = new NodeInfoBox(element, true); // true means it came from a click
+            }
+        }
     }
 
     // redraw active highlights
     function redrawHighlights() {
-        if (_remoteHighlight) {
-            _remoteHighlight.redraw();
+        if (_clickHighlight) {
+            _clickHighlight.redraw();
+        }
+        if (_hoverHighlight) {
+            _hoverHighlight.redraw();
         }
     }
 
-    window.addEventListener("resize", redrawHighlights);
+    // just a wrapper function when we need to redraw highlights as well as UI boxes
+    function redrawEverything() {
+        redrawHighlights();
+        redrawUIBoxes();
+    }
+
+    window.addEventListener("resize", redrawEverything);
     // Add a capture-phase scroll listener to update highlights when
     // any element scrolls.
 
@@ -683,7 +1574,7 @@ function RemoteFunctions(config) {
         if (e.target === window.document) {
             redrawHighlights();
         } else {
-            if (_remoteHighlight || _localHighlight) {
+            if (_localHighlight || _clickHighlight || _hoverHighlight) {
                 window.setTimeout(redrawHighlights, 0);
             }
         }
@@ -942,71 +1833,252 @@ function RemoteFunctions(config) {
         this.rememberedNodes = {};
 
         // update highlight after applying diffs
-        redrawHighlights();
+        redrawEverything();
     };
 
     function applyDOMEdits(edits) {
         _editHandler.apply(edits);
     }
 
-    /**
-     *
-     * @param {Element} elem
-     */
-    function _domElementToJSON(elem) {
-        var json = { tag: elem.tagName.toLowerCase(), attributes: {}, children: [] },
-            i,
-            len,
-            node,
-            value;
+    function updateConfig(newConfig) {
+        var oldConfig = config;
+        config = JSON.parse(newConfig);
 
-        len = elem.attributes.length;
-        for (i = 0; i < len; i++) {
-            node = elem.attributes.item(i);
-            value = (node.name === "data-brackets-id") ? parseInt(node.value, 10) : node.value;
-            json.attributes[node.name] = value;
-        }
+        if (config.highlight) {
+            // Add hover event listeners if highlight is enabled
+            window.document.removeEventListener("mouseover", onElementHover);
+            window.document.removeEventListener("mouseout", onElementHoverOut);
+            window.document.addEventListener("mouseover", onElementHover);
+            window.document.addEventListener("mouseout", onElementHoverOut);
+        } else {
+            // Remove hover event listeners if highlight is disabled
+            window.document.removeEventListener("mouseover", onElementHover);
+            window.document.removeEventListener("mouseout", onElementHoverOut);
 
-        len = elem.childNodes.length;
-        for (i = 0; i < len; i++) {
-            node = elem.childNodes.item(i);
-
-            // ignores comment nodes and visuals generated by live preview
-            if (node.nodeType === Node.ELEMENT_NODE && node.className !== HIGHLIGHT_CLASSNAME) {
-                json.children.push(_domElementToJSON(node));
-            } else if (node.nodeType === Node.TEXT_NODE) {
-                json.children.push({ content: node.nodeValue });
+            // Remove info box and more options box if highlight is disabled
+            if (_nodeInfoBox) {
+                _nodeInfoBox.remove();
+                _nodeInfoBox = null;
+            }
+            if (_nodeMoreOptionsBox) {
+                _nodeMoreOptionsBox.remove();
+                _nodeMoreOptionsBox = null;
             }
         }
 
-        return json;
+        // Handle element highlight mode changes for instant switching
+        const oldHighlightMode = oldConfig.elemHighlights ? oldConfig.elemHighlights.toLowerCase() : "hover";
+        const newHighlightMode = getHighlightMode();
+
+        if (oldHighlightMode !== newHighlightMode) {
+            // Clear any existing highlights when mode changes
+            if (_hoverHighlight) {
+                _hoverHighlight.clear();
+            }
+
+            // Clean up any previously highlighted elements
+            if (previouslyClickedElement) {
+                clearElementBackground(previouslyClickedElement);
+            }
+
+            // Remove info box when switching modes to avoid confusion
+            if (_nodeInfoBox && !_nodeMoreOptionsBox) {
+                _nodeInfoBox.remove();
+                _nodeInfoBox = null;
+            }
+
+            // Re-setup event listeners based on new mode to ensure proper behavior
+            if (config.highlight && config.isLPEditFeaturesActive) {
+                window.document.removeEventListener("mouseover", onElementHover);
+                window.document.removeEventListener("mouseout", onElementHoverOut);
+                window.document.addEventListener("mouseover", onElementHover);
+                window.document.addEventListener("mouseout", onElementHoverOut);
+            }
+        }
+
+        return JSON.stringify(config);
     }
 
-    function getSimpleDOM() {
-        return JSON.stringify(_domElementToJSON(window.document.documentElement));
+    /**
+     * This function checks if there are any live preview boxes currently visible
+     * @return {boolean} true if any boxes are visible, false otherwise
+     */
+    function hasVisibleLivePreviewBoxes() {
+        return _nodeMoreOptionsBox !== null || _nodeInfoBox !== null || previouslyClickedElement !== null;
     }
-    
-    function updateConfig(newConfig) {
-        config = JSON.parse(newConfig);
-        return JSON.stringify(config);
+
+    /**
+     * This function is responsible to remove the more options box
+     * we do this either when user presses the Esc key or clicks on the HTML or Body tags
+     * @return {boolean} true if any boxes were dismissed, false otherwise
+     */
+    function dismissMoreOptionsBox() {
+        let dismissed = false;
+
+        if (_nodeMoreOptionsBox) {
+            _nodeMoreOptionsBox.remove();
+            _nodeMoreOptionsBox = null;
+            dismissed = true;
+        }
+
+        if (_nodeInfoBox) {
+            _nodeInfoBox.remove();
+            _nodeInfoBox = null;
+            dismissed = true;
+        }
+
+        if (previouslyClickedElement) {
+            if (previouslyClickedElement._originalOutline !== undefined) {
+                previouslyClickedElement.style.outline = previouslyClickedElement._originalOutline;
+            } else {
+                previouslyClickedElement.style.outline = "";
+            }
+            delete previouslyClickedElement._originalOutline;
+
+            // Clear click-mode highlighting
+            if (getHighlightMode() === "click") {
+                clearElementBackground(previouslyClickedElement);
+
+                if (_hoverHighlight) {
+                    _hoverHighlight.clear();
+                }
+            }
+
+            previouslyClickedElement = null;
+            dismissed = true;
+        }
+
+        return dismissed;
+    }
+
+    /**
+     * This function is responsible to move the cursor to the end of the text content when we start editing
+     * @param {DOMElement} element
+     */
+    function moveCursorToEnd(selection, element) {
+        const range = document.createRange();
+        range.selectNodeContents(element);
+        range.collapse(false);
+        selection.removeAllRanges();
+        selection.addRange(range);
+    }
+
+    // Function to handle direct editing of elements in the live preview
+    function startEditing(element) {
+        if (!config.isLPEditFeaturesActive
+            || !element
+            || element.tagName === "BODY"
+            || element.tagName === "HTML"
+            || _isInsideHeadTag(element)
+            || !element.hasAttribute("data-brackets-id")) {
+            return;
+        }
+
+        // Make the element editable
+        element.setAttribute("contenteditable", "true");
+        element.focus();
+
+        // Move cursor to end if no existing selection
+        const selection = window.getSelection();
+        if (selection.rangeCount === 0 || selection.isCollapsed) {
+            moveCursorToEnd(selection, element);
+        }
+
+        dismissMoreOptionsBox();
+
+        function onBlur() {
+            finishEditing(element);
+        }
+
+        function onKeyDown(event) {
+            if (event.key === "Escape") {
+                // Cancel editing
+                event.preventDefault();
+                finishEditing(element, false); // false means that the edit operation was cancelled
+            } else if (event.key === "Enter" && !event.shiftKey) {
+                // Finish editing on Enter (unless Shift is held)
+                event.preventDefault();
+                finishEditing(element);
+            }
+        }
+
+        element.addEventListener("blur", onBlur);
+        element.addEventListener("keydown", onKeyDown);
+
+        // Store the event listeners for later removal
+        element._editListeners = {
+            blur: onBlur,
+            keydown: onKeyDown
+        };
+    }
+
+    // Function to finish editing and apply changes
+    // isEditSuccessful: this is a boolean value, defaults to true. false only when the edit operation is cancelled
+    function finishEditing(element, isEditSuccessful = true) {
+        if (!config.isLPEditFeaturesActive || !element || !element.hasAttribute("contenteditable")) {
+            return;
+        }
+
+        // Remove contenteditable attribute
+        element.removeAttribute("contenteditable");
+        dismissMoreOptionsBox();
+
+        // Remove event listeners
+        if (element._editListeners) {
+            element.removeEventListener("blur", element._editListeners.blur);
+            element.removeEventListener("keydown", element._editListeners.keydown);
+            delete element._editListeners;
+        }
+
+        if (element.hasAttribute("data-brackets-id")) {
+            const tagId = element.getAttribute("data-brackets-id");
+            window._Brackets_MessageBroker.send({
+                livePreviewEditEnabled: true,
+                livePreviewTextEdit: true,
+                element: element,
+                newContent: element.outerHTML,
+                tagId: Number(tagId),
+                isEditSuccessful: isEditSuccessful
+            });
+        }
     }
 
     // init
     _editHandler = new DOMEditHandler(window.document);
 
-    if (experimental) {
-        window.document.addEventListener("keydown", onKeyDown);
+    function registerHandlers() {
+        if (config.isLPEditFeaturesActive) {
+            // Initialize hover highlight with Chrome-like colors
+            _hoverHighlight = new Highlight("#c8f9c5", true); // Green similar to Chrome's padding color
+
+            // Initialize click highlight with animation
+            _clickHighlight = new Highlight("#cfc", true); // Light green for click highlight
+
+            window.document.addEventListener("mouseover", onElementHover);
+            window.document.addEventListener("mouseout", onElementHoverOut);
+            window.document.addEventListener("click", onClick);
+            window.document.addEventListener("dblclick", onDoubleClick);
+            window.document.addEventListener("dragover", onDragOver);
+            window.document.addEventListener("drop", onDrop);
+            window.document.addEventListener("keydown", onKeyDown);
+        }
     }
+
+    registerHandlers();
 
     return {
         "DOMEditHandler"        : DOMEditHandler,
-        "showGoto"              : showGoto,
         "hideHighlight"         : hideHighlight,
         "highlight"             : highlight,
         "highlightRule"         : highlightRule,
         "redrawHighlights"      : redrawHighlights,
+        "redrawEverything"      : redrawEverything,
         "applyDOMEdits"         : applyDOMEdits,
-        "getSimpleDOM"          : getSimpleDOM,
-        "updateConfig"          : updateConfig
+        "updateConfig"          : updateConfig,
+        "startEditing"          : startEditing,
+        "finishEditing"         : finishEditing,
+        "dismissMoreOptionsBox" : dismissMoreOptionsBox,
+        "hasVisibleLivePreviewBoxes" : hasVisibleLivePreviewBoxes,
+        "registerHandlers" : registerHandlers
     };
 }
