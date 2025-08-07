@@ -1187,7 +1187,9 @@ function RemoteFunctions(config) {
             window.document.body.appendChild(highlight);
         },
 
-        add: function (element, doAnimation) {
+        // shouldAutoScroll is whether to scroll page to element if not in view
+        // true when user clicks on the source code of some element, in that case we want to scroll the live preview
+        add: function (element, doAnimation, shouldAutoScroll) {
             if (this._elementExists(element) || element === window.document) {
                 return;
             }
@@ -1195,7 +1197,7 @@ function RemoteFunctions(config) {
                 _trigger(element, "highlight", 1);
             }
 
-            if ((!window.event || window.event instanceof MessageEvent) && !isInViewport(element)) {
+            if (shouldAutoScroll && (!window.event || window.event instanceof MessageEvent) && !isInViewport(element)) {
                 var top = getDocumentOffsetTop(element);
                 if (top) {
                     top -= (window.innerHeight / 2);
@@ -1237,7 +1239,7 @@ function RemoteFunctions(config) {
 
             this.clear();
             for (i = 0; i < highlighted.length; i++) {
-                this.add(highlighted[i], false);
+                this.add(highlighted[i], false, false); // 3rd arg is for auto-scroll
             }
         }
     };
@@ -1257,7 +1259,7 @@ function RemoteFunctions(config) {
             // Skip highlighting for HTML, BODY tags and elements inside HEAD
             if (event.target && event.target.nodeType === Node.ELEMENT_NODE &&
                 event.target.tagName !== "HTML" && event.target.tagName !== "BODY" && !_isInsideHeadTag(event.target)) {
-                _localHighlight.add(event.target, true);
+                _localHighlight.add(event.target, true, false); // false means no-auto scroll
             }
         }
     }
@@ -1314,7 +1316,7 @@ function RemoteFunctions(config) {
                 event.target._originalBackgroundColor = event.target.style.backgroundColor;
                 event.target.style.backgroundColor = "rgba(0, 162, 255, 0.2)";
 
-                _hoverHighlight.add(event.target, false);
+                _hoverHighlight.add(event.target, false, false); // false means no auto-scroll
 
                 // Create info box for the hovered element
                 if (_nodeInfoBox) {
@@ -1417,7 +1419,7 @@ function RemoteFunctions(config) {
 
             if (_hoverHighlight) {
                 _hoverHighlight.clear();
-                _hoverHighlight.add(element, true); // true for animation
+                _hoverHighlight.add(element, true, false); // false means no auto-scroll
             }
         }
 
@@ -1524,7 +1526,7 @@ function RemoteFunctions(config) {
         // Skip highlighting for HTML, BODY tags and elements inside HEAD
         if (node && node.nodeType === Node.ELEMENT_NODE &&
             node.tagName !== "HTML" && node.tagName !== "BODY" && !_isInsideHeadTag(node)) {
-            _clickHighlight.add(node, true);
+            _clickHighlight.add(node, true, true); // 3rd arg is for auto-scroll
         }
     }
 
