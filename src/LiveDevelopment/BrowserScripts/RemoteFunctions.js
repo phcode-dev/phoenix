@@ -434,35 +434,8 @@ function RemoteFunctions(config) {
         delete window._currentDraggedElement;
     }
 
-    /**
-     * this function is to check if an element should show the edit text option
-     * it is needed because edit text option doesn't make sense with many elements like images, videos, hr tag etc
-     * @param {Element} element - DOM element to check
-     * @returns {boolean} - true if we should show the edit text option otherwise false
-     */
-    function _shouldShowEditTextOption(element) {
-        if (!element || !element.tagName) {
-            return false;
-        }
-
-        const tagName = element.tagName.toLowerCase();
-
-        // these are self-closing tags and don't allow any text content
-        const voidElements = [
-            "img",
-            "br",
-            "hr",
-            "input",
-            "meta",
-            "link",
-            "area",
-            "base",
-            "col",
-            "embed",
-            "source",
-            "track",
-            "wbr"
-        ];
+        // calc estimate width based on the char count
+        const infoBoxWidth = basePadding + (charCount * avgCharWidth);
 
         // these elements are non-editable as they have their own mechanisms
         const nonEditableElements = [
