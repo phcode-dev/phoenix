@@ -344,8 +344,9 @@ define(function (require, exports, module) {
      * @param {Number} sourceId - the data-brackets-id of the element being moved
      * @param {Number} targetId - the data-brackets-id of the target element where to move
      * @param {Boolean} insertAfter - whether to insert the source element after the target element
+     * @param {Boolean} insertInside - whether to insert the source element as a child of the target element
      */
-    function _moveElementInSource(sourceId, targetId, insertAfter) {
+    function _moveElementInSource(sourceId, targetId, insertAfter, insertInside = false) {
         // this is to get the currently live document that is being served in the live preview
         const currLiveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
         if (!currLiveDoc) {
@@ -407,7 +408,25 @@ define(function (require, exports, module) {
         editor.document.batchOperation(function () {
             if (sourceBeforeTarget) {
                 // this handles the case when source is before target: insert first, then remove
-                if (insertAfter) {
+                if (insertInside) {
+                    // Insert as child inside the target element
+                    const targetText = editor.getTextBetween(targetRange.from, targetRange.to);
+                    const targetElement = targetText.trim();
+
+                    // Find the position just after the opening tag
+                    const openingTagMatch = targetElement.match(/^<[^>]*>/);
+                    if (openingTagMatch) {
+                        const openingTag = openingTagMatch[0];
+                        const insertPos = {
+                            line: targetRange.from.line,
+                            ch: targetRange.from.ch + openingTag.length
+                        };
+
+                        // Add proper indentation for child element
+                        const childIndent = targetIndent + "    "; // 4 spaces more than parent
+                        _insertElementWithIndentation(editor, insertPos, true, childIndent, sourceText);
+                    }
+                } else if (insertAfter) {
                     const insertPos = {
                         line: targetRange.to.line,
                         ch: targetRange.to.ch
@@ -464,7 +483,25 @@ define(function (require, exports, module) {
                     to: updatedTargetEndRange.close ? updatedTargetEndRange.close.to : updatedTargetEndRange.open.to
                 };
 
-                if (insertAfter) {
+                if (insertInside) {
+                    // Insert as child inside the target element
+                    const targetText = editor.getTextBetween(updatedTargetRange.from, updatedTargetRange.to);
+                    const targetElement = targetText.trim();
+
+                    // Find the position just after the opening tag
+                    const openingTagMatch = targetElement.match(/^<[^>]*>/);
+                    if (openingTagMatch) {
+                        const openingTag = openingTagMatch[0];
+                        const insertPos = {
+                            line: updatedTargetRange.from.line,
+                            ch: updatedTargetRange.from.ch + openingTag.length
+                        };
+
+                        // Add proper indentation for child element
+                        const childIndent = targetIndent + "    "; // 4 spaces more than parent
+                        _insertElementWithIndentation(editor, insertPos, true, childIndent, sourceText);
+                    }
+                } else if (insertAfter) {
                     const insertPos = {
                         line: updatedTargetRange.to.line,
                         ch: updatedTargetRange.to.ch
@@ -521,7 +558,7 @@ define(function (require, exports, module) {
     function handleLivePreviewEditOperation(message) {
         // handle move(drag & drop)
         if (message.move && message.sourceId && message.targetId) {
-            _moveElementInSource(message.sourceId, message.targetId, message.insertAfter);
+            _moveElementInSource(message.sourceId, message.targetId, message.insertAfter, message.insertInside);
             return;
         }
 
