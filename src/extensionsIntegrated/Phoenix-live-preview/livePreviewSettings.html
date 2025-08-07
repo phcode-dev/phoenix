@@ -1,33 +1,41 @@
-<div class="live-preview-settings modal" style="min-height: 400px;display: flex; flex-direction: column; justify-content: space-between">
+<div class="""live-preview-settings modal live-preview-settings-container">
     <div>
         <div class="modal-header">
             <h1 class="dialog-title">{{Strings.LIVE_DEV_SETTINGS_TITLE}}</h1>
         </div>
         <div class="modal-body">
             <div class="form-group form-check">
-                <input type="checkbox" class="form-check-input" id="showLivePreviewAtStartupChk" style="margin-top: -2px;">
-                <label class="form-check-label" for="showLivePreviewAtStartupChk" style="display: inline">{{Strings.LIVE_DEV_SETTINGS_STARTUP}}</label>
+                <input type="""checkbox" class="""form-check-input input-margin-top" id="""showLivePreviewAtStartupChk" title="{{Strings.LIVE_DEV_SETTINGS_STARTUP}}" placeholder="{{Strings.LIVE_DEV_SETTINGS_STARTUP}}">
+                <label class="""form-check-label label-inline" for="""showLivePreviewAtStartupChk">{{Strings.LIVE_DEV_SETTINGS_STARTUP}}</label>
             </div>
-            <div class="form-group" style="margin-top: 9px;">
-                <input id="enableCustomServerChk" type="checkbox" class="form-check-input" style="margin-top: -1px;">
-                <label id="enableCustomServerLabel" class="form-check-label" for="enableCustomServerChk" style="display: inline">{{Strings.LIVE_DEV_SETTINGS_USE_SERVER}}</label>
-                <input id="livePreviewServerURL" type="text" spellcheck="false" autocomplete="off" class=""
-                       style="width: 93%; margin-left: 20px;margin-top: 5px;margin-bottom: 0;" value="{{settings.fontSize}}" placeholder="{{Strings.LIVE_DEV_SETTINGS_SERVER_INBUILT}}">
-                <label id="serveRootLabel" class="forced-hidden" style="margin-left: 20px;margin-top: 9px;">{{Strings.LIVE_DEV_SETTINGS_SERVER_ROOT}}</label>
-                <input id="serveRoot" type="text" spellcheck="false" autocomplete="off" class="forced-hidden" style="width: 93%; margin-left: 20px;"
+            <div class="""form-group form-group-margin-top"></div>
+                <input id="""enableCustomServerChk" type="""checkbox" class="""form-check-input input-margin-top-small" title="{{Strings.LIVE_DEV_SETTINGS_USE_SERVER}}" placeholder="{{Strings.LIVE_DEV_SETTINGS_USE_SERVER}}">
+                <label id="""enableCustomServerLabel" class="""form-check-label label-inline" for="""enableCustomServerChk">{{Strings.LIVE_DEV_SETTINGS_USE_SERVER}}</label>
+                <input id="""livePreviewServerURL" type="""text" spellcheck="""false" autocomplete="""off" class="input-server-url"
+                       value="{{settings.fontSize}}" placeholder="{{Strings.LIVE_DEV_SETTINGS_SERVER_INBUILT}}">
+                <label id="serveRootLabel" class="forced-hidden label-margin-left label-margin-top" >{{Strings.LIVE_DEV_SETTINGS_SERVER_ROOT}}</label>
+                <input id="serveRoot" type="text" spellcheck="false" autocomplete="off" class="forced-hidden input-server-root"
                        value="{{settings.fontSize}}" placeholder="{{Strings.LIVE_DEV_SETTINGS_SERVER_ROOT_HELP}}">
-                <label id="frameworkLabel" class="forced-hidden" style="margin-left: 20px;">{{Strings.LIVE_DEV_SETTINGS_FRAMEWORK}}</label>
-                <select id="frameworkSelect" class="forced-hidden" style="width: 20%; margin-left: 20px;">
-                    <option style="text-align:left;" value="Custom">{{Strings.LIVE_DEV_SETTINGS_FRAMEWORK_CUSTOM}}</option>
-                    <option style="text-align:left;" value="Docusaurus">Docusaurus</option>
+                <label id="frameworkLabel" class="forced-hidden label-margin-left">{{Strings.LIVE_DEV_SETTINGS_FRAMEWORK}}</label>
+                <select id="frameworkSelect" class="forced-hidden" title="{{Strings.LIVE_DEV_SETTINGS_FRAMEWORK}}" >
+                    <option class="option-align-left" value="Custom">{{Strings.LIVE_DEV_SETTINGS_FRAMEWORK_CUSTOM}}</option>
+                    <option class="option-align-left" value="Docusaurus">Docusaurus</option>
                 </select>
 
-                <input id="hotReloadChk" type="checkbox" class="form-check-input forced-hidden" style="margin-top: -2px; margin-left: 20px;">
-                <label id="hotReloadLabel" class="form-check-label forced-hidden" for="hotReloadChk" style="display: inline" title="{{Strings.LIVE_DEV_SETTINGS_RELOAD_HELP}}">{{Strings.LIVE_DEV_SETTINGS_RELOAD}}</label>
+                <input id="hotReloadChk" type="checkbox" class="form-check-input forced-hidden input-margin-top input-margin-left">
+                <label id="hotReloadLabel" class="form-check-label forced-hidden label-inline" for="hotReloadChk" title="{{Strings.LIVE_DEV_SETTINGS_RELOAD_HELP}}">{{Strings.LIVE_DEV_SETTINGS_RELOAD}}</label>
+            </div>
+
+            <div class="form-group element-highlight-wrapper" id="elementHighlightWrapper">
+                <label for="elementHighlight" class="label-margin-top">{{Strings.LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT}} </label>
+                <select name="elementHighlight" id="elementHighlight">
+                    <option value="hover">{{Strings.LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT_HOVER}}</option>
+                    <option value="click">{{Strings.LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT_CLICK}}</option>
+                </select>
             </div>
         </div>
     </div>
-    <div class="modal-footer" style="">
+    <div class="modal-footer">
         <button class="dialog-button btn" data-button-id="cancel">{{Strings.CANCEL}}</button>
         <button class="dialog-button btn primary" id="theme-settings-done-btn" data-button-id="ok">{{Strings.DONE}}</button>
     </div>
