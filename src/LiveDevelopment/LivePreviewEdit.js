@@ -114,6 +114,51 @@ define(function (require, exports, module) {
     }
 
     /**
+     * helper function to get editor and validate basic requirements
+     * @param {Number} tagId - the data-brackets-id of the element
+     */
+    function _getEditorAndValidate(tagId) {
+        const currLiveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
+        if (!currLiveDoc || !currLiveDoc.editor) {
+            return null;
+        }
+        // for undo/redo operations, tagId might not be needed, so we only check it if provided
+        if (tagId !== undefined && !tagId) {
+            return null;
+        }
+        return currLiveDoc.editor;
+    }
+
+    /**
+     * helper function to get element range from tagId
+     *
+     * @param {Object} editor - the editor instance
+     * @param {Number} tagId - the data-brackets-id of the element
+     * @returns {Object|null} - object with startPos and endPos, or null if not found
+     */
+    function _getElementRange(editor, tagId) {
+        // get the start range from the getPositionFromTagId function
+        // and we get the end range from the findMatchingTag function
+        // NOTE: we cannot get the end range from getPositionFromTagId
+        // because on non-beautified code getPositionFromTagId may not provide correct end position
+        const startRange = HTMLInstrumentation.getPositionFromTagId(editor, tagId);
+        if(!startRange) {
+            return null;
+        }
+
+        const endRange = CodeMirror.findMatchingTag(editor._codeMirror, startRange.from);
+        if (!endRange) {
+            return null;
+        }
+
+        const startPos = startRange.from;
+        // for empty tags endRange.close might not exist, for ex: img tag
+        const endPos = endRange.close ? endRange.close.to : endRange.open.to;
+
+        return { startPos, endPos };
+    }
+
+    /**
      * this function handles the text edit in the source code when user updates the text in the live preview
      *
      * @param {Object} message - the message object
@@ -125,30 +170,17 @@ define(function (require, exports, module) {
      *   - isEditSuccessful: boolean (false when user pressed Escape to cancel, otherwise true always)
      */
     function _editTextInSource(message) {
-        const currLiveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
-        if (!currLiveDoc || !currLiveDoc.editor || !message.tagId) {
+        const editor = _getEditorAndValidate(message.tagId);
+        if (!editor) {
             return;
         }
 
-        const editor = currLiveDoc.editor;
-
-        // get the start range from the getPositionFromTagId function
-        // and we get the end range from the findMatchingTag function
-        // NOTE: we cannot get the end range from getPositionFromTagId
-        // because on non-beautified code getPositionFromTagId may not provide correct end position
-        const startRange = HTMLInstrumentation.getPositionFromTagId(editor, message.tagId);
-        if(!startRange) {
+        const range = _getElementRange(editor, message.tagId);
+        if (!range) {
             return;
         }
 
-        const endRange = CodeMirror.findMatchingTag(editor._codeMirror, startRange.from);
-        if (!endRange) {
-            return;
-        }
-
-        const startPos = startRange.from;
-        // for empty tags endRange.close might not exist, for ex: img tag
-        const endPos = endRange.close ? endRange.close.to : endRange.open.to;
+        const { startPos, endPos } = range;
 
         const text = editor.getTextBetween(startPos, endPos);
 
@@ -176,33 +208,17 @@ define(function (require, exports, module) {
      */
     function _duplicateElementInSourceByTagId(tagId) {
         // this is to get the currently live document that is being served in the live preview
-        const currLiveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
-        if (!currLiveDoc) {
+        const editor = _getEditorAndValidate(tagId);
+        if (!editor) {
             return;
         }
 
-        const editor = currLiveDoc.editor;
-        if (!editor || !tagId) {
+        const range = _getElementRange(editor, tagId);
+        if (!range) {
             return;
         }
 
-        // get the start range from the getPositionFromTagId function
-        // and we get the end range from the findMatchingTag function
-        // NOTE: we cannot get the end range from getPositionFromTagId
-        // because on non-beautified code getPositionFromTagId may not provide correct end position
-        const startRange = HTMLInstrumentation.getPositionFromTagId(editor, tagId);
-        if(!startRange) {
-            return;
-        }
-
-        const endRange = CodeMirror.findMatchingTag(editor._codeMirror, startRange.from);
-        if (!endRange) {
-            return;
-        }
-
-        const startPos = startRange.from;
-        // for empty tags endRange.close might not exist, for ex: img tag
-        const endPos = endRange.close ? endRange.close.to : endRange.open.to;
+        const { startPos, endPos } = range;
 
         // this is the actual source code for the element that we need to duplicate
         const text = editor.getTextBetween(startPos, endPos);
@@ -237,33 +253,17 @@ define(function (require, exports, module) {
      */
     function _deleteElementInSourceByTagId(tagId) {
         // this is to get the currently live document that is being served in the live preview
-        const currLiveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
-        if (!currLiveDoc) {
+        const editor = _getEditorAndValidate(tagId);
+        if (!editor) {
             return;
         }
 
-        const editor = currLiveDoc.editor;
-        if (!editor || !tagId) {
+        const range = _getElementRange(editor, tagId);
+        if (!range) {
             return;
         }
 
-        // get the start range from the getPositionFromTagId function
-        // and we get the end range from the findMatchingTag function
-        // NOTE: we cannot get the end range from getPositionFromTagId
-        // because on non-beautified code getPositionFromTagId may not provide correct end position
-        const startRange = HTMLInstrumentation.getPositionFromTagId(editor, tagId);
-        if(!startRange) {
-            return;
-        }
-
-        const endRange = CodeMirror.findMatchingTag(editor._codeMirror, startRange.from);
-        if (!endRange) {
-            return;
-        }
-
-        const startPos = startRange.from;
-        // for empty tags endRange.close might not exist, for ex: img tag
-        const endPos = endRange.close ? endRange.close.to : endRange.open.to;
+        const { startPos, endPos } = range;
 
         editor.document.batchOperation(function () {
             editor.replaceRange("", startPos, endPos);
@@ -348,52 +348,34 @@ define(function (require, exports, module) {
      */
     function _moveElementInSource(sourceId, targetId, insertAfter, insertInside = false) {
         // this is to get the currently live document that is being served in the live preview
-        const currLiveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
-        if (!currLiveDoc) {
+        const editor = _getEditorAndValidate(sourceId);
+        if (!editor || !targetId) {
             return;
         }
 
-        const editor = currLiveDoc.editor;
-        if (!editor || !sourceId || !targetId) {
+        const sourceRange = _getElementRange(editor, sourceId);
+        if (!sourceRange) {
             return;
         }
 
-        // get the start range from the getPositionFromTagId function
-        // and we get the end range from the findMatchingTag function
-        // NOTE: we cannot get the end range from getPositionFromTagId
-        // because on non-beautified code getPositionFromTagId may not provide correct end position
-        const sourceStartRange = HTMLInstrumentation.getPositionFromTagId(editor, sourceId);
-        if(!sourceStartRange) {
+        const targetRange = _getElementRange(editor, targetId);
+        if (!targetRange) {
             return;
         }
 
-        const sourceEndRange = CodeMirror.findMatchingTag(editor._codeMirror, sourceStartRange.from);
-        if (!sourceEndRange) {
-            return;
-        }
-
-        const targetStartRange = HTMLInstrumentation.getPositionFromTagId(editor, targetId);
-        if(!targetStartRange) {
-            return;
-        }
-
-        const targetEndRange = CodeMirror.findMatchingTag(editor._codeMirror, targetStartRange.from);
-        if (!targetEndRange) {
-            return;
-        }
-
-        const sourceRange = {
-            from: sourceStartRange.from,
-            to: sourceEndRange.close ? sourceEndRange.close.to : sourceEndRange.open.to
+        // convert to the format expected by the rest of the function
+        const sourceRangeObj = {
+            from: sourceRange.startPos,
+            to: sourceRange.endPos
         };
 
-        const targetRange = {
-            from: targetStartRange.from,
-            to: targetEndRange.close ? targetEndRange.close.to : targetEndRange.open.to
+        const targetRangeObj = {
+            from: targetRange.startPos,
+            to: targetRange.endPos
         };
 
-        const sourceText = editor.getTextBetween(sourceRange.from, sourceRange.to);
-        const targetIndent = editor.getTextBetween({ line: targetRange.from.line, ch: 0 }, targetRange.from);
+        const sourceText = editor.getTextBetween(sourceRangeObj.from, sourceRangeObj.to);
+        const targetIndent = editor.getTextBetween({ line: targetRangeObj.from.line, ch: 0 }, targetRangeObj.from);
 
         // Check if source is before target to determine order of operations
         // check if the source is before target or after the target
@@ -401,8 +383,8 @@ define(function (require, exports, module) {
         // If source is before target → we need to insert first, then remove
         // If target is before source → remove first, then insert
         const sourceBeforeTarget =
-            sourceRange.from.line < targetRange.from.line ||
-            (sourceRange.from.line === targetRange.from.line && sourceRange.from.ch < targetRange.from.ch);
+            sourceRangeObj.from.line < targetRangeObj.from.line ||
+            (sourceRangeObj.from.line === targetRangeObj.from.line && sourceRangeObj.from.ch < targetRangeObj.from.ch);
 
         // creating a batch operation so that undo in live preview works fine
         editor.document.batchOperation(function () {
@@ -410,7 +392,7 @@ define(function (require, exports, module) {
                 // this handles the case when source is before target: insert first, then remove
                 if (insertInside) {
                     // Insert as child inside the target element
-                    const targetText = editor.getTextBetween(targetRange.from, targetRange.to);
+                    const targetText = editor.getTextBetween(targetRangeObj.from, targetRangeObj.to);
                     const targetElement = targetText.trim();
 
                     // Find the position just after the opening tag
@@ -418,8 +400,8 @@ define(function (require, exports, module) {
                     if (openingTagMatch) {
                         const openingTag = openingTagMatch[0];
                         const insertPos = {
-                            line: targetRange.from.line,
-                            ch: targetRange.from.ch + openingTag.length
+                            line: targetRangeObj.from.line,
+                            ch: targetRangeObj.from.ch + openingTag.length
                         };
 
                         // Add proper indentation for child element
@@ -428,64 +410,48 @@ define(function (require, exports, module) {
                     }
                 } else if (insertAfter) {
                     const insertPos = {
-                        line: targetRange.to.line,
-                        ch: targetRange.to.ch
+                        line: targetRangeObj.to.line,
+                        ch: targetRangeObj.to.ch
                     };
                     _insertElementWithIndentation(editor, insertPos, true, targetIndent, sourceText);
                 } else {
                     // insert before target
-                    _insertElementWithIndentation(editor, targetRange.from, false, targetIndent, sourceText);
+                    _insertElementWithIndentation(editor, targetRangeObj.from, false, targetIndent, sourceText);
                 }
 
                 // Now remove the source element (NOTE: the positions have shifted)
-                const updatedSourceStartRange = HTMLInstrumentation.getPositionFromTagId(editor, sourceId);
-                if (updatedSourceStartRange) {
-                    const updatedSourceEndRange = CodeMirror.findMatchingTag(
-                        editor._codeMirror, updatedSourceStartRange.from
-                    );
-
-                    if (updatedSourceEndRange) {
-                        const updatedSourceRange = {
-                            from: updatedSourceStartRange.from,
-                            to: updatedSourceEndRange.close
-                                ? updatedSourceEndRange.close.to
-                                : updatedSourceEndRange.open.to
-                        };
-                        editor.replaceRange("", updatedSourceRange.from, updatedSourceRange.to);
-                        _cleanupAfterRemoval(editor, updatedSourceRange);
-                    }
+                const updatedSourceRange = _getElementRange(editor, sourceId);
+                if (updatedSourceRange) {
+                    const updatedSourceRangeObj = {
+                        from: updatedSourceRange.startPos,
+                        to: updatedSourceRange.endPos
+                    };
+                    editor.replaceRange("", updatedSourceRangeObj.from, updatedSourceRangeObj.to);
+                    _cleanupAfterRemoval(editor, updatedSourceRangeObj);
                 }
             } else {
                 // This handles the case when target is before source: remove first, then insert
                 // Store source range before removal
-                const originalSourceRange = { ...sourceRange };
+                const originalSourceRange = { ...sourceRangeObj };
 
                 // Remove the source element first
-                editor.replaceRange("", sourceRange.from, sourceRange.to);
+                editor.replaceRange("", sourceRangeObj.from, sourceRangeObj.to);
                 _cleanupAfterRemoval(editor, originalSourceRange);
 
                 // Recalculate target range after source removal as the positions have shifted
-                const updatedTargetStartRange = HTMLInstrumentation.getPositionFromTagId(editor, targetId);
-                if (!updatedTargetStartRange) {
+                const updatedTargetRange = _getElementRange(editor, targetId);
+                if (!updatedTargetRange) {
                     return;
                 }
 
-                const updatedTargetEndRange = CodeMirror.findMatchingTag(
-                    editor._codeMirror, updatedTargetStartRange.from
-                );
-
-                if (!updatedTargetEndRange) {
-                    return;
-                }
-
-                const updatedTargetRange = {
-                    from: updatedTargetStartRange.from,
-                    to: updatedTargetEndRange.close ? updatedTargetEndRange.close.to : updatedTargetEndRange.open.to
+                const updatedTargetRangeObj = {
+                    from: updatedTargetRange.startPos,
+                    to: updatedTargetRange.endPos
                 };
 
                 if (insertInside) {
                     // Insert as child inside the target element
-                    const targetText = editor.getTextBetween(updatedTargetRange.from, updatedTargetRange.to);
+                    const targetText = editor.getTextBetween(updatedTargetRangeObj.from, updatedTargetRangeObj.to);
                     const targetElement = targetText.trim();
 
                     // Find the position just after the opening tag
@@ -493,8 +459,8 @@ define(function (require, exports, module) {
                     if (openingTagMatch) {
                         const openingTag = openingTagMatch[0];
                         const insertPos = {
-                            line: updatedTargetRange.from.line,
-                            ch: updatedTargetRange.from.ch + openingTag.length
+                            line: updatedTargetRangeObj.from.line,
+                            ch: updatedTargetRangeObj.from.ch + openingTag.length
                         };
 
                         // Add proper indentation for child element
@@ -503,13 +469,13 @@ define(function (require, exports, module) {
                     }
                 } else if (insertAfter) {
                     const insertPos = {
-                        line: updatedTargetRange.to.line,
-                        ch: updatedTargetRange.to.ch
+                        line: updatedTargetRangeObj.to.line,
+                        ch: updatedTargetRangeObj.to.ch
                     };
                     _insertElementWithIndentation(editor, insertPos, true, targetIndent, sourceText);
                 } else {
                     // Insert before target
-                    _insertElementWithIndentation(editor, updatedTargetRange.from, false, targetIndent, sourceText);
+                    _insertElementWithIndentation(editor, updatedTargetRangeObj.from, false, targetIndent, sourceText);
                 }
             }
         });
@@ -520,12 +486,10 @@ define(function (require, exports, module) {
      * @param {String} undoOrRedo - "undo" when to undo, and "redo" for redo
      */
     function handleUndoRedoOperation(undoOrRedo) {
-        const currLiveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
-        if (!currLiveDoc || !currLiveDoc.editor) {
+        const editor = _getEditorAndValidate(); // no tagId needed for undo/redo
+        if (!editor) {
             return;
         }
-
-        const editor = currLiveDoc.editor;
 
         if (undoOrRedo === "undo") {
             editor.undo();
