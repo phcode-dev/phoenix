@@ -1050,7 +1050,7 @@ function RemoteFunctions(config) {
             let leftPos = offset.left + elemBounds.width - boxWidth;
 
             // Check if the box would go off the top of the viewport
-            if (offset.top - boxHeight < 0) {
+            if (elemBounds.top - boxHeight < 6) {
                 topPos = offset.top + elemBounds.height + 6;
             }
 
@@ -1305,7 +1305,7 @@ function RemoteFunctions(config) {
                 topPos = offset.top - boxDimensions.height - 6; // 6 for just some little space to breathe
                 leftPos = offset.left;
 
-                if (offset.top - boxDimensions.height < 0) {
+                if (elemBounds.top - boxDimensions.height < 6) {
                     topPos = offset.top + elemBounds.height + 6;
                 }
 
@@ -2096,15 +2096,45 @@ function RemoteFunctions(config) {
     // Add a capture-phase scroll listener to update highlights when
     // any element scrolls.
 
+
+    // Helper function to dismiss boxes only for elements that don't move with scroll
+    function _dismissBoxesForFixedElements() {
+        if (_nodeMoreOptionsBox && _nodeMoreOptionsBox.element) {
+            // Store the element's position before scroll
+            if (!_nodeMoreOptionsBox._lastPosition) {
+                _nodeMoreOptionsBox._lastPosition = _nodeMoreOptionsBox.element.getBoundingClientRect();
+                return; // First time, just store position
+            }
+
+            const currentPosition = _nodeMoreOptionsBox.element.getBoundingClientRect();
+            const lastPosition = _nodeMoreOptionsBox._lastPosition;
+
+            // If element position hasn't changed despite scrolling, it's likely fixed/sticky
+            const positionUnchanged =
+                Math.abs(currentPosition.top - lastPosition.top) < 1 &&
+                Math.abs(currentPosition.left - lastPosition.left) < 1;
+
+            if (positionUnchanged) {
+                dismissMoreOptionsBox();
+            } else {
+                // Update stored position for next scroll event
+                _nodeMoreOptionsBox._lastPosition = currentPosition;
+            }
+        }
+    }
+
     function _scrollHandler(e) {
         // Document scrolls can be updated immediately. Any other scrolls
         // need to be updated on a timer to ensure the layout is correct.
         if (e.target === window.document) {
             redrawHighlights();
+            // need to dismiss the box if the elements are fixed, otherwise they drift at times
+            _dismissBoxesForFixedElements();
         } else {
             if (_localHighlight || _clickHighlight || _hoverHighlight) {
                 window.setTimeout(redrawHighlights, 0);
             }
+            _dismissBoxesForFixedElements();
         }
     }
 
