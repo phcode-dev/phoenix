@@ -41,10 +41,15 @@ define(function (require, exports, module) {
         // this function is to remove the phoenix internal attributes from leaking into the user's source code
         function cleanClonedElement(clonedElement) {
             if (clonedElement.nodeType === Node.ELEMENT_NODE) {
-                clonedElement.removeAttribute("data-brackets-id");
+                // this are phoenix's internal attributes
+                const attrs = ["data-brackets-id", "data-ld-highlight"];
 
-                const children = clonedElement.querySelectorAll("[data-brackets-id]");
-                children.forEach(child => child.removeAttribute("data-brackets-id"));
+                // remove from the cloned element
+                attrs.forEach(attr => clonedElement.removeAttribute(attr));
+
+                // also remove from its childrens
+                clonedElement.querySelectorAll(attrs.map(a => `[${a}]`).join(","))
+                    .forEach(el => attrs.forEach(attr => el.removeAttribute(attr)));
             }
             return clonedElement;
         }
