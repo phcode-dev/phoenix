@@ -179,6 +179,14 @@ define({
     "LIVE_DEV_SETTINGS_FRAMEWORK": "Server Framework",
     "LIVE_DEV_SETTINGS_FRAMEWORK_CUSTOM": "Custom",
     "LIVE_DEV_SETTINGS_FRAMEWORK_PREFERENCES": "Server Framework, currently supports only docusaurus",
+    "LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT": "Show Live Preview Element Highlights on:",
+    "LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT_HOVER": "hover",
+    "LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT_CLICK": "click",
+    "LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT_PREFERENCE": "show live preview element highlights on 'hover' or 'click'. Defaults to 'hover'",
+    "LIVE_DEV_MORE_OPTIONS_SELECT_PARENT": "Select Parent",
+    "LIVE_DEV_MORE_OPTIONS_EDIT_TEXT": "Edit Text",
+    "LIVE_DEV_MORE_OPTIONS_DUPLICATE": "Duplicate",
+    "LIVE_DEV_MORE_OPTIONS_DELETE": "Delete",
     "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Getting preview from your custom server {0}",
 
     "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "Live Preview was canceled because the browser's developer tools were opened",
@@ -328,7 +336,7 @@ define({
     "SPLITVIEW_MENU_TOOLTIP": "Split the editor vertically or horizontally",
     "GEAR_MENU_TOOLTIP": "Configure Working Set",
 
-    "CMD_TOGGLE_SHOW_WORKING_SET": "Show Working Set",
+    "CMD_TOGGLE_SHOW_WORKING_SET": "Show Working Files",
     "CMD_TOGGLE_SHOW_FILE_TABS": "Show File Tab Bar",
 
     "SPLITVIEW_INFO_TITLE": "Already Open",
