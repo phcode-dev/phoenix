@@ -375,7 +375,14 @@ define(function (require, exports, module) {
         };
 
         const sourceText = editor.getTextBetween(sourceRangeObj.from, sourceRangeObj.to);
-        const targetIndent = editor.getTextBetween({ line: targetRangeObj.from.line, ch: 0 }, targetRangeObj.from);
+        let targetIndent = editor.getTextBetween({ line: targetRangeObj.from.line, ch: 0 }, targetRangeObj.from);
+        if(targetIndent && targetIndent.trim() !== "") { // because indentation should hold no text
+            let indentLength = targetIndent.search(/\S/);
+            if (indentLength === -1) {
+                indentLength = targetIndent.length;
+            }
+            targetIndent = ' '.repeat(indentLength);
+        }
 
         // Check if source is before target to determine order of operations
         // check if the source is before target or after the target
