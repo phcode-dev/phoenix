@@ -1219,7 +1219,9 @@ function RemoteFunctions(config) {
                     // data-action is to differentiate between the buttons (duplicate, delete or select-parent)
                     const action = event.currentTarget.getAttribute('data-action');
                     handleOptionClick(event, action, this.element);
-                    this.remove();
+                    if (action !== 'duplicate') {
+                        this.remove();
+                    }
                 });
             });
 
