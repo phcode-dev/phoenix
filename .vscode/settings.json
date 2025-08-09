@@ -1,3 +1,6 @@
 {
-    "github.copilot.chat.virtualTools.threshold": 0
+    "github.copilot.chat.virtualTools.threshold": 0,
+    "githubPullRequests.ignoredPullRequestBranches": [
+        "main"
+    ]
 }
