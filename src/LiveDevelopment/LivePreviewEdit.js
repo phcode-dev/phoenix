@@ -430,21 +430,15 @@ define(function (require, exports, module) {
             if (sourceBeforeTarget) {
                 // this handles the case when source is before target: insert first, then remove
                 if (insertInside) {
-                    // Insert as child inside the target element
-                    const targetText = editor.getTextBetween(targetRangeObj.from, targetRangeObj.to);
-                    const targetElement = targetText.trim();
-
-                    // Find the position just after the opening tag
-                    const openingTagMatch = targetElement.match(/^<[^>]*>/);
-                    if (openingTagMatch) {
-                        const openingTag = openingTagMatch[0];
+                    const matchingTagInfo = CodeMirror.findMatchingTag(editor._codeMirror, targetRangeObj.from);
+                    if (matchingTagInfo && matchingTagInfo.open) {
                         const insertPos = {
-                            line: targetRangeObj.from.line,
-                            ch: targetRangeObj.from.ch + openingTag.length
+                            line: matchingTagInfo.open.to.line,
+                            ch: matchingTagInfo.open.to.ch
                         };
 
-                        // Add proper indentation for child element
-                        const childIndent = targetIndent + "    "; // 4 spaces more than parent
+                        const indentInfo = editor._detectIndent();
+                        const childIndent = targetIndent + indentInfo.indent;
                         _insertElementWithIndentation(editor, insertPos, true, childIndent, sourceText);
                     }
                 } else if (insertAfter) {
@@ -489,21 +483,15 @@ define(function (require, exports, module) {
                 };
 
                 if (insertInside) {
-                    // Insert as child inside the target element
-                    const targetText = editor.getTextBetween(updatedTargetRangeObj.from, updatedTargetRangeObj.to);
-                    const targetElement = targetText.trim();
-
-                    // Find the position just after the opening tag
-                    const openingTagMatch = targetElement.match(/^<[^>]*>/);
-                    if (openingTagMatch) {
-                        const openingTag = openingTagMatch[0];
+                    const matchingTagInfo = CodeMirror.findMatchingTag(editor._codeMirror, updatedTargetRangeObj.from);
+                    if (matchingTagInfo && matchingTagInfo.open) {
                         const insertPos = {
-                            line: updatedTargetRangeObj.from.line,
-                            ch: updatedTargetRangeObj.from.ch + openingTag.length
+                            line: matchingTagInfo.open.to.line,
+                            ch: matchingTagInfo.open.to.ch
                         };
 
-                        // Add proper indentation for child element
-                        const childIndent = targetIndent + "    "; // 4 spaces more than parent
+                        const indentInfo = editor._detectIndent();
+                        const childIndent = targetIndent + indentInfo.indent;
                         _insertElementWithIndentation(editor, insertPos, true, childIndent, sourceText);
                     }
                 } else if (insertAfter) {
