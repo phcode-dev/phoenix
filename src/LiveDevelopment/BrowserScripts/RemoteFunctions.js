@@ -1028,7 +1028,7 @@ function RemoteFunctions(config) {
                 _dragStartChores(this.element);
                 _clearDropMarkers();
                 window._currentDraggedElement = this.element;
-
+                dismissMoreOptionsBox();
                 // Add drag image styling
                 event.dataTransfer.effectAllowed = "move";
             });

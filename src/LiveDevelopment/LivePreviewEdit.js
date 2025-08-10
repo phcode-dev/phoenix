@@ -344,6 +344,27 @@ define(function (require, exports, module) {
     }
 
     /**
+     * This function is to make sure that the target element doesn't lie completely within the source element
+     * because if that is the case then it means that the drag-drop was not performed correctly
+     *
+     * @param {Object} source - start/end pos of the source element
+     * @param {Object} target - start/end pos of the target element
+     * @returns {Boolean} true if target is fully inside source, false otherwise
+     */
+    function _targetInsideSource(source, target) {
+        if (
+            (source.from.line < target.from.line ||
+            (source.from.line === target.from.line && source.from.ch <= target.from.ch)) &&
+            (source.to.line > target.to.line ||
+            (source.to.line === target.to.line && source.to.ch >= target.to.ch))
+        ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * This function is responsible for moving an element from one position to another in the source code
      * it is called when there is drag-drop in the live preview
      * @param {Number} sourceId - the data-brackets-id of the element being moved
@@ -378,6 +399,12 @@ define(function (require, exports, module) {
             from: targetRange.startPos,
             to: targetRange.endPos
         };
+
+        // make sure that the target is not within the source
+        // this would otherwise remove both source and target, breaking the document
+        if (_targetInsideSource(sourceRangeObj, targetRangeObj)) {
+            return;
+        }
 
         const sourceText = editor.getTextBetween(sourceRangeObj.from, sourceRangeObj.to);
         let targetIndent = editor.getTextBetween({ line: targetRangeObj.from.line, ch: 0 }, targetRangeObj.from);
