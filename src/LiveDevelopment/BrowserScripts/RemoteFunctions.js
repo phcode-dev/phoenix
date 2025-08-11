@@ -2520,6 +2520,14 @@ function RemoteFunctions(config) {
                 clearElementBackground(previouslyClickedElement);
             }
 
+            // Clear all elements that might have hover background styling applied
+            const allElements = window.document.querySelectorAll("[data-brackets-id]");
+            for (let i = 0; i < allElements.length; i++) {
+                if (allElements[i]._originalBackgroundColor !== undefined) {
+                    clearElementBackground(allElements[i]);
+                }
+            }
+
             // Remove info box when switching modes to avoid confusion
             if (_nodeInfoBox && !_nodeMoreOptionsBox) {
                 _nodeInfoBox.remove();
