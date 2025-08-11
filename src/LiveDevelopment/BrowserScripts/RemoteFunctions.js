@@ -1233,9 +1233,8 @@ function RemoteFunctions(config) {
     };
 
     // Node info box to display DOM node ID and classes on hover
-    function NodeInfoBox(element, isFromClick) {
+    function NodeInfoBox(element) {
         this.element = element;
-        this.isFromClick = isFromClick || false;
         this.remove = this.remove.bind(this);
         this.create();
     }
@@ -1377,7 +1376,7 @@ function RemoteFunctions(config) {
 
                 .id-name,
                 .class-name {
-                    margin-top: 3px;
+                    margin-top: 2px;
                 }
 
                 .exceeded-classes {
@@ -1421,13 +1420,11 @@ function RemoteFunctions(config) {
                 boxElement.style.left = nodeInfoBoxPos.leftPos + 'px';
                 boxElement.style.top = nodeInfoBoxPos.topPos + 'px';
 
-                if(this.isFromClick) {
-                    const isBoxOverlapping = this._checkOverlap(nodeInfoBoxPos, nodeInfoBoxDimensions);
-                    if(isBoxOverlapping) {
-                        const newPos = this._getBoxPosition(nodeInfoBoxDimensions, true);
-                        boxElement.style.left = newPos.leftPos + 'px';
-                        boxElement.style.top = newPos.topPos + 'px';
-                    }
+                const isBoxOverlapping = this._checkOverlap(nodeInfoBoxPos, nodeInfoBoxDimensions);
+                if(isBoxOverlapping) {
+                    const newPos = this._getBoxPosition(nodeInfoBoxDimensions, true);
+                    boxElement.style.left = newPos.leftPos + 'px';
+                    boxElement.style.top = newPos.topPos + 'px';
                 }
             }
         },
@@ -1820,10 +1817,7 @@ function RemoteFunctions(config) {
                 if (_nodeInfoBox) {
                     _nodeInfoBox.remove();
                 }
-                // check if this element is already clicked (has more options box)
-                // this is needed so that we can check for overlapping issue among the boxes
-                const isAlreadyClicked = previouslyClickedElement === event.target && _nodeMoreOptionsBox !== null;
-                _nodeInfoBox = new NodeInfoBox(event.target, isAlreadyClicked);
+                _nodeInfoBox = new NodeInfoBox(event.target);
             }
         }
     }
@@ -1895,7 +1889,7 @@ function RemoteFunctions(config) {
             if (_nodeInfoBox) {
                 _nodeInfoBox.remove();
             }
-            _nodeInfoBox = new NodeInfoBox(element, true); // true means that the element was selected
+            _nodeInfoBox = new NodeInfoBox(element);
         } else {
             // Element is hidden, so don't show UI boxes but still apply visual styling
             _nodeMoreOptionsBox = null;
@@ -2068,7 +2062,7 @@ function RemoteFunctions(config) {
 
             if (_nodeInfoBox) {
                 _nodeInfoBox.remove();
-                _nodeInfoBox = new NodeInfoBox(element, true); // true means it came from a click
+                _nodeInfoBox = new NodeInfoBox(element);
             }
         }
     }
