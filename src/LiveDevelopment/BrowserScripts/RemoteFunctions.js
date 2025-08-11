@@ -2483,14 +2483,14 @@ function RemoteFunctions(config) {
         var oldConfig = config;
         config = JSON.parse(newConfig);
 
-        if (config.highlight) {
-            // Add hover event listeners if highlight is enabled
+        if (config.highlight || (config.isLPEditFeaturesActive && shouldShowHighlightOnHover())) {
+            // Add hover event listeners if highlight is enabled OR editHighlights is set to hover
             window.document.removeEventListener("mouseover", onElementHover);
             window.document.removeEventListener("mouseout", onElementHoverOut);
             window.document.addEventListener("mouseover", onElementHover);
             window.document.addEventListener("mouseout", onElementHoverOut);
         } else {
-            // Remove hover event listeners if highlight is disabled
+            // Remove hover event listeners only if both highlight is disabled AND editHighlights is not set to hover
             window.document.removeEventListener("mouseover", onElementHover);
             window.document.removeEventListener("mouseout", onElementHoverOut);
 
