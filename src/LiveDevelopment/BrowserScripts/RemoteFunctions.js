@@ -55,6 +55,55 @@ function RemoteFunctions(config) {
 
     var HIGHLIGHT_CLASSNAME = "__brackets-ld-highlight";
 
+    // auto-scroll variables to auto scroll the live preview when an element is dragged to the top/bottom
+    let _autoScrollTimer = null;
+    let _isAutoScrolling = false; // to disable highlights when auto scrolling
+    const AUTO_SCROLL_SPEED = 12; // pixels per scroll
+    const AUTO_SCROLL_EDGE_SIZE = 0.05; // 5% of viewport height (either top/bottom)
+
+    /**
+     * this function is responsible to auto scroll the live preview when
+     * dragging an element to the viewport edges
+     * @param {number} clientY - curr mouse Y position
+     */
+    function _handleAutoScroll(clientY) {
+        const viewportHeight = window.innerHeight;
+        const scrollEdgeSize = viewportHeight * AUTO_SCROLL_EDGE_SIZE;
+
+        // Clear existing timer
+        if (_autoScrollTimer) {
+            clearInterval(_autoScrollTimer);
+            _autoScrollTimer = null;
+        }
+
+        let scrollDirection = 0;
+
+        // check if near top edge (scroll up)
+        if (clientY <= scrollEdgeSize) {
+            scrollDirection = -AUTO_SCROLL_SPEED;
+        } else if (clientY >= viewportHeight - scrollEdgeSize) {
+            // check if near bottom edge (scroll down)
+            scrollDirection = AUTO_SCROLL_SPEED;
+        }
+
+        // Start scrolling if needed
+        if (scrollDirection !== 0) {
+            _isAutoScrolling = true;
+            _autoScrollTimer = setInterval(() => {
+                window.scrollBy(0, scrollDirection);
+            }, 16); // 16 is ~60fps
+        }
+    }
+
+    // stop autoscrolling
+    function _stopAutoScroll() {
+        if (_autoScrollTimer) {
+            clearInterval(_autoScrollTimer);
+            _autoScrollTimer = null;
+        }
+        _isAutoScrolling = false;
+    }
+
     // determine whether an event should be processed for Live Development
     function _validEvent(event) {
         if (window.navigator.platform.substr(0, 3) === "Mac") {
@@ -838,6 +887,7 @@ function RemoteFunctions(config) {
         // before creating a drop marker, make sure that we clear all the drop markers
         _clearDropMarkers();
         _createDropMarker(target, dropZone, indicatorType);
+        _handleAutoScroll(event.clientY);
     }
 
     /**
@@ -847,6 +897,7 @@ function RemoteFunctions(config) {
     function onDragLeave(event) {
         if (!event.relatedTarget) {
             _clearDropMarkers();
+            _stopAutoScroll();
         }
     }
 
@@ -874,6 +925,7 @@ function RemoteFunctions(config) {
         // skip if no valid target found or if it's the dragged element
         if (!target || target === window._currentDraggedElement) {
             _clearDropMarkers();
+            _stopAutoScroll();
             _dragEndChores(window._currentDraggedElement);
             dismissMoreOptionsBox();
             delete window._currentDraggedElement;
@@ -883,6 +935,7 @@ function RemoteFunctions(config) {
         // Skip BODY, HTML tags and elements inside HEAD
         if (target.tagName === "BODY" || target.tagName === "HTML" || _isInsideHeadTag(target)) {
             _clearDropMarkers();
+            _stopAutoScroll();
             _dragEndChores(window._currentDraggedElement);
             dismissMoreOptionsBox();
             delete window._currentDraggedElement;
@@ -922,6 +975,7 @@ function RemoteFunctions(config) {
         window._Brackets_MessageBroker.send(messageData);
 
         _clearDropMarkers();
+        _stopAutoScroll();
         _dragEndChores(window._currentDraggedElement);
         dismissMoreOptionsBox();
         delete window._currentDraggedElement;
@@ -1033,6 +1087,7 @@ function RemoteFunctions(config) {
                 event.stopPropagation();
                 _dragEndChores(this.element);
                 _clearDropMarkers();
+                _stopAutoScroll();
                 delete window._currentDraggedElement;
             });
         },
@@ -1792,6 +1847,11 @@ function RemoteFunctions(config) {
     }
 
     function onElementHover(event) {
+        // don't want highlighting and stuff when auto scrolling
+        if (_isAutoScrolling) {
+            return;
+        }
+
         // this is to check the user's settings, if they want to show the elements highlights on hover or click
         if (_hoverHighlight && config.isLPEditFeaturesActive && shouldShowHighlightOnHover()) {
             _hoverHighlight.clear();
@@ -1823,6 +1883,11 @@ function RemoteFunctions(config) {
     }
 
     function onElementHoverOut(event) {
+        // don't want highlighting and stuff when auto scrolling
+        if (_isAutoScrolling) {
+            return;
+        }
+
         // this is to check the user's settings, if they want to show the elements highlights on hover or click
         if (_hoverHighlight && config.isLPEditFeaturesActive && shouldShowHighlightOnHover()) {
             _hoverHighlight.clear();
