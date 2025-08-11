@@ -2095,32 +2095,57 @@ function RemoteFunctions(config) {
     }
 
     window.addEventListener("resize", redrawEverything);
-    // Add a capture-phase scroll listener to update highlights when
-    // any element scrolls.
-
 
     // Helper function to dismiss boxes only for elements that don't move with scroll
+    // this is needed for fixed positioned elements because otherwise the boxes will move along with scroll,
+    // but the element stays at position which will lead to drift between the element & boxes
     function _dismissBoxesForFixedElements() {
+        // first we try more options box, because its position is generally fixed even in overlapping cases
         if (_nodeMoreOptionsBox && _nodeMoreOptionsBox.element) {
-            // Store the element's position before scroll
-            if (!_nodeMoreOptionsBox._lastPosition) {
-                _nodeMoreOptionsBox._lastPosition = _nodeMoreOptionsBox.element.getBoundingClientRect();
-                return; // First time, just store position
+            const moreOptionsBoxElement = _nodeMoreOptionsBox._shadow.querySelector('.phoenix-more-options-box');
+            if(moreOptionsBoxElement) {
+
+                // get the position of both the moreOptionsBox as well as the element
+                const moreOptionsBoxBounds = moreOptionsBoxElement.getBoundingClientRect();
+                const elementBounds = _nodeMoreOptionsBox.element.getBoundingClientRect();
+
+                // this is to store the prev value, so that we can compare it the second time
+                if(!_nodeMoreOptionsBox._possDifference) {
+                    _nodeMoreOptionsBox._possDifference = moreOptionsBoxBounds.top - elementBounds.top;
+                } else {
+                    const calcNewDifference = moreOptionsBoxBounds.top - elementBounds.top;
+                    const prevDifference = _nodeMoreOptionsBox._possDifference;
+
+                    // 4 is just for pixelated differences
+                    if (Math.abs(calcNewDifference - prevDifference) > 4) {
+                        dismissMoreOptionsBox();
+                    }
+                }
             }
+        } else if (_nodeInfoBox && _nodeInfoBox.element) {
+            // if more options box didn't exist, we check with info box (logic is same)
+            const infoBoxElement = _nodeInfoBox._shadow.querySelector('.phoenix-node-info-box');
+            if (infoBoxElement) {
+                // here just we make sure that the element is same
+                if(!_nodeInfoBox._prevElement) {
+                    _nodeInfoBox._prevElement = _nodeInfoBox.element;
+                } else if(_nodeInfoBox._prevElement !== _nodeInfoBox.element) {
+                    return;
+                } else {
+                    const infoBoxBounds = infoBoxElement.getBoundingClientRect();
+                    const elementBounds = _nodeInfoBox.element.getBoundingClientRect();
 
-            const currentPosition = _nodeMoreOptionsBox.element.getBoundingClientRect();
-            const lastPosition = _nodeMoreOptionsBox._lastPosition;
+                    if(!_nodeInfoBox._possDifference) {
+                        _nodeInfoBox._possDifference = infoBoxBounds.top - elementBounds.top;
+                    } else {
+                        const calcNewDifference = infoBoxBounds.top - elementBounds.top;
+                        const prevDifference = _nodeInfoBox._possDifference;
 
-            // If element position hasn't changed despite scrolling, it's likely fixed/sticky
-            const positionUnchanged =
-                Math.abs(currentPosition.top - lastPosition.top) < 1 &&
-                Math.abs(currentPosition.left - lastPosition.left) < 1;
-
-            if (positionUnchanged) {
-                dismissMoreOptionsBox();
-            } else {
-                // Update stored position for next scroll event
-                _nodeMoreOptionsBox._lastPosition = currentPosition;
+                        if (Math.abs(calcNewDifference - prevDifference) > 4) {
+                            dismissMoreOptionsBox();
+                        }
+                    }
+                }
             }
         }
     }
