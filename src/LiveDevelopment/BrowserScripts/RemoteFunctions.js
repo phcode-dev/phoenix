@@ -693,13 +693,8 @@ function RemoteFunctions(config) {
             marker.className = indicatorType === "vertical" ? DROP_MARKER_VERTICAL_CLASSNAME : DROP_MARKER_CLASSNAME;
         }
 
-        // position the marker at the top or bottom of the element
         let rect = element.getBoundingClientRect();
-        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        let scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-
-        // base marker styling
-        marker.style.position = "absolute";
+        marker.style.position = "fixed";
         marker.style.zIndex = "2147483646";
         marker.style.borderRadius = "2px";
         marker.style.pointerEvents = "none";
@@ -708,8 +703,8 @@ function RemoteFunctions(config) {
             // inside marker - outline around the element
             marker.style.border = "1px dashed #4285F4";
             marker.style.backgroundColor = "rgba(66, 133, 244, 0.05)";
-            marker.style.left = rect.left + scrollLeft + "px";
-            marker.style.top = rect.top + scrollTop + "px";
+            marker.style.left = rect.left + "px";
+            marker.style.top = rect.top + "px";
             marker.style.width = rect.width + "px";
             marker.style.height = rect.height + "px";
             marker.style.animation = "insideMarkerPulse 1s ease-in-out infinite alternate";
@@ -723,23 +718,23 @@ function RemoteFunctions(config) {
                 // Vertical marker (for flex row containers)
                 marker.style.width = "2px";
                 marker.style.height = rect.height + "px";
-                marker.style.top = rect.top + scrollTop + "px";
+                marker.style.top = rect.top + "px";
 
                 if (dropZone === "after") {
-                    marker.style.left = rect.right + scrollLeft + 3 + "px";
+                    marker.style.left = rect.right + 3 + "px";
                 } else {
-                    marker.style.left = rect.left + scrollLeft - 5 + "px";
+                    marker.style.left = rect.left - 5 + "px";
                 }
             } else {
                 // Horizontal marker (for block/grid containers)
                 marker.style.width = rect.width + "px";
                 marker.style.height = "2px";
-                marker.style.left = rect.left + scrollLeft + "px";
+                marker.style.left = rect.left + "px";
 
                 if (dropZone === "after") {
-                    marker.style.top = rect.bottom + scrollTop + 3 + "px";
+                    marker.style.top = rect.bottom + 3 + "px";
                 } else {
-                    marker.style.top = rect.top + scrollTop - 5 + "px";
+                    marker.style.top = rect.top - 5 + "px";
                 }
             }
         }
