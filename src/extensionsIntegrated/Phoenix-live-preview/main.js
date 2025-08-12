@@ -96,8 +96,8 @@ define(function (require, exports, module) {
     </iframe>
     `;
 
-    let isEditModeEnabled = true;
-    let isHighlightModeEnabled = true;
+    let isEditModeEnabled = LiveDevelopment.isLPEditFeaturesActive;
+    let isHighlightModeEnabled = null; // Will be initialized later
 
     if(Phoenix.isTestWindow) {
         // for integ tests
@@ -147,6 +147,12 @@ define(function (require, exports, module) {
     function _toggleLivePreviewEditMode() {
         isEditModeEnabled = !isEditModeEnabled;
         LiveDevelopment.setLivePreviewEditFeaturesActive(isEditModeEnabled);
+
+        // clear any existing markers and highlights when edit mode is disabled
+        if (!isEditModeEnabled) {
+            LiveDevelopment.hideHighlight();
+            LiveDevelopment.dismissLivePreviewBoxes();
+        }
     }
 
     function _toggleHighlightMode() {
@@ -461,6 +467,11 @@ define(function (require, exports, module) {
         $panelTitle = $panel.find("#panel-live-preview-title");
         $settingsIcon = $panel.find("#livePreviewSettingsBtn");
         $modeBtn = $panel.find("#livePreviewModeBtn");
+
+        // initialize the value
+        if (isHighlightModeEnabled === null) {
+            isHighlightModeEnabled = _isLiveHighlightEnabled();
+        }
 
         $modeBtn.on("click", _showModeSelectionDropdown);
 

@@ -391,4 +391,6 @@ define(function main(require, exports, module) {
     exports.setLivePreviewEditFeaturesActive = setLivePreviewEditFeaturesActive;
     exports.getConnectionIds = MultiBrowserLiveDev.getConnectionIds;
     exports.getLivePreviewDetails = MultiBrowserLiveDev.getLivePreviewDetails;
+    exports.hideHighlight = MultiBrowserLiveDev.hideHighlight;
+    exports.dismissLivePreviewBoxes = MultiBrowserLiveDev.dismissLivePreviewBoxes;
 });
