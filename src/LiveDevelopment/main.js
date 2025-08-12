@@ -354,6 +354,14 @@ define(function main(require, exports, module) {
 
     config.highlight = PreferencesManager.getViewState("livedevHighlight");
 
+    function setLivePreviewEditFeaturesActive(enabled) {
+        isLPEditFeaturesActive = enabled;
+        config.isLPEditFeaturesActive = enabled;
+        if (MultiBrowserLiveDev && MultiBrowserLiveDev.status >= MultiBrowserLiveDev.STATUS_ACTIVE) {
+            MultiBrowserLiveDev.updateConfig(JSON.stringify(config));
+        }
+    }
+
     // init commands
     CommandManager.register(Strings.CMD_LIVE_HIGHLIGHT, Commands.FILE_LIVE_HIGHLIGHT, togglePreviewHighlight);
     CommandManager.register(Strings.CMD_RELOAD_LIVE_PREVIEW, Commands.CMD_RELOAD_LIVE_PREVIEW, _handleReloadLivePreviewCommand);
@@ -380,6 +388,7 @@ define(function main(require, exports, module) {
     exports.setLivePreviewPinned = setLivePreviewPinned;
     exports.setLivePreviewTransportBridge = setLivePreviewTransportBridge;
     exports.togglePreviewHighlight = togglePreviewHighlight;
+    exports.setLivePreviewEditFeaturesActive = setLivePreviewEditFeaturesActive;
     exports.getConnectionIds = MultiBrowserLiveDev.getConnectionIds;
     exports.getLivePreviewDetails = MultiBrowserLiveDev.getLivePreviewDetails;
 });

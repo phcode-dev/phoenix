@@ -62,6 +62,7 @@ define(function (require, exports, module) {
         NativeApp           = require("utils/NativeApp"),
         StringUtils         = require("utils/StringUtils"),
         FileSystem          = require("filesystem/FileSystem"),
+        DropdownButton     = require("widgets/DropdownButton"),
         BrowserStaticServer  = require("./BrowserStaticServer"),
         NodeStaticServer  = require("./NodeStaticServer"),
         LivePreviewSettings  = require("./LivePreviewSettings"),
@@ -95,6 +96,9 @@ define(function (require, exports, module) {
     </iframe>
     `;
 
+    let isEditModeEnabled = true;
+    let isHighlightModeEnabled = true;
+
     if(Phoenix.isTestWindow) {
         // for integ tests
         window._livePreviewIntegTest = {
@@ -120,7 +124,8 @@ define(function (require, exports, module) {
         $safariButtonBallast,
         $edgeButtonBallast,
         $firefoxButtonBallast,
-        $panelTitle;
+        $panelTitle,
+        $modeBtn;
 
     let customLivePreviewBannerShown = false;
 
@@ -138,6 +143,71 @@ define(function (require, exports, module) {
         const editor  = EditorManager.getActiveEditor();
         editor.focus();
     });
+
+
+    function _toggleLivePreviewEditMode() {
+        isEditModeEnabled = !isEditModeEnabled;
+        LiveDevelopment.setLivePreviewEditFeaturesActive(isEditModeEnabled);
+    }
+
+    function _toggleHighlightMode() {
+        isHighlightModeEnabled = !isHighlightModeEnabled;
+
+        // only toggle highlights if the current state doesn't match what we want
+        const currentHighlightState = _isLiveHighlightEnabled();
+        if (currentHighlightState !== isHighlightModeEnabled) {
+            _toggleLiveHighlights();
+        }
+
+        Metrics.countEvent(
+            Metrics.EVENT_TYPE.LIVE_PREVIEW, "highlightMode", isHighlightModeEnabled ? "enable" : "disable"
+        );
+    }
+
+    function _showModeSelectionDropdown(event) {
+        const items = ["Edit Mode", "Highlight Mode"];
+
+        const dropdown = new DropdownButton.DropdownButton("", items, function (item, index) {
+            // Add checkmark if the mode is enabled
+            if ((index === 0 && isEditModeEnabled) || (index === 1 && isHighlightModeEnabled)) {
+                return "✓ " + item;
+            }
+            // when disabled we remove the check, add spacing so that content remains aligned
+            return "&nbsp;".repeat(4) + item;
+        });
+
+        // Append to document body for absolute positioning
+        $("body").append(dropdown.$button);
+
+        // Position the dropdown at the mouse coordinates
+        dropdown.$button.css({
+            position: "absolute",
+            left: event.pageX + "px",
+            top: event.pageY + "px",
+            zIndex: 1000
+        });
+
+        // Add a custom class to override the max-height
+        dropdown.dropdownExtraClasses = "mode-context-menu";
+
+        dropdown.showDropdown();
+
+        $(".mode-context-menu").css("max-height", "300px");
+
+        // handle the option selection
+        dropdown.on("select", function (e, item, index) {
+            if (index === 0) {
+                _toggleLivePreviewEditMode();
+            } else if (index === 1) {
+                _toggleHighlightMode();
+            }
+        });
+
+        // Remove the button after the dropdown is hidden
+        dropdown.$button.css({
+            display: "none"
+        });
+    }
 
     function _isLiveHighlightEnabled() {
         return CommandManager.get(Commands.FILE_LIVE_HIGHLIGHT).getChecked();
@@ -402,6 +472,9 @@ define(function (require, exports, module) {
         $firefoxButtonBallast = $panel.find("#firefoxButtonBallast");
         $panelTitle = $panel.find("#panel-live-preview-title");
         $settingsIcon = $panel.find("#livePreviewSettingsBtn");
+        $modeBtn = $panel.find("#livePreviewModeBtn");
+
+        $modeBtn.on("click", _showModeSelectionDropdown);
 
         $panel.find(".live-preview-settings-banner-btn").on("click", ()=>{
             CommandManager.execute(Commands.FILE_LIVE_FILE_PREVIEW_SETTINGS);

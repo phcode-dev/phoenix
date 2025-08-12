@@ -100,3 +100,33 @@
 .pointer-icon {
     background: url("./images/sprites.svg#pointer-icon") center no-repeat;
 }
+
+#livePreviewModeBtn {
+    min-width: fit-content;
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+    margin-right: 8px;
+    max-width: 80%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: pointer;
+    background: #3C3F41;
+    box-shadow: none;
+    border: 1px solid #3C3F41;
+    box-sizing: border-box;
+    color: #a0a0a0;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+#livePreviewModeBtn:hover {
+    border: 1px solid rgba(0, 0, 0, 0.24) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+}
+
+#livePreviewModeBtn.btn-dropdown::after {
+    top: 9px !important;
+    left: 90px !important;
+}
