@@ -113,7 +113,6 @@ define(function (require, exports, module) {
         $iframe,
         $panel,
         $pinUrlBtn,
-        $highlightBtn,
         $livePreviewPopBtn,
         $reloadBtn,
         $chromeButton,
@@ -357,15 +356,6 @@ define(function (require, exports, module) {
         Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "pinURLBtn", "click");
     }
 
-    function _updateLiveHighlightToggleStatus() {
-        let isHighlightEnabled = _isLiveHighlightEnabled();
-        if(isHighlightEnabled){
-            $highlightBtn.removeClass('pointer-icon').addClass('pointer-fill-icon');
-        } else {
-            $highlightBtn.removeClass('pointer-fill-icon').addClass('pointer-icon');
-        }
-    }
-
     function _toggleLiveHighlights() {
         LiveDevelopment.togglePreviewHighlight();
         Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "HighlightBtn", "click");
@@ -442,7 +432,6 @@ define(function (require, exports, module) {
             Strings: Strings,
             livePreview: Strings.LIVE_DEV_STATUS_TIP_OUT_OF_SYNC,
             clickToReload: Strings.LIVE_DEV_CLICK_TO_RELOAD_PAGE,
-            toggleLiveHighlight: Strings.LIVE_DEV_TOGGLE_LIVE_HIGHLIGHT,
             livePreviewSettings: Strings.LIVE_DEV_SETTINGS,
             clickToPopout: Strings.LIVE_DEV_CLICK_POPOUT,
             openInChrome: Strings.LIVE_DEV_OPEN_CHROME,
@@ -458,7 +447,6 @@ define(function (require, exports, module) {
         $panel = $(Mustache.render(panelHTML, templateVars));
         $iframe = $panel.find("#panel-live-preview-frame");
         $pinUrlBtn = $panel.find("#pinURLButton");
-        $highlightBtn = $panel.find("#highlightLPButton");
         $reloadBtn = $panel.find("#reloadLivePreviewButton");
         $livePreviewPopBtn = $panel.find("#livePreviewPopoutButton");
         $chromeButton = $panel.find("#chromeButton");
@@ -529,9 +517,7 @@ define(function (require, exports, module) {
             PANEL_MIN_SIZE, $icon, INITIAL_PANEL_SIZE);
 
         WorkspaceManager.recomputeLayout(false);
-        _updateLiveHighlightToggleStatus();
         $pinUrlBtn.click(_togglePinUrl);
-        $highlightBtn.click(_toggleLiveHighlights);
         $livePreviewPopBtn.click(_popoutLivePreview);
         $reloadBtn.click(()=>{
             _loadPreview(true, true);
@@ -903,7 +889,6 @@ define(function (require, exports, module) {
         fileMenu.addMenuDivider(Menus.BEFORE, Commands.FILE_LIVE_FILE_PREVIEW);
         LiveDevelopment.openLivePreview();
         LiveDevelopment.on(LiveDevelopment.EVENT_OPEN_PREVIEW_URL, _openLivePreviewURL);
-        LiveDevelopment.on(LiveDevelopment.EVENT_LIVE_HIGHLIGHT_PREF_CHANGED, _updateLiveHighlightToggleStatus);
         LiveDevelopment.on(LiveDevelopment.EVENT_LIVE_PREVIEW_RELOAD, ()=>{
             // Usually, this event is listened by live preview iframes/tabs and they initiate a location.reload.
             // But in firefox, the embedded iframe will throw a 404 when we try to reload from within the iframe as
