@@ -1357,7 +1357,37 @@ function RemoteFunctions(config) {
                 leftPos = offset.left;
 
                 if (elemBounds.top - boxDimensions.height < 6) {
-                    topPos = offset.top + elemBounds.height + 6;
+                    // check if placing the box below would cause viewport height increase
+                    // we need this or else it might cause a flickering issue
+                    // read this to know why flickering occurs:
+                    // when we hover over the bottom part of a tall element, the info box appears below it.
+                    // this increases the live preview height, which makes the cursor position relatively
+                    // higher due to content shift. the cursor then moves out of the element boundary,
+                    // ending the hover state. this makes the info box disappear, decreasing the height
+                    // back, causing the cursor to fall back into the element, restarting the hover cycle.
+                    // this creates a continuous flickering loop.
+                    const bottomPosition = offset.top + elemBounds.height + 6;
+                    const wouldIncreaseViewportHeight = bottomPosition + boxDimensions.height > window.innerHeight;
+
+                    // we only need to use floating position during hover mode (not on click mode)
+                    const isHoverMode = shouldShowHighlightOnHover();
+                    const shouldUseFloatingPosition = wouldIncreaseViewportHeight && isHoverMode;
+
+                    if (shouldUseFloatingPosition) {
+                        // float over element at bottom-right to prevent layout shift during hover
+                        topPos = offset.top + elemBounds.height - boxDimensions.height - 6;
+                        leftPos = offset.left + elemBounds.width - boxDimensions.width;
+
+                        // make sure it doesn't go off-screen
+                        if (leftPos < 0) {
+                            leftPos = offset.left; // align to left edge of element
+                        }
+                        if (topPos < 0) {
+                            topPos = offset.top + 6; // for the top of element
+                        }
+                    } else {
+                        topPos = bottomPosition;
+                    }
                 }
 
                 // Check if the box would go off the right of the viewport
