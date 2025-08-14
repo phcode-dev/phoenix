@@ -96,9 +96,6 @@ define(function (require, exports, module) {
     </iframe>
     `;
 
-    let isEditModeEnabled = LiveDevelopment.isLPEditFeaturesActive;
-    let isHighlightModeEnabled = null; // Will be initialized later
-
     if(Phoenix.isTestWindow) {
         // for integ tests
         window._livePreviewIntegTest = {
@@ -144,42 +141,48 @@ define(function (require, exports, module) {
     });
 
 
-    function _toggleLivePreviewEditMode() {
-        isEditModeEnabled = !isEditModeEnabled;
-        LiveDevelopment.setLivePreviewEditFeaturesActive(isEditModeEnabled);
+    // this function is to check if the live highlight feature is enabled or not
+    function _isLiveHighlightEnabled() {
+        return CommandManager.get(Commands.FILE_LIVE_HIGHLIGHT).getChecked();
+    }
 
-        // clear any existing markers and highlights when edit mode is disabled
-        if (!isEditModeEnabled) {
-            LiveDevelopment.hideHighlight();
-            LiveDevelopment.dismissLivePreviewBoxes();
+    /**
+     * Live Preview 'Preview Mode'. in this mode no live preview highlight or any such features are active
+     * Just the plain website
+     */
+    function _LPPreviewMode() {
+        LiveDevelopment.setLivePreviewEditFeaturesActive(false);
+        if(_isLiveHighlightEnabled()) {
+            LiveDevelopment.togglePreviewHighlight();
         }
     }
 
-    function _toggleHighlightMode() {
-        isHighlightModeEnabled = !isHighlightModeEnabled;
-
-        // only toggle highlights if the current state doesn't match what we want
-        const currentHighlightState = _isLiveHighlightEnabled();
-        if (currentHighlightState !== isHighlightModeEnabled) {
-            _toggleLiveHighlights();
+    /**
+     * Live Preview 'Inspect Mode'. in this mode only the live preview matching with the source code is active
+     * Meaning that if user clicks on some element that element's source code will be highlighted and vice versa
+     */
+    function _LPInspectMode() {
+        LiveDevelopment.setLivePreviewEditFeaturesActive(false);
+        if(!_isLiveHighlightEnabled()) {
+            LiveDevelopment.togglePreviewHighlight();
         }
+    }
 
-        Metrics.countEvent(
-            Metrics.EVENT_TYPE.LIVE_PREVIEW, "highlightMode", isHighlightModeEnabled ? "enable" : "disable"
-        );
+    /**
+     * Live Preview 'Edit Mode'. this is the most interactive mode, in here the inspect features are available
+     * along with that we also show element's highlighted boxes and such
+     */
+    function _LPEditMode() {
+        LiveDevelopment.setLivePreviewEditFeaturesActive(true);
+        if(!_isLiveHighlightEnabled()) {
+            LiveDevelopment.togglePreviewHighlight();
+        }
     }
 
     function _showModeSelectionDropdown(event) {
-        const items = ["Edit Mode", "Highlight Mode"];
+        const items = ["Preview Mode", "Inspect Mode", "Edit Mode"];
 
-        const dropdown = new DropdownButton.DropdownButton("", items, function (item, index) {
-            // Add checkmark if the mode is enabled
-            if ((index === 0 && isEditModeEnabled) || (index === 1 && isHighlightModeEnabled)) {
-                return "✓ " + item;
-            }
-            // when disabled we remove the check, add spacing so that content remains aligned
-            return "&nbsp;".repeat(4) + item;
-        });
+        const dropdown = new DropdownButton.DropdownButton("", items);
 
         // Append to document body for absolute positioning
         $("body").append(dropdown.$button);
@@ -202,9 +205,18 @@ define(function (require, exports, module) {
         // handle the option selection
         dropdown.on("select", function (e, item, index) {
             if (index === 0) {
-                _toggleLivePreviewEditMode();
+                _LPPreviewMode();
             } else if (index === 1) {
-                _toggleHighlightMode();
+                _LPInspectMode();
+            } else if (index === 2) {
+                _LPEditMode();
+            }
+
+            // need to dismiss the previous highlighting and stuff
+            LiveDevelopment.hideHighlight();
+            LiveDevelopment.dismissLivePreviewBoxes();
+            if($modeBtn) {
+                $modeBtn[0].textContent = item;
             }
         });
 
@@ -212,10 +224,6 @@ define(function (require, exports, module) {
         dropdown.$button.css({
             display: "none"
         });
-    }
-
-    function _isLiveHighlightEnabled() {
-        return CommandManager.get(Commands.FILE_LIVE_HIGHLIGHT).getChecked();
     }
 
     function _getTrustProjectPage() {
@@ -362,11 +370,6 @@ define(function (require, exports, module) {
         Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "pinURLBtn", "click");
     }
 
-    function _toggleLiveHighlights() {
-        LiveDevelopment.togglePreviewHighlight();
-        Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "HighlightBtn", "click");
-    }
-
     const ALLOWED_BROWSERS_NAMES = [`chrome`, `firefox`, `safari`, `edge`, `browser`, `browserPrivate`];
     function _popoutLivePreview(browserName) {
         // We cannot use $iframe.src here if panel is hidden
@@ -468,13 +471,6 @@ define(function (require, exports, module) {
         $settingsIcon = $panel.find("#livePreviewSettingsBtn");
         $modeBtn = $panel.find("#livePreviewModeBtn");
 
-        // initialize the value
-        if (isHighlightModeEnabled === null) {
-            isHighlightModeEnabled = _isLiveHighlightEnabled();
-        }
-
-        $modeBtn.on("click", _showModeSelectionDropdown);
-
         $panel.find(".live-preview-settings-banner-btn").on("click", ()=>{
             CommandManager.execute(Commands.FILE_LIVE_FILE_PREVIEW_SETTINGS);
             Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "settingsBtnBanner", "click");
@@ -506,6 +502,9 @@ define(function (require, exports, module) {
         $firefoxButton.on("click", ()=>{
             _popoutLivePreview("firefox");
         });
+
+        $modeBtn.on("click", _showModeSelectionDropdown);
+
         _showOpenBrowserIcons();
         $settingsIcon.click(()=>{
             CommandManager.execute(Commands.FILE_LIVE_FILE_PREVIEW_SETTINGS);

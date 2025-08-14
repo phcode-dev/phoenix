@@ -97,8 +97,7 @@
     min-width: fit-content;
     display: flex;
     align-items: center;
-    margin-bottom: 4px;
-    margin-right: 8px;
+    margin-right: 4px;
     max-width: 80%;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -120,5 +119,4 @@
 
 #livePreviewModeBtn.btn-dropdown::after {
     top: 9px !important;
-    left: 90px !important;
 }
