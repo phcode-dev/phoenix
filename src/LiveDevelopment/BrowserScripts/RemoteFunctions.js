@@ -207,6 +207,21 @@ function RemoteFunctions(config) {
     }
 
     /**
+     * This function gets called when the AI button is clicked
+     * it shows a AI prompt box to the user
+     * @param {Event} event
+     * @param {DOMElement} element - the HTML DOM element that was clicked
+     */
+    function _handleAIOptionClick(event, element) {
+        // make sure there is no existing AI prompt box, also remove more options box
+        dismissAIPromptBox();
+        dismissNodeMoreOptionsBox();
+
+        // create a new AI prompt box
+        _aiPromptBox = new AIPromptBox(element);
+    }
+
+    /**
      * This function gets called when the delete button is clicked
      * it sends a message to the editor using postMessage to delete the element from the source code
      * @param {Event} event
@@ -295,6 +310,8 @@ function RemoteFunctions(config) {
             _handleDuplicateOptionClick(e, element);
         } else if (action === "delete") {
             _handleDeleteOptionClick(e, element);
+        } else if (action === "ai") {
+            _handleAIOptionClick(e, element);
         }
     }
 
@@ -927,7 +944,7 @@ function RemoteFunctions(config) {
             _clearDropMarkers();
             _stopAutoScroll();
             _dragEndChores(window._currentDraggedElement);
-            dismissMoreOptionsBox();
+            dismissUIAndCleanupState();
             delete window._currentDraggedElement;
             return;
         }
@@ -937,7 +954,7 @@ function RemoteFunctions(config) {
             _clearDropMarkers();
             _stopAutoScroll();
             _dragEndChores(window._currentDraggedElement);
-            dismissMoreOptionsBox();
+            dismissUIAndCleanupState();
             delete window._currentDraggedElement;
             return;
         }
@@ -977,7 +994,7 @@ function RemoteFunctions(config) {
         _clearDropMarkers();
         _stopAutoScroll();
         _dragEndChores(window._currentDraggedElement);
-        dismissMoreOptionsBox();
+        dismissUIAndCleanupState();
         delete window._currentDraggedElement;
     }
 
@@ -1077,7 +1094,7 @@ function RemoteFunctions(config) {
                 _dragStartChores(this.element);
                 _clearDropMarkers();
                 window._currentDraggedElement = this.element;
-                dismissMoreOptionsBox();
+                dismissUIAndCleanupState();
                 // Add drag image styling
                 event.dataTransfer.effectAllowed = "move";
             });
@@ -1126,6 +1143,12 @@ function RemoteFunctions(config) {
 
             // the icons that is displayed in the box
             const ICONS = {
+                ai: `
+                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0,0,256,256">
+                    <g fill="#fffbfb" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(4,4)"><path d="M30.701,41.663l-2.246,5.145c-0.864,1.978 -3.6,1.978 -4.464,0l-2.247,-5.145c-1.999,-4.579 -5.598,-8.224 -10.086,-10.216l-6.183,-2.745c-1.966,-0.873 -1.966,-3.733 0,-4.605l5.99,-2.659c4.604,-2.044 8.267,-5.824 10.232,-10.559l2.276,-5.483c0.844,-2.035 3.656,-2.035 4.5,0l2.276,5.483c1.965,4.735 5.628,8.515 10.232,10.559l5.99,2.659c1.966,0.873 1.966,3.733 0,4.605l-6.183,2.745c-4.489,1.992 -8.088,5.637 -10.087,10.216z"></path><path d="M30.701,41.663l-2.246,5.145c-0.864,1.978 -3.6,1.978 -4.464,0l-2.247,-5.145c-1.999,-4.579 -5.598,-8.224 -10.086,-10.216l-6.183,-2.745c-1.966,-0.873 -1.966,-3.733 0,-4.605l5.99,-2.659c4.604,-2.044 8.267,-5.824 10.232,-10.559l2.276,-5.483c0.844,-2.035 3.656,-2.035 4.5,0l2.276,5.483c1.965,4.735 5.628,8.515 10.232,10.559l5.99,2.659c1.966,0.873 1.966,3.733 0,4.605l-6.183,2.745c-4.489,1.992 -8.088,5.637 -10.087,10.216z"></path><g><path d="M51.578,57.887l-0.632,1.448c-0.462,1.06 -1.93,1.06 -2.393,0l-0.632,-1.448c-1.126,-2.582 -3.155,-4.637 -5.686,-5.762l-1.946,-0.865c-1.052,-0.468 -1.052,-1.998 0,-2.465l1.838,-0.816c2.596,-1.153 4.661,-3.285 5.768,-5.955l0.649,-1.565c0.452,-1.091 1.96,-1.091 2.412,0l0.649,1.565c1.107,2.669 3.172,4.801 5.768,5.955l1.837,0.816c1.053,0.468 1.053,1.998 0,2.465l-1.946,0.865c-2.531,1.125 -4.56,3.18 -5.686,5.762z"></path><path d="M51.578,57.887l-0.632,1.448c-0.462,1.06 -1.93,1.06 -2.393,0l-0.632,-1.448c-1.126,-2.582 -3.155,-4.637 -5.686,-5.762l-1.946,-0.865c-1.052,-0.468 -1.052,-1.998 0,-2.465l1.838,-0.816c2.596,-1.153 4.661,-3.285 5.768,-5.955l0.649,-1.565c0.452,-1.091 1.96,-1.091 2.412,0l0.649,1.565c1.107,2.669 3.172,4.801 5.768,5.955l1.837,0.816c1.053,0.468 1.053,1.998 0,2.465l-1.946,0.865c-2.531,1.125 -4.56,3.18 -5.686,5.762z"></path></g></g></g>
+                </svg>
+                `,
+
                 arrowUp: `
                 <svg viewBox="0 0 24 24" fill="currentColor">
                   <path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.59 5.58L20 12l-8-8-8 8z"/>
@@ -1155,6 +1178,11 @@ function RemoteFunctions(config) {
             };
 
             let content = `<div class="node-options">`;
+
+            // not sure if we need to hide/show the AI icon, right now showing always
+            content += `<span data-action="ai" title="Phoenix AI">
+                    ${ICONS.ai}
+                </span>`;
 
             // Only include select parent option if element supports it
             if (showSelectParentOption) {
@@ -1522,6 +1550,240 @@ function RemoteFunctions(config) {
         }
     };
 
+    // AI prompt box, it is displayed when user clicks on the AI button in the more options box
+    function AIPromptBox(element) {
+        this.element = element;
+        this.remove = this.remove.bind(this);
+        this.create();
+    }
+
+    AIPromptBox.prototype = {
+        _getBoxPosition: function(boxWidth, boxHeight) {
+            const elemBounds = this.element.getBoundingClientRect();
+            const offset = _screenOffset(this.element);
+
+            let topPos = offset.top - boxHeight - 6; // 6 for just some little space to breathe
+            let leftPos = offset.left + elemBounds.width - boxWidth;
+
+            // check if the box would go off the top of the viewport
+            if (elemBounds.top - boxHeight < 6) {
+                topPos = offset.top + elemBounds.height + 6;
+            }
+
+            // check if the box would go off the left of the viewport
+            if (leftPos < 6) {
+                leftPos = offset.left;
+            }
+
+            // check if the box would go off the right of the viewport
+            const viewportWidth = window.innerWidth;
+            if (leftPos + boxWidth > viewportWidth - 6) {
+                leftPos = viewportWidth - boxWidth - 6;
+            }
+
+            // ensure leftPos is never negative
+            leftPos = Math.max(6, leftPos);
+
+            return {topPos: topPos, leftPos: leftPos};
+        },
+
+        _style: function() {
+            this.body = window.document.createElement("div");
+            // using shadow dom so that user styles doesn't override it
+            const shadow = this.body.attachShadow({ mode: "open" });
+
+            // Calculate responsive dimensions based on viewport width
+            const viewportWidth = window.innerWidth;
+            let boxWidth, boxHeight;
+
+            if (viewportWidth >= 400) {
+                boxWidth = Math.min(310, viewportWidth * 0.75); // Max 310px or 75% of viewport
+                boxHeight = 60;
+            } else if (viewportWidth >= 300) {
+                boxWidth = Math.min(280, viewportWidth * 0.85); // Smaller width for medium screens
+                boxHeight = 80; // Increase height for better usability
+            } else {
+                boxWidth = Math.min(250, viewportWidth * 0.9); // Very narrow screens
+                boxHeight = 100; // Even more height for very small screens
+            }
+
+            const styles = `
+                .phoenix-ai-prompt-box {
+                    position: absolute;
+                    background: white;
+                    border: 1px solid #4285F4;
+                    border-radius: 8px;
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+                    font-family: Arial, sans-serif;
+                    z-index: 2147483647;
+                    width: ${boxWidth}px;
+                    padding: 0;
+                }
+
+                .phoenix-ai-prompt-input-container {
+                    position: relative;
+                }
+
+                .phoenix-ai-prompt-textarea {
+                    width: 100%;
+                    height: ${boxHeight}px;
+                    border: none;
+                    border-radius: 8px;
+                    padding: 12px 40px 12px 16px;
+                    font-size: 14px;
+                    font-family: Arial, sans-serif;
+                    resize: none;
+                    outline: none;
+                    box-sizing: border-box;
+                    background: #f9f9f9;
+                }
+
+                .phoenix-ai-prompt-textarea:focus {
+                    background: white;
+                }
+
+                .phoenix-ai-prompt-textarea::placeholder {
+                    color: #999;
+                }
+
+                .phoenix-ai-prompt-send-button {
+                    position: absolute;
+                    right: 12px;
+                    bottom: 8px;
+                    width: 28px;
+                    height: 28px;
+                    border: none;
+                    border-radius: 50%;
+                    background: #4285F4;
+                    color: white;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 14px;
+                    transition: background-color 0.2s;
+                    line-height: 0.5;
+                }
+
+                .phoenix-ai-prompt-send-button:hover:not(:disabled) {
+                    background: #4285F4;
+                }
+
+                .phoenix-ai-prompt-send-button:disabled {
+                    background: #dadce0;
+                    color: #9aa0a6;
+                    cursor: not-allowed;
+                }
+            `;
+
+            const content = `
+                <div class="phoenix-ai-prompt-box">
+                    <div class="phoenix-ai-prompt-input-container">
+                        <textarea
+                            class="phoenix-ai-prompt-textarea"
+                            placeholder="Ask Phoenix AI to modify this element..."
+                        ></textarea>
+                        <button class="phoenix-ai-prompt-send-button" disabled>
+                            ➤
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            shadow.innerHTML = `<style>${styles}</style>${content}`;
+            this._shadow = shadow;
+        },
+
+        create: function() {
+            this._style();
+            window.document.body.appendChild(this.body);
+
+            // Get the actual rendered dimensions of the box and position it
+            const boxElement = this._shadow.querySelector('.phoenix-ai-prompt-box');
+            if (boxElement) {
+                const boxRect = boxElement.getBoundingClientRect();
+                const pos = this._getBoxPosition(boxRect.width, boxRect.height);
+
+                boxElement.style.left = pos.leftPos + 'px';
+                boxElement.style.top = pos.topPos + 'px';
+            }
+
+            // Focus on the textarea
+            const textarea = this._shadow.querySelector('.phoenix-ai-prompt-textarea');
+            if (textarea) { // small timer to make sure that the text area element is fetched
+                setTimeout(() => textarea.focus(), 50);
+            }
+
+            this._attachEventHandlers();
+
+            // Prevent clicks inside the AI box from bubbling up and closing it
+            this.body.addEventListener('click', (event) => {
+                event.stopPropagation();
+            });
+        },
+
+        _attachEventHandlers: function() {
+            const textarea = this._shadow.querySelector('.phoenix-ai-prompt-textarea');
+            const sendButton = this._shadow.querySelector('.phoenix-ai-prompt-send-button');
+
+            // Handle textarea input to enable/disable send button
+            if (textarea && sendButton) {
+                textarea.addEventListener('input', (event) => {
+                    const hasText = event.target.value.trim().length > 0;
+                    sendButton.disabled = !hasText;
+                });
+
+                // enter key
+                textarea.addEventListener('keydown', (event) => {
+                    if (event.key === 'Enter' && !event.shiftKey) {
+                        event.preventDefault();
+                        if (textarea.value.trim()) {
+                            this._handleSend(textarea.value.trim());
+                        }
+                    } else if (event.key === 'Escape') {
+                        event.preventDefault();
+                        this.remove();
+                    }
+                });
+            }
+
+            // send button click
+            if (sendButton) {
+                sendButton.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    if (textarea && textarea.value.trim()) {
+                        this._handleSend(textarea.value.trim());
+                    }
+                });
+            }
+        },
+
+        _handleSend: function(prompt) {
+            // TODO: need to implement the logic for backend handling here
+            console.log('AI Prompt:', prompt, 'for element:', this.element);
+            this.remove();
+        },
+
+        remove: function() {
+            if (this._handleKeydown) {
+                document.removeEventListener('keydown', this._handleKeydown);
+                this._handleKeydown = null;
+            }
+
+            if (this._handleResize) {
+                window.removeEventListener('resize', this._handleResize);
+                this._handleResize = null;
+            }
+
+            if (this.body && this.body.parentNode && this.body.parentNode === window.document.body) {
+                window.document.body.removeChild(this.body);
+                this.body = null;
+                _aiPromptBox = null;
+            }
+        }
+    };
+
     function Highlight(color, trigger) {
         this.color = color;
         this.trigger = !!trigger;
@@ -1829,6 +2091,7 @@ function RemoteFunctions(config) {
     var _clickHighlight;
     var _nodeInfoBox;
     var _nodeMoreOptionsBox;
+    var _aiPromptBox;
     var _setup = false;
 
 
@@ -1904,9 +2167,7 @@ function RemoteFunctions(config) {
                 _hoverHighlight.add(event.target, false, false); // false means no auto-scroll
 
                 // Create info box for the hovered element
-                if (_nodeInfoBox) {
-                    _nodeInfoBox.remove();
-                }
+                dismissNodeInfoBox();
                 _nodeInfoBox = new NodeInfoBox(event.target);
             }
         }
@@ -1933,10 +2194,7 @@ function RemoteFunctions(config) {
             }
 
             // Remove info box when mouse leaves the element
-            if (_nodeInfoBox) {
-                _nodeInfoBox.remove();
-                _nodeInfoBox = null;
-            }
+            dismissNodeInfoBox();
         }
     }
 
@@ -1980,20 +2238,13 @@ function RemoteFunctions(config) {
         if (isElementVisible(element)) {
             _nodeMoreOptionsBox = new NodeMoreOptionsBox(element);
 
-            // show the info box when a DOM element is selected
-            if (_nodeInfoBox) {
-                _nodeInfoBox.remove();
-            }
+            // show the info box when a DOM element is selected, but first remove any existing info box
+            dismissNodeInfoBox();
             _nodeInfoBox = new NodeInfoBox(element);
         } else {
             // Element is hidden, so don't show UI boxes but still apply visual styling
             _nodeMoreOptionsBox = null;
-
-            // Remove any existing info box since the element is not visible
-            if (_nodeInfoBox) {
-                _nodeInfoBox.remove();
-                _nodeInfoBox = null;
-            }
+            dismissNodeInfoBox();
         }
 
         element._originalOutline = element.style.outline;
@@ -2019,6 +2270,8 @@ function RemoteFunctions(config) {
      * @param {Event} event
      */
     function onClick(event) {
+        dismissAIPromptBox();
+
         // make sure that the feature is enabled and also the clicked element has the attribute 'data-brackets-id'
         if (
             config.isLPEditFeaturesActive &&
@@ -2036,7 +2289,7 @@ function RemoteFunctions(config) {
             _nodeMoreOptionsBox &&
             (event.target.tagName === "HTML" || event.target.tagName === "BODY" || _isInsideHeadTag(event.target))
         ) {
-            dismissMoreOptionsBox();
+            dismissUIAndCleanupState();
         }
     }
 
@@ -2075,7 +2328,7 @@ function RemoteFunctions(config) {
 
     function onKeyDown(event) {
         if ((event.key === "Escape" || event.key === "Esc")) {
-            dismissMoreOptionsBox();
+            dismissUIAndCleanupState();
         }
         if (!_setup && _validEvent(event)) {
             window.document.addEventListener("keyup", onKeyUp);
@@ -2087,9 +2340,6 @@ function RemoteFunctions(config) {
             _setup = true;
         }
     }
-
-    /** Public Commands **********************************************************/
-
 
     // remove active highlights
     function hideHighlight() {
@@ -2144,7 +2394,7 @@ function RemoteFunctions(config) {
 
         // if no valid element present we dismiss the boxes
         if (!foundValidElement) {
-            dismissMoreOptionsBox();
+            dismissUIAndCleanupState();
         }
     }
 
@@ -2156,9 +2406,15 @@ function RemoteFunctions(config) {
             _nodeMoreOptionsBox = new NodeMoreOptionsBox(element);
 
             if (_nodeInfoBox) {
-                _nodeInfoBox.remove();
+                dismissNodeInfoBox();
                 _nodeInfoBox = new NodeInfoBox(element);
             }
+        }
+
+        if (_aiPromptBox) {
+            const element = _aiPromptBox.element;
+            _aiPromptBox.remove();
+            _aiPromptBox = new AIPromptBox(element);
         }
     }
 
@@ -2202,7 +2458,7 @@ function RemoteFunctions(config) {
 
                     // 4 is just for pixelated differences
                     if (Math.abs(calcNewDifference - prevDifference) > 4) {
-                        dismissMoreOptionsBox();
+                        dismissUIAndCleanupState();
                     }
                 }
             }
@@ -2226,7 +2482,7 @@ function RemoteFunctions(config) {
                         const prevDifference = _nodeInfoBox._possDifference;
 
                         if (Math.abs(calcNewDifference - prevDifference) > 4) {
-                            dismissMoreOptionsBox();
+                            dismissUIAndCleanupState();
                         }
                     }
                 }
@@ -2525,14 +2781,8 @@ function RemoteFunctions(config) {
             window.document.removeEventListener("mouseout", onElementHoverOut);
 
             // Remove info box and more options box if highlight is disabled
-            if (_nodeInfoBox) {
-                _nodeInfoBox.remove();
-                _nodeInfoBox = null;
-            }
-            if (_nodeMoreOptionsBox) {
-                _nodeMoreOptionsBox.remove();
-                _nodeMoreOptionsBox = null;
-            }
+            dismissNodeInfoBox();
+            dismissNodeMoreOptionsBox();
         }
 
         // Handle element highlight mode changes for instant switching
@@ -2560,8 +2810,7 @@ function RemoteFunctions(config) {
 
             // Remove info box when switching modes to avoid confusion
             if (_nodeInfoBox && !_nodeMoreOptionsBox) {
-                _nodeInfoBox.remove();
-                _nodeInfoBox = null;
+                dismissNodeInfoBox();
             }
 
             // Re-setup event listeners based on new mode to ensure proper behavior
@@ -2585,25 +2834,61 @@ function RemoteFunctions(config) {
     }
 
     /**
-     * This function is responsible to remove the more options box
-     * we do this either when user presses the Esc key or clicks on the HTML or Body tags
-     * @return {boolean} true if any boxes were dismissed, false otherwise
+     * Helper function to dismiss NodeMoreOptionsBox if it exists
+     * @return {boolean} true if box was dismissed, false if it didn't exist
      */
-    function dismissMoreOptionsBox() {
-        let dismissed = false;
-
+    function dismissNodeMoreOptionsBox() {
         if (_nodeMoreOptionsBox) {
             _nodeMoreOptionsBox.remove();
             _nodeMoreOptionsBox = null;
-            dismissed = true;
+            return true;
         }
+        return false;
+    }
 
+    /**
+     * Helper function to dismiss NodeInfoBox if it exists
+     * @return {boolean} true if box was dismissed, false if it didn't exist
+     */
+    function dismissNodeInfoBox() {
         if (_nodeInfoBox) {
             _nodeInfoBox.remove();
             _nodeInfoBox = null;
-            dismissed = true;
+            return true;
         }
+        return false;
+    }
 
+    /**
+     * Helper function to dismiss AIPromptBox if it exists
+     * @return {boolean} true if box was dismissed, false if it didn't exist
+     */
+    function dismissAIPromptBox() {
+        if (_aiPromptBox) {
+            _aiPromptBox.remove();
+            _aiPromptBox = null;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Helper function to dismiss all UI boxes at once
+     * @return {boolean} true if any boxes were dismissed, false otherwise
+     */
+    function dismissAllUIBoxes() {
+        let dismissed = false;
+        dismissed = dismissNodeMoreOptionsBox() || dismissed;
+        dismissed = dismissAIPromptBox() || dismissed;
+        dismissed = dismissNodeInfoBox() || dismissed;
+        return dismissed;
+    }
+
+    /**
+     * Helper function to cleanup previously clicked element highlighting and state
+     * @return {boolean} true if cleanup was performed, false if no element to cleanup
+     */
+    function cleanupPreviousElementState() {
         if (previouslyClickedElement) {
             if (previouslyClickedElement._originalOutline !== undefined) {
                 previouslyClickedElement.style.outline = previouslyClickedElement._originalOutline;
@@ -2622,11 +2907,28 @@ function RemoteFunctions(config) {
             }
 
             previouslyClickedElement = null;
-            dismissed = true;
+            return true;
         }
+        return false;
+    }
+
+    /**
+     * This function dismisses all UI elements and cleans up application state
+     * Called when user presses Esc key, clicks on HTML/Body tags, or other dismissal events
+     * @return {boolean} true if any cleanup was performed, false otherwise
+     */
+    function dismissUIAndCleanupState() {
+        let dismissed = false;
+
+        // Dismiss all UI boxes
+        dismissed = dismissAllUIBoxes() || dismissed;
+
+        // Cleanup previously clicked element state and highlighting
+        dismissed = cleanupPreviousElementState() || dismissed;
 
         return dismissed;
     }
+
 
     /**
      * This function is responsible to move the cursor to the end of the text content when we start editing
@@ -2661,7 +2963,7 @@ function RemoteFunctions(config) {
             moveCursorToEnd(selection, element);
         }
 
-        dismissMoreOptionsBox();
+        dismissUIAndCleanupState();
 
         function onBlur() {
             finishEditing(element);
@@ -2698,7 +3000,7 @@ function RemoteFunctions(config) {
 
         // Remove contenteditable attribute
         element.removeAttribute("contenteditable");
-        dismissMoreOptionsBox();
+        dismissUIAndCleanupState();
 
         // Remove event listeners
         if (element._editListeners) {
@@ -2755,7 +3057,6 @@ function RemoteFunctions(config) {
         "updateConfig"          : updateConfig,
         "startEditing"          : startEditing,
         "finishEditing"         : finishEditing,
-        "dismissMoreOptionsBox" : dismissMoreOptionsBox,
         "hasVisibleLivePreviewBoxes" : hasVisibleLivePreviewBoxes,
         "registerHandlers" : registerHandlers
     };
