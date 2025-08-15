@@ -1180,7 +1180,7 @@ function RemoteFunctions(config) {
             let content = `<div class="node-options">`;
 
             // not sure if we need to hide/show the AI icon, right now showing always
-            content += `<span data-action="ai" title="Phoenix AI">
+            content += `<span data-action="ai" title="${config.strings.ai}">
                     ${ICONS.ai}
                 </span>`;
 
@@ -1681,7 +1681,7 @@ function RemoteFunctions(config) {
                     <div class="phoenix-ai-prompt-input-container">
                         <textarea
                             class="phoenix-ai-prompt-textarea"
-                            placeholder="Ask Phoenix AI to modify this element..."
+                            placeholder="${config.strings.aiPromptPlaceholder}"
                         ></textarea>
                         <button class="phoenix-ai-prompt-send-button" disabled>
                             ➤
@@ -2143,6 +2143,11 @@ function RemoteFunctions(config) {
         // don't want highlighting and stuff when auto scrolling
         if (_isAutoScrolling) {
             return;
+        }
+
+        // if _hoverHighlight is uninitialized, initialize it
+        if (!_hoverHighlight && config.isLPEditFeaturesActive && shouldShowHighlightOnHover()) {
+            _hoverHighlight = new Highlight("#c8f9c5", true);
         }
 
         // this is to check the user's settings, if they want to show the elements highlights on hover or click

@@ -187,7 +187,13 @@ define({
     "LIVE_DEV_MORE_OPTIONS_EDIT_TEXT": "Edit Text",
     "LIVE_DEV_MORE_OPTIONS_DUPLICATE": "Duplicate",
     "LIVE_DEV_MORE_OPTIONS_DELETE": "Delete",
+    "LIVE_DEV_MORE_OPTIONS_AI": "Edit with AI",
+    "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Ask Phoenix AI to modify this element...",
     "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Getting preview from your custom server {0}",
+    "LIVE_PREVIEW_MODE_PREVIEW": "Preview Mode",
+    "LIVE_PREVIEW_MODE_HIGHLIGHT": "Highlight Mode",
+    "LIVE_PREVIEW_MODE_EDIT": "Edit Mode",
+    "LIVE_PREVIEW_MODE_PREFERENCE": "{0} shows only the webpage, {1} connects the webpage to your code - click on elements to jump to their code and vice versa, {2} provides highlighting along with advanced element manipulation",
 
     "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "Live Preview was canceled because the browser's developer tools were opened",
     "LIVE_DEV_DETACHED_TARGET_CLOSED": "Live Preview was canceled because the page was closed in the browser",

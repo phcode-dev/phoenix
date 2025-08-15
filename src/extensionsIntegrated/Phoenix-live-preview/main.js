@@ -88,11 +88,11 @@ define(function (require, exports, module) {
 
     // live preview mode pref
     const PREFERENCE_LIVE_PREVIEW_MODE = "livePreviewMode";
-    const DEFAULT_LIVE_PREVIEW_MODE = "preview"; // preview, inspect or edit
+    const DEFAULT_LIVE_PREVIEW_MODE = "preview"; // preview, highlight or edit
     // define the live preview mode preference
     PreferencesManager.definePreference(PREFERENCE_LIVE_PREVIEW_MODE, "string", DEFAULT_LIVE_PREVIEW_MODE, {
-        description: "Default live preview mode on startup (preview, inspect, edit)",
-        values: ["preview", "inspect", "edit"]
+        description: StringUtils.format(Strings.LIVE_PREVIEW_MODE_PREFERENCE, "'preview'", "'highlight'", "'edit'"),
+        values: ["preview", "highlight", "edit"]
     });
 
     const LIVE_PREVIEW_PANEL_ID = "live-preview-panel";
@@ -167,10 +167,10 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Live Preview 'Inspect Mode'. in this mode only the live preview matching with the source code is active
+     * Live Preview 'Highlight Mode'. in this mode only the live preview matching with the source code is active
      * Meaning that if user clicks on some element that element's source code will be highlighted and vice versa
      */
-    function _LPInspectMode() {
+    function _LPHighlightMode() {
         LiveDevelopment.setLivePreviewEditFeaturesActive(false);
         if(!_isLiveHighlightEnabled()) {
             LiveDevelopment.togglePreviewHighlight();
@@ -178,7 +178,7 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Live Preview 'Edit Mode'. this is the most interactive mode, in here the inspect features are available
+     * Live Preview 'Edit Mode'. this is the most interactive mode, in here the highlight features are available
      * along with that we also show element's highlighted boxes and such
      */
     function _LPEditMode() {
@@ -190,16 +190,16 @@ define(function (require, exports, module) {
 
     /**
      * update the mode button text in the live preview toolbar UI based on the current mode
-     * @param {String} mode - The current mode ("preview", "inspect", or "edit")
+     * @param {String} mode - The current mode ("preview", "highlight", or "edit")
      */
     function _updateModeButton(mode) {
         if ($modeBtn) {
-            if (mode === "inspect") {
-                $modeBtn[0].textContent = "Inspect Mode";
+            if (mode === "highlight") {
+                $modeBtn[0].textContent = Strings.LIVE_PREVIEW_MODE_HIGHLIGHT;
             } else if (mode === "edit") {
-                $modeBtn[0].textContent = "Edit Mode";
+                $modeBtn[0].textContent = Strings.LIVE_PREVIEW_MODE_EDIT;
             } else {
-                $modeBtn[0].textContent = "Preview Mode";
+                $modeBtn[0].textContent = Strings.LIVE_PREVIEW_MODE_PREVIEW;
             }
         }
     }
@@ -211,8 +211,8 @@ define(function (require, exports, module) {
         const savedMode = PreferencesManager.get(PREFERENCE_LIVE_PREVIEW_MODE) || "preview";
 
         // apply the saved
-        if (savedMode === "inspect") {
-            _LPInspectMode();
+        if (savedMode === "highlight") {
+            _LPHighlightMode();
         } else if (savedMode === "edit") {
             _LPEditMode();
         } else {
@@ -223,7 +223,9 @@ define(function (require, exports, module) {
     }
 
     function _showModeSelectionDropdown(event) {
-        const items = ["Preview Mode", "Inspect Mode", "Edit Mode"];
+        const items = [
+            Strings.LIVE_PREVIEW_MODE_PREVIEW, Strings.LIVE_PREVIEW_MODE_HIGHLIGHT, Strings.LIVE_PREVIEW_MODE_EDIT
+        ];
 
         const dropdown = new DropdownButton.DropdownButton("", items);
 
@@ -252,7 +254,7 @@ define(function (require, exports, module) {
             if (index === 0) {
                 PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "preview");
             } else if (index === 1) {
-                PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "inspect");
+                PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "highlight");
             } else if (index === 2) {
                 PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "edit");
             }
@@ -947,8 +949,8 @@ define(function (require, exports, module) {
             // Get the current preference value directly
             const newMode = PreferencesManager.get(PREFERENCE_LIVE_PREVIEW_MODE);
 
-            if (newMode === "inspect") {
-                _LPInspectMode();
+            if (newMode === "highlight") {
+                _LPHighlightMode();
             } else if (newMode === "edit") {
                 _LPEditMode();
             } else {

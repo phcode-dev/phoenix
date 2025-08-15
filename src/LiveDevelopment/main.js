@@ -74,7 +74,9 @@ define(function main(require, exports, module) {
             selectParent: Strings.LIVE_DEV_MORE_OPTIONS_SELECT_PARENT,
             editText: Strings.LIVE_DEV_MORE_OPTIONS_EDIT_TEXT,
             duplicate: Strings.LIVE_DEV_MORE_OPTIONS_DUPLICATE,
-            delete: Strings.LIVE_DEV_MORE_OPTIONS_DELETE
+            delete: Strings.LIVE_DEV_MORE_OPTIONS_DELETE,
+            ai: Strings.LIVE_DEV_MORE_OPTIONS_AI,
+            aiPromptPlaceholder: Strings.LIVE_DEV_AI_PROMPT_PLACEHOLDER
         }
     };
     // Status labels/styles are ordered: error, not connected, progress1, progress2, connected.
