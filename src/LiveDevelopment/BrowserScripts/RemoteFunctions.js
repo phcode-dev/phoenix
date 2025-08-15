@@ -2830,7 +2830,7 @@ function RemoteFunctions(config) {
      * @return {boolean} true if any boxes are visible, false otherwise
      */
     function hasVisibleLivePreviewBoxes() {
-        return _nodeMoreOptionsBox !== null || _nodeInfoBox !== null || previouslyClickedElement !== null;
+        return _nodeMoreOptionsBox !== null || _nodeInfoBox !== null || _aiPromptBox !== null || previouslyClickedElement !== null;
     }
 
     /**
@@ -3058,6 +3058,7 @@ function RemoteFunctions(config) {
         "startEditing"          : startEditing,
         "finishEditing"         : finishEditing,
         "hasVisibleLivePreviewBoxes" : hasVisibleLivePreviewBoxes,
+        "dismissUIAndCleanupState" : dismissUIAndCleanupState,
         "registerHandlers" : registerHandlers
     };
 }

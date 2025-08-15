@@ -710,11 +710,11 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Dismiss live preview more options box and info box
+     * Dismiss live preview boxes like info box, options box, AI box
      */
     function dismissLivePreviewBoxes() {
         if (_protocol) {
-            _protocol.evaluate("_LD.dismissMoreOptionsBox()");
+            _protocol.evaluate("_LD.dismissUIAndCleanupState()");
         }
     }
 

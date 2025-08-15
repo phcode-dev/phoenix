@@ -86,6 +86,15 @@ define(function (require, exports, module) {
     const PREVIEW_TRUSTED_PROJECT_KEY = "preview_trusted";
     const PREVIEW_PROJECT_README_KEY = "preview_readme";
 
+    // live preview mode pref
+    const PREFERENCE_LIVE_PREVIEW_MODE = "livePreviewMode";
+    const DEFAULT_LIVE_PREVIEW_MODE = "preview"; // preview, inspect or edit
+    // define the live preview mode preference
+    PreferencesManager.definePreference(PREFERENCE_LIVE_PREVIEW_MODE, "string", DEFAULT_LIVE_PREVIEW_MODE, {
+        description: "Default live preview mode on startup (preview, inspect, edit)",
+        values: ["preview", "inspect", "edit"]
+    });
+
     const LIVE_PREVIEW_PANEL_ID = "live-preview-panel";
     const LIVE_PREVIEW_IFRAME_ID = "panel-live-preview-frame";
     const LIVE_PREVIEW_IFRAME_HTML = `
@@ -179,6 +188,40 @@ define(function (require, exports, module) {
         }
     }
 
+    /**
+     * update the mode button text in the live preview toolbar UI based on the current mode
+     * @param {String} mode - The current mode ("preview", "inspect", or "edit")
+     */
+    function _updateModeButton(mode) {
+        if ($modeBtn) {
+            if (mode === "inspect") {
+                $modeBtn[0].textContent = "Inspect Mode";
+            } else if (mode === "edit") {
+                $modeBtn[0].textContent = "Edit Mode";
+            } else {
+                $modeBtn[0].textContent = "Preview Mode";
+            }
+        }
+    }
+
+    /**
+     * init live preview mode from saved preferences
+     */
+    function _initializeMode() {
+        const savedMode = PreferencesManager.get(PREFERENCE_LIVE_PREVIEW_MODE) || "preview";
+
+        // apply the saved
+        if (savedMode === "inspect") {
+            _LPInspectMode();
+        } else if (savedMode === "edit") {
+            _LPEditMode();
+        } else {
+            _LPPreviewMode();
+        }
+
+        _updateModeButton(savedMode);
+    }
+
     function _showModeSelectionDropdown(event) {
         const items = ["Preview Mode", "Inspect Mode", "Edit Mode"];
 
@@ -204,20 +247,19 @@ define(function (require, exports, module) {
 
         // handle the option selection
         dropdown.on("select", function (e, item, index) {
+            // here we just set the preference
+            // as the preferences listener will automatically handle the required changes
             if (index === 0) {
-                _LPPreviewMode();
+                PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "preview");
             } else if (index === 1) {
-                _LPInspectMode();
+                PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "inspect");
             } else if (index === 2) {
-                _LPEditMode();
+                PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "edit");
             }
 
             // need to dismiss the previous highlighting and stuff
             LiveDevelopment.hideHighlight();
             LiveDevelopment.dismissLivePreviewBoxes();
-            if($modeBtn) {
-                $modeBtn[0].textContent = item;
-            }
         });
 
         // Remove the button after the dropdown is hidden
@@ -897,6 +939,25 @@ define(function (require, exports, module) {
         fileMenu.addMenuItem(Commands.FILE_LIVE_FILE_PREVIEW_SETTINGS, "",
             Menus.AFTER, Commands.FILE_LIVE_FILE_PREVIEW);
         fileMenu.addMenuDivider(Menus.BEFORE, Commands.FILE_LIVE_FILE_PREVIEW);
+
+        // init live preview mode from saved preferences
+        _initializeMode();
+        // listen for pref changes
+        PreferencesManager.on("change", PREFERENCE_LIVE_PREVIEW_MODE, function () {
+            // Get the current preference value directly
+            const newMode = PreferencesManager.get(PREFERENCE_LIVE_PREVIEW_MODE);
+
+            if (newMode === "inspect") {
+                _LPInspectMode();
+            } else if (newMode === "edit") {
+                _LPEditMode();
+            } else {
+                _LPPreviewMode();
+            }
+
+            _updateModeButton(newMode);
+        });
+
         LiveDevelopment.openLivePreview();
         LiveDevelopment.on(LiveDevelopment.EVENT_OPEN_PREVIEW_URL, _openLivePreviewURL);
         LiveDevelopment.on(LiveDevelopment.EVENT_LIVE_PREVIEW_RELOAD, ()=>{
