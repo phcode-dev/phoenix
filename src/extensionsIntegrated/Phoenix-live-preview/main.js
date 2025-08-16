@@ -237,12 +237,24 @@ define(function (require, exports, module) {
             Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON
         ];
 
+        const rawMode = PreferencesManager.get(PREFERENCE_LIVE_PREVIEW_MODE) || "preview";
+        // this is to take care of invalid values in the pref file
+        const currentMode = ["preview", "highlight", "edit"].includes(rawMode) ? rawMode : "preview";
+
         const dropdown = new DropdownButton.DropdownButton("", items, function(item, index) {
-            if (item === Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON) {
+            if (item === Strings.LIVE_PREVIEW_MODE_PREVIEW) {
+                // using empty spaces to keep content aligned
+                return currentMode === "preview" ? `✓ ${item}` : `${'\u00A0'.repeat(4)}${item}`;
+            } else if (item === Strings.LIVE_PREVIEW_MODE_HIGHLIGHT) {
+                return currentMode === "highlight" ? `✓ ${item}` : `${'\u00A0'.repeat(4)}${item}`;
+            } else if (item === Strings.LIVE_PREVIEW_MODE_EDIT) {
+                return currentMode === "edit" ? `✓ ${item}` : `${'\u00A0'.repeat(4)}${item}`;
+            } else if (item === Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON) {
                 const isHoverMode = PreferencesManager.get(PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT) !== "click";
                 if(isHoverMode) {
                     return `✓ ${Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON}`;
                 }
+                return `${'\u00A0'.repeat(4)}${Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON}`;
             }
             return item;
         });
