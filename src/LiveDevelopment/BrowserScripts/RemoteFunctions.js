@@ -213,12 +213,9 @@ function RemoteFunctions(config) {
      * @param {DOMElement} element - the HTML DOM element that was clicked
      */
     function _handleAIOptionClick(event, element) {
-        // make sure there is no existing AI prompt box, also remove more options box
-        dismissAIPromptBox();
-        dismissNodeMoreOptionsBox();
-
-        // create a new AI prompt box
-        _aiPromptBox = new AIPromptBox(element);
+        // make sure there is no existing AI prompt box, and no other box as well
+        dismissAllUIBoxes();
+        _aiPromptBox = new AIPromptBox(element); // create a new one
     }
 
     /**
@@ -2094,9 +2091,6 @@ function RemoteFunctions(config) {
     var _aiPromptBox;
     var _setup = false;
 
-
-    /** Event Handlers ***********************************************************/
-
     function onMouseOver(event) {
         if (_validEvent(event)) {
             // Skip highlighting for HTML, BODY tags and elements inside HEAD
@@ -2359,7 +2353,9 @@ function RemoteFunctions(config) {
         for (i = 0; i < nodes.length; i++) {
             highlight(nodes[i]);
         }
-        _clickHighlight.selector = rule;
+        if (_clickHighlight) {
+            _clickHighlight.selector = rule;
+        }
 
         // select the first valid highlighted element
         var foundValidElement = false;

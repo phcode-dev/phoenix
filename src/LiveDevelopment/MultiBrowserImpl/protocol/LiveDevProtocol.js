@@ -166,8 +166,9 @@ define(function (require, exports, module) {
         }
         const allOpenFileCount = MainViewManager.getWorkingSetSize(MainViewManager.ALL_PANES);
         function selectInHTMLEditor(fullHtmlEditor) {
-            const position = HTMLInstrumentation.getPositionFromTagId(fullHtmlEditor, parseInt(tagId, 10)).from;
-            if(position && fullHtmlEditor) {
+            const positionResult = HTMLInstrumentation.getPositionFromTagId(fullHtmlEditor, parseInt(tagId, 10));
+            if(positionResult && positionResult.from && fullHtmlEditor) {
+                const position = positionResult.from;
                 const masterEditor = fullHtmlEditor.document._masterEditor || fullHtmlEditor;
                 masterEditor.setCursorPos(position.line, position.ch, true);
                 _focusEditorIfNeeded(masterEditor, nodeName, contentEditable);
