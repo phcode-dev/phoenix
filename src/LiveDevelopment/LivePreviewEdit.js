@@ -195,6 +195,7 @@ define(function (require, exports, module) {
         // the live preview for that element gets refreshed and the changes are discarded in the live preview
         if(!message.isEditSuccessful) {
             editor.replaceRange(text, startPos, endPos);
+            editor.document._markClean();
         } else {
 
             // if the edit operation was successful, we call a helper function that
