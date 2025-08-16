@@ -2208,6 +2208,9 @@ function RemoteFunctions(config) {
      * @param {Element} element - The DOM element to select
      */
     function _selectElement(element) {
+        // dismiss all UI boxes and cleanup previous element state when selecting a different element
+        dismissUIAndCleanupState();
+
         // make sure that the feature is enabled and also the element has the attribute 'data-brackets-id'
         if (
             !config.isLPEditFeaturesActive ||
@@ -2219,37 +2222,13 @@ function RemoteFunctions(config) {
             return;
         }
 
-        if (_nodeMoreOptionsBox) {
-            _nodeMoreOptionsBox.remove();
-            _nodeMoreOptionsBox = null;
-        }
-
-        // to remove the outline styling from the previously clicked element
-        if (previouslyClickedElement) {
-            if (previouslyClickedElement._originalOutline !== undefined) {
-                previouslyClickedElement.style.outline = previouslyClickedElement._originalOutline;
-            } else {
-                previouslyClickedElement.style.outline = "";
-            }
-            delete previouslyClickedElement._originalOutline;
-
-            // Remove highlighting from previously clicked element
-            if (getHighlightMode() === "click") {
-                clearElementBackground(previouslyClickedElement);
-            }
-        }
-
         // make sure that the element is actually visible to the user
         if (isElementVisible(element)) {
             _nodeMoreOptionsBox = new NodeMoreOptionsBox(element);
-
-            // show the info box when a DOM element is selected, but first remove any existing info box
-            dismissNodeInfoBox();
             _nodeInfoBox = new NodeInfoBox(element);
         } else {
             // Element is hidden, so don't show UI boxes but still apply visual styling
             _nodeMoreOptionsBox = null;
-            dismissNodeInfoBox();
         }
 
         element._originalOutline = element.style.outline;
