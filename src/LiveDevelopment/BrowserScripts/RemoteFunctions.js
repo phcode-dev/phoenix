@@ -1562,24 +1562,15 @@ function RemoteFunctions(config) {
             let topPos = offset.top - boxHeight - 6; // 6 for just some little space to breathe
             let leftPos = offset.left + elemBounds.width - boxWidth;
 
-            // check if the box would go off the top of the viewport
+            // Check if the box would go off the top of the viewport
             if (elemBounds.top - boxHeight < 6) {
                 topPos = offset.top + elemBounds.height + 6;
             }
 
-            // check if the box would go off the left of the viewport
-            if (leftPos < 6) {
+            // Check if the box would go off the left of the viewport
+            if (leftPos < 0) {
                 leftPos = offset.left;
             }
-
-            // check if the box would go off the right of the viewport
-            const viewportWidth = window.innerWidth;
-            if (leftPos + boxWidth > viewportWidth - 6) {
-                leftPos = viewportWidth - boxWidth - 6;
-            }
-
-            // ensure leftPos is never negative
-            leftPos = Math.max(6, leftPos);
 
             return {topPos: topPos, leftPos: leftPos};
         },
@@ -1594,14 +1585,23 @@ function RemoteFunctions(config) {
             let boxWidth, boxHeight;
 
             if (viewportWidth >= 400) {
-                boxWidth = Math.min(310, viewportWidth * 0.75); // Max 310px or 75% of viewport
+                boxWidth = Math.min(310, viewportWidth * 0.85);
                 boxHeight = 60;
+            } else if (viewportWidth >= 350) {
+                boxWidth = Math.min(275, viewportWidth * 0.85);
+                boxHeight = 70;
             } else if (viewportWidth >= 300) {
-                boxWidth = Math.min(280, viewportWidth * 0.85); // Smaller width for medium screens
-                boxHeight = 80; // Increase height for better usability
+                boxWidth = Math.min(230, viewportWidth * 0.85);
+                boxHeight = 80;
+            } else if (viewportWidth >= 250) {
+                boxWidth = Math.min(180, viewportWidth * 0.85);
+                boxHeight = 100;
+            } else if (viewportWidth >= 200) {
+                boxWidth = Math.min(130, viewportWidth * 0.85);
+                boxHeight = 120;
             } else {
-                boxWidth = Math.min(250, viewportWidth * 0.9); // Very narrow screens
-                boxHeight = 100; // Even more height for very small screens
+                boxWidth = Math.min(100, viewportWidth * 0.85);
+                boxHeight = 140;
             }
 
             const styles = `
@@ -1615,6 +1615,7 @@ function RemoteFunctions(config) {
                     z-index: 2147483647;
                     width: ${boxWidth}px;
                     padding: 0;
+                    box-sizing: border-box;
                 }
 
                 .phoenix-ai-prompt-input-container {
