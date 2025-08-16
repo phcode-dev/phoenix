@@ -193,6 +193,7 @@ define({
     "LIVE_PREVIEW_MODE_PREVIEW": "Preview Mode",
     "LIVE_PREVIEW_MODE_HIGHLIGHT": "Highlight Mode",
     "LIVE_PREVIEW_MODE_EDIT": "Edit Mode",
+    "LIVE_PREVIEW_EDIT_HIGHLIGHT_ON": "Edit Highlights on Hover",
     "LIVE_PREVIEW_MODE_PREFERENCE": "{0} shows only the webpage, {1} connects the webpage to your code - click on elements to jump to their code and vice versa, {2} provides highlighting along with advanced element manipulation",
 
     "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "Live Preview was canceled because the browser's developer tools were opened",

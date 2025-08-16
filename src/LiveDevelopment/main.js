@@ -51,8 +51,6 @@ define(function main(require, exports, module) {
 
     const EVENT_LIVE_HIGHLIGHT_PREF_CHANGED = "liveHighlightPrefChange";
 
-    const PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT = "livePreviewElementHighlights";
-
     var params = new UrlParams();
     var config = {
         experimental: false, // enable experimental features
@@ -311,22 +309,7 @@ define(function main(require, exports, module) {
                 }
             });
 
-        // this function is responsible to update element highlight config
-        function updateElementHighlightConfig() {
-            const prefValue = PreferencesManager.get(PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT);
-            config.elemHighlights = prefValue || "hover";
-            if (MultiBrowserLiveDev && MultiBrowserLiveDev.status >= MultiBrowserLiveDev.STATUS_ACTIVE) {
-                MultiBrowserLiveDev.updateConfig(JSON.stringify(config));
-                MultiBrowserLiveDev.registerHandlers();
-            }
-        }
-
-        PreferencesManager.on("change", PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT, function() {
-            updateElementHighlightConfig();
-        });
-
         MultiBrowserLiveDev.on(MultiBrowserLiveDev.EVENT_OPEN_PREVIEW_URL, function (event, previewDetails) {
-            updateElementHighlightConfig();
             exports.trigger(exports.EVENT_OPEN_PREVIEW_URL, previewDetails);
         });
         MultiBrowserLiveDev.on(MultiBrowserLiveDev.EVENT_CONNECTION_CLOSE, function (event, {clientId}) {
@@ -364,6 +347,17 @@ define(function main(require, exports, module) {
         }
     }
 
+    // this function is responsible to update element highlight config
+    // called from live preview extension when preference changes
+    function updateElementHighlightConfig() {
+        const prefValue = PreferencesManager.get("livePreviewElementHighlights");
+        config.elemHighlights = prefValue || "hover";
+        if (MultiBrowserLiveDev && MultiBrowserLiveDev.status >= MultiBrowserLiveDev.STATUS_ACTIVE) {
+            MultiBrowserLiveDev.updateConfig(JSON.stringify(config));
+            MultiBrowserLiveDev.registerHandlers();
+        }
+    }
+
     // init commands
     CommandManager.register(Strings.CMD_LIVE_HIGHLIGHT, Commands.FILE_LIVE_HIGHLIGHT, togglePreviewHighlight);
     CommandManager.register(Strings.CMD_RELOAD_LIVE_PREVIEW, Commands.CMD_RELOAD_LIVE_PREVIEW, _handleReloadLivePreviewCommand);
@@ -373,7 +367,6 @@ define(function main(require, exports, module) {
     EventDispatcher.makeEventDispatcher(exports);
 
     exports.isLPEditFeaturesActive = isLPEditFeaturesActive;
-    exports.PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT = PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT;
 
     // public events
     exports.EVENT_OPEN_PREVIEW_URL = MultiBrowserLiveDev.EVENT_OPEN_PREVIEW_URL;
@@ -391,6 +384,7 @@ define(function main(require, exports, module) {
     exports.setLivePreviewTransportBridge = setLivePreviewTransportBridge;
     exports.togglePreviewHighlight = togglePreviewHighlight;
     exports.setLivePreviewEditFeaturesActive = setLivePreviewEditFeaturesActive;
+    exports.updateElementHighlightConfig = updateElementHighlightConfig;
     exports.getConnectionIds = MultiBrowserLiveDev.getConnectionIds;
     exports.getLivePreviewDetails = MultiBrowserLiveDev.getLivePreviewDetails;
     exports.hideHighlight = MultiBrowserLiveDev.hideHighlight;

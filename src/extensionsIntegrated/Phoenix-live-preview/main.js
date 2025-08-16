@@ -95,6 +95,12 @@ define(function (require, exports, module) {
         values: ["preview", "highlight", "edit"]
     });
 
+    // live preview element highlights preference (whether on hover or click)
+    const PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT = "livePreviewElementHighlights";
+    PreferencesManager.definePreference(PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT, "string", "hover", {
+        description: Strings.LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT_PREFERENCE
+    });
+
     const LIVE_PREVIEW_PANEL_ID = "live-preview-panel";
     const LIVE_PREVIEW_IFRAME_ID = "panel-live-preview-frame";
     const LIVE_PREVIEW_IFRAME_HTML = `
@@ -224,10 +230,22 @@ define(function (require, exports, module) {
 
     function _showModeSelectionDropdown(event) {
         const items = [
-            Strings.LIVE_PREVIEW_MODE_PREVIEW, Strings.LIVE_PREVIEW_MODE_HIGHLIGHT, Strings.LIVE_PREVIEW_MODE_EDIT
+            Strings.LIVE_PREVIEW_MODE_PREVIEW,
+            Strings.LIVE_PREVIEW_MODE_HIGHLIGHT,
+            Strings.LIVE_PREVIEW_MODE_EDIT,
+            "---",
+            Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON
         ];
 
-        const dropdown = new DropdownButton.DropdownButton("", items);
+        const dropdown = new DropdownButton.DropdownButton("", items, function(item, index) {
+            if (item === Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON) {
+                const isHoverMode = PreferencesManager.get(PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT) !== "click";
+                if(isHoverMode) {
+                    return `✓ ${Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON}`;
+                }
+            }
+            return item;
+        });
 
         // Append to document body for absolute positioning
         $("body").append(dropdown.$button);
@@ -257,6 +275,12 @@ define(function (require, exports, module) {
                 PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "highlight");
             } else if (index === 2) {
                 PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "edit");
+            } else if (item === Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON) {
+                // Toggle between hover and click
+                const currentMode = PreferencesManager.get(PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT);
+                const newMode = currentMode !== "click" ? "click" : "hover";
+                PreferencesManager.set(PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT, newMode);
+                return; // Don't dismiss highlights for this option
             }
 
             // need to dismiss the previous highlighting and stuff
@@ -959,6 +983,14 @@ define(function (require, exports, module) {
 
             _updateModeButton(newMode);
         });
+
+        // Handle element highlight preference changes from this extension
+        PreferencesManager.on("change", PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT, function() {
+            LiveDevelopment.updateElementHighlightConfig();
+        });
+
+        // Initialize element highlight config on startup
+        LiveDevelopment.updateElementHighlightConfig();
 
         LiveDevelopment.openLivePreview();
         LiveDevelopment.on(LiveDevelopment.EVENT_OPEN_PREVIEW_URL, _openLivePreviewURL);

@@ -41,7 +41,6 @@
 
 define(function (require, exports, module) {
     const livePreviewSettings    = require("text!./livePreviewSettings.html"),
-        LiveDevelopmentMain = require("LiveDevelopment/main"),
         Dialogs             = require("widgets/Dialogs"),
         ProjectManager        = require("project/ProjectManager"),
         Strings = require("strings"),
@@ -88,9 +87,6 @@ define(function (require, exports, module) {
         description: Strings.LIVE_DEV_SETTINGS_FRAMEWORK_PREFERENCES,
         values: Object.keys(SUPPORTED_FRAMEWORKS)
     });
-    PreferencesManager.definePreference(LiveDevelopmentMain.PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT, "string", "hover", {
-        description: Strings.LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT_PREFERENCE
-    });
 
     async function detectFramework($frameworkSelect, $hotReloadChk) {
         for(let framework of Object.keys(SUPPORTED_FRAMEWORKS)){
@@ -134,15 +130,12 @@ define(function (require, exports, module) {
                 $hotReloadChk = $template.find("#hotReloadChk"),
                 $hotReloadLabel = $template.find("#hotReloadLabel"),
                 $frameworkLabel = $template.find("#frameworkLabel"),
-                $frameworkSelect = $template.find("#frameworkSelect"),
-                $elementHighlights = $template.find("#elementHighlightWrapper"), // to show/hide this setting
-                $elementHighlight = $template.find("#elementHighlight"); // dropdown for highlight mode selection
+                $frameworkSelect = $template.find("#frameworkSelect");
 
             // Initialize form values from preferences
             $enableCustomServerChk.prop('checked', PreferencesManager.get(PREFERENCE_PROJECT_SERVER_ENABLED));
             $showLivePreviewAtStartup.prop('checked', PreferencesManager.get(PREFERENCE_SHOW_LIVE_PREVIEW_PANEL));
             $hotReloadChk.prop('checked', !!PreferencesManager.get(PREFERENCE_PROJECT_SERVER_HOT_RELOAD_SUPPORTED));
-            $elementHighlight.val(PreferencesManager.get(LiveDevelopmentMain.PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT));
 
             if(PreferencesManager.get(PREFERENCE_PROJECT_PREVIEW_FRAMEWORK) === null) {
                 detectFramework($frameworkSelect, $hotReloadChk);
@@ -171,12 +164,6 @@ define(function (require, exports, module) {
                     $frameworkSelect.addClass("forced-hidden");
                     $frameworkLabel.addClass("forced-hidden");
                 }
-
-                if(LiveDevelopmentMain.isLPEditFeaturesActive) {
-                    $elementHighlights.removeClass("forced-hidden");
-                } else {
-                    $elementHighlights.addClass("forced-hidden");
-                }
             }
 
             $livePreviewServerURL.on("input", refreshValues);
@@ -190,12 +177,6 @@ define(function (require, exports, module) {
                     PreferencesManager.set(PREFERENCE_SHOW_LIVE_PREVIEW_PANEL, $showLivePreviewAtStartup.is(":checked"));
                     _saveProjectPreferences($enableCustomServerChk.is(":checked"), $livePreviewServerURL.val(),
                         $serveRoot.val(), $hotReloadChk.is(":checked"), $frameworkSelect.val());
-
-                    // Save element highlight preference
-                    PreferencesManager.set(
-                        LiveDevelopmentMain.PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT,
-                        $elementHighlight.val()
-                    );
                 }
                 resolve();
             });
