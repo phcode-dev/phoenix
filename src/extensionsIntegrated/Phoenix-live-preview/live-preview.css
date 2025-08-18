@@ -110,6 +110,7 @@
     color: #a0a0a0;
     font-size: 14px;
     font-weight: normal;
+    padding: 0 0.75em;
 }
 
 #livePreviewModeBtn:hover {
@@ -118,5 +119,15 @@
 }
 
 #livePreviewModeBtn.btn-dropdown::after {
-    top: 9px !important;
+    position: static;
+    margin-top: 2px;
+    margin-left: 5px;
+}
+
+#reloadLivePreviewButton {
+    margin-left: 3px;
+    margin-top: 3.5px;
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
 }

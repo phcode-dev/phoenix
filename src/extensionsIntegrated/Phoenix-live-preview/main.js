@@ -215,27 +215,41 @@ define(function (require, exports, module) {
      */
     function _initializeMode() {
         const savedMode = PreferencesManager.get(PREFERENCE_LIVE_PREVIEW_MODE) || "preview";
+        const isEditFeaturesActive = LiveDevelopment.isLPEditFeaturesActive;
 
-        // apply the saved
-        if (savedMode === "highlight") {
+        // If user has edit mode saved but edit features are not active, default to preview
+        let effectiveMode = savedMode;
+        if (savedMode === "edit" && !isEditFeaturesActive) {
+            effectiveMode = "preview";
+            // Update the preference to reflect the actual mode being used
+            PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "preview");
+        }
+
+        // apply the effective mode
+        if (effectiveMode === "highlight") {
             _LPHighlightMode();
-        } else if (savedMode === "edit") {
+        } else if (effectiveMode === "edit" && isEditFeaturesActive) {
             _LPEditMode();
         } else {
             _LPPreviewMode();
         }
 
-        _updateModeButton(savedMode);
+        _updateModeButton(effectiveMode);
     }
 
     function _showModeSelectionDropdown(event) {
+        const isEditFeaturesActive = LiveDevelopment.isLPEditFeaturesActive;
         const items = [
             Strings.LIVE_PREVIEW_MODE_PREVIEW,
             Strings.LIVE_PREVIEW_MODE_HIGHLIGHT,
-            Strings.LIVE_PREVIEW_MODE_EDIT,
-            "---",
-            Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON
+            Strings.LIVE_PREVIEW_MODE_EDIT
         ];
+
+        // Only add edit highlight option if edit features are active
+        if (isEditFeaturesActive) {
+            items.push("---");
+            items.push(Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON);
+        }
 
         const rawMode = PreferencesManager.get(PREFERENCE_LIVE_PREVIEW_MODE) || "preview";
         // this is to take care of invalid values in the pref file
@@ -248,7 +262,12 @@ define(function (require, exports, module) {
             } else if (item === Strings.LIVE_PREVIEW_MODE_HIGHLIGHT) {
                 return currentMode === "highlight" ? `✓ ${item}` : `${'\u00A0'.repeat(4)}${item}`;
             } else if (item === Strings.LIVE_PREVIEW_MODE_EDIT) {
-                return currentMode === "edit" ? `✓ ${item}` : `${'\u00A0'.repeat(4)}${item}`;
+                const checkmark = currentMode === "edit" ? "✓ " : `${'\u00A0'.repeat(4)}`;
+                const crownIcon = !isEditFeaturesActive ? ' <span style="color: #FBB03B; border: 1px solid #FBB03B; padding: 2px 4px; border-radius: 10px; font-size: 9px; margin-left: 12px;"><i class="fas fa-crown"></i> Pro</span>' : '';
+                return {
+                    html: `${checkmark}${item}${crownIcon}`,
+                    enabled: isEditFeaturesActive
+                };
             } else if (item === Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON) {
                 const isHoverMode = PreferencesManager.get(PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT) !== "click";
                 if(isHoverMode) {
@@ -288,6 +307,10 @@ define(function (require, exports, module) {
             } else if (index === 2) {
                 PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "edit");
             } else if (item === Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON) {
+                // Don't allow edit highlight toggle if edit features are not active
+                if (!isEditFeaturesActive) {
+                    return;
+                }
                 // Toggle between hover and click
                 const currentMode = PreferencesManager.get(PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT);
                 const newMode = currentMode !== "click" ? "click" : "hover";
@@ -984,16 +1007,26 @@ define(function (require, exports, module) {
         PreferencesManager.on("change", PREFERENCE_LIVE_PREVIEW_MODE, function () {
             // Get the current preference value directly
             const newMode = PreferencesManager.get(PREFERENCE_LIVE_PREVIEW_MODE);
+            const isEditFeaturesActive = LiveDevelopment.isLPEditFeaturesActive;
 
-            if (newMode === "highlight") {
+            // If user tries to set edit mode but edit features are not active, default to preview
+            let effectiveMode = newMode;
+            if (newMode === "edit" && !isEditFeaturesActive) {
+                effectiveMode = "preview";
+                // Update the preference to reflect the actual mode being used
+                PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "preview");
+                return; // Return to avoid infinite loop
+            }
+
+            if (effectiveMode === "highlight") {
                 _LPHighlightMode();
-            } else if (newMode === "edit") {
+            } else if (effectiveMode === "edit" && isEditFeaturesActive) {
                 _LPEditMode();
             } else {
                 _LPPreviewMode();
             }
 
-            _updateModeButton(newMode);
+            _updateModeButton(effectiveMode);
         });
 
         // Handle element highlight preference changes from this extension

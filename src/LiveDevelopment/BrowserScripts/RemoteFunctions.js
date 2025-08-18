@@ -3007,6 +3007,16 @@ function RemoteFunctions(config) {
     _editHandler = new DOMEditHandler(window.document);
 
     function registerHandlers() {
+        // Always remove existing listeners first to avoid duplicates
+        window.document.removeEventListener("mouseover", onElementHover);
+        window.document.removeEventListener("mouseout", onElementHoverOut);
+        window.document.removeEventListener("click", onClick);
+        window.document.removeEventListener("dblclick", onDoubleClick);
+        window.document.removeEventListener("dragover", onDragOver);
+        window.document.removeEventListener("drop", onDrop);
+        window.document.removeEventListener("dragleave", onDragLeave);
+        window.document.removeEventListener("keydown", onKeyDown);
+
         if (config.isLPEditFeaturesActive) {
             // Initialize hover highlight with Chrome-like colors
             _hoverHighlight = new Highlight("#c8f9c5", true); // Green similar to Chrome's padding color
@@ -3022,6 +3032,9 @@ function RemoteFunctions(config) {
             window.document.addEventListener("drop", onDrop);
             window.document.addEventListener("dragleave", onDragLeave);
             window.document.addEventListener("keydown", onKeyDown);
+        } else {
+            // Clean up any existing UI when edit features are disabled
+            dismissUIAndCleanupState();
         }
     }
 

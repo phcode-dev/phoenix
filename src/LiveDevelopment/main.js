@@ -344,6 +344,7 @@ define(function main(require, exports, module) {
         config.isLPEditFeaturesActive = enabled;
         if (MultiBrowserLiveDev && MultiBrowserLiveDev.status >= MultiBrowserLiveDev.STATUS_ACTIVE) {
             MultiBrowserLiveDev.updateConfig(JSON.stringify(config));
+            MultiBrowserLiveDev.registerHandlers();
         }
     }
 
