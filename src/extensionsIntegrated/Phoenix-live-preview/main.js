@@ -155,6 +155,34 @@ define(function (require, exports, module) {
         editor.focus();
     });
 
+    function _showProFeatureDialog() {
+        const dialog = Dialogs.showModalDialog(
+            DefaultDialogs.DIALOG_ID_INFO,
+            Strings.LIVE_PREVIEW_PRO_FEATURE_TITLE,
+            Strings.LIVE_PREVIEW_PRO_FEATURE_MESSAGE,
+            [
+                {
+                    className: Dialogs.DIALOG_BTN_CLASS_NORMAL,
+                    id: Dialogs.DIALOG_BTN_CANCEL,
+                    text: Strings.CANCEL
+                },
+                {
+                    className: Dialogs.DIALOG_BTN_CLASS_PRIMARY,
+                    id: "subscribe",
+                    text: Strings.LIVE_PREVIEW_PRO_SUBSCRIBE
+                }
+            ]
+        );
+
+        dialog.done(function (buttonId) {
+            if (buttonId === "subscribe") {
+                // TODO: write the implementation here...@abose
+                console.log("the subscribe button got clicked");
+            }
+        });
+
+        return dialog;
+    }
 
     // this function is to check if the live highlight feature is enabled or not
     function _isLiveHighlightEnabled() {
@@ -266,7 +294,7 @@ define(function (require, exports, module) {
                 const crownIcon = !isEditFeaturesActive ? ' <span style="color: #FBB03B; border: 1px solid #FBB03B; padding: 2px 4px; border-radius: 10px; font-size: 9px; margin-left: 12px;"><i class="fas fa-crown"></i> Pro</span>' : '';
                 return {
                     html: `${checkmark}${item}${crownIcon}`,
-                    enabled: isEditFeaturesActive
+                    enabled: true
                 };
             } else if (item === Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON) {
                 const isHoverMode = PreferencesManager.get(PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT) !== "click";
@@ -305,7 +333,13 @@ define(function (require, exports, module) {
             } else if (index === 1) {
                 PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "highlight");
             } else if (index === 2) {
-                PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "edit");
+                if (!isEditFeaturesActive) {
+                    // when the feature is not active we need to show a dialog to the user asking
+                    // them to subscribe to pro
+                    _showProFeatureDialog();
+                } else {
+                    PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "edit");
+                }
             } else if (item === Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON) {
                 // Don't allow edit highlight toggle if edit features are not active
                 if (!isEditFeaturesActive) {
