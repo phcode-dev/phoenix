@@ -1550,6 +1550,7 @@ function RemoteFunctions(config) {
     // AI prompt box, it is displayed when user clicks on the AI button in the more options box
     function AIPromptBox(element) {
         this.element = element;
+        this.selectedModel = 'fast';
         this.remove = this.remove.bind(this);
         this.create();
     }
@@ -1645,9 +1646,6 @@ function RemoteFunctions(config) {
                 }
 
                 .phoenix-ai-prompt-send-button {
-                    position: absolute;
-                    right: 12px;
-                    bottom: 8px;
                     width: 28px;
                     height: 28px;
                     border: none;
@@ -1672,6 +1670,30 @@ function RemoteFunctions(config) {
                     color: #9aa0a6;
                     cursor: not-allowed;
                 }
+
+                .phoenix-ai-bottom-controls {
+                    border-top: 1px solid #e0e0e0;
+                    padding: 8px 16px;
+                    background: #f9f9f9;
+                    border-radius: 0 0 8px 8px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                }
+
+                .phoenix-ai-model-select {
+                    padding: 4px 8px;
+                    border: 1px solid #ddd;
+                    border-radius: 4px;
+                    font-size: 12px;
+                    background: white;
+                    outline: none;
+                    cursor: pointer;
+                }
+
+                .phoenix-ai-model-select:focus {
+                    border-color: #4285F4;
+                }
             `;
 
             const content = `
@@ -1681,6 +1703,13 @@ function RemoteFunctions(config) {
                             class="phoenix-ai-prompt-textarea"
                             placeholder="${config.strings.aiPromptPlaceholder}"
                         ></textarea>
+                    </div>
+                    <div class="phoenix-ai-bottom-controls">
+                        <select class="phoenix-ai-model-select">
+                            <option value="fast">Fast AI</option>
+                            <option value="moderate">Moderate AI</option>
+                            <option value="slow">Slow AI</option>
+                        </select>
                         <button class="phoenix-ai-prompt-send-button" disabled>
                             ➤
                         </button>
@@ -1723,6 +1752,7 @@ function RemoteFunctions(config) {
         _attachEventHandlers: function() {
             const textarea = this._shadow.querySelector('.phoenix-ai-prompt-textarea');
             const sendButton = this._shadow.querySelector('.phoenix-ai-prompt-send-button');
+            const modelSelect = this._shadow.querySelector('.phoenix-ai-model-select');
 
             // Handle textarea input to enable/disable send button
             if (textarea && sendButton) {
@@ -1755,6 +1785,13 @@ function RemoteFunctions(config) {
                     }
                 });
             }
+
+            // model selection change
+            if (modelSelect) {
+                modelSelect.addEventListener('change', (event) => {
+                    this.selectedModel = event.target.value;
+                });
+            }
         },
 
         _handleSend: function(event, prompt) {
@@ -1770,6 +1807,7 @@ function RemoteFunctions(config) {
                 element: element,
                 prompt: prompt,
                 tagId: Number(tagId),
+                selectedModel: this.selectedModel,
                 AISend: true
             });
             this.remove();

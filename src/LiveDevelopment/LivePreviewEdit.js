@@ -551,7 +551,8 @@ define(function (require, exports, module) {
             tagId: message.tagId, // the data-brackets-id of the element which was selected for AI edit
             range: {startPos, endPos}, // the start and end position text in the source code for that element
             text: text, // the actual source code in between the start and the end pos
-            prompt: message.prompt // the prompt that user typed
+            prompt: message.prompt, // the prompt that user typed
+            model: message.selectedModel // the selected model (fast, slow or moderate)
         };
 
         return AIData;
