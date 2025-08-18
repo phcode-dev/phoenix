@@ -1736,7 +1736,7 @@ function RemoteFunctions(config) {
                     if (event.key === 'Enter' && !event.shiftKey) {
                         event.preventDefault();
                         if (textarea.value.trim()) {
-                            this._handleSend(textarea.value.trim());
+                            this._handleSend(event, textarea.value.trim());
                         }
                     } else if (event.key === 'Escape') {
                         event.preventDefault();
@@ -1751,15 +1751,27 @@ function RemoteFunctions(config) {
                     event.preventDefault();
                     event.stopPropagation();
                     if (textarea && textarea.value.trim()) {
-                        this._handleSend(textarea.value.trim());
+                        this._handleSend(event, textarea.value.trim());
                     }
                 });
             }
         },
 
-        _handleSend: function(prompt) {
-            // TODO: need to implement the logic for backend handling here
-            console.log('AI Prompt:', prompt, 'for element:', this.element);
+        _handleSend: function(event, prompt) {
+            const element = this.element;
+            if(!element) {
+                return;
+            }
+            const tagId = element.getAttribute("data-brackets-id");
+
+            window._Brackets_MessageBroker.send({
+                livePreviewEditEnabled: true,
+                event: event,
+                element: element,
+                prompt: prompt,
+                tagId: Number(tagId),
+                AISend: true
+            });
             this.remove();
         },
 

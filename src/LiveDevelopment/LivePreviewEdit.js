@@ -526,6 +526,42 @@ define(function (require, exports, module) {
         }
     }
 
+    function _getRequiredDataForAI(message) {
+        // this is to get the currently live document that is being served in the live preview
+        const editor = _getEditorAndValidate(message.tagId);
+        if (!editor) {
+            return;
+        }
+
+        const range = _getElementRange(editor, message.tagId);
+        if (!range) {
+            return;
+        }
+
+        const { startPos, endPos } = range;
+        // this is the actual source code for the element that we need to duplicate
+        const text = editor.getTextBetween(startPos, endPos);
+        const fileName = editor.document.file.name;
+        const filePath = editor.document.file.fullPath;
+
+        const AIData = {
+            editor: editor, // the editor instance that is being served in the live preview
+            fileName: fileName,
+            filePath: filePath, // the complete absolute path
+            tagId: message.tagId, // the data-brackets-id of the element which was selected for AI edit
+            range: {startPos, endPos}, // the start and end position text in the source code for that element
+            text: text, // the actual source code in between the start and the end pos
+            prompt: message.prompt // the prompt that user typed
+        };
+
+        return AIData;
+    }
+
+    function _editWithAI(message) {
+        const AIData = _getRequiredDataForAI(message);
+        // write the AI implementation here...@abose
+    }
+
     /**
      * This is the main function that is exported.
      * it will be called by LiveDevProtocol when it receives a message from RemoteFunctions.js
@@ -537,8 +573,10 @@ define(function (require, exports, module) {
      * {
                 livePreviewEditEnabled: true,
                 tagId: tagId,
-                delete || duplicate || livePreviewTextEdit: true
+                delete || duplicate || livePreviewTextEdit || AISend: true
                 undoLivePreviewOperation: true (this property is available only for undo operation)
+
+                prompt: prompt (only for AI)
 
                 sourceId: sourceId, (these are for move (drag & drop))
                 targetId: targetId,
@@ -569,6 +607,8 @@ define(function (require, exports, module) {
             _duplicateElementInSourceByTagId(message.tagId);
         } else if (message.livePreviewTextEdit) {
             _editTextInSource(message);
+        } else if (message.AISend) {
+            _editWithAI(message);
         }
     }
 
