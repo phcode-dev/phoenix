@@ -2928,13 +2928,9 @@ function RemoteFunctions(config) {
             }
             delete previouslyClickedElement._originalOutline;
 
-            // Clear click-mode highlighting
-            if (getHighlightMode() === "click") {
-                clearElementBackground(previouslyClickedElement);
-
-                if (_hoverHighlight) {
-                    _hoverHighlight.clear();
-                }
+            clearElementBackground(previouslyClickedElement);
+            if (_hoverHighlight) {
+                _hoverHighlight.clear();
             }
 
             previouslyClickedElement = null;
