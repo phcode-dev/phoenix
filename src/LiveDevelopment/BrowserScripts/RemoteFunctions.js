@@ -1205,6 +1205,10 @@ function RemoteFunctions(config) {
             </div>`;
 
             const styles = `
+                :host {
+                  all: initial;
+                }
+
                 .phoenix-more-options-box {
                     background-color: #4285F4;
                     color: white;
@@ -1463,6 +1467,10 @@ function RemoteFunctions(config) {
             const leftPos = offset.left;
 
             const styles = `
+                :host {
+                  all: initial;
+                }
+
                 .phoenix-node-info-box {
                     background-color: #4285F4;
                     color: white;
@@ -1606,6 +1614,10 @@ function RemoteFunctions(config) {
             }
 
             const styles = `
+                :host {
+                  all: initial;
+                }
+
                 .phoenix-ai-prompt-box {
                     position: absolute;
                     background: white;
