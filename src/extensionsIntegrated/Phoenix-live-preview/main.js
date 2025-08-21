@@ -579,6 +579,7 @@ define(function (require, exports, module) {
             livePreview: Strings.LIVE_DEV_STATUS_TIP_OUT_OF_SYNC,
             clickToReload: Strings.LIVE_DEV_CLICK_TO_RELOAD_PAGE,
             livePreviewSettings: Strings.LIVE_DEV_SETTINGS,
+            livePreviewConfigureModes: Strings.LIVE_PREVIEW_CONFIGURE_MODES,
             clickToPopout: Strings.LIVE_DEV_CLICK_POPOUT,
             openInChrome: Strings.LIVE_DEV_OPEN_CHROME,
             openInSafari: Strings.LIVE_DEV_OPEN_SAFARI,

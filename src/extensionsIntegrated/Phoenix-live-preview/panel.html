@@ -1,8 +1,8 @@
 <div id="panel-live-preview">
     <div id="live-preview-plugin-toolbar" class="plugin-toolbar" style="display: flex; align-items: center; flex-direction: row;">
-        <div style="width: 30%;display: flex;">
+        <div style="width: 20%;display: flex;">
             <button id="reloadLivePreviewButton" title="{{clickToReload}}" class="btn-alt-quiet toolbar-button reload-icon"></button>
-            <button id="livePreviewModeBtn" title="Configure Live Preview Modes" class="btn-alt-quiet toolbar-button btn-dropdown btn"><!-- Content will come here dynamically --></button>
+            <button id="livePreviewModeBtn" title="{{livePreviewConfigureModes}}" class="btn-alt-quiet toolbar-button btn-dropdown btn"><!-- Content will come here dynamically --></button>
         </div>
         <div style="width: fit-content;min-width: 60%;display: flex;justify-content: center; align-items: center;">
 <!--            these are buttons that are always invisible to help central align the panel title-->
@@ -35,7 +35,7 @@
                 <img src="thirdparty/devicon/icons/firefox/firefox-original.svg" />
             </button>
         </div>
-        <div style="width: 10%;display: flex;align-items: center; justify-content: flex-end">
+        <div style="width: 20%;display: flex;align-items: center; justify-content: flex-end">
             <button id="livePreviewSettingsBtn" title="{{livePreviewSettings}}"
                     class="btn-alt-quiet toolbar-button lp-settings-icon"><i class="fa-solid fa-gear"></i></button>
         </div>
