@@ -28,8 +28,7 @@
  * modules should define a single function that returns an object of all
  * exported functions.
  */
-function RemoteFunctions(config) {
-
+function RemoteFunctions(config = {}) {
     // this will store the element that was clicked previously (before the new click)
     // we need this so that we can remove click styling from the previous element when a new element is clicked
     let previouslyClickedElement = null;
@@ -1494,7 +1493,7 @@ function RemoteFunctions(config) {
 
                 .id-name,
                 .class-name {
-                    margin-top: 2px;
+                    margin-top: 3px;
                 }
 
                 .exceeded-classes {

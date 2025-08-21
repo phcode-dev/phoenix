@@ -98,7 +98,6 @@
     display: flex;
     align-items: center;
     margin-right: 4px;
-    margin-left: 4px;
     max-width: 80%;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -111,7 +110,7 @@
     color: #a0a0a0;
     font-size: 14px;
     font-weight: normal;
-    padding: 0 0.75em;
+    padding: 0 0.35em;
 }
 
 #livePreviewModeBtn:hover {

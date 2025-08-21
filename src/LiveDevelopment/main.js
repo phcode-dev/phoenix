@@ -47,6 +47,7 @@ define(function main(require, exports, module) {
 
 
     // this is responsible to make the advanced live preview features active or inactive
+    // @abose (make this variable false when not a paid user, everything rest is handled automatically)
     let isLPEditFeaturesActive = true;
 
     const EVENT_LIVE_HIGHLIGHT_PREF_CHANGED = "liveHighlightPrefChange";
