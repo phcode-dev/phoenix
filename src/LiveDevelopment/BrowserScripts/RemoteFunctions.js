@@ -847,9 +847,19 @@ function RemoteFunctions(config = {}) {
         let elements = window.document.querySelectorAll("[data-brackets-id]");
         for (let j = 0; j < elements.length; j++) {
             delete elements[j]._dropMarker;
-            // Remove any hover effects
-            elements[j].style.backgroundColor = "";
-            elements[j].style.transform = "";
+            // only restore the styles that were modified by drag operations
+            if (elements[j]._originalDragBackgroundColor !== undefined) {
+                elements[j].style.backgroundColor = elements[j]._originalDragBackgroundColor;
+                delete elements[j]._originalDragBackgroundColor;
+            }
+            if (elements[j]._originalDragTransform !== undefined) {
+                elements[j].style.transform = elements[j]._originalDragTransform;
+                delete elements[j]._originalDragTransform;
+            }
+            if (elements[j]._originalDragTransition !== undefined) {
+                elements[j].style.transition = elements[j]._originalDragTransition;
+                delete elements[j]._originalDragTransition;
+            }
         }
     }
 
@@ -885,6 +895,14 @@ function RemoteFunctions(config = {}) {
         // Skip BODY, HTML tags and elements inside HEAD
         if (target.tagName === "BODY" || target.tagName === "HTML" || _isInsideHeadTag(target)) {
             return;
+        }
+
+        // Store original styles before modifying them
+        if (target._originalDragBackgroundColor === undefined) {
+            target._originalDragBackgroundColor = target.style.backgroundColor;
+        }
+        if (target._originalDragTransition === undefined) {
+            target._originalDragTransition = target.style.transition;
         }
 
         // Add subtle hover effect to target element
