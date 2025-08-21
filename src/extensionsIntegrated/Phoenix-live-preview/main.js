@@ -88,9 +88,17 @@ define(function (require, exports, module) {
 
     // live preview mode pref
     const PREFERENCE_LIVE_PREVIEW_MODE = "livePreviewMode";
-    const DEFAULT_LIVE_PREVIEW_MODE = "preview"; // preview, highlight or edit
+
+    /**
+     * Get the appropriate default mode based on whether edit features are active
+     * @returns {string} "highlight" if edit features inactive, "edit" if active
+     */
+    function _getDefaultMode() {
+        return LiveDevelopment.isLPEditFeaturesActive ? "edit" : "highlight";
+    }
+
     // define the live preview mode preference
-    PreferencesManager.definePreference(PREFERENCE_LIVE_PREVIEW_MODE, "string", DEFAULT_LIVE_PREVIEW_MODE, {
+    PreferencesManager.definePreference(PREFERENCE_LIVE_PREVIEW_MODE, "string", _getDefaultMode(), {
         description: StringUtils.format(Strings.LIVE_PREVIEW_MODE_PREFERENCE, "'preview'", "'highlight'", "'edit'"),
         values: ["preview", "highlight", "edit"]
     });
@@ -242,15 +250,15 @@ define(function (require, exports, module) {
      * init live preview mode from saved preferences
      */
     function _initializeMode() {
-        const savedMode = PreferencesManager.get(PREFERENCE_LIVE_PREVIEW_MODE) || "preview";
+        const savedMode = PreferencesManager.get(PREFERENCE_LIVE_PREVIEW_MODE) || _getDefaultMode();
         const isEditFeaturesActive = LiveDevelopment.isLPEditFeaturesActive;
 
-        // If user has edit mode saved but edit features are not active, default to preview
+        // If user has edit mode saved but edit features are not active, default to highlight
         let effectiveMode = savedMode;
         if (savedMode === "edit" && !isEditFeaturesActive) {
-            effectiveMode = "preview";
+            effectiveMode = "highlight";
             // Update the preference to reflect the actual mode being used
-            PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "preview");
+            PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "highlight");
         }
 
         // apply the effective mode
@@ -279,9 +287,9 @@ define(function (require, exports, module) {
             items.push(Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON);
         }
 
-        const rawMode = PreferencesManager.get(PREFERENCE_LIVE_PREVIEW_MODE) || "preview";
+        const rawMode = PreferencesManager.get(PREFERENCE_LIVE_PREVIEW_MODE) || _getDefaultMode();
         // this is to take care of invalid values in the pref file
-        const currentMode = ["preview", "highlight", "edit"].includes(rawMode) ? rawMode : "preview";
+        const currentMode = ["preview", "highlight", "edit"].includes(rawMode) ? rawMode : _getDefaultMode();
 
         const dropdown = new DropdownButton.DropdownButton("", items, function(item, index) {
             if (item === Strings.LIVE_PREVIEW_MODE_PREVIEW) {
@@ -1044,12 +1052,12 @@ define(function (require, exports, module) {
             const newMode = PreferencesManager.get(PREFERENCE_LIVE_PREVIEW_MODE);
             const isEditFeaturesActive = LiveDevelopment.isLPEditFeaturesActive;
 
-            // If user tries to set edit mode but edit features are not active, default to preview
+            // If user tries to set edit mode but edit features are not active, default to highlight
             let effectiveMode = newMode;
             if (newMode === "edit" && !isEditFeaturesActive) {
-                effectiveMode = "preview";
+                effectiveMode = "highlight";
                 // Update the preference to reflect the actual mode being used
-                PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "preview");
+                PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "highlight");
                 return; // Return to avoid infinite loop
             }
 
