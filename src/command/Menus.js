@@ -737,12 +737,12 @@ define(function (require, exports, module) {
                 logger.leaveTrail("UI Menu Click: " + menuItem._command.getID());
                 MainViewManager.focusActivePane();
                 if (menuItem._command._options.eventSource) {
-                    menuItem._command.execute({
+                    CommandManager.execute(menuItem._command.getID(), {
                         eventSource: CommandManager.SOURCE_UI_MENU_CLICK,
                         sourceType: self.id
                     });
                 } else {
-                    menuItem._command.execute();
+                    CommandManager.execute(menuItem._command.getID());
                 }
             });
 

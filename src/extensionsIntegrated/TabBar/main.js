@@ -548,6 +548,44 @@ define(function (require, exports, module) {
     const debounceUpdateTabs = _.debounce(updateTabs, 2);
 
     /**
+     * This function is responsible to add the placeholder tab to the working set (if user press save on it)
+     * @param {Event} event
+     * @param {String} commandId - the command id, to make sure we check it do the operation only on file save
+     */
+    function onFileSave(event, commandId) {
+        if (commandId === Commands.FILE_SAVE || commandId === Commands.FILE_SAVE_ALL) {
+            const activePane = MainViewManager.getActivePaneId();
+            const currentFile = MainViewManager.getCurrentlyViewedFile(activePane);
+
+            if (currentFile) {
+                const filePath = currentFile.fullPath;
+
+                // check if this file is currently shown as a placeholder in any pane
+                const isFirstPanePlaceholder =
+                    MainViewManager.getCurrentlyViewedFile("first-pane") &&
+                    MainViewManager.getCurrentlyViewedFile("first-pane").fullPath === filePath &&
+                    !Global.firstPaneWorkingSet.some((entry) => entry.path === filePath);
+
+                const isSecondPanePlaceholder =
+                    MainViewManager.getCurrentlyViewedFile("second-pane") &&
+                    MainViewManager.getCurrentlyViewedFile("second-pane").fullPath === filePath &&
+                    !Global.secondPaneWorkingSet.some((entry) => entry.path === filePath);
+
+                // if it's a placeholder tab, we add it to the working set
+                if (isFirstPanePlaceholder) {
+                    const fileObj = FileSystem.getFileForPath(filePath);
+                    MainViewManager.addToWorkingSet("first-pane", fileObj);
+                }
+
+                if (isSecondPanePlaceholder) {
+                    const fileObj = FileSystem.getFileForPath(filePath);
+                    MainViewManager.addToWorkingSet("second-pane", fileObj);
+                }
+            }
+        }
+    }
+
+    /**
      * Registers the event handlers
      */
     function _registerHandlers() {
@@ -587,6 +625,10 @@ define(function (require, exports, module) {
         // also update the tabs when the main plugin panel resizes
         // main-plugin-panel[0] = live preview panel
         new ResizeObserver(updateTabs).observe($("#main-plugin-panel")[0]);
+
+        // listen for file save commands, needed to add placeholder tab to the working set
+        CommandManager.off("beforeExecuteCommand", onFileSave);
+        CommandManager.on("beforeExecuteCommand", onFileSave);
 
         // File dirty flag change handling
         DocumentManager.on("dirtyFlagChange", function (event, doc) {
