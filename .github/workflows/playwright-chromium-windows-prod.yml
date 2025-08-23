@@ -29,6 +29,8 @@ jobs:
 
       - name: Run Playwright unit tests in Chromium for prod stage
         uses: nick-fields/retry@v2
+        id: chromiumUnit
+        continue-on-error: true
         with:
           timeout_minutes: 12
           max_attempts: 3
@@ -36,6 +38,8 @@ jobs:
 
       - name: Run Playwright integration tests in Chromium for prod stage
         uses: nick-fields/retry@v2
+        id: chromiumIntegration
+        continue-on-error: true
         with:
           timeout_minutes: 12
           max_attempts: 3
@@ -43,6 +47,8 @@ jobs:
 
       - name: Run Playwright mainview tests in Chromium for prod stage
         uses: nick-fields/retry@v2
+        id: chromiumMainview
+        continue-on-error: true
         with:
           timeout_minutes: 12
           max_attempts: 3
@@ -50,6 +56,8 @@ jobs:
 
       - name: Run Playwright livepreview tests in Chromium for prod stage
         uses: nick-fields/retry@v2
+        id: chromiumLivepreview
+        continue-on-error: true
         with:
           timeout_minutes: 15
           max_attempts: 3
@@ -57,7 +65,32 @@ jobs:
 
       - name: Run Playwright LegacyInteg tests in Chromium for prod stage
         uses: nick-fields/retry@v2
+        id: chromiumLegacyInteg
+        continue-on-error: true
         with:
           timeout_minutes: 30
           max_attempts: 3
           command: npx cross-env TEST_ENV=LegacyInteg npm run testChromiumDist
+
+      - name: Fail on test runs failed in Chromium Windows (prod sanity)
+        if: steps.chromiumUnit.outcome == 'failure' || steps.chromiumIntegration.outcome == 'failure' || steps.chromiumMainview.outcome == 'failure' || steps.chromiumLivepreview.outcome == 'failure' || steps.chromiumLegacyInteg.outcome == 'failure'
+        shell: bash
+        run: |
+          echo "Chromium Windows (prod) Playwright tests failed, marking step as failed"
+          echo "Failed tests:"
+          if [ "${{ steps.chromiumUnit.outcome }}" == "failure" ]; then
+            echo "- Run Playwright unit tests in Chromium for prod stage"
+          fi
+          if [ "${{ steps.chromiumIntegration.outcome }}" == "failure" ]; then
+            echo "- Run Playwright integration tests in Chromium for prod stage"
+          fi
+          if [ "${{ steps.chromiumMainview.outcome }}" == "failure" ]; then
+            echo "- Run Playwright mainview tests in Chromium for prod stage"
+          fi
+          if [ "${{ steps.chromiumLivepreview.outcome }}" == "failure" ]; then
+            echo "- Run Playwright livepreview tests in Chromium for prod stage"
+          fi
+          if [ "${{ steps.chromiumLegacyInteg.outcome }}" == "failure" ]; then
+            echo "- Run Playwright LegacyInteg tests in Chromium for prod stage"
+          fi
+          exit 1
