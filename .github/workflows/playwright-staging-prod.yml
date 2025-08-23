@@ -25,6 +25,8 @@ jobs:
 
       - name: Run Playwright unit tests in Chromium for prod stage
         uses: nick-fields/retry@v2
+        id: chromiumUnit
+        continue-on-error: true
         with:
           timeout_minutes: 12
           max_attempts: 3
@@ -32,6 +34,8 @@ jobs:
 
       - name: Run Playwright integration tests in Chromium for prod stage
         uses: nick-fields/retry@v2
+        id: chromiumIntegration
+        continue-on-error: true
         with:
           timeout_minutes: 12
           max_attempts: 3
@@ -39,6 +43,8 @@ jobs:
 
       - name: Run Playwright mainview tests in Chromium for prod stage
         uses: nick-fields/retry@v2
+        id: chromiumMainview
+        continue-on-error: true
         with:
           timeout_minutes: 12
           max_attempts: 3
@@ -46,6 +52,8 @@ jobs:
 
       - name: Run Playwright livepreview tests in Chromium for prod stage
         uses: nick-fields/retry@v2
+        id: chromiumLivepreview
+        continue-on-error: true
         with:
           timeout_minutes: 15
           max_attempts: 3
@@ -53,10 +61,34 @@ jobs:
 
       - name: Run Playwright LegacyInteg tests in Chromium for prod stage
         uses: nick-fields/retry@v2
+        id: chromiumLegacyInteg
+        continue-on-error: true
         with:
           timeout_minutes: 20
           max_attempts: 3
           command: npx cross-env TEST_ENV=LegacyInteg npm run testChromiumDist
+
+      - name: Fail on test runs failed in Chromium Linux (staging/prod)
+        if: steps.chromiumUnit.outcome == 'failure' || steps.chromiumIntegration.outcome == 'failure' || steps.chromiumMainview.outcome == 'failure' || steps.chromiumLivepreview.outcome == 'failure' || steps.chromiumLegacyInteg.outcome == 'failure'
+        run: |
+          echo "Chromium Linux (staging/prod) Playwright tests failed, marking step as failed"
+          echo "Failed tests:"
+          if [ "${{ steps.chromiumUnit.outcome }}" == "failure" ]; then
+            echo "- Run Playwright unit tests in Chromium for prod stage"
+          fi
+          if [ "${{ steps.chromiumIntegration.outcome }}" == "failure" ]; then
+            echo "- Run Playwright integration tests in Chromium for prod stage"
+          fi
+          if [ "${{ steps.chromiumMainview.outcome }}" == "failure" ]; then
+            echo "- Run Playwright mainview tests in Chromium for prod stage"
+          fi
+          if [ "${{ steps.chromiumLivepreview.outcome }}" == "failure" ]; then
+            echo "- Run Playwright livepreview tests in Chromium for prod stage"
+          fi
+          if [ "${{ steps.chromiumLegacyInteg.outcome }}" == "failure" ]; then
+            echo "- Run Playwright LegacyInteg tests in Chromium for prod stage"
+          fi
+          exit 1
 
   playwrightChromiumWindows:
     timeout-minutes: 90
@@ -78,6 +110,8 @@ jobs:
 
       - name: Run Playwright unit tests in Chromium for prod stage
         uses: nick-fields/retry@v2
+        id: chromiumUnit
+        continue-on-error: true
         with:
           timeout_minutes: 12
           max_attempts: 3
@@ -85,6 +119,8 @@ jobs:
 
       - name: Run Playwright integration tests in Chromium for prod stage
         uses: nick-fields/retry@v2
+        id: chromiumIntegration
+        continue-on-error: true
         with:
           timeout_minutes: 12
           max_attempts: 3
@@ -92,6 +128,8 @@ jobs:
 
       - name: Run Playwright mainview tests in Chromium for prod stage
         uses: nick-fields/retry@v2
+        id: chromiumMainview
+        continue-on-error: true
         with:
           timeout_minutes: 12
           max_attempts: 3
@@ -99,6 +137,8 @@ jobs:
 
       - name: Run Playwright livepreview tests in Chromium for prod stage
         uses: nick-fields/retry@v2
+        id: chromiumLivepreview
+        continue-on-error: true
         with:
           timeout_minutes: 15
           max_attempts: 3
@@ -106,10 +146,35 @@ jobs:
 
       - name: Run Playwright LegacyInteg tests in Chromium for prod stage
         uses: nick-fields/retry@v2
+        id: chromiumLegacyInteg
+        continue-on-error: true
         with:
           timeout_minutes: 30
           max_attempts: 3
           command: npx cross-env TEST_ENV=LegacyInteg npm run testChromiumDist
+
+      - name: Fail on test runs failed in Chromium Windows (staging/prod)
+        if: steps.chromiumUnit.outcome == 'failure' || steps.chromiumIntegration.outcome == 'failure' || steps.chromiumMainview.outcome == 'failure' || steps.chromiumLivepreview.outcome == 'failure' || steps.chromiumLegacyInteg.outcome == 'failure'
+        shell: bash
+        run: |
+          echo "Chromium Windows (staging/prod) Playwright tests failed, marking step as failed"
+          echo "Failed tests:"
+          if [ "${{ steps.chromiumUnit.outcome }}" == "failure" ]; then
+            echo "- Run Playwright unit tests in Chromium for prod stage"
+          fi
+          if [ "${{ steps.chromiumIntegration.outcome }}" == "failure" ]; then
+            echo "- Run Playwright integration tests in Chromium for prod stage"
+          fi
+          if [ "${{ steps.chromiumMainview.outcome }}" == "failure" ]; then
+            echo "- Run Playwright mainview tests in Chromium for prod stage"
+          fi
+          if [ "${{ steps.chromiumLivepreview.outcome }}" == "failure" ]; then
+            echo "- Run Playwright livepreview tests in Chromium for prod stage"
+          fi
+          if [ "${{ steps.chromiumLegacyInteg.outcome }}" == "failure" ]; then
+            echo "- Run Playwright LegacyInteg tests in Chromium for prod stage"
+          fi
+          exit 1
 
   playwrightChromiumMacos:
     timeout-minutes: 90
@@ -131,6 +196,8 @@ jobs:
 
       - name: Run Playwright unit tests in Chromium
         uses: nick-fields/retry@v2
+        id: chromiumUnit
+        continue-on-error: true
         with:
           timeout_minutes: 12
           max_attempts: 3
@@ -138,6 +205,8 @@ jobs:
 
       - name: Run Playwright integration tests in Chromium
         uses: nick-fields/retry@v2
+        id: chromiumIntegration
+        continue-on-error: true
         with:
           timeout_minutes: 12
           max_attempts: 3
@@ -145,6 +214,8 @@ jobs:
 
       - name: Run Playwright mainview tests in Chromium
         uses: nick-fields/retry@v2
+        id: chromiumMainview
+        continue-on-error: true
         with:
           timeout_minutes: 12
           max_attempts: 3
@@ -152,6 +223,8 @@ jobs:
 
       - name: Run Playwright livepreview tests in Chromium
         uses: nick-fields/retry@v2
+        id: chromiumLivepreview
+        continue-on-error: true
         with:
           timeout_minutes: 15
           max_attempts: 3
@@ -159,10 +232,34 @@ jobs:
 
       - name: Run Playwright LegacyInteg tests in Chromium
         uses: nick-fields/retry@v2
+        id: chromiumLegacyInteg
+        continue-on-error: true
         with:
           timeout_minutes: 20
           max_attempts: 3
           command: npx cross-env TEST_ENV=LegacyInteg npm run testChromiumDist
+
+      - name: Fail on test runs failed in Chromium macOS (staging/prod)
+        if: steps.chromiumUnit.outcome == 'failure' || steps.chromiumIntegration.outcome == 'failure' || steps.chromiumMainview.outcome == 'failure' || steps.chromiumLivepreview.outcome == 'failure' || steps.chromiumLegacyInteg.outcome == 'failure'
+        run: |
+          echo "Chromium macOS (staging/prod) Playwright tests failed, marking step as failed"
+          echo "Failed tests:"
+          if [ "${{ steps.chromiumUnit.outcome }}" == "failure" ]; then
+            echo "- Run Playwright unit tests in Chromium"
+          fi
+          if [ "${{ steps.chromiumIntegration.outcome }}" == "failure" ]; then
+            echo "- Run Playwright integration tests in Chromium"
+          fi
+          if [ "${{ steps.chromiumMainview.outcome }}" == "failure" ]; then
+            echo "- Run Playwright mainview tests in Chromium"
+          fi
+          if [ "${{ steps.chromiumLivepreview.outcome }}" == "failure" ]; then
+            echo "- Run Playwright livepreview tests in Chromium"
+          fi
+          if [ "${{ steps.chromiumLegacyInteg.outcome }}" == "failure" ]; then
+            echo "- Run Playwright LegacyInteg tests in Chromium"
+          fi
+          exit 1
 
   playwrightFirefoxLinux:
     timeout-minutes: 90
@@ -184,6 +281,8 @@ jobs:
 
       - name: Run Playwright unit tests in Firefox
         uses: nick-fields/retry@v2
+        id: firefoxUnit
+        continue-on-error: true
         with:
           timeout_minutes: 12
           max_attempts: 3
@@ -191,6 +290,8 @@ jobs:
 
       - name: Run Playwright integration tests in Firefox
         uses: nick-fields/retry@v2
+        id: firefoxIntegration
+        continue-on-error: true
         with:
           timeout_minutes: 12
           max_attempts: 3
@@ -198,6 +299,8 @@ jobs:
 
       - name: Run Playwright mainview tests in Firefox
         uses: nick-fields/retry@v2
+        id: firefoxMainview
+        continue-on-error: true
         with:
           timeout_minutes: 12
           max_attempts: 3
@@ -205,6 +308,8 @@ jobs:
 
       - name: Run Playwright livepreview tests in Firefox
         uses: nick-fields/retry@v2
+        id: firefoxLivepreview
+        continue-on-error: true
         with:
           timeout_minutes: 15
           max_attempts: 3
@@ -212,10 +317,34 @@ jobs:
 
       - name: Run Playwright LegacyInteg tests in Firefox
         uses: nick-fields/retry@v2
+        id: firefoxLegacyInteg
+        continue-on-error: true
         with:
           timeout_minutes: 20
           max_attempts: 3
           command: npx cross-env TEST_ENV=LegacyInteg npm run testFirefoxDist
+
+      - name: Fail on test runs failed in Firefox Linux (staging/prod)
+        if: steps.firefoxUnit.outcome == 'failure' || steps.firefoxIntegration.outcome == 'failure' || steps.firefoxMainview.outcome == 'failure' || steps.firefoxLivepreview.outcome == 'failure' || steps.firefoxLegacyInteg.outcome == 'failure'
+        run: |
+          echo "Firefox Linux (staging/prod) Playwright tests failed, marking step as failed"
+          echo "Failed tests:"
+          if [ "${{ steps.firefoxUnit.outcome }}" == "failure" ]; then
+            echo "- Run Playwright unit tests in Firefox"
+          fi
+          if [ "${{ steps.firefoxIntegration.outcome }}" == "failure" ]; then
+            echo "- Run Playwright integration tests in Firefox"
+          fi
+          if [ "${{ steps.firefoxMainview.outcome }}" == "failure" ]; then
+            echo "- Run Playwright mainview tests in Firefox"
+          fi
+          if [ "${{ steps.firefoxLivepreview.outcome }}" == "failure" ]; then
+            echo "- Run Playwright livepreview tests in Firefox"
+          fi
+          if [ "${{ steps.firefoxLegacyInteg.outcome }}" == "failure" ]; then
+            echo "- Run Playwright LegacyInteg tests in Firefox"
+          fi
+          exit 1
 
   playwrightFirefoxWindows:
     timeout-minutes: 90
@@ -237,6 +366,8 @@ jobs:
 
       - name: Run Playwright unit tests in Firefox
         uses: nick-fields/retry@v2
+        id: firefoxUnit
+        continue-on-error: true
         with:
           timeout_minutes: 12
           max_attempts: 3
@@ -244,6 +375,8 @@ jobs:
 
       - name: Run Playwright integration tests in Firefox
         uses: nick-fields/retry@v2
+        id: firefoxIntegration
+        continue-on-error: true
         with:
           timeout_minutes: 12
           max_attempts: 3
@@ -251,6 +384,8 @@ jobs:
 
       - name: Run Playwright mainview tests in Firefox
         uses: nick-fields/retry@v2
+        id: firefoxMainview
+        continue-on-error: true
         with:
           timeout_minutes: 12
           max_attempts: 3
@@ -258,6 +393,8 @@ jobs:
 
       - name: Run Playwright livepreview tests in Firefox
         uses: nick-fields/retry@v2
+        id: firefoxLivepreview
+        continue-on-error: true
         with:
           timeout_minutes: 15
           max_attempts: 3
@@ -265,10 +402,35 @@ jobs:
 
       - name: Run Playwright LegacyInteg tests in Firefox
         uses: nick-fields/retry@v2
+        id: firefoxLegacyInteg
+        continue-on-error: true
         with:
           timeout_minutes: 20
           max_attempts: 3
           command: npx cross-env TEST_ENV=LegacyInteg npm run testFirefoxDist
+
+      - name: Fail on test runs failed in Firefox Windows (staging/prod)
+        if: steps.firefoxUnit.outcome == 'failure' || steps.firefoxIntegration.outcome == 'failure' || steps.firefoxMainview.outcome == 'failure' || steps.firefoxLivepreview.outcome == 'failure' || steps.firefoxLegacyInteg.outcome == 'failure'
+        shell: bash
+        run: |
+          echo "Firefox Windows (staging/prod) Playwright tests failed, marking step as failed"
+          echo "Failed tests:"
+          if [ "${{ steps.firefoxUnit.outcome }}" == "failure" ]; then
+            echo "- Run Playwright unit tests in Firefox"
+          fi
+          if [ "${{ steps.firefoxIntegration.outcome }}" == "failure" ]; then
+            echo "- Run Playwright integration tests in Firefox"
+          fi
+          if [ "${{ steps.firefoxMainview.outcome }}" == "failure" ]; then
+            echo "- Run Playwright mainview tests in Firefox"
+          fi
+          if [ "${{ steps.firefoxLivepreview.outcome }}" == "failure" ]; then
+            echo "- Run Playwright livepreview tests in Firefox"
+          fi
+          if [ "${{ steps.firefoxLegacyInteg.outcome }}" == "failure" ]; then
+            echo "- Run Playwright LegacyInteg tests in Firefox"
+          fi
+          exit 1
 
   playwrightFirefoxMacos:
     timeout-minutes: 90
@@ -290,6 +452,8 @@ jobs:
 
       - name: Run Playwright unit tests in Firefox
         uses: nick-fields/retry@v2
+        id: firefoxUnit
+        continue-on-error: true
         with:
           timeout_minutes: 12
           max_attempts: 3
@@ -297,6 +461,8 @@ jobs:
 
       - name: Run Playwright integration tests in Firefox
         uses: nick-fields/retry@v2
+        id: firefoxIntegration
+        continue-on-error: true
         with:
           timeout_minutes: 12
           max_attempts: 3
@@ -304,6 +470,8 @@ jobs:
 
       - name: Run Playwright mainview tests in Firefox
         uses: nick-fields/retry@v2
+        id: firefoxMainview
+        continue-on-error: true
         with:
           timeout_minutes: 12
           max_attempts: 3
@@ -311,6 +479,8 @@ jobs:
 
       - name: Run Playwright livepreview tests in Firefox
         uses: nick-fields/retry@v2
+        id: firefoxLivepreview
+        continue-on-error: true
         with:
           timeout_minutes: 15
           max_attempts: 3
@@ -318,7 +488,31 @@ jobs:
 
       - name: Run Playwright LegacyInteg tests in Firefox
         uses: nick-fields/retry@v2
+        id: firefoxLegacyInteg
+        continue-on-error: true
         with:
           timeout_minutes: 20
           max_attempts: 3
           command: npx cross-env TEST_ENV=LegacyInteg npm run testFirefoxDist
+
+      - name: Fail on test runs failed in Firefox macOS (staging/prod)
+        if: steps.firefoxUnit.outcome == 'failure' || steps.firefoxIntegration.outcome == 'failure' || steps.firefoxMainview.outcome == 'failure' || steps.firefoxLivepreview.outcome == 'failure' || steps.firefoxLegacyInteg.outcome == 'failure'
+        run: |
+          echo "Firefox macOS (staging/prod) Playwright tests failed, marking step as failed"
+          echo "Failed tests:"
+          if [ "${{ steps.firefoxUnit.outcome }}" == "failure" ]; then
+            echo "- Run Playwright unit tests in Firefox"
+          fi
+          if [ "${{ steps.firefoxIntegration.outcome }}" == "failure" ]; then
+            echo "- Run Playwright integration tests in Firefox"
+          fi
+          if [ "${{ steps.firefoxMainview.outcome }}" == "failure" ]; then
+            echo "- Run Playwright mainview tests in Firefox"
+          fi
+          if [ "${{ steps.firefoxLivepreview.outcome }}" == "failure" ]; then
+            echo "- Run Playwright livepreview tests in Firefox"
+          fi
+          if [ "${{ steps.firefoxLegacyInteg.outcome }}" == "failure" ]; then
+            echo "- Run Playwright LegacyInteg tests in Firefox"
+          fi
+          exit 1

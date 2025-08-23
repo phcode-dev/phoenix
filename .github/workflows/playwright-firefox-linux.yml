@@ -26,6 +26,8 @@ jobs:
 
     - name: Run Playwright unit tests in Firefox
       uses: nick-fields/retry@v2
+      id: firefoxUnit
+      continue-on-error: true
       with:
         timeout_minutes: 12
         max_attempts: 3
@@ -33,6 +35,8 @@ jobs:
 
     - name: Run Playwright integration tests in Firefox
       uses: nick-fields/retry@v2
+      id: firefoxIntegration
+      continue-on-error: true
       with:
         timeout_minutes: 12
         max_attempts: 3
@@ -40,6 +44,8 @@ jobs:
 
     - name: Run Playwright mainview tests in Firefox
       uses: nick-fields/retry@v2
+      id: firefoxMainview
+      continue-on-error: true
       with:
         timeout_minutes: 12
         max_attempts: 3
@@ -47,6 +53,8 @@ jobs:
 
     - name: Run Playwright livepreview tests in Firefox
       uses: nick-fields/retry@v2
+      id: firefoxLivepreview
+      continue-on-error: true
       with:
         timeout_minutes: 15
         max_attempts: 3
@@ -54,7 +62,31 @@ jobs:
 
     - name: Run Playwright LegacyInteg tests in Firefox
       uses: nick-fields/retry@v2
+      id: firefoxLegacyInteg
+      continue-on-error: true
       with:
         timeout_minutes: 20
         max_attempts: 3
         command: npx cross-env TEST_ENV=LegacyInteg npm run testFirefox
+
+    - name: Fail on test runs failed in Firefox Linux
+      if: steps.firefoxUnit.outcome == 'failure' || steps.firefoxIntegration.outcome == 'failure' || steps.firefoxMainview.outcome == 'failure' || steps.firefoxLivepreview.outcome == 'failure' || steps.firefoxLegacyInteg.outcome == 'failure'
+      run: |
+        echo "Firefox Linux Playwright tests failed, marking step as failed"
+        echo "Failed tests:"
+        if [ "${{ steps.firefoxUnit.outcome }}" == "failure" ]; then
+          echo "- Run Playwright unit tests in Firefox"
+        fi
+        if [ "${{ steps.firefoxIntegration.outcome }}" == "failure" ]; then
+          echo "- Run Playwright integration tests in Firefox"
+        fi
+        if [ "${{ steps.firefoxMainview.outcome }}" == "failure" ]; then
+          echo "- Run Playwright mainview tests in Firefox"
+        fi
+        if [ "${{ steps.firefoxLivepreview.outcome }}" == "failure" ]; then
+          echo "- Run Playwright livepreview tests in Firefox"
+        fi
+        if [ "${{ steps.firefoxLegacyInteg.outcome }}" == "failure" ]; then
+          echo "- Run Playwright LegacyInteg tests in Firefox"
+        fi
+        exit 1
