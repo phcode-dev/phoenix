@@ -53,10 +53,22 @@ define(function (require, exports, module) {
     let $tabBar2 = null;
 
     /**
+     * this function checks if the TabBar is currently enabled or not (no. of tabs is 0 means tab bar is disabled)
+     * @returns {boolean} true if TabBar is enabled and should be active
+     */
+    function isTabBarActive() {
+        return Preference.tabBarEnabled && Preference.tabBarNumberOfTabs !== 0;
+    }
+
+    /**
      * This function is responsible to take all the files from the working set and gets the working sets ready
      * This is placed here instead of helper.js because it modifies the working sets
      */
     function getAllFilesFromWorkingSet() {
+        if (!isTabBarActive()) {
+            return;
+        }
+
         Global.firstPaneWorkingSet = [];
         Global.secondPaneWorkingSet = [];
 
@@ -204,7 +216,7 @@ define(function (require, exports, module) {
      * Creates the tab bar and adds it to the DOM
      */
     function createTabBar() {
-        if (!Preference.tabBarEnabled || Preference.tabBarNumberOfTabs === 0) {
+        if (!isTabBarActive()) {
             cleanupTabBar();
             return;
         }
@@ -237,6 +249,10 @@ define(function (require, exports, module) {
      * It is called when the working set changes. So instead of creating a new tab bar, we just update the existing one
      */
     function updateTabs() {
+        if (!isTabBarActive()) {
+            return;
+        }
+
         // Get all files from the working set. refer to `global.js`
         getAllFilesFromWorkingSet();
 
@@ -553,6 +569,10 @@ define(function (require, exports, module) {
      * @param {String} commandId - the command id, to make sure we check it do the operation only on file save
      */
     function onFileSave(event, commandId) {
+        if (!isTabBarActive()) {
+            return;
+        }
+
         if (commandId === Commands.FILE_SAVE || commandId === Commands.FILE_SAVE_ALL) {
             const activePane = MainViewManager.getActivePaneId();
             const currentFile = MainViewManager.getCurrentlyViewedFile(activePane);
@@ -632,6 +652,10 @@ define(function (require, exports, module) {
 
         // File dirty flag change handling
         DocumentManager.on("dirtyFlagChange", function (event, doc) {
+            if (!isTabBarActive()) {
+                return;
+            }
+
             const filePath = doc.file.fullPath;
 
             // Update UI
@@ -678,7 +702,7 @@ define(function (require, exports, module) {
         // Update menu checkmark
         CommandManager.get(Commands.TOGGLE_TABBAR).setChecked(prefs.showTabBar);
 
-        if (Preference.tabBarEnabled && Preference.tabBarNumberOfTabs !== 0) {
+        if (isTabBarActive()) {
             createTabBar();
         } else {
             cleanupTabBar();
