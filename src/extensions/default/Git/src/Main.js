@@ -400,12 +400,22 @@ define(function (require, exports) {
     }
 
     let isCommandExecuting = false;
+    let scheduledRefresh = null;
+    const REFRESH_DEDUPE_TIME = 3000;
+
     function refreshOnFocusChange() {
         // to sync external git changes after switching to app.
         if (gitEnabled) {
             const isGitPanelVisible = Panel.getPanel().is(":visible");
 
             if (isCommandExecuting) {
+                // if we haven't already scheduled a refresh, queue one
+                if (!scheduledRefresh) {
+                    scheduledRefresh = setTimeout(() => {
+                        scheduledRefresh = null;
+                        refreshOnFocusChange();
+                    }, REFRESH_DEDUPE_TIME);
+                }
                 return;
             }
             isCommandExecuting = true;
@@ -417,11 +427,24 @@ define(function (require, exports) {
                     console.error("error refreshing on focus switch", err);
                 }).always(() => {
                     isCommandExecuting = false;
+                    // if a refresh got queued while we were executing, run it immediately now
+                    if (scheduledRefresh) {
+                        clearTimeout(scheduledRefresh);
+                        scheduledRefresh = null;
+                        refreshOnFocusChange();
+                    }
                 });
             } else {
                 // if panel not visible, we just refresh the git branch (shown in sidebar)
                 Branch.refresh();
                 isCommandExecuting = false;
+
+                // run if something got queued
+                if (scheduledRefresh) {
+                    clearTimeout(scheduledRefresh);
+                    scheduledRefresh = null;
+                    refreshOnFocusChange();
+                }
             }
         }
     }
