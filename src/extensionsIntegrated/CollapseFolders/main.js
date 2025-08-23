@@ -24,6 +24,7 @@
 define(function (require, exports, module) {
     const AppInit = require("utils/AppInit");
     const ProjectManager = require("project/ProjectManager");
+    const Strings = require("strings");
 
     /**
      * This is the main function that handles the closing of all the directories
@@ -64,7 +65,7 @@ define(function (require, exports, module) {
 
         // create the collapse btn
         const $collapseBtn = $(`
-            <div id="collapse-folders" class="btn-alt-quiet" title="Collapse All">
+            <div id="collapse-folders" class="btn-alt-quiet" title="${Strings.COLLAPSE_ALL_FOLDERS}">
                 <i class="fa-solid fa-chevron-down collapse-icon" aria-hidden="true"></i>
                 <i class="fa-solid fa-chevron-up collapse-icon" aria-hidden="true"></i>
             </div>
