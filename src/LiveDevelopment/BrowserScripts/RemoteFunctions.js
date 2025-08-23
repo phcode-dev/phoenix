@@ -2205,10 +2205,26 @@ function RemoteFunctions(config = {}) {
 
     // helper function to clear element background highlighting
     function clearElementBackground(element) {
+        // make sure that the feature is enabled and also the element has the attribute 'data-brackets-id'
+        if (
+            !config.isLPEditFeaturesActive ||
+            !element.hasAttribute("data-brackets-id") ||
+            element.tagName === "BODY" ||
+            element.tagName === "HTML" ||
+            _isInsideHeadTag(element)
+        ) {
+            return;
+        }
+
         if (element._originalBackgroundColor !== undefined) {
             element.style.backgroundColor = element._originalBackgroundColor;
         } else {
-            element.style.backgroundColor = "";
+            // only clear background if it's currently a highlight color, not if it's an original user style
+            const currentBg = element.style.backgroundColor;
+            if (currentBg === "rgba(0, 162, 255, 0.2)" || currentBg.includes("rgba(0, 162, 255")) {
+                element.style.backgroundColor = "";
+            }
+            // if it's some other color, we just leave it as is - it's likely a user-defined style
         }
         delete element._originalBackgroundColor;
     }
@@ -2308,15 +2324,14 @@ function RemoteFunctions(config = {}) {
         element._originalOutline = element.style.outline;
         element.style.outline = "1px solid #4285F4";
 
-        // Add highlight for click mode
-        if (getHighlightMode() === "click") {
+        if (element._originalBackgroundColor === undefined) {
             element._originalBackgroundColor = element.style.backgroundColor;
-            element.style.backgroundColor = "rgba(0, 162, 255, 0.2)";
+        }
+        element.style.backgroundColor = "rgba(0, 162, 255, 0.2)";
 
-            if (_hoverHighlight) {
-                _hoverHighlight.clear();
-                _hoverHighlight.add(element, true, false); // false means no auto-scroll
-            }
+        if (_hoverHighlight) {
+            _hoverHighlight.clear();
+            _hoverHighlight.add(element, true, false); // false means no auto-scroll
         }
 
         previouslyClickedElement = element;
