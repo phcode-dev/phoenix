@@ -1608,6 +1608,9 @@ define({
     "AI_QUOTA_USED": "AI quota used",
     "LOGIN_REFRESH": "Check Login Status",
 
+    // Collapse Folders
+    "COLLAPSE_ALL_FOLDERS": "Collapse All Folders",
+
     // Custom Snippets
     "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Custom Snippets\u2026",
     "CUSTOM_SNIPPETS_PANEL_TITLE": "Custom Snippets",

@@ -737,6 +737,11 @@ define(function (require, exports, module) {
                 logger.leaveTrail("UI Menu Click: " + menuItem._command.getID());
                 MainViewManager.focusActivePane();
                 if (menuItem._command._options.eventSource) {
+                    // NOTE: Ideally beforeExecuteCommand should be fired inside Command.execute itself.
+                    // But right now Command.execute() bypasses the event flow
+                    // So we run through CommandManager.execute() to keep things consistent
+                    // (keyboard + menu both go through the same path)
+                    // Read this for more info: https://github.com/phcode-dev/phoenix/pull/2356
                     CommandManager.execute(menuItem._command.getID(), {
                         eventSource: CommandManager.SOURCE_UI_MENU_CLICK,
                         sourceType: self.id
