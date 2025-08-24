@@ -113,6 +113,29 @@ function RemoteFunctions(config = {}) {
         return event.ctrlKey;
     }
 
+    /**
+     * This is a checker function for editable elements, it makes sure that the element satisfies all the required checks
+     * - When onlyHighlight is false → config.isLPEditFeaturesActive must be true
+     * - When onlyHighlight is true → config.isLPEditFeaturesActive can be true or false (doesn't matter)
+     * @param {DOMElement} element
+     * @param {boolean} [onlyHighlight=false] - If true, bypasses the isLPEditFeaturesActive check
+     * @returns {boolean} - True if the element is editable else false
+     */
+    function isElementEditable(element, onlyHighlight = false) {
+        if(!config.isLPEditFeaturesActive && !onlyHighlight) {
+            return false;
+        }
+
+        if(element && // element should exist
+           element.hasAttribute("data-brackets-id") && // should have the data-brackets-id attribute
+           element.tagName !== "BODY" && // shouldn't be the body tag
+           element.tagName !== "HTML" && // shouldn't be the HTML tag
+           !_isInsideHeadTag(element)) { // shouldn't be inside the head tag like meta tags and all
+            return true;
+        }
+        return false;
+    }
+
     // helper function to check if an element is inside the HEAD tag
     // we need this because we don't wanna trigger the element highlights on head tag and its children
     function _isInsideHeadTag(element) {
@@ -224,9 +247,9 @@ function RemoteFunctions(config = {}) {
      * @param {DOMElement} element - the HTML DOM element that was clicked. it is to get the data-brackets-id attribute
      */
     function _handleDeleteOptionClick(event, element) {
-        const tagId = element.getAttribute("data-brackets-id");
+        if (isElementEditable(element)) {
+            const tagId = element.getAttribute("data-brackets-id");
 
-        if (tagId && element.tagName !== "BODY" && element.tagName !== "HTML" && !_isInsideHeadTag(element)) {
             window._Brackets_MessageBroker.send({
                 livePreviewEditEnabled: true,
                 element: element,
@@ -245,9 +268,9 @@ function RemoteFunctions(config = {}) {
      * @param {DOMElement} element - the HTML DOM element that was clicked. it is to get the data-brackets-id attribute
      */
     function _handleDuplicateOptionClick(event, element) {
-        const tagId = element.getAttribute("data-brackets-id");
+        if (isElementEditable(element)) {
+            const tagId = element.getAttribute("data-brackets-id");
 
-        if (tagId && element.tagName !== "BODY" && element.tagName !== "HTML" && !_isInsideHeadTag(element)) {
             window._Brackets_MessageBroker.send({
                 livePreviewEditEnabled: true,
                 element: element,
@@ -267,23 +290,12 @@ function RemoteFunctions(config = {}) {
      * @param {DOMElement} element - the HTML DOM element that was clicked. it is to get the data-brackets-id attribute
      */
     function _handleSelectParentOptionClick(event, element) {
-        if (!element) {
+        if (!isElementEditable(element)) {
             return;
         }
 
         const parentElement = element.parentElement;
-        if (!parentElement) {
-            return;
-        }
-
-        // we need to make sure that the parent element is not the body tag or the html.
-        // also we expect it to have the 'data-brackets-id'
-        if (
-            parentElement.tagName !== "BODY" &&
-            parentElement.tagName !== "HTML" &&
-            !_isInsideHeadTag(parentElement) &&
-            parentElement.hasAttribute("data-brackets-id")
-        ) {
+        if (isElementEditable(parentElement)) {
             parentElement.click();
         } else {
             console.error("The TagID might be unavailable or the parent element tag is directly body or html");
@@ -1072,19 +1084,14 @@ function RemoteFunctions(config = {}) {
      * @returns {boolean} - true if we should show the select parent option otherwise false
      */
     function _shouldShowSelectParentOption(element) {
-        if (!element || !element.parentElement) {
+        if(!isElementEditable(element)) {
             return false;
         }
 
         const parentElement = element.parentElement;
-
-        if (parentElement.tagName === "HTML" || parentElement.tagName === "BODY" || _isInsideHeadTag(parentElement)) {
+        if(!isElementEditable(parentElement)) {
             return false;
         }
-        if (!parentElement.hasAttribute("data-brackets-id")) {
-            return false;
-        }
-
         return true;
     }
 
@@ -1825,7 +1832,7 @@ function RemoteFunctions(config = {}) {
 
         _handleSend: function(event, prompt) {
             const element = this.element;
-            if(!element) {
+            if(!isElementEditable(element)) {
                 return;
             }
             const tagId = element.getAttribute("data-brackets-id");
@@ -2173,10 +2180,9 @@ function RemoteFunctions(config = {}) {
 
     function onMouseOver(event) {
         if (_validEvent(event)) {
-            // Skip highlighting for HTML, BODY tags and elements inside HEAD
-            if (event.target && event.target.nodeType === Node.ELEMENT_NODE &&
-                event.target.tagName !== "HTML" && event.target.tagName !== "BODY" && !_isInsideHeadTag(event.target)) {
-                _localHighlight.add(event.target, true, false); // false means no-auto scroll
+            const element = event.target;
+            if(isElementEditable(element) && element.nodeType === Node.ELEMENT_NODE ) {
+                _localHighlight.add(element, true, false); // false means no-auto scroll
             }
         }
     }
@@ -2205,17 +2211,6 @@ function RemoteFunctions(config = {}) {
 
     // helper function to clear element background highlighting
     function clearElementBackground(element) {
-        // make sure that the feature is enabled and also the element has the attribute 'data-brackets-id'
-        if (
-            !config.isLPEditFeaturesActive ||
-            !element.hasAttribute("data-brackets-id") ||
-            element.tagName === "BODY" ||
-            element.tagName === "HTML" ||
-            _isInsideHeadTag(element)
-        ) {
-            return;
-        }
-
         if (element._originalBackgroundColor !== undefined) {
             element.style.backgroundColor = element._originalBackgroundColor;
         } else {
@@ -2235,36 +2230,29 @@ function RemoteFunctions(config = {}) {
             return;
         }
 
+        const element = event.target;
+        if(!isElementEditable(element) || element.nodeType !== Node.ELEMENT_NODE) {
+            return false;
+        }
+
         // if _hoverHighlight is uninitialized, initialize it
-        if (!_hoverHighlight && config.isLPEditFeaturesActive && shouldShowHighlightOnHover()) {
+        if (!_hoverHighlight && shouldShowHighlightOnHover()) {
             _hoverHighlight = new Highlight("#c8f9c5", true);
         }
 
         // this is to check the user's settings, if they want to show the elements highlights on hover or click
-        if (_hoverHighlight && config.isLPEditFeaturesActive && shouldShowHighlightOnHover()) {
+        if (_hoverHighlight && shouldShowHighlightOnHover()) {
             _hoverHighlight.clear();
 
-            // Skip highlighting for HTML, BODY tags and elements inside HEAD
-            // and for DOM elements which doesn't have 'data-brackets-id'
-            // NOTE: Don't remove 'data-brackets-id' check else hover will also target internal live preview elements
-            if (
-                event.target &&
-                event.target.nodeType === Node.ELEMENT_NODE &&
-                event.target.tagName !== "HTML" &&
-                event.target.tagName !== "BODY" &&
-                !_isInsideHeadTag(event.target) &&
-                event.target.hasAttribute("data-brackets-id")
-            ) {
-                // Store original background color to restore on hover out
-                event.target._originalBackgroundColor = event.target.style.backgroundColor;
-                event.target.style.backgroundColor = "rgba(0, 162, 255, 0.2)";
+            // Store original background color to restore on hover out
+            element._originalBackgroundColor = element.style.backgroundColor;
+            element.style.backgroundColor = "rgba(0, 162, 255, 0.2)";
 
-                _hoverHighlight.add(event.target, false, false); // false means no auto-scroll
+            _hoverHighlight.add(element, false, false); // false means no auto-scroll
 
-                // Create info box for the hovered element
-                dismissNodeInfoBox();
-                _nodeInfoBox = new NodeInfoBox(event.target);
-            }
+            // Create info box for the hovered element
+            dismissNodeInfoBox();
+            _nodeInfoBox = new NodeInfoBox(element);
         }
     }
 
@@ -2274,23 +2262,15 @@ function RemoteFunctions(config = {}) {
             return;
         }
 
-        // this is to check the user's settings, if they want to show the elements highlights on hover or click
-        if (_hoverHighlight && config.isLPEditFeaturesActive && shouldShowHighlightOnHover()) {
-            _hoverHighlight.clear();
-
-            // Restore original background color
-            if (
-                event &&
-                event.target &&
-                event.target.nodeType === Node.ELEMENT_NODE &&
-                event.target.hasAttribute("data-brackets-id")
-            ) {
-                clearElementBackground(event.target);
+        const element = event.target;
+        if(isElementEditable(element) && element.nodeType === Node.ELEMENT_NODE) {
+            // this is to check the user's settings, if they want to show the elements highlights on hover or click
+            if (_hoverHighlight && shouldShowHighlightOnHover()) {
+                _hoverHighlight.clear();
+                clearElementBackground(element);
             }
-
-            // Remove info box when mouse leaves the element
-            dismissNodeInfoBox();
         }
+        dismissNodeInfoBox();
     }
 
     /**
@@ -2300,16 +2280,8 @@ function RemoteFunctions(config = {}) {
     function _selectElement(element) {
         // dismiss all UI boxes and cleanup previous element state when selecting a different element
         dismissUIAndCleanupState();
-
-        // make sure that the feature is enabled and also the element has the attribute 'data-brackets-id'
-        if (
-            !config.isLPEditFeaturesActive ||
-            !element.hasAttribute("data-brackets-id") ||
-            element.tagName === "BODY" ||
-            element.tagName === "HTML" ||
-            _isInsideHeadTag(element)
-        ) {
-            return;
+        if(!isElementEditable(element)) {
+            return false;
         }
 
         // make sure that the element is actually visible to the user
@@ -2344,25 +2316,17 @@ function RemoteFunctions(config = {}) {
      */
     function onClick(event) {
         dismissAIPromptBox();
+        const element = event.target;
 
-        // make sure that the feature is enabled and also the clicked element has the attribute 'data-brackets-id'
-        if (
-            config.isLPEditFeaturesActive &&
-            event.target.hasAttribute("data-brackets-id") &&
-            event.target.tagName !== "BODY" &&
-            event.target.tagName !== "HTML" &&
-            !_isInsideHeadTag(event.target)
-        ) {
+        // when user clicks on the HTML, BODY tags or elements inside HEAD, we want to remove the boxes
+        if(_nodeMoreOptionsBox && !isElementEditable(element)) {
+            dismissUIAndCleanupState();
+        } else if(isElementEditable(element)) {
             event.preventDefault();
             event.stopPropagation();
             event.stopImmediatePropagation();
 
-            _selectElement(event.target);
-        } else if ( // when user clicks on the HTML, BODY tags or elements inside HEAD, we want to remove the boxes
-            _nodeMoreOptionsBox &&
-            (event.target.tagName === "HTML" || event.target.tagName === "BODY" || _isInsideHeadTag(event.target))
-        ) {
-            dismissUIAndCleanupState();
+            _selectElement(element);
         }
     }
 
@@ -2371,18 +2335,13 @@ function RemoteFunctions(config = {}) {
      * @param {Event} event
      */
     function onDoubleClick(event) {
-        if (
-            config.isLPEditFeaturesActive &&
-            event.target.hasAttribute("data-brackets-id") &&
-            event.target.tagName !== "BODY" &&
-            event.target.tagName !== "HTML" &&
-            !_isInsideHeadTag(event.target)
-        ) {
+        const element = event.target;
+        if (isElementEditable(element)) {
             // because we only want to allow double click text editing where we show the edit option
-            if (_shouldShowEditTextOption(event.target)) {
+            if (_shouldShowEditTextOption(element)) {
                 event.preventDefault();
                 event.stopPropagation();
-                startEditing(event.target);
+                startEditing(element);
             }
         }
     }
@@ -2425,18 +2384,16 @@ function RemoteFunctions(config = {}) {
         }
     }
 
-    // highlight a node
-    function highlight(node, clear) {
+    // highlight an element
+    function highlight(element, clear) {
         if (!_clickHighlight) {
             _clickHighlight = new Highlight("#cfc");
         }
         if (clear) {
             _clickHighlight.clear();
         }
-        // Skip highlighting for HTML, BODY tags and elements inside HEAD
-        if (node && node.nodeType === Node.ELEMENT_NODE &&
-            node.tagName !== "HTML" && node.tagName !== "BODY" && !_isInsideHeadTag(node)) {
-            _clickHighlight.add(node, true, true); // 3rd arg is for auto-scroll
+        if (isElementEditable(element, true) && element.nodeType === Node.ELEMENT_NODE) {
+            _clickHighlight.add(element, true, true); // 3rd arg is for auto-scroll
         }
     }
 
@@ -2455,12 +2412,7 @@ function RemoteFunctions(config = {}) {
         // select the first valid highlighted element
         var foundValidElement = false;
         for (i = 0; i < nodes.length; i++) {
-            if (nodes[i].hasAttribute("data-brackets-id") &&
-                nodes[i].tagName !== "HTML" &&
-                nodes[i].tagName !== "BODY" &&
-                !_isInsideHeadTag(nodes[i]) &&
-                nodes[i].tagName !== "BR"
-            ) {
+            if(isElementEditable(nodes[i], true) && nodes[i].tagName !== "BR") {
                 _selectElement(nodes[i]);
                 foundValidElement = true;
                 break;
@@ -3015,12 +2967,7 @@ function RemoteFunctions(config = {}) {
 
     // Function to handle direct editing of elements in the live preview
     function startEditing(element) {
-        if (!config.isLPEditFeaturesActive
-            || !element
-            || element.tagName === "BODY"
-            || element.tagName === "HTML"
-            || _isInsideHeadTag(element)
-            || !element.hasAttribute("data-brackets-id")) {
+        if (!isElementEditable(element)) {
             return;
         }
 
@@ -3065,7 +3012,7 @@ function RemoteFunctions(config = {}) {
     // Function to finish editing and apply changes
     // isEditSuccessful: this is a boolean value, defaults to true. false only when the edit operation is cancelled
     function finishEditing(element, isEditSuccessful = true) {
-        if (!config.isLPEditFeaturesActive || !element || !element.hasAttribute("contenteditable")) {
+        if (!isElementEditable(element) || !element.hasAttribute("contenteditable")) {
             return;
         }
 
@@ -3080,17 +3027,15 @@ function RemoteFunctions(config = {}) {
             delete element._editListeners;
         }
 
-        if (element.hasAttribute("data-brackets-id")) {
-            const tagId = element.getAttribute("data-brackets-id");
-            window._Brackets_MessageBroker.send({
-                livePreviewEditEnabled: true,
-                livePreviewTextEdit: true,
-                element: element,
-                newContent: element.outerHTML,
-                tagId: Number(tagId),
-                isEditSuccessful: isEditSuccessful
-            });
-        }
+        const tagId = element.getAttribute("data-brackets-id");
+        window._Brackets_MessageBroker.send({
+            livePreviewEditEnabled: true,
+            livePreviewTextEdit: true,
+            element: element,
+            newContent: element.outerHTML,
+            tagId: Number(tagId),
+            isEditSuccessful: isEditSuccessful
+        });
     }
 
     // init
