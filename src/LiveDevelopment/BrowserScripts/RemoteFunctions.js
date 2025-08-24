@@ -877,6 +877,52 @@ function RemoteFunctions(config = {}) {
     }
 
     /**
+     * Find the nearest valid drop target when direct elementFromPoint fails
+     * @param {number} clientX - x coordinate
+     * @param {number} clientY - y coordinate
+     * @returns {Element|null} - nearest valid target or null
+     */
+    function _findNearestValidTarget(clientX, clientY) {
+        const searchRadius = 500;
+        const step = 10; // pixel step for search
+
+        // Search in expanding squares around the cursor position
+        for (let radius = step; radius <= searchRadius; radius += step) {
+            // Check points in a square pattern around the cursor
+            const points = [
+                [clientX + radius, clientY],
+                [clientX - radius, clientY],
+                [clientX, clientY + radius],
+                [clientX, clientY - radius],
+                [clientX + radius, clientY + radius],
+                [clientX - radius, clientY - radius],
+                [clientX + radius, clientY - radius],
+                [clientX - radius, clientY + radius]
+            ];
+
+            for (let point of points) {
+                const [x, y] = point;
+                let target = document.elementFromPoint(x, y);
+
+                if (!target || target === window._currentDraggedElement) {
+                    continue;
+                }
+
+                // Find closest element with data-brackets-id
+                while (target && !target.hasAttribute("data-brackets-id")) {
+                    target = target.parentElement;
+                }
+
+                // Check if target is valid (not BODY, HTML or inside HEAD)
+                if (isElementEditable(target) && target !== window._currentDraggedElement) {
+                    return target;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
      * Handle dragover events on the document (throttled version)
      * Shows drop markers on valid drop targets
      * @param {Event} event - The dragover event
@@ -900,14 +946,12 @@ function RemoteFunctions(config = {}) {
             target = target.parentElement;
         }
 
-        // skip if no valid target found or if it's the dragged element
-        if (!target || target === window._currentDraggedElement) {
-            return;
-        }
-
-        // Skip BODY, HTML tags and elements inside HEAD
-        if (target.tagName === "BODY" || target.tagName === "HTML" || _isInsideHeadTag(target)) {
-            return;
+        if (!isElementEditable(target) || target === window._currentDraggedElement) {
+            // if direct detection fails, we try to find a nearby valid target
+            target = _findNearestValidTarget(event.clientX, event.clientY);
+            if (!target) {
+                return;
+            }
         }
 
         // Store original styles before modifying them
@@ -966,18 +1010,13 @@ function RemoteFunctions(config = {}) {
             target = target.parentElement;
         }
 
-        // skip if no valid target found or if it's the dragged element
-        if (!target || target === window._currentDraggedElement) {
-            _clearDropMarkers();
-            _stopAutoScroll();
-            _dragEndChores(window._currentDraggedElement);
-            dismissUIAndCleanupState();
-            delete window._currentDraggedElement;
-            return;
+        if (!isElementEditable(target) || target === window._currentDraggedElement) {
+            // if direct detection fails, we try to find a nearby valid target
+            target = _findNearestValidTarget(event.clientX, event.clientY);
         }
 
-        // Skip BODY, HTML tags and elements inside HEAD
-        if (target.tagName === "BODY" || target.tagName === "HTML" || _isInsideHeadTag(target)) {
+        // skip if no valid target found or if it's the dragged element
+        if (!isElementEditable(target) || target === window._currentDraggedElement) {
             _clearDropMarkers();
             _stopAutoScroll();
             _dragEndChores(window._currentDraggedElement);
