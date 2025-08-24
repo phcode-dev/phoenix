@@ -194,8 +194,12 @@ define(function (require, exports, module) {
         // this is a quick trick because as the code is changed for that element in the file,
         // the live preview for that element gets refreshed and the changes are discarded in the live preview
         if(!message.isEditSuccessful) {
-            editor.replaceRange(text, startPos, endPos);
-            editor.document._markClean();
+            editor.document.batchOperation(function () {
+                editor.replaceRange(text, startPos, endPos);
+                setTimeout(() => {
+                    editor.undo(); // undo the replaceRange so dirty icon won't appear and no net change in undo history
+                }, 0);
+            });
         } else {
 
             // if the edit operation was successful, we call a helper function that

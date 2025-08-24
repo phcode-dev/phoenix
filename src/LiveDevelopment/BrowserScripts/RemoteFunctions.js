@@ -137,18 +137,19 @@ function RemoteFunctions(config = {}) {
     }
 
     // helper function to check if an element is inside the HEAD tag
-    // we need this because we don't wanna trigger the element highlights on head tag and its children
+    // we need this because we don't wanna trigger the element highlights on head tag and its children,
+    // except for <style> tags which should be allowed
     function _isInsideHeadTag(element) {
         let parent = element;
         while (parent && parent !== window.document) {
             if (parent.tagName === "HEAD") {
-                return true;
+                // allow <style> tags inside <head>
+                return element.tagName !== "STYLE";
             }
             parent = parent.parentElement;
         }
         return false;
     }
-
 
     // compute the screen offset of an element
     function _screenOffset(element) {
