@@ -375,6 +375,31 @@ define(function (require, exports, module) {
             readOnly: isReadOnly
         });
 
+        // Override default drag image in Safari (and harmless in others):
+        // Safari shows a text image by default when dragging from CodeMirror,
+        // which can be visually distracting. Use a 1x1 transparent image instead.
+        // Note: The CodeMirror "wrapper" element (returned by getWrapperElement()) is NOT the same
+        // as the "container" we pass to new CodeMirror(container, ...). CodeMirror creates its own
+        // wrapper inside that container. We attach the drag listener to the wrapper so it captures
+        // drags originating from the editor surface reliably across browsers.
+        try {
+            const wrapperEl = self._codeMirror.getWrapperElement();
+            if (wrapperEl) {
+                // Create once per editor instance
+                const transparentImg = new Image();
+                transparentImg.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
+                function handleCMDragStart(e) {
+                    if (e && e.dataTransfer && typeof e.dataTransfer.setDragImage === "function") {
+                        e.dataTransfer.setDragImage(transparentImg, 0, 0);
+                    }
+                }
+                wrapperEl.addEventListener("dragstart", handleCMDragStart);
+                // No explicit removal necessary since the wrapper element is removed on editor.destroy().
+            }
+        } catch (err) {
+            // Fail silently; drag image override is non-critical.
+        }
+
         // Can't get CodeMirror's focused state without searching for
         // CodeMirror-focused. Instead, track focus via onFocus and onBlur
         // options and track state with this._focused
@@ -953,18 +978,18 @@ define(function (require, exports, module) {
     };
 
     /**
-     * Takes an anchor/head pair and returns a start/end pair where the start is guaranteed to be <= end, 
+     * Takes an anchor/head pair and returns a start/end pair where the start is guaranteed to be <= end,
      * and a "reversed" flag indicating if the head is before the anchor.
      * @private
      * @typedef {Object} Position
      * @property {number} line - Line number
      * @property {number} ch - Character position
-     * 
+     *
      * @typedef {Object} NormalizedRange
      * @property {Position} start - Start position
      * @property {Position} end - End position
      * @property {boolean} reversed - Whether the range is reversed
-     * 
+     *
      * @param {Position} anchorPos - The anchor position
      * @param {Position} headPos - The head position
      * @return {NormalizedRange} The normalized range with start <= end
