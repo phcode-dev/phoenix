@@ -98,6 +98,7 @@
     display: flex;
     align-items: center;
     margin-right: 4px;
+    margin-left: 3px;
     max-width: 80%;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -125,6 +126,15 @@
 }
 
 #reloadLivePreviewButton {
+    margin-left: 3px;
+    margin-top: 3.5px;
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+}
+
+#previewModeLivePreviewButton {
+    color: #a0a0a0;
     margin-left: 3px;
     margin-top: 3.5px;
     width: 22px;
