@@ -141,7 +141,3 @@
     height: 22px;
     flex-shrink: 0;
 }
-
-#previewModeLivePreviewButton.selected{
-    color: #FBB03B;
-}
