@@ -99,8 +99,8 @@ define(function (require, exports, module) {
 
     // define the live preview mode preference
     PreferencesManager.definePreference(PREFERENCE_LIVE_PREVIEW_MODE, "string", _getDefaultMode(), {
-        description: StringUtils.format(Strings.LIVE_PREVIEW_MODE_PREFERENCE, "'highlight'", "'edit'"),
-        values: ["highlight", "edit"]
+        description: StringUtils.format(Strings.LIVE_PREVIEW_MODE_PREFERENCE, "'preview'", "'highlight'", "'edit'"),
+        values: ["preview", "highlight", "edit"]
     });
 
     // live preview element highlights preference (whether on hover or click)
@@ -144,8 +144,7 @@ define(function (require, exports, module) {
         $edgeButtonBallast,
         $firefoxButtonBallast,
         $panelTitle,
-        $modeBtn,
-        $previewBtn;
+        $modeBtn;
 
     let customLivePreviewBannerShown = false;
 
@@ -233,14 +232,16 @@ define(function (require, exports, module) {
 
     /**
      * update the mode button text in the live preview toolbar UI based on the current mode
-     * @param {String} mode - The current mode ("highlight", or "edit")
+     * @param {String} mode - The current mode ("preview", "highlight", or "edit")
      */
     function _updateModeButton(mode) {
         if ($modeBtn) {
-            if (mode === "edit") {
+            if (mode === "highlight") {
+                $modeBtn[0].textContent = Strings.LIVE_PREVIEW_MODE_HIGHLIGHT;
+            } else if (mode === "edit") {
                 $modeBtn[0].textContent = Strings.LIVE_PREVIEW_MODE_EDIT;
             } else {
-                $modeBtn[0].textContent = Strings.LIVE_PREVIEW_MODE_HIGHLIGHT;
+                $modeBtn[0].textContent = Strings.LIVE_PREVIEW_MODE_PREVIEW;
             }
         }
     }
@@ -261,10 +262,12 @@ define(function (require, exports, module) {
         }
 
         // apply the effective mode
-        if (effectiveMode === "edit" && isEditFeaturesActive) {
+        if (effectiveMode === "highlight") {
+            _LPHighlightMode();
+        } else if (effectiveMode === "edit" && isEditFeaturesActive) {
             _LPEditMode();
         } else {
-            _LPHighlightMode();
+            _LPPreviewMode();
         }
 
         _updateModeButton(effectiveMode);
@@ -273,6 +276,7 @@ define(function (require, exports, module) {
     function _showModeSelectionDropdown(event) {
         const isEditFeaturesActive = LiveDevelopment.isLPEditFeaturesActive;
         const items = [
+            Strings.LIVE_PREVIEW_MODE_PREVIEW,
             Strings.LIVE_PREVIEW_MODE_HIGHLIGHT,
             Strings.LIVE_PREVIEW_MODE_EDIT
         ];
@@ -285,10 +289,13 @@ define(function (require, exports, module) {
 
         const rawMode = PreferencesManager.get(PREFERENCE_LIVE_PREVIEW_MODE) || _getDefaultMode();
         // this is to take care of invalid values in the pref file
-        const currentMode = ["highlight", "edit"].includes(rawMode) ? rawMode : _getDefaultMode();
+        const currentMode = ["preview", "highlight", "edit"].includes(rawMode) ? rawMode : _getDefaultMode();
 
         const dropdown = new DropdownButton.DropdownButton("", items, function(item, index) {
-            if (item === Strings.LIVE_PREVIEW_MODE_HIGHLIGHT) {
+            if (item === Strings.LIVE_PREVIEW_MODE_PREVIEW) {
+                // using empty spaces to keep content aligned
+                return currentMode === "preview" ? `✓ ${item}` : `${'\u00A0'.repeat(4)}${item}`;
+            } else if (item === Strings.LIVE_PREVIEW_MODE_HIGHLIGHT) {
                 return currentMode === "highlight" ? `✓ ${item}` : `${'\u00A0'.repeat(4)}${item}`;
             } else if (item === Strings.LIVE_PREVIEW_MODE_EDIT) {
                 const checkmark = currentMode === "edit" ? "✓ " : `${'\u00A0'.repeat(4)}`;
@@ -330,18 +337,16 @@ define(function (require, exports, module) {
             // here we just set the preference
             // as the preferences listener will automatically handle the required changes
             if (index === 0) {
-                PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "highlight");
-                $previewBtn.removeClass('selected');
-                _LPHighlightMode();
+                PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "preview");
             } else if (index === 1) {
+                PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "highlight");
+            } else if (index === 2) {
                 if (!isEditFeaturesActive) {
                     // when the feature is not active we need to show a dialog to the user asking
                     // them to subscribe to pro
                     _showProFeatureDialog();
                 } else {
                     PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "edit");
-                    $previewBtn.removeClass('selected');
-                    _LPEditMode();
                 }
             } else if (item === Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON) {
                 // Don't allow edit highlight toggle if edit features are not active
@@ -364,23 +369,6 @@ define(function (require, exports, module) {
         dropdown.$button.css({
             display: "none"
         });
-    }
-
-    function _handlePreviewBtnClick() {
-        if($previewBtn.hasClass('selected')) {
-            $previewBtn.removeClass('selected');
-
-            const isEditFeaturesActive = LiveDevelopment.isLPEditFeaturesActive;
-            const currentMode = $modeBtn[0].textContent.toLowerCase();
-            if("edit".includes(currentMode) && isEditFeaturesActive) {
-                _LPEditMode();
-            } else {
-                _LPHighlightMode();
-            }
-        } else {
-            $previewBtn.addClass('selected');
-            _LPPreviewMode();
-        }
     }
 
     function _getTrustProjectPage() {
@@ -598,7 +586,6 @@ define(function (require, exports, module) {
             Strings: Strings,
             livePreview: Strings.LIVE_DEV_STATUS_TIP_OUT_OF_SYNC,
             clickToReload: Strings.LIVE_DEV_CLICK_TO_RELOAD_PAGE,
-            clickToPreview: Strings.LIVE_PREVIEW_CLICK_TO_PREVIEW_PAGE,
             livePreviewSettings: Strings.LIVE_DEV_SETTINGS,
             livePreviewConfigureModes: Strings.LIVE_PREVIEW_CONFIGURE_MODES,
             clickToPopout: Strings.LIVE_DEV_CLICK_POPOUT,
@@ -629,7 +616,6 @@ define(function (require, exports, module) {
         $panelTitle = $panel.find("#panel-live-preview-title");
         $settingsIcon = $panel.find("#livePreviewSettingsBtn");
         $modeBtn = $panel.find("#livePreviewModeBtn");
-        $previewBtn = $panel.find("#previewModeLivePreviewButton");
 
         $panel.find(".live-preview-settings-banner-btn").on("click", ()=>{
             CommandManager.execute(Commands.FILE_LIVE_FILE_PREVIEW_SETTINGS);
@@ -664,7 +650,6 @@ define(function (require, exports, module) {
         });
 
         $modeBtn.on("click", _showModeSelectionDropdown);
-        $previewBtn.on("click", _handlePreviewBtnClick);
 
         _showOpenBrowserIcons();
         $settingsIcon.click(()=>{
@@ -1069,17 +1054,19 @@ define(function (require, exports, module) {
 
             // If user tries to set edit mode but edit features are not active, default to highlight
             let effectiveMode = newMode;
-            if (newMode !== "highlight" && !isEditFeaturesActive) {
+            if (newMode === "edit" && !isEditFeaturesActive) {
                 effectiveMode = "highlight";
                 // Update the preference to reflect the actual mode being used
                 PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "highlight");
                 return; // Return to avoid infinite loop
             }
 
-            if (effectiveMode === "edit" && isEditFeaturesActive) {
+            if (effectiveMode === "highlight") {
+                _LPHighlightMode();
+            } else if (effectiveMode === "edit" && isEditFeaturesActive) {
                 _LPEditMode();
             } else {
-                _LPHighlightMode();
+                _LPPreviewMode();
             }
 
             _updateModeButton(effectiveMode);
