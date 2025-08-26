@@ -332,6 +332,7 @@
   "CODE_INSPECTION_PROBLEMS": "Code inspection problems",
   "CODE_INSPECTION_PROBLEMS_NONE": "No problems detected",
   "COLLAPSE_ALL": "Collapse All",
+  "COLLAPSE_ALL_FOLDERS": "Collapse All Folders",
   "COLLAPSE_CURRENT": "Collapse Current",
   "COLOR_EDITOR_0X_BUTTON_TIP": "Hex (0x) Format",
   "COLOR_EDITOR_CURRENT_COLOR_SWATCH_TIP": "Current Color",
