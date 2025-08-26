@@ -144,9 +144,15 @@ define(function (require, exports, module) {
         $edgeButtonBallast,
         $firefoxButtonBallast,
         $panelTitle,
-        $modeBtn;
+        $modeBtn,
+        $previewBtn;
 
     let customLivePreviewBannerShown = false;
+
+    // so this variable stores the mode that was previously selected
+    // this is needed when the preview mode (play button icon) is clicked, we store the current mode
+    // so that when user unclicks the button we can revert back to the mode that was originally selected
+    let modeThatWasSelected = null;
 
     StaticServer.on(EVENT_EMBEDDED_IFRAME_WHO_AM_I, function () {
         if($iframe && $iframe[0]) {
@@ -264,10 +270,13 @@ define(function (require, exports, module) {
         // apply the effective mode
         if (effectiveMode === "highlight") {
             _LPHighlightMode();
+            $previewBtn.removeClass('selected');
         } else if (effectiveMode === "edit" && isEditFeaturesActive) {
             _LPEditMode();
+            $previewBtn.removeClass('selected');
         } else {
             _LPPreviewMode();
+            $previewBtn.addClass('selected');
         }
 
         _updateModeButton(effectiveMode);
@@ -581,11 +590,35 @@ define(function (require, exports, module) {
         }
     }
 
+    /**
+     * This function is called when user clicks the preview mode button (play button icon)
+     * when this button is clicked we switch the mode button dropdown to preview mode
+     */
+    function _handlePreviewBtnClick() {
+        if($previewBtn.hasClass('selected')) {
+            $previewBtn.removeClass('selected');
+            const isEditFeaturesActive = LiveDevelopment.isLPEditFeaturesActive;
+            if(modeThatWasSelected) {
+                if(modeThatWasSelected === 'edit' && !isEditFeaturesActive) {
+                    // we just set the preference as preference has change handlers that will update the config
+                    PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "highlight");
+                } else {
+                    PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, modeThatWasSelected);
+                }
+            }
+        } else {
+            $previewBtn.addClass('selected');
+            modeThatWasSelected = PreferencesManager.get(PREFERENCE_LIVE_PREVIEW_MODE);
+            PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "preview");
+        }
+    }
+
     async function _createExtensionPanel() {
         let templateVars = {
             Strings: Strings,
             livePreview: Strings.LIVE_DEV_STATUS_TIP_OUT_OF_SYNC,
             clickToReload: Strings.LIVE_DEV_CLICK_TO_RELOAD_PAGE,
+            clickToPreview: Strings.LIVE_PREVIEW_MODE_PREVIEW,
             livePreviewSettings: Strings.LIVE_DEV_SETTINGS,
             livePreviewConfigureModes: Strings.LIVE_PREVIEW_CONFIGURE_MODES,
             clickToPopout: Strings.LIVE_DEV_CLICK_POPOUT,
@@ -616,6 +649,7 @@ define(function (require, exports, module) {
         $panelTitle = $panel.find("#panel-live-preview-title");
         $settingsIcon = $panel.find("#livePreviewSettingsBtn");
         $modeBtn = $panel.find("#livePreviewModeBtn");
+        $previewBtn = $panel.find("#previewModeLivePreviewButton");
 
         $panel.find(".live-preview-settings-banner-btn").on("click", ()=>{
             CommandManager.execute(Commands.FILE_LIVE_FILE_PREVIEW_SETTINGS);
@@ -650,6 +684,7 @@ define(function (require, exports, module) {
         });
 
         $modeBtn.on("click", _showModeSelectionDropdown);
+        $previewBtn.on("click", _handlePreviewBtnClick);
 
         _showOpenBrowserIcons();
         $settingsIcon.click(()=>{
@@ -1063,10 +1098,13 @@ define(function (require, exports, module) {
 
             if (effectiveMode === "highlight") {
                 _LPHighlightMode();
+                $previewBtn.removeClass('selected');
             } else if (effectiveMode === "edit" && isEditFeaturesActive) {
                 _LPEditMode();
+                $previewBtn.removeClass('selected');
             } else {
                 _LPPreviewMode();
+                $previewBtn.addClass('selected');
             }
 
             _updateModeButton(effectiveMode);
