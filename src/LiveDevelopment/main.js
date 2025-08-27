@@ -269,6 +269,62 @@ define(function main(require, exports, module) {
         return false;
     }
 
+    let $livePreviewPanel = null; // stores the live preview panel, need this as overlay is appended inside this
+    let $overlayContainer = null; // the overlay container
+
+    /**
+     * this function is responsible to show the overlay.
+     * so overlay is shown when the live preview is connecting or live preview stopped because of some syntax error
+     * @param {String} textMessage - the text that is written inside the overlay
+     */
+    function _showOverlay(textMessage) {
+        if (!$livePreviewPanel) {
+            $livePreviewPanel = $("#panel-live-preview");
+        }
+
+        // remove any existing overlay
+        _hideOverlay();
+
+        // create the overlay element
+        // styled inside the 'src/extensionsIntegrated/Phoenix-live-preview/live-preview.css'
+        $overlayContainer = $("<div>").addClass("live-preview-status-overlay"); // the wrapper for overlay element
+        const $message = $("<div>").addClass("live-preview-overlay-message").text(textMessage);
+
+        $overlayContainer.append($message);
+        $livePreviewPanel.append($overlayContainer);
+    }
+
+    /**
+     * responsible to hide the overlay
+     */
+    function _hideOverlay() {
+        if ($overlayContainer) {
+            $overlayContainer.remove();
+            $overlayContainer = null;
+        }
+    }
+
+    /**
+     * this function adds/remove the full-width class from the overlay container
+     * styled inside 'src/extensionsIntegrated/Phoenix-live-preview/live-preview.css'
+     *
+     * we need this because
+     * normally when live preview has a good width (more than 305px) then a 3px divider is shown at the left end
+     * so in that case we give the overlay a width of (100% - 3px),
+     * but when the live preview width is reduced
+     * then that divider line gets cut off, so in that case we make the width 100% for this overlay
+     *
+     * without this handling, a white gap appears on the left side, which is distracting
+     */
+    function _setOverlayWidth() {
+        if(!$overlayContainer || !$livePreviewPanel.length) { return; }
+        if($livePreviewPanel.width() <= 305) {
+            $overlayContainer.addClass("full-width");
+        } else {
+            $overlayContainer.removeClass("full-width");
+        }
+    }
+
     /** Initialize LiveDevelopment */
     AppInit.appReady(function () {
         params.parse();
@@ -322,6 +378,18 @@ define(function main(require, exports, module) {
         MultiBrowserLiveDev.on(MultiBrowserLiveDev.EVENT_LIVE_PREVIEW_RELOAD, function (_event, clientDetails) {
             exports.trigger(exports.EVENT_LIVE_PREVIEW_RELOAD, clientDetails);
         });
+
+        MultiBrowserLiveDev.on(MultiBrowserLiveDev.EVENT_STATUS_CHANGE, function(event, status) {
+            if (status === MultiBrowserLiveDev.STATUS_CONNECTING) {
+                _showOverlay(Strings.LIVE_DEV_STATUS_TIP_PROGRESS1);
+            } else if (status === MultiBrowserLiveDev.STATUS_SYNC_ERROR) {
+                _showOverlay(Strings.LIVE_DEV_STATUS_TIP_SYNC_ERROR);
+            } else {
+                _hideOverlay();
+            }
+        });
+        // to understand why we need this, pls read the _setOverlayWidth function
+        new ResizeObserver(_setOverlayWidth).observe($("#main-plugin-panel")[0]);
 
         // allow live preview to handle escape key event
         // Escape is mainly to hide boxes if they are visible
