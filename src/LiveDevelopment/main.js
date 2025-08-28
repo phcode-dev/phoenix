@@ -47,8 +47,8 @@ define(function main(require, exports, module) {
 
 
     // this is responsible to make the advanced live preview features active or inactive
-    // @abose (make this variable false when not a paid user, everything rest is handled automatically)
-    let isLPEditFeaturesActive = false;
+    // @abose (make the first value true when its a paid user, everything rest is handled automatically)
+    let isLPEditFeaturesActive = window.KernalModeTrust ? false : false;
 
     const EVENT_LIVE_HIGHLIGHT_PREF_CHANGED = "liveHighlightPrefChange";
 
@@ -409,6 +409,7 @@ define(function main(require, exports, module) {
     config.highlight = PreferencesManager.getViewState("livedevHighlight");
 
     function setLivePreviewEditFeaturesActive(enabled) {
+        // TODO: @abose here add kernal mode trust check
         isLPEditFeaturesActive = enabled;
         config.isLPEditFeaturesActive = enabled;
         if (MultiBrowserLiveDev && MultiBrowserLiveDev.status >= MultiBrowserLiveDev.STATUS_ACTIVE) {
