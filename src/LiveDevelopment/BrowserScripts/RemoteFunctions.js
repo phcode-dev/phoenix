@@ -115,14 +115,14 @@ function RemoteFunctions(config = {}) {
 
     /**
      * This is a checker function for editable elements, it makes sure that the element satisfies all the required checks
-     * - When onlyHighlight is false → config.isLPEditFeaturesActive must be true
-     * - When onlyHighlight is true → config.isLPEditFeaturesActive can be true or false (doesn't matter)
+     * - When onlyHighlight is false → config.isProUser must be true
+     * - When onlyHighlight is true → config.isProUser can be true or false (doesn't matter)
      * @param {DOMElement} element
-     * @param {boolean} [onlyHighlight=false] - If true, bypasses the isLPEditFeaturesActive check
+     * @param {boolean} [onlyHighlight=false] - If true, bypasses the isProUser check
      * @returns {boolean} - True if the element is editable else false
      */
     function isElementEditable(element, onlyHighlight = false) {
-        if(!config.isLPEditFeaturesActive && !onlyHighlight) {
+        if(!config.isProUser && !onlyHighlight) {
             return false;
         }
 
@@ -1327,7 +1327,7 @@ function RemoteFunctions(config = {}) {
         create: function() {
             this.remove(); // remove existing box if already present
 
-            if(!config.isLPEditFeaturesActive) {
+            if(!config.isProUser) {
                 return;
             }
 
@@ -1502,7 +1502,7 @@ function RemoteFunctions(config = {}) {
 
             // get the ID and classes for that element, as we need to display it in the box
             const id = this.element.id;
-            const classes = this.element.className ? this.element.className.split(/\s+/).filter(Boolean) : [];
+            const classes = Array.from(this.element.classList || []);
 
             let content = ""; // this will hold the main content that will be displayed
             content += "<div class='tag-name'>" + this.element.tagName.toLowerCase() + "</div>"; // add element tag name
@@ -1574,7 +1574,7 @@ function RemoteFunctions(config = {}) {
         create: function() {
             this.remove(); // remove existing box if already present
 
-            if(!config.isLPEditFeaturesActive) {
+            if(!config.isProUser) {
                 return;
             }
 
@@ -2836,7 +2836,7 @@ function RemoteFunctions(config = {}) {
         var oldConfig = config;
         config = JSON.parse(newConfig);
 
-        if (config.highlight || (config.isLPEditFeaturesActive && shouldShowHighlightOnHover())) {
+        if (config.highlight || (config.isProUser && shouldShowHighlightOnHover())) {
             // Add hover event listeners if highlight is enabled OR editHighlights is set to hover
             window.document.removeEventListener("mouseover", onElementHover);
             window.document.removeEventListener("mouseout", onElementHoverOut);
@@ -2881,7 +2881,7 @@ function RemoteFunctions(config = {}) {
             }
 
             // Re-setup event listeners based on new mode to ensure proper behavior
-            if (config.highlight && config.isLPEditFeaturesActive) {
+            if (config.highlight && config.isProUser) {
                 window.document.removeEventListener("mouseover", onElementHover);
                 window.document.removeEventListener("mouseout", onElementHoverOut);
                 window.document.addEventListener("mouseover", onElementHover);
@@ -3092,7 +3092,7 @@ function RemoteFunctions(config = {}) {
         window.document.removeEventListener("dragleave", onDragLeave);
         window.document.removeEventListener("keydown", onKeyDown);
 
-        if (config.isLPEditFeaturesActive) {
+        if (config.isProUser) {
             // Initialize hover highlight with Chrome-like colors
             _hoverHighlight = new Highlight("#c8f9c5", true); // Green similar to Chrome's padding color
 
