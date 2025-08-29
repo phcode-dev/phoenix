@@ -94,7 +94,7 @@ define(function (require, exports, module) {
      * @returns {string} "highlight" if edit features inactive, "edit" if active
      */
     function _getDefaultMode() {
-        return LiveDevelopment.isLPEditFeaturesActive ? "edit" : "highlight";
+        return LiveDevelopment.isProUser ? "edit" : "highlight";
     }
 
     // define the live preview mode preference
@@ -256,8 +256,17 @@ define(function (require, exports, module) {
      * init live preview mode from saved preferences
      */
     function _initializeMode() {
+        // when user is on free trial we just push the edit mode to them every time they open/reload Phoenix
+        if(LiveDevelopment.isFreeTrialUser) {
+            PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "edit");
+            _LPEditMode();
+            $previewBtn.removeClass('selected');
+            _updateModeButton("edit");
+            return;
+        }
+
         const savedMode = PreferencesManager.get(PREFERENCE_LIVE_PREVIEW_MODE) || _getDefaultMode();
-        const isEditFeaturesActive = LiveDevelopment.isLPEditFeaturesActive;
+        const isEditFeaturesActive = LiveDevelopment.isProUser;
 
         // If user has edit mode saved but edit features are not active, default to highlight
         let effectiveMode = savedMode;
@@ -283,7 +292,7 @@ define(function (require, exports, module) {
     }
 
     function _showModeSelectionDropdown(event) {
-        const isEditFeaturesActive = LiveDevelopment.isLPEditFeaturesActive;
+        const isEditFeaturesActive = LiveDevelopment.isProUser;
         const items = [
             Strings.LIVE_PREVIEW_MODE_PREVIEW,
             Strings.LIVE_PREVIEW_MODE_HIGHLIGHT,
@@ -597,7 +606,7 @@ define(function (require, exports, module) {
     function _handlePreviewBtnClick() {
         if($previewBtn.hasClass('selected')) {
             $previewBtn.removeClass('selected');
-            const isEditFeaturesActive = LiveDevelopment.isLPEditFeaturesActive;
+            const isEditFeaturesActive = LiveDevelopment.isProUser;
             if(modeThatWasSelected) {
                 if(modeThatWasSelected === 'edit' && !isEditFeaturesActive) {
                     // we just set the preference as preference has change handlers that will update the config
@@ -1085,7 +1094,7 @@ define(function (require, exports, module) {
         PreferencesManager.on("change", PREFERENCE_LIVE_PREVIEW_MODE, function () {
             // Get the current preference value directly
             const newMode = PreferencesManager.get(PREFERENCE_LIVE_PREVIEW_MODE);
-            const isEditFeaturesActive = LiveDevelopment.isLPEditFeaturesActive;
+            const isEditFeaturesActive = LiveDevelopment.isProUser;
 
             // If user tries to set edit mode but edit features are not active, default to highlight
             let effectiveMode = newMode;
