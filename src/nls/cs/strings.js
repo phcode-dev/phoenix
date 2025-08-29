@@ -1394,7 +1394,6 @@ define({
   "SIGNED_IN_FAILED_TITLE": "Nelze se přihlásit",
   "SIGNED_IN_FAILED_MESSAGE": "Při pokusu o přihlášení se něco pokazilo. Zkuste to prosím znovu.",
   "SIGNED_OUT_FAILED_TITLE": "Odhlášení se nezdařilo",
-  "SIGNED_OUT_FAILED_MESSAGE": "Při pokusu o odhlášení se něco pokazilo. Zkuste to prosím znovu.",
   "VALIDATION_CODE_TITLE": "Ověřovací kód pro přihlášení",
   "VALIDATION_CODE_MESSAGE": "Pro přihlášení k účtu {APP_NAME} použijte tento ověřovací kód:",
   "COPY_VALIDATION_CODE": "Kopírovat kód",
@@ -1407,6 +1406,7 @@ define({
   "ACCOUNT_DETAILS": "Detaily účtu",
   "AI_QUOTA_USED": "Vyčerpána kvóta pro AI",
   "LOGIN_REFRESH": "Zkontrolovat stav přihlášení",
+  "COLLAPSE_ALL_FOLDERS": "Sbalit všechny složky",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Vlastní úryvky…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Vlastní úryvky",
   "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Přidat úryvek",
@@ -1447,5 +1447,14 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Text šablony",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Popis",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Přípona souboru",
-  "COLLAPSE_ALL_FOLDERS": "Sbalit všechny složky"
+  "SIGNED_OUT_FAILED_MESSAGE": "Při odhlašování se něco pokazilo. Stiskněte OK pro otevření stránky <a href='https://account.phcode.dev/#advanced'>account.phcode.dev</a>, kde se můžete odhlásit ručně.",
+  "SIGN_IN_WAITING_TITLE": "Čekání na přihlášení",
+  "SIGN_IN_WAITING_MESSAGE": "Dokončete prosím přihlášení v nové kartě a poté se sem vraťte.",
+  "WAITING_FOR_LOGIN": "Probíhá přihlašování…",
+  "CHECK_NOW": "Zkontrolovat",
+  "CHECKING": "Kontroluji…",
+  "CHECKING_STATUS": "Kontroluji stav přihlášení…",
+  "NOT_SIGNED_IN_YET": "Ještě nejste přihlášeni. Dokončete prosím přihlášení v druhé kartě.",
+  "WELCOME_BACK": "Vítejte zpět, {0}!",
+  "POPUP_BLOCKED": "Vyskakovací okno bylo blokováno. Povolte prosím vyskakovací okna a zkuste to znovu, nebo přejděte ručně na {0}"
 });

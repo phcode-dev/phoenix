@@ -1394,7 +1394,6 @@ define({
   "SIGNED_IN_FAILED_TITLE": "無法登入",
   "SIGNED_IN_FAILED_MESSAGE": "登入時發生錯誤。請再試一次。",
   "SIGNED_OUT_FAILED_TITLE": "登出失敗",
-  "SIGNED_OUT_FAILED_MESSAGE": "登出時發生錯誤。請再試一次。",
   "VALIDATION_CODE_TITLE": "登入驗證碼",
   "VALIDATION_CODE_MESSAGE": "請使用此驗證碼登入您的 {APP_NAME} 帳號：",
   "COPY_VALIDATION_CODE": "複製驗證碼",
@@ -1407,6 +1406,7 @@ define({
   "ACCOUNT_DETAILS": "帳號詳細資訊",
   "AI_QUOTA_USED": "AI 配額已使用",
   "LOGIN_REFRESH": "檢查登入狀態",
+  "COLLAPSE_ALL_FOLDERS": "收合所有資料夾",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "自訂程式碼片段…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "自訂程式碼片段",
   "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "新增程式碼片段",
@@ -1447,5 +1447,14 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "範本文字",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "描述",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "檔案副檔名",
-  "COLLAPSE_ALL_FOLDERS": "收合所有資料夾"
+  "SIGNED_OUT_FAILED_MESSAGE": "登出時發生錯誤。請按一下「確定」開啟 <a href='https://account.phcode.dev/#advanced'>account.phcode.dev</a> 以手動登出。",
+  "SIGN_IN_WAITING_TITLE": "等待登入中",
+  "SIGN_IN_WAITING_MESSAGE": "請在新分頁中完成登入，然後返回此處。",
+  "WAITING_FOR_LOGIN": "正在登入中…",
+  "CHECK_NOW": "立即檢查",
+  "CHECKING": "檢查中…",
+  "CHECKING_STATUS": "正在檢查登入狀態…",
+  "NOT_SIGNED_IN_YET": "您尚未登入。請在另一個分頁中完成登入。",
+  "WELCOME_BACK": "歡迎回來，{0}！",
+  "POPUP_BLOCKED": "彈出視窗遭到封鎖。請允許彈出視窗並重試，或手動前往 {0}"
 });

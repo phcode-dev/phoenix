@@ -1394,7 +1394,6 @@ define({
   "SIGNED_IN_FAILED_TITLE": "Autentificarea nu este posibilă",
   "SIGNED_IN_FAILED_MESSAGE": "Ceva nu a mers bine în timpul autentificării. Te rugăm să încerci din nou.",
   "SIGNED_OUT_FAILED_TITLE": "Deconectare eșuată",
-  "SIGNED_OUT_FAILED_MESSAGE": "Ceva nu a mers bine în timpul deconectării. Te rugăm să încerci din nou.",
   "VALIDATION_CODE_TITLE": "Cod de verificare pentru conectare",
   "VALIDATION_CODE_MESSAGE": "Te rugăm să folosești acest cod de verificare pentru a te conecta la contul tău {APP_NAME}:",
   "COPY_VALIDATION_CODE": "Copiază codul",
@@ -1407,6 +1406,7 @@ define({
   "ACCOUNT_DETAILS": "Detalii cont",
   "AI_QUOTA_USED": "Cotă AI utilizată",
   "LOGIN_REFRESH": "Verificare stare autentificare",
+  "COLLAPSE_ALL_FOLDERS": "Restrânge Toate Folderele",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Fragmente de cod personalizate…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Fragmente de cod personalizate",
   "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Adaugă fragment de cod",
@@ -1447,5 +1447,14 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Text șablon",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Descriere",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extensie fișier",
-  "COLLAPSE_ALL_FOLDERS": "Restrânge Toate Folderele"
+  "SIGNED_OUT_FAILED_MESSAGE": "A apărut o eroare la deconectare. Apăsați OK pentru a deschide <a href='https://account.phcode.dev/#advanced'>account.phcode.dev</a> unde vă puteți deconecta manual.",
+  "SIGN_IN_WAITING_TITLE": "Se așteaptă autentificarea",
+  "SIGN_IN_WAITING_MESSAGE": "Finalizați autentificarea în noua filă, apoi reveniți aici.",
+  "WAITING_FOR_LOGIN": "Se așteaptă autentificarea…",
+  "CHECK_NOW": "Verifică acum",
+  "CHECKING": "Se verifică…",
+  "CHECKING_STATUS": "Se verifică starea de autentificare…",
+  "NOT_SIGNED_IN_YET": "Nu sunteți încă autentificat. Vă rugăm finalizați autentificarea în cealaltă filă.",
+  "WELCOME_BACK": "Bine ai revenit, {0}!",
+  "POPUP_BLOCKED": "Fereastră pop-up blocată. Vă rugăm permiteți ferestrele pop-up și încercați din nou sau navigați manual la {0}"
 });

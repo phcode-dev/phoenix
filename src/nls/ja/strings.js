@@ -1394,7 +1394,6 @@ define({
   "SIGNED_IN_FAILED_TITLE": "サインインできません",
   "SIGNED_IN_FAILED_MESSAGE": "サインイン中にエラーが発生しました。もう一度お試しください。",
   "SIGNED_OUT_FAILED_TITLE": "サインアウトに失敗しました",
-  "SIGNED_OUT_FAILED_MESSAGE": "サインアウト中にエラーが発生しました。もう一度お試しください。",
   "VALIDATION_CODE_TITLE": "ログイン認証コード",
   "VALIDATION_CODE_MESSAGE": "{APP_NAME}アカウントにログインするには、次の認証コードを使用してください。",
   "COPY_VALIDATION_CODE": "コードをコピー",
@@ -1407,6 +1406,7 @@ define({
   "ACCOUNT_DETAILS": "アカウントの詳細",
   "AI_QUOTA_USED": "AI利用量",
   "LOGIN_REFRESH": "ログイン状態を確認",
+  "COLLAPSE_ALL_FOLDERS": "全てのフォルダを閉じる",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "カスタムスニペット…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "カスタムスニペット",
   "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "スニペットを追加",
@@ -1447,5 +1447,14 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "テンプレートテキスト",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "説明",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "ファイル拡張子",
-  "COLLAPSE_ALL_FOLDERS": "全てのフォルダを閉じる"
+  "SIGNED_OUT_FAILED_MESSAGE": "ログアウト中にエラーが発生しました。「OK」を押して<a href='https://account.phcode.dev/#advanced'>account.phcode.dev</a>を開き、手動でログアウトしてください。",
+  "SIGN_IN_WAITING_TITLE": "サインインを待機中",
+  "SIGN_IN_WAITING_MESSAGE": "新しいタブでサインインを完了してから、ここに戻ってください。",
+  "WAITING_FOR_LOGIN": "ログイン中…",
+  "CHECK_NOW": "今すぐ確認",
+  "CHECKING": "確認中…",
+  "CHECKING_STATUS": "ログイン状態を確認中…",
+  "NOT_SIGNED_IN_YET": "まだサインインしていません。別のタブでサインインを完了してください。",
+  "WELCOME_BACK": "{0} さん、おかえりなさい！",
+  "POPUP_BLOCKED": "ポップアップがブロックされました。ポップアップを許可してもう一度お試しいただくか、{0} に手動でアクセスしてください。"
 });

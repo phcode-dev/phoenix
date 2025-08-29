@@ -1394,7 +1394,6 @@ define({
   "SIGNED_IN_FAILED_TITLE": "Nie można się zalogować",
   "SIGNED_IN_FAILED_MESSAGE": "Coś poszło nie tak podczas logowania. Spróbuj ponownie.",
   "SIGNED_OUT_FAILED_TITLE": "Nie udało się wylogować",
-  "SIGNED_OUT_FAILED_MESSAGE": "Coś poszło nie tak podczas wylogowywania. Spróbuj ponownie.",
   "VALIDATION_CODE_TITLE": "Kod weryfikacyjny logowania",
   "VALIDATION_CODE_MESSAGE": "Użyj tego kodu weryfikacyjnego, aby zalogować się do swojego konta {APP_NAME}:",
   "COPY_VALIDATION_CODE": "Kopiuj kod",
@@ -1407,6 +1406,7 @@ define({
   "ACCOUNT_DETAILS": "Szczegóły konta",
   "AI_QUOTA_USED": "Wykorzystany limit AI",
   "LOGIN_REFRESH": "Sprawdź status logowania",
+  "COLLAPSE_ALL_FOLDERS": "Zwiń wszystkie foldery",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Własne fragmenty kodu…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Własne fragmenty kodu",
   "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Dodaj fragment kodu",
@@ -1447,5 +1447,14 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Treść szablonu",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Opis",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Rozszerzenie pliku",
-  "COLLAPSE_ALL_FOLDERS": "Zwiń wszystkie foldery"
+  "SIGNED_OUT_FAILED_MESSAGE": "Wystąpił błąd podczas wylogowywania. Naciśnij OK, aby otworzyć <a href='https://account.phcode.dev/#advanced'>account.phcode.dev</a>, gdzie możesz wylogować się ręcznie.",
+  "SIGN_IN_WAITING_TITLE": "Oczekiwanie na logowanie",
+  "SIGN_IN_WAITING_MESSAGE": "Dokończ logowanie w nowej karcie, a następnie wróć tutaj.",
+  "WAITING_FOR_LOGIN": "Oczekiwanie na logowanie…",
+  "CHECK_NOW": "Sprawdź teraz",
+  "CHECKING": "Sprawdzanie…",
+  "CHECKING_STATUS": "Sprawdzanie statusu logowania…",
+  "NOT_SIGNED_IN_YET": "Nie zalogowano. Dokończ logowanie w drugiej karcie.",
+  "WELCOME_BACK": "Witaj ponownie, {0}!",
+  "POPUP_BLOCKED": "Okno podręczne zablokowane. Zezwól na okna podręczne i spróbuj ponownie lub przejdź ręcznie do {0}"
 });

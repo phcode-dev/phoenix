@@ -1394,7 +1394,6 @@ define({
   "SIGNED_IN_FAILED_TITLE": "No se puede iniciar sesión",
   "SIGNED_IN_FAILED_MESSAGE": "Algo salió mal al intentar iniciar sesión. Inténtalo de nuevo.",
   "SIGNED_OUT_FAILED_TITLE": "Error al cerrar sesión",
-  "SIGNED_OUT_FAILED_MESSAGE": "Algo salió mal al intentar cerrar sesión. Inténtalo de nuevo.",
   "VALIDATION_CODE_TITLE": "Código de verificación de inicio de sesión",
   "VALIDATION_CODE_MESSAGE": "Usa este código de verificación para iniciar sesión en tu cuenta de {APP_NAME}:",
   "COPY_VALIDATION_CODE": "Copiar código",
@@ -1407,6 +1406,7 @@ define({
   "ACCOUNT_DETAILS": "Detalles de la cuenta",
   "AI_QUOTA_USED": "Cuota de IA utilizada",
   "LOGIN_REFRESH": "Verificar estado del inicio de sesión",
+  "COLLAPSE_ALL_FOLDERS": "Contraer todas las carpetas",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Fragmentos de código personalizados…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Fragmentos de código personalizados",
   "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Añadir fragmento de código",
@@ -1447,5 +1447,14 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Texto de la plantilla",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Descripción",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extensión de archivo",
-  "COLLAPSE_ALL_FOLDERS": "Contraer todas las carpetas"
+  "SIGNED_OUT_FAILED_MESSAGE": "Algo salió mal al cerrar sesión. Pulsa Aceptar para abrir <a href='https://account.phcode.dev/#advanced'>account.phcode.dev</a> donde puedes cerrar sesión manualmente.",
+  "SIGN_IN_WAITING_TITLE": "Esperando inicio de sesión",
+  "SIGN_IN_WAITING_MESSAGE": "Completa el inicio de sesión en la nueva pestaña y luego regresa aquí.",
+  "WAITING_FOR_LOGIN": "Esperando el inicio de sesión…",
+  "CHECK_NOW": "Verificar ahora",
+  "CHECKING": "Verificando…",
+  "CHECKING_STATUS": "Comprobando el estado del inicio de sesión…",
+  "NOT_SIGNED_IN_YET": "Aún no has iniciado sesión. Completa el inicio de sesión en la otra pestaña.",
+  "WELCOME_BACK": "¡Bienvenido de nuevo, {0}!",
+  "POPUP_BLOCKED": "Ventana emergente bloqueada. Permite las ventanas emergentes e inténtalo de nuevo, o navega manualmente a {0}"
 });

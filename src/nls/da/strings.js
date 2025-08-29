@@ -1394,7 +1394,6 @@ define({
   "SIGNED_IN_FAILED_TITLE": "Kan ikke logge ind",
   "SIGNED_IN_FAILED_MESSAGE": "Der gik noget galt under forsøget på at logge ind. Prøv igen.",
   "SIGNED_OUT_FAILED_TITLE": "Kunne ikke logge ud",
-  "SIGNED_OUT_FAILED_MESSAGE": "Der gik noget galt under forsøget på at logge ud. Prøv igen.",
   "VALIDATION_CODE_TITLE": "Bekræftelseskode",
   "VALIDATION_CODE_MESSAGE": "Brug venligst denne bekræftelseskode til at logge ind på din {APP_NAME}-konto:",
   "COPY_VALIDATION_CODE": "Kopiér kode",
@@ -1407,6 +1406,7 @@ define({
   "ACCOUNT_DETAILS": "Kontooplysninger",
   "AI_QUOTA_USED": "Brugt AI-kvote",
   "LOGIN_REFRESH": "Tjek loginstatus",
+  "COLLAPSE_ALL_FOLDERS": "Skjul alle mapper",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Brugerdefinerede snippets…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Brugerdefinerede snippets",
   "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Tilføj snippet",
@@ -1447,5 +1447,14 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Skabelontekst",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Beskrivelse",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Filtypenavn",
-  "COLLAPSE_ALL_FOLDERS": "Skjul alle mapper"
+  "SIGNED_OUT_FAILED_MESSAGE": "Der opstod en fejl under udlogning. Tryk OK for at åbne <a href='https://account.phcode.dev/#advanced'>account.phcode.dev</a>, hvor du kan logge ud manuelt.",
+  "SIGN_IN_WAITING_TITLE": "Venter på login",
+  "SIGN_IN_WAITING_MESSAGE": "Fuldfør venligst login i den nye fane, og vend derefter tilbage hertil.",
+  "WAITING_FOR_LOGIN": "Venter på login…",
+  "CHECK_NOW": "Tjek nu",
+  "CHECKING": "Tjekker…",
+  "CHECKING_STATUS": "Tjekker loginstatus…",
+  "NOT_SIGNED_IN_YET": "Du er ikke logget ind endnu. Fuldfør venligst login i den anden fane.",
+  "WELCOME_BACK": "Velkommen tilbage, {0}!",
+  "POPUP_BLOCKED": "Pop-up blokeret. Tillad venligst pop-ups, og prøv igen, eller gå manuelt til {0}"
 });

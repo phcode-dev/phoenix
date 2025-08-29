@@ -1394,7 +1394,6 @@ define({
   "SIGNED_IN_FAILED_TITLE": "امکان ورود وجود ندارد",
   "SIGNED_IN_FAILED_MESSAGE": "هنگام ورود مشکلی پیش آمد. لطفاً دوباره امتحان کنید.",
   "SIGNED_OUT_FAILED_TITLE": "خروج از حساب کاربری ناموفق بود",
-  "SIGNED_OUT_FAILED_MESSAGE": "هنگام خروج از حساب کاربری مشکلی پیش آمد. لطفاً دوباره امتحان کنید.",
   "VALIDATION_CODE_TITLE": "کد تایید ورود",
   "VALIDATION_CODE_MESSAGE": "لطفا از این کد تایید برای ورود به حساب {APP_NAME} خود استفاده کنید:",
   "COPY_VALIDATION_CODE": "کپی کد",
@@ -1407,6 +1406,7 @@ define({
   "ACCOUNT_DETAILS": "جزئیات حساب کاربری",
   "AI_QUOTA_USED": "سهمیه هوش مصنوعی استفاده شده",
   "LOGIN_REFRESH": "بررسی وضعیت ورود",
+  "COLLAPSE_ALL_FOLDERS": "بستن همهٔ پوشه‌ها",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "قطعه‌کدهای سفارشی…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "قطعه‌کدهای سفارشی",
   "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "افزودن قطعه کد",
@@ -1447,5 +1447,14 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "متن الگو",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "توضیحات",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "پسوند فایل",
-  "COLLAPSE_ALL_FOLDERS": "بستن همهٔ پوشه‌ها"
+  "SIGNED_OUT_FAILED_MESSAGE": "در هنگام خروج مشکلی پیش آمد. برای باز کردن <a href='https://account.phcode.dev/#advanced'>account.phcode.dev</a> که می‌توانید به صورت دستی از آنجا خارج شوید، روی تأیید کلیک کنید.",
+  "SIGN_IN_WAITING_TITLE": "در حال انتظار برای ورود",
+  "SIGN_IN_WAITING_MESSAGE": "لطفاً ورود به سیستم را در برگه جدید تکمیل کنید، سپس به اینجا برگردید.",
+  "WAITING_FOR_LOGIN": "در حال انتظار برای ورود…",
+  "CHECK_NOW": "بررسی کن",
+  "CHECKING": "در حال بررسی…",
+  "CHECKING_STATUS": "در حال بررسی وضعیت ورود…",
+  "NOT_SIGNED_IN_YET": "هنوز وارد سیستم نشده‌اید. لطفاً ورود به سیستم را در برگه دیگر تکمیل کنید.",
+  "WELCOME_BACK": "{0} خوش برگشتی!",
+  "POPUP_BLOCKED": "پنجره‌ی پاپ‌آپ مسدود شده است. لطفاً اجازه نمایش پنجره‌های پاپ‌آپ را بدهید و دوباره امتحان کنید، یا به صورت دستی به {0} بروید."
 });

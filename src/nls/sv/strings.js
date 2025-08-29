@@ -1394,7 +1394,6 @@ define({
   "SIGNED_IN_FAILED_TITLE": "Kan inte logga in",
   "SIGNED_IN_FAILED_MESSAGE": "Något gick fel när du försökte logga in. Försök igen.",
   "SIGNED_OUT_FAILED_TITLE": "Kunde inte logga ut",
-  "SIGNED_OUT_FAILED_MESSAGE": "Något gick fel när du försökte logga ut. Försök igen.",
   "VALIDATION_CODE_TITLE": "Verifieringskod för inloggning",
   "VALIDATION_CODE_MESSAGE": "Använd denna verifieringskod för att logga in på ditt {APP_NAME}-konto:",
   "COPY_VALIDATION_CODE": "Kopiera kod",
@@ -1407,6 +1406,7 @@ define({
   "ACCOUNT_DETAILS": "Kontodetaljer",
   "AI_QUOTA_USED": "Använd AI-kvot",
   "LOGIN_REFRESH": "Kontrollera inloggningsstatus",
+  "COLLAPSE_ALL_FOLDERS": "Komprimera alla mappar",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Anpassade kodsnuttar…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Anpassade kodsnuttar",
   "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Lägg till snippet",
@@ -1447,5 +1447,14 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Malltext",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Beskrivning",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Filändelse",
-  "COLLAPSE_ALL_FOLDERS": "Komprimera alla mappar"
+  "SIGNED_OUT_FAILED_MESSAGE": "Något gick fel vid utloggningen. Tryck på OK för att öppna <a href='https://account.phcode.dev/#advanced'>account.phcode.dev</a> där du kan logga ut manuellt.",
+  "SIGN_IN_WAITING_TITLE": "Väntar på inloggning",
+  "SIGN_IN_WAITING_MESSAGE": "Slutför inloggningen i den nya fliken och återvänd sedan hit.",
+  "WAITING_FOR_LOGIN": "Väntar på inloggning…",
+  "CHECK_NOW": "Kontrollera nu",
+  "CHECKING": "Kontrollerar…",
+  "CHECKING_STATUS": "Kontrollerar inloggningsstatus…",
+  "NOT_SIGNED_IN_YET": "Inte inloggad än. Slutför inloggningen i den andra fliken.",
+  "WELCOME_BACK": "Välkommen tillbaka, {0}!",
+  "POPUP_BLOCKED": "Popup-fönster blockerades. Tillåt popup-fönster och försök igen, eller gå manuellt till {0}"
 });

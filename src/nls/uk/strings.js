@@ -1394,7 +1394,6 @@ define({
   "SIGNED_IN_FAILED_TITLE": "Не вдається увійти",
   "SIGNED_IN_FAILED_MESSAGE": "Щось пішло не так під час спроби входу. Будь ласка, спробуйте ще раз.",
   "SIGNED_OUT_FAILED_TITLE": "Не вдалося вийти з системи",
-  "SIGNED_OUT_FAILED_MESSAGE": "Щось пішло не так під час спроби виходу. Будь ласка, спробуйте ще раз.",
   "VALIDATION_CODE_TITLE": "Код підтвердження входу",
   "VALIDATION_CODE_MESSAGE": "Будь ласка, скористайтеся цим кодом підтвердження, щоб увійти до свого облікового запису {APP_NAME}:",
   "COPY_VALIDATION_CODE": "Копіювати код",
@@ -1407,6 +1406,7 @@ define({
   "ACCOUNT_DETAILS": "Дані облікового запису",
   "AI_QUOTA_USED": "Використано квоту ШІ",
   "LOGIN_REFRESH": "Перевірити статус входу",
+  "COLLAPSE_ALL_FOLDERS": "Згорнути всі папки",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Власні сніпети…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Власні сніпети",
   "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Додати фрагмент коду",
@@ -1447,5 +1447,14 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Текст шаблону",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Опис",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Розширення файлу",
-  "COLLAPSE_ALL_FOLDERS": "Згорнути всі папки"
+  "SIGNED_OUT_FAILED_MESSAGE": "Сталася помилка під час виходу з облікового запису. Натисніть OK, щоб відкрити <a href='https://account.phcode.dev/#advanced'>account.phcode.dev</a>, де ви можете вийти вручну.",
+  "SIGN_IN_WAITING_TITLE": "Очікування на вхід",
+  "SIGN_IN_WAITING_MESSAGE": "Будь ласка, завершіть вхід у новій вкладці, а потім поверніться сюди.",
+  "WAITING_FOR_LOGIN": "Очікування на вхід…",
+  "CHECK_NOW": "Перевірити зараз",
+  "CHECKING": "Перевірка…",
+  "CHECKING_STATUS": "Перевірка статусу входу…",
+  "NOT_SIGNED_IN_YET": "Ви ще не ввійшли. Будь ласка, завершіть вхід в іншій вкладці.",
+  "WELCOME_BACK": "Ласкаво просимо назад, {0}!",
+  "POPUP_BLOCKED": "Спливаюче вікно заблоковано. Будь ласка, дозвольте спливаючі вікна та спробуйте ще раз або перейдіть вручну до {0}"
 });

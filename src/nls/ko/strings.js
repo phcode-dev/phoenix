@@ -1394,7 +1394,6 @@ define({
   "SIGNED_IN_FAILED_TITLE": "로그인할 수 없음",
   "SIGNED_IN_FAILED_MESSAGE": "로그인하는 동안 오류가 발생했습니다. 다시 시도해 주세요.",
   "SIGNED_OUT_FAILED_TITLE": "로그아웃 실패",
-  "SIGNED_OUT_FAILED_MESSAGE": "로그아웃하는 동안 오류가 발생했습니다. 다시 시도해 주세요.",
   "VALIDATION_CODE_TITLE": "로그인 인증 코드",
   "VALIDATION_CODE_MESSAGE": "{APP_NAME} 계정에 로그인하려면 다음 인증 코드를 사용하세요:",
   "COPY_VALIDATION_CODE": "코드 복사",
@@ -1407,6 +1406,7 @@ define({
   "ACCOUNT_DETAILS": "계정 세부정보",
   "AI_QUOTA_USED": "사용된 AI 할당량",
   "LOGIN_REFRESH": "로그인 상태 확인",
+  "COLLAPSE_ALL_FOLDERS": "모든 폴더 접기",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "사용자 정의 스니펫…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "사용자 정의 스니펫",
   "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "스니펫 추가",
@@ -1447,5 +1447,14 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "템플릿 텍스트",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "설명",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "파일 확장자",
-  "COLLAPSE_ALL_FOLDERS": "모든 폴더 접기"
+  "SIGNED_OUT_FAILED_MESSAGE": "로그아웃하는 동안 오류가 발생했습니다. 확인을 눌러 <a href='https://account.phcode.dev/#advanced'>account.phcode.dev</a>에서 직접 로그아웃하세요.",
+  "SIGN_IN_WAITING_TITLE": "로그인 대기 중",
+  "SIGN_IN_WAITING_MESSAGE": "새 탭에서 로그인을 완료한 후 여기로 돌아오세요.",
+  "WAITING_FOR_LOGIN": "로그인 중…",
+  "CHECK_NOW": "지금 확인",
+  "CHECKING": "확인 중…",
+  "CHECKING_STATUS": "로그인 상태 확인 중…",
+  "NOT_SIGNED_IN_YET": "아직 로그인하지 않았습니다. 다른 탭에서 로그인을 완료하세요.",
+  "WELCOME_BACK": "{0}님, 다시 오신 것을 환영합니다!",
+  "POPUP_BLOCKED": "팝업이 차단되었습니다. 팝업을 허용하고 다시 시도하거나, {0}으로 직접 이동하세요."
 });

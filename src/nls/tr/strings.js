@@ -1394,7 +1394,6 @@ define({
   "SIGNED_IN_FAILED_TITLE": "Oturum Açılamıyor",
   "SIGNED_IN_FAILED_MESSAGE": "Oturum açmaya çalışırken bir hata oluştu. Lütfen tekrar deneyin.",
   "SIGNED_OUT_FAILED_TITLE": "Oturum Kapatılamadı",
-  "SIGNED_OUT_FAILED_MESSAGE": "Oturum kapatmaya çalışırken bir hata oluştu. Lütfen tekrar deneyin.",
   "VALIDATION_CODE_TITLE": "Doğrulama Kodu",
   "VALIDATION_CODE_MESSAGE": "Lütfen {APP_NAME} hesabınıza giriş yapmak için bu Doğrulama kodunu kullanın:",
   "COPY_VALIDATION_CODE": "Kodu Kopyala",
@@ -1407,6 +1406,7 @@ define({
   "ACCOUNT_DETAILS": "Hesap Ayrıntıları",
   "AI_QUOTA_USED": "Yapay Zeka kotası kullanıldı",
   "LOGIN_REFRESH": "Oturum Durumunu Kontrol Et",
+  "COLLAPSE_ALL_FOLDERS": "Tüm Klasörleri Daralt",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Özel Parçacıklar…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Özel Parçacıklar",
   "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Parça Ekle",
@@ -1447,5 +1447,14 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Şablon Metni",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Açıklama",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Dosya Uzantısı",
-  "COLLAPSE_ALL_FOLDERS": "Tüm Klasörleri Daralt"
+  "SIGNED_OUT_FAILED_MESSAGE": "Oturum kapatılırken bir hata oluştu. <a href='https://account.phcode.dev/#advanced'>account.phcode.dev</a> adresini açmak ve oturumu manuel olarak kapatmak için Tamam'a basın.",
+  "SIGN_IN_WAITING_TITLE": "Oturum Açma Bekleniyor",
+  "SIGN_IN_WAITING_MESSAGE": "Lütfen yeni sekmede oturum açmayı tamamlayın ve buraya geri dönün.",
+  "WAITING_FOR_LOGIN": "Oturum açılıyor…",
+  "CHECK_NOW": "Şimdi Kontrol Et",
+  "CHECKING": "Kontrol ediliyor…",
+  "CHECKING_STATUS": "Oturum açma durumu kontrol ediliyor…",
+  "NOT_SIGNED_IN_YET": "Henüz oturum açılmadı. Lütfen diğer sekmede oturum açmayı tamamlayın.",
+  "WELCOME_BACK": "Tekrar hoş geldiniz, {0}!",
+  "POPUP_BLOCKED": "Açılır pencere engellendi. Lütfen açılır pencerelere izin verin ve tekrar deneyin veya {0} adresine manuel olarak gidin."
 });

@@ -1394,7 +1394,6 @@ define({
   "SIGNED_IN_FAILED_TITLE": "Kirjautuminen ei onnistu",
   "SIGNED_IN_FAILED_MESSAGE": "Kirjautumisessa tapahtui virhe. Yritä uudelleen.",
   "SIGNED_OUT_FAILED_TITLE": "Uloskirjautuminen epäonnistui",
-  "SIGNED_OUT_FAILED_MESSAGE": "Uloskirjautumisessa tapahtui virhe. Yritä uudelleen.",
   "VALIDATION_CODE_TITLE": "Vahvistuskoodi",
   "VALIDATION_CODE_MESSAGE": "Käytä tätä vahvistuskoodia kirjautuaksesi {APP_NAME}-tilillesi:",
   "COPY_VALIDATION_CODE": "Kopioi koodi",
@@ -1407,6 +1406,7 @@ define({
   "ACCOUNT_DETAILS": "Tilin tiedot",
   "AI_QUOTA_USED": "Käytetty tekoälykiintiö",
   "LOGIN_REFRESH": "Tarkista kirjautumistila",
+  "COLLAPSE_ALL_FOLDERS": "Sulje kaikki kansiot",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Omat koodinpätkät…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Omat koodinpätkät",
   "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Lisää koodinpätkä",
@@ -1447,5 +1447,14 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Malliteksti",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Kuvaus",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Tiedostopääte",
-  "COLLAPSE_ALL_FOLDERS": "Sulje kaikki kansiot"
+  "SIGNED_OUT_FAILED_MESSAGE": "Uloskirjautumisessa tapahtui virhe. Paina OK avataksesi <a href='https://account.phcode.dev/#advanced'>account.phcode.dev</a> -sivuston, josta voit kirjautua ulos manuaalisesti.",
+  "SIGN_IN_WAITING_TITLE": "Kirjaudutaan sisään",
+  "SIGN_IN_WAITING_MESSAGE": "Viimeistele sisäänkirjautuminen uudessa välilehdessä ja palaa sitten tänne.",
+  "WAITING_FOR_LOGIN": "Kirjaudutaan sisään…",
+  "CHECK_NOW": "Tarkista nyt",
+  "CHECKING": "Tarkistetaan…",
+  "CHECKING_STATUS": "Tarkistetaan kirjautumistilaa…",
+  "NOT_SIGNED_IN_YET": "Et ole vielä kirjautunut sisään. Viimeistele sisäänkirjautuminen toisessa välilehdessä.",
+  "WELCOME_BACK": "Tervetuloa takaisin, {0}!",
+  "POPUP_BLOCKED": "Ponnahdusikkuna estetty. Salli ponnahdusikkunat ja yritä uudelleen tai siirry manuaalisesti osoitteeseen {0}"
 });

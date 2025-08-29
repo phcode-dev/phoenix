@@ -1394,7 +1394,6 @@ define({
   "SIGNED_IN_FAILED_TITLE": "Nie je možné sa prihlásiť",
   "SIGNED_IN_FAILED_MESSAGE": "Pri pokuse o prihlásenie sa vyskytla chyba. Skúste to znova.",
   "SIGNED_OUT_FAILED_TITLE": "Odhlásenie zlyhalo",
-  "SIGNED_OUT_FAILED_MESSAGE": "Pri pokuse o odhlásenie sa vyskytla chyba. Skúste to znova.",
   "VALIDATION_CODE_TITLE": "Overovací kód pre prihlásenie",
   "VALIDATION_CODE_MESSAGE": "Prosím, použite tento overovací kód na prihlásenie do vášho {APP_NAME} účtu:",
   "COPY_VALIDATION_CODE": "Kopírovať kód",
@@ -1407,6 +1406,7 @@ define({
   "ACCOUNT_DETAILS": "Detaily účtu",
   "AI_QUOTA_USED": "Využité AI kvóty",
   "LOGIN_REFRESH": "Skontrolovať stav prihlásenia",
+  "COLLAPSE_ALL_FOLDERS": "Zbaliť všetky priečinky",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Vlastné úryvky…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Vlastné úryvky",
   "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Pridať úryvok",
@@ -1447,5 +1447,14 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Text šablóny",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Popis",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Prípona súboru",
-  "COLLAPSE_ALL_FOLDERS": "Zbaliť všetky priečinky"
+  "SIGNED_OUT_FAILED_MESSAGE": "Pri odhlásení sa vyskytla chyba. Stlačte OK pre otvorenie <a href='https://account.phcode.dev/#advanced'>account.phcode.dev</a>, kde sa môžete odhlásiť manuálne.",
+  "SIGN_IN_WAITING_TITLE": "Čaká sa na prihlásenie",
+  "SIGN_IN_WAITING_MESSAGE": "Dokončite prihlásenie v novom okne a potom sa sem vráťte.",
+  "WAITING_FOR_LOGIN": "Prihlasovanie…",
+  "CHECK_NOW": "Skontrolovať teraz",
+  "CHECKING": "Kontroluje sa…",
+  "CHECKING_STATUS": "Kontroluje sa stav prihlásenia…",
+  "NOT_SIGNED_IN_YET": "Zatiaľ nie ste prihlásený. Dokončite prihlásenie v druhom okne.",
+  "WELCOME_BACK": "Vitajte späť, {0}!",
+  "POPUP_BLOCKED": "Vyskakovacie okno bolo zablokované. Povoľte vyskakovacie okná a skúste to znova alebo prejdite manuálne na {0}"
 });
