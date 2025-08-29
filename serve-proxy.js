@@ -7,6 +7,10 @@ const path = require('path');
 const fs = require('fs');
 const httpProxy = require('http-proxy');
 
+// Account server configuration - switch between local and production
+const ACCOUNT_SERVER = 'https://account.phcode.dev'; // Production
+// const ACCOUNT_SERVER = 'http://localhost:5000'; // Local development
+
 // Default configuration
 let config = {
     port: 8000,
@@ -71,7 +75,8 @@ proxy.on('proxyReq', (proxyReq, req, res) => {
     const originalOrigin = req.headers.origin;
     
     // Set target host
-    proxyReq.setHeader('Host', 'account.phcode.dev');
+    const accountHost = new URL(ACCOUNT_SERVER).hostname;
+    proxyReq.setHeader('Host', accountHost);
     
     // Transform referer from localhost:8000 to phcode.dev
     if (originalReferer && originalReferer.includes('localhost:8000')) {
@@ -260,12 +265,12 @@ const server = http.createServer((req, res) => {
         req.url = targetPath + (parsedUrl.search || '');
         
         if (!config.silent) {
-            console.log(`[PROXY] ${req.method} ${originalUrl} -> https://account.phcode.dev${req.url}`);
+            console.log(`[PROXY] ${req.method} ${originalUrl} -> ${ACCOUNT_SERVER}${req.url}`);
         }
         
         // Proxy the request
         proxy.web(req, res, {
-            target: 'https://account.phcode.dev',
+            target: ACCOUNT_SERVER,
             changeOrigin: true,
             secure: true
         });
@@ -300,7 +305,7 @@ server.listen(config.port, config.host, () => {
         console.log(`Available on:`);
         console.log(`  http://${config.host === '0.0.0.0' ? 'localhost' : config.host}:${config.port}`);
         console.log(`Proxy routes:`);
-        console.log(`  /proxy/accounts/* -> https://account.phcode.dev/*`);
+        console.log(`  /proxy/accounts/* -> ${ACCOUNT_SERVER}/*`);
         console.log('Hit CTRL-C to stop the server');
     }
 });
