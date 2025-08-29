@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-env node */
 
 const http = require('http');
 const https = require('https');
@@ -68,9 +69,8 @@ proxy.on('error', (err, req, res) => {
 });
 
 // Modify proxy request headers
-proxy.on('proxyReq', (proxyReq, req, res) => {
+proxy.on('proxyReq', (proxyReq, req) => {
     // Transform localhost:8000 to appear as phcode.dev domain
-    const originalHost = req.headers.host;
     const originalReferer = req.headers.referer;
     const originalOrigin = req.headers.origin;
     
@@ -293,7 +293,18 @@ const server = http.createServer((req, res) => {
         console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}${config.logIp ? ` (${clientIp})` : ''}`);
     }
     
-    serveStaticFile(req, res, filePath);
+    // Handle directory requests without trailing slash
+    fs.stat(filePath, (err, stats) => {
+        if (err) {
+            serveStaticFile(req, res, filePath);
+        } else if (stats.isDirectory() && !parsedUrl.pathname.endsWith('/')) {
+            // Redirect to URL with trailing slash for directories
+            res.writeHead(301, { 'Location': req.url + '/' });
+            res.end();
+        } else {
+            serveStaticFile(req, res, filePath);
+        }
+    });
 });
 
 // Parse arguments and start server
