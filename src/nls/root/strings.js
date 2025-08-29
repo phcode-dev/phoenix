@@ -143,6 +143,7 @@ define({
     "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Error starting up the HTTP server for live preview files. Please try again.",
     "LIVE_DEVELOPMENT_TROUBLESHOOTING": "For more information, see <a href='{0}' title='{0}'>Troubleshooting Live Preview connection errors</a>.",
 
+    "LIVE_PREVIEW_HIDE_OVERLAY": "Hide this message",
     "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Live Preview",
     "LIVE_DEV_STATUS_TIP_PROGRESS1": "Live Preview: Connecting\u2026",
     "LIVE_DEV_STATUS_TIP_PROGRESS2": "Live Preview: Initializing\u2026",
