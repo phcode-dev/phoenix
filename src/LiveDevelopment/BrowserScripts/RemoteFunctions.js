@@ -776,7 +776,7 @@ function RemoteFunctions(config = {}) {
 
         if (dropZone === "inside") {
             // inside marker - outline around the element
-            marker.style.border = "1px dashed #4285F4";
+            marker.style.border = "2px dashed #4285F4";
             marker.style.backgroundColor = "rgba(66, 133, 244, 0.05)";
             marker.style.left = rect.left + "px";
             marker.style.top = rect.top + "px";
@@ -791,7 +791,7 @@ function RemoteFunctions(config = {}) {
 
             if (indicatorType === "vertical") {
                 // Vertical marker (for flex row containers)
-                marker.style.width = "2px";
+                marker.style.width = "3px";
                 marker.style.height = rect.height + "px";
                 marker.style.top = rect.top + "px";
 
@@ -803,7 +803,7 @@ function RemoteFunctions(config = {}) {
             } else {
                 // Horizontal marker (for block/grid containers)
                 marker.style.width = rect.width + "px";
-                marker.style.height = "2px";
+                marker.style.height = "3px";
                 marker.style.left = rect.left + "px";
 
                 if (dropZone === "after") {
