@@ -2308,9 +2308,9 @@ function RemoteFunctions(config = {}) {
             if (_hoverHighlight && shouldShowHighlightOnHover()) {
                 _hoverHighlight.clear();
                 clearElementBackground(element);
+                dismissNodeInfoBox();
             }
         }
-        dismissNodeInfoBox();
     }
 
     /**
@@ -2833,63 +2833,52 @@ function RemoteFunctions(config = {}) {
     }
 
     function updateConfig(newConfig) {
-        var oldConfig = config;
+        const oldConfig = config;
         config = JSON.parse(newConfig);
 
-        if (config.highlight || (config.isProUser && shouldShowHighlightOnHover())) {
-            // Add hover event listeners if highlight is enabled OR editHighlights is set to hover
-            window.document.removeEventListener("mouseover", onElementHover);
-            window.document.removeEventListener("mouseout", onElementHoverOut);
-            window.document.addEventListener("mouseover", onElementHover);
-            window.document.addEventListener("mouseout", onElementHoverOut);
-        } else {
-            // Remove hover event listeners only if both highlight is disabled AND editHighlights is not set to hover
-            window.document.removeEventListener("mouseover", onElementHover);
-            window.document.removeEventListener("mouseout", onElementHoverOut);
-
-            // Remove info box and more options box if highlight is disabled
-            dismissNodeInfoBox();
-            dismissNodeMoreOptionsBox();
-        }
-
-        // Handle element highlight mode changes for instant switching
+        // Determine if configuration has changed significantly
         const oldHighlightMode = oldConfig.elemHighlights ? oldConfig.elemHighlights.toLowerCase() : "hover";
         const newHighlightMode = getHighlightMode();
+        const highlightModeChanged = oldHighlightMode !== newHighlightMode;
+        const isProStatusChanged = oldConfig.isProUser !== config.isProUser;
+        const highlightSettingChanged = oldConfig.highlight !== config.highlight;
 
-        if (oldHighlightMode !== newHighlightMode) {
-            // Clear any existing highlights when mode changes
-            if (_hoverHighlight) {
-                _hoverHighlight.clear();
-            }
-
-            // Clean up any previously highlighted elements
-            if (previouslyClickedElement) {
-                clearElementBackground(previouslyClickedElement);
-            }
-
-            // Clear all elements that might have hover background styling applied
-            const allElements = window.document.querySelectorAll("[data-brackets-id]");
-            for (let i = 0; i < allElements.length; i++) {
-                if (allElements[i]._originalBackgroundColor !== undefined) {
-                    clearElementBackground(allElements[i]);
-                }
-            }
-
-            // Remove info box when switching modes to avoid confusion
-            if (_nodeInfoBox && !_nodeMoreOptionsBox) {
-                dismissNodeInfoBox();
-            }
-
-            // Re-setup event listeners based on new mode to ensure proper behavior
-            if (config.highlight && config.isProUser) {
-                window.document.removeEventListener("mouseover", onElementHover);
-                window.document.removeEventListener("mouseout", onElementHoverOut);
-                window.document.addEventListener("mouseover", onElementHover);
-                window.document.addEventListener("mouseout", onElementHoverOut);
-            }
+        // Handle significant configuration changes
+        if (highlightModeChanged || isProStatusChanged || highlightSettingChanged) {
+            _handleConfigurationChange();
         }
+        _updateEventListeners();
 
         return JSON.stringify(config);
+    }
+
+    /**
+     * when config is changed we clear all the highlighting and stuff
+     */
+    function _handleConfigurationChange() {
+        if (_hoverHighlight) {
+            _hoverHighlight.clear();
+        }
+        cleanupPreviousElementState();
+        const allElements = window.document.querySelectorAll("[data-brackets-id]");
+        for (let i = 0; i < allElements.length; i++) {
+            if (allElements[i]._originalBackgroundColor !== undefined) {
+                clearElementBackground(allElements[i]);
+            }
+        }
+        dismissUIAndCleanupState();
+    }
+
+    /**
+     * Update event listeners based on current configuration
+     */
+    function _updateEventListeners() {
+        window.document.removeEventListener("mouseover", onElementHover);
+        window.document.removeEventListener("mouseout", onElementHoverOut);
+        if (config.highlight || (config.isProUser && shouldShowHighlightOnHover())) {
+            window.document.addEventListener("mouseover", onElementHover);
+            window.document.addEventListener("mouseout", onElementHoverOut);
+        }
     }
 
     /**
@@ -2897,7 +2886,10 @@ function RemoteFunctions(config = {}) {
      * @return {boolean} true if any boxes are visible, false otherwise
      */
     function hasVisibleLivePreviewBoxes() {
-        return _nodeMoreOptionsBox !== null || _nodeInfoBox !== null || _aiPromptBox !== null || previouslyClickedElement !== null;
+        return _nodeMoreOptionsBox !== null ||
+                _nodeInfoBox !== null ||
+                _aiPromptBox !== null ||
+                previouslyClickedElement !== null;
     }
 
     /**
