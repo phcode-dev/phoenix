@@ -351,11 +351,14 @@ define(function (require, exports, module) {
 
             if (!result.isSuccess) {
                 console.error('Error logging out', result);
-                Dialogs.showModalDialog(
+                const dialog = Dialogs.showModalDialog(
                     DefaultDialogs.DIALOG_ID_ERROR,
                     Strings.SIGNED_OUT_FAILED_TITLE,
                     Strings.SIGNED_OUT_FAILED_MESSAGE
                 );
+                dialog.done(() => {
+                    NativeApp.openURLInDefaultBrowser(Phoenix.config.account_url + "#advanced");
+                });
                 Metrics.countEvent(Metrics.EVENT_TYPE.AUTH, 'logoutFail', Phoenix.platform);
                 return;
             }
@@ -368,11 +371,14 @@ define(function (require, exports, module) {
             Metrics.countEvent(Metrics.EVENT_TYPE.AUTH, 'logoutOK', Phoenix.platform);
         } catch (error) {
             console.error("Network error. Could not log out session.", error);
-            Dialogs.showModalDialog(
+            const dialog = Dialogs.showModalDialog(
                 DefaultDialogs.DIALOG_ID_ERROR,
                 Strings.SIGNED_OUT_FAILED_TITLE,
                 Strings.SIGNED_OUT_FAILED_MESSAGE
             );
+            dialog.done(() => {
+                NativeApp.openURLInDefaultBrowser(Phoenix.config.account_url + "#advanced");
+            });
             Metrics.countEvent(Metrics.EVENT_TYPE.AUTH, 'getAppAuth', Phoenix.platform);
             logger.reportError(error, "Failed to call logout calling" + resolveURL);
         }
