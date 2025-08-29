@@ -274,13 +274,16 @@ define(function main(require, exports, module) {
 
     let $livePreviewPanel = null; // stores the live preview panel, need this as overlay is appended inside this
     let $overlayContainer = null; // the overlay container
+    let shouldShowSyncErrorOverlay = true; // once user closes the overlay we don't show them again
+    let shouldShowConnectingOverlay = true;
 
     /**
      * this function is responsible to show the overlay.
      * so overlay is shown when the live preview is connecting or live preview stopped because of some syntax error
      * @param {String} textMessage - the text that is written inside the overlay
+     * @param {Number} status - 1 for connect, 4 for sync error but we match it using MultiBrowserLiveDev
      */
-    function _showOverlay(textMessage) {
+    function _showOverlay(textMessage, status) {
         if (!$livePreviewPanel) {
             $livePreviewPanel = $("#panel-live-preview");
         }
@@ -288,12 +291,31 @@ define(function main(require, exports, module) {
         // remove any existing overlay
         _hideOverlay();
 
+        // to not show the overlays if user has already closed it before
+        if(status === MultiBrowserLiveDev.STATUS_CONNECTING && !shouldShowConnectingOverlay) { return; }
+        if(status === MultiBrowserLiveDev.STATUS_SYNC_ERROR && !shouldShowSyncErrorOverlay) { return; }
+
         // create the overlay element
         // styled inside the 'src/extensionsIntegrated/Phoenix-live-preview/live-preview.css'
         $overlayContainer = $("<div>").addClass("live-preview-status-overlay"); // the wrapper for overlay element
         const $message = $("<div>").addClass("live-preview-overlay-message").text(textMessage);
 
+        // the close button at the right end of the overlay
+        const $close = $("<div>").addClass("live-preview-overlay-close")
+            .attr("title", Strings.LIVE_PREVIEW_HIDE_OVERLAY)
+            .on('click', () => {
+                if(status === MultiBrowserLiveDev.STATUS_CONNECTING) {
+                    shouldShowConnectingOverlay = false;
+                } else if(status === MultiBrowserLiveDev.STATUS_SYNC_ERROR) {
+                    shouldShowSyncErrorOverlay = false;
+                }
+                _hideOverlay();
+            });
+        const $closeIcon = $("<i>").addClass("fas fa-times");
+
+        $close.append($closeIcon);
         $overlayContainer.append($message);
+        $overlayContainer.append($close);
         $livePreviewPanel.append($overlayContainer);
     }
 
@@ -384,9 +406,9 @@ define(function main(require, exports, module) {
 
         MultiBrowserLiveDev.on(MultiBrowserLiveDev.EVENT_STATUS_CHANGE, function(event, status) {
             if (status === MultiBrowserLiveDev.STATUS_CONNECTING) {
-                _showOverlay(Strings.LIVE_DEV_STATUS_TIP_PROGRESS1);
+                _showOverlay(Strings.LIVE_DEV_STATUS_TIP_PROGRESS1, status);
             } else if (status === MultiBrowserLiveDev.STATUS_SYNC_ERROR) {
-                _showOverlay(Strings.LIVE_DEV_STATUS_TIP_SYNC_ERROR);
+                _showOverlay(Strings.LIVE_DEV_STATUS_TIP_SYNC_ERROR, status);
             } else {
                 _hideOverlay();
             }

@@ -172,3 +172,9 @@
     text-align: center;
 }
 
+.live-preview-overlay-close {
+    position: absolute;
+    top: 4px;
+    right: 10px;
+    font-size: 12px;
+}
