@@ -1,0 +1,19 @@
+<div class="browser-login-waiting-dialog modal">
+    <div class="modal-header">
+        <h1 class="dialog-title">{{Strings.SIGN_IN_WAITING_TITLE}}</h1>
+    </div>
+    <div class="modal-body">
+        <div class="waiting-content-container">
+            <p>{{Strings.SIGN_IN_WAITING_MESSAGE}}</p>
+            <div class="login-status-container" style="margin: 20px 0; text-align: center;">
+                <div id="login-status" style="color: #666; font-style: italic; font-size: 14px;">
+                    {{Strings.WAITING_FOR_LOGIN}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-button-id="cancel">{{Strings.CANCEL}}</button>
+        <button class="btn primary" data-button-id="check">{{Strings.CHECK_NOW}}</button>
+    </div>
+</div>

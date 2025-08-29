@@ -38,6 +38,9 @@ define(function (require, exports, module) {
     // this is to track whether the popup is visible or not
     let isPopupVisible = false;
 
+    // Track if we're doing a background refresh to avoid closing user-opened popups
+    let isBackgroundRefresh = false;
+
     // this is to handle document click events to close popup
     let documentClickHandler = null;
 
@@ -280,11 +283,44 @@ define(function (require, exports, module) {
             return;
         }
 
+        // Show popup immediately with cached status for instant response
         if (KernalModeTrust.loginService.isLoggedIn()) {
             showProfilePopup();
         } else {
             showLoginPopup();
         }
+
+        // Schedule background verification to update the popup if status changed
+        // Store the current login state before verification
+        const wasLoggedInBefore = KernalModeTrust.loginService.isLoggedIn();
+
+        // Set flag to indicate this is a background refresh
+        isBackgroundRefresh = true;
+
+        KernalModeTrust.loginService.verifyLoginStatus().then(() => {
+            // Clear the background refresh flag
+            isBackgroundRefresh = false;
+
+            // If the login status changed while popup is open, update it
+            if (isPopupVisible) {
+                const isLoggedInNow = KernalModeTrust.loginService.isLoggedIn();
+
+                if (wasLoggedInBefore !== isLoggedInNow) {
+                    // Status changed, close current popup and show correct one
+                    closePopup();
+                    if (isLoggedInNow) {
+                        showProfilePopup();
+                    } else {
+                        showLoginPopup();
+                    }
+                }
+                // If status didn't change, don't do anything to avoid closing popup
+            }
+        }).catch(error => {
+            // Clear the background refresh flag even on error
+            isBackgroundRefresh = false;
+            console.error("Background login status verification failed:", error);
+        });
     }
 
     function init() {
@@ -299,24 +335,21 @@ define(function (require, exports, module) {
             .appendTo($("#main-toolbar .bottom-buttons"));
         // _updateProfileIcon("CA", "blue");
         $icon.on('click', ()=>{
-            if(!Phoenix.isNativeApp){
-                // in browser app, we don't currently support login
-                Phoenix.app.openURLInDefaultBrowser("https://account.phcode.io");
-                return;
-            }
             togglePopup();
         });
     }
 
     function setNotLoggedIn() {
-        if (isPopupVisible) {
+        // Only close popup if it's not a background refresh
+        if (isPopupVisible && !isBackgroundRefresh) {
             closePopup();
         }
         _removeProfileIcon();
     }
 
     function setLoggedIn(initial, color) {
-        if (isPopupVisible) {
+        // Only close popup if it's not a background refresh
+        if (isPopupVisible && !isBackgroundRefresh) {
             closePopup();
         }
         _updateProfileIcon(initial, color);

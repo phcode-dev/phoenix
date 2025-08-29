@@ -37,7 +37,10 @@ define(function (require, exports, module) {
         throw new Error("Login service should have access to KernalModeTrust. Cannot boot without trust ring");
     }
     const secureExports = {};
-    KernalModeTrust.loginService = secureExports;
+    // Only set loginService for native apps to avoid conflict with browser login
+    if (Phoenix.isNativeApp) {
+        KernalModeTrust.loginService = secureExports;
+    }
     // user profile is something like "apiKey": "uuid...", validationCode: "dfdf", "firstName":"Aa","lastName":"bb",
     // "email":"aaaa@sss.com", "customerID":"uuid...","loginTime":1750074393853,
     // "profileIcon":{"color":"#14b8a6","initials":"AB"}
@@ -116,11 +119,13 @@ define(function (require, exports, module) {
         PreferencesManager.stateManager.set(PREF_USER_PROFILE_VERSION, crypto.randomUUID());
     }
 
-    async function _verifyLogin() {
+    async function _verifyLogin(silentCheck = false) {
         const savedUserProfile = await KernalModeTrust.getCredential(KernalModeTrust.CRED_KEY_API);
         if(!savedUserProfile){
             console.log("No savedUserProfile found. Not logged in");
-            ProfileMenu.setNotLoggedIn();
+            if (!silentCheck) {
+                ProfileMenu.setNotLoggedIn();
+            }
             isLoggedInUser = false;
             return;
         }
@@ -128,7 +133,9 @@ define(function (require, exports, module) {
             userProfile = JSON.parse(savedUserProfile);
         } catch (e) {
             console.error(e, "Failed to parse saved user profile credentials");// this should never happen
-            ProfileMenu.setNotLoggedIn();
+            if (!silentCheck) {
+                ProfileMenu.setNotLoggedIn();
+            }
             return; // not logged in if parse fails
         }
         isLoggedInUser = true;
@@ -319,7 +326,7 @@ define(function (require, exports, module) {
             Metrics.countEvent(Metrics.EVENT_TYPE.AUTH,
                 isAutoSignedIn ? 'autoLogin' : 'manLogin'
                 , Phoenix.platform);
-            Metrics.countEvent(Metrics.EVENT_TYPE.AUTH, "login",
+            Metrics.countEvent(Metrics.EVENT_TYPE.AUTH, "dsktpLogin",
                 isAutoSignedIn ? 'auto' : 'man');
         });
         NativeApp.openURLInDefaultBrowser(appSignInURL);
@@ -372,27 +379,30 @@ define(function (require, exports, module) {
     }
 
     function init() {
-        ProfileMenu.init();
         if(!Phoenix.isNativeApp){
-            console.warn("Login service is not supported in browser");
+            console.log("Desktop login service not needed for browser");
             return;
         }
-        _verifyLogin().catch(console.error);// todo raise metrics
+        ProfileMenu.init();
+        _verifyLogin(true).catch(console.error);// todo raise metrics - silent check on init
         const pref = PreferencesManager.stateManager.definePreference(PREF_USER_PROFILE_VERSION, 'string', '0');
         pref.watchExternalChanges();
         pref.on('change', _verifyLogin);
     }
 
-    init();
-
     // no sensitive apis or events should be triggered from the public exports of this module as extensions
     // can read them. Always use KernalModeTrust.loginService for sensitive apis.
 
-    // kernal exports
-    secureExports.isLoggedIn = isLoggedIn;
-    secureExports.signInToAccount = signInToAccount;
-    secureExports.signOutAccount = signOutAccount;
-    secureExports.getProfile = getProfile;
+    // Only set exports for native apps to avoid conflict with browser login
+    if (Phoenix.isNativeApp) {
+        init();
+        // kernal exports
+        secureExports.isLoggedIn = isLoggedIn;
+        secureExports.signInToAccount = signInToAccount;
+        secureExports.signOutAccount = signOutAccount;
+        secureExports.getProfile = getProfile;
+        secureExports.verifyLoginStatus = () => _verifyLogin(false);
+    }
 
     // public exports
     exports.isLoggedIn = isLoggedIn;

@@ -271,7 +271,7 @@ Test if a hint popup is open.
 Register a handler to show hints at the top of the hint list.
 This API allows extensions to add their own hints at the top of the standard hint list.
 
-**Kind**: inner method of [<code>CodeHintManager</code>](#module_CodeHintManager)
+**Kind**: inner method of [<code>CodeHintManager</code>](#module_CodeHintManager)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -282,4 +282,4 @@ This API allows extensions to add their own hints at the top of the standard hin
 ### CodeHintManager.clearHintsAtTop()
 Unregister the hints at top handler.
 
-**Kind**: inner method of [<code>CodeHintManager</code>](#module_CodeHintManager)
+**Kind**: inner method of [<code>CodeHintManager</code>](#module_CodeHintManager)  
