@@ -1,6 +1,6 @@
-# Phoenix Login Service Integration
+# Phoenix Browser Login Service Integration
 
-This document provides comprehensive documentation for integrating with the Phoenix login service in browser applications.
+This document provides comprehensive documentation for integrating with the Phoenix login service in browser applications specifically. For desktop application authentication, see `readme-login-desktop-no_dist.md`.
 
 ## Overview
 
@@ -9,7 +9,8 @@ The Phoenix browser application uses a login service to authenticate users acros
 **Key Files:**
 - `src/services/login-browser.js` - Main browser login implementation
 - `serve-proxy.js` - Proxy server for localhost development
-- This documentation file for detailed integration guide
+- `readme-login-browser-no_dist.md` - This documentation file for detailed integration guide
+- `readme-login-desktop-no_dist.md` - Desktop authentication documentation
 
 ## Architecture
 
@@ -188,4 +189,4 @@ Browser (localhost:8000) → /proxy/accounts/* → serve-proxy.js
 
 ---
 
-For implementation details, see the source code in `src/services/login-browser.js` and related files.
+For browser implementation details, see the source code in `src/services/login-browser.js` and related files. For desktop authentication, see `src/services/login-desktop.js` and `readme-login-desktop-no_dist.md`.

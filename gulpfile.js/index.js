@@ -66,7 +66,8 @@ function cleanUnwantedFilesInDist() {
         'dist/nls/*/expertTranslations.json',
         'dist/nls/*/lastTranslated.json',
         'dist/nls/*/*.js.map',
-        'dist/extensions/default/*/unittests.js.map'
+        'dist/extensions/default/*/unittests.js.map',
+        'dist/**/*no_dist.*'
     ]);
 }
 
