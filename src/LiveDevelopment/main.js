@@ -48,7 +48,10 @@ define(function main(require, exports, module) {
 
     // this is responsible to make the advanced live preview features active or inactive
     // @abose (make the first value true when its a paid user, everything rest is handled automatically)
-    let isLPEditFeaturesActive = window.KernalModeTrust ? false : false;
+    let isProUser = window.KernalModeTrust ? true : false;
+    // when isFreeTrialUser is true isProUser should also be true
+    // when its false, isProUser can be true/false doesn't matter
+    let isFreeTrialUser = true;
 
     const EVENT_LIVE_HIGHLIGHT_PREF_CHANGED = "liveHighlightPrefChange";
 
@@ -64,7 +67,7 @@ define(function main(require, exports, module) {
             paddingColor: {r: 147, g: 196, b: 125, a: 0.66},
             showInfo: true
         },
-        isLPEditFeaturesActive: isLPEditFeaturesActive,
+        isProUser: isProUser,
         elemHighlights: "hover", // default value, this will get updated when the extension loads
         // this strings are used in RemoteFunctions.js
         // we need to pass this through config as remoteFunctions runs in browser context and cannot
@@ -410,8 +413,8 @@ define(function main(require, exports, module) {
 
     function setLivePreviewEditFeaturesActive(enabled) {
         // TODO: @abose here add kernal mode trust check
-        isLPEditFeaturesActive = enabled;
-        config.isLPEditFeaturesActive = enabled;
+        isProUser = enabled;
+        config.isProUser = enabled;
         if (MultiBrowserLiveDev && MultiBrowserLiveDev.status >= MultiBrowserLiveDev.STATUS_ACTIVE) {
             MultiBrowserLiveDev.updateConfig(JSON.stringify(config));
             MultiBrowserLiveDev.registerHandlers();
@@ -437,7 +440,8 @@ define(function main(require, exports, module) {
 
     EventDispatcher.makeEventDispatcher(exports);
 
-    exports.isLPEditFeaturesActive = isLPEditFeaturesActive;
+    exports.isProUser = isProUser;
+    exports.isFreeTrialUser = isFreeTrialUser;
 
     // public events
     exports.EVENT_OPEN_PREVIEW_URL = MultiBrowserLiveDev.EVENT_OPEN_PREVIEW_URL;
