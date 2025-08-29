@@ -276,24 +276,51 @@ define(function main(require, exports, module) {
     let $overlayContainer = null; // the overlay container
     let shouldShowSyncErrorOverlay = true; // once user closes the overlay we don't show them again
     let shouldShowConnectingOverlay = true;
+    let connectingOverlayTimer = null; // this is needed as we show the connecting overlay after 3s
+    let connectingOverlayTimeDuration = 3000;
 
     /**
-     * this function is responsible to show the overlay.
-     * so overlay is shown when the live preview is connecting or live preview stopped because of some syntax error
+     * this function is responsible to check whether to show the overlay or not and how it should be shown
+     * because if user has closed the overlay manually, we don't show it again
+     * secondly, for connecting overlay we show that after a 3s timer, but sync error overlay is shown immediately
      * @param {String} textMessage - the text that is written inside the overlay
      * @param {Number} status - 1 for connect, 4 for sync error but we match it using MultiBrowserLiveDev
      */
-    function _showOverlay(textMessage, status) {
+    function _handleOverlay(textMessage, status) {
         if (!$livePreviewPanel) {
             $livePreviewPanel = $("#panel-live-preview");
         }
 
-        // remove any existing overlay
+        // remove any existing overlay & timer
         _hideOverlay();
 
         // to not show the overlays if user has already closed it before
         if(status === MultiBrowserLiveDev.STATUS_CONNECTING && !shouldShowConnectingOverlay) { return; }
         if(status === MultiBrowserLiveDev.STATUS_SYNC_ERROR && !shouldShowSyncErrorOverlay) { return; }
+
+        // for connecting status, we delay showing the overlay by 3 seconds
+        if(status === MultiBrowserLiveDev.STATUS_CONNECTING) {
+            connectingOverlayTimer = setTimeout(() => {
+                _createAndShowOverlay(textMessage, status);
+                connectingOverlayTimer = null;
+            }, connectingOverlayTimeDuration);
+            return;
+        }
+
+        // for sync error status, show immediately
+        _createAndShowOverlay(textMessage, status);
+    }
+
+    /**
+     * this function is responsible to create & show the overlay.
+     * so overlay is shown when the live preview is connecting or live preview stopped because of some syntax error
+     * @param {String} textMessage - the text that is written inside the overlay
+     * @param {Number} status - 1 for connect, 4 for sync error but we match it using MultiBrowserLiveDev
+     */
+    function _createAndShowOverlay(textMessage, status) {
+        if (!$livePreviewPanel) {
+            $livePreviewPanel = $("#panel-live-preview");
+        }
 
         // create the overlay element
         // styled inside the 'src/extensionsIntegrated/Phoenix-live-preview/live-preview.css'
@@ -323,9 +350,20 @@ define(function main(require, exports, module) {
      * responsible to hide the overlay
      */
     function _hideOverlay() {
+        _clearConnectingOverlayTimer();
         if ($overlayContainer) {
             $overlayContainer.remove();
             $overlayContainer = null;
+        }
+    }
+
+    /**
+     * This is a helper function that just checks that if connectingOverlayTimer exists, we clear it
+     */
+    function _clearConnectingOverlayTimer() {
+        if (connectingOverlayTimer) {
+            clearTimeout(connectingOverlayTimer);
+            connectingOverlayTimer = null;
         }
     }
 
@@ -406,9 +444,9 @@ define(function main(require, exports, module) {
 
         MultiBrowserLiveDev.on(MultiBrowserLiveDev.EVENT_STATUS_CHANGE, function(event, status) {
             if (status === MultiBrowserLiveDev.STATUS_CONNECTING) {
-                _showOverlay(Strings.LIVE_DEV_STATUS_TIP_PROGRESS1, status);
+                _handleOverlay(Strings.LIVE_DEV_STATUS_TIP_PROGRESS1, status);
             } else if (status === MultiBrowserLiveDev.STATUS_SYNC_ERROR) {
-                _showOverlay(Strings.LIVE_DEV_STATUS_TIP_SYNC_ERROR, status);
+                _handleOverlay(Strings.LIVE_DEV_STATUS_TIP_SYNC_ERROR, status);
             } else {
                 _hideOverlay();
             }
