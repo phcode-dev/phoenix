@@ -1594,7 +1594,7 @@ define({
     "SIGNED_IN_FAILED_TITLE": "Cannot Sign In",
     "SIGNED_IN_FAILED_MESSAGE": "Something went wrong while trying to sign in. Please try again.",
     "SIGNED_OUT_FAILED_TITLE": "Failed to Sign Out",
-    "SIGNED_OUT_FAILED_MESSAGE": "Something went wrong while trying to sign out. Please try again.",
+    "SIGNED_OUT_FAILED_MESSAGE": "Something went wrong while logging out. Press OK to open <a href='https://account.phcode.dev/#advanced'>account.phcode.dev</a> where you can logout manually.",
     "VALIDATION_CODE_TITLE": "Sign In Verification Code",
     "VALIDATION_CODE_MESSAGE": "Please use this Verification code to sign in to your {APP_NAME} account:",
     "COPY_VALIDATION_CODE": "Copy Code",
@@ -1615,6 +1615,7 @@ define({
     "CHECKING_STATUS": "Checking login status\u2026",
     "NOT_SIGNED_IN_YET": "Not signed in yet. Please complete sign-in in the other tab.",
     "WELCOME_BACK": "Welcome back, {0}!",
+    "POPUP_BLOCKED": "Pop-up blocked. Please allow pop-ups and try again, or manually navigate to {0}",
 
     // Collapse Folders
     "COLLAPSE_ALL_FOLDERS": "Collapse All Folders",
