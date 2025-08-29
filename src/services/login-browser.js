@@ -18,6 +18,30 @@
 
 /*global logger*/
 
+/**
+ * Phoenix Browser Login Service
+ *
+ * This module handles user authentication for Phoenix browser applications.
+ * It integrates with the Phoenix login service to provide secure authentication
+ * across the phcode.dev domain ecosystem.
+ *
+ * IMPORTANT: For detailed setup instructions, development workflows, and
+ * troubleshooting guide, see: src/services/login-service-no_dist.md
+ *
+ * Key Features:
+ * - Domain-wide session management using 'session' cookie at .phcode.dev level
+ * - Proxy server support for localhost development (serve-proxy.js)
+ * - Support for both production (account.phcode.dev) and custom login servers
+ * - Automatic session validation and user profile management
+ *
+ * Development Notes:
+ * - Production: Uses account.phcode.dev directly with domain-wide cookies
+ * - Development: Uses /proxy/accounts route through serve-proxy.js for localhost:8000 to account.phcode.dev
+ * - Session cookies must be manually copied from account.phcode.dev to localhost for testing
+ *
+ * @see src/services/login-service-no_dist.md for comprehensive documentation
+ */
+
 define(function (require, exports, module) {
     const EventDispatcher = require("utils/EventDispatcher"),
         PreferencesManager  = require("preferences/PreferencesManager"),
