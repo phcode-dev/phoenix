@@ -1394,7 +1394,6 @@ define({
   "SIGNED_IN_FAILED_TITLE": "Não é possível fazer login",
   "SIGNED_IN_FAILED_MESSAGE": "Algo deu errado ao tentar fazer login. Tente novamente.",
   "SIGNED_OUT_FAILED_TITLE": "Falha ao desconectar",
-  "SIGNED_OUT_FAILED_MESSAGE": "Algo deu errado ao tentar desconectar. Tente novamente.",
   "VALIDATION_CODE_TITLE": "Código de Verificação para Login",
   "VALIDATION_CODE_MESSAGE": "Use este código de verificação para entrar na sua conta do {APP_NAME}:",
   "COPY_VALIDATION_CODE": "Copiar Código",
@@ -1407,6 +1406,7 @@ define({
   "ACCOUNT_DETAILS": "Detalhes da Conta",
   "AI_QUOTA_USED": "Cota de IA usada",
   "LOGIN_REFRESH": "Verificar Status de Login",
+  "COLLAPSE_ALL_FOLDERS": "Recolher Todas as Pastas",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Trechos Personalizados…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Trechos Personalizados",
   "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Adicionar Snippet",
@@ -1447,5 +1447,14 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Texto do Modelo",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Descrição",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extensão do Arquivo",
-  "COLLAPSE_ALL_FOLDERS": "Recolher Todas as Pastas"
+  "SIGNED_OUT_FAILED_MESSAGE": "Ocorreu um erro ao sair. Clique em OK para abrir <a href='https://account.phcode.dev/#advanced'>account.phcode.dev</a> onde você pode sair manualmente.",
+  "SIGN_IN_WAITING_TITLE": "Aguardando login",
+  "SIGN_IN_WAITING_MESSAGE": "Conclua o login na nova guia e retorne aqui.",
+  "WAITING_FOR_LOGIN": "Aguardando login…",
+  "CHECK_NOW": "Verificar agora",
+  "CHECKING": "Verificando…",
+  "CHECKING_STATUS": "Verificando status do login…",
+  "NOT_SIGNED_IN_YET": "Você ainda não está conectado. Conclua o login na outra guia.",
+  "WELCOME_BACK": "Bem-vindo de volta, {0}!",
+  "POPUP_BLOCKED": "Pop-up bloqueado. Permita pop-ups e tente novamente ou navegue manualmente até {0}"
 });

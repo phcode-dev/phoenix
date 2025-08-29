@@ -1394,7 +1394,6 @@ define({
   "SIGNED_IN_FAILED_TITLE": "Prijava nije moguća",
   "SIGNED_IN_FAILED_MESSAGE": "Došlo je do pogreške prilikom prijave. Pokušajte ponovno.",
   "SIGNED_OUT_FAILED_TITLE": "Odjava nije uspjela",
-  "SIGNED_OUT_FAILED_MESSAGE": "Došlo je do pogreške prilikom odjave. Pokušajte ponovno.",
   "VALIDATION_CODE_TITLE": "Verifikacijski kôd za prijavu",
   "VALIDATION_CODE_MESSAGE": "Molimo koristite ovaj verifikacijski kôd za prijavu na vaš {APP_NAME} račun:",
   "COPY_VALIDATION_CODE": "Kopiraj kôd",
@@ -1407,6 +1406,7 @@ define({
   "ACCOUNT_DETAILS": "Podaci o računu",
   "AI_QUOTA_USED": "Iskorištena AI kvota",
   "LOGIN_REFRESH": "Provjeri status prijave",
+  "COLLAPSE_ALL_FOLDERS": "Sažmi sve mape",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Prilagođeni isječci…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Prilagođeni isječci",
   "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Dodaj isječak koda",
@@ -1447,5 +1447,14 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Tekst predloška",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Opis",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Ekstenzija datoteke",
-  "COLLAPSE_ALL_FOLDERS": "Sažmi sve mape"
+  "SIGNED_OUT_FAILED_MESSAGE": "Došlo je do pogreške prilikom odjave. Pritisnite U redu za otvaranje <a href='https://account.phcode.dev/#advanced'>account.phcode.dev</a> gdje se možete ručno odjaviti.",
+  "SIGN_IN_WAITING_TITLE": "Prijava u tijeku",
+  "SIGN_IN_WAITING_MESSAGE": "Molimo dovršite prijavu u novoj kartici, a zatim se vratite ovdje.",
+  "WAITING_FOR_LOGIN": "Prijava u tijeku…",
+  "CHECK_NOW": "Provjeri sada",
+  "CHECKING": "Provjeravam…",
+  "CHECKING_STATUS": "Provjera statusa prijave…",
+  "NOT_SIGNED_IN_YET": "Još niste prijavljeni. Molimo dovršite prijavu u drugoj kartici.",
+  "WELCOME_BACK": "Dobrodošli natrag, {0}!",
+  "POPUP_BLOCKED": "Skočni prozor blokiran. Molimo dopustite skočne prozore i pokušajte ponovno ili ručno idite na {0}"
 });

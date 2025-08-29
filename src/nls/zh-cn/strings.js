@@ -1394,7 +1394,6 @@ define({
   "SIGNED_IN_FAILED_TITLE": "无法登录",
   "SIGNED_IN_FAILED_MESSAGE": "登录时出现问题。请重试。",
   "SIGNED_OUT_FAILED_TITLE": "退出登录失败",
-  "SIGNED_OUT_FAILED_MESSAGE": "退出登录时出现问题。请重试。",
   "VALIDATION_CODE_TITLE": "登录验证码",
   "VALIDATION_CODE_MESSAGE": "请使用此验证码登录您的{APP_NAME}帐户：",
   "COPY_VALIDATION_CODE": "复制验证码",
@@ -1407,6 +1406,7 @@ define({
   "ACCOUNT_DETAILS": "帐户详情",
   "AI_QUOTA_USED": "AI 配额已用",
   "LOGIN_REFRESH": "检查登录状态",
+  "COLLAPSE_ALL_FOLDERS": "折叠所有文件夹",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "自定义代码片段…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "自定义代码片段",
   "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "添加代码片段",
@@ -1447,5 +1447,14 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "模板文本",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "描述",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "文件扩展名",
-  "COLLAPSE_ALL_FOLDERS": "折叠所有文件夹"
+  "SIGNED_OUT_FAILED_MESSAGE": "登出时出错。请按“确定”打开<a href='https://account.phcode.dev/#advanced'>account.phcode.dev</a>手动登出。",
+  "SIGN_IN_WAITING_TITLE": "等待登录",
+  "SIGN_IN_WAITING_MESSAGE": "请在新标签页中完成登录，然后返回此处。",
+  "WAITING_FOR_LOGIN": "正在登录…",
+  "CHECK_NOW": "立即检查",
+  "CHECKING": "正在检查…",
+  "CHECKING_STATUS": "正在检查登录状态…",
+  "NOT_SIGNED_IN_YET": "尚未登录。请在另一个标签页中完成登录。",
+  "WELCOME_BACK": "欢迎回来，{0}！",
+  "POPUP_BLOCKED": "弹窗被阻止。请允许弹窗并重试，或手动导航至 {0}"
 });

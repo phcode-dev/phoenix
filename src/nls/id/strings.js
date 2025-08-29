@@ -1394,7 +1394,6 @@ define({
   "SIGNED_IN_FAILED_TITLE": "Tidak Dapat Masuk",
   "SIGNED_IN_FAILED_MESSAGE": "Terjadi kesalahan saat mencoba masuk. Silakan coba lagi.",
   "SIGNED_OUT_FAILED_TITLE": "Gagal Keluar",
-  "SIGNED_OUT_FAILED_MESSAGE": "Terjadi kesalahan saat mencoba keluar. Silakan coba lagi.",
   "VALIDATION_CODE_TITLE": "Kode Verifikasi Masuk",
   "VALIDATION_CODE_MESSAGE": "Silakan gunakan kode Verifikasi ini untuk masuk ke akun {APP_NAME} Anda:",
   "COPY_VALIDATION_CODE": "Salin Kode",
@@ -1407,6 +1406,7 @@ define({
   "ACCOUNT_DETAILS": "Detail Akun",
   "AI_QUOTA_USED": "Kuota AI terpakai",
   "LOGIN_REFRESH": "Periksa Status Login",
+  "COLLAPSE_ALL_FOLDERS": "Ciutkan Semua Folder",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Cuplikan Kustom…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Cuplikan Kustom",
   "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Tambah Cuplikan",
@@ -1447,5 +1447,14 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Teks Templat",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Deskripsi",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Ekstensi Berkas",
-  "COLLAPSE_ALL_FOLDERS": "Ciutkan Semua Folder"
+  "SIGNED_OUT_FAILED_MESSAGE": "Terjadi kesalahan saat keluar. Tekan OK untuk membuka <a href='https://account.phcode.dev/#advanced'>account.phcode.dev</a> tempat Anda dapat keluar secara manual.",
+  "SIGN_IN_WAITING_TITLE": "Menunggu Masuk",
+  "SIGN_IN_WAITING_MESSAGE": "Silakan selesaikan proses masuk di tab baru, lalu kembali ke sini.",
+  "WAITING_FOR_LOGIN": "Menunggu proses masuk…",
+  "CHECK_NOW": "Periksa Sekarang",
+  "CHECKING": "Memeriksa…",
+  "CHECKING_STATUS": "Memeriksa status masuk…",
+  "NOT_SIGNED_IN_YET": "Anda belum masuk. Silakan selesaikan proses masuk di tab lain.",
+  "WELCOME_BACK": "Selamat datang kembali, {0}!",
+  "POPUP_BLOCKED": "Pop-up diblokir. Harap izinkan pop-up dan coba lagi, atau buka {0} secara manual"
 });

@@ -1394,7 +1394,6 @@ define({
   "SIGNED_IN_FAILED_TITLE": "സൈൻ ഇൻ ചെയ്യാൻ കഴിയില്ല",
   "SIGNED_IN_FAILED_MESSAGE": "സൈൻ ഇൻ ചെയ്യാൻ ശ്രമിക്കുമ്പോൾ എന്തോ പിഴച്ചു. വീണ്ടും ശ്രമിക്കുക.",
   "SIGNED_OUT_FAILED_TITLE": "സൈൻ ഔട്ട് ചെയ്യുന്നതിൽ പരാജയപ്പെട്ടു",
-  "SIGNED_OUT_FAILED_MESSAGE": "സൈൻ ഔട്ട് ചെയ്യാൻ ശ്രമിക്കുമ്പോൾ എന്തോ പിഴച്ചു. വീണ്ടും ശ്രമിക്കുക.",
   "VALIDATION_CODE_TITLE": "സൈൻ ഇൻ വെരിഫിക്കേഷൻ കോഡ്",
   "VALIDATION_CODE_MESSAGE": "നിങ്ങളുടെ {APP_NAME} അക്കൗണ്ടിൽ സൈൻ ഇൻ ചെയ്യാൻ ഈ വെരിഫിക്കേഷൻ കോഡ് ഉപയോഗിക്കുക:",
   "COPY_VALIDATION_CODE": "കോഡ് പകർത്തുക",
@@ -1407,6 +1406,7 @@ define({
   "ACCOUNT_DETAILS": "അക്കൗണ്ട് വിശദാംശങ്ങൾ",
   "AI_QUOTA_USED": "എഐ ക്വാട്ട ഉപയോഗിച്ചു",
   "LOGIN_REFRESH": "ലോഗിൻ സ്റ്റാറ്റസ് പരിശോധിക്കുക",
+  "COLLAPSE_ALL_FOLDERS": "എല്ലാ ഫോൾഡറുകളും ചുരുക്കുക",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "കസ്റ്റം സ്നിപ്പെറ്റുകൾ…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "കസ്റ്റം സ്നിപ്പെറ്റുകൾ",
   "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "സ്നിപ്പറ്റ് ചേർക്കുക",
@@ -1447,5 +1447,14 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "ടെംപ്ലേറ്റ് ടെക്സ്റ്റ്",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "വിവരണം",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "ഫയൽ എക്സ്റ്റൻഷൻ",
-  "COLLAPSE_ALL_FOLDERS": "എല്ലാ ഫോൾഡറുകളും ചുരുക്കുക"
+  "SIGNED_OUT_FAILED_MESSAGE": "ലോഗ്ഔട്ട് ചെയ്യുന്നതിൽ പിഴവ് സംഭവിച്ചു. ശരി ക്ലിക്ക് ചെയ്ത് <a href='https://account.phcode.dev/#advanced'>account.phcode.dev</a> തുറന്ന് ലോഗ്ഔട്ട് ചെയ്യുക.",
+  "SIGN_IN_WAITING_TITLE": "സൈൻ ഇൻ ചെയ്യുന്നതിനായി കാത്തിരിക്കുന്നു",
+  "SIGN_IN_WAITING_MESSAGE": "പുതിയ ടാബിൽ സൈൻ-ഇൻ പൂർത്തിയാക്കി ഇവിടേക്ക് തിരികെ വരിക.",
+  "WAITING_FOR_LOGIN": "ലോഗിൻ ചെയ്യുന്നതിനായി കാത്തിരിക്കുന്നു…",
+  "CHECK_NOW": "ഇപ്പോൾ പരിശോധിക്കുക",
+  "CHECKING": "പരിശോധിക്കുന്നു…",
+  "CHECKING_STATUS": "ലോഗിൻ സ്റ്റാറ്റസ് പരിശോധിക്കുന്നു…",
+  "NOT_SIGNED_IN_YET": "ഇതുവരെ സൈൻ ഇൻ ചെയ്തിട്ടില്ല. മറ്റൊരു ടാബിൽ സൈൻ-ഇൻ പൂർത്തിയാക്കുക.",
+  "WELCOME_BACK": "{0}, വീണ്ടും സ്വാഗതം!",
+  "POPUP_BLOCKED": "പോപ്പ്-അപ്പ് തടഞ്ഞിരിക്കുന്നു. പോപ്പ്-അപ്പുകൾ അനുവദിച്ചതിനുശേഷം വീണ്ടും ശ്രമിക്കുക, അല്ലെങ്കിൽ {0} ലേക്ക് നേരിട്ട് പോകുക."
 });

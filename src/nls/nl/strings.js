@@ -1394,7 +1394,6 @@ define({
   "SIGNED_IN_FAILED_TITLE": "Aanmelden mislukt",
   "SIGNED_IN_FAILED_MESSAGE": "Er is iets misgegaan tijdens het aanmelden. Probeer het opnieuw.",
   "SIGNED_OUT_FAILED_TITLE": "Afmelden mislukt",
-  "SIGNED_OUT_FAILED_MESSAGE": "Er is iets misgegaan tijdens het afmelden. Probeer het opnieuw.",
   "VALIDATION_CODE_TITLE": "Verificatiecode",
   "VALIDATION_CODE_MESSAGE": "Gebruik deze verificatiecode om in te loggen op uw {APP_NAME}-account:",
   "COPY_VALIDATION_CODE": "Code kopiëren",
@@ -1407,6 +1406,7 @@ define({
   "ACCOUNT_DETAILS": "Accountgegevens",
   "AI_QUOTA_USED": "Verbruikt AI-quotum",
   "LOGIN_REFRESH": "Aanmeldstatus controleren",
+  "COLLAPSE_ALL_FOLDERS": "Alle mappen samenvouwen",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Aangepaste fragmenten…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Aangepaste fragmenten",
   "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Fragment toevoegen",
@@ -1447,5 +1447,14 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Sjabloontekst",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Beschrijving",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Bestandsextensie",
-  "COLLAPSE_ALL_FOLDERS": "Alle mappen samenvouwen"
+  "SIGNED_OUT_FAILED_MESSAGE": "Er is iets misgegaan tijdens het uitloggen. Klik op OK om <a href='https://account.phcode.dev/#advanced'>account.phcode.dev</a> te openen, waar u handmatig kunt uitloggen.",
+  "SIGN_IN_WAITING_TITLE": "Aanmelden wordt verwerkt",
+  "SIGN_IN_WAITING_MESSAGE": "Voltooi de aanmelding in het nieuwe tabblad en keer hier terug.",
+  "WAITING_FOR_LOGIN": "Aanmelden...",
+  "CHECK_NOW": "Nu controleren",
+  "CHECKING": "Controleren...",
+  "CHECKING_STATUS": "Aanmeldstatus controleren...",
+  "NOT_SIGNED_IN_YET": "U bent nog niet aangemeld. Voltooi de aanmelding in het andere tabblad.",
+  "WELCOME_BACK": "Welkom terug, {0}!",
+  "POPUP_BLOCKED": "Pop-up geblokkeerd. Sta pop-ups toe en probeer het opnieuw, of ga handmatig naar {0}"
 });

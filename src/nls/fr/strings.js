@@ -1394,7 +1394,6 @@ define({
   "SIGNED_IN_FAILED_TITLE": "Connexion impossible",
   "SIGNED_IN_FAILED_MESSAGE": "Un problème est survenu lors de la connexion. Veuillez réessayer.",
   "SIGNED_OUT_FAILED_TITLE": "Déconnexion impossible",
-  "SIGNED_OUT_FAILED_MESSAGE": "Un problème est survenu lors de la déconnexion. Veuillez réessayer.",
   "VALIDATION_CODE_TITLE": "Code de vérification de connexion",
   "VALIDATION_CODE_MESSAGE": "Veuillez utiliser ce code de vérification pour vous connecter à votre compte {APP_NAME} :",
   "COPY_VALIDATION_CODE": "Copier le code",
@@ -1407,6 +1406,7 @@ define({
   "ACCOUNT_DETAILS": "Détails du compte",
   "AI_QUOTA_USED": "Quota IA utilisé",
   "LOGIN_REFRESH": "Vérifier l'état de la connexion",
+  "COLLAPSE_ALL_FOLDERS": "Réduire tous les dossiers",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Extraits personnalisés…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Extraits personnalisés",
   "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Ajouter un extrait de code",
@@ -1447,5 +1447,14 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Texte du modèle",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Description",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extension de fichier",
-  "COLLAPSE_ALL_FOLDERS": "Réduire tous les dossiers"
+  "SIGNED_OUT_FAILED_MESSAGE": "Une erreur s'est produite lors de la déconnexion. Cliquez sur OK pour ouvrir <a href='https://account.phcode.dev/#advanced'>account.phcode.dev</a> où vous pouvez vous déconnecter manuellement.",
+  "SIGN_IN_WAITING_TITLE": "En attente de connexion",
+  "SIGN_IN_WAITING_MESSAGE": "Veuillez vous connecter dans le nouvel onglet, puis revenez ici.",
+  "WAITING_FOR_LOGIN": "Connexion en cours…",
+  "CHECK_NOW": "Vérifier maintenant",
+  "CHECKING": "Vérification…",
+  "CHECKING_STATUS": "Vérification de l'état de la connexion…",
+  "NOT_SIGNED_IN_YET": "Vous n'êtes pas encore connecté. Veuillez vous connecter dans l'autre onglet.",
+  "WELCOME_BACK": "Bon retour parmi nous, {0} !",
+  "POPUP_BLOCKED": "Fenêtre contextuelle bloquée. Veuillez autoriser les fenêtres contextuelles et réessayer, ou accédez manuellement à {0}"
 });

@@ -1394,7 +1394,6 @@ define({
   "SIGNED_IN_FAILED_TITLE": "Impossibile accedere",
   "SIGNED_IN_FAILED_MESSAGE": "Si è verificato un errore durante l'accesso. Riprova.",
   "SIGNED_OUT_FAILED_TITLE": "Impossibile disconnettersi",
-  "SIGNED_OUT_FAILED_MESSAGE": "Si è verificato un errore durante la disconnessione. Riprova.",
   "VALIDATION_CODE_TITLE": "Codice di verifica per l'accesso",
   "VALIDATION_CODE_MESSAGE": "Utilizza questo codice di verifica per accedere al tuo account {APP_NAME}:",
   "COPY_VALIDATION_CODE": "Copia codice",
@@ -1407,6 +1406,7 @@ define({
   "ACCOUNT_DETAILS": "Dettagli account",
   "AI_QUOTA_USED": "Quota IA utilizzata",
   "LOGIN_REFRESH": "Verifica stato accesso",
+  "COLLAPSE_ALL_FOLDERS": "Comprimi tutte le cartelle",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Frammenti personalizzati…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Frammenti personalizzati",
   "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Aggiungi snippet",
@@ -1447,5 +1447,14 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Testo del Modello",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Descrizione",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Estensione del File",
-  "COLLAPSE_ALL_FOLDERS": "Comprimi tutte le cartelle"
+  "SIGNED_OUT_FAILED_MESSAGE": "Si è verificato un errore durante la disconnessione. Premi OK per aprire <a href='https://account.phcode.dev/#advanced'>account.phcode.dev</a> dove puoi disconnetterti manualmente.",
+  "SIGN_IN_WAITING_TITLE": "Attendere l'accesso",
+  "SIGN_IN_WAITING_MESSAGE": "Completa l'accesso nella nuova scheda, quindi torna qui.",
+  "WAITING_FOR_LOGIN": "Accesso in corso…",
+  "CHECK_NOW": "Verifica ora",
+  "CHECKING": "Verifica in corso…",
+  "CHECKING_STATUS": "Verifica dello stato di accesso in corso…",
+  "NOT_SIGNED_IN_YET": "Accesso non ancora effettuato. Completa l'accesso nell'altra scheda.",
+  "WELCOME_BACK": "Bentornato, {0}!",
+  "POPUP_BLOCKED": "Popup bloccato. Autorizza i popup e riprova oppure vai manualmente a {0}"
 });

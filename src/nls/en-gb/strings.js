@@ -1394,7 +1394,6 @@ define({
   "SIGNED_IN_FAILED_TITLE": "Can't Sign In",
   "SIGNED_IN_FAILED_MESSAGE": "Something went wrong while trying to sign in. Please try again.",
   "SIGNED_OUT_FAILED_TITLE": "Failed to Sign Out",
-  "SIGNED_OUT_FAILED_MESSAGE": "Something went wrong while trying to sign out. Please try again.",
   "VALIDATION_CODE_TITLE": "Sign In Verification Code",
   "VALIDATION_CODE_MESSAGE": "Please use this verification code to sign in to your {APP_NAME} account:",
   "COPY_VALIDATION_CODE": "Copy Code",
@@ -1407,6 +1406,7 @@ define({
   "ACCOUNT_DETAILS": "Account Details",
   "AI_QUOTA_USED": "AI quota used",
   "LOGIN_REFRESH": "Check Login Status",
+  "COLLAPSE_ALL_FOLDERS": "Collapse all folders",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Custom Snippets…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Custom Snippets",
   "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Add snippet",
@@ -1447,5 +1447,14 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Template Text",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Description",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "File Extension",
-  "COLLAPSE_ALL_FOLDERS": "Collapse all folders"
+  "SIGNED_OUT_FAILED_MESSAGE": "Something went wrong while logging out. Press OK to open <a href='https://account.phcode.dev/#advanced'>account.phcode.dev</a> where you can log out manually.",
+  "SIGN_IN_WAITING_TITLE": "Waiting for Sign-in",
+  "SIGN_IN_WAITING_MESSAGE": "Please complete sign-in in the new tab, then return here.",
+  "WAITING_FOR_LOGIN": "Waiting for login…",
+  "CHECK_NOW": "Check now",
+  "CHECKING": "Checking…",
+  "CHECKING_STATUS": "Checking login status…",
+  "NOT_SIGNED_IN_YET": "Not signed in yet. Please complete sign-in in the other tab.",
+  "WELCOME_BACK": "Welcome back, {0}!",
+  "POPUP_BLOCKED": "Pop-up blocked. Please allow pop-ups and try again, or manually navigate to {0}"
 });

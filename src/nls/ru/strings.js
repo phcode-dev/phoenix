@@ -1394,7 +1394,6 @@ define({
   "SIGNED_IN_FAILED_TITLE": "Не удаётся войти",
   "SIGNED_IN_FAILED_MESSAGE": "Что-то пошло не так при попытке входа. Пожалуйста, попробуйте ещё раз.",
   "SIGNED_OUT_FAILED_TITLE": "Не удалось выйти из системы",
-  "SIGNED_OUT_FAILED_MESSAGE": "Что-то пошло не так при попытке выхода из системы. Пожалуйста, попробуйте ещё раз.",
   "VALIDATION_CODE_TITLE": "Код подтверждения входа",
   "VALIDATION_CODE_MESSAGE": "Пожалуйста, используйте этот код подтверждения для входа в вашу учетную запись {APP_NAME}:",
   "COPY_VALIDATION_CODE": "Скопировать код",
@@ -1407,6 +1406,7 @@ define({
   "ACCOUNT_DETAILS": "Сведения об учетной записи",
   "AI_QUOTA_USED": "Использована квота ИИ",
   "LOGIN_REFRESH": "Проверить статус входа",
+  "COLLAPSE_ALL_FOLDERS": "Свернуть все папки",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Пользовательские сниппеты…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Пользовательские сниппеты",
   "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Добавить фрагмент",
@@ -1447,5 +1447,14 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Текст шаблона",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Описание",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Расширение файла",
-  "COLLAPSE_ALL_FOLDERS": "Свернуть все папки"
+  "SIGNED_OUT_FAILED_MESSAGE": "При выходе из системы произошла ошибка. Нажмите «ОК», чтобы открыть <a href='https://account.phcode.dev/#advanced'>account.phcode.dev</a>, где вы можете выйти вручную.",
+  "SIGN_IN_WAITING_TITLE": "Ожидание входа",
+  "SIGN_IN_WAITING_MESSAGE": "Пожалуйста, завершите вход в новой вкладке, затем вернитесь сюда.",
+  "WAITING_FOR_LOGIN": "Ожидание входа…",
+  "CHECK_NOW": "Проверить сейчас",
+  "CHECKING": "Проверка…",
+  "CHECKING_STATUS": "Проверка статуса входа…",
+  "NOT_SIGNED_IN_YET": "Вы ещё не вошли в систему. Пожалуйста, завершите вход в другой вкладке.",
+  "WELCOME_BACK": "С возвращением, {0}!",
+  "POPUP_BLOCKED": "Всплывающее окно заблокировано. Разрешите всплывающие окна и попробуйте снова или перейдите вручную по адресу {0}"
 });

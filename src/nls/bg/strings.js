@@ -1394,7 +1394,6 @@ define({
   "SIGNED_IN_FAILED_TITLE": "Неуспешно влизане",
   "SIGNED_IN_FAILED_MESSAGE": "Възникна проблем при опит за влизане. Моля, опитайте отново.",
   "SIGNED_OUT_FAILED_TITLE": "Неуспешно излизане от профила",
-  "SIGNED_OUT_FAILED_MESSAGE": "Възникна проблем при опит за излизане от профила. Моля, опитайте отново.",
   "VALIDATION_CODE_TITLE": "Код за потвърждаване на вход",
   "VALIDATION_CODE_MESSAGE": "Моля, използвайте този код за потвърждение, за да влезете в своя {APP_NAME} акаунт:",
   "COPY_VALIDATION_CODE": "Копиране на код",
@@ -1407,6 +1406,7 @@ define({
   "ACCOUNT_DETAILS": "Данни за акаунта",
   "AI_QUOTA_USED": "Използвана AI квота",
   "LOGIN_REFRESH": "Проверка на състоянието за вход",
+  "COLLAPSE_ALL_FOLDERS": "Свий всички папки",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Персонализирани фрагменти…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Персонализирани фрагменти",
   "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Добавяне на фрагмент",
@@ -1447,5 +1447,14 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Текст на шаблон",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Описание",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Разширение на файл",
-  "COLLAPSE_ALL_FOLDERS": "Свий всички папки"
+  "SIGNED_OUT_FAILED_MESSAGE": "Възникна проблем при излизане от профила. Натиснете OK, за да отворите <a href='https://account.phcode.dev/#advanced'>account.phcode.dev</a>, където можете да излезете ръчно.",
+  "SIGN_IN_WAITING_TITLE": "Изчакване за влизане",
+  "SIGN_IN_WAITING_MESSAGE": "Моля, завършете влизането в новия раздел и след това се върнете тук.",
+  "WAITING_FOR_LOGIN": "Изчакване за влизане…",
+  "CHECK_NOW": "Провери сега",
+  "CHECKING": "Проверява се…",
+  "CHECKING_STATUS": "Проверява се състоянието на влизане…",
+  "NOT_SIGNED_IN_YET": "Все още не сте влезли в профила си. Моля, завършете влизането в другия раздел.",
+  "WELCOME_BACK": "Добре дошли отново, {0}!",
+  "POPUP_BLOCKED": "Изскачащият прозорец е блокиран. Моля, разрешете изскачащите прозорци и опитайте отново или отидете ръчно на {0}"
 });

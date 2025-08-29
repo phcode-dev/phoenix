@@ -1394,7 +1394,6 @@ define({
   "SIGNED_IN_FAILED_TITLE": "Não é possível iniciar sessão",
   "SIGNED_IN_FAILED_MESSAGE": "Ocorreu um erro ao tentar iniciar sessão. Tente novamente.",
   "SIGNED_OUT_FAILED_TITLE": "Falha ao terminar sessão",
-  "SIGNED_OUT_FAILED_MESSAGE": "Ocorreu um erro ao tentar terminar sessão. Tente novamente.",
   "VALIDATION_CODE_TITLE": "Código de Verificação de Início de Sessão",
   "VALIDATION_CODE_MESSAGE": "Utilize este código de verificação para iniciar sessão na sua conta {APP_NAME}:",
   "COPY_VALIDATION_CODE": "Copiar Código",
@@ -1407,6 +1406,7 @@ define({
   "ACCOUNT_DETAILS": "Detalhes da Conta",
   "AI_QUOTA_USED": "Quota de IA utilizada",
   "LOGIN_REFRESH": "Verificar estado de início de sessão",
+  "COLLAPSE_ALL_FOLDERS": "Recolher Todas as Pastas",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Fragmentos Personalizados…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Fragmentos Personalizados",
   "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Adicionar Snippet",
@@ -1447,5 +1447,14 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Texto do Modelo",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Descrição",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extensão de Ficheiro",
-  "COLLAPSE_ALL_FOLDERS": "Recolher Todas as Pastas"
+  "SIGNED_OUT_FAILED_MESSAGE": "Ocorreu um erro ao terminar a sessão. Prima OK para abrir <a href='https://account.phcode.dev/#advanced'>account.phcode.dev</a> onde pode terminar a sessão manualmente.",
+  "SIGN_IN_WAITING_TITLE": "A aguardar início de sessão",
+  "SIGN_IN_WAITING_MESSAGE": "Conclua o início de sessão no novo separador e volte para aqui.",
+  "WAITING_FOR_LOGIN": "A iniciar sessão…",
+  "CHECK_NOW": "Verificar agora",
+  "CHECKING": "A verificar…",
+  "CHECKING_STATUS": "A verificar o estado do início de sessão…",
+  "NOT_SIGNED_IN_YET": "Ainda não iniciou sessão. Conclua o início de sessão no outro separador.",
+  "WELCOME_BACK": "Bem-vindo de volta, {0}!",
+  "POPUP_BLOCKED": "Janela pop-up bloqueada. Permita janelas pop-up e tente novamente ou navegue manualmente para {0}"
 });

@@ -1394,7 +1394,6 @@ define({
   "SIGNED_IN_FAILED_TITLE": "Nevar pieslēgties",
   "SIGNED_IN_FAILED_MESSAGE": "Radās kļūme, mēģinot pieslēgties. Lūdzu, mēģiniet vēlreiz.",
   "SIGNED_OUT_FAILED_TITLE": "Neizdevās izrakstīties",
-  "SIGNED_OUT_FAILED_MESSAGE": "Radās kļūme, mēģinot izrakstīties. Lūdzu, mēģiniet vēlreiz.",
   "VALIDATION_CODE_TITLE": "Piekļuves kods",
   "VALIDATION_CODE_MESSAGE": "Lūdzu, izmantojiet šo piekļuves kodu, lai pieteiktos savā {APP_NAME} kontā:",
   "COPY_VALIDATION_CODE": "Kopēt kodu",
@@ -1407,6 +1406,7 @@ define({
   "ACCOUNT_DETAILS": "Konta informācija",
   "AI_QUOTA_USED": "Izmantotā AI kvota",
   "LOGIN_REFRESH": "Pārbaudīt pieteikšanās statusu",
+  "COLLAPSE_ALL_FOLDERS": "Sakļaut visas mapes",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Pielāgoti fragmenti…",
   "CUSTOM_SNIPPETS_PANEL_TITLE": "Pielāgoti fragmenti",
   "CUSTOM_SNIPPETS_ADD_PANEL_TITLE": "Pievienot fragmentu",
@@ -1447,5 +1447,14 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Veidnes teksts",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Apraksts",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Faila paplašinājums",
-  "COLLAPSE_ALL_FOLDERS": "Sakļaut visas mapes"
+  "SIGNED_OUT_FAILED_MESSAGE": "Izrakstīšanās laikā radās kļūda. Nospiediet \"Labi\", lai atvērtu <a href='https://account.phcode.dev/#advanced'>account.phcode.dev</a>, kur varat izrakstīties manuāli.",
+  "SIGN_IN_WAITING_TITLE": "Notiek pieteikšanās",
+  "SIGN_IN_WAITING_MESSAGE": "Lūdzu, pabeidziet pieteikšanos jaunajā cilnē un pēc tam atgriezieties šeit.",
+  "WAITING_FOR_LOGIN": "Notiek pieteikšanās…",
+  "CHECK_NOW": "Pārbaudīt tagad",
+  "CHECKING": "Pārbauda…",
+  "CHECKING_STATUS": "Pārbauda pieteikšanās statusu…",
+  "NOT_SIGNED_IN_YET": "Vēl neesat pieteicies. Lūdzu, pabeidziet pieteikšanos otrā cilnē.",
+  "WELCOME_BACK": "Laipni lūdzam atpakaļ, {0}!",
+  "POPUP_BLOCKED": "Uznirstošais logs ir bloķēts. Lūdzu, atļaujiet uznirstošos logus un mēģiniet vēlreiz vai arī manuāli dodieties uz {0}"
 });
