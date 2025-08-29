@@ -102,8 +102,7 @@ define(function (require, exports, module) {
                 method: 'GET',
                 credentials: 'include', // Include cookies
                 headers: {
-                    'Accept': 'application/json',
-                    'Cache-Control': 'no-cache'
+                    'Accept': 'application/json'
                 }
             });
 
@@ -289,7 +288,7 @@ define(function (require, exports, module) {
             Dialogs.showModalDialog(
                 DefaultDialogs.DIALOG_ID_ERROR,
                 Strings.SIGNED_IN_FAILED_TITLE,
-                "Pop-up blocked. Please allow pop-ups and try again, or manually navigate to " + accountURL
+                StringUtils.format(Strings.POPUP_BLOCKED, accountURL)
             );
             return;
         }
@@ -310,8 +309,7 @@ define(function (require, exports, module) {
                 method: 'POST',
                 credentials: 'include', // Include cookies
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Cache-Control': 'no-cache'
+                    'Content-Type': 'application/json'
                 }
             });
 
@@ -324,7 +322,7 @@ define(function (require, exports, module) {
                     Dialogs.showModalDialog(
                         DefaultDialogs.DIALOG_ID_INFO,
                         Strings.SIGNED_OUT,
-                        "You have been signed out successfully."
+                        Strings.SIGNED_OUT
                     );
                     Metrics.countEvent(Metrics.EVENT_TYPE.AUTH, 'browserLogoutOK', 'browser');
                     return;
@@ -333,22 +331,28 @@ define(function (require, exports, module) {
 
             // If we get here, there was some issue but we still signed out locally
             console.warn('Logout may not have completed on server, but signed out locally');
-            Dialogs.showModalDialog(
-                DefaultDialogs.DIALOG_ID_INFO,
-                Strings.SIGNED_OUT,
-                "Signed out locally. You may need to sign out from your browser as well."
+            const dialog = Dialogs.showModalDialog(
+                DefaultDialogs.DIALOG_ID_ERROR,
+                Strings.SIGNED_OUT_FAILED_TITLE,
+                Strings.SIGNED_OUT_FAILED_MESSAGE
             );
+            dialog.done(() => {
+                window.open(_getAccountWebURL() + "#advanced", '_blank');
+            });
             Metrics.countEvent(Metrics.EVENT_TYPE.AUTH, 'browserLogoutPartial', 'browser');
 
         } catch (error) {
             // Always reset local state even on network error
             await _resetBrowserLogin();
             console.error("Network error during logout:", error);
-            Dialogs.showModalDialog(
-                DefaultDialogs.DIALOG_ID_INFO,
-                Strings.SIGNED_OUT,
-                "Signed out locally due to network error. You may need to sign out from your browser as well."
+            const dialog = Dialogs.showModalDialog(
+                DefaultDialogs.DIALOG_ID_ERROR,
+                Strings.SIGNED_OUT_FAILED_TITLE,
+                Strings.SIGNED_OUT_FAILED_MESSAGE
             );
+            dialog.done(() => {
+                window.open(_getAccountWebURL() + "#advanced", '_blank');
+            });
             Metrics.countEvent(Metrics.EVENT_TYPE.AUTH, 'browserLogoutError', 'browser');
         }
     }
