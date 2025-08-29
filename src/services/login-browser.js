@@ -303,14 +303,15 @@ define(function (require, exports, module) {
      * Sign out from browser session
      */
     async function signOutBrowser() {
-        const logoutURL = `${_getAccountBaseURL()}/logoutSession`;
+        const logoutURL = `${_getAccountBaseURL()}/signOut`;
         try {
             const response = await fetch(logoutURL, {
                 method: 'POST',
                 credentials: 'include', // Include cookies
                 headers: {
                     'Content-Type': 'application/json'
-                }
+                },
+                body: JSON.stringify({})
             });
 
             // Always reset local state regardless of server response
@@ -322,7 +323,7 @@ define(function (require, exports, module) {
                     Dialogs.showModalDialog(
                         DefaultDialogs.DIALOG_ID_INFO,
                         Strings.SIGNED_OUT,
-                        Strings.SIGNED_OUT
+                        Strings.SIGNED_OUT_MESSAGE_FRIENDLY
                     );
                     Metrics.countEvent(Metrics.EVENT_TYPE.AUTH, 'browserLogoutOK', 'browser');
                     return;
