@@ -219,7 +219,7 @@ const nodeConnector = NodeConnector.createNodeConnector(AUTH_CONNECTOR_ID, {
     setVerificationCode
 });
 
-const ALLOWED_ORIGIN = 'https://account.phcode.io';
+const ALLOWED_ORIGIN = 'https://account.phcode.dev';
 function autoAuth(req, res) {
     const origin = req.headers.origin;
     // localhost dev of loginService is not allowed here to not leak to production. So autoAuth is not available in

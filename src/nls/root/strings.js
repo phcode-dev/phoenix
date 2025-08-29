@@ -1607,6 +1607,14 @@ define({
     "ACCOUNT_DETAILS": "Account Details",
     "AI_QUOTA_USED": "AI quota used",
     "LOGIN_REFRESH": "Check Login Status",
+    "SIGN_IN_WAITING_TITLE": "Waiting for Sign In",
+    "SIGN_IN_WAITING_MESSAGE": "Please complete sign-in in the new tab, then return here.",
+    "WAITING_FOR_LOGIN": "Waiting for login\u2026",
+    "CHECK_NOW": "Check Now",
+    "CHECKING": "Checking\u2026",
+    "CHECKING_STATUS": "Checking login status\u2026",
+    "NOT_SIGNED_IN_YET": "Not signed in yet. Please complete sign-in in the other tab.",
+    "WELCOME_BACK": "Welcome back, {0}!",
 
     // Collapse Folders
     "COLLAPSE_ALL_FOLDERS": "Collapse All Folders",
