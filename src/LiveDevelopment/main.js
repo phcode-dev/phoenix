@@ -43,7 +43,8 @@ define(function main(require, exports, module) {
         ExtensionUtils      = require("utils/ExtensionUtils"),
         StringUtils         = require("utils/StringUtils"),
         EventDispatcher      = require("utils/EventDispatcher"),
-        WorkspaceManager    = require("view/WorkspaceManager");
+        WorkspaceManager    = require("view/WorkspaceManager"),
+        EditorManager      = require("editor/EditorManager");
 
 
     // this is responsible to make the advanced live preview features active or inactive
@@ -453,6 +454,7 @@ define(function main(require, exports, module) {
         });
         // to understand why we need this, pls read the _setOverlayWidth function
         new ResizeObserver(_setOverlayWidth).observe($("#main-plugin-panel")[0]);
+        EditorManager.on("activeEditorChange", _hideOverlay);
 
         // allow live preview to handle escape key event
         // Escape is mainly to hide boxes if they are visible
