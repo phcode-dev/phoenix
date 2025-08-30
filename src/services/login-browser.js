@@ -268,8 +268,12 @@ define(function (require, exports, module) {
     function _onLoginSuccess() {
         if (loginWaitingDialog) {
             const $template = loginWaitingDialog.getElement();
+            const welcomeBackMessage = Phoenix.isNativeApp ?
+                StringUtils.format(Strings.WELCOME_BACK_USER, userProfile.firstName): Strings.WELCOME_BACK;
+            // in desktop app, the apis return full username so we can show `Welcome back, alice`, but in
+            // browser app, we only get name like `a***` due to security posture, so we show `Welcome back` in browser.
             $template.find('#login-status')
-                .text(StringUtils.format(Strings.WELCOME_BACK, userProfile.firstName))
+                .text(welcomeBackMessage)
                 .css('color', '#10b981');
             setTimeout(() => {
                 _cancelLoginWaiting();
