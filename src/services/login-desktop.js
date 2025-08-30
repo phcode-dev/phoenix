@@ -74,6 +74,14 @@ define(function (require, exports, module) {
         return userProfile;
     }
 
+    /**
+     * Get the account base URL for API calls
+     * For desktop apps, this directly uses the configured account URL
+     */
+    function getAccountBaseURL() {
+        return Phoenix.config.account_url.replace(/\/$/, ''); // Remove trailing slash
+    }
+
     const ERR_RETRY_LATER = "retry_later";
     const ERR_INVALID = "invalid";
 
@@ -408,6 +416,7 @@ define(function (require, exports, module) {
         secureExports.signOutAccount = signOutAccount;
         secureExports.getProfile = getProfile;
         secureExports.verifyLoginStatus = () => _verifyLogin(false);
+        secureExports.getAccountBaseURL = getAccountBaseURL;
     }
 
     // public exports
