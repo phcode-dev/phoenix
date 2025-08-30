@@ -1614,7 +1614,7 @@ define({
     "CHECKING": "Checking\u2026",
     "CHECKING_STATUS": "Checking login status\u2026",
     "NOT_SIGNED_IN_YET": "Not signed in yet. Please complete sign-in in the other tab.",
-    "WELCOME_BACK": "Welcome back, {0}!",
+    "WELCOME_BACK": "Welcome back",
     "WELCOME_BACK_USER": "Welcome back, {0}!",
     "POPUP_BLOCKED": "Pop-up blocked. Please allow pop-ups and try again, or manually navigate to {0}",
 
