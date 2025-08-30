@@ -94,7 +94,7 @@ define(function (require, exports, module) {
      * @returns {string} "highlight" if edit features inactive, "edit" if active
      */
     function _getDefaultMode() {
-        return LiveDevelopment.isLPEditFeaturesActive ? "edit" : "highlight";
+        return LiveDevelopment.isProUser ? "edit" : "highlight";
     }
 
     // define the live preview mode preference
@@ -144,9 +144,15 @@ define(function (require, exports, module) {
         $edgeButtonBallast,
         $firefoxButtonBallast,
         $panelTitle,
-        $modeBtn;
+        $modeBtn,
+        $previewBtn;
 
     let customLivePreviewBannerShown = false;
+
+    // so this variable stores the mode that was previously selected
+    // this is needed when the preview mode (play button icon) is clicked, we store the current mode
+    // so that when user unclicks the button we can revert back to the mode that was originally selected
+    let modeThatWasSelected = null;
 
     StaticServer.on(EVENT_EMBEDDED_IFRAME_WHO_AM_I, function () {
         if($iframe && $iframe[0]) {
@@ -250,8 +256,17 @@ define(function (require, exports, module) {
      * init live preview mode from saved preferences
      */
     function _initializeMode() {
+        // when user is on free trial we just push the edit mode to them every time they open/reload Phoenix
+        if(LiveDevelopment.isFreeTrialUser) {
+            PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "edit");
+            _LPEditMode();
+            $previewBtn.removeClass('selected');
+            _updateModeButton("edit");
+            return;
+        }
+
         const savedMode = PreferencesManager.get(PREFERENCE_LIVE_PREVIEW_MODE) || _getDefaultMode();
-        const isEditFeaturesActive = LiveDevelopment.isLPEditFeaturesActive;
+        const isEditFeaturesActive = LiveDevelopment.isProUser;
 
         // If user has edit mode saved but edit features are not active, default to highlight
         let effectiveMode = savedMode;
@@ -264,17 +279,20 @@ define(function (require, exports, module) {
         // apply the effective mode
         if (effectiveMode === "highlight") {
             _LPHighlightMode();
+            $previewBtn.removeClass('selected');
         } else if (effectiveMode === "edit" && isEditFeaturesActive) {
             _LPEditMode();
+            $previewBtn.removeClass('selected');
         } else {
             _LPPreviewMode();
+            $previewBtn.addClass('selected');
         }
 
         _updateModeButton(effectiveMode);
     }
 
     function _showModeSelectionDropdown(event) {
-        const isEditFeaturesActive = LiveDevelopment.isLPEditFeaturesActive;
+        const isEditFeaturesActive = LiveDevelopment.isProUser;
         const items = [
             Strings.LIVE_PREVIEW_MODE_PREVIEW,
             Strings.LIVE_PREVIEW_MODE_HIGHLIGHT,
@@ -547,7 +565,7 @@ define(function (require, exports, module) {
         let message = Strings.LIVE_DEV_SELECT_FILE_TO_PREVIEW,
             tooltip = message;
         if(fileName){
-            message = `${fileName} - ${Strings.LIVE_DEV_STATUS_TIP_OUT_OF_SYNC}`;
+            message = `${fileName}`;
             tooltip = StringUtils.format(Strings.LIVE_DEV_TOOLTIP_SHOW_IN_EDITOR, fileName);
         }
         if(currentLivePreviewURL){
@@ -581,11 +599,35 @@ define(function (require, exports, module) {
         }
     }
 
+    /**
+     * This function is called when user clicks the preview mode button (play button icon)
+     * when this button is clicked we switch the mode button dropdown to preview mode
+     */
+    function _handlePreviewBtnClick() {
+        if($previewBtn.hasClass('selected')) {
+            $previewBtn.removeClass('selected');
+            const isEditFeaturesActive = LiveDevelopment.isProUser;
+            if(modeThatWasSelected) {
+                if(modeThatWasSelected === 'edit' && !isEditFeaturesActive) {
+                    // we just set the preference as preference has change handlers that will update the config
+                    PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "highlight");
+                } else {
+                    PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, modeThatWasSelected);
+                }
+            }
+        } else {
+            $previewBtn.addClass('selected');
+            modeThatWasSelected = PreferencesManager.get(PREFERENCE_LIVE_PREVIEW_MODE);
+            PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "preview");
+        }
+    }
+
     async function _createExtensionPanel() {
         let templateVars = {
             Strings: Strings,
             livePreview: Strings.LIVE_DEV_STATUS_TIP_OUT_OF_SYNC,
             clickToReload: Strings.LIVE_DEV_CLICK_TO_RELOAD_PAGE,
+            clickToPreview: Strings.LIVE_PREVIEW_MODE_PREVIEW,
             livePreviewSettings: Strings.LIVE_DEV_SETTINGS,
             livePreviewConfigureModes: Strings.LIVE_PREVIEW_CONFIGURE_MODES,
             clickToPopout: Strings.LIVE_DEV_CLICK_POPOUT,
@@ -616,6 +658,7 @@ define(function (require, exports, module) {
         $panelTitle = $panel.find("#panel-live-preview-title");
         $settingsIcon = $panel.find("#livePreviewSettingsBtn");
         $modeBtn = $panel.find("#livePreviewModeBtn");
+        $previewBtn = $panel.find("#previewModeLivePreviewButton");
 
         $panel.find(".live-preview-settings-banner-btn").on("click", ()=>{
             CommandManager.execute(Commands.FILE_LIVE_FILE_PREVIEW_SETTINGS);
@@ -650,6 +693,7 @@ define(function (require, exports, module) {
         });
 
         $modeBtn.on("click", _showModeSelectionDropdown);
+        $previewBtn.on("click", _handlePreviewBtnClick);
 
         _showOpenBrowserIcons();
         $settingsIcon.click(()=>{
@@ -1050,7 +1094,7 @@ define(function (require, exports, module) {
         PreferencesManager.on("change", PREFERENCE_LIVE_PREVIEW_MODE, function () {
             // Get the current preference value directly
             const newMode = PreferencesManager.get(PREFERENCE_LIVE_PREVIEW_MODE);
-            const isEditFeaturesActive = LiveDevelopment.isLPEditFeaturesActive;
+            const isEditFeaturesActive = LiveDevelopment.isProUser;
 
             // If user tries to set edit mode but edit features are not active, default to highlight
             let effectiveMode = newMode;
@@ -1063,10 +1107,13 @@ define(function (require, exports, module) {
 
             if (effectiveMode === "highlight") {
                 _LPHighlightMode();
+                $previewBtn.removeClass('selected');
             } else if (effectiveMode === "edit" && isEditFeaturesActive) {
                 _LPEditMode();
+                $previewBtn.removeClass('selected');
             } else {
                 _LPPreviewMode();
+                $previewBtn.addClass('selected');
             }
 
             _updateModeButton(effectiveMode);

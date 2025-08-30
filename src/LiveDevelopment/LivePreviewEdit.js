@@ -1,3 +1,29 @@
+/*
+ * GNU AGPL-3.0 License
+ *
+ * Copyright (c) 2021 - present core.ai . All rights reserved.
+ * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
+ *
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
+ * for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see https://opensource.org/licenses/AGPL-3.0.
+ *
+ */
+
+/*
+ * This file handles all the editor side source code handling after user performed some live preview edit operation
+ * when any operation is performed in the browser context (handled inside remoteFunctions.js) it sends a message through
+ * MessageBroker, now this file then makes the change in the source code
+ */
 define(function (require, exports, module) {
     const HTMLInstrumentation = require("LiveDevelopment/MultiBrowserImpl/language/HTMLInstrumentation");
     const LiveDevMultiBrowser = require("LiveDevelopment/LiveDevMultiBrowser");
@@ -194,8 +220,12 @@ define(function (require, exports, module) {
         // this is a quick trick because as the code is changed for that element in the file,
         // the live preview for that element gets refreshed and the changes are discarded in the live preview
         if(!message.isEditSuccessful) {
-            editor.replaceRange(text, startPos, endPos);
-            editor.document._markClean();
+            editor.document.batchOperation(function () {
+                editor.replaceRange(text, startPos, endPos);
+                setTimeout(() => {
+                    editor.undo(); // undo the replaceRange so dirty icon won't appear and no net change in undo history
+                }, 0);
+            });
         } else {
 
             // if the edit operation was successful, we call a helper function that

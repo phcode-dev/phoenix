@@ -43,12 +43,16 @@ define(function main(require, exports, module) {
         ExtensionUtils      = require("utils/ExtensionUtils"),
         StringUtils         = require("utils/StringUtils"),
         EventDispatcher      = require("utils/EventDispatcher"),
-        WorkspaceManager    = require("view/WorkspaceManager");
+        WorkspaceManager    = require("view/WorkspaceManager"),
+        EditorManager      = require("editor/EditorManager");
 
 
     // this is responsible to make the advanced live preview features active or inactive
-    // @abose (make this variable false when not a paid user, everything rest is handled automatically)
-    let isLPEditFeaturesActive = false;
+    // @abose (make the first value true when its a paid user, everything rest is handled automatically)
+    let isProUser = window.KernalModeTrust ? true : false;
+    // when isFreeTrialUser is true isProUser should also be true
+    // when its false, isProUser can be true/false doesn't matter
+    let isFreeTrialUser = true;
 
     const EVENT_LIVE_HIGHLIGHT_PREF_CHANGED = "liveHighlightPrefChange";
 
@@ -64,7 +68,7 @@ define(function main(require, exports, module) {
             paddingColor: {r: 147, g: 196, b: 125, a: 0.66},
             showInfo: true
         },
-        isLPEditFeaturesActive: isLPEditFeaturesActive,
+        isProUser: isProUser,
         elemHighlights: "hover", // default value, this will get updated when the extension loads
         // this strings are used in RemoteFunctions.js
         // we need to pass this through config as remoteFunctions runs in browser context and cannot
@@ -269,6 +273,122 @@ define(function main(require, exports, module) {
         return false;
     }
 
+    let $livePreviewPanel = null; // stores the live preview panel, need this as overlay is appended inside this
+    let $overlayContainer = null; // the overlay container
+    let shouldShowSyncErrorOverlay = true; // once user closes the overlay we don't show them again
+    let shouldShowConnectingOverlay = true;
+    let connectingOverlayTimer = null; // this is needed as we show the connecting overlay after 3s
+    let connectingOverlayTimeDuration = 3000;
+
+    /**
+     * this function is responsible to check whether to show the overlay or not and how it should be shown
+     * because if user has closed the overlay manually, we don't show it again
+     * secondly, for connecting overlay we show that after a 3s timer, but sync error overlay is shown immediately
+     * @param {String} textMessage - the text that is written inside the overlay
+     * @param {Number} status - 1 for connect, 4 for sync error but we match it using MultiBrowserLiveDev
+     */
+    function _handleOverlay(textMessage, status) {
+        if (!$livePreviewPanel) {
+            $livePreviewPanel = $("#panel-live-preview");
+        }
+
+        // remove any existing overlay & timer
+        _hideOverlay();
+
+        // to not show the overlays if user has already closed it before
+        if(status === MultiBrowserLiveDev.STATUS_CONNECTING && !shouldShowConnectingOverlay) { return; }
+        if(status === MultiBrowserLiveDev.STATUS_SYNC_ERROR && !shouldShowSyncErrorOverlay) { return; }
+
+        // for connecting status, we delay showing the overlay by 3 seconds
+        if(status === MultiBrowserLiveDev.STATUS_CONNECTING) {
+            connectingOverlayTimer = setTimeout(() => {
+                _createAndShowOverlay(textMessage, status);
+                connectingOverlayTimer = null;
+            }, connectingOverlayTimeDuration);
+            return;
+        }
+
+        // for sync error status, show immediately
+        _createAndShowOverlay(textMessage, status);
+    }
+
+    /**
+     * this function is responsible to create & show the overlay.
+     * so overlay is shown when the live preview is connecting or live preview stopped because of some syntax error
+     * @param {String} textMessage - the text that is written inside the overlay
+     * @param {Number} status - 1 for connect, 4 for sync error but we match it using MultiBrowserLiveDev
+     */
+    function _createAndShowOverlay(textMessage, status) {
+        if (!$livePreviewPanel) {
+            $livePreviewPanel = $("#panel-live-preview");
+        }
+
+        // create the overlay element
+        // styled inside the 'src/extensionsIntegrated/Phoenix-live-preview/live-preview.css'
+        $overlayContainer = $("<div>").addClass("live-preview-status-overlay"); // the wrapper for overlay element
+        const $message = $("<div>").addClass("live-preview-overlay-message").text(textMessage);
+
+        // the close button at the right end of the overlay
+        const $close = $("<div>").addClass("live-preview-overlay-close")
+            .attr("title", Strings.LIVE_PREVIEW_HIDE_OVERLAY)
+            .on('click', () => {
+                if(status === MultiBrowserLiveDev.STATUS_CONNECTING) {
+                    shouldShowConnectingOverlay = false;
+                } else if(status === MultiBrowserLiveDev.STATUS_SYNC_ERROR) {
+                    shouldShowSyncErrorOverlay = false;
+                }
+                _hideOverlay();
+            });
+        const $closeIcon = $("<i>").addClass("fas fa-times");
+
+        $close.append($closeIcon);
+        $overlayContainer.append($message);
+        $overlayContainer.append($close);
+        $livePreviewPanel.append($overlayContainer);
+    }
+
+    /**
+     * responsible to hide the overlay
+     */
+    function _hideOverlay() {
+        _clearConnectingOverlayTimer();
+        if ($overlayContainer) {
+            $overlayContainer.remove();
+            $overlayContainer = null;
+        }
+    }
+
+    /**
+     * This is a helper function that just checks that if connectingOverlayTimer exists, we clear it
+     */
+    function _clearConnectingOverlayTimer() {
+        if (connectingOverlayTimer) {
+            clearTimeout(connectingOverlayTimer);
+            connectingOverlayTimer = null;
+        }
+    }
+
+    /**
+     * this function adds/remove the full-width class from the overlay container
+     * styled inside 'src/extensionsIntegrated/Phoenix-live-preview/live-preview.css'
+     *
+     * we need this because
+     * normally when live preview has a good width (more than 305px) then a 3px divider is shown at the left end
+     * so in that case we give the overlay a width of (100% - 3px),
+     * but when the live preview width is reduced
+     * then that divider line gets cut off, so in that case we make the width 100% for this overlay
+     *
+     * without this handling, a white gap appears on the left side, which is distracting
+     */
+    function _setOverlayWidth() {
+        if(!$overlayContainer || !$livePreviewPanel.length) { return; }
+        if($livePreviewPanel.width() <= 305) {
+            $overlayContainer.addClass("full-width");
+        } else {
+            $overlayContainer.removeClass("full-width");
+        }
+    }
+
     /** Initialize LiveDevelopment */
     AppInit.appReady(function () {
         params.parse();
@@ -323,6 +443,19 @@ define(function main(require, exports, module) {
             exports.trigger(exports.EVENT_LIVE_PREVIEW_RELOAD, clientDetails);
         });
 
+        MultiBrowserLiveDev.on(MultiBrowserLiveDev.EVENT_STATUS_CHANGE, function(event, status) {
+            if (status === MultiBrowserLiveDev.STATUS_CONNECTING) {
+                _handleOverlay(Strings.LIVE_DEV_STATUS_TIP_PROGRESS1, status);
+            } else if (status === MultiBrowserLiveDev.STATUS_SYNC_ERROR) {
+                _handleOverlay(Strings.LIVE_DEV_STATUS_TIP_SYNC_ERROR, status);
+            } else {
+                _hideOverlay();
+            }
+        });
+        // to understand why we need this, pls read the _setOverlayWidth function
+        new ResizeObserver(_setOverlayWidth).observe($("#main-plugin-panel")[0]);
+        EditorManager.on("activeEditorChange", _hideOverlay);
+
         // allow live preview to handle escape key event
         // Escape is mainly to hide boxes if they are visible
         WorkspaceManager.addEscapeKeyEventHandler("livePreview", _handleLivePreviewEscapeKey);
@@ -341,8 +474,9 @@ define(function main(require, exports, module) {
     config.highlight = PreferencesManager.getViewState("livedevHighlight");
 
     function setLivePreviewEditFeaturesActive(enabled) {
-        isLPEditFeaturesActive = enabled;
-        config.isLPEditFeaturesActive = enabled;
+        // TODO: @abose here add kernal mode trust check
+        isProUser = enabled;
+        config.isProUser = enabled;
         if (MultiBrowserLiveDev && MultiBrowserLiveDev.status >= MultiBrowserLiveDev.STATUS_ACTIVE) {
             MultiBrowserLiveDev.updateConfig(JSON.stringify(config));
             MultiBrowserLiveDev.registerHandlers();
@@ -368,7 +502,8 @@ define(function main(require, exports, module) {
 
     EventDispatcher.makeEventDispatcher(exports);
 
-    exports.isLPEditFeaturesActive = isLPEditFeaturesActive;
+    exports.isProUser = isProUser;
+    exports.isFreeTrialUser = isFreeTrialUser;
 
     // public events
     exports.EVENT_OPEN_PREVIEW_URL = MultiBrowserLiveDev.EVENT_OPEN_PREVIEW_URL;

@@ -113,19 +113,43 @@ function RemoteFunctions(config = {}) {
         return event.ctrlKey;
     }
 
+    /**
+     * This is a checker function for editable elements, it makes sure that the element satisfies all the required checks
+     * - When onlyHighlight is false → config.isProUser must be true
+     * - When onlyHighlight is true → config.isProUser can be true or false (doesn't matter)
+     * @param {DOMElement} element
+     * @param {boolean} [onlyHighlight=false] - If true, bypasses the isProUser check
+     * @returns {boolean} - True if the element is editable else false
+     */
+    function isElementEditable(element, onlyHighlight = false) {
+        if(!config.isProUser && !onlyHighlight) {
+            return false;
+        }
+
+        if(element && // element should exist
+           element.hasAttribute("data-brackets-id") && // should have the data-brackets-id attribute
+           element.tagName !== "BODY" && // shouldn't be the body tag
+           element.tagName !== "HTML" && // shouldn't be the HTML tag
+           !_isInsideHeadTag(element)) { // shouldn't be inside the head tag like meta tags and all
+            return true;
+        }
+        return false;
+    }
+
     // helper function to check if an element is inside the HEAD tag
-    // we need this because we don't wanna trigger the element highlights on head tag and its children
+    // we need this because we don't wanna trigger the element highlights on head tag and its children,
+    // except for <style> tags which should be allowed
     function _isInsideHeadTag(element) {
         let parent = element;
         while (parent && parent !== window.document) {
             if (parent.tagName === "HEAD") {
-                return true;
+                // allow <style> tags inside <head>
+                return element.tagName !== "STYLE";
             }
             parent = parent.parentElement;
         }
         return false;
     }
-
 
     // compute the screen offset of an element
     function _screenOffset(element) {
@@ -224,9 +248,9 @@ function RemoteFunctions(config = {}) {
      * @param {DOMElement} element - the HTML DOM element that was clicked. it is to get the data-brackets-id attribute
      */
     function _handleDeleteOptionClick(event, element) {
-        const tagId = element.getAttribute("data-brackets-id");
+        if (isElementEditable(element)) {
+            const tagId = element.getAttribute("data-brackets-id");
 
-        if (tagId && element.tagName !== "BODY" && element.tagName !== "HTML" && !_isInsideHeadTag(element)) {
             window._Brackets_MessageBroker.send({
                 livePreviewEditEnabled: true,
                 element: element,
@@ -245,9 +269,9 @@ function RemoteFunctions(config = {}) {
      * @param {DOMElement} element - the HTML DOM element that was clicked. it is to get the data-brackets-id attribute
      */
     function _handleDuplicateOptionClick(event, element) {
-        const tagId = element.getAttribute("data-brackets-id");
+        if (isElementEditable(element)) {
+            const tagId = element.getAttribute("data-brackets-id");
 
-        if (tagId && element.tagName !== "BODY" && element.tagName !== "HTML" && !_isInsideHeadTag(element)) {
             window._Brackets_MessageBroker.send({
                 livePreviewEditEnabled: true,
                 element: element,
@@ -267,23 +291,12 @@ function RemoteFunctions(config = {}) {
      * @param {DOMElement} element - the HTML DOM element that was clicked. it is to get the data-brackets-id attribute
      */
     function _handleSelectParentOptionClick(event, element) {
-        if (!element) {
+        if (!isElementEditable(element)) {
             return;
         }
 
         const parentElement = element.parentElement;
-        if (!parentElement) {
-            return;
-        }
-
-        // we need to make sure that the parent element is not the body tag or the html.
-        // also we expect it to have the 'data-brackets-id'
-        if (
-            parentElement.tagName !== "BODY" &&
-            parentElement.tagName !== "HTML" &&
-            !_isInsideHeadTag(parentElement) &&
-            parentElement.hasAttribute("data-brackets-id")
-        ) {
+        if (isElementEditable(parentElement)) {
             parentElement.click();
         } else {
             console.error("The TagID might be unavailable or the parent element tag is directly body or html");
@@ -763,7 +776,7 @@ function RemoteFunctions(config = {}) {
 
         if (dropZone === "inside") {
             // inside marker - outline around the element
-            marker.style.border = "1px dashed #4285F4";
+            marker.style.border = "2px dashed #4285F4";
             marker.style.backgroundColor = "rgba(66, 133, 244, 0.05)";
             marker.style.left = rect.left + "px";
             marker.style.top = rect.top + "px";
@@ -778,7 +791,7 @@ function RemoteFunctions(config = {}) {
 
             if (indicatorType === "vertical") {
                 // Vertical marker (for flex row containers)
-                marker.style.width = "2px";
+                marker.style.width = "3px";
                 marker.style.height = rect.height + "px";
                 marker.style.top = rect.top + "px";
 
@@ -790,7 +803,7 @@ function RemoteFunctions(config = {}) {
             } else {
                 // Horizontal marker (for block/grid containers)
                 marker.style.width = rect.width + "px";
-                marker.style.height = "2px";
+                marker.style.height = "3px";
                 marker.style.left = rect.left + "px";
 
                 if (dropZone === "after") {
@@ -864,6 +877,52 @@ function RemoteFunctions(config = {}) {
     }
 
     /**
+     * Find the nearest valid drop target when direct elementFromPoint fails
+     * @param {number} clientX - x coordinate
+     * @param {number} clientY - y coordinate
+     * @returns {Element|null} - nearest valid target or null
+     */
+    function _findNearestValidTarget(clientX, clientY) {
+        const searchRadius = 500;
+        const step = 10; // pixel step for search
+
+        // Search in expanding squares around the cursor position
+        for (let radius = step; radius <= searchRadius; radius += step) {
+            // Check points in a square pattern around the cursor
+            const points = [
+                [clientX + radius, clientY],
+                [clientX - radius, clientY],
+                [clientX, clientY + radius],
+                [clientX, clientY - radius],
+                [clientX + radius, clientY + radius],
+                [clientX - radius, clientY - radius],
+                [clientX + radius, clientY - radius],
+                [clientX - radius, clientY + radius]
+            ];
+
+            for (let point of points) {
+                const [x, y] = point;
+                let target = document.elementFromPoint(x, y);
+
+                if (!target || target === window._currentDraggedElement) {
+                    continue;
+                }
+
+                // Find closest element with data-brackets-id
+                while (target && !target.hasAttribute("data-brackets-id")) {
+                    target = target.parentElement;
+                }
+
+                // Check if target is valid (not BODY, HTML or inside HEAD)
+                if (isElementEditable(target) && target !== window._currentDraggedElement) {
+                    return target;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
      * Handle dragover events on the document (throttled version)
      * Shows drop markers on valid drop targets
      * @param {Event} event - The dragover event
@@ -887,14 +946,12 @@ function RemoteFunctions(config = {}) {
             target = target.parentElement;
         }
 
-        // skip if no valid target found or if it's the dragged element
-        if (!target || target === window._currentDraggedElement) {
-            return;
-        }
-
-        // Skip BODY, HTML tags and elements inside HEAD
-        if (target.tagName === "BODY" || target.tagName === "HTML" || _isInsideHeadTag(target)) {
-            return;
+        if (!isElementEditable(target) || target === window._currentDraggedElement) {
+            // if direct detection fails, we try to find a nearby valid target
+            target = _findNearestValidTarget(event.clientX, event.clientY);
+            if (!target) {
+                return;
+            }
         }
 
         // Store original styles before modifying them
@@ -953,18 +1010,13 @@ function RemoteFunctions(config = {}) {
             target = target.parentElement;
         }
 
-        // skip if no valid target found or if it's the dragged element
-        if (!target || target === window._currentDraggedElement) {
-            _clearDropMarkers();
-            _stopAutoScroll();
-            _dragEndChores(window._currentDraggedElement);
-            dismissUIAndCleanupState();
-            delete window._currentDraggedElement;
-            return;
+        if (!isElementEditable(target) || target === window._currentDraggedElement) {
+            // if direct detection fails, we try to find a nearby valid target
+            target = _findNearestValidTarget(event.clientX, event.clientY);
         }
 
-        // Skip BODY, HTML tags and elements inside HEAD
-        if (target.tagName === "BODY" || target.tagName === "HTML" || _isInsideHeadTag(target)) {
+        // skip if no valid target found or if it's the dragged element
+        if (!isElementEditable(target) || target === window._currentDraggedElement) {
             _clearDropMarkers();
             _stopAutoScroll();
             _dragEndChores(window._currentDraggedElement);
@@ -1072,19 +1124,14 @@ function RemoteFunctions(config = {}) {
      * @returns {boolean} - true if we should show the select parent option otherwise false
      */
     function _shouldShowSelectParentOption(element) {
-        if (!element || !element.parentElement) {
+        if(!isElementEditable(element)) {
             return false;
         }
 
         const parentElement = element.parentElement;
-
-        if (parentElement.tagName === "HTML" || parentElement.tagName === "BODY" || _isInsideHeadTag(parentElement)) {
+        if(!isElementEditable(parentElement)) {
             return false;
         }
-        if (!parentElement.hasAttribute("data-brackets-id")) {
-            return false;
-        }
-
         return true;
     }
 
@@ -1280,7 +1327,7 @@ function RemoteFunctions(config = {}) {
         create: function() {
             this.remove(); // remove existing box if already present
 
-            if(!config.isLPEditFeaturesActive) {
+            if(!config.isProUser) {
                 return;
             }
 
@@ -1455,7 +1502,7 @@ function RemoteFunctions(config = {}) {
 
             // get the ID and classes for that element, as we need to display it in the box
             const id = this.element.id;
-            const classes = this.element.className ? this.element.className.split(/\s+/).filter(Boolean) : [];
+            const classes = Array.from(this.element.classList || []);
 
             let content = ""; // this will hold the main content that will be displayed
             content += "<div class='tag-name'>" + this.element.tagName.toLowerCase() + "</div>"; // add element tag name
@@ -1527,7 +1574,7 @@ function RemoteFunctions(config = {}) {
         create: function() {
             this.remove(); // remove existing box if already present
 
-            if(!config.isLPEditFeaturesActive) {
+            if(!config.isProUser) {
                 return;
             }
 
@@ -1825,7 +1872,7 @@ function RemoteFunctions(config = {}) {
 
         _handleSend: function(event, prompt) {
             const element = this.element;
-            if(!element) {
+            if(!isElementEditable(element)) {
                 return;
             }
             const tagId = element.getAttribute("data-brackets-id");
@@ -2173,10 +2220,9 @@ function RemoteFunctions(config = {}) {
 
     function onMouseOver(event) {
         if (_validEvent(event)) {
-            // Skip highlighting for HTML, BODY tags and elements inside HEAD
-            if (event.target && event.target.nodeType === Node.ELEMENT_NODE &&
-                event.target.tagName !== "HTML" && event.target.tagName !== "BODY" && !_isInsideHeadTag(event.target)) {
-                _localHighlight.add(event.target, true, false); // false means no-auto scroll
+            const element = event.target;
+            if(isElementEditable(element) && element.nodeType === Node.ELEMENT_NODE ) {
+                _localHighlight.add(element, true, false); // false means no-auto scroll
             }
         }
     }
@@ -2208,7 +2254,12 @@ function RemoteFunctions(config = {}) {
         if (element._originalBackgroundColor !== undefined) {
             element.style.backgroundColor = element._originalBackgroundColor;
         } else {
-            element.style.backgroundColor = "";
+            // only clear background if it's currently a highlight color, not if it's an original user style
+            const currentBg = element.style.backgroundColor;
+            if (currentBg === "rgba(0, 162, 255, 0.2)" || currentBg.includes("rgba(0, 162, 255")) {
+                element.style.backgroundColor = "";
+            }
+            // if it's some other color, we just leave it as is - it's likely a user-defined style
         }
         delete element._originalBackgroundColor;
     }
@@ -2219,36 +2270,29 @@ function RemoteFunctions(config = {}) {
             return;
         }
 
+        const element = event.target;
+        if(!isElementEditable(element) || element.nodeType !== Node.ELEMENT_NODE) {
+            return false;
+        }
+
         // if _hoverHighlight is uninitialized, initialize it
-        if (!_hoverHighlight && config.isLPEditFeaturesActive && shouldShowHighlightOnHover()) {
+        if (!_hoverHighlight && shouldShowHighlightOnHover()) {
             _hoverHighlight = new Highlight("#c8f9c5", true);
         }
 
         // this is to check the user's settings, if they want to show the elements highlights on hover or click
-        if (_hoverHighlight && config.isLPEditFeaturesActive && shouldShowHighlightOnHover()) {
+        if (_hoverHighlight && shouldShowHighlightOnHover()) {
             _hoverHighlight.clear();
 
-            // Skip highlighting for HTML, BODY tags and elements inside HEAD
-            // and for DOM elements which doesn't have 'data-brackets-id'
-            // NOTE: Don't remove 'data-brackets-id' check else hover will also target internal live preview elements
-            if (
-                event.target &&
-                event.target.nodeType === Node.ELEMENT_NODE &&
-                event.target.tagName !== "HTML" &&
-                event.target.tagName !== "BODY" &&
-                !_isInsideHeadTag(event.target) &&
-                event.target.hasAttribute("data-brackets-id")
-            ) {
-                // Store original background color to restore on hover out
-                event.target._originalBackgroundColor = event.target.style.backgroundColor;
-                event.target.style.backgroundColor = "rgba(0, 162, 255, 0.2)";
+            // Store original background color to restore on hover out
+            element._originalBackgroundColor = element.style.backgroundColor;
+            element.style.backgroundColor = "rgba(0, 162, 255, 0.2)";
 
-                _hoverHighlight.add(event.target, false, false); // false means no auto-scroll
+            _hoverHighlight.add(element, false, false); // false means no auto-scroll
 
-                // Create info box for the hovered element
-                dismissNodeInfoBox();
-                _nodeInfoBox = new NodeInfoBox(event.target);
-            }
+            // Create info box for the hovered element
+            dismissNodeInfoBox();
+            _nodeInfoBox = new NodeInfoBox(element);
         }
     }
 
@@ -2258,22 +2302,14 @@ function RemoteFunctions(config = {}) {
             return;
         }
 
-        // this is to check the user's settings, if they want to show the elements highlights on hover or click
-        if (_hoverHighlight && config.isLPEditFeaturesActive && shouldShowHighlightOnHover()) {
-            _hoverHighlight.clear();
-
-            // Restore original background color
-            if (
-                event &&
-                event.target &&
-                event.target.nodeType === Node.ELEMENT_NODE &&
-                event.target.hasAttribute("data-brackets-id")
-            ) {
-                clearElementBackground(event.target);
+        const element = event.target;
+        if(isElementEditable(element) && element.nodeType === Node.ELEMENT_NODE) {
+            // this is to check the user's settings, if they want to show the elements highlights on hover or click
+            if (_hoverHighlight && shouldShowHighlightOnHover()) {
+                _hoverHighlight.clear();
+                clearElementBackground(element);
+                dismissNodeInfoBox();
             }
-
-            // Remove info box when mouse leaves the element
-            dismissNodeInfoBox();
         }
     }
 
@@ -2284,16 +2320,8 @@ function RemoteFunctions(config = {}) {
     function _selectElement(element) {
         // dismiss all UI boxes and cleanup previous element state when selecting a different element
         dismissUIAndCleanupState();
-
-        // make sure that the feature is enabled and also the element has the attribute 'data-brackets-id'
-        if (
-            !config.isLPEditFeaturesActive ||
-            !element.hasAttribute("data-brackets-id") ||
-            element.tagName === "BODY" ||
-            element.tagName === "HTML" ||
-            _isInsideHeadTag(element)
-        ) {
-            return;
+        if(!isElementEditable(element)) {
+            return false;
         }
 
         // make sure that the element is actually visible to the user
@@ -2308,15 +2336,14 @@ function RemoteFunctions(config = {}) {
         element._originalOutline = element.style.outline;
         element.style.outline = "1px solid #4285F4";
 
-        // Add highlight for click mode
-        if (getHighlightMode() === "click") {
+        if (element._originalBackgroundColor === undefined) {
             element._originalBackgroundColor = element.style.backgroundColor;
-            element.style.backgroundColor = "rgba(0, 162, 255, 0.2)";
+        }
+        element.style.backgroundColor = "rgba(0, 162, 255, 0.2)";
 
-            if (_hoverHighlight) {
-                _hoverHighlight.clear();
-                _hoverHighlight.add(element, true, false); // false means no auto-scroll
-            }
+        if (_hoverHighlight) {
+            _hoverHighlight.clear();
+            _hoverHighlight.add(element, true, false); // false means no auto-scroll
         }
 
         previouslyClickedElement = element;
@@ -2329,25 +2356,17 @@ function RemoteFunctions(config = {}) {
      */
     function onClick(event) {
         dismissAIPromptBox();
+        const element = event.target;
 
-        // make sure that the feature is enabled and also the clicked element has the attribute 'data-brackets-id'
-        if (
-            config.isLPEditFeaturesActive &&
-            event.target.hasAttribute("data-brackets-id") &&
-            event.target.tagName !== "BODY" &&
-            event.target.tagName !== "HTML" &&
-            !_isInsideHeadTag(event.target)
-        ) {
+        // when user clicks on the HTML, BODY tags or elements inside HEAD, we want to remove the boxes
+        if(_nodeMoreOptionsBox && !isElementEditable(element)) {
+            dismissUIAndCleanupState();
+        } else if(isElementEditable(element)) {
             event.preventDefault();
             event.stopPropagation();
             event.stopImmediatePropagation();
 
-            _selectElement(event.target);
-        } else if ( // when user clicks on the HTML, BODY tags or elements inside HEAD, we want to remove the boxes
-            _nodeMoreOptionsBox &&
-            (event.target.tagName === "HTML" || event.target.tagName === "BODY" || _isInsideHeadTag(event.target))
-        ) {
-            dismissUIAndCleanupState();
+            _selectElement(element);
         }
     }
 
@@ -2356,18 +2375,13 @@ function RemoteFunctions(config = {}) {
      * @param {Event} event
      */
     function onDoubleClick(event) {
-        if (
-            config.isLPEditFeaturesActive &&
-            event.target.hasAttribute("data-brackets-id") &&
-            event.target.tagName !== "BODY" &&
-            event.target.tagName !== "HTML" &&
-            !_isInsideHeadTag(event.target)
-        ) {
+        const element = event.target;
+        if (isElementEditable(element)) {
             // because we only want to allow double click text editing where we show the edit option
-            if (_shouldShowEditTextOption(event.target)) {
+            if (_shouldShowEditTextOption(element)) {
                 event.preventDefault();
                 event.stopPropagation();
-                startEditing(event.target);
+                startEditing(element);
             }
         }
     }
@@ -2410,18 +2424,16 @@ function RemoteFunctions(config = {}) {
         }
     }
 
-    // highlight a node
-    function highlight(node, clear) {
+    // highlight an element
+    function highlight(element, clear) {
         if (!_clickHighlight) {
             _clickHighlight = new Highlight("#cfc");
         }
         if (clear) {
             _clickHighlight.clear();
         }
-        // Skip highlighting for HTML, BODY tags and elements inside HEAD
-        if (node && node.nodeType === Node.ELEMENT_NODE &&
-            node.tagName !== "HTML" && node.tagName !== "BODY" && !_isInsideHeadTag(node)) {
-            _clickHighlight.add(node, true, true); // 3rd arg is for auto-scroll
+        if (isElementEditable(element, true) && element.nodeType === Node.ELEMENT_NODE) {
+            _clickHighlight.add(element, true, true); // 3rd arg is for auto-scroll
         }
     }
 
@@ -2440,12 +2452,7 @@ function RemoteFunctions(config = {}) {
         // select the first valid highlighted element
         var foundValidElement = false;
         for (i = 0; i < nodes.length; i++) {
-            if (nodes[i].hasAttribute("data-brackets-id") &&
-                nodes[i].tagName !== "HTML" &&
-                nodes[i].tagName !== "BODY" &&
-                !_isInsideHeadTag(nodes[i]) &&
-                nodes[i].tagName !== "BR"
-            ) {
+            if(isElementEditable(nodes[i], true) && nodes[i].tagName !== "BR") {
                 _selectElement(nodes[i]);
                 foundValidElement = true;
                 break;
@@ -2826,63 +2833,52 @@ function RemoteFunctions(config = {}) {
     }
 
     function updateConfig(newConfig) {
-        var oldConfig = config;
+        const oldConfig = config;
         config = JSON.parse(newConfig);
 
-        if (config.highlight || (config.isLPEditFeaturesActive && shouldShowHighlightOnHover())) {
-            // Add hover event listeners if highlight is enabled OR editHighlights is set to hover
-            window.document.removeEventListener("mouseover", onElementHover);
-            window.document.removeEventListener("mouseout", onElementHoverOut);
-            window.document.addEventListener("mouseover", onElementHover);
-            window.document.addEventListener("mouseout", onElementHoverOut);
-        } else {
-            // Remove hover event listeners only if both highlight is disabled AND editHighlights is not set to hover
-            window.document.removeEventListener("mouseover", onElementHover);
-            window.document.removeEventListener("mouseout", onElementHoverOut);
-
-            // Remove info box and more options box if highlight is disabled
-            dismissNodeInfoBox();
-            dismissNodeMoreOptionsBox();
-        }
-
-        // Handle element highlight mode changes for instant switching
+        // Determine if configuration has changed significantly
         const oldHighlightMode = oldConfig.elemHighlights ? oldConfig.elemHighlights.toLowerCase() : "hover";
         const newHighlightMode = getHighlightMode();
+        const highlightModeChanged = oldHighlightMode !== newHighlightMode;
+        const isProStatusChanged = oldConfig.isProUser !== config.isProUser;
+        const highlightSettingChanged = oldConfig.highlight !== config.highlight;
 
-        if (oldHighlightMode !== newHighlightMode) {
-            // Clear any existing highlights when mode changes
-            if (_hoverHighlight) {
-                _hoverHighlight.clear();
-            }
-
-            // Clean up any previously highlighted elements
-            if (previouslyClickedElement) {
-                clearElementBackground(previouslyClickedElement);
-            }
-
-            // Clear all elements that might have hover background styling applied
-            const allElements = window.document.querySelectorAll("[data-brackets-id]");
-            for (let i = 0; i < allElements.length; i++) {
-                if (allElements[i]._originalBackgroundColor !== undefined) {
-                    clearElementBackground(allElements[i]);
-                }
-            }
-
-            // Remove info box when switching modes to avoid confusion
-            if (_nodeInfoBox && !_nodeMoreOptionsBox) {
-                dismissNodeInfoBox();
-            }
-
-            // Re-setup event listeners based on new mode to ensure proper behavior
-            if (config.highlight && config.isLPEditFeaturesActive) {
-                window.document.removeEventListener("mouseover", onElementHover);
-                window.document.removeEventListener("mouseout", onElementHoverOut);
-                window.document.addEventListener("mouseover", onElementHover);
-                window.document.addEventListener("mouseout", onElementHoverOut);
-            }
+        // Handle significant configuration changes
+        if (highlightModeChanged || isProStatusChanged || highlightSettingChanged) {
+            _handleConfigurationChange();
         }
+        _updateEventListeners();
 
         return JSON.stringify(config);
+    }
+
+    /**
+     * when config is changed we clear all the highlighting and stuff
+     */
+    function _handleConfigurationChange() {
+        if (_hoverHighlight) {
+            _hoverHighlight.clear();
+        }
+        cleanupPreviousElementState();
+        const allElements = window.document.querySelectorAll("[data-brackets-id]");
+        for (let i = 0; i < allElements.length; i++) {
+            if (allElements[i]._originalBackgroundColor !== undefined) {
+                clearElementBackground(allElements[i]);
+            }
+        }
+        dismissUIAndCleanupState();
+    }
+
+    /**
+     * Update event listeners based on current configuration
+     */
+    function _updateEventListeners() {
+        window.document.removeEventListener("mouseover", onElementHover);
+        window.document.removeEventListener("mouseout", onElementHoverOut);
+        if (config.highlight || (config.isProUser && shouldShowHighlightOnHover())) {
+            window.document.addEventListener("mouseover", onElementHover);
+            window.document.addEventListener("mouseout", onElementHoverOut);
+        }
     }
 
     /**
@@ -2890,7 +2886,10 @@ function RemoteFunctions(config = {}) {
      * @return {boolean} true if any boxes are visible, false otherwise
      */
     function hasVisibleLivePreviewBoxes() {
-        return _nodeMoreOptionsBox !== null || _nodeInfoBox !== null || _aiPromptBox !== null || previouslyClickedElement !== null;
+        return _nodeMoreOptionsBox !== null ||
+                _nodeInfoBox !== null ||
+                _aiPromptBox !== null ||
+                previouslyClickedElement !== null;
     }
 
     /**
@@ -3000,12 +2999,7 @@ function RemoteFunctions(config = {}) {
 
     // Function to handle direct editing of elements in the live preview
     function startEditing(element) {
-        if (!config.isLPEditFeaturesActive
-            || !element
-            || element.tagName === "BODY"
-            || element.tagName === "HTML"
-            || _isInsideHeadTag(element)
-            || !element.hasAttribute("data-brackets-id")) {
+        if (!isElementEditable(element)) {
             return;
         }
 
@@ -3050,7 +3044,7 @@ function RemoteFunctions(config = {}) {
     // Function to finish editing and apply changes
     // isEditSuccessful: this is a boolean value, defaults to true. false only when the edit operation is cancelled
     function finishEditing(element, isEditSuccessful = true) {
-        if (!config.isLPEditFeaturesActive || !element || !element.hasAttribute("contenteditable")) {
+        if (!isElementEditable(element) || !element.hasAttribute("contenteditable")) {
             return;
         }
 
@@ -3065,17 +3059,15 @@ function RemoteFunctions(config = {}) {
             delete element._editListeners;
         }
 
-        if (element.hasAttribute("data-brackets-id")) {
-            const tagId = element.getAttribute("data-brackets-id");
-            window._Brackets_MessageBroker.send({
-                livePreviewEditEnabled: true,
-                livePreviewTextEdit: true,
-                element: element,
-                newContent: element.outerHTML,
-                tagId: Number(tagId),
-                isEditSuccessful: isEditSuccessful
-            });
-        }
+        const tagId = element.getAttribute("data-brackets-id");
+        window._Brackets_MessageBroker.send({
+            livePreviewEditEnabled: true,
+            livePreviewTextEdit: true,
+            element: element,
+            newContent: element.outerHTML,
+            tagId: Number(tagId),
+            isEditSuccessful: isEditSuccessful
+        });
     }
 
     // init
@@ -3092,7 +3084,7 @@ function RemoteFunctions(config = {}) {
         window.document.removeEventListener("dragleave", onDragLeave);
         window.document.removeEventListener("keydown", onKeyDown);
 
-        if (config.isLPEditFeaturesActive) {
+        if (config.isProUser) {
             // Initialize hover highlight with Chrome-like colors
             _hoverHighlight = new Highlight("#c8f9c5", true); // Green similar to Chrome's padding color
 
