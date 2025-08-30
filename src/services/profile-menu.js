@@ -1,6 +1,7 @@
 define(function (require, exports, module) {
     const Mustache = require("thirdparty/mustache/mustache"),
         PopUpManager = require("widgets/PopUpManager"),
+        ThemeManager = require("view/ThemeManager"),
         Strings      = require("strings");
 
     const KernalModeTrust = window.KernalModeTrust;
@@ -212,6 +213,78 @@ define(function (require, exports, module) {
     customElements.define ('secure-name', SecureName); // space is must in define ( to prevent build fail
 
     /**
+     * Load user details iframe with secure user information
+     */
+    function _loadUserDetailsIframe() {
+        if (!Phoenix.isNativeApp && $popup) {
+            const $iframe = $popup.find("#user-details-frame");
+            const $secureName = $popup.find(".user-name secure-name");
+            const $secureEmail = $popup.find(".user-email secure-email");
+
+            if ($iframe.length) {
+                // Get account base URL for iframe using login service
+                const accountBaseURL = KernalModeTrust.loginService.getAccountBaseURL();
+                const currentTheme = ThemeManager.getCurrentTheme();
+                const nameColor = (currentTheme && currentTheme.dark) ? "FFFFFF" : "000000";
+
+                // Configure iframe URL with styling parameters
+                const iframeURL = `${accountBaseURL}/getUserDetailFrame?` +
+                    `includeName=true&` +
+                    `nameFontSize=14px&` +
+                    `emailFontSize=12px&` +
+                    `nameColor=%23${nameColor}&` +
+                    `emailColor=%23666666&` +
+                    `backgroundColor=transparent`;
+
+                // Listen for iframe load events
+                const messageHandler = function(event) {
+                    // Only accept messages from trusted account domain
+                    // Handle proxy case where accountBaseURL is '/proxy/accounts'
+                    let trustedOrigin;
+                    if (accountBaseURL.startsWith('/proxy/accounts')) {
+                        // For localhost with proxy, accept messages from current origin
+                        trustedOrigin = window.location.origin;
+                    } else {
+                        // For production, get origin from account URL
+                        trustedOrigin = new URL(accountBaseURL).origin;
+                    }
+
+                    if (event.origin !== trustedOrigin) {
+                        return;
+                    }
+
+                    if (event.data && event.data.loaded) {
+                        // Hide secure DOM elements and show iframe
+                        $secureName.hide();
+                        $secureEmail.hide();
+                        $iframe.show();
+
+                        // Adjust iframe height based on content
+                        $iframe.css('height', '36px'); // Approximate height for name + email
+
+                        // Remove event listener
+                        window.removeEventListener('message', messageHandler);
+                    }
+                };
+
+                // Add message listener
+                window.addEventListener('message', messageHandler);
+
+                // Set iframe source to load user details
+                $iframe.attr('src', iframeURL);
+
+                // Fallback timeout - if iframe doesn't load in 5 seconds, keep secure elements
+                setTimeout(() => {
+                    if ($iframe.is(':hidden')) {
+                        console.log('User details iframe failed to load, keeping secure elements');
+                        window.removeEventListener('message', messageHandler);
+                    }
+                }, 5000);
+            }
+        }
+    }
+
+    /**
      * Shows the user profile popup when the user is logged in
      */
     function showProfilePopup() {
@@ -271,6 +344,9 @@ define(function (require, exports, module) {
         });
 
         _setupDocumentClickHandler();
+
+        // Load user details iframe for browser apps (after popup is created)
+        _loadUserDetailsIframe();
     }
 
     /**

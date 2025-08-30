@@ -6,6 +6,11 @@ This document provides comprehensive documentation for integrating with the Phoe
 
 The Phoenix browser application uses a login service to authenticate users across the phcode.dev domain ecosystem. The login service handles user authentication, session management, and provides secure API endpoints for login operations.
 
+**Key Features:**
+- Domain-wide session management using session cookies
+- Secure user profile display via iframe integration
+- Proxy server support for localhost development
+
 **Key Files:**
 - `src/services/login-browser.js` - Main browser login implementation
 - `serve-proxy.js` - Proxy server for localhost development
@@ -122,8 +127,14 @@ The login service provides these key endpoints:
 
 ### Authentication
 - `POST /signOutPost` - Sign out user (new endpoint with proper JSON handling)
-- `GET /resolveBrowserSession` - Validate and resolve current session
+- `GET /resolveBrowserSession` - Validate and resolve current session (returns masked user data for security)
 - `GET /signOut` - Legacy signout endpoint (deprecated for browser use)
+
+### User Profile Display
+- `GET /getUserDetailFrame` - Returns HTML iframe with full user details for secure display
+  - Query parameters for styling: `includeName`, `nameFontSize`, `emailFontSize`, `nameColor`, `emailColor`, `backgroundColor`
+  - CSP-protected to only allow embedding in trusted domains
+  - Cross-origin communication via postMessage when loaded
 
 ### Session Management
 - Session validation through `session` cookie
@@ -186,6 +197,12 @@ Browser (localhost:8000) → /proxy/accounts/* → serve-proxy.js
 - Local development should never use production user credentials in local account servers
 - Session cookies should have appropriate expiration times
 - Logout should properly invalidate sessions on both client and server
+
+### User Data Security
+- **Masked API Data**: The `resolveBrowserSession` endpoint returns masked user data (e.g., "J***", "j***@g***.com") to prevent exposure to browser extensions
+- **Secure iframe Display**: Full user details are displayed via iframe from trusted account server
+- **CSP Protection**: iframe is protected by Content Security Policy headers restricting embedding domains
+- **Cross-Origin Safety**: iframe communication uses secure postMessage protocol
 
 ---
 

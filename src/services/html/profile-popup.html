@@ -4,9 +4,10 @@
             <div class="user-avatar" style="background-color: {{avatarColor}};">
                 {{initials}}
             </div>
-            <div class="user-info">
+            <div class="user-info" style="width: calc(100% - 40px);">
                 <div class="user-name"><secure-name></secure-name></div>
                 <div class="user-email"><secure-email></secure-email></div>
+                <iframe id="user-details-frame" class="user-details-iframe" style="display: none; padding: 0; border: none; background: transparent; width: 100%; height: auto; overflow: hidden;" scrolling="no"></iframe>
                 <div class="{{planClass}}">{{planName}}</div>
             </div>
         </div>

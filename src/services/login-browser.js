@@ -413,6 +413,7 @@ define(function (require, exports, module) {
         secureExports.signOutAccount = signOutBrowser;
         secureExports.getProfile = getProfile;
         secureExports.verifyLoginStatus = () => _verifyBrowserLogin(false);
+        secureExports.getAccountBaseURL = _getAccountBaseURL;
     }
 
     // public exports
