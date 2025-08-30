@@ -2,7 +2,6 @@
 /* eslint-env node */
 
 const http = require('http');
-const https = require('https');
 const url = require('url');
 const path = require('path');
 const fs = require('fs');
@@ -90,8 +89,6 @@ proxy.on('proxyReq', (proxyReq, req) => {
     if (originalOrigin && originalOrigin.includes('localhost:8000')) {
         const newOrigin = originalOrigin.replace(/localhost:8000/g, 'phcode.dev');
         proxyReq.setHeader('Origin', newOrigin);
-    } else if (!originalOrigin) {
-        proxyReq.setHeader('Origin', 'https://phcode.dev');
     }
 
     // Ensure HTTPS scheme
