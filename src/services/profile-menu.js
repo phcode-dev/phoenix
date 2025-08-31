@@ -232,7 +232,16 @@ define(function (require, exports, module) {
             if (response.ok) {
                 const result = await response.json();
                 if (result.isSuccess) {
+                    // Check if entitlements actually changed
+                    const entitlementsChanged = JSON.stringify(cachedEntitlements) !== JSON.stringify(result);
+                    
                     cachedEntitlements = result;
+                    
+                    // Trigger event if entitlements changed
+                    if (entitlementsChanged && KernalModeTrust.loginService.trigger) {
+                        KernalModeTrust.loginService.trigger(KernalModeTrust.loginService.EVENT_ENTITLEMENTS_CHANGED, result);
+                    }
+                    
                     return cachedEntitlements;
                 }
             }
@@ -559,7 +568,14 @@ define(function (require, exports, module) {
         _removeProfileIcon();
 
         // Clear cached entitlements when user logs out
-        cachedEntitlements = null;
+        if (cachedEntitlements) {
+            cachedEntitlements = null;
+            
+            // Trigger event when entitlements are cleared
+            if (KernalModeTrust.loginService.trigger) {
+                KernalModeTrust.loginService.trigger(KernalModeTrust.loginService.EVENT_ENTITLEMENTS_CHANGED, null);
+            }
+        }
     }
 
     function setLoggedIn(initial, color) {

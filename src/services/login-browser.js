@@ -77,6 +77,10 @@ define(function (require, exports, module) {
     EventDispatcher.makeEventDispatcher(exports);
     EventDispatcher.makeEventDispatcher(secureExports);
 
+    // Event constants
+    const EVENT_ENTITLEMENTS_CHANGED = "entitlements_changed";
+    secureExports.EVENT_ENTITLEMENTS_CHANGED = EVENT_ENTITLEMENTS_CHANGED;
+
     const _EVT_PAGE_FOCUSED = "page_focused";
     $(window).focus(function () {
         exports.trigger(_EVT_PAGE_FOCUSED);
