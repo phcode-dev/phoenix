@@ -51,6 +51,7 @@ define(function (require, exports, module) {
         Strings = require("strings"),
         StringUtils = require("utils/StringUtils"),
         ProfileMenu  = require("./profile-menu"),
+        LoginService = require("./login-service"),
         Mustache = require("thirdparty/mustache/mustache"),
         browserLoginWaitingTemplate = require("text!./html/browser-login-waiting-dialog.html");
 
@@ -76,10 +77,6 @@ define(function (require, exports, module) {
 
     EventDispatcher.makeEventDispatcher(exports);
     EventDispatcher.makeEventDispatcher(secureExports);
-
-    // Event constants
-    const EVENT_ENTITLEMENTS_CHANGED = "entitlements_changed";
-    secureExports.EVENT_ENTITLEMENTS_CHANGED = EVENT_ENTITLEMENTS_CHANGED;
 
     const _EVT_PAGE_FOCUSED = "page_focused";
     $(window).focus(function () {
@@ -422,7 +419,8 @@ define(function (require, exports, module) {
         secureExports.getProfile = getProfile;
         secureExports.verifyLoginStatus = () => _verifyBrowserLogin(false);
         secureExports.getAccountBaseURL = _getAccountBaseURL;
-        secureExports.getEntitlements = ProfileMenu.getEntitlements;
+        secureExports.getEntitlements = LoginService.getEntitlements;
+        secureExports.EVENT_ENTITLEMENTS_CHANGED = LoginService.EVENT_ENTITLEMENTS_CHANGED;
     }
 
     // public exports
