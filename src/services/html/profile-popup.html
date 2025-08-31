@@ -13,13 +13,15 @@
         </div>
     </div>
     <div class="popup-body">
-        <div class="profile-section">
+        <div class="profile-section html-message forced-hidden">
+        </div>
+        <div class="profile-section quota-section forced-hidden">
             <div class="quota-header">
-                <span>{{Strings.AI_QUOTA_USED}}</span>
-                <span>{{quotaUsed}} / {{quotaTotal}} {{quotaUnit}}</span>
+                <span class="titleText">{{titleText}}</span>
+                <span class="usageText">{{usageText}}</span>
             </div>
             <div class="progress-bar">
-                <div class="progress-fill" style="width: {{quotaPercent}}%;"></div>
+                <div class="progress-fill" style="width: {{usedPercent}}%;"></div>
             </div>
         </div>
 

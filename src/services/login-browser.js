@@ -418,6 +418,7 @@ define(function (require, exports, module) {
         secureExports.getProfile = getProfile;
         secureExports.verifyLoginStatus = () => _verifyBrowserLogin(false);
         secureExports.getAccountBaseURL = _getAccountBaseURL;
+        secureExports.getEntitlements = ProfileMenu.getEntitlements;
     }
 
     // public exports
