@@ -27,6 +27,7 @@ define(function (require, exports, module) {
         Strings = require("strings"),
         NativeApp = require("utils/NativeApp"),
         ProfileMenu  = require("./profile-menu"),
+        LoginService = require("./login-service"),
         Mustache = require("thirdparty/mustache/mustache"),
         NodeConnector = require("NodeConnector"),
         otpDialogTemplate = require("text!./html/otp-dialog.html");
@@ -52,10 +53,6 @@ define(function (require, exports, module) {
 
     EventDispatcher.makeEventDispatcher(exports);
     EventDispatcher.makeEventDispatcher(secureExports);
-
-    // Event constants
-    const EVENT_ENTITLEMENTS_CHANGED = "entitlements_changed";
-    secureExports.EVENT_ENTITLEMENTS_CHANGED = EVENT_ENTITLEMENTS_CHANGED;
 
     const _EVT_PAGE_FOCUSED = "page_focused";
     $(window).focus(function () {
@@ -421,7 +418,8 @@ define(function (require, exports, module) {
         secureExports.getProfile = getProfile;
         secureExports.verifyLoginStatus = () => _verifyLogin(false);
         secureExports.getAccountBaseURL = getAccountBaseURL;
-        secureExports.getEntitlements = ProfileMenu.getEntitlements;
+        secureExports.getEntitlements = LoginService.getEntitlements;
+        secureExports.EVENT_ENTITLEMENTS_CHANGED = LoginService.EVENT_ENTITLEMENTS_CHANGED;
     }
 
     // public exports

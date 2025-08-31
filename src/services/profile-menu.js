@@ -2,7 +2,8 @@ define(function (require, exports, module) {
     const Mustache = require("thirdparty/mustache/mustache"),
         PopUpManager = require("widgets/PopUpManager"),
         ThemeManager = require("view/ThemeManager"),
-        Strings      = require("strings");
+        Strings      = require("strings"),
+        LoginService = require("./login-service");
 
     const KernalModeTrust = window.KernalModeTrust;
     if(!KernalModeTrust){
@@ -183,74 +184,6 @@ define(function (require, exports, module) {
         _setupDocumentClickHandler();
     }
 
-    // Cached entitlements data
-    let cachedEntitlements = null;
-
-    /**
-     * Get entitlements from API or cache
-     * Returns null if user is not logged in
-     */
-    async function getEntitlements(forceRefresh = false) {
-        // Return null if not logged in
-        if (!KernalModeTrust.loginService.isLoggedIn()) {
-            return null;
-        }
-
-        // Return cached data if available and not forcing refresh
-        if (cachedEntitlements && !forceRefresh) {
-            return cachedEntitlements;
-        }
-
-        try {
-            const accountBaseURL = KernalModeTrust.loginService.getAccountBaseURL();
-            const language = Phoenix.app && Phoenix.app.language ? Phoenix.app.language : 'en';
-            let url = `${accountBaseURL}/getAppEntitlements?lang=${language}`;
-            let fetchOptions = {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json'
-                }
-            };
-
-            // Handle different authentication methods for browser vs desktop
-            if (Phoenix.isNativeApp) {
-                // Desktop app: use appSessionID and validationCode
-                const profile = KernalModeTrust.loginService.getProfile();
-                if (profile && profile.apiKey && profile.validationCode) {
-                    url += `&appSessionID=${encodeURIComponent(profile.apiKey)}&validationCode=${encodeURIComponent(profile.validationCode)}`;
-                } else {
-                    console.error('Missing appSessionID or validationCode for desktop app entitlements');
-                    return null;
-                }
-            } else {
-                // Browser app: use session cookies
-                fetchOptions.credentials = 'include';
-            }
-
-            const response = await fetch(url, fetchOptions);
-
-            if (response.ok) {
-                const result = await response.json();
-                if (result.isSuccess) {
-                    // Check if entitlements actually changed
-                    const entitlementsChanged = JSON.stringify(cachedEntitlements) !== JSON.stringify(result);
-                    
-                    cachedEntitlements = result;
-                    
-                    // Trigger event if entitlements changed
-                    if (entitlementsChanged && KernalModeTrust.loginService.trigger) {
-                        KernalModeTrust.loginService.trigger(KernalModeTrust.loginService.EVENT_ENTITLEMENTS_CHANGED, result);
-                    }
-                    
-                    return cachedEntitlements;
-                }
-            }
-        } catch (error) {
-            console.error('Failed to fetch entitlements:', error);
-        }
-
-        return null;
-    }
 
     let userEmail="";
     class SecureEmail extends HTMLElement {
@@ -422,11 +355,8 @@ define(function (require, exports, module) {
             Strings: Strings
         };
 
-        // Check for cached entitlements synchronously for immediate basic plan info
-        if (cachedEntitlements && cachedEntitlements.plan) {
-            templateData.planClass = cachedEntitlements.plan.paidSubscriber ? "user-plan-paid" : "user-plan-free";
-            templateData.planName = cachedEntitlements.plan.name;
-        }
+        // Note: We don't await here to keep popup display instant
+        // Cached entitlements will be applied asynchronously after popup is shown
 
         // Render template with data immediately
         const renderedTemplate = Mustache.render(profileTemplate, templateData);
@@ -435,11 +365,16 @@ define(function (require, exports, module) {
         $("body").append($popup);
         isPopupVisible = true;
 
-        // Apply cached entitlements immediately if available (including quota/messages)
-        if (cachedEntitlements) {
-            _updatePopupWithEntitlements(cachedEntitlements);
-        }
         positionPopup();
+        
+        // Apply cached entitlements immediately if available (including quota/messages)
+        KernalModeTrust.loginService.getEntitlements(false).then(cachedEntitlements => {
+            if (cachedEntitlements && isPopupVisible) {
+                _updatePopupWithEntitlements(cachedEntitlements);
+            }
+        }).catch(error => {
+            console.error('Failed to apply cached entitlements to popup:', error);
+        });
 
         PopUpManager.addPopUp($popup, function() {
             $popup.remove();
@@ -483,7 +418,7 @@ define(function (require, exports, module) {
     async function _refreshEntitlementsInBackground() {
         try {
             // Fetch fresh entitlements from API
-            const freshEntitlements = await getEntitlements(true); // Force refresh to get latest data
+            const freshEntitlements = await KernalModeTrust.loginService.getEntitlements(true); // Force refresh to get latest data
 
             // Only update popup if it's still visible
             if (isPopupVisible && $popup && freshEntitlements) {
@@ -568,14 +503,7 @@ define(function (require, exports, module) {
         _removeProfileIcon();
 
         // Clear cached entitlements when user logs out
-        if (cachedEntitlements) {
-            cachedEntitlements = null;
-            
-            // Trigger event when entitlements are cleared
-            if (KernalModeTrust.loginService.trigger) {
-                KernalModeTrust.loginService.trigger(KernalModeTrust.loginService.EVENT_ENTITLEMENTS_CHANGED, null);
-            }
-        }
+        LoginService.clearEntitlements();
     }
 
     function setLoggedIn(initial, color) {
@@ -586,7 +514,7 @@ define(function (require, exports, module) {
         _updateProfileIcon(initial, color);
 
         // Preload entitlements when user logs in
-        getEntitlements().catch(error => {
+        KernalModeTrust.loginService.getEntitlements().catch(error => {
             console.error('Failed to preload entitlements on login:', error);
         });
     }
@@ -594,5 +522,4 @@ define(function (require, exports, module) {
     exports.init = init;
     exports.setNotLoggedIn = setNotLoggedIn;
     exports.setLoggedIn = setLoggedIn;
-    exports.getEntitlements = getEntitlements;
 });
