@@ -1606,7 +1606,6 @@ define({
     "CONTACT_SUPPORT": "Contact support",
     "SIGN_OUT": "Sign out",
     "ACCOUNT_DETAILS": "Account Details",
-    "AI_QUOTA_USED": "AI quota used",
     "LOGIN_REFRESH": "Check Login Status",
     "SIGN_IN_WAITING_TITLE": "Waiting for Sign In",
     "SIGN_IN_WAITING_MESSAGE": "Please complete sign-in in the new tab, then return here.",

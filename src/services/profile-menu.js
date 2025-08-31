@@ -183,6 +183,66 @@ define(function (require, exports, module) {
         _setupDocumentClickHandler();
     }
 
+    // Cached entitlements data
+    let cachedEntitlements = null;
+
+    /**
+     * Get entitlements from API or cache
+     * Returns null if user is not logged in
+     */
+    async function getEntitlements(forceRefresh = false) {
+        // Return null if not logged in
+        if (!KernalModeTrust.loginService.isLoggedIn()) {
+            return null;
+        }
+
+        // Return cached data if available and not forcing refresh
+        if (cachedEntitlements && !forceRefresh) {
+            return cachedEntitlements;
+        }
+
+        try {
+            const accountBaseURL = KernalModeTrust.loginService.getAccountBaseURL();
+            const language = Phoenix.app && Phoenix.app.language ? Phoenix.app.language : 'en';
+            let url = `${accountBaseURL}/getAppEntitlements?lang=${language}`;
+            let fetchOptions = {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            };
+
+            // Handle different authentication methods for browser vs desktop
+            if (Phoenix.isNativeApp) {
+                // Desktop app: use appSessionID and validationCode
+                const profile = KernalModeTrust.loginService.getProfile();
+                if (profile && profile.apiKey && profile.validationCode) {
+                    url += `&appSessionID=${encodeURIComponent(profile.apiKey)}&validationCode=${encodeURIComponent(profile.validationCode)}`;
+                } else {
+                    console.error('Missing appSessionID or validationCode for desktop app entitlements');
+                    return null;
+                }
+            } else {
+                // Browser app: use session cookies
+                fetchOptions.credentials = 'include';
+            }
+
+            const response = await fetch(url, fetchOptions);
+
+            if (response.ok) {
+                const result = await response.json();
+                if (result.isSuccess) {
+                    cachedEntitlements = result;
+                    return cachedEntitlements;
+                }
+            }
+        } catch (error) {
+            console.error('Failed to fetch entitlements:', error);
+        }
+
+        return null;
+    }
+
     let userEmail="";
     class SecureEmail extends HTMLElement {
         constructor() {
@@ -285,6 +345,50 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Update popup content with entitlements data
+     */
+    function _updatePopupWithEntitlements(entitlements) {
+        if (!$popup || !entitlements) {
+            return;
+        }
+
+        // Update plan information
+        if (entitlements.plan) {
+            const $planName = $popup.find('.user-plan-name');
+            $planName.text(entitlements.plan.name);
+
+            // Update plan class based on paid subscriber status
+            $planName.removeClass('user-plan-free user-plan-paid');
+            const planClass = entitlements.plan.paidSubscriber ? 'user-plan-paid' : 'user-plan-free';
+            $planName.addClass(planClass);
+        }
+
+        // Update quota section if available
+        if (entitlements.profileview && entitlements.profileview.quota) {
+            const $quotaSection = $popup.find('.quota-section');
+            const quota = entitlements.profileview.quota;
+
+            // Remove forced-hidden and show quota section
+            $quotaSection.removeClass('forced-hidden');
+
+            // Update quota content
+            $quotaSection.find('.titleText').text(quota.titleText);
+            $quotaSection.find('.usageText').text(quota.usageText);
+            $quotaSection.find('.progress-fill').css('width', quota.usedPercent + '%');
+        }
+
+        // Update HTML message if available
+        if (entitlements.profileview && entitlements.profileview.htmlMessage) {
+            const $htmlMessageSection = $popup.find('.html-message');
+            $htmlMessageSection.removeClass('forced-hidden');
+            $htmlMessageSection.html(entitlements.profileview.htmlMessage);
+        }
+
+        // Reposition popup after content changes
+        positionPopup();
+    }
+
+    /**
      * Shows the user profile popup when the user is logged in
      */
     function showProfilePopup() {
@@ -296,24 +400,36 @@ define(function (require, exports, module) {
         const profileData = KernalModeTrust.loginService.getProfile();
         userEmail = profileData.email;
         userName = profileData.firstName + " " + profileData.lastName;
+
+        // Default template data (fallback) - start with cached plan info if available
         const templateData = {
             initials: profileData.profileIcon.initials,
             avatarColor: profileData.profileIcon.color,
-            planClass: "user-plan-free", // "user-plan-paid" for paid plan
+            planClass: "user-plan-free",
             planName: "Free Plan",
-            quotaUsed: "7,000",
-            quotaTotal: "10,000",
-            quotaUnit: "tokens",
-            quotaPercent: 70,
+            titleText: "Ai Quota Used",
+            usageText: "100 / 200 credits",
+            usedPercent: 0,
             Strings: Strings
         };
 
-        // Render template with data
+        // Check for cached entitlements synchronously for immediate basic plan info
+        if (cachedEntitlements && cachedEntitlements.plan) {
+            templateData.planClass = cachedEntitlements.plan.paidSubscriber ? "user-plan-paid" : "user-plan-free";
+            templateData.planName = cachedEntitlements.plan.name;
+        }
+
+        // Render template with data immediately
         const renderedTemplate = Mustache.render(profileTemplate, templateData);
         $popup = $(renderedTemplate);
 
         $("body").append($popup);
         isPopupVisible = true;
+
+        // Apply cached entitlements immediately if available (including quota/messages)
+        if (cachedEntitlements) {
+            _updatePopupWithEntitlements(cachedEntitlements);
+        }
         positionPopup();
 
         PopUpManager.addPopUp($popup, function() {
@@ -347,6 +463,26 @@ define(function (require, exports, module) {
 
         // Load user details iframe for browser apps (after popup is created)
         _loadUserDetailsIframe();
+
+        // Refresh entitlements in background and update popup if still visible
+        _refreshEntitlementsInBackground();
+    }
+
+    /**
+     * Refresh entitlements in background and update popup if still visible
+     */
+    async function _refreshEntitlementsInBackground() {
+        try {
+            // Fetch fresh entitlements from API
+            const freshEntitlements = await getEntitlements(true); // Force refresh to get latest data
+
+            // Only update popup if it's still visible
+            if (isPopupVisible && $popup && freshEntitlements) {
+                _updatePopupWithEntitlements(freshEntitlements);
+            }
+        } catch (error) {
+            console.error('Failed to refresh entitlements in background:', error);
+        }
     }
 
     /**
@@ -421,6 +557,9 @@ define(function (require, exports, module) {
             closePopup();
         }
         _removeProfileIcon();
+
+        // Clear cached entitlements when user logs out
+        cachedEntitlements = null;
     }
 
     function setLoggedIn(initial, color) {
@@ -429,9 +568,15 @@ define(function (require, exports, module) {
             closePopup();
         }
         _updateProfileIcon(initial, color);
+
+        // Preload entitlements when user logs in
+        getEntitlements().catch(error => {
+            console.error('Failed to preload entitlements on login:', error);
+        });
     }
 
     exports.init = init;
     exports.setNotLoggedIn = setNotLoggedIn;
     exports.setLoggedIn = setLoggedIn;
+    exports.getEntitlements = getEntitlements;
 });
