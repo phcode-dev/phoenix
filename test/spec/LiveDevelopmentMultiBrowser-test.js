@@ -111,6 +111,18 @@ define(function (require, exports, module) {
 
                 await SpecRunnerUtils.loadProjectInTestWindow(testFolder);
                 await SpecRunnerUtils.deletePathAsync(testFolder + "/.phcode.json", true);
+
+                // Disable edit mode features for core live preview tests
+                // This ensures tests focus on basic live preview functionality without
+                // edit mode interference (hover/click handlers)
+                if (LiveDevMultiBrowser && LiveDevMultiBrowser.config) {
+                    LiveDevMultiBrowser.config.isProUser = false;
+                    // Also update the remote browser configuration
+                    if (LiveDevMultiBrowser.updateConfig) {
+                        LiveDevMultiBrowser.updateConfig(JSON.stringify(LiveDevMultiBrowser.config));
+                    }
+                }
+
                 if (!WorkspaceManager.isPanelVisible('live-preview-panel')) {
                     await awaitsForDone(CommandManager.execute(Commands.FILE_LIVE_FILE_PREVIEW));
                 }
@@ -159,6 +171,10 @@ define(function (require, exports, module) {
         }
 
         async function waitsForLiveDevelopmentToOpen() {
+            // Ensure edit mode is disabled before opening live preview
+            if (LiveDevMultiBrowser && LiveDevMultiBrowser.config) {
+                LiveDevMultiBrowser.config.isProUser = false;
+            }
             LiveDevMultiBrowser.open();
             await waitsForLiveDevelopmentFileSwitch();
         }
