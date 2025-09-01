@@ -2235,6 +2235,275 @@ define(function (require, exports, module) {
 
                 await endEditModePreviewSession();
             }, 30000);
+
+            it("should edit text content via double-click and sync to source", async function () {
+                await awaitsForDone(
+                    SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                    "SpecRunnerUtils.openProjectFiles simple1.html"
+                );
+
+                await waitsForLiveDevelopmentToOpenWithEditMode("hover");
+
+                // Get original source code content
+                const originalContent = DocumentManager.getCurrentDocument().getText();
+                expect(originalContent).toContain("Brackets is awesome!"); // Original text
+
+                const newText = "Phoenix is fantastic!";
+
+                // Double-click the element to start editing
+                await forRemoteExec(`
+                                const element = document.getElementById('testId');
+                                const event = new MouseEvent('dblclick', {
+                                    bubbles: true,
+                                    cancelable: true
+                                });
+                                element.dispatchEvent(event);
+                            `);
+
+                // Wait a moment for edit mode to activate
+                await awaits(500);
+
+                // Verify element is in edit mode (contenteditable)
+                await forRemoteExec(`document.getElementById('testId').hasAttribute('contenteditable')`, (result) => {
+                    return result === true;
+                });
+
+                // Modify the text content
+                await forRemoteExec(`
+                                const element = document.getElementById('testId');
+                                element.textContent = '${newText}';
+                                // Trigger input event to simulate user typing
+                                element.dispatchEvent(new Event('input', { bubbles: true }));
+                            `);
+
+                // Press Enter to finish editing
+                await forRemoteExec(`
+                                const element = document.getElementById('testId');
+                                const event = new KeyboardEvent('keydown', {
+                                    key: 'Enter',
+                                    bubbles: true,
+                                    cancelable: true
+                                });
+                                element.dispatchEvent(event);
+                            `);
+
+                // Wait for the operation to complete
+                await awaits(1000);
+
+                // Verify the text is updated in source code
+                const updatedContent = DocumentManager.getCurrentDocument().getText();
+                expect(updatedContent).toContain(newText);
+                expect(updatedContent).not.toContain("Brackets is awesome!");
+
+                // Verify the text is updated in DOM
+                await forRemoteExec(`document.getElementById('testId').textContent.trim()`, (result) => {
+                    return result === newText;
+                });
+
+                await endEditModePreviewSession();
+            }, 30000);
+
+            it("should edit text content via edit button and sync to source", async function () {
+                await awaitsForDone(
+                    SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                    "SpecRunnerUtils.openProjectFiles simple1.html"
+                );
+
+                await waitsForLiveDevelopmentToOpenWithEditMode("hover");
+
+                // Get original source code content
+                const originalContent = DocumentManager.getCurrentDocument().getText();
+                expect(originalContent).toContain("Brackets is awesome!"); // Original text
+
+                const newText = "Edited via button!";
+
+                // Click on the test element to show more options box
+                await forRemoteExec(`document.getElementById('testId').click()`);
+
+                // Wait for more options box to appear
+                await waitForMoreOptionsBox(true);
+
+                // Click the edit-text button in the shadow DOM
+                await forRemoteExec(`
+                                const shadowHosts = Array.from(document.body.children).filter(el => el.shadowRoot);
+                                let editButton = null;
+
+                                shadowHosts.forEach(host => {
+                                    if (host.shadowRoot && host.shadowRoot.innerHTML.includes('phoenix-more-options-box')) {
+                                        editButton = host.shadowRoot.querySelector('span[data-action="edit-text"]');
+                                    }
+                                });
+
+                                if (editButton) {
+                                    editButton.click();
+                                }
+                            `);
+
+                // Wait for edit mode to activate
+                await awaits(500);
+
+                // Verify element is in edit mode
+                await forRemoteExec(`document.getElementById('testId').hasAttribute('contenteditable')`, (result) => {
+                    return result === true;
+                });
+
+                // Modify the text content
+                await forRemoteExec(`
+                                const element = document.getElementById('testId');
+                                element.textContent = '${newText}';
+                                element.dispatchEvent(new Event('input', { bubbles: true }));
+                            `);
+
+                // Press Enter to finish editing
+                await forRemoteExec(`
+                                const element = document.getElementById('testId');
+                                const event = new KeyboardEvent('keydown', {
+                                    key: 'Enter',
+                                    bubbles: true,
+                                    cancelable: true
+                                });
+                                element.dispatchEvent(event);
+                            `);
+
+                // Wait for operation to complete
+                await awaits(1000);
+
+                // Verify changes in source code
+                const updatedContent = DocumentManager.getCurrentDocument().getText();
+                expect(updatedContent).toContain(newText);
+                expect(updatedContent).not.toContain("Brackets is awesome!");
+
+                // Verify changes in DOM
+                await forRemoteExec(`document.getElementById('testId').textContent.trim()`, (result) => {
+                    return result === newText;
+                });
+
+                await endEditModePreviewSession();
+            }, 30000);
+
+            it("should cancel text edit when Escape key is pressed", async function () {
+                await awaitsForDone(
+                    SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                    "SpecRunnerUtils.openProjectFiles simple1.html"
+                );
+
+                await waitsForLiveDevelopmentToOpenWithEditMode("hover");
+
+                // Get original source code content
+                const originalContent = DocumentManager.getCurrentDocument().getText();
+                expect(originalContent).toContain("Brackets is awesome!"); // Original text
+
+                const temporaryText = "This should be cancelled!";
+
+                // Double-click to start editing
+                await forRemoteExec(`
+                                const element = document.getElementById('testId');
+                                const event = new MouseEvent('dblclick', {
+                                    bubbles: true,
+                                    cancelable: true
+                                });
+                                element.dispatchEvent(event);
+                            `);
+
+                await awaits(500);
+
+                // Modify the text content
+                await forRemoteExec(`
+                                const element = document.getElementById('testId');
+                                element.textContent = '${temporaryText}';
+                                element.dispatchEvent(new Event('input', { bubbles: true }));
+                            `);
+
+                // Press Escape to cancel editing
+                await forRemoteExec(`
+                                const element = document.getElementById('testId');
+                                const event = new KeyboardEvent('keydown', {
+                                    key: 'Escape',
+                                    bubbles: true,
+                                    cancelable: true
+                                });
+                                element.dispatchEvent(event);
+                            `);
+
+                // Wait for operation to complete
+                await awaits(1000);
+
+                // Verify source code is unchanged (edit was cancelled)
+                const finalContent = DocumentManager.getCurrentDocument().getText();
+                expect(finalContent).toContain("Brackets is awesome!"); // Original text preserved
+                expect(finalContent).not.toContain(temporaryText); // Temporary text not saved
+
+                // Verify DOM reverted to original text
+                await forRemoteExec(`document.getElementById('testId').textContent.trim()`, (result) => {
+                    return result === "Brackets is awesome!";
+                });
+
+                // Verify element is no longer in edit mode
+                await forRemoteExec(`document.getElementById('testId').hasAttribute('contenteditable')`, (result) => {
+                    return result === false;
+                });
+
+                await endEditModePreviewSession();
+            }, 30000);
+
+            it("should finish text edit when element loses focus (blur)", async function () {
+                await awaitsForDone(
+                    SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                    "SpecRunnerUtils.openProjectFiles simple1.html"
+                );
+
+                await waitsForLiveDevelopmentToOpenWithEditMode("hover");
+
+                // Get original source code content
+                const originalContent = DocumentManager.getCurrentDocument().getText();
+                expect(originalContent).toContain("Brackets is awesome!"); // Original text
+
+                const newText = "Edited via blur event!";
+
+                // Double-click to start editing
+                await forRemoteExec(`
+                                const element = document.getElementById('testId');
+                                const event = new MouseEvent('dblclick', {
+                                    bubbles: true,
+                                    cancelable: true
+                                });
+                                element.dispatchEvent(event);
+                            `);
+
+                await awaits(500);
+
+                // Modify the text content
+                await forRemoteExec(`
+                                const element = document.getElementById('testId');
+                                element.textContent = '${newText}';
+                                element.dispatchEvent(new Event('input', { bubbles: true }));
+                            `);
+
+                // Click outside the element to trigger blur
+                await forRemoteExec(`
+                                document.body.click(); // Click on body to lose focus
+                            `);
+
+                // Wait for operation to complete
+                await awaits(1000);
+
+                // Verify changes were saved in source code
+                const updatedContent = DocumentManager.getCurrentDocument().getText();
+                expect(updatedContent).toContain(newText);
+                expect(updatedContent).not.toContain("Brackets is awesome!");
+
+                // Verify changes in DOM
+                await forRemoteExec(`document.getElementById('testId').textContent.trim()`, (result) => {
+                    return result === newText;
+                });
+
+                // Verify element is no longer in edit mode
+                await forRemoteExec(`document.getElementById('testId').hasAttribute('contenteditable')`, (result) => {
+                    return result === false;
+                });
+
+                await endEditModePreviewSession();
+            }, 30000);
         });
     });
 });
