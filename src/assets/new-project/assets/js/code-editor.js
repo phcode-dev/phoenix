@@ -183,6 +183,36 @@ function _openURLInTauri(url) {
     }
 }
 
+function _updateProBranding() {
+    try {
+        const $freeTitle = $('.phoenix-free-title');
+        const $proTitle = $('.phoenix-pro-title');
+        const $proTitleSpan = $('.pro-plan-name');
+
+        if (!$freeTitle.length || !$proTitle.length || !$proTitleSpan.length) {
+            console.warn('Pro branding elements not found');
+            return;
+        }
+
+        // Get plan info from window.top.Phoenix.pro.plan
+        const planInfo = window.top.Phoenix && window.top.Phoenix.pro && window.top.Phoenix.pro.plan;
+
+        if (planInfo && planInfo.paidSubscriber) {
+            // Hide free title, show pro title
+            $freeTitle.addClass('forced-hidden');
+            $proTitle.removeClass('forced-hidden');
+            // Update plan name
+            $proTitleSpan.text(planInfo.name || 'Phoenix Pro');
+        } else {
+            // Show free title, hide pro title
+            $freeTitle.removeClass('forced-hidden');
+            $proTitle.addClass('forced-hidden');
+        }
+    } catch (error) {
+        console.error('Error updating pro branding:', error);
+    }
+}
+
 function initCodeEditor() {
     document.getElementById("openFolderBtn").onclick = function() {
         Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "main.Click", "open-folder");
@@ -252,4 +282,5 @@ function initCodeEditor() {
     _showFirstTimeExperience();
     $("body").append($(`<script async defer src="https://buttons.github.io/buttons.js"></script>`));
     _attachSettingBtnEventListeners();
+    _updateProBranding();
 }
