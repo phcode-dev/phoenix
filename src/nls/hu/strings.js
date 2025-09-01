@@ -118,6 +118,7 @@ define({
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Az Élő Előnézet használatához szerver-oldali fájlokkal meg kell adni az alap URL-t a projekthez.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Hiba a HTTP szerver indításakor az Élő Fejlesztéshez. Kérlek próbáld újra később.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "További információért lásd: <a href='{0}' title='{0}'>Élő Előnézet csatlakozási hibák kiküszöbölése</a>.",
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Üzenet elrejtése",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Élő Előnézet",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Élő Előnézet: Csatlakozás…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Élő Előnézet: Inicializálás…",
@@ -1405,7 +1406,6 @@ define({
   "CONTACT_SUPPORT": "Ügyfélszolgálattal való kapcsolatfelvétel",
   "SIGN_OUT": "Kijelentkezés",
   "ACCOUNT_DETAILS": "Fiókadatok",
-  "AI_QUOTA_USED": "Felhasznált MI-kvóta",
   "LOGIN_REFRESH": "Bejelentkezés állapotának ellenőrzése",
   "SIGN_IN_WAITING_TITLE": "Bejelentkezésre vár",
   "SIGN_IN_WAITING_MESSAGE": "Kérjük, fejezd be a bejelentkezést az új lapon, majd térj vissza ide.",
@@ -1457,6 +1457,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Rövidítés",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Sablonszöveg",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Leírás",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Fájlkiterjesztés",
-  "LIVE_PREVIEW_HIDE_OVERLAY": "Üzenet elrejtése"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Fájlkiterjesztés"
 });

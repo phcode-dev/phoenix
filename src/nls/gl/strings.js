@@ -118,6 +118,7 @@ define({
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Necesitas especificar unha URL base neste proxecto para poder iniciar Vista Previa en Vivo con arquivos de servidor.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Erro iniciando o servidor HTTP para Vista Previa en Vivo. Volve a intentalo, por favor.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Para máis información, consulta <a href='{0}' title='{0}'>Resolución de Problemas de conexión en Vista Previa en Vivo</a>.",
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Agochar esta mensaxe",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Vista Previa en Vivo",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Vista Previa en Vivo: Conectando…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Vista Previa en Vivo: Inicializando…",
@@ -1405,7 +1406,6 @@ define({
   "CONTACT_SUPPORT": "Contactar co soporte",
   "SIGN_OUT": "Pechar sesión",
   "ACCOUNT_DETAILS": "Detalles da conta",
-  "AI_QUOTA_USED": "Cota de IA usada",
   "LOGIN_REFRESH": "Comprobar o estado do inicio de sesión",
   "SIGN_IN_WAITING_TITLE": "Agardando o inicio de sesión",
   "SIGN_IN_WAITING_MESSAGE": "Complete o inicio de sesión na nova lapela e logo volva aquí.",
@@ -1457,6 +1457,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Abreviatura",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Texto do modelo",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Descrición",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extensión de ficheiro",
-  "LIVE_PREVIEW_HIDE_OVERLAY": "Agochar esta mensaxe"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extensión de ficheiro"
 });

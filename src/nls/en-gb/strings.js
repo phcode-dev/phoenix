@@ -118,6 +118,7 @@ define({
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "To launch live preview with a server-side file, you need to specify a Base URL for this project.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Error starting up the HTTP server for live preview files. Please try again.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "For more information, see <a href='{0}' title='{0}'>Troubleshooting Live Preview connection errors</a>.",
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Dismiss this message",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Live Preview",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Live Preview: Connecting…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Live Preview: Initialising…",
@@ -1405,7 +1406,6 @@ define({
   "CONTACT_SUPPORT": "Contact support",
   "SIGN_OUT": "Sign out",
   "ACCOUNT_DETAILS": "Account Details",
-  "AI_QUOTA_USED": "AI quota used",
   "LOGIN_REFRESH": "Check Login Status",
   "SIGN_IN_WAITING_TITLE": "Waiting for Sign-in",
   "SIGN_IN_WAITING_MESSAGE": "Please complete sign-in in the new tab, then return here.",
@@ -1457,6 +1457,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Abbreviation",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Template Text",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Description",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "File Extension",
-  "LIVE_PREVIEW_HIDE_OVERLAY": "Dismiss this message"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "File Extension"
 });

@@ -118,6 +118,7 @@ define({
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Zum Starten der Live-Vorschau mit einer serverseitigen Datei müssen Sie eine Basis-URL für dieses Projekt angeben.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Ein Fehler ist beim Starten des HTTP-Servers oder der Live-Vorschau-Dateien aufgetreten. Bitte versuchen Sie es später erneut.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Weitere Informationen finden Sie unter dem Thema <a href='{0}' title='{0}'>Fehlerbehebung bei Verbindungs-Fehlern der Live-Entwicklung</a>.",
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Diese Meldung ausblenden",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Live-Vorschau",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Live-Vorschau: Verbinden…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Live-Vorschau: Initialisieren…",
@@ -1405,7 +1406,6 @@ define({
   "CONTACT_SUPPORT": "Support kontaktieren",
   "SIGN_OUT": "Abmelden",
   "ACCOUNT_DETAILS": "Kontodetails",
-  "AI_QUOTA_USED": "Verbrauchte KI-Quote",
   "LOGIN_REFRESH": "Anmeldestatus überprüfen",
   "SIGN_IN_WAITING_TITLE": "Warte auf Anmeldung",
   "SIGN_IN_WAITING_MESSAGE": "Bitte schließen Sie die Anmeldung im neuen Tab ab und kehren Sie dann hierher zurück.",
@@ -1457,6 +1457,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Kürzel",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Vorlagentext",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Beschreibung",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Dateierweiterung",
-  "LIVE_PREVIEW_HIDE_OVERLAY": "Diese Meldung ausblenden"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Dateierweiterung"
 });

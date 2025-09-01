@@ -118,6 +118,7 @@ define({
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "实时预览需要一个服务端, 您需要为这个项目指定一个基本 URL 地址。 (如http://127.0.0.1/)",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "试图启动实时预览 HTTP 服务器时出现错误, 请再试一次。",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "更多信息, 请参考<a href='{0}' title='{0}'>实时预览连接错误信息</a>。",
+  "LIVE_PREVIEW_HIDE_OVERLAY": "隐藏此消息",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "实时预览",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "实时预览: 连接中…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "实时预览: 初始化…",
@@ -1405,7 +1406,6 @@ define({
   "CONTACT_SUPPORT": "联系客服",
   "SIGN_OUT": "退出登录",
   "ACCOUNT_DETAILS": "帐户详情",
-  "AI_QUOTA_USED": "AI 配额已用",
   "LOGIN_REFRESH": "检查登录状态",
   "SIGN_IN_WAITING_TITLE": "等待登录",
   "SIGN_IN_WAITING_MESSAGE": "请在新标签页中完成登录，然后返回此处。",
@@ -1457,6 +1457,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "缩写",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "模板文本",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "描述",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "文件扩展名",
-  "LIVE_PREVIEW_HIDE_OVERLAY": "隐藏此消息"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "文件扩展名"
 });

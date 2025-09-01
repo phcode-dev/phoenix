@@ -118,6 +118,7 @@ define({
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "För att starta förhandsvisningen med en fil innehållande serverkod måste du ange en bas-URL för detta projekt.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Ett fel uppstod när webbsevern för förhandsvisningen skulle startas. Vänligen försök igen.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "För mer information se <a href='{0}' title='{0}'>Troubleshooting Live Development connection errors</a>.",
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Dölj detta meddelande",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Förhandsvisning",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Förhandsvisning: Ansluter…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Förhandsvisning: Initierar…",
@@ -1405,7 +1406,6 @@ define({
   "CONTACT_SUPPORT": "Kontakta supporten",
   "SIGN_OUT": "Logga ut",
   "ACCOUNT_DETAILS": "Kontodetaljer",
-  "AI_QUOTA_USED": "Använd AI-kvot",
   "LOGIN_REFRESH": "Kontrollera inloggningsstatus",
   "SIGN_IN_WAITING_TITLE": "Väntar på inloggning",
   "SIGN_IN_WAITING_MESSAGE": "Slutför inloggningen i den nya fliken och återvänd sedan hit.",
@@ -1457,6 +1457,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Förkortning",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Malltext",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Beskrivning",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Filändelse",
-  "LIVE_PREVIEW_HIDE_OVERLAY": "Dölj detta meddelande"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Filändelse"
 });

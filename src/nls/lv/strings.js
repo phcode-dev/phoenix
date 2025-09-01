@@ -118,6 +118,7 @@ define({
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Lai palaistu tiešo priekšskatījumu ar serverī importētu datni, nepieciešams norādīt šī projekta bāzes URL.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Kļūda, startējot HTTP serveri tiešā priekšskatījuma datnēm. Lūdzu, mēģiniet vēlreiz. ",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Sīkākai informācijai skatiet <a href='{0}' title='{0}'>Tiešā priekšskatījuma savienojuma kļūdu novēršana</a>.",
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Paslēpt šo ziņojumu",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Tiešais priekšskatījums",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Tiešais priekšskatījums: savienojas…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Tiešais priekšskatījums: inicializē…",
@@ -1405,7 +1406,6 @@ define({
   "CONTACT_SUPPORT": "Sazināties ar atbalsta dienestu",
   "SIGN_OUT": "Izrakstīties",
   "ACCOUNT_DETAILS": "Konta informācija",
-  "AI_QUOTA_USED": "Izmantotā AI kvota",
   "LOGIN_REFRESH": "Pārbaudīt pieteikšanās statusu",
   "SIGN_IN_WAITING_TITLE": "Notiek pieteikšanās",
   "SIGN_IN_WAITING_MESSAGE": "Lūdzu, pabeidziet pieteikšanos jaunajā cilnē un pēc tam atgriezieties šeit.",
@@ -1457,6 +1457,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Saīsinājums",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Veidnes teksts",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Apraksts",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Faila paplašinājums",
-  "LIVE_PREVIEW_HIDE_OVERLAY": "Paslēpt šo ziņojumu"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Faila paplašinājums"
 });

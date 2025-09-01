@@ -118,6 +118,7 @@ define({
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "ഒരു സെർവർ-സൈഡ് ഫയലുമായി ലൈവ് പ്രിവ്യൂ ആരംഭിക്കുന്നതിന്, ഈ പ്രോജക്റ്റിനായി ഒരു ബേസ് യുആർഎൽ നിർവചിക്കേണ്ടതുണ്ട്.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "ലൈവ് പ്രിവ്യൂ ഫയലുകൾക്കായുള്ള HTTP സെർവർ ആരംഭിക്കുന്നതിൽ പിശക്. ദയവായി വീണ്ടും ശ്രമിക്കുക.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "കൂടുതൽ വിവരങ്ങൾക്ക്, <a href='{0}' title='{0}'>ലൈവ് പ്രിവ്യൂ കണക്ഷൻ പിശകുകൾ പരിഹരിക്കൽ</a> കാണുക.",
+  "LIVE_PREVIEW_HIDE_OVERLAY": "ഈ സന്ദേശം മറയ്ക്കുക",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "ലൈവ് പ്രിവ്യൂ",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "ലൈവ് പ്രിവ്യൂ: കണക്റ്റ് ചെയ്യുന്നു…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "ലൈവ് പ്രിവ്യൂ: ഇനിഷ്യലൈസ് ചെയ്യുന്നു…",
@@ -1405,7 +1406,6 @@ define({
   "CONTACT_SUPPORT": "പിന്തുണയുമായി ബന്ധപ്പെടുക",
   "SIGN_OUT": "സൈൻ ഔട്ട് ചെയ്യുക",
   "ACCOUNT_DETAILS": "അക്കൗണ്ട് വിശദാംശങ്ങൾ",
-  "AI_QUOTA_USED": "എഐ ക്വാട്ട ഉപയോഗിച്ചു",
   "LOGIN_REFRESH": "ലോഗിൻ സ്റ്റാറ്റസ് പരിശോധിക്കുക",
   "SIGN_IN_WAITING_TITLE": "സൈൻ ഇൻ ചെയ്യുന്നതിനായി കാത്തിരിക്കുന്നു",
   "SIGN_IN_WAITING_MESSAGE": "പുതിയ ടാബിൽ സൈൻ-ഇൻ പൂർത്തിയാക്കി ഇവിടേക്ക് തിരികെ വരിക.",
@@ -1457,6 +1457,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "ചുരുക്കെഴുത്ത്",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "ടെംപ്ലേറ്റ് ടെക്സ്റ്റ്",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "വിവരണം",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "ഫയൽ എക്സ്റ്റൻഷൻ",
-  "LIVE_PREVIEW_HIDE_OVERLAY": "ഈ സന്ദേശം മറയ്ക്കുക"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "ഫയൽ എക്സ്റ്റൻഷൻ"
 });

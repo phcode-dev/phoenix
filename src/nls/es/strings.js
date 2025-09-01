@@ -118,6 +118,7 @@ define({
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Necesitas especificar una URL base en este proyecto para poder iniciar la Vista previa dinámica con archivos de servidor.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Error iniciando el servidor HTTP para la Vista previa dinámica. Vuelve a intentarlo, por favor.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Para más información, consulta <a href='{0}' title='{0}'>Resolución de Problemas de conexión en Vista previa dinámica</a>.",
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Ocultar este mensaje",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Vista previa dinámica",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Vista previa dinámica: Conectando…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Vista previa dinámica: Inicializando…",
@@ -1405,7 +1406,6 @@ define({
   "CONTACT_SUPPORT": "Contactar con soporte técnico",
   "SIGN_OUT": "Cerrar sesión",
   "ACCOUNT_DETAILS": "Detalles de la cuenta",
-  "AI_QUOTA_USED": "Cuota de IA utilizada",
   "LOGIN_REFRESH": "Verificar estado del inicio de sesión",
   "SIGN_IN_WAITING_TITLE": "Esperando inicio de sesión",
   "SIGN_IN_WAITING_MESSAGE": "Completa el inicio de sesión en la nueva pestaña y luego regresa aquí.",
@@ -1457,6 +1457,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Abreviatura",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Texto de la plantilla",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Descripción",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extensión de archivo",
-  "LIVE_PREVIEW_HIDE_OVERLAY": "Ocultar este mensaje"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extensión de archivo"
 });

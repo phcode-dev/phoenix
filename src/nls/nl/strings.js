@@ -118,6 +118,7 @@ define({
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Om live voorbeeld te starten met een server-side bestand, moet je een Start URL voor dit project definiëren.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Er is een fout opgetreden bij het opstarten van de HTTP server voor live ontwikkeling bestanden. Probeer alsjeblieft opnieuw.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Voor meer informatie, zie <a href='{0}' title='{0}'>oplossen van Live Voorbeeld verbindingsproblemen</a>.",
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Dit bericht verbergen",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Live Voorbeeld",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Live Voorbeeld: Bezig met verbinden…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Live Voorbeeld: Initialiseren…",
@@ -1405,7 +1406,6 @@ define({
   "CONTACT_SUPPORT": "Contact opnemen met support",
   "SIGN_OUT": "Uitloggen",
   "ACCOUNT_DETAILS": "Accountgegevens",
-  "AI_QUOTA_USED": "Verbruikt AI-quotum",
   "LOGIN_REFRESH": "Aanmeldstatus controleren",
   "SIGN_IN_WAITING_TITLE": "Aanmelden wordt verwerkt",
   "SIGN_IN_WAITING_MESSAGE": "Voltooi de aanmelding in het nieuwe tabblad en keer hier terug.",
@@ -1457,6 +1457,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Afkorting",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Sjabloontekst",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Beschrijving",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Bestandsextensie",
-  "LIVE_PREVIEW_HIDE_OVERLAY": "Dit bericht verbergen"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Bestandsextensie"
 });

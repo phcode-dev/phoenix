@@ -118,6 +118,7 @@ define({
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Pentru a lansa Live Preview cu un fișier server-side, e necesar de a specifica un URL de bază pentru acest proiect.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Eroare la lansarea serverului HTTP pentru editarea în direct a fișierelor. Mai încercați o dată.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Pentru mai multe informații, vezi <a href='{0}' title='{0}'>Depanarea erorilor de conexiune în Live Development</a>.",
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Ascunde acest mesaj",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Previzualizare interactivă",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Live Preview: Conectare…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Live Preview: Inițializare…",
@@ -1405,7 +1406,6 @@ define({
   "CONTACT_SUPPORT": "Contactează asistența",
   "SIGN_OUT": "Deconectare",
   "ACCOUNT_DETAILS": "Detalii cont",
-  "AI_QUOTA_USED": "Cotă AI utilizată",
   "LOGIN_REFRESH": "Verificare stare autentificare",
   "SIGN_IN_WAITING_TITLE": "Se așteaptă autentificarea",
   "SIGN_IN_WAITING_MESSAGE": "Finalizați autentificarea în noua filă, apoi reveniți aici.",
@@ -1457,6 +1457,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Abreviere",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Text șablon",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Descriere",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extensie fișier",
-  "LIVE_PREVIEW_HIDE_OVERLAY": "Ascunde acest mesaj"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extensie fișier"
 });

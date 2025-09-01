@@ -118,6 +118,7 @@ define({
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Для запуска Live Preview с серверным файлом, вы должны указать базовый URL проекта.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Ошибка запуска HTTP сервера для Live Preview. Попытайтесь снова.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Для дополнительной информации, смотрите <a href='{0}' title='{0}'>Поиск и устранение неисправностей ошибок подключения Live Preview</a>.",
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Скрыть это сообщение",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Live Preview",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Live Preview: Подключение…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Live Preview: Инициализация…",
@@ -1405,7 +1406,6 @@ define({
   "CONTACT_SUPPORT": "Связаться с поддержкой",
   "SIGN_OUT": "Выйти",
   "ACCOUNT_DETAILS": "Сведения об учетной записи",
-  "AI_QUOTA_USED": "Использована квота ИИ",
   "LOGIN_REFRESH": "Проверить статус входа",
   "SIGN_IN_WAITING_TITLE": "Ожидание входа",
   "SIGN_IN_WAITING_MESSAGE": "Пожалуйста, завершите вход в новой вкладке, затем вернитесь сюда.",
@@ -1457,6 +1457,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Сокращение",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Текст шаблона",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Описание",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Расширение файла",
-  "LIVE_PREVIEW_HIDE_OVERLAY": "Скрыть это сообщение"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Расширение файла"
 });

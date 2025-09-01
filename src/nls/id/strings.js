@@ -118,6 +118,7 @@ define({
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Untuk menjalankan tinjauan langsung dengan file sisi-server, Anda perlu mengatur URL Dasar untuk proyek ini.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Gagal menjalankan server HTTP untuk meninjau langsung file. Coba lagi.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Untuk informasi selengkapnya, lihat <a href='{0}' title='{0}'>Mengatasi masalah sambungan Tinjauan Langsung</a>.",
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Sembunyikan pesan ini",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Tinjauan Langsung",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Tinjauan Langsung: Menyambung…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Tinjauan Langsung: Menginisialisasi…",
@@ -1405,7 +1406,6 @@ define({
   "CONTACT_SUPPORT": "Hubungi dukungan",
   "SIGN_OUT": "Keluar",
   "ACCOUNT_DETAILS": "Detail Akun",
-  "AI_QUOTA_USED": "Kuota AI terpakai",
   "LOGIN_REFRESH": "Periksa Status Login",
   "SIGN_IN_WAITING_TITLE": "Menunggu Masuk",
   "SIGN_IN_WAITING_MESSAGE": "Silakan selesaikan proses masuk di tab baru, lalu kembali ke sini.",
@@ -1457,6 +1457,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Singkatan",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Teks Templat",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Deskripsi",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Ekstensi Berkas",
-  "LIVE_PREVIEW_HIDE_OVERLAY": "Sembunyikan pesan ini"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Ekstensi Berkas"
 });

@@ -118,6 +118,7 @@ define({
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Pour lancer l’Aperçu en direct avec un fichier de serveur, vous devez indiquer une URL de base pour ce projet.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Une erreur s’est produite au démarrage du serveur HTTP pour les fichiers d’aperçu en direct. Veuillez réessayer.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Pour plus d’informations, consultez la page <a href='{0}' title='{0}'>Résolution des erreurs de connexion à l’Aperçu en direct</a>.",
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Masquer ce message",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Aperçu en direct",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Aperçu en direct : Connexion…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Aperçu en direct : Initialisation…",
@@ -1405,7 +1406,6 @@ define({
   "CONTACT_SUPPORT": "Contacter le support",
   "SIGN_OUT": "Se déconnecter",
   "ACCOUNT_DETAILS": "Détails du compte",
-  "AI_QUOTA_USED": "Quota IA utilisé",
   "LOGIN_REFRESH": "Vérifier l'état de la connexion",
   "SIGN_IN_WAITING_TITLE": "En attente de connexion",
   "SIGN_IN_WAITING_MESSAGE": "Veuillez vous connecter dans le nouvel onglet, puis revenez ici.",
@@ -1457,6 +1457,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Abréviation",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Texte du modèle",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Description",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extension de fichier",
-  "LIVE_PREVIEW_HIDE_OVERLAY": "Masquer ce message"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extension de fichier"
 });

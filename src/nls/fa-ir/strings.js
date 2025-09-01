@@ -118,6 +118,7 @@ define({
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "جهت اجرای پیش نمایش زنده بصورت پرونده در سمت سرور(server-side), می بایست یک URL پایه برای پروژه تعریف نمایید.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "خطا در اجرای سرویس دهنده HTTP برای توسعه زنده پرونده ها. لطفا دوباره تلاش کنید",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "برای اطلاعات بیشتر, ببینید <a href='{0}' title='{0}'>عیب یابی خطاهای اتصال پیش نمایش زنده</a>.",
+  "LIVE_PREVIEW_HIDE_OVERLAY": "پنهان کردن این پیام",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "پیش نمایش زنده",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "پیش نمایش زنده: درحال اتصال…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "پیش نمایش زنده: درحال مقداردهی اولیه…",
@@ -1405,7 +1406,6 @@ define({
   "CONTACT_SUPPORT": "تماس با پشتیبانی",
   "SIGN_OUT": "خروج",
   "ACCOUNT_DETAILS": "جزئیات حساب کاربری",
-  "AI_QUOTA_USED": "سهمیه هوش مصنوعی استفاده شده",
   "LOGIN_REFRESH": "بررسی وضعیت ورود",
   "SIGN_IN_WAITING_TITLE": "در حال انتظار برای ورود",
   "SIGN_IN_WAITING_MESSAGE": "لطفاً ورود به سیستم را در برگه جدید تکمیل کنید، سپس به اینجا برگردید.",
@@ -1457,6 +1457,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "مخفف",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "متن الگو",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "توضیحات",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "پسوند فایل",
-  "LIVE_PREVIEW_HIDE_OVERLAY": "پنهان کردن این پیام"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "پسوند فایل"
 });

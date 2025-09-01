@@ -118,6 +118,7 @@ define({
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Για να ανοίξετε το Live Preview με ένα αρχείο από κάποιον server, πρέπει να προσδιορίσετε μια διεύθυνση (Base URL) για αυτό το project.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Σφάλμα κατά τη διαδικασία εκκίνησης του HTTP server για την άμεση επεξεργασία αρχείων. Παρακαλούμε προσπαθήστε ξανά.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Για περισσότερες πληροφορίες δείτε εδώ: <a href='{0}' title='{0}'>Troubleshooting Live Development connection errors</a>.",
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Απόκρυψη αυτού του μηνύματος",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Live Preview",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Live Preview: Σύνδεση…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Live Preview: Εκκίνηση…",
@@ -1405,7 +1406,6 @@ define({
   "CONTACT_SUPPORT": "Επικοινωνία με την υποστήριξη",
   "SIGN_OUT": "Αποσύνδεση",
   "ACCOUNT_DETAILS": "Στοιχεία Λογαριασμού",
-  "AI_QUOTA_USED": "Χρήση ποσοστού AI",
   "LOGIN_REFRESH": "Έλεγχος Κατάστασης Σύνδεσης",
   "SIGN_IN_WAITING_TITLE": "Αναμονή για Σύνδεση",
   "SIGN_IN_WAITING_MESSAGE": "Ολοκληρώστε τη σύνδεση στην νέα καρτέλα και μετά επιστρέψτε εδώ.",
@@ -1457,6 +1457,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Συντομογραφία",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Κείμενο Προτύπου",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Περιγραφή",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Επέκταση Αρχείου",
-  "LIVE_PREVIEW_HIDE_OVERLAY": "Απόκρυψη αυτού του μηνύματος"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Επέκταση Αρχείου"
 });

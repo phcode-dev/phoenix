@@ -118,6 +118,7 @@ define({
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Pro spuštění živého náhledu se vzdáleným souborem, musíte specifikovat URL pro tento projekt.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Chyba při spouštění HTTP serveru pro soubory živého náhledu. Prosím, zkuste to znovu.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Pro více informací navštivte stránku <a href='{0}' title='{0}'>řešení problémů s připojením v Živém náhledu</a>.",
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Skrýt tuto zprávu",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Živý náhled",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Živý náhled: Připojování…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Živý náhled: Spouštění…",
@@ -1405,7 +1406,6 @@ define({
   "CONTACT_SUPPORT": "Kontaktovat podporu",
   "SIGN_OUT": "Odhlásit se",
   "ACCOUNT_DETAILS": "Detaily účtu",
-  "AI_QUOTA_USED": "Vyčerpána kvóta pro AI",
   "LOGIN_REFRESH": "Zkontrolovat stav přihlášení",
   "SIGN_IN_WAITING_TITLE": "Čekání na přihlášení",
   "SIGN_IN_WAITING_MESSAGE": "Dokončete prosím přihlášení v nové kartě a poté se sem vraťte.",
@@ -1457,6 +1457,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Zkratka",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Text šablony",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Popis",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Přípona souboru",
-  "LIVE_PREVIEW_HIDE_OVERLAY": "Skrýt tuto zprávu"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Přípona souboru"
 });
