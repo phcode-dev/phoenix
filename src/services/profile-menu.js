@@ -184,6 +184,43 @@ define(function (require, exports, module) {
         _setupDocumentClickHandler();
     }
 
+    /**
+     * Update main navigation branding based on entitlements
+     */
+    function _updateBranding(entitlements) {
+        const $brandingLink = $("#phcode-io-main-nav");
+        if (!entitlements) {
+            Phoenix.pro.plan = {
+                paidSubscriber: false,
+                name: "Community Edition",
+                isInTrial: false
+            };
+            return;
+        }
+
+        if (entitlements && entitlements.plan){
+            Phoenix.pro.plan = {
+                paidSubscriber: entitlements.plan.paidSubscriber,
+                name: entitlements.plan.name,
+                isInTrial: entitlements.plan.isInTrial,
+                validTill: entitlements.plan.validTill
+            };
+        }
+        if (entitlements && entitlements.plan && entitlements.plan.paidSubscriber) {
+            // Paid subscriber: show plan name with feather icon
+            const planName = entitlements.plan.name || "Phoenix Pro";
+            $brandingLink
+                .attr("href", "https://account.phcode.dev")
+                .addClass("phoenix-pro")
+                .html(`${planName}<i class="fa-solid fa-feather orange-gold" style="margin-left: 3px;"></i>`);
+        } else {
+            // Free user: show phcode.io branding
+            $brandingLink
+                .attr("href", "https://phcode.io")
+                .removeClass("phoenix-pro")
+                .text("phcode.io");
+        }
+    }
 
     let userEmail="";
     class SecureEmail extends HTMLElement {
@@ -366,7 +403,7 @@ define(function (require, exports, module) {
         isPopupVisible = true;
 
         positionPopup();
-        
+
         // Apply cached entitlements immediately if available (including quota/messages)
         KernalModeTrust.loginService.getEntitlements(false).then(cachedEntitlements => {
             if (cachedEntitlements && isPopupVisible) {
@@ -504,6 +541,9 @@ define(function (require, exports, module) {
 
         // Clear cached entitlements when user logs out
         LoginService.clearEntitlements();
+
+        // Reset branding to free mode
+        _updateBranding(null);
     }
 
     function setLoggedIn(initial, color) {
@@ -514,9 +554,11 @@ define(function (require, exports, module) {
         _updateProfileIcon(initial, color);
 
         // Preload entitlements when user logs in
-        KernalModeTrust.loginService.getEntitlements().catch(error => {
-            console.error('Failed to preload entitlements on login:', error);
-        });
+        KernalModeTrust.loginService.getEntitlements()
+            .then(_updateBranding)
+            .catch(error => {
+                console.error('Failed to preload entitlements on login:', error);
+            });
     }
 
     exports.init = init;

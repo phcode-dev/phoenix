@@ -36,7 +36,7 @@
         width: 100%;
     }
 
-    .editor-name h4 {
+    .editor-name h4, .editor-name h4 span {
         font-size: 22px;
     }
 
@@ -79,21 +79,21 @@
         margin-left: 0px;
         width: 48%;
     }
-  
+
     .project-content-right {
         width: 48%;
 
     }
-    
+
     .website-detail input {
         width: 242px;
         height: 42px;
     }
-    
+
     #noProjectIframe {
         width: 267px;
     }
-    
+
 }
 
 @media (max-width: 650px) {
