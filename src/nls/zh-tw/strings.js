@@ -118,6 +118,7 @@ define({
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "您需要指定專案的 URL 根位址，才能啟動包含伺服器端資源的即時預覽功能。",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "無法啟動即時預覽用的 HTTP 伺服器。請再試一次。",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "想了解更多，請參考<a href='{0}' title='{0}'>即時預覽連結錯誤排解</a>。",
+  "LIVE_PREVIEW_HIDE_OVERLAY": "隱藏此訊息",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "即時預覽",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "即時預覽: 連線中…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "即時預覽: 初始化中…",
@@ -1405,7 +1406,6 @@ define({
   "CONTACT_SUPPORT": "聯絡客服支援",
   "SIGN_OUT": "登出",
   "ACCOUNT_DETAILS": "帳號詳細資訊",
-  "AI_QUOTA_USED": "AI 配額已使用",
   "LOGIN_REFRESH": "檢查登入狀態",
   "SIGN_IN_WAITING_TITLE": "等待登入中",
   "SIGN_IN_WAITING_MESSAGE": "請在新分頁中完成登入，然後返回此處。",
@@ -1457,6 +1457,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "縮寫",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "範本文字",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "描述",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "檔案副檔名",
-  "LIVE_PREVIEW_HIDE_OVERLAY": "隱藏此訊息"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "檔案副檔名"
 });

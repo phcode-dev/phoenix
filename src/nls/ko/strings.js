@@ -118,6 +118,7 @@ define({
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "서버 측 파일 실시간 미리보기를 시작하려면 이 프로젝트의 기본 URL을 지정해야 합니다.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "실시간 미리보기에 사용되는 HTTP 서버를 시작할 때 에러가 발생했습니다. 잠시 후에 다시 시도하세요.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "자세한 내용은 <a href='{0}' title='{0}'> Live Development 연결 오류 문제 해결 </a>를 참조하세요.",
+  "LIVE_PREVIEW_HIDE_OVERLAY": "이 메시지 숨기기",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "실시간 미리보기",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "실시간 미리보기: 연결 중 …",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "실시간 미리보기: 초기화 중…",
@@ -1405,7 +1406,6 @@ define({
   "CONTACT_SUPPORT": "지원팀에 문의",
   "SIGN_OUT": "로그아웃",
   "ACCOUNT_DETAILS": "계정 세부정보",
-  "AI_QUOTA_USED": "사용된 AI 할당량",
   "LOGIN_REFRESH": "로그인 상태 확인",
   "SIGN_IN_WAITING_TITLE": "로그인 대기 중",
   "SIGN_IN_WAITING_MESSAGE": "새 탭에서 로그인을 완료한 후 여기로 돌아오세요.",
@@ -1457,6 +1457,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "약어",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "템플릿 텍스트",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "설명",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "파일 확장자",
-  "LIVE_PREVIEW_HIDE_OVERLAY": "이 메시지 숨기기"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "파일 확장자"
 });

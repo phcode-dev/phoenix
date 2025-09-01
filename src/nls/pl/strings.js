@@ -118,6 +118,7 @@ define({
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Aby uruchomić podgląd na żywo na plikach serwerowych, musisz podać główny adres dla tego projektu (Base URL).",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Błąd przy próbie uruchomienia serwera HTTP dla podglądu na żywo. Spróbuj ponownie.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Więcej informacji znajdziesz na stronie <a href='{0}' title='{0}'>Troubleshooting Live Preview connection errors</a>.",
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Ukryj tę wiadomość",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Podgląd na żywo",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Podgląd na żywo: łączenie…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Podgląd na żywo: inicjalizacja…",
@@ -1405,7 +1406,6 @@ define({
   "CONTACT_SUPPORT": "Skontaktuj się z pomocą techniczną",
   "SIGN_OUT": "Wyloguj się",
   "ACCOUNT_DETAILS": "Szczegóły konta",
-  "AI_QUOTA_USED": "Wykorzystany limit AI",
   "LOGIN_REFRESH": "Sprawdź status logowania",
   "SIGN_IN_WAITING_TITLE": "Oczekiwanie na logowanie",
   "SIGN_IN_WAITING_MESSAGE": "Dokończ logowanie w nowej karcie, a następnie wróć tutaj.",
@@ -1457,6 +1457,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Skrót",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Treść szablonu",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Opis",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Rozszerzenie pliku",
-  "LIVE_PREVIEW_HIDE_OVERLAY": "Ukryj tę wiadomość"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Rozszerzenie pliku"
 });

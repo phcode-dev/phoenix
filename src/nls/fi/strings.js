@@ -118,6 +118,7 @@ define({
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Jotta voit käynnistää esikatselun palvelimen tiedostolla, täytyy tämän projektin URL-osoite määrittää.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Virhe käynnistettäessä HTTP-palvelinta esikatselun tiedostoille. Yritä uudelleen.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Saat lisätietoja tutustumalla ohjeeseen <a href='{0}' title='{0}'>Troubleshooting Live Preview connection errors</a>.",
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Piilota tämä viesti",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Esikatselu",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Esikatselu: yhdistetään…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Esikatselu: alustetaan…",
@@ -1405,7 +1406,6 @@ define({
   "CONTACT_SUPPORT": "Ota yhteyttä tukeen",
   "SIGN_OUT": "Kirjaudu ulos",
   "ACCOUNT_DETAILS": "Tilin tiedot",
-  "AI_QUOTA_USED": "Käytetty tekoälykiintiö",
   "LOGIN_REFRESH": "Tarkista kirjautumistila",
   "SIGN_IN_WAITING_TITLE": "Kirjaudutaan sisään",
   "SIGN_IN_WAITING_MESSAGE": "Viimeistele sisäänkirjautuminen uudessa välilehdessä ja palaa sitten tänne.",
@@ -1457,6 +1457,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Lyhenne",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Malliteksti",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Kuvaus",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Tiedostopääte",
-  "LIVE_PREVIEW_HIDE_OVERLAY": "Piilota tämä viesti"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Tiedostopääte"
 });

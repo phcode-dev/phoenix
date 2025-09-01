@@ -118,6 +118,7 @@ define({
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "За да пуснете прегледа на живо с файл от сървър, трябва да посочите базов адрес за този проект.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Грешка при пускането на HTTP сървъра за преглед на файлове на живо. Моля, опитайте отново.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "За повече информация, вижте <a href='{0}' title='{0}'>Отстраняване на проблеми с връзката на прегледа на живо</a>.",
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Скрий това съобщение",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Преглед на живо",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Преглед на живо: свързване…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Преглед на живо: установка…",
@@ -1405,7 +1406,6 @@ define({
   "CONTACT_SUPPORT": "Свържете се с поддръжката",
   "SIGN_OUT": "Изход",
   "ACCOUNT_DETAILS": "Данни за акаунта",
-  "AI_QUOTA_USED": "Използвана AI квота",
   "LOGIN_REFRESH": "Проверка на състоянието за вход",
   "SIGN_IN_WAITING_TITLE": "Изчакване за влизане",
   "SIGN_IN_WAITING_MESSAGE": "Моля, завършете влизането в новия раздел и след това се върнете тук.",
@@ -1457,6 +1457,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Съкращение",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Текст на шаблон",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Описание",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Разширение на файл",
-  "LIVE_PREVIEW_HIDE_OVERLAY": "Скрий това съобщение"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Разширение на файл"
 });

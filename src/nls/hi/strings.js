@@ -118,6 +118,7 @@ define({
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "सर्वर-साइड फ़ाइल के साथ लाइव पूर्वावलोकन लॉन्च करने के लिए, आपको इस प्रोजेक्ट के लिए एक बेस URL निर्दिष्ट करना होगा।",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "लाइव पूर्वावलोकन फ़ाइलों के लिए HTTP सर्वर शुरू करने में त्रुटि। कृपया पुन: प्रयास करें।",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "अधिक जानकारी के लिए, <a href='{0}' title='{0}'>लाइव पूर्वावलोकन कनेक्शन त्रुटियों का निवारण</a> देखें।",
+  "LIVE_PREVIEW_HIDE_OVERLAY": "इस संदेश को छिपाएँ",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "लाइव पूर्वावलोकन",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "लाइव पूर्वावलोकन: कनेक्ट हो रहा है…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "लाइव पूर्वावलोकन: आरंभ हो रहा है…",
@@ -1405,7 +1406,6 @@ define({
   "CONTACT_SUPPORT": "सहायता से संपर्क करें",
   "SIGN_OUT": "साइन आउट करें",
   "ACCOUNT_DETAILS": "खाता विवरण",
-  "AI_QUOTA_USED": "एआई कोटा उपयोग किया गया",
   "LOGIN_REFRESH": "लॉगिन स्थिति जांचें",
   "SIGN_IN_WAITING_TITLE": "साइन इन की प्रतीक्षा हो रही है",
   "SIGN_IN_WAITING_MESSAGE": "कृपया नए टैब में साइन-इन पूरा करें, फिर यहां वापस आएं।",
@@ -1457,6 +1457,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "संक्षिप्त नाम",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "टेम्पलेट टेक्स्ट",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "विवरण",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "फ़ाइल एक्सटेंशन",
-  "LIVE_PREVIEW_HIDE_OVERLAY": "इस संदेश को छिपाएँ"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "फ़ाइल एक्सटेंशन"
 });

@@ -118,6 +118,7 @@ define({
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "لتشغيل المعاينة المباشرة باستخدام ملف من جانب الخادم، يجب تحديد عنوان URL أساسي لهذا المشروع.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "خطأ في بدء تشغيل خادم HTTP لملفات المعاينة المباشرة. الرجاء المحاولة مرة أخرى.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "لمزيد من المعلومات، راجع <a href='{0}' title='{0}'>استكشاف أخطاء اتصال المعاينة المباشرة وإصلاحها</a>.",
+  "LIVE_PREVIEW_HIDE_OVERLAY": "إخفاء هذه الرسالة",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "المعاينة المباشرة",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "معاينة مباشرة: جارٍ الاتصال…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "معاينة مباشرة: جارٍ التهيئة…",
@@ -1405,7 +1406,6 @@ define({
   "CONTACT_SUPPORT": "تواصل مع الدعم",
   "SIGN_OUT": "تسجيل الخروج",
   "ACCOUNT_DETAILS": "تفاصيل الحساب",
-  "AI_QUOTA_USED": "حصة الذكاء الاصطناعي المستخدمة",
   "LOGIN_REFRESH": "تحقق من حالة تسجيل الدخول",
   "SIGN_IN_WAITING_TITLE": "جارٍ انتظار تسجيل الدخول",
   "SIGN_IN_WAITING_MESSAGE": "يُرجى إكمال تسجيل الدخول في علامة التبويب الجديدة، ثم العودة إلى هنا.",
@@ -1457,6 +1457,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "اختصار",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "نص القالب",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "الوصف",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "امتداد الملف",
-  "LIVE_PREVIEW_HIDE_OVERLAY": "إخفاء هذه الرسالة"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "امتداد الملف"
 });

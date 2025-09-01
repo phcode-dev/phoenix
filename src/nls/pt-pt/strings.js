@@ -118,6 +118,7 @@ define({
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Para iniciar a pré-visualização em tempo real com um ficheiro do lado do servidor, precisa de especificar um URL Base para este projeto.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Erro ao iniciar o servidor HTTP para ficheiros de pré-visualização em tempo real. Por favor, tente novamente.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Para mais informações, consulte <a href='{0}' title='{0}'>Resolução de problemas de ligação da Pré-visualização em Tempo Real</a>.",
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Ocultar esta mensagem",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Live Preview",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Live Preview: A ligar…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Live Preview: A iniciar…",
@@ -1405,7 +1406,6 @@ define({
   "CONTACT_SUPPORT": "Contactar o suporte",
   "SIGN_OUT": "Terminar Sessão",
   "ACCOUNT_DETAILS": "Detalhes da Conta",
-  "AI_QUOTA_USED": "Quota de IA utilizada",
   "LOGIN_REFRESH": "Verificar estado de início de sessão",
   "SIGN_IN_WAITING_TITLE": "A aguardar início de sessão",
   "SIGN_IN_WAITING_MESSAGE": "Conclua o início de sessão no novo separador e volte para aqui.",
@@ -1457,6 +1457,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Abreviatura",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Texto do Modelo",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Descrição",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extensão de Ficheiro",
-  "LIVE_PREVIEW_HIDE_OVERLAY": "Ocultar esta mensagem"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extensão de Ficheiro"
 });

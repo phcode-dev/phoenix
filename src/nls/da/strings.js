@@ -118,6 +118,7 @@ define({
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "For at bruge Live-Forhåndsvisning på en server-side fil, bliver du nødt til at angive en basis-URL for dette projekt.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Fejl ved opstart af HTTP-serveren for Live-Forhåndsvisning. Prøv igen.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "For yderligere information, se <a href='{0}' title='{0}'>Løsningsforslag til forbindelsesfejl vedrørende Live-Forhåndsvisning</a>.",
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Skjul denne besked",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Live-Forhåndsvisning",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Live-Forhåndsvisning: Forbinder…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Live-Forhåndsvisning: Starter op…",
@@ -1405,7 +1406,6 @@ define({
   "CONTACT_SUPPORT": "Kontakt support",
   "SIGN_OUT": "Log ud",
   "ACCOUNT_DETAILS": "Kontooplysninger",
-  "AI_QUOTA_USED": "Brugt AI-kvote",
   "LOGIN_REFRESH": "Tjek loginstatus",
   "SIGN_IN_WAITING_TITLE": "Venter på login",
   "SIGN_IN_WAITING_MESSAGE": "Fuldfør venligst login i den nye fane, og vend derefter tilbage hertil.",
@@ -1457,6 +1457,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Forkortelse",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Skabelontekst",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Beskrivelse",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Filtypenavn",
-  "LIVE_PREVIEW_HIDE_OVERLAY": "Skjul denne besked"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Filtypenavn"
 });

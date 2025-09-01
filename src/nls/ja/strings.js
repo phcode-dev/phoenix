@@ -118,6 +118,7 @@ define({
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "サーバー側ファイルでライブプレビューを起動するには、このプロジェクトのベース URL を指定する必要があります。",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "ファイルのライブプレビューで使用する HTTP サーバーの起動時にエラーが発生しました。もう一度実行してください。",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "詳しくは、<a href='{0}' title='{0}'>ライブプレビューの接続エラーに関するトラブルシューティング</a>を参照してください。",
+  "LIVE_PREVIEW_HIDE_OVERLAY": "このメッセージを非表示にする",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "ライブプレビュー",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "ライブプレビュー : 接続中…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "ライブプレビュー : 初期化中…",
@@ -1405,7 +1406,6 @@ define({
   "CONTACT_SUPPORT": "サポートに問い合わせる",
   "SIGN_OUT": "サインアウト",
   "ACCOUNT_DETAILS": "アカウントの詳細",
-  "AI_QUOTA_USED": "AI利用量",
   "LOGIN_REFRESH": "ログイン状態を確認",
   "SIGN_IN_WAITING_TITLE": "サインインを待機中",
   "SIGN_IN_WAITING_MESSAGE": "新しいタブでサインインを完了してから、ここに戻ってください。",
@@ -1457,6 +1457,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "略語",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "テンプレートテキスト",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "説明",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "ファイル拡張子",
-  "LIVE_PREVIEW_HIDE_OVERLAY": "このメッセージを非表示にする"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "ファイル拡張子"
 });

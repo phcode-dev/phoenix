@@ -118,6 +118,7 @@ define({
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Za pokretanje prikaza uživo sa datotekom koja je na serveru, morate navesti osnovnu URL adresu za ovaj projekt.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Greška prilikom pokretanja HTTP servera za prikaz datoteka uživo. Pokušajte ponovo.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Za više informacija, pogledajte <a href='{0}' title='{0}'>Rješavanje grešaka u povezivanju prilikom Prikaza uživo.</a>.",
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Sakrij ovu poruku",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Prikaz uživo",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Prikaz uživo: Povezivanje…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Prikaz uživo: Inicijalizacija…",
@@ -1405,7 +1406,6 @@ define({
   "CONTACT_SUPPORT": "Kontaktirajte podršku",
   "SIGN_OUT": "Odjava",
   "ACCOUNT_DETAILS": "Podaci o računu",
-  "AI_QUOTA_USED": "Iskorištena AI kvota",
   "LOGIN_REFRESH": "Provjeri status prijave",
   "SIGN_IN_WAITING_TITLE": "Prijava u tijeku",
   "SIGN_IN_WAITING_MESSAGE": "Molimo dovršite prijavu u novoj kartici, a zatim se vratite ovdje.",
@@ -1457,6 +1457,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Kratica",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Tekst predloška",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Opis",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Ekstenzija datoteke",
-  "LIVE_PREVIEW_HIDE_OVERLAY": "Sakrij ovu poruku"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Ekstenzija datoteke"
 });

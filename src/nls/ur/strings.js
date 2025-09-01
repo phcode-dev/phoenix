@@ -118,6 +118,7 @@ define({
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "سرور سائیڈ فائل کے ساتھ لائیو پریویو لانچ کرنے کے لیے، آپ کو اس پراجیکٹ کے لیے ایک بیس یو آر ایل بتانا ہوگا۔",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "لائیو پریویو فائلوں کے لیے HTTP سرور شروع کرنے میں خرابی۔ براہ کرم دوبارہ کوشش کریں۔",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "مزید معلومات کے لیے، <a href='{0}' title='{0}'>لائیو پریویو کنکشن کی خرابیوں کا ازالہ</a> دیکھیں۔",
+  "LIVE_PREVIEW_HIDE_OVERLAY": "یہ پیغام چھپائیں",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "لائیو پریویو",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "براہ راست پیش منظر: مربوط ہو رہا ہے…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "براہ راست پیش منظر: شروع ہو رہا ہے…",
@@ -1405,7 +1406,6 @@ define({
   "CONTACT_SUPPORT": "سپورٹ سے رابطہ کریں",
   "SIGN_OUT": "سائن آؤٹ کریں",
   "ACCOUNT_DETAILS": "اکاؤنٹ کی تفصیلات",
-  "AI_QUOTA_USED": "استعمال شدہ اے آئی کوٹہ",
   "LOGIN_REFRESH": "لاگ ان کی حیثیت چیک کریں",
   "SIGN_IN_WAITING_TITLE": "سائن ان کا انتظار ہے",
   "SIGN_IN_WAITING_MESSAGE": "براہ کرم نئے ٹیب میں سائن ان مکمل کریں، پھر یہاں واپس آئیں۔",
@@ -1457,6 +1457,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "مخفف",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "ٹیمپلیٹ متن",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "وضاحت",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "فائل ایکسٹینشن",
-  "LIVE_PREVIEW_HIDE_OVERLAY": "یہ پیغام چھپائیں"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "فائل ایکسٹینشن"
 });

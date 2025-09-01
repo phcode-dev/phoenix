@@ -118,6 +118,7 @@ define({
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "For å starte Live Preview med en server-side fil må du spesifisere en base-url for dette prosjektet.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Feil ved starting av HTTP serveren for Live Preview filer. Vennligst prøv igjen.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "For mer informasjon, se <a href='{0}' title='{0}'>Troubleshooting Live Preview connection errors</a>.",
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Skjul denne meldingen",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Live Preview",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Live Preview: Kobler til…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Live Preview: Initaliserer…",
@@ -1405,7 +1406,6 @@ define({
   "CONTACT_SUPPORT": "Kontakt kundestøtte",
   "SIGN_OUT": "Logg ut",
   "ACCOUNT_DETAILS": "Kontodetaljer",
-  "AI_QUOTA_USED": "AI-kvote brukt",
   "LOGIN_REFRESH": "Sjekk innloggingsstatus",
   "SIGN_IN_WAITING_TITLE": "Venter på pålogging",
   "SIGN_IN_WAITING_MESSAGE": "Fullfør påloggingen i den nye fanen, og returner deretter hit.",
@@ -1457,6 +1457,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Forkortelse",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Maltekst",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Beskrivelse",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Filtype",
-  "LIVE_PREVIEW_HIDE_OVERLAY": "Skjul denne meldingen"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Filtype"
 });

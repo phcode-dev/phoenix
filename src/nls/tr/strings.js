@@ -118,6 +118,7 @@ define({
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Canlı Önizlemeyi server-side dosyalarınız ile açmak istiyorsanız, lütfen bu proje için kullanılabilir bir link belirtiniz.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Canlı önizleme dosyaları için HTTP sunucusu başlatılırken hata oluştu. Lütfen tekrar deneyin.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Detaylı bilgi için lütfen <a href='{0}' title='{0}'>Troubleshooting Live Development connection errors</a> sayfasına bakınız.",
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Bu mesajı gizle",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Canlı Önizleme",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Canlı Önizleme: Bağlanılıyor…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Canlı Önizleme: Başlıyor…",
@@ -1405,7 +1406,6 @@ define({
   "CONTACT_SUPPORT": "Destek ekibiyle iletişime geçin",
   "SIGN_OUT": "Oturumu kapat",
   "ACCOUNT_DETAILS": "Hesap Ayrıntıları",
-  "AI_QUOTA_USED": "Yapay Zeka kotası kullanıldı",
   "LOGIN_REFRESH": "Oturum Durumunu Kontrol Et",
   "SIGN_IN_WAITING_TITLE": "Oturum Açma Bekleniyor",
   "SIGN_IN_WAITING_MESSAGE": "Lütfen yeni sekmede oturum açmayı tamamlayın ve buraya geri dönün.",
@@ -1457,6 +1457,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Kısaltma",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Şablon Metni",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Açıklama",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Dosya Uzantısı",
-  "LIVE_PREVIEW_HIDE_OVERLAY": "Bu mesajı gizle"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Dosya Uzantısı"
 });

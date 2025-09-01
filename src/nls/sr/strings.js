@@ -118,6 +118,7 @@ define({
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "За покретање живог приказа са датотеком која је \"server-side\", морате навести основну URL адресу за овај пројекат.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Грешка приликом покретања HTTP сервера за \"живе\" развојне датотеке. Молимо покушајте поново.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "За више информација, погледајте <a href='{0}' title='{0}'>Отклањање грешака у конекцији приликом развоја уживо</a>.",
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Сакриј ову поруку",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Живи приказ",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Живи приказ: Успостављање конекције…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Живи приказ: Иницијализација…",
@@ -1405,7 +1406,6 @@ define({
   "CONTACT_SUPPORT": "Контактирајте подршку",
   "SIGN_OUT": "Одјавите се",
   "ACCOUNT_DETAILS": "Подаци о налогу",
-  "AI_QUOTA_USED": "Искоришћена AI квота",
   "LOGIN_REFRESH": "Провери статус пријаве",
   "SIGN_IN_WAITING_TITLE": "Чека се пријављивање",
   "SIGN_IN_WAITING_MESSAGE": "Молимо Вас да завршите пријављивање у новом табу, а затим се вратите овде.",
@@ -1457,6 +1457,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Скраћеница",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Текст шаблона",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Опис",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Екстензија датотеке",
-  "LIVE_PREVIEW_HIDE_OVERLAY": "Сакриј ову поруку"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Екстензија датотеке"
 });

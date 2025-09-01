@@ -118,6 +118,7 @@ define({
   "LIVE_DEV_NEED_BASEURL_MESSAGE": "Аби запустити live preview з серверним файлом, вам варто вказати базову адресу для цього проекту.",
   "LIVE_DEV_SERVER_NOT_READY_MESSAGE": "Помилка запуску HTTP-сервера для live preview. Будь ласка, спробуйте пізніше.",
   "LIVE_DEVELOPMENT_TROUBLESHOOTING": "Для докладнішої інформації погляньте на <a href='{0}' title='{0}'>пошук та усунення помилок підключення Live Preview</a>.",
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Приховати це повідомлення",
   "LIVE_DEV_STATUS_TIP_NOT_CONNECTED": "Live Preview",
   "LIVE_DEV_STATUS_TIP_PROGRESS1": "Live Preview: Підключення…",
   "LIVE_DEV_STATUS_TIP_PROGRESS2": "Live Preview: Ініціалізація…",
@@ -1405,7 +1406,6 @@ define({
   "CONTACT_SUPPORT": "Звернутися до служби підтримки",
   "SIGN_OUT": "Вийти",
   "ACCOUNT_DETAILS": "Дані облікового запису",
-  "AI_QUOTA_USED": "Використано квоту ШІ",
   "LOGIN_REFRESH": "Перевірити статус входу",
   "SIGN_IN_WAITING_TITLE": "Очікування на вхід",
   "SIGN_IN_WAITING_MESSAGE": "Будь ласка, завершіть вхід у новій вкладці, а потім поверніться сюди.",
@@ -1457,6 +1457,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Скорочення",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Текст шаблону",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Опис",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Розширення файлу",
-  "LIVE_PREVIEW_HIDE_OVERLAY": "Приховати це повідомлення"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Розширення файлу"
 });
