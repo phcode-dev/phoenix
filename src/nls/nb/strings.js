@@ -1414,6 +1414,8 @@ define({
   "CHECKING": "Sjekker…",
   "CHECKING_STATUS": "Sjekker påloggingsstatus…",
   "NOT_SIGNED_IN_YET": "Ikke logget inn ennå. Vennligst fullfør påloggingen i den andre fanen.",
+  "WELCOME_BACK": "Velkommen tilbake",
+  "WELCOME_BACK_USER": "Velkommen tilbake, {0}!",
   "POPUP_BLOCKED": "Popup blokkert. Tillat popup-vinduer og prøv igjen, eller gå manuelt til {0}",
   "COLLAPSE_ALL_FOLDERS": "Skjul alle mapper",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Egendefinerte kodesnutter…",
@@ -1456,6 +1458,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Maltekst",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Beskrivelse",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Filtype",
-  "WELCOME_BACK": "Velkommen tilbake",
-  "WELCOME_BACK_USER": "Velkommen tilbake, {0}!"
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Skjul denne meldingen"
 });

@@ -1414,6 +1414,8 @@ define({
   "CHECKING": "Проверява се…",
   "CHECKING_STATUS": "Проверява се състоянието на влизане…",
   "NOT_SIGNED_IN_YET": "Все още не сте влезли в профила си. Моля, завършете влизането в другия раздел.",
+  "WELCOME_BACK": "Добре дошли отново",
+  "WELCOME_BACK_USER": "Добре дошли отново, {0}!",
   "POPUP_BLOCKED": "Изскачащият прозорец е блокиран. Моля, разрешете изскачащите прозорци и опитайте отново или отидете ръчно на {0}",
   "COLLAPSE_ALL_FOLDERS": "Свий всички папки",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Персонализирани фрагменти…",
@@ -1456,6 +1458,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Текст на шаблон",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Описание",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Разширение на файл",
-  "WELCOME_BACK": "Добре дошли отново",
-  "WELCOME_BACK_USER": "Добре дошли отново, {0}!"
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Скрий това съобщение"
 });

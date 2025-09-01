@@ -1414,6 +1414,8 @@ define({
   "CHECKING": "Verificando…",
   "CHECKING_STATUS": "Comprobando el estado del inicio de sesión…",
   "NOT_SIGNED_IN_YET": "Aún no has iniciado sesión. Completa el inicio de sesión en la otra pestaña.",
+  "WELCOME_BACK": "Bienvenido de nuevo",
+  "WELCOME_BACK_USER": "¡Bienvenido de nuevo, {0}!",
   "POPUP_BLOCKED": "Ventana emergente bloqueada. Permite las ventanas emergentes e inténtalo de nuevo, o navega manualmente a {0}",
   "COLLAPSE_ALL_FOLDERS": "Contraer todas las carpetas",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Fragmentos de código personalizados…",
@@ -1456,6 +1458,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Texto de la plantilla",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Descripción",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extensión de archivo",
-  "WELCOME_BACK": "Bienvenido de nuevo",
-  "WELCOME_BACK_USER": "¡Bienvenido de nuevo, {0}!"
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Ocultar este mensaje"
 });

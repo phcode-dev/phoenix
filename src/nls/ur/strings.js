@@ -1414,6 +1414,8 @@ define({
   "CHECKING": "جانچ پڑتال ہو رہی ہے…",
   "CHECKING_STATUS": "لاگ ان کی حیثیت چیک کر رہے ہیں…",
   "NOT_SIGNED_IN_YET": "ابھی تک سائن ان نہیں ہوا ہے۔ براہ کرم دوسرے ٹیب میں سائن ان مکمل کریں۔",
+  "WELCOME_BACK": "خوش آمدید واپس",
+  "WELCOME_BACK_USER": "{0}، خوش آمدید واپس!",
   "POPUP_BLOCKED": "پاپ اپ بلاک کر دیا گیا۔ براہ کرم پاپ اپ کی اجازت دیں اور دوبارہ کوشش کریں، یا دستی طور پر {0} پر جائیں۔",
   "COLLAPSE_ALL_FOLDERS": "تمام فولڈرز بند کریں",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "حسب ضرورت سنیپٹس…",
@@ -1456,6 +1458,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "ٹیمپلیٹ متن",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "وضاحت",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "فائل ایکسٹینشن",
-  "WELCOME_BACK": "خوش آمدید واپس",
-  "WELCOME_BACK_USER": "{0}، خوش آمدید واپس!"
+  "LIVE_PREVIEW_HIDE_OVERLAY": "یہ پیغام چھپائیں"
 });

@@ -1414,6 +1414,8 @@ define({
   "CHECKING": "Ellenőrzés…",
   "CHECKING_STATUS": "Bejelentkezési állapot ellenőrzése…",
   "NOT_SIGNED_IN_YET": "Még nem jelentkeztél be. Kérjük, fejezd be a bejelentkezést a másik lapon.",
+  "WELCOME_BACK": "Üdvözlünk újra!",
+  "WELCOME_BACK_USER": "Üdvözlünk újra, {0}!",
   "POPUP_BLOCKED": "Felugró ablak blokkolva. Kérjük, engedélyezd a felugró ablakokat, és próbáld újra, vagy navigálj manuálisan ide: {0}",
   "COLLAPSE_ALL_FOLDERS": "Összes mappa összecsukása",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Egyéni kódrészletek…",
@@ -1456,6 +1458,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Sablonszöveg",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Leírás",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Fájlkiterjesztés",
-  "WELCOME_BACK": "Üdvözlünk újra!",
-  "WELCOME_BACK_USER": "Üdvözlünk újra, {0}!"
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Üzenet elrejtése"
 });

@@ -1414,6 +1414,8 @@ define({
   "CHECKING": "Перевірка…",
   "CHECKING_STATUS": "Перевірка статусу входу…",
   "NOT_SIGNED_IN_YET": "Ви ще не ввійшли. Будь ласка, завершіть вхід в іншій вкладці.",
+  "WELCOME_BACK": "Ласкаво просимо назад",
+  "WELCOME_BACK_USER": "Ласкаво просимо назад, {0}!",
   "POPUP_BLOCKED": "Спливаюче вікно заблоковано. Будь ласка, дозвольте спливаючі вікна та спробуйте ще раз або перейдіть вручну до {0}",
   "COLLAPSE_ALL_FOLDERS": "Згорнути всі папки",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Власні сніпети…",
@@ -1456,6 +1458,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Текст шаблону",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Опис",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Розширення файлу",
-  "WELCOME_BACK": "Ласкаво просимо назад",
-  "WELCOME_BACK_USER": "Ласкаво просимо назад, {0}!"
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Приховати це повідомлення"
 });

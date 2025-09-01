@@ -1414,6 +1414,8 @@ define({
   "CHECKING": "Controleren...",
   "CHECKING_STATUS": "Aanmeldstatus controleren...",
   "NOT_SIGNED_IN_YET": "U bent nog niet aangemeld. Voltooi de aanmelding in het andere tabblad.",
+  "WELCOME_BACK": "Welkom terug",
+  "WELCOME_BACK_USER": "Welkom terug, {0}!",
   "POPUP_BLOCKED": "Pop-up geblokkeerd. Sta pop-ups toe en probeer het opnieuw, of ga handmatig naar {0}",
   "COLLAPSE_ALL_FOLDERS": "Alle mappen samenvouwen",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Aangepaste fragmenten…",
@@ -1456,6 +1458,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Sjabloontekst",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Beschrijving",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Bestandsextensie",
-  "WELCOME_BACK": "Welkom terug",
-  "WELCOME_BACK_USER": "Welkom terug, {0}!"
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Dit bericht verbergen"
 });

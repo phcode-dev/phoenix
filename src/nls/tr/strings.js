@@ -1414,6 +1414,8 @@ define({
   "CHECKING": "Kontrol ediliyor…",
   "CHECKING_STATUS": "Oturum açma durumu kontrol ediliyor…",
   "NOT_SIGNED_IN_YET": "Henüz oturum açılmadı. Lütfen diğer sekmede oturum açmayı tamamlayın.",
+  "WELCOME_BACK": "Tekrar hoş geldiniz",
+  "WELCOME_BACK_USER": "Hoş geldiniz, {0}!",
   "POPUP_BLOCKED": "Açılır pencere engellendi. Lütfen açılır pencerelere izin verin ve tekrar deneyin veya {0} adresine manuel olarak gidin.",
   "COLLAPSE_ALL_FOLDERS": "Tüm Klasörleri Daralt",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Özel Parçacıklar…",
@@ -1456,6 +1458,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Şablon Metni",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Açıklama",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Dosya Uzantısı",
-  "WELCOME_BACK": "Tekrar hoş geldiniz",
-  "WELCOME_BACK_USER": "Hoş geldiniz, {0}!"
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Bu mesajı gizle"
 });

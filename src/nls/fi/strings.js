@@ -1414,6 +1414,8 @@ define({
   "CHECKING": "Tarkistetaan…",
   "CHECKING_STATUS": "Tarkistetaan kirjautumistilaa…",
   "NOT_SIGNED_IN_YET": "Et ole vielä kirjautunut sisään. Viimeistele sisäänkirjautuminen toisessa välilehdessä.",
+  "WELCOME_BACK": "Tervetuloa takaisin",
+  "WELCOME_BACK_USER": "Tervetuloa takaisin, {0}!",
   "POPUP_BLOCKED": "Ponnahdusikkuna estetty. Salli ponnahdusikkunat ja yritä uudelleen tai siirry manuaalisesti osoitteeseen {0}",
   "COLLAPSE_ALL_FOLDERS": "Sulje kaikki kansiot",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Omat koodinpätkät…",
@@ -1456,6 +1458,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Malliteksti",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Kuvaus",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Tiedostopääte",
-  "WELCOME_BACK": "Tervetuloa takaisin",
-  "WELCOME_BACK_USER": "Tervetuloa takaisin, {0}!"
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Piilota tämä viesti"
 });

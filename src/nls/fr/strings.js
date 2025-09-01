@@ -1414,6 +1414,8 @@ define({
   "CHECKING": "Vérification…",
   "CHECKING_STATUS": "Vérification de l'état de la connexion…",
   "NOT_SIGNED_IN_YET": "Vous n'êtes pas encore connecté. Veuillez vous connecter dans l'autre onglet.",
+  "WELCOME_BACK": "Bon retour",
+  "WELCOME_BACK_USER": "Bon retour, {0} !",
   "POPUP_BLOCKED": "Fenêtre contextuelle bloquée. Veuillez autoriser les fenêtres contextuelles et réessayer, ou accédez manuellement à {0}",
   "COLLAPSE_ALL_FOLDERS": "Réduire tous les dossiers",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Extraits personnalisés…",
@@ -1456,6 +1458,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Texte du modèle",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Description",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extension de fichier",
-  "WELCOME_BACK": "Bon retour",
-  "WELCOME_BACK_USER": "Bon retour, {0} !"
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Masquer ce message"
 });

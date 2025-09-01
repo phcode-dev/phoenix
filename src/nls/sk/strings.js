@@ -1414,6 +1414,8 @@ define({
   "CHECKING": "Kontroluje sa…",
   "CHECKING_STATUS": "Kontroluje sa stav prihlásenia…",
   "NOT_SIGNED_IN_YET": "Zatiaľ nie ste prihlásený. Dokončite prihlásenie v druhom okne.",
+  "WELCOME_BACK": "Vitajte späť",
+  "WELCOME_BACK_USER": "Vitajte späť, {0}!",
   "POPUP_BLOCKED": "Vyskakovacie okno bolo zablokované. Povoľte vyskakovacie okná a skúste to znova alebo prejdite manuálne na {0}",
   "COLLAPSE_ALL_FOLDERS": "Zbaliť všetky priečinky",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Vlastné úryvky…",
@@ -1456,6 +1458,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Text šablóny",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Popis",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Prípona súboru",
-  "WELCOME_BACK": "Vitajte späť",
-  "WELCOME_BACK_USER": "Vitajte späť, {0}!"
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Skryť túto správu"
 });

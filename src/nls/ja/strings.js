@@ -1414,6 +1414,8 @@ define({
   "CHECKING": "確認中…",
   "CHECKING_STATUS": "ログイン状態を確認中…",
   "NOT_SIGNED_IN_YET": "まだサインインしていません。別のタブでサインインを完了してください。",
+  "WELCOME_BACK": "おかえりなさい",
+  "WELCOME_BACK_USER": "{0}さん、おかえりなさい！",
   "POPUP_BLOCKED": "ポップアップがブロックされました。ポップアップを許可してもう一度お試しいただくか、{0} に手動でアクセスしてください。",
   "COLLAPSE_ALL_FOLDERS": "全てのフォルダを閉じる",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "カスタムスニペット…",
@@ -1456,6 +1458,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "テンプレートテキスト",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "説明",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "ファイル拡張子",
-  "WELCOME_BACK": "おかえりなさい",
-  "WELCOME_BACK_USER": "{0}さん、おかえりなさい！"
+  "LIVE_PREVIEW_HIDE_OVERLAY": "このメッセージを非表示にする"
 });

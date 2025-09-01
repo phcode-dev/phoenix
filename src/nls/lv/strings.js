@@ -1414,6 +1414,8 @@ define({
   "CHECKING": "Pārbauda…",
   "CHECKING_STATUS": "Pārbauda pieteikšanās statusu…",
   "NOT_SIGNED_IN_YET": "Vēl neesat pieteicies. Lūdzu, pabeidziet pieteikšanos otrā cilnē.",
+  "WELCOME_BACK": "Laipni lūdzam atpakaļ!",
+  "WELCOME_BACK_USER": "Laipni lūdzam atpakaļ, {0}!",
   "POPUP_BLOCKED": "Uznirstošais logs ir bloķēts. Lūdzu, atļaujiet uznirstošos logus un mēģiniet vēlreiz vai arī manuāli dodieties uz {0}",
   "COLLAPSE_ALL_FOLDERS": "Sakļaut visas mapes",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Pielāgoti fragmenti…",
@@ -1456,6 +1458,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Veidnes teksts",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Apraksts",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Faila paplašinājums",
-  "WELCOME_BACK": "Laipni lūdzam atpakaļ!",
-  "WELCOME_BACK_USER": "Laipni lūdzam atpakaļ, {0}!"
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Paslēpt šo ziņojumu"
 });

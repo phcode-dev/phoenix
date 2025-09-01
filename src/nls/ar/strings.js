@@ -1414,6 +1414,8 @@ define({
   "CHECKING": "جارٍ التحقق…",
   "CHECKING_STATUS": "جارٍ التحقق من حالة تسجيل الدخول…",
   "NOT_SIGNED_IN_YET": "لم يتم تسجيل الدخول بعد. يُرجى إكمال تسجيل الدخول في علامة التبويب الأخرى.",
+  "WELCOME_BACK": "أهلاً بعودتك",
+  "WELCOME_BACK_USER": "أهلاً بعودتك، {0}!",
   "POPUP_BLOCKED": "تم حظر النافذة المنبثقة. يُرجى السماح بالنوافذ المنبثقة وإعادة المحاولة، أو الانتقال يدويًا إلى {0}",
   "COLLAPSE_ALL_FOLDERS": "طي جميع المجلدات",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "مقتطفات مخصصة…",
@@ -1456,6 +1458,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "نص القالب",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "الوصف",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "امتداد الملف",
-  "WELCOME_BACK": "أهلاً بعودتك",
-  "WELCOME_BACK_USER": "أهلاً بعودتك، {0}!"
+  "LIVE_PREVIEW_HIDE_OVERLAY": "إخفاء هذه الرسالة"
 });

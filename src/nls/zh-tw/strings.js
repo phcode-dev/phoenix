@@ -1414,6 +1414,8 @@ define({
   "CHECKING": "檢查中…",
   "CHECKING_STATUS": "正在檢查登入狀態…",
   "NOT_SIGNED_IN_YET": "您尚未登入。請在另一個分頁中完成登入。",
+  "WELCOME_BACK": "歡迎回來",
+  "WELCOME_BACK_USER": "歡迎回來，{0}！",
   "POPUP_BLOCKED": "彈出視窗遭到封鎖。請允許彈出視窗並重試，或手動前往 {0}",
   "COLLAPSE_ALL_FOLDERS": "收合所有資料夾",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "自訂程式碼片段…",
@@ -1456,6 +1458,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "範本文字",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "描述",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "檔案副檔名",
-  "WELCOME_BACK": "歡迎回來",
-  "WELCOME_BACK_USER": "歡迎回來，{0}！"
+  "LIVE_PREVIEW_HIDE_OVERLAY": "隱藏此訊息"
 });

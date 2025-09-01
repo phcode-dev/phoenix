@@ -1414,6 +1414,8 @@ define({
   "CHECKING": "പരിശോധിക്കുന്നു…",
   "CHECKING_STATUS": "ലോഗിൻ സ്റ്റാറ്റസ് പരിശോധിക്കുന്നു…",
   "NOT_SIGNED_IN_YET": "ഇതുവരെ സൈൻ ഇൻ ചെയ്തിട്ടില്ല. മറ്റൊരു ടാബിൽ സൈൻ-ഇൻ പൂർത്തിയാക്കുക.",
+  "WELCOME_BACK": "സ്വാഗതം",
+  "WELCOME_BACK_USER": "{0}, സ്വാഗതം!",
   "POPUP_BLOCKED": "പോപ്പ്-അപ്പ് തടഞ്ഞിരിക്കുന്നു. പോപ്പ്-അപ്പുകൾ അനുവദിച്ചതിനുശേഷം വീണ്ടും ശ്രമിക്കുക, അല്ലെങ്കിൽ {0} ലേക്ക് നേരിട്ട് പോകുക.",
   "COLLAPSE_ALL_FOLDERS": "എല്ലാ ഫോൾഡറുകളും ചുരുക്കുക",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "കസ്റ്റം സ്നിപ്പെറ്റുകൾ…",
@@ -1456,6 +1458,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "ടെംപ്ലേറ്റ് ടെക്സ്റ്റ്",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "വിവരണം",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "ഫയൽ എക്സ്റ്റൻഷൻ",
-  "WELCOME_BACK": "സ്വാഗതം",
-  "WELCOME_BACK_USER": "{0}, സ്വാഗതം!"
+  "LIVE_PREVIEW_HIDE_OVERLAY": "ഈ സന്ദേശം മറയ്ക്കുക"
 });

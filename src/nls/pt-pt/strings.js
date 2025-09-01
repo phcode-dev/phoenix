@@ -1414,6 +1414,8 @@ define({
   "CHECKING": "A verificar…",
   "CHECKING_STATUS": "A verificar o estado do início de sessão…",
   "NOT_SIGNED_IN_YET": "Ainda não iniciou sessão. Conclua o início de sessão no outro separador.",
+  "WELCOME_BACK": "Bem-vindo de volta",
+  "WELCOME_BACK_USER": "Bem-vindo de volta, {0}!",
   "POPUP_BLOCKED": "Janela pop-up bloqueada. Permita janelas pop-up e tente novamente ou navegue manualmente para {0}",
   "COLLAPSE_ALL_FOLDERS": "Recolher Todas as Pastas",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Fragmentos Personalizados…",
@@ -1456,6 +1458,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Texto do Modelo",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Descrição",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extensão de Ficheiro",
-  "WELCOME_BACK": "Bem-vindo de volta",
-  "WELCOME_BACK_USER": "Bem-vindo de volta, {0}!"
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Ocultar esta mensagem"
 });

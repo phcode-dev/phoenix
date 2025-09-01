@@ -1414,6 +1414,8 @@ define({
   "CHECKING": "Έλεγχος…",
   "CHECKING_STATUS": "Έλεγχος κατάστασης σύνδεσης…",
   "NOT_SIGNED_IN_YET": "Δεν έχετε συνδεθεί ακόμα. Παρακαλούμε ολοκληρώστε τη σύνδεση στην άλλη καρτέλα.",
+  "WELCOME_BACK": "Καλώς ορίσατε πίσω",
+  "WELCOME_BACK_USER": "Καλώς ορίσατε πίσω, {0}!",
   "POPUP_BLOCKED": "Το αναδυόμενο παράθυρο μπλοκαρίστηκε. Επιτρέψτε τα αναδυόμενα παράθυρα και προσπαθήστε ξανά ή μεταβείτε χειροκίνητα στο {0}",
   "COLLAPSE_ALL_FOLDERS": "Σύμπτυξη Όλων των Φακέλων",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Προσαρμοσμένα αποσπάσματα…",
@@ -1456,6 +1458,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Κείμενο Προτύπου",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Περιγραφή",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Επέκταση Αρχείου",
-  "WELCOME_BACK": "Καλώς ορίσατε πίσω",
-  "WELCOME_BACK_USER": "Καλώς ορίσατε πίσω, {0}!"
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Απόκρυψη αυτού του μηνύματος"
 });

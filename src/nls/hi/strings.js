@@ -1414,6 +1414,8 @@ define({
   "CHECKING": "जाँच हो रही है…",
   "CHECKING_STATUS": "लॉगिन स्थिति की जाँच हो रही है…",
   "NOT_SIGNED_IN_YET": "अभी तक साइन इन नहीं किया है। कृपया दूसरे टैब में साइन-इन पूरा करें।",
+  "WELCOME_BACK": "वापस स्वागत है",
+  "WELCOME_BACK_USER": "{0}, वापस स्वागत है!",
   "POPUP_BLOCKED": "पॉप-अप ब्लॉक किया गया है। कृपया पॉप-अप की अनुमति दें और पुनः प्रयास करें, या मैन्युअल रूप से {0} पर नेविगेट करें",
   "COLLAPSE_ALL_FOLDERS": "सभी फ़ोल्डर संकुचित करें",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "कस्टम स्निपेट…",
@@ -1456,6 +1458,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "टेम्पलेट टेक्स्ट",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "विवरण",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "फ़ाइल एक्सटेंशन",
-  "WELCOME_BACK": "वापस स्वागत है",
-  "WELCOME_BACK_USER": "{0}, वापस स्वागत है!"
+  "LIVE_PREVIEW_HIDE_OVERLAY": "इस संदेश को छिपाएँ"
 });

@@ -1414,6 +1414,8 @@ define({
   "CHECKING": "Überprüfung läuft…",
   "CHECKING_STATUS": "Anmeldestatus wird überprüft…",
   "NOT_SIGNED_IN_YET": "Sie sind noch nicht angemeldet. Bitte schließen Sie die Anmeldung im anderen Tab ab.",
+  "WELCOME_BACK": "Willkommen zurück",
+  "WELCOME_BACK_USER": "Willkommen zurück, {0}!",
   "POPUP_BLOCKED": "Popup blockiert. Bitte erlauben Sie Popups und versuchen Sie es erneut, oder navigieren Sie manuell zu {0}",
   "COLLAPSE_ALL_FOLDERS": "Alle Ordner zuklappen",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Benutzerdefinierte Snippets…",
@@ -1456,6 +1458,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Vorlagentext",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Beschreibung",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Dateierweiterung",
-  "WELCOME_BACK": "Willkommen zurück",
-  "WELCOME_BACK_USER": "Willkommen zurück, {0}!"
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Diese Meldung ausblenden"
 });
