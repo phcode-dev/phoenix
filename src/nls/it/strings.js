@@ -1414,6 +1414,8 @@ define({
   "CHECKING": "Verifica in corso…",
   "CHECKING_STATUS": "Verifica dello stato di accesso in corso…",
   "NOT_SIGNED_IN_YET": "Accesso non ancora effettuato. Completa l'accesso nell'altra scheda.",
+  "WELCOME_BACK": "Bentornato",
+  "WELCOME_BACK_USER": "Bentornato, {0}!",
   "POPUP_BLOCKED": "Popup bloccato. Autorizza i popup e riprova oppure vai manualmente a {0}",
   "COLLAPSE_ALL_FOLDERS": "Comprimi tutte le cartelle",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Frammenti personalizzati…",
@@ -1456,6 +1458,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Testo del Modello",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Descrizione",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Estensione del File",
-  "WELCOME_BACK": "Bentornato",
-  "WELCOME_BACK_USER": "Bentornato, {0}!"
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Nascondi questo messaggio"
 });

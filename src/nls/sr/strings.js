@@ -1414,6 +1414,8 @@ define({
   "CHECKING": "Проверава се…",
   "CHECKING_STATUS": "Проверава се статус пријаве…",
   "NOT_SIGNED_IN_YET": "Још увек нисте пријављени. Молимо Вас да завршите пријављивање у другом табу.",
+  "WELCOME_BACK": "Добродошли назад",
+  "WELCOME_BACK_USER": "Добродошли назад, {0}!",
   "POPUP_BLOCKED": "Искачући прозор је блокиран. Молимо Вас да дозволите искачуће прозоре и покушате поново или ручно пређите на {0}",
   "COLLAPSE_ALL_FOLDERS": "Скупи све фасцикле",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Кориснички исечци…",
@@ -1456,6 +1458,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Текст шаблона",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Опис",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Екстензија датотеке",
-  "WELCOME_BACK": "Добродошли назад",
-  "WELCOME_BACK_USER": "Добродошли назад, {0}!"
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Сакриј ову поруку"
 });

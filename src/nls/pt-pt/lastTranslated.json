@@ -1076,6 +1076,7 @@
   "LIVE_PREVIEW_CONFIGURE_MODES": "Configure Live Preview Modes",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Getting preview from your custom server {0}",
   "LIVE_PREVIEW_EDIT_HIGHLIGHT_ON": "Edit Highlights on Hover",
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Hide this message",
   "LIVE_PREVIEW_MODE_EDIT": "Edit Mode",
   "LIVE_PREVIEW_MODE_HIGHLIGHT": "Highlight Mode",
   "LIVE_PREVIEW_MODE_PREFERENCE": "{0} shows only the webpage, {1} connects the webpage to your code - click on elements to jump to their code and vice versa, {2} provides highlighting along with advanced element manipulation",

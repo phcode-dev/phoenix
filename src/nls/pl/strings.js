@@ -1414,6 +1414,8 @@ define({
   "CHECKING": "Sprawdzanie…",
   "CHECKING_STATUS": "Sprawdzanie statusu logowania…",
   "NOT_SIGNED_IN_YET": "Nie zalogowano. Dokończ logowanie w drugiej karcie.",
+  "WELCOME_BACK": "Witaj ponownie",
+  "WELCOME_BACK_USER": "Witaj ponownie, {0}!",
   "POPUP_BLOCKED": "Okno podręczne zablokowane. Zezwól na okna podręczne i spróbuj ponownie lub przejdź ręcznie do {0}",
   "COLLAPSE_ALL_FOLDERS": "Zwiń wszystkie foldery",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Własne fragmenty kodu…",
@@ -1456,6 +1458,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Treść szablonu",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Opis",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Rozszerzenie pliku",
-  "WELCOME_BACK": "Witaj ponownie",
-  "WELCOME_BACK_USER": "Witaj ponownie, {0}!"
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Ukryj tę wiadomość"
 });

@@ -1414,6 +1414,8 @@ define({
   "CHECKING": "Kontroluji…",
   "CHECKING_STATUS": "Kontroluji stav přihlášení…",
   "NOT_SIGNED_IN_YET": "Ještě nejste přihlášeni. Dokončete prosím přihlášení v druhé kartě.",
+  "WELCOME_BACK": "Vítejte zpět",
+  "WELCOME_BACK_USER": "Vítejte zpět, {0}!",
   "POPUP_BLOCKED": "Vyskakovací okno bylo blokováno. Povolte prosím vyskakovací okna a zkuste to znovu, nebo přejděte ručně na {0}",
   "COLLAPSE_ALL_FOLDERS": "Sbalit všechny složky",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Vlastní úryvky…",
@@ -1456,6 +1458,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Text šablony",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Popis",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Přípona souboru",
-  "WELCOME_BACK": "Vítejte zpět",
-  "WELCOME_BACK_USER": "Vítejte zpět, {0}!"
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Skrýt tuto zprávu"
 });

@@ -1414,6 +1414,8 @@ define({
   "CHECKING": "در حال بررسی…",
   "CHECKING_STATUS": "در حال بررسی وضعیت ورود…",
   "NOT_SIGNED_IN_YET": "هنوز وارد سیستم نشده‌اید. لطفاً ورود به سیستم را در برگه دیگر تکمیل کنید.",
+  "WELCOME_BACK": "خوش آمدید",
+  "WELCOME_BACK_USER": "{0} عزیز، خوش آمدید!",
   "POPUP_BLOCKED": "پنجره‌ی پاپ‌آپ مسدود شده است. لطفاً اجازه نمایش پنجره‌های پاپ‌آپ را بدهید و دوباره امتحان کنید، یا به صورت دستی به {0} بروید.",
   "COLLAPSE_ALL_FOLDERS": "بستن همهٔ پوشه‌ها",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "قطعه‌کدهای سفارشی…",
@@ -1456,6 +1458,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "متن الگو",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "توضیحات",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "پسوند فایل",
-  "WELCOME_BACK": "خوش آمدید",
-  "WELCOME_BACK_USER": "{0} عزیز، خوش آمدید!"
+  "LIVE_PREVIEW_HIDE_OVERLAY": "پنهان کردن این پیام"
 });

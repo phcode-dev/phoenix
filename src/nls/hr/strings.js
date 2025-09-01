@@ -1414,6 +1414,8 @@ define({
   "CHECKING": "Provjeravam…",
   "CHECKING_STATUS": "Provjera statusa prijave…",
   "NOT_SIGNED_IN_YET": "Još niste prijavljeni. Molimo dovršite prijavu u drugoj kartici.",
+  "WELCOME_BACK": "Dobrodošli natrag",
+  "WELCOME_BACK_USER": "Dobrodošli natrag, {0}!",
   "POPUP_BLOCKED": "Skočni prozor blokiran. Molimo dopustite skočne prozore i pokušajte ponovno ili ručno idite na {0}",
   "COLLAPSE_ALL_FOLDERS": "Sažmi sve mape",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Prilagođeni isječci…",
@@ -1456,6 +1458,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Tekst predloška",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Opis",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Ekstenzija datoteke",
-  "WELCOME_BACK": "Dobrodošli natrag",
-  "WELCOME_BACK_USER": "Dobrodošli natrag, {0}!"
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Sakrij ovu poruku"
 });

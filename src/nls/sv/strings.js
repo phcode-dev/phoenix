@@ -1414,6 +1414,8 @@ define({
   "CHECKING": "Kontrollerar…",
   "CHECKING_STATUS": "Kontrollerar inloggningsstatus…",
   "NOT_SIGNED_IN_YET": "Inte inloggad än. Slutför inloggningen i den andra fliken.",
+  "WELCOME_BACK": "Välkommen tillbaka",
+  "WELCOME_BACK_USER": "Välkommen tillbaka, {0}!",
   "POPUP_BLOCKED": "Popup-fönster blockerades. Tillåt popup-fönster och försök igen, eller gå manuellt till {0}",
   "COLLAPSE_ALL_FOLDERS": "Komprimera alla mappar",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Anpassade kodsnuttar…",
@@ -1456,6 +1458,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Malltext",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Beskrivning",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Filändelse",
-  "WELCOME_BACK": "Välkommen tillbaka",
-  "WELCOME_BACK_USER": "Välkommen tillbaka, {0}!"
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Dölj detta meddelande"
 });

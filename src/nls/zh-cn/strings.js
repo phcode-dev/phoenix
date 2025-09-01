@@ -1414,6 +1414,8 @@ define({
   "CHECKING": "正在检查…",
   "CHECKING_STATUS": "正在检查登录状态…",
   "NOT_SIGNED_IN_YET": "尚未登录。请在另一个标签页中完成登录。",
+  "WELCOME_BACK": "欢迎回来",
+  "WELCOME_BACK_USER": "欢迎回来，{0}！",
   "POPUP_BLOCKED": "弹窗被阻止。请允许弹窗并重试，或手动导航至 {0}",
   "COLLAPSE_ALL_FOLDERS": "折叠所有文件夹",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "自定义代码片段…",
@@ -1456,6 +1458,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "模板文本",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "描述",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "文件扩展名",
-  "WELCOME_BACK": "欢迎回来",
-  "WELCOME_BACK_USER": "欢迎回来，{0}！"
+  "LIVE_PREVIEW_HIDE_OVERLAY": "隐藏此消息"
 });

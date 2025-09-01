@@ -1414,6 +1414,8 @@ define({
   "CHECKING": "Checking…",
   "CHECKING_STATUS": "Checking login status…",
   "NOT_SIGNED_IN_YET": "Not signed in yet. Please complete sign-in in the other tab.",
+  "WELCOME_BACK": "Welcome back",
+  "WELCOME_BACK_USER": "Welcome back, {0}!",
   "POPUP_BLOCKED": "Pop-up blocked. Please allow pop-ups and try again, or manually navigate to {0}",
   "COLLAPSE_ALL_FOLDERS": "Collapse all folders",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Custom Snippets…",
@@ -1456,6 +1458,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Template Text",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Description",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "File Extension",
-  "WELCOME_BACK": "Welcome back",
-  "WELCOME_BACK_USER": "Welcome back, {0}!"
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Dismiss this message"
 });

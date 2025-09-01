@@ -1414,6 +1414,8 @@ define({
   "CHECKING": "Проверка…",
   "CHECKING_STATUS": "Проверка статуса входа…",
   "NOT_SIGNED_IN_YET": "Вы ещё не вошли в систему. Пожалуйста, завершите вход в другой вкладке.",
+  "WELCOME_BACK": "С возвращением",
+  "WELCOME_BACK_USER": "С возвращением, {0}!",
   "POPUP_BLOCKED": "Всплывающее окно заблокировано. Разрешите всплывающие окна и попробуйте снова или перейдите вручную по адресу {0}",
   "COLLAPSE_ALL_FOLDERS": "Свернуть все папки",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Пользовательские сниппеты…",
@@ -1456,6 +1458,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Текст шаблона",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Описание",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Расширение файла",
-  "WELCOME_BACK": "С возвращением",
-  "WELCOME_BACK_USER": "С возвращением, {0}!"
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Скрыть это сообщение"
 });

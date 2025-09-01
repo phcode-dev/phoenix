@@ -1414,6 +1414,8 @@ define({
   "CHECKING": "Se verifică…",
   "CHECKING_STATUS": "Se verifică starea de autentificare…",
   "NOT_SIGNED_IN_YET": "Nu sunteți încă autentificat. Vă rugăm finalizați autentificarea în cealaltă filă.",
+  "WELCOME_BACK": "Bine ai revenit",
+  "WELCOME_BACK_USER": "Bine ai revenit, {0}!",
   "POPUP_BLOCKED": "Fereastră pop-up blocată. Vă rugăm permiteți ferestrele pop-up și încercați din nou sau navigați manual la {0}",
   "COLLAPSE_ALL_FOLDERS": "Restrânge Toate Folderele",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Fragmente de cod personalizate…",
@@ -1456,6 +1458,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Text șablon",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Descriere",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extensie fișier",
-  "WELCOME_BACK": "Bine ai revenit",
-  "WELCOME_BACK_USER": "Bine ai revenit, {0}!"
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Ascunde acest mesaj"
 });

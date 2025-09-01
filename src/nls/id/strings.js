@@ -1414,6 +1414,8 @@ define({
   "CHECKING": "Memeriksa…",
   "CHECKING_STATUS": "Memeriksa status masuk…",
   "NOT_SIGNED_IN_YET": "Anda belum masuk. Silakan selesaikan proses masuk di tab lain.",
+  "WELCOME_BACK": "Selamat datang kembali",
+  "WELCOME_BACK_USER": "Selamat datang kembali, {0}!",
   "POPUP_BLOCKED": "Pop-up diblokir. Harap izinkan pop-up dan coba lagi, atau buka {0} secara manual",
   "COLLAPSE_ALL_FOLDERS": "Ciutkan Semua Folder",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "Cuplikan Kustom…",
@@ -1456,6 +1458,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Teks Templat",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Deskripsi",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Ekstensi Berkas",
-  "WELCOME_BACK": "Selamat datang kembali",
-  "WELCOME_BACK_USER": "Selamat datang kembali, {0}!"
+  "LIVE_PREVIEW_HIDE_OVERLAY": "Sembunyikan pesan ini"
 });

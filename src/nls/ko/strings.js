@@ -1414,6 +1414,8 @@ define({
   "CHECKING": "확인 중…",
   "CHECKING_STATUS": "로그인 상태 확인 중…",
   "NOT_SIGNED_IN_YET": "아직 로그인하지 않았습니다. 다른 탭에서 로그인을 완료하세요.",
+  "WELCOME_BACK": "다시 오신 것을 환영합니다",
+  "WELCOME_BACK_USER": "{0}님, 다시 오신 것을 환영합니다!",
   "POPUP_BLOCKED": "팝업이 차단되었습니다. 팝업을 허용하고 다시 시도하거나, {0}으로 직접 이동하세요.",
   "COLLAPSE_ALL_FOLDERS": "모든 폴더 접기",
   "CUSTOM_SNIPPETS_MENU_ITEM_NAME": "사용자 정의 스니펫…",
@@ -1456,6 +1458,5 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "템플릿 텍스트",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "설명",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "파일 확장자",
-  "WELCOME_BACK": "다시 오신 것을 환영합니다",
-  "WELCOME_BACK_USER": "{0}님, 다시 오신 것을 환영합니다!"
+  "LIVE_PREVIEW_HIDE_OVERLAY": "이 메시지 숨기기"
 });
