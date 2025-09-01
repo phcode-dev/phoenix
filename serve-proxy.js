@@ -8,8 +8,8 @@ const fs = require('fs');
 const httpProxy = require('http-proxy');
 
 // Account server configuration - switch between local and production
-//const ACCOUNT_SERVER = 'https://account.phcode.dev'; // Production
-const ACCOUNT_SERVER = 'http://localhost:5000'; // Local development
+const ACCOUNT_SERVER = 'https://account.phcode.dev'; // Production
+// const ACCOUNT_SERVER = 'http://localhost:5000'; // Local development
 
 // Default configuration
 let config = {
