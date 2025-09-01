@@ -350,7 +350,7 @@
                 baseURL: _getBaseURL(),
                 isTestWindow: _isTestWindow(),
                 firstBoot: false, // will be set below
-                pro: {},
+                pro: {}, // this is only for display purposes and should not be used to gate features. use kernal mode for that
                 startTime: Date.now(),
                 TRUSTED_ORIGINS: {
                     // if modifying this list, make sure to update in https://github.com/phcode-dev/phcode.live/blob/main/docs/trustedOrigins.js

@@ -190,12 +190,13 @@ define(function (require, exports, module) {
     function _updateBranding(entitlements) {
         const $brandingLink = $("#phcode-io-main-nav");
         if (!entitlements) {
+            // Phoenix.pro is only for display purposes and should not be used to gate features.
+            // Use kernal mode apis for trusted check of pro features.
             Phoenix.pro.plan = {
                 paidSubscriber: false,
                 name: "Community Edition",
                 isInTrial: false
             };
-            return;
         }
 
         if (entitlements && entitlements.plan){
