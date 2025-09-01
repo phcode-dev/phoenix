@@ -2126,6 +2126,115 @@ define(function (require, exports, module) {
 
                 await endEditModePreviewSession();
             }, 30000);
+
+            it("should delete element from source code when delete button is clicked", async function () {
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                    "SpecRunnerUtils.openProjectFiles simple1.html");
+
+                await waitsForLiveDevelopmentToOpenWithEditMode('hover');
+
+                // Get original source code content
+                const originalContent = DocumentManager.getCurrentDocument().getText();
+                expect(originalContent).toContain('id="testId"'); // Ensure test element exists
+
+                // Click on the test element to show more options box
+                await forRemoteExec(`document.getElementById('testId').click()`);
+
+                // Wait for more options box to appear
+                await waitForMoreOptionsBox(true);
+
+                // Click the delete button in the shadow DOM
+                await forRemoteExec(`
+                    const shadowHosts = Array.from(document.body.children).filter(el => el.shadowRoot);
+                    let deleteButton = null;
+
+                    shadowHosts.forEach(host => {
+                        if (host.shadowRoot && host.shadowRoot.innerHTML.includes('phoenix-more-options-box')) {
+                            deleteButton = host.shadowRoot.querySelector('span[data-action="delete"]');
+                        }
+                    });
+
+                    if (deleteButton) {
+                        deleteButton.click();
+                    }
+                `);
+
+                // Wait for the operation to complete
+                await awaits(1000);
+
+                // Verify the element is removed from source code
+                const updatedContent = DocumentManager.getCurrentDocument().getText();
+                expect(updatedContent).not.toContain('id="testId"');
+                expect(updatedContent.length).toBeLessThan(originalContent.length);
+
+                // Verify the element is also removed from DOM
+                await forRemoteExec(`!!document.getElementById('testId')`, (result) => {
+                    return result === false;
+                });
+
+                await endEditModePreviewSession();
+            }, 30000);
+
+            it("should duplicate element in source code when duplicate button is clicked", async function () {
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                    "SpecRunnerUtils.openProjectFiles simple1.html");
+
+                await waitsForLiveDevelopmentToOpenWithEditMode('hover');
+
+                // Get original source code content
+                const originalContent = DocumentManager.getCurrentDocument().getText();
+                expect(originalContent).toContain('id="testId"'); // Ensure test element exists
+
+                // Count initial occurrences of the test element
+                const originalTestIdCount = (originalContent.match(/id="testId"/g) || []).length;
+                expect(originalTestIdCount).toBe(1); // Should have exactly one initially
+
+                // Click on the test element to show more options box
+                await forRemoteExec(`document.getElementById('testId').click()`);
+
+                // Wait for more options box to appear
+                await waitForMoreOptionsBox(true);
+
+                // Click the duplicate button in the shadow DOM
+                await forRemoteExec(`
+                    const shadowHosts = Array.from(document.body.children).filter(el => el.shadowRoot);
+                    let duplicateButton = null;
+
+                    shadowHosts.forEach(host => {
+                        if (host.shadowRoot && host.shadowRoot.innerHTML.includes('phoenix-more-options-box')) {
+                            duplicateButton = host.shadowRoot.querySelector('span[data-action="duplicate"]');
+                        }
+                    });
+
+                    if (duplicateButton) {
+                        duplicateButton.click();
+                    }
+                `);
+
+                // Wait for the operation to complete
+                await awaits(1000);
+
+                // Verify the element is duplicated in source code
+                const updatedContent = DocumentManager.getCurrentDocument().getText();
+                const newTestIdCount = (updatedContent.match(/id="testId"/g) || []).length;
+                expect(newTestIdCount).toBe(2); // Should now have two instances
+                expect(updatedContent.length).toBeGreaterThan(originalContent.length);
+
+                // Verify both elements exist in the DOM
+                await forRemoteExec(`document.querySelectorAll('[id="testId"]').length`, (result) => {
+                    return result === 2;
+                });
+
+                // Verify both elements have the same text content
+                await forRemoteExec(`
+                    const elements = document.querySelectorAll('[id="testId"]');
+                    elements.length === 2 && elements[0].textContent === elements[1].textContent
+                `, (result) => {
+                    return result === true;
+                });
+
+                await endEditModePreviewSession();
+            }, 30000);
         });
     });
 });
