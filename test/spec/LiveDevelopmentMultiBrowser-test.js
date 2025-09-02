@@ -2669,6 +2669,37 @@ define(function (require, exports, module) {
 
                 await endEditModePreviewSession();
             }, 30000);
+
+            it("should not show select parent option when element's direct parent is body", async function () {
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                    "SpecRunnerUtils.openProjectFiles simple1.html");
+
+                await waitsForLiveDevelopmentToOpenWithEditMode('hover');
+
+                // Click on the test element (which has body as direct parent in simple1.html)
+                await forRemoteExec(`document.getElementById('testId').click()`);
+
+                // Wait for more options box to appear
+                await waitForMoreOptionsBox(true);
+
+                // Check that select-parent option is NOT present in the shadow DOM
+                await forRemoteExec(`
+                    const shadowHosts = Array.from(document.body.children).filter(el => el.shadowRoot);
+                    let selectParentButton = null;
+
+                    shadowHosts.forEach(host => {
+                        if (host.shadowRoot && host.shadowRoot.innerHTML.includes('phoenix-more-options-box')) {
+                            selectParentButton = host.shadowRoot.querySelector('span[data-action="select-parent"]');
+                        }
+                    });
+
+                    selectParentButton === null;
+                `, (result) => {
+                    return result === true;
+                });
+
+                await endEditModePreviewSession();
+            }, 30000);
         });
     });
 });
