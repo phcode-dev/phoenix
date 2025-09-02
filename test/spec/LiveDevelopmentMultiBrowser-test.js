@@ -1975,7 +1975,6 @@ define(function (require, exports, module) {
                         LiveDevMultiBrowser.updateConfig(JSON.stringify(LiveDevMultiBrowser.config));
                     }
                 }
-                await awaits(500);
             }
 
             async function switchToEditMode() {
@@ -1985,7 +1984,6 @@ define(function (require, exports, module) {
                         LiveDevMultiBrowser.updateConfig(JSON.stringify(LiveDevMultiBrowser.config));
                     }
                 }
-                await awaits(500);
             }
 
             it("should show info box on hover when elemHighlights is 'hover'", async function () {
@@ -2179,10 +2177,12 @@ define(function (require, exports, module) {
                     }
                 `);
 
-                // Wait for the operation to complete
-                await awaits(1000);
-
                 // Verify the element is removed from source code
+                await awaitsFor(function () {
+                    const updatedContent = DocumentManager.getCurrentDocument().getText();
+                    return !updatedContent.includes('id="testId"');
+                }, "element to be removed from source code");
+
                 const updatedContent = DocumentManager.getCurrentDocument().getText();
                 expect(updatedContent).not.toContain('id="testId"');
                 expect(updatedContent.length).toBeLessThan(originalContent.length);
@@ -2232,7 +2232,11 @@ define(function (require, exports, module) {
                 `);
 
                 // Wait for the operation to complete
-                await awaits(1000);
+                await awaitsFor(function () {
+                    const updatedContent = DocumentManager.getCurrentDocument().getText();
+                    const newTestIdCount = (updatedContent.match(/id="testId"/g) || []).length;
+                    return newTestIdCount === 2;
+                }, "element to be duplicated in source code");
 
                 // Verify the element is duplicated in source code
                 const updatedContent = DocumentManager.getCurrentDocument().getText();
@@ -2280,8 +2284,10 @@ define(function (require, exports, module) {
                                 element.dispatchEvent(event);
                             `);
 
-                // Wait a moment for edit mode to activate
-                await awaits(500);
+                // Wait for edit mode to activate
+                await forRemoteExec(`document.getElementById('testId').hasAttribute('contenteditable')`, (result) => {
+                    return result === true;
+                });
 
                 // Verify element is in edit mode (contenteditable)
                 await forRemoteExec(`document.getElementById('testId').hasAttribute('contenteditable')`, (result) => {
@@ -2308,7 +2314,10 @@ define(function (require, exports, module) {
                             `);
 
                 // Wait for the operation to complete
-                await awaits(1000);
+                await awaitsFor(function () {
+                    const updatedContent = DocumentManager.getCurrentDocument().getText();
+                    return updatedContent.includes(newText);
+                }, "text to be updated in source code");
 
                 // Verify the text is updated in source code
                 const updatedContent = DocumentManager.getCurrentDocument().getText();
@@ -2360,7 +2369,9 @@ define(function (require, exports, module) {
                             `);
 
                 // Wait for edit mode to activate
-                await awaits(500);
+                await forRemoteExec(`document.getElementById('testId').hasAttribute('contenteditable')`, (result) => {
+                    return result === true;
+                });
 
                 // Verify element is in edit mode
                 await forRemoteExec(`document.getElementById('testId').hasAttribute('contenteditable')`, (result) => {
@@ -2386,7 +2397,10 @@ define(function (require, exports, module) {
                             `);
 
                 // Wait for operation to complete
-                await awaits(1000);
+                await awaitsFor(function () {
+                    const updatedContent = DocumentManager.getCurrentDocument().getText();
+                    return updatedContent.includes(newText);
+                }, "text changes to be saved in source code");
 
                 // Verify changes in source code
                 const updatedContent = DocumentManager.getCurrentDocument().getText();
@@ -2425,8 +2439,6 @@ define(function (require, exports, module) {
                                 element.dispatchEvent(event);
                             `);
 
-                await awaits(500);
-
                 // Modify the text content
                 await forRemoteExec(`
                                 const element = document.getElementById('testId');
@@ -2446,7 +2458,10 @@ define(function (require, exports, module) {
                             `);
 
                 // Wait for operation to complete
-                await awaits(1000);
+                await awaitsFor(function () {
+                    const finalContent = DocumentManager.getCurrentDocument().getText();
+                    return finalContent === originalContent;
+                }, "edit to be cancelled and source unchanged");
 
                 // Verify source code is unchanged (edit was cancelled)
                 const finalContent = DocumentManager.getCurrentDocument().getText();
@@ -2490,8 +2505,6 @@ define(function (require, exports, module) {
                                 element.dispatchEvent(event);
                             `);
 
-                await awaits(500);
-
                 // Modify the text content
                 await forRemoteExec(`
                                 const element = document.getElementById('testId');
@@ -2505,7 +2518,10 @@ define(function (require, exports, module) {
                             `);
 
                 // Wait for operation to complete
-                await awaits(1000);
+                await awaitsFor(function () {
+                    const updatedContent = DocumentManager.getCurrentDocument().getText();
+                    return updatedContent.includes(newText);
+                }, "blur event to save changes to source code");
 
                 // Verify changes were saved in source code
                 const updatedContent = DocumentManager.getCurrentDocument().getText();
@@ -2561,7 +2577,10 @@ define(function (require, exports, module) {
                 `);
 
                 // Wait for the delete operation to complete
-                await awaits(1000);
+                await awaitsFor(function () {
+                    const deletedContent = DocumentManager.getCurrentDocument().getText();
+                    return !deletedContent.includes('id="testId"');
+                }, "delete operation to complete");
 
                 // Verify the element is removed from source code
                 const deletedContent = DocumentManager.getCurrentDocument().getText();
@@ -2586,7 +2605,10 @@ define(function (require, exports, module) {
                 `);
 
                 // Wait for the undo operation to complete
-                await awaits(1500);
+                await awaitsFor(function () {
+                    const restoredContent = DocumentManager.getCurrentDocument().getText();
+                    return restoredContent.includes('id="testId"');
+                }, "undo operation to restore deleted element");
 
                 // Verify the element is restored in source code
                 const restoredContent = DocumentManager.getCurrentDocument().getText();
@@ -2643,7 +2665,11 @@ define(function (require, exports, module) {
                 `);
 
                 // Wait for the duplicate operation to complete
-                await awaits(1000);
+                await awaitsFor(function () {
+                    const duplicatedContent = DocumentManager.getCurrentDocument().getText();
+                    const newTestIdCount = (duplicatedContent.match(/id="testId"/g) || []).length;
+                    return newTestIdCount === 2;
+                }, "duplicate operation to complete");
 
                 // Verify the element is duplicated in source code
                 const duplicatedContent = DocumentManager.getCurrentDocument().getText();
@@ -2669,7 +2695,11 @@ define(function (require, exports, module) {
                 `);
 
                 // Wait for the undo operation to complete
-                await awaits(1500);
+                await awaitsFor(function () {
+                    const restoredContent = DocumentManager.getCurrentDocument().getText();
+                    const restoredTestIdCount = (restoredContent.match(/id="testId"/g) || []).length;
+                    return restoredTestIdCount === 1;
+                }, "undo operation to remove duplicate");
 
                 // Verify the duplicate is removed and we're back to original state
                 const restoredContent = DocumentManager.getCurrentDocument().getText();
@@ -2743,7 +2773,6 @@ define(function (require, exports, module) {
 
                 // Step 5: Verify clicking element in preview mode doesn't show boxes
                 await forRemoteExec(`document.getElementById('testId').click()`);
-                await awaits(300); // Brief wait to ensure no boxes appear
                 await waitForMoreOptionsBox(false);
                 await waitForClickedElement(false);
 
@@ -2775,7 +2804,6 @@ define(function (require, exports, module) {
 
                 // Step 3: Click the preview (play icon) button in the toolbar
                 testWindow.$("#previewModeLivePreviewButton").click();
-                await awaits(1000); // Wait for mode switch and preference update
 
                 // Step 4: Verify boxes are hidden after clicking preview button
                 await waitForMoreOptionsBox(false);
@@ -2783,13 +2811,11 @@ define(function (require, exports, module) {
 
                 // Step 5: Verify clicking element in preview mode doesn't show boxes
                 await forRemoteExec(`document.getElementById('testId').click()`);
-                await awaits(300);
                 await waitForMoreOptionsBox(false);
                 await waitForClickedElement(false);
 
                 // Step 6: Click preview button again to toggle back to edit mode
                 testWindow.$("#previewModeLivePreviewButton").click();
-                await awaits(1000); // Wait for mode switch and preference update
 
                 // Step 7: Click element to verify boxes work again in edit mode
                 await forRemoteExec(`document.getElementById('testId').click()`);
