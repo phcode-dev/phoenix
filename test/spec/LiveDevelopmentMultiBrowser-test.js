@@ -2504,6 +2504,171 @@ define(function (require, exports, module) {
 
                 await endEditModePreviewSession();
             }, 30000);
+
+            it("should restore deleted element when undo is pressed after delete operation", async function () {
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                    "SpecRunnerUtils.openProjectFiles simple1.html");
+
+                await waitsForLiveDevelopmentToOpenWithEditMode('hover');
+
+                // Get original source code content
+                const originalContent = DocumentManager.getCurrentDocument().getText();
+                expect(originalContent).toContain('id="testId"'); // Ensure test element exists
+
+                // Store original element text for verification
+                const originalElementText = await forRemoteExec(`document.getElementById('testId').textContent.trim()`);
+
+                // Click on the test element to show more options box
+                await forRemoteExec(`document.getElementById('testId').click()`);
+
+                // Wait for more options box to appear
+                await waitForMoreOptionsBox(true);
+
+                // Click the delete button in the shadow DOM
+                await forRemoteExec(`
+                    const shadowHosts = Array.from(document.body.children).filter(el => el.shadowRoot);
+                    let deleteButton = null;
+
+                    shadowHosts.forEach(host => {
+                        if (host.shadowRoot && host.shadowRoot.innerHTML.includes('phoenix-more-options-box')) {
+                            deleteButton = host.shadowRoot.querySelector('span[data-action="delete"]');
+                        }
+                    });
+
+                    if (deleteButton) {
+                        deleteButton.click();
+                    }
+                `);
+
+                // Wait for the delete operation to complete
+                await awaits(1000);
+
+                // Verify the element is removed from source code
+                const deletedContent = DocumentManager.getCurrentDocument().getText();
+                expect(deletedContent).not.toContain('id="testId"');
+                expect(deletedContent.length).toBeLessThan(originalContent.length);
+
+                // Verify the element is also removed from DOM
+                await forRemoteExec(`!!document.getElementById('testId')`, (result) => {
+                    return result === false;
+                });
+
+                // Now perform undo operation using Ctrl+Z
+                await forRemoteExec(`
+                    const event = new KeyboardEvent('keydown', {
+                        key: 'z',
+                        ctrlKey: true,
+                        metaKey: false, // Use false for Windows/Linux, true for Mac
+                        bubbles: true,
+                        cancelable: true
+                    });
+                    document.dispatchEvent(event);
+                `);
+
+                // Wait for the undo operation to complete
+                await awaits(1500);
+
+                // Verify the element is restored in source code
+                const restoredContent = DocumentManager.getCurrentDocument().getText();
+                expect(restoredContent).toContain('id="testId"');
+                expect(restoredContent.length).toBe(originalContent.length);
+
+                // Verify the element is restored in DOM
+                await forRemoteExec(`!!document.getElementById('testId')`, (result) => {
+                    return result === true;
+                });
+
+                // Verify the restored element has the same text content
+                await forRemoteExec(`document.getElementById('testId').textContent.trim()`, (result) => {
+                    return result === originalElementText;
+                });
+
+                await endEditModePreviewSession();
+            }, 30000);
+
+            it("should restore original state when undo is pressed after duplicate operation", async function () {
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                    "SpecRunnerUtils.openProjectFiles simple1.html");
+
+                await waitsForLiveDevelopmentToOpenWithEditMode('hover');
+
+                // Get original source code content
+                const originalContent = DocumentManager.getCurrentDocument().getText();
+                expect(originalContent).toContain('id="testId"'); // Ensure test element exists
+
+                // Count initial occurrences of the test element
+                const originalTestIdCount = (originalContent.match(/id="testId"/g) || []).length;
+                expect(originalTestIdCount).toBe(1); // Should have exactly one initially
+
+                // Click on the test element to show more options box
+                await forRemoteExec(`document.getElementById('testId').click()`);
+
+                // Wait for more options box to appear
+                await waitForMoreOptionsBox(true);
+
+                // Click the duplicate button in the shadow DOM
+                await forRemoteExec(`
+                    const shadowHosts = Array.from(document.body.children).filter(el => el.shadowRoot);
+                    let duplicateButton = null;
+
+                    shadowHosts.forEach(host => {
+                        if (host.shadowRoot && host.shadowRoot.innerHTML.includes('phoenix-more-options-box')) {
+                            duplicateButton = host.shadowRoot.querySelector('span[data-action="duplicate"]');
+                        }
+                    });
+
+                    if (duplicateButton) {
+                        duplicateButton.click();
+                    }
+                `);
+
+                // Wait for the duplicate operation to complete
+                await awaits(1000);
+
+                // Verify the element is duplicated in source code
+                const duplicatedContent = DocumentManager.getCurrentDocument().getText();
+                const newTestIdCount = (duplicatedContent.match(/id="testId"/g) || []).length;
+                expect(newTestIdCount).toBe(2); // Should now have two instances
+                expect(duplicatedContent.length).toBeGreaterThan(originalContent.length);
+
+                // Verify both elements exist in the DOM
+                await forRemoteExec(`document.querySelectorAll('[id="testId"]').length`, (result) => {
+                    return result === 2;
+                });
+
+                // Now perform undo operation using Ctrl+Z
+                await forRemoteExec(`
+                    const event = new KeyboardEvent('keydown', {
+                        key: 'z',
+                        ctrlKey: true,
+                        metaKey: false, // Use false for Windows/Linux, true for Mac
+                        bubbles: true,
+                        cancelable: true
+                    });
+                    document.dispatchEvent(event);
+                `);
+
+                // Wait for the undo operation to complete
+                await awaits(1500);
+
+                // Verify the duplicate is removed and we're back to original state
+                const restoredContent = DocumentManager.getCurrentDocument().getText();
+                const restoredTestIdCount = (restoredContent.match(/id="testId"/g) || []).length;
+                expect(restoredTestIdCount).toBe(1); // Should be back to one instance
+                expect(restoredContent.length).toBe(originalContent.length);
+
+                // Verify only one element exists in DOM
+                await forRemoteExec(`document.querySelectorAll('[id="testId"]').length`, (result) => {
+                    return result === 1;
+                });
+
+                // Verify the remaining element still has correct content
+                await forRemoteExec(`!!document.getElementById('testId')`, (result) => {
+                    return result === true;
+                });
+
+                await endEditModePreviewSession();
+            }, 30000);
         });
     });
 });
