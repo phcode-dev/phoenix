@@ -1968,6 +1968,26 @@ define(function (require, exports, module) {
                 await waitForClickedElement(false);
             }
 
+            async function switchToPreviewMode() {
+                if (LiveDevMultiBrowser && LiveDevMultiBrowser.config) {
+                    LiveDevMultiBrowser.config.isProUser = false;
+                    if (LiveDevMultiBrowser.updateConfig) {
+                        LiveDevMultiBrowser.updateConfig(JSON.stringify(LiveDevMultiBrowser.config));
+                    }
+                }
+                await awaits(500);
+            }
+
+            async function switchToEditMode() {
+                if (LiveDevMultiBrowser && LiveDevMultiBrowser.config) {
+                    LiveDevMultiBrowser.config.isProUser = true;
+                    if (LiveDevMultiBrowser.updateConfig) {
+                        LiveDevMultiBrowser.updateConfig(JSON.stringify(LiveDevMultiBrowser.config));
+                    }
+                }
+                await awaits(500);
+            }
+
             it("should show info box on hover when elemHighlights is 'hover'", async function () {
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
                     "SpecRunnerUtils.openProjectFiles simple1.html");
@@ -2697,6 +2717,86 @@ define(function (require, exports, module) {
                 `, (result) => {
                     return result === true;
                 });
+
+                await endEditModePreviewSession();
+            }, 30000);
+
+            it("should hide UI boxes when switching to preview mode and show them when switching back to edit mode", async function () {
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                    "SpecRunnerUtils.openProjectFiles simple1.html");
+
+                await waitsForLiveDevelopmentToOpenWithEditMode('hover');
+
+                // Step 1: Click element to show UI boxes in edit mode
+                await forRemoteExec(`document.getElementById('testId').click()`);
+
+                // Step 2: Verify boxes are visible
+                await waitForMoreOptionsBox(true);
+                await waitForClickedElement(true);
+
+                // Step 3: Switch to preview mode
+                await switchToPreviewMode();
+
+                // Step 4: Verify boxes are hidden after mode switch
+                await waitForMoreOptionsBox(false);
+                await waitForClickedElement(false);
+
+                // Step 5: Verify clicking element in preview mode doesn't show boxes
+                await forRemoteExec(`document.getElementById('testId').click()`);
+                await awaits(300); // Brief wait to ensure no boxes appear
+                await waitForMoreOptionsBox(false);
+                await waitForClickedElement(false);
+
+                // Step 6: Switch back to edit mode
+                await switchToEditMode();
+
+                // Step 7: Click element again to show boxes in edit mode
+                await forRemoteExec(`document.getElementById('testId').click()`);
+
+                // Step 8: Verify boxes are visible again
+                await waitForMoreOptionsBox(true);
+                await waitForClickedElement(true);
+
+                await endEditModePreviewSession();
+            }, 30000);
+
+            it("should switch to preview mode when preview (play icon) button is clicked", async function () {
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                    "SpecRunnerUtils.openProjectFiles simple1.html");
+
+                await waitsForLiveDevelopmentToOpenWithEditMode('hover');
+
+                // Step 1: Click element to show UI boxes in edit mode
+                await forRemoteExec(`document.getElementById('testId').click()`);
+
+                // Step 2: Verify boxes are visible in edit mode
+                await waitForMoreOptionsBox(true);
+                await waitForClickedElement(true);
+
+                // Step 3: Click the preview (play icon) button in the toolbar
+                testWindow.$("#previewModeLivePreviewButton").click();
+                await awaits(1000); // Wait for mode switch and preference update
+
+                // Step 4: Verify boxes are hidden after clicking preview button
+                await waitForMoreOptionsBox(false);
+                await waitForClickedElement(false);
+
+                // Step 5: Verify clicking element in preview mode doesn't show boxes
+                await forRemoteExec(`document.getElementById('testId').click()`);
+                await awaits(300);
+                await waitForMoreOptionsBox(false);
+                await waitForClickedElement(false);
+
+                // Step 6: Click preview button again to toggle back to edit mode
+                testWindow.$("#previewModeLivePreviewButton").click();
+                await awaits(1000); // Wait for mode switch and preference update
+
+                // Step 7: Click element to verify boxes work again in edit mode
+                await forRemoteExec(`document.getElementById('testId').click()`);
+
+                // Step 8: Verify boxes are visible again
+                await waitForMoreOptionsBox(true);
+                await waitForClickedElement(true);
 
                 await endEditModePreviewSession();
             }, 30000);
