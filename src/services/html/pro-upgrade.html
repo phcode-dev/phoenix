@@ -1,105 +1,11 @@
 <div class="browser-login-waiting-dialog modal">
-    <style>
-        /* Local tokens mapped to your dark palette */
-        .browser-login-waiting-dialog {
-            --bg: #1c1c1e;                 /* @dark-bc-bg-status-bar */
-            --card-bg: #313131;            /* @dark-bc-panel-bg-alt */
-            --card-bg-hover: #2c2c2c;      /* @dark-bc-panel-bg */
-            --card-border: rgba(255,255,255,0.06);
-            --card-border-hover: rgba(255,255,255,0.12);
-            --text: #ffffff;               /* @dark-bc-text-alt */
-            --text-muted: #9a9a9a;         /* @dark-bc-text-quiet */
-            --text-medium: #cccccc;        /* @dark-bc-text-medium */
-            --thumb-bg: #1b1b1b;           /* @dark-bc-bg-inline-widget */
-            --focus: #1473e6;              /* highlight/focus blue */
-            --link: #6bbeff;               /* @dark-bc-text-link */
-        }
-
-        .modal-header .dialog-title {
-            color: var(--text);
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-        }
-
-        .feature-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 5px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            transition: background 0.15s ease, border-color 0.15s ease;
-        }
-
-        .feature-card:hover {
-            background: var(--card-bg-hover);
-            border-color: var(--card-border-hover);
-        }
-
-        .feature-card:focus-within {
-            outline: 2px solid var(--focus);
-            outline-offset: 2px;
-        }
-
-        .feature-thumb {
-            width: 100%;
-            height: 120px;
-            object-fit: cover;
-            background: var(--thumb-bg);
-        }
-
-        .feature-body {
-            padding: 12px;
-        }
-
-        .feature-body h2 {
-            margin: 0 0 6px;
-            font-size: 15px;
-            color: var(--text);
-        }
-
-        .feature-body p {
-            margin: 0;
-            font-size: 13px;
-            color: var(--text-muted);
-            line-height: 1.35;
-        }
-
-        .waiting-content-container > p {
-            margin-bottom: 20px;
-            font-size: 14px;
-            color: var(--text-medium);
-        }
-
-        .phoenix-pro-title {
-            background: linear-gradient(45deg,#ff8c42,#ffa500,#ffcc70,#ffd700);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            -webkit-text-fill-color: transparent;
-            display: inline-block;
-        }
-
-        .browser-login-waiting-dialog a {
-            color: var(--link);
-            text-decoration: none;
-        }
-        .browser-login-waiting-dialog a:hover {
-            text-decoration: underline;
-        }
-    </style>
-
     <div class="modal-header">
         <h1 class="dialog-title">{{{title}}}</h1>
     </div>
 
     <div class="modal-body" style="max-height: 550px;">
         <div class="waiting-content-container">
-            <p style="margin-bottom: 20px; color: #aaa; font-size: 14px;">
+            <p style="margin-bottom: 20px; font-size: 14px;">
                 {{message}}
             </p>
 

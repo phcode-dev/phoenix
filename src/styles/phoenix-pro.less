@@ -1,0 +1,140 @@
+@import "brackets_variables.less";
+@import "brackets_core_ui_variables.less";
+
+/* Dialog styles with light default + .dark overrides */
+.browser-login-waiting-dialog {
+  /* ---- Layout ---- */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  /* ---- Cards ---- */
+  .feature-card {
+    background: @bc-panel-bg-alt;           // light surface
+    border: 1px solid @bc-panel-border;     // subtle light border
+    border-radius: @bc-border-radius-large; // 5px
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: background 0.15s ease, border-color 0.15s ease;
+
+    .dark & {
+      background: @dark-bc-panel-bg-alt;    // #313131
+      border: 1px solid @dark-bc-highlight; // rgba(255,255,255,0.06)
+      border-radius: @dark-bc-border-radius-large;
+    }
+  }
+
+  .feature-card:hover {
+    background: @bc-panel-bg;               // hover lift
+    border-color: @bc-shadow-small;         // rgba(0,0,0,0.06)
+
+    .dark & {
+      background: @dark-bc-panel-bg;        // #2c2c2c
+      border-color: @dark-bc-panel-bg-hover;// rgba(255,255,255,0.12)
+    }
+  }
+
+  .feature-card:focus-within {
+    outline: 2px solid @bc-btn-border-focused;       // #2893ef (light)
+    outline-offset: 2px;
+
+    .dark & {
+      outline: 2px solid @dark-bc-btn-border-focused;// #2893ef (dark var)
+    }
+  }
+
+  /* ---- Media thumb ---- */
+  .feature-thumb {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    background: @bc-bg-inline-widget;       // #e6e9e9
+
+    .dark & {
+      background: @dark-bc-bg-inline-widget;// #1b1b1b
+    }
+  }
+
+  /* ---- Card body ---- */
+  .feature-body {
+    padding: 12px;
+  }
+
+  .feature-body h2 {
+    margin: 0 0 6px;
+    font-size: 15px;
+    color: @bc-text-emphasized;             // #111
+
+    .dark & {
+      color: @dark-bc-text-alt;             // #fff
+    }
+  }
+
+  .feature-body p {
+    margin: 0;
+    font-size: 13px;
+    color: @bc-text-medium;                 // #606060
+    line-height: 1.35;
+
+    .dark & {
+      color: @dark-bc-text-quiet;           // #9a9a9a
+    }
+  }
+
+  /* ---- Header title ---- */
+  .modal-header .dialog-title {
+    color: @bc-text-emphasized;             // #111 on light
+
+    .dark & {
+      color: @dark-bc-text-alt;             // #fff on dark
+    }
+  }
+
+  /* ---- Body copy ---- */
+  .waiting-content-container > p {
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: @bc-text-medium;                 // #606060
+
+    .dark & {
+      color: @dark-bc-text-medium;          // #ccc
+    }
+  }
+
+  /* ---- Phoenix Pro gradient title ----
+     Light default: use the "light" gradient so it pops on light bg.
+     Dark override: switch to the "dark" gradient for richer contrast. */
+  .phoenix-pro-title {
+    background: @phoenix-pro-gradient-light;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+
+    .dark & {
+      background: @phoenix-pro-gradient-dark;
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
+  }
+
+  /* ---- Links ---- */
+  a {
+    color: @bc-text-link;                   // #0083e8
+    text-decoration: none;
+
+    .dark & {
+      color: @dark-bc-text-link;            // #6bbeff
+    }
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+}
