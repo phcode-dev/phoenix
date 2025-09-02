@@ -16,7 +16,7 @@
     <script src="../../thirdparty/floating-ui.dom.umd.min.js"></script>
     <script src="assets/js/notification-ui.js"></script>
     <style>
-        .phoenix-pro-title {
+        #phoenix-pro-title {
             background: linear-gradient(
                     45deg,
                     #ff8c42,   /* deep orange */
@@ -41,7 +41,7 @@
             </div>
             <div class="editor-name">
                 <h4 class="localize phoenix-free-title">{{APP_TITLE}}</h4>
-                <h4 class="phoenix-pro-title forced-hidden"><a href="https://account.phcode.dev" target="_blank" rel="noopener" class="phoenix-pro"><span class="pro-plan-name">Phoenix Pro</span><i class="fa-solid fa-feather orange-gold" style="margin-left: 4px;"></i></a></h4>
+                <h4 id="phoenix-pro-title" class="forced-hidden"><a href="https://account.phcode.dev" target="_blank" rel="noopener" class="phoenix-pro"><span class="pro-plan-name">Phoenix Pro</span><i class="fa-solid fa-feather orange-gold" style="margin-left: 4px;"></i></a></h4>
                 <!-- Place this tag where you want the button to render. -->
                 <div style="display: flex; justify-content: space-between;">
                     <span class="localize">{{BUILD_THE_WEB}}</span>
