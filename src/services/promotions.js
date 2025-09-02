@@ -33,7 +33,8 @@ define(function (require, exports, module) {
 
     require("./setup-login-service"); // this adds loginService to KernalModeTrust
     const Metrics = require("utils/Metrics"),
-        semver = require("thirdparty/semver.browser");
+        semver = require("thirdparty/semver.browser"),
+        ProDialogs = require("./pro-dialogs");
 
     const KernalModeTrust = window.KernalModeTrust;
     if (!KernalModeTrust) {
@@ -242,6 +243,7 @@ define(function (require, exports, module) {
         Metrics.countEvent(Metrics.EVENT_TYPE.PRO, "trial", "activated");
         console.log(`Pro trial activated for ${trialDays} days`);
 
+        ProDialogs.showProUpgradeDialog(trialDays);
         // Trigger the event for UI to handle
         LoginService.trigger(EVENT_PRO_UPGRADE_ON_INSTALL, {
             trialDays: trialDays,
