@@ -186,7 +186,7 @@ function _openURLInTauri(url) {
 function _updateProBranding() {
     try {
         const $freeTitle = $('.phoenix-free-title');
-        const $proTitle = $('.phoenix-pro-title');
+        const $proTitle = $('#phoenix-pro-title');
         const $proTitleSpan = $('.pro-plan-name');
 
         if (!$freeTitle.length || !$proTitle.length || !$proTitleSpan.length) {
@@ -221,6 +221,10 @@ function initCodeEditor() {
     document.getElementById("viewMore").onclick = function() {
         Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "main.Click", "viewMore");
         window.location.href = 'new-project-more.html';
+    };
+    document.getElementById("phoenix-pro-title").onclick = function() {
+        Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "main.Click", "proTitle");
+        _openURLInTauri("https://account.phcode.dev");
     };
     document.getElementById("githubStarsButton").onclick = function() {
         Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "main.Click", "githubStars");
