@@ -24,13 +24,16 @@
  */
 
 define(function (require, exports, module) {
-    const Promotions = require("./promotions");
+    require("./setup-login-service"); // this adds loginService to KernalModeTrust
+    require("./promotions");
 
     const KernalModeTrust = window.KernalModeTrust;
     if(!KernalModeTrust){
         // integrated extensions will have access to kernal mode, but not external extensions
         throw new Error("Login service should have access to KernalModeTrust. Cannot boot without trust ring");
     }
+
+    const LoginService = KernalModeTrust.loginService;
 
     // Event constants
     const EVENT_ENTITLEMENTS_CHANGED = "entitlements_changed";
@@ -44,7 +47,7 @@ define(function (require, exports, module) {
      */
     async function getEntitlements(forceRefresh = false) {
         // Return null if not logged in
-        if (!KernalModeTrust.loginService.isLoggedIn()) {
+        if (!LoginService.isLoggedIn()) {
             return null;
         }
 
@@ -54,7 +57,7 @@ define(function (require, exports, module) {
         }
 
         try {
-            const accountBaseURL = KernalModeTrust.loginService.getAccountBaseURL();
+            const accountBaseURL = LoginService.getAccountBaseURL();
             const language = Phoenix.app && Phoenix.app.language ? Phoenix.app.language : 'en';
             let url = `${accountBaseURL}/getAppEntitlements?lang=${language}`;
             let fetchOptions = {
@@ -67,7 +70,7 @@ define(function (require, exports, module) {
             // Handle different authentication methods for browser vs desktop
             if (Phoenix.isNativeApp) {
                 // Desktop app: use appSessionID and validationCode
-                const profile = KernalModeTrust.loginService.getProfile();
+                const profile = LoginService.getProfile();
                 if (profile && profile.apiKey && profile.validationCode) {
                     url += `&appSessionID=${encodeURIComponent(profile.apiKey)}&validationCode=${encodeURIComponent(profile.validationCode)}`;
                 } else {
@@ -91,7 +94,7 @@ define(function (require, exports, module) {
 
                     // Trigger event if entitlements changed
                     if (entitlementsChanged) {
-                        KernalModeTrust.loginService.trigger(EVENT_ENTITLEMENTS_CHANGED, result);
+                        LoginService.trigger(EVENT_ENTITLEMENTS_CHANGED, result);
                     }
 
                     return cachedEntitlements;
@@ -113,14 +116,14 @@ define(function (require, exports, module) {
             cachedEntitlements = null;
 
             // Trigger event when entitlements are cleared
-            if (KernalModeTrust.loginService.trigger) {
-                KernalModeTrust.loginService.trigger(EVENT_ENTITLEMENTS_CHANGED, null);
+            if (LoginService.trigger) {
+                LoginService.trigger(EVENT_ENTITLEMENTS_CHANGED, null);
             }
         }
     }
 
-    // Exports
-    exports.EVENT_ENTITLEMENTS_CHANGED = EVENT_ENTITLEMENTS_CHANGED;
-    exports.getEntitlements = getEntitlements;
-    exports.clearEntitlements = clearEntitlements;
+    // Add functions to secure exports
+    LoginService.getEntitlements = getEntitlements;
+    LoginService.clearEntitlements = clearEntitlements;
+    LoginService.EVENT_ENTITLEMENTS_CHANGED = EVENT_ENTITLEMENTS_CHANGED;
 });

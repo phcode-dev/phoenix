@@ -31,8 +31,8 @@
 
 define(function (require, exports, module) {
 
-    const EventDispatcher = require("utils/EventDispatcher"),
-        Metrics = require("utils/Metrics"),
+    require("./setup-login-service"); // this adds loginService to KernalModeTrust
+    const Metrics = require("utils/Metrics"),
         semver = require("thirdparty/semver.browser");
 
     const KernalModeTrust = window.KernalModeTrust;
@@ -40,8 +40,7 @@ define(function (require, exports, module) {
         throw new Error("Promotions service requires access to KernalModeTrust. Cannot boot without trust ring");
     }
 
-    // Make this module an event dispatcher
-    EventDispatcher.makeEventDispatcher(exports);
+    const LoginService = KernalModeTrust.loginService;
 
     // Constants
     const EVENT_PRO_UPGRADE_ON_INSTALL = "pro_upgrade_on_install";
@@ -244,7 +243,7 @@ define(function (require, exports, module) {
         console.log(`Pro trial activated for ${trialDays} days`);
 
         // Trigger the event for UI to handle
-        exports.trigger(EVENT_PRO_UPGRADE_ON_INSTALL, {
+        LoginService.trigger(EVENT_PRO_UPGRADE_ON_INSTALL, {
             trialDays: trialDays,
             isFirstInstall: !existingTrialData
         });
@@ -273,8 +272,9 @@ define(function (require, exports, module) {
         });
     }, TRIAL_POLL_MS);
 
-    // Public exports
-    exports.isProTrialActivated = isProTrialActivated;
-    exports.EVENT_PRO_UPGRADE_ON_INSTALL = EVENT_PRO_UPGRADE_ON_INSTALL;
+    // Add to secure exports
+    LoginService.isProTrialActivated = isProTrialActivated;
+    LoginService.EVENT_PRO_UPGRADE_ON_INSTALL = EVENT_PRO_UPGRADE_ON_INSTALL;
 
+    // no public exports to prevent extension tampering
 });

@@ -43,15 +43,14 @@
  */
 
 define(function (require, exports, module) {
-    const EventDispatcher = require("utils/EventDispatcher"),
-        PreferencesManager  = require("preferences/PreferencesManager"),
+    require("./login-service"); // after this, loginService will be in KernalModeTrust
+    const PreferencesManager  = require("preferences/PreferencesManager"),
         Metrics = require("utils/Metrics"),
         Dialogs = require("widgets/Dialogs"),
         DefaultDialogs = require("widgets/DefaultDialogs"),
         Strings = require("strings"),
         StringUtils = require("utils/StringUtils"),
         ProfileMenu  = require("./profile-menu"),
-        LoginService = require("./login-service"),
         Mustache = require("thirdparty/mustache/mustache"),
         browserLoginWaitingTemplate = require("text!./html/browser-login-waiting-dialog.html");
 
@@ -60,11 +59,7 @@ define(function (require, exports, module) {
         // integrated extensions will have access to kernal mode, but not external extensions
         throw new Error("Browser Login service should have access to KernalModeTrust. Cannot boot without trust ring");
     }
-    const secureExports = {};
-    // Only set loginService for browser apps to avoid conflict with desktop login
-    if (!Phoenix.isNativeApp) {
-        KernalModeTrust.loginService = secureExports;
-    }
+    const LoginService = KernalModeTrust.loginService;
 
     // user profile structure: "customerID": "uuid...", "firstName":"Aa","lastName":"bb",
     // "email":"aaaa@sss.com", "loginTime":1750074393853, "isSuccess": true,
@@ -74,14 +69,6 @@ define(function (require, exports, module) {
 
     // just used as trigger to notify different windows about user profile changes
     const PREF_USER_PROFILE_VERSION = "userProfileVersion";
-
-    EventDispatcher.makeEventDispatcher(exports);
-    EventDispatcher.makeEventDispatcher(secureExports);
-
-    const _EVT_PAGE_FOCUSED = "page_focused";
-    $(window).focus(function () {
-        exports.trigger(_EVT_PAGE_FOCUSED);
-    });
 
     function isLoggedIn() {
         return isLoggedInUser;
@@ -199,7 +186,6 @@ define(function (require, exports, module) {
     }
 
     let loginWaitingDialog = null;
-    let focusCheckInterval = null;
 
     /**
      * Show waiting dialog with auto-detection and manual check options
@@ -287,10 +273,6 @@ define(function (require, exports, module) {
         if (loginWaitingDialog) {
             loginWaitingDialog.close();
             loginWaitingDialog = null;
-        }
-        if (focusCheckInterval) {
-            clearInterval(focusCheckInterval);
-            focusCheckInterval = null;
         }
         $(window).off('focus.loginWaiting');
     }
@@ -413,14 +395,13 @@ define(function (require, exports, module) {
     if (!Phoenix.isNativeApp) {
         init();
         // kernal exports
-        secureExports.isLoggedIn = isLoggedIn;
-        secureExports.signInToAccount = signInToBrowser;
-        secureExports.signOutAccount = signOutBrowser;
-        secureExports.getProfile = getProfile;
-        secureExports.verifyLoginStatus = () => _verifyBrowserLogin(false);
-        secureExports.getAccountBaseURL = _getAccountBaseURL;
-        secureExports.getEntitlements = LoginService.getEntitlements;
-        secureExports.EVENT_ENTITLEMENTS_CHANGED = LoginService.EVENT_ENTITLEMENTS_CHANGED;
+        // Add to existing KernalModeTrust.loginService from login-service.js
+        LoginService.isLoggedIn = isLoggedIn;
+        LoginService.signInToAccount = signInToBrowser;
+        LoginService.signOutAccount = signOutBrowser;
+        LoginService.getProfile = getProfile;
+        LoginService.verifyLoginStatus = () => _verifyBrowserLogin(false);
+        LoginService.getAccountBaseURL = _getAccountBaseURL;
     }
 
     // public exports

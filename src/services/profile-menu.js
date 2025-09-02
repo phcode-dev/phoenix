@@ -539,7 +539,7 @@ define(function (require, exports, module) {
         _removeProfileIcon();
 
         // Clear cached entitlements when user logs out
-        LoginService.clearEntitlements();
+        KernalModeTrust.loginService.clearEntitlements();
 
         // Reset branding to free mode
         _updateBranding(null);
@@ -563,4 +563,6 @@ define(function (require, exports, module) {
     exports.init = init;
     exports.setNotLoggedIn = setNotLoggedIn;
     exports.setLoggedIn = setLoggedIn;
+
+    // dont public exports things that extensions can use to get/put credentials and entitlements, display mods is fine
 });
