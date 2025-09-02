@@ -24,6 +24,7 @@
  */
 
 define(function (require, exports, module) {
+    const Promotions = require("./promotions");
 
     const KernalModeTrust = window.KernalModeTrust;
     if(!KernalModeTrust){

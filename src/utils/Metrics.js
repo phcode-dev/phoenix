@@ -120,7 +120,8 @@ define(function (require, exports, module) {
         NODEJS: "node",
         LINT: "lint",
         GIT: "git",
-        AUTH: "auth"
+        AUTH: "auth",
+        PRO: "pro"
     };
 
     /**

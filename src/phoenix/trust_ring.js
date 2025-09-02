@@ -179,6 +179,7 @@ function _selectKeys() {
 }
 
 const CRED_KEY_API = "API_KEY";
+const CRED_KEY_ENTITLEMENTS = "ENTITLEMENTS_GRANT_KEY";
 const { key, iv } = _selectKeys();
 // this key is set at boot time as a truct base for all the core components before any extensions are loaded.
 // just before extensions are loaded, this key is blanked. This can be used by core modules to talk with other
@@ -186,6 +187,7 @@ const { key, iv } = _selectKeys();
 // KernalModeTrust should only be available within all code that loads before the first default/any extension.
 window.KernalModeTrust = {
     CRED_KEY_API,
+    CRED_KEY_ENTITLEMENTS,
     aesKeys: { key, iv },
     setCredential,
     getCredential,

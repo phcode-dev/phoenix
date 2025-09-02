@@ -194,8 +194,7 @@ define(function (require, exports, module) {
             // Use kernal mode apis for trusted check of pro features.
             Phoenix.pro.plan = {
                 paidSubscriber: false,
-                name: "Community Edition",
-                isInTrial: false
+                name: "Community Edition"
             };
         }
 
@@ -203,7 +202,6 @@ define(function (require, exports, module) {
             Phoenix.pro.plan = {
                 paidSubscriber: entitlements.plan.paidSubscriber,
                 name: entitlements.plan.name,
-                isInTrial: entitlements.plan.isInTrial,
                 validTill: entitlements.plan.validTill
             };
         }
