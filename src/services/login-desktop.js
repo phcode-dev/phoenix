@@ -19,6 +19,8 @@
 /*global logger*/
 
 define(function (require, exports, module) {
+    require("./login-service"); // after this, loginService will be in KernalModeTrust
+
     const EventDispatcher = require("utils/EventDispatcher"),
         PreferencesManager  = require("preferences/PreferencesManager"),
         Metrics = require("utils/Metrics"),
@@ -27,7 +29,6 @@ define(function (require, exports, module) {
         Strings = require("strings"),
         NativeApp = require("utils/NativeApp"),
         ProfileMenu  = require("./profile-menu"),
-        LoginService = require("./login-service"),
         Mustache = require("thirdparty/mustache/mustache"),
         NodeConnector = require("NodeConnector"),
         otpDialogTemplate = require("text!./html/otp-dialog.html");
@@ -37,11 +38,8 @@ define(function (require, exports, module) {
         // integrated extensions will have access to kernal mode, but not external extensions
         throw new Error("Login service should have access to KernalModeTrust. Cannot boot without trust ring");
     }
-    const secureExports = {};
-    // Only set loginService for native apps to avoid conflict with browser login
-    if (Phoenix.isNativeApp) {
-        KernalModeTrust.loginService = secureExports;
-    }
+    const LoginService = KernalModeTrust.loginService;
+
     // user profile is something like "apiKey": "uuid...", validationCode: "dfdf", "firstName":"Aa","lastName":"bb",
     // "email":"aaaa@sss.com", "customerID":"uuid...","loginTime":1750074393853,
     // "profileIcon":{"color":"#14b8a6","initials":"AB"}
@@ -51,12 +49,11 @@ define(function (require, exports, module) {
     // just used as trigger to notify different windows about user profile changes
     const PREF_USER_PROFILE_VERSION = "userProfileVersion";
 
-    EventDispatcher.makeEventDispatcher(exports);
-    EventDispatcher.makeEventDispatcher(secureExports);
-
     const _EVT_PAGE_FOCUSED = "page_focused";
+    const focusWatcher = {};
+    EventDispatcher.makeEventDispatcher(focusWatcher);
     $(window).focus(function () {
-        exports.trigger(_EVT_PAGE_FOCUSED);
+        focusWatcher.trigger(_EVT_PAGE_FOCUSED);
     });
 
     const AUTH_CONNECTOR_ID = "ph_auth";
@@ -320,7 +317,7 @@ define(function (require, exports, module) {
             }
         }
         let isAutoSignedIn = false;
-        exports.on(_EVT_PAGE_FOCUSED, checkLoginStatus);
+        focusWatcher.on(_EVT_PAGE_FOCUSED, checkLoginStatus);
         async function _AutoSignedIn() {
             isAutoSignedIn = true;
             await checkLoginStatus();
@@ -329,7 +326,7 @@ define(function (require, exports, module) {
 
         // Clean up when dialog is closed
         dialog.done(function() {
-            exports.off(_EVT_PAGE_FOCUSED, checkLoginStatus);
+            focusWatcher.off(_EVT_PAGE_FOCUSED, checkLoginStatus);
             authNodeConnector.off(EVENT_CONNECTED, _AutoSignedIn);
             clearTimeout(closeTimeout);
             Metrics.countEvent(Metrics.EVENT_TYPE.AUTH,
@@ -411,15 +408,13 @@ define(function (require, exports, module) {
     // Only set exports for native apps to avoid conflict with browser login
     if (Phoenix.isNativeApp) {
         init();
-        // kernal exports
-        secureExports.isLoggedIn = isLoggedIn;
-        secureExports.signInToAccount = signInToAccount;
-        secureExports.signOutAccount = signOutAccount;
-        secureExports.getProfile = getProfile;
-        secureExports.verifyLoginStatus = () => _verifyLogin(false);
-        secureExports.getAccountBaseURL = getAccountBaseURL;
-        secureExports.getEntitlements = LoginService.getEntitlements;
-        secureExports.EVENT_ENTITLEMENTS_CHANGED = LoginService.EVENT_ENTITLEMENTS_CHANGED;
+        // kernal exports - add to existing KernalModeTrust.loginService from login-service.js
+        LoginService.isLoggedIn = isLoggedIn;
+        LoginService.signInToAccount = signInToAccount;
+        LoginService.signOutAccount = signOutAccount;
+        LoginService.getProfile = getProfile;
+        LoginService.verifyLoginStatus = () => _verifyLogin(false);
+        LoginService.getAccountBaseURL = getAccountBaseURL;
     }
 
     // public exports
