@@ -1662,5 +1662,18 @@ define({
     "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Abbreviation",
     "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Template Text",
     "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Description",
-    "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "File Extension"
+    "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "File Extension",
+
+    // promos
+    "PROMO_UPGRADE_TITLE": "You’ve been upgraded to {0}",
+    "PROMO_UPGRADE_MESSAGE": "Enjoy full access to all premium features for the next {0} days:",
+    "PROMO_CARD_1": "Drag & Drop Elements",
+    "PROMO_CARD_1_MESSAGE": "Rearrange sections visually — Phoenix updates the HTML & CSS for you.",
+    "PROMO_CARD_2": "Image Replacement",
+    "PROMO_CARD_2_MESSAGE": "Click any image to replace it instantly and preview changes in real time.",
+    "PROMO_CARD_3": "Element Duplication and Deletion",
+    "PROMO_CARD_3_MESSAGE": "Duplicate and delete elements with a single click.",
+    "PROMO_CARD_4": "Editing Text In Preview",
+    "PROMO_CARD_4_MESSAGE": "Edit headings, buttons, and copy directly in the preview.",
+    "PROMO_LEARN_MORE": "Learn More\u2026"
 });
