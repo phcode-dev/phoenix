@@ -511,6 +511,9 @@ define(function (require, exports, module) {
 
         // delegate event handling for both tab bars
         $(document).on("mousedown", ".phoenix-tab-bar .tab", function (event) {
+            // to prevent right clicks activate the mousedown event
+            if (event.button === 2) { return; }
+
             if ($(event.target).hasClass("fa-times") || $(event.target).closest(".tab-close").length) {
                 return;
             }
