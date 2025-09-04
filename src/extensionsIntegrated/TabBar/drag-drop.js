@@ -28,15 +28,11 @@ define(function (require, exports, module) {
     /**
      * These variables track the drag and drop state of tabs
      * draggedTab: The tab that is currently being dragged
-     * dragOverTab: The tab that is currently being hovered over
      * dragIndicator: Visual indicator showing where the tab will be dropped
-     * scrollInterval: Used for automatic scrolling when dragging near edges
      * dragSourcePane: To track which pane the dragged tab originated from
      */
     let draggedTab = null;
-    let dragOverTab = null;
     let dragIndicator = null;
-    let scrollInterval = null;
     let dragSourcePane = null;
 
     /**
@@ -51,586 +47,244 @@ define(function (require, exports, module) {
         // this is to make sure that the drag indicator is hidden and remove any inline styles
         if (dragIndicator) {
             dragIndicator.hide().css({
-                top: '',
-                left: '',
-                height: ''
+                top: "",
+                left: "",
+                height: ""
             });
         }
 
         // Reset all drag state variables
         draggedTab = null;
-        dragOverTab = null;
         dragSourcePane = null;
 
-        if (scrollInterval) {
-            clearInterval(scrollInterval);
-            scrollInterval = null;
-        }
-
-        $("#tab-drag-extended-zone").remove();
-
-        // this is needed to make sure that all the drag-active styling are properly hidden
-        // it is required because noticed a bug where sometimes some styles remain when drop fails
-        $(".phoenix-tab-bar").removeClass("drag-active");
-
-        setTimeout(() => {
-            // a double check just to make sure that the drag indicator is still hidden
-            if (dragIndicator && dragIndicator.is(':visible')) {
-                dragIndicator.hide();
-            }
-        }, 5);
+        // remove any temporary elements
+        $("#tab-drag-helper").remove();
     }
 
     /**
-     * Initialize drag and drop functionality for tab bars
-     * This is called from `main.js`
-     * This function sets up event listeners for both panes' tab bars
-     * and creates the visual drag indicator
-     *
-     * @param {String} firstPaneSelector - Selector for the first pane tab bar $("#phoenix-tab-bar")
-     * @param {String} secondPaneSelector - Selector for the second pane tab bar $("#phoenix-tab-bar-2")
+     * create the drag indicator if it doesn't exist
      */
-    function init(firstPaneSelector, secondPaneSelector) {
-        setupDragForTabBar(firstPaneSelector);
-        setupDragForTabBar(secondPaneSelector);
-        setupContainerDrag(firstPaneSelector);
-        setupContainerDrag(secondPaneSelector);
-
-        // Create drag indicator element if it doesn't exist
-        if (!dragIndicator) {
+    function ensureDragIndicator() {
+        if (!dragIndicator || !dragIndicator.length) {
             dragIndicator = $('<div class="tab-drag-indicator"></div>');
             $("body").append(dragIndicator);
         }
-
-        // add initialization for empty panes
-        initEmptyPaneDropTargets();
-
-        // Set up global drag cleanup handlers to ensure drag state is always cleaned up
-        setupGlobalDragCleanup();
     }
 
     /**
-     * Setup drag and drop for a specific tab bar
-     * Makes tabs draggable and adds all the necessary event listeners
-     *
-     * @param {String} tabBarSelector - The selector for the tab bar
+     * this function is to update the drag indicator position
+     * @param {Element} targetTab - The target tab element
+     * @param {boolean} insertBefore - Whether to insert before the target tab
      */
-    function setupDragForTabBar(tabBarSelector) {
-        const $tabs = $(tabBarSelector).find(".tab");
-
-        // Make tabs draggable
-        $tabs.attr("draggable", "true");
-
-        // Remove any existing event listeners first to prevent duplicates
-        // This is important when the tab bar is recreated or updated
-        $tabs.off("dragstart dragover dragenter dragleave drop dragend");
-
-        // Add drag event listeners to each tab
-        // Each event has its own handler function for better organization
-        $tabs.on("dragstart", handleDragStart);
-        $tabs.on("dragover", handleDragOver);
-        $tabs.on("dragenter", handleDragEnter);
-        $tabs.on("dragleave", handleDragLeave);
-        $tabs.on("drop", handleDrop);
-        $tabs.on("dragend", handleDragEnd);
-    }
-
-    /**
-     * Setup container-level drag events
-     * This enables dropping tabs in empty spaces and auto-scrolling
-     * when dragging near the container's edges
-     *
-     * @param {String} containerSelector - The selector for the tab bar container
-     */
-    function setupContainerDrag(containerSelector) {
-        const $container = $(containerSelector);
-        let lastKnownMousePosition = { x: 0 };
-        const boundaryTolerance = 50; // px tolerance outside the container that still allows dropping
-
-        // create a larger drop zone around the container
-        // this is done to make sure that even if the tab is not exactly over the tab bar, we still allow drag-drop
-        const createOuterDropZone = () => {
-            if (draggedTab && !$("#tab-drag-extended-zone").length) {
-                // an invisible larger zone around the container that can still receive drops
-                const containerRect = $container[0].getBoundingClientRect();
-                const $outerZone = $('<div id="tab-drag-extended-zone"></div>').css({
-                    position: "fixed",
-                    top: containerRect.top - boundaryTolerance,
-                    left: containerRect.left - boundaryTolerance,
-                    width: containerRect.width + boundaryTolerance * 2,
-                    height: containerRect.height + boundaryTolerance * 2,
-                    zIndex: 9999,
-                    pointerEvents: "all"
-                });
-
-                $("body").append($outerZone);
-
-                $outerZone.on("dragover", function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    lastKnownMousePosition.x = e.originalEvent.clientX;
-
-                    autoScrollContainer($container[0], lastKnownMousePosition.x);
-
-                    updateDragIndicatorFromOuterZone($container, lastKnownMousePosition.x);
-
-                    return false;
-                });
-
-                $outerZone.on("drop", function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    // to handle drop the same way as if it happened in the container
-                    handleOuterZoneDrop($container, lastKnownMousePosition.x);
-
-                    return false;
-                });
-            }
-        };
-
-        // When dragging over the container but not directly over a tab element
-        $container.on("dragover", function (e) {
-            if (e.preventDefault) {
-                e.preventDefault();
-            }
-
-            lastKnownMousePosition.x = e.originalEvent.clientX;
-
-            // Clear any existing scroll interval
-            if (scrollInterval) {
-                clearInterval(scrollInterval);
-            }
-
-            // auto-scroll if near container edge
-            autoScrollContainer(this, e.originalEvent.clientX);
-
-            // Set up interval for continuous scrolling while dragging near the edge
-            scrollInterval = setInterval(() => {
-                if (draggedTab) {
-                    // Only continue scrolling if still dragging
-                    autoScrollContainer(this, lastKnownMousePosition.x);
-                } else {
-                    clearInterval(scrollInterval);
-                    scrollInterval = null;
-                }
-            }, 16); // this is almost about 60fps
-
-            // if the target is not a tab, update the drag indicator using the container bounds
-            if ($(e.target).closest(".tab").length === 0) {
-                const containerRect = this.getBoundingClientRect();
-                const mouseX = e.originalEvent.clientX;
-
-                // determine if dropping on left or right half of container
-                const onLeftSide = mouseX < containerRect.left + containerRect.width / 2;
-
-                const $tabs = $container.find(".tab");
-                if ($tabs.length) {
-                    // choose the first tab for left drop, last tab for right drop
-                    const targetTab = onLeftSide ? $tabs.first()[0] : $tabs.last()[0];
-                    updateDragIndicator(targetTab, onLeftSide);
-                }
-            }
-
-            // Create the extended drop zone if we're actively dragging
-            if (draggedTab) {
-                createOuterDropZone();
-            }
-        });
-
-        // handle drop on the container (empty space)
-        $container.on("drop", function (e) {
-            if (e.preventDefault) {
-                e.preventDefault();
-            }
-
-            // get container dimensions to determine drop position
-            const containerRect = this.getBoundingClientRect();
-            const mouseX = e.originalEvent.clientX;
-            // determine if dropping on left or right half of container
-            const onLeftSide = mouseX < containerRect.left + containerRect.width / 2;
-
-            const $tabs = $container.find(".tab");
-            if ($tabs.length) {
-                // If dropping on left half, target the first tab; otherwise, target the last tab
-                const targetTab = onLeftSide ? $tabs.first()[0] : $tabs.last()[0];
-
-                // make sure that the draggedTab exists and isn't the same as the target
-                if (draggedTab && targetTab && draggedTab !== targetTab) {
-                    // check which pane the container belongs to
-                    const isSecondPane = $container.attr("id") === "phoenix-tab-bar-2";
-                    const targetPaneId = isSecondPane ? "second-pane" : "first-pane";
-                    const draggedPath = $(draggedTab).attr("data-path");
-                    const targetPath = $(targetTab).attr("data-path");
-
-                    // check if we're dropping in a different pane
-                    if (dragSourcePane !== targetPaneId) {
-                        // cross-pane drop
-                        moveTabBetweenPanes(dragSourcePane, targetPaneId, draggedPath, targetPath, onLeftSide);
-                    } else {
-                        // same pane drop
-                        moveWorkingSetItem(targetPaneId, draggedPath, targetPath, onLeftSide);
-                    }
-                }
-            }
-
-            // ensure all drag state is cleaned up
-            cleanupDragState();
-        });
-
-        /**
-         * Updates the drag indicator when mouse is in the extended zone (outside actual tab bar)
-         * @param {jQuery} $container - The tab bar container
-         * @param {number} mouseX - Current mouse X position
-         */
-        function updateDragIndicatorFromOuterZone($container, mouseX) {
-            const containerRect = $container[0].getBoundingClientRect();
-            const $tabs = $container.find(".tab");
-
-            if ($tabs.length) {
-                // Determine if dropping on left half or right half
-                let onLeftSide = true;
-                let targetTab;
-
-                // If beyond the right edge, use the last tab
-                if (mouseX > containerRect.right) {
-                    targetTab = $tabs.last()[0];
-                    onLeftSide = false;
-                } else if (mouseX < containerRect.left) { // If beyond the left edge, use the first tab
-                    targetTab = $tabs.first()[0];
-                    onLeftSide = true;
-                } else { // If within bounds, find the closest tab
-                    onLeftSide = mouseX < containerRect.left + containerRect.width / 2;
-                    targetTab = onLeftSide ? $tabs.first()[0] : $tabs.last()[0];
-                }
-
-                updateDragIndicator(targetTab, onLeftSide);
-            }
-        }
-
-        /**
-         * Handles drops that occur in the extended drop zone
-         * @param {jQuery} $container - The tab bar container
-         * @param {number} mouseX - Current mouse X position
-         */
-        function handleOuterZoneDrop($container, mouseX) {
-            const containerRect = $container[0].getBoundingClientRect();
-            const $tabs = $container.find(".tab");
-
-            if ($tabs.length && draggedTab) {
-                // Determine drop position similar to updateDragIndicatorFromOuterZone
-                let onLeftSide = true;
-                let targetTab;
-
-                if (mouseX > containerRect.right) {
-                    targetTab = $tabs.last()[0];
-                    onLeftSide = false;
-                } else if (mouseX < containerRect.left) {
-                    targetTab = $tabs.first()[0];
-                    onLeftSide = true;
-                } else {
-                    onLeftSide = mouseX < containerRect.left + containerRect.width / 2;
-                    targetTab = onLeftSide ? $tabs.first()[0] : $tabs.last()[0];
-                }
-
-                // Process the drop
-                const isSecondPane = $container.attr("id") === "phoenix-tab-bar-2";
-                const targetPaneId = isSecondPane ? "second-pane" : "first-pane";
-                const draggedPath = $(draggedTab).attr("data-path");
-                const targetPath = $(targetTab).attr("data-path");
-
-                if (dragSourcePane !== targetPaneId) {
-                    // cross-pane drop
-                    moveTabBetweenPanes(dragSourcePane, targetPaneId, draggedPath, targetPath, onLeftSide);
-                } else {
-                    // same pane drop
-                    moveWorkingSetItem(targetPaneId, draggedPath, targetPath, onLeftSide);
-                }
-            }
-
-            cleanupDragState();
-        }
-    }
-
-    /**
-     * enhanced auto-scroll function for container when the mouse is near its left or right edge
-     * creates a smooth scrolling effect with speed based on proximity to the edge
-     *
-     * @param {HTMLElement} container - The scrollable container element
-     * @param {Number} mouseX - The current mouse X coordinate
-     */
-    function autoScrollContainer(container, mouseX) {
-        const rect = container.getBoundingClientRect();
-        const edgeThreshold = 100; // Increased threshold for edge detection (was 50)
-        const outerThreshold = 50; // Distance outside the container that still triggers scrolling
-
-        // Calculate distance from edges, allowing for mouse to be slightly outside bounds
-        const distanceFromLeft = mouseX - (rect.left - outerThreshold);
-        const distanceFromRight = rect.right + outerThreshold - mouseX;
-
-        // Determine scroll speed based on distance from edge (closer = faster scroll)
-        let scrollSpeed = 0;
-
-        // Only activate scrolling when within the threshold (including the outer buffer)
-        if (distanceFromLeft < edgeThreshold + outerThreshold && mouseX < rect.right) {
-            // Non-linear scroll speed: faster as you get closer to the edge
-            scrollSpeed = -Math.pow(1 - distanceFromLeft / (edgeThreshold + outerThreshold), 2) * 25;
-        } else if (distanceFromRight < edgeThreshold + outerThreshold && mouseX > rect.left) {
-            scrollSpeed = Math.pow(1 - distanceFromRight / (edgeThreshold + outerThreshold), 2) * 25;
-        }
-
-        // Apply scrolling if needed
-        if (scrollSpeed !== 0) {
-            container.scrollLeft += scrollSpeed;
-
-            // If we're already at the edge, don't keep trying to scroll
-            if (
-                (scrollSpeed < 0 && container.scrollLeft <= 0) ||
-                (scrollSpeed > 0 && container.scrollLeft >= container.scrollWidth - container.clientWidth)
-            ) {
-                return;
-            }
-        }
-    }
-
-    /**
-     * Handle the start of a drag operation
-     * Stores the tab being dragged and adds visual styling
-     *
-     * @param {Event} e - The event object
-     */
-    function handleDragStart(e) {
-        if (draggedTab) {
-            cleanupDragState();
-        }
-
-        // store reference to the dragged tab
-        draggedTab = this;
-
-        // set data transfer (required for Firefox)
-        // Firefox requires data to be set for the drag operation to work
-        e.originalEvent.dataTransfer.effectAllowed = "move";
-        e.originalEvent.dataTransfer.setData("text/html", this.innerHTML);
-
-        // Store which pane this tab came from
-        dragSourcePane = $(this).closest("#phoenix-tab-bar-2").length > 0 ? "second-pane" : "first-pane";
-
-        // Add dragging class for styling
-        $(this).addClass("dragging");
-
-        // Use a timeout to let the dragging class apply before taking measurements
-        // This ensures visual updates are applied before we calculate positions
-        setTimeout(() => {
-            // Ensure the drag indicator is properly hidden at the start
-            if (dragIndicator) {
-                dragIndicator.hide();
-            }
-        }, 0);
-    }
-
-    /**
-     * Handle the dragover event to enable drop
-     * Updates the visual indicator showing where the tab will be dropped
-     *
-     * @param {Event} e - The event object
-     */
-    function handleDragOver(e) {
-        if (e.preventDefault) {
-            e.preventDefault(); // Allows us to drop
-        }
-        e.originalEvent.dataTransfer.dropEffect = "move";
-
-        // Update the drag indicator position
-        // We need to determine if it should be on the left or right side of the target tab
-        const targetRect = this.getBoundingClientRect();
-        const mouseX = e.originalEvent.clientX;
-        const midPoint = targetRect.left + targetRect.width / 2;
-        const onLeftSide = mouseX < midPoint;
-
-        updateDragIndicator(this, onLeftSide);
-
-        return false;
-    }
-
-    /**
-     * Handle entering a potential drop target
-     * Applies styling to indicate the current drop target
-     *
-     * @param {Event} e - The event object
-     */
-    function handleDragEnter(e) {
-        dragOverTab = this;
-        $(this).addClass("drag-target");
-    }
-
-    /**
-     * Handle leaving a potential drop target
-     * Removes styling when no longer hovering over a drop target
-     *
-     * @param {Event} e - The event object
-     */
-    function handleDragLeave(e) {
-        const relatedTarget = e.originalEvent.relatedTarget;
-        // Only remove the class if we're truly leaving this tab
-        // This prevents flickering when moving over child elements
-        if (!$(this).is(relatedTarget) && !$(this).has(relatedTarget).length) {
-            $(this).removeClass("drag-target");
-            if (dragOverTab === this) {
-                dragOverTab = null;
-            }
-        }
-    }
-
-    /**
-     * Handle dropping a tab onto a target
-     * Moves the file in the working set to the new position
-     *
-     * @param {Event} e - The event object
-     */
-    function handleDrop(e) {
-        try {
-            if (e.stopPropagation) {
-                e.stopPropagation(); // Stops browser from redirecting
-            }
-
-            // Only process the drop if the dragged tab is different from the drop target
-            if (draggedTab !== this) {
-                // Determine which pane the drop target belongs to
-                const isSecondPane = $(this).closest("#phoenix-tab-bar-2").length > 0;
-                const targetPaneId = isSecondPane ? "second-pane" : "first-pane";
-                const draggedPath = $(draggedTab).attr("data-path");
-                const targetPath = $(this).attr("data-path");
-
-                // Determine if we're dropping to the left or right of the target
-                const targetRect = this.getBoundingClientRect();
-                const mouseX = e.originalEvent.clientX;
-                const midPoint = targetRect.left + targetRect.width / 2;
-                const onLeftSide = mouseX < midPoint;
-
-                // Check if dragging between different panes
-                if (dragSourcePane !== targetPaneId) {
-                    // Move the tab between panes
-                    moveTabBetweenPanes(dragSourcePane, targetPaneId, draggedPath, targetPath, onLeftSide);
-                } else {
-                    // Move within the same pane
-                    moveWorkingSetItem(targetPaneId, draggedPath, targetPath, onLeftSide);
-                }
-            }
-
-            cleanupDragState();
-            return false;
-        } catch (error) {
-            console.error("Error during tab drop operation:", error);
-            // Ensure cleanup happens even if there's an error
-            cleanupDragState();
-            return false;
-        }
-    }
-
-    /**
-     * Handle the end of a drag operation
-     * Cleans up classes and resets state variables
-     *
-     * @param {Event} e - The event object
-     */
-    function handleDragEnd(e) {
-        setTimeout(() => {
-            cleanupDragState();
-        }, 10);
-    }
-
-    /**
-     * Global document event listeners to ensure drag state is always cleaned up
-     * This handles cases where drag operations fail or are cancelled outside
-     * the normal tab bar drop zones
-     */
-    function setupGlobalDragCleanup() {
-        // Listen for drags ending anywhere on the document
-        $(document).on('dragend', function(e) {
-            // Only clean up if we were tracking a drag operation
-            if (draggedTab) {
-                setTimeout(() => {
-                    cleanupDragState();
-                }, 10);
-            }
-        });
-
-        // Listen for global mouse up events to catch cancelled drags
-        $(document).on('mouseup', function(e) {
-            // If we have an active drag but mouse is released, clean up
-            if (draggedTab && !e.originalEvent.dataTransfer) {
-                setTimeout(() => {
-                    cleanupDragState();
-                }, 10);
-            }
-        });
-
-        // Listen for ESC key to cancel drag operations
-        $(document).on('keydown', function(e) {
-            if (e.key === 'Escape' && draggedTab) {
-                cleanupDragState();
-            }
-        });
-
-        // Listen for page visibility changes (like alt-tab) to clean up
-        $(document).on('visibilitychange', function() {
-            if (document.hidden && draggedTab) {
-                cleanupDragState();
-            }
-        });
-    }
-
-    /**
-     * Update the drag indicator position and visibility
-     * The indicator shows where the tab will be dropped
-     * Ensures the indicator stays within the bounds of the tab bar
-     *
-     * @param {HTMLElement} targetTab - The tab being dragged over, or null to hide
-     * @param {Boolean} onLeftSide - Whether the indicator should be on the left or right side
-     */
-    function updateDragIndicator(targetTab, onLeftSide) {
+    function updateDragIndicator(targetTab, insertBefore) {
         if (!targetTab) {
             dragIndicator.hide();
             return;
         }
 
-        // Get the target tab's position and size
-        const targetRect = targetTab.getBoundingClientRect();
+        const rect = targetTab.getBoundingClientRect();
+        const x = insertBefore ? rect.left : rect.right;
 
-        // Find the containing tab bar to ensure the indicator stays within bounds
-        const $tabBar = $(targetTab).closest("#phoenix-tab-bar, #phoenix-tab-bar-2");
-        const tabBarRect = $tabBar[0] ? $tabBar[0].getBoundingClientRect() : null;
-
-        if (onLeftSide) {
-            // Position indicator at the left edge of the target tab
-            // Ensure it doesn't go beyond the tab bar's left edge
-            const leftPos = tabBarRect ? Math.max(targetRect.left, tabBarRect.left) : targetRect.left;
-            dragIndicator.css({
-                top: targetRect.top,
-                left: leftPos,
-                height: targetRect.height
-            });
-        } else {
-            // Position indicator at the right edge of the target tab
-            // Ensure it doesn't go beyond the tab bar's right edge
-            const rightPos = tabBarRect ? Math.min(targetRect.right, tabBarRect.right) : targetRect.right;
-            dragIndicator.css({
-                top: targetRect.top,
-                left: rightPos,
-                height: targetRect.height
-            });
-        }
-        dragIndicator.show();
+        dragIndicator
+            .css({
+                position: "fixed",
+                left: x + "px",
+                top: rect.top + "px",
+                height: rect.height + "px",
+                width: "2px",
+                zIndex: 10001
+            })
+            .show();
     }
 
     /**
-     * Move an item in the working set
-     * This function actually performs the reordering of tabs
-     *
-     * @param {String} paneId - The ID of the pane ("first-pane" or "second-pane")
-     * @param {String} draggedPath - Path of the dragged file
-     * @param {String} targetPath - Path of the drop target file
-     * @param {Boolean} beforeTarget - Whether to place before or after the target
+     * get the drop position relative to a target tab
+     * @param {Element} targetTab - The target tab element
+     * @param {number} mouseX - The mouse X coordinate
+     * @returns {boolean} True if should insert before, false if after
+     */
+    function getDropPosition(targetTab, mouseX) {
+        const rect = targetTab.getBoundingClientRect();
+        const midpoint = rect.left + rect.width / 2;
+        return mouseX < midpoint;
+    }
+
+    /**
+     * find the closest tab to mouse position
+     * @param {jQuery} container - The tab container element
+     * @param {number} mouseX - The mouse X coordinate
+     * @returns {Element|null} The closest tab element or null
+     */
+    function findClosestTab(container, mouseX) {
+        const tabs = container.find(".tab").get();
+        let closestTab = null;
+        let closestDistance = Infinity;
+
+        for (let tab of tabs) {
+            if (tab === draggedTab) {
+                continue;
+            }
+
+            const rect = tab.getBoundingClientRect();
+            const tabCenter = rect.left + rect.width / 2;
+            const distance = Math.abs(mouseX - tabCenter);
+
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                closestTab = tab;
+            }
+        }
+
+        return closestTab;
+    }
+
+    /**
+     * this function handles the drag start
+     * @param {Event} event - the event instance
+     */
+    function handleDragStart(event) {
+        draggedTab = this;
+        dragSourcePane = $(this).closest("#phoenix-tab-bar-2").length > 0 ? "second-pane" : "first-pane";
+
+        // Set up drag data
+        event.originalEvent.dataTransfer.effectAllowed = "move";
+        event.originalEvent.dataTransfer.setData("application/x-phoenix-tab", "tab-drag");
+
+        // Add visual styling
+        $(this).addClass("dragging");
+
+        ensureDragIndicator();
+
+        // Small delay to let the dragging class take effect
+        setTimeout(() => {
+            dragIndicator.hide();
+        }, 10);
+    }
+
+    /**
+     * this function handles the drag over
+     * @param {Event} event - the event instance
+     */
+    function handleDragOver(event) {
+        if (!draggedTab) {
+            return;
+        }
+
+        event.preventDefault();
+        event.originalEvent.dataTransfer.dropEffect = "move";
+
+        const targetTab = event.currentTarget;
+        if (targetTab === draggedTab) {
+            return;
+        }
+
+        const insertBefore = getDropPosition(targetTab, event.originalEvent.clientX);
+        updateDragIndicator(targetTab, insertBefore);
+
+        // Clear any existing drag-target classes
+        $(".tab").removeClass("drag-target");
+        $(targetTab).addClass("drag-target");
+    }
+
+    /**
+     * handles the container drag over (for empty space drops)
+     * @param {Event} event
+     */
+    function handleContainerDragOver(event) {
+        if (!draggedTab) {
+            return;
+        }
+
+        event.preventDefault();
+
+        const container = $(this);
+        const mouseX = event.originalEvent.clientX;
+        const closestTab = findClosestTab(container, mouseX);
+
+        if (closestTab) {
+            const insertBefore = getDropPosition(closestTab, mouseX);
+            updateDragIndicator(closestTab, insertBefore);
+
+            // Clear existing classes and add to closest
+            $(".tab").removeClass("drag-target");
+            $(closestTab).addClass("drag-target");
+        } else {
+            dragIndicator.hide();
+        }
+    }
+
+    /**
+     * this handles the drop
+     * @param {Event} event
+     */
+    function handleDrop(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (!draggedTab || this === draggedTab) {
+            cleanupDragState();
+            return;
+        }
+
+        const targetTab = this;
+        const targetPaneId = $(targetTab).closest("#phoenix-tab-bar-2").length > 0 ? "second-pane" : "first-pane";
+        const insertBefore = getDropPosition(targetTab, event.originalEvent.clientX);
+
+        performTabMove(targetTab, targetPaneId, insertBefore);
+        cleanupDragState();
+    }
+
+    /**
+     * this function handles the drop on container (empty space)
+     * @param {Event} event
+     */
+    function handleContainerDrop(event) {
+        event.preventDefault();
+
+        if (!draggedTab) {
+            cleanupDragState();
+            return;
+        }
+
+        const container = $(this);
+        const mouseX = event.originalEvent.clientX;
+        const closestTab = findClosestTab(container, mouseX);
+
+        if (closestTab) {
+            const targetPaneId = container.attr("id") === "phoenix-tab-bar-2" ? "second-pane" : "first-pane";
+            const insertBefore = getDropPosition(closestTab, mouseX);
+            performTabMove(closestTab, targetPaneId, insertBefore);
+        }
+
+        cleanupDragState();
+    }
+
+    /**
+     * this function performs the actual tab move
+     * it can be of two types: tab move in same pane, tab move between different panes
+     * @param {Element} targetTab - The target tab element
+     * @param {string} targetPaneId - The target pane ID
+     * @param {boolean} insertBefore - Whether to insert before the target
+     */
+    function performTabMove(targetTab, targetPaneId, insertBefore) {
+        const draggedPath = $(draggedTab).attr("data-path");
+        const targetPath = $(targetTab).attr("data-path");
+
+        if (dragSourcePane === targetPaneId) {
+            // same pane move
+            moveWorkingSetItem(targetPaneId, draggedPath, targetPath, insertBefore);
+        } else {
+            // different pane move
+            moveTabBetweenPanes(dragSourcePane, targetPaneId, draggedPath, targetPath, insertBefore);
+        }
+    }
+
+    /**
+     * this function is responsible to move the tab within the pane
+     * @param {string} paneId - The pane ID
+     * @param {string} draggedPath - The path of the dragged file
+     * @param {string} targetPath - The path of the target file
+     * @param {boolean} beforeTarget - Whether to insert before the target
      */
     function moveWorkingSetItem(paneId, draggedPath, targetPath, beforeTarget) {
         const workingSet = MainViewManager.getWorkingSet(paneId);
@@ -647,43 +301,34 @@ define(function (require, exports, module) {
             }
         }
 
-        // Only move if we found both items
         if (draggedIndex !== -1 && targetIndex !== -1) {
-            // Calculate the new position based on whether we're inserting before or after the target
             let newPosition = beforeTarget ? targetIndex : targetIndex + 1;
-            // Adjust position if the dragged item is before the target
-            // This is necessary because removing the dragged item will shift all following items
             if (draggedIndex < newPosition) {
                 newPosition--;
             }
-            // Perform the actual move in the MainViewManager
             MainViewManager._moveWorkingSetItem(paneId, draggedIndex, newPosition);
         }
     }
 
     /**
-     * Move a tab from one pane to another
-     * This function handles cross-pane drag and drop operations
-     *
-     * @param {String} sourcePaneId - The ID of the source pane ("first-pane" or "second-pane")
-     * @param {String} targetPaneId - The ID of the target pane ("first-pane" or "second-pane")
-     * @param {String} draggedPath - Path of the dragged file
-     * @param {String} targetPath - Path of the drop target file (in the target pane)
-     * @param {Boolean} beforeTarget - Whether to place before or after the target
+     * this function is responsible to move the tab in between different panes
+     * @param {string} sourcePaneId - The source pane ID
+     * @param {string} targetPaneId - The target pane ID
+     * @param {string} draggedPath - The path of the dragged file
+     * @param {string} targetPath - The path of the target file
+     * @param {boolean} beforeTarget - Whether to insert before the target
      */
     function moveTabBetweenPanes(sourcePaneId, targetPaneId, draggedPath, targetPath, beforeTarget) {
         try {
             const sourceWorkingSet = MainViewManager.getWorkingSet(sourcePaneId);
             const targetWorkingSet = MainViewManager.getWorkingSet(targetPaneId);
 
-            let draggedIndex = -1;
-            let targetIndex = -1;
             let draggedFile = null;
+            let targetIndex = -1;
 
             // Find the dragged file and its index in the source pane
             for (let i = 0; i < sourceWorkingSet.length; i++) {
                 if (sourceWorkingSet[i].fullPath === draggedPath) {
-                    draggedIndex = i;
                     draggedFile = sourceWorkingSet[i];
                     break;
                 }
@@ -697,220 +342,203 @@ define(function (require, exports, module) {
                 }
             }
 
-            // Only continue if we found the dragged file
-            if (draggedIndex !== -1 && draggedFile) {
-                // Check if the dragged file is currently active in the source pane
-                const currentActiveFileInSource = MainViewManager.getCurrentlyViewedFile(sourcePaneId);
-                const isActiveFileBeingMoved = currentActiveFileInSource &&
-                                              currentActiveFileInSource.fullPath === draggedPath;
-
-                // If the active file is being moved and there are other files in the source pane,
-                // switch to another file first to prevent placeholder creation
-                if (isActiveFileBeingMoved && sourceWorkingSet.length > 1) {
-                    // Find another file to make active (prefer the next file, or previous if this is the last)
-                    let newActiveIndex = draggedIndex + 1;
-                    if (newActiveIndex >= sourceWorkingSet.length) {
-                        newActiveIndex = draggedIndex - 1;
-                    }
-
-                    if (newActiveIndex >= 0 && newActiveIndex < sourceWorkingSet.length) {
-                        const newActiveFile = sourceWorkingSet[newActiveIndex];
-                        // Open the new active file in the source pane before removing the dragged file
-                        CommandManager.execute(Commands.FILE_OPEN, {
-                            fullPath: newActiveFile.fullPath,
-                            paneId: sourcePaneId
-                        });
-                    }
-                }
-
-                // Remove the file from source pane
+            if (draggedFile) {
+                // Close in source pane
                 CommandManager.execute(Commands.FILE_CLOSE, { file: draggedFile, paneId: sourcePaneId });
 
-                // Calculate where to add it in the target pane
-                let targetInsertIndex;
+                // calculate where to insert it in the target pane
+                const insertIndex =
+                    targetIndex !== -1 ? (beforeTarget ? targetIndex : targetIndex + 1) : targetWorkingSet.length;
 
-                if (targetIndex !== -1) {
-                    // We have a specific target index to aim for
-                    targetInsertIndex = beforeTarget ? targetIndex : targetIndex + 1;
-                } else {
-                    // No specific target, add to end of the working set
-                    targetInsertIndex = targetWorkingSet.length;
-                }
-
-                // Add to the target pane at the calculated position
-                MainViewManager.addToWorkingSet(targetPaneId, draggedFile, targetInsertIndex);
-
-                // we always need to make the dragged tab active in the target pane when moving between panes
+                // Add to target pane
+                MainViewManager.addToWorkingSet(targetPaneId, draggedFile, insertIndex);
                 CommandManager.execute(Commands.FILE_OPEN, { fullPath: draggedPath, paneId: targetPaneId });
             }
         } catch (error) {
             console.error("Error during cross-pane tab move:", error);
-            // Even if there's an error, ensure the drag state is cleaned up
-            cleanupDragState();
         }
     }
 
     /**
-     * Initialize drop targets for empty panes
-     * This creates invisible drop zones when a pane has no files and thus no tab bar
+     * this function handles the drag end event
+     * @param {Event} event - the event instance
      */
-    function initEmptyPaneDropTargets() {
-        // get the references to the editor holders (these are always present, even when empty)
-        const $firstPaneHolder = $("#first-pane .pane-content");
-        const $secondPaneHolder = $("#second-pane .pane-content");
-
-        // handle the drop events on empty panes
-        setupEmptyPaneDropTarget($firstPaneHolder, "first-pane");
-        setupEmptyPaneDropTarget($secondPaneHolder, "second-pane");
+    function handleDragEnd(event) {
+        // Small delay to ensure other events finish
+        setTimeout(() => {
+            cleanupDragState();
+        }, 50);
     }
 
     /**
-     * sets up the whole pane as a drop target when it has no tabs
-     *
-     * @param {jQuery} $paneHolder - The jQuery object for the pane content area
-     * @param {String} paneId - The ID of the pane ("first-pane" or "second-pane")
+     * this function handles drag leave
+     * @param {Event} event - the event instance
      */
-    function setupEmptyPaneDropTarget($paneHolder, paneId) {
-        // remove if any existing handlers to prevent duplicates
-        $paneHolder.off("dragover dragenter dragleave drop");
+    function handleDragLeave(event) {
+        // Only remove styling if truly leaving the element
+        const relatedTarget = event.originalEvent.relatedTarget;
+        if (!$(this).is(relatedTarget) && !$(this).has(relatedTarget).length) {
+            $(this).removeClass("drag-target");
+        }
+    }
 
-        // Handle drag over empty pane
-        $paneHolder.on("dragover dragenter", function (e) {
-            if (draggedTab) {
-                e.preventDefault();
-                e.stopPropagation();
+    /**
+     * Setup drag handlers for a tab bar
+     * @param {string} tabBarSelector - The jQuery selector for the tab bar
+     */
+    function setupTabBarDragHandlers(tabBarSelector) {
+        const $tabBar = $(tabBarSelector);
 
-                // add visual indicator that this is a drop target [refer to Extn-TabBar.less]
-                $(this).addClass("empty-pane-drop-target");
+        // Remove existing handlers to prevent duplicates
+        $tabBar.off("dragstart dragover dragenter dragleave drop dragend");
 
-                // set the drop effect
-                if (e.originalEvent && e.originalEvent.dataTransfer) {
-                    e.originalEvent.dataTransfer.dropEffect = "move";
+        // add the handlers
+        $tabBar.on("dragstart", ".tab", handleDragStart);
+        $tabBar.on("dragover", ".tab", handleDragOver);
+        $tabBar.on("dragleave", ".tab", handleDragLeave);
+        $tabBar.on("drop", ".tab", handleDrop);
+        $tabBar.on("dragend", ".tab", handleDragEnd);
+
+        // container level handlers (for empty space)
+        $tabBar.on("dragover", handleContainerDragOver);
+        $tabBar.on("drop", handleContainerDrop);
+
+        // Make tabs draggable
+        $tabBar.find(".tab").attr("draggable", true);
+    }
+
+    /**
+     * setup the pane drop targets
+     */
+    function setupPaneDropTargets() {
+        const panes = ["#first-pane .pane-content", "#second-pane .pane-content"];
+
+        panes.forEach((paneSelector, index) => {
+            const paneId = index === 0 ? "first-pane" : "second-pane";
+            const $pane = $(paneSelector);
+
+            $pane.off("dragover dragenter dragleave drop");
+
+            $pane.on("dragover dragenter", function (event) {
+                if (draggedTab && dragSourcePane !== paneId) {
+                    // Only allow cross-pane drops
+                    event.preventDefault();
+
+                    // Check if this pane is empty for visual styling
+                    const tabBarId = paneId === "first-pane" ? "#phoenix-tab-bar" : "#phoenix-tab-bar-2";
+                    const $tabBar = $(tabBarId);
+                    const isEmptyPane =
+                        !$tabBar.length || $tabBar.is(":hidden") || $tabBar.children(".tab").length === 0;
+
+                    if (isEmptyPane) {
+                        $(this).addClass("empty-pane-drop-target");
+                    } else {
+                        // Add a different class for non-empty panes
+                        $(this).addClass("pane-drop-target");
+                    }
                 }
-            }
-        });
+            });
 
-        // handle leaving an empty pane drop target
-        $paneHolder.on("dragleave", function (e) {
-            $(this).removeClass("empty-pane-drop-target");
-        });
+            $pane.on("dragleave", function (event) {
+                $(this).removeClass("empty-pane-drop-target pane-drop-target");
+            });
 
-        // Handle drop on empty pane
-        $paneHolder.on("drop", function (e) {
-            const $tabBar = paneId === "first-pane" ? $("#phoenix-tab-bar") : $("#phoenix-tab-bar-2");
-            const isEmptyPane = !$tabBar.length || $tabBar.is(":hidden") || $tabBar.children(".tab").length === 0;
+            $pane.on("drop", function (event) {
+                if (draggedTab && dragSourcePane !== paneId) {
+                    event.preventDefault();
+                    $(this).removeClass("empty-pane-drop-target pane-drop-target");
 
-            if (draggedTab) {
-                e.preventDefault();
-                e.stopPropagation();
-
-                // remove the highlight
-                $(this).removeClass("empty-pane-drop-target");
-
-                // get the dragged file path
-                const draggedPath = $(draggedTab).attr("data-path");
-
-                // Determine source pane
-                const sourcePaneId =
-                    $(draggedTab).closest("#phoenix-tab-bar-2").length > 0 ? "second-pane" : "first-pane";
-
-                // we only want to proceed if we're not dropping in the same pane or,
-                // allow if it's the same pane with existing tabs
-                if (sourcePaneId !== paneId || !isEmptyPane) {
-                    const sourceWorkingSet = MainViewManager.getWorkingSet(sourcePaneId);
+                    const draggedPath = $(draggedTab).attr("data-path");
+                    const sourceWorkingSet = MainViewManager.getWorkingSet(dragSourcePane);
                     const targetWorkingSet = MainViewManager.getWorkingSet(paneId);
                     let draggedFile = null;
 
-                    // Find the dragged file in the source pane
-                    for (let i = 0; i < sourceWorkingSet.length; i++) {
-                        if (sourceWorkingSet[i].fullPath === draggedPath) {
-                            draggedFile = sourceWorkingSet[i];
+                    // Find dragged file
+                    for (let file of sourceWorkingSet) {
+                        if (file.fullPath === draggedPath) {
+                            draggedFile = file;
                             break;
                         }
                     }
 
                     if (draggedFile) {
-                        if (sourcePaneId !== paneId) {
-                            // Check if the dragged file is currently active in the source pane
-                            const currentActiveFileInSource = MainViewManager.getCurrentlyViewedFile(sourcePaneId);
-                            const isActiveFileBeingMoved = currentActiveFileInSource &&
-                                                          currentActiveFileInSource.fullPath === draggedPath;
+                        // Close in source pane
+                        CommandManager.execute(Commands.FILE_CLOSE, { file: draggedFile, paneId: dragSourcePane });
 
-                            // If the active file is being moved and there are other files in the source pane,
-                            // switch to another file first to prevent placeholder creation
-                            if (isActiveFileBeingMoved && sourceWorkingSet.length > 1) {
-                                // Find another file to make active
-                                let draggedIndex = -1;
-                                for (let i = 0; i < sourceWorkingSet.length; i++) {
-                                    if (sourceWorkingSet[i].fullPath === draggedPath) {
-                                        draggedIndex = i;
+                        // Check if target pane is empty or has files
+                        const tabBarId = paneId === "first-pane" ? "#phoenix-tab-bar" : "#phoenix-tab-bar-2";
+                        const $tabBar = $(tabBarId);
+                        const isEmptyPane =
+                            !$tabBar.length || $tabBar.is(":hidden") || $tabBar.children(".tab").length === 0;
+
+                        if (isEmptyPane) {
+                            // Empty pane: just add the file
+                            MainViewManager.addToWorkingSet(paneId, draggedFile);
+                        } else {
+                            // Non-empty pane: add after the currently active file
+                            const currentActiveFile = MainViewManager.getCurrentlyViewedFile(paneId);
+                            if (currentActiveFile) {
+                                // Find index of current active file and insert after it
+                                let targetIndex = -1;
+                                for (let i = 0; i < targetWorkingSet.length; i++) {
+                                    if (targetWorkingSet[i].fullPath === currentActiveFile.fullPath) {
+                                        targetIndex = i;
                                         break;
                                     }
                                 }
-
-                                if (draggedIndex !== -1) {
-                                    let newActiveIndex = draggedIndex + 1;
-                                    if (newActiveIndex >= sourceWorkingSet.length) {
-                                        newActiveIndex = draggedIndex - 1;
-                                    }
-
-                                    if (newActiveIndex >= 0 && newActiveIndex < sourceWorkingSet.length) {
-                                        const newActiveFile = sourceWorkingSet[newActiveIndex];
-                                        // Open the new active file in the source pane before removing the dragged file
-                                        CommandManager.execute(Commands.FILE_OPEN, {
-                                            fullPath: newActiveFile.fullPath,
-                                            paneId: sourcePaneId
-                                        });
-                                    }
-                                }
-                            }
-
-                            // If different panes, close in source pane
-                            CommandManager.execute(Commands.FILE_CLOSE, { file: draggedFile, paneId: sourcePaneId });
-
-                            // For non-empty panes, find current active file to place tab after it
-                            if (!isEmptyPane && targetWorkingSet.length > 0) {
-                                const currentActiveFile = MainViewManager.getCurrentlyViewedFile(paneId);
-
-                                if (currentActiveFile) {
-                                    // Find index of current active file
-                                    let targetIndex = -1;
-                                    for (let i = 0; i < targetWorkingSet.length; i++) {
-                                        if (targetWorkingSet[i].fullPath === currentActiveFile.fullPath) {
-                                            targetIndex = i;
-                                            break;
-                                        }
-                                    }
-
-                                    if (targetIndex !== -1) {
-                                        // Add after current active file
-                                        MainViewManager.addToWorkingSet(paneId, draggedFile, targetIndex + 1);
-                                    } else {
-                                        // Fallback to adding at the end
-                                        MainViewManager.addToWorkingSet(paneId, draggedFile);
-                                    }
-                                } else {
-                                    // No active file, add to the end
-                                    MainViewManager.addToWorkingSet(paneId, draggedFile);
-                                }
+                                MainViewManager.addToWorkingSet(paneId, draggedFile, targetIndex + 1);
                             } else {
-                                // Empty pane, just add it
+                                // Fallback: add to end
                                 MainViewManager.addToWorkingSet(paneId, draggedFile);
                             }
-
-                            // Open file in target pane
-                            CommandManager.execute(Commands.FILE_OPEN, { fullPath: draggedPath, paneId: paneId });
-                        } else if (isEmptyPane) {
-                            // Same pane, empty pane case (should never happen but kept for safety)
-                            MainViewManager.addToWorkingSet(paneId, draggedFile);
-                            CommandManager.execute(Commands.FILE_OPEN, { fullPath: draggedPath, paneId: paneId });
                         }
-                    }
-                }
 
+                        // Open file in target pane
+                        CommandManager.execute(Commands.FILE_OPEN, { fullPath: draggedPath, paneId: paneId });
+                    }
+
+                    cleanupDragState();
+                }
+            });
+        });
+    }
+
+    /**
+     * clean up the handlers
+     */
+    function setupGlobalCleanup() {
+        // Clean up on document level events
+        $(document).on("dragend mouseup", function () {
+            if (draggedTab) {
+                setTimeout(() => cleanupDragState(), 100);
+            }
+        });
+
+        // Clean up on escape key
+        $(document).on("keydown", function (event) {
+            if (event.key === "Escape" && draggedTab) {
                 cleanupDragState();
             }
         });
+    }
+
+    /**
+     * Initialize drag and drop functionality
+     * @param {string} firstPaneSelector - The selector for the first pane tab bar
+     * @param {string} secondPaneSelector - The selector for the second pane tab bar
+     */
+    function init(firstPaneSelector, secondPaneSelector) {
+        // setup drag handlers for both tab bars
+        if (firstPaneSelector) {
+            setupTabBarDragHandlers(firstPaneSelector);
+        }
+        if (secondPaneSelector) {
+            setupTabBarDragHandlers(secondPaneSelector);
+        }
+
+        setupPaneDropTargets();
+        setupGlobalCleanup();
+        ensureDragIndicator();
     }
 
     module.exports = {
