@@ -1193,7 +1193,7 @@ define(function (require, exports, module) {
                 async function clickTabAndVerify(filePath, description) {
                     const $tab = getTab(filePath);
                     expect($tab.length).toBe(1);
-                    $tab.trigger("mousedown");
+                    $tab.trigger("click");
 
                     // Wait for the file to become active
                     await awaitsFor(
