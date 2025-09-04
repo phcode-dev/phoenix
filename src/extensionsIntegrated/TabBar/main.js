@@ -229,6 +229,7 @@ define(function (require, exports, module) {
             $tabBar = $(TabBarHTML);
             // since we need to add the tab bar before the editor which has .not-editor class
             $(".pane-header").after($tabBar);
+            $("#overflow-button").attr("title", Strings.TABBAR_SHOW_HIDDEN_TABS);
             WorkspaceManager.recomputeLayout(true);
             updateTabs();
         } else if ($paneHeader.length === 2) {
@@ -239,6 +240,8 @@ define(function (require, exports, module) {
             // TODO: Fix bug where the tab bar gets hidden inside the editor in horizontal split
             $paneHeader.eq(0).after($tabBar);
             $paneHeader.eq(1).after($tabBar2);
+            $("#overflow-button").attr("title", Strings.TABBAR_SHOW_HIDDEN_TABS);
+            $("#overflow-button-2").attr("title", Strings.TABBAR_SHOW_HIDDEN_TABS);
             WorkspaceManager.recomputeLayout(true);
             updateTabs();
         }
