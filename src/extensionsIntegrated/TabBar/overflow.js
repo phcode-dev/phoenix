@@ -35,6 +35,8 @@ define(function (require, exports, module) {
     const EditorManager = require("editor/EditorManager");
     const FileSystem = require("filesystem/FileSystem");
 
+    // holds the dropdown instance
+    let $dropdown = null;
 
     /**
      * This function determines which tabs are hidden in the tab bar due to overflow
@@ -130,15 +132,12 @@ define(function (require, exports, module) {
     function showOverflowMenu(paneId, x, y) {
         const hiddenTabs = _getListOfHiddenTabs(paneId);
 
-        // first, remove any existing dropdown menus to prevent duplicates
-        $(".dropdown-overflow-menu").remove();
-
         // Create a map to track tabs that are being closed
         // Using paths as keys for quick lookup
         const closingTabPaths = {};
 
         // create the dropdown
-        const dropdown = new DropdownButton.DropdownButton("", hiddenTabs, function (item, index) {
+        $dropdown = new DropdownButton.DropdownButton("", hiddenTabs, function (item, index) {
             const iconHtml = item.$icon[0].outerHTML; // the file icon
             const dirtyHtml = item.isDirty
                 ? '<span class="tab-dirty-icon-overflow">•</span>'
@@ -169,15 +168,14 @@ define(function (require, exports, module) {
             };
         });
 
-        // add the custom classes for styling the dropdown
-        dropdown.dropdownExtraClasses = "dropdown-overflow-menu";
-        dropdown.$button.addClass("btn-overflow-tabs");
+        // add custom class to separate overflow dropdown from regular ones
+        $dropdown.dropdownExtraClasses = "dropdown-overflow-menu";
 
         // appending to document body. we'll position this with absolute positioning
-        $("body").append(dropdown.$button);
+        $("body").append($dropdown.$button);
 
         // position the dropdown where the user clicked
-        dropdown.$button.css({
+        $dropdown.$button.css({
             position: "absolute",
             left: x + "px",
             top: y + "px",
@@ -203,10 +201,10 @@ define(function (require, exports, module) {
             e.preventDefault();
         });
 
-        dropdown.showDropdown();
+        $dropdown.showDropdown();
 
         // handle the option selection
-        dropdown.on("select", function (e, item, index) {
+        $dropdown.on("select", function (e, item, index) {
             // check if this tab was marked for closing
             if (closingTabPaths[item.path]) {
                 // this tab is being closed, so handle the close operation
@@ -240,15 +238,9 @@ define(function (require, exports, module) {
             }
         });
 
-        // clean up when the dropdown is closed
-        dropdown.$button.on("dropdown-closed", function () {
-            $(document).off("mousedown", ".tab-close-icon-overflow");
-            dropdown.$button.remove();
-        });
-
         // a button was getting displayed on the screen wherever a click was made. not sure why
         // but this fixes it
-        dropdown.$button.css({
+        $dropdown.$button.css({
             display: "none"
         });
     }
@@ -335,27 +327,50 @@ define(function (require, exports, module) {
         }
     }
 
+    /**
+     * to close the overflow button's dropdown
+     */
+    function _closeDropdown() {
+        if ($dropdown) {
+            if ($dropdown.$button) {
+                $dropdown.$button.remove();
+            }
+            $dropdown = null;
+        }
+    }
 
     /**
-     * To setup the handlers for the overflow menu
+     * this function gets called when the overflow button gets clicked
+     * it shows/closes the dropdown as required
+     * @param {Event} e - the event instance
+     * @param {String} paneId - the pane id "first-pane" or "second-pane"
      */
-    function setupOverflowHandlers() {
+    function _handleOverflowButtonClick(e, paneId) {
+        e.stopPropagation();
+        $dropdown ? _closeDropdown() : showOverflowMenu(paneId, e.pageX, e.pageY);
+    }
+
+    /**
+     * initialize the handling of the overflow buttons
+     * this also registers the event handlers
+     */
+    function init() {
+        // when clicked anywhere on the page we want to close the dropdown
+        // except the overflow-buttons
+        $("html").on("click", function (e) {
+            if ($(e.target).closest("#overflow-button, #overflow-button-2").length) { return; }
+            _closeDropdown();
+        });
+
         // handle when the overflow button is clicked for the first pane
         $(document).on("click", "#overflow-button", function (e) {
-            e.stopPropagation();
-            showOverflowMenu("first-pane", e.pageX, e.pageY);
+            _handleOverflowButtonClick(e, "first-pane");
         });
 
         // for second pane
         $(document).on("click", "#overflow-button-2", function (e) {
-            e.stopPropagation();
-            showOverflowMenu("second-pane", e.pageX, e.pageY);
+            _handleOverflowButtonClick(e, "second-pane");
         });
-    }
-
-    // initialize the handling of the overflow buttons
-    function init() {
-        setupOverflowHandlers();
     }
 
     module.exports = {
