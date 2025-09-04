@@ -595,7 +595,7 @@ define(function (require, exports, module) {
         MainViewManager.on("paneCreate paneDestroy paneLayoutChange", createTabBar);
 
         // For active pane changes, update only the tabs
-        MainViewManager.on("activePaneChange", updateTabs);
+        MainViewManager.on("activePaneChange", debounceUpdateTabs);
 
         // For editor changes, update only the tabs.
         MainViewManager.on(MainViewManager.EVENT_CURRENT_FILE_CHANGE, debounceUpdateTabs);
