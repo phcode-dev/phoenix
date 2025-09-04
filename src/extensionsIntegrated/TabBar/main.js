@@ -487,60 +487,36 @@ define(function (require, exports, module) {
     function handleTabClick() {
         // delegate event handling for both tab bars
         $(document).on("click", ".phoenix-tab-bar .tab", function (event) {
+            // Get the file path from the data-path attribute of the parent tab
+            const filePath = $(this).attr("data-path");
+            if (!filePath) { return; }
+
+            // determine the pane inside which the tab belongs
+            const isSecondPane = $(this).closest("#phoenix-tab-bar-2").length > 0;
+            const paneId = isSecondPane ? "second-pane" : "first-pane";
+
+            // get the file object
+            const fileObj = FileSystem.getFileForPath(filePath);
+
             // check if the clicked element is the close button
             if ($(event.target).hasClass("fa-times") || $(event.target).closest(".tab-close").length) {
-                // Get the file path from the data-path attribute of the parent tab
-                const filePath = $(this).attr("data-path");
+                event.preventDefault();
+                event.stopPropagation();
 
-                if (filePath) {
-                    // determine the pane inside which the tab belongs
-                    const isSecondPane = $(this).closest("#phoenix-tab-bar-2").length > 0;
-                    const paneId = isSecondPane ? "second-pane" : "first-pane";
-
-                    // get the file object
-                    const fileObj = FileSystem.getFileForPath(filePath);
-                    // close the file
-                    CommandManager.execute(Commands.FILE_CLOSE, { file: fileObj, paneId: paneId });
-
-                    // Prevent default behavior
-                    event.preventDefault();
-                    event.stopPropagation();
-                }
-            }
-        });
-
-        // delegate event handling for both tab bars
-        $(document).on("mousedown", ".phoenix-tab-bar .tab", function (event) {
-            // to prevent right-clicks from activating the mousedown event
-            if (event.button === 2) { return; }
-
-            if ($(event.target).hasClass("fa-times") || $(event.target).closest(".tab-close").length) {
-                return;
-            }
-            // Get the file path from the data-path attribute
-            const filePath = $(this).attr("data-path");
-
-            if (filePath) {
-                // determine the pane inside which the tab belongs
-                const isSecondPane = $(this).closest("#phoenix-tab-bar-2").length > 0;
-                const paneId = isSecondPane ? "second-pane" : "first-pane";
+                CommandManager.execute(Commands.FILE_CLOSE, { file: fileObj, paneId: paneId }); // close the file
+            } else { // open the clicked tab
                 const currentActivePane = MainViewManager.getActivePaneId();
                 const isPaneActive = paneId === currentActivePane;
                 const currentFile = MainViewManager.getCurrentlyViewedFile(currentActivePane);
 
-                // Check if this is a placeholder tab
+                // if the clicked tab is a placeholder tab, we add it to the working set
                 if ($(this).hasClass("placeholder")) {
-                    // Add the file to the working set when placeholder tab is clicked
-                    const fileObj = FileSystem.getFileForPath(filePath);
                     MainViewManager.addToWorkingSet(paneId, fileObj);
                 }
 
-                if (isPaneActive && currentFile && currentFile.fullPath === filePath) {
-                    return;
-                }
+                // clicked tab is already active, don't do anything
+                if (isPaneActive && currentFile && currentFile.fullPath === filePath) { return; }
                 CommandManager.execute(Commands.FILE_OPEN, { fullPath: filePath, paneId: paneId });
-
-                // We dont prevent default behavior here to enable drag and drop of this tab
             }
         });
 
