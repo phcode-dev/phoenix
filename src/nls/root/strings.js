@@ -1309,6 +1309,7 @@ define({
     "DESCRIPTION_TABBAR": "Set the tab bar settings.",
     "DESCRIPTION_SHOW_TABBAR": "true to show the tab bar, else false.",
     "DESCRIPTION_NUMBER_OF_TABS": "The number of tabs to show in the tab bar. Set to -1 to show all tabs",
+    "TABBAR_SHOW_HIDDEN_TABS": "Show hidden tabs",
 
     // Git extension
     "ENABLE_GIT": "Enable Git",
