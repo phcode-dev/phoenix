@@ -407,6 +407,10 @@ define(function (require, exports, module) {
          * an existing selection
          */
         $("#editor-holder").on("contextmenu", function (e) {
+            // make sure that the click was not made inside a tab bar container
+            // if it is, then we don't show editor context menu as tab bar has its own
+            if($(e.target).closest('.tab-bar-container').length) { return; }
+
             require(["editor/EditorManager"], function (EditorManager) {
                 if ($(e.target).parents(".CodeMirror-gutter").length !== 0) {
                     return;
