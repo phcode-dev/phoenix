@@ -1115,6 +1115,7 @@ define({
   "DESCRIPTION_TABBAR": "设置标签栏设置。",
   "DESCRIPTION_SHOW_TABBAR": "显示标签栏则为 true，否则为 false。",
   "DESCRIPTION_NUMBER_OF_TABS": "标签栏中显示的标签页数量。设置为 -1 以显示所有标签页",
+  "TABBAR_SHOW_HIDDEN_TABS": "显示隐藏的标签页",
   "ENABLE_GIT": "启用 Git",
   "ACTION": "操作",
   "STATUSBAR_SHOW_GIT": "Git 面板",
@@ -1458,5 +1459,15 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "模板文本",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "描述",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "文件扩展名",
-  "TABBAR_SHOW_HIDDEN_TABS": "显示隐藏的标签页"
+  "PROMO_UPGRADE_TITLE": "您已升级到 {0}",
+  "PROMO_UPGRADE_MESSAGE": "在接下来的 {0} 天内，您可以尽情享用所有高级功能：",
+  "PROMO_CARD_1": "拖放元素",
+  "PROMO_CARD_1_MESSAGE": "直观地重新排列版块 — Phoenix 会为您更新 HTML 和 CSS。",
+  "PROMO_CARD_2": "图片替换",
+  "PROMO_CARD_2_MESSAGE": "点击任何图片即可立即替换，并实时预览更改。",
+  "PROMO_CARD_3": "元素复制和删除",
+  "PROMO_CARD_3_MESSAGE": "一键复制和删除元素。",
+  "PROMO_CARD_4": "在预览中编辑文本",
+  "PROMO_CARD_4_MESSAGE": "直接在预览中编辑标题、按钮和复制内容。",
+  "PROMO_LEARN_MORE": "了解更多…"
 });

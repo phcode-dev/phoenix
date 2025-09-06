@@ -1115,6 +1115,7 @@ define({
   "DESCRIPTION_TABBAR": "Setează setările barei de file.",
   "DESCRIPTION_SHOW_TABBAR": "`true` pentru a afișa bara de file, altfel `false`.",
   "DESCRIPTION_NUMBER_OF_TABS": "Numărul de file de afișat în bara de file. Setează la -1 pentru a afișa toate filele.",
+  "TABBAR_SHOW_HIDDEN_TABS": "Afișează filele ascunse",
   "ENABLE_GIT": "Activează Git",
   "ACTION": "Acțiune",
   "STATUSBAR_SHOW_GIT": "Panou Git",
@@ -1458,5 +1459,15 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Text șablon",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Descriere",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extensie fișier",
-  "TABBAR_SHOW_HIDDEN_TABS": "Afișează filele ascunse"
+  "PROMO_UPGRADE_TITLE": "Ai fost upgradat la {0}",
+  "PROMO_UPGRADE_MESSAGE": "Bucură-te de acces complet la toate funcțiile premium pentru următoarele {0} zile:",
+  "PROMO_CARD_1": "Trage și plasează elemente",
+  "PROMO_CARD_1_MESSAGE": "Reordonează secțiunile vizual — Phoenix actualizează HTML-ul și CSS-ul pentru tine.",
+  "PROMO_CARD_2": "Înlocuire imagine",
+  "PROMO_CARD_2_MESSAGE": "Fă clic pe orice imagine pentru a o înlocui instantaneu și a previzualiza modificările în timp real.",
+  "PROMO_CARD_3": "Duplicare și ștergere element",
+  "PROMO_CARD_3_MESSAGE": "Duplică și șterge elemente cu un singur clic.",
+  "PROMO_CARD_4": "Editare text în previzualizare",
+  "PROMO_CARD_4_MESSAGE": "Editează titluri, butoane și copiază direct în previzualizare.",
+  "PROMO_LEARN_MORE": "Află mai multe…"
 });

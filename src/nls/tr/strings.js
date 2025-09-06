@@ -1115,6 +1115,7 @@ define({
   "DESCRIPTION_TABBAR": "Sekme çubuğu ayarlarını belirleyin.",
   "DESCRIPTION_SHOW_TABBAR": "Sekme çubuğunu göstermek için \"true\", gizlemek için \"false\".",
   "DESCRIPTION_NUMBER_OF_TABS": "Sekme çubuğunda gösterilecek sekme sayısı. Tüm sekmeleri göstermek için -1 olarak ayarlayın.",
+  "TABBAR_SHOW_HIDDEN_TABS": "Gizli sekmeleri göster",
   "ENABLE_GIT": "Git'i Etkinleştir",
   "ACTION": "Eylem",
   "STATUSBAR_SHOW_GIT": "Git Paneli",
@@ -1458,5 +1459,15 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Şablon Metni",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Açıklama",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Dosya Uzantısı",
-  "TABBAR_SHOW_HIDDEN_TABS": "Gizli sekmeleri göster"
+  "PROMO_UPGRADE_TITLE": "{0} sürümüne yükseltildiniz",
+  "PROMO_UPGRADE_MESSAGE": "Önümüzdeki {0} gün boyunca tüm premium özelliklere tam erişimin keyfini çıkarın:",
+  "PROMO_CARD_1": "Öğeleri Sürükle ve Bırak",
+  "PROMO_CARD_1_MESSAGE": "Bölümleri görsel olarak yeniden düzenleyin — Phoenix HTML ve CSS'yi sizin için günceller.",
+  "PROMO_CARD_2": "Görsel Değiştirme",
+  "PROMO_CARD_2_MESSAGE": "Anında değiştirmek ve değişiklikleri gerçek zamanlı olarak önizlemek için herhangi bir resme tıklayın.",
+  "PROMO_CARD_3": "Öğe Çoğaltma ve Silme",
+  "PROMO_CARD_3_MESSAGE": "Tek bir tıklamayla öğeleri çoğaltın ve silin.",
+  "PROMO_CARD_4": "Önizlemede Metin Düzenleme",
+  "PROMO_CARD_4_MESSAGE": "Başlıkları, düğmeleri düzenleyin ve doğrudan önizlemede kopyalayın.",
+  "PROMO_LEARN_MORE": "Daha Fazla Bilgi Edinin…"
 });

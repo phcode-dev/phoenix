@@ -1115,6 +1115,7 @@ define({
   "DESCRIPTION_TABBAR": "Configurar los ajustes de la barra de pestañas.",
   "DESCRIPTION_SHOW_TABBAR": "`true` para mostrar la barra de pestañas, `false` para ocultarla.",
   "DESCRIPTION_NUMBER_OF_TABS": "El número de pestañas a mostrar en la barra de pestañas.  Establecer en -1 para mostrar todas las pestañas.",
+  "TABBAR_SHOW_HIDDEN_TABS": "Mostrar pestañas ocultas",
   "ENABLE_GIT": "Habilitar Git",
   "ACTION": "Acción",
   "STATUSBAR_SHOW_GIT": "Panel de Git",
@@ -1458,5 +1459,15 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Texto de la plantilla",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Descripción",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extensión de archivo",
-  "TABBAR_SHOW_HIDDEN_TABS": "Mostrar pestañas ocultas"
+  "PROMO_UPGRADE_TITLE": "Te hemos actualizado a {0}",
+  "PROMO_UPGRADE_MESSAGE": "Disfruta de acceso completo a todas las funciones premium durante los próximos {0} días:",
+  "PROMO_CARD_1": "Arrastrar y soltar elementos",
+  "PROMO_CARD_1_MESSAGE": "Reorganiza las secciones visualmente: Phoenix actualiza el HTML y CSS por ti.",
+  "PROMO_CARD_2": "Reemplazo de imágenes",
+  "PROMO_CARD_2_MESSAGE": "Haz clic en cualquier imagen para reemplazarla instantáneamente y previsualizar los cambios en tiempo real.",
+  "PROMO_CARD_3": "Duplicación y eliminación de elementos",
+  "PROMO_CARD_3_MESSAGE": "Duplica y elimina elementos con un solo clic.",
+  "PROMO_CARD_4": "Editar texto en la vista previa",
+  "PROMO_CARD_4_MESSAGE": "Edita encabezados, botones y copia directamente en la vista previa.",
+  "PROMO_LEARN_MORE": "Más información…"
 });

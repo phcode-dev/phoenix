@@ -1115,6 +1115,7 @@ define({
   "DESCRIPTION_TABBAR": "탭 표시줄 설정을 지정합니다.",
   "DESCRIPTION_SHOW_TABBAR": "탭 표시줄을 표시하려면 true, 그렇지 않으면 false입니다.",
   "DESCRIPTION_NUMBER_OF_TABS": "탭 표시줄에 표시할 탭 수입니다. 모든 탭을 표시하려면 -1로 설정합니다.",
+  "TABBAR_SHOW_HIDDEN_TABS": "숨겨진 탭 표시",
   "ENABLE_GIT": "깃 활성화",
   "ACTION": "동작",
   "STATUSBAR_SHOW_GIT": "Git 패널",
@@ -1458,5 +1459,15 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "템플릿 텍스트",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "설명",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "파일 확장자",
-  "TABBAR_SHOW_HIDDEN_TABS": "숨겨진 탭 표시"
+  "PROMO_UPGRADE_TITLE": "{0}(으)로 업그레이드되었습니다.",
+  "PROMO_UPGRADE_MESSAGE": "향후 {0}일 동안 모든 프리미엄 기능을 완전히 이용할 수 있습니다.",
+  "PROMO_CARD_1": "요소 끌어서 놓기",
+  "PROMO_CARD_1_MESSAGE": "섹션을 시각적으로 재정렬하세요. Phoenix가 HTML과 CSS를 자동으로 업데이트합니다.",
+  "PROMO_CARD_2": "이미지 교체",
+  "PROMO_CARD_2_MESSAGE": "이미지를 클릭하여 즉시 교체하고 변경 사항을 실시간으로 미리 볼 수 있습니다.",
+  "PROMO_CARD_3": "요소 복제 및 삭제",
+  "PROMO_CARD_3_MESSAGE": "클릭 한 번으로 요소를 복제하고 삭제할 수 있습니다.",
+  "PROMO_CARD_4": "미리보기에서 텍스트 편집",
+  "PROMO_CARD_4_MESSAGE": "미리보기에서 바로 제목, 버튼 및 복사를 편집할 수 있습니다.",
+  "PROMO_LEARN_MORE": "자세히 알아보기…"
 });

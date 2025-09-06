@@ -1115,6 +1115,7 @@ define({
   "DESCRIPTION_TABBAR": "ٹیب بار کی ترتیبات مقرر کریں۔",
   "DESCRIPTION_SHOW_TABBAR": "ٹیب بار دکھانے کے لیے true، ورنہ false۔",
   "DESCRIPTION_NUMBER_OF_TABS": "ٹیب بار میں دکھانے کے لیے ٹیبز کی تعداد۔ تمام ٹیبز دکھانے کے لیے -1 پر سیٹ کریں۔",
+  "TABBAR_SHOW_HIDDEN_TABS": "پوشیدہ ٹیبز دکھائیں",
   "ENABLE_GIT": "گٹ فعال کریں",
   "ACTION": "عمل",
   "STATUSBAR_SHOW_GIT": "گٹ پینل",
@@ -1458,5 +1459,15 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "ٹیمپلیٹ متن",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "وضاحت",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "فائل ایکسٹینشن",
-  "TABBAR_SHOW_HIDDEN_TABS": "پوشیدہ ٹیبز دکھائیں"
+  "PROMO_UPGRADE_TITLE": "آپ کو {0} میں اپ گریڈ کر دیا گیا ہے۔",
+  "PROMO_UPGRADE_MESSAGE": "اگلے {0} دنوں کے لیے تمام پریمیم خصوصیات تک مکمل رسائی سے لطف اندوز ہوں:",
+  "PROMO_CARD_1": "عناصر کو گھسیٹیں اور چھوڑیں",
+  "PROMO_CARD_1_MESSAGE": "حصوں کو بصری طور پر دوبارہ ترتیب دیں — فینکس آپ کے لیے HTML اور CSS کو اپ ڈیٹ کرتا ہے۔",
+  "PROMO_CARD_2": "تصویر کی تبدیلی",
+  "PROMO_CARD_2_MESSAGE": "کسی بھی تصویر پر کلک کر کے اسے فوری طور پر تبدیل کریں اور تبدیلیوں کا حقیقی وقت میں پیش نظارہ کریں۔",
+  "PROMO_CARD_3": "عنصر کی نقل اور حذف",
+  "PROMO_CARD_3_MESSAGE": "ایک ہی کلک سے عناصر کی نقل اور حذف کریں۔",
+  "PROMO_CARD_4": "پیش نظارہ میں متن کی تدوین",
+  "PROMO_CARD_4_MESSAGE": "پیش نظارہ میں براہ راست ہیڈنگ، بٹنوں اور کاپی میں ترمیم کریں۔",
+  "PROMO_LEARN_MORE": "مزید جانیے…"
 });

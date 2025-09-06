@@ -1115,6 +1115,7 @@ define({
   "DESCRIPTION_TABBAR": "Nastaviť nastavenia panela kariet.",
   "DESCRIPTION_SHOW_TABBAR": "Pravda pre zobrazenie panela kariet, inak nepravda.",
   "DESCRIPTION_NUMBER_OF_TABS": "Počet kariet, ktoré sa majú zobraziť na paneli kariet. Nastavte na -1 pre zobrazenie všetkých kariet",
+  "TABBAR_SHOW_HIDDEN_TABS": "Zobraziť skryté karty",
   "ENABLE_GIT": "Povoliť Git",
   "ACTION": "Akcia",
   "STATUSBAR_SHOW_GIT": "Panel Git",
@@ -1458,5 +1459,15 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Text šablóny",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Popis",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Prípona súboru",
-  "TABBAR_SHOW_HIDDEN_TABS": "Zobraziť skryté karty"
+  "PROMO_UPGRADE_TITLE": "Boli ste prejdení na {0}",
+  "PROMO_UPGRADE_MESSAGE": "Využívajte plný prístup ku všetkým prémiovým funkciám počas nasledujúcich {0} dní:",
+  "PROMO_CARD_1": "Presúvanie prvkov myšou",
+  "PROMO_CARD_1_MESSAGE": "Vizuálne usporiadajte sekcie – Phoenix aktualizuje HTML a CSS za vás.",
+  "PROMO_CARD_2": "Nahradenie obrázka",
+  "PROMO_CARD_2_MESSAGE": "Kliknite na ľubovoľný obrázok a okamžite ho nahraďte a zobrazte si zmeny v reálnom čase.",
+  "PROMO_CARD_3": "Duplikovanie a odstránenie prvkov",
+  "PROMO_CARD_3_MESSAGE": "Duplikujte a odstráňte prvky jediným kliknutím.",
+  "PROMO_CARD_4": "Úprava textu v náhľade",
+  "PROMO_CARD_4_MESSAGE": "Upravujte nadpisy, tlačidlá a kopírujte priamo v náhľade.",
+  "PROMO_LEARN_MORE": "Zistiť viac…"
 });

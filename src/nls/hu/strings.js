@@ -1115,6 +1115,7 @@ define({
   "DESCRIPTION_TABBAR": "A fülsáv beállításainak megadása.",
   "DESCRIPTION_SHOW_TABBAR": "`true` a fülsáv megjelenítéséhez, egyébként `false`.",
   "DESCRIPTION_NUMBER_OF_TABS": "A fülsávon megjelenítendő fülek száma. Állítsa -1-re az összes fül megjelenítéséhez.",
+  "TABBAR_SHOW_HIDDEN_TABS": "Rejtett fülek megjelenítése",
   "ENABLE_GIT": "Git engedélyezése",
   "ACTION": "Művelet",
   "STATUSBAR_SHOW_GIT": "Git panel",
@@ -1458,5 +1459,15 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Sablonszöveg",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Leírás",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Fájlkiterjesztés",
-  "TABBAR_SHOW_HIDDEN_TABS": "Rejtett fülek megjelenítése"
+  "PROMO_UPGRADE_TITLE": "Átálltunk a(z) {0} verzióra",
+  "PROMO_UPGRADE_MESSAGE": "Élvezze a prémium funkciók teljes körű elérését a következő {0} napban:",
+  "PROMO_CARD_1": "Elemek húzása és elengedése",
+  "PROMO_CARD_1_MESSAGE": "Rendezd át vizuálisan a szekciókat – a Phoenix frissíti a HTML-t és a CSS-t helyetted.",
+  "PROMO_CARD_2": "Képcsere",
+  "PROMO_CARD_2_MESSAGE": "Kattintson bármelyik képre a cseréjéhez, és tekintse meg a változtatásokat valós időben.",
+  "PROMO_CARD_3": "Elem duplikálása és törlése",
+  "PROMO_CARD_3_MESSAGE": "Duplikálja és törölje az elemeket egyetlen kattintással.",
+  "PROMO_CARD_4": "Szöveg szerkesztése az előnézetben",
+  "PROMO_CARD_4_MESSAGE": "Szerkesszen címsorokat, gombokat és másoljon közvetlenül az előnézetben.",
+  "PROMO_LEARN_MORE": "Tudj meg többet…"
 });

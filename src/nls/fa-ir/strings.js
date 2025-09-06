@@ -1115,6 +1115,7 @@ define({
   "DESCRIPTION_TABBAR": "تنظیمات نوار برگه‌ها را تعیین کنید.",
   "DESCRIPTION_SHOW_TABBAR": "مقدار «درست» برای نمایش نوار برگه‌ها و مقدار «نادرست» برای عدم نمایش.",
   "DESCRIPTION_NUMBER_OF_TABS": "تعداد برگه‌هایی که در نوار برگه‌ها نمایش داده می‌شوند. مقدار ۱- برای نمایش همه برگه‌ها.",
+  "TABBAR_SHOW_HIDDEN_TABS": "نمایش برگه‌های پنهان",
   "ENABLE_GIT": "فعال کردن گیت",
   "ACTION": "اقدام",
   "STATUSBAR_SHOW_GIT": "پنل گیت",
@@ -1458,5 +1459,15 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "متن الگو",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "توضیحات",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "پسوند فایل",
-  "TABBAR_SHOW_HIDDEN_TABS": "نمایش برگه‌های پنهان"
+  "PROMO_UPGRADE_TITLE": "حساب شما به {0} ارتقا یافت.",
+  "PROMO_UPGRADE_MESSAGE": "از دسترسی کامل به تمام امکانات ویژه برای {0} روز آینده لذت ببرید:",
+  "PROMO_CARD_1": "کشیدن و رها کردن عناصر",
+  "PROMO_CARD_1_MESSAGE": "بخش‌ها را به‌صورت بصری مرتب کنید — فینیکس HTML و CSS را برای شما به‌روزرسانی می‌کند.",
+  "PROMO_CARD_2": "جایگزینی تصویر",
+  "PROMO_CARD_2_MESSAGE": "برای جایگزینی فوری روی هر تصویری کلیک کنید و تغییرات را به‌صورت آنی مشاهده کنید.",
+  "PROMO_CARD_3": "تکثیر و حذف عنصر",
+  "PROMO_CARD_3_MESSAGE": "عناصر را با یک کلیک تکثیر و حذف کنید.",
+  "PROMO_CARD_4": "ویرایش متن در پیش‌نمایش",
+  "PROMO_CARD_4_MESSAGE": "سرفصل‌ها، دکمه‌ها و متن را مستقیماً در پیش‌نمایش ویرایش کنید.",
+  "PROMO_LEARN_MORE": "اطلاعات بیشتر…"
 });

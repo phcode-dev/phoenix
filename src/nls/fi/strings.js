@@ -1115,6 +1115,7 @@ define({
   "DESCRIPTION_TABBAR": "Määritä välilehtipalkin asetukset.",
   "DESCRIPTION_SHOW_TABBAR": "Aseta arvoksi `true` näyttääksesi välilehtipalkin, muuten `false`.",
   "DESCRIPTION_NUMBER_OF_TABS": "Näytettävien välilehtien määrä välilehtipalkissa. Aseta arvoksi -1 näyttääksesi kaikki välilehdet.",
+  "TABBAR_SHOW_HIDDEN_TABS": "Näytä piilotetut välilehdet",
   "ENABLE_GIT": "Ota Git käyttöön",
   "ACTION": "Toiminto",
   "STATUSBAR_SHOW_GIT": "Git-paneeli",
@@ -1458,5 +1459,15 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Malliteksti",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Kuvaus",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Tiedostopääte",
-  "TABBAR_SHOW_HIDDEN_TABS": "Näytä piilotetut välilehdet"
+  "PROMO_UPGRADE_TITLE": "Sinut on päivitetty {0}-tilaukseen",
+  "PROMO_UPGRADE_MESSAGE": "Nauti täydestä pääsystä kaikkiin premium-ominaisuuksiin seuraavien {0} päivän ajan:",
+  "PROMO_CARD_1": "Elementtien raahaaminen ja pudottaminen",
+  "PROMO_CARD_1_MESSAGE": "Järjestele osioita visuaalisesti – Phoenix päivittää HTML:n ja CSS:n puolestasi.",
+  "PROMO_CARD_2": "Kuvan vaihtaminen",
+  "PROMO_CARD_2_MESSAGE": "Napsauta mitä tahansa kuvaa vaihtaaksesi sen välittömästi ja esikatsellaksesi muutoksia reaaliajassa.",
+  "PROMO_CARD_3": "Elementtien kopiointi ja poistaminen",
+  "PROMO_CARD_3_MESSAGE": "Kopioi ja poista elementtejä yhdellä napsautuksella.",
+  "PROMO_CARD_4": "Tekstin muokkaaminen esikatselussa",
+  "PROMO_CARD_4_MESSAGE": "Muokkaa otsikoita, painikkeita ja kopioi suoraan esikatselussa.",
+  "PROMO_LEARN_MORE": "Lisätietoja…"
 });

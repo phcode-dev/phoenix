@@ -1115,6 +1115,7 @@ define({
   "DESCRIPTION_TABBAR": "タブバーの設定を行います。",
   "DESCRIPTION_SHOW_TABBAR": "タブバーを表示する場合はtrue、それ以外の場合はfalse。",
   "DESCRIPTION_NUMBER_OF_TABS": "タブバーに表示するタブの数。すべてのタブを表示する場合は-1を設定します。",
+  "TABBAR_SHOW_HIDDEN_TABS": "非表示のタブを表示",
   "ENABLE_GIT": "Gitを有効化",
   "ACTION": "アクション",
   "STATUSBAR_SHOW_GIT": "Git パネル",
@@ -1458,5 +1459,15 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "テンプレートテキスト",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "説明",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "ファイル拡張子",
-  "TABBAR_SHOW_HIDDEN_TABS": "非表示のタブを表示"
+  "PROMO_UPGRADE_TITLE": "{0} にアップグレードされました",
+  "PROMO_UPGRADE_MESSAGE": "今後 {0} 日間、すべてのプレミアム機能をご利用いただけます：",
+  "PROMO_CARD_1": "要素のドラッグ＆ドロップ",
+  "PROMO_CARD_1_MESSAGE": "セクションを視覚的に再配置 — Phoenix が HTML と CSS を自動的に更新します。",
+  "PROMO_CARD_2": "画像の置換",
+  "PROMO_CARD_2_MESSAGE": "画像をクリックして即座に置き換え、変更をリアルタイムでプレビューします。",
+  "PROMO_CARD_3": "要素の複製と削除",
+  "PROMO_CARD_3_MESSAGE": "ワンクリックで要素を複製および削除します。",
+  "PROMO_CARD_4": "プレビューでのテキスト編集",
+  "PROMO_CARD_4_MESSAGE": "見出し、ボタン、コピーをプレビューで直接編集します。",
+  "PROMO_LEARN_MORE": "詳細はこちら…"
 });

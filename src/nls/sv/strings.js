@@ -1115,6 +1115,7 @@ define({
   "DESCRIPTION_TABBAR": "Ange inställningar för flikraden.",
   "DESCRIPTION_SHOW_TABBAR": "Sant för att visa flikraden, annars falskt.",
   "DESCRIPTION_NUMBER_OF_TABS": "Antalet flikar som ska visas i flikraden. Ange -1 för att visa alla flikar.",
+  "TABBAR_SHOW_HIDDEN_TABS": "Visa dolda flikar",
   "ENABLE_GIT": "Aktivera Git",
   "ACTION": "Åtgärd",
   "STATUSBAR_SHOW_GIT": "Git-panel",
@@ -1458,5 +1459,15 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Malltext",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Beskrivning",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Filändelse",
-  "TABBAR_SHOW_HIDDEN_TABS": "Visa dolda flikar"
+  "PROMO_UPGRADE_TITLE": "Du har uppgraderats till {0}",
+  "PROMO_UPGRADE_MESSAGE": "Få full tillgång till alla premiumfunktioner under de kommande {0} dagarna:",
+  "PROMO_CARD_1": "Dra och släpp element",
+  "PROMO_CARD_1_MESSAGE": "Ordna om sektioner visuellt – Phoenix uppdaterar HTML och CSS åt dig.",
+  "PROMO_CARD_2": "Bildersättning",
+  "PROMO_CARD_2_MESSAGE": "Klicka på valfri bild för att ersätta den direkt och förhandsgranska ändringar i realtid.",
+  "PROMO_CARD_3": "Duplicering och borttagning av element",
+  "PROMO_CARD_3_MESSAGE": "Duplicera och ta bort element med ett enda klick.",
+  "PROMO_CARD_4": "Redigera text i förhandsgranskning",
+  "PROMO_CARD_4_MESSAGE": "Redigera rubriker, knappar och kopiera direkt i förhandsgranskningen.",
+  "PROMO_LEARN_MORE": "Läs mer…"
 });

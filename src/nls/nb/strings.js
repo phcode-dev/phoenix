@@ -1115,6 +1115,7 @@ define({
   "DESCRIPTION_TABBAR": "Angi innstillinger for fanelinjen.",
   "DESCRIPTION_SHOW_TABBAR": "`true` for å vise fanelinjen, ellers `false`.",
   "DESCRIPTION_NUMBER_OF_TABS": "Antall faner som skal vises i fanelinjen. Sett til -1 for å vise alle faner.",
+  "TABBAR_SHOW_HIDDEN_TABS": "Vis skjulte faner",
   "ENABLE_GIT": "Aktiver Git",
   "ACTION": "Handling",
   "STATUSBAR_SHOW_GIT": "Git-panel",
@@ -1458,5 +1459,15 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Maltekst",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Beskrivelse",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Filtype",
-  "TABBAR_SHOW_HIDDEN_TABS": "Vis skjulte faner"
+  "PROMO_UPGRADE_TITLE": "Du har blitt oppgradert til {0}",
+  "PROMO_UPGRADE_MESSAGE": "Nyt full tilgang til alle premiumfunksjoner de neste {0} dagene:",
+  "PROMO_CARD_1": "Dra og slipp elementer",
+  "PROMO_CARD_1_MESSAGE": "Omorganiser seksjoner visuelt – Phoenix oppdaterer HTML og CSS for deg.",
+  "PROMO_CARD_2": "Bildeerstatning",
+  "PROMO_CARD_2_MESSAGE": "Klikk på et bilde for å erstatte det umiddelbart og forhåndsvise endringer i sanntid.",
+  "PROMO_CARD_3": "Duplisering og sletting av elementer",
+  "PROMO_CARD_3_MESSAGE": "Dupliser og slett elementer med ett enkelt klikk.",
+  "PROMO_CARD_4": "Redigering av tekst i forhåndsvisning",
+  "PROMO_CARD_4_MESSAGE": "Rediger overskrifter, knapper og kopier direkte i forhåndsvisningen.",
+  "PROMO_LEARN_MORE": "Lær mer…"
 });

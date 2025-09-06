@@ -1115,6 +1115,7 @@ define({
   "DESCRIPTION_TABBAR": "Imposta le impostazioni della barra delle schede.",
   "DESCRIPTION_SHOW_TABBAR": "`true` per mostrare la barra delle schede, altrimenti `false`.",
   "DESCRIPTION_NUMBER_OF_TABS": "Il numero di schede da mostrare nella barra delle schede. Impostare a -1 per mostrare tutte le schede",
+  "TABBAR_SHOW_HIDDEN_TABS": "Mostra le schede nascoste",
   "ENABLE_GIT": "Abilita Git",
   "ACTION": "Azione",
   "STATUSBAR_SHOW_GIT": "Pannello Git",
@@ -1458,5 +1459,15 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Testo del Modello",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Descrizione",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Estensione del File",
-  "TABBAR_SHOW_HIDDEN_TABS": "Mostra le schede nascoste"
+  "PROMO_UPGRADE_TITLE": "Sei passato a {0}",
+  "PROMO_UPGRADE_MESSAGE": "Approfitta dell'accesso completo a tutte le funzionalità premium per i prossimi {0} giorni:",
+  "PROMO_CARD_1": "Trascina e rilascia elementi",
+  "PROMO_CARD_1_MESSAGE": "Riorganizza le sezioni visivamente: Phoenix aggiorna HTML e CSS per te.",
+  "PROMO_CARD_2": "Sostituzione immagini",
+  "PROMO_CARD_2_MESSAGE": "Fai clic su un'immagine per sostituirla all'istante e visualizzare l'anteprima delle modifiche in tempo reale.",
+  "PROMO_CARD_3": "Duplicazione ed eliminazione di elementi",
+  "PROMO_CARD_3_MESSAGE": "Duplica ed elimina elementi con un singolo clic.",
+  "PROMO_CARD_4": "Modifica del testo in anteprima",
+  "PROMO_CARD_4_MESSAGE": "Modifica titoli, pulsanti e copia direttamente nell'anteprima.",
+  "PROMO_LEARN_MORE": "Scopri di più…"
 });

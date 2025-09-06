@@ -1115,6 +1115,7 @@ define({
   "DESCRIPTION_TABBAR": "Indstil fanebjælkens indstillinger.",
   "DESCRIPTION_SHOW_TABBAR": "Sandt for at vise fanebjælken, ellers falsk.",
   "DESCRIPTION_NUMBER_OF_TABS": "Antallet af faner, der skal vises i fanebjælken. Indstil til -1 for at vise alle faner",
+  "TABBAR_SHOW_HIDDEN_TABS": "Vis skjulte faner",
   "ENABLE_GIT": "Aktivér Git",
   "ACTION": "Handling",
   "STATUSBAR_SHOW_GIT": "Git-panel",
@@ -1458,5 +1459,15 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Skabelontekst",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Beskrivelse",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Filtypenavn",
-  "TABBAR_SHOW_HIDDEN_TABS": "Vis skjulte faner"
+  "PROMO_UPGRADE_TITLE": "Du er blevet opgraderet til {0}",
+  "PROMO_UPGRADE_MESSAGE": "Få fuld adgang til alle premium-funktioner de næste {0} dage:",
+  "PROMO_CARD_1": "Træk og slip elementer",
+  "PROMO_CARD_1_MESSAGE": "Omarranger sektioner visuelt – Phoenix opdaterer HTML og CSS for dig.",
+  "PROMO_CARD_2": "Billedudskiftning",
+  "PROMO_CARD_2_MESSAGE": "Klik på et hvilket som helst billede for at erstatte det øjeblikkeligt og se ændringer i realtid.",
+  "PROMO_CARD_3": "Dublering og sletning af elementer",
+  "PROMO_CARD_3_MESSAGE": "Dubler og slet elementer med et enkelt klik.",
+  "PROMO_CARD_4": "Redigering af tekst i forhåndsvisning",
+  "PROMO_CARD_4_MESSAGE": "Rediger overskrifter, knapper og kopiér direkte i forhåndsvisningen.",
+  "PROMO_LEARN_MORE": "Læs mere…"
 });

@@ -1115,6 +1115,7 @@ define({
   "DESCRIPTION_TABBAR": "Задай настройките на лентата с раздели.",
   "DESCRIPTION_SHOW_TABBAR": "`true` за да се показва лентата с раздели, иначе `false`.",
   "DESCRIPTION_NUMBER_OF_TABS": "Броят на разделите, които да се показват в лентата с раздели. Задайте на -1, за да се показват всички раздели.",
+  "TABBAR_SHOW_HIDDEN_TABS": "Показване на скритите раздели",
   "ENABLE_GIT": "Активиране на Git",
   "ACTION": "Действие",
   "STATUSBAR_SHOW_GIT": "Гит панел",
@@ -1458,5 +1459,15 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Текст на шаблон",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Описание",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Разширение на файл",
-  "TABBAR_SHOW_HIDDEN_TABS": "Показване на скритите раздели"
+  "PROMO_UPGRADE_TITLE": "Надградихте до {0}",
+  "PROMO_UPGRADE_MESSAGE": "Възползвайте се от пълен достъп до всички премиум функции през следващите {0} дни:",
+  "PROMO_CARD_1": "Плъзгане и пускане на елементи",
+  "PROMO_CARD_1_MESSAGE": "Пренареждайте секции визуално — Phoenix актуализира HTML и CSS вместо вас.",
+  "PROMO_CARD_2": "Замяна на изображение",
+  "PROMO_CARD_2_MESSAGE": "Кликнете върху всяко изображение, за да го замените незабавно и да видите промените в реално време.",
+  "PROMO_CARD_3": "Дублиране и изтриване на елементи",
+  "PROMO_CARD_3_MESSAGE": "Дублирайте и изтривайте елементи с едно кликване.",
+  "PROMO_CARD_4": "Редактиране на текст в преглед",
+  "PROMO_CARD_4_MESSAGE": "Редактирайте заглавия, бутони и копирайте директно в прегледа.",
+  "PROMO_LEARN_MORE": "Научете повече…"
 });

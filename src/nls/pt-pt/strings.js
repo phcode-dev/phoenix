@@ -1115,6 +1115,7 @@ define({
   "DESCRIPTION_TABBAR": "Definir as definições da barra de separadores.",
   "DESCRIPTION_SHOW_TABBAR": "`true` para mostrar a barra de separadores, caso contrário `false`.",
   "DESCRIPTION_NUMBER_OF_TABS": "O número de separadores a mostrar na barra de separadores. Defina como -1 para mostrar todos os separadores",
+  "TABBAR_SHOW_HIDDEN_TABS": "Mostrar separadores ocultos",
   "ENABLE_GIT": "Ativar o Git",
   "ACTION": "Ação",
   "STATUSBAR_SHOW_GIT": "Painel Git",
@@ -1458,5 +1459,15 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Texto do Modelo",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Descrição",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extensão de Ficheiro",
-  "TABBAR_SHOW_HIDDEN_TABS": "Mostrar separadores ocultos"
+  "PROMO_UPGRADE_TITLE": "Foi atualizado(a) para {0}",
+  "PROMO_UPGRADE_MESSAGE": "Desfrute de acesso total a todas as funcionalidades premium durante os próximos {0} dias:",
+  "PROMO_CARD_1": "Arrastar e Soltar Elementos",
+  "PROMO_CARD_1_MESSAGE": "Reorganize as secções visualmente — o Phoenix atualiza o HTML e o CSS por si.",
+  "PROMO_CARD_2": "Substituição de Imagem",
+  "PROMO_CARD_2_MESSAGE": "Clique em qualquer imagem para a substituir instantaneamente e pré-visualize as alterações em tempo real.",
+  "PROMO_CARD_3": "Duplicação e Eliminação de Elementos",
+  "PROMO_CARD_3_MESSAGE": "Duplique e elimine elementos com um único clique.",
+  "PROMO_CARD_4": "Editar Texto na Pré-visualização",
+  "PROMO_CARD_4_MESSAGE": "Edite títulos, botões e copie diretamente na pré-visualização.",
+  "PROMO_LEARN_MORE": "Saiba mais…"
 });
