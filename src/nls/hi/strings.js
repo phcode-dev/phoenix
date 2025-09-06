@@ -1457,5 +1457,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "संक्षिप्त नाम",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "टेम्पलेट टेक्स्ट",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "विवरण",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "फ़ाइल एक्सटेंशन"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "फ़ाइल एक्सटेंशन",
+  "TABBAR_SHOW_HIDDEN_TABS": "छिपे हुए टैब दिखाएँ"
 });

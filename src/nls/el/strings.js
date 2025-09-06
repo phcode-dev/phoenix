@@ -1457,5 +1457,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Συντομογραφία",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Κείμενο Προτύπου",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Περιγραφή",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Επέκταση Αρχείου"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Επέκταση Αρχείου",
+  "TABBAR_SHOW_HIDDEN_TABS": "Εμφάνιση κρυφών καρτελών"
 });

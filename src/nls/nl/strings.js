@@ -1457,5 +1457,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Afkorting",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Sjabloontekst",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Beschrijving",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Bestandsextensie"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Bestandsextensie",
+  "TABBAR_SHOW_HIDDEN_TABS": "Verborgen tabbladen tonen"
 });

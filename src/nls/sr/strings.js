@@ -1457,5 +1457,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Скраћеница",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Текст шаблона",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Опис",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Екстензија датотеке"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Екстензија датотеке",
+  "TABBAR_SHOW_HIDDEN_TABS": "Прикажи скривене картице"
 });
