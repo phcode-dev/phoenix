@@ -1457,5 +1457,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Abbreviazione",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Testo del Modello",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Descrizione",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Estensione del File"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Estensione del File",
+  "TABBAR_SHOW_HIDDEN_TABS": "Mostra le schede nascoste"
 });

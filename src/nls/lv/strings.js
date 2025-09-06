@@ -1457,5 +1457,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Saīsinājums",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Veidnes teksts",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Apraksts",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Faila paplašinājums"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Faila paplašinājums",
+  "TABBAR_SHOW_HIDDEN_TABS": "Rādīt paslēptās cilnes"
 });

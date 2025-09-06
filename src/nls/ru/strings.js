@@ -1457,5 +1457,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Сокращение",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Текст шаблона",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Описание",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Расширение файла"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Расширение файла",
+  "TABBAR_SHOW_HIDDEN_TABS": "Показать скрытые вкладки"
 });

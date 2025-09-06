@@ -1457,5 +1457,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_ABBREVIATION": "Abreviatura",
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Texto de la plantilla",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Descripción",
-  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extensión de archivo"
+  "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extensión de archivo",
+  "TABBAR_SHOW_HIDDEN_TABS": "Mostrar pestañas ocultas"
 });
