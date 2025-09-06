@@ -1115,6 +1115,7 @@ define({
   "DESCRIPTION_TABBAR": "Подешавање траке са картицама.",
   "DESCRIPTION_SHOW_TABBAR": "`true` за приказивање траке са картицама, иначе `false`.",
   "DESCRIPTION_NUMBER_OF_TABS": "Број картица које се приказују у траци. Поставите на -1 да бисте приказали све картице.",
+  "TABBAR_SHOW_HIDDEN_TABS": "Прикажи скривене картице",
   "ENABLE_GIT": "Омогући Гит",
   "ACTION": "Акција",
   "STATUSBAR_SHOW_GIT": "Гит Панел",
@@ -1458,5 +1459,15 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Текст шаблона",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Опис",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Екстензија датотеке",
-  "TABBAR_SHOW_HIDDEN_TABS": "Прикажи скривене картице"
+  "PROMO_UPGRADE_TITLE": "Унапредили сте на {0}",
+  "PROMO_UPGRADE_MESSAGE": "Уживајте у пуном приступу свим премијум функцијама у наредних {0} дана:",
+  "PROMO_CARD_1": "Превлачење и испуштање елемената",
+  "PROMO_CARD_1_MESSAGE": "Визуелно преуређујте секције — Phoenix ажурира HTML и CSS за вас.",
+  "PROMO_CARD_2": "Замена слике",
+  "PROMO_CARD_2_MESSAGE": "Кликните на било коју слику да бисте је одмах заменили и прегледали измене у реалном времену.",
+  "PROMO_CARD_3": "Дуплирање и брисање елемената",
+  "PROMO_CARD_3_MESSAGE": "Дуплирајте и бришите елементе једним кликом.",
+  "PROMO_CARD_4": "Уређивање текста у прегледу",
+  "PROMO_CARD_4_MESSAGE": "Уредите наслове, дугмад и копирајте директно у прегледу.",
+  "PROMO_LEARN_MORE": "Сазнајте више…"
 });

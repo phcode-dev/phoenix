@@ -1115,6 +1115,7 @@ define({
   "DESCRIPTION_TABBAR": "टैब बार सेटिंग सेट करें।",
   "DESCRIPTION_SHOW_TABBAR": "टैब बार दिखाने के लिए true, अन्यथा false।",
   "DESCRIPTION_NUMBER_OF_TABS": "टैब बार में दिखाने के लिए टैब की संख्या। सभी टैब दिखाने के लिए -1 पर सेट करें।",
+  "TABBAR_SHOW_HIDDEN_TABS": "छिपे हुए टैब दिखाएँ",
   "ENABLE_GIT": "गिट सक्षम करें",
   "ACTION": "क्रिया",
   "STATUSBAR_SHOW_GIT": "गिट पैनल",
@@ -1458,5 +1459,15 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "टेम्पलेट टेक्स्ट",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "विवरण",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "फ़ाइल एक्सटेंशन",
-  "TABBAR_SHOW_HIDDEN_TABS": "छिपे हुए टैब दिखाएँ"
+  "PROMO_UPGRADE_TITLE": "आपको {0} में अपग्रेड कर दिया गया है",
+  "PROMO_UPGRADE_MESSAGE": "अगले {0} दिनों के लिए सभी प्रीमियम सुविधाओं का पूरा आनंद लें:",
+  "PROMO_CARD_1": "एलिमेंट्स को ड्रैग और ड्रॉप करें",
+  "PROMO_CARD_1_MESSAGE": "सेक्शंस को विज़ुअली रूप से पुनर्व्यवस्थित करें — Phoenix आपके लिए HTML और CSS अपडेट करता है।",
+  "PROMO_CARD_2": "इमेज रिप्लेसमेंट",
+  "PROMO_CARD_2_MESSAGE": "किसी भी इमेज को तुरंत बदलने के लिए उस पर क्लिक करें और रीयल टाइम में बदलावों का प्रीव्यू देखें।",
+  "PROMO_CARD_3": "एलिमेंट डुप्लीकेशन और डिलीशन",
+  "PROMO_CARD_3_MESSAGE": "एक ही क्लिक से एलिमेंट्स को डुप्लिकेट और डिलीट करें।",
+  "PROMO_CARD_4": "प्रीव्यू में टेक्स्ट एडिटिंग",
+  "PROMO_CARD_4_MESSAGE": "हेडिंग, बटन एडिट करें, और सीधे प्रीव्यू में कॉपी करें।",
+  "PROMO_LEARN_MORE": "और जानें…"
 });

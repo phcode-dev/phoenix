@@ -1115,6 +1115,7 @@ define({
   "DESCRIPTION_TABBAR": "Tab-Leisten-Einstellungen festlegen.",
   "DESCRIPTION_SHOW_TABBAR": "`true`, um die Tab-Leiste anzuzeigen, sonst `false`.",
   "DESCRIPTION_NUMBER_OF_TABS": "Die Anzahl der in der Tab-Leiste anzuzeigenden Tabs. Auf -1 setzen, um alle Tabs anzuzeigen.",
+  "TABBAR_SHOW_HIDDEN_TABS": "Versteckte Tabs anzeigen",
   "ENABLE_GIT": "Git aktivieren",
   "ACTION": "Aktion",
   "STATUSBAR_SHOW_GIT": "Git-Bereich",
@@ -1458,5 +1459,15 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Vorlagentext",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Beschreibung",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Dateierweiterung",
-  "TABBAR_SHOW_HIDDEN_TABS": "Versteckte Tabs anzeigen"
+  "PROMO_UPGRADE_TITLE": "Sie wurden auf {0} hochgestuft",
+  "PROMO_UPGRADE_MESSAGE": "Genießen Sie die nächsten {0} Tage vollen Zugriff auf alle Premium-Funktionen:",
+  "PROMO_CARD_1": "Elemente per Drag & Drop verschieben",
+  "PROMO_CARD_1_MESSAGE": "Ordnen Sie Abschnitte visuell neu an – Phoenix aktualisiert HTML und CSS für Sie.",
+  "PROMO_CARD_2": "Bilder ersetzen",
+  "PROMO_CARD_2_MESSAGE": "Klicken Sie auf ein Bild, um es sofort zu ersetzen und Änderungen in Echtzeit anzuzeigen.",
+  "PROMO_CARD_3": "Elemente duplizieren und löschen",
+  "PROMO_CARD_3_MESSAGE": "Duplizieren und löschen Sie Elemente mit einem einzigen Klick.",
+  "PROMO_CARD_4": "Text in der Vorschau bearbeiten",
+  "PROMO_CARD_4_MESSAGE": "Bearbeiten Sie Überschriften, Schaltflächen und kopieren Sie direkt in der Vorschau.",
+  "PROMO_LEARN_MORE": "Mehr erfahren…"
 });

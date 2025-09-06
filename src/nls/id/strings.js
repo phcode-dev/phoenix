@@ -1115,6 +1115,7 @@ define({
   "DESCRIPTION_TABBAR": "Atur pengaturan bilah tab.",
   "DESCRIPTION_SHOW_TABBAR": "`true` untuk menampilkan bilah tab, selain itu `false`.",
   "DESCRIPTION_NUMBER_OF_TABS": "Jumlah tab yang akan ditampilkan di bilah tab. Atur ke -1 untuk menampilkan semua tab.",
+  "TABBAR_SHOW_HIDDEN_TABS": "Tampilkan tab tersembunyi",
   "ENABLE_GIT": "Aktifkan Git",
   "ACTION": "Tindakan",
   "STATUSBAR_SHOW_GIT": "Panel Git",
@@ -1458,5 +1459,15 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Teks Templat",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Deskripsi",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Ekstensi Berkas",
-  "TABBAR_SHOW_HIDDEN_TABS": "Tampilkan tab tersembunyi"
+  "PROMO_UPGRADE_TITLE": "Anda telah diupgrade ke {0}",
+  "PROMO_UPGRADE_MESSAGE": "Nikmati akses penuh ke semua fitur premium selama {0} hari ke depan:",
+  "PROMO_CARD_1": "Seret & Lepas Elemen",
+  "PROMO_CARD_1_MESSAGE": "Susun ulang bagian secara visual — Phoenix memperbarui HTML & CSS untuk Anda.",
+  "PROMO_CARD_2": "Penggantian Gambar",
+  "PROMO_CARD_2_MESSAGE": "Klik gambar apa pun untuk menggantinya secara instan dan melihat pratinjau perubahan secara real-time.",
+  "PROMO_CARD_3": "Duplikasi dan Penghapusan Elemen",
+  "PROMO_CARD_3_MESSAGE": "Gandakan dan hapus elemen dengan sekali klik.",
+  "PROMO_CARD_4": "Mengedit Teks Dalam Pratinjau",
+  "PROMO_CARD_4_MESSAGE": "Edit judul, tombol, dan salin langsung di pratinjau.",
+  "PROMO_LEARN_MORE": "Pelajari Lebih Lanjut…"
 });

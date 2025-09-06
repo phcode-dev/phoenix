@@ -1115,6 +1115,7 @@ define({
   "DESCRIPTION_TABBAR": "Stel de instellingen van de tabbalk in.",
   "DESCRIPTION_SHOW_TABBAR": "`true` om de tabbalk weer te geven, anders `false`.",
   "DESCRIPTION_NUMBER_OF_TABS": "Het aantal tabbladen dat in de tabbalk wordt weergegeven. Stel in op -1 om alle tabbladen weer te geven.",
+  "TABBAR_SHOW_HIDDEN_TABS": "Verborgen tabbladen tonen",
   "ENABLE_GIT": "Git inschakelen",
   "ACTION": "Actie",
   "STATUSBAR_SHOW_GIT": "Git-paneel",
@@ -1458,5 +1459,15 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Sjabloontekst",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Beschrijving",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Bestandsextensie",
-  "TABBAR_SHOW_HIDDEN_TABS": "Verborgen tabbladen tonen"
+  "PROMO_UPGRADE_TITLE": "Je bent geüpgraded naar {0}",
+  "PROMO_UPGRADE_MESSAGE": "Profiteer de komende {0} dagen van volledige toegang tot alle premiumfuncties:",
+  "PROMO_CARD_1": "Elementen slepen en neerzetten",
+  "PROMO_CARD_1_MESSAGE": "Herschik secties visueel — Phoenix werkt de HTML & CSS voor je bij.",
+  "PROMO_CARD_2": "Afbeelding vervangen",
+  "PROMO_CARD_2_MESSAGE": "Klik op een afbeelding om deze direct te vervangen en bekijk de wijzigingen in realtime.",
+  "PROMO_CARD_3": "Elementen dupliceren en verwijderen",
+  "PROMO_CARD_3_MESSAGE": "Dupliceer en verwijder elementen met één klik.",
+  "PROMO_CARD_4": "Tekst bewerken in voorbeeldweergave",
+  "PROMO_CARD_4_MESSAGE": "Bewerk koppen, knoppen en kopieer direct in de voorbeeldweergave.",
+  "PROMO_LEARN_MORE": "Meer informatie…"
 });

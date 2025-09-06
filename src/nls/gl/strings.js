@@ -1115,6 +1115,7 @@ define({
   "DESCRIPTION_TABBAR": "Configurar os axustes da barra de lapelas.",
   "DESCRIPTION_SHOW_TABBAR": "\"true\" para mostrar a barra de lapelas, se non \"false\".",
   "DESCRIPTION_NUMBER_OF_TABS": "O número de lapelas a mostrar na barra de lapelas. Establécese en -1 para mostrar todas as lapelas",
+  "TABBAR_SHOW_HIDDEN_TABS": "Mostrar pestanas ocultas",
   "ENABLE_GIT": "Activar Git",
   "ACTION": "Acción",
   "STATUSBAR_SHOW_GIT": "Panel de Git",
@@ -1458,5 +1459,15 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Texto do modelo",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Descrición",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extensión de ficheiro",
-  "TABBAR_SHOW_HIDDEN_TABS": "Mostrar pestanas ocultas"
+  "PROMO_UPGRADE_TITLE": "Actualizaches a {0}",
+  "PROMO_UPGRADE_MESSAGE": "Goza de acceso completo a todas as funcións premium durante os próximos {0} días:",
+  "PROMO_CARD_1": "Arrastrar e soltar elementos",
+  "PROMO_CARD_1_MESSAGE": "Reordena as seccións visualmente: Phoenix actualiza o HTML e o CSS por ti.",
+  "PROMO_CARD_2": "Substitución de imaxes",
+  "PROMO_CARD_2_MESSAGE": "Fai clic en calquera imaxe para substituíla ao instante e previsualizar os cambios en tempo real.",
+  "PROMO_CARD_3": "Duplicación e eliminación de elementos",
+  "PROMO_CARD_3_MESSAGE": "Duplica e elimina elementos cun só clic.",
+  "PROMO_CARD_4": "Edición de texto na previsualización",
+  "PROMO_CARD_4_MESSAGE": "Edita títulos, botóns e copia directamente na previsualización.",
+  "PROMO_LEARN_MORE": "Máis información…"
 });

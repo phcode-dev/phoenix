@@ -1115,6 +1115,7 @@ define({
   "DESCRIPTION_TABBAR": "Définir les paramètres de la barre d'onglets.",
   "DESCRIPTION_SHOW_TABBAR": "`true` pour afficher la barre d'onglets, sinon `false`.",
   "DESCRIPTION_NUMBER_OF_TABS": "Le nombre d'onglets à afficher dans la barre d'onglets. Définissez sur -1 pour afficher tous les onglets.",
+  "TABBAR_SHOW_HIDDEN_TABS": "Afficher les onglets masqués",
   "ENABLE_GIT": "Activer Git",
   "ACTION": "Action",
   "STATUSBAR_SHOW_GIT": "Panneau Git",
@@ -1458,5 +1459,15 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Texte du modèle",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Description",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extension de fichier",
-  "TABBAR_SHOW_HIDDEN_TABS": "Afficher les onglets masqués"
+  "PROMO_UPGRADE_TITLE": "Vous avez été surclassé(e) vers {0}",
+  "PROMO_UPGRADE_MESSAGE": "Profitez d'un accès complet à toutes les fonctionnalités premium pendant les {0} prochains jours :",
+  "PROMO_CARD_1": "Glisser-déposer des éléments",
+  "PROMO_CARD_1_MESSAGE": "Réorganisez les sections visuellement — Phoenix met à jour le HTML et le CSS pour vous.",
+  "PROMO_CARD_2": "Remplacement d'image",
+  "PROMO_CARD_2_MESSAGE": "Cliquez sur une image pour la remplacer instantanément et prévisualiser les modifications en temps réel.",
+  "PROMO_CARD_3": "Duplication et suppression d'éléments",
+  "PROMO_CARD_3_MESSAGE": "Dupliquez et supprimez des éléments en un seul clic.",
+  "PROMO_CARD_4": "Modification du texte dans l'aperçu",
+  "PROMO_CARD_4_MESSAGE": "Modifiez les titres, les boutons et copiez directement dans l'aperçu.",
+  "PROMO_LEARN_MORE": "En savoir plus…"
 });

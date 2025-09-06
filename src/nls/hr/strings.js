@@ -1115,6 +1115,7 @@ define({
   "DESCRIPTION_TABBAR": "Postavi postavke trake kartica.",
   "DESCRIPTION_SHOW_TABBAR": "Vrijednost \"true\" za prikaz trake kartica, inače \"false\".",
   "DESCRIPTION_NUMBER_OF_TABS": "Broj kartica za prikaz u traci kartica. Postavite na -1 za prikaz svih kartica",
+  "TABBAR_SHOW_HIDDEN_TABS": "Prikaži skrivene kartice",
   "ENABLE_GIT": "Omogući Git",
   "ACTION": "Radnja",
   "STATUSBAR_SHOW_GIT": "Git panel",
@@ -1458,5 +1459,15 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Tekst predloška",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Opis",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Ekstenzija datoteke",
-  "TABBAR_SHOW_HIDDEN_TABS": "Prikaži skrivene kartice"
+  "PROMO_UPGRADE_TITLE": "Nadograđeni ste na {0}",
+  "PROMO_UPGRADE_MESSAGE": "Uživajte u punom pristupu svim premium značajkama sljedećih {0} dana:",
+  "PROMO_CARD_1": "Povuci i ispusti elemente",
+  "PROMO_CARD_1_MESSAGE": "Vizualno preuredite odjeljke — Phoenix ažurira HTML i CSS za vas.",
+  "PROMO_CARD_2": "Zamjena slike",
+  "PROMO_CARD_2_MESSAGE": "Kliknite na bilo koju sliku da biste je odmah zamijenili i pregledali promjene u stvarnom vremenu.",
+  "PROMO_CARD_3": "Dupliciranje i brisanje elemenata",
+  "PROMO_CARD_3_MESSAGE": "Duplicirajte i brišite elemente jednim klikom.",
+  "PROMO_CARD_4": "Uređivanje teksta u pregledu",
+  "PROMO_CARD_4_MESSAGE": "Uredite naslove, gumbe i kopirajte izravno u pregledu.",
+  "PROMO_LEARN_MORE": "Saznajte više…"
 });

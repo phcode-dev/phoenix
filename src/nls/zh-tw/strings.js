@@ -1115,6 +1115,7 @@ define({
   "DESCRIPTION_TABBAR": "設定分頁列設定。",
   "DESCRIPTION_SHOW_TABBAR": "顯示分頁列設為 true，隱藏則設為 false。",
   "DESCRIPTION_NUMBER_OF_TABS": "分頁列中顯示的分頁數量。設為 -1 則顯示所有分頁。",
+  "TABBAR_SHOW_HIDDEN_TABS": "顯示隱藏的索引標籤",
   "ENABLE_GIT": "啟用 Git",
   "ACTION": "動作",
   "STATUSBAR_SHOW_GIT": "Git 面板",
@@ -1458,5 +1459,15 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "範本文字",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "描述",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "檔案副檔名",
-  "TABBAR_SHOW_HIDDEN_TABS": "顯示隱藏的索引標籤"
+  "PROMO_UPGRADE_TITLE": "您已升級至 {0}",
+  "PROMO_UPGRADE_MESSAGE": "在接下來的 {0} 天內，盡情享用所有進階功能：",
+  "PROMO_CARD_1": "拖放元素",
+  "PROMO_CARD_1_MESSAGE": "以視覺化方式重新排列區塊 — Phoenix 會為您更新 HTML 和 CSS。",
+  "PROMO_CARD_2": "圖片替換",
+  "PROMO_CARD_2_MESSAGE": "按一下任何圖片即可立即替換，並即時預覽變更。",
+  "PROMO_CARD_3": "元素複製和刪除",
+  "PROMO_CARD_3_MESSAGE": "只需按一下即可複製和刪除元素。",
+  "PROMO_CARD_4": "在預覽中編輯文字",
+  "PROMO_CARD_4_MESSAGE": "直接在預覽中編輯標題、按鈕和複製內容。",
+  "PROMO_LEARN_MORE": "深入瞭解…"
 });

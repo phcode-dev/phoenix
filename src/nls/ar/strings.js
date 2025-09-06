@@ -1115,6 +1115,7 @@ define({
   "DESCRIPTION_TABBAR": "ضبط إعدادات شريط علامات التبويب.",
   "DESCRIPTION_SHOW_TABBAR": "صحيح لإظهار شريط علامات التبويب، وإلا خطأ.",
   "DESCRIPTION_NUMBER_OF_TABS": "عدد علامات التبويب التي سيتم عرضها في شريط علامات التبويب.  اضبط على -1 لعرض جميع علامات التبويب",
+  "TABBAR_SHOW_HIDDEN_TABS": "إظهار علامات التبويب المخفية",
   "ENABLE_GIT": "تفعيل Git",
   "ACTION": "إجراء",
   "STATUSBAR_SHOW_GIT": "لوحة Git",
@@ -1458,5 +1459,15 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "نص القالب",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "الوصف",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "امتداد الملف",
-  "TABBAR_SHOW_HIDDEN_TABS": "إظهار علامات التبويب المخفية"
+  "PROMO_UPGRADE_TITLE": "تم ترقيتك إلى {0}",
+  "PROMO_UPGRADE_MESSAGE": "استمتع بوصول كامل إلى جميع الميزات المميزة للأيام {0} القادمة:",
+  "PROMO_CARD_1": "سحب وإفلات العناصر",
+  "PROMO_CARD_1_MESSAGE": "أعد ترتيب الأقسام بصريًا — يقوم Phoenix بتحديث HTML و CSS نيابةً عنك.",
+  "PROMO_CARD_2": "استبدال الصور",
+  "PROMO_CARD_2_MESSAGE": "انقر فوق أي صورة لاستبدالها على الفور ومعاينة التغييرات في الوقت الفعلي.",
+  "PROMO_CARD_3": "تكرار العناصر وحذفها",
+  "PROMO_CARD_3_MESSAGE": "كرر العناصر واحذفها بنقرة واحدة.",
+  "PROMO_CARD_4": "تحرير النص في المعاينة",
+  "PROMO_CARD_4_MESSAGE": "حرر العناوين والأزرار وانقلها مباشرةً في المعاينة.",
+  "PROMO_LEARN_MORE": "تعرّف على المزيد…"
 });

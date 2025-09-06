@@ -1115,6 +1115,7 @@ define({
   "DESCRIPTION_TABBAR": "Настроить параметры панели вкладок.",
   "DESCRIPTION_SHOW_TABBAR": "`true` для отображения панели вкладок, иначе `false`.",
   "DESCRIPTION_NUMBER_OF_TABS": "Количество вкладок, отображаемых на панели вкладок. Значение -1 отображает все вкладки.",
+  "TABBAR_SHOW_HIDDEN_TABS": "Показать скрытые вкладки",
   "ENABLE_GIT": "Включить Git",
   "ACTION": "Действие",
   "STATUSBAR_SHOW_GIT": "Панель Git",
@@ -1458,5 +1459,15 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Текст шаблона",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Описание",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Расширение файла",
-  "TABBAR_SHOW_HIDDEN_TABS": "Показать скрытые вкладки"
+  "PROMO_UPGRADE_TITLE": "Вы перешли на тариф {0}",
+  "PROMO_UPGRADE_MESSAGE": "Наслаждайтесь полным доступом ко всем премиум-функциям в течение следующих {0} дней:",
+  "PROMO_CARD_1": "Перетаскивание элементов",
+  "PROMO_CARD_1_MESSAGE": "Меняйте расположение секций визуально — Phoenix обновит HTML и CSS за вас.",
+  "PROMO_CARD_2": "Замена изображений",
+  "PROMO_CARD_2_MESSAGE": "Нажмите на любое изображение, чтобы мгновенно заменить его и увидеть изменения в режиме реального времени.",
+  "PROMO_CARD_3": "Дублирование и удаление элементов",
+  "PROMO_CARD_3_MESSAGE": "Дублируйте и удаляйте элементы одним щелчком мыши.",
+  "PROMO_CARD_4": "Редактирование текста в режиме предпросмотра",
+  "PROMO_CARD_4_MESSAGE": "Редактируйте заголовки, кнопки и копируйте текст прямо в режиме предпросмотра.",
+  "PROMO_LEARN_MORE": "Узнать больше…"
 });

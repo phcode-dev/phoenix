@@ -1115,6 +1115,7 @@ define({
   "DESCRIPTION_TABBAR": "Ustawienia paska kart.",
   "DESCRIPTION_SHOW_TABBAR": "`true`, aby pokazać pasek kart, w przeciwnym razie `false`.",
   "DESCRIPTION_NUMBER_OF_TABS": "Liczba kart do wyświetlenia na pasku kart. Ustaw na -1, aby wyświetlić wszystkie karty.",
+  "TABBAR_SHOW_HIDDEN_TABS": "Pokaż ukryte karty",
   "ENABLE_GIT": "Włącz Gita",
   "ACTION": "Akcja",
   "STATUSBAR_SHOW_GIT": "Panel Gita",
@@ -1458,5 +1459,15 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Treść szablonu",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Opis",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Rozszerzenie pliku",
-  "TABBAR_SHOW_HIDDEN_TABS": "Pokaż ukryte karty"
+  "PROMO_UPGRADE_TITLE": "Zostałeś(-aś) ulepszony(-a) do {0}",
+  "PROMO_UPGRADE_MESSAGE": "Korzystaj z pełnego dostępu do wszystkich funkcji premium przez następne {0} dni:",
+  "PROMO_CARD_1": "Przeciągnij i upuść elementy",
+  "PROMO_CARD_1_MESSAGE": "Zmieniaj układ sekcji wizualnie — Phoenix zaktualizuje kod HTML i CSS za Ciebie.",
+  "PROMO_CARD_2": "Zamiana obrazów",
+  "PROMO_CARD_2_MESSAGE": "Kliknij dowolny obraz, aby go natychmiast zamienić i podejrzeć zmiany w czasie rzeczywistym.",
+  "PROMO_CARD_3": "Duplikowanie i usuwanie elementów",
+  "PROMO_CARD_3_MESSAGE": "Duplikuj i usuwaj elementy jednym kliknięciem.",
+  "PROMO_CARD_4": "Edycja tekstu w podglądzie",
+  "PROMO_CARD_4_MESSAGE": "Edytuj nagłówki, przyciski i kopiuj bezpośrednio w podglądzie.",
+  "PROMO_LEARN_MORE": "Dowiedz się więcej…"
 });

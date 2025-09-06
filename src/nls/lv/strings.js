@@ -1115,6 +1115,7 @@ define({
   "DESCRIPTION_TABBAR": "Iestatīt cilņu joslas iestatījumus.",
   "DESCRIPTION_SHOW_TABBAR": "“true”, lai rādītu cilņu joslu, citādi “false”.",
   "DESCRIPTION_NUMBER_OF_TABS": "Cilņu skaits, kas jāparāda cilņu joslā. Iestatiet uz -1, lai rādītu visas cilnes.",
+  "TABBAR_SHOW_HIDDEN_TABS": "Rādīt paslēptās cilnes",
   "ENABLE_GIT": "Iespējot Git",
   "ACTION": "Darbība",
   "STATUSBAR_SHOW_GIT": "Git panelis",
@@ -1458,5 +1459,15 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Veidnes teksts",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Apraksts",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Faila paplašinājums",
-  "TABBAR_SHOW_HIDDEN_TABS": "Rādīt paslēptās cilnes"
+  "PROMO_UPGRADE_TITLE": "Jūs esat jaunināts uz {0}",
+  "PROMO_UPGRADE_MESSAGE": "Izbaudiet pilnu piekļuvi visām Premium funkcijām nākamās {0} dienas:",
+  "PROMO_CARD_1": "Elementu vilkšana un nomešana",
+  "PROMO_CARD_1_MESSAGE": "Pārkārtojiet sadaļas vizuāli — Phoenix atjaunina HTML un CSS jūsu vietā.",
+  "PROMO_CARD_2": "Attēlu aizstāšana",
+  "PROMO_CARD_2_MESSAGE": "Noklikšķiniet uz jebkura attēla, lai to nekavējoties aizstātu un priekšskatītu izmaiņas reāllaikā.",
+  "PROMO_CARD_3": "Elementu dublēšana un dzēšana",
+  "PROMO_CARD_3_MESSAGE": "Dublējiet un dzēsiet elementus ar vienu klikšķi.",
+  "PROMO_CARD_4": "Teksta rediģēšana priekšskatījumā",
+  "PROMO_CARD_4_MESSAGE": "Rediģējiet virsrakstus, pogas un kopējiet tieši priekšskatījumā.",
+  "PROMO_LEARN_MORE": "Uzzināt vairāk…"
 });

@@ -1115,6 +1115,7 @@ define({
   "DESCRIPTION_TABBAR": "Set the tab bar settings.",
   "DESCRIPTION_SHOW_TABBAR": "`true` to show the tab bar, otherwise `false`.",
   "DESCRIPTION_NUMBER_OF_TABS": "The number of tabs to show in the tab bar. Set to `-1` to show all tabs.",
+  "TABBAR_SHOW_HIDDEN_TABS": "Show hidden tabs",
   "ENABLE_GIT": "Enable Git",
   "ACTION": "Action",
   "STATUSBAR_SHOW_GIT": "Git Panel",
@@ -1458,5 +1459,15 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Template Text",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Description",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "File Extension",
-  "TABBAR_SHOW_HIDDEN_TABS": "Show hidden tabs"
+  "PROMO_UPGRADE_TITLE": "You’ve been upgraded to {0}",
+  "PROMO_UPGRADE_MESSAGE": "Enjoy full access to all premium features for the next {0} days:",
+  "PROMO_CARD_1": "Drag and drop elements",
+  "PROMO_CARD_1_MESSAGE": "Rearrange sections visually — Phoenix updates the HTML and CSS for you.",
+  "PROMO_CARD_2": "Image replacement",
+  "PROMO_CARD_2_MESSAGE": "Click any image to replace it instantly and preview changes in real time.",
+  "PROMO_CARD_3": "Element duplication and deletion",
+  "PROMO_CARD_3_MESSAGE": "Duplicate and delete elements with a single click.",
+  "PROMO_CARD_4": "Editing text in preview",
+  "PROMO_CARD_4_MESSAGE": "Edit headings, buttons, and copy directly in the preview.",
+  "PROMO_LEARN_MORE": "Learn more…"
 });
