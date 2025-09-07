@@ -58,7 +58,7 @@ define(function (require, exports, module) {
 
         try {
             const accountBaseURL = LoginService.getAccountBaseURL();
-            const language = Phoenix.app && Phoenix.app.language ? Phoenix.app.language : 'en';
+            const language = brackets.getLocale();
             let url = `${accountBaseURL}/getAppEntitlements?lang=${language}`;
             let fetchOptions = {
                 method: 'GET',

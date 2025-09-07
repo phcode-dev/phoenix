@@ -4,6 +4,8 @@
         "app_name_about": "Phoenix Code",
         "about_icon": "styles/images/phoenix-icon.svg",
         "account_url": "https://account.phcode.dev/",
+        "promotions_url": "https://promotions.phcode.dev/dev/",
+        "purchase_url": "https://phcode.io/pricing",
         "how_to_use_url": "https://github.com/adobe/brackets/wiki/How-to-Use-Brackets",
         "docs_url": "https://docs.phcode.dev/",
         "support_url": "https://account.phcode.dev/?returnUrl=https%3A%2F%2Faccount.phcode.dev%2F%23support",
