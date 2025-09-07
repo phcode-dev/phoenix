@@ -208,7 +208,7 @@ define(function (require, exports, module) {
                     // todo we should not show this to logged in pro subscribers, but at startup time,
                     // we do not know if login is done yet.
                     console.log("Existing trial expired, showing promo ended dialog");
-                    ProDialogs.showProEndedDialog(currentVersion);
+                    ProDialogs.showProEndedDialog();
                     // Store that dialog was shown for this version
                     await _setTrialData({
                         ...existingTrialData,

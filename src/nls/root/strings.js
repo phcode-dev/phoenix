@@ -1667,6 +1667,7 @@ define({
     // promos
     "PROMO_UPGRADE_TITLE": "You’ve been upgraded to {0}",
     "PROMO_UPGRADE_MESSAGE": "Enjoy full access to all premium features for the next {0} days:",
+    "PROMO_ENDED_MESSAGE": "Subscribe now to continue using these advanced features:",
     "PROMO_CARD_1": "Drag & Drop Elements",
     "PROMO_CARD_1_MESSAGE": "Rearrange sections visually — Phoenix updates the HTML & CSS for you.",
     "PROMO_CARD_2": "Image Replacement",
