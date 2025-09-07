@@ -38,6 +38,7 @@ define(function (require, exports, module) {
         Strings = require("strings"),
         StringUtils = require("utils/StringUtils"),
         ThemeManager = require("view/ThemeManager"),
+        Metrics = require("utils/Metrics"),
         proUpgradeHTML = require("text!./html/pro-upgrade.html"),
         proEndedHTML = require("text!./html/promo-ended.html");
 
@@ -51,9 +52,12 @@ define(function (require, exports, module) {
         }));
         Dialogs.showModalDialogUsingTemplate($template).done(function (id) {
             console.log("Dialog closed with id: " + id);
+            Metrics.countEvent(Metrics.EVENT_TYPE.PRO, "dlgShow", "promo");
             if(id === 'secondaryButton') {
-                // todo add metrics
+                Metrics.countEvent(Metrics.EVENT_TYPE.PRO, "dlgAct", "promoLearn");
                 Phoenix.app.openURLInDefaultBrowser(brackets.config.purchase_url);
+            } else {
+                Metrics.countEvent(Metrics.EVENT_TYPE.PRO, "dlgAct", "promoCancel");
             }
         });
     }
@@ -69,9 +73,12 @@ define(function (require, exports, module) {
         }));
         Dialogs.showModalDialogUsingTemplate($template).done(function (id) {
             console.log("Dialog closed with id: " + id);
+            Metrics.countEvent(Metrics.EVENT_TYPE.PRO, "dlgShow", "localUpgrade");
             if(id === 'ok') {
-                // todo add metrics
+                Metrics.countEvent(Metrics.EVENT_TYPE.PRO, "dlgAct", "localGetPro");
                 Phoenix.app.openURLInDefaultBrowser(brackets.config.purchase_url);
+            } else {
+                Metrics.countEvent(Metrics.EVENT_TYPE.PRO, "dlgAct", "localCancel");
             }
         });
     }
@@ -86,8 +93,12 @@ define(function (require, exports, module) {
         const $template = $(Mustache.render(proEndedHTML, {Strings, title, buttonGetPro, promoURL}));
         Dialogs.showModalDialogUsingTemplate($template).done(function (id) {
             console.log("Dialog closed with id: " + id);
+            Metrics.countEvent(Metrics.EVENT_TYPE.PRO, "dlgShow", "remoteUpgrade");
             if(id === 'get_pro') {
+                Metrics.countEvent(Metrics.EVENT_TYPE.PRO, "dlgAct", "remoteGetPro");
                 Phoenix.app.openURLInDefaultBrowser(upsellPurchaseURL || brackets.config.purchase_url);
+            } else {
+                Metrics.countEvent(Metrics.EVENT_TYPE.PRO, "dlgAct", "remoteCancel");
             }
         });
     }
