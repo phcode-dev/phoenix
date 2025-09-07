@@ -266,7 +266,9 @@ define(function (require, exports, module) {
 
     function _isAnyDialogsVisible() {
         const $modal = $(`.modal.instance`);
-        return $modal.length > 0 && $modal.is(':visible');
+        const $notifications = $(`.notification-ui-tooltip`);
+        return ($modal.length > 0 && $modal.is(':visible')) ||
+            ($notifications.length > 0 && $notifications.is(':visible'));
     }
 
     /**
