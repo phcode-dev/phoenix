@@ -1,8 +1,28 @@
 @import "brackets_variables.less";
 @import "brackets_core_ui_variables.less";
 
+/* ---- Phoenix Pro gradient title ----
+ Light default: use the "light" gradient so it pops on light bg.
+ Dark override: switch to the "dark" gradient for richer contrast. */
+.phoenix-pro-title {
+  background: @phoenix-pro-gradient-light;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+
+  .dark & {
+    background: @phoenix-pro-gradient-dark;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
 /* Dialog styles with light default + .dark overrides */
-.browser-login-waiting-dialog {
+.browser-login-waiting-dialog, .pro-upgrade-dialog{
   /* ---- Layout ---- */
   .features-grid {
     display: grid;
@@ -104,26 +124,6 @@
     }
   }
 
-  /* ---- Phoenix Pro gradient title ----
-     Light default: use the "light" gradient so it pops on light bg.
-     Dark override: switch to the "dark" gradient for richer contrast. */
-  .phoenix-pro-title {
-    background: @phoenix-pro-gradient-light;
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-    -webkit-text-fill-color: transparent;
-    display: inline-block;
-
-    .dark & {
-      background: @phoenix-pro-gradient-dark;
-      background-clip: text;
-      -webkit-background-clip: text;
-      color: transparent;
-      -webkit-text-fill-color: transparent;
-    }
-  }
-
   /* ---- Links ---- */
   a {
     color: @bc-text-link;                   // #0083e8
@@ -137,4 +137,41 @@
   a:hover {
     text-decoration: underline;
   }
+}
+
+.pro-ended-dialog.modal {
+  display: flex;
+  flex-direction: column;
+  width: 640px;
+  height: 640px;              /* overall modal height */
+}
+
+.pro-ended-dialog .modal-header,
+.pro-ended-dialog .modal-footer {
+  flex: 0 0 auto;            /* don’t stretch */
+}
+
+.pro-ended-dialog .modal-body {
+  flex: 1 1 auto;            /* take all leftover space */
+  min-height: 0;             /* allow shrinking properly */
+  max-height: 100%;             /* allow shrinking properly */
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  background: none;
+}
+
+.pro-ended-dialog .promo-iframe-wrap {
+  flex: 1 1 auto;
+  min-height: 0;             /* important inside flex */
+  display: flex;
+}
+
+.pro-ended-dialog .promo-iframe {
+  flex: 1 1 auto;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
 }

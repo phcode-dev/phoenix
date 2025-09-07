@@ -525,7 +525,6 @@ define(function (require, exports, module) {
                 title: Strings.CMD_USER_PROFILE
             })
             .appendTo($("#main-toolbar .bottom-buttons"));
-        // _updateProfileIcon("CA", "blue");
         $icon.on('click', ()=>{
             togglePopup();
         });

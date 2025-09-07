@@ -1,0 +1,22 @@
+<div class="pro-ended-dialog modal">
+    <div class="modal-header">
+        <h1 class="dialog-title">{{{title}}}</h1>
+    </div>
+
+    <div class="modal-body">
+        <div class="promo-iframe-wrap">
+            <iframe
+                    class="promo-iframe"
+                    src="{{promoURL}}"
+                    title="{{title}}"
+                    loading="lazy"
+                    referrerpolicy="no-referrer">
+            </iframe>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button class="dialog-button btn" data-button-id="cancel">{{Strings.CANCEL}}</button>
+        <button class="dialog-button btn primary" data-button-id="get_pro">{{{buttonGetPro}}}</button>
+    </div>
+</div>
