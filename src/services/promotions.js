@@ -173,6 +173,24 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Check if user has active pro subscription
+     * Returns true if user is logged in and has a paid subscription
+     */
+    async function _hasProSubscription() {
+        try {
+            // First verify login status to ensure login state is properly resolved
+            await LoginService.verifyLoginStatus();
+
+            // getEntitlements() returns null if not logged in
+            const entitlements = await LoginService.getEntitlements();
+            return entitlements && entitlements.plan && entitlements.plan.paidSubscriber === true;
+        } catch (error) {
+            console.error("Error checking pro subscription:", error);
+            return false;
+        }
+    }
+
+    /**
      * Check if pro trial is currently activated
      */
     async function isProTrialActivated() {
@@ -205,10 +223,14 @@ define(function (require, exports, module) {
             if (remainingDays <= 0 && !isNewerVersion) {
                 // Check if promo ended dialog was already shown for this version
                 if (existingTrialData.upgradeDialogShownVersion !== currentVersion) {
-                    // todo we should not show this to logged in pro subscribers, but at startup time,
-                    // we do not know if login is done yet.
-                    console.log("Existing trial expired, showing promo ended dialog");
-                    ProDialogs.showProEndedDialog();
+                    // Check if user has pro subscription before showing promo dialog
+                    const hasProSubscription = await _hasProSubscription();
+                    if (!hasProSubscription) {
+                        console.log("Existing trial expired, showing promo ended dialog");
+                        ProDialogs.showProEndedDialog();
+                    } else {
+                        console.log("Existing trial expired, but user has pro subscription - skipping promo dialog");
+                    }
                     // Store that dialog was shown for this version
                     await _setTrialData({
                         ...existingTrialData,
@@ -256,7 +278,13 @@ define(function (require, exports, module) {
         Metrics.countEvent(Metrics.EVENT_TYPE.PRO, "trial", "activated");
         console.log(`Pro trial activated for ${trialDays} days`);
 
-        ProDialogs.showProUpgradeDialog(trialDays);
+        // Check if user has pro subscription before showing upgrade dialog
+        const hasProSubscription = await _hasProSubscription();
+        if (!hasProSubscription) {
+            ProDialogs.showProUpgradeDialog(trialDays);
+        } else {
+            console.log("Pro trial activated, but user has pro subscription - skipping upgrade dialog");
+        }
         // Trigger the event for UI to handle
         LoginService.trigger(EVENT_PRO_UPGRADE_ON_INSTALL, {
             trialDays: trialDays,
@@ -273,11 +301,14 @@ define(function (require, exports, module) {
 
     /**
      * Start the pro trial activation process
-     * Waits 2 minutes, then triggers the upgrade event
      */
     console.log(`Checking pro trial activation in ${TRIAL_POLL_MS / 1000} seconds...`);
 
     const trialActivatePoller = setInterval(()=> {
+        if(Phoenix.isTestWindow) {
+            clearInterval(trialActivatePoller);
+            return;
+        }
         if(_isAnyDialogsVisible()){
             // maybe the user hasn't dismissed the new project dialog
             return;
