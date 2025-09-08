@@ -73,6 +73,7 @@
         "_minorVersionBump": "gulp minorVersionBump",
         "_majorVersionBump": "gulp majorVersionBump",
         "serve": "node serve-proxy.js . -p 8000 -c-1",
+        "serveLocalAccount": "node serve-proxy.js . -p 8000 -c-1 --localAccount",
         "_serveWithWebCacheHelp": "echo !!!Make sure to npm run release:dev/stageing/prod before testing the cache!!!",
         "serveWithWebCache": "npm run _releaseWebCache && npm run _serveWithWebCacheHelp && http-server ./dist -p 8000 -c-1",
         "serveExternal": "node serve-proxy.js . -p 8000 -a 0.0.0.0 --log-ip -c-1",
