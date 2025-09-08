@@ -1469,5 +1469,8 @@ define({
   "PROMO_CARD_3_MESSAGE": "Tek bir tıklamayla öğeleri çoğaltın ve silin.",
   "PROMO_CARD_4": "Önizlemede Metin Düzenleme",
   "PROMO_CARD_4_MESSAGE": "Başlıkları, düğmeleri düzenleyin ve doğrudan önizlemede kopyalayın.",
-  "PROMO_LEARN_MORE": "Daha Fazla Bilgi Edinin…"
+  "PROMO_LEARN_MORE": "Daha Fazla Bilgi Edinin…",
+  "PROMO_ENDED_MESSAGE": "Bu gelişmiş özellikleri kullanmaya devam etmek için hemen abone olun:",
+  "PROMO_GET_APP_UPSELL_BUTTON": "{0} edinin",
+  "PROMO_PRO_ENDED_TITLE": "{0} yükseltmeniz sona erdi"
 });

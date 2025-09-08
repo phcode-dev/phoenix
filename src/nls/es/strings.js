@@ -1469,5 +1469,8 @@ define({
   "PROMO_CARD_3_MESSAGE": "Duplica y elimina elementos con un solo clic.",
   "PROMO_CARD_4": "Editar texto en la vista previa",
   "PROMO_CARD_4_MESSAGE": "Edita encabezados, botones y copia directamente en la vista previa.",
-  "PROMO_LEARN_MORE": "Más información…"
+  "PROMO_LEARN_MORE": "Más información…",
+  "PROMO_ENDED_MESSAGE": "Suscríbete ahora para seguir usando estas funciones avanzadas:",
+  "PROMO_GET_APP_UPSELL_BUTTON": "Obtener {0}",
+  "PROMO_PRO_ENDED_TITLE": "Tu actualización a {0} ha finalizado"
 });

@@ -1469,5 +1469,8 @@ define({
   "PROMO_CARD_3_MESSAGE": "Dupliceer en verwijder elementen met één klik.",
   "PROMO_CARD_4": "Tekst bewerken in voorbeeldweergave",
   "PROMO_CARD_4_MESSAGE": "Bewerk koppen, knoppen en kopieer direct in de voorbeeldweergave.",
-  "PROMO_LEARN_MORE": "Meer informatie…"
+  "PROMO_LEARN_MORE": "Meer informatie…",
+  "PROMO_ENDED_MESSAGE": "Abonneer nu om deze geavanceerde functies te blijven gebruiken:",
+  "PROMO_GET_APP_UPSELL_BUTTON": "Download {0}",
+  "PROMO_PRO_ENDED_TITLE": "Je {0}-upgrade is verlopen"
 });

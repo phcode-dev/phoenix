@@ -1469,5 +1469,8 @@ define({
   "PROMO_CARD_3_MESSAGE": "Dupliser og slett elementer med ett enkelt klikk.",
   "PROMO_CARD_4": "Redigering av tekst i forhåndsvisning",
   "PROMO_CARD_4_MESSAGE": "Rediger overskrifter, knapper og kopier direkte i forhåndsvisningen.",
-  "PROMO_LEARN_MORE": "Lær mer…"
+  "PROMO_LEARN_MORE": "Lær mer…",
+  "PROMO_ENDED_MESSAGE": "Abonner nå for å fortsette å bruke disse avanserte funksjonene:",
+  "PROMO_GET_APP_UPSELL_BUTTON": "Skaff deg {0}",
+  "PROMO_PRO_ENDED_TITLE": "{0}-oppgraderingen din er utløpt"
 });

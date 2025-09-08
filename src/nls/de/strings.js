@@ -1469,5 +1469,8 @@ define({
   "PROMO_CARD_3_MESSAGE": "Duplizieren und löschen Sie Elemente mit einem einzigen Klick.",
   "PROMO_CARD_4": "Text in der Vorschau bearbeiten",
   "PROMO_CARD_4_MESSAGE": "Bearbeiten Sie Überschriften, Schaltflächen und kopieren Sie direkt in der Vorschau.",
-  "PROMO_LEARN_MORE": "Mehr erfahren…"
+  "PROMO_LEARN_MORE": "Mehr erfahren…",
+  "PROMO_ENDED_MESSAGE": "Jetzt abonnieren, um diese erweiterten Funktionen weiterhin zu nutzen:",
+  "PROMO_GET_APP_UPSELL_BUTTON": "{0} herunterladen",
+  "PROMO_PRO_ENDED_TITLE": "Ihr {0}-Upgrade ist abgelaufen"
 });

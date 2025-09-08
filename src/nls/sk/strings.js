@@ -1469,5 +1469,8 @@ define({
   "PROMO_CARD_3_MESSAGE": "Duplikujte a odstráňte prvky jediným kliknutím.",
   "PROMO_CARD_4": "Úprava textu v náhľade",
   "PROMO_CARD_4_MESSAGE": "Upravujte nadpisy, tlačidlá a kopírujte priamo v náhľade.",
-  "PROMO_LEARN_MORE": "Zistiť viac…"
+  "PROMO_LEARN_MORE": "Zistiť viac…",
+  "PROMO_ENDED_MESSAGE": "Prihláste sa na odber, aby ste mohli pokračovať v používaní týchto pokročilých funkcií:",
+  "PROMO_GET_APP_UPSELL_BUTTON": "Získajte {0}",
+  "PROMO_PRO_ENDED_TITLE": "Vaše vylepšenie {0} skončilo"
 });

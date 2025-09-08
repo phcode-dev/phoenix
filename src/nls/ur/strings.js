@@ -1469,5 +1469,8 @@ define({
   "PROMO_CARD_3_MESSAGE": "ایک ہی کلک سے عناصر کی نقل اور حذف کریں۔",
   "PROMO_CARD_4": "پیش نظارہ میں متن کی تدوین",
   "PROMO_CARD_4_MESSAGE": "پیش نظارہ میں براہ راست ہیڈنگ، بٹنوں اور کاپی میں ترمیم کریں۔",
-  "PROMO_LEARN_MORE": "مزید جانیے…"
+  "PROMO_LEARN_MORE": "مزید جانیے…",
+  "PROMO_ENDED_MESSAGE": "ان جدید خصوصیات کو استعمال جاری رکھنے کیلئے ابھی سبسکرائب کریں:",
+  "PROMO_GET_APP_UPSELL_BUTTON": "{0} حاصل کریں",
+  "PROMO_PRO_ENDED_TITLE": "آپ کا {0} اپ گریڈ ختم ہو گیا ہے"
 });

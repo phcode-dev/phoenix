@@ -1469,5 +1469,8 @@ define({
   "PROMO_CARD_3_MESSAGE": "Gandakan dan hapus elemen dengan sekali klik.",
   "PROMO_CARD_4": "Mengedit Teks Dalam Pratinjau",
   "PROMO_CARD_4_MESSAGE": "Edit judul, tombol, dan salin langsung di pratinjau.",
-  "PROMO_LEARN_MORE": "Pelajari Lebih Lanjut…"
+  "PROMO_LEARN_MORE": "Pelajari Lebih Lanjut…",
+  "PROMO_ENDED_MESSAGE": "Berlangganan sekarang untuk melanjutkan penggunaan fitur-fitur canggih ini:",
+  "PROMO_GET_APP_UPSELL_BUTTON": "Dapatkan {0}",
+  "PROMO_PRO_ENDED_TITLE": "Upgrade {0} Anda telah berakhir"
 });

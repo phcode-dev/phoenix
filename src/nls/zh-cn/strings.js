@@ -1469,5 +1469,8 @@ define({
   "PROMO_CARD_3_MESSAGE": "一键复制和删除元素。",
   "PROMO_CARD_4": "在预览中编辑文本",
   "PROMO_CARD_4_MESSAGE": "直接在预览中编辑标题、按钮和复制内容。",
-  "PROMO_LEARN_MORE": "了解更多…"
+  "PROMO_LEARN_MORE": "了解更多…",
+  "PROMO_ENDED_MESSAGE": "继续使用以下高级功能，立即订阅：",
+  "PROMO_GET_APP_UPSELL_BUTTON": "获取 {0}",
+  "PROMO_PRO_ENDED_TITLE": "您的 {0} 升级已结束"
 });

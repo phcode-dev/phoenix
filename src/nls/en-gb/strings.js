@@ -1469,5 +1469,8 @@ define({
   "PROMO_CARD_3_MESSAGE": "Duplicate and delete elements with a single click.",
   "PROMO_CARD_4": "Editing text in preview",
   "PROMO_CARD_4_MESSAGE": "Edit headings, buttons, and copy directly in the preview.",
-  "PROMO_LEARN_MORE": "Learn more…"
+  "PROMO_LEARN_MORE": "Learn more…",
+  "PROMO_ENDED_MESSAGE": "Subscribe now to continue using these advanced features:",
+  "PROMO_GET_APP_UPSELL_BUTTON": "Get {0}",
+  "PROMO_PRO_ENDED_TITLE": "Your {0} upgrade has expired"
 });

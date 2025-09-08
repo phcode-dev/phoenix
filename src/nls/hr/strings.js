@@ -1469,5 +1469,8 @@ define({
   "PROMO_CARD_3_MESSAGE": "Duplicirajte i brišite elemente jednim klikom.",
   "PROMO_CARD_4": "Uređivanje teksta u pregledu",
   "PROMO_CARD_4_MESSAGE": "Uredite naslove, gumbe i kopirajte izravno u pregledu.",
-  "PROMO_LEARN_MORE": "Saznajte više…"
+  "PROMO_LEARN_MORE": "Saznajte više…",
+  "PROMO_ENDED_MESSAGE": "Pretplatite se sada kako biste nastavili koristiti ove napredne značajke:",
+  "PROMO_GET_APP_UPSELL_BUTTON": "Nabavite {0}",
+  "PROMO_PRO_ENDED_TITLE": "Vaša nadogradnja na {0} je istekla"
 });

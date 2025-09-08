@@ -1469,5 +1469,8 @@ define({
   "PROMO_CARD_3_MESSAGE": "Duplikujte a mažte prvky jediným kliknutím.",
   "PROMO_CARD_4": "Úprava textu v náhledu",
   "PROMO_CARD_4_MESSAGE": "Upravujte nadpisy, tlačítka a kopírujte přímo v náhledu.",
-  "PROMO_LEARN_MORE": "Další informace…"
+  "PROMO_LEARN_MORE": "Další informace…",
+  "PROMO_ENDED_MESSAGE": "Chcete-li pokračovat v používání těchto pokročilých funkcí, přihlaste se k odběru:",
+  "PROMO_GET_APP_UPSELL_BUTTON": "Získat {0}",
+  "PROMO_PRO_ENDED_TITLE": "Vaše zkušební verze {0} vypršela"
 });

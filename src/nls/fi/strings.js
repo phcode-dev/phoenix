@@ -1469,5 +1469,8 @@ define({
   "PROMO_CARD_3_MESSAGE": "Kopioi ja poista elementtejä yhdellä napsautuksella.",
   "PROMO_CARD_4": "Tekstin muokkaaminen esikatselussa",
   "PROMO_CARD_4_MESSAGE": "Muokkaa otsikoita, painikkeita ja kopioi suoraan esikatselussa.",
-  "PROMO_LEARN_MORE": "Lisätietoja…"
+  "PROMO_LEARN_MORE": "Lisätietoja…",
+  "PROMO_ENDED_MESSAGE": "Tilaa nyt jatkaaksesi näiden lisäominaisuuksien käyttöä:",
+  "PROMO_GET_APP_UPSELL_BUTTON": "Hanki {0}",
+  "PROMO_PRO_ENDED_TITLE": "{0}-päivityksesi on päättynyt"
 });
