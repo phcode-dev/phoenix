@@ -736,18 +736,25 @@ define(function (require, exports, module) {
                 Metrics.countEvent(Metrics.EVENT_TYPE.UI_MENU, "click", menuItem._command.getID());
                 logger.leaveTrail("UI Menu Click: " + menuItem._command.getID());
                 MainViewManager.focusActivePane();
-                if (menuItem._command._options.eventSource) {
-                    // NOTE: Ideally beforeExecuteCommand should be fired inside Command.execute itself.
-                    // But right now Command.execute() bypasses the event flow
-                    // So we run through CommandManager.execute() to keep things consistent
-                    // (keyboard + menu both go through the same path)
-                    // Read this for more info: https://github.com/phcode-dev/phoenix/pull/2356
-                    CommandManager.execute(menuItem._command.getID(), {
+                const commandId = menuItem._command.getID();
+
+                // NOTE: we handle save commands differently because we want save commands to go through the
+                // CommandManager.execute() to trigger beforeExecuteCommand events consistently, whether invoked via
+                // menu click or keyboard shortcut.
+                // because there are listeners that uses beforeExecuteCommand to listen to save commands
+                // (for ex: tabbar listens to save commands to add placeholder tabs to working set)
+                // Other commands use direct execution to preserve file tree context
+                if(commandId === Commands.FILE_SAVE ||
+                   commandId === Commands.FILE_SAVE_AS ||
+                   commandId === Commands.FILE_SAVE_ALL) {
+                    CommandManager.execute(commandId);
+                } else if (menuItem._command._options.eventSource) {
+                    menuItem._command.execute({
                         eventSource: CommandManager.SOURCE_UI_MENU_CLICK,
                         sourceType: self.id
                     });
                 } else {
-                    CommandManager.execute(menuItem._command.getID());
+                    menuItem._command.execute();
                 }
             });
 
