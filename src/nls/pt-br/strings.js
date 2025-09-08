@@ -1469,5 +1469,8 @@ define({
   "PROMO_CARD_3_MESSAGE": "Duplique e exclua elementos com um único clique.",
   "PROMO_CARD_4": "Editando texto na pré-visualização",
   "PROMO_CARD_4_MESSAGE": "Edite títulos, botões e copie diretamente na pré-visualização.",
-  "PROMO_LEARN_MORE": "Saiba mais…"
+  "PROMO_LEARN_MORE": "Saiba mais…",
+  "PROMO_ENDED_MESSAGE": "Assine agora para continuar usando estes recursos avançados:",
+  "PROMO_GET_APP_UPSELL_BUTTON": "Obtenha o {0}",
+  "PROMO_PRO_ENDED_TITLE": "Sua atualização para {0} expirou"
 });

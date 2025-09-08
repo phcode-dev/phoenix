@@ -1469,5 +1469,8 @@ define({
   "PROMO_CARD_3_MESSAGE": "ワンクリックで要素を複製および削除します。",
   "PROMO_CARD_4": "プレビューでのテキスト編集",
   "PROMO_CARD_4_MESSAGE": "見出し、ボタン、コピーをプレビューで直接編集します。",
-  "PROMO_LEARN_MORE": "詳細はこちら…"
+  "PROMO_LEARN_MORE": "詳細はこちら…",
+  "PROMO_ENDED_MESSAGE": "これらの高度な機能を引き続き使用するには、今すぐ登録してください。",
+  "PROMO_GET_APP_UPSELL_BUTTON": "{0} を入手",
+  "PROMO_PRO_ENDED_TITLE": "{0} のアップグレード期間が終了しました"
 });

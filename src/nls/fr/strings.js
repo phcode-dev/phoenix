@@ -1469,5 +1469,8 @@ define({
   "PROMO_CARD_3_MESSAGE": "Dupliquez et supprimez des éléments en un seul clic.",
   "PROMO_CARD_4": "Modification du texte dans l'aperçu",
   "PROMO_CARD_4_MESSAGE": "Modifiez les titres, les boutons et copiez directement dans l'aperçu.",
-  "PROMO_LEARN_MORE": "En savoir plus…"
+  "PROMO_LEARN_MORE": "En savoir plus…",
+  "PROMO_ENDED_MESSAGE": "Abonnez-vous maintenant pour continuer à utiliser ces fonctionnalités avancées :",
+  "PROMO_GET_APP_UPSELL_BUTTON": "Obtenir {0}",
+  "PROMO_PRO_ENDED_TITLE": "Votre mise à niveau {0} a expiré"
 });

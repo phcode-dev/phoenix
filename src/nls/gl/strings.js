@@ -1469,5 +1469,8 @@ define({
   "PROMO_CARD_3_MESSAGE": "Duplica e elimina elementos cun só clic.",
   "PROMO_CARD_4": "Edición de texto na previsualización",
   "PROMO_CARD_4_MESSAGE": "Edita títulos, botóns e copia directamente na previsualización.",
-  "PROMO_LEARN_MORE": "Máis información…"
+  "PROMO_LEARN_MORE": "Máis información…",
+  "PROMO_ENDED_MESSAGE": "Subscríbete agora para continuar a usar estas funcionalidades avanzadas:",
+  "PROMO_GET_APP_UPSELL_BUTTON": "Obtén {0}",
+  "PROMO_PRO_ENDED_TITLE": "A túa actualización a {0} rematou"
 });

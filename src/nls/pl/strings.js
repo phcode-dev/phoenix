@@ -1469,5 +1469,8 @@ define({
   "PROMO_CARD_3_MESSAGE": "Duplikuj i usuwaj elementy jednym kliknięciem.",
   "PROMO_CARD_4": "Edycja tekstu w podglądzie",
   "PROMO_CARD_4_MESSAGE": "Edytuj nagłówki, przyciski i kopiuj bezpośrednio w podglądzie.",
-  "PROMO_LEARN_MORE": "Dowiedz się więcej…"
+  "PROMO_LEARN_MORE": "Dowiedz się więcej…",
+  "PROMO_ENDED_MESSAGE": "Subskrybuj teraz, aby kontynuować korzystanie z tych zaawansowanych funkcji:",
+  "PROMO_GET_APP_UPSELL_BUTTON": "Pobierz {0}",
+  "PROMO_PRO_ENDED_TITLE": "Twój okres próbny wersji {0} dobiegł końca"
 });

@@ -1469,5 +1469,8 @@ define({
   "PROMO_CARD_3_MESSAGE": "Duplică și șterge elemente cu un singur clic.",
   "PROMO_CARD_4": "Editare text în previzualizare",
   "PROMO_CARD_4_MESSAGE": "Editează titluri, butoane și copiază direct în previzualizare.",
-  "PROMO_LEARN_MORE": "Află mai multe…"
+  "PROMO_LEARN_MORE": "Află mai multe…",
+  "PROMO_ENDED_MESSAGE": "Abonează-te acum pentru a continua să utilizezi aceste funcții avansate:",
+  "PROMO_GET_APP_UPSELL_BUTTON": "Obține {0}",
+  "PROMO_PRO_ENDED_TITLE": "Abonamentul tău {0} a expirat"
 });

@@ -1469,5 +1469,8 @@ define({
   "PROMO_CARD_3_MESSAGE": "Dublējiet un dzēsiet elementus ar vienu klikšķi.",
   "PROMO_CARD_4": "Teksta rediģēšana priekšskatījumā",
   "PROMO_CARD_4_MESSAGE": "Rediģējiet virsrakstus, pogas un kopējiet tieši priekšskatījumā.",
-  "PROMO_LEARN_MORE": "Uzzināt vairāk…"
+  "PROMO_LEARN_MORE": "Uzzināt vairāk…",
+  "PROMO_ENDED_MESSAGE": "Abonējiet tagad, lai turpinātu izmantot šīs papildu funkcijas:",
+  "PROMO_GET_APP_UPSELL_BUTTON": "Iegūt {0}",
+  "PROMO_PRO_ENDED_TITLE": "Jūsu {0} jauninājums ir beidzies"
 });

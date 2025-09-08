@@ -1469,5 +1469,8 @@ define({
   "PROMO_CARD_3_MESSAGE": "只需按一下即可複製和刪除元素。",
   "PROMO_CARD_4": "在預覽中編輯文字",
   "PROMO_CARD_4_MESSAGE": "直接在預覽中編輯標題、按鈕和複製內容。",
-  "PROMO_LEARN_MORE": "深入瞭解…"
+  "PROMO_LEARN_MORE": "深入瞭解…",
+  "PROMO_ENDED_MESSAGE": "立即訂閱以繼續使用這些進階功能：",
+  "PROMO_GET_APP_UPSELL_BUTTON": "取得 {0}",
+  "PROMO_PRO_ENDED_TITLE": "您的 {0} 升級已到期"
 });

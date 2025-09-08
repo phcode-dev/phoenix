@@ -1469,5 +1469,8 @@ define({
   "PROMO_CARD_3_MESSAGE": "클릭 한 번으로 요소를 복제하고 삭제할 수 있습니다.",
   "PROMO_CARD_4": "미리보기에서 텍스트 편집",
   "PROMO_CARD_4_MESSAGE": "미리보기에서 바로 제목, 버튼 및 복사를 편집할 수 있습니다.",
-  "PROMO_LEARN_MORE": "자세히 알아보기…"
+  "PROMO_LEARN_MORE": "자세히 알아보기…",
+  "PROMO_ENDED_MESSAGE": "고급 기능을 계속 사용하려면 지금 구독하세요.",
+  "PROMO_GET_APP_UPSELL_BUTTON": "{0} 받기",
+  "PROMO_PRO_ENDED_TITLE": "{0} 업그레이드가 만료되었습니다."
 });

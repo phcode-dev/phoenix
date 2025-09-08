@@ -1469,5 +1469,8 @@ define({
   "PROMO_CARD_3_MESSAGE": "Duplicera och ta bort element med ett enda klick.",
   "PROMO_CARD_4": "Redigera text i förhandsgranskning",
   "PROMO_CARD_4_MESSAGE": "Redigera rubriker, knappar och kopiera direkt i förhandsgranskningen.",
-  "PROMO_LEARN_MORE": "Läs mer…"
+  "PROMO_LEARN_MORE": "Läs mer…",
+  "PROMO_ENDED_MESSAGE": "Prenumerera nu för att fortsätta använda dessa avancerade funktioner:",
+  "PROMO_GET_APP_UPSELL_BUTTON": "Skaffa {0}",
+  "PROMO_PRO_ENDED_TITLE": "Din {0}-uppgradering har upphört"
 });

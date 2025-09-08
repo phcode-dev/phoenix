@@ -1469,5 +1469,8 @@ define({
   "PROMO_CARD_3_MESSAGE": "Duplikálja és törölje az elemeket egyetlen kattintással.",
   "PROMO_CARD_4": "Szöveg szerkesztése az előnézetben",
   "PROMO_CARD_4_MESSAGE": "Szerkesszen címsorokat, gombokat és másoljon közvetlenül az előnézetben.",
-  "PROMO_LEARN_MORE": "Tudj meg többet…"
+  "PROMO_LEARN_MORE": "Tudj meg többet…",
+  "PROMO_ENDED_MESSAGE": "Iratkozzon fel most a következő prémium funkciók további használatához:",
+  "PROMO_GET_APP_UPSELL_BUTTON": "Szerezd meg a(z) {0}-t/et",
+  "PROMO_PRO_ENDED_TITLE": "Lejárt a(z) {0} előfizetésed"
 });
