@@ -1974,6 +1974,7 @@ define(function (require, exports, module) {
                     if (LiveDevMultiBrowser.updateConfig) {
                         LiveDevMultiBrowser.updateConfig(JSON.stringify(LiveDevMultiBrowser.config));
                     }
+                    await awaits(200);
                 }
             }
 
@@ -1983,6 +1984,7 @@ define(function (require, exports, module) {
                     if (LiveDevMultiBrowser.updateConfig) {
                         LiveDevMultiBrowser.updateConfig(JSON.stringify(LiveDevMultiBrowser.config));
                     }
+                    await awaits(200);
                 }
             }
 
@@ -2285,12 +2287,7 @@ define(function (require, exports, module) {
                             `);
 
                 // Wait for edit mode to activate
-                await forRemoteExec(`document.getElementById('testId').hasAttribute('contenteditable')`, (result) => {
-                    return result === true;
-                });
-
-                // Verify element is in edit mode (contenteditable)
-                await forRemoteExec(`document.getElementById('testId').hasAttribute('contenteditable')`, (result) => {
+                await forRemoteExec(`document.getElementById('testId').hasAttribute('contenteditable') && document.getElementById('testId').getAttribute('contenteditable') === 'true'`, (result) => {
                     return result === true;
                 });
 
@@ -2369,12 +2366,7 @@ define(function (require, exports, module) {
                             `);
 
                 // Wait for edit mode to activate
-                await forRemoteExec(`document.getElementById('testId').hasAttribute('contenteditable')`, (result) => {
-                    return result === true;
-                });
-
-                // Verify element is in edit mode
-                await forRemoteExec(`document.getElementById('testId').hasAttribute('contenteditable')`, (result) => {
+                await forRemoteExec(`document.getElementById('testId').hasAttribute('contenteditable') && document.getElementById('testId').getAttribute('contenteditable') === 'true'`, (result) => {
                     return result === true;
                 });
 
@@ -2594,10 +2586,11 @@ define(function (require, exports, module) {
 
                 // Now perform undo operation using Ctrl+Z
                 await forRemoteExec(`
+                    const isMac = ${brackets.platform === "mac"};
                     const event = new KeyboardEvent('keydown', {
                         key: 'z',
-                        ctrlKey: true,
-                        metaKey: false, // Use false for Windows/Linux, true for Mac
+                        ctrlKey: !isMac,
+                        metaKey: isMac,
                         bubbles: true,
                         cancelable: true
                     });
@@ -2684,10 +2677,11 @@ define(function (require, exports, module) {
 
                 // Now perform undo operation using Ctrl+Z
                 await forRemoteExec(`
+                    const isMac = ${brackets.platform === "mac"};
                     const event = new KeyboardEvent('keydown', {
                         key: 'z',
-                        ctrlKey: true,
-                        metaKey: false, // Use false for Windows/Linux, true for Mac
+                        ctrlKey: !isMac,
+                        metaKey: isMac,
                         bubbles: true,
                         cancelable: true
                     });
@@ -2804,6 +2798,7 @@ define(function (require, exports, module) {
 
                 // Step 3: Click the preview (play icon) button in the toolbar
                 testWindow.$("#previewModeLivePreviewButton").click();
+                await awaits(200);
 
                 // Step 4: Verify boxes are hidden after clicking preview button
                 await waitForMoreOptionsBox(false);
@@ -2816,6 +2811,7 @@ define(function (require, exports, module) {
 
                 // Step 6: Click preview button again to toggle back to edit mode
                 testWindow.$("#previewModeLivePreviewButton").click();
+                await awaits(200);
 
                 // Step 7: Click element to verify boxes work again in edit mode
                 await forRemoteExec(`document.getElementById('testId').click()`);
