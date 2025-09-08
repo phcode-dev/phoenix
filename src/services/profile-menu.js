@@ -3,6 +3,7 @@ define(function (require, exports, module) {
         PopUpManager = require("widgets/PopUpManager"),
         ThemeManager = require("view/ThemeManager"),
         Strings      = require("strings"),
+        StringUtils = require("utils/StringUtils"),
         LoginService = require("./login-service");
 
     const KernalModeTrust = window.KernalModeTrust;
@@ -139,7 +140,7 @@ define(function (require, exports, module) {
     /**
      * Shows the sign-in popup when the user is not logged in
      */
-    function showLoginPopup() {
+    async function showLoginPopup() {
         // If popup is already visible, just close it
         if (isPopupVisible) {
             closePopup();
@@ -149,8 +150,19 @@ define(function (require, exports, module) {
         // create the popup element
         closePopup(); // close any existing popup first
 
+        // Check if non-logged-in user has trial entitlements
+        const effectiveEntitlements = await KernalModeTrust.loginService.getEffectiveEntitlements();
+        let templateData = {Strings};
+
+        if (effectiveEntitlements && effectiveEntitlements.isInProTrial) {
+            // Add trial information to template data
+            const planName = StringUtils.format(Strings.PROMO_PRO_TRIAL_DAYS_LEFT,
+                effectiveEntitlements.trialDaysRemaining);
+            templateData.trialInfo = {planName};
+        }
+
         // Render template with data
-        const renderedTemplate = Mustache.render(loginTemplate, {Strings});
+        const renderedTemplate = Mustache.render(loginTemplate, templateData);
         $popup = $(renderedTemplate);
 
         $("body").append($popup);
@@ -206,12 +218,15 @@ define(function (require, exports, module) {
             };
         }
         if (entitlements && entitlements.plan && entitlements.plan.paidSubscriber) {
-            // Paid subscriber: show plan name with feather icon
-            const planName = entitlements.plan.name || "Phoenix Pro";
+            // Pro user (paid subscriber or trial): show plan name with feather icon
+            let displayName = entitlements.plan.name || "Phoenix Pro";
+            if (entitlements.isInProTrial) {
+                displayName = `Phoenix Pro`; // Just "Phoenix Pro" for branding, not "Phoenix Pro Trial"
+            }
             $brandingLink
                 .attr("href", "https://account.phcode.dev")
                 .addClass("phoenix-pro")
-                .html(`${planName}<i class="fa-solid fa-feather orange-gold" style="margin-left: 3px;"></i>`);
+                .html(`${displayName}<i class="fa-solid fa-feather orange-gold" style="margin-left: 3px;"></i>`);
         } else {
             // Free user: show phcode.io branding
             $brandingLink
@@ -333,17 +348,29 @@ define(function (require, exports, module) {
         // Update plan information
         if (entitlements.plan) {
             const $planName = $popup.find('.user-plan-name');
-            
+
             // Update plan class and content based on paid subscriber status
             $planName.removeClass('user-plan-free user-plan-paid');
-            
+
             if (entitlements.plan.paidSubscriber) {
-                // Use pro styling with feather icon for paid subscribers
-                const proTitle = `<span class="phoenix-pro-title">
-                    <span class="pro-plan-name">${entitlements.plan.name}</span>
-                    <i class="fa-solid fa-feather orange-gold" style="margin-left: 3px;"></i>
-                </span>`;
-                $planName.addClass('user-plan-paid').html(proTitle);
+                // Use pro styling with feather icon for pro users (paid or trial)
+                if (entitlements.isInProTrial) {
+                    // For trial users: separate "Phoenix Pro" with icon from "(X days left)" text
+                    const planName = StringUtils.format(Strings.PROMO_PRO_TRIAL_DAYS_LEFT,
+                        entitlements.trialDaysRemaining);
+                    const proTitle = `<span class="phoenix-pro-title-plain">
+                        <span class="pro-plan-name">${planName}</span>
+                        <i class="fa-solid fa-feather" style="margin-left: 3px;"></i>
+                    </span>`;
+                    $planName.addClass('user-plan-paid').html(proTitle);
+                } else {
+                    // For paid users: regular plan name with icon
+                    const proTitle = `<span class="phoenix-pro-title-plain">
+                        <span class="pro-plan-name">${entitlements.plan.name}</span>
+                        <i class="fa-solid fa-feather" style="margin-left: 3px;"></i>
+                    </span>`;
+                    $planName.addClass('user-plan-paid').html(proTitle);
+                }
             } else {
                 // Use simple text for free users
                 $planName.addClass('user-plan-free').text(entitlements.plan.name);
@@ -412,8 +439,8 @@ define(function (require, exports, module) {
 
         positionPopup();
 
-        // Apply cached entitlements immediately if available (including quota/messages)
-        KernalModeTrust.loginService.getEntitlements(false).then(cachedEntitlements => {
+        // Apply cached effective entitlements immediately if available (including quota/messages)
+        KernalModeTrust.loginService.getEffectiveEntitlements(false).then(cachedEntitlements => {
             if (cachedEntitlements && isPopupVisible) {
                 _updatePopupWithEntitlements(cachedEntitlements);
             }
@@ -462,8 +489,7 @@ define(function (require, exports, module) {
      */
     async function _refreshEntitlementsInBackground() {
         try {
-            // Fetch fresh entitlements from API
-            const freshEntitlements = await KernalModeTrust.loginService.getEntitlements(true); // Force refresh to get latest data
+            const freshEntitlements = await KernalModeTrust.loginService.getEffectiveEntitlements(true);
 
             // Only update popup if it's still visible
             if (isPopupVisible && $popup && freshEntitlements) {
@@ -524,6 +550,23 @@ define(function (require, exports, module) {
         });
     }
 
+    /**
+     * Initialize branding for non-logged-in trial users on startup
+     */
+    async function _initializeBrandingForTrialUsers() {
+        // Only check if user is not logged in
+        if (!KernalModeTrust.loginService.isLoggedIn()) {
+            try {
+                const effectiveEntitlements = await KernalModeTrust.loginService.getEffectiveEntitlements();
+                if (effectiveEntitlements && effectiveEntitlements.isInProTrial) {
+                    _updateBranding(effectiveEntitlements);
+                }
+            } catch (error) {
+                console.error('Failed to initialize branding for trial users:', error);
+            }
+        }
+    }
+
     function init() {
         const helpButtonID = "user-profile-button";
         $icon = $("<a>")
@@ -537,6 +580,9 @@ define(function (require, exports, module) {
         $icon.on('click', ()=>{
             togglePopup();
         });
+
+        // Initialize branding for non-logged-in trial users
+        _initializeBrandingForTrialUsers();
     }
 
     function setNotLoggedIn() {
@@ -560,11 +606,11 @@ define(function (require, exports, module) {
         }
         _updateProfileIcon(initial, color);
 
-        // Preload entitlements when user logs in
-        KernalModeTrust.loginService.getEntitlements()
+        // Preload effective entitlements when user logs in
+        KernalModeTrust.loginService.getEffectiveEntitlements()
             .then(_updateBranding)
             .catch(error => {
-                console.error('Failed to preload entitlements on login:', error);
+                console.error('Failed to preload effective entitlements on login:', error);
             });
     }
 

@@ -80,9 +80,16 @@ function aggregateUtilizationMetrics(obj) {
     return globalUtilizationMetrics;
 }
 
+const translationContext =
+`This is a bunch of strings extracted from a JavaScript file used to develop our product with is a text editor.
+Some strings may have HTML or templates(mustache library used).
+The brand name “Phoenix Pro” must remain in English and should never be translated. 
+Please translate these strings accurately.
+`;
+
 function getTranslationrequest(stringsToTranslate, lang) {
     return {
-        translationContext: "This is a bunch of strings extracted from a JavaScript file used to develop our product with is a text editor. Some strings may have HTML or templates(mustache library used). Please translate these strings accurately.",
+        translationContext: translationContext,
         "source": stringsToTranslate,
         "provider": "vertex",
         "sourceContext": {
