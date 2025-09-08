@@ -8,8 +8,8 @@ const fs = require('fs');
 const httpProxy = require('http-proxy');
 
 // Account server configuration - switch between local and production
-const ACCOUNT_SERVER = 'https://account.phcode.dev'; // Production
-// const ACCOUNT_SERVER = 'http://localhost:5000'; // Local development
+let accountServer = 'https://account.phcode.dev'; // Production
+// Set to local development server if --localAccount flag is provided
 
 // Default configuration
 let config = {
@@ -45,6 +45,8 @@ function parseArgs() {
             config.silent = true;
         } else if (arg === '--log-ip') {
             config.logIp = true;
+        } else if (arg === '--localAccount') {
+            accountServer = 'http://localhost:5000';
         } else if (!arg.startsWith('-')) {
             config.root = path.resolve(arg);
         }
@@ -74,7 +76,7 @@ proxy.on('proxyReq', (proxyReq, req) => {
     const originalOrigin = req.headers.origin;
 
     // Set target host
-    const accountHost = new URL(ACCOUNT_SERVER).hostname;
+    const accountHost = new URL(accountServer).hostname;
     proxyReq.setHeader('Host', accountHost);
 
     // Transform referer from localhost:8000 to phcode.dev
@@ -262,12 +264,12 @@ const server = http.createServer((req, res) => {
         req.url = targetPath + (parsedUrl.search || '');
 
         if (!config.silent) {
-            console.log(`[PROXY] ${req.method} ${originalUrl} -> ${ACCOUNT_SERVER}${req.url}`);
+            console.log(`[PROXY] ${req.method} ${originalUrl} -> ${accountServer}${req.url}`);
         }
 
         // Proxy the request
         proxy.web(req, res, {
-            target: ACCOUNT_SERVER,
+            target: accountServer,
             changeOrigin: true,
             secure: true
         });
@@ -313,7 +315,7 @@ server.listen(config.port, config.host, () => {
         console.log(`Available on:`);
         console.log(`  http://${config.host === '0.0.0.0' ? 'localhost' : config.host}:${config.port}`);
         console.log(`Proxy routes:`);
-        console.log(`  /proxy/accounts/* -> ${ACCOUNT_SERVER}/*`);
+        console.log(`  /proxy/accounts/* -> ${accountServer}/*`);
         console.log('Hit CTRL-C to stop the server');
     }
 });
