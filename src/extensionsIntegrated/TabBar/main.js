@@ -507,20 +507,37 @@ define(function (require, exports, module) {
                 event.stopPropagation();
 
                 CommandManager.execute(Commands.FILE_CLOSE, { file: fileObj, paneId: paneId }); // close the file
-            } else { // open the clicked tab
-                const currentActivePane = MainViewManager.getActivePaneId();
-                const isPaneActive = paneId === currentActivePane;
-                const currentFile = MainViewManager.getCurrentlyViewedFile(currentActivePane);
-
-                // if the clicked tab is a placeholder tab, we add it to the working set
-                if ($(this).hasClass("placeholder")) {
-                    MainViewManager.addToWorkingSet(paneId, fileObj);
-                }
-
-                // clicked tab is already active, don't do anything
-                if (isPaneActive && currentFile && currentFile.fullPath === filePath) { return; }
-                CommandManager.execute(Commands.FILE_OPEN, { fullPath: filePath, paneId: paneId });
             }
+        });
+
+        // open tab on mousedown event
+        $(document).on("mousedown", ".phoenix-tab-bar .tab", function (event) {
+            if ($(event.target).hasClass("fa-times") || $(event.target).closest(".tab-close").length) {
+                return;
+            }
+
+            // Get the file path from the data-path attribute of the parent tab
+            const filePath = $(this).attr("data-path");
+            if (!filePath) { return; }
+
+            // determine the pane inside which the tab belongs
+            const isSecondPane = $(this).closest("#phoenix-tab-bar-2").length > 0;
+            const paneId = isSecondPane ? "second-pane" : "first-pane";
+
+            // get the file object
+            const fileObj = FileSystem.getFileForPath(filePath);
+            const currentActivePane = MainViewManager.getActivePaneId();
+            const isPaneActive = paneId === currentActivePane;
+            const currentFile = MainViewManager.getCurrentlyViewedFile(currentActivePane);
+
+            // if the clicked tab is a placeholder tab, we add it to the working set
+            if ($(this).hasClass("placeholder")) {
+                MainViewManager.addToWorkingSet(paneId, fileObj);
+            }
+
+            // clicked tab is already active, don't do anything
+            if (isPaneActive && currentFile && currentFile.fullPath === filePath) { return; }
+            CommandManager.execute(Commands.FILE_OPEN, { fullPath: filePath, paneId: paneId });
         });
 
         // Add the contextmenu (right-click) handler
