@@ -122,8 +122,57 @@ define(function (require, exports, module) {
         }
     }
 
+    /**
+     * Get effective entitlements including trial enhancement for UI display
+     * Returns enhanced entitlements that treat trial users as pro users
+     */
+    async function getEffectiveEntitlements(forceRefresh = false) {
+        // Get raw server entitlements
+        const serverEntitlements = await getEntitlements(forceRefresh);
+
+        // Get trial days remaining
+        const trialDaysRemaining = await LoginService.getProTrialDaysRemaining();
+
+        // If no trial is active, return server entitlements as-is
+        if (trialDaysRemaining <= 0) {
+            return serverEntitlements;
+        }
+
+        // User has active trial
+        if (serverEntitlements && serverEntitlements.plan) {
+            // Logged-in user with trial
+            if (serverEntitlements.plan.paidSubscriber) {
+                // Already a paid subscriber, return as-is
+                return serverEntitlements;
+            } else {
+                // Enhance entitlements for trial user
+                return {
+                    ...serverEntitlements,
+                    plan: {
+                        ...serverEntitlements.plan,
+                        paidSubscriber: true,
+                        name: "Phoenix Pro"
+                    },
+                    isInProTrial: true,
+                    trialDaysRemaining: trialDaysRemaining
+                };
+            }
+        } else {
+            // Non-logged-in user with trial - return synthetic entitlements
+            return {
+                plan: {
+                    paidSubscriber: true,
+                    name: "Phoenix Pro"
+                },
+                isInProTrial: true,
+                trialDaysRemaining: trialDaysRemaining
+            };
+        }
+    }
+
     // Add functions to secure exports
     LoginService.getEntitlements = getEntitlements;
+    LoginService.getEffectiveEntitlements = getEffectiveEntitlements;
     LoginService.clearEntitlements = clearEntitlements;
     LoginService.EVENT_ENTITLEMENTS_CHANGED = EVENT_ENTITLEMENTS_CHANGED;
 });
