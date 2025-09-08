@@ -333,12 +333,21 @@ define(function (require, exports, module) {
         // Update plan information
         if (entitlements.plan) {
             const $planName = $popup.find('.user-plan-name');
-            $planName.text(entitlements.plan.name);
-
-            // Update plan class based on paid subscriber status
+            
+            // Update plan class and content based on paid subscriber status
             $planName.removeClass('user-plan-free user-plan-paid');
-            const planClass = entitlements.plan.paidSubscriber ? 'user-plan-paid' : 'user-plan-free';
-            $planName.addClass(planClass);
+            
+            if (entitlements.plan.paidSubscriber) {
+                // Use pro styling with feather icon for paid subscribers
+                const proTitle = `<span class="phoenix-pro-title">
+                    <span class="pro-plan-name">${entitlements.plan.name}</span>
+                    <i class="fa-solid fa-feather orange-gold" style="margin-left: 3px;"></i>
+                </span>`;
+                $planName.addClass('user-plan-paid').html(proTitle);
+            } else {
+                // Use simple text for free users
+                $planName.addClass('user-plan-free').text(entitlements.plan.name);
+            }
         }
 
         // Update quota section if available
