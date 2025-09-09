@@ -292,7 +292,8 @@ define(function (require, exports, module) {
 
         // Also trigger entitlements changed event since effective entitlements have changed
         // This allows UI components to update based on the new trial status
-        LoginService.trigger(LoginService.EVENT_ENTITLEMENTS_CHANGED, null);
+        const effectiveEntitlements = await LoginService.getEffectiveEntitlements();
+        LoginService.trigger(LoginService.EVENT_ENTITLEMENTS_CHANGED, effectiveEntitlements);
     }
 
     function _isAnyDialogsVisible() {
