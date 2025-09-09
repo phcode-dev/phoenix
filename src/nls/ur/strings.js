@@ -1461,6 +1461,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "فائل ایکسٹینشن",
   "PROMO_UPGRADE_TITLE": "آپ کو {0} میں اپ گریڈ کر دیا گیا ہے۔",
   "PROMO_UPGRADE_MESSAGE": "اگلے {0} دنوں کے لیے تمام پریمیم خصوصیات تک مکمل رسائی سے لطف اندوز ہوں:",
+  "PROMO_ENDED_MESSAGE": "ان جدید خصوصیات کو استعمال جاری رکھنے کیلئے ابھی سبسکرائب کریں:",
   "PROMO_CARD_1": "عناصر کو گھسیٹیں اور چھوڑیں",
   "PROMO_CARD_1_MESSAGE": "حصوں کو بصری طور پر دوبارہ ترتیب دیں — فینکس آپ کے لیے HTML اور CSS کو اپ ڈیٹ کرتا ہے۔",
   "PROMO_CARD_2": "تصویر کی تبدیلی",
@@ -1470,7 +1471,9 @@ define({
   "PROMO_CARD_4": "پیش نظارہ میں متن کی تدوین",
   "PROMO_CARD_4_MESSAGE": "پیش نظارہ میں براہ راست ہیڈنگ، بٹنوں اور کاپی میں ترمیم کریں۔",
   "PROMO_LEARN_MORE": "مزید جانیے…",
-  "PROMO_ENDED_MESSAGE": "ان جدید خصوصیات کو استعمال جاری رکھنے کیلئے ابھی سبسکرائب کریں:",
   "PROMO_GET_APP_UPSELL_BUTTON": "{0} حاصل کریں",
-  "PROMO_PRO_ENDED_TITLE": "آپ کا {0} اپ گریڈ ختم ہو گیا ہے"
+  "CMD_GET_PRO": "Phoenix Pro حاصل کریں",
+  "PROMO_PRO_ENDED_TITLE": "آپ کا {0} آزمائشی ورژن ختم ہو گیا ہے۔",
+  "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro آزمائشی ورژن ({0} دن باقی)",
+  "GET_PHOENIX_PRO": "Phoenix Pro حاصل کریں"
 });

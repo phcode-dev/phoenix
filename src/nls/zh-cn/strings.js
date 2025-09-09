@@ -1461,6 +1461,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "文件扩展名",
   "PROMO_UPGRADE_TITLE": "您已升级到 {0}",
   "PROMO_UPGRADE_MESSAGE": "在接下来的 {0} 天内，您可以尽情享用所有高级功能：",
+  "PROMO_ENDED_MESSAGE": "继续使用以下高级功能，立即订阅：",
   "PROMO_CARD_1": "拖放元素",
   "PROMO_CARD_1_MESSAGE": "直观地重新排列版块 — Phoenix 会为您更新 HTML 和 CSS。",
   "PROMO_CARD_2": "图片替换",
@@ -1470,7 +1471,9 @@ define({
   "PROMO_CARD_4": "在预览中编辑文本",
   "PROMO_CARD_4_MESSAGE": "直接在预览中编辑标题、按钮和复制内容。",
   "PROMO_LEARN_MORE": "了解更多…",
-  "PROMO_ENDED_MESSAGE": "继续使用以下高级功能，立即订阅：",
   "PROMO_GET_APP_UPSELL_BUTTON": "获取 {0}",
-  "PROMO_PRO_ENDED_TITLE": "您的 {0} 升级已结束"
+  "CMD_GET_PRO": "获取 Phoenix Pro",
+  "PROMO_PRO_ENDED_TITLE": "您的 {0} 试用已结束",
+  "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro 试用版（剩余 {0} 天）",
+  "GET_PHOENIX_PRO": "获取 Phoenix Pro"
 });

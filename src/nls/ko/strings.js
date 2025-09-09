@@ -1461,6 +1461,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "파일 확장자",
   "PROMO_UPGRADE_TITLE": "{0}(으)로 업그레이드되었습니다.",
   "PROMO_UPGRADE_MESSAGE": "향후 {0}일 동안 모든 프리미엄 기능을 완전히 이용할 수 있습니다.",
+  "PROMO_ENDED_MESSAGE": "고급 기능을 계속 사용하려면 지금 구독하세요.",
   "PROMO_CARD_1": "요소 끌어서 놓기",
   "PROMO_CARD_1_MESSAGE": "섹션을 시각적으로 재정렬하세요. Phoenix가 HTML과 CSS를 자동으로 업데이트합니다.",
   "PROMO_CARD_2": "이미지 교체",
@@ -1470,7 +1471,9 @@ define({
   "PROMO_CARD_4": "미리보기에서 텍스트 편집",
   "PROMO_CARD_4_MESSAGE": "미리보기에서 바로 제목, 버튼 및 복사를 편집할 수 있습니다.",
   "PROMO_LEARN_MORE": "자세히 알아보기…",
-  "PROMO_ENDED_MESSAGE": "고급 기능을 계속 사용하려면 지금 구독하세요.",
   "PROMO_GET_APP_UPSELL_BUTTON": "{0} 받기",
-  "PROMO_PRO_ENDED_TITLE": "{0} 업그레이드가 만료되었습니다."
+  "CMD_GET_PRO": "Phoenix Pro 받기",
+  "PROMO_PRO_ENDED_TITLE": "{0} 평가판 사용 기간이 만료되었습니다",
+  "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro 평가판({0}일 남음)",
+  "GET_PHOENIX_PRO": "Phoenix Pro 받기"
 });

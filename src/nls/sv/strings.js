@@ -1461,6 +1461,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Filändelse",
   "PROMO_UPGRADE_TITLE": "Du har uppgraderats till {0}",
   "PROMO_UPGRADE_MESSAGE": "Få full tillgång till alla premiumfunktioner under de kommande {0} dagarna:",
+  "PROMO_ENDED_MESSAGE": "Prenumerera nu för att fortsätta använda dessa avancerade funktioner:",
   "PROMO_CARD_1": "Dra och släpp element",
   "PROMO_CARD_1_MESSAGE": "Ordna om sektioner visuellt – Phoenix uppdaterar HTML och CSS åt dig.",
   "PROMO_CARD_2": "Bildersättning",
@@ -1470,7 +1471,9 @@ define({
   "PROMO_CARD_4": "Redigera text i förhandsgranskning",
   "PROMO_CARD_4_MESSAGE": "Redigera rubriker, knappar och kopiera direkt i förhandsgranskningen.",
   "PROMO_LEARN_MORE": "Läs mer…",
-  "PROMO_ENDED_MESSAGE": "Prenumerera nu för att fortsätta använda dessa avancerade funktioner:",
   "PROMO_GET_APP_UPSELL_BUTTON": "Skaffa {0}",
-  "PROMO_PRO_ENDED_TITLE": "Din {0}-uppgradering har upphört"
+  "CMD_GET_PRO": "Skaffa Phoenix Pro",
+  "PROMO_PRO_ENDED_TITLE": "Din {0}-provperiod har löpt ut",
+  "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro-provperiod ({0} dagar kvar)",
+  "GET_PHOENIX_PRO": "Skaffa Phoenix Pro"
 });

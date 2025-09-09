@@ -1461,6 +1461,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Разширение на файл",
   "PROMO_UPGRADE_TITLE": "Надградихте до {0}",
   "PROMO_UPGRADE_MESSAGE": "Възползвайте се от пълен достъп до всички премиум функции през следващите {0} дни:",
+  "PROMO_ENDED_MESSAGE": "Абонирайте се сега, за да продължите да използвате тези разширени функции:",
   "PROMO_CARD_1": "Плъзгане и пускане на елементи",
   "PROMO_CARD_1_MESSAGE": "Пренареждайте секции визуално — Phoenix актуализира HTML и CSS вместо вас.",
   "PROMO_CARD_2": "Замяна на изображение",
@@ -1470,7 +1471,9 @@ define({
   "PROMO_CARD_4": "Редактиране на текст в преглед",
   "PROMO_CARD_4_MESSAGE": "Редактирайте заглавия, бутони и копирайте директно в прегледа.",
   "PROMO_LEARN_MORE": "Научете повече…",
-  "PROMO_ENDED_MESSAGE": "Абонирайте се сега, за да продължите да използвате тези разширени функции:",
   "PROMO_GET_APP_UPSELL_BUTTON": "Вземете {0}",
-  "PROMO_PRO_ENDED_TITLE": "Вашият {0} ъпгрейд е изтекъл"
+  "CMD_GET_PRO": "Вземете Phoenix Pro",
+  "PROMO_PRO_ENDED_TITLE": "Вашият {0} пробен период е изтекъл",
+  "PROMO_PRO_TRIAL_DAYS_LEFT": "Пробен период на Phoenix Pro ({0} дни остават)",
+  "GET_PHOENIX_PRO": "Вземете Phoenix Pro"
 });

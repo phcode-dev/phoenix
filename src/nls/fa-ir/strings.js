@@ -1461,6 +1461,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "پسوند فایل",
   "PROMO_UPGRADE_TITLE": "حساب شما به {0} ارتقا یافت.",
   "PROMO_UPGRADE_MESSAGE": "از دسترسی کامل به تمام امکانات ویژه برای {0} روز آینده لذت ببرید:",
+  "PROMO_ENDED_MESSAGE": "برای ادامه استفاده از این قابلیت‌های پیشرفته، همین حالا مشترک شوید:",
   "PROMO_CARD_1": "کشیدن و رها کردن عناصر",
   "PROMO_CARD_1_MESSAGE": "بخش‌ها را به‌صورت بصری مرتب کنید — فینیکس HTML و CSS را برای شما به‌روزرسانی می‌کند.",
   "PROMO_CARD_2": "جایگزینی تصویر",
@@ -1470,7 +1471,9 @@ define({
   "PROMO_CARD_4": "ویرایش متن در پیش‌نمایش",
   "PROMO_CARD_4_MESSAGE": "سرفصل‌ها، دکمه‌ها و متن را مستقیماً در پیش‌نمایش ویرایش کنید.",
   "PROMO_LEARN_MORE": "اطلاعات بیشتر…",
-  "PROMO_ENDED_MESSAGE": "برای ادامه استفاده از این قابلیت‌های پیشرفته، همین حالا مشترک شوید:",
   "PROMO_GET_APP_UPSELL_BUTTON": "دریافت {0}",
-  "PROMO_PRO_ENDED_TITLE": "ارتقای {0} شما به پایان رسیده است"
+  "CMD_GET_PRO": "دریافت Phoenix Pro",
+  "PROMO_PRO_ENDED_TITLE": "مهلت {0} شما به پایان رسیده است",
+  "PROMO_PRO_TRIAL_DAYS_LEFT": "نسخه آزمایشی Phoenix Pro ({0} روز باقی مانده)",
+  "GET_PHOENIX_PRO": "دریافت Phoenix Pro"
 });

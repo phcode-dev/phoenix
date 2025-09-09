@@ -1461,6 +1461,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Dosya Uzantısı",
   "PROMO_UPGRADE_TITLE": "{0} sürümüne yükseltildiniz",
   "PROMO_UPGRADE_MESSAGE": "Önümüzdeki {0} gün boyunca tüm premium özelliklere tam erişimin keyfini çıkarın:",
+  "PROMO_ENDED_MESSAGE": "Bu gelişmiş özellikleri kullanmaya devam etmek için hemen abone olun:",
   "PROMO_CARD_1": "Öğeleri Sürükle ve Bırak",
   "PROMO_CARD_1_MESSAGE": "Bölümleri görsel olarak yeniden düzenleyin — Phoenix HTML ve CSS'yi sizin için günceller.",
   "PROMO_CARD_2": "Görsel Değiştirme",
@@ -1470,7 +1471,9 @@ define({
   "PROMO_CARD_4": "Önizlemede Metin Düzenleme",
   "PROMO_CARD_4_MESSAGE": "Başlıkları, düğmeleri düzenleyin ve doğrudan önizlemede kopyalayın.",
   "PROMO_LEARN_MORE": "Daha Fazla Bilgi Edinin…",
-  "PROMO_ENDED_MESSAGE": "Bu gelişmiş özellikleri kullanmaya devam etmek için hemen abone olun:",
   "PROMO_GET_APP_UPSELL_BUTTON": "{0} edinin",
-  "PROMO_PRO_ENDED_TITLE": "{0} yükseltmeniz sona erdi"
+  "CMD_GET_PRO": "Phoenix Pro'yu Edinin",
+  "PROMO_PRO_ENDED_TITLE": "{0} Denemeniz Sona Erdi",
+  "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro Deneme Sürümü ({0} gün kaldı)",
+  "GET_PHOENIX_PRO": "Phoenix Pro'yu Edinin"
 });

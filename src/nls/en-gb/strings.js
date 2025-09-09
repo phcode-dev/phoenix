@@ -1461,6 +1461,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "File Extension",
   "PROMO_UPGRADE_TITLE": "You’ve been upgraded to {0}",
   "PROMO_UPGRADE_MESSAGE": "Enjoy full access to all premium features for the next {0} days:",
+  "PROMO_ENDED_MESSAGE": "Subscribe now to continue using these advanced features:",
   "PROMO_CARD_1": "Drag and drop elements",
   "PROMO_CARD_1_MESSAGE": "Rearrange sections visually — Phoenix updates the HTML and CSS for you.",
   "PROMO_CARD_2": "Image replacement",
@@ -1470,7 +1471,9 @@ define({
   "PROMO_CARD_4": "Editing text in preview",
   "PROMO_CARD_4_MESSAGE": "Edit headings, buttons, and copy directly in the preview.",
   "PROMO_LEARN_MORE": "Learn more…",
-  "PROMO_ENDED_MESSAGE": "Subscribe now to continue using these advanced features:",
   "PROMO_GET_APP_UPSELL_BUTTON": "Get {0}",
-  "PROMO_PRO_ENDED_TITLE": "Your {0} upgrade has expired"
+  "CMD_GET_PRO": "Get Phoenix Pro",
+  "PROMO_PRO_ENDED_TITLE": "Your {0} trial has ended",
+  "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro Trial ({0} days remaining)",
+  "GET_PHOENIX_PRO": "Get Phoenix Pro"
 });
