@@ -27,10 +27,10 @@
 
 define(function (require, exports, module) {
     const proTitle = `<span class="phoenix-pro-title">
-                    <span class="pro-plan-name">Phoenix Pro</span>
+                    <span class="pro-plan-name">${brackets.config.main_pro_plan}</span>
                     <i class="fa-solid fa-feather orange-gold" style="margin-left: 3px;"></i>
                 </span>`,
-        proTitlePlain = `<span class="pro-plan-name">Phoenix Pro</span>
+        proTitlePlain = `<span class="pro-plan-name">${brackets.config.main_pro_plan}</span>
                     <i class="fa-solid fa-feather" style="margin-left: 2px;"></i>`;
     require("./setup-login-service"); // this adds loginService to KernalModeTrust
     const Dialogs = require("widgets/Dialogs"),

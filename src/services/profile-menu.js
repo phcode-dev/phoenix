@@ -230,9 +230,9 @@ define(function (require, exports, module) {
         }
         if (entitlements && entitlements.plan && entitlements.plan.paidSubscriber) {
             // Pro user (paid subscriber or trial): show plan name with feather icon
-            let displayName = entitlements.plan.name || "Phoenix Pro";
+            let displayName = entitlements.plan.name || brackets.config.main_pro_plan;
             if (entitlements.isInProTrial) {
-                displayName = `Phoenix Pro`; // Just "Phoenix Pro" for branding, not "Phoenix Pro Trial"
+                displayName = brackets.config.main_pro_plan; // Just "Phoenix Pro" for branding, not "Phoenix Pro Trial"
             }
             $brandingLink
                 .attr("href", "https://account.phcode.dev")

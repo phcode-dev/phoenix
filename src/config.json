@@ -2,6 +2,7 @@
     "config": {
         "app_title": "Phoenix Code",
         "app_name_about": "Phoenix Code",
+        "main_pro_plan": "Phoenix Pro",
         "about_icon": "styles/images/phoenix-icon.svg",
         "account_url": "https://account.phcode.dev/",
         "promotions_url": "https://promotions.phcode.dev/dev/",
