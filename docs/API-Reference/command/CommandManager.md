@@ -13,10 +13,11 @@ const CommandManager = brackets.getModule("command/CommandManager")
     * [.getID()](#Command+getID) ⇒ <code>string</code>
     * [.execute()](#Command+execute) ⇒ <code>$.Promise</code>
     * [.getEnabled()](#Command+getEnabled) ⇒ <code>boolean</code>
+    * [.getOptions()](#Command+getOptions) ⇒ <code>object</code>
     * [.setEnabled(enabled)](#Command+setEnabled)
     * [.setChecked(checked)](#Command+setChecked)
     * [.getChecked()](#Command+getChecked) ⇒ <code>boolean</code>
-    * [.setName(name)](#Command+setName)
+    * [.setName(name, htmlName)](#Command+setName)
     * [.getName()](#Command+getName) ⇒ <code>string</code>
 
 <a name="new_Command_new"></a>
@@ -55,6 +56,12 @@ Executes the command. Additional arguments are passed to the executing function
 Is command enabled?
 
 **Kind**: instance method of [<code>Command</code>](#Command)  
+<a name="Command+getOptions"></a>
+
+### command.getOptions() ⇒ <code>object</code>
+get the command options
+
+**Kind**: instance method of [<code>Command</code>](#Command)  
 <a name="Command+setEnabled"></a>
 
 ### command.setEnabled(enabled)
@@ -87,7 +94,7 @@ Is command checked?
 **Kind**: instance method of [<code>Command</code>](#Command)  
 <a name="Command+setName"></a>
 
-### command.setName(name)
+### command.setName(name, htmlName)
 Sets the name of the Command and dispatches "nameChange" so that
 UI that reflects the command name can update.
 
@@ -97,9 +104,10 @@ use \uXXXX instead of an HTML entity.
 
 **Kind**: instance method of [<code>Command</code>](#Command)  
 
-| Param | Type |
-| --- | --- |
-| name | <code>string</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>string</code> |  |
+| htmlName | <code>string</code> | If set, this will be displayed in ui menus instead of the name given.     Eg. "Phoenix menu<i class='fa fa-car' style='margin-left: 4px;'></i>" |
 
 <a name="Command+getName"></a>
 
@@ -156,6 +164,7 @@ Registers a global command.
 | commandFn | <code>function</code> | the function to call when the command is executed. Any arguments passed to     execute() (after the id) are passed as arguments to the function. If the function is asynchronous,     it must return a jQuery promise that is resolved when the command completes. Otherwise, the     CommandManager will assume it is synchronous, and return a promise that is already resolved. |
 | [options] | <code>Object</code> |  |
 | options.eventSource | <code>boolean</code> | If set to true, the commandFn will be called with the first argument `event` with details about the source(invoker) as event.eventSource(one of the `CommandManager.SOURCE_*`) and event.sourceType(Eg. Ctrl-K) parameter. |
+| options.htmlName | <code>string</code> | If set, this will be displayed in ui menus instead of the name given.     Eg. "Phoenix menu<i class='fa fa-car' style='margin-left: 4px;'></i>" |
 
 <a name="registerInternal"></a>
 

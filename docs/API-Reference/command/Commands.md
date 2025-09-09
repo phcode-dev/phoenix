@@ -735,6 +735,12 @@ Opens documentation
 Opens support resources
 
 **Kind**: global variable  
+<a name="HELP_GET_PRO"></a>
+
+## HELP\_GET\_PRO
+Opens Phoenix Pro page
+
+**Kind**: global variable  
 <a name="HELP_SUGGEST"></a>
 
 ## HELP\_SUGGEST
