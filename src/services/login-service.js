@@ -236,7 +236,8 @@ define(function (require, exports, module) {
                     plan: {
                         ...serverEntitlements.plan,
                         paidSubscriber: true,
-                        name: brackets.config.main_pro_plan
+                        name: brackets.config.main_pro_plan,
+                        validTill: Date.now() + trialDaysRemaining * MS_IN_DAY
                     },
                     isInProTrial: true,
                     trialDaysRemaining: trialDaysRemaining,
@@ -256,7 +257,8 @@ define(function (require, exports, module) {
             return {
                 plan: {
                     paidSubscriber: true,
-                    name: brackets.config.main_pro_plan
+                    name: brackets.config.main_pro_plan,
+                    validTill: Date.now() + trialDaysRemaining * MS_IN_DAY
                 },
                 isInProTrial: true,
                 trialDaysRemaining: trialDaysRemaining,
