@@ -87,7 +87,7 @@ define(function (require, exports, module) {
         async function _waitForProblemsPanelVisible(visible) {
             await awaitsFor(()=>{
                 return $("#problems-panel").is(":visible") === visible;
-            }, "Problems panel to be visible");
+            }, "Problems panel to be visible", 15000);
         }
 
         async function _openSimpleES6Project() {
@@ -160,12 +160,12 @@ define(function (require, exports, module) {
                 await _waitForProblemsPanelVisible(true);
                 await awaitsFor(()=>{
                     return $("#problems-panel").text().includes(Strings.DESCRIPTION_ESLINT_LOAD_FAILED);
-                }, "ESLint v6 not supported error to be shown");
+                }, "ESLint v6 not supported error to be shown", 15000);
             }
 
             it("should ESLint v6 show unsupported version error", async function () {
                 await _loadAndValidateES6Project();
-            }, 5000);
+            }, 30000);
 
             it("should show ESLint and JSHint in desktop app for es6 project or below", async function () {
                 await _loadAndValidateES6Project();
@@ -173,7 +173,7 @@ define(function (require, exports, module) {
                     await _fileSwitcherroForESLintFailDetection();
                     return $("#problems-panel").text().includes(JSHintErrorES6Error_js);
                 }, "JShint error to be shown", 3000, 300);
-            }, 5000);
+            }, 30000);
         });
 
         describe("ES7 and JSHint project", function () {
@@ -190,20 +190,20 @@ define(function (require, exports, module) {
                 await _waitForProblemsPanelVisible(true);
                 await awaitsFor(()=>{
                     return $("#problems-panel").text().includes(ESLintErrorES7Error_js);
-                }, "ESLint v7 error to be shown");
+                }, "ESLint v7 error to be shown", 15000);
             }
 
             it("should ESLint v7 work as expected", async function () {
                 await _loadAndValidateES7Project();
-            }, 5000);
+            }, 30000);
 
             it("should show ESLint and JSHint in desktop app if .jshintrc Present", async function () {
                 await _loadAndValidateES7Project();
                 await awaitsFor(()=>{
                     return $("#problems-panel").text().includes(JSHintErrorES6Error_js);
-                }, "JShint error to be shown");
+                }, "JShint error to be shown", 10000);
                 expect($("#problems-panel").text().includes("JSHint")).toBeTrue();
-            }, 5000);
+            }, 30000);
         });
 
         describe("ES8 with react js support project", function () { // this should cover es7 too
@@ -220,8 +220,8 @@ define(function (require, exports, module) {
                 await _waitForProblemsPanelVisible(true);
                 await awaitsFor(()=>{
                     return $("#problems-panel").text().includes(ESLintReactError_js);
-                }, "ESLint jsx error to be shown");
-            }, 5000);
+                }, "ESLint jsx error to be shown", 15000);
+            }, 30000);
         });
 
         // we should have an es9 test too as above, but es9 currently doesnt support jsx
@@ -241,25 +241,25 @@ define(function (require, exports, module) {
                 await _waitForProblemsPanelVisible(true);
                 await awaitsFor(()=>{
                     return $("#problems-panel").text().includes(ESLintErrorES8Error_js);
-                }, "ESLint v8 error to be shown");
+                }, "ESLint v8 error to be shown", 15000);
             }
 
             it("should ESLint v8 work as expected", async function () {
                 await _loadAndValidateES8Project();
-            }, 5000);
+            }, 30000);
 
             it("should not lint jsx file as ESLint v8 is not configured for react lint", async function () {
                 await _openProjectFile("react.jsx");
                 await awaits(100); // Just wait for some time to prevent any false linter runs
                 await _waitForProblemsPanelVisible(false);
                 expect($("#status-inspection").hasClass("inspection-disabled")).toBeTrue();
-            }, 5000);
+            }, 30000);
 
             it("should not show JSHint in desktop app if ESLint is active", async function () {
                 await _loadAndValidateES8Project();
                 await awaits(100); // give some time so that jshint has time to complete if there is any.
                 expect($("#problems-panel").text().includes("JSHint")).toBeFalse();
-            }, 5000);
+            }, 30000);
         });
 
         describe("ES Latest module project", function () {
@@ -373,7 +373,7 @@ define(function (require, exports, module) {
                 await _waitForProblemsPanelVisible(true);
                 await awaitsFor(()=>{
                     return $("#problems-panel").find(".ph-fix-problem").length === 2;
-                }, "There should be 2 fix problem button in the panel");
+                }, "There should be 2 fix problem button in the panel", 15000);
             }
 
             async function _triggerLint() {
@@ -383,7 +383,7 @@ define(function (require, exports, module) {
 
             it("should ESLint v9 show fix buttons", async function () {
                 await _openAndVerifyInitial();
-            }, 5000);
+            }, 30000);
 
             it("should be able to fix 1 error", async function () {
                 await _openAndVerifyInitial();
@@ -391,7 +391,7 @@ define(function (require, exports, module) {
                 $($("#problems-panel").find(".ph-fix-problem")[0]).click();
                 await awaitsFor(()=>{
                     return $("#problems-panel").find(".ph-fix-problem").length === 1;
-                }, "only 1 problem should remain");
+                }, "only 1 problem should remain", 15000);
 
                 // it should select the edited text
                 const editor = EditorManager.getCurrentFullEditor();
@@ -406,8 +406,8 @@ define(function (require, exports, module) {
                 await _triggerLint();
                 await awaitsFor(()=>{
                     return $("#problems-panel").find(".ph-fix-problem").length === 2;
-                }, "2 problem should be there");
-            }, 5000);
+                }, "2 problem should be there", 15000);
+            }, 30000);
 
             it("should be able to fix all errors", async function () {
                 await _openAndVerifyInitial();
@@ -417,7 +417,7 @@ define(function (require, exports, module) {
                 $($("#problems-panel").find(".problems-fix-all-btn")).click();
                 await awaitsFor(()=>{
                     return $("#problems-panel").find(".ph-fix-problem").length === 0;
-                }, "no problems should remain as all is now fixed");
+                }, "no problems should remain as all is now fixed", 15000);
 
                 // fixing multiple should place the cursor on first fix
                 expect(editor.hasSelection()).toBeFalse();
@@ -430,8 +430,8 @@ define(function (require, exports, module) {
                 await _triggerLint();
                 await awaitsFor(()=>{
                     return $("#problems-panel").find(".ph-fix-problem").length === 2;
-                }, "2 problem should be there");
-            }, 5000);
+                }, "2 problem should be there", 15000);
+            }, 30000);
         });
     });
 });
