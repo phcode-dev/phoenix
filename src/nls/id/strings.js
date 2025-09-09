@@ -1461,6 +1461,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Ekstensi Berkas",
   "PROMO_UPGRADE_TITLE": "Anda telah diupgrade ke {0}",
   "PROMO_UPGRADE_MESSAGE": "Nikmati akses penuh ke semua fitur premium selama {0} hari ke depan:",
+  "PROMO_ENDED_MESSAGE": "Berlangganan sekarang untuk melanjutkan penggunaan fitur-fitur canggih ini:",
   "PROMO_CARD_1": "Seret & Lepas Elemen",
   "PROMO_CARD_1_MESSAGE": "Susun ulang bagian secara visual — Phoenix memperbarui HTML & CSS untuk Anda.",
   "PROMO_CARD_2": "Penggantian Gambar",
@@ -1470,7 +1471,9 @@ define({
   "PROMO_CARD_4": "Mengedit Teks Dalam Pratinjau",
   "PROMO_CARD_4_MESSAGE": "Edit judul, tombol, dan salin langsung di pratinjau.",
   "PROMO_LEARN_MORE": "Pelajari Lebih Lanjut…",
-  "PROMO_ENDED_MESSAGE": "Berlangganan sekarang untuk melanjutkan penggunaan fitur-fitur canggih ini:",
   "PROMO_GET_APP_UPSELL_BUTTON": "Dapatkan {0}",
-  "PROMO_PRO_ENDED_TITLE": "Upgrade {0} Anda telah berakhir"
+  "CMD_GET_PRO": "Dapatkan Phoenix Pro",
+  "PROMO_PRO_ENDED_TITLE": "Masa Percobaan {0} Anda telah berakhir",
+  "PROMO_PRO_TRIAL_DAYS_LEFT": "Percobaan Phoenix Pro ({0} hari tersisa)",
+  "GET_PHOENIX_PRO": "Dapatkan Phoenix Pro"
 });

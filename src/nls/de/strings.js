@@ -1461,6 +1461,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Dateierweiterung",
   "PROMO_UPGRADE_TITLE": "Sie wurden auf {0} hochgestuft",
   "PROMO_UPGRADE_MESSAGE": "Genießen Sie die nächsten {0} Tage vollen Zugriff auf alle Premium-Funktionen:",
+  "PROMO_ENDED_MESSAGE": "Jetzt abonnieren, um diese erweiterten Funktionen weiterhin zu nutzen:",
   "PROMO_CARD_1": "Elemente per Drag & Drop verschieben",
   "PROMO_CARD_1_MESSAGE": "Ordnen Sie Abschnitte visuell neu an – Phoenix aktualisiert HTML und CSS für Sie.",
   "PROMO_CARD_2": "Bilder ersetzen",
@@ -1470,7 +1471,9 @@ define({
   "PROMO_CARD_4": "Text in der Vorschau bearbeiten",
   "PROMO_CARD_4_MESSAGE": "Bearbeiten Sie Überschriften, Schaltflächen und kopieren Sie direkt in der Vorschau.",
   "PROMO_LEARN_MORE": "Mehr erfahren…",
-  "PROMO_ENDED_MESSAGE": "Jetzt abonnieren, um diese erweiterten Funktionen weiterhin zu nutzen:",
   "PROMO_GET_APP_UPSELL_BUTTON": "{0} herunterladen",
-  "PROMO_PRO_ENDED_TITLE": "Ihr {0}-Upgrade ist abgelaufen"
+  "CMD_GET_PRO": "Phoenix Pro herunterladen",
+  "PROMO_PRO_ENDED_TITLE": "Ihre {0}-Testversion ist abgelaufen",
+  "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro-Testversion ({0} Tage verbleibend)",
+  "GET_PHOENIX_PRO": "Phoenix Pro herunterladen"
 });

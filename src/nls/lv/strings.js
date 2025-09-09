@@ -1461,6 +1461,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Faila paplašinājums",
   "PROMO_UPGRADE_TITLE": "Jūs esat jaunināts uz {0}",
   "PROMO_UPGRADE_MESSAGE": "Izbaudiet pilnu piekļuvi visām Premium funkcijām nākamās {0} dienas:",
+  "PROMO_ENDED_MESSAGE": "Abonējiet tagad, lai turpinātu izmantot šīs papildu funkcijas:",
   "PROMO_CARD_1": "Elementu vilkšana un nomešana",
   "PROMO_CARD_1_MESSAGE": "Pārkārtojiet sadaļas vizuāli — Phoenix atjaunina HTML un CSS jūsu vietā.",
   "PROMO_CARD_2": "Attēlu aizstāšana",
@@ -1470,7 +1471,9 @@ define({
   "PROMO_CARD_4": "Teksta rediģēšana priekšskatījumā",
   "PROMO_CARD_4_MESSAGE": "Rediģējiet virsrakstus, pogas un kopējiet tieši priekšskatījumā.",
   "PROMO_LEARN_MORE": "Uzzināt vairāk…",
-  "PROMO_ENDED_MESSAGE": "Abonējiet tagad, lai turpinātu izmantot šīs papildu funkcijas:",
   "PROMO_GET_APP_UPSELL_BUTTON": "Iegūt {0}",
-  "PROMO_PRO_ENDED_TITLE": "Jūsu {0} jauninājums ir beidzies"
+  "CMD_GET_PRO": "Iegūt Phoenix Pro",
+  "PROMO_PRO_ENDED_TITLE": "Jūsu {0} izmēģinājuma periods ir beidzies",
+  "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro izmēģinājuma versija ({0} dienas atlikušas)",
+  "GET_PHOENIX_PRO": "Iegūt Phoenix Pro"
 });
