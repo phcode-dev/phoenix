@@ -89,6 +89,9 @@ define(function (require, exports, module) {
     // live preview mode pref
     const PREFERENCE_LIVE_PREVIEW_MODE = "livePreviewMode";
 
+    // holds the dropdown instance
+    let $dropdown = null;
+
     /**
      * Get the appropriate default mode based on whether edit features are active
      * @returns {string} "highlight" if edit features inactive, "edit" if active
@@ -309,7 +312,7 @@ define(function (require, exports, module) {
         // this is to take care of invalid values in the pref file
         const currentMode = ["preview", "highlight", "edit"].includes(rawMode) ? rawMode : _getDefaultMode();
 
-        const dropdown = new DropdownButton.DropdownButton("", items, function(item, index) {
+        $dropdown = new DropdownButton.DropdownButton("", items, function(item, index) {
             if (item === Strings.LIVE_PREVIEW_MODE_PREVIEW) {
                 // using empty spaces to keep content aligned
                 return currentMode === "preview" ? `✓ ${item}` : `${'\u00A0'.repeat(4)}${item}`;
@@ -333,10 +336,10 @@ define(function (require, exports, module) {
         });
 
         // Append to document body for absolute positioning
-        $("body").append(dropdown.$button);
+        $("body").append($dropdown.$button);
 
         // Position the dropdown at the mouse coordinates
-        dropdown.$button.css({
+        $dropdown.$button.css({
             position: "absolute",
             left: event.pageX + "px",
             top: event.pageY + "px",
@@ -344,14 +347,14 @@ define(function (require, exports, module) {
         });
 
         // Add a custom class to override the max-height
-        dropdown.dropdownExtraClasses = "mode-context-menu";
+        $dropdown.dropdownExtraClasses = "mode-context-menu";
 
-        dropdown.showDropdown();
+        $dropdown.showDropdown();
 
         $(".mode-context-menu").css("max-height", "300px");
 
         // handle the option selection
-        dropdown.on("select", function (e, item, index) {
+        $dropdown.on("select", function (e, item, index) {
             // here we just set the preference
             // as the preferences listener will automatically handle the required changes
             if (index === 0) {
@@ -384,9 +387,26 @@ define(function (require, exports, module) {
         });
 
         // Remove the button after the dropdown is hidden
-        dropdown.$button.css({
+        $dropdown.$button.css({
             display: "none"
         });
+    }
+
+    /**
+     * to close the overflow button's dropdown
+     */
+    function _closeDropdown() {
+        if ($dropdown) {
+            if ($dropdown.$button) {
+                $dropdown.$button.remove();
+            }
+            $dropdown = null;
+        }
+    }
+
+    function _handleLPModeBtnClick(e) {
+        e.stopPropagation();
+        $dropdown ? _closeDropdown() : _showModeSelectionDropdown(e);
     }
 
     function _getTrustProjectPage() {
@@ -692,7 +712,7 @@ define(function (require, exports, module) {
             _popoutLivePreview("firefox");
         });
 
-        $modeBtn.on("click", _showModeSelectionDropdown);
+        $modeBtn.on("click", _handleLPModeBtnClick);
         $previewBtn.on("click", _handlePreviewBtnClick);
 
         _showOpenBrowserIcons();
@@ -1046,6 +1066,18 @@ define(function (require, exports, module) {
         });
     }
 
+    function _registerHandlers() {
+        // when clicked anywhere on the page we want to close the dropdown
+        $("html").on("click", function (e) {
+            if ($(e.target).closest("#livePreviewModeBtn").length) { return; }
+            _closeDropdown();
+        });
+
+        $(document).on("click", "#livePreviewModeBtn", function (e) {
+            _handleLPModeBtnClick(e);
+        });
+    }
+
     AppInit.appReady(function () {
         if(Phoenix.isSpecRunnerWindow){
             return;
@@ -1088,6 +1120,7 @@ define(function (require, exports, module) {
             Menus.AFTER, Commands.FILE_LIVE_FILE_PREVIEW);
         fileMenu.addMenuDivider(Menus.BEFORE, Commands.FILE_LIVE_FILE_PREVIEW);
 
+        _registerHandlers();
         // init live preview mode from saved preferences
         _initializeMode();
         // listen for pref changes
