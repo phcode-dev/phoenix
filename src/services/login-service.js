@@ -27,6 +27,8 @@ define(function (require, exports, module) {
     require("./setup-login-service"); // this adds loginService to KernalModeTrust
     require("./promotions");
 
+    const MS_IN_DAY = 10 * 24 * 60 * 60 * 1000;
+
     const KernalModeTrust = window.KernalModeTrust;
     if(!KernalModeTrust){
         // integrated extensions will have access to kernal mode, but not external extensions
@@ -123,8 +125,91 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Get effective entitlements including trial enhancement for UI display
-     * Returns enhanced entitlements that treat trial users as pro users
+     * Get effective entitlements for determining feature availability throughout the app.
+     * This is the primary API that should be used across Phoenix to check entitlements and enable/disable features.
+     *
+     * @returns {Promise<Object|null>} Entitlements object or null if not logged in and no trial active
+     *
+     * @description Response shapes vary based on user state:
+     *
+     * **For non-logged-in users:**
+     * - Returns `null` if no trial is active
+     * - Returns synthetic entitlements if trial is active:
+     * ```javascript
+     * {
+     *   plan: {
+     *     paidSubscriber: true,    // Always true for trial users
+     *     name: "Phoenix Pro"
+     *   },
+     *   isInProTrial: true,        // Indicates this is a trial user
+     *   trialDaysRemaining: number, // Days left in trial
+     *   entitlements: {
+     *     liveEdit: {
+     *       activated: true        // Trial users get liveEdit access
+     *     }
+     *   }
+     * }
+     * ```
+     *
+     * **For logged-in trial users:**
+     * - If remote response has `plan.paidSubscriber: false`, injects `paidSubscriber: true`
+     * - Adds `isInProTrial: true` and `trialDaysRemaining`
+     * - Injects `entitlements.liveEdit.activated: true`
+     * - Note: Trial users may not be actual paid subscribers, but `paidSubscriber: true` is set
+     *   so all Phoenix code treats them as paid subscribers
+     *
+     * **For logged-in users (full remote response):**
+     * ```javascript
+     * {
+     *   isSuccess: boolean,
+     *   lang: string,
+     *   plan: {
+     *     name: "Phoenix Pro",
+     *     paidSubscriber: boolean,
+     *     validTill: number        // Timestamp
+     *   },
+     *   profileview: {
+     *     quota: {
+     *       titleText: "Ai Quota Used",
+     *       usageText: "100 / 200 credits",
+     *       usedPercent: number
+     *     },
+     *     htmlMessage: string      // HTML alert message
+     *   },
+     *   entitlements: {
+     *     liveEdit: {
+     *       activated: boolean,
+     *       subscribeURL: string,  // URL to subscribe if not activated
+     *       upgradeToPlan: string, // Plan name that includes this entitlement
+     *       validTill: number      // Timestamp when entitlement expires
+     *     },
+     *     liveEditAI: {
+     *       activated: boolean,
+     *       subscribeURL: string,
+     *       purchaseCreditsURL: string, // URL to purchase AI credits
+     *       upgradeToPlan: string,
+     *       validTill: number
+     *     }
+     *   }
+     * }
+     * ```
+     *
+     * @example
+     * // Listen for entitlements changes
+     * const LoginService = window.KernelModeTrust.loginService;
+     * LoginService.on(LoginService.EVENT_ENTITLEMENTS_CHANGED, (entitlements) => {
+     *   console.log('Entitlements changed:', entitlements);
+     *   // Update UI based on new entitlements
+     * });
+     *
+     * // Get current entitlements
+     * const entitlements = await LoginService.getEffectiveEntitlements();
+     * if (entitlements?.plan?.paidSubscriber) {
+     *   // Enable pro features
+     * }
+     * if (entitlements?.entitlements?.liveEdit?.activated) {
+     *   // Enable live edit feature
+     * }
      */
     async function getEffectiveEntitlements(forceRefresh = false) {
         // Get raw server entitlements
@@ -151,10 +236,19 @@ define(function (require, exports, module) {
                     plan: {
                         ...serverEntitlements.plan,
                         paidSubscriber: true,
-                        name: "Phoenix Pro"
+                        name: brackets.config.main_pro_plan
                     },
                     isInProTrial: true,
-                    trialDaysRemaining: trialDaysRemaining
+                    trialDaysRemaining: trialDaysRemaining,
+                    entitlements: {
+                        ...serverEntitlements.entitlements,
+                        liveEdit: {
+                            activated: true,
+                            subscribeURL: brackets.config.purchase_url,
+                            upgradeToPlan: brackets.config.main_pro_plan,
+                            validTill: Date.now() + trialDaysRemaining * MS_IN_DAY
+                        }
+                    }
                 };
             }
         } else {
@@ -162,10 +256,18 @@ define(function (require, exports, module) {
             return {
                 plan: {
                     paidSubscriber: true,
-                    name: "Phoenix Pro"
+                    name: brackets.config.main_pro_plan
                 },
                 isInProTrial: true,
-                trialDaysRemaining: trialDaysRemaining
+                trialDaysRemaining: trialDaysRemaining,
+                entitlements: {
+                    liveEdit: {
+                        activated: true,
+                        subscribeURL: brackets.config.purchase_url,
+                        upgradeToPlan: brackets.config.main_pro_plan,
+                        validTill: Date.now() + trialDaysRemaining * MS_IN_DAY
+                    }
+                }
             };
         }
     }
