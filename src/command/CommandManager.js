@@ -212,7 +212,7 @@ define(function (require, exports, module) {
         let changed = this._name !== name;
         this._name = name;
 
-        if (htmlName && this._options.htmlName !== htmlName) {
+        if (this._options.htmlName !== htmlName) {
             changed = true;
             this._options.htmlName = htmlName;
         }

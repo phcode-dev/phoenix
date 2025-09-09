@@ -173,5 +173,115 @@ define(function (require, exports, module) {
             CommandManager.execute(commandID);
             expect(receivedEvent).not.toBeDefined();
         });
+
+        it("register command with htmlName option", function () {
+            var htmlName = "Phoenix menu<i class='fa fa-car' style='margin-left: 4px;'></i>";
+            var command = CommandManager.register("test command", "test-htmlname-command", testCommandFn, {
+                htmlName: htmlName
+            });
+            expect(command).toBeTruthy();
+            expect(command.getName()).toBe("test command");
+            expect(command.getOptions().htmlName).toBe(htmlName);
+        });
+
+        it("getOptions should return empty object when no options provided", function () {
+            var command = CommandManager.register("test command", "test-no-options-command", testCommandFn);
+            expect(command).toBeTruthy();
+            expect(command.getOptions()).toEql({});
+        });
+
+        it("getOptions should return options when provided", function () {
+            var options = {
+                eventSource: true,
+                htmlName: "Test <b>HTML</b> Name"
+            };
+            var command = CommandManager.register("test command", "test-with-options-command", testCommandFn, options);
+            expect(command).toBeTruthy();
+            expect(command.getOptions()).toEql(options);
+        });
+
+        it("setName with htmlName parameter and trigger nameChange", function () {
+            var eventTriggered = false;
+            var command = CommandManager.register("test command", "test-setname-html-command", testCommandFn);
+            command.on("nameChange", function () {
+                eventTriggered = true;
+            });
+
+            var newName = "new command name";
+            var htmlName = "New <i class='fa fa-star'></i> Name";
+            command.setName(newName, htmlName);
+
+            expect(eventTriggered).toBeTruthy();
+            expect(command.getName()).toBe(newName);
+            expect(command.getOptions().htmlName).toBe(htmlName);
+        });
+
+        it("setName should trigger nameChange when only htmlName changes", function () {
+            var eventTriggered = false;
+            var command = CommandManager.register("test command", "test-setname-htmlonly-command", testCommandFn, {
+                htmlName: "original html"
+            });
+            command.on("nameChange", function () {
+                eventTriggered = true;
+            });
+
+            var newHtmlName = "Updated <span>HTML</span> Name";
+            command.setName(command.getName(), newHtmlName);
+
+            expect(eventTriggered).toBeTruthy();
+            expect(command.getOptions().htmlName).toBe(newHtmlName);
+        });
+
+        it("setName should not trigger nameChange when name and htmlName are unchanged", function () {
+            var eventTriggered = false;
+            var htmlName = "Same HTML Name";
+            var command = CommandManager.register("test command", "test-setname-same-command", testCommandFn, {
+                htmlName: htmlName
+            });
+            command.on("nameChange", function () {
+                eventTriggered = true;
+            });
+
+            command.setName(command.getName(), htmlName);
+
+            expect(eventTriggered).toBeFalsy();
+        });
+
+        it("should handle edge cases for htmlName", function () {
+            // Test with empty string htmlName
+            var command1 = CommandManager.register("test command", "test-empty-html-command", testCommandFn, {
+                htmlName: ""
+            });
+            expect(command1.getOptions().htmlName).toBe("");
+
+            // Test with null htmlName
+            var command2 = CommandManager.register("test command", "test-null-html-command", testCommandFn, {
+                htmlName: null
+            });
+            expect(command2.getOptions().htmlName).toBe(null);
+
+            // Test with undefined htmlName (should not be set)
+            var command3 = CommandManager.register("test command", "test-undefined-html-command", testCommandFn, {
+                htmlName: undefined
+            });
+            expect(command3.getOptions().htmlName).toBe(undefined);
+        });
+
+        it("setName should handle edge cases for htmlName parameter", function () {
+            var command = CommandManager.register("test command", "test-setname-edge-command", testCommandFn);
+
+            // Test setting htmlName to empty string
+            command.setName("test name", "");
+            expect(command.getOptions().htmlName).toBe("");
+
+            // Test setting htmlName to null (should still trigger change if it was different)
+            var eventTriggered = false;
+            command.on("nameChange", function () {
+                eventTriggered = true;
+            });
+            command.setName("test name", null);
+            expect(command.getOptions().htmlName).toBe(null);
+            expect(eventTriggered).toBeTruthy();
+        });
     });
 });
