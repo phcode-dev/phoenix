@@ -151,7 +151,10 @@ define(function (require, exports, module) {
         closePopup(); // close any existing popup first
 
         // Render template with basic data first for instant response
-        const renderedTemplate = Mustache.render(loginTemplate, {Strings});
+        const renderedTemplate = Mustache.render(loginTemplate, {
+            Strings,
+            getProLink: brackets.config.purchase_url
+        });
         $popup = $(renderedTemplate);
 
         $("body").append($popup);
@@ -352,8 +355,9 @@ define(function (require, exports, module) {
         if (!$popup || !entitlements) {
             return;
         }
-
+        // entitlements will always be present for login popup.
         // Update plan information
+        const $getProLink = $popup.find('.get-phoenix-pro-profile');
         if (entitlements.plan) {
             const $planName = $popup.find('.user-plan-name');
 
@@ -371,6 +375,7 @@ define(function (require, exports, module) {
                         <i class="fa-solid fa-feather" style="margin-left: 3px;"></i>
                     </span>`;
                     $planName.addClass('user-plan-paid').html(proTitle);
+                    $getProLink.removeClass('forced-hidden');
                 } else {
                     // For paid users: regular plan name with icon
                     const proTitle = `<span class="phoenix-pro-title">
@@ -378,11 +383,14 @@ define(function (require, exports, module) {
                         <i class="fa-solid fa-feather" style="margin-left: 3px;"></i>
                     </span>`;
                     $planName.addClass('user-plan-paid').html(proTitle);
+                    $getProLink.addClass('forced-hidden');
                 }
             } else {
                 // Use simple text for free users
                 $planName.addClass('user-plan-free').text(entitlements.plan.name);
             }
+        } else {
+            $getProLink.removeClass('forced-hidden');
         }
 
         // Update quota section if available
@@ -432,7 +440,8 @@ define(function (require, exports, module) {
             titleText: "Ai Quota Used",
             usageText: "100 / 200 credits",
             usedPercent: 0,
-            Strings: Strings
+            Strings: Strings,
+            getProLink: brackets.config.purchase_url
         };
 
         // Note: We don't await here to keep popup display instant
