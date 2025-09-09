@@ -268,6 +268,8 @@ define(function (require, exports, module) {
         menu.addMenuItem(Commands.HELP_DOCS);
         menu.addMenuItem(Commands.HELP_SUPPORT);
         menu.addMenuDivider();
+        menu.addMenuItem(Commands.HELP_GET_PRO);
+        menu.addMenuDivider();
         if (brackets.config.suggest_feature_url) {
             menu.addMenuItem(Commands.HELP_SUGGEST);
         }

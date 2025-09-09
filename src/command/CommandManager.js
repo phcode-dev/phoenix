@@ -149,6 +149,15 @@ define(function (require, exports, module) {
     };
 
     /**
+     * get the command options
+     *
+     * @return {object}
+     */
+    Command.prototype.getOptions = function () {
+        return this._options || {};
+    };
+
+    /**
      * Sets enabled state of Command and dispatches "enabledStateChange"
      * when the enabled state changes.
      *
@@ -196,11 +205,17 @@ define(function (require, exports, module) {
      * use \uXXXX instead of an HTML entity.
      *
      * @param {string} name
+     * @param {string} htmlName If set, this will be displayed in ui menus instead of the name given.
+     *     Eg. "Phoenix menu<i class='fa fa-car' style='margin-left: 4px;'></i>"
      */
-    Command.prototype.setName = function (name) {
-        var changed = this._name !== name;
+    Command.prototype.setName = function (name, htmlName) {
+        let changed = this._name !== name;
         this._name = name;
 
+        if (htmlName && this._options.htmlName !== htmlName) {
+            changed = true;
+            this._options.htmlName = htmlName;
+        }
         if (changed) {
             this.trigger("nameChange");
         }
@@ -233,6 +248,8 @@ define(function (require, exports, module) {
      * @param {boolean} options.eventSource If set to true, the commandFn will be called with the first argument `event`
      * with details about the source(invoker) as event.eventSource(one of the `CommandManager.SOURCE_*`) and
      * event.sourceType(Eg. Ctrl-K) parameter.
+     * @param {string} options.htmlName If set, this will be displayed in ui menus instead of the name given.
+     *     Eg. "Phoenix menu<i class='fa fa-car' style='margin-left: 4px;'></i>"
      * @return {?Command}
      */
     function register(name, id, commandFn, options={}) {
