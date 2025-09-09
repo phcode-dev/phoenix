@@ -1108,6 +1108,11 @@ define(function (require, exports, module) {
                 }
             });
         } else {
+            const htmlName = this._command.getOptions().htmlName;
+            if(htmlName) {
+                $(_getHTMLMenuItem(this.id)).find(".menu-name").html(htmlName);
+                return;
+            }
             $(_getHTMLMenuItem(this.id)).find(".menu-name").text(this._command.getName());
         }
     };
