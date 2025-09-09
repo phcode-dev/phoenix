@@ -229,33 +229,12 @@ define(function (require, exports, module) {
             if (serverEntitlements.plan.paidSubscriber) {
                 // Already a paid subscriber, return as-is
                 return serverEntitlements;
-            } else {
-                // Enhance entitlements for trial user
-                return {
-                    ...serverEntitlements,
-                    plan: {
-                        ...serverEntitlements.plan,
-                        paidSubscriber: true,
-                        name: brackets.config.main_pro_plan,
-                        validTill: Date.now() + trialDaysRemaining * MS_IN_DAY
-                    },
-                    isInProTrial: true,
-                    trialDaysRemaining: trialDaysRemaining,
-                    entitlements: {
-                        ...serverEntitlements.entitlements,
-                        liveEdit: {
-                            activated: true,
-                            subscribeURL: brackets.config.purchase_url,
-                            upgradeToPlan: brackets.config.main_pro_plan,
-                            validTill: Date.now() + trialDaysRemaining * MS_IN_DAY
-                        }
-                    }
-                };
             }
-        } else {
-            // Non-logged-in user with trial - return synthetic entitlements
+            // Enhance entitlements for trial user
             return {
+                ...serverEntitlements,
                 plan: {
+                    ...serverEntitlements.plan,
                     paidSubscriber: true,
                     name: brackets.config.main_pro_plan,
                     validTill: Date.now() + trialDaysRemaining * MS_IN_DAY
@@ -263,6 +242,7 @@ define(function (require, exports, module) {
                 isInProTrial: true,
                 trialDaysRemaining: trialDaysRemaining,
                 entitlements: {
+                    ...serverEntitlements.entitlements,
                     liveEdit: {
                         activated: true,
                         subscribeURL: brackets.config.purchase_url,
@@ -272,6 +252,25 @@ define(function (require, exports, module) {
                 }
             };
         }
+
+        // Non-logged-in user with trial - return synthetic entitlements
+        return {
+            plan: {
+                paidSubscriber: true,
+                name: brackets.config.main_pro_plan,
+                validTill: Date.now() + trialDaysRemaining * MS_IN_DAY
+            },
+            isInProTrial: true,
+            trialDaysRemaining: trialDaysRemaining,
+            entitlements: {
+                liveEdit: {
+                    activated: true,
+                    subscribeURL: brackets.config.purchase_url,
+                    upgradeToPlan: brackets.config.main_pro_plan,
+                    validTill: Date.now() + trialDaysRemaining * MS_IN_DAY
+                }
+            }
+        };
     }
 
     // Add functions to secure exports
