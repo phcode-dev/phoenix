@@ -393,7 +393,6 @@ define(function (require, exports, module) {
 
     // Only set exports for browser apps to avoid conflict with desktop login
     if (!Phoenix.isNativeApp) {
-        init();
         // kernal exports
         // Add to existing KernalModeTrust.loginService from login-service.js
         LoginService.isLoggedIn = isLoggedIn;
@@ -402,6 +401,7 @@ define(function (require, exports, module) {
         LoginService.getProfile = getProfile;
         LoginService.verifyLoginStatus = () => _verifyBrowserLogin(false);
         LoginService.getAccountBaseURL = _getAccountBaseURL;
+        init();
     }
 
     // public exports

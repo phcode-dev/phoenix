@@ -140,7 +140,7 @@ define(function (require, exports, module) {
     /**
      * Shows the sign-in popup when the user is not logged in
      */
-    async function showLoginPopup() {
+    function showLoginPopup() {
         // If popup is already visible, just close it
         if (isPopupVisible) {
             closePopup();
@@ -150,25 +150,33 @@ define(function (require, exports, module) {
         // create the popup element
         closePopup(); // close any existing popup first
 
-        // Check if non-logged-in user has trial entitlements
-        const effectiveEntitlements = await KernalModeTrust.loginService.getEffectiveEntitlements();
-        let templateData = {Strings};
-
-        if (effectiveEntitlements && effectiveEntitlements.isInProTrial) {
-            // Add trial information to template data
-            const planName = StringUtils.format(Strings.PROMO_PRO_TRIAL_DAYS_LEFT,
-                effectiveEntitlements.trialDaysRemaining);
-            templateData.trialInfo = {planName};
-        }
-
-        // Render template with data
-        const renderedTemplate = Mustache.render(loginTemplate, templateData);
+        // Render template with basic data first for instant response
+        const renderedTemplate = Mustache.render(loginTemplate, {Strings});
         $popup = $(renderedTemplate);
 
         $("body").append($popup);
         isPopupVisible = true;
 
         positionPopup();
+
+        // Check for trial info asynchronously and update popup
+        KernalModeTrust.loginService.getEffectiveEntitlements().then(effectiveEntitlements => {
+            if (effectiveEntitlements && effectiveEntitlements.isInProTrial && isPopupVisible && $popup) {
+                // Add trial info to the existing popup
+                const planName = StringUtils.format(Strings.PROMO_PRO_TRIAL_DAYS_LEFT,
+                    effectiveEntitlements.trialDaysRemaining);
+                const trialInfoHtml = `<div class="trial-plan-info">
+                    <span class="phoenix-pro-title-plain">
+                        <span class="pro-plan-name">${planName}</span>
+                        <i class="fa-solid fa-feather" style="margin-left: 3px;"></i>
+                    </span>
+                </div>`;
+                $popup.find('.popup-title').after(trialInfoHtml);
+                positionPopup(); // Reposition after adding content
+            }
+        }).catch(error => {
+            console.error('Failed to check trial info for login popup:', error);
+        });
 
         PopUpManager.addPopUp($popup, function() {
             $popup.remove();
@@ -365,7 +373,7 @@ define(function (require, exports, module) {
                     $planName.addClass('user-plan-paid').html(proTitle);
                 } else {
                     // For paid users: regular plan name with icon
-                    const proTitle = `<span class="phoenix-pro-title-plain">
+                    const proTitle = `<span class="phoenix-pro-title">
                         <span class="pro-plan-name">${entitlements.plan.name}</span>
                         <i class="fa-solid fa-feather" style="margin-left: 3px;"></i>
                     </span>`;
@@ -551,19 +559,32 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Check if user has an active trial (works for both logged-in and non-logged-in users)
+     */
+    async function _hasActiveTrial() {
+        try {
+            const effectiveEntitlements = await KernalModeTrust.loginService.getEffectiveEntitlements();
+            return effectiveEntitlements && effectiveEntitlements.isInProTrial;
+        } catch (error) {
+            console.error('Failed to check trial status:', error);
+            return false;
+        }
+    }
+
+    /**
      * Initialize branding for non-logged-in trial users on startup
      */
     async function _initializeBrandingForTrialUsers() {
-        // Only check if user is not logged in
-        if (!KernalModeTrust.loginService.isLoggedIn()) {
-            try {
-                const effectiveEntitlements = await KernalModeTrust.loginService.getEffectiveEntitlements();
-                if (effectiveEntitlements && effectiveEntitlements.isInProTrial) {
-                    _updateBranding(effectiveEntitlements);
-                }
-            } catch (error) {
-                console.error('Failed to initialize branding for trial users:', error);
+        try {
+            const effectiveEntitlements = await KernalModeTrust.loginService.getEffectiveEntitlements();
+            if (effectiveEntitlements && effectiveEntitlements.isInProTrial) {
+                console.log('Profile Menu: Found active trial, updating branding...');
+                _updateBranding(effectiveEntitlements);
+            } else {
+                console.log('Profile Menu: No active trial found');
             }
+        } catch (error) {
+            console.error('Failed to initialize branding for trial users:', error);
         }
     }
 
@@ -583,6 +604,14 @@ define(function (require, exports, module) {
 
         // Initialize branding for non-logged-in trial users
         _initializeBrandingForTrialUsers();
+
+        // Listen for entitlements changes to update branding for non-logged-in trial users
+        KernalModeTrust.loginService.on(KernalModeTrust.loginService.EVENT_ENTITLEMENTS_CHANGED, () => {
+            // When entitlements change (including trial activation) for non-logged-in users, update branding
+            if (!KernalModeTrust.loginService.isLoggedIn()) {
+                _initializeBrandingForTrialUsers();
+            }
+        });
     }
 
     function setNotLoggedIn() {
@@ -592,11 +621,24 @@ define(function (require, exports, module) {
         }
         _removeProfileIcon();
 
+        // Reset branding, but preserve trial branding if user has active trial
+        _hasActiveTrial().then(hasActiveTrial => {
+            if (!hasActiveTrial) {
+                // Only reset branding if no trial exists
+                console.log('Profile Menu: No trial, resetting branding to free');
+                _updateBranding(null);
+            } else {
+                // User has trial, maintain pro branding
+                console.log('Profile Menu: Trial exists, maintaining pro branding');
+                _initializeBrandingForTrialUsers();
+            }
+        }).catch(error => {
+            console.error('Failed to check trial status during logout:', error);
+            // Fallback to resetting branding
+            _updateBranding(null);
+        });
         // Clear cached entitlements when user logs out
         KernalModeTrust.loginService.clearEntitlements();
-
-        // Reset branding to free mode
-        _updateBranding(null);
     }
 
     function setLoggedIn(initial, color) {

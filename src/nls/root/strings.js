@@ -1678,6 +1678,6 @@ define({
     "PROMO_CARD_4_MESSAGE": "Edit headings, buttons, and copy directly in the preview.",
     "PROMO_LEARN_MORE": "Learn More\u2026",
     "PROMO_GET_APP_UPSELL_BUTTON": "Get {0}",
-    "PROMO_PRO_ENDED_TITLE": "Your {0} upgrade has ended",
+    "PROMO_PRO_ENDED_TITLE": "Your {0} Trial has ended",
     "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro Trial ({0} days left)"
 });
