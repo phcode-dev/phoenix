@@ -407,7 +407,6 @@ define(function (require, exports, module) {
 
     // Only set exports for native apps to avoid conflict with browser login
     if (Phoenix.isNativeApp) {
-        init();
         // kernal exports - add to existing KernalModeTrust.loginService from login-service.js
         LoginService.isLoggedIn = isLoggedIn;
         LoginService.signInToAccount = signInToAccount;
@@ -415,6 +414,7 @@ define(function (require, exports, module) {
         LoginService.getProfile = getProfile;
         LoginService.verifyLoginStatus = () => _verifyLogin(false);
         LoginService.getAccountBaseURL = getAccountBaseURL;
+        init();
     }
 
     // public exports

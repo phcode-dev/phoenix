@@ -289,6 +289,10 @@ define(function (require, exports, module) {
             trialDays: trialDays,
             isFirstInstall: !existingTrialData
         });
+
+        // Also trigger entitlements changed event since effective entitlements have changed
+        // This allows UI components to update based on the new trial status
+        LoginService.trigger(LoginService.EVENT_ENTITLEMENTS_CHANGED, null);
     }
 
     function _isAnyDialogsVisible() {
