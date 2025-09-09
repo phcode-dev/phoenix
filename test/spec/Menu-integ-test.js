@@ -403,6 +403,85 @@ define(function (require, exports, module) {
                 hideCommand.setEnabled(true);
                 expect(element.getElementsByClassName("forced-hidden").length).toBe(0);
             });
+
+            it("should display htmlName in menu item when provided", async function () {
+                const utMenuID = "menuitem-htmlname-test";
+                const testCmd = "Menu-test.htmlname-command";
+                const htmlName = "Phoenix menu<i class='fa fa-car' style='margin-left: 4px;'></i>";
+
+                // Register command with htmlName option
+                CommandManager.register("Plain Text Name", testCmd, function () {}, {
+                    htmlName: htmlName
+                });
+
+                const menu = Menus.addMenu("HTML Name Test Menu", utMenuID);
+                const menuItem = menu.addMenuItem(testCmd);
+                expect(menuItem).toBeTruthy();
+
+                const listSelector = "#menuitem-htmlname-test > ul";
+                const $listItems = testWindow.$(listSelector).children();
+                expect($listItems.length).toBe(1);
+
+                // Check that the menu item contains the HTML content
+                const $menuLink = $($listItems[0]).find("a .menu-name");
+                expect($menuLink.html().includes("Phoenix menu")).toBeTrue();
+                expect($menuLink.html().includes("fa fa-car")).toBeTrue();
+                expect($menuLink.html().includes("margin-left: 4px;")).toBeTrue();
+
+                // Verify the HTML is rendered (not just as text)
+                expect($menuLink.find("i.fa.fa-car").length).toBe(1);
+            });
+
+            it("should fall back to regular name when htmlName is not provided", async function () {
+                const utMenuID = "menuitem-fallback-test";
+                const testCmd = "Menu-test.fallback-command";
+                const plainName = "Plain Menu Name";
+
+                // Register command without htmlName option
+                CommandManager.register(plainName, testCmd, function () {});
+
+                const menu = Menus.addMenu("Fallback Test Menu", utMenuID);
+                const menuItem = menu.addMenuItem(testCmd);
+                expect(menuItem).toBeTruthy();
+
+                const listSelector = "#menuitem-fallback-test > ul";
+                const $listItems = testWindow.$(listSelector).children();
+                expect($listItems.length).toBe(1);
+
+                // Check that the menu item displays the regular name (no HTML)
+                const $menuLink = $($listItems[0]).find("a .menu-name");
+                expect($menuLink.text()).toBe(plainName);
+            });
+
+            it("should update menu display when htmlName is changed via setName", async function () {
+                const utMenuID = "menuitem-setname-test";
+                const testCmd = "Menu-test.setname-command";
+                const originalName = "Original Name";
+                const newName = "Updated Name";
+                const newHtmlName = "Updated <b>Bold</b> Name";
+
+                // Register command without htmlName initially
+                const command = CommandManager.register(originalName, testCmd, function () {});
+
+                const menu = Menus.addMenu("SetName Test Menu", utMenuID);
+                const menuItem = menu.addMenuItem(testCmd);
+                expect(menuItem).toBeTruthy();
+
+                const listSelector = "#menuitem-setname-test > ul";
+                const $listItems = testWindow.$(listSelector).children();
+                const $menuLink = $($listItems[0]).find("a .menu-name");
+
+                // Initially should show regular text name
+                expect($menuLink.text()).toBe(originalName);
+
+                // Update name with htmlName
+                command.setName(newName, newHtmlName);
+
+                // Should now display HTML content
+                expect($menuLink.html()).toBe(newHtmlName);
+                expect($menuLink.find("b").length).toBe(1);
+                expect($menuLink.find("b").text()).toBe("Bold");
+            });
         });
 
 
