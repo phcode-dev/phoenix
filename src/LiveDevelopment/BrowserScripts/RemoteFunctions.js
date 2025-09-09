@@ -3028,6 +3028,9 @@ function RemoteFunctions(config = {}) {
                 // Finish editing on Enter (unless Shift is held)
                 event.preventDefault();
                 finishEditing(element);
+            } else if ((event.key === " " || event.key === "Spacebar") && element.tagName.toLowerCase() === 'button') {
+                event.preventDefault();
+                document.execCommand("insertText", false, " ");
             }
         }
 
