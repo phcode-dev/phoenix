@@ -3006,6 +3006,8 @@ function RemoteFunctions(config = {}) {
         // Make the element editable
         element.setAttribute("contenteditable", "true");
         element.focus();
+        // to compare with the new text content, if same we don't make any changes in the editor area
+        const oldContent = element.textContent;
 
         // Move cursor to end if no existing selection
         const selection = window.getSelection();
@@ -3015,16 +3017,35 @@ function RemoteFunctions(config = {}) {
 
         dismissUIAndCleanupState();
 
+        // flag to check if escape is pressed, if pressed we prevent onBlur from handling it as keydown already handles
+        let isEscapePressed = false;
+
         function onBlur() {
-            finishEditing(element);
+            // Small delay so that keydown can handle things first
+            setTimeout(() => {
+                if (isEscapePressed) {
+                    isEscapePressed = false;
+                    finishEditingCleanup(element);
+                    return;
+                }
+
+                const newContent = element.textContent;
+                if (oldContent !== newContent) {
+                    finishEditing(element);
+                } else { // if same content, we just cleanup things
+                    finishEditingCleanup(element);
+                }
+            }, 10);
         }
 
         function onKeyDown(event) {
             if (event.key === "Escape") {
+                isEscapePressed = true;
                 // Cancel editing
                 event.preventDefault();
                 finishEditing(element, false); // false means that the edit operation was cancelled
             } else if (event.key === "Enter" && !event.shiftKey) {
+                isEscapePressed = false;
                 // Finish editing on Enter (unless Shift is held)
                 event.preventDefault();
                 finishEditing(element);
@@ -3044,9 +3065,7 @@ function RemoteFunctions(config = {}) {
         };
     }
 
-    // Function to finish editing and apply changes
-    // isEditSuccessful: this is a boolean value, defaults to true. false only when the edit operation is cancelled
-    function finishEditing(element, isEditSuccessful = true) {
+    function finishEditingCleanup(element) {
         if (!isElementEditable(element) || !element.hasAttribute("contenteditable")) {
             return;
         }
@@ -3061,6 +3080,12 @@ function RemoteFunctions(config = {}) {
             element.removeEventListener("keydown", element._editListeners.keydown);
             delete element._editListeners;
         }
+    }
+
+    // Function to finish editing and apply changes
+    // isEditSuccessful: this is a boolean value, defaults to true. false only when the edit operation is cancelled
+    function finishEditing(element, isEditSuccessful = true) {
+        finishEditingCleanup(element);
 
         const tagId = element.getAttribute("data-brackets-id");
         window._Brackets_MessageBroker.send({
