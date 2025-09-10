@@ -1147,6 +1147,9 @@ function RemoteFunctions(config = {}) {
 
     NodeMoreOptionsBox.prototype = {
         _registerDragDrop: function() {
+            // disable dragging on all elements and then enable it on the current element
+            const allElements = document.querySelectorAll('[data-brackets-id]');
+            allElements.forEach(el => el.setAttribute("draggable", false));
             this.element.setAttribute("draggable", true);
 
             this.element.addEventListener("dragstart", (event) => {
