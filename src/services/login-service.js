@@ -33,6 +33,9 @@ define(function (require, exports, module) {
     const MS_IN_DAY = 10 * 24 * 60 * 60 * 1000;
     const TEN_MINUTES = 10 * 60 * 1000;
 
+    // save a copy of window.fetch so that extensions wont tamper with it.
+    let fetchFn = window.fetch;
+
     const KernalModeTrust = window.KernalModeTrust;
     if(!KernalModeTrust){
         // integrated extensions will have access to kernal mode, but not external extensions
@@ -107,7 +110,7 @@ define(function (require, exports, module) {
                 fetchOptions.credentials = 'include';
             }
 
-            const response = await fetch(url, fetchOptions);
+            const response = await fetchFn(url, fetchOptions);
 
             if (response.ok) {
                 const result = await response.json();

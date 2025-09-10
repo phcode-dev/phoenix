@@ -25,7 +25,7 @@
  * Provides loginless pro trials
  *
  * - First install: 30-day trial on first usage
- * - Subsequent versions: 3-day trial (or remaining from 30-day if still valid)
+ * - Subsequent versions: 7-day trial (or remaining from 30-day if still valid)
  * - Older versions: No new trial, but existing 30-day trial remains valid
  */
 
@@ -36,6 +36,7 @@ define(function (require, exports, module) {
         semver = require("thirdparty/semver.browser"),
         ProDialogs = require("./pro-dialogs");
 
+    let dateNowFn = Date.now;
     const KernalModeTrust = window.KernalModeTrust;
     if (!KernalModeTrust) {
         throw new Error("Promotions service requires access to KernalModeTrust. Cannot boot without trust ring");
@@ -47,7 +48,7 @@ define(function (require, exports, module) {
     const EVENT_PRO_UPGRADE_ON_INSTALL = "pro_upgrade_on_install";
     const TRIAL_POLL_MS = 10 * 1000; // 10 seconds after start, we assign a free trial if possible
     const FIRST_INSTALL_TRIAL_DAYS = 30;
-    const SUBSEQUENT_TRIAL_DAYS = 3;
+    const SUBSEQUENT_TRIAL_DAYS = 7;
     const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
     /**
@@ -151,7 +152,7 @@ define(function (require, exports, module) {
      * Calculate remaining trial days from end date
      */
     function _calculateRemainingTrialDays(existingTrialData) {
-        const now = Date.now();
+        const now = dateNowFn();
         const trialEndDate = existingTrialData.endDate;
 
         // Calculate days remaining until trial ends
@@ -209,7 +210,7 @@ define(function (require, exports, module) {
 
         let trialDays = FIRST_INSTALL_TRIAL_DAYS;
         let endDate;
-        const now = Date.now();
+        const now = dateNowFn();
         let metricString = `${currentVersion.replaceAll(".", "_")}`; // 3.1.0 -> 3_1_0
 
         if (existingTrialData) {
@@ -250,7 +251,7 @@ define(function (require, exports, module) {
                     endDate = existingTrialData.endDate;
                     metricString = `nD_${metricString}_upgrade`;
                 } else {
-                    // Newer version with shorter existing trial - give 3 days
+                    // Newer version with shorter existing trial - give 7 days
                     console.log(`Newer version - granting ${SUBSEQUENT_TRIAL_DAYS} days trial`);
                     trialDays = SUBSEQUENT_TRIAL_DAYS;
                     endDate = now + (trialDays * MS_PER_DAY);
@@ -327,6 +328,45 @@ define(function (require, exports, module) {
     // Add to secure exports
     LoginService.getProTrialDaysRemaining = getProTrialDaysRemaining;
     LoginService.EVENT_PRO_UPGRADE_ON_INSTALL = EVENT_PRO_UPGRADE_ON_INSTALL;
+
+    // Test-only exports for integration testing
+    if (Phoenix.isTestWindow) {
+        window._test_login_exports = {
+            LoginService: LoginService,
+            ProDialogs: ProDialogs,
+            _getTrialData: _getTrialData,
+            _setTrialData: _setTrialData,
+            _cleanTrialData: async function() {
+                try {
+                    if (Phoenix.isNativeApp) {
+                        await KernalModeTrust.removeCredential(KernalModeTrust.CRED_KEY_ENTITLEMENTS);
+                    } else {
+                        const filePath = Phoenix.app.getApplicationSupportDirectory() + "entitlements_granted.json";
+                        return new Promise((resolve) => {
+                            window.fs.unlink(filePath, () => {
+                                // Always resolve, ignore errors since file might not exist
+                                resolve();
+                            });
+                        });
+                    }
+                } catch (error) {
+                    // Ignore cleanup errors
+                    console.log("Trial data cleanup completed (ignoring errors)");
+                }
+            },
+            activateProTrial: activateProTrial,
+            getProTrialDaysRemaining: getProTrialDaysRemaining,
+            setDateNowFn: function _setDdateNowFn(fn) {
+                dateNowFn = fn;
+            },
+            EVENT_PRO_UPGRADE_ON_INSTALL: EVENT_PRO_UPGRADE_ON_INSTALL,
+            TRIAL_CONSTANTS: {
+                FIRST_INSTALL_TRIAL_DAYS,
+                SUBSEQUENT_TRIAL_DAYS,
+                MS_PER_DAY
+            }
+        };
+    }
 
     // no public exports to prevent extension tampering
 });

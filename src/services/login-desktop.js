@@ -46,6 +46,9 @@ define(function (require, exports, module) {
     let userProfile = null;
     let isLoggedInUser = false;
 
+    // save a copy of window.fetch so that extensions wont tamper with it.
+    let fetchFn = window.fetch;
+
     // just used as trigger to notify different windows about user profile changes
     const PREF_USER_PROFILE_VERSION = "userProfileVersion";
 
@@ -98,7 +101,7 @@ define(function (require, exports, module) {
             return {err: ERR_RETRY_LATER};
         }
         try {
-            const response = await fetch(resolveURL);
+            const response = await fetchFn(resolveURL);
             if (response.status === 400 || response.status === 404) {
                 // 404 api key not found and 400 Bad Request, eg: verification code mismatch
                 return {err: ERR_INVALID};
@@ -192,7 +195,7 @@ define(function (require, exports, module) {
         const resolveURL = `${Phoenix.config.account_url}getAppAuthSession?autoAuthPort=${authPortURL}&appName=${appName}`;
         // {"isSuccess":true,"appSessionID":"a uuid...","validationCode":"SWXP07"}
         try {
-            const response = await fetch(resolveURL);
+            const response = await fetchFn(resolveURL);
             if (response.ok) {
                 const {appSessionID, validationCode} = await response.json();
                 if(!appSessionID || !validationCode) {
@@ -345,7 +348,7 @@ define(function (require, exports, module) {
                 appSessionID: userProfile.apiKey
             };
 
-            const response = await fetch(resolveURL, {
+            const response = await fetchFn(resolveURL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
