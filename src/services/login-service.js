@@ -28,6 +28,7 @@ define(function (require, exports, module) {
     require("./promotions");
 
     const Metrics = require("utils/Metrics");
+    const LoginUtils = require("./login-utils");
 
     const MS_IN_DAY = 10 * 24 * 60 * 60 * 1000;
     const TEN_MINUTES = 10 * 60 * 1000;
@@ -142,102 +143,6 @@ define(function (require, exports, module) {
         }
     }
 
-    /**
-     * Check if any validTill time has expired
-     */
-    function validTillExpired(entitlements, lastRecordedEntitlement) {
-        if (!entitlements) {
-            return null;
-        }
-
-        const now = Date.now();
-
-        function isNewlyExpired(validTill, lastValidTill) {
-            return (
-                validTill &&
-                validTill < now &&                      // expired now
-                (!lastValidTill || lastValidTill >= now) // but wasn't expired before
-            );
-        }
-
-        // Check plan validTill
-        if (entitlements.plan) {
-            const validTill = entitlements.plan.validTill;
-            const lastValidTill = (lastRecordedEntitlement && lastRecordedEntitlement.plan)
-                ? lastRecordedEntitlement.plan.validTill
-                : null;
-
-            if (isNewlyExpired(validTill, lastValidTill)) {
-                return entitlements.plan.name || brackets.config.main_pro_plan;
-            }
-        }
-
-        // Check entitlements validTill
-        if (entitlements.entitlements) {
-            for (const key in entitlements.entitlements) {
-                const entitlement = entitlements.entitlements[key];
-                if (!entitlement) {
-                    continue;
-                }
-
-                const validTill = entitlement.validTill;
-                const lastValidTill = (lastRecordedEntitlement &&
-                    lastRecordedEntitlement.entitlements &&
-                    lastRecordedEntitlement.entitlements[key])
-                    ? lastRecordedEntitlement.entitlements[key].validTill
-                    : null;
-
-                if (isNewlyExpired(validTill, lastValidTill)) {
-                    return key;
-                }
-            }
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Check if entitlements have changed from last recorded state
-     */
-    function haveEntitlementsChanged(current, last) {
-        if (!last && !current) {
-            return false;
-        }
-        if ((!last && current) || (!current && last)) {
-            return true;
-        }
-        if ((!last.entitlements && current.entitlements) || (current.entitlements && !last.entitlements)) {
-            return true;
-        }
-
-        // Check paidSubscriber changes
-        const currentPaidSub = current.plan && current.plan.paidSubscriber;
-        const lastPaidSub = last.plan && last.plan.paidSubscriber;
-        if (currentPaidSub !== lastPaidSub) {
-            return true;
-        }
-
-        // Check plan name changes
-        const currentPlanName = current.plan && current.plan.name;
-        const lastPlanName = last.plan && last.plan.name;
-        if (currentPlanName !== lastPlanName) {
-            return true;
-        }
-
-        // Check entitlement activations
-        if (current.entitlements && last.entitlements) {
-            for (const key of Object.keys(current.entitlements)) {
-                const currentActivated = current.entitlements[key] && current.entitlements[key].activated;
-                const lastActivated = last.entitlements[key] && last.entitlements[key].activated;
-                if (currentActivated !== lastActivated) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
 
     /**
      * Start the 10-minute interval timer for monitoring entitlements
@@ -248,8 +153,8 @@ define(function (require, exports, module) {
                 const current = await getEffectiveEntitlements(false); // Get effective entitlements
 
                 // Check if we need to refresh
-                const expiredPlanName = validTillExpired(current, lastRecordedState);
-                const hasChanged = haveEntitlementsChanged(current, lastRecordedState);
+                const expiredPlanName = LoginUtils.validTillExpired(current, lastRecordedState);
+                const hasChanged = LoginUtils.haveEntitlementsChanged(current, lastRecordedState);
 
                 if (expiredPlanName || hasChanged) {
                     console.log(`Entitlements monitor detected changes, Expired: ${expiredPlanName},` +
