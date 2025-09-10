@@ -3043,7 +3043,12 @@ function RemoteFunctions(config = {}) {
                 isEscapePressed = true;
                 // Cancel editing
                 event.preventDefault();
-                finishEditing(element, false); // false means that the edit operation was cancelled
+                const newContent = element.textContent;
+                if (oldContent !== newContent) {
+                    finishEditing(element, false); // false means that the edit operation was cancelled
+                } else { // no content change we can avoid sending details to the editor
+                    finishEditingCleanup(element);
+                }
             } else if (event.key === "Enter" && !event.shiftKey) {
                 isEscapePressed = false;
                 // Finish editing on Enter (unless Shift is held)
