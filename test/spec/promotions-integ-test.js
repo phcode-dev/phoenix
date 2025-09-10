@@ -115,7 +115,7 @@ define(function (require, exports, module) {
                 expect(dialogText).toContain('30 days');
 
                 // Close the dialog
-                testWindow.$('.modal .btn').first().click();
+                testWindow.__PR.clickDialogButtonID(testWindow.__PR.Dialogs.DIALOG_BTN_OK);
                 await testWindow.__PR.waitForModalDialogClosed(".modal");
             });
 
@@ -155,7 +155,7 @@ define(function (require, exports, module) {
                 expect(dialogText).toContain('7 days');
 
                 // Close the dialog
-                testWindow.$('.modal .btn').first().click();
+                testWindow.__PR.clickDialogButtonID(testWindow.__PR.Dialogs.DIALOG_BTN_OK);
                 await testWindow.__PR.waitForModalDialogClosed(".modal");
             });
 
@@ -180,17 +180,16 @@ define(function (require, exports, module) {
                 expect(updatedTrialData.proVersion).toBe("3.1.0");
                 expect(updatedTrialData.endDate).toBe(futureEndDate);
 
-                // Skip dialog testing
-                try {
-                    await testWindow.__PR.waitForModalDialog(".modal");
-                    const modalContent = testWindow.$('.modal');
-                    if (modalContent.length > 0) {
-                        testWindow.$('.modal .btn').first().click();
-                        await testWindow.__PR.waitForModalDialogClosed(".modal");
-                    }
-                } catch (e) {
-                    console.log('Dialog test skipped:', e.message);
-                }
+                await testWindow.__PR.waitForModalDialog(".modal");
+                // Check dialog content
+                const modalContent = testWindow.$('.modal');
+                const dialogText = modalContent.text();
+                expect(dialogText.toLowerCase()).toContain('you’ve been upgraded to');
+                expect(dialogText).toContain('Phoenix Pro');
+                expect(dialogText).toContain('10 days');
+
+                testWindow.__PR.clickDialogButtonID(testWindow.__PR.Dialogs.DIALOG_BTN_OK);
+                await testWindow.__PR.waitForModalDialogClosed(".modal");
             });
 
             // Note: Cannot easily test pro user scenarios in integration tests
@@ -280,8 +279,20 @@ define(function (require, exports, module) {
                 expect(dialogText).toContain('Phoenix Pro');
                 expect(dialogText).toContain('Trial has ended');
 
-                // Close the dialog
-                testWindow.$('.modal .btn').first().click();
+                // Close the dialog, so here trial expiration has 2 dialogs, either an offline dialog or online depends
+                // on config. we just close em blindly. depending on config of
+                // `${brackets.config.promotions_url}app/config.json`. here we just close both blindly;
+                try{
+                    //
+                    testWindow.__PR.clickDialogButtonID("secondaryButton");
+                } catch (e) {
+                    // ignored
+                }
+                try{
+                    testWindow.__PR.clickDialogButtonID(testWindow.__PR.Dialogs.DIALOG_BTN_CANCEL);
+                } catch (e) {
+                    // ignored
+                }
                 await testWindow.__PR.waitForModalDialogClosed(".modal");
             });
 
@@ -319,7 +330,7 @@ define(function (require, exports, module) {
                 expect(dialogText).toContain('7 days');
 
                 // Close the dialog
-                testWindow.$('.modal .btn').first().click();
+                testWindow.__PR.clickDialogButtonID(testWindow.__PR.Dialogs.DIALOG_BTN_OK);
                 await testWindow.__PR.waitForModalDialogClosed(".modal");
             });
 
