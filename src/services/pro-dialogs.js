@@ -42,6 +42,9 @@ define(function (require, exports, module) {
         proUpgradeHTML = require("text!./html/pro-upgrade.html"),
         proEndedHTML = require("text!./html/promo-ended.html");
 
+    // save a copy of window.fetch so that extensions wont tamper with it.
+    let fetchFn = window.fetch;
+
     function showProUpgradeDialog(trialDays) {
         const title = StringUtils.format(Strings.PROMO_UPGRADE_TITLE, proTitle);
         const message = StringUtils.format(Strings.PROMO_UPGRADE_MESSAGE, trialDays);
@@ -113,7 +116,7 @@ define(function (require, exports, module) {
 
         try {
             const configURL = `${brackets.config.promotions_url}app/config.json`;
-            const response = await fetch(configURL);
+            const response = await fetchFn(configURL);
             if (!response.ok) {
                 _showLocalProEndedDialog();
                 return;
@@ -128,6 +131,14 @@ define(function (require, exports, module) {
         } catch (error) {
             _showLocalProEndedDialog();
         }
+    }
+
+    if (Phoenix.isTestWindow) {
+        window._test_pro_dlg_login_exports = {
+            setFetchFn: function _setDdateNowFn(fn) {
+                fetchFn = fn;
+            }
+        };
     }
 
     exports.showProUpgradeDialog = showProUpgradeDialog;

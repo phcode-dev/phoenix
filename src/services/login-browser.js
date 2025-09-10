@@ -100,6 +100,9 @@ define(function (require, exports, module) {
     const ERR_INVALID = "invalid";
     const ERR_NOT_LOGGED_IN = "not_logged_in";
 
+    // save a copy of window.fetch so that extensions wont tamper with it.
+    let fetchFn = window.fetch;
+
     /**
      * Resolve browser session using cookies
      * @return {Promise<Object>} A promise resolving to user profile or error object
@@ -110,7 +113,7 @@ define(function (require, exports, module) {
             return {err: ERR_RETRY_LATER};
         }
         try {
-            const response = await fetch(resolveURL, {
+            const response = await fetchFn(resolveURL, {
                 method: 'GET',
                 credentials: 'include', // Include cookies
                 headers: {
@@ -316,7 +319,7 @@ define(function (require, exports, module) {
     async function signOutBrowser() {
         const logoutURL = `${_getAccountBaseURL()}/signOut`;
         try {
-            const response = await fetch(logoutURL, {
+            const response = await fetchFn(logoutURL, {
                 method: 'POST',
                 credentials: 'include', // Include cookies
                 headers: {
