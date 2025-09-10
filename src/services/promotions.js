@@ -331,7 +331,7 @@ define(function (require, exports, module) {
 
     // Test-only exports for integration testing
     if (Phoenix.isTestWindow) {
-        window._test_login_exports = {
+        window._test_promo_login_exports = {
             LoginService: LoginService,
             ProDialogs: ProDialogs,
             _getTrialData: _getTrialData,
