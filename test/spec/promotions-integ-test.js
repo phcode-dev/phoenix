@@ -30,14 +30,15 @@ define(function (require, exports, module) {
             LoginService,
             ProDialogs,
             originalAppConfig,
+            originalFetch,
             mockNow = 1000000000000; // Fixed timestamp for consistent testing
 
         beforeAll(async function () {
             testWindow = await SpecRunnerUtils.createTestWindowAndRun();
 
             // Access modules from test window
-            LoginService = testWindow._test_login_exports;
-            ProDialogs = testWindow._test_login_exports.ProDialogs;
+            LoginService = testWindow._test_promo_login_exports;
+            ProDialogs = testWindow._test_promo_login_exports.ProDialogs;
 
             // Debug: Check what's available in the exports
             console.log('Debug: Available exports:', Object.keys(LoginService));
@@ -50,6 +51,12 @@ define(function (require, exports, module) {
                 });
             } else {
                 throw new Error('setDateNowFn not available in test exports');
+            }
+
+            // Set up fetch mocking for pro dialogs
+            if (testWindow._test_pro_dlg_login_exports && testWindow._test_pro_dlg_login_exports.setFetchFn) {
+                // Store reference for later restoration
+                originalFetch = testWindow.fetch;
             }
 
             // Store original config and mock AppConfig for tests
@@ -66,9 +73,15 @@ define(function (require, exports, module) {
                 testWindow.AppConfig = originalAppConfig;
             }
 
+            // Restore original fetch if it was mocked
+            if (originalFetch && testWindow._test_pro_dlg_login_exports && testWindow._test_pro_dlg_login_exports.setFetchFn) {
+                testWindow._test_pro_dlg_login_exports.setFetchFn(originalFetch);
+            }
+
             testWindow = null;
             LoginService = null;
             ProDialogs = null;
+            originalFetch = null;
             await SpecRunnerUtils.closeTestWindow();
         }, 30000);
 
@@ -248,7 +261,7 @@ define(function (require, exports, module) {
 
         describe("Trial Expiration", function () {
 
-            it("should show promo ended dialog when trial expires (not logged in)", async function () {
+            async function setupExpiredTrialAndActivate() {
                 const expiredTrial = {
                     proVersion: "3.1.0", // Same version as current to trigger ended dialog
                     endDate: mockNow - LoginService.TRIAL_CONSTANTS.MS_PER_DAY, // Expired yesterday
@@ -269,30 +282,67 @@ define(function (require, exports, module) {
                 expect(updatedTrialData.proVersion).toBe("3.1.0"); // Should preserve original version
                 expect(updatedTrialData.endDate).toBe(expiredTrial.endDate); // Should preserve end date
 
-                // Wait for modal dialog and verify it's the "ended" dialog
+                return { expiredTrial, updatedTrialData };
+            }
+
+            it("should show local promo ended dialog when trial expires (offline/fetch fails)", async function () {
+                // Mock fetch to fail (network error)
+                if (testWindow._test_pro_dlg_login_exports && testWindow._test_pro_dlg_login_exports.setFetchFn) {
+                    testWindow._test_pro_dlg_login_exports.setFetchFn(() => {
+                        return Promise.reject(new Error('Network error'));
+                    });
+                }
+
+                // Set up expired trial and activate
+                await setupExpiredTrialAndActivate();
+
+                // Wait for modal dialog and verify it's the local "ended" dialog
                 await testWindow.__PR.waitForModalDialog(".modal");
                 const modalContent = testWindow.$('.modal');
                 expect(modalContent.length).toBeGreaterThan(0);
 
-                // Check if it's the "ended" dialog (different text than upgrade)
+                // Verify it's the local dialog (has text content, no iframe)
                 const dialogText = modalContent.text();
                 expect(dialogText).toContain('Phoenix Pro');
                 expect(dialogText).toContain('Trial has ended');
 
-                // Close the dialog, so here trial expiration has 2 dialogs, either an offline dialog or online depends
-                // on config. we just close em blindly. depending on config of
-                // `${brackets.config.promotions_url}app/config.json`. here we just close both blindly;
-                try{
-                    //
-                    testWindow.__PR.clickDialogButtonID("secondaryButton");
-                } catch (e) {
-                    // ignored
+                // Verify NO iframe present (local dialog)
+                const iframes = modalContent.find('iframe');
+                expect(iframes.length).toBe(0);
+
+                // Close local dialog - simpler button structure
+                testWindow.__PR.clickDialogButtonID("secondaryButton");
+                await testWindow.__PR.waitForModalDialogClosed(".modal");
+            });
+
+            it("should show remote promo ended dialog when trial expires (online)", async function () {
+                // Mock fetch to succeed with remote config
+                if (testWindow._test_pro_dlg_login_exports && testWindow._test_pro_dlg_login_exports.setFetchFn) {
+                    testWindow._test_pro_dlg_login_exports.setFetchFn(() => {
+                        return Promise.resolve({
+                            ok: true,
+                            json: () => Promise.resolve({
+                                upsell_after_trial_url: "https://phcode.io",
+                                upsell_purchase_url: "https://phcode.dev/pricing"
+                            })
+                        });
+                    });
                 }
-                try{
-                    testWindow.__PR.clickDialogButtonID(testWindow.__PR.Dialogs.DIALOG_BTN_CANCEL);
-                } catch (e) {
-                    // ignored
-                }
+
+                // Set up expired trial and activate
+                await setupExpiredTrialAndActivate();
+
+                // Wait for modal dialog and verify it's the remote dialog
+                await testWindow.__PR.waitForModalDialog(".modal");
+                const modalContent = testWindow.$('.modal');
+                expect(modalContent.length).toBeGreaterThan(0);
+
+                // Verify it's the remote dialog (contains iframe)
+                const iframes = modalContent.find('iframe');
+                expect(iframes.length).toBeGreaterThan(0);
+
+                // Close remote dialog - may have complex button structure
+                testWindow.__PR.clickDialogButtonID(testWindow.__PR.Dialogs.DIALOG_BTN_CANCEL);
                 await testWindow.__PR.waitForModalDialogClosed(".modal");
             });
 
