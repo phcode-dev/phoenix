@@ -171,10 +171,9 @@
 }
 
 .live-preview-overlay-message {
-    width: 100%;
     color: #fff;
     background-color: #666;
-    padding: 0.2em;
+    padding: 0.25em;
     vertical-align: top;
     text-align: center;
 }
@@ -184,4 +183,6 @@
     top: 4px;
     right: 10px;
     font-size: 12px;
+    cursor: pointer;
+    color: #fff;
 }
