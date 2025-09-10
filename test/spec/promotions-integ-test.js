@@ -251,7 +251,7 @@ define(function (require, exports, module) {
 
             it("should show promo ended dialog when trial expires (not logged in)", async function () {
                 const expiredTrial = {
-                    proVersion: "3.0.0",
+                    proVersion: "3.1.0", // Same version as current to trigger ended dialog
                     endDate: mockNow - LoginService.TRIAL_CONSTANTS.MS_PER_DAY, // Expired yesterday
                     signature: "mock_signature"
                 };
@@ -267,7 +267,7 @@ define(function (require, exports, module) {
                 // Verify upgrade dialog shown flag was set
                 expect(updatedTrialData).not.toBeNull();
                 expect(updatedTrialData.upgradeDialogShownVersion).toBe("3.1.0");
-                expect(updatedTrialData.proVersion).toBe("3.0.0"); // Should preserve original version
+                expect(updatedTrialData.proVersion).toBe("3.1.0"); // Should preserve original version
                 expect(updatedTrialData.endDate).toBe(expiredTrial.endDate); // Should preserve end date
 
                 // Wait for modal dialog and verify it's the "ended" dialog
@@ -278,7 +278,45 @@ define(function (require, exports, module) {
                 // Check if it's the "ended" dialog (different text than upgrade)
                 const dialogText = modalContent.text();
                 expect(dialogText).toContain('Phoenix Pro');
-                // Note: Ended dialog would have different text than upgrade dialog
+                expect(dialogText).toContain('Trial has ended');
+
+                // Close the dialog
+                testWindow.$('.modal .btn').first().click();
+                await testWindow.__PR.waitForModalDialogClosed(".modal");
+            });
+
+            it("should grant new trial when expired trial is from older version (not logged in)", async function () {
+                const expiredTrial = {
+                    proVersion: "3.0.0", // Older version than current 3.1.0
+                    endDate: mockNow - LoginService.TRIAL_CONSTANTS.MS_PER_DAY, // Expired yesterday
+                    signature: "mock_signature"
+                };
+
+                // Set up expired trial data first
+                await LoginService._setTrialData(expiredTrial);
+
+                await LoginService.activateProTrial();
+
+                // Get the updated trial data
+                const updatedTrialData = await LoginService._getTrialData();
+
+                // Verify new trial was granted for version upgrade
+                expect(updatedTrialData).not.toBeNull();
+                expect(updatedTrialData.proVersion).toBe("3.1.0"); // Should update to current version
+
+                // Should grant 7-day trial for version upgrade
+                const expectedEndDate = mockNow + (7 * LoginService.TRIAL_CONSTANTS.MS_PER_DAY);
+                expect(updatedTrialData.endDate).toBe(expectedEndDate);
+
+                // Should show upgrade dialog (not ended dialog)
+                await testWindow.__PR.waitForModalDialog(".modal");
+                const modalContent = testWindow.$('.modal');
+                expect(modalContent.length).toBeGreaterThan(0);
+
+                const dialogText = modalContent.text();
+                expect(dialogText.toLowerCase()).toContain('you’ve been upgraded to');
+                expect(dialogText).toContain('Phoenix Pro');
+                expect(dialogText).toContain('7 days');
 
                 // Close the dialog
                 testWindow.$('.modal .btn').first().click();
