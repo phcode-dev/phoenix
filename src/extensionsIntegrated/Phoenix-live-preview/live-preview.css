@@ -171,18 +171,22 @@
 }
 
 .live-preview-overlay-message {
-    color: #fff;
+    color: #ededed;
     background-color: #666;
-    padding: 0.25em;
+    padding: 0.35em;
     vertical-align: top;
     text-align: center;
 }
 
 .live-preview-overlay-close {
     position: absolute;
-    top: 4px;
-    right: 10px;
+    top: 7px;
+    right: 12px;
     font-size: 12px;
     cursor: pointer;
+    color: #ededed;
+}
+
+.live-preview-overlay-close:hover {
     color: #fff;
 }
