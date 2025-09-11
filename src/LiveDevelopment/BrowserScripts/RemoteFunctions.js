@@ -2039,8 +2039,59 @@ function RemoteFunctions(config = {}) {
                         color: #ff6b6b !important;
                         font-size: 14px !important;
                     }
+
+                    .phoenix-ribbon-header {
+                        position: absolute !important;
+                        top: -20px !important;
+                        left: 0 !important;
+                        right: 0 !important;
+                        display: flex !important;
+                        justify-content: space-between !important;
+                        align-items: center !important;
+                        padding: 0 20px !important;
+                    }
+
+                    .phoenix-ribbon-search {
+                        display: flex !important;
+                        align-items: center !important;
+                        gap: 8px !important;
+                        background: rgba(0,0,0,0.5) !important;
+                        padding: 5px 10px !important;
+                        border-radius: 5px !important;
+                    }
+
+                    .phoenix-ribbon-search input {
+                        background: transparent !important;
+                        border: none !important;
+                        outline: none !important;
+                        color: white !important;
+                        width: 200px !important;
+                    }
+
+                    .phoenix-ribbon-search-btn {
+                        background: none !important;
+                        border: none !important;
+                        color: #6aa9ff !important;
+                        cursor: pointer !important;
+                    }
+
+                    .phoenix-ribbon-close {
+                        background: rgba(0,0,0,0.5) !important;
+                        border: none !important;
+                        color: white !important;
+                        cursor: pointer !important;
+                        padding: 5px 8px !important;
+                        border-radius: 3px !important;
+                    }
                 </style>
                 <div class="phoenix-image-ribbon">
+                    <div class="phoenix-ribbon-header">
+                        <div class="phoenix-ribbon-search">
+                            <input type="text" placeholder="Search images..." />
+                            <button class="phoenix-ribbon-search-btn">Search</button>
+                        </div>
+                        <button class="phoenix-ribbon-close">✕</button>
+                    </div>
                     <div class="phoenix-ribbon-nav left">&#8249;</div>
                     <div class="phoenix-ribbon-container">
                         <div class="phoenix-ribbon-strip">
@@ -2054,8 +2105,9 @@ function RemoteFunctions(config = {}) {
             `;
         },
 
-        _fetchImages: function() {
-            const apiUrl = 'https://images.phcode.dev/api/images/search?q=sunshine&per_page=10';
+        _fetchImages: function(searchQuery = 'sunshine') {
+            const apiUrl = `https://images.phcode.dev/api/images/search?q=${encodeURIComponent(searchQuery)}&per_page=10`;
+            this._showLoading();
 
             fetch(apiUrl)
                 .then(response => {
@@ -2075,6 +2127,56 @@ function RemoteFunctions(config = {}) {
                     console.error('Failed to fetch images:', error);
                     this._showError('Failed to load images');
                 });
+        },
+
+        _showLoading: function() {
+            const rowElement = this._shadow.querySelector('.phoenix-ribbon-row');
+            if (!rowElement) { return; }
+
+            rowElement.innerHTML = 'Loading images...';
+            rowElement.className = 'phoenix-ribbon-row phoenix-ribbon-loading';
+        },
+
+        _attachEventHandlers: function() {
+            const searchInput = this._shadow.querySelector('.phoenix-ribbon-search input');
+            const searchButton = this._shadow.querySelector('.phoenix-ribbon-search-btn');
+            const closeButton = this._shadow.querySelector('.phoenix-ribbon-close');
+
+            if (searchInput && searchButton) {
+                const performSearch = (e) => {
+                    e.stopPropagation();
+                    const query = searchInput.value.trim();
+                    if (query) {
+                        this._fetchImages(query);
+                    }
+                };
+
+                searchButton.addEventListener('click', performSearch);
+                searchInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        performSearch(e);
+                    }
+                });
+
+                searchInput.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                });
+            }
+
+            if (closeButton) {
+                closeButton.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.remove();
+                });
+            }
+
+            // Prevent clicks anywhere inside the ribbon from bubbling up
+            const ribbonContainer = this._shadow.querySelector('.phoenix-image-ribbon');
+            if (ribbonContainer) {
+                ribbonContainer.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                });
+            }
         },
 
         _renderImages: function(images) {
@@ -2113,7 +2215,7 @@ function RemoteFunctions(config = {}) {
 
             this._style();
             window.document.body.appendChild(this.body);
-
+            this._attachEventHandlers();
             this._fetchImages();
         },
 
@@ -2589,9 +2691,12 @@ function RemoteFunctions(config = {}) {
 
         // if the image is an element we show the image ribbon gallery
         if(element && element.tagName.toLowerCase() === 'img') {
+            event.preventDefault();
+            event.stopPropagation();
+            event.stopImmediatePropagation();
+
             _imageRibbonGallery = new ImageRibbonGallery(element);
-        } else { // when any other element is clicked we close the ribbon
-            dismissImageRibbonGallery();
+            return;
         }
     }
 
