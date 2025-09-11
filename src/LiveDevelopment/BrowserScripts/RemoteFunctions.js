@@ -1924,132 +1924,197 @@ function RemoteFunctions(config = {}) {
     ImageRibbonGallery.prototype = {
         _style: function () {
             this.body = window.document.createElement("div");
-            this._shadow = this.body.attachShadow({ mode: "closed" });
+            this._shadow = this.body.attachShadow({mode: 'closed'});
 
             this._shadow.innerHTML = `
-                    <style>
-                        .phoenix-image-ribbon {
-                            position: fixed !important;
-                            bottom: 0 !important;
-                            left: 0 !important;
-                            right: 0 !important;
-                            width: 100vw !important;
-                            height: 150px !important;
-                            background: linear-gradient(180deg, rgba(12,14,20,0.0), rgba(12,14,20,0.7)) !important;
-                            z-index: 999999 !important;
-                            display: flex !important;
-                            align-items: center !important;
-                            justify-content: center !important;
-                            font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial !important;
-                            pointer-events: auto !important;
-                        }
+                <style>
+                    .phoenix-image-ribbon {
+                        position: fixed !important;
+                        bottom: 0 !important;
+                        left: 0 !important;
+                        right: 0 !important;
+                        width: 100vw !important;
+                        height: 150px !important;
+                        background: linear-gradient(180deg, rgba(12,14,20,0.0), rgba(12,14,20,0.7)) !important;
+                        z-index: 999999 !important;
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial !important;
+                        pointer-events: auto !important;
+                    }
 
-                        .phoenix-ribbon-container {
-                            width: min(1200px, 96vw) !important;
-                            height: 132px !important;
-                            border-radius: 16px !important;
-                            background: rgba(21,25,36,0.55) !important;
-                            backdrop-filter: blur(8px) !important;
-                            border: 1px solid rgba(255,255,255,0.08) !important;
-                            overflow: hidden !important;
-                            position: relative !important;
-                        }
+                    .phoenix-ribbon-container {
+                        width: min(1200px, 96vw) !important;
+                        height: 132px !important;
+                        border-radius: 16px !important;
+                        background: rgba(21,25,36,0.55) !important;
+                        backdrop-filter: blur(8px) !important;
+                        border: 1px solid rgba(255,255,255,0.08) !important;
+                        overflow: hidden !important;
+                        position: relative !important;
+                    }
 
-                        .phoenix-ribbon-strip {
-                            position: absolute !important;
-                            inset: 0 !important;
-                            overflow: auto hidden !important;
-                            scroll-behavior: smooth !important;
-                            padding: 8px !important;
-                        }
+                    .phoenix-ribbon-strip {
+                        position: absolute !important;
+                        inset: 0 !important;
+                        overflow: auto hidden !important;
+                        scroll-behavior: smooth !important;
+                        padding: 8px !important;
+                    }
 
-                        .phoenix-ribbon-row {
-                            display: flex !important;
-                            gap: 12px !important;
-                            align-items: center !important;
-                            height: 100% !important;
-                        }
+                    .phoenix-ribbon-row {
+                        display: flex !important;
+                        gap: 12px !important;
+                        align-items: center !important;
+                        height: 100% !important;
+                    }
 
-                        .phoenix-ribbon-thumb {
-                            flex: 0 0 auto !important;
-                            width: 112px !important;
-                            height: 112px !important;
-                            border-radius: 14px !important;
-                            overflow: hidden !important;
-                            position: relative !important;
-                            cursor: pointer !important;
-                            outline: 1px solid rgba(255,255,255,0.08) !important;
-                            transition: transform 0.15s ease, outline-color 0.15s ease, box-shadow 0.15s ease !important;
-                            background: #0b0e14 !important;
-                        }
+                    .phoenix-ribbon-thumb {
+                        flex: 0 0 auto !important;
+                        width: 112px !important;
+                        height: 112px !important;
+                        border-radius: 14px !important;
+                        overflow: hidden !important;
+                        position: relative !important;
+                        cursor: pointer !important;
+                        outline: 1px solid rgba(255,255,255,0.08) !important;
+                        transition: transform 0.15s ease, outline-color 0.15s ease, box-shadow 0.15s ease !important;
+                        background: #0b0e14 !important;
+                    }
 
-                        .phoenix-ribbon-thumb img {
-                            width: 100% !important;
-                            height: 100% !important;
-                            object-fit: cover !important;
-                            display: block !important;
-                        }
+                    .phoenix-ribbon-thumb img {
+                        width: 100% !important;
+                        height: 100% !important;
+                        object-fit: cover !important;
+                        display: block !important;
+                    }
 
-                        .phoenix-ribbon-thumb:hover {
-                            transform: translateY(-2px) scale(1.02) !important;
-                            outline-color: rgba(255,255,255,0.25) !important;
-                            box-shadow: 0 8px 18px rgba(0,0,0,0.36) !important;
-                        }
+                    .phoenix-ribbon-thumb:hover {
+                        transform: translateY(-2px) scale(1.02) !important;
+                        outline-color: rgba(255,255,255,0.25) !important;
+                        box-shadow: 0 8px 18px rgba(0,0,0,0.36) !important;
+                    }
 
-                        .phoenix-ribbon-nav {
-                            position: absolute !important;
-                            top: 50% !important;
-                            transform: translateY(-50%) !important;
-                            width: 40px !important;
-                            height: 40px !important;
-                            border-radius: 12px !important;
-                            border: 1px solid rgba(255,255,255,0.14) !important;
-                            display: flex !important;
-                            align-items: center !important;
-                            justify-content: center !important;
-                            color: #eaeaf0 !important;
-                            background: rgba(21,25,36,0.65) !important;
-                            cursor: pointer !important;
-                            backdrop-filter: blur(8px) !important;
-                            font-size: 14px !important;
-                        }
+                    .phoenix-ribbon-nav {
+                        position: absolute !important;
+                        top: 50% !important;
+                        transform: translateY(-50%) !important;
+                        width: 40px !important;
+                        height: 40px !important;
+                        border-radius: 12px !important;
+                        border: 1px solid rgba(255,255,255,0.14) !important;
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                        color: #eaeaf0 !important;
+                        background: rgba(21,25,36,0.65) !important;
+                        cursor: pointer !important;
+                        backdrop-filter: blur(8px) !important;
+                        font-size: 14px !important;
+                    }
 
-                        .phoenix-ribbon-nav.left {
-                            left: 18px !important;
-                        }
+                    .phoenix-ribbon-nav.left {
+                        left: 18px !important;
+                    }
 
-                        .phoenix-ribbon-nav.right {
-                            right: 18px !important;
-                        }
-                    </style>
-                    <div class="phoenix-image-ribbon">
-                        <div class="phoenix-ribbon-nav left">&#8249;</div>
-                        <div class="phoenix-ribbon-container">
-                            <div class="phoenix-ribbon-strip">
-                                <div class="phoenix-ribbon-row">
-                                    <div class="phoenix-ribbon-thumb"><img src="https://picsum.photos/id/10/400/400" /></div>
-                                    <div class="phoenix-ribbon-thumb"><img src="https://picsum.photos/id/12/400/400" /></div>
-                                    <div class="phoenix-ribbon-thumb"><img src="https://picsum.photos/id/14/400/400" /></div>
-                                    <div class="phoenix-ribbon-thumb"><img src="https://picsum.photos/id/16/400/400" /></div>
-                                    <div class="phoenix-ribbon-thumb"><img src="https://picsum.photos/id/22/400/400" /></div>
-                                    <div class="phoenix-ribbon-thumb"><img src="https://picsum.photos/id/24/400/400" /></div>
-                                    <div class="phoenix-ribbon-thumb"><img src="https://picsum.photos/id/29/400/400" /></div>
-                                    <div class="phoenix-ribbon-thumb"><img src="https://picsum.photos/id/32/400/400" /></div>
-                                    <div class="phoenix-ribbon-thumb"><img src="https://picsum.photos/id/35/400/400" /></div>
-                                    <div class="phoenix-ribbon-thumb"><img src="https://picsum.photos/id/40/400/400" /></div>
-                                </div>
+                    .phoenix-ribbon-nav.right {
+                        right: 18px !important;
+                    }
+
+                    .phoenix-ribbon-loading {
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                        height: 100% !important;
+                        color: #eaeaf0 !important;
+                        font-size: 14px !important;
+                    }
+
+                    .phoenix-ribbon-error {
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                        height: 100% !important;
+                        color: #ff6b6b !important;
+                        font-size: 14px !important;
+                    }
+                </style>
+                <div class="phoenix-image-ribbon">
+                    <div class="phoenix-ribbon-nav left">&#8249;</div>
+                    <div class="phoenix-ribbon-container">
+                        <div class="phoenix-ribbon-strip">
+                            <div class="phoenix-ribbon-row phoenix-ribbon-loading">
+                                Loading images...
                             </div>
                         </div>
-                        <div class="phoenix-ribbon-nav right">&#8250;</div>
                     </div>
-                `;
+                    <div class="phoenix-ribbon-nav right">&#8250;</div>
+                </div>
+            `;
         },
 
-        create: function () {
+        _fetchImages: function() {
+            const apiUrl = 'https://images.phcode.dev/api/images/search?q=sunshine&per_page=10';
+
+            fetch(apiUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`API request failed: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.results && data.results.length > 0) {
+                        this._renderImages(data.results);
+                    } else {
+                        this._showError('No images found');
+                    }
+                })
+                .catch(error => {
+                    console.error('Failed to fetch images:', error);
+                    this._showError('Failed to load images');
+                });
+        },
+
+        _renderImages: function(images) {
+            const rowElement = this._shadow.querySelector('.phoenix-ribbon-row');
+            if (!rowElement) { return; }
+
+            // remove the loading state
+            rowElement.innerHTML = '';
+            rowElement.className = 'phoenix-ribbon-row';
+
+            // Create thumbnails from API data
+            images.forEach(image => {
+                const thumbDiv = window.document.createElement('div');
+                thumbDiv.className = 'phoenix-ribbon-thumb';
+
+                const img = window.document.createElement('img');
+                img.src = image.thumb_url || image.url;
+                img.alt = image.alt_text || 'Unsplash image';
+                img.loading = 'lazy';
+
+                thumbDiv.appendChild(img);
+                rowElement.appendChild(thumbDiv);
+            });
+        },
+
+        _showError: function(message) {
+            const rowElement = this._shadow.querySelector('.phoenix-ribbon-row');
+            if (!rowElement) { return; }
+
+            rowElement.innerHTML = message;
+            rowElement.className = 'phoenix-ribbon-row phoenix-ribbon-error';
+        },
+
+        create: function() {
             this.remove(); // remove existing ribbon if already present
 
-            this._style(); // style the ribbon
+            this._style();
             window.document.body.appendChild(this.body);
+
+            this._fetchImages();
         },
 
         remove: function () {
