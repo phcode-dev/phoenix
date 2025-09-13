@@ -1965,7 +1965,7 @@ function RemoteFunctions(config = {}) {
 
                     .phoenix-ribbon-row {
                         display: flex !important;
-                        gap: 12px !important;
+                        gap: 2px !important;
                         align-items: center !important;
                         height: 100% !important;
                     }
@@ -2196,6 +2196,27 @@ function RemoteFunctions(config = {}) {
                 img.src = image.thumb_url || image.url;
                 img.alt = image.alt_text || 'Unsplash image';
                 img.loading = 'lazy';
+
+                // this is the original image, we store it so that we can show new images on hover
+                const originalImageSrc = this.element.src;
+                // we also store its dimensions to show the new image with the same dimension
+                const computedStyle = window.getComputedStyle(this.element);
+                const originalWidth = computedStyle.width;
+                const originalHeight = computedStyle.height;
+                const originalObjectFit = computedStyle.objectFit;
+
+                // show hovered image along with dimensions
+                thumbDiv.addEventListener('mouseenter', () => {
+                    this.element.style.width = originalWidth;
+                    this.element.style.height = originalHeight;
+                    this.element.style.objectFit = originalObjectFit || 'cover';
+                    this.element.src = image.url || image.thumb_url;
+                });
+
+                // show original image when hover ends
+                thumbDiv.addEventListener('mouseleave', () => {
+                    this.element.src = originalImageSrc;
+                });
 
                 thumbDiv.appendChild(img);
                 rowElement.appendChild(thumbDiv);
