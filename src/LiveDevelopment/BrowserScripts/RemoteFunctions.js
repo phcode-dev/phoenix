@@ -2083,6 +2083,36 @@ function RemoteFunctions(config = {}) {
                         padding: 5px 8px !important;
                         border-radius: 3px !important;
                     }
+
+                    .phoenix-ribbon-attribution {
+                        position: absolute !important;
+                        bottom: 6px !important;
+                        left: 6px !important;
+                        background: rgba(0,0,0,0.8) !important;
+                        color: white !important;
+                        padding: 4px 6px !important;
+                        border-radius: 5px !important;
+                        font-size: 10px !important;
+                        line-height: 1.2 !important;
+                        max-width: calc(100% - 12px) !important;
+                        text-shadow: 0 1px 2px rgba(0,0,0,0.9) !important;
+                        pointer-events: none !important;
+                        opacity: 0.95 !important;
+                    }
+
+                    .phoenix-ribbon-attribution .photographer {
+                        display: block !important;
+                        font-weight: 500 !important;
+                        white-space: nowrap !important;
+                        overflow: hidden !important;
+                        text-overflow: ellipsis !important;
+                    }
+
+                    .phoenix-ribbon-attribution .source {
+                        display: block !important;
+                        font-size: 9px !important;
+                        opacity: 0.85 !important;
+                    }
                 </style>
                 <div class="phoenix-image-ribbon">
                     <div class="phoenix-ribbon-header">
@@ -2218,7 +2248,31 @@ function RemoteFunctions(config = {}) {
                     this.element.src = originalImageSrc;
                 });
 
+                // attribution overlay, we show this only in the image ribbon gallery
+                const attribution = window.document.createElement('div');
+                attribution.className = 'phoenix-ribbon-attribution';
+
+                const photographer = window.document.createElement('span');
+                photographer.className = 'photographer';
+
+                // unsplash attribution is in the format 'Photo by <name> on Unsplash'
+                // we extract the name from there
+                let photographerName = 'Anonymous'; // if not present, show anonymous
+                if (image.attribution) {
+                    const match = image.attribution.match(/Photo by (.+) on Unsplash/);
+                    if (match) { photographerName = match[1]; }
+                }
+                photographer.textContent = photographerName;
+
+                const source = window.document.createElement('span');
+                source.className = 'source';
+                source.textContent = 'on Unsplash';
+
+                attribution.appendChild(photographer);
+                attribution.appendChild(source);
+
                 thumbDiv.appendChild(img);
+                thumbDiv.appendChild(attribution);
                 rowElement.appendChild(thumbDiv);
             });
         },
