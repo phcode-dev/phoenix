@@ -415,7 +415,7 @@ define(function (require, exports, module) {
         LoginService.signInToAccount = signInToAccount;
         LoginService.signOutAccount = signOutAccount;
         LoginService.getProfile = getProfile;
-        LoginService.verifyLoginStatus = () => _verifyLogin(false);
+        LoginService._verifyLoginStatus = () => _verifyLogin(false);
         LoginService.getAccountBaseURL = getAccountBaseURL;
         init();
     }

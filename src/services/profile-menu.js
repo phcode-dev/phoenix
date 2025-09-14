@@ -541,7 +541,7 @@ define(function (require, exports, module) {
         // Set flag to indicate this is a background refresh
         isBackgroundRefresh = true;
 
-        KernalModeTrust.loginService.verifyLoginStatus().then(() => {
+        KernalModeTrust.loginService._verifyLoginStatus().then(() => {
             // Clear the background refresh flag
             isBackgroundRefresh = false;
 

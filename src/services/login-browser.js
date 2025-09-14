@@ -151,6 +151,12 @@ define(function (require, exports, module) {
         PreferencesManager.stateManager.set(PREF_USER_PROFILE_VERSION, crypto.randomUUID());
     }
 
+    /**
+     * Calls remote resolveBrowserSession endpoint to verify login status. should not be used frequently.
+     * @param silentCheck
+     * @returns {Promise<void>}
+     * @private
+     */
     async function _verifyBrowserLogin(silentCheck = false) {
         console.log("Verifying browser login status...");
 
@@ -161,28 +167,36 @@ define(function (require, exports, module) {
             isLoggedInUser = true;
             ProfileMenu.setLoggedIn(userProfile.profileIcon.initials, userProfile.profileIcon.color);
             console.log("Browser login verified for:", userProfile.email);
+            Metrics.countEvent(Metrics.EVENT_TYPE.AUTH, "browser", "OKLogin");
             return;
         }
 
-        // User is not logged in or error occurred
+        // User is not logged in or error occurred if here
         if(resolveResponse.err === ERR_NOT_LOGGED_IN) {
             console.log("No browser session found. Not logged in");
-            // Only reset UI state if this is not a silent background check
-            if (!silentCheck) {
-                _resetBrowserLogin();
-            } else {
-                // For silent checks, just update the internal state
-                isLoggedInUser = false;
-                userProfile = null;
-            }
+            Metrics.countEvent(Metrics.EVENT_TYPE.AUTH, "browser", "NotLoggedIn");
+            _handleLoginError(silentCheck);
+            return;
+        }
+
+        if (resolveResponse.err === ERR_INVALID) {
+            console.log("Invalid auth token, resetting login state");
+            Metrics.countEvent(Metrics.EVENT_TYPE.AUTH, "browser", "invalidLogin");
+            _handleLoginError(silentCheck);
             return;
         }
 
         // Other errors (network, retry later, etc.)
-        console.log("Browser login verification failed:", resolveResponse.err);
+        console.log("Browser login verification failed (temporary):", resolveResponse.err);
+        Metrics.countEvent(Metrics.EVENT_TYPE.AUTH, "browser", "RetryLogin");
+        // Don't reset login state for temporary errors, regardless of silent check
+    }
+
+    function _handleLoginError(silentCheck) {
         if (!silentCheck) {
             _resetBrowserLogin();
         } else {
+            // For silent checks, just update the internal state
             isLoggedInUser = false;
             userProfile = null;
         }
@@ -379,13 +393,15 @@ define(function (require, exports, module) {
             return;
         }
 
-        // Always verify login on browser app start (silent check to avoid closing popups)
-        _verifyBrowserLogin(true).catch(console.error);
+        // Always verify login on browser app start
+        _verifyBrowserLogin().catch(console.error);
 
         // Watch for profile changes from other windows/tabs
         const pref = PreferencesManager.stateManager.definePreference(PREF_USER_PROFILE_VERSION, 'string', '0');
         pref.watchExternalChanges();
-        pref.on('change', _verifyBrowserLogin);
+        pref.on('change', ()=>{
+            _verifyBrowserLogin(true).catch(console.error);
+        });
 
         // Note: We don't do automatic verification on page focus to avoid server overload.
         // Automatic checks are only done during the login waiting dialog period.
@@ -402,7 +418,9 @@ define(function (require, exports, module) {
         LoginService.signInToAccount = signInToBrowser;
         LoginService.signOutAccount = signOutBrowser;
         LoginService.getProfile = getProfile;
-        LoginService.verifyLoginStatus = () => _verifyBrowserLogin(false);
+        // verifyLoginStatus Calls remote resolveBrowserSession endpoint to verify. should not be used frequently.
+        // All users are required to use isLoggedIn API instead.
+        LoginService._verifyLoginStatus = () => _verifyBrowserLogin(false);
         LoginService.getAccountBaseURL = _getAccountBaseURL;
         init();
     }
