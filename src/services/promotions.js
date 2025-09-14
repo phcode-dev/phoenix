@@ -174,13 +174,13 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Check if user has active pro subscription
+     * Check if user has active pro subscription. this calls actual login endpoint and is not to be used frequently!.
      * Returns true if user is logged in and has a paid subscription
      */
     async function _hasProSubscription() {
         try {
             // First verify login status to ensure login state is properly resolved
-            await LoginService.verifyLoginStatus();
+            await LoginService._verifyLoginStatus();
 
             // getEntitlements() returns null if not logged in
             const entitlements = await LoginService.getEntitlements();

@@ -337,6 +337,16 @@ define(function (require, exports, module) {
     LoginService.clearEntitlements = clearEntitlements;
     LoginService.EVENT_ENTITLEMENTS_CHANGED = EVENT_ENTITLEMENTS_CHANGED;
 
+    // Test-only exports for integration testing
+    if (Phoenix.isTestWindow) {
+        window._test_login_service_exports = {
+            LoginService,
+            setFetchFn: function _setFetchFn(fn) {
+                fetchFn = fn;
+            }
+        };
+    }
+
     // Start the entitlements monitor timer
     startEntitlementsMonitor();
 });
