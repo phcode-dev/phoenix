@@ -119,6 +119,7 @@ define(function (require, exports, module) {
     require("spec/Generic-integ-test");
     require("spec/spacing-auto-detect-integ-test");
     require("spec/promotions-integ-test");
+    require("spec/login-browser-integ-test");
     require("spec/LocalizationUtils-test");
     require("spec/ScrollTrackHandler-integ-test");
     require("spec/login-utils-test");
