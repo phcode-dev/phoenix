@@ -474,7 +474,7 @@ define(function (require, exports, module) {
                 }
             },
             // Test-only functions for manipulating credentials directly (bypassing validation)
-            _testSetRawCredential: async function(data) {
+            _testSetPromoJSON: async function(data) {
                 if (Phoenix.isNativeApp) {
                     await KernalModeTrust.setCredential(KernalModeTrust.CRED_KEY_PROMO, JSON.stringify(data));
                 } else {
