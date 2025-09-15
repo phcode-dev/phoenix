@@ -24,7 +24,7 @@ define(function (require, exports, module) {
 
     const SpecRunnerUtils = require("spec/SpecRunnerUtils");
 
-    describe("integration:LoginBrowser", function () {
+    describe("integration: login/logout browser app tests", function () {
 
         if (Phoenix.isNativeApp) {
             // Browser login tests are not applicable for native apps
@@ -148,27 +148,68 @@ define(function (require, exports, module) {
                 console.log("llgT: LoginBrowserExports.setFetchFn available?", !!LoginBrowserExports.setFetchFn);
 
                 if (LoginBrowserExports.setFetchFn) {
+                    // Track sign out state for proper mock responses
+                    let userSignedOut = false;
+
                     LoginBrowserExports.setFetchFn((url, options) => {
                         console.log("llgT: login-browser fetchFn called with URL:", url);
                         console.log("llgT: login-browser fetchFn called with options:", options);
-                        return Promise.resolve({
-                            ok: true,
-                            status: 200,
-                            json: () => Promise.resolve({
-                                isSuccess: true,
-                                email: "test@example.com",
-                                firstName: "Test",
-                                lastName: "User",
-                                customerID: "test-customer-id",
-                                loginTime: Date.now(),
-                                profileIcon: {
-                                    initials: "TU",
-                                    color: "#14b8a6"
-                                }
-                            })
-                        });
+
+                        // Handle different endpoints
+                        if (url.includes('/resolveBrowserSession')) {
+                            // Login verification endpoint
+                            if (userSignedOut) {
+                                console.log("llgT: User is signed out, returning 401 for resolveBrowserSession");
+                                return Promise.resolve({
+                                    ok: false,
+                                    status: 401, // Unauthorized - user is logged out
+                                    json: () => Promise.resolve({
+                                        isSuccess: false
+                                    })
+                                });
+                            } else {
+                                console.log("llgT: User is signed in, returning success for resolveBrowserSession");
+                                return Promise.resolve({
+                                    ok: true,
+                                    status: 200,
+                                    json: () => Promise.resolve({
+                                        isSuccess: true,
+                                        email: "test@example.com",
+                                        firstName: "Test",
+                                        lastName: "User",
+                                        customerID: "test-customer-id",
+                                        loginTime: Date.now(),
+                                        profileIcon: {
+                                            initials: "TU",
+                                            color: "#14b8a6"
+                                        }
+                                    })
+                                });
+                            }
+                        } else if (url.includes('/signOut')) {
+                            // Logout endpoint - set signed out state
+                            console.log("llgT: Handling signOut endpoint call, marking user as signed out");
+                            userSignedOut = true;
+                            return Promise.resolve({
+                                ok: true,
+                                status: 200,
+                                json: () => Promise.resolve({
+                                    isSuccess: true
+                                })
+                            });
+                        } else {
+                            // Default response for any other endpoints
+                            console.log("llgT: Unknown endpoint, returning default response");
+                            return Promise.resolve({
+                                ok: true,
+                                status: 200,
+                                json: () => Promise.resolve({
+                                    isSuccess: true
+                                })
+                            });
+                        }
                     });
-                    console.log("llgT: login-browser fetch mock set up successfully");
+                    console.log("llgT: login-browser fetch mock set up successfully for all endpoints");
                 } else {
                     console.log("llgT: LoginBrowserExports.setFetchFn not available!");
                 }
@@ -277,13 +318,72 @@ define(function (require, exports, module) {
                 expect(signOutButton.length).toBe(1); // Should have sign out button
                 expect(newSignInButton.length).toBe(0); // Should NOT have sign in button
 
-                // Close the profile popup (try different methods)
+                // Step 10: Test sign out functionality
+                console.log("llgT: About to click sign out button");
+                console.log("llgT: Login state before sign out:", LoginServiceExports.LoginService.isLoggedIn());
+
+                signOutButton.trigger('click');
+
+                // Wait for sign out dialog to appear and dismiss it
+                console.log("llgT: Waiting for sign out confirmation dialog");
+                await testWindow.__PR.waitForModalDialog(".modal");
+
+                // Dismiss the "you have been signed out" dialog with OK button
+                console.log("llgT: Dismissing sign out confirmation dialog");
+                testWindow.__PR.clickDialogButtonID(testWindow.__PR.Dialogs.DIALOG_BTN_OK);
+                await testWindow.__PR.waitForModalDialogClosed(".modal");
+
+                // Wait for sign out to complete
+                console.log("llgT: Waiting for user to be signed out...");
+                await awaitsFor(
+                    function () {
+                        return !LoginServiceExports.LoginService.isLoggedIn();
+                    },
+                    "User to be signed out",
+                    10000 // Increase timeout to see if it's just taking longer
+                );
+
+                // Verify user is now signed out
+                expect(LoginServiceExports.LoginService.isLoggedIn()).toBe(false);
+
+                // Verify profile icon has been updated (should be empty again)
+                const $profileIconAfterSignout = testWindow.$("#user-profile-button");
+                const profileIconContentAfterSignout = $profileIconAfterSignout.html();
+                console.log("llgT: Profile icon after signout:", profileIconContentAfterSignout);
+
+                // Step 11: Verify clicking profile icon again shows login popup (not profile popup)
+                console.log("llgT: Clicking profile icon after sign out to verify login popup appears");
+                $profileIconAfterSignout.trigger('click');
+
+                // Wait for login popup to appear again
+                await awaitsFor(
+                    function () {
+                        return testWindow.$('.modal').length > 0 || testWindow.$('.profile-popup').length > 0;
+                    },
+                    "Login popup to appear after signout",
+                    3000
+                );
+
+                // Get the popup content after signout
+                let finalPopupContent = testWindow.$('.modal');
+                if (finalPopupContent.length === 0) {
+                    finalPopupContent = testWindow.$('.profile-popup');
+                }
+
+                // Verify it's back to login popup (has sign in button, no sign out button)
+                const finalSignInButton = finalPopupContent.find('#phoenix-signin-btn');
+                const finalSignOutButton = finalPopupContent.find('#phoenix-signout-btn');
+
+                expect(finalSignInButton.length).toBe(1); // Should have sign in button again
+                expect(finalSignOutButton.length).toBe(0); // Should NOT have sign out button
+
+                // Close the final popup
                 if (testWindow.$('.modal').length > 0) {
                     testWindow.__PR.clickDialogButtonID(testWindow.__PR.Dialogs.DIALOG_BTN_CANCEL);
                     await testWindow.__PR.waitForModalDialogClosed(".modal");
                 } else {
                     // If it's not a modal, just click outside or use popup close method
-                    $profileButton.trigger('click'); // Toggle to close
+                    $profileIconAfterSignout.trigger('click'); // Toggle to close
                 }
             });
         });
