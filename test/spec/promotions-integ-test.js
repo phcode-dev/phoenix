@@ -26,7 +26,7 @@ define(function (require, exports, module) {
 
     describe("integration:Promotions", function () {
 
-        if (Phoenix.isTestWindowGitHubActions && Phoenix.platform === "linux") {
+        if (Phoenix.isNativeApp && Phoenix.isTestWindowGitHubActions && Phoenix.platform === "linux") {
             // Credentials test doesn't work in GitHub actions in linux desktop as the runner cant reach key ring.
             it("Should not run in github actions in linux desktop", async function () {
                 expect(1).toEqual(1);
