@@ -99,7 +99,10 @@ define(function (require, exports, module) {
                 // Basic test to verify our exports work
                 expect(LoginService._getTrialData).toBeDefined();
                 expect(LoginService._setTrialData).toBeDefined();
+                expect(LoginService._getSalt).toBeDefined();
+                expect(LoginService._isTrialClosedForCurrentVersion).toBeDefined();
                 expect(LoginService._cleanTrialData).toBeDefined();
+                expect(LoginService._cleanSaltData).toBeDefined();
                 expect(LoginService.activateProTrial).toBeDefined();
                 expect(LoginService.getProTrialDaysRemaining).toBeDefined();
                 expect(LoginService.setDateNowFn).toBeDefined();
@@ -114,15 +117,16 @@ define(function (require, exports, module) {
                 await LoginService.activateProTrial();
 
                 // Get the trial data that was actually stored
-                const storedTrialData = await LoginService._getTrialData();
+                const storedResult = await LoginService._getTrialData();
 
                 // Verify trial data was set correctly
-                expect(storedTrialData).not.toBeNull();
-                expect(storedTrialData.proVersion).toBe("3.1.0");
+                expect(storedResult).not.toBeNull();
+                expect(storedResult.data).toBeDefined();
+                expect(storedResult.data.proVersion).toBe("3.1.0");
 
                 // Check that a 30-day trial was activated with mocked time
                 const expectedEndDate = mockNow + (30 * LoginService.TRIAL_CONSTANTS.MS_PER_DAY);
-                expect(storedTrialData.endDate).toBe(expectedEndDate);
+                expect(storedResult.data.endDate).toBe(expectedEndDate);
 
                 // Verify upgrade dialog appears with correct content
                 await testWindow.__PR.waitForModalDialog(".modal");
@@ -153,16 +157,17 @@ define(function (require, exports, module) {
                 await LoginService.activateProTrial();
 
                 // Get the updated trial data
-                const updatedTrialData = await LoginService._getTrialData();
+                const updatedResult = await LoginService._getTrialData();
 
                 // Verify new trial data was set for newer version
-                expect(updatedTrialData).not.toBeNull();
-                expect(updatedTrialData.proVersion).toBe("3.1.0");
+                expect(updatedResult).not.toBeNull();
+                expect(updatedResult.data).toBeDefined();
+                expect(updatedResult.data.proVersion).toBe("3.1.0");
 
                 // Check that 3-day trial was granted with mocked time
                 const expectedEndDate = mockNow + (LoginService.TRIAL_CONSTANTS.SUBSEQUENT_TRIAL_DAYS
                     * LoginService.TRIAL_CONSTANTS.MS_PER_DAY);
-                expect(updatedTrialData.endDate).toBe(expectedEndDate);
+                expect(updatedResult.data.endDate).toBe(expectedEndDate);
 
                 // Verify upgrade dialog appears with correct content
                 await testWindow.__PR.waitForModalDialog(".modal");
@@ -194,12 +199,13 @@ define(function (require, exports, module) {
                 await LoginService.activateProTrial();
 
                 // Get the updated trial data
-                const updatedTrialData = await LoginService._getTrialData();
+                const updatedResult = await LoginService._getTrialData();
 
                 // Verify existing trial was preserved but version updated
-                expect(updatedTrialData).not.toBeNull();
-                expect(updatedTrialData.proVersion).toBe("3.1.0");
-                expect(updatedTrialData.endDate).toBe(futureEndDate);
+                expect(updatedResult).not.toBeNull();
+                expect(updatedResult.data).toBeDefined();
+                expect(updatedResult.data.proVersion).toBe("3.1.0");
+                expect(updatedResult.data.endDate).toBe(futureEndDate);
 
                 await testWindow.__PR.waitForModalDialog(".modal");
                 // Check dialog content
@@ -229,11 +235,12 @@ define(function (require, exports, module) {
                 await LoginService.activateProTrial();
 
                 // Get the trial data after activation
-                const currentTrialData = await LoginService._getTrialData();
+                const currentResult = await LoginService._getTrialData();
 
                 // Verify trial data remains unchanged (same version, same end date)
-                expect(currentTrialData.proVersion).toBe("3.1.0");
-                expect(currentTrialData.endDate).toBe(existingTrial.endDate);
+                expect(currentResult.data).toBeDefined();
+                expect(currentResult.data.proVersion).toBe("3.1.0");
+                expect(currentResult.data.endDate).toBe(existingTrial.endDate);
 
                 // For same version, no dialog should appear
                 await awaits(500);
@@ -254,11 +261,12 @@ define(function (require, exports, module) {
                 await LoginService.activateProTrial();
 
                 // Get the trial data after activation
-                const currentTrialData = await LoginService._getTrialData();
+                const currentResult = await LoginService._getTrialData();
 
                 // Verify trial data remains unchanged (older current version scenario)
-                expect(currentTrialData.proVersion).toBe("3.2.0"); // Should preserve original version
-                expect(currentTrialData.endDate).toBe(existingTrial.endDate); // Should preserve end date
+                expect(currentResult.data).toBeDefined();
+                expect(currentResult.data.proVersion).toBe("3.2.0"); // Should preserve original version
+                expect(currentResult.data.endDate).toBe(existingTrial.endDate); // Should preserve end date
 
                 // For older current version, no dialog should appear
                 await awaits(500);
@@ -282,15 +290,16 @@ define(function (require, exports, module) {
                 await LoginService.activateProTrial();
 
                 // Get the updated trial data
-                const updatedTrialData = await LoginService._getTrialData();
+                const updatedResult = await LoginService._getTrialData();
 
                 // Verify upgrade dialog shown flag was set
-                expect(updatedTrialData).not.toBeNull();
-                expect(updatedTrialData.upgradeDialogShownVersion).toBe("3.1.0");
-                expect(updatedTrialData.proVersion).toBe("3.1.0"); // Should preserve original version
-                expect(updatedTrialData.endDate).toBe(expiredTrial.endDate); // Should preserve end date
+                expect(updatedResult).not.toBeNull();
+                expect(updatedResult.data).toBeDefined();
+                expect(updatedResult.data.upgradeDialogShownVersion).toBe("3.1.0");
+                expect(updatedResult.data.proVersion).toBe("3.1.0"); // Should preserve original version
+                expect(updatedResult.data.endDate).toBe(expiredTrial.endDate); // Should preserve end date
 
-                return { expiredTrial, updatedTrialData };
+                return { expiredTrial, updatedTrialData: updatedResult.data };
             }
 
             it("should show local promo ended dialog when trial expires (offline/fetch fails)", async function () {
@@ -371,11 +380,12 @@ define(function (require, exports, module) {
 
                 // Verify new trial was granted for version upgrade
                 expect(updatedTrialData).not.toBeNull();
-                expect(updatedTrialData.proVersion).toBe("3.1.0"); // Should update to current version
+                expect(updatedTrialData.data).toBeDefined();
+                expect(updatedTrialData.data.proVersion).toBe("3.1.0"); // Should update to current version
 
                 // Should grant 7-day trial for version upgrade
                 const expectedEndDate = mockNow + (7 * LoginService.TRIAL_CONSTANTS.MS_PER_DAY);
-                expect(updatedTrialData.endDate).toBe(expectedEndDate);
+                expect(updatedTrialData.data.endDate).toBe(expectedEndDate);
 
                 // Should show upgrade dialog (not ended dialog)
                 await testWindow.__PR.waitForModalDialog(".modal");
@@ -433,5 +443,360 @@ define(function (require, exports, module) {
         // Note: Version comparison, pro subscription checks, and event triggering
         // are internal implementation details that are difficult to test reliably
         // in integration tests without extensive mocking of private functions
+
+        describe("Security Tests", function () {
+
+            it("should detect and prevent signature tampering attacks", async function () {
+                // Setup: Create a valid trial first
+                const validTrial = {
+                    proVersion: "3.1.0",
+                    endDate: mockNow + (5 * LoginService.TRIAL_CONSTANTS.MS_PER_DAY)
+                };
+                await LoginService._setTrialData(validTrial);
+
+                // Get the valid trial data (should include signature)
+                let storedResult = await LoginService._getTrialData();
+                expect(storedResult).not.toBeNull();
+                expect(storedResult.data).toBeDefined(); // Should have valid data
+                expect(storedResult.error).toBeUndefined(); // Should not have error
+
+                // Attack: Tamper with the signature
+                const tamperedTrial = { ...storedResult.data, signature: "fake_signature" };
+
+                // Manually store the tampered data (bypassing _setTrialData validation)
+                if (testWindow.Phoenix.isNativeApp) {
+                    await testWindow.KernalModeTrust.setCredential(testWindow.KernalModeTrust.CRED_KEY_PROMO, JSON.stringify(tamperedTrial));
+                } else {
+                    await new Promise((resolve, reject) => {
+                        const filePath = testWindow.Phoenix.app.getApplicationSupportDirectory() + "entitlements_promo.json";
+                        testWindow.fs.writeFile(filePath, JSON.stringify(tamperedTrial), 'utf8', (err) => {
+                            if (err) {
+                                reject(err);
+                            } else {
+                                resolve();
+                            }
+                        });
+                    });
+                }
+
+                // Verify: _getTrialData should detect corruption
+                const corruptedResult = await LoginService._getTrialData();
+                expect(corruptedResult).not.toBeNull();
+                expect(corruptedResult.error).toBe(LoginService.ERROR_CONSTANTS.ERR_CORRUPTED);
+
+                // Verify: activateProTrial should create expired trial marker and deny trial
+                await LoginService.activateProTrial();
+
+                // Should create expired trial marker instead of clearing
+                const resultAfterSecurity = await LoginService._getTrialData();
+                expect(resultAfterSecurity).not.toBeNull(); // Should have expired trial data
+                expect(resultAfterSecurity.data).toBeDefined();
+                expect(resultAfterSecurity.data.proVersion).toBe("3.1.0");
+                expect(resultAfterSecurity.data.endDate).toBe(mockNow); // Should be expired immediately (endDate: now)
+
+                // Should return 0 remaining days (expired trial)
+                const remainingDays = await LoginService.getProTrialDaysRemaining();
+                expect(remainingDays).toBe(0);
+
+                // Should show trial ended dialog (security notice)
+                await testWindow.__PR.waitForModalDialog(".modal");
+                const modalContent = testWindow.$('.modal');
+                expect(modalContent.length).toBeGreaterThan(0);
+                const dialogText = modalContent.text();
+                expect(dialogText).toContain('Trial has ended');
+
+                // Close dialog
+                testWindow.__PR.clickDialogButtonID("secondaryButton");
+                await testWindow.__PR.waitForModalDialogClosed(".modal");
+            });
+
+            it("should handle version downgrade without losing valid trials", async function () {
+                // Setup: Create trial with newer app version salt
+                testWindow.AppConfig.version = "3.2.0";
+                testWindow.AppConfig.apiVersion = "3.2.0";
+
+                // Clean any existing salt to simulate fresh install
+                await LoginService._cleanSaltData();
+
+                const futureTrial = {
+                    proVersion: "3.2.0",
+                    endDate: mockNow + (10 * LoginService.TRIAL_CONSTANTS.MS_PER_DAY)
+                };
+                await LoginService._setTrialData(futureTrial);
+
+                // Verify trial is valid with 3.2.0
+                let trialResult = await LoginService._getTrialData();
+                expect(trialResult).not.toBeNull();
+                expect(trialResult.data).toBeDefined();
+                expect(trialResult.error).toBeUndefined();
+                expect(trialResult.data.proVersion).toBe("3.2.0");
+
+                // Simulate version downgrade - change app version
+                testWindow.AppConfig.version = "3.1.0";
+                testWindow.AppConfig.apiVersion = "3.1.0";
+
+                // The per-user salt should remain the same, so signature should still be valid
+                const downgradeResult = await LoginService._getTrialData();
+                expect(downgradeResult).not.toBeNull();
+                expect(downgradeResult.data).toBeDefined(); // Should have valid data
+                expect(downgradeResult.error).toBeUndefined(); // Should NOT have error
+                expect(downgradeResult.data.proVersion).toBe("3.2.0"); // Should preserve original version
+
+                // Should still have valid remaining days
+                const remainingDays = await LoginService.getProTrialDaysRemaining();
+                expect(remainingDays).toBe(10);
+
+                // activateProTrial should preserve the existing valid trial
+                await LoginService.activateProTrial();
+                const finalTrial = await LoginService._getTrialData();
+                expect(finalTrial.data).toBeDefined();
+                expect(finalTrial.data.proVersion).toBe("3.2.0"); // Should preserve newer version
+                expect(finalTrial.data.endDate).toBe(futureTrial.endDate); // Should preserve end date
+            });
+
+            it("should handle missing signature fields gracefully", async function () {
+                // Setup: Create trial data with missing signature field
+                const trialWithoutSignature = {
+                    proVersion: "3.1.0",
+                    endDate: mockNow + (5 * LoginService.TRIAL_CONSTANTS.MS_PER_DAY)
+                    // No signature field
+                };
+
+                // Manually store data without signature (bypassing _setTrialData)
+                if (testWindow.Phoenix.isNativeApp) {
+                    await testWindow.KernalModeTrust.setCredential(testWindow.KernalModeTrust.CRED_KEY_PROMO, JSON.stringify(trialWithoutSignature));
+                } else {
+                    await new Promise((resolve, reject) => {
+                        const filePath = testWindow.Phoenix.app.getApplicationSupportDirectory() + "entitlements_promo.json";
+                        testWindow.fs.writeFile(filePath, JSON.stringify(trialWithoutSignature), 'utf8', (err) => {
+                            if (err) {
+                                reject(err);
+                            } else {
+                                resolve();
+                            }
+                        });
+                    });
+                }
+
+                // Should detect corruption due to missing signature
+                const result = await LoginService._getTrialData();
+                expect(result.error).toBe(LoginService.ERROR_CONSTANTS.ERR_CORRUPTED);
+
+                // Should create expired trial marker for security
+                await LoginService.activateProTrial();
+                const afterActivation = await LoginService._getTrialData();
+                expect(afterActivation).not.toBeNull(); // Should have expired trial data
+                expect(afterActivation.data).toBeDefined();
+                expect(afterActivation.data.proVersion).toBe("3.1.0");
+                expect(afterActivation.data.endDate).toBe(mockNow); // Should be expired immediately (endDate: now)
+
+                // Should return 0 remaining days (expired trial)
+                const remainingDays = await LoginService.getProTrialDaysRemaining();
+                expect(remainingDays).toBe(0);
+
+                // Should show security dialog
+                await testWindow.__PR.waitForModalDialog(".modal");
+                const modalContent = testWindow.$('.modal');
+                expect(modalContent.length).toBeGreaterThan(0);
+
+                // Close dialog
+                testWindow.__PR.clickDialogButtonID("secondaryButton");
+                await testWindow.__PR.waitForModalDialogClosed(".modal");
+            });
+
+            it("should persist salt across app restarts", async function () {
+                // Clean existing salt
+                await LoginService._cleanSaltData();
+
+                // Get salt (should generate new one)
+                const salt1 = await LoginService._getSalt();
+                expect(salt1).toBeDefined();
+                expect(typeof salt1).toBe('string');
+                expect(salt1.length).toBeGreaterThan(10); // Should be substantial UUID
+
+                // Get salt again (should return same one)
+                const salt2 = await LoginService._getSalt();
+                expect(salt2).toBe(salt1);
+
+                // Create and store trial with this salt
+                const trial = {
+                    proVersion: "3.1.0",
+                    endDate: mockNow + (5 * LoginService.TRIAL_CONSTANTS.MS_PER_DAY)
+                };
+                await LoginService._setTrialData(trial);
+
+                // Verify trial is valid
+                const storedResult = await LoginService._getTrialData();
+                expect(storedResult.data).toBeDefined();
+                expect(storedResult.error).toBeUndefined();
+
+                // Simulate "app restart" - get salt again
+                const salt3 = await LoginService._getSalt();
+                expect(salt3).toBe(salt1); // Should be persistent
+
+                // Trial should still be valid after "restart"
+                const restartResult = await LoginService._getTrialData();
+                expect(restartResult.data).toBeDefined();
+                expect(restartResult.error).toBeUndefined();
+                expect(restartResult.data.proVersion).toBe("3.1.0");
+            });
+
+            it("should prevent future trial grants after corruption creates expired marker", async function () {
+                // Setup: Create a valid trial first
+                const validTrial = {
+                    proVersion: "3.1.0",
+                    endDate: mockNow + (5 * LoginService.TRIAL_CONSTANTS.MS_PER_DAY)
+                };
+                await LoginService._setTrialData(validTrial);
+
+                // Attack: Corrupt the trial data
+                const storedResult = await LoginService._getTrialData();
+                const tamperedTrial = { ...storedResult.data, signature: "fake_signature" };
+
+                if (testWindow.Phoenix.isNativeApp) {
+                    await testWindow.KernalModeTrust.setCredential(testWindow.KernalModeTrust.CRED_KEY_PROMO, JSON.stringify(tamperedTrial));
+                } else {
+                    await new Promise((resolve, reject) => {
+                        const filePath = testWindow.Phoenix.app.getApplicationSupportDirectory() + "entitlements_promo.json";
+                        testWindow.fs.writeFile(filePath, JSON.stringify(tamperedTrial), 'utf8', (err) => {
+                            if (err) {
+                                reject(err);
+                            } else {
+                                resolve();
+                            }
+                        });
+                    });
+                }
+
+                // First activation should create expired marker
+                await LoginService.activateProTrial();
+
+                // Dismiss the security dialog
+                await testWindow.__PR.waitForModalDialog(".modal");
+                testWindow.__PR.clickDialogButtonID("secondaryButton");
+                await testWindow.__PR.waitForModalDialogClosed(".modal");
+
+                // Verify expired marker exists
+                const expiredResult = await LoginService._getTrialData();
+                expect(expiredResult.data).toBeDefined();
+                expect(expiredResult.data.endDate).toBe(mockNow); // Should be expired immediately
+
+                // Simulate app restart by calling activateProTrial again
+                // This should NOT grant a new 30-day trial
+                await LoginService.activateProTrial();
+
+                // Should still have the expired marker, not a new 30-day trial
+                const afterRestartResult = await LoginService._getTrialData();
+                expect(afterRestartResult.data).toBeDefined();
+                expect(afterRestartResult.data.endDate).toBe(mockNow); // Still expired immediately
+                expect(afterRestartResult.data.endDate).toBe(expiredResult.data.endDate); // Same end date
+
+                // Should still return 0 days
+                const remainingDays = await LoginService.getProTrialDaysRemaining();
+                expect(remainingDays).toBe(0);
+            });
+
+            it("should detect time manipulation attacks (system clock rollback)", async function () {
+                // Setup: Create an expired trial with dialog shown flag
+                const expiredTrial = {
+                    proVersion: "3.1.0",
+                    endDate: mockNow - (5 * LoginService.TRIAL_CONSTANTS.MS_PER_DAY), // Expired 5 days ago
+                    upgradeDialogShownVersion: "3.1.0" // Dialog already shown for current version
+                };
+                await LoginService._setTrialData(expiredTrial);
+
+                // Verify trial is properly expired
+                const expiredResult = await LoginService._getTrialData();
+                expect(expiredResult.data).toBeDefined();
+                expect(expiredResult.error).toBeUndefined();
+
+                // Verify _isTrialClosedForCurrentVersion detects closed trial
+                const isClosedBefore = await LoginService._isTrialClosedForCurrentVersion(expiredResult.data);
+                expect(isClosedBefore).toBe(true);
+
+                // Attack: User rolls back system time to make trial appear valid
+                const rolledBackTime = mockNow - (10 * LoginService.TRIAL_CONSTANTS.MS_PER_DAY); // 10 days ago
+                LoginService.setDateNowFn(() => rolledBackTime);
+
+                // Despite rollback, _calculateRemainingTrialDays would show positive days
+                const remainingDaysAfterRollback = await LoginService.getProTrialDaysRemaining();
+                // But getProTrialDaysRemaining should still return 0 due to closure detection
+                expect(remainingDaysAfterRollback).toBe(0);
+
+                // Verify _isTrialClosedForCurrentVersion still detects closed trial despite time manipulation
+                const isClosedAfterRollback = await LoginService._isTrialClosedForCurrentVersion(expiredResult.data);
+                expect(isClosedAfterRollback).toBe(true); // Should still be closed
+
+                // Reset time
+                LoginService.setDateNowFn(() => mockNow);
+
+                // activateProTrial should not grant new trial even after time manipulation
+                await LoginService.activateProTrial();
+
+                // Should still have the same expired trial, not a new one
+                const finalResult = await LoginService._getTrialData();
+                expect(finalResult.data).toBeDefined();
+                expect(finalResult.data.endDate).toBe(expiredTrial.endDate); // Same end date
+                expect(finalResult.data.upgradeDialogShownVersion).toBe("3.1.0"); // Flag preserved
+            });
+
+            it("should respect trial closure flags across version changes", async function () {
+                // Setup: Create a trial that's expired for current version but not time-expired
+                const validTrial = {
+                    proVersion: "3.0.0", // Older version
+                    endDate: mockNow + (5 * LoginService.TRIAL_CONSTANTS.MS_PER_DAY), // Still has time remaining
+                    upgradeDialogShownVersion: "3.1.0" // Dialog was already shown for current version
+                };
+                await LoginService._setTrialData(validTrial);
+
+                // Current version is 3.1.0, which is newer than trial version 3.0.0
+                // Trial has remaining time but dialog was shown for current version
+                const trialResult = await LoginService._getTrialData();
+                expect(trialResult.data).toBeDefined();
+
+                // _isTrialClosedForCurrentVersion should return true because dialog was shown for current version
+                const isClosed = await LoginService._isTrialClosedForCurrentVersion(trialResult.data);
+                expect(isClosed).toBe(true);
+
+                // getProTrialDaysRemaining should return 0 due to closure flag
+                const remainingDays = await LoginService.getProTrialDaysRemaining();
+                expect(remainingDays).toBe(0);
+
+                // activateProTrial should not grant new trial due to closure flag
+                await LoginService.activateProTrial();
+
+                // Should preserve the existing trial with dialog shown flag
+                const finalResult = await LoginService._getTrialData();
+                expect(finalResult.data).toBeDefined();
+                expect(finalResult.data.endDate).toBe(validTrial.endDate); // Same end date
+                expect(finalResult.data.upgradeDialogShownVersion).toBe("3.1.0"); // Flag preserved
+
+                // Test version upgrade scenario - newer version should work
+                testWindow.AppConfig.apiVersion = "3.2.0"; // Upgrade to newer version
+
+                // Now _isTrialClosedForCurrentVersion should return false for the newer version
+                const isClosedAfterUpgrade = await LoginService._isTrialClosedForCurrentVersion(finalResult.data);
+                expect(isClosedAfterUpgrade).toBe(false); // Should not be closed for newer version
+
+                // Should now have remaining days since it's a newer version
+                const remainingAfterUpgrade = await LoginService.getProTrialDaysRemaining();
+                expect(remainingAfterUpgrade).toBeGreaterThan(0);
+
+                // Reset version for cleanup
+                testWindow.AppConfig.apiVersion = "3.1.0";
+            });
+
+            afterEach(async function() {
+                // Clean up after each security test
+                await LoginService._cleanTrialData();
+                await LoginService._cleanSaltData();
+
+                // Reset app config to default
+                testWindow.AppConfig = {
+                    version: "3.1.0",
+                    apiVersion: "3.1.0"
+                };
+            });
+        });
     });
 });
