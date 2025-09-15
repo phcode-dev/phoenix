@@ -536,6 +536,7 @@ define({
   "CMD_AUTO_UPDATE": "자동 업데이트",
   "CMD_HOW_TO_USE_BRACKETS": "{APP_NAME} 사용법",
   "CMD_SUPPORT": "{APP_NAME} 지원",
+  "CMD_GET_PRO": "Phoenix Pro 받기",
   "CMD_USER_PROFILE": "{APP_NAME} 계정",
   "CMD_DOCS": "도움말, 시작하기",
   "CMD_SUGGEST": "기능 제안",
@@ -1404,8 +1405,6 @@ define({
   "OPEN_SIGN_IN_URL": "로그인 페이지 열기",
   "PROFILE_POP_TITLE": "{APP_NAME} 계정",
   "PROFILE_SIGN_IN": "계정에 로그인",
-  "CONTACT_SUPPORT": "지원팀에 문의",
-  "SIGN_OUT": "로그아웃",
   "ACCOUNT_DETAILS": "계정 세부정보",
   "LOGIN_REFRESH": "로그인 상태 확인",
   "SIGN_IN_WAITING_TITLE": "로그인 대기 중",
@@ -1472,8 +1471,9 @@ define({
   "PROMO_CARD_4_MESSAGE": "미리보기에서 바로 제목, 버튼 및 복사를 편집할 수 있습니다.",
   "PROMO_LEARN_MORE": "자세히 알아보기…",
   "PROMO_GET_APP_UPSELL_BUTTON": "{0} 받기",
-  "CMD_GET_PRO": "Phoenix Pro 받기",
   "PROMO_PRO_ENDED_TITLE": "{0} 평가판 사용 기간이 만료되었습니다",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro 평가판({0}일 남음)",
-  "GET_PHOENIX_PRO": "Phoenix Pro 받기"
+  "GET_PHOENIX_PRO": "Phoenix Pro 받기",
+  "CONTACT_SUPPORT": "고객 지원 문의",
+  "SIGN_OUT": "로그아웃"
 });

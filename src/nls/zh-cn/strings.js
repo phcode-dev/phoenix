@@ -536,6 +536,7 @@ define({
   "CMD_AUTO_UPDATE": "自动更新",
   "CMD_HOW_TO_USE_BRACKETS": "如何使用 {APP_NAME}",
   "CMD_SUPPORT": "{APP_NAME} 支持",
+  "CMD_GET_PRO": "获取 Phoenix Pro",
   "CMD_USER_PROFILE": "{APP_NAME} 帐户",
   "CMD_DOCS": "帮助，入门指南",
   "CMD_SUGGEST": "推荐功能",
@@ -1404,8 +1405,6 @@ define({
   "OPEN_SIGN_IN_URL": "打开登录页面",
   "PROFILE_POP_TITLE": "{APP_NAME} 帐户",
   "PROFILE_SIGN_IN": "登录您的帐户",
-  "CONTACT_SUPPORT": "联系客服",
-  "SIGN_OUT": "退出登录",
   "ACCOUNT_DETAILS": "帐户详情",
   "LOGIN_REFRESH": "检查登录状态",
   "SIGN_IN_WAITING_TITLE": "等待登录",
@@ -1472,8 +1471,9 @@ define({
   "PROMO_CARD_4_MESSAGE": "直接在预览中编辑标题、按钮和复制内容。",
   "PROMO_LEARN_MORE": "了解更多…",
   "PROMO_GET_APP_UPSELL_BUTTON": "获取 {0}",
-  "CMD_GET_PRO": "获取 Phoenix Pro",
   "PROMO_PRO_ENDED_TITLE": "您的 {0} 试用已结束",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro 试用版（剩余 {0} 天）",
-  "GET_PHOENIX_PRO": "获取 Phoenix Pro"
+  "GET_PHOENIX_PRO": "获取 Phoenix Pro",
+  "CONTACT_SUPPORT": "联系支持",
+  "SIGN_OUT": "退出登录"
 });
