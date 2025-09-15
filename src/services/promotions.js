@@ -461,6 +461,7 @@ define(function (require, exports, module) {
             _getTrialData: _getTrialData,
             _setTrialData: _setTrialData,
             _getSalt: _getSalt,
+            _isTrialClosedForCurrentVersion: _isTrialClosedForCurrentVersion,
             _cleanTrialData: _clearTrialData,
             _cleanSaltData: async function() {
                 try {
