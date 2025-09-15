@@ -472,20 +472,7 @@ define(function (require, exports, module) {
                 const tamperedTrial = { ...storedResult.data, signature: "fake_signature" };
 
                 // Manually store the tampered data (bypassing _setTrialData validation)
-                if (testWindow.Phoenix.isNativeApp) {
-                    await testWindow.KernalModeTrust.setCredential(testWindow.KernalModeTrust.CRED_KEY_PROMO, JSON.stringify(tamperedTrial));
-                } else {
-                    await new Promise((resolve, reject) => {
-                        const filePath = testWindow.Phoenix.app.getApplicationSupportDirectory() + "entitlements_promo.json";
-                        testWindow.fs.writeFile(filePath, JSON.stringify(tamperedTrial), 'utf8', (err) => {
-                            if (err) {
-                                reject(err);
-                            } else {
-                                resolve();
-                            }
-                        });
-                    });
-                }
+                await LoginService._testSetRawCredential(tamperedTrial);
 
                 // Verify: _getTrialData should detect corruption
                 const corruptedResult = await LoginService._getTrialData();
@@ -571,20 +558,7 @@ define(function (require, exports, module) {
                 };
 
                 // Manually store data without signature (bypassing _setTrialData)
-                if (testWindow.Phoenix.isNativeApp) {
-                    await testWindow.KernalModeTrust.setCredential(testWindow.KernalModeTrust.CRED_KEY_PROMO, JSON.stringify(trialWithoutSignature));
-                } else {
-                    await new Promise((resolve, reject) => {
-                        const filePath = testWindow.Phoenix.app.getApplicationSupportDirectory() + "entitlements_promo.json";
-                        testWindow.fs.writeFile(filePath, JSON.stringify(trialWithoutSignature), 'utf8', (err) => {
-                            if (err) {
-                                reject(err);
-                            } else {
-                                resolve();
-                            }
-                        });
-                    });
-                }
+                await LoginService._testSetRawCredential(trialWithoutSignature);
 
                 // Should detect corruption due to missing signature
                 const result = await LoginService._getTrialData();
@@ -661,20 +635,8 @@ define(function (require, exports, module) {
                 const storedResult = await LoginService._getTrialData();
                 const tamperedTrial = { ...storedResult.data, signature: "fake_signature" };
 
-                if (testWindow.Phoenix.isNativeApp) {
-                    await testWindow.KernalModeTrust.setCredential(testWindow.KernalModeTrust.CRED_KEY_PROMO, JSON.stringify(tamperedTrial));
-                } else {
-                    await new Promise((resolve, reject) => {
-                        const filePath = testWindow.Phoenix.app.getApplicationSupportDirectory() + "entitlements_promo.json";
-                        testWindow.fs.writeFile(filePath, JSON.stringify(tamperedTrial), 'utf8', (err) => {
-                            if (err) {
-                                reject(err);
-                            } else {
-                                resolve();
-                            }
-                        });
-                    });
-                }
+                // Manually store the tampered data (bypassing validation)
+                await LoginService._testSetRawCredential(tamperedTrial);
 
                 // First activation should create expired marker
                 await LoginService.activateProTrial();

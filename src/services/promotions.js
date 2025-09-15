@@ -16,7 +16,7 @@
  *
  */
 
-/*global logger*/
+/*global logger, path*/
 
 /**
  * Promotions Service
@@ -46,7 +46,7 @@ define(function (require, exports, module) {
 
     // Constants
     const EVENT_PRO_UPGRADE_ON_INSTALL = "pro_upgrade_on_install";
-    const PROMO_LOCAL_FILE = "entitlements_promo.json";
+    const PROMO_LOCAL_FILE = path.join(Phoenix.app.getApplicationSupportDirectory(), "entitlements_promo.json");
     const TRIAL_POLL_MS = 10 * 1000; // 10 seconds after start, we assign a free trial if possible
     const FIRST_INSTALL_TRIAL_DAYS = 30;
     const SUBSEQUENT_TRIAL_DAYS = 7;
@@ -94,9 +94,8 @@ define(function (require, exports, module) {
             if (Phoenix.isNativeApp) {
                 await KernalModeTrust.removeCredential(KernalModeTrust.CRED_KEY_PROMO);
             } else {
-                const filePath = Phoenix.app.getApplicationSupportDirectory() + PROMO_LOCAL_FILE;
                 await new Promise((resolve) => {
-                    window.fs.unlink(filePath, () => resolve()); // Always resolve, ignore errors
+                    window.fs.unlink(PROMO_LOCAL_FILE, () => resolve()); // Always resolve, ignore errors
                 });
             }
         } catch (error) {
@@ -183,8 +182,7 @@ define(function (require, exports, module) {
             } else {
                 // Browser app: use virtual filesystem. in future we need to always fetch from remote about trial
                 // entitlements for browser app.
-                const filePath = Phoenix.app.getApplicationSupportDirectory() + PROMO_LOCAL_FILE;
-                const fileData = await _readFileAsync(filePath);
+                const fileData = await _readFileAsync(PROMO_LOCAL_FILE);
 
                 if (!fileData) {
                     return null; // No data exists - genuine first install
@@ -219,8 +217,7 @@ define(function (require, exports, module) {
                 await KernalModeTrust.setCredential(KernalModeTrust.CRED_KEY_PROMO, JSON.stringify(trialData));
             } else {
                 // Browser app: use virtual filesystem
-                const filePath = Phoenix.app.getApplicationSupportDirectory() + PROMO_LOCAL_FILE;
-                await _writeFileAsync(filePath, JSON.stringify(trialData));
+                await _writeFileAsync(PROMO_LOCAL_FILE, JSON.stringify(trialData));
             }
         } catch (error) {
             console.error("Error setting trial data:", error);
@@ -473,6 +470,14 @@ define(function (require, exports, module) {
                 } catch (error) {
                     // Ignore cleanup errors
                     console.log("Salt data cleanup completed (ignoring errors)");
+                }
+            },
+            // Test-only functions for manipulating credentials directly (bypassing validation)
+            _testSetRawCredential: async function(data) {
+                if (Phoenix.isNativeApp) {
+                    await KernalModeTrust.setCredential(KernalModeTrust.CRED_KEY_PROMO, JSON.stringify(data));
+                } else {
+                    await _writeFileAsync(PROMO_LOCAL_FILE, JSON.stringify(data));
                 }
             },
             activateProTrial: activateProTrial,
