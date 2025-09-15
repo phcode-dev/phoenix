@@ -446,6 +446,14 @@ define(function (require, exports, module) {
 
         describe("Security Tests", function () {
 
+            beforeEach(async function() {
+                // Restore original fetch to ensure clean state between tests
+                // This prevents fetch mocks from previous tests affecting security tests
+                if (originalFetch && testWindow._test_pro_dlg_login_exports && testWindow._test_pro_dlg_login_exports.setFetchFn) {
+                    testWindow._test_pro_dlg_login_exports.setFetchFn(originalFetch);
+                }
+            });
+
             it("should detect and prevent signature tampering attacks", async function () {
                 // Setup: Create a valid trial first
                 const validTrial = {
