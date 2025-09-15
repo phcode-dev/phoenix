@@ -482,7 +482,7 @@ define(function (require, exports, module) {
                 const tamperedTrial = { ...storedResult.data, signature: "fake_signature" };
 
                 // Manually store the tampered data (bypassing _setTrialData validation)
-                await LoginService._testSetRawCredential(tamperedTrial);
+                await LoginService._testSetPromoJSON(tamperedTrial);
 
                 // Verify: _getTrialData should detect corruption
                 const corruptedResult = await LoginService._getTrialData();
@@ -559,7 +559,7 @@ define(function (require, exports, module) {
                 expect(finalTrial.data.endDate).toBe(futureTrial.endDate); // Should preserve end date
             });
 
-            it("should handle missing signature fields gracefully", async function () {
+            it("should handle missing signature fields as tampered", async function () {
                 // Setup: Create trial data with missing signature field
                 const trialWithoutSignature = {
                     proVersion: "3.1.0",
@@ -568,7 +568,7 @@ define(function (require, exports, module) {
                 };
 
                 // Manually store data without signature (bypassing _setTrialData)
-                await LoginService._testSetRawCredential(trialWithoutSignature);
+                await LoginService._testSetPromoJSON(trialWithoutSignature);
 
                 // Should detect corruption due to missing signature
                 const result = await LoginService._getTrialData();
@@ -596,7 +596,7 @@ define(function (require, exports, module) {
                 await testWindow.__PR.waitForModalDialogClosed(".modal");
             });
 
-            it("should persist salt across app restarts", async function () {
+            it("should persist salt correctly", async function () {
                 // Clean existing salt
                 await LoginService._cleanSaltData();
 
@@ -622,7 +622,6 @@ define(function (require, exports, module) {
                 expect(storedResult.data).toBeDefined();
                 expect(storedResult.error).toBeUndefined();
 
-                // Simulate "app restart" - get salt again
                 const salt3 = await LoginService._getSalt();
                 expect(salt3).toBe(salt1); // Should be persistent
 
@@ -646,7 +645,7 @@ define(function (require, exports, module) {
                 const tamperedTrial = { ...storedResult.data, signature: "fake_signature" };
 
                 // Manually store the tampered data (bypassing validation)
-                await LoginService._testSetRawCredential(tamperedTrial);
+                await LoginService._testSetPromoJSON(tamperedTrial);
 
                 // First activation should create expired marker
                 await LoginService.activateProTrial();
@@ -703,7 +702,6 @@ define(function (require, exports, module) {
                 const rolledBackTime = mockNow - (10 * LoginService.TRIAL_CONSTANTS.MS_PER_DAY); // 10 days ago
                 LoginService.setDateNowFn(() => rolledBackTime);
 
-                // Despite rollback, _calculateRemainingTrialDays would show positive days
                 const remainingDaysAfterRollback = await LoginService.getProTrialDaysRemaining();
                 // But getProTrialDaysRemaining should still return 0 due to closure detection
                 expect(remainingDaysAfterRollback).toBe(0);
