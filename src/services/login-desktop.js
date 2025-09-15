@@ -420,6 +420,15 @@ define(function (require, exports, module) {
         init();
     }
 
+    // Test-only exports for integration testing
+    if (Phoenix.isTestWindow) {
+        window._test_login_desktop_exports = {
+            setFetchFn: function _setFetchFn(fn) {
+                fetchFn = fn;
+            }
+        };
+    }
+
     // public exports
     exports.isLoggedIn = isLoggedIn;
 
