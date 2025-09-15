@@ -93,6 +93,16 @@ define(function (require, exports, module) {
             await SpecRunnerUtils.closeTestWindow();
         }, 30000);
 
+        it("should require user to be logged out for promotion tests to work", async function () {
+            // Check if user is logged in - these tests only work for non-logged-in users
+            const isLoggedIn = LoginService.LoginService.isLoggedIn();
+            if (isLoggedIn) {
+                throw new Error("Promotion tests require user to be logged out. Please log out before running these tests. Logged-in users with pro subscriptions will not trigger trial activation logic.");
+            }
+            // If we reach here, user is not logged in - tests should work
+            expect(isLoggedIn).toBe(false);
+        });
+
         describe("Trial Activation", function () {
 
             it("should have access to trial functions", function () {
@@ -654,6 +664,11 @@ define(function (require, exports, module) {
                 // Simulate app restart by calling activateProTrial again
                 // This should NOT grant a new 30-day trial
                 await LoginService.activateProTrial();
+
+                // Should show trial ended dialog again (since trial is still expired)
+                await testWindow.__PR.waitForModalDialog(".modal");
+                testWindow.__PR.clickDialogButtonID("secondaryButton");
+                await testWindow.__PR.waitForModalDialogClosed(".modal");
 
                 // Should still have the expired marker, not a new 30-day trial
                 const afterRestartResult = await LoginService._getTrialData();
