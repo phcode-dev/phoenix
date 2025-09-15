@@ -536,6 +536,7 @@ define({
   "CMD_AUTO_UPDATE": "Αυτόματη Ενημέρωση",
   "CMD_HOW_TO_USE_BRACKETS": "Πώς να Χρησιμοποιήσετε το {APP_NAME}",
   "CMD_SUPPORT": "Υποστήριξη {APP_NAME}",
+  "CMD_GET_PRO": "Αποκτήστε το Phoenix Pro",
   "CMD_USER_PROFILE": "Λογαριασμός {APP_NAME}",
   "CMD_DOCS": "Βοήθεια, Ξεκινώντας",
   "CMD_SUGGEST": "Πρότεινε Feature",
@@ -1404,8 +1405,6 @@ define({
   "OPEN_SIGN_IN_URL": "Άνοιγμα Σελίδας Σύνδεσης",
   "PROFILE_POP_TITLE": "Λογαριασμός {APP_NAME}",
   "PROFILE_SIGN_IN": "Συνδεθείτε στον λογαριασμό σας",
-  "CONTACT_SUPPORT": "Επικοινωνία με την υποστήριξη",
-  "SIGN_OUT": "Αποσύνδεση",
   "ACCOUNT_DETAILS": "Στοιχεία Λογαριασμού",
   "LOGIN_REFRESH": "Έλεγχος Κατάστασης Σύνδεσης",
   "SIGN_IN_WAITING_TITLE": "Αναμονή για Σύνδεση",
@@ -1472,8 +1471,9 @@ define({
   "PROMO_CARD_4_MESSAGE": "Επεξεργαστείτε επικεφαλίδες, κουμπιά και αντιγράψτε απευθείας στην προεπισκόπηση.",
   "PROMO_LEARN_MORE": "Μάθετε περισσότερα…",
   "PROMO_GET_APP_UPSELL_BUTTON": "Αποκτήστε {0}",
-  "CMD_GET_PRO": "Αποκτήστε το Phoenix Pro",
   "PROMO_PRO_ENDED_TITLE": "Η δοκιμαστική σας έκδοση {0} έληξε",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Δοκιμαστική έκδοση Phoenix Pro ({0} ημέρες απομένουν)",
-  "GET_PHOENIX_PRO": "Αποκτήστε το Phoenix Pro"
+  "GET_PHOENIX_PRO": "Αποκτήστε το Phoenix Pro",
+  "CONTACT_SUPPORT": "Επικοινωνία με την Υποστήριξη",
+  "SIGN_OUT": "Αποσύνδεση"
 });

@@ -536,6 +536,7 @@ define({
   "CMD_AUTO_UPDATE": "Atualização automática",
   "CMD_HOW_TO_USE_BRACKETS": "Como usar o {APP_NAME}",
   "CMD_SUPPORT": "Ajuda do {APP_NAME}",
+  "CMD_GET_PRO": "Adquira o Phoenix Pro",
   "CMD_USER_PROFILE": "Conta do {APP_NAME}",
   "CMD_DOCS": "Ajuda, Primeiros Passos",
   "CMD_SUGGEST": "Sugira um recurso",
@@ -1404,8 +1405,6 @@ define({
   "OPEN_SIGN_IN_URL": "Abrir Página de Login",
   "PROFILE_POP_TITLE": "Conta {APP_NAME}",
   "PROFILE_SIGN_IN": "Entrar na sua conta",
-  "CONTACT_SUPPORT": "Contatar o suporte",
-  "SIGN_OUT": "Sair",
   "ACCOUNT_DETAILS": "Detalhes da Conta",
   "LOGIN_REFRESH": "Verificar Status de Login",
   "SIGN_IN_WAITING_TITLE": "Aguardando login",
@@ -1472,8 +1471,9 @@ define({
   "PROMO_CARD_4_MESSAGE": "Edite títulos, botões e copie diretamente na pré-visualização.",
   "PROMO_LEARN_MORE": "Saiba mais…",
   "PROMO_GET_APP_UPSELL_BUTTON": "Obtenha o {0}",
-  "CMD_GET_PRO": "Adquira o Phoenix Pro",
   "PROMO_PRO_ENDED_TITLE": "Seu período de teste de {0} terminou",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Teste do Phoenix Pro ({0} dias restantes)",
-  "GET_PHOENIX_PRO": "Adquira o Phoenix Pro"
+  "GET_PHOENIX_PRO": "Adquira o Phoenix Pro",
+  "CONTACT_SUPPORT": "Contatar o Suporte",
+  "SIGN_OUT": "Sair"
 });

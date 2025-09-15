@@ -536,6 +536,7 @@ define({
   "CMD_AUTO_UPDATE": "Actualizare automată",
   "CMD_HOW_TO_USE_BRACKETS": "Cum să folosești {APP_NAME}",
   "CMD_SUPPORT": "Suport {APP_NAME}",
+  "CMD_GET_PRO": "Obține Phoenix Pro",
   "CMD_USER_PROFILE": "Cont {APP_NAME}",
   "CMD_DOCS": "Ajutor, Noțiuni introductive",
   "CMD_SUGGEST": "Sugerează o funcționalitate",
@@ -1404,8 +1405,6 @@ define({
   "OPEN_SIGN_IN_URL": "Deschide pagina de conectare",
   "PROFILE_POP_TITLE": "Cont {APP_NAME}",
   "PROFILE_SIGN_IN": "Conectează-te la contul tău",
-  "CONTACT_SUPPORT": "Contactează asistența",
-  "SIGN_OUT": "Deconectare",
   "ACCOUNT_DETAILS": "Detalii cont",
   "LOGIN_REFRESH": "Verificare stare autentificare",
   "SIGN_IN_WAITING_TITLE": "Se așteaptă autentificarea",
@@ -1472,8 +1471,9 @@ define({
   "PROMO_CARD_4_MESSAGE": "Editează titluri, butoane și copiază direct în previzualizare.",
   "PROMO_LEARN_MORE": "Află mai multe…",
   "PROMO_GET_APP_UPSELL_BUTTON": "Obține {0}",
-  "CMD_GET_PRO": "Obține Phoenix Pro",
   "PROMO_PRO_ENDED_TITLE": "Perioada de probă {0} a expirat",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Probă Phoenix Pro ({0} zile rămase)",
-  "GET_PHOENIX_PRO": "Obține Phoenix Pro"
+  "GET_PHOENIX_PRO": "Obține Phoenix Pro",
+  "CONTACT_SUPPORT": "Contactează Asistența",
+  "SIGN_OUT": "Deconectare"
 });

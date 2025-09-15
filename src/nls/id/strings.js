@@ -536,6 +536,7 @@ define({
   "CMD_AUTO_UPDATE": "Pembaruan Otomatis",
   "CMD_HOW_TO_USE_BRACKETS": "Bagaimana Menggunakan {APP_NAME}",
   "CMD_SUPPORT": "Bantuan {APP_NAME}",
+  "CMD_GET_PRO": "Dapatkan Phoenix Pro",
   "CMD_USER_PROFILE": "Akun {APP_NAME}",
   "CMD_DOCS": "Bantuan, Memulai",
   "CMD_SUGGEST": "Sarankan Fitur",
@@ -1404,8 +1405,6 @@ define({
   "OPEN_SIGN_IN_URL": "Buka Halaman Masuk",
   "PROFILE_POP_TITLE": "Akun {APP_NAME}",
   "PROFILE_SIGN_IN": "Masuk ke akun Anda",
-  "CONTACT_SUPPORT": "Hubungi dukungan",
-  "SIGN_OUT": "Keluar",
   "ACCOUNT_DETAILS": "Detail Akun",
   "LOGIN_REFRESH": "Periksa Status Login",
   "SIGN_IN_WAITING_TITLE": "Menunggu Masuk",
@@ -1472,8 +1471,9 @@ define({
   "PROMO_CARD_4_MESSAGE": "Edit judul, tombol, dan salin langsung di pratinjau.",
   "PROMO_LEARN_MORE": "Pelajari Lebih Lanjut…",
   "PROMO_GET_APP_UPSELL_BUTTON": "Dapatkan {0}",
-  "CMD_GET_PRO": "Dapatkan Phoenix Pro",
   "PROMO_PRO_ENDED_TITLE": "Masa Percobaan {0} Anda telah berakhir",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Percobaan Phoenix Pro ({0} hari tersisa)",
-  "GET_PHOENIX_PRO": "Dapatkan Phoenix Pro"
+  "GET_PHOENIX_PRO": "Dapatkan Phoenix Pro",
+  "CONTACT_SUPPORT": "Hubungi Dukungan",
+  "SIGN_OUT": "Keluar"
 });

@@ -536,6 +536,7 @@ define({
   "CMD_AUTO_UPDATE": "Automatikus frissítés",
   "CMD_HOW_TO_USE_BRACKETS": "{APP_NAME} használata",
   "CMD_SUPPORT": "{APP_NAME} támogatás",
+  "CMD_GET_PRO": "Szerezd meg a Phoenix Pro-t",
   "CMD_USER_PROFILE": "{APP_NAME} fiók",
   "CMD_DOCS": "Súgó, Első lépések",
   "CMD_SUGGEST": "Javaslat új funkcióra",
@@ -1404,8 +1405,6 @@ define({
   "OPEN_SIGN_IN_URL": "Bejelentkezési oldal megnyitása",
   "PROFILE_POP_TITLE": "{APP_NAME} fiók",
   "PROFILE_SIGN_IN": "Bejelentkezés a fiókodba",
-  "CONTACT_SUPPORT": "Ügyfélszolgálattal való kapcsolatfelvétel",
-  "SIGN_OUT": "Kijelentkezés",
   "ACCOUNT_DETAILS": "Fiókadatok",
   "LOGIN_REFRESH": "Bejelentkezés állapotának ellenőrzése",
   "SIGN_IN_WAITING_TITLE": "Bejelentkezésre vár",
@@ -1472,8 +1471,9 @@ define({
   "PROMO_CARD_4_MESSAGE": "Szerkesszen címsorokat, gombokat és másoljon közvetlenül az előnézetben.",
   "PROMO_LEARN_MORE": "Tudj meg többet…",
   "PROMO_GET_APP_UPSELL_BUTTON": "Szerezd meg a(z) {0}-t/et",
-  "CMD_GET_PRO": "Szerezd meg a Phoenix Pro-t",
   "PROMO_PRO_ENDED_TITLE": "Lejárt a(z) {0} próbaidőszakod",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro próbaverzió ({0} nap van hátra)",
-  "GET_PHOENIX_PRO": "Szerezd meg a Phoenix Pro-t"
+  "GET_PHOENIX_PRO": "Szerezd meg a Phoenix Pro-t",
+  "CONTACT_SUPPORT": "Támogatás kérése",
+  "SIGN_OUT": "Kijelentkezés"
 });

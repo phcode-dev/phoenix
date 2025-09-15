@@ -536,6 +536,7 @@ define({
   "CMD_AUTO_UPDATE": "Otomatik Güncelleme",
   "CMD_HOW_TO_USE_BRACKETS": "{APP_NAME} Nasıl Kullanılır",
   "CMD_SUPPORT": "{APP_NAME} Desteği",
+  "CMD_GET_PRO": "Phoenix Pro'yu Edinin",
   "CMD_USER_PROFILE": "{APP_NAME} Hesabı",
   "CMD_DOCS": "Yardım, Başlarken",
   "CMD_SUGGEST": "Yeni Özellik Öner",
@@ -1404,8 +1405,6 @@ define({
   "OPEN_SIGN_IN_URL": "Giriş Sayfasını Aç",
   "PROFILE_POP_TITLE": "{APP_NAME} Hesabı",
   "PROFILE_SIGN_IN": "Hesabınıza giriş yapın",
-  "CONTACT_SUPPORT": "Destek ekibiyle iletişime geçin",
-  "SIGN_OUT": "Oturumu kapat",
   "ACCOUNT_DETAILS": "Hesap Ayrıntıları",
   "LOGIN_REFRESH": "Oturum Durumunu Kontrol Et",
   "SIGN_IN_WAITING_TITLE": "Oturum Açma Bekleniyor",
@@ -1472,8 +1471,9 @@ define({
   "PROMO_CARD_4_MESSAGE": "Başlıkları, düğmeleri düzenleyin ve doğrudan önizlemede kopyalayın.",
   "PROMO_LEARN_MORE": "Daha Fazla Bilgi Edinin…",
   "PROMO_GET_APP_UPSELL_BUTTON": "{0} edinin",
-  "CMD_GET_PRO": "Phoenix Pro'yu Edinin",
   "PROMO_PRO_ENDED_TITLE": "{0} Denemeniz Sona Erdi",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro Deneme Sürümü ({0} gün kaldı)",
-  "GET_PHOENIX_PRO": "Phoenix Pro'yu Edinin"
+  "GET_PHOENIX_PRO": "Phoenix Pro'yu Edinin",
+  "CONTACT_SUPPORT": "Desteğe Başvur",
+  "SIGN_OUT": "Oturumu Kapat"
 });
