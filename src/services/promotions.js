@@ -46,7 +46,8 @@ define(function (require, exports, module) {
 
     // Constants
     const EVENT_PRO_UPGRADE_ON_INSTALL = "pro_upgrade_on_install";
-    const PROMO_LOCAL_FILE = path.join(Phoenix.app.getApplicationSupportDirectory(), "entitlements_promo.json");
+    const PROMO_LOCAL_FILE = path.join(Phoenix.app.getApplicationSupportDirectory(),
+        Phoenix.isTestWindow ? "entitlements_promo_test.json" : "entitlements_promo.json");
     const TRIAL_POLL_MS = 10 * 1000; // 10 seconds after start, we assign a free trial if possible
     const FIRST_INSTALL_TRIAL_DAYS = 30;
     const SUBSEQUENT_TRIAL_DAYS = 7;

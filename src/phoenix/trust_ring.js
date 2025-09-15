@@ -178,9 +178,9 @@ function _selectKeys() {
     return generateRandomKeyAndIV();
 }
 
-const CRED_KEY_API = "API_KEY";
-const CRED_KEY_PROMO = "PROMO_GRANT_KEY";
-const SIGNATURE_SALT_KEY = "SIGNATURE_SALT_KEY";
+const CRED_KEY_API = Phoenix.isTestWindow ? "API_KEY_TEST" : "API_KEY";
+const CRED_KEY_PROMO = Phoenix.isTestWindow ? "PROMO_GRANT_KEY_TEST" : "PROMO_GRANT_KEY";
+const SIGNATURE_SALT_KEY = Phoenix.isTestWindow ? "SIGNATURE_SALT_KEY_TEST" : "SIGNATURE_SALT_KEY";
 const { key, iv } = _selectKeys();
 // this key is set at boot time as a truct base for all the core components before any extensions are loaded.
 // just before extensions are loaded, this key is blanked. This can be used by core modules to talk with other
