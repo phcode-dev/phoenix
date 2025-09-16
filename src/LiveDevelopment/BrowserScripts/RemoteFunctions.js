@@ -2113,6 +2113,55 @@ function RemoteFunctions(config = {}) {
                         font-size: 9px !important;
                         opacity: 0.85 !important;
                     }
+
+                    .phoenix-use-image-btn {
+                        position: absolute !important;
+                        top: 6px !important;
+                        right: 6px !important;
+                        background: rgba(0,0,0,0.55) !important;
+                        border: none !important;
+                        color: white !important;
+                        border-radius: 20px !important;
+                        height: 26px !important;
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                        cursor: pointer !important;
+                        font-size: 12px !important;
+                        z-index: 2 !important;
+                        padding: 0 8px !important;
+                        white-space: nowrap !important;
+                        opacity: 0 !important;
+                        transition: all 0.2s ease !important;
+                    }
+
+                    .phoenix-use-image-btn i {
+                        margin-right: 0 !important;
+                        transition: margin 0.2s !important;
+                    }
+
+                    .phoenix-use-image-btn span {
+                        display: none !important;
+                        font-size: 11px !important;
+                        font-weight: 500 !important;
+                    }
+
+                    .phoenix-ribbon-thumb:hover .phoenix-use-image-btn {
+                        opacity: 1 !important;
+                    }
+
+                    .phoenix-use-image-btn:hover {
+                        background: rgba(0,0,0,0.8) !important;
+                        padding: 0 10px !important;
+                    }
+
+                    .phoenix-use-image-btn:hover i {
+                        margin-right: 4px !important;
+                    }
+
+                    .phoenix-use-image-btn:hover span {
+                        display: inline !important;
+                    }
                 </style>
                 <div class="phoenix-image-ribbon">
                     <div class="phoenix-ribbon-header">
@@ -2136,6 +2185,7 @@ function RemoteFunctions(config = {}) {
         },
 
         _fetchImages: function(searchQuery = 'sunshine') {
+            this._currentSearchQuery = searchQuery;
             const apiUrl = `https://images.phcode.dev/api/images/search?q=${encodeURIComponent(searchQuery)}&per_page=10`;
             this._showLoading();
 
@@ -2254,14 +2304,7 @@ function RemoteFunctions(config = {}) {
 
                 const photographer = window.document.createElement('span');
                 photographer.className = 'photographer';
-
-                // unsplash attribution is in the format 'Photo by <name> on Unsplash'
-                // we extract the name from there
-                let photographerName = 'Anonymous'; // if not present, show anonymous
-                if (image.attribution) {
-                    const match = image.attribution.match(/Photo by (.+) on Unsplash/);
-                    if (match) { photographerName = match[1]; }
-                }
+                const photographerName = this._getPhotographerName(image);
                 photographer.textContent = photographerName;
 
                 const source = window.document.createElement('span');
@@ -2271,8 +2314,24 @@ function RemoteFunctions(config = {}) {
                 attribution.appendChild(photographer);
                 attribution.appendChild(source);
 
+                // use image button
+                const useImageBtn = window.document.createElement('button');
+                useImageBtn.className = 'phoenix-use-image-btn';
+                useImageBtn.innerHTML = '⬇<span>Use this image</span>';
+
+                // when use image button is clicked, we first generate the file name by which we need to save the image
+                // and then we add the image to project
+                useImageBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    const filename = this._generateFilename(image);
+                    const extnName = ".jpg";
+                    this._useImage(image.url, filename, extnName);
+                });
+
                 thumbDiv.appendChild(img);
                 thumbDiv.appendChild(attribution);
+                thumbDiv.appendChild(useImageBtn);
                 rowElement.appendChild(thumbDiv);
             });
         },
@@ -2283,6 +2342,42 @@ function RemoteFunctions(config = {}) {
 
             rowElement.innerHTML = message;
             rowElement.className = 'phoenix-ribbon-row phoenix-ribbon-error';
+        },
+
+        _getPhotographerName: function(image) {
+            // unsplash API returns attribution in format 'Photo by <name> on Unsplash'
+            // this function is responsible to get the name
+            if (image.attribution) {
+                const match = image.attribution.match(/Photo by (.+) on Unsplash/);
+                if (match) {
+                    return match[1];
+                }
+            }
+            return 'Anonymous';
+        },
+
+        // file name with which we need to save the image
+        _generateFilename: function(image) {
+            const photographerName = this._getPhotographerName(image);
+            const searchTerm = this._currentSearchQuery || 'image';
+
+            // clean the search term and the photograper name to write in file name
+            const cleanSearchTerm = searchTerm.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+            const cleanPhotographerName = photographerName.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+
+            return `${cleanSearchTerm}-by-${cleanPhotographerName}`;
+        },
+
+        _useImage: function(imageUrl, filename, extnName) {
+            // to use the image we send the message to the editor instance
+            // this is handled inside liveDevProtocol.js file
+            window._Brackets_MessageBroker.send({
+                livePreviewEditEnabled: true,
+                useImage: true,
+                imageUrl: imageUrl,
+                filename: filename,
+                extnName: extnName
+            });
         },
 
         create: function() {
