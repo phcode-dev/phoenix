@@ -270,7 +270,7 @@ async function generateDataSignature(dataString, salt) {
  * @return {Promise<boolean>} A promise resolving to true if the signature is valid, otherwise false.
  */
 async function validateDataSignature(data, signature, salt) {
-    if (!data || !signature) {
+    if (!signature) {
         return false;
     }
     const expectedSignature = await generateDataSignature(data, salt);
