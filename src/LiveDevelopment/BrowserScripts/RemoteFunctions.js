@@ -2369,14 +2369,17 @@ function RemoteFunctions(config = {}) {
         },
 
         _useImage: function(imageUrl, filename, extnName) {
-            // to use the image we send the message to the editor instance
-            // this is handled inside liveDevProtocol.js file
+            // send the message to the editor instance to save the image and update the source code
+            const tagId = this.element.getAttribute("data-brackets-id");
+
             window._Brackets_MessageBroker.send({
                 livePreviewEditEnabled: true,
                 useImage: true,
                 imageUrl: imageUrl,
                 filename: filename,
-                extnName: extnName
+                extnName: extnName,
+                element: this.element,
+                tagId: Number(tagId)
             });
         },
 

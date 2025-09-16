@@ -627,13 +627,47 @@ define(function (require, exports, module) {
     }
 
     /**
+     * This function updates the src attribute of an image element in the source code
+     * @param {Number} tagId - the data-brackets-id of the image element
+     * @param {String} newSrcValue - the new src value to set
+     */
+    function _updateImageSrcAttribute(tagId, newSrcValue) {
+        const editor = _getEditorAndValidate(tagId);
+        if (!editor) {
+            return;
+        }
+
+        const range = _getElementRange(editor, tagId);
+        if (!range) {
+            return;
+        }
+
+        const { startPos, endPos } = range;
+        const elementText = editor.getTextBetween(startPos, endPos);
+
+        // parse it using DOM parser so that we can update the src attribute
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(elementText, "text/html");
+        const imgElement = doc.querySelector('img');
+
+        if (imgElement) {
+            imgElement.setAttribute('src', newSrcValue);
+            const updatedElementText = imgElement.outerHTML;
+
+            editor.document.batchOperation(function () {
+                editor.replaceRange(updatedElementText, startPos, endPos);
+            });
+        }
+    }
+
+    /**
      * This function is called when 'use this image' button is clicked in the image ribbon gallery
      * this is responsible to download the image in the appropriate place
      * and also change the src attribute of the element
      * @param {Object} message - the message object which stores all the required data for this operation
      */
     function _handleUseThisImage(message) {
-        const { imageUrl, filename } = message;
+        const { imageUrl, filename, tagId } = message;
         const extnName = message.extnName || "jpg";
 
         const projectRoot = ProjectManager.getProjectRoot();
@@ -658,6 +692,8 @@ define(function (require, exports, module) {
                         { encoding: window.fs.BYTE_ARRAY_ENCODING }, (err) => {
                             if (err) {
                                 console.error('Failed to save image:', err);
+                            } else {
+                                _updateImageSrcAttribute(tagId, uniqueFilename);
                             }
                         });
                 })
