@@ -154,6 +154,111 @@ function _setupVFS(fsLib, pathLib){
                 });
             });
         },
+        /**
+         * Deletes a file/dir asynchronously. resolves on success or rejects on error.
+         *
+         * @function
+         * @param {string} filePath - The path of the file/dir to be deleted.
+         * @returns {Promise<Object>} A promise that resolves on success or rejects on error.
+         */
+        unlinkAsync: async function (filePath) {
+            return new Promise((resolve, reject)=>{
+                fs.unlink(filePath, (err)=>{
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve();
+                    }
+                });
+            });
+        },
+        /**
+         * deletes a file/dir asynchronously, always resolves, never rejects.
+         *
+         * @function
+         * @param {string} filePath - The path of the file/dir to be deleted.
+         * @returns {Promise<Object>} A promise that resolves to an object containing either
+         * an `error` property if there is an error, or just {} on success.
+         */
+        unlinkResolves: async function (filePath) {
+            return new Promise((resolve)=>{
+                fs.unlink(filePath, (error)=>{
+                    if(error){
+                        resolve({error: error});
+                        return;
+                    }
+                    resolve({});
+                });
+            });
+        },
+        /**
+         * Reads the contents of a file asynchronously, always resolves, never rejects.
+         * Mainly use to read config and other files.
+         * This should not be used for reading project files that are being edited, for that use file system APIs
+         * as that apis will be able to deal with files being edited in the editor.
+         *
+         * @function
+         * @param {string} filePath - The path of the file to be read.
+         * @param {string} encoding - The encoding to use for reading the file.
+         * @returns {Promise<Object>} A promise that resolves to an object containing either
+         * an `error` property if there is an error, or a `data` property with the file contents.
+         */
+        readFileResolves: function (filePath, encoding) {
+            return new Promise((resolve)=>{
+                fs.readFile(filePath, encoding, function (error, data) {
+                    if(error){
+                        resolve({error: error});
+                        return;
+                    }
+                    resolve({data: data});
+                });
+            });
+        },
+        /**
+         * Reads the contents of a file asynchronously, resolves with content or rejects with error.
+         * Mainly use to read config and other files.
+         * This should not be used for reading project files that are being edited, for that use file system APIs
+         * as that apis will be able to deal with files being edited in the editor.
+         *
+         * @param {string} filePath - The path to the file to be read.
+         * @param {string} encoding - The encoding format to use when reading the file.
+         * @returns {Promise<string>} A promise that resolves with the file data when the read is successful,
+         * or rejects with an error if the read operation fails.
+         */
+        readFileAsync: function (filePath, encoding) {
+            return new Promise((resolve, reject)=>{
+                fs.readFile(filePath, encoding, function (error, data) {
+                    if(error){
+                        reject(error);
+                        return;
+                    }
+                    resolve(data);
+                });
+            });
+        },
+        /**
+         * Asynchronously writes data to a file, replacing the file if it already exists.
+         * Mainly use to write config and other files.
+         * This should not be used for write project files that are being edited, for that use file system APIs
+         * as that apis will be able to deal with files being edited in the editor.
+         *
+         * @param {string} filePath - The path of the file where the data should be written.
+         * @param {string} content - The data to write into the file.
+         * @param {string} encoding - The character encoding to use when writing the file.
+         * @returns {Promise<void>} A promise that resolves when the file has been successfully written,
+         *  or rejects with an error if the operation fails.
+         */
+        writeFileAsync: function (filePath, content, encoding) {
+            return new Promise((resolve, reject) => {
+                fs.writeFile(filePath, content, encoding, (err) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve();
+                    }
+                });
+            });
+        },
         fs: fsLib,
         path: pathLib
     };
