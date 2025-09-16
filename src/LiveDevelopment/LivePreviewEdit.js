@@ -28,6 +28,8 @@ define(function (require, exports, module) {
     const HTMLInstrumentation = require("LiveDevelopment/MultiBrowserImpl/language/HTMLInstrumentation");
     const LiveDevMultiBrowser = require("LiveDevelopment/LiveDevMultiBrowser");
     const CodeMirror = require("thirdparty/CodeMirror/lib/codemirror");
+    const ProjectManager = require("project/ProjectManager");
+    const FileSystem = require("filesystem/FileSystem");
 
     /**
      * This function syncs text content changes between the original source code
@@ -594,6 +596,80 @@ define(function (require, exports, module) {
     }
 
     /**
+     * this is a helper function to make sure that when saving a new image, there's no existing file with the same name
+     * @param {String} basePath - this is the base path where the image will be saved
+     * @param {String} filename - the name of the image file
+     * @param {String} extnName - the name of the image extension. (defaults to "jpg")
+     * @returns {String} - the new file name
+     */
+    function getUniqueFilename(basePath, filename, extnName) {
+        let counter = 0;
+        let uniqueFilename = filename + extnName;
+
+        function checkAndIncrement() {
+            const filePath = basePath + uniqueFilename;
+            const file = FileSystem.getFileForPath(filePath);
+
+            return new Promise((resolve) => {
+                file.exists((err, exists) => {
+                    if (exists) {
+                        counter++;
+                        uniqueFilename = `${filename}-${counter}${extnName}`;
+                        checkAndIncrement().then(resolve);
+                    } else {
+                        resolve(uniqueFilename);
+                    }
+                });
+            });
+        }
+
+        return checkAndIncrement();
+    }
+
+    /**
+     * This function is called when 'use this image' button is clicked in the image ribbon gallery
+     * this is responsible to download the image in the appropriate place
+     * and also change the src attribute of the element
+     * @param {Object} message - the message object which stores all the required data for this operation
+     */
+    function _handleUseThisImage(message) {
+        const { imageUrl, filename } = message;
+        const extnName = message.extnName || "jpg";
+
+        const projectRoot = ProjectManager.getProjectRoot();
+        if (!projectRoot) {
+            console.error('No project root found');
+            return;
+        }
+
+        getUniqueFilename(projectRoot.fullPath, filename, extnName).then((uniqueFilename) => {
+            fetch(imageUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.arrayBuffer();
+                })
+                .then(arrayBuffer => {
+                    const uint8Array = new Uint8Array(arrayBuffer);
+
+                    const targetPath = projectRoot.fullPath + uniqueFilename;
+                    window.fs.writeFile(targetPath, window.Filer.Buffer.from(uint8Array),
+                        { encoding: window.fs.BYTE_ARRAY_ENCODING }, (err) => {
+                            if (err) {
+                                console.error('Failed to save image:', err);
+                            }
+                        });
+                })
+                .catch(error => {
+                    console.error('Failed to fetch image:', error);
+                });
+        }).catch(error => {
+            console.error('Something went wrong when trying to use this image', error);
+        });
+    }
+
+    /**
      * This is the main function that is exported.
      * it will be called by LiveDevProtocol when it receives a message from RemoteFunctions.js
      * or LiveDevProtocolRemote.js (for undo) using MessageBroker
@@ -620,6 +696,12 @@ define(function (require, exports, module) {
         // handle move(drag & drop)
         if (message.move && message.sourceId && message.targetId) {
             _moveElementInSource(message.sourceId, message.targetId, message.insertAfter, message.insertInside);
+            return;
+        }
+
+        // use this image
+        if (message.useImage && message.imageUrl && message.filename) {
+            _handleUseThisImage(message);
             return;
         }
 
