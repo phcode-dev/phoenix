@@ -30,6 +30,7 @@ define(function (require, exports, module) {
     const CodeMirror = require("thirdparty/CodeMirror/lib/codemirror");
     const ProjectManager = require("project/ProjectManager");
     const FileSystem = require("filesystem/FileSystem");
+    const PathUtils = require("thirdparty/path-utils/path-utils");
 
     /**
      * This function syncs text content changes between the original source code
@@ -693,7 +694,18 @@ define(function (require, exports, module) {
                             if (err) {
                                 console.error('Failed to save image:', err);
                             } else {
-                                _updateImageSrcAttribute(tagId, uniqueFilename);
+                                // once the image is saved, we need to update the source code
+                                // so we get the relative path between the current file and the image file
+                                // and that relative path is written as the src value
+                                const editor = _getEditorAndValidate(tagId);
+                                if (editor) {
+                                    const htmlFilePath = editor.document.file.fullPath;
+                                    const relativePath = PathUtils.makePathRelative(targetPath, htmlFilePath);
+                                    _updateImageSrcAttribute(tagId, relativePath);
+                                } else {
+                                    // if editor is not available we directly write the image file name as the src value
+                                    _updateImageSrcAttribute(tagId, uniqueFilename);
+                                }
                             }
                         });
                 })
