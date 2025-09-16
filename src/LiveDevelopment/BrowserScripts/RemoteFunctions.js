@@ -3668,6 +3668,7 @@ function RemoteFunctions(config = {}) {
         "finishEditing"         : finishEditing,
         "hasVisibleLivePreviewBoxes" : hasVisibleLivePreviewBoxes,
         "dismissUIAndCleanupState" : dismissUIAndCleanupState,
+        "dismissImageRibbonGallery" : dismissImageRibbonGallery,
         "registerHandlers" : registerHandlers
     };
 }
