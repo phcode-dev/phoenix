@@ -706,6 +706,13 @@ define(function (require, exports, module) {
                                     // if editor is not available we directly write the image file name as the src value
                                     _updateImageSrcAttribute(tagId, uniqueFilename);
                                 }
+
+                                // after successful update we dismiss the image ribbon gallery
+                                // to ensure that the user doesn't work with image ribbon gallery on a stale DOM
+                                const currLiveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
+                                if (currLiveDoc && currLiveDoc.protocol && currLiveDoc.protocol.evaluate) {
+                                    currLiveDoc.protocol.evaluate("_LD.dismissImageRibbonGallery()");
+                                }
                             }
                         });
                 })
