@@ -52,25 +52,9 @@ define(function (require, exports, module) {
     const FIRST_INSTALL_TRIAL_DAYS = 30;
     const SUBSEQUENT_TRIAL_DAYS = 7;
     const MS_PER_DAY = 24 * 60 * 60 * 1000;
-    // the fallback salt is always a constant as this will only fail in rare circumstatnces and it needs to
-    // be exactly same across versions of the app. Changing this will not breal the large majority of users and
-    // for the ones who are  affected, the app will reset the signed data with new salt but will not grant ant trial
-    // when tampering is detected.
-    const FALLBACK_SALT = 'fallback-salt-2f309322-b32d-4d59-85b4-2baef666a9f4';
 
     // Error constants for _getTrialData
     const ERR_CORRUPTED = "corrupted";
-
-    /**
-     * Async wrapper for fs.readFile in browser
-     */
-    function _readFileAsync(filePath) {
-        return new Promise((resolve) => {
-            window.fs.readFile(filePath, 'utf8', function (err, data) {
-                resolve(err ? null : data);
-            });
-        });
-    }
 
     /**
      * Async wrapper for fs.writeFile in browser
@@ -105,45 +89,12 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Get per-user salt for signature generation, creating and persisting one if it doesn't exist
-     */
-    async function _getSalt() {
-        try {
-            if (Phoenix.isNativeApp) {
-                // Native app: use KernalModeTrust credential store
-                let salt = await KernalModeTrust.getCredential(KernalModeTrust.SIGNATURE_SALT_KEY);
-                if (!salt) {
-                    // Generate and store new salt
-                    salt = crypto.randomUUID();
-                    await KernalModeTrust.setCredential(KernalModeTrust.SIGNATURE_SALT_KEY, salt);
-                }
-                return salt;
-            }
-            // in browser app, there is no way to securely store salt without the extensions also being able to
-            // read it. So we will just return a static salt. In future, we will need to vend trials strongly tied
-            // to user logins for the browser app, and for desktop app, the current cred storage would work as is.
-            return FALLBACK_SALT;
-        } catch (error) {
-            console.error("Error getting signature salt:", error);
-            Metrics.countEvent(Metrics.EVENT_TYPE.PRO, "corrupt", "saltErr");
-            // Return a fallback salt to prevent crashes
-            return FALLBACK_SALT;
-        }
-    }
-
-    /**
      * Generate SHA-256 signature for trial data integrity
      */
     async function _generateSignature(proVersion, endDate) {
-        const salt = await _getSalt();
-        const data = proVersion + "|" + endDate + "|" + salt;
-
-        // Use browser crypto API for SHA-256 hashing
-        const encoder = new TextEncoder();
-        const dataBuffer = encoder.encode(data);
-        const hashBuffer = await crypto.subtle.digest('SHA-256', dataBuffer);
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        return hashArray.map(b => b.toString(16).padStart(2, '0')).join(''); // hash hex string
+        const salt = await LoginService.getSalt();
+        const data = proVersion + "|" + endDate;
+        return KernalModeTrust.generateDataSignature(data, salt);
     }
 
     /**
@@ -183,14 +134,14 @@ define(function (require, exports, module) {
             } else {
                 // Browser app: use virtual filesystem. in future we need to always fetch from remote about trial
                 // entitlements for browser app.
-                const fileData = await _readFileAsync(PROMO_LOCAL_FILE);
+                const fileData = await Phoenix.VFS.readFileResolves(PROMO_LOCAL_FILE, 'utf8');
 
-                if (!fileData) {
+                if (fileData.error) {
                     return null; // No data exists - genuine first install
                 }
 
                 try {
-                    const trialData = JSON.parse(fileData);
+                    const trialData = JSON.parse(fileData.data);
                     const isValid = await _isValidSignature(trialData);
                     if (isValid) {
                         return { data: trialData }; // Valid trial data
@@ -458,7 +409,7 @@ define(function (require, exports, module) {
             ProDialogs: ProDialogs,
             _getTrialData: _getTrialData,
             _setTrialData: _setTrialData,
-            _getSalt: _getSalt,
+            _getSalt: LoginService.getSalt,
             _isTrialClosedForCurrentVersion: _isTrialClosedForCurrentVersion,
             _cleanTrialData: _clearTrialData,
             _cleanSaltData: async function() {

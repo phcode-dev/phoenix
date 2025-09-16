@@ -182,26 +182,6 @@ const CRED_KEY_API = Phoenix.isTestWindow ? "API_KEY_TEST" : "API_KEY";
 const CRED_KEY_PROMO = Phoenix.isTestWindow ? "PROMO_GRANT_KEY_TEST" : "PROMO_GRANT_KEY";
 const SIGNATURE_SALT_KEY = Phoenix.isTestWindow ? "SIGNATURE_SALT_KEY_TEST" : "SIGNATURE_SALT_KEY";
 const { key, iv } = _selectKeys();
-// this key is set at boot time as a truct base for all the core components before any extensions are loaded.
-// just before extensions are loaded, this key is blanked. This can be used by core modules to talk with other
-// core modules securely without worrying about interception by extensions.
-// KernalModeTrust should only be available within all code that loads before the first default/any extension.
-window.KernalModeTrust = {
-    CRED_KEY_API,
-    CRED_KEY_PROMO,
-    SIGNATURE_SALT_KEY,
-    aesKeys: { key, iv },
-    setCredential,
-    getCredential,
-    removeCredential,
-    AESDecryptString,
-    generateRandomKeyAndIV,
-    dismantleKeyring
-};
-if(Phoenix.isSpecRunnerWindow){
-    window.specRunnerTestKernalModeTrust = window.KernalModeTrust;
-}
-// key is 64 hex characters, iv is 24 hex characters
 
 async function setCredential(credKey, secret) {
     if(!window.__TAURI__){
@@ -260,5 +240,62 @@ export async function initTrustRing() {
     if(!window.__TAURI__){
         return;
     }
+    // this will only work once in a window unless dismantleKeyring is called. So this is safe as
+    // a public export as essentially this is a fn that only works in the boot and shutdown phase.
     await window.__TAURI__.tauri.invoke("trust_window_aes_key", {key, iv});
 }
+
+/**
+ * Generates an SHA-256 hash signature of the provided data string combined with a salt.
+ *
+ * @param {string} dataString - The input data string that needs to be signed.
+ * @param {string} salt - A salt value to combine with the data string for additional uniqueness.
+ * @return {Promise<string>} A promise that resolves to the generated SHA-256 hash signature as a hexadecimal string.
+ */
+async function generateDataSignature(dataString, salt) {
+    const signatureData = dataString + "|" + salt;
+    const encoder = new TextEncoder();
+    const dataBuffer = encoder.encode(signatureData);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', dataBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+/**
+ * Validates the provided data signature by comparing it to an expected signature.
+ *
+ * @param {string} data - The data to validate the signature against.
+ * @param {string} signature - The actual signature to be validated.
+ * @param {string} salt - The salt used in generating the expected signature.
+ * @return {Promise<boolean>} A promise resolving to true if the signature is valid, otherwise false.
+ */
+async function validateDataSignature(data, signature, salt) {
+    if (!data || !signature) {
+        return false;
+    }
+    const expectedSignature = await generateDataSignature(data, salt);
+    return signature === expectedSignature;
+}
+
+// this key is set at boot time as a trust base for all the core components before any extensions are loaded.
+// just before extensions are loaded, this key is blanked. This can be used by core modules to talk with other
+// core modules securely without worrying about interception by extensions.
+// KernalModeTrust should only be available within all code that loads before the first default/any extension.
+window.KernalModeTrust = {
+    CRED_KEY_API,
+    CRED_KEY_PROMO,
+    SIGNATURE_SALT_KEY,
+    aesKeys: { key, iv },
+    setCredential,
+    getCredential,
+    removeCredential,
+    AESDecryptString,
+    generateRandomKeyAndIV,
+    dismantleKeyring,
+    generateDataSignature,
+    validateDataSignature
+};
+if(Phoenix.isSpecRunnerWindow){
+    window.specRunnerTestKernalModeTrust = window.KernalModeTrust;
+}
+// key is 64 hex characters, iv is 24 hex characters
