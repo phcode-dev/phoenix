@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, beforeEach, afterEach, awaitsFor, awaitsForDone*/
+/*global describe, it, expect, beforeEach, afterEach, awaitsFor, awaitsForDone, fail*/
 
 define(function (require, exports, module) {
 
@@ -640,6 +640,159 @@ define(function (require, exports, module) {
 
             });
         });
+
+        describe("VFS Async APIs", function () {
+
+            var contents = "This content was generated from LowLevelFileIO-test.js for VFS async APIs";
+
+            describe("writeFileAsync", function () {
+
+                it("should write file content asynchronously", async function () {
+                    var testFile = baseDir + "/vfs_write_test.txt";
+
+                    try {
+                        await Phoenix.VFS.writeFileAsync(testFile, contents, UTF8);
+
+                        var readFileCB = readFileSpy();
+                        brackets.fs.readFile(testFile, UTF8, readFileCB);
+
+                        await awaitsFor(function () { return readFileCB.wasCalled; }, 1000);
+
+                        expect(readFileCB.error).toBeFalsy();
+                        expect(readFileCB.content).toBe(contents);
+                    } catch (error) {
+                        fail("writeFileAsync should not reject: " + error);
+                    }
+                });
+
+                it("should reject when writing to invalid path", async function () {
+                    try {
+                        await Phoenix.VFS.writeFileAsync("/invalid/path/file.txt", contents, UTF8);
+                        fail("writeFileAsync should have rejected for invalid path");
+                    } catch (error) {
+                        expect(error).toBeTruthy();
+                    }
+                });
+
+            }); // describe("writeFileAsync")
+
+            describe("readFileAsync", function () {
+
+                beforeEach(async function () {
+                    var writeFileCB = errSpy();
+                    brackets.fs.writeFile(testDir + "/vfs_read_test.txt", contents, UTF8, writeFileCB);
+                    await awaitsFor(function () { return writeFileCB.wasCalled; }, 1000);
+                    expect(writeFileCB.error).toBeFalsy();
+                });
+
+                it("should read file content asynchronously", async function () {
+                    try {
+                        var data = await Phoenix.VFS.readFileAsync(testDir + "/vfs_read_test.txt", UTF8);
+                        expect(data).toBe(contents);
+                    } catch (error) {
+                        fail("readFileAsync should not reject: " + error);
+                    }
+                });
+
+                it("should reject when reading non-existent file", async function () {
+                    try {
+                        await Phoenix.VFS.readFileAsync("/non/existent/file.txt", UTF8);
+                        fail("readFileAsync should have rejected for non-existent file");
+                    } catch (error) {
+                        expect(error.code).toBe(brackets.fs.ERR_CODES.ENOENT);
+                    }
+                });
+
+            }); // describe("readFileAsync")
+
+            describe("readFileResolves", function () {
+
+                beforeEach(async function () {
+                    var writeFileCB = errSpy();
+                    brackets.fs.writeFile(testDir + "/vfs_read_resolves_test.txt", contents, UTF8, writeFileCB);
+                    await awaitsFor(function () { return writeFileCB.wasCalled; }, 1000);
+                    expect(writeFileCB.error).toBeFalsy();
+                });
+
+                it("should resolve with data when reading existing file", async function () {
+                    var result = await Phoenix.VFS.readFileResolves(testDir + "/vfs_read_resolves_test.txt", UTF8);
+                    expect(result.error).toBeUndefined();
+                    expect(result.data).toBe(contents);
+                });
+
+                it("should resolve with error when reading non-existent file", async function () {
+                    var result = await Phoenix.VFS.readFileResolves("/non/existent/file.txt", UTF8);
+                    expect(result.error).toBeTruthy();
+                    expect(result.error.code).toBe(brackets.fs.ERR_CODES.ENOENT);
+                    expect(result.data).toBeUndefined();
+                });
+
+            }); // describe("readFileResolves")
+
+            describe("unlinkAsync", function () {
+
+                it("should delete file asynchronously", async function () {
+                    var testFile = baseDir + "/vfs_unlink_test.txt";
+
+                    var writeFileCB = errSpy();
+                    brackets.fs.writeFile(testFile, contents, UTF8, writeFileCB);
+                    await awaitsFor(function () { return writeFileCB.wasCalled; }, 1000);
+                    expect(writeFileCB.error).toBeFalsy();
+
+                    try {
+                        await Phoenix.VFS.unlinkAsync(testFile);
+
+                        var statCB = statSpy();
+                        brackets.fs.stat(testFile, statCB);
+                        await awaitsFor(function () { return statCB.wasCalled; }, 1000);
+
+                        expect(statCB.error.code).toBe(brackets.fs.ERR_CODES.ENOENT);
+                    } catch (error) {
+                        fail("unlinkAsync should not reject: " + error);
+                    }
+                });
+
+                it("should reject when deleting non-existent file", async function () {
+                    try {
+                        await Phoenix.VFS.unlinkAsync("/non/existent/file.txt");
+                        fail("unlinkAsync should have rejected for non-existent file");
+                    } catch (error) {
+                        expect(error.code).toBe(brackets.fs.ERR_CODES.ENOENT);
+                    }
+                });
+
+            }); // describe("unlinkAsync")
+
+            describe("unlinkResolves", function () {
+
+                it("should resolve with empty object when deleting existing file", async function () {
+                    var testFile = baseDir + "/vfs_unlink_resolves_test.txt";
+
+                    var writeFileCB = errSpy();
+                    brackets.fs.writeFile(testFile, contents, UTF8, writeFileCB);
+                    await awaitsFor(function () { return writeFileCB.wasCalled; }, 1000);
+                    expect(writeFileCB.error).toBeFalsy();
+
+                    var result = await Phoenix.VFS.unlinkResolves(testFile);
+                    expect(result.error).toBeUndefined();
+                    expect(Object.keys(result).length).toBe(0);
+
+                    var statCB = statSpy();
+                    brackets.fs.stat(testFile, statCB);
+                    await awaitsFor(function () { return statCB.wasCalled; }, 1000);
+
+                    expect(statCB.error.code).toBe(brackets.fs.ERR_CODES.ENOENT);
+                });
+
+                it("should resolve with error when deleting non-existent file", async function () {
+                    var result = await Phoenix.VFS.unlinkResolves("/non/existent/file.txt");
+                    expect(result.error).toBeTruthy();
+                    expect(result.error.code).toBe(brackets.fs.ERR_CODES.ENOENT);
+                });
+
+            }); // describe("unlinkResolves")
+
+        }); // describe("VFS Async APIs")
 
         describe("specialDirectories", function () {
             it("should have an application support directory", async function () {
