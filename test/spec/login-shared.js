@@ -275,6 +275,163 @@ define(function (require, exports, module) {
             // Close popup
             $profileButton.trigger('click');
         });
+
+        it("should show pro branding for user with pro subscription (expired trial)", async function () {
+            console.log("llgT: Starting pro user with expired trial test");
+
+            // Setup: Pro subscription + expired trial
+            setupProUserMock(true);
+            await setupExpiredTrial();
+
+            // Verify initial state (no pro branding)
+            await verifyProBranding(false, "no pro branding to start with");
+
+            // Perform login
+            await performFullLoginFlow();
+            await verifyProBranding(true, "pro branding to appear after pro user login");
+
+            // Check profile popup shows pro status (not trial)
+            const $profileButton = testWindow.$("#user-profile-button");
+            $profileButton.trigger('click');
+
+            // Wait for profile popup to show "phoenix pro <leaf>"
+            await verifyProfilePopupContent(VIEW_PHOENIX_PRO, "pro user profile popup");
+
+            // Close popup
+            $profileButton.trigger('click');
+
+            // Perform logout
+            await performFullLogoutFlow();
+
+            // For user with pro subscription + expired trial:
+            // After logout, pro branding should disappear because:
+            // 1. No server entitlements (logged out)
+            // 2. Trial is expired (0 days remaining)
+            await verifyProBranding(false, "Pro branding to disappear after logout");
+        });
+
+        it("should show trial branding for user without pro subscription (active trial)", async function () {
+            console.log("llgT: Starting trial user test");
+
+            // Setup: No pro subscription + active trial (15 days)
+            setupProUserMock(false);
+            await setupTrialState(15);
+
+            // Verify initial state shows pro branding due to trial
+            await verifyProBranding(true, "Trial branding to appear initially");
+
+            // Perform login
+            await performFullLoginFlow();
+
+            // Verify pro branding remains after login
+            await verifyProBranding(true, "after trial user login");
+
+            // Check profile popup shows trial status
+            const $profileButton = testWindow.$("#user-profile-button");
+            $profileButton.trigger('click');
+            await popupToAppear(PROFILE_POPUP);
+            await verifyProfilePopupContent(VIEW_TRIAL_DAYS_LEFT,
+                "trial user profile popup for logged in user");
+
+            // Close popup
+            $profileButton.trigger('click');
+
+            // Perform logout
+            await performFullLogoutFlow();
+
+            // Verify pro branding remains after logout (trial continues)
+            await verifyProBranding(true, "Trial branding to remain after logout");
+
+            // Check profile popup still shows trial status
+            $profileButton.trigger('click');
+            await popupToAppear(SIGNIN_POPUP);
+            await verifyProfilePopupContent(VIEW_TRIAL_DAYS_LEFT,
+                "trial user profile popup for logged out user");
+
+            // Close popup
+            $profileButton.trigger('click');
+        });
+
+        it("should prioritize pro subscription over trial in profile popup", async function () {
+            console.log("llgT: Starting trial user with pro subscription test");
+
+            // Setup: Pro subscription + active trial
+            setupProUserMock(true);
+            await setupTrialState(10);
+
+            // Perform login
+            await performFullLoginFlow();
+
+            // Verify pro branding appears
+            await verifyProBranding(true, "Pro branding to appear for pro user");
+
+            // Check profile popup shows pro status (not trial text)
+            const $profileButton = testWindow.$("#user-profile-button");
+            $profileButton.trigger('click');
+            await popupToAppear(PROFILE_POPUP);
+
+            // Should show pro, not trial, since user has paid subscription
+            await verifyProfilePopupContent(VIEW_PHOENIX_PRO,
+                "pro+trial user profile should not show trial branding");
+
+            // Close popup
+            $profileButton.trigger('click');
+
+            // Perform logout
+            await performFullLogoutFlow();
+
+            // Verify pro branding remains due to trial (even though subscription is gone)
+            await verifyProBranding(true, "Pro branding should remain after logout as trial user");
+            $profileButton.trigger('click');
+            await popupToAppear(SIGNIN_POPUP);
+            await verifyProfilePopupContent(VIEW_TRIAL_DAYS_LEFT,
+                "trial user profile popup for logged out user");
+
+            // Close popup
+            $profileButton.trigger('click');
+        });
+
+        it("should show free branding for user without pro subscription (expired trial)", async function () {
+            console.log("llgT: Starting desktop trial user test");
+
+            // Setup: No pro subscription + active trial (15 days)
+            setupProUserMock(false);
+            await setupExpiredTrial();
+
+            // Verify initial state (no pro branding)
+            await verifyProBranding(false, "no pro branding to start with");
+
+            // Perform login
+            await performFullLoginFlow();
+
+            // Verify pro branding remains after login
+            await verifyProBranding(false, "after trial free user login");
+
+            // Check profile popup shows free plan status
+            const $profileButton = testWindow.$("#user-profile-button");
+            $profileButton.trigger('click');
+            await popupToAppear(PROFILE_POPUP);
+            await verifyProfilePopupContent(VIEW_PHOENIX_FREE,
+                "free plan user profile popup for logged in user");
+
+            // Close popup
+            $profileButton.trigger('click');
+
+            // Perform logout
+            await performFullLogoutFlow();
+
+            // Verify pro branding remains after logout (trial continues)
+            await verifyProBranding(false, "Trial branding to remain after logout");
+
+            // Check profile popup still shows free plan status as trial expired
+            $profileButton.trigger('click');
+            await popupToAppear(SIGNIN_POPUP);
+            // not logged in user, we wont show free plan tag as base editor is always free.
+            expect(testWindow.$(`.profile-popup .trial-plan-info`).length).toBe(0);
+
+            // Close popup
+            $profileButton.trigger('click');
+        });
     }
 
     exports.setup = setup;
