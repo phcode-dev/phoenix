@@ -18,7 +18,7 @@
  *
  */
 
-/*global describe, it, expect, beforeAll, afterAll, beforeEach, afterEach, awaitsFor, awaitsForDone, awaits*/
+/*global describe, it, expect, beforeAll, afterAll, beforeEach, afterEach, awaits*/
 
 define(function (require, exports, module) {
 
@@ -85,6 +85,8 @@ define(function (require, exports, module) {
             if (originalFetch && testWindow._test_pro_dlg_login_exports && testWindow._test_pro_dlg_login_exports.setFetchFn) {
                 testWindow._test_pro_dlg_login_exports.setFetchFn(originalFetch);
             }
+
+            LoginServicePromo.setDateNowFn(Date.now);
 
             testWindow = null;
             LoginServicePromo = null;
@@ -251,7 +253,7 @@ define(function (require, exports, module) {
                 expect(currentResult.data.proVersion).toBe("3.1.0");
                 expect(currentResult.data.endDate).toBe(existingTrial.endDate);
 
-                // For same version, no dialog should appear
+                // For same version, no dialog should appear. lets wait a bit to make sure it doesn't show up'
                 await awaits(500);
                 const modalContent = testWindow.$('.modal:visible');
                 expect(modalContent.length).toBe(0);
@@ -277,7 +279,7 @@ define(function (require, exports, module) {
                 expect(currentResult.data.proVersion).toBe("3.2.0"); // Should preserve original version
                 expect(currentResult.data.endDate).toBe(existingTrial.endDate); // Should preserve end date
 
-                // For older current version, no dialog should appear
+                // For same version, no dialog should appear. lets wait a bit to make sure it doesn't show up
                 await awaits(500);
                 const modalContent = testWindow.$('.modal:visible');
                 expect(modalContent.length).toBe(0);
