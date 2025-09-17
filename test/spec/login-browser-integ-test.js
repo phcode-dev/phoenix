@@ -40,11 +40,15 @@ define(function (require, exports, module) {
             LoginBrowserExports,
             ProDialogsExports,
             originalOpen,
-            originalFetch,
-            SharedUtils,
+            originalFetch;
+        let SharedUtils,
             setupTrialState,
             setupExpiredTrial,
-            verifyProBranding;
+            verifyProBranding,
+            verifyProfilePopupContent,
+            VIEW_TRIAL_DAYS_LEFT,
+            VIEW_PHOENIX_PRO,
+            VIEW_PHOENIX_FREE;
 
         beforeAll(async function () {
             testWindow = await SpecRunnerUtils.createTestWindowAndRun();
@@ -78,9 +82,13 @@ define(function (require, exports, module) {
                 3000
             );
             SharedUtils = LoginShared.getSharedUtils(testWindow);
+            VIEW_TRIAL_DAYS_LEFT = SharedUtils.VIEW_TRIAL_DAYS_LEFT;
+            VIEW_PHOENIX_PRO = SharedUtils.VIEW_PHOENIX_PRO;
+            VIEW_PHOENIX_FREE = SharedUtils.VIEW_PHOENIX_FREE;
             setupTrialState = SharedUtils.setupTrialState;
             setupExpiredTrial = SharedUtils.setupExpiredTrial;
             verifyProBranding = SharedUtils.verifyProBranding;
+            verifyProfilePopupContent = SharedUtils.verifyProfilePopupContent;
         }, 30000);
 
         afterAll(async function () {
@@ -198,68 +206,6 @@ define(function (require, exports, module) {
             LoginBrowserExports.setFetchFn(fetchMock);
             LoginServiceExports.setFetchFn(fetchMock);
             ProDialogsExports.setFetchFn(fetchMock);
-        }
-
-        const VIEW_TRIAL_DAYS_LEFT = "VIEW_TRIAL_DAYS_LEFT";
-        const VIEW_PHOENIX_PRO = "VIEW_PHOENIX_PRO";
-        const VIEW_PHOENIX_FREE = "VIEW_PHOENIX_FREE";
-        async function verifyProfilePopupContent(expectedView, testDescription) {
-            await awaitsFor(
-                function () {
-                    return testWindow.$('.profile-popup').length > 0;
-                },
-                `Profile popup to appear: ${testDescription}`,
-                3000
-            );
-
-            if (expectedView === VIEW_PHOENIX_PRO) {
-                await awaitsFor(
-                    function () {
-                        const $popup = testWindow.$('.profile-popup');
-                        const $planName = $popup.find('.user-plan-name');
-                        const planText = $planName.text();
-                        return planText.includes("Phoenix Pro");
-                    },
-                    `Profile popup should say phoenix pro: ${testDescription}`, 5000
-                );
-                const $popup = testWindow.$('.profile-popup');
-                const $planName = $popup.find('.user-plan-name');
-                const planText = $planName.text();
-                expect(planText).toContain("Phoenix Pro");
-                expect(planText).not.toContain("days left");
-                expect($popup.find(".fa-feather").length).toBe(1);
-            } else if (expectedView === VIEW_TRIAL_DAYS_LEFT) {
-                await awaitsFor(
-                    function () {
-                        const $popup = testWindow.$('.profile-popup');
-                        const $planName = $popup.find('.user-plan-name');
-                        const planText = $planName.text();
-                        return planText.includes("Phoenix Pro") && planText.includes("days left");
-                    },
-                    `Profile popup should say phoenix pro trial: ${testDescription}`, 5000
-                );
-                const $popup = testWindow.$('.profile-popup');
-                const $planName = $popup.find('.user-plan-name');
-                const planText = $planName.text();
-                expect(planText).toContain("Phoenix Pro");
-                expect(planText).toContain("days left");
-                expect($popup.find(".fa-feather").length).toBe(1);
-            } else {
-                await awaitsFor(
-                    function () {
-                        const $popup = testWindow.$('.profile-popup');
-                        const $planName = $popup.find('.user-plan-name');
-                        const planText = $planName.text();
-                        return !planText.includes("Phoenix Pro");
-                    },
-                    `Profile popup should not say phoenix pro: ${testDescription}`, 5000
-                );
-                const $popup = testWindow.$('.profile-popup');
-                const $planName = $popup.find('.user-plan-name');
-                const planText = $planName.text();
-                expect(planText).not.toContain("Phoenix Pro");
-                expect($popup.find(".fa-feather").length).toBe(0);
-            }
         }
 
         async function cleanupTrialState() {
