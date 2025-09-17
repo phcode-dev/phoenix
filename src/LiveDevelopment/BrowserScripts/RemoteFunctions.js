@@ -1963,7 +1963,7 @@ function RemoteFunctions(config = {}) {
                     .phoenix-ribbon-strip {
                         position: absolute !important;
                         inset: 0 !important;
-                        overflow: auto hidden !important;
+                        overflow: hidden !important;
                         scroll-behavior: smooth !important;
                         padding: 8px !important;
                     }
