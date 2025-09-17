@@ -2208,7 +2208,25 @@ function RemoteFunctions(config = {}) {
             `;
         },
 
-        _fetchImages: function(searchQuery = 'sunshine', page = 1, append = false) {
+        _getDefaultQuery: function() {
+            // this are the default queries, so when image ribbon gallery is shown, we select a random query and show it
+            const qualityQueries = [
+                'nature', 'minimal', 'workspace', 'abstract', 'coffee',
+                'mountains', 'city', 'flowers', 'ocean', 'sunset',
+                'architecture', 'forest', 'travel', 'technology', 'sky',
+                'landscape', 'creative', 'design', 'art', 'modern',
+                'food', 'patterns', 'colors', 'photography', 'studio',
+                'light', 'winter', 'summer', 'vintage', 'geometric',
+                'water', 'beach', 'space', 'garden', 'textures',
+                'urban', 'portrait', 'music', 'books', 'home',
+                'cozy', 'aesthetic', 'autumn', 'spring', 'clouds'
+            ];
+
+            const randIndex = Math.floor(Math.random() * qualityQueries.length);
+            return qualityQueries[randIndex];
+        },
+
+        _fetchImages: function(searchQuery, page = 1, append = false) {
             this._currentSearchQuery = searchQuery;
             const apiUrl = `https://images.phcode.dev/api/images/search?q=${encodeURIComponent(searchQuery)}&per_page=10&page=${page}`;
 
@@ -2572,7 +2590,7 @@ function RemoteFunctions(config = {}) {
             this._style();
             window.document.body.appendChild(this.body);
             this._attachEventHandlers();
-            this._fetchImages();
+            this._fetchImages(this._getDefaultQuery());
             setTimeout(() => this._updateNavButtons(), 0);
         },
 
