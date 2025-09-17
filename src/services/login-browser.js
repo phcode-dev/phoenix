@@ -344,6 +344,7 @@ define(function (require, exports, module) {
 
             // Always reset local state regardless of server response
             await _resetBrowserLogin();
+            await _verifyBrowserLogin();
 
             if (response.ok) {
                 const result = await response.json();
@@ -373,6 +374,7 @@ define(function (require, exports, module) {
         } catch (error) {
             // Always reset local state even on network error
             await _resetBrowserLogin();
+            await _verifyBrowserLogin();
             console.error("Network error during logout:", error);
             const dialog = Dialogs.showModalDialog(
                 DefaultDialogs.DIALOG_ID_ERROR,
