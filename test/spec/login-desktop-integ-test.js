@@ -50,7 +50,9 @@ define(function (require, exports, module) {
             originalCopyToClipboard,
             originalFetch,
             SharedUtils,
-            setupTrialState;
+            setupTrialState,
+            setupExpiredTrial,
+            verifyProBranding;
 
         beforeAll(async function () {
             testWindow = await SpecRunnerUtils.createTestWindowAndRun();
@@ -85,6 +87,8 @@ define(function (require, exports, module) {
             );
             SharedUtils = LoginShared.getSharedUtils(testWindow);
             setupTrialState = SharedUtils.setupTrialState;
+            setupExpiredTrial = SharedUtils.setupExpiredTrial;
+            verifyProBranding = SharedUtils.verifyProBranding;
         }, 30000);
 
         afterAll(async function () {
@@ -111,18 +115,6 @@ define(function (require, exports, module) {
             // Ensure we start each test in a logged-out state
             // Note: We can't easily reset login state, so tests should handle this
         });
-
-        async function setupExpiredTrial() {
-            const PromotionExports = testWindow._test_promo_login_exports;
-            const mockNow = Date.now();
-            await PromotionExports._setTrialData({
-                proVersion: "3.1.0",
-                endDate: mockNow - PromotionExports.TRIAL_CONSTANTS.MS_PER_DAY
-            });
-            // Trigger entitlements changed event to update branding
-            const LoginService = PromotionExports.LoginService;
-            LoginService.trigger(LoginService.EVENT_ENTITLEMENTS_CHANGED);
-        }
 
         function setupProUserMock(hasActiveSubscription = true) {
             let userSignedOut = false;
@@ -228,34 +220,6 @@ define(function (require, exports, module) {
             LoginDesktopExports.setFetchFn(fetchMock);
             LoginServiceExports.setFetchFn(fetchMock);
             ProDialogsExports.setFetchFn(fetchMock);
-        }
-
-        async function verifyProBranding(shouldShowPro, testDescription) {
-            const $brandingLink = testWindow.$("#phcode-io-main-nav");
-            console.log(`llgT: Desktop verifying branding for ${testDescription}, shouldShowPro: ${shouldShowPro}`);
-            console.log(`llgT: Desktop branding link classes: ${$brandingLink.attr('class')}`);
-            console.log(`llgT: Desktop branding link text: '${$brandingLink.text()}'`);
-
-            if (shouldShowPro) {
-                await awaitsFor(
-                    function () {
-                        return testWindow.$("#phcode-io-main-nav").hasClass("phoenix-pro");
-                    },
-                    `Verify Pro branding to appear: ${testDescription}`, 5000
-                );
-                expect($brandingLink.hasClass("phoenix-pro")).toBe(true);
-                expect($brandingLink.text()).toContain("Phoenix Pro");
-                expect($brandingLink.find(".fa-feather").length).toBe(1);
-            } else {
-                await awaitsFor(
-                    function () {
-                        return !testWindow.$("#phcode-io-main-nav").hasClass("phoenix-pro");
-                    },
-                    `Verify Pro branding to go away: ${testDescription}`, 5000
-                );
-                expect($brandingLink.hasClass("phoenix-pro")).toBe(false);
-                expect($brandingLink.text()).toBe("phcode.io");
-            }
         }
 
         const VIEW_TRIAL_DAYS_LEFT = "VIEW_TRIAL_DAYS_LEFT";
