@@ -1918,6 +1918,11 @@ function RemoteFunctions(config = {}) {
     function ImageRibbonGallery(element) {
         this.element = element;
         this.remove = this.remove.bind(this);
+        this.currentPage = 1;
+        this.totalPages = 1;
+        this.allImages = [];
+        this.imagesPerPage = 10;
+        this.scrollPosition = 0;
         this.create();
     }
 
@@ -2012,6 +2017,25 @@ function RemoteFunctions(config = {}) {
                         cursor: pointer !important;
                         backdrop-filter: blur(8px) !important;
                         font-size: 14px !important;
+                    }
+
+                    .phoenix-ribbon-nav {
+                        font-size: 18px !important;
+                        font-weight: 600 !important;
+                        user-select: none !important;
+                        transition: all 0.2s ease !important;
+                        z-index: 10 !important;
+                    }
+
+                    .phoenix-ribbon-nav:hover {
+                        background: rgba(21,25,36,0.85) !important;
+                        border-color: rgba(255,255,255,0.25) !important;
+                        transform: translateY(-50%) scale(1.05) !important;
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+                    }
+
+                    .phoenix-ribbon-nav:active {
+                        transform: translateY(-50%) scale(0.95) !important;
                     }
 
                     .phoenix-ribbon-nav.left {
@@ -2184,10 +2208,13 @@ function RemoteFunctions(config = {}) {
             `;
         },
 
-        _fetchImages: function(searchQuery = 'sunshine') {
+        _fetchImages: function(searchQuery = 'sunshine', page = 1, append = false) {
             this._currentSearchQuery = searchQuery;
-            const apiUrl = `https://images.phcode.dev/api/images/search?q=${encodeURIComponent(searchQuery)}&per_page=10`;
-            this._showLoading();
+            const apiUrl = `https://images.phcode.dev/api/images/search?q=${encodeURIComponent(searchQuery)}&per_page=10&page=${page}`;
+
+            if (!append) {
+                this._showLoading();
+            }
 
             fetch(apiUrl)
                 .then(response => {
@@ -2198,15 +2225,101 @@ function RemoteFunctions(config = {}) {
                 })
                 .then(data => {
                     if (data.results && data.results.length > 0) {
-                        this._renderImages(data.results);
-                    } else {
+                        if (append) {
+                            this.allImages = this.allImages.concat(data.results);
+                            this._renderImages(data.results, true); // true means need to append new images at the end
+                        } else {
+                            this.allImages = data.results;
+                            this._renderImages(this.allImages, false); // false means its a new search
+                        }
+                        this.totalPages = data.total_pages || 1;
+                        this.currentPage = page;
+                        this._updateNavButtons();
+                    } else if (!append) {
                         this._showError('No images found');
+                    }
+
+                    if (append) {
+                        this._isLoadingMore = false;
+                        this._hideLoadingMore();
                     }
                 })
                 .catch(error => {
                     console.error('Failed to fetch images:', error);
-                    this._showError('Failed to load images');
+                    if (!append) {
+                        this._showError('Failed to load images');
+                    } else {
+                        this._isLoadingMore = false;
+                        this._hideLoadingMore();
+                    }
                 });
+        },
+
+        _handleNavLeft: function() {
+            const container = this._shadow.querySelector('.phoenix-ribbon-strip');
+            if (!container) { return; }
+
+            const containerWidth = container.clientWidth;
+            const scrollAmount = containerWidth;
+
+            this.scrollPosition = Math.max(0, this.scrollPosition - scrollAmount);
+            container.scrollTo({ left: this.scrollPosition, behavior: 'smooth' });
+            this._updateNavButtons();
+        },
+
+        _handleNavRight: function() {
+            const container = this._shadow.querySelector('.phoenix-ribbon-strip');
+            if (!container) { return; }
+
+            const containerWidth = container.clientWidth;
+            const totalWidth = container.scrollWidth;
+            const scrollAmount = containerWidth;
+
+            // if we're near the end, we need to load more images
+            const nearEnd = (this.scrollPosition + containerWidth + scrollAmount) >= totalWidth - 100;
+            if (nearEnd && this.currentPage < this.totalPages && !this._isLoadingMore) {
+                this._isLoadingMore = true;
+                this._showLoadingMore();
+                this._fetchImages(this._currentSearchQuery, this.currentPage + 1, true);
+            }
+
+            this.scrollPosition = Math.min(totalWidth - containerWidth, this.scrollPosition + scrollAmount);
+            container.scrollTo({ left: this.scrollPosition, behavior: 'smooth' });
+            this._updateNavButtons();
+        },
+
+        _updateNavButtons: function() {
+            // this function is responsible to update the nav buttons
+            // because when we're at the very left, then we style the nav-left button differently (reduce opacity)
+            // and when we're at the very right and no more pages available, we reduce opacity for nav-right
+            const navLeft = this._shadow.querySelector('.phoenix-ribbon-nav.left');
+            const navRight = this._shadow.querySelector('.phoenix-ribbon-nav.right');
+            const container = this._shadow.querySelector('.phoenix-ribbon-strip');
+
+            if (!navLeft || !navRight || !container) { return; }
+
+            // show/hide left button
+            if (this.scrollPosition <= 0) {
+                navLeft.style.opacity = '0.3';
+                navLeft.style.pointerEvents = 'none';
+            } else {
+                navLeft.style.opacity = '1';
+                navLeft.style.pointerEvents = 'auto';
+            }
+
+            // show/hide right button
+            const containerWidth = container.clientWidth;
+            const totalWidth = container.scrollWidth;
+            const atEnd = (this.scrollPosition + containerWidth) >= totalWidth - 10;
+            const hasMorePages = this.currentPage < this.totalPages;
+
+            if (atEnd && !hasMorePages) {
+                navRight.style.opacity = '0.3';
+                navRight.style.pointerEvents = 'none';
+            } else {
+                navRight.style.opacity = '1';
+                navRight.style.pointerEvents = 'auto';
+            }
         },
 
         _showLoading: function() {
@@ -2217,16 +2330,53 @@ function RemoteFunctions(config = {}) {
             rowElement.className = 'phoenix-ribbon-row phoenix-ribbon-loading';
         },
 
+        _showLoadingMore: function() {
+            const rowElement = this._shadow.querySelector('.phoenix-ribbon-row');
+            if (!rowElement) { return; }
+
+            // when loading more images we need to show the message at the end of the image ribbon
+            const loadingIndicator = window.document.createElement('div');
+            loadingIndicator.className = 'phoenix-loading-more';
+            loadingIndicator.style.cssText = `
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                min-width: 120px !important;
+                height: 116px !important;
+                margin-left: 2px !important;
+                background: rgba(255,255,255,0.03) !important;
+                border-radius: 8px !important;
+                color: #e8eaf0 !important;
+                font-size: 12px !important;
+                border: 1px dashed rgba(255,255,255,0.1) !important;
+            `;
+            loadingIndicator.textContent = 'Loading...';
+            rowElement.appendChild(loadingIndicator);
+        },
+
+        _hideLoadingMore: function() {
+            const loadingIndicator = this._shadow.querySelector('.phoenix-loading-more');
+            if (loadingIndicator) {
+                loadingIndicator.remove();
+            }
+        },
+
         _attachEventHandlers: function() {
             const searchInput = this._shadow.querySelector('.phoenix-ribbon-search input');
             const searchButton = this._shadow.querySelector('.phoenix-ribbon-search-btn');
             const closeButton = this._shadow.querySelector('.phoenix-ribbon-close');
+            const navLeft = this._shadow.querySelector('.phoenix-ribbon-nav.left');
+            const navRight = this._shadow.querySelector('.phoenix-ribbon-nav.right');
 
             if (searchInput && searchButton) {
                 const performSearch = (e) => {
                     e.stopPropagation();
                     const query = searchInput.value.trim();
                     if (query) {
+                        // reset pagination when searching
+                        this.currentPage = 1;
+                        this.allImages = [];
+                        this.scrollPosition = 0;
                         this._fetchImages(query);
                     }
                 };
@@ -2250,6 +2400,20 @@ function RemoteFunctions(config = {}) {
                 });
             }
 
+            if (navLeft) {
+                navLeft.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this._handleNavLeft();
+                });
+            }
+
+            if (navRight) {
+                navRight.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this._handleNavRight();
+                });
+            }
+
             // Prevent clicks anywhere inside the ribbon from bubbling up
             const ribbonContainer = this._shadow.querySelector('.phoenix-image-ribbon');
             if (ribbonContainer) {
@@ -2259,13 +2423,26 @@ function RemoteFunctions(config = {}) {
             }
         },
 
-        _renderImages: function(images) {
+        // append true means load more images (user clicked on nav-right)
+        // append false means its a new query
+        _renderImages: function(images, append = false) {
             const rowElement = this._shadow.querySelector('.phoenix-ribbon-row');
             if (!rowElement) { return; }
 
-            // remove the loading state
-            rowElement.innerHTML = '';
-            rowElement.className = 'phoenix-ribbon-row';
+            const container = this._shadow.querySelector('.phoenix-ribbon-strip');
+            const savedScrollPosition = container ? container.scrollLeft : 0;
+
+            // if not appending we clear the phoenix ribbon
+            if (!append) {
+                rowElement.innerHTML = '';
+                rowElement.className = 'phoenix-ribbon-row';
+            } else {
+                // when appending we add the new images at the end
+                const loadingIndicator = this._shadow.querySelector('.phoenix-loading-more');
+                if (loadingIndicator) {
+                    loadingIndicator.remove();
+                }
+            }
 
             // Create thumbnails from API data
             images.forEach(image => {
@@ -2334,6 +2511,12 @@ function RemoteFunctions(config = {}) {
                 thumbDiv.appendChild(useImageBtn);
                 rowElement.appendChild(thumbDiv);
             });
+
+            if (append && container && savedScrollPosition > 0) {
+                setTimeout(() => {
+                    container.scrollLeft = savedScrollPosition;
+                }, 0);
+            }
         },
 
         _showError: function(message) {
@@ -2390,6 +2573,7 @@ function RemoteFunctions(config = {}) {
             window.document.body.appendChild(this.body);
             this._attachEventHandlers();
             this._fetchImages();
+            setTimeout(() => this._updateNavButtons(), 0);
         },
 
         remove: function () {
