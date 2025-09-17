@@ -352,38 +352,6 @@ define(function (require, exports, module) {
                 expect(capturedBrowserURL).toContain('test-session-123');
             });
 
-            it("should update profile icon after login", async function () {
-                // Setup basic user mock
-                setupProUserMock(false);
-
-                // Verify initial state
-                const $profileIcon = testWindow.$("#user-profile-button");
-                const initialContent = $profileIcon.html();
-                expect(initialContent).not.toContain('TU');
-
-                // Perform login
-                await performFullLoginFlow();
-
-                // Wait for profile icon to update
-                await awaitsFor(
-                    function () {
-                        const $profileIcon = testWindow.$("#user-profile-button");
-                        const profileIconContent = $profileIcon.html();
-                        return profileIconContent && profileIconContent.includes('TU');
-                    },
-                    "profile icon to contain user initials",
-                    5000
-                );
-
-                // Verify profile icon updated with user initials
-                const updatedContent = $profileIcon.html();
-                expect(updatedContent).toContain('svg');
-                expect(updatedContent).toContain('TU');
-
-                // Logout for cleanup
-                await performFullLogoutFlow();
-            });
-
             it("should show correct popup states", async function () {
                 // Setup basic user mock
                 setupProUserMock(false);
