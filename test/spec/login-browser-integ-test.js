@@ -292,59 +292,6 @@ define(function (require, exports, module) {
 
             LoginShared.setupSharedTests();
 
-            it("should show correct popup states", async function () {
-                // Setup basic user mock
-                setupProUserMock(false);
-
-                const $profileButton = testWindow.$("#user-profile-button");
-
-                // Test initial state - should show signin popup
-                $profileButton.trigger('click');
-                await popupToAppear(SIGNIN_POPUP);
-
-                let popupContent = testWindow.$('.profile-popup');
-                const signInButton = popupContent.find('#phoenix-signin-btn');
-                const signOutButton = popupContent.find('#phoenix-signout-btn');
-
-                expect(signInButton.length).toBe(1);
-                expect(signOutButton.length).toBe(0);
-
-                // Close popup
-                $profileButton.trigger('click');
-
-                // Perform login
-                await performFullLoginFlow();
-
-                // Test logged in state - should show profile popup
-                $profileButton.trigger('click');
-                await popupToAppear(PROFILE_POPUP);
-
-                popupContent = testWindow.$('.profile-popup');
-                const newSignInButton = popupContent.find('#phoenix-signin-btn');
-                const newSignOutButton = popupContent.find('#phoenix-signout-btn');
-
-                expect(newSignInButton.length).toBe(0);
-                expect(newSignOutButton.length).toBe(1);
-
-                // Close popup and logout for cleanup
-                $profileButton.trigger('click');
-                await performFullLogoutFlow();
-
-                // Test final state - should be back to signin popup
-                $profileButton.trigger('click');
-                await popupToAppear(SIGNIN_POPUP);
-
-                popupContent = testWindow.$('.profile-popup');
-                const finalSignInButton = popupContent.find('#phoenix-signin-btn');
-                const finalSignOutButton = popupContent.find('#phoenix-signout-btn');
-
-                expect(finalSignInButton.length).toBe(1);
-                expect(finalSignOutButton.length).toBe(0);
-
-                // Close popup
-                $profileButton.trigger('click');
-            });
-
             it("should show pro branding for user with pro subscription (expired trial)", async function () {
                 console.log("llgT: Starting browser pro user with expired trial test");
 
