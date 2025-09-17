@@ -372,6 +372,7 @@ define(function (require, exports, module) {
                 return;
             }
             await _resetAccountLogin();
+            await _verifyLogin();
             Dialogs.showModalDialog(
                 DefaultDialogs.DIALOG_ID_INFO,
                 Strings.SIGNED_OUT,

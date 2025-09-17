@@ -385,6 +385,12 @@ define(function (require, exports, module) {
             );
         }
 
+        function verifyProfileIconBlanked() {
+            const $profileIcon = testWindow.$("#user-profile-button");
+            const initialContent = $profileIcon.html();
+            expect(initialContent).not.toContain('TU');
+        }
+
         async function performFullLogoutFlow() {
             // Click profile button to open popup
             const $profileButton = testWindow.$("#user-profile-button");
@@ -411,6 +417,8 @@ define(function (require, exports, module) {
                 "User to be signed out",
                 10000
             );
+
+            verifyProfileIconBlanked();
         }
 
         describe("Browser Login Tests", function () {
@@ -441,14 +449,13 @@ define(function (require, exports, module) {
                 setupProUserMock(false);
 
                 // Verify initial state
-                const $profileIcon = testWindow.$("#user-profile-button");
-                const initialContent = $profileIcon.html();
-                expect(initialContent).not.toContain('TU');
+                verifyProfileIconBlanked();
 
                 // Perform login
                 await performFullLoginFlow();
 
                 // Verify profile icon updated with user initials
+                const $profileIcon = testWindow.$("#user-profile-button");
                 const updatedContent = $profileIcon.html();
                 expect(updatedContent).toContain('svg');
                 expect(updatedContent).toContain('TU');
