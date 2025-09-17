@@ -42,8 +42,7 @@ define(function (require, exports, module) {
             originalOpen,
             originalFetch;
 
-        let SharedUtils,
-            setupTrialState,
+        let setupTrialState,
             setupExpiredTrial,
             verifyProBranding,
             verifyProfilePopupContent,
@@ -88,20 +87,20 @@ define(function (require, exports, module) {
                 "Profile button to be available",
                 3000
             );
-            SharedUtils = LoginShared.getSharedUtils(testWindow, LoginServiceExports);
-            VIEW_TRIAL_DAYS_LEFT = SharedUtils.VIEW_TRIAL_DAYS_LEFT;
-            VIEW_PHOENIX_PRO = SharedUtils.VIEW_PHOENIX_PRO;
-            VIEW_PHOENIX_FREE = SharedUtils.VIEW_PHOENIX_FREE;
-            SIGNIN_POPUP = SharedUtils.SIGNIN_POPUP;
-            PROFILE_POPUP = SharedUtils.PROFILE_POPUP;
-            setupTrialState = SharedUtils.setupTrialState;
-            setupExpiredTrial = SharedUtils.setupExpiredTrial;
-            verifyProBranding = SharedUtils.verifyProBranding;
-            verifyProfilePopupContent = SharedUtils.verifyProfilePopupContent;
-            cleanupTrialState = SharedUtils.cleanupTrialState;
-            popupToAppear = SharedUtils.popupToAppear;
-            performFullLogoutFlow = SharedUtils.performFullLogoutFlow;
-            verifyProfileIconBlanked = SharedUtils.verifyProfileIconBlanked;
+            LoginShared.setup(testWindow, LoginServiceExports);
+            VIEW_TRIAL_DAYS_LEFT = LoginShared.VIEW_TRIAL_DAYS_LEFT;
+            VIEW_PHOENIX_PRO = LoginShared.VIEW_PHOENIX_PRO;
+            VIEW_PHOENIX_FREE = LoginShared.VIEW_PHOENIX_FREE;
+            SIGNIN_POPUP = LoginShared.SIGNIN_POPUP;
+            PROFILE_POPUP = LoginShared.PROFILE_POPUP;
+            setupTrialState = LoginShared.setupTrialState;
+            setupExpiredTrial = LoginShared.setupExpiredTrial;
+            verifyProBranding = LoginShared.verifyProBranding;
+            verifyProfilePopupContent = LoginShared.verifyProfilePopupContent;
+            cleanupTrialState = LoginShared.cleanupTrialState;
+            popupToAppear = LoginShared.popupToAppear;
+            performFullLogoutFlow = LoginShared.performFullLogoutFlow;
+            verifyProfileIconBlanked = LoginShared.verifyProfileIconBlanked;
         }, 30000);
 
         afterAll(async function () {
