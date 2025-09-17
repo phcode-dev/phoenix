@@ -170,7 +170,7 @@ define(function (require, exports, module) {
                     effectiveEntitlements.trialDaysRemaining);
                 const trialInfoHtml = `<div class="trial-plan-info">
                     <span class="phoenix-pro-title-plain">
-                        <span class="pro-plan-name">${planName}</span>
+                        <span class="pro-plan-name user-plan-name">${planName}</span>
                         <i class="fa-solid fa-feather" style="margin-left: 3px;"></i>
                     </span>
                 </div>`;
@@ -371,7 +371,7 @@ define(function (require, exports, module) {
                     const planName = StringUtils.format(Strings.PROMO_PRO_TRIAL_DAYS_LEFT,
                         entitlements.trialDaysRemaining);
                     const proTitle = `<span class="phoenix-pro-title-plain">
-                        <span class="pro-plan-name">${planName}</span>
+                        <span class="pro-plan-name user-plan-name">${planName}</span>
                         <i class="fa-solid fa-feather" style="margin-left: 3px;"></i>
                     </span>`;
                     $planName.addClass('user-plan-paid').html(proTitle);
@@ -379,7 +379,7 @@ define(function (require, exports, module) {
                 } else {
                     // For paid users: regular plan name with icon
                     const proTitle = `<span class="phoenix-pro-title">
-                        <span class="pro-plan-name">${entitlements.plan.name}</span>
+                        <span class="pro-plan-name user-plan-name">${entitlements.plan.name}</span>
                         <i class="fa-solid fa-feather" style="margin-left: 3px;"></i>
                     </span>`;
                     $planName.addClass('user-plan-paid').html(proTitle);
@@ -591,6 +591,7 @@ define(function (require, exports, module) {
                 _updateBranding(effectiveEntitlements);
             } else {
                 console.log('Profile Menu: No active trial found');
+                _updateBranding(null);
             }
         } catch (error) {
             console.error('Failed to initialize branding for trial users:', error);

@@ -418,7 +418,7 @@ define(function (require, exports, module) {
                         customerID: "test-customer-id",
                         loginTime: Date.now(),
                         profileIcon: {
-                            initials: "PU",
+                            initials: "TU",
                             color: "#14b8a6"
                         }
                     };
@@ -517,7 +517,10 @@ define(function (require, exports, module) {
             }
         }
 
-        async function verifyProfilePopupContent(expectedState, testDescription) {
+        const VIEW_TRIAL_DAYS_LEFT = "VIEW_TRIAL_DAYS_LEFT";
+        const VIEW_PHOENIX_PRO = "VIEW_PHOENIX_PRO";
+        const VIEW_PHOENIX_FREE = "VIEW_PHOENIX_FREE";
+        async function verifyProfilePopupContent(expectedView, testDescription) {
             await awaitsFor(
                 function () {
                     return testWindow.$('.profile-popup').length > 0;
@@ -526,50 +529,53 @@ define(function (require, exports, module) {
                 3000
             );
 
-            const $popup = testWindow.$('.profile-popup');
-            expect($popup.length).toBeGreaterThan(0);
-
-            if (expectedState.isPro && !expectedState.isTrial) {
+            if (expectedView === VIEW_PHOENIX_PRO) {
                 await awaitsFor(
                     function () {
+                        const $popup = testWindow.$('.profile-popup');
                         const $planName = $popup.find('.user-plan-name');
                         const planText = $planName.text();
                         return planText.includes("Phoenix Pro");
                     },
                     `Profile popup should say phoenix pro: ${testDescription}`, 5000
                 );
+                const $popup = testWindow.$('.profile-popup');
                 const $planName = $popup.find('.user-plan-name');
                 const planText = $planName.text();
                 expect(planText).toContain("Phoenix Pro");
                 expect(planText).not.toContain("days left");
-                expect($planName.find(".fa-feather").length).toBe(1);
-            } else if (expectedState.isTrial) {
+                expect($popup.find(".fa-feather").length).toBe(1);
+            } else if (expectedView === VIEW_TRIAL_DAYS_LEFT) {
                 await awaitsFor(
                     function () {
+                        const $popup = testWindow.$('.profile-popup');
                         const $planName = $popup.find('.user-plan-name');
                         const planText = $planName.text();
-                        return planText.includes("Phoenix Pro");
+                        return planText.includes("Phoenix Pro") && planText.includes("days left");
                     },
                     `Profile popup should say phoenix pro trial: ${testDescription}`, 5000
                 );
+                const $popup = testWindow.$('.profile-popup');
                 const $planName = $popup.find('.user-plan-name');
                 const planText = $planName.text();
                 expect(planText).toContain("Phoenix Pro");
                 expect(planText).toContain("days left");
-                expect($planName.find(".fa-feather").length).toBe(1);
+                expect($popup.find(".fa-feather").length).toBe(1);
             } else {
                 await awaitsFor(
                     function () {
+                        const $popup = testWindow.$('.profile-popup');
                         const $planName = $popup.find('.user-plan-name');
                         const planText = $planName.text();
                         return !planText.includes("Phoenix Pro");
                     },
-                    `Profile popup should say phoenix pro: ${testDescription}`, 5000
+                    `Profile popup should not say phoenix pro: ${testDescription}`, 5000
                 );
+                const $popup = testWindow.$('.profile-popup');
                 const $planName = $popup.find('.user-plan-name');
                 const planText = $planName.text();
                 expect(planText).not.toContain("Phoenix Pro");
-                expect($planName.find(".fa-feather").length).toBe(0);
+                expect($popup.find(".fa-feather").length).toBe(0);
             }
         }
 
@@ -578,12 +584,17 @@ define(function (require, exports, module) {
             await PromotionExports._cleanTrialData();
         }
 
-        async function popupToAppear(popupDescription) {
+        const SIGNIN_POPUP = "SIGNIN_POPUP";
+        const PROFILE_POPUP = "PROFILE_POPUP";
+        async function popupToAppear(popupType = SIGNIN_POPUP) {
+            const statusText = popupType === SIGNIN_POPUP ?
+                "Sign In popup to appear" : "Profile popup to appear";
             await awaitsFor(
                 function () {
-                    return testWindow.$('.modal').length > 0 || testWindow.$('.profile-popup').length > 0;
+                    const selector = popupType === SIGNIN_POPUP ? ".login-profile-popup" : ".user-profile-popup";
+                    return testWindow.$('.modal').length > 0 || testWindow.$(selector).length > 0;
                 },
-                popupDescription, 3000
+                statusText, 3000
             );
         }
 
@@ -604,7 +615,7 @@ define(function (require, exports, module) {
             // Click profile button
             const $profileButton = testWindow.$("#user-profile-button");
             $profileButton.trigger('click');
-            await popupToAppear("Login popup to appear");
+            await popupToAppear(SIGNIN_POPUP);
 
             // Find and click sign in button
             let popupContent = testWindow.$('.profile-popup');
@@ -640,7 +651,7 @@ define(function (require, exports, module) {
                 function () {
                     const $profileIcon = testWindow.$("#user-profile-button");
                     const profileIconContent = $profileIcon.html();
-                    return profileIconContent && profileIconContent.includes('PU');
+                    return profileIconContent && profileIconContent.includes('TU');
                 },
                 "profile icon to update with user initials",
                 3000
@@ -653,7 +664,7 @@ define(function (require, exports, module) {
             $profileButton.trigger('click');
 
             // Wait for profile popup
-            await popupToAppear("profile popup to appear");
+            await popupToAppear(PROFILE_POPUP);
 
             // Find and click sign out button
             let popupContent = testWindow.$('.profile-popup');
@@ -685,22 +696,6 @@ define(function (require, exports, module) {
                 await cleanupTrialState();
             });
 
-            // afterEach(async function () {
-            //     // Clean up after each test
-            //     try {
-            //         if (LoginServiceExports.LoginService.isLoggedIn()) {
-            //             await performFullLogoutFlow();
-            //         }
-            //         await cleanupTrialState();
-            //         // Restore original fetch
-            //         if (originalFetch) {
-            //             LoginBrowserExports.setFetchFn(originalFetch);
-            //         }
-            //     } catch (error) {
-            //         console.log("Cleanup error (ignoring):", error);
-            //     }
-            // });
-
             it("should show pro branding for user with pro subscription (expired trial)", async function () {
                 console.log("llgT: Starting browser pro user with expired trial test");
 
@@ -719,8 +714,8 @@ define(function (require, exports, module) {
                 const $profileButton = testWindow.$("#user-profile-button");
                 $profileButton.trigger('click');
 
-                // Wait for profile popup to load entitlements and update content
-                await verifyProfilePopupContent({isPro: true, isTrial: false}, "pro user profile popup");
+                // Wait for profile popup to show "phoenix pro <leaf>"
+                await verifyProfilePopupContent(VIEW_PHOENIX_PRO, "pro user profile popup");
 
                 // Close popup
                 $profileButton.trigger('click');
@@ -735,107 +730,83 @@ define(function (require, exports, module) {
                 await verifyProBranding(false, "Pro branding to disappear after logout");
             });
 
-            // it("should show trial branding for user without pro subscription (active trial)", async function () {
-            //     console.log("llgT: Starting browser trial user test");
-            //
-            //     // Setup: No pro subscription + active trial (15 days)
-            //     setupProUserMock(false);
-            //     await setupTrialState(15);
-            //
-            //     // Verify initial state shows pro branding due to trial
-            //     await awaitsFor(
-            //         function () {
-            //             const $brandingLink = testWindow.$("#phcode-io-main-nav");
-            //             return $brandingLink.hasClass("phoenix-pro");
-            //         },
-            //         "Trial branding to appear initially",
-            //         3000
-            //     );
-            //     verifyProBranding(true, "initial trial state");
-            //
-            //     // Perform login
-            //     await performFullLoginFlow();
-            //
-            //     // Verify pro branding remains after login
-            //     verifyProBranding(true, "after trial user login");
-            //
-            //     // Check profile popup shows trial status
-            //     const $profileButton = testWindow.$("#user-profile-button");
-            //     $profileButton.trigger('click');
-            //
-            //     await awaitsFor(
-            //         function () {
-            //             return testWindow.$('.profile-popup').length > 0;
-            //         },
-            //         "Profile popup to appear",
-            //         3000
-            //     );
-            //
-            //     verifyProfilePopupContent({isPro: true, isTrial: true}, "trial user profile popup");
-            //
-            //     // Close popup
-            //     $profileButton.trigger('click');
-            //
-            //     // Perform logout
-            //     await performFullLogoutFlow();
-            //
-            //     // Verify pro branding remains after logout (trial continues)
-            //     await awaitsFor(
-            //         function () {
-            //             const $brandingLink = testWindow.$("#phcode-io-main-nav");
-            //             return $brandingLink.hasClass("phoenix-pro");
-            //         },
-            //         "Trial branding to remain after logout",
-            //         3000
-            //     );
-            //     verifyProBranding(true, "after trial user logout");
-            // });
-            //
-            // it("should prioritize pro subscription over trial in profile popup", async function () {
-            //     console.log("llgT: Starting browser trial user with pro subscription test");
-            //
-            //     // Setup: Pro subscription + active trial
-            //     setupProUserMock(true);
-            //     await setupTrialState(10);
-            //
-            //     // Perform login
-            //     await performFullLoginFlow();
-            //
-            //     // Verify pro branding appears
-            //     verifyProBranding(true, "after pro+trial user login");
-            //
-            //     // Check profile popup shows pro status (not trial text)
-            //     const $profileButton = testWindow.$("#user-profile-button");
-            //     $profileButton.trigger('click');
-            //
-            //     await awaitsFor(
-            //         function () {
-            //             return testWindow.$('.profile-popup').length > 0;
-            //         },
-            //         "Profile popup to appear",
-            //         3000
-            //     );
-            //
-            //     // Should show pro, not trial, since user has paid subscription
-            //     verifyProfilePopupContent({isPro: true, isTrial: false}, "pro+trial user profile popup");
-            //
-            //     // Close popup
-            //     $profileButton.trigger('click');
-            //
-            //     // Perform logout
-            //     await performFullLogoutFlow();
-            //
-            //     // Verify pro branding remains due to trial (even though subscription is gone)
-            //     await awaitsFor(
-            //         function () {
-            //             const $brandingLink = testWindow.$("#phcode-io-main-nav");
-            //             return $brandingLink.hasClass("phoenix-pro");
-            //         },
-            //         "Trial branding to remain after logout",
-            //         3000
-            //     );
-            //     verifyProBranding(true, "after pro+trial user logout");
-            // });
+            it("should show trial branding for user without pro subscription (active trial)", async function () {
+                console.log("llgT: Starting browser trial user test");
+
+                // Setup: No pro subscription + active trial (15 days)
+                setupProUserMock(false);
+                await setupTrialState(15);
+
+                // Verify initial state shows pro branding due to trial
+                await verifyProBranding(true, "Trial branding to appear initially");
+
+                // Perform login
+                await performFullLoginFlow();
+
+                // Verify pro branding remains after login
+                await verifyProBranding(true, "after trial user login");
+
+                // Check profile popup shows trial status
+                const $profileButton = testWindow.$("#user-profile-button");
+                $profileButton.trigger('click');
+                await popupToAppear(PROFILE_POPUP);
+                await verifyProfilePopupContent(VIEW_TRIAL_DAYS_LEFT,
+                    "trial user profile popup for logged in user");
+
+                // Close popup
+                $profileButton.trigger('click');
+
+                // Perform logout
+                await performFullLogoutFlow();
+
+                // Verify pro branding remains after logout (trial continues)
+                await verifyProBranding(true, "Trial branding to remain after logout");
+
+                // Check profile popup still shows trial status
+                $profileButton.trigger('click');
+                await popupToAppear(SIGNIN_POPUP);
+                await verifyProfilePopupContent(VIEW_TRIAL_DAYS_LEFT,
+                    "trial user profile popup for logged out user");
+
+                // Close popup
+                $profileButton.trigger('click');
+            });
+
+            it("should prioritize pro subscription over trial in profile popup", async function () {
+                console.log("llgT: Starting browser trial user with pro subscription test");
+
+                // Setup: Pro subscription + active trial
+                setupProUserMock(true);
+                await setupTrialState(10);
+
+                // Perform login
+                await performFullLoginFlow();
+
+                // Verify pro branding appears
+                await verifyProBranding(true, "Pro branding to appear for pro user");
+
+                // Check profile popup shows pro status (not trial text)
+                const $profileButton = testWindow.$("#user-profile-button");
+                $profileButton.trigger('click');
+                await popupToAppear(PROFILE_POPUP);
+
+                // Should show pro, not trial, since user has paid subscription
+                await verifyProfilePopupContent(VIEW_PHOENIX_PRO,
+                    "pro+trial user profile should not show trial branding");
+
+                // Close popup
+                $profileButton.trigger('click');
+
+                // Perform logout
+                await performFullLogoutFlow();
+
+                // Verify pro branding remains due to trial (even though subscription is gone)
+                await verifyProBranding(true, "Pro branding should remain after logout as trial user");
+                $profileButton.trigger('click');
+                await popupToAppear(SIGNIN_POPUP);
+                await verifyProfilePopupContent(VIEW_TRIAL_DAYS_LEFT,
+                    "trial user profile popup for logged out user");
+            });
         });
     });
 });
