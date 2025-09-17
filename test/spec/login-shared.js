@@ -3,7 +3,7 @@
 
 define(function (require, exports, module) {
 
-    function getSharedUtils(testWindow) {
+    function getSharedUtils(testWindow, LoginServiceExports) {
         // Helper functions for promotion testing (browser-specific)
         async function setupTrialState(daysRemaining) {
             const PromotionExports = testWindow._test_promo_login_exports;
@@ -135,6 +135,41 @@ define(function (require, exports, module) {
             );
         }
 
+        function verifyProfileIconBlanked() {
+            const $profileIcon = testWindow.$("#user-profile-button");
+            const initialContent = $profileIcon.html();
+            expect(initialContent).not.toContain('TU');
+        }
+
+        async function performFullLogoutFlow() {
+            // Click profile button to open popup
+            const $profileButton = testWindow.$("#user-profile-button");
+            $profileButton.trigger('click');
+
+            // Wait for profile popup
+            await popupToAppear(PROFILE_POPUP);
+
+            // Find and click sign out button
+            let popupContent = testWindow.$('.profile-popup');
+            const signOutButton = popupContent.find('#phoenix-signout-btn');
+            signOutButton.trigger('click');
+
+            // Wait for sign out confirmation dialog and dismiss it
+            await testWindow.__PR.waitForModalDialog(".modal");
+            testWindow.__PR.clickDialogButtonID(testWindow.__PR.Dialogs.DIALOG_BTN_OK);
+            await testWindow.__PR.waitForModalDialogClosed(".modal");
+
+            // Wait for sign out to complete
+            await awaitsFor(
+                function () {
+                    return !LoginServiceExports.LoginService.isLoggedIn();
+                },
+                "User to be signed out",
+                10000
+            );
+            verifyProfileIconBlanked();
+        }
+
         return {
             setupTrialState,
             setupExpiredTrial,
@@ -142,6 +177,8 @@ define(function (require, exports, module) {
             verifyProfilePopupContent,
             cleanupTrialState,
             popupToAppear,
+            performFullLogoutFlow,
+            verifyProfileIconBlanked,
             VIEW_TRIAL_DAYS_LEFT,
             VIEW_PHOENIX_PRO,
             VIEW_PHOENIX_FREE,
