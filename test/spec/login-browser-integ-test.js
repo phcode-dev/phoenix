@@ -41,14 +41,19 @@ define(function (require, exports, module) {
             ProDialogsExports,
             originalOpen,
             originalFetch;
+
         let SharedUtils,
             setupTrialState,
             setupExpiredTrial,
             verifyProBranding,
             verifyProfilePopupContent,
+            cleanupTrialState,
+            popupToAppear,
             VIEW_TRIAL_DAYS_LEFT,
             VIEW_PHOENIX_PRO,
-            VIEW_PHOENIX_FREE;
+            VIEW_PHOENIX_FREE,
+            SIGNIN_POPUP,
+            PROFILE_POPUP;
 
         beforeAll(async function () {
             testWindow = await SpecRunnerUtils.createTestWindowAndRun();
@@ -85,10 +90,14 @@ define(function (require, exports, module) {
             VIEW_TRIAL_DAYS_LEFT = SharedUtils.VIEW_TRIAL_DAYS_LEFT;
             VIEW_PHOENIX_PRO = SharedUtils.VIEW_PHOENIX_PRO;
             VIEW_PHOENIX_FREE = SharedUtils.VIEW_PHOENIX_FREE;
+            SIGNIN_POPUP = SharedUtils.SIGNIN_POPUP;
+            PROFILE_POPUP = SharedUtils.PROFILE_POPUP;
             setupTrialState = SharedUtils.setupTrialState;
             setupExpiredTrial = SharedUtils.setupExpiredTrial;
             verifyProBranding = SharedUtils.verifyProBranding;
             verifyProfilePopupContent = SharedUtils.verifyProfilePopupContent;
+            cleanupTrialState = SharedUtils.cleanupTrialState;
+            popupToAppear = SharedUtils.popupToAppear;
         }, 30000);
 
         afterAll(async function () {
@@ -206,25 +215,6 @@ define(function (require, exports, module) {
             LoginBrowserExports.setFetchFn(fetchMock);
             LoginServiceExports.setFetchFn(fetchMock);
             ProDialogsExports.setFetchFn(fetchMock);
-        }
-
-        async function cleanupTrialState() {
-            const PromotionExports = testWindow._test_promo_login_exports;
-            await PromotionExports._cleanTrialData();
-        }
-
-        const SIGNIN_POPUP = "SIGNIN_POPUP";
-        const PROFILE_POPUP = "PROFILE_POPUP";
-        async function popupToAppear(popupType = SIGNIN_POPUP) {
-            const statusText = popupType === SIGNIN_POPUP ?
-                "Sign In popup to appear" : "Profile popup to appear";
-            await awaitsFor(
-                function () {
-                    const selector = popupType === SIGNIN_POPUP ? ".login-profile-popup" : ".user-profile-popup";
-                    return testWindow.$('.modal').length > 0 || testWindow.$(selector).length > 0;
-                },
-                statusText, 3000
-            );
         }
 
         async function performFullLoginFlow() {
