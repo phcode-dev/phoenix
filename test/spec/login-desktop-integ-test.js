@@ -95,7 +95,7 @@ define(function (require, exports, module) {
                 "Profile button to be available",
                 3000
             );
-            LoginShared.setup(testWindow, LoginServiceExports);
+            LoginShared.setup(testWindow, LoginServiceExports, setupProUserMock, performFullLoginFlow);
             VIEW_TRIAL_DAYS_LEFT = LoginShared.VIEW_TRIAL_DAYS_LEFT;
             VIEW_PHOENIX_PRO = LoginShared.VIEW_PHOENIX_PRO;
             VIEW_PHOENIX_FREE = LoginShared.VIEW_PHOENIX_FREE;
@@ -306,19 +306,7 @@ define(function (require, exports, module) {
                 await cleanupTrialState();
             });
 
-            it("should complete login and logout flow", async function () {
-                // Setup basic user mock
-                setupProUserMock(false);
-
-                // Perform full login flow
-                await performFullLoginFlow();
-                expect(LoginServiceExports.LoginService.isLoggedIn()).toBe(true);
-
-                // Perform full logout flow
-                await performFullLogoutFlow();
-                expect(LoginServiceExports.LoginService.isLoggedIn()).toBe(false);
-                verifyProfileIconBlanked();
-            });
+            LoginShared.setupSharedTests();
 
             it("should open browser and copy validation code", async function () {
                 // Setup basic user mock
