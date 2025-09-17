@@ -23,6 +23,7 @@
 define(function (require, exports, module) {
 
     const SpecRunnerUtils = require("spec/SpecRunnerUtils");
+    const LoginShared = require("./login-shared");
 
     describe("integration: login/logout browser app tests", function () {
 
@@ -39,7 +40,9 @@ define(function (require, exports, module) {
             LoginBrowserExports,
             ProDialogsExports,
             originalOpen,
-            originalFetch;
+            originalFetch,
+            SharedUtils,
+            setupTrialState;
 
         beforeAll(async function () {
             testWindow = await SpecRunnerUtils.createTestWindowAndRun();
@@ -72,6 +75,8 @@ define(function (require, exports, module) {
                 "Profile button to be available",
                 3000
             );
+            SharedUtils = LoginShared.getSharedUtils(testWindow);
+            setupTrialState = SharedUtils.setupTrialState;
         }, 30000);
 
         afterAll(async function () {
@@ -96,19 +101,6 @@ define(function (require, exports, module) {
             // Ensure we start each test in a logged-out state
             // Note: We can't easily reset login state, so tests should handle this
         });
-
-        // Helper functions for promotion testing (browser-specific)
-        async function setupTrialState(daysRemaining) {
-            const PromotionExports = testWindow._test_promo_login_exports;
-            const mockNow = Date.now();
-            await PromotionExports._setTrialData({
-                proVersion: "3.1.0",
-                endDate: mockNow + (daysRemaining * PromotionExports.TRIAL_CONSTANTS.MS_PER_DAY)
-            });
-            // Trigger entitlements changed event to update branding
-            const LoginService = PromotionExports.LoginService;
-            LoginService.trigger(LoginService.EVENT_ENTITLEMENTS_CHANGED);
-        }
 
         async function setupExpiredTrial() {
             const PromotionExports = testWindow._test_promo_login_exports;
