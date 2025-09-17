@@ -1,8 +1,8 @@
 
-/*global expect, awaitsFor*/
+/*global expect, it, awaitsFor*/
 
 define(function (require, exports, module) {
-    let testWindow, LoginServiceExports;
+    let testWindow, LoginServiceExports, setupProUserMock, performFullLoginFlow;
 
     async function setupTrialState(daysRemaining) {
         const PromotionExports = testWindow._test_promo_login_exports;
@@ -169,9 +169,28 @@ define(function (require, exports, module) {
         verifyProfileIconBlanked();
     }
 
-    function setup(_testWindow, _LoginServiceExports) {
+    function setup(_testWindow, _LoginServiceExports, _setupProUserMock, _performFullLoginFlow) {
         testWindow = _testWindow;
         LoginServiceExports = _LoginServiceExports;
+        setupProUserMock = _setupProUserMock;
+        performFullLoginFlow = _performFullLoginFlow;
+    }
+
+    function setupSharedTests() {
+
+        it("should complete login and logout flow", async function () {
+            // Setup basic user mock
+            setupProUserMock(false);
+
+            // Perform full login flow
+            await performFullLoginFlow();
+            expect(LoginServiceExports.LoginService.isLoggedIn()).toBe(true);
+
+            // Perform full logout flow
+            await performFullLogoutFlow();
+            expect(LoginServiceExports.LoginService.isLoggedIn()).toBe(false);
+            verifyProfileIconBlanked();
+        });
     }
 
     exports.setup = setup;
@@ -188,4 +207,7 @@ define(function (require, exports, module) {
     exports.VIEW_PHOENIX_FREE = VIEW_PHOENIX_FREE;
     exports.SIGNIN_POPUP = SIGNIN_POPUP;
     exports.PROFILE_POPUP = PROFILE_POPUP;
+
+    // test runner
+    exports.setupSharedTests = setupSharedTests;
 });
