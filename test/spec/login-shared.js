@@ -191,6 +191,37 @@ define(function (require, exports, module) {
             expect(LoginServiceExports.LoginService.isLoggedIn()).toBe(false);
             verifyProfileIconBlanked();
         });
+
+        it("should update profile icon after login", async function () {
+            // Setup basic user mock
+            setupProUserMock(false);
+
+            // Verify initial state
+            verifyProfileIconBlanked();
+
+            // Perform login
+            await performFullLoginFlow();
+
+            // Wait for profile icon to update
+            await awaitsFor(
+                function () {
+                    const $profileIcon = testWindow.$("#user-profile-button");
+                    const profileIconContent = $profileIcon.html();
+                    return profileIconContent && profileIconContent.includes('TU');
+                },
+                "profile icon to contain user initials",
+                5000
+            );
+
+            // Verify profile icon updated with user initials
+            const $profileIcon = testWindow.$("#user-profile-button");
+            const updatedContent = $profileIcon.html();
+            expect(updatedContent).toContain('svg');
+            expect(updatedContent).toContain('TU');
+
+            // Logout for cleanup
+            await performFullLogoutFlow();
+        });
     }
 
     exports.setup = setup;

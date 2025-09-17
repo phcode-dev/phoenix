@@ -292,26 +292,6 @@ define(function (require, exports, module) {
 
             LoginShared.setupSharedTests();
 
-            it("should update profile icon after login", async function () {
-                // Setup basic user mock
-                setupProUserMock(false);
-
-                // Verify initial state
-                verifyProfileIconBlanked();
-
-                // Perform login
-                await performFullLoginFlow();
-
-                // Verify profile icon updated with user initials
-                const $profileIcon = testWindow.$("#user-profile-button");
-                const updatedContent = $profileIcon.html();
-                expect(updatedContent).toContain('svg');
-                expect(updatedContent).toContain('TU');
-
-                // Logout for cleanup
-                await performFullLogoutFlow();
-            });
-
             it("should show correct popup states", async function () {
                 // Setup basic user mock
                 setupProUserMock(false);
