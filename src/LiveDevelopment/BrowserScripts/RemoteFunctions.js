@@ -2099,6 +2099,24 @@ function RemoteFunctions(config = {}) {
                         cursor: pointer !important;
                     }
 
+                    .phoenix-select-image-btn {
+                        background: rgba(255,255,255,0.1) !important;
+                        border: 1px solid rgba(255,255,255,0.2) !important;
+                        color: #e8eaf0 !important;
+                        padding: 6px 12px !important;
+                        border-radius: 6px !important;
+                        font-size: 12px !important;
+                        cursor: pointer !important;
+                        margin-left: 8px !important;
+                        white-space: nowrap !important;
+                        transition: all 0.2s ease !important;
+                    }
+
+                    .phoenix-select-image-btn:hover {
+                        background: rgba(255,255,255,0.2) !important;
+                        border-color: rgba(255,255,255,0.3) !important;
+                    }
+
                     .phoenix-ribbon-close {
                         background: rgba(0,0,0,0.5) !important;
                         border: none !important;
@@ -2192,6 +2210,8 @@ function RemoteFunctions(config = {}) {
                         <div class="phoenix-ribbon-search">
                             <input type="text" placeholder="Search images..." />
                             <button class="phoenix-ribbon-search-btn">Search</button>
+                            <button class="phoenix-select-image-btn">📁 Select from Computer</button>
+                            <input type="file" class="phoenix-file-input" accept="image/*" style="display: none;">
                         </div>
                         <button class="phoenix-ribbon-close">✕</button>
                     </div>
@@ -2380,11 +2400,14 @@ function RemoteFunctions(config = {}) {
         },
 
         _attachEventHandlers: function() {
+            const ribbonContainer = this._shadow.querySelector('.phoenix-image-ribbon');
             const searchInput = this._shadow.querySelector('.phoenix-ribbon-search input');
             const searchButton = this._shadow.querySelector('.phoenix-ribbon-search-btn');
             const closeButton = this._shadow.querySelector('.phoenix-ribbon-close');
             const navLeft = this._shadow.querySelector('.phoenix-ribbon-nav.left');
             const navRight = this._shadow.querySelector('.phoenix-ribbon-nav.right');
+            const selectImageBtn = this._shadow.querySelector('.phoenix-select-image-btn');
+            const fileInput = this._shadow.querySelector('.phoenix-file-input');
 
             if (searchInput && searchButton) {
                 const performSearch = (e) => {
@@ -2411,6 +2434,22 @@ function RemoteFunctions(config = {}) {
                 });
             }
 
+            if (selectImageBtn && fileInput) {
+                selectImageBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    fileInput.click();
+                });
+
+                fileInput.addEventListener('change', (e) => {
+                    e.stopPropagation();
+                    const file = e.target.files[0];
+                    if (file) {
+                        this._handleLocalImageSelection(file);
+                        fileInput.value = '';
+                    }
+                });
+            }
+
             if (closeButton) {
                 closeButton.addEventListener('click', (e) => {
                     e.stopPropagation();
@@ -2433,7 +2472,6 @@ function RemoteFunctions(config = {}) {
             }
 
             // Prevent clicks anywhere inside the ribbon from bubbling up
-            const ribbonContainer = this._shadow.querySelector('.phoenix-image-ribbon');
             if (ribbonContainer) {
                 ribbonContainer.addEventListener('click', (e) => {
                     e.stopPropagation();
@@ -2521,7 +2559,7 @@ function RemoteFunctions(config = {}) {
                     e.preventDefault();
                     const filename = this._generateFilename(image);
                     const extnName = ".jpg";
-                    this._useImage(image.url, filename, extnName);
+                    this._useImage(image.url, filename, extnName, false);
                 });
 
                 thumbDiv.appendChild(img);
@@ -2569,11 +2607,11 @@ function RemoteFunctions(config = {}) {
             return `${cleanSearchTerm}-by-${cleanPhotographerName}`;
         },
 
-        _useImage: function(imageUrl, filename, extnName) {
+        _useImage: function(imageUrl, filename, extnName, isLocalFile) {
             // send the message to the editor instance to save the image and update the source code
             const tagId = this.element.getAttribute("data-brackets-id");
 
-            window._Brackets_MessageBroker.send({
+            const messageData = {
                 livePreviewEditEnabled: true,
                 useImage: true,
                 imageUrl: imageUrl,
@@ -2581,8 +2619,54 @@ function RemoteFunctions(config = {}) {
                 extnName: extnName,
                 element: this.element,
                 tagId: Number(tagId)
-            });
+            };
+
+            // if this is a local file we need some more data before sending it to the editor
+            if (isLocalFile) {
+                messageData.isLocalFile = true;
+                // Convert data URL to binary data array for local files
+                const byteCharacters = atob(imageUrl.split(',')[1]);
+                const byteNumbers = new Array(byteCharacters.length);
+                for (let i = 0; i < byteCharacters.length; i++) {
+                    byteNumbers[i] = byteCharacters.charCodeAt(i);
+                }
+                messageData.imageData = byteNumbers;
+            }
+
+            window._Brackets_MessageBroker.send(messageData);
         },
+
+        _handleLocalImageSelection: function(file) {
+            if (!file || !file.type.startsWith('image/')) {
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const imageDataUrl = e.target.result;
+
+                const originalName = file.name;
+                const nameWithoutExt = originalName.substring(0, originalName.lastIndexOf('.')) || originalName;
+                const extension = originalName.substring(originalName.lastIndexOf('.')) || '.jpg';
+
+                // we clean the file name because the file might have some chars which might not be compatible
+                const cleanName = nameWithoutExt.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+                const filename = cleanName || 'selected-image';
+
+                // Use the unified _useImage method with isLocalFile flag
+                this._useImage(imageDataUrl, filename, extension, true);
+
+                // Close the ribbon after successful selection
+                this.remove();
+            };
+
+            reader.onerror = (error) => {
+                console.error('Something went wrong when reading the image:', error);
+            };
+
+            reader.readAsDataURL(file);
+        },
+
 
         create: function() {
             this.remove(); // remove existing ribbon if already present
