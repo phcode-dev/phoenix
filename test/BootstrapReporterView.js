@@ -255,34 +255,26 @@ define(function (require, exports, module) {
         if (reporter.activeSpecCount) {
             this._showProgressBar();
 
-            // display running timer
-            this.$timer = $('<div style="text-align: right; font-family: monospace; color: #666; margin-bottom: 5px;">⏱️ 00:00:00</div>');
-            this.$resultsContainer.append(this.$timer);
-
             // display current running test
             this.$info = $('<div class="alert alert-info"/>');
             this.$resultsContainer.append(this.$info);
             this.$resultsContainer.append($('<hr/>'));
-
-            // start the running timer
-            this.testStartTime = Date.now();
-            this.runningTimer = setInterval(() => {
-                if (this.$timer) {
-                    this.$timer.text('⏱️ ' + formatElapsedTime(Date.now() - this.testStartTime));
-                }
-            }, 1000);
         }
     };
 
     BootstrapReporterView.prototype._handleRunnerEnd = function (event, reporter, runnerResult) {
-        // Stop and cleanup the running timer
+        // Stop the running timer and mark as completed
         if (this.runningTimer) {
             clearInterval(this.runningTimer);
             this.runningTimer = null;
+
+            // Show final time with completed status
+            if (this.$timer && this.testStartTime) {
+                const finalTime = formatElapsedTime(Date.now() - this.testStartTime);
+                this.$timer.text('🏁 ' + finalTime + ' (Completed)');
+                this.$timer.css('color', '#28a745'); // green color for completed
+            }
             this.testStartTime = null;
-        }
-        if (this.$timer) {
-            this.$timer.hide();
         }
 
         if (this.$info) {
@@ -317,6 +309,19 @@ define(function (require, exports, module) {
     };
 
     BootstrapReporterView.prototype._handleSpecStart = function (event, reporter, specName) {
+        // Create and start timer on first spec if not already created
+        if (!this.$timer && this.$info) {
+            this.$timer = $('<div style="text-align: right; font-family: monospace; color: #666; margin-bottom: 5px;">⏱️ 00:00:00</div>');
+            this.$timer.insertBefore(this.$info);
+
+            this.testStartTime = Date.now();
+            this.runningTimer = setInterval(() => {
+                if (this.$timer) {
+                    this.$timer.text('⏱️ ' + formatElapsedTime(Date.now() - this.testStartTime));
+                }
+            }, 1000);
+        }
+
         this.$info.text("Running " + specName);
     };
 
