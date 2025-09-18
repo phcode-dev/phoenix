@@ -1948,7 +1948,7 @@ function RemoteFunctions(config = {}) {
 
                     .phoenix-ribbon-container {
                         width: 100% !important;
-                        height: 160px !important;
+                        height: 156px !important;
                         background: rgba(21,25,36,0.55) !important;
                         position: relative !important;
                     }
@@ -1995,28 +1995,20 @@ function RemoteFunctions(config = {}) {
 
                     .phoenix-ribbon-nav {
                         position: absolute !important;
-                        top: 50% !important;
+                        top: 58% !important;
                         transform: translateY(-50%) !important;
-                        width: 40px !important;
-                        height: 40px !important;
                         border-radius: 12px !important;
                         border: 1px solid rgba(255,255,255,0.14) !important;
-                        display: flex !important;
-                        align-items: center !important;
-                        justify-content: center !important;
                         color: #eaeaf0 !important;
                         background: rgba(21,25,36,0.65) !important;
                         cursor: pointer !important;
                         backdrop-filter: blur(8px) !important;
-                        font-size: 14px !important;
-                    }
-
-                    .phoenix-ribbon-nav {
-                        font-size: 18px !important;
+                        font-size: 20px !important;
                         font-weight: 600 !important;
                         user-select: none !important;
                         transition: all 0.2s ease !important;
                         z-index: 10 !important;
+                        padding: 2px 12px 6px 12px !important;
                     }
 
                     .phoenix-ribbon-nav:hover {
@@ -2116,7 +2108,7 @@ function RemoteFunctions(config = {}) {
                         border: none !important;
                         color: white !important;
                         cursor: pointer !important;
-                        padding: 5px 8px !important;
+                        padding: 4px 8px !important;
                         border-radius: 3px !important;
                         position: absolute !important;
                         right: 4px !important;
