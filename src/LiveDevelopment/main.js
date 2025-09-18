@@ -371,7 +371,10 @@ define(function main(require, exports, module) {
     function updateImageRibbonConfig() {
         const prefValue = PreferencesManager.get("livePreviewImageRibbon");
         config.imageRibbon = prefValue !== false; // default to true if undefined
+
         if (MultiBrowserLiveDev && MultiBrowserLiveDev.status >= MultiBrowserLiveDev.STATUS_ACTIVE) {
+            if (!prefValue) { MultiBrowserLiveDev.dismissImageRibbonGallery(); } // to remove any existing image ribbons
+
             MultiBrowserLiveDev.updateConfig(JSON.stringify(config));
             MultiBrowserLiveDev.registerHandlers();
         }
