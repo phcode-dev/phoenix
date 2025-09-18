@@ -719,6 +719,15 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Dismiss image ribbon gallery if it's open
+     */
+    function dismissImageRibbonGallery() {
+        if (_protocol) {
+            _protocol.evaluate("_LD.dismissImageRibbonGallery()");
+        }
+    }
+
+    /**
      * Register event handlers in the remote browser for live preview functionality
      */
     function registerHandlers() {
@@ -804,6 +813,7 @@ define(function (require, exports, module) {
     exports.redrawHighlight     = redrawHighlight;
     exports.hasVisibleLivePreviewBoxes = hasVisibleLivePreviewBoxes;
     exports.dismissLivePreviewBoxes = dismissLivePreviewBoxes;
+    exports.dismissImageRibbonGallery = dismissImageRibbonGallery;
     exports.registerHandlers    = registerHandlers;
     exports.updateConfig        = updateConfig;
     exports.init                = init;
