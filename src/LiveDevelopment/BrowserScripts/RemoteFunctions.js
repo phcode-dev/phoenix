@@ -2058,15 +2058,17 @@ function RemoteFunctions(config = {}) {
 
                     .phoenix-ribbon-header {
                         display: flex !important;
-                        justify-content: space-between !important;
+                        width: 100% !important;
                     }
 
                     .phoenix-ribbon-search {
+                        position: absolute !important;
+                        top: 8px !important;
+                        left: 6px !important;
                         display: flex !important;
                         align-items: center !important;
-                        gap: 8px !important;
                         background: rgba(0,0,0,0.5) !important;
-                        padding: 5px 10px !important;
+                        padding: 5px !important;
                         border-radius: 5px !important;
                     }
 
@@ -2085,11 +2087,17 @@ function RemoteFunctions(config = {}) {
                         cursor: pointer !important;
                     }
 
+                    .phoenix-ribbon-select {
+                        position: absolute !important;
+                        top: 8px !important;
+                        left: 50% !important;
+                    }
+
                     .phoenix-select-image-btn {
                         background: rgba(255,255,255,0.1) !important;
                         border: 1px solid rgba(255,255,255,0.2) !important;
                         color: #e8eaf0 !important;
-                        padding: 6px 12px !important;
+                        padding: 4px 5px !important;
                         border-radius: 6px !important;
                         font-size: 12px !important;
                         cursor: pointer !important;
@@ -2110,6 +2118,9 @@ function RemoteFunctions(config = {}) {
                         cursor: pointer !important;
                         padding: 5px 8px !important;
                         border-radius: 3px !important;
+                        position: absolute !important;
+                        right: 4px !important;
+                        top: 10px !important;
                     }
 
                     .phoenix-ribbon-attribution {
@@ -2197,10 +2208,12 @@ function RemoteFunctions(config = {}) {
                             <div class="phoenix-ribbon-search">
                                 <input type="text" placeholder="Search images..." />
                                 <button class="phoenix-ribbon-search-btn">Search</button>
+                            </div>
+                            <div class="phoenix-ribbon-select">
                                 <button class="phoenix-select-image-btn">📁 Select from Computer</button>
                                 <input type="file" class="phoenix-file-input" accept="image/*" style="display: none;">
                             </div>
-                            <button class="phoenix-ribbon-close">✕</button>
+                            <button class="phoenix-ribbon-close">×</button>
                         </div>
                         <div class="phoenix-ribbon-nav left">&#8249;</div>
                         <div class="phoenix-ribbon-strip">
