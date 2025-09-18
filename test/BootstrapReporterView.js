@@ -48,6 +48,14 @@ define(function (require, exports, module) {
         return result.trim();
     }
 
+    function formatElapsedTime(ms) {
+        const totalSeconds = Math.floor(ms / 1000);
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+        return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
+
     function _addPrintableContainer() {
         var container = $(`
 <div>
@@ -247,14 +255,36 @@ define(function (require, exports, module) {
         if (reporter.activeSpecCount) {
             this._showProgressBar();
 
+            // display running timer
+            this.$timer = $('<div style="text-align: right; font-family: monospace; color: #666; margin-bottom: 5px;">⏱️ 00:00:00</div>');
+            this.$resultsContainer.append(this.$timer);
+
             // display current running test
             this.$info = $('<div class="alert alert-info"/>');
             this.$resultsContainer.append(this.$info);
             this.$resultsContainer.append($('<hr/>'));
+
+            // start the running timer
+            this.testStartTime = Date.now();
+            this.runningTimer = setInterval(() => {
+                if (this.$timer) {
+                    this.$timer.text('⏱️ ' + formatElapsedTime(Date.now() - this.testStartTime));
+                }
+            }, 1000);
         }
     };
 
     BootstrapReporterView.prototype._handleRunnerEnd = function (event, reporter, runnerResult) {
+        // Stop and cleanup the running timer
+        if (this.runningTimer) {
+            clearInterval(this.runningTimer);
+            this.runningTimer = null;
+            this.testStartTime = null;
+        }
+        if (this.$timer) {
+            this.$timer.hide();
+        }
+
         if (this.$info) {
             this.$info.toggleClass("alert-info", false);
 
