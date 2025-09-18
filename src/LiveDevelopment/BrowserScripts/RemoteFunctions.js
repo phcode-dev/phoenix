@@ -3628,11 +3628,19 @@ function RemoteFunctions(config = {}) {
         const highlightModeChanged = oldHighlightMode !== newHighlightMode;
         const isProStatusChanged = oldConfig.isProUser !== config.isProUser;
         const highlightSettingChanged = oldConfig.highlight !== config.highlight;
+        const imageRibbonJustEnabled = !oldConfig.imageRibbon && config.imageRibbon;
 
         // Handle significant configuration changes
         if (highlightModeChanged || isProStatusChanged || highlightSettingChanged) {
             _handleConfigurationChange();
         }
+
+        // if user enabled the image ribbon setting and an image is selected, then we show the image ribbon
+        if (imageRibbonJustEnabled && previouslyClickedElement &&
+            previouslyClickedElement.tagName.toLowerCase() === 'img') {
+            _imageRibbonGallery = new ImageRibbonGallery(previouslyClickedElement);
+        }
+
         _updateEventListeners();
 
         return JSON.stringify(config);
