@@ -71,7 +71,7 @@ define(function (require, exports, module) {
             await awaitsFor(
                 function () {
                     return testWindow._test_login_service_exports &&
-                           testWindow._test_login_desktop_exports;
+                        testWindow._test_login_desktop_exports;
                 },
                 "Test exports to be available",
                 5000
@@ -244,10 +244,14 @@ define(function (require, exports, module) {
 
         async function performFullLoginFlow() {
             // Mock desktop app functions for login flow
+            let capturedBrowserURL = null;
             testWindow.Phoenix.app.openURLInDefaultBrowser = function(url) {
+                capturedBrowserURL = url;
                 return true;
             };
+            let capturedClipboardText = null;
             testWindow.Phoenix.app.copyToClipboard = function(text) {
+                capturedClipboardText = text;
                 return true;
             };
 
@@ -263,6 +267,16 @@ define(function (require, exports, module) {
 
             // Wait for desktop login dialog
             await testWindow.__PR.waitForModalDialog(".modal");
+            const copyButton = testWindow.$('.modal').find('[data-button-id="copy"]');
+            copyButton.trigger('click');
+            expect(capturedClipboardText).toBe("123456");
+
+            // Test open browser functionality
+            const openBrowserButton = testWindow.$('.modal').find('[data-button-id="open"]');
+            openBrowserButton.trigger('click');
+            expect(capturedBrowserURL).toBeDefined();
+            expect(capturedBrowserURL).toContain('authorizeApp');
+            expect(capturedBrowserURL).toContain('test-session-123');
 
             // Click refresh button to verify login
             const refreshButton = testWindow.$('.modal').find('[data-button-id="refresh"]');
@@ -304,50 +318,6 @@ define(function (require, exports, module) {
                         " Please log out before running these tests.");
                 }
                 await cleanupTrialState();
-            });
-
-            it("should open browser and copy validation code", async function () {
-                // Setup basic user mock
-                setupProUserMock(false);
-
-                // Mock desktop app functions
-                let capturedBrowserURL = null;
-                let capturedClipboardText = null;
-
-                if (testWindow.Phoenix && testWindow.Phoenix.app) {
-                    testWindow.Phoenix.app.openURLInDefaultBrowser = function(url) {
-                        capturedBrowserURL = url;
-                        return true;
-                    };
-                    testWindow.Phoenix.app.copyToClipboard = function(text) {
-                        capturedClipboardText = text;
-                        return true;
-                    };
-                }
-
-                // Click profile button and sign in
-                const $profileButton = testWindow.$("#user-profile-button");
-                $profileButton.trigger('click');
-                await popupToAppear(SIGNIN_POPUP);
-
-                const popupContent = testWindow.$('.profile-popup');
-                const signInButton = popupContent.find('#phoenix-signin-btn');
-                signInButton.trigger('click');
-
-                // Wait for desktop login dialog
-                await testWindow.__PR.waitForModalDialog(".modal");
-
-                // Test copy functionality
-                const copyButton = testWindow.$('.modal').find('[data-button-id="copy"]');
-                copyButton.trigger('click');
-                expect(capturedClipboardText).toBe("123456");
-
-                // Test open browser functionality
-                const openBrowserButton = testWindow.$('.modal').find('[data-button-id="open"]');
-                openBrowserButton.trigger('click');
-                expect(capturedBrowserURL).toBeDefined();
-                expect(capturedBrowserURL).toContain('authorizeApp');
-                expect(capturedBrowserURL).toContain('test-session-123');
             });
 
             LoginShared.setupSharedTests();
