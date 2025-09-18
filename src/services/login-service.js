@@ -50,6 +50,7 @@ define(function (require, exports, module) {
 
     // save a copy of window.fetch so that extensions wont tamper with it.
     let fetchFn = window.fetch;
+    let dateNowFn = Date.now;
 
     const KernalModeTrust = window.KernalModeTrust;
     if(!KernalModeTrust){
@@ -383,14 +384,14 @@ define(function (require, exports, module) {
             return;
         }
 
-        const currentDate = Date.now();
+        const currentDate = dateNowFn();
 
         if(entitlements.plan && (!entitlements.plan.validTill || currentDate > entitlements.plan.validTill)) {
             entitlements.plan = {
                 ...entitlements.plan,
                 paidSubscriber: false,
                 name: Strings.USER_FREE_PLAN_NAME,
-                validTill: Date.now() + (FREE_PLAN_VALIDITY_DAYS * MS_IN_DAY)
+                validTill: currentDate + (FREE_PLAN_VALIDITY_DAYS * MS_IN_DAY)
             };
         }
 
@@ -401,10 +402,11 @@ define(function (require, exports, module) {
 
         for(const featureName in featureEntitlements) {
             const feature = featureEntitlements[featureName];
-            if(feature && feature.validTill && currentDate > feature.validTill) {
+            if(feature && (!feature.validTill || currentDate > feature.validTill)) {
                 feature.activated = false;
                 feature.upgradeToPlan = feature.upgradeToPlan || brackets.config.main_pro_plan;
                 feature.subscribeURL = feature.subscribeURL || brackets.config.purchase_url;
+                feature.validTill = feature.validTill || (currentDate - MS_IN_DAY);
             }
         }
     }
@@ -525,7 +527,7 @@ define(function (require, exports, module) {
                     ...serverEntitlements.plan,
                     paidSubscriber: true,
                     name: brackets.config.main_pro_plan,
-                    validTill: Date.now() + trialDaysRemaining * MS_IN_DAY
+                    validTill: dateNowFn() + trialDaysRemaining * MS_IN_DAY
                 },
                 isInProTrial: true,
                 trialDaysRemaining: trialDaysRemaining,
@@ -535,7 +537,7 @@ define(function (require, exports, module) {
                         activated: true,
                         subscribeURL: brackets.config.purchase_url,
                         upgradeToPlan: brackets.config.main_pro_plan,
-                        validTill: Date.now() + trialDaysRemaining * MS_IN_DAY
+                        validTill: dateNowFn() + trialDaysRemaining * MS_IN_DAY
                     }
                 }
             };
@@ -546,7 +548,7 @@ define(function (require, exports, module) {
             plan: {
                 paidSubscriber: true,
                 name: brackets.config.main_pro_plan,
-                validTill: Date.now() + trialDaysRemaining * MS_IN_DAY
+                validTill: dateNowFn() + trialDaysRemaining * MS_IN_DAY
             },
             isInProTrial: true,
             trialDaysRemaining: trialDaysRemaining,
@@ -555,7 +557,7 @@ define(function (require, exports, module) {
                     activated: true,
                     subscribeURL: brackets.config.purchase_url,
                     upgradeToPlan: brackets.config.main_pro_plan,
-                    validTill: Date.now() + trialDaysRemaining * MS_IN_DAY
+                    validTill: dateNowFn() + trialDaysRemaining * MS_IN_DAY
                 }
             }
         };
@@ -574,7 +576,11 @@ define(function (require, exports, module) {
             LoginService,
             setFetchFn: function _setFetchFn(fn) {
                 fetchFn = fn;
-            }
+            },
+            setDateNowFn: function _setDdateNowFn(fn) {
+                dateNowFn = fn;
+            },
+            _validateAndFilterEntitlements: _validateAndFilterEntitlements
         };
     }
 

@@ -782,5 +782,171 @@ define(function (require, exports, module) {
                 };
             });
         });
+
+        describe("Entitlements Validation", function () {
+            let LoginServiceExports;
+
+            beforeEach(function() {
+                // Access login service exports
+                LoginServiceExports = testWindow._test_login_service_exports;
+
+                // Set up time mocking
+                if (LoginServiceExports.setDateNowFn) {
+                    LoginServiceExports.setDateNowFn(() => mockNow);
+                }
+            });
+
+            afterEach(function() {
+                // Reset time function
+                if (LoginServiceExports.setDateNowFn) {
+                    LoginServiceExports.setDateNowFn(Date.now);
+                }
+            });
+
+            it("should handle expired plans correctly", function () {
+
+                // Test expired plan gets reset to free plan
+                const expiredPlanEntitlements = {
+                    plan: {
+                        paidSubscriber: true,
+                        name: "Phoenix Pro",
+                        validTill: mockNow - 86400000 // 1 day ago
+                    },
+                    entitlements: {}
+                };
+
+                LoginServiceExports._validateAndFilterEntitlements(expiredPlanEntitlements);
+
+                expect(expiredPlanEntitlements.plan.paidSubscriber).toBe(false);
+                expect(expiredPlanEntitlements.plan.name).toBe(testWindow.Strings.USER_FREE_PLAN_NAME);
+                expect(expiredPlanEntitlements.plan.validTill).toBeGreaterThan(mockNow);
+
+                // Test valid plan remains unchanged
+                const validPlanEntitlements = {
+                    plan: {
+                        paidSubscriber: true,
+                        name: "Phoenix Pro",
+                        validTill: mockNow + 86400000 // 1 day from now
+                    },
+                    entitlements: {}
+                };
+                const originalPlan = JSON.parse(JSON.stringify(validPlanEntitlements.plan));
+
+                LoginServiceExports._validateAndFilterEntitlements(validPlanEntitlements);
+
+                expect(validPlanEntitlements.plan).toEqual(originalPlan);
+
+                // Test missing validTill gets reset
+                const noValidTillEntitlements = {
+                    plan: {
+                        paidSubscriber: true,
+                        name: "Phoenix Pro"
+                    },
+                    entitlements: {}
+                };
+
+                LoginServiceExports._validateAndFilterEntitlements(noValidTillEntitlements);
+
+                expect(noValidTillEntitlements.plan.paidSubscriber).toBe(false);
+                expect(noValidTillEntitlements.plan.name).toBe(testWindow.Strings.USER_FREE_PLAN_NAME);
+            });
+
+            it("should validate and filter expired feature entitlements", function () {
+                // Test expired features get deactivated
+                const entitlementsWithExpiredFeatures = {
+                    plan: {
+                        paidSubscriber: true,
+                        name: "Phoenix Pro",
+                        validTill: mockNow + 86400000
+                    },
+                    entitlements: {
+                        liveEdit: {
+                            activated: true,
+                            validTill: mockNow - 86400000 // expired
+                        },
+                        liveEditAI: {
+                            activated: true,
+                            validTill: mockNow + 86400000 // valid
+                        }
+                    }
+                };
+
+                LoginServiceExports._validateAndFilterEntitlements(entitlementsWithExpiredFeatures);
+
+                expect(entitlementsWithExpiredFeatures.entitlements.liveEdit.activated).toBe(false);
+                expect(entitlementsWithExpiredFeatures.entitlements.liveEditAI.activated)
+                    .toBe(true); // should remain unchanged
+                expect(entitlementsWithExpiredFeatures.entitlements.liveEdit.upgradeToPlan)
+                    .toBe(testWindow.brackets.config.main_pro_plan);
+                expect(entitlementsWithExpiredFeatures.entitlements.liveEdit.subscribeURL)
+                    .toBe(testWindow.brackets.config.purchase_url);
+
+                // Test features without validTill get deactivated (treated as expired)
+                const entitlementsNoValidTill = {
+                    plan: {
+                        paidSubscriber: true,
+                        name: "Phoenix Pro",
+                        validTill: mockNow + 86400000
+                    },
+                    entitlements: {
+                        liveEdit: {
+                            activated: true
+                            // no validTill property - should be treated as expired
+                        }
+                    }
+                };
+
+                LoginServiceExports._validateAndFilterEntitlements(entitlementsNoValidTill);
+
+                expect(entitlementsNoValidTill.entitlements.liveEdit.activated)
+                    .toBe(false); // should be deactivated
+                expect(entitlementsNoValidTill.entitlements.liveEdit.upgradeToPlan)
+                    .toBe(testWindow.brackets.config.main_pro_plan);
+                expect(entitlementsNoValidTill.entitlements.liveEdit.subscribeURL)
+                    .toBe(testWindow.brackets.config.purchase_url);
+                expect(entitlementsNoValidTill.entitlements.liveEdit.validTill < mockNow)
+                    .toBeTrue(); // should be set to past date
+            });
+
+            it("should handle null and edge cases safely", function () {
+                const validateFn = LoginServiceExports._validateAndFilterEntitlements;
+
+                // Test null entitlements
+                expect(function() {
+                    validateFn(null);
+                }).not.toThrow();
+
+                // Test undefined entitlements
+                expect(function() {
+                    validateFn(undefined);
+                }).not.toThrow();
+
+                // Test entitlements without plan
+                const noPlanEntitlements = {
+                    entitlements: {}
+                };
+                expect(function() {
+                    validateFn(noPlanEntitlements);
+                }).not.toThrow();
+
+                // Test entitlements without entitlements object
+                const noEntitlementsObj = {
+                    plan: {
+                        paidSubscriber: true,
+                        name: "Phoenix Pro",
+                        validTill: mockNow + 86400000
+                    }
+                };
+                expect(function() {
+                    validateFn(noEntitlementsObj);
+                }).not.toThrow();
+
+                // Test empty entitlements object
+                const emptyEntitlements = {};
+                expect(function() {
+                    validateFn(emptyEntitlements);
+                }).not.toThrow();
+            });
+        });
     });
 });
