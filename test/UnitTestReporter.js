@@ -512,7 +512,7 @@ define(function (require, exports, module) {
                 }
             }
         }
-        $(this).triggerHandler("runnerEnd", [this]);
+        $(this).triggerHandler("runnerEnd", [this, runner]);
         activeReporter = null;
     };
 

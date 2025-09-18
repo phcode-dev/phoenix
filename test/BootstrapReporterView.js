@@ -30,6 +30,24 @@ define(function (require, exports, module) {
 
     var _ = require("thirdparty/lodash");
 
+    function formatMilliseconds(ms) {
+        const hours = Math.floor(ms / (1000 * 60 * 60));
+        const minutes = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((ms % (1000 * 60)) / 1000);
+
+        let result = '';
+
+        if (hours) {
+            result = result + `${hours}-Hour `;
+        }
+        if (minutes) {
+            result = result + `${minutes}-Minutes `;
+        }
+        result = `${result}${seconds}-Seconds`;
+
+        return result.trim();
+    }
+
     function _addPrintableContainer() {
         var container = $(`
 <div>
@@ -236,17 +254,26 @@ define(function (require, exports, module) {
         }
     };
 
-    BootstrapReporterView.prototype._handleRunnerEnd = function (event, reporter) {
+    BootstrapReporterView.prototype._handleRunnerEnd = function (event, reporter, runnerResult) {
         if (this.$info) {
             this.$info.toggleClass("alert-info", false);
 
             window.testResults.passed = reporter.passed;
+
+            // Get total time from the reporter's runInfo if available
+            let totalTime = null;
+            if (runnerResult && runnerResult.totalTime) {
+                totalTime = runnerResult.totalTime;
+            }
+
+            let timeText = totalTime ? ` (Done in ${formatMilliseconds(totalTime)})` : '';
+
             if (reporter.passed) {
-                this.$info.toggleClass("alert-success", true).text("Complete. No failures.");
+                this.$info.toggleClass("alert-success", true).text("Complete. No failures." + timeText);
             } else {
                 this.$info.toggleClass("alert-error", true).text(
                     "Complete. See failures Below. If all tests have passed and no failures are seen below," +
-                    "Check the debug console for errors. (search for 'Spec Error:' , 'Suite Error:' or Runner Error: in console)");
+                    "Check the debug console for errors. (search for 'Spec Error:' , 'Suite Error:' or Runner Error: in console)" + timeText);
             }
             window.playWrightRunComplete = true;
         }
