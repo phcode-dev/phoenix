@@ -2510,25 +2510,17 @@ function RemoteFunctions(config = {}) {
                 img.alt = image.alt_text || 'Unsplash image';
                 img.loading = 'lazy';
 
-                // this is the original image, we store it so that we can show new images on hover
-                const originalImageSrc = this.element.src;
-                // we also store its dimensions to show the new image with the same dimension
-                const computedStyle = window.getComputedStyle(this.element);
-                const originalWidth = computedStyle.width;
-                const originalHeight = computedStyle.height;
-                const originalObjectFit = computedStyle.objectFit;
-
                 // show hovered image along with dimensions
                 thumbDiv.addEventListener('mouseenter', () => {
-                    this.element.style.width = originalWidth;
-                    this.element.style.height = originalHeight;
-                    this.element.style.objectFit = originalObjectFit || 'cover';
+                    this.element.style.width = this._originalImageStyle.width;
+                    this.element.style.height = this._originalImageStyle.height;
+                    this.element.style.objectFit = this._originalImageStyle.objectFit || 'cover';
                     this.element.src = image.url || image.thumb_url;
                 });
 
                 // show original image when hover ends
                 thumbDiv.addEventListener('mouseleave', () => {
-                    this.element.src = originalImageSrc;
+                    this.element.src = this._originalImageSrc;
                 });
 
                 // attribution overlay, we show this only in the image ribbon gallery
@@ -2670,6 +2662,15 @@ function RemoteFunctions(config = {}) {
 
         create: function() {
             this.remove(); // remove existing ribbon if already present
+
+            // when image ribbon gallery is created we get the original image along with its dimensions
+            // so that on hover in we can show the hovered image and on hover out we can restore the original image
+            this._originalImageSrc = this.element.src;
+            this._originalImageStyle = {
+                width: window.getComputedStyle(this.element).width,
+                height: window.getComputedStyle(this.element).height,
+                objectFit: window.getComputedStyle(this.element).objectFit
+            };
 
             this._style();
             window.document.body.appendChild(this.body);
