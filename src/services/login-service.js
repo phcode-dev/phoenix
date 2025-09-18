@@ -28,12 +28,14 @@
 define(function (require, exports, module) {
     require("./setup-login-service"); // this adds loginService to KernalModeTrust
     require("./promotions");
+    require("./login-utils");
 
-    const Metrics = require("utils/Metrics");
-    const LoginUtils = require("./login-utils");
+    const Metrics = require("utils/Metrics"),
+        Strings = require("strings");
 
     const MS_IN_DAY = 10 * 24 * 60 * 60 * 1000;
     const TEN_MINUTES = 10 * 60 * 1000;
+    const FREE_PLAN_VALIDITY_DAYS = 10000;
 
     // the fallback salt is always a constant as this will only fail in rare circumstatnces and it needs to
     // be exactly same across versions of the app. Changing this will not affect the large majority of users and
@@ -351,8 +353,8 @@ define(function (require, exports, module) {
                 const current = await getEffectiveEntitlements(false); // Get effective entitlements
 
                 // Check if we need to refresh
-                const expiredPlanName = LoginUtils.validTillExpired(current, lastRecordedState);
-                const hasChanged = LoginUtils.haveEntitlementsChanged(current, lastRecordedState);
+                const expiredPlanName = KernalModeTrust.LoginUtils.validTillExpired(current, lastRecordedState);
+                const hasChanged = KernalModeTrust.LoginUtils.haveEntitlementsChanged(current, lastRecordedState);
 
                 if (expiredPlanName || hasChanged) {
                     console.log(`Entitlements monitor detected changes, Expired: ${expiredPlanName},` +
@@ -374,6 +376,37 @@ define(function (require, exports, module) {
         }, TEN_MINUTES);
 
         console.log('Entitlements monitor started (10-minute interval)');
+    }
+
+    function _validateAndFilterEntitlements(entitlements) {
+        if (!entitlements) {
+            return;
+        }
+
+        const currentDate = Date.now();
+
+        if(entitlements.plan && (!entitlements.plan.validTill || currentDate > entitlements.plan.validTill)) {
+            entitlements.plan = {
+                ...entitlements.plan,
+                paidSubscriber: false,
+                name: Strings.USER_FREE_PLAN_NAME,
+                validTill: Date.now() + (FREE_PLAN_VALIDITY_DAYS * MS_IN_DAY)
+            };
+        }
+
+        const featureEntitlements = entitlements.entitlements;
+        if (!featureEntitlements) {
+            return;
+        }
+
+        for(const featureName in featureEntitlements) {
+            const feature = featureEntitlements[featureName];
+            if(feature && feature.validTill && currentDate > feature.validTill) {
+                feature.activated = false;
+                feature.upgradeToPlan = feature.upgradeToPlan || brackets.config.main_pro_plan;
+                feature.subscribeURL = feature.subscribeURL || brackets.config.purchase_url;
+            }
+        }
     }
 
     /**
@@ -479,13 +512,12 @@ define(function (require, exports, module) {
         // User has active trial
         if (serverEntitlements && serverEntitlements.plan) {
             // Logged-in user with trial
+            _validateAndFilterEntitlements(serverEntitlements); // will prune invalid entitlements
             if (serverEntitlements.plan.paidSubscriber) {
                 // Already a paid subscriber, return as-is
-                // todo we need to check and filter valid till for each fields that we are interested in.
                 return serverEntitlements;
             }
             // Enhance entitlements for trial user
-            // todo we need to prune and filter serverEntitlements valid till for each fields that we are interested in.
             // ie if any entitlement has valid till expired, we need to deactivate that entitlement
             return {
                 ...serverEntitlements,
