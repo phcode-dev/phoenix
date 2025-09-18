@@ -25,9 +25,15 @@
 
 define(function (require, exports, module) {
 
+    const KernalModeTrust = window.KernalModeTrust;
+    if(!KernalModeTrust){
+        // integrated extensions will have access to kernal mode, but not external extensions
+        throw new Error("Login utils should have access to KernalModeTrust. Cannot boot without trust ring");
+    }
+
     /**
      * Check if any validTill time has expired
-     * 
+     *
      * @param {Object|null} entitlements - Current entitlements object
      * @param {Object|null} lastRecordedEntitlement - Previously recorded entitlements
      * @returns {string|null} - Name of expired plan/entitlement or null if none expired
@@ -85,7 +91,7 @@ define(function (require, exports, module) {
 
     /**
      * Check if entitlements have changed from last recorded state
-     * 
+     *
      * @param {Object|null} current - Current entitlements object
      * @param {Object|null} last - Last recorded entitlements object
      * @returns {boolean} - True if entitlements have changed, false otherwise
@@ -129,7 +135,13 @@ define(function (require, exports, module) {
         return false;
     }
 
-    // Export functions
-    exports.validTillExpired = validTillExpired;
-    exports.haveEntitlementsChanged = haveEntitlementsChanged;
+    KernalModeTrust.LoginUtils = {
+        validTillExpired,
+        haveEntitlementsChanged
+    };
+    // Test only Export functions
+    if(Phoenix.isTestWindow) {
+        exports.validTillExpired = validTillExpired;
+        exports.haveEntitlementsChanged = haveEntitlementsChanged;
+    }
 });

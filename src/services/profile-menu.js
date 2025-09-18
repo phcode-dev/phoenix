@@ -436,7 +436,7 @@ define(function (require, exports, module) {
             initials: profileData.profileIcon.initials,
             avatarColor: profileData.profileIcon.color,
             planClass: "user-plan-free",
-            planName: "Free Plan",
+            planName: Strings.USER_FREE_PLAN_NAME,
             titleText: "Ai Quota Used",
             usageText: "100 / 200 credits",
             usedPercent: 0,
