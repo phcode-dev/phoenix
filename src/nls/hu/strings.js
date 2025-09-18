@@ -1405,6 +1405,8 @@ define({
   "OPEN_SIGN_IN_URL": "Bejelentkezési oldal megnyitása",
   "PROFILE_POP_TITLE": "{APP_NAME} fiók",
   "PROFILE_SIGN_IN": "Bejelentkezés a fiókodba",
+  "CONTACT_SUPPORT": "Támogatás kérése",
+  "SIGN_OUT": "Kijelentkezés",
   "ACCOUNT_DETAILS": "Fiókadatok",
   "LOGIN_REFRESH": "Bejelentkezés állapotának ellenőrzése",
   "SIGN_IN_WAITING_TITLE": "Bejelentkezésre vár",
@@ -1474,6 +1476,5 @@ define({
   "PROMO_PRO_ENDED_TITLE": "Lejárt a(z) {0} próbaidőszakod",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro próbaverzió ({0} nap van hátra)",
   "GET_PHOENIX_PRO": "Szerezd meg a Phoenix Pro-t",
-  "CONTACT_SUPPORT": "Támogatás kérése",
-  "SIGN_OUT": "Kijelentkezés"
+  "USER_FREE_PLAN_NAME": "Ingyenes csomag"
 });

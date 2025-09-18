@@ -536,6 +536,7 @@ define({
   "CMD_AUTO_UPDATE": "Automatisk uppdatering",
   "CMD_HOW_TO_USE_BRACKETS": "Hur du använder {APP_NAME}",
   "CMD_SUPPORT": "{APP_NAME}-forum",
+  "CMD_GET_PRO": "Skaffa Phoenix Pro",
   "CMD_USER_PROFILE": "{APP_NAME}-konto",
   "CMD_DOCS": "Hjälp, Kom igång",
   "CMD_SUGGEST": "Föreslå en funktion",
@@ -1472,8 +1473,8 @@ define({
   "PROMO_CARD_4_MESSAGE": "Redigera rubriker, knappar och kopiera direkt i förhandsgranskningen.",
   "PROMO_LEARN_MORE": "Läs mer…",
   "PROMO_GET_APP_UPSELL_BUTTON": "Skaffa {0}",
-  "CMD_GET_PRO": "Skaffa Phoenix Pro",
   "PROMO_PRO_ENDED_TITLE": "Din {0}-provperiod har löpt ut",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro-provperiod ({0} dagar kvar)",
-  "GET_PHOENIX_PRO": "Skaffa Phoenix Pro"
+  "GET_PHOENIX_PRO": "Skaffa Phoenix Pro",
+  "USER_FREE_PLAN_NAME": "Gratisplan"
 });

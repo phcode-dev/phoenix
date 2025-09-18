@@ -1405,6 +1405,8 @@ define({
   "OPEN_SIGN_IN_URL": "Deschide pagina de conectare",
   "PROFILE_POP_TITLE": "Cont {APP_NAME}",
   "PROFILE_SIGN_IN": "Conectează-te la contul tău",
+  "CONTACT_SUPPORT": "Contactează Asistența",
+  "SIGN_OUT": "Deconectare",
   "ACCOUNT_DETAILS": "Detalii cont",
   "LOGIN_REFRESH": "Verificare stare autentificare",
   "SIGN_IN_WAITING_TITLE": "Se așteaptă autentificarea",
@@ -1474,6 +1476,5 @@ define({
   "PROMO_PRO_ENDED_TITLE": "Perioada de probă {0} a expirat",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Probă Phoenix Pro ({0} zile rămase)",
   "GET_PHOENIX_PRO": "Obține Phoenix Pro",
-  "CONTACT_SUPPORT": "Contactează Asistența",
-  "SIGN_OUT": "Deconectare"
+  "USER_FREE_PLAN_NAME": "Abonament gratuit"
 });

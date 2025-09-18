@@ -1405,6 +1405,8 @@ define({
   "OPEN_SIGN_IN_URL": "Abrir páxina de inicio de sesión",
   "PROFILE_POP_TITLE": "Conta de {APP_NAME}",
   "PROFILE_SIGN_IN": "Iniciar sesión na túa conta",
+  "CONTACT_SUPPORT": "Contactar co soporte técnico",
+  "SIGN_OUT": "Pechar sesión",
   "ACCOUNT_DETAILS": "Detalles da conta",
   "LOGIN_REFRESH": "Comprobar o estado do inicio de sesión",
   "SIGN_IN_WAITING_TITLE": "Agardando o inicio de sesión",
@@ -1474,6 +1476,5 @@ define({
   "PROMO_PRO_ENDED_TITLE": "Rematou a túa proba de {0}",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Proba de Phoenix Pro ({0} días restantes)",
   "GET_PHOENIX_PRO": "Obtén Phoenix Pro",
-  "CONTACT_SUPPORT": "Contactar co soporte técnico",
-  "SIGN_OUT": "Pechar sesión"
+  "USER_FREE_PLAN_NAME": "Plan gratuíto"
 });

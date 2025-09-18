@@ -536,6 +536,7 @@ define({
   "CMD_AUTO_UPDATE": "Automaattinen päivitys",
   "CMD_HOW_TO_USE_BRACKETS": "Kuinka käyttää {APP_NAME}iä",
   "CMD_SUPPORT": "{APP_NAME}-tuki",
+  "CMD_GET_PRO": "Hanki Phoenix Pro",
   "CMD_USER_PROFILE": "{APP_NAME}-tili",
   "CMD_DOCS": "Ohje, aloittaminen",
   "CMD_SUGGEST": "Ehdota ominaisuutta",
@@ -1472,8 +1473,8 @@ define({
   "PROMO_CARD_4_MESSAGE": "Muokkaa otsikoita, painikkeita ja kopioi suoraan esikatselussa.",
   "PROMO_LEARN_MORE": "Lisätietoja…",
   "PROMO_GET_APP_UPSELL_BUTTON": "Hanki {0}",
-  "CMD_GET_PRO": "Hanki Phoenix Pro",
   "PROMO_PRO_ENDED_TITLE": "{0}-kokeilusi on päättynyt",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro -kokeiluversio ({0} päivää jäljellä)",
-  "GET_PHOENIX_PRO": "Hanki Phoenix Pro"
+  "GET_PHOENIX_PRO": "Hanki Phoenix Pro",
+  "USER_FREE_PLAN_NAME": "Ilmainen sopimus"
 });

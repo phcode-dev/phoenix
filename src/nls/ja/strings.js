@@ -536,6 +536,7 @@ define({
   "CMD_AUTO_UPDATE": "自動更新",
   "CMD_HOW_TO_USE_BRACKETS": "{APP_NAME} の使用方法",
   "CMD_SUPPORT": "{APP_NAME} サポート",
+  "CMD_GET_PRO": "Phoenix Proを入手",
   "CMD_USER_PROFILE": "{APP_NAME}アカウント",
   "CMD_DOCS": "ヘルプ、はじめに",
   "CMD_SUGGEST": "機能改善の提案",
@@ -1472,8 +1473,8 @@ define({
   "PROMO_CARD_4_MESSAGE": "見出し、ボタン、コピーをプレビューで直接編集します。",
   "PROMO_LEARN_MORE": "詳細はこちら…",
   "PROMO_GET_APP_UPSELL_BUTTON": "{0} を入手",
-  "CMD_GET_PRO": "Phoenix Proを入手",
   "PROMO_PRO_ENDED_TITLE": "{0}トライアルが終了しました",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Proトライアル（残り{0}日）",
-  "GET_PHOENIX_PRO": "Phoenix Proを入手"
+  "GET_PHOENIX_PRO": "Phoenix Proを入手",
+  "USER_FREE_PLAN_NAME": "フリープラン"
 });

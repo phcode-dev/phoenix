@@ -1405,6 +1405,8 @@ define({
   "OPEN_SIGN_IN_URL": "Inlogpagina openen",
   "PROFILE_POP_TITLE": "{APP_NAME}-account",
   "PROFILE_SIGN_IN": "Inloggen op uw account",
+  "CONTACT_SUPPORT": "Neem contact op met support",
+  "SIGN_OUT": "Afmelden",
   "ACCOUNT_DETAILS": "Accountgegevens",
   "LOGIN_REFRESH": "Aanmeldstatus controleren",
   "SIGN_IN_WAITING_TITLE": "Aanmelden wordt verwerkt",
@@ -1474,6 +1476,5 @@ define({
   "PROMO_PRO_ENDED_TITLE": "Je {0} proefperiode is afgelopen",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro proefversie ({0} dagen resterend)",
   "GET_PHOENIX_PRO": "Koop Phoenix Pro",
-  "CONTACT_SUPPORT": "Neem contact op met support",
-  "SIGN_OUT": "Afmelden"
+  "USER_FREE_PLAN_NAME": "Gratis abonnement"
 });

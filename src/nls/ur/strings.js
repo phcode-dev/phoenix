@@ -1405,6 +1405,8 @@ define({
   "OPEN_SIGN_IN_URL": "سائن ان صفحہ کھولیں",
   "PROFILE_POP_TITLE": "{APP_NAME} اکاؤنٹ",
   "PROFILE_SIGN_IN": "اپنے اکاؤنٹ میں سائن ان کریں",
+  "CONTACT_SUPPORT": "مدد حاصل کریں",
+  "SIGN_OUT": "سائن آؤٹ کریں",
   "ACCOUNT_DETAILS": "اکاؤنٹ کی تفصیلات",
   "LOGIN_REFRESH": "لاگ ان کی حیثیت چیک کریں",
   "SIGN_IN_WAITING_TITLE": "سائن ان کا انتظار ہے",
@@ -1474,6 +1476,5 @@ define({
   "PROMO_PRO_ENDED_TITLE": "آپ کا {0} آزمائشی ورژن ختم ہو گیا ہے۔",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro آزمائشی ورژن ({0} دن باقی)",
   "GET_PHOENIX_PRO": "Phoenix Pro حاصل کریں",
-  "CONTACT_SUPPORT": "مدد حاصل کریں",
-  "SIGN_OUT": "سائن آؤٹ کریں"
+  "USER_FREE_PLAN_NAME": "مفت پلان"
 });

@@ -536,6 +536,7 @@ define({
   "CMD_AUTO_UPDATE": "ഓട്ടോ അപ്ഡേറ്റ്",
   "CMD_HOW_TO_USE_BRACKETS": "{APP_NAME} എങ്ങനെ ഉപയോഗിക്കാം",
   "CMD_SUPPORT": "{APP_NAME} പിന്തുണ",
+  "CMD_GET_PRO": "ഫീനിക്സ് പ്രോ നേടുക",
   "CMD_USER_PROFILE": "{APP_NAME} അക്കൗണ്ട്",
   "CMD_DOCS": "സഹായം, തുടക്കക്കാർക്ക്",
   "CMD_SUGGEST": "ഒരു സവിശേഷത നിർദ്ദേശിക്കുക",
@@ -1472,8 +1473,8 @@ define({
   "PROMO_CARD_4_MESSAGE": "തലക്കെട്ടുകൾ, ബട്ടണുകൾ എന്നിവ എഡിറ്റ് ചെയ്യുക, പ്രിവ്യൂവിൽ നേരിട്ട് പകർത്തുക.",
   "PROMO_LEARN_MORE": "കൂടുതലറിയാൻ…",
   "PROMO_GET_APP_UPSELL_BUTTON": "{0} നേടുക",
-  "CMD_GET_PRO": "ഫീനിക്സ് പ്രോ നേടുക",
   "PROMO_PRO_ENDED_TITLE": "നിങ്ങളുടെ {0} പരീക്ഷണ കാലയളവ് അവസാനിച്ചു",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "ഫീനിക്സ് പ്രോ പരീക്ഷണം ({0} ദിവസം ബാക്കി)",
-  "GET_PHOENIX_PRO": "ഫീനിക്സ് പ്രോ നേടുക"
+  "GET_PHOENIX_PRO": "ഫീനിക്സ് പ്രോ നേടുക",
+  "USER_FREE_PLAN_NAME": "സൗജന്യ പ്ലാൻ"
 });

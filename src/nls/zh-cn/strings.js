@@ -1405,6 +1405,8 @@ define({
   "OPEN_SIGN_IN_URL": "打开登录页面",
   "PROFILE_POP_TITLE": "{APP_NAME} 帐户",
   "PROFILE_SIGN_IN": "登录您的帐户",
+  "CONTACT_SUPPORT": "联系支持",
+  "SIGN_OUT": "退出登录",
   "ACCOUNT_DETAILS": "帐户详情",
   "LOGIN_REFRESH": "检查登录状态",
   "SIGN_IN_WAITING_TITLE": "等待登录",
@@ -1474,6 +1476,5 @@ define({
   "PROMO_PRO_ENDED_TITLE": "您的 {0} 试用已结束",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro 试用版（剩余 {0} 天）",
   "GET_PHOENIX_PRO": "获取 Phoenix Pro",
-  "CONTACT_SUPPORT": "联系支持",
-  "SIGN_OUT": "退出登录"
+  "USER_FREE_PLAN_NAME": "免费版"
 });
