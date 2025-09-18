@@ -3020,6 +3020,11 @@ function RemoteFunctions(config = {}) {
         return getHighlightMode() !== "click";
     }
 
+    // helper function to check if image ribbon gallery should be shown
+    function shouldShowImageRibbon() {
+        return config.imageRibbon !== false;
+    }
+
     // helper function to clear element background highlighting
     function clearElementBackground(element) {
         if (element._originalBackgroundColor !== undefined) {
@@ -3140,8 +3145,8 @@ function RemoteFunctions(config = {}) {
             _selectElement(element);
         }
 
-        // if the image is an element we show the image ribbon gallery
-        if(element && element.tagName.toLowerCase() === 'img') {
+        // if the image is an element we show the image ribbon gallery (if enabled in preferences)
+        if(element && element.tagName.toLowerCase() === 'img' && shouldShowImageRibbon()) {
             event.preventDefault();
             event.stopPropagation();
             event.stopImmediatePropagation();
