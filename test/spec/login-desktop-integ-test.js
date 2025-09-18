@@ -136,7 +136,7 @@ define(function (require, exports, module) {
             // Note: We can't easily reset login state, so tests should handle this
         });
 
-        function setupProUserMock(hasActiveSubscription = true) {
+        function setupProUserMock(hasActiveSubscription = true, expiredEntitlements = false) {
             let userSignedOut = false;
 
             // Set fetch mock on desktop exports
@@ -196,15 +196,19 @@ define(function (require, exports, module) {
                         };
 
                         if (hasActiveSubscription) {
+                            const validTill = expiredEntitlements ?
+                                Date.now() - 86400000 : // expired yesterday
+                                Date.now() + 30 * 24 * 60 * 60 * 1000; // valid for 30 days
+
                             entitlementsResponse.plan = {
                                 paidSubscriber: true,
                                 name: "Phoenix Pro",
-                                validTill: Date.now() + 30 * 24 * 60 * 60 * 1000
+                                validTill: validTill
                             };
                             entitlementsResponse.entitlements = {
                                 liveEdit: {
                                     activated: true,
-                                    validTill: Date.now() + 30 * 24 * 60 * 60 * 1000
+                                    validTill: validTill
                                 }
                             };
                         } else {
