@@ -116,7 +116,7 @@ define(function (require, exports, module) {
     // live preview image ribbon gallery preference (whether to show image gallery when clicking images)
     const PREFERENCE_PROJECT_IMAGE_RIBBON = "livePreviewImageRibbon";
     PreferencesManager.definePreference(PREFERENCE_PROJECT_IMAGE_RIBBON, "boolean", true, {
-        description: "Show image gallery when clicked"
+        description: Strings.LIVE_PREVIEW_EDIT_IMAGE_RIBBON
     });
 
     const LIVE_PREVIEW_PANEL_ID = "live-preview-panel";
@@ -425,7 +425,7 @@ define(function (require, exports, module) {
         if (isEditFeaturesActive) {
             items.push("---");
             items.push(Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON);
-            items.push("Show image gallery when clicked");
+            items.push(Strings.LIVE_PREVIEW_EDIT_IMAGE_RIBBON);
         }
 
         const rawMode = PreferencesManager.get(PREFERENCE_LIVE_PREVIEW_MODE) || _getDefaultMode();
@@ -451,7 +451,7 @@ define(function (require, exports, module) {
                     return `✓ ${Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON}`;
                 }
                 return `${'\u00A0'.repeat(4)}${Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON}`;
-            } else if (item === "Show image gallery when clicked") {
+            } else if (item === Strings.LIVE_PREVIEW_EDIT_IMAGE_RIBBON) {
                 const isImageRibbonEnabled = PreferencesManager.get(PREFERENCE_PROJECT_IMAGE_RIBBON) !== false;
                 if(isImageRibbonEnabled) {
                     return `✓ ${item}`;
@@ -505,7 +505,7 @@ define(function (require, exports, module) {
                 const newMode = currentMode !== "click" ? "click" : "hover";
                 PreferencesManager.set(PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT, newMode);
                 return; // Don't dismiss highlights for this option
-            } else if (item === "Show image gallery when clicked") {
+            } else if (item === Strings.LIVE_PREVIEW_EDIT_IMAGE_RIBBON) {
                 // Don't allow image ribbon toggle if edit features are not active
                 if (!isEditFeaturesActive) {
                     return;
