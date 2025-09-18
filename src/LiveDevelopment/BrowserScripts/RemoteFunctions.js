@@ -1939,24 +1939,17 @@ function RemoteFunctions(config = {}) {
                         left: 0 !important;
                         right: 0 !important;
                         width: 100vw !important;
-                        height: 150px !important;
                         background: linear-gradient(180deg, rgba(12,14,20,0.0), rgba(12,14,20,0.7)) !important;
-                        z-index: 999999 !important;
+                        z-index: 2147483647 !important;
                         display: flex !important;
-                        align-items: center !important;
-                        justify-content: center !important;
                         font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial !important;
                         pointer-events: auto !important;
                     }
 
                     .phoenix-ribbon-container {
-                        width: min(1200px, 96vw) !important;
-                        height: 132px !important;
-                        border-radius: 16px !important;
+                        width: 100% !important;
+                        height: 160px !important;
                         background: rgba(21,25,36,0.55) !important;
-                        backdrop-filter: blur(8px) !important;
-                        border: 1px solid rgba(255,255,255,0.08) !important;
-                        overflow: hidden !important;
                         position: relative !important;
                     }
 
@@ -1965,14 +1958,13 @@ function RemoteFunctions(config = {}) {
                         inset: 0 !important;
                         overflow: hidden !important;
                         scroll-behavior: smooth !important;
-                        padding: 8px !important;
+                        padding: 6px !important;
+                        top: 34px !important;
                     }
 
                     .phoenix-ribbon-row {
                         display: flex !important;
                         gap: 2px !important;
-                        align-items: center !important;
-                        height: 100% !important;
                     }
 
                     .phoenix-ribbon-thumb {
@@ -2065,14 +2057,8 @@ function RemoteFunctions(config = {}) {
                     }
 
                     .phoenix-ribbon-header {
-                        position: absolute !important;
-                        top: -20px !important;
-                        left: 0 !important;
-                        right: 0 !important;
                         display: flex !important;
                         justify-content: space-between !important;
-                        align-items: center !important;
-                        padding: 0 20px !important;
                     }
 
                     .phoenix-ribbon-search {
@@ -2206,24 +2192,24 @@ function RemoteFunctions(config = {}) {
                     }
                 </style>
                 <div class="phoenix-image-ribbon">
-                    <div class="phoenix-ribbon-header">
-                        <div class="phoenix-ribbon-search">
-                            <input type="text" placeholder="Search images..." />
-                            <button class="phoenix-ribbon-search-btn">Search</button>
-                            <button class="phoenix-select-image-btn">📁 Select from Computer</button>
-                            <input type="file" class="phoenix-file-input" accept="image/*" style="display: none;">
-                        </div>
-                        <button class="phoenix-ribbon-close">✕</button>
-                    </div>
-                    <div class="phoenix-ribbon-nav left">&#8249;</div>
                     <div class="phoenix-ribbon-container">
+                        <div class="phoenix-ribbon-header">
+                            <div class="phoenix-ribbon-search">
+                                <input type="text" placeholder="Search images..." />
+                                <button class="phoenix-ribbon-search-btn">Search</button>
+                                <button class="phoenix-select-image-btn">📁 Select from Computer</button>
+                                <input type="file" class="phoenix-file-input" accept="image/*" style="display: none;">
+                            </div>
+                            <button class="phoenix-ribbon-close">✕</button>
+                        </div>
+                        <div class="phoenix-ribbon-nav left">&#8249;</div>
                         <div class="phoenix-ribbon-strip">
                             <div class="phoenix-ribbon-row phoenix-ribbon-loading">
                                 Loading images...
                             </div>
                         </div>
+                        <div class="phoenix-ribbon-nav right">&#8250;</div>
                     </div>
-                    <div class="phoenix-ribbon-nav right">&#8250;</div>
                 </div>
             `;
         },
