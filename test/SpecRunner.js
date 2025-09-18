@@ -109,7 +109,7 @@ window.deferredToPromise = jsPromise;
  * @param pollInterval in millis, default poll interval is 10ms
  * @returns {*}
  */
-function awaitsFor(pollFn, _timeoutMessageOrMessageFn, timeoutms = 2000, pollInterval = 10){
+function awaitsFor(pollFn, _timeoutMessageOrMessageFn, timeoutms = 2000, pollInterval = 30){
     if(typeof  _timeoutMessageOrMessageFn === "number"){
         timeoutms = _timeoutMessageOrMessageFn;
         pollInterval = timeoutms;
