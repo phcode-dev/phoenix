@@ -502,6 +502,7 @@ define(function (require, exports, module) {
     async function getEffectiveEntitlements(forceRefresh = false) {
         // Get raw server entitlements
         const serverEntitlements = await getEntitlements(forceRefresh);
+        _validateAndFilterEntitlements(serverEntitlements); // will prune invalid entitlements
 
         // Get trial days remaining
         const trialDaysRemaining = await LoginService.getProTrialDaysRemaining();
@@ -514,7 +515,6 @@ define(function (require, exports, module) {
         // User has active trial
         if (serverEntitlements && serverEntitlements.plan) {
             // Logged-in user with trial
-            _validateAndFilterEntitlements(serverEntitlements); // will prune invalid entitlements
             if (serverEntitlements.plan.paidSubscriber) {
                 // Already a paid subscriber, return as-is
                 return serverEntitlements;

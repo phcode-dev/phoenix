@@ -432,6 +432,90 @@ define(function (require, exports, module) {
             // Close popup
             $profileButton.trigger('click');
         });
+
+        it("should show free user popup when entitlements are expired (no trial)", async function () {
+            console.log("llgT: Starting expired entitlements without trial test");
+
+            // Setup: Expired pro subscription + no trial
+            setupProUserMock(true, true);
+            await cleanupTrialState(); // Ensure no trial is active
+
+            // Verify initial state (no pro branding due to expired entitlements)
+            await verifyProBranding(false, "no pro branding initially due to expired entitlements");
+
+            // Perform login
+            await performFullLoginFlow();
+
+            // Verify pro branding remains false after login (expired entitlements filtered to free)
+            await verifyProBranding(false, "no pro branding after login with expired entitlements");
+
+            // Check profile popup shows free plan status
+            const $profileButton = testWindow.$("#user-profile-button");
+            $profileButton.trigger('click');
+            await popupToAppear(PROFILE_POPUP);
+            await verifyProfilePopupContent(VIEW_PHOENIX_FREE,
+                "free plan user profile popup for user with expired entitlements");
+
+            // Close popup
+            $profileButton.trigger('click');
+
+            // Perform logout
+            await performFullLogoutFlow();
+
+            // Verify pro branding remains false after logout
+            await verifyProBranding(false, "no pro branding after logout with expired entitlements");
+
+            // Check profile popup (signed out state)
+            $profileButton.trigger('click');
+            await popupToAppear(SIGNIN_POPUP);
+            // Not logged in user with no trial - no special branding expected
+            expect(testWindow.$(`.profile-popup .trial-plan-info`).length).toBe(0);
+
+            // Close popup
+            $profileButton.trigger('click');
+        });
+
+        it("should show trial user popup when entitlements are expired (active trial)", async function () {
+            console.log("llgT: Starting expired entitlements with active trial test");
+
+            // Setup: Expired pro subscription + active trial (10 days)
+            setupProUserMock(true, true);
+            await setupTrialState(10);
+
+            // Verify initial state shows pro branding due to trial (overrides expired entitlements)
+            await verifyProBranding(true, "pro branding initially due to active trial");
+
+            // Perform login
+            await performFullLoginFlow();
+
+            // Verify pro branding remains after login (trial overrides expired server entitlements)
+            await verifyProBranding(true, "pro branding after login - trial overrides expired entitlements");
+
+            // Check profile popup shows trial status (not expired server entitlements)
+            const $profileButton = testWindow.$("#user-profile-button");
+            $profileButton.trigger('click');
+            await popupToAppear(PROFILE_POPUP);
+            await verifyProfilePopupContent(VIEW_TRIAL_DAYS_LEFT,
+                "trial user profile popup - trial overrides expired server entitlements");
+
+            // Close popup
+            $profileButton.trigger('click');
+
+            // Perform logout
+            await performFullLogoutFlow();
+
+            // Verify pro branding remains after logout (trial continues)
+            await verifyProBranding(true, "pro branding after logout - trial still active");
+
+            // Check profile popup still shows trial status
+            $profileButton.trigger('click');
+            await popupToAppear(SIGNIN_POPUP);
+            await verifyProfilePopupContent(VIEW_TRIAL_DAYS_LEFT,
+                "trial user profile popup for logged out user");
+
+            // Close popup
+            $profileButton.trigger('click');
+        });
     }
 
     exports.setup = setup;
