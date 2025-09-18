@@ -536,6 +536,7 @@ define({
   "CMD_AUTO_UPDATE": "Automatisk oppdatering",
   "CMD_HOW_TO_USE_BRACKETS": "Hvordan bruke {APP_NAME}",
   "CMD_SUPPORT": "{APP_NAME} support",
+  "CMD_GET_PRO": "Skaff deg Phoenix Pro",
   "CMD_USER_PROFILE": "{APP_NAME}-konto",
   "CMD_DOCS": "Hjelp, Kom i gang",
   "CMD_SUGGEST": "Foreslå en funksjonalitet",
@@ -1472,8 +1473,8 @@ define({
   "PROMO_CARD_4_MESSAGE": "Rediger overskrifter, knapper og kopier direkte i forhåndsvisningen.",
   "PROMO_LEARN_MORE": "Lær mer…",
   "PROMO_GET_APP_UPSELL_BUTTON": "Skaff deg {0}",
-  "CMD_GET_PRO": "Skaff deg Phoenix Pro",
   "PROMO_PRO_ENDED_TITLE": "Din {0}-prøveperiode er over",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro prøveperiode ({0} dager igjen)",
-  "GET_PHOENIX_PRO": "Skaff deg Phoenix Pro"
+  "GET_PHOENIX_PRO": "Skaff deg Phoenix Pro",
+  "USER_FREE_PLAN_NAME": "Gratisabonnement"
 });

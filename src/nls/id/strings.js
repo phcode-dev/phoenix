@@ -1405,6 +1405,8 @@ define({
   "OPEN_SIGN_IN_URL": "Buka Halaman Masuk",
   "PROFILE_POP_TITLE": "Akun {APP_NAME}",
   "PROFILE_SIGN_IN": "Masuk ke akun Anda",
+  "CONTACT_SUPPORT": "Hubungi Dukungan",
+  "SIGN_OUT": "Keluar",
   "ACCOUNT_DETAILS": "Detail Akun",
   "LOGIN_REFRESH": "Periksa Status Login",
   "SIGN_IN_WAITING_TITLE": "Menunggu Masuk",
@@ -1474,6 +1476,5 @@ define({
   "PROMO_PRO_ENDED_TITLE": "Masa Percobaan {0} Anda telah berakhir",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Percobaan Phoenix Pro ({0} hari tersisa)",
   "GET_PHOENIX_PRO": "Dapatkan Phoenix Pro",
-  "CONTACT_SUPPORT": "Hubungi Dukungan",
-  "SIGN_OUT": "Keluar"
+  "USER_FREE_PLAN_NAME": "Paket Gratis"
 });

@@ -536,6 +536,7 @@ define({
   "CMD_AUTO_UPDATE": "Automatická aktualizace",
   "CMD_HOW_TO_USE_BRACKETS": "Jak používat {APP_NAME}",
   "CMD_SUPPORT": "{APP_NAME} Podpora",
+  "CMD_GET_PRO": "Získejte Phoenix Pro",
   "CMD_USER_PROFILE": "Účet {APP_NAME}",
   "CMD_DOCS": "Nápověda, Začínáme",
   "CMD_SUGGEST": "Navrhněte funkci",
@@ -1472,8 +1473,8 @@ define({
   "PROMO_CARD_4_MESSAGE": "Upravujte nadpisy, tlačítka a kopírujte přímo v náhledu.",
   "PROMO_LEARN_MORE": "Další informace…",
   "PROMO_GET_APP_UPSELL_BUTTON": "Získat {0}",
-  "CMD_GET_PRO": "Získejte Phoenix Pro",
   "PROMO_PRO_ENDED_TITLE": "Zkušební doba {0} skončila",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Zkušební verze Phoenix Pro ({0} dní zbývá)",
-  "GET_PHOENIX_PRO": "Získejte Phoenix Pro"
+  "GET_PHOENIX_PRO": "Získejte Phoenix Pro",
+  "USER_FREE_PLAN_NAME": "Bezplatný tarif"
 });

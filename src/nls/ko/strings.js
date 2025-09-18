@@ -1405,6 +1405,8 @@ define({
   "OPEN_SIGN_IN_URL": "로그인 페이지 열기",
   "PROFILE_POP_TITLE": "{APP_NAME} 계정",
   "PROFILE_SIGN_IN": "계정에 로그인",
+  "CONTACT_SUPPORT": "고객 지원 문의",
+  "SIGN_OUT": "로그아웃",
   "ACCOUNT_DETAILS": "계정 세부정보",
   "LOGIN_REFRESH": "로그인 상태 확인",
   "SIGN_IN_WAITING_TITLE": "로그인 대기 중",
@@ -1474,6 +1476,5 @@ define({
   "PROMO_PRO_ENDED_TITLE": "{0} 평가판 사용 기간이 만료되었습니다",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro 평가판({0}일 남음)",
   "GET_PHOENIX_PRO": "Phoenix Pro 받기",
-  "CONTACT_SUPPORT": "고객 지원 문의",
-  "SIGN_OUT": "로그아웃"
+  "USER_FREE_PLAN_NAME": "무료 플랜"
 });

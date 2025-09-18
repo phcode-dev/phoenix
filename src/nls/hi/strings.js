@@ -536,6 +536,7 @@ define({
   "CMD_AUTO_UPDATE": "स्वतः अपडेट",
   "CMD_HOW_TO_USE_BRACKETS": "{APP_NAME} का उपयोग कैसे करें",
   "CMD_SUPPORT": "{APP_NAME} सहायता",
+  "CMD_GET_PRO": "Phoenix Pro प्राप्त करें",
   "CMD_USER_PROFILE": "{APP_NAME} खाता",
   "CMD_DOCS": "सहायता, आरंभ करना",
   "CMD_SUGGEST": "एक सुविधा का सुझाव दें",
@@ -1472,8 +1473,8 @@ define({
   "PROMO_CARD_4_MESSAGE": "हेडिंग, बटन एडिट करें, और सीधे प्रीव्यू में कॉपी करें।",
   "PROMO_LEARN_MORE": "और जानें…",
   "PROMO_GET_APP_UPSELL_BUTTON": "{0} प्राप्त करें",
-  "CMD_GET_PRO": "Phoenix Pro प्राप्त करें",
   "PROMO_PRO_ENDED_TITLE": "आपका {0} परीक्षण समाप्त हो गया है",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro परीक्षण ({0} दिन शेष)",
-  "GET_PHOENIX_PRO": "Phoenix Pro प्राप्त करें"
+  "GET_PHOENIX_PRO": "Phoenix Pro प्राप्त करें",
+  "USER_FREE_PLAN_NAME": "निःशुल्क योजना"
 });

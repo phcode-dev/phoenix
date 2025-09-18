@@ -536,6 +536,7 @@ define({
   "CMD_AUTO_UPDATE": "Аутоматско ажурирање",
   "CMD_HOW_TO_USE_BRACKETS": "Корисничко упутство за {APP_NAME}",
   "CMD_SUPPORT": "{APP_NAME} подршка",
+  "CMD_GET_PRO": "Преузмите Phoenix Pro",
   "CMD_USER_PROFILE": "Налог за {APP_NAME}",
   "CMD_DOCS": "Помоћ, почетак рада",
   "CMD_SUGGEST": "Предложи нову функционалност",
@@ -1472,8 +1473,8 @@ define({
   "PROMO_CARD_4_MESSAGE": "Уредите наслове, дугмад и копирајте директно у прегледу.",
   "PROMO_LEARN_MORE": "Сазнајте више…",
   "PROMO_GET_APP_UPSELL_BUTTON": "Преузмите {0}",
-  "CMD_GET_PRO": "Преузмите Phoenix Pro",
   "PROMO_PRO_ENDED_TITLE": "Ваша пробна верзија {0} је истекла",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro пробна верзија ({0} дана преостало)",
-  "GET_PHOENIX_PRO": "Преузмите Phoenix Pro"
+  "GET_PHOENIX_PRO": "Преузмите Phoenix Pro",
+  "USER_FREE_PLAN_NAME": "Бесплатан план"
 });

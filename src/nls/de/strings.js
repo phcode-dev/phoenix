@@ -536,6 +536,7 @@ define({
   "CMD_AUTO_UPDATE": "Automatische Updates",
   "CMD_HOW_TO_USE_BRACKETS": "So verwendet man {APP_NAME}",
   "CMD_SUPPORT": "{APP_NAME}-Support",
+  "CMD_GET_PRO": "Phoenix Pro herunterladen",
   "CMD_USER_PROFILE": "{APP_NAME}-Konto",
   "CMD_DOCS": "Hilfe, Erste Schritte",
   "CMD_SUGGEST": "Ein Feature vorschlagen",
@@ -1472,8 +1473,8 @@ define({
   "PROMO_CARD_4_MESSAGE": "Bearbeiten Sie Überschriften, Schaltflächen und kopieren Sie direkt in der Vorschau.",
   "PROMO_LEARN_MORE": "Mehr erfahren…",
   "PROMO_GET_APP_UPSELL_BUTTON": "{0} herunterladen",
-  "CMD_GET_PRO": "Phoenix Pro herunterladen",
   "PROMO_PRO_ENDED_TITLE": "Ihre {0}-Testversion ist abgelaufen",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro-Testversion ({0} Tage verbleibend)",
-  "GET_PHOENIX_PRO": "Phoenix Pro herunterladen"
+  "GET_PHOENIX_PRO": "Phoenix Pro herunterladen",
+  "USER_FREE_PLAN_NAME": "Kostenloser Plan"
 });

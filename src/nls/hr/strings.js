@@ -536,6 +536,7 @@ define({
   "CMD_AUTO_UPDATE": "Automatsko ažuriranje",
   "CMD_HOW_TO_USE_BRACKETS": "Kako koristiti {APP_NAME}",
   "CMD_SUPPORT": "{APP_NAME} Podrška (na engleskom)",
+  "CMD_GET_PRO": "Nabavite Phoenix Pro",
   "CMD_USER_PROFILE": "{APP_NAME} račun",
   "CMD_DOCS": "Pomoć, Početak rada",
   "CMD_SUGGEST": "Predloži mogućnost / značajku",
@@ -1472,8 +1473,8 @@ define({
   "PROMO_CARD_4_MESSAGE": "Uredite naslove, gumbe i kopirajte izravno u pregledu.",
   "PROMO_LEARN_MORE": "Saznajte više…",
   "PROMO_GET_APP_UPSELL_BUTTON": "Nabavite {0}",
-  "CMD_GET_PRO": "Nabavite Phoenix Pro",
   "PROMO_PRO_ENDED_TITLE": "Vaša probna verzija {0} je istekla",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Probna verzija Phoenix Pro ({0} dana preostalo)",
-  "GET_PHOENIX_PRO": "Nabavite Phoenix Pro"
+  "GET_PHOENIX_PRO": "Nabavite Phoenix Pro",
+  "USER_FREE_PLAN_NAME": "Besplatni plan"
 });

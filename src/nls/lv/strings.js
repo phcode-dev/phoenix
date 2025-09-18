@@ -536,6 +536,7 @@ define({
   "CMD_AUTO_UPDATE": "Automātiska atjaunināšana",
   "CMD_HOW_TO_USE_BRACKETS": "Kā lietot {APP_NAME}",
   "CMD_SUPPORT": "{APP_NAME} palīdzība",
+  "CMD_GET_PRO": "Iegūt Phoenix Pro",
   "CMD_USER_PROFILE": "{APP_NAME} konts",
   "CMD_DOCS": "Palīdzība, Sākšana",
   "CMD_SUGGEST": "Ieteikt funkciju",
@@ -1472,8 +1473,8 @@ define({
   "PROMO_CARD_4_MESSAGE": "Rediģējiet virsrakstus, pogas un kopējiet tieši priekšskatījumā.",
   "PROMO_LEARN_MORE": "Uzzināt vairāk…",
   "PROMO_GET_APP_UPSELL_BUTTON": "Iegūt {0}",
-  "CMD_GET_PRO": "Iegūt Phoenix Pro",
   "PROMO_PRO_ENDED_TITLE": "Jūsu {0} izmēģinājuma periods ir beidzies",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro izmēģinājuma versija ({0} dienas atlikušas)",
-  "GET_PHOENIX_PRO": "Iegūt Phoenix Pro"
+  "GET_PHOENIX_PRO": "Iegūt Phoenix Pro",
+  "USER_FREE_PLAN_NAME": "Bezmaksas plāns"
 });

@@ -536,6 +536,7 @@ define({
   "CMD_AUTO_UPDATE": "التحديث التلقائي",
   "CMD_HOW_TO_USE_BRACKETS": "كيفية استخدام {APP_NAME}",
   "CMD_SUPPORT": "دعم {APP_NAME}",
+  "CMD_GET_PRO": "احصل على Phoenix Pro",
   "CMD_USER_PROFILE": "حساب {APP_NAME}",
   "CMD_DOCS": "مساعدة، البدء",
   "CMD_SUGGEST": "اقتراح ميزة",
@@ -1472,8 +1473,8 @@ define({
   "PROMO_CARD_4_MESSAGE": "حرر العناوين والأزرار وانقلها مباشرةً في المعاينة.",
   "PROMO_LEARN_MORE": "تعرّف على المزيد…",
   "PROMO_GET_APP_UPSELL_BUTTON": "احصل على {0}",
-  "CMD_GET_PRO": "احصل على Phoenix Pro",
   "PROMO_PRO_ENDED_TITLE": "انتهت الفترة التجريبية لـ {0}",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "النسخة التجريبية من Phoenix Pro ({0} أيام متبقية)",
-  "GET_PHOENIX_PRO": "احصل على Phoenix Pro"
+  "GET_PHOENIX_PRO": "احصل على Phoenix Pro",
+  "USER_FREE_PLAN_NAME": "باقة مجانية"
 });

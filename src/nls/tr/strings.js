@@ -1405,6 +1405,8 @@ define({
   "OPEN_SIGN_IN_URL": "Giriş Sayfasını Aç",
   "PROFILE_POP_TITLE": "{APP_NAME} Hesabı",
   "PROFILE_SIGN_IN": "Hesabınıza giriş yapın",
+  "CONTACT_SUPPORT": "Desteğe Başvur",
+  "SIGN_OUT": "Oturumu Kapat",
   "ACCOUNT_DETAILS": "Hesap Ayrıntıları",
   "LOGIN_REFRESH": "Oturum Durumunu Kontrol Et",
   "SIGN_IN_WAITING_TITLE": "Oturum Açma Bekleniyor",
@@ -1474,6 +1476,5 @@ define({
   "PROMO_PRO_ENDED_TITLE": "{0} Denemeniz Sona Erdi",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro Deneme Sürümü ({0} gün kaldı)",
   "GET_PHOENIX_PRO": "Phoenix Pro'yu Edinin",
-  "CONTACT_SUPPORT": "Desteğe Başvur",
-  "SIGN_OUT": "Oturumu Kapat"
+  "USER_FREE_PLAN_NAME": "Ücretsiz Plan"
 });

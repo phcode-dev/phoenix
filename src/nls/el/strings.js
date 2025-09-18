@@ -1405,6 +1405,8 @@ define({
   "OPEN_SIGN_IN_URL": "Άνοιγμα Σελίδας Σύνδεσης",
   "PROFILE_POP_TITLE": "Λογαριασμός {APP_NAME}",
   "PROFILE_SIGN_IN": "Συνδεθείτε στον λογαριασμό σας",
+  "CONTACT_SUPPORT": "Επικοινωνία με την Υποστήριξη",
+  "SIGN_OUT": "Αποσύνδεση",
   "ACCOUNT_DETAILS": "Στοιχεία Λογαριασμού",
   "LOGIN_REFRESH": "Έλεγχος Κατάστασης Σύνδεσης",
   "SIGN_IN_WAITING_TITLE": "Αναμονή για Σύνδεση",
@@ -1474,6 +1476,5 @@ define({
   "PROMO_PRO_ENDED_TITLE": "Η δοκιμαστική σας έκδοση {0} έληξε",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Δοκιμαστική έκδοση Phoenix Pro ({0} ημέρες απομένουν)",
   "GET_PHOENIX_PRO": "Αποκτήστε το Phoenix Pro",
-  "CONTACT_SUPPORT": "Επικοινωνία με την Υποστήριξη",
-  "SIGN_OUT": "Αποσύνδεση"
+  "USER_FREE_PLAN_NAME": "Δωρεάν Σχέδιο"
 });
