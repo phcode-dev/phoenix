@@ -195,6 +195,7 @@ define({
     "LIVE_PREVIEW_MODE_HIGHLIGHT": "Highlight Mode",
     "LIVE_PREVIEW_MODE_EDIT": "Edit Mode",
     "LIVE_PREVIEW_EDIT_HIGHLIGHT_ON": "Edit Highlights on Hover",
+    "LIVE_PREVIEW_EDIT_IMAGE_RIBBON": "Show image gallery when clicked",
     "LIVE_PREVIEW_MODE_PREFERENCE": "{0} shows only the webpage, {1} connects the webpage to your code - click on elements to jump to their code and vice versa, {2} provides highlighting along with advanced element manipulation",
     "LIVE_PREVIEW_CONFIGURE_MODES": "Configure Live Preview Modes",
     "LIVE_PREVIEW_PRO_FEATURE_TITLE": "Pro Feature",
