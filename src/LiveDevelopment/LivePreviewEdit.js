@@ -662,63 +662,106 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Helper function to update image src attribute and dismiss ribbon gallery
+     *
+     * @param {Number} tagId - the data-brackets-id of the image element
+     * @param {String} targetPath - the full path where the image was saved
+     * @param {String} filename - the filename of the saved image
+     */
+    function _updateImageAndDismissRibbon(tagId, targetPath, filename) {
+        const editor = _getEditorAndValidate(tagId);
+        if (editor) {
+            const htmlFilePath = editor.document.file.fullPath;
+            const relativePath = PathUtils.makePathRelative(targetPath, htmlFilePath);
+            _updateImageSrcAttribute(tagId, relativePath);
+        } else {
+            _updateImageSrcAttribute(tagId, filename);
+        }
+
+        // dismiss the image ribbon gallery
+        const currLiveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
+        if (currLiveDoc && currLiveDoc.protocol && currLiveDoc.protocol.evaluate) {
+            currLiveDoc.protocol.evaluate("_LD.dismissImageRibbonGallery()");
+        }
+    }
+
+    /**
+     * helper function to handle 'upload from computer'
+     * @param {Object} message - the message object
+     * @param {String} filename - the file name with which we need to save the image
+     * @param {Directory} projectRoot - the project root in which the image is to be saved
+     */
+    function _handleUseThisImageLocalFiles(message, filename, projectRoot) {
+        const { tagId, imageData } = message;
+
+        const uint8Array = new Uint8Array(imageData);
+        const targetPath = projectRoot.fullPath + filename;
+
+        window.fs.writeFile(targetPath, window.Filer.Buffer.from(uint8Array),
+            { encoding: window.fs.BYTE_ARRAY_ENCODING }, (err) => {
+                if (err) {
+                    console.error('Failed to save image:', err);
+                } else {
+                    _updateImageAndDismissRibbon(tagId, targetPath, filename);
+                }
+            });
+    }
+
+    /**
+     * helper function to handle 'use this image' button click on remote images
+     * @param {Object} message - the message object
+     * @param {String} filename - the file name with which we need to save the image
+     * @param {Directory} projectRoot - the project root in which the image is to be saved
+     */
+    function _handleUseThisImageRemote(message, filename, projectRoot) {
+        const { imageUrl, tagId } = message;
+
+        fetch(imageUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.arrayBuffer();
+            })
+            .then(arrayBuffer => {
+                const uint8Array = new Uint8Array(arrayBuffer);
+                const targetPath = projectRoot.fullPath + filename;
+
+                window.fs.writeFile(targetPath, window.Filer.Buffer.from(uint8Array),
+                    { encoding: window.fs.BYTE_ARRAY_ENCODING }, (err) => {
+                        if (err) {
+                            console.error('Failed to save image:', err);
+                        } else {
+                            _updateImageAndDismissRibbon(tagId, targetPath, filename);
+                        }
+                    });
+            })
+            .catch(error => {
+                console.error('Failed to fetch image:', error);
+            });
+    }
+
+    /**
      * This function is called when 'use this image' button is clicked in the image ribbon gallery
+     * or user loads an image file from the computer
      * this is responsible to download the image in the appropriate place
-     * and also change the src attribute of the element
+     * and also change the src attribute of the element (by calling appropriate helper functions)
      * @param {Object} message - the message object which stores all the required data for this operation
      */
     function _handleUseThisImage(message) {
-        const { imageUrl, filename, tagId } = message;
+        const filename = message.filename;
         const extnName = message.extnName || "jpg";
 
         const projectRoot = ProjectManager.getProjectRoot();
-        if (!projectRoot) {
-            console.error('No project root found');
-            return;
-        }
+        if (!projectRoot) { return; }
 
         getUniqueFilename(projectRoot.fullPath, filename, extnName).then((uniqueFilename) => {
-            fetch(imageUrl)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.arrayBuffer();
-                })
-                .then(arrayBuffer => {
-                    const uint8Array = new Uint8Array(arrayBuffer);
-
-                    const targetPath = projectRoot.fullPath + uniqueFilename;
-                    window.fs.writeFile(targetPath, window.Filer.Buffer.from(uint8Array),
-                        { encoding: window.fs.BYTE_ARRAY_ENCODING }, (err) => {
-                            if (err) {
-                                console.error('Failed to save image:', err);
-                            } else {
-                                // once the image is saved, we need to update the source code
-                                // so we get the relative path between the current file and the image file
-                                // and that relative path is written as the src value
-                                const editor = _getEditorAndValidate(tagId);
-                                if (editor) {
-                                    const htmlFilePath = editor.document.file.fullPath;
-                                    const relativePath = PathUtils.makePathRelative(targetPath, htmlFilePath);
-                                    _updateImageSrcAttribute(tagId, relativePath);
-                                } else {
-                                    // if editor is not available we directly write the image file name as the src value
-                                    _updateImageSrcAttribute(tagId, uniqueFilename);
-                                }
-
-                                // after successful update we dismiss the image ribbon gallery
-                                // to ensure that the user doesn't work with image ribbon gallery on a stale DOM
-                                const currLiveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
-                                if (currLiveDoc && currLiveDoc.protocol && currLiveDoc.protocol.evaluate) {
-                                    currLiveDoc.protocol.evaluate("_LD.dismissImageRibbonGallery()");
-                                }
-                            }
-                        });
-                })
-                .catch(error => {
-                    console.error('Failed to fetch image:', error);
-                });
+            // check if the image is loaded from computer or from remote
+            if (message.isLocalFile && message.imageData) {
+                _handleUseThisImageLocalFiles(message, uniqueFilename, projectRoot);
+            } else {
+                _handleUseThisImageRemote(message, uniqueFilename, projectRoot);
+            }
         }).catch(error => {
             console.error('Something went wrong when trying to use this image', error);
         });
