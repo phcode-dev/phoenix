@@ -39,6 +39,7 @@ define(function (require, exports, module) {
             LoginServiceExports,
             LoginBrowserExports,
             ProDialogsExports,
+            EntitlementsExports,
             originalOpen,
             originalFetch;
 
@@ -64,7 +65,8 @@ define(function (require, exports, module) {
                 function () {
                     return testWindow._test_login_service_exports &&
                            testWindow._test_login_browser_exports &&
-                           testWindow._test_pro_dlg_login_exports;
+                           testWindow._test_pro_dlg_login_exports &&
+                           testWindow._test_entitlements_exports;
                 },
                 "Test exports to be available",
                 5000
@@ -74,6 +76,7 @@ define(function (require, exports, module) {
             LoginServiceExports = testWindow._test_login_service_exports;
             LoginBrowserExports = testWindow._test_login_browser_exports;
             ProDialogsExports = testWindow._test_pro_dlg_login_exports;
+            EntitlementsExports = testWindow._test_entitlements_exports;
 
             // Store original functions for restoration
             originalOpen = testWindow.open;
@@ -87,7 +90,8 @@ define(function (require, exports, module) {
                 "Profile button to be available",
                 3000
             );
-            LoginShared.setup(testWindow, LoginServiceExports, setupProUserMock, performFullLoginFlow);
+            LoginShared.setup(testWindow, LoginServiceExports, setupProUserMock, performFullLoginFlow,
+                EntitlementsExports);
             VIEW_TRIAL_DAYS_LEFT = LoginShared.VIEW_TRIAL_DAYS_LEFT;
             VIEW_PHOENIX_PRO = LoginShared.VIEW_PHOENIX_PRO;
             VIEW_PHOENIX_FREE = LoginShared.VIEW_PHOENIX_FREE;
