@@ -2671,6 +2671,7 @@ function RemoteFunctions(config = {}) {
         },
 
         remove: function () {
+            _imageRibbonGallery = null;
             if (this.body && this.body.parentNode && this.body.parentNode === window.document.body) {
                 window.document.body.removeChild(this.body);
                 this.body = null;
@@ -3022,6 +3023,7 @@ function RemoteFunctions(config = {}) {
 
     // helper function to check if image ribbon gallery should be shown
     function shouldShowImageRibbon() {
+        if (_imageRibbonGallery) { return false; }
         return config.imageRibbon !== false;
     }
 
@@ -3096,6 +3098,7 @@ function RemoteFunctions(config = {}) {
     function _selectElement(element) {
         // dismiss all UI boxes and cleanup previous element state when selecting a different element
         dismissUIAndCleanupState();
+        dismissImageRibbonGallery();
         if(!isElementEditable(element)) {
             return false;
         }
@@ -3107,6 +3110,11 @@ function RemoteFunctions(config = {}) {
         } else {
             // Element is hidden, so don't show UI boxes but still apply visual styling
             _nodeMoreOptionsBox = null;
+        }
+
+        // if the selected element is an image, show the image ribbon gallery (make sure its enabled in preferences)
+        if(element && element.tagName.toLowerCase() === 'img' && shouldShowImageRibbon()) {
+            _imageRibbonGallery = new ImageRibbonGallery(element);
         }
 
         element._originalOutline = element.style.outline;
@@ -3638,7 +3646,9 @@ function RemoteFunctions(config = {}) {
         // if user enabled the image ribbon setting and an image is selected, then we show the image ribbon
         if (imageRibbonJustEnabled && previouslyClickedElement &&
             previouslyClickedElement.tagName.toLowerCase() === 'img') {
-            _imageRibbonGallery = new ImageRibbonGallery(previouslyClickedElement);
+            if (!_imageRibbonGallery) {
+                _imageRibbonGallery = new ImageRibbonGallery(previouslyClickedElement);
+            }
         }
 
         _updateEventListeners();
