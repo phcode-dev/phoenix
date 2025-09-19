@@ -29,6 +29,7 @@ define(function (require, exports, module) {
     require("./setup-login-service"); // this adds loginService to KernalModeTrust
     require("./promotions");
     require("./login-utils");
+    const EntitlementsDirectImport = require("./entitlements"); // this adds Entitlements to KernalModeTrust
 
     const Metrics = require("utils/Metrics"),
         Strings = require("strings");
@@ -570,6 +571,14 @@ define(function (require, exports, module) {
     LoginService.getSalt = getSalt;
     LoginService.EVENT_ENTITLEMENTS_CHANGED = EVENT_ENTITLEMENTS_CHANGED;
 
+    let inited = false;
+    function init() {
+        if(inited){
+            return;
+        }
+        inited = true;
+        EntitlementsDirectImport.init();
+    }
     // Test-only exports for integration testing
     if (Phoenix.isTestWindow) {
         window._test_login_service_exports = {
@@ -586,4 +595,7 @@ define(function (require, exports, module) {
 
     // Start the entitlements monitor timer
     startEntitlementsMonitor();
+
+    exports.init = init;
+    // no public exports to prevent extension tampering
 });
