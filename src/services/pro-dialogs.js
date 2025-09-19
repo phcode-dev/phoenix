@@ -45,7 +45,11 @@ define(function (require, exports, module) {
     // save a copy of window.fetch so that extensions wont tamper with it.
     let fetchFn = window.fetch;
 
-    function showProUpgradeDialog(trialDays) {
+    const UPSELL_TYPE_LIVE_EDIT = "live_edit";
+    const UPSELL_TYPE_PRO_TRIAL_ENDED = "pro_trial_ended";
+    const UPSELL_TYPE_GET_PRO = "get_pro";
+
+    function showProTrialStartDialog(trialDays) {
         const title = StringUtils.format(Strings.PROMO_UPGRADE_TITLE, proTitle);
         const message = StringUtils.format(Strings.PROMO_UPGRADE_MESSAGE, trialDays);
         const $template = $(Mustache.render(proUpgradeHTML, {
@@ -65,12 +69,38 @@ define(function (require, exports, module) {
         });
     }
 
-    function _showLocalProEndedDialog() {
-        const title = StringUtils.format(Strings.PROMO_PRO_ENDED_TITLE, proTitle);
-        const buttonGetPro = StringUtils.format(Strings.PROMO_GET_APP_UPSELL_BUTTON, proTitlePlain);
+    function _getUpsellDialogText(upsellType) {
+        // our pro dialog has 2 flavors. Local which is shipped with the release for showing if user is offline
+        // and remote which is fetched from the server if we have a remote offer to show. This fn will be called
+        // by both of these flavors and we need to return the appropriate text for each.
+        const buttonGetProText = StringUtils.format(Strings.PROMO_GET_APP_UPSELL_BUTTON, proTitlePlain);
+        switch (upsellType) {
+        case UPSELL_TYPE_PRO_TRIAL_ENDED: return {
+            title: StringUtils.format(Strings.PROMO_PRO_ENDED_TITLE, proTitle),
+            localDialogMessage: Strings.PROMO_ENDED_MESSAGE, // this will be shown in the local dialog
+            buttonGetProText
+        };
+        case UPSELL_TYPE_LIVE_EDIT: return {
+            title: StringUtils.format(Strings.PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE, proTitle),
+            localDialogMessage: Strings.PROMO_PRO_UNLOCK_MESSAGE,
+            buttonGetProText
+        };
+        case UPSELL_TYPE_GET_PRO:
+        default: return {
+            title: StringUtils.format(Strings.PROMO_PRO_UNLOCK_PRO_TITLE, proTitle),
+            localDialogMessage: Strings.PROMO_PRO_UNLOCK_MESSAGE,
+            buttonGetProText
+        };
+        }
+    }
+
+    function _showLocalProEndedDialog(upsellType) {
+        const dlgText = _getUpsellDialogText(upsellType);
+        const title = dlgText.title;
+        const buttonGetPro = dlgText.buttonGetProText;
         const $template = $(Mustache.render(proUpgradeHTML, {
             title, Strings,
-            message: Strings.PROMO_ENDED_MESSAGE,
+            message: dlgText.localDialogMessage,
             secondaryButton: Strings.CANCEL,
             primaryButton: buttonGetPro
         }));
@@ -86,13 +116,14 @@ define(function (require, exports, module) {
         });
     }
 
-    function _showRemoteProEndedDialog(currentVersion, promoHtmlURL, upsellPurchaseURL) {
-        const buttonGetPro = StringUtils.format(Strings.PROMO_GET_APP_UPSELL_BUTTON, proTitlePlain);
-        const title = StringUtils.format(Strings.PROMO_PRO_ENDED_TITLE, proTitle);
+    function _showRemoteProEndedDialog(upsellType, currentVersion, promoHtmlURL, upsellPurchaseURL) {
+        const dlgText = _getUpsellDialogText(upsellType);
+        const title = dlgText.title;
+        const buttonGetPro = dlgText.buttonGetProText;
         const currentTheme = ThemeManager.getCurrentTheme();
         const theme = currentTheme && currentTheme.dark ? "dark" : "light";
         const promoURL = `${promoHtmlURL}?lang=${
-            brackets.getLocale()}&theme=${theme}&version=${currentVersion}`;
+            brackets.getLocale()}&theme=${theme}&version=${currentVersion}&upsellType=${upsellType}`;
         const $template = $(Mustache.render(proEndedHTML, {Strings, title, buttonGetPro, promoURL}));
         Dialogs.showModalDialogUsingTemplate($template).done(function (id) {
             console.log("Dialog closed with id: " + id);
@@ -106,11 +137,11 @@ define(function (require, exports, module) {
         });
     }
 
-    async function showProEndedDialog() {
+    async function showProUpsellDialog(upsellType) {
         const currentVersion = window.AppConfig.apiVersion;
 
         if (!navigator.onLine) {
-            _showLocalProEndedDialog();
+            _showLocalProEndedDialog(upsellType);
             return;
         }
 
@@ -118,18 +149,19 @@ define(function (require, exports, module) {
             const configURL = `${brackets.config.promotions_url}app/config.json`;
             const response = await fetchFn(configURL);
             if (!response.ok) {
-                _showLocalProEndedDialog();
+                _showLocalProEndedDialog(upsellType);
                 return;
             }
 
             const config = await response.json();
             if (config.upsell_after_trial_url) {
-                _showRemoteProEndedDialog(currentVersion, config.upsell_after_trial_url, config.upsell_purchase_url);
+                _showRemoteProEndedDialog(upsellType, currentVersion,
+                    config.upsell_after_trial_url, config.upsell_purchase_url);
             } else {
-                _showLocalProEndedDialog();
+                _showLocalProEndedDialog(upsellType);
             }
         } catch (error) {
-            _showLocalProEndedDialog();
+            _showLocalProEndedDialog(upsellType);
         }
     }
 
@@ -141,6 +173,9 @@ define(function (require, exports, module) {
         };
     }
 
-    exports.showProUpgradeDialog = showProUpgradeDialog;
-    exports.showProEndedDialog = showProEndedDialog;
+    exports.showProTrialStartDialog = showProTrialStartDialog;
+    exports.showProUpsellDialog = showProUpsellDialog;
+    exports.UPSELL_TYPE_PRO_TRIAL_ENDED = UPSELL_TYPE_PRO_TRIAL_ENDED;
+    exports.UPSELL_TYPE_GET_PRO = UPSELL_TYPE_GET_PRO;
+    exports.UPSELL_TYPE_LIVE_EDIT = UPSELL_TYPE_LIVE_EDIT;
 });

@@ -275,7 +275,7 @@ define(function (require, exports, module) {
             // For corruption, show trial ended dialog and create expired marker
             // Do not grant any new trial as possible tampering.
             console.warn("trial data corrupted");
-            ProDialogs.showProEndedDialog(); // Show ended dialog for security
+            ProDialogs.showProUpsellDialog(ProDialogs.UPSELL_TYPE_PRO_TRIAL_ENDED); // Show ended dialog for security
 
             // Create expired trial marker to prevent future trial grants
             await _setTrialData({
@@ -300,7 +300,7 @@ define(function (require, exports, module) {
                     const hasProSubscription = await _hasProSubscription();
                     if (!hasProSubscription) {
                         console.log("Existing trial expired, showing promo ended dialog");
-                        ProDialogs.showProEndedDialog();
+                        ProDialogs.showProUpsellDialog(ProDialogs.UPSELL_TYPE_PRO_TRIAL_ENDED);
                     } else {
                         console.log("Existing trial expired, but user has pro subscription - skipping promo dialog");
                     }
@@ -354,7 +354,7 @@ define(function (require, exports, module) {
         // Check if user has pro subscription before showing upgrade dialog
         const hasProSubscription = await _hasProSubscription();
         if (!hasProSubscription) {
-            ProDialogs.showProUpgradeDialog(trialDays);
+            ProDialogs.showProTrialStartDialog(trialDays);
         } else {
             console.log("Pro trial activated, but user has pro subscription - skipping upgrade dialog");
         }
