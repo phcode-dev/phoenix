@@ -598,7 +598,12 @@ define(function (require, exports, module) {
         }
     }
 
+    let inited = false;
     function init() {
+        if (inited) {
+            return;
+        }
+        inited = true;
         const helpButtonID = "user-profile-button";
         $icon = $("<a>")
             .attr({
