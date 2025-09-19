@@ -189,6 +189,7 @@ define({
     "LIVE_DEV_MORE_OPTIONS_DUPLICATE": "Duplicate",
     "LIVE_DEV_MORE_OPTIONS_DELETE": "Delete",
     "LIVE_DEV_MORE_OPTIONS_AI": "Edit with AI",
+    "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Use this image",
     "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Ask Phoenix AI to modify this element...",
     "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Getting preview from your custom server {0}",
     "LIVE_PREVIEW_MODE_PREVIEW": "Preview Mode",
