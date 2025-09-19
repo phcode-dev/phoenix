@@ -1462,7 +1462,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Екстензија датотеке",
   "PROMO_UPGRADE_TITLE": "Унапредили сте на {0}",
   "PROMO_UPGRADE_MESSAGE": "Уживајте у пуном приступу свим премијум функцијама у наредних {0} дана:",
-  "PROMO_ENDED_MESSAGE": "Претплатите се сада да бисте наставили да користите ове напредне функције:",
   "PROMO_CARD_1": "Превлачење и испуштање елемената",
   "PROMO_CARD_1_MESSAGE": "Визуелно преуређујте секције — Phoenix ажурира HTML и CSS за вас.",
   "PROMO_CARD_2": "Замена слике",
@@ -1474,7 +1473,11 @@ define({
   "PROMO_LEARN_MORE": "Сазнајте више…",
   "PROMO_GET_APP_UPSELL_BUTTON": "Преузмите {0}",
   "PROMO_PRO_ENDED_TITLE": "Ваша пробна верзија {0} је истекла",
+  "PROMO_ENDED_MESSAGE": "Претплатите се сада да бисте наставили да користите ове напредне функције:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro пробна верзија ({0} дана преостало)",
   "GET_PHOENIX_PRO": "Преузмите Phoenix Pro",
-  "USER_FREE_PLAN_NAME": "Бесплатан план"
+  "USER_FREE_PLAN_NAME": "Бесплатан план",
+  "PROMO_PRO_UNLOCK_PRO_TITLE": "Откључајте моћ апликације {0}",
+  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Откључајте Уживо Измене са {0}",
+  "PROMO_PRO_UNLOCK_MESSAGE": "Претплатите се сада да бисте откључали ове напредне функције:"
 });

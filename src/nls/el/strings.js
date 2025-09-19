@@ -1462,7 +1462,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Επέκταση Αρχείου",
   "PROMO_UPGRADE_TITLE": "Έχετε αναβαθμιστεί σε {0}",
   "PROMO_UPGRADE_MESSAGE": "Απολαύστε πλήρη πρόσβαση σε όλες τις premium λειτουργίες για τις επόμενες {0} ημέρες:",
-  "PROMO_ENDED_MESSAGE": "Εγγραφείτε τώρα για να συνεχίσετε να χρησιμοποιείτε αυτές τις προηγμένες λειτουργίες:",
   "PROMO_CARD_1": "Σύρσιμο & Απόθεση Στοιχείων",
   "PROMO_CARD_1_MESSAGE": "Αναδιατάξτε τα τμήματα οπτικά — το Phoenix ενημερώνει το HTML & CSS για εσάς.",
   "PROMO_CARD_2": "Αντικατάσταση Εικόνας",
@@ -1474,7 +1473,11 @@ define({
   "PROMO_LEARN_MORE": "Μάθετε περισσότερα…",
   "PROMO_GET_APP_UPSELL_BUTTON": "Αποκτήστε {0}",
   "PROMO_PRO_ENDED_TITLE": "Η δοκιμαστική σας έκδοση {0} έληξε",
+  "PROMO_ENDED_MESSAGE": "Εγγραφείτε τώρα για να συνεχίσετε να χρησιμοποιείτε αυτές τις προηγμένες λειτουργίες:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Δοκιμαστική έκδοση Phoenix Pro ({0} ημέρες απομένουν)",
   "GET_PHOENIX_PRO": "Αποκτήστε το Phoenix Pro",
-  "USER_FREE_PLAN_NAME": "Δωρεάν Σχέδιο"
+  "USER_FREE_PLAN_NAME": "Δωρεάν Σχέδιο",
+  "PROMO_PRO_UNLOCK_PRO_TITLE": "Ξεκλειδώστε τη δύναμη του {0}",
+  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Ξεκλειδώστε το Live Edit με το {0}",
+  "PROMO_PRO_UNLOCK_MESSAGE": "Εγγραφείτε τώρα για να ξεκλειδώσετε αυτές τις προηγμένες λειτουργίες:"
 });

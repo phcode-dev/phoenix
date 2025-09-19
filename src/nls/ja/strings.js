@@ -1462,7 +1462,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "ファイル拡張子",
   "PROMO_UPGRADE_TITLE": "{0} にアップグレードされました",
   "PROMO_UPGRADE_MESSAGE": "今後 {0} 日間、すべてのプレミアム機能をご利用いただけます：",
-  "PROMO_ENDED_MESSAGE": "これらの高度な機能を引き続き使用するには、今すぐ登録してください。",
   "PROMO_CARD_1": "要素のドラッグ＆ドロップ",
   "PROMO_CARD_1_MESSAGE": "セクションを視覚的に再配置 — Phoenix が HTML と CSS を自動的に更新します。",
   "PROMO_CARD_2": "画像の置換",
@@ -1474,7 +1473,11 @@ define({
   "PROMO_LEARN_MORE": "詳細はこちら…",
   "PROMO_GET_APP_UPSELL_BUTTON": "{0} を入手",
   "PROMO_PRO_ENDED_TITLE": "{0}トライアルが終了しました",
+  "PROMO_ENDED_MESSAGE": "これらの高度な機能を引き続き使用するには、今すぐ登録してください。",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Proトライアル（残り{0}日）",
   "GET_PHOENIX_PRO": "Phoenix Proを入手",
-  "USER_FREE_PLAN_NAME": "フリープラン"
+  "USER_FREE_PLAN_NAME": "フリープラン",
+  "PROMO_PRO_UNLOCK_PRO_TITLE": "{0}の真価を発揮",
+  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "{0}でライブ編集をアンロック",
+  "PROMO_PRO_UNLOCK_MESSAGE": "今すぐ登録して、以下の高度な機能をアンロック："
 });

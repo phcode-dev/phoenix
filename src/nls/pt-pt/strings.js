@@ -1462,7 +1462,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extensão de Ficheiro",
   "PROMO_UPGRADE_TITLE": "Foi atualizado(a) para {0}",
   "PROMO_UPGRADE_MESSAGE": "Desfrute de acesso total a todas as funcionalidades premium durante os próximos {0} dias:",
-  "PROMO_ENDED_MESSAGE": "Assine agora para continuar a utilizar estas funcionalidades avançadas:",
   "PROMO_CARD_1": "Arrastar e Soltar Elementos",
   "PROMO_CARD_1_MESSAGE": "Reorganize as secções visualmente — o Phoenix atualiza o HTML e o CSS por si.",
   "PROMO_CARD_2": "Substituição de Imagem",
@@ -1474,7 +1473,11 @@ define({
   "PROMO_LEARN_MORE": "Saiba mais…",
   "PROMO_GET_APP_UPSELL_BUTTON": "Obtenha {0}",
   "PROMO_PRO_ENDED_TITLE": "O seu período experimental de {0} terminou",
+  "PROMO_ENDED_MESSAGE": "Assine agora para continuar a utilizar estas funcionalidades avançadas:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Período experimental do Phoenix Pro ({0} dias restantes)",
   "GET_PHOENIX_PRO": "Obter Phoenix Pro",
-  "USER_FREE_PLAN_NAME": "Plano Gratuito"
+  "USER_FREE_PLAN_NAME": "Plano Gratuito",
+  "PROMO_PRO_UNLOCK_PRO_TITLE": "Liberte o poder do {0}",
+  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Desbloqueie a Edição em Tempo Real com o {0}",
+  "PROMO_PRO_UNLOCK_MESSAGE": "Assine agora para desbloquear estas funcionalidades avançadas:"
 });
