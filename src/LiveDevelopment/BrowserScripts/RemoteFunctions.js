@@ -2145,53 +2145,41 @@ function RemoteFunctions(config = {}) {
                         opacity: 0.85 !important;
                     }
 
-                    .phoenix-use-image-btn {
+                    .phoenix-download-icon {
                         position: absolute !important;
-                        top: 6px !important;
-                        right: 6px !important;
-                        background: rgba(0,0,0,0.55) !important;
+                        top: 50% !important;
+                        left: 50% !important;
+                        transform: translate(-50%, -50%) !important;
+                        background: rgba(0,0,0,0.7) !important;
                         border: none !important;
-                        color: white !important;
-                        border-radius: 20px !important;
-                        height: 26px !important;
+                        color: #eee !important;
+                        border-radius: 50% !important;
+                        width: 21px !important;
+                        height: 21px !important;
+                        padding: 4px !important;
                         display: flex !important;
                         align-items: center !important;
                         justify-content: center !important;
                         cursor: pointer !important;
-                        font-size: 12px !important;
+                        font-size: 16px !important;
                         z-index: 2147483647 !important;
-                        padding: 0 8px !important;
-                        white-space: nowrap !important;
-                        opacity: 0 !important;
                         transition: all 0.2s ease !important;
+                        pointer-events: none !important;
+                        opacity: 0 !important;
                     }
 
-                    .phoenix-use-image-btn i {
-                        margin-right: 0 !important;
-                        transition: margin 0.2s !important;
-                    }
-
-                    .phoenix-use-image-btn span {
-                        display: none !important;
-                        font-size: 11px !important;
-                        font-weight: 500 !important;
-                    }
-
-                    .phoenix-ribbon-thumb:hover .phoenix-use-image-btn {
+                    .phoenix-ribbon-thumb:hover .phoenix-download-icon {
                         opacity: 1 !important;
+                        pointer-events: auto !important;
                     }
 
-                    .phoenix-use-image-btn:hover {
-                        background: rgba(0,0,0,0.8) !important;
-                        padding: 0 10px !important;
+                    .phoenix-download-icon:hover {
+                        background: rgba(0,0,0,0.9) !important;
+                        transform: translate(-50%, -50%) scale(1.1) !important;
                     }
 
-                    .phoenix-use-image-btn:hover i {
-                        margin-right: 4px !important;
-                    }
-
-                    .phoenix-use-image-btn:hover span {
-                        display: inline !important;
+                    .phoenix-ribbon-thumb {
+                        cursor: pointer !important;
                     }
                 </style>
                 <div class="phoenix-image-ribbon">
@@ -2530,14 +2518,15 @@ function RemoteFunctions(config = {}) {
                 attribution.appendChild(photographer);
                 attribution.appendChild(source);
 
-                // use image button
-                const useImageBtn = window.document.createElement('button');
-                useImageBtn.className = 'phoenix-use-image-btn';
-                useImageBtn.innerHTML = '⬇<span>Use this image</span>';
+                // download icon
+                const downloadIcon = window.document.createElement('div');
+                downloadIcon.className = 'phoenix-download-icon';
+                downloadIcon.innerHTML = `<svg viewBox="0 0 640 640" fill="currentColor">
+                  <path d="M352 96C352 78.3 337.7 64 320 64C302.3 64 288 78.3 288 96L288 306.7L246.6 265.3C234.1 252.8 213.8 252.8 201.3 265.3C188.8 277.8 188.8 298.1 201.3 310.6L297.3 406.6C309.8 419.1 330.1 419.1 342.6 406.6L438.6 310.6C451.1 298.1 451.1 277.8 438.6 265.3C426.1 252.8 405.8 252.8 393.3 265.3L352 306.7L352 96zM160 384C124.7 384 96 412.7 96 448L96 480C96 515.3 124.7 544 160 544L480 544C515.3 544 544 515.3 544 480L544 448C544 412.7 515.3 384 480 384L433.1 384L376.5 440.6C345.3 471.8 294.6 471.8 263.4 440.6L206.9 384L160 384zM464 440C477.3 440 488 450.7 488 464C488 477.3 477.3 488 464 488C450.7 488 440 477.3 440 464C440 450.7 450.7 440 464 440z"/>
+                </svg>`;
 
-                // when use image button is clicked, we first generate the file name by which we need to save the image
-                // and then we add the image to project
-                useImageBtn.addEventListener('click', (e) => {
+                // when the image is clicked we download the image
+                thumbDiv.addEventListener('click', (e) => {
                     e.stopPropagation();
                     e.preventDefault();
                     const filename = this._generateFilename(image);
@@ -2547,7 +2536,7 @@ function RemoteFunctions(config = {}) {
 
                 thumbDiv.appendChild(img);
                 thumbDiv.appendChild(attribution);
-                thumbDiv.appendChild(useImageBtn);
+                thumbDiv.appendChild(downloadIcon);
                 rowElement.appendChild(thumbDiv);
             });
 
