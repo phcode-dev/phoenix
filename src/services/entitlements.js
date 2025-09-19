@@ -54,6 +54,23 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Attempts to sign in to the user's account if the user is not already logged in.
+     * You should listen to `EVENT_ENTITLEMENTS_CHANGED` to know when the login status changes. This function
+     * returns immediately and does not wait for the login process to complete.
+     *
+     * @return {void} Does not return a value.
+     */
+    function loginToAccount() {
+        if(isLoggedIn()){
+            return;
+        }
+        KernalModeTrust.loginService.signInToAccount()
+            .catch(function(err){
+                console.error("Error signing in to account", err);
+            });
+    }
+
+    /**
      * Get the plan details from entitlements with fallback to free plan defaults. If the user is
      * in pro trial(isInProTrial API), then paidSubscriber will always be true as we need to treat user as paid.
      * you should use isInProTrial API to check if user is in pro trial if some trial-related logic needs to be done.
@@ -164,7 +181,8 @@ define(function (require, exports, module) {
             isInProTrial,
             getTrialRemainingDays,
             getRawEntitlements,
-            getLiveEditEntitlement
+            getLiveEditEntitlement,
+            loginToAccount
         };
     }
 
@@ -173,6 +191,7 @@ define(function (require, exports, module) {
 
     // Add functions to secure exports
     Entitlements.isLoggedIn = isLoggedIn;
+    Entitlements.loginToAccount = loginToAccount;
     Entitlements.getPlanDetails = getPlanDetails;
     Entitlements.isInProTrial = isInProTrial;
     Entitlements.getTrialRemainingDays = getTrialRemainingDays;

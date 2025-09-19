@@ -417,7 +417,9 @@ define(function (require, exports, module) {
     if (!Phoenix.isNativeApp) {
         // kernal exports
         // Add to existing KernalModeTrust.loginService from login-service.js
+        // isLoggedIn API shouldn't be used outside loginService, please use Entitlements.isLoggedIn API.
         LoginService.isLoggedIn = isLoggedIn;
+        // signInToAccount API shouldn't be used outside loginService, please use Entitlements.loginToAccount API.
         LoginService.signInToAccount = signInToBrowser;
         LoginService.signOutAccount = signOutBrowser;
         LoginService.getProfile = getProfile;
