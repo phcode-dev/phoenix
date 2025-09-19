@@ -366,10 +366,10 @@ define(function main(require, exports, module) {
         }
     }
 
-    // this function is responsible to update image ribbon config
+    // this function is responsible to update image picker config
     // called from live preview extension when preference changes
     function updateImageRibbonConfig() {
-        const prefValue = PreferencesManager.get("livePreviewImageRibbon");
+        const prefValue = PreferencesManager.get("livePreviewImagePicker");
         config.imageRibbon = prefValue !== false; // default to true if undefined
 
         if (MultiBrowserLiveDev && MultiBrowserLiveDev.status >= MultiBrowserLiveDev.STATUS_ACTIVE) {
