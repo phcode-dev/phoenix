@@ -80,7 +80,8 @@ define(function main(require, exports, module) {
             duplicate: Strings.LIVE_DEV_MORE_OPTIONS_DUPLICATE,
             delete: Strings.LIVE_DEV_MORE_OPTIONS_DELETE,
             ai: Strings.LIVE_DEV_MORE_OPTIONS_AI,
-            aiPromptPlaceholder: Strings.LIVE_DEV_AI_PROMPT_PLACEHOLDER
+            aiPromptPlaceholder: Strings.LIVE_DEV_AI_PROMPT_PLACEHOLDER,
+            imageGalleryUseImage: Strings.LIVE_DEV_IMAGE_GALLERY_USE_IMAGE
         }
     };
     // Status labels/styles are ordered: error, not connected, progress1, progress2, connected.
