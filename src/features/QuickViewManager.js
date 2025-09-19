@@ -585,7 +585,6 @@ define(function (require, exports, module) {
         clearTimeout(popoverState.hoverTimer);
         popoverState.hoverTimer = window.setTimeout(function () {
             if(!mouseInPreviewContainer && !quickViewLocked){
-                console.error("showing");
                 hidePreview();
                 popoverState = {};
                 showPreview(editor);
