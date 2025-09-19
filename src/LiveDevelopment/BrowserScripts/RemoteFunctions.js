@@ -770,7 +770,7 @@ function RemoteFunctions(config = {}) {
 
         let rect = element.getBoundingClientRect();
         marker.style.position = "fixed";
-        marker.style.zIndex = "2147483646";
+        marker.style.zIndex = "2147483647";
         marker.style.borderRadius = "2px";
         marker.style.pointerEvents = "none";
 
@@ -1273,52 +1273,52 @@ function RemoteFunctions(config = {}) {
 
             const styles = `
                 :host {
-                  all: initial;
+                  all: initial !important;
                 }
 
                 .phoenix-more-options-box {
-                    background-color: #4285F4;
-                    color: white;
-                    border-radius: 3px;
-                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-                    font-size: 12px;
-                    font-family: Arial, sans-serif;
-                    z-index: 2147483647;
-                    position: absolute;
+                    background-color: #4285F4 !important;
+                    color: white !important;
+                    border-radius: 3px !important;
+                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) !important;
+                    font-size: 12px !important;
+                    font-family: Arial, sans-serif !important;
+                    z-index: 2147483647 !important;
+                    position: absolute !important;
                     left: -1000px;
                     top: -1000px;
-                    box-sizing: border-box;
+                    box-sizing: border-box !important;
                 }
 
                 .node-options {
-                    display: flex;
-                    align-items: center;
+                    display: flex !important;
+                    align-items: center !important;
                 }
 
                 .node-options span {
-                    padding: 4px 3.9px;
-                    cursor: pointer;
-                    display: flex;
-                    align-items: center;
-                    border-radius: 0;
+                    padding: 4px 3.9px !important;
+                    cursor: pointer !important;
+                    display: flex !important;
+                    align-items: center !important;
+                    border-radius: 0 !important;
                 }
 
                 .node-options span:first-child {
-                    border-radius: 3px 0 0 3px;
+                    border-radius: 3px 0 0 3px !important;
                 }
 
                 .node-options span:last-child {
-                    border-radius: 0 3px 3px 0;
+                    border-radius: 0 3px 3px 0 !important;
                 }
 
                 .node-options span:hover {
-                    background-color: rgba(255, 255, 255, 0.15);
+                    background-color: rgba(255, 255, 255, 0.15) !important;
                 }
 
                 .node-options span > svg {
-                    width: 16px;
-                    height: 16px;
-                    display: block;
+                    width: 16px !important;
+                    height: 16px !important;
+                    display: block !important;
                 }
             `;
 
@@ -1535,37 +1535,37 @@ function RemoteFunctions(config = {}) {
 
             const styles = `
                 :host {
-                  all: initial;
+                  all: initial !important;
                 }
 
                 .phoenix-node-info-box {
-                    background-color: #4285F4;
-                    color: white;
-                    border-radius: 3px;
-                    padding: 5px 8px;
-                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-                    font-size: 12px;
-                    font-family: Arial, sans-serif;
-                    z-index: 2147483647;
-                    position: absolute;
+                    background-color: #4285F4 !important;
+                    color: white !important;
+                    border-radius: 3px !important;
+                    padding: 5px 8px !important;
+                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) !important;
+                    font-size: 12px !important;
+                    font-family: Arial, sans-serif !important;
+                    z-index: 2147483647 !important;
+                    position: absolute !important;
                     left: ${leftPos}px;
                     top: -1000px;
-                    max-width: 300px;
-                    box-sizing: border-box;
-                    pointer-events: none;
+                    max-width: 300px !important;
+                    box-sizing: border-box !important;
+                    pointer-events: none !important;
                 }
 
                 .tag-name {
-                    font-weight: bold;
+                    font-weight: bold !important;
                 }
 
                 .id-name,
                 .class-name {
-                    margin-top: 3px;
+                    margin-top: 3px !important;
                 }
 
                 .exceeded-classes {
-                    opacity: 0.8;
+                    opacity: 0.8 !important;
                 }
             `;
 
@@ -1682,96 +1682,96 @@ function RemoteFunctions(config = {}) {
 
             const styles = `
                 :host {
-                  all: initial;
+                  all: initial !important;
                 }
 
                 .phoenix-ai-prompt-box {
-                    position: absolute;
-                    background: white;
-                    border: 1px solid #4285F4;
-                    border-radius: 8px;
-                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-                    font-family: Arial, sans-serif;
-                    z-index: 2147483647;
-                    width: ${boxWidth}px;
-                    padding: 0;
-                    box-sizing: border-box;
+                    position: absolute !important;
+                    background: white !important;
+                    border: 1px solid #4285F4 !important;
+                    border-radius: 8px !important;
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+                    font-family: Arial, sans-serif !important;
+                    z-index: 2147483647 !important;
+                    width: ${boxWidth}px !important;
+                    padding: 0 !important;
+                    box-sizing: border-box !important;
                 }
 
                 .phoenix-ai-prompt-input-container {
-                    position: relative;
+                    position: relative !important;
                 }
 
                 .phoenix-ai-prompt-textarea {
-                    width: 100%;
-                    height: ${boxHeight}px;
-                    border: none;
-                    border-radius: 8px;
-                    padding: 12px 40px 12px 16px;
-                    font-size: 14px;
-                    font-family: Arial, sans-serif;
-                    resize: none;
-                    outline: none;
-                    box-sizing: border-box;
-                    background: #f9f9f9;
+                    width: 100% !important;
+                    height: ${boxHeight}px !important;
+                    border: none !important;
+                    border-radius: 8px !important;
+                    padding: 12px 40px 12px 16px !important;
+                    font-size: 14px !important;
+                    font-family: Arial, sans-serif !important;
+                    resize: none !important;
+                    outline: none !important;
+                    box-sizing: border-box !important;
+                    background: #f9f9f9 !important;
                 }
 
                 .phoenix-ai-prompt-textarea:focus {
-                    background: white;
+                    background: white !important;
                 }
 
                 .phoenix-ai-prompt-textarea::placeholder {
-                    color: #999;
+                    color: #999 !important;
                 }
 
                 .phoenix-ai-prompt-send-button {
-                    width: 28px;
-                    height: 28px;
-                    border: none;
-                    border-radius: 50%;
-                    background: #4285F4;
-                    color: white;
-                    cursor: pointer;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-size: 14px;
-                    transition: background-color 0.2s;
-                    line-height: 0.5;
+                    width: 28px !important;
+                    height: 28px !important;
+                    border: none !important;
+                    border-radius: 50% !important;
+                    background: #4285F4 !important;
+                    color: white !important;
+                    cursor: pointer !important;
+                    display: flex !important;
+                    align-items: center !important;
+                    justify-content: center !important;
+                    font-size: 14px !important;
+                    transition: background-color 0.2s !important;
+                    line-height: 0.5 !important;
                 }
 
                 .phoenix-ai-prompt-send-button:hover:not(:disabled) {
-                    background: #4285F4;
+                    background: #4285F4 !important;
                 }
 
                 .phoenix-ai-prompt-send-button:disabled {
-                    background: #dadce0;
-                    color: #9aa0a6;
-                    cursor: not-allowed;
+                    background: #dadce0 !important;
+                    color: #9aa0a6 !important;
+                    cursor: not-allowed !important;
                 }
 
                 .phoenix-ai-bottom-controls {
-                    border-top: 1px solid #e0e0e0;
-                    padding: 8px 16px;
-                    background: #f9f9f9;
-                    border-radius: 0 0 8px 8px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
+                    border-top: 1px solid #e0e0e0 !important;
+                    padding: 8px 16px !important;
+                    background: #f9f9f9 !important;
+                    border-radius: 0 0 8px 8px !important;
+                    display: flex !important;
+                    align-items: center !important;
+                    justify-content: space-between !important;
                 }
 
                 .phoenix-ai-model-select {
-                    padding: 4px 8px;
-                    border: 1px solid #ddd;
-                    border-radius: 4px;
-                    font-size: 12px;
-                    background: white;
-                    outline: none;
-                    cursor: pointer;
+                    padding: 4px 8px !important;
+                    border: 1px solid #ddd !important;
+                    border-radius: 4px !important;
+                    font-size: 12px !important;
+                    background: white !important;
+                    outline: none !important;
+                    cursor: pointer !important;
                 }
 
                 .phoenix-ai-model-select:focus {
-                    border-color: #4285F4;
+                    border-color: #4285F4 !important;
                 }
             `;
 
@@ -2007,7 +2007,7 @@ function RemoteFunctions(config = {}) {
                         font-weight: 600 !important;
                         user-select: none !important;
                         transition: all 0.2s ease !important;
-                        z-index: 10 !important;
+                        z-index: 2147483647 !important;
                         padding: 2px 12px 6px 12px !important;
                     }
 
@@ -2159,7 +2159,7 @@ function RemoteFunctions(config = {}) {
                         justify-content: center !important;
                         cursor: pointer !important;
                         font-size: 12px !important;
-                        z-index: 2 !important;
+                        z-index: 2147483647 !important;
                         padding: 0 8px !important;
                         white-space: nowrap !important;
                         opacity: 0 !important;
@@ -2873,7 +2873,7 @@ function RemoteFunctions(config = {}) {
                 "top": offset.top + "px",
                 "width": elementBounds.width + "px",
                 "height": elementBounds.height + "px",
-                "z-index": 2000000,
+                "z-index": 2147483647,
                 "margin": 0,
                 "padding": 0,
                 "position": "absolute",
