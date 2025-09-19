@@ -189,7 +189,7 @@ define(function (require, exports, module) {
     exports.init = init;
     // no public exports to prevent extension tampering
 
-    // Add functions to secure exports
+    // Add functions to secure exports. These can be accessed via `KernalModeTrust.Entitlements.*`
     Entitlements.isLoggedIn = isLoggedIn;
     Entitlements.loginToAccount = loginToAccount;
     Entitlements.getPlanDetails = getPlanDetails;
