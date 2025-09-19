@@ -113,8 +113,8 @@ define(function (require, exports, module) {
         description: Strings.LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT_PREFERENCE
     });
 
-    // live preview image ribbon gallery preference (whether to show image gallery when clicking images)
-    const PREFERENCE_PROJECT_IMAGE_RIBBON = "livePreviewImageRibbon";
+    // live preview image picker preference (whether to show image gallery when clicking images)
+    const PREFERENCE_PROJECT_IMAGE_RIBBON = "livePreviewImagePicker";
     PreferencesManager.definePreference(PREFERENCE_PROJECT_IMAGE_RIBBON, "boolean", true, {
         description: Strings.LIVE_PREVIEW_EDIT_IMAGE_RIBBON
     });
