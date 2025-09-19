@@ -1462,7 +1462,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Filtype",
   "PROMO_UPGRADE_TITLE": "Du har blitt oppgradert til {0}",
   "PROMO_UPGRADE_MESSAGE": "Nyt full tilgang til alle premiumfunksjoner de neste {0} dagene:",
-  "PROMO_ENDED_MESSAGE": "Abonner nå for å fortsette å bruke disse avanserte funksjonene:",
   "PROMO_CARD_1": "Dra og slipp elementer",
   "PROMO_CARD_1_MESSAGE": "Omorganiser seksjoner visuelt – Phoenix oppdaterer HTML og CSS for deg.",
   "PROMO_CARD_2": "Bildeerstatning",
@@ -1474,7 +1473,11 @@ define({
   "PROMO_LEARN_MORE": "Lær mer…",
   "PROMO_GET_APP_UPSELL_BUTTON": "Skaff deg {0}",
   "PROMO_PRO_ENDED_TITLE": "Din {0}-prøveperiode er over",
+  "PROMO_ENDED_MESSAGE": "Abonner nå for å fortsette å bruke disse avanserte funksjonene:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro prøveperiode ({0} dager igjen)",
   "GET_PHOENIX_PRO": "Skaff deg Phoenix Pro",
-  "USER_FREE_PLAN_NAME": "Gratisabonnement"
+  "USER_FREE_PLAN_NAME": "Gratisabonnement",
+  "PROMO_PRO_UNLOCK_PRO_TITLE": "Slipp løs kraften i {0}",
+  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Lås opp Live Edit med {0}",
+  "PROMO_PRO_UNLOCK_MESSAGE": "Abonner nå for å låse opp disse avanserte funksjonene:"
 });

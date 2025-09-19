@@ -1462,7 +1462,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Fájlkiterjesztés",
   "PROMO_UPGRADE_TITLE": "Átálltunk a(z) {0} verzióra",
   "PROMO_UPGRADE_MESSAGE": "Élvezze a prémium funkciók teljes körű elérését a következő {0} napban:",
-  "PROMO_ENDED_MESSAGE": "Iratkozzon fel most a következő prémium funkciók további használatához:",
   "PROMO_CARD_1": "Elemek húzása és elengedése",
   "PROMO_CARD_1_MESSAGE": "Rendezd át vizuálisan a szekciókat – a Phoenix frissíti a HTML-t és a CSS-t helyetted.",
   "PROMO_CARD_2": "Képcsere",
@@ -1474,7 +1473,11 @@ define({
   "PROMO_LEARN_MORE": "Tudj meg többet…",
   "PROMO_GET_APP_UPSELL_BUTTON": "Szerezd meg a(z) {0}-t/et",
   "PROMO_PRO_ENDED_TITLE": "Lejárt a(z) {0} próbaidőszakod",
+  "PROMO_ENDED_MESSAGE": "Iratkozzon fel most a következő prémium funkciók további használatához:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro próbaverzió ({0} nap van hátra)",
   "GET_PHOENIX_PRO": "Szerezd meg a Phoenix Pro-t",
-  "USER_FREE_PLAN_NAME": "Ingyenes csomag"
+  "USER_FREE_PLAN_NAME": "Ingyenes csomag",
+  "PROMO_PRO_UNLOCK_PRO_TITLE": "Használd ki a {0} erejét",
+  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Oldd fel az Élő Szerkesztést a {0} segítségével",
+  "PROMO_PRO_UNLOCK_MESSAGE": "Iratkozz fel most a következő fejlett funkciók eléréséhez:"
 });

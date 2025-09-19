@@ -1462,7 +1462,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extension de fichier",
   "PROMO_UPGRADE_TITLE": "Vous avez été surclassé(e) vers {0}",
   "PROMO_UPGRADE_MESSAGE": "Profitez d'un accès complet à toutes les fonctionnalités premium pendant les {0} prochains jours :",
-  "PROMO_ENDED_MESSAGE": "Abonnez-vous maintenant pour continuer à utiliser ces fonctionnalités avancées :",
   "PROMO_CARD_1": "Glisser-déposer des éléments",
   "PROMO_CARD_1_MESSAGE": "Réorganisez les sections visuellement — Phoenix met à jour le HTML et le CSS pour vous.",
   "PROMO_CARD_2": "Remplacement d'image",
@@ -1474,7 +1473,11 @@ define({
   "PROMO_LEARN_MORE": "En savoir plus…",
   "PROMO_GET_APP_UPSELL_BUTTON": "Obtenir {0}",
   "PROMO_PRO_ENDED_TITLE": "Votre essai {0} a expiré",
+  "PROMO_ENDED_MESSAGE": "Abonnez-vous maintenant pour continuer à utiliser ces fonctionnalités avancées :",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Essai Phoenix Pro ({0} jours restants)",
   "GET_PHOENIX_PRO": "Obtenir Phoenix Pro",
-  "USER_FREE_PLAN_NAME": "Formule gratuite"
+  "USER_FREE_PLAN_NAME": "Formule gratuite",
+  "PROMO_PRO_UNLOCK_PRO_TITLE": "Libérez toute la puissance de {0}",
+  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Débloquez la modification en direct avec {0}",
+  "PROMO_PRO_UNLOCK_MESSAGE": "Abonnez-vous maintenant pour débloquer ces fonctionnalités avancées :"
 });

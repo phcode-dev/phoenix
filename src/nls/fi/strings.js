@@ -1462,7 +1462,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Tiedostopääte",
   "PROMO_UPGRADE_TITLE": "Sinut on päivitetty {0}-tilaukseen",
   "PROMO_UPGRADE_MESSAGE": "Nauti täydestä pääsystä kaikkiin premium-ominaisuuksiin seuraavien {0} päivän ajan:",
-  "PROMO_ENDED_MESSAGE": "Tilaa nyt jatkaaksesi näiden lisäominaisuuksien käyttöä:",
   "PROMO_CARD_1": "Elementtien raahaaminen ja pudottaminen",
   "PROMO_CARD_1_MESSAGE": "Järjestele osioita visuaalisesti – Phoenix päivittää HTML:n ja CSS:n puolestasi.",
   "PROMO_CARD_2": "Kuvan vaihtaminen",
@@ -1474,7 +1473,11 @@ define({
   "PROMO_LEARN_MORE": "Lisätietoja…",
   "PROMO_GET_APP_UPSELL_BUTTON": "Hanki {0}",
   "PROMO_PRO_ENDED_TITLE": "{0}-kokeilusi on päättynyt",
+  "PROMO_ENDED_MESSAGE": "Tilaa nyt jatkaaksesi näiden lisäominaisuuksien käyttöä:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro -kokeiluversio ({0} päivää jäljellä)",
   "GET_PHOENIX_PRO": "Hanki Phoenix Pro",
-  "USER_FREE_PLAN_NAME": "Ilmainen sopimus"
+  "USER_FREE_PLAN_NAME": "Ilmainen sopimus",
+  "PROMO_PRO_UNLOCK_PRO_TITLE": "Avaa Phoenix Pron koko potentiaali {0}",
+  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Avaa Live Edit Phoenix Prolla {0}",
+  "PROMO_PRO_UNLOCK_MESSAGE": "Tilaa nyt avataksesi nämä edistyneet ominaisuudet:"
 });

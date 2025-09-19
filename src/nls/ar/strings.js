@@ -1462,7 +1462,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "امتداد الملف",
   "PROMO_UPGRADE_TITLE": "تم ترقيتك إلى {0}",
   "PROMO_UPGRADE_MESSAGE": "استمتع بوصول كامل إلى جميع الميزات المميزة للأيام {0} القادمة:",
-  "PROMO_ENDED_MESSAGE": "اشترك الآن للاستمرار في استخدام هذه الميزات المتقدمة:",
   "PROMO_CARD_1": "سحب وإفلات العناصر",
   "PROMO_CARD_1_MESSAGE": "أعد ترتيب الأقسام بصريًا — يقوم Phoenix بتحديث HTML و CSS نيابةً عنك.",
   "PROMO_CARD_2": "استبدال الصور",
@@ -1474,7 +1473,11 @@ define({
   "PROMO_LEARN_MORE": "تعرّف على المزيد…",
   "PROMO_GET_APP_UPSELL_BUTTON": "احصل على {0}",
   "PROMO_PRO_ENDED_TITLE": "انتهت الفترة التجريبية لـ {0}",
+  "PROMO_ENDED_MESSAGE": "اشترك الآن للاستمرار في استخدام هذه الميزات المتقدمة:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "النسخة التجريبية من Phoenix Pro ({0} أيام متبقية)",
   "GET_PHOENIX_PRO": "احصل على Phoenix Pro",
-  "USER_FREE_PLAN_NAME": "باقة مجانية"
+  "USER_FREE_PLAN_NAME": "باقة مجانية",
+  "PROMO_PRO_UNLOCK_PRO_TITLE": "أطلق العنان لقوة {0}",
+  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "افتح ميزة التحرير المباشر مع {0}",
+  "PROMO_PRO_UNLOCK_MESSAGE": "اشترك الآن لإلغاء قفل هذه الميزات المتقدمة:"
 });

@@ -1462,7 +1462,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Přípona souboru",
   "PROMO_UPGRADE_TITLE": "Byli jste upgradováni na {0}",
   "PROMO_UPGRADE_MESSAGE": "Využívejte plný přístup ke všem prémiovým funkcím po dobu následujících {0} dnů:",
-  "PROMO_ENDED_MESSAGE": "Chcete-li pokračovat v používání těchto pokročilých funkcí, přihlaste se k odběru:",
   "PROMO_CARD_1": "Přetahování prvků",
   "PROMO_CARD_1_MESSAGE": "Vizuálně uspořádejte sekce – Phoenix aktualizuje HTML a CSS za vás.",
   "PROMO_CARD_2": "Výměna obrázků",
@@ -1474,7 +1473,11 @@ define({
   "PROMO_LEARN_MORE": "Další informace…",
   "PROMO_GET_APP_UPSELL_BUTTON": "Získat {0}",
   "PROMO_PRO_ENDED_TITLE": "Zkušební doba {0} skončila",
+  "PROMO_ENDED_MESSAGE": "Chcete-li pokračovat v používání těchto pokročilých funkcí, přihlaste se k odběru:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Zkušební verze Phoenix Pro ({0} dní zbývá)",
   "GET_PHOENIX_PRO": "Získejte Phoenix Pro",
-  "USER_FREE_PLAN_NAME": "Bezplatný tarif"
+  "USER_FREE_PLAN_NAME": "Bezplatný tarif",
+  "PROMO_PRO_UNLOCK_PRO_TITLE": "Odemkněte sílu {0}",
+  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Odemkněte Živou úpravu s {0}",
+  "PROMO_PRO_UNLOCK_MESSAGE": "Přihlaste se k odběru a odemkněte si tyto pokročilé funkce:"
 });

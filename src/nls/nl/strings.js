@@ -1462,7 +1462,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Bestandsextensie",
   "PROMO_UPGRADE_TITLE": "Je bent geüpgraded naar {0}",
   "PROMO_UPGRADE_MESSAGE": "Profiteer de komende {0} dagen van volledige toegang tot alle premiumfuncties:",
-  "PROMO_ENDED_MESSAGE": "Abonneer nu om deze geavanceerde functies te blijven gebruiken:",
   "PROMO_CARD_1": "Elementen slepen en neerzetten",
   "PROMO_CARD_1_MESSAGE": "Herschik secties visueel — Phoenix werkt de HTML & CSS voor je bij.",
   "PROMO_CARD_2": "Afbeelding vervangen",
@@ -1474,7 +1473,11 @@ define({
   "PROMO_LEARN_MORE": "Meer informatie…",
   "PROMO_GET_APP_UPSELL_BUTTON": "Download {0}",
   "PROMO_PRO_ENDED_TITLE": "Je {0} proefperiode is afgelopen",
+  "PROMO_ENDED_MESSAGE": "Abonneer nu om deze geavanceerde functies te blijven gebruiken:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro proefversie ({0} dagen resterend)",
   "GET_PHOENIX_PRO": "Koop Phoenix Pro",
-  "USER_FREE_PLAN_NAME": "Gratis abonnement"
+  "USER_FREE_PLAN_NAME": "Gratis abonnement",
+  "PROMO_PRO_UNLOCK_PRO_TITLE": "Ontketen de kracht van {0}",
+  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Ontgrendel Live Bewerken met {0}",
+  "PROMO_PRO_UNLOCK_MESSAGE": "Abonneer nu om deze geavanceerde functies te ontgrendelen:"
 });

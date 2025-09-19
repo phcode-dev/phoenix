@@ -1462,7 +1462,6 @@ define({
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Розширення файлу",
   "PROMO_UPGRADE_TITLE": "Вас оновлено до {0}",
   "PROMO_UPGRADE_MESSAGE": "Насолоджуйтесь повним доступом до всіх преміум-функцій протягом наступних {0} днів:",
-  "PROMO_ENDED_MESSAGE": "Підпишіться зараз, щоб продовжити користуватися цими розширеними функціями:",
   "PROMO_CARD_1": "Перетягування елементів",
   "PROMO_CARD_1_MESSAGE": "Змінюйте розташування розділів візуально — Phoenix оновить HTML та CSS за вас.",
   "PROMO_CARD_2": "Заміна зображень",
@@ -1474,7 +1473,11 @@ define({
   "PROMO_LEARN_MORE": "Дізнатися більше…",
   "PROMO_GET_APP_UPSELL_BUTTON": "Отримати {0}",
   "PROMO_PRO_ENDED_TITLE": "Ваш пробний період {0} завершився",
+  "PROMO_ENDED_MESSAGE": "Підпишіться зараз, щоб продовжити користуватися цими розширеними функціями:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Пробний період Phoenix Pro ({0} днів залишилось)",
   "GET_PHOENIX_PRO": "Отримати Phoenix Pro",
-  "USER_FREE_PLAN_NAME": "Безкоштовний план"
+  "USER_FREE_PLAN_NAME": "Безкоштовний план",
+  "PROMO_PRO_UNLOCK_PRO_TITLE": "Розкрийте можливості {0}",
+  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Розблокуйте Live Edit з {0}",
+  "PROMO_PRO_UNLOCK_MESSAGE": "Підпишіться зараз, щоб розблокувати такі розширені функції:"
 });
