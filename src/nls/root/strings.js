@@ -1668,7 +1668,6 @@ define({
     // promos
     "PROMO_UPGRADE_TITLE": "You’ve been upgraded to {0}",
     "PROMO_UPGRADE_MESSAGE": "Enjoy full access to all premium features for the next {0} days:",
-    "PROMO_ENDED_MESSAGE": "Subscribe now to continue using these advanced features:",
     "PROMO_CARD_1": "Drag & Drop Elements",
     "PROMO_CARD_1_MESSAGE": "Rearrange sections visually — Phoenix updates the HTML & CSS for you.",
     "PROMO_CARD_2": "Image Replacement",
@@ -1680,6 +1679,10 @@ define({
     "PROMO_LEARN_MORE": "Learn More\u2026",
     "PROMO_GET_APP_UPSELL_BUTTON": "Get {0}",
     "PROMO_PRO_ENDED_TITLE": "Your {0} Trial has ended",
+    "PROMO_ENDED_MESSAGE": "Subscribe now to continue using these advanced features:",
+    "PROMO_PRO_UNLOCK_PRO_TITLE": "Unlock the power of {0}",
+    "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Unlock Live Edit with {0}",
+    "PROMO_PRO_UNLOCK_MESSAGE": "Subscribe now to unlock these advanced features:",
     "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro Trial ({0} days left)",
     "GET_PHOENIX_PRO": "Get Phoenix Pro",
     "USER_FREE_PLAN_NAME": "Free Plan"
