@@ -2311,8 +2311,8 @@ function RemoteFunctions(config = {}) {
 
         _updateNavButtons: function() {
             // this function is responsible to update the nav buttons
-            // because when we're at the very left, then we style the nav-left button differently (reduce opacity)
-            // and when we're at the very right and no more pages available, we reduce opacity for nav-right
+            // when we're at the very left, we hide the nav-left button completely
+            // when we're at the very right and no more pages available, we hide the nav-right button
             const navLeft = this._shadow.querySelector('.phoenix-ribbon-nav.left');
             const navRight = this._shadow.querySelector('.phoenix-ribbon-nav.right');
             const container = this._shadow.querySelector('.phoenix-ribbon-strip');
@@ -2321,11 +2321,9 @@ function RemoteFunctions(config = {}) {
 
             // show/hide left button
             if (this.scrollPosition <= 0) {
-                navLeft.style.opacity = '0.3';
-                navLeft.style.pointerEvents = 'none';
+                navLeft.style.display = 'none';
             } else {
-                navLeft.style.opacity = '1';
-                navLeft.style.pointerEvents = 'auto';
+                navLeft.style.display = 'block';
             }
 
             // show/hide right button
@@ -2335,11 +2333,9 @@ function RemoteFunctions(config = {}) {
             const hasMorePages = this.currentPage < this.totalPages;
 
             if (atEnd && !hasMorePages) {
-                navRight.style.opacity = '0.3';
-                navRight.style.pointerEvents = 'none';
+                navRight.style.display = 'none';
             } else {
-                navRight.style.opacity = '1';
-                navRight.style.pointerEvents = 'auto';
+                navRight.style.display = 'block';
             }
         },
 
