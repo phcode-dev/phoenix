@@ -770,7 +770,7 @@ function RemoteFunctions(config = {}) {
 
         let rect = element.getBoundingClientRect();
         marker.style.position = "fixed";
-        marker.style.zIndex = "2147483646";
+        marker.style.zIndex = "2147483647";
         marker.style.borderRadius = "2px";
         marker.style.pointerEvents = "none";
 
@@ -1273,52 +1273,52 @@ function RemoteFunctions(config = {}) {
 
             const styles = `
                 :host {
-                  all: initial;
+                  all: initial !important;
                 }
 
                 .phoenix-more-options-box {
-                    background-color: #4285F4;
-                    color: white;
-                    border-radius: 3px;
-                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-                    font-size: 12px;
-                    font-family: Arial, sans-serif;
-                    z-index: 2147483647;
-                    position: absolute;
+                    background-color: #4285F4 !important;
+                    color: white !important;
+                    border-radius: 3px !important;
+                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) !important;
+                    font-size: 12px !important;
+                    font-family: Arial, sans-serif !important;
+                    z-index: 2147483647 !important;
+                    position: absolute !important;
                     left: -1000px;
                     top: -1000px;
-                    box-sizing: border-box;
+                    box-sizing: border-box !important;
                 }
 
                 .node-options {
-                    display: flex;
-                    align-items: center;
+                    display: flex !important;
+                    align-items: center !important;
                 }
 
                 .node-options span {
-                    padding: 4px 3.9px;
-                    cursor: pointer;
-                    display: flex;
-                    align-items: center;
-                    border-radius: 0;
+                    padding: 4px 3.9px !important;
+                    cursor: pointer !important;
+                    display: flex !important;
+                    align-items: center !important;
+                    border-radius: 0 !important;
                 }
 
                 .node-options span:first-child {
-                    border-radius: 3px 0 0 3px;
+                    border-radius: 3px 0 0 3px !important;
                 }
 
                 .node-options span:last-child {
-                    border-radius: 0 3px 3px 0;
+                    border-radius: 0 3px 3px 0 !important;
                 }
 
                 .node-options span:hover {
-                    background-color: rgba(255, 255, 255, 0.15);
+                    background-color: rgba(255, 255, 255, 0.15) !important;
                 }
 
                 .node-options span > svg {
-                    width: 16px;
-                    height: 16px;
-                    display: block;
+                    width: 16px !important;
+                    height: 16px !important;
+                    display: block !important;
                 }
             `;
 
@@ -1535,37 +1535,37 @@ function RemoteFunctions(config = {}) {
 
             const styles = `
                 :host {
-                  all: initial;
+                  all: initial !important;
                 }
 
                 .phoenix-node-info-box {
-                    background-color: #4285F4;
-                    color: white;
-                    border-radius: 3px;
-                    padding: 5px 8px;
-                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-                    font-size: 12px;
-                    font-family: Arial, sans-serif;
-                    z-index: 2147483647;
-                    position: absolute;
+                    background-color: #4285F4 !important;
+                    color: white !important;
+                    border-radius: 3px !important;
+                    padding: 5px 8px !important;
+                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) !important;
+                    font-size: 12px !important;
+                    font-family: Arial, sans-serif !important;
+                    z-index: 2147483647 !important;
+                    position: absolute !important;
                     left: ${leftPos}px;
                     top: -1000px;
-                    max-width: 300px;
-                    box-sizing: border-box;
-                    pointer-events: none;
+                    max-width: 300px !important;
+                    box-sizing: border-box !important;
+                    pointer-events: none !important;
                 }
 
                 .tag-name {
-                    font-weight: bold;
+                    font-weight: bold !important;
                 }
 
                 .id-name,
                 .class-name {
-                    margin-top: 3px;
+                    margin-top: 3px !important;
                 }
 
                 .exceeded-classes {
-                    opacity: 0.8;
+                    opacity: 0.8 !important;
                 }
             `;
 
@@ -1682,96 +1682,96 @@ function RemoteFunctions(config = {}) {
 
             const styles = `
                 :host {
-                  all: initial;
+                  all: initial !important;
                 }
 
                 .phoenix-ai-prompt-box {
-                    position: absolute;
-                    background: white;
-                    border: 1px solid #4285F4;
-                    border-radius: 8px;
-                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-                    font-family: Arial, sans-serif;
-                    z-index: 2147483647;
-                    width: ${boxWidth}px;
-                    padding: 0;
-                    box-sizing: border-box;
+                    position: absolute !important;
+                    background: white !important;
+                    border: 1px solid #4285F4 !important;
+                    border-radius: 8px !important;
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+                    font-family: Arial, sans-serif !important;
+                    z-index: 2147483647 !important;
+                    width: ${boxWidth}px !important;
+                    padding: 0 !important;
+                    box-sizing: border-box !important;
                 }
 
                 .phoenix-ai-prompt-input-container {
-                    position: relative;
+                    position: relative !important;
                 }
 
                 .phoenix-ai-prompt-textarea {
-                    width: 100%;
-                    height: ${boxHeight}px;
-                    border: none;
-                    border-radius: 8px;
-                    padding: 12px 40px 12px 16px;
-                    font-size: 14px;
-                    font-family: Arial, sans-serif;
-                    resize: none;
-                    outline: none;
-                    box-sizing: border-box;
-                    background: #f9f9f9;
+                    width: 100% !important;
+                    height: ${boxHeight}px !important;
+                    border: none !important;
+                    border-radius: 8px !important;
+                    padding: 12px 40px 12px 16px !important;
+                    font-size: 14px !important;
+                    font-family: Arial, sans-serif !important;
+                    resize: none !important;
+                    outline: none !important;
+                    box-sizing: border-box !important;
+                    background: #f9f9f9 !important;
                 }
 
                 .phoenix-ai-prompt-textarea:focus {
-                    background: white;
+                    background: white !important;
                 }
 
                 .phoenix-ai-prompt-textarea::placeholder {
-                    color: #999;
+                    color: #999 !important;
                 }
 
                 .phoenix-ai-prompt-send-button {
-                    width: 28px;
-                    height: 28px;
-                    border: none;
-                    border-radius: 50%;
-                    background: #4285F4;
-                    color: white;
-                    cursor: pointer;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-size: 14px;
-                    transition: background-color 0.2s;
-                    line-height: 0.5;
+                    width: 28px !important;
+                    height: 28px !important;
+                    border: none !important;
+                    border-radius: 50% !important;
+                    background: #4285F4 !important;
+                    color: white !important;
+                    cursor: pointer !important;
+                    display: flex !important;
+                    align-items: center !important;
+                    justify-content: center !important;
+                    font-size: 14px !important;
+                    transition: background-color 0.2s !important;
+                    line-height: 0.5 !important;
                 }
 
                 .phoenix-ai-prompt-send-button:hover:not(:disabled) {
-                    background: #4285F4;
+                    background: #4285F4 !important;
                 }
 
                 .phoenix-ai-prompt-send-button:disabled {
-                    background: #dadce0;
-                    color: #9aa0a6;
-                    cursor: not-allowed;
+                    background: #dadce0 !important;
+                    color: #9aa0a6 !important;
+                    cursor: not-allowed !important;
                 }
 
                 .phoenix-ai-bottom-controls {
-                    border-top: 1px solid #e0e0e0;
-                    padding: 8px 16px;
-                    background: #f9f9f9;
-                    border-radius: 0 0 8px 8px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
+                    border-top: 1px solid #e0e0e0 !important;
+                    padding: 8px 16px !important;
+                    background: #f9f9f9 !important;
+                    border-radius: 0 0 8px 8px !important;
+                    display: flex !important;
+                    align-items: center !important;
+                    justify-content: space-between !important;
                 }
 
                 .phoenix-ai-model-select {
-                    padding: 4px 8px;
-                    border: 1px solid #ddd;
-                    border-radius: 4px;
-                    font-size: 12px;
-                    background: white;
-                    outline: none;
-                    cursor: pointer;
+                    padding: 4px 8px !important;
+                    border: 1px solid #ddd !important;
+                    border-radius: 4px !important;
+                    font-size: 12px !important;
+                    background: white !important;
+                    outline: none !important;
+                    cursor: pointer !important;
                 }
 
                 .phoenix-ai-model-select:focus {
-                    border-color: #4285F4;
+                    border-color: #4285F4 !important;
                 }
             `;
 
@@ -1907,6 +1907,791 @@ function RemoteFunctions(config = {}) {
                 window.document.body.removeChild(this.body);
                 this.body = null;
                 _aiPromptBox = null;
+            }
+        }
+    };
+
+    /**
+     * when user clicks on an image we call this,
+     * this creates a image ribbon gallery at the bottom of the live preview
+     */
+    function ImageRibbonGallery(element) {
+        this.element = element;
+        this.remove = this.remove.bind(this);
+        this.currentPage = 1;
+        this.totalPages = 1;
+        this.allImages = [];
+        this.imagesPerPage = 10;
+        this.scrollPosition = 0;
+        this.create();
+    }
+
+    ImageRibbonGallery.prototype = {
+        _style: function () {
+            this.body = window.document.createElement("div");
+            this._shadow = this.body.attachShadow({mode: 'closed'});
+
+            this._shadow.innerHTML = `
+                <style>
+                    .phoenix-image-ribbon {
+                        position: fixed !important;
+                        bottom: 0 !important;
+                        left: 0 !important;
+                        right: 0 !important;
+                        width: 100vw !important;
+                        background: linear-gradient(180deg, rgba(12,14,20,0.0), rgba(12,14,20,0.7)) !important;
+                        z-index: 2147483647 !important;
+                        display: flex !important;
+                        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial !important;
+                        pointer-events: auto !important;
+                    }
+
+                    .phoenix-ribbon-container {
+                        width: 100% !important;
+                        height: 156px !important;
+                        background: rgba(255, 255, 255, 0.3) !important;
+                        backdrop-filter: blur(10px) !important;
+                        -webkit-backdrop-filter: blur(10px) !important;
+                        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+                        border-radius: 12px !important;
+                        position: relative !important;
+                    }
+
+                    .phoenix-ribbon-strip {
+                        position: absolute !important;
+                        inset: 0 !important;
+                        overflow: hidden !important;
+                        scroll-behavior: smooth !important;
+                        padding: 6px !important;
+                        top: 34px !important;
+                    }
+
+                    .phoenix-ribbon-row {
+                        display: flex !important;
+                        gap: 2px !important;
+                    }
+
+                    .phoenix-ribbon-thumb {
+                        flex: 0 0 auto !important;
+                        width: 112px !important;
+                        height: 112px !important;
+                        border-radius: 14px !important;
+                        overflow: hidden !important;
+                        position: relative !important;
+                        cursor: pointer !important;
+                        outline: 1px solid rgba(255,255,255,0.08) !important;
+                        transition: transform 0.15s ease, outline-color 0.15s ease, box-shadow 0.15s ease !important;
+                        background: #0b0e14 !important;
+                    }
+
+                    .phoenix-ribbon-thumb img {
+                        width: 100% !important;
+                        height: 100% !important;
+                        object-fit: cover !important;
+                        display: block !important;
+                    }
+
+                    .phoenix-ribbon-thumb:hover {
+                        transform: translateY(-2px) scale(1.02) !important;
+                        outline-color: rgba(255,255,255,0.25) !important;
+                        box-shadow: 0 8px 18px rgba(0,0,0,0.36) !important;
+                    }
+
+                    .phoenix-ribbon-nav {
+                        position: absolute !important;
+                        top: 58% !important;
+                        transform: translateY(-50%) !important;
+                        border-radius: 12px !important;
+                        border: 1px solid rgba(255,255,255,0.14) !important;
+                        color: #eaeaf0 !important;
+                        background: rgba(21,25,36,0.65) !important;
+                        cursor: pointer !important;
+                        backdrop-filter: blur(8px) !important;
+                        font-size: 20px !important;
+                        font-weight: 600 !important;
+                        user-select: none !important;
+                        transition: all 0.2s ease !important;
+                        z-index: 2147483647 !important;
+                        padding: 2px 12px 6px 12px !important;
+                    }
+
+                    .phoenix-ribbon-nav:hover {
+                        background: rgba(21,25,36,0.85) !important;
+                        border-color: rgba(255,255,255,0.25) !important;
+                        transform: translateY(-50%) scale(1.05) !important;
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+                    }
+
+                    .phoenix-ribbon-nav:active {
+                        transform: translateY(-50%) scale(0.95) !important;
+                    }
+
+                    .phoenix-ribbon-nav.left {
+                        left: 18px !important;
+                    }
+
+                    .phoenix-ribbon-nav.right {
+                        right: 18px !important;
+                    }
+
+                    .phoenix-ribbon-loading {
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                        height: 100% !important;
+                        color: #eaeaf0 !important;
+                        font-size: 14px !important;
+                    }
+
+                    .phoenix-ribbon-error {
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                        height: 100% !important;
+                        color: #ff6b6b !important;
+                        font-size: 14px !important;
+                    }
+
+                    .phoenix-ribbon-header {
+                        display: flex !important;
+                        width: 100% !important;
+                        position: absolute !important;
+                        top: 5px !important;
+                    }
+
+                    .phoenix-ribbon-header-left {
+                        width: 60% !important;
+                        display: flex !important;
+                    }
+
+                    .phoenix-ribbon-header-right {
+                        width: 40% !important;
+                        display: flex !important;
+                        justify-content: flex-end !important;
+                    }
+
+                    .phoenix-ribbon-search {
+                        display: flex !important;
+                        align-items: center !important;
+                        background: rgba(0,0,0,0.5) !important;
+                        padding: 5px !important;
+                        border-radius: 5px !important;
+                        margin-left: 8px !important;
+                    }
+
+                    .phoenix-ribbon-search input {
+                        background: transparent !important;
+                        border: none !important;
+                        outline: none !important;
+                        color: white !important;
+                        width: 200px !important;
+                    }
+
+                    .phoenix-ribbon-search input::placeholder {
+                        color: rgba(255, 255, 255, 0.7) !important;
+                        opacity: 1 !important;
+                    }
+
+                    .phoenix-ribbon-search input::-webkit-input-placeholder {
+                        color: rgba(255, 255, 255, 0.7) !important;
+                    }
+
+                    .phoenix-ribbon-search input::-moz-placeholder {
+                        color: rgba(255, 255, 255, 0.7) !important;
+                        opacity: 1 !important;
+                    }
+
+                    .phoenix-ribbon-search-btn {
+                        background: none !important;
+                        border: none !important;
+                        color: #6aa9ff !important;
+                        cursor: pointer !important;
+                    }
+
+                    .phoenix-ribbon-select {
+                        margin-left: 10px !important;
+                    }
+
+                    .phoenix-select-image-btn {
+                        background: gray !important;
+                        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+                        color: #fff !important;
+                        padding: 2px 4px !important;
+                        border-radius: 6px !important;
+                        font-size: 12px !important;
+                        cursor: pointer !important;
+                        transition: all 0.2s ease !important;
+                    }
+
+                    .phoenix-ribbon-close {
+                        background: rgba(0,0,0,0.5) !important;
+                        border: none !important;
+                        color: white !important;
+                        cursor: pointer !important;
+                        padding: 4px 8px !important;
+                        border-radius: 3px !important;
+                        margin-right: 16px !important;
+                    }
+
+                    .phoenix-ribbon-attribution {
+                        position: absolute !important;
+                        bottom: 6px !important;
+                        left: 6px !important;
+                        background: rgba(0,0,0,0.8) !important;
+                        color: white !important;
+                        padding: 4px 6px !important;
+                        border-radius: 5px !important;
+                        font-size: 10px !important;
+                        line-height: 1.2 !important;
+                        max-width: calc(100% - 12px) !important;
+                        text-shadow: 0 1px 2px rgba(0,0,0,0.9) !important;
+                        pointer-events: none !important;
+                        opacity: 0 !important;
+                        transition: all 0.2s ease !important;
+                    }
+
+                    .phoenix-ribbon-attribution .photographer {
+                        display: block !important;
+                        font-weight: 500 !important;
+                        white-space: nowrap !important;
+                        overflow: hidden !important;
+                        text-overflow: ellipsis !important;
+                    }
+
+                    .phoenix-ribbon-attribution .source {
+                        display: block !important;
+                        font-size: 9px !important;
+                        opacity: 0.85 !important;
+                    }
+
+                    .phoenix-download-icon {
+                        position: absolute !important;
+                        top: 8px !important;
+                        right: 8px !important;
+                        background: rgba(0,0,0,0.7) !important;
+                        border: none !important;
+                        color: #eee !important;
+                        border-radius: 50% !important;
+                        width: 18px !important;
+                        height: 18px !important;
+                        padding: 4px !important;
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                        cursor: pointer !important;
+                        font-size: 16px !important;
+                        z-index: 2147483647 !important;
+                        transition: all 0.2s ease !important;
+                        pointer-events: none !important;
+                        opacity: 0 !important;
+                    }
+
+                    .phoenix-ribbon-thumb:hover .phoenix-download-icon {
+                        opacity: 1 !important;
+                        pointer-events: auto !important;
+                    }
+
+                    .phoenix-ribbon-thumb:hover .phoenix-ribbon-attribution {
+                        opacity: 1 !important;
+                    }
+
+                    .phoenix-download-icon:hover {
+                        background: rgba(0,0,0,0.9) !important;
+                        transform: scale(1.1) !important;
+                    }
+
+                    .phoenix-ribbon-thumb {
+                        cursor: pointer !important;
+                    }
+                </style>
+                <div class="phoenix-image-ribbon">
+                    <div class="phoenix-ribbon-container">
+                        <div class="phoenix-ribbon-header">
+                            <div class="phoenix-ribbon-header-left">
+                                <div class="phoenix-ribbon-search">
+                                    <input type="text" placeholder="${config.strings.imageGallerySearchPlaceholder}" />
+                                    <button class="phoenix-ribbon-search-btn">Search</button>
+                                </div>
+                                <div class="phoenix-ribbon-select">
+                                    <button class="phoenix-select-image-btn" title="${config.strings.imageGallerySelectFromComputer}">
+                                        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                                            <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                                            <path d="M12,12L10.5,13.5L8.5,11.5L6,14H18L15,11L12,12Z"/>
+                                        </svg>
+                                    </button>
+                                    <input type="file" class="phoenix-file-input" accept="image/*" style="display: none;">
+                                </div>
+                            </div>
+                            <div class="phoenix-ribbon-header-right">
+                                <button class="phoenix-ribbon-close">×</button>
+                            </div>
+                        </div>
+                        <div class="phoenix-ribbon-nav left">&#8249;</div>
+                        <div class="phoenix-ribbon-strip">
+                            <div class="phoenix-ribbon-row phoenix-ribbon-loading">
+                                Loading images...
+                            </div>
+                        </div>
+                        <div class="phoenix-ribbon-nav right">&#8250;</div>
+                    </div>
+                </div>
+            `;
+        },
+
+        _getDefaultQuery: function() {
+            // this are the default queries, so when image ribbon gallery is shown, we select a random query and show it
+            const qualityQueries = [
+                'nature', 'minimal', 'workspace', 'abstract', 'coffee',
+                'mountains', 'city', 'flowers', 'ocean', 'sunset',
+                'architecture', 'forest', 'travel', 'technology', 'sky',
+                'landscape', 'creative', 'design', 'art', 'modern',
+                'food', 'patterns', 'colors', 'photography', 'studio',
+                'light', 'winter', 'summer', 'vintage', 'geometric',
+                'water', 'beach', 'space', 'garden', 'textures',
+                'urban', 'portrait', 'music', 'books', 'home',
+                'cozy', 'aesthetic', 'autumn', 'spring', 'clouds'
+            ];
+
+            const randIndex = Math.floor(Math.random() * qualityQueries.length);
+            return qualityQueries[randIndex];
+        },
+
+        _fetchImages: function(searchQuery, page = 1, append = false) {
+            this._currentSearchQuery = searchQuery;
+            const apiUrl = `https://images.phcode.dev/api/images/search?q=${encodeURIComponent(searchQuery)}&per_page=10&page=${page}`;
+
+            if (!append) {
+                this._showLoading();
+            }
+
+            fetch(apiUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`API request failed: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.results && data.results.length > 0) {
+                        if (append) {
+                            this.allImages = this.allImages.concat(data.results);
+                            this._renderImages(data.results, true); // true means need to append new images at the end
+                        } else {
+                            this.allImages = data.results;
+                            this._renderImages(this.allImages, false); // false means its a new search
+                        }
+                        this.totalPages = data.total_pages || 1;
+                        this.currentPage = page;
+                        this._updateNavButtons();
+                    } else if (!append) {
+                        this._showError('No images found');
+                    }
+
+                    if (append) {
+                        this._isLoadingMore = false;
+                        this._hideLoadingMore();
+                    }
+                })
+                .catch(error => {
+                    console.error('Failed to fetch images:', error);
+                    if (!append) {
+                        this._showError('Failed to load images');
+                    } else {
+                        this._isLoadingMore = false;
+                        this._hideLoadingMore();
+                    }
+                });
+        },
+
+        _handleNavLeft: function() {
+            const container = this._shadow.querySelector('.phoenix-ribbon-strip');
+            if (!container) { return; }
+
+            const containerWidth = container.clientWidth;
+            const scrollAmount = containerWidth;
+
+            this.scrollPosition = Math.max(0, this.scrollPosition - scrollAmount);
+            container.scrollTo({ left: this.scrollPosition, behavior: 'smooth' });
+            this._updateNavButtons();
+        },
+
+        _handleNavRight: function() {
+            const container = this._shadow.querySelector('.phoenix-ribbon-strip');
+            if (!container) { return; }
+
+            const containerWidth = container.clientWidth;
+            const totalWidth = container.scrollWidth;
+            const scrollAmount = containerWidth;
+
+            // if we're near the end, we need to load more images
+            const nearEnd = (this.scrollPosition + containerWidth + scrollAmount) >= totalWidth - 100;
+            if (nearEnd && this.currentPage < this.totalPages && !this._isLoadingMore) {
+                this._isLoadingMore = true;
+                this._showLoadingMore();
+                this._fetchImages(this._currentSearchQuery, this.currentPage + 1, true);
+            }
+
+            this.scrollPosition = Math.min(totalWidth - containerWidth, this.scrollPosition + scrollAmount);
+            container.scrollTo({ left: this.scrollPosition, behavior: 'smooth' });
+            this._updateNavButtons();
+        },
+
+        _updateNavButtons: function() {
+            // this function is responsible to update the nav buttons
+            // when we're at the very left, we hide the nav-left button completely
+            // when we're at the very right and no more pages available, we hide the nav-right button
+            const navLeft = this._shadow.querySelector('.phoenix-ribbon-nav.left');
+            const navRight = this._shadow.querySelector('.phoenix-ribbon-nav.right');
+            const container = this._shadow.querySelector('.phoenix-ribbon-strip');
+
+            if (!navLeft || !navRight || !container) { return; }
+
+            // show/hide left button
+            if (this.scrollPosition <= 0) {
+                navLeft.style.display = 'none';
+            } else {
+                navLeft.style.display = 'block';
+            }
+
+            // show/hide right button
+            const containerWidth = container.clientWidth;
+            const totalWidth = container.scrollWidth;
+            const atEnd = (this.scrollPosition + containerWidth) >= totalWidth - 10;
+            const hasMorePages = this.currentPage < this.totalPages;
+
+            if (atEnd && !hasMorePages) {
+                navRight.style.display = 'none';
+            } else {
+                navRight.style.display = 'block';
+            }
+        },
+
+        _showLoading: function() {
+            const rowElement = this._shadow.querySelector('.phoenix-ribbon-row');
+            if (!rowElement) { return; }
+
+            rowElement.innerHTML = 'Loading images...';
+            rowElement.className = 'phoenix-ribbon-row phoenix-ribbon-loading';
+        },
+
+        _showLoadingMore: function() {
+            const rowElement = this._shadow.querySelector('.phoenix-ribbon-row');
+            if (!rowElement) { return; }
+
+            // when loading more images we need to show the message at the end of the image ribbon
+            const loadingIndicator = window.document.createElement('div');
+            loadingIndicator.className = 'phoenix-loading-more';
+            loadingIndicator.style.cssText = `
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                min-width: 120px !important;
+                height: 116px !important;
+                margin-left: 2px !important;
+                background: rgba(255,255,255,0.03) !important;
+                border-radius: 8px !important;
+                color: #e8eaf0 !important;
+                font-size: 12px !important;
+                border: 1px dashed rgba(255,255,255,0.1) !important;
+            `;
+            loadingIndicator.textContent = 'Loading...';
+            rowElement.appendChild(loadingIndicator);
+        },
+
+        _hideLoadingMore: function() {
+            const loadingIndicator = this._shadow.querySelector('.phoenix-loading-more');
+            if (loadingIndicator) {
+                loadingIndicator.remove();
+            }
+        },
+
+        _attachEventHandlers: function() {
+            const ribbonContainer = this._shadow.querySelector('.phoenix-image-ribbon');
+            const searchInput = this._shadow.querySelector('.phoenix-ribbon-search input');
+            const searchButton = this._shadow.querySelector('.phoenix-ribbon-search-btn');
+            const closeButton = this._shadow.querySelector('.phoenix-ribbon-close');
+            const navLeft = this._shadow.querySelector('.phoenix-ribbon-nav.left');
+            const navRight = this._shadow.querySelector('.phoenix-ribbon-nav.right');
+            const selectImageBtn = this._shadow.querySelector('.phoenix-select-image-btn');
+            const fileInput = this._shadow.querySelector('.phoenix-file-input');
+
+            if (searchInput && searchButton) {
+                const performSearch = (e) => {
+                    e.stopPropagation();
+                    const query = searchInput.value.trim();
+                    if (query) {
+                        // reset pagination when searching
+                        this.currentPage = 1;
+                        this.allImages = [];
+                        this.scrollPosition = 0;
+                        this._fetchImages(query);
+                    }
+                };
+
+                searchButton.addEventListener('click', performSearch);
+                searchInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        performSearch(e);
+                    }
+                });
+
+                searchInput.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                });
+            }
+
+            if (selectImageBtn && fileInput) {
+                selectImageBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    fileInput.click();
+                });
+
+                fileInput.addEventListener('change', (e) => {
+                    e.stopPropagation();
+                    const file = e.target.files[0];
+                    if (file) {
+                        this._handleLocalImageSelection(file);
+                        fileInput.value = '';
+                    }
+                });
+            }
+
+            if (closeButton) {
+                closeButton.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.remove();
+                });
+            }
+
+            if (navLeft) {
+                navLeft.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this._handleNavLeft();
+                });
+            }
+
+            if (navRight) {
+                navRight.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this._handleNavRight();
+                });
+            }
+
+            // Prevent clicks anywhere inside the ribbon from bubbling up
+            if (ribbonContainer) {
+                ribbonContainer.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                });
+            }
+        },
+
+        // append true means load more images (user clicked on nav-right)
+        // append false means its a new query
+        _renderImages: function(images, append = false) {
+            const rowElement = this._shadow.querySelector('.phoenix-ribbon-row');
+            if (!rowElement) { return; }
+
+            const container = this._shadow.querySelector('.phoenix-ribbon-strip');
+            const savedScrollPosition = container ? container.scrollLeft : 0;
+
+            // if not appending we clear the phoenix ribbon
+            if (!append) {
+                rowElement.innerHTML = '';
+                rowElement.className = 'phoenix-ribbon-row';
+            } else {
+                // when appending we add the new images at the end
+                const loadingIndicator = this._shadow.querySelector('.phoenix-loading-more');
+                if (loadingIndicator) {
+                    loadingIndicator.remove();
+                }
+            }
+
+            // Create thumbnails from API data
+            images.forEach(image => {
+                const thumbDiv = window.document.createElement('div');
+                thumbDiv.className = 'phoenix-ribbon-thumb';
+
+                const img = window.document.createElement('img');
+                img.src = image.thumb_url || image.url;
+                img.alt = image.alt_text || 'Unsplash image';
+                img.loading = 'lazy';
+
+                // show hovered image along with dimensions
+                thumbDiv.addEventListener('mouseenter', () => {
+                    this.element.style.width = this._originalImageStyle.width;
+                    this.element.style.height = this._originalImageStyle.height;
+                    this.element.style.objectFit = this._originalImageStyle.objectFit || 'cover';
+                    this.element.src = image.url || image.thumb_url;
+                });
+
+                // show original image when hover ends
+                thumbDiv.addEventListener('mouseleave', () => {
+                    this.element.src = this._originalImageSrc;
+                });
+
+                // attribution overlay, we show this only in the image ribbon gallery
+                const attribution = window.document.createElement('div');
+                attribution.className = 'phoenix-ribbon-attribution';
+
+                const photographer = window.document.createElement('span');
+                photographer.className = 'photographer';
+                const photographerName = this._getPhotographerName(image);
+                photographer.textContent = photographerName;
+
+                const source = window.document.createElement('span');
+                source.className = 'source';
+                source.textContent = 'on Unsplash';
+
+                attribution.appendChild(photographer);
+                attribution.appendChild(source);
+
+                // download icon
+                const downloadIcon = window.document.createElement('div');
+                downloadIcon.className = 'phoenix-download-icon';
+                downloadIcon.title = config.strings.imageGalleryUseImage;
+                downloadIcon.innerHTML = `<svg viewBox="0 0 640 640" fill="currentColor">
+                  <path d="M352 96C352 78.3 337.7 64 320 64C302.3 64 288 78.3 288 96L288 306.7L246.6 265.3C234.1 252.8 213.8 252.8 201.3 265.3C188.8 277.8 188.8 298.1 201.3 310.6L297.3 406.6C309.8 419.1 330.1 419.1 342.6 406.6L438.6 310.6C451.1 298.1 451.1 277.8 438.6 265.3C426.1 252.8 405.8 252.8 393.3 265.3L352 306.7L352 96zM160 384C124.7 384 96 412.7 96 448L96 480C96 515.3 124.7 544 160 544L480 544C515.3 544 544 515.3 544 480L544 448C544 412.7 515.3 384 480 384L433.1 384L376.5 440.6C345.3 471.8 294.6 471.8 263.4 440.6L206.9 384L160 384zM464 440C477.3 440 488 450.7 488 464C488 477.3 477.3 488 464 488C450.7 488 440 477.3 440 464C440 450.7 450.7 440 464 440z"/>
+                </svg>`;
+
+                // when the image is clicked we download the image
+                thumbDiv.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    const filename = this._generateFilename(image);
+                    const extnName = ".jpg";
+                    this._useImage(image.url, filename, extnName, false);
+                });
+
+                thumbDiv.appendChild(img);
+                thumbDiv.appendChild(attribution);
+                thumbDiv.appendChild(downloadIcon);
+                rowElement.appendChild(thumbDiv);
+            });
+
+            if (append && container && savedScrollPosition > 0) {
+                setTimeout(() => {
+                    container.scrollLeft = savedScrollPosition;
+                }, 0);
+            }
+        },
+
+        _showError: function(message) {
+            const rowElement = this._shadow.querySelector('.phoenix-ribbon-row');
+            if (!rowElement) { return; }
+
+            rowElement.innerHTML = message;
+            rowElement.className = 'phoenix-ribbon-row phoenix-ribbon-error';
+        },
+
+        _getPhotographerName: function(image) {
+            // unsplash API returns attribution in format 'Photo by <name> on Unsplash'
+            // this function is responsible to get the name
+            if (image.attribution) {
+                const match = image.attribution.match(/Photo by (.+) on Unsplash/);
+                if (match) {
+                    return match[1];
+                }
+            }
+            return 'Anonymous';
+        },
+
+        // file name with which we need to save the image
+        _generateFilename: function(image) {
+            const photographerName = this._getPhotographerName(image);
+            const searchTerm = this._currentSearchQuery || 'image';
+
+            // clean the search term and the photograper name to write in file name
+            const cleanSearchTerm = searchTerm.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+            const cleanPhotographerName = photographerName.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+
+            return `${cleanSearchTerm}-by-${cleanPhotographerName}`;
+        },
+
+        _useImage: function(imageUrl, filename, extnName, isLocalFile) {
+            // send the message to the editor instance to save the image and update the source code
+            const tagId = this.element.getAttribute("data-brackets-id");
+
+            const messageData = {
+                livePreviewEditEnabled: true,
+                useImage: true,
+                imageUrl: imageUrl,
+                filename: filename,
+                extnName: extnName,
+                element: this.element,
+                tagId: Number(tagId)
+            };
+
+            // if this is a local file we need some more data before sending it to the editor
+            if (isLocalFile) {
+                messageData.isLocalFile = true;
+                // Convert data URL to binary data array for local files
+                const byteCharacters = atob(imageUrl.split(',')[1]);
+                const byteNumbers = new Array(byteCharacters.length);
+                for (let i = 0; i < byteCharacters.length; i++) {
+                    byteNumbers[i] = byteCharacters.charCodeAt(i);
+                }
+                messageData.imageData = byteNumbers;
+            }
+
+            window._Brackets_MessageBroker.send(messageData);
+        },
+
+        _handleLocalImageSelection: function(file) {
+            if (!file || !file.type.startsWith('image/')) {
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const imageDataUrl = e.target.result;
+
+                const originalName = file.name;
+                const nameWithoutExt = originalName.substring(0, originalName.lastIndexOf('.')) || originalName;
+                const extension = originalName.substring(originalName.lastIndexOf('.')) || '.jpg';
+
+                // we clean the file name because the file might have some chars which might not be compatible
+                const cleanName = nameWithoutExt.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+                const filename = cleanName || 'selected-image';
+
+                // Use the unified _useImage method with isLocalFile flag
+                this._useImage(imageDataUrl, filename, extension, true);
+
+                // Close the ribbon after successful selection
+                this.remove();
+            };
+
+            reader.onerror = (error) => {
+                console.error('Something went wrong when reading the image:', error);
+            };
+
+            reader.readAsDataURL(file);
+        },
+
+
+        create: function() {
+            this.remove(); // remove existing ribbon if already present
+
+            // when image ribbon gallery is created we get the original image along with its dimensions
+            // so that on hover in we can show the hovered image and on hover out we can restore the original image
+            this._originalImageSrc = this.element.src;
+            this._originalImageStyle = {
+                width: window.getComputedStyle(this.element).width,
+                height: window.getComputedStyle(this.element).height,
+                objectFit: window.getComputedStyle(this.element).objectFit
+            };
+
+            this._style();
+            window.document.body.appendChild(this.body);
+            this._attachEventHandlers();
+            this._fetchImages(this._getDefaultQuery());
+            setTimeout(() => this._updateNavButtons(), 0);
+        },
+
+        remove: function () {
+            _imageRibbonGallery = null;
+            if (this.body && this.body.parentNode && this.body.parentNode === window.document.body) {
+                window.document.body.removeChild(this.body);
+                this.body = null;
             }
         }
     };
@@ -2105,7 +2890,7 @@ function RemoteFunctions(config = {}) {
                 "top": offset.top + "px",
                 "width": elementBounds.width + "px",
                 "height": elementBounds.height + "px",
-                "z-index": 2000000,
+                "z-index": 2147483647,
                 "margin": 0,
                 "padding": 0,
                 "position": "absolute",
@@ -2219,6 +3004,7 @@ function RemoteFunctions(config = {}) {
     var _nodeInfoBox;
     var _nodeMoreOptionsBox;
     var _aiPromptBox;
+    var _imageRibbonGallery;
     var _setup = false;
 
     function onMouseOver(event) {
@@ -2250,6 +3036,12 @@ function RemoteFunctions(config = {}) {
     // helper function to check if highlights should show on hover
     function shouldShowHighlightOnHover() {
         return getHighlightMode() !== "click";
+    }
+
+    // helper function to check if image ribbon gallery should be shown
+    function shouldShowImageRibbon() {
+        if (_imageRibbonGallery) { return false; }
+        return config.imageRibbon !== false;
     }
 
     // helper function to clear element background highlighting
@@ -2323,6 +3115,7 @@ function RemoteFunctions(config = {}) {
     function _selectElement(element) {
         // dismiss all UI boxes and cleanup previous element state when selecting a different element
         dismissUIAndCleanupState();
+        dismissImageRibbonGallery();
         if(!isElementEditable(element)) {
             return false;
         }
@@ -2334,6 +3127,11 @@ function RemoteFunctions(config = {}) {
         } else {
             // Element is hidden, so don't show UI boxes but still apply visual styling
             _nodeMoreOptionsBox = null;
+        }
+
+        // if the selected element is an image, show the image ribbon gallery (make sure its enabled in preferences)
+        if(element && element.tagName.toLowerCase() === 'img' && shouldShowImageRibbon()) {
+            _imageRibbonGallery = new ImageRibbonGallery(element);
         }
 
         element._originalOutline = element.style.outline;
@@ -2371,6 +3169,17 @@ function RemoteFunctions(config = {}) {
 
             _selectElement(element);
         }
+
+        // if the image is an element we show the image ribbon gallery (if enabled in preferences)
+        if(element && element.tagName.toLowerCase() === 'img' && shouldShowImageRibbon()) {
+            event.preventDefault();
+            event.stopPropagation();
+            event.stopImmediatePropagation();
+
+            _imageRibbonGallery = new ImageRibbonGallery(element);
+        } else {
+            dismissImageRibbonGallery();
+        }
     }
 
     /**
@@ -2402,9 +3211,6 @@ function RemoteFunctions(config = {}) {
     }
 
     function onKeyDown(event) {
-        if ((event.key === "Escape" || event.key === "Esc")) {
-            dismissUIAndCleanupState();
-        }
         if (!_setup && _validEvent(event)) {
             window.document.addEventListener("keyup", onKeyUp);
             window.document.addEventListener("mouseover", onMouseOver);
@@ -2465,6 +3271,7 @@ function RemoteFunctions(config = {}) {
         // if no valid element present we dismiss the boxes
         if (!foundValidElement) {
             dismissUIAndCleanupState();
+            dismissImageRibbonGallery();
         }
     }
 
@@ -2845,11 +3652,21 @@ function RemoteFunctions(config = {}) {
         const highlightModeChanged = oldHighlightMode !== newHighlightMode;
         const isProStatusChanged = oldConfig.isProUser !== config.isProUser;
         const highlightSettingChanged = oldConfig.highlight !== config.highlight;
+        const imageRibbonJustEnabled = !oldConfig.imageRibbon && config.imageRibbon;
 
         // Handle significant configuration changes
         if (highlightModeChanged || isProStatusChanged || highlightSettingChanged) {
             _handleConfigurationChange();
         }
+
+        // if user enabled the image ribbon setting and an image is selected, then we show the image ribbon
+        if (imageRibbonJustEnabled && previouslyClickedElement &&
+            previouslyClickedElement.tagName.toLowerCase() === 'img') {
+            if (!_imageRibbonGallery) {
+                _imageRibbonGallery = new ImageRibbonGallery(previouslyClickedElement);
+            }
+        }
+
         _updateEventListeners();
 
         return JSON.stringify(config);
@@ -2929,6 +3746,18 @@ function RemoteFunctions(config = {}) {
         if (_aiPromptBox) {
             _aiPromptBox.remove();
             _aiPromptBox = null;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * to dismiss the image ribbon gallery if its available
+     */
+    function dismissImageRibbonGallery() {
+        if (_imageRibbonGallery) {
+            _imageRibbonGallery.remove();
+            _imageRibbonGallery = null;
             return true;
         }
         return false;
@@ -3156,6 +3985,7 @@ function RemoteFunctions(config = {}) {
         "finishEditing"         : finishEditing,
         "hasVisibleLivePreviewBoxes" : hasVisibleLivePreviewBoxes,
         "dismissUIAndCleanupState" : dismissUIAndCleanupState,
+        "dismissImageRibbonGallery" : dismissImageRibbonGallery,
         "registerHandlers" : registerHandlers
     };
 }

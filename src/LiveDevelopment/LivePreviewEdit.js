@@ -28,6 +28,9 @@ define(function (require, exports, module) {
     const HTMLInstrumentation = require("LiveDevelopment/MultiBrowserImpl/language/HTMLInstrumentation");
     const LiveDevMultiBrowser = require("LiveDevelopment/LiveDevMultiBrowser");
     const CodeMirror = require("thirdparty/CodeMirror/lib/codemirror");
+    const ProjectManager = require("project/ProjectManager");
+    const FileSystem = require("filesystem/FileSystem");
+    const PathUtils = require("thirdparty/path-utils/path-utils");
 
     /**
      * This function syncs text content changes between the original source code
@@ -594,6 +597,177 @@ define(function (require, exports, module) {
     }
 
     /**
+     * this is a helper function to make sure that when saving a new image, there's no existing file with the same name
+     * @param {String} basePath - this is the base path where the image will be saved
+     * @param {String} filename - the name of the image file
+     * @param {String} extnName - the name of the image extension. (defaults to "jpg")
+     * @returns {String} - the new file name
+     */
+    function getUniqueFilename(basePath, filename, extnName) {
+        let counter = 0;
+        let uniqueFilename = filename + extnName;
+
+        function checkAndIncrement() {
+            const filePath = basePath + uniqueFilename;
+            const file = FileSystem.getFileForPath(filePath);
+
+            return new Promise((resolve) => {
+                file.exists((err, exists) => {
+                    if (exists) {
+                        counter++;
+                        uniqueFilename = `${filename}-${counter}${extnName}`;
+                        checkAndIncrement().then(resolve);
+                    } else {
+                        resolve(uniqueFilename);
+                    }
+                });
+            });
+        }
+
+        return checkAndIncrement();
+    }
+
+    /**
+     * This function updates the src attribute of an image element in the source code
+     * @param {Number} tagId - the data-brackets-id of the image element
+     * @param {String} newSrcValue - the new src value to set
+     */
+    function _updateImageSrcAttribute(tagId, newSrcValue) {
+        const editor = _getEditorAndValidate(tagId);
+        if (!editor) {
+            return;
+        }
+
+        const range = _getElementRange(editor, tagId);
+        if (!range) {
+            return;
+        }
+
+        const { startPos, endPos } = range;
+        const elementText = editor.getTextBetween(startPos, endPos);
+
+        // parse it using DOM parser so that we can update the src attribute
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(elementText, "text/html");
+        const imgElement = doc.querySelector('img');
+
+        if (imgElement) {
+            imgElement.setAttribute('src', newSrcValue);
+            const updatedElementText = imgElement.outerHTML;
+
+            editor.document.batchOperation(function () {
+                editor.replaceRange(updatedElementText, startPos, endPos);
+            });
+        }
+    }
+
+    /**
+     * Helper function to update image src attribute and dismiss ribbon gallery
+     *
+     * @param {Number} tagId - the data-brackets-id of the image element
+     * @param {String} targetPath - the full path where the image was saved
+     * @param {String} filename - the filename of the saved image
+     */
+    function _updateImageAndDismissRibbon(tagId, targetPath, filename) {
+        const editor = _getEditorAndValidate(tagId);
+        if (editor) {
+            const htmlFilePath = editor.document.file.fullPath;
+            const relativePath = PathUtils.makePathRelative(targetPath, htmlFilePath);
+            _updateImageSrcAttribute(tagId, relativePath);
+        } else {
+            _updateImageSrcAttribute(tagId, filename);
+        }
+
+        // dismiss the image ribbon gallery
+        const currLiveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
+        if (currLiveDoc && currLiveDoc.protocol && currLiveDoc.protocol.evaluate) {
+            currLiveDoc.protocol.evaluate("_LD.dismissImageRibbonGallery()");
+        }
+    }
+
+    /**
+     * helper function to handle 'upload from computer'
+     * @param {Object} message - the message object
+     * @param {String} filename - the file name with which we need to save the image
+     * @param {Directory} projectRoot - the project root in which the image is to be saved
+     */
+    function _handleUseThisImageLocalFiles(message, filename, projectRoot) {
+        const { tagId, imageData } = message;
+
+        const uint8Array = new Uint8Array(imageData);
+        const targetPath = projectRoot.fullPath + filename;
+
+        window.fs.writeFile(targetPath, window.Filer.Buffer.from(uint8Array),
+            { encoding: window.fs.BYTE_ARRAY_ENCODING }, (err) => {
+                if (err) {
+                    console.error('Failed to save image:', err);
+                } else {
+                    _updateImageAndDismissRibbon(tagId, targetPath, filename);
+                }
+            });
+    }
+
+    /**
+     * helper function to handle 'use this image' button click on remote images
+     * @param {Object} message - the message object
+     * @param {String} filename - the file name with which we need to save the image
+     * @param {Directory} projectRoot - the project root in which the image is to be saved
+     */
+    function _handleUseThisImageRemote(message, filename, projectRoot) {
+        const { imageUrl, tagId } = message;
+
+        fetch(imageUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.arrayBuffer();
+            })
+            .then(arrayBuffer => {
+                const uint8Array = new Uint8Array(arrayBuffer);
+                const targetPath = projectRoot.fullPath + filename;
+
+                window.fs.writeFile(targetPath, window.Filer.Buffer.from(uint8Array),
+                    { encoding: window.fs.BYTE_ARRAY_ENCODING }, (err) => {
+                        if (err) {
+                            console.error('Failed to save image:', err);
+                        } else {
+                            _updateImageAndDismissRibbon(tagId, targetPath, filename);
+                        }
+                    });
+            })
+            .catch(error => {
+                console.error('Failed to fetch image:', error);
+            });
+    }
+
+    /**
+     * This function is called when 'use this image' button is clicked in the image ribbon gallery
+     * or user loads an image file from the computer
+     * this is responsible to download the image in the appropriate place
+     * and also change the src attribute of the element (by calling appropriate helper functions)
+     * @param {Object} message - the message object which stores all the required data for this operation
+     */
+    function _handleUseThisImage(message) {
+        const filename = message.filename;
+        const extnName = message.extnName || "jpg";
+
+        const projectRoot = ProjectManager.getProjectRoot();
+        if (!projectRoot) { return; }
+
+        getUniqueFilename(projectRoot.fullPath, filename, extnName).then((uniqueFilename) => {
+            // check if the image is loaded from computer or from remote
+            if (message.isLocalFile && message.imageData) {
+                _handleUseThisImageLocalFiles(message, uniqueFilename, projectRoot);
+            } else {
+                _handleUseThisImageRemote(message, uniqueFilename, projectRoot);
+            }
+        }).catch(error => {
+            console.error('Something went wrong when trying to use this image', error);
+        });
+    }
+
+    /**
      * This is the main function that is exported.
      * it will be called by LiveDevProtocol when it receives a message from RemoteFunctions.js
      * or LiveDevProtocolRemote.js (for undo) using MessageBroker
@@ -620,6 +794,12 @@ define(function (require, exports, module) {
         // handle move(drag & drop)
         if (message.move && message.sourceId && message.targetId) {
             _moveElementInSource(message.sourceId, message.targetId, message.insertAfter, message.insertInside);
+            return;
+        }
+
+        // use this image
+        if (message.useImage && message.imageUrl && message.filename) {
+            _handleUseThisImage(message);
             return;
         }
 
