@@ -2087,6 +2087,20 @@ function RemoteFunctions(config = {}) {
                         width: 200px !important;
                     }
 
+                    .phoenix-ribbon-search input::placeholder {
+                        color: rgba(255, 255, 255, 0.7) !important;
+                        opacity: 1 !important;
+                    }
+
+                    .phoenix-ribbon-search input::-webkit-input-placeholder {
+                        color: rgba(255, 255, 255, 0.7) !important;
+                    }
+
+                    .phoenix-ribbon-search input::-moz-placeholder {
+                        color: rgba(255, 255, 255, 0.7) !important;
+                        opacity: 1 !important;
+                    }
+
                     .phoenix-ribbon-search-btn {
                         background: none !important;
                         border: none !important;
@@ -2195,11 +2209,11 @@ function RemoteFunctions(config = {}) {
                         <div class="phoenix-ribbon-header">
                             <div class="phoenix-ribbon-header-left">
                                 <div class="phoenix-ribbon-search">
-                                    <input type="text" placeholder="Search images..." />
+                                    <input type="text" placeholder="${config.strings.imageGallerySearchPlaceholder}" />
                                     <button class="phoenix-ribbon-search-btn">Search</button>
                                 </div>
                                 <div class="phoenix-ribbon-select">
-                                    <button class="phoenix-select-image-btn" title="Select image from computer">
+                                    <button class="phoenix-select-image-btn" title="${config.strings.imageGallerySelectFromComputer}">
                                         <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
                                             <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
                                             <path d="M12,12L10.5,13.5L8.5,11.5L6,14H18L15,11L12,12Z"/>
