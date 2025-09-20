@@ -2128,7 +2128,8 @@ function RemoteFunctions(config = {}) {
                         max-width: calc(100% - 12px) !important;
                         text-shadow: 0 1px 2px rgba(0,0,0,0.9) !important;
                         pointer-events: none !important;
-                        opacity: 0.95 !important;
+                        opacity: 0 !important;
+                        transition: all 0.2s ease !important;
                     }
 
                     .phoenix-ribbon-attribution .photographer {
@@ -2170,6 +2171,10 @@ function RemoteFunctions(config = {}) {
                     .phoenix-ribbon-thumb:hover .phoenix-download-icon {
                         opacity: 1 !important;
                         pointer-events: auto !important;
+                    }
+
+                    .phoenix-ribbon-thumb:hover .phoenix-ribbon-attribution {
+                        opacity: 1 !important;
                     }
 
                     .phoenix-download-icon:hover {
