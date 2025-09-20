@@ -3184,9 +3184,6 @@ function RemoteFunctions(config = {}) {
     }
 
     function onKeyDown(event) {
-        if ((event.key === "Escape" || event.key === "Esc")) {
-            dismissUIAndCleanupState();
-        }
         if (!_setup && _validEvent(event)) {
             window.document.addEventListener("keyup", onKeyUp);
             window.document.addEventListener("mouseover", onMouseOver);

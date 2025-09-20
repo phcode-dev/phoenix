@@ -715,6 +715,7 @@ define(function (require, exports, module) {
     function dismissLivePreviewBoxes() {
         if (_protocol) {
             _protocol.evaluate("_LD.dismissUIAndCleanupState()");
+            _protocol.evaluate("_LD.dismissImageRibbonGallery()");
         }
     }
 
