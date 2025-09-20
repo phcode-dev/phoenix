@@ -3154,7 +3154,8 @@ function RemoteFunctions(config = {}) {
             event.stopImmediatePropagation();
 
             _imageRibbonGallery = new ImageRibbonGallery(element);
-            return;
+        } else {
+            dismissImageRibbonGallery();
         }
     }
 
@@ -3250,6 +3251,7 @@ function RemoteFunctions(config = {}) {
         // if no valid element present we dismiss the boxes
         if (!foundValidElement) {
             dismissUIAndCleanupState();
+            dismissImageRibbonGallery();
         }
     }
 
