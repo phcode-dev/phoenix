@@ -1949,7 +1949,11 @@ function RemoteFunctions(config = {}) {
                     .phoenix-ribbon-container {
                         width: 100% !important;
                         height: 156px !important;
-                        background: rgba(21,25,36,0.55) !important;
+                        background: rgba(255, 255, 255, 0.3) !important;
+                        backdrop-filter: blur(10px) !important;
+                        -webkit-backdrop-filter: blur(10px) !important;
+                        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+                        border-radius: 12px !important;
                         position: relative !important;
                     }
 
@@ -2051,17 +2055,28 @@ function RemoteFunctions(config = {}) {
                     .phoenix-ribbon-header {
                         display: flex !important;
                         width: 100% !important;
+                        position: absolute !important;
+                        top: 5px !important;
+                    }
+
+                    .phoenix-ribbon-header-left {
+                        width: 60% !important;
+                        display: flex !important;
+                    }
+
+                    .phoenix-ribbon-header-right {
+                        width: 40% !important;
+                        display: flex !important;
+                        justify-content: flex-end !important;
                     }
 
                     .phoenix-ribbon-search {
-                        position: absolute !important;
-                        top: 8px !important;
-                        left: 6px !important;
                         display: flex !important;
                         align-items: center !important;
                         background: rgba(0,0,0,0.5) !important;
                         padding: 5px !important;
                         border-radius: 5px !important;
+                        margin-left: 8px !important;
                     }
 
                     .phoenix-ribbon-search input {
@@ -2080,27 +2095,18 @@ function RemoteFunctions(config = {}) {
                     }
 
                     .phoenix-ribbon-select {
-                        position: absolute !important;
-                        top: 8px !important;
-                        left: 50% !important;
+                        margin-left: 10px !important;
                     }
 
                     .phoenix-select-image-btn {
-                        background: rgba(255,255,255,0.1) !important;
-                        border: 1px solid rgba(255,255,255,0.2) !important;
-                        color: #e8eaf0 !important;
-                        padding: 4px 5px !important;
+                        background: gray !important;
+                        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+                        color: #fff !important;
+                        padding: 2px 4px !important;
                         border-radius: 6px !important;
                         font-size: 12px !important;
                         cursor: pointer !important;
-                        margin-left: 8px !important;
-                        white-space: nowrap !important;
                         transition: all 0.2s ease !important;
-                    }
-
-                    .phoenix-select-image-btn:hover {
-                        background: rgba(255,255,255,0.2) !important;
-                        border-color: rgba(255,255,255,0.3) !important;
                     }
 
                     .phoenix-ribbon-close {
@@ -2110,9 +2116,7 @@ function RemoteFunctions(config = {}) {
                         cursor: pointer !important;
                         padding: 4px 8px !important;
                         border-radius: 3px !important;
-                        position: absolute !important;
-                        right: 4px !important;
-                        top: 10px !important;
+                        margin-right: 16px !important;
                     }
 
                     .phoenix-ribbon-attribution {
@@ -2189,15 +2193,24 @@ function RemoteFunctions(config = {}) {
                 <div class="phoenix-image-ribbon">
                     <div class="phoenix-ribbon-container">
                         <div class="phoenix-ribbon-header">
-                            <div class="phoenix-ribbon-search">
-                                <input type="text" placeholder="Search images..." />
-                                <button class="phoenix-ribbon-search-btn">Search</button>
+                            <div class="phoenix-ribbon-header-left">
+                                <div class="phoenix-ribbon-search">
+                                    <input type="text" placeholder="Search images..." />
+                                    <button class="phoenix-ribbon-search-btn">Search</button>
+                                </div>
+                                <div class="phoenix-ribbon-select">
+                                    <button class="phoenix-select-image-btn" title="Select image from computer">
+                                        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                                            <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                                            <path d="M12,12L10.5,13.5L8.5,11.5L6,14H18L15,11L12,12Z"/>
+                                        </svg>
+                                    </button>
+                                    <input type="file" class="phoenix-file-input" accept="image/*" style="display: none;">
+                                </div>
                             </div>
-                            <div class="phoenix-ribbon-select">
-                                <button class="phoenix-select-image-btn">📁 Select from Computer</button>
-                                <input type="file" class="phoenix-file-input" accept="image/*" style="display: none;">
+                            <div class="phoenix-ribbon-header-right">
+                                <button class="phoenix-ribbon-close">×</button>
                             </div>
-                            <button class="phoenix-ribbon-close">×</button>
                         </div>
                         <div class="phoenix-ribbon-nav left">&#8249;</div>
                         <div class="phoenix-ribbon-strip">
