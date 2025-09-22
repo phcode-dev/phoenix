@@ -307,16 +307,16 @@ define(function (require, exports, module) {
             return;
         }
 
-        const accountURL = _getAccountWebURL();
+        const signInURL = _getAccountWebURL() + "authorizeBrowserApp";
 
         // Open account URL in new tab
-        const newTab = window.open(accountURL, '_blank');
+        const newTab = window.open(signInURL, '_blank');
 
         if (!newTab) {
             Dialogs.showModalDialog(
                 DefaultDialogs.DIALOG_ID_ERROR,
                 Strings.SIGNED_IN_FAILED_TITLE,
-                StringUtils.format(Strings.POPUP_BLOCKED, accountURL)
+                StringUtils.format(Strings.POPUP_BLOCKED, _getAccountWebURL())
             );
             return;
         }
