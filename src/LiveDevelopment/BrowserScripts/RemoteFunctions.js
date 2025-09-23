@@ -2145,7 +2145,7 @@ function RemoteFunctions(config = {}) {
                         line-height: 1.2 !important;
                         max-width: calc(100% - 12px) !important;
                         text-shadow: 0 1px 2px rgba(0,0,0,0.9) !important;
-                        pointer-events: none !important;
+                        pointer-events: auto !important;
                         opacity: 0 !important;
                         transition: all 0.2s ease !important;
                     }
@@ -2156,12 +2156,24 @@ function RemoteFunctions(config = {}) {
                         white-space: nowrap !important;
                         overflow: hidden !important;
                         text-overflow: ellipsis !important;
+                        color: white !important;
+                        text-decoration: none !important;
+                    }
+
+                    .phoenix-ribbon-attribution .photographer:hover {
+                        text-decoration: underline !important;
                     }
 
                     .phoenix-ribbon-attribution .source {
                         display: block !important;
                         font-size: 9px !important;
                         opacity: 0.85 !important;
+                        color: white !important;
+                        text-decoration: none !important;
+                    }
+
+                    .phoenix-ribbon-attribution .source:hover {
+                        text-decoration: underline !important;
                     }
 
                     .phoenix-download-icon {
@@ -2192,6 +2204,10 @@ function RemoteFunctions(config = {}) {
                     }
 
                     .phoenix-ribbon-thumb:hover .phoenix-ribbon-attribution {
+                        opacity: 1 !important;
+                    }
+
+                    .phoenix-ribbon-attribution:hover {
                         opacity: 1 !important;
                     }
 
@@ -2533,14 +2549,25 @@ function RemoteFunctions(config = {}) {
                 const attribution = window.document.createElement('div');
                 attribution.className = 'phoenix-ribbon-attribution';
 
-                const photographer = window.document.createElement('span');
+                const photographer = window.document.createElement('a');
                 photographer.className = 'photographer';
-                const photographerName = this._getPhotographerName(image);
-                photographer.textContent = photographerName;
+                photographer.href = image.photographer_url;
+                photographer.target = '_blank';
+                photographer.rel = 'noopener noreferrer';
+                photographer.textContent = (image.user && image.user.name) || 'Anonymous';
+                photographer.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                });
 
-                const source = window.document.createElement('span');
+                const source = window.document.createElement('a');
                 source.className = 'source';
+                source.href = image.unsplash_url;
+                source.target = '_blank';
+                source.rel = 'noopener noreferrer';
                 source.textContent = 'on Unsplash';
+                source.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                });
 
                 attribution.appendChild(photographer);
                 attribution.appendChild(source);
@@ -2583,21 +2610,9 @@ function RemoteFunctions(config = {}) {
             rowElement.className = 'phoenix-ribbon-row phoenix-ribbon-error';
         },
 
-        _getPhotographerName: function(image) {
-            // unsplash API returns attribution in format 'Photo by <name> on Unsplash'
-            // this function is responsible to get the name
-            if (image.attribution) {
-                const match = image.attribution.match(/Photo by (.+) on Unsplash/);
-                if (match) {
-                    return match[1];
-                }
-            }
-            return 'Anonymous';
-        },
-
         // file name with which we need to save the image
         _generateFilename: function(image) {
-            const photographerName = this._getPhotographerName(image);
+            const photographerName = (image.user && image.user.name) || 'Anonymous';
             const searchTerm = this._currentSearchQuery || 'image';
 
             // clean the search term and the photograper name to write in file name
