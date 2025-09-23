@@ -3274,22 +3274,16 @@ function RemoteFunctions(config = {}) {
 
     /**
      * This function handles the click event on the live preview DOM element
-     * it is to show the advanced DOM manipulation options in the live preview
+     * this just stops the propagation because otherwise users might not be able to edit buttons or hyperlinks etc
      * @param {Event} event
      */
     function onClick(event) {
-        dismissAIPromptBox();
         const element = event.target;
 
-        // when user clicks on the HTML, BODY tags or elements inside HEAD, we want to remove the boxes
-        if(_nodeMoreOptionsBox && !isElementEditable(element)) {
-            dismissUIAndCleanupState();
-        } else if(isElementEditable(element)) {
+        if(isElementEditable(element)) {
             event.preventDefault();
             event.stopPropagation();
             event.stopImmediatePropagation();
-
-            _selectElement(element);
         }
     }
 
