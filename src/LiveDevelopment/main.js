@@ -83,6 +83,7 @@ define(function main(require, exports, module) {
             aiPromptPlaceholder: Strings.LIVE_DEV_AI_PROMPT_PLACEHOLDER,
             imageGalleryUseImage: Strings.LIVE_DEV_IMAGE_GALLERY_USE_IMAGE,
             imageGallerySelectFromComputer: Strings.LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER,
+            imageGalleryChooseFolder: Strings.LIVE_DEV_IMAGE_GALLERY_CHOOSE_FOLDER,
             imageGallerySearchPlaceholder: Strings.LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER
         }
     };

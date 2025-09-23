@@ -2134,6 +2134,23 @@ function RemoteFunctions(config = {}) {
                         transition: all 0.2s ease !important;
                     }
 
+                    .phoenix-ribbon-folder-select {
+                        background: rgba(0,0,0,0.5) !important;
+                        border: none !important;
+                        color: white !important;
+                        cursor: pointer !important;
+                        padding: 4px 8px !important;
+                        border-radius: 3px !important;
+                        margin-right: 8px !important;
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                    }
+
+                    .phoenix-ribbon-folder-select:hover {
+                        background: rgba(0,0,0,0.7) !important;
+                    }
+
                     .phoenix-ribbon-close {
                         background: rgba(0,0,0,0.5) !important;
                         border: none !important;
@@ -2250,6 +2267,11 @@ function RemoteFunctions(config = {}) {
                                 </div>
                             </div>
                             <div class="phoenix-ribbon-header-right">
+                                <button class="phoenix-ribbon-folder-select" title="${config.strings.imageGalleryChooseFolder}">
+                                    <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                                        <path d="M10 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2h-8l-2-2z"/>
+                                    </svg>
+                                </button>
                                 <button class="phoenix-ribbon-close">×</button>
                             </div>
                         </div>
@@ -2529,6 +2551,7 @@ function RemoteFunctions(config = {}) {
             const searchInput = this._shadow.querySelector('.phoenix-ribbon-search input');
             const searchButton = this._shadow.querySelector('.phoenix-ribbon-search-btn');
             const closeButton = this._shadow.querySelector('.phoenix-ribbon-close');
+            const folderSelectBtn = this._shadow.querySelector('.phoenix-ribbon-folder-select');
             const navLeft = this._shadow.querySelector('.phoenix-ribbon-nav.left');
             const navRight = this._shadow.querySelector('.phoenix-ribbon-nav.right');
             const selectImageBtn = this._shadow.querySelector('.phoenix-select-image-btn');
@@ -2579,6 +2602,13 @@ function RemoteFunctions(config = {}) {
                 closeButton.addEventListener('click', (e) => {
                     e.stopPropagation();
                     this.remove();
+                });
+            }
+
+            if (folderSelectBtn) {
+                folderSelectBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    console.log('i got clicked');
                 });
             }
 
