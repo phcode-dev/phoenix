@@ -191,6 +191,7 @@ define({
     "LIVE_DEV_MORE_OPTIONS_AI": "Edit with AI",
     "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Use this image",
     "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Select image from computer",
+    "LIVE_DEV_IMAGE_GALLERY_CHOOSE_FOLDER": "Choose download folder",
     "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Search images...",
     "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Ask Phoenix AI to modify this element...",
     "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Getting preview from your custom server {0}",
