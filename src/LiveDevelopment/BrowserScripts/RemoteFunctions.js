@@ -2302,7 +2302,7 @@ function RemoteFunctions(config = {}) {
                 this._clearCache();
             }
 
-            const apiUrl = `https://images.phcode.dev/api/images/search?q=${encodeURIComponent(searchQuery)}&per_page=10&page=${page}`;
+            const apiUrl = `https://images.phcode.dev/api/images/search?q=${encodeURIComponent(searchQuery)}&per_page=10&page=${page}&safe=true`;
 
             if (!append) {
                 this._showLoading();
