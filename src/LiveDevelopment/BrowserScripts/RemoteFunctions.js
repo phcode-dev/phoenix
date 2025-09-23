@@ -1911,6 +1911,16 @@ function RemoteFunctions(config = {}) {
         }
     };
 
+    // image ribbon gallery cache, to store the last query and its results
+    // then next time we can load it from cache itself instead of making a new API call
+    const _imageGalleryCache = {
+        currentQuery: null,
+        allImages: [],
+        totalPages: 1,
+        currentPage: 1,
+        maxImages: 50
+    };
+
     /**
      * when user clicks on an image we call this,
      * this creates a image ribbon gallery at the bottom of the live preview
@@ -2274,6 +2284,23 @@ function RemoteFunctions(config = {}) {
 
         _fetchImages: function(searchQuery, page = 1, append = false) {
             this._currentSearchQuery = searchQuery;
+
+            if (!append && this._loadFromCache(searchQuery)) { // try cache first
+                return;
+            }
+            if (append && this._loadPageFromCache(searchQuery, page)) { // try to load new page from cache
+                return;
+            }
+            // if unable to load from cache, we make the API call
+            this._fetchFromAPI(searchQuery, page, append);
+        },
+
+        _fetchFromAPI: function(searchQuery, page, append) {
+            // when we fetch from API, we clear the cache and then store a fresh copy
+            if (searchQuery !== _imageGalleryCache.currentQuery) {
+                this._clearCache();
+            }
+
             const apiUrl = `https://images.phcode.dev/api/images/search?q=${encodeURIComponent(searchQuery)}&per_page=10&page=${page}`;
 
             if (!append) {
@@ -2299,6 +2326,8 @@ function RemoteFunctions(config = {}) {
                         this.totalPages = data.total_pages || 1;
                         this.currentPage = page;
                         this._updateNavButtons();
+                        this._updateSearchInput(searchQuery);
+                        this._updateCache(searchQuery, data, append);
                     } else if (!append) {
                         this._showError('No images found');
                     }
@@ -2317,6 +2346,79 @@ function RemoteFunctions(config = {}) {
                         this._hideLoadingMore();
                     }
                 });
+        },
+
+        _updateCache: function(searchQuery, data, append) {
+            // Update cache with new data for current query
+            _imageGalleryCache.currentQuery = searchQuery;
+            _imageGalleryCache.totalPages = data.total_pages || 1;
+            _imageGalleryCache.currentPage = this.currentPage;
+
+            if (append) {
+                // Append new results to existing cache
+                const newImages = _imageGalleryCache.allImages.concat(data.results);
+
+                if (newImages.length > _imageGalleryCache.maxImages) { // max = 50
+                    _imageGalleryCache.allImages = newImages.slice(-_imageGalleryCache.maxImages);
+                } else {
+                    _imageGalleryCache.allImages = newImages;
+                }
+            } else {
+                // new search replace cache
+                _imageGalleryCache.allImages = data.results;
+            }
+        },
+
+        _clearCache: function() {
+            // clear current cache when switching to new query
+            _imageGalleryCache.currentQuery = null;
+            _imageGalleryCache.allImages = [];
+            _imageGalleryCache.totalPages = 1;
+            _imageGalleryCache.currentPage = 1;
+        },
+
+        _updateSearchInput: function(searchQuery) {
+            // write the current query in the search input
+            const searchInput = this._shadow.querySelector('.phoenix-ribbon-search input');
+            if (searchInput && searchQuery) {
+                searchInput.value = searchQuery;
+                searchInput.placeholder = searchQuery;
+            }
+        },
+
+        _loadFromCache: function(searchQuery) {
+            // Check if we can load from cache for this query
+            if (searchQuery === _imageGalleryCache.currentQuery && _imageGalleryCache.allImages.length > 0) {
+                this.allImages = _imageGalleryCache.allImages;
+                this.totalPages = _imageGalleryCache.totalPages;
+                this.currentPage = _imageGalleryCache.currentPage;
+
+                this._renderImages(this.allImages, false);
+                this._updateNavButtons();
+                this._updateSearchInput(searchQuery);
+                return true; // Successfully loaded from cache
+            }
+            return false; // unable to load from cache
+        },
+
+        _loadPageFromCache: function(searchQuery, page) {
+            // check if this page is in cache
+            if (searchQuery === _imageGalleryCache.currentQuery && page <= Math.ceil(_imageGalleryCache.allImages.length / 10)) {
+                const startIdx = (page - 1) * 10;
+                const endIdx = startIdx + 10;
+                const pageImages = _imageGalleryCache.allImages.slice(startIdx, endIdx);
+
+                if (pageImages.length > 0) {
+                    this.allImages = this.allImages.concat(pageImages);
+                    this._renderImages(pageImages, true);
+                    this.currentPage = page;
+                    this._updateNavButtons();
+                    this._isLoadingMore = false;
+                    this._hideLoadingMore();
+                    return true; // Successfully loaded page from cache
+                }
+            }
+            return false;
         },
 
         _handleNavLeft: function() {
@@ -2698,7 +2800,9 @@ function RemoteFunctions(config = {}) {
             this._style();
             window.document.body.appendChild(this.body);
             this._attachEventHandlers();
-            this._fetchImages(this._getDefaultQuery());
+
+            const queryToUse = _imageGalleryCache.currentQuery || this._getDefaultQuery();
+            this._fetchImages(queryToUse);
             setTimeout(() => this._updateNavButtons(), 0);
         },
 
@@ -3146,7 +3250,9 @@ function RemoteFunctions(config = {}) {
 
         // if the selected element is an image, show the image ribbon gallery (make sure its enabled in preferences)
         if(element && element.tagName.toLowerCase() === 'img' && shouldShowImageRibbon()) {
-            _imageRibbonGallery = new ImageRibbonGallery(element);
+            if (!_imageRibbonGallery) {
+                _imageRibbonGallery = new ImageRibbonGallery(element);
+            }
         }
 
         element._originalOutline = element.style.outline;
@@ -3183,17 +3289,6 @@ function RemoteFunctions(config = {}) {
             event.stopImmediatePropagation();
 
             _selectElement(element);
-        }
-
-        // if the image is an element we show the image ribbon gallery (if enabled in preferences)
-        if(element && element.tagName.toLowerCase() === 'img' && shouldShowImageRibbon()) {
-            event.preventDefault();
-            event.stopPropagation();
-            event.stopImmediatePropagation();
-
-            _imageRibbonGallery = new ImageRibbonGallery(element);
-        } else {
-            dismissImageRibbonGallery();
         }
     }
 
