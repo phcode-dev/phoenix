@@ -1159,6 +1159,7 @@ function RemoteFunctions(config = {}) {
                 _clearDropMarkers();
                 window._currentDraggedElement = this.element;
                 dismissUIAndCleanupState();
+                dismissImageRibbonGallery();
                 // Add drag image styling
                 event.dataTransfer.effectAllowed = "move";
             });
