@@ -2233,6 +2233,40 @@ function RemoteFunctions(config = {}) {
                     .phoenix-ribbon-thumb {
                         cursor: pointer !important;
                     }
+
+                    .phoenix-ribbon-thumb.downloading {
+                        opacity: 0.6 !important;
+                        pointer-events: none !important;
+                    }
+
+                    .phoenix-download-indicator {
+                        position: absolute !important;
+                        top: 50% !important;
+                        left: 50% !important;
+                        transform: translate(-50%, -50%) !important;
+                        background: rgba(0, 0, 0, 0.8) !important;
+                        border-radius: 50% !important;
+                        width: 40px !important;
+                        height: 40px !important;
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                        z-index: 10 !important;
+                    }
+
+                    .phoenix-download-spinner {
+                        width: 20px !important;
+                        height: 20px !important;
+                        border: 2px solid rgba(255, 255, 255, 0.3) !important;
+                        border-top: 2px solid #fff !important;
+                        border-radius: 50% !important;
+                        animation: phoenix-spin 1s linear infinite !important;
+                    }
+
+                    @keyframes phoenix-spin {
+                        0% { transform: rotate(0deg); }
+                        100% { transform: rotate(360deg); }
+                    }
                 </style>
                 <div class="phoenix-image-ribbon">
                     <div class="phoenix-ribbon-container">
@@ -2691,6 +2725,13 @@ function RemoteFunctions(config = {}) {
                 thumbDiv.addEventListener('click', (e) => {
                     e.stopPropagation();
                     e.preventDefault();
+
+                    // prevent multiple downloads of the same image
+                    if (thumbDiv.classList.contains('downloading')) { return; }
+
+                    // show download indicator
+                    this._showDownloadIndicator(thumbDiv);
+
                     const filename = this._generateFilename(image);
                     const extnName = ".jpg";
 
@@ -2700,7 +2741,7 @@ function RemoteFunctions(config = {}) {
                     const heightNum = parseInt(targetHeight);
 
                     const downloadUrl = image.url ? `${image.url}?w=${widthNum}&h=${heightNum}&fit=crop` : image.thumb_url;
-                    this._useImage(downloadUrl, filename, extnName, false);
+                    this._useImage(downloadUrl, filename, extnName, false, thumbDiv);
                 });
 
                 thumbDiv.appendChild(img);
@@ -2736,7 +2777,7 @@ function RemoteFunctions(config = {}) {
             return `${cleanSearchTerm}-by-${cleanPhotographerName}`;
         },
 
-        _useImage: function(imageUrl, filename, extnName, isLocalFile) {
+        _useImage: function(imageUrl, filename, extnName, isLocalFile, thumbDiv) {
             // send the message to the editor instance to save the image and update the source code
             const tagId = this.element.getAttribute("data-brackets-id");
 
@@ -2763,6 +2804,14 @@ function RemoteFunctions(config = {}) {
             }
 
             window._Brackets_MessageBroker.send(messageData);
+
+            // if thumbDiv is provided, hide the download indicator after a reasonable timeout
+            // this is to make sure that the indicator is always removed even if there's no explicit success callback
+            if (thumbDiv) {
+                setTimeout(() => {
+                    this._hideDownloadIndicator(thumbDiv);
+                }, 3000);
+            }
         },
 
         _handleLocalImageSelection: function(file) {
@@ -2783,7 +2832,7 @@ function RemoteFunctions(config = {}) {
                 const filename = cleanName || 'selected-image';
 
                 // Use the unified _useImage method with isLocalFile flag
-                this._useImage(imageDataUrl, filename, extension, true);
+                this._useImage(imageDataUrl, filename, extension, true, null);
 
                 // Close the ribbon after successful selection
                 this.remove();
@@ -2823,6 +2872,32 @@ function RemoteFunctions(config = {}) {
             if (this.body && this.body.parentNode && this.body.parentNode === window.document.body) {
                 window.document.body.removeChild(this.body);
                 this.body = null;
+            }
+        },
+
+        _showDownloadIndicator: function(thumbDiv) {
+            // add downloading class
+            thumbDiv.classList.add('downloading');
+
+            // create download indicator
+            const indicator = window.document.createElement('div');
+            indicator.className = 'phoenix-download-indicator';
+
+            const spinner = window.document.createElement('div');
+            spinner.className = 'phoenix-download-spinner';
+
+            indicator.appendChild(spinner);
+            thumbDiv.appendChild(indicator);
+        },
+
+        _hideDownloadIndicator: function(thumbDiv) {
+            // remove downloading class
+            thumbDiv.classList.remove('downloading');
+
+            // remove download indicator
+            const indicator = thumbDiv.querySelector('.phoenix-download-indicator');
+            if (indicator) {
+                indicator.remove();
             }
         }
     };
