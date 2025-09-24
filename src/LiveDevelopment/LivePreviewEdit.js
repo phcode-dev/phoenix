@@ -755,12 +755,39 @@ define(function (require, exports, module) {
         const projectRoot = ProjectManager.getProjectRoot();
         if (!projectRoot) { return; }
 
-        getUniqueFilename(projectRoot.fullPath, filename, extnName).then((uniqueFilename) => {
+        // phoenix-assets folder, all the images will be stored inside this
+        const phoenixAssetsPath = projectRoot.fullPath + "phoenix-code-assets/";
+        const phoenixAssetsDir = FileSystem.getDirectoryForPath(phoenixAssetsPath);
+
+        // check if the phoenix-assets dir exists
+        // if present, download the image inside it, if not create the dir and then download the image inside it
+        phoenixAssetsDir.exists((err, exists) => {
+            if (err) { return; }
+
+            if (!exists) {
+                phoenixAssetsDir.create((err) => {
+                    if (err) {
+                        console.error('Error creating phoenix-code-assets directory:', err);
+                        return;
+                    }
+                    _downloadImageToPhoenixAssets(message, filename, extnName, phoenixAssetsDir);
+                });
+            } else {
+                _downloadImageToPhoenixAssets(message, filename, extnName, phoenixAssetsDir);
+            }
+        });
+    }
+
+    /**
+     * Helper function to download image to phoenix-assets folder
+     */
+    function _downloadImageToPhoenixAssets(message, filename, extnName, phoenixAssetsDir) {
+        getUniqueFilename(phoenixAssetsDir.fullPath, filename, extnName).then((uniqueFilename) => {
             // check if the image is loaded from computer or from remote
             if (message.isLocalFile && message.imageData) {
-                _handleUseThisImageLocalFiles(message, uniqueFilename, projectRoot);
+                _handleUseThisImageLocalFiles(message, uniqueFilename, phoenixAssetsDir);
             } else {
-                _handleUseThisImageRemote(message, uniqueFilename, projectRoot);
+                _handleUseThisImageRemote(message, uniqueFilename, phoenixAssetsDir);
             }
         }).catch(error => {
             console.error('Something went wrong when trying to use this image', error);
