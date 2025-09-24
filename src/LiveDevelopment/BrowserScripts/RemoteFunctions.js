@@ -1934,6 +1934,9 @@ function RemoteFunctions(config = {}) {
         this.allImages = [];
         this.imagesPerPage = 10;
         this.scrollPosition = 0;
+        this.maxWidth = '800px'; // when current image dimension is not defined we use this as unsplash images are very large
+        this.maxHeight = '600px';
+
         this.create();
     }
 
@@ -2637,8 +2640,9 @@ function RemoteFunctions(config = {}) {
 
                 // show hovered image along with dimensions
                 thumbDiv.addEventListener('mouseenter', () => {
-                    this.element.style.width = this._originalImageStyle.width;
-                    this.element.style.height = this._originalImageStyle.height;
+                    this.element.style.width = this._originalImageStyle.width || this.maxWidth;
+                    this.element.style.height = this._originalImageStyle.height || this.maxHeight;
+
                     this.element.style.objectFit = this._originalImageStyle.objectFit || 'cover';
                     this.element.src = image.url || image.thumb_url;
                 });
@@ -2689,7 +2693,14 @@ function RemoteFunctions(config = {}) {
                     e.preventDefault();
                     const filename = this._generateFilename(image);
                     const extnName = ".jpg";
-                    this._useImage(image.url, filename, extnName, false);
+
+                    const targetWidth = this._originalImageStyle.width || this.maxWidth;
+                    const targetHeight = this._originalImageStyle.height || this.maxHeight;
+                    const widthNum = parseInt(targetWidth);
+                    const heightNum = parseInt(targetHeight);
+
+                    const downloadUrl = image.url ? `${image.url}?w=${widthNum}&h=${heightNum}&fit=crop` : image.thumb_url;
+                    this._useImage(downloadUrl, filename, extnName, false);
                 });
 
                 thumbDiv.appendChild(img);
