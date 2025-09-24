@@ -2071,12 +2071,12 @@ function RemoteFunctions(config = {}) {
                     }
 
                     .phoenix-ribbon-header-left {
-                        width: 60% !important;
+                        width: 80% !important;
                         display: flex !important;
                     }
 
                     .phoenix-ribbon-header-right {
-                        width: 40% !important;
+                        width: 20% !important;
                         display: flex !important;
                         justify-content: flex-end !important;
                     }
