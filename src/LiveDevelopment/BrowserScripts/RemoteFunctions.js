@@ -2066,6 +2066,20 @@ function RemoteFunctions(config = {}) {
                         font-size: 14px !important;
                     }
 
+                    .phoenix-loading-more {
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                        min-width: 120px !important;
+                        height: 116px !important;
+                        margin-left: 2px !important;
+                        background: rgba(255,255,255,0.03) !important;
+                        border-radius: 8px !important;
+                        color: #e8eaf0 !important;
+                        font-size: 12px !important;
+                        border: 1px dashed rgba(255,255,255,0.1) !important;
+                    }
+
                     .phoenix-ribbon-header {
                         display: flex !important;
                         width: 100% !important;
@@ -2537,19 +2551,6 @@ function RemoteFunctions(config = {}) {
             // when loading more images we need to show the message at the end of the image ribbon
             const loadingIndicator = window.document.createElement('div');
             loadingIndicator.className = 'phoenix-loading-more';
-            loadingIndicator.style.cssText = `
-                display: flex !important;
-                align-items: center !important;
-                justify-content: center !important;
-                min-width: 120px !important;
-                height: 116px !important;
-                margin-left: 2px !important;
-                background: rgba(255,255,255,0.03) !important;
-                border-radius: 8px !important;
-                color: #e8eaf0 !important;
-                font-size: 12px !important;
-                border: 1px dashed rgba(255,255,255,0.1) !important;
-            `;
             loadingIndicator.textContent = 'Loading...';
             rowElement.appendChild(loadingIndicator);
         },
