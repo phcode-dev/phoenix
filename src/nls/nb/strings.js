@@ -1474,10 +1474,15 @@ define({
   "PROMO_GET_APP_UPSELL_BUTTON": "Skaff deg {0}",
   "PROMO_PRO_ENDED_TITLE": "Din {0}-prøveperiode er over",
   "PROMO_ENDED_MESSAGE": "Abonner nå for å fortsette å bruke disse avanserte funksjonene:",
+  "PROMO_PRO_UNLOCK_PRO_TITLE": "Slipp løs kraften i {0}",
+  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Lås opp Live Edit med {0}",
+  "PROMO_PRO_UNLOCK_MESSAGE": "Abonner nå for å låse opp disse avanserte funksjonene:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro prøveperiode ({0} dager igjen)",
   "GET_PHOENIX_PRO": "Skaff deg Phoenix Pro",
   "USER_FREE_PLAN_NAME": "Gratisabonnement",
-  "PROMO_PRO_UNLOCK_PRO_TITLE": "Slipp løs kraften i {0}",
-  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Lås opp Live Edit med {0}",
-  "PROMO_PRO_UNLOCK_MESSAGE": "Abonner nå for å låse opp disse avanserte funksjonene:"
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Bruk dette bildet",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Velg bilde fra datamaskinen",
+  "LIVE_DEV_IMAGE_GALLERY_CHOOSE_FOLDER": "Velg nedlastingsmappe",
+  "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Søk etter bilder...",
+  "LIVE_PREVIEW_EDIT_IMAGE_RIBBON": "Vis bildevelger ved klikk på bilde"
 });

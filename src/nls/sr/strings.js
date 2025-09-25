@@ -1474,10 +1474,15 @@ define({
   "PROMO_GET_APP_UPSELL_BUTTON": "Преузмите {0}",
   "PROMO_PRO_ENDED_TITLE": "Ваша пробна верзија {0} је истекла",
   "PROMO_ENDED_MESSAGE": "Претплатите се сада да бисте наставили да користите ове напредне функције:",
+  "PROMO_PRO_UNLOCK_PRO_TITLE": "Откључајте моћ апликације {0}",
+  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Откључајте Уживо Измене са {0}",
+  "PROMO_PRO_UNLOCK_MESSAGE": "Претплатите се сада да бисте откључали ове напредне функције:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro пробна верзија ({0} дана преостало)",
   "GET_PHOENIX_PRO": "Преузмите Phoenix Pro",
   "USER_FREE_PLAN_NAME": "Бесплатан план",
-  "PROMO_PRO_UNLOCK_PRO_TITLE": "Откључајте моћ апликације {0}",
-  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Откључајте Уживо Измене са {0}",
-  "PROMO_PRO_UNLOCK_MESSAGE": "Претплатите се сада да бисте откључали ове напредне функције:"
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Користи ову слику",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Изаберите слику са рачунара",
+  "LIVE_DEV_IMAGE_GALLERY_CHOOSE_FOLDER": "Изаберите фасциклу за преузимање",
+  "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Претражите слике...",
+  "LIVE_PREVIEW_EDIT_IMAGE_RIBBON": "Прикажи бирач слика при клику на слику"
 });

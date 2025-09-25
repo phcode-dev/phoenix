@@ -1474,10 +1474,15 @@ define({
   "PROMO_GET_APP_UPSELL_BUTTON": "Получить {0}",
   "PROMO_PRO_ENDED_TITLE": "Ваш пробный период {0} истек",
   "PROMO_ENDED_MESSAGE": "Подпишитесь сейчас, чтобы продолжить использовать эти расширенные функции:",
+  "PROMO_PRO_UNLOCK_PRO_TITLE": "Раскройте весь потенциал {0}",
+  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Откройте доступ к функции Live Edit с {0}",
+  "PROMO_PRO_UNLOCK_MESSAGE": "Подпишитесь сейчас, чтобы получить доступ к следующим расширенным функциям:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Пробный период Phoenix Pro ({0} дней осталось)",
   "GET_PHOENIX_PRO": "Получить Phoenix Pro",
   "USER_FREE_PLAN_NAME": "Бесплатный тариф",
-  "PROMO_PRO_UNLOCK_PRO_TITLE": "Раскройте весь потенциал {0}",
-  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Откройте доступ к функции Live Edit с {0}",
-  "PROMO_PRO_UNLOCK_MESSAGE": "Подпишитесь сейчас, чтобы получить доступ к следующим расширенным функциям:"
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Использовать это изображение",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Выбрать изображение с компьютера",
+  "LIVE_DEV_IMAGE_GALLERY_CHOOSE_FOLDER": "Выбрать папку для загрузки",
+  "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Поиск изображений…",
+  "LIVE_PREVIEW_EDIT_IMAGE_RIBBON": "Показать выбор изображений при клике на изображение"
 });

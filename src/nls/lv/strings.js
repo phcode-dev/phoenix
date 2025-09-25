@@ -1474,10 +1474,15 @@ define({
   "PROMO_GET_APP_UPSELL_BUTTON": "Iegūt {0}",
   "PROMO_PRO_ENDED_TITLE": "Jūsu {0} izmēģinājuma periods ir beidzies",
   "PROMO_ENDED_MESSAGE": "Abonējiet tagad, lai turpinātu izmantot šīs papildu funkcijas:",
+  "PROMO_PRO_UNLOCK_PRO_TITLE": "Atklāj {0} jaudu",
+  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Atklāj tiešraides rediģēšanu ar {0}",
+  "PROMO_PRO_UNLOCK_MESSAGE": "Abonē tagad, lai atbloķētu šīs papildu funkcijas:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro izmēģinājuma versija ({0} dienas atlikušas)",
   "GET_PHOENIX_PRO": "Iegūt Phoenix Pro",
   "USER_FREE_PLAN_NAME": "Bezmaksas plāns",
-  "PROMO_PRO_UNLOCK_PRO_TITLE": "Atklāj {0} jaudu",
-  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Atklāj tiešraides rediģēšanu ar {0}",
-  "PROMO_PRO_UNLOCK_MESSAGE": "Abonē tagad, lai atbloķētu šīs papildu funkcijas:"
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Izmantot šo attēlu",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Atlasīt attēlu no datora",
+  "LIVE_DEV_IMAGE_GALLERY_CHOOSE_FOLDER": "Izvēlēties lejupielādes mapi",
+  "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Meklēt attēlus...",
+  "LIVE_PREVIEW_EDIT_IMAGE_RIBBON": "Rādīt attēlu atlasītāju, klikšķinot uz attēla"
 });

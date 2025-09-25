@@ -1474,10 +1474,15 @@ define({
   "PROMO_GET_APP_UPSELL_BUTTON": "{0} edinin",
   "PROMO_PRO_ENDED_TITLE": "{0} Denemeniz Sona Erdi",
   "PROMO_ENDED_MESSAGE": "Bu gelişmiş özellikleri kullanmaya devam etmek için hemen abone olun:",
+  "PROMO_PRO_UNLOCK_PRO_TITLE": "{0} ile gücün kilidini açın",
+  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "{0} ile Canlı Düzenleme'nin kilidini açın",
+  "PROMO_PRO_UNLOCK_MESSAGE": "Bu gelişmiş özelliklerin kilidini açmak için hemen abone olun:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro Deneme Sürümü ({0} gün kaldı)",
   "GET_PHOENIX_PRO": "Phoenix Pro'yu Edinin",
   "USER_FREE_PLAN_NAME": "Ücretsiz Plan",
-  "PROMO_PRO_UNLOCK_PRO_TITLE": "{0} ile gücün kilidini açın",
-  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "{0} ile Canlı Düzenleme'nin kilidini açın",
-  "PROMO_PRO_UNLOCK_MESSAGE": "Bu gelişmiş özelliklerin kilidini açmak için hemen abone olun:"
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Resmi kullan",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Bilgisayardan resim seç",
+  "LIVE_DEV_IMAGE_GALLERY_CHOOSE_FOLDER": "İndirme klasörünü seç",
+  "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Resim ara...",
+  "LIVE_PREVIEW_EDIT_IMAGE_RIBBON": "Resme tıklandığında Resim Seçiciyi Göster"
 });

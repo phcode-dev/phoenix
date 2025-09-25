@@ -1474,10 +1474,15 @@ define({
   "PROMO_GET_APP_UPSELL_BUTTON": "Get {0}",
   "PROMO_PRO_ENDED_TITLE": "Your {0} trial has ended",
   "PROMO_ENDED_MESSAGE": "Subscribe now to continue using these advanced features:",
+  "PROMO_PRO_UNLOCK_PRO_TITLE": "Unleash the power of {0}",
+  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Unlock Live Edit with {0}",
+  "PROMO_PRO_UNLOCK_MESSAGE": "Subscribe now to unlock these advanced features:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro Trial ({0} days remaining)",
   "GET_PHOENIX_PRO": "Get Phoenix Pro",
   "USER_FREE_PLAN_NAME": "Free Plan",
-  "PROMO_PRO_UNLOCK_PRO_TITLE": "Unleash the power of {0}",
-  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Unlock Live Edit with {0}",
-  "PROMO_PRO_UNLOCK_MESSAGE": "Subscribe now to unlock these advanced features:"
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Use this image",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Select image from computer",
+  "LIVE_DEV_IMAGE_GALLERY_CHOOSE_FOLDER": "Choose download folder",
+  "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Search images…",
+  "LIVE_PREVIEW_EDIT_IMAGE_RIBBON": "Show Image Picker on Image click"
 });

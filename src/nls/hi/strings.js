@@ -1474,10 +1474,15 @@ define({
   "PROMO_GET_APP_UPSELL_BUTTON": "{0} प्राप्त करें",
   "PROMO_PRO_ENDED_TITLE": "आपका {0} परीक्षण समाप्त हो गया है",
   "PROMO_ENDED_MESSAGE": "इन उन्नत सुविधाओं का उपयोग जारी रखने के लिए अभी सदस्यता लें:",
+  "PROMO_PRO_UNLOCK_PRO_TITLE": "{0} की शक्ति को अनलॉक करें",
+  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "{0} के साथ लाइव एडिट अनलॉक करें",
+  "PROMO_PRO_UNLOCK_MESSAGE": "इन उन्नत सुविधाओं को अनलॉक करने के लिए अभी सब्सक्राइब करें:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro परीक्षण ({0} दिन शेष)",
   "GET_PHOENIX_PRO": "Phoenix Pro प्राप्त करें",
   "USER_FREE_PLAN_NAME": "निःशुल्क योजना",
-  "PROMO_PRO_UNLOCK_PRO_TITLE": "{0} की शक्ति को अनलॉक करें",
-  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "{0} के साथ लाइव एडिट अनलॉक करें",
-  "PROMO_PRO_UNLOCK_MESSAGE": "इन उन्नत सुविधाओं को अनलॉक करने के लिए अभी सब्सक्राइब करें:"
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "इस इमेज का इस्तेमाल करें",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "कंप्यूटर से इमेज चुनें",
+  "LIVE_DEV_IMAGE_GALLERY_CHOOSE_FOLDER": "डाउनलोड फ़ोल्डर चुनें",
+  "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "इमेज खोजें...",
+  "LIVE_PREVIEW_EDIT_IMAGE_RIBBON": "इमेज पर क्लिक करने पर इमेज पिकर दिखाएँ"
 });

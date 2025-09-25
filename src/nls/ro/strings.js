@@ -1474,10 +1474,15 @@ define({
   "PROMO_GET_APP_UPSELL_BUTTON": "Obține {0}",
   "PROMO_PRO_ENDED_TITLE": "Perioada de probă {0} a expirat",
   "PROMO_ENDED_MESSAGE": "Abonează-te acum pentru a continua să utilizezi aceste funcții avansate:",
+  "PROMO_PRO_UNLOCK_PRO_TITLE": "Deblochează puterea {0}",
+  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Deblochează Editarea Live cu {0}",
+  "PROMO_PRO_UNLOCK_MESSAGE": "Abonează-te acum pentru a debloca aceste funcții avansate:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Probă Phoenix Pro ({0} zile rămase)",
   "GET_PHOENIX_PRO": "Obține Phoenix Pro",
   "USER_FREE_PLAN_NAME": "Abonament gratuit",
-  "PROMO_PRO_UNLOCK_PRO_TITLE": "Deblochează puterea {0}",
-  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Deblochează Editarea Live cu {0}",
-  "PROMO_PRO_UNLOCK_MESSAGE": "Abonează-te acum pentru a debloca aceste funcții avansate:"
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Folosește această imagine",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Selectează imaginea de pe calculator",
+  "LIVE_DEV_IMAGE_GALLERY_CHOOSE_FOLDER": "Alege dosarul de descărcare",
+  "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Caută imagini...",
+  "LIVE_PREVIEW_EDIT_IMAGE_RIBBON": "Arată selectorul de imagini la clic pe imagine"
 });
