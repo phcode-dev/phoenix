@@ -1474,10 +1474,15 @@ define({
   "PROMO_GET_APP_UPSELL_BUTTON": "Obtener {0}",
   "PROMO_PRO_ENDED_TITLE": "Tu prueba de {0} ha finalizado",
   "PROMO_ENDED_MESSAGE": "Suscríbete ahora para seguir usando estas funciones avanzadas:",
+  "PROMO_PRO_UNLOCK_PRO_TITLE": "Desata el poder de {0}",
+  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Desbloquea la edición en vivo con {0}",
+  "PROMO_PRO_UNLOCK_MESSAGE": "Suscríbete ahora para desbloquear estas funciones avanzadas:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Prueba de Phoenix Pro ({0} días restantes)",
   "GET_PHOENIX_PRO": "Obtener Phoenix Pro",
   "USER_FREE_PLAN_NAME": "Plan gratuito",
-  "PROMO_PRO_UNLOCK_PRO_TITLE": "Desata el poder de {0}",
-  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Desbloquea la edición en vivo con {0}",
-  "PROMO_PRO_UNLOCK_MESSAGE": "Suscríbete ahora para desbloquear estas funciones avanzadas:"
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Usar esta imagen",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Seleccionar imagen del ordenador",
+  "LIVE_DEV_IMAGE_GALLERY_CHOOSE_FOLDER": "Seleccionar carpeta de descarga",
+  "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Buscar imágenes...",
+  "LIVE_PREVIEW_EDIT_IMAGE_RIBBON": "Mostrar el selector de imágenes al hacer clic en una imagen"
 });

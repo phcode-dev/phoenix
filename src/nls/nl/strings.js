@@ -1474,10 +1474,15 @@ define({
   "PROMO_GET_APP_UPSELL_BUTTON": "Download {0}",
   "PROMO_PRO_ENDED_TITLE": "Je {0} proefperiode is afgelopen",
   "PROMO_ENDED_MESSAGE": "Abonneer nu om deze geavanceerde functies te blijven gebruiken:",
+  "PROMO_PRO_UNLOCK_PRO_TITLE": "Ontketen de kracht van {0}",
+  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Ontgrendel Live Bewerken met {0}",
+  "PROMO_PRO_UNLOCK_MESSAGE": "Abonneer nu om deze geavanceerde functies te ontgrendelen:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro proefversie ({0} dagen resterend)",
   "GET_PHOENIX_PRO": "Koop Phoenix Pro",
   "USER_FREE_PLAN_NAME": "Gratis abonnement",
-  "PROMO_PRO_UNLOCK_PRO_TITLE": "Ontketen de kracht van {0}",
-  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Ontgrendel Live Bewerken met {0}",
-  "PROMO_PRO_UNLOCK_MESSAGE": "Abonneer nu om deze geavanceerde functies te ontgrendelen:"
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Afbeelding gebruiken",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Afbeelding van computer selecteren",
+  "LIVE_DEV_IMAGE_GALLERY_CHOOSE_FOLDER": "Downloadmap kiezen",
+  "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Zoek afbeeldingen...",
+  "LIVE_PREVIEW_EDIT_IMAGE_RIBBON": "Afbeeldingkiezer weergeven bij klik op afbeelding"
 });

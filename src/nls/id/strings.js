@@ -1474,10 +1474,15 @@ define({
   "PROMO_GET_APP_UPSELL_BUTTON": "Dapatkan {0}",
   "PROMO_PRO_ENDED_TITLE": "Masa Percobaan {0} Anda telah berakhir",
   "PROMO_ENDED_MESSAGE": "Berlangganan sekarang untuk melanjutkan penggunaan fitur-fitur canggih ini:",
+  "PROMO_PRO_UNLOCK_PRO_TITLE": "Buka potensi {0}",
+  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Buka Live Edit dengan {0}",
+  "PROMO_PRO_UNLOCK_MESSAGE": "Berlangganan sekarang untuk membuka fitur-fitur canggih ini:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Percobaan Phoenix Pro ({0} hari tersisa)",
   "GET_PHOENIX_PRO": "Dapatkan Phoenix Pro",
   "USER_FREE_PLAN_NAME": "Paket Gratis",
-  "PROMO_PRO_UNLOCK_PRO_TITLE": "Buka potensi {0}",
-  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Buka Live Edit dengan {0}",
-  "PROMO_PRO_UNLOCK_MESSAGE": "Berlangganan sekarang untuk membuka fitur-fitur canggih ini:"
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Gunakan gambar ini",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Pilih gambar dari komputer",
+  "LIVE_DEV_IMAGE_GALLERY_CHOOSE_FOLDER": "Pilih folder unduhan",
+  "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Cari gambar...",
+  "LIVE_PREVIEW_EDIT_IMAGE_RIBBON": "Tampilkan Pemilih Gambar saat gambar diklik"
 });

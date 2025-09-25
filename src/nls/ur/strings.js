@@ -1474,10 +1474,15 @@ define({
   "PROMO_GET_APP_UPSELL_BUTTON": "{0} حاصل کریں",
   "PROMO_PRO_ENDED_TITLE": "آپ کا {0} آزمائشی ورژن ختم ہو گیا ہے۔",
   "PROMO_ENDED_MESSAGE": "ان جدید خصوصیات کو استعمال جاری رکھنے کیلئے ابھی سبسکرائب کریں:",
+  "PROMO_PRO_UNLOCK_PRO_TITLE": "{0} کی طاقت کو کھولیں",
+  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "{0} کے ساتھ لائیو ایڈٹ کو کھولیں",
+  "PROMO_PRO_UNLOCK_MESSAGE": "ان جدید خصوصیات کو کھولنے کے لیے ابھی سبسکرائب کریں:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro آزمائشی ورژن ({0} دن باقی)",
   "GET_PHOENIX_PRO": "Phoenix Pro حاصل کریں",
   "USER_FREE_PLAN_NAME": "مفت پلان",
-  "PROMO_PRO_UNLOCK_PRO_TITLE": "{0} کی طاقت کو کھولیں",
-  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "{0} کے ساتھ لائیو ایڈٹ کو کھولیں",
-  "PROMO_PRO_UNLOCK_MESSAGE": "ان جدید خصوصیات کو کھولنے کے لیے ابھی سبسکرائب کریں:"
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "اس تصویر کو استعمال کریں",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "کمپیوٹر سے تصویر منتخب کریں",
+  "LIVE_DEV_IMAGE_GALLERY_CHOOSE_FOLDER": "ڈاؤن لوڈ فولڈر منتخب کریں",
+  "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "تصاویر تلاش کریں۔۔۔",
+  "LIVE_PREVIEW_EDIT_IMAGE_RIBBON": "تصویر پر کلک کرنے پر تصویری چننے والا دکھائیں"
 });

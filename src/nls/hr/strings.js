@@ -1474,10 +1474,15 @@ define({
   "PROMO_GET_APP_UPSELL_BUTTON": "Nabavite {0}",
   "PROMO_PRO_ENDED_TITLE": "Vaša probna verzija {0} je istekla",
   "PROMO_ENDED_MESSAGE": "Pretplatite se sada kako biste nastavili koristiti ove napredne značajke:",
+  "PROMO_PRO_UNLOCK_PRO_TITLE": "Otključajte moć {0}",
+  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Otključajte Live Edit uz {0}",
+  "PROMO_PRO_UNLOCK_MESSAGE": "Pretplatite se sada kako biste otključali ove napredne značajke:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Probna verzija Phoenix Pro ({0} dana preostalo)",
   "GET_PHOENIX_PRO": "Nabavite Phoenix Pro",
   "USER_FREE_PLAN_NAME": "Besplatni plan",
-  "PROMO_PRO_UNLOCK_PRO_TITLE": "Otključajte moć {0}",
-  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Otključajte Live Edit uz {0}",
-  "PROMO_PRO_UNLOCK_MESSAGE": "Pretplatite se sada kako biste otključali ove napredne značajke:"
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Koristi ovu sliku",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Odaberi sliku s računala",
+  "LIVE_DEV_IMAGE_GALLERY_CHOOSE_FOLDER": "Odaberi mapu za preuzimanje",
+  "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Traži slike...",
+  "LIVE_PREVIEW_EDIT_IMAGE_RIBBON": "Prikaži birač slika prilikom klika na sliku"
 });

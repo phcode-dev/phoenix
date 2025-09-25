@@ -1474,10 +1474,15 @@ define({
   "PROMO_GET_APP_UPSELL_BUTTON": "Αποκτήστε {0}",
   "PROMO_PRO_ENDED_TITLE": "Η δοκιμαστική σας έκδοση {0} έληξε",
   "PROMO_ENDED_MESSAGE": "Εγγραφείτε τώρα για να συνεχίσετε να χρησιμοποιείτε αυτές τις προηγμένες λειτουργίες:",
+  "PROMO_PRO_UNLOCK_PRO_TITLE": "Ξεκλειδώστε τη δύναμη του {0}",
+  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Ξεκλειδώστε το Live Edit με το {0}",
+  "PROMO_PRO_UNLOCK_MESSAGE": "Εγγραφείτε τώρα για να ξεκλειδώσετε αυτές τις προηγμένες λειτουργίες:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Δοκιμαστική έκδοση Phoenix Pro ({0} ημέρες απομένουν)",
   "GET_PHOENIX_PRO": "Αποκτήστε το Phoenix Pro",
   "USER_FREE_PLAN_NAME": "Δωρεάν Σχέδιο",
-  "PROMO_PRO_UNLOCK_PRO_TITLE": "Ξεκλειδώστε τη δύναμη του {0}",
-  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Ξεκλειδώστε το Live Edit με το {0}",
-  "PROMO_PRO_UNLOCK_MESSAGE": "Εγγραφείτε τώρα για να ξεκλειδώσετε αυτές τις προηγμένες λειτουργίες:"
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Χρήση αυτής της εικόνας",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Επιλογή εικόνας από τον υπολογιστή",
+  "LIVE_DEV_IMAGE_GALLERY_CHOOSE_FOLDER": "Επιλογή φακέλου λήψης",
+  "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Αναζήτηση εικόνων...",
+  "LIVE_PREVIEW_EDIT_IMAGE_RIBBON": "Εμφάνιση Επιλογέα Εικόνας με κλικ στην εικόνα"
 });

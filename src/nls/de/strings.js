@@ -1474,10 +1474,15 @@ define({
   "PROMO_GET_APP_UPSELL_BUTTON": "{0} herunterladen",
   "PROMO_PRO_ENDED_TITLE": "Ihre {0}-Testversion ist abgelaufen",
   "PROMO_ENDED_MESSAGE": "Jetzt abonnieren, um diese erweiterten Funktionen weiterhin zu nutzen:",
+  "PROMO_PRO_UNLOCK_PRO_TITLE": "Schalte die volle Leistung von {0} frei",
+  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Schalte Live Edit mit {0} frei",
+  "PROMO_PRO_UNLOCK_MESSAGE": "Abonniere jetzt, um die folgenden erweiterten Funktionen freizuschalten:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro-Testversion ({0} Tage verbleibend)",
   "GET_PHOENIX_PRO": "Phoenix Pro herunterladen",
   "USER_FREE_PLAN_NAME": "Kostenloser Plan",
-  "PROMO_PRO_UNLOCK_PRO_TITLE": "Schalte die volle Leistung von {0} frei",
-  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Schalte Live Edit mit {0} frei",
-  "PROMO_PRO_UNLOCK_MESSAGE": "Abonniere jetzt, um die folgenden erweiterten Funktionen freizuschalten:"
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Dieses Bild verwenden",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Bild vom Computer auswählen",
+  "LIVE_DEV_IMAGE_GALLERY_CHOOSE_FOLDER": "Download-Ordner auswählen",
+  "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Bilder suchen…",
+  "LIVE_PREVIEW_EDIT_IMAGE_RIBBON": "Bildauswahl bei Klick auf Bild anzeigen"
 });

@@ -1474,10 +1474,15 @@ define({
   "PROMO_GET_APP_UPSELL_BUTTON": "Hanki {0}",
   "PROMO_PRO_ENDED_TITLE": "{0}-kokeilusi on päättynyt",
   "PROMO_ENDED_MESSAGE": "Tilaa nyt jatkaaksesi näiden lisäominaisuuksien käyttöä:",
+  "PROMO_PRO_UNLOCK_PRO_TITLE": "Avaa Phoenix Pron koko potentiaali {0}",
+  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Avaa Live Edit Phoenix Prolla {0}",
+  "PROMO_PRO_UNLOCK_MESSAGE": "Tilaa nyt avataksesi nämä edistyneet ominaisuudet:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro -kokeiluversio ({0} päivää jäljellä)",
   "GET_PHOENIX_PRO": "Hanki Phoenix Pro",
   "USER_FREE_PLAN_NAME": "Ilmainen sopimus",
-  "PROMO_PRO_UNLOCK_PRO_TITLE": "Avaa Phoenix Pron koko potentiaali {0}",
-  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Avaa Live Edit Phoenix Prolla {0}",
-  "PROMO_PRO_UNLOCK_MESSAGE": "Tilaa nyt avataksesi nämä edistyneet ominaisuudet:"
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Käytä tätä kuvaa",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Valitse kuva tietokoneelta",
+  "LIVE_DEV_IMAGE_GALLERY_CHOOSE_FOLDER": "Valitse latauskansio",
+  "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Hae kuvia...",
+  "LIVE_PREVIEW_EDIT_IMAGE_RIBBON": "Näytä kuvanvalitsin kuvaa klikatessa"
 });

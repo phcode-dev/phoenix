@@ -1474,10 +1474,15 @@ define({
   "PROMO_GET_APP_UPSELL_BUTTON": "{0} を入手",
   "PROMO_PRO_ENDED_TITLE": "{0}トライアルが終了しました",
   "PROMO_ENDED_MESSAGE": "これらの高度な機能を引き続き使用するには、今すぐ登録してください。",
+  "PROMO_PRO_UNLOCK_PRO_TITLE": "{0}の真価を発揮",
+  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "{0}でライブ編集をアンロック",
+  "PROMO_PRO_UNLOCK_MESSAGE": "今すぐ登録して、以下の高度な機能をアンロック：",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Proトライアル（残り{0}日）",
   "GET_PHOENIX_PRO": "Phoenix Proを入手",
   "USER_FREE_PLAN_NAME": "フリープラン",
-  "PROMO_PRO_UNLOCK_PRO_TITLE": "{0}の真価を発揮",
-  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "{0}でライブ編集をアンロック",
-  "PROMO_PRO_UNLOCK_MESSAGE": "今すぐ登録して、以下の高度な機能をアンロック："
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "この画像を使用",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "コンピューターから画像を選択",
+  "LIVE_DEV_IMAGE_GALLERY_CHOOSE_FOLDER": "ダウンロードフォルダーを選択",
+  "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "画像を検索...",
+  "LIVE_PREVIEW_EDIT_IMAGE_RIBBON": "画像クリックでイメージピッカーを表示"
 });

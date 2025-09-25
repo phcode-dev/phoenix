@@ -1474,10 +1474,15 @@ define({
   "PROMO_GET_APP_UPSELL_BUTTON": "Získat {0}",
   "PROMO_PRO_ENDED_TITLE": "Zkušební doba {0} skončila",
   "PROMO_ENDED_MESSAGE": "Chcete-li pokračovat v používání těchto pokročilých funkcí, přihlaste se k odběru:",
+  "PROMO_PRO_UNLOCK_PRO_TITLE": "Odemkněte sílu {0}",
+  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Odemkněte Živou úpravu s {0}",
+  "PROMO_PRO_UNLOCK_MESSAGE": "Přihlaste se k odběru a odemkněte si tyto pokročilé funkce:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Zkušební verze Phoenix Pro ({0} dní zbývá)",
   "GET_PHOENIX_PRO": "Získejte Phoenix Pro",
   "USER_FREE_PLAN_NAME": "Bezplatný tarif",
-  "PROMO_PRO_UNLOCK_PRO_TITLE": "Odemkněte sílu {0}",
-  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Odemkněte Živou úpravu s {0}",
-  "PROMO_PRO_UNLOCK_MESSAGE": "Přihlaste se k odběru a odemkněte si tyto pokročilé funkce:"
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Použít tento obrázek",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Vybrat obrázek z počítače",
+  "LIVE_DEV_IMAGE_GALLERY_CHOOSE_FOLDER": "Vybrat složku pro stažení",
+  "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Hledat obrázky…",
+  "LIVE_PREVIEW_EDIT_IMAGE_RIBBON": "Zobrazit výběr obrázků po kliknutí na obrázek"
 });

@@ -1474,10 +1474,15 @@ define({
   "PROMO_GET_APP_UPSELL_BUTTON": "Вземете {0}",
   "PROMO_PRO_ENDED_TITLE": "Вашият {0} пробен период е изтекъл",
   "PROMO_ENDED_MESSAGE": "Абонирайте се сега, за да продължите да използвате тези разширени функции:",
+  "PROMO_PRO_UNLOCK_PRO_TITLE": "Отключете силата на {0}",
+  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Отключете редактиране на живо с {0}",
+  "PROMO_PRO_UNLOCK_MESSAGE": "Абонирайте се сега, за да отключите тези разширени функции:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Пробен период на Phoenix Pro ({0} дни остават)",
   "GET_PHOENIX_PRO": "Вземете Phoenix Pro",
   "USER_FREE_PLAN_NAME": "Безплатен план",
-  "PROMO_PRO_UNLOCK_PRO_TITLE": "Отключете силата на {0}",
-  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Отключете редактиране на живо с {0}",
-  "PROMO_PRO_UNLOCK_MESSAGE": "Абонирайте се сега, за да отключите тези разширени функции:"
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Използвай това изображение",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Избери изображение от компютъра",
+  "LIVE_DEV_IMAGE_GALLERY_CHOOSE_FOLDER": "Избери папка за изтегляне",
+  "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Търсене на изображения...",
+  "LIVE_PREVIEW_EDIT_IMAGE_RIBBON": "Покажи селектор на изображения при кликване върху изображение"
 });

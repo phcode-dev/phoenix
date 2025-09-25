@@ -1474,10 +1474,15 @@ define({
   "PROMO_GET_APP_UPSELL_BUTTON": "{0} നേടുക",
   "PROMO_PRO_ENDED_TITLE": "നിങ്ങളുടെ {0} പരീക്ഷണ കാലയളവ് അവസാനിച്ചു",
   "PROMO_ENDED_MESSAGE": "ഈ വിപുലമായ സവിശേഷതകൾ തുടർന്നും ഉപയോഗിക്കുന്നതിന് ഇപ്പോൾ സബ്‌സ്‌ക്രൈബുചെയ്യുക:",
+  "PROMO_PRO_UNLOCK_PRO_TITLE": "{0} യുടെ ശക്തി അനാവരണം ചെയ്യൂ",
+  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "{0} ഉപയോഗിച്ച് ലൈവ് എഡിറ്റ് അൺലോക്ക് ചെയ്യുക",
+  "PROMO_PRO_UNLOCK_MESSAGE": "ഈ വിപുലമായ സവിശേഷതകൾ അൺലോക്ക് ചെയ്യാൻ ഇപ്പോൾ സബ്‌സ്‌ക്രൈബുചെയ്യുക:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "ഫീനിക്സ് പ്രോ പരീക്ഷണം ({0} ദിവസം ബാക്കി)",
   "GET_PHOENIX_PRO": "ഫീനിക്സ് പ്രോ നേടുക",
   "USER_FREE_PLAN_NAME": "സൗജന്യ പ്ലാൻ",
-  "PROMO_PRO_UNLOCK_PRO_TITLE": "{0} യുടെ ശക്തി അനാവരണം ചെയ്യൂ",
-  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "{0} ഉപയോഗിച്ച് ലൈവ് എഡിറ്റ് അൺലോക്ക് ചെയ്യുക",
-  "PROMO_PRO_UNLOCK_MESSAGE": "ഈ വിപുലമായ സവിശേഷതകൾ അൺലോക്ക് ചെയ്യാൻ ഇപ്പോൾ സബ്‌സ്‌ക്രൈബുചെയ്യുക:"
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "ഈ ചിത്രം ഉപയോഗിക്കുക",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "കമ്പ്യൂട്ടറിൽ നിന്ന് ചിത്രം തിരഞ്ഞെടുക്കുക",
+  "LIVE_DEV_IMAGE_GALLERY_CHOOSE_FOLDER": "ഡൗൺലോഡ് ഫോൾഡർ തിരഞ്ഞെടുക്കുക",
+  "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "ചിത്രങ്ങൾക്കായി തിരയുക...",
+  "LIVE_PREVIEW_EDIT_IMAGE_RIBBON": "ചിത്രത്തിൽ ക്ലിക്ക് ചെയ്യുമ്പോൾ ഇമേജ് പിക്കർ കാണിക്കുക"
 });

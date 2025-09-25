@@ -1474,10 +1474,15 @@ define({
   "PROMO_GET_APP_UPSELL_BUTTON": "دریافت {0}",
   "PROMO_PRO_ENDED_TITLE": "مهلت {0} شما به پایان رسیده است",
   "PROMO_ENDED_MESSAGE": "برای ادامه استفاده از این قابلیت‌های پیشرفته، همین حالا مشترک شوید:",
+  "PROMO_PRO_UNLOCK_PRO_TITLE": "قدرت {0} را آزاد کنید",
+  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "ویرایش زنده را با {0} فعال کنید",
+  "PROMO_PRO_UNLOCK_MESSAGE": "هم‌اکنون مشترک شوید تا این قابلیت‌های پیشرفته را فعال کنید:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "نسخه آزمایشی Phoenix Pro ({0} روز باقی مانده)",
   "GET_PHOENIX_PRO": "دریافت Phoenix Pro",
   "USER_FREE_PLAN_NAME": "طرح رایگان",
-  "PROMO_PRO_UNLOCK_PRO_TITLE": "قدرت {0} را آزاد کنید",
-  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "ویرایش زنده را با {0} فعال کنید",
-  "PROMO_PRO_UNLOCK_MESSAGE": "هم‌اکنون مشترک شوید تا این قابلیت‌های پیشرفته را فعال کنید:"
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "از این تصویر استفاده کنید",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "انتخاب تصویر از رایانه",
+  "LIVE_DEV_IMAGE_GALLERY_CHOOSE_FOLDER": "انتخاب پوشه دانلود",
+  "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "جستجوی تصاویر…",
+  "LIVE_PREVIEW_EDIT_IMAGE_RIBBON": "نمایش انتخابگر تصویر با کلیک روی تصویر"
 });

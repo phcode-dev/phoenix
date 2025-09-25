@@ -1474,10 +1474,15 @@ define({
   "PROMO_GET_APP_UPSELL_BUTTON": "取得 {0}",
   "PROMO_PRO_ENDED_TITLE": "您的 {0} 試用已結束",
   "PROMO_ENDED_MESSAGE": "立即訂閱以繼續使用這些進階功能：",
+  "PROMO_PRO_UNLOCK_PRO_TITLE": "釋放 {0} 的強大功能",
+  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "使用 {0} 解鎖即時編輯功能",
+  "PROMO_PRO_UNLOCK_MESSAGE": "立即訂閱以解鎖以下進階功能：",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro 試用版（剩餘 {0} 天）",
   "GET_PHOENIX_PRO": "取得 Phoenix Pro",
   "USER_FREE_PLAN_NAME": "免費方案",
-  "PROMO_PRO_UNLOCK_PRO_TITLE": "釋放 {0} 的強大功能",
-  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "使用 {0} 解鎖即時編輯功能",
-  "PROMO_PRO_UNLOCK_MESSAGE": "立即訂閱以解鎖以下進階功能："
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "使用此圖片",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "從電腦選取圖片",
+  "LIVE_DEV_IMAGE_GALLERY_CHOOSE_FOLDER": "選擇下載資料夾",
+  "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "搜尋圖片…",
+  "LIVE_PREVIEW_EDIT_IMAGE_RIBBON": "點擊圖片時顯示圖片選擇器"
 });

@@ -1474,10 +1474,15 @@ define({
   "PROMO_GET_APP_UPSELL_BUTTON": "{0} 받기",
   "PROMO_PRO_ENDED_TITLE": "{0} 평가판 사용 기간이 만료되었습니다",
   "PROMO_ENDED_MESSAGE": "고급 기능을 계속 사용하려면 지금 구독하세요.",
+  "PROMO_PRO_UNLOCK_PRO_TITLE": "{0}의 강력한 기능을 사용해 보세요",
+  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "{0}로 라이브 편집 기능을 사용해 보세요",
+  "PROMO_PRO_UNLOCK_MESSAGE": "다음과 같은 고급 기능을 사용하려면 지금 구독하세요:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro 평가판({0}일 남음)",
   "GET_PHOENIX_PRO": "Phoenix Pro 받기",
   "USER_FREE_PLAN_NAME": "무료 플랜",
-  "PROMO_PRO_UNLOCK_PRO_TITLE": "{0}의 강력한 기능을 사용해 보세요",
-  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "{0}로 라이브 편집 기능을 사용해 보세요",
-  "PROMO_PRO_UNLOCK_MESSAGE": "다음과 같은 고급 기능을 사용하려면 지금 구독하세요:"
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "이 이미지 사용",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "컴퓨터에서 이미지 선택",
+  "LIVE_DEV_IMAGE_GALLERY_CHOOSE_FOLDER": "다운로드 폴더 선택",
+  "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "이미지 검색...",
+  "LIVE_PREVIEW_EDIT_IMAGE_RIBBON": "이미지 클릭 시 이미지 선택 도구 표시"
 });

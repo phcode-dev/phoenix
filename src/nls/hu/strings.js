@@ -1474,10 +1474,15 @@ define({
   "PROMO_GET_APP_UPSELL_BUTTON": "Szerezd meg a(z) {0}-t/et",
   "PROMO_PRO_ENDED_TITLE": "Lejárt a(z) {0} próbaidőszakod",
   "PROMO_ENDED_MESSAGE": "Iratkozzon fel most a következő prémium funkciók további használatához:",
+  "PROMO_PRO_UNLOCK_PRO_TITLE": "Használd ki a {0} erejét",
+  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Oldd fel az Élő Szerkesztést a {0} segítségével",
+  "PROMO_PRO_UNLOCK_MESSAGE": "Iratkozz fel most a következő fejlett funkciók eléréséhez:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro próbaverzió ({0} nap van hátra)",
   "GET_PHOENIX_PRO": "Szerezd meg a Phoenix Pro-t",
   "USER_FREE_PLAN_NAME": "Ingyenes csomag",
-  "PROMO_PRO_UNLOCK_PRO_TITLE": "Használd ki a {0} erejét",
-  "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Oldd fel az Élő Szerkesztést a {0} segítségével",
-  "PROMO_PRO_UNLOCK_MESSAGE": "Iratkozz fel most a következő fejlett funkciók eléréséhez:"
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Kép használata",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Kép kiválasztása a számítógépről",
+  "LIVE_DEV_IMAGE_GALLERY_CHOOSE_FOLDER": "Letöltési mappa kiválasztása",
+  "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Képek keresése...",
+  "LIVE_PREVIEW_EDIT_IMAGE_RIBBON": "Képszerkesztő megjelenítése képkattintásra"
 });
