@@ -2288,7 +2288,7 @@ function RemoteFunctions(config = {}) {
                             <div class="phoenix-ribbon-header-left">
                                 <div class="phoenix-ribbon-search">
                                     <input type="text" placeholder="${config.strings.imageGallerySearchPlaceholder}" />
-                                    <button class="phoenix-ribbon-search-btn">Search</button>
+                                    <button class="phoenix-ribbon-search-btn">${config.strings.imageGallerySearchButton}</button>
                                 </div>
                                 <div class="phoenix-ribbon-select">
                                     <button class="phoenix-select-image-btn" title="${config.strings.imageGallerySelectFromComputer}">
@@ -2381,7 +2381,7 @@ function RemoteFunctions(config = {}) {
                         this._updateSearchInput(searchQuery);
                         this._updateCache(searchQuery, data, append);
                     } else if (!append) {
-                        this._showError('No images found');
+                        this._showError(config.strings.imageGalleryNoImages);
                     }
 
                     if (append) {
@@ -2392,7 +2392,7 @@ function RemoteFunctions(config = {}) {
                 .catch(error => {
                     console.error('Failed to fetch images:', error);
                     if (!append) {
-                        this._showError('Failed to load images');
+                        this._showError(config.strings.imageGalleryLoadError);
                     } else {
                         this._isLoadingMore = false;
                         this._hideLoadingMore();
@@ -2540,7 +2540,7 @@ function RemoteFunctions(config = {}) {
             const rowElement = this._shadow.querySelector('.phoenix-ribbon-row');
             if (!rowElement) { return; }
 
-            rowElement.innerHTML = 'Loading images...';
+            rowElement.innerHTML = config.strings.imageGalleryLoadingInitial;
             rowElement.className = 'phoenix-ribbon-row phoenix-ribbon-loading';
         },
 
@@ -2551,7 +2551,7 @@ function RemoteFunctions(config = {}) {
             // when loading more images we need to show the message at the end of the image ribbon
             const loadingIndicator = window.document.createElement('div');
             loadingIndicator.className = 'phoenix-loading-more';
-            loadingIndicator.textContent = 'Loading...';
+            loadingIndicator.textContent = config.strings.imageGalleryLoadingMore;
             rowElement.appendChild(loadingIndicator);
         },
 
