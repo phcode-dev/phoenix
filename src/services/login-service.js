@@ -213,8 +213,10 @@ define(function (require, exports, module) {
 
 
     /**
-     * Get entitlements from API or cache
-     * Returns null if user is not logged in
+     * Get entitlements from API or disc cache.
+     * @param {string} forceRefresh If provided will always fetch from server and bypass cache. Use rarely like
+     *      when a user logs in/out/some other user activity/ account-related events.
+     * Returns null if the user is not logged in
      */
     async function getEntitlements(forceRefresh = false) {
         // Return null if not logged in
@@ -413,8 +415,8 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Get effective entitlements for determining feature availability throughout the app.
-     * This is the primary API that should be used across Phoenix to check entitlements and enable/disable features.
+     * Get effective entitlements for determining feature availability.
+     * This is for internal use only. All consumers in phoenix code should use `KernalModeTrust.Entitlements` APIs.
      *
      * @returns {Promise<Object|null>} Entitlements object or null if not logged in and no trial active
      *

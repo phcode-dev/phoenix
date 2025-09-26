@@ -70,6 +70,16 @@ define(function (require, exports, module) {
             });
     }
 
+    let effectiveEntitlements = null;
+    async function _getEffectiveEntitlements() {
+        if(effectiveEntitlements){
+            return effectiveEntitlements;
+        }
+        const entitlements = await LoginService.getEffectiveEntitlements();
+        effectiveEntitlements = entitlements;
+        return entitlements;
+    }
+
     /**
      * Get the plan details from entitlements with fallback to free plan defaults. If the user is
      * in pro trial(isInProTrial API), then paidSubscriber will always be true as we need to treat user as paid.
@@ -77,7 +87,7 @@ define(function (require, exports, module) {
      * @returns {Promise<Object>} Plan details object
      */
     async function getPlanDetails() {
-        const entitlements = await LoginService.getEffectiveEntitlements();
+        const entitlements = await _getEffectiveEntitlements();
 
         if (entitlements && entitlements.plan) {
             return entitlements.plan;
@@ -97,7 +107,7 @@ define(function (require, exports, module) {
      * @returns {Promise<boolean>} True if user is in pro trial, false otherwise
      */
     async function isInProTrial() {
-        const entitlements = await LoginService.getEffectiveEntitlements();
+        const entitlements = await _getEffectiveEntitlements();
         return !!(entitlements && entitlements.isInProTrial);
     }
 
@@ -106,7 +116,7 @@ define(function (require, exports, module) {
      * @returns {Promise<number>} Number of remaining trial days
      */
     async function getTrialRemainingDays() {
-        const entitlements = await LoginService.getEffectiveEntitlements();
+        const entitlements = await _getEffectiveEntitlements();
         return entitlements && entitlements.trialDaysRemaining ? entitlements.trialDaysRemaining : 0;
     }
 
@@ -142,7 +152,7 @@ define(function (require, exports, module) {
      * }
      */
     async function getLiveEditEntitlement() {
-        const entitlements = await LoginService.getEffectiveEntitlements();
+        const entitlements = await _getEffectiveEntitlements();
 
         if (entitlements && entitlements.entitlements && entitlements.entitlements.liveEdit) {
             return entitlements.entitlements.liveEdit;
@@ -168,6 +178,7 @@ define(function (require, exports, module) {
         LoginService = KernalModeTrust.loginService;
         // Set up event forwarding from LoginService
         LoginService.on(LoginService.EVENT_ENTITLEMENTS_CHANGED, function() {
+            effectiveEntitlements = null;
             Entitlements.trigger(EVENT_ENTITLEMENTS_CHANGED);
         });
     }
