@@ -2682,7 +2682,10 @@ function RemoteFunctions(config = {}) {
 
                 // show original image when hover ends
                 thumbDiv.addEventListener('mouseleave', () => {
-                    this.element.src = this._originalImageSrc;
+                    // don't reset to original image if we're currently downloading this image
+                    if (!thumbDiv.classList.contains('downloading')) {
+                        this.element.src = this._originalImageSrc;
+                    }
                 });
 
                 // attribution overlay, we show this only in the image ribbon gallery
@@ -2731,10 +2734,12 @@ function RemoteFunctions(config = {}) {
                     // show download indicator
                     this._showDownloadIndicator(thumbDiv);
 
+                    // set the preview image on main element during download
+                    const downloadUrl = image.url || image.thumb_url;
+                    this.element.src = downloadUrl;
+
                     const filename = this._generateFilename(image);
                     const extnName = ".jpg";
-
-                    const downloadUrl = image.url || image.thumb_url;
                     this._useImage(downloadUrl, filename, extnName, false, thumbDiv);
                 });
 
