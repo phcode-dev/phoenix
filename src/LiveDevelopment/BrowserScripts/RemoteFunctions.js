@@ -1913,13 +1913,80 @@ function RemoteFunctions(config = {}) {
     };
 
     // image ribbon gallery cache, to store the last query and its results
-    // then next time we can load it from cache itself instead of making a new API call
+    const CACHE_EXPIRY_TIME = 168 * 60 * 60 * 1000; // 7 days, might need to revise this...
+    const CACHE_MAX_IMAGES = 50; // max number of images that we store in the localStorage
     const _imageGalleryCache = {
-        currentQuery: null,
-        allImages: [],
-        totalPages: 1,
-        currentPage: 1,
-        maxImages: 50
+        get currentQuery() {
+            const data = this._getFromStorage();
+            return data ? data.currentQuery : null;
+        },
+        set currentQuery(val) {
+            this._updateStorage({currentQuery: val});
+        },
+
+        get allImages() {
+            const data = this._getFromStorage();
+            return data ? data.allImages : [];
+        },
+        set allImages(val) {
+            this._updateStorage({allImages: val});
+        },
+
+        get totalPages() {
+            const data = this._getFromStorage();
+            return data ? data.totalPages : 1;
+        },
+        set totalPages(val) {
+            this._updateStorage({totalPages: val});
+        },
+
+        get currentPage() {
+            const data = this._getFromStorage();
+            return data ? data.currentPage : 1;
+        },
+        set currentPage(val) {
+            this._updateStorage({currentPage: val});
+        },
+
+
+        _getFromStorage() {
+            try {
+                const data = window.localStorage.getItem('imageGalleryCache');
+                if (!data) { return null; }
+
+                const parsed = JSON.parse(data);
+
+                if (Date.now() > parsed.expires) {
+                    window.localStorage.removeItem('imageGalleryCache');
+                    return null;
+                }
+
+                return parsed;
+            } catch (error) {
+                return null;
+            }
+        },
+
+        _updateStorage(updates) {
+            try {
+                const current = this._getFromStorage() || {};
+                const newData = {
+                    ...current,
+                    ...updates,
+                    expires: Date.now() + CACHE_EXPIRY_TIME
+                };
+                window.localStorage.setItem('imageGalleryCache', JSON.stringify(newData));
+            } catch (error) {
+                if (error.name === 'QuotaExceededError') {
+                    try {
+                        window.localStorage.removeItem('imageGalleryCache');
+                        window.localStorage.setItem('imageGalleryCache', JSON.stringify(updates));
+                    } catch (retryError) {
+                        console.error('Failed to save image cache even after clearing:', retryError);
+                    }
+                }
+            }
+        }
     };
 
     /**
@@ -2346,7 +2413,7 @@ function RemoteFunctions(config = {}) {
         },
 
         _fetchFromAPI: function(searchQuery, page, append) {
-            // when we fetch from API, we clear the cache and then store a fresh copy
+            // when we fetch from API, we clear the previous query from local storage and then store a fresh copy
             if (searchQuery !== _imageGalleryCache.currentQuery) {
                 this._clearCache();
             }
@@ -2405,11 +2472,11 @@ function RemoteFunctions(config = {}) {
             _imageGalleryCache.currentPage = this.currentPage;
 
             if (append) {
-                // Append new results to existing cache
-                const newImages = _imageGalleryCache.allImages.concat(data.results);
+                const currentImages = _imageGalleryCache.allImages;
+                const newImages = currentImages.concat(data.results);
 
-                if (newImages.length > _imageGalleryCache.maxImages) { // max = 50
-                    _imageGalleryCache.allImages = newImages.slice(-_imageGalleryCache.maxImages);
+                if (newImages.length > CACHE_MAX_IMAGES) {
+                    _imageGalleryCache.allImages = newImages.slice(-CACHE_MAX_IMAGES);
                 } else {
                     _imageGalleryCache.allImages = newImages;
                 }
@@ -2420,11 +2487,11 @@ function RemoteFunctions(config = {}) {
         },
 
         _clearCache: function() {
-            // clear current cache when switching to new query
-            _imageGalleryCache.currentQuery = null;
-            _imageGalleryCache.allImages = [];
-            _imageGalleryCache.totalPages = 1;
-            _imageGalleryCache.currentPage = 1;
+            try {
+                window.localStorage.removeItem('imageGalleryCache');
+            } catch (error) {
+                console.error('Failed to clear image cache:', error);
+            }
         },
 
         _updateSearchInput: function(searchQuery) {
@@ -2437,7 +2504,6 @@ function RemoteFunctions(config = {}) {
         },
 
         _loadFromCache: function(searchQuery) {
-            // Check if we can load from cache for this query
             if (searchQuery === _imageGalleryCache.currentQuery && _imageGalleryCache.allImages.length > 0) {
                 this.allImages = _imageGalleryCache.allImages;
                 this.totalPages = _imageGalleryCache.totalPages;
@@ -2446,13 +2512,12 @@ function RemoteFunctions(config = {}) {
                 this._renderImages(this.allImages, false);
                 this._updateNavButtons();
                 this._updateSearchInput(searchQuery);
-                return true; // Successfully loaded from cache
+                return true;
             }
-            return false; // unable to load from cache
+            return false;
         },
 
         _loadPageFromCache: function(searchQuery, page) {
-            // check if this page is in cache
             if (searchQuery === _imageGalleryCache.currentQuery && page <= Math.ceil(_imageGalleryCache.allImages.length / 10)) {
                 const startIdx = (page - 1) * 10;
                 const endIdx = startIdx + 10;
@@ -2465,7 +2530,7 @@ function RemoteFunctions(config = {}) {
                     this._updateNavButtons();
                     this._isLoadingMore = false;
                     this._hideLoadingMore();
-                    return true; // Successfully loaded page from cache
+                    return true;
                 }
             }
             return false;
