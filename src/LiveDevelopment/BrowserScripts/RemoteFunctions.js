@@ -188,9 +188,7 @@ function RemoteFunctions(config = {}) {
         var html = window.document.documentElement;
         return (
             rect.top >= 0 &&
-            rect.left >= 0 &&
-            rect.bottom <= (window.innerHeight || html.clientHeight) &&
-            rect.right <= (window.innerWidth || html.clientWidth)
+            rect.bottom <= (window.innerHeight || html.clientHeight)
         );
     }
 
@@ -3211,9 +3209,7 @@ function RemoteFunctions(config = {}) {
             window.document.body.appendChild(highlight);
         },
 
-        // shouldAutoScroll is whether to scroll page to element if not in view
-        // true when user clicks on the source code of some element, in that case we want to scroll the live preview
-        add: function (element, doAnimation, shouldAutoScroll) {
+        add: function (element, doAnimation) {
             if (this._elementExists(element) || element === window.document) {
                 return;
             }
@@ -3221,15 +3217,7 @@ function RemoteFunctions(config = {}) {
                 _trigger(element, "highlight", 1);
             }
 
-            if (shouldAutoScroll && (!window.event || window.event instanceof MessageEvent) && !isInViewport(element)) {
-                var top = getDocumentOffsetTop(element);
-                if (top) {
-                    top -= (window.innerHeight / 2);
-                    window.scrollTo(0, top);
-                }
-            }
             this.elements.push(element);
-
             this._makeHighlightDiv(element, doAnimation);
         },
 
@@ -3263,7 +3251,7 @@ function RemoteFunctions(config = {}) {
 
             this.clear();
             for (i = 0; i < highlighted.length; i++) {
-                this.add(highlighted[i], false, false); // 3rd arg is for auto-scroll
+                this.add(highlighted[i], false);
             }
         }
     };
@@ -3281,7 +3269,7 @@ function RemoteFunctions(config = {}) {
         if (_validEvent(event)) {
             const element = event.target;
             if(isElementEditable(element) && element.nodeType === Node.ELEMENT_NODE ) {
-                _localHighlight.add(element, true, false); // false means no-auto scroll
+                _localHighlight.add(element, true);
             }
         }
     }
@@ -3353,7 +3341,7 @@ function RemoteFunctions(config = {}) {
             element._originalBackgroundColor = element.style.backgroundColor;
             element.style.backgroundColor = "rgba(0, 162, 255, 0.2)";
 
-            _hoverHighlight.add(element, false, false); // false means no auto-scroll
+            _hoverHighlight.add(element, false);
 
             // Create info box for the hovered element
             dismissNodeInfoBox();
@@ -3378,6 +3366,21 @@ function RemoteFunctions(config = {}) {
         }
     }
 
+    function scrollElementToViewPort(element) {
+        if (!element) {
+            return;
+        }
+
+        // Check if element is in viewport, if not scroll to it
+        if (!isInViewport(element)) {
+            let top = getDocumentOffsetTop(element);
+            if (top) {
+                top -= (window.innerHeight / 2);
+                window.scrollTo(0, top);
+            }
+        }
+    }
+
     /**
      * this function is responsible to select an element in the live preview
      * @param {Element} element - The DOM element to select
@@ -3386,9 +3389,15 @@ function RemoteFunctions(config = {}) {
         // dismiss all UI boxes and cleanup previous element state when selecting a different element
         dismissUIAndCleanupState();
         dismissImageRibbonGallery();
+
+        // this should always happen before isElementEditable check because this is not a live preview edit feature
+        // this should also be there when users are in highlight mode
+        scrollElementToViewPort(element);
+
         if(!isElementEditable(element)) {
             return false;
         }
+
 
         // make sure that the element is actually visible to the user
         if (isElementVisible(element)) {
@@ -3416,7 +3425,7 @@ function RemoteFunctions(config = {}) {
 
         if (_hoverHighlight) {
             _hoverHighlight.clear();
-            _hoverHighlight.add(element, true, false); // false means no auto-scroll
+            _hoverHighlight.add(element, true);
         }
 
         previouslyClickedElement = element;
@@ -3497,7 +3506,7 @@ function RemoteFunctions(config = {}) {
             _clickHighlight.clear();
         }
         if (isElementEditable(element, true) && element.nodeType === Node.ELEMENT_NODE) {
-            _clickHighlight.add(element, true, true); // 3rd arg is for auto-scroll
+            _clickHighlight.add(element, true);
         }
     }
 
