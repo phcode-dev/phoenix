@@ -107,17 +107,22 @@ For testing with a local account server instance:
    - Start your local account development stack on `localhost:5000`
    - Ensure all login endpoints are properly configured
 
-3. **Login and Copy Session:**
+Now just visit login server at `http://localhost:5000` and login. It should work with phoenix code dev server
+at https://localhost:8000/src when you run phoenix code dev server via `npm run serve`. This works without any
+manual cookie copy needed as the dev server sets cookies localhost wide. But if that didnt work, please see
+manual cookie copy instructions below.
+    
+1. **Login and Copy Session:**
    - Navigate to `http://localhost:5000` in browser
    - Login with test credentials
    - Copy `session` cookie value from DevTools
 
-4. **Set Cookie in Phoenix App:**
+2. **Set Cookie in Phoenix App:**
    - Navigate to `http://localhost:8000/src/`
    - Open Chrome DevTools → Application → Cookies
    - Create `session` cookie with copied value (same process as above)
 
-5. **Verify Local Integration:**
+3. **Verify Local Integration:**
    - API calls from localhost:8000 now route through serve-proxy.js to localhost:5000
    - Authentication should work with local account server
 
