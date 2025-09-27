@@ -3264,6 +3264,7 @@ function RemoteFunctions(config = {}) {
     var _aiPromptBox;
     var _imageRibbonGallery;
     var _setup = false;
+    var _hoverLockTimer = null;
 
     function onMouseOver(event) {
         if (_validEvent(event)) {
@@ -3431,6 +3432,18 @@ function RemoteFunctions(config = {}) {
         previouslyClickedElement = element;
     }
 
+    function disableHoverListeners() {
+        window.document.removeEventListener("mouseover", onElementHover);
+        window.document.removeEventListener("mouseout", onElementHoverOut);
+    }
+
+    function enableHoverListeners() {
+        if (config.isProUser && (config.highlight || shouldShowHighlightOnHover())) {
+            window.document.addEventListener("mouseover", onElementHover);
+            window.document.addEventListener("mouseout", onElementHoverOut);
+        }
+    }
+
     /**
      * This function handles the click event on the live preview DOM element
      * this just stops the propagation because otherwise users might not be able to edit buttons or hyperlinks etc
@@ -3443,6 +3456,18 @@ function RemoteFunctions(config = {}) {
             event.preventDefault();
             event.stopPropagation();
             event.stopImmediatePropagation();
+
+            // clear any existing timer before starting new one
+            if (_hoverLockTimer) {
+                clearTimeout(_hoverLockTimer);
+            }
+
+            // disable hover listeners for 2 seconds to prevent info box conflicts
+            disableHoverListeners();
+            _hoverLockTimer = setTimeout(() => {
+                enableHoverListeners();
+                _hoverLockTimer = null;
+            }, 1500);
         }
     }
 
@@ -4250,6 +4275,7 @@ function RemoteFunctions(config = {}) {
         "hasVisibleLivePreviewBoxes" : hasVisibleLivePreviewBoxes,
         "dismissUIAndCleanupState" : dismissUIAndCleanupState,
         "dismissImageRibbonGallery" : dismissImageRibbonGallery,
+        "enableHoverListeners" : enableHoverListeners,
         "registerHandlers" : registerHandlers
     };
 }
