@@ -128,8 +128,8 @@ function RemoteFunctions(config = {}) {
 
         if(element && // element should exist
            element.hasAttribute("data-brackets-id") && // should have the data-brackets-id attribute
-           element.tagName !== "BODY" && // shouldn't be the body tag
-           element.tagName !== "HTML" && // shouldn't be the HTML tag
+           element.tagName.toLowerCase() !== "body" && // shouldn't be the body tag
+           element.tagName.toLowerCase() !== "html" && // shouldn't be the HTML tag
            !_isInsideHeadTag(element)) { // shouldn't be inside the head tag like meta tags and all
             return true;
         }
@@ -142,9 +142,22 @@ function RemoteFunctions(config = {}) {
     function _isInsideHeadTag(element) {
         let parent = element;
         while (parent && parent !== window.document) {
-            if (parent.tagName === "HEAD") {
+            if (parent.tagName.toLowerCase() === "head") {
                 // allow <style> tags inside <head>
-                return element.tagName !== "STYLE";
+                return element.tagName.toLowerCase() !== "style";
+            }
+            parent = parent.parentElement;
+        }
+        return false;
+    }
+
+    // helper function to check if an element is inside an SVG tag
+    // we need this because SVG elements don't support contenteditable
+    function _isInsideSVGTag(element) {
+        let parent = element;
+        while (parent && parent !== window.document) {
+            if (parent.tagName.toLowerCase() === "svg") {
+                return true;
             }
             parent = parent.parentElement;
         }
@@ -1114,7 +1127,7 @@ function RemoteFunctions(config = {}) {
             "textarea"
         ];
 
-        if (voidElements.includes(tagName) || nonEditableElements.includes(tagName)) {
+        if (voidElements.includes(tagName) || nonEditableElements.includes(tagName) || _isInsideSVGTag(element)) {
             return false;
         }
 
@@ -1154,8 +1167,8 @@ function RemoteFunctions(config = {}) {
         _registerDragDrop: function() {
             // disable dragging on all elements and then enable it on the current element
             const allElements = document.querySelectorAll('[data-brackets-id]');
-            allElements.forEach(el => el.setAttribute("draggable", false));
-            this.element.setAttribute("draggable", true);
+            allElements.forEach(el => el.setAttribute("draggable", "false"));
+            this.element.setAttribute("draggable", "true");
 
             this.element.addEventListener("dragstart", (event) => {
                 event.stopPropagation();
