@@ -295,7 +295,14 @@ function RemoteFunctions(config = {}) {
 
         const parentElement = element.parentElement;
         if (isElementEditable(parentElement)) {
-            parentElement.click();
+            // Check if parent element has .click() method (HTML elements)
+            // SVG elements don't have .click() method, so we use _selectElement for them
+            if (typeof parentElement.click === 'function') {
+                parentElement.click();
+            } else {
+                activateHoverLock();
+                _selectElement(parentElement);
+            }
         } else {
             console.error("The TagID might be unavailable or the parent element tag is directly body or html");
         }
@@ -3440,6 +3447,22 @@ function RemoteFunctions(config = {}) {
     }
 
     /**
+     * this function activates hover lock to prevent hover events
+     * Used when user performs click actions to avoid UI box conflicts
+     */
+    function activateHoverLock() {
+        if (_hoverLockTimer) {
+            clearTimeout(_hoverLockTimer);
+        }
+
+        disableHoverListeners();
+        _hoverLockTimer = setTimeout(() => {
+            enableHoverListeners();
+            _hoverLockTimer = null;
+        }, 1500); // 1.5s
+    }
+
+    /**
      * This function handles the click event on the live preview DOM element
      * this just stops the propagation because otherwise users might not be able to edit buttons or hyperlinks etc
      * @param {Event} event
@@ -3451,18 +3474,7 @@ function RemoteFunctions(config = {}) {
             event.preventDefault();
             event.stopPropagation();
             event.stopImmediatePropagation();
-
-            // clear any existing timer before starting new one
-            if (_hoverLockTimer) {
-                clearTimeout(_hoverLockTimer);
-            }
-
-            // disable hover listeners for 2 seconds to prevent info box conflicts
-            disableHoverListeners();
-            _hoverLockTimer = setTimeout(() => {
-                enableHoverListeners();
-                _hoverLockTimer = null;
-            }, 1500);
+            activateHoverLock();
         }
     }
 
