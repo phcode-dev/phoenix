@@ -714,6 +714,7 @@ define(function (require, exports, module) {
      */
     function dismissLivePreviewBoxes() {
         if (_protocol) {
+            _protocol.evaluate("_LD.enableHoverListeners()"); // so that if hover lock is there it will get cleared
             _protocol.evaluate("_LD.dismissUIAndCleanupState()");
             _protocol.evaluate("_LD.dismissImageRibbonGallery()");
         }
