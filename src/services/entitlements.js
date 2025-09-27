@@ -122,7 +122,7 @@ define(function (require, exports, module) {
 
     /**
      * Get current raw entitlements. Should not be used directly, use individual feature entitlement instead
-     * like getLiveEditEntitlement.
+     * like getLiveEditEntitlement. Raw entitlements are server set and will not contain trial info.
      * @returns {Promise<Object|null>} Raw entitlements object or null
      */
     async function getRawEntitlements() {

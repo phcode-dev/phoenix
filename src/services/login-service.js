@@ -252,7 +252,8 @@ define(function (require, exports, module) {
         try {
             const accountBaseURL = LoginService.getAccountBaseURL();
             const language = brackets.getLocale();
-            let url = `${accountBaseURL}/getAppEntitlements?lang=${language}`;
+            const currentVersion = window.AppConfig.apiVersion || "1.0.0";
+            let url = `${accountBaseURL}/getAppEntitlements?lang=${language}&version=${currentVersion}`;
             let fetchOptions = {
                 method: 'GET',
                 headers: {
