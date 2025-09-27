@@ -3998,41 +3998,32 @@ function RemoteFunctions(config = {}) {
 
     /**
      * Helper function to dismiss NodeMoreOptionsBox if it exists
-     * @return {boolean} true if box was dismissed, false if it didn't exist
      */
     function dismissNodeMoreOptionsBox() {
         if (_nodeMoreOptionsBox) {
             _nodeMoreOptionsBox.remove();
             _nodeMoreOptionsBox = null;
-            return true;
         }
-        return false;
     }
 
     /**
      * Helper function to dismiss NodeInfoBox if it exists
-     * @return {boolean} true if box was dismissed, false if it didn't exist
      */
     function dismissNodeInfoBox() {
         if (_nodeInfoBox) {
             _nodeInfoBox.remove();
             _nodeInfoBox = null;
-            return true;
         }
-        return false;
     }
 
     /**
      * Helper function to dismiss AIPromptBox if it exists
-     * @return {boolean} true if box was dismissed, false if it didn't exist
      */
     function dismissAIPromptBox() {
         if (_aiPromptBox) {
             _aiPromptBox.remove();
             _aiPromptBox = null;
-            return true;
         }
-        return false;
     }
 
     /**
@@ -4042,26 +4033,20 @@ function RemoteFunctions(config = {}) {
         if (_imageRibbonGallery) {
             _imageRibbonGallery.remove();
             _imageRibbonGallery = null;
-            return true;
         }
-        return false;
     }
 
     /**
      * Helper function to dismiss all UI boxes at once
-     * @return {boolean} true if any boxes were dismissed, false otherwise
      */
     function dismissAllUIBoxes() {
-        let dismissed = false;
-        dismissed = dismissNodeMoreOptionsBox() || dismissed;
-        dismissed = dismissAIPromptBox() || dismissed;
-        dismissed = dismissNodeInfoBox() || dismissed;
-        return dismissed;
+        dismissNodeMoreOptionsBox();
+        dismissAIPromptBox();
+        dismissNodeInfoBox();
     }
 
     /**
      * Helper function to cleanup previously clicked element highlighting and state
-     * @return {boolean} true if cleanup was performed, false if no element to cleanup
      */
     function cleanupPreviousElementState() {
         if (previouslyClickedElement) {
@@ -4078,26 +4063,16 @@ function RemoteFunctions(config = {}) {
             }
 
             previouslyClickedElement = null;
-            return true;
         }
-        return false;
     }
 
     /**
      * This function dismisses all UI elements and cleans up application state
      * Called when user presses Esc key, clicks on HTML/Body tags, or other dismissal events
-     * @return {boolean} true if any cleanup was performed, false otherwise
      */
     function dismissUIAndCleanupState() {
-        let dismissed = false;
-
-        // Dismiss all UI boxes
-        dismissed = dismissAllUIBoxes() || dismissed;
-
-        // Cleanup previously clicked element state and highlighting
-        dismissed = cleanupPreviousElementState() || dismissed;
-
-        return dismissed;
+        dismissAllUIBoxes();
+        cleanupPreviousElementState();
     }
 
 
