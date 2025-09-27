@@ -2050,7 +2050,6 @@ function RemoteFunctions(config = {}) {
                         backdrop-filter: blur(10px) !important;
                         -webkit-backdrop-filter: blur(10px) !important;
                         border: 1px solid rgba(255, 255, 255, 0.2) !important;
-                        border-radius: 12px !important;
                         position: relative !important;
                     }
 
@@ -2060,7 +2059,7 @@ function RemoteFunctions(config = {}) {
                         overflow: hidden !important;
                         scroll-behavior: smooth !important;
                         padding: 6px !important;
-                        top: 34px !important;
+                        top: 30px !important;
                     }
 
                     .phoenix-ribbon-row {
@@ -2103,7 +2102,6 @@ function RemoteFunctions(config = {}) {
                         color: #eaeaf0 !important;
                         background: rgba(21,25,36,0.65) !important;
                         cursor: pointer !important;
-                        backdrop-filter: blur(8px) !important;
                         font-size: 20px !important;
                         font-weight: 600 !important;
                         user-select: none !important;
@@ -2167,7 +2165,7 @@ function RemoteFunctions(config = {}) {
                         display: flex !important;
                         width: 100% !important;
                         position: absolute !important;
-                        top: 5px !important;
+                        top: 6px !important;
                     }
 
                     .phoenix-ribbon-header-left {
@@ -2183,40 +2181,66 @@ function RemoteFunctions(config = {}) {
 
                     .phoenix-ribbon-search {
                         display: flex !important;
-                        align-items: center !important;
-                        background: rgba(0,0,0,0.5) !important;
-                        padding: 5px !important;
-                        border-radius: 5px !important;
-                        margin-left: 8px !important;
+                        align-items: stretch !important;
+                        background: rgba(21,25,36,0.65) !important;
+                        padding: 0 !important;
+                        border-radius: 6px !important;
+                        margin-left: 6px !important;
+                        border: 1px solid rgba(255,255,255,0.14) !important;
+                        transition: all 0.2s ease !important;
+                        overflow: hidden !important;
+                    }
+
+                    .phoenix-ribbon-search:hover {
+                        background: rgba(21,25,36,0.85) !important;
+                        border-color: rgba(255,255,255,0.25) !important;
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+                    }
+
+                    .phoenix-ribbon-search:focus-within {
+                        background: rgba(21,25,36,0.9) !important;
+                        border-color: rgba(106,169,255,0.4) !important;
                     }
 
                     .phoenix-ribbon-search input {
                         background: transparent !important;
                         border: none !important;
                         outline: none !important;
-                        color: white !important;
-                        width: 200px !important;
+                        color: #eaeaf0 !important;
+                        width: 150px !important;
+                        padding: 2px 6px !important;
+                        border-radius: 4px 0 0 4px !important;
                     }
 
                     .phoenix-ribbon-search input::placeholder {
-                        color: rgba(255, 255, 255, 0.7) !important;
+                        color: rgba(234, 234, 240, 0.6) !important;
                         opacity: 1 !important;
                     }
 
                     .phoenix-ribbon-search input::-webkit-input-placeholder {
-                        color: rgba(255, 255, 255, 0.7) !important;
+                        color: rgba(234, 234, 240, 0.6) !important;
                     }
 
                     .phoenix-ribbon-search input::-moz-placeholder {
-                        color: rgba(255, 255, 255, 0.7) !important;
+                        color: rgba(234, 234, 240, 0.6) !important;
                         opacity: 1 !important;
                     }
 
                     .phoenix-ribbon-search-btn {
-                        background: none !important;
+                        background: transparent !important;
                         border: none !important;
-                        color: #6aa9ff !important;
+                        color: #4285F4 !important;
                         cursor: pointer !important;
+                        padding: 2px 6px !important;
+                        border-radius: 0 4px 4px 0 !important;
+                        font-size: 12px !important;
+                        font-weight: 500 !important;
+                        transition: all 0.2s ease !important;
+                        margin-left: 0 !important;
+                    }
+
+                    .phoenix-ribbon-search-btn:hover {
+                        color: #4285F4 !important;
                     }
 
                     .phoenix-ribbon-select {
@@ -2224,24 +2248,41 @@ function RemoteFunctions(config = {}) {
                     }
 
                     .phoenix-select-image-btn {
-                        background: gray !important;
-                        border: 1px solid rgba(255, 255, 255, 0.2) !important;
-                        color: #fff !important;
-                        padding: 2px 4px !important;
+                        background: rgba(21,25,36,0.65) !important;
+                        border: 1px solid rgba(255,255,255,0.14) !important;
+                        color: #eaeaf0 !important;
+                        padding: 1px 3px !important;
                         border-radius: 6px !important;
                         font-size: 12px !important;
                         cursor: pointer !important;
                         transition: all 0.2s ease !important;
                     }
 
+                    .phoenix-select-image-btn:hover {
+                        background: rgba(21,25,36,0.85) !important;
+                        border-color: rgba(255,255,255,0.25) !important;
+                        transform: scale(1.05) !important;
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+                    }
+
+
                     .phoenix-ribbon-close {
-                        background: rgba(0,0,0,0.5) !important;
-                        border: none !important;
-                        color: white !important;
+                        background: rgba(21,25,36,0.65) !important;
+                        border: 1px solid rgba(255,255,255,0.14) !important;
+                        color: #eaeaf0 !important;
                         cursor: pointer !important;
-                        padding: 4px 8px !important;
-                        border-radius: 3px !important;
+                        padding: 2px 6px !important;
+                        border-radius: 6px !important;
                         margin-right: 16px !important;
+                        transition: all 0.2s ease !important;
+                        font-size: 16px !important;
+                    }
+
+                    .phoenix-ribbon-close:hover {
+                        background: rgba(21,25,36,0.85) !important;
+                        border-color: rgba(255,255,255,0.25) !important;
+                        transform: scale(1.05) !important;
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
                     }
 
                     .phoenix-ribbon-attribution {
