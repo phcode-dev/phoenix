@@ -369,6 +369,8 @@ define(function (require, exports, module) {
             return;
         }
         setTimeout( async function() {
+            // prime the entitlement monitor with the current effective entitlements, after app start, the system would
+            // have resolved any existing login info by now and effective entitlements would be available if any.
             lastRecordedState = await getEffectiveEntitlements(false);
         }, 30000);
         setInterval(async () => {
