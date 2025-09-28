@@ -716,16 +716,6 @@ define(function (require, exports, module) {
         if (_protocol) {
             _protocol.evaluate("_LD.enableHoverListeners()"); // so that if hover lock is there it will get cleared
             _protocol.evaluate("_LD.dismissUIAndCleanupState()");
-            _protocol.evaluate("_LD.dismissImageRibbonGallery()");
-        }
-    }
-
-    /**
-     * Dismiss image ribbon gallery if it's open
-     */
-    function dismissImageRibbonGallery() {
-        if (_protocol) {
-            _protocol.evaluate("_LD.dismissImageRibbonGallery()");
         }
     }
 
@@ -815,7 +805,6 @@ define(function (require, exports, module) {
     exports.redrawHighlight     = redrawHighlight;
     exports.hasVisibleLivePreviewBoxes = hasVisibleLivePreviewBoxes;
     exports.dismissLivePreviewBoxes = dismissLivePreviewBoxes;
-    exports.dismissImageRibbonGallery = dismissImageRibbonGallery;
     exports.registerHandlers    = registerHandlers;
     exports.updateConfig        = updateConfig;
     exports.init                = init;
