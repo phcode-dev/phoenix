@@ -253,7 +253,8 @@ define(function (require, exports, module) {
             const accountBaseURL = LoginService.getAccountBaseURL();
             const language = brackets.getLocale();
             const currentVersion = window.AppConfig.apiVersion || "1.0.0";
-            let url = `${accountBaseURL}/getAppEntitlements?lang=${language}&version=${currentVersion}`;
+            let url = `${accountBaseURL}/getAppEntitlements?lang=${language}&version=${currentVersion}`+
+                `&platform=${Phoenix.platform}&appType=${Phoenix.isNativeApp ? "desktop" : "browser"}}`;
             let fetchOptions = {
                 method: 'GET',
                 headers: {
