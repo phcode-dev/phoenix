@@ -353,21 +353,40 @@ define(function (require, exports, module) {
     /**
      * Start the 10-minute interval timer for monitoring entitlements
      */
-    function startEntitlementsMonitor() {
+    function startEffectiveEntitlementsMonitor() {
+        // Reconcile effective entitlements from server. So the effective entitlements api injects trial
+        // entitlements data. but only the server fetch will trigger the entitlements change event.
+        // so in here, we observe the effective entitlements, and if the effective entitlements are changed,
+        // since the last triggered state, we trigger a change event. This only concerens with the effective
+        // entitlement changes. This will not logout the user if user logged out from the server admin panel,
+        // but his entitlements will be cleared by this call anyways.
+
+        // At app start we refresh entitlements, then only one each user action like user clicks on profile icon,
+        // or if some user hits some backend api, we will refresh entitlements. But here, we periodically refresh
+        // entitlements from the server every 10 minutes, but only trigger entitlement change events only if some
+        // effective entitlement(Eg. trial) data changed or any validity expired.
+        if(Phoenix.isTestWindow){
+            return;
+        }
+        setTimeout( async function() {
+            lastRecordedState = await getEffectiveEntitlements(false);
+        }, 30000);
         setInterval(async () => {
             try {
-                const current = await getEffectiveEntitlements(false); // Get effective entitlements
+                // Get fresh effective entitlements
+                const freshEntitlements = await getEffectiveEntitlements(true);
 
                 // Check if we need to refresh
-                const expiredPlanName = KernalModeTrust.LoginUtils.validTillExpired(current, lastRecordedState);
-                const hasChanged = KernalModeTrust.LoginUtils.haveEntitlementsChanged(current, lastRecordedState);
+                const expiredPlanName = KernalModeTrust.LoginUtils
+                    .validTillExpired(freshEntitlements, lastRecordedState);
+                const hasChanged = KernalModeTrust.LoginUtils
+                    .haveEntitlementsChanged(freshEntitlements, lastRecordedState);
 
                 if (expiredPlanName || hasChanged) {
                     console.log(`Entitlements monitor detected changes, Expired: ${expiredPlanName},` +
                         `changed: ${hasChanged} refreshing...`);
                     Metrics.countEvent(Metrics.EVENT_TYPE.PRO, "entRefresh",
                         expiredPlanName ? "exp_"+expiredPlanName : "changed");
-                    await getEffectiveEntitlements(true); // Force refresh
                     // if not logged in, the getEffectiveEntitlements will not trigger change even if some trial
                     // entitlements changed. so we trigger a change anyway here. The debounce will take care of
                     // multi fire and we are ok with multi fire 1 second apart.
@@ -375,7 +394,7 @@ define(function (require, exports, module) {
                 }
 
                 // Update last recorded state
-                lastRecordedState = current;
+                lastRecordedState = freshEntitlements;
             } catch (error) {
                 console.error('Entitlements monitor error:', error);
             }
@@ -598,7 +617,7 @@ define(function (require, exports, module) {
     }
 
     // Start the entitlements monitor timer
-    startEntitlementsMonitor();
+    startEffectiveEntitlementsMonitor();
 
     exports.init = init;
     // no public exports to prevent extension tampering
