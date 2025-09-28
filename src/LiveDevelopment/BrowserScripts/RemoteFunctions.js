@@ -2251,7 +2251,7 @@ function RemoteFunctions(config = {}) {
                         background: rgba(21,25,36,0.65) !important;
                         border: 1px solid rgba(255,255,255,0.14) !important;
                         color: #eaeaf0 !important;
-                        padding: 1px 3px !important;
+                        padding: 4px 6px 2px 6px !important;
                         border-radius: 6px !important;
                         font-size: 12px !important;
                         cursor: pointer !important;
@@ -2416,9 +2416,8 @@ function RemoteFunctions(config = {}) {
                                 </div>
                                 <div class="phoenix-ribbon-select">
                                     <button class="phoenix-select-image-btn" title="${config.strings.imageGallerySelectFromComputer}">
-                                        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
-                                            <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
-                                            <path d="M12,12L10.5,13.5L8.5,11.5L6,14H18L15,11L12,12Z"/>
+                                        <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                                            <path d="M22,16V4A2,2 0 0,0 20,2H8A2,2 0 0,0 6,4V16A2,2 0 0,0 8,18H20A2,2 0 0,0 22,16M11,12L13.5,15L17,10.5L20,15H8M2,6V20A2,2 0 0,0 4,22H18V20H4V6H2Z"/>
                                         </svg>
                                     </button>
                                     <input type="file" class="phoenix-file-input" accept="image/*" style="display: none;">
