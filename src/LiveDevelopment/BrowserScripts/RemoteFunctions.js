@@ -253,6 +253,18 @@ function RemoteFunctions(config = {}) {
     }
 
     /**
+     * This function gets called when the image gallery button is clicked
+     * it shows the image ribbon gallery at the bottom of the live preview
+     * @param {Event} event
+     * @param {DOMElement} element - the HTML DOM element that was clicked (should be an image)
+     */
+    function _handleImageGalleryOptionClick(event, element) {
+        if (!_imageRibbonGallery && shouldShowImageRibbon()) {
+            _imageRibbonGallery = new ImageRibbonGallery(element);
+        }
+    }
+
+    /**
      * This function gets called when the delete button is clicked
      * it sends a message to the editor using postMessage to delete the element from the source code
      * @param {Event} event
@@ -339,6 +351,8 @@ function RemoteFunctions(config = {}) {
             _handleDeleteOptionClick(e, element);
         } else if (action === "ai") {
             _handleAIOptionClick(e, element);
+        } else if (action === "image-gallery") {
+            _handleImageGalleryOptionClick(e, element);
         }
     }
 
@@ -1257,6 +1271,13 @@ function RemoteFunctions(config = {}) {
                   <path d="M6 7V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2h3v2h-2l-1.5 12.5a2 2 0 0
                   1-2 1.5H8.5a2 2 0 0 1-2-1.5L5 9H3V7h3zm2 0h8V5H8v2z"/>
                 </svg>
+              `,
+
+                imageGallery: `
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                  <path d="M1 3v16h2V5h16V3H1z"/>
+                </svg>
               `
             };
 
@@ -1266,6 +1287,13 @@ function RemoteFunctions(config = {}) {
             content += `<span data-action="ai" title="${config.strings.ai}">
                     ${ICONS.ai}
                 </span>`;
+
+            // if its an image element, we show the image gallery icon
+            if (this.element && this.element.tagName.toLowerCase() === 'img') {
+                content += `<span data-action="image-gallery" title="${config.strings.imageGallery}">
+                    ${ICONS.imageGallery}
+                </span>`;
+            }
 
             // Only include select parent option if element supports it
             if (showSelectParentOption) {
@@ -3464,13 +3492,6 @@ function RemoteFunctions(config = {}) {
             _nodeMoreOptionsBox = null;
         }
 
-        // if the selected element is an image, show the image ribbon gallery (make sure its enabled in preferences)
-        if(element && element.tagName.toLowerCase() === 'img' && shouldShowImageRibbon()) {
-            if (!_imageRibbonGallery) {
-                _imageRibbonGallery = new ImageRibbonGallery(element);
-            }
-        }
-
         element._originalOutline = element.style.outline;
         element.style.outline = "1px solid #4285F4";
 
@@ -4108,6 +4129,7 @@ function RemoteFunctions(config = {}) {
         dismissNodeMoreOptionsBox();
         dismissAIPromptBox();
         dismissNodeInfoBox();
+        dismissImageRibbonGallery();
     }
 
     /**
@@ -4309,7 +4331,6 @@ function RemoteFunctions(config = {}) {
         "finishEditing"         : finishEditing,
         "hasVisibleLivePreviewBoxes" : hasVisibleLivePreviewBoxes,
         "dismissUIAndCleanupState" : dismissUIAndCleanupState,
-        "dismissImageRibbonGallery" : dismissImageRibbonGallery,
         "enableHoverListeners" : enableHoverListeners,
         "registerHandlers" : registerHandlers
     };

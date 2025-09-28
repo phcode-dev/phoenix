@@ -693,10 +693,10 @@ define(function (require, exports, module) {
             _updateImageSrcAttribute(tagId, filename);
         }
 
-        // dismiss the image ribbon gallery
+        // dismiss all UI boxes including the image ribbon gallery
         const currLiveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
         if (currLiveDoc && currLiveDoc.protocol && currLiveDoc.protocol.evaluate) {
-            currLiveDoc.protocol.evaluate("_LD.dismissImageRibbonGallery()");
+            currLiveDoc.protocol.evaluate("_LD.dismissUIAndCleanupState()");
         }
     }
 

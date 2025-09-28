@@ -80,6 +80,7 @@ define(function main(require, exports, module) {
             duplicate: Strings.LIVE_DEV_MORE_OPTIONS_DUPLICATE,
             delete: Strings.LIVE_DEV_MORE_OPTIONS_DELETE,
             ai: Strings.LIVE_DEV_MORE_OPTIONS_AI,
+            imageGallery: Strings.LIVE_DEV_MORE_OPTIONS_IMAGE_GALLERY,
             aiPromptPlaceholder: Strings.LIVE_DEV_AI_PROMPT_PLACEHOLDER,
             imageGalleryUseImage: Strings.LIVE_DEV_IMAGE_GALLERY_USE_IMAGE,
             imageGallerySelectFromComputer: Strings.LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER,
@@ -382,7 +383,7 @@ define(function main(require, exports, module) {
         config.imageRibbon = prefValue !== false; // default to true if undefined
 
         if (MultiBrowserLiveDev && MultiBrowserLiveDev.status >= MultiBrowserLiveDev.STATUS_ACTIVE) {
-            if (!prefValue) { MultiBrowserLiveDev.dismissImageRibbonGallery(); } // to remove any existing image ribbons
+            if (!prefValue) { MultiBrowserLiveDev.dismissLivePreviewBoxes(); } // to remove any existing image ribbons and UI boxes
 
             MultiBrowserLiveDev.updateConfig(JSON.stringify(config));
             MultiBrowserLiveDev.registerHandlers();

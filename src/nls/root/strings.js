@@ -189,6 +189,7 @@ define({
     "LIVE_DEV_MORE_OPTIONS_DUPLICATE": "Duplicate",
     "LIVE_DEV_MORE_OPTIONS_DELETE": "Delete",
     "LIVE_DEV_MORE_OPTIONS_AI": "Edit with AI",
+    "LIVE_DEV_MORE_OPTIONS_IMAGE_GALLERY": "Image Gallery",
     "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Use this image",
     "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Select image from computer",
     "LIVE_DEV_IMAGE_GALLERY_CHOOSE_FOLDER": "Choose download folder",
