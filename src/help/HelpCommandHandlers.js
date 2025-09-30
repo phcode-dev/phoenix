@@ -30,7 +30,8 @@ define(function (require, exports, module) {
         FileUtils               = require("file/FileUtils"),
         NativeApp               = require("utils/NativeApp"),
         Strings                 = require("strings"),
-        StringUtils             = require("utils/StringUtils"),
+        StringUtils       = require("utils/StringUtils"),
+        ManageLicenses          = require("services/manage-licenses"),
         AboutDialogTemplate     = require("text!htmlContent/about-dialog.html"),
         ContributorsTemplate    = require("text!htmlContent/contributors-list.html"),
         Mustache                = require("thirdparty/mustache/mustache");
@@ -168,6 +169,7 @@ define(function (require, exports, module) {
     CommandManager.register(Strings.CMD_GET_PRO,                Commands.HELP_GET_PRO,              _handleLinkMenuItem(brackets.config.purchase_url), {
         htmlName: getProString
     });
+    CommandManager.register(Strings.CMD_MANAGE_LICENSES,        Commands.HELP_MANAGE_LICENSES,      ManageLicenses.showManageLicensesDialog);
     CommandManager.register(Strings.CMD_SUGGEST,                Commands.HELP_SUGGEST,              _handleLinkMenuItem(brackets.config.suggest_feature_url));
     CommandManager.register(Strings.CMD_REPORT_ISSUE,           Commands.HELP_REPORT_ISSUE,         _handleLinkMenuItem(brackets.config.report_issue_url));
     CommandManager.register(Strings.CMD_RELEASE_NOTES,          Commands.HELP_RELEASE_NOTES,        _handleLinkMenuItem(brackets.config.release_notes_url));

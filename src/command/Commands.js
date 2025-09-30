@@ -408,6 +408,9 @@ define(function (require, exports, module) {
     /** Opens Phoenix Pro page */
     exports.HELP_GET_PRO                = "help.getPro";                // HelpCommandHandlers.js       _handleLinkMenuItem()
 
+    /** Manage Pro licenses */
+    exports.HELP_MANAGE_LICENSES        = "help.manageLicenses";        // HelpCommandHandlers.js       _handleLinkMenuItem()
+
     /** Opens feature suggestion page */
     exports.HELP_SUGGEST                = "help.suggest";               // HelpCommandHandlers.js       _handleLinkMenuItem()
 
