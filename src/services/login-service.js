@@ -29,7 +29,7 @@ define(function (require, exports, module) {
     require("./setup-login-service"); // this adds loginService to KernalModeTrust
     require("./promotions");
     require("./login-utils");
-    const EntitlementsDirectImport = require("./entitlements"); // this adds Entitlements to KernalModeTrust
+    const EntitlementsDirectImport = require("./EntitlementsManager"); // this adds Entitlements to KernalModeTrust
 
     const Metrics = require("utils/Metrics"),
         Strings = require("strings");
@@ -440,7 +440,7 @@ define(function (require, exports, module) {
 
     /**
      * Get effective entitlements for determining feature availability.
-     * This is for internal use only. All consumers in phoenix code should use `KernalModeTrust.Entitlements` APIs.
+     * This is for internal use only. All consumers in phoenix should use `KernalModeTrust.EntitlementsManager` APIs.
      *
      * @returns {Promise<Object|null>} Entitlements object or null if not logged in and no trial active
      *

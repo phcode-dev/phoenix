@@ -39,10 +39,10 @@ define(function (require, exports, module) {
     let LoginService;
 
     // Create secure exports and set up event dispatcher
-    const Entitlements = {};
-    EventDispatcher.makeEventDispatcher(Entitlements);
+    const EntitlementsManager = {};
+    EventDispatcher.makeEventDispatcher(EntitlementsManager);
     // Set up KernalModeTrust.Entitlements
-    KernalModeTrust.Entitlements = Entitlements;
+    KernalModeTrust.EntitlementsManager = EntitlementsManager;
 
     // Event constants
     const EVENT_ENTITLEMENTS_CHANGED = "entitlements_changed";
@@ -144,7 +144,7 @@ define(function (require, exports, module) {
      * @returns {Promise<number>} [entitlement.validTill] - Timestamp when entitlement expires (if from server)
      *
      * @example
-     * const liveEditEntitlement = await Entitlements.getLiveEditEntitlement();
+     * const liveEditEntitlement = await EntitlementsManager.getLiveEditEntitlement();
      * if (liveEditEntitlement.activated) {
      *     // Enable live edit feature
      *     enableLiveEditFeature();
@@ -178,14 +178,14 @@ define(function (require, exports, module) {
         // Set up event forwarding from LoginService
         LoginService.on(LoginService.EVENT_ENTITLEMENTS_CHANGED, function() {
             effectiveEntitlements = null;
-            Entitlements.trigger(EVENT_ENTITLEMENTS_CHANGED);
+            EntitlementsManager.trigger(EVENT_ENTITLEMENTS_CHANGED);
         });
     }
 
     // Test-only exports for integration testing
     if (Phoenix.isTestWindow) {
         window._test_entitlements_exports = {
-            EntitlementsService: Entitlements,
+            EntitlementsService: EntitlementsManager,
             isLoggedIn,
             getPlanDetails,
             isInProTrial,
@@ -200,12 +200,12 @@ define(function (require, exports, module) {
     // no public exports to prevent extension tampering
 
     // Add functions to secure exports. These can be accessed via `KernalModeTrust.Entitlements.*`
-    Entitlements.isLoggedIn = isLoggedIn;
-    Entitlements.loginToAccount = loginToAccount;
-    Entitlements.getPlanDetails = getPlanDetails;
-    Entitlements.isInProTrial = isInProTrial;
-    Entitlements.getTrialRemainingDays = getTrialRemainingDays;
-    Entitlements.getRawEntitlements = getRawEntitlements;
-    Entitlements.getLiveEditEntitlement = getLiveEditEntitlement;
-    Entitlements.EVENT_ENTITLEMENTS_CHANGED = EVENT_ENTITLEMENTS_CHANGED;
+    EntitlementsManager.isLoggedIn = isLoggedIn;
+    EntitlementsManager.loginToAccount = loginToAccount;
+    EntitlementsManager.getPlanDetails = getPlanDetails;
+    EntitlementsManager.isInProTrial = isInProTrial;
+    EntitlementsManager.getTrialRemainingDays = getTrialRemainingDays;
+    EntitlementsManager.getRawEntitlements = getRawEntitlements;
+    EntitlementsManager.getLiveEditEntitlement = getLiveEditEntitlement;
+    EntitlementsManager.EVENT_ENTITLEMENTS_CHANGED = EVENT_ENTITLEMENTS_CHANGED;
 });
