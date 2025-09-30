@@ -4,7 +4,7 @@
         "app_name_about": "Phoenix Code",
         "main_pro_plan": "Phoenix Pro",
         "about_icon": "styles/images/phoenix-icon.svg",
-        "account_url": "https://account.phcode.dev/",
+        "account_url": "http://localhost:5000/",
         "promotions_url": "https://promotions.phcode.dev/dev/",
         "purchase_url": "https://phcode.io/pricing",
         "how_to_use_url": "https://github.com/adobe/brackets/wiki/How-to-Use-Brackets",

@@ -183,3 +183,230 @@
   border: 0;
   display: block;
 }
+
+/* ---- License Management Dialog ---- */
+.license-management-dialog {
+  /* ---- Layout ---- */
+  .license-activation-section {
+    margin-bottom: 24px;
+  }
+
+  .license-status-section {
+    margin-top: 24px;
+  }
+
+  /* ---- Form Elements ---- */
+  .license-form-group {
+    margin-bottom: 16px;
+  }
+
+  .license-form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    font-size: 16px;
+    color: @bc-text-emphasized;
+
+    .dark & {
+      color: @dark-bc-text-alt;
+    }
+  }
+
+  .license-form-input {
+    width: 100%;
+    box-sizing: border-box;
+    height: 38px;
+    margin: 0;
+  }
+
+  /* ---- Activation Button ---- */
+  .license-activate-btn {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: @bc-border-radius;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+
+    .btn-spinner {
+      display: none;
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+
+  /* ---- Section Divider ---- */
+  .license-divider {
+    margin: 24px 0;
+    border: none;
+    border-top: 1px solid @bc-panel-border;
+
+    .dark & {
+      border-top-color: @dark-bc-panel-separator;
+    }
+  }
+
+  /* ---- Section Headers ---- */
+  .license-section-title {
+    margin: 0 0 16px 0;
+    font-size: 16px;
+    font-weight: 500;
+    color: @bc-text-emphasized;
+
+    .dark & {
+      color: @dark-bc-text-alt;
+    }
+  }
+
+  /* ---- Status States ---- */
+  .license-status-loading,
+  .license-status-none,
+  .license-status-error {
+    text-align: center;
+    padding: 20px;
+  }
+
+  .license-status-loading {
+    color: @bc-text-medium;
+
+    .dark & {
+      color: @dark-bc-text-medium;
+    }
+
+    .fa-spinner {
+      margin-right: 8px;
+      color: @bc-text-medium;
+
+      .dark & {
+        color: @dark-bc-text-medium;
+      }
+    }
+  }
+
+  .license-status-none {
+    color: @bc-text-medium;
+
+    .dark & {
+      color: @dark-bc-text-medium;
+    }
+
+    .fa-exclamation-circle {
+      margin-right: 8px;
+      color: #ff9500;
+      font-size: 18px;
+    }
+  }
+
+  .license-status-error {
+    color: @bc-error;
+
+    .dark & {
+      color: @dark-bc-error;
+    }
+
+    .fa-exclamation-triangle {
+      margin-right: 8px;
+      font-size: 18px;
+    }
+  }
+
+  /* ---- Valid License Info Card ---- */
+  .license-info-card {
+    border: 1px solid @bc-panel-border;
+    border-radius: @bc-border-radius-large;
+    padding: 16px;
+    background-color: @bc-panel-bg-alt;
+
+    .dark & {
+      border-color: @dark-bc-highlight;
+      background-color: @dark-bc-panel-bg-alt;
+    }
+  }
+
+  .license-info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    .license-info-label {
+      color: @bc-text-medium;
+      font-size: 14px;
+
+      .dark & {
+        color: @dark-bc-text-medium;
+      }
+    }
+
+    .license-info-value {
+      font-weight: 500;
+      color: @bc-text-emphasized;
+      font-size: 14px;
+
+      .dark & {
+        color: @dark-bc-text-alt;
+      }
+    }
+  }
+
+  /* ---- Status Badge ---- */
+  .license-status-badge {
+    padding: 4px 8px;
+    background-color: #28a745;
+    color: white;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  /* ---- Activation Messages ---- */
+  .license-activation-message {
+    margin-top: 16px;
+    padding: 12px;
+    border-radius: @bc-border-radius;
+    font-size: 14px;
+    display: none;
+
+    &.success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+
+      .dark & {
+        background-color: @dark-bc-success-bg;
+        color: #4dff4d;
+        border-color: #2d5a2d;
+      }
+    }
+
+    &.error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+
+      .dark & {
+        background-color: fade(@dark-bc-error, 15%);
+        color: @dark-bc-error;
+        border-color: fade(@dark-bc-error, 30%);
+      }
+    }
+  }
+
+  /* ---- Dialog Header ---- */
+  .modal-header .dialog-title {
+    color: @bc-text-emphasized;
+
+    .dark & {
+      color: @dark-bc-text-alt;
+    }
+  }
+}
