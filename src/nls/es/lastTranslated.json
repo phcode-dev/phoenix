@@ -1430,7 +1430,6 @@
   "URL": "URL",
   "USERNAME": "Username",
   "USER_ABORTED": "User aborted!",
-  "USER_FREE_PLAN_NAME": "Free Plan",
   "USE_DIFFTOOL": "Use difftool for diffs",
   "USE_GIT_GUTTER": "Use Git gutter marks",
   "USE_NOFF": "Create a merge commit even when the merge resolves as a fast-forward (--no-ff)",
