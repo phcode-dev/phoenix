@@ -41,6 +41,8 @@ define(function (require, exports, module) {
     // Create secure exports and set up event dispatcher
     const Entitlements = {};
     EventDispatcher.makeEventDispatcher(Entitlements);
+    // Set up KernalModeTrust.Entitlements
+    KernalModeTrust.Entitlements = Entitlements;
 
     // Event constants
     const EVENT_ENTITLEMENTS_CHANGED = "entitlements_changed";
@@ -165,9 +167,6 @@ define(function (require, exports, module) {
             upgradeToPlan: brackets.config.main_pro_plan
         };
     }
-
-    // Set up KernalModeTrust.Entitlements
-    KernalModeTrust.Entitlements = Entitlements;
 
     let inited = false;
     function init() {
