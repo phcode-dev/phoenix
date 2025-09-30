@@ -249,11 +249,11 @@ export async function initTrustRing() {
  * Generates an SHA-256 hash signature of the provided data string combined with a salt.
  *
  * @param {string} dataString - The input data string that needs to be signed.
- * @param {string} salt - A salt value to combine with the data string for additional uniqueness.
+ * @param {string} [salt] - A Optional salt value to combine with the data string for additional uniqueness.
  * @return {Promise<string>} A promise that resolves to the generated SHA-256 hash signature as a hexadecimal string.
  */
 async function generateDataSignature(dataString, salt) {
-    const signatureData = dataString + "|" + salt;
+    const signatureData = salt ? dataString + "|" + salt : dataString;
     const encoder = new TextEncoder();
     const dataBuffer = encoder.encode(signatureData);
     const hashBuffer = await crypto.subtle.digest('SHA-256', dataBuffer);
