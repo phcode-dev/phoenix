@@ -416,7 +416,8 @@ define(function (require, exports, module) {
             entitlements.plan = {
                 ...entitlements.plan,
                 paidSubscriber: false,
-                name: Strings.USER_FREE_PLAN_NAME,
+                name: Strings.USER_FREE_PLAN_NAME_DO_NOT_TRANSLATE,
+                fullName: Strings.USER_FREE_PLAN_NAME_DO_NOT_TRANSLATE,
                 validTill: currentDate + (FREE_PLAN_VALIDITY_DAYS * MS_IN_DAY)
             };
         }
@@ -453,6 +454,8 @@ define(function (require, exports, module) {
      *   plan: {
      *     paidSubscriber: true,    // Always true for trial users
      *     name: "Phoenix Pro"
+     *     fullName: "Phoenix Pro" // this can be deceptive name like "Phoenix Pro For Education" to use in
+     *                             // profile popup, not main branding
      *   },
      *   isInProTrial: true,        // Indicates this is a trial user
      *   trialDaysRemaining: number, // Days left in trial
@@ -478,6 +481,8 @@ define(function (require, exports, module) {
      *   lang: string,
      *   plan: {
      *     name: "Phoenix Pro",
+     *     fullName: "Phoenix Pro" // this can be deceptive name like "Phoenix Pro For Education" to use in
+     *                            // profile popup, not main branding
      *     paidSubscriber: boolean,
      *     validTill: number        // Timestamp
      *   },
@@ -553,6 +558,7 @@ define(function (require, exports, module) {
                     ...serverEntitlements.plan,
                     paidSubscriber: true,
                     name: brackets.config.main_pro_plan,
+                    fullName: brackets.config.main_pro_plan,
                     validTill: dateNowFn() + trialDaysRemaining * MS_IN_DAY
                 },
                 isInProTrial: true,
@@ -574,6 +580,7 @@ define(function (require, exports, module) {
             plan: {
                 paidSubscriber: true,
                 name: brackets.config.main_pro_plan,
+                fullName: brackets.config.main_pro_plan,
                 validTill: dateNowFn() + trialDaysRemaining * MS_IN_DAY
             },
             isInProTrial: true,

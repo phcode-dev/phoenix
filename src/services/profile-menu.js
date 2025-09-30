@@ -217,7 +217,8 @@ define(function (require, exports, module) {
             // Use kernal mode apis for trusted check of pro features.
             Phoenix.pro.plan = {
                 paidSubscriber: false,
-                name: "Community Edition"
+                name: Strings.USER_FREE_PLAN_NAME_DO_NOT_TRANSLATE,
+                fullName: Strings.USER_FREE_PLAN_NAME_DO_NOT_TRANSLATE
             };
         }
 
@@ -225,11 +226,12 @@ define(function (require, exports, module) {
             Phoenix.pro.plan = {
                 paidSubscriber: entitlements.plan.paidSubscriber,
                 name: entitlements.plan.name,
+                fullName: entitlements.plan.fullName,
                 validTill: entitlements.plan.validTill
             };
         }
         if (entitlements && entitlements.plan && entitlements.plan.paidSubscriber) {
-            // Pro user (paid subscriber or trial): show plan name with feather icon
+            // Pro user (paid subscriber or trial): show short name branding with `name feather icon`(not full name)
             let displayName = entitlements.plan.name || brackets.config.main_pro_plan;
             if (entitlements.isInProTrial) {
                 displayName = brackets.config.main_pro_plan; // Just "Phoenix Pro" for branding, not "Phoenix Pro Trial"
@@ -379,7 +381,7 @@ define(function (require, exports, module) {
                 } else {
                     // For paid users: regular plan name with icon
                     const proTitle = `<span class="phoenix-pro-title">
-                        <span class="pro-plan-name user-plan-name">${entitlements.plan.name}</span>
+                        <span class="pro-plan-name user-plan-name">${entitlements.plan.fullName}</span>
                         <i class="fa-solid fa-feather" style="margin-left: 3px;"></i>
                     </span>`;
                     $planName.addClass('user-plan-paid').html(proTitle);
@@ -387,7 +389,7 @@ define(function (require, exports, module) {
                 }
             } else {
                 // Use simple text for free users
-                $planName.addClass('user-plan-free').text(entitlements.plan.name);
+                $planName.addClass('user-plan-free').text(entitlements.plan.fullName);
             }
         } else {
             $getProLink.removeClass('forced-hidden');
@@ -436,7 +438,7 @@ define(function (require, exports, module) {
             initials: profileData.profileIcon.initials,
             avatarColor: profileData.profileIcon.color,
             planClass: "user-plan-free",
-            planName: Strings.USER_FREE_PLAN_NAME,
+            planName: Strings.USER_FREE_PLAN_NAME_DO_NOT_TRANSLATE,
             titleText: "Ai Quota Used",
             usageText: "100 / 200 credits",
             usedPercent: 0,

@@ -818,7 +818,7 @@ define(function (require, exports, module) {
                 LoginServiceExports._validateAndFilterEntitlements(expiredPlanEntitlements);
 
                 expect(expiredPlanEntitlements.plan.paidSubscriber).toBe(false);
-                expect(expiredPlanEntitlements.plan.name).toBe(testWindow.Strings.USER_FREE_PLAN_NAME);
+                expect(expiredPlanEntitlements.plan.name).toBe(testWindow.Strings.USER_FREE_PLAN_NAME_DO_NOT_TRANSLATE);
                 expect(expiredPlanEntitlements.plan.validTill).toBeGreaterThan(mockNow);
 
                 // Test valid plan remains unchanged
@@ -848,7 +848,7 @@ define(function (require, exports, module) {
                 LoginServiceExports._validateAndFilterEntitlements(noValidTillEntitlements);
 
                 expect(noValidTillEntitlements.plan.paidSubscriber).toBe(false);
-                expect(noValidTillEntitlements.plan.name).toBe(testWindow.Strings.USER_FREE_PLAN_NAME);
+                expect(noValidTillEntitlements.plan.name).toBe(testWindow.Strings.USER_FREE_PLAN_NAME_DO_NOT_TRANSLATE);
             });
 
             it("should validate and filter expired feature entitlements", function () {
