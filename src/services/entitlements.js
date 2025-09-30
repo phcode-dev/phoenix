@@ -97,7 +97,7 @@ define(function (require, exports, module) {
         const currentDate = Date.now();
         return {
             paidSubscriber: false,
-            name: Strings.USER_FREE_PLAN_NAME,
+            name: Strings.USER_FREE_PLAN_NAME_DO_NOT_TRANSLATE,
             validTill: currentDate + (FREE_PLAN_VALIDITY_DAYS * MS_IN_DAY)
         };
     }

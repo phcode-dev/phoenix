@@ -1690,5 +1690,5 @@ define({
     "PROMO_PRO_UNLOCK_MESSAGE": "Subscribe now to unlock these advanced features:",
     "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro Trial ({0} days left)",
     "GET_PHOENIX_PRO": "Get Phoenix Pro",
-    "USER_FREE_PLAN_NAME": "Free Plan"
+    "USER_FREE_PLAN_NAME_DO_NOT_TRANSLATE": "Community Edition"
 });

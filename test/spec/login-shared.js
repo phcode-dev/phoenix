@@ -492,7 +492,7 @@ define(function (require, exports, module) {
             await verifyProBranding(false, "no pro branding to start with");
 
             // Verify entitlements API consistency for logged out user with expired trial
-            await verifyPlanEntitlements({ paidSubscriber: false, name: testWindow.Strings.USER_FREE_PLAN_NAME },
+            await verifyPlanEntitlements({ paidSubscriber: false, name: testWindow.Strings.USER_FREE_PLAN_NAME_DO_NOT_TRANSLATE },
                 "free plan for logged out user with expired trial");
             await verifyIsInProTrialEntitlement(false, "no trial for user with expired trial");
             await verifyTrialRemainingDaysEntitlement(0, "no trial days remaining for expired trial");
@@ -505,7 +505,7 @@ define(function (require, exports, module) {
             await verifyProBranding(false, "after trial free user login");
 
             // Verify entitlements API consistency for logged in free user
-            await verifyPlanEntitlements({ paidSubscriber: false, name: testWindow.Strings.USER_FREE_PLAN_NAME },
+            await verifyPlanEntitlements({ paidSubscriber: false, name: testWindow.Strings.USER_FREE_PLAN_NAME_DO_NOT_TRANSLATE },
                 "free plan for logged in user with expired trial");
             await verifyIsInProTrialEntitlement(false, "still no trial after login");
             await verifyLiveEditEntitlement({ activated: false }, "live edit still deactivated after login");
@@ -551,7 +551,7 @@ define(function (require, exports, module) {
             await verifyProBranding(false, "no pro branding initially due to expired entitlements");
 
             // Verify entitlements API consistency for logged out user with no trial
-            await verifyPlanEntitlements({ paidSubscriber: false, name: testWindow.Strings.USER_FREE_PLAN_NAME },
+            await verifyPlanEntitlements({ paidSubscriber: false, name: testWindow.Strings.USER_FREE_PLAN_NAME_DO_NOT_TRANSLATE },
                 "free plan for logged out user with no trial");
             await verifyIsInProTrialEntitlement(false, "no trial for logged out user");
             await verifyTrialRemainingDaysEntitlement(0, "no trial days remaining");
