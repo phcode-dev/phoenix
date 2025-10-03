@@ -68,6 +68,8 @@
                 Bugsnag.notify(message?
                     new CustomBugSnagError(message, error)
                     :error);
+            } else {
+                console.error(message, error, error.nodeStack);
             }
         },
         /**
@@ -79,6 +81,8 @@
         reportErrorMessage: function (message) {
             if(isBugsnagEnabled) {
                 Bugsnag.notify(new CustomBugSnagError(message));
+            } else {
+                console.error(message);
             }
         },
 

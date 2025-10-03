@@ -274,10 +274,10 @@ define(function (require, exports, module) {
                 // Refresh license status
                 await _loadLicenseStatus($dialog);
             } else {
-                _showActivationMessage($dialog, false, 'Failed to apply license to device');
+                _showActivationMessage($dialog, false, Strings.LICENSE_ACTIVATE_FAIL_APPLY);
             }
         } catch (error) {
-            _showActivationMessage($dialog, false, error.message || 'Failed to apply license to device');
+            _showActivationMessage($dialog, false, Strings.LICENSE_ACTIVATE_FAIL_APPLY);
         } finally {
             // Reset link state
             $link.html(originalText);

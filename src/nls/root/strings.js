@@ -1712,6 +1712,7 @@ define({
     "LICENSE_ACTIVATE_SUCCESS": "License activated system-wide. Please restart {APP_NAME} for the changes to take effect.",
     "LICENSE_ACTIVATE_SUCCESS_PARTIAL": "License activated for your account only (not system-wide). Please restart {APP_NAME} for the changes to take effect.",
     "LICENSE_ACTIVATE_FAIL": "Failed to activate license",
+    "LICENSE_ACTIVATE_FAIL_APPLY": "'Failed to apply license to device'",
     "LICENSE_ENTER_KEY": "Please enter a license key",
     "LICENSE_REAPPLY_TO_DEVICE": "Already activated? Reapply system-wide"
 });
