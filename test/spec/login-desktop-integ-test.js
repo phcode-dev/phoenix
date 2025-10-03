@@ -187,7 +187,11 @@ define(function (require, exports, module) {
                 } else if (url.includes('/getAppEntitlements')) {
                     // Entitlements endpoint - return user's plan and entitlements
                     console.log("llgT: Handling getAppEntitlements call");
-                    if (userSignedOut) {
+
+                    // Check if this is a device ID request (non-logged-in user with device license)
+                    const isDeviceIDRequest = url.includes('deviceID=');
+
+                    if (userSignedOut && !isDeviceIDRequest) {
                         return Promise.resolve({
                             ok: false,
                             status: 401,
@@ -207,7 +211,7 @@ define(function (require, exports, module) {
                             entitlementsResponse.plan = {
                                 paidSubscriber: true,
                                 name: "Phoenix Pro",
-                                fullName: "Phoenix Pro",
+                                fullName: isDeviceIDRequest ? "Phoenix Pro Test Edu" : "Phoenix Pro",
                                 validTill: validTill
                             };
                             entitlementsResponse.entitlements = {

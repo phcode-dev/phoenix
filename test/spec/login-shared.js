@@ -710,6 +710,96 @@ define(function (require, exports, module) {
                 await cleanupTrialState();
             }
         });
+
+        if (Phoenix.isNativeApp) {
+            it("should show device-licensed Pro branding and popup when not logged in", async function () {
+                console.log("llgT: Starting device license Pro branding test");
+
+                try {
+                    // Setup: Enable device license flag
+                    LoginServiceExports.setIsLicensedDevice(true);
+
+                    // Setup mock that handles device ID requests (returns Pro entitlements)
+                    setupProUserMock(true, false);
+
+                    // Ensure no trial is active
+                    await cleanupTrialState();
+
+                    // Ensure user is logged out
+                    if (LoginServiceExports.LoginService.isLoggedIn()) {
+                        await performFullLogoutFlow();
+                    }
+
+                    // Clear and refresh entitlements to trigger device license check
+                    await LoginServiceExports.LoginService.clearEntitlements();
+                    await LoginServiceExports.LoginService.getEffectiveEntitlements(true);
+
+                    // Wait for branding to update in the navbar
+                    await awaitsFor(
+                        function () {
+                            const $branding = testWindow.$("#phcode-io-main-nav");
+                            return $branding.hasClass("phoenix-pro");
+                        },
+                        "navbar branding to show Phoenix Pro",
+                        3000
+                    );
+
+                    // Verify navbar shows Pro branding (uses plan.name)
+                    await verifyProBranding(true, "device license shows Phoenix Pro branding in navbar");
+
+                    // Verify entitlements API shows Pro access
+                    await verifyPlanEntitlements(
+                        { paidSubscriber: true, name: "Phoenix Pro" },
+                        "device license provides Pro plan"
+                    );
+                    await verifyIsInProTrialEntitlement(false, "device license is not a trial");
+                    await verifyLiveEditEntitlement({ activated: true }, "live edit activated via device license");
+
+                    // Verify raw entitlements are present (not null)
+                    const rawEntitlements = await EntitlementsExports.getRawEntitlements();
+                    expect(rawEntitlements).toBeDefined();
+                    expect(rawEntitlements).not.toBeNull();
+                    expect(rawEntitlements.plan.paidSubscriber).toBe(true);
+
+                    // Verify login popup shows Pro branding with fullName
+                    const $profileButton = testWindow.$("#user-profile-button");
+                    $profileButton.trigger('click');
+                    await popupToAppear(SIGNIN_POPUP);
+
+                    // Wait for Pro branding to appear in popup (async entitlements load)
+                    await awaitsFor(
+                        function () {
+                            const $popup = testWindow.$('.profile-popup');
+                            const $proInfo = $popup.find('.trial-plan-info');
+                            return $proInfo.length > 0;
+                        },
+                        "Pro branding to appear in login popup",
+                        3000
+                    );
+
+                    // Check for Pro branding in popup (uses plan.fullName)
+                    const $popup = testWindow.$('.profile-popup');
+                    const $proInfo = $popup.find('.trial-plan-info');
+                    expect($proInfo.length).toBe(1);
+
+                    const proText = $proInfo.text();
+                    expect(proText).toContain("Phoenix Pro Test Edu");
+
+                    // Verify feather icon is present
+                    const $featherIcon = $proInfo.find('.fa-feather');
+                    expect($featherIcon.length).toBe(1);
+
+                    // Close popup
+                    $profileButton.trigger('click');
+
+                    console.log("llgT: Device license Pro branding test completed successfully");
+                } finally {
+                    // Cleanup: Reset device license flag
+                    LoginServiceExports.setIsLicensedDevice(false);
+                    await LoginServiceExports.LoginService.clearEntitlements();
+                }
+            });
+        }
     }
 
     exports.setup = setup;

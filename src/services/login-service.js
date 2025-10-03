@@ -657,13 +657,18 @@ define(function (require, exports, module) {
         return NodeUtils.isLicensedDeviceSystemWide();
     }
 
+    let _isLicensedDeviceFlagForTest = false;
+
     /**
      * Checks if app is configured to check for device licenses at app start at system or user level.
      *
      * @returns {Promise<boolean>} - Resolves with `true` if the device is licensed, `false` otherwise.
      */
     async function isLicensedDevice() {
-        if(Phoenix.isTestWindow || !Phoenix.isNativeApp) {
+        if(Phoenix.isTestWindow) {
+            return _isLicensedDeviceFlagForTest;
+        }
+        if(!Phoenix.isNativeApp) {
             // browser app doesn't support device licence keys, obviously.
             return false;
         }
@@ -696,10 +701,13 @@ define(function (require, exports, module) {
     if (Phoenix.isTestWindow) {
         window._test_login_service_exports = {
             LoginService,
-            setFetchFn: function _setFetchFn(fn) {
+            setIsLicensedDevice: function (isLicensedDevice) {
+                _isLicensedDeviceFlagForTest = isLicensedDevice;
+            },
+            setFetchFn: function (fn) {
                 fetchFn = fn;
             },
-            setDateNowFn: function _setDdateNowFn(fn) {
+            setDateNowFn: function (fn) {
                 dateNowFn = fn;
             },
             _validateAndFilterEntitlements: _validateAndFilterEntitlements
