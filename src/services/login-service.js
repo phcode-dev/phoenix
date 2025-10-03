@@ -701,8 +701,8 @@ define(function (require, exports, module) {
     if (Phoenix.isTestWindow) {
         window._test_login_service_exports = {
             LoginService,
-            setIsLicensedDevice: function (isLicensedDevice) {
-                _isLicensedDeviceFlagForTest = isLicensedDevice;
+            setIsLicensedDevice: function (_isLicensedDevice) {
+                _isLicensedDeviceFlagForTest = _isLicensedDevice;
             },
             setFetchFn: function (fn) {
                 fetchFn = fn;
