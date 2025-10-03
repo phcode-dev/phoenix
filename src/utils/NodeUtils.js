@@ -29,11 +29,8 @@
 
 define(function (require, exports, module) {
     const Strings             = require("strings"),
-        PreferencesManager = require("preferences/PreferencesManager"),
         NodeConnector = require('NodeConnector');
     const UTILS_NODE_CONNECTOR = "ph_utils";
-
-    const PREF_STATE_LICENSED_DEVICE_CHECK = "LICENSED_DEVICE_CHECK";
 
     let utilsConnector;
     if(Phoenix.isNativeApp) {
@@ -201,12 +198,11 @@ define(function (require, exports, module) {
      * @returns {Promise<boolean>} - Resolves true if system wide defile file added, else false.
      * @throws {Error} - If called from the browser
      */
-    async function addDeviceLicense() {
+    async function addDeviceLicenseSystemWide() {
         if (!Phoenix.isNativeApp) {
             throw new Error("addDeviceLicense not available in browser");
         }
         try {
-            PreferencesManager.stateManager.set(PREF_STATE_LICENSED_DEVICE_CHECK, true);
             await utilsConnector.execPeer("addDeviceLicense");
             return true;
         } catch (err) {
@@ -222,12 +218,11 @@ define(function (require, exports, module) {
      * @returns {Promise<boolean>} - Resolves true if system wide defile file removed, else false.
      * @throws {Error} - If called from the browser
      */
-    async function removeDeviceLicense() {
+    async function removeDeviceLicenseSystemWide() {
         if (!Phoenix.isNativeApp) {
             throw new Error("removeDeviceLicense not available in browser");
         }
         try {
-            PreferencesManager.stateManager.set(PREF_STATE_LICENSED_DEVICE_CHECK, false);
             await utilsConnector.execPeer("removeDeviceLicense");
             return true;
         } catch (err) {
@@ -255,17 +250,6 @@ define(function (require, exports, module) {
         return false;
     }
 
-    /**
-     * Checks if app is configured to check for device licenses at app start at system or user level.
-     *
-     * @returns {Promise<boolean>} - Resolves with `true` if the device is licensed, `false` otherwise.
-     */
-    async function isLicensedDevice() {
-        const userCheck = PreferencesManager.stateManager.get(PREF_STATE_LICENSED_DEVICE_CHECK);
-        const systemCheck = await isLicensedDeviceSystemWide();
-        return userCheck || systemCheck;
-    }
-
     if(NodeConnector.isNodeAvailable()) {
         // todo we need to update the strings if a user extension adds its translations. Since we dont support
         // node extensions for now, should consider when we support node extensions.
@@ -291,8 +275,6 @@ define(function (require, exports, module) {
         console.error("Error setting Phoenix.isTestWindowGitHubActions", e);
     }
 
-    PreferencesManager.stateManager.definePreference(PREF_STATE_LICENSED_DEVICE_CHECK, "boolean", false);
-
     // private apis
     exports._loadNodeExtensionModule = _loadNodeExtensionModule;
     exports._npmInstallInFolder = _npmInstallInFolder;
@@ -306,9 +288,8 @@ define(function (require, exports, module) {
     exports.getEnvironmentVariable = getEnvironmentVariable;
     exports.openNativeTerminal = openNativeTerminal;
     exports.openInDefaultApp = openInDefaultApp;
-    exports.addDeviceLicense = addDeviceLicense;
-    exports.removeDeviceLicense = removeDeviceLicense;
-    exports.isLicensedDevice = isLicensedDevice;
+    exports.addDeviceLicenseSystemWide = addDeviceLicenseSystemWide;
+    exports.removeDeviceLicenseSystemWide = removeDeviceLicenseSystemWide;
     exports.isLicensedDeviceSystemWide = isLicensedDeviceSystemWide;
 
     /**
