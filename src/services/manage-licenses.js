@@ -148,17 +148,19 @@ define(function (require, exports, module) {
     /**
      * Update the license status display in the dialog
      */
-    function _updateLicenseStatusDisplay($dialog, licenseData) {
+    async function _updateLicenseStatusDisplay($dialog, licenseData) {
         const $loading = $dialog.find('#license-status-loading');
         const $none = $dialog.find('#license-status-none');
         const $valid = $dialog.find('#license-status-valid');
         const $error = $dialog.find('#license-status-error');
+        const $reapplyContainer = $dialog.find('#reapply-license-container');
 
         // Hide all status sections
         $loading.hide();
         $none.hide();
         $valid.hide();
         $error.hide();
+        $reapplyContainer.hide();
 
         if (licenseData && licenseData.isValid) {
             // Show valid license info
@@ -166,6 +168,12 @@ define(function (require, exports, module) {
             $dialog.find('#license-type-name').text(licenseData.licenseTypeName || Strings.LICENSE_STATUS_UNKNOWN);
             $dialog.find('#license-valid-till').text(_formatDate(licenseData.validTill));
             $valid.show();
+
+            // Show reapply button if license is valid but not applied system-wide
+            const isLicensed = await NodeUtils.isLicensedDevice();
+            if (!isLicensed) {
+                $reapplyContainer.show();
+            }
         } else if (licenseData && licenseData.isValid === false) {
             // No valid license
             $none.show();
@@ -270,6 +278,35 @@ define(function (require, exports, module) {
         }
     }
 
+    /**
+     * Handle reapply license to device
+     */
+    async function _handleReapplyLicense($dialog) {
+        const $link = $dialog.find('#reapply-license-link');
+        const originalText = $link.html();
+
+        try {
+            // Show loading state
+            $link.html('<i class="fa fa-spinner fa-spin" style="margin-right: 6px;"></i>Applying...');
+            $link.css('pointer-events', 'none');
+
+            const addSuccess = await NodeUtils.addDeviceLicense();
+            if (addSuccess) {
+                _showActivationMessage($dialog, true, Strings.LICENSE_ACTIVATE_SUCCESS);
+                // Refresh license status
+                await _loadLicenseStatus($dialog);
+            } else {
+                _showActivationMessage($dialog, false, 'Failed to apply license to device');
+            }
+        } catch (error) {
+            _showActivationMessage($dialog, false, error.message || 'Failed to apply license to device');
+        } finally {
+            // Reset link state
+            $link.html(originalText);
+            $link.css('pointer-events', 'auto');
+        }
+    }
+
     async function showManageLicensesDialog() {
         const $template = $(Mustache.render(licenseManagementHTML, {Strings}));
 
@@ -279,6 +316,7 @@ define(function (require, exports, module) {
         const $dialog = $template;
         const $licenseInput = $dialog.find('#license-key-input');
         const $activateBtn = $dialog.find('#activate-license-btn');
+        const $reapplyLink = $dialog.find('#reapply-license-link');
 
         // Handle activate button click
         $activateBtn.on('click', async function() {
@@ -296,6 +334,12 @@ define(function (require, exports, module) {
             if (e.which === 13) { // Enter key
                 $activateBtn.click();
             }
+        });
+
+        // Handle reapply license link click
+        $reapplyLink.on('click', async function(e) {
+            e.preventDefault();
+            await _handleReapplyLicense($dialog);
         });
 
         // Load current license status

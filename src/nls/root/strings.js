@@ -1712,5 +1712,6 @@ define({
     "LICENSE_ACTIVATE_SUCCESS": "License activated successfully!",
     "LICENSE_ACTIVATE_SUCCESS_PARTIAL": "License activated for your account only (not system-wide).",
     "LICENSE_ACTIVATE_FAIL": "Failed to activate license",
-    "LICENSE_ENTER_KEY": "Please enter a license key"
+    "LICENSE_ENTER_KEY": "Please enter a license key",
+    "LICENSE_REAPPLY_TO_DEVICE": "Already activated? Reapply to this device"
 });

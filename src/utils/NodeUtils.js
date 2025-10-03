@@ -237,11 +237,11 @@ define(function (require, exports, module) {
      * contains valid JSON, and has `licensedDevice: true`.
      *
      * @returns {Promise<boolean>} - Resolves with `true` if the device is licensed, `false` otherwise.
-     * @throws {Error} - If called from the browser.
      */
     async function isLicensedDevice() {
         if (!Phoenix.isNativeApp) {
-            throw new Error("isLicensedDevice not available in browser");
+            console.error("isLicensedDevice not available in browser");
+            return false;
         }
         try {
             return utilsConnector.execPeer("isLicensedDevice");

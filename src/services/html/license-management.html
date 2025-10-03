@@ -20,11 +20,18 @@
             <button
                 id="activate-license-btn"
                 class="btn primary license-activate-btn">
-                <span class="btn-text">{{Strings.LICENSE_KEY_ACTIVATE}}</span>
+                <span class="btn-text"><i class="fa fa-key" style="margin-right: 8px;"></i>{{Strings.LICENSE_KEY_ACTIVATE}}</span>
                 <span class="btn-spinner">
                     <i class="fa fa-spinner fa-spin" style="margin-right: 8px;"></i>{{Strings.LICENSE_KEY_ACTIVATING}}
                 </span>
             </button>
+
+            <!-- Reapply License Secondary Action -->
+            <div id="reapply-license-container" class="license-reapply-container" style="display: none; margin-top: 12px; text-align: center;">
+                <a id="reapply-license-link" href="#" style="font-size: 13px; text-decoration: none;">
+                    <i class="fa fa-sync" style="margin-right: 6px;"></i>{{Strings.LICENSE_REAPPLY_TO_DEVICE}}
+                </a>
+            </div>
         </div>
 
         <!-- Divider -->
