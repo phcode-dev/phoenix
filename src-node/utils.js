@@ -396,13 +396,45 @@ function _getMacDeviceID() {
     });
 }
 
+/**
+ * Get the Windows device ID (MachineGuid).
+ * @returns {Promise<string|null>}
+ *
+ * In a Windows batch file, you can get this with:
+ *   reg query HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Cryptography /v MachineGuid
+ */
+function _getWindowsDeviceID() {
+    return new Promise((resolve, reject) => {
+        exec(
+            'reg query HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Cryptography /v MachineGuid',
+            { encoding: 'utf8' },
+            (err, stdout) => {
+                if (err) {
+                    console.error('Failed to get Windows device ID:', err.message);
+                    return reject(err);
+                }
+
+                // Example output:
+                // HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Cryptography
+                //     MachineGuid    REG_SZ    4c4c4544-0034-5a10-8051-cac04f305a31
+                const match = stdout.match(/MachineGuid\s+REG_[A-Z]+\s+([a-fA-F0-9-]+)/);
+                if (match && match[1]) {
+                    resolve(match[1].trim());
+                } else {
+                    resolve(null);
+                }
+            }
+        );
+    });
+}
+
 async function getDeviceID() {
     if (process.platform === "linux") {
         return _getLinuxDeviceID();
     } else if (process.platform === "darwin") {
         return _getMacDeviceID();
     } else if (process.platform === "win32") {
-        return "not implemented"; //await _getWindowsDeviceID();
+        return _getWindowsDeviceID();
     }
     throw new Error(`Unsupported platform: ${process.platform}`);
 }
