@@ -162,23 +162,41 @@ define(function (require, exports, module) {
 
         positionPopup();
 
-        // Check for trial info asynchronously and update popup
+        // Check for trial info or device license asynchronously and update popup
         KernalModeTrust.loginService.getEffectiveEntitlements().then(effectiveEntitlements => {
-            if (effectiveEntitlements && effectiveEntitlements.isInProTrial && isPopupVisible && $popup) {
-                // Add trial info to the existing popup
-                const planName = StringUtils.format(Strings.PROMO_PRO_TRIAL_DAYS_LEFT,
-                    effectiveEntitlements.trialDaysRemaining);
-                const trialInfoHtml = `<div class="trial-plan-info">
-                    <span class="phoenix-pro-title-plain">
-                        <span class="pro-plan-name user-plan-name">${planName}</span>
-                        <i class="fa-solid fa-feather" style="margin-left: 3px;"></i>
-                    </span>
-                </div>`;
-                $popup.find('.popup-title').after(trialInfoHtml);
-                positionPopup(); // Reposition after adding content
+            // this is the login popup, so user is not logged in yet if we are here.
+            if (effectiveEntitlements && isPopupVisible && $popup) {
+                let proInfoHtml = null;
+
+                if (effectiveEntitlements.isInProTrial) {
+                    // isInProTrial will never be set if user has a pro device license(or a pro sub,
+                    // but that isn't relevant here). Add trial info to the existing popup.
+                    const planName = StringUtils.format(Strings.PROMO_PRO_TRIAL_DAYS_LEFT,
+                        effectiveEntitlements.trialDaysRemaining);
+                    proInfoHtml = `<div class="trial-plan-info">
+                        <span class="phoenix-pro-title-plain">
+                            <span class="pro-plan-name user-plan-name">${planName}</span>
+                            <i class="fa-solid fa-feather" style="margin-left: 3px;"></i>
+                        </span>
+                    </div>`;
+                } else if (effectiveEntitlements.plan && effectiveEntitlements.plan.paidSubscriber) {
+                    // Device-licensed user: show Phoenix Pro branding
+                    const planName = effectiveEntitlements.plan.fullName || brackets.config.main_pro_plan;
+                    proInfoHtml = `<div class="trial-plan-info">
+                        <span class="phoenix-pro-title-plain">
+                            <span class="pro-plan-name user-plan-name">${planName}</span>
+                            <i class="fa-solid fa-feather" style="margin-left: 3px;"></i>
+                        </span>
+                    </div>`;
+                }
+
+                if (proInfoHtml) {
+                    $popup.find('.popup-title').after(proInfoHtml);
+                    positionPopup(); // Reposition after adding content
+                }
             }
         }).catch(error => {
-            console.error('Failed to check trial info for login popup:', error);
+            console.error('Failed to check entitlements for login popup:', error);
         });
 
         PopUpManager.addPopUp($popup, function() {
@@ -570,33 +588,38 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Check if user has an active trial (works for both logged-in and non-logged-in users)
+     * Check if user has Pro access (active trial or device license)
+     * Works for both logged-in and non-logged-in users
      */
-    async function _hasActiveTrial() {
+    async function _hasProActive() {
         try {
             const effectiveEntitlements = await KernalModeTrust.loginService.getEffectiveEntitlements();
-            return effectiveEntitlements && effectiveEntitlements.isInProTrial;
+            return effectiveEntitlements &&
+                (effectiveEntitlements.isInProTrial ||
+                    (effectiveEntitlements.plan && effectiveEntitlements.plan.paidSubscriber));
         } catch (error) {
-            console.error('Failed to check trial status:', error);
+            console.error('Failed to check Pro access status:', error);
             return false;
         }
     }
 
     /**
-     * Initialize branding for non-logged-in trial users on startup
+     * Initialize branding for non-logged-in users with Pro access (trial or device license) on startup
      */
-    async function _initializeBrandingForTrialUsers() {
+    async function _setBrandingForNonLoggedInUser() {
         try {
             const effectiveEntitlements = await KernalModeTrust.loginService.getEffectiveEntitlements();
-            if (effectiveEntitlements && effectiveEntitlements.isInProTrial) {
-                console.log('Profile Menu: Found active trial, updating branding...');
+            if (effectiveEntitlements &&
+                (effectiveEntitlements.isInProTrial ||
+                    (effectiveEntitlements.plan && effectiveEntitlements.plan.paidSubscriber))) {
+                console.log('Profile Menu: Found Pro entitlements (trial or device license), updating branding...');
                 _updateBranding(effectiveEntitlements);
             } else {
-                console.log('Profile Menu: No active trial found');
+                console.log('Profile Menu: No Pro entitlements found');
                 _updateBranding(null);
             }
         } catch (error) {
-            console.error('Failed to initialize branding for trial users:', error);
+            console.error('Failed to initialize branding for non-logged-in Pro users:', error);
         }
     }
 
@@ -619,14 +642,14 @@ define(function (require, exports, module) {
             togglePopup();
         });
 
-        // Initialize branding for non-logged-in trial users
-        _initializeBrandingForTrialUsers();
+        // Initialize branding for non-logged-in users with Pro access (trial or device license)
+        _setBrandingForNonLoggedInUser();
 
-        // Listen for entitlements changes to update branding for non-logged-in trial users
+        // Listen for entitlements changes to update branding for non-logged-in Pro users
         KernalModeTrust.loginService.on(KernalModeTrust.loginService.EVENT_ENTITLEMENTS_CHANGED, () => {
-            // When entitlements change (including trial activation) for non-logged-in users, update branding
+            // When entitlements change (trial activation or device license) for non-logged-in users, update branding
             if (!KernalModeTrust.loginService.isLoggedIn()) {
-                _initializeBrandingForTrialUsers();
+                _setBrandingForNonLoggedInUser();
             }
         });
     }
@@ -638,19 +661,19 @@ define(function (require, exports, module) {
         }
         _removeProfileIcon();
 
-        // Reset branding, but preserve trial branding if user has active trial
-        _hasActiveTrial().then(hasActiveTrial => {
-            if (!hasActiveTrial) {
-                // Only reset branding if no trial exists
-                console.log('Profile Menu: No trial, resetting branding to free');
+        // Reset branding, but preserve Pro branding if user has active trial or device license
+        _hasProActive().then(hasProActive => {
+            if (!hasProActive) {
+                // Only reset branding if no trial or device license exists
+                console.log('Profile Menu: No Pro access, resetting branding to free');
                 _updateBranding(null);
             } else {
-                // User has trial, maintain pro branding
-                console.log('Profile Menu: Trial exists, maintaining pro branding');
-                _initializeBrandingForTrialUsers();
+                // User has trial or device license, maintain pro branding
+                console.log('Profile Menu: Pro access exists, maintaining pro branding');
+                _setBrandingForNonLoggedInUser();
             }
         }).catch(error => {
-            console.error('Failed to check trial status during logout:', error);
+            console.error('Failed to check Pro access status during logout:', error);
             // Fallback to resetting branding
             _updateBranding(null);
         });
