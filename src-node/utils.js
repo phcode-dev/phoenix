@@ -354,7 +354,7 @@ async function isLicensedDevice() {
     const targetPath = getLicensePath();
     try {
         const data = await readFileUtf8(targetPath);
-        JSON.parse(data);
+        JSON.parse(data.trim());
         return true; // currently, the existence of the file itself is flag. in future, we may choose to add more.
     } catch {
         // file missing, unreadable, or invalid JSON
