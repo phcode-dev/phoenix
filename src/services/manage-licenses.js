@@ -170,7 +170,7 @@ define(function (require, exports, module) {
             $valid.show();
 
             // Show reapply button if license is valid but not applied system-wide
-            const isLicensed = await NodeUtils.isLicensedDevice();
+            const isLicensed = await NodeUtils.isLicensedDeviceSystemWide();
             if (!isLicensed) {
                 $reapplyContainer.show();
             }
