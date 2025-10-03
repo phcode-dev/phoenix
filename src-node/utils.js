@@ -9,7 +9,7 @@ const {lintFile} = require("./ESLint/service");
 let openModule, open; // dynamic import when needed
 
 const options = { name: 'Phoenix Code' };
-const licenseFileContent = JSON.stringify({licensedDevice: true});
+const licenseFileContent = JSON.stringify({});
 
 async function _importOpen() {
     if(open){
@@ -310,6 +310,10 @@ function readFileUtf8(p) {
 async function addDeviceLicense() {
     const targetPath = getLicensePath();
     let command;
+    // we should not store any sensitive information in this file as this is world readable. we use the
+    // device id itself as license key for that machine. the device id is not associated with any cloud credits
+    // and all entitlements are local to device only for this threat model to work. So stolen device IDs doesn't
+    // have any meaning.
 
     if (os.platform() === 'win32') {
         // Windows: write file and explicitly grant Everyone read rights
@@ -350,8 +354,8 @@ async function isLicensedDevice() {
     const targetPath = getLicensePath();
     try {
         const data = await readFileUtf8(targetPath);
-        const json = JSON.parse(data);
-        return json && json.licensedDevice === true;
+        JSON.parse(data);
+        return true; // currently, the existence of the file itself is flag. in future, we may choose to add more.
     } catch {
         // file missing, unreadable, or invalid JSON
         return false;
