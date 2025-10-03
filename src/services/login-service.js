@@ -389,6 +389,8 @@ define(function (require, exports, module) {
             cachedEntitlements = null;
             _debounceEntitlementsChanged();
         }
+        // Reset device license state so it's re-evaluated on next entitlement check
+        deviceLicensePrimed = false;
     }
 
 
@@ -661,6 +663,10 @@ define(function (require, exports, module) {
      * @returns {Promise<boolean>} - Resolves with `true` if the device is licensed, `false` otherwise.
      */
     async function isLicensedDevice() {
+        if(Phoenix.isTestWindow || !Phoenix.isNativeApp) {
+            // browser app doesn't support device licence keys, obviously.
+            return false;
+        }
         const userCheck = PreferencesManager.stateManager.get(PREF_STATE_LICENSED_DEVICE_CHECK);
         const systemCheck = await isLicensedDeviceSystemWide();
         return userCheck || systemCheck;
