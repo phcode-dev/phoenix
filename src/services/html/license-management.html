@@ -1,6 +1,6 @@
 <div class="license-management-dialog modal">
     <div class="modal-header">
-        <h1 class="dialog-title">Manage Device License</h1>
+        <h1 class="dialog-title">{{Strings.MANAGE_LICENSE_DIALOG_TITLE}}</h1>
     </div>
 
     <div class="modal-body" style="max-height: 500px; padding: 24px;">
@@ -8,7 +8,7 @@
         <div class="license-activation-section">
             <div class="license-form-group">
                 <label for="license-key-input" class="license-form-label">
-                    License Key
+                    {{Strings.LICENSE_KEY}}
                 </label>
                 <input
                     type="text"
@@ -20,9 +20,9 @@
             <button
                 id="activate-license-btn"
                 class="btn primary license-activate-btn">
-                <span class="btn-text">Activate License</span>
+                <span class="btn-text">{{Strings.LICENSE_KEY_ACTIVATE}}</span>
                 <span class="btn-spinner">
-                    <i class="fa fa-spinner fa-spin" style="margin-right: 8px;"></i>Activating...
+                    <i class="fa fa-spinner fa-spin" style="margin-right: 8px;"></i>{{Strings.LICENSE_KEY_ACTIVATING}}
                 </span>
             </button>
         </div>
@@ -33,38 +33,38 @@
         <!-- License Status Section -->
         <div class="license-status-section">
             <h3 class="license-section-title">
-                Current Device License
+                {{Strings.LICENSE_KEY_CURRENT}}
             </h3>
 
             <!-- Loading State -->
             <div id="license-status-loading" class="license-status-loading">
                 <i class="fa fa-spinner fa-spin"></i>
-                <span>Checking license status...</span>
+                <span>{{Strings.LICENSE_KEY_CHECKING}}</span>
             </div>
 
             <!-- No License State -->
             <div id="license-status-none" class="license-status-none" style="display: none;">
                 <i class="fa fa-exclamation-circle"></i>
-                <span>No active device license found</span>
+                <span>{{Strings.LICENSE_KEY_NONE}}</span>
             </div>
 
             <!-- Valid License State -->
             <div id="license-status-valid" class="license-status-valid" style="display: none;">
                 <div class="license-info-card">
                     <div class="license-info-row" style="margin-bottom: 12px;">
-                        <span class="license-info-label">Status:</span>
-                        <span class="license-status-badge">Active</span>
+                        <span class="license-info-label">{{Strings.LICENSE_INFO_STATUS_LABEL}}</span>
+                        <span class="license-status-badge">{{Strings.LICENSE_STATUS_ACTIVE}}</span>
                     </div>
                     <div class="license-info-row">
-                        <span class="license-info-label">Licensed to:</span>
+                        <span class="license-info-label">{{Strings.LICENSE_INFO_LICENSED_TO_LABEL}}</span>
                         <span id="licensed-to-name" class="license-info-value"></span>
                     </div>
                     <div class="license-info-row">
-                        <span class="license-info-label">License type:</span>
+                        <span class="license-info-label">{{Strings.LICENSE_INFO_TYPE_LABEL}}</span>
                         <span id="license-type-name" class="license-info-value"></span>
                     </div>
                     <div class="license-info-row">
-                        <span class="license-info-label">Valid until:</span>
+                        <span class="license-info-label">{{Strings.LICENSE_INFO_VALID_UNTIL_LABEL}}</span>
                         <span id="license-valid-till" class="license-info-value"></span>
                     </div>
                 </div>
@@ -73,7 +73,7 @@
             <!-- Error State -->
             <div id="license-status-error" class="license-status-error" style="display: none;">
                 <i class="fa fa-exclamation-triangle"></i>
-                <span id="license-error-message">Error checking license status</span>
+                <span id="license-error-message">{{Strings.LICENSE_CHECK_ERROR}}</span>
             </div>
         </div>
 
@@ -84,6 +84,6 @@
     </div>
 
     <div class="modal-footer">
-        <button class="dialog-button btn" data-button-id="close">Close</button>
+        <button class="dialog-button btn" data-button-id="close">{{Strings.CLOSE}}</button>
     </div>
 </div>

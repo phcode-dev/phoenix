@@ -32,7 +32,8 @@ define(function (require, exports, module) {
         throw new Error("manage-licenses should have access to KernalModeTrust. Cannot boot without trust ring");
     }
 
-    const Dialogs = require("widgets/Dialogs"),
+    const Strings = require("strings"),
+        Dialogs = require("widgets/Dialogs"),
         Mustache = require("thirdparty/mustache/mustache"),
         licenseManagementHTML = require("text!./html/license-management.html");
 
@@ -105,7 +106,7 @@ define(function (require, exports, module) {
             const response = await fetchFn(apiURL, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
                     licenseKey: licenseKey,
@@ -133,10 +134,10 @@ define(function (require, exports, module) {
      */
     function _formatDate(timestamp) {
         if (!timestamp) {
-            return 'Never';
+            return Strings.LICENSE_VALID_NEVER;
         }
         const date = new Date(timestamp);
-        return date.toLocaleDateString('en-US', {
+        return date.toLocaleDateString(Phoenix.getLocale(), {
             year: 'numeric',
             month: 'long',
             day: 'numeric'
@@ -160,8 +161,8 @@ define(function (require, exports, module) {
 
         if (licenseData && licenseData.isValid) {
             // Show valid license info
-            $dialog.find('#licensed-to-name').text(licenseData.licensedToName || 'Unknown');
-            $dialog.find('#license-type-name').text(licenseData.licenseTypeName || 'Unknown');
+            $dialog.find('#licensed-to-name').text(licenseData.licensedToName || Strings.LICENSE_STATUS_UNKNOWN);
+            $dialog.find('#license-type-name').text(licenseData.licenseTypeName || Strings.LICENSE_STATUS_UNKNOWN);
             $dialog.find('#license-valid-till').text(_formatDate(licenseData.validTill));
             $valid.show();
         } else if (licenseData && licenseData.isValid === false) {
@@ -169,7 +170,7 @@ define(function (require, exports, module) {
             $none.show();
         } else {
             // Error state
-            $dialog.find('#license-error-message').text('Error checking license status');
+            $dialog.find('#license-error-message').text(Strings.LICENSE_STATUS_ERROR_CHECK);
             $error.show();
         }
     }
@@ -245,7 +246,7 @@ define(function (require, exports, module) {
             const result = await _registerDevice(licenseKey, deviceID, platform, deviceLabel);
 
             if (result.isSuccess) {
-                _showActivationMessage($dialog, true, result.message || 'License activated successfully!');
+                _showActivationMessage($dialog, true, result.message || Strings.LICENSE_ACTIVATE_SUCCESS);
 
                 // Clear the input field
                 $dialog.find('#license-key-input').val('');
@@ -253,10 +254,10 @@ define(function (require, exports, module) {
                 // Refresh license status
                 await _loadLicenseStatus($dialog);
             } else {
-                _showActivationMessage($dialog, false, result.errorMessage || 'Failed to activate license');
+                _showActivationMessage($dialog, false, result.errorMessage || Strings.LICENSE_ACTIVATE_FAIL);
             }
         } catch (error) {
-            _showActivationMessage($dialog, false, error.message || 'Failed to activate license');
+            _showActivationMessage($dialog, false, error.message || Strings.LICENSE_ACTIVATE_FAIL);
         } finally {
             // Reset button state
             $btn.prop('disabled', false);
@@ -266,7 +267,7 @@ define(function (require, exports, module) {
     }
 
     async function showManageLicensesDialog() {
-        const $template = $(Mustache.render(licenseManagementHTML, {}));
+        const $template = $(Mustache.render(licenseManagementHTML, {Strings}));
 
         Dialogs.showModalDialogUsingTemplate($template);
 
@@ -279,7 +280,7 @@ define(function (require, exports, module) {
         $activateBtn.on('click', async function() {
             const licenseKey = $licenseInput.val().trim();
             if (!licenseKey) {
-                _showActivationMessage($dialog, false, 'Please enter a license key');
+                _showActivationMessage($dialog, false, Strings.LICENSE_ENTER_KEY);
                 return;
             }
 
