@@ -26,6 +26,7 @@
         "lmdb": "^2.9.2",
         "mime-types": "^2.1.35",
         "cross-spawn": "^7.0.6",
-        "which": "^2.0.1"
+        "which": "^2.0.1",
+        "@expo/sudo-prompt": "^9.3.2"
     }
 }

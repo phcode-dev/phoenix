@@ -33,6 +33,7 @@ define(function (require, exports, module) {
     }
 
     const Strings = require("strings"),
+        NodeUtils = require("utils/NodeUtils"),
         Dialogs = require("widgets/Dialogs"),
         Mustache = require("thirdparty/mustache/mustache"),
         licenseManagementHTML = require("text!./html/license-management.html");
@@ -246,7 +247,10 @@ define(function (require, exports, module) {
             const result = await _registerDevice(licenseKey, deviceID, platform, deviceLabel);
 
             if (result.isSuccess) {
-                _showActivationMessage($dialog, true, result.message || Strings.LICENSE_ACTIVATE_SUCCESS);
+                const addSuccess = await NodeUtils.addDeviceLicense();
+                const successString = addSuccess ?
+                    Strings.LICENSE_ACTIVATE_SUCCESS : Strings.LICENSE_ACTIVATE_SUCCESS_PARTIAL;
+                _showActivationMessage($dialog, true, successString);
 
                 // Clear the input field
                 $dialog.find('#license-key-input').val('');

@@ -1710,6 +1710,7 @@ define({
     "LICENSE_VALID_NEVER": "Never",
     "LICENSE_STATUS_ERROR_CHECK": "Error checking license status",
     "LICENSE_ACTIVATE_SUCCESS": "License activated successfully!",
+    "LICENSE_ACTIVATE_SUCCESS_PARTIAL": "License activated for your account only (not system-wide).",
     "LICENSE_ACTIVATE_FAIL": "Failed to activate license",
     "LICENSE_ENTER_KEY": "Please enter a license key"
 });
