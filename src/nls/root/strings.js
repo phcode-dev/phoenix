@@ -1691,5 +1691,25 @@ define({
     "PROMO_PRO_UNLOCK_MESSAGE": "Subscribe now to unlock these advanced features:",
     "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro Trial ({0} days left)",
     "GET_PHOENIX_PRO": "Get Phoenix Pro",
-    "USER_FREE_PLAN_NAME_DO_NOT_TRANSLATE": "Community Edition"
+    "USER_FREE_PLAN_NAME_DO_NOT_TRANSLATE": "Community Edition",
+    // license dialogs
+    "MANAGE_LICENSE_DIALOG_TITLE": "Manage Device License",
+    "LICENSE_KEY": "License Key",
+    "LICENSE_KEY_ACTIVATE": "Activate License",
+    "LICENSE_KEY_ACTIVATING": "Activating\u2026",
+    "LICENSE_KEY_CURRENT": "Current Device License",
+    "LICENSE_KEY_CHECKING": "Checking license status\u2026",
+    "LICENSE_KEY_NONE": "No active device license found",
+    "LICENSE_STATUS_ACTIVE": "Active",
+    "LICENSE_INFO_STATUS_LABEL": "Status:",
+    "LICENSE_INFO_LICENSED_TO_LABEL": "Licensed to:",
+    "LICENSE_INFO_TYPE_LABEL": "License type:",
+    "LICENSE_INFO_VALID_UNTIL_LABEL": "Valid until:",
+    "LICENSE_CHECK_ERROR": "Error checking license status",
+    "LICENSE_STATUS_UNKNOWN": "Unknown",
+    "LICENSE_VALID_NEVER": "Never",
+    "LICENSE_STATUS_ERROR_CHECK": "Error checking license status",
+    "LICENSE_ACTIVATE_SUCCESS": "License activated successfully!",
+    "LICENSE_ACTIVATE_FAIL": "Failed to activate license",
+    "LICENSE_ENTER_KEY": "Please enter a license key"
 });
