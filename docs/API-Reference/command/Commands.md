@@ -921,6 +921,12 @@ Hides the sidebar
 Shows the sidebar
 
 **Kind**: global variable  
+<a name="REINSTALL_CREDS"></a>
+
+## REINSTALL\_CREDS
+Reinstalls credentials in keychain
+
+**Kind**: global variable  
 <a name="CMD_GIT_INIT"></a>
 
 ## CMD\_GIT\_INIT
