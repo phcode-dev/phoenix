@@ -107,3 +107,40 @@ Opens a file in the default application for its type on Windows, macOS, and Linu
 | --- | --- | --- |
 | fullPath | <code>string</code> | The path to the file/folder to open. |
 
+<a name="addDeviceLicense"></a>
+
+## addDeviceLicense() ⇒ <code>Promise.&lt;boolean&gt;</code>
+Enables device license by creating a system-wide license file.
+On Windows, macOS, and Linux this will request elevation if needed.
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;boolean&gt;</code> - - Resolves true if system wide defile file added, else false.  
+**Throws**:
+
+- <code>Error</code> - If called from the browser
+
+<a name="removeDeviceLicense"></a>
+
+## removeDeviceLicense() ⇒ <code>Promise.&lt;boolean&gt;</code>
+Removes the system-wide device license file.
+On Windows, macOS, and Linux this will request elevation if needed.
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;boolean&gt;</code> - - Resolves true if system wide defile file removed, else false.  
+**Throws**:
+
+- <code>Error</code> - If called from the browser
+
+<a name="isLicensedDevice"></a>
+
+## isLicensedDevice() ⇒ <code>Promise.&lt;boolean&gt;</code>
+Checks if the current machine is licensed.
+This validates that the system-wide license file exists,
+contains valid JSON, and has `licensedDevice: true`.
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;boolean&gt;</code> - - Resolves with `true` if the device is licensed, `false` otherwise.  
+**Throws**:
+
+- <code>Error</code> - If called from the browser.
+

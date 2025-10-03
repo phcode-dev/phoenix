@@ -4,8 +4,12 @@ const fs = require('fs');
 const fsPromise = require('fs').promises;
 const path = require('path');
 const os = require('os');
+const sudo = require('@expo/sudo-prompt');
 const {lintFile} = require("./ESLint/service");
 let openModule, open; // dynamic import when needed
+
+const options = { name: 'Phoenix Code' };
+const content = '{"licensedDevice": true}\n';
 
 async function _importOpen() {
     if(open){
@@ -269,6 +273,82 @@ async function getEnvironmentVariable(varName) {
     return process.env[varName];
 }
 
+function getLicensePath() {
+    switch (os.platform()) {
+    case 'win32':
+        return 'C:\\Program Files\\Phoenix Code Control\\device-license';
+    case 'darwin':
+        return '/Library/Application Support/phoenix-code-control/device-license';
+    case 'linux':
+        return '/etc/phoenix-code-control/device-license';
+    default:
+        throw new Error(`Unsupported platform: ${os.platform()}`);
+    }
+}
+
+function sudoExec(command) {
+    return new Promise((resolve, reject) => {
+        sudo.exec(command, options, (error, stdout, stderr) => {
+            if (error) {
+                return reject(error);
+            }
+            resolve({ stdout, stderr });
+        });
+    });
+}
+
+function readFileUtf8(p) {
+    return new Promise((resolve, reject) => {
+        fs.readFile(p, 'utf8', (err, data) => (err ? reject(err) : resolve(data)));
+    });
+}
+
+async function addDeviceLicense() {
+    const targetPath = getLicensePath();
+    let command;
+
+    if (os.platform() === 'win32') {
+        // PowerShell with explicit dirs and safe quoting
+        const dir = 'C:\\Program Files\\Phoenix Code Control';
+        const psContent = content.replace(/'/g, "''");
+        command = `powershell -Command "New-Item -ItemType Directory -Force '${dir}' | Out-Null; Set-Content -Path '${targetPath}' -Value '${psContent}' -Encoding UTF8"`;
+    } else {
+        const dir = path.dirname(targetPath);
+        // POSIX: mkdir + printf (use absolute paths)
+        const safe = content.replace(/'/g, `'\\''`);
+        command = `/bin/mkdir -p "${dir}" && /bin/printf '%s' '${safe}' > "${targetPath}"`;
+    }
+
+    await sudoExec(command);
+    return targetPath;
+}
+
+async function removeDeviceLicense() {
+    const targetPath = getLicensePath();
+    let command;
+
+    if (os.platform() === 'win32') {
+        command = `powershell -Command "if (Test-Path '${targetPath}') { Remove-Item -Path '${targetPath}' -Force }"`;
+    } else {
+        command = `/bin/rm -f "${targetPath}"`;
+    }
+
+    await sudoExec(command);
+    return targetPath;
+}
+
+async function isLicensedDevice() {
+    const targetPath = getLicensePath();
+    try {
+        const data = await readFileUtf8(targetPath);
+        const json = JSON.parse(data);
+        return json && json.licensedDevice === true;
+    } catch {
+        // file missing, unreadable, or invalid JSON
+        return false;
+    }
+}
+
 exports.getURLContent = getURLContent;
 exports.setLocaleStrings = setLocaleStrings;
 exports.getPhoenixBinaryVersion = getPhoenixBinaryVersion;
@@ -278,5 +358,8 @@ exports.getEnvironmentVariable = getEnvironmentVariable;
 exports.ESLintFile = ESLintFile;
 exports.openNativeTerminal = openNativeTerminal;
 exports.openInDefaultApp = openInDefaultApp;
+exports.addDeviceLicense = addDeviceLicense;
+exports.removeDeviceLicense = removeDeviceLicense;
+exports.isLicensedDevice = isLicensedDevice;
 exports._loadNodeExtensionModule = _loadNodeExtensionModule;
 exports._npmInstallInFolder = _npmInstallInFolder;

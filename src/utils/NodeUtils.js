@@ -21,6 +21,8 @@
 
 // @INCLUDE_IN_API_DOCS
 
+/*global logger*/
+
 /**
  * Generic node util APIs connector. see `src-node/utils.js` for node peer
  */
@@ -189,6 +191,67 @@ define(function (require, exports, module) {
         return utilsConnector.execPeer("openInDefaultApp", window.fs.getTauriPlatformPath(fullPath));
     }
 
+    /**
+     * Enables device license by creating a system-wide license file.
+     * On Windows, macOS, and Linux this will request elevation if needed.
+     *
+     * @returns {Promise<boolean>} - Resolves true if system wide defile file added, else false.
+     * @throws {Error} - If called from the browser
+     */
+    async function addDeviceLicense() {
+        if (!Phoenix.isNativeApp) {
+            throw new Error("addDeviceLicense not available in browser");
+        }
+        try {
+            await utilsConnector.execPeer("addDeviceLicense");
+            return true;
+        } catch (err) {
+            logger.reportError(err, "system wide device license activation failed");
+        }
+        return false;
+    }
+
+    /**
+     * Removes the system-wide device license file.
+     * On Windows, macOS, and Linux this will request elevation if needed.
+     *
+     * @returns {Promise<boolean>} - Resolves true if system wide defile file removed, else false.
+     * @throws {Error} - If called from the browser
+     */
+    async function removeDeviceLicense() {
+        if (!Phoenix.isNativeApp) {
+            throw new Error("removeDeviceLicense not available in browser");
+        }
+        try {
+            await utilsConnector.execPeer("removeDeviceLicense");
+            return true;
+        } catch (err) {
+            logger.reportError(err, "system wide device license remove failed");
+        }
+        return false;
+    }
+
+    /**
+     * Checks if the current machine is licensed.
+     * This validates that the system-wide license file exists,
+     * contains valid JSON, and has `licensedDevice: true`.
+     *
+     * @returns {Promise<boolean>} - Resolves with `true` if the device is licensed, `false` otherwise.
+     * @throws {Error} - If called from the browser.
+     */
+    async function isLicensedDevice() {
+        if (!Phoenix.isNativeApp) {
+            throw new Error("isLicensedDevice not available in browser");
+        }
+        try {
+            return utilsConnector.execPeer("isLicensedDevice");
+        } catch (err) {
+            logger.reportError(err, "system wide device check failed");
+        }
+        return false;
+    }
+
+
     if(NodeConnector.isNodeAvailable()) {
         // todo we need to update the strings if a user extension adds its translations. Since we dont support
         // node extensions for now, should consider when we support node extensions.
@@ -227,6 +290,9 @@ define(function (require, exports, module) {
     exports.getEnvironmentVariable = getEnvironmentVariable;
     exports.openNativeTerminal = openNativeTerminal;
     exports.openInDefaultApp = openInDefaultApp;
+    exports.addDeviceLicense = addDeviceLicense;
+    exports.removeDeviceLicense = removeDeviceLicense;
+    exports.isLicensedDevice = isLicensedDevice;
 
     /**
      * checks if Node connector is ready
