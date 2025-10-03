@@ -30,7 +30,9 @@ define(function (require, exports, module) {
     require("./promotions");
     require("./login-utils");
     const NodeUtils = require("utils/NodeUtils"),
-        PreferencesManager = require("preferences/PreferencesManager");
+        PreferencesManager = require("preferences/PreferencesManager"),
+        Commands = require("command/Commands"),
+        CommandManager = require("command/CommandManager");
     const EntitlementsDirectImport = require("./EntitlementsManager"); // this adds Entitlements to KernalModeTrust
 
     const Metrics = require("utils/Metrics"),
@@ -689,6 +691,19 @@ define(function (require, exports, module) {
     LoginService.getDeviceID = getDeviceID;
     LoginService.EVENT_ENTITLEMENTS_CHANGED = EVENT_ENTITLEMENTS_CHANGED;
 
+    async function handleReinstallCreds() {
+        if(!Phoenix.isNativeApp) {
+            throw new Error("Reinstall credentials is only available in native apps");
+        }
+        try {
+            await KernalModeTrust.reinstallCreds();
+            console.log("Credentials reinstalled successfully");
+        } catch (error) {
+            console.error("Error reinstalling credentials:", error);
+            throw error;
+        }
+    }
+
     let inited = false;
     function init() {
         if(inited){
@@ -696,6 +711,11 @@ define(function (require, exports, module) {
         }
         inited = true;
         EntitlementsDirectImport.init();
+
+        // Register reinstall credentials command for native apps only
+        if(Phoenix.isNativeApp) {
+            CommandManager.register("Reinstall Credentials", Commands.REINSTALL_CREDS, handleReinstallCreds);
+        }
     }
     // Test-only exports for integration testing
     if (Phoenix.isTestWindow) {

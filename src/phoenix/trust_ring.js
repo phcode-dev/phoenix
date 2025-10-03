@@ -181,6 +181,7 @@ function _selectKeys() {
 const CRED_KEY_API = Phoenix.isTestWindow ? "API_KEY_TEST" : "API_KEY";
 const CRED_KEY_PROMO = Phoenix.isTestWindow ? "PROMO_GRANT_KEY_TEST" : "PROMO_GRANT_KEY";
 const SIGNATURE_SALT_KEY = Phoenix.isTestWindow ? "SIGNATURE_SALT_KEY_TEST" : "SIGNATURE_SALT_KEY";
+const VERSION_PORTER_KEY = Phoenix.isTestWindow ? "VERSION_PORTER_TEST" : "VERSION_PORTER";
 const { key, iv } = _selectKeys();
 
 async function setCredential(credKey, secret) {
@@ -243,6 +244,80 @@ export async function initTrustRing() {
     // this will only work once in a window unless dismantleKeyring is called. So this is safe as
     // a public export as essentially this is a fn that only works in the boot and shutdown phase.
     await window.__TAURI__.tauri.invoke("trust_window_aes_key", {key, iv});
+
+    _portCredentials();
+}
+async function reinstallCreds() {
+    if(!window.__TAURI__){
+        throw new Error("reinstallCreds can only be called in tauri shell!");
+    }
+    // Read current credential values
+    const apiKey = await getCredential(CRED_KEY_API);
+    const promoKey = await getCredential(CRED_KEY_PROMO);
+    const saltKey = await getCredential(SIGNATURE_SALT_KEY);
+
+    // Remove credentials from keychain
+    if(apiKey) {
+        await removeCredential(CRED_KEY_API);
+    }
+    if(promoKey) {
+        await removeCredential(CRED_KEY_PROMO);
+    }
+    if(saltKey) {
+        await removeCredential(SIGNATURE_SALT_KEY);
+    }
+
+    // Re-set credentials to refresh keychain access
+    if(apiKey) {
+        await setCredential(CRED_KEY_API, apiKey);
+    }
+    if(promoKey) {
+        await setCredential(CRED_KEY_PROMO, promoKey);
+    }
+    if(saltKey) {
+        await setCredential(SIGNATURE_SALT_KEY, saltKey);
+    }
+
+    const currentVersion = Phoenix.metadata.version;
+    await setCredential(VERSION_PORTER_KEY, currentVersion);
+}
+
+/**
+ * Handles keychain credential portability across app versions on macOS.
+ * not a problem in windows/linux.
+ *
+ * On macOS, the system keychain ties stored credentials to the app’s code signature.
+ * If the signature changes (for example: running a debug build, unsigned dev build,
+ * or re-signed binary), macOS will repeatedly prompt the user for their password
+ * every time credentials are accessed. This does not usually happen in official
+ * signed release builds, but it can be disruptive during development.
+ *
+ * To reduce this annoyance, we track the app version in the keychain. If the
+ * stored version and the current version don’t match, we reinstall credentials
+ * under the new signature so that future keychain access works without constant
+ * prompts.
+ */
+async function _portCredentials() {
+    if(!Phoenix.isNativeApp || Phoenix.platform === "win" || Phoenix.platform === "linux") {
+        return;
+    }
+    try {
+        const storedVersion = await getCredential(VERSION_PORTER_KEY);
+        const currentVersion = Phoenix.metadata.version;
+
+        if (!storedVersion && currentVersion) {
+            // First boot or version key doesn't exist, set it
+            await setCredential(VERSION_PORTER_KEY, currentVersion);
+        } else if (storedVersion && currentVersion && storedVersion !== currentVersion) {
+            // Version changed, reinstall credentials
+            console.log(`Version changed from ${storedVersion} to ${currentVersion}, reinstalling credentials`);
+            // Update stored version first to prevent races with multi phoenix windows
+            await setCredential(VERSION_PORTER_KEY, currentVersion);
+            await reinstallCreds();
+        }
+    } catch (error) {
+        console.error("Error during version-based credential check:", error);
+    }
 }
 
 /**
@@ -293,7 +368,8 @@ window.KernalModeTrust = {
     generateRandomKeyAndIV,
     dismantleKeyring,
     generateDataSignature,
-    validateDataSignature
+    validateDataSignature,
+    reinstallCreds
 };
 if(Phoenix.isSpecRunnerWindow){
     window.specRunnerTestKernalModeTrust = window.KernalModeTrust;

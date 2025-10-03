@@ -820,6 +820,10 @@ define(function (require, exports, module) {
     }
     // this command is defined in core, but exposed only in Debug menu for now
     debugMenu.addMenuItem(Commands.FILE_OPEN_KEYMAP, null);
+    // Reinstall credentials menu item (native apps only)
+    if(Phoenix.isNativeApp) {
+        debugMenu.addMenuItem(Commands.REINSTALL_CREDS, null);
+    }
     const diagnosticsSubmenu = debugMenu.addSubMenu(Strings.CMD_DIAGNOSTIC_TOOLS, DIAGNOSTICS_SUBMENU);
     diagnosticsSubmenu.addMenuItem(DEBUG_RUN_UNIT_TESTS);
     CommandManager.register(Strings.CMD_BUILD_TESTS, DEBUG_BUILD_TESTS, TestBuilder.toggleTestBuilder);
