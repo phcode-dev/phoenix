@@ -9,7 +9,7 @@ const {lintFile} = require("./ESLint/service");
 let openModule, open; // dynamic import when needed
 
 const options = { name: 'Phoenix Code' };
-const content = '{"licensedDevice": true}\n';
+const licenseFileContent = JSON.stringify({licensedDevice: true});
 
 async function _importOpen() {
     if(open){
@@ -303,21 +303,29 @@ function readFileUtf8(p) {
     });
 }
 
+/**
+ * Writes the license file in a world-readable location.
+ * Works on Windows, macOS, and Linux.
+ */
 async function addDeviceLicense() {
     const targetPath = getLicensePath();
     let command;
 
     if (os.platform() === 'win32') {
-        // PowerShell with explicit dirs and safe quoting
+        // Windows: write file and explicitly grant Everyone read rights
         const dir = 'C:\\Program Files\\Phoenix Code Control';
-        const psContent = content.replace(/'/g, "''");
-        command = `powershell -Command "New-Item -ItemType Directory -Force '${dir}' | Out-Null; Set-Content -Path '${targetPath}' -Value '${psContent}' -Encoding UTF8"`;
+        command =
+            `powershell -Command "` +
+            `New-Item -ItemType Directory -Force '${dir}' | Out-Null; ` +
+            `Set-Content -Path '${targetPath}' -Value '${licenseFileContent}' -Encoding UTF8; ` +
+            `icacls '${targetPath}' /inheritance:e /grant *S-1-1-0:RX | Out-Null"`;
     } else {
+        // macOS / Linux: mkdir + write + chmod 0644 (world-readable, owner-writable)
         const dir = path.dirname(targetPath);
-        // POSIX: mkdir + printf (use absolute paths)
-        const safe = content.replace(/'/g, `'\\''`);
-        // todo we need to chmod to make this world readable
-        command = `/bin/mkdir -p "${dir}" && /bin/printf '%s' '${safe}' > "${targetPath}"`;
+        command =
+            `/bin/mkdir -p "${dir}"` +
+            ` && printf '%s' '${licenseFileContent}' > "${targetPath}"` +
+            ` && /bin/chmod 0644 "${targetPath}"`;
     }
 
     await sudoExec(command);
@@ -363,6 +371,10 @@ async function _getLinuxDeviceID() {
  * @returns {Promise<string|null>}
  */
 function _getMacDeviceID() {
+    // to read this in mac bash, do:
+    // #!/bin/bash
+    // device_id=$(ioreg -rd1 -c IOPlatformExpertDevice | awk -F\" '/IOPlatformUUID/ {print $4}' | tr -d '[:space:]')
+    // echo "$device_id"
     return new Promise((resolve, reject) => {
         exec(
             'ioreg -rd1 -c IOPlatformExpertDevice | grep IOPlatformUUID',
