@@ -113,12 +113,6 @@ define(function (require, exports, module) {
         description: Strings.LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT_PREFERENCE
     });
 
-    // live preview image picker preference (whether to show image gallery when clicking images)
-    const PREFERENCE_PROJECT_IMAGE_RIBBON = "livePreviewImagePicker";
-    PreferencesManager.definePreference(PREFERENCE_PROJECT_IMAGE_RIBBON, "boolean", true, {
-        description: Strings.LIVE_PREVIEW_EDIT_IMAGE_RIBBON
-    });
-
     const LIVE_PREVIEW_PANEL_ID = "live-preview-panel";
     const LIVE_PREVIEW_IFRAME_ID = "panel-live-preview-frame";
     const LIVE_PREVIEW_IFRAME_HTML = `
@@ -429,7 +423,6 @@ define(function (require, exports, module) {
         if (isEditFeaturesActive) {
             items.push("---");
             items.push(Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON);
-            items.push(Strings.LIVE_PREVIEW_EDIT_IMAGE_RIBBON);
         }
 
         const rawMode = PreferencesManager.get(PREFERENCE_LIVE_PREVIEW_MODE) || _getDefaultMode();
@@ -455,12 +448,6 @@ define(function (require, exports, module) {
                     return `✓ ${Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON}`;
                 }
                 return `${'\u00A0'.repeat(4)}${Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON}`;
-            } else if (item === Strings.LIVE_PREVIEW_EDIT_IMAGE_RIBBON) {
-                const isImageRibbonEnabled = PreferencesManager.get(PREFERENCE_PROJECT_IMAGE_RIBBON) !== false;
-                if(isImageRibbonEnabled) {
-                    return `✓ ${item}`;
-                }
-                return `${'\u00A0'.repeat(4)}${item}`;
             }
             return item;
         });
@@ -508,15 +495,6 @@ define(function (require, exports, module) {
                 const currentMode = PreferencesManager.get(PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT);
                 const newMode = currentMode !== "click" ? "click" : "hover";
                 PreferencesManager.set(PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT, newMode);
-                return; // Don't dismiss highlights for this option
-            } else if (item === Strings.LIVE_PREVIEW_EDIT_IMAGE_RIBBON) {
-                // Don't allow image ribbon toggle if edit features are not active
-                if (!isEditFeaturesActive) {
-                    return;
-                }
-                // Toggle image ribbon preference
-                const currentEnabled = PreferencesManager.get(PREFERENCE_PROJECT_IMAGE_RIBBON);
-                PreferencesManager.set(PREFERENCE_PROJECT_IMAGE_RIBBON, !currentEnabled);
                 return; // Don't dismiss highlights for this option
             }
 
@@ -1323,15 +1301,8 @@ define(function (require, exports, module) {
             LiveDevelopment.updateElementHighlightConfig();
         });
 
-        // Handle image ribbon preference changes from this extension
-        PreferencesManager.on("change", PREFERENCE_PROJECT_IMAGE_RIBBON, function() {
-            LiveDevelopment.updateImageRibbonConfig();
-        });
-
         // Initialize element highlight config on startup
         LiveDevelopment.updateElementHighlightConfig();
-        // Initialize image ribbon config on startup
-        LiveDevelopment.updateImageRibbonConfig();
 
         LiveDevelopment.openLivePreview();
         LiveDevelopment.on(LiveDevelopment.EVENT_OPEN_PREVIEW_URL, _openLivePreviewURL);
