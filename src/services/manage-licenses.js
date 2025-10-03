@@ -33,34 +33,12 @@ define(function (require, exports, module) {
     }
 
     const Strings = require("strings"),
-        NodeUtils = require("utils/NodeUtils"),
         Dialogs = require("widgets/Dialogs"),
         Mustache = require("thirdparty/mustache/mustache"),
         licenseManagementHTML = require("text!./html/license-management.html");
 
     // Save a copy of window.fetch so that extensions won't tamper with it
     let fetchFn = window.fetch;
-
-    async function _getLinuxDeviceID() {
-        const LINUX_DEVICE_ID_FILE = Phoenix.VFS.getTauriVirtualPath('/etc/machine-id');
-        const result = await Phoenix.VFS.readFileResolves(LINUX_DEVICE_ID_FILE, 'utf8');
-        if(result.error || !result.data) {
-            logger.reportError(result.error, `Failed to read machine-id file for licensing`);
-            return null;
-        }
-        return KernalModeTrust.generateDataSignature(result.data.trim()); // \n and spaces are trimmed, just id please
-    }
-
-    async function _getDeviceID() {
-        if(!Phoenix.isNativeApp) {
-            // We only grant device licenses to desktop apps. Browsers cannot be uniquely device identified obviously.
-            return null;
-        }
-        switch (Phoenix.platform) {
-        case 'linux': return _getLinuxDeviceID();
-        default: return null;
-        }
-    }
 
     /**
      * Get the API base URL for license operations
@@ -170,7 +148,7 @@ define(function (require, exports, module) {
             $valid.show();
 
             // Show reapply button if license is valid but not applied system-wide
-            const isLicensed = await NodeUtils.isLicensedDeviceSystemWide();
+            const isLicensed = await KernalModeTrust.loginService.isLicensedDeviceSystemWide();
             if (!isLicensed) {
                 $reapplyContainer.show();
             }
@@ -216,7 +194,7 @@ define(function (require, exports, module) {
      */
     async function _loadLicenseStatus($dialog) {
         try {
-            const deviceID = await _getDeviceID();
+            const deviceID = await KernalModeTrust.loginService.getDeviceID();
             if (!deviceID) {
                 _updateLicenseStatusDisplay($dialog, { isValid: false });
                 return;
@@ -244,7 +222,7 @@ define(function (require, exports, module) {
             $btnText.hide();
             $btnSpinner.show();
 
-            const deviceID = await _getDeviceID();
+            const deviceID = await KernalModeTrust.loginService.getDeviceID();
             if (!deviceID) {
                 throw new Error('Unable to get device ID. Device licenses are only supported on desktop applications.');
             }
@@ -255,7 +233,7 @@ define(function (require, exports, module) {
             const result = await _registerDevice(licenseKey, deviceID, platform, deviceLabel);
 
             if (result.isSuccess) {
-                const addSuccess = await NodeUtils.addDeviceLicense();
+                const addSuccess = await KernalModeTrust.loginService.addDeviceLicense();
                 const successString = addSuccess ?
                     Strings.LICENSE_ACTIVATE_SUCCESS : Strings.LICENSE_ACTIVATE_SUCCESS_PARTIAL;
                 _showActivationMessage($dialog, true, successString);
@@ -290,7 +268,7 @@ define(function (require, exports, module) {
             $link.html('<i class="fa fa-spinner fa-spin" style="margin-right: 6px;"></i>Applying...');
             $link.css('pointer-events', 'none');
 
-            const addSuccess = await NodeUtils.addDeviceLicense();
+            const addSuccess = await KernalModeTrust.loginService.addDeviceLicense();
             if (addSuccess) {
                 _showActivationMessage($dialog, true, Strings.LICENSE_ACTIVATE_SUCCESS);
                 // Refresh license status
