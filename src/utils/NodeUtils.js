@@ -191,6 +191,31 @@ define(function (require, exports, module) {
         return utilsConnector.execPeer("openInDefaultApp", window.fs.getTauriPlatformPath(fullPath));
     }
 
+
+    let cachedDeviceID = undefined;
+    /**
+     * gets the os device id. this usually won't change till os reinstall.
+     *
+     * @returns {Promise<string|null>} - Resolves with the os identifier or null
+     * @throws {Error} - If called from the browser
+     */
+    async function getDeviceID() {
+        if (!Phoenix.isNativeApp) {
+            throw new Error("getDeviceID not available in browser");
+        }
+        if(cachedDeviceID !== undefined) {
+            return cachedDeviceID;
+        }
+        try {
+            cachedDeviceID = await utilsConnector.execPeer("getDeviceID");
+            return cachedDeviceID;
+        } catch (err) {
+            cachedDeviceID = null;
+            logger.reportError(err, "getDeviceID failed in NodeUtils");
+        }
+        return cachedDeviceID;
+    }
+
     /**
      * Enables device license by creating a system-wide license file.
      * On Windows, macOS, and Linux this will request elevation if needed.
@@ -291,6 +316,7 @@ define(function (require, exports, module) {
     exports.addDeviceLicenseSystemWide = addDeviceLicenseSystemWide;
     exports.removeDeviceLicenseSystemWide = removeDeviceLicenseSystemWide;
     exports.isLicensedDeviceSystemWide = isLicensedDeviceSystemWide;
+    exports.getDeviceID = getDeviceID;
 
     /**
      * checks if Node connector is ready

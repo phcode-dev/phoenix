@@ -316,6 +316,7 @@ async function addDeviceLicense() {
         const dir = path.dirname(targetPath);
         // POSIX: mkdir + printf (use absolute paths)
         const safe = content.replace(/'/g, `'\\''`);
+        // todo we need to chmod to make this world readable
         command = `/bin/mkdir -p "${dir}" && /bin/printf '%s' '${safe}' > "${targetPath}"`;
     }
 
@@ -349,6 +350,51 @@ async function isLicensedDevice() {
     }
 }
 
+async function _getLinuxDeviceID() {
+    const data = await fsPromise.readFile("/etc/machine-id", "utf8");
+    const id = data.trim();
+    return id || null;
+    // throw on error to main.
+    // no fallback, /var/lib/dbus/machine-id may need sudo in some machines
+}
+
+/**
+ * Get the macOS device ID (IOPlatformUUID).
+ * @returns {Promise<string|null>}
+ */
+function _getMacDeviceID() {
+    return new Promise((resolve, reject) => {
+        exec(
+            'ioreg -rd1 -c IOPlatformExpertDevice | grep IOPlatformUUID',
+            { encoding: 'utf8' },
+            (err, stdout) => {
+                if (err) {
+                    console.error('Failed to get Mac device ID:', err.message);
+                    return reject(err);
+                }
+
+                const match = stdout.match(/"IOPlatformUUID" = "([^"]+)"/);
+                if (match && match[1]) {
+                    resolve(match[1]);
+                } else {
+                    resolve(null);
+                }
+            }
+        );
+    });
+}
+
+async function getDeviceID() {
+    if (process.platform === "linux") {
+        return _getLinuxDeviceID();
+    } else if (process.platform === "darwin") {
+        return _getMacDeviceID();
+    } else if (process.platform === "win32") {
+        return "not implemented"; //await _getWindowsDeviceID();
+    }
+    throw new Error(`Unsupported platform: ${process.platform}`);
+}
+
 exports.getURLContent = getURLContent;
 exports.setLocaleStrings = setLocaleStrings;
 exports.getPhoenixBinaryVersion = getPhoenixBinaryVersion;
@@ -361,5 +407,6 @@ exports.openInDefaultApp = openInDefaultApp;
 exports.addDeviceLicense = addDeviceLicense;
 exports.removeDeviceLicense = removeDeviceLicense;
 exports.isLicensedDevice = isLicensedDevice;
+exports.getDeviceID = getDeviceID;
 exports._loadNodeExtensionModule = _loadNodeExtensionModule;
 exports._npmInstallInFolder = _npmInstallInFolder;

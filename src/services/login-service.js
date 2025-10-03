@@ -216,27 +216,27 @@ define(function (require, exports, module) {
         }
     }
 
-    async function _getLinuxDeviceID() {
-        const LINUX_DEVICE_ID_FILE = Phoenix.VFS.getTauriVirtualPath('/etc/machine-id');
-        const result = await Phoenix.VFS.readFileResolves(LINUX_DEVICE_ID_FILE, 'utf8');
-        if(result.error || !result.data) {
-            logger.reportError(result.error, `Failed to read machine-id file for licensing`);
-            return null;
-        }
-        return KernalModeTrust.generateDataSignature(result.data.trim()); // \n and spaces are trimmed, just id please
-    }
-
-    let deviceIDCached = null;
+    let deviceIDCached = undefined;
     async function getDeviceID() {
         if(!Phoenix.isNativeApp) {
             // We only grant device licenses to desktop apps. Browsers cannot be uniquely device identified obviously.
             return null;
         }
-        if(deviceIDCached) {
+        if(deviceIDCached !== undefined) {
             return deviceIDCached;
         }
-        switch (Phoenix.platform) {
-        case 'linux': deviceIDCached = await _getLinuxDeviceID();
+        try {
+            const deviceID = await NodeUtils.getDeviceID();
+            if(!deviceID) {
+                deviceIDCached = null;
+                Metrics.countEvent(Metrics.EVENT_TYPE.AUTH, "deviceID", "nullErr");
+                return null;
+            }
+            deviceIDCached = KernalModeTrust.generateDataSignature(deviceID);
+        } catch (e) {
+            logger.reportError(e, "failed to sign deviceID");
+            Metrics.countEvent(Metrics.EVENT_TYPE.AUTH, "deviceID", "SignErr");
+            deviceIDCached = null;
         }
         return deviceIDCached;
     }
