@@ -1167,6 +1167,61 @@ function RemoteFunctions(config = {}) {
         return true;
     }
 
+    // the icons used in the live preview edit mode features
+    const ICONS = {
+        ai: `
+        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0,0,256,256">
+            <g fill="#fffbfb" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(4,4)"><path d="M30.701,41.663l-2.246,5.145c-0.864,1.978 -3.6,1.978 -4.464,0l-2.247,-5.145c-1.999,-4.579 -5.598,-8.224 -10.086,-10.216l-6.183,-2.745c-1.966,-0.873 -1.966,-3.733 0,-4.605l5.99,-2.659c4.604,-2.044 8.267,-5.824 10.232,-10.559l2.276,-5.483c0.844,-2.035 3.656,-2.035 4.5,0l2.276,5.483c1.965,4.735 5.628,8.515 10.232,10.559l5.99,2.659c1.966,0.873 1.966,3.733 0,4.605l-6.183,2.745c-4.489,1.992 -8.088,5.637 -10.087,10.216z"></path><path d="M30.701,41.663l-2.246,5.145c-0.864,1.978 -3.6,1.978 -4.464,0l-2.247,-5.145c-1.999,-4.579 -5.598,-8.224 -10.086,-10.216l-6.183,-2.745c-1.966,-0.873 -1.966,-3.733 0,-4.605l5.99,-2.659c4.604,-2.044 8.267,-5.824 10.232,-10.559l2.276,-5.483c0.844,-2.035 3.656,-2.035 4.5,0l2.276,5.483c1.965,4.735 5.628,8.515 10.232,10.559l5.99,2.659c1.966,0.873 1.966,3.733 0,4.605l-6.183,2.745c-4.489,1.992 -8.088,5.637 -10.087,10.216z"></path><g><path d="M51.578,57.887l-0.632,1.448c-0.462,1.06 -1.93,1.06 -2.393,0l-0.632,-1.448c-1.126,-2.582 -3.155,-4.637 -5.686,-5.762l-1.946,-0.865c-1.052,-0.468 -1.052,-1.998 0,-2.465l1.838,-0.816c2.596,-1.153 4.661,-3.285 5.768,-5.955l0.649,-1.565c0.452,-1.091 1.96,-1.091 2.412,0l0.649,1.565c1.107,2.669 3.172,4.801 5.768,5.955l1.837,0.816c1.053,0.468 1.053,1.998 0,2.465l-1.946,0.865c-2.531,1.125 -4.56,3.18 -5.686,5.762z"></path><path d="M51.578,57.887l-0.632,1.448c-0.462,1.06 -1.93,1.06 -2.393,0l-0.632,-1.448c-1.126,-2.582 -3.155,-4.637 -5.686,-5.762l-1.946,-0.865c-1.052,-0.468 -1.052,-1.998 0,-2.465l1.838,-0.816c2.596,-1.153 4.661,-3.285 5.768,-5.955l0.649,-1.565c0.452,-1.091 1.96,-1.091 2.412,0l0.649,1.565c1.107,2.669 3.172,4.801 5.768,5.955l1.837,0.816c1.053,0.468 1.053,1.998 0,2.465l-1.946,0.865c-2.531,1.125 -4.56,3.18 -5.686,5.762z"></path></g></g></g>
+        </svg>
+        `,
+
+        arrowUp: `
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.59 5.58L20 12l-8-8-8 8z"/>
+        </svg>
+      `,
+
+        edit: `
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+        </svg>
+      `,
+
+        duplicate: `
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M18 3H4C3.44772 3 3 3.44772 3 4V18C3 18.5523 2.55228 19 2 19C1.44772 19 1 18.5523 1 18V4C1 2.34315 2.34315 1 4 1H18C18.5523 1 19 1.44772 19 2C19 2.55228 18.5523 3 18 3Z"/>
+          <path d="M13 11C13 10.4477 13.4477 10 14 10C14.5523 10 15 10.4477 15 11V13H17C17.5523 13 18 13.4477 18 14C18 14.5523 17.5523 15 17 15H15V17C15 17.5523 14.5523 18 14 18C13.4477 18 13 17.5523 13 17V15H11C10.4477 15 10 14.5523 10 14C10 13.4477 10.4477 13 11 13H13V11Z"/>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M20 5C21.6569 5 23 6.34315 23 8V20C23 21.6569 21.6569 23 20 23H8C6.34315 23 5 21.6569 5 20V8C5 6.34315 6.34315 5 8 5H20ZM20 7C20.5523 7 21 7.44772 21 8V20C21 20.5523 20.5523 21 20 21H8C7.44772 21 7 20.5523 7 20V8C7 7.44772 7.44772 7 8 7H20Z"/>
+        </svg>
+      `,
+
+        trash: `
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M6 7V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2h3v2h-2l-1.5 12.5a2 2 0 0
+          1-2 1.5H8.5a2 2 0 0 1-2-1.5L5 9H3V7h3zm2 0h8V5H8v2z"/>
+        </svg>
+      `,
+
+        imageGallery: `
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+          <path d="M1 3v16h2V5h16V3H1z"/>
+        </svg>
+      `,
+
+        selectImageFromComputer: `
+        <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+          <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/>
+        </svg>
+      `,
+
+        downloadImage: `
+        <svg viewBox="0 0 640 640" fill="currentColor">
+          <path d="M352 96C352 78.3 337.7 64 320 64C302.3 64 288 78.3 288 96L288 306.7L246.6 265.3C234.1 252.8 213.8 252.8 201.3 265.3C188.8 277.8 188.8 298.1 201.3 310.6L297.3 406.6C309.8 419.1 330.1 419.1 342.6 406.6L438.6 310.6C451.1 298.1 451.1 277.8 438.6 265.3C426.1 252.8 405.8 252.8 393.3 265.3L352 306.7L352 96zM160 384C124.7 384 96 412.7 96 448L96 480C96 515.3 124.7 544 160 544L480 544C515.3 544 544 515.3 544 480L544 448C544 412.7 515.3 384 480 384L433.1 384L376.5 440.6C345.3 471.8 294.6 471.8 263.4 440.6L206.9 384L160 384zM464 440C477.3 440 488 450.7 488 464C488 477.3 477.3 488 464 488C450.7 488 440 477.3 440 464C440 450.7 450.7 440 464 440z"/>
+        </svg>
+      `
+    };
+
     /**
      * This is for the advanced DOM options that appears when a DOM element is clicked
      * advanced options like: 'select parent', 'duplicate', 'delete'
@@ -1237,49 +1292,6 @@ function RemoteFunctions(config = {}) {
             // check which options should be shown to determine box width
             const showEditTextOption = _shouldShowEditTextOption(this.element);
             const showSelectParentOption = _shouldShowSelectParentOption(this.element);
-
-            // the icons that is displayed in the box
-            const ICONS = {
-                ai: `
-                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0,0,256,256">
-                    <g fill="#fffbfb" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(4,4)"><path d="M30.701,41.663l-2.246,5.145c-0.864,1.978 -3.6,1.978 -4.464,0l-2.247,-5.145c-1.999,-4.579 -5.598,-8.224 -10.086,-10.216l-6.183,-2.745c-1.966,-0.873 -1.966,-3.733 0,-4.605l5.99,-2.659c4.604,-2.044 8.267,-5.824 10.232,-10.559l2.276,-5.483c0.844,-2.035 3.656,-2.035 4.5,0l2.276,5.483c1.965,4.735 5.628,8.515 10.232,10.559l5.99,2.659c1.966,0.873 1.966,3.733 0,4.605l-6.183,2.745c-4.489,1.992 -8.088,5.637 -10.087,10.216z"></path><path d="M30.701,41.663l-2.246,5.145c-0.864,1.978 -3.6,1.978 -4.464,0l-2.247,-5.145c-1.999,-4.579 -5.598,-8.224 -10.086,-10.216l-6.183,-2.745c-1.966,-0.873 -1.966,-3.733 0,-4.605l5.99,-2.659c4.604,-2.044 8.267,-5.824 10.232,-10.559l2.276,-5.483c0.844,-2.035 3.656,-2.035 4.5,0l2.276,5.483c1.965,4.735 5.628,8.515 10.232,10.559l5.99,2.659c1.966,0.873 1.966,3.733 0,4.605l-6.183,2.745c-4.489,1.992 -8.088,5.637 -10.087,10.216z"></path><g><path d="M51.578,57.887l-0.632,1.448c-0.462,1.06 -1.93,1.06 -2.393,0l-0.632,-1.448c-1.126,-2.582 -3.155,-4.637 -5.686,-5.762l-1.946,-0.865c-1.052,-0.468 -1.052,-1.998 0,-2.465l1.838,-0.816c2.596,-1.153 4.661,-3.285 5.768,-5.955l0.649,-1.565c0.452,-1.091 1.96,-1.091 2.412,0l0.649,1.565c1.107,2.669 3.172,4.801 5.768,5.955l1.837,0.816c1.053,0.468 1.053,1.998 0,2.465l-1.946,0.865c-2.531,1.125 -4.56,3.18 -5.686,5.762z"></path><path d="M51.578,57.887l-0.632,1.448c-0.462,1.06 -1.93,1.06 -2.393,0l-0.632,-1.448c-1.126,-2.582 -3.155,-4.637 -5.686,-5.762l-1.946,-0.865c-1.052,-0.468 -1.052,-1.998 0,-2.465l1.838,-0.816c2.596,-1.153 4.661,-3.285 5.768,-5.955l0.649,-1.565c0.452,-1.091 1.96,-1.091 2.412,0l0.649,1.565c1.107,2.669 3.172,4.801 5.768,5.955l1.837,0.816c1.053,0.468 1.053,1.998 0,2.465l-1.946,0.865c-2.531,1.125 -4.56,3.18 -5.686,5.762z"></path></g></g></g>
-                </svg>
-                `,
-
-                arrowUp: `
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.59 5.58L20 12l-8-8-8 8z"/>
-                </svg>
-              `,
-
-                edit: `
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
-                </svg>
-              `,
-
-                duplicate: `
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M18 3H4C3.44772 3 3 3.44772 3 4V18C3 18.5523 2.55228 19 2 19C1.44772 19 1 18.5523 1 18V4C1 2.34315 2.34315 1 4 1H18C18.5523 1 19 1.44772 19 2C19 2.55228 18.5523 3 18 3Z"/>
-                  <path d="M13 11C13 10.4477 13.4477 10 14 10C14.5523 10 15 10.4477 15 11V13H17C17.5523 13 18 13.4477 18 14C18 14.5523 17.5523 15 17 15H15V17C15 17.5523 14.5523 18 14 18C13.4477 18 13 17.5523 13 17V15H11C10.4477 15 10 14.5523 10 14C10 13.4477 10.4477 13 11 13H13V11Z"/>
-                  <path fill-rule="evenodd" clip-rule="evenodd" d="M20 5C21.6569 5 23 6.34315 23 8V20C23 21.6569 21.6569 23 20 23H8C6.34315 23 5 21.6569 5 20V8C5 6.34315 6.34315 5 8 5H20ZM20 7C20.5523 7 21 7.44772 21 8V20C21 20.5523 20.5523 21 20 21H8C7.44772 21 7 20.5523 7 20V8C7 7.44772 7.44772 7 8 7H20Z"/>
-                </svg>
-              `,
-
-                trash: `
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M6 7V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2h3v2h-2l-1.5 12.5a2 2 0 0
-                  1-2 1.5H8.5a2 2 0 0 1-2-1.5L5 9H3V7h3zm2 0h8V5H8v2z"/>
-                </svg>
-              `,
-
-                imageGallery: `
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
-                  <path d="M1 3v16h2V5h16V3H1z"/>
-                </svg>
-              `
-            };
 
             let content = `<div class="node-options">`;
 
@@ -2293,13 +2305,12 @@ function RemoteFunctions(config = {}) {
                         box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
                     }
 
-
                     .phoenix-ribbon-close {
                         background: rgba(21,25,36,0.65) !important;
                         border: 1px solid rgba(255,255,255,0.14) !important;
                         color: #eaeaf0 !important;
                         cursor: pointer !important;
-                        padding: 2px 6px !important;
+                        padding: 2px 7px 1px 7px !important;
                         border-radius: 6px !important;
                         margin-right: 16px !important;
                         transition: all 0.2s ease !important;
@@ -2444,9 +2455,7 @@ function RemoteFunctions(config = {}) {
                                 </div>
                                 <div class="phoenix-ribbon-select">
                                     <button class="phoenix-select-image-btn" title="${config.strings.imageGallerySelectFromComputer}">
-                                        <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
-                                            <path d="M22,16V4A2,2 0 0,0 20,2H8A2,2 0 0,0 6,4V16A2,2 0 0,0 8,18H20A2,2 0 0,0 22,16M11,12L13.5,15L17,10.5L20,15H8M2,6V20A2,2 0 0,0 4,22H18V20H4V6H2Z"/>
-                                        </svg>
+                                        ${ICONS.selectImageFromComputer}
                                     </button>
                                     <input type="file" class="phoenix-file-input" accept="image/*" style="display: none;">
                                 </div>
@@ -2867,9 +2876,7 @@ function RemoteFunctions(config = {}) {
                 const downloadIcon = window.document.createElement('div');
                 downloadIcon.className = 'phoenix-download-icon';
                 downloadIcon.title = config.strings.imageGalleryUseImage;
-                downloadIcon.innerHTML = `<svg viewBox="0 0 640 640" fill="currentColor">
-                  <path d="M352 96C352 78.3 337.7 64 320 64C302.3 64 288 78.3 288 96L288 306.7L246.6 265.3C234.1 252.8 213.8 252.8 201.3 265.3C188.8 277.8 188.8 298.1 201.3 310.6L297.3 406.6C309.8 419.1 330.1 419.1 342.6 406.6L438.6 310.6C451.1 298.1 451.1 277.8 438.6 265.3C426.1 252.8 405.8 252.8 393.3 265.3L352 306.7L352 96zM160 384C124.7 384 96 412.7 96 448L96 480C96 515.3 124.7 544 160 544L480 544C515.3 544 544 515.3 544 480L544 448C544 412.7 515.3 384 480 384L433.1 384L376.5 440.6C345.3 471.8 294.6 471.8 263.4 440.6L206.9 384L160 384zM464 440C477.3 440 488 450.7 488 464C488 477.3 477.3 488 464 488C450.7 488 440 477.3 440 464C440 450.7 450.7 440 464 440z"/>
-                </svg>`;
+                downloadIcon.innerHTML = ICONS.downloadImage;
 
                 // when the image is clicked we download the image
                 thumbDiv.addEventListener('click', (e) => {
