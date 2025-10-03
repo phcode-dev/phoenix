@@ -259,7 +259,7 @@ function RemoteFunctions(config = {}) {
      * @param {DOMElement} element - the HTML DOM element that was clicked (should be an image)
      */
     function _handleImageGalleryOptionClick(event, element) {
-        if (!_imageRibbonGallery && shouldShowImageRibbon()) {
+        if (!_imageRibbonGallery) {
             _imageRibbonGallery = new ImageRibbonGallery(element);
         }
     }
@@ -3380,12 +3380,6 @@ function RemoteFunctions(config = {}) {
         return getHighlightMode() !== "click";
     }
 
-    // helper function to check if image ribbon gallery should be shown
-    function shouldShowImageRibbon() {
-        if (_imageRibbonGallery) { return false; }
-        return config.imageRibbon !== false;
-    }
-
     // helper function to clear element background highlighting
     function clearElementBackground(element) {
         if (element._originalBackgroundColor !== undefined) {
@@ -4022,23 +4016,12 @@ function RemoteFunctions(config = {}) {
         const highlightModeChanged = oldHighlightMode !== newHighlightMode;
         const isProStatusChanged = oldConfig.isProUser !== config.isProUser;
         const highlightSettingChanged = oldConfig.highlight !== config.highlight;
-        const imageRibbonJustEnabled = !oldConfig.imageRibbon && config.imageRibbon;
-
-        // Handle significant configuration changes
+        // Handle configuration changes
         if (highlightModeChanged || isProStatusChanged || highlightSettingChanged) {
             _handleConfigurationChange();
         }
 
-        // if user enabled the image ribbon setting and an image is selected, then we show the image ribbon
-        if (imageRibbonJustEnabled && previouslyClickedElement &&
-            previouslyClickedElement.tagName.toLowerCase() === 'img') {
-            if (!_imageRibbonGallery) {
-                _imageRibbonGallery = new ImageRibbonGallery(previouslyClickedElement);
-            }
-        }
-
         _updateEventListeners();
-
         return JSON.stringify(config);
     }
 
