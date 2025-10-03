@@ -504,6 +504,9 @@ define(function (require, exports, module) {
     /** Shows the sidebar */
     exports.SHOW_SIDEBAR                = "view.showSidebar";           // SidebarView.js               show()
 
+    /** Reinstalls credentials in keychain */
+    exports.REINSTALL_CREDS             = "debug.reinstallCreds";       // login-service.js             handleReinstallCreds()
+
     // commands
     /** Initializes a new git repository */
     exports.CMD_GIT_INIT = "git-init";
