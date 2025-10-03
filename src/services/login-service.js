@@ -585,15 +585,16 @@ define(function (require, exports, module) {
             return serverEntitlements;
         }
 
-        // User has active trial
+        // now we need to grant trial, as user is entitled to trial if he is here.
+        // User has active server plan(either with login or device license)
         if (serverEntitlements && serverEntitlements.plan) {
-            // Logged-in user with trial
             if (serverEntitlements.plan.paidSubscriber) {
-                // Already a paid subscriber, return as-is
+                // Already a paid subscriber(or has device license), return as-is
+                // never inject trail data in this case.
                 return serverEntitlements;
             }
             // Enhance entitlements for trial user
-            // ie if any entitlement has valid till expired, we need to deactivate that entitlement
+            // user in not a paid subscriber(nor he has device license), inject trial
             return {
                 ...serverEntitlements,
                 plan: {
@@ -617,7 +618,7 @@ define(function (require, exports, module) {
             };
         }
 
-        // Non-logged-in user with trial - return synthetic entitlements
+        // Non-logged-in, non licensed user with trial - return synthetic entitlements
         return {
             plan: {
                 paidSubscriber: true,
