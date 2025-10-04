@@ -31,7 +31,10 @@ define(function (require, exports, module) {
     const ProjectManager = require("project/ProjectManager");
     const FileSystem = require("filesystem/FileSystem");
     const PathUtils = require("thirdparty/path-utils/path-utils");
+    const Dialogs = require("widgets/Dialogs");
     const ProDialogs = require("services/pro-dialogs");
+    const ImageFolderDialogTemplate = require("text!htmlContent/image-folder-dialog.html");
+
 
     const KernalModeTrust = window.KernalModeTrust;
     if(!KernalModeTrust){
@@ -757,52 +760,99 @@ define(function (require, exports, module) {
     }
 
     /**
-     * This function is called when 'use this image' button is clicked in the image ribbon gallery
-     * or user loads an image file from the computer
-     * this is responsible to download the image in the appropriate place
-     * and also change the src attribute of the element (by calling appropriate helper functions)
-     * @param {Object} message - the message object which stores all the required data for this operation
+     * Downloads image to the specified folder
+     * @private
+     * @param {Object} message - The message containing image download info
+     * @param {string} folderPath - Relative path to the folder
      */
-    function _handleUseThisImage(message) {
+    function _downloadToFolder(message, folderPath) {
+        const projectRoot = ProjectManager.getProjectRoot();
+        if (!projectRoot) {
+            console.error('No project root found');
+            return;
+        }
+
         const filename = message.filename;
         const extnName = message.extnName || "jpg";
 
-        const projectRoot = ProjectManager.getProjectRoot();
-        if (!projectRoot) { return; }
+        // the folder path should always end with /
+        if (!folderPath.endsWith('/')) {
+            folderPath += '/';
+        }
 
-        // phoenix-assets folder, all the images will be stored inside this
-        const phoenixAssetsPath = projectRoot.fullPath + "phoenix-code-assets/";
-        const phoenixAssetsDir = FileSystem.getDirectoryForPath(phoenixAssetsPath);
+        const targetPath = projectRoot.fullPath + folderPath;
+        const targetDir = FileSystem.getDirectoryForPath(targetPath);
 
-        // check if the phoenix-assets dir exists
-        // if present, download the image inside it, if not create the dir and then download the image inside it
-        phoenixAssetsDir.exists((err, exists) => {
+        // the directory name that user wrote, first check if it exists or not
+        // if it doesn't exist we create it and then download the image inside it
+        targetDir.exists((err, exists) => {
             if (err) { return; }
 
             if (!exists) {
-                phoenixAssetsDir.create((err) => {
-                    if (err) {
-                        console.error('Error creating phoenix-code-assets directory:', err);
-                        return;
-                    }
-                    _downloadImageToPhoenixAssets(message, filename, extnName, phoenixAssetsDir);
+                targetDir.create((err) => {
+                    if (err) { return; }
+                    _downloadImageToDirectory(message, filename, extnName, targetDir);
                 });
             } else {
-                _downloadImageToPhoenixAssets(message, filename, extnName, phoenixAssetsDir);
+                _downloadImageToDirectory(message, filename, extnName, targetDir);
             }
         });
     }
 
     /**
-     * Helper function to download image to phoenix-assets folder
+     * This function is called when 'use this image' button is clicked in the image ribbon gallery
+     * or user loads an image file from the computer
+     * this is responsible to download the image in the appropriate place
+     * and also change the src attribute of the element (by calling appropriate helper functions)
+     *
+     * @param {Object} message - the message object which stores all the required data for this operation
      */
-    function _downloadImageToPhoenixAssets(message, filename, extnName, phoenixAssetsDir) {
-        getUniqueFilename(phoenixAssetsDir.fullPath, filename, extnName).then((uniqueFilename) => {
+    function _handleUseThisImage(message) {
+        // show the dialog with a text box to select a folder
+        // dialog html is written in 'image-folder-dialog.html'
+        const dialog = Dialogs.showModalDialogUsingTemplate(ImageFolderDialogTemplate, false);
+        const $dlg = dialog.getElement();
+        const $input = $dlg.find("#folder-path-input");
+
+        // focus the input box
+        setTimeout(function() {
+            $input.focus();
+        }, 100);
+
+        // handle dialog button clicks
+        $dlg.one("buttonClick", function(e, buttonId) {
+            if (buttonId === Dialogs.DIALOG_BTN_OK) {
+                const folderPath = $input.val().trim();
+                dialog.close();
+                // if folder path is specified we download in that folder
+                // else we download in the project root
+                if (folderPath) {
+                    _downloadToFolder(message, folderPath);
+                } else {
+                    _downloadToFolder(message, '');
+                }
+            } else if (buttonId === Dialogs.DIALOG_BTN_CANCEL) {
+                // if cancel is clicked, we abort the download
+                dialog.close();
+            }
+        });
+    }
+
+    /**
+     * Helper function to download image to the specified directory
+     *
+     * @param {Object} message - Message containing image download info
+     * @param {string} filename - Name of the image file
+     * @param {string} extnName - File extension (e.g., "jpg")
+     * @param {Directory} targetDir - Target directory to save the image
+     */
+    function _downloadImageToDirectory(message, filename, extnName, targetDir) {
+        getUniqueFilename(targetDir.fullPath, filename, extnName).then((uniqueFilename) => {
             // check if the image is loaded from computer or from remote
             if (message.isLocalFile && message.imageData) {
-                _handleUseThisImageLocalFiles(message, uniqueFilename, phoenixAssetsDir);
+                _handleUseThisImageLocalFiles(message, uniqueFilename, targetDir);
             } else {
-                _handleUseThisImageRemote(message, uniqueFilename, phoenixAssetsDir);
+                _handleUseThisImageRemote(message, uniqueFilename, targetDir);
             }
         }).catch(error => {
             console.error('Something went wrong when trying to use this image', error);
