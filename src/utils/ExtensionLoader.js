@@ -57,6 +57,7 @@ define(function (require, exports, module) {
         DefaultExtensions = JSON.parse(require("text!extensions/default/DefaultExtensions.json"));
 
     const desktopOnlyExtensions = DefaultExtensions.desktopOnly;
+    const dontLoadExtensionIDs = new Set(DefaultExtensions.dontLoadExtensions.extensionIDs);
     const DefaultExtensionsList = Phoenix.isNativeApp ?
         [...DefaultExtensions.defaultExtensionsList, ...desktopOnlyExtensions]:
         DefaultExtensions.defaultExtensionsList;
@@ -419,6 +420,11 @@ define(function (require, exports, module) {
                 // No special handling for themes... Let the promise propagate into the ExtensionManager
                 if (metadata && metadata.theme) {
                     return;
+                }
+                if (dontLoadExtensionIDs.has(metadata.name)) {
+                    logger.leaveTrail("skipping extension in dontLoadExtensions list: " + metadata.name);
+                    console.warn("skipping extension in dontLoadExtensions list: " + metadata.name);
+                    return new $.Deferred().reject("disabled").promise();
                 }
 
                 if (!metadata.disabled) {
