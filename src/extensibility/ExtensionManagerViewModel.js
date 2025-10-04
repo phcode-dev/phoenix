@@ -26,11 +26,13 @@ define(function (require, exports, module) {
 
     var _ = require("thirdparty/lodash");
 
-    var ExtensionManager    = require("extensibility/ExtensionManager"),
-        registry_utils      = require("extensibility/registry_utils"),
-        EventDispatcher     = require("utils/EventDispatcher"),
-        Strings             = require("strings"),
-        PreferencesManager  = require("preferences/PreferencesManager");
+    const ExtensionManager    = require("extensibility/ExtensionManager"),
+        registry_utils        = require("extensibility/registry_utils"),
+        EventDispatcher        = require("utils/EventDispatcher"),
+        Strings                = require("strings"),
+        PreferencesManager     = require("preferences/PreferencesManager"),
+        DefaultExtensions      = JSON.parse(require("text!extensions/default/DefaultExtensions.json")),
+        dontLoadExtensionIDs   = new Set(DefaultExtensions.dontLoadExtensions.extensionIDs);
 
     /**
      * @private
@@ -307,6 +309,9 @@ define(function (require, exports, module) {
                 return entry.registryInfo && entry.registryInfo.metadata.theme;
 
             })
+            .filter(function (entry) {
+                return !dontLoadExtensionIDs.has(entry.registryInfo.metadata.name);
+            })
             .map(function (entry) {
                 return entry.registryInfo.metadata.name;
             });
@@ -555,6 +560,9 @@ define(function (require, exports, module) {
             .filter(function (key) {
                 return self.extensions[key].installInfo &&
                     self.extensions[key].installInfo.locationType === ExtensionManager.LOCATION_DEFAULT;
+            })
+            .filter(function (key) {
+                return !dontLoadExtensionIDs.has(key);
             });
         this._sortFullSet();
         this._setInitialFilter();
