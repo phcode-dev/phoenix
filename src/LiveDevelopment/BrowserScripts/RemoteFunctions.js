@@ -128,8 +128,8 @@ function RemoteFunctions(config = {}) {
 
         if(element && // element should exist
            element.hasAttribute("data-brackets-id") && // should have the data-brackets-id attribute
-           element.tagName !== "BODY" && // shouldn't be the body tag
-           element.tagName !== "HTML" && // shouldn't be the HTML tag
+           element.tagName.toLowerCase() !== "body" && // shouldn't be the body tag
+           element.tagName.toLowerCase() !== "html" && // shouldn't be the HTML tag
            !_isInsideHeadTag(element)) { // shouldn't be inside the head tag like meta tags and all
             return true;
         }
@@ -142,9 +142,22 @@ function RemoteFunctions(config = {}) {
     function _isInsideHeadTag(element) {
         let parent = element;
         while (parent && parent !== window.document) {
-            if (parent.tagName === "HEAD") {
+            if (parent.tagName.toLowerCase() === "head") {
                 // allow <style> tags inside <head>
-                return element.tagName !== "STYLE";
+                return element.tagName.toLowerCase() !== "style";
+            }
+            parent = parent.parentElement;
+        }
+        return false;
+    }
+
+    // helper function to check if an element is inside an SVG tag
+    // we need this because SVG elements don't support contenteditable
+    function _isInsideSVGTag(element) {
+        let parent = element;
+        while (parent && parent !== window.document) {
+            if (parent.tagName.toLowerCase() === "svg") {
+                return true;
             }
             parent = parent.parentElement;
         }
@@ -188,9 +201,7 @@ function RemoteFunctions(config = {}) {
         var html = window.document.documentElement;
         return (
             rect.top >= 0 &&
-            rect.left >= 0 &&
-            rect.bottom <= (window.innerHeight || html.clientHeight) &&
-            rect.right <= (window.innerWidth || html.clientWidth)
+            rect.bottom <= (window.innerHeight || html.clientHeight)
         );
     }
 
@@ -239,6 +250,18 @@ function RemoteFunctions(config = {}) {
         // make sure there is no existing AI prompt box, and no other box as well
         dismissAllUIBoxes();
         _aiPromptBox = new AIPromptBox(element); // create a new one
+    }
+
+    /**
+     * This function gets called when the image gallery button is clicked
+     * it shows the image ribbon gallery at the bottom of the live preview
+     * @param {Event} event
+     * @param {DOMElement} element - the HTML DOM element that was clicked (should be an image)
+     */
+    function _handleImageGalleryOptionClick(event, element) {
+        if (!_imageRibbonGallery) {
+            _imageRibbonGallery = new ImageRibbonGallery(element);
+        }
     }
 
     /**
@@ -297,7 +320,14 @@ function RemoteFunctions(config = {}) {
 
         const parentElement = element.parentElement;
         if (isElementEditable(parentElement)) {
-            parentElement.click();
+            // Check if parent element has .click() method (HTML elements)
+            // SVG elements don't have .click() method, so we use _selectElement for them
+            if (typeof parentElement.click === 'function') {
+                parentElement.click();
+            } else {
+                activateHoverLock();
+                _selectElement(parentElement);
+            }
         } else {
             console.error("The TagID might be unavailable or the parent element tag is directly body or html");
         }
@@ -321,6 +351,8 @@ function RemoteFunctions(config = {}) {
             _handleDeleteOptionClick(e, element);
         } else if (action === "ai") {
             _handleAIOptionClick(e, element);
+        } else if (action === "image-gallery") {
+            _handleImageGalleryOptionClick(e, element);
         }
     }
 
@@ -1109,7 +1141,7 @@ function RemoteFunctions(config = {}) {
             "textarea"
         ];
 
-        if (voidElements.includes(tagName) || nonEditableElements.includes(tagName)) {
+        if (voidElements.includes(tagName) || nonEditableElements.includes(tagName) || _isInsideSVGTag(element)) {
             return false;
         }
 
@@ -1135,6 +1167,61 @@ function RemoteFunctions(config = {}) {
         return true;
     }
 
+    // the icons used in the live preview edit mode features
+    const ICONS = {
+        ai: `
+        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0,0,256,256">
+            <g fill="#fffbfb" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(4,4)"><path d="M30.701,41.663l-2.246,5.145c-0.864,1.978 -3.6,1.978 -4.464,0l-2.247,-5.145c-1.999,-4.579 -5.598,-8.224 -10.086,-10.216l-6.183,-2.745c-1.966,-0.873 -1.966,-3.733 0,-4.605l5.99,-2.659c4.604,-2.044 8.267,-5.824 10.232,-10.559l2.276,-5.483c0.844,-2.035 3.656,-2.035 4.5,0l2.276,5.483c1.965,4.735 5.628,8.515 10.232,10.559l5.99,2.659c1.966,0.873 1.966,3.733 0,4.605l-6.183,2.745c-4.489,1.992 -8.088,5.637 -10.087,10.216z"></path><path d="M30.701,41.663l-2.246,5.145c-0.864,1.978 -3.6,1.978 -4.464,0l-2.247,-5.145c-1.999,-4.579 -5.598,-8.224 -10.086,-10.216l-6.183,-2.745c-1.966,-0.873 -1.966,-3.733 0,-4.605l5.99,-2.659c4.604,-2.044 8.267,-5.824 10.232,-10.559l2.276,-5.483c0.844,-2.035 3.656,-2.035 4.5,0l2.276,5.483c1.965,4.735 5.628,8.515 10.232,10.559l5.99,2.659c1.966,0.873 1.966,3.733 0,4.605l-6.183,2.745c-4.489,1.992 -8.088,5.637 -10.087,10.216z"></path><g><path d="M51.578,57.887l-0.632,1.448c-0.462,1.06 -1.93,1.06 -2.393,0l-0.632,-1.448c-1.126,-2.582 -3.155,-4.637 -5.686,-5.762l-1.946,-0.865c-1.052,-0.468 -1.052,-1.998 0,-2.465l1.838,-0.816c2.596,-1.153 4.661,-3.285 5.768,-5.955l0.649,-1.565c0.452,-1.091 1.96,-1.091 2.412,0l0.649,1.565c1.107,2.669 3.172,4.801 5.768,5.955l1.837,0.816c1.053,0.468 1.053,1.998 0,2.465l-1.946,0.865c-2.531,1.125 -4.56,3.18 -5.686,5.762z"></path><path d="M51.578,57.887l-0.632,1.448c-0.462,1.06 -1.93,1.06 -2.393,0l-0.632,-1.448c-1.126,-2.582 -3.155,-4.637 -5.686,-5.762l-1.946,-0.865c-1.052,-0.468 -1.052,-1.998 0,-2.465l1.838,-0.816c2.596,-1.153 4.661,-3.285 5.768,-5.955l0.649,-1.565c0.452,-1.091 1.96,-1.091 2.412,0l0.649,1.565c1.107,2.669 3.172,4.801 5.768,5.955l1.837,0.816c1.053,0.468 1.053,1.998 0,2.465l-1.946,0.865c-2.531,1.125 -4.56,3.18 -5.686,5.762z"></path></g></g></g>
+        </svg>
+        `,
+
+        arrowUp: `
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.59 5.58L20 12l-8-8-8 8z"/>
+        </svg>
+      `,
+
+        edit: `
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+        </svg>
+      `,
+
+        duplicate: `
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M18 3H4C3.44772 3 3 3.44772 3 4V18C3 18.5523 2.55228 19 2 19C1.44772 19 1 18.5523 1 18V4C1 2.34315 2.34315 1 4 1H18C18.5523 1 19 1.44772 19 2C19 2.55228 18.5523 3 18 3Z"/>
+          <path d="M13 11C13 10.4477 13.4477 10 14 10C14.5523 10 15 10.4477 15 11V13H17C17.5523 13 18 13.4477 18 14C18 14.5523 17.5523 15 17 15H15V17C15 17.5523 14.5523 18 14 18C13.4477 18 13 17.5523 13 17V15H11C10.4477 15 10 14.5523 10 14C10 13.4477 10.4477 13 11 13H13V11Z"/>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M20 5C21.6569 5 23 6.34315 23 8V20C23 21.6569 21.6569 23 20 23H8C6.34315 23 5 21.6569 5 20V8C5 6.34315 6.34315 5 8 5H20ZM20 7C20.5523 7 21 7.44772 21 8V20C21 20.5523 20.5523 21 20 21H8C7.44772 21 7 20.5523 7 20V8C7 7.44772 7.44772 7 8 7H20Z"/>
+        </svg>
+      `,
+
+        trash: `
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M6 7V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2h3v2h-2l-1.5 12.5a2 2 0 0
+          1-2 1.5H8.5a2 2 0 0 1-2-1.5L5 9H3V7h3zm2 0h8V5H8v2z"/>
+        </svg>
+      `,
+
+        imageGallery: `
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+          <path d="M1 3v16h2V5h16V3H1z"/>
+        </svg>
+      `,
+
+        selectImageFromComputer: `
+        <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+          <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/>
+        </svg>
+      `,
+
+        downloadImage: `
+        <svg viewBox="0 0 640 640" fill="currentColor">
+          <path d="M352 96C352 78.3 337.7 64 320 64C302.3 64 288 78.3 288 96L288 306.7L246.6 265.3C234.1 252.8 213.8 252.8 201.3 265.3C188.8 277.8 188.8 298.1 201.3 310.6L297.3 406.6C309.8 419.1 330.1 419.1 342.6 406.6L438.6 310.6C451.1 298.1 451.1 277.8 438.6 265.3C426.1 252.8 405.8 252.8 393.3 265.3L352 306.7L352 96zM160 384C124.7 384 96 412.7 96 448L96 480C96 515.3 124.7 544 160 544L480 544C515.3 544 544 515.3 544 480L544 448C544 412.7 515.3 384 480 384L433.1 384L376.5 440.6C345.3 471.8 294.6 471.8 263.4 440.6L206.9 384L160 384zM464 440C477.3 440 488 450.7 488 464C488 477.3 477.3 488 464 488C450.7 488 440 477.3 440 464C440 450.7 450.7 440 464 440z"/>
+        </svg>
+      `
+    };
+
     /**
      * This is for the advanced DOM options that appears when a DOM element is clicked
      * advanced options like: 'select parent', 'duplicate', 'delete'
@@ -1149,8 +1236,8 @@ function RemoteFunctions(config = {}) {
         _registerDragDrop: function() {
             // disable dragging on all elements and then enable it on the current element
             const allElements = document.querySelectorAll('[data-brackets-id]');
-            allElements.forEach(el => el.setAttribute("draggable", false));
-            this.element.setAttribute("draggable", true);
+            allElements.forEach(el => el.setAttribute("draggable", "false"));
+            this.element.setAttribute("draggable", "true");
 
             this.element.addEventListener("dragstart", (event) => {
                 event.stopPropagation();
@@ -1206,48 +1293,19 @@ function RemoteFunctions(config = {}) {
             const showEditTextOption = _shouldShowEditTextOption(this.element);
             const showSelectParentOption = _shouldShowSelectParentOption(this.element);
 
-            // the icons that is displayed in the box
-            const ICONS = {
-                ai: `
-                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0,0,256,256">
-                    <g fill="#fffbfb" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(4,4)"><path d="M30.701,41.663l-2.246,5.145c-0.864,1.978 -3.6,1.978 -4.464,0l-2.247,-5.145c-1.999,-4.579 -5.598,-8.224 -10.086,-10.216l-6.183,-2.745c-1.966,-0.873 -1.966,-3.733 0,-4.605l5.99,-2.659c4.604,-2.044 8.267,-5.824 10.232,-10.559l2.276,-5.483c0.844,-2.035 3.656,-2.035 4.5,0l2.276,5.483c1.965,4.735 5.628,8.515 10.232,10.559l5.99,2.659c1.966,0.873 1.966,3.733 0,4.605l-6.183,2.745c-4.489,1.992 -8.088,5.637 -10.087,10.216z"></path><path d="M30.701,41.663l-2.246,5.145c-0.864,1.978 -3.6,1.978 -4.464,0l-2.247,-5.145c-1.999,-4.579 -5.598,-8.224 -10.086,-10.216l-6.183,-2.745c-1.966,-0.873 -1.966,-3.733 0,-4.605l5.99,-2.659c4.604,-2.044 8.267,-5.824 10.232,-10.559l2.276,-5.483c0.844,-2.035 3.656,-2.035 4.5,0l2.276,5.483c1.965,4.735 5.628,8.515 10.232,10.559l5.99,2.659c1.966,0.873 1.966,3.733 0,4.605l-6.183,2.745c-4.489,1.992 -8.088,5.637 -10.087,10.216z"></path><g><path d="M51.578,57.887l-0.632,1.448c-0.462,1.06 -1.93,1.06 -2.393,0l-0.632,-1.448c-1.126,-2.582 -3.155,-4.637 -5.686,-5.762l-1.946,-0.865c-1.052,-0.468 -1.052,-1.998 0,-2.465l1.838,-0.816c2.596,-1.153 4.661,-3.285 5.768,-5.955l0.649,-1.565c0.452,-1.091 1.96,-1.091 2.412,0l0.649,1.565c1.107,2.669 3.172,4.801 5.768,5.955l1.837,0.816c1.053,0.468 1.053,1.998 0,2.465l-1.946,0.865c-2.531,1.125 -4.56,3.18 -5.686,5.762z"></path><path d="M51.578,57.887l-0.632,1.448c-0.462,1.06 -1.93,1.06 -2.393,0l-0.632,-1.448c-1.126,-2.582 -3.155,-4.637 -5.686,-5.762l-1.946,-0.865c-1.052,-0.468 -1.052,-1.998 0,-2.465l1.838,-0.816c2.596,-1.153 4.661,-3.285 5.768,-5.955l0.649,-1.565c0.452,-1.091 1.96,-1.091 2.412,0l0.649,1.565c1.107,2.669 3.172,4.801 5.768,5.955l1.837,0.816c1.053,0.468 1.053,1.998 0,2.465l-1.946,0.865c-2.531,1.125 -4.56,3.18 -5.686,5.762z"></path></g></g></g>
-                </svg>
-                `,
-
-                arrowUp: `
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.59 5.58L20 12l-8-8-8 8z"/>
-                </svg>
-              `,
-
-                edit: `
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
-                </svg>
-              `,
-
-                duplicate: `
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M18 3H4C3.44772 3 3 3.44772 3 4V18C3 18.5523 2.55228 19 2 19C1.44772 19 1 18.5523 1 18V4C1 2.34315 2.34315 1 4 1H18C18.5523 1 19 1.44772 19 2C19 2.55228 18.5523 3 18 3Z"/>
-                  <path d="M13 11C13 10.4477 13.4477 10 14 10C14.5523 10 15 10.4477 15 11V13H17C17.5523 13 18 13.4477 18 14C18 14.5523 17.5523 15 17 15H15V17C15 17.5523 14.5523 18 14 18C13.4477 18 13 17.5523 13 17V15H11C10.4477 15 10 14.5523 10 14C10 13.4477 10.4477 13 11 13H13V11Z"/>
-                  <path fill-rule="evenodd" clip-rule="evenodd" d="M20 5C21.6569 5 23 6.34315 23 8V20C23 21.6569 21.6569 23 20 23H8C6.34315 23 5 21.6569 5 20V8C5 6.34315 6.34315 5 8 5H20ZM20 7C20.5523 7 21 7.44772 21 8V20C21 20.5523 20.5523 21 20 21H8C7.44772 21 7 20.5523 7 20V8C7 7.44772 7.44772 7 8 7H20Z"/>
-                </svg>
-              `,
-
-                trash: `
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M6 7V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2h3v2h-2l-1.5 12.5a2 2 0 0
-                  1-2 1.5H8.5a2 2 0 0 1-2-1.5L5 9H3V7h3zm2 0h8V5H8v2z"/>
-                </svg>
-              `
-            };
-
             let content = `<div class="node-options">`;
 
             // not sure if we need to hide/show the AI icon, right now showing always
             content += `<span data-action="ai" title="${config.strings.ai}">
                     ${ICONS.ai}
                 </span>`;
+
+            // if its an image element, we show the image gallery icon
+            if (this.element && this.element.tagName.toLowerCase() === 'img') {
+                content += `<span data-action="image-gallery" title="${config.strings.imageGallery}">
+                    ${ICONS.imageGallery}
+                </span>`;
+            }
 
             // Only include select parent option if element supports it
             if (showSelectParentOption) {
@@ -1913,13 +1971,80 @@ function RemoteFunctions(config = {}) {
     };
 
     // image ribbon gallery cache, to store the last query and its results
-    // then next time we can load it from cache itself instead of making a new API call
+    const CACHE_EXPIRY_TIME = 168 * 60 * 60 * 1000; // 7 days, might need to revise this...
+    const CACHE_MAX_IMAGES = 50; // max number of images that we store in the localStorage
     const _imageGalleryCache = {
-        currentQuery: null,
-        allImages: [],
-        totalPages: 1,
-        currentPage: 1,
-        maxImages: 50
+        get currentQuery() {
+            const data = this._getFromStorage();
+            return data ? data.currentQuery : null;
+        },
+        set currentQuery(val) {
+            this._updateStorage({currentQuery: val});
+        },
+
+        get allImages() {
+            const data = this._getFromStorage();
+            return data ? data.allImages : [];
+        },
+        set allImages(val) {
+            this._updateStorage({allImages: val});
+        },
+
+        get totalPages() {
+            const data = this._getFromStorage();
+            return data ? data.totalPages : 1;
+        },
+        set totalPages(val) {
+            this._updateStorage({totalPages: val});
+        },
+
+        get currentPage() {
+            const data = this._getFromStorage();
+            return data ? data.currentPage : 1;
+        },
+        set currentPage(val) {
+            this._updateStorage({currentPage: val});
+        },
+
+
+        _getFromStorage() {
+            try {
+                const data = window.localStorage.getItem('imageGalleryCache');
+                if (!data) { return null; }
+
+                const parsed = JSON.parse(data);
+
+                if (Date.now() > parsed.expires) {
+                    window.localStorage.removeItem('imageGalleryCache');
+                    return null;
+                }
+
+                return parsed;
+            } catch (error) {
+                return null;
+            }
+        },
+
+        _updateStorage(updates) {
+            try {
+                const current = this._getFromStorage() || {};
+                const newData = {
+                    ...current,
+                    ...updates,
+                    expires: Date.now() + CACHE_EXPIRY_TIME
+                };
+                window.localStorage.setItem('imageGalleryCache', JSON.stringify(newData));
+            } catch (error) {
+                if (error.name === 'QuotaExceededError') {
+                    try {
+                        window.localStorage.removeItem('imageGalleryCache');
+                        window.localStorage.setItem('imageGalleryCache', JSON.stringify(updates));
+                    } catch (retryError) {
+                        console.error('Failed to save image cache even after clearing:', retryError);
+                    }
+                }
+            }
+        }
     };
 
     /**
@@ -1934,8 +2059,6 @@ function RemoteFunctions(config = {}) {
         this.allImages = [];
         this.imagesPerPage = 10;
         this.scrollPosition = 0;
-        this.maxWidth = '800px'; // when current image dimension is not defined we use this as unsplash images are very large
-        this.maxHeight = '600px';
 
         this.create();
     }
@@ -1967,7 +2090,6 @@ function RemoteFunctions(config = {}) {
                         backdrop-filter: blur(10px) !important;
                         -webkit-backdrop-filter: blur(10px) !important;
                         border: 1px solid rgba(255, 255, 255, 0.2) !important;
-                        border-radius: 12px !important;
                         position: relative !important;
                     }
 
@@ -1977,7 +2099,7 @@ function RemoteFunctions(config = {}) {
                         overflow: hidden !important;
                         scroll-behavior: smooth !important;
                         padding: 6px !important;
-                        top: 34px !important;
+                        top: 30px !important;
                     }
 
                     .phoenix-ribbon-row {
@@ -2020,7 +2142,6 @@ function RemoteFunctions(config = {}) {
                         color: #eaeaf0 !important;
                         background: rgba(21,25,36,0.65) !important;
                         cursor: pointer !important;
-                        backdrop-filter: blur(8px) !important;
                         font-size: 20px !important;
                         font-weight: 600 !important;
                         user-select: none !important;
@@ -2066,11 +2187,25 @@ function RemoteFunctions(config = {}) {
                         font-size: 14px !important;
                     }
 
+                    .phoenix-loading-more {
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                        min-width: 120px !important;
+                        height: 116px !important;
+                        margin-left: 2px !important;
+                        background: rgba(255,255,255,0.03) !important;
+                        border-radius: 8px !important;
+                        color: #e8eaf0 !important;
+                        font-size: 12px !important;
+                        border: 1px dashed rgba(255,255,255,0.1) !important;
+                    }
+
                     .phoenix-ribbon-header {
                         display: flex !important;
                         width: 100% !important;
                         position: absolute !important;
-                        top: 5px !important;
+                        top: 6px !important;
                     }
 
                     .phoenix-ribbon-header-left {
@@ -2086,40 +2221,66 @@ function RemoteFunctions(config = {}) {
 
                     .phoenix-ribbon-search {
                         display: flex !important;
-                        align-items: center !important;
-                        background: rgba(0,0,0,0.5) !important;
-                        padding: 5px !important;
-                        border-radius: 5px !important;
-                        margin-left: 8px !important;
+                        align-items: stretch !important;
+                        background: rgba(21,25,36,0.65) !important;
+                        padding: 0 !important;
+                        border-radius: 6px !important;
+                        margin-left: 6px !important;
+                        border: 1px solid rgba(255,255,255,0.14) !important;
+                        transition: all 0.2s ease !important;
+                        overflow: hidden !important;
+                    }
+
+                    .phoenix-ribbon-search:hover {
+                        background: rgba(21,25,36,0.85) !important;
+                        border-color: rgba(255,255,255,0.25) !important;
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+                    }
+
+                    .phoenix-ribbon-search:focus-within {
+                        background: rgba(21,25,36,0.9) !important;
+                        border-color: rgba(106,169,255,0.4) !important;
                     }
 
                     .phoenix-ribbon-search input {
                         background: transparent !important;
                         border: none !important;
                         outline: none !important;
-                        color: white !important;
-                        width: 200px !important;
+                        color: #eaeaf0 !important;
+                        width: 150px !important;
+                        padding: 2px 6px !important;
+                        border-radius: 4px 0 0 4px !important;
                     }
 
                     .phoenix-ribbon-search input::placeholder {
-                        color: rgba(255, 255, 255, 0.7) !important;
+                        color: rgba(234, 234, 240, 0.6) !important;
                         opacity: 1 !important;
                     }
 
                     .phoenix-ribbon-search input::-webkit-input-placeholder {
-                        color: rgba(255, 255, 255, 0.7) !important;
+                        color: rgba(234, 234, 240, 0.6) !important;
                     }
 
                     .phoenix-ribbon-search input::-moz-placeholder {
-                        color: rgba(255, 255, 255, 0.7) !important;
+                        color: rgba(234, 234, 240, 0.6) !important;
                         opacity: 1 !important;
                     }
 
                     .phoenix-ribbon-search-btn {
-                        background: none !important;
+                        background: transparent !important;
                         border: none !important;
-                        color: #6aa9ff !important;
+                        color: #4285F4 !important;
                         cursor: pointer !important;
+                        padding: 2px 6px !important;
+                        border-radius: 0 4px 4px 0 !important;
+                        font-size: 12px !important;
+                        font-weight: 500 !important;
+                        transition: all 0.2s ease !important;
+                        margin-left: 0 !important;
+                    }
+
+                    .phoenix-ribbon-search-btn:hover {
+                        color: #4285F4 !important;
                     }
 
                     .phoenix-ribbon-select {
@@ -2127,24 +2288,40 @@ function RemoteFunctions(config = {}) {
                     }
 
                     .phoenix-select-image-btn {
-                        background: gray !important;
-                        border: 1px solid rgba(255, 255, 255, 0.2) !important;
-                        color: #fff !important;
-                        padding: 2px 4px !important;
+                        background: rgba(21,25,36,0.65) !important;
+                        border: 1px solid rgba(255,255,255,0.14) !important;
+                        color: #eaeaf0 !important;
+                        padding: 4px 6px 2px 6px !important;
                         border-radius: 6px !important;
                         font-size: 12px !important;
                         cursor: pointer !important;
                         transition: all 0.2s ease !important;
                     }
 
+                    .phoenix-select-image-btn:hover {
+                        background: rgba(21,25,36,0.85) !important;
+                        border-color: rgba(255,255,255,0.25) !important;
+                        transform: scale(1.05) !important;
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+                    }
+
                     .phoenix-ribbon-close {
-                        background: rgba(0,0,0,0.5) !important;
-                        border: none !important;
-                        color: white !important;
+                        background: rgba(21,25,36,0.65) !important;
+                        border: 1px solid rgba(255,255,255,0.14) !important;
+                        color: #eaeaf0 !important;
                         cursor: pointer !important;
-                        padding: 4px 8px !important;
-                        border-radius: 3px !important;
+                        padding: 2px 7px 1px 7px !important;
+                        border-radius: 6px !important;
                         margin-right: 16px !important;
+                        transition: all 0.2s ease !important;
+                        font-size: 16px !important;
+                    }
+
+                    .phoenix-ribbon-close:hover {
+                        background: rgba(21,25,36,0.85) !important;
+                        border-color: rgba(255,255,255,0.25) !important;
+                        transform: scale(1.05) !important;
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
                     }
 
                     .phoenix-ribbon-attribution {
@@ -2274,14 +2451,11 @@ function RemoteFunctions(config = {}) {
                             <div class="phoenix-ribbon-header-left">
                                 <div class="phoenix-ribbon-search">
                                     <input type="text" placeholder="${config.strings.imageGallerySearchPlaceholder}" />
-                                    <button class="phoenix-ribbon-search-btn">Search</button>
+                                    <button class="phoenix-ribbon-search-btn">${config.strings.imageGallerySearchButton}</button>
                                 </div>
                                 <div class="phoenix-ribbon-select">
                                     <button class="phoenix-select-image-btn" title="${config.strings.imageGallerySelectFromComputer}">
-                                        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
-                                            <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
-                                            <path d="M12,12L10.5,13.5L8.5,11.5L6,14H18L15,11L12,12Z"/>
-                                        </svg>
+                                        ${ICONS.selectImageFromComputer}
                                     </button>
                                     <input type="file" class="phoenix-file-input" accept="image/*" style="display: none;">
                                 </div>
@@ -2334,7 +2508,7 @@ function RemoteFunctions(config = {}) {
         },
 
         _fetchFromAPI: function(searchQuery, page, append) {
-            // when we fetch from API, we clear the cache and then store a fresh copy
+            // when we fetch from API, we clear the previous query from local storage and then store a fresh copy
             if (searchQuery !== _imageGalleryCache.currentQuery) {
                 this._clearCache();
             }
@@ -2367,7 +2541,7 @@ function RemoteFunctions(config = {}) {
                         this._updateSearchInput(searchQuery);
                         this._updateCache(searchQuery, data, append);
                     } else if (!append) {
-                        this._showError('No images found');
+                        this._showError(config.strings.imageGalleryNoImages);
                     }
 
                     if (append) {
@@ -2378,7 +2552,7 @@ function RemoteFunctions(config = {}) {
                 .catch(error => {
                     console.error('Failed to fetch images:', error);
                     if (!append) {
-                        this._showError('Failed to load images');
+                        this._showError(config.strings.imageGalleryLoadError);
                     } else {
                         this._isLoadingMore = false;
                         this._hideLoadingMore();
@@ -2393,11 +2567,11 @@ function RemoteFunctions(config = {}) {
             _imageGalleryCache.currentPage = this.currentPage;
 
             if (append) {
-                // Append new results to existing cache
-                const newImages = _imageGalleryCache.allImages.concat(data.results);
+                const currentImages = _imageGalleryCache.allImages;
+                const newImages = currentImages.concat(data.results);
 
-                if (newImages.length > _imageGalleryCache.maxImages) { // max = 50
-                    _imageGalleryCache.allImages = newImages.slice(-_imageGalleryCache.maxImages);
+                if (newImages.length > CACHE_MAX_IMAGES) {
+                    _imageGalleryCache.allImages = newImages.slice(-CACHE_MAX_IMAGES);
                 } else {
                     _imageGalleryCache.allImages = newImages;
                 }
@@ -2408,11 +2582,11 @@ function RemoteFunctions(config = {}) {
         },
 
         _clearCache: function() {
-            // clear current cache when switching to new query
-            _imageGalleryCache.currentQuery = null;
-            _imageGalleryCache.allImages = [];
-            _imageGalleryCache.totalPages = 1;
-            _imageGalleryCache.currentPage = 1;
+            try {
+                window.localStorage.removeItem('imageGalleryCache');
+            } catch (error) {
+                console.error('Failed to clear image cache:', error);
+            }
         },
 
         _updateSearchInput: function(searchQuery) {
@@ -2425,7 +2599,6 @@ function RemoteFunctions(config = {}) {
         },
 
         _loadFromCache: function(searchQuery) {
-            // Check if we can load from cache for this query
             if (searchQuery === _imageGalleryCache.currentQuery && _imageGalleryCache.allImages.length > 0) {
                 this.allImages = _imageGalleryCache.allImages;
                 this.totalPages = _imageGalleryCache.totalPages;
@@ -2434,13 +2607,12 @@ function RemoteFunctions(config = {}) {
                 this._renderImages(this.allImages, false);
                 this._updateNavButtons();
                 this._updateSearchInput(searchQuery);
-                return true; // Successfully loaded from cache
+                return true;
             }
-            return false; // unable to load from cache
+            return false;
         },
 
         _loadPageFromCache: function(searchQuery, page) {
-            // check if this page is in cache
             if (searchQuery === _imageGalleryCache.currentQuery && page <= Math.ceil(_imageGalleryCache.allImages.length / 10)) {
                 const startIdx = (page - 1) * 10;
                 const endIdx = startIdx + 10;
@@ -2453,7 +2625,7 @@ function RemoteFunctions(config = {}) {
                     this._updateNavButtons();
                     this._isLoadingMore = false;
                     this._hideLoadingMore();
-                    return true; // Successfully loaded page from cache
+                    return true;
                 }
             }
             return false;
@@ -2526,7 +2698,7 @@ function RemoteFunctions(config = {}) {
             const rowElement = this._shadow.querySelector('.phoenix-ribbon-row');
             if (!rowElement) { return; }
 
-            rowElement.innerHTML = 'Loading images...';
+            rowElement.innerHTML = config.strings.imageGalleryLoadingInitial;
             rowElement.className = 'phoenix-ribbon-row phoenix-ribbon-loading';
         },
 
@@ -2537,20 +2709,7 @@ function RemoteFunctions(config = {}) {
             // when loading more images we need to show the message at the end of the image ribbon
             const loadingIndicator = window.document.createElement('div');
             loadingIndicator.className = 'phoenix-loading-more';
-            loadingIndicator.style.cssText = `
-                display: flex !important;
-                align-items: center !important;
-                justify-content: center !important;
-                min-width: 120px !important;
-                height: 116px !important;
-                margin-left: 2px !important;
-                background: rgba(255,255,255,0.03) !important;
-                border-radius: 8px !important;
-                color: #e8eaf0 !important;
-                font-size: 12px !important;
-                border: 1px dashed rgba(255,255,255,0.1) !important;
-            `;
-            loadingIndicator.textContent = 'Loading...';
+            loadingIndicator.textContent = config.strings.imageGalleryLoadingMore;
             rowElement.appendChild(loadingIndicator);
         },
 
@@ -2674,8 +2833,8 @@ function RemoteFunctions(config = {}) {
 
                 // show hovered image along with dimensions
                 thumbDiv.addEventListener('mouseenter', () => {
-                    this.element.style.width = this._originalImageStyle.width || this.maxWidth;
-                    this.element.style.height = this._originalImageStyle.height || this.maxHeight;
+                    this.element.style.width = this._originalImageStyle.width;
+                    this.element.style.height = this._originalImageStyle.height;
 
                     this.element.style.objectFit = this._originalImageStyle.objectFit || 'cover';
                     this.element.src = image.url || image.thumb_url;
@@ -2717,9 +2876,7 @@ function RemoteFunctions(config = {}) {
                 const downloadIcon = window.document.createElement('div');
                 downloadIcon.className = 'phoenix-download-icon';
                 downloadIcon.title = config.strings.imageGalleryUseImage;
-                downloadIcon.innerHTML = `<svg viewBox="0 0 640 640" fill="currentColor">
-                  <path d="M352 96C352 78.3 337.7 64 320 64C302.3 64 288 78.3 288 96L288 306.7L246.6 265.3C234.1 252.8 213.8 252.8 201.3 265.3C188.8 277.8 188.8 298.1 201.3 310.6L297.3 406.6C309.8 419.1 330.1 419.1 342.6 406.6L438.6 310.6C451.1 298.1 451.1 277.8 438.6 265.3C426.1 252.8 405.8 252.8 393.3 265.3L352 306.7L352 96zM160 384C124.7 384 96 412.7 96 448L96 480C96 515.3 124.7 544 160 544L480 544C515.3 544 544 515.3 544 480L544 448C544 412.7 515.3 384 480 384L433.1 384L376.5 440.6C345.3 471.8 294.6 471.8 263.4 440.6L206.9 384L160 384zM464 440C477.3 440 488 450.7 488 464C488 477.3 477.3 488 464 488C450.7 488 440 477.3 440 464C440 450.7 450.7 440 464 440z"/>
-                </svg>`;
+                downloadIcon.innerHTML = ICONS.downloadImage;
 
                 // when the image is clicked we download the image
                 thumbDiv.addEventListener('click', (e) => {
@@ -2735,12 +2892,7 @@ function RemoteFunctions(config = {}) {
                     const filename = this._generateFilename(image);
                     const extnName = ".jpg";
 
-                    const targetWidth = this._originalImageStyle.width || this.maxWidth;
-                    const targetHeight = this._originalImageStyle.height || this.maxHeight;
-                    const widthNum = parseInt(targetWidth);
-                    const heightNum = parseInt(targetHeight);
-
-                    const downloadUrl = image.url ? `${image.url}?w=${widthNum}&h=${heightNum}&fit=crop` : image.thumb_url;
+                    const downloadUrl = image.url || image.thumb_url;
                     this._useImage(downloadUrl, filename, extnName, false, thumbDiv);
                 });
 
@@ -3147,9 +3299,7 @@ function RemoteFunctions(config = {}) {
             window.document.body.appendChild(highlight);
         },
 
-        // shouldAutoScroll is whether to scroll page to element if not in view
-        // true when user clicks on the source code of some element, in that case we want to scroll the live preview
-        add: function (element, doAnimation, shouldAutoScroll) {
+        add: function (element, doAnimation) {
             if (this._elementExists(element) || element === window.document) {
                 return;
             }
@@ -3157,15 +3307,7 @@ function RemoteFunctions(config = {}) {
                 _trigger(element, "highlight", 1);
             }
 
-            if (shouldAutoScroll && (!window.event || window.event instanceof MessageEvent) && !isInViewport(element)) {
-                var top = getDocumentOffsetTop(element);
-                if (top) {
-                    top -= (window.innerHeight / 2);
-                    window.scrollTo(0, top);
-                }
-            }
             this.elements.push(element);
-
             this._makeHighlightDiv(element, doAnimation);
         },
 
@@ -3199,7 +3341,7 @@ function RemoteFunctions(config = {}) {
 
             this.clear();
             for (i = 0; i < highlighted.length; i++) {
-                this.add(highlighted[i], false, false); // 3rd arg is for auto-scroll
+                this.add(highlighted[i], false);
             }
         }
     };
@@ -3212,12 +3354,13 @@ function RemoteFunctions(config = {}) {
     var _aiPromptBox;
     var _imageRibbonGallery;
     var _setup = false;
+    var _hoverLockTimer = null;
 
     function onMouseOver(event) {
         if (_validEvent(event)) {
             const element = event.target;
             if(isElementEditable(element) && element.nodeType === Node.ELEMENT_NODE ) {
-                _localHighlight.add(element, true, false); // false means no-auto scroll
+                _localHighlight.add(element, true);
             }
         }
     }
@@ -3242,12 +3385,6 @@ function RemoteFunctions(config = {}) {
     // helper function to check if highlights should show on hover
     function shouldShowHighlightOnHover() {
         return getHighlightMode() !== "click";
-    }
-
-    // helper function to check if image ribbon gallery should be shown
-    function shouldShowImageRibbon() {
-        if (_imageRibbonGallery) { return false; }
-        return config.imageRibbon !== false;
     }
 
     // helper function to clear element background highlighting
@@ -3289,7 +3426,7 @@ function RemoteFunctions(config = {}) {
             element._originalBackgroundColor = element.style.backgroundColor;
             element.style.backgroundColor = "rgba(0, 162, 255, 0.2)";
 
-            _hoverHighlight.add(element, false, false); // false means no auto-scroll
+            _hoverHighlight.add(element, false);
 
             // Create info box for the hovered element
             dismissNodeInfoBox();
@@ -3314,6 +3451,21 @@ function RemoteFunctions(config = {}) {
         }
     }
 
+    function scrollElementToViewPort(element) {
+        if (!element) {
+            return;
+        }
+
+        // Check if element is in viewport, if not scroll to it
+        if (!isInViewport(element)) {
+            let top = getDocumentOffsetTop(element);
+            if (top) {
+                top -= (window.innerHeight / 2);
+                window.scrollTo(0, top);
+            }
+        }
+    }
+
     /**
      * this function is responsible to select an element in the live preview
      * @param {Element} element - The DOM element to select
@@ -3322,9 +3474,15 @@ function RemoteFunctions(config = {}) {
         // dismiss all UI boxes and cleanup previous element state when selecting a different element
         dismissUIAndCleanupState();
         dismissImageRibbonGallery();
+
+        // this should always happen before isElementEditable check because this is not a live preview edit feature
+        // this should also be there when users are in highlight mode
+        scrollElementToViewPort(element);
+
         if(!isElementEditable(element)) {
             return false;
         }
+
 
         // make sure that the element is actually visible to the user
         if (isElementVisible(element)) {
@@ -3333,13 +3491,6 @@ function RemoteFunctions(config = {}) {
         } else {
             // Element is hidden, so don't show UI boxes but still apply visual styling
             _nodeMoreOptionsBox = null;
-        }
-
-        // if the selected element is an image, show the image ribbon gallery (make sure its enabled in preferences)
-        if(element && element.tagName.toLowerCase() === 'img' && shouldShowImageRibbon()) {
-            if (!_imageRibbonGallery) {
-                _imageRibbonGallery = new ImageRibbonGallery(element);
-            }
         }
 
         element._originalOutline = element.style.outline;
@@ -3352,10 +3503,38 @@ function RemoteFunctions(config = {}) {
 
         if (_hoverHighlight) {
             _hoverHighlight.clear();
-            _hoverHighlight.add(element, true, false); // false means no auto-scroll
+            _hoverHighlight.add(element, true);
         }
 
         previouslyClickedElement = element;
+    }
+
+    function disableHoverListeners() {
+        window.document.removeEventListener("mouseover", onElementHover);
+        window.document.removeEventListener("mouseout", onElementHoverOut);
+    }
+
+    function enableHoverListeners() {
+        if (config.isProUser && (config.highlight || shouldShowHighlightOnHover())) {
+            window.document.addEventListener("mouseover", onElementHover);
+            window.document.addEventListener("mouseout", onElementHoverOut);
+        }
+    }
+
+    /**
+     * this function activates hover lock to prevent hover events
+     * Used when user performs click actions to avoid UI box conflicts
+     */
+    function activateHoverLock() {
+        if (_hoverLockTimer) {
+            clearTimeout(_hoverLockTimer);
+        }
+
+        disableHoverListeners();
+        _hoverLockTimer = setTimeout(() => {
+            enableHoverListeners();
+            _hoverLockTimer = null;
+        }, 1500); // 1.5s
     }
 
     /**
@@ -3370,6 +3549,7 @@ function RemoteFunctions(config = {}) {
             event.preventDefault();
             event.stopPropagation();
             event.stopImmediatePropagation();
+            activateHoverLock();
         }
     }
 
@@ -3433,7 +3613,7 @@ function RemoteFunctions(config = {}) {
             _clickHighlight.clear();
         }
         if (isElementEditable(element, true) && element.nodeType === Node.ELEMENT_NODE) {
-            _clickHighlight.add(element, true, true); // 3rd arg is for auto-scroll
+            _clickHighlight.add(element, true);
         }
     }
 
@@ -3843,23 +4023,12 @@ function RemoteFunctions(config = {}) {
         const highlightModeChanged = oldHighlightMode !== newHighlightMode;
         const isProStatusChanged = oldConfig.isProUser !== config.isProUser;
         const highlightSettingChanged = oldConfig.highlight !== config.highlight;
-        const imageRibbonJustEnabled = !oldConfig.imageRibbon && config.imageRibbon;
-
-        // Handle significant configuration changes
+        // Handle configuration changes
         if (highlightModeChanged || isProStatusChanged || highlightSettingChanged) {
             _handleConfigurationChange();
         }
 
-        // if user enabled the image ribbon setting and an image is selected, then we show the image ribbon
-        if (imageRibbonJustEnabled && previouslyClickedElement &&
-            previouslyClickedElement.tagName.toLowerCase() === 'img') {
-            if (!_imageRibbonGallery) {
-                _imageRibbonGallery = new ImageRibbonGallery(previouslyClickedElement);
-            }
-        }
-
         _updateEventListeners();
-
         return JSON.stringify(config);
     }
 
@@ -3905,41 +4074,32 @@ function RemoteFunctions(config = {}) {
 
     /**
      * Helper function to dismiss NodeMoreOptionsBox if it exists
-     * @return {boolean} true if box was dismissed, false if it didn't exist
      */
     function dismissNodeMoreOptionsBox() {
         if (_nodeMoreOptionsBox) {
             _nodeMoreOptionsBox.remove();
             _nodeMoreOptionsBox = null;
-            return true;
         }
-        return false;
     }
 
     /**
      * Helper function to dismiss NodeInfoBox if it exists
-     * @return {boolean} true if box was dismissed, false if it didn't exist
      */
     function dismissNodeInfoBox() {
         if (_nodeInfoBox) {
             _nodeInfoBox.remove();
             _nodeInfoBox = null;
-            return true;
         }
-        return false;
     }
 
     /**
      * Helper function to dismiss AIPromptBox if it exists
-     * @return {boolean} true if box was dismissed, false if it didn't exist
      */
     function dismissAIPromptBox() {
         if (_aiPromptBox) {
             _aiPromptBox.remove();
             _aiPromptBox = null;
-            return true;
         }
-        return false;
     }
 
     /**
@@ -3949,26 +4109,21 @@ function RemoteFunctions(config = {}) {
         if (_imageRibbonGallery) {
             _imageRibbonGallery.remove();
             _imageRibbonGallery = null;
-            return true;
         }
-        return false;
     }
 
     /**
      * Helper function to dismiss all UI boxes at once
-     * @return {boolean} true if any boxes were dismissed, false otherwise
      */
     function dismissAllUIBoxes() {
-        let dismissed = false;
-        dismissed = dismissNodeMoreOptionsBox() || dismissed;
-        dismissed = dismissAIPromptBox() || dismissed;
-        dismissed = dismissNodeInfoBox() || dismissed;
-        return dismissed;
+        dismissNodeMoreOptionsBox();
+        dismissAIPromptBox();
+        dismissNodeInfoBox();
+        dismissImageRibbonGallery();
     }
 
     /**
      * Helper function to cleanup previously clicked element highlighting and state
-     * @return {boolean} true if cleanup was performed, false if no element to cleanup
      */
     function cleanupPreviousElementState() {
         if (previouslyClickedElement) {
@@ -3985,26 +4140,16 @@ function RemoteFunctions(config = {}) {
             }
 
             previouslyClickedElement = null;
-            return true;
         }
-        return false;
     }
 
     /**
      * This function dismisses all UI elements and cleans up application state
      * Called when user presses Esc key, clicks on HTML/Body tags, or other dismissal events
-     * @return {boolean} true if any cleanup was performed, false otherwise
      */
     function dismissUIAndCleanupState() {
-        let dismissed = false;
-
-        // Dismiss all UI boxes
-        dismissed = dismissAllUIBoxes() || dismissed;
-
-        // Cleanup previously clicked element state and highlighting
-        dismissed = cleanupPreviousElementState() || dismissed;
-
-        return dismissed;
+        dismissAllUIBoxes();
+        cleanupPreviousElementState();
     }
 
 
@@ -4176,7 +4321,7 @@ function RemoteFunctions(config = {}) {
         "finishEditing"         : finishEditing,
         "hasVisibleLivePreviewBoxes" : hasVisibleLivePreviewBoxes,
         "dismissUIAndCleanupState" : dismissUIAndCleanupState,
-        "dismissImageRibbonGallery" : dismissImageRibbonGallery,
+        "enableHoverListeners" : enableHoverListeners,
         "registerHandlers" : registerHandlers
     };
 }
