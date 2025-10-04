@@ -36,5 +36,8 @@
      "bib-locked-live-preview", "brackets-display-shortcuts", "changing-tags", "brackets-indent-guides", "brackets-emmet",
      "github-Pluto-custom-line-height"
    ]
- }
+ },
+  "dontLoadExtensions": {
+    "note": "To take down any compromised extensions, see `extensionTakedownURL` in repo"
+  }
 }

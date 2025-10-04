@@ -150,3 +150,26 @@ This validates that the system-wide license file exists, contains valid JSON, an
 
 **Kind**: global function  
 **Returns**: <code>Promise.&lt;boolean&gt;</code> - - Resolves with `true` if the device is licensed, `false` otherwise.  
+<a name="getOSUserName"></a>
+
+## getOSUserName() ⇒ <code>Promise.&lt;string&gt;</code>
+Retrieves the operating system username of the current user.
+This method is only available in native apps.
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;string&gt;</code> - A promise that resolves to the OS username of the current user.  
+**Throws**:
+
+- <code>Error</code> Throws an error if called in a browser environment.
+
+<a name="getSystemSettingsDir"></a>
+
+## getSystemSettingsDir() ⇒ <code>Promise.&lt;string&gt;</code>
+Retrieves the directory path for system settings. This method is applicable to native apps only.
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;string&gt;</code> - A promise that resolves to the path of the system settings directory.  
+**Throws**:
+
+- <code>Error</code> If the method is called in browser app.
+
