@@ -4,6 +4,7 @@ const fs = require('fs');
 const fsPromise = require('fs').promises;
 const path = require('path');
 const os = require('os');
+const { SYSTEM_SETTINGS_DIR } = require('./constants');
 const { lintFile } = require("./ESLint/service");
 const { addDeviceLicense, getDeviceID, isLicensedDevice, removeDeviceLicense } = require("./licence-device");
 let openModule, open; // dynamic import when needed
@@ -274,6 +275,10 @@ async function getOSUserName() {
     return os.userInfo().username;
 }
 
+async function getSystemSettingsDir() {
+    return SYSTEM_SETTINGS_DIR;
+}
+
 exports.getURLContent = getURLContent;
 exports.setLocaleStrings = setLocaleStrings;
 exports.getPhoenixBinaryVersion = getPhoenixBinaryVersion;
@@ -288,5 +293,6 @@ exports.removeDeviceLicense = removeDeviceLicense;
 exports.isLicensedDevice = isLicensedDevice;
 exports.getDeviceID = getDeviceID;
 exports.getOSUserName = getOSUserName;
+exports.getSystemSettingsDir = getSystemSettingsDir;
 exports._loadNodeExtensionModule = _loadNodeExtensionModule;
 exports._npmInstallInFolder = _npmInstallInFolder;
