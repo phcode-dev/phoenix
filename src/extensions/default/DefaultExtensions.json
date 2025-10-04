@@ -34,11 +34,11 @@
    "extensionIDs": [
      "brackets-beautify", "beautify.io", "hirse.beautify", "jsbeautifier", "sizuhiko.brackets.prettier", "pretty_json",
      "bib-locked-live-preview", "brackets-display-shortcuts", "changing-tags", "brackets-indent-guides", "brackets-emmet",
-     "github-Pluto-custom-line-height", "github-phcode-dev-phoenix-code-ai-control"
+     "github-Pluto-custom-line-height"
    ]
  },
   "dontLoadExtensions": {
     "note": "Use this only for first party extensions. we should always allow third party extension loading.",
-    "extensionIDs": ["github-phcode-dev-phoenix-code-ai-control"]
+    "extensionIDs": []
   }
 }
