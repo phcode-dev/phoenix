@@ -30,9 +30,7 @@ define(function (require, exports, module) {
         registry_utils        = require("extensibility/registry_utils"),
         EventDispatcher        = require("utils/EventDispatcher"),
         Strings                = require("strings"),
-        PreferencesManager     = require("preferences/PreferencesManager"),
-        DefaultExtensions      = JSON.parse(require("text!extensions/default/DefaultExtensions.json")),
-        dontLoadExtensionIDs   = new Set(DefaultExtensions.dontLoadExtensions.extensionIDs);
+        PreferencesManager     = require("preferences/PreferencesManager");
 
     /**
      * @private
@@ -310,7 +308,7 @@ define(function (require, exports, module) {
 
             })
             .filter(function (entry) {
-                return !dontLoadExtensionIDs.has(entry.registryInfo.metadata.name);
+                return !ExtensionManager.isExtensionTakenDown(entry.registryInfo.metadata.name);
             })
             .map(function (entry) {
                 return entry.registryInfo.metadata.name;
@@ -562,7 +560,7 @@ define(function (require, exports, module) {
                     self.extensions[key].installInfo.locationType === ExtensionManager.LOCATION_DEFAULT;
             })
             .filter(function (key) {
-                return !dontLoadExtensionIDs.has(key);
+                return !ExtensionManager.isExtensionTakenDown(key);
             });
         this._sortFullSet();
         this._setInitialFilter();

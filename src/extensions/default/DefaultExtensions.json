@@ -38,7 +38,6 @@
    ]
  },
   "dontLoadExtensions": {
-    "note": "Use this only for first party extensions. we should always allow third party extension loading.",
-    "extensionIDs": []
+    "note": "To take down any compromised extensions, see `extensionTakedownURL` in repo"
   }
 }

@@ -1006,6 +1006,7 @@ define(function (require, exports, module) {
     exports.updateExtensions        = updateExtensions;
     exports.getAvailableUpdates     = getAvailableUpdates;
     exports.cleanAvailableUpdates   = cleanAvailableUpdates;
+    exports.isExtensionTakenDown    = ExtensionLoader.isExtensionTakenDown;
 
     exports.ENABLED       = ENABLED;
     exports.DISABLED      = DISABLED;
