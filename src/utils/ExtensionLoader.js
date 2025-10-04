@@ -56,8 +56,97 @@ define(function (require, exports, module) {
         PathUtils      = require("thirdparty/path-utils/path-utils"),
         DefaultExtensions = JSON.parse(require("text!extensions/default/DefaultExtensions.json"));
 
+    // takedown/dont load extensions that are compromised at app start - start
+    const EXTENSION_TAKEDOWN_LOCALSTORAGE_KEY = "PH_EXTENSION_TAKEDOWN_LIST";
+
+    function _getTakedownListLS() {
+        try{
+            let list = localStorage.getItem(EXTENSION_TAKEDOWN_LOCALSTORAGE_KEY);
+            if(list) {
+                list = JSON.parse(list);
+                if (Array.isArray(list)) {
+                    return list;
+                }
+            }
+        } catch (e) {
+            console.error(e);
+        }
+        return [];
+    }
+
+    const loadedExtensionIDs = new Set();
+    let takedownExtensionList = new Set(_getTakedownListLS());
+
+    const EXTENSION_TAKEDOWN_URL = brackets.config.extensionTakedownURL;
+
+    function _anyTakenDownExtensionLoaded() {
+        if (takedownExtensionList.size === 0 || loadedExtensionIDs.size === 0) {
+            return [];
+        }
+        let smaller;
+        let larger;
+
+        if (takedownExtensionList.size < loadedExtensionIDs.size) {
+            smaller = takedownExtensionList;
+            larger = loadedExtensionIDs;
+        } else {
+            smaller = loadedExtensionIDs;
+            larger = takedownExtensionList;
+        }
+
+        const matches = [];
+
+        for (const id of smaller) {
+            if (larger.has(id)) {
+                matches.push(id);
+            }
+        }
+
+        return matches;
+    }
+
+    function fetchWithTimeout(url, ms) {
+        const c = new AbortController();
+        const t = setTimeout(() => c.abort(), ms);
+        return fetch(url, { signal: c.signal }).finally(() => clearTimeout(t));
+    }
+
+    // we dont want a restart after user does too much in the app causing data loss. So we wont reload after 20 seconds.
+    fetchWithTimeout(EXTENSION_TAKEDOWN_URL, 20000)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status} - ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Extension takedown data:', data);
+            if (!Array.isArray(data) || !data.every(x => typeof x === "string")) {
+                console.error("Takedown list must be an array of strings.");
+                return;
+            }
+            const dataToWrite = JSON.stringify(data);
+            localStorage.setItem(EXTENSION_TAKEDOWN_LOCALSTORAGE_KEY, dataToWrite);
+            takedownExtensionList = new Set(data);
+            const compromisedExtensionsLoaded = _anyTakenDownExtensionLoaded();
+            if(!compromisedExtensionsLoaded.length){
+                return;
+            }
+            // if we are here, we have already loaded some compromised extensions. we need to reload app as soon as
+            // possible. no await after this. all sync js calls to prevent extension from tampering with this list.
+            const writtenData = localStorage.getItem(EXTENSION_TAKEDOWN_LOCALSTORAGE_KEY);
+            if(writtenData !== dataToWrite) {
+                // the write did not succeded. local storage write can fail if storage full, if so we may cause infinite
+                // reloads here if we dont do the check.
+                console.error("Failed to write taken down extension to localstorage");
+                return;
+            }
+            location.reload();
+        })
+        .catch(console.error);
+    // takedown/dont load extensions that are compromised at app start - end
+
     const desktopOnlyExtensions = DefaultExtensions.desktopOnly;
-    const dontLoadExtensionIDs = new Set(DefaultExtensions.dontLoadExtensions.extensionIDs);
     const DefaultExtensionsList = Phoenix.isNativeApp ?
         [...DefaultExtensions.defaultExtensionsList, ...desktopOnlyExtensions]:
         DefaultExtensions.defaultExtensionsList;
@@ -417,14 +506,19 @@ define(function (require, exports, module) {
 
         return promise
             .then(function (metadata) {
+                if (isExtensionTakenDown(metadata.name)) {
+                    logger.leaveTrail("skip load taken down extension: " + metadata.name);
+                    console.warn("skip load taken down extension: " + metadata.name);
+                    return new $.Deferred().reject("disabled").promise();
+                }
+
+                if(metadata.name) {
+                    loadedExtensionIDs.add(metadata.name);
+                }
+
                 // No special handling for themes... Let the promise propagate into the ExtensionManager
                 if (metadata && metadata.theme) {
                     return;
-                }
-                if (dontLoadExtensionIDs.has(metadata.name)) {
-                    logger.leaveTrail("skipping extension in dontLoadExtensions list: " + metadata.name);
-                    console.warn("skipping extension in dontLoadExtensions list: " + metadata.name);
-                    return new $.Deferred().reject("disabled").promise();
                 }
 
                 if (!metadata.disabled) {
@@ -929,6 +1023,15 @@ define(function (require, exports, module) {
         return promise;
     }
 
+    function isExtensionTakenDown(extensionID) {
+        if(!extensionID){
+            // extensions without id can happen with local development. these are never distributed in store.
+            // so safe to return false here.
+            return false;
+        }
+        return takedownExtensionList.has(extensionID);
+    }
+
 
     EventDispatcher.makeEventDispatcher(exports);
 
@@ -952,6 +1055,7 @@ define(function (require, exports, module) {
     exports.testExtension = testExtension;
     exports.loadAllExtensionsInNativeDirectory = loadAllExtensionsInNativeDirectory;
     exports.loadExtensionFromNativeDirectory = loadExtensionFromNativeDirectory;
+    exports.isExtensionTakenDown = isExtensionTakenDown;
     exports.testAllExtensionsInNativeDirectory = testAllExtensionsInNativeDirectory;
     exports.testAllDefaultExtensions = testAllDefaultExtensions;
     exports.EVENT_EXTENSION_LOADED = EVENT_EXTENSION_LOADED;

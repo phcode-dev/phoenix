@@ -45,7 +45,6 @@ define(function (require, exports, module) {
         PreferencesManager        = require("preferences/PreferencesManager"),
         DefaultExtensions         = JSON.parse(require("text!extensions/default/DefaultExtensions.json")),
         warnExtensionIDs          = new Set(DefaultExtensions.warnExtensionStoreExtensions.extensionIDs),
-        dontLoadExtensionIDs      = new Set(DefaultExtensions.dontLoadExtensions.extensionIDs),
         Metrics                   = require("utils/Metrics");
 
 
@@ -365,7 +364,7 @@ define(function (require, exports, module) {
             (entry.installInfo.metadata.name === ThemeManager.getCurrentTheme().name);
 
         context.defaultFeature = warnExtensionIDs.has(info.metadata.name);
-        context.isDeprecatedExtension = dontLoadExtensionIDs.has(info.metadata.name);
+        context.isDeprecatedExtension = ExtensionManager.isExtensionTakenDown(info.metadata.name);
 
         context.allowInstall = context.isCompatible && !context.isInstalled;
 
