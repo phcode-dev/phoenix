@@ -4,22 +4,13 @@ const fs = require('fs');
 const fsPromise = require('fs').promises;
 const path = require('path');
 const { exec } = require('child_process');
-const { SYSTEM_SETTINGS_DIR_WIN, SYSTEM_SETTINGS_DIR_MAC, SYSTEM_SETTINGS_DIR_LINUX } = require('./constants');
+const { SYSTEM_SETTINGS_DIR } = require('./constants');
 
 const options = { name: 'Phoenix Code' };
 const licenseFileContent = JSON.stringify({});
 
 function getLicensePath() {
-    switch (os.platform()) {
-    case 'win32':
-        return `${SYSTEM_SETTINGS_DIR_WIN}device-license`;
-    case 'darwin':
-        return `${SYSTEM_SETTINGS_DIR_MAC}device-license`;
-    case 'linux':
-        return `${SYSTEM_SETTINGS_DIR_LINUX}device-license`;
-    default:
-        throw new Error(`Unsupported platform: ${os.platform()}`);
-    }
+    return `${SYSTEM_SETTINGS_DIR}device-license`;
 }
 
 function sudoExec(command) {
