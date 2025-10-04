@@ -39,6 +39,11 @@
         </div>
     </td>
     <td class="ext-desc">
+        {{#isDeprecatedExtension}}
+            {{#isInstalled}}
+                <div class="alert warning">{{Strings.EXTENSION_DEPRECATED_NOT_LOADED}}</div>
+            {{/isInstalled}}
+        {{/isDeprecatedExtension}}
         {{#showInstallButton}}
             <!-- Warnings when trying to install extension where latest/all versions not compatible -->
             {{#defaultFeature}}
