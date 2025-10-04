@@ -275,6 +275,20 @@ define(function (require, exports, module) {
         return false;
     }
 
+    /**
+     * Retrieves the operating system username of the current user.
+     * This method is only available in native apps.
+     *
+     * @throws {Error} Throws an error if called in a browser environment.
+     * @return {Promise<string>} A promise that resolves to the OS username of the current user.
+     */
+    async function getOSUserName() {
+        if (!Phoenix.isNativeApp) {
+            throw new Error("getOSUserName not available in browser");
+        }
+        return utilsConnector.execPeer("getOSUserName");
+    }
+
     if(NodeConnector.isNodeAvailable()) {
         // todo we need to update the strings if a user extension adds its translations. Since we dont support
         // node extensions for now, should consider when we support node extensions.
@@ -317,6 +331,7 @@ define(function (require, exports, module) {
     exports.removeDeviceLicenseSystemWide = removeDeviceLicenseSystemWide;
     exports.isLicensedDeviceSystemWide = isLicensedDeviceSystemWide;
     exports.getDeviceID = getDeviceID;
+    exports.getOSUserName = getOSUserName;
 
     /**
      * checks if Node connector is ready
