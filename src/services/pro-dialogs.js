@@ -26,6 +26,12 @@
  */
 
 define(function (require, exports, module) {
+    const KernalModeTrust = window.KernalModeTrust;
+    if(!KernalModeTrust){
+        // integrated extensions will have access to kernal mode, but not external extensions
+        throw new Error("pro-dialogs.js should have access to KernalModeTrust. Cannot boot without trust ring");
+    }
+
     const proTitle = `<span class="phoenix-pro-title">
                     <span class="pro-plan-name">${brackets.config.main_pro_plan}</span>
                     <i class="fa-solid fa-feather orange-gold" style="margin-left: 3px;"></i>
@@ -165,6 +171,49 @@ define(function (require, exports, module) {
         }
     }
 
+    function showAIUpsellDialog(getAIEntitlementResponse) {
+        // Only show dialog if upsellDialog field is present
+        if (!getAIEntitlementResponse || !getAIEntitlementResponse.upsellDialog) {
+            return;
+        }
+
+        const upsellDialog = getAIEntitlementResponse.upsellDialog;
+        const title = upsellDialog.title;
+        const message = upsellDialog.message;
+        const buyURL = upsellDialog.buyURL;
+        const needsLogin = getAIEntitlementResponse.needsLogin;
+
+        let buttons;
+        if (needsLogin || buyURL) {
+            // Show primary action button and Cancel
+            const primaryButtonText = needsLogin ? Strings.PROFILE_SIGN_IN : Strings.AI_LOGIN_DIALOG_BUTTON;
+            buttons = [
+                { className: Dialogs.DIALOG_BTN_CLASS_NORMAL, id: Dialogs.DIALOG_BTN_CANCEL, text: Strings.CANCEL },
+                { className: Dialogs.DIALOG_BTN_CLASS_PRIMARY, id: "mainAction", text: primaryButtonText }
+            ];
+        } else {
+            // Show only OK button (for disabled AI messages)
+            buttons = [
+                { className: Dialogs.DIALOG_BTN_CLASS_PRIMARY, id: Dialogs.DIALOG_BTN_OK, text: Strings.OK }
+            ];
+        }
+
+        Dialogs.showModalDialog(Dialogs.DIALOG_ID_INFO, title, message, buttons).done(function (id) {
+            Metrics.countEvent(Metrics.EVENT_TYPE.AI, "dlgUpsell", "show");
+            if(id === 'mainAction') {
+                if (needsLogin) {
+                    Metrics.countEvent(Metrics.EVENT_TYPE.AI, "dlgUpsell", "signIn");
+                    KernalModeTrust.EntitlementsManager.loginToAccount();
+                } else {
+                    Metrics.countEvent(Metrics.EVENT_TYPE.AI, "dlgUpsell", "buyClick");
+                    Phoenix.app.openURLInDefaultBrowser(buyURL);
+                }
+            } else {
+                Metrics.countEvent(Metrics.EVENT_TYPE.AI, "dlgUpsell", id);
+            }
+        });
+    }
+
     if (Phoenix.isTestWindow) {
         window._test_pro_dlg_login_exports = {
             setFetchFn: function _setDdateNowFn(fn) {
@@ -175,6 +224,7 @@ define(function (require, exports, module) {
 
     exports.showProTrialStartDialog = showProTrialStartDialog;
     exports.showProUpsellDialog = showProUpsellDialog;
+    exports.showAIUpsellDialog = showAIUpsellDialog;
     exports.UPSELL_TYPE_PRO_TRIAL_ENDED = UPSELL_TYPE_PRO_TRIAL_ENDED;
     exports.UPSELL_TYPE_GET_PRO = UPSELL_TYPE_GET_PRO;
     exports.UPSELL_TYPE_LIVE_EDIT = UPSELL_TYPE_LIVE_EDIT;

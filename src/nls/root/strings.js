@@ -1717,9 +1717,15 @@ define({
     "LICENSE_ENTER_KEY": "Please enter a license key",
     "LICENSE_REAPPLY_TO_DEVICE": "Already activated? Reapply system-wide",
     // AI CONTROL
+    "AI_LOGIN_DIALOG_TITLE": "Sign In to Use AI Edits",
+    "AI_LOGIN_DIALOG_MESSAGE": "Please log in to use AI-powered edits",
+    "AI_LOGIN_DIALOG_BUTTON": "Get AI Access",
+    "AI_DISABLED_DIALOG_TITLE": "AI is disabled",
     "AI_CONTROL_ALL_ALLOWED_NO_CONFIG": "No AI config file found in system. AI is enabled for all users.",
     "AI_CONTROL_ALL_ALLOWED": "AI is enabled for all users.",
     "AI_CONTROL_USER_ALLOWED": "AI is enabled for user ({0}) but disabled for others",
     "AI_CONTROL_ADMIN_DISABLED": "AI access has been disabled by your system administrator",
-    "AI_CONTROL_ADMIN_DISABLED_CONTACT": "AI access has been disabled by your system administrator. Please contact {0} for assistance."
+    "AI_CONTROL_ADMIN_DISABLED_CONTACT": "AI access has been disabled by your system administrator. Please contact {0} for assistance.",
+    "AI_UPSELL_DIALOG_TITLE": "Continue with {0}?",
+    "AI_UPSELL_DIALOG_MESSAGE": "You’ve discovered AI-powered edits. To proceed, you’ll need an AI subscription or credits."
 });
