@@ -170,22 +170,60 @@ define(function (require, exports, module) {
     }
 
     // Entitlements test utility functions
+    // Note: EntitlementsExports.getPlanDetails() is eventually consistent due to
+    // 1 second debounce delay for entitlements changed event
     async function verifyPlanEntitlements(expectedPlan, _testDescription) {
-        const planDetails = await EntitlementsExports.getPlanDetails();
+        // Wait for plan details to match expected values (handles debounce delay)
+        let planDetails;
+        await awaitsFor(
+            async function () {
+                planDetails = await EntitlementsExports.getPlanDetails();
 
+                if (!expectedPlan) {
+                    return planDetails !== undefined; // Should always return something (fallback)
+                }
+
+                if (!planDetails) {
+                    return false;
+                }
+
+                // Check all expected properties match
+                if (expectedPlan.paidSubscriber !== undefined &&
+                    planDetails.paidSubscriber !== expectedPlan.paidSubscriber) {
+                    return false;
+                }
+                if (expectedPlan.name && planDetails.name !== expectedPlan.name) {
+                    return false;
+                }
+                if (expectedPlan.validTill !== undefined && !planDetails.validTill) {
+                    return false;
+                }
+
+                return true;
+            },
+            ()=>{
+                return `Plan entitlements ${JSON.stringify(planDetails)} to match expected ${
+                    JSON.stringify(expectedPlan)}: ${_testDescription}`;
+            },
+            4000,
+            30
+        );
+
+        // Final assertions after condition is met
+        const finalPlanDetails = await EntitlementsExports.getPlanDetails();
         if (expectedPlan) {
-            expect(planDetails).toBeDefined();
+            expect(finalPlanDetails).toBeDefined();
             if (expectedPlan.paidSubscriber !== undefined) {
-                expect(planDetails.paidSubscriber).toBe(expectedPlan.paidSubscriber);
+                expect(finalPlanDetails.paidSubscriber).toBe(expectedPlan.paidSubscriber);
             }
             if (expectedPlan.name) {
-                expect(planDetails.name).toBe(expectedPlan.name);
+                expect(finalPlanDetails.name).toBe(expectedPlan.name);
             }
             if (expectedPlan.validTill !== undefined) {
-                expect(planDetails.validTill).toBeDefined();
+                expect(finalPlanDetails.validTill).toBeDefined();
             }
         } else {
-            expect(planDetails).toBeDefined(); // Should always return something (fallback)
+            expect(finalPlanDetails).toBeDefined(); // Should always return something (fallback)
         }
     }
 
