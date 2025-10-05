@@ -855,7 +855,7 @@ define(function (require, exports, module) {
         }
 
         let html = '<ul class="folder-suggestions-list">';
-        matches.forEach((match) => {
+        matches.forEach((match, index) => {
             let displayHTML = '';
             let folderPath = '';
 
@@ -876,7 +876,9 @@ define(function (require, exports, module) {
                 folderPath = match.label || '';
             }
 
-            html += `<li class="folder-suggestion-item" data-path="${folderPath}">${displayHTML}</li>`;
+            // first item should be selected by default
+            const selectedClass = index === 0 ? ' selected' : '';
+            html += `<li class="folder-suggestion-item${selectedClass}" data-path="${folderPath}">${displayHTML}</li>`;
         });
         html += '</ul>';
 
@@ -915,6 +917,70 @@ define(function (require, exports, module) {
     }
 
     /**
+     * register the input box handlers (folder selection dialog)
+     * also registers the 'arrow up/down and enter' key handler for folder selection and move the selected folder,
+     * in the list of suggestions
+     *
+     * @param {JQuery} $input - the input box element
+     * @param {JQuery} $suggestions - the suggestions list element
+     * @param {JQuery} $dlg - the dialog box element
+     */
+    function _registerFolderDialogInputHandlers($input, $suggestions, $dlg) {
+        // keyboard navigation handler for arrow keys
+        $input.on('keydown', function(e) {
+            const $items = $suggestions.find('.folder-suggestion-item');
+            const $selected = $items.filter('.selected');
+
+            if (e.keyCode === 40) { // arrow down key
+                e.preventDefault();
+                if ($items.length === 0) { return; }
+
+                if ($selected.length === 0) {
+                    $items.first().addClass('selected');
+                } else {
+                    const currentIndex = $items.index($selected);
+                    $selected.removeClass('selected');
+                    const nextIndex = (currentIndex + 1) % $items.length;
+                    $items.eq(nextIndex).addClass('selected');
+                }
+            } else if (e.keyCode === 38) { // arrow up key
+                e.preventDefault();
+                if ($items.length === 0) { return; }
+
+                if ($selected.length === 0) {
+                    $items.last().addClass('selected');
+                } else {
+                    const currentIndex = $items.index($selected);
+                    $selected.removeClass('selected');
+                    const nextIndex = (currentIndex - 1 + $items.length) % $items.length;
+                    $items.eq(nextIndex).addClass('selected');
+                }
+            }
+        });
+
+        // for enter key, we're using keyup handler because keydown was interfering with dialog's default behaviour
+        // when enter key is pressed, we check if there are any selected folders in the suggestions
+        // if yes, we type the folder path in the input box,
+        // if no, we click the ok button of the dialog
+        $input.on('keyup', function(e) {
+            if (e.keyCode === 13) { // enter key
+                const $items = $suggestions.find('.folder-suggestion-item');
+                const $selected = $items.filter('.selected');
+
+                // if there's a selected suggestion, use it
+                if ($selected.length > 0) {
+                    const folderPath = $selected.data('path');
+                    $input.val(folderPath);
+                    $suggestions.empty();
+                } else {
+                    // no suggestions, trigger OK button click
+                    $dlg.find('[data-button-id="ok"]').click();
+                }
+            }
+        });
+    }
+
+    /**
      * This function is called when 'use this image' button is clicked in the image ribbon gallery
      * or user loads an image file from the computer
      * this is responsible to download the image in the appropriate place
@@ -939,13 +1005,13 @@ define(function (require, exports, module) {
         // Scan project directories and setup event handlers
         _scanDirectories(projectRoot, '', folderList).then(() => {
             stringMatcher = new StringMatch.StringMatcher({ segmentedSearch: true });
-
-            // input event handler
-            $input.on('input', function() {
-                _updateFolderSuggestions($input.val(), folderList, stringMatcher, $suggestions, $input);
-            });
         });
 
+        // input event handler
+        $input.on('input', function() {
+            _updateFolderSuggestions($input.val(), folderList, stringMatcher, $suggestions, $input);
+        });
+        _registerFolderDialogInputHandlers($input, $suggestions, $dlg);
         // focus the input box
         setTimeout(function() {
             $input.focus();
