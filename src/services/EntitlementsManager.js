@@ -290,7 +290,7 @@ define(function (require, exports, module) {
         LoginService = KernalModeTrust.loginService;
         // Set up event forwarding from LoginService
         LoginService.on(LoginService.EVENT_ENTITLEMENTS_CHANGED, function() {
-            effectiveEntitlementsCached = null;
+            effectiveEntitlementsCached = undefined;
             EntitlementsManager.trigger(EVENT_ENTITLEMENTS_CHANGED);
         });
         AIControl.init();
