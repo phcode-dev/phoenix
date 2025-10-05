@@ -31,6 +31,7 @@ define(function (require, exports, module) {
     }
 
     const EventDispatcher = require("utils/EventDispatcher"),
+        AIControl = require("./ai-control"),
         Strings = require("strings");
 
     const MS_IN_DAY = 24 * 60 * 60 * 1000;
@@ -180,6 +181,7 @@ define(function (require, exports, module) {
             effectiveEntitlements = null;
             EntitlementsManager.trigger(EVENT_ENTITLEMENTS_CHANGED);
         });
+        AIControl.init();
     }
 
     // Test-only exports for integration testing
