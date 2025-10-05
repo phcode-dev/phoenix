@@ -31,6 +31,7 @@ define(function (require, exports, module) {
     const ProjectManager = require("project/ProjectManager");
     const FileSystem = require("filesystem/FileSystem");
     const PathUtils = require("thirdparty/path-utils/path-utils");
+    const StringMatch = require("utils/StringMatch");
     const Dialogs = require("widgets/Dialogs");
     const ProDialogs = require("services/pro-dialogs");
     const ImageFolderDialogTemplate = require("text!htmlContent/image-folder-dialog.html");
@@ -799,6 +800,120 @@ define(function (require, exports, module) {
         });
     }
 
+    // these folders are generally very large, and we don't scan them otherwise it might freeze the UI
+    const EXCLUDED_FOLDERS = ['node_modules', 'bower_components', '.git', '.npm', '.yarn'];
+
+    /**
+     * this function scans all the directories recursively
+     * and then add the relative paths of the directories to the folderList array
+     *
+     * @param {Directory} directory - The parent directory to scan
+     * @param {string} relativePath - The relative path from project root
+     * @param {Array<string>} folderList - Array to store all discovered folder paths
+     * @return {Promise} Resolves when scanning is complete
+     */
+    function _scanDirectories(directory, relativePath, folderList) {
+        return new Promise((resolve) => {
+            directory.getContents((err, contents) => {
+                if (err) {
+                    resolve();
+                    return;
+                }
+
+                const directories = contents.filter(entry => entry.isDirectory);
+                const scanPromises = [];
+
+                directories.forEach(dir => {
+                    // if its an excluded folder we ignore it
+                    if (EXCLUDED_FOLDERS.includes(dir.name)) {
+                        return;
+                    }
+
+                    const dirRelativePath = relativePath ? `${relativePath}${dir.name}/` : `${dir.name}/`;
+                    folderList.push(dirRelativePath);
+
+                    // also check subdirectories for this dir
+                    scanPromises.push(_scanDirectories(dir, dirRelativePath, folderList));
+                });
+
+                Promise.all(scanPromises).then(() => resolve());
+            });
+        });
+    }
+
+    /**
+     * Renders folder suggestions as a dropdown in the UI with fuzzy match highlighting
+     *
+     * @param {Array<string|Object>} matches - Array of folder paths (strings) or fuzzy match objects with stringRanges
+     * @param {JQuery} $suggestions - jQuery element for the suggestions container
+     * @param {JQuery} $input - jQuery element for the input field
+     */
+    function _renderFolderSuggestions(matches, $suggestions, $input) {
+        if (matches.length === 0) {
+            $suggestions.empty();
+            return;
+        }
+
+        let html = '<ul class="folder-suggestions-list">';
+        matches.forEach((match) => {
+            let displayHTML = '';
+            let folderPath = '';
+
+            // Check if match is a string or an object
+            if (typeof match === 'string') {
+                // Simple string (from empty query showing folders)
+                displayHTML = match;
+                folderPath = match;
+            } else if (match && match.stringRanges) {
+                // fuzzy match, highlight matched chars
+                match.stringRanges.forEach(range => {
+                    if (range.matched) {
+                        displayHTML += `<span class="folder-match-highlight">${range.text}</span>`;
+                    } else {
+                        displayHTML += range.text;
+                    }
+                });
+                folderPath = match.label || '';
+            }
+
+            html += `<li class="folder-suggestion-item" data-path="${folderPath}">${displayHTML}</li>`;
+        });
+        html += '</ul>';
+
+        $suggestions.html(html);
+
+        // when a suggestion is clicked we add the folder path in the input box
+        $suggestions.find('.folder-suggestion-item').on('click', function() {
+            const folderPath = $(this).data('path');
+            $input.val(folderPath);
+            $suggestions.empty();
+        });
+    }
+
+    /**
+     * This function is responsible to update the folder suggestion everytime a new char is inserted in the input field
+     *
+     * @param {string} query - The search query from the input field
+     * @param {Array<string>} folderList - List of all available folder paths
+     * @param {StringMatch.StringMatcher} stringMatcher - StringMatcher instance for fuzzy matching
+     * @param {JQuery} $suggestions - jQuery element for the suggestions container
+     * @param {JQuery} $input - jQuery element for the input field
+     */
+    function _updateFolderSuggestions(query, folderList, stringMatcher, $suggestions, $input) {
+        if (!query || query.trim() === '') {
+            return;
+        }
+
+        // filter folders using fuzzy matching
+        const matches = folderList
+            .map(folder => stringMatcher.match(folder, query))
+            .filter(result => result !== null && result !== undefined)
+            .sort((a, b) => b.matchGoodness - a.matchGoodness)
+            .slice(0, 5);
+
+        _renderFolderSuggestions(matches, $suggestions, $input);
+    }
+
     /**
      * This function is called when 'use this image' button is clicked in the image ribbon gallery
      * or user loads an image file from the computer
@@ -808,11 +923,28 @@ define(function (require, exports, module) {
      * @param {Object} message - the message object which stores all the required data for this operation
      */
     function _handleUseThisImage(message) {
+        const projectRoot = ProjectManager.getProjectRoot();
+        if (!projectRoot) { return; }
+
         // show the dialog with a text box to select a folder
         // dialog html is written in 'image-folder-dialog.html'
         const dialog = Dialogs.showModalDialogUsingTemplate(ImageFolderDialogTemplate, false);
         const $dlg = dialog.getElement();
         const $input = $dlg.find("#folder-path-input");
+        const $suggestions = $dlg.find("#folder-suggestions");
+
+        let folderList = [];
+        let stringMatcher = null;
+
+        // Scan project directories and setup event handlers
+        _scanDirectories(projectRoot, '', folderList).then(() => {
+            stringMatcher = new StringMatch.StringMatcher({ segmentedSearch: true });
+
+            // input event handler
+            $input.on('input', function() {
+                _updateFolderSuggestions($input.val(), folderList, stringMatcher, $suggestions, $input);
+            });
+        });
 
         // focus the input box
         setTimeout(function() {
@@ -820,21 +952,14 @@ define(function (require, exports, module) {
         }, 100);
 
         // handle dialog button clicks
+        // so the logic is either its an ok button click or cancel button click, so if its ok click
+        // then we download image in that folder and close the dialog, in close btn click we directly close the dialog
         $dlg.one("buttonClick", function(e, buttonId) {
             if (buttonId === Dialogs.DIALOG_BTN_OK) {
                 const folderPath = $input.val().trim();
-                dialog.close();
-                // if folder path is specified we download in that folder
-                // else we download in the project root
-                if (folderPath) {
-                    _downloadToFolder(message, folderPath);
-                } else {
-                    _downloadToFolder(message, '');
-                }
-            } else if (buttonId === Dialogs.DIALOG_BTN_CANCEL) {
-                // if cancel is clicked, we abort the download
-                dialog.close();
+                _downloadToFolder(message, folderPath);
             }
+            dialog.close();
         });
     }
 

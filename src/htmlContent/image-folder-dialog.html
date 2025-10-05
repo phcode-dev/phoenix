@@ -9,8 +9,14 @@
                placeholder="Type folder path (e.g., assets/images/)"
                value=""
                autocomplete="off"
-               spellcheck="false"
-               style="width: 100%; height: 30px; padding: 5px; box-sizing: border-box;">
+               spellcheck="false">
+
+        <!-- the folder suggestions will come here dynamically -->
+        <div id="folder-suggestions"></div>
+
+        <p class="folder-help-text">
+            💡 Tip: Type to filter folders or create a new path
+        </p>
     </div>
     <div class="modal-footer">
         <button class="dialog-button btn" data-button-id="cancel">Cancel</button>
