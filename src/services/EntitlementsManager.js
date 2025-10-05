@@ -73,13 +73,13 @@ define(function (require, exports, module) {
             });
     }
 
-    let effectiveEntitlements = null;
+    let effectiveEntitlementsCached = undefined; // entitlements can be null and its valid if no login/trial
     async function _getEffectiveEntitlements() {
-        if(effectiveEntitlements){
-            return effectiveEntitlements;
+        if(effectiveEntitlementsCached !== undefined){
+            return effectiveEntitlementsCached;
         }
         const entitlements = await LoginService.getEffectiveEntitlements();
-        effectiveEntitlements = entitlements;
+        effectiveEntitlementsCached = entitlements;
         return entitlements;
     }
 
@@ -178,7 +178,7 @@ define(function (require, exports, module) {
         LoginService = KernalModeTrust.loginService;
         // Set up event forwarding from LoginService
         LoginService.on(LoginService.EVENT_ENTITLEMENTS_CHANGED, function() {
-            effectiveEntitlements = null;
+            effectiveEntitlementsCached = null;
             EntitlementsManager.trigger(EVENT_ENTITLEMENTS_CHANGED);
         });
         AIControl.init();
