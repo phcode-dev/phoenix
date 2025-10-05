@@ -113,6 +113,10 @@ define(function (require, exports, module) {
             return {err: ERR_RETRY_LATER};
         }
         try {
+            if(Phoenix.isTestWindow && fetchFn === fetch){
+                // so we never allow tests to hit the actual login service.
+                return {err: ERR_NOT_LOGGED_IN};
+            }
             const response = await fetchFn(resolveURL, {
                 method: 'GET',
                 credentials: 'include', // Include cookies
@@ -333,6 +337,10 @@ define(function (require, exports, module) {
     async function signOutBrowser() {
         const logoutURL = `${_getAccountBaseURL()}/signOut`;
         try {
+            if(Phoenix.isTestWindow && fetchFn === fetch){
+                // so we never allow tests to hit the actual login service.
+                return;
+            }
             const response = await fetchFn(logoutURL, {
                 method: 'POST',
                 credentials: 'include', // Include cookies
