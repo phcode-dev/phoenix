@@ -542,6 +542,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "{APP_NAME} Nasıl Kullanılır",
   "CMD_SUPPORT": "{APP_NAME} Desteği",
   "CMD_GET_PRO": "Phoenix Pro'yu Edinin",
+  "CMD_MANAGE_LICENSES": "Lisansları Yönet",
   "CMD_USER_PROFILE": "{APP_NAME} Hesabı",
   "CMD_DOCS": "Yardım, Başlarken",
   "CMD_SUGGEST": "Yeni Özellik Öner",
@@ -1484,7 +1485,6 @@ define({
   "PROMO_PRO_UNLOCK_MESSAGE": "Bu gelişmiş özelliklerin kilidini açmak için hemen abone olun:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro Deneme Sürümü ({0} gün kaldı)",
   "GET_PHOENIX_PRO": "Phoenix Pro'yu Edinin",
-  "CMD_MANAGE_LICENSES": "Lisansları Yönet",
   "MANAGE_LICENSE_DIALOG_TITLE": "Cihaz Lisansını Yönet",
   "LICENSE_KEY": "Lisans Anahtarı",
   "LICENSE_KEY_ACTIVATE": "Lisansı Etkinleştir",
@@ -1506,5 +1506,6 @@ define({
   "LICENSE_ACTIVATE_FAIL": "Lisans etkinleştirilemedi",
   "LICENSE_ACTIVATE_FAIL_APPLY": "Lisans cihaza uygulanamadı",
   "LICENSE_ENTER_KEY": "Lütfen bir lisans anahtarı girin",
-  "LICENSE_REAPPLY_TO_DEVICE": "Zaten etkinleştirildi mi? Sistem genelinde yeniden uygula"
+  "LICENSE_REAPPLY_TO_DEVICE": "Zaten etkinleştirildi mi? Sistem genelinde yeniden uygula",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "Eklenti yüklenmedi. Kullanımdan kaldırılmış veya güvensiz."
 });

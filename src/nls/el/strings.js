@@ -542,6 +542,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "Πώς να Χρησιμοποιήσετε το {APP_NAME}",
   "CMD_SUPPORT": "Υποστήριξη {APP_NAME}",
   "CMD_GET_PRO": "Αποκτήστε το Phoenix Pro",
+  "CMD_MANAGE_LICENSES": "Διαχείριση αδειών",
   "CMD_USER_PROFILE": "Λογαριασμός {APP_NAME}",
   "CMD_DOCS": "Βοήθεια, Ξεκινώντας",
   "CMD_SUGGEST": "Πρότεινε Feature",
@@ -1484,7 +1485,6 @@ define({
   "PROMO_PRO_UNLOCK_MESSAGE": "Εγγραφείτε τώρα για να ξεκλειδώσετε αυτές τις προηγμένες λειτουργίες:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Δοκιμαστική έκδοση Phoenix Pro ({0} ημέρες απομένουν)",
   "GET_PHOENIX_PRO": "Αποκτήστε το Phoenix Pro",
-  "CMD_MANAGE_LICENSES": "Διαχείριση αδειών",
   "MANAGE_LICENSE_DIALOG_TITLE": "Διαχείριση άδειας συσκευής",
   "LICENSE_KEY": "Κλειδί άδειας",
   "LICENSE_KEY_ACTIVATE": "Ενεργοποίηση άδειας",
@@ -1506,5 +1506,6 @@ define({
   "LICENSE_ACTIVATE_FAIL": "Αποτυχία ενεργοποίησης της άδειας",
   "LICENSE_ACTIVATE_FAIL_APPLY": "Αποτυχία εφαρμογής της άδειας χρήσης στη συσκευή",
   "LICENSE_ENTER_KEY": "Παρακαλώ, εισαγάγετε ένα κλειδί άδειας χρήσης",
-  "LICENSE_REAPPLY_TO_DEVICE": "Έχει ήδη ενεργοποιηθεί; Επανεφαρμογή σε όλο το σύστημα"
+  "LICENSE_REAPPLY_TO_DEVICE": "Έχει ήδη ενεργοποιηθεί; Επανεφαρμογή σε όλο το σύστημα",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "Η επέκταση δεν φορτώθηκε. Είναι είτε καταργημένη είτε μη ασφαλής."
 });

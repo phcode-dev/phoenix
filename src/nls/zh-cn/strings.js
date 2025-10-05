@@ -542,6 +542,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "如何使用 {APP_NAME}",
   "CMD_SUPPORT": "{APP_NAME} 支持",
   "CMD_GET_PRO": "获取 Phoenix Pro",
+  "CMD_MANAGE_LICENSES": "管理许可证",
   "CMD_USER_PROFILE": "{APP_NAME} 帐户",
   "CMD_DOCS": "帮助，入门指南",
   "CMD_SUGGEST": "推荐功能",
@@ -1484,7 +1485,6 @@ define({
   "PROMO_PRO_UNLOCK_MESSAGE": "立即订阅以解锁以下高级功能：",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro 试用版（剩余 {0} 天）",
   "GET_PHOENIX_PRO": "获取 Phoenix Pro",
-  "CMD_MANAGE_LICENSES": "管理许可证",
   "MANAGE_LICENSE_DIALOG_TITLE": "管理设备许可证",
   "LICENSE_KEY": "许可证密钥",
   "LICENSE_KEY_ACTIVATE": "激活许可证",
@@ -1506,5 +1506,6 @@ define({
   "LICENSE_ACTIVATE_FAIL": "激活许可证失败",
   "LICENSE_ACTIVATE_FAIL_APPLY": "未能将许可证应用于设备",
   "LICENSE_ENTER_KEY": "请输入许可证密钥",
-  "LICENSE_REAPPLY_TO_DEVICE": "已激活？重新应用至全系统"
+  "LICENSE_REAPPLY_TO_DEVICE": "已激活？重新应用至全系统",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "扩展未加载。它已弃用或不安全。"
 });

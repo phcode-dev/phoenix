@@ -542,6 +542,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "Cum să folosești {APP_NAME}",
   "CMD_SUPPORT": "Suport {APP_NAME}",
   "CMD_GET_PRO": "Obține Phoenix Pro",
+  "CMD_MANAGE_LICENSES": "Gestionare licențe",
   "CMD_USER_PROFILE": "Cont {APP_NAME}",
   "CMD_DOCS": "Ajutor, Noțiuni introductive",
   "CMD_SUGGEST": "Sugerează o funcționalitate",
@@ -1484,7 +1485,6 @@ define({
   "PROMO_PRO_UNLOCK_MESSAGE": "Abonează-te acum pentru a debloca aceste funcții avansate:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Probă Phoenix Pro ({0} zile rămase)",
   "GET_PHOENIX_PRO": "Obține Phoenix Pro",
-  "CMD_MANAGE_LICENSES": "Gestionare licențe",
   "MANAGE_LICENSE_DIALOG_TITLE": "Gestionare licență dispozitiv",
   "LICENSE_KEY": "Cheie de licență",
   "LICENSE_KEY_ACTIVATE": "Activează licența",
@@ -1506,5 +1506,6 @@ define({
   "LICENSE_ACTIVATE_FAIL": "Activarea licenței a eșuat",
   "LICENSE_ACTIVATE_FAIL_APPLY": "Nu s-a putut aplica licența pe dispozitiv",
   "LICENSE_ENTER_KEY": "Introduceți o cheie de licență",
-  "LICENSE_REAPPLY_TO_DEVICE": "Deja activat? Reaplicați la nivel de sistem"
+  "LICENSE_REAPPLY_TO_DEVICE": "Deja activat? Reaplicați la nivel de sistem",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "Extensia nu s-a încărcat. Este fie învechită, fie nesigură."
 });

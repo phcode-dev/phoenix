@@ -542,6 +542,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "Як використовувати {APP_NAME}",
   "CMD_SUPPORT": "Підтримка {APP_NAME}",
   "CMD_GET_PRO": "Отримати Phoenix Pro",
+  "CMD_MANAGE_LICENSES": "Керування ліцензіями",
   "CMD_USER_PROFILE": "Обліковий запис {APP_NAME}",
   "CMD_DOCS": "Довідка, початок роботи",
   "CMD_SUGGEST": "Запропонувати ідею",
@@ -1484,7 +1485,6 @@ define({
   "PROMO_PRO_UNLOCK_MESSAGE": "Підпишіться зараз, щоб розблокувати такі розширені функції:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Пробний період Phoenix Pro ({0} днів залишилось)",
   "GET_PHOENIX_PRO": "Отримати Phoenix Pro",
-  "CMD_MANAGE_LICENSES": "Керування ліцензіями",
   "MANAGE_LICENSE_DIALOG_TITLE": "Керування ліцензією пристрою",
   "LICENSE_KEY": "Ліцензійний ключ",
   "LICENSE_KEY_ACTIVATE": "Активувати ліцензію",
@@ -1506,5 +1506,6 @@ define({
   "LICENSE_ACTIVATE_FAIL": "Не вдалося активувати ліцензію",
   "LICENSE_ACTIVATE_FAIL_APPLY": "Не вдалося застосувати ліцензію до пристрою",
   "LICENSE_ENTER_KEY": "Введіть ліцензійний ключ",
-  "LICENSE_REAPPLY_TO_DEVICE": "Уже активовано? Повторно застосувати для всієї системи"
+  "LICENSE_REAPPLY_TO_DEVICE": "Уже активовано? Повторно застосувати для всієї системи",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "Розширення не завантажено. Воно або застаріле, або небезпечне."
 });

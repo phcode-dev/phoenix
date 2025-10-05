@@ -542,6 +542,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "So verwendet man {APP_NAME}",
   "CMD_SUPPORT": "{APP_NAME}-Support",
   "CMD_GET_PRO": "Phoenix Pro herunterladen",
+  "CMD_MANAGE_LICENSES": "Lizenzen verwalten",
   "CMD_USER_PROFILE": "{APP_NAME}-Konto",
   "CMD_DOCS": "Hilfe, Erste Schritte",
   "CMD_SUGGEST": "Ein Feature vorschlagen",
@@ -1484,7 +1485,6 @@ define({
   "PROMO_PRO_UNLOCK_MESSAGE": "Abonniere jetzt, um die folgenden erweiterten Funktionen freizuschalten:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro-Testversion ({0} Tage verbleibend)",
   "GET_PHOENIX_PRO": "Phoenix Pro herunterladen",
-  "CMD_MANAGE_LICENSES": "Lizenzen verwalten",
   "MANAGE_LICENSE_DIALOG_TITLE": "Gerätelizenz verwalten",
   "LICENSE_KEY": "Lizenzschlüssel",
   "LICENSE_KEY_ACTIVATE": "Lizenz aktivieren",
@@ -1506,5 +1506,6 @@ define({
   "LICENSE_ACTIVATE_FAIL": "Aktivierung der Lizenz fehlgeschlagen",
   "LICENSE_ACTIVATE_FAIL_APPLY": "Die Lizenz konnte nicht auf das Gerät angewendet werden.",
   "LICENSE_ENTER_KEY": "Bitte geben Sie einen Lizenzschlüssel ein.",
-  "LICENSE_REAPPLY_TO_DEVICE": "Bereits aktiviert? Systemweit erneut anwenden."
+  "LICENSE_REAPPLY_TO_DEVICE": "Bereits aktiviert? Systemweit erneut anwenden.",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "Erweiterung nicht geladen. Sie ist entweder veraltet oder unsicher."
 });

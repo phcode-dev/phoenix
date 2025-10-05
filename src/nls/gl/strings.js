@@ -542,6 +542,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "Cómo utilizar {APP_NAME}",
   "CMD_SUPPORT": "Soporte de {APP_NAME}",
   "CMD_GET_PRO": "Obtén Phoenix Pro",
+  "CMD_MANAGE_LICENSES": "Xestionar licenzas",
   "CMD_USER_PROFILE": "Conta de {APP_NAME}",
   "CMD_DOCS": "Axuda, comezando",
   "CMD_SUGGEST": "Suxerir unha mellora",
@@ -1484,7 +1485,6 @@ define({
   "PROMO_PRO_UNLOCK_MESSAGE": "Subscríbete agora para desbloquear estas funcións avanzadas:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Proba de Phoenix Pro ({0} días restantes)",
   "GET_PHOENIX_PRO": "Obtén Phoenix Pro",
-  "CMD_MANAGE_LICENSES": "Xestionar licenzas",
   "MANAGE_LICENSE_DIALOG_TITLE": "Xestionar a licenza do dispositivo",
   "LICENSE_KEY": "Chave de licenza",
   "LICENSE_KEY_ACTIVATE": "Activar licenza",
@@ -1506,5 +1506,6 @@ define({
   "LICENSE_ACTIVATE_FAIL": "Erro ao activar a licenza",
   "LICENSE_ACTIVATE_FAIL_APPLY": "Non se puido aplicar a licenza ao dispositivo",
   "LICENSE_ENTER_KEY": "Introduza unha clave de licenza",
-  "LICENSE_REAPPLY_TO_DEVICE": "Xa está activado? Reaplicar en todo o sistema"
+  "LICENSE_REAPPLY_TO_DEVICE": "Xa está activado? Reaplicar en todo o sistema",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "Extensión non cargada. Está obsoleta ou é insegura."
 });

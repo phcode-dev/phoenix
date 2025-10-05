@@ -542,6 +542,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "Kā lietot {APP_NAME}",
   "CMD_SUPPORT": "{APP_NAME} palīdzība",
   "CMD_GET_PRO": "Iegūt Phoenix Pro",
+  "CMD_MANAGE_LICENSES": "Pārvaldīt licences",
   "CMD_USER_PROFILE": "{APP_NAME} konts",
   "CMD_DOCS": "Palīdzība, Sākšana",
   "CMD_SUGGEST": "Ieteikt funkciju",
@@ -1484,7 +1485,6 @@ define({
   "PROMO_PRO_UNLOCK_MESSAGE": "Abonē tagad, lai atbloķētu šīs papildu funkcijas:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro izmēģinājuma versija ({0} dienas atlikušas)",
   "GET_PHOENIX_PRO": "Iegūt Phoenix Pro",
-  "CMD_MANAGE_LICENSES": "Pārvaldīt licences",
   "MANAGE_LICENSE_DIALOG_TITLE": "Pārvaldīt ierīces licenci",
   "LICENSE_KEY": "Licences atslēga",
   "LICENSE_KEY_ACTIVATE": "Aktivizēt licenci",
@@ -1506,5 +1506,6 @@ define({
   "LICENSE_ACTIVATE_FAIL": "Neizdevās aktivizēt licenci",
   "LICENSE_ACTIVATE_FAIL_APPLY": "Neizdevās piemērot licenci ierīcei",
   "LICENSE_ENTER_KEY": "Lūdzu, ievadiet licences atslēgu",
-  "LICENSE_REAPPLY_TO_DEVICE": "Jau aktivizēts? Piemērot atkārtoti visā sistēmā"
+  "LICENSE_REAPPLY_TO_DEVICE": "Jau aktivizēts? Piemērot atkārtoti visā sistēmā",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "Paplašinājums nav ielādēts. Tas ir vai nu novecojis, vai nedrošs."
 });

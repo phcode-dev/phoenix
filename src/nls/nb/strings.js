@@ -542,6 +542,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "Hvordan bruke {APP_NAME}",
   "CMD_SUPPORT": "{APP_NAME} support",
   "CMD_GET_PRO": "Skaff deg Phoenix Pro",
+  "CMD_MANAGE_LICENSES": "Administrer lisenser",
   "CMD_USER_PROFILE": "{APP_NAME}-konto",
   "CMD_DOCS": "Hjelp, Kom i gang",
   "CMD_SUGGEST": "Foreslå en funksjonalitet",
@@ -1484,7 +1485,6 @@ define({
   "PROMO_PRO_UNLOCK_MESSAGE": "Abonner nå for å låse opp disse avanserte funksjonene:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro prøveperiode ({0} dager igjen)",
   "GET_PHOENIX_PRO": "Skaff deg Phoenix Pro",
-  "CMD_MANAGE_LICENSES": "Administrer lisenser",
   "MANAGE_LICENSE_DIALOG_TITLE": "Administrer enhetslisens",
   "LICENSE_KEY": "Lisensnøkkel",
   "LICENSE_KEY_ACTIVATE": "Aktiver lisens",
@@ -1506,5 +1506,6 @@ define({
   "LICENSE_ACTIVATE_FAIL": "Aktivering av lisens mislyktes",
   "LICENSE_ACTIVATE_FAIL_APPLY": "Kunne ikke anvende lisens på enheten",
   "LICENSE_ENTER_KEY": "Skriv inn en lisensnøkkel",
-  "LICENSE_REAPPLY_TO_DEVICE": "Allerede aktivert? Anvend på nytt for hele systemet"
+  "LICENSE_REAPPLY_TO_DEVICE": "Allerede aktivert? Anvend på nytt for hele systemet",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "Utvidelsen ble ikke lastet. Den er enten foreldet eller usikker."
 });
