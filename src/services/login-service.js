@@ -72,7 +72,7 @@ define(function (require, exports, module) {
     const EVENT_ENTITLEMENTS_CHANGED = "entitlements_changed";
 
     // Cached entitlements data
-    let cachedEntitlements = null;
+    let cachedEntitlements = undefined;
 
     // Last recorded state for entitlements monitoring
     let lastRecordedState = null;
@@ -266,7 +266,7 @@ define(function (require, exports, module) {
         }
 
         // Return cached data if available and not forcing refresh
-        if (cachedEntitlements && !forceRefresh) {
+        if (cachedEntitlements !== undefined && !forceRefresh) {
             return cachedEntitlements;
         }
 
@@ -388,7 +388,7 @@ define(function (require, exports, module) {
      */
     async function clearEntitlements() {
         if (cachedEntitlements) {
-            cachedEntitlements = null;
+            cachedEntitlements = undefined;
             _debounceEntitlementsChanged();
         }
         // Reset device license state so it's re-evaluated on next entitlement check
