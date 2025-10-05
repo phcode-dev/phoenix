@@ -1715,5 +1715,11 @@ define({
     "LICENSE_ACTIVATE_FAIL": "Failed to activate license",
     "LICENSE_ACTIVATE_FAIL_APPLY": "'Failed to apply license to device'",
     "LICENSE_ENTER_KEY": "Please enter a license key",
-    "LICENSE_REAPPLY_TO_DEVICE": "Already activated? Reapply system-wide"
+    "LICENSE_REAPPLY_TO_DEVICE": "Already activated? Reapply system-wide",
+    // AI CONTROL
+    "AI_CONTROL_ALL_ALLOWED_NO_CONFIG": "No AI config file found in system. AI is enabled for all users.",
+    "AI_CONTROL_ALL_ALLOWED": "AI is enabled for all users.",
+    "AI_CONTROL_USER_ALLOWED": "AI is enabled for user ({0}) but disabled for others",
+    "AI_CONTROL_ADMIN_DISABLED": "AI access has been disabled by your system administrator",
+    "AI_CONTROL_ADMIN_DISABLED_CONTACT": "AI access has been disabled by your system administrator. Please contact {0} for assistance."
 });
