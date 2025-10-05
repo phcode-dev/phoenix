@@ -101,6 +101,10 @@ define(function (require, exports, module) {
             return {err: ERR_RETRY_LATER};
         }
         try {
+            if(Phoenix.isTestWindow && fetchFn === fetch){
+                // so we never allow tests to hit the actual login service.
+                return {err: ERR_INVALID};
+            }
             const response = await fetchFn(resolveURL);
             if (response.status === 400 || response.status === 404) {
                 // 404 api key not found and 400 Bad Request, eg: verification code mismatch
@@ -195,6 +199,10 @@ define(function (require, exports, module) {
         const resolveURL = `${Phoenix.config.account_url}getAppAuthSession?autoAuthPort=${authPortURL}&appName=${appName}`;
         // {"isSuccess":true,"appSessionID":"a uuid...","validationCode":"SWXP07"}
         try {
+            if(Phoenix.isTestWindow && fetchFn === fetch){
+                // so we never allow tests to hit the actual login service.
+                return null;
+            }
             const response = await fetchFn(resolveURL);
             if (response.ok) {
                 const {appSessionID, validationCode} = await response.json();
@@ -348,6 +356,10 @@ define(function (require, exports, module) {
                 appSessionID: userProfile.apiKey
             };
 
+            if(Phoenix.isTestWindow && fetchFn === fetch){
+                // so we never allow tests to hit the actual login service.
+                return;
+            }
             const response = await fetchFn(resolveURL, {
                 method: 'POST',
                 headers: {
