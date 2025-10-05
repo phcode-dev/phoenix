@@ -547,12 +547,17 @@ define(function (require, exports, module) {
      *       upgradeToPlan: string, // Plan name that includes this entitlement
      *       validTill: number      // Timestamp when entitlement expires
      *     },
-     *     liveEditAI: {
+     *     aiAgent: {
      *       activated: boolean,
+     *       aiBrandName: string,
      *       subscribeURL: string,
-     *       purchaseCreditsURL: string, // URL to purchase AI credits
      *       upgradeToPlan: string,
-     *       validTill: number
+     *       validTill: number,
+     *       upsellDialog: {
+     *           title: "if activated is false, server can send a custom upsell dialog to show",
+     *           message: "this is the message to show",
+     *           buyURL: "if this url is present from server, this will be shown to as buy link"
+     *       }
      *     }
      *   }
      * }
@@ -612,6 +617,8 @@ define(function (require, exports, module) {
                 trialDaysRemaining: trialDaysRemaining,
                 entitlements: {
                     ...serverEntitlements.entitlements,
+                    // below we only override things we grant in trial. AI which is not part of trial
+                    // is always server injected. the EntitlementsManager will resolve it appropriately.
                     liveEdit: {
                         activated: true,
                         subscribeURL: brackets.config.purchase_url,
@@ -633,6 +640,8 @@ define(function (require, exports, module) {
             isInProTrial: true,
             trialDaysRemaining: trialDaysRemaining,
             entitlements: {
+                // below we only override things we grant in trial. AI which is not part of trial
+                // is always server injected. the EntitlementsManager will resolve it appropriately.
                 liveEdit: {
                     activated: true,
                     subscribeURL: brackets.config.purchase_url,

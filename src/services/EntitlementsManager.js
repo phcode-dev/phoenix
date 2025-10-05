@@ -32,7 +32,8 @@ define(function (require, exports, module) {
 
     const EventDispatcher = require("utils/EventDispatcher"),
         AIControl = require("./ai-control"),
-        Strings = require("strings");
+        Strings = require("strings"),
+        StringUtils = require("utils/StringUtils");
 
     const MS_IN_DAY = 24 * 60 * 60 * 1000;
     const FREE_PLAN_VALIDITY_DAYS = 10000;
@@ -169,6 +170,117 @@ define(function (require, exports, module) {
         };
     }
 
+    /**
+     * Get AI is enabled for user, based on his logged in pro-user/trial status.
+     *
+     * @returns {Promise<Object>} AI entitlement object with the following shape:
+     * @returns {Promise<boolean>} entitlement.activated - If true, enable AI features. If false, check upsellDialog.
+     * @returns {Promise<boolean>} [entitlement.needsLogin] - If true, user needs to login first.
+     * @returns {Promise<string>} [entitlement.aiBrandName] - The brand name used for AI. Eg: `Phoenix AI`
+     * @returns {Promise<string>} [entitlement.buyURL] - URL to subscribe/purchase if not activated. Can be null if AI
+     *                                            is not purchasable.
+     * @returns {Promise<string>} [entitlement.upgradeToPlan] - Plan name that includes AI entitlement
+     * @returns {Promise<number>} [entitlement.validTill] - Timestamp when entitlement expires (if from server)
+     * @returns {Promise<Object>} [entitlement.upsellDialog] - Dialog configuration if user needs to be shown an upsell.
+     *                                            Only present when activated is false.
+     * @returns {Promise<string>} [entitlement.upsellDialog.title] - Dialog title
+     * @returns {Promise<string>} [entitlement.upsellDialog.message] - Dialog message
+     * @returns {Promise<string>} [entitlement.upsellDialog.buyURL] - Purchase URL. If present, dialog shows
+     *                                            "Get AI Access" button. If absent, shows only OK button.
+     *
+     * @example
+     * const aiEntitlement = await EntitlementsManager.getAIEntitlement();
+     * if (aiEntitlement.activated) {
+     *     // Enable AI features
+     *     enableAIFeature();
+     * } else if (aiEntitlement.upsellDialog) {
+     *     // Show upsell dialog when user tries to use AI
+     *     promotions.showAIUpsellDialog(aiEntitlement);
+     * }
+     */
+    async function getAIEntitlement() {
+        if(!isLoggedIn()) {
+            return {
+                needsLogin: true,
+                activated: false,
+                upsellDialog: {
+                    title: Strings.AI_LOGIN_DIALOG_TITLE,
+                    message: Strings.AI_LOGIN_DIALOG_MESSAGE
+                    // no buy url as it is a sign in hint. only ok button will be there in this dialog.
+                }
+            };
+        }
+        const aiControlStatus = await EntitlementsManager.getAIControlStatus();
+        if(!aiControlStatus.aiEnabled) {
+            return {
+                activated: false,
+                upsellDialog: {
+                    title: Strings.AI_DISABLED_DIALOG_TITLE,
+                    // Eg. AI is disabled by school admin/root user.
+                    // no buyURL as ai is disabled explicitly. only ok button will be there in this dialog.
+                    message: aiControlStatus.message || Strings.AI_CONTROL_ADMIN_DISABLED
+                }
+            };
+        }
+        const defaultAIBrandName = brackets.config.ai_brand_name,
+            defaultPurchaseURL = brackets.config.purchase_url,
+            defaultUpsellTitle = StringUtils.format(Strings.AI_UPSELL_DIALOG_TITLE, defaultAIBrandName);
+        const entitlements = await _getEffectiveEntitlements();
+        if(!entitlements || !entitlements.entitlements || !entitlements.entitlements.aiAgent) {
+            return {
+                activated: false,
+                aiBrandName: defaultAIBrandName,
+                buyURL: defaultPurchaseURL,
+                upgradeToPlan: defaultAIBrandName,
+                upsellDialog: {
+                    title: defaultUpsellTitle,
+                    message: Strings.AI_UPSELL_DIALOG_MESSAGE,
+                    buyURL: defaultPurchaseURL
+                }
+            };
+        }
+        const aiEntitlement = entitlements.entitlements.aiAgent;
+        // entitlements.entitlements.aiAgent: {
+        //       activated: boolean,
+        //       aiBrandName: string,
+        //       subscribeURL: string,
+        //       upgradeToPlan: string,
+        //       validTill: number,
+        //       upsellDialog: {
+        //          title: "if activated is false, server can send a custom upsell dialog to show",
+        //          message: "this is the message to show",
+        //          buyURL: "if this url is present from server, this will be shown to as buy link"
+        //      }
+        //     }
+
+        if(aiEntitlement.activated) {
+            return {
+                activated: true,
+                aiBrandName: aiEntitlement.aiBrandName,
+                buyURL: aiEntitlement.subscribeURL,
+                upgradeToPlan: aiEntitlement.upgradeToPlan,
+                validTill: aiEntitlement.validTill
+                // no upsellDialog, as it need not be shown.
+            };
+        }
+
+        const upsellTitle = StringUtils.format(Strings.AI_UPSELL_DIALOG_TITLE,
+            aiEntitlement.aiBrandName || defaultAIBrandName);
+        const upsellDialog = aiEntitlement.upsellDialog || {};
+        return {
+            activated: false,
+            aiBrandName: aiEntitlement.aiBrandName,
+            buyURL: aiEntitlement.subscribeURL || defaultPurchaseURL,
+            upgradeToPlan: aiEntitlement.upgradeToPlan,
+            validTill: aiEntitlement.validTill,
+            upsellDialog: {
+                title: upsellDialog.title || upsellTitle,
+                message: upsellDialog.message || Strings.AI_UPSELL_DIALOG_MESSAGE,
+                buyURL: upsellDialog.buyURL || aiEntitlement.subscribeURL || defaultPurchaseURL
+            }
+        };
+    }
+
     let inited = false;
     function init() {
         if(inited){
@@ -209,5 +321,6 @@ define(function (require, exports, module) {
     EntitlementsManager.getTrialRemainingDays = getTrialRemainingDays;
     EntitlementsManager.getRawEntitlements = getRawEntitlements;
     EntitlementsManager.getLiveEditEntitlement = getLiveEditEntitlement;
+    EntitlementsManager.getAIEntitlement = getAIEntitlement;
     EntitlementsManager.EVENT_ENTITLEMENTS_CHANGED = EVENT_ENTITLEMENTS_CHANGED;
 });
