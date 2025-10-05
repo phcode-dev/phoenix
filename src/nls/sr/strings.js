@@ -542,6 +542,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "Корисничко упутство за {APP_NAME}",
   "CMD_SUPPORT": "{APP_NAME} подршка",
   "CMD_GET_PRO": "Преузмите Phoenix Pro",
+  "CMD_MANAGE_LICENSES": "Управљање лиценцама",
   "CMD_USER_PROFILE": "Налог за {APP_NAME}",
   "CMD_DOCS": "Помоћ, почетак рада",
   "CMD_SUGGEST": "Предложи нову функционалност",
@@ -1484,7 +1485,6 @@ define({
   "PROMO_PRO_UNLOCK_MESSAGE": "Претплатите се сада да бисте откључали ове напредне функције:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro пробна верзија ({0} дана преостало)",
   "GET_PHOENIX_PRO": "Преузмите Phoenix Pro",
-  "CMD_MANAGE_LICENSES": "Управљање лиценцама",
   "MANAGE_LICENSE_DIALOG_TITLE": "Управљање лиценцом уређаја",
   "LICENSE_KEY": "Кључ лиценце",
   "LICENSE_KEY_ACTIVATE": "Активирај лиценцу",
@@ -1506,5 +1506,6 @@ define({
   "LICENSE_ACTIVATE_FAIL": "Активирање лиценце није успело",
   "LICENSE_ACTIVATE_FAIL_APPLY": "Примена лиценце на уређај није успела.",
   "LICENSE_ENTER_KEY": "Унесите кључ лиценце",
-  "LICENSE_REAPPLY_TO_DEVICE": "Већ активирано? Поново примени на нивоу система"
+  "LICENSE_REAPPLY_TO_DEVICE": "Већ активирано? Поново примени на нивоу система",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "Екстензија није учитана. Или је застарела или небезбедна."
 });

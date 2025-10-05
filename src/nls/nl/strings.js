@@ -542,6 +542,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "Hoe gebruik je {APP_NAME}",
   "CMD_SUPPORT": "{APP_NAME} ondersteuning",
   "CMD_GET_PRO": "Download Phoenix Pro",
+  "CMD_MANAGE_LICENSES": "Licenties beheren",
   "CMD_USER_PROFILE": "{APP_NAME}-account",
   "CMD_DOCS": "Help, aan de slag",
   "CMD_SUGGEST": "Stel een nieuwe functie voor",
@@ -1484,7 +1485,6 @@ define({
   "PROMO_PRO_UNLOCK_MESSAGE": "Abonneer nu om deze geavanceerde functies te ontgrendelen:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro proefversie ({0} dagen resterend)",
   "GET_PHOENIX_PRO": "Koop Phoenix Pro",
-  "CMD_MANAGE_LICENSES": "Licenties beheren",
   "MANAGE_LICENSE_DIALOG_TITLE": "Apparaatlicentie beheren",
   "LICENSE_KEY": "Licentiesleutel",
   "LICENSE_KEY_ACTIVATE": "Licentie activeren",
@@ -1506,5 +1506,6 @@ define({
   "LICENSE_ACTIVATE_FAIL": "Licentie activeren mislukt",
   "LICENSE_ACTIVATE_FAIL_APPLY": "Kon licentie niet toepassen op het apparaat",
   "LICENSE_ENTER_KEY": "Voer alstublieft een licentiesleutel in",
-  "LICENSE_REAPPLY_TO_DEVICE": "Al geactiveerd? Opnieuw systeembreed toepassen"
+  "LICENSE_REAPPLY_TO_DEVICE": "Al geactiveerd? Opnieuw systeembreed toepassen",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "Extensie niet geladen. Deze is ofwel verouderd of onveilig."
 });

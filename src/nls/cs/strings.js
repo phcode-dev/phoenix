@@ -542,6 +542,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "Jak používat {APP_NAME}",
   "CMD_SUPPORT": "{APP_NAME} Podpora",
   "CMD_GET_PRO": "Získejte Phoenix Pro",
+  "CMD_MANAGE_LICENSES": "Spravovat licence",
   "CMD_USER_PROFILE": "Účet {APP_NAME}",
   "CMD_DOCS": "Nápověda, Začínáme",
   "CMD_SUGGEST": "Navrhněte funkci",
@@ -1484,7 +1485,6 @@ define({
   "PROMO_PRO_UNLOCK_MESSAGE": "Přihlaste se k odběru a odemkněte si tyto pokročilé funkce:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Zkušební verze Phoenix Pro ({0} dní zbývá)",
   "GET_PHOENIX_PRO": "Získejte Phoenix Pro",
-  "CMD_MANAGE_LICENSES": "Spravovat licence",
   "MANAGE_LICENSE_DIALOG_TITLE": "Spravovat licenci zařízení",
   "LICENSE_KEY": "Licenční klíč",
   "LICENSE_KEY_ACTIVATE": "Aktivovat licenci",
@@ -1506,5 +1506,6 @@ define({
   "LICENSE_ACTIVATE_FAIL": "Nepodařilo se aktivovat licenci",
   "LICENSE_ACTIVATE_FAIL_APPLY": "Nepodařilo se aplikovat licenci na zařízení.",
   "LICENSE_ENTER_KEY": "Zadejte prosím licenční klíč.",
-  "LICENSE_REAPPLY_TO_DEVICE": "Již aktivováno? Znovu aplikovat pro celý systém."
+  "LICENSE_REAPPLY_TO_DEVICE": "Již aktivováno? Znovu aplikovat pro celý systém.",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "Rozšíření nebylo načteno. Je buď zastaralé, nebo nezabezpečené."
 });

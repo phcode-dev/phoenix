@@ -542,6 +542,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "{APP_NAME} használata",
   "CMD_SUPPORT": "{APP_NAME} támogatás",
   "CMD_GET_PRO": "Szerezd meg a Phoenix Pro-t",
+  "CMD_MANAGE_LICENSES": "Licencek kezelése",
   "CMD_USER_PROFILE": "{APP_NAME} fiók",
   "CMD_DOCS": "Súgó, Első lépések",
   "CMD_SUGGEST": "Javaslat új funkcióra",
@@ -1484,7 +1485,6 @@ define({
   "PROMO_PRO_UNLOCK_MESSAGE": "Iratkozz fel most a következő fejlett funkciók eléréséhez:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro próbaverzió ({0} nap van hátra)",
   "GET_PHOENIX_PRO": "Szerezd meg a Phoenix Pro-t",
-  "CMD_MANAGE_LICENSES": "Licencek kezelése",
   "MANAGE_LICENSE_DIALOG_TITLE": "Eszközlicenc kezelése",
   "LICENSE_KEY": "Licenckulcs",
   "LICENSE_KEY_ACTIVATE": "Licenc aktiválása",
@@ -1506,5 +1506,6 @@ define({
   "LICENSE_ACTIVATE_FAIL": "Nem sikerült aktiválni a licencet.",
   "LICENSE_ACTIVATE_FAIL_APPLY": "Nem sikerült a licencet az eszközre alkalmazni.",
   "LICENSE_ENTER_KEY": "Kérjük, adja meg a licenckulcsot.",
-  "LICENSE_REAPPLY_TO_DEVICE": "Már aktiválta? Újraalkalmazás rendszerszinten."
+  "LICENSE_REAPPLY_TO_DEVICE": "Már aktiválta? Újraalkalmazás rendszerszinten.",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "A bővítmény nem töltődött be. Vagy elavult, vagy nem biztonságos."
 });

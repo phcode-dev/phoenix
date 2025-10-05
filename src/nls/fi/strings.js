@@ -542,6 +542,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "Kuinka käyttää {APP_NAME}iä",
   "CMD_SUPPORT": "{APP_NAME}-tuki",
   "CMD_GET_PRO": "Hanki Phoenix Pro",
+  "CMD_MANAGE_LICENSES": "Hallitse lisenssejä",
   "CMD_USER_PROFILE": "{APP_NAME}-tili",
   "CMD_DOCS": "Ohje, aloittaminen",
   "CMD_SUGGEST": "Ehdota ominaisuutta",
@@ -1484,7 +1485,6 @@ define({
   "PROMO_PRO_UNLOCK_MESSAGE": "Tilaa nyt avataksesi nämä edistyneet ominaisuudet:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro -kokeiluversio ({0} päivää jäljellä)",
   "GET_PHOENIX_PRO": "Hanki Phoenix Pro",
-  "CMD_MANAGE_LICENSES": "Hallitse lisenssejä",
   "MANAGE_LICENSE_DIALOG_TITLE": "Hallitse laitelisenssiä",
   "LICENSE_KEY": "Lisenssiavain",
   "LICENSE_KEY_ACTIVATE": "Aktivoi lisenssi",
@@ -1506,5 +1506,6 @@ define({
   "LICENSE_ACTIVATE_FAIL": "Lisenssin aktivointi epäonnistui",
   "LICENSE_ACTIVATE_FAIL_APPLY": "Lisenssin käyttöönotto laitteeseen epäonnistui.",
   "LICENSE_ENTER_KEY": "Syötä lisenssiavain.",
-  "LICENSE_REAPPLY_TO_DEVICE": "Jo aktivoitu? Ota käyttöön järjestelmänlaajuisesti."
+  "LICENSE_REAPPLY_TO_DEVICE": "Jo aktivoitu? Ota käyttöön järjestelmänlaajuisesti.",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "Laajennusta ei ladattu. Se on joko vanhentunut tai turvaton."
 });

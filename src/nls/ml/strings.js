@@ -542,6 +542,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "{APP_NAME} എങ്ങനെ ഉപയോഗിക്കാം",
   "CMD_SUPPORT": "{APP_NAME} പിന്തുണ",
   "CMD_GET_PRO": "ഫീനിക്സ് പ്രോ നേടുക",
+  "CMD_MANAGE_LICENSES": "ലൈസൻസുകൾ നിയന്ത്രിക്കുക",
   "CMD_USER_PROFILE": "{APP_NAME} അക്കൗണ്ട്",
   "CMD_DOCS": "സഹായം, തുടക്കക്കാർക്ക്",
   "CMD_SUGGEST": "ഒരു സവിശേഷത നിർദ്ദേശിക്കുക",
@@ -1484,7 +1485,6 @@ define({
   "PROMO_PRO_UNLOCK_MESSAGE": "ഈ വിപുലമായ സവിശേഷതകൾ അൺലോക്ക് ചെയ്യാൻ ഇപ്പോൾ സബ്‌സ്‌ക്രൈബുചെയ്യുക:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "ഫീനിക്സ് പ്രോ പരീക്ഷണം ({0} ദിവസം ബാക്കി)",
   "GET_PHOENIX_PRO": "ഫീനിക്സ് പ്രോ നേടുക",
-  "CMD_MANAGE_LICENSES": "ലൈസൻസുകൾ നിയന്ത്രിക്കുക",
   "MANAGE_LICENSE_DIALOG_TITLE": "ഉപകരണ ലൈസൻസ് നിയന്ത്രിക്കുക",
   "LICENSE_KEY": "ലൈസൻസ് കീ",
   "LICENSE_KEY_ACTIVATE": "ലൈസൻസ് സജീവമാക്കുക",
@@ -1506,5 +1506,6 @@ define({
   "LICENSE_ACTIVATE_FAIL": "ലൈസൻസ് സജീവമാക്കുന്നതിൽ പരാജയപ്പെട്ടു",
   "LICENSE_ACTIVATE_FAIL_APPLY": "ഉപകരണത്തിൽ ലൈസൻസ് പ്രയോഗിക്കാൻ കഴിഞ്ഞില്ല",
   "LICENSE_ENTER_KEY": "ദയവായി ഒരു ലൈസൻസ് കീ നൽകുക",
-  "LICENSE_REAPPLY_TO_DEVICE": "ഇതിനകം ആക്റ്റിവേറ്റ് ചെയ്തോ? സിസ്റ്റത്തിലുടനീളം വീണ്ടും പ്രയോഗിക്കുക"
+  "LICENSE_REAPPLY_TO_DEVICE": "ഇതിനകം ആക്റ്റിവേറ്റ് ചെയ്തോ? സിസ്റ്റത്തിലുടനീളം വീണ്ടും പ്രയോഗിക്കുക",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "എക്സ്റ്റൻഷൻ ലോഡ് ചെയ്തിട്ടില്ല. അത് കാലഹരണപ്പെട്ടതോ സുരക്ഷിതമല്ലാത്തതോ ആണ്."
 });

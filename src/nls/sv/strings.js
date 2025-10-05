@@ -542,6 +542,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "Hur du använder {APP_NAME}",
   "CMD_SUPPORT": "{APP_NAME}-forum",
   "CMD_GET_PRO": "Skaffa Phoenix Pro",
+  "CMD_MANAGE_LICENSES": "Hantera licenser",
   "CMD_USER_PROFILE": "{APP_NAME}-konto",
   "CMD_DOCS": "Hjälp, Kom igång",
   "CMD_SUGGEST": "Föreslå en funktion",
@@ -1484,7 +1485,6 @@ define({
   "PROMO_PRO_UNLOCK_MESSAGE": "Prenumerera nu för att låsa upp dessa avancerade funktioner:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro-provperiod ({0} dagar kvar)",
   "GET_PHOENIX_PRO": "Skaffa Phoenix Pro",
-  "CMD_MANAGE_LICENSES": "Hantera licenser",
   "MANAGE_LICENSE_DIALOG_TITLE": "Hantera enhetslicens",
   "LICENSE_KEY": "Licensnyckel",
   "LICENSE_KEY_ACTIVATE": "Aktivera licens",
@@ -1506,5 +1506,6 @@ define({
   "LICENSE_ACTIVATE_FAIL": "Det gick inte att aktivera licensen",
   "LICENSE_ACTIVATE_FAIL_APPLY": "Det gick inte att tillämpa licensen på enheten",
   "LICENSE_ENTER_KEY": "Ange en licensnyckel",
-  "LICENSE_REAPPLY_TO_DEVICE": "Redan aktiverad? Tillämpa systemomfattande"
+  "LICENSE_REAPPLY_TO_DEVICE": "Redan aktiverad? Tillämpa systemomfattande",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "Tillägget laddades inte. Det är antingen föråldrat eller osäkert."
 });

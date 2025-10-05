@@ -542,6 +542,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "{APP_NAME} का उपयोग कैसे करें",
   "CMD_SUPPORT": "{APP_NAME} सहायता",
   "CMD_GET_PRO": "Phoenix Pro प्राप्त करें",
+  "CMD_MANAGE_LICENSES": "लाइसेंस प्रबंधित करें",
   "CMD_USER_PROFILE": "{APP_NAME} खाता",
   "CMD_DOCS": "सहायता, आरंभ करना",
   "CMD_SUGGEST": "एक सुविधा का सुझाव दें",
@@ -1484,7 +1485,6 @@ define({
   "PROMO_PRO_UNLOCK_MESSAGE": "इन उन्नत सुविधाओं को अनलॉक करने के लिए अभी सब्सक्राइब करें:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro परीक्षण ({0} दिन शेष)",
   "GET_PHOENIX_PRO": "Phoenix Pro प्राप्त करें",
-  "CMD_MANAGE_LICENSES": "लाइसेंस प्रबंधित करें",
   "MANAGE_LICENSE_DIALOG_TITLE": "डिवाइस लाइसेंस प्रबंधित करें",
   "LICENSE_KEY": "लाइसेंस कुंजी",
   "LICENSE_KEY_ACTIVATE": "लाइसेंस सक्रिय करें",
@@ -1506,5 +1506,6 @@ define({
   "LICENSE_ACTIVATE_FAIL": "लाइसेंस सक्रिय करने में विफल",
   "LICENSE_ACTIVATE_FAIL_APPLY": "डिवाइस पर लाइसेंस लागू करने में विफल",
   "LICENSE_ENTER_KEY": "कृपया लाइसेंस कुंजी दर्ज करें",
-  "LICENSE_REAPPLY_TO_DEVICE": "पहले से सक्रिय है? सिस्टम-व्यापी पुनः लागू करें"
+  "LICENSE_REAPPLY_TO_DEVICE": "पहले से सक्रिय है? सिस्टम-व्यापी पुनः लागू करें",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "एक्सटेंशन लोड नहीं हुआ। यह या तो अप्रचलित है या असुरक्षित।"
 });

@@ -542,6 +542,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "Sådan bruger du {APP_NAME}",
   "CMD_SUPPORT": "{APP_NAME} support",
   "CMD_GET_PRO": "Få Phoenix Pro",
+  "CMD_MANAGE_LICENSES": "Administrer licenser",
   "CMD_USER_PROFILE": "{APP_NAME}-konto",
   "CMD_DOCS": "Hjælp, Kom godt i gang",
   "CMD_SUGGEST": "Foreslå en funktion",
@@ -1484,7 +1485,6 @@ define({
   "PROMO_PRO_UNLOCK_MESSAGE": "Abonner nu for at låse op for disse avancerede funktioner:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro prøveperiode ({0} dage tilbage)",
   "GET_PHOENIX_PRO": "Få Phoenix Pro",
-  "CMD_MANAGE_LICENSES": "Administrer licenser",
   "MANAGE_LICENSE_DIALOG_TITLE": "Administrer enhedslicens",
   "LICENSE_KEY": "Licensnøgle",
   "LICENSE_KEY_ACTIVATE": "Aktivér licens",
@@ -1506,5 +1506,6 @@ define({
   "LICENSE_ACTIVATE_FAIL": "Aktivering af licens mislykkedes",
   "LICENSE_ACTIVATE_FAIL_APPLY": "Kunne ikke anvende licens på enheden",
   "LICENSE_ENTER_KEY": "Indtast venligst en licensnøgle",
-  "LICENSE_REAPPLY_TO_DEVICE": "Allerede aktiveret? Genanvend for hele systemet"
+  "LICENSE_REAPPLY_TO_DEVICE": "Allerede aktiveret? Genanvend for hele systemet",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "Udvidelse ikke indlæst. Den er enten forældet eller usikker."
 });

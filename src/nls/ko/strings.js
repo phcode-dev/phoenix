@@ -542,6 +542,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "{APP_NAME} 사용법",
   "CMD_SUPPORT": "{APP_NAME} 지원",
   "CMD_GET_PRO": "Phoenix Pro 받기",
+  "CMD_MANAGE_LICENSES": "라이선스 관리",
   "CMD_USER_PROFILE": "{APP_NAME} 계정",
   "CMD_DOCS": "도움말, 시작하기",
   "CMD_SUGGEST": "기능 제안",
@@ -1484,7 +1485,6 @@ define({
   "PROMO_PRO_UNLOCK_MESSAGE": "다음과 같은 고급 기능을 사용하려면 지금 구독하세요:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro 평가판({0}일 남음)",
   "GET_PHOENIX_PRO": "Phoenix Pro 받기",
-  "CMD_MANAGE_LICENSES": "라이선스 관리",
   "MANAGE_LICENSE_DIALOG_TITLE": "장치 라이선스 관리",
   "LICENSE_KEY": "라이선스 키",
   "LICENSE_KEY_ACTIVATE": "라이선스 활성화",
@@ -1506,5 +1506,6 @@ define({
   "LICENSE_ACTIVATE_FAIL": "라이선스 활성화에 실패했습니다.",
   "LICENSE_ACTIVATE_FAIL_APPLY": "디바이스에 라이선스를 적용하는 데 실패했습니다",
   "LICENSE_ENTER_KEY": "라이선스 키를 입력해 주세요",
-  "LICENSE_REAPPLY_TO_DEVICE": "이미 활성화하셨나요? 시스템 전체에 재적용"
+  "LICENSE_REAPPLY_TO_DEVICE": "이미 활성화하셨나요? 시스템 전체에 재적용",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "확장 프로그램이 로드되지 않았습니다. 지원이 중단되었거나 안전하지 않습니다."
 });

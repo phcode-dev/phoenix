@@ -542,6 +542,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "{APP_NAME} の使用方法",
   "CMD_SUPPORT": "{APP_NAME} サポート",
   "CMD_GET_PRO": "Phoenix Proを入手",
+  "CMD_MANAGE_LICENSES": "ライセンスの管理",
   "CMD_USER_PROFILE": "{APP_NAME}アカウント",
   "CMD_DOCS": "ヘルプ、はじめに",
   "CMD_SUGGEST": "機能改善の提案",
@@ -1484,7 +1485,6 @@ define({
   "PROMO_PRO_UNLOCK_MESSAGE": "今すぐ登録して、以下の高度な機能をアンロック：",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Proトライアル（残り{0}日）",
   "GET_PHOENIX_PRO": "Phoenix Proを入手",
-  "CMD_MANAGE_LICENSES": "ライセンスの管理",
   "MANAGE_LICENSE_DIALOG_TITLE": "デバイスライセンスの管理",
   "LICENSE_KEY": "ライセンスキー",
   "LICENSE_KEY_ACTIVATE": "ライセンスを有効化",
@@ -1506,5 +1506,6 @@ define({
   "LICENSE_ACTIVATE_FAIL": "ライセンス認証に失敗しました",
   "LICENSE_ACTIVATE_FAIL_APPLY": "デバイスへのライセンスの適用に失敗しました",
   "LICENSE_ENTER_KEY": "ライセンスキーを入力してください",
-  "LICENSE_REAPPLY_TO_DEVICE": "すでにアクティベート済みの場合、システム全体に再適用"
+  "LICENSE_REAPPLY_TO_DEVICE": "すでにアクティベート済みの場合、システム全体に再適用",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "エクステンションは非推奨、または安全ではないため読み込まれませんでした。"
 });

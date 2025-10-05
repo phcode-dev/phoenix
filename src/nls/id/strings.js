@@ -542,6 +542,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "Bagaimana Menggunakan {APP_NAME}",
   "CMD_SUPPORT": "Bantuan {APP_NAME}",
   "CMD_GET_PRO": "Dapatkan Phoenix Pro",
+  "CMD_MANAGE_LICENSES": "Kelola Lisensi",
   "CMD_USER_PROFILE": "Akun {APP_NAME}",
   "CMD_DOCS": "Bantuan, Memulai",
   "CMD_SUGGEST": "Sarankan Fitur",
@@ -1484,7 +1485,6 @@ define({
   "PROMO_PRO_UNLOCK_MESSAGE": "Berlangganan sekarang untuk membuka fitur-fitur canggih ini:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Percobaan Phoenix Pro ({0} hari tersisa)",
   "GET_PHOENIX_PRO": "Dapatkan Phoenix Pro",
-  "CMD_MANAGE_LICENSES": "Kelola Lisensi",
   "MANAGE_LICENSE_DIALOG_TITLE": "Kelola Lisensi Perangkat",
   "LICENSE_KEY": "Kunci Lisensi",
   "LICENSE_KEY_ACTIVATE": "Aktifkan Lisensi",
@@ -1506,5 +1506,6 @@ define({
   "LICENSE_ACTIVATE_FAIL": "Gagal mengaktifkan lisensi",
   "LICENSE_ACTIVATE_FAIL_APPLY": "Gagal menerapkan lisensi ke perangkat",
   "LICENSE_ENTER_KEY": "Silakan masukkan kunci lisensi",
-  "LICENSE_REAPPLY_TO_DEVICE": "Sudah diaktivasi? Terapkan ulang ke seluruh sistem"
+  "LICENSE_REAPPLY_TO_DEVICE": "Sudah diaktivasi? Terapkan ulang ke seluruh sistem",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "Ekstensi tidak dimuat. Ekstensi tersebut usang atau tidak aman."
 });
