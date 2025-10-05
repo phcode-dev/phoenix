@@ -2514,3 +2514,90 @@ code {
         }
     }
 }
+
+// image folder selection dialog
+.image-folder-dialog {
+    #folder-path-input {
+        width: 100%;
+        height: 30px;
+        padding: 5px;
+        box-sizing: border-box;
+        margin-bottom: 8px;
+    }
+
+    #folder-suggestions {
+        max-height: 180px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        border: 1px solid @bc-btn-border;
+        border-radius: @bc-border-radius;
+        background-color: @bc-panel-bg-alt;
+
+        .dark & {
+            border: 1px solid @dark-bc-btn-border;
+            background-color: @dark-bc-panel-bg-alt;
+        }
+
+        &:empty {
+            display: none;
+        }
+
+        .folder-suggestions-list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .folder-suggestion-item {
+            padding: 6px 10px;
+            cursor: pointer;
+            font-size: 12px;
+            color: @bc-text;
+            transition: background-color 0.1s;
+            border-left: 3px solid transparent;
+
+            .dark & {
+                color: @dark-bc-text;
+            }
+
+            &:hover {
+                background-color: @bc-panel-bg-hover-alt;
+
+                .dark & {
+                    background-color: @dark-bc-panel-bg-hover-alt;
+                }
+            }
+
+            &.highlight {
+                background-color: @bc-bg-highlight;
+                border-left-color: @bc-primary-btn-bg;
+
+                .dark & {
+                    background-color: @dark-bc-bg-highlight;
+                    border-left-color: @dark-bc-primary-btn-bg;
+                }
+            }
+        }
+
+        .folder-match-highlight {
+            font-weight: @font-weight-semibold;
+            color: @bc-primary-btn-bg;
+
+            .dark & {
+                color: @dark-bc-primary-btn-bg;
+            }
+        }
+    }
+
+    .folder-help-text {
+        margin-top: 8px;
+        margin-bottom: 0;
+        font-size: 11px;
+        color: @bc-text-quiet;
+        user-select: none;
+
+        .dark & {
+            color: @dark-bc-text-quiet;
+        }
+    }
+}
