@@ -908,12 +908,37 @@ define(function (require, exports, module) {
 
         // filter folders using fuzzy matching
         const matches = folderList
-            .map(folder => stringMatcher.match(folder, query))
-            .filter(result => result !== null && result !== undefined)
-            .sort((a, b) => b.matchGoodness - a.matchGoodness)
-            .slice(0, 5);
+            .map(folder => {
+                const result = stringMatcher.match(folder, query);
+                if (result) {
+                    // get the last folder name (e.g., "assets/images/" -> "images")
+                    const folderPath = result.label || folder;
+                    const segments = folderPath.split('/').filter(s => s.length > 0);
+                    const lastSegment = segments[segments.length - 1] || '';
+                    result.folderName = lastSegment.toLowerCase();
 
-        _renderFolderSuggestions(matches, $suggestions, $input);
+                    // we need to boost the score significantly if the last folder segment starts with the query
+                    // This ensures folders like "images/" rank higher than "testing/maps/google/" when typing "image"
+                    // note: here testing/maps/google has all the chars of 'image'
+                    if (lastSegment.toLowerCase().startsWith(query.toLowerCase())) {
+                        // Use a large positive boost (matchGoodness is negative, so we subtract a large negative number)
+                        result.matchGoodness -= 10000;
+                    }
+                    // Also boost (but less) if the last segment contains the query as a substring
+                    else if (lastSegment.toLowerCase().includes(query.toLowerCase())) {
+                        result.matchGoodness -= 1000;
+                    }
+                }
+                return result;
+            })
+            .filter(result => result !== null && result !== undefined);
+
+        // Sort by matchGoodness first (prefix matches will have best scores),
+        // then alphabetically by folder name, then by full path
+        StringMatch.multiFieldSort(matches, { matchGoodness: 0, folderName: 1, label: 2 });
+
+        const topMatches = matches.slice(0, 5);
+        _renderFolderSuggestions(topMatches, $suggestions, $input);
     }
 
     /**
