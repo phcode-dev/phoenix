@@ -1518,5 +1518,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED": "O acceso á IA foi desactivado polo seu administrador do sistema",
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "O acceso á IA foi desactivado polo seu administrador do sistema. Póñase en contacto con {0} para obter axuda.",
   "AI_UPSELL_DIALOG_TITLE": "Continuar con {0}?",
-  "AI_UPSELL_DIALOG_MESSAGE": "Descubriches as edicións con IA. Para continuar, necesitarás unha subscrición de IA ou créditos."
+  "AI_UPSELL_DIALOG_MESSAGE": "Descubriches {0}. Para continuar, necesitarás unha subscrición de IA ou créditos."
 });

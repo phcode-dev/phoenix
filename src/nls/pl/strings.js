@@ -1518,5 +1518,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED": "Dostęp do AI został wyłączony przez administratora systemu.",
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Dostęp do AI został wyłączony przez administratora systemu. Prosimy o kontakt z {0} w celu uzyskania pomocy.",
   "AI_UPSELL_DIALOG_TITLE": "Kontynuować z {0}?",
-  "AI_UPSELL_DIALOG_MESSAGE": "Odkryłeś edycje wspomagane przez AI. Aby kontynuować, potrzebujesz subskrypcji AI lub kredytów."
+  "AI_UPSELL_DIALOG_MESSAGE": "Odkryłeś {0}. Aby kontynuować, potrzebujesz subskrypcji AI lub kredytów."
 });

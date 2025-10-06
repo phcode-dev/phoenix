@@ -1518,5 +1518,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED": "Accesul AI a fost dezactivat de către administratorul dvs. de sistem",
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Accesul AI a fost dezactivat de către administratorul dvs. de sistem. Vă rugăm să contactați {0} pentru asistență.",
   "AI_UPSELL_DIALOG_TITLE": "Continuați cu {0}?",
-  "AI_UPSELL_DIALOG_MESSAGE": "Ați descoperit editările asistate de AI. Pentru a continua, aveți nevoie de un abonament AI sau de credite."
+  "AI_UPSELL_DIALOG_MESSAGE": "Ați descoperit {0}. Pentru a continua, veți avea nevoie de un abonament AI sau de credite."
 });

@@ -1518,5 +1518,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED": "AI 访问权限已被您的系统管理员禁用。",
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "AI 访问权限已被您的系统管理员禁用。请联系 {0} 以获取帮助。",
   "AI_UPSELL_DIALOG_TITLE": "继续使用 {0}？",
-  "AI_UPSELL_DIALOG_MESSAGE": "您已发现 AI 赋能的编辑功能。若要继续，您需要 AI 订阅或点数。"
+  "AI_UPSELL_DIALOG_MESSAGE": "您发现了 {0}。要继续，您需要 AI 订阅或点数。"
 });

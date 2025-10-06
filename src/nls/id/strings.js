@@ -1518,5 +1518,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED": "Akses AI telah dinonaktifkan oleh administrator sistem Anda",
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Akses AI telah dinonaktifkan oleh administrator sistem Anda. Silakan hubungi {0} untuk bantuan.",
   "AI_UPSELL_DIALOG_TITLE": "Lanjutkan dengan {0}?",
-  "AI_UPSELL_DIALOG_MESSAGE": "Anda telah menemukan editan berbasis AI. Untuk melanjutkan, Anda memerlukan langganan AI atau kredit."
+  "AI_UPSELL_DIALOG_MESSAGE": "Anda telah menemukan {0}. Untuk melanjutkan, Anda memerlukan langganan AI atau kredit."
 });

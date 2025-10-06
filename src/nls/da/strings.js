@@ -1518,5 +1518,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED": "Adgang til AI er blevet deaktiveret af din systemadministrator",
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Adgang til AI er blevet deaktiveret af din systemadministrator. Kontakt venligst {0} for hjælp.",
   "AI_UPSELL_DIALOG_TITLE": "Fortsæt med {0}?",
-  "AI_UPSELL_DIALOG_MESSAGE": "Du har opdaget AI-drevne redigeringer. For at fortsætte skal du bruge et AI-abonnement eller kreditter."
+  "AI_UPSELL_DIALOG_MESSAGE": "Du har opdaget {0}. For at fortsætte har du brug for et AI-abonnement eller kreditter."
 });

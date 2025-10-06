@@ -1518,5 +1518,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED": "De toegang tot AI is uitgeschakeld door uw systeembeheerder.",
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "De toegang tot AI is uitgeschakeld door uw systeembeheerder. Neem contact op met {0} voor hulp.",
   "AI_UPSELL_DIALOG_TITLE": "Doorgaan met {0}?",
-  "AI_UPSELL_DIALOG_MESSAGE": "Je hebt bewerkingen met AI ontdekt. Om door te gaan, heb je een AI-abonnement of credits nodig."
+  "AI_UPSELL_DIALOG_MESSAGE": "U heeft {0} ontdekt. Om verder te gaan, heeft u een AI-abonnement of credits nodig."
 });

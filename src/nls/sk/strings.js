@@ -1518,5 +1518,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED": "Prístup k AI bol vypnutý správcom vášho systému",
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Prístup k AI bol vypnutý správcom vášho systému. So žiadosťou o pomoc sa obráťte na {0}.",
   "AI_UPSELL_DIALOG_TITLE": "Pokračovať s {0}?",
-  "AI_UPSELL_DIALOG_MESSAGE": "Objavili ste úpravy s podporou umelej inteligencie. Ak chcete pokračovať, budete potrebovať predplatné AI alebo kredity."
+  "AI_UPSELL_DIALOG_MESSAGE": "Objavili ste {0}. Ak chcete pokračovať, budete potrebovať predplatné AI alebo kredity."
 });
