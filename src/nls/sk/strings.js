@@ -684,6 +684,7 @@ define({
   "EXTENSION_INCOMPATIBLE_NEWER": "Tento doplnok vyžaduje novšiu verziu {APP_NAME}.",
   "EXTENSION_INCOMPATIBLE_OLDER": "Tento doplnok momentálne funguje iba zo staršími verziami {APP_NAME}.",
   "EXTENSION_DEFAULT_FEATURE_PRESENT": "Toto rozšírenie pravdepodobne nepotrebujete. {APP_NAME} už túto funkciu obsahuje.",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "Rozšírenie sa nenačítalo. Je buď zastarané, alebo nezabezpečené.",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "Verzia {0} tohto rozšírenia vyžaduje novšiu verziu {APP_NAME}. Môžete si však nainštalovať staršiu verziu {1}.",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "Verzia {0} tohto rozšírenia funguje iba so staršími verziami {APP_NAME}. Môžete si však nainštalovať staršiu verziu {1}.",
   "EXTENSION_NO_DESCRIPTION": "Bez popisu",
@@ -1507,5 +1508,15 @@ define({
   "LICENSE_ACTIVATE_FAIL_APPLY": "Nepodarilo sa aplikovať licenciu na zariadenie",
   "LICENSE_ENTER_KEY": "Prosím, zadajte licenčný kľúč",
   "LICENSE_REAPPLY_TO_DEVICE": "Už aktivované? Znovu aplikovať pre celý systém",
-  "EXTENSION_DEPRECATED_NOT_LOADED": "Rozšírenie sa nenačítalo. Je buď zastarané, alebo nezabezpečené."
+  "AI_LOGIN_DIALOG_TITLE": "Prihláste sa na používanie úprav pomocou AI",
+  "AI_LOGIN_DIALOG_MESSAGE": "Prosím, prihláste sa, aby ste mohli používať úpravy s podporou AI",
+  "AI_LOGIN_DIALOG_BUTTON": "Získať prístup k AI",
+  "AI_DISABLED_DIALOG_TITLE": "AI je vypnutá",
+  "AI_CONTROL_ALL_ALLOWED_NO_CONFIG": "V systéme sa nenašiel žiadny konfiguračný súbor AI. AI je povolená pre všetkých používateľov.",
+  "AI_CONTROL_ALL_ALLOWED": "AI je povolená pre všetkých používateľov.",
+  "AI_CONTROL_USER_ALLOWED": "AI je povolená pre používateľa ({0}), ale pre ostatných je vypnutá",
+  "AI_CONTROL_ADMIN_DISABLED": "Prístup k AI bol vypnutý správcom vášho systému",
+  "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Prístup k AI bol vypnutý správcom vášho systému. So žiadosťou o pomoc sa obráťte na {0}.",
+  "AI_UPSELL_DIALOG_TITLE": "Pokračovať s {0}?",
+  "AI_UPSELL_DIALOG_MESSAGE": "Objavili ste úpravy s podporou umelej inteligencie. Ak chcete pokračovať, budete potrebovať predplatné AI alebo kredity."
 });

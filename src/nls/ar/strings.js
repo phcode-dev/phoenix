@@ -542,6 +542,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "كيفية استخدام {APP_NAME}",
   "CMD_SUPPORT": "دعم {APP_NAME}",
   "CMD_GET_PRO": "احصل على Phoenix Pro",
+  "CMD_MANAGE_LICENSES": "إدارة التراخيص",
   "CMD_USER_PROFILE": "حساب {APP_NAME}",
   "CMD_DOCS": "مساعدة، البدء",
   "CMD_SUGGEST": "اقتراح ميزة",
@@ -1484,7 +1485,6 @@ define({
   "PROMO_PRO_UNLOCK_MESSAGE": "اشترك الآن لإلغاء قفل هذه الميزات المتقدمة:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "النسخة التجريبية من Phoenix Pro ({0} أيام متبقية)",
   "GET_PHOENIX_PRO": "احصل على Phoenix Pro",
-  "CMD_MANAGE_LICENSES": "إدارة التراخيص",
   "MANAGE_LICENSE_DIALOG_TITLE": "إدارة ترخيص الجهاز",
   "LICENSE_KEY": "مفتاح الترخيص",
   "LICENSE_KEY_ACTIVATE": "تفعيل الترخيص",
@@ -1506,5 +1506,15 @@ define({
   "LICENSE_ACTIVATE_FAIL": "فشل تفعيل الترخيص",
   "LICENSE_ACTIVATE_FAIL_APPLY": "فشل تطبيق الترخيص على الجهاز",
   "LICENSE_ENTER_KEY": "الرجاء إدخال مفتاح الترخيص",
-  "LICENSE_REAPPLY_TO_DEVICE": "تم التنشيط بالفعل؟ إعادة التطبيق على مستوى النظام"
+  "LICENSE_REAPPLY_TO_DEVICE": "تم التنشيط بالفعل؟ إعادة التطبيق على مستوى النظام",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "لم يتم تحميل الملحق. إنه إما مهمل أو غير آمن.",
+  "AI_LOGIN_DIALOG_TITLE": "تسجيل الدخول لاستخدام تعديلات الذكاء الاصطناعي",
+  "AI_LOGIN_DIALOG_MESSAGE": "يرجى تسجيل الدخول لاستخدام التعديلات المدعومة بالذكاء الاصطناعي",
+  "AI_LOGIN_DIALOG_BUTTON": "الحصول على وصول للذكاء الاصطناعي",
+  "AI_DISABLED_DIALOG_TITLE": "الذكاء الاصطناعي معطل",
+  "AI_CONTROL_ALL_ALLOWED_NO_CONFIG": "لم يتم العثور على ملف تكوين الذكاء الاصطناعي في النظام. الذكاء الاصطناعي ممكّن لجميع المستخدمين.",
+  "AI_CONTROL_ALL_ALLOWED": "الذكاء الاصطناعي ممكّن لجميع المستخدمين.",
+  "AI_CONTROL_USER_ALLOWED": "الذكاء الاصطناعي ممكّن للمستخدم ({0}) ولكنه معطل للآخرين",
+  "AI_CONTROL_ADMIN_DISABLED": "قام مسؤول النظام بتعطيل الوصول إلى الذكاء الاصطناعي",
+  "AI_CONTROL_ADMIN_DISABLED_CONTACT": "قام مسؤول النظام بتعطيل الوصول إلى الذكاء الاصطناعي. يرجى الاتصال بـ {0} للحصول على المساعدة."
 });

@@ -684,6 +684,7 @@ define({
   "EXTENSION_INCOMPATIBLE_NEWER": "इस एक्सटेंशन के लिए {APP_NAME} के नए संस्करण की आवश्यकता है।",
   "EXTENSION_INCOMPATIBLE_OLDER": "यह एक्सटेंशन वर्तमान में केवल {APP_NAME} के पुराने संस्करणों के साथ काम करता है।",
   "EXTENSION_DEFAULT_FEATURE_PRESENT": "आपको इस एक्सटेंशन की आवश्यकता नहीं हो सकती है। {APP_NAME} में यह सुविधा पहले से मौजूद है।",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "एक्सटेंशन लोड नहीं हुआ। यह या तो अप्रचलित है या असुरक्षित।",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "इस एक्सटेंशन के संस्करण {0} के लिए {APP_NAME} के नए संस्करण की आवश्यकता है। लेकिन आप पुराना संस्करण {1} इंस्टॉल कर सकते हैं।",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "इस एक्सटेंशन का संस्करण {0} केवल {APP_NAME} के पुराने संस्करणों के साथ काम करता है। लेकिन आप पुराना संस्करण {1} इंस्टॉल कर सकते हैं।",
   "EXTENSION_NO_DESCRIPTION": "कोई विवरण नहीं",
@@ -1507,5 +1508,15 @@ define({
   "LICENSE_ACTIVATE_FAIL_APPLY": "डिवाइस पर लाइसेंस लागू करने में विफल",
   "LICENSE_ENTER_KEY": "कृपया लाइसेंस कुंजी दर्ज करें",
   "LICENSE_REAPPLY_TO_DEVICE": "पहले से सक्रिय है? सिस्टम-व्यापी पुनः लागू करें",
-  "EXTENSION_DEPRECATED_NOT_LOADED": "एक्सटेंशन लोड नहीं हुआ। यह या तो अप्रचलित है या असुरक्षित।"
+  "AI_LOGIN_DIALOG_TITLE": "AI एडिट्स का उपयोग करने के लिए साइन इन करें",
+  "AI_LOGIN_DIALOG_MESSAGE": "कृपया AI-संचालित एडिट्स का उपयोग करने के लिए लॉग इन करें",
+  "AI_LOGIN_DIALOG_BUTTON": "AI एक्सेस पाएँ",
+  "AI_DISABLED_DIALOG_TITLE": "AI अक्षम है",
+  "AI_CONTROL_ALL_ALLOWED_NO_CONFIG": "सिस्टम में कोई AI कॉन्फ़िग फ़ाइल नहीं मिली। AI सभी उपयोगकर्ताओं के लिए सक्षम है।",
+  "AI_CONTROL_ALL_ALLOWED": "AI सभी उपयोगकर्ताओं के लिए सक्षम है।",
+  "AI_CONTROL_USER_ALLOWED": "AI उपयोगकर्ता ({0}) के लिए सक्षम है, लेकिन दूसरों के लिए अक्षम है।",
+  "AI_CONTROL_ADMIN_DISABLED": "आपके सिस्टम एडमिनिस्ट्रेटर द्वारा AI एक्सेस अक्षम कर दिया गया है।",
+  "AI_CONTROL_ADMIN_DISABLED_CONTACT": "आपके सिस्टम एडमिनिस्ट्रेटर द्वारा AI एक्सेस अक्षम कर दिया गया है। सहायता के लिए कृपया {0} से संपर्क करें।",
+  "AI_UPSELL_DIALOG_TITLE": "{0} के साथ जारी रखें?",
+  "AI_UPSELL_DIALOG_MESSAGE": "आपने AI-संचालित संपादन खोजे हैं। आगे बढ़ने के लिए, आपको AI सदस्यता या क्रेडिट की आवश्यकता होगी।"
 });

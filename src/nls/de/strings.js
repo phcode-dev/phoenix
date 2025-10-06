@@ -684,6 +684,7 @@ define({
   "EXTENSION_INCOMPATIBLE_NEWER": "Diese Erweiterung benötigt eine neuere Version von {APP_NAME}.",
   "EXTENSION_INCOMPATIBLE_OLDER": "Diese Erweiterung funktioniert momentan nur mit älteren Versionen von {APP_NAME}.",
   "EXTENSION_DEFAULT_FEATURE_PRESENT": "Sie benötigen diese Erweiterung möglicherweise nicht. {APP_NAME} verfügt bereits über diese Funktion.",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "Erweiterung nicht geladen. Sie ist entweder veraltet oder unsicher.",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "Die Version {0} dieser Erweiterung benötigt eine neuere Version von {APP_NAME}. Sie können jedoch die ältere Version {1} installieren.",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "Die Version {0} dieser Erweiterung funktioniert nur mit älteren Versionen von {APP_NAME}. Sie können jedoch die ältere Version {1} installieren.",
   "EXTENSION_NO_DESCRIPTION": "Keine Beschreibung",
@@ -1507,5 +1508,15 @@ define({
   "LICENSE_ACTIVATE_FAIL_APPLY": "Die Lizenz konnte nicht auf das Gerät angewendet werden.",
   "LICENSE_ENTER_KEY": "Bitte geben Sie einen Lizenzschlüssel ein.",
   "LICENSE_REAPPLY_TO_DEVICE": "Bereits aktiviert? Systemweit erneut anwenden.",
-  "EXTENSION_DEPRECATED_NOT_LOADED": "Erweiterung nicht geladen. Sie ist entweder veraltet oder unsicher."
+  "AI_LOGIN_DIALOG_TITLE": "Für KI-Bearbeitungen anmelden",
+  "AI_LOGIN_DIALOG_MESSAGE": "Bitte melden Sie sich an, um KI-gestützte Bearbeitungen zu nutzen.",
+  "AI_LOGIN_DIALOG_BUTTON": "KI-Zugriff erhalten",
+  "AI_DISABLED_DIALOG_TITLE": "KI ist deaktiviert",
+  "AI_CONTROL_ALL_ALLOWED_NO_CONFIG": "Keine KI-Konfigurationsdatei im System gefunden. KI ist für alle Benutzer aktiviert.",
+  "AI_CONTROL_ALL_ALLOWED": "KI ist für alle Benutzer aktiviert.",
+  "AI_CONTROL_USER_ALLOWED": "KI ist für Benutzer ({0}) aktiviert, aber für andere deaktiviert.",
+  "AI_CONTROL_ADMIN_DISABLED": "Der KI-Zugriff wurde von Ihrem Systemadministrator deaktiviert.",
+  "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Der KI-Zugriff wurde von Ihrem Systemadministrator deaktiviert. Bitte kontaktieren Sie {0} für Unterstützung.",
+  "AI_UPSELL_DIALOG_TITLE": "Mit {0} fortfahren?",
+  "AI_UPSELL_DIALOG_MESSAGE": "Sie haben KI-gestützte Bearbeitungen entdeckt. Um fortzufahren, benötigen Sie ein KI-Abonnement oder Guthaben."
 });

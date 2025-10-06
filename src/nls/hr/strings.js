@@ -684,6 +684,7 @@ define({
   "EXTENSION_INCOMPATIBLE_NEWER": "Ova extenzija zahtjeva noviju verziju aplikacije {APP_NAME}.",
   "EXTENSION_INCOMPATIBLE_OLDER": "Ova extenzija trenutno radi samo sa starijom verzijom aplikacije {APP_NAME}.",
   "EXTENSION_DEFAULT_FEATURE_PRESENT": "Ovaj proširak vam možda neće biti potreban. {APP_NAME} već ima ovu značajku.",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "Proširenje nije učitano. Ili je zastarjelo ili nesigurno.",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "Verzija {0} ove ekstenzije traži noviju verziju aplikacije {APP_NAME}. Ali možete instalirati raniju verziju {1}.",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "Verzija {0} ove ekstenzije radi samo sa starijim verzijama aplikacije {APP_NAME}. Ali možete instalirati raniju verziju {1}.",
   "EXTENSION_NO_DESCRIPTION": "Nema opisa",
@@ -1507,5 +1508,15 @@ define({
   "LICENSE_ACTIVATE_FAIL_APPLY": "Nije uspjelo primijeniti licencu na uređaj",
   "LICENSE_ENTER_KEY": "Molimo unesite licencni ključ",
   "LICENSE_REAPPLY_TO_DEVICE": "Već aktivirano? Ponovno primijenite na cijeli sustav",
-  "EXTENSION_DEPRECATED_NOT_LOADED": "Proširenje nije učitano. Ili je zastarjelo ili nesigurno."
+  "AI_LOGIN_DIALOG_TITLE": "Prijavite se za korištenje AI uređivanja",
+  "AI_LOGIN_DIALOG_MESSAGE": "Molimo prijavite se za korištenje AI uređivanja.",
+  "AI_LOGIN_DIALOG_BUTTON": "Pristupite AI-ju",
+  "AI_DISABLED_DIALOG_TITLE": "AI je onemogućen",
+  "AI_CONTROL_ALL_ALLOWED_NO_CONFIG": "U sustavu nije pronađena AI konfiguracijska datoteka. AI je omogućen za sve korisnike.",
+  "AI_CONTROL_ALL_ALLOWED": "AI je omogućen za sve korisnike.",
+  "AI_CONTROL_USER_ALLOWED": "AI je omogućen za korisnika ({0}), ali je onemogućen za ostale.",
+  "AI_CONTROL_ADMIN_DISABLED": "Pristup AI-ju onemogućio je vaš administrator sustava.",
+  "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Pristup AI-ju onemogućio je vaš administrator sustava. Molimo kontaktirajte {0} za pomoć.",
+  "AI_UPSELL_DIALOG_TITLE": "Nastaviti s {0}?",
+  "AI_UPSELL_DIALOG_MESSAGE": "Otkrili ste uređivanja pomoću umjetne inteligencije. Za nastavak vam je potrebna pretplata za AI ili krediti."
 });

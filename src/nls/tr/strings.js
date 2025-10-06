@@ -684,6 +684,7 @@ define({
   "EXTENSION_INCOMPATIBLE_NEWER": "Bu uzantı, {APP_NAME}'in daha yeni bir sürümünü gerektiriyor.",
   "EXTENSION_INCOMPATIBLE_OLDER": "Bu uzantı şu anda yalnızca {APP_NAME}'in eski sürümleriyle çalışıyor.",
   "EXTENSION_DEFAULT_FEATURE_PRESENT": "Bu uzantıya ihtiyacınız olmayabilir. {APP_NAME} zaten bu özelliğe sahip.",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "Eklenti yüklenmedi. Kullanımdan kaldırılmış veya güvensiz.",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "Bu uzantının {0} sürümü, {APP_NAME}'in daha yeni bir sürümünü gerektiriyor. Ancak daha eski sürüm olan {1}'i yükleyebilirsiniz.",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "Bu uzantının {0} sürümü yalnızca {APP_NAME}'in eski sürümleriyle çalışır. Ancak daha eski sürüm olan {1}'i yükleyebilirsiniz.",
   "EXTENSION_NO_DESCRIPTION": "Açıklama yok",
@@ -1507,5 +1508,15 @@ define({
   "LICENSE_ACTIVATE_FAIL_APPLY": "Lisans cihaza uygulanamadı",
   "LICENSE_ENTER_KEY": "Lütfen bir lisans anahtarı girin",
   "LICENSE_REAPPLY_TO_DEVICE": "Zaten etkinleştirildi mi? Sistem genelinde yeniden uygula",
-  "EXTENSION_DEPRECATED_NOT_LOADED": "Eklenti yüklenmedi. Kullanımdan kaldırılmış veya güvensiz."
+  "AI_LOGIN_DIALOG_TITLE": "Yapay Zeka Düzenlemelerini Kullanmak için Oturum Açın",
+  "AI_LOGIN_DIALOG_MESSAGE": "Yapay zeka destekli düzenlemeleri kullanmak için lütfen oturum açın",
+  "AI_LOGIN_DIALOG_BUTTON": "Yapay Zeka Erişimi Alın",
+  "AI_DISABLED_DIALOG_TITLE": "Yapay Zeka devre dışı",
+  "AI_CONTROL_ALL_ALLOWED_NO_CONFIG": "Sistemde yapay zeka yapılandırma dosyası bulunamadı. Yapay Zeka tüm kullanıcılar için etkinleştirildi.",
+  "AI_CONTROL_ALL_ALLOWED": "Yapay Zeka tüm kullanıcılar için etkinleştirildi.",
+  "AI_CONTROL_USER_ALLOWED": "Yapay Zeka, ({0}) kullanıcısı için etkin ancak diğerleri için devre dışı.",
+  "AI_CONTROL_ADMIN_DISABLED": "Yapay zeka erişimi sistem yöneticiniz tarafından devre dışı bırakıldı.",
+  "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Yapay zeka erişimi sistem yöneticiniz tarafından devre dışı bırakıldı. Yardım için lütfen {0} ile iletişime geçin.",
+  "AI_UPSELL_DIALOG_TITLE": "{0} ile devam edilsin mi?",
+  "AI_UPSELL_DIALOG_MESSAGE": "Yapay zeka destekli düzenlemeleri keşfettiniz. Devam etmek için bir Yapay Zeka aboneliğine veya kredilere ihtiyacınız olacak."
 });

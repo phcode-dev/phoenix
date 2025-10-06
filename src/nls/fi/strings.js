@@ -684,6 +684,7 @@ define({
   "EXTENSION_INCOMPATIBLE_NEWER": "Tämä laajennus vaatii uudemman {APP_NAME}-version.",
   "EXTENSION_INCOMPATIBLE_OLDER": "Tämä laajennus toimii tällä hetkellä vain vanhemmilla {APP_NAME}-versioilla.",
   "EXTENSION_DEFAULT_FEATURE_PRESENT": "Et ehkä tarvitse tätä laajennusta. {APP_NAME}-sovelluksessa on jo tämä ominaisuus.",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "Laajennusta ei ladattu. Se on joko vanhentunut tai turvaton.",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "Tämän laajennuksen versio {0} vaatii uudemman {APP_NAME}-version, mutta voit asentaa aikaisemman version {1}.",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "Tämän laajennuksen versio {0} toimii vain vanhemmilla {APP_NAME}-versioilla, mutta voit asentaa aikaisemman version {1}.",
   "EXTENSION_NO_DESCRIPTION": "Ei kuvausta",
@@ -1507,5 +1508,15 @@ define({
   "LICENSE_ACTIVATE_FAIL_APPLY": "Lisenssin käyttöönotto laitteeseen epäonnistui.",
   "LICENSE_ENTER_KEY": "Syötä lisenssiavain.",
   "LICENSE_REAPPLY_TO_DEVICE": "Jo aktivoitu? Ota käyttöön järjestelmänlaajuisesti.",
-  "EXTENSION_DEPRECATED_NOT_LOADED": "Laajennusta ei ladattu. Se on joko vanhentunut tai turvaton."
+  "AI_LOGIN_DIALOG_TITLE": "Kirjaudu sisään käyttääksesi tekoälymuokkauksia",
+  "AI_LOGIN_DIALOG_MESSAGE": "Kirjaudu sisään käyttääksesi tekoälyavusteisia muokkauksia",
+  "AI_LOGIN_DIALOG_BUTTON": "Hanki tekoälyn käyttöoikeus",
+  "AI_DISABLED_DIALOG_TITLE": "Tekoäly on poistettu käytöstä",
+  "AI_CONTROL_ALL_ALLOWED_NO_CONFIG": "Järjestelmästä ei löytynyt tekoälyn asetustiedostoa. Tekoäly on käytössä kaikilla käyttäjillä.",
+  "AI_CONTROL_ALL_ALLOWED": "Tekoäly on käytössä kaikilla käyttäjillä.",
+  "AI_CONTROL_USER_ALLOWED": "Tekoäly on käytössä käyttäjällä ({0}), mutta poissa käytöstä muilta.",
+  "AI_CONTROL_ADMIN_DISABLED": "Järjestelmänvalvoja on poistanut tekoälyn käytöstä.",
+  "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Järjestelmänvalvoja on poistanut tekoälyn käytöstä. Ota yhteyttä {0} saadaksesi apua.",
+  "AI_UPSELL_DIALOG_TITLE": "Jatketaanko {0}:n kanssa?",
+  "AI_UPSELL_DIALOG_MESSAGE": "Olet löytänyt tekoälyavusteiset muokkaukset. Jatkaaksesi tarvitset tekoälytilauksen tai krediittejä."
 });

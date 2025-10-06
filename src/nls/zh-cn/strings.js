@@ -684,6 +684,7 @@ define({
   "EXTENSION_INCOMPATIBLE_NEWER": "这个扩展需要更新版本的 {APP_NAME}。",
   "EXTENSION_INCOMPATIBLE_OLDER": "这个扩展目前只能在旧版本的 {APP_NAME} 上运行。",
   "EXTENSION_DEFAULT_FEATURE_PRESENT": "您可能不需要此扩展。{APP_NAME} 已具备此功能。",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "扩展未加载。它已弃用或不安全。",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "扩展版本为 {0} 需要一个更新版本的 {APP_NAME}，但你可以安装旧版本的扩展 {1}。",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "扩展版本为 {0} 需要一个更旧版本的 {APP_NAME}，但你可以安装旧版本的扩展 {1}。",
   "EXTENSION_NO_DESCRIPTION": "没有描述",
@@ -1507,5 +1508,15 @@ define({
   "LICENSE_ACTIVATE_FAIL_APPLY": "未能将许可证应用于设备",
   "LICENSE_ENTER_KEY": "请输入许可证密钥",
   "LICENSE_REAPPLY_TO_DEVICE": "已激活？重新应用至全系统",
-  "EXTENSION_DEPRECATED_NOT_LOADED": "扩展未加载。它已弃用或不安全。"
+  "AI_LOGIN_DIALOG_TITLE": "登录以使用 AI 编辑",
+  "AI_LOGIN_DIALOG_MESSAGE": "请登录以使用 AI 编辑功能",
+  "AI_LOGIN_DIALOG_BUTTON": "获取 AI 访问权限",
+  "AI_DISABLED_DIALOG_TITLE": "AI 已禁用",
+  "AI_CONTROL_ALL_ALLOWED_NO_CONFIG": "系统中未找到 AI 配置文件。AI 已为所有用户启用。",
+  "AI_CONTROL_ALL_ALLOWED": "AI 已为所有用户启用。",
+  "AI_CONTROL_USER_ALLOWED": "AI 已为用户 ({0}) 启用，但为其他用户禁用。",
+  "AI_CONTROL_ADMIN_DISABLED": "AI 访问权限已被您的系统管理员禁用。",
+  "AI_CONTROL_ADMIN_DISABLED_CONTACT": "AI 访问权限已被您的系统管理员禁用。请联系 {0} 以获取帮助。",
+  "AI_UPSELL_DIALOG_TITLE": "继续使用 {0}？",
+  "AI_UPSELL_DIALOG_MESSAGE": "您已发现 AI 赋能的编辑功能。若要继续，您需要 AI 订阅或点数。"
 });

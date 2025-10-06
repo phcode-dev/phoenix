@@ -684,6 +684,7 @@ define({
   "EXTENSION_INCOMPATIBLE_NEWER": "Това разширение изисква по-ново издание на {APP_NAME}.",
   "EXTENSION_INCOMPATIBLE_OLDER": "Това разширение в момента работи само с по-стари издания на {APP_NAME}.",
   "EXTENSION_DEFAULT_FEATURE_PRESENT": "Може би не се нуждаете от това разширение. {APP_NAME} вече има тази функция.",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "Разширението не е заредено. То е или остаряло, или несигурно.",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "Версия {0} на това разширение изисква по-ново издание на {APP_NAME}. Но можете да инсталирате по-старата версия {1}.",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "Версия {0} на това разширение работи само с по-стари издания на {APP_NAME}. Но можете да инсталирате по-старата версия {1}.",
   "EXTENSION_NO_DESCRIPTION": "Няма описание",
@@ -1507,5 +1508,15 @@ define({
   "LICENSE_ACTIVATE_FAIL_APPLY": "Неуспешно прилагане на лиценза към устройството",
   "LICENSE_ENTER_KEY": "Моля, въведете лицензен ключ",
   "LICENSE_REAPPLY_TO_DEVICE": "Вече активиран? Приложете отново системно",
-  "EXTENSION_DEPRECATED_NOT_LOADED": "Разширението не е заредено. То е или остаряло, или несигурно."
+  "AI_LOGIN_DIALOG_TITLE": "Влезте, за да използвате AI редакции",
+  "AI_LOGIN_DIALOG_MESSAGE": "Моля, влезте, за да използвате редакции с AI",
+  "AI_LOGIN_DIALOG_BUTTON": "Получете достъп до AI",
+  "AI_DISABLED_DIALOG_TITLE": "AI е деактивиран",
+  "AI_CONTROL_ALL_ALLOWED_NO_CONFIG": "В системата не е намерен конфигурационен файл за AI. AI е активиран за всички потребители.",
+  "AI_CONTROL_ALL_ALLOWED": "AI е активиран за всички потребители.",
+  "AI_CONTROL_USER_ALLOWED": "AI е активиран за потребител ({0}), но е деактивиран за останалите.",
+  "AI_CONTROL_ADMIN_DISABLED": "Достъпът до AI е деактивиран от вашия системен администратор.",
+  "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Достъпът до AI е деактивиран от вашия системен администратор. Моля, свържете се с {0} за съдействие.",
+  "AI_UPSELL_DIALOG_TITLE": "Да продължите ли с {0}?",
+  "AI_UPSELL_DIALOG_MESSAGE": "Открихте редакциите с изкуствен интелект. За да продължите, ще ви е необходим абонамент за ИИ или кредити."
 });

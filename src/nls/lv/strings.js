@@ -684,6 +684,7 @@ define({
   "EXTENSION_INCOMPATIBLE_NEWER": "Šim paplašinājumam nepieciešama jaunāka {APP_NAME} versija.",
   "EXTENSION_INCOMPATIBLE_OLDER": "Pašlaik šis paplašinājums darbojas tikai ar vecākām {APP_NAME} versijām.",
   "EXTENSION_DEFAULT_FEATURE_PRESENT": "Jums, iespējams, šis paplašinājums nav nepieciešams. {APP_NAME} jau ir šī funkcija.",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "Paplašinājums nav ielādēts. Tas ir vai nu novecojis, vai nedrošs.",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "Šai paplašinājuma versijai {0} nepieciešama jaunāka {APP_NAME} versija. Bet jūs varat instalēt agrāko versiju {1}. ",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "Šī paplašinājuma versija {0} darbojas tikai ar vecākām {APP_NAME} versijām. Bet jūs varat instalēt agrāko versiju {1}.",
   "EXTENSION_NO_DESCRIPTION": "Nav apraksta",
@@ -1507,5 +1508,15 @@ define({
   "LICENSE_ACTIVATE_FAIL_APPLY": "Neizdevās piemērot licenci ierīcei",
   "LICENSE_ENTER_KEY": "Lūdzu, ievadiet licences atslēgu",
   "LICENSE_REAPPLY_TO_DEVICE": "Jau aktivizēts? Piemērot atkārtoti visā sistēmā",
-  "EXTENSION_DEPRECATED_NOT_LOADED": "Paplašinājums nav ielādēts. Tas ir vai nu novecojis, vai nedrošs."
+  "AI_LOGIN_DIALOG_TITLE": "Pierakstieties, lai izmantotu MI labojumus",
+  "AI_LOGIN_DIALOG_MESSAGE": "Lūdzu, pierakstieties, lai izmantotu MI labojumus",
+  "AI_LOGIN_DIALOG_BUTTON": "Iegūt MI piekļuvi",
+  "AI_DISABLED_DIALOG_TITLE": "MI ir atspējots",
+  "AI_CONTROL_ALL_ALLOWED_NO_CONFIG": "Sistēmā nav atrasts MI konfigurācijas fails. MI ir iespējots visiem lietotājiem.",
+  "AI_CONTROL_ALL_ALLOWED": "MI ir iespējots visiem lietotājiem.",
+  "AI_CONTROL_USER_ALLOWED": "MI ir iespējots lietotājam ({0}), bet citiem ir atspējots",
+  "AI_CONTROL_ADMIN_DISABLED": "MI piekļuvi ir atspējojis jūsu sistēmas administrators",
+  "AI_CONTROL_ADMIN_DISABLED_CONTACT": "MI piekļuvi ir atspējojis jūsu sistēmas administrators. Lūdzu, sazinieties ar {0}, lai saņemtu palīdzību.",
+  "AI_UPSELL_DIALOG_TITLE": "Turpināt ar {0}?",
+  "AI_UPSELL_DIALOG_MESSAGE": "Jūs atklājāt ar MI darbinātus labojumus. Lai turpinātu, jums būs nepieciešams MI abonements vai kredīti."
 });

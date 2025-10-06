@@ -684,6 +684,7 @@ define({
   "EXTENSION_INCOMPATIBLE_NEWER": "Detta tillägg kräver en nyare version av {APP_NAME}.",
   "EXTENSION_INCOMPATIBLE_OLDER": "Detta tillägg fungerar för närvarande bara med äldre versioner av {APP_NAME}.",
   "EXTENSION_DEFAULT_FEATURE_PRESENT": "Du kanske inte behöver det här tillägget. {APP_NAME} har redan den här funktionen.",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "Tillägget laddades inte. Det är antingen föråldrat eller osäkert.",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "Version {0} av detta tillägg kräver en nyare version av {APP_NAME} men du kan installera den äldre versionen {1}.",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "Version {0} av detta tillägg fungerar endast med äldre versioner av {APP_NAME} men du kan installera den äldre versionen {1}.",
   "EXTENSION_NO_DESCRIPTION": "Ingen beskrivning",
@@ -1507,5 +1508,15 @@ define({
   "LICENSE_ACTIVATE_FAIL_APPLY": "Det gick inte att tillämpa licensen på enheten",
   "LICENSE_ENTER_KEY": "Ange en licensnyckel",
   "LICENSE_REAPPLY_TO_DEVICE": "Redan aktiverad? Tillämpa systemomfattande",
-  "EXTENSION_DEPRECATED_NOT_LOADED": "Tillägget laddades inte. Det är antingen föråldrat eller osäkert."
+  "AI_LOGIN_DIALOG_TITLE": "Logga in för att använda AI-redigeringar",
+  "AI_LOGIN_DIALOG_MESSAGE": "Vänligen logga in för att använda AI-drivna redigeringar",
+  "AI_LOGIN_DIALOG_BUTTON": "Få AI-åtkomst",
+  "AI_DISABLED_DIALOG_TITLE": "AI är inaktiverat",
+  "AI_CONTROL_ALL_ALLOWED_NO_CONFIG": "Ingen AI-konfigurationsfil hittades i systemet. AI är aktiverat för alla användare.",
+  "AI_CONTROL_ALL_ALLOWED": "AI är aktiverat för alla användare.",
+  "AI_CONTROL_USER_ALLOWED": "AI är aktiverat för användare ({0}) men inaktiverat för andra.",
+  "AI_CONTROL_ADMIN_DISABLED": "AI-åtkomst har inaktiverats av din systemadministratör.",
+  "AI_CONTROL_ADMIN_DISABLED_CONTACT": "AI-åtkomst har inaktiverats av din systemadministratör. Kontakta {0} för hjälp.",
+  "AI_UPSELL_DIALOG_TITLE": "Fortsätt med {0}?",
+  "AI_UPSELL_DIALOG_MESSAGE": "Du har upptäckt AI-drivna redigeringar. För att fortsätta behöver du en AI-prenumeration eller krediter."
 });

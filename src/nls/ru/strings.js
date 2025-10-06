@@ -684,6 +684,7 @@ define({
   "EXTENSION_INCOMPATIBLE_NEWER": "Это расширение требует новой версии {APP_NAME}.",
   "EXTENSION_INCOMPATIBLE_OLDER": "Это расширение работает только с предыдущими версиями {APP_NAME}.",
   "EXTENSION_DEFAULT_FEATURE_PRESENT": "Возможно, вам не нужно это расширение. {APP_NAME} уже имеет эту функцию.",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "Расширение не загружено. Оно устарело или небезопасно.",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "Версия {0} данного расширения требует новой версии {APP_NAME}. Вы можете установить предыдущую версию расширения{1}.",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "Версия {0} данного расширения требует предыдущей версии {APP_NAME}. Вы можете установить предыдущую версию {1}.",
   "EXTENSION_NO_DESCRIPTION": "Описание отсутвует",
@@ -1507,5 +1508,15 @@ define({
   "LICENSE_ACTIVATE_FAIL_APPLY": "Не удалось применить лицензию к устройству",
   "LICENSE_ENTER_KEY": "Введите лицензионный ключ",
   "LICENSE_REAPPLY_TO_DEVICE": "Уже активировали? Применить повторно для всей системы",
-  "EXTENSION_DEPRECATED_NOT_LOADED": "Расширение не загружено. Оно устарело или небезопасно."
+  "AI_LOGIN_DIALOG_TITLE": "Войдите, чтобы использовать ИИ-правки",
+  "AI_LOGIN_DIALOG_MESSAGE": "Пожалуйста, войдите в систему, чтобы использовать правки с помощью ИИ",
+  "AI_LOGIN_DIALOG_BUTTON": "Получить доступ к ИИ",
+  "AI_DISABLED_DIALOG_TITLE": "ИИ отключён",
+  "AI_CONTROL_ALL_ALLOWED_NO_CONFIG": "Файл конфигурации ИИ не найден в системе. ИИ включён для всех пользователей.",
+  "AI_CONTROL_ALL_ALLOWED": "ИИ включён для всех пользователей.",
+  "AI_CONTROL_USER_ALLOWED": "ИИ включён для пользователя ({0}), но отключён для остальных",
+  "AI_CONTROL_ADMIN_DISABLED": "Доступ к ИИ был отключён вашим системным администратором",
+  "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Доступ к ИИ был отключён вашим системным администратором. Пожалуйста, свяжитесь с {0} для получения помощи.",
+  "AI_UPSELL_DIALOG_TITLE": "Продолжить с {0}?",
+  "AI_UPSELL_DIALOG_MESSAGE": "Вы открыли для себя редактирование с помощью ИИ. Чтобы продолжить, вам потребуется подписка на ИИ или кредиты."
 });

@@ -684,6 +684,7 @@ define({
   "EXTENSION_INCOMPATIBLE_NEWER": "Ekstensi ini membutuhkan versi {APP_NAME} yang lebih baru.",
   "EXTENSION_INCOMPATIBLE_OLDER": "Ekstensi ini hanya  kompatibel dengan versi {APP_NAME} yang lama.",
   "EXTENSION_DEFAULT_FEATURE_PRESENT": "Anda mungkin tidak memerlukan ekstensi ini. {APP_NAME} sudah memiliki fitur ini.",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "Ekstensi tidak dimuat. Ekstensi tersebut usang atau tidak aman.",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "Versi {0} dari ekstensi ini membutuhkan versi terbaru dari {APP_NAME}. Tapi Anda dapat menginstal versi sebelumnya {1}.",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "Versi {0} hanya kompatibel dengan versi {APP_NAME} yang lama. Tapi Anda dapat menginstal versi sebelumnya {1}.",
   "EXTENSION_NO_DESCRIPTION": "Tanpa keterangan",
@@ -1507,5 +1508,15 @@ define({
   "LICENSE_ACTIVATE_FAIL_APPLY": "Gagal menerapkan lisensi ke perangkat",
   "LICENSE_ENTER_KEY": "Silakan masukkan kunci lisensi",
   "LICENSE_REAPPLY_TO_DEVICE": "Sudah diaktivasi? Terapkan ulang ke seluruh sistem",
-  "EXTENSION_DEPRECATED_NOT_LOADED": "Ekstensi tidak dimuat. Ekstensi tersebut usang atau tidak aman."
+  "AI_LOGIN_DIALOG_TITLE": "Masuk untuk Menggunakan Edit AI",
+  "AI_LOGIN_DIALOG_MESSAGE": "Silakan masuk untuk menggunakan edit berbasis AI",
+  "AI_LOGIN_DIALOG_BUTTON": "Dapatkan Akses AI",
+  "AI_DISABLED_DIALOG_TITLE": "AI dinonaktifkan",
+  "AI_CONTROL_ALL_ALLOWED_NO_CONFIG": "Tidak ada file konfigurasi AI yang ditemukan di sistem. AI diaktifkan untuk semua pengguna.",
+  "AI_CONTROL_ALL_ALLOWED": "AI diaktifkan untuk semua pengguna.",
+  "AI_CONTROL_USER_ALLOWED": "AI diaktifkan untuk pengguna ({0}) tetapi dinonaktifkan untuk yang lain",
+  "AI_CONTROL_ADMIN_DISABLED": "Akses AI telah dinonaktifkan oleh administrator sistem Anda",
+  "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Akses AI telah dinonaktifkan oleh administrator sistem Anda. Silakan hubungi {0} untuk bantuan.",
+  "AI_UPSELL_DIALOG_TITLE": "Lanjutkan dengan {0}?",
+  "AI_UPSELL_DIALOG_MESSAGE": "Anda telah menemukan editan berbasis AI. Untuk melanjutkan, Anda memerlukan langganan AI atau kredit."
 });

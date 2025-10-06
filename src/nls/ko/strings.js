@@ -684,6 +684,7 @@ define({
   "EXTENSION_INCOMPATIBLE_NEWER": "이 확장 기능은 새 버전의 {APP_NAME}가 필요합니다.",
   "EXTENSION_INCOMPATIBLE_OLDER": "이 확장 기능은 현재 이전 버전의 {APP_NAME}에서 작동하지 않습니다.",
   "EXTENSION_DEFAULT_FEATURE_PRESENT": "이 확장 프로그램이 필요하지 않을 수 있습니다. {APP_NAME}에 이미 이 기능이 있습니다.",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "확장 프로그램이 로드되지 않았습니다. 지원이 중단되었거나 안전하지 않습니다.",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "이 확장 기능 버전 {0}에는 {APP_NAME}의 새 버전이 필요합니다. 그러나 이전 버전 {1}을 설치할 수 있습니다.",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "이 확장 기능 버전 {0} {APP_NAME}의 이전 버전에서만 작동합니다. 그러나 이전 버전 {1}을 설치할 수 있습니다.",
   "EXTENSION_NO_DESCRIPTION": "설명 없음",
@@ -1507,5 +1508,15 @@ define({
   "LICENSE_ACTIVATE_FAIL_APPLY": "디바이스에 라이선스를 적용하는 데 실패했습니다",
   "LICENSE_ENTER_KEY": "라이선스 키를 입력해 주세요",
   "LICENSE_REAPPLY_TO_DEVICE": "이미 활성화하셨나요? 시스템 전체에 재적용",
-  "EXTENSION_DEPRECATED_NOT_LOADED": "확장 프로그램이 로드되지 않았습니다. 지원이 중단되었거나 안전하지 않습니다."
+  "AI_LOGIN_DIALOG_TITLE": "AI 편집 기능 사용을 위한 로그인",
+  "AI_LOGIN_DIALOG_MESSAGE": "AI 기반 편집 기능을 사용하려면 로그인해 주세요.",
+  "AI_LOGIN_DIALOG_BUTTON": "AI 액세스하기",
+  "AI_DISABLED_DIALOG_TITLE": "AI가 비활성화되었습니다",
+  "AI_CONTROL_ALL_ALLOWED_NO_CONFIG": "시스템에서 AI 구성 파일을 찾을 수 없습니다. 모든 사용자에게 AI가 활성화됩니다.",
+  "AI_CONTROL_ALL_ALLOWED": "모든 사용자에 대해 AI가 활성화되어 있습니다.",
+  "AI_CONTROL_USER_ALLOWED": "AI는 사용자({0})에게는 활성화되어 있지만 다른 사용자에게는 비활성화되어 있습니다.",
+  "AI_CONTROL_ADMIN_DISABLED": "시스템 관리자에 의해 AI 액세스가 비활성화되었습니다.",
+  "AI_CONTROL_ADMIN_DISABLED_CONTACT": "시스템 관리자에 의해 AI 액세스가 비활성화되었습니다. 도움이 필요하시면 {0}에게 문의하세요.",
+  "AI_UPSELL_DIALOG_TITLE": "{0}(으)로 계속하시겠습니까?",
+  "AI_UPSELL_DIALOG_MESSAGE": "AI 기반 편집 기능을 발견하셨군요. 계속 진행하시려면 AI 구독 또는 크레딧이 필요합니다."
 });

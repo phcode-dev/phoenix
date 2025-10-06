@@ -684,6 +684,7 @@ define({
   "EXTENSION_INCOMPATIBLE_NEWER": "Tento doplněk požaduje novější verzi {APP_NAME}.",
   "EXTENSION_INCOMPATIBLE_OLDER": "Tento doplněk funguje pouze ve starší verzi {APP_NAME}.",
   "EXTENSION_DEFAULT_FEATURE_PRESENT": "Toto rozšíření pravděpodobně nepotřebujete. {APP_NAME} tuto funkci již obsahuje.",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "Rozšíření nebylo načteno. Je buď zastaralé, nebo nezabezpečené.",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "Verze {0} tohoto doplňku vyžaduje novější verzi {APP_NAME}. Můžete si ale nainstalovat dřívější verzi {1}.",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "Verze {0} tohoto doplňku funguje pouze se starší verzí {APP_NAME}. Můžete si ale nainstalovat dřívější verzi {1}.",
   "EXTENSION_NO_DESCRIPTION": "Bez popisu",
@@ -1507,5 +1508,15 @@ define({
   "LICENSE_ACTIVATE_FAIL_APPLY": "Nepodařilo se aplikovat licenci na zařízení.",
   "LICENSE_ENTER_KEY": "Zadejte prosím licenční klíč.",
   "LICENSE_REAPPLY_TO_DEVICE": "Již aktivováno? Znovu aplikovat pro celý systém.",
-  "EXTENSION_DEPRECATED_NOT_LOADED": "Rozšíření nebylo načteno. Je buď zastaralé, nebo nezabezpečené."
+  "AI_LOGIN_DIALOG_TITLE": "Přihlaste se k používání úprav pomocí AI",
+  "AI_LOGIN_DIALOG_MESSAGE": "Pro používání úprav s podporou AI se prosím přihlaste",
+  "AI_LOGIN_DIALOG_BUTTON": "Získat přístup k AI",
+  "AI_DISABLED_DIALOG_TITLE": "AI je zakázána",
+  "AI_CONTROL_ALL_ALLOWED_NO_CONFIG": "V systému nebyl nalezen žádný konfigurační soubor AI. AI je povolena pro všechny uživatele.",
+  "AI_CONTROL_ALL_ALLOWED": "AI je povolena pro všechny uživatele.",
+  "AI_CONTROL_USER_ALLOWED": "AI je povolena pro uživatele ({0}), ale pro ostatní je zakázána.",
+  "AI_CONTROL_ADMIN_DISABLED": "Přístup k AI byl zakázán správcem systému.",
+  "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Přístup k AI byl zakázán správcem systému. Pro pomoc prosím kontaktujte {0}.",
+  "AI_UPSELL_DIALOG_TITLE": "Pokračovat s {0}?",
+  "AI_UPSELL_DIALOG_MESSAGE": "Objevili jste úpravy s podporou AI. Chcete-li pokračovat, budete potřebovat předplatné AI nebo kredity."
 });

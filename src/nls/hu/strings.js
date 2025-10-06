@@ -684,6 +684,7 @@ define({
   "EXTENSION_INCOMPATIBLE_NEWER": "Ez a bővítmény csak a {APP_NAME} újabb verziójához jó.",
   "EXTENSION_INCOMPATIBLE_OLDER": "Ez a bővítmény csak a {APP_NAME} régebbi verziójához jó",
   "EXTENSION_DEFAULT_FEATURE_PRESENT": "Lehet, hogy nincs szüksége erre a bővítményre. A(z) {APP_NAME} már rendelkezik ezzel a funkcióval.",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "A bővítmény nem töltődött be. Vagy elavult, vagy nem biztonságos.",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "A bővítmény {0} verziója a(z) {APP_NAME} újabb verzióját igényli. Telepítheti azonban a korábbi {1} verziót.",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "A bővítmény {0} verziója csak a(z) {APP_NAME} régebbi verzióival működik. Telepítheti azonban a korábbi {1} verziót.",
   "EXTENSION_NO_DESCRIPTION": "Nincs leírás",
@@ -1507,5 +1508,15 @@ define({
   "LICENSE_ACTIVATE_FAIL_APPLY": "Nem sikerült a licencet az eszközre alkalmazni.",
   "LICENSE_ENTER_KEY": "Kérjük, adja meg a licenckulcsot.",
   "LICENSE_REAPPLY_TO_DEVICE": "Már aktiválta? Újraalkalmazás rendszerszinten.",
-  "EXTENSION_DEPRECATED_NOT_LOADED": "A bővítmény nem töltődött be. Vagy elavult, vagy nem biztonságos."
+  "AI_LOGIN_DIALOG_TITLE": "Bejelentkezés a MI-szerkesztések használatához",
+  "AI_LOGIN_DIALOG_MESSAGE": "Kérjük, jelentkezzen be a MI-alapú szerkesztések használatához.",
+  "AI_LOGIN_DIALOG_BUTTON": "MI-hozzáférés",
+  "AI_DISABLED_DIALOG_TITLE": "A MI le van tiltva",
+  "AI_CONTROL_ALL_ALLOWED_NO_CONFIG": "A rendszerben nem található MI-konfigurációs fájl. A MI minden felhasználó számára engedélyezve van.",
+  "AI_CONTROL_ALL_ALLOWED": "A MI minden felhasználó számára engedélyezve van.",
+  "AI_CONTROL_USER_ALLOWED": "A MI engedélyezve van a(z) {0} felhasználó számára, de mások számára le van tiltva.",
+  "AI_CONTROL_ADMIN_DISABLED": "A MI-hozzáférést a rendszergazda letiltotta.",
+  "AI_CONTROL_ADMIN_DISABLED_CONTACT": "A MI-hozzáférést a rendszergazda letiltotta. Segítségért forduljon a(z) {0} elérhetőséghez.",
+  "AI_UPSELL_DIALOG_TITLE": "Folytatja a(z) {0} használatával?",
+  "AI_UPSELL_DIALOG_MESSAGE": "Felfedezted az MI-alapú szerkesztéseket. A folytatáshoz MI-előfizetésre vagy kreditekre lesz szükséged."
 });
