@@ -937,7 +937,7 @@ define(function (require, exports, module) {
         // then alphabetically by folder name, then by full path
         StringMatch.multiFieldSort(matches, { matchGoodness: 0, folderName: 1, label: 2 });
 
-        const topMatches = matches.slice(0, 5);
+        const topMatches = matches.slice(0, 15);
         _renderFolderSuggestions(topMatches, $suggestions, $input);
     }
 
@@ -953,33 +953,36 @@ define(function (require, exports, module) {
     function _registerFolderDialogInputHandlers($input, $suggestions, $dlg) {
         // keyboard navigation handler for arrow keys
         $input.on('keydown', function(e) {
+            const isArrowDown = e.keyCode === 40;
+            const isArrowUp = e.keyCode === 38;
+            // we only want to handle the arrow up arrow down keys
+            if (!isArrowDown && !isArrowUp) { return; }
+
+            e.preventDefault();
             const $items = $suggestions.find('.folder-suggestion-item');
+            if ($items.length === 0) { return; }
+
             const $selected = $items.filter('.selected');
 
-            if (e.keyCode === 40) { // arrow down key
-                e.preventDefault();
-                if ($items.length === 0) { return; }
+            // determine which item to select next
+            let $nextItem;
+            if ($selected.length === 0) {
+                // no selection - select first or last based on direction
+                $nextItem = isArrowDown ? $items.first() : $items.last();
+            } else {
+                // move selection
+                const currentIndex = $items.index($selected);
+                $selected.removeClass('selected');
+                const nextIndex = isArrowDown
+                    ? (currentIndex + 1) % $items.length
+                    : (currentIndex - 1 + $items.length) % $items.length;
+                $nextItem = $items.eq(nextIndex);
+            }
 
-                if ($selected.length === 0) {
-                    $items.first().addClass('selected');
-                } else {
-                    const currentIndex = $items.index($selected);
-                    $selected.removeClass('selected');
-                    const nextIndex = (currentIndex + 1) % $items.length;
-                    $items.eq(nextIndex).addClass('selected');
-                }
-            } else if (e.keyCode === 38) { // arrow up key
-                e.preventDefault();
-                if ($items.length === 0) { return; }
-
-                if ($selected.length === 0) {
-                    $items.last().addClass('selected');
-                } else {
-                    const currentIndex = $items.index($selected);
-                    $selected.removeClass('selected');
-                    const nextIndex = (currentIndex - 1 + $items.length) % $items.length;
-                    $items.eq(nextIndex).addClass('selected');
-                }
+            // apply selection and scroll the selected item into view (if not in view)
+            $nextItem.addClass('selected');
+            if ($nextItem.length > 0) {
+                $nextItem[0].scrollIntoView({ block: "nearest", behavior: "auto" });
             }
         });
 
