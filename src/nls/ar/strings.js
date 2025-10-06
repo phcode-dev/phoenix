@@ -684,6 +684,7 @@ define({
   "EXTENSION_INCOMPATIBLE_NEWER": "تتطلب هذه الإضافة إصدارًا أحدث من {APP_NAME}.",
   "EXTENSION_INCOMPATIBLE_OLDER": "تعمل هذه الإضافة حاليًا فقط مع الإصدارات القديمة من {APP_NAME}.",
   "EXTENSION_DEFAULT_FEATURE_PRESENT": "قد لا تحتاج إلى هذه الإضافة. {APP_NAME} يمتلك هذه الميزة بالفعل.",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "لم يتم تحميل الملحق. إنه إما مهمل أو غير آمن.",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "الإصدار {0} من هذه الإضافة يتطلب إصدارًا أحدث من {APP_NAME}. ولكن يمكنك تثبيت الإصدار السابق {1}.",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "الإصدار {0} من هذه الإضافة يعمل فقط مع الإصدارات القديمة من {APP_NAME}. ولكن يمكنك تثبيت الإصدار السابق {1}.",
   "EXTENSION_NO_DESCRIPTION": "لا يوجد وصف",
@@ -1507,7 +1508,6 @@ define({
   "LICENSE_ACTIVATE_FAIL_APPLY": "فشل تطبيق الترخيص على الجهاز",
   "LICENSE_ENTER_KEY": "الرجاء إدخال مفتاح الترخيص",
   "LICENSE_REAPPLY_TO_DEVICE": "تم التنشيط بالفعل؟ إعادة التطبيق على مستوى النظام",
-  "EXTENSION_DEPRECATED_NOT_LOADED": "لم يتم تحميل الملحق. إنه إما مهمل أو غير آمن.",
   "AI_LOGIN_DIALOG_TITLE": "تسجيل الدخول لاستخدام تعديلات الذكاء الاصطناعي",
   "AI_LOGIN_DIALOG_MESSAGE": "يرجى تسجيل الدخول لاستخدام التعديلات المدعومة بالذكاء الاصطناعي",
   "AI_LOGIN_DIALOG_BUTTON": "الحصول على وصول للذكاء الاصطناعي",
@@ -1516,5 +1516,7 @@ define({
   "AI_CONTROL_ALL_ALLOWED": "الذكاء الاصطناعي ممكّن لجميع المستخدمين.",
   "AI_CONTROL_USER_ALLOWED": "الذكاء الاصطناعي ممكّن للمستخدم ({0}) ولكنه معطل للآخرين",
   "AI_CONTROL_ADMIN_DISABLED": "قام مسؤول النظام بتعطيل الوصول إلى الذكاء الاصطناعي",
-  "AI_CONTROL_ADMIN_DISABLED_CONTACT": "قام مسؤول النظام بتعطيل الوصول إلى الذكاء الاصطناعي. يرجى الاتصال بـ {0} للحصول على المساعدة."
+  "AI_CONTROL_ADMIN_DISABLED_CONTACT": "قام مسؤول النظام بتعطيل الوصول إلى الذكاء الاصطناعي. يرجى الاتصال بـ {0} للحصول على المساعدة.",
+  "AI_UPSELL_DIALOG_TITLE": "المتابعة باستخدام {0}؟",
+  "AI_UPSELL_DIALOG_MESSAGE": "لقد اكتشفت التعديلات المدعومة بالذكاء الاصطناعي. للمتابعة، ستحتاج إلى اشتراك في الذكاء الاصطناعي أو أرصدة."
 });
