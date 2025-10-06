@@ -33,9 +33,12 @@ define(function (require, exports, module) {
     const PathUtils = require("thirdparty/path-utils/path-utils");
     const StringMatch = require("utils/StringMatch");
     const Dialogs = require("widgets/Dialogs");
+    const StateManager = require("preferences/StateManager");
     const ProDialogs = require("services/pro-dialogs");
     const ImageFolderDialogTemplate = require("text!htmlContent/image-folder-dialog.html");
 
+    // state manager key, to save the download location of the image
+    const IMAGE_DOWNLOAD_FOLDER_KEY = "imageGallery.downloadFolder";
 
     const KernalModeTrust = window.KernalModeTrust;
     if(!KernalModeTrust){
@@ -1020,12 +1023,21 @@ define(function (require, exports, module) {
         const projectRoot = ProjectManager.getProjectRoot();
         if (!projectRoot) { return; }
 
+        // check if user has already saved a folder preference for this project
+        const savedFolder = StateManager.get(IMAGE_DOWNLOAD_FOLDER_KEY, StateManager.PROJECT_CONTEXT);
+        // we specifically check for nullish type vals because empty string is possible as it means project root
+        if (savedFolder !== null && savedFolder !== undefined) {
+            _downloadToFolder(message, savedFolder);
+            return;
+        }
+
         // show the dialog with a text box to select a folder
         // dialog html is written in 'image-folder-dialog.html'
         const dialog = Dialogs.showModalDialogUsingTemplate(ImageFolderDialogTemplate, false);
         const $dlg = dialog.getElement();
         const $input = $dlg.find("#folder-path-input");
         const $suggestions = $dlg.find("#folder-suggestions");
+        const $rememberCheckbox = $dlg.find("#remember-folder-checkbox");
 
         let folderList = [];
         let stringMatcher = null;
@@ -1051,6 +1063,12 @@ define(function (require, exports, module) {
         $dlg.one("buttonClick", function(e, buttonId) {
             if (buttonId === Dialogs.DIALOG_BTN_OK) {
                 const folderPath = $input.val().trim();
+
+                // if the checkbox is checked, we save the folder preference for this project
+                if ($rememberCheckbox.is(':checked')) {
+                    StateManager.set(IMAGE_DOWNLOAD_FOLDER_KEY, folderPath, StateManager.PROJECT_CONTEXT);
+                }
+
                 _downloadToFolder(message, folderPath);
             }
             dialog.close();
