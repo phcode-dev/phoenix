@@ -684,6 +684,7 @@ define({
   "EXTENSION_INCOMPATIBLE_NEWER": "Questa estensione richiede una versione di {APP_NAME} più recente.",
   "EXTENSION_INCOMPATIBLE_OLDER": "Questa estensione al momento può funzionare solo con versioni di {APP_NAME} più vecchie.",
   "EXTENSION_DEFAULT_FEATURE_PRESENT": "Potresti non aver bisogno di questa estensione. {APP_NAME} ha già questa funzionalità.",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "Estensione non caricata. È deprecata o insicura.",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "La versione {0} di questa estensione richiede una versione di {APP_NAME} più recente.",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "La versione {0} di questa estensione richiede una versione di {APP_NAME} più vecchia. Ma puoi comunque installare una versione più recente {1}.",
   "EXTENSION_NO_DESCRIPTION": "Nessuna descrizione",
@@ -1507,5 +1508,15 @@ define({
   "LICENSE_ACTIVATE_FAIL_APPLY": "Impossibile applicare la licenza al dispositivo",
   "LICENSE_ENTER_KEY": "Inserire un codice di licenza",
   "LICENSE_REAPPLY_TO_DEVICE": "Già attivato? Riapplica a livello di sistema",
-  "EXTENSION_DEPRECATED_NOT_LOADED": "Estensione non caricata. È deprecata o insicura."
+  "AI_LOGIN_DIALOG_TITLE": "Accedi per usare le modifiche AI",
+  "AI_LOGIN_DIALOG_MESSAGE": "Effettua l'accesso per usare le modifiche AI",
+  "AI_LOGIN_DIALOG_BUTTON": "Accedi all'AI",
+  "AI_DISABLED_DIALOG_TITLE": "L'AI è disattivata",
+  "AI_CONTROL_ALL_ALLOWED_NO_CONFIG": "Nessun file di configurazione AI trovato nel sistema. L'AI è abilitata per tutti gli utenti.",
+  "AI_CONTROL_ALL_ALLOWED": "L'AI è abilitata per tutti gli utenti.",
+  "AI_CONTROL_USER_ALLOWED": "L'AI è abilitata per l'utente ({0}) ma disattivata per gli altri.",
+  "AI_CONTROL_ADMIN_DISABLED": "L'accesso all'AI è stato disattivato dal tuo amministratore di sistema.",
+  "AI_CONTROL_ADMIN_DISABLED_CONTACT": "L'accesso all'AI è stato disattivato dal tuo amministratore di sistema. Contatta {0} per assistenza.",
+  "AI_UPSELL_DIALOG_TITLE": "Continuare con {0}?",
+  "AI_UPSELL_DIALOG_MESSAGE": "Hai scoperto le modifiche potenziate dall'IA. Per procedere, è necessario un abbonamento IA o dei crediti."
 });

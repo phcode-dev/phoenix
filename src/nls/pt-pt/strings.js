@@ -684,6 +684,7 @@ define({
   "EXTENSION_INCOMPATIBLE_NEWER": "Esta extensão requer uma versão mais recente do {APP_NAME}.",
   "EXTENSION_INCOMPATIBLE_OLDER": "Esta extensão funciona atualmente apenas com versões mais antigas do {APP_NAME}.",
   "EXTENSION_DEFAULT_FEATURE_PRESENT": "Pode não precisar desta extensão. O {APP_NAME} já tem esta funcionalidade.",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "Extensão não carregada. Encontra-se obsoleta ou é insegura.",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "A versão {0} desta extensão requer uma versão mais recente do {APP_NAME}. Mas pode instalar a versão anterior {1}.",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "A versão {0} desta extensão funciona apenas com versões mais antigas do {APP_NAME}. Mas pode instalar a versão anterior {1}.",
   "EXTENSION_NO_DESCRIPTION": "Sem descrição",
@@ -1507,5 +1508,15 @@ define({
   "LICENSE_ACTIVATE_FAIL_APPLY": "Falha ao aplicar a licença ao dispositivo",
   "LICENSE_ENTER_KEY": "Por favor, introduza uma chave de licença",
   "LICENSE_REAPPLY_TO_DEVICE": "Já ativou? Reaplicar em todo o sistema",
-  "EXTENSION_DEPRECATED_NOT_LOADED": "Extensão não carregada. Encontra-se obsoleta ou é insegura."
+  "AI_LOGIN_DIALOG_TITLE": "Inicie sessão para usar as edições de IA",
+  "AI_LOGIN_DIALOG_MESSAGE": "Por favor, inicie sessão para usar as edições com IA",
+  "AI_LOGIN_DIALOG_BUTTON": "Obter acesso à IA",
+  "AI_DISABLED_DIALOG_TITLE": "A IA está desativada",
+  "AI_CONTROL_ALL_ALLOWED_NO_CONFIG": "Não foi encontrado nenhum ficheiro de configuração de IA no sistema. A IA está ativada para todos os utilizadores.",
+  "AI_CONTROL_ALL_ALLOWED": "A IA está ativada para todos os utilizadores.",
+  "AI_CONTROL_USER_ALLOWED": "A IA está ativada para o utilizador ({0}), mas desativada para os restantes",
+  "AI_CONTROL_ADMIN_DISABLED": "O acesso à IA foi desativado pelo seu administrador de sistema",
+  "AI_CONTROL_ADMIN_DISABLED_CONTACT": "O acesso à IA foi desativado pelo seu administrador de sistema. Por favor, contacte {0} para obter assistência.",
+  "AI_UPSELL_DIALOG_TITLE": "Continuar com {0}?",
+  "AI_UPSELL_DIALOG_MESSAGE": "Descobriu as edições assistidas por IA. Para prosseguir, precisará de uma subscrição de IA ou de créditos."
 });

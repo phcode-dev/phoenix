@@ -684,6 +684,7 @@ define({
   "EXTENSION_INCOMPATIBLE_NEWER": "Denne udvidelse kræver en nyere version af {APP_NAME}.",
   "EXTENSION_INCOMPATIBLE_OLDER": "Denne udvidelse virker i øjeblikket kun med ældre versioner af {APP_NAME}.",
   "EXTENSION_DEFAULT_FEATURE_PRESENT": "Du har muligvis ikke brug for denne udvidelse. {APP_NAME} har allerede denne funktion.",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "Udvidelse ikke indlæst. Den er enten forældet eller usikker.",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "Version {0} af denne udvidelse kræver en nyere version af {APP_NAME}. Men du kan installere den tidligere version {1}.",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "Version {0} af denne udvidelse virker kun med en ældre version af {APP_NAME}. Men du kan installere den tidligere version {1}.",
   "EXTENSION_NO_DESCRIPTION": "Ingen beskrivelse",
@@ -1507,5 +1508,15 @@ define({
   "LICENSE_ACTIVATE_FAIL_APPLY": "Kunne ikke anvende licens på enheden",
   "LICENSE_ENTER_KEY": "Indtast venligst en licensnøgle",
   "LICENSE_REAPPLY_TO_DEVICE": "Allerede aktiveret? Genanvend for hele systemet",
-  "EXTENSION_DEPRECATED_NOT_LOADED": "Udvidelse ikke indlæst. Den er enten forældet eller usikker."
+  "AI_LOGIN_DIALOG_TITLE": "Log ind for at bruge AI-redigeringer",
+  "AI_LOGIN_DIALOG_MESSAGE": "Log venligst ind for at bruge AI-drevne redigeringer",
+  "AI_LOGIN_DIALOG_BUTTON": "Få AI-adgang",
+  "AI_DISABLED_DIALOG_TITLE": "AI er deaktiveret",
+  "AI_CONTROL_ALL_ALLOWED_NO_CONFIG": "Ingen AI-konfigurationsfil fundet i systemet. AI er aktiveret for alle brugere.",
+  "AI_CONTROL_ALL_ALLOWED": "AI er aktiveret for alle brugere.",
+  "AI_CONTROL_USER_ALLOWED": "AI er aktiveret for bruger ({0}), men deaktiveret for andre",
+  "AI_CONTROL_ADMIN_DISABLED": "Adgang til AI er blevet deaktiveret af din systemadministrator",
+  "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Adgang til AI er blevet deaktiveret af din systemadministrator. Kontakt venligst {0} for hjælp.",
+  "AI_UPSELL_DIALOG_TITLE": "Fortsæt med {0}?",
+  "AI_UPSELL_DIALOG_MESSAGE": "Du har opdaget AI-drevne redigeringer. For at fortsætte skal du bruge et AI-abonnement eller kreditter."
 });

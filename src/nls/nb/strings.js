@@ -684,6 +684,7 @@ define({
   "EXTENSION_INCOMPATIBLE_NEWER": "Denne utvidelsen krever en nyere versjon av {APP_NAME}.",
   "EXTENSION_INCOMPATIBLE_OLDER": "Denne utvidelsen virker bare med en eldre versjon av {APP_NAME}.",
   "EXTENSION_DEFAULT_FEATURE_PRESENT": "Du trenger kanskje ikke denne utvidelsen. {APP_NAME} har allerede denne funksjonen.",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "Utvidelsen ble ikke lastet. Den er enten foreldet eller usikker.",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "Versjon {0} av denne utvidelsen krever en nyere versjon av {APP_NAME}. Men du kan installere tidligere versjon {1}.",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "Versjon {0} av denne utvidelsen krever en eldre versjon av {APP_NAME}. Men du kan installere tidligere versjon {1}.",
   "EXTENSION_NO_DESCRIPTION": "Ingen beskrivelse",
@@ -1507,5 +1508,15 @@ define({
   "LICENSE_ACTIVATE_FAIL_APPLY": "Kunne ikke anvende lisens på enheten",
   "LICENSE_ENTER_KEY": "Skriv inn en lisensnøkkel",
   "LICENSE_REAPPLY_TO_DEVICE": "Allerede aktivert? Anvend på nytt for hele systemet",
-  "EXTENSION_DEPRECATED_NOT_LOADED": "Utvidelsen ble ikke lastet. Den er enten foreldet eller usikker."
+  "AI_LOGIN_DIALOG_TITLE": "Logg inn for å bruke AI-redigeringer",
+  "AI_LOGIN_DIALOG_MESSAGE": "Vennligst logg inn for å bruke AI-drevne redigeringer",
+  "AI_LOGIN_DIALOG_BUTTON": "Få AI-tilgang",
+  "AI_DISABLED_DIALOG_TITLE": "AI er deaktivert",
+  "AI_CONTROL_ALL_ALLOWED_NO_CONFIG": "Ingen AI-konfigurasjonsfil funnet i systemet. AI er aktivert for alle brukere.",
+  "AI_CONTROL_ALL_ALLOWED": "AI er aktivert for alle brukere.",
+  "AI_CONTROL_USER_ALLOWED": "AI er aktivert for bruker ({0}), men deaktivert for andre",
+  "AI_CONTROL_ADMIN_DISABLED": "AI-tilgang er deaktivert av systemadministratoren din",
+  "AI_CONTROL_ADMIN_DISABLED_CONTACT": "AI-tilgang er deaktivert av systemadministratoren din. Vennligst kontakt {0} for hjelp.",
+  "AI_UPSELL_DIALOG_TITLE": "Fortsette med {0}?",
+  "AI_UPSELL_DIALOG_MESSAGE": "Du har oppdaget AI-drevne redigeringer. For å fortsette trenger du et AI-abonnement eller kreditter."
 });

@@ -684,6 +684,7 @@ define({
   "EXTENSION_INCOMPATIBLE_NEWER": "اس ایکسٹینشن کے لیے {APP_NAME} کے ایک نئے ورژن کی ضرورت ہے۔",
   "EXTENSION_INCOMPATIBLE_OLDER": "یہ ایکسٹینشن فی الحال صرف {APP_NAME} کے پرانے ورژنز کے ساتھ کام کرتا ہے۔",
   "EXTENSION_DEFAULT_FEATURE_PRESENT": "ہو سکتا ہے کہ آپ کو اس ایکسٹینشن کی ضرورت نہ ہو۔ {APP_NAME} میں پہلے سے ہی یہ فیچر موجود ہے۔",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "ایکسٹینشن لوڈ نہیں ہوئی۔ یہ یا تو متروک ہے یا غیر محفوظ۔",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "اس ایکسٹینشن کے ورژن {0} کے لیے {APP_NAME} کے ایک نئے ورژن کی ضرورت ہے۔ لیکن آپ اس کا پہلا ورژن {1} انسٹال کر سکتے ہیں۔",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "اس ایکسٹینشن کا ورژن {0} صرف {APP_NAME} کے پرانے ورژنز کے ساتھ کام کرتا ہے۔ لیکن آپ اس کا پہلا ورژن {1} انسٹال کر سکتے ہیں۔",
   "EXTENSION_NO_DESCRIPTION": "کوئی وضاحت نہیں",
@@ -1507,5 +1508,15 @@ define({
   "LICENSE_ACTIVATE_FAIL_APPLY": "ڈیوائس پر لائسنس لاگو کرنے میں ناکام",
   "LICENSE_ENTER_KEY": "براہ کرم لائسنس کی درج کریں",
   "LICENSE_REAPPLY_TO_DEVICE": "پہلے ہی فعال ہے؟ سسٹم بھر میں دوبارہ لاگو کریں",
-  "EXTENSION_DEPRECATED_NOT_LOADED": "ایکسٹینشن لوڈ نہیں ہوئی۔ یہ یا تو متروک ہے یا غیر محفوظ۔"
+  "AI_LOGIN_DIALOG_TITLE": "AI ترامیم استعمال کرنے کے لیے سائن ان کریں",
+  "AI_LOGIN_DIALOG_MESSAGE": "براہ کرم AI سے چلنے والی ترامیم استعمال کرنے کے لیے لاگ ان کریں",
+  "AI_LOGIN_DIALOG_BUTTON": "AI تک رسائی حاصل کریں",
+  "AI_DISABLED_DIALOG_TITLE": "AI غیر فعال ہے",
+  "AI_CONTROL_ALL_ALLOWED_NO_CONFIG": "سسٹم میں کوئی AI کنفگ فائل نہیں ملی۔ AI تمام صارفین کے لیے فعال ہے۔",
+  "AI_CONTROL_ALL_ALLOWED": "AI تمام صارفین کے لیے فعال ہے۔",
+  "AI_CONTROL_USER_ALLOWED": "AI صارف ({0}) کے لیے فعال ہے لیکن دوسروں کے لیے غیر فعال ہے",
+  "AI_CONTROL_ADMIN_DISABLED": "آپ کے سسٹم ایڈمنسٹریٹر نے AI تک رسائی کو غیر فعال کر دیا ہے",
+  "AI_CONTROL_ADMIN_DISABLED_CONTACT": "آپ کے سسٹم ایڈمنسٹریٹر نے AI تک رسائی کو غیر فعال کر دیا ہے۔ براہ کرم مدد کے لیے {0} سے رابطہ کریں۔",
+  "AI_UPSELL_DIALOG_TITLE": "{0} کے ساتھ جاری رکھیں؟",
+  "AI_UPSELL_DIALOG_MESSAGE": "آپ نے AI سے چلنے والی ترامیم دریافت کی ہیں۔ آگے بڑھنے کے لیے، آپ کو AI سبسکرپشن یا کریڈٹس کی ضرورت ہوگی۔"
 });

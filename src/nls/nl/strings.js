@@ -684,6 +684,7 @@ define({
   "EXTENSION_INCOMPATIBLE_NEWER": "Deze extensie vereist een nieuwere versie van {APP_NAME}.",
   "EXTENSION_INCOMPATIBLE_OLDER": "Deze extensie werkt momenteel enkel met oudere versies van {APP_NAME}.",
   "EXTENSION_DEFAULT_FEATURE_PRESENT": "Mogelijk hebt u deze extensie niet nodig. {APP_NAME} heeft deze functie al.",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "Extensie niet geladen. Deze is ofwel verouderd of onveilig.",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "Versie {0} van deze extensie vereist een nieuwere versie van {APP_NAME}. Je kan wel de oudere versie {1} installeren.",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "Versie {0} van deze extensie werkt alleen met oudere versies van {APP_NAME}. Je kan wel de oudere versie {1} installeren.",
   "EXTENSION_NO_DESCRIPTION": "Geen beschrijving",
@@ -1507,5 +1508,15 @@ define({
   "LICENSE_ACTIVATE_FAIL_APPLY": "Kon licentie niet toepassen op het apparaat",
   "LICENSE_ENTER_KEY": "Voer alstublieft een licentiesleutel in",
   "LICENSE_REAPPLY_TO_DEVICE": "Al geactiveerd? Opnieuw systeembreed toepassen",
-  "EXTENSION_DEPRECATED_NOT_LOADED": "Extensie niet geladen. Deze is ofwel verouderd of onveilig."
+  "AI_LOGIN_DIALOG_TITLE": "Meld u aan om AI-bewerkingen te gebruiken",
+  "AI_LOGIN_DIALOG_MESSAGE": "Meld u aan om AI-gestuurde bewerkingen te gebruiken",
+  "AI_LOGIN_DIALOG_BUTTON": "Krijg toegang tot AI",
+  "AI_DISABLED_DIALOG_TITLE": "AI is uitgeschakeld",
+  "AI_CONTROL_ALL_ALLOWED_NO_CONFIG": "Geen AI-configuratiebestand gevonden in het systeem. AI is ingeschakeld voor alle gebruikers.",
+  "AI_CONTROL_ALL_ALLOWED": "AI is ingeschakeld voor alle gebruikers.",
+  "AI_CONTROL_USER_ALLOWED": "AI is ingeschakeld voor gebruiker ({0}), maar uitgeschakeld voor anderen.",
+  "AI_CONTROL_ADMIN_DISABLED": "De toegang tot AI is uitgeschakeld door uw systeembeheerder.",
+  "AI_CONTROL_ADMIN_DISABLED_CONTACT": "De toegang tot AI is uitgeschakeld door uw systeembeheerder. Neem contact op met {0} voor hulp.",
+  "AI_UPSELL_DIALOG_TITLE": "Doorgaan met {0}?",
+  "AI_UPSELL_DIALOG_MESSAGE": "Je hebt bewerkingen met AI ontdekt. Om door te gaan, heb je een AI-abonnement of credits nodig."
 });

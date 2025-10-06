@@ -684,6 +684,7 @@ define({
   "EXTENSION_INCOMPATIBLE_NEWER": "Această extensie necesită o vesiune mai nouă {APP_NAME}.",
   "EXTENSION_INCOMPATIBLE_OLDER": "Această extensie funcționează doar cu versiunile mai vechi {APP_NAME}.",
   "EXTENSION_DEFAULT_FEATURE_PRESENT": "Este posibil să nu aveți nevoie de această extensie. {APP_NAME} are deja această funcționalitate.",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "Extensia nu s-a încărcat. Este fie învechită, fie nesigură.",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "Versiunea {0} a acestei extensii necesită o vesiune mai nouă {APP_NAME}. Dar puteți instala versiunea {1} a extensiei.",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "Versiunea {0} a acestei extensii funcționează doar cu versiunile vechi {APP_NAME}. Dar puteți instala versiunea {1} a extensiei.",
   "EXTENSION_NO_DESCRIPTION": "Nicio descriere",
@@ -1507,5 +1508,15 @@ define({
   "LICENSE_ACTIVATE_FAIL_APPLY": "Nu s-a putut aplica licența pe dispozitiv",
   "LICENSE_ENTER_KEY": "Introduceți o cheie de licență",
   "LICENSE_REAPPLY_TO_DEVICE": "Deja activat? Reaplicați la nivel de sistem",
-  "EXTENSION_DEPRECATED_NOT_LOADED": "Extensia nu s-a încărcat. Este fie învechită, fie nesigură."
+  "AI_LOGIN_DIALOG_TITLE": "Autentificați-vă pentru a utiliza editările AI",
+  "AI_LOGIN_DIALOG_MESSAGE": "Vă rugăm să vă autentificați pentru a utiliza editările bazate pe AI",
+  "AI_LOGIN_DIALOG_BUTTON": "Obțineți acces AI",
+  "AI_DISABLED_DIALOG_TITLE": "AI este dezactivat",
+  "AI_CONTROL_ALL_ALLOWED_NO_CONFIG": "Nu a fost găsit niciun fișier de configurare AI în sistem. AI este activat pentru toți utilizatorii.",
+  "AI_CONTROL_ALL_ALLOWED": "AI este activat pentru toți utilizatorii.",
+  "AI_CONTROL_USER_ALLOWED": "AI este activat pentru utilizatorul ({0}), dar dezactivat pentru ceilalți",
+  "AI_CONTROL_ADMIN_DISABLED": "Accesul AI a fost dezactivat de către administratorul dvs. de sistem",
+  "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Accesul AI a fost dezactivat de către administratorul dvs. de sistem. Vă rugăm să contactați {0} pentru asistență.",
+  "AI_UPSELL_DIALOG_TITLE": "Continuați cu {0}?",
+  "AI_UPSELL_DIALOG_MESSAGE": "Ați descoperit editările asistate de AI. Pentru a continua, aveți nevoie de un abonament AI sau de credite."
 });

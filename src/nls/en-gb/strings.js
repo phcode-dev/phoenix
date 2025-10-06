@@ -684,6 +684,7 @@ define({
   "EXTENSION_INCOMPATIBLE_NEWER": "This extension requires a newer version of {APP_NAME}.",
   "EXTENSION_INCOMPATIBLE_OLDER": "This extension currently only works with older versions of {APP_NAME}.",
   "EXTENSION_DEFAULT_FEATURE_PRESENT": "You may not need this extension. {APP_NAME} already has this feature.",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "Extension not loaded. It is either deprecated or insecure.",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "Version {0} of this extension requires a newer version of {APP_NAME}. But you can install the earlier version {1}.",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "Version {0} of this extension only works with older versions of {APP_NAME}. But you can install the earlier version {1}.",
   "EXTENSION_NO_DESCRIPTION": "No description",
@@ -1507,5 +1508,15 @@ define({
   "LICENSE_ACTIVATE_FAIL_APPLY": "Failed to apply licence to device",
   "LICENSE_ENTER_KEY": "Please enter a licence key",
   "LICENSE_REAPPLY_TO_DEVICE": "Already activated? Reapply system-wide",
-  "EXTENSION_DEPRECATED_NOT_LOADED": "Extension not loaded. It is either deprecated or insecure."
+  "AI_LOGIN_DIALOG_TITLE": "Log In to Use AI Edits",
+  "AI_LOGIN_DIALOG_MESSAGE": "Please log in to use AI-powered edits",
+  "AI_LOGIN_DIALOG_BUTTON": "Get AI Access",
+  "AI_DISABLED_DIALOG_TITLE": "AI is disabled",
+  "AI_CONTROL_ALL_ALLOWED_NO_CONFIG": "No AI config file found in system. AI is enabled for all users.",
+  "AI_CONTROL_ALL_ALLOWED": "AI is enabled for all users.",
+  "AI_CONTROL_USER_ALLOWED": "AI is enabled for user ({0}) but disabled for others",
+  "AI_CONTROL_ADMIN_DISABLED": "AI access has been disabled by your system administrator",
+  "AI_CONTROL_ADMIN_DISABLED_CONTACT": "AI access has been disabled by your system administrator. Please contact {0} for assistance.",
+  "AI_UPSELL_DIALOG_TITLE": "Continue with {0}?",
+  "AI_UPSELL_DIALOG_MESSAGE": "You’ve discovered AI-powered edits. To proceed, you’ll need an AI subscription or credits."
 });

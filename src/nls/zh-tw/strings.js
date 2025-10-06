@@ -684,6 +684,7 @@ define({
   "EXTENSION_INCOMPATIBLE_NEWER": "這個擴充功能需要較新版的 {APP_NAME} 才能使用。",
   "EXTENSION_INCOMPATIBLE_OLDER": "這個擴充功能目前只能在舊版 {APP_NAME} 中使用。",
   "EXTENSION_DEFAULT_FEATURE_PRESENT": "您可能不需要此擴充功能。{APP_NAME} 已具備此功能。",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "擴充功能未載入。其已棄用或不安全。",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "這個擴充功能 {0} 版只能在新版 {APP_NAME} 中使用。不過您可以選擇安裝較舊的 {1} 版。",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "這個擴充功能 {0} 版只能在舊版 {APP_NAME} 中使用。不過您可以選擇安裝較舊的 {1} 版。",
   "EXTENSION_NO_DESCRIPTION": "沒有描述資訊",
@@ -1507,5 +1508,15 @@ define({
   "LICENSE_ACTIVATE_FAIL_APPLY": "無法將授權套用至裝置",
   "LICENSE_ENTER_KEY": "請輸入授權金鑰",
   "LICENSE_REAPPLY_TO_DEVICE": "已啟用？ 全系統重新套用",
-  "EXTENSION_DEPRECATED_NOT_LOADED": "擴充功能未載入。其已棄用或不安全。"
+  "AI_LOGIN_DIALOG_TITLE": "登入以使用 AI 編輯功能",
+  "AI_LOGIN_DIALOG_MESSAGE": "請登入以使用 AI 支援的編輯功能",
+  "AI_LOGIN_DIALOG_BUTTON": "取得 AI 存取權限",
+  "AI_DISABLED_DIALOG_TITLE": "AI 功能已停用",
+  "AI_CONTROL_ALL_ALLOWED_NO_CONFIG": "系統中找不到 AI 設定檔。AI 功能已為所有使用者啟用。",
+  "AI_CONTROL_ALL_ALLOWED": "AI 功能已為所有使用者啟用。",
+  "AI_CONTROL_USER_ALLOWED": "AI 功能已為使用者 ({0}) 啟用，但已為其他使用者停用。",
+  "AI_CONTROL_ADMIN_DISABLED": "您的系統管理員已停用 AI 存取權限。",
+  "AI_CONTROL_ADMIN_DISABLED_CONTACT": "您的系統管理員已停用 AI 存取權限。如需協助，請聯絡 {0}。",
+  "AI_UPSELL_DIALOG_TITLE": "要繼續使用 {0} 嗎？",
+  "AI_UPSELL_DIALOG_MESSAGE": "您已發現 AI 輔助編輯功能。若要繼續，您需要 AI 訂閱方案或點數。"
 });

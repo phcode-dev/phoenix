@@ -684,6 +684,7 @@ define({
   "EXTENSION_INCOMPATIBLE_NEWER": "To rozszerzenie wymaga nowszej wersji {APP_NAME}.",
   "EXTENSION_INCOMPATIBLE_OLDER": "To rozszerzenie działa tylko ze starszymi wersjami {APP_NAME}.",
   "EXTENSION_DEFAULT_FEATURE_PRESENT": "Możesz nie potrzebować tego rozszerzenia. {APP_NAME} ma już tę funkcję.",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "Rozszerzenie nie zostało załadowane. Jest przestarzałe lub niebezpieczne.",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "Wersja {0} tego rozszerzenia wymaga nowszej wersji {APP_NAME}, ale możesz zainstalować starszą wersję {1}.",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "Wersja {0} tego rozszerzenia wymaga starszej wersji {APP_NAME}, ale możesz zainstalować starszą wersję {1}.",
   "EXTENSION_NO_DESCRIPTION": "Brak opisu",
@@ -1507,5 +1508,15 @@ define({
   "LICENSE_ACTIVATE_FAIL_APPLY": "Nie udało się zastosować licencji na urządzeniu",
   "LICENSE_ENTER_KEY": "Wprowadź klucz licencyjny",
   "LICENSE_REAPPLY_TO_DEVICE": "Już aktywowano? Zastosuj ponownie w całym systemie",
-  "EXTENSION_DEPRECATED_NOT_LOADED": "Rozszerzenie nie zostało załadowane. Jest przestarzałe lub niebezpieczne."
+  "AI_LOGIN_DIALOG_TITLE": "Zaloguj się, aby korzystać z edycji AI",
+  "AI_LOGIN_DIALOG_MESSAGE": "Proszę się zalogować, aby korzystać z edycji AI",
+  "AI_LOGIN_DIALOG_BUTTON": "Uzyskaj dostęp do AI",
+  "AI_DISABLED_DIALOG_TITLE": "AI jest wyłączone",
+  "AI_CONTROL_ALL_ALLOWED_NO_CONFIG": "W systemie nie znaleziono pliku konfiguracyjnego AI. AI jest włączone dla wszystkich użytkowników.",
+  "AI_CONTROL_ALL_ALLOWED": "AI jest włączone dla wszystkich użytkowników.",
+  "AI_CONTROL_USER_ALLOWED": "AI jest włączone dla użytkownika ({0}), ale wyłączone dla pozostałych.",
+  "AI_CONTROL_ADMIN_DISABLED": "Dostęp do AI został wyłączony przez administratora systemu.",
+  "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Dostęp do AI został wyłączony przez administratora systemu. Prosimy o kontakt z {0} w celu uzyskania pomocy.",
+  "AI_UPSELL_DIALOG_TITLE": "Kontynuować z {0}?",
+  "AI_UPSELL_DIALOG_MESSAGE": "Odkryłeś edycje wspomagane przez AI. Aby kontynuować, potrzebujesz subskrypcji AI lub kredytów."
 });

@@ -684,6 +684,7 @@ define({
   "EXTENSION_INCOMPATIBLE_NEWER": "この拡張機能には新しいバージョンの {APP_NAME} が必要です。",
   "EXTENSION_INCOMPATIBLE_OLDER": "この拡張機能は現在、古いバージョンの {APP_NAME} でしか動作しません。",
   "EXTENSION_DEFAULT_FEATURE_PRESENT": "この拡張機能は必要ない可能性があります。{APP_NAME}には既にこの機能が備わっています。",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "エクステンションは非推奨、または安全ではないため読み込まれませんでした。",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "この拡張機能のバージョン {0} には {APP_NAME} の新しいバージョンが必要です。ただし、以前のバージョン {1} をインストールすることができます。",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "この拡張機能のバージョン {0} は {APP_NAME} の古いバージョンでのみ動作します。ただし、以前のバージョン {1} をインストールすることができます。",
   "EXTENSION_NO_DESCRIPTION": "説明なし",
@@ -1507,5 +1508,15 @@ define({
   "LICENSE_ACTIVATE_FAIL_APPLY": "デバイスへのライセンスの適用に失敗しました",
   "LICENSE_ENTER_KEY": "ライセンスキーを入力してください",
   "LICENSE_REAPPLY_TO_DEVICE": "すでにアクティベート済みの場合、システム全体に再適用",
-  "EXTENSION_DEPRECATED_NOT_LOADED": "エクステンションは非推奨、または安全ではないため読み込まれませんでした。"
+  "AI_LOGIN_DIALOG_TITLE": "AI編集機能を利用するためにサインイン",
+  "AI_LOGIN_DIALOG_MESSAGE": "AIを活用した編集機能をご利用いただくには、ログインしてください。",
+  "AI_LOGIN_DIALOG_BUTTON": "AI機能の利用を開始",
+  "AI_DISABLED_DIALOG_TITLE": "AIが無効になっています",
+  "AI_CONTROL_ALL_ALLOWED_NO_CONFIG": "システムにAI設定ファイルが見つかりません。AIはすべてのユーザーに対して有効です。",
+  "AI_CONTROL_ALL_ALLOWED": "AIはすべてのユーザーに対して有効です。",
+  "AI_CONTROL_USER_ALLOWED": "AIはユーザー({0})には有効ですが、他のユーザーには無効です。",
+  "AI_CONTROL_ADMIN_DISABLED": "AIアクセスはシステム管理者によって無効にされています。",
+  "AI_CONTROL_ADMIN_DISABLED_CONTACT": "AIアクセスはシステム管理者によって無効にされています。サポートが必要な場合は、{0}にお問い合わせください。",
+  "AI_UPSELL_DIALOG_TITLE": "{0}を続行しますか？",
+  "AI_UPSELL_DIALOG_MESSAGE": "ＡＩを活用した編集機能です。ご利用には、ＡＩサブスクリプションまたはクレジットが必要です。"
 });

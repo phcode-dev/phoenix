@@ -684,6 +684,7 @@ define({
   "EXTENSION_INCOMPATIBLE_NEWER": "Esta extensión necesita una versión más actualizada de {APP_NAME}.",
   "EXTENSION_INCOMPATIBLE_OLDER": "En estos momentos esta extensión sólo funciona con versiones anteriores de {APP_NAME}.",
   "EXTENSION_DEFAULT_FEATURE_PRESENT": "Puede que no necesite esta extensión. {APP_NAME} ya cuenta con esta función.",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "Extensión no cargada. Está obsoleta o es insegura.",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "La versión {0} de esta extensión necesita una versión superior de {APP_NAME}. Puedes instalar la versión anterior {1}.",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "La versión {0} de esta extensión sólo funciona con versiones anteriores de {APP_NAME}. Puedes instalar la versión anterior {1}.",
   "EXTENSION_NO_DESCRIPTION": "Sin descripción",
@@ -1507,5 +1508,15 @@ define({
   "LICENSE_ACTIVATE_FAIL_APPLY": "Error al aplicar la licencia al dispositivo",
   "LICENSE_ENTER_KEY": "Introduzca una clave de licencia",
   "LICENSE_REAPPLY_TO_DEVICE": "¿Ya está activado? Reaplicar en todo el sistema",
-  "EXTENSION_DEPRECATED_NOT_LOADED": "Extensión no cargada. Está obsoleta o es insegura."
+  "AI_LOGIN_DIALOG_TITLE": "Iniciar sesión para usar las ediciones con IA",
+  "AI_LOGIN_DIALOG_MESSAGE": "Por favor, inicia sesión para usar las ediciones con IA",
+  "AI_LOGIN_DIALOG_BUTTON": "Obtener acceso a la IA",
+  "AI_DISABLED_DIALOG_TITLE": "La IA está desactivada",
+  "AI_CONTROL_ALL_ALLOWED_NO_CONFIG": "No se ha encontrado ningún archivo de configuración de la IA en el sistema. La IA está activada para todos los usuarios.",
+  "AI_CONTROL_ALL_ALLOWED": "La IA está activada para todos los usuarios.",
+  "AI_CONTROL_USER_ALLOWED": "La IA está activada para el usuario ({0}), pero desactivada para los demás.",
+  "AI_CONTROL_ADMIN_DISABLED": "El acceso a la IA ha sido desactivado por el administrador del sistema.",
+  "AI_CONTROL_ADMIN_DISABLED_CONTACT": "El acceso a la IA ha sido desactivado por el administrador del sistema. Póngase en contacto con {0} para obtener ayuda.",
+  "AI_UPSELL_DIALOG_TITLE": "¿Continuar con {0}?",
+  "AI_UPSELL_DIALOG_MESSAGE": "Has descubierto las ediciones con IA. Para continuar, necesitarás una suscripción de IA o créditos."
 });

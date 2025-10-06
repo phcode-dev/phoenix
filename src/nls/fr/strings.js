@@ -684,6 +684,7 @@ define({
   "EXTENSION_INCOMPATIBLE_NEWER": "Cette extension nécessite une version plus récente de l’application {APP_NAME}.",
   "EXTENSION_INCOMPATIBLE_OLDER": "Cette extension n’est actuellement compatible qu’avec les versions antérieures de l’application {APP_NAME}.",
   "EXTENSION_DEFAULT_FEATURE_PRESENT": "Vous n'avez peut-être pas besoin de cette extension. {APP_NAME} possède déjà cette fonctionnalité.",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "Extension non chargée. Elle est soit obsolète, soit non sécurisée.",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "La version {0} de cette extension nécessite une version plus récente de {APP_NAME}. Mais vous pouvez installer la version antérieure {1}.",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "La version {0} de cette extension n’est compatible qu’avec les anciennes versions de {APP_NAME}. Mais vous pouvez installer la version antérieure {1}.",
   "EXTENSION_NO_DESCRIPTION": "Aucune description",
@@ -1507,5 +1508,15 @@ define({
   "LICENSE_ACTIVATE_FAIL_APPLY": "Échec de l'application de la licence à l'appareil",
   "LICENSE_ENTER_KEY": "Veuillez saisir une clé de licence",
   "LICENSE_REAPPLY_TO_DEVICE": "Déjà activée ? Réappliquer à l'échelle du système",
-  "EXTENSION_DEPRECATED_NOT_LOADED": "Extension non chargée. Elle est soit obsolète, soit non sécurisée."
+  "AI_LOGIN_DIALOG_TITLE": "Connectez-vous pour utiliser les modifications IA",
+  "AI_LOGIN_DIALOG_MESSAGE": "Veuillez vous connecter pour utiliser les modifications assistées par IA",
+  "AI_LOGIN_DIALOG_BUTTON": "Accéder à l'IA",
+  "AI_DISABLED_DIALOG_TITLE": "L'IA est désactivée",
+  "AI_CONTROL_ALL_ALLOWED_NO_CONFIG": "Aucun fichier de configuration IA trouvé dans le système. L'IA est activée pour tous les utilisateurs.",
+  "AI_CONTROL_ALL_ALLOWED": "L'IA est activée pour tous les utilisateurs.",
+  "AI_CONTROL_USER_ALLOWED": "L'IA est activée pour l'utilisateur ({0}) mais désactivée pour les autres",
+  "AI_CONTROL_ADMIN_DISABLED": "L'accès à l'IA a été désactivé par votre administrateur système",
+  "AI_CONTROL_ADMIN_DISABLED_CONTACT": "L'accès à l'IA a été désactivé par votre administrateur système. Veuillez contacter {0} pour obtenir de l'aide.",
+  "AI_UPSELL_DIALOG_TITLE": "Continuer avec {0} ?",
+  "AI_UPSELL_DIALOG_MESSAGE": "Vous avez découvert les modifications assistées par l'IA. Pour continuer, vous aurez besoin d'un abonnement IA ou de crédits."
 });

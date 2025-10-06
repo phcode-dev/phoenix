@@ -684,6 +684,7 @@ define({
   "EXTENSION_INCOMPATIBLE_NEWER": "Ова екстензија захтева новиу верзију {APP_NAME}-а.",
   "EXTENSION_INCOMPATIBLE_OLDER": "Ова екстензија тренутно ради само у старијим верзијама {APP_NAME}-а.",
   "EXTENSION_DEFAULT_FEATURE_PRESENT": "Можда вам ово проширење није потребно. {APP_NAME} већ има ову функцију.",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "Екстензија није учитана. Или је застарела или небезбедна.",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "Верзија {0} ове екстензије захтева новију верзију апликације {APP_NAME}. Али можете инсталирати ранију верзију {1}.",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "Верзија {0} ове екстензије ради искључиво са старијим верзијама апликације {APP_NAME}. Али можете инсталирати ранију верзију {1}.",
   "EXTENSION_NO_DESCRIPTION": "Не постоји опис",
@@ -1507,5 +1508,15 @@ define({
   "LICENSE_ACTIVATE_FAIL_APPLY": "Примена лиценце на уређај није успела.",
   "LICENSE_ENTER_KEY": "Унесите кључ лиценце",
   "LICENSE_REAPPLY_TO_DEVICE": "Већ активирано? Поново примени на нивоу система",
-  "EXTENSION_DEPRECATED_NOT_LOADED": "Екстензија није учитана. Или је застарела или небезбедна."
+  "AI_LOGIN_DIALOG_TITLE": "Пријавите се да бисте користили AI измене",
+  "AI_LOGIN_DIALOG_MESSAGE": "Молимо вас, пријавите се да бисте користили измене помоћу вештачке интелигенције",
+  "AI_LOGIN_DIALOG_BUTTON": "Приступите AI",
+  "AI_DISABLED_DIALOG_TITLE": "AI је онемогућена",
+  "AI_CONTROL_ALL_ALLOWED_NO_CONFIG": "У систему није пронађена AI конфигурациона датотека. AI је омогућена за све кориснике.",
+  "AI_CONTROL_ALL_ALLOWED": "AI је омогућена за све кориснике.",
+  "AI_CONTROL_USER_ALLOWED": "AI је омогућена за корисника ({0}), али је онемогућена за остале",
+  "AI_CONTROL_ADMIN_DISABLED": "Приступ AI је онемогућио администратор система",
+  "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Приступ AI је онемогућио администратор система. Молимо вас, контактирајте {0} за помоћ.",
+  "AI_UPSELL_DIALOG_TITLE": "Наставити са {0}?",
+  "AI_UPSELL_DIALOG_MESSAGE": "Открили сте измене које покреће вештачка интелигенција. Да бисте наставили, потребна вам је AI претплата или кредити."
 });
