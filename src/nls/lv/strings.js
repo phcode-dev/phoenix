@@ -1518,5 +1518,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED": "MI piekļuvi ir atspējojis jūsu sistēmas administrators",
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "MI piekļuvi ir atspējojis jūsu sistēmas administrators. Lūdzu, sazinieties ar {0}, lai saņemtu palīdzību.",
   "AI_UPSELL_DIALOG_TITLE": "Turpināt ar {0}?",
-  "AI_UPSELL_DIALOG_MESSAGE": "Jūs atklājāt ar MI darbinātus labojumus. Lai turpinātu, jums būs nepieciešams MI abonements vai kredīti."
+  "AI_UPSELL_DIALOG_MESSAGE": "Jūs atklājāt {0}. Lai turpinātu, jums būs nepieciešams MI abonements vai kredīti."
 });

@@ -1518,5 +1518,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED": "AIアクセスはシステム管理者によって無効にされています。",
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "AIアクセスはシステム管理者によって無効にされています。サポートが必要な場合は、{0}にお問い合わせください。",
   "AI_UPSELL_DIALOG_TITLE": "{0}を続行しますか？",
-  "AI_UPSELL_DIALOG_MESSAGE": "ＡＩを活用した編集機能です。ご利用には、ＡＩサブスクリプションまたはクレジットが必要です。"
+  "AI_UPSELL_DIALOG_MESSAGE": "「{0}」をご利用になるには、AIサブスクリプションまたはクレジットが必要です。"
 });

@@ -224,7 +224,8 @@ define(function (require, exports, module) {
         }
         const defaultAIBrandName = brackets.config.ai_brand_name,
             defaultPurchaseURL = brackets.config.purchase_url,
-            defaultUpsellTitle = StringUtils.format(Strings.AI_UPSELL_DIALOG_TITLE, defaultAIBrandName);
+            defaultUpsellTitle = StringUtils.format(Strings.AI_UPSELL_DIALOG_TITLE, defaultAIBrandName),
+            defaultUpsellMessage = StringUtils.format(Strings.AI_UPSELL_DIALOG_MESSAGE, defaultAIBrandName);
         const entitlements = await _getEffectiveEntitlements();
         if(!entitlements || !entitlements.entitlements || !entitlements.entitlements.aiAgent) {
             return {
@@ -234,7 +235,7 @@ define(function (require, exports, module) {
                 upgradeToPlan: defaultAIBrandName,
                 upsellDialog: {
                     title: defaultUpsellTitle,
-                    message: Strings.AI_UPSELL_DIALOG_MESSAGE,
+                    message: defaultUpsellMessage,
                     buyURL: defaultPurchaseURL
                 }
             };
@@ -266,6 +267,8 @@ define(function (require, exports, module) {
 
         const upsellTitle = StringUtils.format(Strings.AI_UPSELL_DIALOG_TITLE,
             aiEntitlement.aiBrandName || defaultAIBrandName);
+        const upsellMessage = StringUtils.format(Strings.AI_UPSELL_DIALOG_MESSAGE,
+            aiEntitlement.aiBrandName || defaultAIBrandName);
         const upsellDialog = aiEntitlement.upsellDialog || {};
         return {
             activated: false,
@@ -275,7 +278,7 @@ define(function (require, exports, module) {
             validTill: aiEntitlement.validTill,
             upsellDialog: {
                 title: upsellDialog.title || upsellTitle,
-                message: upsellDialog.message || Strings.AI_UPSELL_DIALOG_MESSAGE,
+                message: upsellDialog.message || upsellMessage,
                 buyURL: upsellDialog.buyURL || aiEntitlement.subscribeURL || defaultPurchaseURL
             }
         };

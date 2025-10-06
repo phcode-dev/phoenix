@@ -1518,5 +1518,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED": "시스템 관리자에 의해 AI 액세스가 비활성화되었습니다.",
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "시스템 관리자에 의해 AI 액세스가 비활성화되었습니다. 도움이 필요하시면 {0}에게 문의하세요.",
   "AI_UPSELL_DIALOG_TITLE": "{0}(으)로 계속하시겠습니까?",
-  "AI_UPSELL_DIALOG_MESSAGE": "AI 기반 편집 기능을 발견하셨군요. 계속 진행하시려면 AI 구독 또는 크레딧이 필요합니다."
+  "AI_UPSELL_DIALOG_MESSAGE": "{0} 기능을 발견하셨습니다. 계속 진행하려면 AI 구독 또는 크레딧이 필요합니다."
 });

@@ -1518,5 +1518,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED": "Přístup k AI byl zakázán správcem systému.",
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Přístup k AI byl zakázán správcem systému. Pro pomoc prosím kontaktujte {0}.",
   "AI_UPSELL_DIALOG_TITLE": "Pokračovat s {0}?",
-  "AI_UPSELL_DIALOG_MESSAGE": "Objevili jste úpravy s podporou AI. Chcete-li pokračovat, budete potřebovat předplatné AI nebo kredity."
+  "AI_UPSELL_DIALOG_MESSAGE": "Objevili jste {0}. Chcete-li pokračovat, budete potřebovat předplatné AI nebo kredity."
 });

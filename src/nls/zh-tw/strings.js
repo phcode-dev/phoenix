@@ -1518,5 +1518,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED": "您的系統管理員已停用 AI 存取權限。",
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "您的系統管理員已停用 AI 存取權限。如需協助，請聯絡 {0}。",
   "AI_UPSELL_DIALOG_TITLE": "要繼續使用 {0} 嗎？",
-  "AI_UPSELL_DIALOG_MESSAGE": "您已發現 AI 輔助編輯功能。若要繼續，您需要 AI 訂閱方案或點數。"
+  "AI_UPSELL_DIALOG_MESSAGE": "您已發現 {0}。您需要 AI 訂閱或點數才能繼續。"
 });

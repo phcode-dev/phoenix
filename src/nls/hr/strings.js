@@ -1518,5 +1518,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED": "Pristup AI-ju onemogućio je vaš administrator sustava.",
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Pristup AI-ju onemogućio je vaš administrator sustava. Molimo kontaktirajte {0} za pomoć.",
   "AI_UPSELL_DIALOG_TITLE": "Nastaviti s {0}?",
-  "AI_UPSELL_DIALOG_MESSAGE": "Otkrili ste uređivanja pomoću umjetne inteligencije. Za nastavak vam je potrebna pretplata za AI ili krediti."
+  "AI_UPSELL_DIALOG_MESSAGE": "Otkrili ste {0}. Da biste nastavili, potrebna vam je AI pretplata ili krediti."
 });

@@ -1518,5 +1518,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED": "A MI-hozzáférést a rendszergazda letiltotta.",
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "A MI-hozzáférést a rendszergazda letiltotta. Segítségért forduljon a(z) {0} elérhetőséghez.",
   "AI_UPSELL_DIALOG_TITLE": "Folytatja a(z) {0} használatával?",
-  "AI_UPSELL_DIALOG_MESSAGE": "Felfedezted az MI-alapú szerkesztéseket. A folytatáshoz MI-előfizetésre vagy kreditekre lesz szükséged."
+  "AI_UPSELL_DIALOG_MESSAGE": "Felfedezte a(z) {0} szolgáltatást. A folytatáshoz MI-előfizetésre vagy kreditekre lesz szüksége."
 });

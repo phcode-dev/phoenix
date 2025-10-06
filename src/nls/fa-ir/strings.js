@@ -684,6 +684,7 @@ define({
   "EXTENSION_INCOMPATIBLE_NEWER": "این افزونه نیاز به نسخه جدیدی از {APP_NAME} دارد.",
   "EXTENSION_INCOMPATIBLE_OLDER": " نسخه فعلی این افزونه فقط با نسخه های قبلی {APP_NAME} سازگار است.",
   "EXTENSION_DEFAULT_FEATURE_PRESENT": "ممکن است به این افزونه نیازی نداشته باشید. {APP_NAME} از قبل این ویژگی را دارد.",
+  "EXTENSION_DEPRECATED_NOT_LOADED": "افزونه بارگیری نشد. این افزونه یا منسوخ شده یا ناامن است.",
   "EXTENSION_LATEST_INCOMPATIBLE_NEWER": "نسخه {0} از این افزونه نیازمند نسخه جدیدی از {APP_NAME} می باشد. ولی شما می توانید یک نسخه پایین تر از {1} را نصب کنید.",
   "EXTENSION_LATEST_INCOMPATIBLE_OLDER": "نسخه {0} از این افزونه فقط با نسخه قدیمی از {APP_NAME} کار می کند. اما شما به راحتی می توانید نصب کنید نسخه {1} را ",
   "EXTENSION_NO_DESCRIPTION": "بدون شرح",
@@ -1507,7 +1508,6 @@ define({
   "LICENSE_ACTIVATE_FAIL_APPLY": "اعمال لایسنس روی دستگاه ناموفق بود",
   "LICENSE_ENTER_KEY": "لطفاً کلید لایسنس را وارد کنید",
   "LICENSE_REAPPLY_TO_DEVICE": "قبلاً فعال‌سازی کرده‌اید؟ اعمال مجدد برای کل سیستم",
-  "EXTENSION_DEPRECATED_NOT_LOADED": "افزونه بارگیری نشد. این افزونه یا منسوخ شده یا ناامن است.",
   "AI_LOGIN_DIALOG_TITLE": "برای استفاده از ویرایش‌های هوش مصنوعی وارد شوید",
   "AI_LOGIN_DIALOG_MESSAGE": "لطفاً برای استفاده از ویرایش‌های مبتنی بر هوش مصنوعی وارد شوید",
   "AI_LOGIN_DIALOG_BUTTON": "دریافت دسترسی به هوش مصنوعی",
@@ -1518,5 +1518,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED": "دسترسی به هوش مصنوعی توسط مدیر سیستم شما غیرفعال شده است",
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "دسترسی به هوش مصنوعی توسط مدیر سیستم شما غیرفعال شده است. لطفاً برای راهنمایی با {0} تماس بگیرید.",
   "AI_UPSELL_DIALOG_TITLE": "ادامه با {0}؟",
-  "AI_UPSELL_DIALOG_MESSAGE": "شما ویرایش‌های مبتنی بر هوش مصنوعی را کشف کرده‌اید. برای ادامه، به اشتراک هوش مصنوعی یا اعتبار نیاز دارید."
+  "AI_UPSELL_DIALOG_MESSAGE": "شما قابلیت {0} را کشف کرده‌اید. برای ادامه، به اشتراک AI یا اعتبار نیاز دارید."
 });

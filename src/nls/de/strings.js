@@ -1518,5 +1518,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED": "Der KI-Zugriff wurde von Ihrem Systemadministrator deaktiviert.",
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Der KI-Zugriff wurde von Ihrem Systemadministrator deaktiviert. Bitte kontaktieren Sie {0} für Unterstützung.",
   "AI_UPSELL_DIALOG_TITLE": "Mit {0} fortfahren?",
-  "AI_UPSELL_DIALOG_MESSAGE": "Sie haben KI-gestützte Bearbeitungen entdeckt. Um fortzufahren, benötigen Sie ein KI-Abonnement oder Guthaben."
+  "AI_UPSELL_DIALOG_MESSAGE": "Sie haben {0} entdeckt. Um fortzufahren, benötigen Sie ein KI-Abonnement oder Guthaben."
 });

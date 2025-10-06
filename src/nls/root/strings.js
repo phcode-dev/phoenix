@@ -1727,5 +1727,5 @@ define({
     "AI_CONTROL_ADMIN_DISABLED": "AI access has been disabled by your system administrator",
     "AI_CONTROL_ADMIN_DISABLED_CONTACT": "AI access has been disabled by your system administrator. Please contact {0} for assistance.",
     "AI_UPSELL_DIALOG_TITLE": "Continue with {0}?",
-    "AI_UPSELL_DIALOG_MESSAGE": "You’ve discovered AI-powered edits. To proceed, you’ll need an AI subscription or credits."
+    "AI_UPSELL_DIALOG_MESSAGE": "You’ve discovered {0}. To proceed, you’ll need an AI subscription or credits."
 });

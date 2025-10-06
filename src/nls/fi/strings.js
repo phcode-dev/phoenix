@@ -1518,5 +1518,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED": "Järjestelmänvalvoja on poistanut tekoälyn käytöstä.",
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Järjestelmänvalvoja on poistanut tekoälyn käytöstä. Ota yhteyttä {0} saadaksesi apua.",
   "AI_UPSELL_DIALOG_TITLE": "Jatketaanko {0}:n kanssa?",
-  "AI_UPSELL_DIALOG_MESSAGE": "Olet löytänyt tekoälyavusteiset muokkaukset. Jatkaaksesi tarvitset tekoälytilauksen tai krediittejä."
+  "AI_UPSELL_DIALOG_MESSAGE": "Olet löytänyt ominaisuuden {0}. Jatkaaksesi tarvitset tekoälytilauksen tai krediittejä."
 });
