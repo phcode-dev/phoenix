@@ -21,6 +21,8 @@
   "AI_LOGIN_DIALOG_BUTTON": "Get AI Access",
   "AI_LOGIN_DIALOG_MESSAGE": "Please log in to use AI-powered edits",
   "AI_LOGIN_DIALOG_TITLE": "Sign In to Use AI Edits",
+  "AI_UPSELL_DIALOG_MESSAGE": "You’ve discovered AI-powered edits. To proceed, you’ll need an AI subscription or credits.",
+  "AI_UPSELL_DIALOG_TITLE": "Continue with {0}?",
   "ALWAYS_OVERWRITE": "Always Overwrite",
   "AMEND_COMMIT": "Amend last commit",
   "AMEND_COMMIT_FORBIDDEN": "Cannot amend commit when there are no unpushed commits",
