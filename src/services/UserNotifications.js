@@ -123,11 +123,11 @@ define(function (require, exports, module) {
      * @param {string} notificationID - The notification ID that was dismissed
      */
     async function handleNotificationDismiss(notificationID) {
-        // Call server API to acknowledge (don't wait for success)
-        await acknowledgeNotificationToServer(notificationID);
-
         // Always mark as shown locally to prevent re-showing, even if API fails
         markNotificationAsShown(notificationID);
+
+        // Call server API to acknowledge
+        return acknowledgeNotificationToServer(notificationID);
     }
 
     /**
