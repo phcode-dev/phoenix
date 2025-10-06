@@ -32,6 +32,7 @@ define(function (require, exports, module) {
 
     const EventDispatcher = require("utils/EventDispatcher"),
         AIControl = require("./ai-control"),
+        UserNotifications = require("./UserNotifications"),
         Strings = require("strings"),
         StringUtils = require("utils/StringUtils");
 
@@ -131,6 +132,36 @@ define(function (require, exports, module) {
      */
     async function getRawEntitlements() {
         return await LoginService.getEntitlements();
+    }
+
+    /**
+     * Get notifications array from entitlements. Uses cached entitlements when available.
+     * Notifications are used to display in-app promotional messages, alerts, or announcements to users.
+     *
+     * @returns {Promise<Array>} Array of notification objects, empty array if no notifications available
+     *
+     * @description Each notification object has the following structure:
+     * ```javascript
+     * {
+     *   notificationID: string,      // Unique UUID to track if notification was shown
+     *   title: string,               // Notification title
+     *   htmlContent: string,         // HTML content of the notification message
+     *   validTill: number,           // Timestamp when notification expires
+     *   options: {
+     *     autoCloseTimeS: number,    // Optional: Time in seconds for auto-close. Default: never
+     *     dismissOnClick: boolean,   // Optional: Close on click. Default: true
+     *     toastStyle: string         // Optional: Style class (NOTIFICATION_STYLES_CSS_CLASS.INFO, etc.)
+     *   }
+     * }
+     * ```
+     */
+    async function getNotifications() {
+        const entitlements = await _getEffectiveEntitlements();
+
+        if (entitlements && entitlements.notifications) {
+            return entitlements.notifications;
+        }
+        return [];
     }
 
     /**
@@ -297,6 +328,7 @@ define(function (require, exports, module) {
             EntitlementsManager.trigger(EVENT_ENTITLEMENTS_CHANGED);
         });
         AIControl.init();
+        UserNotifications.init();
     }
 
     // Test-only exports for integration testing
@@ -308,6 +340,7 @@ define(function (require, exports, module) {
             isInProTrial,
             getTrialRemainingDays,
             getRawEntitlements,
+            getNotifications,
             getLiveEditEntitlement,
             loginToAccount
         };
@@ -323,6 +356,7 @@ define(function (require, exports, module) {
     EntitlementsManager.isInProTrial = isInProTrial;
     EntitlementsManager.getTrialRemainingDays = getTrialRemainingDays;
     EntitlementsManager.getRawEntitlements = getRawEntitlements;
+    EntitlementsManager.getNotifications = getNotifications;
     EntitlementsManager.getLiveEditEntitlement = getLiveEditEntitlement;
     EntitlementsManager.getAIEntitlement = getAIEntitlement;
     EntitlementsManager.EVENT_ENTITLEMENTS_CHANGED = EVENT_ENTITLEMENTS_CHANGED;
