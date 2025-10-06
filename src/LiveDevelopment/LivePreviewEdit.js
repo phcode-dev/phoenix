@@ -36,7 +36,7 @@ define(function (require, exports, module) {
     const KernalModeTrust = window.KernalModeTrust;
     if(!KernalModeTrust){
         // integrated extensions will have access to kernal mode, but not external extensions
-        throw new Error("profile menu should have access to KernalModeTrust. Cannot boot without trust ring");
+        throw new Error("LivePreviewEdit.js should have access to KernalModeTrust. Cannot boot without trust ring");
     }
 
     /**
