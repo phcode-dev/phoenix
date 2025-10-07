@@ -35,6 +35,8 @@ define(function (require, exports, module) {
     const Dialogs = require("widgets/Dialogs");
     const StateManager = require("preferences/StateManager");
     const ProDialogs = require("services/pro-dialogs");
+    const Mustache = require("thirdparty/mustache/mustache");
+    const Strings = require("strings");
     const ImageFolderDialogTemplate = require("text!htmlContent/image-folder-dialog.html");
 
     // state manager key, to save the download location of the image
@@ -1022,7 +1024,10 @@ define(function (require, exports, module) {
 
         // show the dialog with a text box to select a folder
         // dialog html is written in 'image-folder-dialog.html'
-        const dialog = Dialogs.showModalDialogUsingTemplate(ImageFolderDialogTemplate, false);
+        const templateVars = {
+            Strings: Strings
+        };
+        const dialog = Dialogs.showModalDialogUsingTemplate(Mustache.render(ImageFolderDialogTemplate, templateVars), false);
         const $dlg = dialog.getElement();
         const $input = $dlg.find("#folder-path-input");
         const $suggestions = $dlg.find("#folder-suggestions");
