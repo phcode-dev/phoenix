@@ -1012,24 +1012,13 @@ define(function (require, exports, module) {
     }
 
     /**
-     * This function is called when 'use this image' button is clicked in the image ribbon gallery
-     * or user loads an image file from the computer
-     * this is responsible to download the image in the appropriate place
-     * and also change the src attribute of the element (by calling appropriate helper functions)
-     *
-     * @param {Object} message - the message object which stores all the required data for this operation
+     * this shows the folder selection dialog for choosing where to download images
+     * @param {Object} message - the message object (optional, only needed when downloading image)
+     * @private
      */
-    function _handleUseThisImage(message) {
+    function _showFolderSelectionDialog(message) {
         const projectRoot = ProjectManager.getProjectRoot();
         if (!projectRoot) { return; }
-
-        // check if user has already saved a folder preference for this project
-        const savedFolder = StateManager.get(IMAGE_DOWNLOAD_FOLDER_KEY, StateManager.PROJECT_CONTEXT);
-        // we specifically check for nullish type vals because empty string is possible as it means project root
-        if (savedFolder !== null && savedFolder !== undefined) {
-            _downloadToFolder(message, savedFolder);
-            return;
-        }
 
         // show the dialog with a text box to select a folder
         // dialog html is written in 'image-folder-dialog.html'
@@ -1069,10 +1058,36 @@ define(function (require, exports, module) {
                     StateManager.set(IMAGE_DOWNLOAD_FOLDER_KEY, folderPath, StateManager.PROJECT_CONTEXT);
                 }
 
-                _downloadToFolder(message, folderPath);
+                // if message is provided, download the image
+                if (message) {
+                    _downloadToFolder(message, folderPath);
+                }
             }
             dialog.close();
         });
+    }
+
+    /**
+     * This function is called when 'use this image' button is clicked in the image ribbon gallery
+     * or user loads an image file from the computer
+     * this is responsible to download the image in the appropriate place
+     * and also change the src attribute of the element (by calling appropriate helper functions)
+     *
+     * @param {Object} message - the message object which stores all the required data for this operation
+     */
+    function _handleUseThisImage(message) {
+        const projectRoot = ProjectManager.getProjectRoot();
+        if (!projectRoot) { return; }
+
+        // check if user has already saved a folder preference for this project
+        const savedFolder = StateManager.get(IMAGE_DOWNLOAD_FOLDER_KEY, StateManager.PROJECT_CONTEXT);
+        // we specifically check for nullish type vals because empty string is possible as it means project root
+        if (savedFolder !== null && savedFolder !== undefined) {
+            _downloadToFolder(message, savedFolder);
+        } else {
+            // show the folder selection dialog
+            _showFolderSelectionDialog(message);
+        }
     }
 
     /**
@@ -1094,6 +1109,19 @@ define(function (require, exports, module) {
         }).catch(error => {
             console.error('Something went wrong when trying to use this image', error);
         });
+    }
+
+    /**
+     * Handles reset of image folder selection - clears the saved preference and shows the dialog
+     * @private
+     */
+    function _handleResetImageFolderSelection() {
+        // clear the saved folder preference for this project
+        StateManager.set(IMAGE_DOWNLOAD_FOLDER_KEY, null, StateManager.PROJECT_CONTEXT);
+
+        // show the folder selection dialog for the user to choose a new folder
+        // we pass null because we're not downloading an image, just setting the preference
+        _showFolderSelectionDialog(null);
     }
 
     /**
@@ -1120,6 +1148,12 @@ define(function (require, exports, module) {
     * these are the main properties that are passed through the message
      */
     function handleLivePreviewEditOperation(message) {
+        // handle reset image folder selection
+        if (message.resetImageFolderSelection) {
+            _handleResetImageFolderSelection();
+            return;
+        }
+
         // handle move(drag & drop)
         if (message.move && message.sourceId && message.targetId) {
             _moveElementInSource(message.sourceId, message.targetId, message.insertAfter, message.insertInside);
