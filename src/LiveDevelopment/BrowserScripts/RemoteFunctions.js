@@ -2491,7 +2491,7 @@ function RemoteFunctions(config = {}) {
                                 </div>
                             </div>
                             <div class="phoenix-ribbon-header-right">
-                                <button class="phoenix-ribbon-folder-settings" title="Select image download folder">
+                                <button class="phoenix-ribbon-folder-settings" title="${config.strings.imageGallerySelectDownloadFolder}">
                                     ${ICONS.folderSettings}
                                 </button>
                                 <button class="phoenix-ribbon-close">×</button>
@@ -2500,7 +2500,7 @@ function RemoteFunctions(config = {}) {
                         <div class="phoenix-ribbon-nav left">&#8249;</div>
                         <div class="phoenix-ribbon-strip">
                             <div class="phoenix-ribbon-row phoenix-ribbon-loading">
-                                Loading images...
+                                ${config.strings.imageGalleryLoadingInitial}
                             </div>
                         </div>
                         <div class="phoenix-ribbon-nav right">&#8250;</div>

@@ -1,12 +1,12 @@
 <div class="image-folder-dialog template modal">
     <div class="modal-header">
-        <h1 class="dialog-title">Select Folder to Save Image</h1>
+        <h1 class="dialog-title">{{Strings.LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE}}</h1>
     </div>
     <div class="modal-body">
-        <p>Choose where to download the image:</p>
+        <p>{{Strings.LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION}}</p>
         <input type="text"
                id="folder-path-input"
-               placeholder="Type folder path (e.g., assets/images/)"
+               placeholder="{{Strings.LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER}}"
                value=""
                autocomplete="off"
                spellcheck="false">
@@ -15,18 +15,18 @@
         <div id="folder-suggestions"></div>
 
         <p class="folder-help-text">
-            💡 Type folder path or leave empty to download in project root
+            {{Strings.LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP}}
         </p>
 
         <div class="remember-folder-container">
             <label>
                 <input type="checkbox" id="remember-folder-checkbox" checked>
-                <span>Don't ask again for this project</span>
+                <span>{{Strings.LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER}}</span>
             </label>
         </div>
     </div>
     <div class="modal-footer">
-        <button class="dialog-button btn" data-button-id="cancel">Cancel</button>
-        <button class="dialog-button btn primary" data-button-id="ok">OK</button>
+        <button class="dialog-button btn" data-button-id="cancel">{{Strings.CANCEL}}</button>
+        <button class="dialog-button btn primary" data-button-id="ok">{{Strings.OK}}</button>
     </div>
 </div>
