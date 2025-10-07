@@ -99,9 +99,7 @@ function _getAccountBaseURL() {
 For testing with a local account server instance:
 
 1. **Configure Proxy Server:**
-   - Edit `serve-proxy.js`
-   - **Comment out:** `const ACCOUNT_SERVER = 'https://account.phcode.dev'; // Production`
-   - **Uncomment:** `const ACCOUNT_SERVER = 'http://localhost:5000'; // Local development`
+   - use `npm run serveLocalAccount` to serve phoenix repo server, instead of using npm run serve command.
 
 2. **Setup Local Account Server:**
    - Start your local account development stack on `localhost:5000`
