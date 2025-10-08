@@ -80,7 +80,17 @@ define(function (require, exports, module) {
      * For desktop apps, this directly uses the configured account URL
      */
     function getAccountBaseURL() {
+        if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+            return '/proxy/accounts';
+        }
         return Phoenix.config.account_url.replace(/\/$/, ''); // Remove trailing slash
+    }
+
+    /**
+     * Get the account website URL for opening browser tabs
+     */
+    function _getAccountWebURL() {
+        return Phoenix.config.account_url;
     }
 
     const ERR_RETRY_LATER = "retry_later";
@@ -96,7 +106,7 @@ define(function (require, exports, module) {
      * never rejects.
      */
     async function _resolveAPIKey(apiKey, validationCode) {
-        const resolveURL = `${Phoenix.config.account_url}resolveAppSessionID?appSessionID=${apiKey}&validationCode=${validationCode}`;
+        const resolveURL = `${getAccountBaseURL()}/resolveAppSessionID?appSessionID=${apiKey}&validationCode=${validationCode}`;
         if (!navigator.onLine) {
             return {err: ERR_RETRY_LATER};
         }
@@ -196,7 +206,7 @@ define(function (require, exports, module) {
         const authPortURL = _getAutoAuthPortURL();
         const platformStr = PLATFORM_STRINGS[Phoenix.platform] || Phoenix.platform;
         const appName = encodeURIComponent(`${Strings.APP_NAME} Desktop on ${platformStr}`);
-        const resolveURL = `${Phoenix.config.account_url}getAppAuthSession?autoAuthPort=${authPortURL}&appName=${appName}`;
+        const resolveURL = `${getAccountBaseURL()}/getAppAuthSession?autoAuthPort=${authPortURL}&appName=${appName}`;
         // {"isSuccess":true,"appSessionID":"a uuid...","validationCode":"SWXP07"}
         try {
             if(Phoenix.isTestWindow && fetchFn === fetch){
@@ -254,7 +264,7 @@ define(function (require, exports, module) {
         }
         const {appSessionID, validationCode} = appAuthSession;
         await setAutoVerificationCode(validationCode);
-        const appSignInURL = `${Phoenix.config.account_url}authorizeApp?appSessionID=${appSessionID}`;
+        const appSignInURL = `${_getAccountWebURL()}authorizeApp?appSessionID=${appSessionID}`;
 
         // Show dialog with validation code
         const dialogData = {
@@ -350,7 +360,7 @@ define(function (require, exports, module) {
     }
 
     async function signOutAccount() {
-        const resolveURL = `${Phoenix.config.account_url}logoutSession`;
+        const resolveURL = `${getAccountBaseURL()}/logoutSession`;
         try {
             let input = {
                 appSessionID: userProfile.apiKey
@@ -378,7 +388,7 @@ define(function (require, exports, module) {
                     Strings.SIGNED_OUT_FAILED_MESSAGE
                 );
                 dialog.done(() => {
-                    NativeApp.openURLInDefaultBrowser(Phoenix.config.account_url + "#advanced");
+                    NativeApp.openURLInDefaultBrowser(_getAccountWebURL() + "#advanced");
                 });
                 Metrics.countEvent(Metrics.EVENT_TYPE.AUTH, 'logoutFail', Phoenix.platform);
                 return;
@@ -399,7 +409,7 @@ define(function (require, exports, module) {
                 Strings.SIGNED_OUT_FAILED_MESSAGE
             );
             dialog.done(() => {
-                NativeApp.openURLInDefaultBrowser(Phoenix.config.account_url + "#advanced");
+                NativeApp.openURLInDefaultBrowser(_getAccountWebURL() + "#advanced");
             });
             Metrics.countEvent(Metrics.EVENT_TYPE.AUTH, 'getAppAuth', Phoenix.platform);
             logger.reportError(error, "Failed to call logout calling" + resolveURL);

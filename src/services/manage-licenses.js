@@ -44,6 +44,9 @@ define(function (require, exports, module) {
      * Get the API base URL for license operations
      */
     function _getAPIBaseURL() {
+        if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+            return '/proxy/accounts';
+        }
         return Phoenix.config.account_url.replace(/\/$/, ''); // Remove trailing slash
     }
 
