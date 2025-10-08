@@ -329,8 +329,11 @@ const server = http.createServer((req, res) => {
     }
 
     if (!config.silent) {
-        const clientIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-        console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}${config.logIp ? ` (${clientIp})` : ''}`);
+        // Skip logging PWA asset requests to reduce noise. chrome somehoe sends this every second to dev server.
+        if (!parsedUrl.pathname.includes('/assets/pwa/')) {
+            const clientIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+            console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}${config.logIp ? ` (${clientIp})` : ''}`);
+        }
     }
 
     // Handle directory requests without trailing slash
