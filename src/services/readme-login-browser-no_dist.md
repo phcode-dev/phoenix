@@ -100,6 +100,7 @@ For testing with a local account server instance:
 
 1. **Configure Proxy Server:**
    - use `npm run serveLocalAccount` to serve phoenix repo server, instead of using npm run serve command.
+   - use `npm run serveStagingAccount` to use the staging endpoint. To get access to staging server, contact team.
 
 2. **Setup Local Account Server:**
    - Start your local account development stack on `localhost:5000`
@@ -109,10 +110,12 @@ Now just visit login server at `http://localhost:5000` and login. It should work
 at https://localhost:8000/src when you run phoenix code dev server via `npm run serve`. This works without any
 manual cookie copy needed as the dev server sets cookies localhost wide. But if that didnt work, please see
 manual cookie copy instructions below.
+
+For staging server at https://account-stage.phcode.dev , you may need to copy cookie manually like below:
     
 1. **Login and Copy Session:**
-   - Navigate to `http://localhost:5000` in browser
-   - Login with test credentials
+   - Navigate to `http://localhost:5000` in browser. (if staging, use https://account-stage.phcode.dev)
+   - Login with your credentials
    - Copy `session` cookie value from DevTools
 
 2. **Set Cookie in Phoenix App:**
