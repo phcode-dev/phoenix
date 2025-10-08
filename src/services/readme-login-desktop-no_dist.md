@@ -241,9 +241,8 @@ pref.on('change', _verifyLogin);
 
 For testing desktop authentication with a local account server:
 
-1. **Configure Account URL:**
-   - Edit `src/config.json`
-   - Change `account_url` from `https://account.phcode.dev/` to `http://localhost:5000/` (or your local server URL)
+1. **Configure Proxy Server:**
+    - use `npm run serveLocalAccount` to serve phoenix repo server, instead of using npm run serve command.
 
 2. **Rebuild Application:**
    ```bash

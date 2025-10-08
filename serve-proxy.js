@@ -7,8 +7,12 @@ const path = require('path');
 const fs = require('fs');
 const httpProxy = require('http-proxy');
 
+const ACCOUNT_PROD = 'https://account.phcode.dev';
+const ACCOUNT_STAGING = 'https://account-stage.phcode.dev';
+const ACCOUNT_DEV = 'http://localhost:5000';
+
 // Account server configuration - switch between local and production
-let accountServer = 'https://account.phcode.dev'; // Production
+let accountServer = ACCOUNT_PROD; // Production
 // Set to local development server if --localAccount flag is provided
 
 // Default configuration
@@ -24,6 +28,8 @@ let config = {
 // Parse command line arguments
 function parseArgs() {
     const args = process.argv.slice(2);
+    let hasLocalAccount = false;
+    let hasStagingAccount = false;
 
     for (let i = 0; i < args.length; i++) {
         const arg = args[i];
@@ -46,10 +52,20 @@ function parseArgs() {
         } else if (arg === '--log-ip') {
             config.logIp = true;
         } else if (arg === '--localAccount') {
-            accountServer = 'http://localhost:5000';
+            hasLocalAccount = true;
+            accountServer = ACCOUNT_DEV;
+        } else if (arg === '--stagingAccount') {
+            hasStagingAccount = true;
+            accountServer = ACCOUNT_STAGING;
         } else if (!arg.startsWith('-')) {
             config.root = path.resolve(arg);
         }
+    }
+
+    // Check for mutually exclusive flags
+    if (hasLocalAccount && hasStagingAccount) {
+        console.error('Error: --localAccount and --stagingAccount cannot be used together');
+        process.exit(1);
     }
 }
 
@@ -81,7 +97,7 @@ proxy.on('proxyReq', (proxyReq, req) => {
 
     // Transform referer from localhost:8000 to phcode.dev
     if (originalReferer && originalReferer.includes('localhost:8000')) {
-        const newReferer = originalReferer.replace(/localhost:8000/g, 'phcode.dev');
+        const newReferer = originalReferer.replace(/http:\/\/localhost:8000/g, 'https://phcode.dev');
         proxyReq.setHeader('Referer', newReferer);
     } else if (!originalReferer) {
         proxyReq.setHeader('Referer', 'https://phcode.dev/');
@@ -89,7 +105,7 @@ proxy.on('proxyReq', (proxyReq, req) => {
 
     // Transform origin from localhost:8000 to phcode.dev
     if (originalOrigin && originalOrigin.includes('localhost:8000')) {
-        const newOrigin = originalOrigin.replace(/localhost:8000/g, 'phcode.dev');
+        const newOrigin = originalOrigin.replace(/http:\/\/localhost:8000/g, 'https://phcode.dev');
         proxyReq.setHeader('Origin', newOrigin);
     }
 
