@@ -243,22 +243,19 @@ For testing desktop authentication with a local account server:
 
 1. **Configure Proxy Server:**
     - use `npm run serveLocalAccount` to serve phoenix repo server, instead of using npm run serve command.
+    - use `npm run serveStagingAccount` to use the staging endpoint. To get access to staging server, contact team.
 
-2. **Rebuild Application:**
-   ```bash
-   npm run build
-   ```
+2. **Setup Local Account Server:**
+    - Start your local account development stack on `localhost:5000`
+    - Ensure all login endpoints are properly configured
 
-3. **Start Your Local Account Server:**
-   - Ensure your local account server is running on the configured port (e.g., localhost:5000)
-   - Verify all authentication endpoints are properly configured
-
-4. **Test Desktop Authentication:**
-   - Desktop app will now use your local server for all authentication calls
-   - Verification codes and API key resolution will go through your local server
+3. **Test Desktop Authentication:**
+   - Desktop app will now use your local/staging server for all authentication calls
+   - Verification codes and API key resolution will go through your local/staging server
    - Auto-verification will attempt to connect to your local account service
 
-**Note:** Unlike browser testing which requires proxy server configuration, desktop apps simply use the `account_url` directly from config.json.
+**Note:** Like browser testing which requires proxy server configuration, desktop apps also use the proxy server
+for communication with backend.
 
 ## Troubleshooting
 
