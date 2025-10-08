@@ -10,5 +10,6 @@
     "bugsnagEnv"                 : "staging",
     "app_notification_url"       : "https://updates.phcode.io/appNotifications/staging/",
     "app_update_url"             : "https://updates.phcode.io/tauri/update-latest-pre-release.json",
-    "promotions_url"             : "https://promotions.phcode.dev/dev/"
+    "promotions_url"             : "https://promotions.phcode.dev/dev/",
+    "account_url"                : "https://account-stage.phcode.dev/"
 }

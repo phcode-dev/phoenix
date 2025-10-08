@@ -446,7 +446,22 @@
                 loadJS('verify-dependencies-loaded.js', null, document.body);
             }
 
-            function _startRequireLoop() {
+            async function _startRequireLoop() {
+                // If running on localhost, fetch proxy config to get dynamic account URL
+                if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                    try {
+                        const response = await fetch('/proxy/config');
+                        if (response.ok) {
+                            const config = await response.json();
+                            if (config.accountURL) {
+                                window.AppConfig.config.account_url = config.accountURL;
+                                console.log('Applied dynamic account URL from proxy:', config.accountURL);
+                            }
+                        }
+                    } catch (error) {
+                        console.warn('Failed to fetch proxy config, using default account URL:', error);
+                    }
+                }
                 loadJS('thirdparty/requirejs/require.js', _requireDone, document.body, "main");
             }
             if(window.PhStore){

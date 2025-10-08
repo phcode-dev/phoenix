@@ -28,8 +28,7 @@
 define(function (require, exports, module) {
 
 
-    var configJSON  = require("text!config.json"),
-        UrlParams   = require("utils/UrlParams").UrlParams;
+    const UrlParams   = require("utils/UrlParams").UrlParams;
 
     // Define core brackets namespace if it isn't already defined
     //
@@ -57,7 +56,7 @@ define(function (require, exports, module) {
 
     // Parse src/config.json
     try {
-        global.brackets.metadata = JSON.parse(configJSON);
+        global.brackets.metadata = window.AppConfig;
         global.brackets.config = global.brackets.metadata.config;
     } catch (err) {
         console.log(err);

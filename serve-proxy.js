@@ -270,6 +270,31 @@ const server = http.createServer((req, res) => {
         return;
     }
 
+    // Handle proxy config request
+    if (parsedUrl.pathname === '/proxy/config') {
+        const configResponse = {
+            accountURL: accountServer + '/'
+        };
+
+        if (!config.silent) {
+            console.log(`[CONFIG] ${req.method} ${parsedUrl.pathname} -> ${JSON.stringify(configResponse)}`);
+        }
+
+        const headers = {
+            'Content-Type': 'application/json'
+        };
+
+        if (config.cors) {
+            headers['Access-Control-Allow-Origin'] = '*';
+            headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS';
+            headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept, Authorization, Cache-Control';
+        }
+
+        res.writeHead(200, headers);
+        res.end(JSON.stringify(configResponse));
+        return;
+    }
+
     // Check if this is a proxy request
     if (parsedUrl.pathname.startsWith('/proxy/accounts')) {
         // Extract the path after /proxy/accounts
