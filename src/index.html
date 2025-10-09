@@ -447,8 +447,10 @@
             }
 
             async function _startRequireLoop() {
-                // If running on localhost, fetch proxy config to get dynamic account URL
-                if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                // If running on localhost, `npm run serve`, `npm run serveLocalAccount` targets puts in a fetch proxy.
+                // tTe proxy helps work around cookie domain set by phcode.dev as the dev urls are localhost. so to use
+                // either the actual services endpoint or localhost endpoints in dev, this is needed.
+                if (!Phoenix.isTestWindow && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
                     try {
                         const response = await fetch('/proxy/config');
                         if (response.ok) {

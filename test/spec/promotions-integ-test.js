@@ -808,7 +808,7 @@ define(function (require, exports, module) {
                 // Test expired plan gets reset to free plan
                 const expiredPlanEntitlements = {
                     plan: {
-                        paidSubscriber: true,
+                        isSubscriber: true,
                         name: "Phoenix Pro",
                         validTill: mockNow - 86400000 // 1 day ago
                     },
@@ -817,14 +817,14 @@ define(function (require, exports, module) {
 
                 LoginServiceExports._validateAndFilterEntitlements(expiredPlanEntitlements);
 
-                expect(expiredPlanEntitlements.plan.paidSubscriber).toBe(false);
+                expect(expiredPlanEntitlements.plan.isSubscriber).toBe(false);
                 expect(expiredPlanEntitlements.plan.name).toBe(testWindow.Strings.USER_FREE_PLAN_NAME_DO_NOT_TRANSLATE);
                 expect(expiredPlanEntitlements.plan.validTill).toBeGreaterThan(mockNow);
 
                 // Test valid plan remains unchanged
                 const validPlanEntitlements = {
                     plan: {
-                        paidSubscriber: true,
+                        isSubscriber: true,
                         name: "Phoenix Pro",
                         validTill: mockNow + 86400000 // 1 day from now
                     },
@@ -839,7 +839,7 @@ define(function (require, exports, module) {
                 // Test missing validTill gets reset
                 const noValidTillEntitlements = {
                     plan: {
-                        paidSubscriber: true,
+                        isSubscriber: true,
                         name: "Phoenix Pro"
                     },
                     entitlements: {}
@@ -847,7 +847,7 @@ define(function (require, exports, module) {
 
                 LoginServiceExports._validateAndFilterEntitlements(noValidTillEntitlements);
 
-                expect(noValidTillEntitlements.plan.paidSubscriber).toBe(false);
+                expect(noValidTillEntitlements.plan.isSubscriber).toBe(false);
                 expect(noValidTillEntitlements.plan.name).toBe(testWindow.Strings.USER_FREE_PLAN_NAME_DO_NOT_TRANSLATE);
             });
 
@@ -855,7 +855,7 @@ define(function (require, exports, module) {
                 // Test expired features get deactivated
                 const entitlementsWithExpiredFeatures = {
                     plan: {
-                        paidSubscriber: true,
+                        isSubscriber: true,
                         name: "Phoenix Pro",
                         validTill: mockNow + 86400000
                     },
@@ -884,7 +884,7 @@ define(function (require, exports, module) {
                 // Test features without validTill get deactivated (treated as expired)
                 const entitlementsNoValidTill = {
                     plan: {
-                        paidSubscriber: true,
+                        isSubscriber: true,
                         name: "Phoenix Pro",
                         validTill: mockNow + 86400000
                     },
@@ -932,7 +932,7 @@ define(function (require, exports, module) {
                 // Test entitlements without entitlements object
                 const noEntitlementsObj = {
                     plan: {
-                        paidSubscriber: true,
+                        isSubscriber: true,
                         name: "Phoenix Pro",
                         validTill: mockNow + 86400000
                     }

@@ -179,7 +179,7 @@ define(function (require, exports, module) {
                             <i class="fa-solid fa-feather" style="margin-left: 3px;"></i>
                         </span>
                     </div>`;
-                } else if (effectiveEntitlements.plan && effectiveEntitlements.plan.paidSubscriber) {
+                } else if (effectiveEntitlements.plan && effectiveEntitlements.plan.isSubscriber) {
                     // Device-licensed user: show Phoenix Pro branding
                     const planName = effectiveEntitlements.plan.fullName || brackets.config.main_pro_plan;
                     proInfoHtml = `<div class="trial-plan-info">
@@ -234,7 +234,7 @@ define(function (require, exports, module) {
             // Phoenix.pro is only for display purposes and should not be used to gate features.
             // Use kernal mode apis for trusted check of pro features.
             Phoenix.pro.plan = {
-                paidSubscriber: false,
+                isSubscriber: false,
                 name: Strings.USER_FREE_PLAN_NAME_DO_NOT_TRANSLATE,
                 fullName: Strings.USER_FREE_PLAN_NAME_DO_NOT_TRANSLATE
             };
@@ -242,13 +242,13 @@ define(function (require, exports, module) {
 
         if (entitlements && entitlements.plan){
             Phoenix.pro.plan = {
-                paidSubscriber: entitlements.plan.paidSubscriber,
+                isSubscriber: entitlements.plan.isSubscriber,
                 name: entitlements.plan.name,
                 fullName: entitlements.plan.fullName,
                 validTill: entitlements.plan.validTill
             };
         }
-        if (entitlements && entitlements.plan && entitlements.plan.paidSubscriber) {
+        if (entitlements && entitlements.plan && entitlements.plan.isSubscriber) {
             // Pro user (paid subscriber or trial): show short name branding with `name feather icon`(not full name)
             let displayName = entitlements.plan.name || brackets.config.main_pro_plan;
             if (entitlements.isInProTrial) {
@@ -384,7 +384,7 @@ define(function (require, exports, module) {
             // Update plan class and content based on paid subscriber status
             $planName.removeClass('user-plan-free user-plan-paid');
 
-            if (entitlements.plan.paidSubscriber) {
+            if (entitlements.plan.isSubscriber) {
                 // Use pro styling with feather icon for pro users (paid or trial)
                 if (entitlements.isInProTrial) {
                     // For trial users: separate "Phoenix Pro" with icon from "(X days left)" text
@@ -596,7 +596,7 @@ define(function (require, exports, module) {
             const effectiveEntitlements = await KernalModeTrust.loginService.getEffectiveEntitlements();
             return effectiveEntitlements &&
                 (effectiveEntitlements.isInProTrial ||
-                    (effectiveEntitlements.plan && effectiveEntitlements.plan.paidSubscriber));
+                    (effectiveEntitlements.plan && effectiveEntitlements.plan.isSubscriber));
         } catch (error) {
             console.error('Failed to check Pro access status:', error);
             return false;
@@ -611,7 +611,7 @@ define(function (require, exports, module) {
             const effectiveEntitlements = await KernalModeTrust.loginService.getEffectiveEntitlements();
             if (effectiveEntitlements &&
                 (effectiveEntitlements.isInProTrial ||
-                    (effectiveEntitlements.plan && effectiveEntitlements.plan.paidSubscriber))) {
+                    (effectiveEntitlements.plan && effectiveEntitlements.plan.isSubscriber))) {
                 console.log('Profile Menu: Found Pro entitlements (trial or device license), updating branding...');
                 _updateBranding(effectiveEntitlements);
             } else {

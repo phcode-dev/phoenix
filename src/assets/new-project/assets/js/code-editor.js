@@ -197,7 +197,7 @@ function _updateProBranding() {
         // Get plan info from window.top.Phoenix.pro.plan
         const planInfo = window.top.Phoenix && window.top.Phoenix.pro && window.top.Phoenix.pro.plan;
 
-        if (planInfo && planInfo.paidSubscriber) {
+        if (planInfo && planInfo.isSubscriber) {
             // Hide free title, show pro title
             $freeTitle.addClass('forced-hidden');
             $proTitle.removeClass('forced-hidden');

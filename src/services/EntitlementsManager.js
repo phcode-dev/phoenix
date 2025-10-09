@@ -87,8 +87,9 @@ define(function (require, exports, module) {
 
     /**
      * Get the plan details from entitlements with fallback to free plan defaults. If the user is
-     * in pro trial(isInProTrial API), then paidSubscriber will always be true as we need to treat user as paid.
-     * you should use isInProTrial API to check if user is in pro trial if some trial-related logic needs to be done.
+     * in pro trial(isInProTrial API), then isSubscriber will always be true as we need to treat
+     * user as subcriber. you should use isInProTrial API to check if user is in pro trial if some
+     * trial-related logic needs to be done.
      * @returns {Promise<Object>} Plan details object
      */
     async function getPlanDetails() {
@@ -101,6 +102,7 @@ define(function (require, exports, module) {
         // Fallback to free plan defaults
         const currentDate = Date.now();
         return {
+            isSubscriber: false,
             paidSubscriber: false,
             name: Strings.USER_FREE_PLAN_NAME_DO_NOT_TRANSLATE,
             validTill: currentDate + (FREE_PLAN_VALIDITY_DAYS * MS_IN_DAY)
@@ -108,7 +110,7 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Check if user is in a pro trial. IF the user is in pro trail, then `plan.paidSubscriber` will always be true.
+     * Check if user is in a pro trial. IF the user is in pro trail, then `plan.isSubscriber` will always be true.
      * @returns {Promise<boolean>} True if user is in pro trial, false otherwise
      */
     async function isInProTrial() {
