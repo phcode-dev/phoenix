@@ -80,16 +80,20 @@ define(function (require, exports, module) {
     // Debounced trigger for entitlements changed
     let entitlementsChangedTimer = null;
 
+    const ENTITLEMENT_CHANGED_DEBOUNCE_WINDOW = Phoenix.isTestWindow ? 100 : 1000;
+
     function _debounceEntitlementsChanged() {
         if (entitlementsChangedTimer) {
             // already scheduled, skip
             return;
         }
 
+        // atmost 1 entitlement changed event will be triggered in this window to prevent too many entitlment changed
+        // events firing.
         entitlementsChangedTimer = setTimeout(() => {
             LoginService.trigger(EVENT_ENTITLEMENTS_CHANGED);
             entitlementsChangedTimer = null;
-        }, 1000); // atmost 1 entitlement changed event will be triggered in a second
+        }, ENTITLEMENT_CHANGED_DEBOUNCE_WINDOW);
     }
 
 
