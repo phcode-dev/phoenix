@@ -110,7 +110,10 @@ define(function (require, exports, module) {
         // Check paidSubscriber changes
         const currentPaidSub = current.plan && current.plan.paidSubscriber;
         const lastPaidSub = last.plan && last.plan.paidSubscriber;
-        if (currentPaidSub !== lastPaidSub) {
+        // Check isSubscriber changes
+        const currentIsSubscriber = current.plan && current.plan.isSubscriber;
+        const lastIsSubscriber = last.plan && last.plan.isSubscriber;
+        if (currentIsSubscriber !== lastIsSubscriber || currentPaidSub !== lastPaidSub) {
             return true;
         }
 

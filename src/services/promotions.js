@@ -213,7 +213,7 @@ define(function (require, exports, module) {
 
             // getEntitlements() returns null if not logged in
             const entitlements = await LoginService.getEntitlements();
-            return entitlements && entitlements.plan && entitlements.plan.paidSubscriber === true;
+            return entitlements && entitlements.plan && entitlements.plan.isSubscriber === true;
         } catch (error) {
             console.error("Error checking pro subscription:", error);
             return false;

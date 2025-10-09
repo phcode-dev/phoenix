@@ -51,7 +51,7 @@ define(function (require, exports, module) {
 
             it("should return null when no validTill times exist", function () {
                 const entitlements = {
-                    plan: { name: "Phoenix Pro", paidSubscriber: true },
+                    plan: { name: "Phoenix Pro", isSubscriber: true },
                     entitlements: {
                         liveEdit: { activated: true }
                     }
@@ -62,7 +62,7 @@ define(function (require, exports, module) {
 
             it("should return null when validTill times are in the future", function () {
                 const entitlements = {
-                    plan: { name: "Phoenix Pro", paidSubscriber: true, validTill: futureTime },
+                    plan: { name: "Phoenix Pro", isSubscriber: true, validTill: futureTime },
                     entitlements: {
                         liveEdit: { activated: true, validTill: futureTime }
                     }
@@ -73,11 +73,11 @@ define(function (require, exports, module) {
 
             it("should return plan name when plan validTill is newly expired", function () {
                 const entitlements = {
-                    plan: { name: "Phoenix Pro", paidSubscriber: true, validTill: pastTime },
+                    plan: { name: "Phoenix Pro", isSubscriber: true, validTill: pastTime },
                     entitlements: {}
                 };
                 const lastRecorded = {
-                    plan: { name: "Phoenix Pro", paidSubscriber: true, validTill: futureTime },
+                    plan: { name: "Phoenix Pro", isSubscriber: true, validTill: futureTime },
                     entitlements: {}
                 };
                 const result = LoginUtils.validTillExpired(entitlements, lastRecorded);
@@ -86,11 +86,11 @@ define(function (require, exports, module) {
 
             it("should return default plan name when plan validTill is newly expired and no name", function () {
                 const entitlements = {
-                    plan: { paidSubscriber: true, validTill: pastTime },
+                    plan: { isSubscriber: true, validTill: pastTime },
                     entitlements: {}
                 };
                 const lastRecorded = {
-                    plan: { paidSubscriber: true, validTill: futureTime },
+                    plan: { isSubscriber: true, validTill: futureTime },
                     entitlements: {}
                 };
                 const result = LoginUtils.validTillExpired(entitlements, lastRecorded);
@@ -99,11 +99,11 @@ define(function (require, exports, module) {
 
             it("should return null when plan validTill was already expired", function () {
                 const entitlements = {
-                    plan: { name: "Phoenix Pro", paidSubscriber: true, validTill: pastTime },
+                    plan: { name: "Phoenix Pro", isSubscriber: true, validTill: pastTime },
                     entitlements: {}
                 };
                 const lastRecorded = {
-                    plan: { name: "Phoenix Pro", paidSubscriber: true, validTill: recentPastTime },
+                    plan: { name: "Phoenix Pro", isSubscriber: true, validTill: recentPastTime },
                     entitlements: {}
                 };
                 const result = LoginUtils.validTillExpired(entitlements, lastRecorded);
@@ -112,14 +112,14 @@ define(function (require, exports, module) {
 
             it("should return entitlement key when entitlement validTill is newly expired", function () {
                 const entitlements = {
-                    plan: { name: "Phoenix Pro", paidSubscriber: true },
+                    plan: { name: "Phoenix Pro", isSubscriber: true },
                     entitlements: {
                         liveEdit: { activated: true, validTill: pastTime },
                         liveEditAI: { activated: true, validTill: futureTime }
                     }
                 };
                 const lastRecorded = {
-                    plan: { name: "Phoenix Pro", paidSubscriber: true },
+                    plan: { name: "Phoenix Pro", isSubscriber: true },
                     entitlements: {
                         liveEdit: { activated: true, validTill: futureTime },
                         liveEditAI: { activated: true, validTill: futureTime }
@@ -131,13 +131,13 @@ define(function (require, exports, module) {
 
             it("should return null when entitlement validTill was already expired", function () {
                 const entitlements = {
-                    plan: { name: "Phoenix Pro", paidSubscriber: true },
+                    plan: { name: "Phoenix Pro", isSubscriber: true },
                     entitlements: {
                         liveEdit: { activated: true, validTill: pastTime }
                     }
                 };
                 const lastRecorded = {
-                    plan: { name: "Phoenix Pro", paidSubscriber: true },
+                    plan: { name: "Phoenix Pro", isSubscriber: true },
                     entitlements: {
                         liveEdit: { activated: true, validTill: recentPastTime }
                     }
@@ -148,7 +148,7 @@ define(function (require, exports, module) {
 
             it("should handle missing entitlements in lastRecorded", function () {
                 const entitlements = {
-                    plan: { name: "Phoenix Pro", paidSubscriber: true, validTill: pastTime },
+                    plan: { name: "Phoenix Pro", isSubscriber: true, validTill: pastTime },
                     entitlements: {
                         liveEdit: { activated: true, validTill: pastTime }
                     }
@@ -159,14 +159,14 @@ define(function (require, exports, module) {
 
             it("should skip null entitlements in loop", function () {
                 const entitlements = {
-                    plan: { name: "Phoenix Pro", paidSubscriber: true },
+                    plan: { name: "Phoenix Pro", isSubscriber: true },
                     entitlements: {
                         liveEdit: null,
                         liveEditAI: { activated: true, validTill: pastTime }
                     }
                 };
                 const lastRecorded = {
-                    plan: { name: "Phoenix Pro", paidSubscriber: true },
+                    plan: { name: "Phoenix Pro", isSubscriber: true },
                     entitlements: {
                         liveEdit: null,
                         liveEditAI: { activated: true, validTill: futureTime }
@@ -182,7 +182,7 @@ define(function (require, exports, module) {
                     lang: "en",
                     plan: {
                         name: "Phoenix Pro",
-                        paidSubscriber: true,
+                        isSubscriber: true,
                         validTill: pastTime
                     },
                     profileview: {
@@ -210,7 +210,7 @@ define(function (require, exports, module) {
                     }
                 };
                 const lastRecorded = {
-                    plan: { name: "Phoenix Pro", paidSubscriber: true, validTill: futureTime },
+                    plan: { name: "Phoenix Pro", isSubscriber: true, validTill: futureTime },
                     entitlements: {
                         liveEdit: { activated: false, validTill: futureTime },
                         liveEditAI: { activated: false, validTill: futureTime }
@@ -225,7 +225,7 @@ define(function (require, exports, module) {
                     isSuccess: true,
                     plan: {
                         name: "Phoenix Pro",
-                        paidSubscriber: true,
+                        isSubscriber: true,
                         validTill: pastTime
                     },
                     isInProTrial: true,
@@ -240,7 +240,7 @@ define(function (require, exports, module) {
                     }
                 };
                 const lastRecorded = {
-                    plan: { name: "Phoenix Pro", paidSubscriber: true, validTill: futureTime },
+                    plan: { name: "Phoenix Pro", isSubscriber: true, validTill: futureTime },
                     entitlements: {
                         liveEdit: { activated: true, validTill: futureTime }
                     }
@@ -252,7 +252,7 @@ define(function (require, exports, module) {
             it("should test synthetic trial shape", function () {
                 const syntheticTrial = {
                     plan: {
-                        paidSubscriber: true,
+                        isSubscriber: true,
                         name: "Phoenix Pro",
                         validTill: pastTime
                     },
@@ -268,7 +268,7 @@ define(function (require, exports, module) {
                     }
                 };
                 const lastRecorded = {
-                    plan: { name: "Phoenix Pro", paidSubscriber: true, validTill: futureTime },
+                    plan: { name: "Phoenix Pro", isSubscriber: true, validTill: futureTime },
                     entitlements: {
                         liveEdit: { activated: true, validTill: futureTime }
                     }
@@ -326,13 +326,13 @@ define(function (require, exports, module) {
                 expect(result).toBe(true);
             });
 
-            it("should return true when paidSubscriber status changes", function () {
+            it("should return true when isSubscriber status changes", function () {
                 const current = { 
-                    plan: { name: "Phoenix Pro", paidSubscriber: true },
+                    plan: { name: "Phoenix Pro", isSubscriber: true },
                     entitlements: {}
                 };
                 const last = { 
-                    plan: { name: "Phoenix Pro", paidSubscriber: false },
+                    plan: { name: "Phoenix Pro", isSubscriber: false },
                     entitlements: {}
                 };
                 const result = LoginUtils.haveEntitlementsChanged(current, last);
@@ -341,11 +341,11 @@ define(function (require, exports, module) {
 
             it("should return true when plan name changes", function () {
                 const current = { 
-                    plan: { name: "Phoenix Pro", paidSubscriber: true },
+                    plan: { name: "Phoenix Pro", isSubscriber: true },
                     entitlements: {}
                 };
                 const last = { 
-                    plan: { name: "Phoenix Basic", paidSubscriber: true },
+                    plan: { name: "Phoenix Basic", isSubscriber: true },
                     entitlements: {}
                 };
                 const result = LoginUtils.haveEntitlementsChanged(current, last);
@@ -354,14 +354,14 @@ define(function (require, exports, module) {
 
             it("should return true when entitlement activation changes", function () {
                 const current = { 
-                    plan: { name: "Phoenix Pro", paidSubscriber: true },
+                    plan: { name: "Phoenix Pro", isSubscriber: true },
                     entitlements: {
                         liveEdit: { activated: true },
                         liveEditAI: { activated: false }
                     }
                 };
                 const last = { 
-                    plan: { name: "Phoenix Pro", paidSubscriber: true },
+                    plan: { name: "Phoenix Pro", isSubscriber: true },
                     entitlements: {
                         liveEdit: { activated: false },
                         liveEditAI: { activated: false }
@@ -373,14 +373,14 @@ define(function (require, exports, module) {
 
             it("should return false when nothing has changed", function () {
                 const current = { 
-                    plan: { name: "Phoenix Pro", paidSubscriber: true },
+                    plan: { name: "Phoenix Pro", isSubscriber: true },
                     entitlements: {
                         liveEdit: { activated: true },
                         liveEditAI: { activated: false }
                     }
                 };
                 const last = { 
-                    plan: { name: "Phoenix Pro", paidSubscriber: true },
+                    plan: { name: "Phoenix Pro", isSubscriber: true },
                     entitlements: {
                         liveEdit: { activated: true },
                         liveEditAI: { activated: false }
@@ -403,14 +403,14 @@ define(function (require, exports, module) {
 
             it("should handle missing entitlement objects", function () {
                 const current = { 
-                    plan: { name: "Phoenix Pro", paidSubscriber: true },
+                    plan: { name: "Phoenix Pro", isSubscriber: true },
                     entitlements: {
                         liveEdit: { activated: true },
                         liveEditAI: null
                     }
                 };
                 const last = { 
-                    plan: { name: "Phoenix Pro", paidSubscriber: true },
+                    plan: { name: "Phoenix Pro", isSubscriber: true },
                     entitlements: {
                         liveEdit: { activated: true },
                         liveEditAI: null
@@ -426,7 +426,7 @@ define(function (require, exports, module) {
                     lang: "en",
                     plan: {
                         name: "Phoenix Pro",
-                        paidSubscriber: true,
+                        isSubscriber: true,
                         validTill: 1756625665847
                     },
                     entitlements: {
@@ -439,7 +439,7 @@ define(function (require, exports, module) {
                     lang: "en",
                     plan: {
                         name: "Phoenix Pro",
-                        paidSubscriber: true,
+                        isSubscriber: true,
                         validTill: 1756625665847
                     },
                     entitlements: {
@@ -455,7 +455,7 @@ define(function (require, exports, module) {
                 const trialCurrent = {
                     plan: {
                         name: "Phoenix Pro",
-                        paidSubscriber: true,
+                        isSubscriber: true,
                         validTill: 1756625665847
                     },
                     isInProTrial: true,
@@ -467,7 +467,7 @@ define(function (require, exports, module) {
                 const trialLast = {
                     plan: {
                         name: "Phoenix Pro",
-                        paidSubscriber: false,
+                        isSubscriber: false,
                         validTill: 1756625665847
                     },
                     entitlements: {
@@ -481,7 +481,7 @@ define(function (require, exports, module) {
             it("should test synthetic trial shape changes", function () {
                 const syntheticCurrent = {
                     plan: {
-                        paidSubscriber: true,
+                        isSubscriber: true,
                         name: "Phoenix Pro",
                         validTill: 1756625665847
                     },

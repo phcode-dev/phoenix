@@ -461,6 +461,7 @@ define(function (require, exports, module) {
         if(entitlements.plan && (!entitlements.plan.validTill || currentDate > entitlements.plan.validTill)) {
             entitlements.plan = {
                 ...entitlements.plan,
+                isSubscriber: false,
                 paidSubscriber: false,
                 name: Strings.USER_FREE_PLAN_NAME_DO_NOT_TRANSLATE,
                 fullName: Strings.USER_FREE_PLAN_NAME_DO_NOT_TRANSLATE,
@@ -498,7 +499,8 @@ define(function (require, exports, module) {
      * ```javascript
      * {
      *   plan: {
-     *     paidSubscriber: true,    // Always true for trial users
+     *     isSubscriber: true,    // Always true for trial users
+     *     paidSubscriber: false, // if the user is a paid for the plan, or is it an unpaid promo
      *     name: "Phoenix Pro"
      *     fullName: "Phoenix Pro" // this can be deceptive name like "Phoenix Pro For Education" to use in
      *                             // profile popup, not main branding
@@ -514,11 +516,12 @@ define(function (require, exports, module) {
      * ```
      *
      * **For logged-in trial users:**
-     * - If remote response has `plan.paidSubscriber: false`, injects `paidSubscriber: true`
+     * - If remote response has `plan.isSubscriber: false`, injects `isSubscriber: true`
      * - Adds `isInProTrial: true` and `trialDaysRemaining`
      * - Injects `entitlements.liveEdit.activated: true`
-     * - Note: Trial users may not be actual paid subscribers, but `paidSubscriber: true` is set
-     *   so all Phoenix code treats them as paid subscribers
+     * - Note: Trial users may not be actual paid subscribers, but `isSubscriber: true` is set
+     *   so all Phoenix code treats them as subscribers. to check if they actually paid or not, use
+     *   `paidSubscriber` field.
      *
      * **For logged-in users (full remote response):**
      * ```javascript
@@ -529,6 +532,7 @@ define(function (require, exports, module) {
      *     name: "Phoenix Pro",
      *     fullName: "Phoenix Pro" // this can be deceptive name like "Phoenix Pro For Education" to use in
      *                            // profile popup, not main branding
+     *     isSubscriber: boolean,
      *     paidSubscriber: boolean,
      *     validTill: number        // Timestamp
      *   },
@@ -574,7 +578,7 @@ define(function (require, exports, module) {
      *
      * // Get current entitlements
      * const entitlements = await LoginService.getEffectiveEntitlements();
-     * if (entitlements?.plan?.paidSubscriber) {
+     * if (entitlements?.plan?.isSubscriber) {
      *   // Enable pro features
      * }
      * if (entitlements?.entitlements?.liveEdit?.activated) {
@@ -597,8 +601,8 @@ define(function (require, exports, module) {
         // now we need to grant trial, as user is entitled to trial if he is here.
         // User has active server plan(either with login or device license)
         if (serverEntitlements && serverEntitlements.plan) {
-            if (serverEntitlements.plan.paidSubscriber) {
-                // Already a paid subscriber(or has device license), return as-is
+            if (serverEntitlements.plan.isSubscriber) {
+                // Already a subscriber(or has device license), return as-is
                 // never inject trail data in this case.
                 return serverEntitlements;
             }
@@ -608,7 +612,8 @@ define(function (require, exports, module) {
                 ...serverEntitlements,
                 plan: {
                     ...serverEntitlements.plan,
-                    paidSubscriber: true,
+                    isSubscriber: true,
+                    paidSubscriber: serverEntitlements.plan.paidSubscriber || false,
                     name: brackets.config.main_pro_plan,
                     fullName: brackets.config.main_pro_plan,
                     validTill: dateNowFn() + trialDaysRemaining * MS_IN_DAY
@@ -632,7 +637,8 @@ define(function (require, exports, module) {
         // Non-logged-in, non licensed user with trial - return synthetic entitlements
         return {
             plan: {
-                paidSubscriber: true,
+                isSubscriber: true,
+                paidSubscriber: false,
                 name: brackets.config.main_pro_plan,
                 fullName: brackets.config.main_pro_plan,
                 validTill: dateNowFn() + trialDaysRemaining * MS_IN_DAY

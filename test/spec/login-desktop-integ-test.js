@@ -209,7 +209,7 @@ define(function (require, exports, module) {
                                 Date.now() + 30 * 24 * 60 * 60 * 1000; // valid for 30 days
 
                             entitlementsResponse.plan = {
-                                paidSubscriber: true,
+                                isSubscriber: true,
                                 name: "Phoenix Pro",
                                 fullName: isDeviceIDRequest ? "Phoenix Pro Test Edu" : "Phoenix Pro",
                                 validTill: validTill
@@ -222,7 +222,7 @@ define(function (require, exports, module) {
                             };
                         } else {
                             entitlementsResponse.plan = {
-                                paidSubscriber: false,
+                                isSubscriber: false,
                                 name: "Free Plan",
                                 fullName: "Free Plan"
                             };
