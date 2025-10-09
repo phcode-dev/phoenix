@@ -327,15 +327,43 @@ define(function (require, exports, module) {
             });
 
             it("should return true when isSubscriber status changes", function () {
-                const current = { 
+                const current = {
                     plan: { name: "Phoenix Pro", isSubscriber: true },
                     entitlements: {}
                 };
-                const last = { 
+                const last = {
                     plan: { name: "Phoenix Pro", isSubscriber: false },
                     entitlements: {}
                 };
                 const result = LoginUtils.haveEntitlementsChanged(current, last);
+                expect(result).toBe(true);
+            });
+
+            it("should return true when paidSubscriber status changes", function () {
+                const current = {
+                    plan: { name: "Phoenix Pro", isSubscriber: true, paidSubscriber: true },
+                    entitlements: {}
+                };
+                const last = {
+                    plan: { name: "Phoenix Pro", isSubscriber: true, paidSubscriber: false },
+                    entitlements: {}
+                };
+                const result = LoginUtils.haveEntitlementsChanged(current, last);
+                expect(result).toBe(true);
+            });
+
+            it("should return true when user goes from trial to paid (paidSubscriber changes)", function () {
+                // Trial user: isSubscriber true, paidSubscriber false
+                const trialUser = {
+                    plan: { name: "Phoenix Pro", isSubscriber: true, paidSubscriber: false },
+                    entitlements: { liveEdit: { activated: true } }
+                };
+                // Paid user: isSubscriber true, paidSubscriber true
+                const paidUser = {
+                    plan: { name: "Phoenix Pro", isSubscriber: true, paidSubscriber: true },
+                    entitlements: { liveEdit: { activated: true } }
+                };
+                const result = LoginUtils.haveEntitlementsChanged(paidUser, trialUser);
                 expect(result).toBe(true);
             });
 

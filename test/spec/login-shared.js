@@ -216,6 +216,9 @@ define(function (require, exports, module) {
             if (expectedPlan.isSubscriber !== undefined) {
                 expect(finalPlanDetails.isSubscriber).toBe(expectedPlan.isSubscriber);
             }
+            if (expectedPlan.paidSubscriber !== undefined) {
+                expect(finalPlanDetails.paidSubscriber).toBe(expectedPlan.paidSubscriber);
+            }
             if (expectedPlan.name) {
                 expect(finalPlanDetails.name).toBe(expectedPlan.name);
             }
@@ -399,7 +402,7 @@ define(function (require, exports, module) {
 
             // Verify entitlements API consistency for logged in pro user
             await verifyIsInProTrialEntitlement(false, "pro user should not be in trial");
-            await verifyPlanEntitlements({ isSubscriber: true }, "pro user should have paid subscriber plan");
+            await verifyPlanEntitlements({ isSubscriber: true, paidSubscriber: true }, "pro user should have paid subscriber plan");
 
             // Check profile popup shows pro status (not trial)
             const $profileButton = testWindow.$("#user-profile-button");
@@ -448,7 +451,7 @@ define(function (require, exports, module) {
 
             // Verify entitlements API consistency for logged in trial user
             await verifyIsInProTrialEntitlement(true, "user should still be in trial after login");
-            await verifyPlanEntitlements({ isSubscriber: true }, "trial user should have isSubscriber true");
+            await verifyPlanEntitlements({ isSubscriber: true, paidSubscriber: false }, "trial user should have isSubscriber true but paidSubscriber false");
 
             // Check profile popup shows trial status
             const $profileButton = testWindow.$("#user-profile-button");
@@ -530,7 +533,7 @@ define(function (require, exports, module) {
             await verifyProBranding(false, "no pro branding to start with");
 
             // Verify entitlements API consistency for logged out user with expired trial
-            await verifyPlanEntitlements({ isSubscriber: false, name: testWindow.Strings.USER_FREE_PLAN_NAME_DO_NOT_TRANSLATE },
+            await verifyPlanEntitlements({ isSubscriber: false, paidSubscriber: false, name: testWindow.Strings.USER_FREE_PLAN_NAME_DO_NOT_TRANSLATE },
                 "free plan for logged out user with expired trial");
             await verifyIsInProTrialEntitlement(false, "no trial for user with expired trial");
             await verifyTrialRemainingDaysEntitlement(0, "no trial days remaining for expired trial");
@@ -543,7 +546,7 @@ define(function (require, exports, module) {
             await verifyProBranding(false, "after trial free user login");
 
             // Verify entitlements API consistency for logged in free user
-            await verifyPlanEntitlements({ isSubscriber: false, name: testWindow.Strings.USER_FREE_PLAN_NAME_DO_NOT_TRANSLATE },
+            await verifyPlanEntitlements({ isSubscriber: false, paidSubscriber: false, name: testWindow.Strings.USER_FREE_PLAN_NAME_DO_NOT_TRANSLATE },
                 "free plan for logged in user with expired trial");
             await verifyIsInProTrialEntitlement(false, "still no trial after login");
             await verifyLiveEditEntitlement({ activated: false }, "live edit still deactivated after login");
@@ -589,7 +592,7 @@ define(function (require, exports, module) {
             await verifyProBranding(false, "no pro branding initially due to expired entitlements");
 
             // Verify entitlements API consistency for logged out user with no trial
-            await verifyPlanEntitlements({ isSubscriber: false, name: testWindow.Strings.USER_FREE_PLAN_NAME_DO_NOT_TRANSLATE },
+            await verifyPlanEntitlements({ isSubscriber: false, paidSubscriber: false, name: testWindow.Strings.USER_FREE_PLAN_NAME_DO_NOT_TRANSLATE },
                 "free plan for logged out user with no trial");
             await verifyIsInProTrialEntitlement(false, "no trial for logged out user");
             await verifyTrialRemainingDaysEntitlement(0, "no trial days remaining");
@@ -603,7 +606,7 @@ define(function (require, exports, module) {
             await verifyProBranding(false, "no pro branding after login with expired entitlements");
 
             // Verify entitlements API consistency for logged in user with expired entitlements
-            await verifyPlanEntitlements({ isSubscriber: false },
+            await verifyPlanEntitlements({ isSubscriber: false, paidSubscriber: false },
                 "expired entitlements filtered to free plan after login");
             await verifyIsInProTrialEntitlement(false, "no trial for user with expired entitlements");
             await verifyTrialRemainingDaysEntitlement(0, "no trial days for expired entitlements user");
@@ -654,7 +657,7 @@ define(function (require, exports, module) {
             await verifyProBranding(true, "pro branding initially due to active trial");
 
             // Verify entitlements API consistency for logged out user with active trial
-            await verifyPlanEntitlements({ isSubscriber: true, name: testWindow.brackets.config.main_pro_plan },
+            await verifyPlanEntitlements({ isSubscriber: true, paidSubscriber: false, name: testWindow.brackets.config.main_pro_plan },
                 "trial plan for logged out user overrides expired entitlements");
             await verifyIsInProTrialEntitlement(true, "user should be in trial initially");
             await verifyTrialRemainingDaysEntitlement(10, "should have 10 trial days remaining");
@@ -668,8 +671,8 @@ define(function (require, exports, module) {
             await verifyProBranding(true, "pro branding after login - trial overrides expired entitlements");
 
             // Verify entitlements API consistency for logged in user (trial overrides expired server entitlements)
-            await verifyPlanEntitlements({ isSubscriber: true },
-                "trial overrides expired server entitlements to show paid subscriber");
+            await verifyPlanEntitlements({ isSubscriber: true, paidSubscriber: false },
+                "trial overrides expired server entitlements - user is subscriber but not paid");
             await verifyIsInProTrialEntitlement(true, "user should still be in trial after login");
             await verifyTrialRemainingDaysEntitlement(10, "trial days should remain 10 after login");
             await verifyLiveEditEntitlement({ activated: true }, "live edit should be activated via trial override");
@@ -786,9 +789,11 @@ define(function (require, exports, module) {
                     await verifyProBranding(true, "device license shows Phoenix Pro branding in navbar");
 
                     // Verify entitlements API shows Pro access
+                    // Note: Device licenses can be paid (paidSubscriber: true) or educational (paidSubscriber: false)
+                    // This test uses educational license (deviceID request) so paidSubscriber should be false
                     await verifyPlanEntitlements(
-                        { isSubscriber: true, name: "Phoenix Pro" },
-                        "device license provides Pro plan"
+                        { isSubscriber: true, paidSubscriber: false, name: "Phoenix Pro" },
+                        "device license provides Pro plan (educational license is unpaid)"
                     );
                     await verifyIsInProTrialEntitlement(false, "device license is not a trial");
                     await verifyLiveEditEntitlement({ activated: true }, "live edit activated via device license");
