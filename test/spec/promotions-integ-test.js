@@ -818,6 +818,7 @@ define(function (require, exports, module) {
                 LoginServiceExports._validateAndFilterEntitlements(expiredPlanEntitlements);
 
                 expect(expiredPlanEntitlements.plan.isSubscriber).toBe(false);
+                expect(expiredPlanEntitlements.plan.paidSubscriber).toBe(false);
                 expect(expiredPlanEntitlements.plan.name).toBe(testWindow.Strings.USER_FREE_PLAN_NAME_DO_NOT_TRANSLATE);
                 expect(expiredPlanEntitlements.plan.validTill).toBeGreaterThan(mockNow);
 
@@ -848,6 +849,7 @@ define(function (require, exports, module) {
                 LoginServiceExports._validateAndFilterEntitlements(noValidTillEntitlements);
 
                 expect(noValidTillEntitlements.plan.isSubscriber).toBe(false);
+                expect(noValidTillEntitlements.plan.paidSubscriber).toBe(false);
                 expect(noValidTillEntitlements.plan.name).toBe(testWindow.Strings.USER_FREE_PLAN_NAME_DO_NOT_TRANSLATE);
             });
 

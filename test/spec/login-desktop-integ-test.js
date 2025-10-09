@@ -210,6 +210,7 @@ define(function (require, exports, module) {
 
                             entitlementsResponse.plan = {
                                 isSubscriber: true,
+                                paidSubscriber: !isDeviceIDRequest, // Educational device licenses are unpaid
                                 name: "Phoenix Pro",
                                 fullName: isDeviceIDRequest ? "Phoenix Pro Test Edu" : "Phoenix Pro",
                                 validTill: validTill
@@ -223,6 +224,7 @@ define(function (require, exports, module) {
                         } else {
                             entitlementsResponse.plan = {
                                 isSubscriber: false,
+                                paidSubscriber: false,
                                 name: "Free Plan",
                                 fullName: "Free Plan"
                             };

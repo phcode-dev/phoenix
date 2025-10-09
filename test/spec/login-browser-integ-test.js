@@ -184,6 +184,7 @@ define(function (require, exports, module) {
 
                             entitlementsResponse.plan = {
                                 isSubscriber: true,
+                                paidSubscriber: true,
                                 name: "Phoenix Pro",
                                 fullName: "Phoenix Pro",
                                 validTill: validTill
@@ -197,6 +198,7 @@ define(function (require, exports, module) {
                         } else {
                             entitlementsResponse.plan = {
                                 isSubscriber: false,
+                                paidSubscriber: false,
                                 name: "Free Plan",
                                 fullName: "Free Plan"
                             };
