@@ -486,6 +486,17 @@ define(function (require, exports, module) {
                     "", FileSystem));
                 await jsPromise(SpecRunnerUtils.createTextFile(`${testPathGitIgnore}/css/.gitignore`,
                     "foo.css", FileSystem));
+
+                // Wait for filesystem changes to propagate before opening search bar.
+                // When the search bar opens, it caches the file list (FindInFilesUI.js:242) by calling
+                // ProjectManager.getAllFiles() which performs gitignore filtering during directory traversal.
+                // We need to ensure gitignore files are fully written and filesystem events have propagated
+                // before this caching happens, otherwise the cached list won't respect the gitignore rules.
+                // Note: We tried awaitsFor() with various conditions (checking file readability, DocumentManager
+                // state, cache updates) but they were not reliable across all platforms.
+                // A 1-second delay is the most reliable approach for this test for now. @filefilter_delay_explanation
+                await awaits(1000);
+
                 await openSearchBar();
 
                 _setNoFilesExcluded();
@@ -503,6 +514,11 @@ define(function (require, exports, module) {
                     "bar.txt", FileSystem));
                 await jsPromise(SpecRunnerUtils.createTextFile(`${testPathGitIgnore}/css/.gitignore`,
                     "foo.css", FileSystem));
+
+                // Wait for filesystem changes to propagate before opening search bar. A 1-second delay is
+                // the most reliable approach for this test. See @filefilter_delay_explanation for explanation
+                await awaits(1000);
+
                 await openSearchBar();
 
                 _setNoFilesExcluded();
