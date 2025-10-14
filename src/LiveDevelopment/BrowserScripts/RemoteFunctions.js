@@ -375,6 +375,7 @@ function RemoteFunctions(config = {}) {
     let DROP_MARKER_CLASSNAME = "__brackets-drop-marker-horizontal";
     let DROP_MARKER_VERTICAL_CLASSNAME = "__brackets-drop-marker-vertical";
     let DROP_MARKER_INSIDE_CLASSNAME = "__brackets-drop-marker-inside";
+    let DROP_MARKER_ARROW_CLASSNAME = "__brackets-drop-marker-arrow";
 
     /**
      * This function is responsible to determine whether to show vertical/horizontal indicators
@@ -790,6 +791,11 @@ function RemoteFunctions(config = {}) {
         // clean any existing marker from that element
         _removeDropMarkerFromElement(element);
 
+        if (element._originalDragBackgroundColor === undefined) {
+            element._originalDragBackgroundColor = element.style.backgroundColor;
+        }
+        element.style.backgroundColor = "rgba(66, 133, 244, 0.15)";
+
         // create the marker element
         let marker = window.document.createElement("div");
 
@@ -806,6 +812,15 @@ function RemoteFunctions(config = {}) {
         marker.style.borderRadius = "2px";
         marker.style.pointerEvents = "none";
 
+        // for the arrow indicator
+        let arrow = window.document.createElement("div");
+        arrow.className = DROP_MARKER_ARROW_CLASSNAME;
+        arrow.style.position = "fixed";
+        arrow.style.zIndex = "2147483648";
+        arrow.style.pointerEvents = "none";
+        arrow.style.fontWeight = "bold";
+        arrow.style.color = "#4285F4";
+
         if (dropZone === "inside") {
             // inside marker - outline around the element
             marker.style.border = "2px dashed #4285F4";
@@ -814,40 +829,66 @@ function RemoteFunctions(config = {}) {
             marker.style.top = rect.top + "px";
             marker.style.width = rect.width + "px";
             marker.style.height = rect.height + "px";
-            marker.style.animation = "insideMarkerPulse 1s ease-in-out infinite alternate";
+
+            // exclusive or symbol (plus inside circle) we use when dropping inside
+            arrow.style.fontSize = "16px";
+            arrow.innerHTML = "⊕";
+            arrow.style.left = (rect.left + rect.width / 2) + "px";
+            arrow.style.top = (rect.top + rect.height / 2) + "px";
+            arrow.style.transform = "translate(-50%, -50%)";
         } else {
             // Before/After markers - lines
             marker.style.background = "linear-gradient(90deg, #4285F4, #1976D2)";
             marker.style.boxShadow = "0 0 8px rgba(66, 133, 244, 0.5)";
-            marker.style.animation = "dropMarkerPulse 0.8s ease-in-out infinite alternate";
 
+            arrow.style.fontSize = "22px";
             if (indicatorType === "vertical") {
                 // Vertical marker (for flex row containers)
                 marker.style.width = "3px";
                 marker.style.height = rect.height + "px";
                 marker.style.top = rect.top + "px";
+                arrow.style.top = (rect.top + rect.height / 2) + "px";
 
                 if (dropZone === "after") {
                     marker.style.left = rect.right + 3 + "px";
+                    // Right arrow
+                    arrow.innerHTML = "→";
+                    arrow.style.left = (rect.right + 5) + "px";
+                    arrow.style.transform = "translateY(-50%)";
                 } else {
                     marker.style.left = rect.left - 5 + "px";
+                    // Left arrow
+                    arrow.innerHTML = "←";
+                    arrow.style.left = (rect.left - 15) + "px";
+                    arrow.style.transform = "translate(-50%, -50%)";
                 }
             } else {
                 // Horizontal marker (for block/grid containers)
                 marker.style.width = rect.width + "px";
                 marker.style.height = "3px";
                 marker.style.left = rect.left + "px";
+                arrow.style.left = (rect.left + rect.width / 2) + "px";
 
                 if (dropZone === "after") {
                     marker.style.top = rect.bottom + 3 + "px";
+                    // Down arrow
+                    arrow.innerHTML = "↓";
+                    arrow.style.top = rect.bottom + "px";
+                    arrow.style.transform = "translateX(-50%)";
                 } else {
                     marker.style.top = rect.top - 5 + "px";
+                    // Up arrow
+                    arrow.innerHTML = "↑";
+                    arrow.style.top = (rect.top - 15) + "px";
+                    arrow.style.transform = "translate(-50%, -50%)";
                 }
             }
         }
 
         element._dropMarker = marker; // we need this in the _removeDropMarkerFromElement function
+        element._dropArrow = arrow; // store arrow reference too
         window.document.body.appendChild(marker);
+        window.document.body.appendChild(arrow);
     }
 
     /**
@@ -859,6 +900,10 @@ function RemoteFunctions(config = {}) {
             element._dropMarker.parentNode.removeChild(element._dropMarker);
             delete element._dropMarker;
         }
+        if (element._dropArrow && element._dropArrow.parentNode) {
+            element._dropArrow.parentNode.removeChild(element._dropArrow);
+            delete element._dropArrow;
+        }
     }
 
     /**
@@ -869,6 +914,7 @@ function RemoteFunctions(config = {}) {
         let horizontalMarkers = window.document.querySelectorAll("." + DROP_MARKER_CLASSNAME);
         let verticalMarkers = window.document.querySelectorAll("." + DROP_MARKER_VERTICAL_CLASSNAME);
         let insideMarkers = window.document.querySelectorAll("." + DROP_MARKER_INSIDE_CLASSNAME);
+        let arrows = window.document.querySelectorAll("." + DROP_MARKER_ARROW_CLASSNAME);
 
         for (let i = 0; i < horizontalMarkers.length; i++) {
             if (horizontalMarkers[i].parentNode) {
@@ -888,10 +934,17 @@ function RemoteFunctions(config = {}) {
             }
         }
 
+        for (let i = 0; i < arrows.length; i++) {
+            if (arrows[i].parentNode) {
+                arrows[i].parentNode.removeChild(arrows[i]);
+            }
+        }
+
         // Also clear any element references
         let elements = window.document.querySelectorAll("[data-brackets-id]");
         for (let j = 0; j < elements.length; j++) {
             delete elements[j]._dropMarker;
+            delete elements[j]._dropArrow;
             // only restore the styles that were modified by drag operations
             if (elements[j]._originalDragBackgroundColor !== undefined) {
                 elements[j].style.backgroundColor = elements[j]._originalDragBackgroundColor;
