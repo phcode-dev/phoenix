@@ -60,6 +60,9 @@ function RemoteFunctions(config = {}) {
     const AUTO_SCROLL_SPEED = 12; // pixels per scroll
     const AUTO_SCROLL_EDGE_SIZE = 0.05; // 5% of viewport height (either top/bottom)
 
+    // to track the state as we want to have a selected state for image gallery
+    let imageGallerySelected = false;
+
     /**
      * this function is responsible to auto scroll the live preview when
      * dragging an element to the viewport edges
@@ -259,7 +262,12 @@ function RemoteFunctions(config = {}) {
      * @param {DOMElement} element - the HTML DOM element that was clicked (should be an image)
      */
     function _handleImageGalleryOptionClick(event, element) {
-        if (!_imageRibbonGallery) {
+        dismissImageRibbonGallery();
+
+        if (imageGallerySelected) {
+            imageGallerySelected = false;
+        } else {
+            imageGallerySelected = true;
             _imageRibbonGallery = new ImageRibbonGallery(element);
         }
     }
@@ -1389,7 +1397,7 @@ function RemoteFunctions(config = {}) {
                 </span>
             </div>`;
 
-            const styles = `
+            let styles = `
                 :host {
                   all: initial !important;
                 }
@@ -1439,6 +1447,15 @@ function RemoteFunctions(config = {}) {
                     display: block !important;
                 }
             `;
+
+            // to highlight that in a different color, to show the selected state
+            if (imageGallerySelected) {
+                styles += `
+                    .node-options span[data-action="image-gallery"] {
+                      background-color: rgba(255, 255, 255, 0.25) !important;
+                    }
+                `;
+            }
 
             // add everything to the shadow box
             shadow.innerHTML = `<style>${styles}</style><div class="phoenix-more-options-box">${content}</div>`;
@@ -2862,6 +2879,8 @@ function RemoteFunctions(config = {}) {
                 closeButton.addEventListener('click', (e) => {
                     e.stopPropagation();
                     this.remove();
+                    imageGallerySelected = false;
+                    dismissUIAndCleanupState();
                 });
             }
 
@@ -3584,6 +3603,12 @@ function RemoteFunctions(config = {}) {
             return false;
         }
 
+        // if imageGallerySelected is true, show the image gallery directly
+        if(element && element.tagName.toLowerCase() === 'img' && imageGallerySelected) {
+            if (!_imageRibbonGallery) {
+                _imageRibbonGallery = new ImageRibbonGallery(element);
+            }
+        }
 
         // make sure that the element is actually visible to the user
         if (isElementVisible(element)) {
