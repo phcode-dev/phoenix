@@ -3013,6 +3013,17 @@ function RemoteFunctions(config = {}) {
                     const extnName = ".jpg";
 
                     const downloadUrl = image.url || image.thumb_url;
+
+                    // we need to make a req to the download endpoint
+                    // its required by the Unsplash API guidelines to track downloads for photographers
+                    // this is just a tracking call, we don't need to wait for the response
+                    if (image.download_location) {
+                        fetch(image.download_location)
+                            .catch(error => {
+                                //
+                            });
+                    }
+
                     this._useImage(downloadUrl, filename, extnName, false, thumbDiv);
                 });
 
