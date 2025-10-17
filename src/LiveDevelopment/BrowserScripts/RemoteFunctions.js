@@ -1367,13 +1367,6 @@ function RemoteFunctions(config = {}) {
                     ${ICONS.ai}
                 </span>`;
 
-            // if its an image element, we show the image gallery icon
-            if (this.element && this.element.tagName.toLowerCase() === 'img') {
-                content += `<span data-action="image-gallery" title="${config.strings.imageGallery}">
-                    ${ICONS.imageGallery}
-                </span>`;
-            }
-
             // Only include select parent option if element supports it
             if (showSelectParentOption) {
                 content += `<span data-action="select-parent" title="${config.strings.selectParent}">
@@ -1385,6 +1378,13 @@ function RemoteFunctions(config = {}) {
             if (showEditTextOption) {
                 content += `<span data-action="edit-text" title="${config.strings.editText}">
                     ${ICONS.edit}
+                </span>`;
+            }
+
+            // if its an image element, we show the image gallery icon
+            if (this.element && this.element.tagName.toLowerCase() === 'img') {
+                content += `<span data-action="image-gallery" title="${config.strings.imageGallery}">
+                    ${ICONS.imageGallery}
                 </span>`;
             }
 
