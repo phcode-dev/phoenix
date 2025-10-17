@@ -208,6 +208,23 @@ function RemoteFunctions(config = {}) {
         );
     }
 
+    /**
+     * this function checks whether the image gallery overlaps the image element
+     * because if it does we scroll the image element a bit above so that users can see the whole image clearly
+     * @param {DOMElement} element - the image element
+     * @param {DOMElement} imageGalleryElement - the image gallery container
+     */
+    function scrollImageToViewportIfRequired(element, imageGalleryElement) {
+        let elementRect = element.getBoundingClientRect();
+        let galleryRect = imageGalleryElement._shadow.querySelector('.phoenix-image-ribbon').getBoundingClientRect();
+
+        // this will get true when the image element and the image gallery overlaps each other
+        if (elementRect.bottom >= galleryRect.top) {
+            const scrollValue = window.scrollY + (elementRect.bottom - galleryRect.top) + 10;
+            window.scrollTo(0, scrollValue);
+        }
+    }
+
     // Checks if an element is actually visible to the user (not hidden, collapsed, or off-screen)
     function isElementVisible(element) {
         // Check if element has zero dimensions (indicates it's hidden or collapsed)
@@ -269,6 +286,7 @@ function RemoteFunctions(config = {}) {
         } else {
             imageGallerySelected = true;
             _imageRibbonGallery = new ImageRibbonGallery(element);
+            scrollImageToViewportIfRequired(element, _imageRibbonGallery);
         }
     }
 
@@ -3618,6 +3636,7 @@ function RemoteFunctions(config = {}) {
         if(element && element.tagName.toLowerCase() === 'img' && imageGallerySelected) {
             if (!_imageRibbonGallery) {
                 _imageRibbonGallery = new ImageRibbonGallery(element);
+                scrollImageToViewportIfRequired(element, _imageRibbonGallery);
             }
         }
 
