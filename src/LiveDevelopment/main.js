@@ -70,7 +70,6 @@ define(function main(require, exports, module) {
         },
         isProUser: isProUser,
         elemHighlights: "hover", // default value, this will get updated when the extension loads
-        imageRibbon: true, // default value, this will get updated when the extension loads
         // this strings are used in RemoteFunctions.js
         // we need to pass this through config as remoteFunctions runs in browser context and cannot
         // directly reference Strings file
@@ -80,11 +79,17 @@ define(function main(require, exports, module) {
             duplicate: Strings.LIVE_DEV_MORE_OPTIONS_DUPLICATE,
             delete: Strings.LIVE_DEV_MORE_OPTIONS_DELETE,
             ai: Strings.LIVE_DEV_MORE_OPTIONS_AI,
+            imageGallery: Strings.LIVE_DEV_MORE_OPTIONS_IMAGE_GALLERY,
             aiPromptPlaceholder: Strings.LIVE_DEV_AI_PROMPT_PLACEHOLDER,
             imageGalleryUseImage: Strings.LIVE_DEV_IMAGE_GALLERY_USE_IMAGE,
             imageGallerySelectFromComputer: Strings.LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER,
-            imageGalleryChooseFolder: Strings.LIVE_DEV_IMAGE_GALLERY_CHOOSE_FOLDER,
-            imageGallerySearchPlaceholder: Strings.LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER
+            imageGallerySelectDownloadFolder: Strings.LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER,
+            imageGallerySearchPlaceholder: Strings.LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER,
+            imageGallerySearchButton: Strings.LIVE_DEV_IMAGE_GALLERY_SEARCH_BUTTON,
+            imageGalleryLoadingInitial: Strings.LIVE_DEV_IMAGE_GALLERY_LOADING_INITIAL,
+            imageGalleryLoadingMore: Strings.LIVE_DEV_IMAGE_GALLERY_LOADING_MORE,
+            imageGalleryNoImages: Strings.LIVE_DEV_IMAGE_GALLERY_NO_IMAGES,
+            imageGalleryLoadError: Strings.LIVE_DEV_IMAGE_GALLERY_LOAD_ERROR
         }
     };
     // Status labels/styles are ordered: error, not connected, progress1, progress2, connected.
@@ -370,20 +375,6 @@ define(function main(require, exports, module) {
         }
     }
 
-    // this function is responsible to update image picker config
-    // called from live preview extension when preference changes
-    function updateImageRibbonConfig() {
-        const prefValue = PreferencesManager.get("livePreviewImagePicker");
-        config.imageRibbon = prefValue !== false; // default to true if undefined
-
-        if (MultiBrowserLiveDev && MultiBrowserLiveDev.status >= MultiBrowserLiveDev.STATUS_ACTIVE) {
-            if (!prefValue) { MultiBrowserLiveDev.dismissImageRibbonGallery(); } // to remove any existing image ribbons
-
-            MultiBrowserLiveDev.updateConfig(JSON.stringify(config));
-            MultiBrowserLiveDev.registerHandlers();
-        }
-    }
-
     // init commands
     CommandManager.register(Strings.CMD_LIVE_HIGHLIGHT, Commands.FILE_LIVE_HIGHLIGHT, togglePreviewHighlight);
     CommandManager.register(Strings.CMD_RELOAD_LIVE_PREVIEW, Commands.CMD_RELOAD_LIVE_PREVIEW, _handleReloadLivePreviewCommand);
@@ -412,7 +403,6 @@ define(function main(require, exports, module) {
     exports.togglePreviewHighlight = togglePreviewHighlight;
     exports.setLivePreviewEditFeaturesActive = setLivePreviewEditFeaturesActive;
     exports.updateElementHighlightConfig = updateElementHighlightConfig;
-    exports.updateImageRibbonConfig = updateImageRibbonConfig;
     exports.getConnectionIds = MultiBrowserLiveDev.getConnectionIds;
     exports.getLivePreviewDetails = MultiBrowserLiveDev.getLivePreviewDetails;
     exports.hideHighlight = MultiBrowserLiveDev.hideHighlight;

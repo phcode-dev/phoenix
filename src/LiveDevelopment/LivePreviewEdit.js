@@ -31,7 +31,16 @@ define(function (require, exports, module) {
     const ProjectManager = require("project/ProjectManager");
     const FileSystem = require("filesystem/FileSystem");
     const PathUtils = require("thirdparty/path-utils/path-utils");
+    const StringMatch = require("utils/StringMatch");
+    const Dialogs = require("widgets/Dialogs");
+    const StateManager = require("preferences/StateManager");
     const ProDialogs = require("services/pro-dialogs");
+    const Mustache = require("thirdparty/mustache/mustache");
+    const Strings = require("strings");
+    const ImageFolderDialogTemplate = require("text!htmlContent/image-folder-dialog.html");
+
+    // state manager key, to save the download location of the image
+    const IMAGE_DOWNLOAD_FOLDER_KEY = "imageGallery.downloadFolder";
 
     const KernalModeTrust = window.KernalModeTrust;
     if(!KernalModeTrust){
@@ -693,10 +702,10 @@ define(function (require, exports, module) {
             _updateImageSrcAttribute(tagId, filename);
         }
 
-        // dismiss the image ribbon gallery
+        // dismiss all UI boxes including the image ribbon gallery
         const currLiveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
         if (currLiveDoc && currLiveDoc.protocol && currLiveDoc.protocol.evaluate) {
-            currLiveDoc.protocol.evaluate("_LD.dismissImageRibbonGallery()");
+            currLiveDoc.protocol.evaluate("_LD.dismissUIAndCleanupState()");
         }
     }
 
@@ -757,56 +766,367 @@ define(function (require, exports, module) {
     }
 
     /**
-     * This function is called when 'use this image' button is clicked in the image ribbon gallery
-     * or user loads an image file from the computer
-     * this is responsible to download the image in the appropriate place
-     * and also change the src attribute of the element (by calling appropriate helper functions)
-     * @param {Object} message - the message object which stores all the required data for this operation
+     * Downloads image to the specified folder
+     * @private
+     * @param {Object} message - The message containing image download info
+     * @param {string} folderPath - Relative path to the folder
      */
-    function _handleUseThisImage(message) {
+    function _downloadToFolder(message, folderPath) {
+        const projectRoot = ProjectManager.getProjectRoot();
+        if (!projectRoot) {
+            console.error('No project root found');
+            return;
+        }
+
         const filename = message.filename;
         const extnName = message.extnName || "jpg";
 
-        const projectRoot = ProjectManager.getProjectRoot();
-        if (!projectRoot) { return; }
+        // the folder path should always end with /
+        if (!folderPath.endsWith('/')) {
+            folderPath += '/';
+        }
 
-        // phoenix-assets folder, all the images will be stored inside this
-        const phoenixAssetsPath = projectRoot.fullPath + "phoenix-code-assets/";
-        const phoenixAssetsDir = FileSystem.getDirectoryForPath(phoenixAssetsPath);
+        const targetPath = projectRoot.fullPath + folderPath;
+        const targetDir = FileSystem.getDirectoryForPath(targetPath);
 
-        // check if the phoenix-assets dir exists
-        // if present, download the image inside it, if not create the dir and then download the image inside it
-        phoenixAssetsDir.exists((err, exists) => {
+        // the directory name that user wrote, first check if it exists or not
+        // if it doesn't exist we create it and then download the image inside it
+        targetDir.exists((err, exists) => {
             if (err) { return; }
 
             if (!exists) {
-                phoenixAssetsDir.create((err) => {
-                    if (err) {
-                        console.error('Error creating phoenix-code-assets directory:', err);
-                        return;
-                    }
-                    _downloadImageToPhoenixAssets(message, filename, extnName, phoenixAssetsDir);
+                targetDir.create((err) => {
+                    if (err) { return; }
+                    _downloadImageToDirectory(message, filename, extnName, targetDir);
                 });
             } else {
-                _downloadImageToPhoenixAssets(message, filename, extnName, phoenixAssetsDir);
+                _downloadImageToDirectory(message, filename, extnName, targetDir);
+            }
+        });
+    }
+
+    // these folders are generally very large, and we don't scan them otherwise it might freeze the UI
+    const EXCLUDED_FOLDERS = ['node_modules', 'bower_components', '.git', '.npm', '.yarn'];
+
+    /**
+     * this function scans all the directories recursively
+     * and then add the relative paths of the directories to the folderList array
+     *
+     * @param {Directory} directory - The parent directory to scan
+     * @param {string} relativePath - The relative path from project root
+     * @param {Array<string>} folderList - Array to store all discovered folder paths
+     * @return {Promise} Resolves when scanning is complete
+     */
+    function _scanDirectories(directory, relativePath, folderList) {
+        return new Promise((resolve) => {
+            directory.getContents((err, contents) => {
+                if (err) {
+                    resolve();
+                    return;
+                }
+
+                const directories = contents.filter(entry => entry.isDirectory);
+                const scanPromises = [];
+
+                directories.forEach(dir => {
+                    // if its an excluded folder we ignore it
+                    if (EXCLUDED_FOLDERS.includes(dir.name)) {
+                        return;
+                    }
+
+                    const dirRelativePath = relativePath ? `${relativePath}${dir.name}/` : `${dir.name}/`;
+                    folderList.push(dirRelativePath);
+
+                    // also check subdirectories for this dir
+                    scanPromises.push(_scanDirectories(dir, dirRelativePath, folderList));
+                });
+
+                Promise.all(scanPromises).then(() => resolve());
+            });
+        });
+    }
+
+    /**
+     * Renders folder suggestions as a dropdown in the UI with fuzzy match highlighting
+     *
+     * @param {Array<string|Object>} matches - Array of folder paths (strings) or fuzzy match objects with stringRanges
+     * @param {JQuery} $suggestions - jQuery element for the suggestions container
+     * @param {JQuery} $input - jQuery element for the input field
+     */
+    function _renderFolderSuggestions(matches, $suggestions, $input) {
+        if (matches.length === 0) {
+            $suggestions.empty();
+            return;
+        }
+
+        let html = '<ul class="folder-suggestions-list">';
+        matches.forEach((match, index) => {
+            let displayHTML = '';
+            let folderPath = '';
+
+            // Check if match is a string or an object
+            if (typeof match === 'string') {
+                // Simple string (from empty query showing folders)
+                displayHTML = match;
+                folderPath = match;
+            } else if (match && match.stringRanges) {
+                // fuzzy match, highlight matched chars
+                match.stringRanges.forEach(range => {
+                    if (range.matched) {
+                        displayHTML += `<span class="folder-match-highlight">${range.text}</span>`;
+                    } else {
+                        displayHTML += range.text;
+                    }
+                });
+                folderPath = match.label || '';
+            }
+
+            // first item should be selected by default
+            const selectedClass = index === 0 ? ' selected' : '';
+            html += `<li class="folder-suggestion-item${selectedClass}" data-path="${folderPath}">${displayHTML}</li>`;
+        });
+        html += '</ul>';
+
+        $suggestions.html(html);
+
+        // when a suggestion is clicked we add the folder path in the input box
+        $suggestions.find('.folder-suggestion-item').on('click', function() {
+            const folderPath = $(this).data('path');
+            $input.val(folderPath);
+            $suggestions.empty();
+        });
+    }
+
+    /**
+     * This function is responsible to update the folder suggestion everytime a new char is inserted in the input field
+     *
+     * @param {string} query - The search query from the input field
+     * @param {Array<string>} folderList - List of all available folder paths
+     * @param {StringMatch.StringMatcher} stringMatcher - StringMatcher instance for fuzzy matching
+     * @param {JQuery} $suggestions - jQuery element for the suggestions container
+     * @param {JQuery} $input - jQuery element for the input field
+     */
+    function _updateFolderSuggestions(query, folderList, stringMatcher, $suggestions, $input) {
+        if (!query || query.trim() === '') {
+            return;
+        }
+
+        // filter folders using fuzzy matching
+        const matches = folderList
+            .map(folder => {
+                const result = stringMatcher.match(folder, query);
+                if (result) {
+                    // get the last folder name (e.g., "assets/images/" -> "images")
+                    const folderPath = result.label || folder;
+                    const segments = folderPath.split('/').filter(s => s.length > 0);
+                    const lastSegment = segments[segments.length - 1] || '';
+                    result.folderName = lastSegment.toLowerCase();
+
+                    // we need to boost the score significantly if the last folder segment starts with the query
+                    // This ensures folders like "images/" rank higher than "testing/maps/google/" when typing "image"
+                    // note: here testing/maps/google has all the chars of 'image'
+                    if (lastSegment.toLowerCase().startsWith(query.toLowerCase())) {
+                        // Use a large positive boost (matchGoodness is negative, so we subtract a large negative number)
+                        result.matchGoodness -= 10000;
+                    }
+                    // Also boost (but less) if the last segment contains the query as a substring
+                    else if (lastSegment.toLowerCase().includes(query.toLowerCase())) {
+                        result.matchGoodness -= 1000;
+                    }
+                }
+                return result;
+            })
+            .filter(result => result !== null && result !== undefined);
+
+        // Sort by matchGoodness first (prefix matches will have best scores),
+        // then alphabetically by folder name, then by full path
+        StringMatch.multiFieldSort(matches, { matchGoodness: 0, folderName: 1, label: 2 });
+
+        const topMatches = matches.slice(0, 15);
+        _renderFolderSuggestions(topMatches, $suggestions, $input);
+    }
+
+    /**
+     * register the input box handlers (folder selection dialog)
+     * also registers the 'arrow up/down and enter' key handler for folder selection and move the selected folder,
+     * in the list of suggestions
+     *
+     * @param {JQuery} $input - the input box element
+     * @param {JQuery} $suggestions - the suggestions list element
+     * @param {JQuery} $dlg - the dialog box element
+     */
+    function _registerFolderDialogInputHandlers($input, $suggestions, $dlg) {
+        // keyboard navigation handler for arrow keys
+        $input.on('keydown', function(e) {
+            const isArrowDown = e.keyCode === 40;
+            const isArrowUp = e.keyCode === 38;
+            // we only want to handle the arrow up arrow down keys
+            if (!isArrowDown && !isArrowUp) { return; }
+
+            e.preventDefault();
+            const $items = $suggestions.find('.folder-suggestion-item');
+            if ($items.length === 0) { return; }
+
+            const $selected = $items.filter('.selected');
+
+            // determine which item to select next
+            let $nextItem;
+            if ($selected.length === 0) {
+                // no selection - select first or last based on direction
+                $nextItem = isArrowDown ? $items.first() : $items.last();
+            } else {
+                // move selection
+                const currentIndex = $items.index($selected);
+                $selected.removeClass('selected');
+                const nextIndex = isArrowDown
+                    ? (currentIndex + 1) % $items.length
+                    : (currentIndex - 1 + $items.length) % $items.length;
+                $nextItem = $items.eq(nextIndex);
+            }
+
+            // apply selection and scroll the selected item into view (if not in view)
+            $nextItem.addClass('selected');
+            if ($nextItem.length > 0) {
+                $nextItem[0].scrollIntoView({ block: "nearest", behavior: "auto" });
+            }
+        });
+
+        // for enter key, we're using keyup handler because keydown was interfering with dialog's default behaviour
+        // when enter key is pressed, we check if there are any selected folders in the suggestions
+        // if yes, we type the folder path in the input box,
+        // if no, we click the ok button of the dialog
+        $input.on('keyup', function(e) {
+            if (e.keyCode === 13) { // enter key
+                const $items = $suggestions.find('.folder-suggestion-item');
+                const $selected = $items.filter('.selected');
+
+                // if there's a selected suggestion, use it
+                if ($selected.length > 0) {
+                    const folderPath = $selected.data('path');
+                    $input.val(folderPath);
+                    $suggestions.empty();
+                } else {
+                    // no suggestions, trigger OK button click
+                    $dlg.find('[data-button-id="ok"]').click();
+                }
             }
         });
     }
 
     /**
-     * Helper function to download image to phoenix-assets folder
+     * this shows the folder selection dialog for choosing where to download images
+     * @param {Object} message - the message object (optional, only needed when downloading image)
+     * @private
      */
-    function _downloadImageToPhoenixAssets(message, filename, extnName, phoenixAssetsDir) {
-        getUniqueFilename(phoenixAssetsDir.fullPath, filename, extnName).then((uniqueFilename) => {
+    function _showFolderSelectionDialog(message) {
+        const projectRoot = ProjectManager.getProjectRoot();
+        if (!projectRoot) { return; }
+
+        // show the dialog with a text box to select a folder
+        // dialog html is written in 'image-folder-dialog.html'
+        const templateVars = {
+            Strings: Strings
+        };
+        const dialog = Dialogs.showModalDialogUsingTemplate(Mustache.render(ImageFolderDialogTemplate, templateVars), false);
+        const $dlg = dialog.getElement();
+        const $input = $dlg.find("#folder-path-input");
+        const $suggestions = $dlg.find("#folder-suggestions");
+        const $rememberCheckbox = $dlg.find("#remember-folder-checkbox");
+
+        let folderList = [];
+        let stringMatcher = null;
+
+        // Scan project directories and setup event handlers
+        _scanDirectories(projectRoot, '', folderList).then(() => {
+            stringMatcher = new StringMatch.StringMatcher({ segmentedSearch: true });
+        });
+
+        // input event handler
+        $input.on('input', function() {
+            _updateFolderSuggestions($input.val(), folderList, stringMatcher, $suggestions, $input);
+        });
+        _registerFolderDialogInputHandlers($input, $suggestions, $dlg);
+        // focus the input box
+        setTimeout(function() {
+            $input.focus();
+        }, 100);
+
+        // handle dialog button clicks
+        // so the logic is either its an ok button click or cancel button click, so if its ok click
+        // then we download image in that folder and close the dialog, in close btn click we directly close the dialog
+        $dlg.one("buttonClick", function(e, buttonId) {
+            if (buttonId === Dialogs.DIALOG_BTN_OK) {
+                const folderPath = $input.val().trim();
+
+                // if the checkbox is checked, we save the folder preference for this project
+                if ($rememberCheckbox.is(':checked')) {
+                    StateManager.set(IMAGE_DOWNLOAD_FOLDER_KEY, folderPath, StateManager.PROJECT_CONTEXT);
+                }
+
+                // if message is provided, download the image
+                if (message) {
+                    _downloadToFolder(message, folderPath);
+                }
+            }
+            dialog.close();
+        });
+    }
+
+    /**
+     * This function is called when 'use this image' button is clicked in the image ribbon gallery
+     * or user loads an image file from the computer
+     * this is responsible to download the image in the appropriate place
+     * and also change the src attribute of the element (by calling appropriate helper functions)
+     *
+     * @param {Object} message - the message object which stores all the required data for this operation
+     */
+    function _handleUseThisImage(message) {
+        const projectRoot = ProjectManager.getProjectRoot();
+        if (!projectRoot) { return; }
+
+        // check if user has already saved a folder preference for this project
+        const savedFolder = StateManager.get(IMAGE_DOWNLOAD_FOLDER_KEY, StateManager.PROJECT_CONTEXT);
+        // we specifically check for nullish type vals because empty string is possible as it means project root
+        if (savedFolder !== null && savedFolder !== undefined) {
+            _downloadToFolder(message, savedFolder);
+        } else {
+            // show the folder selection dialog
+            _showFolderSelectionDialog(message);
+        }
+    }
+
+    /**
+     * Helper function to download image to the specified directory
+     *
+     * @param {Object} message - Message containing image download info
+     * @param {string} filename - Name of the image file
+     * @param {string} extnName - File extension (e.g., "jpg")
+     * @param {Directory} targetDir - Target directory to save the image
+     */
+    function _downloadImageToDirectory(message, filename, extnName, targetDir) {
+        getUniqueFilename(targetDir.fullPath, filename, extnName).then((uniqueFilename) => {
             // check if the image is loaded from computer or from remote
             if (message.isLocalFile && message.imageData) {
-                _handleUseThisImageLocalFiles(message, uniqueFilename, phoenixAssetsDir);
+                _handleUseThisImageLocalFiles(message, uniqueFilename, targetDir);
             } else {
-                _handleUseThisImageRemote(message, uniqueFilename, phoenixAssetsDir);
+                _handleUseThisImageRemote(message, uniqueFilename, targetDir);
             }
         }).catch(error => {
             console.error('Something went wrong when trying to use this image', error);
         });
+    }
+
+    /**
+     * Handles reset of image folder selection - clears the saved preference and shows the dialog
+     * @private
+     */
+    function _handleResetImageFolderSelection() {
+        // clear the saved folder preference for this project
+        StateManager.set(IMAGE_DOWNLOAD_FOLDER_KEY, null, StateManager.PROJECT_CONTEXT);
+
+        // show the folder selection dialog for the user to choose a new folder
+        // we pass null because we're not downloading an image, just setting the preference
+        _showFolderSelectionDialog(null);
     }
 
     /**
@@ -833,6 +1153,12 @@ define(function (require, exports, module) {
     * these are the main properties that are passed through the message
      */
     function handleLivePreviewEditOperation(message) {
+        // handle reset image folder selection
+        if (message.resetImageFolderSelection) {
+            _handleResetImageFolderSelection();
+            return;
+        }
+
         // handle move(drag & drop)
         if (message.move && message.sourceId && message.targetId) {
             _moveElementInSource(message.sourceId, message.targetId, message.insertAfter, message.insertInside);
