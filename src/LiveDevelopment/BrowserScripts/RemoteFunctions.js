@@ -988,6 +988,48 @@ function RemoteFunctions(config = {}) {
     }
 
     /**
+     * this function is for finding the best target element on where to drop the dragged element
+     * for ex: div > image...here both the div and image are of the exact same size, then when user is dragging some
+     * other element, then almost everytime they want to drop it before/after the div and not like div>newEle+img
+     * @param {Element} target - The current target element
+     * @returns {Element|null} - The outermost parent with all edges aligned, or null
+     */
+    function _findBestParentTarget(target) {
+        if (!target) {
+            return null;
+        }
+
+        const tolerance = 1; // 1px is considered same
+        let bestParent = null;
+        let currentElement = target;
+        let parent = currentElement.parentElement;
+
+        while (parent) {
+            if (parent.hasAttribute("data-brackets-id") && isElementEditable(parent)) {
+                const currentRect = currentElement.getBoundingClientRect();
+                const parentRect = parent.getBoundingClientRect();
+
+                // check if all the edges are same
+                const topAligned = Math.abs(currentRect.top - parentRect.top) <= tolerance;
+                const bottomAligned = Math.abs(currentRect.bottom - parentRect.bottom) <= tolerance;
+                const leftAligned = Math.abs(currentRect.left - parentRect.left) <= tolerance;
+                const rightAligned = Math.abs(currentRect.right - parentRect.right) <= tolerance;
+
+                if (topAligned && bottomAligned && leftAligned && rightAligned) {
+                    // all edges match, we prefer the parent element
+                    bestParent = parent;
+                    currentElement = parent;
+                } else {
+                    break;
+                }
+            }
+            parent = parent.parentElement;
+        }
+
+        return bestParent;
+    }
+
+    /**
      * Find the nearest valid drop target when direct elementFromPoint fails
      * @param {number} clientX - x coordinate
      * @param {number} clientY - y coordinate
@@ -1065,6 +1107,12 @@ function RemoteFunctions(config = {}) {
             }
         }
 
+        // Check if we should prefer a parent when all edges are aligned
+        const bestParent = _findBestParentTarget(target);
+        if (bestParent) {
+            target = bestParent;
+        }
+
         // Store original styles before modifying them
         if (target._originalDragBackgroundColor === undefined) {
             target._originalDragBackgroundColor = target.style.backgroundColor;
@@ -1134,6 +1182,12 @@ function RemoteFunctions(config = {}) {
             dismissUIAndCleanupState();
             delete window._currentDraggedElement;
             return;
+        }
+
+        // Check if we should prefer a parent when all edges are aligned
+        const bestParent = _findBestParentTarget(target);
+        if (bestParent) {
+            target = bestParent;
         }
 
         // Determine drop position based on container layout and cursor position
