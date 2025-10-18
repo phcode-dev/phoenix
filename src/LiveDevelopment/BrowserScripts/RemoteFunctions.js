@@ -3862,7 +3862,9 @@ function RemoteFunctions(config = {}) {
 
                     // 4 is just for pixelated differences
                     if (Math.abs(calcNewDifference - prevDifference) > 4) {
-                        dismissUIAndCleanupState();
+                        dismissNodeInfoBox();
+                        dismissNodeMoreOptionsBox();
+                        cleanupPreviousElementState();
                     }
                 }
             }
@@ -3886,10 +3888,43 @@ function RemoteFunctions(config = {}) {
                         const prevDifference = _nodeInfoBox._possDifference;
 
                         if (Math.abs(calcNewDifference - prevDifference) > 4) {
-                            dismissUIAndCleanupState();
+                            dismissNodeInfoBox();
+                            dismissNodeMoreOptionsBox();
+                            cleanupPreviousElementState();
                         }
                     }
                 }
+            }
+        }
+    }
+
+    // this function is responsible to reposition the AI box
+    // so we need to reposition it when for ex: a fixed positioned element is selected in the live preview
+    // now when live preview is scrolled the element remains at a fixed position but the AI box will drift away
+    // so we reposition it when its a fixed element
+    function _repositionAIBox() {
+        if (!_aiPromptBox || !_aiPromptBox.element) { return; }
+
+        const aiBox = _aiPromptBox._shadow.querySelector('.phoenix-ai-prompt-box');
+        if (!aiBox) { return; }
+
+        const aiBoxBounds = aiBox.getBoundingClientRect();
+        const elementBounds = _aiPromptBox.element.getBoundingClientRect();
+
+        // this is to store the prev value, so that we can compare it the second time
+        if(!_aiPromptBox._possDifference) {
+            _aiPromptBox._possDifference = aiBoxBounds.top - elementBounds.top;
+        } else {
+            const calcNewDifference = aiBoxBounds.top - elementBounds.top;
+            const prevDifference = _aiPromptBox._possDifference;
+
+            // 4 is just for pixelated differences
+            if (Math.abs(calcNewDifference - prevDifference) > 4) {
+                const boxPositions = _aiPromptBox._getBoxPosition(aiBoxBounds.width, aiBoxBounds.height);
+
+                aiBox.style.left = boxPositions.leftPos + 'px';
+                aiBox.style.top = boxPositions.topPos + 'px';
+                _aiPromptBox._possDifference = calcNewDifference;
             }
         }
     }
@@ -3901,11 +3936,13 @@ function RemoteFunctions(config = {}) {
             redrawHighlights();
             // need to dismiss the box if the elements are fixed, otherwise they drift at times
             _dismissBoxesForFixedElements();
+            _repositionAIBox(); // and reposition the AI box
         } else {
             if (_localHighlight || _clickHighlight || _hoverHighlight) {
                 window.setTimeout(redrawHighlights, 0);
             }
             _dismissBoxesForFixedElements();
+            _repositionAIBox();
         }
     }
 
