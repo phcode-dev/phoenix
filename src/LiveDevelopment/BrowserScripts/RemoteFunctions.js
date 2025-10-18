@@ -1343,7 +1343,7 @@ function RemoteFunctions(config = {}) {
       `,
 
         selectImageFromComputer: `
-        <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
           <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/>
         </svg>
       `,
@@ -1355,7 +1355,7 @@ function RemoteFunctions(config = {}) {
       `,
 
         folderSettings: `
-        <svg viewBox="0 0 24 24" fill="currentColor">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
           <path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>
         </svg>
       `
@@ -2224,7 +2224,7 @@ function RemoteFunctions(config = {}) {
                         left: 0 !important;
                         right: 0 !important;
                         width: 100vw !important;
-                        background: linear-gradient(180deg, rgba(12,14,20,0.0), rgba(12,14,20,0.7)) !important;
+                        background: #3C3F41 !important;
                         z-index: 2147483647 !important;
                         display: flex !important;
                         font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial !important;
@@ -2234,9 +2234,6 @@ function RemoteFunctions(config = {}) {
                     .phoenix-ribbon-container {
                         width: 100% !important;
                         height: 156px !important;
-                        background: rgba(255, 255, 255, 0.3) !important;
-                        backdrop-filter: blur(10px) !important;
-                        -webkit-backdrop-filter: blur(10px) !important;
                         border: 1px solid rgba(255, 255, 255, 0.2) !important;
                         position: relative !important;
                     }
@@ -2353,7 +2350,7 @@ function RemoteFunctions(config = {}) {
                         display: flex !important;
                         width: 100% !important;
                         position: absolute !important;
-                        top: 6px !important;
+                        top: 8px !important;
                     }
 
                     .phoenix-ribbon-header-left {
@@ -2370,54 +2367,50 @@ function RemoteFunctions(config = {}) {
                     .phoenix-ribbon-search {
                         display: flex !important;
                         align-items: stretch !important;
-                        background: rgba(21,25,36,0.65) !important;
-                        padding: 0 !important;
                         border-radius: 6px !important;
                         margin-left: 6px !important;
                         border: 1px solid rgba(255,255,255,0.14) !important;
-                        transition: all 0.2s ease !important;
-                        overflow: hidden !important;
                     }
 
                     .phoenix-ribbon-search:hover {
-                        background: rgba(21,25,36,0.85) !important;
-                        border-color: rgba(255,255,255,0.25) !important;
-                        box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+                        border: 1px solid rgba(0, 0, 0, 0.24) !important;
+                        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
                     }
 
                     .phoenix-ribbon-search:focus-within {
-                        background: rgba(21,25,36,0.9) !important;
-                        border-color: rgba(106,169,255,0.4) !important;
+                        border: 1px solid rgba(0, 0, 0, 0.24) !important;
+                        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
                     }
 
                     .phoenix-ribbon-search input {
                         background: transparent !important;
                         border: none !important;
                         outline: none !important;
-                        color: #eaeaf0 !important;
+                        color: #a0a0a0 !important;
                         width: 150px !important;
                         padding: 2px 6px !important;
                         border-radius: 4px 0 0 4px !important;
                     }
 
                     .phoenix-ribbon-search input::placeholder {
-                        color: rgba(234, 234, 240, 0.6) !important;
-                        opacity: 1 !important;
+                        color: #a0a0a0 !important;
+                        opacity: 0.7 !important;
                     }
 
                     .phoenix-ribbon-search input::-webkit-input-placeholder {
-                        color: rgba(234, 234, 240, 0.6) !important;
+                        color: #a0a0a0 !important;
+                        opacity: 0.7 !important;
                     }
 
                     .phoenix-ribbon-search input::-moz-placeholder {
-                        color: rgba(234, 234, 240, 0.6) !important;
-                        opacity: 1 !important;
+                        color: #a0a0a0 !important;
+                        opacity: 0.7 !important;
                     }
 
                     .phoenix-ribbon-search-btn {
                         background: transparent !important;
                         border: none !important;
-                        color: #4285F4 !important;
+                        color: #a0a0a0 !important;
                         cursor: pointer !important;
                         padding: 2px 6px !important;
                         border-radius: 0 4px 4px 0 !important;
@@ -2428,7 +2421,8 @@ function RemoteFunctions(config = {}) {
                     }
 
                     .phoenix-ribbon-search-btn:hover {
-                        color: #4285F4 !important;
+                        border: 1px solid rgba(0, 0, 0, 0.24) !important;
+                        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
                     }
 
                     .phoenix-ribbon-select {
@@ -2436,64 +2430,52 @@ function RemoteFunctions(config = {}) {
                     }
 
                     .phoenix-select-image-btn {
-                        background: rgba(21,25,36,0.65) !important;
-                        border: 1px solid rgba(255,255,255,0.14) !important;
-                        color: #eaeaf0 !important;
-                        padding: 4px 6px 2px 6px !important;
+                        background-color: transparent !important;
+                        border: none !important;
+                        color: #a0a0a0 !important;
                         border-radius: 6px !important;
-                        font-size: 12px !important;
                         cursor: pointer !important;
-                        transition: all 0.2s ease !important;
                     }
 
                     .phoenix-select-image-btn:hover {
-                        background: rgba(21,25,36,0.85) !important;
-                        border-color: rgba(255,255,255,0.25) !important;
-                        box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+                        border: 1px solid rgba(0, 0, 0, 0.24) !important;
+                        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
                     }
 
                     .phoenix-ribbon-folder-settings {
-                        background: rgba(21,25,36,0.65) !important;
-                        border: 1px solid rgba(255,255,255,0.14) !important;
-                        color: #eaeaf0 !important;
-                        cursor: pointer !important;
-                        padding: 2px 6px 1px 6px !important;
+                        background-color: transparent !important;
+                        border: none !important;
+                        color: #a0a0a0 !important;
                         border-radius: 6px !important;
+                        cursor: pointer !important;
                         margin-right: 8px !important;
-                        transition: all 0.2s ease !important;
-                        font-size: 12px !important;
                         display: flex !important;
                         align-items: center !important;
                         justify-content: center !important;
+                        margin-bottom: 4px !important;
                     }
 
                     .phoenix-ribbon-folder-settings:hover {
-                        background: rgba(21,25,36,0.85) !important;
-                        border-color: rgba(255,255,255,0.25) !important;
-                        box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
-                    }
-
-                    .phoenix-ribbon-folder-settings svg {
-                        width: 16px !important;
-                        height: 16px !important;
+                        border: 1px solid rgba(0, 0, 0, 0.24) !important;
+                        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
                     }
 
                     .phoenix-ribbon-close {
-                        background: rgba(21,25,36,0.65) !important;
-                        border: 1px solid rgba(255,255,255,0.14) !important;
-                        color: #eaeaf0 !important;
-                        cursor: pointer !important;
-                        padding: 2px 7px 1px 7px !important;
+                        background-color: transparent !important;
+                        border: none !important;
+                        color: #a0a0a0 !important;
                         border-radius: 6px !important;
+                        cursor: pointer !important;
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: center !important;
                         margin-right: 16px !important;
-                        transition: all 0.2s ease !important;
-                        font-size: 16px !important;
+                        font-size: 22px !important;
                     }
 
                     .phoenix-ribbon-close:hover {
-                        background: rgba(21,25,36,0.85) !important;
-                        border-color: rgba(255,255,255,0.25) !important;
-                        box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+                        border: 1px solid rgba(0, 0, 0, 0.24) !important;
+                        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
                     }
 
                     .phoenix-ribbon-attribution {
