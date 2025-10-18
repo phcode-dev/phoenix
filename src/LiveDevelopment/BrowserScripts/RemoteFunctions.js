@@ -1343,7 +1343,7 @@ function RemoteFunctions(config = {}) {
       `,
 
         selectImageFromComputer: `
-        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
           <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/>
         </svg>
       `,
@@ -1357,6 +1357,12 @@ function RemoteFunctions(config = {}) {
         folderSettings: `
         <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
           <path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>
+        </svg>
+      `,
+
+        close: `
+        <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+          <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
         </svg>
       `
     };
@@ -2350,25 +2356,28 @@ function RemoteFunctions(config = {}) {
                         display: flex !important;
                         width: 100% !important;
                         position: absolute !important;
-                        top: 8px !important;
+                        top: 7px !important;
                     }
 
                     .phoenix-ribbon-header-left {
                         width: 80% !important;
                         display: flex !important;
+                        align-items: center !important;
                     }
 
                     .phoenix-ribbon-header-right {
                         width: 20% !important;
                         display: flex !important;
                         justify-content: flex-end !important;
+                        align-items: center !important;
                     }
 
                     .phoenix-ribbon-search {
                         display: flex !important;
                         align-items: stretch !important;
                         border-radius: 6px !important;
-                        margin-left: 6px !important;
+                        margin-left: 8px !important;
+                        padding: 2px 2px 2px 4px !important;
                         border: 1px solid rgba(255,255,255,0.14) !important;
                     }
 
@@ -2409,7 +2418,7 @@ function RemoteFunctions(config = {}) {
 
                     .phoenix-ribbon-search-btn {
                         background: transparent !important;
-                        border: none !important;
+                        border: 1px solid transparent !important;
                         color: #a0a0a0 !important;
                         cursor: pointer !important;
                         padding: 2px 6px !important;
@@ -2426,15 +2435,19 @@ function RemoteFunctions(config = {}) {
                     }
 
                     .phoenix-ribbon-select {
-                        margin-left: 10px !important;
+                        margin-left: 4px !important;
                     }
 
                     .phoenix-select-image-btn {
                         background-color: transparent !important;
-                        border: none !important;
+                        border: 1px solid transparent !important;
                         color: #a0a0a0 !important;
                         border-radius: 6px !important;
                         cursor: pointer !important;
+                        padding: 3px 6px !important;
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: center !important;
                     }
 
                     .phoenix-select-image-btn:hover {
@@ -2444,15 +2457,15 @@ function RemoteFunctions(config = {}) {
 
                     .phoenix-ribbon-folder-settings {
                         background-color: transparent !important;
-                        border: none !important;
+                        border: 1px solid transparent !important;
                         color: #a0a0a0 !important;
                         border-radius: 6px !important;
                         cursor: pointer !important;
-                        margin-right: 8px !important;
+                        margin-right: 2px !important;
+                        padding: 3px 6px !important;
                         display: flex !important;
                         align-items: center !important;
                         justify-content: center !important;
-                        margin-bottom: 4px !important;
                     }
 
                     .phoenix-ribbon-folder-settings:hover {
@@ -2462,15 +2475,15 @@ function RemoteFunctions(config = {}) {
 
                     .phoenix-ribbon-close {
                         background-color: transparent !important;
-                        border: none !important;
+                        border: 1px solid transparent !important;
                         color: #a0a0a0 !important;
                         border-radius: 6px !important;
                         cursor: pointer !important;
+                        padding: 3px 6px !important;
                         display: flex !important;
                         align-items: center !important;
                         justify-content: center !important;
                         margin-right: 16px !important;
-                        font-size: 22px !important;
                     }
 
                     .phoenix-ribbon-close:hover {
@@ -2618,7 +2631,9 @@ function RemoteFunctions(config = {}) {
                                 <button class="phoenix-ribbon-folder-settings" title="${config.strings.imageGallerySelectDownloadFolder}">
                                     ${ICONS.folderSettings}
                                 </button>
-                                <button class="phoenix-ribbon-close">×</button>
+                                <button class="phoenix-ribbon-close">
+                                    ${ICONS.close}
+                                </button>
                             </div>
                         </div>
                         <div class="phoenix-ribbon-nav left">&#8249;</div>
