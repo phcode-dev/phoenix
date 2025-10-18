@@ -820,7 +820,7 @@ function RemoteFunctions(config = {}) {
         if (element._originalDragBackgroundColor === undefined) {
             element._originalDragBackgroundColor = element.style.backgroundColor;
         }
-        element.style.backgroundColor = "rgba(66, 133, 244, 0.15)";
+        element.style.backgroundColor = "rgba(66, 133, 244, 0.22)";
 
         // create the marker element
         let marker = window.document.createElement("div");
@@ -1122,7 +1122,7 @@ function RemoteFunctions(config = {}) {
         }
 
         // Add subtle hover effect to target element
-        target.style.backgroundColor = "rgba(66, 133, 244, 0.1)";
+        target.style.backgroundColor = "rgba(66, 133, 244, 0.22)";
         target.style.transition = "background-color 0.2s ease";
 
         // Determine indicator type and drop zone based on container layout and cursor position
