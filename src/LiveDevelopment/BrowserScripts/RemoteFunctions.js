@@ -1355,13 +1355,13 @@ function RemoteFunctions(config = {}) {
       `,
 
         folderSettings: `
-        <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
           <path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>
         </svg>
       `,
 
         close: `
-        <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15">
           <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
         </svg>
       `
@@ -2419,6 +2419,7 @@ function RemoteFunctions(config = {}) {
                     .phoenix-ribbon-search-btn {
                         background: transparent !important;
                         border: 1px solid transparent !important;
+                        border-left: 1px solid gray !important;
                         color: #a0a0a0 !important;
                         cursor: pointer !important;
                         padding: 2px 6px !important;
@@ -3896,7 +3897,7 @@ function RemoteFunctions(config = {}) {
     // but the element stays at position which will lead to drift between the element & boxes
     function _dismissBoxesForFixedElements() {
         // first we try more options box, because its position is generally fixed even in overlapping cases
-        if (_nodeMoreOptionsBox && _nodeMoreOptionsBox.element) {
+        if (_nodeMoreOptionsBox && _nodeMoreOptionsBox.element && _nodeMoreOptionsBox._shadow) {
             const moreOptionsBoxElement = _nodeMoreOptionsBox._shadow.querySelector('.phoenix-more-options-box');
             if(moreOptionsBoxElement) {
 
@@ -3919,7 +3920,7 @@ function RemoteFunctions(config = {}) {
                     }
                 }
             }
-        } else if (_nodeInfoBox && _nodeInfoBox.element) {
+        } else if (_nodeInfoBox && _nodeInfoBox.element && _nodeInfoBox._shadow) {
             // if more options box didn't exist, we check with info box (logic is same)
             const infoBoxElement = _nodeInfoBox._shadow.querySelector('.phoenix-node-info-box');
             if (infoBoxElement) {
@@ -3954,7 +3955,7 @@ function RemoteFunctions(config = {}) {
     // now when live preview is scrolled the element remains at a fixed position but the AI box will drift away
     // so we reposition it when its a fixed element
     function _repositionAIBox() {
-        if (!_aiPromptBox || !_aiPromptBox.element) { return; }
+        if (!_aiPromptBox || !_aiPromptBox.element || !_aiPromptBox._shadow) { return; }
 
         const aiBox = _aiPromptBox._shadow.querySelector('.phoenix-ai-prompt-box');
         if (!aiBox) { return; }
