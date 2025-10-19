@@ -1364,6 +1364,12 @@ function RemoteFunctions(config = {}) {
         <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15">
           <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
         </svg>
+      `,
+
+        paperPlane: `
+        <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+          <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+        </svg>
       `
     };
 
@@ -1900,9 +1906,9 @@ function RemoteFunctions(config = {}) {
 
                 .phoenix-ai-prompt-box {
                     position: absolute !important;
-                    background: white !important;
+                    background: #3C3F41 !important;
                     border: 1px solid #4285F4 !important;
-                    border-radius: 8px !important;
+                    border-radius: 4px !important;
                     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
                     font-family: Arial, sans-serif !important;
                     z-index: 2147483647 !important;
@@ -1919,55 +1925,56 @@ function RemoteFunctions(config = {}) {
                     width: 100% !important;
                     height: ${boxHeight}px !important;
                     border: none !important;
-                    border-radius: 8px !important;
+                    border-radius: 4px 4px 0 0 !important;
                     padding: 12px 40px 12px 16px !important;
                     font-size: 14px !important;
                     font-family: Arial, sans-serif !important;
                     resize: none !important;
                     outline: none !important;
                     box-sizing: border-box !important;
-                    background: #f9f9f9 !important;
+                    background: transparent !important;
+                    color: #c5c5c5 !important;
+                    transition: background 0.2s ease !important;
                 }
 
                 .phoenix-ai-prompt-textarea:focus {
-                    background: white !important;
+                    background: rgba(255, 255, 255, 0.03) !important;
                 }
 
                 .phoenix-ai-prompt-textarea::placeholder {
-                    color: #999 !important;
+                    color: #a0a0a0 !important;
+                    opacity: 0.7 !important;
                 }
 
                 .phoenix-ai-prompt-send-button {
-                    width: 28px !important;
-                    height: 28px !important;
-                    border: none !important;
-                    border-radius: 50% !important;
-                    background: #4285F4 !important;
-                    color: white !important;
+                    background-color: transparent !important;
+                    border: 1px solid transparent !important;
+                    color: #a0a0a0 !important;
+                    border-radius: 4px !important;
                     cursor: pointer !important;
+                    padding: 3px 6px !important;
                     display: flex !important;
                     align-items: center !important;
                     justify-content: center !important;
                     font-size: 14px !important;
-                    transition: background-color 0.2s !important;
-                    line-height: 0.5 !important;
+                    transition: all 0.2s ease !important;
                 }
 
                 .phoenix-ai-prompt-send-button:hover:not(:disabled) {
-                    background: #4285F4 !important;
+                    border: 1px solid rgba(0, 0, 0, 0.24) !important;
+                    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
                 }
 
                 .phoenix-ai-prompt-send-button:disabled {
-                    background: #dadce0 !important;
-                    color: #9aa0a6 !important;
+                    opacity: 0.5 !important;
                     cursor: not-allowed !important;
                 }
 
                 .phoenix-ai-bottom-controls {
-                    border-top: 1px solid #e0e0e0 !important;
+                    border-top: 1px solid rgba(255,255,255,0.14) !important;
                     padding: 8px 16px !important;
-                    background: #f9f9f9 !important;
-                    border-radius: 0 0 8px 8px !important;
+                    background: transparent !important;
+                    border-radius: 0 0 4px 4px !important;
                     display: flex !important;
                     align-items: center !important;
                     justify-content: space-between !important;
@@ -1975,16 +1982,30 @@ function RemoteFunctions(config = {}) {
 
                 .phoenix-ai-model-select {
                     padding: 4px 8px !important;
-                    border: 1px solid #ddd !important;
+                    border: 1px solid transparent !important;
                     border-radius: 4px !important;
                     font-size: 12px !important;
-                    background: white !important;
+                    background: transparent !important;
+                    color: #a0a0a0 !important;
                     outline: none !important;
                     cursor: pointer !important;
+                    transition: all 0.2s ease !important;
+                }
+
+                .phoenix-ai-model-select:hover {
+                    border: 1px solid rgba(0, 0, 0, 0.24) !important;
+                    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
                 }
 
                 .phoenix-ai-model-select:focus {
-                    border-color: #4285F4 !important;
+                    border: 1px solid rgba(0, 0, 0, 0.24) !important;
+                    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+                }
+
+                .phoenix-ai-model-select option {
+                    background: #000 !important;
+                    color: #fff !important;
+                    padding: 4px 8px !important;
                 }
             `;
 
@@ -2003,7 +2024,7 @@ function RemoteFunctions(config = {}) {
                             <option value="slow">Slow AI</option>
                         </select>
                         <button class="phoenix-ai-prompt-send-button" disabled>
-                            ➤
+                            ${ICONS.paperPlane}
                         </button>
                     </div>
                 </div>
@@ -2377,7 +2398,6 @@ function RemoteFunctions(config = {}) {
                         align-items: stretch !important;
                         border-radius: 6px !important;
                         margin-left: 8px !important;
-                        padding: 2px 2px 2px 4px !important;
                         border: 1px solid rgba(255,255,255,0.14) !important;
                     }
 
@@ -2395,10 +2415,15 @@ function RemoteFunctions(config = {}) {
                         background: transparent !important;
                         border: none !important;
                         outline: none !important;
-                        color: #a0a0a0 !important;
+                        color: #c5c5c5 !important;
                         width: 150px !important;
-                        padding: 2px 6px !important;
+                        padding: 4px 8px !important;
                         border-radius: 4px 0 0 4px !important;
+                        transition: background 0.2s ease !important;
+                    }
+
+                    .phoenix-ribbon-search input:focus {
+                        background: rgba(255, 255, 255, 0.03) !important;
                     }
 
                     .phoenix-ribbon-search input::placeholder {
