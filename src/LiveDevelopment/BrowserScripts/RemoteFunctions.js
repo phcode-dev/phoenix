@@ -2442,7 +2442,7 @@ function RemoteFunctions(config = {}) {
                         background-color: transparent !important;
                         border: 1px solid transparent !important;
                         color: #a0a0a0 !important;
-                        border-radius: 6px !important;
+                        border-radius: 4px !important;
                         cursor: pointer !important;
                         padding: 3px 6px !important;
                         display: flex !important;
@@ -2459,7 +2459,7 @@ function RemoteFunctions(config = {}) {
                         background-color: transparent !important;
                         border: 1px solid transparent !important;
                         color: #a0a0a0 !important;
-                        border-radius: 6px !important;
+                        border-radius: 4px !important;
                         cursor: pointer !important;
                         margin-right: 2px !important;
                         padding: 3px 6px !important;
@@ -2477,7 +2477,7 @@ function RemoteFunctions(config = {}) {
                         background-color: transparent !important;
                         border: 1px solid transparent !important;
                         color: #a0a0a0 !important;
-                        border-radius: 6px !important;
+                        border-radius: 4px !important;
                         cursor: pointer !important;
                         padding: 3px 6px !important;
                         display: flex !important;
