@@ -3545,10 +3545,11 @@ function RemoteFunctions(config = {}) {
                 body.removeChild(highlights[i]);
             }
 
-            if (this.trigger) {
-                for (i = 0; i < this.elements.length; i++) {
+            for (i = 0; i < this.elements.length; i++) {
+                if (this.trigger) {
                     _trigger(this.elements[i], "highlight", 0);
                 }
+                clearElementBackground(this.elements[i]);
             }
 
             this.elements = [];
