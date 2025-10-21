@@ -918,6 +918,7 @@ define(function (require, exports, module) {
         html += '</ul>';
 
         $suggestions.html(html);
+        $suggestions.scrollTop(0); // always need to scroll to top when query changes
 
         // when a suggestion is clicked we add the folder path in the input box
         $suggestions.find('.folder-suggestion-item').on('click', function() {
