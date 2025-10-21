@@ -809,6 +809,36 @@ define(function (require, exports, module) {
     const EXCLUDED_FOLDERS = ['node_modules', 'bower_components', '.git', '.npm', '.yarn'];
 
     /**
+     * this function scans all the root directories
+     * root directories means those directories that are directly inside the project folder
+     * we need this to show when the query is empty
+     *
+     * @param {Directory} directory - project root directory
+     * @param {Array<string>} folderList - array to store discovered root folder paths
+     * @return {Promise} Resolves when root scan is complete
+     */
+    function _scanRootDirectoriesOnly(directory, folderList) {
+        return new Promise((resolve) => {
+            directory.getContents((err, contents) => {
+                if (err) {
+                    resolve();
+                    return;
+                }
+
+                const directories = contents.filter(entry => entry.isDirectory);
+
+                directories.forEach(dir => {
+                    // ignore all the excluded folders
+                    if (EXCLUDED_FOLDERS.includes(dir.name)) { return; }
+                    // add root folder name with trailing slash
+                    folderList.push(dir.name + '/');
+                });
+                resolve();
+            });
+        });
+    }
+
+    /**
      * this function scans all the directories recursively
      * and then add the relative paths of the directories to the folderList array
      *
@@ -902,14 +932,19 @@ define(function (require, exports, module) {
      *
      * @param {string} query - The search query from the input field
      * @param {Array<string>} folderList - List of all available folder paths
+     * @param {Array<string>} rootFolders - list of root-level folder paths
      * @param {StringMatch.StringMatcher} stringMatcher - StringMatcher instance for fuzzy matching
      * @param {JQuery} $suggestions - jQuery element for the suggestions container
      * @param {JQuery} $input - jQuery element for the input field
      */
-    function _updateFolderSuggestions(query, folderList, stringMatcher, $suggestions, $input) {
+    function _updateFolderSuggestions(query, folderList, rootFolders, stringMatcher, $suggestions, $input) {
         if (!query || query.trim() === '') {
+            // when input is empty we show the root folders
+            _renderFolderSuggestions(rootFolders.slice(0, 15), $suggestions, $input);
             return;
         }
+
+        if (!stringMatcher) { return; }
 
         // filter folders using fuzzy matching
         const matches = folderList
@@ -1034,16 +1069,19 @@ define(function (require, exports, module) {
         const $rememberCheckbox = $dlg.find("#remember-folder-checkbox");
 
         let folderList = [];
+        let rootFolders = [];
         let stringMatcher = null;
 
-        // Scan project directories and setup event handlers
-        _scanDirectories(projectRoot, '', folderList).then(() => {
+        _scanRootDirectoriesOnly(projectRoot, rootFolders).then(() => {
             stringMatcher = new StringMatch.StringMatcher({ segmentedSearch: true });
+            _renderFolderSuggestions(rootFolders.slice(0, 15), $suggestions, $input);
         });
+
+        _scanDirectories(projectRoot, '', folderList);
 
         // input event handler
         $input.on('input', function() {
-            _updateFolderSuggestions($input.val(), folderList, stringMatcher, $suggestions, $input);
+            _updateFolderSuggestions($input.val(), folderList, rootFolders, stringMatcher, $suggestions, $input);
         });
         _registerFolderDialogInputHandlers($input, $suggestions, $dlg);
         // focus the input box
