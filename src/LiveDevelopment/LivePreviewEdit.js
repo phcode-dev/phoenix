@@ -805,8 +805,21 @@ define(function (require, exports, module) {
         });
     }
 
-    // these folders are generally very large, and we don't scan them otherwise it might freeze the UI
-    const EXCLUDED_FOLDERS = ['node_modules', 'bower_components', '.git', '.npm', '.yarn'];
+    /**
+     * This function is to determine whether we need to exclude a folder from the suggestions list
+     * so we exclude all the folders that start with . 'dot' as this are generally irrelevant dirs
+     * secondly, we also exclude large dirs like node modules as they might freeze the UI if we scan them
+     * @param {String} folderName - the folder name to check if we need to exclude it or not
+     * @returns {Boolean} - true if we should exclude otherwise false
+     */
+    function _isExcludedFolder(folderName) {
+        if (folderName.startsWith('.')) { return true; }
+
+        const UNNECESSARY_FOLDERS = ['node_modules', 'bower_components'];
+        if (UNNECESSARY_FOLDERS.includes(folderName)) { return true; }
+
+        return false;
+    }
 
     /**
      * this function scans all the root directories
@@ -828,8 +841,7 @@ define(function (require, exports, module) {
                 const directories = contents.filter(entry => entry.isDirectory);
 
                 directories.forEach(dir => {
-                    // ignore all the excluded folders
-                    if (EXCLUDED_FOLDERS.includes(dir.name)) { return; }
+                    if (_isExcludedFolder(dir.name)) { return; }
                     // add root folder name with trailing slash
                     folderList.push(dir.name + '/');
                 });
@@ -859,10 +871,7 @@ define(function (require, exports, module) {
                 const scanPromises = [];
 
                 directories.forEach(dir => {
-                    // if its an excluded folder we ignore it
-                    if (EXCLUDED_FOLDERS.includes(dir.name)) {
-                        return;
-                    }
+                    if (_isExcludedFolder(dir.name)) { return; }
 
                     const dirRelativePath = relativePath ? `${relativePath}${dir.name}/` : `${dir.name}/`;
                     folderList.push(dirRelativePath);
