@@ -886,6 +886,23 @@ define(function (require, exports, module) {
     }
 
     /**
+     * this function is responsible to get the subdirectories inside a directory
+     * we need this because we need to show the drilled down folders...
+     * @param {String} parentPath - Parent folder path (e.g., "images/")
+     * @param {Array<string>} folderList - Complete list of all folder paths
+     * @return {Array<string>} Array of direct subfolders only
+     */
+    function _getSubfolders(parentPath, folderList) {
+        return folderList.filter(folder => {
+            if (!folder.startsWith(parentPath)) { return false; }
+
+            const relativePath = folder.substring(parentPath.length);
+            const pathWithoutTrailingSlash = relativePath.replace(/\/$/, '');
+            return !pathWithoutTrailingSlash.includes('/');
+        });
+    }
+
+    /**
      * Renders folder suggestions as a dropdown in the UI with fuzzy match highlighting
      *
      * @param {Array<string|Object>} matches - Array of folder paths (strings) or fuzzy match objects with stringRanges
@@ -932,8 +949,7 @@ define(function (require, exports, module) {
         // when a suggestion is clicked we add the folder path in the input box
         $suggestions.find('.folder-suggestion-item').on('click', function() {
             const folderPath = $(this).data('path');
-            $input.val(folderPath);
-            $suggestions.empty();
+            $input.val(folderPath).trigger('input');
         });
     }
 
@@ -951,6 +967,18 @@ define(function (require, exports, module) {
         if (!query || query.trim() === '') {
             // when input is empty we show the root folders
             _renderFolderSuggestions(rootFolders.slice(0, 15), $suggestions, $input);
+            return;
+        }
+
+        // if the query ends with a /
+        // we then show the drilled down list of dirs inside that parent directory
+        if (query.endsWith('/')) {
+            const subfolders = _getSubfolders(query, folderList);
+            const formattedSubfolders = subfolders.map(folder => {
+                return stringMatcher.match(folder, query) || { label: folder, stringRanges: [{ text: folder, matched: false }] };
+            });
+
+            _renderFolderSuggestions(formattedSubfolders.slice(0, 15), $suggestions, $input);
             return;
         }
 
@@ -1048,8 +1076,7 @@ define(function (require, exports, module) {
                 // if there's a selected suggestion, use it
                 if ($selected.length > 0) {
                     const folderPath = $selected.data('path');
-                    $input.val(folderPath);
-                    $suggestions.empty();
+                    $input.val(folderPath).trigger('input');
                 } else {
                     // no suggestions, trigger OK button click
                     $dlg.find('[data-button-id="ok"]').click();
