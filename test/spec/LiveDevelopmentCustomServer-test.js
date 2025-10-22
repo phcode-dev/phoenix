@@ -939,6 +939,8 @@ define(function (require, exports, module) {
                 serverFile =  `${serverFile}.${serverFile}`;
                 await _createAnOpenFile(testPath, serverFile);
                 await _forBannerAppear(serverFile);
+                // custom server should never have live preview status banner
+                expect(testWindow.$(".live-preview-status-overlay").is(":visible")).toBeFalse();
                 testWindow.$(".close-icon").click();
                 await _forBannerClose(serverFile);
 
@@ -994,7 +996,7 @@ define(function (require, exports, module) {
             await endPreviewSession();
         }, 30000);
 
-        async function _verifyBannerOK() {
+        it("should custom server banner close on setting custom server and only show up once only", async function () {
             const testPath = await SpecRunnerUtils.getTempTestDirectory(
                 "/spec/LiveDevelopment-MultiBrowser-test-files", true);
             await SpecRunnerUtils.loadProjectInTestWindow(testPath);
@@ -1005,6 +1007,8 @@ define(function (require, exports, module) {
             let serverFile =  `php.php`;
             await _createAnOpenFile(testPath, serverFile);
             await _forBannerAppear(serverFile);
+            // custom server should never have live preview status banner
+            expect(testWindow.$(".live-preview-status-overlay").is(":visible")).toBeFalse();
 
             // now edit the settings
             testWindow.$(".live-preview-settings").click();
@@ -1022,17 +1026,6 @@ define(function (require, exports, module) {
             await _createAnOpenFile(testPath, serverFile);
             await awaits(50);
             expect(testWindow.$(".live-preview-settings").is(":visible")).toBeFalse();
-
-            await endPreviewSession();
-            return testPath;
-        }
-
-        it("should custom server banner close on setting custom server", async function () {
-            await _verifyBannerOK();
-        }, 30000);
-
-        it("should custom server banner show up in a project only once", async function () {
-            const testPath = await _verifyBannerOK();
             // switch project
             await SpecRunnerUtils.loadProjectInTestWindow("/test/parked");
             // now switch back
@@ -1044,7 +1037,6 @@ define(function (require, exports, module) {
             expect(testWindow.$(".live-preview-settings").is(":visible")).toBeFalse();
 
             await endPreviewSession();
-
         }, 30000);
     });
 });
