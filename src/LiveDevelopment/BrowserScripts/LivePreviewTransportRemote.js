@@ -103,6 +103,37 @@
         }
     }
 
+    function createLRU(max = 100) {
+        const map = new Map();
+
+        return {
+            set: function (key, value = true) {
+                if (map.has(key)) {
+                    map.delete(key); // refresh order
+                }
+                map.set(key, value);
+                if (map.size > max) {
+                    const oldestKey = map.keys().next().value;
+                    map.delete(oldestKey);
+                }
+            },
+            has: function (key) {
+                if (!map.has(key)) {
+                    return false;
+                }
+                const val = map.get(key);
+                map.delete(key);   // refresh order
+                map.set(key, val);
+                return true;
+            },
+            size: function() {
+                return map.size;
+            }
+        };
+    }
+
+    const processedMessageIDs = createLRU(1000);
+
     const clientID = "" + Math.round( Math.random()*1000000000);
 
     const worker = new Worker(TRANSPORT_CONFIG.LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME);
@@ -218,7 +249,12 @@
                 case 'MESSAGE_FROM_PHOENIX':
                     if (self._callbacks && self._callbacks.message) {
                         const clientIDs = event.data.clientIDs,
-                            message = event.data.message;
+                            message = event.data.message,
+                            messageID = event.data.messageID;
+                        if(messageID && processedMessageIDs.has(messageID)){
+                            return; // we have already processed this message.
+                        }
+                        processedMessageIDs.set(messageID, true);
                         if(clientIDs.includes(clientID) || clientIDs.length === 0){
                             // clientIDs.length = 0 if the message is intended for all clients
                             self._callbacks.message(message);
@@ -264,6 +300,7 @@
             _postLivePreviewMessage({
                 type: 'BROWSER_MESSAGE',
                 clientID: clientID,
+                messageID: crypto.randomUUID(),
                 message: msgStr
             });
         },

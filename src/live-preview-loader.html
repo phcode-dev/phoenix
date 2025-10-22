@@ -147,7 +147,7 @@
             const LOADER_BROADCAST_ID = `live-preview-loader-${controllingPhoenixInstanceID}`;
             const navigatorChannel = new BroadcastChannel(LOADER_BROADCAST_ID);
             const LIVE_PREVIEW_MESSENGER_CHANNEL = `live-preview-messenger-${controllingPhoenixInstanceID}`;
-            const livePreviewChannel = new BroadcastChannel(LIVE_PREVIEW_MESSENGER_CHANNEL);
+            const phcodeBroadcastMessageChannel = new BroadcastChannel(LIVE_PREVIEW_MESSENGER_CHANNEL);
             navigatorChannel.onmessage = (event) => {
                 _debugLog("Live Preview loader channel: Browser received event from Phoenix: ", JSON.stringify(event.data));
                 const type = event.data.type;
@@ -224,7 +224,7 @@
                 type: 'GET_INITIAL_URL',
                 pageLoaderID: pageLoaderID
             });
-            livePreviewChannel.onmessage = (event) => {
+            phcodeBroadcastMessageChannel.onmessage = (event) => {
                 _debugLog("Live Preview message channel: Browser received event from Phoenix: ", JSON.stringify(event.data));
                 if(event.data.pageLoaderID && event.data.pageLoaderID !== pageLoaderID){
                     // this message is not for this page loader window.
@@ -241,7 +241,7 @@
                 }
 
                 // this is for phoenix to process, pass it on
-                livePreviewChannel.postMessage({
+                phcodeBroadcastMessageChannel.postMessage({
                     pageLoaderID: pageLoaderID,
                     data: event.data
                 });
