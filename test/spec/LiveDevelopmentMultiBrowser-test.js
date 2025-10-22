@@ -358,8 +358,6 @@ define(function (require, exports, module) {
 
             expect(fixSpaces(browserText).includes(fixSpaces(styleTextAdd))).toBeTrue();
             await endPreviewSession();
-            // Wait for file cleanup to complete before next test
-            await awaits(500);
         }, 30000);
 
         it("should make CSS-relative URLs absolute", async function () {
@@ -644,13 +642,21 @@ define(function (require, exports, module) {
             await awaitsFor(() => LiveDevMultiBrowser.status === LiveDevMultiBrowser.STATUS_ACTIVE,
                 "status active");
 
-            // Close simple1.css if it's already open to ensure we get a fresh copy from disk
-            await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE_ALL, { _forceClose: true }),
-                "closing all files before opening simple1.css");
-            await awaits(100);
-
-            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.css"]),
-                "simple1.css");
+            // Ensure we get a clean copy of simple1.css from disk, not a modified cached version
+            // from previous tests. We verify the file doesn't contain #090 background-color.
+            // in linux, or if system slow, it will take some time for file system change event to catch
+            // up and update document. so we need to do this below.
+            await awaitsFor(async function () {
+                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE_ALL, { _forceClose: true }),
+                    "closing all files before opening simple1.css");
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.css"]),
+                    "simple1.css");
+                const doc = DocumentManager.getCurrentDocument();
+                const text = doc.getText();
+                // The original simple1.css should NOT contain background-color:#090
+                // That gets added by a previous test and must be cleaned up
+                return !text.includes("background-color:#090");
+            }, "simple1.css to be in clean state without background-color:#090", 5000);
 
             await _openCodeHints({ line: 3, ch: 8 }, ["antiquewhite"]);
 
