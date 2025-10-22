@@ -1037,7 +1037,6 @@ define(function (require, exports, module) {
             await SpecRunnerUtils.loadProjectInTestWindow("/test/parked");
             // now switch back
             await SpecRunnerUtils.loadProjectInTestWindow(testPath);
-            await awaits(1000); // this is here so that the preferences json is loaded on project switch
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
                 "open simple1.html");
             await waitsForLiveDevelopmentToOpen();
