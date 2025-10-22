@@ -194,6 +194,15 @@ define(function (require, exports, module) {
         }
     }
 
+    const processedMessageIDs = new Phoenix.libs.LRUCache({
+        max: 1000
+        // we dont need to set a ttl here as message ids are unique throughout lifetime. And old ids will
+        // start getting evited from the cache. the message ids are only an issue within a fraction of a seconds when
+        // a series of messages are sent in quick succession. Eg. user click on a div and there are 3 tabs and due to
+        // the reflection bug, we almost immediately get 3 messages with the same id. So that will be in this cache
+        // for a fraction of a second. so a size of 1000 should be more than enough.
+    });
+
     /**
      * @private
      * Handles a message received from the remote protocol handler via the transport.
@@ -203,12 +212,21 @@ define(function (require, exports, module) {
      * TODO: we should probably have a way of returning the results from all clients, not just the first?
      *
      * @param {number} clientId ID of the client that sent the message
-     * @param {string} msg The message that was sent, in JSON string format
+     * @param {string} msgStr The message that was sent, in JSON string format
+     * @param {string} messageID The messageID uniquely identifying a message. in browsers, since we use broadcast
+     *      channels, we get reflections echoes when there are multiple tabs open. Ideally those reflections need to
+     *      be fixed, but that was too complex to fix, so we just reply on the message id to guarantee that a message is
+     *      only processed once and not from any reflections.
      */
-    function _receive(clientId, msgStr) {
+    function _receive(clientId, msgStr, messageID) {
         var msg = JSON.parse(msgStr),
             event = msg.method || "event",
             deferred;
+        if(messageID && processedMessageIDs.has(messageID)){
+            return; // this message is already processed.
+        } else if (messageID) {
+            processedMessageIDs.set(messageID, true);
+        }
         if (msg.livePreviewEditEnabled) {
             LivePreviewEdit.handleLivePreviewEditOperation(msg);
         }
@@ -305,7 +323,7 @@ define(function (require, exports, module) {
                 _connect(msg[0], msg[1]);
             })
             .on("message.livedev", function (event, msg) {
-                _receive(msg[0], msg[1]);
+                _receive(msg[0], msg[1], msg[2]);
             })
             .on("close.livedev", function (event, msg) {
                 _close(msg[0]);

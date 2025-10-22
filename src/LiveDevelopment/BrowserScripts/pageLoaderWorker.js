@@ -25,7 +25,7 @@
  */
 
 
-let _livePreviewNavigationChannel;
+let _livePreviewBroadcastChannel;
 let _livePreviewWebSocket, _livePreviewWebSocketOpen = false;
 let livePreviewDebugModeEnabled = false;
 function _debugLog(...args) {
@@ -106,8 +106,8 @@ let messageQueue = [];
 function _sendMessage(message) {
     if(_livePreviewWebSocket && _livePreviewWebSocketOpen) {
         _livePreviewWebSocket.send(mergeMetadataAndArrayBuffer(message));
-    } else if(_livePreviewNavigationChannel){
-        _livePreviewNavigationChannel.postMessage(message);
+    } else if(_livePreviewBroadcastChannel){
+        _livePreviewBroadcastChannel.postMessage(message);
     } else {
         livePreviewDebugModeEnabled && console.warn("No Channels available for live preview worker messaging," +
             " queueing request, waiting for channel..");
@@ -138,8 +138,8 @@ function _setupHearbeatMessenger(clientID) {
 }
 
 function _setupBroadcastChannel(broadcastChannel, clientID) {
-    _livePreviewNavigationChannel=new BroadcastChannel(broadcastChannel);
-    _livePreviewNavigationChannel.onmessage = (event) => {
+    _livePreviewBroadcastChannel=new BroadcastChannel(broadcastChannel);
+    _livePreviewBroadcastChannel.onmessage = (event) => {
         const type = event.data.type;
         switch (type) {
         case 'TAB_ONLINE': break; // do nothing. This is a loopback message from another live preview tab
