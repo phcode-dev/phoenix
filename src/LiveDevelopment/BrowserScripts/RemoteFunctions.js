@@ -1446,10 +1446,11 @@ function RemoteFunctions(config = {}) {
 
             let content = `<div class="node-options">`;
 
-            // not sure if we need to hide/show the AI icon, right now showing always
-            content += `<span data-action="ai" title="${config.strings.ai}">
-                    ${ICONS.ai}
-                </span>`;
+            // @abose @devansh
+            // hiding it for now as AI is not yet ready
+            // content += `<span data-action="ai" title="${config.strings.ai}">
+            //         ${ICONS.ai}
+            //     </span>`;
 
             // Only include select parent option if element supports it
             if (showSelectParentOption) {
