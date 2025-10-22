@@ -522,7 +522,7 @@ define(function (require, exports, module) {
                             }
 
                             const $emmetHintObj = $("<span>")
-                                .addClass("brackets-css-hints brackets-hints")
+                                .addClass("brackets-css-hints brackets-hints emmet-hint")
                                 .attr("data-val", expandedAbbr)
                                 .attr("data-isEmmet", true);
 
