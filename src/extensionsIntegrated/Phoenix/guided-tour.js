@@ -39,7 +39,6 @@ define(function (require, exports, module) {
     const GENERAL_SURVEY_TIME = 1200000, // 20 min
         SURVEY_PRELOAD_DELAY = 10000, // 10 seconds to allow the survey to preload, but not
         // enough time to break user workflow
-        ONE_MONTH_IN_DAYS = 30,
         POWER_USER_SURVEY_INTERVAL_DAYS = 35;
 
     const userAlreadyDidAction = PhStore.getItem(GUIDED_TOUR_LOCAL_STORAGE_KEY)
@@ -58,11 +57,10 @@ define(function (require, exports, module) {
     *  2. Then after user opens default project, we show "edit code for live preview popup"
     *  3. When user changes file by clicking on files panel, we show "click here to open new project window"
     *     this will continue showing every session until user clicks on the new project icon
-    *  4. After about 2 minutes, the GitHub stars popup will show, if not shown in the past two weeks. Repeats 2 weeks.
-    *  5. After about 3 minutes, the health popup will show up.
-    *  6. power user survey shows up if the user has used brackets for 3 days or 8 hours in the last two weeks after 3
+    *  4. After about 3 minutes, the health popup will show up.
+    *  5. power user survey shows up if the user has used brackets for 3 days or 8 hours in the last two weeks after 3
     *     minutes. This will not coincide with health popup due to the power user check.
-    *  7. After about 10 minutes, survey shows up.
+    *  6. After about 10 minutes, survey shows up.
     *  // the rest are by user actions
     *  a. When user clicks on live preview, we show "click here to popout live preview"
     *  b. Beautification notification when user opened the editor context menu and have not done any beautification yet.
@@ -123,94 +121,6 @@ define(function (require, exports, module) {
         currentlyShowingNotification.done(()=>{
             currentlyShowingNotification = null;
         });
-    }
-
-    function _loadTwitterScripts() {
-        // https://developer.twitter.com/en/docs/twitter-for-websites/javascript-api/guides/javascript-api
-        // we maily do this to metric the users who clicked on the tweet button
-        if(window.twttr){
-            return;
-        }
-        const twitterScript = document.createElement( 'script' );
-        twitterScript.setAttribute( 'src', "https://platform.twitter.com/widgets.js" );
-        document.body.appendChild( twitterScript );
-        twitterScript.addEventListener("load", ()=>{
-            if(!window.twttr){
-                console.error("twitter scripts not loaded");
-                return;
-            }
-            window.twttr.events.bind('click', function (ev) {
-                Metrics.countEvent(Metrics.EVENT_TYPE.USER, "notify", "twit.click", 1);
-                if(Phoenix.isNativeApp) {
-                    // hyperlinks wont work in tauri, so we have to use tauri apis
-                    Phoenix.app.openURLInDefaultBrowser(
-                        'https://twitter.com/intent/tweet?screen_name=phcodedev&ref_src=twsrc%5Etfw');
-                }
-            });
-        });
-    }
-
-    function _openStarsPopup() {
-        _loadTwitterScripts();
-        let notification = $(`${Strings.GITHUB_STARS_POPUP}
-                        <div class="gtstarph" style="display: flex;justify-content: space-around;margin-top: 6px;">
-                            <a class="github-button"
-                             href="https://github.com/phcode-dev/phoenix"
-                             data-color-scheme="no-preference: dark; light: dark; dark: dark;"
-                             data-icon="octicon-star"
-                             data-size="large"
-                             data-show-count="true"
-                             title="Star phcode.dev on GitHub"
-                             aria-label="Star phcode-dev/phoenix on GitHub">Star</a>
-                             <a class="github-button"
-                             href="https://github.com/sponsors/phcode-dev"
-                             data-color-scheme="no-preference: dark; light: dark; dark: dark;"
-                             data-icon="octicon-heart"
-                             data-size="large"
-                             data-show-count="true"
-                             title="Star phcode.dev on GitHub"
-                             aria-label="Sponsor @phcode-dev on GitHub">Sponsor</a>
-                           <script async defer src="https://buttons.github.io/buttons.js"></script>
-                        </div>
-                       ${Strings.GITHUB_STARS_POPUP_TWITTER}
-                       <div class="twbnpop" style="display: flex;justify-content: space-around;margin-top: 6px;">
-                            <a href="https://twitter.com/intent/tweet?screen_name=phcodedev&ref_src=twsrc%5Etfw"
-                             class="twitter-mention-button"
-                             data-size="large"
-                             data-related="BracketsCont,brackets"
-                             data-show-count="false">Tweet to @phcodedev</a>
-                       </div>
-                    </div>`);
-        notification.find(".gtstarph").click(()=>{
-            Metrics.countEvent(Metrics.EVENT_TYPE.USER, "notify", "star.click", 1);
-            if(Phoenix.isNativeApp) {
-                // hyperlinks wont work in tauri, so we have to use tauri apis
-                Phoenix.app.openURLInDefaultBrowser(
-                    'https://github.com/phcode-dev/phoenix');
-            }
-        });
-        NotificationUI.createToastFromTemplate(Strings.ENJOYING_APP, notification, {
-            dismissOnClick: false
-        });
-    }
-
-    function _showRequestStarsPopup() {
-        if(Phoenix.firstBoot){
-            // on first boot we don't show the `enjoying phoenix?` popup as user needs more time to evaluate.
-            // GitHub stars/tweet situation isn't improving either. So we show this at the second launch so that we
-            // the users like the product to revisit and then, every 30 days.
-            return;
-        }
-        let lastShownDate = userAlreadyDidAction.lastShownGithubStarsDate;
-        let nextShowDate = new Date(lastShownDate);
-        nextShowDate.setUTCDate(nextShowDate.getUTCDate() + ONE_MONTH_IN_DAYS);
-        let currentDate = new Date();
-        if(!lastShownDate || currentDate >= nextShowDate){
-            Metrics.countEvent(Metrics.EVENT_TYPE.USER, "notify", "star", 1);
-            _openStarsPopup();
-            userAlreadyDidAction.lastShownGithubStarsDate = Date.now();
-            PhStore.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
-        }
     }
 
     function _showFirstUseSurvey(surveyURL, delayOverride, title,  useDialog) {
@@ -372,7 +282,6 @@ define(function (require, exports, module) {
         tourStarted = true;
         _showNewProjectNotification();
         _showBeautifyNotification();
-        _showRequestStarsPopup();
         _showSurveys();
     };
 });
