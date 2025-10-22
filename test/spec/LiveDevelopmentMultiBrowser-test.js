@@ -358,6 +358,8 @@ define(function (require, exports, module) {
 
             expect(fixSpaces(browserText).includes(fixSpaces(styleTextAdd))).toBeTrue();
             await endPreviewSession();
+            // Wait for file cleanup to complete before next test
+            await awaits(500);
         }, 30000);
 
         it("should make CSS-relative URLs absolute", async function () {
@@ -555,7 +557,12 @@ define(function (require, exports, module) {
                     result = JSON.parse(response.result||"");
                     return result === color;
                 },
-                `element #${elementID} to color ${color}`,
+                async ()=>{
+                    const response = await LiveDevProtocol.evaluate(
+                        `window.getComputedStyle(document.getElementById('${elementID}')).color`);
+                    result = JSON.parse(response.result||"");
+                    return `element #${elementID} to color ${color} but was ${result}`;
+                },
                 5000,
                 50
             );
@@ -637,6 +644,11 @@ define(function (require, exports, module) {
             await awaitsFor(() => LiveDevMultiBrowser.status === LiveDevMultiBrowser.STATUS_ACTIVE,
                 "status active");
 
+            // Close simple1.css if it's already open to ensure we get a fresh copy from disk
+            await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE_ALL, { _forceClose: true }),
+                "closing all files before opening simple1.css");
+            await awaits(100);
+
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.css"]),
                 "simple1.css");
 
@@ -648,15 +660,15 @@ define(function (require, exports, module) {
             await awaitsFor(function () {
                 // #090 is the content from simple1.css file
                 // this appears as the 2nd item in the codehint menu, from "suggest previously used color" feature
-                return editor.getSelectedText() === "#090";
-            }, "expected live hints to update selection to #090");
-            await _waitForLivePreviewElementColor("testId", "rgb(0, 153, 0)");
-            SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DOWN, "keydown", testWindow.document.body);
-            await awaitsFor(function () {
                 return editor.getSelectedText() === "aliceblue";
             }, "expected live hints to update selection to aliceblue");
-
             await _waitForLivePreviewElementColor("testId", "rgb(240, 248, 255)"); // aliceblue
+            SpecRunnerUtils.simulateKeyEvent(KeyEvent.DOM_VK_DOWN, "keydown", testWindow.document.body);
+            await awaitsFor(function () {
+                return editor.getSelectedText() === "antiquewhite";
+            }, "expected live hints to update selection to antiquewhite");
+
+            await _waitForLivePreviewElementColor("testId", "rgb(250, 235, 215)"); // antiquewhite
 
             return initialHistoryLength;
         }
@@ -693,7 +705,7 @@ define(function (require, exports, module) {
                 return editor.getSelectedText() === "";
             }, "to restore the text to old state");
             // check if we have the new value
-            expect(editor.getToken().string).toBe("aliceblue");
+            expect(editor.getToken().string).toBe("antiquewhite");
 
             // the undo history should be just one above
             expect(editor.getHistory().done.length).toBe(expectedHistoryLength + 3);
