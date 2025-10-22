@@ -199,6 +199,10 @@ define(function (require, exports, module) {
         // remove any existing overlay & timer
         _hideOverlay();
 
+        if(LivePreviewSettings.isUsingCustomServer()){
+            return;
+        }
+
         // to not show the overlays if user has already closed it before
         if(status === MultiBrowserLiveDev.STATUS_CONNECTING && !shouldShowConnectingOverlay) { return; }
         if(status === MultiBrowserLiveDev.STATUS_SYNC_ERROR && !shouldShowSyncErrorOverlay) { return; }
