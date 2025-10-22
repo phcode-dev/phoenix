@@ -1098,6 +1098,7 @@ define(function (require, exports, module) {
      */
     async function _openLivePreviewURL(_event, previewDetails) {
         if(LivePreviewSettings.isUsingCustomServer()){
+            _hideOverlay();
             return;
         }
         _loadPreview(true);
@@ -1344,7 +1345,9 @@ define(function (require, exports, module) {
         });
 
         MultiBrowserLiveDev.on(MultiBrowserLiveDev.EVENT_STATUS_CHANGE, function(event, status) {
-            if (status === MultiBrowserLiveDev.STATUS_CONNECTING) {
+            if(LivePreviewSettings.isUsingCustomServer()){
+                _hideOverlay();
+            } else if (status === MultiBrowserLiveDev.STATUS_CONNECTING) {
                 _handleOverlay(Strings.LIVE_DEV_STATUS_TIP_PROGRESS1, status);
             } else if (status === MultiBrowserLiveDev.STATUS_SYNC_ERROR) {
                 _handleOverlay(Strings.LIVE_DEV_STATUS_TIP_SYNC_ERROR, status);
