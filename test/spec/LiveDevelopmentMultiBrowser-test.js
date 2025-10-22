@@ -26,7 +26,8 @@ define(function (require, exports, module) {
 
     const SpecRunnerUtils = require("spec/SpecRunnerUtils"),
         KeyEvent = require("utils/KeyEvent"),
-        StringUtils = require("utils/StringUtils");
+        StringUtils = require("utils/StringUtils"),
+        Strings = require("strings");
 
     describe("livepreview:MultiBrowser Live Preview", function () {
 
@@ -357,6 +358,37 @@ define(function (require, exports, module) {
             browserText = browserText.replace(/url\('http:\/\/127\.0\.0\.1:\d+\/import1\.css'\);/, "url('import1.css');");
 
             expect(fixSpaces(browserText).includes(fixSpaces(styleTextAdd))).toBeTrue();
+            await endPreviewSession();
+        }, 30000);
+
+        it("should show error banner if there is syntax error in html", async function () {
+            let savedText,
+                curDoc;
+
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                "SpecRunnerUtils.openProjectFiles simple1.html");
+
+            await waitsForLiveDevelopmentToOpen();
+
+            curDoc = DocumentManager.getCurrentDocument();
+            savedText = curDoc.getText();
+            // split file in half to and add syntax error then see if error banner shows up
+            const mid = Math.ceil(savedText.length / 2);
+            curDoc.setText(savedText.slice(0, mid));
+
+            await awaitsFor(
+                function isBannerVisible() {
+                    return testWindow.$(".live-preview-status-overlay").is(":visible") &&
+                        testWindow.$(".live-preview-status-overlay").text()
+                            .includes(Strings.LIVE_DEV_STATUS_TIP_SYNC_ERROR);
+                },
+                "waiting for syntax error banner to appear",
+                5000,
+                50
+            );
+
+            curDoc.setText(savedText);
+
             await endPreviewSession();
         }, 30000);
 
