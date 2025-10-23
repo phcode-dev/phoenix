@@ -245,8 +245,10 @@ define(function (require, exports, module) {
     }
 
     async function verifyIsPaidSubscriber(expected, _testDescription) {
-        const isPaidSub = await EntitlementsExports.isPaidSubscriber();
-        expect(isPaidSub).toBe(expected);
+        await awaitsFor(async ()=> {
+            const isPaidSub = await EntitlementsExports.isPaidSubscriber();
+            return isPaidSub === expected;
+        }, `paid subscriber to be ${expected}`);
     }
 
     async function verifyRawEntitlements(expected, _testDescription) {
