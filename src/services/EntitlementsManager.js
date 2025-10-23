@@ -55,7 +55,7 @@ define(function (require, exports, module) {
      * @returns {*}
      */
     function isLoggedIn() {
-        return LoginService.isLoggedIn();
+        return LoginService && LoginService.isLoggedIn();
     }
 
     /**
@@ -107,6 +107,19 @@ define(function (require, exports, module) {
             name: Strings.USER_FREE_PLAN_NAME_DO_NOT_TRANSLATE,
             validTill: currentDate + (FREE_PLAN_VALIDITY_DAYS * MS_IN_DAY)
         };
+    }
+
+    /**
+     * Checks if the current user is a paid subscriber (has purchased a plan, not trial users)
+     *
+     * @return {Promise<boolean>} A promise that resolves to true if the user is a paid subscriber, false otherwise.
+     */
+    async function isPaidSubscriber() {
+        if(!isLoggedIn()) {
+            return false;
+        }
+        const planDetails = await getPlanDetails();
+        return !!planDetails.paidSubscriber;
     }
 
     /**
@@ -339,6 +352,7 @@ define(function (require, exports, module) {
             EntitlementsService: EntitlementsManager,
             isLoggedIn,
             getPlanDetails,
+            isPaidSubscriber,
             isInProTrial,
             getTrialRemainingDays,
             getRawEntitlements,
@@ -355,6 +369,7 @@ define(function (require, exports, module) {
     EntitlementsManager.isLoggedIn = isLoggedIn;
     EntitlementsManager.loginToAccount = loginToAccount;
     EntitlementsManager.getPlanDetails = getPlanDetails;
+    EntitlementsManager.isPaidSubscriber = isPaidSubscriber;
     EntitlementsManager.isInProTrial = isInProTrial;
     EntitlementsManager.getTrialRemainingDays = getTrialRemainingDays;
     EntitlementsManager.getRawEntitlements = getRawEntitlements;

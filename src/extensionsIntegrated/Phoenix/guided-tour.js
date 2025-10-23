@@ -1,24 +1,15 @@
-/*
- * GNU AGPL-3.0 License
- *
- * Copyright (c) 2021 - present core.ai . All rights reserved.
- *
- * This program is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
- * for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see https://opensource.org/licenses/AGPL-3.0.
- *
- */
+// SPDX-License-Identifier: AGPL-3.0-only
+// Copyright (c) 2021 - present core.ai. All rights reserved.
+
+/*global logger*/
 
 define(function (require, exports, module) {
+    const KernalModeTrust = window.KernalModeTrust;
+    if(!KernalModeTrust){
+        // integrated extensions will have access to kernal mode, but not external extensions
+        throw new Error("Guided Tour should have access to KernalModeTrust. Cannot boot without trust ring");
+    }
+
     const NotificationUI = require("widgets/NotificationUI"),
         Commands = require("command/Commands"),
         Strings = require("strings"),
@@ -244,6 +235,23 @@ define(function (require, exports, module) {
         PhStore.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
     }
 
+    async function _resolvePowerUserSurveyURL(surveyJson) {
+        try {
+            const isLoggedIn = KernalModeTrust.EntitlementsManager.isLoggedIn();
+            if(!isLoggedIn) {
+                return surveyJson.powerUser;
+            }
+            const paidSubscriber = await KernalModeTrust.EntitlementsManager.isPaidSubscriber();
+            if(paidSubscriber && surveyJson.powerUserPaid) {
+                return surveyJson.powerUserPaid;
+            }
+            return surveyJson.powerUserLoggedIn || surveyJson.powerUser;
+        } catch (e) {
+            logger.reportError(e, "Error resolving power user survey URL");
+        }
+        return surveyJson.powerUser;
+    }
+
     async function _showSurveys() {
         try {
             if(!navigator.onLine){
@@ -258,6 +266,8 @@ define(function (require, exports, module) {
                     newUserShowDelayMS: surveyJSON.browser.newUserShowDelayMS || surveyJSON.newUserShowDelayMS,
                     newUserUseDialog: surveyJSON.browser.newUserUseDialog || surveyJSON.newUserUseDialog,
                     powerUser: surveyJSON.browser.powerUser || surveyJSON.powerUser,
+                    powerUserPaid: surveyJSON.browser.powerUserPaid || surveyJSON.powerUserPaid,
+                    powerUserLoggedIn: surveyJSON.browser.powerUserLoggedIn || surveyJSON.powerUserLoggedIn,
                     powerUserTitle: surveyJSON.browser.powerUserTitle || surveyJSON.powerUserTitle,
                     powerUserShowIntervalDays: surveyJSON.browser.powerUserShowIntervalDays
                         || surveyJSON.powerUserShowIntervalDays,
@@ -266,7 +276,8 @@ define(function (require, exports, module) {
             }
             surveyJSON.newUser && _showFirstUseSurvey(surveyJSON.newUser, surveyJSON.newUserShowDelayMS,
                 surveyJSON.newUserTitle, surveyJSON.newUserUseDialog);
-            surveyJSON.powerUser && _showRepeatUserSurvey(surveyJSON.powerUser, surveyJSON.powerUserShowIntervalDays,
+            const powerUserSurveyURL = await _resolvePowerUserSurveyURL(surveyJSON);
+            powerUserSurveyURL && _showRepeatUserSurvey(powerUserSurveyURL, surveyJSON.powerUserShowIntervalDays,
                 surveyJSON.powerUserTitle, surveyJSON.powerUserUseDialog);
         } catch (e) {
             console.error("Error fetching survey link", surveyLinksURL, e);
