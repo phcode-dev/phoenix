@@ -371,10 +371,9 @@ define(function (require, exports, module) {
     }
 
     function _isAnyDialogsVisible() {
-        const $modal = $(`.modal.instance`);
-        const $notifications = $(`.notification-ui-tooltip`);
-        return ($modal.length > 0 && $modal.is(':visible')) ||
-            ($notifications.length > 0 && $notifications.is(':visible'));
+        const dialogsVisible = $(`.modal.instance`).is(':visible');
+        const notificationsVisible = $(`.notification-ui-tooltip`).is(':visible');
+        return dialogsVisible || notificationsVisible;
     }
 
     /**
