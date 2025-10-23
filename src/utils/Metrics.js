@@ -39,6 +39,12 @@
  * @module utils/Metrics
  */
 define(function (require, exports, module) {
+    const KernalModeTrust = window.KernalModeTrust;
+    if(!KernalModeTrust){
+        // integrated extensions will have access to kernal mode, but not external extensions
+        throw new Error("Metrics should have access to KernalModeTrust. Cannot boot without trust ring");
+    }
+
     const MAX_AUDIT_ENTRIES = 3000,
         ONE_DAY = 24 * 60* 60 * 1000;
     let initDone = false,
@@ -46,7 +52,7 @@ define(function (require, exports, module) {
         loggedDataForAudit = new Map();
 
     let isFirstUseDay;
-    let userID, isPowerUserFn;
+    let userID, isPowerUserFn, powerUserPrefix;
     let cachedIsPowerUser = false;
 
     function _setUserID() {
@@ -260,6 +266,25 @@ define(function (require, exports, module) {
         document.getElementsByTagName('head')[0].appendChild(script);
     }
 
+    async function _setPowerUserPrefix() {
+        powerUserPrefix = null;
+        const EntitlementsManager = KernalModeTrust.EntitlementsManager;
+        if(cachedIsPowerUser){
+            // A power user is someone who used Phoenix at least 3 days/8 hours in the last two weeks
+            powerUserPrefix = "P";
+        } else if(!isFirstUseDay){
+            // A repeat user is a user who has used phoenix at least one other day before
+            powerUserPrefix = "R";
+        }
+        if(EntitlementsManager.isLoggedIn()){
+            if(await EntitlementsManager.isPaidSubscriber()){
+                powerUserPrefix = "S"; // subscriber
+                return;
+            }
+            powerUserPrefix = "L"; // logged in user
+        }
+    }
+
     /**
      * We are transitioning to our own analytics instead of google as we breached the free user threshold of google
      * and paid plans for GA starts at 100,000 USD.
@@ -275,10 +300,14 @@ define(function (require, exports, module) {
         if (initOptions.isPowerUserFn) {
             isPowerUserFn = initOptions.isPowerUserFn;
             cachedIsPowerUser = isPowerUserFn();  // only call once to avoid heavy computations repeatedly
+            _setPowerUserPrefix();
             setInterval(()=>{
                 cachedIsPowerUser = isPowerUserFn();
+                _setPowerUserPrefix();
             }, ONE_DAY);
         }
+        KernalModeTrust.EntitlementsManager.on(KernalModeTrust.EntitlementsManager.EVENT_ENTITLEMENTS_CHANGED,
+            _setPowerUserPrefix);
     }
 
     // some events generate too many ga events that ga can't handle. ignore them.
@@ -363,12 +392,9 @@ define(function (require, exports, module) {
      * @type {function}
      */
     function countEvent(eventType, eventCategory, eventSubCategory, count= 1) {
-        if(cachedIsPowerUser){
+        if(powerUserPrefix){
             // emit power user metrics too
-            _countEvent(`P-${eventType}`, eventCategory, eventSubCategory, count);
-        } else if(!isFirstUseDay){
-            // emit repeat user metrics too
-            _countEvent(`R-${eventType}`, eventCategory, eventSubCategory, count);
+            _countEvent(`${powerUserPrefix}-${eventType}`, eventCategory, eventSubCategory, count);
         }
         _countEvent(eventType, eventCategory, eventSubCategory, count);
     }
@@ -394,12 +420,9 @@ define(function (require, exports, module) {
      * @type {function}
      */
     function valueEvent(eventType, eventCategory, eventSubCategory, value) {
-        if(cachedIsPowerUser){
+        if(powerUserPrefix){
             // emit power user metrics too
-            _valueEvent(`P-${eventType}`, eventCategory, eventSubCategory, value);
-        } else if(!isFirstUseDay){
-            // emit repeat user metrics too
-            _valueEvent(`R-${eventType}`, eventCategory, eventSubCategory, value);
+            _valueEvent(`${powerUserPrefix}-${eventType}`, eventCategory, eventSubCategory, value);
         }
         _valueEvent(eventType, eventCategory, eventSubCategory, value);
     }
