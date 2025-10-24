@@ -397,6 +397,7 @@ define(function (require, exports, module) {
         }
         // Reset device license state so it's re-evaluated on next entitlement check
         deviceLicensePrimed = false;
+        await _clearCachedEntitlements();
     }
 
 
