@@ -495,7 +495,7 @@ define(function (require, exports, module) {
                     // wrapped in try catch block because EXPAND_ABBR might throw error when it gets unexpected
                     // characters such as `, =, etc
                     try {
-                        let expandedAbbr = expandAbbr(needle, { syntax: "css", type: "stylesheet", maxRepeat: 1000 });
+                        let expandedAbbr = expandAbbr(needle, { syntax: "css", type: "stylesheet", maxRepeat: 400 });
                         if (expandedAbbr && _isEmmetExpandable(needle, expandedAbbr)) {
 
                             // if the expandedAbbr doesn't have any numbers, we should split the expandedAbbr to,
