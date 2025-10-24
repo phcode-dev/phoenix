@@ -288,6 +288,9 @@ define(function (require, exports, module) {
                 Metrics.countEvent(Metrics.EVENT_TYPE.AUTH, "browserLogin", "browser");
             }, 1500);
         }
+        // on login we fire an entitlements changed event forcefully as new user came online
+        // even if entitlements didn't change(entitlements may not change between trial users for eg.).
+        LoginService._debounceEntitlementsChanged();
     }
 
     function _cancelLoginWaiting() {

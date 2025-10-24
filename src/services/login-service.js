@@ -708,6 +708,7 @@ define(function (require, exports, module) {
     LoginService.isLicensedDevice = isLicensedDevice;
     LoginService.isLicensedDeviceSystemWide = isLicensedDeviceSystemWide;
     LoginService.getDeviceID = getDeviceID;
+    LoginService._debounceEntitlementsChanged = _debounceEntitlementsChanged;
     LoginService.EVENT_ENTITLEMENTS_CHANGED = EVENT_ENTITLEMENTS_CHANGED;
 
     async function handleReinstallCreds() {

@@ -320,13 +320,16 @@ define(function (require, exports, module) {
                 if(resolveResponse.userDetails) {
                     // the user has validated the creds
                     userProfile = resolveResponse.userDetails;
+                    isLoggedInUser = true;
                     ProfileMenu.setLoggedIn(userProfile.profileIcon.initials, userProfile.profileIcon.color);
                     await KernalModeTrust.setCredential(KernalModeTrust.CRED_KEY_API, JSON.stringify(userProfile));
                     // bump the version so that in multi windows, the other window gets notified of the change
                     PreferencesManager.stateManager.set(PREF_USER_PROFILE_VERSION, crypto.randomUUID());
                     checkAgain = false;
-                    isLoggedInUser = true;
                     dialog.close();
+                    // on login we fire an entitlements changed event forcefully as new user came online
+                    // even if entitlements didn't change(entitlements may not change between trial users for eg.).
+                    LoginService._debounceEntitlementsChanged();
                 }
             } catch (e) {
                 console.error("Failed to check login status.", e);
