@@ -498,7 +498,7 @@ define(function (require, exports, module) {
         ) {
 
             try {
-                return  expandAbbr(word, { syntax: "html", type: "markup" }); // expanded
+                return  expandAbbr(word, { syntax: "html", type: "markup", maxRepeat: 1000 }); // expanded
             } catch (error) {
 
                 // emmet api throws an error when abbr contains unclosed quotes, handling that case
@@ -510,7 +510,7 @@ define(function (require, exports, module) {
                         const modifiedWord = word + nextChar;
 
                         try {
-                            return expandAbbr(modifiedWord, { syntax: "html", type: "markup" }); //expandedModified
+                            return expandAbbr(modifiedWord, { syntax: "html", type: "markup", maxRepeat: 1000 });
                         } catch (innerError) {
                             // If it still fails, return false
                             return null;
