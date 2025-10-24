@@ -522,9 +522,10 @@ define(function (require, exports, module) {
                             }
 
                             const $emmetHintObj = $("<span>")
-                                .addClass("brackets-css-hints brackets-hints emmet-hint")
+                                .addClass("brackets-css-hints brackets-hints")
                                 .attr("data-val", expandedAbbr)
-                                .attr("data-isEmmet", true);
+                                .attr("data-isEmmet", true)
+                                .css("margin-right", "48px");
 
                             // for highlighting the already-typed characters
                             if (token.stringRanges) {
