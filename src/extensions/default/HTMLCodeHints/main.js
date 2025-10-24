@@ -145,7 +145,7 @@ define(function (require, exports, module) {
     function formatEmmetHint(abbr) {
         // Create the main container for the hint
         var $hint = $("<span>")
-            .addClass("emmet-hint");
+            .css("margin-right", "48px");
 
         // Create a wrapper for the text content
         var $textContent = $("<span>")
@@ -153,7 +153,7 @@ define(function (require, exports, module) {
             .text(abbr);
 
         // style in brackets_patterns_override.less file
-        let $icon = $(`<span class="emmet-code-hint">Emmet</span>`);
+        let $icon = $(`<span class="emmet-html-code-hint">Emmet</span>`);
 
         // Append both text content and icon to the main container
         $hint.append($textContent);
