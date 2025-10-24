@@ -40,6 +40,7 @@ define(function (require, exports, module) {
             LoginBrowserExports,
             ProDialogsExports,
             EntitlementsExports,
+            entitlementsService,
             originalOpen,
             originalFetch;
 
@@ -77,6 +78,9 @@ define(function (require, exports, module) {
             LoginBrowserExports = testWindow._test_login_browser_exports;
             ProDialogsExports = testWindow._test_pro_dlg_login_exports;
             EntitlementsExports = testWindow._test_entitlements_exports;
+            entitlementsService = EntitlementsExports.EntitlementsService;
+            entitlementsService.on(entitlementsService.EVENT_ENTITLEMENTS_CHANGED,
+                LoginShared.entitlmentsChangedHandler);
 
             // Store original functions for restoration
             originalOpen = testWindow.open;
@@ -109,6 +113,8 @@ define(function (require, exports, module) {
 
         afterAll(async function () {
             // Restore original functions
+            entitlementsService.off(entitlementsService.EVENT_ENTITLEMENTS_CHANGED,
+                LoginShared.entitlmentsChangedHandler);
             testWindow.open = originalOpen;
 
             // Restore all fetch function overrides

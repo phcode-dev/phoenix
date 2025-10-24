@@ -47,6 +47,7 @@ define(function (require, exports, module) {
             LoginDesktopExports,
             ProDialogsExports,
             EntitlementsExports,
+            entitlementsService,
             originalOpenURLInDefaultBrowser,
             originalCopyToClipboard,
             originalFetch;
@@ -84,6 +85,9 @@ define(function (require, exports, module) {
             LoginDesktopExports = testWindow._test_login_desktop_exports;
             ProDialogsExports = testWindow._test_pro_dlg_login_exports;
             EntitlementsExports = testWindow._test_entitlements_exports;
+            entitlementsService = EntitlementsExports.EntitlementsService;
+            entitlementsService.on(entitlementsService.EVENT_ENTITLEMENTS_CHANGED,
+                LoginShared.entitlmentsChangedHandler);
 
             // Store original functions for restoration
             originalOpenURLInDefaultBrowser = testWindow.Phoenix.app.openURLInDefaultBrowser;
@@ -117,6 +121,8 @@ define(function (require, exports, module) {
 
         afterAll(async function () {
             // Restore original functions
+            entitlementsService.off(entitlementsService.EVENT_ENTITLEMENTS_CHANGED,
+                LoginShared.entitlmentsChangedHandler);
             testWindow.Phoenix.app.openURLInDefaultBrowser = originalOpenURLInDefaultBrowser;
             testWindow.Phoenix.app.copyToClipboard = originalCopyToClipboard;
 

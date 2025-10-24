@@ -289,9 +289,16 @@ define(function (require, exports, module) {
         EntitlementsExports = _EntitlementsExports;
     }
 
+    let entitlementsEventFired = false;
+    function entitlmentsChangedHandler() {
+        entitlementsEventFired = true;
+    }
+
     function setupSharedTests() {
 
         it("should complete login and logout flow", async function () {
+            entitlementsEventFired = false;
+
             // Setup basic user mock
             setupProUserMock(false);
 
@@ -299,10 +306,21 @@ define(function (require, exports, module) {
             await performFullLoginFlow();
             expect(LoginServiceExports.LoginService.isLoggedIn()).toBe(true);
 
+            // Wait for entitlements event to fire after login
+            await awaitsFor(() => entitlementsEventFired, "Entitlements event to fire after login");
+            expect(entitlementsEventFired).toBe(true);
+
+            // Reset flag for logout test
+            entitlementsEventFired = false;
+
             // Perform full logout flow
             await performFullLogoutFlow();
             expect(LoginServiceExports.LoginService.isLoggedIn()).toBe(false);
             verifyProfileIconBlanked();
+
+            // Wait for entitlements event to fire after logout
+            await awaitsFor(() => entitlementsEventFired, "Entitlements event to fire after logout");
+            expect(entitlementsEventFired).toBe(true);
         });
 
         it("should update profile icon after login", async function () {
@@ -392,6 +410,8 @@ define(function (require, exports, module) {
         it("should show pro branding for user with pro subscription (expired trial)", async function () {
             console.log("llgT: Starting pro user with expired trial test");
 
+            entitlementsEventFired = false;
+
             // Setup: Pro subscription + expired trial
             setupProUserMock(true);
             await setupExpiredTrial();
@@ -408,6 +428,10 @@ define(function (require, exports, module) {
             await performFullLoginFlow();
             await verifyProBranding(true, "pro branding to appear after pro user login");
 
+            // Wait for entitlements event to fire after login
+            await awaitsFor(() => entitlementsEventFired, "Entitlements event to fire after login");
+            expect(entitlementsEventFired).toBe(true);
+
             // Verify entitlements API consistency for logged in pro user
             await verifyIsInProTrialEntitlement(false, "pro user should not be in trial");
             await verifyPlanEntitlements({ isSubscriber: true, paidSubscriber: true }, "pro user should have paid subscriber plan");
@@ -423,8 +447,15 @@ define(function (require, exports, module) {
             // Close popup
             $profileButton.trigger('click');
 
+            // Reset flag for logout test
+            entitlementsEventFired = false;
+
             // Perform logout
             await performFullLogoutFlow();
+
+            // Wait for entitlements event to fire after logout
+            await awaitsFor(() => entitlementsEventFired, "Entitlements event to fire after logout");
+            expect(entitlementsEventFired).toBe(true);
 
             // For user with pro subscription + expired trial:
             // After logout, pro branding should disappear because:
@@ -440,6 +471,8 @@ define(function (require, exports, module) {
 
         it("should show trial branding for user without pro subscription (active trial)", async function () {
             console.log("llgT: Starting trial user test");
+
+            entitlementsEventFired = false;
 
             // Setup: No pro subscription + active trial (15 days)
             setupProUserMock(false);
@@ -459,6 +492,10 @@ define(function (require, exports, module) {
             // Verify pro branding remains after login
             await verifyProBranding(true, "after trial user login");
 
+            // Wait for entitlements event to fire after login
+            await awaitsFor(() => entitlementsEventFired, "Entitlements event to fire after login");
+            expect(entitlementsEventFired).toBe(true);
+
             // Verify entitlements API consistency for logged in trial user
             await verifyIsInProTrialEntitlement(true, "user should still be in trial after login");
             await verifyPlanEntitlements({ isSubscriber: true, paidSubscriber: false }, "trial user should have isSubscriber true but paidSubscriber false");
@@ -474,8 +511,15 @@ define(function (require, exports, module) {
             // Close popup
             $profileButton.trigger('click');
 
+            // Reset flag for logout test
+            entitlementsEventFired = false;
+
             // Perform logout
             await performFullLogoutFlow();
+
+            // Wait for entitlements event to fire after logout
+            await awaitsFor(() => entitlementsEventFired, "Entitlements event to fire after logout");
+            expect(entitlementsEventFired).toBe(true);
 
             // Verify pro branding remains after logout (trial continues)
             await verifyProBranding(true, "Trial branding to remain after logout");
@@ -541,6 +585,8 @@ define(function (require, exports, module) {
         it("should show free branding for user without pro subscription (expired trial)", async function () {
             console.log("llgT: Starting desktop trial user test");
 
+            entitlementsEventFired = false;
+
             // Setup: No pro subscription + expired trial
             setupProUserMock(false);
             await setupExpiredTrial();
@@ -562,6 +608,10 @@ define(function (require, exports, module) {
             // Verify pro branding remains after login
             await verifyProBranding(false, "after trial free user login");
 
+            // Wait for entitlements event to fire after login
+            await awaitsFor(() => entitlementsEventFired, "Entitlements event to fire after login");
+            expect(entitlementsEventFired).toBe(true);
+
             // Verify entitlements API consistency for logged in free user
             await verifyPlanEntitlements({ isSubscriber: false, paidSubscriber: false, name: testWindow.Strings.USER_FREE_PLAN_NAME_DO_NOT_TRANSLATE },
                 "free plan for logged in user with expired trial");
@@ -579,8 +629,15 @@ define(function (require, exports, module) {
             // Close popup
             $profileButton.trigger('click');
 
+            // Reset flag for logout test
+            entitlementsEventFired = false;
+
             // Perform logout
             await performFullLogoutFlow();
+
+            // Wait for entitlements event to fire after logout
+            await awaitsFor(() => entitlementsEventFired, "Entitlements event to fire after logout");
+            expect(entitlementsEventFired).toBe(true);
 
             // Verify pro branding remains after logout (trial continues)
             await verifyProBranding(false, "Trial branding to remain after logout");
@@ -921,6 +978,7 @@ define(function (require, exports, module) {
     exports.popupToAppear = popupToAppear;
     exports.performFullLogoutFlow = performFullLogoutFlow;
     exports.verifyProfileIconBlanked = verifyProfileIconBlanked;
+    exports.entitlmentsChangedHandler = entitlmentsChangedHandler;
     exports.VIEW_TRIAL_DAYS_LEFT = VIEW_TRIAL_DAYS_LEFT;
     exports.VIEW_PHOENIX_PRO = VIEW_PHOENIX_PRO;
     exports.VIEW_PHOENIX_FREE = VIEW_PHOENIX_FREE;
