@@ -54,10 +54,18 @@ define(function (require, exports, module) {
         UrlParams      = require("utils/UrlParams").UrlParams,
         NodeUtils = require("utils/NodeUtils"),
         PathUtils      = require("thirdparty/path-utils/path-utils"),
-        DefaultExtensions = JSON.parse(require("text!extensions/default/DefaultExtensions.json"));
+        DefaultExtensions = JSON.parse(require("text!extensions/default/DefaultExtensions.json")),
+        Dialogs        = require("widgets/Dialogs"),
+        PreferencesManager = require("preferences/PreferencesManager"),
+        Mustache       = require("thirdparty/mustache/mustache"),
+        Strings        = require("strings"),
+        DeprecatedExtensionsTemplate = require("text!htmlContent/deprecated-extensions-dialog.html");
 
     // takedown/dont load extensions that are compromised at app start - start
     const EXTENSION_TAKEDOWN_LOCALSTORAGE_KEY = "PH_EXTENSION_TAKEDOWN_LIST";
+
+    // deprecated extensions dialog state key
+    const STATE_DEPRECATED_EXTENSIONS_DIALOG_SHOWN = "deprecatedExtensionsDialogShown";
 
     function _getTakedownListLS() {
         try{
@@ -1018,6 +1026,8 @@ define(function (require, exports, module) {
 
         promise.always(function () {
             _init = true;
+            // Check for deprecated extensions after all extensions have loaded
+            _checkAndShowDeprecatedExtensionsDialog();
         });
 
         return promise;
@@ -1030,6 +1040,55 @@ define(function (require, exports, module) {
             return false;
         }
         return takedownExtensionList.has(extensionID);
+    }
+
+    /**
+     * Check if any deprecated extensions are installed and show a dialog once
+     * @private
+     */
+    function _checkAndShowDeprecatedExtensionsDialog() {
+        // Check if we've already shown the dialog
+        const dialogShown = PreferencesManager.stateManager.get(STATE_DEPRECATED_EXTENSIONS_DIALOG_SHOWN);
+        if (dialogShown) {
+            return;
+        }
+
+        // Get deprecated extensions config
+        const deprecatedExtensionsConfig = DefaultExtensions.deprecatedExtensions;
+        if (!deprecatedExtensionsConfig || !deprecatedExtensionsConfig.extensionIDsAndDocs) {
+            return;
+        }
+
+        const deprecatedExtensionIDs = deprecatedExtensionsConfig.extensionIDsAndDocs;
+
+        // Check which deprecated extensions are loaded
+        const deprecatedExtensionsFound = [];
+        for (const extensionID of loadedExtensionIDs) {
+            if (deprecatedExtensionIDs[extensionID]) {
+                deprecatedExtensionsFound.push({
+                    id: extensionID,
+                    docUrl: deprecatedExtensionIDs[extensionID]
+                });
+            }
+        }
+
+        // If no deprecated extensions found, mark dialog as shown and return
+        if (deprecatedExtensionsFound.length === 0) {
+            PreferencesManager.stateManager.set(STATE_DEPRECATED_EXTENSIONS_DIALOG_SHOWN, true);
+            return;
+        }
+
+        // Show the dialog
+        const templateVars = {
+            extensions: deprecatedExtensionsFound,
+            Strings: Strings
+        };
+
+        const $template = $(Mustache.render(DeprecatedExtensionsTemplate, templateVars));
+        Dialogs.showModalDialogUsingTemplate($template);
+
+        // Mark dialog as shown
+        PreferencesManager.stateManager.set(STATE_DEPRECATED_EXTENSIONS_DIALOG_SHOWN, true);
     }
 
 

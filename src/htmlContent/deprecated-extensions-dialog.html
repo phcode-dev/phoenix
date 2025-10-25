@@ -1,0 +1,28 @@
+<div class="deprecated-extensions-dialog modal">
+    <div class="modal-header">
+        <h1 class="dialog-title">{{Strings.DEPRECATED_EXTENSIONS_TITLE}}</h1>
+    </div>
+    <div class="modal-body">
+        <p class="dialog-message">{{Strings.DEPRECATED_EXTENSIONS_MESSAGE}}</p>
+
+        <div class="deprecated-extensions-list" style="margin-top: 16px;">
+            {{#extensions}}
+            <div class="deprecated-extension-item" style="margin-bottom: 12px; padding: 12px; border: 1px solid var(--border-color, #ddd); border-radius: 4px;">
+                <div class="extension-info" style="margin-bottom: 6px;">
+                    <i class="fa fa-exclamation-triangle" style="color: #f5a623; margin-right: 8px;"></i>
+                    <strong>{{id}}</strong>
+                </div>
+                <div class="extension-alternative" style="margin-left: 24px;">
+                    <a href="{{docUrl}}" target="_blank" rel="noopener">
+                        {{Strings.DEPRECATED_EXTENSIONS_LEARN_MORE}}
+                        <i class="fa fa-external-link" style="margin-left: 4px; font-size: 11px;"></i>
+                    </a>
+                </div>
+            </div>
+            {{/extensions}}
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="dialog-button btn primary" data-button-id="ok">{{Strings.OK}}</button>
+    </div>
+</div>

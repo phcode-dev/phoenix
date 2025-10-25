@@ -1723,6 +1723,10 @@ define({
     "LICENSE_ACTIVATE_FAIL_APPLY": "'Failed to apply license to device'",
     "LICENSE_ENTER_KEY": "Please enter a license key",
     "LICENSE_REAPPLY_TO_DEVICE": "Already activated? Reapply system-wide",
+    // Deprecated Extensions Dialog
+    "DEPRECATED_EXTENSIONS_TITLE": "Deprecated Extensions Detected",
+    "DEPRECATED_EXTENSIONS_MESSAGE": "The following installed extensions are now natively supported by Phoenix and can be safely removed:",
+    "DEPRECATED_EXTENSIONS_LEARN_MORE": "Learn more about the native feature",
     // AI CONTROL
     "AI_LOGIN_DIALOG_TITLE": "Sign In to Use AI Edits",
     "AI_LOGIN_DIALOG_MESSAGE": "Please log in to use AI-powered edits",
