@@ -1401,6 +1401,7 @@ define({
   "ERROR_FETCH_REMOTE": "擷取遠端資訊失敗",
   "ERROR_PREPARING_COMMIT_DIALOG": "準備提交對話框失敗",
   "GIT_TOAST_TITLE": "在 Phoenix Code 中探索 Git 功能",
+  "GIT_TOAST_MESSAGE": "點擊 Git 面板圖示來管理您的儲存庫。輕鬆提交、推送、拉取，並檢視您的專案歷史紀錄 — 全都在同一個地方。<br><a href='https://docs.phcode.dev/app-links/git'>深入了解 Git 面板 →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "投票選出您希望看到的下個功能！",
   "SIGNED_OUT": "您已登出。",
   "SIGNED_OUT_MESSAGE": "您已登出 {APP_NAME} 帳號。請重新登入以繼續。",
@@ -1525,5 +1526,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "您的系統管理員已停用 AI 存取權限。如需協助，請聯絡 {0}。",
   "AI_UPSELL_DIALOG_TITLE": "要繼續使用 {0} 嗎？",
   "AI_UPSELL_DIALOG_MESSAGE": "您已發現 {0}。您需要 AI 訂閱或點數才能繼續。",
-  "GIT_TOAST_MESSAGE": "點擊 Git 面板圖示來管理您的儲存庫。輕鬆提交、推送、拉取，並檢視您的專案歷史紀錄 — 全都在同一個地方。<br><a href='https://docs.phcode.dev/app-links/git'>深入了解 Git 面板 →</a>"
+  "ERROR_UNINSTALLING_EXTENSION_TITLE": "解除安裝擴充功能錯誤",
+  "ERROR_UNINSTALLING_EXTENSION_MESSAGE": "解除安裝擴充功能 {0} 失敗",
+  "RESTART_APP_BUTTON": "重新啟動 {APP_NAME}",
+  "REMOVING": "正在移除…",
+  "DEPRECATED_EXTENSIONS_TITLE": "偵測到已棄用的擴充功能",
+  "DEPRECATED_EXTENSIONS_MESSAGE": "下列已安裝的擴充功能現已由 {APP_NAME} 原生支援，可從「擴充功能管理員」中安全地解除安裝：",
+  "DEPRECATED_EXTENSIONS_LEARN_MORE": "現已內建 — 了解更多"
 });

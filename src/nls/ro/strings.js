@@ -1401,6 +1401,7 @@ define({
   "ERROR_FETCH_REMOTE": "Obținerea informațiilor despre depozitul remote a eșuat",
   "ERROR_PREPARING_COMMIT_DIALOG": "Pregătirea dialogului de commit a eșuat",
   "GIT_TOAST_TITLE": "Explorați funcțiile Git în Phoenix Code",
+  "GIT_TOAST_MESSAGE": "Faceți clic pe pictograma panoului Git pentru a vă gestiona repository-ul. Aici puteți efectua cu ușurință commit, push, pull și vizualiza istoricul proiectului — totul într-un singur loc.<br><a href='https://docs.phcode.dev/app-links/git'>Aflați mai multe despre panoul Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Votează pentru funcționalitățile pe care dorești să le vezi în continuare!",
   "SIGNED_OUT": "Sesiunea a fost închisă.",
   "SIGNED_OUT_MESSAGE": "Sesiunea contului tău {APP_NAME} a fost închisă. Te rugăm să te autentifici din nou pentru a continua.",
@@ -1525,5 +1526,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Accesul AI a fost dezactivat de către administratorul dvs. de sistem. Vă rugăm să contactați {0} pentru asistență.",
   "AI_UPSELL_DIALOG_TITLE": "Continuați cu {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Ați descoperit {0}. Pentru a continua, veți avea nevoie de un abonament AI sau de credite.",
-  "GIT_TOAST_MESSAGE": "Faceți clic pe pictograma panoului Git pentru a vă gestiona repository-ul. Aici puteți efectua cu ușurință commit, push, pull și vizualiza istoricul proiectului — totul într-un singur loc.<br><a href='https://docs.phcode.dev/app-links/git'>Aflați mai multe despre panoul Git →</a>"
+  "ERROR_UNINSTALLING_EXTENSION_TITLE": "Eroare dezinstalare extensie",
+  "ERROR_UNINSTALLING_EXTENSION_MESSAGE": "Nu s-a putut dezinstala extensia {0}",
+  "RESTART_APP_BUTTON": "Repornește {APP_NAME}",
+  "REMOVING": "Se elimină…",
+  "DEPRECATED_EXTENSIONS_TITLE": "Extensii învechite detectate",
+  "DEPRECATED_EXTENSIONS_MESSAGE": "Următoarele extensii instalate sunt acum suportate nativ de {APP_NAME} și pot fi dezinstalate în siguranță din Managerul de extensii:",
+  "DEPRECATED_EXTENSIONS_LEARN_MORE": "Acum încorporat — află mai multe"
 });

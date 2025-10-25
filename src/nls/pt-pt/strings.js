@@ -1401,6 +1401,7 @@ define({
   "ERROR_FETCH_REMOTE": "Falha ao obter informações do remoto",
   "ERROR_PREPARING_COMMIT_DIALOG": "Falha ao preparar a janela de _commit_",
   "GIT_TOAST_TITLE": "Explore as funcionalidades do Git no Phoenix Code",
+  "GIT_TOAST_MESSAGE": "Clique no ícone do painel Git para gerir o seu repositório. Efetue commit, push, pull e consulte o histórico do seu projeto facilmente—tudo num só lugar.<br><a href='https://docs.phcode.dev/app-links/git'>Saiba mais sobre o painel Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vote nas funcionalidades que quer ver a seguir!",
   "SIGNED_OUT": "Terminou a sessão.",
   "SIGNED_OUT_MESSAGE": "Terminou a sessão da sua conta {APP_NAME}. Inicie sessão novamente para continuar.",
@@ -1525,5 +1526,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "O acesso à IA foi desativado pelo seu administrador de sistema. Por favor, contacte {0} para obter assistência.",
   "AI_UPSELL_DIALOG_TITLE": "Continuar com {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Descobriu {0}. Para continuar, precisará de uma subscrição de IA ou de créditos.",
-  "GIT_TOAST_MESSAGE": "Clique no ícone do painel Git para gerir o seu repositório. Efetue commit, push, pull e consulte o histórico do seu projeto facilmente—tudo num só lugar.<br><a href='https://docs.phcode.dev/app-links/git'>Saiba mais sobre o painel Git →</a>"
+  "ERROR_UNINSTALLING_EXTENSION_TITLE": "Erro ao Desinstalar Extensão",
+  "ERROR_UNINSTALLING_EXTENSION_MESSAGE": "Falha ao desinstalar a extensão {0}",
+  "RESTART_APP_BUTTON": "Reiniciar o {APP_NAME}",
+  "REMOVING": "A remover…",
+  "DEPRECATED_EXTENSIONS_TITLE": "Detetadas Extensões Obsoletas",
+  "DEPRECATED_EXTENSIONS_MESSAGE": "As seguintes extensões instaladas são agora suportadas nativamente pelo {APP_NAME} e podem ser desinstaladas com segurança a partir do Gestor de Extensões:",
+  "DEPRECATED_EXTENSIONS_LEARN_MORE": "Agora incorporado — saiba mais"
 });

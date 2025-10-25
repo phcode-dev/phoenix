@@ -1401,6 +1401,7 @@ define({
   "ERROR_FETCH_REMOTE": "Távoli adattár információinak lekérése sikertelen",
   "ERROR_PREPARING_COMMIT_DIALOG": "A kommitdialógus előkészítése sikertelen volt",
   "GIT_TOAST_TITLE": "Fedezd fel a Git funkciókat a Phoenix Code-ban",
+  "GIT_TOAST_MESSAGE": "Kattints a Git panel ikonjára a tárolód kezeléséhez. Könnyedén commitelhetsz, pusholhatsz, pullolhatsz és megtekintheted a projektelőzményeidet – mindezt egy helyen.<br><a href='https://docs.phcode.dev/app-links/git'>Tudj meg többet a Git panelről →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Szavazzon azokra a funkciókra, amelyeket a jövőben látni szeretne!",
   "SIGNED_OUT": "Kijelentkeztél.",
   "SIGNED_OUT_MESSAGE": "Kijelentkeztél a(z) {APP_NAME} fiókodból. Kérjük, jelentkezz be újra a folytatáshoz.",
@@ -1525,5 +1526,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "A MI-hozzáférést a rendszergazda letiltotta. Segítségért forduljon a(z) {0} elérhetőséghez.",
   "AI_UPSELL_DIALOG_TITLE": "Folytatja a(z) {0} használatával?",
   "AI_UPSELL_DIALOG_MESSAGE": "Felfedezte a(z) {0} szolgáltatást. A folytatáshoz MI-előfizetésre vagy kreditekre lesz szüksége.",
-  "GIT_TOAST_MESSAGE": "Kattints a Git panel ikonjára a tárolód kezeléséhez. Könnyedén commitelhetsz, pusholhatsz, pullolhatsz és megtekintheted a projektelőzményeidet – mindezt egy helyen.<br><a href='https://docs.phcode.dev/app-links/git'>Tudj meg többet a Git panelről →</a>"
+  "ERROR_UNINSTALLING_EXTENSION_TITLE": "Hiba a bővítmény eltávolítása során",
+  "ERROR_UNINSTALLING_EXTENSION_MESSAGE": "Nem sikerült eltávolítani a(z) {0} bővítményt",
+  "RESTART_APP_BUTTON": "{APP_NAME} újraindítása",
+  "REMOVING": "Eltávolítás…",
+  "DEPRECATED_EXTENSIONS_TITLE": "Elavult bővítmények észlelve",
+  "DEPRECATED_EXTENSIONS_MESSAGE": "A következő telepített bővítményeket mostantól natívan támogatja a(z) {APP_NAME}, és biztonságosan eltávolíthatók a Bővítménykezelőből:",
+  "DEPRECATED_EXTENSIONS_LEARN_MORE": "Mostantól beépítve — tudjon meg többet"
 });

@@ -1401,6 +1401,7 @@ define({
   "ERROR_FETCH_REMOTE": "فشل جلب معلومات جهاز التحكم عن بعد",
   "ERROR_PREPARING_COMMIT_DIALOG": "فشل تحضير مربع حوار الالتزام",
   "GIT_TOAST_TITLE": "استكشف ميزات Git في Phoenix Code",
+  "GIT_TOAST_MESSAGE": "انقر على أيقونة لوحة Git لإدارة مستودعك. قم بسهولة بعمل commit، وpush، وpull، وعرض تاريخ مشروعك—كل ذلك في مكان واحد.<br><a href='https://docs.phcode.dev/app-links/git'>تعلم المزيد عن لوحة Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "صوت للميزات التي ترغب برؤيتها تالياً!",
   "SIGNED_OUT": "تم تسجيل خروجك.",
   "SIGNED_OUT_MESSAGE": "تم تسجيل خروجك من حساب {APP_NAME} الخاص بك. يُرجى تسجيل الدخول مرة أخرى للمتابعة.",
@@ -1525,5 +1526,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "قام مسؤول النظام بتعطيل الوصول إلى الذكاء الاصطناعي. يرجى الاتصال بـ {0} للحصول على المساعدة.",
   "AI_UPSELL_DIALOG_TITLE": "المتابعة باستخدام {0}؟",
   "AI_UPSELL_DIALOG_MESSAGE": "لقد اكتشفت {0}. للمتابعة، ستحتاج إلى اشتراك في الذكاء الاصطناعي أو أرصدة.",
-  "GIT_TOAST_MESSAGE": "انقر على أيقونة لوحة Git لإدارة مستودعك. قم بسهولة بعمل commit، وpush، وpull، وعرض تاريخ مشروعك—كل ذلك في مكان واحد.<br><a href='https://docs.phcode.dev/app-links/git'>تعلم المزيد عن لوحة Git →</a>"
+  "ERROR_UNINSTALLING_EXTENSION_TITLE": "خطأ في إلغاء تثبيت الملحق",
+  "ERROR_UNINSTALLING_EXTENSION_MESSAGE": "فشل إلغاء تثبيت الملحق {0}",
+  "RESTART_APP_BUTTON": "إعادة تشغيل {APP_NAME}",
+  "REMOVING": "جارٍ الإزالة...",
+  "DEPRECATED_EXTENSIONS_TITLE": "تم اكتشاف ملحقات مهملة",
+  "DEPRECATED_EXTENSIONS_MESSAGE": "الملحقات المثبتة التالية أصبحت الآن مدعومة بشكل أصلي بواسطة {APP_NAME} ويمكن إلغاء تثبيتها بأمان من مدير الملحقات:",
+  "DEPRECATED_EXTENSIONS_LEARN_MORE": "مدمج الآن — اعرف المزيد"
 });

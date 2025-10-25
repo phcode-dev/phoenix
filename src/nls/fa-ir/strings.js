@@ -1401,6 +1401,7 @@ define({
   "ERROR_FETCH_REMOTE": "دریافت اطلاعات ریموت با شکست مواجه شد",
   "ERROR_PREPARING_COMMIT_DIALOG": "خطا در آماده‌سازی پنجره ثبت کامیت",
   "GIT_TOAST_TITLE": "کاوش ویژگی‌های گیت در Phoenix Code",
+  "GIT_TOAST_MESSAGE": "برای مدیریت مخزن خود، روی آیکون پنل گیت کلیک کنید. به راحتی کامیت، پوش، پول کرده و تاریخچه پروژه خود را مشاهده کنید—همه در یک جا.<br><a href='https://docs.phcode.dev/app-links/git'>اطلاعات بیشتر درباره پنل گیت →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "برای قابلیت‌هایی که می‌خواهید در آینده ببینید، رأی دهید!",
   "SIGNED_OUT": "از حساب کاربری خارج شدید.",
   "SIGNED_OUT_MESSAGE": "از حساب کاربری {APP_NAME} خود خارج شدید. لطفاً برای ادامه دوباره وارد شوید.",
@@ -1525,5 +1526,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "دسترسی به هوش مصنوعی توسط مدیر سیستم شما غیرفعال شده است. لطفاً برای راهنمایی با {0} تماس بگیرید.",
   "AI_UPSELL_DIALOG_TITLE": "ادامه با {0}؟",
   "AI_UPSELL_DIALOG_MESSAGE": "شما قابلیت {0} را کشف کرده‌اید. برای ادامه، به اشتراک AI یا اعتبار نیاز دارید.",
-  "GIT_TOAST_MESSAGE": "برای مدیریت مخزن خود، روی آیکون پنل گیت کلیک کنید. به راحتی کامیت، پوش، پول کرده و تاریخچه پروژه خود را مشاهده کنید—همه در یک جا.<br><a href='https://docs.phcode.dev/app-links/git'>اطلاعات بیشتر درباره پنل گیت →</a>"
+  "ERROR_UNINSTALLING_EXTENSION_TITLE": "خطای لغو نصب افزونه",
+  "ERROR_UNINSTALLING_EXTENSION_MESSAGE": "لغو نصب افزونهٔ {0} ناموفق بود",
+  "RESTART_APP_BUTTON": "راه‌اندازی مجدد {APP_NAME}",
+  "REMOVING": "در حال حذف…",
+  "DEPRECATED_EXTENSIONS_TITLE": "افزونه‌های منسوخ‌شده شناسایی شد",
+  "DEPRECATED_EXTENSIONS_MESSAGE": "افزونه‌های نصب‌شدهٔ زیر اکنون به‌صورت پیش‌فرض توسط {APP_NAME} پشتیبانی می‌شوند و می‌توان آن‌ها را با خیال راحت از «مدیریت افزونه‌ها» لغو نصب کرد:",
+  "DEPRECATED_EXTENSIONS_LEARN_MORE": "اکنون داخلی است — بیشتر بدانید"
 });

@@ -1401,6 +1401,7 @@ define({
   "ERROR_FETCH_REMOTE": "リモート情報の取得に失敗しました。",
   "ERROR_PREPARING_COMMIT_DIALOG": "コミットダイアログの準備に失敗しました",
   "GIT_TOAST_TITLE": "Phoenix CodeのGit機能を試す",
+  "GIT_TOAST_MESSAGE": "Ｇｉｔパネルアイコンをクリックすれば、コミット、プッシュ、プル、プロジェクト履歴の表示など、リポジトリの管理をすべて１か所で簡単に行えます。<br><a href='https://docs.phcode.dev/app-links/git'>Ｇｉｔパネルについてさらに詳しく →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "次に実装してほしい機能に投票してください！",
   "SIGNED_OUT": "サインアウトしました。",
   "SIGNED_OUT_MESSAGE": "{APP_NAME}アカウントからサインアウトしました。続行するにはもう一度サインインしてください。",
@@ -1525,5 +1526,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "AIアクセスはシステム管理者によって無効にされています。サポートが必要な場合は、{0}にお問い合わせください。",
   "AI_UPSELL_DIALOG_TITLE": "{0}を続行しますか？",
   "AI_UPSELL_DIALOG_MESSAGE": "「{0}」をご利用になるには、AIサブスクリプションまたはクレジットが必要です。",
-  "GIT_TOAST_MESSAGE": "Ｇｉｔパネルアイコンをクリックすれば、コミット、プッシュ、プル、プロジェクト履歴の表示など、リポジトリの管理をすべて１か所で簡単に行えます。<br><a href='https://docs.phcode.dev/app-links/git'>Ｇｉｔパネルについてさらに詳しく →</a>"
+  "ERROR_UNINSTALLING_EXTENSION_TITLE": "拡張機能のアンインストールエラー",
+  "ERROR_UNINSTALLING_EXTENSION_MESSAGE": "拡張機能「{0}」のアンインストールに失敗しました",
+  "RESTART_APP_BUTTON": "{APP_NAME}を再起動",
+  "REMOVING": "削除中…",
+  "DEPRECATED_EXTENSIONS_TITLE": "非推奨の拡張機能を検出",
+  "DEPRECATED_EXTENSIONS_MESSAGE": "以下のインストール済み拡張機能は、{APP_NAME}に標準で搭載されるようになったため、拡張機能マネージャーから安全にアンインストールできます。",
+  "DEPRECATED_EXTENSIONS_LEARN_MORE": "標準搭載 — 詳細はこちら"
 });

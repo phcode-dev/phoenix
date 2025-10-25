@@ -1401,6 +1401,7 @@ define({
   "ERROR_FETCH_REMOTE": "Etäyhteyden tietojen haku epäonnistui",
   "ERROR_PREPARING_COMMIT_DIALOG": "Commit-valintaikkunan valmistelu epäonnistui",
   "GIT_TOAST_TITLE": "Tutustu Git-ominaisuuksiin Phoenix Codessa",
+  "GIT_TOAST_MESSAGE": "Napsauta Git-paneelin kuvaketta hallitaksesi tietovarastoasi. Voit helposti tehdä committeja, puskea ja noutaa muutoksia sekä tarkastella projektisi historiaa – kaikki yhdessä paikassa.<br><a href='https://docs.phcode.dev/app-links/git'>Lue lisää Git-paneelista →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Äänestä ominaisuuksia, jotka haluat nähdä seuraavaksi!",
   "SIGNED_OUT": "Olet kirjautunut ulos.",
   "SIGNED_OUT_MESSAGE": "Olet kirjautunut ulos {APP_NAME}-tilistäsi. Kirjaudu sisään uudelleen jatkaaksesi.",
@@ -1525,5 +1526,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Järjestelmänvalvoja on poistanut tekoälyn käytöstä. Ota yhteyttä {0} saadaksesi apua.",
   "AI_UPSELL_DIALOG_TITLE": "Jatketaanko {0}:n kanssa?",
   "AI_UPSELL_DIALOG_MESSAGE": "Olet löytänyt ominaisuuden {0}. Jatkaaksesi tarvitset tekoälytilauksen tai krediittejä.",
-  "GIT_TOAST_MESSAGE": "Napsauta Git-paneelin kuvaketta hallitaksesi tietovarastoasi. Voit helposti tehdä committeja, puskea ja noutaa muutoksia sekä tarkastella projektisi historiaa – kaikki yhdessä paikassa.<br><a href='https://docs.phcode.dev/app-links/git'>Lue lisää Git-paneelista →</a>"
+  "ERROR_UNINSTALLING_EXTENSION_TITLE": "Virhe poistettaessa laajennusta",
+  "ERROR_UNINSTALLING_EXTENSION_MESSAGE": "Laajennuksen {0} poistaminen epäonnistui",
+  "RESTART_APP_BUTTON": "Käynnistä {APP_NAME} uudelleen",
+  "REMOVING": "Poistetaan…",
+  "DEPRECATED_EXTENSIONS_TITLE": "Vanhentuneita laajennuksia havaittu",
+  "DEPRECATED_EXTENSIONS_MESSAGE": "Seuraavat asennetut laajennukset ovat nyt {APP_NAME}:n natiivisti tukemia, ja ne voidaan turvallisesti poistaa Laajennusten hallinnasta:",
+  "DEPRECATED_EXTENSIONS_LEARN_MORE": "Nyt sisäänrakennettu — lue lisää"
 });

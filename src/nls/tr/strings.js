@@ -1401,6 +1401,7 @@ define({
   "ERROR_FETCH_REMOTE": "Uzak depo bilgileri alınamadı",
   "ERROR_PREPARING_COMMIT_DIALOG": "Kaydetme iletişim kutusu hazırlanamadı",
   "GIT_TOAST_TITLE": "Phoenix Code'da Git Özelliklerini Keşfedin",
+  "GIT_TOAST_MESSAGE": "Deponuzu yönetmek için Git paneli simgesine tıklayın. Tek bir yerden kolayca commit, push, pull yapın ve proje geçmişinizi görüntüleyin.<br><a href='https://docs.phcode.dev/app-links/git'>Git paneli hakkında daha fazla bilgi edinin →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Gelecekte görmek istediğiniz özellikler için oy verin!",
   "SIGNED_OUT": "Oturumunuz kapatıldı.",
   "SIGNED_OUT_MESSAGE": "{APP_NAME} hesabınızdan çıkış yaptınız. Devam etmek için lütfen tekrar oturum açın.",
@@ -1525,5 +1526,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Yapay zeka erişimi sistem yöneticiniz tarafından devre dışı bırakıldı. Yardım için lütfen {0} ile iletişime geçin.",
   "AI_UPSELL_DIALOG_TITLE": "{0} ile devam edilsin mi?",
   "AI_UPSELL_DIALOG_MESSAGE": "{0} özelliğini keşfettiniz. Devam etmek için bir Yapay Zeka aboneliğine veya kredilere ihtiyacınız var.",
-  "GIT_TOAST_MESSAGE": "Deponuzu yönetmek için Git paneli simgesine tıklayın. Tek bir yerden kolayca commit, push, pull yapın ve proje geçmişinizi görüntüleyin.<br><a href='https://docs.phcode.dev/app-links/git'>Git paneli hakkında daha fazla bilgi edinin →</a>"
+  "ERROR_UNINSTALLING_EXTENSION_TITLE": "Uzantı Kaldırma Hatası",
+  "ERROR_UNINSTALLING_EXTENSION_MESSAGE": "{0} uzantısı kaldırılamadı",
+  "RESTART_APP_BUTTON": "{APP_NAME} Yeniden Başlat",
+  "REMOVING": "Kaldırılıyor…",
+  "DEPRECATED_EXTENSIONS_TITLE": "Kullanımdan Kaldırılmış Uzantılar Algılandı",
+  "DEPRECATED_EXTENSIONS_MESSAGE": "Aşağıdaki yüklü uzantılar artık {APP_NAME} tarafından yerel olarak desteklenmektedir ve Uzantı Yöneticisi'nden güvenle kaldırılabilir:",
+  "DEPRECATED_EXTENSIONS_LEARN_MORE": "Artık yerleşik — daha fazla bilgi edinin"
 });

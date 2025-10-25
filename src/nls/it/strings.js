@@ -1401,6 +1401,7 @@ define({
   "ERROR_FETCH_REMOTE": "Recupero delle informazioni del remote non riuscito",
   "ERROR_PREPARING_COMMIT_DIALOG": "Preparazione della finestra di commit non riuscita",
   "GIT_TOAST_TITLE": "Esplora le funzionalità Git in Phoenix Code",
+  "GIT_TOAST_MESSAGE": "Clicca sull'icona del pannello Git per gestire il tuo repository. Esegui commit, push, pull e visualizza la cronologia del tuo progetto con facilità—tutto in un unico posto.<br><a href='https://docs.phcode.dev/app-links/git'>Scopri di più sul pannello Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vota per le funzionalità che desideri vedere in futuro!",
   "SIGNED_OUT": "Sessione terminata.",
   "SIGNED_OUT_MESSAGE": "La tua sessione per l'account {APP_NAME} è terminata. Accedi di nuovo per continuare.",
@@ -1525,5 +1526,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "L'accesso all'AI è stato disattivato dal tuo amministratore di sistema. Contatta {0} per assistenza.",
   "AI_UPSELL_DIALOG_TITLE": "Continuare con {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Hai scoperto {0}. Per procedere, avrai bisogno di un abbonamento AI o di crediti.",
-  "GIT_TOAST_MESSAGE": "Clicca sull'icona del pannello Git per gestire il tuo repository. Esegui commit, push, pull e visualizza la cronologia del tuo progetto con facilità—tutto in un unico posto.<br><a href='https://docs.phcode.dev/app-links/git'>Scopri di più sul pannello Git →</a>"
+  "ERROR_UNINSTALLING_EXTENSION_TITLE": "Errore durante la disinstallazione dell'estensione",
+  "ERROR_UNINSTALLING_EXTENSION_MESSAGE": "Impossibile disinstallare l'estensione {0}",
+  "RESTART_APP_BUTTON": "Riavvia {APP_NAME}",
+  "REMOVING": "Rimozione in corso…",
+  "DEPRECATED_EXTENSIONS_TITLE": "Rilevate estensioni obsolete",
+  "DEPRECATED_EXTENSIONS_MESSAGE": "Le seguenti estensioni installate sono ora supportate in modo nativo da {APP_NAME} e possono essere disinstallate in sicurezza da Gestione estensioni:",
+  "DEPRECATED_EXTENSIONS_LEARN_MORE": "Ora integrato — scopri di più"
 });
