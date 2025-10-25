@@ -37,6 +37,18 @@
      "github-Pluto-custom-line-height"
    ]
  },
+  "deprecatedExtensions": {
+    "description": "list extension ids that you want to show a dialog once that the extension is deprecated when installed from extension store or has already been installed.",
+    "note": "use this only is we add support for the extension in core directly and has an alternative. dialog says: The following installed extensions are natively supported by phoenix and is recommended to remove it. The url is the documentation link for the feature replacing the extension feature.",
+    "extensionIDsAndDocs": {
+      "bib-locked-live-preview": "https://docs.phcode.dev/app-links/live-preview",
+      "brackets-display-shortcuts":  "https://docs.phcode.dev/app-links/keyboard-shortcuts",
+      "changing-tags":  "https://docs.phcode.dev/app-links/auto-rename-tag",
+      "brackets-indent-guides":  "https://docs.phcode.dev/app-links/indent-guide-lines",
+      "brackets-emmet":  "https://docs.phcode.dev/app-links/emmet",
+      "github-Pluto-custom-line-height": "https://docs.phcode.dev/app-links/extn-line-height"
+    }
+  },
   "dontLoadExtensions": {
     "note": "To take down any compromised extensions, see `extensionTakedownURL` in repo"
   }

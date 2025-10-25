@@ -107,7 +107,7 @@ use \uXXXX instead of an HTML entity.
 | Param | Type | Description |
 | --- | --- | --- |
 | name | <code>string</code> |  |
-| htmlName | <code>string</code> | If set, this will be displayed in ui menus instead of the name given.     Eg. "Phoenix menu<i class='fa fa-car' style='margin-left: 4px;'></i>" |
+| htmlName | <code>string</code> | If set, this will be displayed in ui menus instead of the name given.      Example: `"Phoenix menu<i class='fa fa-car' style='margin-left: 4px;'></i>"` |
 
 <a name="Command+getName"></a>
 
@@ -164,7 +164,7 @@ Registers a global command.
 | commandFn | <code>function</code> | the function to call when the command is executed. Any arguments passed to     execute() (after the id) are passed as arguments to the function. If the function is asynchronous,     it must return a jQuery promise that is resolved when the command completes. Otherwise, the     CommandManager will assume it is synchronous, and return a promise that is already resolved. |
 | [options] | <code>Object</code> |  |
 | options.eventSource | <code>boolean</code> | If set to true, the commandFn will be called with the first argument `event` with details about the source(invoker) as event.eventSource(one of the `CommandManager.SOURCE_*`) and event.sourceType(Eg. Ctrl-K) parameter. |
-| options.htmlName | <code>string</code> | If set, this will be displayed in ui menus instead of the name given.     Eg. "Phoenix menu<i class='fa fa-car' style='margin-left: 4px;'></i>" |
+| options.htmlName | <code>string</code> | If set, this will be displayed in ui menus instead of the name given.      Example: `"Phoenix menu<i class='fa fa-car' style='margin-left: 4px;'></i>"` |
 
 <a name="registerInternal"></a>
 
