@@ -1043,16 +1043,10 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Check if any deprecated extensions are installed and show a dialog once
+     * Check if any deprecated extensions are installed and show a dialog once per extension
      * @private
      */
     function _checkAndShowDeprecatedExtensionsDialog() {
-        // Check if we've already shown the dialog
-        const dialogShown = PreferencesManager.stateManager.get(STATE_DEPRECATED_EXTENSIONS_DIALOG_SHOWN);
-        if (dialogShown) {
-            return;
-        }
-
         // Get deprecated extensions config
         const deprecatedExtensionsConfig = DefaultExtensions.deprecatedExtensions;
         if (!deprecatedExtensionsConfig || !deprecatedExtensionsConfig.extensionIDsAndDocs) {
@@ -1061,10 +1055,16 @@ define(function (require, exports, module) {
 
         const deprecatedExtensionIDs = deprecatedExtensionsConfig.extensionIDsAndDocs;
 
-        // Check which deprecated extensions are loaded
+        // Get the state object that tracks which deprecated extensions we've already shown
+        let shownDeprecatedExtensions = PreferencesManager.stateManager.get(STATE_DEPRECATED_EXTENSIONS_DIALOG_SHOWN);
+        if (!shownDeprecatedExtensions || typeof shownDeprecatedExtensions !== 'object') {
+            shownDeprecatedExtensions = {};
+        }
+
+        // Check which deprecated extensions are loaded and not yet shown
         const deprecatedExtensionsFound = [];
         for (const extensionID of loadedExtensionIDs) {
-            if (deprecatedExtensionIDs[extensionID]) {
+            if (deprecatedExtensionIDs[extensionID] && !shownDeprecatedExtensions[extensionID]) {
                 deprecatedExtensionsFound.push({
                     id: extensionID,
                     docUrl: deprecatedExtensionIDs[extensionID]
@@ -1072,9 +1072,8 @@ define(function (require, exports, module) {
             }
         }
 
-        // If no deprecated extensions found, mark dialog as shown and return
+        // If no new deprecated extensions found, return
         if (deprecatedExtensionsFound.length === 0) {
-            PreferencesManager.stateManager.set(STATE_DEPRECATED_EXTENSIONS_DIALOG_SHOWN, true);
             return;
         }
 
@@ -1087,8 +1086,11 @@ define(function (require, exports, module) {
         const $template = $(Mustache.render(DeprecatedExtensionsTemplate, templateVars));
         Dialogs.showModalDialogUsingTemplate($template);
 
-        // Mark dialog as shown
-        PreferencesManager.stateManager.set(STATE_DEPRECATED_EXTENSIONS_DIALOG_SHOWN, true);
+        // Mark each extension as shown
+        for (const ext of deprecatedExtensionsFound) {
+            shownDeprecatedExtensions[ext.id] = true;
+        }
+        PreferencesManager.stateManager.set(STATE_DEPRECATED_EXTENSIONS_DIALOG_SHOWN, shownDeprecatedExtensions);
     }
 
 
