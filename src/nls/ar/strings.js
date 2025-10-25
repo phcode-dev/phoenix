@@ -164,9 +164,21 @@ define({
   "LIVE_DEV_MORE_OPTIONS_DUPLICATE": "تكرار",
   "LIVE_DEV_MORE_OPTIONS_DELETE": "حذف",
   "LIVE_DEV_MORE_OPTIONS_AI": "تعديل باستخدام الذكاء الاصطناعي",
+  "LIVE_DEV_MORE_OPTIONS_IMAGE_GALLERY": "معرض الصور",
   "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "استخدام هذه الصورة",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "تحديد صورة من الكمبيوتر",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "اختر مجلد تنزيل الصور",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "ابحث عن الصور...",
+  "LIVE_DEV_IMAGE_GALLERY_SEARCH_BUTTON": "بحث",
+  "LIVE_DEV_IMAGE_GALLERY_LOADING_INITIAL": "جارٍ تحميل الصور...",
+  "LIVE_DEV_IMAGE_GALLERY_LOADING_MORE": "جارٍ التحميل...",
+  "LIVE_DEV_IMAGE_GALLERY_NO_IMAGES": "لم يتم العثور على صور",
+  "LIVE_DEV_IMAGE_GALLERY_LOAD_ERROR": "فشل تحميل الصور",
+  "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "حدد مجلدًا لحفظ الصورة",
+  "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "اختر مكان تنزيل الصورة:",
+  "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "اكتب مسار المجلد (مثال: assets/images/)",
+  "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 اكتب مسار المجلد أو اتركه فارغًا للتنزيل في جذر المشروع",
+  "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "لا تسأل مرة أخرى بخصوص هذا المشروع",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "اطلب من فينيكس AI تعديل هذا العنصر...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "الحصول على معاينة من خادمك المخصص {0}",
   "LIVE_PREVIEW_MODE_PREVIEW": "وضع المعاينة",
@@ -1389,7 +1401,6 @@ define({
   "ERROR_FETCH_REMOTE": "فشل جلب معلومات جهاز التحكم عن بعد",
   "ERROR_PREPARING_COMMIT_DIALOG": "فشل تحضير مربع حوار الالتزام",
   "GIT_TOAST_TITLE": "استكشف ميزات Git في Phoenix Code",
-  "GIT_TOAST_MESSAGE": "انقر على رمز لوحة Git لإدارة مستودعك. يمكنك بسهولة تنفيذ الالتزام والدفع والسحب وعرض سجل مشروعك - كل ذلك في مكان واحد.<br><a href='https://docs.phcode.dev/docs/Features/git'>تعرّف على المزيد حول لوحة Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "صوت للميزات التي ترغب برؤيتها تالياً!",
   "SIGNED_OUT": "تم تسجيل خروجك.",
   "SIGNED_OUT_MESSAGE": "تم تسجيل خروجك من حساب {APP_NAME} الخاص بك. يُرجى تسجيل الدخول مرة أخرى للمتابعة.",
@@ -1514,16 +1525,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "قام مسؤول النظام بتعطيل الوصول إلى الذكاء الاصطناعي. يرجى الاتصال بـ {0} للحصول على المساعدة.",
   "AI_UPSELL_DIALOG_TITLE": "المتابعة باستخدام {0}؟",
   "AI_UPSELL_DIALOG_MESSAGE": "لقد اكتشفت {0}. للمتابعة، ستحتاج إلى اشتراك في الذكاء الاصطناعي أو أرصدة.",
-  "LIVE_DEV_MORE_OPTIONS_IMAGE_GALLERY": "معرض الصور",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "اختر مجلد تنزيل الصور",
-  "LIVE_DEV_IMAGE_GALLERY_SEARCH_BUTTON": "بحث",
-  "LIVE_DEV_IMAGE_GALLERY_LOADING_INITIAL": "جارٍ تحميل الصور...",
-  "LIVE_DEV_IMAGE_GALLERY_LOADING_MORE": "جارٍ التحميل...",
-  "LIVE_DEV_IMAGE_GALLERY_NO_IMAGES": "لم يتم العثور على صور",
-  "LIVE_DEV_IMAGE_GALLERY_LOAD_ERROR": "فشل تحميل الصور",
-  "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "حدد مجلدًا لحفظ الصورة",
-  "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "اختر مكان تنزيل الصورة:",
-  "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "اكتب مسار المجلد (مثال: assets/images/)",
-  "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 اكتب مسار المجلد أو اتركه فارغًا للتنزيل في جذر المشروع",
-  "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "لا تسأل مرة أخرى بخصوص هذا المشروع"
+  "GIT_TOAST_MESSAGE": "انقر على أيقونة لوحة Git لإدارة مستودعك. قم بسهولة بعمل commit، وpush، وpull، وعرض تاريخ مشروعك—كل ذلك في مكان واحد.<br><a href='https://docs.phcode.dev/app-links/git'>تعلم المزيد عن لوحة Git →</a>"
 });
