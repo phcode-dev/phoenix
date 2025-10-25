@@ -1094,9 +1094,10 @@ define(function (require, exports, module) {
         for (const extensionID of loadedExtensionIDs.keys()) {
             if (deprecatedExtensionIDs[extensionID] && !shownDeprecatedExtensions[extensionID]) {
                 const extensionInfo = loadedExtensionIDs.get(extensionID);
+                const extensionName = extensionInfo && extensionInfo.extensionName;
                 deprecatedExtensionsFound.push({
                     id: extensionID,
-                    name: extensionInfo?.extensionName || extensionID,
+                    name: extensionName || extensionID,
                     docUrl: deprecatedExtensionIDs[extensionID]
                 });
             }
