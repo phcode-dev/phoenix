@@ -7,16 +7,23 @@
 
         <div class="deprecated-extensions-list" style="margin-top: 16px;">
             {{#extensions}}
-            <div class="deprecated-extension-item" style="margin-bottom: 12px; padding: 12px;">
-                <div class="extension-info" style="margin-bottom: 6px;">
-                    <i class="fa fa-exclamation-triangle" style="color: #f5a623; margin-right: 8px;"></i>
-                    <strong>{{id}}</strong>
+            <div class="deprecated-extension-item" style="margin-bottom: 12px; padding: 12px; display: flex; justify-content: space-between; align-items: flex-start;">
+                <div style="flex: 1;">
+                    <div class="extension-info" style="margin-bottom: 6px;">
+                        <i class="fa fa-exclamation-triangle" style="color: #f5a623; margin-right: 8px;"></i>
+                        <strong>{{id}}</strong>
+                    </div>
+                    <div class="extension-alternative" style="margin-left: 24px;">
+                        <a href="{{docUrl}}" target="_blank" rel="noopener">
+                            {{Strings.DEPRECATED_EXTENSIONS_LEARN_MORE}}
+                            <i class="fa fa-external-link" style="margin-left: 4px; font-size: 11px;"></i>
+                        </a>
+                    </div>
                 </div>
-                <div class="extension-alternative" style="margin-left: 24px;">
-                    <a href="{{docUrl}}" target="_blank" rel="noopener">
-                        {{Strings.DEPRECATED_EXTENSIONS_LEARN_MORE}}
-                        <i class="fa fa-external-link" style="margin-left: 4px; font-size: 11px;"></i>
-                    </a>
+                <div style="margin-left: 12px;">
+                    <button class="btn btn-mini uninstall-extension-btn" data-extension-id="{{id}}">
+                        {{Strings.REMOVE}}
+                    </button>
                 </div>
             </div>
             {{/extensions}}

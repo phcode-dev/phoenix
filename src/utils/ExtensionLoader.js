@@ -1043,6 +1043,15 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Uninstall a deprecated extension
+     * @param {string} extensionID - The ID of the extension to uninstall
+     */
+    function uninstallExtension(extensionID) {
+        // TODO: Implement uninstall logic
+        alert(`Uninstall button clicked for extension: ${extensionID}`);
+    }
+
+    /**
      * Check if any deprecated extensions are installed and show a dialog once per extension
      * @private
      */
@@ -1086,6 +1095,12 @@ define(function (require, exports, module) {
         const $template = $(Mustache.render(DeprecatedExtensionsTemplate, templateVars));
         Dialogs.showModalDialogUsingTemplate($template);
 
+        // Wire up uninstall button click handlers
+        $template.on('click', '.uninstall-extension-btn', function() {
+            const extensionID = $(this).data('extension-id');
+            uninstallExtension(extensionID);
+        });
+
         // Mark each extension as shown
         for (const ext of deprecatedExtensionsFound) {
             shownDeprecatedExtensions[ext.id] = true;
@@ -1117,6 +1132,7 @@ define(function (require, exports, module) {
     exports.loadAllExtensionsInNativeDirectory = loadAllExtensionsInNativeDirectory;
     exports.loadExtensionFromNativeDirectory = loadExtensionFromNativeDirectory;
     exports.isExtensionTakenDown = isExtensionTakenDown;
+    exports.uninstallExtension = uninstallExtension;
     exports.testAllExtensionsInNativeDirectory = testAllExtensionsInNativeDirectory;
     exports.testAllDefaultExtensions = testAllDefaultExtensions;
     exports.EVENT_EXTENSION_LOADED = EVENT_EXTENSION_LOADED;
