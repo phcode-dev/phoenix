@@ -1401,6 +1401,7 @@ define({
   "ERROR_FETCH_REMOTE": "Fetching remote information failed",
   "ERROR_PREPARING_COMMIT_DIALOG": "Failed to prepare the commit dialogue",
   "GIT_TOAST_TITLE": "Explore Git Features in Phoenix Code",
+  "GIT_TOAST_MESSAGE": "Click the Git panel icon to manage your repository. Easily commit, push, pull, and view your project history—all in one place.<br><a href='https://docs.phcode.dev/app-links/git'>Learn more about the Git panel →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vote for the features you'd like to see next!",
   "SIGNED_OUT": "You've been signed out.",
   "SIGNED_OUT_MESSAGE": "You've been signed out of your {APP_NAME} account. Please sign in again to continue.",
@@ -1525,5 +1526,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "AI access has been disabled by your system administrator. Please contact {0} for assistance.",
   "AI_UPSELL_DIALOG_TITLE": "Continue with {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "You’ve discovered {0}. To proceed, you’ll need an AI subscription or credits.",
-  "GIT_TOAST_MESSAGE": "Click the Git panel icon to manage your repository. Easily commit, push, pull, and view your project history—all in one place.<br><a href='https://docs.phcode.dev/app-links/git'>Learn more about the Git panel →</a>"
+  "ERROR_UNINSTALLING_EXTENSION_TITLE": "Error Uninstalling Extension",
+  "ERROR_UNINSTALLING_EXTENSION_MESSAGE": "Failed to uninstall extension {0}",
+  "RESTART_APP_BUTTON": "Restart {APP_NAME}",
+  "REMOVING": "Removing…",
+  "DEPRECATED_EXTENSIONS_TITLE": "Deprecated Extensions Detected",
+  "DEPRECATED_EXTENSIONS_MESSAGE": "The following installed extensions are now natively supported by {APP_NAME} and can be safely uninstalled from the Extension Manager:",
+  "DEPRECATED_EXTENSIONS_LEARN_MORE": "Now built-in — learn more"
 });

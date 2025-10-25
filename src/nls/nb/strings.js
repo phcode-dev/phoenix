@@ -1401,6 +1401,7 @@ define({
   "ERROR_FETCH_REMOTE": "Kunne ikke hente informasjon om eksternt repositorium",
   "ERROR_PREPARING_COMMIT_DIALOG": "Klargjøring av commit-dialogen feilet",
   "GIT_TOAST_TITLE": "Utforsk Git-funksjoner i Phoenix Code",
+  "GIT_TOAST_MESSAGE": "Klikk på Git-panelikonet for å administrere repositoriet ditt. Her kan du enkelt committe, pushe, pulle og se prosjekthistorikken din – alt på ett sted.<br><a href='https://docs.phcode.dev/app-links/git'>Les mer om Git-panelet →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Stem på funksjonene du ønsker å se neste!",
   "SIGNED_OUT": "Du er logget ut.",
   "SIGNED_OUT_MESSAGE": "Du er logget ut av {APP_NAME}-kontoen din. Logg inn på nytt for å fortsette.",
@@ -1525,5 +1526,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "AI-tilgang er deaktivert av systemadministratoren din. Vennligst kontakt {0} for hjelp.",
   "AI_UPSELL_DIALOG_TITLE": "Fortsette med {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Du har oppdaget {0}. For å fortsette trenger du et AI-abonnement eller kreditter.",
-  "GIT_TOAST_MESSAGE": "Klikk på Git-panelikonet for å administrere repositoriet ditt. Her kan du enkelt committe, pushe, pulle og se prosjekthistorikken din – alt på ett sted.<br><a href='https://docs.phcode.dev/app-links/git'>Les mer om Git-panelet →</a>"
+  "ERROR_UNINSTALLING_EXTENSION_TITLE": "Feil ved avinstallering av utvidelse",
+  "ERROR_UNINSTALLING_EXTENSION_MESSAGE": "Kunne ikke avinstallere utvidelsen {0}",
+  "RESTART_APP_BUTTON": "Start {APP_NAME} på nytt",
+  "REMOVING": "Fjerner …",
+  "DEPRECATED_EXTENSIONS_TITLE": "Foreldede utvidelser funnet",
+  "DEPRECATED_EXTENSIONS_MESSAGE": "Følgende installerte utvidelser er nå innebygd i {APP_NAME} og kan trygt avinstalleres fra utvidelsesbehandleren:",
+  "DEPRECATED_EXTENSIONS_LEARN_MORE": "Nå innebygd – lær mer"
 });

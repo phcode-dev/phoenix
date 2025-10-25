@@ -1401,6 +1401,7 @@ define({
   "ERROR_FETCH_REMOTE": "Pobieranie informacji o zdalnym repozytorium nie powiodło się",
   "ERROR_PREPARING_COMMIT_DIALOG": "Przygotowanie okna dialogowego zatwierdzenia nie powiodło się",
   "GIT_TOAST_TITLE": "Poznaj funkcje Gita w Phoenix Code",
+  "GIT_TOAST_MESSAGE": "Kliknij ikonę panelu Git, aby zarządzać swoim repozytorium. Z łatwością zatwierdzaj, wypychaj, pobieraj i przeglądaj historię projektu — wszystko w jednym miejscu.<br><a href='https://docs.phcode.dev/app-links/git'>Dowiedz się więcej o panelu Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Zagłosuj na funkcje, które chcesz zobaczyć w przyszłości!",
   "SIGNED_OUT": "Wylogowano.",
   "SIGNED_OUT_MESSAGE": "Zostałeś wylogowany z konta {APP_NAME}. Zaloguj się ponownie, aby kontynuować.",
@@ -1525,5 +1526,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Dostęp do AI został wyłączony przez administratora systemu. Prosimy o kontakt z {0} w celu uzyskania pomocy.",
   "AI_UPSELL_DIALOG_TITLE": "Kontynuować z {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Odkryłeś {0}. Aby kontynuować, potrzebujesz subskrypcji AI lub kredytów.",
-  "GIT_TOAST_MESSAGE": "Kliknij ikonę panelu Git, aby zarządzać swoim repozytorium. Z łatwością zatwierdzaj, wypychaj, pobieraj i przeglądaj historię projektu — wszystko w jednym miejscu.<br><a href='https://docs.phcode.dev/app-links/git'>Dowiedz się więcej o panelu Git →</a>"
+  "ERROR_UNINSTALLING_EXTENSION_TITLE": "Błąd odinstalowywania rozszerzenia",
+  "ERROR_UNINSTALLING_EXTENSION_MESSAGE": "Nie udało się odinstalować rozszerzenia {0}",
+  "RESTART_APP_BUTTON": "Uruchom ponownie {APP_NAME}",
+  "REMOVING": "Usuwanie…",
+  "DEPRECATED_EXTENSIONS_TITLE": "Wykryto wycofane rozszerzenia",
+  "DEPRECATED_EXTENSIONS_MESSAGE": "Następujące zainstalowane rozszerzenia są teraz natywnie obsługiwane przez {APP_NAME} i mogą zostać bezpiecznie odinstalowane z Menedżera rozszerzeń:",
+  "DEPRECATED_EXTENSIONS_LEARN_MORE": "Teraz wbudowane — dowiedz się więcej"
 });

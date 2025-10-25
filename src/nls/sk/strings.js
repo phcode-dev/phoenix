@@ -1401,6 +1401,7 @@ define({
   "ERROR_FETCH_REMOTE": "Získanie informácií o vzdialenom repozitári zlyhalo",
   "ERROR_PREPARING_COMMIT_DIALOG": "Chyba pri príprave dialógového okna pre commit",
   "GIT_TOAST_TITLE": "Preskúmajte funkcie Gitu v Phoenix Code",
+  "GIT_TOAST_MESSAGE": "Kliknite na ikonu panela Git na správu svojho repozitára. Jednoducho commitujte, pushujte, pullujte a prezerajte si históriu svojho projektu – všetko na jednom mieste.<br><a href='https://docs.phcode.dev/app-links/git'>Zistite viac o paneli Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Hlasujte za funkcie, ktoré chcete vidieť v ďalšej verzii!",
   "SIGNED_OUT": "Boli ste odhlásení.",
   "SIGNED_OUT_MESSAGE": "Boli ste odhlásení z vášho účtu {APP_NAME}. Pre pokračovanie sa prosím prihláste.",
@@ -1525,5 +1526,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Prístup k AI bol vypnutý správcom vášho systému. So žiadosťou o pomoc sa obráťte na {0}.",
   "AI_UPSELL_DIALOG_TITLE": "Pokračovať s {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Objavili ste {0}. Ak chcete pokračovať, budete potrebovať predplatné AI alebo kredity.",
-  "GIT_TOAST_MESSAGE": "Kliknite na ikonu panela Git na správu svojho repozitára. Jednoducho commitujte, pushujte, pullujte a prezerajte si históriu svojho projektu – všetko na jednom mieste.<br><a href='https://docs.phcode.dev/app-links/git'>Zistite viac o paneli Git →</a>"
+  "ERROR_UNINSTALLING_EXTENSION_TITLE": "Chyba pri odinštalovaní rozšírenia",
+  "ERROR_UNINSTALLING_EXTENSION_MESSAGE": "Nepodarilo sa odinštalovať rozšírenie {0}",
+  "RESTART_APP_BUTTON": "Reštartovať {APP_NAME}",
+  "REMOVING": "Odstraňuje sa…",
+  "DEPRECATED_EXTENSIONS_TITLE": "Zistené zastarané rozšírenia",
+  "DEPRECATED_EXTENSIONS_MESSAGE": "Nasledujúce nainštalované rozšírenia sú teraz natívne podporované aplikáciou {APP_NAME} a je možné ich bezpečne odinštalovať v Správcovi rozšírení:",
+  "DEPRECATED_EXTENSIONS_LEARN_MORE": "Teraz vstavané – zistite viac"
 });

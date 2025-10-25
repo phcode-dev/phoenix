@@ -1401,6 +1401,7 @@ define({
   "ERROR_FETCH_REMOTE": "Gagal mengambil informasi remote",
   "ERROR_PREPARING_COMMIT_DIALOG": "Gagal mempersiapkan dialog commit",
   "GIT_TOAST_TITLE": "Jelajahi Fitur Git di Phoenix Code",
+  "GIT_TOAST_MESSAGE": "Klik ikon panel Git untuk mengelola repositori Anda. Lakukan commit, push, pull, dan lihat riwayat proyek Anda dengan mudah—semua di satu tempat.<br><a href='https://docs.phcode.dev/app-links/git'>Pelajari lebih lanjut tentang panel Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Pilih fitur yang ingin Anda lihat selanjutnya!",
   "SIGNED_OUT": "Anda telah keluar.",
   "SIGNED_OUT_MESSAGE": "Anda telah keluar dari akun {APP_NAME} Anda. Silakan masuk lagi untuk melanjutkan.",
@@ -1525,5 +1526,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Akses AI telah dinonaktifkan oleh administrator sistem Anda. Silakan hubungi {0} untuk bantuan.",
   "AI_UPSELL_DIALOG_TITLE": "Lanjutkan dengan {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Anda telah menemukan {0}. Untuk melanjutkan, Anda memerlukan langganan AI atau kredit.",
-  "GIT_TOAST_MESSAGE": "Klik ikon panel Git untuk mengelola repositori Anda. Lakukan commit, push, pull, dan lihat riwayat proyek Anda dengan mudah—semua di satu tempat.<br><a href='https://docs.phcode.dev/app-links/git'>Pelajari lebih lanjut tentang panel Git →</a>"
+  "ERROR_UNINSTALLING_EXTENSION_TITLE": "Galat Mencopot Ekstensi",
+  "ERROR_UNINSTALLING_EXTENSION_MESSAGE": "Gagal mencopot ekstensi {0}",
+  "RESTART_APP_BUTTON": "Mulai Ulang {APP_NAME}",
+  "REMOVING": "Menghapus…",
+  "DEPRECATED_EXTENSIONS_TITLE": "Ekstensi Usang Terdeteksi",
+  "DEPRECATED_EXTENSIONS_MESSAGE": "Ekstensi terinstal berikut kini didukung secara bawaan oleh {APP_NAME} dan dapat dicopot dengan aman dari Pengelola Ekstensi:",
+  "DEPRECATED_EXTENSIONS_LEARN_MORE": "Kini bawaan — pelajari lebih lanjut"
 });

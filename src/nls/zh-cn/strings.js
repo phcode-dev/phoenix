@@ -1401,6 +1401,7 @@ define({
   "ERROR_FETCH_REMOTE": "获取远程仓库信息失败",
   "ERROR_PREPARING_COMMIT_DIALOG": "准备提交对话框失败",
   "GIT_TOAST_TITLE": "探索 Phoenix Code 中的 Git 功能",
+  "GIT_TOAST_MESSAGE": "点击 Git 面板图标来管理您的仓库。一站式轻松完成提交、推送、拉取和查看项目历史。<br><a href='https://docs.phcode.dev/app-links/git'>进一步了解 Git 面板 →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "为您希望看到的下一个功能投票！",
   "SIGNED_OUT": "您已退出登录。",
   "SIGNED_OUT_MESSAGE": "您已退出 {APP_NAME} 帐户。请重新登录以继续。",
@@ -1525,5 +1526,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "AI 访问权限已被您的系统管理员禁用。请联系 {0} 以获取帮助。",
   "AI_UPSELL_DIALOG_TITLE": "继续使用 {0}？",
   "AI_UPSELL_DIALOG_MESSAGE": "您发现了 {0}。要继续，您需要 AI 订阅或点数。",
-  "GIT_TOAST_MESSAGE": "点击 Git 面板图标来管理您的仓库。一站式轻松完成提交、推送、拉取和查看项目历史。<br><a href='https://docs.phcode.dev/app-links/git'>进一步了解 Git 面板 →</a>"
+  "ERROR_UNINSTALLING_EXTENSION_TITLE": "卸载扩展时出错",
+  "ERROR_UNINSTALLING_EXTENSION_MESSAGE": "卸载扩展 {0} 失败",
+  "RESTART_APP_BUTTON": "重启 {APP_NAME}",
+  "REMOVING": "正在删除…",
+  "DEPRECATED_EXTENSIONS_TITLE": "检测到已弃用的扩展",
+  "DEPRECATED_EXTENSIONS_MESSAGE": "以下已安装的扩展现已由 {APP_NAME} 原生支持，可以从扩展管理器中安全卸载：",
+  "DEPRECATED_EXTENSIONS_LEARN_MORE": "现已内置 — 了解更多"
 });

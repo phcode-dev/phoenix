@@ -1401,6 +1401,7 @@ define({
   "ERROR_FETCH_REMOTE": "Извличането на информация за отдалеченото хранилище е неуспешно",
   "ERROR_PREPARING_COMMIT_DIALOG": "Неуспешно подготвяне на диалогов прозорец за commit",
   "GIT_TOAST_TITLE": "Разгледайте Git функциите в Phoenix Code",
+  "GIT_TOAST_MESSAGE": "Кликнете върху иконата на Git панела, за да управлявате вашето хранилище. Лесно извършвайте commit, push, pull и преглеждайте историята на проекта си — всичко на едно място.<br><a href='https://docs.phcode.dev/app-links/git'>Научете повече за Git панела →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Гласувайте за функциите, които искате да видите следващи!",
   "SIGNED_OUT": "Излязохте от профила си.",
   "SIGNED_OUT_MESSAGE": "Излязохте от профила си в {APP_NAME}. Моля, влезте отново, за да продължите.",
@@ -1525,5 +1526,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Достъпът до AI е деактивиран от вашия системен администратор. Моля, свържете се с {0} за съдействие.",
   "AI_UPSELL_DIALOG_TITLE": "Да продължите ли с {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Вие открихте {0}. За да продължите, ще ви е необходим AI абонамент или кредити.",
-  "GIT_TOAST_MESSAGE": "Кликнете върху иконата на Git панела, за да управлявате вашето хранилище. Лесно извършвайте commit, push, pull и преглеждайте историята на проекта си — всичко на едно място.<br><a href='https://docs.phcode.dev/app-links/git'>Научете повече за Git панела →</a>"
+  "ERROR_UNINSTALLING_EXTENSION_TITLE": "Грешка при деинсталиране на разширение",
+  "ERROR_UNINSTALLING_EXTENSION_MESSAGE": "Неуспешно деинсталиране на разширение {0}",
+  "RESTART_APP_BUTTON": "Рестартиране на {APP_NAME}",
+  "REMOVING": "Премахване…",
+  "DEPRECATED_EXTENSIONS_TITLE": "Открити са остарели разширения",
+  "DEPRECATED_EXTENSIONS_MESSAGE": "Следните инсталирани разширения вече се поддържат вградено от {APP_NAME} и могат да бъдат безопасно деинсталирани от мениджъра на разширения:",
+  "DEPRECATED_EXTENSIONS_LEARN_MORE": "Вече е вградено — научете повече"
 });

@@ -1401,6 +1401,7 @@ define({
   "ERROR_FETCH_REMOTE": "रिमोट जानकारी प्राप्त करने में विफलता",
   "ERROR_PREPARING_COMMIT_DIALOG": "कमिट डायलॉग तैयार करने में विफल रहा",
   "GIT_TOAST_TITLE": "फ़ीनिक्स कोड में Git सुविधाओं का अन्वेषण करें",
+  "GIT_TOAST_MESSAGE": "अपनी रिपॉजिटरी को मैनेज करने के लिए Git पैनल आइकन पर क्लिक करें। आसानी से कमिट, पुश, पुल करें, और अपने प्रोजेक्ट का इतिहास देखें—सब कुछ एक ही जगह पर।<br><a href='https://docs.phcode.dev/app-links/git'>Git पैनल के बारे में और जानें →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "उन विशेषताओं के लिए वोट करें जिन्हें आप आगे देखना चाहते हैं!",
   "SIGNED_OUT": "आप साइन आउट हो गए हैं।",
   "SIGNED_OUT_MESSAGE": "आप अपने {APP_NAME} खाते से साइन आउट हो गए हैं। कृपया जारी रखने के लिए फिर से साइन इन करें।",
@@ -1525,5 +1526,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "आपके सिस्टम एडमिनिस्ट्रेटर द्वारा AI एक्सेस अक्षम कर दिया गया है। सहायता के लिए कृपया {0} से संपर्क करें।",
   "AI_UPSELL_DIALOG_TITLE": "{0} के साथ जारी रखें?",
   "AI_UPSELL_DIALOG_MESSAGE": "आपने {0} खोज लिया है। आगे बढ़ने के लिए, आपको AI सब्सक्रिप्शन या क्रेडिट्स की ज़रूरत होगी।",
-  "GIT_TOAST_MESSAGE": "अपनी रिपॉजिटरी को मैनेज करने के लिए Git पैनल आइकन पर क्लिक करें। आसानी से कमिट, पुश, पुल करें, और अपने प्रोजेक्ट का इतिहास देखें—सब कुछ एक ही जगह पर।<br><a href='https://docs.phcode.dev/app-links/git'>Git पैनल के बारे में और जानें →</a>"
+  "ERROR_UNINSTALLING_EXTENSION_TITLE": "एक्सटेंशन अनइंस्टॉल करने में त्रुटि",
+  "ERROR_UNINSTALLING_EXTENSION_MESSAGE": "एक्सटेंशन {0} को अनइंस्टॉल करने में विफल",
+  "RESTART_APP_BUTTON": "{APP_NAME} रीस्टार्ट करें",
+  "REMOVING": "हटाया जा रहा है…",
+  "DEPRECATED_EXTENSIONS_TITLE": "डेप्रिकेटेड एक्सटेंशन पाए गए",
+  "DEPRECATED_EXTENSIONS_MESSAGE": "निम्नलिखित इंस्टॉल किए गए एक्सटेंशन अब {APP_NAME} द्वारा मूल रूप से समर्थित हैं और इन्हें एक्सटेंशन मैनेजर से सुरक्षित रूप से अनइंस्टॉल किया जा सकता है:",
+  "DEPRECATED_EXTENSIONS_LEARN_MORE": "अब अंतर्निहित — और जानें"
 });

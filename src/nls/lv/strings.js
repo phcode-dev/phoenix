@@ -1401,6 +1401,7 @@ define({
   "ERROR_FETCH_REMOTE": "Neizdevās iegūt informāciju par attālo krātuvi",
   "ERROR_PREPARING_COMMIT_DIALOG": "Neizdevās sagatavot izmaiņu apstiprināšanas dialogu",
   "GIT_TOAST_TITLE": "Izpētiet Git funkcijas Phoenix Code",
+  "GIT_TOAST_MESSAGE": "Noklikšķiniet uz Git paneļa ikonas, lai pārvaldītu savu repozitoriju. Viegli veiciet `commit`, `push`, `pull` darbības un apskatiet sava projekta vēsturi — viss vienuviet.<br><a href='https://docs.phcode.dev/app-links/git'>Uzziniet vairāk par Git paneli →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Nobalsot par funkcijām, kuras vēlaties redzēt nākamreiz!",
   "SIGNED_OUT": "Jūs esat izrakstījies.",
   "SIGNED_OUT_MESSAGE": "Jūs esat izrakstījies no sava {APP_NAME} konta. Lūdzu, piesakieties vēlreiz, lai turpinātu.",
@@ -1525,5 +1526,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "MI piekļuvi ir atspējojis jūsu sistēmas administrators. Lūdzu, sazinieties ar {0}, lai saņemtu palīdzību.",
   "AI_UPSELL_DIALOG_TITLE": "Turpināt ar {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Jūs atklājāt {0}. Lai turpinātu, jums būs nepieciešams MI abonements vai kredīti.",
-  "GIT_TOAST_MESSAGE": "Noklikšķiniet uz Git paneļa ikonas, lai pārvaldītu savu repozitoriju. Viegli veiciet `commit`, `push`, `pull` darbības un apskatiet sava projekta vēsturi — viss vienuviet.<br><a href='https://docs.phcode.dev/app-links/git'>Uzziniet vairāk par Git paneli →</a>"
+  "ERROR_UNINSTALLING_EXTENSION_TITLE": "Kļūda, atinstalējot paplašinājumu",
+  "ERROR_UNINSTALLING_EXTENSION_MESSAGE": "Neizdevās atinstalēt paplašinājumu {0}",
+  "RESTART_APP_BUTTON": "Restartēt {APP_NAME}",
+  "REMOVING": "Noņem...",
+  "DEPRECATED_EXTENSIONS_TITLE": "Konstatēti novecojuši paplašinājumi",
+  "DEPRECATED_EXTENSIONS_MESSAGE": "Tālāk norādītie instalētie paplašinājumi tagad ir iebūvēti {APP_NAME}, un tos var droši atinstalēt Paplašinājumu pārvaldniekā:",
+  "DEPRECATED_EXTENSIONS_LEARN_MORE": "Tagad iebūvēts — uzzināt vairāk"
 });

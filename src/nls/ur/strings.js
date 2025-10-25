@@ -1401,6 +1401,7 @@ define({
   "ERROR_FETCH_REMOTE": "ریموٹ معلومات حاصل کرنے میں ناکامی۔",
   "ERROR_PREPARING_COMMIT_DIALOG": "کمیٹ ڈائیلاگ تیار کرنے میں ناکام",
   "GIT_TOAST_TITLE": "فینکس کوڈ میں گٹ فیچرز دریافت کریں",
+  "GIT_TOAST_MESSAGE": "اپنی ریپازٹری کو منظم کرنے کے لیے گٹ پینل آئیکن پر کلک کریں۔ آسانی سے کمٹ، پش، پل کریں، اور اپنے پروجیکٹ کی ہسٹری دیکھیں—سب ایک ہی جگہ پر۔<br><a href='https://docs.phcode.dev/app-links/git'>گٹ پینل کے بارے میں مزید جانیں →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "اپنی پسندیدہ خصوصیات کے لیے ووٹ دیں!",
   "SIGNED_OUT": "آپ سائن آؤٹ ہو گئے ہیں۔",
   "SIGNED_OUT_MESSAGE": "آپ اپنے {APP_NAME} اکاؤنٹ سے سائن آؤٹ ہو گئے ہیں۔ براہ کرم جاری رکھنے کے لیے دوبارہ سائن ان کریں۔",
@@ -1525,5 +1526,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "آپ کے سسٹم ایڈمنسٹریٹر نے AI تک رسائی کو غیر فعال کر دیا ہے۔ براہ کرم مدد کے لیے {0} سے رابطہ کریں۔",
   "AI_UPSELL_DIALOG_TITLE": "{0} کے ساتھ جاری رکھیں؟",
   "AI_UPSELL_DIALOG_MESSAGE": "آپ نے {0} کو دریافت کیا ہے۔ آگے بڑھنے کے لیے، آپ کو AI سبسکرپشن یا کریڈٹس کی ضرورت ہوگی۔",
-  "GIT_TOAST_MESSAGE": "اپنی ریپازٹری کو منظم کرنے کے لیے گٹ پینل آئیکن پر کلک کریں۔ آسانی سے کمٹ، پش، پل کریں، اور اپنے پروجیکٹ کی ہسٹری دیکھیں—سب ایک ہی جگہ پر۔<br><a href='https://docs.phcode.dev/app-links/git'>گٹ پینل کے بارے میں مزید جانیں →</a>"
+  "ERROR_UNINSTALLING_EXTENSION_TITLE": "ایکسٹینشن ان انسٹال کرنے میں خرابی",
+  "ERROR_UNINSTALLING_EXTENSION_MESSAGE": "ایکسٹینشن {0} کو ان انسٹال کرنے میں ناکامی ہوئی",
+  "RESTART_APP_BUTTON": "{APP_NAME} کو دوبارہ شروع کریں",
+  "REMOVING": "ہٹایا جا رہا ہے…",
+  "DEPRECATED_EXTENSIONS_TITLE": "متروک ایکسٹینشنز کا پتہ چلا",
+  "DEPRECATED_EXTENSIONS_MESSAGE": "درج ذیل انسٹال شدہ ایکسٹینشنز اب {APP_NAME} میں مقامی طور پر سپورٹ کی جاتی ہیں اور انہیں ایکسٹینشن مینیجر سے محفوظ طریقے سے ان انسٹال کیا جا سکتا ہے:",
+  "DEPRECATED_EXTENSIONS_LEARN_MORE": "اب شامل ہے — مزید جانیں"
 });

@@ -1401,6 +1401,7 @@ define({
   "ERROR_FETCH_REMOTE": "Échec de la récupération des informations du dépôt distant",
   "ERROR_PREPARING_COMMIT_DIALOG": "Échec de la préparation de la boîte de dialogue de commit",
   "GIT_TOAST_TITLE": "Explorer les fonctionnalités Git dans Phoenix Code",
+  "GIT_TOAST_MESSAGE": "Cliquez sur l'icône du panneau Git pour gérer votre dépôt. Validez, poussez, récupérez et consultez facilement l'historique de votre projet — le tout au même endroit.<br><a href='https://docs.phcode.dev/app-links/git'>En savoir plus sur le panneau Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Votez pour les fonctionnalités que vous souhaitez voir apparaître !",
   "SIGNED_OUT": "Vous avez été déconnecté(e).",
   "SIGNED_OUT_MESSAGE": "Vous avez été déconnecté(e) de votre compte {APP_NAME}. Veuillez vous reconnecter pour continuer.",
@@ -1525,5 +1526,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "L'accès à l'IA a été désactivé par votre administrateur système. Veuillez contacter {0} pour obtenir de l'aide.",
   "AI_UPSELL_DIALOG_TITLE": "Continuer avec {0} ?",
   "AI_UPSELL_DIALOG_MESSAGE": "Vous avez découvert {0}. Pour continuer, vous aurez besoin d'un abonnement IA ou de crédits.",
-  "GIT_TOAST_MESSAGE": "Cliquez sur l'icône du panneau Git pour gérer votre dépôt. Validez, poussez, récupérez et consultez facilement l'historique de votre projet — le tout au même endroit.<br><a href='https://docs.phcode.dev/app-links/git'>En savoir plus sur le panneau Git →</a>"
+  "ERROR_UNINSTALLING_EXTENSION_TITLE": "Erreur lors de la désinstallation de l'extension",
+  "ERROR_UNINSTALLING_EXTENSION_MESSAGE": "Échec de la désinstallation de l'extension {0}",
+  "RESTART_APP_BUTTON": "Redémarrer {APP_NAME}",
+  "REMOVING": "Suppression en cours…",
+  "DEPRECATED_EXTENSIONS_TITLE": "Extensions obsolètes détectées",
+  "DEPRECATED_EXTENSIONS_MESSAGE": "Les extensions installées suivantes sont désormais prises en charge nativement par {APP_NAME} et peuvent être désinstallées en toute sécurité depuis le gestionnaire d'extensions :",
+  "DEPRECATED_EXTENSIONS_LEARN_MORE": "Désormais intégré — en savoir plus"
 });

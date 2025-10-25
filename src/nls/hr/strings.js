@@ -1401,6 +1401,7 @@ define({
   "ERROR_FETCH_REMOTE": "Dohvaćanje informacija o udaljenom repozitoriju nije uspjelo",
   "ERROR_PREPARING_COMMIT_DIALOG": "Priprema dijaloga za commit nije uspjela",
   "GIT_TOAST_TITLE": "Istražite Git značajke u Phoenix Codeu",
+  "GIT_TOAST_MESSAGE": "Kliknite na ikonu Git panela kako biste upravljali svojim repozitorijem. Jednostavno commitajte, pushajte, pullajte i pregledajte povijest svog projekta—sve na jednom mjestu.<br><a href='https://docs.phcode.dev/app-links/git'>Saznajte više o Git panelu →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Glasajte za značajke koje želite vidjeti sljedeće!",
   "SIGNED_OUT": "Odjavljeni ste.",
   "SIGNED_OUT_MESSAGE": "Odjavljeni ste iz svog {APP_NAME} računa. Prijavite se ponovno kako biste nastavili.",
@@ -1525,5 +1526,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Pristup AI-ju onemogućio je vaš administrator sustava. Molimo kontaktirajte {0} za pomoć.",
   "AI_UPSELL_DIALOG_TITLE": "Nastaviti s {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Otkrili ste {0}. Da biste nastavili, potrebna vam je AI pretplata ili krediti.",
-  "GIT_TOAST_MESSAGE": "Kliknite na ikonu Git panela kako biste upravljali svojim repozitorijem. Jednostavno commitajte, pushajte, pullajte i pregledajte povijest svog projekta—sve na jednom mjestu.<br><a href='https://docs.phcode.dev/app-links/git'>Saznajte više o Git panelu →</a>"
+  "ERROR_UNINSTALLING_EXTENSION_TITLE": "Greška pri deinstalaciji proširenja",
+  "ERROR_UNINSTALLING_EXTENSION_MESSAGE": "Deinstalacija proširenja {0} nije uspjela",
+  "RESTART_APP_BUTTON": "Ponovno pokreni {APP_NAME}",
+  "REMOVING": "Uklanjanje…",
+  "DEPRECATED_EXTENSIONS_TITLE": "Otkrivena su zastarjela proširenja",
+  "DEPRECATED_EXTENSIONS_MESSAGE": "Sljedeća instalirana proširenja sada su izvorno podržana u aplikaciji {APP_NAME} i mogu se sigurno deinstalirati putem Upravitelja proširenja:",
+  "DEPRECATED_EXTENSIONS_LEARN_MORE": "Sada ugrađeno — saznajte više"
 });

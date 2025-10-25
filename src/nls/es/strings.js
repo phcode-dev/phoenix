@@ -1401,6 +1401,7 @@ define({
   "ERROR_FETCH_REMOTE": "Error al obtener la información del remoto.",
   "ERROR_PREPARING_COMMIT_DIALOG": "Error al preparar el diálogo de confirmación",
   "GIT_TOAST_TITLE": "Explora las funciones de Git en Phoenix Code",
+  "GIT_TOAST_MESSAGE": "Haz clic en el icono del panel de Git para gestionar tu repositorio. Haz commit, push, pull y visualiza el historial de tu proyecto fácilmente, todo en un solo lugar.<br><a href='https://docs.phcode.dev/app-links/git'>Aprende más sobre el panel de Git →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "¡Vota por las funciones que quieres ver próximamente!",
   "SIGNED_OUT": "Se ha cerrado la sesión.",
   "SIGNED_OUT_MESSAGE": "Se ha cerrado la sesión de tu cuenta de {APP_NAME}. Inicia sesión de nuevo para continuar.",
@@ -1525,5 +1526,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "El acceso a la IA ha sido desactivado por el administrador del sistema. Póngase en contacto con {0} para obtener ayuda.",
   "AI_UPSELL_DIALOG_TITLE": "¿Continuar con {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Has descubierto {0}. Para continuar, necesitarás una suscripción de IA o créditos.",
-  "GIT_TOAST_MESSAGE": "Haz clic en el icono del panel de Git para gestionar tu repositorio. Haz commit, push, pull y visualiza el historial de tu proyecto fácilmente, todo en un solo lugar.<br><a href='https://docs.phcode.dev/app-links/git'>Aprende más sobre el panel de Git →</a>"
+  "ERROR_UNINSTALLING_EXTENSION_TITLE": "Error al desinstalar la extensión",
+  "ERROR_UNINSTALLING_EXTENSION_MESSAGE": "No se pudo desinstalar la extensión {0}",
+  "RESTART_APP_BUTTON": "Reiniciar {APP_NAME}",
+  "REMOVING": "Eliminando…",
+  "DEPRECATED_EXTENSIONS_TITLE": "Extensiones obsoletas detectadas",
+  "DEPRECATED_EXTENSIONS_MESSAGE": "Las siguientes extensiones instaladas ahora cuentan con soporte nativo en {APP_NAME} y se pueden desinstalar de forma segura desde el administrador de extensiones:",
+  "DEPRECATED_EXTENSIONS_LEARN_MORE": "Ahora integrado — más información"
 });

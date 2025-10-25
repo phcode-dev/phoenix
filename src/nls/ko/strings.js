@@ -1401,6 +1401,7 @@ define({
   "ERROR_FETCH_REMOTE": "리모트 정보 가져오기 실패",
   "ERROR_PREPARING_COMMIT_DIALOG": "커밋 대화 상자 준비 실패",
   "GIT_TOAST_TITLE": "Phoenix Code의 Git 기능 살펴보기",
+  "GIT_TOAST_MESSAGE": "깃 패널 아이콘을 클릭해 리포지토리를 관리하세요. 한곳에서 손쉽게 커밋, 푸시, 풀을 실행하고 프로젝트 기록을 볼 수 있습니다.<br><a href='https://docs.phcode.dev/app-links/git'>깃 패널에 대해 자세히 알아보기 →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "다음에 보고 싶은 기능에 투표하세요!",
   "SIGNED_OUT": "로그아웃되었습니다.",
   "SIGNED_OUT_MESSAGE": "{APP_NAME} 계정에서 로그아웃되었습니다. 계속하려면 다시 로그인하세요.",
@@ -1525,5 +1526,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "시스템 관리자에 의해 AI 액세스가 비활성화되었습니다. 도움이 필요하시면 {0}에게 문의하세요.",
   "AI_UPSELL_DIALOG_TITLE": "{0}(으)로 계속하시겠습니까?",
   "AI_UPSELL_DIALOG_MESSAGE": "{0} 기능을 발견하셨습니다. 계속 진행하려면 AI 구독 또는 크레딧이 필요합니다.",
-  "GIT_TOAST_MESSAGE": "깃 패널 아이콘을 클릭해 리포지토리를 관리하세요. 한곳에서 손쉽게 커밋, 푸시, 풀을 실행하고 프로젝트 기록을 볼 수 있습니다.<br><a href='https://docs.phcode.dev/app-links/git'>깃 패널에 대해 자세히 알아보기 →</a>"
+  "ERROR_UNINSTALLING_EXTENSION_TITLE": "확장 프로그램 제거 오류",
+  "ERROR_UNINSTALLING_EXTENSION_MESSAGE": "{0} 확장 프로그램을 제거하지 못했습니다",
+  "RESTART_APP_BUTTON": "{APP_NAME} 다시 시작",
+  "REMOVING": "제거 중…",
+  "DEPRECATED_EXTENSIONS_TITLE": "지원 중단된 확장 프로그램 감지됨",
+  "DEPRECATED_EXTENSIONS_MESSAGE": "다음 설치된 확장 프로그램은 이제 {APP_NAME}에서 기본적으로 지원되므로 확장 프로그램 관리자에서 안전하게 제거할 수 있습니다:",
+  "DEPRECATED_EXTENSIONS_LEARN_MORE": "이제 내장 기능 — 자세히 알아보기"
 });

@@ -1401,6 +1401,7 @@ define({
   "ERROR_FETCH_REMOTE": "Ophalen van remote-informatie mislukt",
   "ERROR_PREPARING_COMMIT_DIALOG": "Voorbereiden commit-dialoogvenster mislukt",
   "GIT_TOAST_TITLE": "Ontdek Git-functies in Phoenix Code",
+  "GIT_TOAST_MESSAGE": "Klik op het Git-paneelicoon om je repository te beheren. Eenvoudig committen, pushen, pullen en je projectgeschiedenis bekijken—alles op één plek.<br><a href='https://docs.phcode.dev/app-links/git'>Meer informatie over het Git-paneel →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Stem op de functies die u graag wilt zien!",
   "SIGNED_OUT": "U bent afgemeld.",
   "SIGNED_OUT_MESSAGE": "U bent afgemeld van uw {APP_NAME}-account. Meld u opnieuw aan om verder te gaan.",
@@ -1525,5 +1526,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "De toegang tot AI is uitgeschakeld door uw systeembeheerder. Neem contact op met {0} voor hulp.",
   "AI_UPSELL_DIALOG_TITLE": "Doorgaan met {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "U heeft {0} ontdekt. Om verder te gaan, heeft u een AI-abonnement of credits nodig.",
-  "GIT_TOAST_MESSAGE": "Klik op het Git-paneelicoon om je repository te beheren. Eenvoudig committen, pushen, pullen en je projectgeschiedenis bekijken—alles op één plek.<br><a href='https://docs.phcode.dev/app-links/git'>Meer informatie over het Git-paneel →</a>"
+  "ERROR_UNINSTALLING_EXTENSION_TITLE": "Fout bij verwijderen van extensie",
+  "ERROR_UNINSTALLING_EXTENSION_MESSAGE": "Kon extensie {0} niet verwijderen",
+  "RESTART_APP_BUTTON": "{APP_NAME} herstarten",
+  "REMOVING": "Verwijderen…",
+  "DEPRECATED_EXTENSIONS_TITLE": "Verouderde extensies gedetecteerd",
+  "DEPRECATED_EXTENSIONS_MESSAGE": "De volgende geïnstalleerde extensies worden nu standaard ondersteund door {APP_NAME} en kunnen veilig worden verwijderd via de Extensiebeheerder:",
+  "DEPRECATED_EXTENSIONS_LEARN_MORE": "Nu ingebouwd — meer informatie"
 });

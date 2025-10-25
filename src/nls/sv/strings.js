@@ -1401,6 +1401,7 @@ define({
   "ERROR_FETCH_REMOTE": "Det gick inte att hämta information om fjärranslutning",
   "ERROR_PREPARING_COMMIT_DIALOG": "Det gick inte att förbereda commit-dialogrutan",
   "GIT_TOAST_TITLE": "Utforska Git-funktioner i Phoenix Code",
+  "GIT_TOAST_MESSAGE": "Klicka på Git-panelikonen för att hantera ditt repository. Gör enkelt commit, push, pull och se din projekthistorik – allt på ett och samma ställe.<br><a href='https://docs.phcode.dev/app-links/git'>Lär dig mer om Git-panelen →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Rösta på funktionerna du vill se härnäst!",
   "SIGNED_OUT": "Du har loggats ut.",
   "SIGNED_OUT_MESSAGE": "Du har loggats ut från ditt {APP_NAME}-konto. Logga in igen för att fortsätta.",
@@ -1525,5 +1526,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "AI-åtkomst har inaktiverats av din systemadministratör. Kontakta {0} för hjälp.",
   "AI_UPSELL_DIALOG_TITLE": "Fortsätt med {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Du har upptäckt {0}. För att fortsätta behöver du ett AI-abonnemang eller krediter.",
-  "GIT_TOAST_MESSAGE": "Klicka på Git-panelikonen för att hantera ditt repository. Gör enkelt commit, push, pull och se din projekthistorik – allt på ett och samma ställe.<br><a href='https://docs.phcode.dev/app-links/git'>Lär dig mer om Git-panelen →</a>"
+  "ERROR_UNINSTALLING_EXTENSION_TITLE": "Fel vid avinstallation av tillägg",
+  "ERROR_UNINSTALLING_EXTENSION_MESSAGE": "Det gick inte att avinstallera tillägget {0}",
+  "RESTART_APP_BUTTON": "Starta om {APP_NAME}",
+  "REMOVING": "Tar bort…",
+  "DEPRECATED_EXTENSIONS_TITLE": "Inaktuella tillägg har upptäckts",
+  "DEPRECATED_EXTENSIONS_MESSAGE": "Följande installerade tillägg har nu inbyggt stöd i {APP_NAME} och kan tryggt avinstalleras från tilläggshanteraren:",
+  "DEPRECATED_EXTENSIONS_LEARN_MORE": "Nu inbyggt — läs mer"
 });

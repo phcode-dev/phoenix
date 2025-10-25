@@ -1401,6 +1401,7 @@ define({
   "ERROR_FETCH_REMOTE": "Abrufen der Remote-Informationen fehlgeschlagen",
   "ERROR_PREPARING_COMMIT_DIALOG": "Fehler beim Vorbereiten des Commit-Dialogs",
   "GIT_TOAST_TITLE": "Git-Funktionen in Phoenix Code entdecken",
+  "GIT_TOAST_MESSAGE": "Klicken Sie auf das Git-Panel-Symbol, um Ihr Repository zu verwalten. Committen, pushen und pullen Sie ganz einfach und sehen Sie Ihren Projektverlauf ein – alles an einem Ort.<br><a href='https://docs.phcode.dev/app-links/git'>Mehr über das Git-Panel erfahren →</a>",
   "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Stimmen Sie für die Funktionen ab, die Sie als Nächstes sehen möchten!",
   "SIGNED_OUT": "Sie wurden abgemeldet.",
   "SIGNED_OUT_MESSAGE": "Sie wurden von Ihrem {APP_NAME}-Konto abgemeldet. Bitte melden Sie sich erneut an, um fortzufahren.",
@@ -1525,5 +1526,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Der KI-Zugriff wurde von Ihrem Systemadministrator deaktiviert. Bitte kontaktieren Sie {0} für Unterstützung.",
   "AI_UPSELL_DIALOG_TITLE": "Mit {0} fortfahren?",
   "AI_UPSELL_DIALOG_MESSAGE": "Sie haben {0} entdeckt. Um fortzufahren, benötigen Sie ein KI-Abonnement oder Guthaben.",
-  "GIT_TOAST_MESSAGE": "Klicken Sie auf das Git-Panel-Symbol, um Ihr Repository zu verwalten. Committen, pushen und pullen Sie ganz einfach und sehen Sie Ihren Projektverlauf ein – alles an einem Ort.<br><a href='https://docs.phcode.dev/app-links/git'>Mehr über das Git-Panel erfahren →</a>"
+  "ERROR_UNINSTALLING_EXTENSION_TITLE": "Fehler beim Deinstallieren der Erweiterung",
+  "ERROR_UNINSTALLING_EXTENSION_MESSAGE": "Die Erweiterung {0} konnte nicht deinstalliert werden",
+  "RESTART_APP_BUTTON": "{APP_NAME} neu starten",
+  "REMOVING": "Wird entfernt…",
+  "DEPRECATED_EXTENSIONS_TITLE": "Veraltete Erweiterungen erkannt",
+  "DEPRECATED_EXTENSIONS_MESSAGE": "Die folgenden installierten Erweiterungen werden jetzt nativ von {APP_NAME} unterstützt und können sicher über den Erweiterungs-Manager deinstalliert werden:",
+  "DEPRECATED_EXTENSIONS_LEARN_MORE": "Jetzt integriert – mehr erfahren"
 });
