@@ -2283,7 +2283,7 @@ function RemoteFunctions(config = {}) {
 
                     .phoenix-ribbon-row {
                         display: flex !important;
-                        gap: 4px !important;
+                        gap: 5px !important;
                     }
 
                     .phoenix-ribbon-thumb {
@@ -2314,8 +2314,7 @@ function RemoteFunctions(config = {}) {
 
                     .phoenix-ribbon-nav {
                         position: absolute !important;
-                        top: 58% !important;
-                        transform: translateY(-50%) !important;
+                        top: 50% !important;
                         border-radius: 12px !important;
                         border: 1px solid rgba(255,255,255,0.14) !important;
                         color: #eaeaf0 !important;
@@ -2326,26 +2325,26 @@ function RemoteFunctions(config = {}) {
                         user-select: none !important;
                         transition: all 0.2s ease !important;
                         z-index: 2147483647 !important;
-                        padding: 2px 12px 6px 12px !important;
+                        padding: 0 12px 6px 12px !important;
                     }
 
                     .phoenix-ribbon-nav:hover {
                         background: rgba(21,25,36,0.85) !important;
                         border-color: rgba(255,255,255,0.25) !important;
-                        transform: translateY(-50%) scale(1.05) !important;
+                        transform: scale(1.05) !important;
                         box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
                     }
 
                     .phoenix-ribbon-nav:active {
-                        transform: translateY(-50%) scale(0.95) !important;
+                        transform: scale(0.95) !important;
                     }
 
                     .phoenix-ribbon-nav.left {
-                        left: 18px !important;
+                        left: 15px !important;
                     }
 
                     .phoenix-ribbon-nav.right {
-                        right: 18px !important;
+                        right: 15px !important;
                     }
 
                     .phoenix-ribbon-loading {
