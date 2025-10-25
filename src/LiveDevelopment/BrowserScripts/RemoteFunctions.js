@@ -1343,7 +1343,7 @@ function RemoteFunctions(config = {}) {
       `,
 
         selectImageFromComputer: `
-        <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="19" height="19">
           <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/>
         </svg>
       `,
@@ -1355,13 +1355,13 @@ function RemoteFunctions(config = {}) {
       `,
 
         folderSettings: `
-        <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="17" height="17">
           <path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>
         </svg>
       `,
 
         close: `
-        <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
           <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
         </svg>
       `,
@@ -1369,6 +1369,12 @@ function RemoteFunctions(config = {}) {
         paperPlane: `
         <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
           <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+        </svg>
+      `,
+
+        search: `
+        <svg viewBox="0 0 20 16" fill="currentColor" width="17" height="17">
+          <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
         </svg>
       `
     };
@@ -2261,7 +2267,7 @@ function RemoteFunctions(config = {}) {
 
                     .phoenix-ribbon-container {
                         width: 100% !important;
-                        height: 156px !important;
+                        height: 164px !important;
                         border: 1px solid rgba(255, 255, 255, 0.2) !important;
                         position: relative !important;
                     }
@@ -2272,19 +2278,19 @@ function RemoteFunctions(config = {}) {
                         overflow: hidden !important;
                         scroll-behavior: smooth !important;
                         padding: 6px !important;
-                        top: 30px !important;
+                        top: 36px !important;
                     }
 
                     .phoenix-ribbon-row {
                         display: flex !important;
-                        gap: 2px !important;
+                        gap: 4px !important;
                     }
 
                     .phoenix-ribbon-thumb {
                         flex: 0 0 auto !important;
                         width: 112px !important;
                         height: 112px !important;
-                        border-radius: 14px !important;
+                        border-radius: 4px !important;
                         overflow: hidden !important;
                         position: relative !important;
                         cursor: pointer !important;
@@ -2395,70 +2401,68 @@ function RemoteFunctions(config = {}) {
                     }
 
                     .phoenix-ribbon-search {
-                        display: flex !important;
-                        align-items: stretch !important;
-                        border-radius: 6px !important;
                         margin-left: 8px !important;
-                        border: 1px solid rgba(255,255,255,0.14) !important;
-                    }
-
-                    .phoenix-ribbon-search:hover {
-                        border: 1px solid rgba(0, 0, 0, 0.24) !important;
-                        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
-                    }
-
-                    .phoenix-ribbon-search:focus-within {
-                        border: 1px solid rgba(0, 0, 0, 0.24) !important;
-                        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+                        flex: 1 !important;
+                        max-width: 200px !important;
+                        position: relative !important;
                     }
 
                     .phoenix-ribbon-search input {
-                        background: transparent !important;
-                        border: none !important;
+                        width: 100% !important;
+                        height: 27px !important;
+                        padding: 5px 32px 5px 5px !important;
+                        box-sizing: border-box !important;
+                        background: #555555 !important;
+                        border: 1px solid #202020 !important;
+                        border-radius: 3px !important;
+                        color: #fff !important;
+                        font-size: 13px !important;
                         outline: none !important;
-                        color: #c5c5c5 !important;
-                        width: 150px !important;
-                        padding: 4px 8px !important;
-                        border-radius: 4px 0 0 4px !important;
-                        transition: background 0.2s ease !important;
-                    }
-
-                    .phoenix-ribbon-search input:focus {
-                        background: rgba(255, 255, 255, 0.03) !important;
                     }
 
                     .phoenix-ribbon-search input::placeholder {
-                        color: #a0a0a0 !important;
-                        opacity: 0.7 !important;
+                        color: #b4b4b4 !important;
                     }
 
                     .phoenix-ribbon-search input::-webkit-input-placeholder {
-                        color: #a0a0a0 !important;
-                        opacity: 0.7 !important;
+                        color: #b4b4b4 !important;
                     }
 
                     .phoenix-ribbon-search input::-moz-placeholder {
-                        color: #a0a0a0 !important;
-                        opacity: 0.7 !important;
+                        color: #b4b4b4 !important;
+                    }
+
+                    .phoenix-ribbon-search input:focus {
+                        border: 1px solid #2893ef !important;
+                        box-shadow: 0 0 0 1px #94ceff !important;
                     }
 
                     .phoenix-ribbon-search-btn {
+                        position: absolute !important;
+                        right: 2px !important;
+                        top: 50% !important;
+                        transform: translateY(-50%) !important;
                         background: transparent !important;
                         border: 1px solid transparent !important;
-                        border-left: 1px solid gray !important;
                         color: #a0a0a0 !important;
+                        border-radius: 2px !important;
                         cursor: pointer !important;
-                        padding: 2px 6px !important;
-                        border-radius: 0 4px 4px 0 !important;
-                        font-size: 12px !important;
-                        font-weight: 500 !important;
+                        padding: 4px !important;
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: center !important;
                         transition: all 0.2s ease !important;
-                        margin-left: 0 !important;
+                        height: 25px !important;
+                        width: 25px !important;
                     }
 
-                    .phoenix-ribbon-search-btn:hover {
-                        border: 1px solid rgba(0, 0, 0, 0.24) !important;
-                        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+                    .phoenix-ribbon-search-btn:hover:not(:disabled) {
+                        background: rgba(255, 255, 255, 0.1) !important;
+                    }
+
+                    .phoenix-ribbon-search-btn:disabled {
+                        opacity: 0.3 !important;
+                        cursor: not-allowed !important;
                     }
 
                     .phoenix-ribbon-select {
@@ -2645,7 +2649,9 @@ function RemoteFunctions(config = {}) {
                             <div class="phoenix-ribbon-header-left">
                                 <div class="phoenix-ribbon-search">
                                     <input type="text" placeholder="${config.strings.imageGallerySearchPlaceholder}" />
-                                    <button class="phoenix-ribbon-search-btn">${config.strings.imageGallerySearchButton}</button>
+                                    <button class="phoenix-ribbon-search-btn" disabled>
+                                        ${ICONS.search}
+                                    </button>
                                 </div>
                                 <div class="phoenix-ribbon-select">
                                     <button class="phoenix-select-image-btn" title="${config.strings.imageGallerySelectFromComputer}">
@@ -2943,7 +2949,13 @@ function RemoteFunctions(config = {}) {
                     }
                 };
 
-                searchButton.addEventListener('click', performSearch);
+                // disable/enable search button as per input container text
+                const updateSearchButtonState = () => {
+                    searchButton.disabled = searchInput.value.trim().length === 0;
+                };
+
+                searchInput.addEventListener('input', updateSearchButtonState);
+
                 searchInput.addEventListener('keydown', (e) => {
                     if (e.key === 'Enter') {
                         performSearch(e);
@@ -2953,6 +2965,8 @@ function RemoteFunctions(config = {}) {
                 searchInput.addEventListener('click', (e) => {
                     e.stopPropagation();
                 });
+
+                searchButton.addEventListener('click', performSearch);
             }
 
             if (selectImageBtn && fileInput) {
