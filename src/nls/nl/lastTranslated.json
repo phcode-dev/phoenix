@@ -925,7 +925,7 @@
   "GIT_SETTINGS_TITLE": "Git Settings",
   "GIT_SHOW_FILE_HISTORY": "File Commit history",
   "GIT_SHOW_HISTORY": "Commit history",
-  "GIT_TOAST_MESSAGE": "Click the Git panel icon to manage your repository. Easily commit, push, pull, and view your project history—all in one place.<br><a href='https://docs.phcode.dev/docs/Features/git'>Learn more about the Git panel →</a>",
+  "GIT_TOAST_MESSAGE": "Click the Git panel icon to manage your repository. Easily commit, push, pull, and view your project history—all in one place.<br><a href='https://docs.phcode.dev/app-links/git'>Learn more about the Git panel →</a>",
   "GIT_TOAST_TITLE": "Explore Git Features in Phoenix Code",
   "GOTO_NEXT_GIT_CHANGE": "Go to next Git change",
   "GOTO_PREVIOUS_GIT_CHANGE": "Go to previous Git change",
