@@ -59,7 +59,10 @@ define(function (require, exports, module) {
         PreferencesManager = require("preferences/PreferencesManager"),
         Mustache       = require("thirdparty/mustache/mustache"),
         Strings        = require("strings"),
-        DeprecatedExtensionsTemplate = require("text!htmlContent/deprecated-extensions-dialog.html");
+        StringUtils    = require("utils/StringUtils"),
+        Metrics = require("utils/Metrics"),
+        DeprecatedExtensionsTemplate = require("text!htmlContent/deprecated-extensions-dialog.html"),
+        CommandManager = require("command/CommandManager");
 
     // takedown/dont load extensions that are compromised at app start - start
     const EXTENSION_TAKEDOWN_LOCALSTORAGE_KEY = "PH_EXTENSION_TAKEDOWN_LIST";
@@ -82,7 +85,7 @@ define(function (require, exports, module) {
         return [];
     }
 
-    const loadedExtensionIDs = new Set();
+    const loadedExtensionIDs = new Map();
     let takedownExtensionList = new Set(_getTakedownListLS());
 
     const EXTENSION_TAKEDOWN_URL = brackets.config.extensionTakedownURL;
@@ -96,16 +99,16 @@ define(function (require, exports, module) {
 
         if (takedownExtensionList.size < loadedExtensionIDs.size) {
             smaller = takedownExtensionList;
-            larger = loadedExtensionIDs;
+            larger = Array.from(loadedExtensionIDs.keys());
         } else {
-            smaller = loadedExtensionIDs;
+            smaller = Array.from(loadedExtensionIDs.keys());
             larger = takedownExtensionList;
         }
 
         const matches = [];
 
         for (const id of smaller) {
-            if (larger.has(id)) {
+            if (larger.has ? larger.has(id) : larger.includes(id)) {
                 matches.push(id);
             }
         }
@@ -521,7 +524,11 @@ define(function (require, exports, module) {
                 }
 
                 if(metadata.name) {
-                    loadedExtensionIDs.add(metadata.name);
+                    loadedExtensionIDs.set(metadata.name, {
+                        loadedFromDisc: !!config.nativeDir,
+                        extensionPath: config.nativeDir || config.baseUrl,
+                        extensionName: metadata.title || metadata.name
+                    });
                 }
 
                 // No special handling for themes... Let the promise propagate into the ExtensionManager
@@ -1045,10 +1052,21 @@ define(function (require, exports, module) {
     /**
      * Uninstall a deprecated extension
      * @param {string} extensionID - The ID of the extension to uninstall
+     * @return {Promise} A promise that resolves when the extension is uninstalled successfully
      */
-    function uninstallExtension(extensionID) {
-        // TODO: Implement uninstall logic
-        alert(`Uninstall button clicked for extension: ${extensionID}`);
+    async function uninstallExtension(extensionID) {
+        const extensionInfo = loadedExtensionIDs.get(extensionID);
+
+        if (!extensionInfo) {
+            throw new Error(`Extension ${extensionID} not found in loaded extensions`);
+        }
+
+        if (!extensionInfo.loadedFromDisc) {
+            throw new Error(`Cannot uninstall built-in extension: ${extensionID}`);
+        }
+
+        const extensionDir = FileSystem.getDirectoryForPath(extensionInfo.extensionPath);
+        await extensionDir.unlinkAsync();
     }
 
     /**
@@ -1057,6 +1075,7 @@ define(function (require, exports, module) {
      */
     function _checkAndShowDeprecatedExtensionsDialog() {
         // Get deprecated extensions config
+        let needsRestart = false;
         const deprecatedExtensionsConfig = DefaultExtensions.deprecatedExtensions;
         if (!deprecatedExtensionsConfig || !deprecatedExtensionsConfig.extensionIDsAndDocs) {
             return;
@@ -1072,10 +1091,12 @@ define(function (require, exports, module) {
 
         // Check which deprecated extensions are loaded and not yet shown
         const deprecatedExtensionsFound = [];
-        for (const extensionID of loadedExtensionIDs) {
+        for (const extensionID of loadedExtensionIDs.keys()) {
             if (deprecatedExtensionIDs[extensionID] && !shownDeprecatedExtensions[extensionID]) {
+                const extensionInfo = loadedExtensionIDs.get(extensionID);
                 deprecatedExtensionsFound.push({
                     id: extensionID,
+                    name: extensionInfo?.extensionName || extensionID,
                     docUrl: deprecatedExtensionIDs[extensionID]
                 });
             }
@@ -1093,12 +1114,53 @@ define(function (require, exports, module) {
         };
 
         const $template = $(Mustache.render(DeprecatedExtensionsTemplate, templateVars));
-        Dialogs.showModalDialogUsingTemplate($template);
+        const dialog = Dialogs.showModalDialogUsingTemplate($template, false); // autoDismiss = false
 
         // Wire up uninstall button click handlers
-        $template.on('click', '.uninstall-extension-btn', function() {
-            const extensionID = $(this).data('extension-id');
-            uninstallExtension(extensionID);
+        $template.on('click', '.uninstall-extension-btn', async function() {
+            const $button = $(this);
+            const extensionID = $button.data('extension-id');
+            const $extensionItem = $button.closest('.deprecated-extension-item');
+
+            // Disable button during uninstall
+            $button.prop('disabled', true);
+            $button.text(Strings.REMOVING);
+
+            try {
+                Metrics.countEvent(Metrics.EVENT_TYPE.EXTENSIONS, "removeDep", extensionID);
+                await uninstallExtension(extensionID);
+
+                // Update the OK button to "Restart App"
+                const $okButton = $template.find('[data-button-id="ok"]');
+                $okButton.text(Strings.RESTART_APP_BUTTON);
+
+                // Strike through the extension name and disable/strike the uninstall button
+                $extensionItem.find('.extension-info strong').addClass('striked');
+                $button.remove();
+                needsRestart = true;
+            } catch (err) {
+                Metrics.countEvent(Metrics.EVENT_TYPE.EXTENSIONS, "removeDep", "fail");
+                logger.reportError(err, 'Failed to uninstall deprecated extension:' + extensionID);
+
+                // Show error dialog
+                const message = StringUtils.format(Strings.ERROR_UNINSTALLING_EXTENSION_MESSAGE, extensionID);
+                Dialogs.showErrorDialog(Strings.ERROR_UNINSTALLING_EXTENSION_TITLE, message);
+
+                // Re-enable button
+                $button.prop('disabled', false);
+                $button.text(Strings.REMOVE);
+            }
+        });
+
+        // Handle OK button click
+        $template.on('click', '[data-button-id="ok"]', function() {
+            if (needsRestart) {
+                // Reload the app to complete uninstallation
+                CommandManager.execute("debug.refreshWindow");
+            } else {
+                // Just close the dialog
+                dialog.close();
+            }
         });
 
         // Mark each extension as shown
