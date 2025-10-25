@@ -2926,6 +2926,7 @@ function RemoteFunctions(config = {}) {
 
         _attachEventHandlers: function() {
             const ribbonContainer = this._shadow.querySelector('.phoenix-image-ribbon');
+            const ribbonStrip = this._shadow.querySelector('.phoenix-ribbon-strip');
             const searchInput = this._shadow.querySelector('.phoenix-ribbon-search input');
             const searchButton = this._shadow.querySelector('.phoenix-ribbon-search-btn');
             const closeButton = this._shadow.querySelector('.phoenix-ribbon-close');
@@ -3021,6 +3022,13 @@ function RemoteFunctions(config = {}) {
                 });
             }
 
+            // Restore original image when mouse leaves the entire ribbon strip
+            if (ribbonStrip) {
+                ribbonStrip.addEventListener('mouseleave', () => {
+                    this.element.src = this._originalImageSrc;
+                });
+            }
+
             // Prevent clicks anywhere inside the ribbon from bubbling up
             if (ribbonContainer) {
                 ribbonContainer.addEventListener('click', (e) => {
@@ -3067,11 +3075,6 @@ function RemoteFunctions(config = {}) {
 
                     this.element.style.objectFit = this._originalImageStyle.objectFit || 'cover';
                     this.element.src = image.url || image.thumb_url;
-                });
-
-                // show original image when hover ends
-                thumbDiv.addEventListener('mouseleave', () => {
-                    this.element.src = this._originalImageSrc;
                 });
 
                 // attribution overlay, we show this only in the image ribbon gallery
