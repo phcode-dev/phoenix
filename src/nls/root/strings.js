@@ -1597,7 +1597,7 @@ define({
     "ERROR_FETCH_REMOTE": "Fetching remote information failed",
     "ERROR_PREPARING_COMMIT_DIALOG": "Preparing commit dialog failed",
     "GIT_TOAST_TITLE": "Explore Git Features in Phoenix Code",
-    "GIT_TOAST_MESSAGE": "Click the Git panel icon to manage your repository. Easily commit, push, pull, and view your project history—all in one place.<br><a href='https://docs.phcode.dev/docs/Features/git'>Learn more about the Git panel →</a>",
+    "GIT_TOAST_MESSAGE": "Click the Git panel icon to manage your repository. Easily commit, push, pull, and view your project history—all in one place.<br><a href='https://docs.phcode.dev/app-links/git'>Learn more about the Git panel →</a>",
 
     // surveys
     "SURVEY_TITLE_VOTE_FOR_FEATURES_YOU_WANT": "Vote for the features you want to see next!",

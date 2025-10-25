@@ -206,7 +206,7 @@ define(function (require, exports, module) {
      *
      * @param {string} name
      * @param {string} htmlName If set, this will be displayed in ui menus instead of the name given.
-     *     Eg. "Phoenix menu<i class='fa fa-car' style='margin-left: 4px;'></i>"
+     *      Example: `"Phoenix menu<i class='fa fa-car' style='margin-left: 4px;'></i>"`
      */
     Command.prototype.setName = function (name, htmlName) {
         let changed = this._name !== name;
@@ -249,7 +249,8 @@ define(function (require, exports, module) {
      * with details about the source(invoker) as event.eventSource(one of the `CommandManager.SOURCE_*`) and
      * event.sourceType(Eg. Ctrl-K) parameter.
      * @param {string} options.htmlName If set, this will be displayed in ui menus instead of the name given.
-     *     Eg. "Phoenix menu<i class='fa fa-car' style='margin-left: 4px;'></i>"
+     *      Example: `"Phoenix menu<i class='fa fa-car' style='margin-left: 4px;'></i>"`
+     *
      * @return {?Command}
      */
     function register(name, id, commandFn, options={}) {
