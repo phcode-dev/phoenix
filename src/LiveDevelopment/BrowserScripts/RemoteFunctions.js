@@ -2649,7 +2649,7 @@ function RemoteFunctions(config = {}) {
                             <div class="phoenix-ribbon-header-left">
                                 <div class="phoenix-ribbon-search">
                                     <input type="text" placeholder="${config.strings.imageGallerySearchPlaceholder}" />
-                                    <button class="phoenix-ribbon-search-btn" disabled>
+                                    <button class="phoenix-ribbon-search-btn" title="${config.strings.imageGallerySearchButton}">
                                         ${ICONS.search}
                                     </button>
                                 </div>
@@ -2664,7 +2664,7 @@ function RemoteFunctions(config = {}) {
                                 <button class="phoenix-ribbon-folder-settings" title="${config.strings.imageGallerySelectDownloadFolder}">
                                     ${ICONS.folderSettings}
                                 </button>
-                                <button class="phoenix-ribbon-close">
+                                <button class="phoenix-ribbon-close" title="${config.strings.imageGalleryClose}">
                                     ${ICONS.close}
                                 </button>
                             </div>
