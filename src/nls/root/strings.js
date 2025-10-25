@@ -199,6 +199,7 @@ define({
     "LIVE_DEV_IMAGE_GALLERY_LOADING_MORE": "Loading...",
     "LIVE_DEV_IMAGE_GALLERY_NO_IMAGES": "No images found",
     "LIVE_DEV_IMAGE_GALLERY_LOAD_ERROR": "Failed to load images",
+    "LIVE_DEV_IMAGE_GALLERY_CLOSE": "Close",
     "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Select Folder to Save Image",
     "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Choose where to download the image:",
     "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Type folder path (e.g., assets/images/)",
