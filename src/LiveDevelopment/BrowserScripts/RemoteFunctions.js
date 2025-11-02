@@ -216,7 +216,7 @@ function RemoteFunctions(config = {}) {
      */
     function scrollImageToViewportIfRequired(element, imageGalleryElement) {
         let elementRect = element.getBoundingClientRect();
-        let galleryRect = imageGalleryElement._shadow.querySelector('.phoenix-image-ribbon').getBoundingClientRect();
+        let galleryRect = imageGalleryElement._shadow.querySelector('.phoenix-image-gallery-container').getBoundingClientRect();
 
         // this will get true when the image element and the image gallery overlaps each other
         if (elementRect.bottom >= galleryRect.top) {
@@ -2616,6 +2616,7 @@ function RemoteFunctions(config = {}) {
 
                         <div class='phoenix-image-gallery-upload-container'>
                             <button>${ICONS.selectImageFromComputer} Upload</button>
+                            <input type="file" class="phoenix-file-input" accept="image/*" style="display: none;">
                         </div>
 
                         <div class='phoenix-image-gallery-right-buttons'>
@@ -2755,7 +2756,7 @@ function RemoteFunctions(config = {}) {
 
         _updateSearchInput: function(searchQuery) {
             // write the current query in the search input
-            const searchInput = this._shadow.querySelector('.phoenix-ribbon-search input');
+            const searchInput = this._shadow.querySelector('.search-wrapper input');
             if (searchInput && searchQuery) {
                 searchInput.value = searchQuery;
                 searchInput.placeholder = searchQuery;
@@ -2796,7 +2797,7 @@ function RemoteFunctions(config = {}) {
         },
 
         _handleNavLeft: function() {
-            const container = this._shadow.querySelector('.phoenix-ribbon-strip');
+            const container = this._shadow.querySelector('.phoenix-image-gallery-strip');
             if (!container) { return; }
 
             const containerWidth = container.clientWidth;
@@ -2808,7 +2809,7 @@ function RemoteFunctions(config = {}) {
         },
 
         _handleNavRight: function() {
-            const container = this._shadow.querySelector('.phoenix-ribbon-strip');
+            const container = this._shadow.querySelector('.phoenix-image-gallery-strip');
             if (!container) { return; }
 
             const containerWidth = container.clientWidth;
@@ -2832,9 +2833,9 @@ function RemoteFunctions(config = {}) {
             // this function is responsible to update the nav buttons
             // when we're at the very left, we hide the nav-left button completely
             // when we're at the very right and no more pages available, we hide the nav-right button
-            const navLeft = this._shadow.querySelector('.phoenix-ribbon-nav.left');
-            const navRight = this._shadow.querySelector('.phoenix-ribbon-nav.right');
-            const container = this._shadow.querySelector('.phoenix-ribbon-strip');
+            const navLeft = this._shadow.querySelector('.phoenix-image-gallery-nav.left');
+            const navRight = this._shadow.querySelector('.phoenix-image-gallery-nav.right');
+            const container = this._shadow.querySelector('.phoenix-image-gallery-strip');
 
             if (!navLeft || !navRight || !container) { return; }
 
@@ -2859,15 +2860,15 @@ function RemoteFunctions(config = {}) {
         },
 
         _showLoading: function() {
-            const rowElement = this._shadow.querySelector('.phoenix-ribbon-row');
+            const rowElement = this._shadow.querySelector('.phoenix-image-gallery-row');
             if (!rowElement) { return; }
 
             rowElement.innerHTML = config.strings.imageGalleryLoadingInitial;
-            rowElement.className = 'phoenix-ribbon-row phoenix-ribbon-loading';
+            rowElement.className = 'phoenix-image-gallery-row phoenix-image-gallery-loading';
         },
 
         _showLoadingMore: function() {
-            const rowElement = this._shadow.querySelector('.phoenix-ribbon-row');
+            const rowElement = this._shadow.querySelector('.phoenix-image-gallery-row');
             if (!rowElement) { return; }
 
             // when loading more images we need to show the message at the end of the image ribbon
@@ -2885,15 +2886,15 @@ function RemoteFunctions(config = {}) {
         },
 
         _attachEventHandlers: function() {
-            const ribbonContainer = this._shadow.querySelector('.phoenix-image-ribbon');
-            const ribbonStrip = this._shadow.querySelector('.phoenix-ribbon-strip');
-            const searchInput = this._shadow.querySelector('.phoenix-ribbon-search input');
-            const searchButton = this._shadow.querySelector('.phoenix-ribbon-search-btn');
-            const closeButton = this._shadow.querySelector('.phoenix-ribbon-close');
-            const folderSettingsButton = this._shadow.querySelector('.phoenix-ribbon-folder-settings');
-            const navLeft = this._shadow.querySelector('.phoenix-ribbon-nav.left');
-            const navRight = this._shadow.querySelector('.phoenix-ribbon-nav.right');
-            const selectImageBtn = this._shadow.querySelector('.phoenix-select-image-btn');
+            const ribbonContainer = this._shadow.querySelector('.phoenix-image-gallery-container');
+            const ribbonStrip = this._shadow.querySelector('.phoenix-image-gallery-strip');
+            const searchInput = this._shadow.querySelector('.search-wrapper input');
+            const searchButton = this._shadow.querySelector('.search-icon');
+            const closeButton = this._shadow.querySelector('.phoenix-image-gallery-close-button');
+            const folderSettingsButton = this._shadow.querySelector('.phoenix-image-gallery-download-folder-button');
+            const navLeft = this._shadow.querySelector('.phoenix-image-gallery-nav.left');
+            const navRight = this._shadow.querySelector('.phoenix-image-gallery-nav.right');
+            const selectImageBtn = this._shadow.querySelector('.phoenix-image-gallery-upload-container button');
             const fileInput = this._shadow.querySelector('.phoenix-file-input');
 
             if (searchInput && searchButton) {
@@ -3000,16 +3001,16 @@ function RemoteFunctions(config = {}) {
         // append true means load more images (user clicked on nav-right)
         // append false means its a new query
         _renderImages: function(images, append = false) {
-            const rowElement = this._shadow.querySelector('.phoenix-ribbon-row');
+            const rowElement = this._shadow.querySelector('.phoenix-image-gallery-row');
             if (!rowElement) { return; }
 
-            const container = this._shadow.querySelector('.phoenix-ribbon-strip');
+            const container = this._shadow.querySelector('.phoenix-image-gallery-strip');
             const savedScrollPosition = container ? container.scrollLeft : 0;
 
             // if not appending we clear the phoenix ribbon
             if (!append) {
                 rowElement.innerHTML = '';
-                rowElement.className = 'phoenix-ribbon-row';
+                rowElement.className = 'phoenix-image-gallery-row';
             } else {
                 // when appending we add the new images at the end
                 const loadingIndicator = this._shadow.querySelector('.phoenix-loading-more');
@@ -3113,11 +3114,11 @@ function RemoteFunctions(config = {}) {
         },
 
         _showError: function(message) {
-            const rowElement = this._shadow.querySelector('.phoenix-ribbon-row');
+            const rowElement = this._shadow.querySelector('.phoenix-image-gallery-row');
             if (!rowElement) { return; }
 
             rowElement.innerHTML = message;
-            rowElement.className = 'phoenix-ribbon-row phoenix-ribbon-error';
+            rowElement.className = 'phoenix-image-gallery-row phoenix-ribbon-error';
         },
 
         // file name with which we need to save the image
