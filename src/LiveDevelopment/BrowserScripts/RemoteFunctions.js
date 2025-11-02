@@ -2372,8 +2372,6 @@ function RemoteFunctions(config = {}) {
                         overflow: hidden;
                         scroll-behavior: smooth;
                         padding: 6px;
-                        height: calc(100% - 36px);
-                        margin-top: 36px;
                     }
 
                     .phoenix-image-gallery-row {
