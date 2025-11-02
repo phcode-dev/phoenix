@@ -2291,7 +2291,7 @@ function RemoteFunctions(config = {}) {
 
                     .search-wrapper {
                         position: relative;
-                        margin-right: 2px;
+                        margin-right: 6px;
                     }
 
                     .search-wrapper input {
@@ -2329,7 +2329,7 @@ function RemoteFunctions(config = {}) {
                         color: #a0a0a0;
                         border: none;
                         border-radius: 3px;
-                        padding: 4px 8px;
+                        padding: 4px 8px 4px 3px;
                         font-size: 12px;
                         cursor: pointer;
                     }
@@ -2600,7 +2600,7 @@ function RemoteFunctions(config = {}) {
 
                         <div class="phoenix-image-gallery-search-container">
                           <div class="search-wrapper">
-                            <button class="search-icon">${ICONS.search}</button>
+                            <button class="search-icon" title="${config.strings.imageGallerySearchButton}">${ICONS.search}</button>
                             <input
                               type="text"
                               placeholder="${config.strings.imageGallerySearchPlaceholder}"
@@ -2609,16 +2609,16 @@ function RemoteFunctions(config = {}) {
                         </div>
 
                         <div class='phoenix-image-gallery-upload-container'>
-                            <button>${ICONS.selectImageFromComputer} Upload</button>
+                            <button title="${config.strings.imageGallerySelectFromComputer}">${ICONS.selectImageFromComputer} ${config.strings.imageGalleryUpload}</button>
                             <input type="file" class="phoenix-file-input" accept="image/*" style="display: none;">
                         </div>
 
                         <div class='phoenix-image-gallery-right-buttons'>
-                            <button class='phoenix-image-gallery-download-folder-button'>
+                            <button class='phoenix-image-gallery-download-folder-button' title="${config.strings.imageGallerySelectDownloadFolder}">
                                 ${ICONS.folderSettings}
                             </button>
 
-                            <button class='phoenix-image-gallery-close-button'>
+                            <button class='phoenix-image-gallery-close-button' title="${config.strings.imageGalleryClose}">
                                 ${ICONS.close}
                             </button>
                         </div>
@@ -3020,7 +3020,7 @@ function RemoteFunctions(config = {}) {
 
                 const img = window.document.createElement('img');
                 img.src = image.thumb_url || image.url;
-                img.alt = image.alt_text || 'Unsplash image';
+                img.alt = image.alt_text || '';
                 img.loading = 'lazy';
 
                 // show hovered image along with dimensions

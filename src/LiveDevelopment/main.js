@@ -90,7 +90,8 @@ define(function main(require, exports, module) {
             imageGalleryLoadingMore: Strings.LIVE_DEV_IMAGE_GALLERY_LOADING_MORE,
             imageGalleryNoImages: Strings.LIVE_DEV_IMAGE_GALLERY_NO_IMAGES,
             imageGalleryLoadError: Strings.LIVE_DEV_IMAGE_GALLERY_LOAD_ERROR,
-            imageGalleryClose: Strings.LIVE_DEV_IMAGE_GALLERY_CLOSE
+            imageGalleryClose: Strings.LIVE_DEV_IMAGE_GALLERY_CLOSE,
+            imageGalleryUpload: Strings.LIVE_DEV_IMAGE_GALLERY_UPLOAD
         }
     };
     // Status labels/styles are ordered: error, not connected, progress1, progress2, connected.
