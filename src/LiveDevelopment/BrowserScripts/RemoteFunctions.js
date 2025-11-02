@@ -2266,19 +2266,21 @@ function RemoteFunctions(config = {}) {
 
                     .phoenix-image-gallery-header {
                         display: flex;
-                        padding: 6px 8px;
-                        gap: 10px;
+                        padding: 10px 8px 6px 8px;
                     }
 
                     .phoenix-image-gallery-header-title {
                         display: flex;
+                        align-items: center;
                         color: #a0a0a0;
                         gap: 3px;
                         font-size: 14px;
+                        margin-bottom: 4px;
+                        margin-right: 10px;
                     }
 
                     .phoenix-image-gallery-header-icon {
-                        height: 18px;
+                        height: 16px;
                         width: 18px;
                     }
 
@@ -2289,6 +2291,7 @@ function RemoteFunctions(config = {}) {
 
                     .search-wrapper {
                         position: relative;
+                        margin-right: 2px;
                     }
 
                     .search-wrapper input {
@@ -2301,8 +2304,8 @@ function RemoteFunctions(config = {}) {
 
                     .search-wrapper .search-icon {
                         position: absolute;
-                        left: 10px;
-                        top: 50%;
+                        left: 6px;
+                        top: 55%;
                         transform: translateY(-50%);
                         background: none;
                         border: none;
@@ -2364,7 +2367,7 @@ function RemoteFunctions(config = {}) {
                     .phoenix-image-gallery-strip {
                         overflow: hidden;
                         scroll-behavior: smooth;
-                        padding: 3px 6px 6px 6px;
+                        padding: 6px;
                     }
 
                     .phoenix-image-gallery-row {
