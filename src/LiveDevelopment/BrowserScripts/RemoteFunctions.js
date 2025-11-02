@@ -2440,7 +2440,7 @@ function RemoteFunctions(config = {}) {
                         display: flex;
                         align-items: center;
                         justify-content: center;
-                        height: 100%;
+                        min-height: 112px;
                         color: #eaeaf0;
                         font-size: 14px;
                     }
@@ -2449,7 +2449,7 @@ function RemoteFunctions(config = {}) {
                         display: flex;
                         align-items: center;
                         justify-content: center;
-                        height: 100%;
+                        min-height: 112px;
                         color: #ff6b6b;
                         font-size: 14px;
                     }
@@ -2459,7 +2459,7 @@ function RemoteFunctions(config = {}) {
                         align-items: center;
                         justify-content: center;
                         min-width: 120px;
-                        height: 116px;
+                        min-height: 110px;
                         margin-left: 2px;
                         background: rgba(255,255,255,0.03);
                         border-radius: 8px;
@@ -2823,6 +2823,18 @@ function RemoteFunctions(config = {}) {
             this._updateNavButtons();
         },
 
+        _setNavButtonsVisibility: function(visible) {
+            const navLeft = this._shadow.querySelector('.phoenix-image-gallery-nav.left');
+            const navRight = this._shadow.querySelector('.phoenix-image-gallery-nav.right');
+
+            if (navLeft) {
+                navLeft.style.display = visible ? 'block' : 'none';
+            }
+            if (navRight) {
+                navRight.style.display = visible ? 'block' : 'none';
+            }
+        },
+
         _updateNavButtons: function() {
             // this function is responsible to update the nav buttons
             // when we're at the very left, we hide the nav-left button completely
@@ -2859,6 +2871,8 @@ function RemoteFunctions(config = {}) {
 
             rowElement.innerHTML = config.strings.imageGalleryLoadingInitial;
             rowElement.className = 'phoenix-image-gallery-row phoenix-image-gallery-loading';
+
+            this._setNavButtonsVisibility(false);
         },
 
         _showLoadingMore: function() {
@@ -3105,6 +3119,8 @@ function RemoteFunctions(config = {}) {
                     container.scrollLeft = savedScrollPosition;
                 }, 0);
             }
+
+            this._setNavButtonsVisibility(true);
         },
 
         _showError: function(message) {
@@ -3113,6 +3129,8 @@ function RemoteFunctions(config = {}) {
 
             rowElement.innerHTML = message;
             rowElement.className = 'phoenix-image-gallery-row phoenix-ribbon-error';
+
+            this._setNavButtonsVisibility(false);
         },
 
         // file name with which we need to save the image
