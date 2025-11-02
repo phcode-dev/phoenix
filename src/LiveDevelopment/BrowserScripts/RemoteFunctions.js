@@ -2253,14 +2253,13 @@ function RemoteFunctions(config = {}) {
             this._shadow.innerHTML = `
                 <style>
                     .phoenix-image-gallery-container {
-                        position: absolute;
+                        position: fixed;
                         bottom: 0;
                         left: 12px;
                         right: 12px;
                         background-color: #2c2c2c;
                         border-radius: 6px 6px 0 0;
                         font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
-                        height: 164px;
                         border: 1px solid rgba(255, 255, 255, 0.2);
                         z-index: 2147483647;
                     }
@@ -2290,13 +2289,11 @@ function RemoteFunctions(config = {}) {
 
                     .search-wrapper {
                         position: relative;
-                        width: 130px;
                     }
 
                     .search-wrapper input {
-                        width: 100%;
-                        padding: 8px 12px 8px 36px;
-                        border-radius: 6px;
+                        padding: 5px 4px 6px 36px;
+                        border-radius: 4px;
                         border: none;
                         background-color: #1e1e1e;
                         color: #fff;
@@ -2319,10 +2316,6 @@ function RemoteFunctions(config = {}) {
 
                     .search-wrapper input:focus {
                         outline: 1px solid #3a8ef6;
-                    }
-
-                    .phoenix-image-gallery-upload-container {
-                        margin-left: 40px;
                     }
 
                     .phoenix-image-gallery-upload-container button {
@@ -2371,7 +2364,7 @@ function RemoteFunctions(config = {}) {
                     .phoenix-image-gallery-strip {
                         overflow: hidden;
                         scroll-behavior: smooth;
-                        padding: 6px;
+                        padding: 3px 6px 6px 6px;
                     }
 
                     .phoenix-image-gallery-row {
