@@ -2262,6 +2262,7 @@ function RemoteFunctions(config = {}) {
                         font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
                         border: 1px solid rgba(255, 255, 255, 0.2);
                         z-index: 2147483647;
+                        overflow: hidden;
                     }
 
                     .phoenix-image-gallery-header {
@@ -2277,6 +2278,12 @@ function RemoteFunctions(config = {}) {
                         font-size: 14px;
                         margin-bottom: 4px;
                         margin-right: 10px;
+                    }
+
+                    @media (max-width: 525px) {
+                        .phoenix-image-gallery-header-title {
+                            display: none;
+                        }
                     }
 
                     .phoenix-image-gallery-header-icon {
@@ -2321,6 +2328,12 @@ function RemoteFunctions(config = {}) {
                         outline: 1px solid #3a8ef6;
                     }
 
+                    @media (max-width: 350px) {
+                        .search-wrapper input {
+                            width: 100px;
+                        }
+                    }
+
                     .phoenix-image-gallery-upload-container button {
                         display: flex;
                         align-items: center;
@@ -2329,13 +2342,25 @@ function RemoteFunctions(config = {}) {
                         color: #a0a0a0;
                         border: none;
                         border-radius: 3px;
-                        padding: 4px 8px 4px 3px;
+                        padding: 3px 8px 3px 3px;
+                        margin-top: 1px;
                         font-size: 12px;
                         cursor: pointer;
                     }
 
                     .phoenix-image-gallery-upload-container button:hover {
                         background: #3c3f41;
+                    }
+
+                    @media (max-width: 400px) {
+                        .phoenix-image-gallery-upload-container button {
+                            font-size: 0;
+                            padding: 3px 6px;
+                        }
+
+                        .phoenix-image-gallery-upload-container button svg {
+                            font-size: 16px;
+                        }
                     }
 
                     .phoenix-image-gallery-right-buttons {
