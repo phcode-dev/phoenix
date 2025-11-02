@@ -1356,9 +1356,9 @@ function RemoteFunctions(config = {}) {
 
         folderSettings: `
         <svg viewBox="0 0 24 24" fill="currentColor" width="17" height="17">
-          <path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>
+          <path d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h8.1c.15.7.42 1.36.81 1.94l.29.41H4c-1.66 0-3-1.34-3-3V6c0-1.66 1.34-3 3-3h6l2 2h8c1.66 0 3 1.34 3 3v4.18c-.63-.11-1.28-.18-1.95-.18-.68 0-1.35.07-2 .2V8c0-1.1-.9-2-2-2h-8l-2-2zM18 13a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2c.55 0 1 .45 1 1v1h1c.55 0 1 .45 1 1s-.45 1-1 1h-1v1c0 .55-.45 1-1 1s-1-.45-1-1v-1h-1c-.55 0-1-.45-1-1s.45-1 1-1h1v-1c0-.55.45-1 1-1z"/>
         </svg>
-      `,
+       `,
 
         close: `
         <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
@@ -2252,389 +2252,338 @@ function RemoteFunctions(config = {}) {
 
             this._shadow.innerHTML = `
                 <style>
-                    .phoenix-image-ribbon {
-                        position: fixed !important;
-                        bottom: 0 !important;
-                        left: 0 !important;
-                        right: 0 !important;
-                        width: 100vw !important;
-                        background: #3C3F41 !important;
-                        z-index: 2147483647 !important;
-                        display: flex !important;
-                        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial !important;
-                        pointer-events: auto !important;
+                    .phoenix-image-gallery-container {
+                        position: absolute;
+                        bottom: 0;
+                        left: 12px;
+                        right: 12px;
+                        background-color: #2c2c2c;
+                        border-radius: 6px 6px 0 0;
+                        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+                        height: 164px;
+                        border: 1px solid rgba(255, 255, 255, 0.2);
+                        z-index: 2147483647;
                     }
 
-                    .phoenix-ribbon-container {
-                        width: 100% !important;
-                        height: 164px !important;
-                        border: 1px solid rgba(255, 255, 255, 0.2) !important;
-                        position: relative !important;
+                    .phoenix-image-gallery-header {
+                        display: flex;
+                        padding: 6px 8px;
+                        gap: 10px;
                     }
 
-                    .phoenix-ribbon-strip {
-                        position: absolute !important;
-                        inset: 0 !important;
-                        overflow: hidden !important;
-                        scroll-behavior: smooth !important;
-                        padding: 6px !important;
-                        top: 36px !important;
+                    .phoenix-image-gallery-header-title {
+                        display: flex;
+                        color: #a0a0a0;
+                        gap: 3px;
+                        font-size: 14px;
                     }
 
-                    .phoenix-ribbon-row {
-                        display: flex !important;
-                        gap: 5px !important;
+                    .phoenix-image-gallery-header-icon {
+                        height: 18px;
+                        width: 18px;
+                    }
+
+                    .phoenix-image-gallery-search-container {
+                        display: flex;
+                        align-items: center;
+                    }
+
+                    .search-wrapper {
+                        position: relative;
+                        width: 130px;
+                    }
+
+                    .search-wrapper input {
+                        width: 100%;
+                        padding: 8px 12px 8px 36px;
+                        border-radius: 6px;
+                        border: none;
+                        background-color: #1e1e1e;
+                        color: #fff;
+                    }
+
+                    .search-wrapper .search-icon {
+                        position: absolute;
+                        left: 10px;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        background: none;
+                        border: none;
+                        color: #aaa;
+                        cursor: pointer;
+                    }
+
+                    .search-wrapper .search-icon:hover {
+                        color: #fff;
+                    }
+
+                    .search-wrapper input:focus {
+                        outline: 1px solid #3a8ef6;
+                    }
+
+                    .phoenix-image-gallery-upload-container {
+                        margin-left: 40px;
+                    }
+
+                    .phoenix-image-gallery-upload-container button {
+                        display: flex;
+                        align-items: center;
+                        gap: 2px;
+                        background: transparent;
+                        color: #a0a0a0;
+                        border: none;
+                        border-radius: 3px;
+                        padding: 4px 8px;
+                        font-size: 12px;
+                        cursor: pointer;
+                    }
+
+                    .phoenix-image-gallery-upload-container button:hover {
+                        background: #3c3f41;
+                    }
+
+                    .phoenix-image-gallery-right-buttons {
+                        display: flex;
+                        align-items: center;
+                        gap: 3px;
+                        margin-left: auto;
+                    }
+
+                    .phoenix-image-gallery-right-buttons button {
+                        display: flex;
+                        background: transparent;
+                        color: #a0a0a0;
+                        border: none;
+                        border-radius: 3px;
+                        padding: 4px 8px;
+                        cursor: pointer;
+                    }
+
+                    .phoenix-image-gallery-right-buttons button:hover {
+                        background: #3c3f41;
+                    }
+
+                    .phoenix-image-gallery-right-buttons svg {
+                        width: 16px;
+                        height: 16px;
+                    }
+
+                    .phoenix-image-gallery-strip {
+                        overflow: hidden;
+                        scroll-behavior: smooth;
+                        padding: 6px;
+                        height: calc(100% - 36px);
+                        margin-top: 36px;
+                    }
+
+                    .phoenix-image-gallery-row {
+                        display: flex;
+                        gap: 5px;
                     }
 
                     .phoenix-ribbon-thumb {
-                        flex: 0 0 auto !important;
-                        width: 112px !important;
-                        height: 112px !important;
-                        border-radius: 4px !important;
-                        overflow: hidden !important;
-                        position: relative !important;
-                        cursor: pointer !important;
-                        outline: 1px solid rgba(255,255,255,0.08) !important;
-                        transition: transform 0.15s ease, outline-color 0.15s ease, box-shadow 0.15s ease !important;
-                        background: #0b0e14 !important;
+                        flex: 0 0 auto;
+                        width: 112px;
+                        height: 112px;
+                        border-radius: 4px;
+                        overflow: hidden;
+                        position: relative;
+                        cursor: pointer;
+                        outline: 1px solid rgba(255,255,255,0.08);
+                        transition: transform 0.15s ease, outline-color 0.15s ease, box-shadow 0.15s ease;
+                        background: #0b0e14;
                     }
 
                     .phoenix-ribbon-thumb img {
-                        width: 100% !important;
-                        height: 100% !important;
-                        object-fit: cover !important;
-                        display: block !important;
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        display: block;
                     }
 
                     .phoenix-ribbon-thumb:hover {
-                        transform: translateY(-2px) scale(1.02) !important;
-                        outline-color: rgba(255,255,255,0.25) !important;
-                        box-shadow: 0 8px 18px rgba(0,0,0,0.36) !important;
+                        transform: translateY(-2px) scale(1.02);
+                        outline-color: rgba(255,255,255,0.25);
+                        box-shadow: 0 8px 18px rgba(0,0,0,0.36);
                     }
 
-                    .phoenix-ribbon-nav {
-                        position: absolute !important;
-                        top: 50% !important;
-                        border-radius: 12px !important;
-                        border: 1px solid rgba(255,255,255,0.14) !important;
-                        color: #eaeaf0 !important;
-                        background: rgba(21,25,36,0.65) !important;
-                        cursor: pointer !important;
-                        font-size: 20px !important;
-                        font-weight: 600 !important;
-                        user-select: none !important;
-                        transition: all 0.2s ease !important;
-                        z-index: 2147483647 !important;
-                        padding: 0 12px 6px 12px !important;
+                    .phoenix-image-gallery-nav {
+                        position: absolute;
+                        top: 50%;
+                        border-radius: 12px;
+                        border: 1px solid rgba(255,255,255,0.14);
+                        color: #eaeaf0;
+                        background: rgba(21,25,36,0.65);
+                        cursor: pointer;
+                        font-size: 20px;
+                        font-weight: 600;
+                        user-select: none;
+                        transition: all 0.2s ease;
+                        z-index: 2147483647;
+                        padding: 0 12px 6px 12px;
                     }
 
-                    .phoenix-ribbon-nav:hover {
-                        background: rgba(21,25,36,0.85) !important;
-                        border-color: rgba(255,255,255,0.25) !important;
-                        transform: scale(1.05) !important;
-                        box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+                    .phoenix-image-gallery-nav:hover {
+                        background: rgba(21,25,36,0.85);
+                        border-color: rgba(255,255,255,0.25);
+                        transform: scale(1.05);
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
                     }
 
-                    .phoenix-ribbon-nav:active {
-                        transform: scale(0.95) !important;
+                    .phoenix-image-gallery-nav:active {
+                        transform: scale(0.95);
                     }
 
-                    .phoenix-ribbon-nav.left {
-                        left: 15px !important;
+                    .phoenix-image-gallery-nav.left {
+                        left: 15px;
                     }
 
-                    .phoenix-ribbon-nav.right {
-                        right: 15px !important;
+                    .phoenix-image-gallery-nav.right {
+                        right: 15px;
                     }
 
-                    .phoenix-ribbon-loading {
-                        display: flex !important;
-                        align-items: center !important;
-                        justify-content: center !important;
-                        height: 100% !important;
-                        color: #eaeaf0 !important;
-                        font-size: 14px !important;
+                    .phoenix-image-gallery-loading {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        height: 100%;
+                        color: #eaeaf0;
+                        font-size: 14px;
                     }
 
                     .phoenix-ribbon-error {
-                        display: flex !important;
-                        align-items: center !important;
-                        justify-content: center !important;
-                        height: 100% !important;
-                        color: #ff6b6b !important;
-                        font-size: 14px !important;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        height: 100%;
+                        color: #ff6b6b;
+                        font-size: 14px;
                     }
 
                     .phoenix-loading-more {
-                        display: flex !important;
-                        align-items: center !important;
-                        justify-content: center !important;
-                        min-width: 120px !important;
-                        height: 116px !important;
-                        margin-left: 2px !important;
-                        background: rgba(255,255,255,0.03) !important;
-                        border-radius: 8px !important;
-                        color: #e8eaf0 !important;
-                        font-size: 12px !important;
-                        border: 1px dashed rgba(255,255,255,0.1) !important;
-                    }
-
-                    .phoenix-ribbon-header {
-                        display: flex !important;
-                        width: 100% !important;
-                        position: absolute !important;
-                        top: 7px !important;
-                    }
-
-                    .phoenix-ribbon-header-left {
-                        width: 80% !important;
-                        display: flex !important;
-                        align-items: center !important;
-                    }
-
-                    .phoenix-ribbon-header-right {
-                        width: 20% !important;
-                        display: flex !important;
-                        justify-content: flex-end !important;
-                        align-items: center !important;
-                    }
-
-                    .phoenix-ribbon-search {
-                        margin-left: 8px !important;
-                        flex: 1 !important;
-                        max-width: 200px !important;
-                        position: relative !important;
-                    }
-
-                    .phoenix-ribbon-search input {
-                        width: 100% !important;
-                        height: 27px !important;
-                        padding: 5px 32px 5px 5px !important;
-                        box-sizing: border-box !important;
-                        background: #555555 !important;
-                        border: 1px solid #202020 !important;
-                        border-radius: 3px !important;
-                        color: #fff !important;
-                        font-size: 13px !important;
-                        outline: none !important;
-                    }
-
-                    .phoenix-ribbon-search input::placeholder {
-                        color: #b4b4b4 !important;
-                    }
-
-                    .phoenix-ribbon-search input::-webkit-input-placeholder {
-                        color: #b4b4b4 !important;
-                    }
-
-                    .phoenix-ribbon-search input::-moz-placeholder {
-                        color: #b4b4b4 !important;
-                    }
-
-                    .phoenix-ribbon-search input:focus {
-                        border: 1px solid #2893ef !important;
-                        box-shadow: 0 0 0 1px #94ceff !important;
-                    }
-
-                    .phoenix-ribbon-search-btn {
-                        position: absolute !important;
-                        right: 2px !important;
-                        top: 50% !important;
-                        transform: translateY(-50%) !important;
-                        background: transparent !important;
-                        border: 1px solid transparent !important;
-                        color: #a0a0a0 !important;
-                        border-radius: 2px !important;
-                        cursor: pointer !important;
-                        padding: 4px !important;
-                        display: flex !important;
-                        align-items: center !important;
-                        justify-content: center !important;
-                        transition: all 0.2s ease !important;
-                        height: 25px !important;
-                        width: 25px !important;
-                    }
-
-                    .phoenix-ribbon-search-btn:hover:not(:disabled) {
-                        background: rgba(255, 255, 255, 0.1) !important;
-                    }
-
-                    .phoenix-ribbon-search-btn:disabled {
-                        opacity: 0.3 !important;
-                        cursor: not-allowed !important;
-                    }
-
-                    .phoenix-ribbon-select {
-                        margin-left: 4px !important;
-                    }
-
-                    .phoenix-select-image-btn {
-                        background-color: transparent !important;
-                        border: 1px solid transparent !important;
-                        color: #a0a0a0 !important;
-                        border-radius: 4px !important;
-                        cursor: pointer !important;
-                        padding: 3px 6px !important;
-                        display: flex !important;
-                        align-items: center !important;
-                        justify-content: center !important;
-                    }
-
-                    .phoenix-select-image-btn:hover {
-                        border: 1px solid rgba(0, 0, 0, 0.24) !important;
-                        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
-                    }
-
-                    .phoenix-ribbon-folder-settings {
-                        background-color: transparent !important;
-                        border: 1px solid transparent !important;
-                        color: #a0a0a0 !important;
-                        border-radius: 4px !important;
-                        cursor: pointer !important;
-                        margin-right: 2px !important;
-                        padding: 3px 6px !important;
-                        display: flex !important;
-                        align-items: center !important;
-                        justify-content: center !important;
-                    }
-
-                    .phoenix-ribbon-folder-settings:hover {
-                        border: 1px solid rgba(0, 0, 0, 0.24) !important;
-                        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
-                    }
-
-                    .phoenix-ribbon-close {
-                        background-color: transparent !important;
-                        border: 1px solid transparent !important;
-                        color: #a0a0a0 !important;
-                        border-radius: 4px !important;
-                        cursor: pointer !important;
-                        padding: 3px 6px !important;
-                        display: flex !important;
-                        align-items: center !important;
-                        justify-content: center !important;
-                        margin-right: 16px !important;
-                    }
-
-                    .phoenix-ribbon-close:hover {
-                        border: 1px solid rgba(0, 0, 0, 0.24) !important;
-                        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        min-width: 120px;
+                        height: 116px;
+                        margin-left: 2px;
+                        background: rgba(255,255,255,0.03);
+                        border-radius: 8px;
+                        color: #e8eaf0;
+                        font-size: 12px;
+                        border: 1px dashed rgba(255,255,255,0.1);
                     }
 
                     .phoenix-ribbon-attribution {
-                        position: absolute !important;
-                        bottom: 6px !important;
-                        left: 6px !important;
-                        background: rgba(0,0,0,0.8) !important;
-                        color: white !important;
-                        padding: 4px 6px !important;
-                        border-radius: 5px !important;
-                        font-size: 10px !important;
-                        line-height: 1.2 !important;
-                        max-width: calc(100% - 12px) !important;
-                        text-shadow: 0 1px 2px rgba(0,0,0,0.9) !important;
-                        pointer-events: auto !important;
-                        opacity: 0 !important;
-                        transition: all 0.2s ease !important;
+                        position: absolute;
+                        bottom: 6px;
+                        left: 6px;
+                        background: rgba(0,0,0,0.8);
+                        color: white;
+                        padding: 4px 6px;
+                        border-radius: 5px;
+                        font-size: 10px;
+                        line-height: 1.2;
+                        max-width: calc(100% - 12px);
+                        text-shadow: 0 1px 2px rgba(0,0,0,0.9);
+                        pointer-events: auto;
+                        opacity: 0;
+                        transition: all 0.2s ease;
                     }
 
                     .phoenix-ribbon-attribution .photographer {
-                        display: block !important;
-                        font-weight: 500 !important;
-                        white-space: nowrap !important;
-                        overflow: hidden !important;
-                        text-overflow: ellipsis !important;
-                        color: white !important;
-                        text-decoration: none !important;
+                        display: block;
+                        font-weight: 500;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        color: white;
+                        text-decoration: none;
                     }
 
                     .phoenix-ribbon-attribution .photographer:hover {
-                        text-decoration: underline !important;
+                        text-decoration: underline;
                     }
 
                     .phoenix-ribbon-attribution .source {
-                        display: block !important;
-                        font-size: 9px !important;
-                        opacity: 0.85 !important;
-                        color: white !important;
-                        text-decoration: none !important;
+                        display: block;
+                        font-size: 9px;
+                        opacity: 0.85;
+                        color: white;
+                        text-decoration: none;
                     }
 
                     .phoenix-ribbon-attribution .source:hover {
-                        text-decoration: underline !important;
+                        text-decoration: underline;
                     }
 
                     .phoenix-download-icon {
-                        position: absolute !important;
-                        top: 8px !important;
-                        right: 8px !important;
-                        background: rgba(0,0,0,0.7) !important;
-                        border: none !important;
-                        color: #eee !important;
-                        border-radius: 50% !important;
-                        width: 18px !important;
-                        height: 18px !important;
-                        padding: 4px !important;
-                        display: flex !important;
-                        align-items: center !important;
-                        justify-content: center !important;
-                        cursor: pointer !important;
-                        font-size: 16px !important;
-                        z-index: 2147483647 !important;
-                        transition: all 0.2s ease !important;
-                        pointer-events: none !important;
-                        opacity: 0 !important;
+                        position: absolute;
+                        top: 8px;
+                        right: 8px;
+                        background: rgba(0,0,0,0.7);
+                        border: none;
+                        color: #eee;
+                        border-radius: 50%;
+                        width: 18px;
+                        height: 18px;
+                        padding: 4px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        cursor: pointer;
+                        font-size: 16px;
+                        z-index: 2147483647;
+                        transition: all 0.2s ease;
+                        pointer-events: none;
+                        opacity: 0;
                     }
 
                     .phoenix-ribbon-thumb:hover .phoenix-download-icon {
-                        opacity: 1 !important;
-                        pointer-events: auto !important;
+                        opacity: 1;
+                        pointer-events: auto;
                     }
 
                     .phoenix-ribbon-thumb:hover .phoenix-ribbon-attribution {
-                        opacity: 1 !important;
+                        opacity: 1;
                     }
 
                     .phoenix-ribbon-attribution:hover {
-                        opacity: 1 !important;
+                        opacity: 1;
                     }
 
                     .phoenix-download-icon:hover {
-                        background: rgba(0,0,0,0.9) !important;
-                        transform: scale(1.1) !important;
-                    }
-
-                    .phoenix-ribbon-thumb {
-                        cursor: pointer !important;
+                        background: rgba(0,0,0,0.9);
+                        transform: scale(1.1);
                     }
 
                     .phoenix-ribbon-thumb.downloading {
-                        opacity: 0.6 !important;
-                        pointer-events: none !important;
+                        opacity: 0.6;
+                        pointer-events: none;
                     }
 
                     .phoenix-download-indicator {
-                        position: absolute !important;
-                        top: 50% !important;
-                        left: 50% !important;
-                        transform: translate(-50%, -50%) !important;
-                        background: rgba(0, 0, 0, 0.8) !important;
-                        border-radius: 50% !important;
-                        width: 40px !important;
-                        height: 40px !important;
-                        display: flex !important;
-                        align-items: center !important;
-                        justify-content: center !important;
-                        z-index: 10 !important;
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        background: rgba(0, 0, 0, 0.8);
+                        border-radius: 50%;
+                        width: 40px;
+                        height: 40px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        z-index: 10;
                     }
 
                     .phoenix-download-spinner {
-                        width: 20px !important;
-                        height: 20px !important;
-                        border: 2px solid rgba(255, 255, 255, 0.3) !important;
-                        border-top: 2px solid #fff !important;
-                        border-radius: 50% !important;
-                        animation: phoenix-spin 1s linear infinite !important;
+                        width: 20px;
+                        height: 20px;
+                        border: 2px solid rgba(255, 255, 255, 0.3);
+                        border-top: 2px solid #fff;
+                        border-radius: 50%;
+                        animation: phoenix-spin 1s linear infinite;
                     }
 
                     @keyframes phoenix-spin {
@@ -2642,40 +2591,51 @@ function RemoteFunctions(config = {}) {
                         100% { transform: rotate(360deg); }
                     }
                 </style>
-                <div class="phoenix-image-ribbon">
-                    <div class="phoenix-ribbon-container">
-                        <div class="phoenix-ribbon-header">
-                            <div class="phoenix-ribbon-header-left">
-                                <div class="phoenix-ribbon-search">
-                                    <input type="text" placeholder="${config.strings.imageGallerySearchPlaceholder}" />
-                                    <button class="phoenix-ribbon-search-btn" title="${config.strings.imageGallerySearchButton}">
-                                        ${ICONS.search}
-                                    </button>
-                                </div>
-                                <div class="phoenix-ribbon-select">
-                                    <button class="phoenix-select-image-btn" title="${config.strings.imageGallerySelectFromComputer}">
-                                        ${ICONS.selectImageFromComputer}
-                                    </button>
-                                    <input type="file" class="phoenix-file-input" accept="image/*" style="display: none;">
-                                </div>
+
+
+                <div class='phoenix-image-gallery-container'>
+                    <div class='phoenix-image-gallery-header'>
+                        <div class='phoenix-image-gallery-header-title'>
+                            <div class='phoenix-image-gallery-header-icon'>
+                                ${ICONS.imageGallery}
                             </div>
-                            <div class="phoenix-ribbon-header-right">
-                                <button class="phoenix-ribbon-folder-settings" title="${config.strings.imageGallerySelectDownloadFolder}">
-                                    ${ICONS.folderSettings}
-                                </button>
-                                <button class="phoenix-ribbon-close" title="${config.strings.imageGalleryClose}">
-                                    ${ICONS.close}
-                                </button>
+                            <div class='phoenix-image-gallery-header-text'>
+                                ${config.strings.imageGallery}
                             </div>
                         </div>
-                        <div class="phoenix-ribbon-nav left">&#8249;</div>
-                        <div class="phoenix-ribbon-strip">
-                            <div class="phoenix-ribbon-row phoenix-ribbon-loading">
-                                ${config.strings.imageGalleryLoadingInitial}
-                            </div>
+
+                        <div class="phoenix-image-gallery-search-container">
+                          <div class="search-wrapper">
+                            <button class="search-icon">${ICONS.search}</button>
+                            <input
+                              type="text"
+                              placeholder="${config.strings.imageGallerySearchPlaceholder}"
+                            />
+                          </div>
                         </div>
-                        <div class="phoenix-ribbon-nav right">&#8250;</div>
+
+                        <div class='phoenix-image-gallery-upload-container'>
+                            <button>${ICONS.selectImageFromComputer} Upload</button>
+                        </div>
+
+                        <div class='phoenix-image-gallery-right-buttons'>
+                            <button class='phoenix-image-gallery-download-folder-button'>
+                                ${ICONS.folderSettings}
+                            </button>
+
+                            <button class='phoenix-image-gallery-close-button'>
+                                ${ICONS.close}
+                            </button>
+                        </div>
                     </div>
+
+                    <div class="phoenix-image-gallery-nav left">&#8249;</div>
+                    <div class="phoenix-image-gallery-strip">
+                        <div class="phoenix-image-gallery-row phoenix-image-gallery-loading">
+                            ${config.strings.imageGalleryLoadingInitial}
+                        </div>
+                    </div>
+                    <div class="phoenix-image-gallery-nav right">&#8250;</div>
                 </div>
             `;
         },
