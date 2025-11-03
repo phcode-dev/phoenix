@@ -2264,356 +2264,356 @@ function RemoteFunctions(config = {}) {
             this._shadow.innerHTML = `
                 <style>
                     .phoenix-image-gallery-container {
-                        position: fixed;
-                        bottom: 0;
-                        left: 12px;
-                        right: 12px;
-                        background-color: #2c2c2c;
-                        border-radius: 6px 6px 0 0;
-                        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
-                        border: 1px solid rgba(255, 255, 255, 0.2);
-                        z-index: 2147483647;
-                        overflow: hidden;
+                        position: fixed !important;
+                        bottom: 0 !important;
+                        left: 12px !important;
+                        right: 12px !important;
+                        background-color: #2c2c2c !important;
+                        border-radius: 6px 6px 0 0 !important;
+                        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial !important;
+                        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+                        z-index: 2147483647 !important;
+                        overflow: hidden !important;
                     }
 
                     .phoenix-image-gallery-header {
-                        display: flex;
-                        padding: 10px 8px 6px 8px;
+                        display: flex !important;
+                        padding: 10px 8px 6px 8px !important;
                     }
 
                     .phoenix-image-gallery-header-title {
-                        display: flex;
-                        align-items: center;
-                        color: #a0a0a0;
-                        gap: 3px;
-                        font-size: 14px;
-                        margin-bottom: 4px;
-                        margin-right: 10px;
+                        display: flex !important;
+                        align-items: center !important;
+                        color: #a0a0a0 !important;
+                        gap: 3px !important;
+                        font-size: 14px !important;
+                        margin-bottom: 4px !important;
+                        margin-right: 10px !important;
                     }
 
                     @media (max-width: 525px) {
                         .phoenix-image-gallery-header-title {
-                            display: none;
+                            display: none !important;
                         }
                     }
 
                     .phoenix-image-gallery-header-icon {
-                        height: 16px;
-                        width: 18px;
+                        height: 16px !important;
+                        width: 18px !important;
                     }
 
                     .phoenix-image-gallery-search-container {
-                        display: flex;
-                        align-items: center;
+                        display: flex !important;
+                        align-items: center !important;
                     }
 
                     .search-wrapper {
-                        position: relative;
-                        margin-right: 6px;
+                        position: relative !important;
+                        margin-right: 6px !important;
                     }
 
                     .search-wrapper input {
-                        padding: 5px 4px 6px 36px;
-                        border-radius: 4px;
-                        border: none;
-                        background-color: #1e1e1e;
-                        color: #fff;
+                        padding: 5px 4px 6px 36px !important;
+                        border-radius: 4px !important;
+                        border: none !important;
+                        background-color: #1e1e1e !important;
+                        color: #fff !important;
                     }
 
                     .search-wrapper .search-icon {
-                        position: absolute;
-                        left: 6px;
-                        top: 55%;
-                        transform: translateY(-50%);
-                        background: none;
-                        border: none;
-                        color: #aaa;
-                        cursor: pointer;
+                        position: absolute !important;
+                        left: 6px !important;
+                        top: 55% !important;
+                        transform: translateY(-50%) !important;
+                        background: none !important;
+                        border: none !important;
+                        color: #aaa !important;
+                        cursor: pointer !important;
                     }
 
                     .search-wrapper .search-icon:hover {
-                        color: #fff;
+                        color: #fff !important;
                     }
 
                     .search-wrapper input:focus {
-                        outline: 1px solid #3a8ef6;
+                        outline: 1px solid #3a8ef6 !important;
                     }
 
                     @media (max-width: 350px) {
                         .search-wrapper input {
-                            width: 100px;
+                            width: 100px !important;
                         }
                     }
 
                     .phoenix-image-gallery-upload-container button {
-                        display: flex;
-                        align-items: center;
-                        gap: 2px;
-                        background: transparent;
-                        color: #a0a0a0;
-                        border: none;
-                        border-radius: 3px;
-                        padding: 3px 8px 3px 3px;
-                        margin-top: 1px;
-                        font-size: 12px;
-                        cursor: pointer;
+                        display: flex !important;
+                        align-items: center !important;
+                        gap: 2px !important;
+                        background: transparent !important;
+                        color: #a0a0a0 !important;
+                        border: none !important;
+                        border-radius: 3px !important;
+                        padding: 3px 8px 3px 3px !important;
+                        margin-top: 1px !important;
+                        font-size: 12px !important;
+                        cursor: pointer !important;
                     }
 
                     .phoenix-image-gallery-upload-container button:hover {
-                        background: #3c3f41;
+                        background: #3c3f41 !important;
                     }
 
                     @media (max-width: 400px) {
                         .phoenix-image-gallery-upload-container button {
-                            font-size: 0;
-                            padding: 3px 6px;
+                            font-size: 0 !important;
+                            padding: 3px 6px !important;
                         }
 
                         .phoenix-image-gallery-upload-container button svg {
-                            font-size: 16px;
+                            font-size: 16px !important;
                         }
                     }
 
                     .phoenix-image-gallery-right-buttons {
-                        display: flex;
-                        align-items: center;
-                        gap: 3px;
-                        margin-left: auto;
+                        display: flex !important;
+                        align-items: center !important;
+                        gap: 3px !important;
+                        margin-left: auto !important;
                     }
 
                     .phoenix-image-gallery-right-buttons button {
-                        display: flex;
-                        background: transparent;
-                        color: #a0a0a0;
-                        border: none;
-                        border-radius: 3px;
-                        padding: 4px 8px;
-                        cursor: pointer;
+                        display: flex !important;
+                        background: transparent !important;
+                        color: #a0a0a0 !important;
+                        border: none !important;
+                        border-radius: 3px !important;
+                        padding: 4px 8px !important;
+                        cursor: pointer !important;
                     }
 
                     .phoenix-image-gallery-right-buttons button:hover {
-                        background: #3c3f41;
+                        background: #3c3f41 !important;
                     }
 
                     .phoenix-image-gallery-right-buttons svg {
-                        width: 16px;
-                        height: 16px;
+                        width: 16px !important;
+                        height: 16px !important;
                     }
 
                     .phoenix-image-gallery-strip {
-                        overflow: hidden;
-                        scroll-behavior: smooth;
-                        padding: 6px;
+                        overflow: hidden !important;
+                        scroll-behavior: smooth !important;
+                        padding: 6px !important;
                     }
 
                     .phoenix-image-gallery-row {
-                        display: flex;
-                        gap: 5px;
+                        display: flex !important;
+                        gap: 5px !important;
                     }
 
                     .phoenix-ribbon-thumb {
-                        flex: 0 0 auto;
-                        width: 112px;
-                        height: 112px;
-                        border-radius: 4px;
-                        overflow: hidden;
-                        position: relative;
-                        cursor: pointer;
-                        outline: 1px solid rgba(255,255,255,0.08);
-                        transition: transform 0.15s ease, outline-color 0.15s ease, box-shadow 0.15s ease;
-                        background: #0b0e14;
+                        flex: 0 0 auto !important;
+                        width: 112px !important;
+                        height: 112px !important;
+                        border-radius: 4px !important;
+                        overflow: hidden !important;
+                        position: relative !important;
+                        cursor: pointer !important;
+                        outline: 1px solid rgba(255,255,255,0.08) !important;
+                        transition: transform 0.15s ease, outline-color 0.15s ease, box-shadow 0.15s ease !important;
+                        background: #0b0e14 !important;
                     }
 
                     .phoenix-ribbon-thumb img {
-                        width: 100%;
-                        height: 100%;
-                        object-fit: cover;
-                        display: block;
+                        width: 100% !important;
+                        height: 100% !important;
+                        object-fit: cover !important;
+                        display: block !important;
                     }
 
                     .phoenix-ribbon-thumb:hover {
-                        transform: translateY(-2px) scale(1.02);
-                        outline-color: rgba(255,255,255,0.25);
-                        box-shadow: 0 8px 18px rgba(0,0,0,0.36);
+                        transform: translateY(-2px) scale(1.02) !important;
+                        outline-color: rgba(255,255,255,0.25) !important;
+                        box-shadow: 0 8px 18px rgba(0,0,0,0.36) !important;
                     }
 
                     .phoenix-image-gallery-nav {
-                        position: absolute;
-                        top: 50%;
-                        border-radius: 12px;
-                        border: 1px solid rgba(255,255,255,0.14);
-                        color: #eaeaf0;
-                        background: rgba(21,25,36,0.65);
-                        cursor: pointer;
-                        font-size: 20px;
-                        font-weight: 600;
-                        user-select: none;
-                        transition: all 0.2s ease;
-                        z-index: 2147483647;
-                        padding: 0 12px 6px 12px;
+                        position: absolute !important;
+                        top: 50% !important;
+                        border-radius: 12px !important;
+                        border: 1px solid rgba(255,255,255,0.14) !important;
+                        color: #eaeaf0 !important;
+                        background: rgba(21,25,36,0.65) !important;
+                        cursor: pointer !important;
+                        font-size: 20px !important;
+                        font-weight: 600 !important;
+                        user-select: none !important;
+                        transition: all 0.2s ease !important;
+                        z-index: 2147483647 !important;
+                        padding: 0 12px 6px 12px !important;
                     }
 
                     .phoenix-image-gallery-nav:hover {
-                        background: rgba(21,25,36,0.85);
-                        border-color: rgba(255,255,255,0.25);
-                        transform: scale(1.05);
-                        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                        background: rgba(21,25,36,0.85) !important;
+                        border-color: rgba(255,255,255,0.25) !important;
+                        transform: scale(1.05) !important;
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
                     }
 
                     .phoenix-image-gallery-nav:active {
-                        transform: scale(0.95);
+                        transform: scale(0.95) !important;
                     }
 
                     .phoenix-image-gallery-nav.left {
-                        left: 15px;
+                        left: 15px !important;
                     }
 
                     .phoenix-image-gallery-nav.right {
-                        right: 15px;
+                        right: 15px !important;
                     }
 
                     .phoenix-image-gallery-loading {
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        min-height: 112px;
-                        color: #eaeaf0;
-                        font-size: 14px;
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                        min-height: 112px !important;
+                        color: #eaeaf0 !important;
+                        font-size: 14px !important;
                     }
 
                     .phoenix-ribbon-error {
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        min-height: 112px;
-                        color: #ff6b6b;
-                        font-size: 14px;
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                        min-height: 112px !important;
+                        color: #ff6b6b !important;
+                        font-size: 14px !important;
                     }
 
                     .phoenix-loading-more {
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        min-width: 120px;
-                        min-height: 110px;
-                        margin-left: 2px;
-                        background: rgba(255,255,255,0.03);
-                        border-radius: 8px;
-                        color: #e8eaf0;
-                        font-size: 12px;
-                        border: 1px dashed rgba(255,255,255,0.1);
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                        min-width: 120px !important;
+                        min-height: 110px !important;
+                        margin-left: 2px !important;
+                        background: rgba(255,255,255,0.03) !important;
+                        border-radius: 8px !important;
+                        color: #e8eaf0 !important;
+                        font-size: 12px !important;
+                        border: 1px dashed rgba(255,255,255,0.1) !important;
                     }
 
                     .phoenix-ribbon-attribution {
-                        position: absolute;
-                        bottom: 6px;
-                        left: 6px;
-                        background: rgba(0,0,0,0.8);
-                        color: white;
-                        padding: 4px 6px;
-                        border-radius: 5px;
-                        font-size: 10px;
-                        line-height: 1.2;
-                        max-width: calc(100% - 12px);
-                        text-shadow: 0 1px 2px rgba(0,0,0,0.9);
-                        pointer-events: auto;
-                        opacity: 0;
-                        transition: all 0.2s ease;
+                        position: absolute !important;
+                        bottom: 6px !important;
+                        left: 6px !important;
+                        background: rgba(0,0,0,0.8) !important;
+                        color: white !important;
+                        padding: 4px 6px !important;
+                        border-radius: 5px !important;
+                        font-size: 10px !important;
+                        line-height: 1.2 !important;
+                        max-width: calc(100% - 12px) !important;
+                        text-shadow: 0 1px 2px rgba(0,0,0,0.9) !important;
+                        pointer-events: auto !important;
+                        opacity: 0 !important;
+                        transition: all 0.2s ease !important;
                     }
 
                     .phoenix-ribbon-attribution .photographer {
-                        display: block;
-                        font-weight: 500;
-                        white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        color: white;
-                        text-decoration: none;
+                        display: block !important;
+                        font-weight: 500 !important;
+                        white-space: nowrap !important;
+                        overflow: hidden !important;
+                        text-overflow: ellipsis !important;
+                        color: white !important;
+                        text-decoration: none !important;
                     }
 
                     .phoenix-ribbon-attribution .photographer:hover {
-                        text-decoration: underline;
+                        text-decoration: underline !important;
                     }
 
                     .phoenix-ribbon-attribution .source {
-                        display: block;
-                        font-size: 9px;
-                        opacity: 0.85;
-                        color: white;
-                        text-decoration: none;
+                        display: block !important;
+                        font-size: 9px !important;
+                        opacity: 0.85 !important;
+                        color: white !important;
+                        text-decoration: none !important;
                     }
 
                     .phoenix-ribbon-attribution .source:hover {
-                        text-decoration: underline;
+                        text-decoration: underline !important;
                     }
 
                     .phoenix-download-icon {
-                        position: absolute;
-                        top: 8px;
-                        right: 8px;
-                        background: rgba(0,0,0,0.7);
-                        border: none;
-                        color: #eee;
-                        border-radius: 50%;
-                        width: 18px;
-                        height: 18px;
-                        padding: 4px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        cursor: pointer;
-                        font-size: 16px;
-                        z-index: 2147483647;
-                        transition: all 0.2s ease;
-                        pointer-events: none;
-                        opacity: 0;
+                        position: absolute !important;
+                        top: 8px !important;
+                        right: 8px !important;
+                        background: rgba(0,0,0,0.7) !important;
+                        border: none !important;
+                        color: #eee !important;
+                        border-radius: 50% !important;
+                        width: 18px !important;
+                        height: 18px !important;
+                        padding: 4px !important;
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                        cursor: pointer !important;
+                        font-size: 16px !important;
+                        z-index: 2147483647 !important;
+                        transition: all 0.2s ease !important;
+                        pointer-events: none !important;
+                        opacity: 0 !important;
                     }
 
                     .phoenix-ribbon-thumb:hover .phoenix-download-icon {
-                        opacity: 1;
-                        pointer-events: auto;
+                        opacity: 1 !important;
+                        pointer-events: auto !important;
                     }
 
                     .phoenix-ribbon-thumb:hover .phoenix-ribbon-attribution {
-                        opacity: 1;
+                        opacity: 1 !important;
                     }
 
                     .phoenix-ribbon-attribution:hover {
-                        opacity: 1;
+                        opacity: 1 !important;
                     }
 
                     .phoenix-download-icon:hover {
-                        background: rgba(0,0,0,0.9);
-                        transform: scale(1.1);
+                        background: rgba(0,0,0,0.9) !important;
+                        transform: scale(1.1) !important;
                     }
 
                     .phoenix-ribbon-thumb.downloading {
-                        opacity: 0.6;
-                        pointer-events: none;
+                        opacity: 0.6 !important;
+                        pointer-events: none !important;
                     }
 
                     .phoenix-download-indicator {
-                        position: absolute;
-                        top: 50%;
-                        left: 50%;
-                        transform: translate(-50%, -50%);
-                        background: rgba(0, 0, 0, 0.8);
-                        border-radius: 50%;
-                        width: 40px;
-                        height: 40px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        z-index: 10;
+                        position: absolute !important;
+                        top: 50% !important;
+                        left: 50% !important;
+                        transform: translate(-50%, -50%) !important;
+                        background: rgba(0, 0, 0, 0.8) !important;
+                        border-radius: 50% !important;
+                        width: 40px !important;
+                        height: 40px !important;
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                        z-index: 10 !important;
                     }
 
                     .phoenix-download-spinner {
-                        width: 20px;
-                        height: 20px;
-                        border: 2px solid rgba(255, 255, 255, 0.3);
-                        border-top: 2px solid #fff;
-                        border-radius: 50%;
-                        animation: phoenix-spin 1s linear infinite;
+                        width: 20px !important;
+                        height: 20px !important;
+                        border: 2px solid rgba(255, 255, 255, 0.3) !important;
+                        border-top: 2px solid #fff !important;
+                        border-radius: 50% !important;
+                        animation: phoenix-spin 1s linear infinite !important;
                     }
 
                     @keyframes phoenix-spin {
