@@ -38,6 +38,7 @@ define(function main(require, exports, module) {
         LivePreviewTransport  = require("LiveDevelopment/MultiBrowserImpl/transports/LivePreviewTransport"),
         CommandManager      = require("command/CommandManager"),
         PreferencesManager  = require("preferences/PreferencesManager"),
+        StateManager        = require("preferences/StateManager"),
         UrlParams           = require("utils/UrlParams").UrlParams,
         Strings             = require("strings"),
         ExtensionUtils      = require("utils/ExtensionUtils"),
@@ -56,6 +57,33 @@ define(function main(require, exports, module) {
 
     const EVENT_LIVE_HIGHLIGHT_PREF_CHANGED = "liveHighlightPrefChange";
 
+    // state manager key to track image gallery selected state, by default we keep this as selected
+    // if this is true we show the image gallery when an image element is clicked
+    const IMAGE_GALLERY_STATE = "livePreview.imageGallery.state";
+
+    /**
+     * get the image gallery state from StateManager
+     * @returns {boolean} true (default)
+     */
+    function _getImageGalleryState() {
+        const savedState = StateManager.get(IMAGE_GALLERY_STATE);
+        return savedState !== undefined && savedState !== null ? savedState : true;
+    }
+
+    /**
+     * sets the image gallery state
+     * @param {Boolean} the state that we need to set
+     */
+    function setImageGalleryState(state) {
+        StateManager.set(IMAGE_GALLERY_STATE, state);
+
+        // update the config with the new state
+        config.imageGalleryState = state;
+        if (MultiBrowserLiveDev && MultiBrowserLiveDev.status >= MultiBrowserLiveDev.STATUS_ACTIVE) {
+            MultiBrowserLiveDev.updateConfig(JSON.stringify(config));
+        }
+    }
+
     var params = new UrlParams();
     var config = {
         experimental: false, // enable experimental features
@@ -70,6 +98,7 @@ define(function main(require, exports, module) {
         },
         isProUser: isProUser,
         elemHighlights: "hover", // default value, this will get updated when the extension loads
+        imageGalleryState: _getImageGalleryState(), // image gallery selected state
         // this strings are used in RemoteFunctions.js
         // we need to pass this through config as remoteFunctions runs in browser context and cannot
         // directly reference Strings file
@@ -404,6 +433,7 @@ define(function main(require, exports, module) {
     exports.setLivePreviewTransportBridge = setLivePreviewTransportBridge;
     exports.togglePreviewHighlight = togglePreviewHighlight;
     exports.setLivePreviewEditFeaturesActive = setLivePreviewEditFeaturesActive;
+    exports.setImageGalleryState = setImageGalleryState;
     exports.updateElementHighlightConfig = updateElementHighlightConfig;
     exports.getConnectionIds = MultiBrowserLiveDev.getConnectionIds;
     exports.getLivePreviewDetails = MultiBrowserLiveDev.getLivePreviewDetails;
