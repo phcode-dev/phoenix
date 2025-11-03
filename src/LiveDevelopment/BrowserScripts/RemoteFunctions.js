@@ -2831,7 +2831,14 @@ function RemoteFunctions(config = {}) {
             if (!container) { return; }
 
             const containerWidth = container.clientWidth;
-            const scrollAmount = containerWidth;
+            const imageWidth = 117; // image width + gap
+
+            // calculate how many images are visible
+            const visibleImages = Math.floor(containerWidth / imageWidth);
+
+            // scroll by (visible images - 2), minimum 1 image, maximum 5 images
+            const imagesToScroll = Math.max(1, Math.min(5, visibleImages - 2));
+            const scrollAmount = imagesToScroll * imageWidth;
 
             this.scrollPosition = Math.max(0, this.scrollPosition - scrollAmount);
             container.scrollTo({ left: this.scrollPosition, behavior: 'smooth' });
@@ -2844,7 +2851,14 @@ function RemoteFunctions(config = {}) {
 
             const containerWidth = container.clientWidth;
             const totalWidth = container.scrollWidth;
-            const scrollAmount = containerWidth;
+            const imageWidth = 117; // image width + gap
+
+            // calculate how many images are visible
+            const visibleImages = Math.floor(containerWidth / imageWidth);
+
+            // scroll by (visible images - 2), minimum 1 image, maximum 5 images
+            const imagesToScroll = Math.max(1, Math.min(5, visibleImages - 2));
+            const scrollAmount = imagesToScroll * imageWidth;
 
             // if we're near the end, we need to load more images
             const nearEnd = (this.scrollPosition + containerWidth + scrollAmount) >= totalWidth - 100;
