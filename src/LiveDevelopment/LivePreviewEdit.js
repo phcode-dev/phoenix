@@ -27,6 +27,7 @@
 define(function (require, exports, module) {
     const HTMLInstrumentation = require("LiveDevelopment/MultiBrowserImpl/language/HTMLInstrumentation");
     const LiveDevMultiBrowser = require("LiveDevelopment/LiveDevMultiBrowser");
+    const LiveDevelopment = require("LiveDevelopment/main");
     const CodeMirror = require("thirdparty/CodeMirror/lib/codemirror");
     const ProjectManager = require("project/ProjectManager");
     const FileSystem = require("filesystem/FileSystem");
@@ -1231,6 +1232,12 @@ define(function (require, exports, module) {
         // handle reset image folder selection
         if (message.resetImageFolderSelection) {
             _handleResetImageFolderSelection();
+            return;
+        }
+
+        // handle image gallery state change message
+        if (message.type === "imageGalleryStateChange") {
+            LiveDevelopment.setImageGalleryState(message.selected);
             return;
         }
 

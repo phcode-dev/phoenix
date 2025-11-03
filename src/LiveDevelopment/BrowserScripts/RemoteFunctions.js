@@ -60,8 +60,8 @@ function RemoteFunctions(config = {}) {
     const AUTO_SCROLL_SPEED = 12; // pixels per scroll
     const AUTO_SCROLL_EDGE_SIZE = 0.05; // 5% of viewport height (either top/bottom)
 
-    // to track the state as we want to have a selected state for image gallery
-    let imageGallerySelected = false;
+    // initialized from config, defaults to true if not set
+    let imageGallerySelected = config.imageGalleryState !== undefined ? config.imageGalleryState : true;
 
     /**
      * this function is responsible to auto scroll the live preview when
@@ -288,6 +288,17 @@ function RemoteFunctions(config = {}) {
             _imageRibbonGallery = new ImageRibbonGallery(element);
             scrollImageToViewportIfRequired(element, _imageRibbonGallery);
         }
+
+        _handleImageGalleryStateChange();
+    }
+
+    function _handleImageGalleryStateChange() {
+        // send image gallery state change message to editor to save preference in state manager
+        window._Brackets_MessageBroker.send({
+            livePreviewEditEnabled: true,
+            type: "imageGalleryStateChange",
+            selected: imageGallerySelected
+        });
     }
 
     /**
@@ -2984,6 +2995,7 @@ function RemoteFunctions(config = {}) {
                     e.stopPropagation();
                     this.remove();
                     imageGallerySelected = false;
+                    _handleImageGalleryStateChange();
                     dismissUIAndCleanupState();
                 });
             }
@@ -4302,6 +4314,11 @@ function RemoteFunctions(config = {}) {
     function updateConfig(newConfig) {
         const oldConfig = config;
         config = JSON.parse(newConfig);
+
+        // update image gallery selected state as per the new config
+        if (config.imageGalleryState !== undefined) {
+            imageGallerySelected = config.imageGalleryState;
+        }
 
         // Determine if configuration has changed significantly
         const oldHighlightMode = oldConfig.elemHighlights ? oldConfig.elemHighlights.toLowerCase() : "hover";
