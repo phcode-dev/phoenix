@@ -3809,7 +3809,7 @@ function RemoteFunctions(config = {}) {
         _hoverLockTimer = setTimeout(() => {
             enableHoverListeners();
             _hoverLockTimer = null;
-        }, 1500); // 1.5s
+        }, 800);
     }
 
     /**
