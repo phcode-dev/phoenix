@@ -2331,7 +2331,7 @@ function RemoteFunctions(config = {}) {
                         border-radius: 4px !important;
                         border: none !important;
                         background-color: #1e1e1e !important;
-                        color: #fff !important;
+                        color: #e0e0e0 !important;
                     }
 
                     .search-wrapper .search-icon {
@@ -2346,7 +2346,7 @@ function RemoteFunctions(config = {}) {
                     }
 
                     .search-wrapper .search-icon:hover {
-                        color: #fff !important;
+                        color: #e0e0e0 !important;
                     }
 
                     .search-wrapper input:focus {
