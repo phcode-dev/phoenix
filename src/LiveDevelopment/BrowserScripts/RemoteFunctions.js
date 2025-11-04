@@ -2300,6 +2300,20 @@ function RemoteFunctions(config = {}) {
                     .phoenix-image-gallery-header-icon {
                         height: 16px !important;
                         width: 18px !important;
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                    }
+
+                    .phoenix-image-gallery-header-icon svg {
+                        display: block !important;
+                        vertical-align: middle !important;
+                    }
+
+                    .phoenix-image-gallery-header-text {
+                        line-height: 1 !important;
+                        display: flex !important;
+                        align-items: center !important;
                     }
 
                     .phoenix-image-gallery-search-container {
@@ -2379,6 +2393,7 @@ function RemoteFunctions(config = {}) {
                         align-items: center !important;
                         gap: 3px !important;
                         margin-left: auto !important;
+                        margin-bottom: 2px !important;
                     }
 
                     .phoenix-image-gallery-right-buttons button {
@@ -2450,7 +2465,12 @@ function RemoteFunctions(config = {}) {
                         user-select: none !important;
                         transition: all 0.2s ease !important;
                         z-index: 2147483647 !important;
-                        padding: 0 12px 6px 12px !important;
+                        padding: 4px 12px 8px 12px !important;
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                        line-height: 1 !important;
+                        text-align: center !important;
                     }
 
                     .phoenix-image-gallery-nav:hover {
