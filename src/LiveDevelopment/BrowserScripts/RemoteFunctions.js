@@ -853,7 +853,7 @@ function RemoteFunctions(config = {}) {
         let arrow = window.document.createElement("div");
         arrow.className = DROP_MARKER_ARROW_CLASSNAME;
         arrow.style.position = "fixed";
-        arrow.style.zIndex = "2147483648";
+        arrow.style.zIndex = "2147483647";
         arrow.style.pointerEvents = "none";
         arrow.style.fontWeight = "bold";
         arrow.style.color = "#4285F4";
@@ -1511,7 +1511,7 @@ function RemoteFunctions(config = {}) {
                     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) !important;
                     font-size: 12px !important;
                     font-family: Arial, sans-serif !important;
-                    z-index: 2147483647 !important;
+                    z-index: 2147483646 !important;
                     position: absolute !important;
                     left: -1000px;
                     top: -1000px;
@@ -1783,7 +1783,7 @@ function RemoteFunctions(config = {}) {
                     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) !important;
                     font-size: 12px !important;
                     font-family: Arial, sans-serif !important;
-                    z-index: 2147483647 !important;
+                    z-index: 2147483646 !important;
                     position: absolute !important;
                     left: ${leftPos}px;
                     top: -1000px;
@@ -3515,7 +3515,7 @@ function RemoteFunctions(config = {}) {
                 "top": offset.top + "px",
                 "width": elementBounds.width + "px",
                 "height": elementBounds.height + "px",
-                "z-index": 2147483647,
+                "z-index": 2147483646,
                 "margin": 0,
                 "padding": 0,
                 "position": "absolute",
