@@ -2466,7 +2466,7 @@ function RemoteFunctions(config = {}) {
                         transition: all 0.2s ease !important;
                         z-index: 2147483647 !important;
                         padding: 4px 12px 8px 12px !important;
-                        display: flex !important;
+                        display: none !important;
                         align-items: center !important;
                         justify-content: center !important;
                         line-height: 1 !important;
@@ -2666,7 +2666,7 @@ function RemoteFunctions(config = {}) {
 
                         <div class='phoenix-image-gallery-upload-container'>
                             <button title="${config.strings.imageGallerySelectFromComputer}">${ICONS.selectImageFromComputer} ${config.strings.imageGalleryUpload}</button>
-                            <input type="file" class="phoenix-file-input" accept="image/*" style="display: none;">
+                            <input type="file" class="phoenix-file-input" accept="image/*" style="display: none !important;">
                         </div>
 
                         <div class='phoenix-image-gallery-right-buttons'>
@@ -2752,7 +2752,7 @@ function RemoteFunctions(config = {}) {
                         }
                         this.totalPages = data.total_pages || 1;
                         this.currentPage = page;
-                        this._updateNavButtons();
+                        this._handleNavButtonsDisplay('visible');
                         this._updateSearchInput(searchQuery);
                         this._updateCache(searchQuery, data, append);
                     } else if (!append) {
@@ -2782,7 +2782,7 @@ function RemoteFunctions(config = {}) {
             _imageGalleryCache.currentPage = this.currentPage;
 
             if (append) {
-                const currentImages = _imageGalleryCache.allImages;
+                const currentImages = _imageGalleryCache.allImages || [];
                 const newImages = currentImages.concat(data.results);
 
                 if (newImages.length > CACHE_MAX_IMAGES) {
@@ -2814,13 +2814,14 @@ function RemoteFunctions(config = {}) {
         },
 
         _loadFromCache: function(searchQuery) {
-            if (searchQuery === _imageGalleryCache.currentQuery && _imageGalleryCache.allImages.length > 0) {
-                this.allImages = _imageGalleryCache.allImages;
+            const cachedImages = _imageGalleryCache.allImages;
+            if (searchQuery === _imageGalleryCache.currentQuery && cachedImages && cachedImages.length > 0) {
+                this.allImages = cachedImages;
                 this.totalPages = _imageGalleryCache.totalPages;
                 this.currentPage = _imageGalleryCache.currentPage;
 
                 this._renderImages(this.allImages, false);
-                this._updateNavButtons();
+                this._handleNavButtonsDisplay('visible');
                 this._updateSearchInput(searchQuery);
                 return true;
             }
@@ -2828,16 +2829,17 @@ function RemoteFunctions(config = {}) {
         },
 
         _loadPageFromCache: function(searchQuery, page) {
-            if (searchQuery === _imageGalleryCache.currentQuery && page <= Math.ceil(_imageGalleryCache.allImages.length / 10)) {
+            const cachedImages = _imageGalleryCache.allImages;
+            if (searchQuery === _imageGalleryCache.currentQuery && cachedImages && page <= Math.ceil(cachedImages.length / 10)) {
                 const startIdx = (page - 1) * 10;
                 const endIdx = startIdx + 10;
-                const pageImages = _imageGalleryCache.allImages.slice(startIdx, endIdx);
+                const pageImages = cachedImages.slice(startIdx, endIdx);
 
                 if (pageImages.length > 0) {
                     this.allImages = this.allImages.concat(pageImages);
                     this._renderImages(pageImages, true);
                     this.currentPage = page;
-                    this._updateNavButtons();
+                    this._handleNavButtonsDisplay('visible');
                     this._isLoadingMore = false;
                     this._hideLoadingMore();
                     return true;
@@ -2862,7 +2864,7 @@ function RemoteFunctions(config = {}) {
 
             this.scrollPosition = Math.max(0, this.scrollPosition - scrollAmount);
             container.scrollTo({ left: this.scrollPosition, behavior: 'smooth' });
-            this._updateNavButtons();
+            this._handleNavButtonsDisplay('visible');
         },
 
         _handleNavRight: function() {
@@ -2890,48 +2892,43 @@ function RemoteFunctions(config = {}) {
 
             this.scrollPosition = Math.min(totalWidth - containerWidth, this.scrollPosition + scrollAmount);
             container.scrollTo({ left: this.scrollPosition, behavior: 'smooth' });
-            this._updateNavButtons();
+            this._handleNavButtonsDisplay('visible');
         },
 
-        _setNavButtonsVisibility: function(visible) {
-            const navLeft = this._shadow.querySelector('.phoenix-image-gallery-nav.left');
-            const navRight = this._shadow.querySelector('.phoenix-image-gallery-nav.right');
-
-            if (navLeft) {
-                navLeft.style.display = visible ? 'block' : 'none';
-            }
-            if (navRight) {
-                navRight.style.display = visible ? 'block' : 'none';
-            }
-        },
-
-        _updateNavButtons: function() {
-            // this function is responsible to update the nav buttons
-            // when we're at the very left, we hide the nav-left button completely
-            // when we're at the very right and no more pages available, we hide the nav-right button
+        _handleNavButtonsDisplay: function(state) { // state can be 'visible' or 'hidden'
             const navLeft = this._shadow.querySelector('.phoenix-image-gallery-nav.left');
             const navRight = this._shadow.querySelector('.phoenix-image-gallery-nav.right');
             const container = this._shadow.querySelector('.phoenix-image-gallery-strip');
 
-            if (!navLeft || !navRight || !container) { return; }
+            if (!navLeft || !navRight) { return; }
 
-            // show/hide left button
-            if (this.scrollPosition <= 0) {
-                navLeft.style.display = 'none';
-            } else {
-                navLeft.style.display = 'block';
+            if (state === 'hidden') {
+                navLeft.style.setProperty('display', 'none', 'important');
+                navRight.style.setProperty('display', 'none', 'important');
+                return;
             }
 
-            // show/hide right button
-            const containerWidth = container.clientWidth;
-            const totalWidth = container.scrollWidth;
-            const atEnd = (this.scrollPosition + containerWidth) >= totalWidth - 10;
-            const hasMorePages = this.currentPage < this.totalPages;
+            if (state === 'visible') {
+                if (!container) { return; }
 
-            if (atEnd && !hasMorePages) {
-                navRight.style.display = 'none';
-            } else {
-                navRight.style.display = 'block';
+                // show/hide the nav-left button
+                if (this.scrollPosition <= 0) {
+                    navLeft.style.setProperty('display', 'none', 'important');
+                } else {
+                    navLeft.style.setProperty('display', 'flex', 'important');
+                }
+
+                // show/hide the nav-right button
+                const containerWidth = container.clientWidth;
+                const totalWidth = container.scrollWidth;
+                const atEnd = (this.scrollPosition + containerWidth) >= totalWidth - 10;
+                const hasMorePages = this.currentPage < this.totalPages;
+
+                if (atEnd && !hasMorePages) {
+                    navRight.style.setProperty('display', 'none', 'important');
+                } else {
+                    navRight.style.setProperty('display', 'flex', 'important');
+                }
             }
         },
 
@@ -2942,7 +2939,7 @@ function RemoteFunctions(config = {}) {
             rowElement.innerHTML = config.strings.imageGalleryLoadingInitial;
             rowElement.className = 'phoenix-image-gallery-row phoenix-image-gallery-loading';
 
-            this._setNavButtonsVisibility(false);
+            this._handleNavButtonsDisplay('hidden');
         },
 
         _showLoadingMore: function() {
@@ -3191,7 +3188,7 @@ function RemoteFunctions(config = {}) {
                 }, 0);
             }
 
-            this._setNavButtonsVisibility(true);
+            this._handleNavButtonsDisplay('visible');
         },
 
         _showError: function(message) {
@@ -3201,7 +3198,7 @@ function RemoteFunctions(config = {}) {
             rowElement.innerHTML = message;
             rowElement.className = 'phoenix-image-gallery-row phoenix-ribbon-error';
 
-            this._setNavButtonsVisibility(false);
+            this._handleNavButtonsDisplay('hidden');
         },
 
         // file name with which we need to save the image
@@ -3303,7 +3300,6 @@ function RemoteFunctions(config = {}) {
 
             const queryToUse = _imageGalleryCache.currentQuery || this._getDefaultQuery();
             this._fetchImages(queryToUse);
-            setTimeout(() => this._updateNavButtons(), 0);
         },
 
         remove: function () {
