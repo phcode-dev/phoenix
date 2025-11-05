@@ -3755,9 +3755,10 @@ function RemoteFunctions(config = {}) {
      * @param {Element} element - The DOM element to select
      */
     function _selectElement(element) {
-        // dismiss all UI boxes and cleanup previous element state when selecting a different element
-        dismissUIAndCleanupState();
-        dismissImageRibbonGallery();
+        dismissNodeMoreOptionsBox();
+        dismissAIPromptBox();
+        dismissNodeInfoBox();
+        cleanupPreviousElementState();
 
         // this should always happen before isElementEditable check because this is not a live preview edit feature
         // this should also be there when users are in highlight mode
@@ -3769,10 +3770,14 @@ function RemoteFunctions(config = {}) {
 
         // if imageGallerySelected is true, show the image gallery directly
         if(element && element.tagName.toLowerCase() === 'img' && imageGallerySelected) {
-            if (!_imageRibbonGallery) {
+            if (!_imageRibbonGallery || _imageRibbonGallery.element !== element) {
+                dismissImageRibbonGallery();  // Dismiss only when creating new
                 _imageRibbonGallery = new ImageRibbonGallery(element);
                 scrollImageToViewportIfRequired(element, _imageRibbonGallery);
             }
+        } else {
+            // Not an image or gallery not selected, dismiss if exists
+            dismissImageRibbonGallery();
         }
 
         // make sure that the element is actually visible to the user
