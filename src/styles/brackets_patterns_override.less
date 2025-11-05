@@ -2560,30 +2560,37 @@ code {
             }
 
             &:hover {
-                background-color: @bc-panel-bg-hover-alt;
+                background-color: rgba(0, 0, 0, 0.03);
 
                 .dark & {
-                    background-color: @dark-bc-panel-bg-hover-alt;
+                    background-color: rgba(255, 255, 255, 0.05);
                 }
             }
 
             &.selected {
-                background-color: @bc-bg-highlight;
-                border-left-color: @bc-primary-btn-bg;
+                background-color: rgba(40, 142, 223, 0.08);
+                border-left-color: #288edf;
 
                 .dark & {
-                    background-color: @dark-bc-bg-highlight;
-                    border-left-color: @dark-bc-primary-btn-bg;
+                    background-color: rgba(40, 142, 223, 0.15);
+                    border-left-color: #3da3ff;
+                }
+
+                &:hover {
+                    background-color: rgba(40, 142, 223, 0.12);
+
+                    .dark & {
+                        background-color: rgba(40, 142, 223, 0.2);
+                    }
                 }
             }
         }
 
         .folder-match-highlight {
-            font-weight: @font-weight-semibold;
-            color: @bc-primary-btn-bg;
+            color: #288edf;
 
             .dark & {
-                color: @dark-bc-primary-btn-bg;
+                color: #3da3ff;
             }
         }
     }
