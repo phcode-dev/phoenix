@@ -2786,7 +2786,7 @@ function RemoteFunctions(config = {}) {
                 const newImages = currentImages.concat(data.results);
 
                 if (newImages.length > CACHE_MAX_IMAGES) {
-                    _imageGalleryCache.allImages = newImages.slice(-CACHE_MAX_IMAGES);
+                    _imageGalleryCache.allImages = newImages.slice(0, CACHE_MAX_IMAGES);
                 } else {
                     _imageGalleryCache.allImages = newImages;
                 }
