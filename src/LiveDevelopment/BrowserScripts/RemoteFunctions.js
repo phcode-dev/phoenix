@@ -2287,7 +2287,7 @@ function RemoteFunctions(config = {}) {
                         color: #a0a0a0 !important;
                         gap: 3px !important;
                         font-size: 14px !important;
-                        margin-bottom: 4px !important;
+                        margin-bottom: 2px !important;
                         margin-right: 10px !important;
                     }
 
