@@ -3162,18 +3162,9 @@ function RemoteFunctions(config = {}) {
                     const extnName = ".jpg";
 
                     const downloadUrl = image.url || image.thumb_url;
+                    const downloadLocation = image.download_location;
 
-                    // we need to make a req to the download endpoint
-                    // its required by the Unsplash API guidelines to track downloads for photographers
-                    // this is just a tracking call, we don't need to wait for the response
-                    if (image.download_location) {
-                        fetch(`https://images.phcode.dev/api/images/download?download_location=${encodeURIComponent(image.download_location)}`)
-                            .catch(error => {
-                                console.error('download tracking failed:', error);
-                            });
-                    }
-
-                    this._useImage(downloadUrl, filename, extnName, false, thumbDiv);
+                    this._useImage(downloadUrl, filename, extnName, false, thumbDiv, downloadLocation);
                 });
 
                 thumbDiv.appendChild(img);
@@ -3213,9 +3204,9 @@ function RemoteFunctions(config = {}) {
             return `${cleanSearchTerm}-by-${cleanPhotographerName}`;
         },
 
-        _useImage: function(imageUrl, filename, extnName, isLocalFile, thumbDiv) {
-            // send the message to the editor instance to save the image and update the source code
+        _useImage: function(imageUrl, filename, extnName, isLocalFile, thumbDiv, downloadLocation) {
             const tagId = this.element.getAttribute("data-brackets-id");
+            const downloadId = Date.now() + Math.random();
 
             const messageData = {
                 livePreviewEditEnabled: true,
@@ -3224,7 +3215,9 @@ function RemoteFunctions(config = {}) {
                 filename: filename,
                 extnName: extnName,
                 element: this.element,
-                tagId: Number(tagId)
+                tagId: Number(tagId),
+                downloadLocation: downloadLocation,
+                downloadId: downloadId
             };
 
             // if this is a local file we need some more data before sending it to the editor
@@ -3239,15 +3232,12 @@ function RemoteFunctions(config = {}) {
                 messageData.imageData = byteNumbers;
             }
 
-            window._Brackets_MessageBroker.send(messageData);
+            _activeDownloads.set(downloadId, {
+                thumbDiv: thumbDiv,
+                timestamp: Date.now()
+            });
 
-            // if thumbDiv is provided, hide the download indicator after a reasonable timeout
-            // this is to make sure that the indicator is always removed even if there's no explicit success callback
-            if (thumbDiv) {
-                setTimeout(() => {
-                    this._hideDownloadIndicator(thumbDiv);
-                }, 3000);
-            }
+            window._Brackets_MessageBroker.send(messageData);
         },
 
         _handleLocalImageSelection: function(file) {
@@ -3639,6 +3629,41 @@ function RemoteFunctions(config = {}) {
     var _imageRibbonGallery;
     var _setup = false;
     var _hoverLockTimer = null;
+
+    const DOWNLOAD_EVENTS = {
+        STARTED: 'downloadStarted',
+        COMPLETED: 'downloadCompleted',
+        CANCELLED: 'downloadCancelled',
+        ERROR: 'downloadError'
+    };
+
+    let _activeDownloads = new Map();
+
+    function handleDownloadEvent(eventType, data) {
+        const downloadId = data && data.downloadId;
+        if (!downloadId) {
+            return;
+        }
+
+        const download = _activeDownloads.get(downloadId);
+        if (!download) {
+            return;
+        }
+
+        switch (eventType) {
+        case DOWNLOAD_EVENTS.STARTED:
+            break;
+
+        case DOWNLOAD_EVENTS.COMPLETED:
+        case DOWNLOAD_EVENTS.CANCELLED:
+        case DOWNLOAD_EVENTS.ERROR:
+            if (_imageRibbonGallery && download.thumbDiv) {
+                _imageRibbonGallery._hideDownloadIndicator(download.thumbDiv);
+            }
+            _activeDownloads.delete(downloadId);
+            break;
+        }
+    }
 
     function onMouseOver(event) {
         if (_validEvent(event)) {
@@ -4660,6 +4685,7 @@ function RemoteFunctions(config = {}) {
         "hasVisibleLivePreviewBoxes" : hasVisibleLivePreviewBoxes,
         "dismissUIAndCleanupState" : dismissUIAndCleanupState,
         "enableHoverListeners" : enableHoverListeners,
-        "registerHandlers" : registerHandlers
+        "registerHandlers" : registerHandlers,
+        "handleDownloadEvent" : handleDownloadEvent
     };
 }
