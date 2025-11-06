@@ -2266,12 +2266,16 @@ function RemoteFunctions(config = {}) {
                     .phoenix-image-gallery-container {
                         position: fixed !important;
                         bottom: 0 !important;
-                        left: 12px !important;
-                        right: 12px !important;
+                        left: 50% !important;
+                        transform: translateX(-50%) !important;
+                        width: calc(100% - 24px) !important;
+                        max-width: 1160px !important;
                         background-color: #2c2c2c !important;
                         border-radius: 6px 6px 0 0 !important;
                         font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial !important;
-                        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+                        border: 2px solid rgba(255, 255, 255, 0.3) !important;
+                        border-bottom: none !important;
+                        box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.3) !important;
                         z-index: 2147483647 !important;
                         overflow: hidden !important;
                     }
