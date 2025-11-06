@@ -3167,9 +3167,9 @@ function RemoteFunctions(config = {}) {
                     // its required by the Unsplash API guidelines to track downloads for photographers
                     // this is just a tracking call, we don't need to wait for the response
                     if (image.download_location) {
-                        fetch(image.download_location)
+                        fetch(`https://images.phcode.dev/api/images/download?download_location=${encodeURIComponent(image.download_location)}`)
                             .catch(error => {
-                                //
+                                console.error('download tracking failed:', error);
                             });
                     }
 
