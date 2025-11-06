@@ -42,6 +42,7 @@ define(function (require, exports, module) {
 
     // state manager key, to save the download location of the image
     const IMAGE_DOWNLOAD_FOLDER_KEY = "imageGallery.downloadFolder";
+    const IMAGE_DOWNLOAD_PERSIST_FOLDER_KEY = "imageGallery.persistFolder";
 
     const DOWNLOAD_EVENTS = {
         STARTED: 'downloadStarted',
@@ -1157,6 +1158,10 @@ define(function (require, exports, module) {
         let rootFolders = [];
         let stringMatcher = null;
 
+        const persistFolder = StateManager.get(IMAGE_DOWNLOAD_PERSIST_FOLDER_KEY, StateManager.PROJECT_CONTEXT);
+        const shouldBeChecked = persistFolder !== false;
+        $rememberCheckbox.prop('checked', shouldBeChecked);
+
         _scanRootDirectoriesOnly(projectRoot, rootFolders).then(() => {
             stringMatcher = new StringMatch.StringMatcher({ segmentedSearch: true });
             _renderFolderSuggestions(rootFolders.slice(0, 15), $suggestions, $input);
@@ -1182,8 +1187,12 @@ define(function (require, exports, module) {
                 const folderPath = $input.val().trim();
 
                 // if the checkbox is checked, we save the folder preference for this project
-                if ($rememberCheckbox.is(':checked')) {
+                const isChecked = $rememberCheckbox.is(':checked');
+                StateManager.set(IMAGE_DOWNLOAD_PERSIST_FOLDER_KEY, isChecked, StateManager.PROJECT_CONTEXT);
+                if (isChecked) {
                     StateManager.set(IMAGE_DOWNLOAD_FOLDER_KEY, folderPath, StateManager.PROJECT_CONTEXT);
+                } else {
+                    StateManager.set(IMAGE_DOWNLOAD_FOLDER_KEY, undefined, StateManager.PROJECT_CONTEXT);
                 }
 
                 // if message is provided, download the image
