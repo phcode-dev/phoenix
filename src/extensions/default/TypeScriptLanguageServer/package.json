@@ -1,0 +1,11 @@
+{
+  "name": "phcode-typescript-lsp",
+  "title": "TypeScript/JavaScript Language Server",
+  "version": "1.0.0",
+  "engines": {
+    "brackets": ">=4.0.0"
+  },
+  "description": "TypeScript/JavaScript Language Server Protocol integration for code intelligence features",
+  "nodeIsRequired": true,
+  "dependencies": {}
+}

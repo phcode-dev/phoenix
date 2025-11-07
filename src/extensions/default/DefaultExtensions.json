@@ -23,6 +23,7 @@
     "QuickView",
     "SVGCodeHints",
     "UrlCodeHints",
+    "TypeScriptLanguageServer",
     "HealthData"
   ],
   "desktopOnly": [

@@ -118,6 +118,8 @@
         "requirejs": "^2.3.7",
         "tern": "^0.24.3",
         "tinycolor2": "^1.4.2",
+        "typescript": "^5.9.3",
+        "typescript-language-server": "^5.1.1",
         "underscore": "^1.13.4"
     }
 }
