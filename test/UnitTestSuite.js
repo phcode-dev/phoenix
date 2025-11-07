@@ -143,6 +143,6 @@ define(function (require, exports, module) {
     // Node Tests
     require("spec/NodeConnection-test");
     // todo TEST_MODERN
-    // require("spec/LanguageTools-test"); LSP tests. disabled for now
+    require("spec/LanguageTools-test");
     // require("spec/Menu-native-integ-test"); evaluate after we have native menus in os installed builds
 });
