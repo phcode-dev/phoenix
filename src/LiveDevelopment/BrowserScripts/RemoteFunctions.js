@@ -1744,8 +1744,19 @@ function RemoteFunctions(config = {}) {
             const id = this.element.id;
             const classes = Array.from(this.element.classList || []);
 
+            // get the dimensions of the element
+            const elemBounds = this.element.getBoundingClientRect();
+            // we only show integers, because showing decimal places will take up a lot more space
+            const elemWidth = Math.round(elemBounds.width);
+            const elemHeight = Math.round(elemBounds.height);
+
             let content = ""; // this will hold the main content that will be displayed
-            content += "<div class='tag-name'>" + this.element.tagName.toLowerCase() + "</div>"; // add element tag name
+
+            // add the tag name and dimensions in the same line
+            content += "<div class='tag-line'>";
+            content += "<span class='tag-name'>" + this.element.tagName.toLowerCase() + "</span>";
+            content += `<span class='elem-dimensions'>${elemWidth} × ${elemHeight}</span>`;
+            content += "</div>";
 
             // Add ID if present
             if (id) {
@@ -1792,8 +1803,22 @@ function RemoteFunctions(config = {}) {
                     pointer-events: none !important;
                 }
 
+                .tag-line {
+                    display: flex !important;
+                    align-items: baseline !important;
+                    justify-content: space-between !important;
+                }
+
                 .tag-name {
                     font-weight: bold !important;
+                }
+
+                .elem-dimensions {
+                    font-size: 9px !important;
+                    font-weight: 500 !important;
+                    opacity: 0.9 !important;
+                    margin-left: 7px !important;
+                    flex-shrink: 0 !important;
                 }
 
                 .id-name,
