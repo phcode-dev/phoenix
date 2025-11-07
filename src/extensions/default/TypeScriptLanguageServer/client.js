@@ -24,6 +24,20 @@
 /*eslint-env es6, node*/
 /*eslint max-len: ["error", { "code": 200 }]*/
 
+/**
+ * TypeScript Language Server Client (Node.js side)
+ *
+ * ARCHITECTURE NOTE:
+ * Phoenix runs in the browser, but this file runs in Node.js via Phoenix's NodeDomain.
+ * Flow: Browser (main.js) → NodeDomain → Node.js (this file) → TypeScript LSP server
+ *
+ * This file:
+ * 1. Runs in a Node.js process spawned by Phoenix's NodeConnection
+ * 2. Creates a LanguageClient to manage the TypeScript language server
+ * 3. Spawns the actual typescript-language-server as a child process
+ * 4. Bridges LSP protocol between Phoenix (browser) and the language server (Node.js)
+ */
+
 var LanguageClient = require(global.LanguageClientInfo.languageClientPath).LanguageClient,
     path = require("path"),
     clientName = "TypeScriptLanguageServer",
@@ -31,7 +45,8 @@ var LanguageClient = require(global.LanguageClientInfo.languageClientPath).Langu
 
 function getServerOptions() {
     // Path to the typescript-language-server executable
-    var serverPath = path.resolve(__dirname, "../../../node_modules/.bin/typescript-language-server");
+    // Go from: src/extensions/default/TypeScriptLanguageServer/ to project root
+    var serverPath = path.resolve(__dirname, "../../../../node_modules/.bin/typescript-language-server");
 
     var serverOptions = {
         command: serverPath,
