@@ -117,7 +117,26 @@ function RemoteFunctions(config = {}) {
     }
 
     /**
-     * This is a checker function for editable elements, it makes sure that the element satisfies all the required checks
+     * check if an element is inspectable.
+     * inspectable elements are those which doesn't have data-brackets-id,
+     * this normally happens when content is DOM content is inserted by some scripting language
+     */
+    function isElementInspectable(element, onlyHighlight = false) {
+        if(!config.isProUser && !onlyHighlight) {
+            return false;
+        }
+
+        if(element && // element should exist
+           element.tagName.toLowerCase() !== "body" && // shouldn't be the body tag
+           element.tagName.toLowerCase() !== "html" && // shouldn't be the HTML tag
+           !_isInsideHeadTag(element)) { // shouldn't be inside the head tag like meta tags and all
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * This is a checker function for editable elements, it makes sure that the element satisfies all the required check
      * - When onlyHighlight is false → config.isProUser must be true
      * - When onlyHighlight is true → config.isProUser can be true or false (doesn't matter)
      * @param {DOMElement} element
@@ -125,18 +144,9 @@ function RemoteFunctions(config = {}) {
      * @returns {boolean} - True if the element is editable else false
      */
     function isElementEditable(element, onlyHighlight = false) {
-        if(!config.isProUser && !onlyHighlight) {
-            return false;
-        }
-
-        if(element && // element should exist
-           element.hasAttribute("data-brackets-id") && // should have the data-brackets-id attribute
-           element.tagName.toLowerCase() !== "body" && // shouldn't be the body tag
-           element.tagName.toLowerCase() !== "html" && // shouldn't be the HTML tag
-           !_isInsideHeadTag(element)) { // shouldn't be inside the head tag like meta tags and all
-            return true;
-        }
-        return false;
+        // for an element to be editable it should satisfy all inspectable checks and should also have data-brackets-id
+        return isElementInspectable(element, onlyHighlight) &&
+               element.hasAttribute("data-brackets-id");
     }
 
     // helper function to check if an element is inside the HEAD tag
@@ -1781,13 +1791,16 @@ function RemoteFunctions(config = {}) {
             const offset = _screenOffset(this.element);
             const leftPos = offset.left;
 
+            // if element is non-editable we use gray bg color in info box, otherwise normal blue color
+            const bgColor = this.element.hasAttribute('data-brackets-id') ? '#4285F4' : '#666666';
+
             const styles = `
                 :host {
                   all: initial !important;
                 }
 
                 .phoenix-node-info-box {
-                    background-color: #4285F4 !important;
+                    background-color: ${bgColor} !important;
                     color: white !important;
                     border-radius: 3px !important;
                     padding: 5px 8px !important;
@@ -3747,7 +3760,7 @@ function RemoteFunctions(config = {}) {
         }
 
         const element = event.target;
-        if(!isElementEditable(element) || element.nodeType !== Node.ELEMENT_NODE) {
+        if(!isElementInspectable(element) || element.nodeType !== Node.ELEMENT_NODE) {
             return false;
         }
 
@@ -3814,16 +3827,15 @@ function RemoteFunctions(config = {}) {
         dismissNodeInfoBox();
         cleanupPreviousElementState();
 
-        // this should always happen before isElementEditable check because this is not a live preview edit feature
         // this should also be there when users are in highlight mode
         scrollElementToViewPort(element);
 
-        if(!isElementEditable(element)) {
+        if(!isElementInspectable(element)) {
             return false;
         }
 
-        // if imageGallerySelected is true, show the image gallery directly
-        if(element && element.tagName.toLowerCase() === 'img' && imageGallerySelected) {
+        // if imageGallerySelected is true, show the image gallery directly (only for editable images)
+        if(isElementEditable(element) && element && element.tagName.toLowerCase() === 'img' && imageGallerySelected) {
             if (!_imageRibbonGallery || _imageRibbonGallery.element !== element) {
                 dismissImageRibbonGallery();  // Dismiss only when creating new
                 _imageRibbonGallery = new ImageRibbonGallery(element);
@@ -3836,7 +3848,11 @@ function RemoteFunctions(config = {}) {
 
         // make sure that the element is actually visible to the user
         if (isElementVisible(element)) {
-            _nodeMoreOptionsBox = new NodeMoreOptionsBox(element);
+            // Only show more options box for editable elements (have data-brackets-id)
+            if (isElementEditable(element)) {
+                _nodeMoreOptionsBox = new NodeMoreOptionsBox(element);
+            }
+            // Always show info box for inspectable elements
             _nodeInfoBox = new NodeInfoBox(element);
         } else {
             // Element is hidden, so don't show UI boxes but still apply visual styling
@@ -3846,10 +3862,13 @@ function RemoteFunctions(config = {}) {
         element._originalOutline = element.style.outline;
         element.style.outline = "1px solid #4285F4";
 
-        if (element._originalBackgroundColor === undefined) {
-            element._originalBackgroundColor = element.style.backgroundColor;
+        // Only apply background tint for editable elements (not for dynamic/read-only)
+        if (element.hasAttribute("data-brackets-id")) {
+            if (element._originalBackgroundColor === undefined) {
+                element._originalBackgroundColor = element.style.backgroundColor;
+            }
+            element.style.backgroundColor = "rgba(0, 162, 255, 0.2)";
         }
-        element.style.backgroundColor = "rgba(0, 162, 255, 0.2)";
 
         if (_hoverHighlight) {
             _hoverHighlight.clear();
@@ -3962,7 +3981,7 @@ function RemoteFunctions(config = {}) {
         if (clear) {
             _clickHighlight.clear();
         }
-        if (isElementEditable(element, true) && element.nodeType === Node.ELEMENT_NODE) {
+        if (isElementInspectable(element, true) && element.nodeType === Node.ELEMENT_NODE) {
             _clickHighlight.add(element, true);
         }
     }
@@ -3982,7 +4001,7 @@ function RemoteFunctions(config = {}) {
         // select the first valid highlighted element
         var foundValidElement = false;
         for (i = 0; i < nodes.length; i++) {
-            if(isElementEditable(nodes[i], true) && nodes[i].tagName !== "BR") {
+            if(isElementInspectable(nodes[i], true) && nodes[i].tagName !== "BR") {
                 _selectElement(nodes[i]);
                 foundValidElement = true;
                 break;
