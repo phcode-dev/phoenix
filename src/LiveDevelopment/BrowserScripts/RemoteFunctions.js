@@ -3710,7 +3710,7 @@ function RemoteFunctions(config = {}) {
     function onMouseOver(event) {
         if (_validEvent(event)) {
             const element = event.target;
-            if(isElementEditable(element) && element.nodeType === Node.ELEMENT_NODE ) {
+            if(isElementInspectable(element) && element.nodeType === Node.ELEMENT_NODE ) {
                 _localHighlight.add(element, true);
             }
         }
@@ -3914,10 +3914,17 @@ function RemoteFunctions(config = {}) {
     function onClick(event) {
         const element = event.target;
 
-        if(isElementEditable(element)) {
+        if(isElementInspectable(element)) {
             event.preventDefault();
             event.stopPropagation();
             event.stopImmediatePropagation();
+
+            // when in click mode, only select dynamic elements (without data-brackets-id) directly
+            // as for static elements, the editor will handle selection via highlight message
+            if (!shouldShowHighlightOnHover() && !element.hasAttribute("data-brackets-id")) {
+                _selectElement(element);
+            }
+
             activateHoverLock();
         }
     }
