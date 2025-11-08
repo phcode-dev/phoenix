@@ -4028,17 +4028,18 @@ function RemoteFunctions(config = {}) {
         }
     }
 
-    // recreate UI boxes (info box and more options box)
+    // recreate UI boxes so that they are placed properly
     function redrawUIBoxes() {
         if (_nodeMoreOptionsBox) {
             const element = _nodeMoreOptionsBox.element;
             _nodeMoreOptionsBox.remove();
             _nodeMoreOptionsBox = new NodeMoreOptionsBox(element);
+        }
 
-            if (_nodeInfoBox) {
-                dismissNodeInfoBox();
-                _nodeInfoBox = new NodeInfoBox(element);
-            }
+        if (_nodeInfoBox) {
+            const element = _nodeInfoBox.element;
+            _nodeInfoBox.remove();
+            _nodeInfoBox = new NodeInfoBox(element);
         }
 
         if (_aiPromptBox) {
