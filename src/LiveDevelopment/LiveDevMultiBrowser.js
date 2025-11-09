@@ -733,7 +733,7 @@ define(function (require, exports, module) {
      */
     function updateConfig(configJSON) {
         if (_protocol) {
-            _protocol.evaluate("_LD.updateConfig('" + configJSON + "')");
+            _protocol.evaluate("_LD.updateConfig(" + JSON.stringify(configJSON) + ")");
         }
     }
 
