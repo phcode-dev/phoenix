@@ -3894,6 +3894,9 @@ function RemoteFunctions(config = {}) {
 
     function enableHoverListeners() {
         if (config.isProUser && (config.highlight || shouldShowHighlightOnHover())) {
+            window.document.removeEventListener("mouseover", onElementHover);
+            window.document.removeEventListener("mouseout", onElementHoverOut);
+
             window.document.addEventListener("mouseover", onElementHover);
             window.document.addEventListener("mouseout", onElementHoverOut);
         }
@@ -4693,6 +4696,37 @@ function RemoteFunctions(config = {}) {
         cleanupPreviousElementState();
     }
 
+    /**
+     * this is a hard reset function, it resets every live preview edit thing, whether it be UI boxes
+     * highlighting, any timers or anything
+     */
+    function resetState() {
+        _stopAutoScroll();
+
+        if (_hoverHighlight) {
+            _hoverHighlight.clear();
+            _hoverHighlight = null;
+        }
+        if (_clickHighlight) {
+            _clickHighlight.clear();
+            _clickHighlight = null;
+        }
+
+        dismissUIAndCleanupState();
+
+        const allElements = window.document.querySelectorAll("[data-brackets-id]");
+        for (let i = 0; i < allElements.length; i++) {
+            if (allElements[i]._originalBackgroundColor !== undefined) {
+                clearElementBackground(allElements[i]);
+            }
+        }
+
+        if (config.isProUser) {
+            _hoverHighlight = new Highlight("#c8f9c5", true);
+            _clickHighlight = new Highlight("#cfc", true);
+        }
+    }
+
 
     /**
      * This function is responsible to move the cursor to the end of the text content when we start editing
@@ -4816,6 +4850,16 @@ function RemoteFunctions(config = {}) {
     _editHandler = new DOMEditHandler(window.document);
 
     function registerHandlers() {
+        // clear previous highlighting
+        if (_hoverHighlight) {
+            _hoverHighlight.clear();
+            _hoverHighlight = null;
+        }
+        if (_clickHighlight) {
+            _clickHighlight.clear();
+            _clickHighlight = null;
+        }
+
         // Always remove existing listeners first to avoid duplicates
         window.document.removeEventListener("mouseover", onElementHover);
         window.document.removeEventListener("mouseout", onElementHoverOut);
@@ -4862,6 +4906,7 @@ function RemoteFunctions(config = {}) {
         "finishEditing"         : finishEditing,
         "hasVisibleLivePreviewBoxes" : hasVisibleLivePreviewBoxes,
         "dismissUIAndCleanupState" : dismissUIAndCleanupState,
+        "resetState"            : resetState,
         "enableHoverListeners" : enableHoverListeners,
         "registerHandlers" : registerHandlers,
         "handleDownloadEvent" : handleDownloadEvent

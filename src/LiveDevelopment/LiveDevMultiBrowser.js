@@ -435,6 +435,7 @@ define(function (require, exports, module) {
                             const urlString = `${url.origin}${url.pathname}`;
                             if (_liveDocument &&  urlString === _resolveUrl(_liveDocument.doc.file.fullPath)) {
                                 _setStatus(STATUS_ACTIVE);
+                                resetLPEditState();
                             }
                         }
                         Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "connect",
@@ -734,6 +735,17 @@ define(function (require, exports, module) {
     function updateConfig(configJSON) {
         if (_protocol) {
             _protocol.evaluate("_LD.updateConfig(" + JSON.stringify(configJSON) + ")");
+        }
+    }
+
+    /**
+     * this function is to completely reset the live preview edit
+     * its done so that when live preview is opened/popped out, we can re-update the config so that
+     * there are no stale markers and edit works perfectly
+     */
+    function resetLPEditState() {
+        if (_protocol) {
+            _protocol.evaluate("_LD.resetState()");
         }
     }
 
