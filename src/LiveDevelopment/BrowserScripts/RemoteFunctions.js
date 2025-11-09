@@ -60,8 +60,8 @@ function RemoteFunctions(config = {}) {
     const AUTO_SCROLL_SPEED = 12; // pixels per scroll
     const AUTO_SCROLL_EDGE_SIZE = 0.05; // 5% of viewport height (either top/bottom)
 
-    // to track the state as we want to have a selected state for image gallery
-    let imageGallerySelected = false;
+    // initialized from config, defaults to true if not set
+    let imageGallerySelected = config.imageGalleryState !== undefined ? config.imageGalleryState : true;
 
     /**
      * this function is responsible to auto scroll the live preview when
@@ -117,7 +117,26 @@ function RemoteFunctions(config = {}) {
     }
 
     /**
-     * This is a checker function for editable elements, it makes sure that the element satisfies all the required checks
+     * check if an element is inspectable.
+     * inspectable elements are those which doesn't have data-brackets-id,
+     * this normally happens when content is DOM content is inserted by some scripting language
+     */
+    function isElementInspectable(element, onlyHighlight = false) {
+        if(!config.isProUser && !onlyHighlight) {
+            return false;
+        }
+
+        if(element && // element should exist
+           element.tagName.toLowerCase() !== "body" && // shouldn't be the body tag
+           element.tagName.toLowerCase() !== "html" && // shouldn't be the HTML tag
+           !_isInsideHeadTag(element)) { // shouldn't be inside the head tag like meta tags and all
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * This is a checker function for editable elements, it makes sure that the element satisfies all the required check
      * - When onlyHighlight is false → config.isProUser must be true
      * - When onlyHighlight is true → config.isProUser can be true or false (doesn't matter)
      * @param {DOMElement} element
@@ -125,18 +144,9 @@ function RemoteFunctions(config = {}) {
      * @returns {boolean} - True if the element is editable else false
      */
     function isElementEditable(element, onlyHighlight = false) {
-        if(!config.isProUser && !onlyHighlight) {
-            return false;
-        }
-
-        if(element && // element should exist
-           element.hasAttribute("data-brackets-id") && // should have the data-brackets-id attribute
-           element.tagName.toLowerCase() !== "body" && // shouldn't be the body tag
-           element.tagName.toLowerCase() !== "html" && // shouldn't be the HTML tag
-           !_isInsideHeadTag(element)) { // shouldn't be inside the head tag like meta tags and all
-            return true;
-        }
-        return false;
+        // for an element to be editable it should satisfy all inspectable checks and should also have data-brackets-id
+        return isElementInspectable(element, onlyHighlight) &&
+               element.hasAttribute("data-brackets-id");
     }
 
     // helper function to check if an element is inside the HEAD tag
@@ -216,7 +226,7 @@ function RemoteFunctions(config = {}) {
      */
     function scrollImageToViewportIfRequired(element, imageGalleryElement) {
         let elementRect = element.getBoundingClientRect();
-        let galleryRect = imageGalleryElement._shadow.querySelector('.phoenix-image-ribbon').getBoundingClientRect();
+        let galleryRect = imageGalleryElement._shadow.querySelector('.phoenix-image-gallery-container').getBoundingClientRect();
 
         // this will get true when the image element and the image gallery overlaps each other
         if (elementRect.bottom >= galleryRect.top) {
@@ -288,6 +298,17 @@ function RemoteFunctions(config = {}) {
             _imageRibbonGallery = new ImageRibbonGallery(element);
             scrollImageToViewportIfRequired(element, _imageRibbonGallery);
         }
+
+        _handleImageGalleryStateChange();
+    }
+
+    function _handleImageGalleryStateChange() {
+        // send image gallery state change message to editor to save preference in state manager
+        window._Brackets_MessageBroker.send({
+            livePreviewEditEnabled: true,
+            type: "imageGalleryStateChange",
+            selected: imageGallerySelected
+        });
     }
 
     /**
@@ -842,7 +863,7 @@ function RemoteFunctions(config = {}) {
         let arrow = window.document.createElement("div");
         arrow.className = DROP_MARKER_ARROW_CLASSNAME;
         arrow.style.position = "fixed";
-        arrow.style.zIndex = "2147483648";
+        arrow.style.zIndex = "2147483647";
         arrow.style.pointerEvents = "none";
         arrow.style.fontWeight = "bold";
         arrow.style.color = "#4285F4";
@@ -1343,7 +1364,7 @@ function RemoteFunctions(config = {}) {
       `,
 
         selectImageFromComputer: `
-        <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="19" height="19">
           <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/>
         </svg>
       `,
@@ -1355,13 +1376,13 @@ function RemoteFunctions(config = {}) {
       `,
 
         folderSettings: `
-        <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
-          <path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>
+        <svg viewBox="0 0 24 24" fill="currentColor" width="17" height="17">
+          <path d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h8.1c.15.7.42 1.36.81 1.94l.29.41H4c-1.66 0-3-1.34-3-3V6c0-1.66 1.34-3 3-3h6l2 2h8c1.66 0 3 1.34 3 3v4.18c-.63-.11-1.28-.18-1.95-.18-.68 0-1.35.07-2 .2V8c0-1.1-.9-2-2-2h-8l-2-2zM18 13a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2c.55 0 1 .45 1 1v1h1c.55 0 1 .45 1 1s-.45 1-1 1h-1v1c0 .55-.45 1-1 1s-1-.45-1-1v-1h-1c-.55 0-1-.45-1-1s.45-1 1-1h1v-1c0-.55.45-1 1-1z"/>
         </svg>
-      `,
+       `,
 
         close: `
-        <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
           <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
         </svg>
       `,
@@ -1369,6 +1390,12 @@ function RemoteFunctions(config = {}) {
         paperPlane: `
         <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
           <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+        </svg>
+      `,
+
+        search: `
+        <svg viewBox="0 0 20 16" fill="currentColor" width="17" height="17">
+          <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
         </svg>
       `
     };
@@ -1494,7 +1521,7 @@ function RemoteFunctions(config = {}) {
                     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) !important;
                     font-size: 12px !important;
                     font-family: Arial, sans-serif !important;
-                    z-index: 2147483647 !important;
+                    z-index: 2147483646 !important;
                     position: absolute !important;
                     left: -1000px;
                     top: -1000px;
@@ -1727,8 +1754,19 @@ function RemoteFunctions(config = {}) {
             const id = this.element.id;
             const classes = Array.from(this.element.classList || []);
 
+            // get the dimensions of the element
+            const elemBounds = this.element.getBoundingClientRect();
+            // we only show integers, because showing decimal places will take up a lot more space
+            const elemWidth = Math.round(elemBounds.width);
+            const elemHeight = Math.round(elemBounds.height);
+
             let content = ""; // this will hold the main content that will be displayed
-            content += "<div class='tag-name'>" + this.element.tagName.toLowerCase() + "</div>"; // add element tag name
+
+            // add the tag name and dimensions in the same line
+            content += "<div class='tag-line'>";
+            content += "<span class='tag-name'>" + this.element.tagName.toLowerCase() + "</span>";
+            content += `<span class='elem-dimensions'>${elemWidth} × ${elemHeight}</span>`;
+            content += "</div>";
 
             // Add ID if present
             if (id) {
@@ -1753,20 +1791,23 @@ function RemoteFunctions(config = {}) {
             const offset = _screenOffset(this.element);
             const leftPos = offset.left;
 
+            // if element is non-editable we use gray bg color in info box, otherwise normal blue color
+            const bgColor = this.element.hasAttribute('data-brackets-id') ? '#4285F4' : '#3C3F41';
+
             const styles = `
                 :host {
                   all: initial !important;
                 }
 
                 .phoenix-node-info-box {
-                    background-color: #4285F4 !important;
+                    background-color: ${bgColor} !important;
                     color: white !important;
                     border-radius: 3px !important;
                     padding: 5px 8px !important;
                     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) !important;
                     font-size: 12px !important;
                     font-family: Arial, sans-serif !important;
-                    z-index: 2147483647 !important;
+                    z-index: 2147483646 !important;
                     position: absolute !important;
                     left: ${leftPos}px;
                     top: -1000px;
@@ -1775,8 +1816,22 @@ function RemoteFunctions(config = {}) {
                     pointer-events: none !important;
                 }
 
+                .tag-line {
+                    display: flex !important;
+                    align-items: baseline !important;
+                    justify-content: space-between !important;
+                }
+
                 .tag-name {
                     font-weight: bold !important;
+                }
+
+                .elem-dimensions {
+                    font-size: 9px !important;
+                    font-weight: 500 !important;
+                    opacity: 0.9 !important;
+                    margin-left: 7px !important;
+                    flex-shrink: 0 !important;
                 }
 
                 .id-name,
@@ -2246,45 +2301,178 @@ function RemoteFunctions(config = {}) {
 
             this._shadow.innerHTML = `
                 <style>
-                    .phoenix-image-ribbon {
+                    .phoenix-image-gallery-container {
                         position: fixed !important;
                         bottom: 0 !important;
-                        left: 0 !important;
-                        right: 0 !important;
-                        width: 100vw !important;
-                        background: #3C3F41 !important;
-                        z-index: 2147483647 !important;
-                        display: flex !important;
+                        left: 50% !important;
+                        transform: translateX(-50%) !important;
+                        width: calc(100% - 24px) !important;
+                        max-width: 1160px !important;
+                        background-color: #2c2c2c !important;
+                        border-radius: 6px 6px 0 0 !important;
                         font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial !important;
-                        pointer-events: auto !important;
+                        border: 2px solid rgba(255, 255, 255, 0.3) !important;
+                        border-bottom: none !important;
+                        box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.3) !important;
+                        z-index: 2147483647 !important;
+                        overflow: hidden !important;
                     }
 
-                    .phoenix-ribbon-container {
-                        width: 100% !important;
-                        height: 156px !important;
-                        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+                    .phoenix-image-gallery-header {
+                        display: flex !important;
+                        padding: 10px 8px 6px 8px !important;
+                    }
+
+                    .phoenix-image-gallery-header-title {
+                        display: flex !important;
+                        align-items: center !important;
+                        color: #a0a0a0 !important;
+                        gap: 3px !important;
+                        font-size: 14px !important;
+                        margin-bottom: 2px !important;
+                        margin-right: 10px !important;
+                    }
+
+                    @media (max-width: 525px) {
+                        .phoenix-image-gallery-header-title {
+                            display: none !important;
+                        }
+                    }
+
+                    .phoenix-image-gallery-header-icon {
+                        height: 16px !important;
+                        width: 18px !important;
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                    }
+
+                    .phoenix-image-gallery-header-icon svg {
+                        display: block !important;
+                        vertical-align: middle !important;
+                    }
+
+                    .phoenix-image-gallery-header-text {
+                        line-height: 1 !important;
+                        display: flex !important;
+                        align-items: center !important;
+                    }
+
+                    .phoenix-image-gallery-search-container {
+                        display: flex !important;
+                        align-items: center !important;
+                    }
+
+                    .search-wrapper {
                         position: relative !important;
+                        margin-right: 6px !important;
                     }
 
-                    .phoenix-ribbon-strip {
+                    .search-wrapper input {
+                        padding: 5px 4px 6px 36px !important;
+                        border-radius: 4px !important;
+                        border: none !important;
+                        background-color: #1e1e1e !important;
+                        color: #e0e0e0 !important;
+                    }
+
+                    .search-wrapper .search-icon {
                         position: absolute !important;
-                        inset: 0 !important;
+                        left: 6px !important;
+                        top: 55% !important;
+                        transform: translateY(-50%) !important;
+                        background: none !important;
+                        border: none !important;
+                        color: #aaa !important;
+                        cursor: pointer !important;
+                    }
+
+                    .search-wrapper .search-icon:hover {
+                        color: #e0e0e0 !important;
+                    }
+
+                    .search-wrapper input:focus {
+                        outline: 1px solid #3a8ef6 !important;
+                    }
+
+                    @media (max-width: 350px) {
+                        .search-wrapper input {
+                            width: 100px !important;
+                        }
+                    }
+
+                    .phoenix-image-gallery-upload-container button {
+                        display: flex !important;
+                        align-items: center !important;
+                        gap: 2px !important;
+                        background: transparent !important;
+                        color: #a0a0a0 !important;
+                        border: none !important;
+                        border-radius: 3px !important;
+                        padding: 3px 8px 3px 3px !important;
+                        margin-top: 1px !important;
+                        font-size: 12px !important;
+                        cursor: pointer !important;
+                    }
+
+                    .phoenix-image-gallery-upload-container button:hover {
+                        background: #3c3f41 !important;
+                    }
+
+                    @media (max-width: 400px) {
+                        .phoenix-image-gallery-upload-container button {
+                            font-size: 0 !important;
+                            padding: 3px 6px !important;
+                        }
+
+                        .phoenix-image-gallery-upload-container button svg {
+                            font-size: 16px !important;
+                        }
+                    }
+
+                    .phoenix-image-gallery-right-buttons {
+                        display: flex !important;
+                        align-items: center !important;
+                        gap: 3px !important;
+                        margin-left: auto !important;
+                        margin-bottom: 2px !important;
+                    }
+
+                    .phoenix-image-gallery-right-buttons button {
+                        display: flex !important;
+                        background: transparent !important;
+                        color: #a0a0a0 !important;
+                        border: none !important;
+                        border-radius: 3px !important;
+                        padding: 4px 8px !important;
+                        cursor: pointer !important;
+                    }
+
+                    .phoenix-image-gallery-right-buttons button:hover {
+                        background: #3c3f41 !important;
+                    }
+
+                    .phoenix-image-gallery-right-buttons svg {
+                        width: 16px !important;
+                        height: 16px !important;
+                    }
+
+                    .phoenix-image-gallery-strip {
                         overflow: hidden !important;
                         scroll-behavior: smooth !important;
                         padding: 6px !important;
-                        top: 30px !important;
                     }
 
-                    .phoenix-ribbon-row {
+                    .phoenix-image-gallery-row {
                         display: flex !important;
-                        gap: 2px !important;
+                        gap: 5px !important;
                     }
 
                     .phoenix-ribbon-thumb {
                         flex: 0 0 auto !important;
                         width: 112px !important;
                         height: 112px !important;
-                        border-radius: 14px !important;
+                        border-radius: 4px !important;
                         overflow: hidden !important;
                         position: relative !important;
                         cursor: pointer !important;
@@ -2306,10 +2494,9 @@ function RemoteFunctions(config = {}) {
                         box-shadow: 0 8px 18px rgba(0,0,0,0.36) !important;
                     }
 
-                    .phoenix-ribbon-nav {
+                    .phoenix-image-gallery-nav {
                         position: absolute !important;
-                        top: 58% !important;
-                        transform: translateY(-50%) !important;
+                        top: 50% !important;
                         border-radius: 12px !important;
                         border: 1px solid rgba(255,255,255,0.14) !important;
                         color: #eaeaf0 !important;
@@ -2320,33 +2507,38 @@ function RemoteFunctions(config = {}) {
                         user-select: none !important;
                         transition: all 0.2s ease !important;
                         z-index: 2147483647 !important;
-                        padding: 2px 12px 6px 12px !important;
+                        padding: 4px 12px 8px 12px !important;
+                        display: none !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                        line-height: 1 !important;
+                        text-align: center !important;
                     }
 
-                    .phoenix-ribbon-nav:hover {
+                    .phoenix-image-gallery-nav:hover {
                         background: rgba(21,25,36,0.85) !important;
                         border-color: rgba(255,255,255,0.25) !important;
-                        transform: translateY(-50%) scale(1.05) !important;
+                        transform: scale(1.05) !important;
                         box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
                     }
 
-                    .phoenix-ribbon-nav:active {
-                        transform: translateY(-50%) scale(0.95) !important;
+                    .phoenix-image-gallery-nav:active {
+                        transform: scale(0.95) !important;
                     }
 
-                    .phoenix-ribbon-nav.left {
-                        left: 18px !important;
+                    .phoenix-image-gallery-nav.left {
+                        left: 15px !important;
                     }
 
-                    .phoenix-ribbon-nav.right {
-                        right: 18px !important;
+                    .phoenix-image-gallery-nav.right {
+                        right: 15px !important;
                     }
 
-                    .phoenix-ribbon-loading {
+                    .phoenix-image-gallery-loading {
                         display: flex !important;
                         align-items: center !important;
                         justify-content: center !important;
-                        height: 100% !important;
+                        min-height: 112px !important;
                         color: #eaeaf0 !important;
                         font-size: 14px !important;
                     }
@@ -2355,7 +2547,7 @@ function RemoteFunctions(config = {}) {
                         display: flex !important;
                         align-items: center !important;
                         justify-content: center !important;
-                        height: 100% !important;
+                        min-height: 112px !important;
                         color: #ff6b6b !important;
                         font-size: 14px !important;
                     }
@@ -2365,157 +2557,13 @@ function RemoteFunctions(config = {}) {
                         align-items: center !important;
                         justify-content: center !important;
                         min-width: 120px !important;
-                        height: 116px !important;
+                        min-height: 110px !important;
                         margin-left: 2px !important;
                         background: rgba(255,255,255,0.03) !important;
                         border-radius: 8px !important;
                         color: #e8eaf0 !important;
                         font-size: 12px !important;
                         border: 1px dashed rgba(255,255,255,0.1) !important;
-                    }
-
-                    .phoenix-ribbon-header {
-                        display: flex !important;
-                        width: 100% !important;
-                        position: absolute !important;
-                        top: 7px !important;
-                    }
-
-                    .phoenix-ribbon-header-left {
-                        width: 80% !important;
-                        display: flex !important;
-                        align-items: center !important;
-                    }
-
-                    .phoenix-ribbon-header-right {
-                        width: 20% !important;
-                        display: flex !important;
-                        justify-content: flex-end !important;
-                        align-items: center !important;
-                    }
-
-                    .phoenix-ribbon-search {
-                        display: flex !important;
-                        align-items: stretch !important;
-                        border-radius: 6px !important;
-                        margin-left: 8px !important;
-                        border: 1px solid rgba(255,255,255,0.14) !important;
-                    }
-
-                    .phoenix-ribbon-search:hover {
-                        border: 1px solid rgba(0, 0, 0, 0.24) !important;
-                        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
-                    }
-
-                    .phoenix-ribbon-search:focus-within {
-                        border: 1px solid rgba(0, 0, 0, 0.24) !important;
-                        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
-                    }
-
-                    .phoenix-ribbon-search input {
-                        background: transparent !important;
-                        border: none !important;
-                        outline: none !important;
-                        color: #c5c5c5 !important;
-                        width: 150px !important;
-                        padding: 4px 8px !important;
-                        border-radius: 4px 0 0 4px !important;
-                        transition: background 0.2s ease !important;
-                    }
-
-                    .phoenix-ribbon-search input:focus {
-                        background: rgba(255, 255, 255, 0.03) !important;
-                    }
-
-                    .phoenix-ribbon-search input::placeholder {
-                        color: #a0a0a0 !important;
-                        opacity: 0.7 !important;
-                    }
-
-                    .phoenix-ribbon-search input::-webkit-input-placeholder {
-                        color: #a0a0a0 !important;
-                        opacity: 0.7 !important;
-                    }
-
-                    .phoenix-ribbon-search input::-moz-placeholder {
-                        color: #a0a0a0 !important;
-                        opacity: 0.7 !important;
-                    }
-
-                    .phoenix-ribbon-search-btn {
-                        background: transparent !important;
-                        border: 1px solid transparent !important;
-                        border-left: 1px solid gray !important;
-                        color: #a0a0a0 !important;
-                        cursor: pointer !important;
-                        padding: 2px 6px !important;
-                        border-radius: 0 4px 4px 0 !important;
-                        font-size: 12px !important;
-                        font-weight: 500 !important;
-                        transition: all 0.2s ease !important;
-                        margin-left: 0 !important;
-                    }
-
-                    .phoenix-ribbon-search-btn:hover {
-                        border: 1px solid rgba(0, 0, 0, 0.24) !important;
-                        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
-                    }
-
-                    .phoenix-ribbon-select {
-                        margin-left: 4px !important;
-                    }
-
-                    .phoenix-select-image-btn {
-                        background-color: transparent !important;
-                        border: 1px solid transparent !important;
-                        color: #a0a0a0 !important;
-                        border-radius: 4px !important;
-                        cursor: pointer !important;
-                        padding: 3px 6px !important;
-                        display: flex !important;
-                        align-items: center !important;
-                        justify-content: center !important;
-                    }
-
-                    .phoenix-select-image-btn:hover {
-                        border: 1px solid rgba(0, 0, 0, 0.24) !important;
-                        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
-                    }
-
-                    .phoenix-ribbon-folder-settings {
-                        background-color: transparent !important;
-                        border: 1px solid transparent !important;
-                        color: #a0a0a0 !important;
-                        border-radius: 4px !important;
-                        cursor: pointer !important;
-                        margin-right: 2px !important;
-                        padding: 3px 6px !important;
-                        display: flex !important;
-                        align-items: center !important;
-                        justify-content: center !important;
-                    }
-
-                    .phoenix-ribbon-folder-settings:hover {
-                        border: 1px solid rgba(0, 0, 0, 0.24) !important;
-                        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
-                    }
-
-                    .phoenix-ribbon-close {
-                        background-color: transparent !important;
-                        border: 1px solid transparent !important;
-                        color: #a0a0a0 !important;
-                        border-radius: 4px !important;
-                        cursor: pointer !important;
-                        padding: 3px 6px !important;
-                        display: flex !important;
-                        align-items: center !important;
-                        justify-content: center !important;
-                        margin-right: 16px !important;
-                    }
-
-                    .phoenix-ribbon-close:hover {
-                        border: 1px solid rgba(0, 0, 0, 0.24) !important;
-                        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
                     }
 
                     .phoenix-ribbon-attribution {
@@ -2601,10 +2649,6 @@ function RemoteFunctions(config = {}) {
                         transform: scale(1.1) !important;
                     }
 
-                    .phoenix-ribbon-thumb {
-                        cursor: pointer !important;
-                    }
-
                     .phoenix-ribbon-thumb.downloading {
                         opacity: 0.6 !important;
                         pointer-events: none !important;
@@ -2639,38 +2683,52 @@ function RemoteFunctions(config = {}) {
                         100% { transform: rotate(360deg); }
                     }
                 </style>
-                <div class="phoenix-image-ribbon">
-                    <div class="phoenix-ribbon-container">
-                        <div class="phoenix-ribbon-header">
-                            <div class="phoenix-ribbon-header-left">
-                                <div class="phoenix-ribbon-search">
-                                    <input type="text" placeholder="${config.strings.imageGallerySearchPlaceholder}" />
-                                    <button class="phoenix-ribbon-search-btn">${config.strings.imageGallerySearchButton}</button>
-                                </div>
-                                <div class="phoenix-ribbon-select">
-                                    <button class="phoenix-select-image-btn" title="${config.strings.imageGallerySelectFromComputer}">
-                                        ${ICONS.selectImageFromComputer}
-                                    </button>
-                                    <input type="file" class="phoenix-file-input" accept="image/*" style="display: none;">
-                                </div>
+
+
+                <div class='phoenix-image-gallery-container'>
+                    <div class='phoenix-image-gallery-header'>
+                        <div class='phoenix-image-gallery-header-title'>
+                            <div class='phoenix-image-gallery-header-icon'>
+                                ${ICONS.imageGallery}
                             </div>
-                            <div class="phoenix-ribbon-header-right">
-                                <button class="phoenix-ribbon-folder-settings" title="${config.strings.imageGallerySelectDownloadFolder}">
-                                    ${ICONS.folderSettings}
-                                </button>
-                                <button class="phoenix-ribbon-close">
-                                    ${ICONS.close}
-                                </button>
+                            <div class='phoenix-image-gallery-header-text'>
+                                ${config.strings.imageGallery}
                             </div>
                         </div>
-                        <div class="phoenix-ribbon-nav left">&#8249;</div>
-                        <div class="phoenix-ribbon-strip">
-                            <div class="phoenix-ribbon-row phoenix-ribbon-loading">
-                                ${config.strings.imageGalleryLoadingInitial}
-                            </div>
+
+                        <div class="phoenix-image-gallery-search-container">
+                          <div class="search-wrapper">
+                            <button class="search-icon" title="${config.strings.imageGallerySearchButton}">${ICONS.search}</button>
+                            <input
+                              type="text"
+                              placeholder="${config.strings.imageGallerySearchPlaceholder}"
+                            />
+                          </div>
                         </div>
-                        <div class="phoenix-ribbon-nav right">&#8250;</div>
+
+                        <div class='phoenix-image-gallery-upload-container'>
+                            <button title="${config.strings.imageGallerySelectFromComputer}">${ICONS.selectImageFromComputer} ${config.strings.imageGalleryUpload}</button>
+                            <input type="file" class="phoenix-file-input" accept="image/*" style="display: none !important;">
+                        </div>
+
+                        <div class='phoenix-image-gallery-right-buttons'>
+                            <button class='phoenix-image-gallery-download-folder-button' title="${config.strings.imageGallerySelectDownloadFolder}">
+                                ${ICONS.folderSettings}
+                            </button>
+
+                            <button class='phoenix-image-gallery-close-button' title="${config.strings.imageGalleryClose}">
+                                ${ICONS.close}
+                            </button>
+                        </div>
                     </div>
+
+                    <div class="phoenix-image-gallery-nav left">&#8249;</div>
+                    <div class="phoenix-image-gallery-strip">
+                        <div class="phoenix-image-gallery-row phoenix-image-gallery-loading">
+                            ${config.strings.imageGalleryLoadingInitial}
+                        </div>
+                    </div>
+                    <div class="phoenix-image-gallery-nav right">&#8250;</div>
                 </div>
             `;
         },
@@ -2736,7 +2794,7 @@ function RemoteFunctions(config = {}) {
                         }
                         this.totalPages = data.total_pages || 1;
                         this.currentPage = page;
-                        this._updateNavButtons();
+                        this._handleNavButtonsDisplay('visible');
                         this._updateSearchInput(searchQuery);
                         this._updateCache(searchQuery, data, append);
                     } else if (!append) {
@@ -2766,11 +2824,11 @@ function RemoteFunctions(config = {}) {
             _imageGalleryCache.currentPage = this.currentPage;
 
             if (append) {
-                const currentImages = _imageGalleryCache.allImages;
+                const currentImages = _imageGalleryCache.allImages || [];
                 const newImages = currentImages.concat(data.results);
 
                 if (newImages.length > CACHE_MAX_IMAGES) {
-                    _imageGalleryCache.allImages = newImages.slice(-CACHE_MAX_IMAGES);
+                    _imageGalleryCache.allImages = newImages.slice(0, CACHE_MAX_IMAGES);
                 } else {
                     _imageGalleryCache.allImages = newImages;
                 }
@@ -2790,7 +2848,7 @@ function RemoteFunctions(config = {}) {
 
         _updateSearchInput: function(searchQuery) {
             // write the current query in the search input
-            const searchInput = this._shadow.querySelector('.phoenix-ribbon-search input');
+            const searchInput = this._shadow.querySelector('.search-wrapper input');
             if (searchInput && searchQuery) {
                 searchInput.value = searchQuery;
                 searchInput.placeholder = searchQuery;
@@ -2798,13 +2856,14 @@ function RemoteFunctions(config = {}) {
         },
 
         _loadFromCache: function(searchQuery) {
-            if (searchQuery === _imageGalleryCache.currentQuery && _imageGalleryCache.allImages.length > 0) {
-                this.allImages = _imageGalleryCache.allImages;
+            const cachedImages = _imageGalleryCache.allImages;
+            if (searchQuery === _imageGalleryCache.currentQuery && cachedImages && cachedImages.length > 0) {
+                this.allImages = cachedImages;
                 this.totalPages = _imageGalleryCache.totalPages;
                 this.currentPage = _imageGalleryCache.currentPage;
 
                 this._renderImages(this.allImages, false);
-                this._updateNavButtons();
+                this._handleNavButtonsDisplay('visible');
                 this._updateSearchInput(searchQuery);
                 return true;
             }
@@ -2812,16 +2871,17 @@ function RemoteFunctions(config = {}) {
         },
 
         _loadPageFromCache: function(searchQuery, page) {
-            if (searchQuery === _imageGalleryCache.currentQuery && page <= Math.ceil(_imageGalleryCache.allImages.length / 10)) {
+            const cachedImages = _imageGalleryCache.allImages;
+            if (searchQuery === _imageGalleryCache.currentQuery && cachedImages && page <= Math.ceil(cachedImages.length / 10)) {
                 const startIdx = (page - 1) * 10;
                 const endIdx = startIdx + 10;
-                const pageImages = _imageGalleryCache.allImages.slice(startIdx, endIdx);
+                const pageImages = cachedImages.slice(startIdx, endIdx);
 
                 if (pageImages.length > 0) {
                     this.allImages = this.allImages.concat(pageImages);
                     this._renderImages(pageImages, true);
                     this.currentPage = page;
-                    this._updateNavButtons();
+                    this._handleNavButtonsDisplay('visible');
                     this._isLoadingMore = false;
                     this._hideLoadingMore();
                     return true;
@@ -2831,24 +2891,38 @@ function RemoteFunctions(config = {}) {
         },
 
         _handleNavLeft: function() {
-            const container = this._shadow.querySelector('.phoenix-ribbon-strip');
+            const container = this._shadow.querySelector('.phoenix-image-gallery-strip');
             if (!container) { return; }
 
             const containerWidth = container.clientWidth;
-            const scrollAmount = containerWidth;
+            const imageWidth = 117; // image width + gap
+
+            // calculate how many images are visible
+            const visibleImages = Math.floor(containerWidth / imageWidth);
+
+            // scroll by (visible images - 2), minimum 1 image, maximum 5 images
+            const imagesToScroll = Math.max(1, Math.min(5, visibleImages - 2));
+            const scrollAmount = imagesToScroll * imageWidth;
 
             this.scrollPosition = Math.max(0, this.scrollPosition - scrollAmount);
             container.scrollTo({ left: this.scrollPosition, behavior: 'smooth' });
-            this._updateNavButtons();
+            this._handleNavButtonsDisplay('visible');
         },
 
         _handleNavRight: function() {
-            const container = this._shadow.querySelector('.phoenix-ribbon-strip');
+            const container = this._shadow.querySelector('.phoenix-image-gallery-strip');
             if (!container) { return; }
 
             const containerWidth = container.clientWidth;
             const totalWidth = container.scrollWidth;
-            const scrollAmount = containerWidth;
+            const imageWidth = 117; // image width + gap
+
+            // calculate how many images are visible
+            const visibleImages = Math.floor(containerWidth / imageWidth);
+
+            // scroll by (visible images - 2), minimum 1 image, maximum 5 images
+            const imagesToScroll = Math.max(1, Math.min(5, visibleImages - 2));
+            const scrollAmount = imagesToScroll * imageWidth;
 
             // if we're near the end, we need to load more images
             const nearEnd = (this.scrollPosition + containerWidth + scrollAmount) >= totalWidth - 100;
@@ -2860,49 +2934,58 @@ function RemoteFunctions(config = {}) {
 
             this.scrollPosition = Math.min(totalWidth - containerWidth, this.scrollPosition + scrollAmount);
             container.scrollTo({ left: this.scrollPosition, behavior: 'smooth' });
-            this._updateNavButtons();
+            this._handleNavButtonsDisplay('visible');
         },
 
-        _updateNavButtons: function() {
-            // this function is responsible to update the nav buttons
-            // when we're at the very left, we hide the nav-left button completely
-            // when we're at the very right and no more pages available, we hide the nav-right button
-            const navLeft = this._shadow.querySelector('.phoenix-ribbon-nav.left');
-            const navRight = this._shadow.querySelector('.phoenix-ribbon-nav.right');
-            const container = this._shadow.querySelector('.phoenix-ribbon-strip');
+        _handleNavButtonsDisplay: function(state) { // state can be 'visible' or 'hidden'
+            const navLeft = this._shadow.querySelector('.phoenix-image-gallery-nav.left');
+            const navRight = this._shadow.querySelector('.phoenix-image-gallery-nav.right');
+            const container = this._shadow.querySelector('.phoenix-image-gallery-strip');
 
-            if (!navLeft || !navRight || !container) { return; }
+            if (!navLeft || !navRight) { return; }
 
-            // show/hide left button
-            if (this.scrollPosition <= 0) {
-                navLeft.style.display = 'none';
-            } else {
-                navLeft.style.display = 'block';
+            if (state === 'hidden') {
+                navLeft.style.setProperty('display', 'none', 'important');
+                navRight.style.setProperty('display', 'none', 'important');
+                return;
             }
 
-            // show/hide right button
-            const containerWidth = container.clientWidth;
-            const totalWidth = container.scrollWidth;
-            const atEnd = (this.scrollPosition + containerWidth) >= totalWidth - 10;
-            const hasMorePages = this.currentPage < this.totalPages;
+            if (state === 'visible') {
+                if (!container) { return; }
 
-            if (atEnd && !hasMorePages) {
-                navRight.style.display = 'none';
-            } else {
-                navRight.style.display = 'block';
+                // show/hide the nav-left button
+                if (this.scrollPosition <= 0) {
+                    navLeft.style.setProperty('display', 'none', 'important');
+                } else {
+                    navLeft.style.setProperty('display', 'flex', 'important');
+                }
+
+                // show/hide the nav-right button
+                const containerWidth = container.clientWidth;
+                const totalWidth = container.scrollWidth;
+                const atEnd = (this.scrollPosition + containerWidth) >= totalWidth - 10;
+                const hasMorePages = this.currentPage < this.totalPages;
+
+                if (atEnd && !hasMorePages) {
+                    navRight.style.setProperty('display', 'none', 'important');
+                } else {
+                    navRight.style.setProperty('display', 'flex', 'important');
+                }
             }
         },
 
         _showLoading: function() {
-            const rowElement = this._shadow.querySelector('.phoenix-ribbon-row');
+            const rowElement = this._shadow.querySelector('.phoenix-image-gallery-row');
             if (!rowElement) { return; }
 
             rowElement.innerHTML = config.strings.imageGalleryLoadingInitial;
-            rowElement.className = 'phoenix-ribbon-row phoenix-ribbon-loading';
+            rowElement.className = 'phoenix-image-gallery-row phoenix-image-gallery-loading';
+
+            this._handleNavButtonsDisplay('hidden');
         },
 
         _showLoadingMore: function() {
-            const rowElement = this._shadow.querySelector('.phoenix-ribbon-row');
+            const rowElement = this._shadow.querySelector('.phoenix-image-gallery-row');
             if (!rowElement) { return; }
 
             // when loading more images we need to show the message at the end of the image ribbon
@@ -2920,14 +3003,15 @@ function RemoteFunctions(config = {}) {
         },
 
         _attachEventHandlers: function() {
-            const ribbonContainer = this._shadow.querySelector('.phoenix-image-ribbon');
-            const searchInput = this._shadow.querySelector('.phoenix-ribbon-search input');
-            const searchButton = this._shadow.querySelector('.phoenix-ribbon-search-btn');
-            const closeButton = this._shadow.querySelector('.phoenix-ribbon-close');
-            const folderSettingsButton = this._shadow.querySelector('.phoenix-ribbon-folder-settings');
-            const navLeft = this._shadow.querySelector('.phoenix-ribbon-nav.left');
-            const navRight = this._shadow.querySelector('.phoenix-ribbon-nav.right');
-            const selectImageBtn = this._shadow.querySelector('.phoenix-select-image-btn');
+            const ribbonContainer = this._shadow.querySelector('.phoenix-image-gallery-container');
+            const ribbonStrip = this._shadow.querySelector('.phoenix-image-gallery-strip');
+            const searchInput = this._shadow.querySelector('.search-wrapper input');
+            const searchButton = this._shadow.querySelector('.search-icon');
+            const closeButton = this._shadow.querySelector('.phoenix-image-gallery-close-button');
+            const folderSettingsButton = this._shadow.querySelector('.phoenix-image-gallery-download-folder-button');
+            const navLeft = this._shadow.querySelector('.phoenix-image-gallery-nav.left');
+            const navRight = this._shadow.querySelector('.phoenix-image-gallery-nav.right');
+            const selectImageBtn = this._shadow.querySelector('.phoenix-image-gallery-upload-container button');
             const fileInput = this._shadow.querySelector('.phoenix-file-input');
 
             if (searchInput && searchButton) {
@@ -2943,7 +3027,13 @@ function RemoteFunctions(config = {}) {
                     }
                 };
 
-                searchButton.addEventListener('click', performSearch);
+                // disable/enable search button as per input container text
+                const updateSearchButtonState = () => {
+                    searchButton.disabled = searchInput.value.trim().length === 0;
+                };
+
+                searchInput.addEventListener('input', updateSearchButtonState);
+
                 searchInput.addEventListener('keydown', (e) => {
                     if (e.key === 'Enter') {
                         performSearch(e);
@@ -2953,6 +3043,8 @@ function RemoteFunctions(config = {}) {
                 searchInput.addEventListener('click', (e) => {
                     e.stopPropagation();
                 });
+
+                searchButton.addEventListener('click', performSearch);
             }
 
             if (selectImageBtn && fileInput) {
@@ -2976,6 +3068,7 @@ function RemoteFunctions(config = {}) {
                     e.stopPropagation();
                     this.remove();
                     imageGallerySelected = false;
+                    _handleImageGalleryStateChange();
                     dismissUIAndCleanupState();
                 });
             }
@@ -3008,6 +3101,13 @@ function RemoteFunctions(config = {}) {
                 });
             }
 
+            // Restore original image when mouse leaves the entire ribbon strip
+            if (ribbonStrip) {
+                ribbonStrip.addEventListener('mouseleave', () => {
+                    this.element.src = this._originalImageSrc;
+                });
+            }
+
             // Prevent clicks anywhere inside the ribbon from bubbling up
             if (ribbonContainer) {
                 ribbonContainer.addEventListener('click', (e) => {
@@ -3019,16 +3119,16 @@ function RemoteFunctions(config = {}) {
         // append true means load more images (user clicked on nav-right)
         // append false means its a new query
         _renderImages: function(images, append = false) {
-            const rowElement = this._shadow.querySelector('.phoenix-ribbon-row');
+            const rowElement = this._shadow.querySelector('.phoenix-image-gallery-row');
             if (!rowElement) { return; }
 
-            const container = this._shadow.querySelector('.phoenix-ribbon-strip');
+            const container = this._shadow.querySelector('.phoenix-image-gallery-strip');
             const savedScrollPosition = container ? container.scrollLeft : 0;
 
             // if not appending we clear the phoenix ribbon
             if (!append) {
                 rowElement.innerHTML = '';
-                rowElement.className = 'phoenix-ribbon-row';
+                rowElement.className = 'phoenix-image-gallery-row';
             } else {
                 // when appending we add the new images at the end
                 const loadingIndicator = this._shadow.querySelector('.phoenix-loading-more');
@@ -3044,7 +3144,7 @@ function RemoteFunctions(config = {}) {
 
                 const img = window.document.createElement('img');
                 img.src = image.thumb_url || image.url;
-                img.alt = image.alt_text || 'Unsplash image';
+                img.alt = image.alt_text || '';
                 img.loading = 'lazy';
 
                 // show hovered image along with dimensions
@@ -3054,11 +3154,6 @@ function RemoteFunctions(config = {}) {
 
                     this.element.style.objectFit = this._originalImageStyle.objectFit || 'cover';
                     this.element.src = image.url || image.thumb_url;
-                });
-
-                // show original image when hover ends
-                thumbDiv.addEventListener('mouseleave', () => {
-                    this.element.src = this._originalImageSrc;
                 });
 
                 // attribution overlay, we show this only in the image ribbon gallery
@@ -3109,18 +3204,9 @@ function RemoteFunctions(config = {}) {
                     const extnName = ".jpg";
 
                     const downloadUrl = image.url || image.thumb_url;
+                    const downloadLocation = image.download_location;
 
-                    // we need to make a req to the download endpoint
-                    // its required by the Unsplash API guidelines to track downloads for photographers
-                    // this is just a tracking call, we don't need to wait for the response
-                    if (image.download_location) {
-                        fetch(image.download_location)
-                            .catch(error => {
-                                //
-                            });
-                    }
-
-                    this._useImage(downloadUrl, filename, extnName, false, thumbDiv);
+                    this._useImage(downloadUrl, filename, extnName, false, thumbDiv, downloadLocation);
                 });
 
                 thumbDiv.appendChild(img);
@@ -3134,14 +3220,18 @@ function RemoteFunctions(config = {}) {
                     container.scrollLeft = savedScrollPosition;
                 }, 0);
             }
+
+            this._handleNavButtonsDisplay('visible');
         },
 
         _showError: function(message) {
-            const rowElement = this._shadow.querySelector('.phoenix-ribbon-row');
+            const rowElement = this._shadow.querySelector('.phoenix-image-gallery-row');
             if (!rowElement) { return; }
 
             rowElement.innerHTML = message;
-            rowElement.className = 'phoenix-ribbon-row phoenix-ribbon-error';
+            rowElement.className = 'phoenix-image-gallery-row phoenix-ribbon-error';
+
+            this._handleNavButtonsDisplay('hidden');
         },
 
         // file name with which we need to save the image
@@ -3156,9 +3246,9 @@ function RemoteFunctions(config = {}) {
             return `${cleanSearchTerm}-by-${cleanPhotographerName}`;
         },
 
-        _useImage: function(imageUrl, filename, extnName, isLocalFile, thumbDiv) {
-            // send the message to the editor instance to save the image and update the source code
+        _useImage: function(imageUrl, filename, extnName, isLocalFile, thumbDiv, downloadLocation) {
             const tagId = this.element.getAttribute("data-brackets-id");
+            const downloadId = Date.now() + Math.random();
 
             const messageData = {
                 livePreviewEditEnabled: true,
@@ -3167,7 +3257,9 @@ function RemoteFunctions(config = {}) {
                 filename: filename,
                 extnName: extnName,
                 element: this.element,
-                tagId: Number(tagId)
+                tagId: Number(tagId),
+                downloadLocation: downloadLocation,
+                downloadId: downloadId
             };
 
             // if this is a local file we need some more data before sending it to the editor
@@ -3182,15 +3274,12 @@ function RemoteFunctions(config = {}) {
                 messageData.imageData = byteNumbers;
             }
 
-            window._Brackets_MessageBroker.send(messageData);
+            _activeDownloads.set(downloadId, {
+                thumbDiv: thumbDiv,
+                timestamp: Date.now()
+            });
 
-            // if thumbDiv is provided, hide the download indicator after a reasonable timeout
-            // this is to make sure that the indicator is always removed even if there's no explicit success callback
-            if (thumbDiv) {
-                setTimeout(() => {
-                    this._hideDownloadIndicator(thumbDiv);
-                }, 3000);
-            }
+            window._Brackets_MessageBroker.send(messageData);
         },
 
         _handleLocalImageSelection: function(file) {
@@ -3243,7 +3332,6 @@ function RemoteFunctions(config = {}) {
 
             const queryToUse = _imageGalleryCache.currentQuery || this._getDefaultQuery();
             this._fetchImages(queryToUse);
-            setTimeout(() => this._updateNavButtons(), 0);
         },
 
         remove: function () {
@@ -3475,7 +3563,7 @@ function RemoteFunctions(config = {}) {
                 "top": offset.top + "px",
                 "width": elementBounds.width + "px",
                 "height": elementBounds.height + "px",
-                "z-index": 2147483647,
+                "z-index": 2147483646,
                 "margin": 0,
                 "padding": 0,
                 "position": "absolute",
@@ -3584,10 +3672,45 @@ function RemoteFunctions(config = {}) {
     var _setup = false;
     var _hoverLockTimer = null;
 
+    const DOWNLOAD_EVENTS = {
+        STARTED: 'downloadStarted',
+        COMPLETED: 'downloadCompleted',
+        CANCELLED: 'downloadCancelled',
+        ERROR: 'downloadError'
+    };
+
+    let _activeDownloads = new Map();
+
+    function handleDownloadEvent(eventType, data) {
+        const downloadId = data && data.downloadId;
+        if (!downloadId) {
+            return;
+        }
+
+        const download = _activeDownloads.get(downloadId);
+        if (!download) {
+            return;
+        }
+
+        switch (eventType) {
+        case DOWNLOAD_EVENTS.STARTED:
+            break;
+
+        case DOWNLOAD_EVENTS.COMPLETED:
+        case DOWNLOAD_EVENTS.CANCELLED:
+        case DOWNLOAD_EVENTS.ERROR:
+            if (_imageRibbonGallery && download.thumbDiv) {
+                _imageRibbonGallery._hideDownloadIndicator(download.thumbDiv);
+            }
+            _activeDownloads.delete(downloadId);
+            break;
+        }
+    }
+
     function onMouseOver(event) {
         if (_validEvent(event)) {
             const element = event.target;
-            if(isElementEditable(element) && element.nodeType === Node.ELEMENT_NODE ) {
+            if(isElementInspectable(element) && element.nodeType === Node.ELEMENT_NODE ) {
                 _localHighlight.add(element, true);
             }
         }
@@ -3637,7 +3760,7 @@ function RemoteFunctions(config = {}) {
         }
 
         const element = event.target;
-        if(!isElementEditable(element) || element.nodeType !== Node.ELEMENT_NODE) {
+        if(!isElementInspectable(element) || element.nodeType !== Node.ELEMENT_NODE) {
             return false;
         }
 
@@ -3699,29 +3822,46 @@ function RemoteFunctions(config = {}) {
      * @param {Element} element - The DOM element to select
      */
     function _selectElement(element) {
-        // dismiss all UI boxes and cleanup previous element state when selecting a different element
-        dismissUIAndCleanupState();
-        dismissImageRibbonGallery();
+        dismissNodeMoreOptionsBox();
+        dismissAIPromptBox();
+        dismissNodeInfoBox();
+        cleanupPreviousElementState();
 
-        // this should always happen before isElementEditable check because this is not a live preview edit feature
         // this should also be there when users are in highlight mode
         scrollElementToViewPort(element);
 
-        if(!isElementEditable(element)) {
+        if(!isElementInspectable(element)) {
             return false;
         }
 
-        // if imageGallerySelected is true, show the image gallery directly
-        if(element && element.tagName.toLowerCase() === 'img' && imageGallerySelected) {
-            if (!_imageRibbonGallery) {
+        // if imageGallerySelected is true, show the image gallery directly (only for editable images)
+        if(isElementEditable(element) && element && element.tagName.toLowerCase() === 'img' && imageGallerySelected) {
+            if (!_imageRibbonGallery || _imageRibbonGallery.element !== element) {
+                dismissImageRibbonGallery();  // Dismiss only when creating new
                 _imageRibbonGallery = new ImageRibbonGallery(element);
                 scrollImageToViewportIfRequired(element, _imageRibbonGallery);
+            }
+        } else {
+            // Not an image or gallery not selected, dismiss if exists
+            dismissImageRibbonGallery();
+        }
+
+        // if element is not editable and user clicks on it, then we show a toast notification saying
+        // that this element is not editable (unless user dismissed it permanently)
+        if (!element.hasAttribute("data-brackets-id")) {
+            const hideToast = localStorage.getItem('phoenix-hide-dynamic-toast');
+            if (!hideToast) {
+                showToast(config.strings.toastNotEditable);
             }
         }
 
         // make sure that the element is actually visible to the user
         if (isElementVisible(element)) {
-            _nodeMoreOptionsBox = new NodeMoreOptionsBox(element);
+            // Only show more options box for editable elements (have data-brackets-id)
+            if (isElementEditable(element)) {
+                _nodeMoreOptionsBox = new NodeMoreOptionsBox(element);
+            }
+            // Always show info box for inspectable elements
             _nodeInfoBox = new NodeInfoBox(element);
         } else {
             // Element is hidden, so don't show UI boxes but still apply visual styling
@@ -3731,10 +3871,13 @@ function RemoteFunctions(config = {}) {
         element._originalOutline = element.style.outline;
         element.style.outline = "1px solid #4285F4";
 
-        if (element._originalBackgroundColor === undefined) {
-            element._originalBackgroundColor = element.style.backgroundColor;
+        // Only apply background tint for editable elements (not for dynamic/read-only)
+        if (element.hasAttribute("data-brackets-id")) {
+            if (element._originalBackgroundColor === undefined) {
+                element._originalBackgroundColor = element.style.backgroundColor;
+            }
+            element.style.backgroundColor = "rgba(0, 162, 255, 0.2)";
         }
-        element.style.backgroundColor = "rgba(0, 162, 255, 0.2)";
 
         if (_hoverHighlight) {
             _hoverHighlight.clear();
@@ -3751,6 +3894,9 @@ function RemoteFunctions(config = {}) {
 
     function enableHoverListeners() {
         if (config.isProUser && (config.highlight || shouldShowHighlightOnHover())) {
+            window.document.removeEventListener("mouseover", onElementHover);
+            window.document.removeEventListener("mouseout", onElementHoverOut);
+
             window.document.addEventListener("mouseover", onElementHover);
             window.document.addEventListener("mouseout", onElementHoverOut);
         }
@@ -3769,7 +3915,7 @@ function RemoteFunctions(config = {}) {
         _hoverLockTimer = setTimeout(() => {
             enableHoverListeners();
             _hoverLockTimer = null;
-        }, 1500); // 1.5s
+        }, 800);
     }
 
     /**
@@ -3780,10 +3926,17 @@ function RemoteFunctions(config = {}) {
     function onClick(event) {
         const element = event.target;
 
-        if(isElementEditable(element)) {
+        if(isElementInspectable(element)) {
             event.preventDefault();
             event.stopPropagation();
             event.stopImmediatePropagation();
+
+            // when in click mode, only select dynamic elements (without data-brackets-id) directly
+            // as for static elements, the editor will handle selection via highlight message
+            if (!shouldShowHighlightOnHover() && !element.hasAttribute("data-brackets-id")) {
+                _selectElement(element);
+            }
+
             activateHoverLock();
         }
     }
@@ -3847,7 +4000,7 @@ function RemoteFunctions(config = {}) {
         if (clear) {
             _clickHighlight.clear();
         }
-        if (isElementEditable(element, true) && element.nodeType === Node.ELEMENT_NODE) {
+        if (isElementInspectable(element, true) && element.nodeType === Node.ELEMENT_NODE) {
             _clickHighlight.add(element, true);
         }
     }
@@ -3867,7 +4020,7 @@ function RemoteFunctions(config = {}) {
         // select the first valid highlighted element
         var foundValidElement = false;
         for (i = 0; i < nodes.length; i++) {
-            if(isElementEditable(nodes[i], true) && nodes[i].tagName !== "BR") {
+            if(isElementInspectable(nodes[i], true) && nodes[i].tagName !== "BR") {
                 _selectElement(nodes[i]);
                 foundValidElement = true;
                 break;
@@ -3881,17 +4034,18 @@ function RemoteFunctions(config = {}) {
         }
     }
 
-    // recreate UI boxes (info box and more options box)
+    // recreate UI boxes so that they are placed properly
     function redrawUIBoxes() {
         if (_nodeMoreOptionsBox) {
             const element = _nodeMoreOptionsBox.element;
             _nodeMoreOptionsBox.remove();
             _nodeMoreOptionsBox = new NodeMoreOptionsBox(element);
+        }
 
-            if (_nodeInfoBox) {
-                dismissNodeInfoBox();
-                _nodeInfoBox = new NodeInfoBox(element);
-            }
+        if (_nodeInfoBox) {
+            const element = _nodeInfoBox.element;
+            _nodeInfoBox.remove();
+            _nodeInfoBox = new NodeInfoBox(element);
         }
 
         if (_aiPromptBox) {
@@ -4289,6 +4443,11 @@ function RemoteFunctions(config = {}) {
         const oldConfig = config;
         config = JSON.parse(newConfig);
 
+        // update image gallery selected state as per the new config
+        if (config.imageGalleryState !== undefined) {
+            imageGallerySelected = config.imageGalleryState;
+        }
+
         // Determine if configuration has changed significantly
         const oldHighlightMode = oldConfig.elemHighlights ? oldConfig.elemHighlights.toLowerCase() : "hover";
         const newHighlightMode = getHighlightMode();
@@ -4394,6 +4553,119 @@ function RemoteFunctions(config = {}) {
         dismissImageRibbonGallery();
     }
 
+    let _toastTimeout = null;
+
+    /**
+     * this function is to show a toast notification at the bottom center of the screen
+     * this toast message is used when user tries to edit a non-editable element
+     * @param {String} message - the message to display in the toast
+     */
+    function showToast(message) {
+        // clear any existing toast & timer, if there are any
+        const existingToast = window.document.getElementById('phoenix-toast-notification');
+        if (existingToast) {
+            existingToast.remove();
+        }
+        if (_toastTimeout) {
+            clearTimeout(_toastTimeout);
+        }
+
+        // create a new fresh toast container
+        const toast = window.document.createElement('div');
+        toast.id = 'phoenix-toast-notification';
+        const shadow = toast.attachShadow({ mode: 'open' });
+
+        const styles = `
+            :host {
+                all: initial !important;
+            }
+
+            .toast-container {
+                position: fixed !important;
+                bottom: 30px !important;
+                left: 50% !important;
+                transform: translateX(-50%) translateY(0) !important;
+                background-color: rgba(51, 51, 51, 0.95) !important;
+                color: white !important;
+                padding: 10px 14px !important;
+                border-radius: 6px !important;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+                font-family: Arial, sans-serif !important;
+                font-size: 13px !important;
+                line-height: 1.4 !important;
+                z-index: 2147483647 !important;
+                text-align: center !important;
+                max-width: 90% !important;
+                box-sizing: border-box !important;
+                animation: slideUp 0.3s ease-out !important;
+            }
+
+            .toast-message {
+                margin-bottom: 6px !important;
+            }
+
+            .toast-button {
+                background: none !important;
+                border: none !important;
+                color: #A0A0A0 !important;
+                cursor: pointer !important;
+                font-size: 12px !important;
+                font-family: Arial, sans-serif !important;
+                text-decoration: none !important;
+                pointer-events: auto !important;
+                transition: opacity 0.2s !important;
+            }
+
+            .toast-button:hover {
+                opacity: 0.8 !important;
+                text-decoration: underline !important;
+            }
+
+            @keyframes slideUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        `;
+
+        const content = `
+            <div class="toast-container">
+                <div class="toast-message">${message}</div>
+                <button class="toast-button">${config.strings.toastDontShowAgain}</button>
+            </div>
+        `;
+
+        shadow.innerHTML = `<style>${styles}</style>${content}`;
+        window.document.body.appendChild(toast);
+
+        // add click handler to "Don't show again" button
+        const button = shadow.querySelector('.toast-button');
+        button.addEventListener('click', () => {
+            // save to localStorage to never show again and close toast rn
+            localStorage.setItem('phoenix-hide-dynamic-toast', 'true');
+            if (toast && toast.parentNode) {
+                toast.remove();
+            }
+            if (_toastTimeout) {
+                clearTimeout(_toastTimeout);
+                _toastTimeout = null;
+            }
+        });
+
+        // Auto-dismiss after 6 seconds
+        _toastTimeout = setTimeout(() => {
+            if (toast && toast.parentNode) {
+                toast.remove();
+            }
+            _toastTimeout = null;
+        }, 6000);
+    }
+
     /**
      * Helper function to cleanup previously clicked element highlighting and state
      */
@@ -4422,6 +4694,37 @@ function RemoteFunctions(config = {}) {
     function dismissUIAndCleanupState() {
         dismissAllUIBoxes();
         cleanupPreviousElementState();
+    }
+
+    /**
+     * this is a hard reset function, it resets every live preview edit thing, whether it be UI boxes
+     * highlighting, any timers or anything
+     */
+    function resetState() {
+        _stopAutoScroll();
+
+        if (_hoverHighlight) {
+            _hoverHighlight.clear();
+            _hoverHighlight = null;
+        }
+        if (_clickHighlight) {
+            _clickHighlight.clear();
+            _clickHighlight = null;
+        }
+
+        dismissUIAndCleanupState();
+
+        const allElements = window.document.querySelectorAll("[data-brackets-id]");
+        for (let i = 0; i < allElements.length; i++) {
+            if (allElements[i]._originalBackgroundColor !== undefined) {
+                clearElementBackground(allElements[i]);
+            }
+        }
+
+        if (config.isProUser) {
+            _hoverHighlight = new Highlight("#c8f9c5", true);
+            _clickHighlight = new Highlight("#cfc", true);
+        }
     }
 
 
@@ -4547,6 +4850,16 @@ function RemoteFunctions(config = {}) {
     _editHandler = new DOMEditHandler(window.document);
 
     function registerHandlers() {
+        // clear previous highlighting
+        if (_hoverHighlight) {
+            _hoverHighlight.clear();
+            _hoverHighlight = null;
+        }
+        if (_clickHighlight) {
+            _clickHighlight.clear();
+            _clickHighlight = null;
+        }
+
         // Always remove existing listeners first to avoid duplicates
         window.document.removeEventListener("mouseover", onElementHover);
         window.document.removeEventListener("mouseout", onElementHoverOut);
@@ -4593,7 +4906,9 @@ function RemoteFunctions(config = {}) {
         "finishEditing"         : finishEditing,
         "hasVisibleLivePreviewBoxes" : hasVisibleLivePreviewBoxes,
         "dismissUIAndCleanupState" : dismissUIAndCleanupState,
+        "resetState"            : resetState,
         "enableHoverListeners" : enableHoverListeners,
-        "registerHandlers" : registerHandlers
+        "registerHandlers" : registerHandlers,
+        "handleDownloadEvent" : handleDownloadEvent
     };
 }

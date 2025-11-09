@@ -27,6 +27,7 @@
 define(function (require, exports, module) {
     const HTMLInstrumentation = require("LiveDevelopment/MultiBrowserImpl/language/HTMLInstrumentation");
     const LiveDevMultiBrowser = require("LiveDevelopment/LiveDevMultiBrowser");
+    const LiveDevelopment = require("LiveDevelopment/main");
     const CodeMirror = require("thirdparty/CodeMirror/lib/codemirror");
     const ProjectManager = require("project/ProjectManager");
     const FileSystem = require("filesystem/FileSystem");
@@ -41,6 +42,14 @@ define(function (require, exports, module) {
 
     // state manager key, to save the download location of the image
     const IMAGE_DOWNLOAD_FOLDER_KEY = "imageGallery.downloadFolder";
+    const IMAGE_DOWNLOAD_PERSIST_FOLDER_KEY = "imageGallery.persistFolder";
+
+    const DOWNLOAD_EVENTS = {
+        STARTED: 'downloadStarted',
+        COMPLETED: 'downloadCompleted',
+        CANCELLED: 'downloadCancelled',
+        ERROR: 'downloadError'
+    };
 
     const KernalModeTrust = window.KernalModeTrust;
     if(!KernalModeTrust){
@@ -685,6 +694,32 @@ define(function (require, exports, module) {
         }
     }
 
+    function _sendDownloadStatusToBrowser(eventType, data) {
+        const currLiveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
+        if (currLiveDoc && currLiveDoc.protocol && currLiveDoc.protocol.evaluate) {
+            const dataJson = JSON.stringify(data || {});
+            const evalString = `_LD.handleDownloadEvent('${eventType}', ${dataJson})`;
+            currLiveDoc.protocol.evaluate(evalString);
+        }
+    }
+
+    function _handleDownloadError(error, downloadId) {
+        console.error('something went wrong while download the image. error:', error);
+        if (downloadId) {
+            _sendDownloadStatusToBrowser(DOWNLOAD_EVENTS.ERROR, { downloadId: downloadId });
+        }
+    }
+
+    function _trackDownload(downloadLocation) {
+        if (!downloadLocation) {
+            return;
+        }
+        fetch(`https://images.phcode.dev/api/images/download?download_location=${encodeURIComponent(downloadLocation)}`)
+            .catch(error => {
+                console.error('download tracking failed:', error);
+            });
+    }
+
     /**
      * Helper function to update image src attribute and dismiss ribbon gallery
      *
@@ -716,7 +751,7 @@ define(function (require, exports, module) {
      * @param {Directory} projectRoot - the project root in which the image is to be saved
      */
     function _handleUseThisImageLocalFiles(message, filename, projectRoot) {
-        const { tagId, imageData } = message;
+        const { tagId, imageData, downloadLocation, downloadId } = message;
 
         const uint8Array = new Uint8Array(imageData);
         const targetPath = projectRoot.fullPath + filename;
@@ -724,8 +759,10 @@ define(function (require, exports, module) {
         window.fs.writeFile(targetPath, window.Filer.Buffer.from(uint8Array),
             { encoding: window.fs.BYTE_ARRAY_ENCODING }, (err) => {
                 if (err) {
-                    console.error('Failed to save image:', err);
+                    _handleDownloadError(err, downloadId);
                 } else {
+                    _trackDownload(downloadLocation);
+                    _sendDownloadStatusToBrowser(DOWNLOAD_EVENTS.COMPLETED, { downloadId });
                     _updateImageAndDismissRibbon(tagId, targetPath, filename);
                 }
             });
@@ -738,7 +775,7 @@ define(function (require, exports, module) {
      * @param {Directory} projectRoot - the project root in which the image is to be saved
      */
     function _handleUseThisImageRemote(message, filename, projectRoot) {
-        const { imageUrl, tagId } = message;
+        const { imageUrl, tagId, downloadLocation, downloadId } = message;
 
         fetch(imageUrl)
             .then(response => {
@@ -754,14 +791,16 @@ define(function (require, exports, module) {
                 window.fs.writeFile(targetPath, window.Filer.Buffer.from(uint8Array),
                     { encoding: window.fs.BYTE_ARRAY_ENCODING }, (err) => {
                         if (err) {
-                            console.error('Failed to save image:', err);
+                            _handleDownloadError(err, downloadId);
                         } else {
+                            _trackDownload(downloadLocation);
+                            _sendDownloadStatusToBrowser(DOWNLOAD_EVENTS.COMPLETED, { downloadId });
                             _updateImageAndDismissRibbon(tagId, targetPath, filename);
                         }
                     });
             })
             .catch(error => {
-                console.error('Failed to fetch image:', error);
+                _handleDownloadError(error, downloadId);
             });
     }
 
@@ -778,6 +817,10 @@ define(function (require, exports, module) {
             return;
         }
 
+        if (message.downloadId) {
+            _sendDownloadStatusToBrowser(DOWNLOAD_EVENTS.STARTED, { downloadId: message.downloadId });
+        }
+
         const filename = message.filename;
         const extnName = message.extnName || "jpg";
 
@@ -792,11 +835,17 @@ define(function (require, exports, module) {
         // the directory name that user wrote, first check if it exists or not
         // if it doesn't exist we create it and then download the image inside it
         targetDir.exists((err, exists) => {
-            if (err) { return; }
+            if (err) {
+                _handleDownloadError(err, message.downloadId);
+                return;
+            }
 
             if (!exists) {
                 targetDir.create((err) => {
-                    if (err) { return; }
+                    if (err) {
+                        _handleDownloadError(err, message.downloadId);
+                        return;
+                    }
                     _downloadImageToDirectory(message, filename, extnName, targetDir);
                 });
             } else {
@@ -1109,6 +1158,10 @@ define(function (require, exports, module) {
         let rootFolders = [];
         let stringMatcher = null;
 
+        const persistFolder = StateManager.get(IMAGE_DOWNLOAD_PERSIST_FOLDER_KEY, StateManager.PROJECT_CONTEXT);
+        const shouldBeChecked = persistFolder !== false;
+        $rememberCheckbox.prop('checked', shouldBeChecked);
+
         _scanRootDirectoriesOnly(projectRoot, rootFolders).then(() => {
             stringMatcher = new StringMatch.StringMatcher({ segmentedSearch: true });
             _renderFolderSuggestions(rootFolders.slice(0, 15), $suggestions, $input);
@@ -1134,13 +1187,21 @@ define(function (require, exports, module) {
                 const folderPath = $input.val().trim();
 
                 // if the checkbox is checked, we save the folder preference for this project
-                if ($rememberCheckbox.is(':checked')) {
+                const isChecked = $rememberCheckbox.is(':checked');
+                StateManager.set(IMAGE_DOWNLOAD_PERSIST_FOLDER_KEY, isChecked, StateManager.PROJECT_CONTEXT);
+                if (isChecked) {
                     StateManager.set(IMAGE_DOWNLOAD_FOLDER_KEY, folderPath, StateManager.PROJECT_CONTEXT);
+                } else {
+                    StateManager.set(IMAGE_DOWNLOAD_FOLDER_KEY, undefined, StateManager.PROJECT_CONTEXT);
                 }
 
                 // if message is provided, download the image
                 if (message) {
                     _downloadToFolder(message, folderPath);
+                }
+            } else {
+                if (message && message.downloadId) {
+                    _sendDownloadStatusToBrowser(DOWNLOAD_EVENTS.CANCELLED, { downloadId: message.downloadId });
                 }
             }
             dialog.close();
@@ -1187,7 +1248,7 @@ define(function (require, exports, module) {
                 _handleUseThisImageRemote(message, uniqueFilename, targetDir);
             }
         }).catch(error => {
-            console.error('Something went wrong when trying to use this image', error);
+            _handleDownloadError(error, message.downloadId);
         });
     }
 
@@ -1231,6 +1292,12 @@ define(function (require, exports, module) {
         // handle reset image folder selection
         if (message.resetImageFolderSelection) {
             _handleResetImageFolderSelection();
+            return;
+        }
+
+        // handle image gallery state change message
+        if (message.type === "imageGalleryStateChange") {
+            LiveDevelopment.setImageGalleryState(message.selected);
             return;
         }
 
