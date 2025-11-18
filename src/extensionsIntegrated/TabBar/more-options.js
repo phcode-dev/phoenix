@@ -23,308 +23,194 @@
  * The more options context menu is shown when a tab is right-clicked
  */
 define(function (require, exports, module) {
-    const DropdownButton = require("widgets/DropdownButton");
-    const Strings = require("strings");
     const CommandManager = require("command/CommandManager");
     const Commands = require("command/Commands");
     const FileSystem = require("filesystem/FileSystem");
+    const Menus = require("command/Menus");
+    const Strings = require("strings");
 
     const Global = require("./global");
 
-    // List of items to show in the context menu
-    // Strings defined in `src/nls/root/strings.js`
-    const items = [
-        Strings.CLOSE_TAB,
-        Strings.CLOSE_TABS_TO_THE_LEFT,
-        Strings.CLOSE_TABS_TO_THE_RIGHT,
-        Strings.CLOSE_SAVED_TABS,
-        Strings.CLOSE_ALL_TABS,
-        "---",
-        Strings.CMD_FILE_RENAME,
-        Strings.CMD_FILE_DELETE,
-        Strings.CMD_SHOW_IN_TREE,
-        "---",
-        Strings.REOPEN_CLOSED_FILE
-    ];
+    // these are Tab bar specific commands for the context menu
+    // not added in the Commands.js as Tab bar is not a core module but an extension
+    // read init function
+    const TABBAR_CLOSE_TABS_LEFT = "tabbar.closeTabsLeft";
+    const TABBAR_CLOSE_TABS_RIGHT = "tabbar.closeTabsRight";
+    const TABBAR_CLOSE_SAVED_TABS = "tabbar.closeSavedTabs";
+    const TABBAR_CLOSE_ALL = "tabbar.closeAllTabs";
 
-    /**
-     * "CLOSE TAB"
-     * this function handles the closing of the tab that was right-clicked
-     *
-     * @param {String} filePath - path of the file to close
-     * @param {String} paneId - the id of the pane in which the file is present
-     */
-    function handleCloseTab(filePath, paneId) {
-        if (filePath) {
-            // Get the file object using FileSystem
-            const fileObj = FileSystem.getFileForPath(filePath);
+    // stores the context of the right-clicked tab (which file, which pane)
+    // this is set inside the showMoreOptionsContextMenu. read that func for more details
+    let _currentTabContext = { filePath: null, paneId: null };
 
-            // Execute close command with file object and pane ID
+    // gets the working set (list of open files) for the given pane
+    function _getWorkingSet(paneId) {
+        return paneId === "first-pane" ? Global.firstPaneWorkingSet : Global.secondPaneWorkingSet;
+    }
+
+    // closes files from right to left to avoid index shifts during iteration
+    function _closeFiles(files, paneId) {
+        for (let i = files.length - 1; i >= 0; i--) {
+            const fileObj = FileSystem.getFileForPath(files[i].path);
             CommandManager.execute(Commands.FILE_CLOSE, { file: fileObj, paneId: paneId });
         }
     }
 
-    /**
-     * "CLOSE ALL TABS"
-     * This will close all tabs in the specified pane
-     *
-     * @param {String} paneId - the id of the pane ["first-pane", "second-pane"]
-     */
-    function handleCloseAllTabs(paneId) {
-        if (!paneId) {
-            return;
-        }
-
-        let workingSet;
-        workingSet = paneId === "first-pane" ? Global.firstPaneWorkingSet : Global.secondPaneWorkingSet;
-        if (!workingSet || workingSet.length === 0) {
-            return;
-        }
-
-        // close each file in the pane, start from the rightmost [to avoid index shifts]
-        for (let i = workingSet.length - 1; i >= 0; i--) {
-            const fileObj = FileSystem.getFileForPath(workingSet[i].path);
-            CommandManager.execute(Commands.FILE_CLOSE, { file: fileObj, paneId: paneId });
+    // executes a command with the right-clicked tab's file as the target
+    function _executeWithFileContext(commandId, options = {}) {
+        if (_currentTabContext.filePath) {
+            // we need to get the file object from the file path, as the commandManager expects the file object
+            const fileObj = FileSystem.getFileForPath(_currentTabContext.filePath);
+            CommandManager.execute(commandId, { file: fileObj, ...options });
         }
     }
 
-    /**
-     * "CLOSE SAVED TABS"
-     * This will close all tabs that are not dirty in the specified pane
-     *
-     * @param {String} paneId - the id of the pane ["first-pane", "second-pane"]
-     */
-    function handleCloseSavedTabs(paneId) {
-        if (!paneId) {
-            return;
-        }
+    // **Close**
+    // closes the right-clicked tab
+    function handleCloseTab() {
+        _executeWithFileContext(Commands.FILE_CLOSE, { paneId: _currentTabContext.paneId });
+    }
 
-        let workingSet;
-        workingSet = paneId === "first-pane" ? Global.firstPaneWorkingSet : Global.secondPaneWorkingSet;
-        if (!workingSet || workingSet.length === 0) {
-            return;
-        }
-
-        // get all those entries that are not dirty
-        const unmodifiedEntries = workingSet.filter((entry) => !entry.isDirty);
-
-        // close each non-dirty file in the pane
-        for (let i = unmodifiedEntries.length - 1; i >= 0; i--) {
-            const fileObj = FileSystem.getFileForPath(unmodifiedEntries[i].path);
-            CommandManager.execute(Commands.FILE_CLOSE, { file: fileObj, paneId: paneId });
+    // **Close All Tabs**
+    // closes all tabs in the pane where the tab was right-clicked
+    function handleCloseAllTabs() {
+        const workingSet = _getWorkingSet(_currentTabContext.paneId);
+        if (workingSet && workingSet.length !== 0) {
+            // close everything in the pane
+            _closeFiles(workingSet, _currentTabContext.paneId);
         }
     }
 
-    /**
-     * "CLOSE TABS TO THE LEFT"
-     * This function is responsible for closing all tabs to the left of the right-clicked tab
-     *
-     * @param {String} filePath - path of the file that was right-clicked
-     * @param {String} paneId - the id of the pane in which the file is present
-     */
-    function handleCloseTabsToTheLeft(filePath, paneId) {
-        if (!filePath) {
-            return;
+    // **Close Saved Tabs**
+    // closes all saved tabs (not dirty) in the pane
+    function handleCloseSavedTabs() {
+        const workingSet = _getWorkingSet(_currentTabContext.paneId);
+        if (workingSet && workingSet.length !== 0) {
+            // filter out dirty tabs, only close the saved ones
+            const savedTabs = workingSet.filter(entry => !entry.isDirty);
+            _closeFiles(savedTabs, _currentTabContext.paneId);
         }
+    }
 
-        let workingSet;
-        workingSet = paneId === "first-pane" ? Global.firstPaneWorkingSet : Global.secondPaneWorkingSet;
-        if (!workingSet) {
-            return;
-        }
+    // **Close Tabs to the Left**
+    // closes all tabs to the left of the right-clicked tab
+    function handleCloseTabsToTheLeft() {
+        const workingSet = _getWorkingSet(_currentTabContext.paneId);
+        if (!workingSet) { return; }
 
-        // find the index of the current file in the working set
-        const currentIndex = workingSet.findIndex((entry) => entry.path === filePath);
-
+        // find where the right-clicked tab is in the list
+        const currentIndex = workingSet.findIndex(entry => entry.path === _currentTabContext.filePath);
         if (currentIndex > 0) {
-            // we only proceed if there are tabs to the left
-            // get all files to the left of the current file
-            const filesToClose = workingSet.slice(0, currentIndex);
-
-            // Close each file, starting from the rightmost [to avoid index shifts]
-            for (let i = filesToClose.length - 1; i >= 0; i--) {
-                const fileObj = FileSystem.getFileForPath(filesToClose[i].path);
-                CommandManager.execute(Commands.FILE_CLOSE, { file: fileObj, paneId: paneId });
-            }
+            // slice from start to currentIndex (not including currentIndex)
+            _closeFiles(workingSet.slice(0, currentIndex), _currentTabContext.paneId);
         }
     }
 
-    /**
-     * "CLOSE TABS TO THE RIGHT"
-     * This function is responsible for closing all tabs to the right of the right-clicked tab
-     *
-     * @param {String} filePath - path of the file that was right-clicked
-     * @param {String} paneId - the id of the pane in which the file is present
-     */
-    function handleCloseTabsToTheRight(filePath, paneId) {
-        if (!filePath) {
-            return;
-        }
+    // **Close Tabs to the Right**
+    // closes all tabs to the right of the right-clicked tab
+    function handleCloseTabsToTheRight() {
+        const workingSet = _getWorkingSet(_currentTabContext.paneId);
+        if (!workingSet) { return; }
 
-        let workingSet;
-        workingSet = paneId === "first-pane" ? Global.firstPaneWorkingSet : Global.secondPaneWorkingSet;
-        if (!workingSet) {
-            return;
-        }
-
-        // get the index of the current file in the working set
-        const currentIndex = workingSet.findIndex((entry) => entry.path === filePath);
-        // only proceed if there are tabs to the right
+        // find where the right-clicked tab is in the list
+        const currentIndex = workingSet.findIndex(entry => entry.path === _currentTabContext.filePath);
         if (currentIndex !== -1 && currentIndex < workingSet.length - 1) {
-            // get all files to the right of the current file
-            const filesToClose = workingSet.slice(currentIndex + 1);
-
-            for (let i = filesToClose.length - 1; i >= 0; i--) {
-                const fileObj = FileSystem.getFileForPath(filesToClose[i].path);
-                CommandManager.execute(Commands.FILE_CLOSE, { file: fileObj, paneId: paneId });
-            }
+            // slice from currentIndex+1 to end
+            _closeFiles(workingSet.slice(currentIndex + 1), _currentTabContext.paneId);
         }
     }
 
-    /**
-     * "REOPEN CLOSED FILE"
-     * This just calls the reopen closed file command. everthing else is handled there
-     * TODO: disable the command if there are no closed files, look into the file menu
-     */
-    function reopenClosedFile() {
-        CommandManager.execute(Commands.FILE_REOPEN_CLOSED);
+    // **Rename**
+    // renames the right-clicked tab's file
+    function handleFileRename() {
+        CommandManager.execute(Commands.SHOW_SIDEBAR);
+        _executeWithFileContext(Commands.FILE_RENAME);
     }
 
-    /**
-     * "RENAME FILE"
-     * This function handles the renaming of the file that was right-clicked
-     *
-     * @param {String} filePath - path of the file to rename
-     */
-    function handleFileRename(filePath) {
-        if (filePath) {
-            // First ensure the sidebar is visible so users can see the rename action
-            CommandManager.execute(Commands.SHOW_SIDEBAR);
-
-            // Get the file object using FileSystem
-            const fileObj = FileSystem.getFileForPath(filePath);
-
-            // Execute the rename command with the file object
-            CommandManager.execute(Commands.FILE_RENAME, { file: fileObj });
-        }
+    // **Delete**
+    // deletes the right-clicked tab's file
+    function handleFileDelete() {
+        _executeWithFileContext(Commands.FILE_DELETE);
     }
 
-    /**
-     * "DELETE FILE"
-     * This function handles the deletion of the file that was right-clicked
-     *
-     * @param {String} filePath - path of the file to delete
-     */
-    function handleFileDelete(filePath) {
-        if (filePath) {
-            // Get the file object using FileSystem
-            const fileObj = FileSystem.getFileForPath(filePath);
-
-            // Execute the delete command with the file object
-            CommandManager.execute(Commands.FILE_DELETE, { file: fileObj });
-        }
+    // **Show in File Tree**
+    // shows the right-clicked tab's file in the file tree
+    function handleShowInFileTree() {
+        CommandManager.execute(Commands.SHOW_SIDEBAR);
+        _executeWithFileContext(Commands.NAVIGATE_SHOW_IN_FILE_TREE);
     }
 
-    /**
-     * "SHOW IN FILE TREE"
-     * This function handles showing the file in the file tree
-     *
-     * @param {String} filePath - path of the file to show in file tree
-     */
-    function handleShowInFileTree(filePath) {
-        if (filePath) {
-            // First ensure the sidebar is visible so users can see the file in the tree
-            CommandManager.execute(Commands.SHOW_SIDEBAR);
-
-            // Get the file object using FileSystem
-            const fileObj = FileSystem.getFileForPath(filePath);
-
-            // Execute the show in tree command with the file object
-            CommandManager.execute(Commands.NAVIGATE_SHOW_IN_FILE_TREE, { file: fileObj });
-        }
-    }
 
     /**
-     * This function is called when a tab is right-clicked
-     * This will show the more options context menu
-     *
+     * this function is called from Tabbar/main.js when a tab is right clicked
+     * it is responsible to show the context menu and also set the currentTabContext
      * @param {String} paneId - the id of the pane ["first-pane", "second-pane"]
+     * @param {String} filePath - the path of the file that was right-clicked
      * @param {Number} x - the x coordinate for positioning the menu
      * @param {Number} y - the y coordinate for positioning the menu
-     * @param {String} filePath - [optional] the path of the file that was right-clicked
      */
-    function showMoreOptionsContextMenu(paneId, x, y, filePath) {
-        const dropdown = new DropdownButton.DropdownButton("", items);
+    function showMoreOptionsContextMenu(paneId, filePath, x, y) {
+        _currentTabContext.filePath = filePath;
+        _currentTabContext.paneId = paneId;
 
-        // Append to document body for absolute positioning
-        $("body").append(dropdown.$button);
-
-        // Position the dropdown at the mouse coordinates
-        dropdown.$button.css({
-            position: "absolute",
-            left: x + "px",
-            top: y + "px",
-            zIndex: 1000
-        });
-
-        // Add a custom class to override the max-height, not sure why a scroll bar was coming but this did the trick
-        dropdown.dropdownExtraClasses = "tabbar-context-menu";
-
-        dropdown.showDropdown();
-
-        $(".tabbar-context-menu").css("max-height", "300px");
-
-        // handle the option selection
-        dropdown.on("select", function (e, item) {
-            _handleSelection(item, filePath, paneId);
-        });
-
-        // Remove the button after the dropdown is hidden
-        dropdown.$button.css({
-            display: "none"
-        });
+        const contextMenu = Menus.getContextMenu("tabbar-context-menu");
+        const event = $.Event("contextmenu", { pageX: x, pageY: y });
+        contextMenu.open(event);
     }
 
+
     /**
-     * Handles the selection of an option in the more options context menu
-     *
-     * @param {String} item - the item being selected
-     * @param {String} filePath - the path of the file that was right-clicked
-     * @param {String} paneId - the id of the pane ["first-pane", "second-pane"]
+     * this is the main function, it gets called only once on load from TabBar/main.js
+     * this registers the context menu and add the menu items inside it
      */
-    function _handleSelection(item, filePath, paneId) {
-        switch (item) {
-        case Strings.CLOSE_TAB:
-            handleCloseTab(filePath, paneId);
-            break;
-        case Strings.CLOSE_TABS_TO_THE_LEFT:
-            handleCloseTabsToTheLeft(filePath, paneId);
-            break;
-        case Strings.CLOSE_TABS_TO_THE_RIGHT:
-            handleCloseTabsToTheRight(filePath, paneId);
-            break;
-        case Strings.CLOSE_ALL_TABS:
-            handleCloseAllTabs(paneId);
-            break;
-        case Strings.CLOSE_SAVED_TABS:
-            handleCloseSavedTabs(paneId);
-            break;
-        case Strings.CMD_FILE_RENAME:
-            handleFileRename(filePath);
-            break;
-        case Strings.CMD_FILE_DELETE:
-            handleFileDelete(filePath);
-            break;
-        case Strings.CMD_SHOW_IN_TREE:
-            handleShowInFileTree(filePath);
-            break;
-        case Strings.REOPEN_CLOSED_FILE:
-            reopenClosedFile();
-            break;
-        }
+    function init() {
+        // these are the tab bar specific commands
+        CommandManager.register(Strings.CLOSE_TABS_TO_THE_LEFT, TABBAR_CLOSE_TABS_LEFT, handleCloseTabsToTheLeft);
+        CommandManager.register(Strings.CLOSE_TABS_TO_THE_RIGHT, TABBAR_CLOSE_TABS_RIGHT, handleCloseTabsToTheRight);
+        CommandManager.register(Strings.CLOSE_SAVED_TABS, TABBAR_CLOSE_SAVED_TABS, handleCloseSavedTabs);
+        CommandManager.register(Strings.CLOSE_ALL_TABS, TABBAR_CLOSE_ALL, handleCloseAllTabs);
+
+        // these commands already exist for working files, just reusing them
+        const menu = Menus.registerContextMenu("tabbar-context-menu");
+        menu.addMenuItem(Commands.FILE_CLOSE);
+        menu.addMenuItem(TABBAR_CLOSE_TABS_LEFT);
+        menu.addMenuItem(TABBAR_CLOSE_TABS_RIGHT);
+        menu.addMenuItem(TABBAR_CLOSE_SAVED_TABS);
+        menu.addMenuItem(TABBAR_CLOSE_ALL);
+        menu.addMenuDivider();
+        menu.addMenuItem(Commands.FILE_RENAME);
+        menu.addMenuItem(Commands.FILE_DELETE);
+        menu.addMenuItem(Commands.NAVIGATE_SHOW_IN_FILE_TREE);
+        menu.addMenuDivider();
+        menu.addMenuItem(Commands.FILE_REOPEN_CLOSED);
+
+        // intercept clicks on existing commands
+        // this is done so that we can inject the right-clicked tab's context
+        menu.on("beforeContextMenuOpen", function () {
+            const $menu = $(`#${menu.id} > ul`);
+            if (!$menu.length) { return; }
+
+            // for other commands, we have built-in context as those are our custom functions
+            const interceptors = [
+                [Commands.FILE_CLOSE, handleCloseTab],
+                [Commands.FILE_RENAME, handleFileRename],
+                [Commands.FILE_DELETE, handleFileDelete],
+                [Commands.NAVIGATE_SHOW_IN_FILE_TREE, handleShowInFileTree]
+            ];
+
+            interceptors.forEach(([commandId, handler]) => {
+                $menu.find(`a[data-command="${commandId}"]`).off("click").on("click", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    handler();
+                    menu.close();
+                });
+            });
+        });
     }
 
     module.exports = {
-        showMoreOptionsContextMenu
+        showMoreOptionsContextMenu,
+        init
     };
 });
