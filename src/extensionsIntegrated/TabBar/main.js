@@ -553,7 +553,7 @@ define(function (require, exports, module) {
             const paneId = isSecondPane ? "second-pane" : "first-pane";
 
             // show the context menu at mouse position
-            MoreOptions.showMoreOptionsContextMenu(paneId, event.pageX, event.pageY, filePath);
+            MoreOptions.showMoreOptionsContextMenu(paneId, filePath, event.pageX, event.pageY);
         });
     }
 
@@ -768,6 +768,7 @@ define(function (require, exports, module) {
         // handle when a single tab gets clicked
         handleTabClick();
 
+        MoreOptions.init();
         Overflow.init();
         DragDrop.init($("#phoenix-tab-bar"), $("#phoenix-tab-bar-2"));
 
