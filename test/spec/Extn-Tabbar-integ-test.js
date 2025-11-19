@@ -1907,7 +1907,7 @@ define(function (require, exports, module) {
                 const $closeTabOption = getContextMenu()
                     .find(".menu-name")
                     .filter(function () {
-                        return $(this).text().trim() === "Close";
+                        return $(this).text().trim() === Strings.CMD_FILE_CLOSE;
                     })
                     .closest("li");
                 expect($closeTabOption.length).toBe(1);
@@ -1957,25 +1957,34 @@ define(function (require, exports, module) {
                 const $tab = getTab(testFilePath);
 
                 // Right-click on the first tab to open context menu
-                $tab.trigger("contextmenu", {
+                const mousedownEvent = $.Event("mousedown", {
+                    button: 2,
                     pageX: 100,
                     pageY: 100
                 });
+                $tab.trigger(mousedownEvent);
+
+                const contextmenuEvent = $.Event("contextmenu", {
+                    pageX: 100,
+                    pageY: 100
+                });
+                $tab.trigger(contextmenuEvent);
 
                 // Wait for context menu to appear
                 await awaitsFor(
                     function () {
-                        return getContextMenu().length > 0;
+                        return getContextMenu().hasClass("open");
                     },
                     "Context menu to appear"
                 );
 
-                // Find and click the "Close tabs to the right" option
+                // Find and click the "Close Tabs to the Right" option
                 const $closeTabsToRightOption = getContextMenu()
-                    .find("a.stylesheet-link")
+                    .find(".menu-name")
                     .filter(function () {
                         return $(this).text().trim() === Strings.CLOSE_TABS_TO_THE_RIGHT;
-                    });
+                    })
+                    .closest("li");
                 expect($closeTabsToRightOption.length).toBe(1);
                 $closeTabsToRightOption.click();
 
@@ -2029,25 +2038,34 @@ define(function (require, exports, module) {
                 const $tab = getTab(testFilePath3);
 
                 // Right-click on the third tab to open context menu
-                $tab.trigger("contextmenu", {
+                const mousedownEvent = $.Event("mousedown", {
+                    button: 2,
                     pageX: 100,
                     pageY: 100
                 });
+                $tab.trigger(mousedownEvent);
+
+                const contextmenuEvent = $.Event("contextmenu", {
+                    pageX: 100,
+                    pageY: 100
+                });
+                $tab.trigger(contextmenuEvent);
 
                 // Wait for context menu to appear
                 await awaitsFor(
                     function () {
-                        return getContextMenu().length > 0;
+                        return getContextMenu().hasClass("open");
                     },
                     "Context menu to appear"
                 );
 
-                // Find and click the "Close tabs to the left" option
+                // Find and click the "Close Tabs to the Left" option
                 const $closeTabsToLeftOption = getContextMenu()
-                    .find("a.stylesheet-link")
+                    .find(".menu-name")
                     .filter(function () {
                         return $(this).text().trim() === Strings.CLOSE_TABS_TO_THE_LEFT;
-                    });
+                    })
+                    .closest("li");
                 expect($closeTabsToLeftOption.length).toBe(1);
                 $closeTabsToLeftOption.click();
 
@@ -2116,25 +2134,34 @@ define(function (require, exports, module) {
                 const $tab = getTab(testFilePath);
 
                 // Right-click on the tab to open context menu
-                $tab.trigger("contextmenu", {
+                const mousedownEvent = $.Event("mousedown", {
+                    button: 2,
                     pageX: 100,
                     pageY: 100
                 });
+                $tab.trigger(mousedownEvent);
+
+                const contextmenuEvent = $.Event("contextmenu", {
+                    pageX: 100,
+                    pageY: 100
+                });
+                $tab.trigger(contextmenuEvent);
 
                 // Wait for context menu to appear
                 await awaitsFor(
                     function () {
-                        return getContextMenu().length > 0;
+                        return getContextMenu().hasClass("open");
                     },
                     "Context menu to appear"
                 );
 
-                // Find and click the "Close saved tabs" option
+                // Find and click the "Close Saved Tabs" option
                 const $closeSavedTabsOption = getContextMenu()
-                    .find("a.stylesheet-link")
+                    .find(".menu-name")
                     .filter(function () {
                         return $(this).text().trim() === Strings.CLOSE_SAVED_TABS;
-                    });
+                    })
+                    .closest("li");
                 expect($closeSavedTabsOption.length).toBe(1);
                 $closeSavedTabsOption.click();
 
@@ -2195,25 +2222,34 @@ define(function (require, exports, module) {
                 const $tab = getTab(testFilePath);
 
                 // Right-click on the tab to open context menu
-                $tab.trigger("contextmenu", {
+                const mousedownEvent = $.Event("mousedown", {
+                    button: 2,
                     pageX: 100,
                     pageY: 100
                 });
+                $tab.trigger(mousedownEvent);
+
+                const contextmenuEvent = $.Event("contextmenu", {
+                    pageX: 100,
+                    pageY: 100
+                });
+                $tab.trigger(contextmenuEvent);
 
                 // Wait for context menu to appear
                 await awaitsFor(
                     function () {
-                        return getContextMenu().length > 0;
+                        return getContextMenu().hasClass("open");
                     },
                     "Context menu to appear"
                 );
 
-                // Find and click the "Close all tabs" option
+                // Find and click the "Close All Tabs" option
                 const $closeAllTabsOption = getContextMenu()
-                    .find("a.stylesheet-link")
+                    .find(".menu-name")
                     .filter(function () {
                         return $(this).text().trim() === Strings.CLOSE_ALL_TABS;
-                    });
+                    })
+                    .closest("li");
                 expect($closeAllTabsOption.length).toBe(1);
                 $closeAllTabsOption.click();
 
