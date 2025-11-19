@@ -1875,30 +1875,41 @@ define(function (require, exports, module) {
                 );
             });
 
-            it("should close the tab when selecting 'Close Tab' from context menu", async function () {
+            it("should close the tab when selecting 'Close' from context menu", async function () {
                 // Get the tab element
                 const $tab = getTab(testFilePath);
 
                 // Right-click on the tab to open context menu
-                $tab.trigger("contextmenu", {
+                // First trigger mousedown to make the tab active
+                const mousedownEvent = $.Event("mousedown", {
+                    button: 2,
                     pageX: 100,
                     pageY: 100
                 });
+                $tab.trigger(mousedownEvent);
+
+                // Then trigger contextmenu to open the menu
+                const contextmenuEvent = $.Event("contextmenu", {
+                    pageX: 100,
+                    pageY: 100
+                });
+                $tab.trigger(contextmenuEvent);
 
                 // Wait for context menu to appear
                 await awaitsFor(
                     function () {
-                        return getContextMenu().length > 0;
+                        return getContextMenu().hasClass("open");
                     },
                     "Context menu to appear"
                 );
 
-                // Find and click the "Close Tab" option
+                // Find and click the "Close" option
                 const $closeTabOption = getContextMenu()
-                    .find("a.stylesheet-link")
+                    .find(".menu-name")
                     .filter(function () {
-                        return $(this).text().trim() === Strings.CLOSE_TAB;
-                    });
+                        return $(this).text().trim() === "Close";
+                    })
+                    .closest("li");
                 expect($closeTabOption.length).toBe(1);
                 $closeTabOption.click();
 
