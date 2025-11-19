@@ -201,4 +201,8 @@ define(function (require) {
         detachEvents();
     });
 
+    return {
+        isIgnored: isIgnored
+    };
+
 });
