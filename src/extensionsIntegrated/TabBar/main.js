@@ -150,9 +150,14 @@ define(function (require, exports, module) {
             const TabBarIntegration = window.phoenixGitEvents.TabBarIntegration;
 
             // find the Git status
-            // if untracked we add the git-new class and U char
-            // if modified we add the git-modified class and M char
-            if (TabBarIntegration.isUntracked(entry.path)) {
+            // Check ignored FIRST (takes precedence over other statuses)
+            // if ignored we add the git-ignored class
+            // if untracked we add the git-new class
+            // if modified we add the git-modified class
+            if (TabBarIntegration.isIgnored(entry.path)) {
+                gitStatus = "Ignored";
+                gitStatusClass = "git-ignored";
+            } else if (TabBarIntegration.isUntracked(entry.path)) {
                 gitStatus = "Untracked";
                 gitStatusClass = "git-new";
             } else if (TabBarIntegration.isModified(entry.path)) {

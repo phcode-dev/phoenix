@@ -3,6 +3,7 @@ define(function (require) {
     const Events = require("src/Events");
     const Git = require("src/git/Git");
     const Preferences = require("src/Preferences");
+    const ProjectTreeMarks = require("src/ProjectTreeMarks");
 
     // the cache of file statuses by path
     let fileStatusCache = {};
@@ -55,6 +56,19 @@ define(function (require) {
         );
     }
 
+    /**
+     * whether the file is gitignored or not
+     *
+     * @param {string} fullPath - the file path
+     * @returns {boolean} - if the file is gitignored it returns true otherwise false
+     */
+    function isIgnored(fullPath) {
+        if (!ProjectTreeMarks || !ProjectTreeMarks.isIgnored) {
+            return false;
+        }
+        return ProjectTreeMarks.isIgnored(fullPath);
+    }
+
 
     // Update file status cache when Git status results are received
     EventEmitter.on(Events.GIT_STATUS_RESULTS, function (files) {
@@ -85,6 +99,7 @@ define(function (require) {
     return {
         getFileStatus: getFileStatus,
         isModified: isModified,
-        isUntracked: isUntracked
+        isUntracked: isUntracked,
+        isIgnored: isIgnored
     };
 });
