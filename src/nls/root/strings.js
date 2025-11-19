@@ -469,12 +469,10 @@ define({
     "STATUSBAR_TASKS_RESTART": "Restart",
 
     // Tab bar Strings
-    "CLOSE_TAB": "Close Tab",
     "CLOSE_TABS_TO_THE_RIGHT": "Close Tabs to the Right",
     "CLOSE_TABS_TO_THE_LEFT": "Close Tabs to the Left",
     "CLOSE_ALL_TABS": "Close All Tabs",
     "CLOSE_SAVED_TABS": "Close Saved Tabs",
-    "REOPEN_CLOSED_FILE": "Reopen Closed File",
 
     // CodeInspection: errors/warnings
     "ERRORS_NO_FILE": "No File Open",
