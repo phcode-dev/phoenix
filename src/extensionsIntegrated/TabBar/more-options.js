@@ -65,12 +65,6 @@ define(function (require, exports, module) {
         }
     }
 
-    // **Close**
-    // closes the right-clicked tab
-    function handleCloseTab() {
-        _executeWithFileContext(Commands.FILE_CLOSE, { paneId: _currentTabContext.paneId });
-    }
-
     // **Close All Tabs**
     // closes all tabs in the pane where the tab was right-clicked
     function handleCloseAllTabs() {
@@ -120,27 +114,6 @@ define(function (require, exports, module) {
         }
     }
 
-    // **Rename**
-    // renames the right-clicked tab's file
-    function handleFileRename() {
-        CommandManager.execute(Commands.SHOW_SIDEBAR);
-        _executeWithFileContext(Commands.FILE_RENAME);
-    }
-
-    // **Delete**
-    // deletes the right-clicked tab's file
-    function handleFileDelete() {
-        _executeWithFileContext(Commands.FILE_DELETE);
-    }
-
-    // **Show in File Tree**
-    // shows the right-clicked tab's file in the file tree
-    function handleShowInFileTree() {
-        CommandManager.execute(Commands.SHOW_SIDEBAR);
-        _executeWithFileContext(Commands.NAVIGATE_SHOW_IN_FILE_TREE);
-    }
-
-
     /**
      * this function is called from Tabbar/main.js when a tab is right clicked
      * it is responsible to show the context menu and also set the currentTabContext
@@ -183,30 +156,6 @@ define(function (require, exports, module) {
         menu.addMenuItem(Commands.NAVIGATE_SHOW_IN_FILE_TREE);
         menu.addMenuDivider();
         menu.addMenuItem(Commands.FILE_REOPEN_CLOSED);
-
-        // intercept clicks on existing commands
-        // this is done so that we can inject the right-clicked tab's context
-        menu.on("beforeContextMenuOpen", function () {
-            const $menu = $(`#${menu.id} > ul`);
-            if (!$menu.length) { return; }
-
-            // for other commands, we have built-in context as those are our custom functions
-            const interceptors = [
-                [Commands.FILE_CLOSE, handleCloseTab],
-                [Commands.FILE_RENAME, handleFileRename],
-                [Commands.FILE_DELETE, handleFileDelete],
-                [Commands.NAVIGATE_SHOW_IN_FILE_TREE, handleShowInFileTree]
-            ];
-
-            interceptors.forEach(([commandId, handler]) => {
-                $menu.find(`a[data-command="${commandId}"]`).off("click").on("click", function (e) {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    handler();
-                    menu.close();
-                });
-            });
-        });
     }
 
     module.exports = {
