@@ -344,27 +344,35 @@ define(function (require, exports) {
 
     var _toggleMenuEntriesState = false,
         _divider1 = null,
-        _divider2 = null;
+        _divider2 = null,
+        _divider3 = null;
     function toggleMenuEntries(bool) {
         if (bool === _toggleMenuEntriesState) {
             return;
         }
         var projectCmenu = Menus.getContextMenu(Menus.ContextMenuIds.PROJECT_MENU);
         var workingCmenu = Menus.getContextMenu(Menus.ContextMenuIds.WORKING_SET_CONTEXT_MENU);
+        var tabbarCmenu = Menus.getContextMenu("tabbar-context-menu");
         if (bool) {
             _divider1 = projectCmenu.addMenuDivider();
             _divider2 = workingCmenu.addMenuDivider();
+            _divider3 = tabbarCmenu.addMenuDivider();
             projectCmenu.addMenuItem(CMD_ADD_TO_IGNORE);
             workingCmenu.addMenuItem(CMD_ADD_TO_IGNORE);
+            tabbarCmenu.addMenuItem(CMD_ADD_TO_IGNORE);
             projectCmenu.addMenuItem(CMD_REMOVE_FROM_IGNORE);
             workingCmenu.addMenuItem(CMD_REMOVE_FROM_IGNORE);
+            tabbarCmenu.addMenuItem(CMD_REMOVE_FROM_IGNORE);
         } else {
             projectCmenu.removeMenuDivider(_divider1.id);
             workingCmenu.removeMenuDivider(_divider2.id);
+            tabbarCmenu.removeMenuDivider(_divider3.id);
             projectCmenu.removeMenuItem(CMD_ADD_TO_IGNORE);
             workingCmenu.removeMenuItem(CMD_ADD_TO_IGNORE);
+            tabbarCmenu.removeMenuItem(CMD_ADD_TO_IGNORE);
             projectCmenu.removeMenuItem(CMD_REMOVE_FROM_IGNORE);
             workingCmenu.removeMenuItem(CMD_REMOVE_FROM_IGNORE);
+            tabbarCmenu.removeMenuItem(CMD_REMOVE_FROM_IGNORE);
         }
         _toggleMenuEntriesState = bool;
     }
