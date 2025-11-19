@@ -1662,7 +1662,7 @@ define({
     "CUSTOM_SNIPPETS_SAVE": "Save",
     "CUSTOM_SNIPPETS_NO_DESCRIPTION": "No description",
     "CUSTOM_SNIPPETS_NO_MATCHES": "No snippets match \"{0}\"",
-    "CUSTOM_SNIPPETS_LEARN_MORE": "Add your own code hints to speed up coding - <a href=\"https://docs.phcode.dev\" target=\"_blank\">Learn More</a>",
+    "CUSTOM_SNIPPETS_LEARN_MORE": "Add your own code hints to speed up coding - <a href=\"https://docs.phcode.dev/app-links/custom-snippets\" target=\"_blank\">Learn More</a>",
     "CUSTOM_SNIPPETS_DUPLICATE_ERROR": "A snippet with abbreviation \"{0}\" already exists.",
     "CUSTOM_SNIPPETS_SPACE_ERROR": "Space is not accepted as a valid abbreviation character.",
     "CUSTOM_SNIPPETS_ABBR_LENGTH_ERROR": "Abbreviation cannot be more than 30 characters.",
