@@ -1837,7 +1837,7 @@ define(function (require, exports, module) {
              * @returns {jQuery} - The context menu element
              */
             function getContextMenu() {
-                return $(".tabbar-context-menu");
+                return $("#tabbar-context-menu");
             }
 
             it("should open context menu when right-clicking on a tab", async function () {
@@ -1846,22 +1846,22 @@ define(function (require, exports, module) {
                 expect($tab.length).toBe(1);
 
                 // Simulate a right-click (contextmenu) event on the tab
-                $tab.trigger("contextmenu", {
+                const event = $.Event("contextmenu", {
                     pageX: 100,
                     pageY: 100
                 });
+                $tab.trigger(event);
 
                 // Wait for the context menu to appear
                 await awaitsFor(
                     function () {
-                        return getContextMenu().length > 0;
+                        return getContextMenu().hasClass("open");
                     },
                     "Context menu to appear"
                 );
 
-                // Verify the context menu is visible
-                expect(getContextMenu().length).toBe(1);
-                expect(getContextMenu().is(":visible")).toBe(true);
+                // Verify the context menu is open
+                expect(getContextMenu().hasClass("open")).toBe(true);
 
                 // Clean up - close the context menu by clicking elsewhere
                 $("body").click();
@@ -1869,7 +1869,7 @@ define(function (require, exports, module) {
                 // Wait for the context menu to disappear
                 await awaitsFor(
                     function () {
-                        return getContextMenu().length === 0;
+                        return !getContextMenu().hasClass("open");
                     },
                     "Context menu to disappear"
                 );
