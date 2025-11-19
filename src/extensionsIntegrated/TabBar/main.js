@@ -512,9 +512,6 @@ define(function (require, exports, module) {
 
         // open tab on mousedown event
         $(document).on("mousedown", ".phoenix-tab-bar .tab", function (event) {
-            // to prevent right-clicks from making the tab active
-            if (event.button === 2) { return; }
-
             if ($(event.target).hasClass("fa-times") || $(event.target).closest(".tab-close").length) {
                 return;
             }
