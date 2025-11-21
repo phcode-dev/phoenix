@@ -48,14 +48,14 @@ define(function main(require, exports, module) {
         EditorManager      = require("editor/EditorManager");
 
 
-    // this is responsible to make the advanced live preview features active or inactive
-    // @abose (make the first value true when its a paid user, everything rest is handled automatically)
-    let isProUser = window.KernalModeTrust ? true : false;
-    // when isFreeTrialUser is true isProUser should also be true
-    // when its false, isProUser can be true/false doesn't matter
-    let isFreeTrialUser = true;
+    const KernalModeTrust = window.KernalModeTrust;
+
+    // this will later be assigned its correct values once entitlementsManager loads
+    let isProUser = false;
+    let isFreeTrialUser = false;
 
     const EVENT_LIVE_HIGHLIGHT_PREF_CHANGED = "liveHighlightPrefChange";
+    const PREFERENCE_LIVE_PREVIEW_MODE = "livePreviewMode";
 
     // state manager key to track image gallery selected state, by default we keep this as selected
     // if this is true we show the image gallery when an image element is clicked
@@ -316,6 +316,70 @@ define(function main(require, exports, module) {
         return false;
     }
 
+    // default mode means on first load for pro user we have edit mode
+    // for free user we have highlight mode
+    function _getDefaultMode() {
+        return isProUser ? "edit" : "highlight";
+    }
+
+    // to set that mode in the preferences
+    function _initializeMode() {
+        if (isFreeTrialUser) {
+            PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "edit");
+            return;
+        }
+
+        const savedMode = PreferencesManager.get(PREFERENCE_LIVE_PREVIEW_MODE) || _getDefaultMode();
+
+        if (savedMode === "highlight" && isProUser) {
+            PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "edit");
+        } else if (savedMode === "edit" && !isProUser) {
+            PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "highlight");
+        }
+    }
+
+    // this is called everytime there is a change in entitlements
+    async function _updateProUserStatus() {
+        if (!KernalModeTrust) {
+            return;
+        }
+
+        try {
+            const entitlement = await KernalModeTrust.EntitlementsManager.getLiveEditEntitlement();
+            const isPaidSub = await KernalModeTrust.EntitlementsManager.isPaidSubscriber();
+
+            isProUser = entitlement.activated || isPaidSub;
+            isFreeTrialUser = await KernalModeTrust.EntitlementsManager.isInProTrial();
+
+            config.isProUser = isProUser;
+            exports.isProUser = isProUser;
+            exports.isFreeTrialUser = isFreeTrialUser;
+
+            _initializeMode();
+
+            if (MultiBrowserLiveDev.status >= MultiBrowserLiveDev.STATUS_ACTIVE) {
+                MultiBrowserLiveDev.updateConfig(JSON.stringify(config));
+                MultiBrowserLiveDev.registerHandlers();
+            }
+        } catch (error) {
+            console.error("Error updating pro user status:", error);
+            isProUser = false;
+            isFreeTrialUser = false;
+        }
+    }
+
+    function setMode(mode) {
+        if (mode === "edit" && !exports.isProUser) {
+            return false;
+        }
+        PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, mode);
+        return true;
+    }
+
+    function getCurrentMode() {
+        return PreferencesManager.get(PREFERENCE_LIVE_PREVIEW_MODE) || _getDefaultMode();
+    }
+
     /** Initialize LiveDevelopment */
     AppInit.appReady(function () {
         params.parse();
@@ -329,6 +393,15 @@ define(function main(require, exports, module) {
 
         _loadStyles();
         _updateHighlightCheckmark();
+
+        // init pro user status and listen for changes
+        if (KernalModeTrust) {
+            _updateProUserStatus();
+            KernalModeTrust.EntitlementsManager.on(
+                KernalModeTrust.EntitlementsManager.EVENT_ENTITLEMENTS_CHANGED,
+                _updateProUserStatus
+            );
+        }
 
         // update styles for UI status
         _status = [
@@ -384,6 +457,11 @@ define(function main(require, exports, module) {
                 MultiBrowserLiveDev.updateConfig(JSON.stringify(config));
             }
         });
+
+    PreferencesManager.definePreference(PREFERENCE_LIVE_PREVIEW_MODE, "string", _getDefaultMode(), {
+        description: StringUtils.format(Strings.LIVE_PREVIEW_MODE_PREFERENCE, "'preview'", "'highlight'", "'edit'"),
+        values: ["preview", "highlight", "edit"]
+    });
 
     config.highlight = PreferencesManager.getViewState("livedevHighlight");
 
@@ -441,4 +519,6 @@ define(function main(require, exports, module) {
     exports.getLivePreviewDetails = MultiBrowserLiveDev.getLivePreviewDetails;
     exports.hideHighlight = MultiBrowserLiveDev.hideHighlight;
     exports.dismissLivePreviewBoxes = MultiBrowserLiveDev.dismissLivePreviewBoxes;
+    exports.setMode = setMode;
+    exports.getCurrentMode = getCurrentMode;
 });
