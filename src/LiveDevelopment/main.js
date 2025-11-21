@@ -346,9 +346,8 @@ define(function main(require, exports, module) {
 
         try {
             const entitlement = await KernalModeTrust.EntitlementsManager.getLiveEditEntitlement();
-            const isPaidSub = await KernalModeTrust.EntitlementsManager.isPaidSubscriber();
 
-            isProUser = entitlement.activated || isPaidSub;
+            isProUser = entitlement.activated;
             isFreeTrialUser = await KernalModeTrust.EntitlementsManager.isInProTrial();
 
             config.isProUser = isProUser;
