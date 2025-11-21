@@ -33,6 +33,10 @@ function RemoteFunctions(config = {}) {
     // we need this so that we can remove click styling from the previous element when a new element is clicked
     let previouslyClickedElement = null;
 
+    // this is needed so that when user starts typing we can dismiss all the boxes and highlights
+    // now with this variable we check if its a first keystroke on an element or a subsequent keystroke
+    let _uiHiddenDuringTyping = false;
+
     var req, timeout;
     var animateHighlight = function (time) {
         if(req) {
@@ -1576,10 +1580,6 @@ function RemoteFunctions(config = {}) {
 
         create: function() {
             this.remove(); // remove existing box if already present
-
-            if(!config.isProUser) {
-                return;
-            }
 
             // this check because when there is no element visible to the user, we don't want to show the box
             // for ex: when user clicks on a 'x' button and the button is responsible to hide a panel
@@ -3822,6 +3822,9 @@ function RemoteFunctions(config = {}) {
      * @param {Element} element - The DOM element to select
      */
     function _selectElement(element) {
+        // user selected a new element, we need to reset this variable
+        _uiHiddenDuringTyping = false;
+
         dismissNodeMoreOptionsBox();
         dismissAIPromptBox();
         dismissNodeInfoBox();
@@ -3931,12 +3934,7 @@ function RemoteFunctions(config = {}) {
             event.stopPropagation();
             event.stopImmediatePropagation();
 
-            // when in click mode, only select dynamic elements (without data-brackets-id) directly
-            // as for static elements, the editor will handle selection via highlight message
-            if (!shouldShowHighlightOnHover() && !element.hasAttribute("data-brackets-id")) {
-                _selectElement(element);
-            }
-
+            _selectElement(element);
             activateHoverLock();
         }
     }
@@ -4021,7 +4019,10 @@ function RemoteFunctions(config = {}) {
         var foundValidElement = false;
         for (i = 0; i < nodes.length; i++) {
             if(isElementInspectable(nodes[i], true) && nodes[i].tagName !== "BR") {
-                _selectElement(nodes[i]);
+                // only call _selectElement if it's a different element to avoid unnecessary box recreation
+                if (previouslyClickedElement !== nodes[i]) {
+                    _selectElement(nodes[i]);
+                }
                 foundValidElement = true;
                 break;
             }
@@ -4431,8 +4432,14 @@ function RemoteFunctions(config = {}) {
 
         this.rememberedNodes = {};
 
-        // update highlight after applying diffs
-        redrawEverything();
+        // when user starts typing in the editor we hide all the boxes and highlights
+        // _uiHiddenDuringTyping variable keeps track if its a first keystroke or subsequent
+        // so that we don't end up calling dismiss/hide kinda functions multiple times
+        if (!_uiHiddenDuringTyping) {
+            dismissUIAndCleanupState();
+            hideHighlight();
+            _uiHiddenDuringTyping = true;
+        }
     };
 
     function applyDOMEdits(edits) {
