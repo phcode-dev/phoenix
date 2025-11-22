@@ -690,7 +690,7 @@ define(function (require, exports, module) {
             Strings: Strings,
             livePreview: Strings.LIVE_DEV_STATUS_TIP_OUT_OF_SYNC,
             clickToReload: Strings.LIVE_DEV_CLICK_TO_RELOAD_PAGE,
-            clickToPreview: Strings.LIVE_PREVIEW_MODE_PREVIEW,
+            clickToPreview: Strings.LIVE_PREVIEW_MODE_TOGGLE_PREVIEW,
             livePreviewSettings: Strings.LIVE_DEV_SETTINGS,
             livePreviewConfigureModes: Strings.LIVE_PREVIEW_CONFIGURE_MODES,
             clickToPopout: Strings.LIVE_DEV_CLICK_POPOUT,

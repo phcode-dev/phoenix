@@ -210,6 +210,7 @@ define({
     "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Don't ask again for this project",
     "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Ask Phoenix AI to modify this element...",
     "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Getting preview from your custom server {0}",
+    "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Toggle Preview Mode (F8)",
     "LIVE_PREVIEW_MODE_PREVIEW": "Preview Mode",
     "LIVE_PREVIEW_MODE_HIGHLIGHT": "Highlight Mode",
     "LIVE_PREVIEW_MODE_EDIT": "Edit Mode",
