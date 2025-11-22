@@ -455,6 +455,37 @@
                 redoLivePreviewOperation: true
             });
         }
+
+        // for save
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") {
+            e.preventDefault();
+
+            // to check if user was in between editing text
+            // in such cases we first finish the editing and then save
+            const activeElement = document.activeElement;
+            if (activeElement &&
+                activeElement.hasAttribute("contenteditable") &&
+                activeElement.hasAttribute("data-brackets-id") &&
+                window._LD &&
+                window._LD.finishEditing) {
+
+                window._LD.finishEditing(activeElement);
+            }
+
+            MessageBroker.send({
+                livePreviewEditEnabled: true,
+                saveCurrentDocument: true
+            });
+        }
+
+        // for preview button (play icon) toggle
+        if (e.key === 'F8') {
+            e.preventDefault();
+            MessageBroker.send({
+                livePreviewEditEnabled: true,
+                toggleLivePreviewMode: true
+            });
+        }
     });
 
 }(this));

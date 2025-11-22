@@ -33,10 +33,6 @@ function RemoteFunctions(config = {}) {
     // we need this so that we can remove click styling from the previous element when a new element is clicked
     let previouslyClickedElement = null;
 
-    // this is needed so that when user starts typing we can dismiss all the boxes and highlights
-    // now with this variable we check if its a first keystroke on an element or a subsequent keystroke
-    let _uiHiddenDuringTyping = false;
-
     var req, timeout;
     var animateHighlight = function (time) {
         if(req) {
@@ -3822,9 +3818,6 @@ function RemoteFunctions(config = {}) {
      * @param {Element} element - The DOM element to select
      */
     function _selectElement(element) {
-        // user selected a new element, we need to reset this variable
-        _uiHiddenDuringTyping = false;
-
         dismissNodeMoreOptionsBox();
         dismissAIPromptBox();
         dismissNodeInfoBox();
@@ -4431,15 +4424,7 @@ function RemoteFunctions(config = {}) {
         });
 
         this.rememberedNodes = {};
-
-        // when user starts typing in the editor we hide all the boxes and highlights
-        // _uiHiddenDuringTyping variable keeps track if its a first keystroke or subsequent
-        // so that we don't end up calling dismiss/hide kinda functions multiple times
-        if (!_uiHiddenDuringTyping) {
-            dismissUIAndCleanupState();
-            hideHighlight();
-            _uiHiddenDuringTyping = true;
-        }
+        redrawEverything();
     };
 
     function applyDOMEdits(edits) {

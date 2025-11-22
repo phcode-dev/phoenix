@@ -30,6 +30,8 @@ define(function (require, exports, module) {
     const LiveDevelopment = require("LiveDevelopment/main");
     const CodeMirror = require("thirdparty/CodeMirror/lib/codemirror");
     const ProjectManager = require("project/ProjectManager");
+    const CommandManager = require("command/CommandManager");
+    const Commands = require("command/Commands");
     const FileSystem = require("filesystem/FileSystem");
     const PathUtils = require("thirdparty/path-utils/path-utils");
     const StringMatch = require("utils/StringMatch");
@@ -1266,6 +1268,33 @@ define(function (require, exports, module) {
     }
 
     /**
+     * this function is responsible to save the active file (and previewed file, both might be same though)
+     * when ctrl/cmd + s is pressed in the live preview
+     */
+    function _handleLivePreviewSave() {
+        // this saves the active file
+        CommandManager.execute(Commands.FILE_SAVE);
+
+        // we also save the previewed file, (active file might be same as previewed or different)
+        const currLiveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
+        if (currLiveDoc && currLiveDoc.editor) {
+            const previewedDoc = currLiveDoc.editor.document;
+            CommandManager.execute(Commands.FILE_SAVE, { doc: previewedDoc });
+        }
+    }
+
+    /**
+     * This function is responsible to toggle the live preview Preview mode (play icon)
+     * this is done when user presses F8 key in the live preview
+     */
+    function _handlePreviewModeToggle() {
+        const $previewBtn = $("#previewModeLivePreviewButton");
+        if ($previewBtn.length > 0) {
+            $previewBtn.trigger("click");
+        }
+    }
+
+    /**
      * This is the main function that is exported.
      * it will be called by LiveDevProtocol when it receives a message from RemoteFunctions.js
      * or LiveDevProtocolRemote.js (for undo) using MessageBroker
@@ -1289,6 +1318,18 @@ define(function (require, exports, module) {
     * these are the main properties that are passed through the message
      */
     function handleLivePreviewEditOperation(message) {
+        // handle save current document in live preview (ctrl/cmd + s)
+        if (message.saveCurrentDocument) {
+            _handleLivePreviewSave();
+            return;
+        }
+
+        // toggle live preview mode using F8 key
+        if (message.toggleLivePreviewMode) {
+            _handlePreviewModeToggle();
+            return;
+        }
+
         // handle reset image folder selection
         if (message.resetImageFolderSelection) {
             _handleResetImageFolderSelection();

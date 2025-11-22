@@ -28,9 +28,6 @@
             "key": "Ctrl-Shift-R"
         }
     ],
-    "file.previewHighlight":  [
-        "Ctrl-Shift-C"
-    ],
     "file.quit":  [
         "Ctrl-Q"
     ],
