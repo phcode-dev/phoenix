@@ -455,6 +455,15 @@
                 redoLivePreviewOperation: true
             });
         }
+
+        // for save
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") {
+            e.preventDefault();
+            MessageBroker.send({
+                livePreviewEditEnabled: true,
+                saveCurrentDocument: true
+            });
+        }
     });
 
 }(this));
