@@ -106,6 +106,9 @@ define(function (require, exports, module) {
     /** Toggles live highlight */
     exports.FILE_LIVE_HIGHLIGHT         = "file.previewHighlight";      // LiveDevelopment/main.js      _handlePreviewHighlightCommand()
 
+    /** Toggles live preview mode */
+    exports.FILE_LIVE_PREVIEW_MODE_TOGGLE = "file.livePreviewModeToggle"; // Phoenix-live-preview/main.js _handlePreviewBtnClick()
+
     /** Opens project settings */
     exports.FILE_PROJECT_SETTINGS       = "file.projectSettings";       // ProjectManager.js            _projectSettings()
 
