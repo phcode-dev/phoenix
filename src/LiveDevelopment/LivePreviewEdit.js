@@ -1268,6 +1268,22 @@ define(function (require, exports, module) {
     }
 
     /**
+     * this function is responsible to save the active file (and previewed file, both might be same though)
+     * when ctrl/cmd + s is pressed in the live preview
+     */
+    function _handleLivePreviewSave() {
+        // this saves the active file
+        CommandManager.execute(Commands.FILE_SAVE);
+
+        // we also save the previewed file, (active file might be same as previewed or different)
+        const currLiveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
+        if (currLiveDoc && currLiveDoc.editor) {
+            const previewedDoc = currLiveDoc.editor.document;
+            CommandManager.execute(Commands.FILE_SAVE, { doc: previewedDoc });
+        }
+    }
+
+    /**
      * This is the main function that is exported.
      * it will be called by LiveDevProtocol when it receives a message from RemoteFunctions.js
      * or LiveDevProtocolRemote.js (for undo) using MessageBroker
@@ -1293,7 +1309,7 @@ define(function (require, exports, module) {
     function handleLivePreviewEditOperation(message) {
         // handle save current document in live preview (ctrl/cmd + s)
         if (message.saveCurrentDocument) {
-            CommandManager.execute(Commands.FILE_SAVE);
+            _handleLivePreviewSave();
             return;
         }
 

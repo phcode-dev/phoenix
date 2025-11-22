@@ -465,7 +465,6 @@ define(function main(require, exports, module) {
     config.highlight = PreferencesManager.getViewState("livedevHighlight");
 
     function setLivePreviewEditFeaturesActive(enabled) {
-        // TODO: @abose here add kernal mode trust check
         isProUser = enabled;
         config.isProUser = enabled;
         if (MultiBrowserLiveDev && MultiBrowserLiveDev.status >= MultiBrowserLiveDev.STATUS_ACTIVE) {
