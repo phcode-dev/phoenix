@@ -477,6 +477,15 @@
                 saveCurrentDocument: true
             });
         }
+
+        // for preview button (play icon) toggle
+        if (e.key === 'F8') {
+            e.preventDefault();
+            MessageBroker.send({
+                livePreviewEditEnabled: true,
+                toggleLivePreviewMode: true
+            });
+        }
     });
 
 }(this));

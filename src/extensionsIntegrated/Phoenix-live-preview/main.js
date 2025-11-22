@@ -1146,6 +1146,13 @@ define(function (require, exports, module) {
         $(document).on("click", "#livePreviewModeBtn", function (e) {
             _handleLPModeBtnClick(e);
         });
+
+        $(document).on("keydown", function (e) {
+            if (e.key === "F8") {
+                e.preventDefault();
+                _handlePreviewBtnClick();
+            }
+        });
     }
 
     AppInit.appReady(function () {

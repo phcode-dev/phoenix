@@ -1284,6 +1284,17 @@ define(function (require, exports, module) {
     }
 
     /**
+     * This function is responsible to toggle the live preview Preview mode (play icon)
+     * this is done when user presses F8 key in the live preview
+     */
+    function _handlePreviewModeToggle() {
+        const $previewBtn = $("#previewModeLivePreviewButton");
+        if ($previewBtn.length > 0) {
+            $previewBtn.trigger("click");
+        }
+    }
+
+    /**
      * This is the main function that is exported.
      * it will be called by LiveDevProtocol when it receives a message from RemoteFunctions.js
      * or LiveDevProtocolRemote.js (for undo) using MessageBroker
@@ -1310,6 +1321,12 @@ define(function (require, exports, module) {
         // handle save current document in live preview (ctrl/cmd + s)
         if (message.saveCurrentDocument) {
             _handleLivePreviewSave();
+            return;
+        }
+
+        // toggle live preview mode using F8 key
+        if (message.toggleLivePreviewMode) {
+            _handlePreviewModeToggle();
             return;
         }
 
