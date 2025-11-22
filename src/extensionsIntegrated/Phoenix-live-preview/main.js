@@ -72,6 +72,7 @@ define(function (require, exports, module) {
         panelHTML       = require("text!./panel.html"),
         Dialogs = require("widgets/Dialogs"),
         DefaultDialogs = require("widgets/DefaultDialogs"),
+        ProDialogs = require("services/pro-dialogs"),
         utils = require('./utils');
 
     const StateManager = PreferencesManager.stateManager;
@@ -273,35 +274,6 @@ define(function (require, exports, module) {
         }
     }
 
-    function _showProFeatureDialog() {
-        const dialog = Dialogs.showModalDialog(
-            DefaultDialogs.DIALOG_ID_INFO,
-            Strings.LIVE_PREVIEW_PRO_FEATURE_TITLE,
-            Strings.LIVE_PREVIEW_PRO_FEATURE_MESSAGE,
-            [
-                {
-                    className: Dialogs.DIALOG_BTN_CLASS_NORMAL,
-                    id: Dialogs.DIALOG_BTN_CANCEL,
-                    text: Strings.CANCEL
-                },
-                {
-                    className: Dialogs.DIALOG_BTN_CLASS_PRIMARY,
-                    id: "subscribe",
-                    text: Strings.LIVE_PREVIEW_PRO_SUBSCRIBE
-                }
-            ]
-        );
-
-        dialog.done(function (buttonId) {
-            if (buttonId === "subscribe") {
-                // TODO: write the implementation here...@abose
-                console.log("the subscribe button got clicked");
-            }
-        });
-
-        return dialog;
-    }
-
     // this function is to check if the live highlight feature is enabled or not
     function _isLiveHighlightEnabled() {
         return CommandManager.get(Commands.FILE_LIVE_HIGHLIGHT).getChecked();
@@ -438,7 +410,7 @@ define(function (require, exports, module) {
                 LiveDevelopment.setMode("highlight");
             } else if (index === 2) {
                 if (!LiveDevelopment.setMode("edit")) {
-                    _showProFeatureDialog();
+                    ProDialogs.showProUpsellDialog(ProDialogs.UPSELL_TYPE_LIVE_EDIT);
                 }
             } else if (item === Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON) {
                 // Don't allow edit highlight toggle if edit features are not active
