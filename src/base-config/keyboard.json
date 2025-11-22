@@ -28,9 +28,6 @@
             "key": "Ctrl-Shift-R"
         }
     ],
-    "file.livePreviewModeToggle":  [
-        "Ctrl-Shift-C"
-    ],
     "file.quit":  [
         "Ctrl-Q"
     ],

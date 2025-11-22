@@ -607,7 +607,6 @@ define({
     "CMD_TOGGLE_ACTIVE_LINE": "Highlight Active Line",
     "CMD_TOGGLE_WORD_WRAP": "Word Wrap",
     "CMD_LIVE_HIGHLIGHT": "Live Preview Highlight",
-    "CMD_LIVE_PREVIEW_MODE_TOGGLE": "Toggle Live Preview Mode",
     "CMD_VIEW_TOGGLE_INSPECTION": "Lint Files on Save",
     "CMD_VIEW_TOGGLE_PROBLEMS": "Problems",
     "CMD_WORKINGSET_SORT_BY_ADDED": "Sort by Added",

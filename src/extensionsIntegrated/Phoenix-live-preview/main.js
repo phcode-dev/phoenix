@@ -1184,7 +1184,6 @@ define(function (require, exports, module) {
         });
         CommandManager.register(Strings.CMD_LIVE_FILE_PREVIEW_SETTINGS,
             Commands.FILE_LIVE_FILE_PREVIEW_SETTINGS, _showSettingsDialog);
-        CommandManager.register(Strings.CMD_LIVE_PREVIEW_MODE_TOGGLE, Commands.FILE_LIVE_PREVIEW_MODE_TOGGLE, _handlePreviewBtnClick);
         let fileMenu = Menus.getMenu(Menus.AppMenuBar.FILE_MENU);
         fileMenu.addMenuItem(Commands.FILE_LIVE_FILE_PREVIEW, "", Menus.AFTER, Commands.FILE_EXTENSION_MANAGER);
         fileMenu.addMenuItem(Commands.FILE_LIVE_FILE_PREVIEW_SETTINGS, "",
