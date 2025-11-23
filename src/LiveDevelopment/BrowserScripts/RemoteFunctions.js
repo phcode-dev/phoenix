@@ -2703,7 +2703,7 @@ function RemoteFunctions(config = {}) {
                         </div>
 
                         <div class='phoenix-image-gallery-upload-container'>
-                            <button title="${config.strings.imageGallerySelectFromComputer}">${ICONS.selectImageFromComputer} ${config.strings.imageGalleryUpload}</button>
+                            <button title="${config.strings.imageGallerySelectFromComputerTooltip}">${ICONS.selectImageFromComputer} ${config.strings.imageGallerySelectFromComputer}</button>
                             <input type="file" class="phoenix-file-input" accept="image/*" style="display: none !important;">
                         </div>
 

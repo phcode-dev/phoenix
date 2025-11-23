@@ -111,7 +111,6 @@ define(function main(require, exports, module) {
             imageGallery: Strings.LIVE_DEV_MORE_OPTIONS_IMAGE_GALLERY,
             aiPromptPlaceholder: Strings.LIVE_DEV_AI_PROMPT_PLACEHOLDER,
             imageGalleryUseImage: Strings.LIVE_DEV_IMAGE_GALLERY_USE_IMAGE,
-            imageGallerySelectFromComputer: Strings.LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER,
             imageGallerySelectDownloadFolder: Strings.LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER,
             imageGallerySearchPlaceholder: Strings.LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER,
             imageGallerySearchButton: Strings.LIVE_DEV_IMAGE_GALLERY_SEARCH_BUTTON,
@@ -120,7 +119,8 @@ define(function main(require, exports, module) {
             imageGalleryNoImages: Strings.LIVE_DEV_IMAGE_GALLERY_NO_IMAGES,
             imageGalleryLoadError: Strings.LIVE_DEV_IMAGE_GALLERY_LOAD_ERROR,
             imageGalleryClose: Strings.LIVE_DEV_IMAGE_GALLERY_CLOSE,
-            imageGalleryUpload: Strings.LIVE_DEV_IMAGE_GALLERY_UPLOAD,
+            imageGallerySelectFromComputer: Strings.LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER,
+            imageGallerySelectFromComputerTooltip: Strings.LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP,
             toastNotEditable: Strings.LIVE_DEV_TOAST_NOT_EDITABLE,
             toastDontShowAgain: Strings.LIVE_DEV_TOAST_DONT_SHOW_AGAIN
         }
