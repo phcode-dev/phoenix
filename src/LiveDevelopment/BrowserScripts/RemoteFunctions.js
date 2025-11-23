@@ -1364,10 +1364,10 @@ function RemoteFunctions(config = {}) {
       `,
 
         selectImageFromComputer: `
-        <svg viewBox="0 0 24 24" fill="currentColor" width="19" height="19">
-          <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/>
-        </svg>
-      `,
+          <svg viewBox="0 0 24 24" fill="currentColor" width="19" height="19">
+            <path d="M11 5v6H5v2h6v6h2v-6h6v-2h-6V5h-2z"/>
+          </svg>
+        `,
 
         downloadImage: `
         <svg viewBox="0 0 640 640" fill="currentColor">
