@@ -3845,7 +3845,7 @@ function RemoteFunctions(config = {}) {
         // if element is not editable and user clicks on it, then we show a toast notification saying
         // that this element is not editable
         if (!element.hasAttribute("data-brackets-id")) {
-            showToast(config.strings.toastNotEditable);
+            showToastMessage(config.strings.toastNotEditable);
         }
 
         // make sure that the element is actually visible to the user
@@ -4540,6 +4540,7 @@ function RemoteFunctions(config = {}) {
         dismissAIPromptBox();
         dismissNodeInfoBox();
         dismissImageRibbonGallery();
+        dismissToastMessage();
     }
 
     let _toastTimeout = null;
@@ -4549,15 +4550,9 @@ function RemoteFunctions(config = {}) {
      * this toast message is used when user tries to edit a non-editable element
      * @param {String} message - the message to display in the toast
      */
-    function showToast(message) {
+    function showToastMessage(message) {
         // clear any existing toast & timer, if there are any
-        const existingToast = window.document.getElementById('phoenix-toast-notification');
-        if (existingToast) {
-            existingToast.remove();
-        }
-        if (_toastTimeout) {
-            clearTimeout(_toastTimeout);
-        }
+        dismissToastMessage();
 
         // create a new fresh toast container
         const toast = window.document.createElement('div');
@@ -4617,6 +4612,21 @@ function RemoteFunctions(config = {}) {
             }
             _toastTimeout = null;
         }, 3000);
+    }
+
+    /**
+     * this function is to dismiss the toast message
+     * and clear its timeout (if any)
+     */
+    function dismissToastMessage() {
+        const toastMessage = window.document.getElementById('phoenix-toast-notification');
+        if (toastMessage) {
+            toastMessage.remove();
+        }
+        if (_toastTimeout) {
+            clearTimeout(_toastTimeout);
+        }
+        _toastTimeout = null;
     }
 
     /**
