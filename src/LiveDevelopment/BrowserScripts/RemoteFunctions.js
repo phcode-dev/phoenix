@@ -3843,12 +3843,9 @@ function RemoteFunctions(config = {}) {
         }
 
         // if element is not editable and user clicks on it, then we show a toast notification saying
-        // that this element is not editable (unless user dismissed it permanently)
+        // that this element is not editable
         if (!element.hasAttribute("data-brackets-id")) {
-            const hideToast = localStorage.getItem('phoenix-hide-dynamic-toast');
-            if (!hideToast) {
-                showToast(config.strings.toastNotEditable);
-            }
+            showToast(config.strings.toastNotEditable);
         }
 
         // make sure that the element is actually visible to the user
@@ -4592,27 +4589,6 @@ function RemoteFunctions(config = {}) {
                 animation: slideUp 0.3s ease-out !important;
             }
 
-            .toast-message {
-                margin-bottom: 6px !important;
-            }
-
-            .toast-button {
-                background: none !important;
-                border: none !important;
-                color: #A0A0A0 !important;
-                cursor: pointer !important;
-                font-size: 12px !important;
-                font-family: Arial, sans-serif !important;
-                text-decoration: none !important;
-                pointer-events: auto !important;
-                transition: opacity 0.2s !important;
-            }
-
-            .toast-button:hover {
-                opacity: 0.8 !important;
-                text-decoration: underline !important;
-            }
-
             @keyframes slideUp {
                 from {
                     opacity: 0;
@@ -4628,34 +4604,19 @@ function RemoteFunctions(config = {}) {
         const content = `
             <div class="toast-container">
                 <div class="toast-message">${message}</div>
-                <button class="toast-button">${config.strings.toastDontShowAgain}</button>
             </div>
         `;
 
         shadow.innerHTML = `<style>${styles}</style>${content}`;
         window.document.body.appendChild(toast);
 
-        // add click handler to "Don't show again" button
-        const button = shadow.querySelector('.toast-button');
-        button.addEventListener('click', () => {
-            // save to localStorage to never show again and close toast rn
-            localStorage.setItem('phoenix-hide-dynamic-toast', 'true');
-            if (toast && toast.parentNode) {
-                toast.remove();
-            }
-            if (_toastTimeout) {
-                clearTimeout(_toastTimeout);
-                _toastTimeout = null;
-            }
-        });
-
-        // Auto-dismiss after 6 seconds
+        // Auto-dismiss after 3 seconds
         _toastTimeout = setTimeout(() => {
             if (toast && toast.parentNode) {
                 toast.remove();
             }
             _toastTimeout = null;
-        }, 6000);
+        }, 3000);
     }
 
     /**
