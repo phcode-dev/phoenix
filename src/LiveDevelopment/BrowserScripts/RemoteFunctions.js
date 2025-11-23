@@ -3821,6 +3821,7 @@ function RemoteFunctions(config = {}) {
         dismissNodeMoreOptionsBox();
         dismissAIPromptBox();
         dismissNodeInfoBox();
+        dismissToastMessage();
         cleanupPreviousElementState();
 
         // this should also be there when users are in highlight mode
