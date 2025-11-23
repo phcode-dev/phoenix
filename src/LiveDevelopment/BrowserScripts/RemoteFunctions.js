@@ -2418,7 +2418,7 @@ function RemoteFunctions(config = {}) {
                     @media (max-width: 450px) {
                         .phoenix-image-gallery-upload-container button {
                             font-size: 0 !important;
-                            padding: 3px 6px !important;
+                            padding: 3px 5px 3px 6px !important;
                         }
 
                         .phoenix-image-gallery-upload-container button svg {
@@ -2498,12 +2498,12 @@ function RemoteFunctions(config = {}) {
                         color: #eaeaf0 !important;
                         background: rgba(21,25,36,0.65) !important;
                         cursor: pointer !important;
-                        font-size: 20px !important;
+                        font-size: 22px !important;
                         font-weight: 600 !important;
                         user-select: none !important;
                         transition: all 0.2s ease !important;
                         z-index: 2147483647 !important;
-                        padding: 4px 12px 8px 12px !important;
+                        padding: 2px 11px 7px 11px !important;
                         display: none !important;
                         align-items: center !important;
                         justify-content: center !important;
@@ -2514,8 +2514,6 @@ function RemoteFunctions(config = {}) {
                     .phoenix-image-gallery-nav:hover {
                         background: rgba(21,25,36,0.85) !important;
                         border-color: rgba(255,255,255,0.25) !important;
-                        transform: scale(1.05) !important;
-                        box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
                     }
 
                     .phoenix-image-gallery-nav:active {
