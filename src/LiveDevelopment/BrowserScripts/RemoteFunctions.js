@@ -2329,7 +2329,7 @@ function RemoteFunctions(config = {}) {
                         margin-right: 10px !important;
                     }
 
-                    @media (max-width: 525px) {
+                    @media (max-width: 565px) {
                         .phoenix-image-gallery-header-title {
                             display: none !important;
                         }
@@ -2415,7 +2415,7 @@ function RemoteFunctions(config = {}) {
                         background: #3c3f41 !important;
                     }
 
-                    @media (max-width: 400px) {
+                    @media (max-width: 450px) {
                         .phoenix-image-gallery-upload-container button {
                             font-size: 0 !important;
                             padding: 3px 6px !important;
