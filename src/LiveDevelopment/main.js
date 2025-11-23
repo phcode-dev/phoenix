@@ -121,8 +121,7 @@ define(function main(require, exports, module) {
             imageGalleryClose: Strings.LIVE_DEV_IMAGE_GALLERY_CLOSE,
             imageGallerySelectFromComputer: Strings.LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER,
             imageGallerySelectFromComputerTooltip: Strings.LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP,
-            toastNotEditable: Strings.LIVE_DEV_TOAST_NOT_EDITABLE,
-            toastDontShowAgain: Strings.LIVE_DEV_TOAST_DONT_SHOW_AGAIN
+            toastNotEditable: Strings.LIVE_DEV_TOAST_NOT_EDITABLE
         }
     };
     // Status labels/styles are ordered: error, not connected, progress1, progress2, connected.
