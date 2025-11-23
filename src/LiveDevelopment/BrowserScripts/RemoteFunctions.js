@@ -129,6 +129,7 @@ function RemoteFunctions(config = {}) {
         if(element && // element should exist
            element.tagName.toLowerCase() !== "body" && // shouldn't be the body tag
            element.tagName.toLowerCase() !== "html" && // shouldn't be the HTML tag
+           !element.closest("[data-phcode-internal-c15r5a9]") && // this attribute is used by phoenix internal elements
            !_isInsideHeadTag(element)) { // shouldn't be inside the head tag like meta tags and all
             return true;
         }
@@ -1461,6 +1462,7 @@ function RemoteFunctions(config = {}) {
 
         _style: function() {
             this.body = window.document.createElement("div");
+            this.body.setAttribute("data-phcode-internal-c15r5a9", "true");
 
             // this is shadow DOM.
             // we need it because if we add the box directly to the DOM then users style might override it.
@@ -1740,6 +1742,7 @@ function RemoteFunctions(config = {}) {
 
         _style: function() {
             this.body = window.document.createElement("div");
+            this.body.setAttribute("data-phcode-internal-c15r5a9", "true");
 
             // this is shadow DOM.
             // we need it because if we add the box directly to the DOM then users style might override it.
@@ -1924,6 +1927,7 @@ function RemoteFunctions(config = {}) {
 
         _style: function() {
             this.body = window.document.createElement("div");
+            this.body.setAttribute("data-phcode-internal-c15r5a9", "true");
             // using shadow dom so that user styles doesn't override it
             const shadow = this.body.attachShadow({ mode: "open" });
 
@@ -2293,7 +2297,8 @@ function RemoteFunctions(config = {}) {
     ImageRibbonGallery.prototype = {
         _style: function () {
             this.body = window.document.createElement("div");
-            this._shadow = this.body.attachShadow({mode: 'closed'});
+            this.body.setAttribute("data-phcode-internal-c15r5a9", "true");
+            this._shadow = this.body.attachShadow({ mode: 'open' });
 
             this._shadow.innerHTML = `
                 <style>
@@ -4556,6 +4561,7 @@ function RemoteFunctions(config = {}) {
         // create a new fresh toast container
         const toast = window.document.createElement('div');
         toast.id = 'phoenix-toast-notification';
+        toast.setAttribute("data-phcode-internal-c15r5a9", "true");
         const shadow = toast.attachShadow({ mode: 'open' });
 
         const styles = `
