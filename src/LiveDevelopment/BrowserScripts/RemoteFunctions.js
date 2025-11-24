@@ -3919,14 +3919,40 @@ function RemoteFunctions(config = {}) {
     }
 
     /**
+     * this function is called when user clicks on an element in the LP when in edit mode
+     *
+     * @param {HTMLElement} element - The clicked element
+     * @param {Event} event - The click event
+     */
+    function handleElementClick(element, event) {
+        if (!isElementInspectable(element)) { return; }
+
+        // send cursor movement message to editor so cursor jumps to clicked element
+        if (element.hasAttribute("data-brackets-id")) {
+            const selection = window.getSelection();
+
+            if (!selection || selection.toString().length === 0) {
+                window._Brackets_MessageBroker.send({
+                    "tagId": element.getAttribute("data-brackets-id"),
+                    "nodeID": element.id,
+                    "nodeClassList": element.classList,
+                    "nodeName": element.nodeName,
+                    "allSelectors": window.getAllInheritedSelectorsInOrder(element),
+                    "contentEditable": element.contentEditable === "true",
+                    "clicked": true
+                });
+            }
+        }
+
+        // call the selectElement as selectElement handles all the highlighting/boxes and all UI related stuff
+        _selectElement(element);
+        activateHoverLock();
+    }
+
+    /**
      * this acts as the "KILL SWITCH", it blocks all the click related events from user elements
      * but we exclude all the phoenix interal elements
      * we call this function from inside registerHandlers
-     */
-    /**
-     * Central event blocker for edit mode
-     * Blocks all user page interactions but allows Phoenix UI to work
-     * Stores handler references so they can be removed when switching modes
      */
     function registerInteractionBlocker() {
         // Create an object to store handler references
@@ -3953,8 +3979,7 @@ function RemoteFunctions(config = {}) {
                     // Skip click handling on the second click of a double-click
                     // event.detail = 1 for first click, 2 for second click (during double-click)
                     if (event.detail !== 2) {
-                        _selectElement(element);
-                        activateHoverLock();
+                        handleElementClick(element, event);
                     }
                 } else if (eventType === "dblclick") {
                     if (isElementEditable(element) && _shouldShowEditTextOption(element)) {
