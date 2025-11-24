@@ -3927,21 +3927,23 @@ function RemoteFunctions(config = {}) {
     function handleElementClick(element, event) {
         if (!isElementInspectable(element)) { return; }
 
+        // if anything is currently selected, we need to clear that
+        const selection = window.getSelection();
+        if (selection && selection.toString().length > 0) {
+            selection.removeAllRanges();
+        }
+
         // send cursor movement message to editor so cursor jumps to clicked element
         if (element.hasAttribute("data-brackets-id")) {
-            const selection = window.getSelection();
-
-            if (!selection || selection.toString().length === 0) {
-                window._Brackets_MessageBroker.send({
-                    "tagId": element.getAttribute("data-brackets-id"),
-                    "nodeID": element.id,
-                    "nodeClassList": element.classList,
-                    "nodeName": element.nodeName,
-                    "allSelectors": window.getAllInheritedSelectorsInOrder(element),
-                    "contentEditable": element.contentEditable === "true",
-                    "clicked": true
-                });
-            }
+            window._Brackets_MessageBroker.send({
+                "tagId": element.getAttribute("data-brackets-id"),
+                "nodeID": element.id,
+                "nodeClassList": element.classList,
+                "nodeName": element.nodeName,
+                "allSelectors": window.getAllInheritedSelectorsInOrder(element),
+                "contentEditable": element.contentEditable === "true",
+                "clicked": true
+            });
         }
 
         // call the selectElement as selectElement handles all the highlighting/boxes and all UI related stuff
