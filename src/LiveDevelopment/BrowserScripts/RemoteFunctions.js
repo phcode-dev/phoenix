@@ -3916,37 +3916,41 @@ function RemoteFunctions(config = {}) {
     }
 
     /**
-     * This function handles the click event on the live preview DOM element
-     * this just stops the propagation because otherwise users might not be able to edit buttons or hyperlinks etc
-     * @param {Event} event
+     * this acts as the "KILL SWITCH", it blocks all the click related events from user elements
+     * but we exclude all the phoenix interal elements
+     * we call this function from inside registerHandlers
      */
-    function onClick(event) {
-        const element = event.target;
+    function registerInteractionBlocker() {
+        const eventsToBlock = ["click", "dblclick", "mousedown", "mouseup"];
 
-        if(isElementInspectable(element)) {
-            event.preventDefault();
-            event.stopPropagation();
-            event.stopImmediatePropagation();
+        eventsToBlock.forEach(eventType => {
+            window.document.addEventListener(eventType, function(event) {
+                const element = event.target;
 
-            _selectElement(element);
-            activateHoverLock();
-        }
-    }
+                // whitelist: phoenix internal elements
+                if (element.closest("[data-phcode-internal-c15r5a9]")) {
+                    return;
+                }
 
-    /**
-     * this function handles the double click event
-     * @param {Event} event
-     */
-    function onDoubleClick(event) {
-        const element = event.target;
-        if (isElementEditable(element)) {
-            // because we only want to allow double click text editing where we show the edit option
-            if (_shouldShowEditTextOption(element)) {
                 event.preventDefault();
-                event.stopPropagation();
-                startEditing(element);
-            }
-        }
+                event.stopImmediatePropagation();
+
+                // handling the click and double click.
+                // on click we just call the selectElement as it handles everything
+                // on doubleClick we just need to call the startEditing
+                if (eventType === "click") {
+                    // event detail is 2 for double clicks
+                    if (event.detail !== 2) {
+                        _selectElement(element);
+                        activateHoverLock(); // we add hover lock on LP clicks
+                    }
+                } else if (eventType === "dblclick") {
+                    if (isElementEditable(element) && _shouldShowEditTextOption(element)) {
+                        startEditing(element);
+                    }
+                }
+            }, true); // true is for capture phase
+        });
     }
 
     function onKeyUp(event) {
@@ -3967,7 +3971,6 @@ function RemoteFunctions(config = {}) {
             window.document.addEventListener("mouseover", onMouseOver);
             window.document.addEventListener("mouseout", onMouseOut);
             window.document.addEventListener("mousemove", onMouseMove);
-            window.document.addEventListener("click", onClick);
             _localHighlight = new Highlight("#ecc", true);
             _setup = true;
         }
@@ -4831,8 +4834,6 @@ function RemoteFunctions(config = {}) {
         // Always remove existing listeners first to avoid duplicates
         window.document.removeEventListener("mouseover", onElementHover);
         window.document.removeEventListener("mouseout", onElementHoverOut);
-        window.document.removeEventListener("click", onClick);
-        window.document.removeEventListener("dblclick", onDoubleClick);
         window.document.removeEventListener("dragover", onDragOver);
         window.document.removeEventListener("drop", onDrop);
         window.document.removeEventListener("dragleave", onDragLeave);
@@ -4845,14 +4846,17 @@ function RemoteFunctions(config = {}) {
             // Initialize click highlight with animation
             _clickHighlight = new Highlight("#cfc", true); // Light green for click highlight
 
+            // register the event handlers
             window.document.addEventListener("mouseover", onElementHover);
             window.document.addEventListener("mouseout", onElementHoverOut);
-            window.document.addEventListener("click", onClick);
-            window.document.addEventListener("dblclick", onDoubleClick);
             window.document.addEventListener("dragover", onDragOver);
             window.document.addEventListener("drop", onDrop);
             window.document.addEventListener("dragleave", onDragLeave);
             window.document.addEventListener("keydown", onKeyDown);
+
+            // this is to block all the interactions of the user created elements
+            // so that lets say user created link doesn't redirect in edit mode
+            registerInteractionBlocker();
         } else {
             // Clean up any existing UI when edit features are disabled
             dismissUIAndCleanupState();
