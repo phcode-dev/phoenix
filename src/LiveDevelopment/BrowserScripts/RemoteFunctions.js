@@ -33,6 +33,9 @@ function RemoteFunctions(config = {}) {
     // we need this so that we can remove click styling from the previous element when a new element is clicked
     let previouslyClickedElement = null;
 
+    // we store references to interaction blocker event handlers so we can remove them when switching modes
+    let _interactionBlockerHandlers = null;
+
     var req, timeout;
     var animateHighlight = function (time) {
         if(req) {
@@ -3920,37 +3923,65 @@ function RemoteFunctions(config = {}) {
      * but we exclude all the phoenix interal elements
      * we call this function from inside registerHandlers
      */
+    /**
+     * Central event blocker for edit mode
+     * Blocks all user page interactions but allows Phoenix UI to work
+     * Stores handler references so they can be removed when switching modes
+     */
     function registerInteractionBlocker() {
+        // Create an object to store handler references
+        _interactionBlockerHandlers = {};
+
         const eventsToBlock = ["click", "dblclick", "mousedown", "mouseup"];
 
         eventsToBlock.forEach(eventType => {
-            window.document.addEventListener(eventType, function(event) {
+            // Create a named handler function so we can remove it later
+            const handler = function(event) {
                 const element = event.target;
 
-                // whitelist: phoenix internal elements
+                // WHITELIST: Allow Phoenix internal UI elements to work normally
                 if (element.closest("[data-phcode-internal-c15r5a9]")) {
                     return;
                 }
 
+                // BLOCK: Kill all user page interactions in edit mode
                 event.preventDefault();
                 event.stopImmediatePropagation();
 
-                // handling the click and double click.
-                // on click we just call the selectElement as it handles everything
-                // on doubleClick we just need to call the startEditing
+                // HANDLE: Process clicks and double-clicks for element selection/editing
                 if (eventType === "click") {
-                    // event detail is 2 for double clicks
+                    // Skip click handling on the second click of a double-click
+                    // event.detail = 1 for first click, 2 for second click (during double-click)
                     if (event.detail !== 2) {
                         _selectElement(element);
-                        activateHoverLock(); // we add hover lock on LP clicks
+                        activateHoverLock();
                     }
                 } else if (eventType === "dblclick") {
                     if (isElementEditable(element) && _shouldShowEditTextOption(element)) {
                         startEditing(element);
                     }
                 }
-            }, true); // true is for capture phase
+            };
+
+            // Store the handler reference
+            _interactionBlockerHandlers[eventType] = handler;
+
+            // Register the handler in capture phase
+            window.document.addEventListener(eventType, handler, true);
         });
+    }
+
+    /**
+     * this function is to remove all the interaction blocker
+     * this is needed when user is in preview/highlight mode
+     */
+    function unregisterInteractionBlocker() {
+        if (_interactionBlockerHandlers) {
+            Object.keys(_interactionBlockerHandlers).forEach(eventType => {
+                window.document.removeEventListener(eventType, _interactionBlockerHandlers[eventType], true);
+            });
+            _interactionBlockerHandlers = null;
+        }
     }
 
     function onKeyUp(event) {
@@ -4838,6 +4869,7 @@ function RemoteFunctions(config = {}) {
         window.document.removeEventListener("drop", onDrop);
         window.document.removeEventListener("dragleave", onDragLeave);
         window.document.removeEventListener("keydown", onKeyDown);
+        unregisterInteractionBlocker();
 
         if (config.isProUser) {
             // Initialize hover highlight with Chrome-like colors
