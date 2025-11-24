@@ -1164,12 +1164,30 @@ define(function (require, exports, module) {
         const shouldBeChecked = persistFolder !== false;
         $rememberCheckbox.prop('checked', shouldBeChecked);
 
-        _scanRootDirectoriesOnly(projectRoot, rootFolders).then(() => {
-            stringMatcher = new StringMatch.StringMatcher({ segmentedSearch: true });
-            _renderFolderSuggestions(rootFolders.slice(0, 15), $suggestions, $input);
-        });
+        // check if any folder path exists, we pre-fill it
+        const savedFolder = StateManager.get(IMAGE_DOWNLOAD_FOLDER_KEY, StateManager.PROJECT_CONTEXT);
+        if (savedFolder !== null && savedFolder !== undefined) {
+            $input.val(savedFolder);
+        }
 
-        _scanDirectories(projectRoot, '', folderList);
+        // we only scan root directories if we don't have a pre-filled value
+        if (!savedFolder) {
+            _scanRootDirectoriesOnly(projectRoot, rootFolders).then(() => {
+                stringMatcher = new StringMatch.StringMatcher({ segmentedSearch: true });
+                _renderFolderSuggestions(rootFolders.slice(0, 15), $suggestions, $input);
+            });
+        }
+
+        // scan all directories, and if we pre-filled a path, trigger autocomplete suggestions
+        _scanDirectories(projectRoot, '', folderList).then(() => {
+            // init stringMatcher if it wasn't created during root scan
+            if (!stringMatcher) {
+                stringMatcher = new StringMatch.StringMatcher({ segmentedSearch: true });
+            }
+            if (savedFolder) {
+                _updateFolderSuggestions(savedFolder, folderList, rootFolders, stringMatcher, $suggestions, $input);
+            }
+        });
 
         // input event handler
         $input.on('input', function() {
@@ -1255,19 +1273,6 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Handles reset of image folder selection - clears the saved preference and shows the dialog
-     * @private
-     */
-    function _handleResetImageFolderSelection() {
-        // clear the saved folder preference for this project
-        StateManager.set(IMAGE_DOWNLOAD_FOLDER_KEY, null, StateManager.PROJECT_CONTEXT);
-
-        // show the folder selection dialog for the user to choose a new folder
-        // we pass null because we're not downloading an image, just setting the preference
-        _showFolderSelectionDialog(null);
-    }
-
-    /**
      * this function is responsible to save the active file (and previewed file, both might be same though)
      * when ctrl/cmd + s is pressed in the live preview
      */
@@ -1332,7 +1337,7 @@ define(function (require, exports, module) {
 
         // handle reset image folder selection
         if (message.resetImageFolderSelection) {
-            _handleResetImageFolderSelection();
+            _showFolderSelectionDialog(null);
             return;
         }
 
