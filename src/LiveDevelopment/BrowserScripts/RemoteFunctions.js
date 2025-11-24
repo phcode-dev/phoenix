@@ -1569,7 +1569,11 @@ function RemoteFunctions(config = {}) {
             if (imageGallerySelected) {
                 styles += `
                     .node-options span[data-action="image-gallery"] {
-                      background-color: rgba(255, 255, 255, 0.25) !important;
+                      background-color: rgba(50, 50, 220, 0.5) !important;
+                    }
+
+                    .node-options span[data-action="image-gallery"]:hover {
+                      background-color: rgba(100, 100, 230, 0.6) !important;
                     }
                 `;
             }
