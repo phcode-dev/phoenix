@@ -3929,7 +3929,10 @@ function RemoteFunctions(config = {}) {
      * @param {Event} event - The click event
      */
     function handleElementClick(element, event) {
-        if (!isElementInspectable(element)) { return; }
+        if (!isElementInspectable(element)) {
+            dismissUIAndCleanupState();
+            return;
+        }
 
         // if anything is currently selected, we need to clear that
         const selection = window.getSelection();
