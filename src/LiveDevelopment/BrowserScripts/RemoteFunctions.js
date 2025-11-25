@@ -3964,7 +3964,7 @@ function RemoteFunctions(config = {}) {
         // Create an object to store handler references
         _interactionBlockerHandlers = {};
 
-        const eventsToBlock = ["click", "dblclick", "mousedown", "mouseup"];
+        const eventsToBlock = ["click", "dblclick"];
 
         eventsToBlock.forEach(eventType => {
             // Create a named handler function so we can remove it later
