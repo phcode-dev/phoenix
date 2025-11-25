@@ -1186,6 +1186,8 @@ define(function (require, exports, module) {
             }
             if (savedFolder) {
                 _updateFolderSuggestions(savedFolder, folderList, rootFolders, stringMatcher, $suggestions, $input);
+                // load root directories in background so they're ready when user clears input
+                _scanRootDirectoriesOnly(projectRoot, rootFolders);
             }
         });
 
