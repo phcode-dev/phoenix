@@ -3698,25 +3698,45 @@ function RemoteFunctions(config = {}) {
 
         // create overlay container
         const overlay = window.document.createElement('div');
-        overlay.className = 'phoenix-dialog-overlay';
         overlay.setAttribute('data-phcode-internal-c15r5a9', 'true');
-        overlay.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; ' +
-            'background: rgba(0, 0, 0, 0.5); z-index: 10000; pointer-events: auto;';
 
-        // create message bar
-        const messageBar = window.document.createElement('div');
-        messageBar.className = 'phoenix-dialog-message-bar';
-        messageBar.setAttribute('data-phcode-internal-c15r5a9', 'true');
-        messageBar.style.cssText = 'position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); ' +
-            'color: #ffffff; background-color: #333333; padding: 1em 1.5em; ' +
-            'text-align: center; font-size: 16px; border-radius: 3px;' +
-            'font-family: "SourceSansPro", Helvetica, Arial, sans-serif;';
-        messageBar.textContent = config.strings.imageGalleryDialogOverlayMessage;
+        const styles = `
+            <style>
+                .phoenix-dialog-overlay {
+                    position: fixed !important;
+                    top: 0 !important;
+                    left: 0 !important;
+                    width: 100% !important;
+                    height: 100% !important;
+                    background: rgba(0, 0, 0, 0.5) !important;
+                    z-index: 2147483646 !important;
+                    pointer-events: auto !important;
+                }
 
-        // assemble the structure
-        overlay.appendChild(messageBar);
+                .phoenix-dialog-message-bar {
+                    position: absolute !important;
+                    top: 50% !important;
+                    left: 50% !important;
+                    transform: translate(-50%, -50%) !important;
+                    color: #ffffff !important;
+                    background-color: #333333 !important;
+                    padding: 1em 1.5em !important;
+                    text-align: center !important;
+                    font-size: 16px !important;
+                    border-radius: 3px !important;
+                    font-family: "SourceSansPro", Helvetica, Arial, sans-serif !important;
+                    z-index: 2147483647 !important;
+                }
+            </style>
+        `;
 
-        // append to body
+        const content = `
+            <div class="phoenix-dialog-overlay">
+                <div class="phoenix-dialog-message-bar">${config.strings.imageGalleryDialogOverlayMessage}</div>
+            </div>
+        `;
+
+        overlay.innerHTML = styles + content;
         window.document.body.appendChild(overlay);
         _dialogOverlay = overlay;
     }
