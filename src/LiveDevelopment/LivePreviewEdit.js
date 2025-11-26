@@ -47,6 +47,8 @@ define(function (require, exports, module) {
     const IMAGE_DOWNLOAD_PERSIST_FOLDER_KEY = "imageGallery.persistFolder";
 
     const DOWNLOAD_EVENTS = {
+        DIALOG_OPENED: 'dialogOpened',
+        DIALOG_CLOSED: 'dialogClosed',
         STARTED: 'downloadStarted',
         COMPLETED: 'downloadCompleted',
         CANCELLED: 'downloadCancelled',
@@ -1156,6 +1158,11 @@ define(function (require, exports, module) {
         const $suggestions = $dlg.find("#folder-suggestions");
         const $rememberCheckbox = $dlg.find("#remember-folder-checkbox");
 
+        // notify live preview that dialog is now open
+        if (message && message.downloadId) {
+            _sendDownloadStatusToBrowser(DOWNLOAD_EVENTS.DIALOG_OPENED, { downloadId: message.downloadId });
+        }
+
         let folderList = [];
         let rootFolders = [];
         let stringMatcher = null;
@@ -1226,6 +1233,12 @@ define(function (require, exports, module) {
                     _sendDownloadStatusToBrowser(DOWNLOAD_EVENTS.CANCELLED, { downloadId: message.downloadId });
                 }
             }
+
+            // notify live preview that dialog is now closed
+            if (message && message.downloadId) {
+                _sendDownloadStatusToBrowser(DOWNLOAD_EVENTS.DIALOG_CLOSED, { downloadId: message.downloadId });
+            }
+
             dialog.close();
         });
     }
