@@ -121,6 +121,7 @@ define(function main(require, exports, module) {
             imageGalleryClose: Strings.LIVE_DEV_IMAGE_GALLERY_CLOSE,
             imageGallerySelectFromComputer: Strings.LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER,
             imageGallerySelectFromComputerTooltip: Strings.LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP,
+            imageGalleryDialogOverlayMessage: Strings.LIVE_DEV_IMAGE_GALLERY_DIALOG_OVERLAY_MESSAGE,
             toastNotEditable: Strings.LIVE_DEV_TOAST_NOT_EDITABLE
         }
     };

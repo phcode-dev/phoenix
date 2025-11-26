@@ -3711,7 +3711,7 @@ function RemoteFunctions(config = {}) {
             'color: #ffffff; background-color: #333333; padding: 1em 1.5em; ' +
             'text-align: center; font-size: 16px; border-radius: 3px;' +
             'font-family: "SourceSansPro", Helvetica, Arial, sans-serif;';
-        messageBar.textContent = 'Select image download location in the editor to continue';
+        messageBar.textContent = config.strings.imageGalleryDialogOverlayMessage;
 
         // assemble the structure
         overlay.appendChild(messageBar);
