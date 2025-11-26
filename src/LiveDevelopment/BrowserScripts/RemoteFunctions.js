@@ -3703,31 +3703,18 @@ function RemoteFunctions(config = {}) {
         overlay.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; ' +
             'background: rgba(0, 0, 0, 0.5); z-index: 10000; pointer-events: auto;';
 
-        // create toast card (matching existing overlay style: #666 background, #ededed text)
-        const toast = window.document.createElement('div');
-        toast.className = 'phoenix-dialog-toast';
-        toast.setAttribute('data-phcode-internal-c15r5a9', 'true');
-        toast.style.cssText = 'position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); ' +
-            'background: #666; color: #ededed; padding: 24px 32px; border-radius: 6px; ' +
-            'box-shadow: 0 4px 12px rgba(0,0,0,0.15); font-size: 16px; text-align: center;';
-
-        // create icon
-        const icon = window.document.createElement('span');
-        icon.className = 'phoenix-dialog-icon';
-        icon.setAttribute('data-phcode-internal-c15r5a9', 'true');
-        icon.style.cssText = 'margin-right: 10px; font-size: 18px;';
-        icon.textContent = 'ⓘ';
-
-        // create message
-        const message = window.document.createElement('span');
-        message.className = 'phoenix-dialog-message';
-        message.setAttribute('data-phcode-internal-c15r5a9', 'true');
-        message.textContent = 'Select image download location in the editor to continue';
+        // create message bar
+        const messageBar = window.document.createElement('div');
+        messageBar.className = 'phoenix-dialog-message-bar';
+        messageBar.setAttribute('data-phcode-internal-c15r5a9', 'true');
+        messageBar.style.cssText = 'position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); ' +
+            'color: #ffffff; background-color: #333333; padding: 1em 1.5em; ' +
+            'text-align: center; font-size: 16px; border-radius: 3px;' +
+            'font-family: "SourceSansPro", Helvetica, Arial, sans-serif;';
+        messageBar.textContent = 'Select image download location in the editor to continue';
 
         // assemble the structure
-        toast.appendChild(icon);
-        toast.appendChild(message);
-        overlay.appendChild(toast);
+        overlay.appendChild(messageBar);
 
         // append to body
         window.document.body.appendChild(overlay);
