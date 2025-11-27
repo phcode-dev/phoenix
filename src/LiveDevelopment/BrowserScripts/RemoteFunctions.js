@@ -1612,7 +1612,7 @@ function RemoteFunctions(config = {}) {
                 <span data-action="delete" title="${config.strings.delete}">
                     ${ICONS.trash}
                 </span>
-                <span data-action="more-options" title='More Options'>
+                <span data-action="more-options" title="${config.strings.moreOptions}">
                     ${ICONS.verticalEllipsis}
                 </span>
             </div>`;
@@ -1802,15 +1802,15 @@ function RemoteFunctions(config = {}) {
                 <div class="more-options-dropdown">
                     <div class="dropdown-item" data-action="cut">
                         <span class="item-icon">${ICONS.cut}</span>
-                        <span class="item-label">Cut</span>
+                        <span class="item-label">${config.strings.cut}</span>
                     </div>
                     <div class="dropdown-item" data-action="copy">
                         <span class="item-icon">${ICONS.copy}</span>
-                        <span class="item-label">Copy</span>
+                        <span class="item-label">${config.strings.copy}</span>
                     </div>
                     <div class="dropdown-item" data-action="paste">
                         <span class="item-icon">${ICONS.paste}</span>
-                        <span class="item-label">Paste</span>
+                        <span class="item-label">${config.strings.paste}</span>
                     </div>
                 </div>
             `;
