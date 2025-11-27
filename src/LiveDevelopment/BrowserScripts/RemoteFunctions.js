@@ -1495,6 +1495,12 @@ function RemoteFunctions(config = {}) {
         <svg viewBox="0 0 20 16" fill="currentColor" width="17" height="17">
           <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
         </svg>
+      `,
+
+        verticalEllipsis: `
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+        </svg>
       `
     };
 
@@ -1606,14 +1612,8 @@ function RemoteFunctions(config = {}) {
                 <span data-action="delete" title="${config.strings.delete}">
                     ${ICONS.trash}
                 </span>
-                <span data-action="cut" title='Cut'>
-                    ${ICONS.cut}
-                </span>
-                <span data-action="copy" title='Copy'>
-                    ${ICONS.copy}
-                </span>
-                <span data-action="paste" title='Paste'>
-                    ${ICONS.paste}
+                <span data-action="more-options" title='More Options'>
+                    ${ICONS.verticalEllipsis}
                 </span>
             </div>`;
 
@@ -1719,9 +1719,20 @@ function RemoteFunctions(config = {}) {
                     event.preventDefault();
                     // data-action is to differentiate between the buttons (duplicate, delete, select-parent etc)
                     const action = event.currentTarget.getAttribute('data-action');
-                    handleOptionClick(event, action, this.element);
-                    if (action !== 'duplicate') {
-                        this.remove();
+
+                    if (action === 'more-options') {
+                        // to toggle the dropdown on more options button click
+                        if (_moreOptionsDropdown) {
+                            _moreOptionsDropdown.remove();
+                        } else {
+                            _moreOptionsDropdown = new MoreOptionsDropdown(this.element, event.currentTarget);
+                        }
+                    } else {
+                        handleOptionClick(event, action, this.element);
+                        // as we don't want to remove the options box on duplicate button click
+                        if (action !== 'duplicate') {
+                            this.remove();
+                        }
                     }
                 });
             });
@@ -1734,6 +1745,179 @@ function RemoteFunctions(config = {}) {
                 window.document.body.removeChild(this.body);
                 this.body = null;
                 _nodeMoreOptionsBox = null;
+            }
+        }
+    };
+
+    /**
+     * the more options dropdown which appears when user clicks on the ellipsis button in the options box
+     */
+    function MoreOptionsDropdown(targetElement, ellipsisButton) {
+        this.targetElement = targetElement;
+        this.ellipsisButton = ellipsisButton;
+        this.remove = this.remove.bind(this);
+        this.create();
+    }
+
+    MoreOptionsDropdown.prototype = {
+        _getDropdownPosition: function(dropdownWidth, dropdownHeight) {
+            const buttonBounds = this.ellipsisButton.getBoundingClientRect();
+            const viewportHeight = window.innerHeight;
+
+            let topPos, leftPos;
+
+            // Check if there's enough space below the button
+            const spaceBelow = viewportHeight - buttonBounds.bottom;
+            const spaceAbove = buttonBounds.top;
+
+            if (spaceBelow >= dropdownHeight + 6) {
+                // Show below the ellipsis button
+                topPos = buttonBounds.bottom + window.pageYOffset + 6;
+            } else if (spaceAbove >= dropdownHeight + 6) {
+                // Show above the ellipsis button
+                topPos = buttonBounds.top + window.pageYOffset - dropdownHeight - 6;
+            } else {
+                // Not enough space either way, default to below
+                topPos = buttonBounds.bottom + window.pageYOffset + 6;
+            }
+
+            // Align dropdown to the right edge of the button
+            leftPos = buttonBounds.right + window.pageXOffset - dropdownWidth;
+
+            // Make sure dropdown doesn't go off the left edge of viewport
+            if (leftPos < 0) {
+                leftPos = buttonBounds.left + window.pageXOffset;
+            }
+
+            return {topPos: topPos, leftPos: leftPos};
+        },
+
+        _style: function() {
+            this.body = window.document.createElement("div");
+            this.body.setAttribute("data-phcode-internal-c15r5a9", "true");
+
+            const shadow = this.body.attachShadow({ mode: "open" });
+
+            let content = `
+                <div class="more-options-dropdown">
+                    <div class="dropdown-item" data-action="cut">
+                        <span class="item-icon">${ICONS.cut}</span>
+                        <span class="item-label">Cut</span>
+                    </div>
+                    <div class="dropdown-item" data-action="copy">
+                        <span class="item-icon">${ICONS.copy}</span>
+                        <span class="item-label">Copy</span>
+                    </div>
+                    <div class="dropdown-item" data-action="paste">
+                        <span class="item-icon">${ICONS.paste}</span>
+                        <span class="item-label">Paste</span>
+                    </div>
+                </div>
+            `;
+
+            let styles = `
+                :host {
+                  all: initial !important;
+                }
+
+                .phoenix-dropdown {
+                    background-color: #ffffff !important;
+                    color: #1f2933 !important;
+                    border: 1px solid #1a73e8 !important;
+                    border-radius: 6px !important;
+                    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25) !important;
+                    font-size: 13px !important;
+                    font-family: Arial, sans-serif !important;
+                    z-index: 2147483647 !important;
+                    position: absolute !important;
+                    left: -1000px;
+                    top: -1000px;
+                    box-sizing: border-box !important;
+                    min-width: 150px !important;
+                    padding: 4px 0 !important;
+                    overflow: hidden !important;
+                }
+
+                .more-options-dropdown {
+                    display: flex !important;
+                    flex-direction: column !important;
+                }
+
+                .dropdown-item {
+                    padding: 7px 14px !important;
+                    cursor: pointer !important;
+                    white-space: nowrap !important;
+                    user-select: none !important;
+                    display: flex !important;
+                    align-items: center !important;
+                    gap: 8px !important;
+                }
+
+                .dropdown-item:hover {
+                    background-color: #e8f1ff !important;
+                }
+
+                .item-icon {
+                    display: flex !important;
+                    align-items: center !important;
+                    justify-content: center !important;
+                    width: 16px !important;
+                    height: 16px !important;
+                    flex-shrink: 0 !important;
+                }
+
+                .item-icon svg {
+                    width: 16px !important;
+                    height: 16px !important;
+                    display: block !important;
+                }
+
+                .item-label {
+                    flex: 1 !important;
+                }
+            `;
+
+            shadow.innerHTML = `<style>${styles}</style><div class="phoenix-dropdown">${content}</div>`;
+            this._shadow = shadow;
+        },
+
+        create: function() {
+            this.remove();
+            this._style();
+            window.document.body.appendChild(this.body);
+
+            // to position the dropdown element at the right position
+            const dropdownElement = this._shadow.querySelector('.phoenix-dropdown');
+            if (dropdownElement) {
+                const dropdownRect = dropdownElement.getBoundingClientRect();
+                const pos = this._getDropdownPosition(dropdownRect.width, dropdownRect.height);
+
+                dropdownElement.style.left = pos.leftPos + 'px';
+                dropdownElement.style.top = pos.topPos + 'px';
+            }
+
+            // click handlers for the dropdown items
+            const items = this._shadow.querySelectorAll('.dropdown-item');
+            items.forEach(item => {
+                item.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    event.preventDefault();
+                    const action = event.currentTarget.getAttribute('data-action');
+                    handleOptionClick(event, action, this.targetElement);
+                    // when an option is selected we close both the dropdown as well as the options box
+                    this.remove();
+                    if (_nodeMoreOptionsBox) {
+                        _nodeMoreOptionsBox.remove();
+                    }
+                });
+            });
+        },
+
+        remove: function() {
+            if (this.body && this.body.parentNode && this.body.parentNode === window.document.body) {
+                window.document.body.removeChild(this.body);
+                this.body = null;
+                _moreOptionsDropdown = null;
             }
         }
     };
@@ -3776,6 +3960,7 @@ function RemoteFunctions(config = {}) {
     var _clickHighlight;
     var _nodeInfoBox;
     var _nodeMoreOptionsBox;
+    var _moreOptionsDropdown;
     var _aiPromptBox;
     var _imageRibbonGallery;
     var _setup = false;
@@ -4751,6 +4936,16 @@ function RemoteFunctions(config = {}) {
     }
 
     /**
+     * Helper function to dismiss MoreOptionsDropdown if it exists
+     */
+    function dismissMoreOptionsDropdown() {
+        if (_moreOptionsDropdown) {
+            _moreOptionsDropdown.remove();
+            _moreOptionsDropdown = null;
+        }
+    }
+
+    /**
      * Helper function to dismiss NodeInfoBox if it exists
      */
     function dismissNodeInfoBox() {
@@ -4785,6 +4980,7 @@ function RemoteFunctions(config = {}) {
      */
     function dismissAllUIBoxes() {
         dismissNodeMoreOptionsBox();
+        dismissMoreOptionsDropdown();
         dismissAIPromptBox();
         dismissNodeInfoBox();
         dismissImageRibbonGallery();
