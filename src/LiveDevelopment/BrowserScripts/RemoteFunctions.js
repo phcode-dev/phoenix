@@ -1821,9 +1821,9 @@ function RemoteFunctions(config = {}) {
                 }
 
                 .phoenix-dropdown {
-                    background-color: #ffffff !important;
-                    color: #1f2933 !important;
-                    border: 1px solid #1a73e8 !important;
+                    background-color: #2c2c2c !important;
+                    color: #cdcdcd !important;
+                    border: 1px solid #4285F4 !important;
                     border-radius: 6px !important;
                     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25) !important;
                     font-size: 13px !important;
@@ -1833,8 +1833,8 @@ function RemoteFunctions(config = {}) {
                     left: -1000px;
                     top: -1000px;
                     box-sizing: border-box !important;
-                    min-width: 150px !important;
-                    padding: 4px 0 !important;
+                    min-width: 130px !important;
+                    padding: 2px 0 !important;
                     overflow: hidden !important;
                 }
 
@@ -1854,7 +1854,7 @@ function RemoteFunctions(config = {}) {
                 }
 
                 .dropdown-item:hover {
-                    background-color: #e8f1ff !important;
+                    background-color: #3c3f41 !important;
                 }
 
                 .item-icon {
