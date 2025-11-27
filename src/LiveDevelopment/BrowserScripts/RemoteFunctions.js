@@ -4190,6 +4190,7 @@ function RemoteFunctions(config = {}) {
      */
     function _selectElement(element) {
         dismissNodeMoreOptionsBox();
+        dismissMoreOptionsDropdown();
         dismissAIPromptBox();
         dismissNodeInfoBox();
         dismissToastMessage();
