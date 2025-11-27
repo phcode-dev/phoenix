@@ -316,6 +316,102 @@ define(function (require, exports, module) {
     }
 
     /**
+     * this saves the element to clipboard and deletes its source code
+     * @param {Number} tagId
+     */
+    function _cutElementToClipboard(tagId) {
+        const editor = _getEditorAndValidate(tagId);
+        if (!editor) {
+            return;
+        }
+
+        const range = _getElementRange(editor, tagId);
+        if (!range) {
+            return;
+        }
+
+        const { startPos, endPos } = range;
+        const text = editor.getTextBetween(startPos, endPos);
+
+        Phoenix.app.copyToClipboard(text);
+
+        // delete the elements source code
+        editor.document.batchOperation(function () {
+            editor.replaceRange("", startPos, endPos);
+
+            // clean up any empty line
+            if(startPos.line !== 0 && !(editor.getLine(startPos.line).trim())) {
+                const prevLineText = editor.getLine(startPos.line - 1);
+                const chPrevLine = prevLineText ? prevLineText.length : 0;
+                editor.replaceRange("", {line: startPos.line - 1, ch: chPrevLine}, startPos);
+            }
+        });
+    }
+
+    function _copyElementToClipboard(tagId) {
+        const editor = _getEditorAndValidate(tagId);
+        if (!editor) {
+            return;
+        }
+
+        const range = _getElementRange(editor, tagId);
+        if (!range) {
+            return;
+        }
+
+        const { startPos, endPos } = range;
+        const text = editor.getTextBetween(startPos, endPos);
+
+        Phoenix.app.copyToClipboard(text);
+    }
+
+    /**
+     * this function is to paste the clipboard content above the target element
+     * @param {Number} tagId
+     */
+    function _pasteElementFromClipboard(tagId) {
+        const editor = _getEditorAndValidate(tagId);
+        if (!editor) {
+            return;
+        }
+        const range = _getElementRange(editor, tagId);
+        if (!range) {
+            return;
+        }
+
+        const { startPos } = range;
+
+        Phoenix.app.clipboardReadText().then(text => {
+            if (!text) {
+                return;
+            }
+
+            // get the indentation at the target element's line
+            const indent = editor.getTextBetween({ line: startPos.line, ch: 0 }, startPos);
+
+            // for proper indentation
+            const lines = text.split('\n');
+            const indentedLines = lines.map((line, index) => {
+                if (index === 0) {
+                    return indent.trim() === "" ? indent + line : line;
+                }
+                return line ? indent + line : line;
+            });
+            const indentedContent = indentedLines.join('\n');
+
+            editor.document.batchOperation(function () {
+                if (indent.trim() === "") {
+                    editor.replaceRange(indentedContent + "\n", startPos);
+                } else {
+                    editor.replaceRange("\n" + indentedContent, { line: startPos.line, ch: 0 });
+                }
+            });
+        }).catch(err => {
+            console.error("Failed to read from clipboard:", err);
+        });
+    }
+
+    /**
      * This function is responsible to delete an element from the source code
      * @param {Number} tagId - the data-brackets-id of the DOM element
      */
@@ -1387,6 +1483,12 @@ define(function (require, exports, module) {
             _deleteElementInSourceByTagId(message.tagId);
         } else if (message.duplicate) {
             _duplicateElementInSourceByTagId(message.tagId);
+        } else if (message.cut) {
+            _cutElementToClipboard(message.tagId);
+        } else if (message.copy) {
+            _copyElementToClipboard(message.tagId);
+        } else if (message.paste) {
+            _pasteElementFromClipboard(message.tagId);
         } else if (message.livePreviewTextEdit) {
             _editTextInSource(message);
         } else if (message.AISend) {

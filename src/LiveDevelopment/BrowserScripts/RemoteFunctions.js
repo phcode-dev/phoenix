@@ -359,6 +359,70 @@ function RemoteFunctions(config = {}) {
     }
 
     /**
+     * this is for cut button, when user clicks on cut button we copy the element's source code
+     * into the clipboard and remove it from the src code. read `_cutElementToClipboard` in `LivePreviewEdit.js`
+     * @param {Event} event
+     * @param {DOMElement} element - the element we need to cut
+     */
+    function _handleCutOptionClick(event, element) {
+        if (isElementEditable(element)) {
+            const tagId = element.getAttribute("data-brackets-id");
+
+            window._Brackets_MessageBroker.send({
+                livePreviewEditEnabled: true,
+                element: element,
+                event: event,
+                tagId: Number(tagId),
+                cut: true
+            });
+        } else {
+            console.error("The TagID might be unavailable or the element tag is directly body or html");
+        }
+    }
+
+    /**
+     * this is for copy button, similar to cut just we don't remove the elements source code
+     * @param {Event} event
+     * @param {DOMElement} element
+     */
+    function _handleCopyOptionClick(event, element) {
+        if (isElementEditable(element)) {
+            const tagId = element.getAttribute("data-brackets-id");
+
+            window._Brackets_MessageBroker.send({
+                livePreviewEditEnabled: true,
+                element: element,
+                event: event,
+                tagId: Number(tagId),
+                copy: true
+            });
+        } else {
+            console.error("The TagID might be unavailable or the element tag is directly body or html");
+        }
+    }
+
+    /**
+     * this is for paste button, this inserts the saved content from clipboard just above this element
+     * @param {Event} event
+     * @param {DOMElement} targetElement
+     */
+    function _handlePasteOptionClick(event, targetElement) {
+        if (isElementEditable(targetElement)) {
+            const targetTagId = targetElement.getAttribute("data-brackets-id");
+
+            window._Brackets_MessageBroker.send({
+                livePreviewEditEnabled: true,
+                element: targetElement,
+                event: event,
+                tagId: Number(targetTagId),
+                paste: true
+            });
+        } else {
+            console.error("The TagID might be unavailable or the element tag is directly body or html");
+        }
+    }
+
+    /**
      * this is for select-parent button
      * When user clicks on this option for a particular element, we get its parent element and trigger a click on it
      * @param {Event} event
@@ -400,6 +464,12 @@ function RemoteFunctions(config = {}) {
             _handleDuplicateOptionClick(e, element);
         } else if (action === "delete") {
             _handleDeleteOptionClick(e, element);
+        } else if (action === "cut") {
+            _handleCutOptionClick(e, element);
+        } else if (action === "copy") {
+            _handleCopyOptionClick(e, element);
+        } else if (action === "paste") {
+            _handlePasteOptionClick(e, element);
         } else if (action === "ai") {
             _handleAIOptionClick(e, element);
         } else if (action === "image-gallery") {
@@ -1360,6 +1430,30 @@ function RemoteFunctions(config = {}) {
         </svg>
       `,
 
+        cut: `
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <circle cx="6" cy="6" r="3"/>
+          <circle cx="6" cy="18" r="3"/>
+          <line x1="20" y1="4" x2="8.12" y2="15.88" stroke="currentColor" stroke-width="2"/>
+          <line x1="14.47" y1="14.48" x2="20" y2="20" stroke="currentColor" stroke-width="2"/>
+          <line x1="8.12" y1="8.12" x2="12" y2="12" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      `,
+
+        copy: `
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="2"/>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      `,
+
+        paste: `
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+          <rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
+        </svg>
+      `,
+
         imageGallery: `
         <svg viewBox="0 0 24 24" fill="currentColor">
           <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
@@ -1512,6 +1606,15 @@ function RemoteFunctions(config = {}) {
                 <span data-action="delete" title="${config.strings.delete}">
                     ${ICONS.trash}
                 </span>
+                <span data-action="cut" title='Cut'>
+                    ${ICONS.cut}
+                </span>
+                <span data-action="copy" title='Copy'>
+                    ${ICONS.copy}
+                </span>
+                <span data-action="paste" title='Paste'>
+                    ${ICONS.paste}
+                </span>
             </div>`;
 
             let styles = `
@@ -1614,7 +1717,7 @@ function RemoteFunctions(config = {}) {
                 span.addEventListener('click', (event) => {
                     event.stopPropagation();
                     event.preventDefault();
-                    // data-action is to differentiate between the buttons (duplicate, delete or select-parent)
+                    // data-action is to differentiate between the buttons (duplicate, delete, select-parent etc)
                     const action = event.currentTarget.getAttribute('data-action');
                     handleOptionClick(event, action, this.element);
                     if (action !== 'duplicate') {
