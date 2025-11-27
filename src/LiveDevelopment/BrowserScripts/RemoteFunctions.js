@@ -1757,33 +1757,76 @@ function RemoteFunctions(config = {}) {
         _getDropdownPosition: function(dropdownWidth, dropdownHeight) {
             const buttonBounds = this.ellipsisButton.getBoundingClientRect();
             const viewportHeight = window.innerHeight;
+            const viewportWidth = window.innerWidth;
+
+            const optionsBox = _nodeMoreOptionsBox._shadow.querySelector(".phoenix-more-options-box");
+            const optionsBoxBounds = optionsBox.getBoundingClientRect();
+            const targetElementBounds = this.targetElement.getBoundingClientRect();
 
             let topPos, leftPos;
 
-            // Check if there's enough space below the button
-            const spaceBelow = viewportHeight - buttonBounds.bottom;
-            const spaceAbove = buttonBounds.top;
+            const checkOverlap = function (dTop, dLeft, dWidth, dHeight) {
+                const dropdownRight = dLeft + dWidth;
+                const dropdownBottom = dTop + dHeight;
+                const elemRight = targetElementBounds.left + targetElementBounds.width;
+                const elemBottom = targetElementBounds.top + targetElementBounds.height;
 
-            if (spaceBelow >= dropdownHeight + 6) {
-                // Show below the ellipsis button
-                topPos = buttonBounds.bottom + window.pageYOffset + 6;
-            } else if (spaceAbove >= dropdownHeight + 6) {
-                // Show above the ellipsis button
-                topPos = buttonBounds.top + window.pageYOffset - dropdownHeight - 6;
+                return !(
+                    dLeft > elemRight ||
+                    dropdownRight < targetElementBounds.left ||
+                    dTop > elemBottom ||
+                    dropdownBottom < targetElementBounds.top
+                );
+            };
+
+            const isOptionsBoxAboveElement = optionsBoxBounds.bottom < targetElementBounds.top;
+
+            if (isOptionsBoxAboveElement) {
+                const spaceAbove = optionsBoxBounds.top;
+
+                if (spaceAbove >= dropdownHeight + 6) {
+                    topPos = optionsBoxBounds.top + window.pageYOffset - dropdownHeight - 6;
+                } else {
+                    topPos = optionsBoxBounds.bottom + window.pageYOffset + 6;
+
+                    const tempTop = optionsBoxBounds.bottom;
+                    const tempLeft = buttonBounds.right - dropdownWidth;
+
+                    if (checkOverlap(tempTop, tempLeft, dropdownWidth, dropdownHeight)) {
+                        let shiftedLeft = targetElementBounds.right + 6;
+                        if (shiftedLeft + dropdownWidth <= viewportWidth - 6) {
+                            leftPos = shiftedLeft + window.pageXOffset;
+                            return { topPos: topPos, leftPos: leftPos };
+                        }
+
+                        shiftedLeft = targetElementBounds.left - dropdownWidth - 6;
+                        if (shiftedLeft >= 6) {
+                            leftPos = shiftedLeft + window.pageXOffset;
+                            return { topPos: topPos, leftPos: leftPos };
+                        }
+                    }
+                }
             } else {
-                // Not enough space either way, default to below
-                topPos = buttonBounds.bottom + window.pageYOffset + 6;
+                const spaceBelow = viewportHeight - optionsBoxBounds.bottom;
+
+                if (spaceBelow >= dropdownHeight + 6) {
+                    topPos = optionsBoxBounds.bottom + window.pageYOffset + 6;
+                } else {
+                    topPos = optionsBoxBounds.top + window.pageYOffset - dropdownHeight - 6;
+                }
             }
 
-            // Align dropdown to the right edge of the button
             leftPos = buttonBounds.right + window.pageXOffset - dropdownWidth;
 
-            // Make sure dropdown doesn't go off the left edge of viewport
-            if (leftPos < 0) {
-                leftPos = buttonBounds.left + window.pageXOffset;
+            if (leftPos < 6) {
+                leftPos = 6;
             }
 
-            return {topPos: topPos, leftPos: leftPos};
+            if (leftPos + dropdownWidth > viewportWidth - 6) {
+                leftPos = viewportWidth - dropdownWidth - 6;
+            }
+
+            return { topPos: topPos, leftPos: leftPos };
         },
 
         _style: function() {
