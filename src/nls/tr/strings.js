@@ -174,6 +174,8 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_NO_IMAGES": "Hiç resim bulunamadı",
   "LIVE_DEV_IMAGE_GALLERY_LOAD_ERROR": "Resimler yüklenemedi",
   "LIVE_DEV_IMAGE_GALLERY_CLOSE": "Kapat",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "Cihazınızdan bir resim seçin",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Cihazdan seç",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Öğe düzenlenemez - betik tarafından oluşturuldu.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Resmi Kaydetmek İçin Klasör Seçin",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Resmi nereye indireceğinizi seçin:",
@@ -182,6 +184,7 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Bu proje için tekrar sorma",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Phoenix AI'dan bu öğeyi değiştirmesini isteyin...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Özel sunucunuzdan önizleme alınıyor {0}",
+  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Önizleme Modunu Aç/Kapat (F8)",
   "LIVE_PREVIEW_MODE_PREVIEW": "Önizleme Modu",
   "LIVE_PREVIEW_MODE_HIGHLIGHT": "Vurgulama Modu",
   "LIVE_PREVIEW_MODE_EDIT": "Düzenleme Modu",
@@ -1529,7 +1532,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Yapay zeka erişimi sistem yöneticiniz tarafından devre dışı bırakıldı. Yardım için lütfen {0} ile iletişime geçin.",
   "AI_UPSELL_DIALOG_TITLE": "{0} ile devam edilsin mi?",
   "AI_UPSELL_DIALOG_MESSAGE": "{0} özelliğini keşfettiniz. Devam etmek için bir Yapay Zeka aboneliğine veya kredilere ihtiyacınız var.",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "Cihazınızdan bir resim seçin",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Cihazdan seç",
-  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Önizleme Modunu Aç/Kapat (F8)"
+  "LICENSE_KEY_PLACEHOLDER": "Lisans anahtarınızı girin…"
 });

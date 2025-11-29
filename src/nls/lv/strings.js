@@ -174,6 +174,8 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_NO_IMAGES": "Nav atrasti attēli",
   "LIVE_DEV_IMAGE_GALLERY_LOAD_ERROR": "Neizdevās ielādēt attēlus",
   "LIVE_DEV_IMAGE_GALLERY_CLOSE": "Aizvērt",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "Atlasiet attēlu no savas ierīces",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Atlasīt no ierīces",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Elements nav rediģējams - to ģenerējis skripts.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Izvēlieties mapi attēla saglabāšanai",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Izvēlieties, kur lejupielādēt attēlu:",
@@ -182,6 +184,7 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Vairs nejautāt šim projektam",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Palūdziet Phoenix AI modificēt šo elementu...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Priekšskatījuma iegūšana no pielāgotā servera {0}",
+  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Pārslēgt priekšskatījuma režīmu (F8)",
   "LIVE_PREVIEW_MODE_PREVIEW": "Priekšskatījuma režīms",
   "LIVE_PREVIEW_MODE_HIGHLIGHT": "Izcelšanas režīms",
   "LIVE_PREVIEW_MODE_EDIT": "Rediģēšanas režīms",
@@ -1529,7 +1532,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "MI piekļuvi ir atspējojis jūsu sistēmas administrators. Lūdzu, sazinieties ar {0}, lai saņemtu palīdzību.",
   "AI_UPSELL_DIALOG_TITLE": "Turpināt ar {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Jūs atklājāt {0}. Lai turpinātu, jums būs nepieciešams MI abonements vai kredīti.",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "Atlasiet attēlu no savas ierīces",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Atlasīt no ierīces",
-  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Pārslēgt priekšskatījuma režīmu (F8)"
+  "LICENSE_KEY_PLACEHOLDER": "Ievadiet savu licences atslēgu…"
 });

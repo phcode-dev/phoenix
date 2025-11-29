@@ -174,6 +174,8 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_NO_IMAGES": "هیچ تصویری یافت نشد",
   "LIVE_DEV_IMAGE_GALLERY_LOAD_ERROR": "بارگذاری تصاویر با خطا مواجه شد",
   "LIVE_DEV_IMAGE_GALLERY_CLOSE": "بستن",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "انتخاب یک تصویر از دستگاه شما",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "انتخاب از دستگاه",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "عنصر قابل ویرایش نیست - توسط اسکریپت ایجاد شده است.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "انتخاب پوشه برای ذخیره تصویر",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "محل دانلود تصویر را انتخاب کنید:",
@@ -182,6 +184,7 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "دیگر برای این پروژه سؤال نشود",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "از فینیکس هوش مصنوعی بخواهید این المان را تغییر دهد...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "دریافت پیش‌نمایش از سرور سفارشی شما {0}",
+  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "تغییر وضعیت حالت پیش‌نمایش (F8)",
   "LIVE_PREVIEW_MODE_PREVIEW": "حالت پیش‌نمایش",
   "LIVE_PREVIEW_MODE_HIGHLIGHT": "حالت هایلایت",
   "LIVE_PREVIEW_MODE_EDIT": "حالت ویرایش",
@@ -1529,7 +1532,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "دسترسی به هوش مصنوعی توسط مدیر سیستم شما غیرفعال شده است. لطفاً برای راهنمایی با {0} تماس بگیرید.",
   "AI_UPSELL_DIALOG_TITLE": "ادامه با {0}؟",
   "AI_UPSELL_DIALOG_MESSAGE": "شما قابلیت {0} را کشف کرده‌اید. برای ادامه، به اشتراک AI یا اعتبار نیاز دارید.",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "انتخاب یک تصویر از دستگاه شما",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "انتخاب از دستگاه",
-  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "تغییر وضعیت حالت پیش‌نمایش (F8)"
+  "LICENSE_KEY_PLACEHOLDER": "کلید لایسنس خود را وارد کنید…"
 });

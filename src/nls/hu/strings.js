@@ -174,6 +174,8 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_NO_IMAGES": "Nem található kép",
   "LIVE_DEV_IMAGE_GALLERY_LOAD_ERROR": "A képek betöltése sikertelen",
   "LIVE_DEV_IMAGE_GALLERY_CLOSE": "Bezárás",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "Kép kiválasztása az eszközről",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Kiválasztás eszközről",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Az elem nem szerkeszthető – szkript által generált.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Mappa kiválasztása a kép mentéséhez",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Válassza ki, hova szeretné letölteni a képet:",
@@ -182,6 +184,7 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Ne kérdezze újra ennél a projektnél",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Kérd meg a Phoenix MI-t, hogy módosítsa ezt az elemet...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Előnézet lekérése az egyéni szerverről ({0})",
+  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Előnézeti mód be-/kikapcsolása (F8)",
   "LIVE_PREVIEW_MODE_PREVIEW": "Előnézeti mód",
   "LIVE_PREVIEW_MODE_HIGHLIGHT": "Kiemelés mód",
   "LIVE_PREVIEW_MODE_EDIT": "Szerkesztő mód",
@@ -1529,7 +1532,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "A MI-hozzáférést a rendszergazda letiltotta. Segítségért forduljon a(z) {0} elérhetőséghez.",
   "AI_UPSELL_DIALOG_TITLE": "Folytatja a(z) {0} használatával?",
   "AI_UPSELL_DIALOG_MESSAGE": "Felfedezte a(z) {0} szolgáltatást. A folytatáshoz MI-előfizetésre vagy kreditekre lesz szüksége.",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "Kép kiválasztása az eszközről",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Kiválasztás eszközről",
-  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Előnézeti mód be-/kikapcsolása (F8)"
+  "LICENSE_KEY_PLACEHOLDER": "Adja meg a licenckulcsát…"
 });

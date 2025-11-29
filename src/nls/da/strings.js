@@ -174,6 +174,8 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_NO_IMAGES": "Ingen billeder fundet",
   "LIVE_DEV_IMAGE_GALLERY_LOAD_ERROR": "Kunne ikke indlæse billeder",
   "LIVE_DEV_IMAGE_GALLERY_CLOSE": "Luk",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "Vælg et billede fra din enhed",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Vælg fra enhed",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Element kan ikke redigeres - genereret af script.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Vælg mappe til at gemme billede",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Vælg, hvor billedet skal downloades:",
@@ -182,6 +184,7 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Spørg ikke igen for dette projekt",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Bed Phoenix AI om at ændre dette element...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Henter forhåndsvisning fra din brugerdefinerede server {0}",
+  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Skift forhåndsvisningstilstand (F8)",
   "LIVE_PREVIEW_MODE_PREVIEW": "Forhåndsvisningstilstand",
   "LIVE_PREVIEW_MODE_HIGHLIGHT": "Fremhævningstilstand",
   "LIVE_PREVIEW_MODE_EDIT": "Redigeringstilstand",
@@ -1529,7 +1532,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Adgang til AI er blevet deaktiveret af din systemadministrator. Kontakt venligst {0} for hjælp.",
   "AI_UPSELL_DIALOG_TITLE": "Fortsæt med {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Du har opdaget {0}. For at fortsætte har du brug for et AI-abonnement eller kreditter.",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "Vælg et billede fra din enhed",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Vælg fra enhed",
-  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Skift forhåndsvisningstilstand (F8)"
+  "LICENSE_KEY_PLACEHOLDER": "Indtast din licensnøgle…"
 });

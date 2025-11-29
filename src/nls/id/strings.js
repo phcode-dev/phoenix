@@ -174,6 +174,8 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_NO_IMAGES": "Tidak ada gambar yang ditemukan",
   "LIVE_DEV_IMAGE_GALLERY_LOAD_ERROR": "Gagal memuat gambar",
   "LIVE_DEV_IMAGE_GALLERY_CLOSE": "Tutup",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "Pilih gambar dari perangkat Anda",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Pilih dari perangkat",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Elemen tidak dapat diedit - dihasilkan oleh skrip.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Pilih Folder untuk Menyimpan Gambar",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Pilih lokasi untuk mengunduh gambar:",
@@ -182,6 +184,7 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Jangan tanya lagi untuk proyek ini",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Minta Phoenix AI untuk memodifikasi elemen ini...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Mendapatkan pratinjau dari server kustom Anda {0}",
+  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Alihkan Mode Pratinjau (F8)",
   "LIVE_PREVIEW_MODE_PREVIEW": "Mode Pratinjau",
   "LIVE_PREVIEW_MODE_HIGHLIGHT": "Mode Sorotan",
   "LIVE_PREVIEW_MODE_EDIT": "Mode Edit",
@@ -1529,7 +1532,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Akses AI telah dinonaktifkan oleh administrator sistem Anda. Silakan hubungi {0} untuk bantuan.",
   "AI_UPSELL_DIALOG_TITLE": "Lanjutkan dengan {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Anda telah menemukan {0}. Untuk melanjutkan, Anda memerlukan langganan AI atau kredit.",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "Pilih gambar dari perangkat Anda",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Pilih dari perangkat",
-  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Alihkan Mode Pratinjau (F8)"
+  "LICENSE_KEY_PLACEHOLDER": "Masukkan kunci lisensi Anda…"
 });

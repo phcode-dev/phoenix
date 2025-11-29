@@ -174,6 +174,8 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_NO_IMAGES": "발견된 이미지가 없습니다",
   "LIVE_DEV_IMAGE_GALLERY_LOAD_ERROR": "이미지 로드에 실패했습니다",
   "LIVE_DEV_IMAGE_GALLERY_CLOSE": "닫기",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "기기에서 이미지를 선택하세요",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "기기에서 선택",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "편집할 수 없는 요소 - 스크립트로 생성됨.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "이미지를 저장할 폴더 선택",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "이미지를 다운로드할 위치를 선택하세요:",
@@ -182,6 +184,7 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "이 프로젝트에 대해 다시 묻지 않기",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Phoenix AI에게 이 요소 수정을 요청하세요...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "사용자 지정 서버 {0}에서 미리보기 가져오는 중",
+  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "미리보기 모드 전환 (F8)",
   "LIVE_PREVIEW_MODE_PREVIEW": "미리보기 모드",
   "LIVE_PREVIEW_MODE_HIGHLIGHT": "강조 표시 모드",
   "LIVE_PREVIEW_MODE_EDIT": "편집 모드",
@@ -1529,7 +1532,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "시스템 관리자에 의해 AI 액세스가 비활성화되었습니다. 도움이 필요하시면 {0}에게 문의하세요.",
   "AI_UPSELL_DIALOG_TITLE": "{0}(으)로 계속하시겠습니까?",
   "AI_UPSELL_DIALOG_MESSAGE": "{0} 기능을 발견하셨습니다. 계속 진행하려면 AI 구독 또는 크레딧이 필요합니다.",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "기기에서 이미지를 선택하세요",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "기기에서 선택",
-  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "미리보기 모드 전환 (F8)"
+  "LICENSE_KEY_PLACEHOLDER": "라이선스 키를 입력하세요…"
 });

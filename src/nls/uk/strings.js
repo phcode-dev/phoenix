@@ -174,6 +174,8 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_NO_IMAGES": "Зображень не знайдено",
   "LIVE_DEV_IMAGE_GALLERY_LOAD_ERROR": "Не вдалося завантажити зображення",
   "LIVE_DEV_IMAGE_GALLERY_CLOSE": "Закрити",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "Оберіть зображення з вашого пристрою",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Вибрати з пристрою",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Елемент не можна редагувати – згенеровано скриптом.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Виберіть папку для збереження зображення",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Виберіть, куди завантажити зображення:",
@@ -182,6 +184,7 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Не запитувати знову для цього проєкту",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Попросіть Phoenix AI змінити цей елемент...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Отримання попереднього перегляду з вашого власного сервера {0}",
+  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Перемкнути режим попереднього перегляду (F8)",
   "LIVE_PREVIEW_MODE_PREVIEW": "Режим попереднього перегляду",
   "LIVE_PREVIEW_MODE_HIGHLIGHT": "Режим підсвічування",
   "LIVE_PREVIEW_MODE_EDIT": "Режим редагування",
@@ -1529,7 +1532,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Доступ до ШІ було вимкнено вашим системним адміністратором. Будь ласка, зверніться до {0} за допомогою.",
   "AI_UPSELL_DIALOG_TITLE": "Продовжити з {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Ви відкрили для себе {0}. Щоб продовжити, вам знадобиться підписка на ШІ або кредити.",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "Оберіть зображення з вашого пристрою",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Вибрати з пристрою",
-  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Перемкнути режим попереднього перегляду (F8)"
+  "LICENSE_KEY_PLACEHOLDER": "Введіть ваш ліцензійний ключ…"
 });

@@ -174,6 +174,8 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_NO_IMAGES": "画像が見つかりません",
   "LIVE_DEV_IMAGE_GALLERY_LOAD_ERROR": "画像の読み込みに失敗しました",
   "LIVE_DEV_IMAGE_GALLERY_CLOSE": "閉じる",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "お使いのデバイスから画像を選択",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "デバイスから選択",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "スクリプトにより生成された要素は編集できません。",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "画像を保存するフォルダーを選択",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "画像のダウンロード先を選択してください：",
@@ -182,6 +184,7 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "このプロジェクトでは次回から表示しない",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Phoenix AIにこの要素の変更を依頼してください…",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "カスタムサーバー {0} からプレビューを取得しています",
+  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "プレビューモードの切り替え (F8)",
   "LIVE_PREVIEW_MODE_PREVIEW": "プレビューモード",
   "LIVE_PREVIEW_MODE_HIGHLIGHT": "ハイライトモード",
   "LIVE_PREVIEW_MODE_EDIT": "編集モード",
@@ -1529,7 +1532,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "AIアクセスはシステム管理者によって無効にされています。サポートが必要な場合は、{0}にお問い合わせください。",
   "AI_UPSELL_DIALOG_TITLE": "{0}を続行しますか？",
   "AI_UPSELL_DIALOG_MESSAGE": "「{0}」をご利用になるには、AIサブスクリプションまたはクレジットが必要です。",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "お使いのデバイスから画像を選択",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "デバイスから選択",
-  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "プレビューモードの切り替え (F8)"
+  "LICENSE_KEY_PLACEHOLDER": "ライセンスキーを入力…"
 });

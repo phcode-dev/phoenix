@@ -174,6 +174,8 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_NO_IMAGES": "Nebyly nalezeny žádné obrázky",
   "LIVE_DEV_IMAGE_GALLERY_LOAD_ERROR": "Nepodařilo se načíst obrázky",
   "LIVE_DEV_IMAGE_GALLERY_CLOSE": "Zavřít",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "Vyberte obrázek z vašeho zařízení",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Vybrat ze zařízení",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Prvek nelze upravit – vygenerováno skriptem.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Vybrat složku pro uložení obrázku",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Zvolte, kam chcete obrázek stáhnout:",
@@ -182,6 +184,7 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "U tohoto projektu se znovu neptat",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Požádejte Phoenix AI o úpravu tohoto prvku...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Získávání náhledu z vašeho vlastního serveru {0}",
+  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Přepnout režim náhledu (F8)",
   "LIVE_PREVIEW_MODE_PREVIEW": "Režim náhledu",
   "LIVE_PREVIEW_MODE_HIGHLIGHT": "Režim zvýraznění",
   "LIVE_PREVIEW_MODE_EDIT": "Režim úprav",
@@ -1529,7 +1532,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Přístup k AI byl zakázán správcem systému. Pro pomoc prosím kontaktujte {0}.",
   "AI_UPSELL_DIALOG_TITLE": "Pokračovat s {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Objevili jste {0}. Chcete-li pokračovat, budete potřebovat předplatné AI nebo kredity.",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "Vyberte obrázek z vašeho zařízení",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Vybrat ze zařízení",
-  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Přepnout režim náhledu (F8)"
+  "LICENSE_KEY_PLACEHOLDER": "Zadejte licenční klíč…"
 });

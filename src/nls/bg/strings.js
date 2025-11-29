@@ -174,6 +174,8 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_NO_IMAGES": "Няма намерени изображения",
   "LIVE_DEV_IMAGE_GALLERY_LOAD_ERROR": "Грешка при зареждане на изображения",
   "LIVE_DEV_IMAGE_GALLERY_CLOSE": "Затваряне",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "Изберете изображение от вашето устройство",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Изберете от устройство",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Елементът не може да се редактира – генериран е от скрипт.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Избор на папка за запазване на изображението",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Изберете къде да изтеглите изображението:",
@@ -182,6 +184,7 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Не питай отново за този проект",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Помолете Phoenix AI да модифицира този елемент...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Получаване на преглед от вашия потребителски сървър {0}",
+  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Превключване на режим на преглед (F8)",
   "LIVE_PREVIEW_MODE_PREVIEW": "Режим на преглед",
   "LIVE_PREVIEW_MODE_HIGHLIGHT": "Режим на осветяване",
   "LIVE_PREVIEW_MODE_EDIT": "Режим на редактиране",
@@ -1529,7 +1532,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Достъпът до AI е деактивиран от вашия системен администратор. Моля, свържете се с {0} за съдействие.",
   "AI_UPSELL_DIALOG_TITLE": "Да продължите ли с {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Вие открихте {0}. За да продължите, ще ви е необходим AI абонамент или кредити.",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "Изберете изображение от вашето устройство",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Изберете от устройство",
-  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Превключване на режим на преглед (F8)"
+  "LICENSE_KEY_PLACEHOLDER": "Въведете вашия лицензионен ключ…"
 });

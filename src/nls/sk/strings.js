@@ -174,6 +174,8 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_NO_IMAGES": "Nenašli sa žiadne obrázky",
   "LIVE_DEV_IMAGE_GALLERY_LOAD_ERROR": "Nepodarilo sa načítať obrázky",
   "LIVE_DEV_IMAGE_GALLERY_CLOSE": "Zatvoriť",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "Vyberte obrázok z vášho zariadenia",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Vybrať zo zariadenia",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Prvok nie je možné upraviť – bol vygenerovaný skriptom.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Vyberte priečinok na uloženie obrázka",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Vyberte, kam stiahnuť obrázok:",
@@ -182,6 +184,7 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Pre tento projekt sa už nepýtať",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Požiadajte Phoenix AI o úpravu tohto prvku...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Získavanie náhľadu z vášho vlastného servera {0}",
+  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Prepnúť režim náhľadu (F8)",
   "LIVE_PREVIEW_MODE_PREVIEW": "Režim náhľadu",
   "LIVE_PREVIEW_MODE_HIGHLIGHT": "Režim zvýraznenia",
   "LIVE_PREVIEW_MODE_EDIT": "Režim úprav",
@@ -1529,7 +1532,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Prístup k AI bol vypnutý správcom vášho systému. So žiadosťou o pomoc sa obráťte na {0}.",
   "AI_UPSELL_DIALOG_TITLE": "Pokračovať s {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Objavili ste {0}. Ak chcete pokračovať, budete potrebovať predplatné AI alebo kredity.",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "Vyberte obrázok z vášho zariadenia",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Vybrať zo zariadenia",
-  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Prepnúť režim náhľadu (F8)"
+  "LICENSE_KEY_PLACEHOLDER": "Zadajte váš licenčný kľúč…"
 });

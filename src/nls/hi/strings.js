@@ -174,6 +174,8 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_NO_IMAGES": "कोई छवि नहीं मिली",
   "LIVE_DEV_IMAGE_GALLERY_LOAD_ERROR": "छवियाँ लोड करने में विफल",
   "LIVE_DEV_IMAGE_GALLERY_CLOSE": "बंद करें",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "अपने डिवाइस से एक छवि चुनें",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "डिवाइस से चुनें",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "एलिमेंट संपादन योग्य नहीं है - स्क्रिप्ट द्वारा जेनरेट किया गया है।",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "छवि सहेजने के लिए फ़ोल्डर चुनें",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "छवि डाउनलोड करने के लिए स्थान चुनें:",
@@ -182,6 +184,7 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "इस प्रोजेक्ट के लिए दोबारा न पूछें",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "इस एलिमेंट को संशोधित करने के लिए Phoenix AI से पूछें...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "आपके कस्टम सर्वर {0} से प्रीव्यू प्राप्त कर रहा है",
+  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "पूर्वावलोकन मोड टॉगल करें (F8)",
   "LIVE_PREVIEW_MODE_PREVIEW": "पूर्वावलोकन मोड",
   "LIVE_PREVIEW_MODE_HIGHLIGHT": "हाइलाइट मोड",
   "LIVE_PREVIEW_MODE_EDIT": "संपादन मोड",
@@ -1529,7 +1532,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "आपके सिस्टम एडमिनिस्ट्रेटर द्वारा AI एक्सेस अक्षम कर दिया गया है। सहायता के लिए कृपया {0} से संपर्क करें।",
   "AI_UPSELL_DIALOG_TITLE": "{0} के साथ जारी रखें?",
   "AI_UPSELL_DIALOG_MESSAGE": "आपने {0} खोज लिया है। आगे बढ़ने के लिए, आपको AI सब्सक्रिप्शन या क्रेडिट्स की ज़रूरत होगी।",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "अपने डिवाइस से एक छवि चुनें",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "डिवाइस से चुनें",
-  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "पूर्वावलोकन मोड टॉगल करें (F8)"
+  "LICENSE_KEY_PLACEHOLDER": "अपनी लाइसेंस कुंजी दर्ज करें..."
 });

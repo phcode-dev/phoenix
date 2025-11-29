@@ -174,6 +174,8 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_NO_IMAGES": "لم يتم العثور على صور",
   "LIVE_DEV_IMAGE_GALLERY_LOAD_ERROR": "فشل تحميل الصور",
   "LIVE_DEV_IMAGE_GALLERY_CLOSE": "إغلاق",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "حدد صورة من جهازك",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "تحديد من الجهاز",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "العنصر غير قابل للتعديل - تم إنشاؤه بواسطة سكربت.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "حدد مجلدًا لحفظ الصورة",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "اختر مكان تنزيل الصورة:",
@@ -182,6 +184,7 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "لا تسأل مرة أخرى بخصوص هذا المشروع",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "اطلب من فينيكس AI تعديل هذا العنصر...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "الحصول على معاينة من خادمك المخصص {0}",
+  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "تبديل وضع المعاينة (F8)",
   "LIVE_PREVIEW_MODE_PREVIEW": "وضع المعاينة",
   "LIVE_PREVIEW_MODE_HIGHLIGHT": "وضع التمييز",
   "LIVE_PREVIEW_MODE_EDIT": "وضع التحرير",
@@ -1529,7 +1532,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "قام مسؤول النظام بتعطيل الوصول إلى الذكاء الاصطناعي. يرجى الاتصال بـ {0} للحصول على المساعدة.",
   "AI_UPSELL_DIALOG_TITLE": "المتابعة باستخدام {0}؟",
   "AI_UPSELL_DIALOG_MESSAGE": "لقد اكتشفت {0}. للمتابعة، ستحتاج إلى اشتراك في الذكاء الاصطناعي أو أرصدة.",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "حدد صورة من جهازك",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "تحديد من الجهاز",
-  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "تبديل وضع المعاينة (F8)"
+  "LICENSE_KEY_PLACEHOLDER": "أدخل مفتاح ترخيصك…"
 });
