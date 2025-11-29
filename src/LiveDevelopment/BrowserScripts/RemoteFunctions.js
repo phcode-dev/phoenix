@@ -1888,6 +1888,7 @@ function RemoteFunctions(config = {}) {
                         <span class="item-icon">${ICONS.paste}</span>
                         <span class="item-label">${config.strings.paste}</span>
                     </div>
+                    <div class="dropdown-separator"></div>
                     <div class="dropdown-item" data-action="toggle-ruler-lines">
                         <span class="item-icon">${ICONS.ruler}</span>
                         <span class="item-label">${config.strings.showRulerLines}</span>
@@ -1915,7 +1916,7 @@ function RemoteFunctions(config = {}) {
                     top: -1000px;
                     box-sizing: border-box !important;
                     min-width: 130px !important;
-                    padding: 2px 0 !important;
+                    padding: 3px 0 !important;
                     overflow: hidden !important;
                 }
 
@@ -1931,7 +1932,7 @@ function RemoteFunctions(config = {}) {
                     user-select: none !important;
                     display: flex !important;
                     align-items: center !important;
-                    gap: 8px !important;
+                    gap: 6px !important;
                 }
 
                 .dropdown-item:hover {
@@ -1957,10 +1958,17 @@ function RemoteFunctions(config = {}) {
                     flex: 1 !important;
                 }
 
+                .dropdown-separator {
+                    height: 1px !important;
+                    background-color: #4a4a4a !important;
+                    margin: 2px 0 !important;
+                }
+
                 .item-checkmark {
                     margin-left: auto !important;
-                    padding-left: 12px !important;
+                    padding-left: 4px !important;
                     font-size: 14px !important;
+                    margin-top: -4px !important;
                 }
             `;
 
