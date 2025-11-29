@@ -1043,6 +1043,7 @@
   "LICENSE_KEY_CHECKING": "Checking license status…",
   "LICENSE_KEY_CURRENT": "Current Device License",
   "LICENSE_KEY_NONE": "No active device license found",
+  "LICENSE_KEY_PLACEHOLDER": "Enter your license key…",
   "LICENSE_REAPPLY_TO_DEVICE": "Already activated? Reapply system-wide",
   "LICENSE_STATUS_ACTIVE": "Active",
   "LICENSE_STATUS_ERROR_CHECK": "Error checking license status",

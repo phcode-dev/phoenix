@@ -174,6 +174,8 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_NO_IMAGES": "Kuvia ei löytynyt",
   "LIVE_DEV_IMAGE_GALLERY_LOAD_ERROR": "Kuvien lataaminen epäonnistui",
   "LIVE_DEV_IMAGE_GALLERY_CLOSE": "Sulje",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "Valitse kuva laitteeltasi",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Valitse laitteelta",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Elementtiä ei voi muokata – komentosarjan luoma.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Valitse kuvan tallennuskansio",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Valitse, mihin kuva ladataan:",
@@ -182,6 +184,7 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Älä kysy uudelleen tämän projektin osalta",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Pyydä Phoenix-tekoälyä muokkaamaan tätä elementtiä...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Esikatselu haetaan mukautetulta palvelimeltasi {0}",
+  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Vaihda esikatselutila (F8)",
   "LIVE_PREVIEW_MODE_PREVIEW": "Esikatselutila",
   "LIVE_PREVIEW_MODE_HIGHLIGHT": "Korostustila",
   "LIVE_PREVIEW_MODE_EDIT": "Muokkaustila",
@@ -1529,7 +1532,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Järjestelmänvalvoja on poistanut tekoälyn käytöstä. Ota yhteyttä {0} saadaksesi apua.",
   "AI_UPSELL_DIALOG_TITLE": "Jatketaanko {0}:n kanssa?",
   "AI_UPSELL_DIALOG_MESSAGE": "Olet löytänyt ominaisuuden {0}. Jatkaaksesi tarvitset tekoälytilauksen tai krediittejä.",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "Valitse kuva laitteeltasi",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Valitse laitteelta",
-  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Vaihda esikatselutila (F8)"
+  "LICENSE_KEY_PLACEHOLDER": "Syötä lisenssiavaimesi…"
 });

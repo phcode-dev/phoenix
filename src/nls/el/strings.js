@@ -174,6 +174,8 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_NO_IMAGES": "Δεν βρέθηκαν εικόνες",
   "LIVE_DEV_IMAGE_GALLERY_LOAD_ERROR": "Αποτυχία φόρτωσης εικόνων",
   "LIVE_DEV_IMAGE_GALLERY_CLOSE": "Κλείσιμο",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "Επιλέξτε μια εικόνα από τη συσκευή σας",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Επιλογή από τη συσκευή",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Το στοιχείο δεν είναι επεξεργάσιμο - δημιουργήθηκε από script.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Επιλέξτε φάκελο για αποθήκευση εικόνας",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Επιλέξτε πού θα γίνει η λήψη της εικόνας:",
@@ -182,6 +184,7 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Να μην ερωτηθώ ξανά για αυτό το έργο",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Ζητήστε από το Phoenix AI να τροποποιήσει αυτό το στοιχείο...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Λήψη προεπισκόπησης από τον προσαρμοσμένο διακομιστή σας {0}",
+  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Εναλλαγή λειτουργίας προεπισκόπησης (F8)",
   "LIVE_PREVIEW_MODE_PREVIEW": "Λειτουργία Προεπισκόπησης",
   "LIVE_PREVIEW_MODE_HIGHLIGHT": "Λειτουργία Επισήμανσης",
   "LIVE_PREVIEW_MODE_EDIT": "Λειτουργία Επεξεργασίας",
@@ -1529,7 +1532,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Η πρόσβαση στο AI έχει απενεργοποιηθεί από τον διαχειριστή του συστήματός σας. Παρακαλούμε επικοινωνήστε με {0} για βοήθεια.",
   "AI_UPSELL_DIALOG_TITLE": "Συνέχεια με {0};",
   "AI_UPSELL_DIALOG_MESSAGE": "Ανακαλύψατε το {0}. Για να συνεχίσετε, θα χρειαστείτε μια συνδρομή AI ή πιστώσεις.",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "Επιλέξτε μια εικόνα από τη συσκευή σας",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Επιλογή από τη συσκευή",
-  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Εναλλαγή λειτουργίας προεπισκόπησης (F8)"
+  "LICENSE_KEY_PLACEHOLDER": "Εισαγάγετε το κλειδί άδειας χρήσης…"
 });

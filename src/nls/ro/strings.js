@@ -174,6 +174,8 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_NO_IMAGES": "Nu s-au găsit imagini",
   "LIVE_DEV_IMAGE_GALLERY_LOAD_ERROR": "Imaginile nu au putut fi încărcate",
   "LIVE_DEV_IMAGE_GALLERY_CLOSE": "Închide",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "Selectați o imagine de pe dispozitiv",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Selectați de pe dispozitiv",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Elementul nu este editabil - generat de script.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Selectați folderul pentru a salva imaginea",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Alegeți unde să descărcați imaginea:",
@@ -182,6 +184,7 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Nu mai întrebați pentru acest proiect",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Roagă Phoenix AI să modifice acest element...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Se obține previzualizarea de la serverul personalizat {0}",
+  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Comutați modul de previzualizare (F8)",
   "LIVE_PREVIEW_MODE_PREVIEW": "Mod Previzualizare",
   "LIVE_PREVIEW_MODE_HIGHLIGHT": "Mod Evidențiere",
   "LIVE_PREVIEW_MODE_EDIT": "Mod Editare",
@@ -1529,7 +1532,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Accesul AI a fost dezactivat de către administratorul dvs. de sistem. Vă rugăm să contactați {0} pentru asistență.",
   "AI_UPSELL_DIALOG_TITLE": "Continuați cu {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Ați descoperit {0}. Pentru a continua, veți avea nevoie de un abonament AI sau de credite.",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "Selectați o imagine de pe dispozitiv",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Selectați de pe dispozitiv",
-  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Comutați modul de previzualizare (F8)"
+  "LICENSE_KEY_PLACEHOLDER": "Introduceți cheia de licență…"
 });

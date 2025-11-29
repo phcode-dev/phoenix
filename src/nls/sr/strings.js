@@ -174,6 +174,8 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_NO_IMAGES": "Није пронађена ниједна слика",
   "LIVE_DEV_IMAGE_GALLERY_LOAD_ERROR": "Учитавање слика није успело",
   "LIVE_DEV_IMAGE_GALLERY_CLOSE": "Затвори",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "Изаберите слику са свог уређаја",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Изаберите са уређаја",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Елемент није могуће уредити - генерисан је скриптом.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Изаберите фасциклу за чување слике",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Изаберите где желите да преузмете слику:",
@@ -182,6 +184,7 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Не питај поново за овај пројекат",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Замолите Phoenix AI да измени овај елемент...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Преглед са вашег прилагођеног сервера {0}",
+  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Промени режим прегледа (F8)",
   "LIVE_PREVIEW_MODE_PREVIEW": "Режим прегледа",
   "LIVE_PREVIEW_MODE_HIGHLIGHT": "Режим истицања",
   "LIVE_PREVIEW_MODE_EDIT": "Режим измене",
@@ -1529,7 +1532,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Приступ AI је онемогућио администратор система. Молимо вас, контактирајте {0} за помоћ.",
   "AI_UPSELL_DIALOG_TITLE": "Наставити са {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Открили сте {0}. Да бисте наставили, потребна вам је AI претплата или кредити.",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "Изаберите слику са свог уређаја",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Изаберите са уређаја",
-  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Промени режим прегледа (F8)"
+  "LICENSE_KEY_PLACEHOLDER": "Унесите ваш лиценцни кључ…"
 });

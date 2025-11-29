@@ -174,6 +174,8 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_NO_IMAGES": "Geen afbeeldingen gevonden",
   "LIVE_DEV_IMAGE_GALLERY_LOAD_ERROR": "Laden van afbeeldingen mislukt",
   "LIVE_DEV_IMAGE_GALLERY_CLOSE": "Sluiten",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "Selecteer een afbeelding vanaf je apparaat",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Selecteer vanaf apparaat",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Element niet bewerkbaar - gegenereerd door script.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Selecteer map om afbeelding op te slaan",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Kies waar de afbeelding gedownload moet worden:",
@@ -182,6 +184,7 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Niet opnieuw vragen voor dit project",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Vraag Phoenix AI om dit element aan te passen...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Voorbeeld ophalen van uw aangepaste server {0}",
+  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Voorbeeldmodus in-/uitschakelen (F8)",
   "LIVE_PREVIEW_MODE_PREVIEW": "Voorvertoningsmodus",
   "LIVE_PREVIEW_MODE_HIGHLIGHT": "Markeringsmodus",
   "LIVE_PREVIEW_MODE_EDIT": "Bewerken",
@@ -1529,7 +1532,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "De toegang tot AI is uitgeschakeld door uw systeembeheerder. Neem contact op met {0} voor hulp.",
   "AI_UPSELL_DIALOG_TITLE": "Doorgaan met {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "U heeft {0} ontdekt. Om verder te gaan, heeft u een AI-abonnement of credits nodig.",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "Selecteer een afbeelding vanaf je apparaat",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Selecteer vanaf apparaat",
-  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Voorbeeldmodus in-/uitschakelen (F8)"
+  "LICENSE_KEY_PLACEHOLDER": "Voer je licentiesleutel in…"
 });

@@ -174,6 +174,8 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_NO_IMAGES": "Nessuna immagine trovata",
   "LIVE_DEV_IMAGE_GALLERY_LOAD_ERROR": "Caricamento delle immagini non riuscito",
   "LIVE_DEV_IMAGE_GALLERY_CLOSE": "Chiudi",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "Seleziona un'immagine dal tuo dispositivo",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Seleziona da dispositivo",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Elemento non modificabile - generato da script.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Seleziona la cartella per salvare l'immagine",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Scegli dove scaricare l'immagine:",
@@ -182,6 +184,7 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Non chiedere più per questo progetto",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Chiedi a Phoenix AI di modificare questo elemento...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Anteprima dal tuo server personalizzato {0}",
+  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Attiva/disattiva anteprima (F8)",
   "LIVE_PREVIEW_MODE_PREVIEW": "Modalità Anteprima",
   "LIVE_PREVIEW_MODE_HIGHLIGHT": "Modalità Evidenziazione",
   "LIVE_PREVIEW_MODE_EDIT": "Modalità di modifica",
@@ -1529,7 +1532,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "L'accesso all'AI è stato disattivato dal tuo amministratore di sistema. Contatta {0} per assistenza.",
   "AI_UPSELL_DIALOG_TITLE": "Continuare con {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Hai scoperto {0}. Per procedere, avrai bisogno di un abbonamento AI o di crediti.",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "Seleziona un'immagine dal tuo dispositivo",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Seleziona da dispositivo",
-  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Attiva/disattiva anteprima (F8)"
+  "LICENSE_KEY_PLACEHOLDER": "Inserisci il codice di licenza…"
 });

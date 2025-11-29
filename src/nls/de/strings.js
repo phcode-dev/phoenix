@@ -174,6 +174,8 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_NO_IMAGES": "Keine Bilder gefunden",
   "LIVE_DEV_IMAGE_GALLERY_LOAD_ERROR": "Fehler beim Laden der Bilder",
   "LIVE_DEV_IMAGE_GALLERY_CLOSE": "Schließen",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "Wählen Sie ein Bild von Ihrem Gerät aus",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Vom Gerät auswählen",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Element nicht bearbeitbar - von Skript generiert.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Ordner zum Speichern des Bildes auswählen",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Wählen Sie, wohin das Bild heruntergeladen werden soll:",
@@ -182,6 +184,7 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Für dieses Projekt nicht erneut fragen",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Bitte Phoenix AI, dieses Element zu modifizieren...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Vorschau von Ihrem benutzerdefinierten Server {0} wird abgerufen",
+  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Vorschaumodus umschalten (F8)",
   "LIVE_PREVIEW_MODE_PREVIEW": "Vorschaumodus",
   "LIVE_PREVIEW_MODE_HIGHLIGHT": "Hervorhebungsmodus",
   "LIVE_PREVIEW_MODE_EDIT": "Bearbeitungsmodus",
@@ -1529,7 +1532,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Der KI-Zugriff wurde von Ihrem Systemadministrator deaktiviert. Bitte kontaktieren Sie {0} für Unterstützung.",
   "AI_UPSELL_DIALOG_TITLE": "Mit {0} fortfahren?",
   "AI_UPSELL_DIALOG_MESSAGE": "Sie haben {0} entdeckt. Um fortzufahren, benötigen Sie ein KI-Abonnement oder Guthaben.",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "Wählen Sie ein Bild von Ihrem Gerät aus",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Vom Gerät auswählen",
-  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Vorschaumodus umschalten (F8)"
+  "LICENSE_KEY_PLACEHOLDER": "Geben Sie Ihren Lizenzschlüssel ein…"
 });

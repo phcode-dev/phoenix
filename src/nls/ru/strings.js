@@ -174,6 +174,8 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_NO_IMAGES": "Изображения не найдены",
   "LIVE_DEV_IMAGE_GALLERY_LOAD_ERROR": "Не удалось загрузить изображения",
   "LIVE_DEV_IMAGE_GALLERY_CLOSE": "Закрыть",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "Выберите изображение с вашего устройства",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Выбрать с устройства",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Элемент не редактируется — создан скриптом.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Выберите папку для сохранения изображения",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Выберите, куда загрузить изображение:",
@@ -182,6 +184,7 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Больше не спрашивать для этого проекта",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Попросите Phoenix AI изменить этот элемент...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Получение предварительного просмотра с вашего пользовательского сервера {0}",
+  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Переключить режим предпросмотра (F8)",
   "LIVE_PREVIEW_MODE_PREVIEW": "Режим предпросмотра",
   "LIVE_PREVIEW_MODE_HIGHLIGHT": "Режим подсветки",
   "LIVE_PREVIEW_MODE_EDIT": "Режим редактирования",
@@ -1529,7 +1532,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Доступ к ИИ был отключён вашим системным администратором. Пожалуйста, свяжитесь с {0} для получения помощи.",
   "AI_UPSELL_DIALOG_TITLE": "Продолжить с {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Вы открыли для себя {0}. Чтобы продолжить, вам понадобится подписка на ИИ или кредиты.",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "Выберите изображение с вашего устройства",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Выбрать с устройства",
-  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Переключить режим предпросмотра (F8)"
+  "LICENSE_KEY_PLACEHOLDER": "Введите ваш лицензионный ключ…"
 });

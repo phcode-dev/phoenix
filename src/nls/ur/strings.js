@@ -174,6 +174,8 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_NO_IMAGES": "کوئی تصاویر نہیں ملیں",
   "LIVE_DEV_IMAGE_GALLERY_LOAD_ERROR": "تصاویر لوڈ کرنے میں ناکامی ہوئی",
   "LIVE_DEV_IMAGE_GALLERY_CLOSE": "بند کریں",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "اپنے ڈیوائس سے ایک تصویر منتخب کریں",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "ڈیوائس سے منتخب کریں",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "عنصر قابلِ تدوین نہیں - اسکرپٹ سے تیار کردہ۔",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "تصویر محفوظ کرنے کے لیے فولڈر منتخب کریں",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "تصویر ڈاؤن لوڈ کرنے کی جگہ منتخب کریں:",
@@ -182,6 +184,7 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "اس پروجیکٹ کے لیے دوبارہ نہ پوچھیں۔",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "فینکس مصنوعی ذہانت سے اس عنصر میں ترمیم کرنے کو کہیں...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "آپ کے اپنی مرضی کے سرور {0} سے پیش نظارہ حاصل کرنا",
+  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "پریویو موڈ ٹوگل کریں (F8)",
   "LIVE_PREVIEW_MODE_PREVIEW": "پیش نظارہ وضع",
   "LIVE_PREVIEW_MODE_HIGHLIGHT": "نمایاں وضع",
   "LIVE_PREVIEW_MODE_EDIT": "ترمیم وضع",
@@ -1529,7 +1532,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "آپ کے سسٹم ایڈمنسٹریٹر نے AI تک رسائی کو غیر فعال کر دیا ہے۔ براہ کرم مدد کے لیے {0} سے رابطہ کریں۔",
   "AI_UPSELL_DIALOG_TITLE": "{0} کے ساتھ جاری رکھیں؟",
   "AI_UPSELL_DIALOG_MESSAGE": "آپ نے {0} کو دریافت کیا ہے۔ آگے بڑھنے کے لیے، آپ کو AI سبسکرپشن یا کریڈٹس کی ضرورت ہوگی۔",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "اپنے ڈیوائس سے ایک تصویر منتخب کریں",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "ڈیوائس سے منتخب کریں",
-  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "پریویو موڈ ٹوگل کریں (F8)"
+  "LICENSE_KEY_PLACEHOLDER": "اپنی لائسنس کی درج کریں…"
 });

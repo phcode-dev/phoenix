@@ -174,6 +174,8 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_NO_IMAGES": "Inga bilder hittades",
   "LIVE_DEV_IMAGE_GALLERY_LOAD_ERROR": "Kunde inte ladda bilder",
   "LIVE_DEV_IMAGE_GALLERY_CLOSE": "Stäng",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "Välj en bild från din enhet",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Välj från enhet",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Elementet är inte redigerbart - genererat av skript.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Välj mapp för att spara bild",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Välj var bilden ska laddas ner:",
@@ -182,6 +184,7 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Fråga inte igen för det här projektet",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Be Phoenix AI att modifiera detta element...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Hämtar förhandsvisning från din anpassade server {0}",
+  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Växla förhandsgranskningsläge (F8)",
   "LIVE_PREVIEW_MODE_PREVIEW": "Förhandsgranskningsläge",
   "LIVE_PREVIEW_MODE_HIGHLIGHT": "Markeringsläge",
   "LIVE_PREVIEW_MODE_EDIT": "Redigeringsläge",
@@ -1529,7 +1532,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "AI-åtkomst har inaktiverats av din systemadministratör. Kontakta {0} för hjälp.",
   "AI_UPSELL_DIALOG_TITLE": "Fortsätt med {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Du har upptäckt {0}. För att fortsätta behöver du ett AI-abonnemang eller krediter.",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "Välj en bild från din enhet",
-  "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "Välj från enhet",
-  "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Växla förhandsgranskningsläge (F8)"
+  "LICENSE_KEY_PLACEHOLDER": "Ange din licensnyckel…"
 });
