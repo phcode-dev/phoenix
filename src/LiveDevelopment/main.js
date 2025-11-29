@@ -114,6 +114,7 @@ define(function main(require, exports, module) {
             cut: Strings.LIVE_DEV_MORE_OPTIONS_CUT,
             copy: Strings.LIVE_DEV_MORE_OPTIONS_COPY,
             paste: Strings.LIVE_DEV_MORE_OPTIONS_PASTE,
+            showRulerLines: Strings.LIVE_PREVIEW_SHOW_RULER_LINES,
             aiPromptPlaceholder: Strings.LIVE_DEV_AI_PROMPT_PLACEHOLDER,
             imageGalleryUseImage: Strings.LIVE_DEV_IMAGE_GALLERY_USE_IMAGE,
             imageGallerySelectDownloadFolder: Strings.LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER,

@@ -30,6 +30,7 @@ define(function (require, exports, module) {
     const LiveDevelopment = require("LiveDevelopment/main");
     const CodeMirror = require("thirdparty/CodeMirror/lib/codemirror");
     const ProjectManager = require("project/ProjectManager");
+    const PreferencesManager = require("preferences/PreferencesManager");
     const CommandManager = require("command/CommandManager");
     const Commands = require("command/Commands");
     const FileSystem = require("filesystem/FileSystem");
@@ -1455,6 +1456,12 @@ define(function (require, exports, module) {
         // handle image gallery state change message
         if (message.type === "imageGalleryStateChange") {
             LiveDevelopment.setImageGalleryState(message.selected);
+            return;
+        }
+
+        // handle ruler lines toggle message
+        if (message.type === "toggleRulerLines") {
+            PreferencesManager.set("livePreviewShowRulerLines", message.enabled);
             return;
         }
 

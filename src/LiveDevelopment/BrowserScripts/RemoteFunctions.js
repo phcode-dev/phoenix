@@ -1448,6 +1448,12 @@ function RemoteFunctions(config = {}) {
         </svg>
         `,
 
+        ruler: `
+        <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 3h1.5v18H8V3zm6.5 0H16v18h-1.5V3zM3 8v1.5h18V8H3zm0 6.5V16h18v-1.5H3z"/>
+        </svg>
+        `,
+
         imageGallery: `
         <svg viewBox="0 0 24 24" fill="currentColor">
           <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
@@ -1744,6 +1750,39 @@ function RemoteFunctions(config = {}) {
     };
 
     /**
+     * this is called when user clicks on the Show Ruler lines option in the more options dropdown
+     * @param {Event} event - click event
+     * @param {MoreOptionsDropdown} dropdown - the dropdown instance
+     */
+    function _handleToggleRulerLines(event, dropdown) {
+        config.showRulerLines = !config.showRulerLines;
+
+        window._Brackets_MessageBroker.send({
+            livePreviewEditEnabled: true,
+            type: "toggleRulerLines",
+            enabled: config.showRulerLines
+        });
+
+        // add checkmark in the dropdown
+        const checkmark = dropdown._shadow.querySelector('[data-action="toggle-ruler-lines"] .item-checkmark');
+        if (checkmark) {
+            checkmark.textContent = config.showRulerLines ? '✓' : '';
+        }
+
+        // to apply the ruler lines or remove it when option is toggled
+        if (config.showRulerLines && previouslyClickedElement) {
+            if (!_currentRulerLines) {
+                _currentRulerLines = new RulerLines(previouslyClickedElement);
+            }
+        } else {
+            if (_currentRulerLines) {
+                _currentRulerLines.remove();
+                _currentRulerLines = null;
+            }
+        }
+    }
+
+    /**
      * the more options dropdown which appears when user clicks on the ellipsis button in the options box
      */
     function MoreOptionsDropdown(targetElement, ellipsisButton) {
@@ -1849,6 +1888,11 @@ function RemoteFunctions(config = {}) {
                         <span class="item-icon">${ICONS.paste}</span>
                         <span class="item-label">${config.strings.paste}</span>
                     </div>
+                    <div class="dropdown-item" data-action="toggle-ruler-lines">
+                        <span class="item-icon">${ICONS.ruler}</span>
+                        <span class="item-label">${config.strings.showRulerLines}</span>
+                        <span class="item-checkmark">${config.showRulerLines ? '✓' : ''}</span>
+                    </div>
                 </div>
             `;
 
@@ -1912,6 +1956,12 @@ function RemoteFunctions(config = {}) {
                 .item-label {
                     flex: 1 !important;
                 }
+
+                .item-checkmark {
+                    margin-left: auto !important;
+                    padding-left: 12px !important;
+                    font-size: 14px !important;
+                }
             `;
 
             shadow.innerHTML = `<style>${styles}</style><div class="phoenix-dropdown">${content}</div>`;
@@ -1940,11 +1990,17 @@ function RemoteFunctions(config = {}) {
                     event.stopPropagation();
                     event.preventDefault();
                     const action = event.currentTarget.getAttribute('data-action');
-                    handleOptionClick(event, action, this.targetElement);
-                    // when an option is selected we close both the dropdown as well as the options box
-                    this.remove();
-                    if (_nodeMoreOptionsBox) {
-                        _nodeMoreOptionsBox.remove();
+
+                    if (action === 'toggle-ruler-lines') {
+                        // when ruler lines option is clicked we need to keep the dropdown open
+                        _handleToggleRulerLines(event, this);
+                    } else {
+                        // for other options, we close both the dropdown as well as the options box
+                        handleOptionClick(event, action, this.targetElement);
+                        this.remove();
+                        if (_nodeMoreOptionsBox) {
+                            _nodeMoreOptionsBox.remove();
+                        }
                     }
                 });
             });
@@ -1955,6 +2011,14 @@ function RemoteFunctions(config = {}) {
                 window.document.body.removeChild(this.body);
                 this.body = null;
                 _moreOptionsDropdown = null;
+            }
+        },
+
+        refresh: function() {
+            // update the checkmark state when config changes
+            const checkmark = this._shadow.querySelector('[data-action="toggle-ruler-lines"] .item-checkmark');
+            if (checkmark) {
+                checkmark.textContent = config.showRulerLines ? '✓' : '';
             }
         }
     };
@@ -5068,8 +5132,11 @@ function RemoteFunctions(config = {}) {
             imageGallerySelected = config.imageGalleryState;
         }
 
-        // handle ruler lines visibility toggle
+        // handle ruler lines visibility toggle and refresh the more options dropdown if its open
         _handleRulerLinesConfigChange(oldConfig);
+        if (_moreOptionsDropdown) {
+            _moreOptionsDropdown.refresh();
+        }
 
         // Determine if configuration has changed significantly
         const oldHighlightMode = oldConfig.elemHighlights ? oldConfig.elemHighlights.toLowerCase() : "hover";
