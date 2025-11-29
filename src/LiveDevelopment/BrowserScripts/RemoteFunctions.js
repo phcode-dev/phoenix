@@ -4003,6 +4003,10 @@ function RemoteFunctions(config = {}) {
             top: null,
             bottom: null
         };
+        // gray color for non-editable elements, blue for editable
+        this.color = element.hasAttribute("data-brackets-id")
+            ? "#4285F4"
+            : "#3C3F41";
         this.create();
         this.update();
     }
@@ -4021,17 +4025,17 @@ function RemoteFunctions(config = {}) {
             this.lineElements.top.setAttribute("data-phcode-internal-c15r5a9", "true");
             this.lineElements.bottom.setAttribute("data-phcode-internal-c15r5a9", "true");
 
-            let applyStyles = function (element) {
+            let applyStyles = function (element, color) {
                 element.style.position = "absolute";
-                element.style.backgroundColor = "rgba(66, 133, 244, 0.5)";
+                element.style.backgroundColor = color;
                 element.style.pointerEvents = "none";
                 element.style.zIndex = "2147483645";
             };
 
-            applyStyles(this.lineElements.left);
-            applyStyles(this.lineElements.right);
-            applyStyles(this.lineElements.top);
-            applyStyles(this.lineElements.bottom);
+            applyStyles(this.lineElements.left, this.color);
+            applyStyles(this.lineElements.right, this.color);
+            applyStyles(this.lineElements.top, this.color);
+            applyStyles(this.lineElements.bottom, this.color);
 
             body.appendChild(this.lineElements.left);
             body.appendChild(this.lineElements.right);
@@ -4388,7 +4392,8 @@ function RemoteFunctions(config = {}) {
         }
 
         element._originalOutline = element.style.outline;
-        element.style.outline = "1px solid #4285F4";
+        const outlineColor = element.hasAttribute("data-brackets-id") ? "#4285F4" : "#3C3F41";
+        element.style.outline = `1px solid ${outlineColor}`;
 
         // Only apply background tint for editable elements (not for dynamic/read-only)
         if (element.hasAttribute("data-brackets-id")) {
