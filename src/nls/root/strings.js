@@ -1706,7 +1706,7 @@ define({
     // license dialogs
     "MANAGE_LICENSE_DIALOG_TITLE": "Manage Device License",
     "LICENSE_KEY": "License Key",
-    "LICENSE_KEY_PLACEHOLDER": "Enter your license key...",
+    "LICENSE_KEY_PLACEHOLDER": "Enter your license key\u2026",
     "LICENSE_KEY_ACTIVATE": "Activate License",
     "LICENSE_KEY_ACTIVATING": "Activating\u2026",
     "LICENSE_KEY_CURRENT": "Current Device License",
