@@ -75,7 +75,7 @@ define(function (require, exports, module) {
      * we only care about text changes or things like newlines, <br>, or formatting like <b>, <i>, etc.
      *
      * Here's the basic idea:
-     * - Parse both old and new HTML strings into DOM trees
+     * - Parse both old and new HTML strings into document fragments using <template> elements
      * - Then walk both DOMs side by side and sync changes
      *
      * What we handle:
@@ -90,12 +90,14 @@ define(function (require, exports, module) {
      * This avoids the browser trying to “fix” broken HTML (which we don’t want)
      */
     function _syncTextContentChanges(oldContent, newContent) {
-        const parser = new DOMParser();
-        const oldDoc = parser.parseFromString(oldContent, "text/html");
-        const newDoc = parser.parseFromString(newContent, "text/html");
+        function parseFragment(html) {
+            const t = document.createElement("template");
+            t.innerHTML = html;
+            return t.content;
+        }
 
-        const oldRoot = oldDoc.body;
-        const newRoot = newDoc.body;
+        const oldRoot = parseFragment(oldContent);
+        const newRoot = parseFragment(newContent);
 
         // this function is to remove the phoenix internal attributes from leaking into the user's source code
         function cleanClonedElement(clonedElement) {
@@ -167,14 +169,16 @@ define(function (require, exports, module) {
             }
         }
 
-        const oldEls = Array.from(oldRoot.children);
-        const newEls = Array.from(newRoot.children);
+        const oldEls = Array.from(oldRoot.childNodes);
+        const newEls = Array.from(newRoot.childNodes);
 
         for (let i = 0; i < Math.min(oldEls.length, newEls.length); i++) {
             syncText(oldEls[i], newEls[i]);
         }
 
-        return oldRoot.innerHTML;
+        return Array.from(oldRoot.childNodes).map(node =>
+            node.outerHTML || node.textContent
+        ).join("");
     }
 
     /**
