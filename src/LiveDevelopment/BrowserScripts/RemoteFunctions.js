@@ -5032,6 +5032,28 @@ function RemoteFunctions(config = {}) {
         _editHandler.apply(edits);
     }
 
+    /**
+     * Handle ruler lines visibility toggle when config changes
+     * @param {Object} oldConfig - the prev config state
+     */
+    function _handleRulerLinesConfigChange(oldConfig) {
+        const rulerLinesChanged = oldConfig.showRulerLines !== config.showRulerLines;
+        if (rulerLinesChanged && previouslyClickedElement) {
+            if (config.showRulerLines) {
+                // if user turned it on: create ruler lines for the element
+                if (!_currentRulerLines) {
+                    _currentRulerLines = new RulerLines(previouslyClickedElement);
+                }
+            } else {
+                // if user turned it off: remove the lines
+                if (_currentRulerLines) {
+                    _currentRulerLines.remove();
+                    _currentRulerLines = null;
+                }
+            }
+        }
+    }
+
     function updateConfig(newConfig) {
         const oldConfig = config;
         config = JSON.parse(newConfig);
@@ -5040,6 +5062,9 @@ function RemoteFunctions(config = {}) {
         if (config.imageGalleryState !== undefined) {
             imageGallerySelected = config.imageGalleryState;
         }
+
+        // handle ruler lines visibility toggle
+        _handleRulerLinesConfigChange(oldConfig);
 
         // Determine if configuration has changed significantly
         const oldHighlightMode = oldConfig.elemHighlights ? oldConfig.elemHighlights.toLowerCase() : "hover";
