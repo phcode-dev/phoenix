@@ -4005,8 +4005,8 @@ function RemoteFunctions(config = {}) {
         };
         // gray color for non-editable elements, blue for editable
         this.color = element.hasAttribute("data-brackets-id")
-            ? "#4285F4"
-            : "#3C3F41";
+            ? "rgba(66, 133, 244, 0.4)"
+            : "rgba(60, 63, 65, 0.8)";
         this.create();
         this.update();
     }
