@@ -1905,7 +1905,7 @@ function RemoteFunctions(config = {}) {
                 .phoenix-dropdown {
                     background-color: #2c2c2c !important;
                     color: #cdcdcd !important;
-                    border: 1px solid #4285F4 !important;
+                    border: 1px solid #4a4a4a !important;
                     border-radius: 6px !important;
                     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25) !important;
                     font-size: 13px !important;
