@@ -3992,6 +3992,121 @@ function RemoteFunctions(config = {}) {
         }
     };
 
+    /**
+     * Ruler lines class, this creates the rulers across the edges of the element (hori as well as vert)
+     */
+    function RulerLines(element) {
+        this.element = element;
+        this.lineElements = {
+            left: null,
+            right: null,
+            top: null,
+            bottom: null
+        };
+        this.create();
+        this.update();
+    }
+
+    RulerLines.prototype = {
+        create: function() {
+            let body = window.document.body;
+
+            this.lineElements.left = window.document.createElement("div");
+            this.lineElements.right = window.document.createElement("div");
+            this.lineElements.top = window.document.createElement("div");
+            this.lineElements.bottom = window.document.createElement("div");
+
+            this.lineElements.left.setAttribute("data-phcode-internal-c15r5a9", "true");
+            this.lineElements.right.setAttribute("data-phcode-internal-c15r5a9", "true");
+            this.lineElements.top.setAttribute("data-phcode-internal-c15r5a9", "true");
+            this.lineElements.bottom.setAttribute("data-phcode-internal-c15r5a9", "true");
+
+            let applyStyles = function (element) {
+                element.style.position = "absolute";
+                element.style.backgroundColor = "rgba(66, 133, 244, 0.5)";
+                element.style.pointerEvents = "none";
+                element.style.zIndex = "2147483645";
+            };
+
+            applyStyles(this.lineElements.left);
+            applyStyles(this.lineElements.right);
+            applyStyles(this.lineElements.top);
+            applyStyles(this.lineElements.bottom);
+
+            body.appendChild(this.lineElements.left);
+            body.appendChild(this.lineElements.right);
+            body.appendChild(this.lineElements.top);
+            body.appendChild(this.lineElements.bottom);
+        },
+
+        update: function() {
+            if (!this.element) {
+                return;
+            }
+
+            let rect = this.element.getBoundingClientRect();
+            let scrollTop = window.pageYOffset;
+            let scrollLeft = window.pageXOffset;
+
+            var edges = {
+                left: rect.left + scrollLeft,
+                right: rect.right + scrollLeft,
+                top: rect.top + scrollTop,
+                bottom: rect.bottom + scrollTop
+            };
+
+            // get the doc dimensions as we need to put the ruler lines in the whole document
+            var docHeight = window.document.documentElement.scrollHeight;
+            var docWidth = window.document.documentElement.scrollWidth;
+
+            // for vertical lines
+            this.lineElements.left.style.width = '1px';
+            this.lineElements.left.style.height = docHeight + 'px';
+            this.lineElements.left.style.left = edges.left + 'px';
+            this.lineElements.left.style.top = '0px';
+
+            this.lineElements.right.style.width = '1px';
+            this.lineElements.right.style.height = docHeight + 'px';
+            this.lineElements.right.style.left = edges.right + 'px';
+            this.lineElements.right.style.top = '0px';
+
+            // for horizontal lines
+            this.lineElements.top.style.height = '1px';
+            this.lineElements.top.style.width = docWidth + 'px';
+            this.lineElements.top.style.top = edges.top + 'px';
+            this.lineElements.top.style.left = '0px';
+
+            this.lineElements.bottom.style.height = '1px';
+            this.lineElements.bottom.style.width = docWidth + 'px';
+            this.lineElements.bottom.style.top = edges.bottom + 'px';
+            this.lineElements.bottom.style.left = '0px';
+        },
+
+        remove: function() {
+            var body = window.document.body;
+
+            if (this.lineElements.left && this.lineElements.left.parentNode) {
+                body.removeChild(this.lineElements.left);
+            }
+            if (this.lineElements.right && this.lineElements.right.parentNode) {
+                body.removeChild(this.lineElements.right);
+            }
+            if (this.lineElements.top && this.lineElements.top.parentNode) {
+                body.removeChild(this.lineElements.top);
+            }
+            if (this.lineElements.bottom && this.lineElements.bottom.parentNode) {
+                body.removeChild(this.lineElements.bottom);
+            }
+
+            this.lineElements = {
+                left: null,
+                right: null,
+                top: null,
+                bottom: null
+            };
+        }
+    };
+
     var _localHighlight;
     var _hoverHighlight;
     var _clickHighlight;
@@ -4000,6 +4115,7 @@ function RemoteFunctions(config = {}) {
     var _moreOptionsDropdown;
     var _aiPromptBox;
     var _imageRibbonGallery;
+    var _currentRulerLines;
     var _setup = false;
     var _hoverLockTimer = null;
 
@@ -4287,6 +4403,11 @@ function RemoteFunctions(config = {}) {
             _hoverHighlight.add(element, true);
         }
 
+        // to show ruler lines (only when its enabled)
+        if (config.showRulerLines) {
+            _currentRulerLines = new RulerLines(element);
+        }
+
         previouslyClickedElement = element;
     }
 
@@ -4527,10 +4648,18 @@ function RemoteFunctions(config = {}) {
         }
     }
 
+    // redraw ruler lines when element is selected
+    function redrawRulerLines() {
+        if (_currentRulerLines) {
+            _currentRulerLines.update();
+        }
+    }
+
     // just a wrapper function when we need to redraw highlights as well as UI boxes
     function redrawEverything() {
         redrawHighlights();
         redrawUIBoxes();
+        redrawRulerLines();
     }
 
     window.addEventListener("resize", redrawEverything);
@@ -4629,12 +4758,16 @@ function RemoteFunctions(config = {}) {
         // need to be updated on a timer to ensure the layout is correct.
         if (e.target === window.document) {
             redrawHighlights();
+            redrawRulerLines();
             // need to dismiss the box if the elements are fixed, otherwise they drift at times
             _dismissBoxesForFixedElements();
             _repositionAIBox(); // and reposition the AI box
         } else {
             if (_localHighlight || _clickHighlight || _hoverHighlight) {
                 window.setTimeout(redrawHighlights, 0);
+            }
+            if (_currentRulerLines) {
+                window.setTimeout(redrawRulerLines, 0);
             }
             _dismissBoxesForFixedElements();
             _repositionAIBox();
@@ -5127,6 +5260,11 @@ function RemoteFunctions(config = {}) {
             clearElementBackground(previouslyClickedElement);
             if (_hoverHighlight) {
                 _hoverHighlight.clear();
+            }
+
+            if (_currentRulerLines) {
+                _currentRulerLines.remove();
+                _currentRulerLines = null;
             }
 
             previouslyClickedElement = null;

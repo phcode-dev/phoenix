@@ -98,6 +98,7 @@ define(function main(require, exports, module) {
         },
         isProUser: isProUser,
         elemHighlights: "hover", // default value, this will get updated when the extension loads
+        showRulerLines: false, // default value, this will get updated when the extension loads
         imageGalleryState: _getImageGalleryState(), // image gallery selected state
         // this strings are used in RemoteFunctions.js
         // we need to pass this through config as remoteFunctions runs in browser context and cannot
@@ -488,6 +489,14 @@ define(function main(require, exports, module) {
         }
     }
 
+    function updateRulerLinesConfig() {
+        const prefValue = PreferencesManager.get("livePreviewShowRulerLines");
+        config.showRulerLines = prefValue || false;
+        if (MultiBrowserLiveDev && MultiBrowserLiveDev.status >= MultiBrowserLiveDev.STATUS_ACTIVE) {
+            MultiBrowserLiveDev.updateConfig(JSON.stringify(config));
+        }
+    }
+
     // init commands
     CommandManager.register(Strings.CMD_LIVE_HIGHLIGHT, Commands.FILE_LIVE_HIGHLIGHT, togglePreviewHighlight);
     CommandManager.register(Strings.CMD_RELOAD_LIVE_PREVIEW, Commands.CMD_RELOAD_LIVE_PREVIEW, _handleReloadLivePreviewCommand);
@@ -517,6 +526,7 @@ define(function main(require, exports, module) {
     exports.setLivePreviewEditFeaturesActive = setLivePreviewEditFeaturesActive;
     exports.setImageGalleryState = setImageGalleryState;
     exports.updateElementHighlightConfig = updateElementHighlightConfig;
+    exports.updateRulerLinesConfig = updateRulerLinesConfig;
     exports.getConnectionIds = MultiBrowserLiveDev.getConnectionIds;
     exports.getLivePreviewDetails = MultiBrowserLiveDev.getLivePreviewDetails;
     exports.hideHighlight = MultiBrowserLiveDev.hideHighlight;

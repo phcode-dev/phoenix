@@ -183,7 +183,8 @@ define({
     "LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT": "Show Live Preview Element Highlights on:",
     "LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT_HOVER": "hover",
     "LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT_CLICK": "click",
-    "LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT_PREFERENCE": "show live preview element highlights on 'hover' or 'click'. Defaults to 'hover'",
+    "LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT_PREFERENCE": "Show live preview element highlights on 'hover' or 'click'. Defaults to 'hover'",
+    "LIVE_DEV_SETTINGS_SHOW_RULER_LINES_PREFERENCE": "Show ruler lines when elements are selected in live preview. Defaults to 'false'",
     "LIVE_DEV_MORE_OPTIONS_SELECT_PARENT": "Select Parent",
     "LIVE_DEV_MORE_OPTIONS_EDIT_TEXT": "Edit Text",
     "LIVE_DEV_MORE_OPTIONS_DUPLICATE": "Duplicate",
@@ -219,6 +220,7 @@ define({
     "LIVE_PREVIEW_MODE_HIGHLIGHT": "Highlight Mode",
     "LIVE_PREVIEW_MODE_EDIT": "Edit Mode",
     "LIVE_PREVIEW_EDIT_HIGHLIGHT_ON": "Edit Highlights on Hover",
+    "LIVE_PREVIEW_SHOW_RULER_LINES": "Show Ruler Lines",
     "LIVE_PREVIEW_MODE_PREFERENCE": "{0} shows only the webpage, {1} connects the webpage to your code - click on elements to jump to their code and vice versa, {2} provides highlighting along with advanced element manipulation",
     "LIVE_PREVIEW_CONFIGURE_MODES": "Configure Live Preview Modes",
 
