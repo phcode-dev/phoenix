@@ -5269,8 +5269,9 @@ function RemoteFunctions(config = {}) {
      * this function is to show a toast notification at the bottom center of the screen
      * this toast message is used when user tries to edit a non-editable element
      * @param {String} message - the message to display in the toast
+     * @param {Number} duration - optional duration in milliseconds (default: 3000)
      */
-    function showToastMessage(message) {
+    function showToastMessage(message, duration = 3000) {
         // clear any existing toast & timer, if there are any
         dismissToastMessage();
 
@@ -5326,13 +5327,13 @@ function RemoteFunctions(config = {}) {
         shadow.innerHTML = `<style>${styles}</style>${content}`;
         window.document.body.appendChild(toast);
 
-        // Auto-dismiss after 3 seconds
+        // Auto-dismiss after the given time
         _toastTimeout = setTimeout(() => {
             if (toast && toast.parentNode) {
                 toast.remove();
             }
             _toastTimeout = null;
-        }, 3000);
+        }, duration);
     }
 
     /**
@@ -5600,6 +5601,7 @@ function RemoteFunctions(config = {}) {
         "resetState"            : resetState,
         "enableHoverListeners" : enableHoverListeners,
         "registerHandlers" : registerHandlers,
-        "handleDownloadEvent" : handleDownloadEvent
+        "handleDownloadEvent" : handleDownloadEvent,
+        "showToastMessage" : showToastMessage
     };
 }

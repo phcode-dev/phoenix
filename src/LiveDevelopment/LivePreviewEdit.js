@@ -47,6 +47,9 @@ define(function (require, exports, module) {
     const IMAGE_DOWNLOAD_FOLDER_KEY = "imageGallery.downloadFolder";
     const IMAGE_DOWNLOAD_PERSIST_FOLDER_KEY = "imageGallery.persistFolder";
 
+    // state manager key for tracking if copy/cut toast has been shown
+    const COPY_CUT_TOAST_SHOWN_KEY = "livePreviewEdit.copyToastShown";
+
     const DOWNLOAD_EVENTS = {
         DIALOG_OPENED: 'dialogOpened',
         DIALOG_CLOSED: 'dialogClosed',
@@ -339,6 +342,7 @@ define(function (require, exports, module) {
         const text = editor.getTextBetween(startPos, endPos);
 
         Phoenix.app.copyToClipboard(text);
+        _showCopyToastIfNeeded();
 
         // delete the elements source code
         editor.document.batchOperation(function () {
@@ -368,6 +372,7 @@ define(function (require, exports, module) {
         const text = editor.getTextBetween(startPos, endPos);
 
         Phoenix.app.copyToClipboard(text);
+        _showCopyToastIfNeeded();
     }
 
     /**
@@ -796,6 +801,19 @@ define(function (require, exports, module) {
         console.error('something went wrong while download the image. error:', error);
         if (downloadId) {
             _sendDownloadStatusToBrowser(DOWNLOAD_EVENTS.ERROR, { downloadId: downloadId });
+        }
+    }
+
+    function _showCopyToastIfNeeded() {
+        const hasShownToast = StateManager.get(COPY_CUT_TOAST_SHOWN_KEY);
+        if (!hasShownToast) {
+            const currLiveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
+            if (currLiveDoc && currLiveDoc.protocol && currLiveDoc.protocol.evaluate) {
+                const message = Strings.LIVE_DEV_COPY_TOAST_MESSAGE;
+                const evalString = `_LD.showToastMessage(${JSON.stringify(message)}, 6000)`;
+                currLiveDoc.protocol.evaluate(evalString);
+                StateManager.set(COPY_CUT_TOAST_SHOWN_KEY, true);
+            }
         }
     }
 
