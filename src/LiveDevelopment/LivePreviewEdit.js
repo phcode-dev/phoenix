@@ -30,6 +30,7 @@ define(function (require, exports, module) {
     const LiveDevelopment = require("LiveDevelopment/main");
     const CodeMirror = require("thirdparty/CodeMirror/lib/codemirror");
     const ProjectManager = require("project/ProjectManager");
+    const PreferencesManager = require("preferences/PreferencesManager");
     const CommandManager = require("command/CommandManager");
     const Commands = require("command/Commands");
     const FileSystem = require("filesystem/FileSystem");
@@ -46,7 +47,12 @@ define(function (require, exports, module) {
     const IMAGE_DOWNLOAD_FOLDER_KEY = "imageGallery.downloadFolder";
     const IMAGE_DOWNLOAD_PERSIST_FOLDER_KEY = "imageGallery.persistFolder";
 
+    // state manager key for tracking if copy/cut toast has been shown
+    const COPY_CUT_TOAST_SHOWN_KEY = "livePreviewEdit.copyToastShown";
+
     const DOWNLOAD_EVENTS = {
+        DIALOG_OPENED: 'dialogOpened',
+        DIALOG_CLOSED: 'dialogClosed',
         STARTED: 'downloadStarted',
         COMPLETED: 'downloadCompleted',
         CANCELLED: 'downloadCancelled',
@@ -72,7 +78,7 @@ define(function (require, exports, module) {
      * we only care about text changes or things like newlines, <br>, or formatting like <b>, <i>, etc.
      *
      * Here's the basic idea:
-     * - Parse both old and new HTML strings into DOM trees
+     * - Parse both old and new HTML strings into document fragments using <template> elements
      * - Then walk both DOMs side by side and sync changes
      *
      * What we handle:
@@ -87,12 +93,14 @@ define(function (require, exports, module) {
      * This avoids the browser trying to “fix” broken HTML (which we don’t want)
      */
     function _syncTextContentChanges(oldContent, newContent) {
-        const parser = new DOMParser();
-        const oldDoc = parser.parseFromString(oldContent, "text/html");
-        const newDoc = parser.parseFromString(newContent, "text/html");
+        function parseFragment(html) {
+            const t = document.createElement("template");
+            t.innerHTML = html;
+            return t.content;
+        }
 
-        const oldRoot = oldDoc.body;
-        const newRoot = newDoc.body;
+        const oldRoot = parseFragment(oldContent);
+        const newRoot = parseFragment(newContent);
 
         // this function is to remove the phoenix internal attributes from leaking into the user's source code
         function cleanClonedElement(clonedElement) {
@@ -164,14 +172,16 @@ define(function (require, exports, module) {
             }
         }
 
-        const oldEls = Array.from(oldRoot.children);
-        const newEls = Array.from(newRoot.children);
+        const oldEls = Array.from(oldRoot.childNodes);
+        const newEls = Array.from(newRoot.childNodes);
 
         for (let i = 0; i < Math.min(oldEls.length, newEls.length); i++) {
             syncText(oldEls[i], newEls[i]);
         }
 
-        return oldRoot.innerHTML;
+        return Array.from(oldRoot.childNodes).map(node =>
+            node.outerHTML || node.textContent
+        ).join("");
     }
 
     /**
@@ -310,6 +320,88 @@ define(function (require, exports, module) {
                 // if there is some text, we just add the duplicated text right next to it
                 editor.replaceRange(text, startPos);
             }
+        });
+    }
+
+    /**
+     * this saves the element to clipboard and deletes its source code
+     * @param {Number} tagId
+     */
+    function _cutElementToClipboard(tagId) {
+        const editor = _getEditorAndValidate(tagId);
+        if (!editor) {
+            return;
+        }
+
+        const range = _getElementRange(editor, tagId);
+        if (!range) {
+            return;
+        }
+
+        const { startPos, endPos } = range;
+        const text = editor.getTextBetween(startPos, endPos);
+
+        Phoenix.app.copyToClipboard(text);
+        _showCopyToastIfNeeded();
+
+        // delete the elements source code
+        editor.document.batchOperation(function () {
+            editor.replaceRange("", startPos, endPos);
+
+            // clean up any empty line
+            if(startPos.line !== 0 && !(editor.getLine(startPos.line).trim())) {
+                const prevLineText = editor.getLine(startPos.line - 1);
+                const chPrevLine = prevLineText ? prevLineText.length : 0;
+                editor.replaceRange("", {line: startPos.line - 1, ch: chPrevLine}, startPos);
+            }
+        });
+    }
+
+    function _copyElementToClipboard(tagId) {
+        const editor = _getEditorAndValidate(tagId);
+        if (!editor) {
+            return;
+        }
+
+        const range = _getElementRange(editor, tagId);
+        if (!range) {
+            return;
+        }
+
+        const { startPos, endPos } = range;
+        const text = editor.getTextBetween(startPos, endPos);
+
+        Phoenix.app.copyToClipboard(text);
+        _showCopyToastIfNeeded();
+    }
+
+    /**
+     * this function is to paste the clipboard content above the target element
+     * @param {Number} tagId
+     */
+    function _pasteElementFromClipboard(tagId) {
+        const editor = _getEditorAndValidate(tagId);
+        if (!editor) {
+            return;
+        }
+        const range = _getElementRange(editor, tagId);
+        if (!range) {
+            return;
+        }
+
+        const { startPos } = range;
+
+        Phoenix.app.clipboardReadText().then(text => {
+            if (!text) {
+                return;
+            }
+            // get the indentation in the target line and check if there is any real indentation
+            let indent = editor.getTextBetween({ line: startPos.line, ch: 0 }, startPos);
+            indent = indent.trim() === '' ? indent : '';
+
+            editor.replaceRange(text + '\n' + indent, startPos);
+        }).catch(err => {
+            console.error("Failed to read from clipboard:", err);
         });
     }
 
@@ -709,6 +801,19 @@ define(function (require, exports, module) {
         console.error('something went wrong while download the image. error:', error);
         if (downloadId) {
             _sendDownloadStatusToBrowser(DOWNLOAD_EVENTS.ERROR, { downloadId: downloadId });
+        }
+    }
+
+    function _showCopyToastIfNeeded() {
+        const hasShownToast = StateManager.get(COPY_CUT_TOAST_SHOWN_KEY);
+        if (!hasShownToast) {
+            const currLiveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
+            if (currLiveDoc && currLiveDoc.protocol && currLiveDoc.protocol.evaluate) {
+                const message = Strings.LIVE_DEV_COPY_TOAST_MESSAGE;
+                const evalString = `_LD.showToastMessage(${JSON.stringify(message)}, 6000)`;
+                currLiveDoc.protocol.evaluate(evalString);
+                StateManager.set(COPY_CUT_TOAST_SHOWN_KEY, true);
+            }
         }
     }
 
@@ -1156,6 +1261,11 @@ define(function (require, exports, module) {
         const $suggestions = $dlg.find("#folder-suggestions");
         const $rememberCheckbox = $dlg.find("#remember-folder-checkbox");
 
+        // notify live preview that dialog is now open
+        if (message && message.downloadId) {
+            _sendDownloadStatusToBrowser(DOWNLOAD_EVENTS.DIALOG_OPENED, { downloadId: message.downloadId });
+        }
+
         let folderList = [];
         let rootFolders = [];
         let stringMatcher = null;
@@ -1164,12 +1274,32 @@ define(function (require, exports, module) {
         const shouldBeChecked = persistFolder !== false;
         $rememberCheckbox.prop('checked', shouldBeChecked);
 
-        _scanRootDirectoriesOnly(projectRoot, rootFolders).then(() => {
-            stringMatcher = new StringMatch.StringMatcher({ segmentedSearch: true });
-            _renderFolderSuggestions(rootFolders.slice(0, 15), $suggestions, $input);
-        });
+        // check if any folder path exists, we pre-fill it
+        const savedFolder = StateManager.get(IMAGE_DOWNLOAD_FOLDER_KEY, StateManager.PROJECT_CONTEXT);
+        if (savedFolder !== null && savedFolder !== undefined) {
+            $input.val(savedFolder);
+        }
 
-        _scanDirectories(projectRoot, '', folderList);
+        // we only scan root directories if we don't have a pre-filled value
+        if (!savedFolder) {
+            _scanRootDirectoriesOnly(projectRoot, rootFolders).then(() => {
+                stringMatcher = new StringMatch.StringMatcher({ segmentedSearch: true });
+                _renderFolderSuggestions(rootFolders.slice(0, 15), $suggestions, $input);
+            });
+        }
+
+        // scan all directories, and if we pre-filled a path, trigger autocomplete suggestions
+        _scanDirectories(projectRoot, '', folderList).then(() => {
+            // init stringMatcher if it wasn't created during root scan
+            if (!stringMatcher) {
+                stringMatcher = new StringMatch.StringMatcher({ segmentedSearch: true });
+            }
+            if (savedFolder) {
+                _updateFolderSuggestions(savedFolder, folderList, rootFolders, stringMatcher, $suggestions, $input);
+                // load root directories in background so they're ready when user clears input
+                _scanRootDirectoriesOnly(projectRoot, rootFolders);
+            }
+        });
 
         // input event handler
         $input.on('input', function() {
@@ -1206,6 +1336,12 @@ define(function (require, exports, module) {
                     _sendDownloadStatusToBrowser(DOWNLOAD_EVENTS.CANCELLED, { downloadId: message.downloadId });
                 }
             }
+
+            // notify live preview that dialog is now closed
+            if (message && message.downloadId) {
+                _sendDownloadStatusToBrowser(DOWNLOAD_EVENTS.DIALOG_CLOSED, { downloadId: message.downloadId });
+            }
+
             dialog.close();
         });
     }
@@ -1252,19 +1388,6 @@ define(function (require, exports, module) {
         }).catch(error => {
             _handleDownloadError(error, message.downloadId);
         });
-    }
-
-    /**
-     * Handles reset of image folder selection - clears the saved preference and shows the dialog
-     * @private
-     */
-    function _handleResetImageFolderSelection() {
-        // clear the saved folder preference for this project
-        StateManager.set(IMAGE_DOWNLOAD_FOLDER_KEY, null, StateManager.PROJECT_CONTEXT);
-
-        // show the folder selection dialog for the user to choose a new folder
-        // we pass null because we're not downloading an image, just setting the preference
-        _showFolderSelectionDialog(null);
     }
 
     /**
@@ -1332,13 +1455,19 @@ define(function (require, exports, module) {
 
         // handle reset image folder selection
         if (message.resetImageFolderSelection) {
-            _handleResetImageFolderSelection();
+            _showFolderSelectionDialog(null);
             return;
         }
 
         // handle image gallery state change message
         if (message.type === "imageGalleryStateChange") {
             LiveDevelopment.setImageGalleryState(message.selected);
+            return;
+        }
+
+        // handle ruler lines toggle message
+        if (message.type === "toggleRulerLines") {
+            PreferencesManager.set("livePreviewShowRulerLines", message.enabled);
             return;
         }
 
@@ -1367,6 +1496,12 @@ define(function (require, exports, module) {
             _deleteElementInSourceByTagId(message.tagId);
         } else if (message.duplicate) {
             _duplicateElementInSourceByTagId(message.tagId);
+        } else if (message.cut) {
+            _cutElementToClipboard(message.tagId);
+        } else if (message.copy) {
+            _copyElementToClipboard(message.tagId);
+        } else if (message.paste) {
+            _pasteElementFromClipboard(message.tagId);
         } else if (message.livePreviewTextEdit) {
             _editTextInSource(message);
         } else if (message.AISend) {

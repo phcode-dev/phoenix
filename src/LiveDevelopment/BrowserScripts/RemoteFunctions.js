@@ -33,6 +33,9 @@ function RemoteFunctions(config = {}) {
     // we need this so that we can remove click styling from the previous element when a new element is clicked
     let previouslyClickedElement = null;
 
+    // we store references to interaction blocker event handlers so we can remove them when switching modes
+    let _interactionBlockerHandlers = null;
+
     var req, timeout;
     var animateHighlight = function (time) {
         if(req) {
@@ -356,6 +359,70 @@ function RemoteFunctions(config = {}) {
     }
 
     /**
+     * this is for cut button, when user clicks on cut button we copy the element's source code
+     * into the clipboard and remove it from the src code. read `_cutElementToClipboard` in `LivePreviewEdit.js`
+     * @param {Event} event
+     * @param {DOMElement} element - the element we need to cut
+     */
+    function _handleCutOptionClick(event, element) {
+        if (isElementEditable(element)) {
+            const tagId = element.getAttribute("data-brackets-id");
+
+            window._Brackets_MessageBroker.send({
+                livePreviewEditEnabled: true,
+                element: element,
+                event: event,
+                tagId: Number(tagId),
+                cut: true
+            });
+        } else {
+            console.error("The TagID might be unavailable or the element tag is directly body or html");
+        }
+    }
+
+    /**
+     * this is for copy button, similar to cut just we don't remove the elements source code
+     * @param {Event} event
+     * @param {DOMElement} element
+     */
+    function _handleCopyOptionClick(event, element) {
+        if (isElementEditable(element)) {
+            const tagId = element.getAttribute("data-brackets-id");
+
+            window._Brackets_MessageBroker.send({
+                livePreviewEditEnabled: true,
+                element: element,
+                event: event,
+                tagId: Number(tagId),
+                copy: true
+            });
+        } else {
+            console.error("The TagID might be unavailable or the element tag is directly body or html");
+        }
+    }
+
+    /**
+     * this is for paste button, this inserts the saved content from clipboard just above this element
+     * @param {Event} event
+     * @param {DOMElement} targetElement
+     */
+    function _handlePasteOptionClick(event, targetElement) {
+        if (isElementEditable(targetElement)) {
+            const targetTagId = targetElement.getAttribute("data-brackets-id");
+
+            window._Brackets_MessageBroker.send({
+                livePreviewEditEnabled: true,
+                element: targetElement,
+                event: event,
+                tagId: Number(targetTagId),
+                paste: true
+            });
+        } else {
+            console.error("The TagID might be unavailable or the element tag is directly body or html");
+        }
+    }
+
+    /**
      * this is for select-parent button
      * When user clicks on this option for a particular element, we get its parent element and trigger a click on it
      * @param {Event} event
@@ -397,6 +464,12 @@ function RemoteFunctions(config = {}) {
             _handleDuplicateOptionClick(e, element);
         } else if (action === "delete") {
             _handleDeleteOptionClick(e, element);
+        } else if (action === "cut") {
+            _handleCutOptionClick(e, element);
+        } else if (action === "copy") {
+            _handleCopyOptionClick(e, element);
+        } else if (action === "paste") {
+            _handlePasteOptionClick(e, element);
         } else if (action === "ai") {
             _handleAIOptionClick(e, element);
         } else if (action === "image-gallery") {
@@ -1357,6 +1430,30 @@ function RemoteFunctions(config = {}) {
         </svg>
       `,
 
+        cut: `
+        <svg viewBox="0 0 640 640" fill="currentColor">
+            <path d="M256 320L216.5 359.5C203.9 354.6 190.3 352 176 352C114.1 352 64 402.1 64 464C64 525.9 114.1 576 176 576C237.9 576 288 525.9 288 464C288 449.7 285.3 436.1 280.5 423.5L563.2 140.8C570.3 133.7 570.3 122.3 563.2 115.2C534.9 86.9 489.1 86.9 460.8 115.2L320 256L280.5 216.5C285.4 203.9 288 190.3 288 176C288 114.1 237.9 64 176 64C114.1 64 64 114.1 64 176C64 237.9 114.1 288 176 288C190.3 288 203.9 285.3 216.5 280.5L256 320zM353.9 417.9L460.8 524.8C489.1 553.1 534.9 553.1 563.2 524.8C570.3 517.7 570.3 506.3 563.2 499.2L417.9 353.9L353.9 417.9zM128 176C128 149.5 149.5 128 176 128C202.5 128 224 149.5 224 176C224 202.5 202.5 224 176 224C149.5 224 128 202.5 128 176zM176 416C202.5 416 224 437.5 224 464C224 490.5 202.5 512 176 512C149.5 512 128 490.5 128 464C128 437.5 149.5 416 176 416z" />
+        </svg>
+        `,
+
+        copy: `
+        <svg viewBox="0 0 640 640" fill="currentColor">
+            <path d="M288 64C252.7 64 224 92.7 224 128L224 384C224 419.3 252.7 448 288 448L480 448C515.3 448 544 419.3 544 384L544 183.4C544 166 536.9 149.3 524.3 137.2L466.6 81.8C454.7 70.4 438.8 64 422.3 64L288 64zM160 192C124.7 192 96 220.7 96 256L96 512C96 547.3 124.7 576 160 576L352 576C387.3 576 416 547.3 416 512L416 496L352 496L352 512L160 512L160 256L176 256L176 192L160 192z" />
+        </svg>
+        `,
+
+        paste: `
+        <svg viewBox="0 0 640 640" fill="currentColor">
+            <path d="M128 64C92.7 64 64 92.7 64 128L64 448C64 483.3 92.7 512 128 512L240 512L240 288C240 226.1 290.1 176 352 176L416 176L416 128C416 92.7 387.3 64 352 64L128 64zM312 176L168 176C154.7 176 144 165.3 144 152C144 138.7 154.7 128 168 128L312 128C325.3 128 336 138.7 336 152C336 165.3 325.3 176 312 176zM352 224C316.7 224 288 252.7 288 288L288 512C288 547.3 316.7 576 352 576L512 576C547.3 576 576 547.3 576 512L576 346.5C576 329.5 569.3 313.2 557.3 301.2L498.8 242.7C486.8 230.7 470.5 224 453.5 224L352 224z" />
+        </svg>
+        `,
+
+        ruler: `
+        <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 3h1.5v18H8V3zm6.5 0H16v18h-1.5V3zM3 8v1.5h18V8H3zm0 6.5V16h18v-1.5H3z"/>
+        </svg>
+        `,
+
         imageGallery: `
         <svg viewBox="0 0 24 24" fill="currentColor">
           <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
@@ -1397,6 +1494,12 @@ function RemoteFunctions(config = {}) {
         search: `
         <svg viewBox="0 0 20 16" fill="currentColor" width="17" height="17">
           <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+        </svg>
+      `,
+
+        verticalEllipsis: `
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
         </svg>
       `
     };
@@ -1509,6 +1612,9 @@ function RemoteFunctions(config = {}) {
                 <span data-action="delete" title="${config.strings.delete}">
                     ${ICONS.trash}
                 </span>
+                <span data-action="more-options" title="${config.strings.moreOptions}">
+                    ${ICONS.verticalEllipsis}
+                </span>
             </div>`;
 
             let styles = `
@@ -1566,7 +1672,11 @@ function RemoteFunctions(config = {}) {
             if (imageGallerySelected) {
                 styles += `
                     .node-options span[data-action="image-gallery"] {
-                      background-color: rgba(255, 255, 255, 0.25) !important;
+                      background-color: rgba(50, 50, 220, 0.5) !important;
+                    }
+
+                    .node-options span[data-action="image-gallery"]:hover {
+                      background-color: rgba(100, 100, 230, 0.6) !important;
                     }
                 `;
             }
@@ -1607,11 +1717,22 @@ function RemoteFunctions(config = {}) {
                 span.addEventListener('click', (event) => {
                     event.stopPropagation();
                     event.preventDefault();
-                    // data-action is to differentiate between the buttons (duplicate, delete or select-parent)
+                    // data-action is to differentiate between the buttons (duplicate, delete, select-parent etc)
                     const action = event.currentTarget.getAttribute('data-action');
-                    handleOptionClick(event, action, this.element);
-                    if (action !== 'duplicate') {
-                        this.remove();
+
+                    if (action === 'more-options') {
+                        // to toggle the dropdown on more options button click
+                        if (_moreOptionsDropdown) {
+                            _moreOptionsDropdown.remove();
+                        } else {
+                            _moreOptionsDropdown = new MoreOptionsDropdown(this.element, event.currentTarget);
+                        }
+                    } else {
+                        handleOptionClick(event, action, this.element);
+                        // as we don't want to remove the options box on duplicate button click
+                        if (action !== 'duplicate') {
+                            this.remove();
+                        }
                     }
                 });
             });
@@ -1624,6 +1745,288 @@ function RemoteFunctions(config = {}) {
                 window.document.body.removeChild(this.body);
                 this.body = null;
                 _nodeMoreOptionsBox = null;
+            }
+        }
+    };
+
+    /**
+     * this is called when user clicks on the Show Ruler lines option in the more options dropdown
+     * @param {Event} event - click event
+     * @param {MoreOptionsDropdown} dropdown - the dropdown instance
+     */
+    function _handleToggleRulerLines(event, dropdown) {
+        config.showRulerLines = !config.showRulerLines;
+
+        window._Brackets_MessageBroker.send({
+            livePreviewEditEnabled: true,
+            type: "toggleRulerLines",
+            enabled: config.showRulerLines
+        });
+
+        // add checkmark in the dropdown
+        const checkmark = dropdown._shadow.querySelector('[data-action="toggle-ruler-lines"] .item-checkmark');
+        if (checkmark) {
+            checkmark.textContent = config.showRulerLines ? '✓' : '';
+        }
+
+        // to apply the ruler lines or remove it when option is toggled
+        if (config.showRulerLines && previouslyClickedElement) {
+            if (!_currentRulerLines) {
+                _currentRulerLines = new RulerLines(previouslyClickedElement);
+            }
+        } else {
+            if (_currentRulerLines) {
+                _currentRulerLines.remove();
+                _currentRulerLines = null;
+            }
+        }
+    }
+
+    /**
+     * the more options dropdown which appears when user clicks on the ellipsis button in the options box
+     */
+    function MoreOptionsDropdown(targetElement, ellipsisButton) {
+        this.targetElement = targetElement;
+        this.ellipsisButton = ellipsisButton;
+        this.remove = this.remove.bind(this);
+        this.create();
+    }
+
+    MoreOptionsDropdown.prototype = {
+        _getDropdownPosition: function(dropdownWidth, dropdownHeight) {
+            const buttonBounds = this.ellipsisButton.getBoundingClientRect();
+            const viewportHeight = window.innerHeight;
+            const viewportWidth = window.innerWidth;
+
+            const optionsBox = _nodeMoreOptionsBox._shadow.querySelector(".phoenix-more-options-box");
+            const optionsBoxBounds = optionsBox.getBoundingClientRect();
+            const targetElementBounds = this.targetElement.getBoundingClientRect();
+
+            let topPos, leftPos;
+
+            const checkOverlap = function (dTop, dLeft, dWidth, dHeight) {
+                const dropdownRight = dLeft + dWidth;
+                const dropdownBottom = dTop + dHeight;
+                const elemRight = targetElementBounds.left + targetElementBounds.width;
+                const elemBottom = targetElementBounds.top + targetElementBounds.height;
+
+                return !(
+                    dLeft > elemRight ||
+                    dropdownRight < targetElementBounds.left ||
+                    dTop > elemBottom ||
+                    dropdownBottom < targetElementBounds.top
+                );
+            };
+
+            const isOptionsBoxAboveElement = optionsBoxBounds.bottom < targetElementBounds.top;
+
+            if (isOptionsBoxAboveElement) {
+                const spaceAbove = optionsBoxBounds.top;
+
+                if (spaceAbove >= dropdownHeight + 6) {
+                    topPos = optionsBoxBounds.top + window.pageYOffset - dropdownHeight - 6;
+                } else {
+                    topPos = optionsBoxBounds.bottom + window.pageYOffset + 6;
+
+                    const tempTop = optionsBoxBounds.bottom;
+                    const tempLeft = buttonBounds.right - dropdownWidth;
+
+                    if (checkOverlap(tempTop, tempLeft, dropdownWidth, dropdownHeight)) {
+                        let shiftedLeft = targetElementBounds.right + 6;
+                        if (shiftedLeft + dropdownWidth <= viewportWidth - 6) {
+                            leftPos = shiftedLeft + window.pageXOffset;
+                            return { topPos: topPos, leftPos: leftPos };
+                        }
+
+                        shiftedLeft = targetElementBounds.left - dropdownWidth - 6;
+                        if (shiftedLeft >= 6) {
+                            leftPos = shiftedLeft + window.pageXOffset;
+                            return { topPos: topPos, leftPos: leftPos };
+                        }
+                    }
+                }
+            } else {
+                const spaceBelow = viewportHeight - optionsBoxBounds.bottom;
+
+                if (spaceBelow >= dropdownHeight + 6) {
+                    topPos = optionsBoxBounds.bottom + window.pageYOffset + 6;
+                } else {
+                    topPos = optionsBoxBounds.top + window.pageYOffset - dropdownHeight - 6;
+                }
+            }
+
+            leftPos = buttonBounds.right + window.pageXOffset - dropdownWidth;
+
+            if (leftPos < 6) {
+                leftPos = 6;
+            }
+
+            if (leftPos + dropdownWidth > viewportWidth - 6) {
+                leftPos = viewportWidth - dropdownWidth - 6;
+            }
+
+            return { topPos: topPos, leftPos: leftPos };
+        },
+
+        _style: function() {
+            this.body = window.document.createElement("div");
+            this.body.setAttribute("data-phcode-internal-c15r5a9", "true");
+
+            const shadow = this.body.attachShadow({ mode: "open" });
+
+            let content = `
+                <div class="more-options-dropdown">
+                    <div class="dropdown-item" data-action="cut">
+                        <span class="item-icon">${ICONS.cut}</span>
+                        <span class="item-label">${config.strings.cut}</span>
+                    </div>
+                    <div class="dropdown-item" data-action="copy">
+                        <span class="item-icon">${ICONS.copy}</span>
+                        <span class="item-label">${config.strings.copy}</span>
+                    </div>
+                    <div class="dropdown-item" data-action="paste">
+                        <span class="item-icon">${ICONS.paste}</span>
+                        <span class="item-label">${config.strings.paste}</span>
+                    </div>
+                    <div class="dropdown-separator"></div>
+                    <div class="dropdown-item" data-action="toggle-ruler-lines">
+                        <span class="item-icon">${ICONS.ruler}</span>
+                        <span class="item-label">${config.strings.showRulerLines}</span>
+                        <span class="item-checkmark">${config.showRulerLines ? '✓' : ''}</span>
+                    </div>
+                </div>
+            `;
+
+            let styles = `
+                :host {
+                  all: initial !important;
+                }
+
+                .phoenix-dropdown {
+                    background-color: #2c2c2c !important;
+                    color: #cdcdcd !important;
+                    border: 1px solid #4a4a4a !important;
+                    border-radius: 6px !important;
+                    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25) !important;
+                    font-size: 13px !important;
+                    font-family: Arial, sans-serif !important;
+                    z-index: 2147483647 !important;
+                    position: absolute !important;
+                    left: -1000px;
+                    top: -1000px;
+                    box-sizing: border-box !important;
+                    min-width: 130px !important;
+                    padding: 3px 0 !important;
+                    overflow: hidden !important;
+                }
+
+                .more-options-dropdown {
+                    display: flex !important;
+                    flex-direction: column !important;
+                }
+
+                .dropdown-item {
+                    padding: 7px 14px !important;
+                    cursor: pointer !important;
+                    white-space: nowrap !important;
+                    user-select: none !important;
+                    display: flex !important;
+                    align-items: center !important;
+                    gap: 6px !important;
+                }
+
+                .dropdown-item:hover {
+                    background-color: #3c3f41 !important;
+                }
+
+                .item-icon {
+                    display: flex !important;
+                    align-items: center !important;
+                    justify-content: center !important;
+                    width: 16px !important;
+                    height: 16px !important;
+                    flex-shrink: 0 !important;
+                }
+
+                .item-icon svg {
+                    width: 16px !important;
+                    height: 16px !important;
+                    display: block !important;
+                }
+
+                .item-label {
+                    flex: 1 !important;
+                }
+
+                .dropdown-separator {
+                    height: 1px !important;
+                    background-color: #4a4a4a !important;
+                    margin: 2px 0 !important;
+                }
+
+                .item-checkmark {
+                    margin-left: auto !important;
+                    padding-left: 4px !important;
+                    font-size: 14px !important;
+                    margin-top: -4px !important;
+                }
+            `;
+
+            shadow.innerHTML = `<style>${styles}</style><div class="phoenix-dropdown">${content}</div>`;
+            this._shadow = shadow;
+        },
+
+        create: function() {
+            this.remove();
+            this._style();
+            window.document.body.appendChild(this.body);
+
+            // to position the dropdown element at the right position
+            const dropdownElement = this._shadow.querySelector('.phoenix-dropdown');
+            if (dropdownElement) {
+                const dropdownRect = dropdownElement.getBoundingClientRect();
+                const pos = this._getDropdownPosition(dropdownRect.width, dropdownRect.height);
+
+                dropdownElement.style.left = pos.leftPos + 'px';
+                dropdownElement.style.top = pos.topPos + 'px';
+            }
+
+            // click handlers for the dropdown items
+            const items = this._shadow.querySelectorAll('.dropdown-item');
+            items.forEach(item => {
+                item.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    event.preventDefault();
+                    const action = event.currentTarget.getAttribute('data-action');
+
+                    if (action === 'toggle-ruler-lines') {
+                        // when ruler lines option is clicked we need to keep the dropdown open
+                        _handleToggleRulerLines(event, this);
+                    } else {
+                        // for other options, we close both the dropdown as well as the options box
+                        handleOptionClick(event, action, this.targetElement);
+                        this.remove();
+                        if (_nodeMoreOptionsBox) {
+                            _nodeMoreOptionsBox.remove();
+                        }
+                    }
+                });
+            });
+        },
+
+        remove: function() {
+            if (this.body && this.body.parentNode && this.body.parentNode === window.document.body) {
+                window.document.body.removeChild(this.body);
+                this.body = null;
+                _moreOptionsDropdown = null;
+            }
+        },
+
+        refresh: function() {
+            // update the checkmark state when config changes
+            const checkmark = this._shadow.querySelector('[data-action="toggle-ruler-lines"] .item-checkmark');
+            if (checkmark) {
+                checkmark.textContent = config.showRulerLines ? '✓' : '';
             }
         }
     };
@@ -3661,17 +4064,140 @@ function RemoteFunctions(config = {}) {
         }
     };
 
+    /**
+     * Ruler lines class, this creates the rulers across the edges of the element (hori as well as vert)
+     */
+    function RulerLines(element) {
+        this.element = element;
+        this.lineElements = {
+            left: null,
+            right: null,
+            top: null,
+            bottom: null
+        };
+        // gray color for non-editable elements, blue for editable
+        this.color = element.hasAttribute("data-brackets-id")
+            ? "rgba(66, 133, 244, 0.4)"
+            : "rgba(60, 63, 65, 0.8)";
+        this.create();
+        this.update();
+    }
+
+    RulerLines.prototype = {
+        create: function() {
+            let body = window.document.body;
+
+            this.lineElements.left = window.document.createElement("div");
+            this.lineElements.right = window.document.createElement("div");
+            this.lineElements.top = window.document.createElement("div");
+            this.lineElements.bottom = window.document.createElement("div");
+
+            this.lineElements.left.setAttribute("data-phcode-internal-c15r5a9", "true");
+            this.lineElements.right.setAttribute("data-phcode-internal-c15r5a9", "true");
+            this.lineElements.top.setAttribute("data-phcode-internal-c15r5a9", "true");
+            this.lineElements.bottom.setAttribute("data-phcode-internal-c15r5a9", "true");
+
+            let applyStyles = function (element, color) {
+                element.style.position = "absolute";
+                element.style.backgroundColor = color;
+                element.style.pointerEvents = "none";
+                element.style.zIndex = "2147483645";
+            };
+
+            applyStyles(this.lineElements.left, this.color);
+            applyStyles(this.lineElements.right, this.color);
+            applyStyles(this.lineElements.top, this.color);
+            applyStyles(this.lineElements.bottom, this.color);
+
+            body.appendChild(this.lineElements.left);
+            body.appendChild(this.lineElements.right);
+            body.appendChild(this.lineElements.top);
+            body.appendChild(this.lineElements.bottom);
+        },
+
+        update: function() {
+            if (!this.element) {
+                return;
+            }
+
+            let rect = this.element.getBoundingClientRect();
+            let scrollTop = window.pageYOffset;
+            let scrollLeft = window.pageXOffset;
+
+            var edges = {
+                left: rect.left + scrollLeft,
+                right: rect.right + scrollLeft,
+                top: rect.top + scrollTop,
+                bottom: rect.bottom + scrollTop
+            };
+
+            // get the doc dimensions as we need to put the ruler lines in the whole document
+            var docHeight = window.document.documentElement.scrollHeight;
+            var docWidth = window.document.documentElement.scrollWidth;
+
+            // for vertical lines
+            this.lineElements.left.style.width = '1px';
+            this.lineElements.left.style.height = docHeight + 'px';
+            this.lineElements.left.style.left = edges.left + 'px';
+            this.lineElements.left.style.top = '0px';
+
+            this.lineElements.right.style.width = '1px';
+            this.lineElements.right.style.height = docHeight + 'px';
+            this.lineElements.right.style.left = edges.right + 'px';
+            this.lineElements.right.style.top = '0px';
+
+            // for horizontal lines
+            this.lineElements.top.style.height = '1px';
+            this.lineElements.top.style.width = docWidth + 'px';
+            this.lineElements.top.style.top = edges.top + 'px';
+            this.lineElements.top.style.left = '0px';
+
+            this.lineElements.bottom.style.height = '1px';
+            this.lineElements.bottom.style.width = docWidth + 'px';
+            this.lineElements.bottom.style.top = edges.bottom + 'px';
+            this.lineElements.bottom.style.left = '0px';
+        },
+
+        remove: function() {
+            var body = window.document.body;
+
+            if (this.lineElements.left && this.lineElements.left.parentNode) {
+                body.removeChild(this.lineElements.left);
+            }
+            if (this.lineElements.right && this.lineElements.right.parentNode) {
+                body.removeChild(this.lineElements.right);
+            }
+            if (this.lineElements.top && this.lineElements.top.parentNode) {
+                body.removeChild(this.lineElements.top);
+            }
+            if (this.lineElements.bottom && this.lineElements.bottom.parentNode) {
+                body.removeChild(this.lineElements.bottom);
+            }
+
+            this.lineElements = {
+                left: null,
+                right: null,
+                top: null,
+                bottom: null
+            };
+        }
+    };
+
     var _localHighlight;
     var _hoverHighlight;
     var _clickHighlight;
     var _nodeInfoBox;
     var _nodeMoreOptionsBox;
+    var _moreOptionsDropdown;
     var _aiPromptBox;
     var _imageRibbonGallery;
+    var _currentRulerLines;
     var _setup = false;
     var _hoverLockTimer = null;
 
     const DOWNLOAD_EVENTS = {
+        DIALOG_OPENED: 'dialogOpened',
+        DIALOG_CLOSED: 'dialogClosed',
         STARTED: 'downloadStarted',
         COMPLETED: 'downloadCompleted',
         CANCELLED: 'downloadCancelled',
@@ -3679,6 +4205,65 @@ function RemoteFunctions(config = {}) {
     };
 
     let _activeDownloads = new Map();
+    let _dialogOverlay = null;
+
+    function _showDialogOverlay() {
+        // don't create multiple overlays
+        if (_dialogOverlay) {
+            return;
+        }
+
+        // create overlay container
+        const overlay = window.document.createElement('div');
+        overlay.setAttribute('data-phcode-internal-c15r5a9', 'true');
+
+        const styles = `
+            <style>
+                .phoenix-dialog-overlay {
+                    position: fixed !important;
+                    top: 0 !important;
+                    left: 0 !important;
+                    width: 100% !important;
+                    height: 100% !important;
+                    background: rgba(0, 0, 0, 0.5) !important;
+                    z-index: 2147483646 !important;
+                    pointer-events: auto !important;
+                }
+
+                .phoenix-dialog-message-bar {
+                    position: absolute !important;
+                    top: 50% !important;
+                    left: 50% !important;
+                    transform: translate(-50%, -50%) !important;
+                    color: #ffffff !important;
+                    background-color: #333333 !important;
+                    padding: 1em 1.5em !important;
+                    text-align: center !important;
+                    font-size: 16px !important;
+                    border-radius: 3px !important;
+                    font-family: "SourceSansPro", Helvetica, Arial, sans-serif !important;
+                    z-index: 2147483647 !important;
+                }
+            </style>
+        `;
+
+        const content = `
+            <div class="phoenix-dialog-overlay">
+                <div class="phoenix-dialog-message-bar">${config.strings.imageGalleryDialogOverlayMessage}</div>
+            </div>
+        `;
+
+        overlay.innerHTML = styles + content;
+        window.document.body.appendChild(overlay);
+        _dialogOverlay = overlay;
+    }
+
+    function _hideDialogOverlay() {
+        if (_dialogOverlay && _dialogOverlay.parentNode) {
+            _dialogOverlay.parentNode.removeChild(_dialogOverlay);
+            _dialogOverlay = null;
+        }
+    }
 
     function handleDownloadEvent(eventType, data) {
         const downloadId = data && data.downloadId;
@@ -3686,6 +4271,18 @@ function RemoteFunctions(config = {}) {
             return;
         }
 
+        // handle dialog events (these don't require download to exist)
+        if (eventType === DOWNLOAD_EVENTS.DIALOG_OPENED) {
+            _showDialogOverlay();
+            return;
+        }
+
+        if (eventType === DOWNLOAD_EVENTS.DIALOG_CLOSED) {
+            _hideDialogOverlay();
+            return;
+        }
+
+        // handle download events (these require download to exist)
         const download = _activeDownloads.get(downloadId);
         if (!download) {
             return;
@@ -3822,6 +4419,7 @@ function RemoteFunctions(config = {}) {
      */
     function _selectElement(element) {
         dismissNodeMoreOptionsBox();
+        dismissMoreOptionsDropdown();
         dismissAIPromptBox();
         dismissNodeInfoBox();
         dismissToastMessage();
@@ -3866,7 +4464,8 @@ function RemoteFunctions(config = {}) {
         }
 
         element._originalOutline = element.style.outline;
-        element.style.outline = "1px solid #4285F4";
+        const outlineColor = element.hasAttribute("data-brackets-id") ? "#4285F4" : "#3C3F41";
+        element.style.outline = `1px solid ${outlineColor}`;
 
         // Only apply background tint for editable elements (not for dynamic/read-only)
         if (element.hasAttribute("data-brackets-id")) {
@@ -3879,6 +4478,11 @@ function RemoteFunctions(config = {}) {
         if (_hoverHighlight) {
             _hoverHighlight.clear();
             _hoverHighlight.add(element, true);
+        }
+
+        // to show ruler lines (only when its enabled)
+        if (config.showRulerLines) {
+            _currentRulerLines = new RulerLines(element);
         }
 
         previouslyClickedElement = element;
@@ -3916,36 +4520,98 @@ function RemoteFunctions(config = {}) {
     }
 
     /**
-     * This function handles the click event on the live preview DOM element
-     * this just stops the propagation because otherwise users might not be able to edit buttons or hyperlinks etc
-     * @param {Event} event
+     * this function is called when user clicks on an element in the LP when in edit mode
+     *
+     * @param {HTMLElement} element - The clicked element
+     * @param {Event} event - The click event
      */
-    function onClick(event) {
-        const element = event.target;
-
-        if(isElementInspectable(element)) {
-            event.preventDefault();
-            event.stopPropagation();
-            event.stopImmediatePropagation();
-
-            _selectElement(element);
-            activateHoverLock();
+    function handleElementClick(element, event) {
+        if (!isElementInspectable(element)) {
+            dismissUIAndCleanupState();
+            return;
         }
+
+        // if anything is currently selected, we need to clear that
+        const selection = window.getSelection();
+        if (selection && selection.toString().length > 0) {
+            selection.removeAllRanges();
+        }
+
+        // send cursor movement message to editor so cursor jumps to clicked element
+        if (element.hasAttribute("data-brackets-id")) {
+            window._Brackets_MessageBroker.send({
+                "tagId": element.getAttribute("data-brackets-id"),
+                "nodeID": element.id,
+                "nodeClassList": element.classList,
+                "nodeName": element.nodeName,
+                "allSelectors": window.getAllInheritedSelectorsInOrder(element),
+                "contentEditable": element.contentEditable === "true",
+                "clicked": true
+            });
+        }
+
+        // call the selectElement as selectElement handles all the highlighting/boxes and all UI related stuff
+        _selectElement(element);
+        activateHoverLock();
     }
 
     /**
-     * this function handles the double click event
-     * @param {Event} event
+     * this acts as the "KILL SWITCH", it blocks all the click related events from user elements
+     * but we exclude all the phoenix interal elements
+     * we call this function from inside registerHandlers
      */
-    function onDoubleClick(event) {
-        const element = event.target;
-        if (isElementEditable(element)) {
-            // because we only want to allow double click text editing where we show the edit option
-            if (_shouldShowEditTextOption(element)) {
+    function registerInteractionBlocker() {
+        // Create an object to store handler references
+        _interactionBlockerHandlers = {};
+
+        const eventsToBlock = ["click", "dblclick"];
+
+        eventsToBlock.forEach(eventType => {
+            // Create a named handler function so we can remove it later
+            const handler = function(event) {
+                const element = event.target;
+
+                // WHITELIST: Allow Phoenix internal UI elements to work normally
+                if (element.closest("[data-phcode-internal-c15r5a9]")) {
+                    return;
+                }
+
+                // BLOCK: Kill all user page interactions in edit mode
                 event.preventDefault();
-                event.stopPropagation();
-                startEditing(element);
-            }
+                event.stopImmediatePropagation();
+
+                // HANDLE: Process clicks and double-clicks for element selection/editing
+                if (eventType === "click") {
+                    // Skip click handling on the second click of a double-click
+                    // event.detail = 1 for first click, 2 for second click (during double-click)
+                    if (event.detail !== 2) {
+                        handleElementClick(element, event);
+                    }
+                } else if (eventType === "dblclick") {
+                    if (isElementEditable(element) && _shouldShowEditTextOption(element)) {
+                        startEditing(element);
+                    }
+                }
+            };
+
+            // Store the handler reference
+            _interactionBlockerHandlers[eventType] = handler;
+
+            // Register the handler in capture phase
+            window.document.addEventListener(eventType, handler, true);
+        });
+    }
+
+    /**
+     * this function is to remove all the interaction blocker
+     * this is needed when user is in preview/highlight mode
+     */
+    function unregisterInteractionBlocker() {
+        if (_interactionBlockerHandlers) {
+            Object.keys(_interactionBlockerHandlers).forEach(eventType => {
+                window.document.removeEventListener(eventType, _interactionBlockerHandlers[eventType], true);
+            });
+            _interactionBlockerHandlers = null;
         }
     }
 
@@ -3967,7 +4633,6 @@ function RemoteFunctions(config = {}) {
             window.document.addEventListener("mouseover", onMouseOver);
             window.document.addEventListener("mouseout", onMouseOut);
             window.document.addEventListener("mousemove", onMouseMove);
-            window.document.addEventListener("click", onClick);
             _localHighlight = new Highlight("#ecc", true);
             _setup = true;
         }
@@ -4060,10 +4725,18 @@ function RemoteFunctions(config = {}) {
         }
     }
 
+    // redraw ruler lines when element is selected
+    function redrawRulerLines() {
+        if (_currentRulerLines) {
+            _currentRulerLines.update();
+        }
+    }
+
     // just a wrapper function when we need to redraw highlights as well as UI boxes
     function redrawEverything() {
         redrawHighlights();
         redrawUIBoxes();
+        redrawRulerLines();
     }
 
     window.addEventListener("resize", redrawEverything);
@@ -4162,12 +4835,16 @@ function RemoteFunctions(config = {}) {
         // need to be updated on a timer to ensure the layout is correct.
         if (e.target === window.document) {
             redrawHighlights();
+            redrawRulerLines();
             // need to dismiss the box if the elements are fixed, otherwise they drift at times
             _dismissBoxesForFixedElements();
             _repositionAIBox(); // and reposition the AI box
         } else {
             if (_localHighlight || _clickHighlight || _hoverHighlight) {
                 window.setTimeout(redrawHighlights, 0);
+            }
+            if (_currentRulerLines) {
+                window.setTimeout(redrawRulerLines, 0);
             }
             _dismissBoxesForFixedElements();
             _repositionAIBox();
@@ -4432,6 +5109,28 @@ function RemoteFunctions(config = {}) {
         _editHandler.apply(edits);
     }
 
+    /**
+     * Handle ruler lines visibility toggle when config changes
+     * @param {Object} oldConfig - the prev config state
+     */
+    function _handleRulerLinesConfigChange(oldConfig) {
+        const rulerLinesChanged = oldConfig.showRulerLines !== config.showRulerLines;
+        if (rulerLinesChanged && previouslyClickedElement) {
+            if (config.showRulerLines) {
+                // if user turned it on: create ruler lines for the element
+                if (!_currentRulerLines) {
+                    _currentRulerLines = new RulerLines(previouslyClickedElement);
+                }
+            } else {
+                // if user turned it off: remove the lines
+                if (_currentRulerLines) {
+                    _currentRulerLines.remove();
+                    _currentRulerLines = null;
+                }
+            }
+        }
+    }
+
     function updateConfig(newConfig) {
         const oldConfig = config;
         config = JSON.parse(newConfig);
@@ -4439,6 +5138,12 @@ function RemoteFunctions(config = {}) {
         // update image gallery selected state as per the new config
         if (config.imageGalleryState !== undefined) {
             imageGallerySelected = config.imageGalleryState;
+        }
+
+        // handle ruler lines visibility toggle and refresh the more options dropdown if its open
+        _handleRulerLinesConfigChange(oldConfig);
+        if (_moreOptionsDropdown) {
+            _moreOptionsDropdown.refresh();
         }
 
         // Determine if configuration has changed significantly
@@ -4507,6 +5212,16 @@ function RemoteFunctions(config = {}) {
     }
 
     /**
+     * Helper function to dismiss MoreOptionsDropdown if it exists
+     */
+    function dismissMoreOptionsDropdown() {
+        if (_moreOptionsDropdown) {
+            _moreOptionsDropdown.remove();
+            _moreOptionsDropdown = null;
+        }
+    }
+
+    /**
      * Helper function to dismiss NodeInfoBox if it exists
      */
     function dismissNodeInfoBox() {
@@ -4541,6 +5256,7 @@ function RemoteFunctions(config = {}) {
      */
     function dismissAllUIBoxes() {
         dismissNodeMoreOptionsBox();
+        dismissMoreOptionsDropdown();
         dismissAIPromptBox();
         dismissNodeInfoBox();
         dismissImageRibbonGallery();
@@ -4553,8 +5269,9 @@ function RemoteFunctions(config = {}) {
      * this function is to show a toast notification at the bottom center of the screen
      * this toast message is used when user tries to edit a non-editable element
      * @param {String} message - the message to display in the toast
+     * @param {Number} duration - optional duration in milliseconds (default: 3000)
      */
-    function showToastMessage(message) {
+    function showToastMessage(message, duration = 3000) {
         // clear any existing toast & timer, if there are any
         dismissToastMessage();
 
@@ -4610,13 +5327,13 @@ function RemoteFunctions(config = {}) {
         shadow.innerHTML = `<style>${styles}</style>${content}`;
         window.document.body.appendChild(toast);
 
-        // Auto-dismiss after 3 seconds
+        // Auto-dismiss after the given time
         _toastTimeout = setTimeout(() => {
             if (toast && toast.parentNode) {
                 toast.remove();
             }
             _toastTimeout = null;
-        }, 3000);
+        }, duration);
     }
 
     /**
@@ -4649,6 +5366,11 @@ function RemoteFunctions(config = {}) {
             clearElementBackground(previouslyClickedElement);
             if (_hoverHighlight) {
                 _hoverHighlight.clear();
+            }
+
+            if (_currentRulerLines) {
+                _currentRulerLines.remove();
+                _currentRulerLines = null;
             }
 
             previouslyClickedElement = null;
@@ -4831,12 +5553,11 @@ function RemoteFunctions(config = {}) {
         // Always remove existing listeners first to avoid duplicates
         window.document.removeEventListener("mouseover", onElementHover);
         window.document.removeEventListener("mouseout", onElementHoverOut);
-        window.document.removeEventListener("click", onClick);
-        window.document.removeEventListener("dblclick", onDoubleClick);
         window.document.removeEventListener("dragover", onDragOver);
         window.document.removeEventListener("drop", onDrop);
         window.document.removeEventListener("dragleave", onDragLeave);
         window.document.removeEventListener("keydown", onKeyDown);
+        unregisterInteractionBlocker();
 
         if (config.isProUser) {
             // Initialize hover highlight with Chrome-like colors
@@ -4845,14 +5566,17 @@ function RemoteFunctions(config = {}) {
             // Initialize click highlight with animation
             _clickHighlight = new Highlight("#cfc", true); // Light green for click highlight
 
+            // register the event handlers
             window.document.addEventListener("mouseover", onElementHover);
             window.document.addEventListener("mouseout", onElementHoverOut);
-            window.document.addEventListener("click", onClick);
-            window.document.addEventListener("dblclick", onDoubleClick);
             window.document.addEventListener("dragover", onDragOver);
             window.document.addEventListener("drop", onDrop);
             window.document.addEventListener("dragleave", onDragLeave);
             window.document.addEventListener("keydown", onKeyDown);
+
+            // this is to block all the interactions of the user created elements
+            // so that lets say user created link doesn't redirect in edit mode
+            registerInteractionBlocker();
         } else {
             // Clean up any existing UI when edit features are disabled
             dismissUIAndCleanupState();
@@ -4877,6 +5601,7 @@ function RemoteFunctions(config = {}) {
         "resetState"            : resetState,
         "enableHoverListeners" : enableHoverListeners,
         "registerHandlers" : registerHandlers,
-        "handleDownloadEvent" : handleDownloadEvent
+        "handleDownloadEvent" : handleDownloadEvent,
+        "showToastMessage" : showToastMessage
     };
 }

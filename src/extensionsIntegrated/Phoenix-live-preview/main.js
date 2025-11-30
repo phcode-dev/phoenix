@@ -98,6 +98,12 @@ define(function (require, exports, module) {
         description: Strings.LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT_PREFERENCE
     });
 
+    // live preview ruler lines preference (show/hide ruler lines on element selection)
+    const PREFERENCE_SHOW_RULER_LINES = "livePreviewShowRulerLines";
+    PreferencesManager.definePreference(PREFERENCE_SHOW_RULER_LINES, "boolean", false, {
+        description: Strings.LIVE_DEV_SETTINGS_SHOW_RULER_LINES_PREFERENCE
+    });
+
     const LIVE_PREVIEW_PANEL_ID = "live-preview-panel";
     const LIVE_PREVIEW_IFRAME_ID = "panel-live-preview-frame";
     const LIVE_PREVIEW_IFRAME_HTML = `
@@ -357,6 +363,7 @@ define(function (require, exports, module) {
         if (isEditFeaturesActive) {
             items.push("---");
             items.push(Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON);
+            items.push(Strings.LIVE_PREVIEW_SHOW_RULER_LINES);
         }
 
         const currentMode = LiveDevelopment.getCurrentMode();
@@ -380,6 +387,12 @@ define(function (require, exports, module) {
                     return `✓ ${Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON}`;
                 }
                 return `${'\u00A0'.repeat(4)}${Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON}`;
+            } else if (item === Strings.LIVE_PREVIEW_SHOW_RULER_LINES) {
+                const isEnabled = PreferencesManager.get(PREFERENCE_SHOW_RULER_LINES);
+                if(isEnabled) {
+                    return `✓ ${Strings.LIVE_PREVIEW_SHOW_RULER_LINES}`;
+                }
+                return `${'\u00A0'.repeat(4)}${Strings.LIVE_PREVIEW_SHOW_RULER_LINES}`;
             }
             return item;
         });
@@ -421,6 +434,15 @@ define(function (require, exports, module) {
                 const currMode = PreferencesManager.get(PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT);
                 const newMode = currMode !== "click" ? "click" : "hover";
                 PreferencesManager.set(PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT, newMode);
+                return; // Don't dismiss highlights for this option
+            } else if (item === Strings.LIVE_PREVIEW_SHOW_RULER_LINES) {
+                // Don't allow ruler lines toggle if edit features are not active
+                if (!isEditFeaturesActive) {
+                    return;
+                }
+                // Toggle ruler lines on/off
+                const currentValue = PreferencesManager.get(PREFERENCE_SHOW_RULER_LINES);
+                PreferencesManager.set(PREFERENCE_SHOW_RULER_LINES, !currentValue);
                 return; // Don't dismiss highlights for this option
             }
 
@@ -1205,13 +1227,17 @@ define(function (require, exports, module) {
             _initializeMode();
         });
 
-        // Handle element highlight preference changes from this extension
+        // Handle element highlight & ruler lines preference changes
         PreferencesManager.on("change", PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT, function() {
             LiveDevelopment.updateElementHighlightConfig();
         });
+        PreferencesManager.on("change", PREFERENCE_SHOW_RULER_LINES, function() {
+            LiveDevelopment.updateRulerLinesConfig();
+        });
 
-        // Initialize element highlight config on startup
+        // Initialize element highlight and ruler lines config on startup
         LiveDevelopment.updateElementHighlightConfig();
+        LiveDevelopment.updateRulerLinesConfig();
 
         LiveDevelopment.openLivePreview();
         LiveDevelopment.on(LiveDevelopment.EVENT_OPEN_PREVIEW_URL, _openLivePreviewURL);
