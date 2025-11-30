@@ -390,27 +390,11 @@ define(function (require, exports, module) {
             if (!text) {
                 return;
             }
+            // get the indentation in the target line and check if there is any real indentation
+            let indent = editor.getTextBetween({ line: startPos.line, ch: 0 }, startPos);
+            indent = indent.trim() === '' ? indent : '';
 
-            // get the indentation at the target element's line
-            const indent = editor.getTextBetween({ line: startPos.line, ch: 0 }, startPos);
-
-            // for proper indentation
-            const lines = text.split('\n');
-            const indentedLines = lines.map((line, index) => {
-                if (index === 0) {
-                    return indent.trim() === "" ? indent + line : line;
-                }
-                return line ? indent + line : line;
-            });
-            const indentedContent = indentedLines.join('\n');
-
-            editor.document.batchOperation(function () {
-                if (indent.trim() === "") {
-                    editor.replaceRange(indentedContent + "\n", startPos);
-                } else {
-                    editor.replaceRange("\n" + indentedContent, { line: startPos.line, ch: 0 });
-                }
-            });
+            editor.replaceRange(text + '\n' + indent, startPos);
         }).catch(err => {
             console.error("Failed to read from clipboard:", err);
         });
