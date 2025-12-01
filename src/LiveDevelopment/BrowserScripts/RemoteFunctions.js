@@ -1801,26 +1801,27 @@ function RemoteFunctions(config = {}) {
                     :host { all: initial !important; }
                     .hyperlink-input-box {
                         position: absolute;
-                        background: white;
-                        border: 1px solid #4285F4;
-                        border-radius: 3px;
-                        padding: 6px 8px;
-                        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+                        background-color: #2c2c2c !important;
+                        border: 1px solid #4a4a4a !important;
+                        border-radius: 6px !important;
+                        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25) !important;
                         z-index: 2147483647;
                         min-width: 200px;
                         max-width: 400px;
                         box-sizing: border-box;
+                        padding: 7px 14px !important;
                     }
                     input {
                         width: 100%;
                         border: none;
                         outline: none;
-                        font: 12px Monaco, Consolas, monospace;
-                        color: #333;
+                        font-size: 14px !important;
+                        font-family: Arial, sans-serif !important;
+                        color: #cdcdcd !important;
                         background: transparent;
                     }
                     input::placeholder {
-                        color: #999;
+                        color: #6a6a6a !important;
                     }
                 </style>
                 <div class="hyperlink-input-box">
