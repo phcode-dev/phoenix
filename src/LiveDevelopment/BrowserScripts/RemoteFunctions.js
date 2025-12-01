@@ -1809,9 +1809,26 @@ function RemoteFunctions(config = {}) {
                         max-width: 400px;
                         box-sizing: border-box;
                         padding: 7px 14px !important;
+                        display: flex !important;
+                        align-items: center !important;
+                        gap: 8px !important;
+                    }
+                    .link-icon {
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                        flex-shrink: 0 !important;
+                        width: 16px !important;
+                        height: 16px !important;
+                        color: #cdcdcd !important;
+                    }
+                    .link-icon svg {
+                        width: 16px !important;
+                        height: 16px !important;
+                        display: block !important;
                     }
                     input {
-                        width: 100%;
+                        flex: 1 !important;
                         border: none;
                         outline: none;
                         font-size: 14px !important;
@@ -1824,7 +1841,10 @@ function RemoteFunctions(config = {}) {
                     }
                 </style>
                 <div class="hyperlink-input-box">
-                    <input type="text" value="${currentHref}" placeholder="https://example.com" spellcheck="false" />
+                    <div class="link-icon" title="${currentHref.trim() || config.strings.hyperlinkNoHref}">
+                        ${ICONS.link}
+                    </div>
+                    <input type="text" value="${currentHref.trim()}" placeholder="https://example.com" spellcheck="false" />
                 </div>
             `;
 
