@@ -2374,7 +2374,13 @@ function RemoteFunctions(config = {}) {
             if (this.element.tagName.toLowerCase() === 'a') {
                 let href = this.element.getAttribute('href');
                 if (href && href.trim()) {
-                    content += `<div class='href-info'>${ICONS.link} ${href.trim()}</div>`;
+                    let displayHref = href.trim();
+
+                    // this is just to safeguard from very large URLs. 35 char limit should be fine
+                    if (displayHref.length > 35) {
+                        displayHref = displayHref.substring(0, 35) + '...';
+                    }
+                    content += `<div class='href-info'>${ICONS.link} ${displayHref}</div>`;
                 }
             }
 
