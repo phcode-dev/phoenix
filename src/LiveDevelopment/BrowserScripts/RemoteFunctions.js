@@ -2370,6 +2370,14 @@ function RemoteFunctions(config = {}) {
                 content += "</div>";
             }
 
+            // for 'a' tags we also show the href
+            if (this.element.tagName.toLowerCase() === 'a') {
+                let href = this.element.getAttribute('href');
+                if (href && href.trim()) {
+                    content += `<div class='href-info'>${ICONS.link} ${href.trim()}</div>`;
+                }
+            }
+
             // initially, we place our info box -1000px to the top but at the right left pos. this is done so that
             // we can take the text-wrapping inside the info box in account when calculating the height
             // after calculating the height of the box, we place it at the exact position above the element
@@ -2420,8 +2428,23 @@ function RemoteFunctions(config = {}) {
                 }
 
                 .id-name,
-                .class-name {
+                .class-name,
+                .href-info {
                     margin-top: 3px !important;
+                }
+
+                .href-info {
+                    display: flex !important;
+                    align-items: center !important;
+                    gap: 6px !important;
+                    opacity: 0.9 !important;
+                    letter-spacing: 0.6px !important;
+                }
+
+                .href-info svg {
+                    width: 13px !important;
+                    height: 13px !important;
+                    flex-shrink: 0 !important;
                 }
 
                 .exceeded-classes {
