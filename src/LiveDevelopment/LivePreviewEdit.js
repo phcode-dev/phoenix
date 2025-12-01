@@ -788,6 +788,40 @@ define(function (require, exports, module) {
         }
     }
 
+    /**
+     * Updates the href attribute of an anchor tag in the src code
+     * @param {number} tagId - The data-brackets-id of the link element
+     * @param {string} newHrefValue - The new href value to set
+     */
+    function _updateHyperlinkHref(tagId, newHrefValue) {
+        const editor = _getEditorAndValidate(tagId);
+        if (!editor) {
+            return;
+        }
+
+        const range = _getElementRange(editor, tagId);
+        if (!range) {
+            return;
+        }
+
+        const { startPos, endPos } = range;
+        const elementText = editor.getTextBetween(startPos, endPos);
+
+        // parse it using DOM parser so that we can update the href attribute
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(elementText, "text/html");
+        const linkElement = doc.querySelector('a');
+
+        if (linkElement) {
+            linkElement.setAttribute('href', newHrefValue);
+            const updatedElementText = linkElement.outerHTML;
+
+            editor.document.batchOperation(function () {
+                editor.replaceRange(updatedElementText, startPos, endPos);
+            });
+        }
+    }
+
     function _sendDownloadStatusToBrowser(eventType, data) {
         const currLiveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
         if (currLiveDoc && currLiveDoc.protocol && currLiveDoc.protocol.evaluate) {
@@ -1504,6 +1538,8 @@ define(function (require, exports, module) {
             _pasteElementFromClipboard(message.tagId);
         } else if (message.livePreviewTextEdit) {
             _editTextInSource(message);
+        } else if (message.livePreviewHyperlinkEdit) {
+            _updateHyperlinkHref(message.tagId, message.newHref);
         } else if (message.AISend) {
             _editWithAI(message);
         }

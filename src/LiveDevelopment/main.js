@@ -106,6 +106,7 @@ define(function main(require, exports, module) {
         strings: {
             selectParent: Strings.LIVE_DEV_MORE_OPTIONS_SELECT_PARENT,
             editText: Strings.LIVE_DEV_MORE_OPTIONS_EDIT_TEXT,
+            editHyperlink: Strings.LIVE_DEV_MORE_OPTIONS_EDIT_HYPERLINK,
             duplicate: Strings.LIVE_DEV_MORE_OPTIONS_DUPLICATE,
             delete: Strings.LIVE_DEV_MORE_OPTIONS_DELETE,
             ai: Strings.LIVE_DEV_MORE_OPTIONS_AI,

@@ -187,6 +187,7 @@ define({
     "LIVE_DEV_SETTINGS_SHOW_RULER_LINES_PREFERENCE": "Show ruler lines when elements are selected in live preview. Defaults to 'false'",
     "LIVE_DEV_MORE_OPTIONS_SELECT_PARENT": "Select Parent",
     "LIVE_DEV_MORE_OPTIONS_EDIT_TEXT": "Edit Text",
+    "LIVE_DEV_MORE_OPTIONS_EDIT_HYPERLINK": "Edit Hyperlink",
     "LIVE_DEV_MORE_OPTIONS_DUPLICATE": "Duplicate",
     "LIVE_DEV_MORE_OPTIONS_DELETE": "Delete",
     "LIVE_DEV_MORE_OPTIONS_AI": "Edit with AI",

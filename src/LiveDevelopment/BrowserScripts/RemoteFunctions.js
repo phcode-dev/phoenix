@@ -316,6 +316,16 @@ function RemoteFunctions(config = {}) {
     }
 
     /**
+     * This function gets called when the edit hyperlink button is clicked
+     * @param {Event} event
+     * @param {DOMElement} element - the HTML link element
+     */
+    function _handleEditHyperlinkOptionClick(event, element) {
+        dismissHyperlinkEditor();
+        _hyperlinkEditor = new HyperlinkEditor(element);
+    }
+
+    /**
      * This function gets called when the delete button is clicked
      * it sends a message to the editor using postMessage to delete the element from the source code
      * @param {Event} event
@@ -460,6 +470,8 @@ function RemoteFunctions(config = {}) {
             _handleSelectParentOptionClick(e, element);
         } else if (action === "edit-text") {
             startEditing(element);
+        } else if (action === "edit-hyperlink") {
+            _handleEditHyperlinkOptionClick(e, element);
         } else if (action === "duplicate") {
             _handleDuplicateOptionClick(e, element);
         } else if (action === "delete") {
@@ -1501,6 +1513,13 @@ function RemoteFunctions(config = {}) {
         <svg viewBox="0 0 24 24" fill="currentColor">
           <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
         </svg>
+      `,
+
+        link: `
+        <svg viewBox="0 0 16 16" fill="currentColor">
+          <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9c-.086 0-.17.01-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
+          <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4.02 4.02 0 0 1-.82 1H12a3 3 0 1 0 0-6H9z"/>
+        </svg>
       `
     };
 
@@ -1595,6 +1614,13 @@ function RemoteFunctions(config = {}) {
             if (showEditTextOption) {
                 content += `<span data-action="edit-text" title="${config.strings.editText}">
                     ${ICONS.edit}
+                </span>`;
+            }
+
+            // if its a link element, we show the edit hyperlink icon
+            if (this.element && this.element.tagName.toLowerCase() === 'a') {
+                content += `<span data-action="edit-hyperlink" title="${config.strings.editHyperlink}">
+                    ${ICONS.link}
                 </span>`;
             }
 
@@ -1745,6 +1771,143 @@ function RemoteFunctions(config = {}) {
                 window.document.body.removeChild(this.body);
                 this.body = null;
                 _nodeMoreOptionsBox = null;
+            }
+        }
+    };
+
+    /**
+     * This shows a floating input box above the element which allows you to edit the link of the 'a' tag
+     */
+    function HyperlinkEditor(element) {
+        this.element = element;
+        this.remove = this.remove.bind(this);
+        this.create();
+    }
+
+    HyperlinkEditor.prototype = {
+        create: function() {
+            const currentHref = this.element.getAttribute('href') || '';
+
+            // Create shadow DOM container
+            this.body = document.createElement('div');
+            this.body.setAttribute('data-phcode-internal-c15r5a9', '1');
+            document.body.appendChild(this.body);
+
+            const shadow = this.body.attachShadow({ mode: 'open' });
+
+            // Create input HTML + styles
+            const html = `
+                <style>
+                    :host { all: initial !important; }
+                    .hyperlink-input-box {
+                        position: absolute;
+                        background: white;
+                        border: 1px solid #4285F4;
+                        border-radius: 3px;
+                        padding: 6px 8px;
+                        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+                        z-index: 2147483647;
+                        min-width: 200px;
+                        max-width: 400px;
+                        box-sizing: border-box;
+                    }
+                    input {
+                        width: 100%;
+                        border: none;
+                        outline: none;
+                        font: 12px Monaco, Consolas, monospace;
+                        color: #333;
+                        background: transparent;
+                    }
+                    input::placeholder {
+                        color: #999;
+                    }
+                </style>
+                <div class="hyperlink-input-box">
+                    <input type="text" value="${currentHref}" placeholder="https://example.com" spellcheck="false" />
+                </div>
+            `;
+
+            shadow.innerHTML = html;
+            this._shadow = shadow;
+
+            this._positionInput();
+
+            // setup the event listeners
+            const input = shadow.querySelector('input');
+            input.focus();
+            input.select();
+
+            input.addEventListener('keydown', (e) => this._handleKeydown(e));
+            input.addEventListener('blur', () => this._handleBlur());
+        },
+
+        _positionInput: function() {
+            const inputBoxElement = this._shadow.querySelector('.hyperlink-input-box');
+            if (!inputBoxElement) {
+                return;
+            }
+
+            const boxRect = inputBoxElement.getBoundingClientRect();
+            const elemBounds = this.element.getBoundingClientRect();
+            const offset = _screenOffset(this.element);
+
+            let topPos = offset.top - boxRect.height - 6;
+            let leftPos = offset.left + elemBounds.width - boxRect.width;
+
+            // If would go off top, position below
+            if (elemBounds.top - boxRect.height < 6) {
+                topPos = offset.top + elemBounds.height + 6;
+            }
+
+            // If would go off left, align left
+            if (leftPos < 0) {
+                leftPos = offset.left;
+            }
+
+            inputBoxElement.style.left = leftPos + 'px';
+            inputBoxElement.style.top = topPos + 'px';
+        },
+
+        _handleKeydown: function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                this._save();
+            } else if (event.key === 'Escape') {
+                event.preventDefault();
+                dismissHyperlinkEditor();
+            }
+        },
+
+        _handleBlur: function() {
+            setTimeout(() => this._save(), 100);
+        },
+
+        _save: function() {
+            const input = this._shadow.querySelector('input');
+            const newHref = input.value.trim();
+            const oldHref = this.element.getAttribute('href') || '';
+
+            if (newHref !== oldHref) {
+                this.element.setAttribute('href', newHref);
+
+                const tagId = this.element.getAttribute('data-brackets-id');
+                window._Brackets_MessageBroker.send({
+                    livePreviewEditEnabled: true,
+                    livePreviewHyperlinkEdit: true,
+                    element: this.element,
+                    tagId: Number(tagId),
+                    newHref: newHref
+                });
+            }
+
+            dismissUIAndCleanupState();
+        },
+
+        remove: function() {
+            if (this.body && this.body.parentNode) {
+                this.body.parentNode.removeChild(this.body);
+                this.body = null;
             }
         }
     };
@@ -4191,6 +4354,7 @@ function RemoteFunctions(config = {}) {
     var _moreOptionsDropdown;
     var _aiPromptBox;
     var _imageRibbonGallery;
+    var _hyperlinkEditor;
     var _currentRulerLines;
     var _setup = false;
     var _hoverLockTimer = null;
@@ -5251,6 +5415,13 @@ function RemoteFunctions(config = {}) {
         }
     }
 
+    function dismissHyperlinkEditor() {
+        if (_hyperlinkEditor) {
+            _hyperlinkEditor.remove();
+            _hyperlinkEditor = null;
+        }
+    }
+
     /**
      * Helper function to dismiss all UI boxes at once
      */
@@ -5260,6 +5431,7 @@ function RemoteFunctions(config = {}) {
         dismissAIPromptBox();
         dismissNodeInfoBox();
         dismissImageRibbonGallery();
+        dismissHyperlinkEditor();
         dismissToastMessage();
     }
 
