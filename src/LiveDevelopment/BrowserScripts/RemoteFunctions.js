@@ -4280,118 +4280,136 @@ function RemoteFunctions(config = {}) {
      */
     function RulerLines(element) {
         this.element = element;
-        this.lineElements = {
-            left: null,
-            right: null,
-            top: null,
-            bottom: null
-        };
-        // gray color for non-editable elements, blue for editable
-        this.color = element.hasAttribute("data-brackets-id")
+
+        const editable = element.hasAttribute("data-brackets-id");
+        this.color = editable
             ? "rgba(66, 133, 244, 0.4)"
             : "rgba(60, 63, 65, 0.8)";
+        this.labelColor = editable
+            ? "rgba(66, 133, 244, 1)"
+            : "rgba(60, 63, 65, 1)";
+
+        this.sides = ["left", "right", "top", "bottom"];
+        this.lineElements = {};
+        this.labelElements = {};
+
         this.create();
         this.update();
     }
 
     RulerLines.prototype = {
-        create: function() {
-            let body = window.document.body;
+        create() {
+            const body = document.body;
 
-            this.lineElements.left = window.document.createElement("div");
-            this.lineElements.right = window.document.createElement("div");
-            this.lineElements.top = window.document.createElement("div");
-            this.lineElements.bottom = window.document.createElement("div");
-
-            this.lineElements.left.setAttribute("data-phcode-internal-c15r5a9", "true");
-            this.lineElements.right.setAttribute("data-phcode-internal-c15r5a9", "true");
-            this.lineElements.top.setAttribute("data-phcode-internal-c15r5a9", "true");
-            this.lineElements.bottom.setAttribute("data-phcode-internal-c15r5a9", "true");
-
-            let applyStyles = function (element, color) {
-                element.style.position = "absolute";
-                element.style.backgroundColor = color;
-                element.style.pointerEvents = "none";
-                element.style.zIndex = "2147483645";
+            const makeDiv = () => {
+                const el = document.createElement("div");
+                el.setAttribute("data-phcode-internal-c15r5a9", "true");
+                return el;
             };
 
-            applyStyles(this.lineElements.left, this.color);
-            applyStyles(this.lineElements.right, this.color);
-            applyStyles(this.lineElements.top, this.color);
-            applyStyles(this.lineElements.bottom, this.color);
+            const styleLine = (el) => {
+                el.style.position = "absolute";
+                el.style.backgroundColor = this.color;
+                el.style.pointerEvents = "none";
+                el.style.zIndex = "2147483645";
+            };
 
-            body.appendChild(this.lineElements.left);
-            body.appendChild(this.lineElements.right);
-            body.appendChild(this.lineElements.top);
-            body.appendChild(this.lineElements.bottom);
+            const styleLabel = (el) => {
+                el.style.position = "absolute";
+                el.style.color = this.labelColor;
+                el.style.fontSize = "9px";
+                el.style.fontFamily = "Arial, sans-serif";
+                el.style.pointerEvents = "none";
+                el.style.zIndex = "2147483646";
+                el.style.whiteSpace = "nowrap";
+                el.style.backgroundColor = "transparent";
+            };
+
+            for (const side of this.sides) {
+                const line = makeDiv();
+                const label = makeDiv();
+
+                styleLine(line);
+                styleLabel(label);
+
+                this.lineElements[side] = line;
+                this.labelElements[side] = label;
+
+                body.appendChild(line);
+                body.appendChild(label);
+            }
         },
 
-        update: function() {
-            if (!this.element) {
-                return;
-            }
+        update() {
+            if (!this.element) { return; }
 
-            let rect = this.element.getBoundingClientRect();
-            let scrollTop = window.pageYOffset;
-            let scrollLeft = window.pageXOffset;
+            const rect = this.element.getBoundingClientRect();
+            const scrollTop = window.pageYOffset;
+            const scrollLeft = window.pageXOffset;
 
-            var edges = {
-                // 0.8 is to fix pixel diff between ruler and outline (ruler is part of box model but outline is not)
+            const edges = {
                 left: rect.left + scrollLeft - 0.8,
                 right: rect.right + scrollLeft,
                 top: rect.top + scrollTop - 0.8,
                 bottom: rect.bottom + scrollTop
             };
 
-            // get the doc dimensions as we need to put the ruler lines in the whole document
-            var docHeight = window.document.documentElement.scrollHeight;
-            var docWidth = window.document.documentElement.scrollWidth;
+            const docHeight = document.documentElement.scrollHeight;
+            const docWidth = document.documentElement.scrollWidth;
 
-            // for vertical lines
-            this.lineElements.left.style.width = '1px';
-            this.lineElements.left.style.height = docHeight + 'px';
-            this.lineElements.left.style.left = edges.left + 'px';
-            this.lineElements.left.style.top = '0px';
+            // Position lines
+            this.lineElements.left.style.cssText += `
+                width:1px; height:${docHeight}px;
+                left:${edges.left}px; top:0px;
+            `;
+            this.lineElements.right.style.cssText += `
+                width:1px; height:${docHeight}px;
+                left:${edges.right}px; top:0px;
+            `;
+            this.lineElements.top.style.cssText += `
+                height:1px; width:${docWidth}px;
+                top:${edges.top}px; left:0px;
+            `;
+            this.lineElements.bottom.style.cssText += `
+                height:1px; width:${docWidth}px;
+                top:${edges.bottom}px; left:0px;
+            `;
 
-            this.lineElements.right.style.width = '1px';
-            this.lineElements.right.style.height = docHeight + 'px';
-            this.lineElements.right.style.left = edges.right + 'px';
-            this.lineElements.right.style.top = '0px';
+            const x1 = Math.floor(edges.left + 1);
+            const x2 = x1 + rect.width;
+            const y1 = Math.floor(edges.top + 1);
+            const y2 = y1 + rect.height;
 
-            // for horizontal lines
-            this.lineElements.top.style.height = '1px';
-            this.lineElements.top.style.width = docWidth + 'px';
-            this.lineElements.top.style.top = edges.top + 'px';
-            this.lineElements.top.style.left = '0px';
+            this.labelElements.left.textContent = x1 + "px";
+            this.labelElements.right.textContent = x2 + "px";
+            this.labelElements.top.textContent = y1 + "px";
+            this.labelElements.bottom.textContent = y2 + "px";
 
-            this.lineElements.bottom.style.height = '1px';
-            this.lineElements.bottom.style.width = docWidth + 'px';
-            this.lineElements.bottom.style.top = edges.bottom + 'px';
-            this.lineElements.bottom.style.left = '0px';
+            this.labelElements.left.style.left = edges.left + "px";
+            this.labelElements.right.style.left = edges.right + "px";
+            this.labelElements.top.style.left = (scrollLeft + 10) + "px";
+            this.labelElements.bottom.style.left = (scrollLeft + 10) + "px";
+
+            this.labelElements.left.style.top = (scrollTop + 10) + "px";
+            this.labelElements.right.style.top = (scrollTop + 10) + "px";
+
+            this.labelElements.top.style.top = edges.top + "px";
+            this.labelElements.bottom.style.top = edges.bottom + "px";
         },
 
-        remove: function() {
-            var body = window.document.body;
+        remove() {
+            const body = document.body;
 
-            if (this.lineElements.left && this.lineElements.left.parentNode) {
-                body.removeChild(this.lineElements.left);
-            }
-            if (this.lineElements.right && this.lineElements.right.parentNode) {
-                body.removeChild(this.lineElements.right);
-            }
-            if (this.lineElements.top && this.lineElements.top.parentNode) {
-                body.removeChild(this.lineElements.top);
-            }
-            if (this.lineElements.bottom && this.lineElements.bottom.parentNode) {
-                body.removeChild(this.lineElements.bottom);
+            for (const side of this.sides) {
+                const line = this.lineElements[side];
+                const label = this.labelElements[side];
+
+                if (line && line.parentNode) { body.removeChild(line); }
+                if (label && label.parentNode) { body.removeChild(label); }
             }
 
-            this.lineElements = {
-                left: null,
-                right: null,
-                top: null,
-                bottom: null
-            };
+            this.lineElements = {};
+            this.labelElements = {};
         }
     };
 
