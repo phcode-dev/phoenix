@@ -4358,22 +4358,25 @@ function RemoteFunctions(config = {}) {
             const docWidth = document.documentElement.scrollWidth;
 
             // Position lines
-            this.lineElements.left.style.cssText += `
-                width:1px; height:${docHeight}px;
-                left:${edges.left}px; top:0px;
-            `;
-            this.lineElements.right.style.cssText += `
-                width:1px; height:${docHeight}px;
-                left:${edges.right}px; top:0px;
-            `;
-            this.lineElements.top.style.cssText += `
-                height:1px; width:${docWidth}px;
-                top:${edges.top}px; left:0px;
-            `;
-            this.lineElements.bottom.style.cssText += `
-                height:1px; width:${docWidth}px;
-                top:${edges.bottom}px; left:0px;
-            `;
+            this.lineElements.left.style.width = '1px';
+            this.lineElements.left.style.height = docHeight + 'px';
+            this.lineElements.left.style.left = edges.left + 'px';
+            this.lineElements.left.style.top = '0px';
+
+            this.lineElements.right.style.width = '1px';
+            this.lineElements.right.style.height = docHeight + 'px';
+            this.lineElements.right.style.left = edges.right + 'px';
+            this.lineElements.right.style.top = '0px';
+
+            this.lineElements.top.style.height = '1px';
+            this.lineElements.top.style.width = docWidth + 'px';
+            this.lineElements.top.style.top = edges.top + 'px';
+            this.lineElements.top.style.left = '0px';
+
+            this.lineElements.bottom.style.height = '1px';
+            this.lineElements.bottom.style.width = docWidth + 'px';
+            this.lineElements.bottom.style.top = edges.bottom + 'px';
+            this.lineElements.bottom.style.left = '0px';
 
             const x1 = Math.floor(edges.left + 1);
             const x2 = x1 + rect.width;
