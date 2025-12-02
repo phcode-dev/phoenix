@@ -4298,7 +4298,7 @@ function RemoteFunctions(config = {}) {
     }
 
     RulerLines.prototype = {
-        create() {
+        create: function() {
             const body = document.body;
 
             const makeDiv = () => {
@@ -4340,7 +4340,7 @@ function RemoteFunctions(config = {}) {
             }
         },
 
-        update() {
+        update: function() {
             if (!this.element) { return; }
 
             const rect = this.element.getBoundingClientRect();
@@ -4400,7 +4400,7 @@ function RemoteFunctions(config = {}) {
             this.labelElements.bottom.style.top = edges.bottom + "px";
         },
 
-        remove() {
+        remove: function() {
             const body = document.body;
 
             for (const side of this.sides) {
