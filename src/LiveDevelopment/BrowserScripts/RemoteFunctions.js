@@ -4336,9 +4336,10 @@ function RemoteFunctions(config = {}) {
             let scrollLeft = window.pageXOffset;
 
             var edges = {
-                left: rect.left + scrollLeft,
+                // 0.8 is to fix pixel diff between ruler and outline (ruler is part of box model but outline is not)
+                left: rect.left + scrollLeft - 0.8,
                 right: rect.right + scrollLeft,
-                top: rect.top + scrollTop,
+                top: rect.top + scrollTop - 0.8,
                 bottom: rect.bottom + scrollTop
             };
 
