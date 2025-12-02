@@ -4388,16 +4388,16 @@ function RemoteFunctions(config = {}) {
             this.labelElements.top.textContent = Math.round(y1) + "px";
             this.labelElements.bottom.textContent = Math.round(y2) + "px";
 
-            this.labelElements.left.style.left = edges.left + "px";
-            this.labelElements.right.style.left = edges.right + "px";
+            this.labelElements.left.style.left = (edges.left - 30) + "px";
+            this.labelElements.right.style.left = (edges.right + 5) + "px";
             this.labelElements.top.style.left = (scrollLeft + 10) + "px";
             this.labelElements.bottom.style.left = (scrollLeft + 10) + "px";
 
             this.labelElements.left.style.top = (scrollTop + 10) + "px";
             this.labelElements.right.style.top = (scrollTop + 10) + "px";
 
-            this.labelElements.top.style.top = edges.top + "px";
-            this.labelElements.bottom.style.top = edges.bottom + "px";
+            this.labelElements.top.style.top = (edges.top - 15) + "px";
+            this.labelElements.bottom.style.top = (edges.bottom + 5) + "px";
         },
 
         remove: function() {
