@@ -1921,7 +1921,7 @@ function RemoteFunctions(config = {}) {
                 });
             }
 
-            dismissUIAndCleanupState();
+            this.remove();
         },
 
         remove: function() {

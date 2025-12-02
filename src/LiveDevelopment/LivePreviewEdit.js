@@ -819,6 +819,12 @@ define(function (require, exports, module) {
             editor.document.batchOperation(function () {
                 editor.replaceRange(updatedElementText, startPos, endPos);
             });
+
+            // dismiss all UI boxes including the image ribbon gallery
+            const currLiveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
+            if (currLiveDoc && currLiveDoc.protocol && currLiveDoc.protocol.evaluate) {
+                currLiveDoc.protocol.evaluate("_LD.dismissUIAndCleanupState()");
+            }
         }
     }
 
