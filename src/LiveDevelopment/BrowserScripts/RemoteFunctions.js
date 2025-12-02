@@ -4383,10 +4383,10 @@ function RemoteFunctions(config = {}) {
             const y1 = Math.floor(edges.top + 1);
             const y2 = y1 + rect.height;
 
-            this.labelElements.left.textContent = x1 + "px";
-            this.labelElements.right.textContent = x2 + "px";
-            this.labelElements.top.textContent = y1 + "px";
-            this.labelElements.bottom.textContent = y2 + "px";
+            this.labelElements.left.textContent = Math.round(x1) + "px";
+            this.labelElements.right.textContent = Math.round(x2) + "px";
+            this.labelElements.top.textContent = Math.round(y1) + "px";
+            this.labelElements.bottom.textContent = Math.round(y2) + "px";
 
             this.labelElements.left.style.left = edges.left + "px";
             this.labelElements.right.style.left = edges.right + "px";
