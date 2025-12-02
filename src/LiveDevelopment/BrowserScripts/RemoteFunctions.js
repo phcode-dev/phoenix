@@ -1946,10 +1946,10 @@ function RemoteFunctions(config = {}) {
             enabled: config.showRulerLines
         });
 
-        // add checkmark in the dropdown
+        // toggle checkmark visibility in the dropdown
         const checkmark = dropdown._shadow.querySelector('[data-action="toggle-ruler-lines"] .item-checkmark');
         if (checkmark) {
-            checkmark.textContent = config.showRulerLines ? '✓' : '';
+            checkmark.style.visibility = config.showRulerLines ? 'visible' : 'hidden';
         }
 
         // to apply the ruler lines or remove it when option is toggled
@@ -2075,7 +2075,7 @@ function RemoteFunctions(config = {}) {
                     <div class="dropdown-item" data-action="toggle-ruler-lines">
                         <span class="item-icon">${ICONS.ruler}</span>
                         <span class="item-label">${config.strings.showRulerLines}</span>
-                        <span class="item-checkmark">${config.showRulerLines ? '✓' : ''}</span>
+                        <span class="item-checkmark" style="visibility: ${config.showRulerLines ? 'visible' : 'hidden'}">✓</span>
                     </div>
                 </div>
             `;
@@ -2151,7 +2151,6 @@ function RemoteFunctions(config = {}) {
                     margin-left: auto !important;
                     padding-left: 4px !important;
                     font-size: 14px !important;
-                    margin-top: -4px !important;
                 }
             `;
 
@@ -2206,10 +2205,10 @@ function RemoteFunctions(config = {}) {
         },
 
         refresh: function() {
-            // update the checkmark state when config changes
+            // update the checkmark visibility when config changes
             const checkmark = this._shadow.querySelector('[data-action="toggle-ruler-lines"] .item-checkmark');
             if (checkmark) {
-                checkmark.textContent = config.showRulerLines ? '✓' : '';
+                checkmark.style.visibility = config.showRulerLines ? 'visible' : 'hidden';
             }
         }
     };
