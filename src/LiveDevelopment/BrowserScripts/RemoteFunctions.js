@@ -4176,7 +4176,7 @@ function RemoteFunctions(config = {}) {
                 "top": offset.top + "px",
                 "width": elementBounds.width + "px",
                 "height": elementBounds.height + "px",
-                "z-index": 2147483646,
+                "z-index": 2147483645,
                 "margin": 0,
                 "padding": 0,
                 "position": "absolute",
