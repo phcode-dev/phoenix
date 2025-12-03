@@ -1534,10 +1534,10 @@ function RemoteFunctions(config = {}) {
                 </span>
             </div>`;
 
-            let styles = config.styles.optionsBoxStyles;
+            let styles = config.styles.optionsBox;
             // to highlight that in a different color, to show the selected state
             if (imageGallerySelected) {
-                styles += config.styles.optionsBoxImageGallerySelectedStyles;
+                styles += config.styles.optionsBoxImageGallerySelected;
             }
 
             // add everything to the shadow box
@@ -1914,80 +1914,7 @@ function RemoteFunctions(config = {}) {
                 </div>
             `;
 
-            let styles = `
-                :host {
-                  all: initial !important;
-                }
-
-                .phoenix-dropdown {
-                    background-color: #2c2c2c !important;
-                    color: #cdcdcd !important;
-                    border: 1px solid #4a4a4a !important;
-                    border-radius: 6px !important;
-                    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25) !important;
-                    font-size: 13px !important;
-                    font-family: Arial, sans-serif !important;
-                    z-index: 2147483647 !important;
-                    position: absolute !important;
-                    left: -1000px;
-                    top: -1000px;
-                    box-sizing: border-box !important;
-                    min-width: 130px !important;
-                    padding: 3px 0 !important;
-                    overflow: hidden !important;
-                }
-
-                .more-options-dropdown {
-                    display: flex !important;
-                    flex-direction: column !important;
-                }
-
-                .dropdown-item {
-                    padding: 7px 14px !important;
-                    cursor: pointer !important;
-                    white-space: nowrap !important;
-                    user-select: none !important;
-                    display: flex !important;
-                    align-items: center !important;
-                    gap: 6px !important;
-                }
-
-                .dropdown-item:hover {
-                    background-color: #3c3f41 !important;
-                }
-
-                .item-icon {
-                    display: flex !important;
-                    align-items: center !important;
-                    justify-content: center !important;
-                    width: 16px !important;
-                    height: 16px !important;
-                    flex-shrink: 0 !important;
-                }
-
-                .item-icon svg {
-                    width: 16px !important;
-                    height: 16px !important;
-                    display: block !important;
-                }
-
-                .item-label {
-                    flex: 1 !important;
-                }
-
-                .dropdown-separator {
-                    height: 1px !important;
-                    background-color: #4a4a4a !important;
-                    margin: 2px 0 !important;
-                }
-
-                .item-checkmark {
-                    margin-left: auto !important;
-                    padding-left: 4px !important;
-                    font-size: 14px !important;
-                }
-            `;
-
+            let styles = config.styles.optionsBoxDropdown;
             shadow.innerHTML = `<style>${styles}</style><div class="phoenix-dropdown">${content}</div>`;
             this._shadow = shadow;
         },
