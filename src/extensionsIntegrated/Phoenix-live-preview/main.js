@@ -671,8 +671,12 @@ define(function (require, exports, module) {
             $previewBtn.removeClass('selected');
             const isEditFeaturesActive = LiveDevelopment.isProUser;
             if(modeThatWasSelected) {
-                if(modeThatWasSelected === 'edit' && !isEditFeaturesActive) {
-                    // we just set the preference as preference has change handlers that will update the config
+                // If the last selected mode was preview itself, default to the best mode for user's entitlement
+                if(modeThatWasSelected === 'preview') {
+                    const defaultMode = isEditFeaturesActive ? 'edit' : 'highlight';
+                    PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, defaultMode);
+                } else if(modeThatWasSelected === 'edit' && !isEditFeaturesActive) {
+                    // Non-pro users can't be in edit mode - switch to highlight
                     PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "highlight");
                 } else {
                     PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, modeThatWasSelected);
