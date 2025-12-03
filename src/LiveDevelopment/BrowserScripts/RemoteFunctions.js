@@ -33,7 +33,9 @@ function RemoteFunctions(config = {}) {
     const GLOBALS = {
         // given to internal elements like info box, options box, image gallery and all other phcode internal elements
         // to distinguish between phoenix internal vs user created elements
-        PHCODE_INTERNAL_ATTR: "data-phcode-internal-c15r5a9"
+        PHCODE_INTERNAL_ATTR: "data-phcode-internal-c15r5a9",
+        DATA_BRACKETS_ID_ATTR: "data-brackets-id", // data attribute used to track elements for live preview operations
+        HIGHLIGHT_CLASSNAME: "__brackets-ld-highlight" // CSS class name used for highlighting elements in live preview
     };
 
     // this will store the element that was clicked previously (before the new click)
@@ -61,8 +63,6 @@ function RemoteFunctions(config = {}) {
      * @type {DOMEditHandler}
      */
     var _editHandler;
-
-    var HIGHLIGHT_CLASSNAME = "__brackets-ld-highlight";
 
     // auto-scroll variables to auto scroll the live preview when an element is dragged to the top/bottom
     let _autoScrollTimer = null;
@@ -128,7 +128,7 @@ function RemoteFunctions(config = {}) {
 
     /**
      * check if an element is inspectable.
-     * inspectable elements are those which doesn't have data-brackets-id,
+     * inspectable elements are those which doesn't have GLOBALS.DATA_BRACKETS_ID_ATTR ('data-brackets-id'),
      * this normally happens when content is DOM content is inserted by some scripting language
      */
     function isElementInspectable(element, onlyHighlight = false) {
@@ -157,7 +157,7 @@ function RemoteFunctions(config = {}) {
     function isElementEditable(element, onlyHighlight = false) {
         // for an element to be editable it should satisfy all inspectable checks and should also have data-brackets-id
         return isElementInspectable(element, onlyHighlight) &&
-               element.hasAttribute("data-brackets-id");
+               element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
     }
 
     // helper function to check if an element is inside the HEAD tag
@@ -336,11 +336,11 @@ function RemoteFunctions(config = {}) {
      * This function gets called when the delete button is clicked
      * it sends a message to the editor using postMessage to delete the element from the source code
      * @param {Event} event
-     * @param {DOMElement} element - the HTML DOM element that was clicked. it is to get the data-brackets-id attribute
+     * @param {DOMElement} element - the HTML DOM element that was clicked.
      */
     function _handleDeleteOptionClick(event, element) {
         if (isElementEditable(element)) {
-            const tagId = element.getAttribute("data-brackets-id");
+            const tagId = element.getAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
 
             window._Brackets_MessageBroker.send({
                 livePreviewEditEnabled: true,
@@ -357,11 +357,11 @@ function RemoteFunctions(config = {}) {
     /**
      * this is for duplicate button. Read '_handleDeleteOptionClick' jsdoc to understand more on how this works
      * @param {Event} event
-     * @param {DOMElement} element - the HTML DOM element that was clicked. it is to get the data-brackets-id attribute
+     * @param {DOMElement} element - the HTML DOM element that was clicked.
      */
     function _handleDuplicateOptionClick(event, element) {
         if (isElementEditable(element)) {
-            const tagId = element.getAttribute("data-brackets-id");
+            const tagId = element.getAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
 
             window._Brackets_MessageBroker.send({
                 livePreviewEditEnabled: true,
@@ -383,7 +383,7 @@ function RemoteFunctions(config = {}) {
      */
     function _handleCutOptionClick(event, element) {
         if (isElementEditable(element)) {
-            const tagId = element.getAttribute("data-brackets-id");
+            const tagId = element.getAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
 
             window._Brackets_MessageBroker.send({
                 livePreviewEditEnabled: true,
@@ -404,7 +404,7 @@ function RemoteFunctions(config = {}) {
      */
     function _handleCopyOptionClick(event, element) {
         if (isElementEditable(element)) {
-            const tagId = element.getAttribute("data-brackets-id");
+            const tagId = element.getAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
 
             window._Brackets_MessageBroker.send({
                 livePreviewEditEnabled: true,
@@ -425,7 +425,7 @@ function RemoteFunctions(config = {}) {
      */
     function _handlePasteOptionClick(event, targetElement) {
         if (isElementEditable(targetElement)) {
-            const targetTagId = targetElement.getAttribute("data-brackets-id");
+            const targetTagId = targetElement.getAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
 
             window._Brackets_MessageBroker.send({
                 livePreviewEditEnabled: true,
@@ -443,7 +443,7 @@ function RemoteFunctions(config = {}) {
      * this is for select-parent button
      * When user clicks on this option for a particular element, we get its parent element and trigger a click on it
      * @param {Event} event
-     * @param {DOMElement} element - the HTML DOM element that was clicked. it is to get the data-brackets-id attribute
+     * @param {DOMElement} element - the HTML DOM element that was clicked
      */
     function _handleSelectParentOptionClick(event, element) {
         if (!isElementEditable(element)) {
@@ -1081,7 +1081,7 @@ function RemoteFunctions(config = {}) {
         }
 
         // Also clear any element references
-        let elements = window.document.querySelectorAll("[data-brackets-id]");
+        let elements = window.document.querySelectorAll(`[${GLOBALS.DATA_BRACKETS_ID_ATTR}]`);
         for (let j = 0; j < elements.length; j++) {
             delete elements[j]._dropMarker;
             delete elements[j]._dropArrow;
@@ -1119,7 +1119,7 @@ function RemoteFunctions(config = {}) {
         let parent = currentElement.parentElement;
 
         while (parent) {
-            if (parent.hasAttribute("data-brackets-id") && isElementEditable(parent)) {
+            if (parent.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR) && isElementEditable(parent)) {
                 const currentRect = currentElement.getBoundingClientRect();
                 const parentRect = parent.getBoundingClientRect();
 
@@ -1175,8 +1175,8 @@ function RemoteFunctions(config = {}) {
                     continue;
                 }
 
-                // Find closest element with data-brackets-id
-                while (target && !target.hasAttribute("data-brackets-id")) {
+                // Find closest editable element
+                while (target && !target.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR)) {
                     target = target.parentElement;
                 }
 
@@ -1208,8 +1208,8 @@ function RemoteFunctions(config = {}) {
             return;
         }
 
-        // get the closest element with a data-brackets-id
-        while (target && !target.hasAttribute("data-brackets-id")) {
+        // get the closest editable element
+        while (target && !target.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR)) {
             target = target.parentElement;
         }
 
@@ -1278,8 +1278,8 @@ function RemoteFunctions(config = {}) {
         // get the element under the cursor
         let target = document.elementFromPoint(event.clientX, event.clientY);
 
-        // get the closest element with a data-brackets-id
-        while (target && !target.hasAttribute("data-brackets-id")) {
+        // get the closest editable element
+        while (target && !target.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR)) {
             target = target.parentElement;
         }
 
@@ -1311,8 +1311,8 @@ function RemoteFunctions(config = {}) {
         );
 
         // IDs of the source and target elements
-        const sourceId = window._currentDraggedElement.getAttribute("data-brackets-id");
-        const targetId = target.getAttribute("data-brackets-id");
+        const sourceId = window._currentDraggedElement.getAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
+        const targetId = target.getAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
 
         // Handle different drop zones
         let messageData = {
@@ -1542,13 +1542,13 @@ function RemoteFunctions(config = {}) {
     NodeMoreOptionsBox.prototype = {
         _registerDragDrop: function() {
             // disable dragging on all elements and then enable it on the current element
-            const allElements = document.querySelectorAll('[data-brackets-id]');
+            const allElements = document.querySelectorAll(`[${GLOBALS.DATA_BRACKETS_ID_ATTR}]`);
             allElements.forEach(el => el.setAttribute("draggable", "false"));
             this.element.setAttribute("draggable", "true");
 
             this.element.addEventListener("dragstart", (event) => {
                 event.stopPropagation();
-                event.dataTransfer.setData("text/plain", this.element.getAttribute("data-brackets-id"));
+                event.dataTransfer.setData("text/plain", this.element.getAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR));
                 _dragStartChores(this.element);
                 _clearDropMarkers();
                 window._currentDraggedElement = this.element;
@@ -1918,7 +1918,7 @@ function RemoteFunctions(config = {}) {
             if (newHref !== oldHref) {
                 this.element.setAttribute('href', newHref);
 
-                const tagId = this.element.getAttribute('data-brackets-id');
+                const tagId = this.element.getAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
                 window._Brackets_MessageBroker.send({
                     livePreviewEditEnabled: true,
                     livePreviewHyperlinkEdit: true,
@@ -2397,7 +2397,7 @@ function RemoteFunctions(config = {}) {
             const leftPos = offset.left;
 
             // if element is non-editable we use gray bg color in info box, otherwise normal blue color
-            const bgColor = this.element.hasAttribute('data-brackets-id') ? '#4285F4' : '#3C3F41';
+            const bgColor = this.element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR) ? '#4285F4' : '#3C3F41';
 
             const styles = `
                 :host {
@@ -2789,7 +2789,7 @@ function RemoteFunctions(config = {}) {
             if(!isElementEditable(element)) {
                 return;
             }
-            const tagId = element.getAttribute("data-brackets-id");
+            const tagId = element.getAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
 
             window._Brackets_MessageBroker.send({
                 livePreviewEditEnabled: true,
@@ -3697,7 +3697,7 @@ function RemoteFunctions(config = {}) {
                 folderSettingsButton.addEventListener('click', (e) => {
                     e.stopPropagation();
                     // send message to LivePreviewEdit to show folder selection dialog
-                    const tagId = this.element.getAttribute("data-brackets-id");
+                    const tagId = this.element.getAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
                     window._Brackets_MessageBroker.send({
                         livePreviewEditEnabled: true,
                         resetImageFolderSelection: true,
@@ -3867,7 +3867,7 @@ function RemoteFunctions(config = {}) {
         },
 
         _useImage: function(imageUrl, filename, extnName, isLocalFile, thumbDiv, downloadLocation) {
-            const tagId = this.element.getAttribute("data-brackets-id");
+            const tagId = this.element.getAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
             const downloadId = Date.now() + Math.random();
 
             const messageData = {
@@ -4167,7 +4167,7 @@ function RemoteFunctions(config = {}) {
                 config.remoteHighlight.paddingStyling
             );
 
-            highlight.className = HIGHLIGHT_CLASSNAME;
+            highlight.className = GLOBALS.HIGHLIGHT_CLASSNAME;
 
             var offset = _screenOffset(element);
 
@@ -4247,7 +4247,7 @@ function RemoteFunctions(config = {}) {
         },
 
         clear: function () {
-            var i, highlights = window.document.querySelectorAll("." + HIGHLIGHT_CLASSNAME),
+            var i, highlights = window.document.querySelectorAll("." + GLOBALS.HIGHLIGHT_CLASSNAME),
                 body = window.document.body;
 
             for (i = 0; i < highlights.length; i++) {
@@ -4288,7 +4288,7 @@ function RemoteFunctions(config = {}) {
     function RulerLines(element) {
         this.element = element;
 
-        const editable = element.hasAttribute("data-brackets-id");
+        const editable = element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
         this.color = editable
             ? "rgba(66, 133, 244, 0.4)"
             : "rgba(60, 63, 65, 0.8)";
@@ -4687,13 +4687,13 @@ function RemoteFunctions(config = {}) {
 
         // if element is not editable and user clicks on it, then we show a toast notification saying
         // that this element is not editable
-        if (!element.hasAttribute("data-brackets-id")) {
+        if (!element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR)) {
             showToastMessage("notEditable");
         }
 
         // make sure that the element is actually visible to the user
         if (isElementVisible(element)) {
-            // Only show more options box for editable elements (have data-brackets-id)
+            // Only show more options box for editable elements
             if (isElementEditable(element)) {
                 _nodeMoreOptionsBox = new NodeMoreOptionsBox(element);
             }
@@ -4705,11 +4705,11 @@ function RemoteFunctions(config = {}) {
         }
 
         element._originalOutline = element.style.outline;
-        const outlineColor = element.hasAttribute("data-brackets-id") ? "#4285F4" : "#3C3F41";
+        const outlineColor = element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR) ? "#4285F4" : "#3C3F41";
         element.style.outline = `1px solid ${outlineColor}`;
 
         // Only apply background tint for editable elements (not for dynamic/read-only)
-        if (element.hasAttribute("data-brackets-id")) {
+        if (element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR)) {
             if (element._originalBackgroundColor === undefined) {
                 element._originalBackgroundColor = element.style.backgroundColor;
             }
@@ -4779,9 +4779,9 @@ function RemoteFunctions(config = {}) {
         }
 
         // send cursor movement message to editor so cursor jumps to clicked element
-        if (element.hasAttribute("data-brackets-id")) {
+        if (element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR)) {
             window._Brackets_MessageBroker.send({
-                "tagId": element.getAttribute("data-brackets-id"),
+                "tagId": element.getAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR),
                 "nodeID": element.id,
                 "nodeClassList": element.classList,
                 "nodeName": element.nodeName,
@@ -5119,7 +5119,7 @@ function RemoteFunctions(config = {}) {
             return this.rememberedNodes[id];
         }
 
-        var results = this.htmlDocument.querySelectorAll("[data-brackets-id='" + id + "']");
+        var results = this.htmlDocument.querySelectorAll(`[${GLOBALS.DATA_BRACKETS_ID_ATTR}='${id}']`);
         return results && results[0];
     };
 
@@ -5184,18 +5184,18 @@ function RemoteFunctions(config = {}) {
         function prevIgnoringHighlights(node) {
             do {
                 node = node.previousSibling;
-            } while (node && node.className === HIGHLIGHT_CLASSNAME);
+            } while (node && node.className === GLOBALS.HIGHLIGHT_CLASSNAME);
             return node;
         }
         function nextIgnoringHighlights(node) {
             do {
                 node = node.nextSibling;
-            } while (node && node.className === HIGHLIGHT_CLASSNAME);
+            } while (node && node.className === GLOBALS.HIGHLIGHT_CLASSNAME);
             return node;
         }
         function lastChildIgnoringHighlights(node) {
             node = (node.childNodes.length ? node.childNodes.item(node.childNodes.length - 1) : null);
-            if (node && node.className === HIGHLIGHT_CLASSNAME) {
+            if (node && node.className === GLOBALS.HIGHLIGHT_CLASSNAME) {
                 node = prevIgnoringHighlights(node);
             }
             return node;
@@ -5321,7 +5321,7 @@ function RemoteFunctions(config = {}) {
                 Object.keys(edit.attributes).forEach(function (attr) {
                     childElement.setAttribute(attr, self._parseEntities(edit.attributes[attr]));
                 });
-                childElement.setAttribute("data-brackets-id", edit.tagID);
+                childElement.setAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR, edit.tagID);
 
                 if (!editIsSpecialTag) {
                     self._insertChildNode(targetElement, childElement, edit);
@@ -5410,7 +5410,7 @@ function RemoteFunctions(config = {}) {
             _hoverHighlight.clear();
         }
         cleanupPreviousElementState();
-        const allElements = window.document.querySelectorAll("[data-brackets-id]");
+        const allElements = window.document.querySelectorAll(`[${GLOBALS.DATA_BRACKETS_ID_ATTR}]`);
         for (let i = 0; i < allElements.length; i++) {
             if (allElements[i]._originalBackgroundColor !== undefined) {
                 clearElementBackground(allElements[i]);
@@ -5658,7 +5658,7 @@ function RemoteFunctions(config = {}) {
 
         dismissUIAndCleanupState();
 
-        const allElements = window.document.querySelectorAll("[data-brackets-id]");
+        const allElements = window.document.querySelectorAll(`[${GLOBALS.DATA_BRACKETS_ID_ATTR}]`);
         for (let i = 0; i < allElements.length; i++) {
             if (allElements[i]._originalBackgroundColor !== undefined) {
                 clearElementBackground(allElements[i]);
@@ -5779,7 +5779,7 @@ function RemoteFunctions(config = {}) {
     function finishEditing(element, isEditSuccessful = true) {
         finishEditingCleanup(element);
 
-        const tagId = element.getAttribute("data-brackets-id");
+        const tagId = element.getAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
         window._Brackets_MessageBroker.send({
             livePreviewEditEnabled: true,
             livePreviewTextEdit: true,
