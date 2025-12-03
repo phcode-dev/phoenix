@@ -2153,8 +2153,8 @@ function RemoteFunctions(config = {}) {
             // if element is non-editable we use gray bg color in info box, otherwise normal blue color
             const bgColor = this.element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR) ? '#4285F4' : '#3C3F41';
 
-            // we need to insert some dynamic values in the info box styles
-            const styles = `
+            // add everything to the shadow box with CSS variables for dynamic values
+            shadow.innerHTML = `
                 <style>
                     ${config.styles.infoBox}
                     :host {
@@ -2162,10 +2162,8 @@ function RemoteFunctions(config = {}) {
                         --info-box-left-pos: ${leftPos}px;
                     }
                 </style>
+                <div class="phoenix-node-info-box">${content}</div>
             `;
-
-            // add everything to the shadow box
-            shadow.innerHTML = `<style>${styles}</style><div class="phoenix-node-info-box">${content}</div>`;
             this._shadow = shadow;
         },
 
@@ -4158,35 +4156,9 @@ function RemoteFunctions(config = {}) {
         const overlay = window.document.createElement('div');
         overlay.setAttribute(GLOBALS.PHCODE_INTERNAL_ATTR, 'true');
 
-        const styles = `
-            <style>
-                .phoenix-dialog-overlay {
-                    position: fixed !important;
-                    top: 0 !important;
-                    left: 0 !important;
-                    width: 100% !important;
-                    height: 100% !important;
-                    background: rgba(0, 0, 0, 0.5) !important;
-                    z-index: 2147483646 !important;
-                    pointer-events: auto !important;
-                }
-
-                .phoenix-dialog-message-bar {
-                    position: absolute !important;
-                    top: 50% !important;
-                    left: 50% !important;
-                    transform: translate(-50%, -50%) !important;
-                    color: #ffffff !important;
-                    background-color: #333333 !important;
-                    padding: 1em 1.5em !important;
-                    text-align: center !important;
-                    font-size: 16px !important;
-                    border-radius: 3px !important;
-                    font-family: "SourceSansPro", Helvetica, Arial, sans-serif !important;
-                    z-index: 2147483647 !important;
-                }
-            </style>
-        `;
+        // use shadow DOM for style isolation
+        const shadow = overlay.attachShadow({ mode: 'open' });
+        const styles = config.styles.dialogOverlay;
 
         const content = `
             <div class="phoenix-dialog-overlay">
@@ -4194,7 +4166,7 @@ function RemoteFunctions(config = {}) {
             </div>
         `;
 
-        overlay.innerHTML = styles + content;
+        shadow.innerHTML = `<style>${styles}</style>${content}`;
         window.document.body.appendChild(overlay);
         _dialogOverlay = overlay;
     }
@@ -5235,42 +5207,7 @@ function RemoteFunctions(config = {}) {
         toast.setAttribute(GLOBALS.PHCODE_INTERNAL_ATTR, "true");
         const shadow = toast.attachShadow({ mode: 'open' });
 
-        const styles = `
-            :host {
-                all: initial !important;
-            }
-
-            .toast-container {
-                position: fixed !important;
-                bottom: 30px !important;
-                left: 50% !important;
-                transform: translateX(-50%) translateY(0) !important;
-                background-color: rgba(51, 51, 51, 0.95) !important;
-                color: white !important;
-                padding: 10px 14px !important;
-                border-radius: 6px !important;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
-                font-family: Arial, sans-serif !important;
-                font-size: 13px !important;
-                line-height: 1.4 !important;
-                z-index: 2147483647 !important;
-                text-align: center !important;
-                max-width: 90% !important;
-                box-sizing: border-box !important;
-                animation: slideUp 0.3s ease-out !important;
-            }
-
-            @keyframes slideUp {
-                from {
-                    opacity: 0;
-                    transform: translateY(20px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-        `;
+        const styles = config.styles.toastMessage;
 
         const content = `
             <div class="toast-container">

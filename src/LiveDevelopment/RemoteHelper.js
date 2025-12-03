@@ -383,11 +383,82 @@ define(function (require, exports, module) {
                 }
             `;
 
+    const toastMessageStyles = `
+                :host {
+                    all: initial !important;
+                }
+
+                .toast-container {
+                    position: fixed !important;
+                    bottom: 30px !important;
+                    left: 50% !important;
+                    transform: translateX(-50%) translateY(0) !important;
+                    background-color: rgba(51, 51, 51, 0.95) !important;
+                    color: white !important;
+                    padding: 10px 14px !important;
+                    border-radius: 6px !important;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+                    font-family: Arial, sans-serif !important;
+                    font-size: 13px !important;
+                    line-height: 1.4 !important;
+                    z-index: 2147483647 !important;
+                    text-align: center !important;
+                    max-width: 90% !important;
+                    box-sizing: border-box !important;
+                    animation: slideUp 0.3s ease-out !important;
+                }
+
+                @keyframes slideUp {
+                    from {
+                        opacity: 0;
+                        transform: translateY(20px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+            `;
+
+    const dialogOverlayStyles = `
+                :host {
+                    all: initial !important;
+                }
+
+                .phoenix-dialog-overlay {
+                    position: fixed !important;
+                    top: 0 !important;
+                    left: 0 !important;
+                    width: 100% !important;
+                    height: 100% !important;
+                    background: rgba(0, 0, 0, 0.5) !important;
+                    z-index: 2147483646 !important;
+                    pointer-events: auto !important;
+                }
+
+                .phoenix-dialog-message-bar {
+                    position: absolute !important;
+                    top: 50% !important;
+                    left: 50% !important;
+                    transform: translate(-50%, -50%) !important;
+                    color: #ffffff !important;
+                    background-color: #333333 !important;
+                    padding: 1em 1.5em !important;
+                    text-align: center !important;
+                    font-size: 16px !important;
+                    border-radius: 3px !important;
+                    font-family: "SourceSansPro", Helvetica, Arial, sans-serif !important;
+                    z-index: 2147483647 !important;
+                }
+            `;
+
     const remoteStyles = {
         optionsBox: optionsBoxStyles,
         optionsBoxImageGallerySelected: optionsBoxImageGallerySelectedStyles,
         optionsBoxDropdown: optionsBoxDropdownStyles,
-        infoBox: infoBoxStyles
+        infoBox: infoBoxStyles,
+        toastMessage: toastMessageStyles,
+        dialogOverlay: dialogOverlayStyles
     };
 
     exports.remoteStrings = remoteStrings;
