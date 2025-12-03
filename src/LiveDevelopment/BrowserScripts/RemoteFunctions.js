@@ -29,6 +29,13 @@
  * exported functions.
  */
 function RemoteFunctions(config = {}) {
+
+    const GLOBALS = {
+        // given to internal elements like info box, options box, image gallery and all other phcode internal elements
+        // to distinguish between phoenix internal vs user created elements
+        PHCODE_INTERNAL_ATTR: "data-phcode-internal-c15r5a9"
+    };
+
     // this will store the element that was clicked previously (before the new click)
     // we need this so that we can remove click styling from the previous element when a new element is clicked
     let previouslyClickedElement = null;
@@ -132,7 +139,7 @@ function RemoteFunctions(config = {}) {
         if(element && // element should exist
            element.tagName.toLowerCase() !== "body" && // shouldn't be the body tag
            element.tagName.toLowerCase() !== "html" && // shouldn't be the HTML tag
-           !element.closest("[data-phcode-internal-c15r5a9]") && // this attribute is used by phoenix internal elements
+           !element.closest(`[${GLOBALS.PHCODE_INTERNAL_ATTR}]`) && // this attribute is used by phoenix internal elements
            !_isInsideHeadTag(element)) { // shouldn't be inside the head tag like meta tags and all
             return true;
         }
@@ -1583,7 +1590,7 @@ function RemoteFunctions(config = {}) {
 
         _style: function() {
             this.body = window.document.createElement("div");
-            this.body.setAttribute("data-phcode-internal-c15r5a9", "true");
+            this.body.setAttribute(GLOBALS.PHCODE_INTERNAL_ATTR, "true");
 
             // this is shadow DOM.
             // we need it because if we add the box directly to the DOM then users style might override it.
@@ -1789,7 +1796,7 @@ function RemoteFunctions(config = {}) {
 
             // Create shadow DOM container
             this.body = document.createElement('div');
-            this.body.setAttribute('data-phcode-internal-c15r5a9', '1');
+            this.body.setAttribute(GLOBALS.PHCODE_INTERNAL_ATTR, "true");
             document.body.appendChild(this.body);
 
             const shadow = this.body.attachShadow({ mode: 'open' });
@@ -2053,7 +2060,7 @@ function RemoteFunctions(config = {}) {
 
         _style: function() {
             this.body = window.document.createElement("div");
-            this.body.setAttribute("data-phcode-internal-c15r5a9", "true");
+            this.body.setAttribute(GLOBALS.PHCODE_INTERNAL_ATTR, "true");
 
             const shadow = this.body.attachShadow({ mode: "open" });
 
@@ -2327,7 +2334,7 @@ function RemoteFunctions(config = {}) {
 
         _style: function() {
             this.body = window.document.createElement("div");
-            this.body.setAttribute("data-phcode-internal-c15r5a9", "true");
+            this.body.setAttribute(GLOBALS.PHCODE_INTERNAL_ATTR, "true");
 
             // this is shadow DOM.
             // we need it because if we add the box directly to the DOM then users style might override it.
@@ -2541,7 +2548,7 @@ function RemoteFunctions(config = {}) {
 
         _style: function() {
             this.body = window.document.createElement("div");
-            this.body.setAttribute("data-phcode-internal-c15r5a9", "true");
+            this.body.setAttribute(GLOBALS.PHCODE_INTERNAL_ATTR, "true");
             // using shadow dom so that user styles doesn't override it
             const shadow = this.body.attachShadow({ mode: "open" });
 
@@ -2911,7 +2918,7 @@ function RemoteFunctions(config = {}) {
     ImageRibbonGallery.prototype = {
         _style: function () {
             this.body = window.document.createElement("div");
-            this.body.setAttribute("data-phcode-internal-c15r5a9", "true");
+            this.body.setAttribute(GLOBALS.PHCODE_INTERNAL_ATTR, "true");
             this._shadow = this.body.attachShadow({ mode: 'open' });
 
             this._shadow.innerHTML = `
@@ -4303,7 +4310,7 @@ function RemoteFunctions(config = {}) {
 
             const makeDiv = () => {
                 const el = document.createElement("div");
-                el.setAttribute("data-phcode-internal-c15r5a9", "true");
+                el.setAttribute(GLOBALS.PHCODE_INTERNAL_ATTR, "true");
                 return el;
             };
 
@@ -4449,7 +4456,7 @@ function RemoteFunctions(config = {}) {
 
         // create overlay container
         const overlay = window.document.createElement('div');
-        overlay.setAttribute('data-phcode-internal-c15r5a9', 'true');
+        overlay.setAttribute(GLOBALS.PHCODE_INTERNAL_ATTR, 'true');
 
         const styles = `
             <style>
@@ -4806,7 +4813,7 @@ function RemoteFunctions(config = {}) {
                 const element = event.target;
 
                 // WHITELIST: Allow Phoenix internal UI elements to work normally
-                if (element.closest("[data-phcode-internal-c15r5a9]")) {
+                if (element.closest(`[${GLOBALS.PHCODE_INTERNAL_ATTR}]`)) {
                     return;
                 }
 
@@ -5520,7 +5527,7 @@ function RemoteFunctions(config = {}) {
         // create a new fresh toast container
         const toast = window.document.createElement('div');
         toast.id = 'phoenix-toast-notification';
-        toast.setAttribute("data-phcode-internal-c15r5a9", "true");
+        toast.setAttribute(GLOBALS.PHCODE_INTERNAL_ATTR, "true");
         const shadow = toast.attachShadow({ mode: 'open' });
 
         const styles = `
