@@ -286,39 +286,6 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Live Preview 'Preview Mode'. in this mode no live preview highlight or any such features are active
-     * Just the plain website
-     */
-    function _LPPreviewMode() {
-        LiveDevelopment.setLivePreviewEditFeaturesActive(false);
-        if(_isLiveHighlightEnabled()) {
-            LiveDevelopment.togglePreviewHighlight();
-        }
-    }
-
-    /**
-     * Live Preview 'Highlight Mode'. in this mode only the live preview matching with the source code is active
-     * Meaning that if user clicks on some element that element's source code will be highlighted and vice versa
-     */
-    function _LPHighlightMode() {
-        LiveDevelopment.setLivePreviewEditFeaturesActive(false);
-        if(!_isLiveHighlightEnabled()) {
-            LiveDevelopment.togglePreviewHighlight();
-        }
-    }
-
-    /**
-     * Live Preview 'Edit Mode'. this is the most interactive mode, in here the highlight features are available
-     * along with that we also show element's highlighted boxes and such
-     */
-    function _LPEditMode() {
-        LiveDevelopment.setLivePreviewEditFeaturesActive(true);
-        if(!_isLiveHighlightEnabled()) {
-            LiveDevelopment.togglePreviewHighlight();
-        }
-    }
-
-    /**
      * update the mode button text in the live preview toolbar UI based on the current mode
      * @param {String} mode - The current mode ("preview", "highlight", or "edit")
      */
@@ -337,15 +304,26 @@ define(function (require, exports, module) {
     function _initializeMode() {
         const currentMode = LiveDevelopment.getCurrentMode();
 
-        if (currentMode === "highlight") {
-            _LPHighlightMode();
-            $previewBtn.removeClass('selected');
-        } else if (currentMode === "edit") {
-            _LPEditMode();
-            $previewBtn.removeClass('selected');
-        } else {
-            _LPPreviewMode();
+        // when in preview mode, we need to give the play button a selected state
+        if (currentMode === "preview") {
             $previewBtn.addClass('selected');
+        } else {
+            $previewBtn.removeClass('selected');
+        }
+
+        // Update highlight state based on mode
+        const isHighlightEnabled = _isLiveHighlightEnabled();
+
+        if (currentMode === "preview") {
+            // Preview mode: disable highlight
+            if (isHighlightEnabled) {
+                LiveDevelopment.togglePreviewHighlight();
+            }
+        } else {
+            // Highlight or Edit mode: enable highlight
+            if (!isHighlightEnabled) {
+                LiveDevelopment.togglePreviewHighlight();
+            }
         }
 
         _updateModeButton(currentMode);

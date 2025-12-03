@@ -132,7 +132,7 @@ function RemoteFunctions(config = {}) {
      * this normally happens when content is DOM content is inserted by some scripting language
      */
     function isElementInspectable(element, onlyHighlight = false) {
-        if(!config.isProUser && !onlyHighlight) {
+        if(config.mode !== 'edit' && !onlyHighlight) {
             return false;
         }
 
@@ -148,10 +148,10 @@ function RemoteFunctions(config = {}) {
 
     /**
      * This is a checker function for editable elements, it makes sure that the element satisfies all the required check
-     * - When onlyHighlight is false → config.isProUser must be true
-     * - When onlyHighlight is true → config.isProUser can be true or false (doesn't matter)
+     * - When onlyHighlight is false → config.mode must be 'edit'
+     * - When onlyHighlight is true → config.mode can be any mode (doesn't matter)
      * @param {DOMElement} element
-     * @param {boolean} [onlyHighlight=false] - If true, bypasses the isProUser check
+     * @param {boolean} [onlyHighlight=false] - If true, bypasses the mode check
      * @returns {boolean} - True if the element is editable else false
      */
     function isElementEditable(element, onlyHighlight = false) {
@@ -2129,7 +2129,7 @@ function RemoteFunctions(config = {}) {
         create: function() {
             this.remove(); // remove existing box if already present
 
-            if(!config.isProUser) {
+            if(config.mode !== 'edit') {
                 return;
             }
 
@@ -3886,7 +3886,7 @@ function RemoteFunctions(config = {}) {
     }
 
     function enableHoverListeners() {
-        if (config.isProUser && (config.highlight || shouldShowHighlightOnHover())) {
+        if (config.mode === 'edit' && (config.highlight || shouldShowHighlightOnHover())) {
             window.document.removeEventListener("mouseover", onElementHover);
             window.document.removeEventListener("mouseout", onElementHoverOut);
 
@@ -4542,10 +4542,10 @@ function RemoteFunctions(config = {}) {
         const oldHighlightMode = oldConfig.elemHighlights ? oldConfig.elemHighlights.toLowerCase() : "hover";
         const newHighlightMode = getHighlightMode();
         const highlightModeChanged = oldHighlightMode !== newHighlightMode;
-        const isProStatusChanged = oldConfig.isProUser !== config.isProUser;
+        const isModeChanged = oldConfig.mode !== config.mode;
         const highlightSettingChanged = oldConfig.highlight !== config.highlight;
         // Handle configuration changes
-        if (highlightModeChanged || isProStatusChanged || highlightSettingChanged) {
+        if (highlightModeChanged || isModeChanged || highlightSettingChanged) {
             _handleConfigurationChange();
         }
 
@@ -4576,7 +4576,7 @@ function RemoteFunctions(config = {}) {
     function _updateEventListeners() {
         window.document.removeEventListener("mouseover", onElementHover);
         window.document.removeEventListener("mouseout", onElementHoverOut);
-        if (config.highlight || (config.isProUser && shouldShowHighlightOnHover())) {
+        if (config.highlight || (config.mode === 'edit' && shouldShowHighlightOnHover())) {
             window.document.addEventListener("mouseover", onElementHover);
             window.document.addEventListener("mouseout", onElementHoverOut);
         }
@@ -4781,7 +4781,7 @@ function RemoteFunctions(config = {}) {
             }
         }
 
-        if (config.isProUser) {
+        if (config.mode === 'edit') {
             _hoverHighlight = new Highlight("#c8f9c5", true);
             _clickHighlight = new Highlight("#cfc", true);
         }
@@ -4929,7 +4929,7 @@ function RemoteFunctions(config = {}) {
         window.document.removeEventListener("keydown", onKeyDown);
         unregisterInteractionBlocker();
 
-        if (config.isProUser) {
+        if (config.mode === 'edit') {
             // Initialize hover highlight with Chrome-like colors
             _hoverHighlight = new Highlight("#c8f9c5", true); // Green similar to Chrome's padding color
 

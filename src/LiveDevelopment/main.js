@@ -87,7 +87,7 @@ define(function main(require, exports, module) {
     var params = new UrlParams();
     var config = {
         highlight: true, // enable highlighting?
-        isProUser: isProUser,
+        mode: _getDefaultMode(), // 'edit', 'highlight', or 'preview' - will be updated when preference loads
         elemHighlights: "hover", // default value, this will get updated when the extension loads
         showRulerLines: false, // default value, this will get updated when the extension loads
         imageGalleryState: _getImageGalleryState(), // image gallery selected state
@@ -316,11 +316,11 @@ define(function main(require, exports, module) {
             isProUser = entitlement.activated;
             isFreeTrialUser = await KernalModeTrust.EntitlementsManager.isInProTrial();
 
-            config.isProUser = isProUser;
             exports.isProUser = isProUser;
             exports.isFreeTrialUser = isFreeTrialUser;
 
-            _initializeMode();
+            _initializeMode(); // validates mode based on new entitlement
+            config.mode = getCurrentMode(); // update config.mode after validation
 
             if (MultiBrowserLiveDev.status >= MultiBrowserLiveDev.STATUS_ACTIVE) {
                 MultiBrowserLiveDev.updateConfig(JSON.stringify(config));
@@ -349,6 +349,7 @@ define(function main(require, exports, module) {
     AppInit.appReady(function () {
         params.parse();
         config.remoteHighlight = prefs.get(PREF_REMOTEHIGHLIGHT);
+        config.mode = getCurrentMode(); // update config.mode with current preference value
 
         // init experimental multi-browser implementation
         // it can be enable by setting 'livedev.multibrowser' preference to true.
@@ -419,21 +420,25 @@ define(function main(require, exports, module) {
             }
         });
 
-    PreferencesManager.definePreference(PREFERENCE_LIVE_PREVIEW_MODE, "string", _getDefaultMode(), {
-        description: StringUtils.format(Strings.LIVE_PREVIEW_MODE_PREFERENCE, "'preview'", "'highlight'", "'edit'"),
-        values: ["preview", "highlight", "edit"]
-    });
+    function _updateConfigMode() {
+        const currentMode = getCurrentMode();
+        config.mode = currentMode;
 
-    config.highlight = PreferencesManager.getViewState("livedevHighlight");
-
-    function setLivePreviewEditFeaturesActive(enabled) {
-        isProUser = enabled;
-        config.isProUser = enabled;
         if (MultiBrowserLiveDev && MultiBrowserLiveDev.status >= MultiBrowserLiveDev.STATUS_ACTIVE) {
             MultiBrowserLiveDev.updateConfig(JSON.stringify(config));
             MultiBrowserLiveDev.registerHandlers();
         }
     }
+
+    PreferencesManager.definePreference(PREFERENCE_LIVE_PREVIEW_MODE, "string", _getDefaultMode(), {
+        description: StringUtils.format(Strings.LIVE_PREVIEW_MODE_PREFERENCE, "'preview'", "'highlight'", "'edit'"),
+        values: ["preview", "highlight", "edit"]
+    }).on("change", function () {
+        // when mode changes we update the config mode and notify remoteFunctions so that it can get updated
+        _updateConfigMode();
+    });
+
+    config.highlight = PreferencesManager.getViewState("livedevHighlight");
 
     // this function is responsible to update element highlight config
     // called from live preview extension when preference changes
@@ -480,7 +485,6 @@ define(function main(require, exports, module) {
     exports.setLivePreviewPinned = setLivePreviewPinned;
     exports.setLivePreviewTransportBridge = setLivePreviewTransportBridge;
     exports.togglePreviewHighlight = togglePreviewHighlight;
-    exports.setLivePreviewEditFeaturesActive = setLivePreviewEditFeaturesActive;
     exports.setImageGalleryState = setImageGalleryState;
     exports.updateElementHighlightConfig = updateElementHighlightConfig;
     exports.updateRulerLinesConfig = updateRulerLinesConfig;
