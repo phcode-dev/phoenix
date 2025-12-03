@@ -86,16 +86,7 @@ define(function main(require, exports, module) {
 
     var params = new UrlParams();
     var config = {
-        experimental: false, // enable experimental features
-        debug: true, // enable debug output and helpers
         highlight: true, // enable highlighting?
-        highlightConfig: { // the highlight configuration for the Inspector
-            borderColor:  {r: 255, g: 229, b: 153, a: 0.66},
-            contentColor: {r: 111, g: 168, b: 220, a: 0.55},
-            marginColor:  {r: 246, g: 178, b: 107, a: 0.66},
-            paddingColor: {r: 147, g: 196, b: 125, a: 0.66},
-            showInfo: true
-        },
         isProUser: isProUser,
         elemHighlights: "hover", // default value, this will get updated when the extension loads
         showRulerLines: false, // default value, this will get updated when the extension loads
@@ -299,11 +290,6 @@ define(function main(require, exports, module) {
         PreferencesManager.setViewState("livedevHighlight", config.highlight);
     }
 
-    /** Setup window references to useful LiveDevelopment modules */
-    function _setupDebugHelpers() {
-        window.report = function report(params) { window.params = params; console.info(params); };
-    }
-
     /** force reload the live preview currently only with shortcut ctrl-shift-R */
     function _handleReloadLivePreviewCommand() {
         if (MultiBrowserLiveDev.status >= MultiBrowserLiveDev.STATUS_ACTIVE) {
@@ -424,10 +410,6 @@ define(function main(require, exports, module) {
         // setup status changes listeners for new implementation
         _setupGoLiveButton();
         _setupGoLiveMenu();
-
-        if (config.debug) {
-            _setupDebugHelpers();
-        }
 
         remoteHighlightPref
             .on("change", function () {
