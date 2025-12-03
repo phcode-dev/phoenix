@@ -614,7 +614,7 @@ define(function (require, exports, module) {
                     display: flex !important;
                     align-items: center !important;
                     color: #a0a0a0 !important;
-                    gap: 3px !important;
+                    gap: 4px !important;
                     font-size: 14px !important;
                     margin-bottom: 2px !important;
                     margin-right: 10px !important;
@@ -629,9 +629,6 @@ define(function (require, exports, module) {
                 .phoenix-image-gallery-header-icon {
                     height: 16px !important;
                     width: 18px !important;
-                    display: flex !important;
-                    align-items: center !important;
-                    justify-content: center !important;
                 }
 
                 .phoenix-image-gallery-header-icon svg {
