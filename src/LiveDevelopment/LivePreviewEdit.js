@@ -849,8 +849,7 @@ define(function (require, exports, module) {
         if (!hasShownToast) {
             const currLiveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
             if (currLiveDoc && currLiveDoc.protocol && currLiveDoc.protocol.evaluate) {
-                const message = Strings.LIVE_DEV_COPY_TOAST_MESSAGE;
-                const evalString = `_LD.showToastMessage(${JSON.stringify(message)}, 6000)`;
+                const evalString = `_LD.showToastMessage('copyFirstTime', 6000)`;
                 currLiveDoc.protocol.evaluate(evalString);
                 StateManager.set(COPY_CUT_TOAST_SHOWN_KEY, true);
             }

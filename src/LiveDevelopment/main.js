@@ -45,7 +45,7 @@ define(function main(require, exports, module) {
         StringUtils         = require("utils/StringUtils"),
         EventDispatcher      = require("utils/EventDispatcher"),
         WorkspaceManager    = require("view/WorkspaceManager"),
-        EditorManager      = require("editor/EditorManager");
+        RemoteHelper        = require("LiveDevelopment/RemoteHelper");
 
 
     const KernalModeTrust = window.KernalModeTrust;
@@ -94,36 +94,9 @@ define(function main(require, exports, module) {
         // this strings are used in RemoteFunctions.js
         // we need to pass this through config as remoteFunctions runs in browser context and cannot
         // directly reference Strings file
-        strings: {
-            selectParent: Strings.LIVE_DEV_MORE_OPTIONS_SELECT_PARENT,
-            editText: Strings.LIVE_DEV_MORE_OPTIONS_EDIT_TEXT,
-            editHyperlink: Strings.LIVE_DEV_MORE_OPTIONS_EDIT_HYPERLINK,
-            hyperlinkNoHref: Strings.LIVE_DEV_HYPERLINK_NO_HREF,
-            duplicate: Strings.LIVE_DEV_MORE_OPTIONS_DUPLICATE,
-            delete: Strings.LIVE_DEV_MORE_OPTIONS_DELETE,
-            ai: Strings.LIVE_DEV_MORE_OPTIONS_AI,
-            imageGallery: Strings.LIVE_DEV_MORE_OPTIONS_IMAGE_GALLERY,
-            moreOptions: Strings.LIVE_DEV_MORE_OPTIONS_MORE,
-            cut: Strings.LIVE_DEV_MORE_OPTIONS_CUT,
-            copy: Strings.LIVE_DEV_MORE_OPTIONS_COPY,
-            paste: Strings.LIVE_DEV_MORE_OPTIONS_PASTE,
-            showRulerLines: Strings.LIVE_PREVIEW_SHOW_RULER_LINES,
-            aiPromptPlaceholder: Strings.LIVE_DEV_AI_PROMPT_PLACEHOLDER,
-            imageGalleryUseImage: Strings.LIVE_DEV_IMAGE_GALLERY_USE_IMAGE,
-            imageGallerySelectDownloadFolder: Strings.LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER,
-            imageGallerySearchPlaceholder: Strings.LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER,
-            imageGallerySearchButton: Strings.LIVE_DEV_IMAGE_GALLERY_SEARCH_BUTTON,
-            imageGalleryLoadingInitial: Strings.LIVE_DEV_IMAGE_GALLERY_LOADING_INITIAL,
-            imageGalleryLoadingMore: Strings.LIVE_DEV_IMAGE_GALLERY_LOADING_MORE,
-            imageGalleryNoImages: Strings.LIVE_DEV_IMAGE_GALLERY_NO_IMAGES,
-            imageGalleryLoadError: Strings.LIVE_DEV_IMAGE_GALLERY_LOAD_ERROR,
-            imageGalleryClose: Strings.LIVE_DEV_IMAGE_GALLERY_CLOSE,
-            imageGallerySelectFromComputer: Strings.LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER,
-            imageGallerySelectFromComputerTooltip: Strings.LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP,
-            imageGalleryDialogOverlayMessage: Strings.LIVE_DEV_IMAGE_GALLERY_DIALOG_OVERLAY_MESSAGE,
-            toastNotEditable: Strings.LIVE_DEV_TOAST_NOT_EDITABLE
-        }
+        strings: RemoteHelper.remoteStrings
     };
+
     // Status labels/styles are ordered: error, not connected, progress1, progress2, connected.
     var _status,
         _allStatusStyles = ["warning", "info", "success", "out-of-sync", "sync-error"].join(" ");

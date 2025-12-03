@@ -4688,7 +4688,7 @@ function RemoteFunctions(config = {}) {
         // if element is not editable and user clicks on it, then we show a toast notification saying
         // that this element is not editable
         if (!element.hasAttribute("data-brackets-id")) {
-            showToastMessage(config.strings.toastNotEditable);
+            showToastMessage("notEditable");
         }
 
         // make sure that the element is actually visible to the user
@@ -5514,13 +5514,18 @@ function RemoteFunctions(config = {}) {
 
     let _toastTimeout = null;
 
+    const TOAST_TYPE_MAPPING = {
+        notEditable: config.strings.toastNotEditable,
+        copyFirstTime: config.strings.toastCopyFirstTime
+    };
+
     /**
      * this function is to show a toast notification at the bottom center of the screen
      * this toast message is used when user tries to edit a non-editable element
-     * @param {String} message - the message to display in the toast
+     * @param {String} toastType - toastType determines the message to display in the toast
      * @param {Number} duration - optional duration in milliseconds (default: 3000)
      */
-    function showToastMessage(message, duration = 3000) {
+    function showToastMessage(toastType, duration = 3000) {
         // clear any existing toast & timer, if there are any
         dismissToastMessage();
 
@@ -5569,7 +5574,7 @@ function RemoteFunctions(config = {}) {
 
         const content = `
             <div class="toast-container">
-                <div class="toast-message">${message}</div>
+                <div class="toast-message">${TOAST_TYPE_MAPPING[toastType]}</div>
             </div>
         `;
 
