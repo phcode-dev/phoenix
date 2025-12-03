@@ -183,6 +183,73 @@ define(function (require, exports, module) {
       `
     };
 
+    const optionsBoxStyles = `
+                :host {
+                  all: initial !important;
+                }
+
+                .phoenix-more-options-box {
+                    background-color: #4285F4 !important;
+                    color: white !important;
+                    border-radius: 3px !important;
+                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) !important;
+                    font-size: 12px !important;
+                    font-family: Arial, sans-serif !important;
+                    z-index: 2147483646 !important;
+                    position: absolute !important;
+                    left: -1000px;
+                    top: -1000px;
+                    box-sizing: border-box !important;
+                }
+
+                .node-options {
+                    display: flex !important;
+                    align-items: center !important;
+                }
+
+                .node-options span {
+                    padding: 4px 3.9px !important;
+                    cursor: pointer !important;
+                    display: flex !important;
+                    align-items: center !important;
+                    border-radius: 0 !important;
+                }
+
+                .node-options span:first-child {
+                    border-radius: 3px 0 0 3px !important;
+                }
+
+                .node-options span:last-child {
+                    border-radius: 0 3px 3px 0 !important;
+                }
+
+                .node-options span:hover {
+                    background-color: rgba(255, 255, 255, 0.15) !important;
+                }
+
+                .node-options span > svg {
+                    width: 16px !important;
+                    height: 16px !important;
+                    display: block !important;
+                }
+            `;
+
+    const optionsBoxImageGallerySelectedStyles = `
+                .node-options span[data-action="image-gallery"] {
+                  background-color: rgba(50, 50, 220, 0.5) !important;
+                }
+
+                .node-options span[data-action="image-gallery"]:hover {
+                  background-color: rgba(100, 100, 230, 0.6) !important;
+                }
+            `;
+
+    const remoteStyles = {
+        optionsBoxStyles: optionsBoxStyles,
+        optionsBoxImageGallerySelectedStyles: optionsBoxImageGallerySelectedStyles
+    };
+
     exports.remoteStrings = remoteStrings;
     exports.remoteIcons = remoteIcons;
+    exports.remoteStyles = remoteStyles;
 });
