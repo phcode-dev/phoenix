@@ -91,10 +91,8 @@ define(function main(require, exports, module) {
         elemHighlights: "hover", // default value, this will get updated when the extension loads
         showRulerLines: false, // default value, this will get updated when the extension loads
         imageGalleryState: _getImageGalleryState(), // image gallery selected state
-        // this strings are used in RemoteFunctions.js
-        // we need to pass this through config as remoteFunctions runs in browser context and cannot
-        // directly reference Strings file
-        strings: RemoteHelper.remoteStrings
+        strings: RemoteHelper.remoteStrings, // strings that remote functions need
+        icons: RemoteHelper.remoteIcons // icons used by remote functions file
     };
 
     // Status labels/styles are ordered: error, not connected, progress1, progress2, connected.
