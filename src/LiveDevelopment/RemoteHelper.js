@@ -318,10 +318,76 @@ define(function (require, exports, module) {
                 }
             `;
 
+    const infoBoxStyles = `
+                :host {
+                  all: initial !important;
+                }
+
+                .phoenix-node-info-box {
+                    background-color: var(--info-box-bg-color) !important;
+                    color: white !important;
+                    border-radius: 3px !important;
+                    padding: 5px 8px !important;
+                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) !important;
+                    font-size: 12px !important;
+                    font-family: Arial, sans-serif !important;
+                    z-index: 2147483646 !important;
+                    position: absolute !important;
+                    left: var(--info-box-left-pos);
+                    top: -1000px;
+                    max-width: 300px !important;
+                    box-sizing: border-box !important;
+                    pointer-events: none !important;
+                }
+
+                .tag-line {
+                    display: flex !important;
+                    align-items: baseline !important;
+                    justify-content: space-between !important;
+                }
+
+                .tag-name {
+                    font-weight: bold !important;
+                }
+
+                .elem-dimensions {
+                    font-size: 9px !important;
+                    font-weight: 500 !important;
+                    opacity: 0.9 !important;
+                    margin-left: 7px !important;
+                    flex-shrink: 0 !important;
+                }
+
+                .id-name,
+                .class-name,
+                .href-info {
+                    margin-top: 3px !important;
+                }
+
+                .href-info {
+                    display: flex !important;
+                    align-items: center !important;
+                    gap: 6px !important;
+                    opacity: 0.9 !important;
+                    letter-spacing: 0.6px !important;
+                }
+
+                .href-info svg {
+                    width: 13px !important;
+                    height: 13px !important;
+                    flex-shrink: 0 !important;
+                }
+
+                .exceeded-classes {
+                    opacity: 0.8 !important;
+                }
+            `;
+
     const remoteStyles = {
         optionsBox: optionsBoxStyles,
         optionsBoxImageGallerySelected: optionsBoxImageGallerySelectedStyles,
-        optionsBoxDropdown: optionsBoxDropdownStyles
+        optionsBoxDropdown: optionsBoxDropdownStyles,
+        infoBox: infoBoxStyles
     };
 
     exports.remoteStrings = remoteStrings;

@@ -2153,69 +2153,15 @@ function RemoteFunctions(config = {}) {
             // if element is non-editable we use gray bg color in info box, otherwise normal blue color
             const bgColor = this.element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR) ? '#4285F4' : '#3C3F41';
 
+            // we need to insert some dynamic values in the info box styles
             const styles = `
-                :host {
-                  all: initial !important;
-                }
-
-                .phoenix-node-info-box {
-                    background-color: ${bgColor} !important;
-                    color: white !important;
-                    border-radius: 3px !important;
-                    padding: 5px 8px !important;
-                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) !important;
-                    font-size: 12px !important;
-                    font-family: Arial, sans-serif !important;
-                    z-index: 2147483646 !important;
-                    position: absolute !important;
-                    left: ${leftPos}px;
-                    top: -1000px;
-                    max-width: 300px !important;
-                    box-sizing: border-box !important;
-                    pointer-events: none !important;
-                }
-
-                .tag-line {
-                    display: flex !important;
-                    align-items: baseline !important;
-                    justify-content: space-between !important;
-                }
-
-                .tag-name {
-                    font-weight: bold !important;
-                }
-
-                .elem-dimensions {
-                    font-size: 9px !important;
-                    font-weight: 500 !important;
-                    opacity: 0.9 !important;
-                    margin-left: 7px !important;
-                    flex-shrink: 0 !important;
-                }
-
-                .id-name,
-                .class-name,
-                .href-info {
-                    margin-top: 3px !important;
-                }
-
-                .href-info {
-                    display: flex !important;
-                    align-items: center !important;
-                    gap: 6px !important;
-                    opacity: 0.9 !important;
-                    letter-spacing: 0.6px !important;
-                }
-
-                .href-info svg {
-                    width: 13px !important;
-                    height: 13px !important;
-                    flex-shrink: 0 !important;
-                }
-
-                .exceeded-classes {
-                    opacity: 0.8 !important;
-                }
+                <style>
+                    ${config.styles.infoBox}
+                    :host {
+                        --info-box-bg-color: ${bgColor};
+                        --info-box-left-pos: ${leftPos}px;
+                    }
+                </style>
             `;
 
             // add everything to the shadow box
