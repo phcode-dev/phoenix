@@ -1867,8 +1867,8 @@ function RemoteFunctions(config = {}) {
                     <div class="dropdown-separator"></div>
                     <div class="dropdown-item" data-action="toggle-ruler-lines">
                         <span class="item-icon">${config.icons.ruler}</span>
-                        <span class="item-label">${config.strings.showRulerLines}</span>
-                        <span class="item-checkmark" style="visibility: ${config.showRulerLines ? 'visible' : 'hidden'}">✓</span>
+                        <span class="item-label show-ruler-label">${config.strings.showRulerLines}</span>
+                        <span class="item-checkmark" style="visibility: ${config.showRulerLines ? 'visible' : 'hidden'}">${config.icons.check}</span>
                     </div>
                 </div>
             `;
