@@ -185,6 +185,274 @@ define(function (require, exports, module) {
     }
 
     /**
+     * builds a map of character positions to text nodes so we can find which nodes contain a selection
+     * @param {Element} element - the element to map
+     * @returns {Array} array of objects: { node, startOffset, endOffset }
+     */
+    function _buildTextNodeMap(element) {
+        const textNodeMap = [];
+        let currentOffset = 0;
+
+        function traverse(node) {
+            if (node.nodeType === Node.TEXT_NODE) {
+                const textLength = node.nodeValue.length;
+                textNodeMap.push({
+                    node: node,
+                    startOffset: currentOffset,
+                    endOffset: currentOffset + textLength
+                });
+                currentOffset += textLength;
+            } else if (node.nodeType === Node.ELEMENT_NODE) {
+                // recursively traverse child nodes
+                for (let child of node.childNodes) {
+                    traverse(child);
+                }
+            }
+        }
+
+        traverse(element);
+        return textNodeMap;
+    }
+
+    /**
+     * finds text nodes that overlap with the user's selection
+     * @param {Array} textNodeMap - the text node map from _buildTextNodeMap
+     * @param {Number} startOffset - selection start offset
+     * @param {Number} endOffset - selection end offset
+     * @returns {Array} array of objects: { node, localStart, localEnd, parentElement }
+     */
+    function _findSelectionNodes(textNodeMap, startOffset, endOffset) {
+        const selectionNodes = [];
+
+        for (let entry of textNodeMap) {
+            // check if this text node overlaps with the selection range
+            if (entry.endOffset > startOffset && entry.startOffset < endOffset) {
+                const localStart = Math.max(0, startOffset - entry.startOffset);
+                const localEnd = Math.min(entry.node.nodeValue.length, endOffset - entry.startOffset);
+
+                selectionNodes.push({
+                    node: entry.node,
+                    localStart: localStart,
+                    localEnd: localEnd,
+                    parentElement: entry.node.parentElement
+                });
+            }
+        }
+
+        return selectionNodes;
+    }
+
+    /**
+     * converts format command string to the actual HTML tag name we want to use
+     * @param {string} formatCommand - "bold", "italic", or "underline"
+     * @returns {string} tag name: "b", "i", or "u"
+     */
+    function _getFormatTag(formatCommand) {
+        const tagMap = {
+            'bold': 'b',
+            'italic': 'i',
+            'underline': 'u'
+        };
+        return tagMap[formatCommand] || null;
+    }
+
+    /**
+     * checks if a text node is already wrapped in a formatting tag by checking ancestors
+     * we stop at contenteditable boundary since that's the element being edited
+     * @param {Node} node - the text node to check
+     * @param {string} tagName - the tag name to look for (lowercase)
+     * @returns {Element|null} the wrapping element if found, null otherwise
+     */
+    function _isNodeWrappedInTag(node, tagName) {
+        let parent = node.parentElement;
+        while (parent) {
+            if (parent.tagName && parent.tagName.toLowerCase() === tagName) {
+                return parent;
+            }
+            // stop at the editable element boundary
+            if (parent.hasAttribute('contenteditable')) {
+                break;
+            }
+            parent = parent.parentElement;
+        }
+        return null;
+    }
+
+    /**
+     * wraps a portion of a text node in a formatting tag, splitting the text node if needed
+     * @param {Node} textNode - the text node to wrap
+     * @param {string} tagName - the formatting tag name (b, i, u)
+     * @param {Number} start - start offset within the text node
+     * @param {Number} end - end offset within the text node
+     */
+    function _wrapTextInTag(textNode, tagName, start, end) {
+        const text = textNode.nodeValue;
+        const before = text.substring(0, start);
+        const selected = text.substring(start, end);
+        const after = text.substring(end);
+
+        const parent = textNode.parentNode;
+        const formatElement = document.createElement(tagName);
+        formatElement.textContent = selected;
+
+        // replace the text node with before + formatted + after
+        const fragment = document.createDocumentFragment();
+        if (before) {
+            fragment.appendChild(document.createTextNode(before));
+        }
+        fragment.appendChild(formatElement);
+        if (after) {
+            fragment.appendChild(document.createTextNode(after));
+        }
+
+        parent.replaceChild(fragment, textNode);
+    }
+
+    /**
+     * removes a formatting tag by moving its children to its parent
+     * @param {Element} formatElement - the formatting element to unwrap
+     */
+    function _unwrapFormattingTag(formatElement) {
+        const parent = formatElement.parentNode;
+        while (formatElement.firstChild) {
+            parent.insertBefore(formatElement.firstChild, formatElement);
+        }
+        parent.removeChild(formatElement);
+    }
+
+    /**
+     * applies or removes formatting on the selected text nodes (toggle behavior)
+     * if all nodes are wrapped in the format tag, we remove it. otherwise we add it.
+     * @param {Array} selectionNodes - array of selected node info from _findSelectionNodes
+     * @param {string} formatTag - the format tag to apply/remove (b, i, or u)
+     */
+    function _applyFormatToNodes(selectionNodes, formatTag) {
+        // check if all selected nodes are already wrapped in the format tag
+        const allWrapped = selectionNodes.every(nodeInfo =>
+            _isNodeWrappedInTag(nodeInfo.node, formatTag)
+        );
+
+        if (allWrapped) {
+            // remove formatting (toggle OFF)
+            selectionNodes.forEach(nodeInfo => {
+                const wrapper = _isNodeWrappedInTag(nodeInfo.node, formatTag);
+                if (wrapper) {
+                    _unwrapFormattingTag(wrapper);
+                }
+            });
+        } else {
+            // apply formatting (toggle ON)
+            selectionNodes.forEach(nodeInfo => {
+                const { node, localStart, localEnd } = nodeInfo;
+
+                // skip if already wrapped
+                if (!_isNodeWrappedInTag(node, formatTag)) {
+                    // check if we need to format the entire node or just a portion
+                    if (localStart === 0 && localEnd === node.nodeValue.length) {
+                        // format entire node
+                        const formatElement = document.createElement(formatTag);
+                        const parent = node.parentNode;
+                        parent.insertBefore(formatElement, node);
+                        formatElement.appendChild(node);
+                    } else {
+                        // format partial node
+                        _wrapTextInTag(node, formatTag, localStart, localEnd);
+                    }
+                }
+            });
+        }
+    }
+
+    /**
+     * handles text formatting (bold, italic, underline) for selected text in live preview
+     * this is called when user presses ctrl+b/i/u in contenteditable mode
+     * @param {Object} message - message from frontend with format command and selection info
+     */
+    function _applyFormattingToSource(message) {
+        const editor = _getEditorAndValidate(message.tagId);
+        if (!editor) {
+            return;
+        }
+
+        const range = _getElementRange(editor, message.tagId);
+        if (!range) {
+            return;
+        }
+
+        const { startPos, endPos } = range;
+        const elementText = editor.document.getRange(startPos, endPos);
+
+        // parse the HTML from source using DOMParser
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(elementText, "text/html");
+        const targetElement = doc.body.firstElementChild;
+
+        if (!targetElement) {
+            return;
+        }
+
+        // if targetElement itself is an inline formatting tag (b, i, u, etc), we need to wrap it
+        // because when we toggle it off, the element gets removed and we lose the reference
+        const isInlineFormatTag = ['b', 'i', 'u', 'strong', 'em'].includes(
+            targetElement.tagName.toLowerCase()
+        );
+
+        let workingElement = targetElement;
+        let wrapperElement = null;
+
+        if (isInlineFormatTag) {
+            // wrap in temporary container so we don't lose content when element is removed
+            wrapperElement = doc.createElement('div');
+            wrapperElement.appendChild(targetElement);
+            workingElement = wrapperElement.firstElementChild;
+        }
+
+        // build text node map for finding which nodes contain the selection
+        const textNodeMap = _buildTextNodeMap(workingElement);
+
+        // validate selection bounds
+        if (!message.selection || message.selection.startOffset >= message.selection.endOffset) {
+            return;
+        }
+
+        if (message.selection.endOffset > textNodeMap[textNodeMap.length - 1]?.endOffset) {
+            return;
+        }
+
+        // find which text nodes contain the selection
+        const selectionNodes = _findSelectionNodes(
+            textNodeMap,
+            message.selection.startOffset,
+            message.selection.endOffset
+        );
+
+        if (selectionNodes.length === 0) {
+            return;
+        }
+
+        // get the format tag and apply/remove it
+        const formatTag = _getFormatTag(message.livePreviewFormatCommand);
+        if (!formatTag) {
+            return;
+        }
+
+        _applyFormatToNodes(selectionNodes, formatTag);
+
+        // serialize and replace in editor
+        let updatedHTML;
+        if (wrapperElement) {
+            // if we wrapped the element, get the wrapper's innerHTML
+            updatedHTML = wrapperElement.innerHTML;
+        } else {
+            updatedHTML = workingElement.outerHTML;
+        }
+
+        editor.document.batchOperation(function () {
+            editor.document.replaceRange(updatedHTML, startPos, endPos);
+        });
+    }
+
+    /**
      * helper function to get editor and validate basic requirements
      * @param {Number} tagId - the data-brackets-id of the element
      */
@@ -1543,6 +1811,8 @@ define(function (require, exports, module) {
             _pasteElementFromClipboard(message.tagId);
         } else if (message.livePreviewTextEdit) {
             _editTextInSource(message);
+        } else if (message.livePreviewFormatCommand) {
+            _applyFormattingToSource(message);
         } else if (message.livePreviewHyperlinkEdit) {
             _updateHyperlinkHref(message.tagId, message.newHref);
         } else if (message.AISend) {

@@ -4800,6 +4800,84 @@ function RemoteFunctions(config = {}) {
         selection.addRange(range);
     }
 
+    /**
+     * gets the current selection as character offsets relative to the element's text content
+     *
+     * @param {Element} element - the contenteditable element
+     * @returns {Object|null} selection info with startOffset, endOffset, selectedText or null
+     */
+    function getSelectionInfo(element) {
+        const selection = window.getSelection();
+        if (!selection.rangeCount) {
+            return null;
+        }
+
+        const range = selection.getRangeAt(0);
+
+        // make sure selection is within the element we're editing
+        if (!element.contains(range.commonAncestorContainer)) {
+            return null;
+        }
+
+        // create a range from element start to selection start to calculate offset
+        const preSelectionRange = document.createRange();
+        preSelectionRange.selectNodeContents(element);
+        preSelectionRange.setEnd(range.startContainer, range.startOffset);
+
+        const startOffset = preSelectionRange.toString().length;
+        const selectedText = range.toString();
+        const endOffset = startOffset + selectedText.length;
+
+        return {
+            startOffset: startOffset,
+            endOffset: endOffset,
+            selectedText: selectedText
+        };
+    }
+
+    /**
+     * handles text formatting commands when user presses ctrl+b/i/u
+     * sends a message to backend to apply consistent formatting tags
+     * @param {Element} element - the contenteditable element
+     * @param {string} formatKey - the format key ('b', 'i', or 'u')
+     */
+    function handleFormatting(element, formatKey) {
+        const selection = getSelectionInfo(element);
+
+        // need an actual selection, not just cursor position
+        if (!selection || selection.startOffset === selection.endOffset) {
+            return;
+        }
+
+        const formatCommand = {
+            'b': 'bold',
+            'i': 'italic',
+            'u': 'underline'
+        }[formatKey];
+
+        if (!formatCommand) {
+            return;
+        }
+
+        const tagId = element.getAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
+        if (!tagId) {
+            return;
+        }
+
+        // send formatting message to backend
+        window._Brackets_MessageBroker.send({
+            livePreviewEditEnabled: true,
+            livePreviewFormatCommand: formatCommand,
+            tagId: Number(tagId),
+            element: element,
+            selection: selection,
+            currentHTML: element.innerHTML
+        });
+
+        // exit edit mode after applying format
+        finishEditingCleanup(element);
+    }
+
     // Function to handle direct editing of elements in the live preview
     function startEditing(element) {
         if (!isElementEditable(element)) {
@@ -4860,6 +4938,21 @@ function RemoteFunctions(config = {}) {
             } else if ((event.key === " " || event.key === "Spacebar") && element.tagName.toLowerCase() === 'button') {
                 event.preventDefault();
                 document.execCommand("insertText", false, " ");
+            } else if ((event.ctrlKey || event.metaKey) && (event.key === 'b' || event.key === 'i' || event.key === 'u')) {
+                // handle formatting commands (ctrl+b/i/u)
+                event.preventDefault();
+
+                // check if user has typed text that hasn't been saved yet
+                const currentContent = element.textContent;
+                const hasTextChanges = (oldContent !== currentContent);
+
+                // so if user already has some text changes, we just save that
+                // we do formatting only when there are no text changes
+                if (hasTextChanges) {
+                    finishEditing(element, true);
+                } else {
+                    handleFormatting(element, event.key);
+                }
             }
         }
 
