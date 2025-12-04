@@ -620,7 +620,7 @@ define(function (require, exports, module) {
                     margin-right: 10px !important;
                 }
 
-                @media (max-width: 565px) {
+                @media (max-width: 580px) {
                     .phoenix-image-gallery-header-title {
                         display: none !important;
                     }
@@ -679,7 +679,7 @@ define(function (require, exports, module) {
                     outline: 1px solid #3a8ef6 !important;
                 }
 
-                @media (max-width: 350px) {
+                @media (max-width: 370px) {
                     .search-wrapper input {
                         width: 100px !important;
                     }
@@ -703,7 +703,7 @@ define(function (require, exports, module) {
                     background: #3c3f41 !important;
                 }
 
-                @media (max-width: 450px) {
+                @media (max-width: 470px) {
                     .phoenix-image-gallery-upload-container button {
                         font-size: 0 !important;
                         padding: 3px 5px 3px 6px !important;
@@ -791,7 +791,7 @@ define(function (require, exports, module) {
                     user-select: none !important;
                     transition: all 0.2s ease !important;
                     z-index: 2147483647 !important;
-                    padding: 2px 11px 7px 11px !important;
+                    padding: 2.5px 11px 7px 11px !important;
                     display: none !important;
                     align-items: center !important;
                     justify-content: center !important;
