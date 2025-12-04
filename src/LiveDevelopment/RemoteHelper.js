@@ -404,6 +404,44 @@ define(function (require, exports, module) {
                 }
             `;
 
+    const rulerStyles = `
+                :host {
+                    all: initial !important;
+                }
+
+                .phoenix-ruler-line {
+                    position: absolute !important;
+                    pointer-events: none !important;
+                    z-index: 2147483645 !important;
+                }
+
+                .phoenix-ruler-line-editable {
+                    background-color: rgba(66, 133, 244, 0.4) !important;
+                }
+
+                .phoenix-ruler-line-non-editable {
+                    background-color: rgba(60, 63, 65, 0.8) !important;
+                }
+
+                .phoenix-ruler-label {
+                    position: absolute !important;
+                    font-size: 9px !important;
+                    font-family: Arial, sans-serif !important;
+                    pointer-events: none !important;
+                    z-index: 2147483646 !important;
+                    white-space: nowrap !important;
+                    background-color: transparent !important;
+                }
+
+                .phoenix-ruler-label-editable {
+                    color: rgba(66, 133, 244, 1) !important;
+                }
+
+                .phoenix-ruler-label-non-editable {
+                    color: rgba(60, 63, 65, 1) !important;
+                }
+            `;
+
     const toastMessageStyles = `
                 :host {
                     all: initial !important;
@@ -1027,7 +1065,8 @@ define(function (require, exports, module) {
         dialogOverlay: dialogOverlayStyles,
         aiPromptBox: aiPromptBoxStyles,
         imageGallery: imageGalleryStyles,
-        hyperlinkEditor: hyperlinkEditorStyles
+        hyperlinkEditor: hyperlinkEditorStyles,
+        ruler: rulerStyles
     };
 
     exports.remoteStrings = remoteStrings;

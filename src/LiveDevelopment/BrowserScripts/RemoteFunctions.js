@@ -3464,14 +3464,7 @@ function RemoteFunctions(config = {}) {
      */
     function RulerLines(element) {
         this.element = element;
-
-        const editable = element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
-        this.color = editable
-            ? "rgba(66, 133, 244, 0.4)"
-            : "rgba(60, 63, 65, 0.8)";
-        this.labelColor = editable
-            ? "rgba(66, 133, 244, 1)"
-            : "rgba(60, 63, 65, 1)";
+        this.editable = element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
 
         this.sides = ["left", "right", "top", "bottom"];
         this.lineElements = {};
@@ -3483,45 +3476,43 @@ function RemoteFunctions(config = {}) {
 
     RulerLines.prototype = {
         create: function() {
-            const body = document.body;
+            this.container = window.document.createElement("div");
+            this.container.setAttribute(GLOBALS.PHCODE_INTERNAL_ATTR, "true");
 
-            const makeDiv = () => {
-                const el = document.createElement("div");
-                el.setAttribute(GLOBALS.PHCODE_INTERNAL_ATTR, "true");
-                return el;
-            };
+            const shadow = this.container.attachShadow({ mode: "open" });
+            this._shadow = shadow;
 
-            const styleLine = (el) => {
-                el.style.position = "absolute";
-                el.style.backgroundColor = this.color;
-                el.style.pointerEvents = "none";
-                el.style.zIndex = "2147483645";
-            };
+            const lineClass = this.editable ? "phoenix-ruler-line-editable" : "phoenix-ruler-line-non-editable";
+            const labelClass = this.editable ? "phoenix-ruler-label-editable" : "phoenix-ruler-label-non-editable";
 
-            const styleLabel = (el) => {
-                el.style.position = "absolute";
-                el.style.color = this.labelColor;
-                el.style.fontSize = "9px";
-                el.style.fontFamily = "Arial, sans-serif";
-                el.style.pointerEvents = "none";
-                el.style.zIndex = "2147483646";
-                el.style.whiteSpace = "nowrap";
-                el.style.backgroundColor = "transparent";
-            };
-
+            let html = "";
             for (const side of this.sides) {
-                const line = makeDiv();
-                const label = makeDiv();
-
-                styleLine(line);
-                styleLabel(label);
-
-                this.lineElements[side] = line;
-                this.labelElements[side] = label;
-
-                body.appendChild(line);
-                body.appendChild(label);
+                html += `<div class="phoenix-ruler-line ${lineClass}" data-side="${side}"></div>`;
+                html += `<div class="phoenix-ruler-label ${labelClass}" data-side="${side}"></div>`;
             }
+
+            shadow.innerHTML = `
+                            <style>
+                                ${config.styles.ruler}
+                            </style>
+                            ${html}
+                        `;
+
+            window.document.body.appendChild(this.container);
+
+            this.lineElements = {
+                left: shadow.querySelector('.phoenix-ruler-line[data-side="left"]'),
+                right: shadow.querySelector('.phoenix-ruler-line[data-side="right"]'),
+                top: shadow.querySelector('.phoenix-ruler-line[data-side="top"]'),
+                bottom: shadow.querySelector('.phoenix-ruler-line[data-side="bottom"]')
+            };
+
+            this.labelElements = {
+                left: shadow.querySelector('.phoenix-ruler-label[data-side="left"]'),
+                right: shadow.querySelector('.phoenix-ruler-label[data-side="right"]'),
+                top: shadow.querySelector('.phoenix-ruler-label[data-side="top"]'),
+                bottom: shadow.querySelector('.phoenix-ruler-label[data-side="bottom"]')
+            };
         },
 
         update: function() {
@@ -3610,16 +3601,12 @@ function RemoteFunctions(config = {}) {
         },
 
         remove: function() {
-            const body = document.body;
-
-            for (const side of this.sides) {
-                const line = this.lineElements[side];
-                const label = this.labelElements[side];
-
-                if (line && line.parentNode) { body.removeChild(line); }
-                if (label && label.parentNode) { body.removeChild(label); }
+            if (this.container && this.container.parentNode) {
+                window.document.body.removeChild(this.container);
             }
 
+            this.container = null;
+            this._shadow = null;
             this.lineElements = {};
             this.labelElements = {};
         }
@@ -3875,6 +3862,11 @@ function RemoteFunctions(config = {}) {
             }
             // Always show info box for inspectable elements
             _nodeInfoBox = new NodeInfoBox(element);
+
+            // show ruler lines (only when enabled)
+            if (config.showRulerLines) {
+                _currentRulerLines = new RulerLines(element);
+            }
         } else {
             // Element is hidden, so don't show UI boxes but still apply visual styling
             _nodeMoreOptionsBox = null;
@@ -3895,11 +3887,6 @@ function RemoteFunctions(config = {}) {
         if (_hoverHighlight) {
             _hoverHighlight.clear();
             _hoverHighlight.add(element, true);
-        }
-
-        // to show ruler lines (only when its enabled)
-        if (config.showRulerLines) {
-            _currentRulerLines = new RulerLines(element);
         }
 
         previouslyClickedElement = element;
