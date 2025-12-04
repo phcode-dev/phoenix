@@ -3525,7 +3525,9 @@ function RemoteFunctions(config = {}) {
         },
 
         update: function() {
-            if (!this.element) { return; }
+            if (!this.element) {
+                return;
+            }
 
             const rect = this.element.getBoundingClientRect();
             const scrollTop = window.pageYOffset;
@@ -3541,26 +3543,25 @@ function RemoteFunctions(config = {}) {
             const docHeight = document.documentElement.scrollHeight;
             const docWidth = document.documentElement.scrollWidth;
 
-            // Position lines
-            this.lineElements.left.style.width = '1px';
-            this.lineElements.left.style.height = docHeight + 'px';
-            this.lineElements.left.style.left = edges.left + 'px';
-            this.lineElements.left.style.top = '0px';
+            this.lineElements.left.style.width = "1px";
+            this.lineElements.left.style.height = docHeight + "px";
+            this.lineElements.left.style.left = edges.left + "px";
+            this.lineElements.left.style.top = "0px";
 
-            this.lineElements.right.style.width = '1px';
-            this.lineElements.right.style.height = docHeight + 'px';
-            this.lineElements.right.style.left = edges.right + 'px';
-            this.lineElements.right.style.top = '0px';
+            this.lineElements.right.style.width = "1px";
+            this.lineElements.right.style.height = docHeight + "px";
+            this.lineElements.right.style.left = edges.right + "px";
+            this.lineElements.right.style.top = "0px";
 
-            this.lineElements.top.style.height = '1px';
-            this.lineElements.top.style.width = docWidth + 'px';
-            this.lineElements.top.style.top = edges.top + 'px';
-            this.lineElements.top.style.left = '0px';
+            this.lineElements.top.style.height = "1px";
+            this.lineElements.top.style.width = docWidth + "px";
+            this.lineElements.top.style.top = edges.top + "px";
+            this.lineElements.top.style.left = "0px";
 
-            this.lineElements.bottom.style.height = '1px';
-            this.lineElements.bottom.style.width = docWidth + 'px';
-            this.lineElements.bottom.style.top = edges.bottom + 'px';
-            this.lineElements.bottom.style.left = '0px';
+            this.lineElements.bottom.style.height = "1px";
+            this.lineElements.bottom.style.width = docWidth + "px";
+            this.lineElements.bottom.style.top = edges.bottom + "px";
+            this.lineElements.bottom.style.left = "0px";
 
             const x1 = Math.floor(edges.left + 1);
             const x2 = x1 + rect.width;
@@ -3572,16 +3573,40 @@ function RemoteFunctions(config = {}) {
             this.labelElements.top.textContent = Math.round(y1) + "px";
             this.labelElements.bottom.textContent = Math.round(y2) + "px";
 
-            this.labelElements.left.style.left = (edges.left - 30) + "px";
-            this.labelElements.right.style.left = (edges.right + 5) + "px";
-            this.labelElements.top.style.left = (scrollLeft + 10) + "px";
-            this.labelElements.bottom.style.left = (scrollLeft + 10) + "px";
+            const LABEL_MARGIN = 6;
 
-            this.labelElements.left.style.top = (scrollTop + 10) + "px";
-            this.labelElements.right.style.top = (scrollTop + 10) + "px";
+            const leftLabelWidth = this.labelElements.left.offsetWidth;
+            const rightLabelWidth = this.labelElements.right.offsetWidth;
+            const topLabelHeight = this.labelElements.top.offsetHeight;
+            const bottomLabelHeight = this.labelElements.bottom.offsetHeight;
 
-            this.labelElements.top.style.top = (edges.top - 15) + "px";
-            this.labelElements.bottom.style.top = (edges.bottom + 5) + "px";
+            let leftLabelLeft = edges.left - leftLabelWidth - LABEL_MARGIN;
+            if (rect.left - leftLabelWidth - LABEL_MARGIN < LABEL_MARGIN) {
+                leftLabelLeft = edges.left + LABEL_MARGIN;
+            }
+            this.labelElements.left.style.left = leftLabelLeft + "px";
+            this.labelElements.left.style.top = scrollTop + 10 + "px";
+
+            let rightLabelLeft = edges.right + LABEL_MARGIN;
+            if (rect.right + rightLabelWidth + LABEL_MARGIN > window.innerWidth - LABEL_MARGIN) {
+                rightLabelLeft = edges.right - rightLabelWidth - LABEL_MARGIN;
+            }
+            this.labelElements.right.style.left = rightLabelLeft + "px";
+            this.labelElements.right.style.top = scrollTop + 10 + "px";
+
+            let topLabelTop = edges.top - topLabelHeight - LABEL_MARGIN;
+            if (rect.top - topLabelHeight - LABEL_MARGIN < LABEL_MARGIN) {
+                topLabelTop = edges.top + LABEL_MARGIN;
+            }
+            this.labelElements.top.style.left = scrollLeft + 10 + "px";
+            this.labelElements.top.style.top = topLabelTop + "px";
+
+            let bottomLabelTop = edges.bottom + LABEL_MARGIN;
+            if (rect.bottom + bottomLabelHeight + LABEL_MARGIN > window.innerHeight - LABEL_MARGIN) {
+                bottomLabelTop = edges.bottom - bottomLabelHeight - LABEL_MARGIN;
+            }
+            this.labelElements.bottom.style.left = scrollLeft + 10 + "px";
+            this.labelElements.bottom.style.top = bottomLabelTop + "px";
         },
 
         remove: function() {
