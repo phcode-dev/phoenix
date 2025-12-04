@@ -182,6 +182,10 @@
                 }
             }
             s.id = msg.params.url;
+
+            if (window._LD && window._LD.redrawEverything) {
+                window._LD.redrawEverything();
+            }
         },
 
         /**
