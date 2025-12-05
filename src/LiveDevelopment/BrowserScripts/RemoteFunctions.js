@@ -3578,37 +3578,56 @@ function RemoteFunctions(config = {}) {
 
             const LABEL_MARGIN = 6;
 
+            const THRESHOLD_Y = Math.min(150, window.innerHeight * 0.15);
+            const THRESHOLD_X = Math.min(150, window.innerWidth * 0.15);
+
             const leftLabelWidth = this.labelElements.left.offsetWidth;
             const rightLabelWidth = this.labelElements.right.offsetWidth;
             const topLabelHeight = this.labelElements.top.offsetHeight;
             const bottomLabelHeight = this.labelElements.bottom.offsetHeight;
+
+            let labelsVerticalPosition = scrollTop + 10;
+
+            if (rect.top < THRESHOLD_Y && rect.height < window.innerHeight - 2 * THRESHOLD_Y) {
+                labelsVerticalPosition = scrollTop + window.innerHeight - 30;
+            }
 
             let leftLabelLeft = edges.left - leftLabelWidth - LABEL_MARGIN;
             if (rect.left - leftLabelWidth - LABEL_MARGIN < LABEL_MARGIN) {
                 leftLabelLeft = edges.left + LABEL_MARGIN;
             }
             this.labelElements.left.style.left = leftLabelLeft + "px";
-            this.labelElements.left.style.top = scrollTop + 10 + "px";
+            this.labelElements.left.style.top = labelsVerticalPosition + "px";
 
             let rightLabelLeft = edges.right + LABEL_MARGIN;
             if (rect.right + rightLabelWidth + LABEL_MARGIN > window.innerWidth - LABEL_MARGIN) {
                 rightLabelLeft = edges.right - rightLabelWidth - LABEL_MARGIN;
             }
             this.labelElements.right.style.left = rightLabelLeft + "px";
-            this.labelElements.right.style.top = scrollTop + 10 + "px";
+            this.labelElements.right.style.top = labelsVerticalPosition + "px";
+
+            let labelsHorizontalPosition = scrollLeft + 10;
+
+            if (rect.left < THRESHOLD_X && rect.width < window.innerWidth - 2 * THRESHOLD_X) {
+                const maxLabelWidth = Math.max(
+                    this.labelElements.top.offsetWidth,
+                    this.labelElements.bottom.offsetWidth
+                );
+                labelsHorizontalPosition = scrollLeft + window.innerWidth - maxLabelWidth - 20;
+            }
 
             let topLabelTop = edges.top - topLabelHeight - LABEL_MARGIN;
             if (rect.top - topLabelHeight - LABEL_MARGIN < LABEL_MARGIN) {
                 topLabelTop = edges.top + LABEL_MARGIN;
             }
-            this.labelElements.top.style.left = scrollLeft + 10 + "px";
+            this.labelElements.top.style.left = labelsHorizontalPosition + "px";
             this.labelElements.top.style.top = topLabelTop + "px";
 
             let bottomLabelTop = edges.bottom + LABEL_MARGIN;
             if (rect.bottom + bottomLabelHeight + LABEL_MARGIN > window.innerHeight - LABEL_MARGIN) {
                 bottomLabelTop = edges.bottom - bottomLabelHeight - LABEL_MARGIN;
             }
-            this.labelElements.bottom.style.left = scrollLeft + 10 + "px";
+            this.labelElements.bottom.style.left = labelsHorizontalPosition + "px";
             this.labelElements.bottom.style.top = bottomLabelTop + "px";
         },
 
