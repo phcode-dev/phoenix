@@ -3479,6 +3479,16 @@ function RemoteFunctions(config = {}) {
             this.container = window.document.createElement("div");
             this.container.setAttribute(GLOBALS.PHCODE_INTERNAL_ATTR, "true");
 
+            // Prevent ruler lines from extending document scroll area
+            // set container to match current document dimensions with overflow clip
+            this.container.style.position = "absolute";
+            this.container.style.top = "0";
+            this.container.style.left = "0";
+            this.container.style.width = document.documentElement.scrollWidth + "px";
+            this.container.style.height = document.documentElement.scrollHeight + "px";
+            this.container.style.overflow = "clip";
+            this.container.style.pointerEvents = "none";
+
             const shadow = this.container.attachShadow({ mode: "open" });
             this._shadow = shadow;
 
