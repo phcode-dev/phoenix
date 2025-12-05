@@ -1456,21 +1456,64 @@ function RemoteFunctions(config = {}) {
         _getBoxPosition: function(boxWidth, boxHeight) {
             const elemBounds = this.element.getBoundingClientRect();
             const offset = _screenOffset(this.element);
+            const MARGIN = 6;
 
-            let topPos = offset.top - boxHeight - 6; // 6 for just some little space to breathe
-            let leftPos = offset.left + elemBounds.width - boxWidth;
+            const viewportLeft = window.scrollX;
+            const viewportRight = window.scrollX + window.innerWidth;
+            const viewportTop = window.scrollY;
+            const viewportBottom = window.scrollY + window.innerHeight;
 
-            // Check if the box would go off the top of the viewport
-            if (elemBounds.top - boxHeight < 6) {
-                topPos = offset.top + elemBounds.height + 6;
+            // Default: Top of element, left-aligned
+            let topPos = offset.top - boxHeight - MARGIN;
+            let leftPos = offset.left;
+
+            // Check if element is very tall (covers full viewport height)
+            const isVeryTall = elemBounds.height >= window.innerHeight - 50;
+
+            if (isVeryTall) {
+                // Place inside element at top
+                topPos = offset.top + MARGIN;
+                leftPos = offset.left + MARGIN;
+                return {topPos, leftPos};
             }
 
-            // Check if the box would go off the left of the viewport
-            if (leftPos < 0) {
-                leftPos = offset.left;
+            // Edge Case: Goes off top
+            if (topPos < viewportTop + MARGIN) {
+                // Try right side
+                const rightSideTop = offset.top;
+                const rightSideLeft = offset.left + elemBounds.width + MARGIN;
+
+                if (rightSideLeft + boxWidth <= viewportRight - MARGIN) {
+                    topPos = rightSideTop;
+                    leftPos = rightSideLeft;
+                } else {
+                    // Try left side
+                    const leftSideLeft = offset.left - boxWidth - MARGIN;
+
+                    if (leftSideLeft >= viewportLeft + MARGIN) {
+                        topPos = offset.top;
+                        leftPos = leftSideLeft;
+                    } else {
+                        // Last resort: Below element (below info box)
+                        // Will be positioned below info box by checking overlap later
+                        topPos = offset.top + elemBounds.height + MARGIN;
+                        leftPos = offset.left;
+                    }
+                }
             }
 
-            return {topPos: topPos, leftPos: leftPos};
+            // Handle horizontal viewport boundaries
+            if (leftPos + boxWidth > viewportRight - MARGIN) {
+                // Calculate exact overflow and shift left
+                const overflow = (leftPos + boxWidth) - (viewportRight - MARGIN);
+                leftPos -= overflow;
+            }
+
+            if (leftPos < viewportLeft + MARGIN) {
+                leftPos = viewportLeft + MARGIN;
+            }
+
+            return {topPos, leftPos};
         },
 
         _style: function() {
@@ -1976,73 +2019,103 @@ function RemoteFunctions(config = {}) {
         _getBoxPosition: function(boxDimensions, overlap = false) {
             const elemBounds = this.element.getBoundingClientRect();
             const offset = _screenOffset(this.element);
-            let topPos = 0;
-            let leftPos = 0;
+            const MARGIN = 6;
 
-            if (overlap) {
-                topPos = offset.top + 2;
-                leftPos = offset.left + elemBounds.width + 6; // positioning at the right side
+            const viewportLeft = window.scrollX;
+            const viewportRight = window.scrollX + window.innerWidth;
+            const viewportTop = window.scrollY;
+            const viewportBottom = window.scrollY + window.innerHeight;
 
-                // Check if overlap position would go off the right of the viewport
-                if (leftPos + boxDimensions.width > window.innerWidth) {
-                    leftPos = offset.left - boxDimensions.width - 6; // positioning at the left side
+            // Default: Bottom of element, left-aligned
+            let topPos = offset.top + elemBounds.height + MARGIN;
+            let leftPos = offset.left;
 
-                    if (leftPos < 0) { // if left positioning not perfect, position at bottom
-                        topPos = offset.top + elemBounds.height + 6;
+            // Check if element is very tall (covers full viewport height)
+            const isVeryTall = elemBounds.height >= window.innerHeight - 50;
+
+            if (isVeryTall) {
+                // Place inside element at bottom
+                topPos = offset.top + elemBounds.height - boxDimensions.height - MARGIN;
+                leftPos = offset.left + MARGIN;
+                return {topPos, leftPos};
+            }
+
+            // Edge Case: Goes off bottom
+            if (topPos + boxDimensions.height > viewportBottom - MARGIN) {
+                // Try right side
+                const rightSideTop = offset.top;
+                const rightSideLeft = offset.left + elemBounds.width + MARGIN;
+
+                if (rightSideLeft + boxDimensions.width <= viewportRight - MARGIN) {
+                    topPos = rightSideTop;
+                    leftPos = rightSideLeft;
+                } else {
+                    // Try left side
+                    const leftSideLeft = offset.left - boxDimensions.width - MARGIN;
+
+                    if (leftSideLeft >= viewportLeft + MARGIN) {
+                        topPos = offset.top;
+                        leftPos = leftSideLeft;
+                    } else {
+                        // Last resort: Above element (above options box)
+                        // Will be positioned above options box by checking overlap later
+                        topPos = offset.top - boxDimensions.height - MARGIN;
                         leftPos = offset.left;
 
-                        // if bottom position not perfect, move at top above the more options box
-                        if (elemBounds.bottom + 6 + boxDimensions.height > window.innerHeight) {
-                            topPos = offset.top - boxDimensions.height - 34; // 34 is for moreOptions box height
-                            leftPos = offset.left;
+                        // If still goes off top, place inside element
+                        if (topPos < viewportTop + MARGIN) {
+                            topPos = offset.top + MARGIN;
                         }
                     }
-                }
-            } else {
-                topPos = offset.top - boxDimensions.height - 6; // 6 for just some little space to breathe
-                leftPos = offset.left;
-
-                if (elemBounds.top - boxDimensions.height < 6) {
-                    // check if placing the box below would cause viewport height increase
-                    // we need this or else it might cause a flickering issue
-                    // read this to know why flickering occurs:
-                    // when we hover over the bottom part of a tall element, the info box appears below it.
-                    // this increases the live preview height, which makes the cursor position relatively
-                    // higher due to content shift. the cursor then moves out of the element boundary,
-                    // ending the hover state. this makes the info box disappear, decreasing the height
-                    // back, causing the cursor to fall back into the element, restarting the hover cycle.
-                    // this creates a continuous flickering loop.
-                    const bottomPosition = offset.top + elemBounds.height + 6;
-                    const wouldIncreaseViewportHeight = bottomPosition + boxDimensions.height > window.innerHeight;
-
-                    // we only need to use floating position during hover mode (not on click mode)
-                    const isHoverMode = shouldShowHighlightOnHover();
-                    const shouldUseFloatingPosition = wouldIncreaseViewportHeight && isHoverMode;
-
-                    if (shouldUseFloatingPosition) {
-                        // float over element at bottom-right to prevent layout shift during hover
-                        topPos = offset.top + elemBounds.height - boxDimensions.height - 6;
-                        leftPos = offset.left + elemBounds.width - boxDimensions.width;
-
-                        // make sure it doesn't go off-screen
-                        if (leftPos < 0) {
-                            leftPos = offset.left; // align to left edge of element
-                        }
-                        if (topPos < 0) {
-                            topPos = offset.top + 6; // for the top of element
-                        }
-                    } else {
-                        topPos = bottomPosition;
-                    }
-                }
-
-                // Check if the box would go off the right of the viewport
-                if (leftPos + boxDimensions.width > window.innerWidth) {
-                    leftPos = window.innerWidth - boxDimensions.width - 10;
                 }
             }
 
-            return {topPos: topPos, leftPos: leftPos};
+            // Handle overlap with options box
+            if (overlap && _nodeMoreOptionsBox && _nodeMoreOptionsBox._shadow) {
+                const optionsBox = _nodeMoreOptionsBox._shadow.querySelector('.phoenix-more-options-box');
+                if (optionsBox) {
+                    const optionsRect = optionsBox.getBoundingClientRect();
+                    const optionsOffset = _screenOffset(optionsBox);
+
+                    // Check if we overlap
+                    const infoBox = {
+                        left: leftPos,
+                        top: topPos,
+                        right: leftPos + boxDimensions.width,
+                        bottom: topPos + boxDimensions.height
+                    };
+
+                    const moreOptionsBox = {
+                        left: optionsOffset.left,
+                        top: optionsOffset.top,
+                        right: optionsOffset.left + optionsRect.width,
+                        bottom: optionsOffset.top + optionsRect.height
+                    };
+
+                    const isOverlapping = !(infoBox.right < moreOptionsBox.left ||
+                                           moreOptionsBox.right < infoBox.left ||
+                                           infoBox.bottom < moreOptionsBox.top ||
+                                           moreOptionsBox.bottom < infoBox.top);
+
+                    if (isOverlapping) {
+                        // Stack vertically below options box
+                        topPos = moreOptionsBox.bottom + MARGIN;
+                        leftPos = offset.left;
+                    }
+                }
+            }
+
+            // Handle horizontal viewport boundaries
+            if (leftPos + boxDimensions.width > viewportRight - MARGIN) {
+                const overflow = (leftPos + boxDimensions.width) - (viewportRight - MARGIN);
+                leftPos -= overflow;
+            }
+
+            if (leftPos < viewportLeft + MARGIN) {
+                leftPos = viewportLeft + MARGIN;
+            }
+
+            return {topPos, leftPos};
         },
 
         _style: function() {
