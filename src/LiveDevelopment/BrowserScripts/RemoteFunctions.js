@@ -1457,11 +1457,12 @@ function RemoteFunctions(config = {}) {
             const elemBounds = this.element.getBoundingClientRect();
             const offset = _screenOffset(this.element);
             const MARGIN = 6;
+            const SCROLLBAR_OFFSET = 8;
 
             const viewportLeft = window.scrollX;
-            const viewportRight = window.scrollX + window.innerWidth;
+            const viewportRight = window.scrollX + document.documentElement.clientWidth - SCROLLBAR_OFFSET;
             const viewportTop = window.scrollY;
-            const viewportBottom = window.scrollY + window.innerHeight;
+            const viewportBottom = window.scrollY + document.documentElement.clientHeight - SCROLLBAR_OFFSET;
 
             // Default: Top of element, left-aligned
             let topPos = offset.top - boxHeight - MARGIN;
@@ -1471,8 +1472,8 @@ function RemoteFunctions(config = {}) {
             const isVeryTall = elemBounds.height >= window.innerHeight - 50;
 
             if (isVeryTall) {
-                // Place inside element at top
-                topPos = offset.top + MARGIN;
+                // Place inside element at top, but stick to viewport top if element extends above
+                topPos = Math.max(offset.top, viewportTop) + MARGIN;
                 leftPos = offset.left + MARGIN;
                 return {topPos, leftPos};
             }
@@ -2020,11 +2021,12 @@ function RemoteFunctions(config = {}) {
             const elemBounds = this.element.getBoundingClientRect();
             const offset = _screenOffset(this.element);
             const MARGIN = 6;
+            const SCROLLBAR_OFFSET = 8;
 
             const viewportLeft = window.scrollX;
-            const viewportRight = window.scrollX + window.innerWidth;
+            const viewportRight = window.scrollX + document.documentElement.clientWidth - SCROLLBAR_OFFSET;
             const viewportTop = window.scrollY;
-            const viewportBottom = window.scrollY + window.innerHeight;
+            const viewportBottom = window.scrollY + document.documentElement.clientHeight - SCROLLBAR_OFFSET;
 
             // Default: Bottom of element, left-aligned
             let topPos = offset.top + elemBounds.height + MARGIN;
@@ -2034,8 +2036,8 @@ function RemoteFunctions(config = {}) {
             const isVeryTall = elemBounds.height >= window.innerHeight - 50;
 
             if (isVeryTall) {
-                // Place inside element at bottom
-                topPos = offset.top + elemBounds.height - boxDimensions.height - MARGIN;
+                // Place inside element at bottom, but stick to viewport bottom if element extends below
+                topPos = Math.min(offset.top + elemBounds.height, viewportBottom) - boxDimensions.height - MARGIN;
                 leftPos = offset.left + MARGIN;
                 return {topPos, leftPos};
             }
