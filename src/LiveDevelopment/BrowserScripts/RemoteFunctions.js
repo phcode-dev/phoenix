@@ -4506,7 +4506,13 @@ function RemoteFunctions(config = {}) {
         });
 
         this.rememberedNodes = {};
-        redrawEverything();
+
+        // this check makes sure that if the element is no more in the DOM then we remove it
+        if (previouslyClickedElement && !previouslyClickedElement.isConnected) {
+            dismissUIAndCleanupState();
+        } else {
+            redrawEverything();
+        }
     };
 
     function applyDOMEdits(edits) {
