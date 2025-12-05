@@ -3192,12 +3192,14 @@ function RemoteFunctions(config = {}) {
 
             highlight.trackingElement = element; // save which node are we highlighting
 
-            if (transitionDuration) {
-                animateHighlight(transitionDuration);
-            }
+            if (doAnimation) {
+                if (transitionDuration) {
+                    animateHighlight(transitionDuration);
+                }
 
-            if (animationDuration) {
-                animateHighlight(animationDuration);
+                if (animationDuration) {
+                    animateHighlight(animationDuration);
+                }
             }
 
             // Don't highlight elements with 0 width & height
@@ -3894,10 +3896,11 @@ function RemoteFunctions(config = {}) {
             element.style.backgroundColor = "rgba(0, 162, 255, 0.2)";
         }
 
-        if (_hoverHighlight) {
-            _hoverHighlight.clear();
-            _hoverHighlight.add(element, true);
+        if (!_clickHighlight) {
+            _clickHighlight = new Highlight("#cfc");
         }
+        _clickHighlight.clear();
+        _clickHighlight.add(element, true);
 
         previouslyClickedElement = element;
     }
@@ -4248,13 +4251,12 @@ function RemoteFunctions(config = {}) {
         // Document scrolls can be updated immediately. Any other scrolls
         // need to be updated on a timer to ensure the layout is correct.
         if (e.target === window.document) {
-            redrawHighlights();
             redrawRulerLines();
             // need to dismiss the box if the elements are fixed, otherwise they drift at times
             _dismissBoxesForFixedElements();
             _repositionAIBox(); // and reposition the AI box
         } else {
-            if (_localHighlight || _clickHighlight || _hoverHighlight) {
+            if (_localHighlight) {
                 window.setTimeout(redrawHighlights, 0);
             }
             if (_currentRulerLines) {
