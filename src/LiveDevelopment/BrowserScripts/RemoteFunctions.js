@@ -2059,8 +2059,26 @@ function RemoteFunctions(config = {}) {
                         topPos = offset.top;
                         leftPos = leftSideLeft;
                     } else {
-                        // Last resort: Above element (above options box)
-                        // Will be positioned above options box by checking overlap later
+                        // Last resort: Try above options box, then above element
+                        // First, try to position above options box
+                        let aboveOptionsBoxPos = null;
+
+                        if (_nodeMoreOptionsBox && _nodeMoreOptionsBox._shadow) {
+                            const optionsBox = _nodeMoreOptionsBox._shadow.querySelector('.phoenix-more-options-box');
+                            if (optionsBox) {
+                                const optionsOffset = _screenOffset(optionsBox);
+                                aboveOptionsBoxPos = optionsOffset.top - boxDimensions.height - MARGIN;
+
+                                // Check if it fits in viewport
+                                if (aboveOptionsBoxPos >= viewportTop + MARGIN) {
+                                    topPos = aboveOptionsBoxPos;
+                                    leftPos = offset.left;
+                                    return {topPos, leftPos};
+                                }
+                            }
+                        }
+
+                        // If above options box doesn't fit, try above element
                         topPos = offset.top - boxDimensions.height - MARGIN;
                         leftPos = offset.left;
 
