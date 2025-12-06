@@ -34,9 +34,38 @@ function RemoteFunctions(config = {}) {
         // given to internal elements like info box, options box, image gallery and all other phcode internal elements
         // to distinguish between phoenix internal vs user created elements
         PHCODE_INTERNAL_ATTR: "data-phcode-internal-c15r5a9",
+
         DATA_BRACKETS_ID_ATTR: "data-brackets-id", // data attribute used to track elements for live preview operations
-        HIGHLIGHT_CLASSNAME: "__brackets-ld-highlight" // CSS class name used for highlighting elements in live preview
+
+        HIGHLIGHT_CLASSNAME: "__brackets-ld-highlight", // CSS class name used for highlighting elements in live preview
+
+        // auto scroll is when the user drags an element to the top/bottom of the viewport
+        AUTO_SCROLL_SPEED: 12, // pixels per scroll
+        AUTO_SCROLL_EDGE_SIZE: 0.05, // 5% of viewport height (either top/bottom)
+
+        // CSS class names for drop markers
+        DROP_MARKER_CLASSNAME: "__brackets-drop-marker-horizontal",
+        DROP_MARKER_VERTICAL_CLASSNAME: "__brackets-drop-marker-vertical",
+        DROP_MARKER_INSIDE_CLASSNAME: "__brackets-drop-marker-inside",
+        DROP_MARKER_ARROW_CLASSNAME: "__brackets-drop-marker-arrow",
+
+        // image ribbon gallery cache, to store the last query and its results
+        CACHE_EXPIRY_TIME: 168 * 60 * 60 * 1000, // 7 days
+        CACHE_MAX_IMAGES: 50 // max number of images that we store in the localStorage
     };
+
+    let _localHighlight;
+    let _hoverHighlight;
+    let _clickHighlight;
+    let _nodeInfoBox;
+    let _nodeMoreOptionsBox;
+    let _moreOptionsDropdown;
+    let _aiPromptBox;
+    let _imageRibbonGallery;
+    let _hyperlinkEditor;
+    let _currentRulerLines;
+    let _setup = false;
+    let _hoverLockTimer = null;
 
     // this will store the element that was clicked previously (before the new click)
     // we need this so that we can remove click styling from the previous element when a new element is clicked
@@ -44,6 +73,14 @@ function RemoteFunctions(config = {}) {
 
     // we store references to interaction blocker event handlers so we can remove them when switching modes
     let _interactionBlockerHandlers = null;
+
+    // auto-scroll variables to auto scroll the live preview when an element is dragged to the top/bottom
+    let _autoScrollTimer = null;
+    let _isAutoScrolling = false; // to disable highlights when auto scrolling
+
+    // initialized from config, defaults to true if not set
+    let imageGallerySelected = config.imageGalleryState !== undefined ? config.imageGalleryState : true;
+
 
     var req, timeout;
     var animateHighlight = function (time) {
@@ -64,15 +101,6 @@ function RemoteFunctions(config = {}) {
      */
     var _editHandler;
 
-    // auto-scroll variables to auto scroll the live preview when an element is dragged to the top/bottom
-    let _autoScrollTimer = null;
-    let _isAutoScrolling = false; // to disable highlights when auto scrolling
-    const AUTO_SCROLL_SPEED = 12; // pixels per scroll
-    const AUTO_SCROLL_EDGE_SIZE = 0.05; // 5% of viewport height (either top/bottom)
-
-    // initialized from config, defaults to true if not set
-    let imageGallerySelected = config.imageGalleryState !== undefined ? config.imageGalleryState : true;
-
     /**
      * this function is responsible to auto scroll the live preview when
      * dragging an element to the viewport edges
@@ -80,7 +108,7 @@ function RemoteFunctions(config = {}) {
      */
     function _handleAutoScroll(clientY) {
         const viewportHeight = window.innerHeight;
-        const scrollEdgeSize = viewportHeight * AUTO_SCROLL_EDGE_SIZE;
+        const scrollEdgeSize = viewportHeight * GLOBALS.AUTO_SCROLL_EDGE_SIZE;
 
         // Clear existing timer
         if (_autoScrollTimer) {
@@ -92,10 +120,10 @@ function RemoteFunctions(config = {}) {
 
         // check if near top edge (scroll up)
         if (clientY <= scrollEdgeSize) {
-            scrollDirection = -AUTO_SCROLL_SPEED;
+            scrollDirection = -GLOBALS.AUTO_SCROLL_SPEED;
         } else if (clientY >= viewportHeight - scrollEdgeSize) {
             // check if near bottom edge (scroll down)
-            scrollDirection = AUTO_SCROLL_SPEED;
+            scrollDirection = GLOBALS.AUTO_SCROLL_SPEED;
         }
 
         // Start scrolling if needed
@@ -510,12 +538,6 @@ function RemoteFunctions(config = {}) {
         }
         delete element._originalDragOpacity;
     }
-
-    // CSS class names for drop markers
-    let DROP_MARKER_CLASSNAME = "__brackets-drop-marker-horizontal";
-    let DROP_MARKER_VERTICAL_CLASSNAME = "__brackets-drop-marker-vertical";
-    let DROP_MARKER_INSIDE_CLASSNAME = "__brackets-drop-marker-inside";
-    let DROP_MARKER_ARROW_CLASSNAME = "__brackets-drop-marker-arrow";
 
     /**
      * This function is responsible to determine whether to show vertical/horizontal indicators
@@ -941,9 +963,9 @@ function RemoteFunctions(config = {}) {
 
         // Set marker class based on drop zone
         if (dropZone === "inside") {
-            marker.className = DROP_MARKER_INSIDE_CLASSNAME;
+            marker.className = GLOBALS.DROP_MARKER_INSIDE_CLASSNAME;
         } else {
-            marker.className = indicatorType === "vertical" ? DROP_MARKER_VERTICAL_CLASSNAME : DROP_MARKER_CLASSNAME;
+            marker.className = indicatorType === "vertical" ? GLOBALS.DROP_MARKER_VERTICAL_CLASSNAME : GLOBALS.DROP_MARKER_CLASSNAME;
         }
 
         let rect = element.getBoundingClientRect();
@@ -954,7 +976,7 @@ function RemoteFunctions(config = {}) {
 
         // for the arrow indicator
         let arrow = window.document.createElement("div");
-        arrow.className = DROP_MARKER_ARROW_CLASSNAME;
+        arrow.className = GLOBALS.DROP_MARKER_ARROW_CLASSNAME;
         arrow.style.position = "fixed";
         arrow.style.zIndex = "2147483647";
         arrow.style.pointerEvents = "none";
@@ -1051,10 +1073,10 @@ function RemoteFunctions(config = {}) {
      */
     function _clearDropMarkers() {
         // Clear all types of markers
-        let horizontalMarkers = window.document.querySelectorAll("." + DROP_MARKER_CLASSNAME);
-        let verticalMarkers = window.document.querySelectorAll("." + DROP_MARKER_VERTICAL_CLASSNAME);
-        let insideMarkers = window.document.querySelectorAll("." + DROP_MARKER_INSIDE_CLASSNAME);
-        let arrows = window.document.querySelectorAll("." + DROP_MARKER_ARROW_CLASSNAME);
+        let horizontalMarkers = window.document.querySelectorAll("." + GLOBALS.DROP_MARKER_CLASSNAME);
+        let verticalMarkers = window.document.querySelectorAll("." + GLOBALS.DROP_MARKER_VERTICAL_CLASSNAME);
+        let insideMarkers = window.document.querySelectorAll("." + GLOBALS.DROP_MARKER_INSIDE_CLASSNAME);
+        let arrows = window.document.querySelectorAll("." + GLOBALS.DROP_MARKER_ARROW_CLASSNAME);
 
         for (let i = 0; i < horizontalMarkers.length; i++) {
             if (horizontalMarkers[i].parentNode) {
@@ -2471,9 +2493,6 @@ function RemoteFunctions(config = {}) {
         }
     };
 
-    // image ribbon gallery cache, to store the last query and its results
-    const CACHE_EXPIRY_TIME = 168 * 60 * 60 * 1000; // 7 days, might need to revise this...
-    const CACHE_MAX_IMAGES = 50; // max number of images that we store in the localStorage
     const _imageGalleryCache = {
         get currentQuery() {
             const data = this._getFromStorage();
@@ -2532,7 +2551,7 @@ function RemoteFunctions(config = {}) {
                 const newData = {
                     ...current,
                     ...updates,
-                    expires: Date.now() + CACHE_EXPIRY_TIME
+                    expires: Date.now() + GLOBALS.CACHE_EXPIRY_TIME
                 };
                 window.localStorage.setItem('imageGalleryCache', JSON.stringify(newData));
             } catch (error) {
@@ -2716,8 +2735,8 @@ function RemoteFunctions(config = {}) {
                 const currentImages = _imageGalleryCache.allImages || [];
                 const newImages = currentImages.concat(data.results);
 
-                if (newImages.length > CACHE_MAX_IMAGES) {
-                    _imageGalleryCache.allImages = newImages.slice(0, CACHE_MAX_IMAGES);
+                if (newImages.length > GLOBALS.CACHE_MAX_IMAGES) {
+                    _imageGalleryCache.allImages = newImages.slice(0, GLOBALS.CACHE_MAX_IMAGES);
                 } else {
                     _imageGalleryCache.allImages = newImages;
                 }
@@ -3734,19 +3753,6 @@ function RemoteFunctions(config = {}) {
             this.labelElements = {};
         }
     };
-
-    var _localHighlight;
-    var _hoverHighlight;
-    var _clickHighlight;
-    var _nodeInfoBox;
-    var _nodeMoreOptionsBox;
-    var _moreOptionsDropdown;
-    var _aiPromptBox;
-    var _imageRibbonGallery;
-    var _hyperlinkEditor;
-    var _currentRulerLines;
-    var _setup = false;
-    var _hoverLockTimer = null;
 
     const DOWNLOAD_EVENTS = {
         DIALOG_OPENED: 'dialogOpened',
