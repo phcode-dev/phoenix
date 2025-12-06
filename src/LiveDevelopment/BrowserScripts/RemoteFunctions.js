@@ -2558,7 +2558,6 @@ function RemoteFunctions(config = {}) {
         this.currentPage = 1;
         this.totalPages = 1;
         this.allImages = [];
-        this.imagesPerPage = 10;
         this.scrollPosition = 0;
 
         this.create();
@@ -4725,17 +4724,6 @@ function RemoteFunctions(config = {}) {
     }
 
     /**
-     * This function checks if there are any live preview boxes currently visible
-     * @return {boolean} true if any boxes are visible, false otherwise
-     */
-    function hasVisibleLivePreviewBoxes() {
-        return _nodeMoreOptionsBox !== null ||
-                _nodeInfoBox !== null ||
-                _aiPromptBox !== null ||
-                previouslyClickedElement !== null;
-    }
-
-    /**
      * Helper function to dismiss NodeMoreOptionsBox if it exists
      */
     function dismissNodeMoreOptionsBox() {
@@ -5205,7 +5193,6 @@ function RemoteFunctions(config = {}) {
         "updateConfig"          : updateConfig,
         "startEditing"          : startEditing,
         "finishEditing"         : finishEditing,
-        "hasVisibleLivePreviewBoxes" : hasVisibleLivePreviewBoxes,
         "dismissUIAndCleanupState" : dismissUIAndCleanupState,
         "resetState"            : resetState,
         "enableHoverListeners" : enableHoverListeners,
