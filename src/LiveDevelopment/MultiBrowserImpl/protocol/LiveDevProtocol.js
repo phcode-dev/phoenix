@@ -52,8 +52,7 @@ define(function (require, exports, module) {
         HTMLInstrumentation   = require("LiveDevelopment/MultiBrowserImpl/language/HTMLInstrumentation"),
         StringUtils = require("utils/StringUtils"),
         FileViewController    = require("project/FileViewController"),
-        MainViewManager     = require("view/MainViewManager"),
-        LivePreviewEdit     = require("LiveDevelopment/LivePreviewEdit");
+        MainViewManager     = require("view/MainViewManager");
 
     const LIVE_DEV_REMOTE_SCRIPTS_FILE_NAME = `phoenix_live_preview_scripts_instrumented_${StringUtils.randomString(8)}.js`;
     const LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME = `pageLoaderWorker_${StringUtils.randomString(8)}.js`;
@@ -203,6 +202,11 @@ define(function (require, exports, module) {
         // for a fraction of a second. so a size of 1000 should be more than enough.
     });
 
+    let _livePreviewMessageHandler;
+    function setLivePreviewMessageHandler(handler) {
+        _livePreviewMessageHandler = handler;
+    }
+
     /**
      * @private
      * Handles a message received from the remote protocol handler via the transport.
@@ -227,8 +231,8 @@ define(function (require, exports, module) {
         } else if (messageID) {
             processedMessageIDs.set(messageID, true);
         }
-        if (msg.livePreviewEditEnabled) {
-            LivePreviewEdit.handleLivePreviewEditOperation(msg);
+        if(_livePreviewMessageHandler) {
+            _livePreviewMessageHandler(msg);
         }
 
         if (msg.id) {
@@ -498,6 +502,7 @@ define(function (require, exports, module) {
     exports.getConnectionIds = getConnectionIds;
     exports.closeAllConnections = closeAllConnections;
     exports.addRemoteFunctionScript = addRemoteFunctionScript;
+    exports.setLivePreviewMessageHandler = setLivePreviewMessageHandler;
     exports.LIVE_DEV_REMOTE_SCRIPTS_FILE_NAME = LIVE_DEV_REMOTE_SCRIPTS_FILE_NAME;
     exports.LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME = LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME;
     exports.EVENT_LIVE_PREVIEW_CLICKED = EVENT_LIVE_PREVIEW_CLICKED;

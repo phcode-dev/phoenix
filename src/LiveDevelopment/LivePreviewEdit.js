@@ -41,7 +41,8 @@ define(function (require, exports, module) {
     const ProDialogs = require("services/pro-dialogs");
     const Mustache = require("thirdparty/mustache/mustache");
     const Strings = require("strings");
-    const ImageFolderDialogTemplate = require("text!htmlContent/image-folder-dialog.html");
+    const ImageFolderDialogTemplate = require("text!htmlContent/image-folder-dialog.html"); // todo move to extension
+    const LiveDevProtocol = require("LiveDevelopment/MultiBrowserImpl/protocol/LiveDevProtocol");
 
     // state manager key, to save the download location of the image
     const IMAGE_DOWNLOAD_FOLDER_KEY = "imageGallery.downloadFolder";
@@ -1820,5 +1821,9 @@ define(function (require, exports, module) {
         }
     }
 
-    exports.handleLivePreviewEditOperation = handleLivePreviewEditOperation;
+    LiveDevProtocol.setLivePreviewMessageHandler((msg)=>{
+        if (msg.livePreviewEditEnabled) {
+            handleLivePreviewEditOperation(msg);
+        }
+    });
 });

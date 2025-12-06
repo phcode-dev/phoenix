@@ -34,7 +34,7 @@
  */
 
 define(function (require, exports, module) {
-    const Strings = require("strings");
+    const Strings = require("strings"); // todo move to code construction logic
 
     // list of all the strings that are used in the remoteFunctions file
     const remoteStrings = {
