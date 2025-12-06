@@ -4,11 +4,13 @@
  */
 
 define(function (require, exports, module) {
-    const AppInit = brackets.getModule("utils/AppInit"),
-        Strings = brackets.getModule("strings");
+    require("./LivePreviewEdit");
+
+    const AppInit = require("utils/AppInit"),
+        Strings = require("strings");
 
     const sampleFnText = require("text!./browser-context/sample-remore-fn.js");
-    const LiveDevProtocol = brackets.getModule("LiveDevelopment/MultiBrowserImpl/protocol/LiveDevProtocol");
+    const LiveDevProtocol = require("LiveDevelopment/MultiBrowserImpl/protocol/LiveDevProtocol");
     LiveDevProtocol.addRemoteFunctionScript("sampleFn", sampleFnText);
 
     AppInit.appReady(function () {
