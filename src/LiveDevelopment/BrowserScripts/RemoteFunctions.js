@@ -184,8 +184,7 @@ function RemoteFunctions(config = {}) {
      */
     function isElementEditable(element, onlyHighlight = false) {
         // for an element to be editable it should satisfy all inspectable checks and should also have data-brackets-id
-        return isElementInspectable(element, onlyHighlight) &&
-               element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
+        return isElementInspectable(element, onlyHighlight) && element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
     }
 
     // helper function to check if an element is inside the HEAD tag
@@ -214,24 +213,6 @@ function RemoteFunctions(config = {}) {
             parent = parent.parentElement;
         }
         return false;
-    }
-
-    // compute the screen offset of an element
-    function _screenOffset(element) {
-        var elemBounds = element.getBoundingClientRect(),
-            body = window.document.body,
-            offsetTop,
-            offsetLeft;
-
-        if (window.getComputedStyle(body).position === "static") {
-            offsetLeft = elemBounds.left + window.pageXOffset;
-            offsetTop = elemBounds.top + window.pageYOffset;
-        } else {
-            var bodyBounds = body.getBoundingClientRect();
-            offsetLeft = elemBounds.left - bodyBounds.left;
-            offsetTop = elemBounds.top - bodyBounds.top;
-        }
-        return { left: offsetLeft, top: offsetTop };
     }
 
     // set an event on a element
@@ -1436,6 +1417,280 @@ function RemoteFunctions(config = {}) {
         return true;
     }
 
+
+    /**
+     * this function calc the screen offset of an element
+     *
+     * @param {DOMElement} element
+     * @returns {{left: number, top: number}}
+     */
+    function _screenOffset(element) {
+        const elemBounds = element.getBoundingClientRect();
+        const body = window.document.body;
+        let offsetTop;
+        let offsetLeft;
+
+        if (window.getComputedStyle(body).position === "static") {
+            offsetLeft = elemBounds.left + window.pageXOffset;
+            offsetTop = elemBounds.top + window.pageYOffset;
+        } else {
+            const bodyBounds = body.getBoundingClientRect();
+            offsetLeft = elemBounds.left - bodyBounds.left;
+            offsetTop = elemBounds.top - bodyBounds.top;
+        }
+        return { left: offsetLeft, top: offsetTop };
+    }
+
+    /**
+     * Check if two rectangles overlap
+     * @param {Object} rect1 - First rectangle {left, top, right, bottom}
+     * @param {Object} rect2 - Second rectangle {left, top, right, bottom}
+     * @param {Number} padding - Optional padding to add around rectangles
+     * @returns {Boolean} - True if rectangles overlap
+     */
+    function _doBoxesOverlap(rect1, rect2, padding = 0) {
+        return !(rect1.right + padding < rect2.left ||
+                 rect1.left - padding > rect2.right ||
+                 rect1.bottom + padding < rect2.top ||
+                 rect1.top - padding > rect2.bottom);
+    }
+
+    /**
+     * Check if a box position is within viewport bounds
+     * @param {Number} left - Left position
+     * @param {Number} top - Top position
+     * @param {Number} width - Box width
+     * @param {Number} height - Box height
+     * @returns {Boolean} - True if within viewport
+     */
+    function _isWithinViewport(left, top, width, height) {
+        return left >= 0 &&
+               top >= 0 &&
+               left + width <= window.innerWidth &&
+               top + height <= window.innerHeight;
+    }
+
+    /**
+     * Convert position coordinates to rectangle object
+     * @param {Number} left - Left position
+     * @param {Number} top - Top position
+     * @param {Number} width - Width
+     * @param {Number} height - Height
+     * @returns {Object} - Rectangle {left, top, right, bottom}
+     */
+    function _coordsToRect(left, top, width, height) {
+        return {
+            left: left,
+            top: top,
+            right: left + width,
+            bottom: top + height
+        };
+    }
+
+    /**
+     * Calculate coordinates for a specific position type
+     * @param {String} position - Position type (e.g., 'top-left', 'bottom-right')
+     * @param {DOMElement} element - The element to position relative to
+     * @param {Object} boxDimensions - Box dimensions {width, height}
+     * @param {Number} verticalOffset - Vertical spacing
+     * @param {Number} horizontalOffset - Horizontal spacing
+     * @returns {Object} - {leftPos, topPos}
+     */
+    function _getCoordinatesForPosition(position, element, boxDimensions, verticalOffset, horizontalOffset) {
+        const offsetBounds = _screenOffset(element);
+        const elemBounds = element.getBoundingClientRect();
+
+        let leftPos, topPos;
+
+        switch(position) {
+        case 'top-left':
+            leftPos = offsetBounds.left;
+            topPos = offsetBounds.top - boxDimensions.height - verticalOffset;
+            break;
+
+        case 'top-right':
+            leftPos = offsetBounds.left + elemBounds.width - boxDimensions.width;
+            topPos = offsetBounds.top - boxDimensions.height - verticalOffset;
+            break;
+
+        case 'bottom-left':
+            leftPos = offsetBounds.left;
+            topPos = offsetBounds.top + elemBounds.height + verticalOffset;
+            break;
+
+        case 'bottom-right':
+            leftPos = offsetBounds.left + elemBounds.width - boxDimensions.width;
+            topPos = offsetBounds.top + elemBounds.height + verticalOffset;
+            break;
+
+        case 'left':
+            leftPos = offsetBounds.left - boxDimensions.width - horizontalOffset;
+            topPos = offsetBounds.top;
+            break;
+
+        case 'right':
+            leftPos = offsetBounds.left + elemBounds.width + horizontalOffset;
+            topPos = offsetBounds.top;
+            break;
+
+        case 'inside-top-left':
+            leftPos = offsetBounds.left;
+            topPos = offsetBounds.top;
+            break;
+
+        case 'inside-top-right':
+            leftPos = offsetBounds.left + elemBounds.width - boxDimensions.width;
+            topPos = offsetBounds.top;
+            break;
+
+        default:
+            leftPos = -1000;
+            topPos = -1000;
+        }
+
+        return { leftPos, topPos };
+    }
+
+    /**
+     * Check if a proposed position is valid
+     * @param {Number} leftPos - Proposed left position
+     * @param {Number} topPos - Proposed top position
+     * @param {Object} boxDimensions - Box dimensions {width, height}
+     * @param {DOMElement} element - Element being positioned relative to
+     * @param {String} boxType - Type of box ('info-box' or 'options-box')
+     * @param {Number} padding - Padding for overlap checks
+     * @returns {Boolean} - True if position is valid
+     */
+    function _isPositionValid(leftPos, topPos, boxDimensions, element, boxType, padding = 6) {
+        // Convert page coordinates to viewport coordinates for validation
+        const viewportLeft = leftPos - window.pageXOffset;
+        const viewportTop = topPos - window.pageYOffset;
+
+        // 1. Check viewport overflow
+        if (!_isWithinViewport(viewportLeft, viewportTop, boxDimensions.width, boxDimensions.height)) {
+            return false;
+        }
+
+        // 2. Create rectangle for proposed position (in viewport coordinates)
+        const proposedRect = _coordsToRect(viewportLeft, viewportTop, boxDimensions.width, boxDimensions.height);
+
+        // 3. Check overlap with element (with padding)
+        const elemBounds = element.getBoundingClientRect();
+        const elemRect = _coordsToRect(elemBounds.left, elemBounds.top, elemBounds.width, elemBounds.height);
+
+        if (_doBoxesOverlap(proposedRect, elemRect, -padding)) {
+            // Negative padding means we need separation
+            return false;
+        }
+
+        // 4. Check overlap with other box (if it exists)
+        if (boxType === 'info-box' && _nodeMoreOptionsBox) {
+            const optionsBoxElement = _nodeMoreOptionsBox._shadow?.querySelector('.phoenix-more-options-box');
+            if (optionsBoxElement) {
+                const optionsBoxBounds = optionsBoxElement.getBoundingClientRect();
+                const optionsBoxRect = _coordsToRect(
+                    optionsBoxBounds.left,
+                    optionsBoxBounds.top,
+                    optionsBoxBounds.width,
+                    optionsBoxBounds.height
+                );
+
+                if (_doBoxesOverlap(proposedRect, optionsBoxRect, -4)) {
+                    // Need at least 4px separation between boxes
+                    return false;
+                }
+            }
+        } else if (boxType === 'options-box' && _nodeInfoBox) {
+            const infoBoxElement = _nodeInfoBox._shadow?.querySelector('.phoenix-node-info-box');
+            if (infoBoxElement) {
+                const infoBoxBounds = infoBoxElement.getBoundingClientRect();
+                const infoBoxRect = _coordsToRect(
+                    infoBoxBounds.left,
+                    infoBoxBounds.top,
+                    infoBoxBounds.width,
+                    infoBoxBounds.height
+                );
+
+                if (_doBoxesOverlap(proposedRect, infoBoxRect, -4)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * This function is responsible to calculate the position of the box
+     * it handles all the checks like whether the element is in viewport or not
+     * whether they overlap with the element or some other internal boxes
+     *
+     * @param {DOMElement} element - the DOM element that was clicked
+     * @param {String} boxType - the type of the box ('info-box' or 'options-box')
+     * @param {Object} boxInstance - the instance of the box
+     * @returns {{leftPos: number, topPos: number}}
+     */
+    function _calcBoxPosition(element, boxType, boxInstance) {
+        // Default fallback (invisible to user)
+        const fallbackPos = { leftPos: -1000, topPos: -1000 };
+
+        // Get the box element to determine dimensions
+        const boxSelector = boxType === 'info-box' ? '.phoenix-node-info-box' : '.phoenix-more-options-box';
+        const boxElement = boxInstance._shadow?.querySelector(boxSelector);
+
+        if (!boxElement) {
+            return fallbackPos;
+        }
+
+        const boxDimensions = boxElement.getBoundingClientRect();
+        const verticalOffset = 6;   // Space above/below element
+        const horizontalOffset = 8; // Space left/right of element
+
+        // Define position priority order for each box type
+        const POSITION_PRIORITIES = {
+            'info-box': [
+                'top-left',
+                'left',
+                'right',
+                'bottom-left',
+                'inside-top-left'
+            ],
+            'options-box': [
+                'top-right',
+                'right',
+                'left',
+                'bottom-right',
+                'inside-top-right'
+            ]
+        };
+
+        const positions = POSITION_PRIORITIES[boxType];
+
+        // Try each position in priority order
+        for (let position of positions) {
+            const coords = _getCoordinatesForPosition(
+                position,
+                element,
+                boxDimensions,
+                verticalOffset,
+                horizontalOffset
+            );
+
+            // For 'inside' positions, always use them as last resort
+            if (position.startsWith('inside-')) {
+                return coords;
+            }
+
+            // Check if this position is valid
+            if (_isPositionValid(coords.leftPos, coords.topPos, boxDimensions, element, boxType)) {
+                return coords;
+            }
+        }
+
+        // Should never reach here as 'inside' position should always be tried
+        return fallbackPos;
+    }
+
     /**
      * This is for the advanced DOM options that appears when a DOM element is clicked
      * advanced options like: 'select parent', 'duplicate', 'delete'
@@ -1473,70 +1728,6 @@ function RemoteFunctions(config = {}) {
                 _stopAutoScroll();
                 delete window._currentDraggedElement;
             });
-        },
-
-        _getBoxPosition: function(boxWidth, boxHeight) {
-            const elemBounds = this.element.getBoundingClientRect();
-            const offset = _screenOffset(this.element);
-            const MARGIN = 6;
-            const SCROLLBAR_OFFSET = 8;
-
-            const viewportLeft = window.scrollX;
-            const viewportRight = window.scrollX + document.documentElement.clientWidth - SCROLLBAR_OFFSET;
-            const viewportTop = window.scrollY;
-            const viewportBottom = window.scrollY + document.documentElement.clientHeight - SCROLLBAR_OFFSET;
-
-            // Default: Top of element, left-aligned
-            let topPos = offset.top - boxHeight - MARGIN;
-            let leftPos = offset.left;
-
-            // Check if element is very tall (covers full viewport height)
-            const isVeryTall = elemBounds.height >= window.innerHeight - 50;
-
-            if (isVeryTall) {
-                // Place inside element at top, but stick to viewport top if element extends above
-                topPos = Math.max(offset.top, viewportTop) + MARGIN;
-                leftPos = offset.left + MARGIN;
-                return {topPos, leftPos};
-            }
-
-            // Edge Case: Goes off top
-            if (topPos < viewportTop + MARGIN) {
-                // Try right side
-                const rightSideTop = offset.top;
-                const rightSideLeft = offset.left + elemBounds.width + MARGIN;
-
-                if (rightSideLeft + boxWidth <= viewportRight - MARGIN) {
-                    topPos = rightSideTop;
-                    leftPos = rightSideLeft;
-                } else {
-                    // Try left side
-                    const leftSideLeft = offset.left - boxWidth - MARGIN;
-
-                    if (leftSideLeft >= viewportLeft + MARGIN) {
-                        topPos = offset.top;
-                        leftPos = leftSideLeft;
-                    } else {
-                        // Last resort: Below element (below info box)
-                        // Will be positioned below info box by checking overlap later
-                        topPos = offset.top + elemBounds.height + MARGIN;
-                        leftPos = offset.left;
-                    }
-                }
-            }
-
-            // Handle horizontal viewport boundaries
-            if (leftPos + boxWidth > viewportRight - MARGIN) {
-                // Calculate exact overflow and shift left
-                const overflow = (leftPos + boxWidth) - (viewportRight - MARGIN);
-                leftPos -= overflow;
-            }
-
-            if (leftPos < viewportLeft + MARGIN) {
-                leftPos = viewportLeft + MARGIN;
-            }
-
-            return {topPos, leftPos};
         },
 
         _style: function() {
@@ -1614,26 +1805,23 @@ function RemoteFunctions(config = {}) {
         create: function() {
             this.remove(); // remove existing box if already present
 
-            // this check because when there is no element visible to the user, we don't want to show the box
-            // for ex: when user clicks on a 'x' button and the button is responsible to hide a panel
-            // then clicking on that button shouldn't show the more options box
-            // also covers cases where elements are inside closed/collapsed menus
-            if(!isElementVisible(this.element)) {
+            // isElementVisible is used to check if the element is visible to the user
+            // because there might be cases when element is inside a closed/collapsed menu
+            // then in that case we don't want to show the box
+            if(config.mode !== 'edit' || !isElementVisible(this.element)) {
                 return;
             }
 
             this._style(); // style the box
-
             window.document.body.appendChild(this.body);
 
-            // get the actual rendered dimensions of the box and then we reposition it to the actual place
+            // initially when we append the box the body, we position it by -1000px on top as well as left
+            // then we get the actual rendered dimensions of the box and then we reposition it to the actual place
             const boxElement = this._shadow.querySelector('.phoenix-more-options-box');
             if (boxElement) {
-                const boxRect = boxElement.getBoundingClientRect();
-                const pos = this._getBoxPosition(boxRect.width, boxRect.height);
-
-                boxElement.style.left = pos.leftPos + 'px';
-                boxElement.style.top = pos.topPos + 'px';
+                const boxPos = _calcBoxPosition(this.element, 'options-box', this);
+                boxElement.style.left = boxPos.leftPos + 'px';
+                boxElement.style.top = boxPos.topPos + 'px';
             }
 
             // add click handler to all the buttons
@@ -2007,159 +2195,6 @@ function RemoteFunctions(config = {}) {
     }
 
     NodeInfoBox.prototype = {
-        _checkOverlap: function(nodeInfoBoxPos, nodeInfoBoxDimensions) {
-            if (_nodeMoreOptionsBox && _nodeMoreOptionsBox._shadow) {
-                const moreOptionsBoxElement = _nodeMoreOptionsBox._shadow.querySelector('.phoenix-more-options-box');
-                if (moreOptionsBoxElement) {
-                    const moreOptionsBoxOffset = _screenOffset(moreOptionsBoxElement);
-                    const moreOptionsBoxRect = moreOptionsBoxElement.getBoundingClientRect();
-
-                    const infoBox = {
-                        left: nodeInfoBoxPos.leftPos,
-                        top: nodeInfoBoxPos.topPos,
-                        right: nodeInfoBoxPos.leftPos + nodeInfoBoxDimensions.width,
-                        bottom: nodeInfoBoxPos.topPos + nodeInfoBoxDimensions.height
-                    };
-
-                    const moreOptionsBox = {
-                        left: moreOptionsBoxOffset.left,
-                        top: moreOptionsBoxOffset.top,
-                        right: moreOptionsBoxOffset.left + moreOptionsBoxRect.width,
-                        bottom: moreOptionsBoxOffset.top + moreOptionsBoxRect.height
-                    };
-
-                    const isOverlapping = !(infoBox.right < moreOptionsBox.left ||
-                             moreOptionsBox.right < infoBox.left ||
-                             infoBox.bottom < moreOptionsBox.top ||
-                             moreOptionsBox.bottom < infoBox.top);
-
-                    return isOverlapping;
-                }
-            }
-            return false;
-        },
-
-        _getBoxPosition: function(boxDimensions, overlap = false) {
-            const elemBounds = this.element.getBoundingClientRect();
-            const offset = _screenOffset(this.element);
-            const MARGIN = 6;
-            const SCROLLBAR_OFFSET = 8;
-
-            const viewportLeft = window.scrollX;
-            const viewportRight = window.scrollX + document.documentElement.clientWidth - SCROLLBAR_OFFSET;
-            const viewportTop = window.scrollY;
-            const viewportBottom = window.scrollY + document.documentElement.clientHeight - SCROLLBAR_OFFSET;
-
-            // Default: Bottom of element, left-aligned
-            let topPos = offset.top + elemBounds.height + MARGIN;
-            let leftPos = offset.left;
-
-            // Check if element is very tall (covers full viewport height)
-            const isVeryTall = elemBounds.height >= window.innerHeight - 50;
-
-            if (isVeryTall) {
-                // Place inside element at bottom, but stick to viewport bottom if element extends below
-                topPos = Math.min(offset.top + elemBounds.height, viewportBottom) - boxDimensions.height - MARGIN;
-                leftPos = offset.left + MARGIN;
-                return {topPos, leftPos};
-            }
-
-            // Edge Case: Goes off bottom
-            if (topPos + boxDimensions.height > viewportBottom - MARGIN) {
-                // Try right side
-                const rightSideTop = offset.top;
-                const rightSideLeft = offset.left + elemBounds.width + MARGIN;
-
-                if (rightSideLeft + boxDimensions.width <= viewportRight - MARGIN) {
-                    topPos = rightSideTop;
-                    leftPos = rightSideLeft;
-                } else {
-                    // Try left side
-                    const leftSideLeft = offset.left - boxDimensions.width - MARGIN;
-
-                    if (leftSideLeft >= viewportLeft + MARGIN) {
-                        topPos = offset.top;
-                        leftPos = leftSideLeft;
-                    } else {
-                        // Last resort: Try above options box, then above element
-                        // First, try to position above options box
-                        let aboveOptionsBoxPos = null;
-
-                        if (_nodeMoreOptionsBox && _nodeMoreOptionsBox._shadow) {
-                            const optionsBox = _nodeMoreOptionsBox._shadow.querySelector('.phoenix-more-options-box');
-                            if (optionsBox) {
-                                const optionsOffset = _screenOffset(optionsBox);
-                                aboveOptionsBoxPos = optionsOffset.top - boxDimensions.height - MARGIN;
-
-                                // Check if it fits in viewport
-                                if (aboveOptionsBoxPos >= viewportTop + MARGIN) {
-                                    topPos = aboveOptionsBoxPos;
-                                    leftPos = offset.left;
-                                    return {topPos, leftPos};
-                                }
-                            }
-                        }
-
-                        // If above options box doesn't fit, try above element
-                        topPos = offset.top - boxDimensions.height - MARGIN;
-                        leftPos = offset.left;
-
-                        // If still goes off top, place inside element
-                        if (topPos < viewportTop + MARGIN) {
-                            topPos = offset.top + MARGIN;
-                        }
-                    }
-                }
-            }
-
-            // Handle overlap with options box
-            if (overlap && _nodeMoreOptionsBox && _nodeMoreOptionsBox._shadow) {
-                const optionsBox = _nodeMoreOptionsBox._shadow.querySelector('.phoenix-more-options-box');
-                if (optionsBox) {
-                    const optionsRect = optionsBox.getBoundingClientRect();
-                    const optionsOffset = _screenOffset(optionsBox);
-
-                    // Check if we overlap
-                    const infoBox = {
-                        left: leftPos,
-                        top: topPos,
-                        right: leftPos + boxDimensions.width,
-                        bottom: topPos + boxDimensions.height
-                    };
-
-                    const moreOptionsBox = {
-                        left: optionsOffset.left,
-                        top: optionsOffset.top,
-                        right: optionsOffset.left + optionsRect.width,
-                        bottom: optionsOffset.top + optionsRect.height
-                    };
-
-                    const isOverlapping = !(infoBox.right < moreOptionsBox.left ||
-                                           moreOptionsBox.right < infoBox.left ||
-                                           infoBox.bottom < moreOptionsBox.top ||
-                                           moreOptionsBox.bottom < infoBox.top);
-
-                    if (isOverlapping) {
-                        // Stack vertically below options box
-                        topPos = moreOptionsBox.bottom + MARGIN;
-                        leftPos = offset.left;
-                    }
-                }
-            }
-
-            // Handle horizontal viewport boundaries
-            if (leftPos + boxDimensions.width > viewportRight - MARGIN) {
-                const overflow = (leftPos + boxDimensions.width) - (viewportRight - MARGIN);
-                leftPos -= overflow;
-            }
-
-            if (leftPos < viewportLeft + MARGIN) {
-                leftPos = viewportLeft + MARGIN;
-            }
-
-            return {topPos, leftPos};
-        },
-
         _style: function() {
             this.body = window.document.createElement("div");
             this.body.setAttribute(GLOBALS.PHCODE_INTERNAL_ATTR, "true");
@@ -2218,22 +2253,15 @@ function RemoteFunctions(config = {}) {
                 }
             }
 
-            // initially, we place our info box -1000px to the top but at the right left pos. this is done so that
-            // we can take the text-wrapping inside the info box in account when calculating the height
-            // after calculating the height of the box, we place it at the exact position above the element
-            const offset = _screenOffset(this.element);
-            const leftPos = offset.left;
-
             // if element is non-editable we use gray bg color in info box, otherwise normal blue color
             const bgColor = this.element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR) ? '#4285F4' : '#3C3F41';
 
-            // add everything to the shadow box with CSS variables for dynamic values
+            // add everything to the shadow box with CSS variables for dynamic color
             shadow.innerHTML = `
                 <style>
                     ${config.styles.infoBox}
                     :host {
                         --info-box-bg-color: ${bgColor};
-                        --info-box-left-pos: ${leftPos}px;
                     }
                 </style>
                 <div class="phoenix-node-info-box">${content}</div>
@@ -2244,40 +2272,23 @@ function RemoteFunctions(config = {}) {
         create: function() {
             this.remove(); // remove existing box if already present
 
-            if(config.mode !== 'edit') {
-                return;
-            }
-
-            // this check because when there is no element visible to the user, we don't want to show the box
-            // for ex: when user clicks on a 'x' button and the button is responsible to hide a panel
-            // then clicking on that button shouldn't show the more options box
-            // also covers cases where elements are inside closed/collapsed menus
-            if(!isElementVisible(this.element)) {
+            // isElementVisible is used to check if the element is visible to the user
+            // because there might be cases when element is inside a closed/collapsed menu
+            // then in that case we don't want to show the box
+            if(config.mode !== 'edit' || !isElementVisible(this.element)) {
                 return;
             }
 
             this._style(); // style the box
-
             window.document.body.appendChild(this.body);
 
-            // get the actual rendered height of the box and then we reposition it to the actual place
+            // initially when we append the box the body, we position it by -1000px on top as well as left
+            // and then once its added to the body then we reposition it to the actual place
             const boxElement = this._shadow.querySelector('.phoenix-node-info-box');
             if (boxElement) {
-                const nodeInfoBoxDimensions = {
-                    height: boxElement.getBoundingClientRect().height,
-                    width: boxElement.getBoundingClientRect().width
-                };
-                const nodeInfoBoxPos = this._getBoxPosition(nodeInfoBoxDimensions, false);
-
-                boxElement.style.left = nodeInfoBoxPos.leftPos + 'px';
-                boxElement.style.top = nodeInfoBoxPos.topPos + 'px';
-
-                const isBoxOverlapping = this._checkOverlap(nodeInfoBoxPos, nodeInfoBoxDimensions);
-                if(isBoxOverlapping) {
-                    const newPos = this._getBoxPosition(nodeInfoBoxDimensions, true);
-                    boxElement.style.left = newPos.leftPos + 'px';
-                    boxElement.style.top = newPos.topPos + 'px';
-                }
+                const boxPos = _calcBoxPosition(this.element, 'info-box', this);
+                boxElement.style.left = boxPos.leftPos + 'px';
+                boxElement.style.top = boxPos.topPos + 'px';
             }
         },
 

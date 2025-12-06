@@ -354,7 +354,7 @@ define(function (require, exports, module) {
                     font-family: Arial, sans-serif !important;
                     z-index: 2147483646 !important;
                     position: absolute !important;
-                    left: var(--info-box-left-pos);
+                    left: -1000px;
                     top: -1000px;
                     max-width: 300px !important;
                     box-sizing: border-box !important;
