@@ -1746,6 +1746,12 @@ define(function (require, exports, module) {
             return;
         }
 
+        // toggle live preview mode using hot corner
+        if (message.type === "hotCornerPreviewToggle") {
+            _handlePreviewModeToggle(true);
+            return;
+        }
+
         // handle reset image folder selection
         if (message.resetImageFolderSelection) {
             _showFolderSelectionDialog(null);

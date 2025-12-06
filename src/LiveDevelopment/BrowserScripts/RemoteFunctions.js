@@ -64,6 +64,7 @@ function RemoteFunctions(config = {}) {
     let _imageRibbonGallery;
     let _hyperlinkEditor;
     let _currentRulerLines;
+    let _hotCorner;
     let _setup = false;
     let _hoverLockTimer = null;
 
@@ -3292,6 +3293,76 @@ function RemoteFunctions(config = {}) {
         }
     };
 
+    /**
+     * hot corner class,
+     * to switch to preview mode and back
+     */
+    class HotCorner {
+        constructor() {
+            this.element = null;
+            this.button = null;
+            this.box = null;
+            this.wasPreviewMode = false;
+            this._setup();
+        }
+
+        _setup() {
+            const container = document.createElement("div");
+            container.setAttribute(GLOBALS.PHCODE_INTERNAL_ATTR, "true");
+
+            const shadow = container.attachShadow({ mode: "open" });
+
+            const content = `
+                <div class="phoenix-hot-corner">
+                    <div class="hot-corner-indicator"></div>
+                    <div class="hot-corner-box">
+                        <button class="hot-corner-play-btn"> ${config.icons.playButton} </button>
+                    </div>
+                </div>`;
+
+            shadow.innerHTML = `<style>${config.styles.hotCorner}</style>${content}`;
+
+            this.element = container;
+            this.button = shadow.querySelector(".hot-corner-play-btn");
+            this.box = shadow.querySelector(".hot-corner-box");
+
+            this.button.addEventListener("click", () => {
+                window._Brackets_MessageBroker.send({ livePreviewEditEnabled: true, type: "hotCornerPreviewToggle" });
+            });
+            document.body.appendChild(this.element);
+        }
+
+        updateState(isPreviewMode, showAnimation = false) {
+
+            if (isPreviewMode) {
+                this.button.classList.add("selected");
+
+                if (!this.wasPreviewMode && showAnimation && this.box) {
+                    this.box.classList.add("peek-animation");
+
+                    setTimeout(() => {
+                        if (this.box) {
+                            this.box.classList.remove("peek-animation");
+                        }
+                    }, 1200);
+                }
+            } else {
+                this.button.classList.remove("selected");
+            }
+            this.wasPreviewMode = isPreviewMode;
+        }
+
+        remove() {
+            if (this.element && this.element.parentNode) {
+                this.element.parentNode.removeChild(this.element);
+            }
+            this.element = null;
+            this.button = null;
+            this.box = null;
+        }
+    }
+
+
     function Highlight(color, trigger) {
         this.color = color;
         this.trigger = !!trigger;
@@ -4706,6 +4777,13 @@ function RemoteFunctions(config = {}) {
         const highlightModeChanged = oldHighlightMode !== newHighlightMode;
         const isModeChanged = oldConfig.mode !== config.mode;
         const highlightSettingChanged = oldConfig.highlight !== config.highlight;
+
+        // Update hot corner state when mode changes
+        // Show animation when mode changes to help users discover the feature
+        if (isModeChanged && _hotCorner) {
+            _hotCorner.updateState(config.mode === 'preview', true);
+        }
+
         // Handle configuration changes
         if (highlightModeChanged || isModeChanged || highlightSettingChanged) {
             _handleConfigurationChange();
@@ -5198,6 +5276,26 @@ function RemoteFunctions(config = {}) {
     }
 
     registerHandlers();
+
+    // init the hot corner after the DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+            // make sure that also the configs are present
+            if (!_hotCorner && config.icons && config.styles) {
+                _hotCorner = new HotCorner();
+                _hotCorner.updateState(config.mode === 'preview');
+            }
+        });
+    } else {
+        // or if the DOM is already ready then init directly
+        setTimeout(() => {
+            if (!_hotCorner && config.icons && config.styles) {
+                _hotCorner = new HotCorner();
+                _hotCorner.updateState(config.mode === 'preview');
+            }
+        }, 0);
+    }
+
     let customReturns = {};
     // the below code comment is replaced by added scripts for extensibility
     // REPLACE_WITH_ADDED_REMOTE_SCRIPTS
