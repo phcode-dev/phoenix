@@ -331,6 +331,21 @@ define(function (require, exports, module) {
         _transport.start();
     }
 
+    let remoteFunctionsScripts = new Map();
+    let effectiveRemoteFunctionsScripts = RemoteFunctions;
+    function addRemoteFunctionScript(scriptName, scriptText) {
+        if(remoteFunctionsScripts.has(scriptName)){
+            console.error(`Remote function script ${scriptName} already exists. Script wont be added.`);
+            return false;
+        }
+        remoteFunctionsScripts.set(scriptName, scriptText);
+        if(!RemoteFunctions.includes("// REPLACE_WITH_ADDED_REMOTE_SCRIPTS")){
+            throw new Error("RemoteFunctions script is missing the placeholder // REPLACE_WITH_ADDED_REMOTE_SCRIPTS");
+        }
+        effectiveRemoteFunctionsScripts = RemoteFunctions.replace("// REPLACE_WITH_ADDED_REMOTE_SCRIPTS",
+            Array.from(remoteFunctionsScripts.values()).join("\n"));
+        return true;
+    }
 
     /**
      * Returns a script that should be injected into the HTML that's launched in the
@@ -343,7 +358,8 @@ define(function (require, exports, module) {
         // Inject DocumentObserver into the browser (tracks related documents)
         script += DocumentObserver;
         // Inject remote functions into the browser.
-        script += "\nwindow._LD=(" + RemoteFunctions + "(" + JSON.stringify(LiveDevMultiBrowser.config) + "))";
+        script += "\nwindow._LD=(" + effectiveRemoteFunctionsScripts +
+            "(" + JSON.stringify(LiveDevMultiBrowser.config) + "))";
         return "\n" + script + "\n";
     }
 
@@ -481,6 +497,7 @@ define(function (require, exports, module) {
     exports.close = close;
     exports.getConnectionIds = getConnectionIds;
     exports.closeAllConnections = closeAllConnections;
+    exports.addRemoteFunctionScript = addRemoteFunctionScript;
     exports.LIVE_DEV_REMOTE_SCRIPTS_FILE_NAME = LIVE_DEV_REMOTE_SCRIPTS_FILE_NAME;
     exports.LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME = LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME;
     exports.EVENT_LIVE_PREVIEW_CLICKED = EVENT_LIVE_PREVIEW_CLICKED;

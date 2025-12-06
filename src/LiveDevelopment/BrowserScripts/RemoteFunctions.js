@@ -5189,8 +5189,12 @@ function RemoteFunctions(config = {}) {
     }
 
     registerHandlers();
+    let customReturns = {};
+    // the below code comment is replaced by added scripts for extensibility
+    // REPLACE_WITH_ADDED_REMOTE_SCRIPTS
 
     return {
+        ...customReturns,
         "DOMEditHandler"        : DOMEditHandler,
         "hideHighlight"         : hideHighlight,
         "highlight"             : highlight,
