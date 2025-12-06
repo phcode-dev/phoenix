@@ -98,6 +98,12 @@ define(function (require, exports, module) {
         description: Strings.LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT_PREFERENCE
     });
 
+    // live preview ruler lines preference (show/hide ruler lines on element selection)
+    const PREFERENCE_SHOW_RULER_LINES = "livePreviewShowRulerLines";
+    PreferencesManager.definePreference(PREFERENCE_SHOW_RULER_LINES, "boolean", false, {
+        description: Strings.LIVE_DEV_SETTINGS_SHOW_RULER_LINES_PREFERENCE
+    });
+
     const LIVE_PREVIEW_PANEL_ID = "live-preview-panel";
     const LIVE_PREVIEW_IFRAME_ID = "panel-live-preview-frame";
     const LIVE_PREVIEW_IFRAME_HTML = `
@@ -280,39 +286,6 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Live Preview 'Preview Mode'. in this mode no live preview highlight or any such features are active
-     * Just the plain website
-     */
-    function _LPPreviewMode() {
-        LiveDevelopment.setLivePreviewEditFeaturesActive(false);
-        if(_isLiveHighlightEnabled()) {
-            LiveDevelopment.togglePreviewHighlight();
-        }
-    }
-
-    /**
-     * Live Preview 'Highlight Mode'. in this mode only the live preview matching with the source code is active
-     * Meaning that if user clicks on some element that element's source code will be highlighted and vice versa
-     */
-    function _LPHighlightMode() {
-        LiveDevelopment.setLivePreviewEditFeaturesActive(false);
-        if(!_isLiveHighlightEnabled()) {
-            LiveDevelopment.togglePreviewHighlight();
-        }
-    }
-
-    /**
-     * Live Preview 'Edit Mode'. this is the most interactive mode, in here the highlight features are available
-     * along with that we also show element's highlighted boxes and such
-     */
-    function _LPEditMode() {
-        LiveDevelopment.setLivePreviewEditFeaturesActive(true);
-        if(!_isLiveHighlightEnabled()) {
-            LiveDevelopment.togglePreviewHighlight();
-        }
-    }
-
-    /**
      * update the mode button text in the live preview toolbar UI based on the current mode
      * @param {String} mode - The current mode ("preview", "highlight", or "edit")
      */
@@ -331,15 +304,26 @@ define(function (require, exports, module) {
     function _initializeMode() {
         const currentMode = LiveDevelopment.getCurrentMode();
 
-        if (currentMode === "highlight") {
-            _LPHighlightMode();
-            $previewBtn.removeClass('selected');
-        } else if (currentMode === "edit") {
-            _LPEditMode();
-            $previewBtn.removeClass('selected');
-        } else {
-            _LPPreviewMode();
+        // when in preview mode, we need to give the play button a selected state
+        if (currentMode === "preview") {
             $previewBtn.addClass('selected');
+        } else {
+            $previewBtn.removeClass('selected');
+        }
+
+        // Update highlight state based on mode
+        const isHighlightEnabled = _isLiveHighlightEnabled();
+
+        if (currentMode === "preview") {
+            // Preview mode: disable highlight
+            if (isHighlightEnabled) {
+                LiveDevelopment.togglePreviewHighlight();
+            }
+        } else {
+            // Highlight or Edit mode: enable highlight
+            if (!isHighlightEnabled) {
+                LiveDevelopment.togglePreviewHighlight();
+            }
         }
 
         _updateModeButton(currentMode);
@@ -357,6 +341,7 @@ define(function (require, exports, module) {
         if (isEditFeaturesActive) {
             items.push("---");
             items.push(Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON);
+            items.push(Strings.LIVE_PREVIEW_SHOW_RULER_LINES);
         }
 
         const currentMode = LiveDevelopment.getCurrentMode();
@@ -380,6 +365,12 @@ define(function (require, exports, module) {
                     return `✓ ${Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON}`;
                 }
                 return `${'\u00A0'.repeat(4)}${Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON}`;
+            } else if (item === Strings.LIVE_PREVIEW_SHOW_RULER_LINES) {
+                const isEnabled = PreferencesManager.get(PREFERENCE_SHOW_RULER_LINES);
+                if(isEnabled) {
+                    return `✓ ${Strings.LIVE_PREVIEW_SHOW_RULER_LINES}`;
+                }
+                return `${'\u00A0'.repeat(4)}${Strings.LIVE_PREVIEW_SHOW_RULER_LINES}`;
             }
             return item;
         });
@@ -421,6 +412,15 @@ define(function (require, exports, module) {
                 const currMode = PreferencesManager.get(PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT);
                 const newMode = currMode !== "click" ? "click" : "hover";
                 PreferencesManager.set(PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT, newMode);
+                return; // Don't dismiss highlights for this option
+            } else if (item === Strings.LIVE_PREVIEW_SHOW_RULER_LINES) {
+                // Don't allow ruler lines toggle if edit features are not active
+                if (!isEditFeaturesActive) {
+                    return;
+                }
+                // Toggle ruler lines on/off
+                const currentValue = PreferencesManager.get(PREFERENCE_SHOW_RULER_LINES);
+                PreferencesManager.set(PREFERENCE_SHOW_RULER_LINES, !currentValue);
                 return; // Don't dismiss highlights for this option
             }
 
@@ -671,8 +671,12 @@ define(function (require, exports, module) {
             $previewBtn.removeClass('selected');
             const isEditFeaturesActive = LiveDevelopment.isProUser;
             if(modeThatWasSelected) {
-                if(modeThatWasSelected === 'edit' && !isEditFeaturesActive) {
-                    // we just set the preference as preference has change handlers that will update the config
+                // If the last selected mode was preview itself, default to the best mode for user's entitlement
+                if(modeThatWasSelected === 'preview') {
+                    const defaultMode = isEditFeaturesActive ? 'edit' : 'highlight';
+                    PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, defaultMode);
+                } else if(modeThatWasSelected === 'edit' && !isEditFeaturesActive) {
+                    // Non-pro users can't be in edit mode - switch to highlight
                     PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "highlight");
                 } else {
                     PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, modeThatWasSelected);
@@ -1205,13 +1209,17 @@ define(function (require, exports, module) {
             _initializeMode();
         });
 
-        // Handle element highlight preference changes from this extension
+        // Handle element highlight & ruler lines preference changes
         PreferencesManager.on("change", PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT, function() {
             LiveDevelopment.updateElementHighlightConfig();
         });
+        PreferencesManager.on("change", PREFERENCE_SHOW_RULER_LINES, function() {
+            LiveDevelopment.updateRulerLinesConfig();
+        });
 
-        // Initialize element highlight config on startup
+        // Initialize element highlight and ruler lines config on startup
         LiveDevelopment.updateElementHighlightConfig();
+        LiveDevelopment.updateRulerLinesConfig();
 
         LiveDevelopment.openLivePreview();
         LiveDevelopment.on(LiveDevelopment.EVENT_OPEN_PREVIEW_URL, _openLivePreviewURL);

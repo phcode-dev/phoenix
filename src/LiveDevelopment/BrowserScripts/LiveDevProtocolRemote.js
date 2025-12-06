@@ -182,6 +182,10 @@
                 }
             }
             s.id = msg.params.url;
+
+            if (window._LD && window._LD.redrawEverything) {
+                window._LD.redrawEverything();
+            }
         },
 
         /**
@@ -363,7 +367,7 @@
         ProtocolManager.enable();
     });
 
-    function _getAllInheritedSelectorsInOrder(element) {
+    function getAllInheritedSelectorsInOrder(element) {
         let selectorsFound= new Map();
         const selectorsList = [];
         while (element) {
@@ -383,6 +387,7 @@
         return selectorsList;
     }
 
+    global.getAllInheritedSelectorsInOrder = getAllInheritedSelectorsInOrder;
 
     /**
     * Sends the message containing tagID which is being clicked
@@ -407,7 +412,7 @@
                         "nodeID": element.id,
                         "nodeClassList": element.classList,
                         "nodeName": element.nodeName,
-                        "allSelectors": _getAllInheritedSelectorsInOrder(element),
+                        "allSelectors": getAllInheritedSelectorsInOrder(element),
                         "contentEditable": element.contentEditable === 'true',
                         "clicked": true,
                         "edit": true
@@ -431,7 +436,7 @@
                     "nodeID": element.id,
                     "nodeClassList": element.classList,
                     "nodeName": element.nodeName,
-                    "allSelectors": _getAllInheritedSelectorsInOrder(element),
+                    "allSelectors": getAllInheritedSelectorsInOrder(element),
                     "contentEditable": element.contentEditable === 'true',
                     "clicked": true
                 });

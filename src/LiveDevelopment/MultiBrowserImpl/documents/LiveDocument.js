@@ -71,7 +71,7 @@ define(function (require, exports, module) {
 
         // Redraw highlights when window gets focus. This ensures that the highlights
         // will be in sync with any DOM changes that may have occurred.
-        $(window).focus(this._onHighlightPrefChange);
+        $(window).on(`focus.LiveDocument-${this.doc.file.fullPath}`, this._onHighlightPrefChange);
 
         if (editor) {
             // Attach now
@@ -91,6 +91,8 @@ define(function (require, exports, module) {
         EditorManager.off(`activeEditorChange.LiveDocument-${this.doc.file.fullPath}`);
         PreferencesManager.stateManager.getPreference("livedevHighlight")
             .off(`change.LiveDocument-${this.doc.file.fullPath}`);
+
+        $(window).off(`focus.LiveDocument-${this.doc.file.fullPath}`);
     };
 
     /**

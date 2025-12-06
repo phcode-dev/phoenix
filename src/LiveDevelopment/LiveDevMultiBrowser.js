@@ -701,16 +701,6 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Check if live preview boxes are currently visible
-     */
-    function hasVisibleLivePreviewBoxes() {
-        if (_protocol) {
-            return _protocol.evaluate("_LD.hasVisibleLivePreviewBoxes()");
-        }
-        return false;
-    }
-
-    /**
      * Dismiss live preview boxes like info box, options box, AI box
      */
     function dismissLivePreviewBoxes() {
@@ -815,7 +805,6 @@ define(function (require, exports, module) {
     exports.showHighlight       = showHighlight;
     exports.hideHighlight       = hideHighlight;
     exports.redrawHighlight     = redrawHighlight;
-    exports.hasVisibleLivePreviewBoxes = hasVisibleLivePreviewBoxes;
     exports.dismissLivePreviewBoxes = dismissLivePreviewBoxes;
     exports.registerHandlers    = registerHandlers;
     exports.updateConfig        = updateConfig;

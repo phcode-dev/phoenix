@@ -29,9 +29,60 @@
  * exported functions.
  */
 function RemoteFunctions(config = {}) {
+
+    const GLOBALS = {
+        // given to internal elements like info box, options box, image gallery and all other phcode internal elements
+        // to distinguish between phoenix internal vs user created elements
+        PHCODE_INTERNAL_ATTR: "data-phcode-internal-c15r5a9",
+
+        DATA_BRACKETS_ID_ATTR: "data-brackets-id", // data attribute used to track elements for live preview operations
+
+        HIGHLIGHT_CLASSNAME: "__brackets-ld-highlight", // CSS class name used for highlighting elements in live preview
+
+        // auto scroll is when the user drags an element to the top/bottom of the viewport
+        AUTO_SCROLL_SPEED: 12, // pixels per scroll
+        AUTO_SCROLL_EDGE_SIZE: 0.05, // 5% of viewport height (either top/bottom)
+
+        // CSS class names for drop markers
+        DROP_MARKER_CLASSNAME: "__brackets-drop-marker-horizontal",
+        DROP_MARKER_VERTICAL_CLASSNAME: "__brackets-drop-marker-vertical",
+        DROP_MARKER_INSIDE_CLASSNAME: "__brackets-drop-marker-inside",
+        DROP_MARKER_ARROW_CLASSNAME: "__brackets-drop-marker-arrow",
+
+        // image ribbon gallery cache, to store the last query and its results
+        CACHE_EXPIRY_TIME: 168 * 60 * 60 * 1000, // 7 days
+        CACHE_MAX_IMAGES: 50 // max number of images that we store in the localStorage
+    };
+
+    let _localHighlight;
+    let _hoverHighlight;
+    let _clickHighlight;
+    let _nodeInfoBox;
+    let _nodeMoreOptionsBox;
+    let _moreOptionsDropdown;
+    let _aiPromptBox;
+    let _imageRibbonGallery;
+    let _hyperlinkEditor;
+    let _currentRulerLines;
+    let _hotCorner;
+    let _setup = false;
+    let _hoverLockTimer = null;
+
     // this will store the element that was clicked previously (before the new click)
     // we need this so that we can remove click styling from the previous element when a new element is clicked
     let previouslyClickedElement = null;
+
+    // we store references to interaction blocker event handlers so we can remove them when switching modes
+    let _interactionBlockerHandlers = null;
+
+    // auto-scroll variables to auto scroll the live preview when an element is dragged to the top/bottom
+    let _autoScrollTimer = null;
+    let _isAutoScrolling = false; // to disable highlights when auto scrolling
+
+    // initialized from config, defaults to true if not set
+    let imageGallerySelected = config.imageGalleryState !== undefined ? config.imageGalleryState : true;
+    config.strings = config.strings || {};
+
 
     var req, timeout;
     var animateHighlight = function (time) {
@@ -52,17 +103,6 @@ function RemoteFunctions(config = {}) {
      */
     var _editHandler;
 
-    var HIGHLIGHT_CLASSNAME = "__brackets-ld-highlight";
-
-    // auto-scroll variables to auto scroll the live preview when an element is dragged to the top/bottom
-    let _autoScrollTimer = null;
-    let _isAutoScrolling = false; // to disable highlights when auto scrolling
-    const AUTO_SCROLL_SPEED = 12; // pixels per scroll
-    const AUTO_SCROLL_EDGE_SIZE = 0.05; // 5% of viewport height (either top/bottom)
-
-    // initialized from config, defaults to true if not set
-    let imageGallerySelected = config.imageGalleryState !== undefined ? config.imageGalleryState : true;
-
     /**
      * this function is responsible to auto scroll the live preview when
      * dragging an element to the viewport edges
@@ -70,7 +110,7 @@ function RemoteFunctions(config = {}) {
      */
     function _handleAutoScroll(clientY) {
         const viewportHeight = window.innerHeight;
-        const scrollEdgeSize = viewportHeight * AUTO_SCROLL_EDGE_SIZE;
+        const scrollEdgeSize = viewportHeight * GLOBALS.AUTO_SCROLL_EDGE_SIZE;
 
         // Clear existing timer
         if (_autoScrollTimer) {
@@ -82,10 +122,10 @@ function RemoteFunctions(config = {}) {
 
         // check if near top edge (scroll up)
         if (clientY <= scrollEdgeSize) {
-            scrollDirection = -AUTO_SCROLL_SPEED;
+            scrollDirection = -GLOBALS.AUTO_SCROLL_SPEED;
         } else if (clientY >= viewportHeight - scrollEdgeSize) {
             // check if near bottom edge (scroll down)
-            scrollDirection = AUTO_SCROLL_SPEED;
+            scrollDirection = GLOBALS.AUTO_SCROLL_SPEED;
         }
 
         // Start scrolling if needed
@@ -118,18 +158,18 @@ function RemoteFunctions(config = {}) {
 
     /**
      * check if an element is inspectable.
-     * inspectable elements are those which doesn't have data-brackets-id,
+     * inspectable elements are those which doesn't have GLOBALS.DATA_BRACKETS_ID_ATTR ('data-brackets-id'),
      * this normally happens when content is DOM content is inserted by some scripting language
      */
     function isElementInspectable(element, onlyHighlight = false) {
-        if(!config.isProUser && !onlyHighlight) {
+        if(config.mode !== 'edit' && !onlyHighlight) {
             return false;
         }
 
         if(element && // element should exist
            element.tagName.toLowerCase() !== "body" && // shouldn't be the body tag
            element.tagName.toLowerCase() !== "html" && // shouldn't be the HTML tag
-           !element.closest("[data-phcode-internal-c15r5a9]") && // this attribute is used by phoenix internal elements
+           !element.closest(`[${GLOBALS.PHCODE_INTERNAL_ATTR}]`) && // this attribute is used by phoenix internal elements
            !_isInsideHeadTag(element)) { // shouldn't be inside the head tag like meta tags and all
             return true;
         }
@@ -138,16 +178,15 @@ function RemoteFunctions(config = {}) {
 
     /**
      * This is a checker function for editable elements, it makes sure that the element satisfies all the required check
-     * - When onlyHighlight is false → config.isProUser must be true
-     * - When onlyHighlight is true → config.isProUser can be true or false (doesn't matter)
+     * - When onlyHighlight is false → config.mode must be 'edit'
+     * - When onlyHighlight is true → config.mode can be any mode (doesn't matter)
      * @param {DOMElement} element
-     * @param {boolean} [onlyHighlight=false] - If true, bypasses the isProUser check
+     * @param {boolean} [onlyHighlight=false] - If true, bypasses the mode check
      * @returns {boolean} - True if the element is editable else false
      */
     function isElementEditable(element, onlyHighlight = false) {
         // for an element to be editable it should satisfy all inspectable checks and should also have data-brackets-id
-        return isElementInspectable(element, onlyHighlight) &&
-               element.hasAttribute("data-brackets-id");
+        return isElementInspectable(element, onlyHighlight) && element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
     }
 
     // helper function to check if an element is inside the HEAD tag
@@ -176,24 +215,6 @@ function RemoteFunctions(config = {}) {
             parent = parent.parentElement;
         }
         return false;
-    }
-
-    // compute the screen offset of an element
-    function _screenOffset(element) {
-        var elemBounds = element.getBoundingClientRect(),
-            body = window.document.body,
-            offsetTop,
-            offsetLeft;
-
-        if (window.getComputedStyle(body).position === "static") {
-            offsetLeft = elemBounds.left + window.pageXOffset;
-            offsetTop = elemBounds.top + window.pageYOffset;
-        } else {
-            var bodyBounds = body.getBoundingClientRect();
-            offsetLeft = elemBounds.left - bodyBounds.left;
-            offsetTop = elemBounds.top - bodyBounds.top;
-        }
-        return { left: offsetLeft, top: offsetTop };
     }
 
     // set an event on a element
@@ -313,14 +334,24 @@ function RemoteFunctions(config = {}) {
     }
 
     /**
+     * This function gets called when the edit hyperlink button is clicked
+     * @param {Event} event
+     * @param {DOMElement} element - the HTML link element
+     */
+    function _handleEditHyperlinkOptionClick(event, element) {
+        dismissHyperlinkEditor();
+        _hyperlinkEditor = new HyperlinkEditor(element);
+    }
+
+    /**
      * This function gets called when the delete button is clicked
      * it sends a message to the editor using postMessage to delete the element from the source code
      * @param {Event} event
-     * @param {DOMElement} element - the HTML DOM element that was clicked. it is to get the data-brackets-id attribute
+     * @param {DOMElement} element - the HTML DOM element that was clicked.
      */
     function _handleDeleteOptionClick(event, element) {
         if (isElementEditable(element)) {
-            const tagId = element.getAttribute("data-brackets-id");
+            const tagId = element.getAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
 
             window._Brackets_MessageBroker.send({
                 livePreviewEditEnabled: true,
@@ -337,11 +368,11 @@ function RemoteFunctions(config = {}) {
     /**
      * this is for duplicate button. Read '_handleDeleteOptionClick' jsdoc to understand more on how this works
      * @param {Event} event
-     * @param {DOMElement} element - the HTML DOM element that was clicked. it is to get the data-brackets-id attribute
+     * @param {DOMElement} element - the HTML DOM element that was clicked.
      */
     function _handleDuplicateOptionClick(event, element) {
         if (isElementEditable(element)) {
-            const tagId = element.getAttribute("data-brackets-id");
+            const tagId = element.getAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
 
             window._Brackets_MessageBroker.send({
                 livePreviewEditEnabled: true,
@@ -356,10 +387,74 @@ function RemoteFunctions(config = {}) {
     }
 
     /**
+     * this is for cut button, when user clicks on cut button we copy the element's source code
+     * into the clipboard and remove it from the src code. read `_cutElementToClipboard` in `LivePreviewEdit.js`
+     * @param {Event} event
+     * @param {DOMElement} element - the element we need to cut
+     */
+    function _handleCutOptionClick(event, element) {
+        if (isElementEditable(element)) {
+            const tagId = element.getAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
+
+            window._Brackets_MessageBroker.send({
+                livePreviewEditEnabled: true,
+                element: element,
+                event: event,
+                tagId: Number(tagId),
+                cut: true
+            });
+        } else {
+            console.error("The TagID might be unavailable or the element tag is directly body or html");
+        }
+    }
+
+    /**
+     * this is for copy button, similar to cut just we don't remove the elements source code
+     * @param {Event} event
+     * @param {DOMElement} element
+     */
+    function _handleCopyOptionClick(event, element) {
+        if (isElementEditable(element)) {
+            const tagId = element.getAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
+
+            window._Brackets_MessageBroker.send({
+                livePreviewEditEnabled: true,
+                element: element,
+                event: event,
+                tagId: Number(tagId),
+                copy: true
+            });
+        } else {
+            console.error("The TagID might be unavailable or the element tag is directly body or html");
+        }
+    }
+
+    /**
+     * this is for paste button, this inserts the saved content from clipboard just above this element
+     * @param {Event} event
+     * @param {DOMElement} targetElement
+     */
+    function _handlePasteOptionClick(event, targetElement) {
+        if (isElementEditable(targetElement)) {
+            const targetTagId = targetElement.getAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
+
+            window._Brackets_MessageBroker.send({
+                livePreviewEditEnabled: true,
+                element: targetElement,
+                event: event,
+                tagId: Number(targetTagId),
+                paste: true
+            });
+        } else {
+            console.error("The TagID might be unavailable or the element tag is directly body or html");
+        }
+    }
+
+    /**
      * this is for select-parent button
      * When user clicks on this option for a particular element, we get its parent element and trigger a click on it
      * @param {Event} event
-     * @param {DOMElement} element - the HTML DOM element that was clicked. it is to get the data-brackets-id attribute
+     * @param {DOMElement} element - the HTML DOM element that was clicked
      */
     function _handleSelectParentOptionClick(event, element) {
         if (!isElementEditable(element)) {
@@ -393,10 +488,18 @@ function RemoteFunctions(config = {}) {
             _handleSelectParentOptionClick(e, element);
         } else if (action === "edit-text") {
             startEditing(element);
+        } else if (action === "edit-hyperlink") {
+            _handleEditHyperlinkOptionClick(e, element);
         } else if (action === "duplicate") {
             _handleDuplicateOptionClick(e, element);
         } else if (action === "delete") {
             _handleDeleteOptionClick(e, element);
+        } else if (action === "cut") {
+            _handleCutOptionClick(e, element);
+        } else if (action === "copy") {
+            _handleCopyOptionClick(e, element);
+        } else if (action === "paste") {
+            _handlePasteOptionClick(e, element);
         } else if (action === "ai") {
             _handleAIOptionClick(e, element);
         } else if (action === "image-gallery") {
@@ -418,12 +521,6 @@ function RemoteFunctions(config = {}) {
         }
         delete element._originalDragOpacity;
     }
-
-    // CSS class names for drop markers
-    let DROP_MARKER_CLASSNAME = "__brackets-drop-marker-horizontal";
-    let DROP_MARKER_VERTICAL_CLASSNAME = "__brackets-drop-marker-vertical";
-    let DROP_MARKER_INSIDE_CLASSNAME = "__brackets-drop-marker-inside";
-    let DROP_MARKER_ARROW_CLASSNAME = "__brackets-drop-marker-arrow";
 
     /**
      * This function is responsible to determine whether to show vertical/horizontal indicators
@@ -849,9 +946,9 @@ function RemoteFunctions(config = {}) {
 
         // Set marker class based on drop zone
         if (dropZone === "inside") {
-            marker.className = DROP_MARKER_INSIDE_CLASSNAME;
+            marker.className = GLOBALS.DROP_MARKER_INSIDE_CLASSNAME;
         } else {
-            marker.className = indicatorType === "vertical" ? DROP_MARKER_VERTICAL_CLASSNAME : DROP_MARKER_CLASSNAME;
+            marker.className = indicatorType === "vertical" ? GLOBALS.DROP_MARKER_VERTICAL_CLASSNAME : GLOBALS.DROP_MARKER_CLASSNAME;
         }
 
         let rect = element.getBoundingClientRect();
@@ -862,7 +959,7 @@ function RemoteFunctions(config = {}) {
 
         // for the arrow indicator
         let arrow = window.document.createElement("div");
-        arrow.className = DROP_MARKER_ARROW_CLASSNAME;
+        arrow.className = GLOBALS.DROP_MARKER_ARROW_CLASSNAME;
         arrow.style.position = "fixed";
         arrow.style.zIndex = "2147483647";
         arrow.style.pointerEvents = "none";
@@ -959,10 +1056,10 @@ function RemoteFunctions(config = {}) {
      */
     function _clearDropMarkers() {
         // Clear all types of markers
-        let horizontalMarkers = window.document.querySelectorAll("." + DROP_MARKER_CLASSNAME);
-        let verticalMarkers = window.document.querySelectorAll("." + DROP_MARKER_VERTICAL_CLASSNAME);
-        let insideMarkers = window.document.querySelectorAll("." + DROP_MARKER_INSIDE_CLASSNAME);
-        let arrows = window.document.querySelectorAll("." + DROP_MARKER_ARROW_CLASSNAME);
+        let horizontalMarkers = window.document.querySelectorAll("." + GLOBALS.DROP_MARKER_CLASSNAME);
+        let verticalMarkers = window.document.querySelectorAll("." + GLOBALS.DROP_MARKER_VERTICAL_CLASSNAME);
+        let insideMarkers = window.document.querySelectorAll("." + GLOBALS.DROP_MARKER_INSIDE_CLASSNAME);
+        let arrows = window.document.querySelectorAll("." + GLOBALS.DROP_MARKER_ARROW_CLASSNAME);
 
         for (let i = 0; i < horizontalMarkers.length; i++) {
             if (horizontalMarkers[i].parentNode) {
@@ -989,7 +1086,7 @@ function RemoteFunctions(config = {}) {
         }
 
         // Also clear any element references
-        let elements = window.document.querySelectorAll("[data-brackets-id]");
+        let elements = window.document.querySelectorAll(`[${GLOBALS.DATA_BRACKETS_ID_ATTR}]`);
         for (let j = 0; j < elements.length; j++) {
             delete elements[j]._dropMarker;
             delete elements[j]._dropArrow;
@@ -1027,7 +1124,7 @@ function RemoteFunctions(config = {}) {
         let parent = currentElement.parentElement;
 
         while (parent) {
-            if (parent.hasAttribute("data-brackets-id") && isElementEditable(parent)) {
+            if (parent.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR) && isElementEditable(parent)) {
                 const currentRect = currentElement.getBoundingClientRect();
                 const parentRect = parent.getBoundingClientRect();
 
@@ -1083,8 +1180,8 @@ function RemoteFunctions(config = {}) {
                     continue;
                 }
 
-                // Find closest element with data-brackets-id
-                while (target && !target.hasAttribute("data-brackets-id")) {
+                // Find closest editable element
+                while (target && !target.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR)) {
                     target = target.parentElement;
                 }
 
@@ -1116,8 +1213,8 @@ function RemoteFunctions(config = {}) {
             return;
         }
 
-        // get the closest element with a data-brackets-id
-        while (target && !target.hasAttribute("data-brackets-id")) {
+        // get the closest editable element
+        while (target && !target.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR)) {
             target = target.parentElement;
         }
 
@@ -1186,8 +1283,8 @@ function RemoteFunctions(config = {}) {
         // get the element under the cursor
         let target = document.elementFromPoint(event.clientX, event.clientY);
 
-        // get the closest element with a data-brackets-id
-        while (target && !target.hasAttribute("data-brackets-id")) {
+        // get the closest editable element
+        while (target && !target.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR)) {
             target = target.parentElement;
         }
 
@@ -1219,8 +1316,8 @@ function RemoteFunctions(config = {}) {
         );
 
         // IDs of the source and target elements
-        const sourceId = window._currentDraggedElement.getAttribute("data-brackets-id");
-        const targetId = target.getAttribute("data-brackets-id");
+        const sourceId = window._currentDraggedElement.getAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
+        const targetId = target.getAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
 
         // Handle different drop zones
         let messageData = {
@@ -1322,84 +1419,282 @@ function RemoteFunctions(config = {}) {
         return true;
     }
 
-    // the icons used in the live preview edit mode features
-    const ICONS = {
-        ai: `
-        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0,0,256,256">
-            <g fill="#fffbfb" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(4,4)"><path d="M30.701,41.663l-2.246,5.145c-0.864,1.978 -3.6,1.978 -4.464,0l-2.247,-5.145c-1.999,-4.579 -5.598,-8.224 -10.086,-10.216l-6.183,-2.745c-1.966,-0.873 -1.966,-3.733 0,-4.605l5.99,-2.659c4.604,-2.044 8.267,-5.824 10.232,-10.559l2.276,-5.483c0.844,-2.035 3.656,-2.035 4.5,0l2.276,5.483c1.965,4.735 5.628,8.515 10.232,10.559l5.99,2.659c1.966,0.873 1.966,3.733 0,4.605l-6.183,2.745c-4.489,1.992 -8.088,5.637 -10.087,10.216z"></path><path d="M30.701,41.663l-2.246,5.145c-0.864,1.978 -3.6,1.978 -4.464,0l-2.247,-5.145c-1.999,-4.579 -5.598,-8.224 -10.086,-10.216l-6.183,-2.745c-1.966,-0.873 -1.966,-3.733 0,-4.605l5.99,-2.659c4.604,-2.044 8.267,-5.824 10.232,-10.559l2.276,-5.483c0.844,-2.035 3.656,-2.035 4.5,0l2.276,5.483c1.965,4.735 5.628,8.515 10.232,10.559l5.99,2.659c1.966,0.873 1.966,3.733 0,4.605l-6.183,2.745c-4.489,1.992 -8.088,5.637 -10.087,10.216z"></path><g><path d="M51.578,57.887l-0.632,1.448c-0.462,1.06 -1.93,1.06 -2.393,0l-0.632,-1.448c-1.126,-2.582 -3.155,-4.637 -5.686,-5.762l-1.946,-0.865c-1.052,-0.468 -1.052,-1.998 0,-2.465l1.838,-0.816c2.596,-1.153 4.661,-3.285 5.768,-5.955l0.649,-1.565c0.452,-1.091 1.96,-1.091 2.412,0l0.649,1.565c1.107,2.669 3.172,4.801 5.768,5.955l1.837,0.816c1.053,0.468 1.053,1.998 0,2.465l-1.946,0.865c-2.531,1.125 -4.56,3.18 -5.686,5.762z"></path><path d="M51.578,57.887l-0.632,1.448c-0.462,1.06 -1.93,1.06 -2.393,0l-0.632,-1.448c-1.126,-2.582 -3.155,-4.637 -5.686,-5.762l-1.946,-0.865c-1.052,-0.468 -1.052,-1.998 0,-2.465l1.838,-0.816c2.596,-1.153 4.661,-3.285 5.768,-5.955l0.649,-1.565c0.452,-1.091 1.96,-1.091 2.412,0l0.649,1.565c1.107,2.669 3.172,4.801 5.768,5.955l1.837,0.816c1.053,0.468 1.053,1.998 0,2.465l-1.946,0.865c-2.531,1.125 -4.56,3.18 -5.686,5.762z"></path></g></g></g>
-        </svg>
-        `,
 
-        arrowUp: `
-        <svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.59 5.58L20 12l-8-8-8 8z"/>
-        </svg>
-      `,
+    /**
+     * this function calc the screen offset of an element
+     *
+     * @param {DOMElement} element
+     * @returns {{left: number, top: number}}
+     */
+    function _screenOffset(element) {
+        const elemBounds = element.getBoundingClientRect();
+        const body = window.document.body;
+        let offsetTop;
+        let offsetLeft;
 
-        edit: `
-        <svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
-        </svg>
-      `,
+        if (window.getComputedStyle(body).position === "static") {
+            offsetLeft = elemBounds.left + window.pageXOffset;
+            offsetTop = elemBounds.top + window.pageYOffset;
+        } else {
+            const bodyBounds = body.getBoundingClientRect();
+            offsetLeft = elemBounds.left - bodyBounds.left;
+            offsetTop = elemBounds.top - bodyBounds.top;
+        }
+        return { left: offsetLeft, top: offsetTop };
+    }
 
-        duplicate: `
-        <svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M18 3H4C3.44772 3 3 3.44772 3 4V18C3 18.5523 2.55228 19 2 19C1.44772 19 1 18.5523 1 18V4C1 2.34315 2.34315 1 4 1H18C18.5523 1 19 1.44772 19 2C19 2.55228 18.5523 3 18 3Z"/>
-          <path d="M13 11C13 10.4477 13.4477 10 14 10C14.5523 10 15 10.4477 15 11V13H17C17.5523 13 18 13.4477 18 14C18 14.5523 17.5523 15 17 15H15V17C15 17.5523 14.5523 18 14 18C13.4477 18 13 17.5523 13 17V15H11C10.4477 15 10 14.5523 10 14C10 13.4477 10.4477 13 11 13H13V11Z"/>
-          <path fill-rule="evenodd" clip-rule="evenodd" d="M20 5C21.6569 5 23 6.34315 23 8V20C23 21.6569 21.6569 23 20 23H8C6.34315 23 5 21.6569 5 20V8C5 6.34315 6.34315 5 8 5H20ZM20 7C20.5523 7 21 7.44772 21 8V20C21 20.5523 20.5523 21 20 21H8C7.44772 21 7 20.5523 7 20V8C7 7.44772 7.44772 7 8 7H20Z"/>
-        </svg>
-      `,
+    /**
+     * Check if two rectangles overlap
+     * @param {Object} rect1 - First rectangle {left, top, right, bottom}
+     * @param {Object} rect2 - Second rectangle {left, top, right, bottom}
+     * @param {Number} padding - Optional padding to add around rectangles
+     * @returns {Boolean} - True if rectangles overlap
+     */
+    function _doBoxesOverlap(rect1, rect2, padding = 0) {
+        return !(rect1.right + padding < rect2.left ||
+                 rect1.left - padding > rect2.right ||
+                 rect1.bottom + padding < rect2.top ||
+                 rect1.top - padding > rect2.bottom);
+    }
 
-        trash: `
-        <svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M6 7V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2h3v2h-2l-1.5 12.5a2 2 0 0
-          1-2 1.5H8.5a2 2 0 0 1-2-1.5L5 9H3V7h3zm2 0h8V5H8v2z"/>
-        </svg>
-      `,
+    /**
+     * Check if a box position is within viewport bounds
+     * @param {Number} left - Left position
+     * @param {Number} top - Top position
+     * @param {Number} width - Box width
+     * @param {Number} height - Box height
+     * @returns {Boolean} - True if within viewport
+     */
+    function _isWithinViewport(left, top, width, height) {
+        return left >= 0 &&
+               top >= 0 &&
+               left + width <= window.innerWidth &&
+               top + height <= window.innerHeight;
+    }
 
-        imageGallery: `
-        <svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
-          <path d="M1 3v16h2V5h16V3H1z"/>
-        </svg>
-      `,
+    /**
+     * Convert position coordinates to rectangle object
+     * @param {Number} left - Left position
+     * @param {Number} top - Top position
+     * @param {Number} width - Width
+     * @param {Number} height - Height
+     * @returns {Object} - Rectangle {left, top, right, bottom}
+     */
+    function _coordsToRect(left, top, width, height) {
+        return {
+            left: left,
+            top: top,
+            right: left + width,
+            bottom: top + height
+        };
+    }
 
-        selectImageFromComputer: `
-          <svg viewBox="0 0 24 24" fill="currentColor" width="19" height="19">
-            <path d="M11 5v6H5v2h6v6h2v-6h6v-2h-6V5h-2z"/>
-          </svg>
-        `,
+    /**
+     * Calculate coordinates for a specific position type
+     * @param {String} position - Position type (e.g., 'top-left', 'bottom-right')
+     * @param {DOMElement} element - The element to position relative to
+     * @param {Object} boxDimensions - Box dimensions {width, height}
+     * @param {Number} verticalOffset - Vertical spacing
+     * @param {Number} horizontalOffset - Horizontal spacing
+     * @returns {Object} - {leftPos, topPos}
+     */
+    function _getCoordinatesForPosition(position, element, boxDimensions, verticalOffset, horizontalOffset) {
+        const offsetBounds = _screenOffset(element);
+        const elemBounds = element.getBoundingClientRect();
 
-        downloadImage: `
-        <svg viewBox="0 0 640 640" fill="currentColor">
-          <path d="M352 96C352 78.3 337.7 64 320 64C302.3 64 288 78.3 288 96L288 306.7L246.6 265.3C234.1 252.8 213.8 252.8 201.3 265.3C188.8 277.8 188.8 298.1 201.3 310.6L297.3 406.6C309.8 419.1 330.1 419.1 342.6 406.6L438.6 310.6C451.1 298.1 451.1 277.8 438.6 265.3C426.1 252.8 405.8 252.8 393.3 265.3L352 306.7L352 96zM160 384C124.7 384 96 412.7 96 448L96 480C96 515.3 124.7 544 160 544L480 544C515.3 544 544 515.3 544 480L544 448C544 412.7 515.3 384 480 384L433.1 384L376.5 440.6C345.3 471.8 294.6 471.8 263.4 440.6L206.9 384L160 384zM464 440C477.3 440 488 450.7 488 464C488 477.3 477.3 488 464 488C450.7 488 440 477.3 440 464C440 450.7 450.7 440 464 440z"/>
-        </svg>
-      `,
+        let leftPos, topPos;
 
-        folderSettings: `
-        <svg viewBox="0 0 24 24" fill="currentColor" width="17" height="17">
-          <path d="M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h8.1c.15.7.42 1.36.81 1.94l.29.41H4c-1.66 0-3-1.34-3-3V6c0-1.66 1.34-3 3-3h6l2 2h8c1.66 0 3 1.34 3 3v4.18c-.63-.11-1.28-.18-1.95-.18-.68 0-1.35.07-2 .2V8c0-1.1-.9-2-2-2h-8l-2-2zM18 13a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2c.55 0 1 .45 1 1v1h1c.55 0 1 .45 1 1s-.45 1-1 1h-1v1c0 .55-.45 1-1 1s-1-.45-1-1v-1h-1c-.55 0-1-.45-1-1s.45-1 1-1h1v-1c0-.55.45-1 1-1z"/>
-        </svg>
-       `,
+        switch(position) {
+        case 'top-left':
+            leftPos = offsetBounds.left;
+            topPos = offsetBounds.top - boxDimensions.height - verticalOffset;
+            break;
 
-        close: `
-        <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
-          <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
-        </svg>
-      `,
+        case 'top-right':
+            leftPos = offsetBounds.left + elemBounds.width - boxDimensions.width;
+            topPos = offsetBounds.top - boxDimensions.height - verticalOffset;
+            break;
 
-        paperPlane: `
-        <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
-          <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
-        </svg>
-      `,
+        case 'bottom-left':
+            leftPos = offsetBounds.left;
+            topPos = offsetBounds.top + elemBounds.height + verticalOffset;
+            break;
 
-        search: `
-        <svg viewBox="0 0 20 16" fill="currentColor" width="17" height="17">
-          <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-        </svg>
-      `
-    };
+        case 'bottom-right':
+            leftPos = offsetBounds.left + elemBounds.width - boxDimensions.width;
+            topPos = offsetBounds.top + elemBounds.height + verticalOffset;
+            break;
+
+        case 'left':
+            leftPos = offsetBounds.left - boxDimensions.width - horizontalOffset;
+            topPos = offsetBounds.top;
+            break;
+
+        case 'right':
+            leftPos = offsetBounds.left + elemBounds.width + horizontalOffset;
+            topPos = offsetBounds.top;
+            break;
+
+        case 'inside-top-left':
+            leftPos = offsetBounds.left;
+            topPos = offsetBounds.top;
+            break;
+
+        case 'inside-top-right':
+            leftPos = offsetBounds.left + elemBounds.width - boxDimensions.width;
+            topPos = offsetBounds.top;
+            break;
+
+        default:
+            leftPos = -1000;
+            topPos = -1000;
+        }
+
+        return { leftPos, topPos };
+    }
+
+    /**
+     * Check if a proposed position is valid
+     * @param {Number} leftPos - Proposed left position
+     * @param {Number} topPos - Proposed top position
+     * @param {Object} boxDimensions - Box dimensions {width, height}
+     * @param {DOMElement} element - Element being positioned relative to
+     * @param {String} boxType - Type of box ('info-box' or 'options-box')
+     * @param {Number} padding - Padding for overlap checks
+     * @returns {Boolean} - True if position is valid
+     */
+    function _isPositionValid(leftPos, topPos, boxDimensions, element, boxType, padding = 6) {
+        // Convert page coordinates to viewport coordinates for validation
+        const viewportLeft = leftPos - window.pageXOffset;
+        const viewportTop = topPos - window.pageYOffset;
+
+        // 1. Check viewport overflow
+        if (!_isWithinViewport(viewportLeft, viewportTop, boxDimensions.width, boxDimensions.height)) {
+            return false;
+        }
+
+        // 2. Create rectangle for proposed position (in viewport coordinates)
+        const proposedRect = _coordsToRect(viewportLeft, viewportTop, boxDimensions.width, boxDimensions.height);
+
+        // 3. Check overlap with element (with padding)
+        const elemBounds = element.getBoundingClientRect();
+        const elemRect = _coordsToRect(elemBounds.left, elemBounds.top, elemBounds.width, elemBounds.height);
+
+        if (_doBoxesOverlap(proposedRect, elemRect, -padding)) {
+            // Negative padding means we need separation
+            return false;
+        }
+
+        // 4. Check overlap with other box (if it exists)
+        if (boxType === 'info-box' && _nodeMoreOptionsBox) {
+            const optionsBoxElement = _nodeMoreOptionsBox._shadow &&
+                _nodeMoreOptionsBox._shadow.querySelector('.phoenix-more-options-box');
+            if (optionsBoxElement) {
+                const optionsBoxBounds = optionsBoxElement.getBoundingClientRect();
+                const optionsBoxRect = _coordsToRect(
+                    optionsBoxBounds.left,
+                    optionsBoxBounds.top,
+                    optionsBoxBounds.width,
+                    optionsBoxBounds.height
+                );
+
+                if (_doBoxesOverlap(proposedRect, optionsBoxRect, -4)) {
+                    // Need at least 4px separation between boxes
+                    return false;
+                }
+            }
+        } else if (boxType === 'options-box' && _nodeInfoBox) {
+            const infoBoxElement = _nodeInfoBox._shadow &&
+                _nodeInfoBox._shadow.querySelector('.phoenix-node-info-box');
+            if (infoBoxElement) {
+                const infoBoxBounds = infoBoxElement.getBoundingClientRect();
+                const infoBoxRect = _coordsToRect(
+                    infoBoxBounds.left,
+                    infoBoxBounds.top,
+                    infoBoxBounds.width,
+                    infoBoxBounds.height
+                );
+
+                if (_doBoxesOverlap(proposedRect, infoBoxRect, -4)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * This function is responsible to calculate the position of the box
+     * it handles all the checks like whether the element is in viewport or not
+     * whether they overlap with the element or some other internal boxes
+     *
+     * @param {DOMElement} element - the DOM element that was clicked
+     * @param {String} boxType - the type of the box ('info-box' or 'options-box')
+     * @param {Object} boxInstance - the instance of the box
+     * @returns {{leftPos: number, topPos: number}}
+     */
+    function _calcBoxPosition(element, boxType, boxInstance) {
+        // Default fallback (invisible to user)
+        const fallbackPos = { leftPos: -1000, topPos: -1000 };
+
+        // Get the box element to determine dimensions
+        const boxSelector = boxType === 'info-box' ? '.phoenix-node-info-box' : '.phoenix-more-options-box';
+        const boxElement = boxInstance._shadow &&
+            boxInstance._shadow.querySelector(boxSelector);
+
+        if (!boxElement) {
+            return fallbackPos;
+        }
+
+        const boxDimensions = boxElement.getBoundingClientRect();
+        const verticalOffset = 6;   // Space above/below element
+        const horizontalOffset = 8; // Space left/right of element
+
+        // Define position priority order for each box type
+        const POSITION_PRIORITIES = {
+            'info-box': [
+                'top-left',
+                'left',
+                'right',
+                'bottom-left',
+                'inside-top-left'
+            ],
+            'options-box': [
+                'top-right',
+                'right',
+                'left',
+                'bottom-right',
+                'inside-top-right'
+            ]
+        };
+
+        const positions = POSITION_PRIORITIES[boxType];
+
+        // Try each position in priority order
+        for (let position of positions) {
+            const coords = _getCoordinatesForPosition(
+                position,
+                element,
+                boxDimensions,
+                verticalOffset,
+                horizontalOffset
+            );
+
+            // For 'inside' positions, always use them as last resort
+            if (position.startsWith('inside-')) {
+                return coords;
+            }
+
+            // Check if this position is valid
+            if (_isPositionValid(coords.leftPos, coords.topPos, boxDimensions, element, boxType)) {
+                return coords;
+            }
+        }
+
+        // Should never reach here as 'inside' position should always be tried
+        return fallbackPos;
+    }
 
     /**
      * This is for the advanced DOM options that appears when a DOM element is clicked
@@ -1414,13 +1709,13 @@ function RemoteFunctions(config = {}) {
     NodeMoreOptionsBox.prototype = {
         _registerDragDrop: function() {
             // disable dragging on all elements and then enable it on the current element
-            const allElements = document.querySelectorAll('[data-brackets-id]');
+            const allElements = document.querySelectorAll(`[${GLOBALS.DATA_BRACKETS_ID_ATTR}]`);
             allElements.forEach(el => el.setAttribute("draggable", "false"));
             this.element.setAttribute("draggable", "true");
 
             this.element.addEventListener("dragstart", (event) => {
                 event.stopPropagation();
-                event.dataTransfer.setData("text/plain", this.element.getAttribute("data-brackets-id"));
+                event.dataTransfer.setData("text/plain", this.element.getAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR));
                 _dragStartChores(this.element);
                 _clearDropMarkers();
                 window._currentDraggedElement = this.element;
@@ -1440,29 +1735,9 @@ function RemoteFunctions(config = {}) {
             });
         },
 
-        _getBoxPosition: function(boxWidth, boxHeight) {
-            const elemBounds = this.element.getBoundingClientRect();
-            const offset = _screenOffset(this.element);
-
-            let topPos = offset.top - boxHeight - 6; // 6 for just some little space to breathe
-            let leftPos = offset.left + elemBounds.width - boxWidth;
-
-            // Check if the box would go off the top of the viewport
-            if (elemBounds.top - boxHeight < 6) {
-                topPos = offset.top + elemBounds.height + 6;
-            }
-
-            // Check if the box would go off the left of the viewport
-            if (leftPos < 0) {
-                leftPos = offset.left;
-            }
-
-            return {topPos: topPos, leftPos: leftPos};
-        },
-
         _style: function() {
             this.body = window.document.createElement("div");
-            this.body.setAttribute("data-phcode-internal-c15r5a9", "true");
+            this.body.setAttribute(GLOBALS.PHCODE_INTERNAL_ATTR, "true");
 
             // this is shadow DOM.
             // we need it because if we add the box directly to the DOM then users style might override it.
@@ -1484,91 +1759,47 @@ function RemoteFunctions(config = {}) {
             // Only include select parent option if element supports it
             if (showSelectParentOption) {
                 content += `<span data-action="select-parent" title="${config.strings.selectParent}">
-                    ${ICONS.arrowUp}
+                    ${config.icons.arrowUp}
                 </span>`;
             }
 
             // Only include edit text option if element supports it
             if (showEditTextOption) {
                 content += `<span data-action="edit-text" title="${config.strings.editText}">
-                    ${ICONS.edit}
+                    ${config.icons.edit}
+                </span>`;
+            }
+
+            // if its a link element, we show the edit hyperlink icon
+            if (this.element && this.element.tagName.toLowerCase() === 'a') {
+                content += `<span data-action="edit-hyperlink" title="${config.strings.editHyperlink}">
+                    ${config.icons.link}
                 </span>`;
             }
 
             // if its an image element, we show the image gallery icon
             if (this.element && this.element.tagName.toLowerCase() === 'img') {
                 content += `<span data-action="image-gallery" title="${config.strings.imageGallery}">
-                    ${ICONS.imageGallery}
+                    ${config.icons.imageGallery}
                 </span>`;
             }
 
             // Always include duplicate and delete options
             content += `<span data-action="duplicate" title="${config.strings.duplicate}">
-                    ${ICONS.duplicate}
+                    ${config.icons.duplicate}
                 </span>
                 <span data-action="delete" title="${config.strings.delete}">
-                    ${ICONS.trash}
+                    ${config.icons.trash}
+                </span>
+                <span data-action="more-options" title="${config.strings.moreOptions}">
+                    ${config.icons.verticalEllipsis}
                 </span>
             </div>`;
 
-            let styles = `
-                :host {
-                  all: initial !important;
-                }
-
-                .phoenix-more-options-box {
-                    background-color: #4285F4 !important;
-                    color: white !important;
-                    border-radius: 3px !important;
-                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) !important;
-                    font-size: 12px !important;
-                    font-family: Arial, sans-serif !important;
-                    z-index: 2147483646 !important;
-                    position: absolute !important;
-                    left: -1000px;
-                    top: -1000px;
-                    box-sizing: border-box !important;
-                }
-
-                .node-options {
-                    display: flex !important;
-                    align-items: center !important;
-                }
-
-                .node-options span {
-                    padding: 4px 3.9px !important;
-                    cursor: pointer !important;
-                    display: flex !important;
-                    align-items: center !important;
-                    border-radius: 0 !important;
-                }
-
-                .node-options span:first-child {
-                    border-radius: 3px 0 0 3px !important;
-                }
-
-                .node-options span:last-child {
-                    border-radius: 0 3px 3px 0 !important;
-                }
-
-                .node-options span:hover {
-                    background-color: rgba(255, 255, 255, 0.15) !important;
-                }
-
-                .node-options span > svg {
-                    width: 16px !important;
-                    height: 16px !important;
-                    display: block !important;
-                }
-            `;
-
+            let styles = config.styles.optionsBox;
             // to highlight that in a different color, to show the selected state
             if (imageGallerySelected) {
-                styles += `
-                    .node-options span[data-action="image-gallery"] {
-                      background-color: rgba(255, 255, 255, 0.25) !important;
-                    }
-                `;
+                styles += config.styles.optionsBoxImageGallerySelected;
             }
 
             // add everything to the shadow box
@@ -1579,26 +1810,23 @@ function RemoteFunctions(config = {}) {
         create: function() {
             this.remove(); // remove existing box if already present
 
-            // this check because when there is no element visible to the user, we don't want to show the box
-            // for ex: when user clicks on a 'x' button and the button is responsible to hide a panel
-            // then clicking on that button shouldn't show the more options box
-            // also covers cases where elements are inside closed/collapsed menus
-            if(!isElementVisible(this.element)) {
+            // isElementVisible is used to check if the element is visible to the user
+            // because there might be cases when element is inside a closed/collapsed menu
+            // then in that case we don't want to show the box
+            if(config.mode !== 'edit' || !isElementVisible(this.element)) {
                 return;
             }
 
             this._style(); // style the box
-
             window.document.body.appendChild(this.body);
 
-            // get the actual rendered dimensions of the box and then we reposition it to the actual place
+            // initially when we append the box the body, we position it by -1000px on top as well as left
+            // then we get the actual rendered dimensions of the box and then we reposition it to the actual place
             const boxElement = this._shadow.querySelector('.phoenix-more-options-box');
             if (boxElement) {
-                const boxRect = boxElement.getBoundingClientRect();
-                const pos = this._getBoxPosition(boxRect.width, boxRect.height);
-
-                boxElement.style.left = pos.leftPos + 'px';
-                boxElement.style.top = pos.topPos + 'px';
+                const boxPos = _calcBoxPosition(this.element, 'options-box', this);
+                boxElement.style.left = boxPos.leftPos + 'px';
+                boxElement.style.top = boxPos.topPos + 'px';
             }
 
             // add click handler to all the buttons
@@ -1607,11 +1835,22 @@ function RemoteFunctions(config = {}) {
                 span.addEventListener('click', (event) => {
                     event.stopPropagation();
                     event.preventDefault();
-                    // data-action is to differentiate between the buttons (duplicate, delete or select-parent)
+                    // data-action is to differentiate between the buttons (duplicate, delete, select-parent etc)
                     const action = event.currentTarget.getAttribute('data-action');
-                    handleOptionClick(event, action, this.element);
-                    if (action !== 'duplicate') {
-                        this.remove();
+
+                    if (action === 'more-options') {
+                        // to toggle the dropdown on more options button click
+                        if (_moreOptionsDropdown) {
+                            _moreOptionsDropdown.remove();
+                        } else {
+                            _moreOptionsDropdown = new MoreOptionsDropdown(this.element, event.currentTarget);
+                        }
+                    } else {
+                        handleOptionClick(event, action, this.element);
+                        // as we don't want to remove the options box on duplicate button click
+                        if (action !== 'duplicate') {
+                            this.remove();
+                        }
                     }
                 });
             });
@@ -1628,6 +1867,331 @@ function RemoteFunctions(config = {}) {
         }
     };
 
+    /**
+     * This shows a floating input box above the element which allows you to edit the link of the 'a' tag
+     */
+    function HyperlinkEditor(element) {
+        this.element = element;
+        this.remove = this.remove.bind(this);
+        this.create();
+    }
+
+    HyperlinkEditor.prototype = {
+        create: function() {
+            const currentHref = this.element.getAttribute('href') || '';
+
+            // Create shadow DOM container
+            this.body = document.createElement('div');
+            this.body.setAttribute(GLOBALS.PHCODE_INTERNAL_ATTR, "true");
+            document.body.appendChild(this.body);
+
+            const shadow = this.body.attachShadow({ mode: 'open' });
+
+            // Create input HTML + styles
+            const html = `
+                <style>
+                    ${config.styles.hyperlinkEditor}
+                </style>
+                <div class="hyperlink-input-box">
+                    <div class="link-icon" title="${currentHref.trim() || config.strings.hyperlinkNoHref}">
+                        ${config.icons.link}
+                    </div>
+                    <input type="text" value="${currentHref.trim()}" placeholder="https://example.com" spellcheck="false" />
+                </div>
+            `;
+
+            shadow.innerHTML = html;
+            this._shadow = shadow;
+
+            this._positionInput();
+
+            // setup the event listeners
+            const input = shadow.querySelector('input');
+            input.focus();
+            input.select();
+
+            input.addEventListener('keydown', (e) => this._handleKeydown(e));
+            input.addEventListener('blur', () => this._handleBlur());
+        },
+
+        _positionInput: function() {
+            const inputBoxElement = this._shadow.querySelector('.hyperlink-input-box');
+            if (!inputBoxElement) {
+                return;
+            }
+
+            const boxRect = inputBoxElement.getBoundingClientRect();
+            const elemBounds = this.element.getBoundingClientRect();
+            const offset = _screenOffset(this.element);
+
+            let topPos = offset.top - boxRect.height - 6;
+            let leftPos = offset.left + elemBounds.width - boxRect.width;
+
+            // If would go off top, position below
+            if (elemBounds.top - boxRect.height < 6) {
+                topPos = offset.top + elemBounds.height + 6;
+            }
+
+            // If would go off left, align left
+            if (leftPos < 0) {
+                leftPos = offset.left;
+            }
+
+            inputBoxElement.style.left = leftPos + 'px';
+            inputBoxElement.style.top = topPos + 'px';
+        },
+
+        _handleKeydown: function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                this._save();
+            } else if (event.key === 'Escape') {
+                event.preventDefault();
+                dismissHyperlinkEditor();
+            }
+        },
+
+        _handleBlur: function() {
+            setTimeout(() => this._save(), 100);
+        },
+
+        _save: function() {
+            const input = this._shadow.querySelector('input');
+            const newHref = input.value.trim();
+            const oldHref = this.element.getAttribute('href') || '';
+
+            if (newHref !== oldHref) {
+                this.element.setAttribute('href', newHref);
+
+                const tagId = this.element.getAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
+                window._Brackets_MessageBroker.send({
+                    livePreviewEditEnabled: true,
+                    livePreviewHyperlinkEdit: true,
+                    element: this.element,
+                    tagId: Number(tagId),
+                    newHref: newHref
+                });
+            }
+
+            this.remove();
+        },
+
+        remove: function() {
+            if (this.body && this.body.parentNode) {
+                this.body.parentNode.removeChild(this.body);
+                this.body = null;
+            }
+        }
+    };
+
+    /**
+     * this is called when user clicks on the Show Ruler lines option in the more options dropdown
+     * @param {Event} event - click event
+     * @param {MoreOptionsDropdown} dropdown - the dropdown instance
+     */
+    function _handleToggleRulerLines(event, dropdown) {
+        config.showRulerLines = !config.showRulerLines;
+
+        window._Brackets_MessageBroker.send({
+            livePreviewEditEnabled: true,
+            type: "toggleRulerLines",
+            enabled: config.showRulerLines
+        });
+
+        // toggle checkmark visibility in the dropdown
+        const checkmark = dropdown._shadow.querySelector('[data-action="toggle-ruler-lines"] .item-checkmark');
+        if (checkmark) {
+            checkmark.style.visibility = config.showRulerLines ? 'visible' : 'hidden';
+        }
+
+        // to apply the ruler lines or remove it when option is toggled
+        if (config.showRulerLines && previouslyClickedElement) {
+            if (!_currentRulerLines) {
+                _currentRulerLines = new RulerLines(previouslyClickedElement);
+            }
+        } else {
+            if (_currentRulerLines) {
+                _currentRulerLines.remove();
+                _currentRulerLines = null;
+            }
+        }
+    }
+
+    /**
+     * the more options dropdown which appears when user clicks on the ellipsis button in the options box
+     */
+    function MoreOptionsDropdown(targetElement, ellipsisButton) {
+        this.targetElement = targetElement;
+        this.ellipsisButton = ellipsisButton;
+        this.remove = this.remove.bind(this);
+        this.create();
+    }
+
+    MoreOptionsDropdown.prototype = {
+        _getDropdownPosition: function(dropdownWidth, dropdownHeight) {
+            const buttonBounds = this.ellipsisButton.getBoundingClientRect();
+            const viewportHeight = window.innerHeight;
+            const viewportWidth = window.innerWidth;
+
+            const optionsBox = _nodeMoreOptionsBox._shadow.querySelector(".phoenix-more-options-box");
+            const optionsBoxBounds = optionsBox.getBoundingClientRect();
+            const targetElementBounds = this.targetElement.getBoundingClientRect();
+
+            let topPos, leftPos;
+
+            const checkOverlap = function (dTop, dLeft, dWidth, dHeight) {
+                const dropdownRight = dLeft + dWidth;
+                const dropdownBottom = dTop + dHeight;
+                const elemRight = targetElementBounds.left + targetElementBounds.width;
+                const elemBottom = targetElementBounds.top + targetElementBounds.height;
+
+                return !(
+                    dLeft > elemRight ||
+                    dropdownRight < targetElementBounds.left ||
+                    dTop > elemBottom ||
+                    dropdownBottom < targetElementBounds.top
+                );
+            };
+
+            const isOptionsBoxAboveElement = optionsBoxBounds.bottom < targetElementBounds.top;
+
+            if (isOptionsBoxAboveElement) {
+                const spaceAbove = optionsBoxBounds.top;
+
+                if (spaceAbove >= dropdownHeight + 6) {
+                    topPos = optionsBoxBounds.top + window.pageYOffset - dropdownHeight - 6;
+                } else {
+                    topPos = optionsBoxBounds.bottom + window.pageYOffset + 6;
+
+                    const tempTop = optionsBoxBounds.bottom;
+                    const tempLeft = buttonBounds.right - dropdownWidth;
+
+                    if (checkOverlap(tempTop, tempLeft, dropdownWidth, dropdownHeight)) {
+                        let shiftedLeft = targetElementBounds.right + 6;
+                        if (shiftedLeft + dropdownWidth <= viewportWidth - 6) {
+                            leftPos = shiftedLeft + window.pageXOffset;
+                            return { topPos: topPos, leftPos: leftPos };
+                        }
+
+                        shiftedLeft = targetElementBounds.left - dropdownWidth - 6;
+                        if (shiftedLeft >= 6) {
+                            leftPos = shiftedLeft + window.pageXOffset;
+                            return { topPos: topPos, leftPos: leftPos };
+                        }
+                    }
+                }
+            } else {
+                const spaceBelow = viewportHeight - optionsBoxBounds.bottom;
+
+                if (spaceBelow >= dropdownHeight + 6) {
+                    topPos = optionsBoxBounds.bottom + window.pageYOffset + 6;
+                } else {
+                    topPos = optionsBoxBounds.top + window.pageYOffset - dropdownHeight - 6;
+                }
+            }
+
+            leftPos = buttonBounds.right + window.pageXOffset - dropdownWidth;
+
+            if (leftPos < 6) {
+                leftPos = 6;
+            }
+
+            if (leftPos + dropdownWidth > viewportWidth - 6) {
+                leftPos = viewportWidth - dropdownWidth - 6;
+            }
+
+            return { topPos: topPos, leftPos: leftPos };
+        },
+
+        _style: function() {
+            this.body = window.document.createElement("div");
+            this.body.setAttribute(GLOBALS.PHCODE_INTERNAL_ATTR, "true");
+
+            const shadow = this.body.attachShadow({ mode: "open" });
+
+            let content = `
+                <div class="more-options-dropdown">
+                    <div class="dropdown-item" data-action="cut">
+                        <span class="item-icon">${config.icons.cut}</span>
+                        <span class="item-label">${config.strings.cut}</span>
+                    </div>
+                    <div class="dropdown-item" data-action="copy">
+                        <span class="item-icon">${config.icons.copy}</span>
+                        <span class="item-label">${config.strings.copy}</span>
+                    </div>
+                    <div class="dropdown-item" data-action="paste">
+                        <span class="item-icon">${config.icons.paste}</span>
+                        <span class="item-label">${config.strings.paste}</span>
+                    </div>
+                    <div class="dropdown-separator"></div>
+                    <div class="dropdown-item" data-action="toggle-ruler-lines">
+                        <span class="item-icon">${config.icons.ruler}</span>
+                        <span class="item-label show-ruler-label">${config.strings.showRulerLines}</span>
+                        <span class="item-checkmark" style="visibility: ${config.showRulerLines ? 'visible' : 'hidden'}">${config.icons.check}</span>
+                    </div>
+                </div>
+            `;
+
+            let styles = config.styles.optionsBoxDropdown;
+            shadow.innerHTML = `<style>${styles}</style><div class="phoenix-dropdown">${content}</div>`;
+            this._shadow = shadow;
+        },
+
+        create: function() {
+            this.remove();
+            this._style();
+            window.document.body.appendChild(this.body);
+
+            // to position the dropdown element at the right position
+            const dropdownElement = this._shadow.querySelector('.phoenix-dropdown');
+            if (dropdownElement) {
+                const dropdownRect = dropdownElement.getBoundingClientRect();
+                const pos = this._getDropdownPosition(dropdownRect.width, dropdownRect.height);
+
+                dropdownElement.style.left = pos.leftPos + 'px';
+                dropdownElement.style.top = pos.topPos + 'px';
+            }
+
+            // click handlers for the dropdown items
+            const items = this._shadow.querySelectorAll('.dropdown-item');
+            items.forEach(item => {
+                item.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    event.preventDefault();
+                    const action = event.currentTarget.getAttribute('data-action');
+
+                    if (action === 'toggle-ruler-lines') {
+                        // when ruler lines option is clicked we need to keep the dropdown open
+                        _handleToggleRulerLines(event, this);
+                    } else {
+                        // for other options, we close both the dropdown as well as the options box
+                        handleOptionClick(event, action, this.targetElement);
+                        this.remove();
+                        if (_nodeMoreOptionsBox) {
+                            _nodeMoreOptionsBox.remove();
+                        }
+                    }
+                });
+            });
+        },
+
+        remove: function() {
+            if (this.body && this.body.parentNode && this.body.parentNode === window.document.body) {
+                window.document.body.removeChild(this.body);
+                this.body = null;
+                _moreOptionsDropdown = null;
+            }
+        },
+
+        refresh: function() {
+            // update the checkmark visibility when config changes
+            const checkmark = this._shadow.querySelector('[data-action="toggle-ruler-lines"] .item-checkmark');
+            if (checkmark) {
+                checkmark.style.visibility = config.showRulerLines ? 'visible' : 'hidden';
+            }
+        }
+    };
+
     // Node info box to display DOM node ID and classes on hover
     function NodeInfoBox(element) {
         this.element = element;
@@ -1636,113 +2200,9 @@ function RemoteFunctions(config = {}) {
     }
 
     NodeInfoBox.prototype = {
-        _checkOverlap: function(nodeInfoBoxPos, nodeInfoBoxDimensions) {
-            if (_nodeMoreOptionsBox && _nodeMoreOptionsBox._shadow) {
-                const moreOptionsBoxElement = _nodeMoreOptionsBox._shadow.querySelector('.phoenix-more-options-box');
-                if (moreOptionsBoxElement) {
-                    const moreOptionsBoxOffset = _screenOffset(moreOptionsBoxElement);
-                    const moreOptionsBoxRect = moreOptionsBoxElement.getBoundingClientRect();
-
-                    const infoBox = {
-                        left: nodeInfoBoxPos.leftPos,
-                        top: nodeInfoBoxPos.topPos,
-                        right: nodeInfoBoxPos.leftPos + nodeInfoBoxDimensions.width,
-                        bottom: nodeInfoBoxPos.topPos + nodeInfoBoxDimensions.height
-                    };
-
-                    const moreOptionsBox = {
-                        left: moreOptionsBoxOffset.left,
-                        top: moreOptionsBoxOffset.top,
-                        right: moreOptionsBoxOffset.left + moreOptionsBoxRect.width,
-                        bottom: moreOptionsBoxOffset.top + moreOptionsBoxRect.height
-                    };
-
-                    const isOverlapping = !(infoBox.right < moreOptionsBox.left ||
-                             moreOptionsBox.right < infoBox.left ||
-                             infoBox.bottom < moreOptionsBox.top ||
-                             moreOptionsBox.bottom < infoBox.top);
-
-                    return isOverlapping;
-                }
-            }
-            return false;
-        },
-
-        _getBoxPosition: function(boxDimensions, overlap = false) {
-            const elemBounds = this.element.getBoundingClientRect();
-            const offset = _screenOffset(this.element);
-            let topPos = 0;
-            let leftPos = 0;
-
-            if (overlap) {
-                topPos = offset.top + 2;
-                leftPos = offset.left + elemBounds.width + 6; // positioning at the right side
-
-                // Check if overlap position would go off the right of the viewport
-                if (leftPos + boxDimensions.width > window.innerWidth) {
-                    leftPos = offset.left - boxDimensions.width - 6; // positioning at the left side
-
-                    if (leftPos < 0) { // if left positioning not perfect, position at bottom
-                        topPos = offset.top + elemBounds.height + 6;
-                        leftPos = offset.left;
-
-                        // if bottom position not perfect, move at top above the more options box
-                        if (elemBounds.bottom + 6 + boxDimensions.height > window.innerHeight) {
-                            topPos = offset.top - boxDimensions.height - 34; // 34 is for moreOptions box height
-                            leftPos = offset.left;
-                        }
-                    }
-                }
-            } else {
-                topPos = offset.top - boxDimensions.height - 6; // 6 for just some little space to breathe
-                leftPos = offset.left;
-
-                if (elemBounds.top - boxDimensions.height < 6) {
-                    // check if placing the box below would cause viewport height increase
-                    // we need this or else it might cause a flickering issue
-                    // read this to know why flickering occurs:
-                    // when we hover over the bottom part of a tall element, the info box appears below it.
-                    // this increases the live preview height, which makes the cursor position relatively
-                    // higher due to content shift. the cursor then moves out of the element boundary,
-                    // ending the hover state. this makes the info box disappear, decreasing the height
-                    // back, causing the cursor to fall back into the element, restarting the hover cycle.
-                    // this creates a continuous flickering loop.
-                    const bottomPosition = offset.top + elemBounds.height + 6;
-                    const wouldIncreaseViewportHeight = bottomPosition + boxDimensions.height > window.innerHeight;
-
-                    // we only need to use floating position during hover mode (not on click mode)
-                    const isHoverMode = shouldShowHighlightOnHover();
-                    const shouldUseFloatingPosition = wouldIncreaseViewportHeight && isHoverMode;
-
-                    if (shouldUseFloatingPosition) {
-                        // float over element at bottom-right to prevent layout shift during hover
-                        topPos = offset.top + elemBounds.height - boxDimensions.height - 6;
-                        leftPos = offset.left + elemBounds.width - boxDimensions.width;
-
-                        // make sure it doesn't go off-screen
-                        if (leftPos < 0) {
-                            leftPos = offset.left; // align to left edge of element
-                        }
-                        if (topPos < 0) {
-                            topPos = offset.top + 6; // for the top of element
-                        }
-                    } else {
-                        topPos = bottomPosition;
-                    }
-                }
-
-                // Check if the box would go off the right of the viewport
-                if (leftPos + boxDimensions.width > window.innerWidth) {
-                    leftPos = window.innerWidth - boxDimensions.width - 10;
-                }
-            }
-
-            return {topPos: topPos, leftPos: leftPos};
-        },
-
         _style: function() {
             this.body = window.document.createElement("div");
-            this.body.setAttribute("data-phcode-internal-c15r5a9", "true");
+            this.body.setAttribute(GLOBALS.PHCODE_INTERNAL_ATTR, "true");
 
             // this is shadow DOM.
             // we need it because if we add the box directly to the DOM then users style might override it.
@@ -1784,107 +2244,56 @@ function RemoteFunctions(config = {}) {
                 content += "</div>";
             }
 
-            // initially, we place our info box -1000px to the top but at the right left pos. this is done so that
-            // we can take the text-wrapping inside the info box in account when calculating the height
-            // after calculating the height of the box, we place it at the exact position above the element
-            const offset = _screenOffset(this.element);
-            const leftPos = offset.left;
+            // for 'a' tags we also show the href
+            if (this.element.tagName.toLowerCase() === 'a') {
+                let href = this.element.getAttribute('href');
+                if (href && href.trim()) {
+                    let displayHref = href.trim();
+
+                    // this is just to safeguard from very large URLs. 35 char limit should be fine
+                    if (displayHref.length > 35) {
+                        displayHref = displayHref.substring(0, 35) + '...';
+                    }
+                    content += `<div class='href-info'>${config.icons.link} ${displayHref}</div>`;
+                }
+            }
 
             // if element is non-editable we use gray bg color in info box, otherwise normal blue color
-            const bgColor = this.element.hasAttribute('data-brackets-id') ? '#4285F4' : '#3C3F41';
+            const bgColor = this.element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR) ? '#4285F4' : '#3C3F41';
 
-            const styles = `
-                :host {
-                  all: initial !important;
-                }
-
-                .phoenix-node-info-box {
-                    background-color: ${bgColor} !important;
-                    color: white !important;
-                    border-radius: 3px !important;
-                    padding: 5px 8px !important;
-                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) !important;
-                    font-size: 12px !important;
-                    font-family: Arial, sans-serif !important;
-                    z-index: 2147483646 !important;
-                    position: absolute !important;
-                    left: ${leftPos}px;
-                    top: -1000px;
-                    max-width: 300px !important;
-                    box-sizing: border-box !important;
-                    pointer-events: none !important;
-                }
-
-                .tag-line {
-                    display: flex !important;
-                    align-items: baseline !important;
-                    justify-content: space-between !important;
-                }
-
-                .tag-name {
-                    font-weight: bold !important;
-                }
-
-                .elem-dimensions {
-                    font-size: 9px !important;
-                    font-weight: 500 !important;
-                    opacity: 0.9 !important;
-                    margin-left: 7px !important;
-                    flex-shrink: 0 !important;
-                }
-
-                .id-name,
-                .class-name {
-                    margin-top: 3px !important;
-                }
-
-                .exceeded-classes {
-                    opacity: 0.8 !important;
-                }
+            // add everything to the shadow box with CSS variables for dynamic color
+            shadow.innerHTML = `
+                <style>
+                    ${config.styles.infoBox}
+                    :host {
+                        --info-box-bg-color: ${bgColor};
+                    }
+                </style>
+                <div class="phoenix-node-info-box">${content}</div>
             `;
-
-            // add everything to the shadow box
-            shadow.innerHTML = `<style>${styles}</style><div class="phoenix-node-info-box">${content}</div>`;
             this._shadow = shadow;
         },
 
         create: function() {
             this.remove(); // remove existing box if already present
 
-            if(!config.isProUser) {
-                return;
-            }
-
-            // this check because when there is no element visible to the user, we don't want to show the box
-            // for ex: when user clicks on a 'x' button and the button is responsible to hide a panel
-            // then clicking on that button shouldn't show the more options box
-            // also covers cases where elements are inside closed/collapsed menus
-            if(!isElementVisible(this.element)) {
+            // isElementVisible is used to check if the element is visible to the user
+            // because there might be cases when element is inside a closed/collapsed menu
+            // then in that case we don't want to show the box
+            if(config.mode !== 'edit' || !isElementVisible(this.element)) {
                 return;
             }
 
             this._style(); // style the box
-
             window.document.body.appendChild(this.body);
 
-            // get the actual rendered height of the box and then we reposition it to the actual place
+            // initially when we append the box the body, we position it by -1000px on top as well as left
+            // and then once its added to the body then we reposition it to the actual place
             const boxElement = this._shadow.querySelector('.phoenix-node-info-box');
             if (boxElement) {
-                const nodeInfoBoxDimensions = {
-                    height: boxElement.getBoundingClientRect().height,
-                    width: boxElement.getBoundingClientRect().width
-                };
-                const nodeInfoBoxPos = this._getBoxPosition(nodeInfoBoxDimensions, false);
-
-                boxElement.style.left = nodeInfoBoxPos.leftPos + 'px';
-                boxElement.style.top = nodeInfoBoxPos.topPos + 'px';
-
-                const isBoxOverlapping = this._checkOverlap(nodeInfoBoxPos, nodeInfoBoxDimensions);
-                if(isBoxOverlapping) {
-                    const newPos = this._getBoxPosition(nodeInfoBoxDimensions, true);
-                    boxElement.style.left = newPos.leftPos + 'px';
-                    boxElement.style.top = newPos.topPos + 'px';
-                }
+                const boxPos = _calcBoxPosition(this.element, 'info-box', this);
+                boxElement.style.left = boxPos.leftPos + 'px';
+                boxElement.style.top = boxPos.topPos + 'px';
             }
         },
 
@@ -1927,7 +2336,7 @@ function RemoteFunctions(config = {}) {
 
         _style: function() {
             this.body = window.document.createElement("div");
-            this.body.setAttribute("data-phcode-internal-c15r5a9", "true");
+            this.body.setAttribute(GLOBALS.PHCODE_INTERNAL_ATTR, "true");
             // using shadow dom so that user styles doesn't override it
             const shadow = this.body.attachShadow({ mode: "open" });
 
@@ -1955,116 +2364,6 @@ function RemoteFunctions(config = {}) {
                 boxHeight = 140;
             }
 
-            const styles = `
-                :host {
-                  all: initial !important;
-                }
-
-                .phoenix-ai-prompt-box {
-                    position: absolute !important;
-                    background: #3C3F41 !important;
-                    border: 1px solid #4285F4 !important;
-                    border-radius: 4px !important;
-                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
-                    font-family: Arial, sans-serif !important;
-                    z-index: 2147483647 !important;
-                    width: ${boxWidth}px !important;
-                    padding: 0 !important;
-                    box-sizing: border-box !important;
-                }
-
-                .phoenix-ai-prompt-input-container {
-                    position: relative !important;
-                }
-
-                .phoenix-ai-prompt-textarea {
-                    width: 100% !important;
-                    height: ${boxHeight}px !important;
-                    border: none !important;
-                    border-radius: 4px 4px 0 0 !important;
-                    padding: 12px 40px 12px 16px !important;
-                    font-size: 14px !important;
-                    font-family: Arial, sans-serif !important;
-                    resize: none !important;
-                    outline: none !important;
-                    box-sizing: border-box !important;
-                    background: transparent !important;
-                    color: #c5c5c5 !important;
-                    transition: background 0.2s ease !important;
-                }
-
-                .phoenix-ai-prompt-textarea:focus {
-                    background: rgba(255, 255, 255, 0.03) !important;
-                }
-
-                .phoenix-ai-prompt-textarea::placeholder {
-                    color: #a0a0a0 !important;
-                    opacity: 0.7 !important;
-                }
-
-                .phoenix-ai-prompt-send-button {
-                    background-color: transparent !important;
-                    border: 1px solid transparent !important;
-                    color: #a0a0a0 !important;
-                    border-radius: 4px !important;
-                    cursor: pointer !important;
-                    padding: 3px 6px !important;
-                    display: flex !important;
-                    align-items: center !important;
-                    justify-content: center !important;
-                    font-size: 14px !important;
-                    transition: all 0.2s ease !important;
-                }
-
-                .phoenix-ai-prompt-send-button:hover:not(:disabled) {
-                    border: 1px solid rgba(0, 0, 0, 0.24) !important;
-                    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
-                }
-
-                .phoenix-ai-prompt-send-button:disabled {
-                    opacity: 0.5 !important;
-                    cursor: not-allowed !important;
-                }
-
-                .phoenix-ai-bottom-controls {
-                    border-top: 1px solid rgba(255,255,255,0.14) !important;
-                    padding: 8px 16px !important;
-                    background: transparent !important;
-                    border-radius: 0 0 4px 4px !important;
-                    display: flex !important;
-                    align-items: center !important;
-                    justify-content: space-between !important;
-                }
-
-                .phoenix-ai-model-select {
-                    padding: 4px 8px !important;
-                    border: 1px solid transparent !important;
-                    border-radius: 4px !important;
-                    font-size: 12px !important;
-                    background: transparent !important;
-                    color: #a0a0a0 !important;
-                    outline: none !important;
-                    cursor: pointer !important;
-                    transition: all 0.2s ease !important;
-                }
-
-                .phoenix-ai-model-select:hover {
-                    border: 1px solid rgba(0, 0, 0, 0.24) !important;
-                    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
-                }
-
-                .phoenix-ai-model-select:focus {
-                    border: 1px solid rgba(0, 0, 0, 0.24) !important;
-                    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
-                }
-
-                .phoenix-ai-model-select option {
-                    background: #000 !important;
-                    color: #fff !important;
-                    padding: 4px 8px !important;
-                }
-            `;
-
             const content = `
                 <div class="phoenix-ai-prompt-box">
                     <div class="phoenix-ai-prompt-input-container">
@@ -2080,13 +2379,22 @@ function RemoteFunctions(config = {}) {
                             <option value="slow">Slow AI</option>
                         </select>
                         <button class="phoenix-ai-prompt-send-button" disabled>
-                            ${ICONS.paperPlane}
+                            ${config.icons.paperPlane}
                         </button>
                     </div>
                 </div>
             `;
 
-            shadow.innerHTML = `<style>${styles}</style>${content}`;
+            shadow.innerHTML = `
+                <style>
+                    ${config.styles.aiPromptBox}
+                    :host {
+                        --ai-box-width: ${boxWidth}px;
+                        --ai-box-height: ${boxHeight}px;
+                    }
+                </style>
+                ${content}
+            `;
             this._shadow = shadow;
         },
 
@@ -2168,7 +2476,7 @@ function RemoteFunctions(config = {}) {
             if(!isElementEditable(element)) {
                 return;
             }
-            const tagId = element.getAttribute("data-brackets-id");
+            const tagId = element.getAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
 
             window._Brackets_MessageBroker.send({
                 livePreviewEditEnabled: true,
@@ -2201,9 +2509,6 @@ function RemoteFunctions(config = {}) {
         }
     };
 
-    // image ribbon gallery cache, to store the last query and its results
-    const CACHE_EXPIRY_TIME = 168 * 60 * 60 * 1000; // 7 days, might need to revise this...
-    const CACHE_MAX_IMAGES = 50; // max number of images that we store in the localStorage
     const _imageGalleryCache = {
         get currentQuery() {
             const data = this._getFromStorage();
@@ -2262,7 +2567,7 @@ function RemoteFunctions(config = {}) {
                 const newData = {
                     ...current,
                     ...updates,
-                    expires: Date.now() + CACHE_EXPIRY_TIME
+                    expires: Date.now() + GLOBALS.CACHE_EXPIRY_TIME
                 };
                 window.localStorage.setItem('imageGalleryCache', JSON.stringify(newData));
             } catch (error) {
@@ -2288,7 +2593,6 @@ function RemoteFunctions(config = {}) {
         this.currentPage = 1;
         this.totalPages = 1;
         this.allImages = [];
-        this.imagesPerPage = 10;
         this.scrollPosition = 0;
 
         this.create();
@@ -2297,398 +2601,19 @@ function RemoteFunctions(config = {}) {
     ImageRibbonGallery.prototype = {
         _style: function () {
             this.body = window.document.createElement("div");
-            this.body.setAttribute("data-phcode-internal-c15r5a9", "true");
+            this.body.setAttribute(GLOBALS.PHCODE_INTERNAL_ATTR, "true");
             this._shadow = this.body.attachShadow({ mode: 'open' });
 
             this._shadow.innerHTML = `
                 <style>
-                    .phoenix-image-gallery-container {
-                        position: fixed !important;
-                        bottom: 0 !important;
-                        left: 50% !important;
-                        transform: translateX(-50%) !important;
-                        width: calc(100% - 24px) !important;
-                        max-width: 1160px !important;
-                        background-color: #2c2c2c !important;
-                        border-radius: 6px 6px 0 0 !important;
-                        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial !important;
-                        border: 2px solid rgba(255, 255, 255, 0.3) !important;
-                        border-bottom: none !important;
-                        box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.3) !important;
-                        z-index: 2147483647 !important;
-                        overflow: hidden !important;
-                    }
-
-                    .phoenix-image-gallery-header {
-                        display: flex !important;
-                        padding: 10px 8px 6px 8px !important;
-                    }
-
-                    .phoenix-image-gallery-header-title {
-                        display: flex !important;
-                        align-items: center !important;
-                        color: #a0a0a0 !important;
-                        gap: 3px !important;
-                        font-size: 14px !important;
-                        margin-bottom: 2px !important;
-                        margin-right: 10px !important;
-                    }
-
-                    @media (max-width: 565px) {
-                        .phoenix-image-gallery-header-title {
-                            display: none !important;
-                        }
-                    }
-
-                    .phoenix-image-gallery-header-icon {
-                        height: 16px !important;
-                        width: 18px !important;
-                        display: flex !important;
-                        align-items: center !important;
-                        justify-content: center !important;
-                    }
-
-                    .phoenix-image-gallery-header-icon svg {
-                        display: block !important;
-                        vertical-align: middle !important;
-                    }
-
-                    .phoenix-image-gallery-header-text {
-                        line-height: 1 !important;
-                        display: flex !important;
-                        align-items: center !important;
-                    }
-
-                    .phoenix-image-gallery-search-container {
-                        display: flex !important;
-                        align-items: center !important;
-                    }
-
-                    .search-wrapper {
-                        position: relative !important;
-                        margin-right: 6px !important;
-                    }
-
-                    .search-wrapper input {
-                        padding: 5px 4px 6px 36px !important;
-                        border-radius: 4px !important;
-                        border: none !important;
-                        background-color: #1e1e1e !important;
-                        color: #e0e0e0 !important;
-                    }
-
-                    .search-wrapper .search-icon {
-                        position: absolute !important;
-                        left: 6px !important;
-                        top: 55% !important;
-                        transform: translateY(-50%) !important;
-                        background: none !important;
-                        border: none !important;
-                        color: #aaa !important;
-                        cursor: pointer !important;
-                    }
-
-                    .search-wrapper .search-icon:hover {
-                        color: #e0e0e0 !important;
-                    }
-
-                    .search-wrapper input:focus {
-                        outline: 1px solid #3a8ef6 !important;
-                    }
-
-                    @media (max-width: 350px) {
-                        .search-wrapper input {
-                            width: 100px !important;
-                        }
-                    }
-
-                    .phoenix-image-gallery-upload-container button {
-                        display: flex !important;
-                        align-items: center !important;
-                        gap: 2px !important;
-                        background: transparent !important;
-                        color: #a0a0a0 !important;
-                        border: none !important;
-                        border-radius: 3px !important;
-                        padding: 3px 8px 3px 3px !important;
-                        margin-top: 1px !important;
-                        font-size: 12px !important;
-                        cursor: pointer !important;
-                    }
-
-                    .phoenix-image-gallery-upload-container button:hover {
-                        background: #3c3f41 !important;
-                    }
-
-                    @media (max-width: 450px) {
-                        .phoenix-image-gallery-upload-container button {
-                            font-size: 0 !important;
-                            padding: 3px 5px 3px 6px !important;
-                        }
-
-                        .phoenix-image-gallery-upload-container button svg {
-                            font-size: 16px !important;
-                        }
-                    }
-
-                    .phoenix-image-gallery-right-buttons {
-                        display: flex !important;
-                        align-items: center !important;
-                        gap: 3px !important;
-                        margin-left: auto !important;
-                        margin-bottom: 2px !important;
-                    }
-
-                    .phoenix-image-gallery-right-buttons button {
-                        display: flex !important;
-                        background: transparent !important;
-                        color: #a0a0a0 !important;
-                        border: none !important;
-                        border-radius: 3px !important;
-                        padding: 4px 8px !important;
-                        cursor: pointer !important;
-                    }
-
-                    .phoenix-image-gallery-right-buttons button:hover {
-                        background: #3c3f41 !important;
-                    }
-
-                    .phoenix-image-gallery-right-buttons svg {
-                        width: 16px !important;
-                        height: 16px !important;
-                    }
-
-                    .phoenix-image-gallery-strip {
-                        overflow: hidden !important;
-                        scroll-behavior: smooth !important;
-                        padding: 6px !important;
-                    }
-
-                    .phoenix-image-gallery-row {
-                        display: flex !important;
-                        gap: 5px !important;
-                    }
-
-                    .phoenix-ribbon-thumb {
-                        flex: 0 0 auto !important;
-                        width: 112px !important;
-                        height: 112px !important;
-                        border-radius: 4px !important;
-                        overflow: hidden !important;
-                        position: relative !important;
-                        cursor: pointer !important;
-                        outline: 1px solid rgba(255,255,255,0.08) !important;
-                        transition: transform 0.15s ease, outline-color 0.15s ease, box-shadow 0.15s ease !important;
-                        background: #0b0e14 !important;
-                    }
-
-                    .phoenix-ribbon-thumb img {
-                        width: 100% !important;
-                        height: 100% !important;
-                        object-fit: cover !important;
-                        display: block !important;
-                    }
-
-                    .phoenix-ribbon-thumb:hover {
-                        transform: translateY(-2px) scale(1.02) !important;
-                        outline-color: rgba(255,255,255,0.25) !important;
-                        box-shadow: 0 8px 18px rgba(0,0,0,0.36) !important;
-                    }
-
-                    .phoenix-image-gallery-nav {
-                        position: absolute !important;
-                        top: 50% !important;
-                        border-radius: 12px !important;
-                        border: 1px solid rgba(255,255,255,0.14) !important;
-                        color: #eaeaf0 !important;
-                        background: rgba(21,25,36,0.65) !important;
-                        cursor: pointer !important;
-                        font-size: 22px !important;
-                        font-weight: 600 !important;
-                        user-select: none !important;
-                        transition: all 0.2s ease !important;
-                        z-index: 2147483647 !important;
-                        padding: 2px 11px 7px 11px !important;
-                        display: none !important;
-                        align-items: center !important;
-                        justify-content: center !important;
-                        line-height: 1 !important;
-                        text-align: center !important;
-                    }
-
-                    .phoenix-image-gallery-nav:hover {
-                        background: rgba(21,25,36,0.85) !important;
-                        border-color: rgba(255,255,255,0.25) !important;
-                    }
-
-                    .phoenix-image-gallery-nav:active {
-                        transform: scale(0.95) !important;
-                    }
-
-                    .phoenix-image-gallery-nav.left {
-                        left: 15px !important;
-                    }
-
-                    .phoenix-image-gallery-nav.right {
-                        right: 15px !important;
-                    }
-
-                    .phoenix-image-gallery-loading {
-                        display: flex !important;
-                        align-items: center !important;
-                        justify-content: center !important;
-                        min-height: 112px !important;
-                        color: #eaeaf0 !important;
-                        font-size: 14px !important;
-                    }
-
-                    .phoenix-ribbon-error {
-                        display: flex !important;
-                        align-items: center !important;
-                        justify-content: center !important;
-                        min-height: 112px !important;
-                        color: #ff6b6b !important;
-                        font-size: 14px !important;
-                    }
-
-                    .phoenix-loading-more {
-                        display: flex !important;
-                        align-items: center !important;
-                        justify-content: center !important;
-                        min-width: 120px !important;
-                        min-height: 110px !important;
-                        margin-left: 2px !important;
-                        background: rgba(255,255,255,0.03) !important;
-                        border-radius: 8px !important;
-                        color: #e8eaf0 !important;
-                        font-size: 12px !important;
-                        border: 1px dashed rgba(255,255,255,0.1) !important;
-                    }
-
-                    .phoenix-ribbon-attribution {
-                        position: absolute !important;
-                        bottom: 6px !important;
-                        left: 6px !important;
-                        background: rgba(0,0,0,0.8) !important;
-                        color: white !important;
-                        padding: 4px 6px !important;
-                        border-radius: 5px !important;
-                        font-size: 10px !important;
-                        line-height: 1.2 !important;
-                        max-width: calc(100% - 12px) !important;
-                        text-shadow: 0 1px 2px rgba(0,0,0,0.9) !important;
-                        pointer-events: auto !important;
-                        opacity: 0 !important;
-                        transition: all 0.2s ease !important;
-                    }
-
-                    .phoenix-ribbon-attribution .photographer {
-                        display: block !important;
-                        font-weight: 500 !important;
-                        white-space: nowrap !important;
-                        overflow: hidden !important;
-                        text-overflow: ellipsis !important;
-                        color: white !important;
-                        text-decoration: none !important;
-                    }
-
-                    .phoenix-ribbon-attribution .photographer:hover {
-                        text-decoration: underline !important;
-                    }
-
-                    .phoenix-ribbon-attribution .source {
-                        display: block !important;
-                        font-size: 9px !important;
-                        opacity: 0.85 !important;
-                        color: white !important;
-                        text-decoration: none !important;
-                    }
-
-                    .phoenix-ribbon-attribution .source:hover {
-                        text-decoration: underline !important;
-                    }
-
-                    .phoenix-download-icon {
-                        position: absolute !important;
-                        top: 8px !important;
-                        right: 8px !important;
-                        background: rgba(0,0,0,0.7) !important;
-                        border: none !important;
-                        color: #eee !important;
-                        border-radius: 50% !important;
-                        width: 18px !important;
-                        height: 18px !important;
-                        padding: 4px !important;
-                        display: flex !important;
-                        align-items: center !important;
-                        justify-content: center !important;
-                        cursor: pointer !important;
-                        font-size: 16px !important;
-                        z-index: 2147483647 !important;
-                        transition: all 0.2s ease !important;
-                        pointer-events: none !important;
-                        opacity: 0 !important;
-                    }
-
-                    .phoenix-ribbon-thumb:hover .phoenix-download-icon {
-                        opacity: 1 !important;
-                        pointer-events: auto !important;
-                    }
-
-                    .phoenix-ribbon-thumb:hover .phoenix-ribbon-attribution {
-                        opacity: 1 !important;
-                    }
-
-                    .phoenix-ribbon-attribution:hover {
-                        opacity: 1 !important;
-                    }
-
-                    .phoenix-download-icon:hover {
-                        background: rgba(0,0,0,0.9) !important;
-                        transform: scale(1.1) !important;
-                    }
-
-                    .phoenix-ribbon-thumb.downloading {
-                        opacity: 0.6 !important;
-                        pointer-events: none !important;
-                    }
-
-                    .phoenix-download-indicator {
-                        position: absolute !important;
-                        top: 50% !important;
-                        left: 50% !important;
-                        transform: translate(-50%, -50%) !important;
-                        background: rgba(0, 0, 0, 0.8) !important;
-                        border-radius: 50% !important;
-                        width: 40px !important;
-                        height: 40px !important;
-                        display: flex !important;
-                        align-items: center !important;
-                        justify-content: center !important;
-                        z-index: 10 !important;
-                    }
-
-                    .phoenix-download-spinner {
-                        width: 20px !important;
-                        height: 20px !important;
-                        border: 2px solid rgba(255, 255, 255, 0.3) !important;
-                        border-top: 2px solid #fff !important;
-                        border-radius: 50% !important;
-                        animation: phoenix-spin 1s linear infinite !important;
-                    }
-
-                    @keyframes phoenix-spin {
-                        0% { transform: rotate(0deg); }
-                        100% { transform: rotate(360deg); }
-                    }
+                    ${config.styles.imageGallery}
                 </style>
-
 
                 <div class='phoenix-image-gallery-container'>
                     <div class='phoenix-image-gallery-header'>
                         <div class='phoenix-image-gallery-header-title'>
                             <div class='phoenix-image-gallery-header-icon'>
-                                ${ICONS.imageGallery}
+                                ${config.icons.imageGallery}
                             </div>
                             <div class='phoenix-image-gallery-header-text'>
                                 ${config.strings.imageGallery}
@@ -2697,7 +2622,7 @@ function RemoteFunctions(config = {}) {
 
                         <div class="phoenix-image-gallery-search-container">
                           <div class="search-wrapper">
-                            <button class="search-icon" title="${config.strings.imageGallerySearchButton}">${ICONS.search}</button>
+                            <button class="search-icon" title="${config.strings.imageGallerySearchButton}">${config.icons.search}</button>
                             <input
                               type="text"
                               placeholder="${config.strings.imageGallerySearchPlaceholder}"
@@ -2706,17 +2631,17 @@ function RemoteFunctions(config = {}) {
                         </div>
 
                         <div class='phoenix-image-gallery-upload-container'>
-                            <button title="${config.strings.imageGallerySelectFromComputerTooltip}">${ICONS.selectImageFromComputer} ${config.strings.imageGallerySelectFromComputer}</button>
+                            <button title="${config.strings.imageGallerySelectFromComputerTooltip}">${config.icons.selectImageFromComputer} ${config.strings.imageGallerySelectFromComputer}</button>
                             <input type="file" class="phoenix-file-input" accept="image/*" style="display: none !important;">
                         </div>
 
                         <div class='phoenix-image-gallery-right-buttons'>
                             <button class='phoenix-image-gallery-download-folder-button' title="${config.strings.imageGallerySelectDownloadFolder}">
-                                ${ICONS.folderSettings}
+                                ${config.icons.folderSettings}
                             </button>
 
                             <button class='phoenix-image-gallery-close-button' title="${config.strings.imageGalleryClose}">
-                                ${ICONS.close}
+                                ${config.icons.close}
                             </button>
                         </div>
                     </div>
@@ -2826,8 +2751,8 @@ function RemoteFunctions(config = {}) {
                 const currentImages = _imageGalleryCache.allImages || [];
                 const newImages = currentImages.concat(data.results);
 
-                if (newImages.length > CACHE_MAX_IMAGES) {
-                    _imageGalleryCache.allImages = newImages.slice(0, CACHE_MAX_IMAGES);
+                if (newImages.length > GLOBALS.CACHE_MAX_IMAGES) {
+                    _imageGalleryCache.allImages = newImages.slice(0, GLOBALS.CACHE_MAX_IMAGES);
                 } else {
                     _imageGalleryCache.allImages = newImages;
                 }
@@ -3076,7 +3001,7 @@ function RemoteFunctions(config = {}) {
                 folderSettingsButton.addEventListener('click', (e) => {
                     e.stopPropagation();
                     // send message to LivePreviewEdit to show folder selection dialog
-                    const tagId = this.element.getAttribute("data-brackets-id");
+                    const tagId = this.element.getAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
                     window._Brackets_MessageBroker.send({
                         livePreviewEditEnabled: true,
                         resetImageFolderSelection: true,
@@ -3186,7 +3111,7 @@ function RemoteFunctions(config = {}) {
                 const downloadIcon = window.document.createElement('div');
                 downloadIcon.className = 'phoenix-download-icon';
                 downloadIcon.title = config.strings.imageGalleryUseImage;
-                downloadIcon.innerHTML = ICONS.downloadImage;
+                downloadIcon.innerHTML = config.icons.downloadImage;
 
                 // when the image is clicked we download the image
                 thumbDiv.addEventListener('click', (e) => {
@@ -3246,7 +3171,7 @@ function RemoteFunctions(config = {}) {
         },
 
         _useImage: function(imageUrl, filename, extnName, isLocalFile, thumbDiv, downloadLocation) {
-            const tagId = this.element.getAttribute("data-brackets-id");
+            const tagId = this.element.getAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
             const downloadId = Date.now() + Math.random();
 
             const messageData = {
@@ -3368,6 +3293,76 @@ function RemoteFunctions(config = {}) {
         }
     };
 
+    /**
+     * hot corner class,
+     * to switch to preview mode and back
+     */
+    class HotCorner {
+        constructor() {
+            this.element = null;
+            this.button = null;
+            this.box = null;
+            this.wasPreviewMode = false;
+            this._setup();
+        }
+
+        _setup() {
+            const container = document.createElement("div");
+            container.setAttribute(GLOBALS.PHCODE_INTERNAL_ATTR, "true");
+
+            const shadow = container.attachShadow({ mode: "open" });
+
+            const content = `
+                <div class="phoenix-hot-corner">
+                    <div class="hot-corner-indicator"></div>
+                    <div class="hot-corner-box">
+                        <button class="hot-corner-play-btn"> ${config.icons.playButton} </button>
+                    </div>
+                </div>`;
+
+            shadow.innerHTML = `<style>${config.styles.hotCorner}</style>${content}`;
+
+            this.element = container;
+            this.button = shadow.querySelector(".hot-corner-play-btn");
+            this.box = shadow.querySelector(".hot-corner-box");
+
+            this.button.addEventListener("click", () => {
+                window._Brackets_MessageBroker.send({ livePreviewEditEnabled: true, type: "hotCornerPreviewToggle" });
+            });
+            document.body.appendChild(this.element);
+        }
+
+        updateState(isPreviewMode, showAnimation = false) {
+
+            if (isPreviewMode) {
+                this.button.classList.add("selected");
+
+                if (!this.wasPreviewMode && showAnimation && this.box) {
+                    this.box.classList.add("peek-animation");
+
+                    setTimeout(() => {
+                        if (this.box) {
+                            this.box.classList.remove("peek-animation");
+                        }
+                    }, 1200);
+                }
+            } else {
+                this.button.classList.remove("selected");
+            }
+            this.wasPreviewMode = isPreviewMode;
+        }
+
+        remove() {
+            if (this.element && this.element.parentNode) {
+                this.element.parentNode.removeChild(this.element);
+            }
+            this.element = null;
+            this.button = null;
+            this.box = null;
+        }
+    }
+
+
     function Highlight(color, trigger) {
         this.color = color;
         this.trigger = !!trigger;
@@ -3394,12 +3389,14 @@ function RemoteFunctions(config = {}) {
 
             highlight.trackingElement = element; // save which node are we highlighting
 
-            if (transitionDuration) {
-                animateHighlight(transitionDuration);
-            }
+            if (doAnimation) {
+                if (transitionDuration) {
+                    animateHighlight(transitionDuration);
+                }
 
-            if (animationDuration) {
-                animateHighlight(animationDuration);
+                if (animationDuration) {
+                    animateHighlight(animationDuration);
+                }
             }
 
             // Don't highlight elements with 0 width & height
@@ -3546,7 +3543,7 @@ function RemoteFunctions(config = {}) {
                 config.remoteHighlight.paddingStyling
             );
 
-            highlight.className = HIGHLIGHT_CLASSNAME;
+            highlight.className = GLOBALS.HIGHLIGHT_CLASSNAME;
 
             var offset = _screenOffset(element);
 
@@ -3562,7 +3559,7 @@ function RemoteFunctions(config = {}) {
                 "top": offset.top + "px",
                 "width": elementBounds.width + "px",
                 "height": elementBounds.height + "px",
-                "z-index": 2147483646,
+                "z-index": 2147483645,
                 "margin": 0,
                 "padding": 0,
                 "position": "absolute",
@@ -3626,7 +3623,7 @@ function RemoteFunctions(config = {}) {
         },
 
         clear: function () {
-            var i, highlights = window.document.querySelectorAll("." + HIGHLIGHT_CLASSNAME),
+            var i, highlights = window.document.querySelectorAll("." + GLOBALS.HIGHLIGHT_CLASSNAME),
                 body = window.document.body;
 
             for (i = 0; i < highlights.length; i++) {
@@ -3661,17 +3658,191 @@ function RemoteFunctions(config = {}) {
         }
     };
 
-    var _localHighlight;
-    var _hoverHighlight;
-    var _clickHighlight;
-    var _nodeInfoBox;
-    var _nodeMoreOptionsBox;
-    var _aiPromptBox;
-    var _imageRibbonGallery;
-    var _setup = false;
-    var _hoverLockTimer = null;
+    /**
+     * Ruler lines class, this creates the rulers across the edges of the element (hori as well as vert)
+     */
+    function RulerLines(element) {
+        this.element = element;
+        this.editable = element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
+
+        this.sides = ["left", "right", "top", "bottom"];
+        this.lineElements = {};
+        this.labelElements = {};
+
+        this.create();
+        this.update();
+    }
+
+    RulerLines.prototype = {
+        create: function() {
+            this.container = window.document.createElement("div");
+            this.container.setAttribute(GLOBALS.PHCODE_INTERNAL_ATTR, "true");
+
+            // Prevent ruler lines from extending document scroll area
+            // set container to match current document dimensions with overflow clip
+            this.container.style.position = "absolute";
+            this.container.style.top = "0";
+            this.container.style.left = "0";
+            this.container.style.width = document.documentElement.scrollWidth + "px";
+            this.container.style.height = document.documentElement.scrollHeight + "px";
+            this.container.style.overflow = "clip";
+            this.container.style.pointerEvents = "none";
+
+            const shadow = this.container.attachShadow({ mode: "open" });
+            this._shadow = shadow;
+
+            const lineClass = this.editable ? "phoenix-ruler-line-editable" : "phoenix-ruler-line-non-editable";
+            const labelClass = this.editable ? "phoenix-ruler-label-editable" : "phoenix-ruler-label-non-editable";
+
+            let html = "";
+            for (const side of this.sides) {
+                html += `<div class="phoenix-ruler-line ${lineClass}" data-side="${side}"></div>`;
+                html += `<div class="phoenix-ruler-label ${labelClass}" data-side="${side}"></div>`;
+            }
+
+            shadow.innerHTML = `
+                            <style>
+                                ${config.styles.ruler}
+                            </style>
+                            ${html}
+                        `;
+
+            window.document.body.appendChild(this.container);
+
+            this.lineElements = {
+                left: shadow.querySelector('.phoenix-ruler-line[data-side="left"]'),
+                right: shadow.querySelector('.phoenix-ruler-line[data-side="right"]'),
+                top: shadow.querySelector('.phoenix-ruler-line[data-side="top"]'),
+                bottom: shadow.querySelector('.phoenix-ruler-line[data-side="bottom"]')
+            };
+
+            this.labelElements = {
+                left: shadow.querySelector('.phoenix-ruler-label[data-side="left"]'),
+                right: shadow.querySelector('.phoenix-ruler-label[data-side="right"]'),
+                top: shadow.querySelector('.phoenix-ruler-label[data-side="top"]'),
+                bottom: shadow.querySelector('.phoenix-ruler-label[data-side="bottom"]')
+            };
+        },
+
+        update: function() {
+            if (!this.element) {
+                return;
+            }
+
+            const rect = this.element.getBoundingClientRect();
+            const scrollTop = window.pageYOffset;
+            const scrollLeft = window.pageXOffset;
+
+            const edges = {
+                left: rect.left + scrollLeft - 0.8,
+                right: rect.right + scrollLeft,
+                top: rect.top + scrollTop - 0.8,
+                bottom: rect.bottom + scrollTop
+            };
+
+            const docHeight = document.documentElement.scrollHeight;
+            const docWidth = document.documentElement.scrollWidth;
+
+            this.lineElements.left.style.width = "1px";
+            this.lineElements.left.style.height = docHeight + "px";
+            this.lineElements.left.style.left = edges.left + "px";
+            this.lineElements.left.style.top = "0px";
+
+            this.lineElements.right.style.width = "1px";
+            this.lineElements.right.style.height = docHeight + "px";
+            this.lineElements.right.style.left = edges.right + "px";
+            this.lineElements.right.style.top = "0px";
+
+            this.lineElements.top.style.height = "1px";
+            this.lineElements.top.style.width = docWidth + "px";
+            this.lineElements.top.style.top = edges.top + "px";
+            this.lineElements.top.style.left = "0px";
+
+            this.lineElements.bottom.style.height = "1px";
+            this.lineElements.bottom.style.width = docWidth + "px";
+            this.lineElements.bottom.style.top = edges.bottom + "px";
+            this.lineElements.bottom.style.left = "0px";
+
+            const x1 = Math.floor(edges.left + 1);
+            const x2 = x1 + rect.width;
+            const y1 = Math.floor(edges.top + 1);
+            const y2 = y1 + rect.height;
+
+            this.labelElements.left.textContent = Math.round(x1) + "px";
+            this.labelElements.right.textContent = Math.round(x2) + "px";
+            this.labelElements.top.textContent = Math.round(y1) + "px";
+            this.labelElements.bottom.textContent = Math.round(y2) + "px";
+
+            const LABEL_MARGIN = 6;
+
+            const THRESHOLD_Y = Math.min(150, window.innerHeight * 0.15);
+            const THRESHOLD_X = Math.min(150, window.innerWidth * 0.15);
+
+            const leftLabelWidth = this.labelElements.left.offsetWidth;
+            const rightLabelWidth = this.labelElements.right.offsetWidth;
+            const topLabelHeight = this.labelElements.top.offsetHeight;
+            const bottomLabelHeight = this.labelElements.bottom.offsetHeight;
+
+            let labelsVerticalPosition = scrollTop + 10;
+
+            if (rect.top < THRESHOLD_Y && rect.height < window.innerHeight - 2 * THRESHOLD_Y) {
+                labelsVerticalPosition = scrollTop + window.innerHeight - 30;
+            }
+
+            let leftLabelLeft = edges.left - leftLabelWidth - LABEL_MARGIN;
+            if (rect.left - leftLabelWidth - LABEL_MARGIN < LABEL_MARGIN) {
+                leftLabelLeft = edges.left + LABEL_MARGIN;
+            }
+            this.labelElements.left.style.left = leftLabelLeft + "px";
+            this.labelElements.left.style.top = labelsVerticalPosition + "px";
+
+            let rightLabelLeft = edges.right + LABEL_MARGIN;
+            if (rect.right + rightLabelWidth + LABEL_MARGIN > window.innerWidth - LABEL_MARGIN) {
+                rightLabelLeft = edges.right - rightLabelWidth - LABEL_MARGIN;
+            }
+            this.labelElements.right.style.left = rightLabelLeft + "px";
+            this.labelElements.right.style.top = labelsVerticalPosition + "px";
+
+            let labelsHorizontalPosition = scrollLeft + 10;
+
+            if (rect.left < THRESHOLD_X && rect.width < window.innerWidth - 2 * THRESHOLD_X) {
+                const maxLabelWidth = Math.max(
+                    this.labelElements.top.offsetWidth,
+                    this.labelElements.bottom.offsetWidth
+                );
+                labelsHorizontalPosition = scrollLeft + window.innerWidth - maxLabelWidth - 20;
+            }
+
+            let topLabelTop = edges.top - topLabelHeight - LABEL_MARGIN;
+            if (rect.top - topLabelHeight - LABEL_MARGIN < LABEL_MARGIN) {
+                topLabelTop = edges.top + LABEL_MARGIN;
+            }
+            this.labelElements.top.style.left = labelsHorizontalPosition + "px";
+            this.labelElements.top.style.top = topLabelTop + "px";
+
+            let bottomLabelTop = edges.bottom + LABEL_MARGIN;
+            if (rect.bottom + bottomLabelHeight + LABEL_MARGIN > window.innerHeight - LABEL_MARGIN) {
+                bottomLabelTop = edges.bottom - bottomLabelHeight - LABEL_MARGIN;
+            }
+            this.labelElements.bottom.style.left = labelsHorizontalPosition + "px";
+            this.labelElements.bottom.style.top = bottomLabelTop + "px";
+        },
+
+        remove: function() {
+            if (this.container && this.container.parentNode) {
+                window.document.body.removeChild(this.container);
+            }
+
+            this.container = null;
+            this._shadow = null;
+            this.lineElements = {};
+            this.labelElements = {};
+        }
+    };
 
     const DOWNLOAD_EVENTS = {
+        DIALOG_OPENED: 'dialogOpened',
+        DIALOG_CLOSED: 'dialogClosed',
         STARTED: 'downloadStarted',
         COMPLETED: 'downloadCompleted',
         CANCELLED: 'downloadCancelled',
@@ -3679,6 +3850,39 @@ function RemoteFunctions(config = {}) {
     };
 
     let _activeDownloads = new Map();
+    let _dialogOverlay = null;
+
+    function _showDialogOverlay() {
+        // don't create multiple overlays
+        if (_dialogOverlay) {
+            return;
+        }
+
+        // create overlay container
+        const overlay = window.document.createElement('div');
+        overlay.setAttribute(GLOBALS.PHCODE_INTERNAL_ATTR, 'true');
+
+        // use shadow DOM for style isolation
+        const shadow = overlay.attachShadow({ mode: 'open' });
+        const styles = config.styles.dialogOverlay;
+
+        const content = `
+            <div class="phoenix-dialog-overlay">
+                <div class="phoenix-dialog-message-bar">${config.strings.imageGalleryDialogOverlayMessage}</div>
+            </div>
+        `;
+
+        shadow.innerHTML = `<style>${styles}</style>${content}`;
+        window.document.body.appendChild(overlay);
+        _dialogOverlay = overlay;
+    }
+
+    function _hideDialogOverlay() {
+        if (_dialogOverlay && _dialogOverlay.parentNode) {
+            _dialogOverlay.parentNode.removeChild(_dialogOverlay);
+            _dialogOverlay = null;
+        }
+    }
 
     function handleDownloadEvent(eventType, data) {
         const downloadId = data && data.downloadId;
@@ -3686,6 +3890,18 @@ function RemoteFunctions(config = {}) {
             return;
         }
 
+        // handle dialog events (these don't require download to exist)
+        if (eventType === DOWNLOAD_EVENTS.DIALOG_OPENED) {
+            _showDialogOverlay();
+            return;
+        }
+
+        if (eventType === DOWNLOAD_EVENTS.DIALOG_CLOSED) {
+            _hideDialogOverlay();
+            return;
+        }
+
+        // handle download events (these require download to exist)
         const download = _activeDownloads.get(downloadId);
         if (!download) {
             return;
@@ -3822,6 +4038,7 @@ function RemoteFunctions(config = {}) {
      */
     function _selectElement(element) {
         dismissNodeMoreOptionsBox();
+        dismissMoreOptionsDropdown();
         dismissAIPromptBox();
         dismissNodeInfoBox();
         dismissToastMessage();
@@ -3848,38 +4065,45 @@ function RemoteFunctions(config = {}) {
 
         // if element is not editable and user clicks on it, then we show a toast notification saying
         // that this element is not editable
-        if (!element.hasAttribute("data-brackets-id")) {
-            showToastMessage(config.strings.toastNotEditable);
+        if (!element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR)) {
+            showToastMessage("notEditable");
         }
 
         // make sure that the element is actually visible to the user
         if (isElementVisible(element)) {
-            // Only show more options box for editable elements (have data-brackets-id)
+            // Only show more options box for editable elements
             if (isElementEditable(element)) {
                 _nodeMoreOptionsBox = new NodeMoreOptionsBox(element);
             }
             // Always show info box for inspectable elements
             _nodeInfoBox = new NodeInfoBox(element);
+
+            // show ruler lines (only when enabled)
+            if (config.showRulerLines) {
+                _currentRulerLines = new RulerLines(element);
+            }
         } else {
             // Element is hidden, so don't show UI boxes but still apply visual styling
             _nodeMoreOptionsBox = null;
         }
 
         element._originalOutline = element.style.outline;
-        element.style.outline = "1px solid #4285F4";
+        const outlineColor = element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR) ? "#4285F4" : "#3C3F41";
+        element.style.outline = `1px solid ${outlineColor}`;
 
         // Only apply background tint for editable elements (not for dynamic/read-only)
-        if (element.hasAttribute("data-brackets-id")) {
+        if (element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR)) {
             if (element._originalBackgroundColor === undefined) {
                 element._originalBackgroundColor = element.style.backgroundColor;
             }
             element.style.backgroundColor = "rgba(0, 162, 255, 0.2)";
         }
 
-        if (_hoverHighlight) {
-            _hoverHighlight.clear();
-            _hoverHighlight.add(element, true);
+        if (!_clickHighlight) {
+            _clickHighlight = new Highlight("#cfc");
         }
+        _clickHighlight.clear();
+        _clickHighlight.add(element, true);
 
         previouslyClickedElement = element;
     }
@@ -3890,7 +4114,7 @@ function RemoteFunctions(config = {}) {
     }
 
     function enableHoverListeners() {
-        if (config.isProUser && (config.highlight || shouldShowHighlightOnHover())) {
+        if (config.mode === 'edit' && (config.highlight || shouldShowHighlightOnHover())) {
             window.document.removeEventListener("mouseover", onElementHover);
             window.document.removeEventListener("mouseout", onElementHoverOut);
 
@@ -3916,36 +4140,98 @@ function RemoteFunctions(config = {}) {
     }
 
     /**
-     * This function handles the click event on the live preview DOM element
-     * this just stops the propagation because otherwise users might not be able to edit buttons or hyperlinks etc
-     * @param {Event} event
+     * this function is called when user clicks on an element in the LP when in edit mode
+     *
+     * @param {HTMLElement} element - The clicked element
+     * @param {Event} event - The click event
      */
-    function onClick(event) {
-        const element = event.target;
-
-        if(isElementInspectable(element)) {
-            event.preventDefault();
-            event.stopPropagation();
-            event.stopImmediatePropagation();
-
-            _selectElement(element);
-            activateHoverLock();
+    function handleElementClick(element, event) {
+        if (!isElementInspectable(element)) {
+            dismissUIAndCleanupState();
+            return;
         }
+
+        // if anything is currently selected, we need to clear that
+        const selection = window.getSelection();
+        if (selection && selection.toString().length > 0) {
+            selection.removeAllRanges();
+        }
+
+        // send cursor movement message to editor so cursor jumps to clicked element
+        if (element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR)) {
+            window._Brackets_MessageBroker.send({
+                "tagId": element.getAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR),
+                "nodeID": element.id,
+                "nodeClassList": element.classList,
+                "nodeName": element.nodeName,
+                "allSelectors": window.getAllInheritedSelectorsInOrder(element),
+                "contentEditable": element.contentEditable === "true",
+                "clicked": true
+            });
+        }
+
+        // call the selectElement as selectElement handles all the highlighting/boxes and all UI related stuff
+        _selectElement(element);
+        activateHoverLock();
     }
 
     /**
-     * this function handles the double click event
-     * @param {Event} event
+     * this acts as the "KILL SWITCH", it blocks all the click related events from user elements
+     * but we exclude all the phoenix interal elements
+     * we call this function from inside registerHandlers
      */
-    function onDoubleClick(event) {
-        const element = event.target;
-        if (isElementEditable(element)) {
-            // because we only want to allow double click text editing where we show the edit option
-            if (_shouldShowEditTextOption(element)) {
+    function registerInteractionBlocker() {
+        // Create an object to store handler references
+        _interactionBlockerHandlers = {};
+
+        const eventsToBlock = ["click", "dblclick"];
+
+        eventsToBlock.forEach(eventType => {
+            // Create a named handler function so we can remove it later
+            const handler = function(event) {
+                const element = event.target;
+
+                // WHITELIST: Allow Phoenix internal UI elements to work normally
+                if (element.closest(`[${GLOBALS.PHCODE_INTERNAL_ATTR}]`)) {
+                    return;
+                }
+
+                // BLOCK: Kill all user page interactions in edit mode
                 event.preventDefault();
-                event.stopPropagation();
-                startEditing(element);
-            }
+                event.stopImmediatePropagation();
+
+                // HANDLE: Process clicks and double-clicks for element selection/editing
+                if (eventType === "click") {
+                    // Skip click handling on the second click of a double-click
+                    // event.detail = 1 for first click, 2 for second click (during double-click)
+                    if (event.detail !== 2) {
+                        handleElementClick(element, event);
+                    }
+                } else if (eventType === "dblclick") {
+                    if (isElementEditable(element) && _shouldShowEditTextOption(element)) {
+                        startEditing(element);
+                    }
+                }
+            };
+
+            // Store the handler reference
+            _interactionBlockerHandlers[eventType] = handler;
+
+            // Register the handler in capture phase
+            window.document.addEventListener(eventType, handler, true);
+        });
+    }
+
+    /**
+     * this function is to remove all the interaction blocker
+     * this is needed when user is in preview/highlight mode
+     */
+    function unregisterInteractionBlocker() {
+        if (_interactionBlockerHandlers) {
+            Object.keys(_interactionBlockerHandlers).forEach(eventType => {
+                window.document.removeEventListener(eventType, _interactionBlockerHandlers[eventType], true);
+            });
+            _interactionBlockerHandlers = null;
         }
     }
 
@@ -3967,7 +4253,6 @@ function RemoteFunctions(config = {}) {
             window.document.addEventListener("mouseover", onMouseOver);
             window.document.addEventListener("mouseout", onMouseOut);
             window.document.addEventListener("mousemove", onMouseMove);
-            window.document.addEventListener("click", onClick);
             _localHighlight = new Highlight("#ecc", true);
             _setup = true;
         }
@@ -4060,10 +4345,18 @@ function RemoteFunctions(config = {}) {
         }
     }
 
+    // redraw ruler lines when element is selected
+    function redrawRulerLines() {
+        if (_currentRulerLines) {
+            _currentRulerLines.update();
+        }
+    }
+
     // just a wrapper function when we need to redraw highlights as well as UI boxes
     function redrawEverything() {
         redrawHighlights();
         redrawUIBoxes();
+        redrawRulerLines();
     }
 
     window.addEventListener("resize", redrawEverything);
@@ -4161,13 +4454,16 @@ function RemoteFunctions(config = {}) {
         // Document scrolls can be updated immediately. Any other scrolls
         // need to be updated on a timer to ensure the layout is correct.
         if (e.target === window.document) {
-            redrawHighlights();
+            redrawRulerLines();
             // need to dismiss the box if the elements are fixed, otherwise they drift at times
             _dismissBoxesForFixedElements();
             _repositionAIBox(); // and reposition the AI box
         } else {
-            if (_localHighlight || _clickHighlight || _hoverHighlight) {
+            if (_localHighlight) {
                 window.setTimeout(redrawHighlights, 0);
+            }
+            if (_currentRulerLines) {
+                window.setTimeout(redrawRulerLines, 0);
             }
             _dismissBoxesForFixedElements();
             _repositionAIBox();
@@ -4201,7 +4497,7 @@ function RemoteFunctions(config = {}) {
             return this.rememberedNodes[id];
         }
 
-        var results = this.htmlDocument.querySelectorAll("[data-brackets-id='" + id + "']");
+        var results = this.htmlDocument.querySelectorAll(`[${GLOBALS.DATA_BRACKETS_ID_ATTR}='${id}']`);
         return results && results[0];
     };
 
@@ -4266,18 +4562,18 @@ function RemoteFunctions(config = {}) {
         function prevIgnoringHighlights(node) {
             do {
                 node = node.previousSibling;
-            } while (node && node.className === HIGHLIGHT_CLASSNAME);
+            } while (node && node.className === GLOBALS.HIGHLIGHT_CLASSNAME);
             return node;
         }
         function nextIgnoringHighlights(node) {
             do {
                 node = node.nextSibling;
-            } while (node && node.className === HIGHLIGHT_CLASSNAME);
+            } while (node && node.className === GLOBALS.HIGHLIGHT_CLASSNAME);
             return node;
         }
         function lastChildIgnoringHighlights(node) {
             node = (node.childNodes.length ? node.childNodes.item(node.childNodes.length - 1) : null);
-            if (node && node.className === HIGHLIGHT_CLASSNAME) {
+            if (node && node.className === GLOBALS.HIGHLIGHT_CLASSNAME) {
                 node = prevIgnoringHighlights(node);
             }
             return node;
@@ -4403,7 +4699,7 @@ function RemoteFunctions(config = {}) {
                 Object.keys(edit.attributes).forEach(function (attr) {
                     childElement.setAttribute(attr, self._parseEntities(edit.attributes[attr]));
                 });
-                childElement.setAttribute("data-brackets-id", edit.tagID);
+                childElement.setAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR, edit.tagID);
 
                 if (!editIsSpecialTag) {
                     self._insertChildNode(targetElement, childElement, edit);
@@ -4425,11 +4721,39 @@ function RemoteFunctions(config = {}) {
         });
 
         this.rememberedNodes = {};
-        redrawEverything();
+
+        // this check makes sure that if the element is no more in the DOM then we remove it
+        if (previouslyClickedElement && !previouslyClickedElement.isConnected) {
+            dismissUIAndCleanupState();
+        } else {
+            redrawEverything();
+        }
     };
 
     function applyDOMEdits(edits) {
         _editHandler.apply(edits);
+    }
+
+    /**
+     * Handle ruler lines visibility toggle when config changes
+     * @param {Object} oldConfig - the prev config state
+     */
+    function _handleRulerLinesConfigChange(oldConfig) {
+        const rulerLinesChanged = oldConfig.showRulerLines !== config.showRulerLines;
+        if (rulerLinesChanged && previouslyClickedElement) {
+            if (config.showRulerLines) {
+                // if user turned it on: create ruler lines for the element
+                if (!_currentRulerLines) {
+                    _currentRulerLines = new RulerLines(previouslyClickedElement);
+                }
+            } else {
+                // if user turned it off: remove the lines
+                if (_currentRulerLines) {
+                    _currentRulerLines.remove();
+                    _currentRulerLines = null;
+                }
+            }
+        }
     }
 
     function updateConfig(newConfig) {
@@ -4441,14 +4765,27 @@ function RemoteFunctions(config = {}) {
             imageGallerySelected = config.imageGalleryState;
         }
 
+        // handle ruler lines visibility toggle and refresh the more options dropdown if its open
+        _handleRulerLinesConfigChange(oldConfig);
+        if (_moreOptionsDropdown) {
+            _moreOptionsDropdown.refresh();
+        }
+
         // Determine if configuration has changed significantly
         const oldHighlightMode = oldConfig.elemHighlights ? oldConfig.elemHighlights.toLowerCase() : "hover";
         const newHighlightMode = getHighlightMode();
         const highlightModeChanged = oldHighlightMode !== newHighlightMode;
-        const isProStatusChanged = oldConfig.isProUser !== config.isProUser;
+        const isModeChanged = oldConfig.mode !== config.mode;
         const highlightSettingChanged = oldConfig.highlight !== config.highlight;
+
+        // Update hot corner state when mode changes
+        // Show animation when mode changes to help users discover the feature
+        if (isModeChanged && _hotCorner) {
+            _hotCorner.updateState(config.mode === 'preview', true);
+        }
+
         // Handle configuration changes
-        if (highlightModeChanged || isProStatusChanged || highlightSettingChanged) {
+        if (highlightModeChanged || isModeChanged || highlightSettingChanged) {
             _handleConfigurationChange();
         }
 
@@ -4464,7 +4801,7 @@ function RemoteFunctions(config = {}) {
             _hoverHighlight.clear();
         }
         cleanupPreviousElementState();
-        const allElements = window.document.querySelectorAll("[data-brackets-id]");
+        const allElements = window.document.querySelectorAll(`[${GLOBALS.DATA_BRACKETS_ID_ATTR}]`);
         for (let i = 0; i < allElements.length; i++) {
             if (allElements[i]._originalBackgroundColor !== undefined) {
                 clearElementBackground(allElements[i]);
@@ -4479,21 +4816,10 @@ function RemoteFunctions(config = {}) {
     function _updateEventListeners() {
         window.document.removeEventListener("mouseover", onElementHover);
         window.document.removeEventListener("mouseout", onElementHoverOut);
-        if (config.highlight || (config.isProUser && shouldShowHighlightOnHover())) {
+        if (config.highlight || (config.mode === 'edit' && shouldShowHighlightOnHover())) {
             window.document.addEventListener("mouseover", onElementHover);
             window.document.addEventListener("mouseout", onElementHoverOut);
         }
-    }
-
-    /**
-     * This function checks if there are any live preview boxes currently visible
-     * @return {boolean} true if any boxes are visible, false otherwise
-     */
-    function hasVisibleLivePreviewBoxes() {
-        return _nodeMoreOptionsBox !== null ||
-                _nodeInfoBox !== null ||
-                _aiPromptBox !== null ||
-                previouslyClickedElement !== null;
     }
 
     /**
@@ -4503,6 +4829,16 @@ function RemoteFunctions(config = {}) {
         if (_nodeMoreOptionsBox) {
             _nodeMoreOptionsBox.remove();
             _nodeMoreOptionsBox = null;
+        }
+    }
+
+    /**
+     * Helper function to dismiss MoreOptionsDropdown if it exists
+     */
+    function dismissMoreOptionsDropdown() {
+        if (_moreOptionsDropdown) {
+            _moreOptionsDropdown.remove();
+            _moreOptionsDropdown = null;
         }
     }
 
@@ -4536,87 +4872,67 @@ function RemoteFunctions(config = {}) {
         }
     }
 
+    function dismissHyperlinkEditor() {
+        if (_hyperlinkEditor) {
+            _hyperlinkEditor.remove();
+            _hyperlinkEditor = null;
+        }
+    }
+
     /**
      * Helper function to dismiss all UI boxes at once
      */
     function dismissAllUIBoxes() {
         dismissNodeMoreOptionsBox();
+        dismissMoreOptionsDropdown();
         dismissAIPromptBox();
         dismissNodeInfoBox();
         dismissImageRibbonGallery();
+        dismissHyperlinkEditor();
         dismissToastMessage();
     }
 
     let _toastTimeout = null;
 
+    const TOAST_TYPE_MAPPING = {
+        notEditable: config.strings.toastNotEditable,
+        copyFirstTime: config.strings.toastCopyFirstTime
+    };
+
     /**
      * this function is to show a toast notification at the bottom center of the screen
      * this toast message is used when user tries to edit a non-editable element
-     * @param {String} message - the message to display in the toast
+     * @param {String} toastType - toastType determines the message to display in the toast
+     * @param {Number} duration - optional duration in milliseconds (default: 3000)
      */
-    function showToastMessage(message) {
+    function showToastMessage(toastType, duration = 3000) {
         // clear any existing toast & timer, if there are any
         dismissToastMessage();
 
         // create a new fresh toast container
         const toast = window.document.createElement('div');
         toast.id = 'phoenix-toast-notification';
-        toast.setAttribute("data-phcode-internal-c15r5a9", "true");
+        toast.setAttribute(GLOBALS.PHCODE_INTERNAL_ATTR, "true");
         const shadow = toast.attachShadow({ mode: 'open' });
 
-        const styles = `
-            :host {
-                all: initial !important;
-            }
-
-            .toast-container {
-                position: fixed !important;
-                bottom: 30px !important;
-                left: 50% !important;
-                transform: translateX(-50%) translateY(0) !important;
-                background-color: rgba(51, 51, 51, 0.95) !important;
-                color: white !important;
-                padding: 10px 14px !important;
-                border-radius: 6px !important;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
-                font-family: Arial, sans-serif !important;
-                font-size: 13px !important;
-                line-height: 1.4 !important;
-                z-index: 2147483647 !important;
-                text-align: center !important;
-                max-width: 90% !important;
-                box-sizing: border-box !important;
-                animation: slideUp 0.3s ease-out !important;
-            }
-
-            @keyframes slideUp {
-                from {
-                    opacity: 0;
-                    transform: translateY(20px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-        `;
+        const styles = config.styles.toastMessage;
 
         const content = `
             <div class="toast-container">
-                <div class="toast-message">${message}</div>
+                <div class="toast-message">${TOAST_TYPE_MAPPING[toastType]}</div>
             </div>
         `;
 
         shadow.innerHTML = `<style>${styles}</style>${content}`;
         window.document.body.appendChild(toast);
 
-        // Auto-dismiss after 3 seconds
+        // Auto-dismiss after the given time
         _toastTimeout = setTimeout(() => {
             if (toast && toast.parentNode) {
                 toast.remove();
             }
             _toastTimeout = null;
-        }, 3000);
+        }, duration);
     }
 
     /**
@@ -4651,6 +4967,11 @@ function RemoteFunctions(config = {}) {
                 _hoverHighlight.clear();
             }
 
+            if (_currentRulerLines) {
+                _currentRulerLines.remove();
+                _currentRulerLines = null;
+            }
+
             previouslyClickedElement = null;
         }
     }
@@ -4682,14 +5003,14 @@ function RemoteFunctions(config = {}) {
 
         dismissUIAndCleanupState();
 
-        const allElements = window.document.querySelectorAll("[data-brackets-id]");
+        const allElements = window.document.querySelectorAll(`[${GLOBALS.DATA_BRACKETS_ID_ATTR}]`);
         for (let i = 0; i < allElements.length; i++) {
             if (allElements[i]._originalBackgroundColor !== undefined) {
                 clearElementBackground(allElements[i]);
             }
         }
 
-        if (config.isProUser) {
+        if (config.mode === 'edit') {
             _hoverHighlight = new Highlight("#c8f9c5", true);
             _clickHighlight = new Highlight("#cfc", true);
         }
@@ -4706,6 +5027,84 @@ function RemoteFunctions(config = {}) {
         range.collapse(false);
         selection.removeAllRanges();
         selection.addRange(range);
+    }
+
+    /**
+     * gets the current selection as character offsets relative to the element's text content
+     *
+     * @param {Element} element - the contenteditable element
+     * @returns {Object|null} selection info with startOffset, endOffset, selectedText or null
+     */
+    function getSelectionInfo(element) {
+        const selection = window.getSelection();
+        if (!selection.rangeCount) {
+            return null;
+        }
+
+        const range = selection.getRangeAt(0);
+
+        // make sure selection is within the element we're editing
+        if (!element.contains(range.commonAncestorContainer)) {
+            return null;
+        }
+
+        // create a range from element start to selection start to calculate offset
+        const preSelectionRange = document.createRange();
+        preSelectionRange.selectNodeContents(element);
+        preSelectionRange.setEnd(range.startContainer, range.startOffset);
+
+        const startOffset = preSelectionRange.toString().length;
+        const selectedText = range.toString();
+        const endOffset = startOffset + selectedText.length;
+
+        return {
+            startOffset: startOffset,
+            endOffset: endOffset,
+            selectedText: selectedText
+        };
+    }
+
+    /**
+     * handles text formatting commands when user presses ctrl+b/i/u
+     * sends a message to backend to apply consistent formatting tags
+     * @param {Element} element - the contenteditable element
+     * @param {string} formatKey - the format key ('b', 'i', or 'u')
+     */
+    function handleFormatting(element, formatKey) {
+        const selection = getSelectionInfo(element);
+
+        // need an actual selection, not just cursor position
+        if (!selection || selection.startOffset === selection.endOffset) {
+            return;
+        }
+
+        const formatCommand = {
+            'b': 'bold',
+            'i': 'italic',
+            'u': 'underline'
+        }[formatKey];
+
+        if (!formatCommand) {
+            return;
+        }
+
+        const tagId = element.getAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
+        if (!tagId) {
+            return;
+        }
+
+        // send formatting message to backend
+        window._Brackets_MessageBroker.send({
+            livePreviewEditEnabled: true,
+            livePreviewFormatCommand: formatCommand,
+            tagId: Number(tagId),
+            element: element,
+            selection: selection,
+            currentHTML: element.innerHTML
+        });
+
+        // exit edit mode after applying format
+        finishEditingCleanup(element);
     }
 
     // Function to handle direct editing of elements in the live preview
@@ -4768,6 +5167,21 @@ function RemoteFunctions(config = {}) {
             } else if ((event.key === " " || event.key === "Spacebar") && element.tagName.toLowerCase() === 'button') {
                 event.preventDefault();
                 document.execCommand("insertText", false, " ");
+            } else if ((event.ctrlKey || event.metaKey) && (event.key === 'b' || event.key === 'i' || event.key === 'u')) {
+                // handle formatting commands (ctrl+b/i/u)
+                event.preventDefault();
+
+                // check if user has typed text that hasn't been saved yet
+                const currentContent = element.textContent;
+                const hasTextChanges = (oldContent !== currentContent);
+
+                // so if user already has some text changes, we just save that
+                // we do formatting only when there are no text changes
+                if (hasTextChanges) {
+                    finishEditing(element, true);
+                } else {
+                    handleFormatting(element, event.key);
+                }
             }
         }
 
@@ -4803,7 +5217,7 @@ function RemoteFunctions(config = {}) {
     function finishEditing(element, isEditSuccessful = true) {
         finishEditingCleanup(element);
 
-        const tagId = element.getAttribute("data-brackets-id");
+        const tagId = element.getAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR);
         window._Brackets_MessageBroker.send({
             livePreviewEditEnabled: true,
             livePreviewTextEdit: true,
@@ -4831,28 +5245,30 @@ function RemoteFunctions(config = {}) {
         // Always remove existing listeners first to avoid duplicates
         window.document.removeEventListener("mouseover", onElementHover);
         window.document.removeEventListener("mouseout", onElementHoverOut);
-        window.document.removeEventListener("click", onClick);
-        window.document.removeEventListener("dblclick", onDoubleClick);
         window.document.removeEventListener("dragover", onDragOver);
         window.document.removeEventListener("drop", onDrop);
         window.document.removeEventListener("dragleave", onDragLeave);
         window.document.removeEventListener("keydown", onKeyDown);
+        unregisterInteractionBlocker();
 
-        if (config.isProUser) {
+        if (config.mode === 'edit') {
             // Initialize hover highlight with Chrome-like colors
             _hoverHighlight = new Highlight("#c8f9c5", true); // Green similar to Chrome's padding color
 
             // Initialize click highlight with animation
             _clickHighlight = new Highlight("#cfc", true); // Light green for click highlight
 
+            // register the event handlers
             window.document.addEventListener("mouseover", onElementHover);
             window.document.addEventListener("mouseout", onElementHoverOut);
-            window.document.addEventListener("click", onClick);
-            window.document.addEventListener("dblclick", onDoubleClick);
             window.document.addEventListener("dragover", onDragOver);
             window.document.addEventListener("drop", onDrop);
             window.document.addEventListener("dragleave", onDragLeave);
             window.document.addEventListener("keydown", onKeyDown);
+
+            // this is to block all the interactions of the user created elements
+            // so that lets say user created link doesn't redirect in edit mode
+            registerInteractionBlocker();
         } else {
             // Clean up any existing UI when edit features are disabled
             dismissUIAndCleanupState();
@@ -4861,7 +5277,31 @@ function RemoteFunctions(config = {}) {
 
     registerHandlers();
 
+    // init the hot corner after the DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+            // make sure that also the configs are present
+            if (!_hotCorner && config.icons && config.styles) {
+                _hotCorner = new HotCorner();
+                _hotCorner.updateState(config.mode === 'preview');
+            }
+        });
+    } else {
+        // or if the DOM is already ready then init directly
+        setTimeout(() => {
+            if (!_hotCorner && config.icons && config.styles) {
+                _hotCorner = new HotCorner();
+                _hotCorner.updateState(config.mode === 'preview');
+            }
+        }, 0);
+    }
+
+    let customReturns = {};
+    // the below code comment is replaced by added scripts for extensibility
+    // REPLACE_WITH_ADDED_REMOTE_SCRIPTS
+
     return {
+        ...customReturns,
         "DOMEditHandler"        : DOMEditHandler,
         "hideHighlight"         : hideHighlight,
         "highlight"             : highlight,
@@ -4872,11 +5312,11 @@ function RemoteFunctions(config = {}) {
         "updateConfig"          : updateConfig,
         "startEditing"          : startEditing,
         "finishEditing"         : finishEditing,
-        "hasVisibleLivePreviewBoxes" : hasVisibleLivePreviewBoxes,
         "dismissUIAndCleanupState" : dismissUIAndCleanupState,
         "resetState"            : resetState,
         "enableHoverListeners" : enableHoverListeners,
         "registerHandlers" : registerHandlers,
-        "handleDownloadEvent" : handleDownloadEvent
+        "handleDownloadEvent" : handleDownloadEvent,
+        "showToastMessage" : showToastMessage
     };
 }

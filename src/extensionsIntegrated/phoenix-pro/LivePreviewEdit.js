@@ -1,22 +1,6 @@
 /*
- * GNU AGPL-3.0 License
- *
  * Copyright (c) 2021 - present core.ai . All rights reserved.
- * Original work Copyright (c) 2012 - 2021 Adobe Systems Incorporated. All rights reserved.
- *
- * This program is free software: you can redistribute it and/or modify it
- * under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
- * for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see https://opensource.org/licenses/AGPL-3.0.
- *
+ * Proprietary code, all rights reserved.
  */
 
 /*
@@ -30,6 +14,7 @@ define(function (require, exports, module) {
     const LiveDevelopment = require("LiveDevelopment/main");
     const CodeMirror = require("thirdparty/CodeMirror/lib/codemirror");
     const ProjectManager = require("project/ProjectManager");
+    const PreferencesManager = require("preferences/PreferencesManager");
     const CommandManager = require("command/CommandManager");
     const Commands = require("command/Commands");
     const FileSystem = require("filesystem/FileSystem");
@@ -40,13 +25,19 @@ define(function (require, exports, module) {
     const ProDialogs = require("services/pro-dialogs");
     const Mustache = require("thirdparty/mustache/mustache");
     const Strings = require("strings");
-    const ImageFolderDialogTemplate = require("text!htmlContent/image-folder-dialog.html");
+    const ImageFolderDialogTemplate = require("text!./html/image-folder-dialog.html");
+    const LiveDevProtocol = require("LiveDevelopment/MultiBrowserImpl/protocol/LiveDevProtocol");
 
     // state manager key, to save the download location of the image
     const IMAGE_DOWNLOAD_FOLDER_KEY = "imageGallery.downloadFolder";
     const IMAGE_DOWNLOAD_PERSIST_FOLDER_KEY = "imageGallery.persistFolder";
 
+    // state manager key for tracking if copy/cut toast has been shown
+    const COPY_CUT_TOAST_SHOWN_KEY = "livePreviewEdit.copyToastShown";
+
     const DOWNLOAD_EVENTS = {
+        DIALOG_OPENED: 'dialogOpened',
+        DIALOG_CLOSED: 'dialogClosed',
         STARTED: 'downloadStarted',
         COMPLETED: 'downloadCompleted',
         CANCELLED: 'downloadCancelled',
@@ -72,7 +63,7 @@ define(function (require, exports, module) {
      * we only care about text changes or things like newlines, <br>, or formatting like <b>, <i>, etc.
      *
      * Here's the basic idea:
-     * - Parse both old and new HTML strings into DOM trees
+     * - Parse both old and new HTML strings into document fragments using <template> elements
      * - Then walk both DOMs side by side and sync changes
      *
      * What we handle:
@@ -87,12 +78,14 @@ define(function (require, exports, module) {
      * This avoids the browser trying to “fix” broken HTML (which we don’t want)
      */
     function _syncTextContentChanges(oldContent, newContent) {
-        const parser = new DOMParser();
-        const oldDoc = parser.parseFromString(oldContent, "text/html");
-        const newDoc = parser.parseFromString(newContent, "text/html");
+        function parseFragment(html) {
+            const t = document.createElement("template");
+            t.innerHTML = html;
+            return t.content;
+        }
 
-        const oldRoot = oldDoc.body;
-        const newRoot = newDoc.body;
+        const oldRoot = parseFragment(oldContent);
+        const newRoot = parseFragment(newContent);
 
         // this function is to remove the phoenix internal attributes from leaking into the user's source code
         function cleanClonedElement(clonedElement) {
@@ -164,14 +157,285 @@ define(function (require, exports, module) {
             }
         }
 
-        const oldEls = Array.from(oldRoot.children);
-        const newEls = Array.from(newRoot.children);
+        const oldEls = Array.from(oldRoot.childNodes);
+        const newEls = Array.from(newRoot.childNodes);
 
         for (let i = 0; i < Math.min(oldEls.length, newEls.length); i++) {
             syncText(oldEls[i], newEls[i]);
         }
 
-        return oldRoot.innerHTML;
+        return Array.from(oldRoot.childNodes).map(node =>
+            node.outerHTML || node.textContent
+        ).join("");
+    }
+
+    /**
+     * builds a map of character positions to text nodes so we can find which nodes contain a selection
+     * @param {Element} element - the element to map
+     * @returns {Array} array of objects: { node, startOffset, endOffset }
+     */
+    function _buildTextNodeMap(element) {
+        const textNodeMap = [];
+        let currentOffset = 0;
+
+        function traverse(node) {
+            if (node.nodeType === Node.TEXT_NODE) {
+                const textLength = node.nodeValue.length;
+                textNodeMap.push({
+                    node: node,
+                    startOffset: currentOffset,
+                    endOffset: currentOffset + textLength
+                });
+                currentOffset += textLength;
+            } else if (node.nodeType === Node.ELEMENT_NODE) {
+                // recursively traverse child nodes
+                for (let child of node.childNodes) {
+                    traverse(child);
+                }
+            }
+        }
+
+        traverse(element);
+        return textNodeMap;
+    }
+
+    /**
+     * finds text nodes that overlap with the user's selection
+     * @param {Array} textNodeMap - the text node map from _buildTextNodeMap
+     * @param {Number} startOffset - selection start offset
+     * @param {Number} endOffset - selection end offset
+     * @returns {Array} array of objects: { node, localStart, localEnd, parentElement }
+     */
+    function _findSelectionNodes(textNodeMap, startOffset, endOffset) {
+        const selectionNodes = [];
+
+        for (let entry of textNodeMap) {
+            // check if this text node overlaps with the selection range
+            if (entry.endOffset > startOffset && entry.startOffset < endOffset) {
+                const localStart = Math.max(0, startOffset - entry.startOffset);
+                const localEnd = Math.min(entry.node.nodeValue.length, endOffset - entry.startOffset);
+
+                selectionNodes.push({
+                    node: entry.node,
+                    localStart: localStart,
+                    localEnd: localEnd,
+                    parentElement: entry.node.parentElement
+                });
+            }
+        }
+
+        return selectionNodes;
+    }
+
+    /**
+     * converts format command string to the actual HTML tag name we want to use
+     * @param {string} formatCommand - "bold", "italic", or "underline"
+     * @returns {string} tag name: "b", "i", or "u"
+     */
+    function _getFormatTag(formatCommand) {
+        const tagMap = {
+            'bold': 'b',
+            'italic': 'i',
+            'underline': 'u'
+        };
+        return tagMap[formatCommand] || null;
+    }
+
+    /**
+     * checks if a text node is already wrapped in a formatting tag by checking ancestors
+     * we stop at contenteditable boundary since that's the element being edited
+     * @param {Node} node - the text node to check
+     * @param {string} tagName - the tag name to look for (lowercase)
+     * @returns {Element|null} the wrapping element if found, null otherwise
+     */
+    function _isNodeWrappedInTag(node, tagName) {
+        let parent = node.parentElement;
+        while (parent) {
+            if (parent.tagName && parent.tagName.toLowerCase() === tagName) {
+                return parent;
+            }
+            // stop at the editable element boundary
+            if (parent.hasAttribute('contenteditable')) {
+                break;
+            }
+            parent = parent.parentElement;
+        }
+        return null;
+    }
+
+    /**
+     * wraps a portion of a text node in a formatting tag, splitting the text node if needed
+     * @param {Node} textNode - the text node to wrap
+     * @param {string} tagName - the formatting tag name (b, i, u)
+     * @param {Number} start - start offset within the text node
+     * @param {Number} end - end offset within the text node
+     */
+    function _wrapTextInTag(textNode, tagName, start, end) {
+        const text = textNode.nodeValue;
+        const before = text.substring(0, start);
+        const selected = text.substring(start, end);
+        const after = text.substring(end);
+
+        const parent = textNode.parentNode;
+        const formatElement = document.createElement(tagName);
+        formatElement.textContent = selected;
+
+        // replace the text node with before + formatted + after
+        const fragment = document.createDocumentFragment();
+        if (before) {
+            fragment.appendChild(document.createTextNode(before));
+        }
+        fragment.appendChild(formatElement);
+        if (after) {
+            fragment.appendChild(document.createTextNode(after));
+        }
+
+        parent.replaceChild(fragment, textNode);
+    }
+
+    /**
+     * removes a formatting tag by moving its children to its parent
+     * @param {Element} formatElement - the formatting element to unwrap
+     */
+    function _unwrapFormattingTag(formatElement) {
+        const parent = formatElement.parentNode;
+        while (formatElement.firstChild) {
+            parent.insertBefore(formatElement.firstChild, formatElement);
+        }
+        parent.removeChild(formatElement);
+    }
+
+    /**
+     * applies or removes formatting on the selected text nodes (toggle behavior)
+     * if all nodes are wrapped in the format tag, we remove it. otherwise we add it.
+     * @param {Array} selectionNodes - array of selected node info from _findSelectionNodes
+     * @param {string} formatTag - the format tag to apply/remove (b, i, or u)
+     */
+    function _applyFormatToNodes(selectionNodes, formatTag) {
+        // check if all selected nodes are already wrapped in the format tag
+        const allWrapped = selectionNodes.every(nodeInfo =>
+            _isNodeWrappedInTag(nodeInfo.node, formatTag)
+        );
+
+        if (allWrapped) {
+            // remove formatting (toggle OFF)
+            selectionNodes.forEach(nodeInfo => {
+                const wrapper = _isNodeWrappedInTag(nodeInfo.node, formatTag);
+                if (wrapper) {
+                    _unwrapFormattingTag(wrapper);
+                }
+            });
+        } else {
+            // apply formatting (toggle ON)
+            selectionNodes.forEach(nodeInfo => {
+                const { node, localStart, localEnd } = nodeInfo;
+
+                // skip if already wrapped
+                if (!_isNodeWrappedInTag(node, formatTag)) {
+                    // check if we need to format the entire node or just a portion
+                    if (localStart === 0 && localEnd === node.nodeValue.length) {
+                        // format entire node
+                        const formatElement = document.createElement(formatTag);
+                        const parent = node.parentNode;
+                        parent.insertBefore(formatElement, node);
+                        formatElement.appendChild(node);
+                    } else {
+                        // format partial node
+                        _wrapTextInTag(node, formatTag, localStart, localEnd);
+                    }
+                }
+            });
+        }
+    }
+
+    /**
+     * handles text formatting (bold, italic, underline) for selected text in live preview
+     * this is called when user presses ctrl+b/i/u in contenteditable mode
+     * @param {Object} message - message from frontend with format command and selection info
+     */
+    function _applyFormattingToSource(message) {
+        const editor = _getEditorAndValidate(message.tagId);
+        if (!editor) {
+            return;
+        }
+
+        const range = _getElementRange(editor, message.tagId);
+        if (!range) {
+            return;
+        }
+
+        const { startPos, endPos } = range;
+        const elementText = editor.document.getRange(startPos, endPos);
+
+        // parse the HTML from source using DOMParser
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(elementText, "text/html");
+        const targetElement = doc.body.firstElementChild;
+
+        if (!targetElement) {
+            return;
+        }
+
+        // if targetElement itself is an inline formatting tag (b, i, u, etc), we need to wrap it
+        // because when we toggle it off, the element gets removed and we lose the reference
+        const isInlineFormatTag = ['b', 'i', 'u', 'strong', 'em'].includes(
+            targetElement.tagName.toLowerCase()
+        );
+
+        let workingElement = targetElement;
+        let wrapperElement = null;
+
+        if (isInlineFormatTag) {
+            // wrap in temporary container so we don't lose content when element is removed
+            wrapperElement = doc.createElement('div');
+            wrapperElement.appendChild(targetElement);
+            workingElement = wrapperElement.firstElementChild;
+        }
+
+        // build text node map for finding which nodes contain the selection
+        const textNodeMap = _buildTextNodeMap(workingElement);
+
+        // validate selection bounds
+        if (!message.selection || message.selection.startOffset >= message.selection.endOffset) {
+            return;
+        }
+        const endOffset = textNodeMap[textNodeMap.length - 1] && textNodeMap[textNodeMap.length - 1].endOffset;
+
+        if (message.selection.endOffset > endOffset) {
+            return;
+        }
+
+        // find which text nodes contain the selection
+        const selectionNodes = _findSelectionNodes(
+            textNodeMap,
+            message.selection.startOffset,
+            message.selection.endOffset
+        );
+
+        if (selectionNodes.length === 0) {
+            return;
+        }
+
+        // get the format tag and apply/remove it
+        const formatTag = _getFormatTag(message.livePreviewFormatCommand);
+        if (!formatTag) {
+            return;
+        }
+
+        _applyFormatToNodes(selectionNodes, formatTag);
+
+        // serialize and replace in editor
+        let updatedHTML;
+        if (wrapperElement) {
+            // if we wrapped the element, get the wrapper's innerHTML
+            updatedHTML = wrapperElement.innerHTML;
+        } else {
+            updatedHTML = workingElement.outerHTML;
+        }
+
+        editor.document.batchOperation(function () {
+            editor.document.replaceRange(updatedHTML, startPos, endPos);
+        });
     }
 
     /**
@@ -310,6 +574,88 @@ define(function (require, exports, module) {
                 // if there is some text, we just add the duplicated text right next to it
                 editor.replaceRange(text, startPos);
             }
+        });
+    }
+
+    /**
+     * this saves the element to clipboard and deletes its source code
+     * @param {Number} tagId
+     */
+    function _cutElementToClipboard(tagId) {
+        const editor = _getEditorAndValidate(tagId);
+        if (!editor) {
+            return;
+        }
+
+        const range = _getElementRange(editor, tagId);
+        if (!range) {
+            return;
+        }
+
+        const { startPos, endPos } = range;
+        const text = editor.getTextBetween(startPos, endPos);
+
+        Phoenix.app.copyToClipboard(text);
+        _showCopyToastIfNeeded();
+
+        // delete the elements source code
+        editor.document.batchOperation(function () {
+            editor.replaceRange("", startPos, endPos);
+
+            // clean up any empty line
+            if(startPos.line !== 0 && !(editor.getLine(startPos.line).trim())) {
+                const prevLineText = editor.getLine(startPos.line - 1);
+                const chPrevLine = prevLineText ? prevLineText.length : 0;
+                editor.replaceRange("", {line: startPos.line - 1, ch: chPrevLine}, startPos);
+            }
+        });
+    }
+
+    function _copyElementToClipboard(tagId) {
+        const editor = _getEditorAndValidate(tagId);
+        if (!editor) {
+            return;
+        }
+
+        const range = _getElementRange(editor, tagId);
+        if (!range) {
+            return;
+        }
+
+        const { startPos, endPos } = range;
+        const text = editor.getTextBetween(startPos, endPos);
+
+        Phoenix.app.copyToClipboard(text);
+        _showCopyToastIfNeeded();
+    }
+
+    /**
+     * this function is to paste the clipboard content above the target element
+     * @param {Number} tagId
+     */
+    function _pasteElementFromClipboard(tagId) {
+        const editor = _getEditorAndValidate(tagId);
+        if (!editor) {
+            return;
+        }
+        const range = _getElementRange(editor, tagId);
+        if (!range) {
+            return;
+        }
+
+        const { startPos } = range;
+
+        Phoenix.app.clipboardReadText().then(text => {
+            if (!text) {
+                return;
+            }
+            // get the indentation in the target line and check if there is any real indentation
+            let indent = editor.getTextBetween({ line: startPos.line, ch: 0 }, startPos);
+            indent = indent.trim() === '' ? indent : '';
+
+            editor.replaceRange(text + '\n' + indent, startPos);
+        }).catch(err => {
+            console.error("Failed to read from clipboard:", err);
         });
     }
 
@@ -696,6 +1042,46 @@ define(function (require, exports, module) {
         }
     }
 
+    /**
+     * Updates the href attribute of an anchor tag in the src code
+     * @param {number} tagId - The data-brackets-id of the link element
+     * @param {string} newHrefValue - The new href value to set
+     */
+    function _updateHyperlinkHref(tagId, newHrefValue) {
+        const editor = _getEditorAndValidate(tagId);
+        if (!editor) {
+            return;
+        }
+
+        const range = _getElementRange(editor, tagId);
+        if (!range) {
+            return;
+        }
+
+        const { startPos, endPos } = range;
+        const elementText = editor.getTextBetween(startPos, endPos);
+
+        // parse it using DOM parser so that we can update the href attribute
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(elementText, "text/html");
+        const linkElement = doc.querySelector('a');
+
+        if (linkElement) {
+            linkElement.setAttribute('href', newHrefValue);
+            const updatedElementText = linkElement.outerHTML;
+
+            editor.document.batchOperation(function () {
+                editor.replaceRange(updatedElementText, startPos, endPos);
+            });
+
+            // dismiss all UI boxes including the image ribbon gallery
+            const currLiveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
+            if (currLiveDoc && currLiveDoc.protocol && currLiveDoc.protocol.evaluate) {
+                currLiveDoc.protocol.evaluate("_LD.dismissUIAndCleanupState()");
+            }
+        }
+    }
+
     function _sendDownloadStatusToBrowser(eventType, data) {
         const currLiveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
         if (currLiveDoc && currLiveDoc.protocol && currLiveDoc.protocol.evaluate) {
@@ -709,6 +1095,18 @@ define(function (require, exports, module) {
         console.error('something went wrong while download the image. error:', error);
         if (downloadId) {
             _sendDownloadStatusToBrowser(DOWNLOAD_EVENTS.ERROR, { downloadId: downloadId });
+        }
+    }
+
+    function _showCopyToastIfNeeded() {
+        const hasShownToast = StateManager.get(COPY_CUT_TOAST_SHOWN_KEY);
+        if (!hasShownToast) {
+            const currLiveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
+            if (currLiveDoc && currLiveDoc.protocol && currLiveDoc.protocol.evaluate) {
+                const evalString = `_LD.showToastMessage('copyFirstTime', 6000)`;
+                currLiveDoc.protocol.evaluate(evalString);
+                StateManager.set(COPY_CUT_TOAST_SHOWN_KEY, true);
+            }
         }
     }
 
@@ -1156,6 +1554,11 @@ define(function (require, exports, module) {
         const $suggestions = $dlg.find("#folder-suggestions");
         const $rememberCheckbox = $dlg.find("#remember-folder-checkbox");
 
+        // notify live preview that dialog is now open
+        if (message && message.downloadId) {
+            _sendDownloadStatusToBrowser(DOWNLOAD_EVENTS.DIALOG_OPENED, { downloadId: message.downloadId });
+        }
+
         let folderList = [];
         let rootFolders = [];
         let stringMatcher = null;
@@ -1164,12 +1567,32 @@ define(function (require, exports, module) {
         const shouldBeChecked = persistFolder !== false;
         $rememberCheckbox.prop('checked', shouldBeChecked);
 
-        _scanRootDirectoriesOnly(projectRoot, rootFolders).then(() => {
-            stringMatcher = new StringMatch.StringMatcher({ segmentedSearch: true });
-            _renderFolderSuggestions(rootFolders.slice(0, 15), $suggestions, $input);
-        });
+        // check if any folder path exists, we pre-fill it
+        const savedFolder = StateManager.get(IMAGE_DOWNLOAD_FOLDER_KEY, StateManager.PROJECT_CONTEXT);
+        if (savedFolder !== null && savedFolder !== undefined) {
+            $input.val(savedFolder);
+        }
 
-        _scanDirectories(projectRoot, '', folderList);
+        // we only scan root directories if we don't have a pre-filled value
+        if (!savedFolder) {
+            _scanRootDirectoriesOnly(projectRoot, rootFolders).then(() => {
+                stringMatcher = new StringMatch.StringMatcher({ segmentedSearch: true });
+                _renderFolderSuggestions(rootFolders.slice(0, 15), $suggestions, $input);
+            });
+        }
+
+        // scan all directories, and if we pre-filled a path, trigger autocomplete suggestions
+        _scanDirectories(projectRoot, '', folderList).then(() => {
+            // init stringMatcher if it wasn't created during root scan
+            if (!stringMatcher) {
+                stringMatcher = new StringMatch.StringMatcher({ segmentedSearch: true });
+            }
+            if (savedFolder) {
+                _updateFolderSuggestions(savedFolder, folderList, rootFolders, stringMatcher, $suggestions, $input);
+                // load root directories in background so they're ready when user clears input
+                _scanRootDirectoriesOnly(projectRoot, rootFolders);
+            }
+        });
 
         // input event handler
         $input.on('input', function() {
@@ -1206,6 +1629,12 @@ define(function (require, exports, module) {
                     _sendDownloadStatusToBrowser(DOWNLOAD_EVENTS.CANCELLED, { downloadId: message.downloadId });
                 }
             }
+
+            // notify live preview that dialog is now closed
+            if (message && message.downloadId) {
+                _sendDownloadStatusToBrowser(DOWNLOAD_EVENTS.DIALOG_CLOSED, { downloadId: message.downloadId });
+            }
+
             dialog.close();
         });
     }
@@ -1252,19 +1681,6 @@ define(function (require, exports, module) {
         }).catch(error => {
             _handleDownloadError(error, message.downloadId);
         });
-    }
-
-    /**
-     * Handles reset of image folder selection - clears the saved preference and shows the dialog
-     * @private
-     */
-    function _handleResetImageFolderSelection() {
-        // clear the saved folder preference for this project
-        StateManager.set(IMAGE_DOWNLOAD_FOLDER_KEY, null, StateManager.PROJECT_CONTEXT);
-
-        // show the folder selection dialog for the user to choose a new folder
-        // we pass null because we're not downloading an image, just setting the preference
-        _showFolderSelectionDialog(null);
     }
 
     /**
@@ -1330,15 +1746,27 @@ define(function (require, exports, module) {
             return;
         }
 
+        // toggle live preview mode using hot corner
+        if (message.type === "hotCornerPreviewToggle") {
+            _handlePreviewModeToggle(true);
+            return;
+        }
+
         // handle reset image folder selection
         if (message.resetImageFolderSelection) {
-            _handleResetImageFolderSelection();
+            _showFolderSelectionDialog(null);
             return;
         }
 
         // handle image gallery state change message
         if (message.type === "imageGalleryStateChange") {
             LiveDevelopment.setImageGalleryState(message.selected);
+            return;
+        }
+
+        // handle ruler lines toggle message
+        if (message.type === "toggleRulerLines") {
+            PreferencesManager.set("livePreviewShowRulerLines", message.enabled);
             return;
         }
 
@@ -1367,12 +1795,26 @@ define(function (require, exports, module) {
             _deleteElementInSourceByTagId(message.tagId);
         } else if (message.duplicate) {
             _duplicateElementInSourceByTagId(message.tagId);
+        } else if (message.cut) {
+            _cutElementToClipboard(message.tagId);
+        } else if (message.copy) {
+            _copyElementToClipboard(message.tagId);
+        } else if (message.paste) {
+            _pasteElementFromClipboard(message.tagId);
         } else if (message.livePreviewTextEdit) {
             _editTextInSource(message);
+        } else if (message.livePreviewFormatCommand) {
+            _applyFormattingToSource(message);
+        } else if (message.livePreviewHyperlinkEdit) {
+            _updateHyperlinkHref(message.tagId, message.newHref);
         } else if (message.AISend) {
             _editWithAI(message);
         }
     }
 
-    exports.handleLivePreviewEditOperation = handleLivePreviewEditOperation;
+    LiveDevProtocol.setLivePreviewMessageHandler((msg)=>{
+        if (msg.livePreviewEditEnabled) {
+            handleLivePreviewEditOperation(msg);
+        }
+    });
 });
