@@ -23,7 +23,8 @@
     "QuickView",
     "SVGCodeHints",
     "UrlCodeHints",
-    "HealthData"
+    "HealthData",
+    "phoenix-pro"
   ],
   "desktopOnly": [
     "Git"
