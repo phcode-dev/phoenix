@@ -80,6 +80,7 @@ function RemoteFunctions(config = {}) {
 
     // initialized from config, defaults to true if not set
     let imageGallerySelected = config.imageGalleryState !== undefined ? config.imageGalleryState : true;
+    config.strings = config.strings || {};
 
 
     var req, timeout;
