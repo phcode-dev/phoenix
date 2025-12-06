@@ -1585,7 +1585,8 @@ function RemoteFunctions(config = {}) {
 
         // 4. Check overlap with other box (if it exists)
         if (boxType === 'info-box' && _nodeMoreOptionsBox) {
-            const optionsBoxElement = _nodeMoreOptionsBox._shadow?.querySelector('.phoenix-more-options-box');
+            const optionsBoxElement = _nodeMoreOptionsBox._shadow &&
+                _nodeMoreOptionsBox._shadow.querySelector('.phoenix-more-options-box');
             if (optionsBoxElement) {
                 const optionsBoxBounds = optionsBoxElement.getBoundingClientRect();
                 const optionsBoxRect = _coordsToRect(
@@ -1601,7 +1602,8 @@ function RemoteFunctions(config = {}) {
                 }
             }
         } else if (boxType === 'options-box' && _nodeInfoBox) {
-            const infoBoxElement = _nodeInfoBox._shadow?.querySelector('.phoenix-node-info-box');
+            const infoBoxElement = _nodeInfoBox._shadow &&
+                _nodeInfoBox._shadow.querySelector('.phoenix-node-info-box');
             if (infoBoxElement) {
                 const infoBoxBounds = infoBoxElement.getBoundingClientRect();
                 const infoBoxRect = _coordsToRect(
@@ -1636,7 +1638,8 @@ function RemoteFunctions(config = {}) {
 
         // Get the box element to determine dimensions
         const boxSelector = boxType === 'info-box' ? '.phoenix-node-info-box' : '.phoenix-more-options-box';
-        const boxElement = boxInstance._shadow?.querySelector(boxSelector);
+        const boxElement = boxInstance._shadow &&
+            boxInstance._shadow.querySelector(boxSelector);
 
         if (!boxElement) {
             return fallbackPos;

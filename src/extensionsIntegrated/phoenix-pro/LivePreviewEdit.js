@@ -399,8 +399,9 @@ define(function (require, exports, module) {
         if (!message.selection || message.selection.startOffset >= message.selection.endOffset) {
             return;
         }
+        const endOffset = textNodeMap[textNodeMap.length - 1] && textNodeMap[textNodeMap.length - 1].endOffset;
 
-        if (message.selection.endOffset > textNodeMap[textNodeMap.length - 1]?.endOffset) {
+        if (message.selection.endOffset > endOffset) {
             return;
         }
 
