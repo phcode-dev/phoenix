@@ -449,6 +449,60 @@ define(function (require, exports, module) {
         }
     }
 
+    /**
+     * to validate whether a lorem abbreviation is safe to expand without crashing the app
+     * so there are many problematic patters like lorem1000000, li*10>lorem50000 etc
+     * we put a max constraint of 100000, above which we don't show the code hint at all
+     *
+     * @param {String} word - the abbreviation to validate
+     * @returns {Boolean} - true if safe to expand otherwise false
+     */
+    function isLoremSafeToExpand(word) {
+        const MAX_LOREM_WORDS = 100000;
+
+        // extract all lorem word counts (handles lorem123, loremru123, lorem10-200, etc.)
+        const loremPattern = /lorem[a-z]*(\d+)(?:-(\d+))?/gi;
+        const loremMatches = [...word.matchAll(loremPattern)];
+        // if no lorem is there, it means its safe
+        if (loremMatches.length === 0) {
+            return true;
+        }
+
+        // find the maximum lorem word count
+        let maxLoremCount = 0;
+        for (const match of loremMatches) {
+            const count1 = parseInt(match[1]) || 0;
+            // for ranges like lorem10-200, take the second (max) number
+            const count2 = match[2] ? parseInt(match[2]) : count1;
+            const maxCount = Math.max(count1, count2);
+            maxLoremCount = Math.max(maxLoremCount, maxCount);
+        }
+
+        // if any single lorem exceeds the limit, for ex: `lorem1000000` or `lorem5000000`
+        if (maxLoremCount > MAX_LOREM_WORDS) {
+            return false;
+        }
+
+        // handle the multiplication cases, for ex: `li*10>lorem500000`
+        const multiplierPattern = /\*(\d+)/g;
+        const multipliers = [...word.matchAll(multiplierPattern)].map(m => parseInt(m[1]));
+
+        // if no multipliers, just check the max lorem count
+        if (multipliers.length === 0) {
+            return true;
+        }
+
+        // calc total multiplication factor (capped at 400 due to maxRepeat)
+        const totalMultiplier = Math.min(
+            multipliers.reduce((product, num) => product * num, 1),
+            400
+        );
+
+        // worst case: max lorem count × total multiplier
+        const estimatedTotal = maxLoremCount * totalMultiplier;
+
+        return estimatedTotal <= MAX_LOREM_WORDS;
+    }
 
     /**
      * This function checks whether the abbreviation can be expanded or not.
@@ -496,6 +550,12 @@ define(function (require, exports, module) {
             positiveSymbols.some(symbol => word.includes(symbol)) ||
             word.toLowerCase().includes('lorem')
         ) {
+            // we need to check if this is safe to expand because cases like
+            // `lorem100000000` will crash phoenix
+            // read functions jsdoc for more details
+            if (word.toLowerCase().includes('lorem') && !isLoremSafeToExpand(word)) {
+                return null;
+            }
 
             try {
                 return  expandAbbr(word, { syntax: "html", type: "markup", maxRepeat: 400 }); // expanded
