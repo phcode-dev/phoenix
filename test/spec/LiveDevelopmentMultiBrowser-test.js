@@ -2026,6 +2026,26 @@ define(function (require, exports, module) {
                 await waitForClickedElement(false);
             }
 
+            async function switchToPreviewMode() {
+                if (LiveDevMultiBrowser && LiveDevMultiBrowser.config) {
+                    LiveDevMultiBrowser.config.isProUser = false;
+                    if (LiveDevMultiBrowser.updateConfig) {
+                        LiveDevMultiBrowser.updateConfig(JSON.stringify(LiveDevMultiBrowser.config));
+                    }
+                    await awaits(200);
+                }
+            }
+
+            async function switchToEditMode() {
+                if (LiveDevMultiBrowser && LiveDevMultiBrowser.config) {
+                    LiveDevMultiBrowser.config.isProUser = true;
+                    if (LiveDevMultiBrowser.updateConfig) {
+                        LiveDevMultiBrowser.updateConfig(JSON.stringify(LiveDevMultiBrowser.config));
+                    }
+                    await awaits(200);
+                }
+            }
+
             it("should show info box on hover when elemHighlights is 'hover'", async function () {
                 await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
                     "SpecRunnerUtils.openProjectFiles simple1.html");
@@ -2181,6 +2201,682 @@ define(function (require, exports, module) {
                 // Boxes should be dismissed
                 await waitForMoreOptionsBox(false);
                 await waitForClickedElement(false);
+
+                await endEditModePreviewSession();
+            }, 30000);
+
+            it("should delete element from source code when delete button is clicked", async function () {
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                    "SpecRunnerUtils.openProjectFiles simple1.html");
+
+                await waitsForLiveDevelopmentToOpenWithEditMode('hover');
+
+                // Get original source code content
+                const originalContent = DocumentManager.getCurrentDocument().getText();
+                expect(originalContent).toContain('id="testId"'); // Ensure test element exists
+
+                // Click on the test element to show more options box
+                await forRemoteExec(`document.getElementById('testId').click()`);
+
+                // Wait for more options box to appear
+                await waitForMoreOptionsBox(true);
+
+                // Click the delete button in the shadow DOM
+                await forRemoteExec(`
+                    const shadowHosts = Array.from(document.body.children).filter(el => el.shadowRoot);
+                    let deleteButton = null;
+
+                    shadowHosts.forEach(host => {
+                        if (host.shadowRoot && host.shadowRoot.innerHTML.includes('phoenix-more-options-box')) {
+                            deleteButton = host.shadowRoot.querySelector('span[data-action="delete"]');
+                        }
+                    });
+
+                    if (deleteButton) {
+                        deleteButton.click();
+                    }
+                `);
+
+                // Verify the element is removed from source code
+                await awaitsFor(function () {
+                    const updatedContent = DocumentManager.getCurrentDocument().getText();
+                    return !updatedContent.includes('id="testId"');
+                }, "element to be removed from source code");
+
+                const updatedContent = DocumentManager.getCurrentDocument().getText();
+                expect(updatedContent).not.toContain('id="testId"');
+                expect(updatedContent.length).toBeLessThan(originalContent.length);
+
+                // Verify the element is also removed from DOM
+                await forRemoteExec(`!!document.getElementById('testId')`, (result) => {
+                    return result === false;
+                });
+
+                await endEditModePreviewSession();
+            }, 30000);
+
+            it("should duplicate element in source code when duplicate button is clicked", async function () {
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                    "SpecRunnerUtils.openProjectFiles simple1.html");
+
+                await waitsForLiveDevelopmentToOpenWithEditMode('hover');
+
+                // Get original source code content
+                const originalContent = DocumentManager.getCurrentDocument().getText();
+                expect(originalContent).toContain('id="testId"'); // Ensure test element exists
+
+                // Count initial occurrences of the test element
+                const originalTestIdCount = (originalContent.match(/id="testId"/g) || []).length;
+                expect(originalTestIdCount).toBe(1); // Should have exactly one initially
+
+                // Click on the test element to show more options box
+                await forRemoteExec(`document.getElementById('testId').click()`);
+
+                // Wait for more options box to appear
+                await waitForMoreOptionsBox(true);
+
+                // Click the duplicate button in the shadow DOM
+                await forRemoteExec(`
+                    const shadowHosts = Array.from(document.body.children).filter(el => el.shadowRoot);
+                    let duplicateButton = null;
+
+                    shadowHosts.forEach(host => {
+                        if (host.shadowRoot && host.shadowRoot.innerHTML.includes('phoenix-more-options-box')) {
+                            duplicateButton = host.shadowRoot.querySelector('span[data-action="duplicate"]');
+                        }
+                    });
+
+                    if (duplicateButton) {
+                        duplicateButton.click();
+                    }
+                `);
+
+                // Wait for the operation to complete
+                await awaitsFor(function () {
+                    const updatedContent = DocumentManager.getCurrentDocument().getText();
+                    const newTestIdCount = (updatedContent.match(/id="testId"/g) || []).length;
+                    return newTestIdCount === 2;
+                }, "element to be duplicated in source code");
+
+                // Verify the element is duplicated in source code
+                const updatedContent = DocumentManager.getCurrentDocument().getText();
+                const newTestIdCount = (updatedContent.match(/id="testId"/g) || []).length;
+                expect(newTestIdCount).toBe(2); // Should now have two instances
+                expect(updatedContent.length).toBeGreaterThan(originalContent.length);
+
+                // Verify both elements exist in the DOM
+                await forRemoteExec(`document.querySelectorAll('[id="testId"]').length`, (result) => {
+                    return result === 2;
+                });
+
+                // Verify both elements have the same text content
+                await forRemoteExec(`
+                    const elements = document.querySelectorAll('[id="testId"]');
+                    elements.length === 2 && elements[0].textContent === elements[1].textContent
+                `, (result) => {
+                    return result === true;
+                });
+
+                await endEditModePreviewSession();
+            }, 30000);
+
+            it("should edit text content via double-click and sync to source", async function () {
+                await awaitsForDone(
+                    SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                    "SpecRunnerUtils.openProjectFiles simple1.html"
+                );
+
+                await waitsForLiveDevelopmentToOpenWithEditMode("hover");
+
+                // Get original source code content
+                const originalContent = DocumentManager.getCurrentDocument().getText();
+                expect(originalContent).toContain("Brackets is awesome!"); // Original text
+
+                const newText = "Phoenix is fantastic!";
+
+                // Double-click the element to start editing
+                await forRemoteExec(`
+                                const element = document.getElementById('testId');
+                                const event = new MouseEvent('dblclick', {
+                                    bubbles: true,
+                                    cancelable: true
+                                });
+                                element.dispatchEvent(event);
+                            `);
+
+                // Wait for edit mode to activate
+                await forRemoteExec(`document.getElementById('testId').hasAttribute('contenteditable') && document.getElementById('testId').getAttribute('contenteditable') === 'true'`, (result) => {
+                    return result === true;
+                });
+
+                // Modify the text content
+                await forRemoteExec(`
+                                const element = document.getElementById('testId');
+                                element.textContent = '${newText}';
+                                // Trigger input event to simulate user typing
+                                element.dispatchEvent(new Event('input', { bubbles: true }));
+                            `);
+
+                // Press Enter to finish editing
+                await forRemoteExec(`
+                                const element = document.getElementById('testId');
+                                const event = new KeyboardEvent('keydown', {
+                                    key: 'Enter',
+                                    bubbles: true,
+                                    cancelable: true
+                                });
+                                element.dispatchEvent(event);
+                            `);
+
+                // Wait for the operation to complete
+                await awaitsFor(function () {
+                    const updatedContent = DocumentManager.getCurrentDocument().getText();
+                    return updatedContent.includes(newText);
+                }, "text to be updated in source code");
+
+                // Verify the text is updated in source code
+                const updatedContent = DocumentManager.getCurrentDocument().getText();
+                expect(updatedContent).toContain(newText);
+                expect(updatedContent).not.toContain("Brackets is awesome!");
+
+                // Verify the text is updated in DOM
+                await forRemoteExec(`document.getElementById('testId').textContent.trim()`, (result) => {
+                    return result === newText;
+                });
+
+                await endEditModePreviewSession();
+            }, 30000);
+
+            it("should edit text content via edit button and sync to source", async function () {
+                await awaitsForDone(
+                    SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                    "SpecRunnerUtils.openProjectFiles simple1.html"
+                );
+
+                await waitsForLiveDevelopmentToOpenWithEditMode("hover");
+
+                // Get original source code content
+                const originalContent = DocumentManager.getCurrentDocument().getText();
+                expect(originalContent).toContain("Brackets is awesome!"); // Original text
+
+                const newText = "Edited via button!";
+
+                // Click on the test element to show more options box
+                await forRemoteExec(`document.getElementById('testId').click()`);
+
+                // Wait for more options box to appear
+                await waitForMoreOptionsBox(true);
+
+                // Click the edit-text button in the shadow DOM
+                await forRemoteExec(`
+                                const shadowHosts = Array.from(document.body.children).filter(el => el.shadowRoot);
+                                let editButton = null;
+
+                                shadowHosts.forEach(host => {
+                                    if (host.shadowRoot && host.shadowRoot.innerHTML.includes('phoenix-more-options-box')) {
+                                        editButton = host.shadowRoot.querySelector('span[data-action="edit-text"]');
+                                    }
+                                });
+
+                                if (editButton) {
+                                    editButton.click();
+                                }
+                            `);
+
+                // Wait for edit mode to activate
+                await forRemoteExec(`document.getElementById('testId').hasAttribute('contenteditable') && document.getElementById('testId').getAttribute('contenteditable') === 'true'`, (result) => {
+                    return result === true;
+                });
+
+                // Modify the text content
+                await forRemoteExec(`
+                                const element = document.getElementById('testId');
+                                element.textContent = '${newText}';
+                                element.dispatchEvent(new Event('input', { bubbles: true }));
+                            `);
+
+                // Press Enter to finish editing
+                await forRemoteExec(`
+                                const element = document.getElementById('testId');
+                                const event = new KeyboardEvent('keydown', {
+                                    key: 'Enter',
+                                    bubbles: true,
+                                    cancelable: true
+                                });
+                                element.dispatchEvent(event);
+                            `);
+
+                // Wait for operation to complete
+                await awaitsFor(function () {
+                    const updatedContent = DocumentManager.getCurrentDocument().getText();
+                    return updatedContent.includes(newText);
+                }, "text changes to be saved in source code");
+
+                // Verify changes in source code
+                const updatedContent = DocumentManager.getCurrentDocument().getText();
+                expect(updatedContent).toContain(newText);
+                expect(updatedContent).not.toContain("Brackets is awesome!");
+
+                // Verify changes in DOM
+                await forRemoteExec(`document.getElementById('testId').textContent.trim()`, (result) => {
+                    return result === newText;
+                });
+
+                await endEditModePreviewSession();
+            }, 30000);
+
+            it("should cancel text edit when Escape key is pressed", async function () {
+                await awaitsForDone(
+                    SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                    "SpecRunnerUtils.openProjectFiles simple1.html"
+                );
+
+                await waitsForLiveDevelopmentToOpenWithEditMode("hover");
+
+                // Get original source code content
+                const originalContent = DocumentManager.getCurrentDocument().getText();
+                expect(originalContent).toContain("Brackets is awesome!"); // Original text
+
+                const temporaryText = "This should be cancelled!";
+
+                // Double-click to start editing
+                await forRemoteExec(`
+                                const element = document.getElementById('testId');
+                                const event = new MouseEvent('dblclick', {
+                                    bubbles: true,
+                                    cancelable: true
+                                });
+                                element.dispatchEvent(event);
+                            `);
+
+                // Modify the text content
+                await forRemoteExec(`
+                                const element = document.getElementById('testId');
+                                element.textContent = '${temporaryText}';
+                                element.dispatchEvent(new Event('input', { bubbles: true }));
+                            `);
+
+                // Press Escape to cancel editing
+                await forRemoteExec(`
+                                const element = document.getElementById('testId');
+                                const event = new KeyboardEvent('keydown', {
+                                    key: 'Escape',
+                                    bubbles: true,
+                                    cancelable: true
+                                });
+                                element.dispatchEvent(event);
+                            `);
+
+                // Wait for operation to complete
+                await awaitsFor(function () {
+                    const finalContent = DocumentManager.getCurrentDocument().getText();
+                    return finalContent === originalContent;
+                }, "edit to be cancelled and source unchanged");
+
+                // Verify source code is unchanged (edit was cancelled)
+                const finalContent = DocumentManager.getCurrentDocument().getText();
+                expect(finalContent).toContain("Brackets is awesome!"); // Original text preserved
+                expect(finalContent).not.toContain(temporaryText); // Temporary text not saved
+
+                // Verify DOM reverted to original text
+                await forRemoteExec(`document.getElementById('testId').textContent.trim()`, (result) => {
+                    return result === "Brackets is awesome!";
+                });
+
+                // Verify element is no longer in edit mode
+                await forRemoteExec(`document.getElementById('testId').hasAttribute('contenteditable')`, (result) => {
+                    return result === false;
+                });
+
+                await endEditModePreviewSession();
+            }, 30000);
+
+            it("should finish text edit when element loses focus (blur)", async function () {
+                await awaitsForDone(
+                    SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                    "SpecRunnerUtils.openProjectFiles simple1.html"
+                );
+
+                await waitsForLiveDevelopmentToOpenWithEditMode("hover");
+
+                // Get original source code content
+                const originalContent = DocumentManager.getCurrentDocument().getText();
+                expect(originalContent).toContain("Brackets is awesome!"); // Original text
+
+                const newText = "Edited via blur event!";
+
+                // Double-click to start editing
+                await forRemoteExec(`
+                                const element = document.getElementById('testId');
+                                const event = new MouseEvent('dblclick', {
+                                    bubbles: true,
+                                    cancelable: true
+                                });
+                                element.dispatchEvent(event);
+                            `);
+
+                // Modify the text content
+                await forRemoteExec(`
+                                const element = document.getElementById('testId');
+                                element.textContent = '${newText}';
+                                element.dispatchEvent(new Event('input', { bubbles: true }));
+                            `);
+
+                // Click outside the element to trigger blur
+                await forRemoteExec(`
+                                document.body.click(); // Click on body to lose focus
+                            `);
+
+                // Wait for operation to complete
+                await awaitsFor(function () {
+                    const updatedContent = DocumentManager.getCurrentDocument().getText();
+                    return updatedContent.includes(newText);
+                }, "blur event to save changes to source code");
+
+                // Verify changes were saved in source code
+                const updatedContent = DocumentManager.getCurrentDocument().getText();
+                expect(updatedContent).toContain(newText);
+                expect(updatedContent).not.toContain("Brackets is awesome!");
+
+                // Verify changes in DOM
+                await forRemoteExec(`document.getElementById('testId').textContent.trim()`, (result) => {
+                    return result === newText;
+                });
+
+                // Verify element is no longer in edit mode
+                await forRemoteExec(`document.getElementById('testId').hasAttribute('contenteditable')`, (result) => {
+                    return result === false;
+                });
+
+                await endEditModePreviewSession();
+            }, 30000);
+
+            it("should restore deleted element when undo is pressed after delete operation", async function () {
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                    "SpecRunnerUtils.openProjectFiles simple1.html");
+
+                await waitsForLiveDevelopmentToOpenWithEditMode('hover');
+
+                // Get original source code content
+                const originalContent = DocumentManager.getCurrentDocument().getText();
+                expect(originalContent).toContain('id="testId"'); // Ensure test element exists
+
+                // Store original element text for verification
+                const originalElementText = await forRemoteExec(`document.getElementById('testId').textContent.trim()`);
+
+                // Click on the test element to show more options box
+                await forRemoteExec(`document.getElementById('testId').click()`);
+
+                // Wait for more options box to appear
+                await waitForMoreOptionsBox(true);
+
+                // Click the delete button in the shadow DOM
+                await forRemoteExec(`
+                    const shadowHosts = Array.from(document.body.children).filter(el => el.shadowRoot);
+                    let deleteButton = null;
+
+                    shadowHosts.forEach(host => {
+                        if (host.shadowRoot && host.shadowRoot.innerHTML.includes('phoenix-more-options-box')) {
+                            deleteButton = host.shadowRoot.querySelector('span[data-action="delete"]');
+                        }
+                    });
+
+                    if (deleteButton) {
+                        deleteButton.click();
+                    }
+                `);
+
+                // Wait for the delete operation to complete
+                await awaitsFor(function () {
+                    const deletedContent = DocumentManager.getCurrentDocument().getText();
+                    return !deletedContent.includes('id="testId"');
+                }, "delete operation to complete");
+
+                // Verify the element is removed from source code
+                const deletedContent = DocumentManager.getCurrentDocument().getText();
+                expect(deletedContent).not.toContain('id="testId"');
+                expect(deletedContent.length).toBeLessThan(originalContent.length);
+
+                // Verify the element is also removed from DOM
+                await forRemoteExec(`!!document.getElementById('testId')`, (result) => {
+                    return result === false;
+                });
+
+                // Now perform undo operation using Ctrl+Z
+                await forRemoteExec(`
+                    const isMac = ${brackets.platform === "mac"};
+                    const event = new KeyboardEvent('keydown', {
+                        key: 'z',
+                        ctrlKey: !isMac,
+                        metaKey: isMac,
+                        bubbles: true,
+                        cancelable: true
+                    });
+                    document.dispatchEvent(event);
+                `);
+
+                // Wait for the undo operation to complete
+                await awaitsFor(function () {
+                    const restoredContent = DocumentManager.getCurrentDocument().getText();
+                    return restoredContent.includes('id="testId"');
+                }, "undo operation to restore deleted element");
+
+                // Verify the element is restored in source code
+                const restoredContent = DocumentManager.getCurrentDocument().getText();
+                expect(restoredContent).toContain('id="testId"');
+                expect(restoredContent.length).toBe(originalContent.length);
+
+                // Verify the element is restored in DOM
+                await forRemoteExec(`!!document.getElementById('testId')`, (result) => {
+                    return result === true;
+                });
+
+                // Verify the restored element has the same text content
+                await forRemoteExec(`document.getElementById('testId').textContent.trim()`, (result) => {
+                    return result === originalElementText;
+                });
+
+                await endEditModePreviewSession();
+            }, 30000);
+
+            it("should restore original state when undo is pressed after duplicate operation", async function () {
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                    "SpecRunnerUtils.openProjectFiles simple1.html");
+
+                await waitsForLiveDevelopmentToOpenWithEditMode('hover');
+
+                // Get original source code content
+                const originalContent = DocumentManager.getCurrentDocument().getText();
+                expect(originalContent).toContain('id="testId"'); // Ensure test element exists
+
+                // Count initial occurrences of the test element
+                const originalTestIdCount = (originalContent.match(/id="testId"/g) || []).length;
+                expect(originalTestIdCount).toBe(1); // Should have exactly one initially
+
+                // Click on the test element to show more options box
+                await forRemoteExec(`document.getElementById('testId').click()`);
+
+                // Wait for more options box to appear
+                await waitForMoreOptionsBox(true);
+
+                // Click the duplicate button in the shadow DOM
+                await forRemoteExec(`
+                    const shadowHosts = Array.from(document.body.children).filter(el => el.shadowRoot);
+                    let duplicateButton = null;
+
+                    shadowHosts.forEach(host => {
+                        if (host.shadowRoot && host.shadowRoot.innerHTML.includes('phoenix-more-options-box')) {
+                            duplicateButton = host.shadowRoot.querySelector('span[data-action="duplicate"]');
+                        }
+                    });
+
+                    if (duplicateButton) {
+                        duplicateButton.click();
+                    }
+                `);
+
+                // Wait for the duplicate operation to complete
+                await awaitsFor(function () {
+                    const duplicatedContent = DocumentManager.getCurrentDocument().getText();
+                    const newTestIdCount = (duplicatedContent.match(/id="testId"/g) || []).length;
+                    return newTestIdCount === 2;
+                }, "duplicate operation to complete");
+
+                // Verify the element is duplicated in source code
+                const duplicatedContent = DocumentManager.getCurrentDocument().getText();
+                const newTestIdCount = (duplicatedContent.match(/id="testId"/g) || []).length;
+                expect(newTestIdCount).toBe(2); // Should now have two instances
+                expect(duplicatedContent.length).toBeGreaterThan(originalContent.length);
+
+                // Verify both elements exist in the DOM
+                await forRemoteExec(`document.querySelectorAll('[id="testId"]').length`, (result) => {
+                    return result === 2;
+                });
+
+                // Now perform undo operation using Ctrl+Z
+                await forRemoteExec(`
+                    const isMac = ${brackets.platform === "mac"};
+                    const event = new KeyboardEvent('keydown', {
+                        key: 'z',
+                        ctrlKey: !isMac,
+                        metaKey: isMac,
+                        bubbles: true,
+                        cancelable: true
+                    });
+                    document.dispatchEvent(event);
+                `);
+
+                // Wait for the undo operation to complete
+                await awaitsFor(function () {
+                    const restoredContent = DocumentManager.getCurrentDocument().getText();
+                    const restoredTestIdCount = (restoredContent.match(/id="testId"/g) || []).length;
+                    return restoredTestIdCount === 1;
+                }, "undo operation to remove duplicate");
+
+                // Verify the duplicate is removed and we're back to original state
+                const restoredContent = DocumentManager.getCurrentDocument().getText();
+                const restoredTestIdCount = (restoredContent.match(/id="testId"/g) || []).length;
+                expect(restoredTestIdCount).toBe(1); // Should be back to one instance
+                expect(restoredContent.length).toBe(originalContent.length);
+
+                // Verify only one element exists in DOM
+                await forRemoteExec(`document.querySelectorAll('[id="testId"]').length`, (result) => {
+                    return result === 1;
+                });
+
+                // Verify the remaining element still has correct content
+                await forRemoteExec(`!!document.getElementById('testId')`, (result) => {
+                    return result === true;
+                });
+
+                await endEditModePreviewSession();
+            }, 30000);
+
+            it("should not show select parent option when element's direct parent is body", async function () {
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                    "SpecRunnerUtils.openProjectFiles simple1.html");
+
+                await waitsForLiveDevelopmentToOpenWithEditMode('hover');
+
+                // Click on the test element (which has body as direct parent in simple1.html)
+                await forRemoteExec(`document.getElementById('testId').click()`);
+
+                // Wait for more options box to appear
+                await waitForMoreOptionsBox(true);
+
+                // Check that select-parent option is NOT present in the shadow DOM
+                await forRemoteExec(`
+                    const shadowHosts = Array.from(document.body.children).filter(el => el.shadowRoot);
+                    let selectParentButton = null;
+
+                    shadowHosts.forEach(host => {
+                        if (host.shadowRoot && host.shadowRoot.innerHTML.includes('phoenix-more-options-box')) {
+                            selectParentButton = host.shadowRoot.querySelector('span[data-action="select-parent"]');
+                        }
+                    });
+
+                    selectParentButton === null;
+                `, (result) => {
+                    return result === true;
+                });
+
+                await endEditModePreviewSession();
+            }, 30000);
+
+            it("should hide UI boxes when switching to preview mode and show them when switching back to edit mode", async function () {
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                    "SpecRunnerUtils.openProjectFiles simple1.html");
+
+                await waitsForLiveDevelopmentToOpenWithEditMode('hover');
+
+                // Step 1: Click element to show UI boxes in edit mode
+                await forRemoteExec(`document.getElementById('testId').click()`);
+
+                // Step 2: Verify boxes are visible
+                await waitForMoreOptionsBox(true);
+                await waitForClickedElement(true);
+
+                // Step 3: Switch to preview mode
+                await switchToPreviewMode();
+
+                // Step 4: Verify boxes are hidden after mode switch
+                await waitForMoreOptionsBox(false);
+                await waitForClickedElement(false);
+
+                // Step 5: Verify clicking element in preview mode doesn't show boxes
+                await forRemoteExec(`document.getElementById('testId').click()`);
+                await waitForMoreOptionsBox(false);
+                await waitForClickedElement(false);
+
+                // Step 6: Switch back to edit mode
+                await switchToEditMode();
+
+                // Step 7: Click element again to show boxes in edit mode
+                await forRemoteExec(`document.getElementById('testId').click()`);
+
+                // Step 8: Verify boxes are visible again
+                await waitForMoreOptionsBox(true);
+                await waitForClickedElement(true);
+
+                await endEditModePreviewSession();
+            }, 30000);
+
+            it("should switch to preview mode when preview (play icon) button is clicked", async function () {
+                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+                    "SpecRunnerUtils.openProjectFiles simple1.html");
+
+                await waitsForLiveDevelopmentToOpenWithEditMode('hover');
+
+                // Step 1: Click element to show UI boxes in edit mode
+                await forRemoteExec(`document.getElementById('testId').click()`);
+
+                // Step 2: Verify boxes are visible in edit mode
+                await waitForMoreOptionsBox(true);
+                await waitForClickedElement(true);
+
+                // Step 3: Click the preview (play icon) button in the toolbar
+                testWindow.$("#previewModeLivePreviewButton").click();
+                await awaits(200);
+
+                // Step 4: Verify boxes are hidden after clicking preview button
+                await waitForMoreOptionsBox(false);
+                await waitForClickedElement(false);
+
+                // Step 5: Verify clicking element in preview mode doesn't show boxes
+                await forRemoteExec(`document.getElementById('testId').click()`);
+                await waitForMoreOptionsBox(false);
+                await waitForClickedElement(false);
+
+                // Step 6: Click preview button again to toggle back to edit mode
+                testWindow.$("#previewModeLivePreviewButton").click();
+                await awaits(200);
+
+                // Step 7: Click element to verify boxes work again in edit mode
+                await forRemoteExec(`document.getElementById('testId').click()`);
+
+                // Step 8: Verify boxes are visible again
+                await waitForMoreOptionsBox(true);
+                await waitForClickedElement(true);
 
                 await endEditModePreviewSession();
             }, 30000);
