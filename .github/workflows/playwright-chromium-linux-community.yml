@@ -1,0 +1,95 @@
+name: 'Community edition - Chromium-linux run full tests suite'
+on:
+  pull_request:
+    branches: [ main ]
+
+concurrency:
+  group: pr-chromium-linux-community-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  playwright-chromium-linux:
+    timeout-minutes: 90
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v3
+    - name: setup node
+      uses: actions/setup-node@v3
+      with:
+        node-version: 20
+    - name: Install dependencies
+      run: npm ci
+    - name: Build phoenix
+      env:
+        PRO_REPO_URL: ${{ secrets.PRO_REPO_URL }}
+        PRO_REPO_ACCESS_TOKEN: ${{ secrets.PRO_REPO_ACCESS_TOKEN }}
+      run: npm run build
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+
+    - name: Run Playwright unit tests in Chromium
+      uses: nick-fields/retry@v2
+      id: chromiumUnit
+      continue-on-error: true
+      with:
+        timeout_minutes: 12
+        max_attempts: 3
+        command: npm run testChromium
+
+    - name: Run Playwright integration tests in Chromium
+      uses: nick-fields/retry@v2
+      id: chromiumIntegration
+      continue-on-error: true
+      with:
+        timeout_minutes: 12
+        max_attempts: 3
+        command: npx cross-env TEST_ENV=integration npm run testChromium
+
+    - name: Run Playwright mainview tests in Chromium
+      uses: nick-fields/retry@v2
+      id: chromiumMainview
+      continue-on-error: true
+      with:
+        timeout_minutes: 12
+        max_attempts: 3
+        command: npx cross-env TEST_ENV=mainview npm run testChromium
+
+    - name: Run Playwright livepreview tests in Chromium
+      uses: nick-fields/retry@v2
+      id: chromiumLivepreview
+      continue-on-error: true
+      with:
+        timeout_minutes: 15
+        max_attempts: 3
+        command: npx cross-env TEST_ENV=livepreview npm run testChromium
+
+    - name: Run Playwright LegacyInteg tests in Chromium
+      uses: nick-fields/retry@v2
+      id: chromiumLegacyInteg
+      continue-on-error: true
+      with:
+        timeout_minutes: 20
+        max_attempts: 3
+        command: npx cross-env TEST_ENV=LegacyInteg npm run testChromium
+
+    - name: Fail on test runs failed in Chromium Linux
+      if: steps.chromiumUnit.outcome == 'failure' || steps.chromiumIntegration.outcome == 'failure' || steps.chromiumMainview.outcome == 'failure' || steps.chromiumLivepreview.outcome == 'failure' || steps.chromiumLegacyInteg.outcome == 'failure'
+      run: |
+        echo "Chromium Linux Playwright tests failed, marking step as failed"
+        echo "Failed tests:"
+        if [ "${{ steps.chromiumUnit.outcome }}" == "failure" ]; then
+          echo "- Run Playwright unit tests in Chromium"
+        fi
+        if [ "${{ steps.chromiumIntegration.outcome }}" == "failure" ]; then
+          echo "- Run Playwright integration tests in Chromium"
+        fi
+        if [ "${{ steps.chromiumMainview.outcome }}" == "failure" ]; then
+          echo "- Run Playwright mainview tests in Chromium"
+        fi
+        if [ "${{ steps.chromiumLivepreview.outcome }}" == "failure" ]; then
+          echo "- Run Playwright livepreview tests in Chromium"
+        fi
+        if [ "${{ steps.chromiumLegacyInteg.outcome }}" == "failure" ]; then
+          echo "- Run Playwright LegacyInteg tests in Chromium"
+        fi
+        exit 1

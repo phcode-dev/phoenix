@@ -1,0 +1,106 @@
+name: 'Community Edition - Desktop-mac M1 prod release full test suite run on pull request'
+on:
+  pull_request:
+    branches: [ main ]
+
+concurrency:
+  group: pr-desktop-mac-m1-prod-community-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  test-desktop-mac-m1-prod:
+    runs-on: macos-15
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v3
+      - name: setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+      - name: install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: 1.85.1
+
+      - name: build phoenix dist-test
+        run: |
+          npm ci
+          npm run build
+          npm run release:prod
+
+      - name: Download phoenix desktop and build test runner
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cd ..
+          git clone https://github.com/phcode-dev/phoenix-desktop.git
+          cd phoenix-desktop
+          npm ci
+          npm run releaseDistTestDebug
+
+      - name: Run tauri unit tests
+        uses: nick-fields/retry@v2
+        id: macM1RunUnit
+        continue-on-error: true
+        with:
+          timeout_minutes: 12
+          max_attempts: 3
+          command: ../phoenix-desktop/src-tauri/target/debug/phoenix-test --run-tests=unit -q
+
+      - name: Run tauri integration tests
+        uses: nick-fields/retry@v2
+        id: macM1RunIntegration
+        continue-on-error: true
+        with:
+          timeout_minutes: 12
+          max_attempts: 3
+          command: ../phoenix-desktop/src-tauri/target/debug/phoenix-test --run-tests=integration -q
+
+      - name: Run tauri mainview tests
+        uses: nick-fields/retry@v2
+        id: macM1RunMainview
+        continue-on-error: true
+        with:
+          timeout_minutes: 12
+          max_attempts: 3
+          command: ../phoenix-desktop/src-tauri/target/debug/phoenix-test --run-tests=mainview -q
+
+      - name: Run tauri livepreview tests
+        uses: nick-fields/retry@v2
+        id: macM1RunLivepreview
+        continue-on-error: true
+        with:
+          timeout_minutes: 12
+          max_attempts: 3
+          command: ../phoenix-desktop/src-tauri/target/debug/phoenix-test --run-tests=livepreview -q
+
+      - name: Run tauri LegacyInteg tests
+        uses: nick-fields/retry@v2
+        id: macM1RunLegacyInteg
+        continue-on-error: true
+        with:
+          timeout_minutes: 20
+          max_attempts: 3
+          command: ../phoenix-desktop/src-tauri/target/debug/phoenix-test --run-tests=LegacyInteg -q
+
+      - name: Fail on test runs failed in Mac M1 (prod)
+        if: steps.macM1RunUnit.outcome == 'failure' || steps.macM1RunIntegration.outcome == 'failure' || steps.macM1RunMainview.outcome == 'failure' || steps.macM1RunLivepreview.outcome == 'failure' || steps.macM1RunLegacyInteg.outcome == 'failure'
+        run: |
+          echo "Mac M1 (prod) tests failed, marking step as failed"
+          echo "Failed tests:"
+          if [ "${{ steps.macM1RunUnit.outcome }}" == "failure" ]; then
+            echo "- Run tauri unit tests"
+          fi
+          if [ "${{ steps.macM1RunIntegration.outcome }}" == "failure" ]; then
+            echo "- Run tauri integration tests"
+          fi
+          if [ "${{ steps.macM1RunMainview.outcome }}" == "failure" ]; then
+            echo "- Run tauri mainview tests"
+          fi
+          if [ "${{ steps.macM1RunLivepreview.outcome }}" == "failure" ]; then
+            echo "- Run tauri livepreview tests"
+          fi
+          if [ "${{ steps.macM1RunLegacyInteg.outcome }}" == "failure" ]; then
+            echo "- Run tauri LegacyInteg tests"
+          fi
+          exit 1
