@@ -119,7 +119,6 @@ define(function (require, exports, module) {
     require("spec/TaskManager-integ-test");
     require("spec/Generic-integ-test");
     require("spec/spacing-auto-detect-integ-test");
-    require("spec/promotions-integ-test");
     require("spec/LocalizationUtils-test");
     require("spec/ScrollTrackHandler-integ-test");
     // Integrated extension tests
