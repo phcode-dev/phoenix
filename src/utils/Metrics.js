@@ -268,7 +268,7 @@ define(function (require, exports, module) {
 
     async function _setPowerUserPrefix() {
         powerUserPrefix = null;
-        const EntitlementsManager = KernalModeTrust.EntitlementsManager;
+        const EntitlementsManager = KernalModeTrust.EntitlementsManager; // can be null in free builds
         if(cachedIsPowerUser){
             // A power user is someone who used Phoenix at least 3 days/8 hours in the last two weeks
             powerUserPrefix = "P";
@@ -276,7 +276,7 @@ define(function (require, exports, module) {
             // A repeat user is a user who has used phoenix at least one other day before
             powerUserPrefix = "R";
         }
-        if(EntitlementsManager.isLoggedIn()){
+        if(EntitlementsManager && EntitlementsManager.isLoggedIn()){
             if(await EntitlementsManager.isPaidSubscriber()){
                 powerUserPrefix = "S"; // subscriber
                 return;
@@ -306,8 +306,8 @@ define(function (require, exports, module) {
                 _setPowerUserPrefix();
             }, ONE_DAY);
         }
-        KernalModeTrust.EntitlementsManager.on(KernalModeTrust.EntitlementsManager.EVENT_ENTITLEMENTS_CHANGED,
-            _setPowerUserPrefix);
+        KernalModeTrust.EntitlementsManager && KernalModeTrust.EntitlementsManager.on(
+            KernalModeTrust.EntitlementsManager.EVENT_ENTITLEMENTS_CHANGED, _setPowerUserPrefix);
     }
 
     // some events generate too many ga events that ga can't handle. ignore them.

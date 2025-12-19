@@ -235,13 +235,23 @@ define(function (require, exports, module) {
         PhStore.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
     }
 
+    function _isLoggedIn() {
+        // in community edition entitlements for pro is null
+        return KernalModeTrust.EntitlementsManager && KernalModeTrust.EntitlementsManager.isLoggedIn();
+    }
+
+    function _isPaidSubscriber() {
+        // in community edition entitlements for pro is null
+        return KernalModeTrust.EntitlementsManager && KernalModeTrust.EntitlementsManager.isPaidSubscriber();
+    }
+
     async function _resolvePowerUserSurveyURL(surveyJson) {
         try {
-            const isLoggedIn = KernalModeTrust.EntitlementsManager.isLoggedIn();
+            const isLoggedIn = _isLoggedIn();
             if(!isLoggedIn) {
                 return surveyJson.powerUser;
             }
-            const paidSubscriber = await KernalModeTrust.EntitlementsManager.isPaidSubscriber();
+            const paidSubscriber = await _isPaidSubscriber();
             if(paidSubscriber && surveyJson.powerUserPaid) {
                 return surveyJson.powerUserPaid;
             }

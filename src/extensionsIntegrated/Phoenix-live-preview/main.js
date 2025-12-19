@@ -162,12 +162,17 @@ define(function (require, exports, module) {
     let connectingOverlayTimer = null; // this is needed as we show the connecting overlay after 3s
     let connectingOverlayTimeDuration = 3000;
 
+    function _getLiveEditEntitlement() {
+        // in community edition, this may not be present;
+        return KernalModeTrust.EntitlementsManager && KernalModeTrust.EntitlementsManager.getLiveEditEntitlement();
+    }
+
     let isProEditUser = false;
     // this is called everytime there is a change in entitlements
     async function _entitlementsChanged() {
         try {
-            const entitlement = await KernalModeTrust.EntitlementsManager.getLiveEditEntitlement();
-            isProEditUser = entitlement.activated;
+            const entitlement = await _getLiveEditEntitlement();
+            isProEditUser = entitlement && entitlement.activated;
         } catch (error) {
             console.error("Error updating pro user status:", error);
             isProEditUser = false;
@@ -1317,7 +1322,8 @@ define(function (require, exports, module) {
         _projectOpened();
         if(!Phoenix.isSpecRunnerWindow){
             _entitlementsChanged();
-            KernalModeTrust.EntitlementsManager.on(
+            // in community edition EntitlementsManager may be null
+            KernalModeTrust.EntitlementsManager && KernalModeTrust.EntitlementsManager.on(
                 KernalModeTrust.EntitlementsManager.EVENT_ENTITLEMENTS_CHANGED,
                 _entitlementsChanged
             );
