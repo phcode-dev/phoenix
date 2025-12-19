@@ -73,7 +73,6 @@ define(function (require, exports, module) {
         panelHTML       = require("text!./panel.html"),
         Dialogs = require("widgets/Dialogs"),
         DefaultDialogs = require("widgets/DefaultDialogs"),
-        ProDialogs = require("services/pro-dialogs"),
         utils = require('./utils');
 
     const KernalModeTrust = window.KernalModeTrust;
@@ -411,7 +410,12 @@ define(function (require, exports, module) {
                 LiveDevelopment.setMode(LiveDevelopment.CONSTANTS.LIVE_HIGHLIGHT_MODE);
             } else if (index === 2) {
                 if (!LiveDevelopment.setMode(LiveDevelopment.CONSTANTS.LIVE_EDIT_MODE)) {
-                    ProDialogs.showProUpsellDialog(ProDialogs.UPSELL_TYPE_LIVE_EDIT);
+                    if(KernalModeTrust.ProDialogs) {
+                        KernalModeTrust.ProDialogs.showProUpsellDialog(
+                            KernalModeTrust.ProDialogs.UPSELL_TYPE_LIVE_EDIT);
+                    } else {
+                        Metrics.countEvent(Metrics.EVENT_TYPE.PRO, "proUpsellDlg", "fail");
+                    }
                 }
             } else if (item === Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON) {
                 // Don't allow edit highlight toggle if edit features are not active

@@ -31,7 +31,7 @@ define(function (require, exports, module) {
         NativeApp               = require("utils/NativeApp"),
         Strings                 = require("strings"),
         StringUtils       = require("utils/StringUtils"),
-        ManageLicenses          = require("services/manage-licenses"),
+        ManageLicenses          = require("extensionsIntegrated/phoenix-pro/services/manage-licenses"),
         AboutDialogTemplate     = require("text!htmlContent/about-dialog.html"),
         ContributorsTemplate    = require("text!htmlContent/contributors-list.html"),
         Mustache                = require("thirdparty/mustache/mustache");
