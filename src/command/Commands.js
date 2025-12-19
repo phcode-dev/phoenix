@@ -103,9 +103,6 @@ define(function (require, exports, module) {
     /** Reloads live preview */
     exports.CMD_RELOAD_LIVE_PREVIEW     = "file.reloadLivePreview";     // LiveDevelopment/main.js      _handleReloadLivePreviewCommand()
 
-    /** Toggles live highlight */
-    exports.FILE_LIVE_HIGHLIGHT         = "file.previewHighlight";      // LiveDevelopment/main.js      _handlePreviewHighlightCommand()
-
     /** Opens project settings */
     exports.FILE_PROJECT_SETTINGS       = "file.projectSettings";       // ProjectManager.js            _projectSettings()
 

@@ -2522,20 +2522,20 @@ code {
         height: 30px;
         padding: 5px;
         box-sizing: border-box;
-        margin-bottom: 8px;
+        margin-bottom: 10px;
     }
 
     #folder-suggestions {
         max-height: 150px;
         overflow-y: auto;
         overflow-x: hidden;
-        border: 1px solid @bc-btn-border;
-        border-radius: @bc-border-radius;
-        background-color: @bc-panel-bg-alt;
+        outline: 1px solid #f5f5f5;
+        border-radius: 3px;
+        background-color: #f5f5f5;
 
         .dark & {
-            border: 1px solid @dark-bc-btn-border;
-            background-color: @dark-bc-panel-bg-alt;
+            background-color: #1E1E1E;
+            outline: 1px solid #1E1E1E;
         }
 
         &:empty {
@@ -2550,37 +2550,60 @@ code {
 
         .folder-suggestion-item {
             padding: 6px 10px;
+            display: flex;
+            align-items: center;
             cursor: pointer;
-            font-size: 12px;
-            color: @bc-text;
-            border-left: 3px solid transparent;
+            font-size: 0.875rem;
+            letter-spacing: 0.4px;
+            word-spacing: 0.75px;
+            color: #555;
+            background-color: #f1f1f1;
+            border-right: 1px solid rgba(0, 0, 0, 0.05);
+            position: relative;
+            user-select: none;
 
             .dark & {
-                color: @dark-bc-text;
+                color: #aaa;
+                background-color: #292929;
+                border-right: 1px solid rgba(255, 255, 255, 0.05);
             }
 
             &:hover {
-                background-color: rgba(0, 0, 0, 0.03);
+                background-color: #e0e0e0;
 
                 .dark & {
-                    background-color: rgba(255, 255, 255, 0.05);
+                    background-color: #3b3a3a;
                 }
             }
 
             &.selected {
-                background-color: rgba(40, 142, 223, 0.08);
-                border-left-color: #288edf;
+                background-color: #fff;
+                color: #333;
 
                 .dark & {
-                    background-color: rgba(40, 142, 223, 0.15);
-                    border-left-color: #3da3ff;
+                    background-color: #1D1F21;
+                    color: #dedede;
+                }
+
+                &::after {
+                    content: "";
+                    position: absolute;
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
+                    width: 0.15rem;
+                    background-color: #0078D7;
+
+                    .dark & {
+                        background-color: #75BEFF;
+                    }
                 }
 
                 &:hover {
-                    background-color: rgba(40, 142, 223, 0.12);
+                    background-color: #fff;
 
                     .dark & {
-                        background-color: rgba(40, 142, 223, 0.2);
+                        background-color: #1D1F21;
                     }
                 }
             }
@@ -2596,7 +2619,7 @@ code {
     }
 
     .folder-help-text {
-        margin-top: 8px;
+        margin-top: 10px;
         margin-bottom: 0;
         font-size: 11px;
         color: @bc-text-quiet;

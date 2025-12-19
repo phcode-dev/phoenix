@@ -182,6 +182,10 @@
                 }
             }
             s.id = msg.params.url;
+
+            if (window._LD && window._LD.redrawEverything) {
+                window._LD.redrawEverything();
+            }
         },
 
         /**
@@ -363,7 +367,7 @@
         ProtocolManager.enable();
     });
 
-    function _getAllInheritedSelectorsInOrder(element) {
+    function getAllInheritedSelectorsInOrder(element) {
         let selectorsFound= new Map();
         const selectorsList = [];
         while (element) {
@@ -383,6 +387,7 @@
         return selectorsList;
     }
 
+    global.getAllInheritedSelectorsInOrder = getAllInheritedSelectorsInOrder;
 
     /**
     * Sends the message containing tagID which is being clicked
@@ -407,7 +412,7 @@
                         "nodeID": element.id,
                         "nodeClassList": element.classList,
                         "nodeName": element.nodeName,
-                        "allSelectors": _getAllInheritedSelectorsInOrder(element),
+                        "allSelectors": getAllInheritedSelectorsInOrder(element),
                         "contentEditable": element.contentEditable === 'true',
                         "clicked": true,
                         "edit": true
@@ -431,7 +436,7 @@
                     "nodeID": element.id,
                     "nodeClassList": element.classList,
                     "nodeName": element.nodeName,
-                    "allSelectors": _getAllInheritedSelectorsInOrder(element),
+                    "allSelectors": getAllInheritedSelectorsInOrder(element),
                     "contentEditable": element.contentEditable === 'true',
                     "clicked": true
                 });
@@ -440,20 +445,81 @@
     }
     window.document.addEventListener("click", onDocumentClick);
     window.document.addEventListener("keydown", function (e) {
+        // Check if user is editing text content - if so, allow normal text cut
+        // Get the truly active element, even if inside shadow roots
+        let activeElement = document.activeElement;
+
+        const isEditingText = activeElement && (
+            // Check for standard form input elements
+            ['INPUT', 'TEXTAREA'].includes(activeElement.tagName) ||
+            // Check for contentEditable elements
+            activeElement.isContentEditable ||
+            // Check for ARIA roles that indicate text input
+            ['textbox', 'searchbox', 'combobox'].includes(activeElement.getAttribute('role')) ||
+            // Check if element is designed to receive text input
+            (activeElement.hasAttribute("contenteditable") && activeElement.hasAttribute("data-brackets-id"))
+        );
+
+        // Check if a Phoenix tool is active (has data-phcode-internal-* attribute)
+        const isActiveElementPhoenixTool = activeElement && Array.from(activeElement.attributes || []).some(attr =>
+            attr.name.startsWith('data-phcode-internal-') && attr.value === 'true'
+        );
+
+        const isInEditMode = window._LD && window._LD.getMode && window._LD.getMode() === 'edit';
+
         // for undo. refer to LivePreviewEdit.js file 'handleLivePreviewEditOperation' function
-        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "z") {
+        if (!isEditingText && !isActiveElementPhoenixTool && isInEditMode &&
+            (e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "z" && !e.shiftKey) {
             MessageBroker.send({
                 livePreviewEditEnabled: true,
                 undoLivePreviewOperation: true
             });
         }
 
-        // for redo
-        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "y") {
+        // for redo - supports both Ctrl+Y and Ctrl+Shift+Z (Cmd+Y and Cmd+Shift+Z on Mac)
+        if (!isEditingText && !isActiveElementPhoenixTool && isInEditMode && (e.ctrlKey || e.metaKey) &&
+            (e.key.toLowerCase() === "y" || (e.key.toLowerCase() === "z" && e.shiftKey))) {
             MessageBroker.send({
                 livePreviewEditEnabled: true,
                 redoLivePreviewOperation: true
             });
+        }
+
+        // Cut: Ctrl+X / Cmd+X - operates on selected element
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "x") {
+
+            // Only handle element cut if not editing text and in edit mode
+            if (!isEditingText && !isActiveElementPhoenixTool && isInEditMode && window._LD.handleCutElement) {
+                e.preventDefault();
+                window._LD.handleCutElement();
+            }
+        }
+
+        // Copy: Ctrl+C / Cmd+C - operates on selected element
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "c") {
+
+            // Only handle element copy if not editing text and in edit mode
+            if (!isEditingText && !isActiveElementPhoenixTool && isInEditMode && window._LD.handleCopyElement) {
+                e.preventDefault();
+                window._LD.handleCopyElement();
+            }
+        }
+
+        // Paste: Ctrl+V / Cmd+V - operates on selected element
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "v") {
+
+            // Only handle element paste if not editing text and in edit mode
+            if (!isEditingText && !isActiveElementPhoenixTool && isInEditMode && window._LD.handlePasteElement) {
+                e.preventDefault();
+                window._LD.handlePasteElement();
+            }
+        }
+
+        if (e.key.toLowerCase() === 'delete' || e.key.toLowerCase() === 'backspace') {
+            if (!isEditingText && !isActiveElementPhoenixTool && isInEditMode && window._LD.handleDeleteElement) {
+                e.preventDefault();
+                window._LD.handleDeleteElement();
+            }
         }
 
         // for save
@@ -462,12 +528,7 @@
 
             // to check if user was in between editing text
             // in such cases we first finish the editing and then save
-            const activeElement = document.activeElement;
-            if (activeElement &&
-                activeElement.hasAttribute("contenteditable") &&
-                activeElement.hasAttribute("data-brackets-id") &&
-                window._LD &&
-                window._LD.finishEditing) {
+            if (isEditingText && window._LD && window._LD.finishEditing) {
 
                 window._LD.finishEditing(activeElement);
             }

@@ -25,6 +25,11 @@
 
 define(function (require, exports, module) {
 
+    let _cutInterceptor = null;
+    let _copyInterceptor = null;
+    let _pasteInterceptor = null;
+    let _keyEventInterceptor = null;
+
     const CodeMirror = require("thirdparty/CodeMirror/lib/codemirror"),
         Menus = require("command/Menus");
 
@@ -170,6 +175,10 @@ define(function (require, exports, module) {
 
         // Redispatch these CodeMirror key events as Editor events
         function _onKeyEvent(instance, event) {
+            if(_keyEventInterceptor && _keyEventInterceptor(self, self._codeMirror, event)){
+                // the interceptor processed it, so don't pass it along to CodeMirror'
+                return;
+            }
             self.trigger("keyEvent", self, event);  // deprecated
             self.trigger(event.type, self, event);
             return event.defaultPrevented;   // false tells CodeMirror we didn't eat the event
@@ -242,6 +251,29 @@ define(function (require, exports, module) {
             elt.style.textIndent = "-" + off + "px";
             elt.style.paddingLeft = off + "px";
         });
+        self._codeMirror.on("cut", function(cm, e) {
+            // Let interceptor decide what to do with the event (including preventDefault)
+            if (_cutInterceptor) {
+                return _cutInterceptor(self, cm, e);
+            }
+            // Otherwise allow normal cut behavior
+        });
+
+        self._codeMirror.on("copy", function(cm, e) {
+            // Let interceptor decide what to do with the event (including preventDefault)
+            if (_copyInterceptor) {
+                return _copyInterceptor(self, cm, e);
+            }
+            // Otherwise allow normal copy behavior
+        });
+
+        self._codeMirror.on("paste", function(cm, e) {
+            // Let interceptor decide what to do with the event (including preventDefault)
+            if (_pasteInterceptor) {
+                return _pasteInterceptor(self, cm, e);
+            }
+            // Otherwise allow normal paste behavior
+        });
     }
 
     /**
@@ -282,5 +314,45 @@ define(function (require, exports, module) {
         Editor.prototype._dontDismissPopupOnScroll = _dontDismissPopupOnScroll;
     }
 
+    /**
+     * Sets the cut interceptor function in codemirror
+     * @param {Function} interceptor - Function(editor, cm, event) that returns true to
+     preventDefault
+     */
+    function setCutInterceptor(interceptor) {
+        _cutInterceptor = interceptor;
+    }
+
+    /**
+     * Sets the copy interceptor function in codemirror
+     * @param {Function} interceptor - Function(editor, cm, event) that returns true to
+     preventDefault
+     */
+    function setCopyInterceptor(interceptor) {
+        _copyInterceptor = interceptor;
+    }
+
+    /**
+     * Sets the paste interceptor function in codemirror
+     * @param {Function} interceptor - Function(editor, cm, event) that returns true to
+     preventDefault
+     */
+    function setPasteInterceptor(interceptor) {
+        _pasteInterceptor = interceptor;
+    }
+
+    /**
+     * Sets the key down/up/press interceptor function in codemirror
+     * @param {Function} interceptor - Function(editor, cm, event) that returns true to
+     preventDefault
+     */
+    function setKeyEventInterceptor(interceptor) {
+        _keyEventInterceptor = interceptor;
+    }
+
     exports.addHelpers =addHelpers;
+    exports.setCutInterceptor = setCutInterceptor;
+    exports.setCopyInterceptor = setCopyInterceptor;
+    exports.setPasteInterceptor = setPasteInterceptor;
+    exports.setKeyEventInterceptor = setKeyEventInterceptor;
 });

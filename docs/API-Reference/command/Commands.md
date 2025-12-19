@@ -159,12 +159,6 @@ Toggles live preview multi-browser mode
 Reloads live preview
 
 **Kind**: global variable  
-<a name="FILE_LIVE_HIGHLIGHT"></a>
-
-## FILE\_LIVE\_HIGHLIGHT
-Toggles live highlight
-
-**Kind**: global variable  
 <a name="FILE_PROJECT_SETTINGS"></a>
 
 ## FILE\_PROJECT\_SETTINGS

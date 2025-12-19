@@ -75,8 +75,12 @@ define(function (require, exports, module) {
             });
     }
 
+    let _entitlementFnForTests;
     let effectiveEntitlementsCached = undefined; // entitlements can be null and its valid if no login/trial
     async function _getEffectiveEntitlements() {
+        if(_entitlementFnForTests){
+            return _entitlementFnForTests();
+        }
         if(effectiveEntitlementsCached !== undefined){
             return effectiveEntitlementsCached;
         }
@@ -358,7 +362,11 @@ define(function (require, exports, module) {
             getRawEntitlements,
             getNotifications,
             getLiveEditEntitlement,
-            loginToAccount
+            loginToAccount,
+            simulateEntitlementForTests: (entitlementsFn) => {
+                _entitlementFnForTests = entitlementsFn;
+                EntitlementsManager.trigger(EVENT_ENTITLEMENTS_CHANGED);
+            }
         };
     }
 

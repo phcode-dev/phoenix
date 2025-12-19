@@ -20,5 +20,8 @@ jobs:
         run: |
           npm run lint
       - name: building Phoenix with npm run build
+        env:
+          PRO_REPO_URL: ${{ secrets.PRO_REPO_URL }}
+          PRO_REPO_ACCESS_TOKEN: ${{ secrets.PRO_REPO_ACCESS_TOKEN }}
         run: |
           npm run build

@@ -313,9 +313,10 @@
         }
     };
 
+    const ABS_REGEX = new RegExp("^(?:[a-z]+:)?\\/\\/", "i");
     function getAbsoluteUrl(url) {
         // Check if the URL is already absolute
-        if (/^(?:[a-z]+:)?\/\//i.test(url)) {
+        if (ABS_REGEX.test(url)) {
             return url; // The URL is already absolute
         }
 
@@ -439,6 +440,7 @@
 
     let alertQueue = [], confirmCalled = false, promptCalled = false;
     let addToQueue = true;
+    window.__PHOENIX_APP_INFO = {isTauri, platform};
     if(!isExternalBrowser){
         // this is an embedded iframe we always take hold of the alert api for better ux within the live preivew frame.
         window.__PHOENIX_EMBED_INFO = {isTauri, platform};

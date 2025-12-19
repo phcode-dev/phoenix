@@ -109,11 +109,7 @@ define(function (require, exports, module) {
             WorkspaceManager = null;
         }, 30000);
 
-        async function _enableLiveHighlights(enable) {
-            PreferencesManager.setViewState("livedevHighlight", enable);
-        }
         async function endPreviewSession() {
-            await _enableLiveHighlights(true);
             LiveDevMultiBrowser.close();
             await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE_ALL, { _forceClose: true }),
                 "closing all file");
@@ -134,6 +130,17 @@ define(function (require, exports, module) {
         async function waitsForLiveDevelopmentToOpen() {
             LiveDevMultiBrowser.open();
             await waitsForLiveDevelopmentFileSwitch();
+        }
+
+        async function waitForLivePreviewToContainTitle(title) {
+            await awaitsFor(
+                function isLiveDevelopmentActive() {
+                    const currentTitle = testWindow.$("#panel-live-preview-title").attr("title");
+                    return currentTitle.indexOf(title) !== -1;
+                },
+                `Liuve prview page title to be ${title}`,
+                20000
+            );
         }
 
         it("should live preview settings work as expected", async function () {
@@ -1011,11 +1018,12 @@ define(function (require, exports, module) {
             expect(testWindow.$(".live-preview-status-overlay").is(":visible")).toBeFalse();
 
             // now edit the settings
+            const serverURL = "http://localhost:8000";
             testWindow.$(".live-preview-settings").click();
             await SpecRunnerUtils.waitForModalDialog();
             if(!testWindow.$("#enableCustomServerChk").is(":checked")){
                 testWindow.$("#enableCustomServerChk").click();
-                testWindow.$("#livePreviewServerURL").val("http://localhost:8000");
+                testWindow.$("#livePreviewServerURL").val(serverURL);
             }
             SpecRunnerUtils.clickDialogButton(Dialogs.DIALOG_BTN_OK);
 
@@ -1032,7 +1040,7 @@ define(function (require, exports, module) {
             await SpecRunnerUtils.loadProjectInTestWindow(testPath);
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
                 "open simple1.html");
-            await waitsForLiveDevelopmentToOpen();
+            await waitForLivePreviewToContainTitle(serverURL);
             await awaits(100);// give some time to see if the banner comes up
             expect(testWindow.$(".live-preview-settings").is(":visible")).toBeFalse();
 

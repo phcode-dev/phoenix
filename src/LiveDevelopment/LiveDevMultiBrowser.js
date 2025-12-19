@@ -87,6 +87,7 @@ define(function (require, exports, module) {
         LivePreviewTransport  = require("LiveDevelopment/MultiBrowserImpl/transports/LivePreviewTransport"),
         LiveDevProtocol      = require("LiveDevelopment/MultiBrowserImpl/protocol/LiveDevProtocol"),
         Metrics              = require("utils/Metrics"),
+        WorkspaceManager    = require("view/WorkspaceManager"),
         PageLoaderWorkerScript = require("text!LiveDevelopment/BrowserScripts/pageLoaderWorker.js");
 
     // Documents
@@ -127,6 +128,8 @@ define(function (require, exports, module) {
      * @type {BaseServer}
      */
     var _server;
+
+    let _config = {};
 
     /**
      * @private
@@ -375,6 +378,18 @@ define(function (require, exports, module) {
         );
     }
 
+    function _updateVirtualServerScripts() {
+        if(!_server || !_liveDocument || !_liveDocument.doc){
+            return;
+        }
+        _server.addVirtualContentAtPath(
+            `${_liveDocument.doc.file.parentPath}${LiveDevProtocol.LIVE_DEV_REMOTE_SCRIPTS_FILE_NAME}`,
+            _protocol.getRemoteScriptContents());
+        _server.addVirtualContentAtPath(
+            `${_liveDocument.doc.file.parentPath}${LiveDevProtocol.LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME}`,
+            PageLoaderWorkerScript);
+    }
+
     /**
      * @private
      * Creates the main live document for a given HTML document and notifies the server it exists.
@@ -389,12 +404,7 @@ define(function (require, exports, module) {
             return;
         }
         _server.add(_liveDocument);
-        _server.addVirtualContentAtPath(
-            `${_liveDocument.doc.file.parentPath}${LiveDevProtocol.LIVE_DEV_REMOTE_SCRIPTS_FILE_NAME}`,
-            _protocol.getRemoteScriptContents());
-        _server.addVirtualContentAtPath(
-            `${_liveDocument.doc.file.parentPath}${LiveDevProtocol.LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME}`,
-            PageLoaderWorkerScript);
+        _updateVirtualServerScripts();
     }
 
 
@@ -435,7 +445,6 @@ define(function (require, exports, module) {
                             const urlString = `${url.origin}${url.pathname}`;
                             if (_liveDocument &&  urlString === _resolveUrl(_liveDocument.doc.file.fullPath)) {
                                 _setStatus(STATUS_ACTIVE);
-                                resetLPEditState();
                             }
                         }
                         Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "connect",
@@ -650,7 +659,7 @@ define(function (require, exports, module) {
      * Initialize the LiveDevelopment module.
      */
     function init(config) {
-        exports.config = config;
+        _config = config;
         MainViewManager
             .on("currentFileChange", _onFileChange);
         DocumentManager
@@ -701,52 +710,46 @@ define(function (require, exports, module) {
     }
 
     /**
-     * Check if live preview boxes are currently visible
-     */
-    function hasVisibleLivePreviewBoxes() {
-        if (_protocol) {
-            return _protocol.evaluate("_LD.hasVisibleLivePreviewBoxes()");
-        }
-        return false;
-    }
-
-    /**
-     * Dismiss live preview boxes like info box, options box, AI box
-     */
-    function dismissLivePreviewBoxes() {
-        if (_protocol) {
-            _protocol.evaluate("_LD.enableHoverListeners()"); // so that if hover lock is there it will get cleared
-            _protocol.evaluate("_LD.dismissUIAndCleanupState()");
-        }
-    }
-
-    /**
-     * Register event handlers in the remote browser for live preview functionality
-     */
-    function registerHandlers() {
-        if (_protocol) {
-            _protocol.evaluate("_LD.registerHandlers()");
-        }
-    }
-
-    /**
      * Update configuration in the remote browser
      */
-    function updateConfig(configJSON) {
-        if (_protocol) {
-            _protocol.evaluate("_LD.updateConfig(" + JSON.stringify(configJSON) + ")");
-        }
+    function updateConfig(config) {
+        _config = config;
+        _updateVirtualServerScripts();
+        refreshConfig();
     }
 
     /**
-     * this function is to completely reset the live preview edit
-     * its done so that when live preview is opened/popped out, we can re-update the config so that
-     * there are no stale markers and edit works perfectly
+     * Refresh all live previews with existing configuration in the remote browser
      */
-    function resetLPEditState() {
+    function refreshConfig() {
         if (_protocol) {
-            _protocol.evaluate("_LD.resetState()");
+            _protocol.evaluate("_LD.updateConfig(" + JSON.stringify(_config) + ")");
         }
+    }
+
+
+    /**
+     * this function handles escape key for live preview to hide boxes if they are visible
+     * @param {Event} event
+     */
+    function _handleLivePreviewEscapeKey(event) {
+        const currLiveDoc = getCurrentLiveDoc();
+        if (currLiveDoc && currLiveDoc.protocol && currLiveDoc.protocol.evaluate) {
+            currLiveDoc.protocol.evaluate("_LD.escapeKeyPressInEditor()");
+        }
+        // returning false to let the editor also handle the escape key
+        return false;
+    }
+    // allow live preview to handle escape key event
+    // Escape is mainly to hide boxes if they are visible
+    WorkspaceManager.addEscapeKeyEventHandler("livePreview", _handleLivePreviewEscapeKey);
+
+    /**
+     * gets configuration used to set in the remote browser
+     */
+    function getConfig() {
+        // not using structured clone as it's not fast for small objects
+        return JSON.parse(JSON.stringify(_config || {}));
     }
 
     /**
@@ -815,10 +818,9 @@ define(function (require, exports, module) {
     exports.showHighlight       = showHighlight;
     exports.hideHighlight       = hideHighlight;
     exports.redrawHighlight     = redrawHighlight;
-    exports.hasVisibleLivePreviewBoxes = hasVisibleLivePreviewBoxes;
-    exports.dismissLivePreviewBoxes = dismissLivePreviewBoxes;
-    exports.registerHandlers    = registerHandlers;
+    exports.getConfig           = getConfig;
     exports.updateConfig        = updateConfig;
+    exports.refreshConfig       = refreshConfig;
     exports.init                = init;
     exports.isActive            = isActive;
     exports.setLivePreviewPinned= setLivePreviewPinned;

@@ -142,6 +142,8 @@ define(function (require, exports, module) {
     require("spec/Extn-Git-integ-test");
     // Node Tests
     require("spec/NodeConnection-test");
+    // pro test suite optional components
+    require("./pro-test-suite");
     // todo TEST_MODERN
     // require("spec/LanguageTools-test"); LSP tests. disabled for now
     // require("spec/Menu-native-integ-test"); evaluate after we have native menus in os installed builds

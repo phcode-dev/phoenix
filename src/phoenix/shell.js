@@ -177,14 +177,6 @@ Phoenix.app = {
         window.__TAURI__.window.getCurrent().setFocus();
         window.__TAURI__.window.getCurrent().setAlwaysOnTop(false);
     },
-    clipboardReadText: function () {
-        if(Phoenix.isNativeApp){
-            return window.__TAURI__.clipboard.readText();
-        } else if(window.navigator && window.navigator.clipboard){
-            return window.navigator.clipboard.readText();
-        }
-        return Promise.reject(new Error("clipboardReadText: Not supported."));
-    },
     /**
      * Gets the commandline argument in desktop builds and null in browser builds.
      * Will always return CLI of the current process only.
@@ -277,6 +269,14 @@ Phoenix.app = {
                 });
             });
         }
+    },
+    clipboardReadText: function () {
+        if(Phoenix.isNativeApp){
+            return window.__TAURI__.clipboard.readText();
+        } else if(window.navigator && window.navigator.clipboard){
+            return window.navigator.clipboard.readText();
+        }
+        return Promise.reject(new Error("clipboardReadText: Not supported."));
     },
     clipboardReadFiles: function () {
         return new Promise((resolve, reject)=>{

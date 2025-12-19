@@ -68,6 +68,7 @@
         "release:dev": "gulp releaseDev",
         "release:staging": "gulp releaseStaging",
         "release:prod": "gulp releaseProd",
+        "validate:dist-size": "gulp validateDistSizeRestrictions",
         "_releaseWebCache": "gulp releaseWebCache",
         "_patchVersionBump": "gulp patchVersionBump",
         "_minorVersionBump": "gulp minorVersionBump",

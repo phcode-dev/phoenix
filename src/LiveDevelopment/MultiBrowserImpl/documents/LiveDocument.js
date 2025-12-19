@@ -22,7 +22,8 @@
 define(function (require, exports, module) {
 
 
-    var EditorManager       = require("editor/EditorManager"),
+    const CONSTANTS           = require("LiveDevelopment/LivePreviewConstants"),
+        EditorManager       = require("editor/EditorManager"),
         EventDispatcher     = require("utils/EventDispatcher"),
         PreferencesManager  = require("preferences/PreferencesManager"),
         _                   = require("thirdparty/lodash");
@@ -33,6 +34,16 @@ define(function (require, exports, module) {
      * @type {string}
      */
     var SYNC_ERROR_CLASS = "live-preview-sync-error";
+
+    function _simpleHash(str) {
+        let hash = 5381;
+        for (let i = 0; i < str.length; ) {
+            // eslint-disable-next-line no-bitwise
+            hash = (hash * 33) ^ str.charCodeAt(i++);
+        }
+        // eslint-disable-next-line no-bitwise
+        return hash >>> 0;
+    }
 
     /**
      * @constructor
@@ -62,16 +73,11 @@ define(function (require, exports, module) {
 
         this._onActiveEditorChange = this._onActiveEditorChange.bind(this);
         this._onCursorActivity = this._onCursorActivity.bind(this);
-        this._onHighlightPrefChange = this._onHighlightPrefChange.bind(this);
 
-        EditorManager.on(`activeEditorChange.LiveDocument-${this.doc.file.fullPath}`, this._onActiveEditorChange);
-
-        PreferencesManager.stateManager.getPreference("livedevHighlight")
-            .on(`change.LiveDocument-${this.doc.file.fullPath}`, this._onHighlightPrefChange);
-
-        // Redraw highlights when window gets focus. This ensures that the highlights
-        // will be in sync with any DOM changes that may have occurred.
-        $(window).focus(this._onHighlightPrefChange);
+        // we cant use file paths for event registration - paths may have spaces(treated as an event list separator)
+        this.fileHashForEvents = _simpleHash(this.doc.file.fullPath);
+        EditorManager.off(`activeEditorChange.LiveDocument-${this.fileHashForEvents}`);
+        EditorManager.on(`activeEditorChange.LiveDocument-${this.fileHashForEvents}`, this._onActiveEditorChange);
 
         if (editor) {
             // Attach now
@@ -85,12 +91,9 @@ define(function (require, exports, module) {
      * Closes the live document, terminating its connection to the browser.
      */
     LiveDocument.prototype.close = function () {
-
+        EditorManager.off(`activeEditorChange.LiveDocument-${this.fileHashForEvents}`);
         this._clearErrorDisplay();
         this._detachFromEditor();
-        EditorManager.off(`activeEditorChange.LiveDocument-${this.doc.file.fullPath}`);
-        PreferencesManager.stateManager.getPreference("livedevHighlight")
-            .off(`change.LiveDocument-${this.doc.file.fullPath}`);
     };
 
     /**
@@ -128,18 +131,6 @@ define(function (require, exports, module) {
 
     /**
      * @private
-     * Handles changes to the "Live Highlight" preference, switching it on/off in the browser as appropriate.
-     */
-    LiveDocument.prototype._onHighlightPrefChange = function () {
-        if (this.isHighlightEnabled()) {
-            this.updateHighlight();
-        } else {
-            this.hideHighlight();
-        }
-    };
-
-    /**
-     * @private
      * Handles when the active editor changes, attaching to the new editor if it's for the current document.
      * @param {$.Event} event
      * @param {?Editor} newActive
@@ -163,6 +154,7 @@ define(function (require, exports, module) {
 
         if (this.editor) {
             this.setInstrumentationEnabled(true, true);
+            this.editor.off("cursorActivity", this._onCursorActivity);
             this.editor.on("cursorActivity", this._onCursorActivity);
             this.updateHighlight();
         }
@@ -262,7 +254,7 @@ define(function (require, exports, module) {
      * @return {boolean}
      */
     LiveDocument.prototype.isHighlightEnabled = function () {
-        return PreferencesManager.getViewState("livedevHighlight");
+        return PreferencesManager.get(CONSTANTS.PREFERENCE_LIVE_PREVIEW_MODE) !== CONSTANTS.LIVE_PREVIEW_MODE;
     };
 
     /**
