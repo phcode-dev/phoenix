@@ -1066,7 +1066,7 @@
   "LIVE_DEV_DETACHED_TARGET_CLOSED": "Live Preview was canceled because the page was closed in the browser",
   "LIVE_DEV_HYPERLINK_NO_HREF": "No href set",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Choose where to download the image:",
-  "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Type folder path or leave empty to download in project root",
+  "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Type folder path or leave empty to download in 'images' folder.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Type folder path (e.g., assets/images/)",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Don't ask again for this project",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Select Folder to Save Image",
