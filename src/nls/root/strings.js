@@ -218,7 +218,7 @@ define({
     "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Select Folder to Save Image",
     "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Choose where to download the image:",
     "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Type folder path (e.g., assets/images/)",
-    "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Type folder path or leave empty to download in project root",
+    "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Type folder path or leave empty to download in 'images' folder.",
     "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Don't ask again for this project",
     "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Ask Phoenix AI to modify this element...",
     "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Getting preview from your custom server {0}",
