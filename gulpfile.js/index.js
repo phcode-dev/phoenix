@@ -645,7 +645,7 @@ function inlineTextRequire(file, content, srcDir, isDevBuild = true) {
         const requireFragments = extractRequireTextFragments(content);
         for (const {requirePath, requireStatement} of requireFragments) {
             let filePath = srcDir + requirePath;
-            if(requirePath.startsWith("./")) {
+            if(requirePath.startsWith("./") || requirePath.startsWith("../")) {
                 filePath = path.join(path.dirname(file), requirePath);
             }
             let textContent = textContentMap[getKey(filePath, isDevBuild)];
@@ -663,7 +663,7 @@ function inlineTextRequire(file, content, srcDir, isDevBuild = true) {
                 textContentMap[getKey(filePath, isDevBuild)] = fileContent;
                 textContent = fileContent;
             }
-            if((requirePath.endsWith(".js") && !requirePath.includes("./")) // js files that are relative paths are ok
+            if((requirePath.endsWith(".js") && !requirePath.includes("./") && !requirePath.includes("../")) // js files that are relative paths are ok
                 || excludeSuffixPathsInlining.some(ext => requirePath.endsWith(ext))) {
                 console.warn("Not inlining JS/JSON file:", requirePath, filePath);
                 if(filePath.includes("phoenix-pro")) {

@@ -124,7 +124,6 @@ define(function (require, exports, module) {
     require("spec/login-desktop-integ-test");
     require("spec/LocalizationUtils-test");
     require("spec/ScrollTrackHandler-integ-test");
-    require("spec/login-utils-test");
     // Integrated extension tests
     require("spec/Extn-InAppNotifications-integ-test");
     require("spec/Extn-RemoteFileAdapter-integ-test");
