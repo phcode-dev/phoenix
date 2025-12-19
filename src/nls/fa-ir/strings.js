@@ -158,12 +158,17 @@ define({
   "LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT": "نمایش هایلایت المان در پیش‌نمایش زنده هنگام:",
   "LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT_HOVER": "شناور شدن (هاور)",
   "LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT_CLICK": "کلیک",
+  "LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT_PREFERENCE": "نمایش برجستگی‌های عناصر پیش‌نمایش زنده در حالت 'hover' یا 'click'. پیش‌فرض 'hover' است.",
+  "LIVE_DEV_SETTINGS_SHOW_RULER_LINES_PREFERENCE": "نمایش اندازه‌ها هنگام انتخاب عناصر در پیش‌نمایش زنده. پیش‌فرض 'false' است.",
   "LIVE_DEV_MORE_OPTIONS_SELECT_PARENT": "انتخاب والد",
   "LIVE_DEV_MORE_OPTIONS_EDIT_TEXT": "ویرایش متن",
+  "LIVE_DEV_MORE_OPTIONS_EDIT_HYPERLINK": "ویرایش لینک",
+  "LIVE_DEV_HYPERLINK_NO_HREF": "هیچ href تنظیم نشده است",
   "LIVE_DEV_MORE_OPTIONS_DUPLICATE": "دو نسخه کردن خط",
   "LIVE_DEV_MORE_OPTIONS_DELETE": "حذف",
   "LIVE_DEV_MORE_OPTIONS_AI": "ویرایش با هوش مصنوعی",
   "LIVE_DEV_MORE_OPTIONS_IMAGE_GALLERY": "گالری تصاویر",
+  "LIVE_DEV_MORE_OPTIONS_MORE": "گزینه‌های بیشتر",
   "LIVE_DEV_MORE_OPTIONS_CUT": "بریدن",
   "LIVE_DEV_MORE_OPTIONS_COPY": "رونوشت",
   "LIVE_DEV_MORE_OPTIONS_PASTE": "چسباندن رو نوشت",
@@ -178,11 +183,16 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_CLOSE": "بستن",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "انتخاب یک تصویر از دستگاه شما",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "انتخاب از دستگاه",
+  "LIVE_DEV_IMAGE_GALLERY_DIALOG_OVERLAY_MESSAGE": "برای ادامه، محل دانلود تصویر را در ویرایشگر انتخاب کنید",
+  "LIVE_DEV_IMAGE_GALLERY_OFFLINE_BANNER": "اتصال برقرار نیست - کار در حالت آفلاین",
+  "LIVE_DEV_IMAGE_GALLERY_OFFLINE_RETRY": "تلاش مجدد",
+  "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "در حال بررسی اتصال",
+  "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "هنوز آفلاین هستید. لطفاً اتصال خود را بررسی کنید.",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "عنصر قابل ویرایش نیست - توسط اسکریپت ایجاد شده است.",
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "عنصر کپی شد! برای درج آن در بالا، روی هر عنصری «چسباندن» را کلیک کنید.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "انتخاب پوشه برای ذخیره تصویر",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "محل دانلود تصویر را انتخاب کنید:",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "مسیر پوشه را تایپ کنید (مثلاً assets/images/)",
-  "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 مسیر پوشه را تایپ کنید یا برای دانلود در ریشه پروژه، آن را خالی بگذارید",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "دیگر برای این پروژه سؤال نشود",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "از فینیکس هوش مصنوعی بخواهید این المان را تغییر دهد...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "دریافت پیش‌نمایش از سرور سفارشی شما {0}",
@@ -191,6 +201,8 @@ define({
   "LIVE_PREVIEW_MODE_HIGHLIGHT": "حالت هایلایت",
   "LIVE_PREVIEW_MODE_EDIT": "حالت ویرایش",
   "LIVE_PREVIEW_EDIT_HIGHLIGHT_ON": "برجسته‌سازی هنگام شناور بودن روی عناصر",
+  "LIVE_PREVIEW_SHOW_RULER_LINES": "نمایش اندازه‌ها",
+  "LIVE_PREVIEW_MODE_PREFERENCE": "«{0}» فقط صفحه وب را نمایش می‌دهد، «{1}» صفحه وب را به کد شما متصل می‌کند - برای پرش به کد عناصر و بالعکس روی آنها کلیک کنید، «{2}» امکان هایلایت کردن به همراه دستکاری پیشرفتهٔ عناصر را فراهم می‌کند.",
   "LIVE_PREVIEW_CONFIGURE_MODES": "پیکربندی حالت‌های پیش‌نمایش زنده",
   "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "پیش نمایش زنده لغو شد زیرا از برخی از ابزارهای توسعه مختص مرورگرتان استفاده کرده اید.",
   "LIVE_DEV_DETACHED_TARGET_CLOSED": "پیش نمایش زنده لغو شد زیرا پنجره یا زبانه مربوط به صفحه در مرورگر بسته شده.",
@@ -431,6 +443,7 @@ define({
   "CMD_LIVE_FILE_PREVIEW": "پیش نمایش زنده",
   "CMD_LIVE_FILE_PREVIEW_SETTINGS": "تنظیمات پیش‌نمایش زنده",
   "CMD_TOGGLE_LIVE_PREVIEW_MB_MODE": "فعال کردن پیش نمایش تجربی",
+  "CMD_RELOAD_LIVE_PREVIEW": "بارگذاری مجدد پیش‌نمایش زنده",
   "CMD_PROJECT_SETTINGS": "تنظیمات پروژه…",
   "CMD_FILE_RENAME": "تغییر نام",
   "CMD_FILE_DELETE": "حذف",
@@ -577,6 +590,7 @@ define({
   "CLOSE": "بستن",
   "ABOUT_TEXT_LINE1": "نسخه {VERSION_MAJOR}.{VERSION_MINOR} {BUILD_TYPE} {VERSION}",
   "ABOUT_TEXT_BUILD_TIMESTAMP": "زمان ساخت:",
+  "ABOUT_TEXT_PRO_BUILD": "‏Phoenix Pro نسخه ساخت:",
   "ABOUT_RELEASE_CREDITS": "مشارکت‌کنندگان در انتشار:",
   "ABOUT_TEXT_LINE3": "کتابخانه‌های شخص ثالث استفاده شده - <a href='https://github.com/phcode-dev/phoenix/tree/main/src/thirdparty/licences'> مجوزها و توضیحات</a> .",
   "ABOUT_TEXT_LINE4": "مستندات و کد منبع در <a href='https://github.com/phcode-dev/phoenix/'>https://github.com/phcode-dev/phoenix/</a>",
@@ -1531,19 +1545,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "دسترسی به هوش مصنوعی توسط مدیر سیستم شما غیرفعال شده است. لطفاً برای راهنمایی با {0} تماس بگیرید.",
   "AI_UPSELL_DIALOG_TITLE": "ادامه با {0}؟",
   "AI_UPSELL_DIALOG_MESSAGE": "شما قابلیت {0} را کشف کرده‌اید. برای ادامه، به اشتراک AI یا اعتبار نیاز دارید.",
-  "LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT_PREFERENCE": "نمایش برجستگی‌های عناصر پیش‌نمایش زنده در حالت 'hover' یا 'click'. پیش‌فرض 'hover' است.",
-  "LIVE_DEV_SETTINGS_SHOW_RULER_LINES_PREFERENCE": "نمایش اندازه‌ها هنگام انتخاب عناصر در پیش‌نمایش زنده. پیش‌فرض 'false' است.",
-  "LIVE_DEV_MORE_OPTIONS_EDIT_HYPERLINK": "ویرایش لینک",
-  "LIVE_DEV_HYPERLINK_NO_HREF": "هیچ href تنظیم نشده است",
-  "LIVE_DEV_MORE_OPTIONS_MORE": "گزینه‌های بیشتر",
-  "LIVE_DEV_IMAGE_GALLERY_DIALOG_OVERLAY_MESSAGE": "برای ادامه، محل دانلود تصویر را در ویرایشگر انتخاب کنید",
-  "LIVE_DEV_IMAGE_GALLERY_OFFLINE_BANNER": "اتصال برقرار نیست - کار در حالت آفلاین",
-  "LIVE_DEV_IMAGE_GALLERY_OFFLINE_RETRY": "تلاش مجدد",
-  "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "در حال بررسی اتصال",
-  "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "هنوز آفلاین هستید. لطفاً اتصال خود را بررسی کنید.",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "عنصر کپی شد! برای درج آن در بالا، روی هر عنصری «چسباندن» را کلیک کنید.",
-  "LIVE_PREVIEW_SHOW_RULER_LINES": "نمایش اندازه‌ها",
-  "LIVE_PREVIEW_MODE_PREFERENCE": "«{0}» فقط صفحه وب را نمایش می‌دهد، «{1}» صفحه وب را به کد شما متصل می‌کند - برای پرش به کد عناصر و بالعکس روی آنها کلیک کنید، «{2}» امکان هایلایت کردن به همراه دستکاری پیشرفتهٔ عناصر را فراهم می‌کند.",
-  "CMD_RELOAD_LIVE_PREVIEW": "بارگذاری مجدد پیش‌نمایش زنده",
-  "ABOUT_TEXT_PRO_BUILD": "‏Phoenix Pro نسخه ساخت:"
+  "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 مسیر پوشه را تایپ کنید یا برای دانلود در پوشه 'images'، آن را خالی بگذارید."
 });

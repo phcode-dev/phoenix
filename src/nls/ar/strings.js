@@ -158,12 +158,20 @@ define({
   "LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT": "إظهار تمييز عناصر المعاينة المباشرة عند:",
   "LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT_HOVER": "التمرير",
   "LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT_CLICK": "النقر",
+  "LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT_PREFERENCE": "إظهار تمييز عناصر المعاينة المباشرة عند 'hover' أو 'click'. الإعداد الافتراضي هو 'hover'",
+  "LIVE_DEV_SETTINGS_SHOW_RULER_LINES_PREFERENCE": "إظهار القياسات عند تحديد العناصر في المعاينة المباشرة. الإعداد الافتراضي هو 'false'",
   "LIVE_DEV_MORE_OPTIONS_SELECT_PARENT": "تحديد العنصر الأب",
   "LIVE_DEV_MORE_OPTIONS_EDIT_TEXT": "تعديل النص",
+  "LIVE_DEV_MORE_OPTIONS_EDIT_HYPERLINK": "تحرير الارتباط التشعبي",
+  "LIVE_DEV_HYPERLINK_NO_HREF": "لم يتم تعيين href",
   "LIVE_DEV_MORE_OPTIONS_DUPLICATE": "تكرار",
   "LIVE_DEV_MORE_OPTIONS_DELETE": "حذف",
   "LIVE_DEV_MORE_OPTIONS_AI": "تعديل باستخدام الذكاء الاصطناعي",
   "LIVE_DEV_MORE_OPTIONS_IMAGE_GALLERY": "معرض الصور",
+  "LIVE_DEV_MORE_OPTIONS_MORE": "المزيد من الخيارات",
+  "LIVE_DEV_MORE_OPTIONS_CUT": "قص",
+  "LIVE_DEV_MORE_OPTIONS_COPY": "نسخ",
+  "LIVE_DEV_MORE_OPTIONS_PASTE": "لصق",
   "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "استخدام هذه الصورة",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "اختر مجلد تنزيل الصور",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "ابحث عن صور...",
@@ -175,11 +183,16 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_CLOSE": "إغلاق",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP": "حدد صورة من جهازك",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER": "تحديد من الجهاز",
+  "LIVE_DEV_IMAGE_GALLERY_DIALOG_OVERLAY_MESSAGE": "حدد موقع تنزيل الصورة في المحرر للمتابعة",
+  "LIVE_DEV_IMAGE_GALLERY_OFFLINE_BANNER": "لا يوجد اتصال - العمل في وضع عدم الاتصال",
+  "LIVE_DEV_IMAGE_GALLERY_OFFLINE_RETRY": "إعادة المحاولة",
+  "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "جارٍ التحقق من الاتصال",
+  "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "لا يزال غير متصل. يرجى التحقق من اتصالك.",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "العنصر غير قابل للتعديل - تم إنشاؤه بواسطة سكربت.",
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "تم نسخ العنصر! انقر فوق 'لصق' على أي عنصر لإدراجه أعلاه.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "حدد مجلدًا لحفظ الصورة",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "اختر مكان تنزيل الصورة:",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "اكتب مسار المجلد (مثال: assets/images/)",
-  "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 اكتب مسار المجلد أو اتركه فارغًا للتنزيل في جذر المشروع",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "لا تسأل مرة أخرى بخصوص هذا المشروع",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "اطلب من فينيكس AI تعديل هذا العنصر...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "الحصول على معاينة من خادمك المخصص {0}",
@@ -188,6 +201,8 @@ define({
   "LIVE_PREVIEW_MODE_HIGHLIGHT": "وضع التمييز",
   "LIVE_PREVIEW_MODE_EDIT": "وضع التحرير",
   "LIVE_PREVIEW_EDIT_HIGHLIGHT_ON": "تحرير التمييزات عند المرور",
+  "LIVE_PREVIEW_SHOW_RULER_LINES": "إظهار القياسات",
+  "LIVE_PREVIEW_MODE_PREFERENCE": "يعرض '{0}' صفحة الويب فقط، ويربط '{1}' صفحة الويب بالتعليمات البرمجية الخاصة بك - انقر فوق العناصر للانتقال إلى التعليمات البرمجية الخاصة بها والعكس صحيح، ويوفر '{2}' التمييز إلى جانب المعالجة المتقدمة للعناصر",
   "LIVE_PREVIEW_CONFIGURE_MODES": "تكوين أوضاع المعاينة المباشرة",
   "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "تم إلغاء المعاينة المباشرة لأن أدوات مطوّري المتصفح كانت مفتوحة",
   "LIVE_DEV_DETACHED_TARGET_CLOSED": "تم إلغاء المعاينة المباشرة لأن الصفحة تم إغلاقها في المتصفح",
@@ -428,6 +443,7 @@ define({
   "CMD_LIVE_FILE_PREVIEW": "معاينة مباشرة",
   "CMD_LIVE_FILE_PREVIEW_SETTINGS": "إعدادات المعاينة المباشرة",
   "CMD_TOGGLE_LIVE_PREVIEW_MB_MODE": "تفعيل المعاينة المباشرة التجريبية",
+  "CMD_RELOAD_LIVE_PREVIEW": "إعادة تحميل المعاينة المباشرة",
   "CMD_PROJECT_SETTINGS": "إعدادات المشروع…",
   "CMD_FILE_RENAME": "إعادة تسمية",
   "CMD_FILE_DELETE": "حذف",
@@ -574,6 +590,7 @@ define({
   "CLOSE": "إغلاق",
   "ABOUT_TEXT_LINE1": "إصدار {VERSION_MAJOR}.{VERSION_MINOR} {BUILD_TYPE} {VERSION}",
   "ABOUT_TEXT_BUILD_TIMESTAMP": "وقت بناء الإصدار:",
+  "ABOUT_TEXT_PRO_BUILD": "إصدار Phoenix Pro:",
   "ABOUT_RELEASE_CREDITS": "جهات الإصدار:",
   "ABOUT_TEXT_LINE3": "مكتبات الطرف الثالث التي نستخدمها - <a href='https://github.com/phcode-dev/phoenix/tree/main/src/thirdparty/licences'> التراخيص والإسنادات</a> .",
   "ABOUT_TEXT_LINE4": "الوثائق والمصدر في <a href='https://github.com/phcode-dev/phoenix/'>https://github.com/phcode-dev/phoenix/</a>",
@@ -1528,22 +1545,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "قام مسؤول النظام بتعطيل الوصول إلى الذكاء الاصطناعي. يرجى الاتصال بـ {0} للحصول على المساعدة.",
   "AI_UPSELL_DIALOG_TITLE": "المتابعة باستخدام {0}؟",
   "AI_UPSELL_DIALOG_MESSAGE": "لقد اكتشفت {0}. للمتابعة، ستحتاج إلى اشتراك في الذكاء الاصطناعي أو أرصدة.",
-  "LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT_PREFERENCE": "إظهار تمييز عناصر المعاينة المباشرة عند 'hover' أو 'click'. الإعداد الافتراضي هو 'hover'",
-  "LIVE_DEV_SETTINGS_SHOW_RULER_LINES_PREFERENCE": "إظهار القياسات عند تحديد العناصر في المعاينة المباشرة. الإعداد الافتراضي هو 'false'",
-  "LIVE_DEV_MORE_OPTIONS_EDIT_HYPERLINK": "تحرير الارتباط التشعبي",
-  "LIVE_DEV_HYPERLINK_NO_HREF": "لم يتم تعيين href",
-  "LIVE_DEV_MORE_OPTIONS_MORE": "المزيد من الخيارات",
-  "LIVE_DEV_MORE_OPTIONS_CUT": "قص",
-  "LIVE_DEV_MORE_OPTIONS_COPY": "نسخ",
-  "LIVE_DEV_MORE_OPTIONS_PASTE": "لصق",
-  "LIVE_DEV_IMAGE_GALLERY_DIALOG_OVERLAY_MESSAGE": "حدد موقع تنزيل الصورة في المحرر للمتابعة",
-  "LIVE_DEV_IMAGE_GALLERY_OFFLINE_BANNER": "لا يوجد اتصال - العمل في وضع عدم الاتصال",
-  "LIVE_DEV_IMAGE_GALLERY_OFFLINE_RETRY": "إعادة المحاولة",
-  "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "جارٍ التحقق من الاتصال",
-  "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "لا يزال غير متصل. يرجى التحقق من اتصالك.",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "تم نسخ العنصر! انقر فوق 'لصق' على أي عنصر لإدراجه أعلاه.",
-  "LIVE_PREVIEW_SHOW_RULER_LINES": "إظهار القياسات",
-  "LIVE_PREVIEW_MODE_PREFERENCE": "يعرض '{0}' صفحة الويب فقط، ويربط '{1}' صفحة الويب بالتعليمات البرمجية الخاصة بك - انقر فوق العناصر للانتقال إلى التعليمات البرمجية الخاصة بها والعكس صحيح، ويوفر '{2}' التمييز إلى جانب المعالجة المتقدمة للعناصر",
-  "CMD_RELOAD_LIVE_PREVIEW": "إعادة تحميل المعاينة المباشرة",
-  "ABOUT_TEXT_PRO_BUILD": "إصدار Phoenix Pro:"
+  "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 أدخل مسار المجلد أو اتركه فارغًا للتنزيل في مجلد 'images'."
 });
