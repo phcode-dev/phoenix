@@ -8,6 +8,9 @@
             <h2>{{APP_NAME_ABOUT_BOX}}</h2>
             <div class="about-info">
                 <p class="dialog-message">{{Strings.ABOUT_TEXT_LINE1}} <span id="about-build-number">{{BUILD_INFO}}</span>
+                  {{#PRO_BUILD_COMMIT}}
+                  <br><span class="dialog-message">{{Strings.ABOUT_TEXT_PRO_BUILD}}{{PRO_BUILD_COMMIT}}</span>
+                  {{/PRO_BUILD_COMMIT}}
                   {{#BUILD_TIMESTAMP}}
                   <br><span class="dialog-message">{{Strings.ABOUT_TEXT_BUILD_TIMESTAMP}}{{BUILD_TIMESTAMP}}</span>
                   {{/BUILD_TIMESTAMP}}

@@ -11,6 +11,9 @@ Thumbs.db
 /npm-debug.log
 /src/cacheManifest.json
 /src/appConfig.js
+/src/extensionsIntegrated/pro-loader.js
+/test/pro-test-suite.js
+/src/extensionsIntegrated/phoenix-pro
 
 # ignore node_modules inside src
 /src/node_modules

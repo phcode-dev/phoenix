@@ -72,6 +72,11 @@ define(function (require, exports, module) {
             Strings: Strings
         };
 
+        // If we have phoenix pro optional features built in
+        if (Phoenix.pro.commitID) {
+            templateVars.PRO_BUILD_COMMIT = window.Phoenix.pro.commitID;
+        }
+
         Dialogs.showModalDialogUsingTemplate(Mustache.render(AboutDialogTemplate, templateVars));
 
         // Get containers

@@ -151,3 +151,15 @@ Load extensions.
 | --- | --- | --- |
 | A | <code>Array.&lt;string&gt;</code> | list containing references to extension source      location. A source location may be either (a) a folder name inside      src/extensions or (b) an absolute path. |
 
+<a name="uninstallExtension"></a>
+
+## uninstallExtension(extensionID) ⇒ <code>Promise</code>
+Uninstall a deprecated extension
+
+**Kind**: global function  
+**Returns**: <code>Promise</code> - A promise that resolves when the extension is uninstalled successfully  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| extensionID | <code>string</code> | The ID of the extension to uninstall |
+

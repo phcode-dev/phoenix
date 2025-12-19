@@ -1,5 +1,4 @@
 name: 'Desktop-Linux prod release full test suite run on pull request'
-# we only do this on linux as a sanity. detailed tests will be run on pulls on staging/prod branch
 on:
   pull_request:
     branches: [ main ]
@@ -31,6 +30,9 @@ jobs:
           sudo apt-get install xvfb
 
       - name: build phoenix dist-test
+        env:
+          PRO_REPO_URL: ${{ secrets.PRO_REPO_URL }}
+          PRO_REPO_ACCESS_TOKEN: ${{ secrets.PRO_REPO_ACCESS_TOKEN }}
         run: |
           npm ci
           npm run build
@@ -39,6 +41,8 @@ jobs:
       - name: Download phoenix desktop and build test runner
         env:
           GH_TOKEN: ${{ github.token }}
+          PRO_REPO_URL: ${{ secrets.PRO_REPO_URL }}
+          PRO_REPO_ACCESS_TOKEN: ${{ secrets.PRO_REPO_ACCESS_TOKEN }}
         run: |
           cd ..
           git clone https://github.com/phcode-dev/phoenix-desktop.git

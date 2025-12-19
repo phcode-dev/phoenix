@@ -19,7 +19,7 @@
  *
  */
 
-/*global less, Phoenix */
+/*global less */
 
 /**
  * main integrates LiveDevelopment into Brackets
@@ -32,7 +32,8 @@
 define(function main(require, exports, module) {
 
 
-    const Commands            = require("command/Commands"),
+    const CONSTANTS           = require("LiveDevelopment/LivePreviewConstants"),
+        Commands            = require("command/Commands"),
         AppInit             = require("utils/AppInit"),
         MultiBrowserLiveDev = require("LiveDevelopment/LiveDevMultiBrowser"),
         LivePreviewTransport  = require("LiveDevelopment/MultiBrowserImpl/transports/LivePreviewTransport"),
@@ -43,23 +44,30 @@ define(function main(require, exports, module) {
         Strings             = require("strings"),
         ExtensionUtils      = require("utils/ExtensionUtils"),
         StringUtils         = require("utils/StringUtils"),
-        EventDispatcher      = require("utils/EventDispatcher"),
-        WorkspaceManager    = require("view/WorkspaceManager"),
-        EditorManager      = require("editor/EditorManager");
+        EventDispatcher      = require("utils/EventDispatcher");
 
-
-    const KernalModeTrust = window.KernalModeTrust;
+    const LIVE_PREVIEW_MODE = CONSTANTS.LIVE_PREVIEW_MODE,
+        LIVE_HIGHLIGHT_MODE = CONSTANTS.LIVE_HIGHLIGHT_MODE,
+        LIVE_EDIT_MODE = CONSTANTS.LIVE_EDIT_MODE;
 
     // this will later be assigned its correct values once entitlementsManager loads
-    let isProUser = false;
-    let isFreeTrialUser = false;
+    let hasLiveEditCapability = false;
+    let isPaidUser = false;
 
-    const EVENT_LIVE_HIGHLIGHT_PREF_CHANGED = "liveHighlightPrefChange";
-    const PREFERENCE_LIVE_PREVIEW_MODE = "livePreviewMode";
+    const PREFERENCE_LIVE_PREVIEW_MODE = CONSTANTS.PREFERENCE_LIVE_PREVIEW_MODE;
 
     // state manager key to track image gallery selected state, by default we keep this as selected
     // if this is true we show the image gallery when an image element is clicked
     const IMAGE_GALLERY_STATE = "livePreview.imageGallery.state";
+
+    PreferencesManager.definePreference(PREFERENCE_LIVE_PREVIEW_MODE, "string", LIVE_HIGHLIGHT_MODE, {
+        description: StringUtils.format(
+            Strings.LIVE_PREVIEW_MODE_PREFERENCE, LIVE_PREVIEW_MODE, LIVE_HIGHLIGHT_MODE, LIVE_EDIT_MODE),
+        values: [LIVE_PREVIEW_MODE, LIVE_HIGHLIGHT_MODE, LIVE_EDIT_MODE]
+    }).on("change", function () {
+        // when mode changes we update the config mode and notify remoteFunctions so that it can get updated
+        _previewModeUpdated();
+    });
 
     /**
      * get the image gallery state from StateManager
@@ -78,82 +86,25 @@ define(function main(require, exports, module) {
         StateManager.set(IMAGE_GALLERY_STATE, state);
 
         // update the config with the new state
+        const config = MultiBrowserLiveDev.getConfig();
         config.imageGalleryState = state;
-        if (MultiBrowserLiveDev && MultiBrowserLiveDev.status >= MultiBrowserLiveDev.STATUS_ACTIVE) {
-            MultiBrowserLiveDev.updateConfig(JSON.stringify(config));
-        }
+        MultiBrowserLiveDev.updateConfig(config);
     }
 
-    var params = new UrlParams();
-    var config = {
-        experimental: false, // enable experimental features
-        debug: true, // enable debug output and helpers
-        highlight: true, // enable highlighting?
-        highlightConfig: { // the highlight configuration for the Inspector
-            borderColor:  {r: 255, g: 229, b: 153, a: 0.66},
-            contentColor: {r: 111, g: 168, b: 220, a: 0.55},
-            marginColor:  {r: 246, g: 178, b: 107, a: 0.66},
-            paddingColor: {r: 147, g: 196, b: 125, a: 0.66},
-            showInfo: true
-        },
-        isProUser: isProUser,
-        elemHighlights: "hover", // default value, this will get updated when the extension loads
+    let params = new UrlParams();
+    const defaultConfig = {
+        mode: LIVE_HIGHLIGHT_MODE, // will be updated when we fetch entitlements
+        elemHighlights: CONSTANTS.HIGHLIGHT_HOVER, // default value, this will get updated when the extension loads
+        showRulerLines: false, // default value, this will get updated when the extension loads
         imageGalleryState: _getImageGalleryState(), // image gallery selected state
-        // this strings are used in RemoteFunctions.js
-        // we need to pass this through config as remoteFunctions runs in browser context and cannot
-        // directly reference Strings file
-        strings: {
-            selectParent: Strings.LIVE_DEV_MORE_OPTIONS_SELECT_PARENT,
-            editText: Strings.LIVE_DEV_MORE_OPTIONS_EDIT_TEXT,
-            duplicate: Strings.LIVE_DEV_MORE_OPTIONS_DUPLICATE,
-            delete: Strings.LIVE_DEV_MORE_OPTIONS_DELETE,
-            ai: Strings.LIVE_DEV_MORE_OPTIONS_AI,
-            imageGallery: Strings.LIVE_DEV_MORE_OPTIONS_IMAGE_GALLERY,
-            aiPromptPlaceholder: Strings.LIVE_DEV_AI_PROMPT_PLACEHOLDER,
-            imageGalleryUseImage: Strings.LIVE_DEV_IMAGE_GALLERY_USE_IMAGE,
-            imageGallerySelectDownloadFolder: Strings.LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER,
-            imageGallerySearchPlaceholder: Strings.LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER,
-            imageGallerySearchButton: Strings.LIVE_DEV_IMAGE_GALLERY_SEARCH_BUTTON,
-            imageGalleryLoadingInitial: Strings.LIVE_DEV_IMAGE_GALLERY_LOADING_INITIAL,
-            imageGalleryLoadingMore: Strings.LIVE_DEV_IMAGE_GALLERY_LOADING_MORE,
-            imageGalleryNoImages: Strings.LIVE_DEV_IMAGE_GALLERY_NO_IMAGES,
-            imageGalleryLoadError: Strings.LIVE_DEV_IMAGE_GALLERY_LOAD_ERROR,
-            imageGalleryClose: Strings.LIVE_DEV_IMAGE_GALLERY_CLOSE,
-            imageGallerySelectFromComputer: Strings.LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER,
-            imageGallerySelectFromComputerTooltip: Strings.LIVE_DEV_IMAGE_GALLERY_SELECT_FROM_COMPUTER_TOOLTIP,
-            toastNotEditable: Strings.LIVE_DEV_TOAST_NOT_EDITABLE
-        }
+        isPaidUser: false // will be updated when we fetch entitlements
     };
+
     // Status labels/styles are ordered: error, not connected, progress1, progress2, connected.
     var _status,
         _allStatusStyles = ["warning", "info", "success", "out-of-sync", "sync-error"].join(" ");
 
     var _$btnGoLive; // reference to the GoLive button
-
-    var prefs = PreferencesManager.getExtensionPrefs("livedev");
-
-    // "livedev.remoteHighlight" preference
-    var PREF_REMOTEHIGHLIGHT = "remoteHighlight";
-    var remoteHighlightPref = prefs.definePreference(PREF_REMOTEHIGHLIGHT, "object", {
-        animateStartValue: {
-            "background-color": "rgba(0, 162, 255, 0.5)",
-            "opacity": 0
-        },
-        animateEndValue: {
-            "background-color": "rgba(0, 162, 255, 0)",
-            "opacity": 0.6
-        },
-        "paddingStyling": {
-            "background-color": "rgba(200, 249, 197, 0.7)"
-        },
-        "marginStyling": {
-            "background-color": "rgba(249, 204, 157, 0.7)"
-        },
-        "borderColor": "rgba(200, 249, 197, 0.85)",
-        "showPaddingMargin": true
-    }, {
-        description: Strings.DESCRIPTION_LIVE_DEV_HIGHLIGHT_SETTINGS
-    });
 
     /** Load Live Development LESS Style */
     function _loadStyles() {
@@ -269,105 +220,40 @@ define(function main(require, exports, module) {
             // Add checkmark when status is STATUS_ACTIVE; otherwise remove it
             CommandManager.get(Commands.FILE_LIVE_FILE_PREVIEW)
                 .setChecked(status === MultiBrowserLiveDev.STATUS_ACTIVE);
-            CommandManager.get(Commands.FILE_LIVE_HIGHLIGHT)
-                .setEnabled(status === MultiBrowserLiveDev.STATUS_ACTIVE);
         });
     }
 
-    function _updateHighlightCheckmark() {
-        CommandManager.get(Commands.FILE_LIVE_HIGHLIGHT).setChecked(config.highlight);
-        exports.trigger(EVENT_LIVE_HIGHLIGHT_PREF_CHANGED, config.highlight);
-    }
-
-    function togglePreviewHighlight() {
-        config.highlight = !config.highlight;
-        _updateHighlightCheckmark();
-        if (config.highlight) {
-            MultiBrowserLiveDev.showHighlight();
-        } else {
-            MultiBrowserLiveDev.hideHighlight();
-        }
-        PreferencesManager.setViewState("livedevHighlight", config.highlight);
-    }
-
-    /** Setup window references to useful LiveDevelopment modules */
-    function _setupDebugHelpers() {
-        window.report = function report(params) { window.params = params; console.info(params); };
-    }
-
-    /** force reload the live preview currently only with shortcut ctrl-shift-R */
-    function _handleReloadLivePreviewCommand() {
-        if (MultiBrowserLiveDev.status >= MultiBrowserLiveDev.STATUS_ACTIVE) {
-            MultiBrowserLiveDev.reload();
-        }
-    }
-
     /**
-     * this function handles escape key for live preview to hide boxes if they are visible
-     * @param {Event} event
+     * Internal api used to update live edit capability status as entitlements changes. calling this will update the UI
+     * but will not functionally enable live editing capabilities as that are dependent on entitlements framework.
+     * @param newCapability
+     * @private
      */
-    function _handleLivePreviewEscapeKey(event) {
-        // we only handle the escape keypress for live preview when its active
-        if (MultiBrowserLiveDev.status === MultiBrowserLiveDev.STATUS_ACTIVE) {
-            MultiBrowserLiveDev.dismissLivePreviewBoxes();
-        }
-        // returning false to let the editor also handle the escape key
-        return false;
-    }
-
-    // default mode means on first load for pro user we have edit mode
-    // for free user we have highlight mode
-    function _getDefaultMode() {
-        return isProUser ? "edit" : "highlight";
-    }
-
-    // to set that mode in the preferences
-    function _initializeMode() {
-        if (isFreeTrialUser) {
-            PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "edit");
-            return;
-        }
-
-        const savedMode = PreferencesManager.get(PREFERENCE_LIVE_PREVIEW_MODE) || _getDefaultMode();
-
-        if (savedMode === "highlight" && isProUser) {
-            PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "edit");
-        } else if (savedMode === "edit" && !isProUser) {
-            PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "highlight");
-        }
-    }
-
-    // this is called everytime there is a change in entitlements
-    async function _updateProUserStatus() {
-        if (!KernalModeTrust) {
-            return;
-        }
-
-        try {
-            const entitlement = await KernalModeTrust.EntitlementsManager.getLiveEditEntitlement();
-
-            isProUser = entitlement.activated;
-            isFreeTrialUser = await KernalModeTrust.EntitlementsManager.isInProTrial();
-
-            config.isProUser = isProUser;
-            exports.isProUser = isProUser;
-            exports.isFreeTrialUser = isFreeTrialUser;
-
-            _initializeMode();
-
-            if (MultiBrowserLiveDev.status >= MultiBrowserLiveDev.STATUS_ACTIVE) {
-                MultiBrowserLiveDev.updateConfig(JSON.stringify(config));
-                MultiBrowserLiveDev.registerHandlers();
+    function _liveEditCapabilityChanged(newCapability) {
+        if(newCapability !== hasLiveEditCapability){
+            hasLiveEditCapability = newCapability;
+            if(!hasLiveEditCapability && getCurrentMode() === LIVE_EDIT_MODE){
+                // downgraded, so we need to disable live edit mode
+                setMode(LIVE_HIGHLIGHT_MODE);
+            } else if(hasLiveEditCapability) {
+                // this means that the user has switched to pro-account and we need to enable live edit mode
+                // as user may have just logged in with a pro-capable account/upgraded to pro.
+                setMode(LIVE_EDIT_MODE);
             }
-        } catch (error) {
-            console.error("Error updating pro user status:", error);
-            isProUser = false;
-            isFreeTrialUser = false;
+        }
+    }
+
+    function _isPaidUserChanged(newStatus) {
+        if(newStatus !== isPaidUser){
+            isPaidUser = newStatus;
+            const config = MultiBrowserLiveDev.getConfig();
+            config.isPaidUser = isPaidUser;
+            MultiBrowserLiveDev.updateConfig(config);
         }
     }
 
     function setMode(mode) {
-        if (mode === "edit" && !exports.isProUser) {
+        if (mode === LIVE_EDIT_MODE && !hasLiveEditCapability) {
             return false;
         }
         PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, mode);
@@ -375,31 +261,21 @@ define(function main(require, exports, module) {
     }
 
     function getCurrentMode() {
-        return PreferencesManager.get(PREFERENCE_LIVE_PREVIEW_MODE) || _getDefaultMode();
+        return PreferencesManager.get(PREFERENCE_LIVE_PREVIEW_MODE);
+    }
+
+    function isInPreviewMode() {
+        return getCurrentMode() === LIVE_PREVIEW_MODE;
     }
 
     /** Initialize LiveDevelopment */
     AppInit.appReady(function () {
         params.parse();
-        config.remoteHighlight = prefs.get(PREF_REMOTEHIGHLIGHT);
-
-        // init experimental multi-browser implementation
-        // it can be enable by setting 'livedev.multibrowser' preference to true.
-        // It has to be initiated at this point in case of dynamically switching
-        // by changing the preference value.
+        const config = Object.assign({}, defaultConfig, MultiBrowserLiveDev.getConfig());
+        config.mode = getCurrentMode();
         MultiBrowserLiveDev.init(config);
 
         _loadStyles();
-        _updateHighlightCheckmark();
-
-        // init pro user status and listen for changes
-        if (KernalModeTrust) {
-            _updateProUserStatus();
-            KernalModeTrust.EntitlementsManager.on(
-                KernalModeTrust.EntitlementsManager.EVENT_ENTITLEMENTS_CHANGED,
-                _updateProUserStatus
-            );
-        }
 
         // update styles for UI status
         _status = [
@@ -416,18 +292,6 @@ define(function main(require, exports, module) {
         _setupGoLiveButton();
         _setupGoLiveMenu();
 
-        if (config.debug) {
-            _setupDebugHelpers();
-        }
-
-        remoteHighlightPref
-            .on("change", function () {
-                config.remoteHighlight = prefs.get(PREF_REMOTEHIGHLIGHT);
-                if (MultiBrowserLiveDev && MultiBrowserLiveDev.status >= MultiBrowserLiveDev.STATUS_ACTIVE) {
-                    MultiBrowserLiveDev.updateConfig(JSON.stringify(config));
-                }
-            });
-
         MultiBrowserLiveDev.on(MultiBrowserLiveDev.EVENT_OPEN_PREVIEW_URL, function (event, previewDetails) {
             exports.trigger(exports.EVENT_OPEN_PREVIEW_URL, previewDetails);
         });
@@ -440,82 +304,63 @@ define(function main(require, exports, module) {
         MultiBrowserLiveDev.on(MultiBrowserLiveDev.EVENT_LIVE_PREVIEW_RELOAD, function (_event, clientDetails) {
             exports.trigger(exports.EVENT_LIVE_PREVIEW_RELOAD, clientDetails);
         });
-
-        // allow live preview to handle escape key event
-        // Escape is mainly to hide boxes if they are visible
-        WorkspaceManager.addEscapeKeyEventHandler("livePreview", _handleLivePreviewEscapeKey);
     });
 
-    // init prefs
-    PreferencesManager.stateManager.definePreference("livedevHighlight", "boolean", true)
-        .on("change", function () {
-            config.highlight = PreferencesManager.getViewState("livedevHighlight");
-            _updateHighlightCheckmark();
-            if (MultiBrowserLiveDev && MultiBrowserLiveDev.status >= MultiBrowserLiveDev.STATUS_ACTIVE) {
-                MultiBrowserLiveDev.updateConfig(JSON.stringify(config));
-            }
-        });
-
-    PreferencesManager.definePreference(PREFERENCE_LIVE_PREVIEW_MODE, "string", _getDefaultMode(), {
-        description: StringUtils.format(Strings.LIVE_PREVIEW_MODE_PREFERENCE, "'preview'", "'highlight'", "'edit'"),
-        values: ["preview", "highlight", "edit"]
-    });
-
-    config.highlight = PreferencesManager.getViewState("livedevHighlight");
-
-    function setLivePreviewEditFeaturesActive(enabled) {
-        isProUser = enabled;
-        config.isProUser = enabled;
-        if (MultiBrowserLiveDev && MultiBrowserLiveDev.status >= MultiBrowserLiveDev.STATUS_ACTIVE) {
-            MultiBrowserLiveDev.updateConfig(JSON.stringify(config));
-            MultiBrowserLiveDev.registerHandlers();
+    function _previewModeUpdated() {
+        const currentMode = getCurrentMode();
+        if (currentMode === LIVE_EDIT_MODE && !hasLiveEditCapability) {
+            PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, LIVE_HIGHLIGHT_MODE);
+            // we will get another update event for this immediately, so just return.
+            return;
         }
+        const config = MultiBrowserLiveDev.getConfig();
+        config.mode = currentMode;
+        MultiBrowserLiveDev.updateConfig(config);
     }
 
     // this function is responsible to update element highlight config
     // called from live preview extension when preference changes
     function updateElementHighlightConfig() {
-        const prefValue = PreferencesManager.get("livePreviewElementHighlights");
-        config.elemHighlights = prefValue || "hover";
-        if (MultiBrowserLiveDev && MultiBrowserLiveDev.status >= MultiBrowserLiveDev.STATUS_ACTIVE) {
-            MultiBrowserLiveDev.updateConfig(JSON.stringify(config));
-            MultiBrowserLiveDev.registerHandlers();
-        }
+        const prefValue = PreferencesManager.get(CONSTANTS.PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT);
+        const config = MultiBrowserLiveDev.getConfig();
+        config.elemHighlights = prefValue || CONSTANTS.HIGHLIGHT_HOVER;
+        MultiBrowserLiveDev.updateConfig(config);
     }
 
-    // init commands
-    CommandManager.register(Strings.CMD_LIVE_HIGHLIGHT, Commands.FILE_LIVE_HIGHLIGHT, togglePreviewHighlight);
-    CommandManager.register(Strings.CMD_RELOAD_LIVE_PREVIEW, Commands.CMD_RELOAD_LIVE_PREVIEW, _handleReloadLivePreviewCommand);
-
-    CommandManager.get(Commands.FILE_LIVE_HIGHLIGHT).setEnabled(false);
+    function updateRulerLinesConfig() {
+        const prefValue = PreferencesManager.get(CONSTANTS.PREFERENCE_SHOW_RULER_LINES);
+        const config = MultiBrowserLiveDev.getConfig();
+        config.showRulerLines = prefValue || false;
+        MultiBrowserLiveDev.updateConfig(config);
+    }
 
     EventDispatcher.makeEventDispatcher(exports);
 
-    exports.isProUser = isProUser;
-    exports.isFreeTrialUser = isFreeTrialUser;
+    // private api
+    exports._liveEditCapabilityChanged = _liveEditCapabilityChanged;
+    exports._isPaidUserChanged = _isPaidUserChanged;
 
     // public events
     exports.EVENT_OPEN_PREVIEW_URL = MultiBrowserLiveDev.EVENT_OPEN_PREVIEW_URL;
     exports.EVENT_CONNECTION_CLOSE = MultiBrowserLiveDev.EVENT_CONNECTION_CLOSE;
     exports.EVENT_LIVE_PREVIEW_CLICKED = MultiBrowserLiveDev.EVENT_LIVE_PREVIEW_CLICKED;
     exports.EVENT_LIVE_PREVIEW_RELOAD = MultiBrowserLiveDev.EVENT_LIVE_PREVIEW_RELOAD;
-    exports.EVENT_LIVE_HIGHLIGHT_PREF_CHANGED = EVENT_LIVE_HIGHLIGHT_PREF_CHANGED;
 
     // Export public functions
+    exports.CONSTANTS = CONSTANTS;
     exports.openLivePreview = openLivePreview;
     exports.closeLivePreview = closeLivePreview;
     exports.isInactive = isInactive;
     exports.isActive = isActive;
     exports.setLivePreviewPinned = setLivePreviewPinned;
     exports.setLivePreviewTransportBridge = setLivePreviewTransportBridge;
-    exports.togglePreviewHighlight = togglePreviewHighlight;
-    exports.setLivePreviewEditFeaturesActive = setLivePreviewEditFeaturesActive;
     exports.setImageGalleryState = setImageGalleryState;
     exports.updateElementHighlightConfig = updateElementHighlightConfig;
+    exports.updateRulerLinesConfig = updateRulerLinesConfig;
     exports.getConnectionIds = MultiBrowserLiveDev.getConnectionIds;
     exports.getLivePreviewDetails = MultiBrowserLiveDev.getLivePreviewDetails;
     exports.hideHighlight = MultiBrowserLiveDev.hideHighlight;
-    exports.dismissLivePreviewBoxes = MultiBrowserLiveDev.dismissLivePreviewBoxes;
     exports.setMode = setMode;
     exports.getCurrentMode = getCurrentMode;
+    exports.isInPreviewMode = isInPreviewMode;
 });

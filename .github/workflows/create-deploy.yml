@@ -17,6 +17,9 @@ jobs:
         run: |
           npm ci
       - name: Verifying release artifact build
+        env:
+          PRO_REPO_URL: ${{ secrets.PRO_REPO_URL }}
+          PRO_REPO_ACCESS_TOKEN: ${{ secrets.PRO_REPO_ACCESS_TOKEN }}
         run: |
           npm run release:prod
       - name: Deploy Notification To authoring production repository create.phcode.dev

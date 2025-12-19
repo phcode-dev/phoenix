@@ -30,12 +30,14 @@ const { src, dest, series } = require('gulp');
 const zip = require('gulp-zip');
 const Translate = require("./translateStrings");
 const copyThirdPartyLibs = require("./thirdparty-lib-copy");
+const optionalBuild = require("./optional-build");
+const validateBuild = require("./validate-build");
 const minify = require('gulp-minify');
 const glob = require("glob");
-const sourcemaps = require('gulp-sourcemaps');
 const crypto = require("crypto");
 const rename = require("gulp-rename");
 const execSync = require('child_process').execSync;
+const terser = require('terser');
 
 function cleanDist() {
     return del(['dist', 'dist-test']);
@@ -57,11 +59,13 @@ function cleanAll() {
         // Test artifacts
         'dist-test',
         'test/spec/test_folders.zip',
+        'src/extensionsIntegrated/pro-loader.js',
+        'test/pro-test-suite.js',
         ...RELEASE_BUILD_ARTEFACTS
     ]);
 }
 
-function cleanUnwantedFilesInDist() {
+function cleanUnwantedFilesInDistDev() {
     return del([
         'dist/nls/*/expertTranslations.json',
         'dist/nls/*/lastTranslated.json',
@@ -69,6 +73,55 @@ function cleanUnwantedFilesInDist() {
         'dist/extensions/default/*/unittests.js.map',
         'dist/**/*no_dist.*'
     ]);
+}
+
+function cleanUnwantedFilesInDistProd() {
+    return del([
+        'dist/nls/*/expertTranslations.json',
+        'dist/nls/*/lastTranslated.json',
+        'dist/nls/*/*.js.map',
+        'dist/extensions/default/*/unittests.js.map',
+        'dist/**/*no_dist.*',
+        'dist/thirdparty/no-minify/language-worker.js.map'
+    ]);
+}
+
+function _cleanPhoenixProGitFolder() {
+    return new Promise((resolve) => {
+        const gitFolders = [
+            'dist/extensionsIntegrated/phoenix-pro/.git',
+            'dist-test/src/extensionsIntegrated/phoenix-pro/.git'
+        ];
+
+        for (const gitFolder of gitFolders) {
+            if (fs.existsSync(gitFolder)) {
+                fs.rmSync(gitFolder, { recursive: true, force: true });
+                console.log(`Removed git folder: ${gitFolder}`);
+            }
+        }
+        resolve();
+    });
+}
+
+function _deletePhoenixProSourceFolder() {
+    return new Promise((resolve) => {
+        const phoenixProFolders = [
+            // we only delete the source folder from the release build artifact and not the test artifact. why below?
+            'dist/extensionsIntegrated/phoenix-pro'
+            // 'dist-test/src/extensionsIntegrated/phoenix-pro' // ideally we should delete this too so that the tests
+            // test exactly the release build artifact, but the spec runner requires on these files during test start
+            // and i wasnt able to isolate them. so instead wehat we do now is that we have an additional test in prod
+            // that checks that the phoenix-pro source folder is not loaded in prod and loaded only from the inlines
+            // brackets-min file.
+        ];
+
+        for (const folder of phoenixProFolders) {
+            if (fs.existsSync(folder)) {
+                fs.rmSync(folder, { recursive: true, force: true });
+            }
+        }
+        resolve();
+    });
 }
 
 /**
@@ -89,8 +142,7 @@ function makeDistAll() {
 
 function makeJSDist() {
     return src(['src/**/*.js', '!src/**/unittest-files/**/*', "!src/thirdparty/prettier/**/*",
-        "!src/thirdparty/no-minify/**/*"])
-        .pipe(sourcemaps.init())
+        "!src/thirdparty/no-minify/**/*", "!src/LiveDevelopment/BrowserScripts/RemoteFunctions.js"])
         .pipe(minify({
             ext:{
                 min:'.js'
@@ -99,23 +151,31 @@ function makeJSDist() {
             mangle: false,
             compress: {
                 unused: false
+            },
+            preserveComments: function (node, comment) {
+                const text = (comment.value || "").trim();
+
+                // license headers should not end up in distribution as the license of dist depends on
+                // internal vs external builds. we strip every comment except with below flag.
+                // Preserve ONLY comments starting with "DONT_STRIP_MINIFY:"
+                return text.includes("DONT_STRIP_MINIFY:");
             }
         }))
-        .pipe(sourcemaps.write('./'))
         .pipe(dest('dist'));
 }
 
 // we had to do this as prettier is non minifiable
 function makeJSPrettierDist() {
     return src(["src/thirdparty/prettier/**/*"])
-        .pipe(sourcemaps.init())
         .pipe(dest('dist/thirdparty/prettier'));
 }
 
 function makeNonMinifyDist() {
-    return src(["src/thirdparty/no-minify/**/*"])
-        .pipe(sourcemaps.init())
-        .pipe(dest('dist/thirdparty/no-minify'));
+    // we dont minify remote functions as its in live preview context and the prod minify is stripping variables
+    // used by plugins in live preview. so we dont minify this for now.
+    return src(["src/thirdparty/no-minify/**/*",
+        "src/LiveDevelopment/BrowserScripts/RemoteFunctions.js"], {base: 'src'})
+        .pipe(dest('dist'));
 }
 
 function makeDistNonJS() {
@@ -536,29 +596,81 @@ function containsRegExpExcludingEmpty(str) {
 }
 
 
+// Paths that should be minified during production builds
+const minifyablePaths = [
+    'src/extensionsIntegrated/phoenix-pro/browser-context'
+];
+
+function _minifyBrowserContextFile(fileContent) {
+    const minified = terser.minify(fileContent, {
+        mangle: true,
+        compress: {
+            unused: false
+        },
+        output: {
+            comments: function(node, comment) {
+                // license headers should not end up in distribution as the license of dist depends on
+                // internal vs external builds. we strip every comment except with below flag.
+                const text = comment.value.trim();
+                return text.includes("DONT_STRIP_MINIFY:");
+            }
+        }
+    });
+
+    if (minified.error) {
+        throw new Error(`Failed to minify file: ${minified.error}`);
+    }
+
+    return minified.code;
+}
+
+function _isMinifyablePath(filePath) {
+    const normalizedFilePath = path.normalize(filePath);
+    return minifyablePaths.some(minifyPath =>
+        normalizedFilePath.startsWith(path.normalize(minifyPath))
+    );
+}
+
+function getKey(filePath, isDevBuild) {
+    return isDevBuild + filePath;
+}
+
 const textContentMap = {};
-function inlineTextRequire(file, content, srcDir) {
+const excludeSuffixPathsInlining = ["MessageIds.json"];
+function inlineTextRequire(file, content, srcDir, isDevBuild = true) {
     if(content.includes(`'text!`) || content.includes("`text!")) {
         throw new Error(`in file ${file} require("text!...") should always use a double quote "text! instead of " or \``);
     }
     if(content.includes(`"text!`)) {
         const requireFragments = extractRequireTextFragments(content);
         for (const {requirePath, requireStatement} of requireFragments) {
-            let textContent = textContentMap[requirePath];
+            let filePath = srcDir + requirePath;
+            if(requirePath.startsWith("./")) {
+                filePath = path.join(path.dirname(file), requirePath);
+            }
+            let textContent = textContentMap[getKey(filePath, isDevBuild)];
+
             if(!textContent){
-                let filePath = srcDir + requirePath;
-                if(requirePath.startsWith("./")) {
-                    filePath = path.join(path.dirname(file), requirePath);
-                }
                 console.log("reading file at path: ", filePath);
-                const fileContent = fs.readFileSync(filePath, "utf8");
-                textContentMap[requirePath] = fileContent;
+                let fileContent = fs.readFileSync(filePath, "utf8");
+
+                // Minify inline if this is a minifyable path and we're in production mode
+                if (!isDevBuild && _isMinifyablePath(filePath)) {
+                    console.log("Minifying file inline:", filePath);
+                    fileContent = _minifyBrowserContextFile(fileContent);
+                }
+
+                textContentMap[getKey(filePath, isDevBuild)] = fileContent;
                 textContent = fileContent;
             }
-            if(textContent.includes("`")) {
-                console.log("Not inlining file as it contains a backquote(`) :", requirePath);
-            } else if(requirePath.endsWith(".js") || requirePath.endsWith(".json")) {
-                console.log("Not inlining JS/JSON file:", requirePath);
+            if((requirePath.endsWith(".js") && !requirePath.includes("./")) // js files that are relative paths are ok
+                || excludeSuffixPathsInlining.some(ext => requirePath.endsWith(ext))) {
+                console.warn("Not inlining JS/JSON file:", requirePath, filePath);
+                if(filePath.includes("phoenix-pro")) {
+                    // this is needed as we will delete the extension sources when packaging for release.
+                    // so non inlined content will not be available in the extension. throw early to detect that.
+                    throw new Error(`All Files in phoenix pro extension should be inlineable!: failed for ${filePath}`);
+                }
             } else {
                 console.log("Inlining", requireStatement);
                 if((requireStatement.includes(".html") || requireStatement.includes(".js"))
@@ -568,7 +680,7 @@ function inlineTextRequire(file, content, srcDir) {
                     throw `Error inlining ${requireStatement} in ${file}: Regex: ${detectedRegEx}`+
                     "\nRegular expression of the form /*/ is not allowed for minification please use RegEx constructor";
                 }
-                content = content.replaceAll(requireStatement, "`"+textContent+"`");
+                content = content.replaceAll(requireStatement, `${JSON.stringify(textContent)}`);
             }
         }
 
@@ -576,7 +688,7 @@ function inlineTextRequire(file, content, srcDir) {
     return content;
 }
 
-function makeBracketsConcatJS() {
+function _makeBracketsConcatJSInternal(isDevBuild = true) {
     return new Promise((resolve)=>{
         const srcDir = "src/";
         const DO_NOT_CONCATENATE = [
@@ -610,7 +722,7 @@ function makeBracketsConcatJS() {
                 console.log("Merging: ", requirePath);
                 mergeCount ++;
                 content = content.replace("define(", `define("${requirePath}", `);
-                content = inlineTextRequire(file, content, srcDir);
+                content = inlineTextRequire(file, content, srcDir, isDevBuild);
                 concatenatedFile = concatenatedFile + "\n" + content;
             }
         }
@@ -621,14 +733,20 @@ function makeBracketsConcatJS() {
     });
 }
 
+function makeBracketsConcatJS() {
+    return _makeBracketsConcatJSInternal(true);
+}
+
+function makeBracketsConcatJSWithMinifiedBrowserScripts() {
+    return _makeBracketsConcatJSInternal(false);
+}
+
 function _renameBracketsConcatAsBracketsJSInDist() {
     return new Promise((resolve)=>{
         fs.unlinkSync("dist/brackets.js");
         fs.copyFileSync("dist/brackets-min.js", "dist/brackets.js");
-        fs.copyFileSync("dist/brackets-min.js.map", "dist/brackets.js.map");
         // cleanup minifed files
         fs.unlinkSync("dist/brackets-min.js");
-        fs.unlinkSync("dist/brackets-min.js.map");
         resolve();
     });
 }
@@ -711,8 +829,8 @@ function makeExtensionConcatJS(extensionName) {
                     `define("${defineId}", `
                 );
 
-                // inline text requires
-                content = inlineTextRequire(file, content, extensionDir);
+                // inline text requires (extensions use isDevBuild=true, they're minified via makeJSDist)
+                content = inlineTextRequire(file, content, extensionDir, true);
 
                 concatenatedFile += '\n' + content;
                 mergeCount++;
@@ -748,9 +866,7 @@ function _renameExtensionConcatAsExtensionJSInDist(extensionName) {
             const srcExtensionConcatFile = path.join(srcExtensionDir, 'extension-min.js');
             const distExtensionDir = path.join('dist/extensions/default', extensionName);
             const extMinFile = path.join(distExtensionDir, 'main.js');
-            const extMinFileMap = path.join(distExtensionDir, 'main.js.map');
             const extSrcFile = path.join(distExtensionDir, 'extension-min.js');
-            const extSrcFileMap = path.join(distExtensionDir, 'extension-min.js.map');
 
             // Make sure extension-min.js exists in dist.
             if (!fs.existsSync(extSrcFile)) {
@@ -769,17 +885,7 @@ function _renameExtensionConcatAsExtensionJSInDist(extensionName) {
             }
             fs.copyFileSync(extSrcFile, extMinFile);
 
-            if (fs.existsSync(extMinFileMap)) {
-                fs.unlinkSync(extMinFileMap);
-            }
-            if (fs.existsSync(extSrcFileMap)) {
-                fs.copyFileSync(extSrcFileMap, extMinFileMap);
-            }
-
             fs.unlinkSync(extSrcFile);
-            if (fs.existsSync(extSrcFileMap)) {
-                fs.unlinkSync(extSrcFileMap);
-            }
 
             resolve();
         } catch (err) {
@@ -877,6 +983,32 @@ function makeLoggerConfig() {
     });
 }
 
+function generateProLoaderFiles() {
+    return new Promise((resolve) => {
+        // AMD module template for generated files
+        const AMD_MODULE_TEMPLATE = `define(function (require, exports, module) {<CODE>});\n`;
+
+        const phoenixProExists = fs.existsSync('src/extensionsIntegrated/phoenix-pro');
+
+        // Generate test/pro-test-suite.js content
+        const testSuiteCode = phoenixProExists ?
+            '\n    require("extensionsIntegrated/phoenix-pro/unittests");\n' : '';
+        const testSuiteContent = AMD_MODULE_TEMPLATE.replace('<CODE>', testSuiteCode);
+
+        // Generate src/extensionsIntegrated/pro-loader.js content
+        const loaderCode = phoenixProExists ? '\n    require("./phoenix-pro/main");\n' : '';
+        const loaderContent = AMD_MODULE_TEMPLATE.replace('<CODE>', loaderCode);
+
+        fs.writeFileSync('test/pro-test-suite.js', testSuiteContent);
+        fs.writeFileSync('src/extensionsIntegrated/pro-loader.js', loaderContent);
+
+        console.log(`Generated pro-loader.js (phoenix-pro ${phoenixProExists ? 'found' : 'not found'})`);
+        console.log(`Generated pro-test-suite.js (phoenix-pro ${phoenixProExists ? 'found' : 'not found'})`);
+
+        resolve();
+    });
+}
+
 function validatePackageVersions() {
     return new Promise((resolve, reject)=>{
         const mainPackageJson = require("../package.json", "utf8");
@@ -926,6 +1058,7 @@ function validatePackageVersions() {
     });
 }
 
+
 function _patchMinifiedCSSInDistIndex() {
     return new Promise((resolve)=>{
         let content = fs.readFileSync("dist/index.html", "utf8");
@@ -942,26 +1075,29 @@ function _patchMinifiedCSSInDistIndex() {
 
 const createDistTest = series(copyDistToDistTestFolder, copyTestToDistTestFolder, copyIndexToDistTestFolder);
 
-exports.build = series(copyThirdPartyLibs.copyAll, makeLoggerConfig, zipDefaultProjectFiles, zipSampleProjectFiles,
-    makeBracketsConcatJS, _compileLessSrc, _cleanReleaseBuildArtefactsInSrc, // these are here only as sanity check so as to catch release build minify fails not too late
+exports.build = series(optionalBuild.clonePhoenixProRepo, optionalBuild.generateProBuildInfo, copyThirdPartyLibs.copyAll, makeLoggerConfig, generateProLoaderFiles, zipDefaultProjectFiles, zipSampleProjectFiles,
+    makeBracketsConcatJS, makeBracketsConcatJSWithMinifiedBrowserScripts, _compileLessSrc, _cleanReleaseBuildArtefactsInSrc, // these are here only as sanity check so as to catch release build minify fails not too late
     createSrcCacheManifest, validatePackageVersions);
-exports.buildDebug = series(copyThirdPartyLibs.copyAllDebug, makeLoggerConfig, zipDefaultProjectFiles,
-    makeBracketsConcatJS, _compileLessSrc, _cleanReleaseBuildArtefactsInSrc, // these are here only as sanity check so as to catch release build minify fails not too late
+exports.buildDebug = series(optionalBuild.clonePhoenixProRepo, optionalBuild.generateProBuildInfo, copyThirdPartyLibs.copyAllDebug, makeLoggerConfig, generateProLoaderFiles, zipDefaultProjectFiles,
+    makeBracketsConcatJS, makeBracketsConcatJSWithMinifiedBrowserScripts, _compileLessSrc, _cleanReleaseBuildArtefactsInSrc, // these are here only as sanity check so as to catch release build minify fails not too late
     zipSampleProjectFiles, createSrcCacheManifest);
 exports.clean = series(cleanDist);
 exports.reset = series(cleanAll);
 
 exports.releaseDev = series(cleanDist, exports.buildDebug, makeBracketsConcatJS, makeConcatExtensions, _compileLessSrc,
-    makeDistAll, cleanUnwantedFilesInDist, releaseDev, _renameConcatExtensionsinDist,
-    createDistCacheManifest, createDistTest, _cleanReleaseBuildArtefactsInSrc);
-exports.releaseStaging = series(cleanDist, exports.build, makeBracketsConcatJS, makeConcatExtensions, _compileLessSrc,
-    makeDistNonJS, makeJSDist, makeJSPrettierDist, makeNonMinifyDist, cleanUnwantedFilesInDist,
-    _renameBracketsConcatAsBracketsJSInDist, _renameConcatExtensionsinDist, _patchMinifiedCSSInDistIndex, releaseStaging,
-    createDistCacheManifest, createDistTest, _cleanReleaseBuildArtefactsInSrc);
-exports.releaseProd = series(cleanDist, exports.build, makeBracketsConcatJS, makeConcatExtensions, _compileLessSrc,
-    makeDistNonJS, makeJSDist, makeJSPrettierDist, makeNonMinifyDist, cleanUnwantedFilesInDist,
-    _renameBracketsConcatAsBracketsJSInDist, _renameConcatExtensionsinDist, _patchMinifiedCSSInDistIndex, releaseProd,
-    createDistCacheManifest, createDistTest, _cleanReleaseBuildArtefactsInSrc);
+    makeDistAll, cleanUnwantedFilesInDistDev, releaseDev, _renameConcatExtensionsinDist,
+    createDistCacheManifest, createDistTest,
+    _cleanPhoenixProGitFolder, _cleanReleaseBuildArtefactsInSrc, validateBuild.validateDistSizeRestrictions);
+exports.releaseStaging = series(cleanDist, exports.build, makeBracketsConcatJSWithMinifiedBrowserScripts,
+    makeConcatExtensions, _compileLessSrc, makeDistNonJS, makeJSDist, makeJSPrettierDist, makeNonMinifyDist,
+    cleanUnwantedFilesInDistProd, _renameBracketsConcatAsBracketsJSInDist, _renameConcatExtensionsinDist,
+    _patchMinifiedCSSInDistIndex, releaseStaging, createDistCacheManifest, createDistTest,
+    _deletePhoenixProSourceFolder, _cleanReleaseBuildArtefactsInSrc, validateBuild.validateDistSizeRestrictions);
+exports.releaseProd = series(cleanDist, exports.build, makeBracketsConcatJSWithMinifiedBrowserScripts,
+    makeConcatExtensions, _compileLessSrc, makeDistNonJS, makeJSDist, makeJSPrettierDist, makeNonMinifyDist,
+    cleanUnwantedFilesInDistProd, _renameBracketsConcatAsBracketsJSInDist, _renameConcatExtensionsinDist,
+    _patchMinifiedCSSInDistIndex, releaseProd, createDistCacheManifest, createDistTest,
+    _deletePhoenixProSourceFolder, _cleanReleaseBuildArtefactsInSrc, validateBuild.validateDistSizeRestrictions);
 exports.releaseWebCache = series(makeDistWebCache);
 exports.serve = series(exports.build, serve);
 exports.zipTestFiles = series(zipTestFiles);
@@ -972,3 +1108,4 @@ exports.default = series(exports.build);
 exports.patchVersionBump = series(patchVersionBump);
 exports.minorVersionBump = series(minorVersionBump);
 exports.majorVersionBump = series(majorVersionBump);
+exports.validateDistSizeRestrictions = series(validateBuild.validateDistSizeRestrictions);

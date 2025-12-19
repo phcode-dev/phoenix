@@ -36,7 +36,7 @@
  */
 
 /*jslint vars: true, plusplus: true, devel: true, nomen: true, regexp: true, indent: 4, maxerr: 50 */
-/*global path, jsPromise*/
+/*global path*/
 //jshint-ignore:no-start
 
 define(function (require, exports, module) {
@@ -57,6 +57,7 @@ define(function (require, exports, module) {
         Strings            = require("strings"),
         Mustache           = require("thirdparty/mustache/mustache"),
         Metrics            = require("utils/Metrics"),
+        CONSTANTS           = require("LiveDevelopment/LivePreviewConstants"),
         LiveDevelopment    = require("LiveDevelopment/main"),
         LiveDevServerManager = require("LiveDevelopment/LiveDevServerManager"),
         MultiBrowserLiveDev = require("LiveDevelopment/LiveDevMultiBrowser"),
@@ -74,6 +75,11 @@ define(function (require, exports, module) {
         DefaultDialogs = require("widgets/DefaultDialogs"),
         ProDialogs = require("services/pro-dialogs"),
         utils = require('./utils');
+
+    const KernalModeTrust = window.KernalModeTrust;
+    if(!KernalModeTrust){
+        throw new Error("KernalModeTrust is not defined. Cannot boot without trust ring");
+    }
 
     const StateManager = PreferencesManager.stateManager;
     const STATE_CUSTOM_SERVER_BANNER_ACK = "customServerBannerDone";
@@ -93,9 +99,16 @@ define(function (require, exports, module) {
     const PREFERENCE_LIVE_PREVIEW_MODE = "livePreviewMode";
 
     // live preview element highlights preference (whether on hover or click)
-    const PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT = "livePreviewElementHighlights";
-    PreferencesManager.definePreference(PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT, "string", "hover", {
-        description: Strings.LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT_PREFERENCE
+    const PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT = CONSTANTS.PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT;
+    PreferencesManager.definePreference(PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT, "string", CONSTANTS.HIGHLIGHT_HOVER, {
+        description: Strings.LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT_PREFERENCE,
+        values: [CONSTANTS.HIGHLIGHT_HOVER, CONSTANTS.HIGHLIGHT_CLICK]
+    });
+
+    // live preview ruler lines preference (show/hide ruler lines on element selection)
+    const PREFERENCE_SHOW_RULER_LINES = CONSTANTS.PREFERENCE_SHOW_RULER_LINES;
+    PreferencesManager.definePreference(PREFERENCE_SHOW_RULER_LINES, "boolean", false, {
+        description: Strings.LIVE_DEV_SETTINGS_SHOW_RULER_LINES_PREFERENCE
     });
 
     const LIVE_PREVIEW_PANEL_ID = "live-preview-panel";
@@ -150,6 +163,18 @@ define(function (require, exports, module) {
     let connectingOverlayTimer = null; // this is needed as we show the connecting overlay after 3s
     let connectingOverlayTimeDuration = 3000;
 
+    let isProEditUser = false;
+    // this is called everytime there is a change in entitlements
+    async function _entitlementsChanged() {
+        try {
+            const entitlement = await KernalModeTrust.EntitlementsManager.getLiveEditEntitlement();
+            isProEditUser = entitlement.activated;
+        } catch (error) {
+            console.error("Error updating pro user status:", error);
+            isProEditUser = false;
+        }
+    }
+
     StaticServer.on(EVENT_EMBEDDED_IFRAME_WHO_AM_I, function () {
         if($iframe && $iframe[0]) {
             const iframeDom = $iframe[0];
@@ -189,6 +214,12 @@ define(function (require, exports, module) {
         // for connecting status, we delay showing the overlay by 3 seconds
         if(status === MultiBrowserLiveDev.STATUS_CONNECTING) {
             connectingOverlayTimer = setTimeout(() => {
+                // before creating the overlays we need to do a recheck for custom server
+                // cause project prefs sometimes takes time to reload which causes overlays to appear for custom servers
+                if(LivePreviewSettings.isUsingCustomServer()){
+                    connectingOverlayTimer = null;
+                    return;
+                }
                 _createAndShowOverlay(textMessage, status);
                 connectingOverlayTimer = null;
             }, connectingOverlayTimeDuration);
@@ -274,44 +305,6 @@ define(function (require, exports, module) {
         }
     }
 
-    // this function is to check if the live highlight feature is enabled or not
-    function _isLiveHighlightEnabled() {
-        return CommandManager.get(Commands.FILE_LIVE_HIGHLIGHT).getChecked();
-    }
-
-    /**
-     * Live Preview 'Preview Mode'. in this mode no live preview highlight or any such features are active
-     * Just the plain website
-     */
-    function _LPPreviewMode() {
-        LiveDevelopment.setLivePreviewEditFeaturesActive(false);
-        if(_isLiveHighlightEnabled()) {
-            LiveDevelopment.togglePreviewHighlight();
-        }
-    }
-
-    /**
-     * Live Preview 'Highlight Mode'. in this mode only the live preview matching with the source code is active
-     * Meaning that if user clicks on some element that element's source code will be highlighted and vice versa
-     */
-    function _LPHighlightMode() {
-        LiveDevelopment.setLivePreviewEditFeaturesActive(false);
-        if(!_isLiveHighlightEnabled()) {
-            LiveDevelopment.togglePreviewHighlight();
-        }
-    }
-
-    /**
-     * Live Preview 'Edit Mode'. this is the most interactive mode, in here the highlight features are available
-     * along with that we also show element's highlighted boxes and such
-     */
-    function _LPEditMode() {
-        LiveDevelopment.setLivePreviewEditFeaturesActive(true);
-        if(!_isLiveHighlightEnabled()) {
-            LiveDevelopment.togglePreviewHighlight();
-        }
-    }
-
     /**
      * update the mode button text in the live preview toolbar UI based on the current mode
      * @param {String} mode - The current mode ("preview", "highlight", or "edit")
@@ -331,22 +324,18 @@ define(function (require, exports, module) {
     function _initializeMode() {
         const currentMode = LiveDevelopment.getCurrentMode();
 
-        if (currentMode === "highlight") {
-            _LPHighlightMode();
-            $previewBtn.removeClass('selected');
-        } else if (currentMode === "edit") {
-            _LPEditMode();
-            $previewBtn.removeClass('selected');
-        } else {
-            _LPPreviewMode();
+        // when in preview mode, we need to give the play button a selected state
+        if (currentMode === LiveDevelopment.CONSTANTS.LIVE_PREVIEW_MODE) {
             $previewBtn.addClass('selected');
+        } else {
+            $previewBtn.removeClass('selected');
         }
 
         _updateModeButton(currentMode);
     }
 
     function _showModeSelectionDropdown(event) {
-        const isEditFeaturesActive = LiveDevelopment.isProUser;
+        const isEditFeaturesActive = isProEditUser;
         const items = [
             Strings.LIVE_PREVIEW_MODE_PREVIEW,
             Strings.LIVE_PREVIEW_MODE_HIGHLIGHT,
@@ -357,6 +346,7 @@ define(function (require, exports, module) {
         if (isEditFeaturesActive) {
             items.push("---");
             items.push(Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON);
+            items.push(Strings.LIVE_PREVIEW_SHOW_RULER_LINES);
         }
 
         const currentMode = LiveDevelopment.getCurrentMode();
@@ -364,22 +354,33 @@ define(function (require, exports, module) {
         $dropdown = new DropdownButton.DropdownButton("", items, function(item, index) {
             if (item === Strings.LIVE_PREVIEW_MODE_PREVIEW) {
                 // using empty spaces to keep content aligned
-                return currentMode === "preview" ? `✓ ${item}` : `${'\u00A0'.repeat(4)}${item}`;
+                return currentMode === LiveDevelopment.CONSTANTS.LIVE_PREVIEW_MODE ?
+                    `✓ ${item}` : `${'\u00A0'.repeat(4)}${item}`;
             } else if (item === Strings.LIVE_PREVIEW_MODE_HIGHLIGHT) {
-                return currentMode === "highlight" ? `✓ ${item}` : `${'\u00A0'.repeat(4)}${item}`;
+                return currentMode === LiveDevelopment.CONSTANTS.LIVE_HIGHLIGHT_MODE ?
+                    `✓ ${item}` : `${'\u00A0'.repeat(4)}${item}`;
             } else if (item === Strings.LIVE_PREVIEW_MODE_EDIT) {
-                const checkmark = currentMode === "edit" ? "✓ " : `${'\u00A0'.repeat(4)}`;
-                const crownIcon = !isEditFeaturesActive ? ' <span style="color: #FBB03B; border: 1px solid #FBB03B; padding: 2px 4px; border-radius: 10px; font-size: 9px; margin-left: 12px;"><i class="fas fa-crown"></i> Pro</span>' : '';
+                const checkmark = currentMode === LiveDevelopment.CONSTANTS.LIVE_EDIT_MODE ?
+                    "✓ " : `${'\u00A0'.repeat(4)}`;
+                const crownIcon = !isEditFeaturesActive ?
+                    ' <span style="color: #FBB03B; border: 1px solid #FBB03B; padding: 2px 4px; border-radius: 10px; font-size: 9px; margin-left: 12px;"><i class="fas fa-crown"></i> Pro</span>' : '';
                 return {
                     html: `${checkmark}${item}${crownIcon}`,
                     enabled: true
                 };
             } else if (item === Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON) {
-                const isHoverMode = PreferencesManager.get(PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT) !== "click";
+                const isHoverMode =
+                    PreferencesManager.get(PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT) === CONSTANTS.HIGHLIGHT_HOVER;
                 if(isHoverMode) {
                     return `✓ ${Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON}`;
                 }
                 return `${'\u00A0'.repeat(4)}${Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON}`;
+            } else if (item === Strings.LIVE_PREVIEW_SHOW_RULER_LINES) {
+                const isEnabled = PreferencesManager.get(PREFERENCE_SHOW_RULER_LINES);
+                if(isEnabled) {
+                    return `✓ ${Strings.LIVE_PREVIEW_SHOW_RULER_LINES}`;
+                }
+                return `${'\u00A0'.repeat(4)}${Strings.LIVE_PREVIEW_SHOW_RULER_LINES}`;
             }
             return item;
         });
@@ -405,11 +406,11 @@ define(function (require, exports, module) {
         // handle the option selection
         $dropdown.on("select", function (e, item, index) {
             if (index === 0) {
-                LiveDevelopment.setMode("preview");
+                LiveDevelopment.setMode(LiveDevelopment.CONSTANTS.LIVE_PREVIEW_MODE);
             } else if (index === 1) {
-                LiveDevelopment.setMode("highlight");
+                LiveDevelopment.setMode(LiveDevelopment.CONSTANTS.LIVE_HIGHLIGHT_MODE);
             } else if (index === 2) {
-                if (!LiveDevelopment.setMode("edit")) {
+                if (!LiveDevelopment.setMode(LiveDevelopment.CONSTANTS.LIVE_EDIT_MODE)) {
                     ProDialogs.showProUpsellDialog(ProDialogs.UPSELL_TYPE_LIVE_EDIT);
                 }
             } else if (item === Strings.LIVE_PREVIEW_EDIT_HIGHLIGHT_ON) {
@@ -419,14 +420,20 @@ define(function (require, exports, module) {
                 }
                 // Toggle between hover and click
                 const currMode = PreferencesManager.get(PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT);
-                const newMode = currMode !== "click" ? "click" : "hover";
+                const newMode = (currMode !== CONSTANTS.HIGHLIGHT_CLICK) ?
+                    CONSTANTS.HIGHLIGHT_CLICK : CONSTANTS.HIGHLIGHT_HOVER;
                 PreferencesManager.set(PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT, newMode);
                 return; // Don't dismiss highlights for this option
+            } else if (item === Strings.LIVE_PREVIEW_SHOW_RULER_LINES) {
+                // Don't allow ruler lines toggle if edit features are not active
+                if (!isEditFeaturesActive) {
+                    return;
+                }
+                // Toggle ruler lines on/off
+                const currentValue = PreferencesManager.get(PREFERENCE_SHOW_RULER_LINES);
+                PreferencesManager.set(PREFERENCE_SHOW_RULER_LINES, !currentValue);
+                return; // Don't dismiss highlights for this option
             }
-
-            // need to dismiss the previous highlighting and stuff
-            LiveDevelopment.hideHighlight();
-            LiveDevelopment.dismissLivePreviewBoxes();
         });
 
         // Remove the button after the dropdown is hidden
@@ -669,10 +676,14 @@ define(function (require, exports, module) {
     function _handlePreviewBtnClick() {
         if($previewBtn.hasClass('selected')) {
             $previewBtn.removeClass('selected');
-            const isEditFeaturesActive = LiveDevelopment.isProUser;
+            const isEditFeaturesActive = isProEditUser;
             if(modeThatWasSelected) {
-                if(modeThatWasSelected === 'edit' && !isEditFeaturesActive) {
-                    // we just set the preference as preference has change handlers that will update the config
+                // If the last selected mode was preview itself, default to the best mode for user's entitlement
+                if(modeThatWasSelected === 'preview') {
+                    const defaultMode = isEditFeaturesActive ? 'edit' : 'highlight';
+                    PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, defaultMode);
+                } else if(modeThatWasSelected === 'edit' && !isEditFeaturesActive) {
+                    // Non-pro users can't be in edit mode - switch to highlight
                     PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "highlight");
                 } else {
                     PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, modeThatWasSelected);
@@ -1191,10 +1202,15 @@ define(function (require, exports, module) {
         });
         CommandManager.register(Strings.CMD_LIVE_FILE_PREVIEW_SETTINGS,
             Commands.FILE_LIVE_FILE_PREVIEW_SETTINGS, _showSettingsDialog);
+        CommandManager.register(Strings.CMD_RELOAD_LIVE_PREVIEW, Commands.CMD_RELOAD_LIVE_PREVIEW, function () {
+            _loadPreview(true, true);
+        });
         let fileMenu = Menus.getMenu(Menus.AppMenuBar.FILE_MENU);
         fileMenu.addMenuItem(Commands.FILE_LIVE_FILE_PREVIEW, "", Menus.AFTER, Commands.FILE_EXTENSION_MANAGER);
-        fileMenu.addMenuItem(Commands.FILE_LIVE_FILE_PREVIEW_SETTINGS, "",
+        fileMenu.addMenuItem(Commands.CMD_RELOAD_LIVE_PREVIEW, "",
             Menus.AFTER, Commands.FILE_LIVE_FILE_PREVIEW);
+        fileMenu.addMenuItem(Commands.FILE_LIVE_FILE_PREVIEW_SETTINGS, "",
+            Menus.AFTER, Commands.CMD_RELOAD_LIVE_PREVIEW);
         fileMenu.addMenuDivider(Menus.BEFORE, Commands.FILE_LIVE_FILE_PREVIEW);
 
         _registerHandlers();
@@ -1205,13 +1221,17 @@ define(function (require, exports, module) {
             _initializeMode();
         });
 
-        // Handle element highlight preference changes from this extension
+        // Handle element highlight & ruler lines preference changes
         PreferencesManager.on("change", PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT, function() {
             LiveDevelopment.updateElementHighlightConfig();
         });
+        PreferencesManager.on("change", PREFERENCE_SHOW_RULER_LINES, function() {
+            LiveDevelopment.updateRulerLinesConfig();
+        });
 
-        // Initialize element highlight config on startup
+        // Initialize element highlight and ruler lines config on startup
         LiveDevelopment.updateElementHighlightConfig();
+        LiveDevelopment.updateRulerLinesConfig();
 
         LiveDevelopment.openLivePreview();
         LiveDevelopment.on(LiveDevelopment.EVENT_OPEN_PREVIEW_URL, _openLivePreviewURL);
@@ -1291,6 +1311,13 @@ define(function (require, exports, module) {
             }
         }, 1000);
         _projectOpened();
+        if(!Phoenix.isSpecRunnerWindow){
+            _entitlementsChanged();
+            KernalModeTrust.EntitlementsManager.on(
+                KernalModeTrust.EntitlementsManager.EVENT_ENTITLEMENTS_CHANGED,
+                _entitlementsChanged
+            );
+        }
     });
 
     // private API to be used inside phoenix codebase only

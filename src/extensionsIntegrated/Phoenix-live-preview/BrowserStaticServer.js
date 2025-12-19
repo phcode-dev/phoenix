@@ -34,8 +34,6 @@ define(function (require, exports, module) {
         Mustache = require("thirdparty/mustache/mustache"),
         FileSystem = require("filesystem/FileSystem"),
         EventDispatcher = require("utils/EventDispatcher"),
-        CommandManager     = require("command/CommandManager"),
-        Commands           = require("command/Commands"),
         StringUtils       = require("utils/StringUtils"),
         EventManager = require("utils/EventManager"),
         LivePreviewSettings  = require("./LivePreviewSettings"),
@@ -730,11 +728,8 @@ define(function (require, exports, module) {
         });
     });
 
-    function _isLiveHighlightEnabled() {
-        return CommandManager.get(Commands.FILE_LIVE_HIGHLIGHT).getChecked();
-    }
     exports.on(EVENT_EMBEDDED_IFRAME_ESCAPE_PRESS, function () {
-        if(!_isLiveHighlightEnabled()){
+        if(LiveDevelopment.isInPreviewMode()){
             return;
         }
         utils.focusActiveEditorIfFocusInLivePreview();

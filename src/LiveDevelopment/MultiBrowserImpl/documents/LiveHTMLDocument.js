@@ -33,8 +33,8 @@ define(function (require, exports, module) {
         PerfUtils           = require("utils/PerfUtils"),
         _                   = require("thirdparty/lodash"),
         LiveDocument        = require("LiveDevelopment/MultiBrowserImpl/documents/LiveDocument"),
-        HTMLInstrumentation = require("LiveDevelopment/MultiBrowserImpl/language/HTMLInstrumentation");
-
+        HTMLInstrumentation = require("LiveDevelopment/MultiBrowserImpl/language/HTMLInstrumentation"),
+        CSSUtils            = require("language/CSSUtils");
 
     /**
      * @constructor
@@ -156,7 +156,28 @@ define(function (require, exports, module) {
             return;
         }
         var editor = this.editor,
-            ids = [];
+            mode = editor.getModeForSelection(),
+            ids = [],
+            selectors = [];
+
+        // check if the cursor is in a stylesheet context (internal styles)
+        if (mode === "css" || mode === "text/x-scss" || mode === "text/x-less") {
+            // find the css selector
+            _.each(this.editor.getSelections(), function (sel) {
+                let selector = CSSUtils.findSelectorAtDocumentPos(editor, (sel.reversed ? sel.end : sel.start));
+                if (selector) {
+                    selectors.push(selector);
+                }
+            });
+
+            if (selectors.length) {
+                // to highlight the elements that match the css selectors
+                this.highlightRule(selectors.join(","));
+                return;
+            }
+        }
+
+        // its not found in css context, then it must be a inline style or a normal html element
         _.each(this.editor.getSelections(), function (sel) {
             var tagID = HTMLInstrumentation._getTagIDAtDocumentPos(
                 editor,

@@ -27,6 +27,7 @@ define(function (require, exports, module) {
     const SpecRunnerUtils = require("spec/SpecRunnerUtils"),
         KeyEvent = require("utils/KeyEvent"),
         StringUtils = require("utils/StringUtils"),
+        CONSTANTS = require("LiveDevelopment/LivePreviewConstants"),
         Strings = require("strings");
 
     describe("livepreview:MultiBrowser Live Preview", function () {
@@ -113,17 +114,6 @@ define(function (require, exports, module) {
                 await SpecRunnerUtils.loadProjectInTestWindow(testFolder);
                 await SpecRunnerUtils.deletePathAsync(testFolder + "/.phcode.json", true);
 
-                // Disable edit mode features for core live preview tests
-                // This ensures tests focus on basic live preview functionality without
-                // edit mode interference (hover/click handlers)
-                if (LiveDevMultiBrowser && LiveDevMultiBrowser.config) {
-                    LiveDevMultiBrowser.config.isProUser = false;
-                    // Also update the remote browser configuration
-                    if (LiveDevMultiBrowser.updateConfig) {
-                        LiveDevMultiBrowser.updateConfig(JSON.stringify(LiveDevMultiBrowser.config));
-                    }
-                }
-
                 if (!WorkspaceManager.isPanelVisible('live-preview-panel')) {
                     await awaitsForDone(CommandManager.execute(Commands.FILE_LIVE_FILE_PREVIEW));
                 }
@@ -149,11 +139,11 @@ define(function (require, exports, module) {
             WorkspaceManager = null;
         }, 30000);
 
-        async function _enableLiveHighlights(enable) {
-            PreferencesManager.setViewState("livedevHighlight", enable);
+        async function _setLivePreviewMode(mode) {
+            PreferencesManager.set(CONSTANTS.PREFERENCE_LIVE_PREVIEW_MODE, mode);
         }
         async function endPreviewSession() {
-            await _enableLiveHighlights(true);
+            await _setLivePreviewMode(CONSTANTS.LIVE_HIGHLIGHT_MODE);
             LiveDevMultiBrowser.close();
             await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE_ALL, { _forceClose: true }),
                 "closing all file");
@@ -172,14 +162,6 @@ define(function (require, exports, module) {
         }
 
         async function waitsForLiveDevelopmentToOpen() {
-            // Ensure edit mode is disabled before opening live preview
-            if (LiveDevMultiBrowser && LiveDevMultiBrowser.config) {
-                LiveDevMultiBrowser.config.isProUser = false;
-                // Update the remote browser configuration to sync the disabled state
-                if (LiveDevMultiBrowser.updateConfig) {
-                    LiveDevMultiBrowser.updateConfig(JSON.stringify(LiveDevMultiBrowser.config));
-                }
-            }
             LiveDevMultiBrowser.open();
             await waitsForLiveDevelopmentFileSwitch();
         }
@@ -923,7 +905,6 @@ define(function (require, exports, module) {
         }, 30000);
 
         it("focus test: should html live previews never take focus from editor", async function () {
-            // this test may fail if the test window doesn't have focus
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
                 "SpecRunnerUtils.openProjectFiles simple1.html");
 
@@ -937,7 +918,7 @@ define(function (require, exports, module) {
             // delegate focus to editor explicitly in case of html files.
             expect(testWindow.document.activeElement).toEqual(iFrame);
             // for html, it can take focus, but clicking on any non- text elemnt will make it loose focus to editor
-            await forRemoteExec(`document.getElementById("testId2").click()`);
+            await forRemoteExec(`document.getElementById("testId").click()`);
             await awaits(500);
             const activeElement = testWindow.document.activeElement;
             const editorHolder = testWindow.document.getElementById("editor-holder");
@@ -1005,8 +986,6 @@ define(function (require, exports, module) {
                 "SpecRunnerUtils.openProjectFiles simple1.html");
 
             await waitsForLiveDevelopmentToOpen();
-            await _editFileAndVerifyLivePreview("simple1.html", { line: 11, ch: 45 }, 'hello world ',
-                "testId", "Brackets is hello world awesome!");
 
             let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
             expect(iFrame.src.endsWith("simple1.html")).toBeTrue();
@@ -1041,8 +1020,6 @@ define(function (require, exports, module) {
                 "SpecRunnerUtils.openProjectFiles simple1.html");
 
             await waitsForLiveDevelopmentToOpen();
-            await _editFileAndVerifyLivePreview("simple1.html", { line: 11, ch: 45 }, 'hello world ',
-                "testId", "Brackets is hello world awesome!");
 
             let iFrame = testWindow.document.getElementById("panel-live-preview-frame");
             expect(iFrame.src.endsWith("simple1.html")).toBeTrue();
@@ -1552,7 +1529,7 @@ define(function (require, exports, module) {
         }, 30000);
 
         it("should reverse highlight be disabled if live highlight is disabled", async function () {
-            await _enableLiveHighlights(false);
+            await _setLivePreviewMode(CONSTANTS.LIVE_PREVIEW_MODE);
             await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
                 "SpecRunnerUtils.openProjectFiles simple1.html");
 
@@ -1569,7 +1546,7 @@ define(function (require, exports, module) {
             await awaits(500);
             expect(editor.getCursorPos()).toEql({ line: 0, ch: 0, sticky: null });
 
-            await _enableLiveHighlights(true);
+            await _setLivePreviewMode(CONSTANTS.LIVE_HIGHLIGHT_MODE);
             await endPreviewSession();
         }, 30000);
 
@@ -1603,24 +1580,24 @@ define(function (require, exports, module) {
         }, 30000);
 
         it("should beautify and undo not corrupt live preview", async function () {
-            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
-                "SpecRunnerUtils.openProjectFiles simple1.html");
+            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple2.html"]),
+                "SpecRunnerUtils.openProjectFiles simple2.html");
 
             await waitsForLiveDevelopmentToOpen();
-            await _editFileAndVerifyLivePreview("simple1.html", { line: 11, ch: 45 }, 'hello world ',
-                "testId", "Brackets is hello world awesome!");
+            await _editFileAndVerifyLivePreview("simple2.html", { line: 11, ch: 45 }, 'hello world ',
+                "simpId", "Brackets is hello world awesome!");
 
             let editor = EditorManager.getActiveEditor();
             await BeautificationManager.beautifyEditor(editor);
-            await _editFileAndVerifyLivePreview("simple1.html", { line: 11, ch: 73 }, 'yo',
-                "testId", "Brackets is hello world awesome!yo");
+            await _editFileAndVerifyLivePreview("simple2.html", { line: 11, ch: 73 }, 'yo',
+                "simpId", "Brackets is hello world awesome!yo");
 
             await awaitsForDone(CommandManager.execute(Commands.EDIT_UNDO), "undo");
             await awaitsForDone(CommandManager.execute(Commands.EDIT_UNDO), "undo");
             await awaitsForDone(CommandManager.execute(Commands.EDIT_UNDO), "undo");
 
-            await _editFileAndVerifyLivePreview("simple1.html", { line: 11, ch: 45 }, 'hello world ',
-                "testId", "Brackets is hello world awesome!");
+            await _editFileAndVerifyLivePreview("simple2.html", { line: 11, ch: 45 }, 'hello world ',
+                "simpId", "Brackets is hello world awesome!");
 
             await endPreviewSession();
         }, 30000);
@@ -1944,246 +1921,5 @@ define(function (require, exports, module) {
             testWindow.$("#pinURLButton").click();
             await endPreviewSession();
         }, 30000);
-
-        describe("Edit Mode Tests", function () {
-
-            async function waitsForLiveDevelopmentToOpenWithEditMode(elemHighlights = 'hover') {
-                // Enable edit mode before opening live preview
-                if (LiveDevMultiBrowser && LiveDevMultiBrowser.config) {
-                    LiveDevMultiBrowser.config.isProUser = true;
-                    LiveDevMultiBrowser.config.elemHighlights = elemHighlights;
-                    // Update the remote browser configuration
-                    if (LiveDevMultiBrowser.updateConfig) {
-                        LiveDevMultiBrowser.updateConfig(JSON.stringify(LiveDevMultiBrowser.config));
-                    }
-                }
-                LiveDevMultiBrowser.open();
-                await waitsForLiveDevelopmentFileSwitch();
-            }
-
-            async function endEditModePreviewSession() {
-                await _enableLiveHighlights(true);
-                LiveDevMultiBrowser.close();
-                // Disable edit mode after session
-                if (LiveDevMultiBrowser && LiveDevMultiBrowser.config) {
-                    LiveDevMultiBrowser.config.isProUser = false;
-                    LiveDevMultiBrowser.config.elemHighlights = 'hover';
-                }
-                await awaitsForDone(CommandManager.execute(Commands.FILE_CLOSE_ALL, { _forceClose: true }),
-                    "closing all file");
-            }
-
-            async function waitForInfoBox(shouldBeVisible = true, timeout = 5000) {
-                await forRemoteExec(`
-                    const shadowHosts = Array.from(document.body.children).filter(el => el.shadowRoot);
-                    let hasInfoBox = false;
-                    shadowHosts.forEach(host => {
-                        if (host.shadowRoot && host.shadowRoot.innerHTML.includes('phoenix-node-info-box')) {
-                            hasInfoBox = true;
-                        }
-                    });
-                    hasInfoBox;
-                `, (result) => {
-                    return result === shouldBeVisible;
-                });
-            }
-
-            async function waitForMoreOptionsBox(shouldBeVisible = true, timeout = 5000) {
-                await forRemoteExec(`
-                    const shadowHosts = Array.from(document.body.children).filter(el => el.shadowRoot);
-                    let hasMoreOptionsBox = false;
-                    shadowHosts.forEach(host => {
-                        if (host.shadowRoot && host.shadowRoot.innerHTML.includes('phoenix-more-options-box')) {
-                            hasMoreOptionsBox = true;
-                        }
-                    });
-                    hasMoreOptionsBox;
-                `, (result) => {
-                    return result === shouldBeVisible;
-                });
-            }
-
-            async function waitForClickedElement(shouldBeVisible = true, timeout = 5000) {
-                await forRemoteExec(`
-                    const highlightedElements = document.getElementsByClassName("__brackets-ld-highlight");
-                    Array.from(highlightedElements).some(el =>
-                        el.style.backgroundColor && el.style.backgroundColor.includes('rgba(0, 162, 255')
-                    );
-                `, (result) => {
-                    return result === shouldBeVisible;
-                });
-            }
-
-            async function waitForNoEditBoxes() {
-                // Wait for no shadow DOM boxes and no clicked element highlighting
-                await forRemoteExec(`
-                    const shadowHosts = Array.from(document.body.children).filter(el => el.shadowRoot);
-                    shadowHosts.length;
-                `, (result) => {
-                    return result === 0;
-                });
-
-                await waitForClickedElement(false);
-            }
-
-            it("should show info box on hover when elemHighlights is 'hover'", async function () {
-                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
-                    "SpecRunnerUtils.openProjectFiles simple1.html");
-
-                await waitsForLiveDevelopmentToOpenWithEditMode('hover');
-
-                // Initially no boxes should be visible
-                await waitForNoEditBoxes();
-
-                // Hover over testId element
-                await forRemoteExec(`
-                    const event = new MouseEvent('mouseover', { bubbles: true, cancelable: true });
-                    document.getElementById('testId').dispatchEvent(event);
-                `);
-
-                // Info box should appear on hover
-                await waitForInfoBox(true);
-                await waitForMoreOptionsBox(false);
-
-                // Mouse out should hide the info box
-                await forRemoteExec(`
-                    const event = new MouseEvent('mouseout', { bubbles: true, cancelable: true });
-                    document.getElementById('testId').dispatchEvent(event);
-                `);
-
-                await waitForInfoBox(false);
-                await waitForNoEditBoxes();
-
-                await endEditModePreviewSession();
-            }, 30000);
-
-            it("should show more options box on click when elemHighlights is 'hover'", async function () {
-                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
-                    "SpecRunnerUtils.openProjectFiles simple1.html");
-
-                await waitsForLiveDevelopmentToOpenWithEditMode('hover');
-
-                // Click on testId element
-                await forRemoteExec(`document.getElementById('testId').click()`);
-
-                // More options box should appear on click
-                await waitForMoreOptionsBox(true);
-                await waitForClickedElement(true);
-
-                // Clicking on a different element should move the box
-                await forRemoteExec(`document.getElementById('testId2').click()`);
-
-                await waitForMoreOptionsBox(true);
-                await waitForClickedElement(true);
-
-                await endEditModePreviewSession();
-            }, 30000);
-
-            it("should show more options box on click when elemHighlights is 'click'", async function () {
-                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
-                    "SpecRunnerUtils.openProjectFiles simple1.html");
-
-                await waitsForLiveDevelopmentToOpenWithEditMode('click');
-
-                // Initially no boxes should be visible
-                await waitForNoEditBoxes();
-
-                // In click mode, hover should not show info box
-                await forRemoteExec(`
-                    const event = new MouseEvent('mouseover', { bubbles: true, cancelable: true });
-                    document.getElementById('testId').dispatchEvent(event);
-                `);
-
-                // Should still be no boxes visible
-                await waitForInfoBox(false);
-                await waitForMoreOptionsBox(false);
-
-                // Click should show more options box
-                await forRemoteExec(`document.getElementById('testId').click()`);
-
-                await waitForMoreOptionsBox(true);
-                await waitForClickedElement(true);
-
-                await endEditModePreviewSession();
-            }, 30000);
-
-            it("should handle multiple element interactions in hover mode", async function () {
-                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple2.html"]),
-                    "SpecRunnerUtils.openProjectFiles simple2.html");
-
-                await waitsForLiveDevelopmentToOpenWithEditMode('hover');
-
-                // Test hovering over multiple elements
-                const elementIds = ['simpId', 'simpId2', 'simpId3'];
-
-                for (let elementId of elementIds) {
-                    // Hover over element
-                    await forRemoteExec(`
-                        const event = new MouseEvent('mouseover', { bubbles: true, cancelable: true });
-                        document.getElementById('${elementId}').dispatchEvent(event);
-                    `);
-
-                    // Info box should appear
-                    await waitForInfoBox(true);
-
-                    // Mouse out
-                    await forRemoteExec(`
-                        const event = new MouseEvent('mouseout', { bubbles: true, cancelable: true });
-                        document.getElementById('${elementId}').dispatchEvent(event);
-                    `);
-
-                    // Box should disappear
-                    await waitForInfoBox(false);
-                }
-
-                await endEditModePreviewSession();
-            }, 30000);
-
-            it("should handle multiple element clicks and box movement", async function () {
-                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple2.html"]),
-                    "SpecRunnerUtils.openProjectFiles simple2.html");
-
-                await waitsForLiveDevelopmentToOpenWithEditMode('hover');
-
-                const elementIds = ['simpId', 'simpId2', 'simpId3'];
-
-                // Click on first element
-                await forRemoteExec(`document.getElementById('${elementIds[0]}').click()`);
-
-                await waitForMoreOptionsBox(true);
-                await waitForClickedElement(true);
-
-                // Click on subsequent elements - box should move
-                for (let i = 1; i < elementIds.length; i++) {
-                    await forRemoteExec(`document.getElementById('${elementIds[i]}').click()`);
-
-                    await waitForMoreOptionsBox(true);
-                    await waitForClickedElement(true);
-                }
-
-                await endEditModePreviewSession();
-            }, 30000);
-
-            it("should dismiss boxes when clicking outside elements", async function () {
-                await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
-                    "SpecRunnerUtils.openProjectFiles simple1.html");
-
-                await waitsForLiveDevelopmentToOpenWithEditMode('hover');
-
-                // Click on element to show more options box
-                await forRemoteExec(`document.getElementById('testId').click()`);
-
-                await waitForMoreOptionsBox(true);
-
-                // Click on body (outside any specific element)
-                await forRemoteExec(`document.body.click()`);
-
-                // Boxes should be dismissed
-                await waitForMoreOptionsBox(false);
-                await waitForClickedElement(false);
-
-                await endEditModePreviewSession();
-            }, 30000);
-        });
     });
 });

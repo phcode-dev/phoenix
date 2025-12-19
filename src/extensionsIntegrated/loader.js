@@ -46,4 +46,5 @@ define(function (require, exports, module) {
     require("./TabBar/main");
     require("./CustomSnippets/main");
     require("./CollapseFolders/main");
+    require("./pro-loader");
 });

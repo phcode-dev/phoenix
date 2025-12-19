@@ -42,7 +42,8 @@ define(function (require, exports, module) {
     const EventDispatcher = require("utils/EventDispatcher");
 
     // Text of the script we'll inject into the browser that handles protocol requests.
-    const LiveDevProtocolRemote = require("text!LiveDevelopment/BrowserScripts/LiveDevProtocolRemote.js"),
+    const CONSTANTS           = require("LiveDevelopment/LivePreviewConstants"),
+        LiveDevProtocolRemote = require("text!LiveDevelopment/BrowserScripts/LiveDevProtocolRemote.js"),
         DocumentObserver      = require("text!LiveDevelopment/BrowserScripts/DocumentObserver.js"),
         LanguageManager     = require("language/LanguageManager"),
         RemoteFunctions       = require("text!LiveDevelopment/BrowserScripts/RemoteFunctions.js"),
@@ -52,8 +53,7 @@ define(function (require, exports, module) {
         HTMLInstrumentation   = require("LiveDevelopment/MultiBrowserImpl/language/HTMLInstrumentation"),
         StringUtils = require("utils/StringUtils"),
         FileViewController    = require("project/FileViewController"),
-        MainViewManager     = require("view/MainViewManager"),
-        LivePreviewEdit     = require("LiveDevelopment/LivePreviewEdit");
+        MainViewManager     = require("view/MainViewManager");
 
     const LIVE_DEV_REMOTE_SCRIPTS_FILE_NAME = `phoenix_live_preview_scripts_instrumented_${StringUtils.randomString(8)}.js`;
     const LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME = `pageLoaderWorker_${StringUtils.randomString(8)}.js`;
@@ -88,6 +88,16 @@ define(function (require, exports, module) {
      * @type {Object}
      */
     var _responseDeferreds = {};
+
+    let _remoteFunctionProvider = null;
+
+    /**
+     * The callback fn must return a single text string that will be used as remote function script
+     * @param callbackFn
+     */
+    function setCustomRemoteFunctionProvider(callbackFn) {
+        _remoteFunctionProvider = callbackFn;
+    }
 
     /**
      * Returns an array of the client IDs that are being managed by this live document.
@@ -149,9 +159,9 @@ define(function (require, exports, module) {
     }
 
     function _tagSelectedInLivePreview(tagId, nodeName, contentEditable, allSelectors) {
-        const highlightPref = PreferencesManager.getViewState("livedevHighlight");
-        if(!highlightPref){
-            // live preview highlight and reverse highlight feature is disabled
+        const livePreviewMode = PreferencesManager.get(CONSTANTS.PREFERENCE_LIVE_PREVIEW_MODE);
+        if(livePreviewMode === CONSTANTS.LIVE_PREVIEW_MODE){
+            // hilights are enabled only in edit and highlight mode
             return;
         }
         const liveDoc = LiveDevMultiBrowser.getCurrentLiveDoc(),
@@ -203,6 +213,11 @@ define(function (require, exports, module) {
         // for a fraction of a second. so a size of 1000 should be more than enough.
     });
 
+    let _livePreviewMessageHandler;
+    function setLivePreviewMessageHandler(handler) {
+        _livePreviewMessageHandler = handler;
+    }
+
     /**
      * @private
      * Handles a message received from the remote protocol handler via the transport.
@@ -219,16 +234,23 @@ define(function (require, exports, module) {
      *      only processed once and not from any reflections.
      */
     function _receive(clientId, msgStr, messageID) {
-        var msg = JSON.parse(msgStr),
-            event = msg.method || "event",
-            deferred;
+        const msg = JSON.parse(msgStr),
+            event = msg.method || "event";
+        let deferred;
         if(messageID && processedMessageIDs.has(messageID)){
             return; // this message is already processed.
         } else if (messageID) {
             processedMessageIDs.set(messageID, true);
         }
-        if (msg.livePreviewEditEnabled) {
-            LivePreviewEdit.handleLivePreviewEditOperation(msg);
+        if(_livePreviewMessageHandler) {
+            let preventDefault = _livePreviewMessageHandler(msg);
+            if(preventDefault){
+                return;
+            }
+        }
+        if(msg.requestConfigRefresh){
+            LiveDevMultiBrowser.refreshConfig();
+            return;
         }
 
         if (msg.id) {
@@ -263,6 +285,11 @@ define(function (require, exports, module) {
     function _send(msg, clients) {
         var id = _nextMsgId++,
             result = new $.Deferred();
+        if(!_transport){
+            console.error("Cannot send message before live preview transport initialised");
+            result.reject();
+            return result.promise();
+        }
 
         // broadcast if there are no specific clients
         clients = clients || getConnectionIds();
@@ -331,7 +358,6 @@ define(function (require, exports, module) {
         _transport.start();
     }
 
-
     /**
      * Returns a script that should be injected into the HTML that's launched in the
      * browser in order to implement remote commands that handle protocol requests.
@@ -343,7 +369,12 @@ define(function (require, exports, module) {
         // Inject DocumentObserver into the browser (tracks related documents)
         script += DocumentObserver;
         // Inject remote functions into the browser.
-        script += "\nwindow._LD=(" + RemoteFunctions + "(" + JSON.stringify(LiveDevMultiBrowser.config) + "))";
+        if(_remoteFunctionProvider){
+            script += _remoteFunctionProvider();
+        } else {
+            script += "\nwindow._LD=(" + RemoteFunctions +
+                "(" + JSON.stringify(LiveDevMultiBrowser.getConfig()) + "))";
+        }
         return "\n" + script + "\n";
     }
 
@@ -481,6 +512,8 @@ define(function (require, exports, module) {
     exports.close = close;
     exports.getConnectionIds = getConnectionIds;
     exports.closeAllConnections = closeAllConnections;
+    exports.setLivePreviewMessageHandler = setLivePreviewMessageHandler;
+    exports.setCustomRemoteFunctionProvider = setCustomRemoteFunctionProvider;
     exports.LIVE_DEV_REMOTE_SCRIPTS_FILE_NAME = LIVE_DEV_REMOTE_SCRIPTS_FILE_NAME;
     exports.LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME = LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME;
     exports.EVENT_LIVE_PREVIEW_CLICKED = EVENT_LIVE_PREVIEW_CLICKED;

@@ -1,5 +1,5 @@
 # The use of robots or other automated means to access the sites managed by core.ai
-# without the express permission of Adobe is strictly prohibited.
+# without the express permission of core.ai is strictly prohibited.
 # Notwithstanding the foregoing, core.ai may permit automated access to
 # access certain pages but solely for the limited purpose of
 # including content in publicly available search engines. Any other
