@@ -695,14 +695,6 @@ function RemoteFunctions(config = {}) {
         const outlineColor = element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR) ? "#4285F4" : "#3C3F41";
         element.style.outline = `1px solid ${outlineColor}`;
 
-        // Only apply background tint for editable elements (not for dynamic/read-only)
-        if (element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR)) {
-            if (element._originalBackgroundColor === undefined) {
-                element._originalBackgroundColor = element.style.backgroundColor;
-            }
-            element.style.backgroundColor = "rgba(0, 162, 255, 0.2)";
-        }
-
         if (!_clickHighlight) {
             _clickHighlight = new Highlight("#cfc");
         }
@@ -1201,16 +1193,7 @@ function RemoteFunctions(config = {}) {
      * when config is changed we clear all the highlighting and stuff
      */
     function _handleConfigurationChange() {
-        if (_hoverHighlight) {
-            _hoverHighlight.clear();
-        }
-        cleanupPreviousElementState();
-        const allElements = window.document.querySelectorAll(`[${GLOBALS.DATA_BRACKETS_ID_ATTR}]`);
-        for (let i = 0; i < allElements.length; i++) {
-            if (allElements[i]._originalBackgroundColor !== undefined) {
-                clearElementBackground(allElements[i]);
-            }
-        }
+        hideHighlight();
         dismissUIAndCleanupState();
     }
 
@@ -1226,7 +1209,6 @@ function RemoteFunctions(config = {}) {
             }
             delete previouslyClickedElement._originalOutline;
 
-            clearElementBackground(previouslyClickedElement);
             hideHighlight();
 
             // Notify handlers about cleanup
