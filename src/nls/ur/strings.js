@@ -188,11 +188,10 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_OFFLINE_RETRY": "دوبارہ کوشش کریں",
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "کنکشن چیک کیا جا رہا ہے",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "ابھی بھی آف لائن ہیں۔ براہ کرم اپنا کنکشن چیک کریں۔",
-  "LIVE_DEV_TOAST_NOT_EDITABLE": "عنصر قابلِ تدوین نہیں - اسکرپٹ سے تیار کردہ۔",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "عنصر کاپی ہو گیا! اسے اوپر داخل کرنے کے لیے کسی بھی عنصر پر 'پیسٹ' پر کلک کریں۔",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "تصویر محفوظ کرنے کے لیے فولڈر منتخب کریں",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "تصویر ڈاؤن لوڈ کرنے کی جگہ منتخب کریں:",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "فولڈر کا پاتھ ٹائپ کریں (مثلاً، assets/images/)",
+  "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 فولڈر کا پاتھ ٹائپ کریں، یا 'images' فولڈر میں ڈاؤن لوڈ کرنے کے لیے خالی چھوڑ دیں۔",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "اس پروجیکٹ کے لیے دوبارہ نہ پوچھیں۔",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "فینکس مصنوعی ذہانت سے اس عنصر میں ترمیم کرنے کو کہیں...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "آپ کے اپنی مرضی کے سرور {0} سے پیش نظارہ حاصل کرنا",
@@ -1545,5 +1544,7 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "آپ کے سسٹم ایڈمنسٹریٹر نے AI تک رسائی کو غیر فعال کر دیا ہے۔ براہ کرم مدد کے لیے {0} سے رابطہ کریں۔",
   "AI_UPSELL_DIALOG_TITLE": "{0} کے ساتھ جاری رکھیں؟",
   "AI_UPSELL_DIALOG_MESSAGE": "آپ نے {0} کو دریافت کیا ہے۔ آگے بڑھنے کے لیے، آپ کو AI سبسکرپشن یا کریڈٹس کی ضرورت ہوگی۔",
-  "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 فولڈر کا پاتھ ٹائپ کریں، یا 'images' فولڈر میں ڈاؤن لوڈ کرنے کے لیے خالی چھوڑ دیں۔"
+  "LIVE_DEV_TOAST_NOT_EDITABLE": "عنصر قابلِ ترمیم نہیں - اسکرپٹ سے تیار کردہ",
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "عنصر کاپی ہو گیا۔ اسے منتخب عنصر کے نیچے شامل کرنے کے لیے 'چسپاں کریں' استعمال کریں۔",
+  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "عنصر صفحہ کے ساتھ اسکرول نہیں ہوتا - ترمیم کے باکسز پوشیدہ ہیں"
 });

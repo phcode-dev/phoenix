@@ -188,11 +188,10 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_OFFLINE_RETRY": "Zkusit znovu",
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Kontrola připojení",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Stále offline. Zkontrolujte prosím své připojení.",
-  "LIVE_DEV_TOAST_NOT_EDITABLE": "Prvek nelze upravit – vygenerováno skriptem.",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Prvek zkopírován! Klikněte na 'Vložit' u libovolného prvku a vložíte ho nad něj.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Vybrat složku pro uložení obrázku",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Zvolte, kam chcete obrázek stáhnout:",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Zadejte cestu ke složce (např. assets/images/)",
+  "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Zadejte cestu ke složce nebo ponechte prázdné pro stažení do složky 'images'.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "U tohoto projektu se znovu neptat",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Požádejte Phoenix AI o úpravu tohoto prvku...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Získávání náhledu z vašeho vlastního serveru {0}",
@@ -1545,5 +1544,7 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Přístup k AI byl zakázán správcem systému. Pro pomoc prosím kontaktujte {0}.",
   "AI_UPSELL_DIALOG_TITLE": "Pokračovat s {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Objevili jste {0}. Chcete-li pokračovat, budete potřebovat předplatné AI nebo kredity.",
-  "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Zadejte cestu ke složce nebo ponechte prázdné pro stažení do složky 'images'."
+  "LIVE_DEV_TOAST_NOT_EDITABLE": "Prvek nelze upravit – vygenerováno skriptem",
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Prvek zkopírován. Pro vložení pod vybraný prvek použijte 'Vložit'.",
+  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Prvek se neposouvá se stránkou – editační pole jsou skryta."
 });

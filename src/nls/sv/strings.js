@@ -188,11 +188,10 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_OFFLINE_RETRY": "Försök igen",
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Kontrollerar anslutning",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Fortfarande offline. Kontrollera din anslutning.",
-  "LIVE_DEV_TOAST_NOT_EDITABLE": "Elementet är inte redigerbart - genererat av skript.",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Elementet kopierades! Klicka på 'Klistra in' på valfritt element för att infoga det ovanför.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Välj mapp för att spara bild",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Välj var bilden ska laddas ner:",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Ange mappsökväg (t.ex. assets/images/)",
+  "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Ange mappsökväg eller lämna tomt för att ladda ner i mappen 'images'.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Fråga inte igen för det här projektet",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Be Phoenix AI att modifiera detta element...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Hämtar förhandsvisning från din anpassade server {0}",
@@ -1545,5 +1544,7 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "AI-åtkomst har inaktiverats av din systemadministratör. Kontakta {0} för hjälp.",
   "AI_UPSELL_DIALOG_TITLE": "Fortsätt med {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Du har upptäckt {0}. För att fortsätta behöver du ett AI-abonnemang eller krediter.",
-  "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Ange mappsökväg eller lämna tomt för att ladda ner i mappen 'images'."
+  "LIVE_DEV_TOAST_NOT_EDITABLE": "Elementet kan inte redigeras - genererat av skript",
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Elementet har kopierats. Använd 'Klistra in' för att lägga till det under det valda elementet",
+  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Elementet rullar inte med sidan - redigeringsrutor dolda"
 });

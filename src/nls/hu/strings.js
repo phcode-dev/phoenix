@@ -188,11 +188,10 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_OFFLINE_RETRY": "Újrapróbálkozás",
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Kapcsolat ellenőrzése",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Még mindig offline. Kérjük, ellenőrizze a kapcsolatát.",
-  "LIVE_DEV_TOAST_NOT_EDITABLE": "Az elem nem szerkeszthető – szkript által generált.",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Elem másolva! Kattintson a 'Beillesztés' gombra bármely elemen, hogy fölé illessze be.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Mappa kiválasztása a kép mentéséhez",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Válassza ki, hova szeretné letölteni a képet:",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Adja meg a mappa elérési útját (pl. assets/images/)",
+  "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Gépelje be a mappa elérési útját, vagy hagyja üresen az 'images' mappába történő letöltéshez.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Ne kérdezze újra ennél a projektnél",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Kérd meg a Phoenix MI-t, hogy módosítsa ezt az elemet...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Előnézet lekérése az egyéni szerverről ({0})",
@@ -1545,5 +1544,7 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "A MI-hozzáférést a rendszergazda letiltotta. Segítségért forduljon a(z) {0} elérhetőséghez.",
   "AI_UPSELL_DIALOG_TITLE": "Folytatja a(z) {0} használatával?",
   "AI_UPSELL_DIALOG_MESSAGE": "Felfedezte a(z) {0} szolgáltatást. A folytatáshoz MI-előfizetésre vagy kreditekre lesz szüksége.",
-  "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Gépelje be a mappa elérési útját, vagy hagyja üresen az 'images' mappába történő letöltéshez."
+  "LIVE_DEV_TOAST_NOT_EDITABLE": "Az elem nem szerkeszthető – szkript által generált.",
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Elem másolva. A 'Beillesztés' paranccsal illesztheti be a kijelölt elem alá.",
+  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Az elem nem gördül az oldallal – a szerkesztőmezők elrejtve."
 });

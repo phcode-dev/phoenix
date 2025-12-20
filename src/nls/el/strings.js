@@ -188,11 +188,10 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_OFFLINE_RETRY": "Επανάληψη",
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Έλεγχος σύνδεσης",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Ακόμα εκτός σύνδεσης. Παρακαλώ, ελέγξτε τη σύνδεσή σας.",
-  "LIVE_DEV_TOAST_NOT_EDITABLE": "Το στοιχείο δεν είναι επεξεργάσιμο - δημιουργήθηκε από script.",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Το στοιχείο αντιγράφηκε! Κάντε κλικ στην 'Επικόλληση' σε οποιοδήποτε στοιχείο για να το εισαγάγετε από πάνω.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Επιλέξτε φάκελο για αποθήκευση εικόνας",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Επιλέξτε πού θα γίνει η λήψη της εικόνας:",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Πληκτρολογήστε διαδρομή φακέλου (π.χ., assets/images/)",
+  "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Πληκτρολογήστε τη διαδρομή φακέλου ή αφήστε το πεδίο κενό για λήψη στον φάκελο 'images'.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Να μην ερωτηθώ ξανά για αυτό το έργο",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Ζητήστε από το Phoenix AI να τροποποιήσει αυτό το στοιχείο...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Λήψη προεπισκόπησης από τον προσαρμοσμένο διακομιστή σας {0}",
@@ -1545,5 +1544,7 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Η πρόσβαση στο AI έχει απενεργοποιηθεί από τον διαχειριστή του συστήματός σας. Παρακαλούμε επικοινωνήστε με {0} για βοήθεια.",
   "AI_UPSELL_DIALOG_TITLE": "Συνέχεια με {0};",
   "AI_UPSELL_DIALOG_MESSAGE": "Ανακαλύψατε το {0}. Για να συνεχίσετε, θα χρειαστείτε μια συνδρομή AI ή πιστώσεις.",
-  "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Πληκτρολογήστε τη διαδρομή φακέλου ή αφήστε το πεδίο κενό για λήψη στον φάκελο 'images'."
+  "LIVE_DEV_TOAST_NOT_EDITABLE": "Το στοιχείο δεν είναι επεξεργάσιμο - δημιουργήθηκε από script",
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Το στοιχείο αντιγράφηκε. Χρησιμοποιήστε την 'Επικόλληση' για να το προσθέσετε κάτω από το επιλεγμένο στοιχείο",
+  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Το στοιχείο δεν κάνει κύλιση με τη σελίδα - τα πλαίσια επεξεργασίας είναι κρυφά"
 });

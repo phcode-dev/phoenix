@@ -188,11 +188,10 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_OFFLINE_RETRY": "重試",
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "正在檢查連線",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "仍處於離線狀態。請檢查您的網路連線。",
-  "LIVE_DEV_TOAST_NOT_EDITABLE": "元素無法編輯 - 由腳本產生。",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "元素已複製！在任何元素上點擊「貼上」即可將其插入到上方。",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "選取儲存圖片的資料夾",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "選擇要下載圖片的位置：",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "輸入資料夾路徑 (例如：assets/images/)",
+  "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 輸入資料夾路徑，或留空以將檔案下載至 'images' 資料夾。",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "針對此專案不再詢問",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "讓 Phoenix AI 修改此元素…",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "從您的自訂伺服器 {0} 取得預覽",
@@ -1545,5 +1544,7 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "您的系統管理員已停用 AI 存取權限。如需協助，請聯絡 {0}。",
   "AI_UPSELL_DIALOG_TITLE": "要繼續使用 {0} 嗎？",
   "AI_UPSELL_DIALOG_MESSAGE": "您已發現 {0}。您需要 AI 訂閱或點數才能繼續。",
-  "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 輸入資料夾路徑，或留空以將檔案下載至 'images' 資料夾。"
+  "LIVE_DEV_TOAST_NOT_EDITABLE": "元素不可編輯 - 由指令碼產生",
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "元素已複製。使用「貼上」將其新增至所選元素的下方",
+  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "元素不會隨頁面捲動 - 編輯方塊已隱藏"
 });

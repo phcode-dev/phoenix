@@ -188,11 +188,10 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_OFFLINE_RETRY": "Wiederholen",
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Verbindung wird geprüft...",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Weiterhin offline. Bitte prüfen Sie Ihre Verbindung.",
-  "LIVE_DEV_TOAST_NOT_EDITABLE": "Element nicht bearbeitbar - von Skript generiert.",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Element kopiert! Klicken Sie bei einem Element auf 'Einfügen', um es darüber einzufügen.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Ordner zum Speichern des Bildes auswählen",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Wählen Sie, wohin das Bild heruntergeladen werden soll:",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Ordnerpfad eingeben (z. B. assets/images/)",
+  "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Geben Sie den Ordnerpfad ein oder lassen Sie das Feld leer, um den Download in den Ordner 'images' durchzuführen.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Für dieses Projekt nicht erneut fragen",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Bitte Phoenix AI, dieses Element zu modifizieren...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Vorschau von Ihrem benutzerdefinierten Server {0} wird abgerufen",
@@ -1545,5 +1544,7 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Der KI-Zugriff wurde von Ihrem Systemadministrator deaktiviert. Bitte kontaktieren Sie {0} für Unterstützung.",
   "AI_UPSELL_DIALOG_TITLE": "Mit {0} fortfahren?",
   "AI_UPSELL_DIALOG_MESSAGE": "Sie haben {0} entdeckt. Um fortzufahren, benötigen Sie ein KI-Abonnement oder Guthaben.",
-  "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Geben Sie den Ordnerpfad ein oder lassen Sie das Feld leer, um den Download in den Ordner 'images' durchzuführen."
+  "LIVE_DEV_TOAST_NOT_EDITABLE": "Element nicht bearbeitbar – durch Skript generiert",
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Element kopiert. Verwenden Sie „Einfügen“, um es unter dem ausgewählten Element hinzuzufügen.",
+  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Element scrollt nicht mit der Seite – Bearbeitungsfelder ausgeblendet"
 });

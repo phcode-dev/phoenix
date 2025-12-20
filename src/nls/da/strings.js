@@ -188,11 +188,10 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_OFFLINE_RETRY": "Prøv igen",
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Kontrollerer forbindelse",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Stadig offline. Kontroller venligst din forbindelse.",
-  "LIVE_DEV_TOAST_NOT_EDITABLE": "Element kan ikke redigeres - genereret af script.",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Element kopieret! Klik på 'Indsæt' på et hvilket som helst element for at indsætte det ovenfor.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Vælg mappe til at gemme billede",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Vælg, hvor billedet skal downloades:",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Indtast mappesti (f.eks. assets/images/)",
+  "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Indtast mappesti eller lad feltet være tomt for at downloade i 'images'-mappen.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Spørg ikke igen for dette projekt",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Bed Phoenix AI om at ændre dette element...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Henter forhåndsvisning fra din brugerdefinerede server {0}",
@@ -1545,5 +1544,7 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Adgang til AI er blevet deaktiveret af din systemadministrator. Kontakt venligst {0} for hjælp.",
   "AI_UPSELL_DIALOG_TITLE": "Fortsæt med {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Du har opdaget {0}. For at fortsætte har du brug for et AI-abonnement eller kreditter.",
-  "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Indtast mappesti eller lad feltet være tomt for at downloade i 'images'-mappen."
+  "LIVE_DEV_TOAST_NOT_EDITABLE": "Elementet kan ikke redigeres - genereret af script",
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Element kopieret. Brug 'Indsæt' for at tilføje det under det valgte element",
+  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Elementet scroller ikke med siden - redigeringsfelter skjult"
 });
