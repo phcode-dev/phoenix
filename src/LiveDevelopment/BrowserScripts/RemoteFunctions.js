@@ -26,27 +26,6 @@ function RemoteFunctions(config = {}) {
         __description: "Use this to keep shared state for Live Preview Edit instead of window.*"
     };
 
-    let _hoverHighlight;
-    let _clickHighlight;
-    let _hoverLockTimer = null;
-
-    // this will store the element that was clicked previously (before the new click)
-    // we need this so that we can remove click styling from the previous element when a new element is clicked
-    let previouslyClickedElement = null;
-
-    var req, timeout;
-    function animateHighlight(time) {
-        if(req) {
-            window.cancelAnimationFrame(req);
-            window.clearTimeout(timeout);
-        }
-        req = window.requestAnimationFrame(redrawHighlights);
-
-        timeout = setTimeout(function () {
-            window.cancelAnimationFrame(req);
-            req = null;
-        }, time * 1000);
-    }
 
     // the following fucntions can be in the handler and live preview will call those functions when the below
     // events happen
@@ -79,6 +58,7 @@ function RemoteFunctions(config = {}) {
     ];
 
     const _toolHandlers = new Map();
+
     function registerToolHandler(handlerName, handler) {
         if(_toolHandlers.get(handlerName)) {
             console.error(`lp: Tool handler '${handlerName}' already registered. Ignoring new registration`);
@@ -97,11 +77,47 @@ function RemoteFunctions(config = {}) {
         }
         _toolHandlers.set(handlerName, handler);
     }
+
     function getToolHandler(handlerName) {
         return _toolHandlers.get(handlerName);
     }
+
     function getAllToolHandlers() {
         return Array.from(_toolHandlers.values());
+    }
+
+    const LivePreviewView = {
+        registerToolHandler: registerToolHandler,
+        getToolHandler: getToolHandler,
+        getAllToolHandlers: getAllToolHandlers,
+        isElementEditable: isElementEditable,
+        isElementInspectable: isElementInspectable,
+        isElementVisible: isElementVisible,
+        screenOffset: screenOffset,
+        selectElement: selectElement,
+        brieflyDisableHoverListeners: brieflyDisableHoverListeners,
+        handleElementClick: handleElementClick,
+        cleanupPreviousElementState: cleanupPreviousElementState
+    };
+
+
+    // this will store the element that was clicked previously (before the new click)
+    // we need this so that we can remove click styling from the previous element when a new element is clicked
+    let previouslyClickedElement = null;
+
+    // helper function to check if an element is inside the HEAD tag
+    // we need this because we don't wanna trigger the element highlights on head tag and its children,
+    // except for <style> tags which should be allowed
+    function _isInsideHeadTag(element) {
+        let parent = element;
+        while (parent && parent !== window.document) {
+            if (parent.tagName.toLowerCase() === "head") {
+                // allow <style> tags inside <head>
+                return element.tagName.toLowerCase() !== "style";
+            }
+            parent = parent.parentElement;
+        }
+        return false;
     }
 
     /**
@@ -161,56 +177,6 @@ function RemoteFunctions(config = {}) {
         return { left: offsetLeft, top: offsetTop };
     }
 
-    const LivePreviewView = {
-        registerToolHandler: registerToolHandler,
-        getToolHandler: getToolHandler,
-        getAllToolHandlers: getAllToolHandlers,
-        isElementEditable: isElementEditable,
-        isElementInspectable: isElementInspectable,
-        isElementVisible: isElementVisible,
-        screenOffset: screenOffset,
-        selectElement: selectElement,
-        brieflyDisableHoverListeners: brieflyDisableHoverListeners,
-        handleElementClick: handleElementClick,
-        cleanupPreviousElementState: cleanupPreviousElementState
-    };
-
-    /**
-     * @type {DOMEditHandler}
-     */
-    var _editHandler;
-
-    // the below code comment is replaced by added scripts for extensibility
-    // DONT_STRIP_MINIFY:REPLACE_WITH_ADDED_REMOTE_CONSTANT_SCRIPTS
-
-    // helper function to check if an element is inside the HEAD tag
-    // we need this because we don't wanna trigger the element highlights on head tag and its children,
-    // except for <style> tags which should be allowed
-    function _isInsideHeadTag(element) {
-        let parent = element;
-        while (parent && parent !== window.document) {
-            if (parent.tagName.toLowerCase() === "head") {
-                // allow <style> tags inside <head>
-                return element.tagName.toLowerCase() !== "style";
-            }
-            parent = parent.parentElement;
-        }
-        return false;
-    }
-
-    // set an event on a element
-    function _trigger(element, name, value, autoRemove) {
-        var key = "data-ld-" + name;
-        if (value !== undefined && value !== null) {
-            element.setAttribute(key, value);
-            if (autoRemove) {
-                window.setTimeout(element.removeAttribute.bind(element, key));
-            }
-        } else {
-            element.removeAttribute(key);
-        }
-    }
-
     // Checks if the element is in Viewport in the client browser
     function isInViewport(element) {
         var rect = element.getBoundingClientRect();
@@ -254,6 +220,42 @@ function RemoteFunctions(config = {}) {
     // returns the distance from the top of the closest relatively positioned parent element
     function getDocumentOffsetTop(element) {
         return element.offsetTop + (element.offsetParent ? getDocumentOffsetTop(element.offsetParent) : 0);
+    }
+
+    // the below code comment is replaced by added scripts for extensibility
+    // DONT_STRIP_MINIFY:REPLACE_WITH_ADDED_REMOTE_CONSTANT_SCRIPTS
+
+
+
+    let _hoverHighlight;
+    let _clickHighlight;
+    let _hoverLockTimer = null;
+
+    // set an event on a element
+    function _trigger(element, name, value, autoRemove) {
+        var key = "data-ld-" + name;
+        if (value !== undefined && value !== null) {
+            element.setAttribute(key, value);
+            if (autoRemove) {
+                window.setTimeout(element.removeAttribute.bind(element, key));
+            }
+        } else {
+            element.removeAttribute(key);
+        }
+    }
+
+    var req, timeout;
+    function animateHighlight(time) {
+        if(req) {
+            window.cancelAnimationFrame(req);
+            window.clearTimeout(timeout);
+        }
+        req = window.requestAnimationFrame(redrawHighlights);
+
+        timeout = setTimeout(function () {
+            window.cancelAnimationFrame(req);
+            req = null;
+        }, time * 1000);
     }
 
     function Highlight(color, trigger) {
@@ -486,7 +488,7 @@ function RemoteFunctions(config = {}) {
 
             var transitionValues = {
                 "transition-property": "opacity, background-color, transform",
-                "transition-duration": "300ms, 2.3s"
+                "transition-duration": "300ms, 2.6s"
             };
 
             function _setStyleValues(styleValues, obj) {
@@ -601,20 +603,15 @@ function RemoteFunctions(config = {}) {
             return false;
         }
 
-        // if _hoverHighlight is uninitialized, initialize it
-        if (!_hoverHighlight && shouldShowHighlightOnHover()) {
-            _hoverHighlight = new Highlight("#c8f9c5", true);
-        }
-
         // this is to check the user's settings, if they want to show the elements highlights on hover or click
-        if (_hoverHighlight && shouldShowHighlightOnHover()) {
-            _hoverHighlight.clear();
+        if (shouldShowHighlightOnHover()) {
+            hideHighlight();
+            _hoverHighlight = new Highlight("#c8f9c5", true);
+            _hoverHighlight.add(element, false);
 
             // Store original background color to restore on hover out
             element._originalBackgroundColor = element.style.backgroundColor;
             element.style.backgroundColor = "rgba(0, 162, 255, 0.2)";
-
-            _hoverHighlight.add(element, false);
 
             // create the info box for the hovered element
             const infoBoxHandler = LivePreviewView.getToolHandler("InfoBox");
@@ -664,6 +661,7 @@ function RemoteFunctions(config = {}) {
      * @param {Element} element - The DOM element to select
      */
     function selectElement(element) {
+        hideHighlight();
         dismissUIAndCleanupState();
         // this should also be there when users are in highlight mode
         scrollElementToViewPort(element);
@@ -695,18 +693,7 @@ function RemoteFunctions(config = {}) {
         const outlineColor = element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR) ? "#4285F4" : "#3C3F41";
         element.style.outline = `1px solid ${outlineColor}`;
 
-        // Only apply background tint for editable elements (not for dynamic/read-only)
-        if (element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR)) {
-            if (element._originalBackgroundColor === undefined) {
-                element._originalBackgroundColor = element.style.backgroundColor;
-            }
-            element.style.backgroundColor = "rgba(0, 162, 255, 0.2)";
-        }
-
-        if (!_clickHighlight) {
-            _clickHighlight = new Highlight("#cfc");
-        }
-        _clickHighlight.clear();
+        _clickHighlight = new Highlight("#cfc");
         _clickHighlight.add(element, true);
 
         previouslyClickedElement = element;
@@ -738,7 +725,7 @@ function RemoteFunctions(config = {}) {
         _hoverLockTimer = setTimeout(() => {
             enableHoverListeners();
             _hoverLockTimer = null;
-        }, 800);
+        }, 600);
     }
 
     /**
@@ -877,6 +864,11 @@ function RemoteFunctions(config = {}) {
     }
 
     window.addEventListener("resize", redrawEverything);
+
+    /**
+     * @type {DOMEditHandler}
+     */
+    var _editHandler;
 
     /**
      * Constructor
@@ -1201,16 +1193,7 @@ function RemoteFunctions(config = {}) {
      * when config is changed we clear all the highlighting and stuff
      */
     function _handleConfigurationChange() {
-        if (_hoverHighlight) {
-            _hoverHighlight.clear();
-        }
-        cleanupPreviousElementState();
-        const allElements = window.document.querySelectorAll(`[${GLOBALS.DATA_BRACKETS_ID_ATTR}]`);
-        for (let i = 0; i < allElements.length; i++) {
-            if (allElements[i]._originalBackgroundColor !== undefined) {
-                clearElementBackground(allElements[i]);
-            }
-        }
+        hideHighlight();
         dismissUIAndCleanupState();
     }
 
@@ -1226,7 +1209,6 @@ function RemoteFunctions(config = {}) {
             }
             delete previouslyClickedElement._originalOutline;
 
-            clearElementBackground(previouslyClickedElement);
             hideHighlight();
 
             // Notify handlers about cleanup
