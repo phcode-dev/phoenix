@@ -188,11 +188,10 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_OFFLINE_RETRY": "Spróbuj ponownie",
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Sprawdzanie połączenia",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Nadal brak połączenia. Sprawdź swoje połączenie.",
-  "LIVE_DEV_TOAST_NOT_EDITABLE": "Element nieedytowalny - wygenerowany przez skrypt.",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Skopiowano element! Kliknij 'Wklej' na dowolnym elemencie, aby wstawić go powyżej.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Wybierz folder zapisu obrazu",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Wybierz, gdzie pobrać obraz:",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Wpisz ścieżkę folderu (np. assets/images/)",
+  "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Wpisz ścieżkę folderu lub pozostaw puste, aby pobrać do folderu 'images'.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Nie pytaj ponownie dla tego projektu",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Poproś Phoenix AI o modyfikację tego elementu...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Pobieranie podglądu z Twojego własnego serwera {0}",
@@ -1545,5 +1544,7 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Dostęp do AI został wyłączony przez administratora systemu. Prosimy o kontakt z {0} w celu uzyskania pomocy.",
   "AI_UPSELL_DIALOG_TITLE": "Kontynuować z {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Odkryłeś {0}. Aby kontynuować, potrzebujesz subskrypcji AI lub kredytów.",
-  "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Wpisz ścieżkę folderu lub pozostaw puste, aby pobrać do folderu 'images'."
+  "LIVE_DEV_TOAST_NOT_EDITABLE": "Element nieedytowalny - wygenerowany przez skrypt",
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Element skopiowany. Użyj opcji 'Wklej', aby dodać go poniżej zaznaczonego elementu.",
+  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Element nie przewija się ze stroną - pola edycji ukryte"
 });

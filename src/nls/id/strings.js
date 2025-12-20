@@ -188,11 +188,10 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_OFFLINE_RETRY": "Coba lagi",
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Memeriksa koneksi",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Masih offline. Silakan periksa koneksi Anda.",
-  "LIVE_DEV_TOAST_NOT_EDITABLE": "Elemen tidak dapat diedit - dihasilkan oleh skrip.",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Elemen disalin! Klik 'Tempel' pada elemen mana pun untuk menyisipkannya di atas.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Pilih Folder untuk Menyimpan Gambar",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Pilih lokasi untuk mengunduh gambar:",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Ketik jalur folder (mis., assets/images/)",
+  "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Ketik path folder atau biarkan kosong untuk mengunduh di folder 'images'.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Jangan tanya lagi untuk proyek ini",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Minta Phoenix AI untuk memodifikasi elemen ini...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Mendapatkan pratinjau dari server kustom Anda {0}",
@@ -1545,5 +1544,7 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Akses AI telah dinonaktifkan oleh administrator sistem Anda. Silakan hubungi {0} untuk bantuan.",
   "AI_UPSELL_DIALOG_TITLE": "Lanjutkan dengan {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Anda telah menemukan {0}. Untuk melanjutkan, Anda memerlukan langganan AI atau kredit.",
-  "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Ketik path folder atau biarkan kosong untuk mengunduh di folder 'images'."
+  "LIVE_DEV_TOAST_NOT_EDITABLE": "Elemen tidak dapat diedit - dihasilkan oleh skrip",
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Elemen disalin. Gunakan 'Tempel' untuk menambahkannya di bawah elemen yang dipilih",
+  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Elemen tidak ikut bergulir dengan halaman - kotak edit disembunyikan"
 });

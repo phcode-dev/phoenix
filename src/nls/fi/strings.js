@@ -188,11 +188,10 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_OFFLINE_RETRY": "Yritä uudelleen",
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Tarkistetaan yhteyttä",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Edelleen offline-tilassa. Tarkista yhteytesi.",
-  "LIVE_DEV_TOAST_NOT_EDITABLE": "Elementtiä ei voi muokata – komentosarjan luoma.",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Elementti kopioitu! Napsauta 'Liitä' minkä tahansa elementin kohdalla lisätäksesi sen yläpuolelle.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Valitse kuvan tallennuskansio",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Valitse, mihin kuva ladataan:",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Kirjoita kansion polku (esim. assets/images/)",
+  "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Kirjoita kansion polku tai jätä tyhjäksi ladataksesi 'images'-kansioon.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Älä kysy uudelleen tämän projektin osalta",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Pyydä Phoenix-tekoälyä muokkaamaan tätä elementtiä...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Esikatselu haetaan mukautetulta palvelimeltasi {0}",
@@ -1545,5 +1544,7 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Järjestelmänvalvoja on poistanut tekoälyn käytöstä. Ota yhteyttä {0} saadaksesi apua.",
   "AI_UPSELL_DIALOG_TITLE": "Jatketaanko {0}:n kanssa?",
   "AI_UPSELL_DIALOG_MESSAGE": "Olet löytänyt ominaisuuden {0}. Jatkaaksesi tarvitset tekoälytilauksen tai krediittejä.",
-  "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Kirjoita kansion polku tai jätä tyhjäksi ladataksesi 'images'-kansioon."
+  "LIVE_DEV_TOAST_NOT_EDITABLE": "Elementti ei ole muokattavissa – skriptin luoma",
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Elementti kopioitu. Lisää se valitun elementin alle 'Liitä'-komennolla.",
+  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Elementti ei vierity sivun mukana – muokkausruudut piilotettu"
 });

@@ -188,11 +188,10 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_OFFLINE_RETRY": "Réessayer",
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Vérification de la connexion",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Toujours hors ligne. Veuillez vérifier votre connexion.",
-  "LIVE_DEV_TOAST_NOT_EDITABLE": "Élément non modifiable - généré par un script.",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Élément copié ! Cliquez sur 'Coller' sur n'importe quel élément pour l'insérer au-dessus.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Sélectionner un dossier pour enregistrer l'image",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Choisissez où télécharger l'image :",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Saisir le chemin du dossier (ex. : assets/images/)",
+  "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Saisissez le chemin du dossier ou laissez vide pour télécharger dans le dossier 'images'.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Ne plus demander pour ce projet",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Demander à Phoenix AI de modifier cet élément...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Aperçu en direct depuis votre serveur personnalisé {0}",
@@ -1545,5 +1544,7 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "L'accès à l'IA a été désactivé par votre administrateur système. Veuillez contacter {0} pour obtenir de l'aide.",
   "AI_UPSELL_DIALOG_TITLE": "Continuer avec {0} ?",
   "AI_UPSELL_DIALOG_MESSAGE": "Vous avez découvert {0}. Pour continuer, vous aurez besoin d'un abonnement IA ou de crédits.",
-  "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Saisissez le chemin du dossier ou laissez vide pour télécharger dans le dossier 'images'."
+  "LIVE_DEV_TOAST_NOT_EDITABLE": "Élément non éditable - généré par un script",
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Élément copié. Utilisez 'Coller' pour l'ajouter sous l'élément sélectionné.",
+  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "L'élément ne défile pas avec la page - boîtes d'édition masquées"
 });

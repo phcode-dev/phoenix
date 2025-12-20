@@ -188,11 +188,10 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_OFFLINE_RETRY": "Tentar novamente",
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Verificando a conexão",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Ainda offline. Por favor, verifique sua conexão.",
-  "LIVE_DEV_TOAST_NOT_EDITABLE": "Elemento não editável - gerado por script.",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Elemento copiado! Clique em 'Colar' em qualquer elemento para inseri-lo acima.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Selecionar Pasta para Salvar Imagem",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Escolha onde baixar a imagem:",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Digite o caminho da pasta (ex.: assets/images/)",
+  "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Digite o caminho da pasta ou deixe em branco para baixar na pasta 'images'.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Não perguntar novamente para este projeto",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Peça à Phoenix AI para modificar este elemento...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Obtendo pré-visualização do seu servidor personalizado {0}",
@@ -1545,5 +1544,7 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "O acesso à IA foi desativado pelo administrador do seu sistema. Entre em contato com {0} para obter assistência.",
   "AI_UPSELL_DIALOG_TITLE": "Continuar com {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Você descobriu o {0}. Para prosseguir, você precisará de uma assinatura de IA ou de créditos.",
-  "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Digite o caminho da pasta ou deixe em branco para baixar na pasta 'images'."
+  "LIVE_DEV_TOAST_NOT_EDITABLE": "Elemento não editável - gerado por script",
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Elemento copiado. Use 'Colar' para adicioná-lo abaixo do elemento selecionado",
+  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "O elemento não rola com a página - caixas de edição ocultas"
 });

@@ -188,11 +188,10 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_OFFLINE_RETRY": "Skúsiť znova",
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Overuje sa pripojenie",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Stále ste offline. Skontrolujte prosím svoje pripojenie.",
-  "LIVE_DEV_TOAST_NOT_EDITABLE": "Prvok nie je možné upraviť – bol vygenerovaný skriptom.",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Prvok skopírovaný! Kliknite na 'Prilepiť' na ľubovoľnom prvku pre vloženie nad neho.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Vyberte priečinok na uloženie obrázka",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Vyberte, kam stiahnuť obrázok:",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Zadajte cestu k priečinku (napr. assets/images/)",
+  "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Zadajte cestu k priečinku alebo nechajte pole prázdne pre stiahnutie do priečinka 'images'.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Pre tento projekt sa už nepýtať",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Požiadajte Phoenix AI o úpravu tohto prvku...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Získavanie náhľadu z vášho vlastného servera {0}",
@@ -1545,5 +1544,7 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Prístup k AI bol vypnutý správcom vášho systému. So žiadosťou o pomoc sa obráťte na {0}.",
   "AI_UPSELL_DIALOG_TITLE": "Pokračovať s {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Objavili ste {0}. Ak chcete pokračovať, budete potrebovať predplatné AI alebo kredity.",
-  "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Zadajte cestu k priečinku alebo nechajte pole prázdne pre stiahnutie do priečinka 'images'."
+  "LIVE_DEV_TOAST_NOT_EDITABLE": "Prvok nie je možné upraviť – vygenerovaný skriptom",
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Prvok bol skopírovaný. Použite 'Prilepiť' na jeho pridanie pod vybraný prvok",
+  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Prvok sa neposúva so stránkou – editačné polia skryté"
 });
