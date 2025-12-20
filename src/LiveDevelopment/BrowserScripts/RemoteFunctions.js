@@ -26,10 +26,8 @@ function RemoteFunctions(config = {}) {
         __description: "Use this to keep shared state for Live Preview Edit instead of window.*"
     };
 
-    let _localHighlight;
     let _hoverHighlight;
     let _clickHighlight;
-    let _setup = false;
     let _hoverLockTimer = null;
 
     // this will store the element that was clicked previously (before the new click)
@@ -184,16 +182,6 @@ function RemoteFunctions(config = {}) {
 
     // the below code comment is replaced by added scripts for extensibility
     // DONT_STRIP_MINIFY:REPLACE_WITH_ADDED_REMOTE_CONSTANT_SCRIPTS
-
-    // determine whether an event should be processed for Live Development
-    function _validEvent(event) {
-        if (window.navigator.platform.substr(0, 3) === "Mac") {
-            // Mac
-            return event.metaKey;
-        }
-        // Windows
-        return event.ctrlKey;
-    }
 
     // helper function to check if an element is inside the HEAD tag
     // we need this because we don't wanna trigger the element highlights on head tag and its children,
@@ -575,26 +563,6 @@ function RemoteFunctions(config = {}) {
         }
     };
 
-    function onMouseOver(event) {
-        if (_validEvent(event)) {
-            const element = event.target;
-            if(LivePreviewView.isElementInspectable(element) && element.nodeType === Node.ELEMENT_NODE ) {
-                _localHighlight.add(element, true);
-            }
-        }
-    }
-
-    function onMouseOut(event) {
-        if (_validEvent(event)) {
-            _localHighlight.clear();
-        }
-    }
-
-    function onMouseMove(event) {
-        onMouseOver(event);
-        window.document.removeEventListener("mousemove", onMouseMove);
-    }
-
     // helper function to get the current elements highlight mode
     // this is as per user settings (either click or hover)
     function getHighlightMode() {
@@ -807,29 +775,6 @@ function RemoteFunctions(config = {}) {
         // call the selectElement as selectElement handles all the highlighting/boxes and all UI related stuff
         selectElement(element);
         brieflyDisableHoverListeners();
-    }
-
-    function onKeyUp(event) {
-        if (_setup && !_validEvent(event)) {
-            window.document.removeEventListener("keyup", onKeyUp);
-            window.document.removeEventListener("mouseover", onMouseOver);
-            window.document.removeEventListener("mouseout", onMouseOut);
-            window.document.removeEventListener("mousemove", onMouseMove);
-            _localHighlight.clear();
-            _localHighlight = undefined;
-            _setup = false;
-        }
-    }
-
-    function onKeyDown(event) {
-        if (!_setup && _validEvent(event)) {
-            window.document.addEventListener("keyup", onKeyUp);
-            window.document.addEventListener("mouseover", onMouseOver);
-            window.document.addEventListener("mouseout", onMouseOut);
-            window.document.addEventListener("mousemove", onMouseMove);
-            _localHighlight = new Highlight("#ecc", true);
-            _setup = true;
-        }
     }
 
     // remove active highlights
@@ -1282,13 +1227,7 @@ function RemoteFunctions(config = {}) {
             delete previouslyClickedElement._originalOutline;
 
             clearElementBackground(previouslyClickedElement);
-            if (_hoverHighlight) {
-                _hoverHighlight.clear();
-            }
-            if (_clickHighlight) {
-                _clickHighlight.clear();
-                _clickHighlight = null;
-            }
+            hideHighlight();
 
             // Notify handlers about cleanup
             getAllToolHandlers().forEach(handler => {
@@ -1316,7 +1255,6 @@ function RemoteFunctions(config = {}) {
     function registerHandlers() {
         hideHighlight(); // clear previous highlighting
         disableHoverListeners(); // Always remove existing listeners first to avoid duplicates
-        window.document.removeEventListener("keydown", onKeyDown);
         getAllToolHandlers().forEach(handler => {
             if (handler.unregisterInteractionBlocker) {
                 handler.unregisterInteractionBlocker();
@@ -1332,7 +1270,6 @@ function RemoteFunctions(config = {}) {
 
             // register the event handlers
             enableHoverListeners();
-            window.document.addEventListener("keydown", onKeyDown);
 
             // this is to block all the interactions of the user created elements
             // so that lets say user created link doesn't redirect in edit mode
