@@ -764,8 +764,11 @@ function RemoteFunctions(config = {}) {
             });
         }
 
-        // call the selectElement as selectElement handles all the highlighting/boxes and all UI related stuff
-        selectElement(element);
+        // we call the select element function only when the element is not editable (JS generated content)
+        // because for editable elements, highlightRule function already calls selectElement internally
+        if (!LivePreviewView.isElementEditable(element)) {
+            selectElement(element);
+        }
         brieflyDisableHoverListeners();
     }
 
@@ -807,13 +810,10 @@ function RemoteFunctions(config = {}) {
         }
 
         // select the first valid highlighted element
-        var foundValidElement = false;
+        let foundValidElement = false;
         for (i = 0; i < nodes.length; i++) {
             if(LivePreviewView.isElementInspectable(nodes[i], true) && nodes[i].tagName !== "BR") {
-                // only call selectElement if it's a different element to avoid unnecessary box recreation
-                if (previouslyClickedElement !== nodes[i]) {
-                    selectElement(nodes[i]);
-                }
+                selectElement(nodes[i]);
                 foundValidElement = true;
                 break;
             }
@@ -1208,7 +1208,10 @@ function RemoteFunctions(config = {}) {
                 previouslyClickedElement.style.outline = "";
             }
             delete previouslyClickedElement._originalOutline;
+            previouslyClickedElement = null;
+        }
 
+        if (config.mode === 'edit') {
             hideHighlight();
 
             // Notify handlers about cleanup
@@ -1217,8 +1220,6 @@ function RemoteFunctions(config = {}) {
                     handler.onElementCleanup();
                 }
             });
-
-            previouslyClickedElement = null;
         }
     }
 
