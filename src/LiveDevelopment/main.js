@@ -97,7 +97,8 @@ define(function main(require, exports, module) {
         elemHighlights: CONSTANTS.HIGHLIGHT_HOVER, // default value, this will get updated when the extension loads
         showRulerLines: false, // default value, this will get updated when the extension loads
         imageGalleryState: _getImageGalleryState(), // image gallery selected state
-        isPaidUser: false // will be updated when we fetch entitlements
+        isPaidUser: false, // will be updated when we fetch entitlements
+        hasLiveEditCapability: false // handled inside _liveEditCapabilityChanged function
     };
 
     // Status labels/styles are ordered: error, not connected, progress1, progress2, connected.
@@ -232,6 +233,12 @@ define(function main(require, exports, module) {
     function _liveEditCapabilityChanged(newCapability) {
         if(newCapability !== hasLiveEditCapability){
             hasLiveEditCapability = newCapability;
+
+            // update the config to include the live edit capability
+            const config = MultiBrowserLiveDev.getConfig();
+            config.hasLiveEditCapability = hasLiveEditCapability;
+            MultiBrowserLiveDev.updateConfig(config);
+
             if(!hasLiveEditCapability && getCurrentMode() === LIVE_EDIT_MODE){
                 // downgraded, so we need to disable live edit mode
                 setMode(LIVE_HIGHLIGHT_MODE);
