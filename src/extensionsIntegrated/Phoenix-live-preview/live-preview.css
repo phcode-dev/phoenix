@@ -158,16 +158,11 @@
 }
 
 .live-preview-status-overlay {
-    width: calc(100% - 3px);
+    width: 100%;
     position: absolute;
     top: 30px;
-    left: 3px;
-    z-index: 100;
-}
-
-.live-preview-status-overlay.full-width {
-    width: 100%;
     left: 0;
+    z-index: 100;
 }
 
 .live-preview-overlay-message {
