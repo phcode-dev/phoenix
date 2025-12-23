@@ -15,6 +15,13 @@ function RemoteFunctions(config = {}) {
         HIGHLIGHT_CLASSNAME: "__brackets-ld-highlight" // CSS class name used for highlighting elements in live preview
     };
 
+    // this is for bidirectional communication between phoenix and live preview
+    const PhoenixComm = window._Brackets_LiveDev_PhoenixComm;
+    PhoenixComm.registerLpFn("PH_Hello", function(param) {
+        // this is just a test function here to check if live preview. fn call is working correctly.
+        console.log("Hello World", param);
+    });
+
     const SHARED_STATE = {
         __description: "Use this to keep shared state for Live Preview Edit instead of window.*"
     };

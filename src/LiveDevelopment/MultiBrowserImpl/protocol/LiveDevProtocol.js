@@ -61,6 +61,8 @@ define(function (require, exports, module) {
     const EVENT_LIVE_PREVIEW_CLICKED = "livePreviewClicked",
         EVENT_LIVE_PREVIEW_RELOAD = "livePreviewReload";
 
+    const MAX_PENDING_LP_CALLS_1000 = 1000;
+
     /**
      * @private
      * Active connections.
@@ -205,7 +207,7 @@ define(function (require, exports, module) {
     }
 
     const processedMessageIDs = new Phoenix.libs.LRUCache({
-        max: 1000
+        max: MAX_PENDING_LP_CALLS_1000
         // we dont need to set a ttl here as message ids are unique throughout lifetime. And old ids will
         // start getting evited from the cache. the message ids are only an issue within a fraction of a seconds when
         // a series of messages are sent in quick succession. Eg. user click on a div and there are 3 tabs and due to
@@ -294,7 +296,7 @@ define(function (require, exports, module) {
         // broadcast if there are no specific clients
         clients = clients || getConnectionIds();
         msg.id = id;
-        _responseDeferreds[id] = result;
+        _responseDeferreds[id] = result; // todo responses deffered if size larger than 100k enttries raise metric and warn in console once every 10 seconds long only
         _transport.send(clients, JSON.stringify(msg));
         return result.promise();
     }
@@ -484,6 +486,68 @@ define(function (require, exports, module) {
         );
     }
 
+    const registeredFunctions = {};
+    function registerPhoenixFn(fnName, fn) {
+        if(registeredFunctions[fnName]){
+            throw new Error(`Function "${fnName}" already registered with LPComm`);
+        }
+        registeredFunctions[fnName] = fn;
+    }
+
+    /**
+     * Triggers a named API function in the Live Preview for one or more clients
+     * in a **fire-and-forget** manner.
+     *
+     * This API intentionally does **not** return a value or Promise.
+     *
+     * Live Preview connections are considered unreliable:
+     * - Multiple Live Preview clients may exist, or none at all.
+     * - Clients may be geographically distant and slow to respond.
+     * - If a Live Preview disconnects unexpectedly, Phoenix may take up to ~10 seconds
+     *   to detect the disconnection, during which calls would otherwise block.
+     *
+     * Because of these constraints, this function does **not** wait for acknowledgements
+     * or responses, and callers should **not** rely on timely execution or delivery.
+     *
+     * Use this method only for best-effort notifications or side effects in Live Preview.
+     *
+     * If a response or guaranteed delivery is required, invoke this function using
+     * `triggerLPFn()` and have the corresponding Live Preview handler explicitly
+     * send the result back to Phoenix via `PhoenixComm.execFn`.
+     *
+     * @param {string} fnName
+     *        Name of the Live Preview API function to invoke.
+     *
+     * @param {*} fnArgs
+     *        Arguments to pass to the Live Preview function(object/string). Must be JSON-serializable.
+     *
+     * @param {number|number[]=} clientIdOrArray
+     *        Optional client ID or array of client IDs obtained from getConnectionIds().
+     *        If omitted, the function is executed for all active Live Preview connections.
+     */
+    function triggerLPFn(fnName, fnArgs, clientIdOrArray) {
+        let clientIds;
+
+        if (clientIdOrArray === undefined || clientIdOrArray === null) {
+            clientIds = getConnectionIds();
+        } else if (Array.isArray(clientIdOrArray)) {
+            clientIds = clientIdOrArray;
+        } else {
+            clientIds = [clientIdOrArray];
+        }
+
+        clientIds.map(clientId => {
+            _transport.send([clientId], JSON.stringify({
+                method: "PhoenixComm.execLPFn",
+                fnName,
+                params: fnArgs
+            }));
+        });
+    }
+
+
+    window.ee= triggerLPFn; // todo remove this once all usages are migrated to execLPFn
+
     /**
      * Closes the connection to the given client. Proxies to the transport.
      * @param {number} clientId
@@ -514,6 +578,9 @@ define(function (require, exports, module) {
     exports.closeAllConnections = closeAllConnections;
     exports.setLivePreviewMessageHandler = setLivePreviewMessageHandler;
     exports.setCustomRemoteFunctionProvider = setCustomRemoteFunctionProvider;
+    // lp communication functions
+    exports.registerPhoenixFn = registerPhoenixFn;
+    exports.triggerLPFn = triggerLPFn;
     exports.LIVE_DEV_REMOTE_SCRIPTS_FILE_NAME = LIVE_DEV_REMOTE_SCRIPTS_FILE_NAME;
     exports.LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME = LIVE_DEV_REMOTE_WORKER_SCRIPTS_FILE_NAME;
     exports.EVENT_LIVE_PREVIEW_CLICKED = EVENT_LIVE_PREVIEW_CLICKED;
