@@ -213,6 +213,13 @@ define(function (require, exports, module) {
             return;
         }
 
+        // we dont show the overlays for non HTML-type files
+        const currentDocument = DocumentManager.getCurrentDocument();
+        if (!currentDocument || !currentDocument.file) { return; }
+
+        const filePath = currentDocument.file.fullPath;
+        if (!utils.isHTMLFile(filePath)) { return; }
+
         // to not show the overlays if user has already closed it before
         if(status === MultiBrowserLiveDev.STATUS_CONNECTING && !shouldShowConnectingOverlay) { return; }
         if(status === MultiBrowserLiveDev.STATUS_SYNC_ERROR && !shouldShowSyncErrorOverlay) { return; }
