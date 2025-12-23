@@ -341,11 +341,9 @@
          * @param {string} msgStr The protocol message as stringified JSON.
          */
         message: function (msgStr) {
-            var msg;
-            try {
-                msg = JSON.parse(msgStr);
-            } catch (e) {
-                console.error("[Brackets LiveDev] Malformed message received: ", msgStr);
+            const msg = JSON.parse(msgStr);
+            if(msg && typeof msg === "object" && msg.method === "PhoenixComm.execLPFn") {
+                _onLPFnTrigger(msg.fnName, msg.params);
                 return;
             }
             // delegates handling/routing to MessageBroker.
@@ -362,6 +360,37 @@
     };
 
     ProtocolManager.setProtocolHandler(ProtocolHandler);
+
+    const registeredPhoenixCommFns = {};
+
+    // never rejects
+    function _onLPFnTrigger(fnName, paramObj) {
+        const lpFn = registeredPhoenixCommFns[fnName];
+        if(!lpFn) {
+            console.error(`PhoenixComm: No such LP function ${fnName}`);
+        }
+        try {
+            const response = lpFn(paramObj);
+            if(response instanceof Promise) {
+                response.catch(err => {
+                    console.error(`PhoenixComm: Error executing LP function ${fnName}`, err);
+                });
+            }
+        } catch (e) {
+            console.error(`PhoenixComm: Error executing LP function ${fnName}`, e);
+        }
+    }
+
+    const PhoenixComm = {
+        registerLpFn: function (fnName, fn) {
+            if(registeredPhoenixCommFns[fnName]){
+                throw new Error(`Function "${fnName}" already registered with PhoenixComm`);
+            }
+            registeredPhoenixCommFns[fnName] = fn;
+        }
+    };
+
+    global._Brackets_LiveDev_PhoenixComm = PhoenixComm;
 
     window.addEventListener('load', function () {
         ProtocolManager.enable();
