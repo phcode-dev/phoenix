@@ -765,12 +765,8 @@ function RemoteFunctions(config = {}) {
             });
         }
 
-        // we call the select element function only when the element is not editable (JS generated content)
-        // because for editable elements, highlightRule function already calls selectElement internally
-        if (!LivePreviewView.isElementEditable(element)) {
-            selectElement(element);
-        }
         brieflyDisableHoverListeners();
+        selectElement(element);
     }
 
     // remove active highlights
@@ -814,6 +810,12 @@ function RemoteFunctions(config = {}) {
         let foundValidElement = false;
         for (i = 0; i < nodes.length; i++) {
             if(LivePreviewView.isElementInspectable(nodes[i], true) && nodes[i].tagName !== "BR") {
+                // if hover lock timer is active, we don't call selectElement as,
+                // it means that its already called by handleElementClick function
+                if (_hoverLockTimer && nodes[i] === previouslyClickedElement) {
+                    foundValidElement = true;
+                    break;
+                }
                 selectElement(nodes[i]);
                 foundValidElement = true;
                 break;
