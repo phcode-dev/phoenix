@@ -86,10 +86,84 @@ define(function (require, exports, module) {
 
     /**
      * @private
-     * A map of response IDs to deferreds, for messages that are awaiting responses.
-     * @type {Object}
+     * LRU cache of response IDs to deferreds, for messages that are awaiting responses.
+     * Uses LRU cache to prevent unbounded memory growth.
+     * @type {Phoenix.libs.LRUCache}
      */
-    var _responseDeferreds = {};
+    const pendingLpResponses = new Phoenix.libs.LRUCache({
+        max: MAX_PENDING_LP_CALLS_1000
+    });
+
+    /**
+     * @private
+     * Reverse mapping: clientId -> Set of pending call IDs.
+     * Used to clean up pending calls when a client disconnects.
+     * @type {Map<number, Set<number>>}
+     */
+    const pendingCallsByClient = new Map();
+
+    /**
+     * Track a pending call for cleanup when client disconnects.
+     * @param {number} fnCallID
+     * @param {number} clientId
+     * @param {$.Deferred} deferred
+     */
+    function _trackPending(fnCallID, clientId, deferred) {
+        pendingLpResponses.set(fnCallID, { deferred, clientId });
+
+        let set = pendingCallsByClient.get(clientId);
+        if (!set) {
+            set = new Set();
+            pendingCallsByClient.set(clientId, set);
+        }
+        set.add(fnCallID);
+    }
+
+    /**
+     * Untrack a pending call (cleanup from both maps).
+     * @param {number} fnCallID
+     */
+    function _untrackPending(fnCallID) {
+        const pendingHandler = pendingLpResponses.get(fnCallID);
+        if (!pendingHandler) {
+            return;
+        }
+
+        // Delete from main cache
+        pendingLpResponses.delete(fnCallID);
+
+        // Clean up reverse mapping
+        if (pendingHandler.clientId) {
+            const set = pendingCallsByClient.get(pendingHandler.clientId);
+            if (set) {
+                set.delete(fnCallID);
+                if (set.size === 0) {
+                    pendingCallsByClient.delete(pendingHandler.clientId);
+                }
+            }
+        }
+
+        return pendingHandler;
+    }
+
+    /**
+     * Reject all pending calls for a Live Preview client that disconnected.
+     * @param {number} clientId
+     */
+    function rejectAllPendingForClient(clientId) {
+        const set = pendingCallsByClient.get(clientId);
+        if (!set || set.size === 0) {
+            return;
+        }
+
+        const callIds = Array.from(set);
+        for (const fnCallID of callIds) {
+            const pendingHandler = _untrackPending(fnCallID);
+            if (pendingHandler) {
+                pendingHandler.deferred.reject(new Error(`Live Preview client disconnected: ${clientId}`));
+            }
+        }
+    }
 
     let _remoteFunctionProvider = null;
 
@@ -238,7 +312,6 @@ define(function (require, exports, module) {
     function _receive(clientId, msgStr, messageID) {
         const msg = JSON.parse(msgStr),
             event = msg.method || "event";
-        let deferred;
         if(messageID && processedMessageIDs.has(messageID)){
             return; // this message is already processed.
         } else if (messageID) {
@@ -256,13 +329,12 @@ define(function (require, exports, module) {
         }
 
         if (msg.id) {
-            deferred = _responseDeferreds[msg.id];
-            if (deferred) {
-                delete _responseDeferreds[msg.id];
+            const pendingHandler = _untrackPending(msg.id);
+            if (pendingHandler) {
                 if (msg.error) {
-                    deferred.reject(msg);
+                    pendingHandler.deferred.reject(msg);
                 } else {
-                    deferred.resolve(msg);
+                    pendingHandler.deferred.resolve(msg);
                 }
             }
         } else if (msg.clicked && msg.tagId) {
@@ -280,7 +352,7 @@ define(function (require, exports, module) {
      * Dispatches a message to the remote protocol handler via the transport.
      *
      * @param {Object} msg The message to send.
-     * @param {number|Array.<number>} idOrArray ID or IDs of the client(s) that should
+     * @param {number|Array.<number>} clients ID or IDs of the client(s) that should
      *     receive the message.
      * @return {$.Promise} A promise that's fulfilled when the response to the message is received.
      */
@@ -296,7 +368,22 @@ define(function (require, exports, module) {
         // broadcast if there are no specific clients
         clients = clients || getConnectionIds();
         msg.id = id;
-        _responseDeferreds[id] = result; // todo responses deffered if size larger than 100k enttries raise metric and warn in console once every 10 seconds long only
+
+        // Normalize clients to array
+        if (!Array.isArray(clients)) {
+            clients = [clients];
+        }
+
+        // If no clients available, reject immediately
+        if (clients.length === 0) {
+            result.reject(new Error("No live preview clients connected"));
+            return result.promise();
+        }
+
+        // Track pending call for the first client (representative)
+        const clientId = clients[0];
+        _trackPending(id, clientId, result);
+
         _transport.send(clients, JSON.stringify(msg));
         return result.promise();
     }
@@ -329,6 +416,10 @@ define(function (require, exports, module) {
         if(!_connections[clientId]){
             return;
         }
+
+        // Reject all pending calls for this client
+        rejectAllPendingForClient(clientId);
+
         delete _connections[clientId];
         exports.trigger("ConnectionClose", {
             clientId: clientId
@@ -559,6 +650,7 @@ define(function (require, exports, module) {
     function closeAllConnections() {
         getConnectionIds().forEach(function (clientId) {
             close(clientId);
+            rejectAllPendingForClient(clientId);
         });
         _connections = {};
     }

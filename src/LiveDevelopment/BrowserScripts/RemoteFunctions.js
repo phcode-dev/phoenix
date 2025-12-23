@@ -17,7 +17,7 @@ function RemoteFunctions(config = {}) {
 
     // this is for bidirectional communication between phoenix and live preview
     const PhoenixComm = window._Brackets_LiveDev_PhoenixComm;
-    PhoenixComm.registerLpFn("PH_Hello", function(param) {
+    PhoenixComm && PhoenixComm.registerLpFn("PH_Hello", function(param) {
         // this is just a test function here to check if live preview. fn call is working correctly.
         console.log("Hello World", param);
     });
