@@ -25,7 +25,11 @@ define(function (require, exports, module) {
         DocumentManager = require("document/DocumentManager"),
         FileSystem = require("filesystem/FileSystem"),
         FileUtils = require("file/FileUtils"),
+        StringUtils = require("utils/StringUtils"),
+        StateManager = require("preferences/StateManager"),
         Metrics = require("utils/Metrics");
+
+    const STATE_LAST_SHOWN_HASH = "newlyAddedFeaturesHash";
 
     function _getUpdateMarkdownURL() {
         return Phoenix.baseURL + "assets/default-project/en/Newly_added_features.md";
@@ -66,8 +70,14 @@ define(function (require, exports, module) {
     async function _showNewUpdatesIfPresent() {
         // codemirror documents are always \n instead of \r\n line endings. so we strip here too
         let newMarkdownText = (await _getUpdateMarkdownText()).replace(/\r/g, '');
+        let newMarkdownTextHash = StringUtils.hashCode(newMarkdownText);
+        if(StateManager.get(STATE_LAST_SHOWN_HASH) === newMarkdownTextHash){
+            // already shown this update, so no need to show it again.
+            return;
+        }
         let currentMarkdownText = (await _readMarkdownTextFile()).replace(/\r/g, '');
         if(newMarkdownText !== currentMarkdownText){
+            StateManager.set(STATE_LAST_SHOWN_HASH, newMarkdownTextHash);
             let markdownFile = FileSystem.getFileForPath(_getUpdateMarkdownLocalPath());
             // if the user overwrites the markdown file, then the user edited content will be nuked here.
             FileUtils.writeText(markdownFile, newMarkdownText, true)
@@ -80,7 +90,8 @@ define(function (require, exports, module) {
 
     exports.init = function () {
         if(!Phoenix.firstBoot && !window.testEnvironment){
-            _showNewUpdatesIfPresent();
+            _showNewUpdatesIfPresent()
+                .catch(console.error); // fine if we dont show it once. happens mostly when offline.
         }
     };
 });
