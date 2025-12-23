@@ -342,8 +342,13 @@
          */
         message: function (msgStr) {
             const msg = JSON.parse(msgStr);
+            _setPCommReady();
             if(msg && typeof msg === "object" && msg.method === "PhoenixComm.execLPFn") {
                 _onLPFnTrigger(msg.fnName, msg.params);
+                return;
+            }
+            if(msg && typeof msg === "object" && msg.method === "phoenixFnResponse") {
+                _onPhoenixExecResponse(msg.fnName, msg.fnExecID, msg.resolveWith, msg.rejectWith);
                 return;
             }
             // delegates handling/routing to MessageBroker.
@@ -381,14 +386,74 @@
         }
     }
 
+    let currentFnExecID = 1;
+    let lpCommReady = false;
+    const pendingExecPromises = new Map();
+    let queuedExecRequests = [];         // array of { fnName, paramObj, fnExecID }
+
+    /**
+     * Sends immediately if ready, else queues for later replay.
+     * @param {{execFnName:string, paramObj:any, fnExecID:number}} payload
+     */
+    function _sendOrQueueExec(payload) {
+        if (lpCommReady) {
+            MessageBroker.send(payload);
+        } else {
+            queuedExecRequests.push(payload);
+        }
+    }
+
+    /** Flush queued execPhoenixFn calls once LP comm becomes ready. */
+    function _flushQueuedExecRequests() {
+        if (!lpCommReady || queuedExecRequests.length === 0) {
+            return;
+        }
+        // Preserve order
+        for (let i = 0; i < queuedExecRequests.length; i++) {
+            MessageBroker.send(queuedExecRequests[i]);
+        }
+        queuedExecRequests = [];
+    }
+
     const PhoenixComm = {
         registerLpFn: function (fnName, fn) {
             if(registeredPhoenixCommFns[fnName]){
                 throw new Error(`Function "${fnName}" already registered with PhoenixComm`);
             }
             registeredPhoenixCommFns[fnName] = fn;
+        },
+        execPhoenixFn: function (fnName, paramObj) {
+            return new Promise((resolve, reject) => {
+                const fnExecID = currentFnExecID++;
+                pendingExecPromises.set(fnExecID, { resolve, reject });
+                _sendOrQueueExec({
+                    execFnName: fnName,
+                    paramObj,
+                    fnExecID
+                });
+            });
         }
     };
+
+    function _setPCommReady() {
+        lpCommReady = true;
+        _flushQueuedExecRequests();
+    }
+
+    PhoenixComm.registerLpFn("PH_LP_COMM_READY", _setPCommReady);
+
+    function _onPhoenixExecResponse(fnName, fnExecID, resolveWith, rejectWith) {
+        const pendingPromise = pendingExecPromises.get(fnExecID);
+        if(!pendingPromise) {
+            console.error(`execPhoenixFn: No response promise found! for ${fnName}: ${fnExecID}`);
+        }
+        pendingExecPromises.delete(fnExecID);
+        if(rejectWith) {
+            pendingPromise.reject(rejectWith);
+        } else {
+            pendingPromise.resolve(resolveWith);
+        }
+    }
 
     global._Brackets_LiveDev_PhoenixComm = PhoenixComm;
 

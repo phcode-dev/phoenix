@@ -317,6 +317,10 @@ define(function (require, exports, module) {
         } else if (messageID) {
             processedMessageIDs.set(messageID, true);
         }
+        if(msg && typeof msg === "object" && msg.execFnName) {
+            _executePhoenixFn(msg.execFnName, msg.paramObj, msg.fnExecID, clientId);
+            return;
+        }
         if(_livePreviewMessageHandler) {
             let preventDefault = _livePreviewMessageHandler(msg);
             if(preventDefault){
@@ -405,6 +409,7 @@ define(function (require, exports, module) {
             clientId: clientId,
             url: url
         });
+        triggerLPFn("PH_LP_COMM_READY", "", clientId);
     }
 
     /**
@@ -585,6 +590,58 @@ define(function (require, exports, module) {
         registeredFunctions[fnName] = fn;
     }
 
+    function _toErrorString(e) {
+        if (e instanceof Error) {
+            if (e.stack) {
+                return `${e.message}\n${e.stack}`;
+            }
+            return e.message || String(e);
+        }
+        return String(e);
+    }
+
+    function _executePhoenixFn(fnName, params, fnExecID, clientId) {
+        try{
+            if(registeredFunctions[fnName]){
+                const response = registeredFunctions[fnName](params, clientId);
+                if(response instanceof Promise) {
+                    response.then((resolveValue)=>{
+                        _transport.send([clientId], JSON.stringify({
+                            method: "phoenixFnResponse",
+                            fnName, fnExecID,
+                            resolveWith: resolveValue
+                        }));
+                    }).catch(err => {
+                        _transport.send([clientId], JSON.stringify({
+                            method: "phoenixFnResponse",
+                            fnName, fnExecID,
+                            rejectWith: _toErrorString(err)
+                        }));
+                    });
+                    return;
+                }
+                _transport.send([clientId], JSON.stringify({
+                    method: "phoenixFnResponse",
+                    fnName, fnExecID,
+                    resolveWith: response
+                }));
+            } else {
+                console.error(`Function "${fnName}" not registered with registerPhoenixFn`);
+                _transport.send([clientId], JSON.stringify({
+                    method: "phoenixFnResponse",
+                    fnName, fnExecID,
+                    rejectWith: `Function "${fnName}" not registered with registerPhoenixFn`
+                }));
+            }
+        } catch (err) {
+            _transport.send([clientId], JSON.stringify({
+                method: "phoenixFnResponse",
+                fnName, fnExecID,
+                rejectWith: _toErrorString(err)
+            }));
+        }
+    }
+
     /**
      * Triggers a named API function in the Live Preview for one or more clients
      * in a **fire-and-forget** manner.
@@ -635,9 +692,6 @@ define(function (require, exports, module) {
             }));
         });
     }
-
-
-    window.ee= triggerLPFn; // todo remove this once all usages are migrated to execLPFn
 
     /**
      * Closes the connection to the given client. Proxies to the transport.
