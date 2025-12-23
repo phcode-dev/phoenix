@@ -289,27 +289,6 @@ define(function (require, exports, module) {
     }
 
     /**
-     * this function adds/remove the full-width class from the overlay container
-     * styled inside 'live-preview.css'
-     *
-     * we need this because
-     * normally when live preview has a good width (more than 305px) then a 3px divider is shown at the left end
-     * so in that case we give the overlay a width of (100% - 3px),
-     * but when the live preview width is reduced
-     * then that divider line gets cut off, so in that case we make the width 100% for this overlay
-     *
-     * without this handling, a white gap appears on the left side, which is distracting
-     */
-    function _setOverlayWidth() {
-        if(!$overlayContainer || !$panel || !$panel.length) { return; }
-        if($panel.width() <= 305) {
-            $overlayContainer.addClass("full-width");
-        } else {
-            $overlayContainer.removeClass("full-width");
-        }
-    }
-
-    /**
      * update the mode button text in the live preview toolbar UI based on the current mode
      * @param {String} mode - The current mode ("preview", "highlight", or "edit")
      */
@@ -806,10 +785,6 @@ define(function (require, exports, module) {
             _loadPreview(true, true);
             Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "reloadBtn", "click");
         });
-
-        // Set up ResizeObserver for overlay width adjustments
-        // to understand why we're doing this read _setOverlayWidth function
-        new ResizeObserver(_setOverlayWidth).observe($panel[0]);
     }
 
     async function _loadPreview(force, isReload) {
