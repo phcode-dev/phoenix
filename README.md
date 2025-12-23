@@ -40,11 +40,8 @@ designed to make coding as simple and fun as playing a video game.
 4. Uncompromised local development experience.
 5. Support for pluggable remote back-ends.
 6. Phoenix core will work from a static web server.
-7. Source code in release builds will always be auditable and readable from dev-tools.
-
-AGPL/Libre license guards your right to audit and change code that handles your data.
-Phoenix usually loads up in under one second and loading it faster at the expense of making it hard
-to read and develop is a noop. We prioritize simplicity and eaze of development. 
+7. Compile step less build process. Code changes in phoenix do not need to be recompiled for most cases for development. 
+8. Prioritize simplicity and ease of development. 
 
 ## Contributing/ Feedback
 * [Get in touch with our community](https://github.com/phcode-dev/phoenix/discussions).
@@ -111,10 +108,10 @@ It has much better debug UX and fixing it directly in the browser will almost ce
 2. Run the unit tests using format: `npm run test<*>Dist`. Eg. `npm run testChromiumDist`.
 3. Run the integration tests using the format: `npx cross-env TEST_ENV=<integration suite name> npm run test<*>Dist`. Eg. `npx cross-env TEST_ENV=mainview npm run testChromiumDist`.
  
-#### To run tests against these stacks go to the following url: 
-* dev: https://dev.phcode.dev/test/SpecRunner.html
-* staging: https://staging.phcode.dev/test/SpecRunner.html
-* prod: https://phcode.dev/test/SpecRunner.html
+#### To run tests against these dev/staging/prod in the browser
+1. Build the release using `npm run release:<stage>`. Eg: `npm run release:dev`
+2. Run `npm run serve` to start the server.
+3. Go to `http://localhost:8000/dist-test/test/SpecRunner.html` in the browser to run tests that was built for the stage above.
 
 ## Browsing the virtual file system
 To view/edit the files in the browser virtual file system in Phoenix:
@@ -123,39 +120,16 @@ To view/edit the files in the browser virtual file system in Phoenix:
 ## Clean and reset builds
 * clean builds only: `npm run clean`
 
-## Previewing changes in dev and staging
-One a pull request is merged, it will be automatically deployed to dev.phcode.dev . To view the changes:
-1. goto https://dev.phcode.dev/devEnable.html and click `enable dev.phcode.dev` . only needs to be done once.
-2. goto https://dev.phcode.dev to preview your changes. If it is a recent change, you might need to wait for
-up to 15 minutes before the changes are deployed to the dev stage. Reload page a few times to get the latest
-dev build and reset cached content.
-
-The process is the same for `staging.phcode.dev`. Builds that are verified in development will be pushed
-periodically to staging. To view staging:
-1. goto https://staging.phcode.dev/devEnable.html and click `enable staging.phcode.dev` . only needs to be done once.
-2. goto https://staging.phcode.dev to preview your changes.  If it is a recent change, you might need to wait for
-   up to 15 minutes before the changes are deployed to the dev stage. Reload page a few times to get the latest
-   dev build and reset cached content.
-
-## Deployment to phcode.dev
-* All changes pushed to the main branch are automatically published to https://dev.phcode.dev 
-* To publish the changes to https://staging.phcode.dev , push changes to the `staging` branch in this repo with a pull request.
-* Once the changes are validated and tested, trigger a prod deployment by pushing to the `prod` branch.
-
 ## Acknowledgements
 * Phoenix is based on the Brackets code editor by Adobe. Find out more on [Adobe Brackets here](https://github.com/adobe/brackets/).
 * Our main code editor library https://codemirror.net/
 * Inspired by previous work from the [Mozilla Thimble](https://github.com/mozilla/thimble.mozilla.org) project to port brackets to the web. https://github.com/mozilla/brackets
 * In browser server based on [nohost](https://github.com/humphd/nohost) by https://github.com/humphd/
 
-
 ## License
-Discussion: https://github.com/phcode-dev/phoenix/issues/184
-
 GNU AGPL-3.0 License
 
 Copyright (c) 2021 - present Core.ai
-
 Based on Backets, Copyright (c) 2012 Adobe Systems Incorporated and the brackets.io community
 
 This program is free software: you can redistribute it and/or modify
