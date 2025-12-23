@@ -156,7 +156,9 @@ define(function (require, exports, module) {
     let modeThatWasSelected = null;
 
     // live Preview overlay variables (overlays are shown when live preview is connecting or there's a syntax error)
-    let $overlayContainer = null; // the overlay container
+    let $statusOverlay = null; // reference to the static overlay element
+    let $statusOverlayMessage = null; // reference to the message span
+    let $statusOverlayClose = null; // reference to the close button
     let shouldShowSyncErrorOverlay = true; // once user closes the overlay we don't show them again
     let shouldShowConnectingOverlay = true;
     let connectingOverlayTimer = null; // this is needed as we show the connecting overlay after 3s
@@ -224,47 +226,48 @@ define(function (require, exports, module) {
                     connectingOverlayTimer = null;
                     return;
                 }
-                _createAndShowOverlay(textMessage, status);
+                _showOverlay(textMessage, status);
                 connectingOverlayTimer = null;
             }, connectingOverlayTimeDuration);
             return;
         }
 
         // for sync error status, show immediately
-        _createAndShowOverlay(textMessage, status);
+        _showOverlay(textMessage, status);
     }
 
     /**
-     * this function is responsible to create & show the overlay.
+     * this function is init the overlay.
      * so overlay is shown when the live preview is connecting or live preview stopped because of some syntax error
+     */
+    function _initOverlay() {
+        if (!$panel) { return; }
+        $statusOverlay = $panel.find(".live-preview-status-overlay");
+        $statusOverlayMessage = $statusOverlay.find(".live-preview-overlay-message");
+        $statusOverlayClose = $statusOverlay.find(".live-preview-overlay-close");
+
+        $statusOverlayClose.on("click", () => {
+            const currentStatue = $statusOverlay.data("status");
+            if(currentStatue === MultiBrowserLiveDev.STATUS_CONNECTING) {
+                shouldShowConnectingOverlay = false;
+            } else if(currentStatue === MultiBrowserLiveDev.STATUS_SYNC_ERROR) {
+                shouldShowSyncErrorOverlay = false;
+            }
+            _hideOverlay();
+        });
+    }
+
+    /**
+     * Show the overlay with the given message and status
      * @param {String} textMessage - the text that is written inside the overlay
      * @param {Number} status - 1 for connect, 4 for sync error but we match it using MultiBrowserLiveDev
      */
-    function _createAndShowOverlay(textMessage, status) {
-        if (!$panel) { return; }
+    function _showOverlay(textMessage, status) {
+        if (!$statusOverlay) { return; }
 
-        // create the overlay element
-        // styled inside the 'live-preview.css'
-        $overlayContainer = $("<div>").addClass("live-preview-status-overlay"); // the wrapper for overlay element
-        const $message = $("<div>").addClass("live-preview-overlay-message").text(textMessage);
-
-        // the close button at the right end of the overlay
-        const $close = $("<div>").addClass("live-preview-overlay-close")
-            .attr("title", Strings.LIVE_PREVIEW_HIDE_OVERLAY)
-            .on('click', () => {
-                if(status === MultiBrowserLiveDev.STATUS_CONNECTING) {
-                    shouldShowConnectingOverlay = false;
-                } else if(status === MultiBrowserLiveDev.STATUS_SYNC_ERROR) {
-                    shouldShowSyncErrorOverlay = false;
-                }
-                _hideOverlay();
-            });
-        const $closeIcon = $("<i>").addClass("fas fa-times");
-
-        $close.append($closeIcon);
-        $overlayContainer.append($message);
-        $overlayContainer.append($close);
-        $panel.append($overlayContainer);
+        $statusOverlayMessage.text(textMessage);
+        $statusOverlay.data("status", status);
+        $statusOverlay.removeClass("forced-hidden");
     }
 
     /**
@@ -272,9 +275,8 @@ define(function (require, exports, module) {
      */
     function _hideOverlay() {
         _clearConnectingOverlayTimer();
-        if ($overlayContainer) {
-            $overlayContainer.remove();
-            $overlayContainer = null;
+        if ($statusOverlay) {
+            $statusOverlay.addClass("forced-hidden");
         }
     }
 
@@ -785,6 +787,9 @@ define(function (require, exports, module) {
             _loadPreview(true, true);
             Metrics.countEvent(Metrics.EVENT_TYPE.LIVE_PREVIEW, "reloadBtn", "click");
         });
+
+        // init the status overlay
+        _initOverlay();
     }
 
     async function _loadPreview(force, isReload) {
