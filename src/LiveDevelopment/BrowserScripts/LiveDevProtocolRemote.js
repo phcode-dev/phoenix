@@ -589,6 +589,16 @@
             }
         }
 
+        // duplicate element: Ctrl+D / Cmd+D
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "d") {
+
+            // Only handle element cut if not editing text and in edit mode
+            if (!isEditingText && !isActiveElementPhoenixTool && isInEditMode && window._LD.handleCutElement) {
+                e.preventDefault();
+                window._LD.handleDuplicateElement();
+            }
+        }
+
         // Copy: Ctrl+C / Cmd+C - operates on selected element
         if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "c") {
 
