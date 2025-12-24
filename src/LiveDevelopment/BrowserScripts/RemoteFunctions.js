@@ -21,6 +21,7 @@ function RemoteFunctions(config = {}) {
         // this is just a test function here to check if live preview. fn call is working correctly.
         console.log("Hello World", param);
     });
+    const MessageBroker = window._Brackets_MessageBroker; // to be used by plugins.
 
     const SHARED_STATE = {
         __description: "Use this to keep shared state for Live Preview Edit instead of window.*"
@@ -753,7 +754,7 @@ function RemoteFunctions(config = {}) {
 
         // send cursor movement message to editor so cursor jumps to clicked element
         if (element.hasAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR)) {
-            window._Brackets_MessageBroker.send({
+            MessageBroker.send({
                 "tagId": element.getAttribute(GLOBALS.DATA_BRACKETS_ID_ATTR),
                 "nodeID": element.id,
                 "nodeClassList": element.classList,
@@ -1285,7 +1286,7 @@ function RemoteFunctions(config = {}) {
     // we need to refresh the config once the load is completed
     // this is important because messageBroker gets ready for use only when load fires
     window.addEventListener('load', function() {
-        window._Brackets_MessageBroker.send({
+        MessageBroker.send({
             requestConfigRefresh: true
         });
     });
