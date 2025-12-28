@@ -53,6 +53,7 @@ define(function main(require, exports, module) {
     // this will later be assigned its correct values once entitlementsManager loads
     let hasLiveEditCapability = false;
     let isPaidUser = false;
+    let isLoggedIn = false;
 
     const PREFERENCE_LIVE_PREVIEW_MODE = CONSTANTS.PREFERENCE_LIVE_PREVIEW_MODE;
 
@@ -98,6 +99,7 @@ define(function main(require, exports, module) {
         showRulerLines: false, // default value, this will get updated when the extension loads
         imageGalleryState: _getImageGalleryState(), // image gallery selected state
         isPaidUser: false, // will be updated when we fetch entitlements
+        isLoggedIn: false, // will be updated when we fetch entitlements
         hasLiveEditCapability: false // handled inside _liveEditCapabilityChanged function
     };
 
@@ -259,6 +261,15 @@ define(function main(require, exports, module) {
         }
     }
 
+    function _isLoggedInChanged(newStatus) {
+        if(newStatus !== isLoggedIn){
+            isLoggedIn = newStatus;
+            const config = MultiBrowserLiveDev.getConfig();
+            config.isLoggedIn = isLoggedIn;
+            MultiBrowserLiveDev.updateConfig(config);
+        }
+    }
+
     function setMode(mode) {
         if (mode === LIVE_EDIT_MODE && !hasLiveEditCapability) {
             return false;
@@ -346,6 +357,7 @@ define(function main(require, exports, module) {
     // private api
     exports._liveEditCapabilityChanged = _liveEditCapabilityChanged;
     exports._isPaidUserChanged = _isPaidUserChanged;
+    exports._isLoggedInChanged = _isLoggedInChanged;
 
     // public events
     exports.EVENT_OPEN_PREVIEW_URL = MultiBrowserLiveDev.EVENT_OPEN_PREVIEW_URL;
