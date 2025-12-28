@@ -78,7 +78,7 @@ define(function (require, exports, module) {
             return;
         }
         if(newProjectDialogueObj && newProjectDialogueObj.isVisible()){
-            return;
+            return newProjectDialogueObj;
         }
         let templateVars = {
             Strings: Strings,
@@ -88,6 +88,7 @@ define(function (require, exports, module) {
         newProjectDialogueObj = Dialogs.showModalDialogUsingTemplate(dialogueContents, true);
         _focusContentWindow();
         Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "dialogue", "open");
+        return newProjectDialogueObj;
     }
 
     function _addMenuEntries() {
@@ -145,20 +146,36 @@ define(function (require, exports, module) {
 
     ProjectManager.on(ProjectManager.EVENT_AFTER_PROJECT_OPEN, projectOpened);
 
+    let _bootDoneDeferred = new $.Deferred();
+    let _bootDonePromise = jsPromise(_bootDoneDeferred.promise());
+
+    function onBootComplete() {
+        return _bootDonePromise;
+    }
+
     function init() {
         _addMenuEntries();
         const shouldShowWelcome = PhStore.getItem("new-project.showWelcomeScreen") || 'Y';
         if(shouldShowWelcome !== 'Y') {
             Metrics.countEvent(Metrics.EVENT_TYPE.NEW_PROJECT, "dialogue", "disabled");
             guidedTour.startTourIfNeeded();
+            _bootDoneDeferred.resolve();
             return;
         }
         _shouldNotShowDialog()
             .then(notShow=>{
                 if(notShow){
+                    _bootDoneDeferred.resolve();
                     return;
                 }
-                _showNewProjectDialogue();
+                const dialog = _showNewProjectDialogue();
+                if(dialog){
+                    dialog.done(()=>{
+                        _bootDoneDeferred.resolve();
+                    });
+                } else {
+                    _bootDoneDeferred.resolve();
+                }
                 DocumentCommandHandlers.on(DocumentCommandHandlers._EVENT_OPEN_WITH_FILE_FROM_OS, ()=>{
                     closeDialogue();
                 });
@@ -489,6 +506,7 @@ define(function (require, exports, module) {
     }
 
     exports.init = init;
+    exports.onBootComplete = onBootComplete;
     exports.openFolder = openFolder;
     exports.closeDialogue = closeDialogue;
     exports.downloadAndOpenProject = downloadAndOpenProject;
