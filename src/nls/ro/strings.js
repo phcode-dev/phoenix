@@ -188,6 +188,9 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_OFFLINE_RETRY": "Reîncercați",
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Se verifică conexiunea",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Încă sunteți offline. Vă rugăm să verificați conexiunea.",
+  "LIVE_DEV_TOAST_NOT_EDITABLE": "Elementul nu este editabil - generat de script",
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Element copiat. Folosiți „Lipește” pentru a-l adăuga sub elementul selectat",
+  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Elementul nu derulează odată cu pagina - casetele de editare sunt ascunse",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Selectați folderul pentru a salva imaginea",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Alegeți unde să descărcați imaginea:",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Introduceți calea folderului (ex., assets/images/)",
@@ -1544,7 +1547,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Accesul AI a fost dezactivat de către administratorul dvs. de sistem. Vă rugăm să contactați {0} pentru asistență.",
   "AI_UPSELL_DIALOG_TITLE": "Continuați cu {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Ați descoperit {0}. Pentru a continua, veți avea nevoie de un abonament AI sau de credite.",
-  "LIVE_DEV_TOAST_NOT_EDITABLE": "Elementul nu este editabil - generat de script",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Element copiat. Folosiți „Lipește” pentru a-l adăuga sub elementul selectat",
-  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Elementul nu derulează odată cu pagina - casetele de editare sunt ascunse"
+  "SIGN_IN_WITH_PRO": "Autentificare cu Pro"
 });

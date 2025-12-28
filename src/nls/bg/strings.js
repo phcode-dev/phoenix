@@ -188,6 +188,9 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_OFFLINE_RETRY": "Опитай отново",
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Проверка на връзката",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Все още сте офлайн. Моля, проверете връзката си.",
+  "LIVE_DEV_TOAST_NOT_EDITABLE": "Елементът не може да се редактира – генериран е от скрипт",
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Елементът е копиран. Използвайте „Поставяне“, за да го добавите под избрания елемент",
+  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Елементът не се превърта със страницата – полетата за редакция са скрити",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Избор на папка за запазване на изображението",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Изберете къде да изтеглите изображението:",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Въведете път до папката (напр. assets/images/)",
@@ -1544,7 +1547,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Достъпът до AI е деактивиран от вашия системен администратор. Моля, свържете се с {0} за съдействие.",
   "AI_UPSELL_DIALOG_TITLE": "Да продължите ли с {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Вие открихте {0}. За да продължите, ще ви е необходим AI абонамент или кредити.",
-  "LIVE_DEV_TOAST_NOT_EDITABLE": "Елементът не може да се редактира – генериран е от скрипт",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Елементът е копиран. Използвайте „Поставяне“, за да го добавите под избрания елемент",
-  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Елементът не се превърта със страницата – полетата за редакция са скрити"
+  "SIGN_IN_WITH_PRO": "Влезте с Pro"
 });

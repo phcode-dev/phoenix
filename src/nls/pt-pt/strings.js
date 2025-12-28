@@ -188,6 +188,9 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_OFFLINE_RETRY": "Tentar novamente",
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "A verificar a ligação",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Continua offline. Por favor, verifique a sua ligação.",
+  "LIVE_DEV_TOAST_NOT_EDITABLE": "Elemento não editável - gerado por script",
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Elemento copiado. Utilize 'Colar' para o adicionar abaixo do elemento selecionado.",
+  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "O elemento não acompanha o deslocamento da página - caixas de edição ocultas",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Selecionar Pasta para Guardar a Imagem",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Escolha onde descarregar a imagem:",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Escreva o caminho da pasta (p. ex., assets/images/)",
@@ -1544,7 +1547,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "O acesso à IA foi desativado pelo seu administrador de sistema. Por favor, contacte {0} para obter assistência.",
   "AI_UPSELL_DIALOG_TITLE": "Continuar com {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Descobriu {0}. Para continuar, precisará de uma subscrição de IA ou de créditos.",
-  "LIVE_DEV_TOAST_NOT_EDITABLE": "Elemento não editável - gerado por script",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Elemento copiado. Utilize 'Colar' para o adicionar abaixo do elemento selecionado.",
-  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "O elemento não acompanha o deslocamento da página - caixas de edição ocultas"
+  "SIGN_IN_WITH_PRO": "Iniciar sessão com Pro"
 });

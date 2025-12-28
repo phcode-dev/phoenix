@@ -1354,6 +1354,7 @@
   "SIGNED_OUT_MESSAGE_FRIENDLY": "Thank you for using {APP_NAME}. See you soon!",
   "SIGN_IN_WAITING_MESSAGE": "Please complete sign-in in the new tab, then return here.",
   "SIGN_IN_WAITING_TITLE": "Waiting for Sign In",
+  "SIGN_IN_WITH_PRO": "Sign in with Pro",
   "SIGN_OUT": "Sign Out",
   "SINGLE_ERROR": "1 {0} Problem - {1}",
   "SINGLE_ERROR_FIXABLE": "1 {0} Problem, {1} Fixable - {2}",

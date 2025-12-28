@@ -188,6 +188,9 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_OFFLINE_RETRY": "Повторити",
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Перевірка з'єднання",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "З'єднання досі відсутнє. Будь ласка, перевірте ваше з'єднання.",
+  "LIVE_DEV_TOAST_NOT_EDITABLE": "Елемент не можна редагувати — згенеровано скриптом",
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Елемент скопійовано. Використовуйте 'Вставити', щоб додати його під вибраним елементом",
+  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Елемент не прокручується зі сторінкою — поля редагування приховано",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Виберіть папку для збереження зображення",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Виберіть, куди завантажити зображення:",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Введіть шлях до папки (напр., assets/images/)",
@@ -1544,7 +1547,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Доступ до ШІ було вимкнено вашим системним адміністратором. Будь ласка, зверніться до {0} за допомогою.",
   "AI_UPSELL_DIALOG_TITLE": "Продовжити з {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Ви відкрили для себе {0}. Щоб продовжити, вам знадобиться підписка на ШІ або кредити.",
-  "LIVE_DEV_TOAST_NOT_EDITABLE": "Елемент не можна редагувати — згенеровано скриптом",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Елемент скопійовано. Використовуйте 'Вставити', щоб додати його під вибраним елементом",
-  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Елемент не прокручується зі сторінкою — поля редагування приховано"
+  "SIGN_IN_WITH_PRO": "Увійти з Pro"
 });

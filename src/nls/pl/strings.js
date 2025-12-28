@@ -188,6 +188,9 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_OFFLINE_RETRY": "Spróbuj ponownie",
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Sprawdzanie połączenia",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Nadal brak połączenia. Sprawdź swoje połączenie.",
+  "LIVE_DEV_TOAST_NOT_EDITABLE": "Element nieedytowalny - wygenerowany przez skrypt",
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Element skopiowany. Użyj opcji 'Wklej', aby dodać go poniżej zaznaczonego elementu.",
+  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Element nie przewija się ze stroną - pola edycji ukryte",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Wybierz folder zapisu obrazu",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Wybierz, gdzie pobrać obraz:",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Wpisz ścieżkę folderu (np. assets/images/)",
@@ -1544,7 +1547,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Dostęp do AI został wyłączony przez administratora systemu. Prosimy o kontakt z {0} w celu uzyskania pomocy.",
   "AI_UPSELL_DIALOG_TITLE": "Kontynuować z {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Odkryłeś {0}. Aby kontynuować, potrzebujesz subskrypcji AI lub kredytów.",
-  "LIVE_DEV_TOAST_NOT_EDITABLE": "Element nieedytowalny - wygenerowany przez skrypt",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Element skopiowany. Użyj opcji 'Wklej', aby dodać go poniżej zaznaczonego elementu.",
-  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Element nie przewija się ze stroną - pola edycji ukryte"
+  "SIGN_IN_WITH_PRO": "Zaloguj się do Pro"
 });

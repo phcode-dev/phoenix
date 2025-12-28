@@ -188,6 +188,9 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_OFFLINE_RETRY": "Mēģināt vēlreiz",
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Pārbauda savienojumu",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Joprojām bezsaistē. Lūdzu, pārbaudiet savienojumu.",
+  "LIVE_DEV_TOAST_NOT_EDITABLE": "Elements nav rediģējams - ģenerēts ar skriptu",
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Elements nokopēts. Izmantojiet 'Ielīmēt', lai to pievienotu zem atlasītā elementa",
+  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Elements neritinās līdzi lapai - rediģēšanas lauki paslēpti",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Izvēlieties mapi attēla saglabāšanai",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Izvēlieties, kur lejupielādēt attēlu:",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Ierakstiet mapes ceļu (piem., assets/images/)",
@@ -1544,7 +1547,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "MI piekļuvi ir atspējojis jūsu sistēmas administrators. Lūdzu, sazinieties ar {0}, lai saņemtu palīdzību.",
   "AI_UPSELL_DIALOG_TITLE": "Turpināt ar {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Jūs atklājāt {0}. Lai turpinātu, jums būs nepieciešams MI abonements vai kredīti.",
-  "LIVE_DEV_TOAST_NOT_EDITABLE": "Elements nav rediģējams - ģenerēts ar skriptu",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Elements nokopēts. Izmantojiet 'Ielīmēt', lai to pievienotu zem atlasītā elementa",
-  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Elements neritinās līdzi lapai - rediģēšanas lauki paslēpti"
+  "SIGN_IN_WITH_PRO": "Pieteikties ar Pro"
 });

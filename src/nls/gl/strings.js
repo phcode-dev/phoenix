@@ -188,6 +188,9 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_OFFLINE_RETRY": "Reintentar",
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Comprobando a conexión",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Aínda sen conexión. Comprobe a súa conexión.",
+  "LIVE_DEV_TOAST_NOT_EDITABLE": "Elemento non editable: xerado por script",
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Elemento copiado. Usa «Pegar» para engadilo debaixo do elemento seleccionado",
+  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "O elemento non se despraza coa páxina: caixas de edición ocultas",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Seleccionar cartafol para gardar a imaxe",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Escolla onde descargar a imaxe:",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Escriba a ruta do cartafol (p. ex., assets/images/)",
@@ -1544,7 +1547,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "O acceso á IA foi desactivado polo seu administrador do sistema. Póñase en contacto con {0} para obter axuda.",
   "AI_UPSELL_DIALOG_TITLE": "Continuar con {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Descubriches {0}. Para continuar, necesitarás unha subscrición de IA ou créditos.",
-  "LIVE_DEV_TOAST_NOT_EDITABLE": "Elemento non editable: xerado por script",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Elemento copiado. Usa «Pegar» para engadilo debaixo do elemento seleccionado",
-  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "O elemento non se despraza coa páxina: caixas de edición ocultas"
+  "SIGN_IN_WITH_PRO": "Iniciar sesión con Pro"
 });
