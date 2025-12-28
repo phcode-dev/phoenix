@@ -1438,6 +1438,7 @@ define({
   "PROFILE_SIGN_IN": "Logga in på ditt konto",
   "CONTACT_SUPPORT": "Kontakta supporten",
   "SIGN_OUT": "Logga ut",
+  "SIGN_IN_WITH_PRO": "Logga in med Pro",
   "ACCOUNT_DETAILS": "Kontodetaljer",
   "LOGIN_REFRESH": "Kontrollera inloggningsstatus",
   "SIGN_IN_WAITING_TITLE": "Väntar på inloggning",
@@ -1547,5 +1548,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "AI-åtkomst har inaktiverats av din systemadministratör. Kontakta {0} för hjälp.",
   "AI_UPSELL_DIALOG_TITLE": "Fortsätt med {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Du har upptäckt {0}. För att fortsätta behöver du ett AI-abonnemang eller krediter.",
-  "SIGN_IN_WITH_PRO": "Logga in med Pro"
+  "IMAGE_SEARCH_GUEST_LIMIT_TITLE": "Logga in för att fortsätta",
+  "IMAGE_SEARCH_GUEST_LIMIT_MESSAGE": "Du har nått den kostnadsfria gästgränsen på {0} sökningar/bildnedladdningar. Logga in för att få {1} till den här månaden och fortsätta.",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_TITLE": "Månadsgränsen för bildsökning har nåtts",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_MESSAGE": "Du har använt alla dina {0} sökningar/bildnedladdningar för den här månaden. Skaffa fullständig åtkomst till Phoenix Pro för att fortsätta med bildsökning och nedladdningar av professionell kvalitet.",
+  "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "Gränsen för bildsökning har nåtts",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Du har nått din nuvarande Pro-användningsgräns ({0} bilder/timme). Försök igen om en liten stund.",
+  "SIGN_IN": "Logga in"
 });

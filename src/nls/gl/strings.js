@@ -1438,6 +1438,7 @@ define({
   "PROFILE_SIGN_IN": "Iniciar sesión na túa conta",
   "CONTACT_SUPPORT": "Contactar co soporte técnico",
   "SIGN_OUT": "Pechar sesión",
+  "SIGN_IN_WITH_PRO": "Iniciar sesión con Pro",
   "ACCOUNT_DETAILS": "Detalles da conta",
   "LOGIN_REFRESH": "Comprobar o estado do inicio de sesión",
   "SIGN_IN_WAITING_TITLE": "Agardando o inicio de sesión",
@@ -1547,5 +1548,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "O acceso á IA foi desactivado polo seu administrador do sistema. Póñase en contacto con {0} para obter axuda.",
   "AI_UPSELL_DIALOG_TITLE": "Continuar con {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Descubriches {0}. Para continuar, necesitarás unha subscrición de IA ou créditos.",
-  "SIGN_IN_WITH_PRO": "Iniciar sesión con Pro"
+  "IMAGE_SEARCH_GUEST_LIMIT_TITLE": "Inicia sesión para continuar",
+  "IMAGE_SEARCH_GUEST_LIMIT_MESSAGE": "Alcanzaches o límite gratuíto para convidados de {0} buscas/descargas de imaxes.",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_TITLE": "Límite mensual de busca de imaxes alcanzado",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_MESSAGE": "Usaches todas as {0} buscas/descargas de imaxes deste mes.",
+  "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "Límite de busca de imaxes alcanzado",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Alcanzaches o teu límite de uso Pro actual ({0} imaxes/hora).",
+  "SIGN_IN": "Iniciar sesión"
 });

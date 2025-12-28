@@ -1438,6 +1438,7 @@ define({
   "PROFILE_SIGN_IN": "Entrar na sua conta",
   "CONTACT_SUPPORT": "Contatar o Suporte",
   "SIGN_OUT": "Sair",
+  "SIGN_IN_WITH_PRO": "Entrar com Pro",
   "ACCOUNT_DETAILS": "Detalhes da Conta",
   "LOGIN_REFRESH": "Verificar Status de Login",
   "SIGN_IN_WAITING_TITLE": "Aguardando login",
@@ -1547,5 +1548,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "O acesso à IA foi desativado pelo administrador do seu sistema. Entre em contato com {0} para obter assistência.",
   "AI_UPSELL_DIALOG_TITLE": "Continuar com {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Você descobriu o {0}. Para prosseguir, você precisará de uma assinatura de IA ou de créditos.",
-  "SIGN_IN_WITH_PRO": "Entrar com Pro"
+  "IMAGE_SEARCH_GUEST_LIMIT_TITLE": "Faça login para continuar",
+  "IMAGE_SEARCH_GUEST_LIMIT_MESSAGE": "Você atingiu o limite gratuito para convidados de {0} buscas / downloads de imagem. Faça login para obter mais {1} este mês e continuar.",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_TITLE": "Limite mensal de busca de imagens atingido",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_MESSAGE": "Você usou todas as {0} buscas / downloads de imagem deste mês. Obtenha acesso total ao Phoenix Pro para continuar com buscas e downloads de imagens de nível profissional.",
+  "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "Limite de busca de imagens atingido",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Você atingiu seu limite de uso Pro atual ({0} imagens/hora). Por favor, tente novamente em breve.",
+  "SIGN_IN": "Entrar"
 });

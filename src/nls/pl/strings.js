@@ -1438,6 +1438,7 @@ define({
   "PROFILE_SIGN_IN": "Zaloguj się do swojego konta",
   "CONTACT_SUPPORT": "Skontaktuj się z pomocą techniczną",
   "SIGN_OUT": "Wyloguj się",
+  "SIGN_IN_WITH_PRO": "Zaloguj się do Pro",
   "ACCOUNT_DETAILS": "Szczegóły konta",
   "LOGIN_REFRESH": "Sprawdź status logowania",
   "SIGN_IN_WAITING_TITLE": "Oczekiwanie na logowanie",
@@ -1547,5 +1548,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Dostęp do AI został wyłączony przez administratora systemu. Prosimy o kontakt z {0} w celu uzyskania pomocy.",
   "AI_UPSELL_DIALOG_TITLE": "Kontynuować z {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Odkryłeś {0}. Aby kontynuować, potrzebujesz subskrypcji AI lub kredytów.",
-  "SIGN_IN_WITH_PRO": "Zaloguj się do Pro"
+  "IMAGE_SEARCH_GUEST_LIMIT_TITLE": "Zaloguj się, aby kontynuować",
+  "IMAGE_SEARCH_GUEST_LIMIT_MESSAGE": "Osiągnięto darmowy limit dla gości wynoszący {0} wyszukiwań / pobrań obrazów. Zaloguj się, aby otrzymać {1} więcej w tym miesiącu i kontynuować.",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_TITLE": "Osiągnięto miesięczny limit wyszukiwania obrazów",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_MESSAGE": "Wykorzystano wszystkie {0} wyszukiwań / pobrań obrazów w tym miesiącu. Uzyskaj pełny dostęp do Phoenix Pro, aby kontynuować wyszukiwanie i pobieranie obrazów na profesjonalnym poziomie.",
+  "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "Osiągnięto limit wyszukiwania obrazów",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Osiągnięto bieżący limit użycia dla konta Pro ({0} obrazów/godzinę). Spróbuj ponownie za chwilę.",
+  "SIGN_IN": "Zaloguj się"
 });

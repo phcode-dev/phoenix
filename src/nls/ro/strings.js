@@ -1438,6 +1438,7 @@ define({
   "PROFILE_SIGN_IN": "Conectează-te la contul tău",
   "CONTACT_SUPPORT": "Contactează Asistența",
   "SIGN_OUT": "Deconectare",
+  "SIGN_IN_WITH_PRO": "Autentificare cu Pro",
   "ACCOUNT_DETAILS": "Detalii cont",
   "LOGIN_REFRESH": "Verificare stare autentificare",
   "SIGN_IN_WAITING_TITLE": "Se așteaptă autentificarea",
@@ -1547,5 +1548,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Accesul AI a fost dezactivat de către administratorul dvs. de sistem. Vă rugăm să contactați {0} pentru asistență.",
   "AI_UPSELL_DIALOG_TITLE": "Continuați cu {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Ați descoperit {0}. Pentru a continua, veți avea nevoie de un abonament AI sau de credite.",
-  "SIGN_IN_WITH_PRO": "Autentificare cu Pro"
+  "IMAGE_SEARCH_GUEST_LIMIT_TITLE": "Autentificare pentru a continua",
+  "IMAGE_SEARCH_GUEST_LIMIT_MESSAGE": "Ați atins limita gratuită pentru vizitatori de {0} căutări / descărcări de imagini. Autentificați-vă pentru a obține încă {1} luna aceasta și pentru a continua.",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_TITLE": "Limitare lunară de căutare imagini atinsă",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_MESSAGE": "Ați folosit toate cele {0} căutări / descărcări de imagini pentru această lună. Obțineți acces complet Phoenix Pro pentru a continua cu căutări și descărcări de imagini de nivel profesional.",
+  "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "Limită de căutare imagini atinsă",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Ați atins limita actuală de utilizare Pro ({0} imagini/oră). Vă rugăm să încercați din nou în scurt timp.",
+  "SIGN_IN": "Autentificare"
 });

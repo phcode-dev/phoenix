@@ -1438,6 +1438,7 @@ define({
   "PROFILE_SIGN_IN": "Hesabınıza giriş yapın",
   "CONTACT_SUPPORT": "Desteğe Başvur",
   "SIGN_OUT": "Oturumu Kapat",
+  "SIGN_IN_WITH_PRO": "Pro ile giriş yap",
   "ACCOUNT_DETAILS": "Hesap Ayrıntıları",
   "LOGIN_REFRESH": "Oturum Durumunu Kontrol Et",
   "SIGN_IN_WAITING_TITLE": "Oturum Açma Bekleniyor",
@@ -1547,5 +1548,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Yapay zeka erişimi sistem yöneticiniz tarafından devre dışı bırakıldı. Yardım için lütfen {0} ile iletişime geçin.",
   "AI_UPSELL_DIALOG_TITLE": "{0} ile devam edilsin mi?",
   "AI_UPSELL_DIALOG_MESSAGE": "{0} özelliğini keşfettiniz. Devam etmek için bir Yapay Zeka aboneliğine veya kredilere ihtiyacınız var.",
-  "SIGN_IN_WITH_PRO": "Pro ile giriş yap"
+  "IMAGE_SEARCH_GUEST_LIMIT_TITLE": "Devam etmek için oturum açın",
+  "IMAGE_SEARCH_GUEST_LIMIT_MESSAGE": "Ücretsiz misafir limiti olan {0} arama / resim indirme hakkınıza ulaştınız.",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_TITLE": "Aylık resim arama limitine ulaşıldı",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_MESSAGE": "Bu ayki {0} arama / resim indirme hakkınızın tamamını kullandınız.",
+  "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "Resim arama limitine ulaşıldı",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Mevcut Pro kullanım limitinize ({0} resim/saat) ulaştınız.",
+  "SIGN_IN": "Oturum Aç"
 });

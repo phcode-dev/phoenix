@@ -1438,6 +1438,7 @@ define({
   "PROFILE_SIGN_IN": "ورود به حساب کاربری",
   "CONTACT_SUPPORT": "تماس با پشتیبانی",
   "SIGN_OUT": "خروج",
+  "SIGN_IN_WITH_PRO": "با Pro وارد شوید",
   "ACCOUNT_DETAILS": "جزئیات حساب کاربری",
   "LOGIN_REFRESH": "بررسی وضعیت ورود",
   "SIGN_IN_WAITING_TITLE": "در حال انتظار برای ورود",
@@ -1547,5 +1548,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "دسترسی به هوش مصنوعی توسط مدیر سیستم شما غیرفعال شده است. لطفاً برای راهنمایی با {0} تماس بگیرید.",
   "AI_UPSELL_DIALOG_TITLE": "ادامه با {0}؟",
   "AI_UPSELL_DIALOG_MESSAGE": "شما قابلیت {0} را کشف کرده‌اید. برای ادامه، به اشتراک AI یا اعتبار نیاز دارید.",
-  "SIGN_IN_WITH_PRO": "با Pro وارد شوید"
+  "IMAGE_SEARCH_GUEST_LIMIT_TITLE": "برای ادامه وارد شوید",
+  "IMAGE_SEARCH_GUEST_LIMIT_MESSAGE": "شما به سقف مجاز رایگان کاربر مهمان یعنی {0} جستجو / دانلود تصویر رسیده‌اید. برای دریافت {1} اعتبار بیشتر در این ماه و ادامه کار، وارد شوید.",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_TITLE": "سقف مجاز ماهانه جستجوی تصویر به پایان رسید",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_MESSAGE": "شما از تمام {0} جستجو / دانلود تصویر خود برای این ماه استفاده کرده‌اید. برای ادامه جستجو و دانلود تصویر در سطح حرفه‌ای، دسترسی کامل Phoenix Pro را دریافت کنید.",
+  "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "به سقف مجاز جستجوی تصویر رسیده‌اید",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "شما به سقف مجاز مصرف کنونی حساب Pro خود ({0} تصویر/ساعت) رسیده‌اید. لطفاً کمی بعد دوباره تلاش کنید.",
+  "SIGN_IN": "ورود"
 });

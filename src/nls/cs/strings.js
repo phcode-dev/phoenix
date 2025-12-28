@@ -1438,6 +1438,7 @@ define({
   "PROFILE_SIGN_IN": "Přihlaste se ke svému účtu",
   "CONTACT_SUPPORT": "Kontaktovat podporu",
   "SIGN_OUT": "Odhlásit se",
+  "SIGN_IN_WITH_PRO": "Přihlásit se s Pro",
   "ACCOUNT_DETAILS": "Detaily účtu",
   "LOGIN_REFRESH": "Zkontrolovat stav přihlášení",
   "SIGN_IN_WAITING_TITLE": "Čekání na přihlášení",
@@ -1547,5 +1548,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Přístup k AI byl zakázán správcem systému. Pro pomoc prosím kontaktujte {0}.",
   "AI_UPSELL_DIALOG_TITLE": "Pokračovat s {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Objevili jste {0}. Chcete-li pokračovat, budete potřebovat předplatné AI nebo kredity.",
-  "SIGN_IN_WITH_PRO": "Přihlásit se s Pro"
+  "IMAGE_SEARCH_GUEST_LIMIT_TITLE": "Přihlaste se, abyste mohli pokračovat",
+  "IMAGE_SEARCH_GUEST_LIMIT_MESSAGE": "Dosáhli jste bezplatného limitu pro hosty {0} vyhledávání / stažení obrázků.",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_TITLE": "Měsíční limit vyhledávání obrázků byl dosažen",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_MESSAGE": "Využili jste všech {0} vyhledávání / stažení obrázků pro tento měsíc.",
+  "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "Limit vyhledávání obrázků byl dosažen",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Dosáhli jste aktuálního limitu využití Pro ({0} obrázků/hodinu).",
+  "SIGN_IN": "Přihlásit se"
 });

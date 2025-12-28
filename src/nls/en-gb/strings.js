@@ -1438,6 +1438,7 @@ define({
   "PROFILE_SIGN_IN": "Sign in to your account",
   "CONTACT_SUPPORT": "Contact support",
   "SIGN_OUT": "Sign out",
+  "SIGN_IN_WITH_PRO": "Sign in with Pro",
   "ACCOUNT_DETAILS": "Account Details",
   "LOGIN_REFRESH": "Check Login Status",
   "SIGN_IN_WAITING_TITLE": "Waiting for Sign-in",
@@ -1547,5 +1548,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "AI access has been disabled by your system administrator. Please contact {0} for assistance.",
   "AI_UPSELL_DIALOG_TITLE": "Continue with {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "You’ve discovered {0}. To proceed, you’ll need an AI subscription or credits.",
-  "SIGN_IN_WITH_PRO": "Sign in with Pro"
+  "IMAGE_SEARCH_GUEST_LIMIT_TITLE": "Sign in to continue",
+  "IMAGE_SEARCH_GUEST_LIMIT_MESSAGE": "You've reached the free guest limit of {0} searches / image downloads. Sign in to get {1} more this month and keep going.",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_TITLE": "Image search monthly limit reached",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_MESSAGE": "You've used all {0} searches / image downloads for this month. Get full Phoenix Pro access to continue with professional-grade image search and downloads.",
+  "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "Image search limit reached",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "You've reached your current Pro usage limit ({0} images/hour). Please try again shortly.",
+  "SIGN_IN": "Sign In"
 });

@@ -1438,6 +1438,7 @@ define({
   "PROFILE_SIGN_IN": "Kirjaudu tilillesi",
   "CONTACT_SUPPORT": "Ota yhteyttä tukeen",
   "SIGN_OUT": "Kirjaudu ulos",
+  "SIGN_IN_WITH_PRO": "Kirjaudu sisään Prolla",
   "ACCOUNT_DETAILS": "Tilin tiedot",
   "LOGIN_REFRESH": "Tarkista kirjautumistila",
   "SIGN_IN_WAITING_TITLE": "Kirjaudutaan sisään",
@@ -1547,5 +1548,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Järjestelmänvalvoja on poistanut tekoälyn käytöstä. Ota yhteyttä {0} saadaksesi apua.",
   "AI_UPSELL_DIALOG_TITLE": "Jatketaanko {0}:n kanssa?",
   "AI_UPSELL_DIALOG_MESSAGE": "Olet löytänyt ominaisuuden {0}. Jatkaaksesi tarvitset tekoälytilauksen tai krediittejä.",
-  "SIGN_IN_WITH_PRO": "Kirjaudu sisään Prolla"
+  "IMAGE_SEARCH_GUEST_LIMIT_TITLE": "Kirjaudu sisään jatkaaksesi",
+  "IMAGE_SEARCH_GUEST_LIMIT_MESSAGE": "Olet saavuttanut ilmaisen vierailijarajan, joka on {0} hakua / kuvan latausta. Kirjaudu sisään, niin saat {1} lisää tässä kuussa ja voit jatkaa.",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_TITLE": "Kuvahaun kuukausiraja saavutettu",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_MESSAGE": "Olet käyttänyt kaikki tämän kuun {0} hakua / kuvan latausta. Hanki täysi Phoenix Pro -käyttöoikeus jatkaaksesi ammattitason kuvahakujen ja latausten käyttöä.",
+  "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "Kuvahaun raja saavutettu",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Olet saavuttanut nykyisen Pro-käyttörajasi ({0} kuvaa/tunti). Yritä hetken kuluttua uudelleen.",
+  "SIGN_IN": "Kirjaudu sisään"
 });

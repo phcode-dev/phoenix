@@ -1438,6 +1438,7 @@ define({
   "PROFILE_SIGN_IN": "アカウントにログイン",
   "CONTACT_SUPPORT": "サポートに問い合わせる",
   "SIGN_OUT": "サインアウト",
+  "SIGN_IN_WITH_PRO": "Proでサインイン",
   "ACCOUNT_DETAILS": "アカウントの詳細",
   "LOGIN_REFRESH": "ログイン状態を確認",
   "SIGN_IN_WAITING_TITLE": "サインインを待機中",
@@ -1547,5 +1548,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "AIアクセスはシステム管理者によって無効にされています。サポートが必要な場合は、{0}にお問い合わせください。",
   "AI_UPSELL_DIALOG_TITLE": "{0}を続行しますか？",
   "AI_UPSELL_DIALOG_MESSAGE": "「{0}」をご利用になるには、AIサブスクリプションまたはクレジットが必要です。",
-  "SIGN_IN_WITH_PRO": "Proでサインイン"
+  "IMAGE_SEARCH_GUEST_LIMIT_TITLE": "続行するにはサインインしてください",
+  "IMAGE_SEARCH_GUEST_LIMIT_MESSAGE": "ゲストの無料利用上限である、{0}回の検索・画像ダウンロードに達しました。",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_TITLE": "画像検索の月間上限に達しました",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_MESSAGE": "今月分の検索・画像ダウンロード{0}回分をすべて使用しました。",
+  "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "画像検索の上限に達しました",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Proプランの現在の利用上限（1時間あたり{0}画像）に達しました。",
+  "SIGN_IN": "サインイン"
 });
