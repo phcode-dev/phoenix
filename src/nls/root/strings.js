@@ -221,7 +221,7 @@ define({
     "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Type folder path (e.g., assets/images/)",
     "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Type folder path or leave empty to download in 'images' folder.",
     "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Don't ask again for this project",
-    "IMAGE_SEARCH_GUEST_LIMIT_TITLE": "Sign in to keep searching",
+    "IMAGE_SEARCH_GUEST_LIMIT_TITLE": "Sign in to continue",
     "IMAGE_SEARCH_GUEST_LIMIT_MESSAGE": "You've reached the free guest limit of {0} searches / image downloads.\nSign in to get {1} more this month and keep going.",
     "IMAGE_SEARCH_MONTHLY_LIMIT_TITLE": "Image search monthly limit reached",
     "IMAGE_SEARCH_MONTHLY_LIMIT_MESSAGE": "You've used all {0} searches / image downloads for this month.\nGet full Phoenix Pro access to continue with professional-grade image search and downloads.",
