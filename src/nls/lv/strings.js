@@ -1438,6 +1438,7 @@ define({
   "PROFILE_SIGN_IN": "Pieteikties savā kontā",
   "CONTACT_SUPPORT": "Sazināties ar atbalsta dienestu",
   "SIGN_OUT": "Izrakstīties",
+  "SIGN_IN_WITH_PRO": "Pieteikties ar Pro",
   "ACCOUNT_DETAILS": "Konta informācija",
   "LOGIN_REFRESH": "Pārbaudīt pieteikšanās statusu",
   "SIGN_IN_WAITING_TITLE": "Notiek pieteikšanās",
@@ -1547,5 +1548,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "MI piekļuvi ir atspējojis jūsu sistēmas administrators. Lūdzu, sazinieties ar {0}, lai saņemtu palīdzību.",
   "AI_UPSELL_DIALOG_TITLE": "Turpināt ar {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Jūs atklājāt {0}. Lai turpinātu, jums būs nepieciešams MI abonements vai kredīti.",
-  "SIGN_IN_WITH_PRO": "Pieteikties ar Pro"
+  "IMAGE_SEARCH_GUEST_LIMIT_TITLE": "Pierakstieties, lai turpinātu",
+  "IMAGE_SEARCH_GUEST_LIMIT_MESSAGE": "Jūs esat sasniedzis bezmaksas viesa limitu — {0} meklēšanas reizes / attēlu lejupielādes. Pierakstieties, lai saņemtu vēl {1} šajā mēnesī un turpinātu darbu.",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_TITLE": "Attēlu meklēšanas mēneša limits sasniegts",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_MESSAGE": "Jūs esat izmantojuši visas {0} meklēšanas reizes / attēlu lejupielādes šim mēnesim. Iegūstiet pilnu Phoenix Pro piekļuvi, lai turpinātu izmantot profesionāla līmeņa attēlu meklēšanu un lejupielādes.",
+  "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "Attēlu meklēšanas limits sasniegts",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Jūs esat sasnieguši savu pašreizējo Pro lietošanas limitu ({0} attēli stundā). Lūdzu, mēģiniet vēlreiz nedaudz vēlāk.",
+  "SIGN_IN": "Pierakstīties"
 });

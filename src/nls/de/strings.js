@@ -1438,6 +1438,7 @@ define({
   "PROFILE_SIGN_IN": "Bei Ihrem Konto anmelden",
   "CONTACT_SUPPORT": "Support kontaktieren",
   "SIGN_OUT": "Abmelden",
+  "SIGN_IN_WITH_PRO": "Mit Pro anmelden",
   "ACCOUNT_DETAILS": "Kontodetails",
   "LOGIN_REFRESH": "Anmeldestatus überprüfen",
   "SIGN_IN_WAITING_TITLE": "Warte auf Anmeldung",
@@ -1547,5 +1548,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Der KI-Zugriff wurde von Ihrem Systemadministrator deaktiviert. Bitte kontaktieren Sie {0} für Unterstützung.",
   "AI_UPSELL_DIALOG_TITLE": "Mit {0} fortfahren?",
   "AI_UPSELL_DIALOG_MESSAGE": "Sie haben {0} entdeckt. Um fortzufahren, benötigen Sie ein KI-Abonnement oder Guthaben.",
-  "SIGN_IN_WITH_PRO": "Mit Pro anmelden"
+  "IMAGE_SEARCH_GUEST_LIMIT_TITLE": "Anmelden, um fortzufahren",
+  "IMAGE_SEARCH_GUEST_LIMIT_MESSAGE": "Sie haben das kostenlose Gast-Limit von {0} Suchen / Bild-Downloads erreicht.",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_TITLE": "Monatliches Limit für Bildsuche erreicht",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_MESSAGE": "Sie haben alle {0} Suchen / Bild-Downloads für diesen Monat verbraucht.",
+  "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "Limit für Bildsuche erreicht",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Sie haben Ihr aktuelles Pro-Nutzungslimit ({0} Bilder/Stunde) erreicht.",
+  "SIGN_IN": "Anmelden"
 });

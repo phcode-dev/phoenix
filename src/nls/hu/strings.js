@@ -1438,6 +1438,7 @@ define({
   "PROFILE_SIGN_IN": "Bejelentkezés a fiókodba",
   "CONTACT_SUPPORT": "Támogatás kérése",
   "SIGN_OUT": "Kijelentkezés",
+  "SIGN_IN_WITH_PRO": "Bejelentkezés Pro-val",
   "ACCOUNT_DETAILS": "Fiókadatok",
   "LOGIN_REFRESH": "Bejelentkezés állapotának ellenőrzése",
   "SIGN_IN_WAITING_TITLE": "Bejelentkezésre vár",
@@ -1547,5 +1548,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "A MI-hozzáférést a rendszergazda letiltotta. Segítségért forduljon a(z) {0} elérhetőséghez.",
   "AI_UPSELL_DIALOG_TITLE": "Folytatja a(z) {0} használatával?",
   "AI_UPSELL_DIALOG_MESSAGE": "Felfedezte a(z) {0} szolgáltatást. A folytatáshoz MI-előfizetésre vagy kreditekre lesz szüksége.",
-  "SIGN_IN_WITH_PRO": "Bejelentkezés Pro-val"
+  "IMAGE_SEARCH_GUEST_LIMIT_TITLE": "Jelentkezzen be a folytatáshoz",
+  "IMAGE_SEARCH_GUEST_LIMIT_MESSAGE": "Elérte az ingyenes vendégkorlátot, ami {0} keresés / kép letöltés.",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_TITLE": "Havi képkeresési korlát elérve",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_MESSAGE": "Ebben a hónapban felhasználta mind a(z) {0} keresést / kép letöltést.",
+  "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "Képkeresési korlát elérve",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Elérte a jelenlegi Pro használati korlátját ({0} kép/óra).",
+  "SIGN_IN": "Bejelentkezés"
 });

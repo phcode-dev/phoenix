@@ -1438,6 +1438,7 @@ define({
   "PROFILE_SIGN_IN": "登录您的帐户",
   "CONTACT_SUPPORT": "联系支持",
   "SIGN_OUT": "退出登录",
+  "SIGN_IN_WITH_PRO": "使用 Pro 登录",
   "ACCOUNT_DETAILS": "帐户详情",
   "LOGIN_REFRESH": "检查登录状态",
   "SIGN_IN_WAITING_TITLE": "等待登录",
@@ -1547,5 +1548,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "AI 访问权限已被您的系统管理员禁用。请联系 {0} 以获取帮助。",
   "AI_UPSELL_DIALOG_TITLE": "继续使用 {0}？",
   "AI_UPSELL_DIALOG_MESSAGE": "您发现了 {0}。要继续，您需要 AI 订阅或点数。",
-  "SIGN_IN_WITH_PRO": "使用 Pro 登录"
+  "IMAGE_SEARCH_GUEST_LIMIT_TITLE": "请登录后继续",
+  "IMAGE_SEARCH_GUEST_LIMIT_MESSAGE": "您已达到 {0} 次搜索/图片下载的免费访客额度。",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_TITLE": "图片搜索月度额度已用尽",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_MESSAGE": "您已用完本月全部 {0} 次搜索/图片下载额度。",
+  "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "已达到图片搜索上限",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "您已达到当前的 Pro 使用上限（{0} 张图片/小时）。",
+  "SIGN_IN": "登录"
 });

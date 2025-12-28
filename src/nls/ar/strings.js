@@ -1438,6 +1438,7 @@ define({
   "PROFILE_SIGN_IN": "تسجيل الدخول إلى حسابك",
   "CONTACT_SUPPORT": "تواصل مع الدعم",
   "SIGN_OUT": "تسجيل الخروج",
+  "SIGN_IN_WITH_PRO": "تسجيل الدخول بـ Pro",
   "ACCOUNT_DETAILS": "تفاصيل الحساب",
   "LOGIN_REFRESH": "تحقق من حالة تسجيل الدخول",
   "SIGN_IN_WAITING_TITLE": "جارٍ انتظار تسجيل الدخول",
@@ -1547,5 +1548,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "قام مسؤول النظام بتعطيل الوصول إلى الذكاء الاصطناعي. يرجى الاتصال بـ {0} للحصول على المساعدة.",
   "AI_UPSELL_DIALOG_TITLE": "المتابعة باستخدام {0}؟",
   "AI_UPSELL_DIALOG_MESSAGE": "لقد اكتشفت {0}. للمتابعة، ستحتاج إلى اشتراك في الذكاء الاصطناعي أو أرصدة.",
-  "SIGN_IN_WITH_PRO": "تسجيل الدخول بـ Pro"
+  "IMAGE_SEARCH_GUEST_LIMIT_TITLE": "سجّل الدخول للمتابعة",
+  "IMAGE_SEARCH_GUEST_LIMIT_MESSAGE": "لقد وصلت إلى الحد المجاني للزوار وهو {0} عملية بحث / تنزيل للصور.",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_TITLE": "تم الوصول إلى الحد الشهري للبحث عن الصور",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_MESSAGE": "لقد استهلكت جميع عمليات البحث / تنزيل الصور البالغ عددها {0} لهذا الشهر.",
+  "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "تم الوصول إلى حد البحث عن الصور",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "لقد وصلت إلى حد الاستخدام الحالي لخطة Pro ({0} صورة/ساعة).",
+  "SIGN_IN": "تسجيل الدخول"
 });

@@ -1438,6 +1438,7 @@ define({
   "PROFILE_SIGN_IN": "Prijavite se na svoj račun",
   "CONTACT_SUPPORT": "Kontaktirajte podršku",
   "SIGN_OUT": "Odjava",
+  "SIGN_IN_WITH_PRO": "Prijavi se s Pro",
   "ACCOUNT_DETAILS": "Podaci o računu",
   "LOGIN_REFRESH": "Provjeri status prijave",
   "SIGN_IN_WAITING_TITLE": "Prijava u tijeku",
@@ -1547,5 +1548,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Pristup AI-ju onemogućio je vaš administrator sustava. Molimo kontaktirajte {0} za pomoć.",
   "AI_UPSELL_DIALOG_TITLE": "Nastaviti s {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Otkrili ste {0}. Da biste nastavili, potrebna vam je AI pretplata ili krediti.",
-  "SIGN_IN_WITH_PRO": "Prijavi se s Pro"
+  "IMAGE_SEARCH_GUEST_LIMIT_TITLE": "Prijavite se za nastavak",
+  "IMAGE_SEARCH_GUEST_LIMIT_MESSAGE": "Dosegnuli ste besplatno ograničenje za goste od {0} pretraga / preuzimanja slika.",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_TITLE": "Dosegnuto mjesečno ograničenje pretraživanja slika",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_MESSAGE": "Iskoristili ste svih {0} pretraga / preuzimanja slika za ovaj mjesec.",
+  "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "Dosegnuto ograničenje pretraživanja slika",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Dosegnuli ste svoje trenutačno Pro ograničenje upotrebe ({0} slika/sat).",
+  "SIGN_IN": "Prijava"
 });

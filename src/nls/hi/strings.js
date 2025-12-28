@@ -1438,6 +1438,7 @@ define({
   "PROFILE_SIGN_IN": "अपने खाते में साइन इन करें",
   "CONTACT_SUPPORT": "सहायता से संपर्क करें",
   "SIGN_OUT": "साइन आउट करें",
+  "SIGN_IN_WITH_PRO": "Pro से साइन इन करें",
   "ACCOUNT_DETAILS": "खाता विवरण",
   "LOGIN_REFRESH": "लॉगिन स्थिति जांचें",
   "SIGN_IN_WAITING_TITLE": "साइन इन की प्रतीक्षा हो रही है",
@@ -1547,5 +1548,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "आपके सिस्टम एडमिनिस्ट्रेटर द्वारा AI एक्सेस अक्षम कर दिया गया है। सहायता के लिए कृपया {0} से संपर्क करें।",
   "AI_UPSELL_DIALOG_TITLE": "{0} के साथ जारी रखें?",
   "AI_UPSELL_DIALOG_MESSAGE": "आपने {0} खोज लिया है। आगे बढ़ने के लिए, आपको AI सब्सक्रिप्शन या क्रेडिट्स की ज़रूरत होगी।",
-  "SIGN_IN_WITH_PRO": "Pro से साइन इन करें"
+  "IMAGE_SEARCH_GUEST_LIMIT_TITLE": "जारी रखने के लिए साइन इन करें",
+  "IMAGE_SEARCH_GUEST_LIMIT_MESSAGE": "आप {0} खोजों / इमेज डाउनलोड की मुफ़्त गेस्ट सीमा तक पहुँच गए हैं।",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_TITLE": "इमेज खोज की मासिक सीमा समाप्त",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_MESSAGE": "आपने इस महीने के लिए सभी {0} खोजों / इमेज डाउनलोड का उपयोग कर लिया है।",
+  "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "इमेज खोज की सीमा समाप्त",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "आप अपनी वर्तमान प्रो उपयोग सीमा ({0} इमेज/घंटा) तक पहुँच गए हैं।",
+  "SIGN_IN": "साइन इन करें"
 });

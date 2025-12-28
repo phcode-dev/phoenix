@@ -1438,6 +1438,7 @@ define({
   "PROFILE_SIGN_IN": "Влезте в акаунта си",
   "CONTACT_SUPPORT": "Свържете се с поддръжката",
   "SIGN_OUT": "Изход",
+  "SIGN_IN_WITH_PRO": "Влезте с Pro",
   "ACCOUNT_DETAILS": "Данни за акаунта",
   "LOGIN_REFRESH": "Проверка на състоянието за вход",
   "SIGN_IN_WAITING_TITLE": "Изчакване за влизане",
@@ -1547,5 +1548,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Достъпът до AI е деактивиран от вашия системен администратор. Моля, свържете се с {0} за съдействие.",
   "AI_UPSELL_DIALOG_TITLE": "Да продължите ли с {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Вие открихте {0}. За да продължите, ще ви е необходим AI абонамент или кредити.",
-  "SIGN_IN_WITH_PRO": "Влезте с Pro"
+  "IMAGE_SEARCH_GUEST_LIMIT_TITLE": "Влезте, за да продължите",
+  "IMAGE_SEARCH_GUEST_LIMIT_MESSAGE": "Достигнахте безплатния лимит за гости от {0} търсения / изтегляния на изображения.",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_TITLE": "Достигнат е месечният лимит за търсене на изображения",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_MESSAGE": "Използвали сте всички {0} търсения / изтегляния на изображения за този месец.",
+  "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "Достигнат е лимитът за търсене на изображения",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Достигнахте текущия си лимит за използване на Pro ({0} изображения/час).",
+  "SIGN_IN": "Вход"
 });

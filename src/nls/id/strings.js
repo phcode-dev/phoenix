@@ -1438,6 +1438,7 @@ define({
   "PROFILE_SIGN_IN": "Masuk ke akun Anda",
   "CONTACT_SUPPORT": "Hubungi Dukungan",
   "SIGN_OUT": "Keluar",
+  "SIGN_IN_WITH_PRO": "Masuk dengan Pro",
   "ACCOUNT_DETAILS": "Detail Akun",
   "LOGIN_REFRESH": "Periksa Status Login",
   "SIGN_IN_WAITING_TITLE": "Menunggu Masuk",
@@ -1547,5 +1548,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Akses AI telah dinonaktifkan oleh administrator sistem Anda. Silakan hubungi {0} untuk bantuan.",
   "AI_UPSELL_DIALOG_TITLE": "Lanjutkan dengan {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Anda telah menemukan {0}. Untuk melanjutkan, Anda memerlukan langganan AI atau kredit.",
-  "SIGN_IN_WITH_PRO": "Masuk dengan Pro"
+  "IMAGE_SEARCH_GUEST_LIMIT_TITLE": "Masuk untuk melanjutkan",
+  "IMAGE_SEARCH_GUEST_LIMIT_MESSAGE": "Anda telah mencapai batas tamu gratis sebanyak {0} pencarian / unduhan gambar. Masuk untuk mendapatkan {1} lagi bulan ini dan terus melanjutkan.",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_TITLE": "Batas pencarian gambar bulanan tercapai",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_MESSAGE": "Anda telah menggunakan semua {0} pencarian / unduhan gambar untuk bulan ini. Dapatkan akses penuh Phoenix Pro untuk melanjutkan pencarian dan unduhan gambar tingkat profesional.",
+  "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "Batas pencarian gambar tercapai",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Anda telah mencapai batas penggunaan Pro Anda saat ini ({0} gambar/jam). Harap coba lagi sebentar lagi.",
+  "SIGN_IN": "Masuk"
 });

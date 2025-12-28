@@ -1438,6 +1438,7 @@ define({
   "PROFILE_SIGN_IN": "Logg inn på kontoen din",
   "CONTACT_SUPPORT": "Kontakt kundestøtte",
   "SIGN_OUT": "Logg ut",
+  "SIGN_IN_WITH_PRO": "Logg inn med Pro",
   "ACCOUNT_DETAILS": "Kontodetaljer",
   "LOGIN_REFRESH": "Sjekk innloggingsstatus",
   "SIGN_IN_WAITING_TITLE": "Venter på pålogging",
@@ -1547,5 +1548,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "AI-tilgang er deaktivert av systemadministratoren din. Vennligst kontakt {0} for hjelp.",
   "AI_UPSELL_DIALOG_TITLE": "Fortsette med {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Du har oppdaget {0}. For å fortsette trenger du et AI-abonnement eller kreditter.",
-  "SIGN_IN_WITH_PRO": "Logg inn med Pro"
+  "IMAGE_SEARCH_GUEST_LIMIT_TITLE": "Logg inn for å fortsette",
+  "IMAGE_SEARCH_GUEST_LIMIT_MESSAGE": "Du har nådd gratisgrensen for gjester på {0} søk / bildenedlastinger.",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_TITLE": "Månedlig grense for bildesøk er nådd",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_MESSAGE": "Du har brukt alle dine {0} søk / bildenedlastinger for denne måneden.",
+  "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "Grense for bildesøk er nådd",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Du har nådd din nåværende Pro-bruksgrense ({0} bilder/time).",
+  "SIGN_IN": "Logg inn"
 });

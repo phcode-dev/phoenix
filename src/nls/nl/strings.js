@@ -1438,6 +1438,7 @@ define({
   "PROFILE_SIGN_IN": "Inloggen op uw account",
   "CONTACT_SUPPORT": "Neem contact op met support",
   "SIGN_OUT": "Afmelden",
+  "SIGN_IN_WITH_PRO": "Inloggen met Pro",
   "ACCOUNT_DETAILS": "Accountgegevens",
   "LOGIN_REFRESH": "Aanmeldstatus controleren",
   "SIGN_IN_WAITING_TITLE": "Aanmelden wordt verwerkt",
@@ -1547,5 +1548,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "De toegang tot AI is uitgeschakeld door uw systeembeheerder. Neem contact op met {0} voor hulp.",
   "AI_UPSELL_DIALOG_TITLE": "Doorgaan met {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "U heeft {0} ontdekt. Om verder te gaan, heeft u een AI-abonnement of credits nodig.",
-  "SIGN_IN_WITH_PRO": "Inloggen met Pro"
+  "IMAGE_SEARCH_GUEST_LIMIT_TITLE": "Meld u aan om door te gaan",
+  "IMAGE_SEARCH_GUEST_LIMIT_MESSAGE": "U heeft de gratis gastenlimiet van {0} zoekopdrachten / afbeeldingdownloads bereikt.",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_TITLE": "Maandelijkse zoeklimiet voor afbeeldingen bereikt",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_MESSAGE": "U heeft alle {0} zoekopdrachten / afbeeldingdownloads voor deze maand gebruikt.",
+  "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "Zoeklimiet voor afbeeldingen bereikt",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "U heeft uw huidige Pro-gebruikslimiet ({0} afbeeldingen/uur) bereikt.",
+  "SIGN_IN": "Inloggen"
 });

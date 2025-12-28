@@ -1438,6 +1438,7 @@ define({
   "PROFILE_SIGN_IN": "اپنے اکاؤنٹ میں سائن ان کریں",
   "CONTACT_SUPPORT": "مدد حاصل کریں",
   "SIGN_OUT": "سائن آؤٹ کریں",
+  "SIGN_IN_WITH_PRO": "Pro کے ساتھ سائن ان کریں",
   "ACCOUNT_DETAILS": "اکاؤنٹ کی تفصیلات",
   "LOGIN_REFRESH": "لاگ ان کی حیثیت چیک کریں",
   "SIGN_IN_WAITING_TITLE": "سائن ان کا انتظار ہے",
@@ -1547,5 +1548,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "آپ کے سسٹم ایڈمنسٹریٹر نے AI تک رسائی کو غیر فعال کر دیا ہے۔ براہ کرم مدد کے لیے {0} سے رابطہ کریں۔",
   "AI_UPSELL_DIALOG_TITLE": "{0} کے ساتھ جاری رکھیں؟",
   "AI_UPSELL_DIALOG_MESSAGE": "آپ نے {0} کو دریافت کیا ہے۔ آگے بڑھنے کے لیے، آپ کو AI سبسکرپشن یا کریڈٹس کی ضرورت ہوگی۔",
-  "SIGN_IN_WITH_PRO": "Pro کے ساتھ سائن ان کریں"
+  "IMAGE_SEARCH_GUEST_LIMIT_TITLE": "جاری رکھنے کے لیے سائن ان کریں",
+  "IMAGE_SEARCH_GUEST_LIMIT_MESSAGE": "آپ {0} تلاشوں / تصویری ڈاؤن لوڈز کی مفت مہمان حد تک پہنچ چکے ہیں۔",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_TITLE": "تصویری تلاش کی ماہانہ حد پوری ہو گئی",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_MESSAGE": "آپ نے اس مہینے کے لیے تمام {0} تلاشیں / تصویری ڈاؤن لوڈز استعمال کر لیے ہیں۔",
+  "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "تصویری تلاش کی حد پوری ہو گئی",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "آپ اپنی موجودہ پرو استعمال کی حد ({0} تصاویر/گھنٹہ) تک پہنچ چکے ہیں۔",
+  "SIGN_IN": "سائن ان کریں"
 });

@@ -1438,6 +1438,7 @@ define({
   "PROFILE_SIGN_IN": "계정에 로그인",
   "CONTACT_SUPPORT": "고객 지원 문의",
   "SIGN_OUT": "로그아웃",
+  "SIGN_IN_WITH_PRO": "Pro로 로그인",
   "ACCOUNT_DETAILS": "계정 세부정보",
   "LOGIN_REFRESH": "로그인 상태 확인",
   "SIGN_IN_WAITING_TITLE": "로그인 대기 중",
@@ -1547,5 +1548,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "시스템 관리자에 의해 AI 액세스가 비활성화되었습니다. 도움이 필요하시면 {0}에게 문의하세요.",
   "AI_UPSELL_DIALOG_TITLE": "{0}(으)로 계속하시겠습니까?",
   "AI_UPSELL_DIALOG_MESSAGE": "{0} 기능을 발견하셨습니다. 계속 진행하려면 AI 구독 또는 크레딧이 필요합니다.",
-  "SIGN_IN_WITH_PRO": "Pro로 로그인"
+  "IMAGE_SEARCH_GUEST_LIMIT_TITLE": "계속하려면 로그인하세요",
+  "IMAGE_SEARCH_GUEST_LIMIT_MESSAGE": "게스트 무료 이용 한도인 {0}회의 검색/이미지 다운로드를 모두 사용하셨습니다.",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_TITLE": "이미지 검색 월간 한도 도달",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_MESSAGE": "이번 달의 {0}회 검색/이미지 다운로드를 모두 사용하셨습니다.",
+  "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "이미지 검색 한도 도달",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Pro 현재 사용량 한도(시간당 {0}개 이미지)에 도달하셨습니다.",
+  "SIGN_IN": "로그인"
 });

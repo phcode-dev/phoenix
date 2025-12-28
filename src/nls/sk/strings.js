@@ -1438,6 +1438,7 @@ define({
   "PROFILE_SIGN_IN": "Prihlásiť sa do účtu",
   "CONTACT_SUPPORT": "Kontaktovať podporu",
   "SIGN_OUT": "Odhlásiť sa",
+  "SIGN_IN_WITH_PRO": "Prihlásiť sa s Pro",
   "ACCOUNT_DETAILS": "Detaily účtu",
   "LOGIN_REFRESH": "Skontrolovať stav prihlásenia",
   "SIGN_IN_WAITING_TITLE": "Čaká sa na prihlásenie",
@@ -1547,5 +1548,11 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Prístup k AI bol vypnutý správcom vášho systému. So žiadosťou o pomoc sa obráťte na {0}.",
   "AI_UPSELL_DIALOG_TITLE": "Pokračovať s {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Objavili ste {0}. Ak chcete pokračovať, budete potrebovať predplatné AI alebo kredity.",
-  "SIGN_IN_WITH_PRO": "Prihlásiť sa s Pro"
+  "IMAGE_SEARCH_GUEST_LIMIT_TITLE": "Prihláste sa, aby ste mohli pokračovať",
+  "IMAGE_SEARCH_GUEST_LIMIT_MESSAGE": "Dosiahli ste bezplatný limit pre hosťa {0} vyhľadávaní / stiahnutí obrázkov. Prihláste sa, aby ste tento mesiac získali ďalších {1} a mohli pokračovať.",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_TITLE": "Mesačný limit vyhľadávania obrázkov bol dosiahnutý",
+  "IMAGE_SEARCH_MONTHLY_LIMIT_MESSAGE": "Tento mesiac ste vyčerpali všetkých {0} vyhľadávaní / stiahnutí obrázkov. Získajte plný prístup k Phoenix Pro a pokračujte s profesionálnym vyhľadávaním a sťahovaním obrázkov.",
+  "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "Limit vyhľadávania obrázkov bol dosiahnutý",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Dosiahli ste svoj aktuálny limit používania verzie Pro ({0} obrázkov/hodinu). Prosím, skúste to znova o chvíľu.",
+  "SIGN_IN": "Prihlásiť sa"
 });
