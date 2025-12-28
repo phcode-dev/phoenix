@@ -1638,6 +1638,7 @@ define({
     "PROFILE_SIGN_IN": "Sign in to your account",
     "CONTACT_SUPPORT": "Contact Support",
     "SIGN_OUT": "Sign Out",
+    "SIGN_IN_WITH_PRO": "Sign in with Pro",
     "ACCOUNT_DETAILS": "Account Details",
     "LOGIN_REFRESH": "Check Login Status",
     "SIGN_IN_WAITING_TITLE": "Waiting for Sign In",
