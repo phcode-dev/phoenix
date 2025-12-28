@@ -1723,6 +1723,8 @@ define({
     "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Unlock Live Edit with {0}",
     "PROMO_PRO_UNLOCK_MESSAGE": "Subscribe now to unlock these advanced features:",
     "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro Trial ({0} days left)",
+    "PRO_TRIAL_ENDING_TITLE": "Your {0} trial ends in {1} days",
+    "PRO_TRIAL_ENDING_MESSAGE": "Get Phoenix Pro to keep using these Pro features without interruption.",
     "GET_PHOENIX_PRO": "Get Phoenix Pro",
     "USER_FREE_PLAN_NAME_DO_NOT_TRANSLATE": "Community Edition",
     // license dialogs
