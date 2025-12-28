@@ -188,6 +188,9 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_OFFLINE_RETRY": "Wiederholen",
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Verbindung wird geprüft...",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Weiterhin offline. Bitte prüfen Sie Ihre Verbindung.",
+  "LIVE_DEV_TOAST_NOT_EDITABLE": "Element nicht bearbeitbar – durch Skript generiert",
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Element kopiert. Verwenden Sie „Einfügen“, um es unter dem ausgewählten Element hinzuzufügen.",
+  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Element scrollt nicht mit der Seite – Bearbeitungsfelder ausgeblendet",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Ordner zum Speichern des Bildes auswählen",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Wählen Sie, wohin das Bild heruntergeladen werden soll:",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Ordnerpfad eingeben (z. B. assets/images/)",
@@ -1544,7 +1547,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Der KI-Zugriff wurde von Ihrem Systemadministrator deaktiviert. Bitte kontaktieren Sie {0} für Unterstützung.",
   "AI_UPSELL_DIALOG_TITLE": "Mit {0} fortfahren?",
   "AI_UPSELL_DIALOG_MESSAGE": "Sie haben {0} entdeckt. Um fortzufahren, benötigen Sie ein KI-Abonnement oder Guthaben.",
-  "LIVE_DEV_TOAST_NOT_EDITABLE": "Element nicht bearbeitbar – durch Skript generiert",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Element kopiert. Verwenden Sie „Einfügen“, um es unter dem ausgewählten Element hinzuzufügen.",
-  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Element scrollt nicht mit der Seite – Bearbeitungsfelder ausgeblendet"
+  "SIGN_IN_WITH_PRO": "Mit Pro anmelden"
 });

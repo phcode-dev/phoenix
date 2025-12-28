@@ -188,6 +188,9 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_OFFLINE_RETRY": "Επανάληψη",
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Έλεγχος σύνδεσης",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Ακόμα εκτός σύνδεσης. Παρακαλώ, ελέγξτε τη σύνδεσή σας.",
+  "LIVE_DEV_TOAST_NOT_EDITABLE": "Το στοιχείο δεν είναι επεξεργάσιμο - δημιουργήθηκε από script",
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Το στοιχείο αντιγράφηκε. Χρησιμοποιήστε την 'Επικόλληση' για να το προσθέσετε κάτω από το επιλεγμένο στοιχείο",
+  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Το στοιχείο δεν κάνει κύλιση με τη σελίδα - τα πλαίσια επεξεργασίας είναι κρυφά",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Επιλέξτε φάκελο για αποθήκευση εικόνας",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Επιλέξτε πού θα γίνει η λήψη της εικόνας:",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Πληκτρολογήστε διαδρομή φακέλου (π.χ., assets/images/)",
@@ -1544,7 +1547,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Η πρόσβαση στο AI έχει απενεργοποιηθεί από τον διαχειριστή του συστήματός σας. Παρακαλούμε επικοινωνήστε με {0} για βοήθεια.",
   "AI_UPSELL_DIALOG_TITLE": "Συνέχεια με {0};",
   "AI_UPSELL_DIALOG_MESSAGE": "Ανακαλύψατε το {0}. Για να συνεχίσετε, θα χρειαστείτε μια συνδρομή AI ή πιστώσεις.",
-  "LIVE_DEV_TOAST_NOT_EDITABLE": "Το στοιχείο δεν είναι επεξεργάσιμο - δημιουργήθηκε από script",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Το στοιχείο αντιγράφηκε. Χρησιμοποιήστε την 'Επικόλληση' για να το προσθέσετε κάτω από το επιλεγμένο στοιχείο",
-  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Το στοιχείο δεν κάνει κύλιση με τη σελίδα - τα πλαίσια επεξεργασίας είναι κρυφά"
+  "SIGN_IN_WITH_PRO": "Σύνδεση με Pro"
 });

@@ -188,6 +188,9 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_OFFLINE_RETRY": "Riprova",
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Verifica connessione in corso",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Ancora offline. Controllare la connessione.",
+  "LIVE_DEV_TOAST_NOT_EDITABLE": "Elemento non modificabile - generato da script",
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Elemento copiato. Usa 'Incolla' per aggiungerlo sotto l'elemento selezionato",
+  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "L'elemento non scorre con la pagina - caselle di modifica nascoste",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Seleziona la cartella per salvare l'immagine",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Scegli dove scaricare l'immagine:",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Inserisci il percorso della cartella (es. assets/images/)",
@@ -1544,7 +1547,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "L'accesso all'AI è stato disattivato dal tuo amministratore di sistema. Contatta {0} per assistenza.",
   "AI_UPSELL_DIALOG_TITLE": "Continuare con {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Hai scoperto {0}. Per procedere, avrai bisogno di un abbonamento AI o di crediti.",
-  "LIVE_DEV_TOAST_NOT_EDITABLE": "Elemento non modificabile - generato da script",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Elemento copiato. Usa 'Incolla' per aggiungerlo sotto l'elemento selezionato",
-  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "L'elemento non scorre con la pagina - caselle di modifica nascoste"
+  "SIGN_IN_WITH_PRO": "Accedi con Pro"
 });

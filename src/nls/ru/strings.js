@@ -188,6 +188,9 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_OFFLINE_RETRY": "Повторить",
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Проверка подключения",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Все еще нет подключения. Проверьте ваше соединение.",
+  "LIVE_DEV_TOAST_NOT_EDITABLE": "Элемент не редактируется — сгенерирован скриптом",
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Элемент скопирован. Используйте «Вставить», чтобы добавить его под выделенным элементом",
+  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Элемент не прокручивается со страницей — поля для редактирования скрыты",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Выберите папку для сохранения изображения",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Выберите, куда загрузить изображение:",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Введите путь к папке (например, assets/images/)",
@@ -1544,7 +1547,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Доступ к ИИ был отключён вашим системным администратором. Пожалуйста, свяжитесь с {0} для получения помощи.",
   "AI_UPSELL_DIALOG_TITLE": "Продолжить с {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Вы открыли для себя {0}. Чтобы продолжить, вам понадобится подписка на ИИ или кредиты.",
-  "LIVE_DEV_TOAST_NOT_EDITABLE": "Элемент не редактируется — сгенерирован скриптом",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Элемент скопирован. Используйте «Вставить», чтобы добавить его под выделенным элементом",
-  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Элемент не прокручивается со страницей — поля для редактирования скрыты"
+  "SIGN_IN_WITH_PRO": "Войти с Pro"
 });

@@ -188,6 +188,9 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_OFFLINE_RETRY": "Prøv igjen",
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Sjekker tilkobling",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Fortsatt frakoblet. Vennligst sjekk tilkoblingen din.",
+  "LIVE_DEV_TOAST_NOT_EDITABLE": "Elementet kan ikke redigeres – generert av skript",
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Element kopiert. Bruk 'Lim inn' for å legge det til under det valgte elementet",
+  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Elementet ruller ikke med siden – redigeringsbokser skjult",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Velg mappe for å lagre bildet",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Velg hvor bildet skal lastes ned:",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Skriv inn mappesti (f.eks. assets/images/)",
@@ -1544,7 +1547,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "AI-tilgang er deaktivert av systemadministratoren din. Vennligst kontakt {0} for hjelp.",
   "AI_UPSELL_DIALOG_TITLE": "Fortsette med {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Du har oppdaget {0}. For å fortsette trenger du et AI-abonnement eller kreditter.",
-  "LIVE_DEV_TOAST_NOT_EDITABLE": "Elementet kan ikke redigeres – generert av skript",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Element kopiert. Bruk 'Lim inn' for å legge det til under det valgte elementet",
-  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Elementet ruller ikke med siden – redigeringsbokser skjult"
+  "SIGN_IN_WITH_PRO": "Logg inn med Pro"
 });

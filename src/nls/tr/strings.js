@@ -188,6 +188,9 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_OFFLINE_RETRY": "Yeniden Dene",
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Bağlantı kontrol ediliyor",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Hâlâ çevrimdışı. Lütfen bağlantınızı kontrol edin.",
+  "LIVE_DEV_TOAST_NOT_EDITABLE": "Öğe düzenlenemez - script tarafından oluşturuldu",
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Öğe kopyalandı. Seçili öğenin altına eklemek için 'Yapıştır'ı kullanın",
+  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Öğe sayfayla birlikte kaymıyor - düzenleme kutuları gizlendi",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Resmi Kaydetmek İçin Klasör Seçin",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Resmi nereye indireceğinizi seçin:",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Klasör yolunu yazın (örn., assets/images/)",
@@ -1544,7 +1547,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Yapay zeka erişimi sistem yöneticiniz tarafından devre dışı bırakıldı. Yardım için lütfen {0} ile iletişime geçin.",
   "AI_UPSELL_DIALOG_TITLE": "{0} ile devam edilsin mi?",
   "AI_UPSELL_DIALOG_MESSAGE": "{0} özelliğini keşfettiniz. Devam etmek için bir Yapay Zeka aboneliğine veya kredilere ihtiyacınız var.",
-  "LIVE_DEV_TOAST_NOT_EDITABLE": "Öğe düzenlenemez - script tarafından oluşturuldu",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Öğe kopyalandı. Seçili öğenin altına eklemek için 'Yapıştır'ı kullanın",
-  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Öğe sayfayla birlikte kaymıyor - düzenleme kutuları gizlendi"
+  "SIGN_IN_WITH_PRO": "Pro ile giriş yap"
 });

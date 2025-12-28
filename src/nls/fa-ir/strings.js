@@ -188,6 +188,9 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_OFFLINE_RETRY": "تلاش مجدد",
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "در حال بررسی اتصال",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "هنوز آفلاین هستید. لطفاً اتصال خود را بررسی کنید.",
+  "LIVE_DEV_TOAST_NOT_EDITABLE": "عنصر قابل ویرایش نیست - توسط اسکریپت ایجاد شده است",
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "عنصر کپی شد. برای افزودن آن در زیر عنصر انتخاب‌شده، از «چسباندن» استفاده کنید",
+  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "عنصر با صفحه پیمایش نمی‌شود - کادرهای ویرایش پنهان هستند",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "انتخاب پوشه برای ذخیره تصویر",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "محل دانلود تصویر را انتخاب کنید:",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "مسیر پوشه را تایپ کنید (مثلاً assets/images/)",
@@ -1544,7 +1547,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "دسترسی به هوش مصنوعی توسط مدیر سیستم شما غیرفعال شده است. لطفاً برای راهنمایی با {0} تماس بگیرید.",
   "AI_UPSELL_DIALOG_TITLE": "ادامه با {0}؟",
   "AI_UPSELL_DIALOG_MESSAGE": "شما قابلیت {0} را کشف کرده‌اید. برای ادامه، به اشتراک AI یا اعتبار نیاز دارید.",
-  "LIVE_DEV_TOAST_NOT_EDITABLE": "عنصر قابل ویرایش نیست - توسط اسکریپت ایجاد شده است",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "عنصر کپی شد. برای افزودن آن در زیر عنصر انتخاب‌شده، از «چسباندن» استفاده کنید",
-  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "عنصر با صفحه پیمایش نمی‌شود - کادرهای ویرایش پنهان هستند"
+  "SIGN_IN_WITH_PRO": "با Pro وارد شوید"
 });

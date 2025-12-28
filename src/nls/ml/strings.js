@@ -188,6 +188,9 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_OFFLINE_RETRY": "വീണ്ടും ശ്രമിക്കുക",
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "കണക്ഷൻ പരിശോധിക്കുന്നു",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "ഇപ്പോഴും ഓഫ്‌ലൈനാണ്. ദയവായി നിങ്ങളുടെ കണക്ഷൻ പരിശോധിക്കുക.",
+  "LIVE_DEV_TOAST_NOT_EDITABLE": "ഘടകം തിരുത്താനാവില്ല - സ്ക്രിപ്റ്റ് നിർമ്മിച്ചത്",
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "ഘടകം പകർത്തി. തിരഞ്ഞെടുത്ത ഘടകത്തിന് താഴെ ചേർക്കാൻ 'പേസ്റ്റ്' ഉപയോഗിക്കുക",
+  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "ഘടകം പേജിനൊപ്പം സ്ക്രോൾ ചെയ്യുന്നില്ല - എഡിറ്റ് ബോക്സുകൾ മറച്ചിരിക്കുന്നു",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "ചിത്രം സേവ് ചെയ്യാനുള്ള ഫോൾഡർ തിരഞ്ഞെടുക്കുക",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "ചിത്രം എവിടെയാണ് ഡൗൺലോഡ് ചെയ്യേണ്ടതെന്ന് തിരഞ്ഞെടുക്കുക:",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "ഫോൾഡർ പാത്ത് ടൈപ്പ് ചെയ്യുക (ഉദാ: assets/images/)",
@@ -1544,7 +1547,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "നിങ്ങളുടെ സിസ്റ്റം അഡ്മിനിസ്ട്രേറ്റർ എഐ ആക്‌സസ് പ്രവർത്തനരഹിതമാക്കിയിരിക്കുന്നു. സഹായത്തിനായി ദയവായി {0}-മായി ബന്ധപ്പെടുക.",
   "AI_UPSELL_DIALOG_TITLE": "{0} ഉപയോഗിച്ച് തുടരണോ?",
   "AI_UPSELL_DIALOG_MESSAGE": "നിങ്ങൾ {0} കണ്ടെത്തിയിരിക്കുന്നു. തുടരാൻ, നിങ്ങൾക്ക് ഒരു എഐ സബ്സ്ക്രിപ്ഷനോ ക്രെഡിറ്റുകളോ ആവശ്യമാണ്.",
-  "LIVE_DEV_TOAST_NOT_EDITABLE": "ഘടകം തിരുത്താനാവില്ല - സ്ക്രിപ്റ്റ് നിർമ്മിച്ചത്",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "ഘടകം പകർത്തി. തിരഞ്ഞെടുത്ത ഘടകത്തിന് താഴെ ചേർക്കാൻ 'പേസ്റ്റ്' ഉപയോഗിക്കുക",
-  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "ഘടകം പേജിനൊപ്പം സ്ക്രോൾ ചെയ്യുന്നില്ല - എഡിറ്റ് ബോക്സുകൾ മറച്ചിരിക്കുന്നു"
+  "SIGN_IN_WITH_PRO": "Pro-യിൽ സൈൻ ഇൻ ചെയ്യുക"
 });

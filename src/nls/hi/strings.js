@@ -188,6 +188,9 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_OFFLINE_RETRY": "फिर से कोशिश करें",
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "कनेक्शन की जाँच हो रही है",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "अभी भी ऑफ़लाइन हैं। कृपया अपना कनेक्शन जाँचें।",
+  "LIVE_DEV_TOAST_NOT_EDITABLE": "एलिमेंट संपादन योग्य नहीं - स्क्रिप्ट द्वारा बनाया गया",
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "एलिमेंट कॉपी हो गया। इसे चयनित एलिमेंट के नीचे जोड़ने के लिए 'पेस्ट' का उपयोग करें",
+  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "एलिमेंट पेज के साथ स्क्रॉल नहीं होता - एडिट बॉक्स छिपा दिए गए हैं",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "छवि सहेजने के लिए फ़ोल्डर चुनें",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "छवि डाउनलोड करने के लिए स्थान चुनें:",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "फ़ोल्डर पाथ टाइप करें (जैसे, assets/images/)",
@@ -1544,7 +1547,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "आपके सिस्टम एडमिनिस्ट्रेटर द्वारा AI एक्सेस अक्षम कर दिया गया है। सहायता के लिए कृपया {0} से संपर्क करें।",
   "AI_UPSELL_DIALOG_TITLE": "{0} के साथ जारी रखें?",
   "AI_UPSELL_DIALOG_MESSAGE": "आपने {0} खोज लिया है। आगे बढ़ने के लिए, आपको AI सब्सक्रिप्शन या क्रेडिट्स की ज़रूरत होगी।",
-  "LIVE_DEV_TOAST_NOT_EDITABLE": "एलिमेंट संपादन योग्य नहीं - स्क्रिप्ट द्वारा बनाया गया",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "एलिमेंट कॉपी हो गया। इसे चयनित एलिमेंट के नीचे जोड़ने के लिए 'पेस्ट' का उपयोग करें",
-  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "एलिमेंट पेज के साथ स्क्रॉल नहीं होता - एडिट बॉक्स छिपा दिए गए हैं"
+  "SIGN_IN_WITH_PRO": "Pro से साइन इन करें"
 });

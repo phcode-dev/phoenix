@@ -188,6 +188,9 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_OFFLINE_RETRY": "再試行",
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "接続を確認中",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "まだオフラインです。接続を確認してください。",
+  "LIVE_DEV_TOAST_NOT_EDITABLE": "スクリプトにより生成された要素は編集できません",
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "要素がコピーされました。「貼り付け」で選択要素の下に追加できます",
+  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "固定表示の要素のため、編集ボックスは非表示です",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "画像を保存するフォルダーを選択",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "画像のダウンロード先を選択してください：",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "フォルダーパスを入力（例：assets/images/）",
@@ -1544,7 +1547,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "AIアクセスはシステム管理者によって無効にされています。サポートが必要な場合は、{0}にお問い合わせください。",
   "AI_UPSELL_DIALOG_TITLE": "{0}を続行しますか？",
   "AI_UPSELL_DIALOG_MESSAGE": "「{0}」をご利用になるには、AIサブスクリプションまたはクレジットが必要です。",
-  "LIVE_DEV_TOAST_NOT_EDITABLE": "スクリプトにより生成された要素は編集できません",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "要素がコピーされました。「貼り付け」で選択要素の下に追加できます",
-  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "固定表示の要素のため、編集ボックスは非表示です"
+  "SIGN_IN_WITH_PRO": "Proでサインイン"
 });

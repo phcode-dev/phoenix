@@ -188,6 +188,9 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_OFFLINE_RETRY": "Prøv igen",
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Kontrollerer forbindelse",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Stadig offline. Kontroller venligst din forbindelse.",
+  "LIVE_DEV_TOAST_NOT_EDITABLE": "Elementet kan ikke redigeres - genereret af script",
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Element kopieret. Brug 'Indsæt' for at tilføje det under det valgte element",
+  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Elementet scroller ikke med siden - redigeringsfelter skjult",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Vælg mappe til at gemme billede",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Vælg, hvor billedet skal downloades:",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Indtast mappesti (f.eks. assets/images/)",
@@ -1544,7 +1547,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Adgang til AI er blevet deaktiveret af din systemadministrator. Kontakt venligst {0} for hjælp.",
   "AI_UPSELL_DIALOG_TITLE": "Fortsæt med {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Du har opdaget {0}. For at fortsætte har du brug for et AI-abonnement eller kreditter.",
-  "LIVE_DEV_TOAST_NOT_EDITABLE": "Elementet kan ikke redigeres - genereret af script",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Element kopieret. Brug 'Indsæt' for at tilføje det under det valgte element",
-  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Elementet scroller ikke med siden - redigeringsfelter skjult"
+  "SIGN_IN_WITH_PRO": "Log ind med Pro"
 });

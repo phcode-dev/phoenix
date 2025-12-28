@@ -188,6 +188,9 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_OFFLINE_RETRY": "إعادة المحاولة",
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "جارٍ التحقق من الاتصال",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "لا يزال غير متصل. يرجى التحقق من اتصالك.",
+  "LIVE_DEV_TOAST_NOT_EDITABLE": "العنصر غير قابل للتعديل - تم إنشاؤه بواسطة برنامج نصي",
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "تم نسخ العنصر. استخدم 'لصق' لإضافته أسفل العنصر المحدد",
+  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "العنصر لا يتم تمريره مع الصفحة - مربعات التعديل مخفية",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "حدد مجلدًا لحفظ الصورة",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "اختر مكان تنزيل الصورة:",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "اكتب مسار المجلد (مثال: assets/images/)",
@@ -1544,7 +1547,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "قام مسؤول النظام بتعطيل الوصول إلى الذكاء الاصطناعي. يرجى الاتصال بـ {0} للحصول على المساعدة.",
   "AI_UPSELL_DIALOG_TITLE": "المتابعة باستخدام {0}؟",
   "AI_UPSELL_DIALOG_MESSAGE": "لقد اكتشفت {0}. للمتابعة، ستحتاج إلى اشتراك في الذكاء الاصطناعي أو أرصدة.",
-  "LIVE_DEV_TOAST_NOT_EDITABLE": "العنصر غير قابل للتعديل - تم إنشاؤه بواسطة برنامج نصي",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "تم نسخ العنصر. استخدم 'لصق' لإضافته أسفل العنصر المحدد",
-  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "العنصر لا يتم تمريره مع الصفحة - مربعات التعديل مخفية"
+  "SIGN_IN_WITH_PRO": "تسجيل الدخول بـ Pro"
 });

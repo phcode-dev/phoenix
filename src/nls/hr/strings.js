@@ -188,6 +188,9 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_OFFLINE_RETRY": "Pokušaj ponovno",
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Provjera veze...",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "I dalje ste izvan mreže. Molimo, provjerite svoju vezu.",
+  "LIVE_DEV_TOAST_NOT_EDITABLE": "Element nije moguće uređivati - generiran skriptom",
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Element je kopiran. Upotrijebite 'Zalijepi' da biste ga dodali ispod odabranog elementa",
+  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Element se ne pomiče sa stranicom - okviri za uređivanje su skriveni",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Odaberite mapu za spremanje slike",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Odaberite gdje želite preuzeti sliku:",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Upišite putanju mape (npr. assets/images/)",
@@ -1544,7 +1547,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Pristup AI-ju onemogućio je vaš administrator sustava. Molimo kontaktirajte {0} za pomoć.",
   "AI_UPSELL_DIALOG_TITLE": "Nastaviti s {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Otkrili ste {0}. Da biste nastavili, potrebna vam je AI pretplata ili krediti.",
-  "LIVE_DEV_TOAST_NOT_EDITABLE": "Element nije moguće uređivati - generiran skriptom",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Element je kopiran. Upotrijebite 'Zalijepi' da biste ga dodali ispod odabranog elementa",
-  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Element se ne pomiče sa stranicom - okviri za uređivanje su skriveni"
+  "SIGN_IN_WITH_PRO": "Prijavi se s Pro"
 });

@@ -188,6 +188,9 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_OFFLINE_RETRY": "Yritä uudelleen",
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Tarkistetaan yhteyttä",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Edelleen offline-tilassa. Tarkista yhteytesi.",
+  "LIVE_DEV_TOAST_NOT_EDITABLE": "Elementti ei ole muokattavissa – skriptin luoma",
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Elementti kopioitu. Lisää se valitun elementin alle 'Liitä'-komennolla.",
+  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Elementti ei vierity sivun mukana – muokkausruudut piilotettu",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Valitse kuvan tallennuskansio",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Valitse, mihin kuva ladataan:",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Kirjoita kansion polku (esim. assets/images/)",
@@ -1544,7 +1547,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Järjestelmänvalvoja on poistanut tekoälyn käytöstä. Ota yhteyttä {0} saadaksesi apua.",
   "AI_UPSELL_DIALOG_TITLE": "Jatketaanko {0}:n kanssa?",
   "AI_UPSELL_DIALOG_MESSAGE": "Olet löytänyt ominaisuuden {0}. Jatkaaksesi tarvitset tekoälytilauksen tai krediittejä.",
-  "LIVE_DEV_TOAST_NOT_EDITABLE": "Elementti ei ole muokattavissa – skriptin luoma",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Elementti kopioitu. Lisää se valitun elementin alle 'Liitä'-komennolla.",
-  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Elementti ei vierity sivun mukana – muokkausruudut piilotettu"
+  "SIGN_IN_WITH_PRO": "Kirjaudu sisään Prolla"
 });

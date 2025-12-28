@@ -188,6 +188,9 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_OFFLINE_RETRY": "Покушај поново",
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Провера везе",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Још увек сте офлајн. Проверите своју везу.",
+  "LIVE_DEV_TOAST_NOT_EDITABLE": "Елемент није могуће уредити - генерисан је скриптом",
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Елемент је копиран. Користите 'Налепи' да бисте га додали испод изабраног елемента",
+  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Елемент се не скролује са страницом - поља за уређивање су сакривена",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Изаберите фасциклу за чување слике",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Изаберите где желите да преузмете слику:",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Унесите путању фасцикле (нпр. assets/images/)",
@@ -1544,7 +1547,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Приступ AI је онемогућио администратор система. Молимо вас, контактирајте {0} за помоћ.",
   "AI_UPSELL_DIALOG_TITLE": "Наставити са {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Открили сте {0}. Да бисте наставили, потребна вам је AI претплата или кредити.",
-  "LIVE_DEV_TOAST_NOT_EDITABLE": "Елемент није могуће уредити - генерисан је скриптом",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Елемент је копиран. Користите 'Налепи' да бисте га додали испод изабраног елемента",
-  "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Елемент се не скролује са страницом - поља за уређивање су сакривена"
+  "SIGN_IN_WITH_PRO": "Пријавите се са Pro"
 });
