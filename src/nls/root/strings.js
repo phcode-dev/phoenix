@@ -219,6 +219,7 @@ define({
     "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
     "LIVE_DEV_IMAGE_GALLERY_LIMIT_EXCEEDED_LOGGED_IN": "Your free tier limits are exhausted. Please Subscribe to Pro to continue",
     "LIVE_DEV_IMAGE_GALLERY_LIMIT_EXCEEDED_ANONYMOUS": "Your limits are exhausted. Please log in to continue",
+    "LIVE_DEV_IMAGE_GALLERY_LIMIT_EXCEEDED_PAID_HOURLY": "Your hourly query limit has been reached. Please try again later",
     "LIVE_DEV_IMAGE_GALLERY_LOGIN_BUTTON": "Log In",
     "LIVE_DEV_IMAGE_GALLERY_SUBSCRIBE_BUTTON": "Subscribe to Pro",
     "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "on",
