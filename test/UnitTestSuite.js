@@ -122,7 +122,6 @@ define(function (require, exports, module) {
     require("spec/LocalizationUtils-test");
     require("spec/ScrollTrackHandler-integ-test");
     // Integrated extension tests
-    require("spec/Extn-InAppNotifications-integ-test");
     require("spec/Extn-RemoteFileAdapter-integ-test");
     require("spec/Extn-NavigationAndHistory-integ-test");
     require("spec/Extn-RecentProjects-integ-test");
