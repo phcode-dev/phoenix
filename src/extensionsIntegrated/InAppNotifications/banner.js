@@ -30,7 +30,7 @@ define(function (require, exports, module) {
         PreferencesManager   = require("preferences/PreferencesManager"),
         ExtensionUtils       = require("utils/ExtensionUtils"),
         Metrics = require("utils/Metrics"),
-        utils = require("./utils"),
+        semver = require("thirdparty/semver.browser"),
         NotificationBarHtml  = require("text!./htmlContent/notificationContainer.html");
 
     ExtensionUtils.loadStyleSheet(module, "styles/styles.css");
@@ -43,6 +43,26 @@ define(function (require, exports, module) {
     // Init default last notification number
     PreferencesManager.stateManager.definePreference(IN_APP_NOTIFICATIONS_BANNER_SHOWN_STATE,
         "object", {});
+
+    function _isValidForThisVersion(versionFilter) {
+        return semver.satisfies(brackets.metadata.apiVersion, versionFilter);
+    }
+
+    // platformFilter is a string subset of
+    // "mac,win,linux,allDesktop,firefox,chrome,safari,allBrowser,all"
+    function _isValidForThisPlatform(platformFilter) {
+        platformFilter = platformFilter.split(",");
+        if(platformFilter.includes("all")
+            || (platformFilter.includes(brackets.platform) && Phoenix.isNativeApp) // win linux and mac is only for tauri and not for browser in platform
+            || (platformFilter.includes("allDesktop") && Phoenix.isNativeApp)
+            || (platformFilter.includes("firefox") && Phoenix.browser.desktop.isFirefox && !Phoenix.isNativeApp)
+            || (platformFilter.includes("chrome") && Phoenix.browser.desktop.isChromeBased && !Phoenix.isNativeApp)
+            || (platformFilter.includes("safari") && Phoenix.browser.desktop.isSafari && !Phoenix.isNativeApp)
+            || (platformFilter.includes("allBrowser") && !Phoenix.isNativeApp)){
+            return true;
+        }
+        return false;
+    }
 
     /**
      * If there are multiple notifications, thew will be shown one after the other and not all at once.
@@ -86,21 +106,18 @@ define(function (require, exports, module) {
         for(const notificationID of Object.keys(notifications)){
             if(!_InAppBannerShownAndDone[notificationID]) {
                 const notification = notifications[notificationID];
-                if(!utils.isValidForThisVersion(notification.FOR_VERSIONS)){
+                if(!_isValidForThisVersion(notification.FOR_VERSIONS)){
                     continue;
                 }
-                if(!utils.isValidForThisPlatform(notification.PLATFORM)){
+                if(!_isValidForThisPlatform(notification.PLATFORM)){
                     continue;
                 }
-                if(!notification.HTML_CONTENT.includes(NOTIFICATION_ACK_CLASS)
-                    && !notification.DANGER_SHOW_ON_EVERY_BOOT){
+                if(!notification.DANGER_SHOW_ON_EVERY_BOOT){
                     // One time notification. mark as shown and never show again
+                    // all notifications are one time, we track metrics for each notification separately
                     _markAsShownAndDone(notificationID);
                 }
                 await showBannerAndWaitForDismiss(notification.HTML_CONTENT, notificationID);
-                if(!notification.DANGER_SHOW_ON_EVERY_BOOT){
-                    _markAsShownAndDone(notificationID);
-                }
             }
         }
     }
@@ -185,25 +202,21 @@ define(function (require, exports, module) {
                 $closeIcon = $notificationBar.find('.close-icon');
 
             $notificationContent.append($htmlContent);
-            Metrics.countEvent(Metrics.EVENT_TYPE.NOTIFICATIONS, "banner-"+notificationID,
-                "shown");
+            Metrics.countEvent(Metrics.EVENT_TYPE.NOTIFICATIONS, "banner-shown", notificationID);
 
             // Click handlers on actionable elements
             if ($closeIcon.length > 0) {
                 $closeIcon.click(function () {
                     cleanNotificationBanner();
-                    Metrics.countEvent(Metrics.EVENT_TYPE.NOTIFICATIONS, "banner-"+notificationID,
-                        "closeClick");
+                    Metrics.countEvent(Metrics.EVENT_TYPE.NOTIFICATIONS, "banner-close", notificationID);
                     !resolved && resolve($htmlContent);
                     resolved = true;
                 });
             }
 
             $notificationBar.find(`.${NOTIFICATION_ACK_CLASS}`).click(function() {
-                // Your click event handler logic here
                 cleanNotificationBanner();
-                Metrics.countEvent(Metrics.EVENT_TYPE.NOTIFICATIONS, "banner-"+notificationID,
-                    "ackClick");
+                Metrics.countEvent(Metrics.EVENT_TYPE.NOTIFICATIONS, "banner-ack", notificationID);
                 !resolved && resolve($htmlContent);
                 resolved = true;
             });
