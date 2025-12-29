@@ -172,7 +172,6 @@ define({
   "LIVE_DEV_MORE_OPTIONS_CUT": "Recortar",
   "LIVE_DEV_MORE_OPTIONS_COPY": "Copiar",
   "LIVE_DEV_MORE_OPTIONS_PASTE": "Colar",
-  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Usar esta imagem",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "Escolher pasta de download de imagens",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Pesquisar imagens…",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_BUTTON": "Pesquisar",
@@ -1517,6 +1516,9 @@ define({
   "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Libere a Edição em Tempo Real com o {0}",
   "PROMO_PRO_UNLOCK_MESSAGE": "Assine agora para liberar estes recursos avançados:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Teste do Phoenix Pro ({0} dias restantes)",
+  "PRO_TRIAL_ENDING_TITLE": "Sua avaliação do {0} termina em {1} dias",
+  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "Sua avaliação do {0} termina amanhã",
+  "PRO_TRIAL_ENDING_MESSAGE": "Adquira o Phoenix Pro para continuar usando estes recursos Pro sem interrupção.",
   "GET_PHOENIX_PRO": "Adquira o Phoenix Pro",
   "MANAGE_LICENSE_DIALOG_TITLE": "Gerenciar Licença do Dispositivo",
   "LICENSE_KEY": "Chave de Licença",
@@ -1555,7 +1557,10 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "O acesso à IA foi desativado pelo administrador do seu sistema. Entre em contato com {0} para obter assistência.",
   "AI_UPSELL_DIALOG_TITLE": "Continuar com {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Você descobriu o {0}. Para prosseguir, você precisará de uma assinatura de IA ou de créditos.",
-  "PRO_TRIAL_ENDING_TITLE": "Sua avaliação do {0} termina em {1} dias",
-  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "Sua avaliação do {0} termina amanhã",
-  "PRO_TRIAL_ENDING_MESSAGE": "Adquira o Phoenix Pro para continuar usando estes recursos Pro sem interrupção."
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Baixar imagem",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "Selecionar tamanho da imagem",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Card 400px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "em"
 });

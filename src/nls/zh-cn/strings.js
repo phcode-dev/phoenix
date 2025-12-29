@@ -172,7 +172,6 @@ define({
   "LIVE_DEV_MORE_OPTIONS_CUT": "剪切",
   "LIVE_DEV_MORE_OPTIONS_COPY": "复制",
   "LIVE_DEV_MORE_OPTIONS_PASTE": "粘贴",
-  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "使用此图片",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "选择图片下载文件夹",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "搜索图片…",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_BUTTON": "搜索",
@@ -1517,6 +1516,9 @@ define({
   "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "使用 {0} 解锁实时编辑功能",
   "PROMO_PRO_UNLOCK_MESSAGE": "立即订阅以解锁以下高级功能：",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro 试用版（剩余 {0} 天）",
+  "PRO_TRIAL_ENDING_TITLE": "您的 {0} 试用期将在 {1} 天后结束",
+  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "您的 {0} 试用期将于明天结束",
+  "PRO_TRIAL_ENDING_MESSAGE": "获取 Phoenix Pro，即可不间断地继续使用这些专业版功能。",
   "GET_PHOENIX_PRO": "获取 Phoenix Pro",
   "MANAGE_LICENSE_DIALOG_TITLE": "管理设备许可证",
   "LICENSE_KEY": "许可证密钥",
@@ -1555,7 +1557,10 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "AI 访问权限已被您的系统管理员禁用。请联系 {0} 以获取帮助。",
   "AI_UPSELL_DIALOG_TITLE": "继续使用 {0}？",
   "AI_UPSELL_DIALOG_MESSAGE": "您发现了 {0}。要继续，您需要 AI 订阅或点数。",
-  "PRO_TRIAL_ENDING_TITLE": "您的 {0} 试用期将在 {1} 天后结束",
-  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "您的 {0} 试用期将于明天结束",
-  "PRO_TRIAL_ENDING_MESSAGE": "获取 Phoenix Pro，即可不间断地继续使用这些专业版功能。"
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "下载图片",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "选择图片尺寸",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "卡片 400px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "横幅 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "于"
 });

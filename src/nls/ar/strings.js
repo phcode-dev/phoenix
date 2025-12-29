@@ -172,7 +172,6 @@ define({
   "LIVE_DEV_MORE_OPTIONS_CUT": "قص",
   "LIVE_DEV_MORE_OPTIONS_COPY": "نسخ",
   "LIVE_DEV_MORE_OPTIONS_PASTE": "لصق",
-  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "استخدام هذه الصورة",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "اختر مجلد تنزيل الصور",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "ابحث عن صور...",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_BUTTON": "بحث",
@@ -1517,6 +1516,9 @@ define({
   "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "افتح ميزة التحرير المباشر مع {0}",
   "PROMO_PRO_UNLOCK_MESSAGE": "اشترك الآن لإلغاء قفل هذه الميزات المتقدمة:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "النسخة التجريبية من Phoenix Pro ({0} أيام متبقية)",
+  "PRO_TRIAL_ENDING_TITLE": "تنتهي فترتك التجريبية من {0} في غضون {1} أيام",
+  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "تنتهي فترتك التجريبية من {0} غدًا",
+  "PRO_TRIAL_ENDING_MESSAGE": "احصل على Phoenix Pro لمواصلة استخدام هذه الميزات الاحترافية دون انقطاع.",
   "GET_PHOENIX_PRO": "احصل على Phoenix Pro",
   "MANAGE_LICENSE_DIALOG_TITLE": "إدارة ترخيص الجهاز",
   "LICENSE_KEY": "مفتاح الترخيص",
@@ -1555,7 +1557,10 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "قام مسؤول النظام بتعطيل الوصول إلى الذكاء الاصطناعي. يرجى الاتصال بـ {0} للحصول على المساعدة.",
   "AI_UPSELL_DIALOG_TITLE": "المتابعة باستخدام {0}؟",
   "AI_UPSELL_DIALOG_MESSAGE": "لقد اكتشفت {0}. للمتابعة، ستحتاج إلى اشتراك في الذكاء الاصطناعي أو أرصدة.",
-  "PRO_TRIAL_ENDING_TITLE": "تنتهي فترتك التجريبية من {0} في غضون {1} أيام",
-  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "تنتهي فترتك التجريبية من {0} غدًا",
-  "PRO_TRIAL_ENDING_MESSAGE": "احصل على Phoenix Pro لمواصلة استخدام هذه الميزات الاحترافية دون انقطاع."
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "تنزيل الصورة",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "اختر حجم الصورة",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "بطاقة 400 بكسل",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "صورة رئيسية 1080 بكسل",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200 بكسل",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "على"
 });

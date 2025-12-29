@@ -172,7 +172,6 @@ define({
   "LIVE_DEV_MORE_OPTIONS_CUT": "오려두기",
   "LIVE_DEV_MORE_OPTIONS_COPY": "복사하기",
   "LIVE_DEV_MORE_OPTIONS_PASTE": "붙여넣기",
-  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "이 이미지 사용",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "이미지 다운로드 폴더 선택",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "이미지 검색…",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_BUTTON": "검색",
@@ -1517,6 +1516,9 @@ define({
   "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "{0}로 라이브 편집 기능을 사용해 보세요",
   "PROMO_PRO_UNLOCK_MESSAGE": "다음과 같은 고급 기능을 사용하려면 지금 구독하세요:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro 평가판({0}일 남음)",
+  "PRO_TRIAL_ENDING_TITLE": "{0} 체험 기간이 {1}일 후에 종료됩니다.",
+  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "{0} 체험 기간이 내일 종료됩니다.",
+  "PRO_TRIAL_ENDING_MESSAGE": "중단 없이 이 Pro 기능들을 계속 사용하려면 Phoenix Pro로 업그레이드하세요.",
   "GET_PHOENIX_PRO": "Phoenix Pro 받기",
   "MANAGE_LICENSE_DIALOG_TITLE": "장치 라이선스 관리",
   "LICENSE_KEY": "라이선스 키",
@@ -1555,7 +1557,10 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "시스템 관리자에 의해 AI 액세스가 비활성화되었습니다. 도움이 필요하시면 {0}에게 문의하세요.",
   "AI_UPSELL_DIALOG_TITLE": "{0}(으)로 계속하시겠습니까?",
   "AI_UPSELL_DIALOG_MESSAGE": "{0} 기능을 발견하셨습니다. 계속 진행하려면 AI 구독 또는 크레딧이 필요합니다.",
-  "PRO_TRIAL_ENDING_TITLE": "{0} 체험 기간이 {1}일 후에 종료됩니다.",
-  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "{0} 체험 기간이 내일 종료됩니다.",
-  "PRO_TRIAL_ENDING_MESSAGE": "중단 없이 이 Pro 기능들을 계속 사용하려면 Phoenix Pro로 업그레이드하세요."
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "이미지 다운로드",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "이미지 크기 선택",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "카드 400px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "히어로 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "레티나 2200px",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "켜짐"
 });

@@ -172,7 +172,6 @@ define({
   "LIVE_DEV_MORE_OPTIONS_CUT": "Vystrihnúť",
   "LIVE_DEV_MORE_OPTIONS_COPY": "Kopírovať",
   "LIVE_DEV_MORE_OPTIONS_PASTE": "Vložiť",
-  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Použiť tento obrázok",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "Vyberte priečinok na stiahnutie obrázkov",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Hľadať obrázky…",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_BUTTON": "Hľadať",
@@ -1517,6 +1516,9 @@ define({
   "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Odomknite si Živú úpravu s {0}",
   "PROMO_PRO_UNLOCK_MESSAGE": "Prihláste sa na odber a odomknite si tieto pokročilé funkcie:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Skúšobná verzia Phoenix Pro ({0} dní zostáva)",
+  "PRO_TRIAL_ENDING_TITLE": "Vaša skúšobná verzia {0} končí o {1} dní",
+  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "Vaša skúšobná verzia {0} končí zajtra",
+  "PRO_TRIAL_ENDING_MESSAGE": "Získajte Phoenix Pro, aby ste mohli naďalej používať tieto Pro funkcie bez prerušenia.",
   "GET_PHOENIX_PRO": "Získajte Phoenix Pro",
   "MANAGE_LICENSE_DIALOG_TITLE": "Spravovať licenciu zariadenia",
   "LICENSE_KEY": "Licenčný kľúč",
@@ -1555,7 +1557,10 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Prístup k AI bol vypnutý správcom vášho systému. So žiadosťou o pomoc sa obráťte na {0}.",
   "AI_UPSELL_DIALOG_TITLE": "Pokračovať s {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Objavili ste {0}. Ak chcete pokračovať, budete potrebovať predplatné AI alebo kredity.",
-  "PRO_TRIAL_ENDING_TITLE": "Vaša skúšobná verzia {0} končí o {1} dní",
-  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "Vaša skúšobná verzia {0} končí zajtra",
-  "PRO_TRIAL_ENDING_MESSAGE": "Získajte Phoenix Pro, aby ste mohli naďalej používať tieto Pro funkcie bez prerušenia."
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Stiahnuť obrázok",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "Vyberte veľkosť obrázka",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Karta 400px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "na"
 });

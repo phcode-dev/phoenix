@@ -172,7 +172,6 @@ define({
   "LIVE_DEV_MORE_OPTIONS_CUT": "Klip",
   "LIVE_DEV_MORE_OPTIONS_COPY": "Kopiér",
   "LIVE_DEV_MORE_OPTIONS_PASTE": "Sæt ind",
-  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Brug dette billede",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "Vælg mappe til download af billeder",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Søg efter billeder…",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_BUTTON": "Søg",
@@ -1517,6 +1516,9 @@ define({
   "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Få Live Edit med {0}",
   "PROMO_PRO_UNLOCK_MESSAGE": "Abonner nu for at låse op for disse avancerede funktioner:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro prøveperiode ({0} dage tilbage)",
+  "PRO_TRIAL_ENDING_TITLE": "Din {0}-prøveperiode udløber om {1} dage",
+  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "Din {0}-prøveperiode udløber i morgen",
+  "PRO_TRIAL_ENDING_MESSAGE": "Få Phoenix Pro for at fortsætte med at bruge disse Pro-funktioner uden afbrydelser.",
   "GET_PHOENIX_PRO": "Få Phoenix Pro",
   "MANAGE_LICENSE_DIALOG_TITLE": "Administrer enhedslicens",
   "LICENSE_KEY": "Licensnøgle",
@@ -1555,7 +1557,10 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Adgang til AI er blevet deaktiveret af din systemadministrator. Kontakt venligst {0} for hjælp.",
   "AI_UPSELL_DIALOG_TITLE": "Fortsæt med {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Du har opdaget {0}. For at fortsætte har du brug for et AI-abonnement eller kreditter.",
-  "PRO_TRIAL_ENDING_TITLE": "Din {0}-prøveperiode udløber om {1} dage",
-  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "Din {0}-prøveperiode udløber i morgen",
-  "PRO_TRIAL_ENDING_MESSAGE": "Få Phoenix Pro for at fortsætte med at bruge disse Pro-funktioner uden afbrydelser."
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Download billede",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "Vælg billedstørrelse",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Kort 400px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "på"
 });

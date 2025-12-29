@@ -172,7 +172,6 @@ define({
   "LIVE_DEV_MORE_OPTIONS_CUT": "Cortar",
   "LIVE_DEV_MORE_OPTIONS_COPY": "Copiar",
   "LIVE_DEV_MORE_OPTIONS_PASTE": "Pegar",
-  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Usar esta imagen",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "Elegir carpeta de descarga de imágenes",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Buscar imágenes…",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_BUTTON": "Buscar",
@@ -1517,6 +1516,9 @@ define({
   "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Desbloquea la edición en vivo con {0}",
   "PROMO_PRO_UNLOCK_MESSAGE": "Suscríbete ahora para desbloquear estas funciones avanzadas:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Prueba de Phoenix Pro ({0} días restantes)",
+  "PRO_TRIAL_ENDING_TITLE": "Tu prueba de {0} termina en {1} días",
+  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "Tu prueba de {0} termina mañana",
+  "PRO_TRIAL_ENDING_MESSAGE": "Obtén Phoenix Pro para seguir usando estas funciones Pro sin interrupciones.",
   "GET_PHOENIX_PRO": "Obtener Phoenix Pro",
   "MANAGE_LICENSE_DIALOG_TITLE": "Gestionar licencia del dispositivo",
   "LICENSE_KEY": "Clave de licencia",
@@ -1555,7 +1557,10 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "El acceso a la IA ha sido desactivado por el administrador del sistema. Póngase en contacto con {0} para obtener ayuda.",
   "AI_UPSELL_DIALOG_TITLE": "¿Continuar con {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Has descubierto {0}. Para continuar, necesitarás una suscripción de IA o créditos.",
-  "PRO_TRIAL_ENDING_TITLE": "Tu prueba de {0} termina en {1} días",
-  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "Tu prueba de {0} termina mañana",
-  "PRO_TRIAL_ENDING_MESSAGE": "Obtén Phoenix Pro para seguir usando estas funciones Pro sin interrupciones."
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Descargar imagen",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "Seleccionar tamaño de imagen",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Tarjeta 400px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "en"
 });

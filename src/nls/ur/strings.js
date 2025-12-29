@@ -172,7 +172,6 @@ define({
   "LIVE_DEV_MORE_OPTIONS_CUT": "کٹ",
   "LIVE_DEV_MORE_OPTIONS_COPY": "کاپی",
   "LIVE_DEV_MORE_OPTIONS_PASTE": "پیسٹ",
-  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "اس تصویر کو استعمال کریں",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "امیج ڈاؤن لوڈ فولڈر منتخب کریں",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "تصاویر تلاش کریں…",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_BUTTON": "تلاش کریں",
@@ -1517,6 +1516,9 @@ define({
   "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "{0} کے ساتھ لائیو ایڈٹ کو کھولیں",
   "PROMO_PRO_UNLOCK_MESSAGE": "ان جدید خصوصیات کو کھولنے کے لیے ابھی سبسکرائب کریں:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro آزمائشی ورژن ({0} دن باقی)",
+  "PRO_TRIAL_ENDING_TITLE": "آپ کا {0} ٹرائل {1} دنوں میں ختم ہو جائے گا۔",
+  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "آپ کا {0} ٹرائل کل ختم ہو جائے گا۔",
+  "PRO_TRIAL_ENDING_MESSAGE": "ان پرو خصوصیات کو بغیر کسی رکاوٹ کے استعمال کرتے رہنے کے لیے Phoenix Pro حاصل کریں۔",
   "GET_PHOENIX_PRO": "Phoenix Pro حاصل کریں",
   "MANAGE_LICENSE_DIALOG_TITLE": "ڈیوائس لائسنس کا انتظام",
   "LICENSE_KEY": "لائسنس کی",
@@ -1555,7 +1557,10 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "آپ کے سسٹم ایڈمنسٹریٹر نے AI تک رسائی کو غیر فعال کر دیا ہے۔ براہ کرم مدد کے لیے {0} سے رابطہ کریں۔",
   "AI_UPSELL_DIALOG_TITLE": "{0} کے ساتھ جاری رکھیں؟",
   "AI_UPSELL_DIALOG_MESSAGE": "آپ نے {0} کو دریافت کیا ہے۔ آگے بڑھنے کے لیے، آپ کو AI سبسکرپشن یا کریڈٹس کی ضرورت ہوگی۔",
-  "PRO_TRIAL_ENDING_TITLE": "آپ کا {0} ٹرائل {1} دنوں میں ختم ہو جائے گا۔",
-  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "آپ کا {0} ٹرائل کل ختم ہو جائے گا۔",
-  "PRO_TRIAL_ENDING_MESSAGE": "ان پرو خصوصیات کو بغیر کسی رکاوٹ کے استعمال کرتے رہنے کے لیے Phoenix Pro حاصل کریں۔"
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "تصویر ڈاؤن لوڈ کریں",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "تصویر کا سائز منتخب کریں",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "کارڈ 400px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "ہیرو 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "ریٹنا 2200px",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "پر"
 });

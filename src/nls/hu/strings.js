@@ -172,7 +172,6 @@ define({
   "LIVE_DEV_MORE_OPTIONS_CUT": "Kivágás",
   "LIVE_DEV_MORE_OPTIONS_COPY": "Másolás",
   "LIVE_DEV_MORE_OPTIONS_PASTE": "Beillesztés",
-  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Kép használata",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "Kép letöltési mappa kiválasztása",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Képek keresése…",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_BUTTON": "Keresés",
@@ -1517,6 +1516,9 @@ define({
   "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Oldd fel az Élő Szerkesztést a {0} segítségével",
   "PROMO_PRO_UNLOCK_MESSAGE": "Iratkozz fel most a következő fejlett funkciók eléréséhez:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro próbaverzió ({0} nap van hátra)",
+  "PRO_TRIAL_ENDING_TITLE": "A {0} próbaverzió {1} nap múlva lejár",
+  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "A {0} próbaverzió holnap lejár",
+  "PRO_TRIAL_ENDING_MESSAGE": "Szerezze be a Phoenix Pro-t, hogy továbbra is megszakítás nélkül használhassa ezeket a Pro funkciókat.",
   "GET_PHOENIX_PRO": "Szerezd meg a Phoenix Pro-t",
   "MANAGE_LICENSE_DIALOG_TITLE": "Eszközlicenc kezelése",
   "LICENSE_KEY": "Licenckulcs",
@@ -1555,7 +1557,10 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "A MI-hozzáférést a rendszergazda letiltotta. Segítségért forduljon a(z) {0} elérhetőséghez.",
   "AI_UPSELL_DIALOG_TITLE": "Folytatja a(z) {0} használatával?",
   "AI_UPSELL_DIALOG_MESSAGE": "Felfedezte a(z) {0} szolgáltatást. A folytatáshoz MI-előfizetésre vagy kreditekre lesz szüksége.",
-  "PRO_TRIAL_ENDING_TITLE": "A {0} próbaverzió {1} nap múlva lejár",
-  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "A {0} próbaverzió holnap lejár",
-  "PRO_TRIAL_ENDING_MESSAGE": "Szerezze be a Phoenix Pro-t, hogy továbbra is megszakítás nélkül használhassa ezeket a Pro funkciókat."
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Kép letöltése",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "Képméret kiválasztása",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Kártya 400px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "keresztül"
 });

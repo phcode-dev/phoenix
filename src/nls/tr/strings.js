@@ -172,7 +172,6 @@ define({
   "LIVE_DEV_MORE_OPTIONS_CUT": "Kes",
   "LIVE_DEV_MORE_OPTIONS_COPY": "Kopyala",
   "LIVE_DEV_MORE_OPTIONS_PASTE": "Yapıştır",
-  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Resmi kullan",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "Resim indirme klasörünü seçin",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Resim ara…",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_BUTTON": "Ara",
@@ -1517,6 +1516,9 @@ define({
   "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "{0} ile Canlı Düzenleme'nin kilidini açın",
   "PROMO_PRO_UNLOCK_MESSAGE": "Bu gelişmiş özelliklerin kilidini açmak için hemen abone olun:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro Deneme Sürümü ({0} gün kaldı)",
+  "PRO_TRIAL_ENDING_TITLE": "{0} deneme süreniz {1} gün sonra sona eriyor",
+  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "{0} deneme süreniz yarın sona eriyor",
+  "PRO_TRIAL_ENDING_MESSAGE": "Bu Pro özellikleri kesintisiz kullanmaya devam etmek için Phoenix Pro'yu edinin.",
   "GET_PHOENIX_PRO": "Phoenix Pro'yu Edinin",
   "MANAGE_LICENSE_DIALOG_TITLE": "Cihaz Lisansını Yönet",
   "LICENSE_KEY": "Lisans Anahtarı",
@@ -1555,7 +1557,10 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Yapay zeka erişimi sistem yöneticiniz tarafından devre dışı bırakıldı. Yardım için lütfen {0} ile iletişime geçin.",
   "AI_UPSELL_DIALOG_TITLE": "{0} ile devam edilsin mi?",
   "AI_UPSELL_DIALOG_MESSAGE": "{0} özelliğini keşfettiniz. Devam etmek için bir Yapay Zeka aboneliğine veya kredilere ihtiyacınız var.",
-  "PRO_TRIAL_ENDING_TITLE": "{0} deneme süreniz {1} gün sonra sona eriyor",
-  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "{0} deneme süreniz yarın sona eriyor",
-  "PRO_TRIAL_ENDING_MESSAGE": "Bu Pro özellikleri kesintisiz kullanmaya devam etmek için Phoenix Pro'yu edinin."
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Resmi indir",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "Resim boyutu seçin",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Kart 400px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "açık"
 });

@@ -172,7 +172,6 @@ define({
   "LIVE_DEV_MORE_OPTIONS_CUT": "Cortar",
   "LIVE_DEV_MORE_OPTIONS_COPY": "Copiar",
   "LIVE_DEV_MORE_OPTIONS_PASTE": "Pegar",
-  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Usar esta imaxe",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "Escoller o cartafol de descarga de imaxes",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Buscar imaxes…",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_BUTTON": "Buscar",
@@ -1517,6 +1516,9 @@ define({
   "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Desbloquea a Edición en Directo con {0}",
   "PROMO_PRO_UNLOCK_MESSAGE": "Subscríbete agora para desbloquear estas funcións avanzadas:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Proba de Phoenix Pro ({0} días restantes)",
+  "PRO_TRIAL_ENDING_TITLE": "A túa proba de {0} remata en {1} días",
+  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "A túa proba de {0} remata mañá",
+  "PRO_TRIAL_ENDING_MESSAGE": "Obtén Phoenix Pro para seguir usando estas funcións Pro sen interrupcións.",
   "GET_PHOENIX_PRO": "Obtén Phoenix Pro",
   "MANAGE_LICENSE_DIALOG_TITLE": "Xestionar a licenza do dispositivo",
   "LICENSE_KEY": "Chave de licenza",
@@ -1555,7 +1557,10 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "O acceso á IA foi desactivado polo seu administrador do sistema. Póñase en contacto con {0} para obter axuda.",
   "AI_UPSELL_DIALOG_TITLE": "Continuar con {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Descubriches {0}. Para continuar, necesitarás unha subscrición de IA ou créditos.",
-  "PRO_TRIAL_ENDING_TITLE": "A túa proba de {0} remata en {1} días",
-  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "A túa proba de {0} remata mañá",
-  "PRO_TRIAL_ENDING_MESSAGE": "Obtén Phoenix Pro para seguir usando estas funcións Pro sen interrupcións."
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Descargar imaxe",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "Seleccionar o tamaño da imaxe",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Tarxeta 400px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "en"
 });

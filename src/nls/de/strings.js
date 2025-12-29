@@ -172,7 +172,6 @@ define({
   "LIVE_DEV_MORE_OPTIONS_CUT": "Ausschneiden",
   "LIVE_DEV_MORE_OPTIONS_COPY": "Kopieren",
   "LIVE_DEV_MORE_OPTIONS_PASTE": "Einfügen",
-  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Dieses Bild verwenden",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "Download-Ordner für Bilder auswählen",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Bilder suchen…",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_BUTTON": "Suchen",
@@ -1517,6 +1516,9 @@ define({
   "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Schalte Live Edit mit {0} frei",
   "PROMO_PRO_UNLOCK_MESSAGE": "Abonniere jetzt, um die folgenden erweiterten Funktionen freizuschalten:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro-Testversion ({0} Tage verbleibend)",
+  "PRO_TRIAL_ENDING_TITLE": "Ihre {0}-Testversion endet in {1} Tagen",
+  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "Ihre {0}-Testversion endet morgen",
+  "PRO_TRIAL_ENDING_MESSAGE": "Holen Sie sich Phoenix Pro, um diese Pro-Funktionen weiterhin ohne Unterbrechung zu nutzen.",
   "GET_PHOENIX_PRO": "Phoenix Pro herunterladen",
   "MANAGE_LICENSE_DIALOG_TITLE": "Gerätelizenz verwalten",
   "LICENSE_KEY": "Lizenzschlüssel",
@@ -1555,7 +1557,10 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Der KI-Zugriff wurde von Ihrem Systemadministrator deaktiviert. Bitte kontaktieren Sie {0} für Unterstützung.",
   "AI_UPSELL_DIALOG_TITLE": "Mit {0} fortfahren?",
   "AI_UPSELL_DIALOG_MESSAGE": "Sie haben {0} entdeckt. Um fortzufahren, benötigen Sie ein KI-Abonnement oder Guthaben.",
-  "PRO_TRIAL_ENDING_TITLE": "Ihre {0}-Testversion endet in {1} Tagen",
-  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "Ihre {0}-Testversion endet morgen",
-  "PRO_TRIAL_ENDING_MESSAGE": "Holen Sie sich Phoenix Pro, um diese Pro-Funktionen weiterhin ohne Unterbrechung zu nutzen."
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Bild herunterladen",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "Bildgröße auswählen",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Karte 400px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "an"
 });

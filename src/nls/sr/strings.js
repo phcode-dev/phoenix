@@ -172,7 +172,6 @@ define({
   "LIVE_DEV_MORE_OPTIONS_CUT": "Исеци",
   "LIVE_DEV_MORE_OPTIONS_COPY": "Копирај",
   "LIVE_DEV_MORE_OPTIONS_PASTE": "Налепи",
-  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Користи ову слику",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "Изаберите фасциклу за преузимање слика",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Претражи слике…",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_BUTTON": "Пронађи",
@@ -1517,6 +1516,9 @@ define({
   "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Откључајте Уживо Измене са {0}",
   "PROMO_PRO_UNLOCK_MESSAGE": "Претплатите се сада да бисте откључали ове напредне функције:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro пробна верзија ({0} дана преостало)",
+  "PRO_TRIAL_ENDING_TITLE": "Ваш {0} пробни период истиче за {1} дана",
+  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "Ваш {0} пробни период истиче сутра",
+  "PRO_TRIAL_ENDING_MESSAGE": "Набавите Phoenix Pro да бисте наставили да користите ове Pro функције без прекида.",
   "GET_PHOENIX_PRO": "Преузмите Phoenix Pro",
   "MANAGE_LICENSE_DIALOG_TITLE": "Управљање лиценцом уређаја",
   "LICENSE_KEY": "Кључ лиценце",
@@ -1555,7 +1557,10 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Приступ AI је онемогућио администратор система. Молимо вас, контактирајте {0} за помоћ.",
   "AI_UPSELL_DIALOG_TITLE": "Наставити са {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Открили сте {0}. Да бисте наставили, потребна вам је AI претплата или кредити.",
-  "PRO_TRIAL_ENDING_TITLE": "Ваш {0} пробни период истиче за {1} дана",
-  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "Ваш {0} пробни период истиче сутра",
-  "PRO_TRIAL_ENDING_MESSAGE": "Набавите Phoenix Pro да бисте наставили да користите ове Pro функције без прекида."
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Преузми слику",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "Изабери величину слике",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Картица 400px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "на"
 });

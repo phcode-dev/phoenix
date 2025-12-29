@@ -172,7 +172,6 @@ define({
   "LIVE_DEV_MORE_OPTIONS_CUT": "Taglia",
   "LIVE_DEV_MORE_OPTIONS_COPY": "Copia",
   "LIVE_DEV_MORE_OPTIONS_PASTE": "Incolla",
-  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Usa questa immagine",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "Scegli la cartella per il download delle immagini",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Cerca immagini…",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_BUTTON": "Cerca",
@@ -1517,6 +1516,9 @@ define({
   "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Sblocca Live Edit con {0}",
   "PROMO_PRO_UNLOCK_MESSAGE": "Abbonati ora per sbloccare queste funzionalità avanzate:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Prova di Phoenix Pro ({0} giorni rimanenti)",
+  "PRO_TRIAL_ENDING_TITLE": "La tua prova di {0} scade tra {1} giorni",
+  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "La tua prova di {0} scade domani",
+  "PRO_TRIAL_ENDING_MESSAGE": "Passa a Phoenix Pro per continuare a usare queste funzionalità Pro senza interruzioni.",
   "GET_PHOENIX_PRO": "Ottieni Phoenix Pro",
   "MANAGE_LICENSE_DIALOG_TITLE": "Gestisci licenza del dispositivo",
   "LICENSE_KEY": "Codice di licenza",
@@ -1555,7 +1557,10 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "L'accesso all'AI è stato disattivato dal tuo amministratore di sistema. Contatta {0} per assistenza.",
   "AI_UPSELL_DIALOG_TITLE": "Continuare con {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Hai scoperto {0}. Per procedere, avrai bisogno di un abbonamento AI o di crediti.",
-  "PRO_TRIAL_ENDING_TITLE": "La tua prova di {0} scade tra {1} giorni",
-  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "La tua prova di {0} scade domani",
-  "PRO_TRIAL_ENDING_MESSAGE": "Passa a Phoenix Pro per continuare a usare queste funzionalità Pro senza interruzioni."
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Scarica immagine",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "Seleziona dimensione immagine",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Scheda 400px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "su"
 });

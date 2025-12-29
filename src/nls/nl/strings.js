@@ -172,7 +172,6 @@ define({
   "LIVE_DEV_MORE_OPTIONS_CUT": "Knippen",
   "LIVE_DEV_MORE_OPTIONS_COPY": "Kopierën",
   "LIVE_DEV_MORE_OPTIONS_PASTE": "Plakken",
-  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Afbeelding gebruiken",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "Kies downloadmap voor afbeeldingen",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Afbeeldingen zoeken…",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_BUTTON": "Zoek",
@@ -1517,6 +1516,9 @@ define({
   "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Ontgrendel Live Bewerken met {0}",
   "PROMO_PRO_UNLOCK_MESSAGE": "Abonneer nu om deze geavanceerde functies te ontgrendelen:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro proefversie ({0} dagen resterend)",
+  "PRO_TRIAL_ENDING_TITLE": "Uw {0}-proefperiode eindigt over {1} dagen",
+  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "Uw {0}-proefperiode eindigt morgen",
+  "PRO_TRIAL_ENDING_MESSAGE": "Upgrade naar Phoenix Pro om deze Pro-functies zonder onderbreking te blijven gebruiken.",
   "GET_PHOENIX_PRO": "Koop Phoenix Pro",
   "MANAGE_LICENSE_DIALOG_TITLE": "Apparaatlicentie beheren",
   "LICENSE_KEY": "Licentiesleutel",
@@ -1555,7 +1557,10 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "De toegang tot AI is uitgeschakeld door uw systeembeheerder. Neem contact op met {0} voor hulp.",
   "AI_UPSELL_DIALOG_TITLE": "Doorgaan met {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "U heeft {0} ontdekt. Om verder te gaan, heeft u een AI-abonnement of credits nodig.",
-  "PRO_TRIAL_ENDING_TITLE": "Uw {0}-proefperiode eindigt over {1} dagen",
-  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "Uw {0}-proefperiode eindigt morgen",
-  "PRO_TRIAL_ENDING_MESSAGE": "Upgrade naar Phoenix Pro om deze Pro-functies zonder onderbreking te blijven gebruiken."
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Afbeelding downloaden",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "Afbeeldingsgrootte selecteren",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Kaart 400px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "op"
 });

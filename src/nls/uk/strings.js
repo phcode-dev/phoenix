@@ -172,7 +172,6 @@ define({
   "LIVE_DEV_MORE_OPTIONS_CUT": "Вирізати",
   "LIVE_DEV_MORE_OPTIONS_COPY": "Копіювати",
   "LIVE_DEV_MORE_OPTIONS_PASTE": "Вставити",
-  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Використати це зображення",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "Вибрати папку для завантаження зображень",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Пошук зображень…",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_BUTTON": "Пошук",
@@ -1517,6 +1516,9 @@ define({
   "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Розблокуйте Live Edit з {0}",
   "PROMO_PRO_UNLOCK_MESSAGE": "Підпишіться зараз, щоб розблокувати такі розширені функції:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Пробний період Phoenix Pro ({0} днів залишилось)",
+  "PRO_TRIAL_ENDING_TITLE": "Ваш пробний період {0} закінчується через {1} днів",
+  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "Ваш пробний період {0} закінчується завтра",
+  "PRO_TRIAL_ENDING_MESSAGE": "Придбайте Phoenix Pro, щоб і надалі користуватися цими функціями Pro без перерв.",
   "GET_PHOENIX_PRO": "Отримати Phoenix Pro",
   "MANAGE_LICENSE_DIALOG_TITLE": "Керування ліцензією пристрою",
   "LICENSE_KEY": "Ліцензійний ключ",
@@ -1555,7 +1557,10 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Доступ до ШІ було вимкнено вашим системним адміністратором. Будь ласка, зверніться до {0} за допомогою.",
   "AI_UPSELL_DIALOG_TITLE": "Продовжити з {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Ви відкрили для себе {0}. Щоб продовжити, вам знадобиться підписка на ШІ або кредити.",
-  "PRO_TRIAL_ENDING_TITLE": "Ваш пробний період {0} закінчується через {1} днів",
-  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "Ваш пробний період {0} закінчується завтра",
-  "PRO_TRIAL_ENDING_MESSAGE": "Придбайте Phoenix Pro, щоб і надалі користуватися цими функціями Pro без перерв."
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Завантажити зображення",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "Вибрати розмір зображення",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Картка 400px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Головне 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Ретіна 2200px",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "на"
 });

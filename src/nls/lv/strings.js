@@ -172,7 +172,6 @@ define({
   "LIVE_DEV_MORE_OPTIONS_CUT": "Izgriezt",
   "LIVE_DEV_MORE_OPTIONS_COPY": "Kopēt",
   "LIVE_DEV_MORE_OPTIONS_PASTE": "Ielīmēt",
-  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Izmantot šo attēlu",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "Izvēlieties attēlu lejupielādes mapi",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Meklēt attēlus…",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_BUTTON": "Meklēt",
@@ -1517,6 +1516,9 @@ define({
   "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Atklāj tiešraides rediģēšanu ar {0}",
   "PROMO_PRO_UNLOCK_MESSAGE": "Abonē tagad, lai atbloķētu šīs papildu funkcijas:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro izmēģinājuma versija ({0} dienas atlikušas)",
+  "PRO_TRIAL_ENDING_TITLE": "Jūsu {0} izmēģinājuma periods beigsies pēc {1} dienām.",
+  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "Jūsu {0} izmēģinājuma periods beigsies rīt.",
+  "PRO_TRIAL_ENDING_MESSAGE": "Iegūstiet Phoenix Pro, lai bez pārtraukumiem turpinātu izmantot šīs Pro funkcijas.",
   "GET_PHOENIX_PRO": "Iegūt Phoenix Pro",
   "MANAGE_LICENSE_DIALOG_TITLE": "Pārvaldīt ierīces licenci",
   "LICENSE_KEY": "Licences atslēga",
@@ -1555,7 +1557,10 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "MI piekļuvi ir atspējojis jūsu sistēmas administrators. Lūdzu, sazinieties ar {0}, lai saņemtu palīdzību.",
   "AI_UPSELL_DIALOG_TITLE": "Turpināt ar {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Jūs atklājāt {0}. Lai turpinātu, jums būs nepieciešams MI abonements vai kredīti.",
-  "PRO_TRIAL_ENDING_TITLE": "Jūsu {0} izmēģinājuma periods beigsies pēc {1} dienām.",
-  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "Jūsu {0} izmēģinājuma periods beigsies rīt.",
-  "PRO_TRIAL_ENDING_MESSAGE": "Iegūstiet Phoenix Pro, lai bez pārtraukumiem turpinātu izmantot šīs Pro funkcijas."
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Lejupielādēt attēlu",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "Izvēlēties attēla izmēru",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Karte 400px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "vietnē"
 });

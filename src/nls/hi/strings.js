@@ -172,7 +172,6 @@ define({
   "LIVE_DEV_MORE_OPTIONS_CUT": "कट",
   "LIVE_DEV_MORE_OPTIONS_COPY": "कॉपी",
   "LIVE_DEV_MORE_OPTIONS_PASTE": "पेस्ट",
-  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "इस इमेज का इस्तेमाल करें",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "छवि डाउनलोड फ़ोल्डर चुनें",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "इमेज खोजें…",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_BUTTON": "खोजें",
@@ -1517,6 +1516,9 @@ define({
   "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "{0} के साथ लाइव एडिट अनलॉक करें",
   "PROMO_PRO_UNLOCK_MESSAGE": "इन उन्नत सुविधाओं को अनलॉक करने के लिए अभी सब्सक्राइब करें:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro परीक्षण ({0} दिन शेष)",
+  "PRO_TRIAL_ENDING_TITLE": "आपका {0} ट्रायल {1} दिनों में समाप्त हो रहा है",
+  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "आपका {0} ट्रायल कल समाप्त हो रहा है",
+  "PRO_TRIAL_ENDING_MESSAGE": "इन प्रो सुविधाओं का बिना रुकावट उपयोग जारी रखने के लिए Phoenix Pro प्राप्त करें।",
   "GET_PHOENIX_PRO": "Phoenix Pro प्राप्त करें",
   "MANAGE_LICENSE_DIALOG_TITLE": "डिवाइस लाइसेंस प्रबंधित करें",
   "LICENSE_KEY": "लाइसेंस कुंजी",
@@ -1555,7 +1557,10 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "आपके सिस्टम एडमिनिस्ट्रेटर द्वारा AI एक्सेस अक्षम कर दिया गया है। सहायता के लिए कृपया {0} से संपर्क करें।",
   "AI_UPSELL_DIALOG_TITLE": "{0} के साथ जारी रखें?",
   "AI_UPSELL_DIALOG_MESSAGE": "आपने {0} खोज लिया है। आगे बढ़ने के लिए, आपको AI सब्सक्रिप्शन या क्रेडिट्स की ज़रूरत होगी।",
-  "PRO_TRIAL_ENDING_TITLE": "आपका {0} ट्रायल {1} दिनों में समाप्त हो रहा है",
-  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "आपका {0} ट्रायल कल समाप्त हो रहा है",
-  "PRO_TRIAL_ENDING_MESSAGE": "इन प्रो सुविधाओं का बिना रुकावट उपयोग जारी रखने के लिए Phoenix Pro प्राप्त करें।"
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "इमेज डाउनलोड करें",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "इमेज का आकार चुनें",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "कार्ड 400px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "हीरो 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "रेटिना 2200px",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "पर"
 });

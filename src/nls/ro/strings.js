@@ -172,7 +172,6 @@ define({
   "LIVE_DEV_MORE_OPTIONS_CUT": "Taie",
   "LIVE_DEV_MORE_OPTIONS_COPY": "Copiază",
   "LIVE_DEV_MORE_OPTIONS_PASTE": "Lipește",
-  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Folosește această imagine",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "Alegeți folderul de descărcare a imaginilor",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Caută imagini…",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_BUTTON": "Caută",
@@ -1517,6 +1516,9 @@ define({
   "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Deblochează Editarea Live cu {0}",
   "PROMO_PRO_UNLOCK_MESSAGE": "Abonează-te acum pentru a debloca aceste funcții avansate:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Probă Phoenix Pro ({0} zile rămase)",
+  "PRO_TRIAL_ENDING_TITLE": "Perioada de probă pentru {0} se încheie în {1} zile",
+  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "Perioada de probă pentru {0} se încheie mâine",
+  "PRO_TRIAL_ENDING_MESSAGE": "Obțineți Phoenix Pro pentru a continua să folosiți aceste funcționalități Pro fără întrerupere.",
   "GET_PHOENIX_PRO": "Obține Phoenix Pro",
   "MANAGE_LICENSE_DIALOG_TITLE": "Gestionare licență dispozitiv",
   "LICENSE_KEY": "Cheie de licență",
@@ -1555,7 +1557,10 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Accesul AI a fost dezactivat de către administratorul dvs. de sistem. Vă rugăm să contactați {0} pentru asistență.",
   "AI_UPSELL_DIALOG_TITLE": "Continuați cu {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Ați descoperit {0}. Pentru a continua, veți avea nevoie de un abonament AI sau de credite.",
-  "PRO_TRIAL_ENDING_TITLE": "Perioada de probă pentru {0} se încheie în {1} zile",
-  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "Perioada de probă pentru {0} se încheie mâine",
-  "PRO_TRIAL_ENDING_MESSAGE": "Obțineți Phoenix Pro pentru a continua să folosiți aceste funcționalități Pro fără întrerupere."
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Descarcă imaginea",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "Selectați dimensiunea imaginii",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Card 400px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "pe"
 });

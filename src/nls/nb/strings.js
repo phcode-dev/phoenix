@@ -172,7 +172,6 @@ define({
   "LIVE_DEV_MORE_OPTIONS_CUT": "Klipp",
   "LIVE_DEV_MORE_OPTIONS_COPY": "Kopier",
   "LIVE_DEV_MORE_OPTIONS_PASTE": "Lim inn",
-  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Bruk dette bildet",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "Velg nedlastingsmappe for bilder",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Søk etter bilder …",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_BUTTON": "Søk",
@@ -1517,6 +1516,9 @@ define({
   "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Lås opp Live Edit med {0}",
   "PROMO_PRO_UNLOCK_MESSAGE": "Abonner nå for å låse opp disse avanserte funksjonene:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Pro prøveperiode ({0} dager igjen)",
+  "PRO_TRIAL_ENDING_TITLE": "Din {0}-prøveperiode utløper om {1} dager",
+  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "Din {0}-prøveperiode utløper i morgen",
+  "PRO_TRIAL_ENDING_MESSAGE": "Skaff deg Phoenix Pro for å fortsette å bruke disse Pro-funksjonene uten avbrudd.",
   "GET_PHOENIX_PRO": "Skaff deg Phoenix Pro",
   "MANAGE_LICENSE_DIALOG_TITLE": "Administrer enhetslisens",
   "LICENSE_KEY": "Lisensnøkkel",
@@ -1555,7 +1557,10 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "AI-tilgang er deaktivert av systemadministratoren din. Vennligst kontakt {0} for hjelp.",
   "AI_UPSELL_DIALOG_TITLE": "Fortsette med {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Du har oppdaget {0}. For å fortsette trenger du et AI-abonnement eller kreditter.",
-  "PRO_TRIAL_ENDING_TITLE": "Din {0}-prøveperiode utløper om {1} dager",
-  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "Din {0}-prøveperiode utløper i morgen",
-  "PRO_TRIAL_ENDING_MESSAGE": "Skaff deg Phoenix Pro for å fortsette å bruke disse Pro-funksjonene uten avbrudd."
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Last ned bilde",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "Velg bildestørrelse",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Kort 400px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "på"
 });

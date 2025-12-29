@@ -172,7 +172,6 @@ define({
   "LIVE_DEV_MORE_OPTIONS_CUT": "カット",
   "LIVE_DEV_MORE_OPTIONS_COPY": "コピー",
   "LIVE_DEV_MORE_OPTIONS_PASTE": "ペースト",
-  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "この画像を使用",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "画像ダウンロードフォルダーを選択",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "画像を検索…",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_BUTTON": "検索",
@@ -1517,6 +1516,9 @@ define({
   "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "{0}でライブ編集をアンロック",
   "PROMO_PRO_UNLOCK_MESSAGE": "今すぐ登録して、以下の高度な機能をアンロック：",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Phoenix Proトライアル（残り{0}日）",
+  "PRO_TRIAL_ENDING_TITLE": "{0}のトライアルはあと{1}日で終了します",
+  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "{0}のトライアルは明日で終了します",
+  "PRO_TRIAL_ENDING_MESSAGE": "これらのプロ機能を引き続き中断なく使用するには、Phoenix Proを入手してください。",
   "GET_PHOENIX_PRO": "Phoenix Proを入手",
   "MANAGE_LICENSE_DIALOG_TITLE": "デバイスライセンスの管理",
   "LICENSE_KEY": "ライセンスキー",
@@ -1555,7 +1557,10 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "AIアクセスはシステム管理者によって無効にされています。サポートが必要な場合は、{0}にお問い合わせください。",
   "AI_UPSELL_DIALOG_TITLE": "{0}を続行しますか？",
   "AI_UPSELL_DIALOG_MESSAGE": "「{0}」をご利用になるには、AIサブスクリプションまたはクレジットが必要です。",
-  "PRO_TRIAL_ENDING_TITLE": "{0}のトライアルはあと{1}日で終了します",
-  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "{0}のトライアルは明日で終了します",
-  "PRO_TRIAL_ENDING_MESSAGE": "これらのプロ機能を引き続き中断なく使用するには、Phoenix Proを入手してください。"
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "画像をダウンロード",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "画像サイズを選択",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "カード 400px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "ヒーロー 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "レティナ 2200px",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "／"
 });

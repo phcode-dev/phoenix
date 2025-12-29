@@ -172,7 +172,6 @@ define({
   "LIVE_DEV_MORE_OPTIONS_CUT": "Vyjmout",
   "LIVE_DEV_MORE_OPTIONS_COPY": "Kopírovat",
   "LIVE_DEV_MORE_OPTIONS_PASTE": "Vložit",
-  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Použít tento obrázek",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_DOWNLOAD_FOLDER": "Vybrat složku pro stažení obrázků",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_PLACEHOLDER": "Hledat obrázky…",
   "LIVE_DEV_IMAGE_GALLERY_SEARCH_BUTTON": "Hledat",
@@ -1517,6 +1516,9 @@ define({
   "PROMO_PRO_UNLOCK_LIVE_EDIT_TITLE": "Odemkněte Živou úpravu s {0}",
   "PROMO_PRO_UNLOCK_MESSAGE": "Přihlaste se k odběru a odemkněte si tyto pokročilé funkce:",
   "PROMO_PRO_TRIAL_DAYS_LEFT": "Zkušební verze Phoenix Pro ({0} dní zbývá)",
+  "PRO_TRIAL_ENDING_TITLE": "Vaše zkušební verze {0} končí za {1} dní",
+  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "Vaše zkušební verze {0} končí zítra",
+  "PRO_TRIAL_ENDING_MESSAGE": "Pořiďte si Phoenix Pro, abyste mohli nadále používat tyto Pro funkce bez přerušení.",
   "GET_PHOENIX_PRO": "Získejte Phoenix Pro",
   "MANAGE_LICENSE_DIALOG_TITLE": "Spravovat licenci zařízení",
   "LICENSE_KEY": "Licenční klíč",
@@ -1555,7 +1557,10 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Přístup k AI byl zakázán správcem systému. Pro pomoc prosím kontaktujte {0}.",
   "AI_UPSELL_DIALOG_TITLE": "Pokračovat s {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Objevili jste {0}. Chcete-li pokračovat, budete potřebovat předplatné AI nebo kredity.",
-  "PRO_TRIAL_ENDING_TITLE": "Vaše zkušební verze {0} končí za {1} dní",
-  "PRO_TRIAL_ENDING_TITLE_TOMORROW": "Vaše zkušební verze {0} končí zítra",
-  "PRO_TRIAL_ENDING_MESSAGE": "Pořiďte si Phoenix Pro, abyste mohli nadále používat tyto Pro funkce bez přerušení."
+  "LIVE_DEV_IMAGE_GALLERY_USE_IMAGE": "Stáhnout obrázek",
+  "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "Vyberte velikost obrázku",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Karta 400px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "na"
 });
