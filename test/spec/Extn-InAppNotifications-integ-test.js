@@ -373,5 +373,44 @@ define(function (require, exports, module) {
             banner.registerCustomFilter(null);
             banner.cleanNotificationBanner();
         });
+
+        it("Should show notification only once even with multiple concurrent reRenderNotifications calls", async function () {
+            banner.cleanNotificationBanner();
+
+            const {notification} = getRandomNotification("all", false); // NOT DANGER_SHOW_ON_EVERY_BOOT
+            let renderCount = 0;
+
+            // Set cache
+            banner._setBannerCache(notification);
+
+            // Register filter to track render calls
+            banner.registerCustomFilter(async () => {
+                renderCount++;
+                return true;
+            });
+
+            // Make 3 concurrent calls
+            const promise1 = banner.reRenderNotifications();
+            const promise2 = banner.reRenderNotifications();
+            const promise3 = banner.reRenderNotifications();
+
+            // Only first render should show banner
+            await _waitForBannerShown();
+            expect(renderCount).toEqual(1);
+            testWindow.$('.close-icon').click();
+            await promise1;
+
+            // Second and third should resolve without showing banner
+            await awaits(50);
+            await promise2;
+            await promise3;
+
+            // Filter should only have been called once
+            expect(renderCount).toEqual(1);
+            expect(testWindow.$('#notification-bar').is(":visible")).toBe(false);
+
+            // Cleanup
+            banner.registerCustomFilter(null);
+        });
     });
 });
