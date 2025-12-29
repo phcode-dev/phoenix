@@ -80,6 +80,7 @@ define(function (require, exports, module) {
      * A sample notifications is as follows:
      * {
      *   "SAMPLE_NOTIFICATION_NAME": {
+     *     "PRO_EDITION_ONLY" : false,
      *     "DANGER_SHOW_ON_EVERY_BOOT" : false,
      *     "HTML_CONTENT": "<div>hello world <a class='notification_ack'>Click to acknowledge.</a></div>",
      *     "FOR_VERSIONS": "1.x || >=2.5.0 || 5.0.0 - 7.2.3",
@@ -91,16 +92,17 @@ define(function (require, exports, module) {
      *  or there is an html element with class `notification_ack`.
      *
      * 1. `SAMPLE_NOTIFICATION_NAME` : This is a unique ID. It is used to check if the notification was shown to user.
-     * 2. `DANGER_SHOW_ON_EVERY_BOOT` : (Default false) Setting this to true will cause the
+     * 2. `PRO_EDITION_ONLY` : (Default false) Setting this to true will not show the notification on community editions
+     * 3. `DANGER_SHOW_ON_EVERY_BOOT` : (Default false) Setting this to true will cause the
      *    notification to be shown on every boot. This is bad ux and only be used if there is a critical security issue
      *    that we want the version not to be used.
-     * 3. `HTML_CONTENT`: The actual html content to show to the user. It can have an optional `notification_ack` class.
+     * 4. `HTML_CONTENT`: The actual html content to show to the user. It can have an optional `notification_ack` class.
      *     Setting this class will cause the notification to be shown once a day until the user explicitly clicks
      *     on any html element with class `notification_ack` or explicitly click the close button.
      *     If such a class is not present, then the notification is shown only once ever.
-     * 4. `FOR_VERSIONS` : [Semver compatible version filter](https://www.npmjs.com/package/semver).
+     * 5. `FOR_VERSIONS` : [Semver compatible version filter](https://www.npmjs.com/package/semver).
      *     The notification will be shown to all versions satisfying this.
-     * 5. `PLATFORM`: A comma seperated list of all platforms in which the message will be shown.
+     * 6. `PLATFORM`: A comma seperated list of all platforms in which the message will be shown.
      *     allowed values are: `mac,win,linux,allDesktop,firefox,chrome,safari,allBrowser,all`
      * @param notifications
      * @returns {false|*}
@@ -113,6 +115,7 @@ define(function (require, exports, module) {
 
         const _InAppBannerShownAndDone = PreferencesManager.getViewState(
             IN_APP_NOTIFICATIONS_BANNER_SHOWN_STATE);
+        const isProEdition = Phoenix.pro && Phoenix.pro.commitID;
 
         for(const notificationID of Object.keys(notifications)){
             if(!_InAppBannerShownAndDone[notificationID]) {
@@ -124,6 +127,9 @@ define(function (require, exports, module) {
                     continue;
                 }
                 if(customFilterCallback && !(await customFilterCallback(notification, notificationID))){
+                    continue;
+                }
+                if(!isProEdition && notification.PRO_EDITION_ONLY){
                     continue;
                 }
                 if(!notification.DANGER_SHOW_ON_EVERY_BOOT){

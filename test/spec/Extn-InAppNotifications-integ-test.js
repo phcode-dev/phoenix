@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, beforeAll, afterAll, awaits, awaitsFor */
+/*global describe, it, expect, beforeAll, beforeEach, afterEach, afterAll, awaits, awaitsFor */
 
 define(function (require, exports, module) {
     // Recommended to avoid reloading the integration test window Phoenix instance for each test.
@@ -28,7 +28,7 @@ define(function (require, exports, module) {
 
     const testPath = SpecRunnerUtils.getTestPath("/spec/JSUtils-test-files");
 
-    let testWindow, banner;
+    let testWindow, banner, originalPhoenixPro;
 
 
     describe("integration:In App notification banner integration tests", function () {
@@ -39,6 +39,16 @@ define(function (require, exports, module) {
 
             await SpecRunnerUtils.loadProjectInTestWindow(testPath);
         }, 30000);
+
+        beforeEach(function () {
+            // Save original Phoenix.pro before each test
+            originalPhoenixPro = testWindow.Phoenix.pro;
+        });
+
+        afterEach(function () {
+            // Restore Phoenix.pro after each test (even if test fails)
+            testWindow.Phoenix.pro = originalPhoenixPro;
+        });
 
         async function _waitForBannerShown() {
             await awaitsFor(function () {
@@ -52,16 +62,20 @@ define(function (require, exports, module) {
             await SpecRunnerUtils.closeTestWindow();
         }, 30000);
 
-        function getRandomNotification(platform, showOnEveryBoot=false, ack = false) {
+        function getRandomNotification(platform, showOnEveryBoot=false, ack = false, proOnly = false) {
             const notification = {};
             const id = crypto.randomUUID();
             const ackClass = ack? "notification_ack" : '';
-            notification[id] = {
+            const notificationObj = {
                 "DANGER_SHOW_ON_EVERY_BOOT": showOnEveryBoot,
                 "HTML_CONTENT": `<div id='${id}' class="${ackClass}">random notification ${platform} with id ${id}, DANGER_SHOW_ON_EVERY_BOOT: ${showOnEveryBoot}, ack:${ack}</div>`,
                 "FOR_VERSIONS": ">=3.0.0",
                 "PLATFORM": platform || "all"
             };
+            if (proOnly) {
+                notificationObj.PRO_EDITION_ONLY = true;
+            }
+            notification[id] = notificationObj;
             return {notification, id: `#${id}`};
         }
 
@@ -187,6 +201,53 @@ define(function (require, exports, module) {
             // acknowledged banner should not show the same banner again
             banner._renderNotifications(notification);
             expect(testWindow.$(id).length).toEqual(0);
+        });
+
+        it("Should show PRO_EDITION_ONLY notification in pro edition", async function () {
+            banner.cleanNotificationBanner();
+
+            // Mock pro edition
+            testWindow.Phoenix.pro = { commitID: "test-pro-commit" };
+
+            const {notification, id} = getRandomNotification("all", true, false, true);
+            banner._renderNotifications(notification);
+
+            expect(testWindow.$(id).length).toEqual(1);
+
+            banner.cleanNotificationBanner();
+        });
+
+        it("Should not show PRO_EDITION_ONLY notification in community edition", async function () {
+            banner.cleanNotificationBanner();
+
+            // Mock community edition
+            testWindow.Phoenix.pro = null;
+
+            const {notification, id} = getRandomNotification("all", true, false, true);
+            banner._renderNotifications(notification);
+            await awaits(50);
+
+            expect(testWindow.$(id).length).toEqual(0);
+
+            banner.cleanNotificationBanner();
+        });
+
+        it("Should show non-PRO_EDITION_ONLY notification in all editions", async function () {
+            const {notification, id} = getRandomNotification("all", true, false, false);
+
+            // Test in pro edition
+            banner.cleanNotificationBanner();
+            testWindow.Phoenix.pro = { commitID: "test-pro-commit" };
+            banner._renderNotifications(notification);
+            expect(testWindow.$(id).length).toEqual(1);
+            banner.cleanNotificationBanner();
+            expect(testWindow.$(id).length).toEqual(0);
+
+            // Test in community edition
+            testWindow.Phoenix.pro = null;
+            banner._renderNotifications(notification);
+            expect(testWindow.$(id).length).toEqual(1);
+            banner.cleanNotificationBanner();
         });
 
         it("Should apply custom filter to block notification", async function () {
