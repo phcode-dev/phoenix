@@ -19,7 +19,7 @@
  *
  */
 
-/*global describe, it, expect, beforeAll, afterAll, awaits, Phoenix */
+/*global describe, it, expect, beforeAll, afterAll, awaits, awaitsFor */
 
 define(function (require, exports, module) {
     // Recommended to avoid reloading the integration test window Phoenix instance for each test.
@@ -39,6 +39,12 @@ define(function (require, exports, module) {
 
             await SpecRunnerUtils.loadProjectInTestWindow(testPath);
         }, 30000);
+
+        async function _waitForBannerShown() {
+            await awaitsFor(function () {
+                return testWindow.$('#notification-bar').is(":visible");
+            }, "banner to be shown");
+        }
 
         afterAll(async function () {
             testWindow = null;
@@ -181,6 +187,87 @@ define(function (require, exports, module) {
             // acknowledged banner should not show the same banner again
             banner._renderNotifications(notification);
             expect(testWindow.$(id).length).toEqual(0);
+        });
+
+        it("Should apply custom filter to block notification", async function () {
+            banner.cleanNotificationBanner();
+            banner.registerCustomFilter(async () => false);
+
+            const {notification, id} = getRandomNotification("all", true);
+            banner._renderNotifications(notification);
+            await awaits(50);
+
+            expect(testWindow.$('#notification-bar').is(":visible")).toBe(false);
+            expect(testWindow.$(id).length).toEqual(0);
+
+            // Cleanup: remove custom filter
+            banner.registerCustomFilter(null);
+        });
+
+        it("Should apply custom filter to allow notification", async function () {
+            banner.cleanNotificationBanner();
+            banner.registerCustomFilter(async () => true);
+
+            const {notification, id} = getRandomNotification("all", true);
+            banner._renderNotifications(notification);
+            await _waitForBannerShown();
+
+            expect(testWindow.$(id).length).toEqual(1);
+
+            // Cleanup
+            banner.registerCustomFilter(null);
+            banner.cleanNotificationBanner();
+        });
+
+        it("Should pass correct parameters to custom filter", async function () {
+            banner.cleanNotificationBanner();
+            let receivedNotification, receivedID;
+
+            const {notification} = getRandomNotification("all", true);
+            const expectedID = Object.keys(notification)[0];
+
+            banner.registerCustomFilter(async (notif, notifID) => {
+                receivedNotification = notif;
+                receivedID = notifID;
+                return true;
+            });
+
+            banner._renderNotifications(notification);
+            await _waitForBannerShown();
+
+            expect(receivedID).toEqual(expectedID);
+            expect(receivedNotification).toEqual(notification[expectedID]);
+
+            // Cleanup
+            banner.registerCustomFilter(null);
+            banner.cleanNotificationBanner();
+        });
+
+        it("Should apply custom filter on reRenderNotifications", async function () {
+            banner.cleanNotificationBanner();
+
+            const {notification, id} = getRandomNotification("all", true);
+
+            // Set cache and render
+            banner._setBannerCache(notification);
+            banner._renderNotifications(notification);
+            await _waitForBannerShown();
+            expect(testWindow.$(id).length).toEqual(1);
+
+            banner.cleanNotificationBanner();
+
+            // Set filter to block
+            banner.registerCustomFilter(async () => false);
+
+            // Re-render should not show notification due to filter
+            banner.reRenderNotifications();
+            await awaits(50);
+            expect(testWindow.$('#notification-bar').is(":visible")).toBe(false);
+            expect(testWindow.$(id).length).toEqual(0);
+
+            // Cleanup
+            banner.registerCustomFilter(null);
+            banner.cleanNotificationBanner();
         });
     });
 });

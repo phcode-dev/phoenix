@@ -35,6 +35,9 @@ define(function (require, exports, module) {
 
     ExtensionUtils.loadStyleSheet(module, "styles/styles.css");
 
+    let latestBannerJSON;
+    let customFilterCallback;
+
     // duration of one day in milliseconds
     const ONE_DAY = 1000 * 60 * 60 * 24;
     const IN_APP_NOTIFICATIONS_BANNER_SHOWN_STATE = "InAppNotificationsBannerShown";
@@ -62,6 +65,14 @@ define(function (require, exports, module) {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Registers a custom filter callback function for notifications
+     * @param {Function} cfbn - async function that filters notifications
+     */
+    function registerCustomFilter(cfbn) {
+        customFilterCallback = cfbn;
     }
 
     /**
@@ -112,6 +123,9 @@ define(function (require, exports, module) {
                 if(!_isValidForThisPlatform(notification.PLATFORM)){
                     continue;
                 }
+                if(customFilterCallback && !(await customFilterCallback(notification, notificationID))){
+                    continue;
+                }
                 if(!notification.DANGER_SHOW_ON_EVERY_BOOT){
                     // One time notification. mark as shown and never show again
                     // all notifications are one time, we track metrics for each notification separately
@@ -136,6 +150,12 @@ define(function (require, exports, module) {
                     return null;
                 }
                 return response.json();
+            })
+            .then(json => {
+                if (json !== null) {
+                    latestBannerJSON = json;
+                }
+                return json;
             });
     }
 
@@ -165,6 +185,15 @@ define(function (require, exports, module) {
             .finally(()=>{
                 inProgress = false;
             });
+    }
+
+    /**
+     * Re-renders notifications using the latest cached banner JSON
+     */
+    function reRenderNotifications() {
+        if(latestBannerJSON) {
+            _renderNotifications(latestBannerJSON);
+        }
     }
 
 
@@ -232,8 +261,14 @@ define(function (require, exports, module) {
         setInterval(_fetchAndRenderNotifications, ONE_DAY);
     });
 
+    exports.registerCustomFilter = registerCustomFilter;
+    exports.reRenderNotifications = reRenderNotifications;
+
     if(Phoenix.isTestWindow){
         exports.cleanNotificationBanner = cleanNotificationBanner;
         exports._renderNotifications = _renderNotifications;
+        exports._setBannerCache = function(notifications) {
+            latestBannerJSON = notifications;
+        };
     }
 });
