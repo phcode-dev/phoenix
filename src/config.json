@@ -3,6 +3,7 @@
         "app_title": "Phoenix Code",
         "app_name_about": "Phoenix Code",
         "main_pro_plan": "Phoenix Pro",
+        "main_pro_plan_short": "Pro",
         "ai_brand_name": "Phoenix AI",
         "about_icon": "styles/images/phoenix-icon.svg",
         "account_url": "https://account.phcode.dev/",
