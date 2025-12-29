@@ -19,7 +19,7 @@
  *
  */
 
-/*global Phoenix*/
+/*global*/
 /**
  *  module for displaying in-app banner notifications
  *
@@ -31,9 +31,13 @@ define(function (require, exports, module) {
         ExtensionUtils       = require("utils/ExtensionUtils"),
         Metrics = require("utils/Metrics"),
         semver = require("thirdparty/semver.browser"),
-        NotificationBarHtml  = require("text!./htmlContent/notificationContainer.html");
+        NotificationBarHtml  = require("text!./htmlContent/notificationContainer.html"),
+        ExtensionInterface = require("utils/ExtensionInterface");
 
     ExtensionUtils.loadStyleSheet(module, "styles/styles.css");
+
+    const IN_APP_NOTIFICATION_INTERFACE = "Extn.Phoenix.inAppNotification";
+    ExtensionInterface.registerExtensionInterface(IN_APP_NOTIFICATION_INTERFACE, exports);
 
     let latestBannerJSON;
     let customFilterCallback;
@@ -193,13 +197,22 @@ define(function (require, exports, module) {
             });
     }
 
+    let reRenderInProgress = Promise.resolve();
+
     /**
      * Re-renders notifications using the latest cached banner JSON
+     * Ensures renders are strictly serialized
      */
     function reRenderNotifications() {
-        if(latestBannerJSON) {
-            _renderNotifications(latestBannerJSON);
+        if (!latestBannerJSON) {
+            return Promise.resolve();
         }
+
+        reRenderInProgress = reRenderInProgress
+            .catch(() => {}) // prevent lock break on error
+            .then(() => _renderNotifications(latestBannerJSON));
+
+        return reRenderInProgress;
     }
 
 

@@ -330,5 +330,48 @@ define(function (require, exports, module) {
             banner.registerCustomFilter(null);
             banner.cleanNotificationBanner();
         });
+
+        it("Should serialize multiple concurrent reRenderNotifications calls", async function () {
+            banner.cleanNotificationBanner();
+
+            const {notification} = getRandomNotification("all", true);
+            let renderCount = 0;
+
+            // Set cache
+            banner._setBannerCache(notification);
+
+            // Register filter to track render calls
+            banner.registerCustomFilter(async () => {
+                renderCount++;
+                return true;
+            });
+
+            // Make 3 concurrent calls
+            const promise1 = banner.reRenderNotifications();
+            const promise2 = banner.reRenderNotifications();
+            const promise3 = banner.reRenderNotifications();
+
+            // First render: wait for banner, close it, wait for promise to resolve
+            await _waitForBannerShown();
+            expect(renderCount).toEqual(1);
+            testWindow.$('.close-icon').click();
+            await promise1;
+
+            // Second render: wait for banner, close it, wait for promise to resolve
+            await _waitForBannerShown();
+            expect(renderCount).toEqual(2);
+            testWindow.$('.close-icon').click();
+            await promise2;
+
+            // Third render: wait for banner, close it, wait for promise to resolve
+            await _waitForBannerShown();
+            expect(renderCount).toEqual(3);
+            testWindow.$('.close-icon').click();
+            await promise3;
+
+            // Cleanup
+            banner.registerCustomFilter(null);
+            banner.cleanNotificationBanner();
+        });
     });
 });
