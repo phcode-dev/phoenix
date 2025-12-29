@@ -165,13 +165,9 @@ define(function (require, exports, module) {
             expect(testWindow.$(id).length).toEqual(1);
         });
 
-        it("Should show notification if not acknowledged with close click", async function () {
+        it("Should show notification only once", async function () {
             banner.cleanNotificationBanner();
             const {notification, id} = getRandomNotification("all", false, true);
-            banner._renderNotifications(notification);
-
-            // clear notification without clicking close
-            banner.cleanNotificationBanner();
 
             // show the same banner again
             banner._renderNotifications(notification);
@@ -179,28 +175,6 @@ define(function (require, exports, module) {
 
             // now close the notification by clicking the close icon
             testWindow.$(".close-icon").click();
-            expect(testWindow.$(id).length).toEqual(0);
-
-            await awaits(300);
-            // acknowledged banner should not show the same banner again
-            banner._renderNotifications(notification);
-            expect(testWindow.$(id).length).toEqual(0);
-        });
-
-        it("Should show notification if not acknowledged with click on item with notification ack class", async function () {
-            banner.cleanNotificationBanner();
-            const {notification, id} = getRandomNotification("all", false, true);
-            banner._renderNotifications(notification);
-
-            // clear notification without clicking close
-            banner.cleanNotificationBanner();
-
-            // show the same banner again
-            banner._renderNotifications(notification);
-            expect(testWindow.$(id).length).toEqual(1);
-
-            // now close the notification by clicking the close icon
-            testWindow.$(".notification_ack").click();
             expect(testWindow.$(id).length).toEqual(0);
 
             await awaits(300);

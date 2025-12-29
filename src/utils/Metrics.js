@@ -104,7 +104,7 @@ define(function (require, exports, module) {
         PROJECT: "project",
         THEMES: "themes",
         EXTENSIONS: "extensions",
-        NOTIFICATIONS: "notifications",
+        NOTIFICATIONS: "notify",
         UI: "UI",
         UI_MENU: "UIMenu",
         UI_DIALOG: "ui-dialog",
