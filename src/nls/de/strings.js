@@ -192,7 +192,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Karte 400px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "auf",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Element nicht bearbeitbar – durch Skript generiert",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "Element kopiert. Verwenden Sie „Einfügen“, um es unter dem ausgewählten Element hinzuzufügen.",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Element scrollt nicht mit der Seite – Bearbeitungsfelder ausgeblendet",
@@ -201,7 +200,11 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Ordnerpfad eingeben (z. B. assets/images/)",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Geben Sie den Ordnerpfad ein oder lassen Sie das Feld leer, um den Download in den Ordner 'images' durchzuführen.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Für dieses Projekt nicht erneut fragen",
+  "IMAGE_SEARCH_LIMIT_TITLE": "Limit für Bildsuche erreicht",
+  "IMAGE_SEARCH_LIMIT_MESSAGE": "Sie haben alle {0} Bildsuchen für diesen Monat verbraucht.<br>Starten Sie einen kostenpflichtigen Phoenix Pro-Plan, um die Testlimits aufzuheben und die Suche fortzusetzen.",
+  "IMAGE_SEARCH_LIMIT_MESSAGE_THROTTLE": "Die Bildsuche ist aufgrund hoher Nachfrage vorübergehend nicht verfügbar.<br>Starten Sie einen kostenpflichtigen Phoenix Pro-Plan, um die Testlimits aufzuheben und die Suche fortzusetzen.",
   "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "Limit für Bildsuche erreicht",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Die Bildsuche ist aufgrund hoher Nachfrage vorübergehend nicht verfügbar. Dies ist in der Regel innerhalb einer Stunde behoben – bitte versuchen Sie es in Kürze erneut.",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Bitte Phoenix AI, dieses Element zu modifizieren...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Vorschau von Ihrem benutzerdefinierten Server {0} wird abgerufen",
   "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Vorschaumodus umschalten (F8)",
@@ -1560,8 +1563,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Der KI-Zugriff wurde von Ihrem Systemadministrator deaktiviert. Bitte kontaktieren Sie {0} für Unterstützung.",
   "AI_UPSELL_DIALOG_TITLE": "Mit {0} fortfahren?",
   "AI_UPSELL_DIALOG_MESSAGE": "Sie haben {0} entdeckt. Um fortzufahren, benötigen Sie ein KI-Abonnement oder Guthaben.",
-  "IMAGE_SEARCH_LIMIT_TITLE": "Limit für Bildsuche erreicht",
-  "IMAGE_SEARCH_LIMIT_MESSAGE": "Sie haben alle {0} Bildsuchen für diesen Monat verbraucht.<br>Starten Sie einen kostenpflichtigen Phoenix Pro-Plan, um die Testlimits aufzuheben und die Suche fortzusetzen.",
-  "IMAGE_SEARCH_LIMIT_MESSAGE_THROTTLE": "Die Bildsuche ist aufgrund hoher Nachfrage vorübergehend nicht verfügbar.<br>Starten Sie einen kostenpflichtigen Phoenix Pro-Plan, um die Testlimits aufzuheben und die Suche fortzusetzen.",
-  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Die Bildsuche ist aufgrund hoher Nachfrage vorübergehend nicht verfügbar. Dies ist in der Regel innerhalb einer Stunde behoben – bitte versuchen Sie es in Kürze erneut."
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "auf {0}"
 });

@@ -192,7 +192,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Tarxeta 400px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "Activado",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Elemento non editable: xerado por script",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "Elemento copiado. Usa «Pegar» para engadilo debaixo do elemento seleccionado",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "O elemento non se despraza coa páxina: caixas de edición ocultas",
@@ -201,7 +200,11 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Escriba a ruta do cartafol (p. ex., assets/images/)",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Escriba a ruta do cartafol ou déixeo baleiro para descargar no cartafol «images».",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Non volver preguntar para este proxecto",
+  "IMAGE_SEARCH_LIMIT_TITLE": "Límite de busca de imaxes alcanzado",
+  "IMAGE_SEARCH_LIMIT_MESSAGE": "Esgotaches as {0} buscas de imaxes deste mes.<br>Inicia un plan de pago de Phoenix Pro para eliminar os límites da proba e seguir buscando.",
+  "IMAGE_SEARCH_LIMIT_MESSAGE_THROTTLE": "A busca de imaxes non está dispoñible temporalmente debido á alta demanda.<br>Inicia un plan de pago de Phoenix Pro para eliminar os límites da proba e seguir buscando.",
   "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "Límite de busca de imaxes alcanzado",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "A busca de imaxes non está dispoñible temporalmente debido á alta demanda. Isto adoita solucionarse en menos dunha hora — téntao de novo en breve.",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Pedir a Phoenix AI que modifique este elemento...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Obtendo a vista previa do teu servidor personalizado {0}",
   "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Alternar o modo de vista previa (F8)",
@@ -1560,8 +1563,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "O acceso á IA foi desactivado polo seu administrador do sistema. Póñase en contacto con {0} para obter axuda.",
   "AI_UPSELL_DIALOG_TITLE": "Continuar con {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Descubriches {0}. Para continuar, necesitarás unha subscrición de IA ou créditos.",
-  "IMAGE_SEARCH_LIMIT_TITLE": "Límite de busca de imaxes alcanzado",
-  "IMAGE_SEARCH_LIMIT_MESSAGE": "Esgotaches as {0} buscas de imaxes deste mes.<br>Inicia un plan de pago de Phoenix Pro para eliminar os límites da proba e seguir buscando.",
-  "IMAGE_SEARCH_LIMIT_MESSAGE_THROTTLE": "A busca de imaxes non está dispoñible temporalmente debido á alta demanda.<br>Inicia un plan de pago de Phoenix Pro para eliminar os límites da proba e seguir buscando.",
-  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "A busca de imaxes non está dispoñible temporalmente debido á alta demanda. Isto adoita solucionarse en menos dunha hora — téntao de novo en breve."
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "en {0}"
 });

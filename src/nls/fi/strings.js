@@ -192,7 +192,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Kortti 400px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "palvelussa",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Elementti ei ole muokattavissa – skriptin luoma",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "Elementti kopioitu. Lisää se valitun elementin alle 'Liitä'-komennolla.",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Elementti ei vierity sivun mukana – muokkausruudut piilotettu",
@@ -201,7 +200,11 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Kirjoita kansion polku (esim. assets/images/)",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Kirjoita kansion polku tai jätä tyhjäksi ladataksesi 'images'-kansioon.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Älä kysy uudelleen tämän projektin osalta",
+  "IMAGE_SEARCH_LIMIT_TITLE": "Kuvahakuraja saavutettu",
+  "IMAGE_SEARCH_LIMIT_MESSAGE": "Olet käyttänyt kaikki tämän kuukauden {0} kuvahakua.<br>Aloita maksullinen Phoenix Pro -tilaus poistaaksesi kokeilurajoitukset ja jatkaaksesi hakua.",
+  "IMAGE_SEARCH_LIMIT_MESSAGE_THROTTLE": "Kuvahaku on tilapäisesti poissa käytöstä suuren kysynnän vuoksi.<br>Aloita maksullinen Phoenix Pro -tilaus poistaaksesi kokeilurajoitukset ja jatkaaksesi hakua.",
   "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "Kuvahaun raja saavutettu",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Kuvahaku on tilapäisesti poissa käytöstä suuren kysynnän vuoksi. Tilanne korjaantuu yleensä tunnin kuluessa — yritä pian uudelleen.",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Pyydä Phoenix-tekoälyä muokkaamaan tätä elementtiä...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Esikatselu haetaan mukautetulta palvelimeltasi {0}",
   "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Vaihda esikatselutila (F8)",
@@ -1560,8 +1563,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Järjestelmänvalvoja on poistanut tekoälyn käytöstä. Ota yhteyttä {0} saadaksesi apua.",
   "AI_UPSELL_DIALOG_TITLE": "Jatketaanko {0}:n kanssa?",
   "AI_UPSELL_DIALOG_MESSAGE": "Olet löytänyt ominaisuuden {0}. Jatkaaksesi tarvitset tekoälytilauksen tai krediittejä.",
-  "IMAGE_SEARCH_LIMIT_TITLE": "Kuvahakuraja saavutettu",
-  "IMAGE_SEARCH_LIMIT_MESSAGE": "Olet käyttänyt kaikki tämän kuukauden {0} kuvahakua.<br>Aloita maksullinen Phoenix Pro -tilaus poistaaksesi kokeilurajoitukset ja jatkaaksesi hakua.",
-  "IMAGE_SEARCH_LIMIT_MESSAGE_THROTTLE": "Kuvahaku on tilapäisesti poissa käytöstä suuren kysynnän vuoksi.<br>Aloita maksullinen Phoenix Pro -tilaus poistaaksesi kokeilurajoitukset ja jatkaaksesi hakua.",
-  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Kuvahaku on tilapäisesti poissa käytöstä suuren kysynnän vuoksi. Tilanne korjaantuu yleensä tunnin kuluessa — yritä pian uudelleen."
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "palvelussa {0}"
 });

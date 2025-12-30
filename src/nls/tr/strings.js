@@ -192,7 +192,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Kart 400px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Manşet 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "üzerinde",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Öğe düzenlenemez - script tarafından oluşturuldu",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "Öğe kopyalandı. Seçili öğenin altına eklemek için 'Yapıştır'ı kullanın",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Öğe sayfayla birlikte kaymıyor - düzenleme kutuları gizlendi",
@@ -201,7 +200,11 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Klasör yolunu yazın (örn., assets/images/)",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Klasör yolunu yazın ya da 'images' klasörüne indirilmesi için boş bırakın.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Bu proje için tekrar sorma",
+  "IMAGE_SEARCH_LIMIT_TITLE": "Görsel arama sınırına ulaşıldı",
+  "IMAGE_SEARCH_LIMIT_MESSAGE": "Bu ayki {0} görsel arama hakkınızın tamamını kullandınız.<br>Deneme sürümü sınırlarını kaldırmak ve aramaya devam etmek için ücretli bir Phoenix Pro planı başlatın.",
+  "IMAGE_SEARCH_LIMIT_MESSAGE_THROTTLE": "Yoğun talep nedeniyle görsel arama geçici olarak kullanılamıyor.<br>Deneme sürümü sınırlarını kaldırmak ve aramaya devam etmek için ücretli bir Phoenix Pro planı başlatın.",
   "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "Resim arama limitine ulaşıldı",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Yoğun talep nedeniyle görsel arama geçici olarak kullanılamıyor. Bu durum genellikle bir saat içinde düzelir — lütfen kısa bir süre sonra tekrar deneyin.",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Phoenix AI'dan bu öğeyi değiştirmesini isteyin...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Özel sunucunuzdan önizleme alınıyor {0}",
   "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Önizleme Modunu Aç/Kapat (F8)",
@@ -1560,8 +1563,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Yapay zeka erişimi sistem yöneticiniz tarafından devre dışı bırakıldı. Yardım için lütfen {0} ile iletişime geçin.",
   "AI_UPSELL_DIALOG_TITLE": "{0} ile devam edilsin mi?",
   "AI_UPSELL_DIALOG_MESSAGE": "{0} özelliğini keşfettiniz. Devam etmek için bir Yapay Zeka aboneliğine veya kredilere ihtiyacınız var.",
-  "IMAGE_SEARCH_LIMIT_TITLE": "Görsel arama sınırına ulaşıldı",
-  "IMAGE_SEARCH_LIMIT_MESSAGE": "Bu ayki {0} görsel arama hakkınızın tamamını kullandınız.<br>Deneme sürümü sınırlarını kaldırmak ve aramaya devam etmek için ücretli bir Phoenix Pro planı başlatın.",
-  "IMAGE_SEARCH_LIMIT_MESSAGE_THROTTLE": "Yoğun talep nedeniyle görsel arama geçici olarak kullanılamıyor.<br>Deneme sürümü sınırlarını kaldırmak ve aramaya devam etmek için ücretli bir Phoenix Pro planı başlatın.",
-  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Yoğun talep nedeniyle görsel arama geçici olarak kullanılamıyor. Bu durum genellikle bir saat içinde düzelir — lütfen kısa bir süre sonra tekrar deneyin."
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "{0} üzerinde"
 });

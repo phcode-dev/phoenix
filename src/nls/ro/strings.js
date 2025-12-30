@@ -192,7 +192,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Card 400px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "pe",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Elementul nu este editabil - generat de script",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "Element copiat. Folosiți „Lipește” pentru a-l adăuga sub elementul selectat",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Elementul nu derulează odată cu pagina - casetele de editare sunt ascunse",
@@ -201,7 +200,11 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Introduceți calea folderului (ex., assets/images/)",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Tastați calea folderului sau lăsați gol pentru a descărca în folderul 'images'.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Nu mai întrebați pentru acest proiect",
+  "IMAGE_SEARCH_LIMIT_TITLE": "Limitarea căutărilor de imagini a fost atinsă",
+  "IMAGE_SEARCH_LIMIT_MESSAGE": "Ați folosit toate cele {0} căutări de imagini pentru această lună.<br>Începeți un abonament plătit Phoenix Pro pentru a elimina limitele versiunii de încercare și a continua căutarea.",
+  "IMAGE_SEARCH_LIMIT_MESSAGE_THROTTLE": "Căutarea de imagini este temporar indisponibilă din cauza cererii ridicate.<br>Începeți un abonament plătit Phoenix Pro pentru a elimina limitele versiunii de încercare și a continua căutarea.",
   "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "Limită de căutare imagini atinsă",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Căutarea de imagini este temporar indisponibilă din cauza cererii ridicate. De obicei, problema se rezolvă în decurs de o oră — vă rugăm să încercați din nou în scurt timp.",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Roagă Phoenix AI să modifice acest element...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Se obține previzualizarea de la serverul personalizat {0}",
   "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Comutați modul de previzualizare (F8)",
@@ -1560,8 +1563,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Accesul AI a fost dezactivat de către administratorul dvs. de sistem. Vă rugăm să contactați {0} pentru asistență.",
   "AI_UPSELL_DIALOG_TITLE": "Continuați cu {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Ați descoperit {0}. Pentru a continua, veți avea nevoie de un abonament AI sau de credite.",
-  "IMAGE_SEARCH_LIMIT_TITLE": "Limitarea căutărilor de imagini a fost atinsă",
-  "IMAGE_SEARCH_LIMIT_MESSAGE": "Ați folosit toate cele {0} căutări de imagini pentru această lună.<br>Începeți un abonament plătit Phoenix Pro pentru a elimina limitele versiunii de încercare și a continua căutarea.",
-  "IMAGE_SEARCH_LIMIT_MESSAGE_THROTTLE": "Căutarea de imagini este temporar indisponibilă din cauza cererii ridicate.<br>Începeți un abonament plătit Phoenix Pro pentru a elimina limitele versiunii de încercare și a continua căutarea.",
-  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Căutarea de imagini este temporar indisponibilă din cauza cererii ridicate. De obicei, problema se rezolvă în decurs de o oră — vă rugăm să încercați din nou în scurt timp."
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "pe {0}"
 });

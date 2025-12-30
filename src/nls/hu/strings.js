@@ -192,7 +192,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Kártya 400px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "bekapcsolva",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Az elem nem szerkeszthető – szkript által generált.",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "Elem másolva. A 'Beillesztés' paranccsal illesztheti be a kijelölt elem alá.",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Az elem nem gördül az oldallal – a szerkesztőmezők elrejtve.",
@@ -201,7 +200,11 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Adja meg a mappa elérési útját (pl. assets/images/)",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Gépelje be a mappa elérési útját, vagy hagyja üresen az 'images' mappába történő letöltéshez.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Ne kérdezze újra ennél a projektnél",
+  "IMAGE_SEARCH_LIMIT_TITLE": "Képkeresési korlát elérve",
+  "IMAGE_SEARCH_LIMIT_MESSAGE": "Felhasználta az erre a hónapra szóló {0} képkeresését.<br>Váltson fizetős Phoenix Pro csomagra a próbaverziós korlátok eltávolításához és a keresés folytatásához.",
+  "IMAGE_SEARCH_LIMIT_MESSAGE_THROTTLE": "A képkeresés a nagy terheltség miatt átmenetileg nem elérhető.<br>Váltson fizetős Phoenix Pro csomagra a próbaverziós korlátok eltávolításához és a keresés folytatásához.",
   "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "Képkeresési korlát elérve",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "A képkeresés a nagy terheltség miatt átmenetileg nem elérhető. Ez általában egy órán belül megoldódik — kérjük, próbálja újra hamarosan.",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Kérd meg a Phoenix MI-t, hogy módosítsa ezt az elemet...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Előnézet lekérése az egyéni szerverről ({0})",
   "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Előnézeti mód be-/kikapcsolása (F8)",
@@ -1560,8 +1563,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "A MI-hozzáférést a rendszergazda letiltotta. Segítségért forduljon a(z) {0} elérhetőséghez.",
   "AI_UPSELL_DIALOG_TITLE": "Folytatja a(z) {0} használatával?",
   "AI_UPSELL_DIALOG_MESSAGE": "Felfedezte a(z) {0} szolgáltatást. A folytatáshoz MI-előfizetésre vagy kreditekre lesz szüksége.",
-  "IMAGE_SEARCH_LIMIT_TITLE": "Képkeresési korlát elérve",
-  "IMAGE_SEARCH_LIMIT_MESSAGE": "Felhasználta az erre a hónapra szóló {0} képkeresését.<br>Váltson fizetős Phoenix Pro csomagra a próbaverziós korlátok eltávolításához és a keresés folytatásához.",
-  "IMAGE_SEARCH_LIMIT_MESSAGE_THROTTLE": "A képkeresés a nagy terheltség miatt átmenetileg nem elérhető.<br>Váltson fizetős Phoenix Pro csomagra a próbaverziós korlátok eltávolításához és a keresés folytatásához.",
-  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "A képkeresés a nagy terheltség miatt átmenetileg nem elérhető. Ez általában egy órán belül megoldódik — kérjük, próbálja újra hamarosan."
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "a(z) {0} felületen"
 });

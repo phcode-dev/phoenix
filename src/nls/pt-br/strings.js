@@ -192,7 +192,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Card 400px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "no",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Elemento não editável - gerado por script",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "Elemento copiado. Use 'Colar' para adicioná-lo abaixo do elemento selecionado",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "O elemento não rola com a página - caixas de edição ocultas",
@@ -201,7 +200,11 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Digite o caminho da pasta (ex.: assets/images/)",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Digite o caminho da pasta ou deixe em branco para baixar na pasta 'images'.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Não perguntar novamente para este projeto",
+  "IMAGE_SEARCH_LIMIT_TITLE": "Limite de busca de imagens atingido",
+  "IMAGE_SEARCH_LIMIT_MESSAGE": "Você usou todas as suas {0} buscas de imagem deste mês.<br>Assine um plano pago do Phoenix Pro para remover os limites de avaliação e continuar buscando.",
+  "IMAGE_SEARCH_LIMIT_MESSAGE_THROTTLE": "A busca de imagens está temporariamente indisponível devido à alta demanda.<br>Assine um plano pago do Phoenix Pro para remover os limites de avaliação e continuar buscando.",
   "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "Limite de busca de imagens atingido",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "A busca de imagens está temporariamente indisponível devido à alta demanda. Isso geralmente se resolve em uma hora. Por favor, tente novamente em breve.",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Peça à Phoenix AI para modificar este elemento...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Obtendo pré-visualização do seu servidor personalizado {0}",
   "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Alternar Modo de Visualização (F8)",
@@ -1560,8 +1563,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "O acesso à IA foi desativado pelo administrador do seu sistema. Entre em contato com {0} para obter assistência.",
   "AI_UPSELL_DIALOG_TITLE": "Continuar com {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Você descobriu o {0}. Para prosseguir, você precisará de uma assinatura de IA ou de créditos.",
-  "IMAGE_SEARCH_LIMIT_TITLE": "Limite de busca de imagens atingido",
-  "IMAGE_SEARCH_LIMIT_MESSAGE": "Você usou todas as suas {0} buscas de imagem deste mês.<br>Assine um plano pago do Phoenix Pro para remover os limites de avaliação e continuar buscando.",
-  "IMAGE_SEARCH_LIMIT_MESSAGE_THROTTLE": "A busca de imagens está temporariamente indisponível devido à alta demanda.<br>Assine um plano pago do Phoenix Pro para remover os limites de avaliação e continuar buscando.",
-  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "A busca de imagens está temporariamente indisponível devido à alta demanda. Isso geralmente se resolve em uma hora. Por favor, tente novamente em breve."
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "em {0}"
 });

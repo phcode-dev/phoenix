@@ -192,7 +192,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Kort 400px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "på",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Elementet kan ikke redigeres – generert av skript",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "Element kopiert. Bruk 'Lim inn' for å legge det til under det valgte elementet",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Elementet ruller ikke med siden – redigeringsbokser skjult",
@@ -201,7 +200,11 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Skriv inn mappesti (f.eks. assets/images/)",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Skriv inn mappesti eller la stå tomt for å laste ned i 'images'-mappen.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Ikke spør igjen for dette prosjektet",
+  "IMAGE_SEARCH_LIMIT_TITLE": "Grensen for bildesøk er nådd",
+  "IMAGE_SEARCH_LIMIT_MESSAGE": "Du har brukt alle {0} bildesøkene dine for denne måneden.<br>Start et betalt Phoenix Pro-abonnement for å fjerne prøveperiodegrensene og fortsette å søke.",
+  "IMAGE_SEARCH_LIMIT_MESSAGE_THROTTLE": "Bildesøk er midlertidig utilgjengelig på grunn av stor pågang.<br>Start et betalt Phoenix Pro-abonnement for å fjerne prøveperiodegrensene og fortsette å søke.",
   "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "Grense for bildesøk er nådd",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Bildesøk er midlertidig utilgjengelig på grunn av stor pågang. Dette løser seg vanligvis innen en time – vennligst prøv igjen om kort tid.",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Be Phoenix AI om å endre dette elementet...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Henter forhåndsvisning fra din tilpassede server {0}",
   "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Veksle forhåndsvisningsmodus (F8)",
@@ -1560,8 +1563,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "AI-tilgang er deaktivert av systemadministratoren din. Vennligst kontakt {0} for hjelp.",
   "AI_UPSELL_DIALOG_TITLE": "Fortsette med {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Du har oppdaget {0}. For å fortsette trenger du et AI-abonnement eller kreditter.",
-  "IMAGE_SEARCH_LIMIT_TITLE": "Grensen for bildesøk er nådd",
-  "IMAGE_SEARCH_LIMIT_MESSAGE": "Du har brukt alle {0} bildesøkene dine for denne måneden.<br>Start et betalt Phoenix Pro-abonnement for å fjerne prøveperiodegrensene og fortsette å søke.",
-  "IMAGE_SEARCH_LIMIT_MESSAGE_THROTTLE": "Bildesøk er midlertidig utilgjengelig på grunn av stor pågang.<br>Start et betalt Phoenix Pro-abonnement for å fjerne prøveperiodegrensene og fortsette å søke.",
-  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Bildesøk er midlertidig utilgjengelig på grunn av stor pågang. Dette løser seg vanligvis innen en time – vennligst prøv igjen om kort tid."
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "på {0}"
 });

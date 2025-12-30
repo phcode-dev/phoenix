@@ -192,7 +192,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Scheda 400px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "su",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Elemento non modificabile - generato da script",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "Elemento copiato. Usa 'Incolla' per aggiungerlo sotto l'elemento selezionato",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "L'elemento non scorre con la pagina - caselle di modifica nascoste",
@@ -201,7 +200,11 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Inserisci il percorso della cartella (es. assets/images/)",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Digita il percorso della cartella o lascia vuoto per scaricare nella cartella 'images'.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Non chiedere più per questo progetto",
+  "IMAGE_SEARCH_LIMIT_TITLE": "Limite di ricerca immagini raggiunto",
+  "IMAGE_SEARCH_LIMIT_MESSAGE": "Hai esaurito le {0} ricerche di immagini per questo mese.<br>Attiva un piano a pagamento Phoenix Pro per rimuovere i limiti della versione di prova e continuare a cercare.",
+  "IMAGE_SEARCH_LIMIT_MESSAGE_THROTTLE": "La ricerca di immagini è temporaneamente non disponibile a causa dell'elevata richiesta.<br>Attiva un piano a pagamento Phoenix Pro per rimuovere i limiti della versione di prova e continuare a cercare.",
   "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "Limite di ricerca immagini raggiunto",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "La ricerca di immagini è temporaneamente non disponibile a causa dell'elevata richiesta. Il problema si risolve solitamente entro un'ora — riprova tra poco.",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Chiedi a Phoenix AI di modificare questo elemento...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Anteprima dal tuo server personalizzato {0}",
   "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Attiva/disattiva anteprima (F8)",
@@ -1560,8 +1563,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "L'accesso all'AI è stato disattivato dal tuo amministratore di sistema. Contatta {0} per assistenza.",
   "AI_UPSELL_DIALOG_TITLE": "Continuare con {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Hai scoperto {0}. Per procedere, avrai bisogno di un abbonamento AI o di crediti.",
-  "IMAGE_SEARCH_LIMIT_TITLE": "Limite di ricerca immagini raggiunto",
-  "IMAGE_SEARCH_LIMIT_MESSAGE": "Hai esaurito le {0} ricerche di immagini per questo mese.<br>Attiva un piano a pagamento Phoenix Pro per rimuovere i limiti della versione di prova e continuare a cercare.",
-  "IMAGE_SEARCH_LIMIT_MESSAGE_THROTTLE": "La ricerca di immagini è temporaneamente non disponibile a causa dell'elevata richiesta.<br>Attiva un piano a pagamento Phoenix Pro per rimuovere i limiti della versione di prova e continuare a cercare.",
-  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "La ricerca di immagini è temporaneamente non disponibile a causa dell'elevata richiesta. Il problema si risolve solitamente entro un'ora — riprova tra poco."
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "su {0}"
 });

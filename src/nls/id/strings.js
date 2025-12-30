@@ -192,7 +192,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Kartu 400px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "di",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Elemen tidak dapat diedit - dihasilkan oleh skrip",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "Elemen disalin. Gunakan 'Tempel' untuk menambahkannya di bawah elemen yang dipilih",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Elemen tidak ikut bergulir dengan halaman - kotak edit disembunyikan",
@@ -201,7 +200,11 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Ketik jalur folder (mis., assets/images/)",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Ketik path folder atau biarkan kosong untuk mengunduh di folder 'images'.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Jangan tanya lagi untuk proyek ini",
+  "IMAGE_SEARCH_LIMIT_TITLE": "Batas pencarian gambar tercapai",
+  "IMAGE_SEARCH_LIMIT_MESSAGE": "Anda telah menggunakan semua {0} pencarian gambar untuk bulan ini.<br>Mulai langganan berbayar Phoenix Pro untuk menghapus batas uji coba dan melanjutkan pencarian.",
+  "IMAGE_SEARCH_LIMIT_MESSAGE_THROTTLE": "Pencarian gambar untuk sementara tidak tersedia karena permintaan yang tinggi.<br>Mulai langganan berbayar Phoenix Pro untuk menghapus batas uji coba dan melanjutkan pencarian.",
   "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "Batas pencarian gambar tercapai",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Pencarian gambar untuk sementara tidak tersedia karena permintaan yang tinggi. Masalah ini biasanya selesai dalam satu jam — silakan coba lagi sebentar lagi.",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Minta Phoenix AI untuk memodifikasi elemen ini...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Mendapatkan pratinjau dari server kustom Anda {0}",
   "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Alihkan Mode Pratinjau (F8)",
@@ -1560,8 +1563,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Akses AI telah dinonaktifkan oleh administrator sistem Anda. Silakan hubungi {0} untuk bantuan.",
   "AI_UPSELL_DIALOG_TITLE": "Lanjutkan dengan {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Anda telah menemukan {0}. Untuk melanjutkan, Anda memerlukan langganan AI atau kredit.",
-  "IMAGE_SEARCH_LIMIT_TITLE": "Batas pencarian gambar tercapai",
-  "IMAGE_SEARCH_LIMIT_MESSAGE": "Anda telah menggunakan semua {0} pencarian gambar untuk bulan ini.<br>Mulai langganan berbayar Phoenix Pro untuk menghapus batas uji coba dan melanjutkan pencarian.",
-  "IMAGE_SEARCH_LIMIT_MESSAGE_THROTTLE": "Pencarian gambar untuk sementara tidak tersedia karena permintaan yang tinggi.<br>Mulai langganan berbayar Phoenix Pro untuk menghapus batas uji coba dan melanjutkan pencarian.",
-  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Pencarian gambar untuk sementara tidak tersedia karena permintaan yang tinggi. Masalah ini biasanya selesai dalam satu jam — silakan coba lagi sebentar lagi."
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "di {0}"
 });

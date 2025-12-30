@@ -192,7 +192,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Kort 400px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "på",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Elementet kan inte redigeras - genererat av skript",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "Elementet har kopierats. Använd 'Klistra in' för att lägga till det under det valda elementet",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Elementet rullar inte med sidan - redigeringsrutor dolda",
@@ -201,7 +200,11 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Ange mappsökväg (t.ex. assets/images/)",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Ange mappsökväg eller lämna tomt för att ladda ner i mappen 'images'.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Fråga inte igen för det här projektet",
+  "IMAGE_SEARCH_LIMIT_TITLE": "Gränsen för bildsökning har nåtts",
+  "IMAGE_SEARCH_LIMIT_MESSAGE": "Du har använt alla dina {0} bildsökningar för den här månaden.<br>Starta en betald Phoenix Pro-plan för att ta bort provperiodens begränsningar och fortsätta söka.",
+  "IMAGE_SEARCH_LIMIT_MESSAGE_THROTTLE": "Bildsökning är tillfälligt otillgänglig på grund av hög efterfrågan.<br>Starta en betald Phoenix Pro-plan för att ta bort provperiodens begränsningar och fortsätta söka.",
   "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "Gränsen för bildsökning har nåtts",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Bildsökning är tillfälligt otillgänglig på grund av hög efterfrågan. Detta löser sig vanligtvis inom en timme – försök igen om en liten stund.",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Be Phoenix AI att modifiera detta element...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Hämtar förhandsvisning från din anpassade server {0}",
   "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Växla förhandsgranskningsläge (F8)",
@@ -1560,8 +1563,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "AI-åtkomst har inaktiverats av din systemadministratör. Kontakta {0} för hjälp.",
   "AI_UPSELL_DIALOG_TITLE": "Fortsätt med {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Du har upptäckt {0}. För att fortsätta behöver du ett AI-abonnemang eller krediter.",
-  "IMAGE_SEARCH_LIMIT_TITLE": "Gränsen för bildsökning har nåtts",
-  "IMAGE_SEARCH_LIMIT_MESSAGE": "Du har använt alla dina {0} bildsökningar för den här månaden.<br>Starta en betald Phoenix Pro-plan för att ta bort provperiodens begränsningar och fortsätta söka.",
-  "IMAGE_SEARCH_LIMIT_MESSAGE_THROTTLE": "Bildsökning är tillfälligt otillgänglig på grund av hög efterfrågan.<br>Starta en betald Phoenix Pro-plan för att ta bort provperiodens begränsningar och fortsätta söka.",
-  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Bildsökning är tillfälligt otillgänglig på grund av hög efterfrågan. Detta löser sig vanligtvis inom en timme – försök igen om en liten stund."
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "på {0}"
 });
