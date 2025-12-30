@@ -192,7 +192,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Karta 400px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "na",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Prvok nie je možné upraviť – vygenerovaný skriptom",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "Prvok bol skopírovaný. Použite 'Prilepiť' na jeho pridanie pod vybraný prvok",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Prvok sa neposúva so stránkou – editačné polia skryté",
@@ -201,7 +200,11 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Zadajte cestu k priečinku (napr. assets/images/)",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Zadajte cestu k priečinku alebo nechajte pole prázdne pre stiahnutie do priečinka 'images'.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Pre tento projekt sa už nepýtať",
+  "IMAGE_SEARCH_LIMIT_TITLE": "Dosiahli ste limit vyhľadávania obrázkov",
+  "IMAGE_SEARCH_LIMIT_MESSAGE": "Tento mesiac ste využili všetkých {0} vyhľadávaní obrázkov.<br>Aktivujte si platený plán Phoenix Pro, aby ste zrušili limity skúšobnej verzie a mohli pokračovať vo vyhľadávaní.",
+  "IMAGE_SEARCH_LIMIT_MESSAGE_THROTTLE": "Vyhľadávanie obrázkov je dočasne nedostupné z dôvodu vysokého dopytu.<br>Aktivujte si platený plán Phoenix Pro, aby ste zrušili limity skúšobnej verzie a mohli pokračovať vo vyhľadávaní.",
   "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "Limit vyhľadávania obrázkov bol dosiahnutý",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Vyhľadávanie obrázkov je dočasne nedostupné z dôvodu vysokého dopytu. Zvyčajne sa to vyrieši do hodiny — skúste to, prosím, znova o chvíľu.",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Požiadajte Phoenix AI o úpravu tohto prvku...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Získavanie náhľadu z vášho vlastného servera {0}",
   "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Prepnúť režim náhľadu (F8)",
@@ -1560,8 +1563,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Prístup k AI bol vypnutý správcom vášho systému. So žiadosťou o pomoc sa obráťte na {0}.",
   "AI_UPSELL_DIALOG_TITLE": "Pokračovať s {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Objavili ste {0}. Ak chcete pokračovať, budete potrebovať predplatné AI alebo kredity.",
-  "IMAGE_SEARCH_LIMIT_TITLE": "Dosiahli ste limit vyhľadávania obrázkov",
-  "IMAGE_SEARCH_LIMIT_MESSAGE": "Tento mesiac ste využili všetkých {0} vyhľadávaní obrázkov.<br>Aktivujte si platený plán Phoenix Pro, aby ste zrušili limity skúšobnej verzie a mohli pokračovať vo vyhľadávaní.",
-  "IMAGE_SEARCH_LIMIT_MESSAGE_THROTTLE": "Vyhľadávanie obrázkov je dočasne nedostupné z dôvodu vysokého dopytu.<br>Aktivujte si platený plán Phoenix Pro, aby ste zrušili limity skúšobnej verzie a mohli pokračovať vo vyhľadávaní.",
-  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Vyhľadávanie obrázkov je dočasne nedostupné z dôvodu vysokého dopytu. Zvyčajne sa to vyrieši do hodiny — skúste to, prosím, znova o chvíľu."
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "na {0}"
 });

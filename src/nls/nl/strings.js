@@ -192,7 +192,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Kaart 400px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "op",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Element niet bewerkbaar - gegenereerd door script",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "Element gekopieerd. Gebruik 'Plakken' om het onder het geselecteerde element toe te voegen",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Element scrolt niet mee met de pagina - bewerkingsvakken verborgen",
@@ -201,7 +200,11 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Typ mappad (bijv. assets/images/)",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Typ een mappad of laat leeg om te downloaden in de map 'images'.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Niet opnieuw vragen voor dit project",
+  "IMAGE_SEARCH_LIMIT_TITLE": "Limiet voor afbeeldingen zoeken bereikt",
+  "IMAGE_SEARCH_LIMIT_MESSAGE": "U heeft alle {0} zoekopdrachten naar afbeeldingen voor deze maand gebruikt.<br>Start een betaald Phoenix Pro-abonnement om proeflimieten te verwijderen en door te gaan met zoeken.",
+  "IMAGE_SEARCH_LIMIT_MESSAGE_THROTTLE": "Zoeken naar afbeeldingen is tijdelijk niet beschikbaar vanwege de grote vraag.<br>Start een betaald Phoenix Pro-abonnement om proeflimieten te verwijderen en door te gaan met zoeken.",
   "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "Zoeklimiet voor afbeeldingen bereikt",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Zoeken naar afbeeldingen is tijdelijk niet beschikbaar vanwege de grote vraag. Dit is meestal binnen een uur opgelost — probeer het binnenkort opnieuw.",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Vraag Phoenix AI om dit element aan te passen...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Voorbeeld ophalen van uw aangepaste server {0}",
   "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Voorbeeldmodus in-/uitschakelen (F8)",
@@ -1560,8 +1563,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "De toegang tot AI is uitgeschakeld door uw systeembeheerder. Neem contact op met {0} voor hulp.",
   "AI_UPSELL_DIALOG_TITLE": "Doorgaan met {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "U heeft {0} ontdekt. Om verder te gaan, heeft u een AI-abonnement of credits nodig.",
-  "IMAGE_SEARCH_LIMIT_TITLE": "Limiet voor afbeeldingen zoeken bereikt",
-  "IMAGE_SEARCH_LIMIT_MESSAGE": "U heeft alle {0} zoekopdrachten naar afbeeldingen voor deze maand gebruikt.<br>Start een betaald Phoenix Pro-abonnement om proeflimieten te verwijderen en door te gaan met zoeken.",
-  "IMAGE_SEARCH_LIMIT_MESSAGE_THROTTLE": "Zoeken naar afbeeldingen is tijdelijk niet beschikbaar vanwege de grote vraag.<br>Start een betaald Phoenix Pro-abonnement om proeflimieten te verwijderen en door te gaan met zoeken.",
-  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Zoeken naar afbeeldingen is tijdelijk niet beschikbaar vanwege de grote vraag. Dit is meestal binnen een uur opgelost — probeer het binnenkort opnieuw."
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "op {0}"
 });

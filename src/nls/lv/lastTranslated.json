@@ -1076,7 +1076,7 @@
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Type folder path (e.g., assets/images/)",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Don't ask again for this project",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Select Folder to Save Image",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "on",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "on {0}",
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Checking connection",
   "LIVE_DEV_IMAGE_GALLERY_CLOSE": "Close",
   "LIVE_DEV_IMAGE_GALLERY_DIALOG_OVERLAY_MESSAGE": "Select image download location in the editor to continue",

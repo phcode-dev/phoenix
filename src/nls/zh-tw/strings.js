@@ -192,7 +192,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "卡片 400px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "主視覺 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "於",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "元素不可編輯 - 由指令碼產生",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "元素已複製。使用「貼上」將其新增至所選元素的下方",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "元素不會隨頁面捲動 - 編輯方塊已隱藏",
@@ -201,7 +200,11 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "輸入資料夾路徑 (例如：assets/images/)",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 輸入資料夾路徑，或留空以將檔案下載至 'images' 資料夾。",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "針對此專案不再詢問",
+  "IMAGE_SEARCH_LIMIT_TITLE": "圖片搜尋已達上限",
+  "IMAGE_SEARCH_LIMIT_MESSAGE": "您已用完本月的 {0} 次圖片搜尋。<br>升級至付費 Phoenix Pro 方案，即可移除試用限制並繼續搜尋。",
+  "IMAGE_SEARCH_LIMIT_MESSAGE_THROTTLE": "因需求量過高，圖片搜尋功能暫時無法使用。<br>升級至付費 Phoenix Pro 方案，即可移除試用限制並繼續搜尋。",
   "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "圖片搜尋上限已達",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "因需求量過高，圖片搜尋功能暫時無法使用。此狀況通常會在一小時內排除 — 請稍後再試。",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "讓 Phoenix AI 修改此元素…",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "從您的自訂伺服器 {0} 取得預覽",
   "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "切換預覽模式 (F8)",
@@ -1560,8 +1563,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "您的系統管理員已停用 AI 存取權限。如需協助，請聯絡 {0}。",
   "AI_UPSELL_DIALOG_TITLE": "要繼續使用 {0} 嗎？",
   "AI_UPSELL_DIALOG_MESSAGE": "您已發現 {0}。您需要 AI 訂閱或點數才能繼續。",
-  "IMAGE_SEARCH_LIMIT_TITLE": "圖片搜尋已達上限",
-  "IMAGE_SEARCH_LIMIT_MESSAGE": "您已用完本月的 {0} 次圖片搜尋。<br>升級至付費 Phoenix Pro 方案，即可移除試用限制並繼續搜尋。",
-  "IMAGE_SEARCH_LIMIT_MESSAGE_THROTTLE": "因需求量過高，圖片搜尋功能暫時無法使用。<br>升級至付費 Phoenix Pro 方案，即可移除試用限制並繼續搜尋。",
-  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "因需求量過高，圖片搜尋功能暫時無法使用。此狀況通常會在一小時內排除 — 請稍後再試。"
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "於 {0}"
 });

@@ -192,7 +192,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "卡片 400px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "主图 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "于",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "元素不可编辑 - 由脚本生成",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "元素已复制。使用“粘贴”可将其添加到选中元素下方",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "元素不随页面滚动 - 编辑框已隐藏",
@@ -201,7 +200,11 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "输入文件夹路径（例如：assets/images/）",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 输入文件夹路径，或留空则下载到 'images' 文件夹。",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "针对此项目不再询问",
+  "IMAGE_SEARCH_LIMIT_TITLE": "图片搜索次数已达上限",
+  "IMAGE_SEARCH_LIMIT_MESSAGE": "您本月的 {0} 次图片搜索已用尽。<br>升级到 Phoenix Pro 付费版，即可解除试用限制并继续搜索。",
+  "IMAGE_SEARCH_LIMIT_MESSAGE_THROTTLE": "因需求过高，图片搜索暂时无法使用。<br>升级到 Phoenix Pro 付费版，即可解除试用限制并继续搜索。",
   "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "已达到图片搜索上限",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "因需求过高，图片搜索暂时无法使用。此问题通常会在一小时内解决——请稍后重试。",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "让 Phoenix AI 修改此元素……",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "正在从您的自定义服务器 {0} 获取预览",
   "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "切换预览模式 (F8)",
@@ -1560,8 +1563,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "AI 访问权限已被您的系统管理员禁用。请联系 {0} 以获取帮助。",
   "AI_UPSELL_DIALOG_TITLE": "继续使用 {0}？",
   "AI_UPSELL_DIALOG_MESSAGE": "您发现了 {0}。要继续，您需要 AI 订阅或点数。",
-  "IMAGE_SEARCH_LIMIT_TITLE": "图片搜索次数已达上限",
-  "IMAGE_SEARCH_LIMIT_MESSAGE": "您本月的 {0} 次图片搜索已用尽。<br>升级到 Phoenix Pro 付费版，即可解除试用限制并继续搜索。",
-  "IMAGE_SEARCH_LIMIT_MESSAGE_THROTTLE": "因需求过高，图片搜索暂时无法使用。<br>升级到 Phoenix Pro 付费版，即可解除试用限制并继续搜索。",
-  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "因需求过高，图片搜索暂时无法使用。此问题通常会在一小时内解决——请稍后重试。"
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "于 {0}"
 });

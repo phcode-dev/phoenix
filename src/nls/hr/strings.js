@@ -192,7 +192,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Kartica 400px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "na",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Element nije moguće uređivati - generiran skriptom",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "Element je kopiran. Upotrijebite 'Zalijepi' da biste ga dodali ispod odabranog elementa",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Element se ne pomiče sa stranicom - okviri za uređivanje su skriveni",
@@ -201,7 +200,11 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Upišite putanju mape (npr. assets/images/)",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Upišite putanju mape ili ostavite prazno za preuzimanje u mapu 'images'.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Ne pitaj ponovno za ovaj projekt",
+  "IMAGE_SEARCH_LIMIT_TITLE": "Dosegnuto ograničenje pretraživanja slika",
+  "IMAGE_SEARCH_LIMIT_MESSAGE": "Iskoristili ste svih {0} pretraživanja slika za ovaj mjesec.<br>Pokrenite plaćeni Phoenix Pro plan kako biste uklonili ograničenja probne verzije i nastavili s pretraživanjem.",
+  "IMAGE_SEARCH_LIMIT_MESSAGE_THROTTLE": "Pretraživanje slika privremeno je nedostupno zbog velike potražnje.<br>Pokrenite plaćeni Phoenix Pro plan kako biste uklonili ograničenja probne verzije i nastavili s pretraživanjem.",
   "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "Dosegnuto ograničenje pretraživanja slika",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Pretraživanje slika privremeno je nedostupno zbog velike potražnje. Ovo se obično riješi unutar sat vremena — molimo, pokušajte ponovno uskoro.",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Zatražite od Phoenix AI-ja da izmijeni ovaj element...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Dohvaćanje pregleda s vašeg prilagođenog poslužitelja {0}",
   "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Uključi/isključi način pretpregleda (F8)",
@@ -1560,8 +1563,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Pristup AI-ju onemogućio je vaš administrator sustava. Molimo kontaktirajte {0} za pomoć.",
   "AI_UPSELL_DIALOG_TITLE": "Nastaviti s {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Otkrili ste {0}. Da biste nastavili, potrebna vam je AI pretplata ili krediti.",
-  "IMAGE_SEARCH_LIMIT_TITLE": "Dosegnuto ograničenje pretraživanja slika",
-  "IMAGE_SEARCH_LIMIT_MESSAGE": "Iskoristili ste svih {0} pretraživanja slika za ovaj mjesec.<br>Pokrenite plaćeni Phoenix Pro plan kako biste uklonili ograničenja probne verzije i nastavili s pretraživanjem.",
-  "IMAGE_SEARCH_LIMIT_MESSAGE_THROTTLE": "Pretraživanje slika privremeno je nedostupno zbog velike potražnje.<br>Pokrenite plaćeni Phoenix Pro plan kako biste uklonili ograničenja probne verzije i nastavili s pretraživanjem.",
-  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Pretraživanje slika privremeno je nedostupno zbog velike potražnje. Ovo se obično riješi unutar sat vremena — molimo, pokušajte ponovno uskoro."
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "na {0}"
 });

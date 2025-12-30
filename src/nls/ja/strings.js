@@ -192,7 +192,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "カード 400px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "ヒーロー 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "レティナ 2200px",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "オン",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "スクリプトにより生成された要素は編集できません",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "要素がコピーされました。「貼り付け」で選択要素の下に追加できます",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "固定表示の要素のため、編集ボックスは非表示です",
@@ -201,7 +200,11 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "フォルダーパスを入力（例：assets/images/）",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 フォルダーパスを入力するか、空のままにすると 'images' フォルダーにダウンロードされます。",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "このプロジェクトでは次回から表示しない",
+  "IMAGE_SEARCH_LIMIT_TITLE": "画像検索の上限に達しました",
+  "IMAGE_SEARCH_LIMIT_MESSAGE": "今月の画像検索回数{0}回をすべて使用しました。<br>トライアル制限を解除して検索を続けるには、Phoenix Proの有料プランを開始してください。",
+  "IMAGE_SEARCH_LIMIT_MESSAGE_THROTTLE": "アクセスが集中しているため、画像検索は一時的にご利用いただけません。<br>トライアル制限を解除して検索を続けるには、Phoenix Proの有料プランを開始してください。",
   "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "画像検索の上限に達しました",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "アクセスが集中しているため、画像検索は一時的にご利用いただけません。通常1時間以内に解消されます。しばらくしてからもう一度お試しください。",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Phoenix AIにこの要素の変更を依頼してください…",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "カスタムサーバー {0} からプレビューを取得しています",
   "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "プレビューモードの切り替え (F8)",
@@ -1560,8 +1563,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "AIアクセスはシステム管理者によって無効にされています。サポートが必要な場合は、{0}にお問い合わせください。",
   "AI_UPSELL_DIALOG_TITLE": "{0}を続行しますか？",
   "AI_UPSELL_DIALOG_MESSAGE": "「{0}」をご利用になるには、AIサブスクリプションまたはクレジットが必要です。",
-  "IMAGE_SEARCH_LIMIT_TITLE": "画像検索の上限に達しました",
-  "IMAGE_SEARCH_LIMIT_MESSAGE": "今月の画像検索回数{0}回をすべて使用しました。<br>トライアル制限を解除して検索を続けるには、Phoenix Proの有料プランを開始してください。",
-  "IMAGE_SEARCH_LIMIT_MESSAGE_THROTTLE": "アクセスが集中しているため、画像検索は一時的にご利用いただけません。<br>トライアル制限を解除して検索を続けるには、Phoenix Proの有料プランを開始してください。",
-  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "アクセスが集中しているため、画像検索は一時的にご利用いただけません。通常1時間以内に解消されます。しばらくしてからもう一度お試しください。"
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "{0}にて"
 });

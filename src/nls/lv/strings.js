@@ -192,7 +192,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Karte 400px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "no",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Elements nav rediģējams - ģenerēts ar skriptu",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "Elements nokopēts. Izmantojiet 'Ielīmēt', lai to pievienotu zem atlasītā elementa",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Elements neritinās līdzi lapai - rediģēšanas lauki paslēpti",
@@ -201,7 +200,11 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Ierakstiet mapes ceļu (piem., assets/images/)",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Ievadiet mapes ceļu vai atstājiet tukšu, lai lejupielādētu mapē 'images'.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Vairs nejautāt šim projektam",
+  "IMAGE_SEARCH_LIMIT_TITLE": "Attēlu meklēšanas limits sasniegts",
+  "IMAGE_SEARCH_LIMIT_MESSAGE": "Jūs esat izmantojis visus {0} attēlu meklējumus šajā mēnesī.<br>Uzsāciet maksas Phoenix Pro plānu, lai noņemtu izmēģinājuma versijas ierobežojumus un turpinātu meklēšanu.",
+  "IMAGE_SEARCH_LIMIT_MESSAGE_THROTTLE": "Attēlu meklēšana īslaicīgi nav pieejama lielā pieprasījuma dēļ.<br>Uzsāciet maksas Phoenix Pro plānu, lai noņemtu izmēģinājuma versijas ierobežojumus un turpinātu meklēšanu.",
   "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "Attēlu meklēšanas limits sasniegts",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Attēlu meklēšana īslaicīgi nav pieejama lielā pieprasījuma dēļ. Parasti tas atrisinās stundas laikā — lūdzu, mēģiniet vēlreiz nedaudz vēlāk.",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Palūdziet Phoenix AI modificēt šo elementu...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Priekšskatījuma iegūšana no pielāgotā servera {0}",
   "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Pārslēgt priekšskatījuma režīmu (F8)",
@@ -1560,8 +1563,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "MI piekļuvi ir atspējojis jūsu sistēmas administrators. Lūdzu, sazinieties ar {0}, lai saņemtu palīdzību.",
   "AI_UPSELL_DIALOG_TITLE": "Turpināt ar {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Jūs atklājāt {0}. Lai turpinātu, jums būs nepieciešams MI abonements vai kredīti.",
-  "IMAGE_SEARCH_LIMIT_TITLE": "Attēlu meklēšanas limits sasniegts",
-  "IMAGE_SEARCH_LIMIT_MESSAGE": "Jūs esat izmantojis visus {0} attēlu meklējumus šajā mēnesī.<br>Uzsāciet maksas Phoenix Pro plānu, lai noņemtu izmēģinājuma versijas ierobežojumus un turpinātu meklēšanu.",
-  "IMAGE_SEARCH_LIMIT_MESSAGE_THROTTLE": "Attēlu meklēšana īslaicīgi nav pieejama lielā pieprasījuma dēļ.<br>Uzsāciet maksas Phoenix Pro plānu, lai noņemtu izmēģinājuma versijas ierobežojumus un turpinātu meklēšanu.",
-  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Attēlu meklēšana īslaicīgi nav pieejama lielā pieprasījuma dēļ. Parasti tas atrisinās stundas laikā — lūdzu, mēģiniet vēlreiz nedaudz vēlāk."
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "vietnē {0}"
 });

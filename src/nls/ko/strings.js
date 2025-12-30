@@ -192,7 +192,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "카드 400픽셀",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "히어로 1080픽셀",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "레티나 2200픽셀",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "켜짐",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "스크립트로 생성된 요소는 편집할 수 없습니다.",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "요소가 복사되었습니다. '붙여넣기'를 사용하여 선택한 요소 아래에 추가하세요.",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "요소가 페이지에 고정되어 있어 편집 상자가 숨겨집니다.",
@@ -201,7 +200,11 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "폴더 경로 입력 (예: assets/images/)",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 폴더 경로를 입력하거나 비워두면 'images' 폴더에 다운로드됩니다.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "이 프로젝트에 대해 다시 묻지 않기",
+  "IMAGE_SEARCH_LIMIT_TITLE": "이미지 검색 한도 초과",
+  "IMAGE_SEARCH_LIMIT_MESSAGE": "이번 달 이미지 검색 횟수 {0}회를 모두 사용하셨습니다.<br>유료 Phoenix Pro 플랜을 시작하여 체험판 제한을 해제하고 계속 검색하세요.",
+  "IMAGE_SEARCH_LIMIT_MESSAGE_THROTTLE": "수요가 많아 이미지 검색을 일시적으로 사용할 수 없습니다.<br>유료 Phoenix Pro 플랜을 시작하여 체험판 제한을 해제하고 계속 검색하세요.",
   "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "이미지 검색 한도 도달",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "수요가 많아 이미지 검색을 일시적으로 사용할 수 없습니다. 이 문제는 보통 1시간 이내에 해결됩니다 — 잠시 후 다시 시도해 주세요.",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Phoenix AI에게 이 요소 수정을 요청하세요...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "사용자 지정 서버 {0}에서 미리보기 가져오는 중",
   "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "미리보기 모드 전환 (F8)",
@@ -1560,8 +1563,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "시스템 관리자에 의해 AI 액세스가 비활성화되었습니다. 도움이 필요하시면 {0}에게 문의하세요.",
   "AI_UPSELL_DIALOG_TITLE": "{0}(으)로 계속하시겠습니까?",
   "AI_UPSELL_DIALOG_MESSAGE": "{0} 기능을 발견하셨습니다. 계속 진행하려면 AI 구독 또는 크레딧이 필요합니다.",
-  "IMAGE_SEARCH_LIMIT_TITLE": "이미지 검색 한도 초과",
-  "IMAGE_SEARCH_LIMIT_MESSAGE": "이번 달 이미지 검색 횟수 {0}회를 모두 사용하셨습니다.<br>유료 Phoenix Pro 플랜을 시작하여 체험판 제한을 해제하고 계속 검색하세요.",
-  "IMAGE_SEARCH_LIMIT_MESSAGE_THROTTLE": "수요가 많아 이미지 검색을 일시적으로 사용할 수 없습니다.<br>유료 Phoenix Pro 플랜을 시작하여 체험판 제한을 해제하고 계속 검색하세요.",
-  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "수요가 많아 이미지 검색을 일시적으로 사용할 수 없습니다. 이 문제는 보통 1시간 이내에 해결됩니다 — 잠시 후 다시 시도해 주세요."
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "{0}에서"
 });

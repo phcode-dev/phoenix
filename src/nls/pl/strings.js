@@ -192,7 +192,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Karta 400px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "na",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Element nieedytowalny - wygenerowany przez skrypt",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "Element skopiowany. Użyj opcji 'Wklej', aby dodać go poniżej zaznaczonego elementu.",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Element nie przewija się ze stroną - pola edycji ukryte",
@@ -201,7 +200,11 @@ define({
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_PLACEHOLDER": "Wpisz ścieżkę folderu (np. assets/images/)",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Wpisz ścieżkę folderu lub pozostaw puste, aby pobrać do folderu 'images'.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_REMEMBER": "Nie pytaj ponownie dla tego projektu",
+  "IMAGE_SEARCH_LIMIT_TITLE": "Osiągnięto limit wyszukiwania obrazów",
+  "IMAGE_SEARCH_LIMIT_MESSAGE": "Wykorzystano wszystkie {0} wyszukiwania obrazów w tym miesiącu.<br>Rozpocznij płatny plan Phoenix Pro, aby usunąć limity wersji próbnej i kontynuować wyszukiwanie.",
+  "IMAGE_SEARCH_LIMIT_MESSAGE_THROTTLE": "Wyszukiwanie obrazów jest tymczasowo niedostępne z powodu dużego obciążenia.<br>Rozpocznij płatny plan Phoenix Pro, aby usunąć limity wersji próbnej i kontynuować wyszukiwanie.",
   "IMAGE_SEARCH_PRO_THROTTLE_TITLE": "Osiągnięto limit wyszukiwania obrazów",
+  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Wyszukiwanie obrazów jest tymczasowo niedostępne z powodu dużego obciążenia. Problem zwykle ustępuje w ciągu godziny — spróbuj ponownie za chwilę.",
   "LIVE_DEV_AI_PROMPT_PLACEHOLDER": "Poproś Phoenix AI o modyfikację tego elementu...",
   "LIVE_PREVIEW_CUSTOM_SERVER_BANNER": "Pobieranie podglądu z Twojego własnego serwera {0}",
   "LIVE_PREVIEW_MODE_TOGGLE_PREVIEW": "Przełącz tryb podglądu (F8)",
@@ -1560,8 +1563,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Dostęp do AI został wyłączony przez administratora systemu. Prosimy o kontakt z {0} w celu uzyskania pomocy.",
   "AI_UPSELL_DIALOG_TITLE": "Kontynuować z {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Odkryłeś {0}. Aby kontynuować, potrzebujesz subskrypcji AI lub kredytów.",
-  "IMAGE_SEARCH_LIMIT_TITLE": "Osiągnięto limit wyszukiwania obrazów",
-  "IMAGE_SEARCH_LIMIT_MESSAGE": "Wykorzystano wszystkie {0} wyszukiwania obrazów w tym miesiącu.<br>Rozpocznij płatny plan Phoenix Pro, aby usunąć limity wersji próbnej i kontynuować wyszukiwanie.",
-  "IMAGE_SEARCH_LIMIT_MESSAGE_THROTTLE": "Wyszukiwanie obrazów jest tymczasowo niedostępne z powodu dużego obciążenia.<br>Rozpocznij płatny plan Phoenix Pro, aby usunąć limity wersji próbnej i kontynuować wyszukiwanie.",
-  "IMAGE_SEARCH_PRO_THROTTLE_MESSAGE": "Wyszukiwanie obrazów jest tymczasowo niedostępne z powodu dużego obciążenia. Problem zwykle ustępuje w ciągu godziny — spróbuj ponownie za chwilę."
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "na {0}"
 });
