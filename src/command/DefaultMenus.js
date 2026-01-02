@@ -267,6 +267,7 @@ define(function (require, exports, module) {
         menu.addMenuItem(Commands.HELP_SUPPORT);
         menu.addMenuDivider();
         menu.addMenuItem(Commands.HELP_GET_PRO);
+        menu.addMenuItem(Commands.HELP_VIEW_LICENSE);
         menu.addMenuDivider();
         if (brackets.config.suggest_feature_url) {
             menu.addMenuItem(Commands.HELP_SUGGEST);

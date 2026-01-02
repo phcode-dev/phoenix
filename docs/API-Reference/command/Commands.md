@@ -735,6 +735,12 @@ Opens support resources
 Opens Phoenix Pro page
 
 **Kind**: global variable  
+<a name="HELP_VIEW_LICENSE"></a>
+
+## HELP\_VIEW\_LICENSE
+Opens Phoenix License page
+
+**Kind**: global variable  
 <a name="HELP_MANAGE_LICENSES"></a>
 
 ## HELP\_MANAGE\_LICENSES

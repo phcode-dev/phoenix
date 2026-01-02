@@ -9,6 +9,7 @@
         "account_url": "https://account.phcode.dev/",
         "promotions_url": "https://promotions.phcode.dev/dev/",
         "purchase_url": "https://phcode.io/pricing",
+        "license_url": "https://www.gnu.org/licenses/agpl-3.0.en.html",
         "how_to_use_url": "https://github.com/adobe/brackets/wiki/How-to-Use-Brackets",
         "docs_url": "https://docs.phcode.dev/",
         "support_url": "https://account.phcode.dev/?returnUrl=https%3A%2F%2Faccount.phcode.dev%2F%23support",
