@@ -165,6 +165,13 @@ define(function (require, exports, module) {
         });
     });
 
+    function _openLicenseLink() {
+        if(brackets.config.license_url) {
+            // license loaded based on pro-context from config
+            NativeApp.openURLInDefaultBrowser(brackets.config.license_url);
+        }
+    }
+
     const getProString = `${Strings.CMD_GET_PRO}<i class='fa fa-feather' style='margin-left: 4px;'></i>`;
 
     CommandManager.register(Strings.CMD_HOW_TO_USE_BRACKETS,    Commands.HELP_HOW_TO_USE_BRACKETS,  _handleLinkMenuItem(brackets.config.how_to_use_url));
@@ -173,6 +180,7 @@ define(function (require, exports, module) {
     CommandManager.register(Strings.CMD_GET_PRO,                Commands.HELP_GET_PRO,              _handleLinkMenuItem(brackets.config.purchase_url), {
         htmlName: getProString
     });
+    CommandManager.register(Strings.CMD_VIEW_LICENSE,           Commands.HELP_VIEW_LICENSE,         _openLicenseLink);
     CommandManager.register(Strings.CMD_SUGGEST,                Commands.HELP_SUGGEST,              _handleLinkMenuItem(brackets.config.suggest_feature_url));
     CommandManager.register(Strings.CMD_REPORT_ISSUE,           Commands.HELP_REPORT_ISSUE,         _handleLinkMenuItem(brackets.config.report_issue_url));
     CommandManager.register(Strings.CMD_RELEASE_NOTES,          Commands.HELP_RELEASE_NOTES,        _handleLinkMenuItem(brackets.config.release_notes_url));
