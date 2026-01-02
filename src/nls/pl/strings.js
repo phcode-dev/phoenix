@@ -192,6 +192,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Karta 400px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "na {0}",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Element nieedytowalny - wygenerowany przez skrypt",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "Element skopiowany. Użyj opcji 'Wklej', aby dodać go poniżej zaznaczonego elementu.",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Element nie przewija się ze stroną - pola edycji ukryte",
@@ -1563,5 +1564,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Dostęp do AI został wyłączony przez administratora systemu. Prosimy o kontakt z {0} w celu uzyskania pomocy.",
   "AI_UPSELL_DIALOG_TITLE": "Kontynuować z {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Odkryłeś {0}. Aby kontynuować, potrzebujesz subskrypcji AI lub kredytów.",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "na {0}"
+  "CMD_VIEW_LICENSE": "Wyświetl licencję"
 });

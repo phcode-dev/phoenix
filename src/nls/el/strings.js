@@ -192,6 +192,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Κάρτα 400px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "στο {0}",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Το στοιχείο δεν είναι επεξεργάσιμο - δημιουργήθηκε από script",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "Το στοιχείο αντιγράφηκε. Χρησιμοποιήστε την 'Επικόλληση' για να το προσθέσετε κάτω από το επιλεγμένο στοιχείο",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Το στοιχείο δεν κάνει κύλιση με τη σελίδα - τα πλαίσια επεξεργασίας είναι κρυφά",
@@ -1563,5 +1564,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Η πρόσβαση στο AI έχει απενεργοποιηθεί από τον διαχειριστή του συστήματός σας. Παρακαλούμε επικοινωνήστε με {0} για βοήθεια.",
   "AI_UPSELL_DIALOG_TITLE": "Συνέχεια με {0};",
   "AI_UPSELL_DIALOG_MESSAGE": "Ανακαλύψατε το {0}. Για να συνεχίσετε, θα χρειαστείτε μια συνδρομή AI ή πιστώσεις.",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "στο {0}"
+  "CMD_VIEW_LICENSE": "Προβολή άδειας χρήσης"
 });

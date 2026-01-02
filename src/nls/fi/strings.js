@@ -192,6 +192,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Kortti 400px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "palvelussa {0}",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Elementti ei ole muokattavissa – skriptin luoma",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "Elementti kopioitu. Lisää se valitun elementin alle 'Liitä'-komennolla.",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Elementti ei vierity sivun mukana – muokkausruudut piilotettu",
@@ -1563,5 +1564,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Järjestelmänvalvoja on poistanut tekoälyn käytöstä. Ota yhteyttä {0} saadaksesi apua.",
   "AI_UPSELL_DIALOG_TITLE": "Jatketaanko {0}:n kanssa?",
   "AI_UPSELL_DIALOG_MESSAGE": "Olet löytänyt ominaisuuden {0}. Jatkaaksesi tarvitset tekoälytilauksen tai krediittejä.",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "palvelussa {0}"
+  "CMD_VIEW_LICENSE": "Näytä lisenssi"
 });

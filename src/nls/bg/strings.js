@@ -192,6 +192,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Карта 400px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Основно изображение 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Ретина 2200px",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "на {0}",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Елементът не може да се редактира – генериран е от скрипт",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "Елементът е копиран. Използвайте „Поставяне“, за да го добавите под избрания елемент",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Елементът не се превърта със страницата – полетата за редакция са скрити",
@@ -1563,5 +1564,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Достъпът до AI е деактивиран от вашия системен администратор. Моля, свържете се с {0} за съдействие.",
   "AI_UPSELL_DIALOG_TITLE": "Да продължите ли с {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Вие открихте {0}. За да продължите, ще ви е необходим AI абонамент или кредити.",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "на {0}"
+  "CMD_VIEW_LICENSE": "Преглед на лиценза"
 });

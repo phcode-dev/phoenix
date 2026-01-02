@@ -192,6 +192,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Karte 400px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "auf {0}",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Element nicht bearbeitbar – durch Skript generiert",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "Element kopiert. Verwenden Sie „Einfügen“, um es unter dem ausgewählten Element hinzuzufügen.",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Element scrollt nicht mit der Seite – Bearbeitungsfelder ausgeblendet",
@@ -1563,5 +1564,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Der KI-Zugriff wurde von Ihrem Systemadministrator deaktiviert. Bitte kontaktieren Sie {0} für Unterstützung.",
   "AI_UPSELL_DIALOG_TITLE": "Mit {0} fortfahren?",
   "AI_UPSELL_DIALOG_MESSAGE": "Sie haben {0} entdeckt. Um fortzufahren, benötigen Sie ein KI-Abonnement oder Guthaben.",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "auf {0}"
+  "CMD_VIEW_LICENSE": "Lizenz anzeigen"
 });

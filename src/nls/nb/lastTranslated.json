@@ -329,6 +329,7 @@
   "CMD_UNINDENT": "Unindent",
   "CMD_UNLOAD_CURRENT_EXTENSION": "Unload Project As Extension",
   "CMD_USER_PROFILE": "{APP_NAME} Account",
+  "CMD_VIEW_LICENSE": "View License",
   "CMD_VIEW_TOGGLE_INSPECTION": "Lint Files on Save",
   "CMD_VIEW_TOGGLE_PROBLEMS": "Problems",
   "CMD_WORKINGSET_SORT_BY_ADDED": "Sort by Added",

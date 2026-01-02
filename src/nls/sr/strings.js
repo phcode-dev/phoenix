@@ -192,6 +192,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Картица 400px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Херо 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Ретина 2200px",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "на {0}",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Елемент није могуће уредити - генерисан је скриптом",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "Елемент је копиран. Користите 'Налепи' да бисте га додали испод изабраног елемента",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Елемент се не скролује са страницом - поља за уређивање су сакривена",
@@ -1563,5 +1564,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Приступ AI је онемогућио администратор система. Молимо вас, контактирајте {0} за помоћ.",
   "AI_UPSELL_DIALOG_TITLE": "Наставити са {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Открили сте {0}. Да бисте наставили, потребна вам је AI претплата или кредити.",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "на {0}"
+  "CMD_VIEW_LICENSE": "Прикажи лиценцу"
 });

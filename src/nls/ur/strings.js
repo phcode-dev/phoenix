@@ -192,6 +192,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "کارڈ 400px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "ہیرو 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "ریٹنا 2200px",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "پر {0}",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "عنصر قابلِ ترمیم نہیں - اسکرپٹ سے تیار کردہ",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "عنصر کاپی ہو گیا۔ اسے منتخب عنصر کے نیچے شامل کرنے کے لیے 'چسپاں کریں' استعمال کریں۔",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "عنصر صفحہ کے ساتھ اسکرول نہیں ہوتا - ترمیم کے باکسز پوشیدہ ہیں",
@@ -1563,5 +1564,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "آپ کے سسٹم ایڈمنسٹریٹر نے AI تک رسائی کو غیر فعال کر دیا ہے۔ براہ کرم مدد کے لیے {0} سے رابطہ کریں۔",
   "AI_UPSELL_DIALOG_TITLE": "{0} کے ساتھ جاری رکھیں؟",
   "AI_UPSELL_DIALOG_MESSAGE": "آپ نے {0} کو دریافت کیا ہے۔ آگے بڑھنے کے لیے، آپ کو AI سبسکرپشن یا کریڈٹس کی ضرورت ہوگی۔",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "پر {0}"
+  "CMD_VIEW_LICENSE": "لائسنس دیکھیں"
 });

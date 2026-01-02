@@ -192,6 +192,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "카드 400픽셀",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "히어로 1080픽셀",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "레티나 2200픽셀",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "{0}에서",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "스크립트로 생성된 요소는 편집할 수 없습니다.",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "요소가 복사되었습니다. '붙여넣기'를 사용하여 선택한 요소 아래에 추가하세요.",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "요소가 페이지에 고정되어 있어 편집 상자가 숨겨집니다.",
@@ -1563,5 +1564,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "시스템 관리자에 의해 AI 액세스가 비활성화되었습니다. 도움이 필요하시면 {0}에게 문의하세요.",
   "AI_UPSELL_DIALOG_TITLE": "{0}(으)로 계속하시겠습니까?",
   "AI_UPSELL_DIALOG_MESSAGE": "{0} 기능을 발견하셨습니다. 계속 진행하려면 AI 구독 또는 크레딧이 필요합니다.",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "{0}에서"
+  "CMD_VIEW_LICENSE": "라이선스 보기"
 });

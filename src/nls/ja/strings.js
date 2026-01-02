@@ -192,6 +192,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "カード 400px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "ヒーロー 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "レティナ 2200px",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "{0}にて",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "スクリプトにより生成された要素は編集できません",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "要素がコピーされました。「貼り付け」で選択要素の下に追加できます",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "固定表示の要素のため、編集ボックスは非表示です",
@@ -1563,5 +1564,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "AIアクセスはシステム管理者によって無効にされています。サポートが必要な場合は、{0}にお問い合わせください。",
   "AI_UPSELL_DIALOG_TITLE": "{0}を続行しますか？",
   "AI_UPSELL_DIALOG_MESSAGE": "「{0}」をご利用になるには、AIサブスクリプションまたはクレジットが必要です。",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "{0}にて"
+  "CMD_VIEW_LICENSE": "ライセンスを表示"
 });

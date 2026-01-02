@@ -192,6 +192,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Kort 400px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "på {0}",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Elementet kan ikke redigeres - genereret af script",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "Element kopieret. Brug 'Indsæt' for at tilføje det under det valgte element",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Elementet scroller ikke med siden - redigeringsfelter skjult",
@@ -1563,5 +1564,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Adgang til AI er blevet deaktiveret af din systemadministrator. Kontakt venligst {0} for hjælp.",
   "AI_UPSELL_DIALOG_TITLE": "Fortsæt med {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Du har opdaget {0}. For at fortsætte har du brug for et AI-abonnement eller kreditter.",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "på {0}"
+  "CMD_VIEW_LICENSE": "Vis licens"
 });

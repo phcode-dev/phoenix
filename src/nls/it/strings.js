@@ -192,6 +192,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Scheda 400px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "su {0}",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Elemento non modificabile - generato da script",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "Elemento copiato. Usa 'Incolla' per aggiungerlo sotto l'elemento selezionato",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "L'elemento non scorre con la pagina - caselle di modifica nascoste",
@@ -1563,5 +1564,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "L'accesso all'AI è stato disattivato dal tuo amministratore di sistema. Contatta {0} per assistenza.",
   "AI_UPSELL_DIALOG_TITLE": "Continuare con {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Hai scoperto {0}. Per procedere, avrai bisogno di un abbonamento AI o di crediti.",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "su {0}"
+  "CMD_VIEW_LICENSE": "Visualizza licenza"
 });

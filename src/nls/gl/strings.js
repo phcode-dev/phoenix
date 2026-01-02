@@ -192,6 +192,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Tarxeta 400px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "en {0}",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Elemento non editable: xerado por script",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "Elemento copiado. Usa «Pegar» para engadilo debaixo do elemento seleccionado",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "O elemento non se despraza coa páxina: caixas de edición ocultas",
@@ -1563,5 +1564,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "O acceso á IA foi desactivado polo seu administrador do sistema. Póñase en contacto con {0} para obter axuda.",
   "AI_UPSELL_DIALOG_TITLE": "Continuar con {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Descubriches {0}. Para continuar, necesitarás unha subscrición de IA ou créditos.",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "en {0}"
+  "CMD_VIEW_LICENSE": "Ver licenza"
 });

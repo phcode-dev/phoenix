@@ -192,6 +192,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Kártya 400px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "a(z) {0} felületen",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Az elem nem szerkeszthető – szkript által generált.",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "Elem másolva. A 'Beillesztés' paranccsal illesztheti be a kijelölt elem alá.",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Az elem nem gördül az oldallal – a szerkesztőmezők elrejtve.",
@@ -1563,5 +1564,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "A MI-hozzáférést a rendszergazda letiltotta. Segítségért forduljon a(z) {0} elérhetőséghez.",
   "AI_UPSELL_DIALOG_TITLE": "Folytatja a(z) {0} használatával?",
   "AI_UPSELL_DIALOG_MESSAGE": "Felfedezte a(z) {0} szolgáltatást. A folytatáshoz MI-előfizetésre vagy kreditekre lesz szüksége.",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "a(z) {0} felületen"
+  "CMD_VIEW_LICENSE": "Licenc megtekintése"
 });
