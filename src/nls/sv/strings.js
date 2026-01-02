@@ -192,6 +192,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Kort 400px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "på {0}",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Elementet kan inte redigeras - genererat av skript",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "Elementet har kopierats. Använd 'Klistra in' för att lägga till det under det valda elementet",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Elementet rullar inte med sidan - redigeringsrutor dolda",
@@ -1563,5 +1564,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "AI-åtkomst har inaktiverats av din systemadministratör. Kontakta {0} för hjälp.",
   "AI_UPSELL_DIALOG_TITLE": "Fortsätt med {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Du har upptäckt {0}. För att fortsätta behöver du ett AI-abonnemang eller krediter.",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "på {0}"
+  "CMD_VIEW_LICENSE": "Visa licens"
 });

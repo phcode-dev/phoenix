@@ -192,6 +192,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "卡片 400px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "主图 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "于 {0}",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "元素不可编辑 - 由脚本生成",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "元素已复制。使用“粘贴”可将其添加到选中元素下方",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "元素不随页面滚动 - 编辑框已隐藏",
@@ -1563,5 +1564,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "AI 访问权限已被您的系统管理员禁用。请联系 {0} 以获取帮助。",
   "AI_UPSELL_DIALOG_TITLE": "继续使用 {0}？",
   "AI_UPSELL_DIALOG_MESSAGE": "您发现了 {0}。要继续，您需要 AI 订阅或点数。",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "于 {0}"
+  "CMD_VIEW_LICENSE": "查看许可证"
 });

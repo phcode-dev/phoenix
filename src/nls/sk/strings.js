@@ -192,6 +192,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Karta 400px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "na {0}",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Prvok nie je možné upraviť – vygenerovaný skriptom",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "Prvok bol skopírovaný. Použite 'Prilepiť' na jeho pridanie pod vybraný prvok",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Prvok sa neposúva so stránkou – editačné polia skryté",
@@ -1563,5 +1564,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Prístup k AI bol vypnutý správcom vášho systému. So žiadosťou o pomoc sa obráťte na {0}.",
   "AI_UPSELL_DIALOG_TITLE": "Pokračovať s {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Objavili ste {0}. Ak chcete pokračovať, budete potrebovať predplatné AI alebo kredity.",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "na {0}"
+  "CMD_VIEW_LICENSE": "Zobraziť licenciu"
 });

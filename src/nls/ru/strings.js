@@ -192,6 +192,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Карточка 400px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Главное 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "на {0}",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Элемент не редактируется — сгенерирован скриптом",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "Элемент скопирован. Используйте «Вставить», чтобы добавить его под выделенным элементом",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Элемент не прокручивается со страницей — поля для редактирования скрыты",
@@ -1563,5 +1564,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Доступ к ИИ был отключён вашим системным администратором. Пожалуйста, свяжитесь с {0} для получения помощи.",
   "AI_UPSELL_DIALOG_TITLE": "Продолжить с {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Вы открыли для себя {0}. Чтобы продолжить, вам понадобится подписка на ИИ или кредиты.",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "на {0}"
+  "CMD_VIEW_LICENSE": "Просмотреть лицензию"
 });

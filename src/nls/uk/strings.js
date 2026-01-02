@@ -192,6 +192,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Картка 400px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "на {0}",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Елемент не можна редагувати — згенеровано скриптом",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "Елемент скопійовано. Використовуйте 'Вставити', щоб додати його під вибраним елементом",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Елемент не прокручується зі сторінкою — поля редагування приховано",
@@ -1563,5 +1564,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Доступ до ШІ було вимкнено вашим системним адміністратором. Будь ласка, зверніться до {0} за допомогою.",
   "AI_UPSELL_DIALOG_TITLE": "Продовжити з {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Ви відкрили для себе {0}. Щоб продовжити, вам знадобиться підписка на ШІ або кредити.",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "на {0}"
+  "CMD_VIEW_LICENSE": "Переглянути ліцензію"
 });

@@ -192,6 +192,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "بطاقة 400 بكسل",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "هيرو 1080 بكسل",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "ريتينا 2200 بكسل",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "على {0}",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "العنصر غير قابل للتعديل - تم إنشاؤه بواسطة برنامج نصي",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "تم نسخ العنصر. استخدم 'لصق' لإضافته أسفل العنصر المحدد",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "العنصر لا يتم تمريره مع الصفحة - مربعات التعديل مخفية",
@@ -1563,5 +1564,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "قام مسؤول النظام بتعطيل الوصول إلى الذكاء الاصطناعي. يرجى الاتصال بـ {0} للحصول على المساعدة.",
   "AI_UPSELL_DIALOG_TITLE": "المتابعة باستخدام {0}؟",
   "AI_UPSELL_DIALOG_MESSAGE": "لقد اكتشفت {0}. للمتابعة، ستحتاج إلى اشتراك في الذكاء الاصطناعي أو أرصدة.",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "على {0}"
+  "CMD_VIEW_LICENSE": "عرض الرخصة"
 });

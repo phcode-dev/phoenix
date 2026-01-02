@@ -192,6 +192,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Kartu 400px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "di {0}",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Elemen tidak dapat diedit - dihasilkan oleh skrip",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "Elemen disalin. Gunakan 'Tempel' untuk menambahkannya di bawah elemen yang dipilih",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Elemen tidak ikut bergulir dengan halaman - kotak edit disembunyikan",
@@ -1563,5 +1564,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Akses AI telah dinonaktifkan oleh administrator sistem Anda. Silakan hubungi {0} untuk bantuan.",
   "AI_UPSELL_DIALOG_TITLE": "Lanjutkan dengan {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Anda telah menemukan {0}. Untuk melanjutkan, Anda memerlukan langganan AI atau kredit.",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "di {0}"
+  "CMD_VIEW_LICENSE": "Lihat Lisensi"
 });

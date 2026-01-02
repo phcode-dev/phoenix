@@ -192,6 +192,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Karta 400px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "na {0}",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Prvek nelze upravit – vygenerováno skriptem",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "Prvek zkopírován. Pro vložení pod vybraný prvek použijte 'Vložit'.",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Prvek se neposouvá se stránkou – editační pole jsou skryta.",
@@ -1563,5 +1564,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Přístup k AI byl zakázán správcem systému. Pro pomoc prosím kontaktujte {0}.",
   "AI_UPSELL_DIALOG_TITLE": "Pokračovat s {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Objevili jste {0}. Chcete-li pokračovat, budete potřebovat předplatné AI nebo kredity.",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "na {0}"
+  "CMD_VIEW_LICENSE": "Zobrazit licenci"
 });

@@ -192,6 +192,7 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Tarjeta 400px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
+  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "en {0}",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Elemento no editable: generado por script",
   "LIVE_DEV_COPY_TOAST_MESSAGE": "Elemento copiado. Usa 'Pegar' para añadirlo debajo del elemento seleccionado.",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "El elemento no se desplaza con la página: cuadros de edición ocultos.",
@@ -1563,5 +1564,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "El acceso a la IA ha sido desactivado por el administrador del sistema. Póngase en contacto con {0} para obtener ayuda.",
   "AI_UPSELL_DIALOG_TITLE": "¿Continuar con {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Has descubierto {0}. Para continuar, necesitarás una suscripción de IA o créditos.",
-  "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "en {0}"
+  "CMD_VIEW_LICENSE": "Ver licencia"
 });
