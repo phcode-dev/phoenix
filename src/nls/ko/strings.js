@@ -189,8 +189,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "연결 확인 중",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "아직 오프라인 상태입니다. 연결을 확인해 주세요.",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "이미지 크기 선택",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "카드 400픽셀",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "히어로 1080픽셀",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "레티나 2200픽셀",
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "{0}에서",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "스크립트로 생성된 요소는 편집할 수 없습니다.",
@@ -575,6 +573,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "{APP_NAME} 사용법",
   "CMD_SUPPORT": "{APP_NAME} 지원",
   "CMD_GET_PRO": "Phoenix Pro 받기",
+  "CMD_VIEW_LICENSE": "라이선스 보기",
   "CMD_MANAGE_LICENSES": "라이선스 관리",
   "CMD_USER_PROFILE": "{APP_NAME} 계정",
   "CMD_DOCS": "도움말, 시작하기",
@@ -1564,5 +1563,13 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "시스템 관리자에 의해 AI 액세스가 비활성화되었습니다. 도움이 필요하시면 {0}에게 문의하세요.",
   "AI_UPSELL_DIALOG_TITLE": "{0}(으)로 계속하시겠습니까?",
   "AI_UPSELL_DIALOG_MESSAGE": "{0} 기능을 발견하셨습니다. 계속 진행하려면 AI 구독 또는 크레딧이 필요합니다.",
-  "CMD_VIEW_LICENSE": "라이선스 보기"
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_THUMBNAIL": "썸네일 200픽셀",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XS": "모바일 320픽셀",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_SM": "모바일 고화질 640픽셀",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_MD": "태블릿 960픽셀",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_REGULAR": "일반 1080픽셀",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_LG": "데스크톱 1280픽셀",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XL": "대형 1600픽셀",
+  "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "프로 버전 사용하기",
+  "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "무료 이미지 검색의 {0}%({1}/{2})를 사용했습니다."
 });

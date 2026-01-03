@@ -189,8 +189,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "कनेक्शन की जाँच हो रही है",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "अभी भी ऑफ़लाइन हैं। कृपया अपना कनेक्शन जाँचें।",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "इमेज का आकार चुनें",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "कार्ड 400px",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "हीरो 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "रेटिना 2200px",
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "पर {0}",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "एलिमेंट संपादन योग्य नहीं - स्क्रिप्ट द्वारा बनाया गया",
@@ -575,6 +573,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "{APP_NAME} का उपयोग कैसे करें",
   "CMD_SUPPORT": "{APP_NAME} सहायता",
   "CMD_GET_PRO": "Phoenix Pro प्राप्त करें",
+  "CMD_VIEW_LICENSE": "लाइसेंस देखें",
   "CMD_MANAGE_LICENSES": "लाइसेंस प्रबंधित करें",
   "CMD_USER_PROFILE": "{APP_NAME} खाता",
   "CMD_DOCS": "सहायता, आरंभ करना",
@@ -1564,5 +1563,13 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "आपके सिस्टम एडमिनिस्ट्रेटर द्वारा AI एक्सेस अक्षम कर दिया गया है। सहायता के लिए कृपया {0} से संपर्क करें।",
   "AI_UPSELL_DIALOG_TITLE": "{0} के साथ जारी रखें?",
   "AI_UPSELL_DIALOG_MESSAGE": "आपने {0} खोज लिया है। आगे बढ़ने के लिए, आपको AI सब्सक्रिप्शन या क्रेडिट्स की ज़रूरत होगी।",
-  "CMD_VIEW_LICENSE": "लाइसेंस देखें"
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_THUMBNAIL": "थंबनेल 200px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XS": "मोबाइल 320px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_SM": "मोबाइल HD 640px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_MD": "टैबलेट 960px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_REGULAR": "सामान्य 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_LG": "डेस्कटॉप 1280px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XL": "बड़ा 1600px",
+  "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "प्रो पाएं",
+  "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "आपने अपनी मुफ़्त इमेज खोजों का {0}% इस्तेमाल कर लिया है ({1}/{2})"
 });

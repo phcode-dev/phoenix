@@ -189,8 +189,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "接続を確認中",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "まだオフラインです。接続を確認してください。",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "画像サイズを選択",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "カード 400px",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "ヒーロー 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "レティナ 2200px",
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "{0}にて",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "スクリプトにより生成された要素は編集できません",
@@ -575,6 +573,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "{APP_NAME} の使用方法",
   "CMD_SUPPORT": "{APP_NAME} サポート",
   "CMD_GET_PRO": "Phoenix Proを入手",
+  "CMD_VIEW_LICENSE": "ライセンスを表示",
   "CMD_MANAGE_LICENSES": "ライセンスの管理",
   "CMD_USER_PROFILE": "{APP_NAME}アカウント",
   "CMD_DOCS": "ヘルプ、はじめに",
@@ -1564,5 +1563,13 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "AIアクセスはシステム管理者によって無効にされています。サポートが必要な場合は、{0}にお問い合わせください。",
   "AI_UPSELL_DIALOG_TITLE": "{0}を続行しますか？",
   "AI_UPSELL_DIALOG_MESSAGE": "「{0}」をご利用になるには、AIサブスクリプションまたはクレジットが必要です。",
-  "CMD_VIEW_LICENSE": "ライセンスを表示"
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_THUMBNAIL": "サムネイル 200px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XS": "モバイル 320px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_SM": "モバイルHD 640px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_MD": "タブレット 960px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_REGULAR": "レギュラー 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_LG": "デスクトップ 1280px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XL": "ラージ 1600px",
+  "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Proを入手",
+  "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "無料の画像検索を{0}%使用しました ({1}/{2})"
 });

@@ -189,8 +189,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Memeriksa koneksi",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Masih offline. Silakan periksa koneksi Anda.",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "Pilih ukuran gambar",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Kartu 400px",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "di {0}",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Elemen tidak dapat diedit - dihasilkan oleh skrip",
@@ -575,6 +573,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "Bagaimana Menggunakan {APP_NAME}",
   "CMD_SUPPORT": "Bantuan {APP_NAME}",
   "CMD_GET_PRO": "Dapatkan Phoenix Pro",
+  "CMD_VIEW_LICENSE": "Lihat Lisensi",
   "CMD_MANAGE_LICENSES": "Kelola Lisensi",
   "CMD_USER_PROFILE": "Akun {APP_NAME}",
   "CMD_DOCS": "Bantuan, Memulai",
@@ -1564,5 +1563,13 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Akses AI telah dinonaktifkan oleh administrator sistem Anda. Silakan hubungi {0} untuk bantuan.",
   "AI_UPSELL_DIALOG_TITLE": "Lanjutkan dengan {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Anda telah menemukan {0}. Untuk melanjutkan, Anda memerlukan langganan AI atau kredit.",
-  "CMD_VIEW_LICENSE": "Lihat Lisensi"
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_THUMBNAIL": "Gambar Mini 200px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XS": "Ponsel 320px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_SM": "Ponsel HD 640px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_MD": "Tablet 960px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_REGULAR": "Reguler 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_LG": "Desktop 1280px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XL": "Besar 1600px",
+  "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Dapatkan Pro",
+  "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Anda telah menggunakan {0}% dari pencarian gambar gratis Anda ({1}/{2})"
 });

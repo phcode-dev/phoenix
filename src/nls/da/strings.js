@@ -189,8 +189,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Kontrollerer forbindelse",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Stadig offline. Kontroller venligst din forbindelse.",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "Vælg billedstørrelse",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Kort 400px",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "på {0}",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Elementet kan ikke redigeres - genereret af script",
@@ -575,6 +573,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "Sådan bruger du {APP_NAME}",
   "CMD_SUPPORT": "{APP_NAME} support",
   "CMD_GET_PRO": "Få Phoenix Pro",
+  "CMD_VIEW_LICENSE": "Vis licens",
   "CMD_MANAGE_LICENSES": "Administrer licenser",
   "CMD_USER_PROFILE": "{APP_NAME}-konto",
   "CMD_DOCS": "Hjælp, Kom godt i gang",
@@ -1564,5 +1563,13 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Adgang til AI er blevet deaktiveret af din systemadministrator. Kontakt venligst {0} for hjælp.",
   "AI_UPSELL_DIALOG_TITLE": "Fortsæt med {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Du har opdaget {0}. For at fortsætte har du brug for et AI-abonnement eller kreditter.",
-  "CMD_VIEW_LICENSE": "Vis licens"
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_THUMBNAIL": "Miniature 200px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XS": "Mobil 320px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_SM": "Mobil HD 640px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_MD": "Tablet 960px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_REGULAR": "Standard 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_LG": "Desktop 1280px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XL": "Stor 1600px",
+  "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Få Pro",
+  "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Du har brugt {0}% af dine gratis billedsøgninger ({1}/{2})"
 });

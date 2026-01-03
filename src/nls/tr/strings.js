@@ -189,8 +189,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Bağlantı kontrol ediliyor",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Hâlâ çevrimdışı. Lütfen bağlantınızı kontrol edin.",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "Görsel boyutunu seçin",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Kart 400px",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Manşet 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "{0} üzerinde",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Öğe düzenlenemez - script tarafından oluşturuldu",
@@ -575,6 +573,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "{APP_NAME} Nasıl Kullanılır",
   "CMD_SUPPORT": "{APP_NAME} Desteği",
   "CMD_GET_PRO": "Phoenix Pro'yu Edinin",
+  "CMD_VIEW_LICENSE": "Lisansı Görüntüle",
   "CMD_MANAGE_LICENSES": "Lisansları Yönet",
   "CMD_USER_PROFILE": "{APP_NAME} Hesabı",
   "CMD_DOCS": "Yardım, Başlarken",
@@ -1564,5 +1563,13 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Yapay zeka erişimi sistem yöneticiniz tarafından devre dışı bırakıldı. Yardım için lütfen {0} ile iletişime geçin.",
   "AI_UPSELL_DIALOG_TITLE": "{0} ile devam edilsin mi?",
   "AI_UPSELL_DIALOG_MESSAGE": "{0} özelliğini keşfettiniz. Devam etmek için bir Yapay Zeka aboneliğine veya kredilere ihtiyacınız var.",
-  "CMD_VIEW_LICENSE": "Lisansı Görüntüle"
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_THUMBNAIL": "Küçük resim 200px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XS": "Mobil 320px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_SM": "Mobil HD 640px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_MD": "Tablet 960px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_REGULAR": "Normal 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_LG": "Masaüstü 1280px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XL": "Büyük 1600px",
+  "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Pro'ya Geçin",
+  "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Ücretsiz görsel arama hakkınızın {0}%'lık kısmını kullandınız ({1}/{2})"
 });

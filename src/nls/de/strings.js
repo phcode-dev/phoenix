@@ -189,8 +189,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Verbindung wird geprüft...",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Weiterhin offline. Bitte prüfen Sie Ihre Verbindung.",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "Bildgröße auswählen",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Karte 400px",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "auf {0}",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Element nicht bearbeitbar – durch Skript generiert",
@@ -575,6 +573,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "So verwendet man {APP_NAME}",
   "CMD_SUPPORT": "{APP_NAME}-Support",
   "CMD_GET_PRO": "Phoenix Pro herunterladen",
+  "CMD_VIEW_LICENSE": "Lizenz anzeigen",
   "CMD_MANAGE_LICENSES": "Lizenzen verwalten",
   "CMD_USER_PROFILE": "{APP_NAME}-Konto",
   "CMD_DOCS": "Hilfe, Erste Schritte",
@@ -1564,5 +1563,13 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Der KI-Zugriff wurde von Ihrem Systemadministrator deaktiviert. Bitte kontaktieren Sie {0} für Unterstützung.",
   "AI_UPSELL_DIALOG_TITLE": "Mit {0} fortfahren?",
   "AI_UPSELL_DIALOG_MESSAGE": "Sie haben {0} entdeckt. Um fortzufahren, benötigen Sie ein KI-Abonnement oder Guthaben.",
-  "CMD_VIEW_LICENSE": "Lizenz anzeigen"
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_THUMBNAIL": "Thumbnail 200px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XS": "Mobil 320px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_SM": "Mobil HD 640px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_MD": "Tablet 960px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_REGULAR": "Standard 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_LG": "Desktop 1280px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XL": "Groß 1600px",
+  "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Pro-Version holen",
+  "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Sie haben {0}% Ihrer kostenlosen Bildsuchen genutzt ({1}/{2})"
 });

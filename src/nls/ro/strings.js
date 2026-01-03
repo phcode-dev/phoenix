@@ -189,8 +189,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Se verifică conexiunea",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Încă sunteți offline. Vă rugăm să verificați conexiunea.",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "Selectează dimensiunea imaginii",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Card 400px",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "pe {0}",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Elementul nu este editabil - generat de script",
@@ -575,6 +573,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "Cum să folosești {APP_NAME}",
   "CMD_SUPPORT": "Suport {APP_NAME}",
   "CMD_GET_PRO": "Obține Phoenix Pro",
+  "CMD_VIEW_LICENSE": "Vizualizare Licență",
   "CMD_MANAGE_LICENSES": "Gestionare licențe",
   "CMD_USER_PROFILE": "Cont {APP_NAME}",
   "CMD_DOCS": "Ajutor, Noțiuni introductive",
@@ -1564,5 +1563,13 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Accesul AI a fost dezactivat de către administratorul dvs. de sistem. Vă rugăm să contactați {0} pentru asistență.",
   "AI_UPSELL_DIALOG_TITLE": "Continuați cu {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Ați descoperit {0}. Pentru a continua, veți avea nevoie de un abonament AI sau de credite.",
-  "CMD_VIEW_LICENSE": "Vizualizare Licență"
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_THUMBNAIL": "Miniatură 200px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XS": "Mobil 320px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_SM": "Mobil HD 640px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_MD": "Tabletă 960px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_REGULAR": "Normal 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_LG": "Desktop 1280px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XL": "Mare 1600px",
+  "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Obțineți Pro",
+  "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Ați folosit {0}% din căutările gratuite de imagini ({1}/{2})"
 });

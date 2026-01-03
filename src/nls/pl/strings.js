@@ -189,8 +189,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Sprawdzanie połączenia",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Nadal brak połączenia. Sprawdź swoje połączenie.",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "Wybierz rozmiar obrazu",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Karta 400px",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "na {0}",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Element nieedytowalny - wygenerowany przez skrypt",
@@ -575,6 +573,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "Jak używać {APP_NAME}",
   "CMD_SUPPORT": "Wsparcie {APP_NAME}",
   "CMD_GET_PRO": "Pobierz Phoenix Pro",
+  "CMD_VIEW_LICENSE": "Wyświetl licencję",
   "CMD_MANAGE_LICENSES": "Zarządzaj licencjami",
   "CMD_USER_PROFILE": "Konto {APP_NAME}",
   "CMD_DOCS": "Pomoc, Pierwsze kroki",
@@ -1564,5 +1563,13 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Dostęp do AI został wyłączony przez administratora systemu. Prosimy o kontakt z {0} w celu uzyskania pomocy.",
   "AI_UPSELL_DIALOG_TITLE": "Kontynuować z {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Odkryłeś {0}. Aby kontynuować, potrzebujesz subskrypcji AI lub kredytów.",
-  "CMD_VIEW_LICENSE": "Wyświetl licencję"
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_THUMBNAIL": "Miniaturka 200px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XS": "Mobilny 320px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_SM": "Mobilny HD 640px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_MD": "Tablet 960px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_REGULAR": "Standardowy 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_LG": "Desktop 1280px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XL": "Duży 1600px",
+  "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Zdobądź Pro",
+  "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Wykorzystano {0}% Twoich darmowych wyszukiwań obrazów ({1}/{2})"
 });

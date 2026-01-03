@@ -189,8 +189,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "در حال بررسی اتصال",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "هنوز آفلاین هستید. لطفاً اتصال خود را بررسی کنید.",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "انتخاب اندازه تصویر",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "کارت ۴۰۰px",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "هیرو ۱۰۸۰px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "رتینا ۲۲۰۰px",
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "در {0}",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "عنصر قابل ویرایش نیست - توسط اسکریپت ایجاد شده است",
@@ -575,6 +573,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "چگونگی استفاده از {APP_NAME}",
   "CMD_SUPPORT": "{APP_NAME} پشتیبانی",
   "CMD_GET_PRO": "دریافت Phoenix Pro",
+  "CMD_VIEW_LICENSE": "مشاهده مجوز",
   "CMD_MANAGE_LICENSES": "مدیریت مجوزها",
   "CMD_USER_PROFILE": "حساب کاربری {APP_NAME}",
   "CMD_DOCS": "راهنما، شروع به کار",
@@ -1564,5 +1563,13 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "دسترسی به هوش مصنوعی توسط مدیر سیستم شما غیرفعال شده است. لطفاً برای راهنمایی با {0} تماس بگیرید.",
   "AI_UPSELL_DIALOG_TITLE": "ادامه با {0}؟",
   "AI_UPSELL_DIALOG_MESSAGE": "شما قابلیت {0} را کشف کرده‌اید. برای ادامه، به اشتراک AI یا اعتبار نیاز دارید.",
-  "CMD_VIEW_LICENSE": "مشاهده مجوز"
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_THUMBNAIL": "بندانگشتی ۲۰۰ پیکسل",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XS": "موبایل ۳۲۰ پیکسل",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_SM": "موبایل HD ۶۴۰ پیکسل",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_MD": "تبلت ۹۶۰ پیکسل",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_REGULAR": "معمولی ۱۰۸۰ پیکسل",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_LG": "دسکتاپ ۱۲۸۰ پیکسل",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XL": "بزرگ ۱۶۰۰ پیکسل",
+  "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "دریافت Pro",
+  "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "شما از {0}٪ جستجوهای تصویر رایگان خود استفاده کرده‌اید ({1}/{2})"
 });

@@ -189,8 +189,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Verbinding controleren",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Nog steeds offline. Controleer uw verbinding.",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "Afbeeldingsgrootte selecteren",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Kaart 400px",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "op {0}",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Element niet bewerkbaar - gegenereerd door script",
@@ -575,6 +573,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "Hoe gebruik je {APP_NAME}",
   "CMD_SUPPORT": "{APP_NAME} ondersteuning",
   "CMD_GET_PRO": "Download Phoenix Pro",
+  "CMD_VIEW_LICENSE": "Licentie bekijken",
   "CMD_MANAGE_LICENSES": "Licenties beheren",
   "CMD_USER_PROFILE": "{APP_NAME}-account",
   "CMD_DOCS": "Help, aan de slag",
@@ -1564,5 +1563,13 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "De toegang tot AI is uitgeschakeld door uw systeembeheerder. Neem contact op met {0} voor hulp.",
   "AI_UPSELL_DIALOG_TITLE": "Doorgaan met {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "U heeft {0} ontdekt. Om verder te gaan, heeft u een AI-abonnement of credits nodig.",
-  "CMD_VIEW_LICENSE": "Licentie bekijken"
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_THUMBNAIL": "Miniatuur 200px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XS": "Mobiel 320px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_SM": "Mobiel HD 640px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_MD": "Tablet 960px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_REGULAR": "Normaal 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_LG": "Desktop 1280px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XL": "Groot 1600px",
+  "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Neem Pro",
+  "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "U heeft {0}% van uw gratis zoekopdrachten naar afbeeldingen gebruikt ({1}/{2})"
 });

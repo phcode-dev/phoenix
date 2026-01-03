@@ -189,8 +189,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Проверка подключения",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Все еще нет подключения. Проверьте ваше соединение.",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "Выберите размер изображения",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Карточка 400px",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Главное 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "на {0}",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Элемент не редактируется — сгенерирован скриптом",
@@ -575,6 +573,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "Как использовать {APP_NAME}",
   "CMD_SUPPORT": "Поддержка {APP_NAME}",
   "CMD_GET_PRO": "Получить Phoenix Pro",
+  "CMD_VIEW_LICENSE": "Просмотреть лицензию",
   "CMD_MANAGE_LICENSES": "Управление лицензиями",
   "CMD_USER_PROFILE": "Учётная запись {APP_NAME}",
   "CMD_DOCS": "Справка, начало работы",
@@ -1564,5 +1563,13 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Доступ к ИИ был отключён вашим системным администратором. Пожалуйста, свяжитесь с {0} для получения помощи.",
   "AI_UPSELL_DIALOG_TITLE": "Продолжить с {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Вы открыли для себя {0}. Чтобы продолжить, вам понадобится подписка на ИИ или кредиты.",
-  "CMD_VIEW_LICENSE": "Просмотреть лицензию"
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_THUMBNAIL": "Миниатюра 200px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XS": "Мобильный 320px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_SM": "Мобильный HD 640px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_MD": "Планшетный 960px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_REGULAR": "Стандартный 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_LG": "Настольный 1280px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XL": "Большой 1600px",
+  "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Перейти на Pro",
+  "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Вы использовали {0}% бесплатных поисков изображений ({1}/{2})"
 });

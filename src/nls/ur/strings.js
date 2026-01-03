@@ -189,8 +189,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "کنکشن چیک کیا جا رہا ہے",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "ابھی بھی آف لائن ہیں۔ براہ کرم اپنا کنکشن چیک کریں۔",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "تصویر کا سائز منتخب کریں",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "کارڈ 400px",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "ہیرو 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "ریٹنا 2200px",
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "پر {0}",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "عنصر قابلِ ترمیم نہیں - اسکرپٹ سے تیار کردہ",
@@ -575,6 +573,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "{APP_NAME} استعمال کرنے کا طریقہ",
   "CMD_SUPPORT": "{APP_NAME} سپورٹ",
   "CMD_GET_PRO": "Phoenix Pro حاصل کریں",
+  "CMD_VIEW_LICENSE": "لائسنس دیکھیں",
   "CMD_MANAGE_LICENSES": "لائسنسوں کا انتظام کریں",
   "CMD_USER_PROFILE": "{APP_NAME} اکاؤنٹ",
   "CMD_DOCS": "مدد، شروع کرنا",
@@ -1564,5 +1563,13 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "آپ کے سسٹم ایڈمنسٹریٹر نے AI تک رسائی کو غیر فعال کر دیا ہے۔ براہ کرم مدد کے لیے {0} سے رابطہ کریں۔",
   "AI_UPSELL_DIALOG_TITLE": "{0} کے ساتھ جاری رکھیں؟",
   "AI_UPSELL_DIALOG_MESSAGE": "آپ نے {0} کو دریافت کیا ہے۔ آگے بڑھنے کے لیے، آپ کو AI سبسکرپشن یا کریڈٹس کی ضرورت ہوگی۔",
-  "CMD_VIEW_LICENSE": "لائسنس دیکھیں"
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_THUMBNAIL": "تھمب نیل 200px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XS": "موبائل 320px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_SM": "موبائل HD 640px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_MD": "ٹیبلیٹ 960px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_REGULAR": "معیاری 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_LG": "ڈیسک ٹاپ 1280px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XL": "بڑا 1600px",
+  "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Pro حاصل کریں",
+  "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "آپ نے اپنی مفت تصویری تلاشوں کا {0}% استعمال کر لیا ہے ({1}/{2})"
 });

@@ -189,8 +189,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Kontrollerar anslutning",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Fortfarande offline. Kontrollera din anslutning.",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "Välj bildstorlek",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Kort 400px",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "på {0}",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Elementet kan inte redigeras - genererat av skript",
@@ -575,6 +573,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "Hur du använder {APP_NAME}",
   "CMD_SUPPORT": "{APP_NAME}-forum",
   "CMD_GET_PRO": "Skaffa Phoenix Pro",
+  "CMD_VIEW_LICENSE": "Visa licens",
   "CMD_MANAGE_LICENSES": "Hantera licenser",
   "CMD_USER_PROFILE": "{APP_NAME}-konto",
   "CMD_DOCS": "Hjälp, Kom igång",
@@ -1564,5 +1563,13 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "AI-åtkomst har inaktiverats av din systemadministratör. Kontakta {0} för hjälp.",
   "AI_UPSELL_DIALOG_TITLE": "Fortsätt med {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Du har upptäckt {0}. För att fortsätta behöver du ett AI-abonnemang eller krediter.",
-  "CMD_VIEW_LICENSE": "Visa licens"
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_THUMBNAIL": "Miniatyrbild 200px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XS": "Mobil 320px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_SM": "Mobil HD 640px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_MD": "Surfplatta 960px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_REGULAR": "Standard 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_LG": "Dator 1280px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XL": "Stor 1600px",
+  "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Skaffa Pro",
+  "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Du har använt {0}% av dina kostnadsfria bildsökningar ({1}/{2})"
 });
