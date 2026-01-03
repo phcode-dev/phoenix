@@ -189,6 +189,7 @@ define({
     "LIVE_DEV_MORE_OPTIONS_EDIT_TEXT": "Edit Text",
     "LIVE_DEV_MORE_OPTIONS_EDIT_HYPERLINK": "Edit Hyperlink",
     "LIVE_DEV_HYPERLINK_NO_HREF": "No href set",
+    "LIVE_DEV_HYPERLINK_OPEN_LINK": "Open this link",
     "LIVE_DEV_MORE_OPTIONS_DUPLICATE": "Duplicate",
     "LIVE_DEV_MORE_OPTIONS_DELETE": "Delete",
     "LIVE_DEV_MORE_OPTIONS_AI": "Edit with AI",
