@@ -189,8 +189,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Έλεγχος σύνδεσης",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Ακόμα εκτός σύνδεσης. Παρακαλώ, ελέγξτε τη σύνδεσή σας.",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "Επιλογή μεγέθους εικόνας",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Κάρτα 400px",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "στο {0}",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Το στοιχείο δεν είναι επεξεργάσιμο - δημιουργήθηκε από script",
@@ -575,6 +573,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "Πώς να Χρησιμοποιήσετε το {APP_NAME}",
   "CMD_SUPPORT": "Υποστήριξη {APP_NAME}",
   "CMD_GET_PRO": "Αποκτήστε το Phoenix Pro",
+  "CMD_VIEW_LICENSE": "Προβολή άδειας χρήσης",
   "CMD_MANAGE_LICENSES": "Διαχείριση αδειών",
   "CMD_USER_PROFILE": "Λογαριασμός {APP_NAME}",
   "CMD_DOCS": "Βοήθεια, Ξεκινώντας",
@@ -1564,5 +1563,13 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Η πρόσβαση στο AI έχει απενεργοποιηθεί από τον διαχειριστή του συστήματός σας. Παρακαλούμε επικοινωνήστε με {0} για βοήθεια.",
   "AI_UPSELL_DIALOG_TITLE": "Συνέχεια με {0};",
   "AI_UPSELL_DIALOG_MESSAGE": "Ανακαλύψατε το {0}. Για να συνεχίσετε, θα χρειαστείτε μια συνδρομή AI ή πιστώσεις.",
-  "CMD_VIEW_LICENSE": "Προβολή άδειας χρήσης"
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_THUMBNAIL": "Μικρογραφία 200px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XS": "Κινητό 320px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_SM": "Κινητό HD 640px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_MD": "Tablet 960px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_REGULAR": "Κανονικό 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_LG": "Desktop 1280px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XL": "Μεγάλο 1600px",
+  "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Αποκτήστε το Pro",
+  "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Έχετε χρησιμοποιήσει το {0}% των δωρεάν αναζητήσεων εικόνων σας ({1}/{2})"
 });

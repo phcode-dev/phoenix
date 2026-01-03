@@ -189,8 +189,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "جارٍ التحقق من الاتصال",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "لا يزال غير متصل. يرجى التحقق من اتصالك.",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "اختر حجم الصورة",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "بطاقة 400 بكسل",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "هيرو 1080 بكسل",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "ريتينا 2200 بكسل",
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "على {0}",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "العنصر غير قابل للتعديل - تم إنشاؤه بواسطة برنامج نصي",
@@ -575,6 +573,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "كيفية استخدام {APP_NAME}",
   "CMD_SUPPORT": "دعم {APP_NAME}",
   "CMD_GET_PRO": "احصل على Phoenix Pro",
+  "CMD_VIEW_LICENSE": "عرض الرخصة",
   "CMD_MANAGE_LICENSES": "إدارة التراخيص",
   "CMD_USER_PROFILE": "حساب {APP_NAME}",
   "CMD_DOCS": "مساعدة، البدء",
@@ -1564,5 +1563,13 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "قام مسؤول النظام بتعطيل الوصول إلى الذكاء الاصطناعي. يرجى الاتصال بـ {0} للحصول على المساعدة.",
   "AI_UPSELL_DIALOG_TITLE": "المتابعة باستخدام {0}؟",
   "AI_UPSELL_DIALOG_MESSAGE": "لقد اكتشفت {0}. للمتابعة، ستحتاج إلى اشتراك في الذكاء الاصطناعي أو أرصدة.",
-  "CMD_VIEW_LICENSE": "عرض الرخصة"
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_THUMBNAIL": "صورة مصغرة 200 بكسل",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XS": "جوال 320 بكسل",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_SM": "جوال HD 640 بكسل",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_MD": "جهاز لوحي 960 بكسل",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_REGULAR": "عادي 1080 بكسل",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_LG": "سطح المكتب 1280 بكسل",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XL": "كبير 1600 بكسل",
+  "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "احصل على Pro",
+  "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "لقد استخدمت {0}% من عمليات البحث المجانية عن الصور ({1}/{2})"
 });

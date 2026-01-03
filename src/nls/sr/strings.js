@@ -189,8 +189,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Провера везе",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Још увек сте офлајн. Проверите своју везу.",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "Изабери величину слике",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Картица 400px",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Херо 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Ретина 2200px",
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "на {0}",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Елемент није могуће уредити - генерисан је скриптом",
@@ -575,6 +573,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "Корисничко упутство за {APP_NAME}",
   "CMD_SUPPORT": "{APP_NAME} подршка",
   "CMD_GET_PRO": "Преузмите Phoenix Pro",
+  "CMD_VIEW_LICENSE": "Прикажи лиценцу",
   "CMD_MANAGE_LICENSES": "Управљање лиценцама",
   "CMD_USER_PROFILE": "Налог за {APP_NAME}",
   "CMD_DOCS": "Помоћ, почетак рада",
@@ -1564,5 +1563,13 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Приступ AI је онемогућио администратор система. Молимо вас, контактирајте {0} за помоћ.",
   "AI_UPSELL_DIALOG_TITLE": "Наставити са {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Открили сте {0}. Да бисте наставили, потребна вам је AI претплата или кредити.",
-  "CMD_VIEW_LICENSE": "Прикажи лиценцу"
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_THUMBNAIL": "Минијатура 200px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XS": "Мобилни 320px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_SM": "Мобилни HD 640px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_MD": "Таблет 960px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_REGULAR": "Стандардна 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_LG": "Десктоп 1280px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XL": "Велика 1600px",
+  "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Набавите Pro",
+  "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Искористили сте {0}% ваших бесплатних претрага слика ({1}/{2})"
 });

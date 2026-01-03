@@ -189,8 +189,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Overuje sa pripojenie",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Stále ste offline. Skontrolujte prosím svoje pripojenie.",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "Vybrať veľkosť obrázka",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Karta 400px",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "na {0}",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Prvok nie je možné upraviť – vygenerovaný skriptom",
@@ -575,6 +573,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "Ako používať {APP_NAME}",
   "CMD_SUPPORT": "Podpora pre {APP_NAME}",
   "CMD_GET_PRO": "Získajte Phoenix Pro",
+  "CMD_VIEW_LICENSE": "Zobraziť licenciu",
   "CMD_MANAGE_LICENSES": "Spravovať licencie",
   "CMD_USER_PROFILE": "Účet {APP_NAME}",
   "CMD_DOCS": "Pomocník, Začíname",
@@ -1564,5 +1563,13 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Prístup k AI bol vypnutý správcom vášho systému. So žiadosťou o pomoc sa obráťte na {0}.",
   "AI_UPSELL_DIALOG_TITLE": "Pokračovať s {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Objavili ste {0}. Ak chcete pokračovať, budete potrebovať predplatné AI alebo kredity.",
-  "CMD_VIEW_LICENSE": "Zobraziť licenciu"
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_THUMBNAIL": "Miniatúra 200px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XS": "Mobil 320px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_SM": "Mobil HD 640px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_MD": "Tablet 960px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_REGULAR": "Štandardná 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_LG": "Desktop 1280px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XL": "Veľká 1600px",
+  "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Získajte Pro",
+  "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Využili ste {0} % vašich bezplatných vyhľadávaní obrázkov ({1}/{2})"
 });

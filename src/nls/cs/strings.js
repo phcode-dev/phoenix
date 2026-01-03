@@ -189,8 +189,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Kontrola připojení",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Stále offline. Zkontrolujte prosím své připojení.",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "Vybrat velikost obrázku",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Karta 400px",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "na {0}",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Prvek nelze upravit – vygenerováno skriptem",
@@ -575,6 +573,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "Jak používat {APP_NAME}",
   "CMD_SUPPORT": "{APP_NAME} Podpora",
   "CMD_GET_PRO": "Získejte Phoenix Pro",
+  "CMD_VIEW_LICENSE": "Zobrazit licenci",
   "CMD_MANAGE_LICENSES": "Spravovat licence",
   "CMD_USER_PROFILE": "Účet {APP_NAME}",
   "CMD_DOCS": "Nápověda, Začínáme",
@@ -1564,5 +1563,13 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Přístup k AI byl zakázán správcem systému. Pro pomoc prosím kontaktujte {0}.",
   "AI_UPSELL_DIALOG_TITLE": "Pokračovat s {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Objevili jste {0}. Chcete-li pokračovat, budete potřebovat předplatné AI nebo kredity.",
-  "CMD_VIEW_LICENSE": "Zobrazit licenci"
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_THUMBNAIL": "Miniatura 200px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XS": "Mobil 320px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_SM": "Mobil HD 640px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_MD": "Tablet 960px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_REGULAR": "Standardní 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_LG": "Počítač 1280px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XL": "Velká 1600px",
+  "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Získat Pro",
+  "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Využili jste {0} % vašich bezplatných vyhledávání obrázků ({1}/{2})"
 });

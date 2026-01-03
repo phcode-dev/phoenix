@@ -189,8 +189,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Pārbauda savienojumu",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Joprojām bezsaistē. Lūdzu, pārbaudiet savienojumu.",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "Izvēlēties attēla izmēru",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Karte 400px",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "vietnē {0}",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Elements nav rediģējams - ģenerēts ar skriptu",
@@ -575,6 +573,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "Kā lietot {APP_NAME}",
   "CMD_SUPPORT": "{APP_NAME} palīdzība",
   "CMD_GET_PRO": "Iegūt Phoenix Pro",
+  "CMD_VIEW_LICENSE": "Apskatīt licenci",
   "CMD_MANAGE_LICENSES": "Pārvaldīt licences",
   "CMD_USER_PROFILE": "{APP_NAME} konts",
   "CMD_DOCS": "Palīdzība, Sākšana",
@@ -1564,5 +1563,13 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "MI piekļuvi ir atspējojis jūsu sistēmas administrators. Lūdzu, sazinieties ar {0}, lai saņemtu palīdzību.",
   "AI_UPSELL_DIALOG_TITLE": "Turpināt ar {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Jūs atklājāt {0}. Lai turpinātu, jums būs nepieciešams MI abonements vai kredīti.",
-  "CMD_VIEW_LICENSE": "Apskatīt licenci"
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_THUMBNAIL": "Sīktēls 200px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XS": "Mobilais 320px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_SM": "Mobilais HD 640px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_MD": "Planšete 960px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_REGULAR": "Standarta 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_LG": "Dators 1280px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XL": "Liels 1600px",
+  "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Iegūt Pro",
+  "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Ir izmantoti {0}% no jūsu bezmaksas attēlu meklējumiem ({1}/{2})"
 });

@@ -189,8 +189,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Проверка на връзката",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Все още сте офлайн. Моля, проверете връзката си.",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "Изберете размер на изображението",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Карта 400px",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Основно изображение 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Ретина 2200px",
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "на {0}",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Елементът не може да се редактира – генериран е от скрипт",
@@ -575,6 +573,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "Как се използва {APP_NAME}",
   "CMD_SUPPORT": "Поддръжка на {APP_NAME}",
   "CMD_GET_PRO": "Вземете Phoenix Pro",
+  "CMD_VIEW_LICENSE": "Преглед на лиценза",
   "CMD_MANAGE_LICENSES": "Управление на лицензи",
   "CMD_USER_PROFILE": "Профил в {APP_NAME}",
   "CMD_DOCS": "Помощ, Първи стъпки",
@@ -1564,5 +1563,13 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Достъпът до AI е деактивиран от вашия системен администратор. Моля, свържете се с {0} за съдействие.",
   "AI_UPSELL_DIALOG_TITLE": "Да продължите ли с {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Вие открихте {0}. За да продължите, ще ви е необходим AI абонамент или кредити.",
-  "CMD_VIEW_LICENSE": "Преглед на лиценза"
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_THUMBNAIL": "Миниатюра 200px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XS": "Мобилен 320px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_SM": "Мобилен HD 640px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_MD": "Таблет 960px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_REGULAR": "Стандартен 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_LG": "Настолен 1280px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XL": "Голям 1600px",
+  "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Вземете Pro",
+  "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Използвали сте {0}% от вашите безплатни търсения на изображения ({1}/{2})"
 });

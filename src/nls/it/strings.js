@@ -189,8 +189,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Verifica connessione in corso",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Ancora offline. Controllare la connessione.",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "Seleziona dimensione immagine",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Scheda 400px",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "su {0}",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Elemento non modificabile - generato da script",
@@ -575,6 +573,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "Come usare {APP_NAME}",
   "CMD_SUPPORT": "Supporto per {APP_NAME}",
   "CMD_GET_PRO": "Ottieni Phoenix Pro",
+  "CMD_VIEW_LICENSE": "Visualizza licenza",
   "CMD_MANAGE_LICENSES": "Gestisci licenze",
   "CMD_USER_PROFILE": "Account {APP_NAME}",
   "CMD_DOCS": "Aiuto, Guida introduttiva",
@@ -1564,5 +1563,13 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "L'accesso all'AI è stato disattivato dal tuo amministratore di sistema. Contatta {0} per assistenza.",
   "AI_UPSELL_DIALOG_TITLE": "Continuare con {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Hai scoperto {0}. Per procedere, avrai bisogno di un abbonamento AI o di crediti.",
-  "CMD_VIEW_LICENSE": "Visualizza licenza"
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_THUMBNAIL": "Miniatura 200px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XS": "Mobile 320px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_SM": "Mobile HD 640px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_MD": "Tablet 960px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_REGULAR": "Standard 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_LG": "Desktop 1280px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XL": "Grande 1600px",
+  "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Passa a Pro",
+  "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Hai utilizzato il {0}% delle tue ricerche di immagini gratuite ({1}/{2})"
 });

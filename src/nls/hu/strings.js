@@ -189,8 +189,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Kapcsolat ellenőrzése",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Még mindig offline. Kérjük, ellenőrizze a kapcsolatát.",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "Képméret kiválasztása",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Kártya 400px",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "a(z) {0} felületen",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Az elem nem szerkeszthető – szkript által generált.",
@@ -575,6 +573,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "{APP_NAME} használata",
   "CMD_SUPPORT": "{APP_NAME} támogatás",
   "CMD_GET_PRO": "Szerezd meg a Phoenix Pro-t",
+  "CMD_VIEW_LICENSE": "Licenc megtekintése",
   "CMD_MANAGE_LICENSES": "Licencek kezelése",
   "CMD_USER_PROFILE": "{APP_NAME} fiók",
   "CMD_DOCS": "Súgó, Első lépések",
@@ -1564,5 +1563,13 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "A MI-hozzáférést a rendszergazda letiltotta. Segítségért forduljon a(z) {0} elérhetőséghez.",
   "AI_UPSELL_DIALOG_TITLE": "Folytatja a(z) {0} használatával?",
   "AI_UPSELL_DIALOG_MESSAGE": "Felfedezte a(z) {0} szolgáltatást. A folytatáshoz MI-előfizetésre vagy kreditekre lesz szüksége.",
-  "CMD_VIEW_LICENSE": "Licenc megtekintése"
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_THUMBNAIL": "Bélyegkép 200px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XS": "Mobil 320px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_SM": "Mobil HD 640px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_MD": "Tablet 960px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_REGULAR": "Normál 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_LG": "Asztali 1280px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XL": "Nagy 1600px",
+  "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Válts Pro-ra",
+  "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Az ingyenes képkereséseid {0}%-át használtad fel ({1}/{2})"
 });

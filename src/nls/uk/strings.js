@@ -189,8 +189,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Перевірка з'єднання",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "З'єднання досі відсутнє. Будь ласка, перевірте ваше з'єднання.",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "Вибрати розмір зображення",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Картка 400px",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "на {0}",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Елемент не можна редагувати — згенеровано скриптом",
@@ -575,6 +573,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "Як використовувати {APP_NAME}",
   "CMD_SUPPORT": "Підтримка {APP_NAME}",
   "CMD_GET_PRO": "Отримати Phoenix Pro",
+  "CMD_VIEW_LICENSE": "Переглянути ліцензію",
   "CMD_MANAGE_LICENSES": "Керування ліцензіями",
   "CMD_USER_PROFILE": "Обліковий запис {APP_NAME}",
   "CMD_DOCS": "Довідка, початок роботи",
@@ -1564,5 +1563,13 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Доступ до ШІ було вимкнено вашим системним адміністратором. Будь ласка, зверніться до {0} за допомогою.",
   "AI_UPSELL_DIALOG_TITLE": "Продовжити з {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Ви відкрили для себе {0}. Щоб продовжити, вам знадобиться підписка на ШІ або кредити.",
-  "CMD_VIEW_LICENSE": "Переглянути ліцензію"
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_THUMBNAIL": "Мініатюра 200px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XS": "Мобільний 320px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_SM": "Мобільний HD 640px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_MD": "Планшет 960px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_REGULAR": "Звичайний 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_LG": "Настільний 1280px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XL": "Великий 1600px",
+  "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Отримати Pro",
+  "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Ви використали {0}% безкоштовних пошуків зображень ({1} з {2})"
 });

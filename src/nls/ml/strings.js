@@ -189,8 +189,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "കണക്ഷൻ പരിശോധിക്കുന്നു",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "ഇപ്പോഴും ഓഫ്‌ലൈനാണ്. ദയവായി നിങ്ങളുടെ കണക്ഷൻ പരിശോധിക്കുക.",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "ചിത്രത്തിന്റെ വലുപ്പം തിരഞ്ഞെടുക്കുക",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "കാർഡ് 400px",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "ഹീറോ 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "റെറ്റിന 2200px",
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "{0}-ൽ",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "ഘടകം തിരുത്താനാവില്ല - സ്ക്രിപ്റ്റ് നിർമ്മിച്ചത്",
@@ -575,6 +573,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "{APP_NAME} എങ്ങനെ ഉപയോഗിക്കാം",
   "CMD_SUPPORT": "{APP_NAME} പിന്തുണ",
   "CMD_GET_PRO": "ഫീനിക്സ് പ്രോ നേടുക",
+  "CMD_VIEW_LICENSE": "ലൈസൻസ് കാണുക",
   "CMD_MANAGE_LICENSES": "ലൈസൻസുകൾ നിയന്ത്രിക്കുക",
   "CMD_USER_PROFILE": "{APP_NAME} അക്കൗണ്ട്",
   "CMD_DOCS": "സഹായം, തുടക്കക്കാർക്ക്",
@@ -1564,5 +1563,13 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "നിങ്ങളുടെ സിസ്റ്റം അഡ്മിനിസ്ട്രേറ്റർ എഐ ആക്‌സസ് പ്രവർത്തനരഹിതമാക്കിയിരിക്കുന്നു. സഹായത്തിനായി ദയവായി {0}-മായി ബന്ധപ്പെടുക.",
   "AI_UPSELL_DIALOG_TITLE": "{0} ഉപയോഗിച്ച് തുടരണോ?",
   "AI_UPSELL_DIALOG_MESSAGE": "നിങ്ങൾ {0} കണ്ടെത്തിയിരിക്കുന്നു. തുടരാൻ, നിങ്ങൾക്ക് ഒരു എഐ സബ്സ്ക്രിപ്ഷനോ ക്രെഡിറ്റുകളോ ആവശ്യമാണ്.",
-  "CMD_VIEW_LICENSE": "ലൈസൻസ് കാണുക"
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_THUMBNAIL": "ലഘുചിത്രം 200px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XS": "മൊബൈൽ 320px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_SM": "മൊബൈൽ എച്ച്ഡി 640px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_MD": "ടാബ്‌ലെറ്റ് 960px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_REGULAR": "സാധാരണ 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_LG": "ഡെസ്ക്ടോപ്പ് 1280px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XL": "വലുത് 1600px",
+  "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "പ്രോ നേടുക",
+  "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "നിങ്ങളുടെ സൗജന്യ ചിത്ര തിരയലുകളിൽ {0}% ({1}/{2}) ഉപയോഗിച്ചു കഴിഞ്ഞു"
 });

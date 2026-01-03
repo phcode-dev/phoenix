@@ -189,8 +189,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_CHECKING_CONNECTION": "Tarkistetaan yhteyttä",
   "LIVE_DEV_IMAGE_GALLERY_STILL_OFFLINE": "Edelleen offline-tilassa. Tarkista yhteytesi.",
   "LIVE_DEV_IMAGE_GALLERY_SELECT_SIZE": "Valitse kuvan koko",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_CARD": "Kortti 400px",
-  "LIVE_DEV_IMAGE_GALLERY_SIZE_HERO": "Hero 1080px",
   "LIVE_DEV_IMAGE_GALLERY_SIZE_RETINA": "Retina 2200px",
   "LIVE_DEV_IMAGE_GALLERY_ATTRIBUTION_ON": "palvelussa {0}",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Elementti ei ole muokattavissa – skriptin luoma",
@@ -575,6 +573,7 @@ define({
   "CMD_HOW_TO_USE_BRACKETS": "Kuinka käyttää {APP_NAME}iä",
   "CMD_SUPPORT": "{APP_NAME}-tuki",
   "CMD_GET_PRO": "Hanki Phoenix Pro",
+  "CMD_VIEW_LICENSE": "Näytä lisenssi",
   "CMD_MANAGE_LICENSES": "Hallitse lisenssejä",
   "CMD_USER_PROFILE": "{APP_NAME}-tili",
   "CMD_DOCS": "Ohje, aloittaminen",
@@ -1564,5 +1563,13 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Järjestelmänvalvoja on poistanut tekoälyn käytöstä. Ota yhteyttä {0} saadaksesi apua.",
   "AI_UPSELL_DIALOG_TITLE": "Jatketaanko {0}:n kanssa?",
   "AI_UPSELL_DIALOG_MESSAGE": "Olet löytänyt ominaisuuden {0}. Jatkaaksesi tarvitset tekoälytilauksen tai krediittejä.",
-  "CMD_VIEW_LICENSE": "Näytä lisenssi"
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_THUMBNAIL": "Pikkukuva 200px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XS": "Mobiili 320px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_SM": "Mobiili HD 640px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_MD": "Tabletti 960px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_REGULAR": "Normaali 1080px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_LG": "Työpöytä 1280px",
+  "LIVE_DEV_IMAGE_GALLERY_SIZE_XL": "Suuri 1600px",
+  "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Hanki Pro",
+  "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Olet käyttänyt {0} % ilmaisista kuvahauistasi ({1}/{2})"
 });
