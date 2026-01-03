@@ -181,8 +181,6 @@ define({
     "LIVE_DEV_SETTINGS_FRAMEWORK_CUSTOM": "Custom",
     "LIVE_DEV_SETTINGS_FRAMEWORK_PREFERENCES": "Server Framework, currently supports only docusaurus",
     "LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT": "Show Live Preview Element Highlights on:",
-    "LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT_HOVER": "hover",
-    "LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT_CLICK": "click",
     "LIVE_DEV_SETTINGS_ELEMENT_HIGHLIGHT_PREFERENCE": "Show live preview element highlights on 'hover' or 'click'. Defaults to 'hover'",
     "LIVE_DEV_SETTINGS_SHOW_RULER_LINES_PREFERENCE": "Show measurements when elements are selected in live preview. Defaults to 'false'",
     "LIVE_DEV_TOOLBOX_SELECT_PARENT": "Select Parent",
