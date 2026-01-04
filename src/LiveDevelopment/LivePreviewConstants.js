@@ -36,7 +36,7 @@ define(function main(require, exports, module) {
 
     exports.PREFERENCE_LIVE_PREVIEW_MODE = "livePreviewMode";
 
-    exports.PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT = "livePreviewElementHighlights";
+    exports.PREFERENCE_PROJECT_ELEMENT_HIGHLIGHT = "livePreviewInspectElement";
     exports.HIGHLIGHT_HOVER = "hover";
     exports.HIGHLIGHT_CLICK = "click";
 
