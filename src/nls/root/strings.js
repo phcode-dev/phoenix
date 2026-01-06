@@ -187,6 +187,7 @@ define({
     "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Edit Hyperlink",
     "LIVE_DEV_HYPERLINK_NO_HREF": "No href set",
     "LIVE_DEV_HYPERLINK_OPEN_LINK": "Open this link",
+    "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Open in new tab",
     "LIVE_DEV_TOOLBOX_DUPLICATE": "Duplicate",
     "LIVE_DEV_TOOLBOX_DELETE": "Delete",
     "LIVE_DEV_TOOLBOX_AI": "Edit with AI",
