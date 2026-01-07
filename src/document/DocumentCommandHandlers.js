@@ -1243,6 +1243,7 @@ define(function (require, exports, module) {
      *   USER_CANCELED object).
      */
     function handleFileSave(commandData) {
+        // todo save interceptor
         var activeEditor = EditorManager.getActiveEditor(),
             activeDoc = activeEditor && activeEditor.document,
             doc = (commandData && commandData.doc) || activeDoc,
