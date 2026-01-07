@@ -112,6 +112,7 @@ define(function (require, exports, module) {
         UI_SIDE_PANEL: "ui-sidePanel",
         UPDATES: "update",
         LIVE_PREVIEW: "live-preview",
+        LP_EDIT: "lp-edit", // live preview edit related
         KEYBOARD: "keyboard",
         CODE_HINTS: "code-hints",
         EDITOR: "editor",
