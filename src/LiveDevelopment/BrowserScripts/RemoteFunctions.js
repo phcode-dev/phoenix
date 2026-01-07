@@ -29,7 +29,9 @@ function RemoteFunctions(config = {}) {
 
     let _hoverHighlight;
     let _clickHighlight;
+    let _cssSelectorHighlight; // temporary highlight for CSS selector matches in edit mode
     let _hoverLockTimer = null;
+    let _cssSelectorHighlightTimer = null; // timer for clearing temporary CSS selector highlights
 
     // this will store the element that was clicked previously (before the new click)
     // we need this so that we can remove click styling from the previous element when a new element is clicked
@@ -775,6 +777,36 @@ function RemoteFunctions(config = {}) {
         selectElement(element);
     }
 
+    // clear temporary CSS selector highlights
+    function clearCssSelectorHighlight() {
+        if (_cssSelectorHighlightTimer) {
+            clearTimeout(_cssSelectorHighlightTimer);
+            _cssSelectorHighlightTimer = null;
+        }
+        if (_cssSelectorHighlight) {
+            _cssSelectorHighlight.clear();
+            _cssSelectorHighlight = null;
+        }
+    }
+
+    // create temporary CSS selector highlights for edit mode
+    function createCssSelectorHighlight(nodes, rule) {
+        // Clear any existing temporary highlights
+        clearCssSelectorHighlight();
+
+        // Create new temporary highlight for all matching elements
+        _cssSelectorHighlight = new Highlight("#cfc");
+        for (var i = 0; i < nodes.length; i++) {
+            if (LivePreviewView.isElementInspectable(nodes[i], true) && nodes[i].nodeType === Node.ELEMENT_NODE) {
+                _cssSelectorHighlight.add(nodes[i], true);
+            }
+        }
+        _cssSelectorHighlight.selector = rule;
+
+        // Clear temporary highlights after 2 seconds
+        _cssSelectorHighlightTimer = setTimeout(clearCssSelectorHighlight, 2000);
+    }
+
     // remove active highlights
     function hideHighlight() {
         if (_clickHighlight) {
@@ -785,6 +817,7 @@ function RemoteFunctions(config = {}) {
             _hoverHighlight.clear();
             _hoverHighlight = null;
         }
+        clearCssSelectorHighlight();
     }
 
     // highlight an element
@@ -831,6 +864,11 @@ function RemoteFunctions(config = {}) {
         // if no valid element present we dismiss the boxes
         if (!foundValidElement) {
             dismissUIAndCleanupState();
+        }
+
+        // In edit mode, create temporary highlights AFTER selection to avoid clearing
+        if (config.mode === 'edit') {
+            createCssSelectorHighlight(nodes, rule);
         }
     }
 
