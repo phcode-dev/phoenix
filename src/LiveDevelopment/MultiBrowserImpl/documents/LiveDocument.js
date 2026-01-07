@@ -171,6 +171,17 @@ define(function (require, exports, module) {
         }
     };
 
+    let _disableHighlightOnCursor = false;
+
+    /**
+     * If tur, it will disable highlights in live preview on cursor movement in editor
+     * @param {boolean} shouldDisable
+     */
+    LiveDocument.prototype.disableHighlightOnCursorActivity = function (shouldDisable) {
+        // intentionally global. see usage for details
+        _disableHighlightOnCursor = shouldDisable;
+    };
+
     /**
      * @private
      * Handles a cursor change in our attached editor. Updates the highlight in the browser.
@@ -181,7 +192,10 @@ define(function (require, exports, module) {
         if (!this.editor) {
             return;
         }
-        this.updateHighlight();
+        if(!_disableHighlightOnCursor){
+            console.log("cursor activity highlight");
+            this.updateHighlight();
+        }
     };
 
     /**

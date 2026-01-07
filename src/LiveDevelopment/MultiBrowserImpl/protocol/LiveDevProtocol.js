@@ -342,8 +342,21 @@ define(function (require, exports, module) {
                 }
             }
         } else if (msg.clicked && msg.tagId) {
-            _tagSelectedInLivePreview(msg.tagId, msg.nodeName, msg.contentEditable, msg.allSelectors);
-            exports.trigger(EVENT_LIVE_PREVIEW_CLICKED, msg);
+            // While previewing an html file, and if css related file is active in the editor, then clicking on the
+            // live preview, here we set the cursor position in the css file. but this will also trigger a css
+            // highlight as the cursor changes which jumps the live preview selection.
+            // We should not do reverse highlight when lp highlight is going on here.
+            const livePreviewMode = PreferencesManager.get(CONSTANTS.PREFERENCE_LIVE_PREVIEW_MODE);
+            const editMode = (livePreviewMode === CONSTANTS.LIVE_PREVIEW_MODE);
+            const liveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
+            editMode && liveDoc && liveDoc.disableHighlightOnCursorActivity(true);
+            try {
+                _tagSelectedInLivePreview(msg.tagId, msg.nodeName, msg.contentEditable, msg.allSelectors);
+                exports.trigger(EVENT_LIVE_PREVIEW_CLICKED, msg);
+            } catch (e) {
+                console.error("error in tag selection", e);
+            }
+            editMode && liveDoc && liveDoc.disableHighlightOnCursorActivity(false);
         } else {
             // enrich received message with clientId
             msg.clientId = clientId;
