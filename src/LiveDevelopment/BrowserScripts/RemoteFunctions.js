@@ -175,7 +175,9 @@ function RemoteFunctions(config = {}) {
         selectElement: selectElement,
         brieflyDisableHoverListeners: brieflyDisableHoverListeners,
         handleElementClick: handleElementClick,
-        cleanupPreviousElementState: cleanupPreviousElementState
+        cleanupPreviousElementState: cleanupPreviousElementState,
+        disableHoverListeners: disableHoverListeners,
+        enableHoverListeners: enableHoverListeners
     };
 
     /**
