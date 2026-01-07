@@ -347,7 +347,7 @@ define(function (require, exports, module) {
             // highlight as the cursor changes which jumps the live preview selection.
             // We should not do reverse highlight when lp highlight is going on here.
             const livePreviewMode = PreferencesManager.get(CONSTANTS.PREFERENCE_LIVE_PREVIEW_MODE);
-            const editMode = (livePreviewMode === CONSTANTS.LIVE_PREVIEW_MODE);
+            const editMode = (livePreviewMode === CONSTANTS.LIVE_EDIT_MODE);
             const liveDoc = LiveDevMultiBrowser.getCurrentLiveDoc();
             editMode && liveDoc && liveDoc.disableHighlightOnCursorActivity(true);
             try {
