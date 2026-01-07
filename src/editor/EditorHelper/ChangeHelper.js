@@ -31,8 +31,7 @@ define(function (require, exports, module) {
     let _keyEventInterceptor = null;
 
     const CodeMirror = require("thirdparty/CodeMirror/lib/codemirror"),
-        Menus = require("command/Menus"),
-        EditorCommandHandlers = require("editor/EditorCommandHandlers");
+        Menus = require("command/Menus");
 
     function _applyChanges(changeList) {
         // eslint-disable-next-line no-invalid-this
@@ -315,12 +314,29 @@ define(function (require, exports, module) {
         Editor.prototype._dontDismissPopupOnScroll = _dontDismissPopupOnScroll;
     }
 
+    let _undoInterceptor = null;
+    let _redoInterceptor = null;
+
+    function _onBeforeUndo(editor, codeMirror, event) {
+        if(!_undoInterceptor){
+            return false;
+        }
+        return _undoInterceptor(editor, codeMirror, event);
+    }
+
+    function _onBeforeRedo(editor, codeMirror, event) {
+        if(!_redoInterceptor){
+            return false;
+        }
+        return _redoInterceptor(editor, codeMirror, event);
+    }
+
     /**
      * Sets the undo interceptor function in before it goes to codemirror
      * @param {Function} interceptor - Function(editor, cm, event) that returns true to preventDefault
      */
     function setUndoInterceptor(interceptor) {
-        EditorCommandHandlers._setUndoInterceptor(interceptor);
+        _undoInterceptor = interceptor;
     }
 
     /**
@@ -328,7 +344,7 @@ define(function (require, exports, module) {
      * @param {Function} interceptor - Function(editor, cm, event) that returns true to preventDefault
      */
     function setRedoInterceptor(interceptor) {
-        EditorCommandHandlers._setRedoInterceptor(interceptor);
+        _redoInterceptor = interceptor;
     }
 
     /**
@@ -363,7 +379,12 @@ define(function (require, exports, module) {
         _keyEventInterceptor = interceptor;
     }
 
-    exports.addHelpers =addHelpers;
+    // private exports
+    exports._onBeforeUndo =_onBeforeUndo;
+    exports._onBeforeRedo = _onBeforeRedo;
+
+    // public exports
+    exports.addHelpers = addHelpers;
     exports.setUndoInterceptor = setUndoInterceptor;
     exports.setRedoInterceptor = setRedoInterceptor;
     exports.setCutInterceptor = setCutInterceptor;
