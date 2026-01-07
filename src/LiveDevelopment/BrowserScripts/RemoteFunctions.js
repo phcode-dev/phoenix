@@ -741,6 +741,9 @@ function RemoteFunctions(config = {}) {
      * @param {Event} event - The click event
      */
     function handleElementClick(element, event) {
+        if(element && element.classList && element.classList.contains("phcode-no-lp-edit")) {
+            return;
+        }
         if (!LivePreviewView.isElementInspectable(element)) {
             dismissUIAndCleanupState();
             return;
