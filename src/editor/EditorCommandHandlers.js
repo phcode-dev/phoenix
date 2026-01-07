@@ -1190,11 +1190,45 @@ define(function (require, exports, module) {
         return result.promise();
     }
 
+    let _undoInterceptor = null;
+    let _redoInterceptor = null;
+
+    /**
+     * Use require("editor/EditorHelper/ChangeHelper") to intercept. this for internal use only
+     * @private
+     * @param {Function} interceptor - Function(editor, cm, event) that returns true to preventDefault
+     */
+    function _setUndoInterceptor(interceptor) {
+        _undoInterceptor = interceptor;
+    }
+
+    /**
+     * Use require("editor/EditorHelper/ChangeHelper") to intercept. this for internal use only
+     * @param {Function} interceptor - Function(editor, cm, event) that returns true to preventDefault
+     */
+    function _setRedoInterceptor(interceptor) {
+        _redoInterceptor = interceptor;
+    }
+
     function handleUndo() {
+        if(_undoInterceptor){
+            const focusedEditor = EditorManager.getFocusedEditor();
+            const codeMirror = focusedEditor && focusedEditor._codeMirror;
+            if(_undoInterceptor(focusedEditor, codeMirror, null)){
+                return;
+            }
+        }
         return handleUndoRedo("undo");
     }
 
     function handleRedo() {
+        if(_redoInterceptor){
+            const focusedEditor = EditorManager.getFocusedEditor();
+            const codeMirror = focusedEditor && focusedEditor._codeMirror;
+            if(_redoInterceptor(focusedEditor, codeMirror, null)){
+                return;
+            }
+        }
         return handleUndoRedo("redo");
     }
 
@@ -1273,4 +1307,7 @@ define(function (require, exports, module) {
     CommandManager.register(Strings.CMD_COPY, Commands.EDIT_COPY, _execCommandCopy);
     CommandManager.register(Strings.CMD_PASTE, Commands.EDIT_PASTE, _execCommandPaste);
     CommandManager.register(Strings.CMD_SELECT_ALL, Commands.EDIT_SELECT_ALL, _handleSelectAll);
+
+    exports._setUndoInterceptor = _setUndoInterceptor;
+    exports._setRedoInterceptor = _setRedoInterceptor;
 });

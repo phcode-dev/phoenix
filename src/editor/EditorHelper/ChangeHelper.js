@@ -31,7 +31,8 @@ define(function (require, exports, module) {
     let _keyEventInterceptor = null;
 
     const CodeMirror = require("thirdparty/CodeMirror/lib/codemirror"),
-        Menus = require("command/Menus");
+        Menus = require("command/Menus"),
+        EditorCommandHandlers = require("editor/EditorCommandHandlers");
 
     function _applyChanges(changeList) {
         // eslint-disable-next-line no-invalid-this
@@ -315,9 +316,24 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Sets the undo interceptor function in before it goes to codemirror
+     * @param {Function} interceptor - Function(editor, cm, event) that returns true to preventDefault
+     */
+    function setUndoInterceptor(interceptor) {
+        EditorCommandHandlers._setUndoInterceptor(interceptor);
+    }
+
+    /**
+     * Sets the redo interceptor function in before it goes to codemirror
+     * @param {Function} interceptor - Function(editor, cm, event) that returns true to preventDefault
+     */
+    function setRedoInterceptor(interceptor) {
+        EditorCommandHandlers._setRedoInterceptor(interceptor);
+    }
+
+    /**
      * Sets the cut interceptor function in codemirror
-     * @param {Function} interceptor - Function(editor, cm, event) that returns true to
-     preventDefault
+     * @param {Function} interceptor - Function(editor, cm, event) that returns true to preventDefault
      */
     function setCutInterceptor(interceptor) {
         _cutInterceptor = interceptor;
@@ -325,8 +341,7 @@ define(function (require, exports, module) {
 
     /**
      * Sets the copy interceptor function in codemirror
-     * @param {Function} interceptor - Function(editor, cm, event) that returns true to
-     preventDefault
+     * @param {Function} interceptor - Function(editor, cm, event) that returns true to preventDefault
      */
     function setCopyInterceptor(interceptor) {
         _copyInterceptor = interceptor;
@@ -334,8 +349,7 @@ define(function (require, exports, module) {
 
     /**
      * Sets the paste interceptor function in codemirror
-     * @param {Function} interceptor - Function(editor, cm, event) that returns true to
-     preventDefault
+     * @param {Function} interceptor - Function(editor, cm, event) that returns true to preventDefault
      */
     function setPasteInterceptor(interceptor) {
         _pasteInterceptor = interceptor;
@@ -343,14 +357,15 @@ define(function (require, exports, module) {
 
     /**
      * Sets the key down/up/press interceptor function in codemirror
-     * @param {Function} interceptor - Function(editor, cm, event) that returns true to
-     preventDefault
+     * @param {Function} interceptor - Function(editor, cm, event) that returns true to preventDefault
      */
     function setKeyEventInterceptor(interceptor) {
         _keyEventInterceptor = interceptor;
     }
 
     exports.addHelpers =addHelpers;
+    exports.setUndoInterceptor = setUndoInterceptor;
+    exports.setRedoInterceptor = setRedoInterceptor;
     exports.setCutInterceptor = setCutInterceptor;
     exports.setCopyInterceptor = setCopyInterceptor;
     exports.setPasteInterceptor = setPasteInterceptor;
