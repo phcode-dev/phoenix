@@ -193,7 +193,6 @@ define(function (require, exports, module) {
             return;
         }
         if(!_disableHighlightOnCursor){
-            console.log("cursor activity highlight");
             this.updateHighlight();
         }
     };
