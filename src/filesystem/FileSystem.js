@@ -755,6 +755,9 @@ define(function (require, exports, module) {
      * @param {function(?string, boolean)} callback
      */
     FileSystem.prototype.existsAsync = function (path) {
+        if(!path) {
+            return Promise.resolve(false);
+        }
         return this._impl.existsAsync(path);
     };
 

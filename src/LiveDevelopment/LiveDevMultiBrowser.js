@@ -88,6 +88,7 @@ define(function (require, exports, module) {
         LiveDevProtocol      = require("LiveDevelopment/MultiBrowserImpl/protocol/LiveDevProtocol"),
         Metrics              = require("utils/Metrics"),
         WorkspaceManager    = require("view/WorkspaceManager"),
+        FileSystem          = require("filesystem/FileSystem"),
         PageLoaderWorkerScript = require("text!LiveDevelopment/BrowserScripts/pageLoaderWorker.js");
 
     // Documents
@@ -538,15 +539,34 @@ define(function (require, exports, module) {
         }
     }
 
+    let _lastPreviewedHTMLFilePath;
+    async function _resolveLivePreviewDocument() {
+        let activeDocument = DocumentManager.getCurrentDocument();
+        if(livePreviewUrlPinned){
+            return jsPromise(DocumentManager.getDocumentForPath(currentPreviewFilePath));
+        }
+        if (activeDocument && activeDocument.getLanguage().getId() === "html") {
+            _lastPreviewedHTMLFilePath = activeDocument.file.fullPath;
+            return activeDocument;
+        }
+        // if a css/js/non html file is active, we fall back to the last previewed HTML file
+        let fileExists = await FileSystem.existsAsync(_lastPreviewedHTMLFilePath);
+        if(!fileExists){
+            // the last previewed file may have been deleted
+            return activeDocument; // can be null
+        }
+        return jsPromise(DocumentManager.getDocumentForPath(_lastPreviewedHTMLFilePath));
+    }
+
+    ProjectManager.on(ProjectManager.EVENT_PROJECT_OPEN, ()=>{
+        _lastPreviewedHTMLFilePath = null;
+    });
 
     /**
      * Open a live preview on the current docuemnt.
      */
     async function open() {
-        let doc = DocumentManager.getCurrentDocument();
-        if(livePreviewUrlPinned){
-            doc = await jsPromise(DocumentManager.getDocumentForPath(currentPreviewFilePath));
-        }
+        let doc = await _resolveLivePreviewDocument();
 
         // wait for server (StaticServer, Base URL or file:)
         _prepareServer(doc)

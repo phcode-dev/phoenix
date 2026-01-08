@@ -823,13 +823,7 @@ define(function (require, exports, module) {
             currentLivePreviewURL = newSrc;
             currentPreviewFile = previewDetails.fullPath;
         }
-        const existingPreviewFile = $iframe && $iframe.attr('data-original-path');
-        const existingPreviewURL = $iframe && $iframe.attr('data-original-src');
-        if(isReload && previewDetails.isNoPreview && existingPreviewURL &&
-            existingPreviewFile && ProjectManager.isWithinProject(existingPreviewFile)) {
-            currentLivePreviewURL = existingPreviewURL;
-            currentPreviewFile = existingPreviewFile;
-        } else if(isReload){
+        if(isReload && previewDetails.isHTMLFile){
             LiveDevelopment.openLivePreview();
         }
         let relativeOrFullPath= ProjectManager.makeProjectRelativeIfPossible(currentPreviewFile);
@@ -852,10 +846,6 @@ define(function (require, exports, module) {
             $iframe = newIframe;
             if(_isProjectPreviewTrusted()){
                 $iframe.attr('src', currentLivePreviewURL);
-                // we have to save src as the iframe src attribute may have redirected, and we cannot read it as its
-                // a third party domain once its redirected.
-                $iframe.attr('data-original-src', currentLivePreviewURL);
-                $iframe.attr('data-original-path', currentPreviewFile);
                 if(Phoenix.isTestWindow) {
                     window._livePreviewIntegTest.currentLivePreviewURL = currentLivePreviewURL;
                     window._livePreviewIntegTest.urlLoadCount++;
