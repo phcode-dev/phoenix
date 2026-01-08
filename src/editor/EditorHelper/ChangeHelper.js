@@ -177,9 +177,15 @@ define(function (require, exports, module) {
 
         // Redispatch these CodeMirror key events as Editor events
         function _onKeyEvent(instance, event) {
-            if(_keyEventInterceptor && _keyEventInterceptor(self, self._codeMirror, event)){
-                // the interceptor processed it, so don't pass it along to CodeMirror'
-                return;
+            if(_keyEventInterceptor){
+                try {
+                    if(_keyEventInterceptor(self, self._codeMirror, event)){
+                        // the interceptor processed it, so don't pass it along to CodeMirror'
+                        return;
+                    }
+                } catch (e) {
+                    logger.reportError(e, "Error in key event interceptor");
+                }
             }
             self.trigger("keyEvent", self, event);  // deprecated
             self.trigger(event.type, self, event);
@@ -256,7 +262,11 @@ define(function (require, exports, module) {
         self._codeMirror.on("cut", function(cm, e) {
             // Let interceptor decide what to do with the event (including preventDefault)
             if (_cutInterceptor) {
-                return _cutInterceptor(self, cm, e);
+                try {
+                    return _cutInterceptor(self, cm, e);
+                } catch (e) {
+                    logger.reportError(e, "Error in cut interceptor");
+                }
             }
             // Otherwise allow normal cut behavior
         });
@@ -264,7 +274,11 @@ define(function (require, exports, module) {
         self._codeMirror.on("copy", function(cm, e) {
             // Let interceptor decide what to do with the event (including preventDefault)
             if (_copyInterceptor) {
-                return _copyInterceptor(self, cm, e);
+                try {
+                    return _copyInterceptor(self, cm, e);
+                } catch (e) {
+                    logger.reportError(e, "Error in copy interceptor");
+                }
             }
             // Otherwise allow normal copy behavior
         });
@@ -272,7 +286,11 @@ define(function (require, exports, module) {
         self._codeMirror.on("paste", function(cm, e) {
             // Let interceptor decide what to do with the event (including preventDefault)
             if (_pasteInterceptor) {
-                return _pasteInterceptor(self, cm, e);
+                try {
+                    return _pasteInterceptor(self, cm, e);
+                } catch (e) {
+                    logger.reportError(e, "Error in paste interceptor");
+                }
             }
             // Otherwise allow normal paste behavior
         });
