@@ -19,6 +19,8 @@
  *
  */
 
+/*global logger*/
+
 /**
  * Editor instance helpers change handling. Only to be used from Editor.js.
  */
@@ -316,19 +318,42 @@ define(function (require, exports, module) {
 
     let _undoInterceptor = null;
     let _redoInterceptor = null;
+    let _saveInterceptor = null;
+
+    function _onBeforeSave(docBeingSaved) {
+        if(!_saveInterceptor){
+            return false;
+        }
+        try{
+            return _saveInterceptor(docBeingSaved);
+        } catch (e) {
+            logger.reportError(e, "Error in save interceptor");
+            return false;
+        }
+    }
 
     function _onBeforeUndo(editor, codeMirror, event) {
         if(!_undoInterceptor){
             return false;
         }
-        return _undoInterceptor(editor, codeMirror, event);
+        try {
+            return _undoInterceptor(editor, codeMirror, event);
+        } catch (e) {
+            logger.reportError(e, "Error in undo interceptor");
+            return false;
+        }
     }
 
     function _onBeforeRedo(editor, codeMirror, event) {
         if(!_redoInterceptor){
             return false;
         }
-        return _redoInterceptor(editor, codeMirror, event);
+        try {
+            return _redoInterceptor(editor, codeMirror, event);
+        } catch (e) {
+            logger.reportError(e, "Error in redo interceptor");
+            return false;
+        }
     }
 
     /**
@@ -379,9 +404,18 @@ define(function (require, exports, module) {
         _keyEventInterceptor = interceptor;
     }
 
+    /**
+     * Sets the key down/up/press interceptor function in codemirror
+     * @param {Function} interceptor - Function(editor, cm, event) that returns true to preventDefault
+     */
+    function setSaveInterceptor(interceptor) {
+        _saveInterceptor = interceptor;
+    }
+
     // private exports
     exports._onBeforeUndo =_onBeforeUndo;
     exports._onBeforeRedo = _onBeforeRedo;
+    exports._onBeforeSave = _onBeforeSave;
 
     // public exports
     exports.addHelpers = addHelpers;
@@ -391,4 +425,5 @@ define(function (require, exports, module) {
     exports.setCopyInterceptor = setCopyInterceptor;
     exports.setPasteInterceptor = setPasteInterceptor;
     exports.setKeyEventInterceptor = setKeyEventInterceptor;
+    exports.setSaveInterceptor = setSaveInterceptor;
 });

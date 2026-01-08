@@ -59,6 +59,7 @@ define(function (require, exports, module) {
         NewFileContentManager     = require("features/NewFileContentManager"),
         NodeConnector = require("NodeConnector"),
         NodeUtils           = require("utils/NodeUtils"),
+        ChangeHelper        = require("editor/EditorHelper/ChangeHelper"),
         _                   = require("thirdparty/lodash");
 
     const KernalModeTrust = window.KernalModeTrust;
@@ -1243,11 +1244,13 @@ define(function (require, exports, module) {
      *   USER_CANCELED object).
      */
     function handleFileSave(commandData) {
-        // todo save interceptor
-        var activeEditor = EditorManager.getActiveEditor(),
+        const activeEditor = EditorManager.getActiveEditor(),
             activeDoc = activeEditor && activeEditor.document,
-            doc = (commandData && commandData.doc) || activeDoc,
-            settings;
+            doc = (commandData && commandData.doc) || activeDoc;
+        let settings;
+        if(ChangeHelper._onBeforeSave(doc)){
+            return $.Deferred().reject().promise();
+        }
 
         if (doc && !doc.isSaving) {
             if (doc.isUntitled()) {
