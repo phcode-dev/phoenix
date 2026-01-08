@@ -35,7 +35,7 @@ function RemoteFunctions(config = {}) {
 
     // this will store the element that was clicked previously (before the new click)
     // we need this so that we can remove click styling from the previous element when a new element is clicked
-    let previouslyClickedElement = null;
+    let previouslySelectedElement = null;
 
     var req, timeout;
     function animateHighlight(time) {
@@ -709,7 +709,7 @@ function RemoteFunctions(config = {}) {
         _clickHighlight.clear();
         _clickHighlight.add(element, true);
 
-        previouslyClickedElement = element;
+        previouslySelectedElement = element;
     }
 
     function disableHoverListeners() {
@@ -835,37 +835,80 @@ function RemoteFunctions(config = {}) {
         }
     }
 
-    // highlight a rule
+    /**
+     * Find the best element to select from a list of matched nodes
+     * Prefers: previously selected element > parent of selected > first valid element
+     * @param {NodeList} nodes - The nodes matching the CSS rule
+     * @param {string} rule - The CSS rule used to match nodes
+     * @returns {{element: Element|null, skipSelection: boolean}} - The element to select and whether to skip selection
+     */
+    function findBestElementToSelect(nodes, rule) {
+        let firstValidElement = null;
+        let elementToSelect = null;
+
+        for (let i = 0; i < nodes.length; i++) {
+            if(!LivePreviewView.isElementInspectable(nodes[i], true) || nodes[i].tagName === "BR") {
+                continue;
+            }
+
+            // Store the first valid element as a fallback
+            if (!firstValidElement) {
+                firstValidElement = nodes[i];
+            }
+
+            // if hover lock timer is active, skip selection as it's already handled by handleElementClick
+            if (_hoverLockTimer && nodes[i] === previouslySelectedElement) {
+                return { element: null, skipSelection: true };
+            }
+
+            // Check if the currently selected element or any of its parents have a highlight
+            if (previouslySelectedElement) {
+                if (nodes[i] === previouslySelectedElement) {
+                    // Exact match - prefer this
+                    elementToSelect = previouslySelectedElement;
+                    break;
+                } else if (!elementToSelect &&
+                    previouslySelectedElement.closest && nodes[i] === previouslySelectedElement.closest(rule)) {
+                    // The node is a parent of the currently selected element. we stop at the first parent, after that
+                    // we only scan for exact match
+                    elementToSelect = nodes[i];
+                }
+            }
+        }
+
+        return {
+            element: elementToSelect || firstValidElement,
+            skipSelection: false
+        };
+    }
+
+    /**
+     * Highlight all elements matching a CSS rule and select the best one
+     * @param {string} rule - The CSS rule to highlight
+     */
     function highlightRule(rule) {
         hideHighlight();
-        var i, nodes = window.document.querySelectorAll(rule);
+        const nodes = window.document.querySelectorAll(rule);
 
-        for (i = 0; i < nodes.length; i++) {
+        // Highlight all matching nodes
+        for (let i = 0; i < nodes.length; i++) {
             highlight(nodes[i]);
         }
+
         if (_clickHighlight) {
             _clickHighlight.selector = rule;
         }
 
-        // select the first valid highlighted element
-        let foundValidElement = false;
-        for (i = 0; i < nodes.length; i++) {
-            if(LivePreviewView.isElementInspectable(nodes[i], true) && nodes[i].tagName !== "BR") {
-                // if hover lock timer is active, we don't call selectElement as,
-                // it means that its already called by handleElementClick function
-                if (_hoverLockTimer && nodes[i] === previouslyClickedElement) {
-                    foundValidElement = true;
-                    break;
-                }
-                selectElement(nodes[i]);
-                foundValidElement = true;
-                break;
-            }
-        }
+        // Find and select the best element
+        const { element, skipSelection } = findBestElementToSelect(nodes, rule);
 
-        // if no valid element present we dismiss the boxes
-        if (!foundValidElement) {
-            dismissUIAndCleanupState();
+        if (!skipSelection) {
+            if (element) {
+                selectElement(element);
+            } else {
+                // No valid element found, dismiss UI
+                dismissUIAndCleanupState();
+            }
         }
 
         // In edit mode, create temporary highlights AFTER selection to avoid clearing
@@ -1195,7 +1238,7 @@ function RemoteFunctions(config = {}) {
         this.rememberedNodes = {};
 
         // this check makes sure that if the element is no more in the DOM then we remove it
-        if (previouslyClickedElement && !previouslyClickedElement.isConnected) {
+        if (previouslySelectedElement && !previouslySelectedElement.isConnected) {
             dismissUIAndCleanupState();
         } else {
             redrawEverything();
@@ -1250,14 +1293,14 @@ function RemoteFunctions(config = {}) {
      * Helper function to cleanup previously clicked element highlighting and state
      */
     function cleanupPreviousElementState() {
-        if (previouslyClickedElement) {
-            if (previouslyClickedElement._originalOutline !== undefined) {
-                previouslyClickedElement.style.outline = previouslyClickedElement._originalOutline;
+        if (previouslySelectedElement) {
+            if (previouslySelectedElement._originalOutline !== undefined) {
+                previouslySelectedElement.style.outline = previouslySelectedElement._originalOutline;
             } else {
-                previouslyClickedElement.style.outline = "";
+                previouslySelectedElement.style.outline = "";
             }
-            delete previouslyClickedElement._originalOutline;
-            previouslyClickedElement = null;
+            delete previouslySelectedElement._originalOutline;
+            previouslySelectedElement = null;
         }
 
         if (config.mode === 'edit') {
