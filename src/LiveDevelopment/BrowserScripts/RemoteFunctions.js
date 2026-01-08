@@ -718,6 +718,14 @@ function RemoteFunctions(config = {}) {
     }
 
     function enableHoverListeners() {
+        // don't enable hover listeners if user is currently editing an element
+        // this was added to fix a specific bug:
+        // lets say user double clicked an element: so as soon as the first click is made,
+        // 'breiflyDisableHoverListeners' is called which has a timer to re-enable hover listeners,
+        // because of which even during editing the hover listeners were working
+        if (SHARED_STATE._currentlyEditingElement) {
+            return;
+        }
         if (config.mode === 'edit' && shouldShowHighlightOnHover()) {
             disableHoverListeners();
             window.document.addEventListener("mouseover", onElementHover);
