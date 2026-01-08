@@ -431,7 +431,9 @@ define(function (require, exports, module) {
             return Promise.reject("Not serving content as url invalid: " + url);
         }
         const filePath = _staticServerInstance.urlToPath(url);
-        if(utils.isMarkdownFile(filePath) && currentFile && currentFile.fullPath === filePath){
+        const shouldServeRendered = ((filePath === _lastPreviewedFilePath)
+            || (currentFile && currentFile.fullPath === path));
+        if(utils.isMarkdownFile(filePath) && shouldServeRendered){
             return _getMarkdown(filePath);
         }
         if(_staticServerInstance){
@@ -580,6 +582,7 @@ define(function (require, exports, module) {
     }
 
     function _projectOpened(_evt, projectRoot) {
+        _lastPreviewedFilePath = null;
         liveServerConnector.execPeer('navMessageProjectOpened', {
             type: 'PROJECT_SWITCH',
             projectRoot: projectRoot.fullPath
@@ -634,6 +637,8 @@ define(function (require, exports, module) {
     function hasActiveLivePreviews() {
         return livePreviewTabs.size > 0;
     }
+
+    let _lastPreviewedFilePath;
 
     /**
      * Finds out a {URL,filePath} to live preview from the project. Will return and empty object if the current
@@ -703,33 +708,24 @@ define(function (require, exports, module) {
                     });
                     return;
                 } else if(utils.isPreviewableFile(fullPath)){
-                    const relativeFilePath = httpFilePath || path.relative(projectRoot, fullPath);
-                    let URL = httpFilePath || decodeURI(_staticServerInstance.pathToUrl(fullPath));
+                    // this is the case where the user has html/svg/any previewable file as the active document
+                    _lastPreviewedFilePath = fullPath;
+                }
+                let fileExists = await FileSystem.existsAsync(_lastPreviewedFilePath);
+                if(_lastPreviewedFilePath && fileExists){
+                    // user either has active document as a previewable file or this is the case where
+                    // user switched to a css/js/other file that is not previewable, but we have on old previewable
+                    // file we will just take the _lastPreviewedFilePath as active
+                    const relativeFilePath = httpFilePath || path.relative(projectRoot, _lastPreviewedFilePath);
+                    let URL = httpFilePath || decodeURI(_staticServerInstance.pathToUrl(_lastPreviewedFilePath));
                     resolve({
                         URL,
                         filePath: relativeFilePath,
-                        fullPath: fullPath,
-                        isMarkdownFile: utils.isMarkdownFile(fullPath),
-                        isHTMLFile: utils.isHTMLFile(fullPath)
+                        fullPath: _lastPreviewedFilePath,
+                        isMarkdownFile: utils.isMarkdownFile(_lastPreviewedFilePath),
+                        isHTMLFile: utils.isHTMLFile(_lastPreviewedFilePath)
                     });
                     return;
-                } else {
-                    const currentLivePreviewDetails = LiveDevelopment.getLivePreviewDetails();
-                    if(currentLivePreviewDetails && currentLivePreviewDetails.liveDocument
-                        && currentLivePreviewDetails.liveDocument.isRelated
-                        && currentLivePreviewDetails.liveDocument.isRelated(fullPath)){
-                        fullPath = currentLivePreviewDetails.liveDocument.doc.file.fullPath;
-                        const relativeFilePath = httpFilePath || path.relative(projectRoot, fullPath);
-                        let URL = httpFilePath || decodeURI(_staticServerInstance.pathToUrl(fullPath));
-                        resolve({
-                            URL,
-                            filePath: relativeFilePath,
-                            fullPath: fullPath,
-                            isMarkdownFile: utils.isMarkdownFile(fullPath),
-                            isHTMLFile: utils.isHTMLFile(fullPath)
-                        });
-                        return;
-                    }
                 }
                 resolve({
                     URL: getNoPreviewURL(),

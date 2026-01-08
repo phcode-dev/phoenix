@@ -128,6 +128,8 @@ define(function (require, exports, module) {
         return Phoenix.isNativeApp || !(Phoenix.browser.desktop.isSafari || Phoenix.browser.mobile.isIos);
     }
 
+    let _lastPreviewedFilePath;
+
     /**
      * Finds out a {URL,filePath} to live preview from the project. Will return and empty object if the current
      * file is not previewable.
@@ -179,33 +181,24 @@ define(function (require, exports, module) {
                         });
                         return;
                     }  else if(utils.isPreviewableFile(fullPath)){
-                        const filePath = httpFilePath || path.relative(projectRoot, fullPath);
+                        // this is the case where the user has html/svg/any previewable file as the active document
+                        _lastPreviewedFilePath = fullPath;
+                    }
+                    let fileExists = await FileSystem.existsAsync(_lastPreviewedFilePath);
+                    if(_lastPreviewedFilePath && fileExists){
+                        // user either has active document as a previewable file or this is the case where
+                        // user switched to a css/js/other file that is not previewable, but we have on old previewable
+                        // file we will just take the _lastPreviewedFilePath as active
+                        const filePath = httpFilePath || path.relative(projectRoot, _lastPreviewedFilePath);
                         let URL = httpFilePath || `${projectRootUrl}${filePath}`;
                         resolve({
                             URL,
                             filePath: filePath,
-                            fullPath: fullPath,
-                            isMarkdownFile: utils.isMarkdownFile(fullPath),
-                            isHTMLFile: utils.isHTMLFile(fullPath)
+                            fullPath: _lastPreviewedFilePath,
+                            isMarkdownFile: utils.isMarkdownFile(_lastPreviewedFilePath),
+                            isHTMLFile: utils.isHTMLFile(_lastPreviewedFilePath)
                         });
                         return;
-                    } else {
-                        const currentLivePreviewDetails = LiveDevelopment.getLivePreviewDetails();
-                        if(currentLivePreviewDetails && currentLivePreviewDetails.liveDocument
-                            && currentLivePreviewDetails.liveDocument.isRelated
-                            && currentLivePreviewDetails.liveDocument.isRelated(fullPath)){
-                            fullPath = currentLivePreviewDetails.liveDocument.doc.file.fullPath;
-                            const filePath = path.relative(projectRoot, fullPath);
-                            let URL = `${projectRootUrl}${filePath}`;
-                            resolve({
-                                URL,
-                                filePath: filePath,
-                                fullPath: fullPath,
-                                isMarkdownFile: utils.isMarkdownFile(fullPath),
-                                isHTMLFile: utils.isHTMLFile(fullPath)
-                            });
-                            return;
-                        }
                     }
                 }
                 resolve({
@@ -588,14 +581,16 @@ define(function (require, exports, module) {
         if(!url.startsWith(_staticServerInstance.getBaseUrl())) {
             return Promise.reject("Not serving content as url belongs to another phcode instance: " + url);
         }
-        if(utils.isMarkdownFile(path) && currentFile && currentFile.fullPath === path){
+        const shouldServeRendered = ((path === _lastPreviewedFilePath)
+            || (currentFile && currentFile.fullPath === path));
+        if(utils.isMarkdownFile(path) && shouldServeRendered){
             return _getMarkdown(path);
         }
         if(_staticServerInstance){
             return _staticServerInstance._getInstrumentedContent(path, url);
         }
         return Promise.reject("Cannot get content");
-    };
+    }
 
     /**
      * See BaseServer#start. Starts listenting to StaticServerDomain events.
@@ -712,6 +707,7 @@ define(function (require, exports, module) {
     }
 
     function _projectOpened(_evt, projectRoot) {
+        _lastPreviewedFilePath = null;
         navigatorChannel.postMessage({
             type: 'PROJECT_SWITCH',
             projectRoot: projectRoot.fullPath
