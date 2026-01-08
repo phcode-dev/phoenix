@@ -146,9 +146,9 @@ define(function (require, exports, module) {
             return;
         }
 
-        var key = this._liveDocuments[this._documentKey(liveDocument.doc.file.fullPath)];
+        const key = this._documentKey(liveDocument.doc.file.fullPath);
 
-        if (key) {
+        if (this._liveDocuments[key]) {
             delete this._liveDocuments[key];
         }
     };

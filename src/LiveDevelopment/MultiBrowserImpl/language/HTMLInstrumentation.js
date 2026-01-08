@@ -754,6 +754,19 @@ define(function (require, exports, module) {
                     markCache[mark.tagID] = { mark: mark, range: mark.find() };
                 }
             });
+
+            // DEFENSIVE CHECK: If we expected marks but found none, force re-marking
+            if (Object.keys(markCache).length === 0 && dom.nodeMap && Object.keys(dom.nodeMap).length > 0) {
+                console.warn("generateInstrumentedHTML: No marks found, forcing re-mark");
+                _markTextFromDOM(editor, dom);
+                // Rebuild markCache with new marks
+                markCache = {};
+                editor._codeMirror.getAllMarks().forEach(function (mark) {
+                    if (mark.tagID) {
+                        markCache[mark.tagID] = { mark: mark, range: mark.find() };
+                    }
+                });
+            }
         }
 
         // Walk through the dom nodes and insert the 'data-brackets-id' attribute at the
@@ -827,7 +840,18 @@ define(function (require, exports, module) {
         if (!dom) {
             console.error("Couldn't find the dom for " + editor.document.file.fullPath);
             return;
-        } else if (!dom.fullBuild) {
+        }
+
+        // Check if editor has any tagID marks
+        var existingMarks = editor._codeMirror.getAllMarks().filter(function (mark) {
+            return mark.hasOwnProperty("tagID");
+        });
+
+        // Allow marking if:
+        // 1. DOM is a full build (offsets are accurate), OR
+        // 2. Editor has no marks (new editor instance needs marking)
+        if (!dom.fullBuild && existingMarks.length > 0) {
+            // Editor already has marks and DOM is stale - don't re-mark
             console.error("Tried to mark text from a stale DOM for " + editor.document.file.fullPath);
             return;
         }
