@@ -357,6 +357,7 @@ define(function (require, exports, module) {
                 console.error("error in tag selection", e);
             }
             editMode && liveDoc && liveDoc.disableHighlightOnCursorActivity(false);
+            liveDoc && liveDoc.updateHighlight();
         } else {
             // enrich received message with clientId
             msg.clientId = clientId;
