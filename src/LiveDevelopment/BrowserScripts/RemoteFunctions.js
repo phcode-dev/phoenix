@@ -73,7 +73,7 @@ function RemoteFunctions(config = {}) {
         "reRegisterEventHandlers",
         "handleClick", // handle click on an icon in the tool box.
         // when escape key is presses in the editor, we may need to dismiss the live edit boxes.
-        "handleEscapePressFromEditor",
+        "handleEscapePress",
         // interaction blocks acts as 'kill switch' to block all kinds of click handlers
         // this is done so that links or buttons doesn't perform their natural operation in edit mode
         "registerInteractionBlocker", // to block
@@ -1364,15 +1364,22 @@ function RemoteFunctions(config = {}) {
         });
     }
 
-    function _escapeKeyPressInEditor() {
+    function _handleEscapeKeyPress() {
         enableHoverListeners(); // so that if hover lock is there it will get cleared
         dismissUIAndCleanupState();
         getAllToolHandlers().forEach(handler => {
-            if (handler.handleEscapePressFromEditor) {
-                handler.handleEscapePressFromEditor();
+            if (handler.handleEscapePress) {
+                handler.handleEscapePress();
             }
         });
     }
+
+    document.addEventListener('keydown', function(event) {
+        if (config.mode === 'edit' && (event.key === 'Escape' || event.key === 'Esc')) {
+            event.preventDefault();
+            _handleEscapeKeyPress();
+        }
+    });
 
     // we need to refresh the config once the load is completed
     // this is important because messageBroker gets ready for use only when load fires
@@ -1397,7 +1404,7 @@ function RemoteFunctions(config = {}) {
         "applyDOMEdits": applyDOMEdits,
         "updateConfig": updateConfig,
         "dismissUIAndCleanupState": dismissUIAndCleanupState,
-        "escapeKeyPressInEditor": _escapeKeyPressInEditor,
+        "escapeKeyPressInEditor": _handleEscapeKeyPress,
         "getMode": function() { return config.mode; }
     };
 
