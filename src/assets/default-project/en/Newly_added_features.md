@@ -18,12 +18,12 @@ make changes faster without breaking your flow. - Included with Phoenix Pro.
 
 ![Image](https://docs-images.phcode.dev/in-app/pro-layoutRulers.png)
 
-<h2><a target="_blank" href="https://docs.phcode.dev/app-links/tab-bar">All New Tab Bar</a></h2>
+<h2><a target="_blank" href="https://docs.phcode.dev/app-links/tab-bar">Tab Bar</a></h2>
 
 `Added in 2025`
 
-The tab bar now works together with the Working Set, giving you the best of both worlds for organizing open files.
-Switch files faster and keep large projects under control.
+Tabs let you navigate between open files and easily reorder them with drag and drop.
+
 ![Image](https://docs-images.phcode.dev/in-app/tab-bar.png)
 
 <h2><a target="_blank" href="https://docs.phcode.dev/app-links/emmet">Emmet</a></h2>
