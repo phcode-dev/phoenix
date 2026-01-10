@@ -21,15 +21,19 @@ define(function (require, exports, module) {
     }
 
     function _showFirstLaunchPopup() {
-        if(!window.testEnvironment){
-            const alreadyShown = PreferencesManager.getViewState("healthDataNotificationShown");
-            const prefs = PreferencesManager.getExtensionPrefs("healthData");
-            if (!alreadyShown && prefs.get("healthDataTracking")) {
-                HealthDataPopup.showFirstLaunchTooltip()
-                    .done(function () {
-                        PreferencesManager.setViewState("healthDataNotificationShown", true);
-                    });
-            }
+        const agreementManagedByInstaller = Phoenix.isNativeApp &&
+            (brackets.platform === "mac" || brackets.platform === "win");
+        if(window.testEnvironment || agreementManagedByInstaller){
+            return;
+        }
+
+        const alreadyShown = PreferencesManager.getViewState("healthDataNotificationShown");
+        const prefs = PreferencesManager.getExtensionPrefs("healthData");
+        if (!alreadyShown && prefs.get("healthDataTracking")) {
+            HealthDataPopup.showFirstLaunchTooltip()
+                .done(function () {
+                    PreferencesManager.setViewState("healthDataNotificationShown", true);
+                });
         }
     }
 
