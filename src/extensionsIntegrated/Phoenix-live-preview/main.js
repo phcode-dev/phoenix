@@ -150,11 +150,6 @@ define(function (require, exports, module) {
 
     let customLivePreviewBannerShown = false;
 
-    // so this variable stores the mode that was previously selected
-    // this is needed when the preview mode (play button icon) is clicked, we store the current mode
-    // so that when user unclicks the button we can revert back to the mode that was originally selected
-    let modeThatWasSelected = null;
-
     // live Preview overlay variables (overlays are shown when live preview is connecting or there's a syntax error)
     let $statusOverlay = null; // reference to the static overlay element
     let $statusOverlayMessage = null; // reference to the message span
@@ -667,28 +662,18 @@ define(function (require, exports, module) {
     }
 
     /**
-     * This function is called when user clicks the preview mode button (play button icon)
-     * when this button is clicked we switch the mode button dropdown to preview mode
+     * Handle preview button click - toggles between preview mode and the user's default mode.
+     * PRO users toggle between preview and edit mode.
+     * community users toggle between preview and highlight mode.
      */
     function _handlePreviewBtnClick() {
         if($previewBtn.hasClass('selected')) {
             $previewBtn.removeClass('selected');
-            const isEditFeaturesActive = isProEditUser;
-            if(modeThatWasSelected) {
-                // If the last selected mode was preview itself, default to the best mode for user's entitlement
-                if(modeThatWasSelected === 'preview') {
-                    const defaultMode = isEditFeaturesActive ? 'edit' : 'highlight';
-                    PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, defaultMode);
-                } else if(modeThatWasSelected === 'edit' && !isEditFeaturesActive) {
-                    // Non-pro users can't be in edit mode - switch to highlight
-                    PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "highlight");
-                } else {
-                    PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, modeThatWasSelected);
-                }
-            }
+            const defaultMode = isProEditUser ? 'edit' : 'highlight';
+            PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, defaultMode);
         } else {
+            // Currently NOT in preview mode - switch to preview
             $previewBtn.addClass('selected');
-            modeThatWasSelected = PreferencesManager.get(PREFERENCE_LIVE_PREVIEW_MODE);
             PreferencesManager.set(PREFERENCE_LIVE_PREVIEW_MODE, "preview");
         }
     }
