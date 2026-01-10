@@ -7,13 +7,50 @@ We are continuously adding features every week to improve the life of web develo
 
 Here's a list of top features recently added to Phoenix:
 
+<h2><a target="_blank" href="https://docs.phcode.dev/app-links/live-preview-edit">Live Preview Edit</a></h2>
+
+`Added in 2025`
+
+Introducing the all-new Live Preview Edit - powerful, reliable editing directly inside your page preview.
+
+Edit content on the page, drag and rearrange elements visually, and inspect layouts with rulers. Try new layouts and
+make changes faster without breaking your flow. - Included with Phoenix Pro.
+
+![Image](https://docs-images.phcode.dev/in-app/pro-layoutRulers.png)
+
+<h2><a target="_blank" href="https://docs.phcode.dev/app-links/tab-bar">All New Tab Bar</a></h2>
+
+`Added in 2025`
+
+The tab bar now works together with the Working Set, giving you the best of both worlds for organizing open files.
+Switch files faster and keep large projects under control.
+![Image](https://docs-images.phcode.dev/in-app/tab-bar.png)
+
+<h2><a target="_blank" href="https://docs.phcode.dev/app-links/emmet">Emmet</a></h2>
+
+`Added in 2025`
+
+Phoenix Code now includes built-in Emmet support for HTML and CSS workflows. Expand abbreviations instantly from code
+hints.
+
+![Image](https://docs-images.phcode.dev/in-app/emmet.jpg)
+
+<h2><a target="_blank" href="https://docs.phcode.dev/app-links/custom-snippets">Custom Snippets Panel</a></h2>
+
+`Added in 2025`
+
+Create, edit, search, and manage your own snippets using the Snippets panel. Snippets help you insert frequently
+used code fragments directly from code hints in the editor.
+
+![Image](https://docs-images.phcode.dev/in-app/snippets.png)
+
 <h2><a target="_blank" href="https://docs.phcode.dev/app-links/git">Git for Desktop</a></h2>
 
 `Added on January, 2025`
 
 Git is finally here.  Integrated Git source control with a clean, intuitive interface.
 Stage changes, commit, and sync with a single click while keeping your focus on the code.
-Now available in the Windows, Mac and Linux desktop apps of Phoenix code.
+Now available in the Windows, Mac, and Linux desktop apps of Phoenix code.
 
 
 ![Image](https://github.com/user-attachments/assets/aeacc7c0-3ee3-4a80-9b05-f2b48140bcdd)
@@ -241,7 +278,7 @@ Creating extensions and themes is now easier than ever with a single click in Gi
 ## Beautify code
 `Added on August,2022`
 
-Beautify HTML, CSS, JS, Json, Markdown, Typescript and other language code with `Ctrl-B` (`Cmd-B` in mac.).
+Beautify HTML, CSS, JS, Json, Markdown, Typescript, and other language code with `Ctrl-B` (`Cmd-B` in mac.).
 
 #### Watch the video on YouTube
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=DMMPfIuUGGs" target="_blank">
