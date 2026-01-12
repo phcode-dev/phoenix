@@ -884,8 +884,25 @@ define(function (require, exports, module) {
         }
     }
 
+    function _switchToEditModeIfNeeded() {
+        // Auto-switch mode based on project and user type
+        const projectPath = ProjectManager.getProjectRoot().fullPath;
+        const exploreProjectPath = ProjectManager.getExploreProjectPath();
+        const isExploreProject = projectPath === exploreProjectPath;
+
+        if (isExploreProject) {
+            // Always use highlight mode for explore project
+            LiveDevelopment.setMode(LiveDevelopment.CONSTANTS.LIVE_HIGHLIGHT_MODE);
+        } else if (isProEditUser) {
+            // Pro users: auto-switch to edit mode on regular projects
+            LiveDevelopment.setMode(LiveDevelopment.CONSTANTS.LIVE_EDIT_MODE);
+        }
+        // Non-pro users on regular projects: keep current mode (no change)
+    }
+
     let startupFilesLoadHandled = false;
     async function _projectOpened() {
+        _switchToEditModeIfNeeded();
         customLivePreviewBannerShown = false;
         $panel.find(".live-preview-custom-banner").addClass("forced-hidden");
         _openReadmeMDIfFirstTime();
