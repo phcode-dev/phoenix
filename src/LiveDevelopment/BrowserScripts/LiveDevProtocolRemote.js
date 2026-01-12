@@ -492,7 +492,7 @@
         // Get the user's current selection
         const selection = window.getSelection();
         var element = event.target;
-        if(element && element.closest('.phcode-no-lp-edit')) {
+        if(element && (element.closest('.phcode-no-lp-edit') || element.classList.contains('phcode-no-lp-edit-this'))) {
             return;
         }
         if (element && element.hasAttribute('data-brackets-id')) {
