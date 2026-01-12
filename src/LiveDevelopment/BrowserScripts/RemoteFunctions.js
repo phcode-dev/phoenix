@@ -605,7 +605,7 @@ function RemoteFunctions(config = {}) {
         if(!LivePreviewView.isElementInspectable(element) || element.nodeType !== Node.ELEMENT_NODE) {
             return false;
         }
-        if(element && element.closest('.phcode-no-lp-edit')) {
+        if(element && (element.closest('.phcode-no-lp-edit') || element.classList.contains('phcode-no-lp-edit-this'))) {
             return false;
         }
 
@@ -756,7 +756,7 @@ function RemoteFunctions(config = {}) {
      * @param {Event} event - The click event
      */
     function handleElementClick(element, event) {
-        if(element && element.closest('.phcode-no-lp-edit')) {
+        if(element && (element.closest('.phcode-no-lp-edit') || element.classList.contains('phcode-no-lp-edit-this'))) {
             return;
         }
         if (!LivePreviewView.isElementInspectable(element)) {
