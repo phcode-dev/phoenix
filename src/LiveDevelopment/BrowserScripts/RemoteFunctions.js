@@ -756,15 +756,15 @@ function RemoteFunctions(config = {}) {
      * @param {Event} event - The click event
      */
     function handleElementClick(element, event) {
-        if(element && (element.closest('.phcode-no-lp-edit') || element.classList.contains('phcode-no-lp-edit-this'))) {
-            return;
-        }
-        // Check for dismiss action - dismiss LP editing when clicked
+        // Check for dismiss action first - dismiss LP editing when clicked (takes precedence over no-edit)
         if(element && (
             element.closest('.phcode-dismiss-lp-edit') || element.classList.contains('phcode-dismiss-lp-edit-this'))) {
             dismissUIAndCleanupState();
             event.preventDefault();
             event.stopPropagation();
+            return;
+        }
+        if(element && (element.closest('.phcode-no-lp-edit') || element.classList.contains('phcode-no-lp-edit-this'))) {
             return;
         }
         if (!LivePreviewView.isElementInspectable(element)) {
