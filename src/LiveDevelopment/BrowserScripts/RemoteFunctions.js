@@ -759,6 +759,14 @@ function RemoteFunctions(config = {}) {
         if(element && (element.closest('.phcode-no-lp-edit') || element.classList.contains('phcode-no-lp-edit-this'))) {
             return;
         }
+        // Check for dismiss action - dismiss LP editing when clicked
+        if(element && (
+            element.closest('.phcode-dismiss-lp-edit') || element.classList.contains('phcode-dismiss-lp-edit-this'))) {
+            dismissUIAndCleanupState();
+            event.preventDefault();
+            event.stopPropagation();
+            return;
+        }
         if (!LivePreviewView.isElementInspectable(element)) {
             dismissUIAndCleanupState();
             return;
