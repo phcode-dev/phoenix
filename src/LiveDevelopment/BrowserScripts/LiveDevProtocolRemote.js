@@ -495,6 +495,17 @@
         if(element && (element.closest('.phcode-no-lp-edit') || element.classList.contains('phcode-no-lp-edit-this'))) {
             return;
         }
+        // Check for dismiss action - dismiss LP editing when clicked
+        if(element && (element.closest('.phcode-dismiss-lp-edit')
+            || element.classList.contains('phcode-dismiss-lp-edit-this'))) {
+            // dismissUIAndCleanupState is in RemoteFunctions, accessible via window._LD
+            if (window._LD && window._LD.dismissUIAndCleanupState) {
+                window._LD.dismissUIAndCleanupState();
+            }
+            event.preventDefault();
+            event.stopPropagation();
+            return;
+        }
         if (element && element.hasAttribute('data-brackets-id')) {
             // Check if it's a double-click for direct editing
             if (event.detail === 2 && !['INPUT', 'TEXTAREA', 'SELECT'].includes(element.tagName)) {
