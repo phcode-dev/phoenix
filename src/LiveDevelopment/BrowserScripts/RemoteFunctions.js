@@ -36,6 +36,8 @@ function RemoteFunctions(config = {}) {
     // this will store the element that was clicked previously (before the new click)
     // we need this so that we can remove click styling from the previous element when a new element is clicked
     let previouslySelectedElement = null;
+    // Expose the currently selected element globally for external access
+    window.__current_ph_lp_selected = null;
 
     var req, timeout;
     function animateHighlight(time) {
@@ -710,6 +712,7 @@ function RemoteFunctions(config = {}) {
         _clickHighlight.add(element, true);
 
         previouslySelectedElement = element;
+        window.__current_ph_lp_selected = element;
     }
 
     function disableHoverListeners() {
@@ -1317,6 +1320,7 @@ function RemoteFunctions(config = {}) {
             }
             delete previouslySelectedElement._originalOutline;
             previouslySelectedElement = null;
+            window.__current_ph_lp_selected = null;
         }
 
         if (config.mode === 'edit') {
