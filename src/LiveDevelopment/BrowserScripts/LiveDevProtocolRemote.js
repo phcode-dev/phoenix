@@ -492,10 +492,7 @@
         // Get the user's current selection
         const selection = window.getSelection();
         var element = event.target;
-        if(element && (element.closest('.phcode-no-lp-edit') || element.classList.contains('phcode-no-lp-edit-this'))) {
-            return;
-        }
-        // Check for dismiss action - dismiss LP editing when clicked
+        // Check for dismiss action first - dismiss LP editing when clicked (takes precedence over no-edit)
         if(element && (element.closest('.phcode-dismiss-lp-edit')
             || element.classList.contains('phcode-dismiss-lp-edit-this'))) {
             // dismissUIAndCleanupState is in RemoteFunctions, accessible via window._LD
@@ -504,6 +501,9 @@
             }
             event.preventDefault();
             event.stopPropagation();
+            return;
+        }
+        if(element && (element.closest('.phcode-no-lp-edit') || element.classList.contains('phcode-no-lp-edit-this'))) {
             return;
         }
         if (element && element.hasAttribute('data-brackets-id')) {
