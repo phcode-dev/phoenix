@@ -27,10 +27,10 @@ define(function (require, exports, module) {
 
     // All popup notifications will show immediately on boot, we don't want to interrupt user amidst his work
     // by showing it at a later point in time.
-    const GENERAL_SURVEY_TIME = 1200000, // 20 min
+    const GENERAL_SURVEY_TIME = 35 * 60 * 1000, // min -> ms
         SURVEY_PRELOAD_DELAY = 10000, // 10 seconds to allow the survey to preload, but not
         // enough time to break user workflow
-        POWER_USER_SURVEY_INTERVAL_DAYS = 35;
+        POWER_USER_SURVEY_INTERVAL_DAYS = 45;
 
     const userAlreadyDidAction = PhStore.getItem(GUIDED_TOUR_LOCAL_STORAGE_KEY)
         ? JSON.parse(PhStore.getItem(GUIDED_TOUR_LOCAL_STORAGE_KEY)) : {
