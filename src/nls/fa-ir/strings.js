@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "ویرایش پیوند",
   "LIVE_DEV_HYPERLINK_NO_HREF": "هیچ href تنظیم نشده است",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "باز کردن این پیوند",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "باز کردن در زبانه‌ی جدید",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "دو نسخه کردن خط",
   "LIVE_DEV_TOOLBOX_DELETE": "حذف",
   "LIVE_DEV_TOOLBOX_AI": "ویرایش با هوش مصنوعی",
@@ -199,7 +200,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "دریافت Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "شما از {0}٪ جستجوهای تصویر رایگان خود استفاده کرده‌اید ({1}/{2})",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "عنصر قابل ویرایش نیست - توسط اسکریپت ایجاد شده است",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "عنصر کپی شد. برای افزودن آن در زیر عنصر انتخاب‌شده، از «چسباندن» استفاده کنید",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "عنصر با صفحه پیمایش نمی‌شود - کادرهای ویرایش پنهان هستند",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "انتخاب پوشه برای ذخیره تصویر",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "محل دانلود تصویر را انتخاب کنید:",
@@ -1570,5 +1570,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "دسترسی به هوش مصنوعی توسط مدیر سیستم شما غیرفعال شده است. لطفاً برای راهنمایی با {0} تماس بگیرید.",
   "AI_UPSELL_DIALOG_TITLE": "ادامه با {0}؟",
   "AI_UPSELL_DIALOG_MESSAGE": "شما قابلیت {0} را کشف کرده‌اید. برای ادامه، به اشتراک AI یا اعتبار نیاز دارید.",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "باز کردن در زبانه‌ی جدید"
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "عنصر کپی شد. برای افزودن آن بعد از عنصر انتخاب‌شده، از «چسباندن» استفاده کنید."
 });

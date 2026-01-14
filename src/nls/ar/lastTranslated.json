@@ -1068,7 +1068,6 @@
   "LIVE_DEV_CLICK_TO_PIN_UNPIN": "Pin or Unpin Preview Page",
   "LIVE_DEV_CLICK_TO_RELOAD_PAGE": "Reload Page",
   "LIVE_DEV_CLOSED_UNKNOWN_REASON": "Live Preview was canceled for an unknown reason ({0})",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Element copied. Use 'Paste' to add it below the selected element",
   "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "Live Preview was canceled because the browser's developer tools were opened",
   "LIVE_DEV_DETACHED_TARGET_CLOSED": "Live Preview was canceled because the page was closed in the browser",
   "LIVE_DEV_HYPERLINK_NO_HREF": "No href set",

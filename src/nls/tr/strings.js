@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Köprüyü Düzenle",
   "LIVE_DEV_HYPERLINK_NO_HREF": "href ayarlanmadı",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Bu bağlantıyı aç",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Yeni sekmede aç",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Çoğalt",
   "LIVE_DEV_TOOLBOX_DELETE": "Sil",
   "LIVE_DEV_TOOLBOX_AI": "Yapay Zeka ile Düzenle",
@@ -199,7 +200,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Pro'ya Geçin",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Ücretsiz görsel arama hakkınızın {0}%'lık kısmını kullandınız ({1}/{2})",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Öğe düzenlenemez - script tarafından oluşturuldu",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Öğe kopyalandı. Seçili öğenin altına eklemek için 'Yapıştır'ı kullanın",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Öğe sayfayla birlikte kaymıyor - düzenleme kutuları gizlendi",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Resmi Kaydetmek İçin Klasör Seçin",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Resmi nereye indireceğinizi seçin:",
@@ -1570,5 +1570,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Yapay zeka erişimi sistem yöneticiniz tarafından devre dışı bırakıldı. Yardım için lütfen {0} ile iletişime geçin.",
   "AI_UPSELL_DIALOG_TITLE": "{0} ile devam edilsin mi?",
   "AI_UPSELL_DIALOG_MESSAGE": "{0} özelliğini keşfettiniz. Devam etmek için bir Yapay Zeka aboneliğine veya kredilere ihtiyacınız var.",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Yeni sekmede aç"
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Öğe kopyalandı. Seçili öğeden sonra eklemek için 'Yapıştır'ı kullanın"
 });

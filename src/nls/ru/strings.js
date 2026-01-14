@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Редактировать гиперссылку",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Атрибут href не задан",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Открыть эту ссылку",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Открыть в новой вкладке",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Дублировать",
   "LIVE_DEV_TOOLBOX_DELETE": "Удалить",
   "LIVE_DEV_TOOLBOX_AI": "Редактировать с помощью ИИ",
@@ -199,7 +200,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Перейти на Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Вы использовали {0}% бесплатных поисков изображений ({1}/{2})",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Элемент не редактируется — сгенерирован скриптом",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Элемент скопирован. Используйте «Вставить», чтобы добавить его под выделенным элементом",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Элемент не прокручивается со страницей — поля для редактирования скрыты",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Выберите папку для сохранения изображения",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Выберите, куда загрузить изображение:",
@@ -1570,5 +1570,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Доступ к ИИ был отключён вашим системным администратором. Пожалуйста, свяжитесь с {0} для получения помощи.",
   "AI_UPSELL_DIALOG_TITLE": "Продолжить с {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Вы открыли для себя {0}. Чтобы продолжить, вам понадобится подписка на ИИ или кредиты.",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Открыть в новой вкладке"
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Элемент скопирован. Используйте «Вставить», чтобы добавить его после выделенного элемента."
 });

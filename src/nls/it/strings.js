@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Modifica collegamento",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Nessun href impostato",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Apri questo collegamento",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Apri in una nuova scheda",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Duplica",
   "LIVE_DEV_TOOLBOX_DELETE": "Elimina",
   "LIVE_DEV_TOOLBOX_AI": "Modifica con AI",
@@ -199,7 +200,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Passa a Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Hai utilizzato il {0}% delle tue ricerche di immagini gratuite ({1}/{2})",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Elemento non modificabile - generato da script",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Elemento copiato. Usa 'Incolla' per aggiungerlo sotto l'elemento selezionato",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "L'elemento non scorre con la pagina - caselle di modifica nascoste",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Seleziona la cartella per salvare l'immagine",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Scegli dove scaricare l'immagine:",
@@ -1570,5 +1570,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "L'accesso all'AI è stato disattivato dal tuo amministratore di sistema. Contatta {0} per assistenza.",
   "AI_UPSELL_DIALOG_TITLE": "Continuare con {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Hai scoperto {0}. Per procedere, avrai bisogno di un abbonamento AI o di crediti.",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Apri in una nuova scheda"
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Elemento copiato. Usa 'Incolla' per aggiungerlo dopo l'elemento selezionato"
 });

@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Rediger hyperlink",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Ingen href angivet",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Åbn dette link",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Åbn i ny fane",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Duplikér",
   "LIVE_DEV_TOOLBOX_DELETE": "Slet",
   "LIVE_DEV_TOOLBOX_AI": "Rediger med AI",
@@ -199,7 +200,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Få Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Du har brugt {0}% af dine gratis billedsøgninger ({1}/{2})",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Elementet kan ikke redigeres - genereret af script",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Element kopieret. Brug 'Indsæt' for at tilføje det under det valgte element",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Elementet scroller ikke med siden - redigeringsfelter skjult",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Vælg mappe til at gemme billede",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Vælg, hvor billedet skal downloades:",
@@ -1570,5 +1570,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Adgang til AI er blevet deaktiveret af din systemadministrator. Kontakt venligst {0} for hjælp.",
   "AI_UPSELL_DIALOG_TITLE": "Fortsæt med {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Du har opdaget {0}. For at fortsætte har du brug for et AI-abonnement eller kreditter.",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Åbn i ny fane"
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Element kopieret. Brug 'Indsæt' for at tilføje det efter det valgte element."
 });

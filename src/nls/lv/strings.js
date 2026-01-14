@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Rediģēt hipersaiti",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Nav iestatīts href",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Atvērt šo saiti",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Atvērt jaunā cilnē",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Dublēt",
   "LIVE_DEV_TOOLBOX_DELETE": "Dzēst",
   "LIVE_DEV_TOOLBOX_AI": "Rediģēt ar MI",
@@ -199,7 +200,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Iegūt Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Ir izmantoti {0}% no jūsu bezmaksas attēlu meklējumiem ({1}/{2})",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Elements nav rediģējams - ģenerēts ar skriptu",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Elements nokopēts. Izmantojiet 'Ielīmēt', lai to pievienotu zem atlasītā elementa",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Elements neritinās līdzi lapai - rediģēšanas lauki paslēpti",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Izvēlieties mapi attēla saglabāšanai",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Izvēlieties, kur lejupielādēt attēlu:",
@@ -1570,5 +1570,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "MI piekļuvi ir atspējojis jūsu sistēmas administrators. Lūdzu, sazinieties ar {0}, lai saņemtu palīdzību.",
   "AI_UPSELL_DIALOG_TITLE": "Turpināt ar {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Jūs atklājāt {0}. Lai turpinātu, jums būs nepieciešams MI abonements vai kredīti.",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Atvērt jaunā cilnē"
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Elements nokopēts. Lietojiet 'Ielīmēt', lai to pievienotu aiz atlasītā elementa."
 });

@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Hivatkozás szerkesztése",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Nincs href beállítva",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Hivatkozás megnyitása",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Megnyitás új lapon",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Duplikálás",
   "LIVE_DEV_TOOLBOX_DELETE": "Töröl",
   "LIVE_DEV_TOOLBOX_AI": "Szerkesztés AI-val",
@@ -199,7 +200,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Válts Pro-ra",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Az ingyenes képkereséseid {0}%-át használtad fel ({1}/{2})",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Az elem nem szerkeszthető – szkript által generált.",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Elem másolva. A 'Beillesztés' paranccsal illesztheti be a kijelölt elem alá.",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Az elem nem gördül az oldallal – a szerkesztőmezők elrejtve.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Mappa kiválasztása a kép mentéséhez",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Válassza ki, hova szeretné letölteni a képet:",
@@ -1570,5 +1570,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "A MI-hozzáférést a rendszergazda letiltotta. Segítségért forduljon a(z) {0} elérhetőséghez.",
   "AI_UPSELL_DIALOG_TITLE": "Folytatja a(z) {0} használatával?",
   "AI_UPSELL_DIALOG_MESSAGE": "Felfedezte a(z) {0} szolgáltatást. A folytatáshoz MI-előfizetésre vagy kreditekre lesz szüksége.",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Megnyitás új lapon"
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Elem másolva. A 'Beillesztés' paranccsal illesztheti be a kijelölt elem után."
 });

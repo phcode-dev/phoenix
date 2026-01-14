@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "하이퍼링크 편집",
   "LIVE_DEV_HYPERLINK_NO_HREF": "링크 대상이 설정되지 않음",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "이 링크 열기",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "새 탭에서 열기",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "행 복사",
   "LIVE_DEV_TOOLBOX_DELETE": "삭제",
   "LIVE_DEV_TOOLBOX_AI": "AI로 편집",
@@ -199,7 +200,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "프로 버전 사용하기",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "무료 이미지 검색의 {0}%({1}/{2})를 사용했습니다.",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "스크립트로 생성된 요소는 편집할 수 없습니다.",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "요소가 복사되었습니다. '붙여넣기'를 사용하여 선택한 요소 아래에 추가하세요.",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "요소가 페이지에 고정되어 있어 편집 상자가 숨겨집니다.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "이미지를 저장할 폴더 선택",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "이미지를 다운로드할 위치를 선택하세요:",
@@ -1570,5 +1570,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "시스템 관리자에 의해 AI 액세스가 비활성화되었습니다. 도움이 필요하시면 {0}에게 문의하세요.",
   "AI_UPSELL_DIALOG_TITLE": "{0}(으)로 계속하시겠습니까?",
   "AI_UPSELL_DIALOG_MESSAGE": "{0} 기능을 발견하셨습니다. 계속 진행하려면 AI 구독 또는 크레딧이 필요합니다.",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "새 탭에서 열기"
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "요소가 복사되었습니다. '붙여넣기'를 사용하여 선택한 요소 뒤에 추가하세요."
 });

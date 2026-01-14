@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "ഹൈപ്പർലിങ്ക് എഡിറ്റ് ചെയ്യുക",
   "LIVE_DEV_HYPERLINK_NO_HREF": "href സജ്ജീകരിച്ചിട്ടില്ല",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "ഈ ലിങ്ക് തുറക്കുക",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "പുതിയ ടാബിൽ തുറക്കുക",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "ഡ്യൂപ്ലിക്കേറ്റ്",
   "LIVE_DEV_TOOLBOX_DELETE": "ഡിലീറ്റ് ചെയ്യുക",
   "LIVE_DEV_TOOLBOX_AI": "AI ഉപയോഗിച്ച് എഡിറ്റ് ചെയ്യുക",
@@ -199,7 +200,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "പ്രോ നേടുക",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "നിങ്ങളുടെ സൗജന്യ ചിത്ര തിരയലുകളിൽ {0}% ({1}/{2}) ഉപയോഗിച്ചു കഴിഞ്ഞു",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "ഘടകം തിരുത്താനാവില്ല - സ്ക്രിപ്റ്റ് നിർമ്മിച്ചത്",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "ഘടകം പകർത്തി. തിരഞ്ഞെടുത്ത ഘടകത്തിന് താഴെ ചേർക്കാൻ 'പേസ്റ്റ്' ഉപയോഗിക്കുക",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "ഘടകം പേജിനൊപ്പം സ്ക്രോൾ ചെയ്യുന്നില്ല - എഡിറ്റ് ബോക്സുകൾ മറച്ചിരിക്കുന്നു",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "ചിത്രം സേവ് ചെയ്യാനുള്ള ഫോൾഡർ തിരഞ്ഞെടുക്കുക",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "ചിത്രം എവിടെയാണ് ഡൗൺലോഡ് ചെയ്യേണ്ടതെന്ന് തിരഞ്ഞെടുക്കുക:",
@@ -1570,5 +1570,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "നിങ്ങളുടെ സിസ്റ്റം അഡ്മിനിസ്ട്രേറ്റർ എഐ ആക്‌സസ് പ്രവർത്തനരഹിതമാക്കിയിരിക്കുന്നു. സഹായത്തിനായി ദയവായി {0}-മായി ബന്ധപ്പെടുക.",
   "AI_UPSELL_DIALOG_TITLE": "{0} ഉപയോഗിച്ച് തുടരണോ?",
   "AI_UPSELL_DIALOG_MESSAGE": "നിങ്ങൾ {0} കണ്ടെത്തിയിരിക്കുന്നു. തുടരാൻ, നിങ്ങൾക്ക് ഒരു എഐ സബ്സ്ക്രിപ്ഷനോ ക്രെഡിറ്റുകളോ ആവശ്യമാണ്.",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "പുതിയ ടാബിൽ തുറക്കുക"
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "എലമെന്റ് പകർത്തി. തിരഞ്ഞെടുത്ത എലമെന്റിന് ശേഷം ചേർക്കാൻ 'Paste' ഉപയോഗിക്കുക"
 });

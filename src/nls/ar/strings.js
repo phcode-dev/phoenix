@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "تحرير الارتباط التشعبي",
   "LIVE_DEV_HYPERLINK_NO_HREF": "لم يتم تعيين href",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "فتح هذا الرابط",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "فتح في علامة تبويب جديدة",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "تكرار",
   "LIVE_DEV_TOOLBOX_DELETE": "حذف",
   "LIVE_DEV_TOOLBOX_AI": "تحرير بالذكاء الاصطناعي",
@@ -199,7 +200,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "احصل على Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "لقد استخدمت {0}% من عمليات البحث المجانية عن الصور ({1}/{2})",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "العنصر غير قابل للتعديل - تم إنشاؤه بواسطة برنامج نصي",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "تم نسخ العنصر. استخدم 'لصق' لإضافته أسفل العنصر المحدد",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "العنصر لا يتم تمريره مع الصفحة - مربعات التعديل مخفية",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "حدد مجلدًا لحفظ الصورة",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "اختر مكان تنزيل الصورة:",
@@ -1569,6 +1569,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED": "قام مسؤول النظام بتعطيل الوصول إلى الذكاء الاصطناعي",
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "قام مسؤول النظام بتعطيل الوصول إلى الذكاء الاصطناعي. يرجى الاتصال بـ {0} للحصول على المساعدة.",
   "AI_UPSELL_DIALOG_TITLE": "المتابعة باستخدام {0}؟",
-  "AI_UPSELL_DIALOG_MESSAGE": "لقد اكتشفت {0}. للمتابعة، ستحتاج إلى اشتراك في الذكاء الاصطناعي أو أرصدة.",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "فتح في علامة تبويب جديدة"
+  "AI_UPSELL_DIALOG_MESSAGE": "لقد اكتشفت {0}. للمتابعة، ستحتاج إلى اشتراك في الذكاء الاصطناعي أو أرصدة."
 });

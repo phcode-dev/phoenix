@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Редагувати посилання",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Не вказано href",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Відкрити це посилання",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Відкрити у новій вкладці",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Дублювати",
   "LIVE_DEV_TOOLBOX_DELETE": "Видалити",
   "LIVE_DEV_TOOLBOX_AI": "Редагувати з ШІ",
@@ -199,7 +200,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Отримати Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Ви використали {0}% безкоштовних пошуків зображень ({1} з {2})",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Елемент не можна редагувати — згенеровано скриптом",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Елемент скопійовано. Використовуйте 'Вставити', щоб додати його під вибраним елементом",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Елемент не прокручується зі сторінкою — поля редагування приховано",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Виберіть папку для збереження зображення",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Виберіть, куди завантажити зображення:",
@@ -1570,5 +1570,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Доступ до ШІ було вимкнено вашим системним адміністратором. Будь ласка, зверніться до {0} за допомогою.",
   "AI_UPSELL_DIALOG_TITLE": "Продовжити з {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Ви відкрили для себе {0}. Щоб продовжити, вам знадобиться підписка на ШІ або кредити.",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Відкрити у новій вкладці"
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Елемент скопійовано. Використовуйте «Вставити», щоб додати його після вибраного елемента."
 });
