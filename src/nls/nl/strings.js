@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Hyperlink bewerken",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Geen href ingesteld",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Deze link openen",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Open in nieuw tabblad",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Dupliceer",
   "LIVE_DEV_TOOLBOX_DELETE": "Verwijder",
   "LIVE_DEV_TOOLBOX_AI": "Bewerken met AI",
@@ -199,7 +200,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Neem Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "U heeft {0}% van uw gratis zoekopdrachten naar afbeeldingen gebruikt ({1}/{2})",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Element niet bewerkbaar - gegenereerd door script",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Element gekopieerd. Gebruik 'Plakken' om het onder het geselecteerde element toe te voegen",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Element scrolt niet mee met de pagina - bewerkingsvakken verborgen",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Selecteer map om afbeelding op te slaan",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Kies waar de afbeelding gedownload moet worden:",
@@ -1570,5 +1570,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "De toegang tot AI is uitgeschakeld door uw systeembeheerder. Neem contact op met {0} voor hulp.",
   "AI_UPSELL_DIALOG_TITLE": "Doorgaan met {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "U heeft {0} ontdekt. Om verder te gaan, heeft u een AI-abonnement of credits nodig.",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Open in nieuw tabblad"
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Element gekopieerd. Gebruik 'Plakken' om het na het geselecteerde element toe te voegen."
 });

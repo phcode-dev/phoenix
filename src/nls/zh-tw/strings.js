@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "編輯超連結",
   "LIVE_DEV_HYPERLINK_NO_HREF": "未設定 href",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "開啟此連結",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "在新分頁開啟",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "整行複製",
   "LIVE_DEV_TOOLBOX_DELETE": "刪除",
   "LIVE_DEV_TOOLBOX_AI": "使用 AI 編輯",
@@ -199,7 +200,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "取得專業版",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "您已使用 {0}% 的免費圖片搜尋次數 ({1}/{2})",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "元素不可編輯 - 由指令碼產生",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "元素已複製。使用「貼上」將其新增至所選元素的下方",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "元素不會隨頁面捲動 - 編輯方塊已隱藏",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "選取儲存圖片的資料夾",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "選擇要下載圖片的位置：",
@@ -1570,5 +1570,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "您的系統管理員已停用 AI 存取權限。如需協助，請聯絡 {0}。",
   "AI_UPSELL_DIALOG_TITLE": "要繼續使用 {0} 嗎？",
   "AI_UPSELL_DIALOG_MESSAGE": "您已發現 {0}。您需要 AI 訂閱或點數才能繼續。",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "在新分頁開啟"
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "元素已複製。使用「貼上」即可將其新增至所選元素之後。"
 });

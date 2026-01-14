@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Editar ligazón",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Non se estableceu ningún href",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Abrir esta ligazón",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Abrir nunha nova pestana",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Duplicar",
   "LIVE_DEV_TOOLBOX_DELETE": "Eliminar",
   "LIVE_DEV_TOOLBOX_AI": "Editar con IA",
@@ -199,7 +200,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Obter Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Usaches o {0}% das túas buscas de imaxes gratuítas ({1}/{2})",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Elemento non editable: xerado por script",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Elemento copiado. Usa «Pegar» para engadilo debaixo do elemento seleccionado",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "O elemento non se despraza coa páxina: caixas de edición ocultas",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Seleccionar cartafol para gardar a imaxe",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Escolla onde descargar a imaxe:",
@@ -1570,5 +1570,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "O acceso á IA foi desactivado polo seu administrador do sistema. Póñase en contacto con {0} para obter axuda.",
   "AI_UPSELL_DIALOG_TITLE": "Continuar con {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Descubriches {0}. Para continuar, necesitarás unha subscrición de IA ou créditos.",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Abrir nunha nova pestana"
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Elemento copiado. Usa «Pegar» para engadilo despois do elemento seleccionado."
 });

@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Uredi poveznicu",
   "LIVE_DEV_HYPERLINK_NO_HREF": "href nije postavljen",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Otvori ovu poveznicu",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Otvori u novoj kartici",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Udvostruči",
   "LIVE_DEV_TOOLBOX_DELETE": "Obriši",
   "LIVE_DEV_TOOLBOX_AI": "Uredi s AI",
@@ -199,7 +200,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Nabavite Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Iskoristili ste {0}% svojih besplatnih pretraživanja slika ({1}/{2})",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Element nije moguće uređivati - generiran skriptom",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Element je kopiran. Upotrijebite 'Zalijepi' da biste ga dodali ispod odabranog elementa",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Element se ne pomiče sa stranicom - okviri za uređivanje su skriveni",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Odaberite mapu za spremanje slike",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Odaberite gdje želite preuzeti sliku:",
@@ -1570,5 +1570,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Pristup AI-ju onemogućio je vaš administrator sustava. Molimo kontaktirajte {0} za pomoć.",
   "AI_UPSELL_DIALOG_TITLE": "Nastaviti s {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Otkrili ste {0}. Da biste nastavili, potrebna vam je AI pretplata ili krediti.",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Otvori u novoj kartici"
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Element je kopiran. Koristite 'Zalijepi' kako biste ga dodali iza odabranog elementa."
 });

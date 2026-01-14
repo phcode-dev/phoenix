@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Editar Hiperligação",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Nenhum href definido",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Abrir esta ligação",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Abrir em novo separador",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Duplicar",
   "LIVE_DEV_TOOLBOX_DELETE": "Eliminar",
   "LIVE_DEV_TOOLBOX_AI": "Editar com IA",
@@ -199,7 +200,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Obter Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Já utilizou {0}% das suas pesquisas de imagens gratuitas ({1}/{2})",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Elemento não editável - gerado por script",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Elemento copiado. Utilize 'Colar' para o adicionar abaixo do elemento selecionado.",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "O elemento não acompanha o deslocamento da página - caixas de edição ocultas",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Selecionar Pasta para Guardar a Imagem",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Escolha onde descarregar a imagem:",
@@ -1570,5 +1570,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "O acesso à IA foi desativado pelo seu administrador de sistema. Por favor, contacte {0} para obter assistência.",
   "AI_UPSELL_DIALOG_TITLE": "Continuar com {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Descobriu {0}. Para continuar, precisará de uma subscrição de IA ou de créditos.",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Abrir em novo separador"
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Elemento copiado. Use \"Colar\" para o adicionar após o elemento selecionado."
 });

@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Hyperlink bearbeiten",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Kein href festgelegt",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Diesen Link öffnen",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "In neuem Tab öffnen",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Duplizieren",
   "LIVE_DEV_TOOLBOX_DELETE": "Löschen",
   "LIVE_DEV_TOOLBOX_AI": "Mit KI bearbeiten",
@@ -199,7 +200,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Pro-Version holen",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Sie haben {0}% Ihrer kostenlosen Bildsuchen genutzt ({1}/{2})",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Element nicht bearbeitbar – durch Skript generiert",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Element kopiert. Verwenden Sie „Einfügen“, um es unter dem ausgewählten Element hinzuzufügen.",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Element scrollt nicht mit der Seite – Bearbeitungsfelder ausgeblendet",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Ordner zum Speichern des Bildes auswählen",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Wählen Sie, wohin das Bild heruntergeladen werden soll:",
@@ -1570,5 +1570,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Der KI-Zugriff wurde von Ihrem Systemadministrator deaktiviert. Bitte kontaktieren Sie {0} für Unterstützung.",
   "AI_UPSELL_DIALOG_TITLE": "Mit {0} fortfahren?",
   "AI_UPSELL_DIALOG_MESSAGE": "Sie haben {0} entdeckt. Um fortzufahren, benötigen Sie ein KI-Abonnement oder Guthaben.",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "In neuem Tab öffnen"
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Element kopiert. Verwenden Sie „Einfügen“, um es nach dem ausgewählten Element hinzuzufügen."
 });

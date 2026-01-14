@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "ハイパーリンクを編集",
   "LIVE_DEV_HYPERLINK_NO_HREF": "hrefが設定されていません",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "このリンクを開く",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "新しいタブで開く",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "行を複製",
   "LIVE_DEV_TOOLBOX_DELETE": "削除",
   "LIVE_DEV_TOOLBOX_AI": "AIで編集",
@@ -199,7 +200,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Proを入手",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "無料の画像検索を{0}%使用しました ({1}/{2})",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "スクリプトにより生成された要素は編集できません",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "要素がコピーされました。「貼り付け」で選択要素の下に追加できます",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "固定表示の要素のため、編集ボックスは非表示です",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "画像を保存するフォルダーを選択",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "画像のダウンロード先を選択してください：",
@@ -1570,5 +1570,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "AIアクセスはシステム管理者によって無効にされています。サポートが必要な場合は、{0}にお問い合わせください。",
   "AI_UPSELL_DIALOG_TITLE": "{0}を続行しますか？",
   "AI_UPSELL_DIALOG_MESSAGE": "「{0}」をご利用になるには、AIサブスクリプションまたはクレジットが必要です。",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "新しいタブで開く"
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "要素がコピーされました。「貼り付け」で選択した要素の後に追加できます。"
 });

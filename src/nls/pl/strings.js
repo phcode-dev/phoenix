@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Edytuj hiperłącze",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Nie ustawiono href",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Otwórz ten link",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Otwórz w nowej karcie",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Duplikuj",
   "LIVE_DEV_TOOLBOX_DELETE": "Usuń",
   "LIVE_DEV_TOOLBOX_AI": "Edytuj z AI",
@@ -199,7 +200,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Zdobądź Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Wykorzystano {0}% Twoich darmowych wyszukiwań obrazów ({1}/{2})",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Element nieedytowalny - wygenerowany przez skrypt",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Element skopiowany. Użyj opcji 'Wklej', aby dodać go poniżej zaznaczonego elementu.",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Element nie przewija się ze stroną - pola edycji ukryte",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Wybierz folder zapisu obrazu",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Wybierz, gdzie pobrać obraz:",
@@ -1570,5 +1570,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Dostęp do AI został wyłączony przez administratora systemu. Prosimy o kontakt z {0} w celu uzyskania pomocy.",
   "AI_UPSELL_DIALOG_TITLE": "Kontynuować z {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Odkryłeś {0}. Aby kontynuować, potrzebujesz subskrypcji AI lub kredytów.",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Otwórz w nowej karcie"
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Element skopiowany. Użyj opcji 'Wklej', aby dodać go za zaznaczonym elementem."
 });
