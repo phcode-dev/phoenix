@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Redigera hyperlänk",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Ingen href angiven",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Öppna den här länken",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Öppna i ny flik",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Duplicera",
   "LIVE_DEV_TOOLBOX_DELETE": "Radera",
   "LIVE_DEV_TOOLBOX_AI": "Redigera med AI",
@@ -199,7 +200,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Skaffa Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Du har använt {0}% av dina kostnadsfria bildsökningar ({1}/{2})",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Elementet kan inte redigeras - genererat av skript",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Elementet har kopierats. Använd 'Klistra in' för att lägga till det under det valda elementet",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Elementet rullar inte med sidan - redigeringsrutor dolda",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Välj mapp för att spara bild",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Välj var bilden ska laddas ner:",
@@ -1570,5 +1570,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "AI-åtkomst har inaktiverats av din systemadministratör. Kontakta {0} för hjälp.",
   "AI_UPSELL_DIALOG_TITLE": "Fortsätt med {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Du har upptäckt {0}. För att fortsätta behöver du ett AI-abonnemang eller krediter.",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Öppna i ny flik"
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Element kopierat. Använd 'Klistra in' för att lägga till det efter det markerade elementet."
 });

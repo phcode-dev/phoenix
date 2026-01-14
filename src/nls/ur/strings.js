@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "ہائپر لنک میں ترمیم کریں",
   "LIVE_DEV_HYPERLINK_NO_HREF": "کوئی href سیٹ نہیں ہے",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "اس لنک کو کھولیں",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "نئی ٹیب میں کھولیں",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "نقل بنائیں",
   "LIVE_DEV_TOOLBOX_DELETE": "حذف کریں",
   "LIVE_DEV_TOOLBOX_AI": "AI کے ساتھ ترمیم کریں",
@@ -199,7 +200,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Pro حاصل کریں",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "آپ نے اپنی مفت تصویری تلاشوں کا {0}% استعمال کر لیا ہے ({1}/{2})",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "عنصر قابلِ ترمیم نہیں - اسکرپٹ سے تیار کردہ",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "عنصر کاپی ہو گیا۔ اسے منتخب عنصر کے نیچے شامل کرنے کے لیے 'چسپاں کریں' استعمال کریں۔",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "عنصر صفحہ کے ساتھ اسکرول نہیں ہوتا - ترمیم کے باکسز پوشیدہ ہیں",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "تصویر محفوظ کرنے کے لیے فولڈر منتخب کریں",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "تصویر ڈاؤن لوڈ کرنے کی جگہ منتخب کریں:",
@@ -1570,5 +1570,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "آپ کے سسٹم ایڈمنسٹریٹر نے AI تک رسائی کو غیر فعال کر دیا ہے۔ براہ کرم مدد کے لیے {0} سے رابطہ کریں۔",
   "AI_UPSELL_DIALOG_TITLE": "{0} کے ساتھ جاری رکھیں؟",
   "AI_UPSELL_DIALOG_MESSAGE": "آپ نے {0} کو دریافت کیا ہے۔ آگے بڑھنے کے لیے، آپ کو AI سبسکرپشن یا کریڈٹس کی ضرورت ہوگی۔",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "نئی ٹیب میں کھولیں"
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "ایلیمنٹ کاپی ہو گیا۔ منتخب ایلیمنٹ کے بعد اسے شامل کرنے کے لیے 'Paste' استعمال کریں۔"
 });

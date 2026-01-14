@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Upraviť odkaz",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Nie je nastavený atribút href",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Otvoriť tento odkaz",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Otvoriť na novej karte",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Duplikovať",
   "LIVE_DEV_TOOLBOX_DELETE": "Zmazať",
   "LIVE_DEV_TOOLBOX_AI": "Upraviť pomocou AI",
@@ -199,7 +200,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Získajte Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Využili ste {0} % vašich bezplatných vyhľadávaní obrázkov ({1}/{2})",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Prvok nie je možné upraviť – vygenerovaný skriptom",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Prvok bol skopírovaný. Použite 'Prilepiť' na jeho pridanie pod vybraný prvok",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Prvok sa neposúva so stránkou – editačné polia skryté",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Vyberte priečinok na uloženie obrázka",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Vyberte, kam stiahnuť obrázok:",
@@ -1570,5 +1570,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Prístup k AI bol vypnutý správcom vášho systému. So žiadosťou o pomoc sa obráťte na {0}.",
   "AI_UPSELL_DIALOG_TITLE": "Pokračovať s {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Objavili ste {0}. Ak chcete pokračovať, budete potrebovať predplatné AI alebo kredity.",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Otvoriť na novej karte"
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Prvok skopírovaný. Použite 'Prilepiť' na jeho vloženie za vybraný prvok."
 });

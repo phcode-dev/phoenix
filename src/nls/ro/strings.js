@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Editează hyperlinkul",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Niciun href setat",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Deschide acest link",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Deschide în filă nouă",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Dublează",
   "LIVE_DEV_TOOLBOX_DELETE": "Șterge",
   "LIVE_DEV_TOOLBOX_AI": "Editează cu AI",
@@ -199,7 +200,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Obțineți Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Ați folosit {0}% din căutările gratuite de imagini ({1}/{2})",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Elementul nu este editabil - generat de script",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Element copiat. Folosiți „Lipește” pentru a-l adăuga sub elementul selectat",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Elementul nu derulează odată cu pagina - casetele de editare sunt ascunse",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Selectați folderul pentru a salva imaginea",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Alegeți unde să descărcați imaginea:",
@@ -1570,5 +1570,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Accesul AI a fost dezactivat de către administratorul dvs. de sistem. Vă rugăm să contactați {0} pentru asistență.",
   "AI_UPSELL_DIALOG_TITLE": "Continuați cu {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Ați descoperit {0}. Pentru a continua, veți avea nevoie de un abonament AI sau de credite.",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Deschide în filă nouă"
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Element copiat. Folosiți „Lipire” pentru a-l adăuga după elementul selectat."
 });

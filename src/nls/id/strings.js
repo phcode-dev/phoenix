@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Edit Tautan",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Href belum diatur",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Buka tautan ini",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Buka di tab baru",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Gandakan",
   "LIVE_DEV_TOOLBOX_DELETE": "Hapus",
   "LIVE_DEV_TOOLBOX_AI": "Edit dengan AI",
@@ -199,7 +200,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Dapatkan Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Anda telah menggunakan {0}% dari pencarian gambar gratis Anda ({1}/{2})",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Elemen tidak dapat diedit - dihasilkan oleh skrip",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Elemen disalin. Gunakan 'Tempel' untuk menambahkannya di bawah elemen yang dipilih",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Elemen tidak ikut bergulir dengan halaman - kotak edit disembunyikan",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Pilih Folder untuk Menyimpan Gambar",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Pilih lokasi untuk mengunduh gambar:",
@@ -1570,5 +1570,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Akses AI telah dinonaktifkan oleh administrator sistem Anda. Silakan hubungi {0} untuk bantuan.",
   "AI_UPSELL_DIALOG_TITLE": "Lanjutkan dengan {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Anda telah menemukan {0}. Untuk melanjutkan, Anda memerlukan langganan AI atau kredit.",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Buka di tab baru"
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Elemen disalin. Gunakan 'Tempel' untuk menambahkannya setelah elemen yang dipilih."
 });

@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Редактиране на хипервръзка",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Няма зададен href",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Отваряне на връзката",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Отваряне в нов раздел",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Копие на реда",
   "LIVE_DEV_TOOLBOX_DELETE": "Изтриване",
   "LIVE_DEV_TOOLBOX_AI": "Редактиране с AI",
@@ -199,7 +200,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Вземете Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Използвали сте {0}% от вашите безплатни търсения на изображения ({1}/{2})",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Елементът не може да се редактира – генериран е от скрипт",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Елементът е копиран. Използвайте „Поставяне“, за да го добавите под избрания елемент",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Елементът не се превърта със страницата – полетата за редакция са скрити",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Избор на папка за запазване на изображението",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Изберете къде да изтеглите изображението:",
@@ -1570,5 +1570,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Достъпът до AI е деактивиран от вашия системен администратор. Моля, свържете се с {0} за съдействие.",
   "AI_UPSELL_DIALOG_TITLE": "Да продължите ли с {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Вие открихте {0}. За да продължите, ще ви е необходим AI абонамент или кредити.",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Отваряне в нов раздел"
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Елементът е копиран. Използвайте 'Поставяне', за да го добавите след избрания елемент."
 });

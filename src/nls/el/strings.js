@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Επεξεργασία υπερσυνδέσμου",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Δεν έχει οριστεί href",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Άνοιγμα αυτού του συνδέσμου",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Άνοιγμα σε νέα καρτέλα",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Δημιουργία Αντιγράφου",
   "LIVE_DEV_TOOLBOX_DELETE": "Διαγραφή",
   "LIVE_DEV_TOOLBOX_AI": "Επεξεργασία με AI",
@@ -199,7 +200,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Αποκτήστε το Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Έχετε χρησιμοποιήσει το {0}% των δωρεάν αναζητήσεων εικόνων σας ({1}/{2})",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Το στοιχείο δεν είναι επεξεργάσιμο - δημιουργήθηκε από script",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Το στοιχείο αντιγράφηκε. Χρησιμοποιήστε την 'Επικόλληση' για να το προσθέσετε κάτω από το επιλεγμένο στοιχείο",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Το στοιχείο δεν κάνει κύλιση με τη σελίδα - τα πλαίσια επεξεργασίας είναι κρυφά",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Επιλέξτε φάκελο για αποθήκευση εικόνας",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Επιλέξτε πού θα γίνει η λήψη της εικόνας:",
@@ -1570,5 +1570,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Η πρόσβαση στο AI έχει απενεργοποιηθεί από τον διαχειριστή του συστήματός σας. Παρακαλούμε επικοινωνήστε με {0} για βοήθεια.",
   "AI_UPSELL_DIALOG_TITLE": "Συνέχεια με {0};",
   "AI_UPSELL_DIALOG_MESSAGE": "Ανακαλύψατε το {0}. Για να συνεχίσετε, θα χρειαστείτε μια συνδρομή AI ή πιστώσεις.",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Άνοιγμα σε νέα καρτέλα"
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Το στοιχείο αντιγράφηκε. Χρησιμοποιήστε την «Επικόλληση» για να το προσθέσετε μετά το επιλεγμένο στοιχείο."
 });

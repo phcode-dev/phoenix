@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Upravit odkaz",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Není nastaveno href",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Otevřít odkaz",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Otevřít v nové kartě",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Duplikovat",
   "LIVE_DEV_TOOLBOX_DELETE": "Smazat",
   "LIVE_DEV_TOOLBOX_AI": "Upravit s AI",
@@ -199,7 +200,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Získat Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Využili jste {0} % vašich bezplatných vyhledávání obrázků ({1}/{2})",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Prvek nelze upravit – vygenerováno skriptem",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Prvek zkopírován. Pro vložení pod vybraný prvek použijte 'Vložit'.",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Prvek se neposouvá se stránkou – editační pole jsou skryta.",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Vybrat složku pro uložení obrázku",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Zvolte, kam chcete obrázek stáhnout:",
@@ -1570,5 +1570,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Přístup k AI byl zakázán správcem systému. Pro pomoc prosím kontaktujte {0}.",
   "AI_UPSELL_DIALOG_TITLE": "Pokračovat s {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Objevili jste {0}. Chcete-li pokračovat, budete potřebovat předplatné AI nebo kredity.",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Otevřít v nové kartě"
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Prvek zkopírován. Pomocí 'Vložit' jej přidáte za vybraný prvek."
 });

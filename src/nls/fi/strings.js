@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Muokkaa linkkiä",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Ei href-arvoa asetettu",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Avaa tämä linkki",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Avaa uudessa välilehdessä",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Monista",
   "LIVE_DEV_TOOLBOX_DELETE": "Poista",
   "LIVE_DEV_TOOLBOX_AI": "Muokkaa tekoälyllä",
@@ -199,7 +200,6 @@ define({
   "LIVE_DEV_IMAGE_GALLERY_GET_PRO": "Hanki Pro",
   "LIVE_DEV_IMAGE_GALLERY_USAGE_THRESHOLD": "Olet käyttänyt {0} % ilmaisista kuvahauistasi ({1}/{2})",
   "LIVE_DEV_TOAST_NOT_EDITABLE": "Elementti ei ole muokattavissa – skriptin luoma",
-  "LIVE_DEV_COPY_TOAST_MESSAGE": "Elementti kopioitu. Lisää se valitun elementin alle 'Liitä'-komennolla.",
   "LIVE_DEV_TOAST_FIXED_ELEMENT_DISMISSED": "Elementti ei vierity sivun mukana – muokkausruudut piilotettu",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_TITLE": "Valitse kuvan tallennuskansio",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Valitse, mihin kuva ladataan:",
@@ -1570,5 +1570,5 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "Järjestelmänvalvoja on poistanut tekoälyn käytöstä. Ota yhteyttä {0} saadaksesi apua.",
   "AI_UPSELL_DIALOG_TITLE": "Jatketaanko {0}:n kanssa?",
   "AI_UPSELL_DIALOG_MESSAGE": "Olet löytänyt ominaisuuden {0}. Jatkaaksesi tarvitset tekoälytilauksen tai krediittejä.",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Avaa uudessa välilehdessä"
+  "LIVE_DEV_COPY_TOAST_MESSAGE": "Elementti kopioitu. Lisää se valitun elementin jälkeen käyttämällä Liitä-toimintoa."
 });
