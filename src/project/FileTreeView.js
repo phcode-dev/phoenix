@@ -786,6 +786,16 @@ define(function (require, exports, module) {
                 type: "text",
                 defaultValue: this.props.name,
                 autoFocus: true,
+
+                // 🔒 Disable OS / browser assistance
+                autoComplete: "off",
+                autoCorrect: "off",        // Safari / iOS
+                autoCapitalize: "off",     // Safari / iOS
+                spellCheck: false,         // Chrome / Firefox / Safari
+                inputMode: "text",         // Prevent smart keyboards
+                enterKeyHint: "done",      // Optional, avoids suggestions UI
+
+                // events
                 onKeyDown: this.handleKeyDown,
                 onInput: this.handleInput,
                 onBlur: this.handleBlur,
