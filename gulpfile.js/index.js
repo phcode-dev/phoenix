@@ -142,7 +142,8 @@ function makeDistAll() {
 
 function makeJSDist() {
     return src(['src/**/*.js', '!src/**/unittest-files/**/*', "!src/thirdparty/prettier/**/*",
-        "!src/thirdparty/no-minify/**/*", "!src/LiveDevelopment/BrowserScripts/RemoteFunctions.js"])
+        "!src/thirdparty/no-minify/**/*", "!src/LiveDevelopment/BrowserScripts/RemoteFunctions.js",
+        "!src/extensionsIntegrated/phoenix-pro/onboarding/**/*"])
         .pipe(minify({
             ext:{
                 min:'.js'
@@ -174,7 +175,8 @@ function makeNonMinifyDist() {
     // we dont minify remote functions as its in live preview context and the prod minify is stripping variables
     // used by plugins in live preview. so we dont minify this for now.
     return src(["src/thirdparty/no-minify/**/*",
-        "src/LiveDevelopment/BrowserScripts/RemoteFunctions.js"], {base: 'src'})
+        "src/LiveDevelopment/BrowserScripts/RemoteFunctions.js",
+        "src/extensionsIntegrated/phoenix-pro/onboarding/**/*"], {base: 'src'})
         .pipe(dest('dist'));
 }
 
