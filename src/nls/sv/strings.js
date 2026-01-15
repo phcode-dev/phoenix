@@ -1660,5 +1660,6 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "En sak till",
   "DEMO_JS_BUTTON_START_AGAIN": "Börja om",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 raderat"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 raderat",
+  "DEMO_CLICK_TO_REPLACE_IMAGE": "Klicka för att ersätta"
 });

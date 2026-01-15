@@ -1660,5 +1660,6 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "Ešte jedna vec",
   "DEMO_JS_BUTTON_START_AGAIN": "Začať znova",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karty",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 odstránené"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 odstránené",
+  "DEMO_CLICK_TO_REPLACE_IMAGE": "Kliknutím nahradiť"
 });

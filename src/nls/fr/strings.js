@@ -1660,5 +1660,6 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "Une dernière chose",
   "DEMO_JS_BUTTON_START_AGAIN": "Recommencer",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartes",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 supprimé"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 supprimé",
+  "DEMO_CLICK_TO_REPLACE_IMAGE": "Cliquez pour remplacer"
 });

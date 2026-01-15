@@ -1660,5 +1660,6 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "Еще кое-что",
   "DEMO_JS_BUTTON_START_AGAIN": "Начать заново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карточки",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 удалено"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 удалено",
+  "DEMO_CLICK_TO_REPLACE_IMAGE": "Нажмите, чтобы заменить"
 });

@@ -1660,5 +1660,6 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "Ще дещо",
   "DEMO_JS_BUTTON_START_AGAIN": "Почати знову",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карток",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 видалено"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 видалено",
+  "DEMO_CLICK_TO_REPLACE_IMAGE": "Натисніть, щоб замінити"
 });
