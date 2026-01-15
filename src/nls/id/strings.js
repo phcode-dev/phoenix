@@ -1660,5 +1660,6 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "Satu hal lagi",
   "DEMO_JS_BUTTON_START_AGAIN": "Mulai Lagi",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartu",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 dihapus"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 dihapus",
+  "DEMO_CLICK_TO_REPLACE_IMAGE": "Klik untuk Ganti"
 });

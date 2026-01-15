@@ -1660,5 +1660,6 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "Још једна ствар",
   "DEMO_JS_BUTTON_START_AGAIN": "Почни поново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 картице",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 обрисано"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 обрисано",
+  "DEMO_CLICK_TO_REPLACE_IMAGE": "Кликните за замену"
 });

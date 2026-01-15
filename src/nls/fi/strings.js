@@ -1660,5 +1660,6 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "Vielä yksi asia",
   "DEMO_JS_BUTTON_START_AGAIN": "Aloita alusta",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 korttia",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 poistettu"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 poistettu",
+  "DEMO_CLICK_TO_REPLACE_IMAGE": "Napsauta vaihtaaksesi"
 });

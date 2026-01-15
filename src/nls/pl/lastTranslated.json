@@ -472,6 +472,7 @@
   "DEMO_BOX_LABEL": "Box",
   "DEMO_CARD_SELECT_PARENT_TIP": "Click the <img src=\"images/arrowUp.svg\" alt=\"Up\" class=\"inline-icon\">&nbsp;icon in toolbar above to select the parent card.",
   "DEMO_CARD_TITLE": "Card",
+  "DEMO_CLICK_TO_REPLACE_IMAGE": "Click to Replace",
   "DEMO_COMPLETION_BODY": "You've learned how to edit with Live Preview.<br>Open a folder with your HTML files to start editing.",
   "DEMO_COMPLETION_HELP_PROMPT": "Need more help?",
   "DEMO_COMPLETION_TITLE": "You're ready to build!",

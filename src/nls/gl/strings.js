@@ -1660,5 +1660,6 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "Unha cousa máis",
   "DEMO_JS_BUTTON_START_AGAIN": "Comezar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 tarxetas",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
+  "DEMO_CLICK_TO_REPLACE_IMAGE": "Faga clic para substituír"
 });
