@@ -74,16 +74,47 @@
     }
   }
 
+  /* ---- Media wrapper for image + video hover ---- */
+  .feature-media-wrap {
+    position: relative;
+    width: 100%;
+    height: 120px;
+    overflow: hidden;
+    background: @bc-bg-inline-widget;       // #e6e9e9
+
+    .dark & {
+      background: @dark-bc-bg-inline-widget;// #1b1b1b
+    }
+  }
+
   /* ---- Media thumb ---- */
   .feature-thumb {
     width: 100%;
     height: 120px;
     object-fit: cover;
     background: @bc-bg-inline-widget;       // #e6e9e9
+    transition: opacity 0.3s ease;
 
     .dark & {
       background: @dark-bc-bg-inline-widget;// #1b1b1b
     }
+  }
+
+  /* ---- Feature video (hidden by default, layered on top of image) ---- */
+  .feature-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  /* ---- Hover state: show video on top of image (image stays as fallback for offline) ---- */
+  .feature-card:hover .feature-video {
+    opacity: 1;
   }
 
   /* ---- Card body ---- */
