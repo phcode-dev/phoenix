@@ -1872,6 +1872,7 @@ define({
     "DEMO_ALT_CARD_IMAGE": "Card image",
     "DEMO_ALT_ROCKET": "Rocket",
     "DEMO_ALT_ARROW": "Arrow",
+    "DEMO_CLICK_TO_REPLACE_IMAGE": "Click to Replace",
 
     "DEMO_JS_BUTTON_BACK": "Back",
     "DEMO_JS_BUTTON_PREVIOUS": "Previous",
