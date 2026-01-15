@@ -343,36 +343,37 @@ define(function (require, exports, module) {
             await endPreviewSession();
         }, 30000);
 
-        it("should show error banner if there is syntax error in html", async function () {
-            let savedText,
-                curDoc;
-
-            await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
-                "SpecRunnerUtils.openProjectFiles simple1.html");
-
-            await waitsForLiveDevelopmentToOpen();
-
-            curDoc = DocumentManager.getCurrentDocument();
-            savedText = curDoc.getText();
-            // split file in half to and add syntax error then see if error banner shows up
-            const mid = Math.ceil(savedText.length / 2);
-            curDoc.setText(savedText.slice(0, mid));
-
-            await awaitsFor(
-                function isBannerVisible() {
-                    return testWindow.$(".live-preview-status-overlay").is(":visible") &&
-                        testWindow.$(".live-preview-status-overlay").text()
-                            .includes(Strings.LIVE_DEV_STATUS_TIP_SYNC_ERROR);
-                },
-                "waiting for syntax error banner to appear",
-                5000,
-                50
-            );
-
-            curDoc.setText(savedText);
-
-            await endPreviewSession();
-        }, 30000);
+        // @devansh: commenting out this test as we are not doing status overlays for now
+        // it("should show error banner if there is syntax error in html", async function () {
+        //     let savedText,
+        //         curDoc;
+        //
+        //     await awaitsForDone(SpecRunnerUtils.openProjectFiles(["simple1.html"]),
+        //         "SpecRunnerUtils.openProjectFiles simple1.html");
+        //
+        //     await waitsForLiveDevelopmentToOpen();
+        //
+        //     curDoc = DocumentManager.getCurrentDocument();
+        //     savedText = curDoc.getText();
+        //     // split file in half to and add syntax error then see if error banner shows up
+        //     const mid = Math.ceil(savedText.length / 2);
+        //     curDoc.setText(savedText.slice(0, mid));
+        //
+        //     await awaitsFor(
+        //         function isBannerVisible() {
+        //             return testWindow.$(".live-preview-status-overlay").is(":visible") &&
+        //                 testWindow.$(".live-preview-status-overlay").text()
+        //                     .includes(Strings.LIVE_DEV_STATUS_TIP_SYNC_ERROR);
+        //         },
+        //         "waiting for syntax error banner to appear",
+        //         5000,
+        //         50
+        //     );
+        //
+        //     curDoc.setText(savedText);
+        //
+        //     await endPreviewSession();
+        // }, 30000);
 
         it("should make CSS-relative URLs absolute", async function () {
             var localText,

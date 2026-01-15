@@ -269,7 +269,11 @@ define(function (require, exports, module) {
 
         $statusOverlayMessage.text(textMessage);
         $statusOverlay.data("status", status);
-        $statusOverlay.removeClass("forced-hidden");
+
+        // @devansh - commenting this out to not show the status overlays, need to fix later
+        // the issue is that status overlay - conneting status was never getting removed on devices with
+        // slow connections or sites with heavy videos...
+        // $statusOverlay.removeClass("forced-hidden");
     }
 
     /**
