@@ -1651,5 +1651,14 @@ define({
   "DEMO_ALT_MORE_OPTIONS_ICON": "مزید اختیارات",
   "DEMO_ALT_CARD_IMAGE": "کارڈ کی تصویر",
   "DEMO_ALT_ROCKET": "راکٹ",
-  "DEMO_ALT_ARROW": "تیر"
+  "DEMO_ALT_ARROW": "تیر",
+  "DEMO_JS_BUTTON_BACK": "واپس",
+  "DEMO_JS_BUTTON_PREVIOUS": "پچھلا",
+  "DEMO_JS_BUTTON_NEXT": "اگلا",
+  "DEMO_JS_BUTTON_TIP": "ٹپ",
+  "DEMO_JS_BUTTON_FINISH": "ختم کریں",
+  "DEMO_JS_BUTTON_ONE_MORE": "ایک اور بات",
+  "DEMO_JS_BUTTON_START_AGAIN": "دوبارہ شروع کریں",
+  "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 کارڈز",
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 حذف شدہ"
 });
