@@ -1651,5 +1651,14 @@ define({
   "DEMO_ALT_MORE_OPTIONS_ICON": "अधिक विकल्प",
   "DEMO_ALT_CARD_IMAGE": "कार्ड छवि",
   "DEMO_ALT_ROCKET": "रॉकेट",
-  "DEMO_ALT_ARROW": "तीर"
+  "DEMO_ALT_ARROW": "तीर",
+  "DEMO_JS_BUTTON_BACK": "वापस",
+  "DEMO_JS_BUTTON_PREVIOUS": "पिछला",
+  "DEMO_JS_BUTTON_NEXT": "अगला",
+  "DEMO_JS_BUTTON_TIP": "सुझाव",
+  "DEMO_JS_BUTTON_FINISH": "समाप्त करें",
+  "DEMO_JS_BUTTON_ONE_MORE": "एक और बात",
+  "DEMO_JS_BUTTON_START_AGAIN": "फिर से शुरू करें",
+  "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 कार्ड",
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 हटाया गया"
 });

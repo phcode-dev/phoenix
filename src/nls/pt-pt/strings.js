@@ -1571,7 +1571,6 @@ define({
   "AI_CONTROL_ADMIN_DISABLED_CONTACT": "O acesso à IA foi desativado pelo seu administrador de sistema. Por favor, contacte {0} para obter assistência.",
   "AI_UPSELL_DIALOG_TITLE": "Continuar com {0}?",
   "AI_UPSELL_DIALOG_MESSAGE": "Descobriu {0}. Para continuar, precisará de uma subscrição de IA ou de créditos.",
-  "DEMO_ALT_DUPLICATE_ICON": "Duplicar",
   "DEMO_SECTION1_TITLE": "Editar em Pré-visualização ao Vivo",
   "DEMO_SECTION1_SUBTITLE": "Edite a sua página visualmente -&nbsp; <b>O seu HTML é atualizado instantaneamente</b>",
   "DEMO_GET_STARTED_BUTTON": "Começar",
@@ -1643,6 +1642,7 @@ define({
   "DEMO_ALT_LAYOUT_RULERS": "Réguas de Esquema",
   "DEMO_ALT_REPLACEABLE_IMAGE": "Imagem substituível",
   "DEMO_ALT_DOWNLOAD_ICON": "Transferir",
+  "DEMO_ALT_DUPLICATE_ICON": "Duplicar",
   "DEMO_ALT_DELETE_ICON": "Eliminar",
   "DEMO_ALT_UP_ICON": "Para cima",
   "DEMO_ALT_LINK_ICON": "Ligação",
@@ -1651,5 +1651,14 @@ define({
   "DEMO_ALT_MORE_OPTIONS_ICON": "Mais opções",
   "DEMO_ALT_CARD_IMAGE": "Imagem do cartão",
   "DEMO_ALT_ROCKET": "Foguete",
-  "DEMO_ALT_ARROW": "Seta"
+  "DEMO_ALT_ARROW": "Seta",
+  "DEMO_JS_BUTTON_BACK": "Voltar",
+  "DEMO_JS_BUTTON_PREVIOUS": "Anterior",
+  "DEMO_JS_BUTTON_NEXT": "Seguinte",
+  "DEMO_JS_BUTTON_TIP": "Dica",
+  "DEMO_JS_BUTTON_FINISH": "Concluir",
+  "DEMO_JS_BUTTON_ONE_MORE": "Mais uma coisa",
+  "DEMO_JS_BUTTON_START_AGAIN": "Começar de novo",
+  "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartões",
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado"
 });

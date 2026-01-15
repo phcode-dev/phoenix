@@ -1651,5 +1651,14 @@ define({
   "DEMO_ALT_MORE_OPTIONS_ICON": "കൂടുതൽ ഓപ്ഷനുകൾ",
   "DEMO_ALT_CARD_IMAGE": "കാർഡ് ചിത്രം",
   "DEMO_ALT_ROCKET": "റോക്കറ്റ്",
-  "DEMO_ALT_ARROW": "അമ്പ്"
+  "DEMO_ALT_ARROW": "അമ്പ്",
+  "DEMO_JS_BUTTON_BACK": "പുറകോട്ട്",
+  "DEMO_JS_BUTTON_PREVIOUS": "മുമ്പത്തേത്",
+  "DEMO_JS_BUTTON_NEXT": "അടുത്തത്",
+  "DEMO_JS_BUTTON_TIP": "സൂചന",
+  "DEMO_JS_BUTTON_FINISH": "പൂർത്തിയാക്കുക",
+  "DEMO_JS_BUTTON_ONE_MORE": "ഒരു കാര്യം കൂടി",
+  "DEMO_JS_BUTTON_START_AGAIN": "വീണ്ടും ആരംഭിക്കുക",
+  "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 കാർഡുകൾ",
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 ഇല്ലാതാക്കി"
 });

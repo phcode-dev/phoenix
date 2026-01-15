@@ -1651,5 +1651,14 @@ define({
   "DEMO_ALT_MORE_OPTIONS_ICON": "More options",
   "DEMO_ALT_CARD_IMAGE": "Card image",
   "DEMO_ALT_ROCKET": "Rocket",
-  "DEMO_ALT_ARROW": "Arrow"
+  "DEMO_ALT_ARROW": "Arrow",
+  "DEMO_JS_BUTTON_BACK": "Back",
+  "DEMO_JS_BUTTON_PREVIOUS": "Previous",
+  "DEMO_JS_BUTTON_NEXT": "Next",
+  "DEMO_JS_BUTTON_TIP": "Tip",
+  "DEMO_JS_BUTTON_FINISH": "Finish",
+  "DEMO_JS_BUTTON_ONE_MORE": "One more thing",
+  "DEMO_JS_BUTTON_START_AGAIN": "Start Again",
+  "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cards",
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 deleted"
 });

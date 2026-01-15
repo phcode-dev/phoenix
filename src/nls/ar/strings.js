@@ -1651,5 +1651,14 @@ define({
   "DEMO_ALT_MORE_OPTIONS_ICON": "المزيد من الخيارات",
   "DEMO_ALT_CARD_IMAGE": "صورة البطاقة",
   "DEMO_ALT_ROCKET": "صاروخ",
-  "DEMO_ALT_ARROW": "سهم"
+  "DEMO_ALT_ARROW": "سهم",
+  "DEMO_JS_BUTTON_BACK": "رجوع",
+  "DEMO_JS_BUTTON_PREVIOUS": "السابق",
+  "DEMO_JS_BUTTON_NEXT": "التالي",
+  "DEMO_JS_BUTTON_TIP": "تلميح",
+  "DEMO_JS_BUTTON_FINISH": "إنهاء",
+  "DEMO_JS_BUTTON_ONE_MORE": "شيء آخر",
+  "DEMO_JS_BUTTON_START_AGAIN": "البدء من جديد",
+  "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 بطاقات",
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 محذوف"
 });
