@@ -11,6 +11,39 @@
     z-index: @z-index-brackets-context-menu-base;
     transform-origin: 0 0;
 
+    .popup-header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .popup-close-btn {
+        width: 24px;
+        height: 24px;
+        padding: 0;
+        background: none;
+        border: none;
+        border-radius: @bc-border-radius;
+        cursor: pointer;
+        color: @bc-text-medium;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: color 0.2s ease, background-color 0.2s ease;
+        flex-shrink: 0;
+
+        &:hover {
+            color: @bc-text-emphasized;
+            background-color: @bc-btn-bg;
+        }
+
+        &:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px @bc-btn-border-focused;
+        }
+    }
+
     .popup-header {
         padding: 12px 15px;
         border-bottom: 1px solid @bc-menu-separator;
@@ -203,6 +236,19 @@
     background-color: @dark-bc-panel-bg;
     color: @dark-bc-menu-text;
     box-shadow: 0 3px 9px @dark-bc-shadow;
+
+    .popup-close-btn {
+        color: @dark-bc-text-thin-quiet;
+
+        &:hover {
+            color: @dark-bc-text;
+            background-color: @dark-bc-btn-bg;
+        }
+
+        &:focus {
+            box-shadow: 0 0 0 2px @dark-bc-btn-border-focused;
+        }
+    }
 
     .popup-header {
         border-bottom: 1px solid @dark-bc-menu-separator;
