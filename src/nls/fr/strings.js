@@ -338,7 +338,6 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Fractionnement vertical",
   "CMD_SPLITVIEW_HORIZONTAL": "Fractionnement horizontal",
   "SPLITVIEW_MENU_TOOLTIP": "Fractionner l’éditeur horizontalement ou verticalement",
-  "GEAR_MENU_TOOLTIP": "Configurer l’ensemble de travail",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Afficher les fichiers de travail",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Afficher la barre d'onglets des fichiers",
   "SPLITVIEW_INFO_TITLE": "Déjà ouvert",
@@ -1586,6 +1585,7 @@ define({
   "DEMO_SECTION3_SUBTITLE": "Cliquez sur l'image ci-dessous pour la remplacer par une image de votre choix depuis la bibliothèque d'images.",
   "DEMO_SECTION3_SUCCESS_URL": "Saviez-vous que vous pouvez télécharger des images avec le bouton <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> Télécharger dans la bibliothèque d'images ?",
   "DEMO_SECTION3_SUCCESS_LOCAL": "Saviez-vous que vous pouvez cliquer sur une image pour l'utiliser sans la télécharger ?",
+  "DEMO_SECTION3_HINT_STEP1": "Cliquez sur l'image pour ouvrir la bibliothèque d'images (alternez l'affichage avec l'icône <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> de la barre d'outils ou en double-cliquant).",
   "DEMO_SECTION3_HINT_STEP2": "Dans la bibliothèque d'images : survolez les miniatures pour les prévisualiser",
   "DEMO_SECTION3_HINT_STEP3": "Cliquez sur une miniature pour la placer sur votre page, ou cliquez sur l'icône <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> pour la télécharger d'abord",
   "DEMO_SECTION4_TITLE": "Modifier les éléments visuellement",
@@ -1661,5 +1661,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Recommencer",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 supprimé",
-  "DEMO_SECTION3_HINT_STEP1": "Cliquez sur l'image pour ouvrir la bibliothèque d'images (alternez l'affichage avec l'icône <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> de la barre d'outils ou en double-cliquant)."
+  "GEAR_MENU_TOOLTIP": "Configurer les fichiers de travail",
+  "CLOSE_TAB_TOOLTIP": "Fermer l'onglet",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Supprimer le snippet"
 });

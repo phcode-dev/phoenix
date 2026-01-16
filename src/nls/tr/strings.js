@@ -338,7 +338,6 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Dikey Bölme",
   "CMD_SPLITVIEW_HORIZONTAL": "Yatay Böl",
   "SPLITVIEW_MENU_TOOLTIP": "Düzenleyiciyi dikey veya yatay olarak böl",
-  "GEAR_MENU_TOOLTIP": "Çalışma Kümesini Yapılandır",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Çalışma Dosyalarını Göster",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Dosya Sekme Çubuğunu Göster",
   "SPLITVIEW_INFO_TITLE": "Zaten Açık",
@@ -1586,6 +1585,7 @@ define({
   "DEMO_SECTION3_SUBTITLE": "Aşağıdaki resme tıklayarak Resim Kütüphanesinden beğendiğiniz bir resimle değiştirin.",
   "DEMO_SECTION3_SUCCESS_URL": "Resim Kütüphanesindeki <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> İndir düğmesiyle resimleri indirebileceğinizi biliyor muydunuz?",
   "DEMO_SECTION3_SUCCESS_LOCAL": "Bir resme tıklayarak onu indirmeden kullanabileceğinizi biliyor muydunuz?",
+  "DEMO_SECTION3_HINT_STEP1": "Resim Kütüphanesi'ni açmak için resme tıklayın (araç çubuğundaki <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> simgesiyle veya çift tıklayarak açıp kapatabilirsiniz).",
   "DEMO_SECTION3_HINT_STEP2": "Resim Kütüphanesinde: küçük resimleri önizlemek için üzerlerine gelin",
   "DEMO_SECTION3_HINT_STEP3": "Sayfanıza yerleştirmek için bir küçük resme tıklayın veya önce indirmek için <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> simgesine tıklayın",
   "DEMO_SECTION4_TITLE": "Öğeleri görsel olarak düzenleyin",
@@ -1661,5 +1661,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Yeniden Başla",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 silindi",
-  "DEMO_SECTION3_HINT_STEP1": "Resim Kütüphanesi'ni açmak için resme tıklayın (araç çubuğundaki <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> simgesiyle veya çift tıklayarak açıp kapatabilirsiniz)."
+  "GEAR_MENU_TOOLTIP": "Çalışma Dosyalarını Yapılandır",
+  "CLOSE_TAB_TOOLTIP": "Sekmeyi Kapat",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Kod Parçacığını Sil"
 });

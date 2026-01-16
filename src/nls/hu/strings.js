@@ -338,7 +338,6 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Függőleges felosztás",
   "CMD_SPLITVIEW_HORIZONTAL": "Vízszintes felosztás",
   "SPLITVIEW_MENU_TOOLTIP": "A szerkesztő függőleges vagy vízszintes felosztása",
-  "GEAR_MENU_TOOLTIP": "Munkakészlet konfigurálása",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Munkában lévő fájlok megjelenítése",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Fájlfülek sávjának megjelenítése",
   "SPLITVIEW_INFO_TITLE": "Már meg van nyitva",
@@ -1586,6 +1585,7 @@ define({
   "DEMO_SECTION3_SUBTITLE": "Kattintson az alábbi képre, hogy lecserélje egy Önnek tetszőre a Képtárból.",
   "DEMO_SECTION3_SUCCESS_URL": "Tudta, hogy a Képtárban a <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> Letöltés gombbal képeket is letölthet?",
   "DEMO_SECTION3_SUCCESS_LOCAL": "Tudta, hogy a képre kattintva letöltés nélkül is használhatja azt?",
+  "DEMO_SECTION3_HINT_STEP1": "Kattintson a képre a Képtár megnyitásához (váltás az eszköztár <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> ikonjával vagy dupla kattintással).",
   "DEMO_SECTION3_HINT_STEP2": "A Képtárban: vigye az egeret a miniatűrök fölé az előnézetükhöz",
   "DEMO_SECTION3_HINT_STEP3": "Kattintson egy miniatűrre, hogy az oldalára helyezze, vagy kattintson a <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> ikonra, hogy előbb letöltse",
   "DEMO_SECTION4_TITLE": "Elemek vizuális szerkesztése",
@@ -1661,5 +1661,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Újrakezdés",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kártya",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 törölve",
-  "DEMO_SECTION3_HINT_STEP1": "Kattintson a képre a Képtár megnyitásához (váltás az eszköztár <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> ikonjával vagy dupla kattintással)."
+  "GEAR_MENU_TOOLTIP": "Munkamenet fájlok beállítása",
+  "CLOSE_TAB_TOOLTIP": "Fül bezárása",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Kódrészlet törlése"
 });

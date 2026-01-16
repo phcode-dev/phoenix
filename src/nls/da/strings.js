@@ -338,7 +338,6 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Lodret opdeling",
   "CMD_SPLITVIEW_HORIZONTAL": "Vandret opdeling",
   "SPLITVIEW_MENU_TOOLTIP": "Opdel editoren lodret eller vandret",
-  "GEAR_MENU_TOOLTIP": "Konfigurer arbejdsgruppe",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Vis arbejdsfiler",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Vis fane-bjælke for filer",
   "SPLITVIEW_INFO_TITLE": "Allerede åben",
@@ -1586,6 +1585,7 @@ define({
   "DEMO_SECTION3_SUBTITLE": "Klik på billedet nedenfor for at udskifte det med et, du kan lide, fra billedbiblioteket.",
   "DEMO_SECTION3_SUCCESS_URL": "Vidste du, at du kan downloade billeder med knappen <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> Download i billedbiblioteket?",
   "DEMO_SECTION3_SUCCESS_LOCAL": "Vidste du, at du kan klikke på et billede for at bruge det uden at downloade?",
+  "DEMO_SECTION3_HINT_STEP1": "Klik på billedet for at åbne Billedbibliotek (slå til/fra med <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> ikonet på værktøjslinjen eller dobbeltklik).",
   "DEMO_SECTION3_HINT_STEP2": "I billedbiblioteket: hold markøren over miniaturer for at forhåndsvise dem",
   "DEMO_SECTION3_HINT_STEP3": "Klik på en miniature for at placere den på din side, eller klik på ikonet <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> for at downloade det først",
   "DEMO_SECTION4_TITLE": "Rediger elementer visuelt",
@@ -1661,5 +1661,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start forfra",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "DEMO_SECTION3_HINT_STEP1": "Klik på billedet for at åbne Billedbibliotek (slå til/fra med <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> ikonet på værktøjslinjen eller dobbeltklik)."
+  "GEAR_MENU_TOOLTIP": "Konfigurer arbejdsfiler",
+  "CLOSE_TAB_TOOLTIP": "Luk faneblad",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Slet snippet"
 });

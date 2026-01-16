@@ -338,7 +338,6 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Divisão vertical",
   "CMD_SPLITVIEW_HORIZONTAL": "Divisão horizontal",
   "SPLITVIEW_MENU_TOOLTIP": "Divida o editor verticalmente ou horizontalmente",
-  "GEAR_MENU_TOOLTIP": "Configurar conjunto de trabalho",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Mostrar Arquivos em Uso",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Mostrar Barra de Abas de Arquivos",
   "SPLITVIEW_INFO_TITLE": "Já está aberto",
@@ -1586,6 +1585,7 @@ define({
   "DEMO_SECTION3_SUBTITLE": "Clique na imagem abaixo para substituí-la por uma de sua preferência da Biblioteca de Imagens.",
   "DEMO_SECTION3_SUCCESS_URL": "Você sabia que pode baixar imagens com o botão <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> Baixar na Biblioteca de Imagens?",
   "DEMO_SECTION3_SUCCESS_LOCAL": "Você sabia que pode clicar em uma imagem para usá-la sem precisar baixar?",
+  "DEMO_SECTION3_HINT_STEP1": "Clique na imagem para abrir a Biblioteca de Imagens (alterne com o ícone <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> da barra de ferramentas ou com um clique duplo).",
   "DEMO_SECTION3_HINT_STEP2": "Na Biblioteca de Imagens: passe o mouse sobre as miniaturas para pré-visualizá-las",
   "DEMO_SECTION3_HINT_STEP3": "Clique em uma miniatura para inseri-la em sua página, ou clique no ícone <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> para baixá-la primeiro",
   "DEMO_SECTION4_TITLE": "Edite elementos visualmente",
@@ -1661,5 +1661,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Começar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartões",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 excluído",
-  "DEMO_SECTION3_HINT_STEP1": "Clique na imagem para abrir a Biblioteca de Imagens (alterne com o ícone <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> da barra de ferramentas ou com um clique duplo)."
+  "GEAR_MENU_TOOLTIP": "Configurar Arquivos de Trabalho",
+  "CLOSE_TAB_TOOLTIP": "Fechar Aba",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Excluir Snippet"
 });

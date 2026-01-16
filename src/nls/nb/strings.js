@@ -338,7 +338,6 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Vertikal deling",
   "CMD_SPLITVIEW_HORIZONTAL": "Horisontal deling",
   "SPLITVIEW_MENU_TOOLTIP": "Del redigeringsprogrammet vertikalt eller horisontalt",
-  "GEAR_MENU_TOOLTIP": "Konfigurer arbeidssett",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Vis filer i bruk",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Vis filfanelinje",
   "SPLITVIEW_INFO_TITLE": "Allerede åpen",
@@ -1586,6 +1585,7 @@ define({
   "DEMO_SECTION3_SUBTITLE": "Klikk på bildet nedenfor for å erstatte det med et du liker fra bildebiblioteket.",
   "DEMO_SECTION3_SUCCESS_URL": "Visste du at du kan laste ned bilder med <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> Last ned-knappen i bildebiblioteket?",
   "DEMO_SECTION3_SUCCESS_LOCAL": "Visste du at du kan klikke på et bilde for å bruke det uten å laste det ned?",
+  "DEMO_SECTION3_HINT_STEP1": "Klikk på bildet for å åpne bildebiblioteket (veksle med <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\">-ikonet på verktøylinjen eller dobbeltklikk).",
   "DEMO_SECTION3_HINT_STEP2": "I bildebiblioteket: hold musepekeren over miniatyrbildene for å forhåndsvise dem",
   "DEMO_SECTION3_HINT_STEP3": "Klikk på et miniatyrbilde for å plassere det på siden din, eller klikk på <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\">-ikonet for å laste det ned først",
   "DEMO_SECTION4_TITLE": "Rediger elementer visuelt",
@@ -1661,5 +1661,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start på nytt",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "DEMO_SECTION3_HINT_STEP1": "Klikk på bildet for å åpne bildebiblioteket (veksle med <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\">-ikonet på verktøylinjen eller dobbeltklikk)."
+  "GEAR_MENU_TOOLTIP": "Konfigurer arbeidsfiler",
+  "CLOSE_TAB_TOOLTIP": "Lukk fane",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Slett kodebit"
 });

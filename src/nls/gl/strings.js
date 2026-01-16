@@ -338,7 +338,6 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "División Vertical",
   "CMD_SPLITVIEW_HORIZONTAL": "División Horizontal",
   "SPLITVIEW_MENU_TOOLTIP": "Dividir o editor vertical ou horizontalmente",
-  "GEAR_MENU_TOOLTIP": "Configurar espacio de traballo",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Mostrar ficheiros de traballo",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Mostrar barra de pestanas de ficheiros",
   "SPLITVIEW_INFO_TITLE": "Xa está aberto",
@@ -1586,6 +1585,7 @@ define({
   "DEMO_SECTION3_SUBTITLE": "Faga clic na imaxe de abaixo para substituíla por unha que lle guste da Biblioteca de imaxes.",
   "DEMO_SECTION3_SUCCESS_URL": "Sabía que pode descargar imaxes co botón Descargar <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> na Biblioteca de imaxes?",
   "DEMO_SECTION3_SUCCESS_LOCAL": "Sabía que pode facer clic nunha imaxe para usala sen necesidade de descargala?",
+  "DEMO_SECTION3_HINT_STEP1": "Faga clic na imaxe para abrir a Biblioteca de imaxes (tamén se abre/pecha coa icona <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> da barra de ferramentas ou facendo dobre clic).",
   "DEMO_SECTION3_HINT_STEP2": "Na Biblioteca de imaxes: pase o cursor sobre as miniaturas para previsualizalas",
   "DEMO_SECTION3_HINT_STEP3": "Faga clic nunha miniatura para colocala na súa páxina, ou faga clic na icona <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> para descargala primeiro",
   "DEMO_SECTION4_TITLE": "Edite os elementos visualmente",
@@ -1661,5 +1661,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Comezar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 tarxetas",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "DEMO_SECTION3_HINT_STEP1": "Faga clic na imaxe para abrir a Biblioteca de imaxes (tamén se abre/pecha coa icona <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> da barra de ferramentas ou facendo dobre clic)."
+  "GEAR_MENU_TOOLTIP": "Configurar ficheiros de traballo",
+  "CLOSE_TAB_TOOLTIP": "Pechar lapela",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Eliminar fragmento"
 });

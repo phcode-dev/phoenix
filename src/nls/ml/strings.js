@@ -338,7 +338,6 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "ലംബ വിഭജനം",
   "CMD_SPLITVIEW_HORIZONTAL": "തിരശ്ചീനമായി വിഭജിക്കുക",
   "SPLITVIEW_MENU_TOOLTIP": "എഡിറ്റரை ലംബമായോ തിരശ്ചീനമായോ വിഭജിക്കുക",
-  "GEAR_MENU_TOOLTIP": "വർക്കിംഗ് സെറ്റ് ക്രമീകരിക്കുക",
   "CMD_TOGGLE_SHOW_WORKING_SET": "പ്രവർത്തനക്ഷമമായ ഫയലുകൾ കാണിക്കുക",
   "CMD_TOGGLE_SHOW_FILE_TABS": "ഫയൽ ടാബ് ബാർ കാണിക്കുക",
   "SPLITVIEW_INFO_TITLE": "ഇതിനകം തുറന്നിരിക്കുന്നു",
@@ -1586,6 +1585,7 @@ define({
   "DEMO_SECTION3_SUBTITLE": "ഇമേജ് ലൈബ്രറിയിൽ നിന്ന് നിങ്ങൾക്ക് ഇഷ്ടമുള്ള ഒരെണ്ണം ഉപയോഗിച്ച് മാറ്റിസ്ഥാപിക്കാൻ താഴെയുള്ള ചിത്രത്തിൽ ക്ലിക്ക് ചെയ്യുക.",
   "DEMO_SECTION3_SUCCESS_URL": "ഇമേജ് ലൈബ്രറിയിലെ <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> ഡൗൺലോഡ് ബട്ടൺ ഉപയോഗിച്ച് നിങ്ങൾക്ക് ചിത്രങ്ങൾ ഡൗൺലോഡ് ചെയ്യാൻ കഴിയുമെന്ന് നിങ്ങൾക്കറിയാമോ?",
   "DEMO_SECTION3_SUCCESS_LOCAL": "ഡൗൺലോഡ് ചെയ്യാതെ ഒരു ചിത്രം ഉപയോഗിക്കാൻ അതിൽ ക്ലിക്ക് ചെയ്യാൻ കഴിയുമെന്ന് നിങ്ങൾക്കറിയാമോ?",
+  "DEMO_SECTION3_HINT_STEP1": "ഇമേജ് ലൈബ്രറി തുറക്കാൻ ചിത്രത്തിൽ ക്ലിക്ക് ചെയ്യുക (<img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> ടൂൾബാർ ഐക്കൺ ഉപയോഗിച്ചോ ഡബിൾ ക്ലിക്ക് ചെയ്തോ ടോഗിൾ ചെയ്യുക).",
   "DEMO_SECTION3_HINT_STEP2": "ഇമേജ് ലൈബ്രറിയിൽ: തംബ്നെയിലുകൾ പ്രിവ്യൂ ചെയ്യാൻ അവയുടെ മുകളിൽ ഹോവർ ചെയ്യുക",
   "DEMO_SECTION3_HINT_STEP3": "നിങ്ങളുടെ പേജിൽ സ്ഥാപിക്കാൻ ഒരു തംബ്നെയിലിൽ ക്ലിക്ക് ചെയ്യുക, അല്ലെങ്കിൽ ആദ്യം അത് ഡൗൺലോഡ് ചെയ്യാൻ <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> ഐക്കണിൽ ക്ലിക്ക് ചെയ്യുക",
   "DEMO_SECTION4_TITLE": "ഘടകങ്ങൾ ദൃശ്യപരമായി എഡിറ്റ് ചെയ്യുക",
@@ -1661,5 +1661,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "വീണ്ടും ആരംഭിക്കുക",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 കാർഡുകൾ",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 ഇല്ലാതാക്കി",
-  "DEMO_SECTION3_HINT_STEP1": "ഇമേജ് ലൈബ്രറി തുറക്കാൻ ചിത്രത്തിൽ ക്ലിക്ക് ചെയ്യുക (<img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> ടൂൾബാർ ഐക്കൺ ഉപയോഗിച്ചോ ഡബിൾ ക്ലിക്ക് ചെയ്തോ ടോഗിൾ ചെയ്യുക)."
+  "GEAR_MENU_TOOLTIP": "വർക്കിംഗ് ഫയലുകൾ ക്രമീകരിക്കുക",
+  "CLOSE_TAB_TOOLTIP": "ടാബ് അടയ്ക്കുക",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "സ്നിപ്പെറ്റ് ഇല്ലാതാക്കുക"
 });

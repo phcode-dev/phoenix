@@ -338,7 +338,6 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Divisão Vertical",
   "CMD_SPLITVIEW_HORIZONTAL": "Divisão Horizontal",
   "SPLITVIEW_MENU_TOOLTIP": "Dividir o editor verticalmente ou horizontalmente",
-  "GEAR_MENU_TOOLTIP": "Configurar Conjunto de Trabalho",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Mostrar Ficheiros em Utilização",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Mostrar Barra de Separadores de Ficheiros",
   "SPLITVIEW_INFO_TITLE": "Já Aberto",
@@ -1586,6 +1585,7 @@ define({
   "DEMO_SECTION3_SUBTITLE": "Clique na imagem abaixo para a substituir por uma da sua preferência da Biblioteca de Imagens.",
   "DEMO_SECTION3_SUCCESS_URL": "Sabia que pode transferir imagens com o botão <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> Transferir na Biblioteca de Imagens?",
   "DEMO_SECTION3_SUCCESS_LOCAL": "Sabia que pode clicar numa imagem para a usar sem a transferir?",
+  "DEMO_SECTION3_HINT_STEP1": "Clique na imagem para abrir a Biblioteca de Imagens (alterne com o ícone <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> na barra de ferramentas ou com um duplo clique).",
   "DEMO_SECTION3_HINT_STEP2": "Na Biblioteca de Imagens: passe o cursor sobre as miniaturas para as pré-visualizar",
   "DEMO_SECTION3_HINT_STEP3": "Clique numa miniatura para a colocar na sua página, ou clique no ícone <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> para a transferir primeiro",
   "DEMO_SECTION4_TITLE": "Edite elementos visualmente",
@@ -1661,5 +1661,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Começar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartões",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "DEMO_SECTION3_HINT_STEP1": "Clique na imagem para abrir a Biblioteca de Imagens (alterne com o ícone <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> na barra de ferramentas ou com um duplo clique)."
+  "GEAR_MENU_TOOLTIP": "Configurar Ficheiros de Trabalho",
+  "CLOSE_TAB_TOOLTIP": "Fechar Separador",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Eliminar Fragmento"
 });

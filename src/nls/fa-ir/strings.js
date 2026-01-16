@@ -338,7 +338,6 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "دو بخشی کردن عمودی",
   "CMD_SPLITVIEW_HORIZONTAL": "دو بخشی کردن افقی",
   "SPLITVIEW_MENU_TOOLTIP": "دو بخشی کردن ویرایشگر به صورت عمودی یا افقی",
-  "GEAR_MENU_TOOLTIP": "پیکربندی پرونده های کاری",
   "CMD_TOGGLE_SHOW_WORKING_SET": "نمایش فایل‌های در حال کار",
   "CMD_TOGGLE_SHOW_FILE_TABS": "نمایش نوار تب فایل‌ها",
   "SPLITVIEW_INFO_TITLE": "هم اکنون باز است",
@@ -1586,6 +1585,7 @@ define({
   "DEMO_SECTION3_SUBTITLE": "روی تصویر زیر کلیک کنید تا آن را با تصویر دلخواه خود از کتابخانه تصاویر جایگزین کنید.",
   "DEMO_SECTION3_SUCCESS_URL": "آیا می‌دانستید که با دکمه <img src=\"images/download.svg\" alt=\"دانلود\" class=\"inline-icon\"> دانلود در کتابخانه تصاویر، می‌توانید تصاویر را دانلود کنید؟",
   "DEMO_SECTION3_SUCCESS_LOCAL": "آیا می‌دانستید می‌توانید برای استفاده از یک تصویر، بدون نیاز به دانلود، روی آن کلیک کنید؟",
+  "DEMO_SECTION3_HINT_STEP1": "روی تصویر کلیک کنید تا کتابخانه تصویر باز شود (با آیکون <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> در نوار ابزار یا دابل-کلیک، آن را باز و بسته کنید).",
   "DEMO_SECTION3_HINT_STEP2": "در کتابخانه تصاویر: برای دیدن پیش‌نمایش، نشانگر ماوس را روی تصاویر کوچک ببرید",
   "DEMO_SECTION3_HINT_STEP3": "روی یک تصویر کوچک کلیک کنید تا در صفحه قرار گیرد، یا روی آیکون <img src=\"images/download.svg\" alt=\"دانلود\" class=\"inline-icon\"> کلیک کنید تا ابتدا آن را دانلود کنید",
   "DEMO_SECTION4_TITLE": "ویرایش بصری عناصر",
@@ -1660,6 +1660,5 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "یک نکته دیگر",
   "DEMO_JS_BUTTON_START_AGAIN": "شروع مجدد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE} از ۳ کارت",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE} از ۱ مورد حذف شد",
-  "DEMO_SECTION3_HINT_STEP1": "روی تصویر کلیک کنید تا کتابخانه تصویر باز شود (با آیکون <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> در نوار ابزار یا دابل-کلیک، آن را باز و بسته کنید)."
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE} از ۱ مورد حذف شد"
 });

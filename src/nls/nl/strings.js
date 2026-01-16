@@ -338,7 +338,6 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Verticaal splitsen",
   "CMD_SPLITVIEW_HORIZONTAL": "Horizontaal splitsen",
   "SPLITVIEW_MENU_TOOLTIP": "Splits de editor verticaal of horizontaal",
-  "GEAR_MENU_TOOLTIP": "Configureer bestanden",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Werkbestanden tonen",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Bestandstabbalk tonen",
   "SPLITVIEW_INFO_TITLE": "Al geopend",
@@ -1586,6 +1585,7 @@ define({
   "DEMO_SECTION3_SUBTITLE": "Klik op de afbeelding hieronder om deze te vervangen door een afbeelding naar keuze uit de Afbeeldingenbibliotheek.",
   "DEMO_SECTION3_SUCCESS_URL": "Wist u dat u afbeeldingen kunt downloaden met de <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> Downloadknop in de Afbeeldingenbibliotheek?",
   "DEMO_SECTION3_SUCCESS_LOCAL": "Wist u dat u op een afbeelding kunt klikken om deze te gebruiken zonder te downloaden?",
+  "DEMO_SECTION3_HINT_STEP1": "Klik op de afbeelding om de Afbeeldingenbibliotheek te openen (schakel met het <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> werkbalkpictogram of dubbelklik).",
   "DEMO_SECTION3_HINT_STEP2": "In de Afbeeldingenbibliotheek: beweeg de muis over miniaturen om een voorbeeld te bekijken",
   "DEMO_SECTION3_HINT_STEP3": "Klik op een miniatuur om deze op uw pagina te plaatsen, of klik op het <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> icoon om deze eerst te downloaden",
   "DEMO_SECTION4_TITLE": "Elementen visueel bewerken",
@@ -1661,5 +1661,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Opnieuw beginnen",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kaarten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 verwijderd",
-  "DEMO_SECTION3_HINT_STEP1": "Klik op de afbeelding om de Afbeeldingenbibliotheek te openen (schakel met het <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> werkbalkpictogram of dubbelklik)."
+  "GEAR_MENU_TOOLTIP": "Werkbestanden configureren",
+  "CLOSE_TAB_TOOLTIP": "Tabblad sluiten",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Snippet verwijderen"
 });

@@ -338,7 +338,6 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Prepolovi okomito",
   "CMD_SPLITVIEW_HORIZONTAL": "Prepolovi vodoravno",
   "SPLITVIEW_MENU_TOOLTIP": "Prepolovi editor okomito ili vodoravno",
-  "GEAR_MENU_TOOLTIP": "Definiraj radni skup",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Prikaži datoteke na kojima se radi",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Prikaži traku kartica datoteka",
   "SPLITVIEW_INFO_TITLE": "Već otvoreno",
@@ -1586,6 +1585,7 @@ define({
   "DEMO_SECTION3_SUBTITLE": "Kliknite na sliku ispod kako biste je zamijenili onom koja vam se sviđa iz biblioteke slika.",
   "DEMO_SECTION3_SUCCESS_URL": "Jeste li znali da možete preuzeti slike pomoću gumba <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> Preuzmi u biblioteci slika?",
   "DEMO_SECTION3_SUCCESS_LOCAL": "Jeste li znali da možete kliknuti na sliku kako biste je upotrijebili bez preuzimanja?",
+  "DEMO_SECTION3_HINT_STEP1": "Kliknite na sliku za otvaranje biblioteke slika (prebacujte prikaz ikonom <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> na alatnoj traci ili dvostrukim klikom).",
   "DEMO_SECTION3_HINT_STEP2": "U biblioteci slika: prijeđite mišem preko minijatura kako biste ih pregledali",
   "DEMO_SECTION3_HINT_STEP3": "Kliknite na minijaturu kako biste je postavili na svoju stranicu ili kliknite na ikonu <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> kako biste je prvo preuzeli",
   "DEMO_SECTION4_TITLE": "Vizualno uređujte elemente",
@@ -1661,5 +1661,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Kreni ispočetka",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartice",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 obrisano",
-  "DEMO_SECTION3_HINT_STEP1": "Kliknite na sliku za otvaranje biblioteke slika (prebacujte prikaz ikonom <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> na alatnoj traci ili dvostrukim klikom)."
+  "GEAR_MENU_TOOLTIP": "Konfiguriraj radne datoteke",
+  "CLOSE_TAB_TOOLTIP": "Zatvori karticu",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Izbriši isječak"
 });

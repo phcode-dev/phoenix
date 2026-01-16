@@ -338,7 +338,6 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Dividere Verticalmente",
   "CMD_SPLITVIEW_HORIZONTAL": "Dividere Orizzontalmente",
   "SPLITVIEW_MENU_TOOLTIP": "Dividere l'editor verticalmente oppure orizzontalmente",
-  "GEAR_MENU_TOOLTIP": "Configura le impostazioni di lavoro",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Mostra file di lavoro",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Mostra barra delle schede dei file",
   "SPLITVIEW_INFO_TITLE": "Già aperto",
@@ -1586,6 +1585,7 @@ define({
   "DEMO_SECTION3_SUBTITLE": "Fai clic sull'immagine qui sotto per sostituirla con una di tuo gradimento dalla Libreria immagini.",
   "DEMO_SECTION3_SUCCESS_URL": "Sapevi che puoi scaricare le immagini con il pulsante <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> Scarica nella Libreria immagini?",
   "DEMO_SECTION3_SUCCESS_LOCAL": "Sapevi che puoi fare clic su un'immagine per usarla senza scaricarla?",
+  "DEMO_SECTION3_HINT_STEP1": "Clicca sull'immagine per aprire la Libreria immagini (apri/chiudi con l'icona <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> nella barra degli strumenti o fai doppio clic).",
   "DEMO_SECTION3_HINT_STEP2": "Nella Libreria immagini: passa il mouse sulle miniature per visualizzarne l'anteprima",
   "DEMO_SECTION3_HINT_STEP3": "Fai clic su una miniatura per inserirla nella tua pagina, oppure fai clic sull'icona <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> per scaricarla prima",
   "DEMO_SECTION4_TITLE": "Modifica elementi visivamente",
@@ -1661,5 +1661,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Ricomincia",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carte",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminato",
-  "DEMO_SECTION3_HINT_STEP1": "Clicca sull'immagine per aprire la Libreria immagini (apri/chiudi con l'icona <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> nella barra degli strumenti o fai doppio clic)."
+  "GEAR_MENU_TOOLTIP": "Configura file di lavoro",
+  "CLOSE_TAB_TOOLTIP": "Chiudi scheda",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Elimina snippet"
 });

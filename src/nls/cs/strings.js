@@ -338,7 +338,6 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Vertikální rozdělení",
   "CMD_SPLITVIEW_HORIZONTAL": "Horizontální rozdělení",
   "SPLITVIEW_MENU_TOOLTIP": "Rozdělit editor horizontálně nebo vertikálně",
-  "GEAR_MENU_TOOLTIP": "Nastavit pracovní plochu",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Zobrazit pracovní soubory",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Zobrazit panel karet souborů",
   "SPLITVIEW_INFO_TITLE": "Již otevřen",
@@ -1586,6 +1585,7 @@ define({
   "DEMO_SECTION3_SUBTITLE": "Klikněte na obrázek níže a nahraďte ho jiným z Knihovny obrázků.",
   "DEMO_SECTION3_SUCCESS_URL": "Věděli jste, že můžete stahovat obrázky pomocí tlačítka <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> Stáhnout v Knihovně obrázků?",
   "DEMO_SECTION3_SUCCESS_LOCAL": "Věděli jste, že můžete kliknout na obrázek a použít ho bez stahování?",
+  "DEMO_SECTION3_HINT_STEP1": "Kliknutím na obrázek otevřete Knihovnu obrázků (přepínat lze ikonou <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> na panelu nástrojů nebo dvojklikem).",
   "DEMO_SECTION3_HINT_STEP2": "V Knihovně obrázků: najeďte myší na miniatury pro zobrazení náhledu.",
   "DEMO_SECTION3_HINT_STEP3": "Klikněte na miniaturu a umístěte ji na svou stránku, nebo klikněte na ikonu <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> a nejprve ji stáhněte.",
   "DEMO_SECTION4_TITLE": "Upravujte prvky vizuálně.",
@@ -1661,5 +1661,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začít znovu",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karet",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 smazáno",
-  "DEMO_SECTION3_HINT_STEP1": "Kliknutím na obrázek otevřete Knihovnu obrázků (přepínat lze ikonou <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> na panelu nástrojů nebo dvojklikem)."
+  "GEAR_MENU_TOOLTIP": "Nastavit pracovní soubory",
+  "CLOSE_TAB_TOOLTIP": "Zavřít kartu",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Odstranit fragment"
 });

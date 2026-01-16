@@ -338,7 +338,6 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Вертикално разделяне",
   "CMD_SPLITVIEW_HORIZONTAL": "Хоризонтално разделяне",
   "SPLITVIEW_MENU_TOOLTIP": "Вертикално или хоризонтално разделяне на редактора",
-  "GEAR_MENU_TOOLTIP": "Настройки за работните файлове",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Показване на работните файлове",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Покажи лента с табове на файловете",
   "SPLITVIEW_INFO_TITLE": "Вече е отворен",
@@ -1586,6 +1585,7 @@ define({
   "DEMO_SECTION3_SUBTITLE": "Щракнете върху изображението по-долу, за да го замените с друго по ваш избор от библиотеката с изображения.",
   "DEMO_SECTION3_SUCCESS_URL": "Знаете ли, че можете да изтегляте изображения с бутона <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> за изтегляне в библиотеката с изображения?",
   "DEMO_SECTION3_SUCCESS_LOCAL": "Знаете ли, че можете да щракнете върху изображение, за да го използвате, без да го изтегляте?",
+  "DEMO_SECTION3_HINT_STEP1": "Кликнете върху изображението, за да отворите Библиотека с изображения (превключете с иконата <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> от лентата с инструменти или с двоен клик).",
   "DEMO_SECTION3_HINT_STEP2": "В библиотеката с изображения: задръжте курсора върху миниатюрите за предварителен преглед",
   "DEMO_SECTION3_HINT_STEP3": "Щракнете върху миниатюра, за да я поставите на страницата си, или щракнете върху иконата <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\">, за да я изтеглите първо",
   "DEMO_SECTION4_TITLE": "Редактирайте елементи визуално",
@@ -1661,5 +1661,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Започни отново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карти",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 изтрит",
-  "DEMO_SECTION3_HINT_STEP1": "Кликнете върху изображението, за да отворите Библиотека с изображения (превключете с иконата <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> от лентата с инструменти или с двоен клик)."
+  "GEAR_MENU_TOOLTIP": "Настройки на работните файлове",
+  "CLOSE_TAB_TOOLTIP": "Затвори раздел",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Изтриване на фрагмент"
 });

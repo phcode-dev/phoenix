@@ -338,7 +338,6 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Vertikálne rozdelenie",
   "CMD_SPLITVIEW_HORIZONTAL": "Horizontálne rozdelenie",
   "SPLITVIEW_MENU_TOOLTIP": "Rozdeliť editor vertikálne alebo horizontálne",
-  "GEAR_MENU_TOOLTIP": "Konfigurovať pracovnú sadu",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Zobraziť pracovné súbory",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Zobraziť panel so záložkami súborov",
   "SPLITVIEW_INFO_TITLE": "Už otvorené",
@@ -1586,6 +1585,7 @@ define({
   "DEMO_SECTION3_SUBTITLE": "Kliknite na obrázok nižšie a nahraďte ho obrázkom z Knižnice obrázkov, ktorý sa vám páči.",
   "DEMO_SECTION3_SUCCESS_URL": "Vedeli ste, že obrázky môžete sťahovať pomocou tlačidla <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> Stiahnuť v Knižnici obrázkov?",
   "DEMO_SECTION3_SUCCESS_LOCAL": "Vedeli ste, že kliknutím na obrázok ho môžete použiť bez sťahovania?",
+  "DEMO_SECTION3_HINT_STEP1": "Kliknutím na obrázok otvoríte Knižnicu obrázkov (prepnete ju ikonou <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> na paneli s nástrojmi alebo dvojitým kliknutím).",
   "DEMO_SECTION3_HINT_STEP2": "V Knižnici obrázkov: podržaním kurzora nad miniatúrami zobrazíte ich náhľad.",
   "DEMO_SECTION3_HINT_STEP3": "Kliknite na miniatúru a umiestnite ju na stránku, alebo kliknite na ikonu <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> a najprv si ju stiahnite.",
   "DEMO_SECTION4_TITLE": "Vizuálna úprava prvkov",
@@ -1661,5 +1661,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začať znova",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karty",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 odstránené",
-  "DEMO_SECTION3_HINT_STEP1": "Kliknutím na obrázok otvoríte Knižnicu obrázkov (prepnete ju ikonou <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> na paneli s nástrojmi alebo dvojitým kliknutím)."
+  "GEAR_MENU_TOOLTIP": "Konfigurovať pracovné súbory",
+  "CLOSE_TAB_TOOLTIP": "Zavrieť kartu",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Odstrániť úryvok"
 });
