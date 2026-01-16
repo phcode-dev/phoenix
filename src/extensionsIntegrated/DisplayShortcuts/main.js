@@ -124,7 +124,7 @@ define(function (require, exports, module) {
         let q1 = idArray[0].toLowerCase();
         if (defaultCommands.includes(cmdID) || q1 === "file" || q1 === "edit" || q1 === "view" || q1 === "navigate" || q1 === "debug" || q1 === "help" ||
             cmdID.startsWith("AltMenu-") || cmdID.startsWith("codefolding.") || cmdID.startsWith("navigation.") || cmdID.startsWith("recent-files") ||
-            cmdID.startsWith("refactoring.") || cmdID.startsWith("recentProjects") || cmdID ==="showParameterHint") {
+            cmdID.startsWith("refactoring.") || cmdID.startsWith("recentProjects") || cmdID.startsWith("tabbar.") || cmdID ==="showParameterHint") {
             return origBrackets;
         }
         if (idArray.length > 2) {
