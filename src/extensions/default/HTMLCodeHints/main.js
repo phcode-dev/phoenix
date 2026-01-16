@@ -348,23 +348,30 @@ define(function (require, exports, module) {
      * @returns {Object | false} - Cursor position {line, ch} or false if no pattern found
      */
     function findCursorPosition(editor, indentedAbbr, startPos) {
-        const totalLines = startPos.line + indentedAbbr.split('\n').length;
+        const abbrLines = indentedAbbr.split('\n');
 
-        for (let i = startPos.line; i < totalLines; i++) {
-            const line = editor.document.getLine(i);
+        for (let lineOffset = 0; lineOffset < abbrLines.length; lineOffset++) {
+            const abbrLine = abbrLines[lineOffset];
 
-            for (let j = 0; j < line.length - 1; j++) {
-                const pair = line[j] + line[j + 1];
+            // Search for empty quotes "" or ''
+            for (let j = 0; j < abbrLine.length - 1; j++) {
+                const pair = abbrLine[j] + abbrLine[j + 1];
 
                 if (pair === '""' || pair === "''") {
-                    return { line: i, ch: j + 1 };
+                    const absoluteLine = startPos.line + lineOffset;
+                    const absoluteCh = (lineOffset === 0) ? startPos.ch + j + 1 : j + 1;
+                    return { line: absoluteLine, ch: absoluteCh };
                 }
             }
-            for (let j = 0; j < line.length - 1; j++) {
-                const pair = line[j] + line[j + 1];
+
+            // Search for >< pattern (cursor between tags)
+            for (let j = 0; j < abbrLine.length - 1; j++) {
+                const pair = abbrLine[j] + abbrLine[j + 1];
 
                 if (pair === '><') {
-                    return { line: i, ch: j + 1 };
+                    const absoluteLine = startPos.line + lineOffset;
+                    const absoluteCh = (lineOffset === 0) ? startPos.ch + j + 1 : j + 1;
+                    return { line: absoluteLine, ch: absoluteCh };
                 }
             }
         }
@@ -374,7 +381,7 @@ define(function (require, exports, module) {
         //      |
         // </body>
         // here in such scenarios, we want the cursor to be placed in between
-        // Look for opening and closing tag pairs with empty line in between
+        const totalLines = startPos.line + abbrLines.length;
         for (let i = startPos.line; i < totalLines; i++) {
             const line = editor.document.getLine(i).trim();
             if (line.endsWith('>') && line.includes('<') && !line.includes('</')) {
