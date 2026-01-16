@@ -501,6 +501,7 @@ define({
     "CLOSE_TABS_TO_THE_LEFT": "Close Tabs to the Left",
     "CLOSE_ALL_TABS": "Close All Tabs",
     "CLOSE_SAVED_TABS": "Close Saved Tabs",
+    "CLOSE_TAB_TOOLTIP": "Close Tab",
 
     // CodeInspection: errors/warnings
     "ERRORS_NO_FILE": "No File Open",
