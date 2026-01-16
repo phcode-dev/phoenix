@@ -1586,7 +1586,6 @@ define({
   "DEMO_SECTION3_SUBTITLE": "Kliknij obrazek poniżej, aby zastąpić go wybranym z Biblioteki obrazów.",
   "DEMO_SECTION3_SUCCESS_URL": "Czy wiesz, że możesz pobierać obrazy za pomocą przycisku <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> Pobierz w Bibliotece obrazów?",
   "DEMO_SECTION3_SUCCESS_LOCAL": "Czy wiesz, że możesz kliknąć obraz, aby go użyć bez pobierania?",
-  "DEMO_SECTION3_HINT_STEP1": "Kliknij obrazek powyżej, aby otworzyć Bibliotekę obrazów (kliknij dwukrotnie, aby przełączyć)",
   "DEMO_SECTION3_HINT_STEP2": "W Bibliotece obrazów: najedź kursorem na miniatury, aby wyświetlić ich podgląd",
   "DEMO_SECTION3_HINT_STEP3": "Kliknij miniaturę, aby umieścić ją na swojej stronie, lub kliknij ikonę <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\">, aby najpierw ją pobrać",
   "DEMO_SECTION4_TITLE": "Edytuj elementy wizualnie",
@@ -1652,6 +1651,7 @@ define({
   "DEMO_ALT_CARD_IMAGE": "Obrazek karty",
   "DEMO_ALT_ROCKET": "Rakieta",
   "DEMO_ALT_ARROW": "Strzałka",
+  "DEMO_CLICK_TO_REPLACE_IMAGE": "Kliknij, aby zamienić",
   "DEMO_JS_BUTTON_BACK": "Wstecz",
   "DEMO_JS_BUTTON_PREVIOUS": "Poprzedni",
   "DEMO_JS_BUTTON_NEXT": "Dalej",
@@ -1661,5 +1661,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Zacznij od nowa",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 usunięto",
-  "DEMO_CLICK_TO_REPLACE_IMAGE": "Kliknij, aby zamienić"
+  "DEMO_SECTION3_HINT_STEP1": "Kliknij obrazek, aby otworzyć Bibliotekę obrazów (włącz/wyłącz za pomocą ikony <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> na pasku narzędzi lub podwójnym kliknięciem)."
 });

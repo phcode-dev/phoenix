@@ -1586,7 +1586,6 @@ define({
   "DEMO_SECTION3_SUBTITLE": "下の画像をクリックして、画像ライブラリからお好きなものに置き換えます。",
   "DEMO_SECTION3_SUCCESS_URL": "画像ライブラリの<img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\">ダウンロードボタンで画像をダウンロードできることをご存知でしたか？",
   "DEMO_SECTION3_SUCCESS_LOCAL": "画像をダウンロードせずにクリックするだけで使用できることをご存知でしたか？",
-  "DEMO_SECTION3_HINT_STEP1": "上の画像をクリックして画像ライブラリを開きます（ダブルクリックで表示の切り替え）",
   "DEMO_SECTION3_HINT_STEP2": "画像ライブラリで：サムネイルにカーソルを合わせるとプレビューが表示されます",
   "DEMO_SECTION3_HINT_STEP3": "サムネイルをクリックしてページに配置するか、<img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\">アイコンをクリックして先にダウンロードします。",
   "DEMO_SECTION4_TITLE": "要素を視覚的に編集",
@@ -1652,6 +1651,7 @@ define({
   "DEMO_ALT_CARD_IMAGE": "カード画像",
   "DEMO_ALT_ROCKET": "ロケット",
   "DEMO_ALT_ARROW": "矢印",
+  "DEMO_CLICK_TO_REPLACE_IMAGE": "クリックして置換",
   "DEMO_JS_BUTTON_BACK": "戻る",
   "DEMO_JS_BUTTON_PREVIOUS": "前へ",
   "DEMO_JS_BUTTON_NEXT": "次へ",
@@ -1661,5 +1661,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "最初からやり直す",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3枚のカード",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1件削除済み",
-  "DEMO_CLICK_TO_REPLACE_IMAGE": "クリックして置換"
+  "DEMO_SECTION3_HINT_STEP1": "画像をクリックして画像ライブラリを開きます（<img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\">ツールバーアイコンまたはダブルクリックで表示を切り替えられます）。"
 });

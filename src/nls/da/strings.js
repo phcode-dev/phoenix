@@ -1586,7 +1586,6 @@ define({
   "DEMO_SECTION3_SUBTITLE": "Klik på billedet nedenfor for at udskifte det med et, du kan lide, fra billedbiblioteket.",
   "DEMO_SECTION3_SUCCESS_URL": "Vidste du, at du kan downloade billeder med knappen <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> Download i billedbiblioteket?",
   "DEMO_SECTION3_SUCCESS_LOCAL": "Vidste du, at du kan klikke på et billede for at bruge det uden at downloade?",
-  "DEMO_SECTION3_HINT_STEP1": "Klik på billedet ovenfor for at åbne billedbiblioteket (dobbeltklik for at slå til/fra)",
   "DEMO_SECTION3_HINT_STEP2": "I billedbiblioteket: hold markøren over miniaturer for at forhåndsvise dem",
   "DEMO_SECTION3_HINT_STEP3": "Klik på en miniature for at placere den på din side, eller klik på ikonet <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> for at downloade det først",
   "DEMO_SECTION4_TITLE": "Rediger elementer visuelt",
@@ -1652,6 +1651,7 @@ define({
   "DEMO_ALT_CARD_IMAGE": "Kortbillede",
   "DEMO_ALT_ROCKET": "Raket",
   "DEMO_ALT_ARROW": "Pil",
+  "DEMO_CLICK_TO_REPLACE_IMAGE": "Klik for at erstatte",
   "DEMO_JS_BUTTON_BACK": "Tilbage",
   "DEMO_JS_BUTTON_PREVIOUS": "Forrige",
   "DEMO_JS_BUTTON_NEXT": "Næste",
@@ -1661,5 +1661,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start forfra",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "DEMO_CLICK_TO_REPLACE_IMAGE": "Klik for at erstatte"
+  "DEMO_SECTION3_HINT_STEP1": "Klik på billedet for at åbne Billedbibliotek (slå til/fra med <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> ikonet på værktøjslinjen eller dobbeltklik)."
 });

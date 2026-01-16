@@ -1586,7 +1586,6 @@ define({
   "DEMO_SECTION3_SUBTITLE": "روی تصویر زیر کلیک کنید تا آن را با تصویر دلخواه خود از کتابخانه تصاویر جایگزین کنید.",
   "DEMO_SECTION3_SUCCESS_URL": "آیا می‌دانستید که با دکمه <img src=\"images/download.svg\" alt=\"دانلود\" class=\"inline-icon\"> دانلود در کتابخانه تصاویر، می‌توانید تصاویر را دانلود کنید؟",
   "DEMO_SECTION3_SUCCESS_LOCAL": "آیا می‌دانستید می‌توانید برای استفاده از یک تصویر، بدون نیاز به دانلود، روی آن کلیک کنید؟",
-  "DEMO_SECTION3_HINT_STEP1": "برای باز کردن کتابخانه تصاویر، روی تصویر بالا کلیک کنید (برای باز و بسته کردن، دو بار کلیک کنید)",
   "DEMO_SECTION3_HINT_STEP2": "در کتابخانه تصاویر: برای دیدن پیش‌نمایش، نشانگر ماوس را روی تصاویر کوچک ببرید",
   "DEMO_SECTION3_HINT_STEP3": "روی یک تصویر کوچک کلیک کنید تا در صفحه قرار گیرد، یا روی آیکون <img src=\"images/download.svg\" alt=\"دانلود\" class=\"inline-icon\"> کلیک کنید تا ابتدا آن را دانلود کنید",
   "DEMO_SECTION4_TITLE": "ویرایش بصری عناصر",
@@ -1652,6 +1651,7 @@ define({
   "DEMO_ALT_CARD_IMAGE": "تصویر کارت",
   "DEMO_ALT_ROCKET": "موشک",
   "DEMO_ALT_ARROW": "پیکان",
+  "DEMO_CLICK_TO_REPLACE_IMAGE": "برای جایگزینی کلیک کنید",
   "DEMO_JS_BUTTON_BACK": "بازگشت",
   "DEMO_JS_BUTTON_PREVIOUS": "قبلی",
   "DEMO_JS_BUTTON_NEXT": "بعدی",
@@ -1661,5 +1661,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "شروع مجدد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE} از ۳ کارت",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE} از ۱ مورد حذف شد",
-  "DEMO_CLICK_TO_REPLACE_IMAGE": "برای جایگزینی کلیک کنید"
+  "DEMO_SECTION3_HINT_STEP1": "روی تصویر کلیک کنید تا کتابخانه تصویر باز شود (با آیکون <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> در نوار ابزار یا دابل-کلیک، آن را باز و بسته کنید)."
 });

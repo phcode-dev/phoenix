@@ -1586,7 +1586,6 @@ define({
   "DEMO_SECTION3_SUBTITLE": "Aşağıdaki resme tıklayarak Resim Kütüphanesinden beğendiğiniz bir resimle değiştirin.",
   "DEMO_SECTION3_SUCCESS_URL": "Resim Kütüphanesindeki <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> İndir düğmesiyle resimleri indirebileceğinizi biliyor muydunuz?",
   "DEMO_SECTION3_SUCCESS_LOCAL": "Bir resme tıklayarak onu indirmeden kullanabileceğinizi biliyor muydunuz?",
-  "DEMO_SECTION3_HINT_STEP1": "Resim Kütüphanesini açmak için yukarıdaki resme tıklayın (açıp kapatmak için çift tıklayın)",
   "DEMO_SECTION3_HINT_STEP2": "Resim Kütüphanesinde: küçük resimleri önizlemek için üzerlerine gelin",
   "DEMO_SECTION3_HINT_STEP3": "Sayfanıza yerleştirmek için bir küçük resme tıklayın veya önce indirmek için <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> simgesine tıklayın",
   "DEMO_SECTION4_TITLE": "Öğeleri görsel olarak düzenleyin",
@@ -1652,6 +1651,7 @@ define({
   "DEMO_ALT_CARD_IMAGE": "Kart resmi",
   "DEMO_ALT_ROCKET": "Roket",
   "DEMO_ALT_ARROW": "Ok",
+  "DEMO_CLICK_TO_REPLACE_IMAGE": "Değiştirmek için tıklayın",
   "DEMO_JS_BUTTON_BACK": "Geri",
   "DEMO_JS_BUTTON_PREVIOUS": "Önceki",
   "DEMO_JS_BUTTON_NEXT": "Sonraki",
@@ -1661,5 +1661,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Yeniden Başla",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 silindi",
-  "DEMO_CLICK_TO_REPLACE_IMAGE": "Değiştirmek için tıklayın"
+  "DEMO_SECTION3_HINT_STEP1": "Resim Kütüphanesi'ni açmak için resme tıklayın (araç çubuğundaki <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> simgesiyle veya çift tıklayarak açıp kapatabilirsiniz)."
 });

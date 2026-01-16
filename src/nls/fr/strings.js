@@ -1586,7 +1586,6 @@ define({
   "DEMO_SECTION3_SUBTITLE": "Cliquez sur l'image ci-dessous pour la remplacer par une image de votre choix depuis la bibliothèque d'images.",
   "DEMO_SECTION3_SUCCESS_URL": "Saviez-vous que vous pouvez télécharger des images avec le bouton <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> Télécharger dans la bibliothèque d'images ?",
   "DEMO_SECTION3_SUCCESS_LOCAL": "Saviez-vous que vous pouvez cliquer sur une image pour l'utiliser sans la télécharger ?",
-  "DEMO_SECTION3_HINT_STEP1": "Cliquez sur l'image ci-dessus pour ouvrir la bibliothèque d'images (double-cliquez pour basculer)",
   "DEMO_SECTION3_HINT_STEP2": "Dans la bibliothèque d'images : survolez les miniatures pour les prévisualiser",
   "DEMO_SECTION3_HINT_STEP3": "Cliquez sur une miniature pour la placer sur votre page, ou cliquez sur l'icône <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> pour la télécharger d'abord",
   "DEMO_SECTION4_TITLE": "Modifier les éléments visuellement",
@@ -1652,6 +1651,7 @@ define({
   "DEMO_ALT_CARD_IMAGE": "Image de la carte",
   "DEMO_ALT_ROCKET": "Fusée",
   "DEMO_ALT_ARROW": "Flèche",
+  "DEMO_CLICK_TO_REPLACE_IMAGE": "Cliquez pour remplacer",
   "DEMO_JS_BUTTON_BACK": "Retour",
   "DEMO_JS_BUTTON_PREVIOUS": "Précédent",
   "DEMO_JS_BUTTON_NEXT": "Suivant",
@@ -1661,5 +1661,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Recommencer",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 supprimé",
-  "DEMO_CLICK_TO_REPLACE_IMAGE": "Cliquez pour remplacer"
+  "DEMO_SECTION3_HINT_STEP1": "Cliquez sur l'image pour ouvrir la bibliothèque d'images (alternez l'affichage avec l'icône <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> de la barre d'outils ou en double-cliquant)."
 });

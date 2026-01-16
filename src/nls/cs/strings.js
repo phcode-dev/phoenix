@@ -1586,7 +1586,6 @@ define({
   "DEMO_SECTION3_SUBTITLE": "Klikněte na obrázek níže a nahraďte ho jiným z Knihovny obrázků.",
   "DEMO_SECTION3_SUCCESS_URL": "Věděli jste, že můžete stahovat obrázky pomocí tlačítka <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> Stáhnout v Knihovně obrázků?",
   "DEMO_SECTION3_SUCCESS_LOCAL": "Věděli jste, že můžete kliknout na obrázek a použít ho bez stahování?",
-  "DEMO_SECTION3_HINT_STEP1": "Klikněte na obrázek výše pro otevření Knihovny obrázků (dvojklikem přepnete).",
   "DEMO_SECTION3_HINT_STEP2": "V Knihovně obrázků: najeďte myší na miniatury pro zobrazení náhledu.",
   "DEMO_SECTION3_HINT_STEP3": "Klikněte na miniaturu a umístěte ji na svou stránku, nebo klikněte na ikonu <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> a nejprve ji stáhněte.",
   "DEMO_SECTION4_TITLE": "Upravujte prvky vizuálně.",
@@ -1652,6 +1651,7 @@ define({
   "DEMO_ALT_CARD_IMAGE": "Obrázek karty",
   "DEMO_ALT_ROCKET": "Raketa",
   "DEMO_ALT_ARROW": "Šipka",
+  "DEMO_CLICK_TO_REPLACE_IMAGE": "Klikněte pro nahrazení",
   "DEMO_JS_BUTTON_BACK": "Zpět",
   "DEMO_JS_BUTTON_PREVIOUS": "Předchozí",
   "DEMO_JS_BUTTON_NEXT": "Další",
@@ -1661,5 +1661,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začít znovu",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karet",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 smazáno",
-  "DEMO_CLICK_TO_REPLACE_IMAGE": "Klikněte pro nahrazení"
+  "DEMO_SECTION3_HINT_STEP1": "Kliknutím na obrázek otevřete Knihovnu obrázků (přepínat lze ikonou <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> na panelu nástrojů nebo dvojklikem)."
 });

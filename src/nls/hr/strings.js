@@ -1586,7 +1586,6 @@ define({
   "DEMO_SECTION3_SUBTITLE": "Kliknite na sliku ispod kako biste je zamijenili onom koja vam se sviđa iz biblioteke slika.",
   "DEMO_SECTION3_SUCCESS_URL": "Jeste li znali da možete preuzeti slike pomoću gumba <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> Preuzmi u biblioteci slika?",
   "DEMO_SECTION3_SUCCESS_LOCAL": "Jeste li znali da možete kliknuti na sliku kako biste je upotrijebili bez preuzimanja?",
-  "DEMO_SECTION3_HINT_STEP1": "Kliknite na sliku iznad kako biste otvorili biblioteku slika (dvostruki klik za uključivanje/isključivanje)",
   "DEMO_SECTION3_HINT_STEP2": "U biblioteci slika: prijeđite mišem preko minijatura kako biste ih pregledali",
   "DEMO_SECTION3_HINT_STEP3": "Kliknite na minijaturu kako biste je postavili na svoju stranicu ili kliknite na ikonu <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> kako biste je prvo preuzeli",
   "DEMO_SECTION4_TITLE": "Vizualno uređujte elemente",
@@ -1652,6 +1651,7 @@ define({
   "DEMO_ALT_CARD_IMAGE": "Slika kartice",
   "DEMO_ALT_ROCKET": "Raketa",
   "DEMO_ALT_ARROW": "Strelica",
+  "DEMO_CLICK_TO_REPLACE_IMAGE": "Kliknite za zamjenu",
   "DEMO_JS_BUTTON_BACK": "Natrag",
   "DEMO_JS_BUTTON_PREVIOUS": "Prethodno",
   "DEMO_JS_BUTTON_NEXT": "Dalje",
@@ -1661,5 +1661,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Kreni ispočetka",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartice",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 obrisano",
-  "DEMO_CLICK_TO_REPLACE_IMAGE": "Kliknite za zamjenu"
+  "DEMO_SECTION3_HINT_STEP1": "Kliknite na sliku za otvaranje biblioteke slika (prebacujte prikaz ikonom <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> na alatnoj traci ili dvostrukim klikom)."
 });

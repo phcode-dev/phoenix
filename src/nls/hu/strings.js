@@ -1586,7 +1586,6 @@ define({
   "DEMO_SECTION3_SUBTITLE": "Kattintson az alábbi képre, hogy lecserélje egy Önnek tetszőre a Képtárból.",
   "DEMO_SECTION3_SUCCESS_URL": "Tudta, hogy a Képtárban a <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> Letöltés gombbal képeket is letölthet?",
   "DEMO_SECTION3_SUCCESS_LOCAL": "Tudta, hogy a képre kattintva letöltés nélkül is használhatja azt?",
-  "DEMO_SECTION3_HINT_STEP1": "Kattintson a fenti képre a Képtár megnyitásához (dupla kattintás a váltáshoz)",
   "DEMO_SECTION3_HINT_STEP2": "A Képtárban: vigye az egeret a miniatűrök fölé az előnézetükhöz",
   "DEMO_SECTION3_HINT_STEP3": "Kattintson egy miniatűrre, hogy az oldalára helyezze, vagy kattintson a <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> ikonra, hogy előbb letöltse",
   "DEMO_SECTION4_TITLE": "Elemek vizuális szerkesztése",
@@ -1652,6 +1651,7 @@ define({
   "DEMO_ALT_CARD_IMAGE": "Kártyakép",
   "DEMO_ALT_ROCKET": "Rakéta",
   "DEMO_ALT_ARROW": "Nyíl",
+  "DEMO_CLICK_TO_REPLACE_IMAGE": "Kattintson a cseréhez",
   "DEMO_JS_BUTTON_BACK": "Vissza",
   "DEMO_JS_BUTTON_PREVIOUS": "Előző",
   "DEMO_JS_BUTTON_NEXT": "Következő",
@@ -1661,5 +1661,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Újrakezdés",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kártya",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 törölve",
-  "DEMO_CLICK_TO_REPLACE_IMAGE": "Kattintson a cseréhez"
+  "DEMO_SECTION3_HINT_STEP1": "Kattintson a képre a Képtár megnyitásához (váltás az eszköztár <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> ikonjával vagy dupla kattintással)."
 });

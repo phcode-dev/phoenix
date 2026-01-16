@@ -1586,7 +1586,6 @@ define({
   "DEMO_SECTION3_SUBTITLE": "Faceți clic pe imaginea de mai jos pentru a o înlocui cu una care vă place din Biblioteca de imagini.",
   "DEMO_SECTION3_SUCCESS_URL": "Știați că puteți descărca imagini cu butonul <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> Descărcare din Biblioteca de imagini?",
   "DEMO_SECTION3_SUCCESS_LOCAL": "Știați că puteți face clic pe o imagine pentru a o folosi fără a o descărca?",
-  "DEMO_SECTION3_HINT_STEP1": "Faceți clic pe imaginea de mai sus pentru a deschide Biblioteca de imagini (dublu clic pentru a comuta)",
   "DEMO_SECTION3_HINT_STEP2": "În Biblioteca de imagini: treceți cu mouse-ul peste miniaturi pentru a le previzualiza",
   "DEMO_SECTION3_HINT_STEP3": "Faceți clic pe o miniatură pentru a o plasa pe pagina dvs. sau faceți clic pe pictograma <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> pentru a o descărca mai întâi",
   "DEMO_SECTION4_TITLE": "Editați elemente vizual",
@@ -1652,6 +1651,7 @@ define({
   "DEMO_ALT_CARD_IMAGE": "Imagine card",
   "DEMO_ALT_ROCKET": "Rachetă",
   "DEMO_ALT_ARROW": "Săgeată",
+  "DEMO_CLICK_TO_REPLACE_IMAGE": "Clic pentru a înlocui",
   "DEMO_JS_BUTTON_BACK": "Înapoi",
   "DEMO_JS_BUTTON_PREVIOUS": "Anterior",
   "DEMO_JS_BUTTON_NEXT": "Următorul",
@@ -1661,5 +1661,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Reîncepe",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carduri",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 șters",
-  "DEMO_CLICK_TO_REPLACE_IMAGE": "Clic pentru a înlocui"
+  "DEMO_SECTION3_HINT_STEP1": "Faceți clic pe imagine pentru a deschide Biblioteca de Imagini (comutați cu pictograma <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> din bara de instrumente sau prin dublu clic)."
 });

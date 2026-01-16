@@ -1586,7 +1586,6 @@ define({
   "DEMO_SECTION3_SUBTITLE": "Click the image below to replace it with one you like from the Image Library.",
   "DEMO_SECTION3_SUCCESS_URL": "Did you know that you can download images with the <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> Download button in the Image Library?",
   "DEMO_SECTION3_SUCCESS_LOCAL": "Did you know you can click on an image to use it without downloading?",
-  "DEMO_SECTION3_HINT_STEP1": "Click the image above to open the Image Library (double-click to toggle)",
   "DEMO_SECTION3_HINT_STEP2": "In the Image Library: hover over thumbnails to preview them",
   "DEMO_SECTION3_HINT_STEP3": "Click a thumbnail to place it on your page, or click the <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> icon to download it first",
   "DEMO_SECTION4_TITLE": "Edit elements visually",
@@ -1652,6 +1651,7 @@ define({
   "DEMO_ALT_CARD_IMAGE": "Card image",
   "DEMO_ALT_ROCKET": "Rocket",
   "DEMO_ALT_ARROW": "Arrow",
+  "DEMO_CLICK_TO_REPLACE_IMAGE": "Click to Replace",
   "DEMO_JS_BUTTON_BACK": "Back",
   "DEMO_JS_BUTTON_PREVIOUS": "Previous",
   "DEMO_JS_BUTTON_NEXT": "Next",
@@ -1661,5 +1661,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start Again",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cards",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 deleted",
-  "DEMO_CLICK_TO_REPLACE_IMAGE": "Click to Replace"
+  "DEMO_SECTION3_HINT_STEP1": "Click the image to open Image Library (toggle with <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> toolbar icon or double-click)."
 });

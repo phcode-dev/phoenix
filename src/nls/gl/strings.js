@@ -1586,7 +1586,6 @@ define({
   "DEMO_SECTION3_SUBTITLE": "Faga clic na imaxe de abaixo para substituíla por unha que lle guste da Biblioteca de imaxes.",
   "DEMO_SECTION3_SUCCESS_URL": "Sabía que pode descargar imaxes co botón Descargar <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> na Biblioteca de imaxes?",
   "DEMO_SECTION3_SUCCESS_LOCAL": "Sabía que pode facer clic nunha imaxe para usala sen necesidade de descargala?",
-  "DEMO_SECTION3_HINT_STEP1": "Faga clic na imaxe de enriba para abrir a Biblioteca de imaxes (faga dobre clic para alternar)",
   "DEMO_SECTION3_HINT_STEP2": "Na Biblioteca de imaxes: pase o cursor sobre as miniaturas para previsualizalas",
   "DEMO_SECTION3_HINT_STEP3": "Faga clic nunha miniatura para colocala na súa páxina, ou faga clic na icona <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> para descargala primeiro",
   "DEMO_SECTION4_TITLE": "Edite os elementos visualmente",
@@ -1652,6 +1651,7 @@ define({
   "DEMO_ALT_CARD_IMAGE": "Imaxe da tarxeta",
   "DEMO_ALT_ROCKET": "Foguete",
   "DEMO_ALT_ARROW": "Frecha",
+  "DEMO_CLICK_TO_REPLACE_IMAGE": "Faga clic para substituír",
   "DEMO_JS_BUTTON_BACK": "Atrás",
   "DEMO_JS_BUTTON_PREVIOUS": "Anterior",
   "DEMO_JS_BUTTON_NEXT": "Seguinte",
@@ -1661,5 +1661,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Comezar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 tarxetas",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "DEMO_CLICK_TO_REPLACE_IMAGE": "Faga clic para substituír"
+  "DEMO_SECTION3_HINT_STEP1": "Faga clic na imaxe para abrir a Biblioteca de imaxes (tamén se abre/pecha coa icona <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> da barra de ferramentas ou facendo dobre clic)."
 });
