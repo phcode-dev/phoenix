@@ -411,7 +411,30 @@ define(function (require, exports) {
     let scheduledRefresh = null;
     const REFRESH_DEDUPE_TIME = 3000;
 
+    // this variable tracks if user clicked on the live preview iframe
+    // this is done cause when live preview iframe is clicked in highlight/edit mode,
+    // we set cursor back to the editor because of which editor regains focus and refreshes git
+    let focusWentToLivePreview = false;
+
+    // when editor window loses focus we check if focus went to live preview,
+    // if it did, then we just set the flag to true
+    $(window).on("blur", function () {
+        // delay to let activeElement update
+        setTimeout(function () {
+            const activeEl = document.activeElement;
+            if (activeEl && activeEl.id === "panel-live-preview-frame") {
+                focusWentToLivePreview = true;
+            }
+        }, 0);
+    });
+
     function refreshOnFocusChange() {
+        // ignore git refresh if focus went to live preview
+        if (focusWentToLivePreview) {
+            focusWentToLivePreview = false;
+            return;
+        }
+
         // to sync external git changes after switching to app.
         if (gitEnabled) {
             const isGitPanelVisible = Panel.getPanel().is(":visible");
