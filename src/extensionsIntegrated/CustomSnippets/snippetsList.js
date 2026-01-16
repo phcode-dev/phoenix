@@ -78,6 +78,7 @@ define(function (require, exports, module) {
         const $deleteSnippet = $("<div>")
             .html(`<i class="fas fa-trash"></i>`)
             .attr("id", "delete-snippet-btn")
+            .attr("title", Strings.CUSTOM_SNIPPETS_DELETE_TOOLTIP)
             .addClass("delete-snippet-btn");
 
         $snippetItem.append($snippetAbbr, $snippetTemplate, $snippetDescription, $snippetFiles, $deleteSnippet);

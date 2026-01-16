@@ -1713,6 +1713,7 @@ define({
     "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Template Text",
     "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Description",
     "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "File Extension",
+    "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Delete Snippet",
 
     // promos
     "PROMO_UPGRADE_TITLE": "You’ve been upgraded to {0}",
