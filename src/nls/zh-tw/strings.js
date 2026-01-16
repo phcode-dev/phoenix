@@ -1586,7 +1586,6 @@ define({
   "DEMO_SECTION3_SUBTITLE": "點擊下方的圖片，從圖片庫中選擇您喜歡的圖片來替換它。",
   "DEMO_SECTION3_SUCCESS_URL": "您知道嗎？您可以使用圖片庫中的 <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> 下載按鈕來下載圖片。",
   "DEMO_SECTION3_SUCCESS_LOCAL": "您知道嗎？您可以點擊圖片直接使用，無需下載。",
-  "DEMO_SECTION3_HINT_STEP1": "點擊上方的圖片以開啟圖片庫 (雙擊可切換開關)",
   "DEMO_SECTION3_HINT_STEP2": "在圖片庫中：將滑鼠懸停在縮圖上即可預覽",
   "DEMO_SECTION3_HINT_STEP3": "點擊縮圖以將其放置在您的頁面上，或點擊 <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> 圖示先將其下載",
   "DEMO_SECTION4_TITLE": "視覺化編輯元素",
@@ -1652,6 +1651,7 @@ define({
   "DEMO_ALT_CARD_IMAGE": "卡片圖片",
   "DEMO_ALT_ROCKET": "火箭",
   "DEMO_ALT_ARROW": "箭頭",
+  "DEMO_CLICK_TO_REPLACE_IMAGE": "點擊以更換",
   "DEMO_JS_BUTTON_BACK": "返回",
   "DEMO_JS_BUTTON_PREVIOUS": "上一步",
   "DEMO_JS_BUTTON_NEXT": "下一步",
@@ -1661,5 +1661,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "重新開始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 張卡片",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已刪除",
-  "DEMO_CLICK_TO_REPLACE_IMAGE": "點擊以更換"
+  "DEMO_SECTION3_HINT_STEP1": "點擊圖片以開啟圖片庫（可透過 <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> 工具列圖示或雙擊來切換）。"
 });

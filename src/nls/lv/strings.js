@@ -1586,7 +1586,6 @@ define({
   "DEMO_SECTION3_SUBTITLE": "Noklikšķiniet uz zemāk redzamā attēla, lai to aizstātu ar sev tīkamu attēlu no Attēlu bibliotēkas.",
   "DEMO_SECTION3_SUCCESS_URL": "Vai zinājāt, ka Attēlu bibliotēkā varat lejupielādēt attēlus ar pogu <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> Lejupielādēt?",
   "DEMO_SECTION3_SUCCESS_LOCAL": "Vai zinājāt, ka varat noklikšķināt uz attēla, lai to izmantotu, to nelejupielādējot?",
-  "DEMO_SECTION3_HINT_STEP1": "Noklikšķiniet uz augstāk redzamā attēla, lai atvērtu Attēlu bibliotēku (veiciet dubultklikšķi, lai pārslēgtu)",
   "DEMO_SECTION3_HINT_STEP2": "Attēlu bibliotēkā: virziet kursoru virs sīktēliem, lai tos priekšskatītu",
   "DEMO_SECTION3_HINT_STEP3": "Noklikšķiniet uz sīktēla, lai to ievietotu savā lapā, vai noklikšķiniet uz <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> ikonas, lai to vispirms lejupielādētu",
   "DEMO_SECTION4_TITLE": "Rediģējiet elementus vizuāli",
@@ -1652,6 +1651,7 @@ define({
   "DEMO_ALT_CARD_IMAGE": "Kartītes attēls",
   "DEMO_ALT_ROCKET": "Raķete",
   "DEMO_ALT_ARROW": "Bultiņa",
+  "DEMO_CLICK_TO_REPLACE_IMAGE": "Noklikšķiniet, lai aizvietotu",
   "DEMO_JS_BUTTON_BACK": "Atpakaļ",
   "DEMO_JS_BUTTON_PREVIOUS": "Iepriekšējais",
   "DEMO_JS_BUTTON_NEXT": "Tālāk",
@@ -1661,5 +1661,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Sākt no jauna",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartītes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 izdzēsts",
-  "DEMO_CLICK_TO_REPLACE_IMAGE": "Noklikšķiniet, lai aizvietotu"
+  "DEMO_SECTION3_HINT_STEP1": "Noklikšķiniet uz attēla, lai atvērtu Attēlu bibliotēku (pārslēdziet ar rīkjoslas ikonu <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> vai veicot dubultklikšķi)."
 });

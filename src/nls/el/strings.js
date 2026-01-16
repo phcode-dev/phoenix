@@ -1586,7 +1586,6 @@ define({
   "DEMO_SECTION3_SUBTITLE": "Κάντε κλικ στην παρακάτω εικόνα για να την αντικαταστήσετε με μία που σας αρέσει από τη Βιβλιοθήκη Εικόνων.",
   "DEMO_SECTION3_SUCCESS_URL": "Γνωρίζατε ότι μπορείτε να κατεβάσετε εικόνες με το κουμπί <img src=\"images/download.svg\" alt=\"Λήψη\" class=\"inline-icon\"> Λήψη στη Βιβλιοθήκη Εικόνων;",
   "DEMO_SECTION3_SUCCESS_LOCAL": "Γνωρίζατε ότι μπορείτε να κάνετε κλικ σε μια εικόνα για να τη χρησιμοποιήσετε χωρίς να την κατεβάσετε;",
-  "DEMO_SECTION3_HINT_STEP1": "Κάντε κλικ στην παραπάνω εικόνα για να ανοίξετε τη Βιβλιοθήκη Εικόνων (διπλό κλικ για εναλλαγή)",
   "DEMO_SECTION3_HINT_STEP2": "Στη Βιβλιοθήκη Εικόνων: περάστε τον δείκτη πάνω από τις μικρογραφίες για να τις δείτε σε προεπισκόπηση",
   "DEMO_SECTION3_HINT_STEP3": "Κάντε κλικ σε μια μικρογραφία για να την τοποθετήσετε στη σελίδα σας, ή κάντε κλικ στο εικονίδιο <img src=\"images/download.svg\" alt=\"Λήψη\" class=\"inline-icon\"> για να την κατεβάσετε πρώτα",
   "DEMO_SECTION4_TITLE": "Επεξεργαστείτε στοιχεία οπτικά",
@@ -1652,6 +1651,7 @@ define({
   "DEMO_ALT_CARD_IMAGE": "Εικόνα κάρτας",
   "DEMO_ALT_ROCKET": "Πύραυλος",
   "DEMO_ALT_ARROW": "Βέλος",
+  "DEMO_CLICK_TO_REPLACE_IMAGE": "Κάντε κλικ για αντικατάσταση",
   "DEMO_JS_BUTTON_BACK": "Πίσω",
   "DEMO_JS_BUTTON_PREVIOUS": "Προηγούμενο",
   "DEMO_JS_BUTTON_NEXT": "Επόμενο",
@@ -1661,5 +1661,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Έναρξη από την αρχή",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 κάρτες",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 διαγράφηκε",
-  "DEMO_CLICK_TO_REPLACE_IMAGE": "Κάντε κλικ για αντικατάσταση"
+  "DEMO_SECTION3_HINT_STEP1": "Κάντε κλικ στην εικόνα για να ανοίξετε τη Βιβλιοθήκη εικόνων (εναλλαγή με το εικονίδιο <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> στη γραμμή εργαλείων ή με διπλό κλικ)."
 });

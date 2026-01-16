@@ -1586,7 +1586,6 @@ define({
   "DEMO_SECTION3_SUBTITLE": "Клацніть зображення нижче, щоб замінити його на інше з Бібліотеки зображень.",
   "DEMO_SECTION3_SUCCESS_URL": "Чи знаєте ви, що можете завантажувати зображення за допомогою кнопки <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> «Завантажити» в Бібліотеці зображень?",
   "DEMO_SECTION3_SUCCESS_LOCAL": "Чи знаєте ви, що можна клацнути на зображення, щоб використати його, не завантажуючи?",
-  "DEMO_SECTION3_HINT_STEP1": "Клацніть зображення вище, щоб відкрити Бібліотеку зображень (подвійне клацання для перемикання)",
   "DEMO_SECTION3_HINT_STEP2": "У Бібліотеці зображень: наведіть курсор на мініатюри, щоб переглянути їх",
   "DEMO_SECTION3_HINT_STEP3": "Клацніть мініатюру, щоб розмістити її на сторінці, або клацніть іконку <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\">, щоб спершу завантажити її",
   "DEMO_SECTION4_TITLE": "Редагуйте елементи візуально",
@@ -1652,6 +1651,7 @@ define({
   "DEMO_ALT_CARD_IMAGE": "Зображення картки",
   "DEMO_ALT_ROCKET": "Ракета",
   "DEMO_ALT_ARROW": "Стрілка",
+  "DEMO_CLICK_TO_REPLACE_IMAGE": "Натисніть, щоб замінити",
   "DEMO_JS_BUTTON_BACK": "Назад",
   "DEMO_JS_BUTTON_PREVIOUS": "Попередній",
   "DEMO_JS_BUTTON_NEXT": "Далі",
@@ -1661,5 +1661,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Почати знову",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карток",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 видалено",
-  "DEMO_CLICK_TO_REPLACE_IMAGE": "Натисніть, щоб замінити"
+  "DEMO_SECTION3_HINT_STEP1": "Клацніть зображення, щоб відкрити бібліотеку зображень (перемикається іконкою <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> на панелі інструментів або подвійним клацанням)."
 });

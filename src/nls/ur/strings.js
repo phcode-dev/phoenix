@@ -1586,7 +1586,6 @@ define({
   "DEMO_SECTION3_SUBTITLE": "نیچے دی گئی تصویر پر کلک کرکے اسے امیج لائبریری سے اپنی پسند کی تصویر سے تبدیل کریں۔",
   "DEMO_SECTION3_SUCCESS_URL": "کیا آپ جانتے ہیں کہ آپ امیج لائبریری میں <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> ڈاؤن لوڈ بٹن سے تصاویر ڈاؤن لوڈ کر سکتے ہیں؟",
   "DEMO_SECTION3_SUCCESS_LOCAL": "کیا آپ جانتے ہیں کہ آپ کسی تصویر پر کلک کر کے اسے ڈاؤن لوڈ کیے بغیر استعمال کر سکتے ہیں؟",
-  "DEMO_SECTION3_HINT_STEP1": "امیج لائبریری کھولنے کے لیے اوپر دی گئی تصویر پر کلک کریں (ٹوگل کرنے کے لیے ڈبل کلک کریں)۔",
   "DEMO_SECTION3_HINT_STEP2": "امیج لائبریری میں: تھمب نیلز کا پیش منظر دیکھنے کے لیے ان پر ہوور کریں۔",
   "DEMO_SECTION3_HINT_STEP3": "اسے اپنے صفحے پر رکھنے کے لیے کسی تھمب نیل پر کلک کریں، یا پہلے اسے ڈاؤن لوڈ کرنے کے لیے <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> آئیکن پر کلک کریں۔",
   "DEMO_SECTION4_TITLE": "عناصر میں بصری طور پر ترمیم کریں۔",
@@ -1652,6 +1651,7 @@ define({
   "DEMO_ALT_CARD_IMAGE": "کارڈ کی تصویر",
   "DEMO_ALT_ROCKET": "راکٹ",
   "DEMO_ALT_ARROW": "تیر",
+  "DEMO_CLICK_TO_REPLACE_IMAGE": "تبدیل کرنے کے لیے کلک کریں",
   "DEMO_JS_BUTTON_BACK": "واپس",
   "DEMO_JS_BUTTON_PREVIOUS": "پچھلا",
   "DEMO_JS_BUTTON_NEXT": "اگلا",
@@ -1661,5 +1661,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "دوبارہ شروع کریں",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 کارڈز",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 حذف شدہ",
-  "DEMO_CLICK_TO_REPLACE_IMAGE": "تبدیل کرنے کے لیے کلک کریں"
+  "DEMO_SECTION3_HINT_STEP1": "امیج لائبریری کھولنے کے لیے تصویر پر کلک کریں (<img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> ٹول بار آئیکن یا ڈبل کلک سے ٹوگل کریں)۔"
 });

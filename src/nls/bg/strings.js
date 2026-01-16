@@ -1586,7 +1586,6 @@ define({
   "DEMO_SECTION3_SUBTITLE": "Щракнете върху изображението по-долу, за да го замените с друго по ваш избор от библиотеката с изображения.",
   "DEMO_SECTION3_SUCCESS_URL": "Знаете ли, че можете да изтегляте изображения с бутона <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> за изтегляне в библиотеката с изображения?",
   "DEMO_SECTION3_SUCCESS_LOCAL": "Знаете ли, че можете да щракнете върху изображение, за да го използвате, без да го изтегляте?",
-  "DEMO_SECTION3_HINT_STEP1": "Щракнете върху изображението по-горе, за да отворите библиотеката с изображения (щракнете двукратно за превключване)",
   "DEMO_SECTION3_HINT_STEP2": "В библиотеката с изображения: задръжте курсора върху миниатюрите за предварителен преглед",
   "DEMO_SECTION3_HINT_STEP3": "Щракнете върху миниатюра, за да я поставите на страницата си, или щракнете върху иконата <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\">, за да я изтеглите първо",
   "DEMO_SECTION4_TITLE": "Редактирайте елементи визуално",
@@ -1652,6 +1651,7 @@ define({
   "DEMO_ALT_CARD_IMAGE": "Изображение на карта",
   "DEMO_ALT_ROCKET": "Ракета",
   "DEMO_ALT_ARROW": "Стрелка",
+  "DEMO_CLICK_TO_REPLACE_IMAGE": "Кликнете за замяна",
   "DEMO_JS_BUTTON_BACK": "Назад",
   "DEMO_JS_BUTTON_PREVIOUS": "Предишен",
   "DEMO_JS_BUTTON_NEXT": "Следващ",
@@ -1661,5 +1661,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Започни отново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карти",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 изтрит",
-  "DEMO_CLICK_TO_REPLACE_IMAGE": "Кликнете за замяна"
+  "DEMO_SECTION3_HINT_STEP1": "Кликнете върху изображението, за да отворите Библиотека с изображения (превключете с иконата <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> от лентата с инструменти или с двоен клик)."
 });

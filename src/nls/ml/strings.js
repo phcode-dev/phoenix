@@ -1586,7 +1586,6 @@ define({
   "DEMO_SECTION3_SUBTITLE": "ഇമേജ് ലൈബ്രറിയിൽ നിന്ന് നിങ്ങൾക്ക് ഇഷ്ടമുള്ള ഒരെണ്ണം ഉപയോഗിച്ച് മാറ്റിസ്ഥാപിക്കാൻ താഴെയുള്ള ചിത്രത്തിൽ ക്ലിക്ക് ചെയ്യുക.",
   "DEMO_SECTION3_SUCCESS_URL": "ഇമേജ് ലൈബ്രറിയിലെ <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> ഡൗൺലോഡ് ബട്ടൺ ഉപയോഗിച്ച് നിങ്ങൾക്ക് ചിത്രങ്ങൾ ഡൗൺലോഡ് ചെയ്യാൻ കഴിയുമെന്ന് നിങ്ങൾക്കറിയാമോ?",
   "DEMO_SECTION3_SUCCESS_LOCAL": "ഡൗൺലോഡ് ചെയ്യാതെ ഒരു ചിത്രം ഉപയോഗിക്കാൻ അതിൽ ക്ലിക്ക് ചെയ്യാൻ കഴിയുമെന്ന് നിങ്ങൾക്കറിയാമോ?",
-  "DEMO_SECTION3_HINT_STEP1": "ഇമേജ് ലൈബ്രറി തുറക്കാൻ മുകളിലുള്ള ചിത്രത്തിൽ ക്ലിക്ക് ചെയ്യുക (ടോഗിൾ ചെയ്യാൻ ഡബിൾ ക്ലിക്ക് ചെയ്യുക)",
   "DEMO_SECTION3_HINT_STEP2": "ഇമേജ് ലൈബ്രറിയിൽ: തംബ്നെയിലുകൾ പ്രിവ്യൂ ചെയ്യാൻ അവയുടെ മുകളിൽ ഹോവർ ചെയ്യുക",
   "DEMO_SECTION3_HINT_STEP3": "നിങ്ങളുടെ പേജിൽ സ്ഥാപിക്കാൻ ഒരു തംബ്നെയിലിൽ ക്ലിക്ക് ചെയ്യുക, അല്ലെങ്കിൽ ആദ്യം അത് ഡൗൺലോഡ് ചെയ്യാൻ <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> ഐക്കണിൽ ക്ലിക്ക് ചെയ്യുക",
   "DEMO_SECTION4_TITLE": "ഘടകങ്ങൾ ദൃശ്യപരമായി എഡിറ്റ് ചെയ്യുക",
@@ -1652,6 +1651,7 @@ define({
   "DEMO_ALT_CARD_IMAGE": "കാർഡ് ചിത്രം",
   "DEMO_ALT_ROCKET": "റോക്കറ്റ്",
   "DEMO_ALT_ARROW": "അമ്പ്",
+  "DEMO_CLICK_TO_REPLACE_IMAGE": "മാറ്റിസ്ഥാപിക്കാൻ ക്ലിക്ക് ചെയ്യുക",
   "DEMO_JS_BUTTON_BACK": "പുറകോട്ട്",
   "DEMO_JS_BUTTON_PREVIOUS": "മുമ്പത്തേത്",
   "DEMO_JS_BUTTON_NEXT": "അടുത്തത്",
@@ -1661,5 +1661,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "വീണ്ടും ആരംഭിക്കുക",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 കാർഡുകൾ",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 ഇല്ലാതാക്കി",
-  "DEMO_CLICK_TO_REPLACE_IMAGE": "മാറ്റിസ്ഥാപിക്കാൻ ക്ലിക്ക് ചെയ്യുക"
+  "DEMO_SECTION3_HINT_STEP1": "ഇമേജ് ലൈബ്രറി തുറക്കാൻ ചിത്രത്തിൽ ക്ലിക്ക് ചെയ്യുക (<img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> ടൂൾബാർ ഐക്കൺ ഉപയോഗിച്ചോ ഡബിൾ ക്ലിക്ക് ചെയ്തോ ടോഗിൾ ചെയ്യുക)."
 });

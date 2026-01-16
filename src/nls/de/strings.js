@@ -1586,7 +1586,6 @@ define({
   "DEMO_SECTION3_SUBTITLE": "Klicken Sie auf das Bild unten, um es durch ein Bild Ihrer Wahl aus der Bildergalerie zu ersetzen.",
   "DEMO_SECTION3_SUCCESS_URL": "Wussten Sie schon, dass Sie Bilder mit der <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> Herunterladen-Schaltfläche in der Bildergalerie herunterladen können?",
   "DEMO_SECTION3_SUCCESS_LOCAL": "Wussten Sie schon, dass Sie ein Bild anklicken können, um es zu verwenden, ohne es herunterzuladen?",
-  "DEMO_SECTION3_HINT_STEP1": "Klicken Sie auf das Bild oben, um die Bildergalerie zu öffnen (Doppelklick zum Umschalten).",
   "DEMO_SECTION3_HINT_STEP2": "In der Bildergalerie: Fahren Sie mit der Maus über die Miniaturansichten, um eine Vorschau anzuzeigen.",
   "DEMO_SECTION3_HINT_STEP3": "Klicken Sie auf eine Miniaturansicht, um sie auf Ihrer Seite zu platzieren, oder klicken Sie auf das <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> Symbol, um sie zuerst herunterzuladen.",
   "DEMO_SECTION4_TITLE": "Elemente visuell bearbeiten",
@@ -1652,6 +1651,7 @@ define({
   "DEMO_ALT_CARD_IMAGE": "Kartenbild",
   "DEMO_ALT_ROCKET": "Rakete",
   "DEMO_ALT_ARROW": "Pfeil",
+  "DEMO_CLICK_TO_REPLACE_IMAGE": "Zum Ersetzen klicken",
   "DEMO_JS_BUTTON_BACK": "Zurück",
   "DEMO_JS_BUTTON_PREVIOUS": "Zurück",
   "DEMO_JS_BUTTON_NEXT": "Weiter",
@@ -1661,5 +1661,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Erneut starten",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 Karten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 gelöscht",
-  "DEMO_CLICK_TO_REPLACE_IMAGE": "Zum Ersetzen klicken"
+  "DEMO_SECTION3_HINT_STEP1": "Klicken Sie auf das Bild, um die Bildbibliothek zu öffnen (Umschalten mit dem <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> Symbol in der Symbolleiste oder per Doppelklick)."
 });

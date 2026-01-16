@@ -506,7 +506,7 @@
   "DEMO_SECTION2_SUBTITLE": "Double-click to edit the text below and add your name",
   "DEMO_SECTION2_SUCCESS_MESSAGE": "Your edit updated the code — undo with <span id=\"undo-shortcut\"></span>, redo with <span id=\"redo-shortcut\"></span>.",
   "DEMO_SECTION2_TITLE": "Edit Text",
-  "DEMO_SECTION3_HINT_STEP1": "Click the image above to open the Image Library (double-click to toggle)",
+  "DEMO_SECTION3_HINT_STEP1": "Click the image to open Image Library (toggle with <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> toolbar icon or double-click).",
   "DEMO_SECTION3_HINT_STEP2": "In the Image Library: hover over thumbnails to preview them",
   "DEMO_SECTION3_HINT_STEP3": "Click a thumbnail to place it on your page, or click the <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> icon to download it first",
   "DEMO_SECTION3_SUBTITLE": "Click the image below to replace it with one you like from the Image Library.",
