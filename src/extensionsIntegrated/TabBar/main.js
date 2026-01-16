@@ -28,6 +28,7 @@ define(function (require, exports, module) {
     const FileUtils = require("file/FileUtils");
     const CommandManager = require("command/CommandManager");
     const Commands = require("command/Commands");
+    const KeyBindingManager = require("command/KeyBindingManager");
     const DocumentManager = require("document/DocumentManager");
     const WorkspaceManager = require("view/WorkspaceManager");
     const Menus = require("command/Menus");
@@ -513,6 +514,23 @@ define(function (require, exports, module) {
 
                 CommandManager.execute(Commands.FILE_CLOSE, { file: fileObj, paneId: paneId }); // close the file
             }
+        });
+
+        // add listener for tab close button to show the tooltip along with the keybinding
+        $(document).on("mouseenter", ".phoenix-tab-bar .tab-close", function () {
+
+            // there can be more than 1 keybinding for 'Close' as one is default and other one is user-set
+            // we need to get the user created keybinding...
+            const closeBindings = KeyBindingManager.getKeyBindings(Commands.FILE_CLOSE);
+            const closeShortcut = closeBindings.length > 0
+                ? KeyBindingManager.formatKeyDescriptor(closeBindings[closeBindings.length - 1].displayKey)
+                : "";
+
+            const closeTabTooltip = closeShortcut
+                ? `${Strings.CLOSE_TAB_TOOLTIP} (${closeShortcut})`
+                : Strings.CLOSE_TAB_TOOLTIP;
+
+            $(this).attr("title", closeTabTooltip);
         });
 
         // open tab on mousedown event
