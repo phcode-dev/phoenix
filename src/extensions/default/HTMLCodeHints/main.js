@@ -93,6 +93,17 @@ define(function (require, exports, module) {
         if (enabled) {
             this.editor = editor;
 
+            // check the context before showing emmet hints, because we don't want to show
+            // emmet hints when its a Attribute name or value
+            // cause for those cases AttrHints should handle it
+            const pos = editor.getCursorPos();
+            const tagInfo = HTMLUtils.getTagInfo(editor, pos);
+            const tokenType = tagInfo.position.tokenType;
+
+            if (tokenType === HTMLUtils.ATTR_NAME || tokenType === HTMLUtils.ATTR_VALUE) {
+                return false;
+            }
+
             const wordObj = getWordBeforeCursor(editor);
             // make sure we donot have empty spaces
             if (wordObj.word.trim()) {
