@@ -1,8 +1,8 @@
 {
     "name": "@phcode/node-core",
     "description": "Phoenix Node Core",
-    "version": "5.0.2-0",
-    "apiVersion": "5.0.2",
+    "version": "5.0.3-0",
+    "apiVersion": "5.0.3",
     "keywords": [],
     "author": "arun@core.ai",
     "homepage": "https://github.com/phcode-dev/phoenix",
