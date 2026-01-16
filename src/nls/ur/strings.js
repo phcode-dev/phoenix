@@ -338,7 +338,6 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "عمودی تقسیم",
   "CMD_SPLITVIEW_HORIZONTAL": "افقی تقسیم",
   "SPLITVIEW_MENU_TOOLTIP": "ایڈیٹر کو عمودی یا افقی طور پر تقسیم کریں۔",
-  "GEAR_MENU_TOOLTIP": "ورکنگ سیٹ ترتیب دیں",
   "CMD_TOGGLE_SHOW_WORKING_SET": "فعال فائلیں دکھائیں",
   "CMD_TOGGLE_SHOW_FILE_TABS": "فائل ٹیب بار دکھائیں",
   "SPLITVIEW_INFO_TITLE": "پہلے سے کھلا ہوا ہے",
@@ -1586,6 +1585,7 @@ define({
   "DEMO_SECTION3_SUBTITLE": "نیچے دی گئی تصویر پر کلک کرکے اسے امیج لائبریری سے اپنی پسند کی تصویر سے تبدیل کریں۔",
   "DEMO_SECTION3_SUCCESS_URL": "کیا آپ جانتے ہیں کہ آپ امیج لائبریری میں <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> ڈاؤن لوڈ بٹن سے تصاویر ڈاؤن لوڈ کر سکتے ہیں؟",
   "DEMO_SECTION3_SUCCESS_LOCAL": "کیا آپ جانتے ہیں کہ آپ کسی تصویر پر کلک کر کے اسے ڈاؤن لوڈ کیے بغیر استعمال کر سکتے ہیں؟",
+  "DEMO_SECTION3_HINT_STEP1": "امیج لائبریری کھولنے کے لیے تصویر پر کلک کریں (<img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> ٹول بار آئیکن یا ڈبل کلک سے ٹوگل کریں)۔",
   "DEMO_SECTION3_HINT_STEP2": "امیج لائبریری میں: تھمب نیلز کا پیش منظر دیکھنے کے لیے ان پر ہوور کریں۔",
   "DEMO_SECTION3_HINT_STEP3": "اسے اپنے صفحے پر رکھنے کے لیے کسی تھمب نیل پر کلک کریں، یا پہلے اسے ڈاؤن لوڈ کرنے کے لیے <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> آئیکن پر کلک کریں۔",
   "DEMO_SECTION4_TITLE": "عناصر میں بصری طور پر ترمیم کریں۔",
@@ -1661,5 +1661,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "دوبارہ شروع کریں",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 کارڈز",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 حذف شدہ",
-  "DEMO_SECTION3_HINT_STEP1": "امیج لائبریری کھولنے کے لیے تصویر پر کلک کریں (<img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> ٹول بار آئیکن یا ڈبل کلک سے ٹوگل کریں)۔"
+  "GEAR_MENU_TOOLTIP": "ورکنگ فائلوں کی ترتیب",
+  "CLOSE_TAB_TOOLTIP": "ٹیب بند کریں",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "سنیپٹ حذف کریں"
 });

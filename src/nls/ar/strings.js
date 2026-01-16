@@ -338,7 +338,6 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "تقسيم رأسي",
   "CMD_SPLITVIEW_HORIZONTAL": "تقسيم أفقي",
   "SPLITVIEW_MENU_TOOLTIP": "تقسيم المحرر رأسيًا أو أفقيًا",
-  "GEAR_MENU_TOOLTIP": "تكوين مجموعة العمل",
   "CMD_TOGGLE_SHOW_WORKING_SET": "إظهار الملفات العاملة",
   "CMD_TOGGLE_SHOW_FILE_TABS": "إظهار شريط علامات تبويب الملفات",
   "SPLITVIEW_INFO_TITLE": "مفتوح بالفعل",
@@ -1586,6 +1585,7 @@ define({
   "DEMO_SECTION3_SUBTITLE": "انقر على الصورة أدناه لاستبدالها بواحدة تعجبك من مكتبة الصور.",
   "DEMO_SECTION3_SUCCESS_URL": "هل تعلم أنه يمكنك تنزيل الصور باستخدام زر <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> التنزيل في مكتبة الصور؟",
   "DEMO_SECTION3_SUCCESS_LOCAL": "هل تعلم أنه يمكنك النقر على صورة لاستخدامها دون الحاجة إلى تنزيلها؟",
+  "DEMO_SECTION3_HINT_STEP1": "انقر على الصورة لفتح مكتبة الصور (يمكن التبديل باستخدام أيقونة <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> في شريط الأدوات أو بالنقر المزدوج).",
   "DEMO_SECTION3_HINT_STEP2": "في مكتبة الصور: مرّر مؤشر الفأرة فوق الصور المصغرة لمعاينتها",
   "DEMO_SECTION3_HINT_STEP3": "انقر على صورة مصغرة لوضعها في صفحتك، أو انقر على أيقونة <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> لتنزيلها أولاً",
   "DEMO_SECTION4_TITLE": "تعديل العناصر بصريًا",
@@ -1661,5 +1661,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "البدء من جديد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 بطاقات",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 محذوف",
-  "DEMO_SECTION3_HINT_STEP1": "انقر على الصورة لفتح مكتبة الصور (يمكن التبديل باستخدام أيقونة <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> في شريط الأدوات أو بالنقر المزدوج)."
+  "GEAR_MENU_TOOLTIP": "إعداد ملفات العمل",
+  "CLOSE_TAB_TOOLTIP": "إغلاق علامة التبويب",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "حذف المقتطف"
 });

@@ -338,7 +338,6 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Vertical Split",
   "CMD_SPLITVIEW_HORIZONTAL": "Split Horizontally",
   "SPLITVIEW_MENU_TOOLTIP": "Split the editor vertically or horizontally",
-  "GEAR_MENU_TOOLTIP": "Configure Working Set",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Show Working Files",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Show File Tab Bar",
   "SPLITVIEW_INFO_TITLE": "Already Open",
@@ -1586,6 +1585,7 @@ define({
   "DEMO_SECTION3_SUBTITLE": "Click the image below to replace it with one you like from the Image Library.",
   "DEMO_SECTION3_SUCCESS_URL": "Did you know that you can download images with the <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> Download button in the Image Library?",
   "DEMO_SECTION3_SUCCESS_LOCAL": "Did you know you can click on an image to use it without downloading?",
+  "DEMO_SECTION3_HINT_STEP1": "Click the image to open Image Library (toggle with <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> toolbar icon or double-click).",
   "DEMO_SECTION3_HINT_STEP2": "In the Image Library: hover over thumbnails to preview them",
   "DEMO_SECTION3_HINT_STEP3": "Click a thumbnail to place it on your page, or click the <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> icon to download it first",
   "DEMO_SECTION4_TITLE": "Edit elements visually",
@@ -1661,5 +1661,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start Again",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cards",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 deleted",
-  "DEMO_SECTION3_HINT_STEP1": "Click the image to open Image Library (toggle with <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> toolbar icon or double-click)."
+  "GEAR_MENU_TOOLTIP": "Configure Working Files",
+  "CLOSE_TAB_TOOLTIP": "Close Tab",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Delete Snippet"
 });

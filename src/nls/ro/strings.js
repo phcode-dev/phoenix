@@ -338,7 +338,6 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Divizare verticală",
   "CMD_SPLITVIEW_HORIZONTAL": "Divizare orizontală",
   "SPLITVIEW_MENU_TOOLTIP": "Divizare verticală și orizontală",
-  "GEAR_MENU_TOOLTIP": "Configurează setul de lucru",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Afișează Fișierele de Lucru",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Afișează bara de tab-uri fișiere",
   "SPLITVIEW_INFO_TITLE": "Deja deschis",
@@ -1586,6 +1585,7 @@ define({
   "DEMO_SECTION3_SUBTITLE": "Faceți clic pe imaginea de mai jos pentru a o înlocui cu una care vă place din Biblioteca de imagini.",
   "DEMO_SECTION3_SUCCESS_URL": "Știați că puteți descărca imagini cu butonul <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> Descărcare din Biblioteca de imagini?",
   "DEMO_SECTION3_SUCCESS_LOCAL": "Știați că puteți face clic pe o imagine pentru a o folosi fără a o descărca?",
+  "DEMO_SECTION3_HINT_STEP1": "Faceți clic pe imagine pentru a deschide Biblioteca de Imagini (comutați cu pictograma <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> din bara de instrumente sau prin dublu clic).",
   "DEMO_SECTION3_HINT_STEP2": "În Biblioteca de imagini: treceți cu mouse-ul peste miniaturi pentru a le previzualiza",
   "DEMO_SECTION3_HINT_STEP3": "Faceți clic pe o miniatură pentru a o plasa pe pagina dvs. sau faceți clic pe pictograma <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> pentru a o descărca mai întâi",
   "DEMO_SECTION4_TITLE": "Editați elemente vizual",
@@ -1661,5 +1661,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Reîncepe",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carduri",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 șters",
-  "DEMO_SECTION3_HINT_STEP1": "Faceți clic pe imagine pentru a deschide Biblioteca de Imagini (comutați cu pictograma <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> din bara de instrumente sau prin dublu clic)."
+  "GEAR_MENU_TOOLTIP": "Configurează fișierele de lucru",
+  "CLOSE_TAB_TOOLTIP": "Închide fila",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Șterge snippetul"
 });

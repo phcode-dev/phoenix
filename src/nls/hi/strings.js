@@ -338,7 +338,6 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "लंबवत विभाजन",
   "CMD_SPLITVIEW_HORIZONTAL": "क्षैतिज विभाजन",
   "SPLITVIEW_MENU_TOOLTIP": "संपादक को लंबवत या क्षैतिज रूप से विभाजित करें",
-  "GEAR_MENU_TOOLTIP": "कार्यशील सेट कॉन्फ़िगर करें",
   "CMD_TOGGLE_SHOW_WORKING_SET": "कार्यशील फ़ाइलें दिखाएँ",
   "CMD_TOGGLE_SHOW_FILE_TABS": "फ़ाइल टैब बार दिखाएँ",
   "SPLITVIEW_INFO_TITLE": "पहले से खुला",
@@ -1586,6 +1585,7 @@ define({
   "DEMO_SECTION3_SUBTITLE": "नीचे दी गई छवि पर क्लिक करके इसे छवि लाइब्रेरी से अपनी पसंद की छवि से बदलें।",
   "DEMO_SECTION3_SUCCESS_URL": "क्या आप जानते हैं कि आप छवि लाइब्रेरी में <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> डाउनलोड बटन से छवियाँ डाउनलोड कर सकते हैं?",
   "DEMO_SECTION3_SUCCESS_LOCAL": "क्या आप जानते हैं कि आप डाउनलोड किए बिना भी छवि पर क्लिक करके उसका उपयोग कर सकते हैं?",
+  "DEMO_SECTION3_HINT_STEP1": "इमेज लाइब्रेरी खोलने के लिए इमेज पर क्लिक करें (<img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> टूलबार आइकन या डबल-क्लिक से टॉगल करें)।",
   "DEMO_SECTION3_HINT_STEP2": "छवि लाइब्रेरी में: उनका पूर्वावलोकन करने के लिए थंबनेल पर होवर करें",
   "DEMO_SECTION3_HINT_STEP3": "किसी थंबनेल पर क्लिक करके उसे अपने पेज पर रखें, या पहले डाउनलोड करने के लिए <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> आइकन पर क्लिक करें",
   "DEMO_SECTION4_TITLE": "तत्वों को विज़ुअली संपादित करें",
@@ -1661,5 +1661,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "फिर से शुरू करें",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 कार्ड",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 हटाया गया",
-  "DEMO_SECTION3_HINT_STEP1": "इमेज लाइब्रेरी खोलने के लिए इमेज पर क्लिक करें (<img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> टूलबार आइकन या डबल-क्लिक से टॉगल करें)।"
+  "GEAR_MENU_TOOLTIP": "वर्किंग फ़ाइलें कॉन्फ़िगर करें",
+  "CLOSE_TAB_TOOLTIP": "टैब बंद करें",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "स्निपेट हटाएँ"
 });

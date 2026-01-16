@@ -338,7 +338,6 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "左右分割",
   "CMD_SPLITVIEW_HORIZONTAL": "上下分割",
   "SPLITVIEW_MENU_TOOLTIP": "將編輯器分割成上下或左右兩塊",
-  "GEAR_MENU_TOOLTIP": "設定工作集",
   "CMD_TOGGLE_SHOW_WORKING_SET": "顯示工作檔案",
   "CMD_TOGGLE_SHOW_FILE_TABS": "顯示檔案標籤列",
   "SPLITVIEW_INFO_TITLE": "已經開啟",
@@ -1586,6 +1585,7 @@ define({
   "DEMO_SECTION3_SUBTITLE": "點擊下方的圖片，從圖片庫中選擇您喜歡的圖片來替換它。",
   "DEMO_SECTION3_SUCCESS_URL": "您知道嗎？您可以使用圖片庫中的 <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> 下載按鈕來下載圖片。",
   "DEMO_SECTION3_SUCCESS_LOCAL": "您知道嗎？您可以點擊圖片直接使用，無需下載。",
+  "DEMO_SECTION3_HINT_STEP1": "點擊圖片以開啟圖片庫（可透過 <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> 工具列圖示或雙擊來切換）。",
   "DEMO_SECTION3_HINT_STEP2": "在圖片庫中：將滑鼠懸停在縮圖上即可預覽",
   "DEMO_SECTION3_HINT_STEP3": "點擊縮圖以將其放置在您的頁面上，或點擊 <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> 圖示先將其下載",
   "DEMO_SECTION4_TITLE": "視覺化編輯元素",
@@ -1661,5 +1661,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "重新開始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 張卡片",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已刪除",
-  "DEMO_SECTION3_HINT_STEP1": "點擊圖片以開啟圖片庫（可透過 <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> 工具列圖示或雙擊來切換）。"
+  "GEAR_MENU_TOOLTIP": "設定工作檔案",
+  "CLOSE_TAB_TOOLTIP": "關閉頁籤",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "刪除片段"
 });

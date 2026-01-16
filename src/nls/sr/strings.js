@@ -338,7 +338,6 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Вертикална подела",
   "CMD_SPLITVIEW_HORIZONTAL": "Хоризонтална подела",
   "SPLITVIEW_MENU_TOOLTIP": "Подели едитор вертикално или хоризонтално",
-  "GEAR_MENU_TOOLTIP": "Конфигуриши радни сет",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Прикажи радне датотеке",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Прикажи траку картица датотека",
   "SPLITVIEW_INFO_TITLE": "Већ отворена",
@@ -1586,6 +1585,7 @@ define({
   "DEMO_SECTION3_SUBTITLE": "Кликните на слику испод да бисте је заменили оном која вам се допада из библиотеке слика.",
   "DEMO_SECTION3_SUCCESS_URL": "Да ли сте знали да можете да преузмете слике у библиотеци слика помоћу дугмета за преузимање <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\">?",
   "DEMO_SECTION3_SUCCESS_LOCAL": "Да ли сте знали да можете да кликнете на слику да бисте је користили без преузимања?",
+  "DEMO_SECTION3_HINT_STEP1": "Кликните на слику да бисте отворили Библиотеку слика (укључите/искључите је помоћу иконе <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> на траци са алаткама или двоструким кликом).",
   "DEMO_SECTION3_HINT_STEP2": "У библиотеци слика: пређите курсором преко умањених приказа да бисте их прегледали",
   "DEMO_SECTION3_HINT_STEP3": "Кликните на умањени приказ да бисте га поставили на страницу, или кликните на икону <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> да бисте га прво преузели",
   "DEMO_SECTION4_TITLE": "Визуелно уређивање елемената",
@@ -1661,5 +1661,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Почни поново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 картице",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 обрисано",
-  "DEMO_SECTION3_HINT_STEP1": "Кликните на слику да бисте отворили Библиотеку слика (укључите/искључите је помоћу иконе <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> на траци са алаткама или двоструким кликом)."
+  "GEAR_MENU_TOOLTIP": "Конфигуриши радне датотеке",
+  "CLOSE_TAB_TOOLTIP": "Затвори картицу",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Обриши исечак"
 });

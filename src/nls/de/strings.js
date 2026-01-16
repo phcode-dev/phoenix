@@ -338,7 +338,6 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Vertikal geteilt",
   "CMD_SPLITVIEW_HORIZONTAL": "Horizontal geteilt",
   "SPLITVIEW_MENU_TOOLTIP": "Teilen Sie den Editor vertikal oder horizontal",
-  "GEAR_MENU_TOOLTIP": "Projektdateien konfigurieren",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Arbeitsdateien anzeigen",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Dateireiterleiste anzeigen",
   "SPLITVIEW_INFO_TITLE": "Bereits geöffnet",
@@ -1586,6 +1585,7 @@ define({
   "DEMO_SECTION3_SUBTITLE": "Klicken Sie auf das Bild unten, um es durch ein Bild Ihrer Wahl aus der Bildergalerie zu ersetzen.",
   "DEMO_SECTION3_SUCCESS_URL": "Wussten Sie schon, dass Sie Bilder mit der <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> Herunterladen-Schaltfläche in der Bildergalerie herunterladen können?",
   "DEMO_SECTION3_SUCCESS_LOCAL": "Wussten Sie schon, dass Sie ein Bild anklicken können, um es zu verwenden, ohne es herunterzuladen?",
+  "DEMO_SECTION3_HINT_STEP1": "Klicken Sie auf das Bild, um die Bildbibliothek zu öffnen (Umschalten mit dem <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> Symbol in der Symbolleiste oder per Doppelklick).",
   "DEMO_SECTION3_HINT_STEP2": "In der Bildergalerie: Fahren Sie mit der Maus über die Miniaturansichten, um eine Vorschau anzuzeigen.",
   "DEMO_SECTION3_HINT_STEP3": "Klicken Sie auf eine Miniaturansicht, um sie auf Ihrer Seite zu platzieren, oder klicken Sie auf das <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> Symbol, um sie zuerst herunterzuladen.",
   "DEMO_SECTION4_TITLE": "Elemente visuell bearbeiten",
@@ -1661,5 +1661,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Erneut starten",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 Karten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 gelöscht",
-  "DEMO_SECTION3_HINT_STEP1": "Klicken Sie auf das Bild, um die Bildbibliothek zu öffnen (Umschalten mit dem <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> Symbol in der Symbolleiste oder per Doppelklick)."
+  "GEAR_MENU_TOOLTIP": "Arbeitsdateien konfigurieren",
+  "CLOSE_TAB_TOOLTIP": "Tab schließen",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Snippet löschen"
 });

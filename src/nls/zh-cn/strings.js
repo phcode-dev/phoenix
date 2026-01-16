@@ -338,7 +338,6 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "垂直分割",
   "CMD_SPLITVIEW_HORIZONTAL": "水平分割",
   "SPLITVIEW_MENU_TOOLTIP": "垂直/水平分割编辑器窗口",
-  "GEAR_MENU_TOOLTIP": "配置工作区",
   "CMD_TOGGLE_SHOW_WORKING_SET": "显示工作文件",
   "CMD_TOGGLE_SHOW_FILE_TABS": "显示文件标签栏",
   "SPLITVIEW_INFO_TITLE": "已经打开",
@@ -1586,6 +1585,7 @@ define({
   "DEMO_SECTION3_SUBTITLE": "单击下面的图片，从图片库中选择您喜欢的图片进行替换。",
   "DEMO_SECTION3_SUCCESS_URL": "您知道吗？您可以使用图片库中的 <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> 下载按钮来下载图片。",
   "DEMO_SECTION3_SUCCESS_LOCAL": "您知道吗？您可以单击图片直接使用，无需下载。",
+  "DEMO_SECTION3_HINT_STEP1": "点击图片打开图片库（使用 <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> 工具栏图标或双击切换）。",
   "DEMO_SECTION3_HINT_STEP2": "在图片库中：将鼠标悬停在缩略图上可进行预览",
   "DEMO_SECTION3_HINT_STEP3": "单击缩略图可将其放置在您的页面上，或单击 <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> 图标先将其下载",
   "DEMO_SECTION4_TITLE": "可视化编辑元素",
@@ -1661,5 +1661,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "重新开始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 张卡片",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已删除",
-  "DEMO_SECTION3_HINT_STEP1": "点击图片打开图片库（使用 <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> 工具栏图标或双击切换）。"
+  "GEAR_MENU_TOOLTIP": "配置工作文件",
+  "CLOSE_TAB_TOOLTIP": "关闭标签页",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "删除片段"
 });

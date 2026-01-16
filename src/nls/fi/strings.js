@@ -338,7 +338,6 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Pystyjako",
   "CMD_SPLITVIEW_HORIZONTAL": "Vaakajako",
   "SPLITVIEW_MENU_TOOLTIP": "Jaa editori pysty- tai vaakasuunnassa",
-  "GEAR_MENU_TOOLTIP": "Määritä työlista",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Näytä työstettävät tiedostot",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Näytä tiedostovälilehtirivi",
   "SPLITVIEW_INFO_TITLE": "Jo avoinna",
@@ -1586,6 +1585,7 @@ define({
   "DEMO_SECTION3_SUBTITLE": "Napsauta alla olevaa kuvaa korvataksesi sen mieleiselläsi kuvalla kuvakirjastosta.",
   "DEMO_SECTION3_SUCCESS_URL": "Tiesitkö, että voit ladata kuvia kuvakirjaston <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> Lataa-painikkeella?",
   "DEMO_SECTION3_SUCCESS_LOCAL": "Tiesitkö, että voit käyttää kuvaa napsauttamalla sitä ilman lataamista?",
+  "DEMO_SECTION3_HINT_STEP1": "Napsauta kuvaa avataksesi Kuvakirjaston (voit avata/sulkea sen <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> -työkalupalkin kuvakkeella tai kaksoisnapsautuksella).",
   "DEMO_SECTION3_HINT_STEP2": "Kuvakirjastossa: vie hiiren osoitin pikkukuvien päälle nähdäksesi niiden esikatselun",
   "DEMO_SECTION3_HINT_STEP3": "Napsauta pikkukuvaa sijoittaaksesi sen sivullesi, tai napsauta <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> -kuvaketta ladataksesi sen ensin",
   "DEMO_SECTION4_TITLE": "Muokkaa elementtejä visuaalisesti",
@@ -1661,5 +1661,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Aloita alusta",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 korttia",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 poistettu",
-  "DEMO_SECTION3_HINT_STEP1": "Napsauta kuvaa avataksesi Kuvakirjaston (voit avata/sulkea sen <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> -työkalupalkin kuvakkeella tai kaksoisnapsautuksella)."
+  "GEAR_MENU_TOOLTIP": "Määritä työtiedostot",
+  "CLOSE_TAB_TOOLTIP": "Sulje välilehti",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Poista koodinpätkä"
 });

@@ -338,7 +338,6 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Вертикальное разделение",
   "CMD_SPLITVIEW_HORIZONTAL": "Горизонтальное разделение",
   "SPLITVIEW_MENU_TOOLTIP": "Разделить редактор вертикально или горизонтально",
-  "GEAR_MENU_TOOLTIP": "Настроить рабочий набор",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Показать рабочие файлы",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Показать панель вкладок файлов",
   "SPLITVIEW_INFO_TITLE": "Уже открыт",
@@ -1586,6 +1585,7 @@ define({
   "DEMO_SECTION3_SUBTITLE": "Щёлкните по изображению ниже, чтобы заменить его на понравившееся из Библиотеки изображений.",
   "DEMO_SECTION3_SUCCESS_URL": "Знаете ли вы, что можете скачивать изображения с помощью кнопки «Скачать» <img src=\"images/download.svg\" alt=\"Скачать\" class=\"inline-icon\"> в Библиотеке изображений?",
   "DEMO_SECTION3_SUCCESS_LOCAL": "Знаете ли вы, что можно щёлкнуть по изображению, чтобы использовать его, не скачивая?",
+  "DEMO_SECTION3_HINT_STEP1": "Нажмите на изображение, чтобы открыть Библиотеку изображений (переключается значком <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> на панели инструментов или двойным щелчком).",
   "DEMO_SECTION3_HINT_STEP2": "В Библиотеке изображений: наведите курсор на миниатюры, чтобы просмотреть их",
   "DEMO_SECTION3_HINT_STEP3": "Щёлкните по миниатюре, чтобы разместить её на своей странице, или щёлкните по значку <img src=\"images/download.svg\" alt=\"Скачать\" class=\"inline-icon\">, чтобы сначала скачать её",
   "DEMO_SECTION4_TITLE": "Редактируйте элементы визуально",
@@ -1661,5 +1661,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Начать заново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карточки",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 удалено",
-  "DEMO_SECTION3_HINT_STEP1": "Нажмите на изображение, чтобы открыть Библиотеку изображений (переключается значком <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> на панели инструментов или двойным щелчком)."
+  "GEAR_MENU_TOOLTIP": "Настроить рабочие файлы",
+  "CLOSE_TAB_TOOLTIP": "Закрыть вкладку",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Удалить сниппет"
 });

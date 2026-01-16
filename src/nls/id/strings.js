@@ -338,7 +338,6 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Sekat Vertikal",
   "CMD_SPLITVIEW_HORIZONTAL": "Sekat Horisontal",
   "SPLITVIEW_MENU_TOOLTIP": "Beri sekat pada editor secara horisontal atau vertikal",
-  "GEAR_MENU_TOOLTIP": "Atur Daftar Kerja",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Tampilkan File yang Sedang Diproses",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Tampilkan Bilah Tab Berkas",
   "SPLITVIEW_INFO_TITLE": "Sudah Terbuka",
@@ -1586,6 +1585,7 @@ define({
   "DEMO_SECTION3_SUBTITLE": "Klik gambar di bawah ini untuk menggantinya dengan yang Anda suka dari Pustaka Gambar.",
   "DEMO_SECTION3_SUCCESS_URL": "Tahukah Anda bahwa Anda dapat mengunduh gambar dengan tombol <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> Unduh di Pustaka Gambar?",
   "DEMO_SECTION3_SUCCESS_LOCAL": "Tahukah Anda bahwa Anda dapat mengeklik gambar untuk menggunakannya tanpa mengunduh?",
+  "DEMO_SECTION3_HINT_STEP1": "Klik gambar untuk membuka Pustaka Gambar (beralih dengan ikon bilah alat <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> atau klik dua kali).",
   "DEMO_SECTION3_HINT_STEP2": "Di Pustaka Gambar: arahkan kursor ke gambar mini untuk melihat pratinjaunya",
   "DEMO_SECTION3_HINT_STEP3": "Klik gambar mini untuk menempatkannya di halaman Anda, atau klik ikon <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> untuk mengunduhnya terlebih dahulu",
   "DEMO_SECTION4_TITLE": "Edit elemen secara visual",
@@ -1661,5 +1661,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Mulai Lagi",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartu",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 dihapus",
-  "DEMO_SECTION3_HINT_STEP1": "Klik gambar untuk membuka Pustaka Gambar (beralih dengan ikon bilah alat <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> atau klik dua kali)."
+  "GEAR_MENU_TOOLTIP": "Konfigurasi File Kerja",
+  "CLOSE_TAB_TOOLTIP": "Tutup Tab",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Hapus Snippet"
 });

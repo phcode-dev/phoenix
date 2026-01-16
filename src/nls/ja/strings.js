@@ -338,7 +338,6 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "左右分割",
   "CMD_SPLITVIEW_HORIZONTAL": "上下分割",
   "SPLITVIEW_MENU_TOOLTIP": "エディターを垂直方向 / 水平方向に分割",
-  "GEAR_MENU_TOOLTIP": "ワーキングセットを構成",
   "CMD_TOGGLE_SHOW_WORKING_SET": "作業ファイルを表示",
   "CMD_TOGGLE_SHOW_FILE_TABS": "ファイルタブバーを表示",
   "SPLITVIEW_INFO_TITLE": "既に開かれています",
@@ -1586,6 +1585,7 @@ define({
   "DEMO_SECTION3_SUBTITLE": "下の画像をクリックして、画像ライブラリからお好きなものに置き換えます。",
   "DEMO_SECTION3_SUCCESS_URL": "画像ライブラリの<img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\">ダウンロードボタンで画像をダウンロードできることをご存知でしたか？",
   "DEMO_SECTION3_SUCCESS_LOCAL": "画像をダウンロードせずにクリックするだけで使用できることをご存知でしたか？",
+  "DEMO_SECTION3_HINT_STEP1": "画像をクリックして画像ライブラリを開きます（<img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\">ツールバーアイコンまたはダブルクリックで表示を切り替えられます）。",
   "DEMO_SECTION3_HINT_STEP2": "画像ライブラリで：サムネイルにカーソルを合わせるとプレビューが表示されます",
   "DEMO_SECTION3_HINT_STEP3": "サムネイルをクリックしてページに配置するか、<img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\">アイコンをクリックして先にダウンロードします。",
   "DEMO_SECTION4_TITLE": "要素を視覚的に編集",
@@ -1661,5 +1661,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "最初からやり直す",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3枚のカード",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1件削除済み",
-  "DEMO_SECTION3_HINT_STEP1": "画像をクリックして画像ライブラリを開きます（<img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\">ツールバーアイコンまたはダブルクリックで表示を切り替えられます）。"
+  "GEAR_MENU_TOOLTIP": "作業ファイルの設定",
+  "CLOSE_TAB_TOOLTIP": "タブを閉じる",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "スニペットを削除"
 });

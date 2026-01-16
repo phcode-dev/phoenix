@@ -338,7 +338,6 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Vertikal delning",
   "CMD_SPLITVIEW_HORIZONTAL": "Horisontell delning",
   "SPLITVIEW_MENU_TOOLTIP": "Dela editorn vertikalt eller horisontellt",
-  "GEAR_MENU_TOOLTIP": "Konfigurera arbetsyta",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Visa aktiva filer",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Visa flikfält för filer",
   "SPLITVIEW_INFO_TITLE": "Redan öppen",
@@ -1586,6 +1585,7 @@ define({
   "DEMO_SECTION3_SUBTITLE": "Klicka på bilden nedan för att ersätta den med en du gillar från bildbiblioteket.",
   "DEMO_SECTION3_SUCCESS_URL": "Visste du att du kan ladda ner bilder med knappen <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> Ladda ner i bildbiblioteket?",
   "DEMO_SECTION3_SUCCESS_LOCAL": "Visste du att du kan klicka på en bild för att använda den utan att ladda ner den?",
+  "DEMO_SECTION3_HINT_STEP1": "Klicka på bilden för att öppna bildbiblioteket (växla med <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> verktygsfältsikonen eller dubbelklicka).",
   "DEMO_SECTION3_HINT_STEP2": "I bildbiblioteket: håll muspekaren över miniatyrbilderna för att förhandsgranska dem",
   "DEMO_SECTION3_HINT_STEP3": "Klicka på en miniatyrbild för att placera den på din sida, eller klicka på ikonen <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> för att ladda ner den först",
   "DEMO_SECTION4_TITLE": "Redigera element visuellt",
@@ -1661,5 +1661,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Börja om",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 raderat",
-  "DEMO_SECTION3_HINT_STEP1": "Klicka på bilden för att öppna bildbiblioteket (växla med <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> verktygsfältsikonen eller dubbelklicka)."
+  "GEAR_MENU_TOOLTIP": "Konfigurera arbetsfiler",
+  "CLOSE_TAB_TOOLTIP": "Stäng flik",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Ta bort kodavsnitt"
 });

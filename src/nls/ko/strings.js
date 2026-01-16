@@ -338,7 +338,6 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "왼쪽/오른쪽으로 분할",
   "CMD_SPLITVIEW_HORIZONTAL": "위/아래로 분할",
   "SPLITVIEW_MENU_TOOLTIP": "에디터를 왼쪽/오른쪽 또는 위/아래로 분할합니다",
-  "GEAR_MENU_TOOLTIP": "Configure Working Set",
   "CMD_TOGGLE_SHOW_WORKING_SET": "작업 파일 표시",
   "CMD_TOGGLE_SHOW_FILE_TABS": "파일 탭 표시줄 표시",
   "SPLITVIEW_INFO_TITLE": "이미 열려있는 파일",
@@ -1586,6 +1585,7 @@ define({
   "DEMO_SECTION3_SUBTITLE": "아래 이미지를 클릭하여 이미지 라이브러리에서 마음에 드는 이미지로 교체하세요.",
   "DEMO_SECTION3_SUCCESS_URL": "이미지 라이브러리의 <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> 다운로드 버튼으로 이미지를 다운로드할 수 있다는 사실을 알고 계셨나요?",
   "DEMO_SECTION3_SUCCESS_LOCAL": "다운로드하지 않고 이미지를 클릭하여 사용할 수 있다는 사실을 알고 계셨나요?",
+  "DEMO_SECTION3_HINT_STEP1": "이미지를 클릭하여 이미지 라이브러리를 여세요 (<img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> 툴바 아이콘 또는 더블 클릭으로 토글할 수 있습니다).",
   "DEMO_SECTION3_HINT_STEP2": "이미지 라이브러리에서: 섬네일 위에 마우스를 올려 미리 보세요",
   "DEMO_SECTION3_HINT_STEP3": "섬네일을 클릭하여 페이지에 배치하거나, <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> 아이콘을 클릭하여 먼저 다운로드하세요",
   "DEMO_SECTION4_TITLE": "시각적으로 요소 편집",
@@ -1661,5 +1661,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "다시 시작",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 카드",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 삭제됨",
-  "DEMO_SECTION3_HINT_STEP1": "이미지를 클릭하여 이미지 라이브러리를 여세요 (<img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> 툴바 아이콘 또는 더블 클릭으로 토글할 수 있습니다)."
+  "GEAR_MENU_TOOLTIP": "작업 파일 설정",
+  "CLOSE_TAB_TOOLTIP": "탭 닫기",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "스니펫 삭제"
 });

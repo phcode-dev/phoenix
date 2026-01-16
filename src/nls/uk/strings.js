@@ -338,7 +338,6 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Вертикальне розділення",
   "CMD_SPLITVIEW_HORIZONTAL": "Горизонтальне розділення",
   "SPLITVIEW_MENU_TOOLTIP": "Розділити редактор горизонтально або вертикально",
-  "GEAR_MENU_TOOLTIP": "Налаштувати робочий набір",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Показати робочі файли",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Показати панель вкладок файлів",
   "SPLITVIEW_INFO_TITLE": "Уже відкрито",
@@ -1586,6 +1585,7 @@ define({
   "DEMO_SECTION3_SUBTITLE": "Клацніть зображення нижче, щоб замінити його на інше з Бібліотеки зображень.",
   "DEMO_SECTION3_SUCCESS_URL": "Чи знаєте ви, що можете завантажувати зображення за допомогою кнопки <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\"> «Завантажити» в Бібліотеці зображень?",
   "DEMO_SECTION3_SUCCESS_LOCAL": "Чи знаєте ви, що можна клацнути на зображення, щоб використати його, не завантажуючи?",
+  "DEMO_SECTION3_HINT_STEP1": "Клацніть зображення, щоб відкрити бібліотеку зображень (перемикається іконкою <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> на панелі інструментів або подвійним клацанням).",
   "DEMO_SECTION3_HINT_STEP2": "У Бібліотеці зображень: наведіть курсор на мініатюри, щоб переглянути їх",
   "DEMO_SECTION3_HINT_STEP3": "Клацніть мініатюру, щоб розмістити її на сторінці, або клацніть іконку <img src=\"images/download.svg\" alt=\"Download\" class=\"inline-icon\">, щоб спершу завантажити її",
   "DEMO_SECTION4_TITLE": "Редагуйте елементи візуально",
@@ -1661,5 +1661,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Почати знову",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карток",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 видалено",
-  "DEMO_SECTION3_HINT_STEP1": "Клацніть зображення, щоб відкрити бібліотеку зображень (перемикається іконкою <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> на панелі інструментів або подвійним клацанням)."
+  "GEAR_MENU_TOOLTIP": "Налаштувати робочі файли",
+  "CLOSE_TAB_TOOLTIP": "Закрити вкладку",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Видалити сніпет"
 });

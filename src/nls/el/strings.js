@@ -338,7 +338,6 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Κάθετος Διαχωρισμός",
   "CMD_SPLITVIEW_HORIZONTAL": "Οριζόντια Διαίρεση",
   "SPLITVIEW_MENU_TOOLTIP": "Διαίρεση του editor κάθετα ή οριζόντια",
-  "GEAR_MENU_TOOLTIP": "Ρύθμιση Ενεργού Σετ",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Εμφάνιση Αρχείων Εργασίας",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Εμφάνιση Γραμμής Καρτελών Αρχείων",
   "SPLITVIEW_INFO_TITLE": "Ήδη Ανοιχτό",
@@ -1586,6 +1585,7 @@ define({
   "DEMO_SECTION3_SUBTITLE": "Κάντε κλικ στην παρακάτω εικόνα για να την αντικαταστήσετε με μία που σας αρέσει από τη Βιβλιοθήκη Εικόνων.",
   "DEMO_SECTION3_SUCCESS_URL": "Γνωρίζατε ότι μπορείτε να κατεβάσετε εικόνες με το κουμπί <img src=\"images/download.svg\" alt=\"Λήψη\" class=\"inline-icon\"> Λήψη στη Βιβλιοθήκη Εικόνων;",
   "DEMO_SECTION3_SUCCESS_LOCAL": "Γνωρίζατε ότι μπορείτε να κάνετε κλικ σε μια εικόνα για να τη χρησιμοποιήσετε χωρίς να την κατεβάσετε;",
+  "DEMO_SECTION3_HINT_STEP1": "Κάντε κλικ στην εικόνα για να ανοίξετε τη Βιβλιοθήκη εικόνων (εναλλαγή με το εικονίδιο <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> στη γραμμή εργαλείων ή με διπλό κλικ).",
   "DEMO_SECTION3_HINT_STEP2": "Στη Βιβλιοθήκη Εικόνων: περάστε τον δείκτη πάνω από τις μικρογραφίες για να τις δείτε σε προεπισκόπηση",
   "DEMO_SECTION3_HINT_STEP3": "Κάντε κλικ σε μια μικρογραφία για να την τοποθετήσετε στη σελίδα σας, ή κάντε κλικ στο εικονίδιο <img src=\"images/download.svg\" alt=\"Λήψη\" class=\"inline-icon\"> για να την κατεβάσετε πρώτα",
   "DEMO_SECTION4_TITLE": "Επεξεργαστείτε στοιχεία οπτικά",
@@ -1661,5 +1661,7 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Έναρξη από την αρχή",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 κάρτες",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 διαγράφηκε",
-  "DEMO_SECTION3_HINT_STEP1": "Κάντε κλικ στην εικόνα για να ανοίξετε τη Βιβλιοθήκη εικόνων (εναλλαγή με το εικονίδιο <img src=\"images/image.svg\" alt=\"Image\" class=\"inline-icon\"> στη γραμμή εργαλείων ή με διπλό κλικ)."
+  "GEAR_MENU_TOOLTIP": "Διαμόρφωση αρχείων εργασίας",
+  "CLOSE_TAB_TOOLTIP": "Κλείσιμο καρτέλας",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Διαγραφή αποσπάσματος"
 });
