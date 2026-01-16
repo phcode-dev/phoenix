@@ -393,7 +393,7 @@ define({
     "CMD_SPLITVIEW_VERTICAL": "Vertical Split",
     "CMD_SPLITVIEW_HORIZONTAL": "Horizontal Split",
     "SPLITVIEW_MENU_TOOLTIP": "Split the editor vertically or horizontally",
-    "GEAR_MENU_TOOLTIP": "Configure Working Set",
+    "GEAR_MENU_TOOLTIP": "Configure Working Files",
 
     "CMD_TOGGLE_SHOW_WORKING_SET": "Show Working Files",
     "CMD_TOGGLE_SHOW_FILE_TABS": "Show File Tab Bar",
