@@ -162,7 +162,6 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Editar ligazón",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Non se estableceu ningún href",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Abrir esta ligazón",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Abrir nunha nova pestana",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Duplicar",
   "LIVE_DEV_TOOLBOX_DELETE": "Eliminar",
   "LIVE_DEV_TOOLBOX_AI": "Editar con IA",
@@ -338,6 +337,7 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "División Vertical",
   "CMD_SPLITVIEW_HORIZONTAL": "División Horizontal",
   "SPLITVIEW_MENU_TOOLTIP": "Dividir o editor vertical ou horizontalmente",
+  "GEAR_MENU_TOOLTIP": "Configurar ficheiros de traballo",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Mostrar ficheiros de traballo",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Mostrar barra de pestanas de ficheiros",
   "SPLITVIEW_INFO_TITLE": "Xa está aberto",
@@ -409,6 +409,7 @@ define({
   "CLOSE_TABS_TO_THE_LEFT": "Pechar lapelas á esquerda",
   "CLOSE_ALL_TABS": "Pechar todas as lapelas",
   "CLOSE_SAVED_TABS": "Pechar lapelas gardadas",
+  "CLOSE_TAB_TOOLTIP": "Pechar lapela",
   "ERRORS_NO_FILE": "Non hai ningún ficheiro aberto",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Problemas - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} problemas, {1} solucionables - {2}",
@@ -1508,6 +1509,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Texto do modelo",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Descrición",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extensión de ficheiro",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Eliminar fragmento",
   "PROMO_UPGRADE_TITLE": "Actualizaches a {0}",
   "PROMO_UPGRADE_MESSAGE": "Goza de acceso a estas funcións premium durante os próximos {0} días:",
   "PROMO_CARD_1": "Editar na vista previa en vivo",
@@ -1661,7 +1663,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Comezar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 tarxetas",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "GEAR_MENU_TOOLTIP": "Configurar ficheiros de traballo",
-  "CLOSE_TAB_TOOLTIP": "Pechar lapela",
-  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Eliminar fragmento"
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Abre nunha nova pestana"
 });

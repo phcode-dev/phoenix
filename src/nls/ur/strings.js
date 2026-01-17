@@ -162,7 +162,6 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "ہائپر لنک میں ترمیم کریں",
   "LIVE_DEV_HYPERLINK_NO_HREF": "کوئی href سیٹ نہیں ہے",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "اس لنک کو کھولیں",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "نئی ٹیب میں کھولیں",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "نقل بنائیں",
   "LIVE_DEV_TOOLBOX_DELETE": "حذف کریں",
   "LIVE_DEV_TOOLBOX_AI": "AI کے ساتھ ترمیم کریں",
@@ -338,6 +337,7 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "عمودی تقسیم",
   "CMD_SPLITVIEW_HORIZONTAL": "افقی تقسیم",
   "SPLITVIEW_MENU_TOOLTIP": "ایڈیٹر کو عمودی یا افقی طور پر تقسیم کریں۔",
+  "GEAR_MENU_TOOLTIP": "ورکنگ فائلوں کی ترتیب",
   "CMD_TOGGLE_SHOW_WORKING_SET": "فعال فائلیں دکھائیں",
   "CMD_TOGGLE_SHOW_FILE_TABS": "فائل ٹیب بار دکھائیں",
   "SPLITVIEW_INFO_TITLE": "پہلے سے کھلا ہوا ہے",
@@ -409,6 +409,7 @@ define({
   "CLOSE_TABS_TO_THE_LEFT": "بائیں جانب والے ٹیبز بند کریں",
   "CLOSE_ALL_TABS": "تمام ٹیبز بند کریں",
   "CLOSE_SAVED_TABS": "محفوظ ٹیبز بند کریں",
+  "CLOSE_TAB_TOOLTIP": "ٹیب بند کریں",
   "ERRORS_NO_FILE": "کوئی فائل کھلی نہیں",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} مسائل - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} مسائل، {1} قابلِ اصلاح - {2}",
@@ -1508,6 +1509,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "ٹیمپلیٹ متن",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "وضاحت",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "فائل ایکسٹینشن",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "سنیپٹ حذف کریں",
   "PROMO_UPGRADE_TITLE": "آپ کو {0} میں اپ گریڈ کر دیا گیا ہے۔",
   "PROMO_UPGRADE_MESSAGE": "اگلے {0} دنوں کے لیے ان پریمیم خصوصیات تک رسائی سے لطف اٹھائیں۔",
   "PROMO_CARD_1": "لائیو پیش منظر میں ترمیم کریں",
@@ -1661,7 +1663,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "دوبارہ شروع کریں",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 کارڈز",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 حذف شدہ",
-  "GEAR_MENU_TOOLTIP": "ورکنگ فائلوں کی ترتیب",
-  "CLOSE_TAB_TOOLTIP": "ٹیب بند کریں",
-  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "سنیپٹ حذف کریں"
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "نئے ٹیب میں کھلتا ہے"
 });

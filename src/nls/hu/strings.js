@@ -162,7 +162,6 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Hivatkozás szerkesztése",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Nincs href beállítva",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Hivatkozás megnyitása",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Megnyitás új lapon",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Duplikálás",
   "LIVE_DEV_TOOLBOX_DELETE": "Töröl",
   "LIVE_DEV_TOOLBOX_AI": "Szerkesztés AI-val",
@@ -338,6 +337,7 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Függőleges felosztás",
   "CMD_SPLITVIEW_HORIZONTAL": "Vízszintes felosztás",
   "SPLITVIEW_MENU_TOOLTIP": "A szerkesztő függőleges vagy vízszintes felosztása",
+  "GEAR_MENU_TOOLTIP": "Munkamenet fájlok beállítása",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Munkában lévő fájlok megjelenítése",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Fájlfülek sávjának megjelenítése",
   "SPLITVIEW_INFO_TITLE": "Már meg van nyitva",
@@ -409,6 +409,7 @@ define({
   "CLOSE_TABS_TO_THE_LEFT": "Bal oldali fülek bezárása",
   "CLOSE_ALL_TABS": "Összes fül bezárása",
   "CLOSE_SAVED_TABS": "Mentett fülek bezárása",
+  "CLOSE_TAB_TOOLTIP": "Fül bezárása",
   "ERRORS_NO_FILE": "Nincs megnyitott fájl",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} probléma - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} probléma, {1} javítható - {2}",
@@ -1508,6 +1509,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Sablonszöveg",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Leírás",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Fájlkiterjesztés",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Kódrészlet törlése",
   "PROMO_UPGRADE_TITLE": "Átálltunk a(z) {0} verzióra",
   "PROMO_UPGRADE_MESSAGE": "Élvezze a hozzáférést ezekhez a prémium funkciókhoz a következő {0} napig:",
   "PROMO_CARD_1": "Szerkesztés élő előnézetben",
@@ -1661,7 +1663,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Újrakezdés",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kártya",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 törölve",
-  "GEAR_MENU_TOOLTIP": "Munkamenet fájlok beállítása",
-  "CLOSE_TAB_TOOLTIP": "Fül bezárása",
-  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Kódrészlet törlése"
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Új lapon nyílik meg"
 });

@@ -162,7 +162,6 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "編輯超連結",
   "LIVE_DEV_HYPERLINK_NO_HREF": "未設定 href",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "開啟此連結",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "在新分頁開啟",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "整行複製",
   "LIVE_DEV_TOOLBOX_DELETE": "刪除",
   "LIVE_DEV_TOOLBOX_AI": "使用 AI 編輯",
@@ -338,6 +337,7 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "左右分割",
   "CMD_SPLITVIEW_HORIZONTAL": "上下分割",
   "SPLITVIEW_MENU_TOOLTIP": "將編輯器分割成上下或左右兩塊",
+  "GEAR_MENU_TOOLTIP": "設定工作檔案",
   "CMD_TOGGLE_SHOW_WORKING_SET": "顯示工作檔案",
   "CMD_TOGGLE_SHOW_FILE_TABS": "顯示檔案標籤列",
   "SPLITVIEW_INFO_TITLE": "已經開啟",
@@ -409,6 +409,7 @@ define({
   "CLOSE_TABS_TO_THE_LEFT": "關閉左側分頁",
   "CLOSE_ALL_TABS": "關閉所有分頁",
   "CLOSE_SAVED_TABS": "關閉已儲存的索引標籤",
+  "CLOSE_TAB_TOOLTIP": "關閉頁籤",
   "ERRORS_NO_FILE": "尚未開啟檔案",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} 個問題 - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} 個問題，其中 {1} 個可修復 - {2}",
@@ -1508,6 +1509,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "範本文字",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "描述",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "檔案副檔名",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "刪除片段",
   "PROMO_UPGRADE_TITLE": "您已升級至 {0}",
   "PROMO_UPGRADE_MESSAGE": "在接下來的 {0} 天內，您將可享用以下這些進階功能：",
   "PROMO_CARD_1": "在即時預覽中編輯",
@@ -1661,7 +1663,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "重新開始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 張卡片",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已刪除",
-  "GEAR_MENU_TOOLTIP": "設定工作檔案",
-  "CLOSE_TAB_TOOLTIP": "關閉頁籤",
-  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "刪除片段"
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "於新分頁中開啟"
 });

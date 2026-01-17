@@ -162,7 +162,6 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Редактировать гиперссылку",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Атрибут href не задан",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Открыть эту ссылку",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Открыть в новой вкладке",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Дублировать",
   "LIVE_DEV_TOOLBOX_DELETE": "Удалить",
   "LIVE_DEV_TOOLBOX_AI": "Редактировать с помощью ИИ",
@@ -338,6 +337,7 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Вертикальное разделение",
   "CMD_SPLITVIEW_HORIZONTAL": "Горизонтальное разделение",
   "SPLITVIEW_MENU_TOOLTIP": "Разделить редактор вертикально или горизонтально",
+  "GEAR_MENU_TOOLTIP": "Настроить рабочие файлы",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Показать рабочие файлы",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Показать панель вкладок файлов",
   "SPLITVIEW_INFO_TITLE": "Уже открыт",
@@ -409,6 +409,7 @@ define({
   "CLOSE_TABS_TO_THE_LEFT": "Закрыть вкладки слева",
   "CLOSE_ALL_TABS": "Закрыть все вкладки",
   "CLOSE_SAVED_TABS": "Закрыть сохранённые вкладки",
+  "CLOSE_TAB_TOOLTIP": "Закрыть вкладку",
   "ERRORS_NO_FILE": "Нет открытого файла",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} проблем - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} проблем, {1} можно исправить - {2}",
@@ -1508,6 +1509,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Текст шаблона",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Описание",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Расширение файла",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Удалить сниппет",
   "PROMO_UPGRADE_TITLE": "Вы перешли на тариф {0}",
   "PROMO_UPGRADE_MESSAGE": "Наслаждайтесь доступом к этим премиум-функциям в течение следующих {0} дней:",
   "PROMO_CARD_1": "Редактирование в реальном времени",
@@ -1661,7 +1663,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Начать заново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карточки",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 удалено",
-  "GEAR_MENU_TOOLTIP": "Настроить рабочие файлы",
-  "CLOSE_TAB_TOOLTIP": "Закрыть вкладку",
-  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Удалить сниппет"
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Открывается в новой вкладке"
 });

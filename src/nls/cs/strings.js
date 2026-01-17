@@ -162,7 +162,6 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Upravit odkaz",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Není nastaveno href",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Otevřít odkaz",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Otevřít v nové kartě",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Duplikovat",
   "LIVE_DEV_TOOLBOX_DELETE": "Smazat",
   "LIVE_DEV_TOOLBOX_AI": "Upravit s AI",
@@ -338,6 +337,7 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Vertikální rozdělení",
   "CMD_SPLITVIEW_HORIZONTAL": "Horizontální rozdělení",
   "SPLITVIEW_MENU_TOOLTIP": "Rozdělit editor horizontálně nebo vertikálně",
+  "GEAR_MENU_TOOLTIP": "Nastavit pracovní soubory",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Zobrazit pracovní soubory",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Zobrazit panel karet souborů",
   "SPLITVIEW_INFO_TITLE": "Již otevřen",
@@ -409,6 +409,7 @@ define({
   "CLOSE_TABS_TO_THE_LEFT": "Zavřít karty nalevo",
   "CLOSE_ALL_TABS": "Zavřít všechny karty",
   "CLOSE_SAVED_TABS": "Zavřít uložené karty",
+  "CLOSE_TAB_TOOLTIP": "Zavřít kartu",
   "ERRORS_NO_FILE": "Žádný otevřený soubor",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} problémů - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} problémů, {1} opravitelných – {2}",
@@ -1508,6 +1509,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Text šablony",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Popis",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Přípona souboru",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Odstranit fragment",
   "PROMO_UPGRADE_TITLE": "Byli jste upgradováni na {0}",
   "PROMO_UPGRADE_MESSAGE": "Užívejte si přístup k těmto prémiovým funkcím po dobu následujících {0} dní:",
   "PROMO_CARD_1": "Upravovat v živém náhledu",
@@ -1661,7 +1663,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začít znovu",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karet",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 smazáno",
-  "GEAR_MENU_TOOLTIP": "Nastavit pracovní soubory",
-  "CLOSE_TAB_TOOLTIP": "Zavřít kartu",
-  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Odstranit fragment"
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Otevře se v nové kartě"
 });

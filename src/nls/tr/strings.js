@@ -162,7 +162,6 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Köprüyü Düzenle",
   "LIVE_DEV_HYPERLINK_NO_HREF": "href ayarlanmadı",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Bu bağlantıyı aç",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Yeni sekmede aç",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Çoğalt",
   "LIVE_DEV_TOOLBOX_DELETE": "Sil",
   "LIVE_DEV_TOOLBOX_AI": "Yapay Zeka ile Düzenle",
@@ -338,6 +337,7 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Dikey Bölme",
   "CMD_SPLITVIEW_HORIZONTAL": "Yatay Böl",
   "SPLITVIEW_MENU_TOOLTIP": "Düzenleyiciyi dikey veya yatay olarak böl",
+  "GEAR_MENU_TOOLTIP": "Çalışma Dosyalarını Yapılandır",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Çalışma Dosyalarını Göster",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Dosya Sekme Çubuğunu Göster",
   "SPLITVIEW_INFO_TITLE": "Zaten Açık",
@@ -409,6 +409,7 @@ define({
   "CLOSE_TABS_TO_THE_LEFT": "Soldaki Sekmeleri Kapat",
   "CLOSE_ALL_TABS": "Tüm Sekmeleri Kapat",
   "CLOSE_SAVED_TABS": "Kaydedilen Sekmeleri Kapat",
+  "CLOSE_TAB_TOOLTIP": "Sekmeyi Kapat",
   "ERRORS_NO_FILE": "Açık Dosya Yok",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Sorun - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} Sorun, {1} Düzeltilebilir - {2}",
@@ -1508,6 +1509,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Şablon Metni",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Açıklama",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Dosya Uzantısı",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Kod Parçacığını Sil",
   "PROMO_UPGRADE_TITLE": "{0} sürümüne yükseltildiniz",
   "PROMO_UPGRADE_MESSAGE": "Bu premium özelliklere önümüzdeki {0} gün boyunca erişimin keyfini çıkarın:",
   "PROMO_CARD_1": "Canlı Önizlemede Düzenle",
@@ -1661,7 +1663,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Yeniden Başla",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 silindi",
-  "GEAR_MENU_TOOLTIP": "Çalışma Dosyalarını Yapılandır",
-  "CLOSE_TAB_TOOLTIP": "Sekmeyi Kapat",
-  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Kod Parçacığını Sil"
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Yeni sekmede açılır"
 });

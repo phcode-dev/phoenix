@@ -162,7 +162,6 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "ハイパーリンクを編集",
   "LIVE_DEV_HYPERLINK_NO_HREF": "hrefが設定されていません",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "このリンクを開く",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "新しいタブで開く",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "行を複製",
   "LIVE_DEV_TOOLBOX_DELETE": "削除",
   "LIVE_DEV_TOOLBOX_AI": "AIで編集",
@@ -338,6 +337,7 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "左右分割",
   "CMD_SPLITVIEW_HORIZONTAL": "上下分割",
   "SPLITVIEW_MENU_TOOLTIP": "エディターを垂直方向 / 水平方向に分割",
+  "GEAR_MENU_TOOLTIP": "作業ファイルの設定",
   "CMD_TOGGLE_SHOW_WORKING_SET": "作業ファイルを表示",
   "CMD_TOGGLE_SHOW_FILE_TABS": "ファイルタブバーを表示",
   "SPLITVIEW_INFO_TITLE": "既に開かれています",
@@ -409,6 +409,7 @@ define({
   "CLOSE_TABS_TO_THE_LEFT": "左側のタブを閉じる",
   "CLOSE_ALL_TABS": "すべてのタブを閉じる",
   "CLOSE_SAVED_TABS": "保存済みタブを閉じる",
+  "CLOSE_TAB_TOOLTIP": "タブを閉じる",
   "ERRORS_NO_FILE": "ファイルが開かれていません",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} 個の問題 - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0}件の問題、{1}件修正可能 - {2}",
@@ -1508,6 +1509,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "テンプレートテキスト",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "説明",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "ファイル拡張子",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "スニペットを削除",
   "PROMO_UPGRADE_TITLE": "{0} にアップグレードされました",
   "PROMO_UPGRADE_MESSAGE": "今後{0}日間、これらのプレミアム機能をご利用いただけます：",
   "PROMO_CARD_1": "ライブプレビューで編集",
@@ -1661,7 +1663,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "最初からやり直す",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3枚のカード",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1件削除済み",
-  "GEAR_MENU_TOOLTIP": "作業ファイルの設定",
-  "CLOSE_TAB_TOOLTIP": "タブを閉じる",
-  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "スニペットを削除"
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "新しいタブで開きます"
 });

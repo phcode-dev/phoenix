@@ -162,7 +162,6 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Editar Hiperlink",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Nenhum href definido",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Abrir este link",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Abrir em nova aba",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Duplicar",
   "LIVE_DEV_TOOLBOX_DELETE": "Excluir",
   "LIVE_DEV_TOOLBOX_AI": "Editar com IA",
@@ -338,6 +337,7 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Divisão vertical",
   "CMD_SPLITVIEW_HORIZONTAL": "Divisão horizontal",
   "SPLITVIEW_MENU_TOOLTIP": "Divida o editor verticalmente ou horizontalmente",
+  "GEAR_MENU_TOOLTIP": "Configurar Arquivos de Trabalho",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Mostrar Arquivos em Uso",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Mostrar Barra de Abas de Arquivos",
   "SPLITVIEW_INFO_TITLE": "Já está aberto",
@@ -409,6 +409,7 @@ define({
   "CLOSE_TABS_TO_THE_LEFT": "Fechar abas à esquerda",
   "CLOSE_ALL_TABS": "Fechar Todas as Guias",
   "CLOSE_SAVED_TABS": "Fechar Abas Salvas",
+  "CLOSE_TAB_TOOLTIP": "Fechar Aba",
   "ERRORS_NO_FILE": "Nenhum Arquivo Aberto",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Problemas - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} Problemas, {1} Corrigível(veis) - {2}",
@@ -1508,6 +1509,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Texto do Modelo",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Descrição",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extensão do Arquivo",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Excluir Snippet",
   "PROMO_UPGRADE_TITLE": "Você foi atualizado(a) para {0}",
   "PROMO_UPGRADE_MESSAGE": "Aproveite o acesso a estes recursos premium pelos próximos {0} dias:",
   "PROMO_CARD_1": "Editar na Visualização ao Vivo",
@@ -1661,7 +1663,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Começar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartões",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 excluído",
-  "GEAR_MENU_TOOLTIP": "Configurar Arquivos de Trabalho",
-  "CLOSE_TAB_TOOLTIP": "Fechar Aba",
-  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Excluir Snippet"
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Abre em nova aba"
 });

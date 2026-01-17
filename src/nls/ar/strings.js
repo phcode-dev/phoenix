@@ -162,7 +162,6 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "تحرير الارتباط التشعبي",
   "LIVE_DEV_HYPERLINK_NO_HREF": "لم يتم تعيين href",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "فتح هذا الرابط",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "فتح في علامة تبويب جديدة",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "تكرار",
   "LIVE_DEV_TOOLBOX_DELETE": "حذف",
   "LIVE_DEV_TOOLBOX_AI": "تحرير بالذكاء الاصطناعي",
@@ -338,6 +337,7 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "تقسيم رأسي",
   "CMD_SPLITVIEW_HORIZONTAL": "تقسيم أفقي",
   "SPLITVIEW_MENU_TOOLTIP": "تقسيم المحرر رأسيًا أو أفقيًا",
+  "GEAR_MENU_TOOLTIP": "إعداد ملفات العمل",
   "CMD_TOGGLE_SHOW_WORKING_SET": "إظهار الملفات العاملة",
   "CMD_TOGGLE_SHOW_FILE_TABS": "إظهار شريط علامات تبويب الملفات",
   "SPLITVIEW_INFO_TITLE": "مفتوح بالفعل",
@@ -409,6 +409,7 @@ define({
   "CLOSE_TABS_TO_THE_LEFT": "إغلاق علامات التبويب على اليسار",
   "CLOSE_ALL_TABS": "إغلاق جميع علامات التبويب",
   "CLOSE_SAVED_TABS": "إغلاق علامات التبويب المحفوظة",
+  "CLOSE_TAB_TOOLTIP": "إغلاق علامة التبويب",
   "ERRORS_NO_FILE": "لا يوجد ملف مفتوح",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} مشاكل - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} مشاكل، {1} قابلة للإصلاح - {2}",
@@ -1508,6 +1509,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "نص القالب",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "الوصف",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "امتداد الملف",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "حذف المقتطف",
   "PROMO_UPGRADE_TITLE": "تم ترقيتك إلى {0}",
   "PROMO_UPGRADE_MESSAGE": "استمتع بالوصول إلى هذه الميزات المميزة للأيام الـ {0} القادمة:",
   "PROMO_CARD_1": "التعديل في المعاينة المباشرة",
@@ -1660,8 +1662,5 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "شيء آخر",
   "DEMO_JS_BUTTON_START_AGAIN": "البدء من جديد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 بطاقات",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 محذوف",
-  "GEAR_MENU_TOOLTIP": "إعداد ملفات العمل",
-  "CLOSE_TAB_TOOLTIP": "إغلاق علامة التبويب",
-  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "حذف المقتطف"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 محذوف"
 });

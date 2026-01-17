@@ -162,7 +162,6 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Редактиране на хипервръзка",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Няма зададен href",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Отваряне на връзката",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Отваряне в нов раздел",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Копие на реда",
   "LIVE_DEV_TOOLBOX_DELETE": "Изтриване",
   "LIVE_DEV_TOOLBOX_AI": "Редактиране с AI",
@@ -338,6 +337,7 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Вертикално разделяне",
   "CMD_SPLITVIEW_HORIZONTAL": "Хоризонтално разделяне",
   "SPLITVIEW_MENU_TOOLTIP": "Вертикално или хоризонтално разделяне на редактора",
+  "GEAR_MENU_TOOLTIP": "Настройки на работните файлове",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Показване на работните файлове",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Покажи лента с табове на файловете",
   "SPLITVIEW_INFO_TITLE": "Вече е отворен",
@@ -409,6 +409,7 @@ define({
   "CLOSE_TABS_TO_THE_LEFT": "Затвори табовете отляво",
   "CLOSE_ALL_TABS": "Затвори всички раздели",
   "CLOSE_SAVED_TABS": "Затваряне на запазените раздели",
+  "CLOSE_TAB_TOOLTIP": "Затвори раздел",
   "ERRORS_NO_FILE": "Няма отворен файл",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} проблема - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} проблема, {1} поправим(и) - {2}",
@@ -1508,6 +1509,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Текст на шаблон",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Описание",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Разширение на файл",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Изтриване на фрагмент",
   "PROMO_UPGRADE_TITLE": "Надградихте до {0}",
   "PROMO_UPGRADE_MESSAGE": "Насладете се на тези премиум функции през следващите {0} дни:",
   "PROMO_CARD_1": "Редактиране в преглед на живо",
@@ -1661,7 +1663,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Започни отново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карти",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 изтрит",
-  "GEAR_MENU_TOOLTIP": "Настройки на работните файлове",
-  "CLOSE_TAB_TOOLTIP": "Затвори раздел",
-  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Изтриване на фрагмент"
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Отваря се в нов раздел"
 });

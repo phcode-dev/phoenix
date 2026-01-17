@@ -162,7 +162,6 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Modifica collegamento",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Nessun href impostato",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Apri questo collegamento",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Apri in una nuova scheda",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Duplica",
   "LIVE_DEV_TOOLBOX_DELETE": "Elimina",
   "LIVE_DEV_TOOLBOX_AI": "Modifica con AI",
@@ -338,6 +337,7 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Dividere Verticalmente",
   "CMD_SPLITVIEW_HORIZONTAL": "Dividere Orizzontalmente",
   "SPLITVIEW_MENU_TOOLTIP": "Dividere l'editor verticalmente oppure orizzontalmente",
+  "GEAR_MENU_TOOLTIP": "Configura file di lavoro",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Mostra file di lavoro",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Mostra barra delle schede dei file",
   "SPLITVIEW_INFO_TITLE": "Già aperto",
@@ -409,6 +409,7 @@ define({
   "CLOSE_TABS_TO_THE_LEFT": "Chiudi schede a sinistra",
   "CLOSE_ALL_TABS": "Chiudi tutte le schede",
   "CLOSE_SAVED_TABS": "Chiudi Schede Salvate",
+  "CLOSE_TAB_TOOLTIP": "Chiudi scheda",
   "ERRORS_NO_FILE": "Nessun file aperto",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Problemi - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} Problemi, {1} Risolvibili - {2}",
@@ -1508,6 +1509,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Testo del Modello",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Descrizione",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Estensione del File",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Elimina snippet",
   "PROMO_UPGRADE_TITLE": "Sei passato a {0}",
   "PROMO_UPGRADE_MESSAGE": "Goditi l'accesso a queste funzionalità premium per i prossimi {0} giorni:",
   "PROMO_CARD_1": "Modifica nell'anteprima in tempo reale",
@@ -1661,7 +1663,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Ricomincia",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carte",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminato",
-  "GEAR_MENU_TOOLTIP": "Configura file di lavoro",
-  "CLOSE_TAB_TOOLTIP": "Chiudi scheda",
-  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Elimina snippet"
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Apre in una nuova scheda"
 });

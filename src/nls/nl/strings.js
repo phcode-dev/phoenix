@@ -162,7 +162,6 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Hyperlink bewerken",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Geen href ingesteld",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Deze link openen",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Open in nieuw tabblad",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Dupliceer",
   "LIVE_DEV_TOOLBOX_DELETE": "Verwijder",
   "LIVE_DEV_TOOLBOX_AI": "Bewerken met AI",
@@ -338,6 +337,7 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Verticaal splitsen",
   "CMD_SPLITVIEW_HORIZONTAL": "Horizontaal splitsen",
   "SPLITVIEW_MENU_TOOLTIP": "Splits de editor verticaal of horizontaal",
+  "GEAR_MENU_TOOLTIP": "Werkbestanden configureren",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Werkbestanden tonen",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Bestandstabbalk tonen",
   "SPLITVIEW_INFO_TITLE": "Al geopend",
@@ -409,6 +409,7 @@ define({
   "CLOSE_TABS_TO_THE_LEFT": "Tabbladen links sluiten",
   "CLOSE_ALL_TABS": "Alle tabbladen sluiten",
   "CLOSE_SAVED_TABS": "Opgeslagen tabbladen sluiten",
+  "CLOSE_TAB_TOOLTIP": "Tabblad sluiten",
   "ERRORS_NO_FILE": "Geen bestand geopend",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} problemen - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} problemen, {1} oplosbaar - {2}",
@@ -1508,6 +1509,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Sjabloontekst",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Beschrijving",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Bestandsextensie",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Snippet verwijderen",
   "PROMO_UPGRADE_TITLE": "Je bent geüpgraded naar {0}",
   "PROMO_UPGRADE_MESSAGE": "Geniet de komende {0} dagen van toegang tot deze premium functies:",
   "PROMO_CARD_1": "Bewerken in Live Preview",
@@ -1661,7 +1663,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Opnieuw beginnen",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kaarten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 verwijderd",
-  "GEAR_MENU_TOOLTIP": "Werkbestanden configureren",
-  "CLOSE_TAB_TOOLTIP": "Tabblad sluiten",
-  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Snippet verwijderen"
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Opent in een nieuw tabblad"
 });

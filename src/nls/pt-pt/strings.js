@@ -162,7 +162,6 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Editar Hiperligação",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Nenhum href definido",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Abrir esta ligação",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Abrir em novo separador",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Duplicar",
   "LIVE_DEV_TOOLBOX_DELETE": "Eliminar",
   "LIVE_DEV_TOOLBOX_AI": "Editar com IA",
@@ -338,6 +337,7 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Divisão Vertical",
   "CMD_SPLITVIEW_HORIZONTAL": "Divisão Horizontal",
   "SPLITVIEW_MENU_TOOLTIP": "Dividir o editor verticalmente ou horizontalmente",
+  "GEAR_MENU_TOOLTIP": "Configurar Ficheiros de Trabalho",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Mostrar Ficheiros em Utilização",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Mostrar Barra de Separadores de Ficheiros",
   "SPLITVIEW_INFO_TITLE": "Já Aberto",
@@ -409,6 +409,7 @@ define({
   "CLOSE_TABS_TO_THE_LEFT": "Fechar Separadores à Esquerda",
   "CLOSE_ALL_TABS": "Fechar Todos os Separadores",
   "CLOSE_SAVED_TABS": "Fechar Separadores Guardados",
+  "CLOSE_TAB_TOOLTIP": "Fechar Separador",
   "ERRORS_NO_FILE": "Nenhum Ficheiro Aberto",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Problemas - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} Problemas, {1} Corrigíveis - {2}",
@@ -1508,6 +1509,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Texto do Modelo",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Descrição",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extensão de Ficheiro",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Eliminar Fragmento",
   "PROMO_UPGRADE_TITLE": "Foi atualizado(a) para {0}",
   "PROMO_UPGRADE_MESSAGE": "Desfrute do acesso a estas funcionalidades premium durante os próximos {0} dias:",
   "PROMO_CARD_1": "Editar na Pré-visualização em Direto",
@@ -1661,7 +1663,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Começar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartões",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "GEAR_MENU_TOOLTIP": "Configurar Ficheiros de Trabalho",
-  "CLOSE_TAB_TOOLTIP": "Fechar Separador",
-  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Eliminar Fragmento"
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Abre num novo separador"
 });

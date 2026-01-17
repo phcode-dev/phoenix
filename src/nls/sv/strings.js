@@ -162,7 +162,6 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Redigera hyperlänk",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Ingen href angiven",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Öppna den här länken",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Öppna i ny flik",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Duplicera",
   "LIVE_DEV_TOOLBOX_DELETE": "Radera",
   "LIVE_DEV_TOOLBOX_AI": "Redigera med AI",
@@ -338,6 +337,7 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Vertikal delning",
   "CMD_SPLITVIEW_HORIZONTAL": "Horisontell delning",
   "SPLITVIEW_MENU_TOOLTIP": "Dela editorn vertikalt eller horisontellt",
+  "GEAR_MENU_TOOLTIP": "Konfigurera arbetsfiler",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Visa aktiva filer",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Visa flikfält för filer",
   "SPLITVIEW_INFO_TITLE": "Redan öppen",
@@ -409,6 +409,7 @@ define({
   "CLOSE_TABS_TO_THE_LEFT": "Stäng flikar till vänster",
   "CLOSE_ALL_TABS": "Stäng alla flikar",
   "CLOSE_SAVED_TABS": "Stäng sparade flikar",
+  "CLOSE_TAB_TOOLTIP": "Stäng flik",
   "ERRORS_NO_FILE": "Ingen fil öppen",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} problem - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} problem, {1} kan åtgärdas - {2}",
@@ -1508,6 +1509,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Malltext",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Beskrivning",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Filändelse",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Ta bort kodavsnitt",
   "PROMO_UPGRADE_TITLE": "Du har uppgraderats till {0}",
   "PROMO_UPGRADE_MESSAGE": "Njut av tillgång till dessa premiumfunktioner under de kommande {0} dagarna:",
   "PROMO_CARD_1": "Redigera i Live Preview",
@@ -1661,7 +1663,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Börja om",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 raderat",
-  "GEAR_MENU_TOOLTIP": "Konfigurera arbetsfiler",
-  "CLOSE_TAB_TOOLTIP": "Stäng flik",
-  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Ta bort kodavsnitt"
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Öppnas i ny flik"
 });

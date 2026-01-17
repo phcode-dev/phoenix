@@ -162,7 +162,6 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Upraviť odkaz",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Nie je nastavený atribút href",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Otvoriť tento odkaz",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Otvoriť na novej karte",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Duplikovať",
   "LIVE_DEV_TOOLBOX_DELETE": "Zmazať",
   "LIVE_DEV_TOOLBOX_AI": "Upraviť pomocou AI",
@@ -338,6 +337,7 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Vertikálne rozdelenie",
   "CMD_SPLITVIEW_HORIZONTAL": "Horizontálne rozdelenie",
   "SPLITVIEW_MENU_TOOLTIP": "Rozdeliť editor vertikálne alebo horizontálne",
+  "GEAR_MENU_TOOLTIP": "Konfigurovať pracovné súbory",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Zobraziť pracovné súbory",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Zobraziť panel so záložkami súborov",
   "SPLITVIEW_INFO_TITLE": "Už otvorené",
@@ -409,6 +409,7 @@ define({
   "CLOSE_TABS_TO_THE_LEFT": "Zatvoriť karty naľavo",
   "CLOSE_ALL_TABS": "Zatvoriť všetky karty",
   "CLOSE_SAVED_TABS": "Zatvoriť uložené karty",
+  "CLOSE_TAB_TOOLTIP": "Zavrieť kartu",
   "ERRORS_NO_FILE": "Žiadny otvorený súbor",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} problémov - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} problémov, {1} opraviteľných - {2}",
@@ -1508,6 +1509,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Text šablóny",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Popis",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Prípona súboru",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Odstrániť úryvok",
   "PROMO_UPGRADE_TITLE": "Boli ste prejdení na {0}",
   "PROMO_UPGRADE_MESSAGE": "Užite si prístup k týmto prémiovým funkciám počas nasledujúcich {0} dní:",
   "PROMO_CARD_1": "Editovať v živom náhľade",
@@ -1661,7 +1663,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začať znova",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karty",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 odstránené",
-  "GEAR_MENU_TOOLTIP": "Konfigurovať pracovné súbory",
-  "CLOSE_TAB_TOOLTIP": "Zavrieť kartu",
-  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Odstrániť úryvok"
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Otvorí sa na novej karte"
 });

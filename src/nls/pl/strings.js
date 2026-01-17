@@ -162,7 +162,6 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Edytuj hiperłącze",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Nie ustawiono href",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Otwórz ten link",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Otwórz w nowej karcie",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Duplikuj",
   "LIVE_DEV_TOOLBOX_DELETE": "Usuń",
   "LIVE_DEV_TOOLBOX_AI": "Edytuj z AI",
@@ -338,6 +337,7 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Podziel pionowo",
   "CMD_SPLITVIEW_HORIZONTAL": "Podziel poziomo",
   "SPLITVIEW_MENU_TOOLTIP": "Podziel edytor pionowo lub poziomo",
+  "GEAR_MENU_TOOLTIP": "Konfiguruj pliki robocze",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Pokaż pliki robocze",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Pokaż pasek kart plików",
   "SPLITVIEW_INFO_TITLE": "Plik jest już otwarty",
@@ -409,6 +409,7 @@ define({
   "CLOSE_TABS_TO_THE_LEFT": "Zamknij karty po lewej",
   "CLOSE_ALL_TABS": "Zamknij wszystkie karty",
   "CLOSE_SAVED_TABS": "Zamknij zapisane karty",
+  "CLOSE_TAB_TOOLTIP": "Zamknij zakładkę",
   "ERRORS_NO_FILE": "Brak otwartego pliku",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} problemów - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} problemów, {1} do naprawienia - {2}",
@@ -1508,6 +1509,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Treść szablonu",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Opis",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Rozszerzenie pliku",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Usuń fragment",
   "PROMO_UPGRADE_TITLE": "Zostałeś(-aś) ulepszony(-a) do {0}",
   "PROMO_UPGRADE_MESSAGE": "Ciesz się dostępem do tych funkcji premium przez następne {0} dni:",
   "PROMO_CARD_1": "Edytuj w podglądzie na żywo",
@@ -1661,7 +1663,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Zacznij od nowa",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 usunięto",
-  "GEAR_MENU_TOOLTIP": "Konfiguruj pliki robocze",
-  "CLOSE_TAB_TOOLTIP": "Zamknij zakładkę",
-  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Usuń fragment"
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Otwiera w nowej karcie"
 });

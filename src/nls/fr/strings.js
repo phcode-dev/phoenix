@@ -162,7 +162,6 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Modifier le lien hypertexte",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Aucun href défini",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Ouvrir ce lien",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Ouvrir dans un nouvel onglet",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Dupliquer",
   "LIVE_DEV_TOOLBOX_DELETE": "Supprimer",
   "LIVE_DEV_TOOLBOX_AI": "Modifier avec l'IA",
@@ -338,6 +337,7 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Fractionnement vertical",
   "CMD_SPLITVIEW_HORIZONTAL": "Fractionnement horizontal",
   "SPLITVIEW_MENU_TOOLTIP": "Fractionner l’éditeur horizontalement ou verticalement",
+  "GEAR_MENU_TOOLTIP": "Configurer les fichiers de travail",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Afficher les fichiers de travail",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Afficher la barre d'onglets des fichiers",
   "SPLITVIEW_INFO_TITLE": "Déjà ouvert",
@@ -409,6 +409,7 @@ define({
   "CLOSE_TABS_TO_THE_LEFT": "Fermer les onglets à gauche",
   "CLOSE_ALL_TABS": "Fermer tous les onglets",
   "CLOSE_SAVED_TABS": "Fermer les onglets enregistrés",
+  "CLOSE_TAB_TOOLTIP": "Fermer l'onglet",
   "ERRORS_NO_FILE": "Aucun fichier ouvert",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Problèmes - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} problèmes, {1} corrigeable(s) - {2}",
@@ -1508,6 +1509,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Texte du modèle",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Description",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extension de fichier",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Supprimer le snippet",
   "PROMO_UPGRADE_TITLE": "Vous avez été surclassé(e) vers {0}",
   "PROMO_UPGRADE_MESSAGE": "Profitez de l'accès à ces fonctionnalités premium pendant les {0} prochains jours :",
   "PROMO_CARD_1": "Modifier dans l'aperçu en direct",
@@ -1661,7 +1663,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Recommencer",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 supprimé",
-  "GEAR_MENU_TOOLTIP": "Configurer les fichiers de travail",
-  "CLOSE_TAB_TOOLTIP": "Fermer l'onglet",
-  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Supprimer le snippet"
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Ouvre dans un nouvel onglet"
 });

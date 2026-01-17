@@ -162,7 +162,6 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "하이퍼링크 편집",
   "LIVE_DEV_HYPERLINK_NO_HREF": "링크 대상이 설정되지 않음",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "이 링크 열기",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "새 탭에서 열기",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "행 복사",
   "LIVE_DEV_TOOLBOX_DELETE": "삭제",
   "LIVE_DEV_TOOLBOX_AI": "AI로 편집",
@@ -338,6 +337,7 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "왼쪽/오른쪽으로 분할",
   "CMD_SPLITVIEW_HORIZONTAL": "위/아래로 분할",
   "SPLITVIEW_MENU_TOOLTIP": "에디터를 왼쪽/오른쪽 또는 위/아래로 분할합니다",
+  "GEAR_MENU_TOOLTIP": "작업 파일 설정",
   "CMD_TOGGLE_SHOW_WORKING_SET": "작업 파일 표시",
   "CMD_TOGGLE_SHOW_FILE_TABS": "파일 탭 표시줄 표시",
   "SPLITVIEW_INFO_TITLE": "이미 열려있는 파일",
@@ -409,6 +409,7 @@ define({
   "CLOSE_TABS_TO_THE_LEFT": "왼쪽 탭 닫기",
   "CLOSE_ALL_TABS": "모든 탭 닫기",
   "CLOSE_SAVED_TABS": "저장된 탭 닫기",
+  "CLOSE_TAB_TOOLTIP": "탭 닫기",
   "ERRORS_NO_FILE": "열려 있는 파일 없음",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0}개의 문제 - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0}개 문제, {1}개 수정 가능 - {2}",
@@ -1508,6 +1509,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "템플릿 텍스트",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "설명",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "파일 확장자",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "스니펫 삭제",
   "PROMO_UPGRADE_TITLE": "{0}(으)로 업그레이드되었습니다.",
   "PROMO_UPGRADE_MESSAGE": "앞으로 {0}일 동안 다음 프리미엄 기능을 이용해 보세요:",
   "PROMO_CARD_1": "라이브 미리보기에서 편집",
@@ -1661,7 +1663,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "다시 시작",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 카드",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 삭제됨",
-  "GEAR_MENU_TOOLTIP": "작업 파일 설정",
-  "CLOSE_TAB_TOOLTIP": "탭 닫기",
-  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "스니펫 삭제"
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "새 탭에 열립니다"
 });

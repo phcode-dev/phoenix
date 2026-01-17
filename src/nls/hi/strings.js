@@ -162,7 +162,6 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "हाइपरलिंक संपादित करें",
   "LIVE_DEV_HYPERLINK_NO_HREF": "कोई href सेट नहीं है",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "यह लिंक खोलें",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "नए टैब में खोलें",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "डुप्लिकेट",
   "LIVE_DEV_TOOLBOX_DELETE": "डिलीट करें",
   "LIVE_DEV_TOOLBOX_AI": "AI से संपादित करें",
@@ -338,6 +337,7 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "लंबवत विभाजन",
   "CMD_SPLITVIEW_HORIZONTAL": "क्षैतिज विभाजन",
   "SPLITVIEW_MENU_TOOLTIP": "संपादक को लंबवत या क्षैतिज रूप से विभाजित करें",
+  "GEAR_MENU_TOOLTIP": "वर्किंग फ़ाइलें कॉन्फ़िगर करें",
   "CMD_TOGGLE_SHOW_WORKING_SET": "कार्यशील फ़ाइलें दिखाएँ",
   "CMD_TOGGLE_SHOW_FILE_TABS": "फ़ाइल टैब बार दिखाएँ",
   "SPLITVIEW_INFO_TITLE": "पहले से खुला",
@@ -409,6 +409,7 @@ define({
   "CLOSE_TABS_TO_THE_LEFT": "बाईं ओर के टैब बंद करें",
   "CLOSE_ALL_TABS": "सभी टैब बंद करें",
   "CLOSE_SAVED_TABS": "सहेजे गए टैब बंद करें",
+  "CLOSE_TAB_TOOLTIP": "टैब बंद करें",
   "ERRORS_NO_FILE": "कोई फ़ाइल नहीं खुली",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} समस्याएँ - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} समस्याएँ, {1} ठीक करने योग्य - {2}",
@@ -1508,6 +1509,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "टेम्पलेट टेक्स्ट",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "विवरण",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "फ़ाइल एक्सटेंशन",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "स्निपेट हटाएँ",
   "PROMO_UPGRADE_TITLE": "आपको {0} में अपग्रेड कर दिया गया है",
   "PROMO_UPGRADE_MESSAGE": "अगले {0} दिनों के लिए इन प्रीमियम सुविधाओं का लाभ उठाएँ:",
   "PROMO_CARD_1": "लाइव प्रीव्यू में संपादित करें",
@@ -1661,7 +1663,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "फिर से शुरू करें",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 कार्ड",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 हटाया गया",
-  "GEAR_MENU_TOOLTIP": "वर्किंग फ़ाइलें कॉन्फ़िगर करें",
-  "CLOSE_TAB_TOOLTIP": "टैब बंद करें",
-  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "स्निपेट हटाएँ"
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "नए टैब में खुलता है"
 });
