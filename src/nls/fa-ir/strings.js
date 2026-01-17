@@ -162,7 +162,6 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "ویرایش پیوند",
   "LIVE_DEV_HYPERLINK_NO_HREF": "هیچ href تنظیم نشده است",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "باز کردن این پیوند",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "باز کردن در زبانه‌ی جدید",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "دو نسخه کردن خط",
   "LIVE_DEV_TOOLBOX_DELETE": "حذف",
   "LIVE_DEV_TOOLBOX_AI": "ویرایش با هوش مصنوعی",
@@ -1660,5 +1659,9 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "یک نکته دیگر",
   "DEMO_JS_BUTTON_START_AGAIN": "شروع مجدد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE} از ۳ کارت",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE} از ۱ مورد حذف شد"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE} از ۱ مورد حذف شد",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "در زبانهٔ جدید باز می‌شود",
+  "GEAR_MENU_TOOLTIP": "پیکربندی فایل‌های کاری",
+  "CLOSE_TAB_TOOLTIP": "بستن زبانه",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "حذف اسنیپت"
 });

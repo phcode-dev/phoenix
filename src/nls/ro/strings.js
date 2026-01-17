@@ -162,7 +162,6 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Editează hyperlinkul",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Niciun href setat",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Deschide acest link",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Deschide în filă nouă",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Dublează",
   "LIVE_DEV_TOOLBOX_DELETE": "Șterge",
   "LIVE_DEV_TOOLBOX_AI": "Editează cu AI",
@@ -338,6 +337,7 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Divizare verticală",
   "CMD_SPLITVIEW_HORIZONTAL": "Divizare orizontală",
   "SPLITVIEW_MENU_TOOLTIP": "Divizare verticală și orizontală",
+  "GEAR_MENU_TOOLTIP": "Configurează fișierele de lucru",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Afișează Fișierele de Lucru",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Afișează bara de tab-uri fișiere",
   "SPLITVIEW_INFO_TITLE": "Deja deschis",
@@ -409,6 +409,7 @@ define({
   "CLOSE_TABS_TO_THE_LEFT": "Închide filele din stânga",
   "CLOSE_ALL_TABS": "Închide toate filele",
   "CLOSE_SAVED_TABS": "Închide filele salvate",
+  "CLOSE_TAB_TOOLTIP": "Închide fila",
   "ERRORS_NO_FILE": "Niciun fișier deschis",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Probleme - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} Probleme, {1} Remediabile - {2}",
@@ -1508,6 +1509,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Text șablon",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Descriere",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extensie fișier",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Șterge snippetul",
   "PROMO_UPGRADE_TITLE": "Ai fost upgradat la {0}",
   "PROMO_UPGRADE_MESSAGE": "Bucură-te de acces la aceste funcționalități premium pentru următoarele {0} zile:",
   "PROMO_CARD_1": "Editează în Previzualizarea Live",
@@ -1661,7 +1663,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Reîncepe",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carduri",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 șters",
-  "GEAR_MENU_TOOLTIP": "Configurează fișierele de lucru",
-  "CLOSE_TAB_TOOLTIP": "Închide fila",
-  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Șterge snippetul"
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Se deschide într-o filă nouă"
 });

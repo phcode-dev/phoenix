@@ -162,7 +162,6 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Επεξεργασία υπερσυνδέσμου",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Δεν έχει οριστεί href",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Άνοιγμα αυτού του συνδέσμου",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Άνοιγμα σε νέα καρτέλα",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Δημιουργία Αντιγράφου",
   "LIVE_DEV_TOOLBOX_DELETE": "Διαγραφή",
   "LIVE_DEV_TOOLBOX_AI": "Επεξεργασία με AI",
@@ -338,6 +337,7 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Κάθετος Διαχωρισμός",
   "CMD_SPLITVIEW_HORIZONTAL": "Οριζόντια Διαίρεση",
   "SPLITVIEW_MENU_TOOLTIP": "Διαίρεση του editor κάθετα ή οριζόντια",
+  "GEAR_MENU_TOOLTIP": "Διαμόρφωση αρχείων εργασίας",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Εμφάνιση Αρχείων Εργασίας",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Εμφάνιση Γραμμής Καρτελών Αρχείων",
   "SPLITVIEW_INFO_TITLE": "Ήδη Ανοιχτό",
@@ -409,6 +409,7 @@ define({
   "CLOSE_TABS_TO_THE_LEFT": "Κλείσιμο καρτελών στα αριστερά",
   "CLOSE_ALL_TABS": "Κλείσιμο Όλων των Καρτελών",
   "CLOSE_SAVED_TABS": "Κλείσιμο Αποθηκευμένων Καρτελών",
+  "CLOSE_TAB_TOOLTIP": "Κλείσιμο καρτέλας",
   "ERRORS_NO_FILE": "Δεν Υπάρχει Ανοιχτό Αρχείο",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Προβλήματα - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} Προβλήματα, {1} Διορθώσιμα - {2}",
@@ -1508,6 +1509,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Κείμενο Προτύπου",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Περιγραφή",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Επέκταση Αρχείου",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Διαγραφή αποσπάσματος",
   "PROMO_UPGRADE_TITLE": "Έχετε αναβαθμιστεί σε {0}",
   "PROMO_UPGRADE_MESSAGE": "Απολαύστε πρόσβαση σε αυτές τις premium λειτουργίες για τις επόμενες {0} ημέρες:",
   "PROMO_CARD_1": "Επεξεργασία σε Ζωντανή Προεπισκόπηση",
@@ -1661,7 +1663,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Έναρξη από την αρχή",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 κάρτες",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 διαγράφηκε",
-  "GEAR_MENU_TOOLTIP": "Διαμόρφωση αρχείων εργασίας",
-  "CLOSE_TAB_TOOLTIP": "Κλείσιμο καρτέλας",
-  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Διαγραφή αποσπάσματος"
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Ανοίγει σε νέα καρτέλα"
 });

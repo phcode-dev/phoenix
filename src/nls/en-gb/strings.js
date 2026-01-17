@@ -162,7 +162,6 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Edit Hyperlink",
   "LIVE_DEV_HYPERLINK_NO_HREF": "No href set",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Open this link",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Open in new tab",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Duplicate",
   "LIVE_DEV_TOOLBOX_DELETE": "Delete",
   "LIVE_DEV_TOOLBOX_AI": "Edit with AI",
@@ -338,6 +337,7 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Vertical Split",
   "CMD_SPLITVIEW_HORIZONTAL": "Split Horizontally",
   "SPLITVIEW_MENU_TOOLTIP": "Split the editor vertically or horizontally",
+  "GEAR_MENU_TOOLTIP": "Configure Working Files",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Show Working Files",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Show File Tab Bar",
   "SPLITVIEW_INFO_TITLE": "Already Open",
@@ -409,6 +409,7 @@ define({
   "CLOSE_TABS_TO_THE_LEFT": "Close tabs to the left",
   "CLOSE_ALL_TABS": "Close All Tabs",
   "CLOSE_SAVED_TABS": "Close Saved Tabs",
+  "CLOSE_TAB_TOOLTIP": "Close Tab",
   "ERRORS_NO_FILE": "No file open",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Problems - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} Problems, {1} Fixable - {2}",
@@ -1508,6 +1509,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Template Text",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Description",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "File Extension",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Delete Snippet",
   "PROMO_UPGRADE_TITLE": "You’ve been upgraded to {0}",
   "PROMO_UPGRADE_MESSAGE": "Enjoy access to these premium features for the next {0} days:",
   "PROMO_CARD_1": "Edit In Live Preview",
@@ -1661,7 +1663,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start Again",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cards",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 deleted",
-  "GEAR_MENU_TOOLTIP": "Configure Working Files",
-  "CLOSE_TAB_TOOLTIP": "Close Tab",
-  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Delete Snippet"
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Opens in new tab"
 });

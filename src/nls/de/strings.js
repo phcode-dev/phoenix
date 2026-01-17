@@ -162,7 +162,6 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Hyperlink bearbeiten",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Kein href festgelegt",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Diesen Link öffnen",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "In neuem Tab öffnen",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Duplizieren",
   "LIVE_DEV_TOOLBOX_DELETE": "Löschen",
   "LIVE_DEV_TOOLBOX_AI": "Mit KI bearbeiten",
@@ -338,6 +337,7 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Vertikal geteilt",
   "CMD_SPLITVIEW_HORIZONTAL": "Horizontal geteilt",
   "SPLITVIEW_MENU_TOOLTIP": "Teilen Sie den Editor vertikal oder horizontal",
+  "GEAR_MENU_TOOLTIP": "Arbeitsdateien konfigurieren",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Arbeitsdateien anzeigen",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Dateireiterleiste anzeigen",
   "SPLITVIEW_INFO_TITLE": "Bereits geöffnet",
@@ -409,6 +409,7 @@ define({
   "CLOSE_TABS_TO_THE_LEFT": "Links befindliche Tabs schließen",
   "CLOSE_ALL_TABS": "Alle Tabs schließen",
   "CLOSE_SAVED_TABS": "Geschlossene Tabs wiederherstellen",
+  "CLOSE_TAB_TOOLTIP": "Tab schließen",
   "ERRORS_NO_FILE": "Keine Datei geöffnet",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Probleme - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} Probleme, {1} davon behebbar - {2}",
@@ -1508,6 +1509,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Vorlagentext",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Beschreibung",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Dateierweiterung",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Snippet löschen",
   "PROMO_UPGRADE_TITLE": "Sie wurden auf {0} hochgestuft",
   "PROMO_UPGRADE_MESSAGE": "Genießen Sie in den nächsten {0} Tagen den Zugriff auf diese Premium-Funktionen:",
   "PROMO_CARD_1": "In der Live-Vorschau bearbeiten",
@@ -1661,7 +1663,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Erneut starten",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 Karten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 gelöscht",
-  "GEAR_MENU_TOOLTIP": "Arbeitsdateien konfigurieren",
-  "CLOSE_TAB_TOOLTIP": "Tab schließen",
-  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Snippet löschen"
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Öffnet in neuem Tab"
 });

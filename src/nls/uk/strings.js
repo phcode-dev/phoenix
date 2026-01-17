@@ -162,7 +162,6 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Редагувати посилання",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Не вказано href",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Відкрити це посилання",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Відкрити у новій вкладці",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Дублювати",
   "LIVE_DEV_TOOLBOX_DELETE": "Видалити",
   "LIVE_DEV_TOOLBOX_AI": "Редагувати з ШІ",
@@ -338,6 +337,7 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Вертикальне розділення",
   "CMD_SPLITVIEW_HORIZONTAL": "Горизонтальне розділення",
   "SPLITVIEW_MENU_TOOLTIP": "Розділити редактор горизонтально або вертикально",
+  "GEAR_MENU_TOOLTIP": "Налаштувати робочі файли",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Показати робочі файли",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Показати панель вкладок файлів",
   "SPLITVIEW_INFO_TITLE": "Уже відкрито",
@@ -409,6 +409,7 @@ define({
   "CLOSE_TABS_TO_THE_LEFT": "Закрити вкладки ліворуч",
   "CLOSE_ALL_TABS": "Закрити всі вкладки",
   "CLOSE_SAVED_TABS": "Закрити збережені вкладки",
+  "CLOSE_TAB_TOOLTIP": "Закрити вкладку",
   "ERRORS_NO_FILE": "Немає відкритого файлу",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} проблем - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} проблем, {1} можна виправити - {2}",
@@ -1508,6 +1509,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Текст шаблону",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Опис",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Розширення файлу",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Видалити сніпет",
   "PROMO_UPGRADE_TITLE": "Вас оновлено до {0}",
   "PROMO_UPGRADE_MESSAGE": "Насолоджуйтесь доступом до цих преміум-функцій протягом наступних {0} днів:",
   "PROMO_CARD_1": "Редагування в режимі живого перегляду",
@@ -1661,7 +1663,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Почати знову",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карток",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 видалено",
-  "GEAR_MENU_TOOLTIP": "Налаштувати робочі файли",
-  "CLOSE_TAB_TOOLTIP": "Закрити вкладку",
-  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Видалити сніпет"
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Відкривається в новій вкладці"
 });

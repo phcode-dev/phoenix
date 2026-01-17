@@ -1165,7 +1165,6 @@
   "LIVE_DEV_DETACHED_REPLACED_WITH_DEVTOOLS": "Live Preview was canceled because the browser's developer tools were opened",
   "LIVE_DEV_DETACHED_TARGET_CLOSED": "Live Preview was canceled because the page was closed in the browser",
   "LIVE_DEV_HYPERLINK_NO_HREF": "No href set",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Open in new tab",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Open this link",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_DESCRIPTION": "Choose where to download the image:",
   "LIVE_DEV_IMAGE_FOLDER_DIALOG_HELP": "💡 Type folder path or leave empty to download in 'images' folder.",

@@ -162,7 +162,6 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Uredi poveznicu",
   "LIVE_DEV_HYPERLINK_NO_HREF": "href nije postavljen",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Otvori ovu poveznicu",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Otvori u novoj kartici",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Udvostruči",
   "LIVE_DEV_TOOLBOX_DELETE": "Obriši",
   "LIVE_DEV_TOOLBOX_AI": "Uredi s AI",
@@ -338,6 +337,7 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Prepolovi okomito",
   "CMD_SPLITVIEW_HORIZONTAL": "Prepolovi vodoravno",
   "SPLITVIEW_MENU_TOOLTIP": "Prepolovi editor okomito ili vodoravno",
+  "GEAR_MENU_TOOLTIP": "Konfiguriraj radne datoteke",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Prikaži datoteke na kojima se radi",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Prikaži traku kartica datoteka",
   "SPLITVIEW_INFO_TITLE": "Već otvoreno",
@@ -409,6 +409,7 @@ define({
   "CLOSE_TABS_TO_THE_LEFT": "Zatvori kartice lijevo",
   "CLOSE_ALL_TABS": "Zatvori sve kartice",
   "CLOSE_SAVED_TABS": "Zatvori spremljene kartice",
+  "CLOSE_TAB_TOOLTIP": "Zatvori karticu",
   "ERRORS_NO_FILE": "Nema otvorene datoteke",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} problema - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} problema, {1} se može popraviti - {2}",
@@ -1508,6 +1509,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Tekst predloška",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Opis",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Ekstenzija datoteke",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Izbriši isječak",
   "PROMO_UPGRADE_TITLE": "Nadograđeni ste na {0}",
   "PROMO_UPGRADE_MESSAGE": "Uživajte u pristupu ovim premium značajkama sljedećih {0} dana:",
   "PROMO_CARD_1": "Uređivanje u pregledu uživo",
@@ -1661,7 +1663,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Kreni ispočetka",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartice",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 obrisano",
-  "GEAR_MENU_TOOLTIP": "Konfiguriraj radne datoteke",
-  "CLOSE_TAB_TOOLTIP": "Zatvori karticu",
-  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Izbriši isječak"
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Otvara se u novoj kartici"
 });

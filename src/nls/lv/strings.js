@@ -162,7 +162,6 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Rediģēt hipersaiti",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Nav iestatīts href",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Atvērt šo saiti",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Atvērt jaunā cilnē",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Dublēt",
   "LIVE_DEV_TOOLBOX_DELETE": "Dzēst",
   "LIVE_DEV_TOOLBOX_AI": "Rediģēt ar MI",
@@ -338,6 +337,7 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Vertikālā sadalīšana",
   "CMD_SPLITVIEW_HORIZONTAL": "Horizontālā sadalīšana",
   "SPLITVIEW_MENU_TOOLTIP": "Sadalīt redaktoru vertikāli vai horizontāli",
+  "GEAR_MENU_TOOLTIP": "Konfigurēt darba failus",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Rādīt darba failus",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Rādīt failu cilnes",
   "SPLITVIEW_INFO_TITLE": "Jau atvērts",
@@ -409,6 +409,7 @@ define({
   "CLOSE_TABS_TO_THE_LEFT": "Aizvērt cilnes pa kreisi",
   "CLOSE_ALL_TABS": "Aizvērt visas cilnes",
   "CLOSE_SAVED_TABS": "Aizvērt saglabātās cilnes",
+  "CLOSE_TAB_TOOLTIP": "Aizvērt cilni",
   "ERRORS_NO_FILE": "Nav atvērts neviens fails",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} problēmas - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} problēmas, {1} labojamas - {2}",
@@ -1508,6 +1509,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Veidnes teksts",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Apraksts",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Faila paplašinājums",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Dzēst fragmentu",
   "PROMO_UPGRADE_TITLE": "Jūs esat jaunināts uz {0}",
   "PROMO_UPGRADE_MESSAGE": "Izbaudiet piekļuvi šīm premium funkcijām nākamās {0} dienas:",
   "PROMO_CARD_1": "Rediģēšana tiešraides priekšskatījumā",
@@ -1661,7 +1663,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Sākt no jauna",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartītes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 izdzēsts",
-  "GEAR_MENU_TOOLTIP": "Konfigurēt darba failus",
-  "CLOSE_TAB_TOOLTIP": "Aizvērt cilni",
-  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Dzēst fragmentu"
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Atveras jaunā cilnē"
 });

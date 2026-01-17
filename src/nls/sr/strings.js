@@ -162,7 +162,6 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Уреди хипервезу",
   "LIVE_DEV_HYPERLINK_NO_HREF": "href није подешен",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Отвори ову везу",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Отвори у новој картици",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Удвостручи",
   "LIVE_DEV_TOOLBOX_DELETE": "Обриши",
   "LIVE_DEV_TOOLBOX_AI": "Уреди помоћу ВИ",
@@ -338,6 +337,7 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Вертикална подела",
   "CMD_SPLITVIEW_HORIZONTAL": "Хоризонтална подела",
   "SPLITVIEW_MENU_TOOLTIP": "Подели едитор вертикално или хоризонтално",
+  "GEAR_MENU_TOOLTIP": "Конфигуриши радне датотеке",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Прикажи радне датотеке",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Прикажи траку картица датотека",
   "SPLITVIEW_INFO_TITLE": "Већ отворена",
@@ -409,6 +409,7 @@ define({
   "CLOSE_TABS_TO_THE_LEFT": "Затвори картице лево",
   "CLOSE_ALL_TABS": "Затвори све картице",
   "CLOSE_SAVED_TABS": "Затвори сачуване картице",
+  "CLOSE_TAB_TOOLTIP": "Затвори картицу",
   "ERRORS_NO_FILE": "Нема отворених датотека",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} проблема - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} проблема, {1} се може поправити - {2}",
@@ -1508,6 +1509,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Текст шаблона",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Опис",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Екстензија датотеке",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Обриши исечак",
   "PROMO_UPGRADE_TITLE": "Унапредили сте на {0}",
   "PROMO_UPGRADE_MESSAGE": "Уживајте у приступу овим премијум функцијама у наредних {0} дана:",
   "PROMO_CARD_1": "Уређивање у живом прегледу",
@@ -1661,7 +1663,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Почни поново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 картице",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 обрисано",
-  "GEAR_MENU_TOOLTIP": "Конфигуриши радне датотеке",
-  "CLOSE_TAB_TOOLTIP": "Затвори картицу",
-  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Обриши исечак"
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Отвара се у новој картици"
 });

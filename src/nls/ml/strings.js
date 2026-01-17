@@ -162,7 +162,6 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "ഹൈപ്പർലിങ്ക് എഡിറ്റ് ചെയ്യുക",
   "LIVE_DEV_HYPERLINK_NO_HREF": "href സജ്ജീകരിച്ചിട്ടില്ല",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "ഈ ലിങ്ക് തുറക്കുക",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "പുതിയ ടാബിൽ തുറക്കുക",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "ഡ്യൂപ്ലിക്കേറ്റ്",
   "LIVE_DEV_TOOLBOX_DELETE": "ഡിലീറ്റ് ചെയ്യുക",
   "LIVE_DEV_TOOLBOX_AI": "AI ഉപയോഗിച്ച് എഡിറ്റ് ചെയ്യുക",
@@ -338,6 +337,7 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "ലംബ വിഭജനം",
   "CMD_SPLITVIEW_HORIZONTAL": "തിരശ്ചീനമായി വിഭജിക്കുക",
   "SPLITVIEW_MENU_TOOLTIP": "എഡിറ്റரை ലംബമായോ തിരശ്ചീനമായോ വിഭജിക്കുക",
+  "GEAR_MENU_TOOLTIP": "വർക്കിംഗ് ഫയലുകൾ ക്രമീകരിക്കുക",
   "CMD_TOGGLE_SHOW_WORKING_SET": "പ്രവർത്തനക്ഷമമായ ഫയലുകൾ കാണിക്കുക",
   "CMD_TOGGLE_SHOW_FILE_TABS": "ഫയൽ ടാബ് ബാർ കാണിക്കുക",
   "SPLITVIEW_INFO_TITLE": "ഇതിനകം തുറന്നിരിക്കുന്നു",
@@ -409,6 +409,7 @@ define({
   "CLOSE_TABS_TO_THE_LEFT": "ഇടതുവശത്തുള്ള ടാബുകൾ അടയ്ക്കുക",
   "CLOSE_ALL_TABS": "എല്ലാ ടാബുകളും അടയ്ക്കുക",
   "CLOSE_SAVED_TABS": "സേവ് ചെയ്ത ടാബുകൾ അടയ്ക്കുക",
+  "CLOSE_TAB_TOOLTIP": "ടാബ് അടയ്ക്കുക",
   "ERRORS_NO_FILE": "ഫയൽ തുറന്നിട്ടില്ല",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} പ്രശ്നങ്ങൾ - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} പ്രശ്‌നങ്ങൾ, {1} പരിഹരിക്കാവുന്നവ - {2}",
@@ -1508,6 +1509,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "ടെംപ്ലേറ്റ് ടെക്സ്റ്റ്",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "വിവരണം",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "ഫയൽ എക്സ്റ്റൻഷൻ",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "സ്നിപ്പെറ്റ് ഇല്ലാതാക്കുക",
   "PROMO_UPGRADE_TITLE": "നിങ്ങൾ {0} ലേക്ക് അപ്‌ഗ്രേഡ് ചെയ്യപ്പെട്ടിരിക്കുന്നു",
   "PROMO_UPGRADE_MESSAGE": "അടുത്ത {0} ദിവസത്തേക്ക് ഈ പ്രീമിയം ഫീച്ചറുകൾ ആസ്വദിക്കൂ:",
   "PROMO_CARD_1": "ലൈവ് പ്രിവ്യൂവിൽ എഡിറ്റ് ചെയ്യുക",
@@ -1661,7 +1663,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "വീണ്ടും ആരംഭിക്കുക",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 കാർഡുകൾ",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 ഇല്ലാതാക്കി",
-  "GEAR_MENU_TOOLTIP": "വർക്കിംഗ് ഫയലുകൾ ക്രമീകരിക്കുക",
-  "CLOSE_TAB_TOOLTIP": "ടാബ് അടയ്ക്കുക",
-  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "സ്നിപ്പെറ്റ് ഇല്ലാതാക്കുക"
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "പുതിയ ടാബിൽ തുറക്കുന്നു"
 });

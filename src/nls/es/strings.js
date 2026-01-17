@@ -162,7 +162,6 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Editar enlace",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Sin href establecido",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Abrir este enlace",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Abrir en nueva pestaña",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Duplicar",
   "LIVE_DEV_TOOLBOX_DELETE": "Eliminar",
   "LIVE_DEV_TOOLBOX_AI": "Editar con IA",
@@ -338,6 +337,7 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "División vertical",
   "CMD_SPLITVIEW_HORIZONTAL": "División horizontal",
   "SPLITVIEW_MENU_TOOLTIP": "Dividir el editor vertical u horizontalmente",
+  "GEAR_MENU_TOOLTIP": "Configurar archivos de trabajo",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Mostrar archivos de trabajo",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Mostrar barra de pestañas de archivos",
   "SPLITVIEW_INFO_TITLE": "Ya está abierto",
@@ -409,6 +409,7 @@ define({
   "CLOSE_TABS_TO_THE_LEFT": "Cerrar pestañas a la izquierda",
   "CLOSE_ALL_TABS": "Cerrar todas las pestañas",
   "CLOSE_SAVED_TABS": "Cerrar pestañas guardadas",
+  "CLOSE_TAB_TOOLTIP": "Cerrar pestaña",
   "ERRORS_NO_FILE": "No hay ningún archivo abierto",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Problemas - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} Problemas, {1} Solucionables - {2}",
@@ -1508,6 +1509,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Texto de la plantilla",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Descripción",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Extensión de archivo",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Eliminar fragmento",
   "PROMO_UPGRADE_TITLE": "Te hemos actualizado a {0}",
   "PROMO_UPGRADE_MESSAGE": "Disfruta de acceso a estas funciones prémium durante los próximos {0} días:",
   "PROMO_CARD_1": "Editar en la Vista Previa en Vivo",
@@ -1661,7 +1663,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Empezar de nuevo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 tarjetas",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "GEAR_MENU_TOOLTIP": "Configurar archivos de trabajo",
-  "CLOSE_TAB_TOOLTIP": "Cerrar pestaña",
-  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Eliminar fragmento"
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Se abre en una pestaña nueva"
 });

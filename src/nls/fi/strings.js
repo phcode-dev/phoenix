@@ -162,7 +162,6 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Muokkaa linkkiä",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Ei href-arvoa asetettu",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Avaa tämä linkki",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Avaa uudessa välilehdessä",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Monista",
   "LIVE_DEV_TOOLBOX_DELETE": "Poista",
   "LIVE_DEV_TOOLBOX_AI": "Muokkaa tekoälyllä",
@@ -338,6 +337,7 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Pystyjako",
   "CMD_SPLITVIEW_HORIZONTAL": "Vaakajako",
   "SPLITVIEW_MENU_TOOLTIP": "Jaa editori pysty- tai vaakasuunnassa",
+  "GEAR_MENU_TOOLTIP": "Määritä työtiedostot",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Näytä työstettävät tiedostot",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Näytä tiedostovälilehtirivi",
   "SPLITVIEW_INFO_TITLE": "Jo avoinna",
@@ -409,6 +409,7 @@ define({
   "CLOSE_TABS_TO_THE_LEFT": "Sulje välilehdet vasemmalta",
   "CLOSE_ALL_TABS": "Sulje kaikki välilehdet",
   "CLOSE_SAVED_TABS": "Sulje tallennetut välilehdet",
+  "CLOSE_TAB_TOOLTIP": "Sulje välilehti",
   "ERRORS_NO_FILE": "Ei avoinna olevaa tiedostoa",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} ongelmaa - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} ongelmaa, {1} korjattavissa - {2}",
@@ -1508,6 +1509,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Malliteksti",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Kuvaus",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Tiedostopääte",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Poista koodinpätkä",
   "PROMO_UPGRADE_TITLE": "Sinut on päivitetty {0}-tilaukseen",
   "PROMO_UPGRADE_MESSAGE": "Nauti näiden premium-ominaisuuksien käytöstä seuraavien {0} päivän ajan:",
   "PROMO_CARD_1": "Muokkaa reaaliaikaisessa esikatselussa",
@@ -1661,7 +1663,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Aloita alusta",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 korttia",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 poistettu",
-  "GEAR_MENU_TOOLTIP": "Määritä työtiedostot",
-  "CLOSE_TAB_TOOLTIP": "Sulje välilehti",
-  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Poista koodinpätkä"
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Avautuu uuteen välilehteen"
 });

@@ -162,7 +162,6 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Edit Tautan",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Href belum diatur",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Buka tautan ini",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Buka di tab baru",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Gandakan",
   "LIVE_DEV_TOOLBOX_DELETE": "Hapus",
   "LIVE_DEV_TOOLBOX_AI": "Edit dengan AI",
@@ -338,6 +337,7 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Sekat Vertikal",
   "CMD_SPLITVIEW_HORIZONTAL": "Sekat Horisontal",
   "SPLITVIEW_MENU_TOOLTIP": "Beri sekat pada editor secara horisontal atau vertikal",
+  "GEAR_MENU_TOOLTIP": "Konfigurasi File Kerja",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Tampilkan File yang Sedang Diproses",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Tampilkan Bilah Tab Berkas",
   "SPLITVIEW_INFO_TITLE": "Sudah Terbuka",
@@ -409,6 +409,7 @@ define({
   "CLOSE_TABS_TO_THE_LEFT": "Tutup Tab di Sebelah Kiri",
   "CLOSE_ALL_TABS": "Tutup Semua Tab",
   "CLOSE_SAVED_TABS": "Tutup Tab yang Disimpan",
+  "CLOSE_TAB_TOOLTIP": "Tutup Tab",
   "ERRORS_NO_FILE": "Tidak Ada Berkas yang Dibuka",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} Masalah - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} Masalah, {1} Dapat Diperbaiki - {2}",
@@ -1508,6 +1509,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Teks Templat",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Deskripsi",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Ekstensi Berkas",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Hapus Snippet",
   "PROMO_UPGRADE_TITLE": "Anda telah diupgrade ke {0}",
   "PROMO_UPGRADE_MESSAGE": "Nikmati akses ke fitur-fitur premium ini selama {0} hari ke depan:",
   "PROMO_CARD_1": "Edit di Pratinjau Langsung",
@@ -1661,7 +1663,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Mulai Lagi",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartu",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 dihapus",
-  "GEAR_MENU_TOOLTIP": "Konfigurasi File Kerja",
-  "CLOSE_TAB_TOOLTIP": "Tutup Tab",
-  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Hapus Snippet"
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Dibuka di tab baru"
 });

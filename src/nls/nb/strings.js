@@ -162,7 +162,6 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Rediger hyperlenke",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Ingen href angitt",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Åpne denne lenken",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Åpne i ny fane",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Dupliser",
   "LIVE_DEV_TOOLBOX_DELETE": "Slett",
   "LIVE_DEV_TOOLBOX_AI": "Rediger med KI",
@@ -338,6 +337,7 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "Vertikal deling",
   "CMD_SPLITVIEW_HORIZONTAL": "Horisontal deling",
   "SPLITVIEW_MENU_TOOLTIP": "Del redigeringsprogrammet vertikalt eller horisontalt",
+  "GEAR_MENU_TOOLTIP": "Konfigurer arbeidsfiler",
   "CMD_TOGGLE_SHOW_WORKING_SET": "Vis filer i bruk",
   "CMD_TOGGLE_SHOW_FILE_TABS": "Vis filfanelinje",
   "SPLITVIEW_INFO_TITLE": "Allerede åpen",
@@ -409,6 +409,7 @@ define({
   "CLOSE_TABS_TO_THE_LEFT": "Lukk faner til venstre",
   "CLOSE_ALL_TABS": "Lukk alle faner",
   "CLOSE_SAVED_TABS": "Lukk lagrede faner",
+  "CLOSE_TAB_TOOLTIP": "Lukk fane",
   "ERRORS_NO_FILE": "Ingen fil åpen",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} problemer - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} problemer, {1} kan fikses - {2}",
@@ -1508,6 +1509,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "Maltekst",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "Beskrivelse",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "Filtype",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Slett kodebit",
   "PROMO_UPGRADE_TITLE": "Du har blitt oppgradert til {0}",
   "PROMO_UPGRADE_MESSAGE": "Få tilgang til disse premium-funksjonene i de neste {0} dagene:",
   "PROMO_CARD_1": "Rediger i direkte forhåndsvisning",
@@ -1661,7 +1663,5 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start på nytt",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "GEAR_MENU_TOOLTIP": "Konfigurer arbeidsfiler",
-  "CLOSE_TAB_TOOLTIP": "Lukk fane",
-  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "Slett kodebit"
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Åpnes i ny fane"
 });
