@@ -1662,5 +1662,6 @@ define({
   "DEMO_JS_BUTTON_ONE_MORE": "شيء آخر",
   "DEMO_JS_BUTTON_START_AGAIN": "البدء من جديد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 بطاقات",
-  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 محذوف"
+  "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 محذوف",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "يُفتح في علامة تبويب جديدة"
 });
