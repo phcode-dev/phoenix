@@ -214,6 +214,7 @@ define(function (require, exports, module) {
     function _findAbbreviationStart(line, cursorCh) {
         let start = cursorCh;
         let insideBraces = false;
+        let lastGtPos = -1;
 
         // If the cursor is right before a closing brace, adjust it to be "inside" the braces
         if (line.charAt(start) === '}' || line.charAt(start) === ']') {
@@ -230,6 +231,20 @@ define(function (require, exports, module) {
                 insideBraces = true;
             } else if (char === '{' || char === '[') {
                 insideBraces = false;
+            }
+
+            // if we hit '<', this means that we've entered an HTML tag (e.g., <p>, <div>)
+            // so in that case we need to return position right after the last '>' (we store it in lastGtPos)
+            // use case scenario: "<p>lorem" to extract "lorem" instead of "<p>lorem"
+            if (char === '<') {
+                if (lastGtPos !== -1) {
+                    return lastGtPos + 1;
+                }
+                break;
+            }
+
+            if (char === '>') {
+                lastGtPos = start - 1;
             }
 
             // If the character is valid as part of an Emmet abbreviation, continue scanning backwards
