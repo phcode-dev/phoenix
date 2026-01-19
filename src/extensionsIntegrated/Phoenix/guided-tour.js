@@ -230,8 +230,9 @@ define(function (require, exports, module) {
             Metrics.countEvent(Metrics.EVENT_TYPE.USER, "survey", "powerNotification", 1);
             _showSurveyNotification(surveyURL, title);
         }
-        nextShowDate.setUTCDate(nextShowDate.getUTCDate() + intervalDays);
-        userAlreadyDidAction.nextPowerSurveyShowDate = nextShowDate.getTime();
+        let newNextShowDate = new Date();
+        newNextShowDate.setUTCDate(newNextShowDate.getUTCDate() + intervalDays);
+        userAlreadyDidAction.nextPowerSurveyShowDate = newNextShowDate.getTime();
         PhStore.setItem(GUIDED_TOUR_LOCAL_STORAGE_KEY, JSON.stringify(userAlreadyDidAction));
     }
 
