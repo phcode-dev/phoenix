@@ -46,8 +46,8 @@
         "bugsnagEnv": "development"
     },
     "name": "Phoenix Code",
-    "version": "5.0.7-0",
-    "apiVersion": "5.0.7",
+    "version": "5.1.0-0",
+    "apiVersion": "5.1.0",
     "homepage": "https://core.ai",
     "issues": {
         "url": "https://github.com/phcode-dev/phoenix/issues"
