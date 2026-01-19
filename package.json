@@ -1,7 +1,7 @@
 {
     "name": "phoenix",
-    "version": "5.0.4-0",
-    "apiVersion": "5.0.4",
+    "version": "5.0.5-0",
+    "apiVersion": "5.0.5",
     "homepage": "https://core.ai",
     "issues": {
         "url": "https://github.com/phcode-dev/phoenix/issues"
