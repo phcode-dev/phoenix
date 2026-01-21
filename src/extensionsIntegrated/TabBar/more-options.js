@@ -151,6 +151,9 @@ define(function (require, exports, module) {
         menu.addMenuItem(TABBAR_CLOSE_SAVED_TABS);
         menu.addMenuItem(TABBAR_CLOSE_ALL);
         menu.addMenuDivider();
+        menu.addMenuItem(Commands.FILE_PIN);
+        menu.addMenuItem(Commands.FILE_UNPIN);
+        menu.addMenuDivider();
         menu.addMenuItem(Commands.FILE_RENAME);
         menu.addMenuItem(Commands.FILE_DELETE);
         menu.addMenuItem(Commands.NAVIGATE_SHOW_IN_FILE_TREE);

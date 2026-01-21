@@ -320,6 +320,9 @@ define(function (require, exports, module) {
             subMenu.addMenuItem(Commands.NAVIGATE_OPEN_IN_DEFAULT_APP);
         }
         workingset_cmenu.addMenuDivider();
+        workingset_cmenu.addMenuItem(Commands.FILE_PIN);
+        workingset_cmenu.addMenuItem(Commands.FILE_UNPIN);
+        workingset_cmenu.addMenuDivider();
         workingset_cmenu.addMenuItem(Commands.FILE_COPY);
         workingset_cmenu.addMenuItem(Commands.FILE_COPY_PATH);
         workingset_cmenu.addMenuItem(Commands.FILE_DUPLICATE);
