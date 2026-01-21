@@ -2002,12 +2002,33 @@ define(function (require, exports, module) {
             });
     }
 
-    function handleFilePin() {
-        // @devansh: implement the pin functionality here...
+    /**
+     * we call this function when the user selects the 'Pin' option from the context menu
+     * so we pin the file. the pinned file is displayed before the normal files in the working set and tab bar
+     * we also prevent the pinned files from being closed during bulk close operations
+     * @param {{file: File, paneId: string}} commandData - the file to pin and paneId,
+     *                         if unavailable we use the current file and active pane
+     */
+    function handleFilePin(commandData = {}) {
+        const file = commandData.file || MainViewManager.getCurrentlyViewedFile();
+        const paneId = commandData.paneId || MainViewManager.ACTIVE_PANE;
+
+        if (file) {
+            MainViewManager.pinFile(paneId, file);
+        }
     }
 
-    function handleFileUnpin() {
-        // @devansh: implement the unpin functionality here...
+    /**
+     * this unpins the file so it goes back to normal behavior in the working set and tab bar
+     * @param {{file: File, paneId: string}} commandData - read the JSDoc for handleFilePin
+     */
+    function handleFileUnpin(commandData = {}) {
+        const file = commandData.file || MainViewManager.getCurrentlyViewedFile();
+        const paneId = commandData.paneId || MainViewManager.ACTIVE_PANE;
+
+        if (file) {
+            MainViewManager.unpinFile(paneId, file);
+        }
     }
 
     /** Show the selected sidebar (tree or workingset) item in Finder/Explorer */

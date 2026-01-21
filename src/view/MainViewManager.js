@@ -1002,6 +1002,68 @@ define(function (require, exports, module) {
     }
 
     /**
+     * This function is called from DocumentCommandHandlers.js handleFilePin function
+     * it is to pin the file. the pinned file is displayed before the normal files in the working set and tab bar
+     * we also prevent the pinned files from being closed during bulk close operations
+     *
+     * @param {!string} paneId - the id of the pane in which to pin the file or ACTIVE_PANE
+     * @param {!File} file - the File to pin
+     * @return {boolean} true if the file was pinned, false if it was already pinned or not in the working set
+     */
+    function pinFile(paneId, file) {
+        const pane = _getPane(paneId);
+        if (!pane) {
+            return false;
+        }
+
+        const result = pane.pinPath(file.fullPath);
+        if (result) {
+            exports.trigger("workingSetPinned", file, pane.id);
+            exports.trigger("workingSetSort", pane.id);
+        }
+
+        return result;
+    }
+
+    /**
+     * called from DocumentCommandHandlers.js handleFileUnpin function,
+     * to unpin the file
+     *
+     * @param {!string} paneId - the id of the pane in which to unpin the file or ACTIVE_PANE
+     * @param {!File} file - the File to unpin
+     * @return {boolean} true if the file was unpinned, false if it wasn't pinned
+     */
+    function unpinFile(paneId, file) {
+        const pane = _getPane(paneId);
+        if (!pane) {
+            return false;
+        }
+
+        const result = pane.unpinPath(file.fullPath);
+        if (result) {
+            exports.trigger("workingSetUnpinned", file, pane.id);
+        }
+
+        return result;
+    }
+
+    /**
+     * checks if a file path is pinned in the working set.
+     *
+     * @param {!string} paneId - the id of the pane in which to check or ACTIVE_PANE
+     * @param {!string} path - the full path to check
+     * @return {boolean} true if the file is pinned
+     */
+    function isPathPinned(paneId, path) {
+        const pane = _getPane(paneId);
+        if (!pane) {
+            return false;
+        }
+
+        return pane.isPathPinned(path);
+    }
+
+    /**
      * Get the next or previous file in the MRU list.
      * @param {!number} direction - Must be 1 or -1 to traverse forward or backward
      * @return {?{file:File, paneId:string}} The File object of the next item in the traversal order or null if there aren't any files to traverse.
@@ -1807,6 +1869,11 @@ define(function (require, exports, module) {
     exports.addListToWorkingSet = addListToWorkingSet;
     exports.getWorkingSetSize = getWorkingSetSize;
     exports.getWorkingSet = getWorkingSet;
+
+    // Pin Management
+    exports.pinFile = pinFile;
+    exports.unpinFile = unpinFile;
+    exports.isPathPinned = isPathPinned;
 
     // Pane state
     exports.cacheScrollState = cacheScrollState;
