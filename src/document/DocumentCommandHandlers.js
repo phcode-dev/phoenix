@@ -2002,6 +2002,14 @@ define(function (require, exports, module) {
             });
     }
 
+    function handleFilePin() {
+        // @devansh: implement the pin functionality here...
+    }
+
+    function handleFileUnpin() {
+        // @devansh: implement the unpin functionality here...
+    }
+
     /** Show the selected sidebar (tree or workingset) item in Finder/Explorer */
     function handleShowInOS() {
         var entry = ProjectManager.getSelectedItem();
@@ -2380,6 +2388,8 @@ define(function (require, exports, module) {
     CommandManager.register(Strings.CMD_FILE_SAVE_AS,                Commands.FILE_SAVE_AS,                   handleFileSaveAs);
     CommandManager.register(Strings.CMD_FILE_RENAME,                 Commands.FILE_RENAME,                    handleFileRename);
     CommandManager.register(Strings.CMD_FILE_DELETE,                 Commands.FILE_DELETE,                    handleFileDelete);
+    CommandManager.register(Strings.CMD_FILE_PIN,                    Commands.FILE_PIN,                       handleFilePin);
+    CommandManager.register(Strings.CMD_FILE_UNPIN,                  Commands.FILE_UNPIN,                     handleFileUnpin);
 
     // Close Commands
     CommandManager.register(Strings.CMD_FILE_CLOSE,                  Commands.FILE_CLOSE,                     handleFileClose);
