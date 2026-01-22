@@ -1244,6 +1244,14 @@ define(function (require, exports, module) {
             $newItem.addClass(provider(data));
         });
 
+        // if the file is pinned, add the pin icon in the list item
+        const isPinned = MainViewManager.isPathPinned(this.paneId, file.fullPath);
+        if (isPinned) {
+            $newItem.addClass("pinned");
+            const $pinIcon = $("<div class='pin-icon'><i class='fa-solid fa-thumbtack'></i></div>");
+            $newItem.append($pinIcon);
+        }
+
         // Update the listItem's apperance
         this._updateFileStatusIcon($newItem, _isOpenAndDirty(file), false);
         _updateListItemSelection($newItem, selectedFile);
@@ -1422,6 +1430,15 @@ define(function (require, exports, module) {
     };
 
     /**
+     * working set pin change (unpinned/pinned) event handler
+     */
+    WorkingSetView.prototype._handleWorkingSetPinChange = function (e, file, paneId) {
+        if (paneId === this.paneId) {
+            this._rebuildViewList(true);
+        }
+    };
+
+    /**
      * dirtyFlagChange event handler
      * @private
      * @param {jQuery.Event} e - event object
@@ -1469,6 +1486,8 @@ define(function (require, exports, module) {
         MainViewManager.on(this._makeEventName("activePaneChange"), _.bind(this._handleActivePaneChange, this));
         MainViewManager.on(this._makeEventName("paneLayoutChange"), _.bind(this._handlePaneLayoutChange, this));
         MainViewManager.on(this._makeEventName("workingSetUpdate"), _.bind(this._handleWorkingSetUpdate, this));
+        MainViewManager.on(this._makeEventName("workingSetPinned"), _.bind(this._handleWorkingSetPinChange, this));
+        MainViewManager.on(this._makeEventName("workingSetUnpinned"), _.bind(this._handleWorkingSetPinChange, this));
 
         DocumentManager.on(this._makeEventName("dirtyFlagChange"), _.bind(this._handleDirtyFlagChanged, this));
 
