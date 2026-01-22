@@ -143,6 +143,7 @@ define(function (require, exports, module) {
 
         const isDirty = Helper._isFileModified(FileSystem.getFileForPath(entry.path));
         const isPlaceholder = entry.isPlaceholder === true;
+        const isPinned = MainViewManager.isPathPinned(paneId, entry.path);
 
         let gitStatus = ""; // this will be shown in the tooltip when a tab is hovered
         let gitStatusClass = ""; // for styling
@@ -173,12 +174,15 @@ define(function (require, exports, module) {
             ${isActive ? "active" : ""}
             ${isDirty ? "dirty" : ""}
             ${isPlaceholder ? "placeholder" : ""}
+            ${isPinned ? "pinned" : ""}
             ${gitStatusClass}"
             data-path="${entry.path}" 
             title="${Phoenix.app.getDisplayPath(entry.path)}${gitStatus ? " (" + gitStatus + ")" : ""}">
             <div class="tab-icon"></div>
             <div class="tab-name"></div>
-            <div class="tab-close"><i class="fa-solid fa-times"></i></div>
+            ${isPinned ?
+        '<div class="tab-pin"><i class="fa-solid fa-thumbtack"></i></div>' :
+        '<div class="tab-close"><i class="fa-solid fa-times"></i></div>'}
         </div>`
         );
 
@@ -514,6 +518,14 @@ define(function (require, exports, module) {
 
                 CommandManager.execute(Commands.FILE_CLOSE, { file: fileObj, paneId: paneId }); // close the file
             }
+
+            // check if the clicked element is the pin icon, if yes then we need to unpin it
+            if ($(event.target).hasClass("fa-thumbtack") || $(event.target).closest(".tab-pin").length) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                CommandManager.execute(Commands.FILE_UNPIN, { file: fileObj, paneId: paneId });
+            }
         });
 
         // add listener for tab close button to show the tooltip along with the keybinding
@@ -655,7 +667,9 @@ define(function (require, exports, module) {
             "workingSetAddList",
             "workingSetRemoveList",
             "workingSetUpdate",
-            "_workingSetDisableAutoSort"
+            "_workingSetDisableAutoSort",
+            "workingSetPinned",
+            "workingSetUnpinned"
         ];
         MainViewManager.off(events.join(" "), updateTabs);
         MainViewManager.on(events.join(" "), updateTabs);
