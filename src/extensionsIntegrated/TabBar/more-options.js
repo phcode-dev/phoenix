@@ -26,6 +26,7 @@ define(function (require, exports, module) {
     const CommandManager = require("command/CommandManager");
     const Commands = require("command/Commands");
     const FileSystem = require("filesystem/FileSystem");
+    const MainViewManager = require("view/MainViewManager");
     const Menus = require("command/Menus");
     const Strings = require("strings");
 
@@ -42,6 +43,22 @@ define(function (require, exports, module) {
     // stores the context of the right-clicked tab (which file, which pane)
     // this is set inside the showMoreOptionsContextMenu. read that func for more details
     let _currentTabContext = { filePath: null, paneId: null };
+
+    /**
+     * this function is called before the context menu is shown
+     * it updates the menu items based on the current tab context
+     * so we only show the relevant options
+     */
+    function _updateMenuItems() {
+        // PIN/UNPIN logic
+        const isPinned = MainViewManager.isPathPinned(
+            _currentTabContext.paneId,
+            _currentTabContext.filePath
+        );
+
+        CommandManager.get(Commands.FILE_PIN).setEnabled(!isPinned);
+        CommandManager.get(Commands.FILE_UNPIN).setEnabled(isPinned);
+    }
 
     // gets the working set (list of open files) for the given pane
     function _getWorkingSet(paneId) {
@@ -151,14 +168,18 @@ define(function (require, exports, module) {
         menu.addMenuItem(TABBAR_CLOSE_SAVED_TABS);
         menu.addMenuItem(TABBAR_CLOSE_ALL);
         menu.addMenuDivider();
-        menu.addMenuItem(Commands.FILE_PIN);
-        menu.addMenuItem(Commands.FILE_UNPIN);
+        menu.addMenuItem(Commands.FILE_PIN, null, null, null, { hideWhenCommandDisabled: true });
+        menu.addMenuItem(Commands.FILE_UNPIN, null, null, null, { hideWhenCommandDisabled: true });
         menu.addMenuDivider();
         menu.addMenuItem(Commands.FILE_RENAME);
         menu.addMenuItem(Commands.FILE_DELETE);
         menu.addMenuItem(Commands.NAVIGATE_SHOW_IN_FILE_TREE);
         menu.addMenuDivider();
         menu.addMenuItem(Commands.FILE_REOPEN_CLOSED);
+
+        // _updateMenuItems function disables the button which are not needed for the current tab
+        // and those items are then hidden by the menu system automatically because of the hideWhenCommandDisabled flag
+        menu.on("beforeContextMenuOpen", _updateMenuItems);
     }
 
     module.exports = {
