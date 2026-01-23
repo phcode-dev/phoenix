@@ -48,7 +48,7 @@ define(function main(require, exports, module) {
 
     // this is responsible to make the advanced live preview features active or inactive
     // @abose (make the first value true when its a paid user, everything rest is handled automatically)
-    let isLPEditFeaturesActive = window.KernalModeTrust ? false : false;
+    let isLPEditFeaturesActive = true;
 
     const EVENT_LIVE_HIGHLIGHT_PREF_CHANGED = "liveHighlightPrefChange";
 
