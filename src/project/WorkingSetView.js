@@ -809,6 +809,22 @@ define(function (require, exports, module) {
                         }
                     }
 
+                    // Check if the dragged file is not pinned - if moved before a pinned file, pin it
+                    if (!isPinned) {
+                        const workingSet = MainViewManager.getWorkingSet(sourceView.paneId);
+
+                        // check if there's a file after this one
+                        if (newIndex < workingSet.length - 1) {
+                            const nextFilePath = workingSet[newIndex + 1].fullPath;
+
+                            // if the next file is pinned, pin this file too
+                            if (MainViewManager.isPathPinned(sourceView.paneId, nextFilePath)) {
+                                CommandManager.get(Commands.FILE_PIN).setEnabled(true);
+                                CommandManager.execute(Commands.FILE_PIN, { file: sourceFile, paneId: sourceView.paneId });
+                            }
+                        }
+                    }
+
                     postDropCleanup();
                 } else {
                     // If the same doc view is present in the destination pane prevent drop
