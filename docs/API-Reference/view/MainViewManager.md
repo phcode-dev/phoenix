@@ -346,6 +346,48 @@ Adds the given file list to the end of the workingset.
 Switch between panes
 
 **Kind**: global function  
+<a name="pinFile"></a>
+
+## pinFile(paneId, file) ⇒ <code>boolean</code>
+This function is called from DocumentCommandHandlers.js handleFilePin function
+it is to pin the file. the pinned file is displayed before the normal files in the working set and tab bar
+we also prevent the pinned files from being closed during bulk close operations
+
+**Kind**: global function  
+**Returns**: <code>boolean</code> - true if the file was pinned, false if it was already pinned or not in the working set  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| paneId | <code>string</code> | the id of the pane in which to pin the file or ACTIVE_PANE |
+| file | <code>File</code> | the File to pin |
+
+<a name="unpinFile"></a>
+
+## unpinFile(paneId, file) ⇒ <code>boolean</code>
+called from DocumentCommandHandlers.js handleFileUnpin function,
+to unpin the file
+
+**Kind**: global function  
+**Returns**: <code>boolean</code> - true if the file was unpinned, false if it wasn't pinned  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| paneId | <code>string</code> | the id of the pane in which to unpin the file or ACTIVE_PANE |
+| file | <code>File</code> | the File to unpin |
+
+<a name="isPathPinned"></a>
+
+## isPathPinned(paneId, path) ⇒ <code>boolean</code>
+checks if a file path is pinned in the working set.
+
+**Kind**: global function  
+**Returns**: <code>boolean</code> - true if the file is pinned  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| paneId | <code>string</code> | the id of the pane in which to check or ACTIVE_PANE |
+| path | <code>string</code> | the full path to check |
+
 <a name="traverseToNextViewByMRU"></a>
 
 ## traverseToNextViewByMRU(direction) ⇒ <code>Object</code>
