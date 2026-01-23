@@ -790,7 +790,7 @@ function _renameExtensionConcatAsExtensionJSInDist(extensionName) {
 const minifyableExtensions = ["CloseOthers", "CodeFolding", "DebugCommands", "Git",
     "HealthData", "JavaScriptCodeHints", "JavaScriptRefactoring", "QuickView"];
 // extensions that nned not be minified either coz they are single file extensions or some other reason.
-const nonMinifyExtensions = ["CSSAtRuleCodeHints", "CSSCodeHints",
+const nonMinifyExtensions = ["ClaudeCodeBridge", "CSSAtRuleCodeHints", "CSSCodeHints",
     "CSSPseudoSelectorHints", "DarkTheme", "HandlebarsSupport", "HTMLCodeHints", "HtmlEntityCodeHints",
     "InlineColorEditor", "InlineTimingFunctionEditor", "JavaScriptQuickEdit", "JSLint",
     "LightTheme", "MDNDocs", "Phoenix-prettier", "PrefsCodeHints", "SVGCodeHints", "UrlCodeHints"

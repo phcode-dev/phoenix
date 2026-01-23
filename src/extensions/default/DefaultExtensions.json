@@ -2,6 +2,7 @@
   "defaultExtensionsList": [
     "DarkTheme",
     "LightTheme",
+    "ClaudeCodeBridge",
     "CloseOthers",
     "CodeFolding",
     "CSSAtRuleCodeHints",

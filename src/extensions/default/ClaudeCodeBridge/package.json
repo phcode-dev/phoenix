@@ -1,0 +1,10 @@
+{
+    "name": "ClaudeCodeBridge",
+    "title": "Claude Code Bridge",
+    "description": "Bridge between Phoenix Live Preview and Claude Code UI for AI-powered element editing",
+    "version": "1.0.0",
+    "engines": {
+        "brackets": ">=4.0.0"
+    },
+    "main": "main.js"
+}

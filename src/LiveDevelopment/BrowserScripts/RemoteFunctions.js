@@ -238,7 +238,11 @@ function RemoteFunctions(config = {}) {
     function _handleAIOptionClick(event, element) {
         // make sure there is no existing AI prompt box, and no other box as well
         dismissAllUIBoxes();
-        _aiPromptBox = new AIPromptBox(element); // create a new one
+        try {
+            _aiPromptBox = new AIPromptBox(element); // create a new one
+        } catch (error) {
+            console.error("[Phoenix AI] Error creating AIPromptBox:", error);
+        }
     }
 
     /**
@@ -1622,8 +1626,11 @@ function RemoteFunctions(config = {}) {
     // AI prompt box, it is displayed when user clicks on the AI button in the more options box
     function AIPromptBox(element) {
         this.element = element;
+        // Store tagId at creation time - element may become stale after edits
+        this.tagId = Number(element.getAttribute("data-brackets-id"));
         this.selectedModel = 'fast';
         this.remove = this.remove.bind(this);
+        console.log("[Phoenix AI] AIPromptBox created for tagId:", this.tagId);
         this.create();
     }
 
@@ -1770,25 +1777,138 @@ function RemoteFunctions(config = {}) {
                 .phoenix-ai-model-select:focus {
                     border-color: #4285F4;
                 }
+
+                .phoenix-ai-button-group {
+                    display: flex;
+                    gap: 8px;
+                    align-items: center;
+                }
+
+                .phoenix-ai-new-chat-button {
+                    padding: 4px 10px;
+                    border: 1px solid #ddd;
+                    border-radius: 4px;
+                    background: white;
+                    color: #666;
+                    font-size: 12px;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                }
+
+                .phoenix-ai-new-chat-button:hover {
+                    background: #f5f5f5;
+                    border-color: #ccc;
+                }
+
+                /* Loading state styles */
+                .phoenix-ai-loading-container {
+                    display: none;
+                    padding: 16px;
+                    text-align: center;
+                }
+
+                .phoenix-ai-loading-container.active {
+                    display: block;
+                }
+
+                .phoenix-ai-input-container.hidden {
+                    display: none;
+                }
+
+                .phoenix-ai-spinner {
+                    width: 24px;
+                    height: 24px;
+                    border: 3px solid #e0e0e0;
+                    border-top-color: #4285F4;
+                    border-radius: 50%;
+                    animation: phoenix-ai-spin 1s linear infinite;
+                    margin: 0 auto 12px;
+                }
+
+                @keyframes phoenix-ai-spin {
+                    to { transform: rotate(360deg); }
+                }
+
+                .phoenix-ai-loading-text {
+                    font-size: 13px;
+                    color: #666;
+                    margin-bottom: 12px;
+                    max-height: 40px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+
+                .phoenix-ai-cancel-button {
+                    padding: 6px 16px;
+                    border: 1px solid #ddd;
+                    border-radius: 4px;
+                    background: white;
+                    color: #666;
+                    font-size: 12px;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                }
+
+                .phoenix-ai-cancel-button:hover {
+                    background: #f5f5f5;
+                    border-color: #ccc;
+                }
+
+                .phoenix-ai-success-container {
+                    display: none;
+                    padding: 16px;
+                    text-align: center;
+                }
+
+                .phoenix-ai-success-container.active {
+                    display: block;
+                }
+
+                .phoenix-ai-success-icon {
+                    font-size: 24px;
+                    margin-bottom: 8px;
+                }
+
+                .phoenix-ai-success-text {
+                    font-size: 13px;
+                    color: #34a853;
+                }
+
+                .phoenix-ai-error-text {
+                    font-size: 13px;
+                    color: #ea4335;
+                }
             `;
 
             const content = `
                 <div class="phoenix-ai-prompt-box">
-                    <div class="phoenix-ai-prompt-input-container">
+                    <div class="phoenix-ai-prompt-input-container phoenix-ai-input-container">
                         <textarea
                             class="phoenix-ai-prompt-textarea"
                             placeholder="${config.strings.aiPromptPlaceholder}"
                         ></textarea>
                     </div>
-                    <div class="phoenix-ai-bottom-controls">
+                    <div class="phoenix-ai-bottom-controls phoenix-ai-input-container">
                         <select class="phoenix-ai-model-select">
                             <option value="fast">Fast AI</option>
                             <option value="moderate">Moderate AI</option>
                             <option value="slow">Slow AI</option>
                         </select>
-                        <button class="phoenix-ai-prompt-send-button" disabled>
-                            ➤
-                        </button>
+                        <div class="phoenix-ai-button-group">
+                            <button class="phoenix-ai-new-chat-button" title="Start fresh conversation">New</button>
+                            <button class="phoenix-ai-prompt-send-button" disabled>
+                                ➤
+                            </button>
+                        </div>
+                    </div>
+                    <div class="phoenix-ai-loading-container">
+                        <div class="phoenix-ai-spinner"></div>
+                        <div class="phoenix-ai-loading-text">Processing...</div>
+                        <button class="phoenix-ai-cancel-button">Cancel</button>
+                    </div>
+                    <div class="phoenix-ai-success-container">
+                        <div class="phoenix-ai-success-icon"></div>
+                        <div class="phoenix-ai-success-text"></div>
                     </div>
                 </div>
             `;
@@ -1868,28 +1988,214 @@ function RemoteFunctions(config = {}) {
                     this.selectedModel = event.target.value;
                 });
             }
+
+            // New Chat button click
+            const newChatButton = this._shadow.querySelector('.phoenix-ai-new-chat-button');
+            if (newChatButton) {
+                newChatButton.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this._startNewSession();
+                });
+            }
+        },
+
+        _startNewSession: function() {
+            // Send signal to server to reset conversation
+            window._Brackets_MessageBroker.send({
+                livePreviewEditEnabled: true,
+                newSession: true
+            });
+
+            // Reset UI placeholder
+            const textarea = this._shadow.querySelector('.phoenix-ai-prompt-textarea');
+            if (textarea) {
+                textarea.value = '';
+                textarea.placeholder = config.strings.aiPromptPlaceholder;
+                textarea.focus();
+            }
+
+            // Disable send button since textarea is empty
+            const sendButton = this._shadow.querySelector('.phoenix-ai-prompt-send-button');
+            if (sendButton) {
+                sendButton.disabled = true;
+            }
         },
 
         _handleSend: function(event, prompt) {
-            const element = this.element;
-            if(!isElementEditable(element)) {
+            // Use stored tagId - element may be stale after previous edits
+            if (!this.tagId) {
+                console.error("[Phoenix AI] No tagId stored for this prompt box");
                 return;
             }
-            const tagId = element.getAttribute("data-brackets-id");
+
+            console.log("[Phoenix AI] Sending prompt:", prompt, "tagId:", this.tagId, "model:", this.selectedModel);
+
+            // Show loading state instead of removing
+            this._showLoading();
 
             window._Brackets_MessageBroker.send({
                 livePreviewEditEnabled: true,
                 event: event,
-                element: element,
                 prompt: prompt,
-                tagId: Number(tagId),
+                tagId: this.tagId,
                 selectedModel: this.selectedModel,
                 AISend: true
             });
+
+            console.log("[Phoenix AI] Message sent to broker");
+
+            // Auto-close after timeout if no response (30 seconds)
+            this._loadingTimeout = setTimeout(() => {
+                this._showError("Request timed out. Please try again.");
+                setTimeout(() => this.remove(), 2000);
+            }, 30000);
+        },
+
+        _showLoading: function() {
+            if (!this._shadow) {
+                return;
+            }
+
+            // Hide input containers
+            const inputContainers = this._shadow.querySelectorAll('.phoenix-ai-input-container');
+            inputContainers.forEach(container => container.classList.add('hidden'));
+
+            // Show loading container
+            const loadingContainer = this._shadow.querySelector('.phoenix-ai-loading-container');
+            if (loadingContainer) {
+                loadingContainer.classList.add('active');
+            }
+
+            // Attach cancel button handler
+            const cancelButton = this._shadow.querySelector('.phoenix-ai-cancel-button');
+            if (cancelButton) {
+                cancelButton.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this._cancelRequest();
+                });
+            }
+        },
+
+        _cancelRequest: function() {
+            if (this._loadingTimeout) {
+                clearTimeout(this._loadingTimeout);
+                this._loadingTimeout = null;
+            }
             this.remove();
         },
 
+        _updateProgress: function(message) {
+            if (!this._shadow) {
+                return;
+            }
+
+            const loadingText = this._shadow.querySelector('.phoenix-ai-loading-text');
+            if (loadingText && message) {
+                loadingText.textContent = message;
+            }
+        },
+
+        _showSuccess: function(message) {
+            if (this._loadingTimeout) {
+                clearTimeout(this._loadingTimeout);
+                this._loadingTimeout = null;
+            }
+
+            if (!this._shadow) {
+                return;
+            }
+
+            // Hide loading container
+            const loadingContainer = this._shadow.querySelector('.phoenix-ai-loading-container');
+            if (loadingContainer) {
+                loadingContainer.classList.remove('active');
+            }
+
+            // Show success container
+            const successContainer = this._shadow.querySelector('.phoenix-ai-success-container');
+            if (successContainer) {
+                successContainer.classList.add('active');
+                const icon = successContainer.querySelector('.phoenix-ai-success-icon');
+                const text = successContainer.querySelector('.phoenix-ai-success-text');
+                if (icon) {
+                    icon.textContent = '\u2713'; // checkmark
+                }
+                if (text) {
+                    text.className = 'phoenix-ai-success-text';
+                    text.textContent = message || 'Changes applied!';
+                }
+            }
+
+            // Return to input state after brief success display
+            setTimeout(() => {
+                if (!this._shadow) {
+                    return;
+                }
+
+                successContainer.classList.remove('active');
+
+                // Show input containers again
+                const inputContainers = this._shadow.querySelectorAll('.phoenix-ai-input-container');
+                inputContainers.forEach(c => c.classList.remove('hidden'));
+
+                // Update placeholder and focus for follow-up
+                const textarea = this._shadow.querySelector('.phoenix-ai-prompt-textarea');
+                if (textarea) {
+                    textarea.value = '';
+                    textarea.placeholder = 'Ask a follow-up question...';
+                    textarea.focus();
+                }
+
+                // Disable send button since textarea is empty
+                const sendButton = this._shadow.querySelector('.phoenix-ai-prompt-send-button');
+                if (sendButton) {
+                    sendButton.disabled = true;
+                }
+            }, 1200);
+        },
+
+        _showError: function(message) {
+            if (this._loadingTimeout) {
+                clearTimeout(this._loadingTimeout);
+                this._loadingTimeout = null;
+            }
+
+            if (!this._shadow) {
+                return;
+            }
+
+            // Hide loading container
+            const loadingContainer = this._shadow.querySelector('.phoenix-ai-loading-container');
+            if (loadingContainer) {
+                loadingContainer.classList.remove('active');
+            }
+
+            // Show error in success container (reuse it)
+            const successContainer = this._shadow.querySelector('.phoenix-ai-success-container');
+            if (successContainer) {
+                successContainer.classList.add('active');
+                const icon = successContainer.querySelector('.phoenix-ai-success-icon');
+                const text = successContainer.querySelector('.phoenix-ai-success-text');
+                if (icon) {
+                    icon.textContent = '\u2717'; // X mark
+                }
+                if (text) {
+                    text.className = 'phoenix-ai-error-text';
+                    text.textContent = message || 'An error occurred';
+                }
+            }
+
+            // Auto-close after showing error
+            setTimeout(() => this.remove(), 3000);
+        },
+
         remove: function() {
+            if (this._loadingTimeout) {
+                clearTimeout(this._loadingTimeout);
+                this._loadingTimeout = null;
+            }
             if (this._handleKeydown) {
                 document.removeEventListener('keydown', this._handleKeydown);
                 this._handleKeydown = null;
@@ -1904,6 +2210,8 @@ function RemoteFunctions(config = {}) {
                 window.document.body.removeChild(this.body);
                 this.body = null;
                 _aiPromptBox = null;
+                // Session persists - user can reopen and continue
+                // Use "New" button to start fresh session
             }
         }
     };

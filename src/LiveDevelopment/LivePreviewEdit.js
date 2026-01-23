@@ -174,11 +174,17 @@ define(function (require, exports, module) {
         // because on non-beautified code getPositionFromTagId may not provide correct end position
         const startRange = HTMLInstrumentation.getPositionFromTagId(editor, tagId);
         if(!startRange) {
+            // Debug: list available tagIds in marks
+            const marks = editor._codeMirror.getAllMarks();
+            const tagIds = marks.filter(m => m.tagID !== undefined).map(m => m.tagID).sort((a,b) => a-b);
+            console.warn("[LivePreviewEdit] getPositionFromTagId returned null for tagId:", tagId,
+                "Available tagIds:", tagIds.slice(0, 20), "...(total:", tagIds.length, ")");
             return null;
         }
 
         const endRange = CodeMirror.findMatchingTag(editor._codeMirror, startRange.from);
         if (!endRange) {
+            console.warn("[LivePreviewEdit] findMatchingTag returned null for startRange:", startRange.from);
             return null;
         }
 
@@ -560,11 +566,13 @@ define(function (require, exports, module) {
         // this is to get the currently live document that is being served in the live preview
         const editor = _getEditorAndValidate(message.tagId);
         if (!editor) {
+            console.error("[LivePreviewEdit] _getRequiredDataForAI: No editor or invalid tagId:", message.tagId);
             return;
         }
 
         const range = _getElementRange(editor, message.tagId);
         if (!range) {
+            console.error("[LivePreviewEdit] _getRequiredDataForAI: Could not find element range for tagId:", message.tagId);
             return;
         }
 
@@ -582,7 +590,8 @@ define(function (require, exports, module) {
             range: {startPos, endPos}, // the start and end position text in the source code for that element
             text: text, // the actual source code in between the start and the end pos
             prompt: message.prompt, // the prompt that user typed
-            model: message.selectedModel // the selected model (fast, slow or moderate)
+            model: message.selectedModel, // the selected model (fast, slow or moderate)
+            newSession: message.newSession || false // whether to start a new conversation session
         };
 
         return AIData;
@@ -590,7 +599,27 @@ define(function (require, exports, module) {
 
     function _editWithAI(message) {
         const AIData = _getRequiredDataForAI(message);
-        // write the AI implementation here...@abose
+        if (!AIData) {
+            console.error("[LivePreviewEdit] Failed to gather AI context");
+            return;
+        }
+
+        // Dispatch to ClaudeCodeBridge extension (registered globally on brackets object)
+        try {
+            const ClaudeCodeBridge = brackets.ClaudeCodeBridge;
+
+            if (!ClaudeCodeBridge) {
+                console.error("[LivePreviewEdit] ClaudeCodeBridge extension not loaded");
+                return;
+            }
+
+            const requestId = ClaudeCodeBridge.submitAIEditRequest(AIData);
+            if (requestId) {
+                console.log("[LivePreviewEdit] AI edit request submitted:", requestId);
+            }
+        } catch (error) {
+            console.error("[LivePreviewEdit] Error dispatching to ClaudeCodeBridge:", error);
+        }
     }
 
     /**
@@ -617,9 +646,41 @@ define(function (require, exports, module) {
     * these are the main properties that are passed through the message
      */
     function handleLivePreviewEditOperation(message) {
+        // Handle destroy session signal (from dialog close)
+        if (message.destroySession) {
+            try {
+                const ClaudeCodeBridge = brackets.ClaudeCodeBridge;
+                if (ClaudeCodeBridge) {
+                    ClaudeCodeBridge.destroySession();
+                }
+            } catch (error) {
+                console.error("[LivePreviewEdit] Error destroying session:", error);
+            }
+            return;
+        }
+
+        // Handle new session signal (from "New Chat" button click)
+        if (message.newSession && !message.AISend) {
+            try {
+                const ClaudeCodeBridge = brackets.ClaudeCodeBridge;
+                if (ClaudeCodeBridge) {
+                    ClaudeCodeBridge.startNewSession();
+                }
+            } catch (error) {
+                console.error("[LivePreviewEdit] Error starting new session:", error);
+            }
+            return;
+        }
+
         // handle move(drag & drop)
         if (message.move && message.sourceId && message.targetId) {
             _moveElementInSource(message.sourceId, message.targetId, message.insertAfter, message.insertInside);
+            return;
+        }
+
+        // AI messages only need tagId (element may be stale after edits)
+        if (message.AISend && message.tagId) {
+            _editWithAI(message);
             return;
         }
 
@@ -638,8 +699,6 @@ define(function (require, exports, module) {
             _duplicateElementInSourceByTagId(message.tagId);
         } else if (message.livePreviewTextEdit) {
             _editTextInSource(message);
-        } else if (message.AISend) {
-            _editWithAI(message);
         }
     }
 
