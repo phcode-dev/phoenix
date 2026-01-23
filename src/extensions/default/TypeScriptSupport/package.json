@@ -1,0 +1,9 @@
+{
+    "name": "typescript-support",
+    "title": "TypeScript/JavaScript Language Support",
+    "description": "Provides TypeScript and JavaScript language support via LSP",
+    "version": "1.0.0",
+    "engines": {
+        "brackets": ">=2.0.0"
+    }
+}
