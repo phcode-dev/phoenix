@@ -69,6 +69,7 @@ const LivePreview = require("./live-preview");
 require("./test-connection");
 require("./utils");
 require("./git/cli");
+require("./lsp-client");
 function randomNonce(byteLength) {
     const randomBuffer = new Uint8Array(byteLength);
     crypto.getRandomValues(randomBuffer);
