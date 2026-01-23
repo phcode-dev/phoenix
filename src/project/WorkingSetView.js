@@ -1248,7 +1248,7 @@ define(function (require, exports, module) {
         const isPinned = MainViewManager.isPathPinned(this.paneId, file.fullPath);
         if (isPinned) {
             $newItem.addClass("pinned");
-            const $pinIcon = $("<div class='pin-icon'><i class='fa-solid fa-thumbtack'></i></div>");
+            const $pinIcon = $("<div class='working-set-pin-icon'><i class='fa-solid fa-thumbtack'></i></div>");
             $newItem.append($pinIcon);
         }
 
