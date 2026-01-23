@@ -794,7 +794,21 @@ define(function (require, exports, module) {
                     }
                 } else if (sourceView.paneId === currentView.paneId) {
                     // item was reordered
-                    MainViewManager._moveWorkingSetItem(sourceView.paneId, startingIndex, $el.index());
+                    const newIndex = $el.index();
+                    MainViewManager._moveWorkingSetItem(sourceView.paneId, startingIndex, newIndex);
+
+                    // Check if the dragged file is pinned - if moved after an unpinned file, unpin it
+                    const isPinned = MainViewManager.isPathPinned(sourceView.paneId, sourceFile.fullPath);
+                    if (isPinned && newIndex > 0) {
+                        const workingSet = MainViewManager.getWorkingSet(sourceView.paneId);
+                        const prevFilePath = workingSet[newIndex - 1].fullPath;
+
+                        if (!MainViewManager.isPathPinned(sourceView.paneId, prevFilePath)) {
+                            CommandManager.get(Commands.FILE_UNPIN).setEnabled(true);
+                            CommandManager.execute(Commands.FILE_UNPIN, { file: sourceFile, paneId: sourceView.paneId });
+                        }
+                    }
+
                     postDropCleanup();
                 } else {
                     // If the same doc view is present in the destination pane prevent drop
