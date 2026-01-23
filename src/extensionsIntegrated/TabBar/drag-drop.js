@@ -24,6 +24,7 @@ define(function (require, exports, module) {
     const MainViewManager = require("view/MainViewManager");
     const CommandManager = require("command/CommandManager");
     const Commands = require("command/Commands");
+    const FileSystem = require("filesystem/FileSystem");
 
     /**
      * These variables track the drag and drop state of tabs
@@ -307,6 +308,21 @@ define(function (require, exports, module) {
                 newPosition--;
             }
             MainViewManager._moveWorkingSetItem(paneId, draggedIndex, newPosition);
+
+            // we check if the dragged file is pinned, cause if it is we might need to unpin it,
+            // if it is dropped after an unpinned file
+            const isDraggedFilePinned = MainViewManager.isPathPinned(paneId, draggedPath);
+
+            if (isDraggedFilePinned && newPosition > 0) {
+                const newWorkingSet = MainViewManager.getWorkingSet(paneId);
+                const prevFilePath = newWorkingSet[newPosition - 1].fullPath;
+
+                // if the prev file is not pinned, we unpin this file too!
+                if (!MainViewManager.isPathPinned(paneId, prevFilePath)) {
+                    const fileObj = FileSystem.getFileForPath(draggedPath);
+                    CommandManager.execute(Commands.FILE_UNPIN, { file: fileObj, paneId: paneId });
+                }
+            }
         }
     }
 
