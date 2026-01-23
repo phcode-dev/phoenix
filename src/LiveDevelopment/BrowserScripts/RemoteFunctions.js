@@ -1832,10 +1832,29 @@ function RemoteFunctions(config = {}) {
                 .phoenix-ai-loading-text {
                     font-size: 13px;
                     color: #666;
-                    margin-bottom: 12px;
-                    max-height: 40px;
+                    margin-bottom: 8px;
+                    max-height: 20px;
                     overflow: hidden;
                     text-overflow: ellipsis;
+                }
+
+                .phoenix-ai-stream-text {
+                    font-size: 12px;
+                    color: #333;
+                    background: #f5f5f5;
+                    padding: 8px;
+                    border-radius: 4px;
+                    max-height: 60px;
+                    overflow-y: auto;
+                    margin-bottom: 8px;
+                    white-space: pre-wrap;
+                    word-wrap: break-word;
+                    display: none;
+                    text-align: left;
+                }
+
+                .phoenix-ai-stream-text.active {
+                    display: block;
                 }
 
                 .phoenix-ai-cancel-button {
@@ -1904,6 +1923,7 @@ function RemoteFunctions(config = {}) {
                     <div class="phoenix-ai-loading-container">
                         <div class="phoenix-ai-spinner"></div>
                         <div class="phoenix-ai-loading-text">Processing...</div>
+                        <div class="phoenix-ai-stream-text"></div>
                         <button class="phoenix-ai-cancel-button">Cancel</button>
                     </div>
                     <div class="phoenix-ai-success-container">
@@ -2023,13 +2043,22 @@ function RemoteFunctions(config = {}) {
         },
 
         _handleSend: function(event, prompt) {
-            // Use stored tagId - element may be stale after previous edits
-            if (!this.tagId) {
-                console.error("[Phoenix AI] No tagId stored for this prompt box");
+            // Re-read tagId from element - it may have changed after previous edits
+            let currentTagId = this.tagId;
+            if (this.element && this.element.getAttribute) {
+                const freshTagId = this.element.getAttribute("data-brackets-id");
+                if (freshTagId) {
+                    currentTagId = Number(freshTagId);
+                    this.tagId = currentTagId; // Update cached value
+                }
+            }
+
+            if (!currentTagId) {
+                console.error("[Phoenix AI] No tagId available for this prompt box");
                 return;
             }
 
-            console.log("[Phoenix AI] Sending prompt:", prompt, "tagId:", this.tagId, "model:", this.selectedModel);
+            console.log("[Phoenix AI] Sending prompt:", prompt, "tagId:", currentTagId, "model:", this.selectedModel);
 
             // Show loading state instead of removing
             this._showLoading();
@@ -2038,7 +2067,7 @@ function RemoteFunctions(config = {}) {
                 livePreviewEditEnabled: true,
                 event: event,
                 prompt: prompt,
-                tagId: this.tagId,
+                tagId: currentTagId,
                 selectedModel: this.selectedModel,
                 AISend: true
             });
@@ -2065,6 +2094,15 @@ function RemoteFunctions(config = {}) {
             const loadingContainer = this._shadow.querySelector('.phoenix-ai-loading-container');
             if (loadingContainer) {
                 loadingContainer.classList.add('active');
+            }
+
+            // Clear any previous stream text
+            this._clearStreamText();
+
+            // Reset loading text
+            const loadingText = this._shadow.querySelector('.phoenix-ai-loading-text');
+            if (loadingText) {
+                loadingText.textContent = 'Analyzing code...';
             }
 
             // Attach cancel button handler
@@ -2097,6 +2135,32 @@ function RemoteFunctions(config = {}) {
             }
         },
 
+        _appendStreamText: function(text) {
+            if (!this._shadow) {
+                return;
+            }
+
+            const streamEl = this._shadow.querySelector('.phoenix-ai-stream-text');
+            if (streamEl) {
+                streamEl.classList.add('active');
+                streamEl.textContent += text;
+                // Auto-scroll to bottom
+                streamEl.scrollTop = streamEl.scrollHeight;
+            }
+        },
+
+        _clearStreamText: function() {
+            if (!this._shadow) {
+                return;
+            }
+
+            const streamEl = this._shadow.querySelector('.phoenix-ai-stream-text');
+            if (streamEl) {
+                streamEl.classList.remove('active');
+                streamEl.textContent = '';
+            }
+        },
+
         _showSuccess: function(message) {
             if (this._loadingTimeout) {
                 clearTimeout(this._loadingTimeout);
@@ -2107,11 +2171,12 @@ function RemoteFunctions(config = {}) {
                 return;
             }
 
-            // Hide loading container
+            // Hide loading container and clear stream text
             const loadingContainer = this._shadow.querySelector('.phoenix-ai-loading-container');
             if (loadingContainer) {
                 loadingContainer.classList.remove('active');
             }
+            this._clearStreamText();
 
             // Show success container
             const successContainer = this._shadow.querySelector('.phoenix-ai-success-container');
@@ -2166,11 +2231,12 @@ function RemoteFunctions(config = {}) {
                 return;
             }
 
-            // Hide loading container
+            // Hide loading container and clear stream text
             const loadingContainer = this._shadow.querySelector('.phoenix-ai-loading-container');
             if (loadingContainer) {
                 loadingContainer.classList.remove('active');
             }
+            this._clearStreamText();
 
             // Show error in success container (reuse it)
             const successContainer = this._shadow.querySelector('.phoenix-ai-success-container');
@@ -2525,6 +2591,42 @@ function RemoteFunctions(config = {}) {
     var _nodeMoreOptionsBox;
     var _aiPromptBox;
     var _setup = false;
+
+    // Global handlers for AI progress events (called from LivePreviewEdit via evaluate)
+    window._Phoenix_AI_updateProgress = function(message) {
+        if (_aiPromptBox && _aiPromptBox._updateProgress) {
+            _aiPromptBox._updateProgress(message);
+        }
+    };
+
+    window._Phoenix_AI_appendStreamText = function(text) {
+        if (_aiPromptBox && _aiPromptBox._appendStreamText) {
+            _aiPromptBox._appendStreamText(text);
+        }
+    };
+
+    window._Phoenix_AI_showSuccess = function(message, newTagId) {
+        if (_aiPromptBox) {
+            // Update the AIPromptBox's tagId and element reference if a new tagId is provided
+            if (newTagId && newTagId > 0) {
+                const newElement = document.querySelector('[data-brackets-id="' + newTagId + '"]');
+                if (newElement) {
+                    _aiPromptBox.element = newElement;
+                    _aiPromptBox.tagId = newTagId;
+                    console.log("[Phoenix AI] Updated AIPromptBox to new tagId:", newTagId);
+                }
+            }
+            if (_aiPromptBox._showSuccess) {
+                _aiPromptBox._showSuccess(message);
+            }
+        }
+    };
+
+    window._Phoenix_AI_showError = function(message) {
+        if (_aiPromptBox && _aiPromptBox._showError) {
+            _aiPromptBox._showError(message);
+        }
+    };
 
     function onMouseOver(event) {
         if (_validEvent(event)) {

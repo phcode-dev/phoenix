@@ -40,6 +40,7 @@ define(function (require, exports, module) {
     const Dialogs = brackets.getModule("widgets/Dialogs");
     const DefaultDialogs = brackets.getModule("widgets/DefaultDialogs");
     const ProjectManager = brackets.getModule("project/ProjectManager");
+    const HTMLInstrumentation = brackets.getModule("LiveDevelopment/MultiBrowserImpl/language/HTMLInstrumentation");
 
     // Connection instance
     let connection = null;
@@ -206,6 +207,10 @@ define(function (require, exports, module) {
                 handleProgress(response);
                 break;
 
+            case 'phoenix-ai-text-stream':
+                handleTextStream(response);
+                break;
+
             case 'phoenix-ai-edit-result':
                 handleEditResult(response);
                 break;
@@ -234,7 +239,25 @@ define(function (require, exports, module) {
         // We broadcast a progress event that the live preview can listen to
         $(brackets).trigger("claudeCodeBridge.progress", {
             requestId: response.requestId,
-            message: response.message
+            message: response.message,
+            phase: response.phase
+        });
+    }
+
+    /**
+     * Handle streamed text from Claude
+     * @param {Object} response - Text stream message
+     */
+    function handleTextStream(response) {
+        const requestContext = pendingRequests.get(response.requestId);
+        if (!requestContext) {
+            return;
+        }
+
+        // Broadcast text stream event to the live preview
+        $(brackets).trigger("claudeCodeBridge.textStream", {
+            requestId: response.requestId,
+            text: response.text
         });
     }
 
@@ -274,10 +297,36 @@ define(function (require, exports, module) {
         // Apply edits using EditApplicator
         EditApplicator.applyEdits(response.edits).then(function(result) {
             if (result.success) {
-                $(brackets).trigger("claudeCodeBridge.complete", {
-                    requestId: response.requestId,
-                    editCount: response.edits.length
-                });
+                // Try to get the new tagId at the original edit position
+                // This helps the live preview update its reference after the document changes
+                let newTagId = -1;
+                if (requestContext.editor && requestContext.range) {
+                    try {
+                        // Small delay to let HTMLInstrumentation update its marks
+                        setTimeout(function() {
+                            newTagId = HTMLInstrumentation._getTagIDAtDocumentPos(
+                                requestContext.editor,
+                                requestContext.range.startPos
+                            );
+                            $(brackets).trigger("claudeCodeBridge.complete", {
+                                requestId: response.requestId,
+                                editCount: response.edits.length,
+                                newTagId: newTagId
+                            });
+                        }, 100);
+                    } catch (e) {
+                        console.warn("[ClaudeCodeBridge] Could not get new tagId:", e);
+                        $(brackets).trigger("claudeCodeBridge.complete", {
+                            requestId: response.requestId,
+                            editCount: response.edits.length
+                        });
+                    }
+                } else {
+                    $(brackets).trigger("claudeCodeBridge.complete", {
+                        requestId: response.requestId,
+                        editCount: response.edits.length
+                    });
+                }
             } else {
                 console.error("[ClaudeCodeBridge] Failed to apply some edits:", result.errors);
                 Dialogs.showModalDialog(

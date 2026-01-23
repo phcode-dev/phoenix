@@ -28,6 +28,7 @@ define(function (require, exports, module) {
     const HTMLInstrumentation = require("LiveDevelopment/MultiBrowserImpl/language/HTMLInstrumentation");
     const LiveDevMultiBrowser = require("LiveDevelopment/LiveDevMultiBrowser");
     const CodeMirror = require("thirdparty/CodeMirror/lib/codemirror");
+    const LiveDevProtocol = require("LiveDevelopment/MultiBrowserImpl/protocol/LiveDevProtocol");
 
     /**
      * This function syncs text content changes between the original source code
@@ -701,6 +702,36 @@ define(function (require, exports, module) {
             _editTextInSource(message);
         }
     }
+
+    // Forward AI progress events to live preview
+    $(brackets).on("claudeCodeBridge.progress", function(event, data) {
+        // Escape the message for safe JavaScript string interpolation
+        const escapedMessage = (data.message || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\n/g, '\\n');
+        const script = `if (window._Phoenix_AI_updateProgress) { window._Phoenix_AI_updateProgress('${escapedMessage}'); }`;
+        LiveDevProtocol.evaluate(script);
+    });
+
+    // Forward AI text stream events to live preview
+    $(brackets).on("claudeCodeBridge.textStream", function(event, data) {
+        // Escape the text for safe JavaScript string interpolation
+        const escapedText = (data.text || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\n/g, '\\n');
+        const script = `if (window._Phoenix_AI_appendStreamText) { window._Phoenix_AI_appendStreamText('${escapedText}'); }`;
+        LiveDevProtocol.evaluate(script);
+    });
+
+    // Forward AI completion events to live preview
+    $(brackets).on("claudeCodeBridge.complete", function(event, data) {
+        const newTagId = data.newTagId || -1;
+        const script = `if (window._Phoenix_AI_showSuccess) { window._Phoenix_AI_showSuccess('Changes applied!', ${newTagId}); }`;
+        LiveDevProtocol.evaluate(script);
+    });
+
+    // Forward AI error events to live preview
+    $(brackets).on("claudeCodeBridge.error", function(event, data) {
+        const escapedError = (data.error || 'An error occurred').replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\n/g, '\\n');
+        const script = `if (window._Phoenix_AI_showError) { window._Phoenix_AI_showError('${escapedError}'); }`;
+        LiveDevProtocol.evaluate(script);
+    });
 
     exports.handleLivePreviewEditOperation = handleLivePreviewEditOperation;
 });
