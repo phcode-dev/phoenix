@@ -524,6 +524,10 @@ define(function (require, exports, module) {
                 event.preventDefault();
                 event.stopPropagation();
 
+                // we consciously enable the unpin command here, because if the tab is pinned,
+                // the unpin command will be disabled by default as the last context menu item
+                // and the user will not be able to unpin the tab
+                CommandManager.get(Commands.FILE_UNPIN).setEnabled(true);
                 CommandManager.execute(Commands.FILE_UNPIN, { file: fileObj, paneId: paneId });
             }
         });
@@ -548,6 +552,9 @@ define(function (require, exports, module) {
         // open tab on mousedown event
         $(document).on("mousedown", ".phoenix-tab-bar .tab", function (event) {
             if ($(event.target).hasClass("fa-times") || $(event.target).closest(".tab-close").length) {
+                return;
+            }
+            if ($(event.target).hasClass("fa-thumbtack") || $(event.target).closest(".tab-pin").length) {
                 return;
             }
 
