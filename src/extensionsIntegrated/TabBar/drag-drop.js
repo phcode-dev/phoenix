@@ -328,6 +328,26 @@ define(function (require, exports, module) {
                     CommandManager.execute(Commands.FILE_UNPIN, { file: fileObj, paneId: paneId });
                 }
             }
+
+            // if the dragged file is not pinned, we check if it should be pinned,
+            // if it is dropped before a pinned file
+            if (!isDraggedFilePinned) {
+                const newWorkingSet = MainViewManager.getWorkingSet(paneId);
+
+                // check if there's a file after this one
+                if (newPosition < newWorkingSet.length - 1) {
+                    const nextFilePath = newWorkingSet[newPosition + 1].fullPath;
+
+                    // if the next file is pinned, we pin this file too!
+                    if (MainViewManager.isPathPinned(paneId, nextFilePath)) {
+                        const fileObj = FileSystem.getFileForPath(draggedPath);
+
+                        // we consciously enable the pin command here, same reason as above
+                        CommandManager.get(Commands.FILE_PIN).setEnabled(true);
+                        CommandManager.execute(Commands.FILE_PIN, { file: fileObj, paneId: paneId });
+                    }
+                }
+            }
         }
     }
 
