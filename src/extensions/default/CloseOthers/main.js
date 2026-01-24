@@ -77,6 +77,10 @@ define(function (require, exports, module) {
     function contextMenuOpenHandler() {
         var file = MainViewManager.getCurrentlyViewedFile(MainViewManager.ACTIVE_PANE);
 
+        // reset these labels for Working Set context (because tabBar may have changed them to "Left/Right")
+        CommandManager.get(closeAbove).setName(Strings.CMD_FILE_CLOSE_ABOVE);
+        CommandManager.get(closeBelow).setName(Strings.CMD_FILE_CLOSE_BELOW);
+
         if (file) {
             var targetIndex  = MainViewManager.findInWorkingSet(MainViewManager.ACTIVE_PANE, file.fullPath),
                 workingSetListSize = MainViewManager.getWorkingSetSize(MainViewManager.ACTIVE_PANE);

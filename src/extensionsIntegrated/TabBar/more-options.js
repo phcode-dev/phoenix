@@ -35,10 +35,14 @@ define(function (require, exports, module) {
     // these are Tab bar specific commands for the context menu
     // not added in the Commands.js as Tab bar is not a core module but an extension
     // read init function
-    const TABBAR_CLOSE_TABS_LEFT = "tabbar.closeTabsLeft";
-    const TABBAR_CLOSE_TABS_RIGHT = "tabbar.closeTabsRight";
     const TABBAR_CLOSE_SAVED_TABS = "tabbar.closeSavedTabs";
     const TABBAR_CLOSE_ALL = "tabbar.closeAllTabs";
+
+    // command IDs from working files - we reuse it here with different labels
+    // Close Others Above = Close Tabs to the Left
+    // Close Others Below = Close Tabs to the Right
+    const FILE_CLOSE_ABOVE = "file.close_above";
+    const FILE_CLOSE_BELOW = "file.close_below";
 
     // stores the context of the right-clicked tab (which file, which pane)
     // this is set inside the showMoreOptionsContextMenu. read that func for more details
@@ -58,6 +62,12 @@ define(function (require, exports, module) {
 
         const pinCommand = CommandManager.get(Commands.FILE_PIN);
         pinCommand.setName(isPinned ? Strings.CMD_FILE_UNPIN : Strings.CMD_FILE_PIN);
+
+        // update Close Above/Below labels for TabBar context (Left/Right instead of Above/Below)
+        const closeAboveCmd = CommandManager.get(FILE_CLOSE_ABOVE);
+        const closeBelowCmd = CommandManager.get(FILE_CLOSE_BELOW);
+        closeAboveCmd.setName(Strings.CLOSE_TABS_TO_THE_LEFT);
+        closeBelowCmd.setName(Strings.CLOSE_TABS_TO_THE_RIGHT);
     }
 
     // gets the working set (list of open files) for the given pane
@@ -103,34 +113,6 @@ define(function (require, exports, module) {
         }
     }
 
-    // **Close Tabs to the Left**
-    // closes all tabs to the left of the right-clicked tab
-    function handleCloseTabsToTheLeft() {
-        const workingSet = _getWorkingSet(_currentTabContext.paneId);
-        if (!workingSet) { return; }
-
-        // find where the right-clicked tab is in the list
-        const currentIndex = workingSet.findIndex(entry => entry.path === _currentTabContext.filePath);
-        if (currentIndex > 0) {
-            // slice from start to currentIndex (not including currentIndex)
-            _closeFiles(workingSet.slice(0, currentIndex), _currentTabContext.paneId);
-        }
-    }
-
-    // **Close Tabs to the Right**
-    // closes all tabs to the right of the right-clicked tab
-    function handleCloseTabsToTheRight() {
-        const workingSet = _getWorkingSet(_currentTabContext.paneId);
-        if (!workingSet) { return; }
-
-        // find where the right-clicked tab is in the list
-        const currentIndex = workingSet.findIndex(entry => entry.path === _currentTabContext.filePath);
-        if (currentIndex !== -1 && currentIndex < workingSet.length - 1) {
-            // slice from currentIndex+1 to end
-            _closeFiles(workingSet.slice(currentIndex + 1), _currentTabContext.paneId);
-        }
-    }
-
     /**
      * this function is called from Tabbar/main.js when a tab is right clicked
      * it is responsible to show the context menu and also set the currentTabContext
@@ -155,16 +137,13 @@ define(function (require, exports, module) {
      */
     function init() {
         // these are the tab bar specific commands
-        CommandManager.register(Strings.CLOSE_TABS_TO_THE_LEFT, TABBAR_CLOSE_TABS_LEFT, handleCloseTabsToTheLeft);
-        CommandManager.register(Strings.CLOSE_TABS_TO_THE_RIGHT, TABBAR_CLOSE_TABS_RIGHT, handleCloseTabsToTheRight);
         CommandManager.register(Strings.CLOSE_SAVED_TABS, TABBAR_CLOSE_SAVED_TABS, handleCloseSavedTabs);
         CommandManager.register(Strings.CLOSE_ALL_TABS, TABBAR_CLOSE_ALL, handleCloseAllTabs);
 
-        // these commands already exist for working files, just reusing them
         const menu = Menus.registerContextMenu("tabbar-context-menu");
         menu.addMenuItem(Commands.FILE_CLOSE);
-        menu.addMenuItem(TABBAR_CLOSE_TABS_LEFT);
-        menu.addMenuItem(TABBAR_CLOSE_TABS_RIGHT);
+        menu.addMenuItem(FILE_CLOSE_ABOVE);  // updated label will be : "Close Tabs to the Left"
+        menu.addMenuItem(FILE_CLOSE_BELOW);  // updated label will be : "Close Tabs to the Right"
         menu.addMenuItem(TABBAR_CLOSE_SAVED_TABS);
         menu.addMenuItem(TABBAR_CLOSE_ALL);
         menu.addMenuDivider();
