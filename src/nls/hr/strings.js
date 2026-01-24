@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Uredi poveznicu",
   "LIVE_DEV_HYPERLINK_NO_HREF": "href nije postavljen",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Otvori ovu poveznicu",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Otvara se u novoj kartici",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Udvostruči",
   "LIVE_DEV_TOOLBOX_DELETE": "Obriši",
   "LIVE_DEV_TOOLBOX_AI": "Uredi s AI",
@@ -1663,5 +1664,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Kreni ispočetka",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartice",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 obrisano",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Otvara se u novoj kartici"
+  "SCROLL_SENSITIVITY": "Osjetljivost pomicanja",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Množitelj za brzinu pomicanja kotačićem miša (0,1 do 10, zadano 1). Prilagodite ako vam se pomicanje čini presporim ili prebrzim."
 });

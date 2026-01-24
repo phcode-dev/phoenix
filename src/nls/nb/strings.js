@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Rediger hyperlenke",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Ingen href angitt",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Åpne denne lenken",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Åpnes i ny fane",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Dupliser",
   "LIVE_DEV_TOOLBOX_DELETE": "Slett",
   "LIVE_DEV_TOOLBOX_AI": "Rediger med KI",
@@ -1663,5 +1664,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start på nytt",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 slettet",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Åpnes i ny fane"
+  "SCROLL_SENSITIVITY": "Rullefølsomhet",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Multiplikator for rullehastigheten til musehjulet (0,1 til 10, standard 1). Juster hvis rullingen føles for treg eller for rask."
 });

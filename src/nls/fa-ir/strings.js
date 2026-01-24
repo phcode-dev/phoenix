@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "ویرایش پیوند",
   "LIVE_DEV_HYPERLINK_NO_HREF": "هیچ href تنظیم نشده است",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "باز کردن این پیوند",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "در زبانهٔ جدید باز می‌شود",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "دو نسخه کردن خط",
   "LIVE_DEV_TOOLBOX_DELETE": "حذف",
   "LIVE_DEV_TOOLBOX_AI": "ویرایش با هوش مصنوعی",
@@ -337,6 +338,7 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "دو بخشی کردن عمودی",
   "CMD_SPLITVIEW_HORIZONTAL": "دو بخشی کردن افقی",
   "SPLITVIEW_MENU_TOOLTIP": "دو بخشی کردن ویرایشگر به صورت عمودی یا افقی",
+  "GEAR_MENU_TOOLTIP": "پیکربندی فایل‌های کاری",
   "CMD_TOGGLE_SHOW_WORKING_SET": "نمایش فایل‌های در حال کار",
   "CMD_TOGGLE_SHOW_FILE_TABS": "نمایش نوار تب فایل‌ها",
   "SPLITVIEW_INFO_TITLE": "هم اکنون باز است",
@@ -408,6 +410,7 @@ define({
   "CLOSE_TABS_TO_THE_LEFT": "بستن تب‌های سمت چپ",
   "CLOSE_ALL_TABS": "بستن همه برگه‌ها",
   "CLOSE_SAVED_TABS": "بستن برگه‌های ذخیره‌شده",
+  "CLOSE_TAB_TOOLTIP": "بستن زبانه",
   "ERRORS_NO_FILE": "فایلی باز نیست",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} مشکل - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} مشکل، {1} قابل‌رفع - {2}",
@@ -1507,6 +1510,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "متن الگو",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "توضیحات",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "پسوند فایل",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "حذف اسنیپت",
   "PROMO_UPGRADE_TITLE": "حساب شما به {0} ارتقا یافت.",
   "PROMO_UPGRADE_MESSAGE": "برای {0} روز آینده از این ویژگی‌های ممتاز بهره‌مند شوید:",
   "PROMO_CARD_1": "ویرایش در پیش‌نمایش زنده",
@@ -1660,8 +1664,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "شروع مجدد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE} از ۳ کارت",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE} از ۱ مورد حذف شد",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "در زبانهٔ جدید باز می‌شود",
-  "GEAR_MENU_TOOLTIP": "پیکربندی فایل‌های کاری",
-  "CLOSE_TAB_TOOLTIP": "بستن زبانه",
-  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "حذف اسنیپت"
+  "SCROLL_SENSITIVITY": "حساسیت اسکرول",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "ضریب برای سرعت اسکرول چرخ ماوس (از ۰٫۱ تا ۱۰، پیش‌فرض ۱). اگر اسکرول خیلی کند یا سریع به نظر می‌رسد، این مقدار را تنظیم کنید."
 });

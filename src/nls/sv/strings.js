@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Redigera hyperlänk",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Ingen href angiven",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Öppna den här länken",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Öppnas i ny flik",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Duplicera",
   "LIVE_DEV_TOOLBOX_DELETE": "Radera",
   "LIVE_DEV_TOOLBOX_AI": "Redigera med AI",
@@ -1663,5 +1664,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Börja om",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kort",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 raderat",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Öppnas i ny flik"
+  "SCROLL_SENSITIVITY": "Scrollkänslighet",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Multiplikator för mushjulets scrollhastighet (0,1 till 10, standard 1). Justera om scrollningen känns för långsam eller snabb."
 });

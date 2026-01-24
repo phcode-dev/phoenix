@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Edit Tautan",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Href belum diatur",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Buka tautan ini",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Dibuka di tab baru",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Gandakan",
   "LIVE_DEV_TOOLBOX_DELETE": "Hapus",
   "LIVE_DEV_TOOLBOX_AI": "Edit dengan AI",
@@ -1663,5 +1664,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Mulai Lagi",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartu",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 dihapus",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Dibuka di tab baru"
+  "SCROLL_SENSITIVITY": "Sensitivitas Gulir",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Pengali untuk kecepatan gulir roda mouse (0,1 hingga 10, default 1). Sesuaikan jika guliran terasa terlalu lambat atau cepat."
 });

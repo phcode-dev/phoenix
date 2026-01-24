@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Modifier le lien hypertexte",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Aucun href défini",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Ouvrir ce lien",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Ouvre dans un nouvel onglet",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Dupliquer",
   "LIVE_DEV_TOOLBOX_DELETE": "Supprimer",
   "LIVE_DEV_TOOLBOX_AI": "Modifier avec l'IA",
@@ -1663,5 +1664,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Recommencer",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cartes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 supprimé",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Ouvre dans un nouvel onglet"
+  "SCROLL_SENSITIVITY": "Sensibilité du défilement",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Multiplicateur pour la vitesse de défilement de la molette (0,1 à 10, par défaut 1). Ajustez si le défilement vous semble trop lent ou trop rapide."
 });

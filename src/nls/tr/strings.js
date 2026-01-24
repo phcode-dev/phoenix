@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Köprüyü Düzenle",
   "LIVE_DEV_HYPERLINK_NO_HREF": "href ayarlanmadı",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Bu bağlantıyı aç",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Yeni sekmede açılır",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Çoğalt",
   "LIVE_DEV_TOOLBOX_DELETE": "Sil",
   "LIVE_DEV_TOOLBOX_AI": "Yapay Zeka ile Düzenle",
@@ -1663,5 +1664,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Yeniden Başla",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 silindi",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Yeni sekmede açılır"
+  "SCROLL_SENSITIVITY": "Kaydırma Hassasiyeti",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Fare tekerleği kaydırma hızı için çarpan (0,1 ila 10, varsayılan 1). Kaydırma çok yavaş veya hızlı geliyorsa ayarlayın."
 });

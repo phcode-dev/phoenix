@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Editează hyperlinkul",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Niciun href setat",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Deschide acest link",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Se deschide într-o filă nouă",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Dublează",
   "LIVE_DEV_TOOLBOX_DELETE": "Șterge",
   "LIVE_DEV_TOOLBOX_AI": "Editează cu AI",
@@ -1663,5 +1664,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Reîncepe",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carduri",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 șters",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Se deschide într-o filă nouă"
+  "SCROLL_SENSITIVITY": "Sensibilitate derulare",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Multiplicator pentru viteza de derulare a rotiței mouse-ului (de la 0,1 la 10, implicit 1). Ajustați dacă derularea pare prea lentă sau prea rapidă."
 });

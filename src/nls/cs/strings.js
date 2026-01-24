@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Upravit odkaz",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Není nastaveno href",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Otevřít odkaz",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Otevře se v nové kartě",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Duplikovat",
   "LIVE_DEV_TOOLBOX_DELETE": "Smazat",
   "LIVE_DEV_TOOLBOX_AI": "Upravit s AI",
@@ -1663,5 +1664,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začít znovu",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karet",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 smazáno",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Otevře se v nové kartě"
+  "SCROLL_SENSITIVITY": "Citlivost posouvání",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Násobič rychlosti posouvání kolečkem myši (0,1 až 10, výchozí 1). Upravte, pokud se vám posouvání zdá příliš pomalé nebo rychlé."
 });

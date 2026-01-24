@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Rediģēt hipersaiti",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Nav iestatīts href",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Atvērt šo saiti",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Atveras jaunā cilnē",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Dublēt",
   "LIVE_DEV_TOOLBOX_DELETE": "Dzēst",
   "LIVE_DEV_TOOLBOX_AI": "Rediģēt ar MI",
@@ -1663,5 +1664,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Sākt no jauna",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kartītes",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 izdzēsts",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Atveras jaunā cilnē"
+  "SCROLL_SENSITIVITY": "Ritināšanas jutība",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Peles ritentiņa ritināšanas ātruma reizinātājs (no 0,1 līdz 10, noklusējums 1). Pielāgojiet, ja ritināšana šķiet pārāk lēna vai ātra."
 });

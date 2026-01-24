@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "ہائپر لنک میں ترمیم کریں",
   "LIVE_DEV_HYPERLINK_NO_HREF": "کوئی href سیٹ نہیں ہے",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "اس لنک کو کھولیں",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "نئے ٹیب میں کھلتا ہے",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "نقل بنائیں",
   "LIVE_DEV_TOOLBOX_DELETE": "حذف کریں",
   "LIVE_DEV_TOOLBOX_AI": "AI کے ساتھ ترمیم کریں",
@@ -1663,5 +1664,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "دوبارہ شروع کریں",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 کارڈز",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 حذف شدہ",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "نئے ٹیب میں کھلتا ہے"
+  "SCROLL_SENSITIVITY": "اسکرول حساسیت",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "ماؤس وہیل کی اسکرول رفتار کا ملٹی پلائر (0.1 سے 10 تک، ڈیفالٹ 1)۔ اگر اسکرولنگ بہت سست یا تیز محسوس ہو تو ایڈجسٹ کریں۔"
 });

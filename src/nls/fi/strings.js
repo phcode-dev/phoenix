@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Muokkaa linkkiä",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Ei href-arvoa asetettu",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Avaa tämä linkki",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Avautuu uuteen välilehteen",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Monista",
   "LIVE_DEV_TOOLBOX_DELETE": "Poista",
   "LIVE_DEV_TOOLBOX_AI": "Muokkaa tekoälyllä",
@@ -1663,5 +1664,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Aloita alusta",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 korttia",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 poistettu",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Avautuu uuteen välilehteen"
+  "SCROLL_SENSITIVITY": "Vierityksen herkkyys",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Kerroin hiiren rullan vieritysnopeudelle (0,1–10, oletus 1). Säädä, jos vieritys tuntuu liian hitaalta tai nopealta."
 });
