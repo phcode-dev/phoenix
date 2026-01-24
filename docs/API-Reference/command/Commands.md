@@ -126,13 +126,7 @@ Closes files from list
 <a name="FILE_PIN"></a>
 
 ## FILE\_PIN
-Pins the selected file
-
-**Kind**: global variable  
-<a name="FILE_UNPIN"></a>
-
-## FILE\_UNPIN
-Unpins the selected file
+Toggles the pinned state of the selected file
 
 **Kind**: global variable  
 <a name="FILE_REOPEN_CLOSED"></a>
