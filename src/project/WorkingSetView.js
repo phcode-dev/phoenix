@@ -288,6 +288,7 @@ define(function (require, exports, module) {
                 lastPageY = startPageY,
                 lastHit = { where: NOMANSLAND },
                 tryClosing = $(e.target).hasClass("can-close"),
+                tryPinning = $(e.target).closest(".file-status-icon").hasClass("pinned"),
                 currentFile = MainViewManager.getCurrentlyViewedFile(),
                 activePaneId = MainViewManager.getActivePaneId(),
                 activeView = _views[activePaneId],
@@ -778,6 +779,14 @@ define(function (require, exports, module) {
                                 .always(function () {
                                     postDropCleanup();
                                 });
+                        } else if (tryPinning) {
+                            // Click on pin icon - toggle pin state
+                            CommandManager
+                                .execute(Commands.FILE_PIN, {file: sourceFile,
+                                    paneId: sourceView.paneId})
+                                .always(function () {
+                                    postDropCleanup();
+                                });
                         } else {
                             // Normal right and left click - select the item
                             FileViewController.setFileViewFocus(FileViewController.WORKING_SET_VIEW);
@@ -1186,32 +1195,42 @@ define(function (require, exports, module) {
     };
 
     /**
-     * Updates the appearance of the list element based on the parameters provided
+     * Updates the appearance of the list element based on the parameters provided.
+     * For pinned files: shows pin icon (always visible, clickable to unpin)
+     * For unpinned files: shows close button on hover
+     * Dirty indicator is shown on the right side when file has unsaved changes
      * @private
      * @param {!HTMLLIElement} listElement
      * @param {bool} isDirty
      * @param {bool} canClose
+     * @param {bool} isPinned
      */
-    WorkingSetView.prototype._updateFileStatusIcon = function (listElement, isDirty, canClose) {
-        var $fileStatusIcon = listElement.find(".file-status-icon"),
-            showIcon = isDirty || canClose;
+    WorkingSetView.prototype._updateFileStatusIcon = function (listElement, isDirty, canClose, isPinned) {
+        let $fileStatusIcon = listElement.find(".file-status-icon"),
+            $dirtyIndicator = listElement.find(".working-set-dirty-indicator"),
+            showIcon = isPinned || canClose;
 
-        // remove icon if its not needed
+        // Handle file status icon (pin or close button) on LEFT side
         if (!showIcon && $fileStatusIcon.length !== 0) {
             $fileStatusIcon.remove();
             $fileStatusIcon = null;
-
-        // create icon if its needed and doesn't exist
         } else if (showIcon && $fileStatusIcon.length === 0) {
-
             $fileStatusIcon = $("<div class='file-status-icon'></div>")
                 .prependTo(listElement);
         }
 
-        // Set icon's class
+        // Set icon's class - pinned shows thumbtack, unpinned shows close on hover
         if ($fileStatusIcon) {
-            ViewUtils.toggleClass($fileStatusIcon, "dirty", isDirty);
-            ViewUtils.toggleClass($fileStatusIcon, "can-close", canClose);
+            ViewUtils.toggleClass($fileStatusIcon, "can-close", canClose && !isPinned);
+            ViewUtils.toggleClass($fileStatusIcon, "pinned", isPinned);
+        }
+
+        // Handle dirty indicator on RIGHT side
+        if (!isDirty && $dirtyIndicator.length !== 0) {
+            $dirtyIndicator.remove();
+        } else if (isDirty && $dirtyIndicator.length === 0) {
+            $dirtyIndicator = $("<div class='working-set-dirty-indicator'></div>")
+                .appendTo(listElement);
         }
     };
 
@@ -1272,25 +1291,23 @@ define(function (require, exports, module) {
             $newItem.addClass(provider(data));
         });
 
-        // if the file is pinned, add the pin icon in the list item
+        // Check if the file is pinned and add the class
         const isPinned = MainViewManager.isPathPinned(this.paneId, file.fullPath);
         if (isPinned) {
             $newItem.addClass("pinned");
-            const $pinIcon = $("<div class='working-set-pin-icon'><i class='fa-solid fa-thumbtack'></i></div>");
-            $newItem.append($pinIcon);
         }
 
-        // Update the listItem's apperance
-        this._updateFileStatusIcon($newItem, _isOpenAndDirty(file), false);
+        // Update the listItem's appearance - pin icon or close button handled by _updateFileStatusIcon
+        this._updateFileStatusIcon($newItem, _isOpenAndDirty(file), false, isPinned);
         _updateListItemSelection($newItem, selectedFile);
         _makeDraggable($newItem);
 
         $newItem.hover(
             function () {
-                self._updateFileStatusIcon($(this), _isOpenAndDirty(file), true);
+                self._updateFileStatusIcon($(this), _isOpenAndDirty(file), true, isPinned);
             },
             function () {
-                self._updateFileStatusIcon($(this), _isOpenAndDirty(file), false);
+                self._updateFileStatusIcon($(this), _isOpenAndDirty(file), false, isPinned);
             }
         );
     };
@@ -1405,7 +1422,9 @@ define(function (require, exports, module) {
                     if ($nextListItem && $nextListItem.length > 0) {
                         var canClose = ($listItem.find(".can-close").length === 1);
                         var isDirty = _isOpenAndDirty($nextListItem.data(_FILE_KEY));
-                        this._updateFileStatusIcon($nextListItem, isDirty, canClose);
+                        let nextFile = $nextListItem.data(_FILE_KEY);
+                        let isPinned = MainViewManager.isPathPinned(this.paneId, nextFile.fullPath);
+                        this._updateFileStatusIcon($nextListItem, isDirty, canClose, isPinned);
                     }
                     $listItem.remove();
                 }
@@ -1476,7 +1495,8 @@ define(function (require, exports, module) {
         var listItem = this._findListItemFromFile(doc.file);
         if (listItem) {
             var canClose = $(listItem).find(".can-close").length === 1;
-            this._updateFileStatusIcon(listItem, doc.isDirty, canClose);
+            let isPinned = MainViewManager.isPathPinned(this.paneId, doc.file.fullPath);
+            this._updateFileStatusIcon(listItem, doc.isDirty, canClose, isPinned);
         }
     };
 

@@ -1443,19 +1443,6 @@ a, img {
         color: @project-panel-text-2;
     }
 
-    li.pinned .working-set-pin-icon {
-        position: absolute;
-        right: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 9px;
-        color: @project-panel-text-2;
-        opacity: 0.7;
-
-        &:hover {
-            opacity: 1;
-        }
-    }
 }
 
 
@@ -1619,15 +1606,10 @@ a, img {
     left: 0;
     top: 0;
 
-    &.dirty:before,
-    &.can-close:before {
+    &.can-close:before,
+    &.pinned:before {
         .unicode-icon-container;
         color: rgba(255, 255, 255, 0.5);
-    }
-
-    &.dirty:before {
-        content: "\2022";
-        line-height: 1em;
     }
 
     &.can-close:before {
@@ -1641,6 +1623,30 @@ a, img {
 
     &.can-close:active:before {
         color: rgba(255, 255, 255, 0.3);
+    }
+
+    &.pinned:before {
+        content: "\f08d";
+        font-family: "Font Awesome 6 Free";
+        font-weight: 900;
+        font-size: 9px;
+    }
+
+    &.pinned:hover:before {
+        color: rgba(255, 255, 255, 0.7);
+    }
+}
+
+.working-set-dirty-indicator {
+    position: absolute;
+    right: 10px;
+    top: 0;
+
+    &:before {
+        .unicode-icon-container;
+        content: "\2022";
+        color: rgba(255, 255, 255, 0.5);
+        line-height: 1em;
     }
 }
 
