@@ -265,3 +265,36 @@
   top: 50%;
   transform: translateY(-50%);
 }
+
+#mrof-container #mrof-list > li.git-modified > a.mroitem:before {
+  content: "|";
+  color: #E3B551;
+  position: absolute;
+  left: 21px;
+  font-weight: bold;
+}
+
+#mrof-container #mrof-list > li.git-new > a.mroitem:before {
+  content: "|";
+  color: #91CC41;
+  position: absolute;
+  left: 21px;
+  font-weight: bold;
+}
+
+#mrof-container #mrof-list > li.git-ignored > a.mroitem {
+  color: #868888 !important;
+  font-style: italic;
+}
+
+#mrof-container #mrof-list > li.git-ignored.highlight > a.mroitem {
+  color: #868888 !important;
+}
+
+#mrof-list-wrapper #mrof-list > li.git-modified > a.mroitem:before {
+  color: #f1ae1c;
+}
+
+#mrof-list-wrapper #mrof-list > li.git-new > a.mroitem:before {
+  color: #69a01f;
+}
