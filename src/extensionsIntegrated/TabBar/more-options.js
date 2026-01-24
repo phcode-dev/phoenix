@@ -63,6 +63,18 @@ define(function (require, exports, module) {
         closeAboveCmd.setName(Strings.CLOSE_TABS_TO_THE_LEFT);
         closeBelowCmd.setName(Strings.CLOSE_TABS_TO_THE_RIGHT);
         closeAllCmd.setName(Strings.CLOSE_ALL_TABS);
+
+        // Enable/disable Close Left/Right based on tab position
+        const targetIndex = MainViewManager.findInWorkingSet(
+            _currentTabContext.paneId,
+            _currentTabContext.filePath
+        );
+        const workingSetListSize = MainViewManager.getWorkingSetSize(_currentTabContext.paneId);
+
+        // disable "Close Tabs to the Left" if this is the first tab
+        closeAboveCmd.setEnabled(targetIndex > 0);
+        // disable "Close Tabs to the Right" if this is the last tab
+        closeBelowCmd.setEnabled(targetIndex < workingSetListSize - 1);
     }
 
     /**
