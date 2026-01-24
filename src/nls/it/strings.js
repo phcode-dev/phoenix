@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Modifica collegamento",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Nessun href impostato",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Apri questo collegamento",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Apre in una nuova scheda",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Duplica",
   "LIVE_DEV_TOOLBOX_DELETE": "Elimina",
   "LIVE_DEV_TOOLBOX_AI": "Modifica con AI",
@@ -1663,5 +1664,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Ricomincia",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 carte",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminato",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Apre in una nuova scheda"
+  "SCROLL_SENSITIVITY": "Sensibilità scorrimento",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Moltiplicatore per la velocità di scorrimento della rotellina del mouse (da 0,1 a 10, predefinito 1). Regolare se lo scorrimento risulta troppo lento o veloce."
 });

@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "하이퍼링크 편집",
   "LIVE_DEV_HYPERLINK_NO_HREF": "링크 대상이 설정되지 않음",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "이 링크 열기",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "새 탭에 열립니다",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "행 복사",
   "LIVE_DEV_TOOLBOX_DELETE": "삭제",
   "LIVE_DEV_TOOLBOX_AI": "AI로 편집",
@@ -1663,5 +1664,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "다시 시작",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 카드",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 삭제됨",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "새 탭에 열립니다"
+  "SCROLL_SENSITIVITY": "스크롤 감도",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "마우스 휠 스크롤 속도 배수 (0.1에서 10까지, 기본값 1). 스크롤이 너무 느리거나 빠르다고 느껴지면 조절하세요."
 });

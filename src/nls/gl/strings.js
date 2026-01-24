@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Editar ligazón",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Non se estableceu ningún href",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Abrir esta ligazón",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Abre nunha nova pestana",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Duplicar",
   "LIVE_DEV_TOOLBOX_DELETE": "Eliminar",
   "LIVE_DEV_TOOLBOX_AI": "Editar con IA",
@@ -1663,5 +1664,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Comezar de novo",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 tarxetas",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 eliminado",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Abre nunha nova pestana"
+  "SCROLL_SENSITIVITY": "Sensibilidade do desprazamento",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Multiplicador para a velocidade de desprazamento da roda do rato (de 0,1 a 10, predeterminado 1). Axuste se o desprazamento parece demasiado lento ou rápido."
 });

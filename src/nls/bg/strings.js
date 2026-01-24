@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Редактиране на хипервръзка",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Няма зададен href",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Отваряне на връзката",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Отваря се в нов раздел",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Копие на реда",
   "LIVE_DEV_TOOLBOX_DELETE": "Изтриване",
   "LIVE_DEV_TOOLBOX_AI": "Редактиране с AI",
@@ -1663,5 +1664,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Започни отново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карти",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 изтрит",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Отваря се в нов раздел"
+  "SCROLL_SENSITIVITY": "Чувствителност на превъртане",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Множител за скоростта на превъртане с колелцето на мишката (от 0,1 до 10, по подразбиране 1). Регулирайте, ако превъртането е твърде бавно или бързо."
 });

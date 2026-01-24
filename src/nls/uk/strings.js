@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Редагувати посилання",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Не вказано href",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Відкрити це посилання",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Відкривається в новій вкладці",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Дублювати",
   "LIVE_DEV_TOOLBOX_DELETE": "Видалити",
   "LIVE_DEV_TOOLBOX_AI": "Редагувати з ШІ",
@@ -1663,5 +1664,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Почати знову",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карток",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 видалено",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Відкривається в новій вкладці"
+  "SCROLL_SENSITIVITY": "Чутливість прокручування",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Множник швидкості прокручування коліщатка миші (від 0,1 до 10, за замовчуванням 1). Налаштуйте, якщо прокручування здається занадто повільним або швидким."
 });

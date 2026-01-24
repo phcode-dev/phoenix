@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "ഹൈപ്പർലിങ്ക് എഡിറ്റ് ചെയ്യുക",
   "LIVE_DEV_HYPERLINK_NO_HREF": "href സജ്ജീകരിച്ചിട്ടില്ല",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "ഈ ലിങ്ക് തുറക്കുക",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "പുതിയ ടാബിൽ തുറക്കുന്നു",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "ഡ്യൂപ്ലിക്കേറ്റ്",
   "LIVE_DEV_TOOLBOX_DELETE": "ഡിലീറ്റ് ചെയ്യുക",
   "LIVE_DEV_TOOLBOX_AI": "AI ഉപയോഗിച്ച് എഡിറ്റ് ചെയ്യുക",
@@ -1663,5 +1664,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "വീണ്ടും ആരംഭിക്കുക",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 കാർഡുകൾ",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 ഇല്ലാതാക്കി",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "പുതിയ ടാബിൽ തുറക്കുന്നു"
+  "SCROLL_SENSITIVITY": "സ്ക്രോൾ സെൻസിറ്റിവിറ്റി",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "മൗസ് വീൽ സ്ക്രോൾ വേഗതയുടെ ഗുണകം (0.1 മുതൽ 10 വരെ, സാധാരണ 1). സ്ക്രോളിംഗ് വളരെ വേഗത കുറഞ്ഞതായോ കൂടിയതായോ അനുഭവപ്പെട്ടാൽ ക്രമീകരിക്കുക."
 });

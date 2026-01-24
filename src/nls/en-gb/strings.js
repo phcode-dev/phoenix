@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Edit Hyperlink",
   "LIVE_DEV_HYPERLINK_NO_HREF": "No href set",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Open this link",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Opens in new tab",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Duplicate",
   "LIVE_DEV_TOOLBOX_DELETE": "Delete",
   "LIVE_DEV_TOOLBOX_AI": "Edit with AI",
@@ -1663,5 +1664,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Start Again",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 cards",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 deleted",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Opens in new tab"
+  "SCROLL_SENSITIVITY": "Scroll Sensitivity",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Multiplier for mouse wheel scroll speed (0.1 to 10, default 1). Adjust if scrolling feels too slow or fast."
 });

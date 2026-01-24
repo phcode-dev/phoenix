@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Επεξεργασία υπερσυνδέσμου",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Δεν έχει οριστεί href",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Άνοιγμα αυτού του συνδέσμου",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Ανοίγει σε νέα καρτέλα",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Δημιουργία Αντιγράφου",
   "LIVE_DEV_TOOLBOX_DELETE": "Διαγραφή",
   "LIVE_DEV_TOOLBOX_AI": "Επεξεργασία με AI",
@@ -1663,5 +1664,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Έναρξη από την αρχή",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 κάρτες",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 διαγράφηκε",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Ανοίγει σε νέα καρτέλα"
+  "SCROLL_SENSITIVITY": "Ευαισθησία Κύλισης",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Πολλαπλασιαστής για την ταχύτητα κύλισης της ροδέλας του ποντικιού (0,1 έως 10, προεπιλογή 1). Προσαρμόστε εάν η κύλιση είναι πολύ αργή ή γρήγορη."
 });

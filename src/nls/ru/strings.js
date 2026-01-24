@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Редактировать гиперссылку",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Атрибут href не задан",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Открыть эту ссылку",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Открывается в новой вкладке",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Дублировать",
   "LIVE_DEV_TOOLBOX_DELETE": "Удалить",
   "LIVE_DEV_TOOLBOX_AI": "Редактировать с помощью ИИ",
@@ -1663,5 +1664,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Начать заново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 карточки",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 удалено",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Открывается в новой вкладке"
+  "SCROLL_SENSITIVITY": "Чувствительность прокрутки",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Множитель скорости прокрутки колесом мыши (от 0,1 до 10, по умолчанию 1). Настройте, если прокрутка кажется слишком медленной или быстрой."
 });

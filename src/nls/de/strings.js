@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Hyperlink bearbeiten",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Kein href festgelegt",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Diesen Link öffnen",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Öffnet in neuem Tab",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Duplizieren",
   "LIVE_DEV_TOOLBOX_DELETE": "Löschen",
   "LIVE_DEV_TOOLBOX_AI": "Mit KI bearbeiten",
@@ -1663,5 +1664,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Erneut starten",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 Karten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 gelöscht",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Öffnet in neuem Tab"
+  "SCROLL_SENSITIVITY": "Scroll-Empfindlichkeit",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Multiplikator für die Scroll-Geschwindigkeit des Mausrads (0,1 bis 10, Standard: 1). Passen Sie diesen Wert an, wenn sich das Scrollen zu langsam oder zu schnell anfühlt."
 });

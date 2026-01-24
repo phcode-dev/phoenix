@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "تحرير الارتباط التشعبي",
   "LIVE_DEV_HYPERLINK_NO_HREF": "لم يتم تعيين href",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "فتح هذا الرابط",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "يُفتح في علامة تبويب جديدة",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "تكرار",
   "LIVE_DEV_TOOLBOX_DELETE": "حذف",
   "LIVE_DEV_TOOLBOX_AI": "تحرير بالذكاء الاصطناعي",
@@ -1663,5 +1664,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "البدء من جديد",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 بطاقات",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 محذوف",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "يُفتح في علامة تبويب جديدة"
+  "SCROLL_SENSITIVITY": "حساسية التمرير",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "مُضاعِف لسرعة تمرير عجلة الماوس (من 0.1 إلى 10، الافتراضي 1). اضبط القيمة إذا كان التمرير بطيئًا جدًا أو سريعًا جدًا."
 });

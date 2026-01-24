@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Edytuj hiperłącze",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Nie ustawiono href",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Otwórz ten link",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Otwiera w nowej karcie",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Duplikuj",
   "LIVE_DEV_TOOLBOX_DELETE": "Usuń",
   "LIVE_DEV_TOOLBOX_AI": "Edytuj z AI",
@@ -1663,5 +1664,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Zacznij od nowa",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kart",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 usunięto",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Otwiera w nowej karcie"
+  "SCROLL_SENSITIVITY": "Czułość przewijania",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Mnożnik prędkości przewijania kółkiem myszy (od 0,1 do 10, domyślnie 1). Dostosuj, jeśli przewijanie jest zbyt wolne lub zbyt szybkie."
 });

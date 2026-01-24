@@ -338,6 +338,7 @@ define({
   "CMD_SPLITVIEW_VERTICAL": "垂直分割",
   "CMD_SPLITVIEW_HORIZONTAL": "水平分割",
   "SPLITVIEW_MENU_TOOLTIP": "垂直/水平分割编辑器窗口",
+  "GEAR_MENU_TOOLTIP": "配置工作文件",
   "CMD_TOGGLE_SHOW_WORKING_SET": "显示工作文件",
   "CMD_TOGGLE_SHOW_FILE_TABS": "显示文件标签栏",
   "SPLITVIEW_INFO_TITLE": "已经打开",
@@ -409,6 +410,7 @@ define({
   "CLOSE_TABS_TO_THE_LEFT": "关闭左侧标签页",
   "CLOSE_ALL_TABS": "关闭所有标签页",
   "CLOSE_SAVED_TABS": "关闭已保存的标签页",
+  "CLOSE_TAB_TOOLTIP": "关闭标签页",
   "ERRORS_NO_FILE": "未打开文件",
   "ERRORS_PANEL_TITLE_MULTIPLE": "{0} 个问题 - {1}",
   "ERRORS_PANEL_TITLE_MULTIPLE_FIXABLE": "{0} 个问题，其中 {1} 个可修复 - {2}",
@@ -1508,6 +1510,7 @@ define({
   "CUSTOM_SNIPPETS_HEADER_TEMPLATE": "模板文本",
   "CUSTOM_SNIPPETS_HEADER_DESCRIPTION": "描述",
   "CUSTOM_SNIPPETS_HEADER_FILE_EXTENSION": "文件扩展名",
+  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "删除片段",
   "PROMO_UPGRADE_TITLE": "您已升级到 {0}",
   "PROMO_UPGRADE_MESSAGE": "在接下来的 {0} 天内畅享这些高级功能：",
   "PROMO_CARD_1": "实时预览编辑",
@@ -1661,7 +1664,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "重新开始",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 张卡片",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 已删除",
-  "GEAR_MENU_TOOLTIP": "配置工作文件",
-  "CLOSE_TAB_TOOLTIP": "关闭标签页",
-  "CUSTOM_SNIPPETS_DELETE_TOOLTIP": "删除片段"
+  "SCROLL_SENSITIVITY": "滚动灵敏度",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "鼠标滚轮滚动速度倍率（0.1 到 10，默认为 1）。如果滚动过慢或过快，可调整此项。"
 });

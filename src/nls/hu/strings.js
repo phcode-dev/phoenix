@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Hivatkozás szerkesztése",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Nincs href beállítva",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Hivatkozás megnyitása",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Új lapon nyílik meg",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Duplikálás",
   "LIVE_DEV_TOOLBOX_DELETE": "Töröl",
   "LIVE_DEV_TOOLBOX_AI": "Szerkesztés AI-val",
@@ -1663,5 +1664,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Újrakezdés",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kártya",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 törölve",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Új lapon nyílik meg"
+  "SCROLL_SENSITIVITY": "Görgetési érzékenység",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Szorzó az egérgörgő görgetési sebességéhez (0,1-től 10-ig, alapértelmezett: 1). Módosítsa, ha a görgetést túl lassúnak vagy gyorsnak érzi."
 });

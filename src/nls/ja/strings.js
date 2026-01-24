@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "ハイパーリンクを編集",
   "LIVE_DEV_HYPERLINK_NO_HREF": "hrefが設定されていません",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "このリンクを開く",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "新しいタブで開きます",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "行を複製",
   "LIVE_DEV_TOOLBOX_DELETE": "削除",
   "LIVE_DEV_TOOLBOX_AI": "AIで編集",
@@ -1663,5 +1664,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "最初からやり直す",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3枚のカード",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1件削除済み",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "新しいタブで開きます"
+  "SCROLL_SENSITIVITY": "スクロール感度",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "マウスホイールのスクロール速度の倍率（0.1～10、デフォルトは1）。スクロールが遅すぎる、または速すぎると感じる場合に調整してください。"
 });

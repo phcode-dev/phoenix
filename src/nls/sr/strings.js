@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Уреди хипервезу",
   "LIVE_DEV_HYPERLINK_NO_HREF": "href није подешен",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Отвори ову везу",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Отвара се у новој картици",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Удвостручи",
   "LIVE_DEV_TOOLBOX_DELETE": "Обриши",
   "LIVE_DEV_TOOLBOX_AI": "Уреди помоћу ВИ",
@@ -1663,5 +1664,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Почни поново",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 картице",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 обрисано",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Отвара се у новој картици"
+  "SCROLL_SENSITIVITY": "Осетљивост скроловања",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Множилац за брзину скроловања точкићем миша (од 0,1 до 10, подразумевано 1). Подесите ако вам се чини да је скроловање преспоро или пребрзо."
 });

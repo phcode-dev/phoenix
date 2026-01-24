@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Hyperlink bewerken",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Geen href ingesteld",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Deze link openen",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Opent in een nieuw tabblad",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Dupliceer",
   "LIVE_DEV_TOOLBOX_DELETE": "Verwijder",
   "LIVE_DEV_TOOLBOX_AI": "Bewerken met AI",
@@ -1663,5 +1664,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Opnieuw beginnen",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 kaarten",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 verwijderd",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Opent in een nieuw tabblad"
+  "SCROLL_SENSITIVITY": "Scrolgevoeligheid",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Vermenigvuldiger voor de scrolsnelheid van het muiswiel (0,1 tot 10, standaard 1). Pas aan als scrollen te traag of te snel aanvoelt."
 });

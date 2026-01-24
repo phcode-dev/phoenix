@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "हाइपरलिंक संपादित करें",
   "LIVE_DEV_HYPERLINK_NO_HREF": "कोई href सेट नहीं है",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "यह लिंक खोलें",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "नए टैब में खुलता है",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "डुप्लिकेट",
   "LIVE_DEV_TOOLBOX_DELETE": "डिलीट करें",
   "LIVE_DEV_TOOLBOX_AI": "AI से संपादित करें",
@@ -1663,5 +1664,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "फिर से शुरू करें",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 कार्ड",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 हटाया गया",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "नए टैब में खुलता है"
+  "SCROLL_SENSITIVITY": "स्क्रॉल संवेदनशीलता",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "माउस व्हील स्क्रॉल गति के लिए गुणक (0.1 से 10, डिफ़ॉल्ट 1)। यदि स्क्रॉलिंग बहुत धीमी या तेज़ लगे तो समायोजित करें।"
 });

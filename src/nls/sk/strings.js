@@ -162,6 +162,7 @@ define({
   "LIVE_DEV_TOOLBOX_EDIT_HYPERLINK": "Upraviť odkaz",
   "LIVE_DEV_HYPERLINK_NO_HREF": "Nie je nastavený atribút href",
   "LIVE_DEV_HYPERLINK_OPEN_LINK": "Otvoriť tento odkaz",
+  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Otvorí sa na novej karte",
   "LIVE_DEV_TOOLBOX_DUPLICATE": "Duplikovať",
   "LIVE_DEV_TOOLBOX_DELETE": "Zmazať",
   "LIVE_DEV_TOOLBOX_AI": "Upraviť pomocou AI",
@@ -1663,5 +1664,6 @@ define({
   "DEMO_JS_BUTTON_START_AGAIN": "Začať znova",
   "DEMO_JS_CARD_COUNT_TEMPLATE": "{NUM_DONE}/3 karty",
   "DEMO_JS_DELETE_COUNT_TEMPLATE": "{NUM_DONE}/1 odstránené",
-  "LIVE_DEV_HYPERLINK_OPENS_NEW_TAB": "Otvorí sa na novej karte"
+  "SCROLL_SENSITIVITY": "Citlivosť posúvania",
+  "DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY": "Násobok rýchlosti posúvania kolieskom myši (0,1 až 10, predvolené 1). Upravte, ak sa vám posúvanie zdá príliš pomalé alebo rýchle."
 });
