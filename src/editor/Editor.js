@@ -135,7 +135,8 @@ define(function (require, exports, module) {
 
     const LINE_NUMBER_GUTTER = EditorPreferences.LINE_NUMBER_GUTTER,
         LINE_NUMBER_GUTTER_PRIORITY = EditorPreferences.LINE_NUMBER_GUTTER_PRIORITY,
-        CODE_FOLDING_GUTTER_PRIORITY = EditorPreferences.CODE_FOLDING_GUTTER_PRIORITY;
+        CODE_FOLDING_GUTTER_PRIORITY = EditorPreferences.CODE_FOLDING_GUTTER_PRIORITY,
+        MOUSE_WHEEL_SCROLL_SENSITIVITY = EditorPreferences.MOUSE_WHEEL_SCROLL_SENSITIVITY;
 
     let editorOptions = [...Object.keys(cmOptions), AUTO_TAB_SPACES];
 
@@ -147,6 +148,13 @@ define(function (require, exports, module) {
      * @type {boolean}
      */
     var _duringFocus = false;
+
+    /**
+     * Cached mouse wheel scroll sensitivity value from preferences
+     * @private
+     * @type {number}
+     */
+    let _mouseWheelScrollSensitivity = 1;
 
     /**
      * Constant: Normal boundary check when centering text.
@@ -464,11 +472,11 @@ define(function (require, exports, module) {
         const $cmElement = this.$el;
         $cmElement[0].addEventListener("wheel", (event) => {
             const $editor = $cmElement.find(".CodeMirror-scroll");
-            // we need to slow down the scroll by the factor of line height. else the scrolling is too fast.
-            // this became a problem after we added the custom line height feature causing jumping scrolls esp in safari
-            // and mac if we dont do this scroll scaling.
+            // We need to scale the scroll by the factor of line height. This became a problem after we added
+            // the custom line height feature causing jumping scrolls esp in safari and mac if we dont do
+            // this scroll scaling.
             const lineHeight = parseFloat(getComputedStyle($editor[0]).lineHeight);
-            const defaultHeight = 14, scrollScaleFactor = lineHeight/defaultHeight;
+            const defaultHeight = 14, scrollScaleFactor = lineHeight / defaultHeight;
 
             // when user is pressing the 'Shift' key, we need to convert the vertical scroll to horizontal scroll
             if (event.shiftKey) {
@@ -493,8 +501,19 @@ define(function (require, exports, module) {
 
             // apply the vertical scrolling normally
             if (event.deltaY !== 0) {
-                const scrollDelta = event.deltaY;
-                $editor[0].scrollTop += (scrollDelta/scrollScaleFactor);
+                let scrollAmount;
+                if (event.deltaMode === 0) {
+                    // Pixel mode - browser reports delta in pixels, system scroll settings already applied.
+                    // Scale by line height factor to normalize for custom line heights.
+                    scrollAmount = event.deltaY / scrollScaleFactor;
+                } else if (event.deltaMode === 1) {
+                    // Line mode - delta is in lines, convert to pixels using actual line height
+                    scrollAmount = event.deltaY * defaultHeight;
+                } else {
+                    // Page mode - delta is in pages, convert to viewport height
+                    scrollAmount = event.deltaY * $editor[0].clientHeight;
+                }
+                $editor[0].scrollTop += scrollAmount * _mouseWheelScrollSensitivity;
                 event.preventDefault();
             }
         });
@@ -3170,6 +3189,12 @@ define(function (require, exports, module) {
             });
         });
     });
+
+    // Set up listener for mouse wheel scroll sensitivity preference
+    PreferencesManager.on("change", MOUSE_WHEEL_SCROLL_SENSITIVITY, function () {
+        _mouseWheelScrollSensitivity = PreferencesManager.get(MOUSE_WHEEL_SCROLL_SENSITIVITY);
+    });
+    _mouseWheelScrollSensitivity = PreferencesManager.get(MOUSE_WHEEL_SCROLL_SENSITIVITY);
 
     // Define public API
     exports.Editor = Editor;

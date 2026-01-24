@@ -49,7 +49,8 @@ define(function (require, exports, module) {
         WORD_WRAP           = "wordWrap",
         AUTO_HIDE_SEARCH    = "autoHideSearch",
         INDENT_LINE_COMMENT   = "indentLineComment",
-        INPUT_STYLE         = "inputStyle";
+        INPUT_STYLE         = "inputStyle",
+        MOUSE_WHEEL_SCROLL_SENSITIVITY = "mouseWheelScrollSensitivity";
 
     /**
      * Constants
@@ -167,6 +168,10 @@ define(function (require, exports, module) {
     PreferencesManager.definePreference(INPUT_STYLE,  "string", "textarea", {
         description: Strings.DESCRIPTION_INPUT_STYLE
     });
+    PreferencesManager.definePreference(MOUSE_WHEEL_SCROLL_SENSITIVITY, "number", 1, {
+        validator: _.partialRight(ValidationUtils.isWithinRange, 0.1, 10),
+        description: Strings.DESCRIPTION_MOUSE_WHEEL_SCROLL_SENSITIVITY
+    });
 
     function isValidTabSize (size) {
         return ValidationUtils.isIntegerInRange(size, MIN_TAB_SIZE, MAX_TAB_SIZE);
@@ -215,6 +220,7 @@ define(function (require, exports, module) {
     exports.AUTO_HIDE_SEARCH    = AUTO_HIDE_SEARCH;
     exports.INDENT_LINE_COMMENT = INDENT_LINE_COMMENT;
     exports.INPUT_STYLE         = INPUT_STYLE;
+    exports.MOUSE_WHEEL_SCROLL_SENSITIVITY = MOUSE_WHEEL_SCROLL_SENSITIVITY;
 
     exports.MIN_SPACE_UNITS         =  MIN_SPACE_UNITS;
     exports.MIN_TAB_SIZE            =  MIN_TAB_SIZE;

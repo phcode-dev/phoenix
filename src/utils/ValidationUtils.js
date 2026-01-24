@@ -72,8 +72,31 @@ define(function (require, exports, module) {
         return ((!hasLowerLimt || value >= lowerLimit) && (!hasUpperLimt || value <= upperLimit));
     }
 
+    /**
+     * Used to validate whether type of unknown value is a number (including decimals),
+     * and, if so, is it within the optional lower and upper limits.
+     *
+     * @param {*} value Value for which to validate its type
+     * @param {number=} lowerLimit Optional lower limit (inclusive)
+     * @param {number=} upperLimit Optional upper limit (inclusive)
+     * @return {boolean} true if value is a finite number, and optionally in specified range.
+     */
+    function isWithinRange(value, lowerLimit, upperLimit) {
+        // Validate value is a number
+        if (typeof (value) !== "number" || !isFinite(value)) {
+            return false;
+        }
+
+        // Validate number is in range
+        var hasLowerLimit = (typeof (lowerLimit) === "number"),
+            hasUpperLimit = (typeof (upperLimit) === "number");
+
+        return ((!hasLowerLimit || value >= lowerLimit) && (!hasUpperLimit || value <= upperLimit));
+    }
+
 
     // Define public API
     exports.isInteger               = isInteger;
     exports.isIntegerInRange        = isIntegerInRange;
+    exports.isWithinRange           = isWithinRange;
 });

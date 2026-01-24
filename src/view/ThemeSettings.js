@@ -35,6 +35,8 @@ define(function (require, exports, module) {
         Commands            = require("command/Commands"),
         prefs               = PreferencesManager.getExtensionPrefs("themes");
 
+    const MOUSE_WHEEL_SCROLL_SENSITIVITY = "mouseWheelScrollSensitivity";
+
     /**
      * @type {Object}
      * Currently loaded themes that are available to choose from.
@@ -76,6 +78,7 @@ define(function (require, exports, module) {
         result.fontFamily = ViewCommandHandlers.getFontFamily();
         result.fontSize   = ViewCommandHandlers.getFontSize();
         result.validFontSizeRegExp = ViewCommandHandlers.validFontSizeRegExp;
+        result.scrollSensitivity = PreferencesManager.get(MOUSE_WHEEL_SCROLL_SENSITIVITY);
         return result;
     }
 
@@ -140,6 +143,12 @@ define(function (require, exports, module) {
                 newSettings["editorLineHeight"] = targetValue;
                 prefs.set("editorLineHeight", targetValue + "");
             })
+            .on("input", ".scrollSensitivitySlider", function () {
+                const targetValue = parseFloat($(this).val());
+                $template.find(".scrollSensitivityValue").text(targetValue);
+                newSettings["scrollSensitivity"] = targetValue;
+                PreferencesManager.set(MOUSE_WHEEL_SCROLL_SENSITIVITY, targetValue);
+            })
             .on("change", "select", function () {
                 var $target = $(":selected", this);
                 var attr = $target.attr("data-target");
@@ -171,6 +180,7 @@ define(function (require, exports, module) {
                 // Make sure we revert any changes to theme selection
                 prefs.set("theme", currentSettings.theme);
                 prefs.set("editorLineHeight", currentSettings.editorLineHeight);
+                PreferencesManager.set(MOUSE_WHEEL_SCROLL_SENSITIVITY, currentSettings.scrollSensitivity);
             }
         });
         $template
