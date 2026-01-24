@@ -54,7 +54,7 @@ define(function (require, exports, module) {
         OPEN_FILES_VIEW_STATE   = "openFiles";
 
     var htmlTemplate = require("text!./html/recentfiles-template.html"),
-        dirtyDotTemplate = "<div class='file-status-icon dirty' style='position: absolute;margin-left: -2px;'></div>";
+        dirtyDotTemplate = "<div class='file-status-icon dirty'></div>";
 
     var MAX_ENTRY_COUNT    = 50;
 
