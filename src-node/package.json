@@ -19,14 +19,17 @@
     },
     "IMPORTANT!!": "Adding things here will bloat up the package size",
     "dependencies": {
+        "@expo/sudo-prompt": "^9.3.2",
         "@phcode/fs": "^3.0.1",
-        "open": "^10.1.0",
-        "npm": "10.1.0",
-        "ws": "^8.17.1",
+        "@vtsls/language-server": "^0.3.0",
+        "cross-spawn": "^7.0.6",
         "lmdb": "^2.9.2",
         "mime-types": "^2.1.35",
-        "cross-spawn": "^7.0.6",
+        "npm": "10.1.0",
+        "open": "^10.1.0",
+        "typescript": "^5.3.3",
+        "typescript-language-server": "^4.3.3",
         "which": "^2.0.1",
-        "@expo/sudo-prompt": "^9.3.2"
+        "ws": "^8.17.1"
     }
 }

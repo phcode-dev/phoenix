@@ -34,20 +34,26 @@
  */
 
 define(function (require, exports, module) {
+    console.error("[TypeScript] Extension module loading...");
+    console.error("[TypeScript] Phoenix.isNativeApp:", typeof Phoenix !== 'undefined' && Phoenix.isNativeApp);
 
     const AppInit = brackets.getModule("utils/AppInit");
     const ProjectManager = brackets.getModule("project/ProjectManager");
     const CodeHintManager = brackets.getModule("editor/CodeHintManager");
     const EditorManager = brackets.getModule("editor/EditorManager");
+    const NodeConnector = brackets.getModule("NodeConnector");
 
     const LSP_CONNECTOR_ID = "ph-lsp";  // Shared LSP connector
     const SERVER_ID = "typescript";     // This extension's server ID
 
     const SUPPORTED_LANGUAGES = ['javascript', 'typescript', 'jsx', 'tsx'];
 
+    const DocumentManager = brackets.getModule("document/DocumentManager");
+
     let lspConnector = null;
     let initialized = false;
     let documentVersions = new Map();  // Track document versions for LSP
+    let openDocuments = new Set();     // Track URIs that are open in LSP
 
     /**
      * Check if this extension can run (desktop app with Node available)
@@ -57,7 +63,6 @@ define(function (require, exports, module) {
         if (typeof Phoenix === 'undefined' || !Phoenix.isNativeApp) {
             return false;
         }
-        const NodeConnector = brackets.getModule("NodeConnector");
         if (!NodeConnector || !NodeConnector.isNodeAvailable || !NodeConnector.isNodeAvailable()) {
             return false;
         }
@@ -70,7 +75,12 @@ define(function (require, exports, module) {
      * @returns {string} - The file URI
      */
     function getFileUri(doc) {
-        return "file://" + doc.file.fullPath;
+        let path = doc.file.fullPath;
+        // Strip /tauri prefix if present (Tauri desktop adds this)
+        if (path.startsWith('/tauri/')) {
+            path = path.substring(6);
+        }
+        return "file://" + path;
     }
 
     /**
@@ -141,19 +151,35 @@ define(function (require, exports, module) {
             // Ensure document is open in LSP server and get completions
             (async () => {
                 try {
-                    // Send didOpen to ensure server has latest content
-                    await lspConnector.execPeer('sendNotification', {
-                        serverId: SERVER_ID,
-                        method: 'textDocument/didOpen',
-                        params: {
-                            textDocument: {
-                                uri: uri,
-                                languageId: getLanguageId(doc),
-                                version: getNextVersion(uri),
-                                text: doc.getText()
+                    // Send didOpen only once, then didChange for updates
+                    if (!openDocuments.has(uri)) {
+                        // First time - send didOpen
+                        await lspConnector.execPeer('sendNotification', {
+                            serverId: SERVER_ID,
+                            method: 'textDocument/didOpen',
+                            params: {
+                                textDocument: {
+                                    uri: uri,
+                                    languageId: getLanguageId(doc),
+                                    version: 1,
+                                    text: doc.getText()
+                                }
                             }
-                        }
-                    });
+                        });
+                        openDocuments.add(uri);
+                        documentVersions.set(uri, 1);
+                    } else {
+                        // Document already open - send didChange
+                        const version = getNextVersion(uri);
+                        await lspConnector.execPeer('sendNotification', {
+                            serverId: SERVER_ID,
+                            method: 'textDocument/didChange',
+                            params: {
+                                textDocument: { uri: uri, version: version },
+                                contentChanges: [{ text: doc.getText() }]
+                            }
+                        });
+                    }
 
                     // Request completions
                     const result = await lspConnector.execPeer('sendRequest', {
@@ -305,49 +331,89 @@ define(function (require, exports, module) {
     }
 
     /**
+     * Wait for Node to be ready with a timeout
+     * @param {number} timeout - Maximum time to wait in ms
+     * @returns {Promise<boolean>} - True if node is ready, false if timeout
+     */
+    async function waitForNodeReady(timeout = 30000) {
+        const startTime = Date.now();
+
+        while (Date.now() - startTime < timeout) {
+            if (NodeConnector.isNodeReady()) {
+                return true;
+            }
+            // Wait 500ms before checking again
+            await new Promise(resolve => setTimeout(resolve, 500));
+        }
+        return false;
+    }
+
+    /**
      * Initialize the TypeScript language server
      */
     async function initialize() {
         if (!canRun()) {
-            console.log("[TypeScript] Skipping - not desktop app or Node not available");
+            console.error("[TypeScript] Skipping - not desktop app or Node not available");
             return;
         }
 
-        const NodeConnector = brackets.getModule("NodeConnector");
-        if (!NodeConnector.isNodeReady()) {
-            console.log("[TypeScript] Skipping - Node not ready");
+        // Clear document tracking state for fresh start
+        openDocuments.clear();
+        documentVersions.clear();
+
+        console.error("[TypeScript] Waiting for Node to be ready...");
+
+        const nodeReady = await waitForNodeReady();
+        if (!nodeReady) {
+            console.error("[TypeScript] Skipping - Node not ready after timeout");
             return;
         }
 
-        console.log("[TypeScript] Initializing...");
+        console.error("[TypeScript] Initializing...");
 
         try {
-            lspConnector = NodeConnector.createNodeConnector(LSP_CONNECTOR_ID, {});
+            // Try to create connector, handle case where it already exists
+            console.error("[TypeScript] Creating NodeConnector...");
+            try {
+                lspConnector = NodeConnector.createNodeConnector(LSP_CONNECTOR_ID, {});
+                console.error("[TypeScript] NodeConnector created");
+            } catch (connErr) {
+                // Connector might already be registered from a previous load
+                console.error("[TypeScript] Connector already exists, creating unique one");
+                lspConnector = NodeConnector.createNodeConnector(LSP_CONNECTOR_ID + "-" + Date.now(), {});
+            }
 
             // Verify LSP connector is working with a timeout
+            console.error("[TypeScript] Pinging LSP connector...");
             const pingPromise = lspConnector.execPeer('ping', {});
             const timeoutPromise = new Promise((_, reject) =>
                 setTimeout(() => reject(new Error('Ping timeout')), 5000)
             );
 
             const pingResult = await Promise.race([pingPromise, timeoutPromise]);
-            console.log("[TypeScript] LSP connector ping:", pingResult);
+            console.error("[TypeScript] LSP connector ping:", pingResult);
 
             // Get project root
             const projectRoot = ProjectManager.getProjectRoot();
-            const rootPath = projectRoot ? projectRoot.fullPath : "/tmp";
+            let rootPath = projectRoot ? projectRoot.fullPath : "/tmp";
+            // Strip /tauri prefix if present (Tauri desktop adds this)
+            if (rootPath.startsWith('/tauri/')) {
+                rootPath = rootPath.substring(6); // Remove '/tauri'
+            }
             const rootUri = "file://" + rootPath;
+            console.error("[TypeScript] Project root:", rootUri);
 
-            // Start TypeScript language server
+            // Start TypeScript language server (vtsls - same as Zed/VS Code)
+            console.error("[TypeScript] Starting vtsls language server...");
             const startResult = await lspConnector.execPeer('startServer', {
                 serverId: SERVER_ID,
-                command: 'typescript-language-server',
+                command: 'vtsls',
                 args: ['--stdio'],
                 rootUri: rootUri
             });
-            console.log("[TypeScript] Server started:", startResult);
+            console.error("[TypeScript] Server started:", startResult);
 
-            // Initialize LSP
+            // Initialize LSP with vtsls-specific options (like Zed)
             const initResult = await lspConnector.execPeer('sendRequest', {
                 serverId: SERVER_ID,
                 method: 'initialize',
@@ -368,10 +434,21 @@ define(function (require, exports, module) {
                                 willSaveWaitUntil: false
                             }
                         }
+                    },
+                    initializationOptions: {
+                        vtsls: {
+                            experimental: {
+                                completion: {
+                                    enableServerSideFuzzyMatch: true,
+                                    entriesLimit: 5000
+                                }
+                            },
+                            autoUseWorkspaceTsdk: true
+                        }
                     }
                 }
             });
-            console.log("[TypeScript] LSP initialized:", initResult);
+            console.error("[TypeScript] LSP initialized:", initResult);
 
             // Send initialized notification
             await lspConnector.execPeer('sendNotification', {
@@ -393,8 +470,30 @@ define(function (require, exports, module) {
             // Listen for server exit
             lspConnector.on('serverExit', (event, data) => {
                 if (data && data.serverId === SERVER_ID) {
-                    console.log("[TypeScript] Server exited with code:", data.code);
+                    console.error("[TypeScript] Server exited with code:", data.code);
                     initialized = false;
+                    // Clear document tracking state on server exit
+                    openDocuments.clear();
+                    documentVersions.clear();
+                }
+            });
+
+            // Listen for document close events - send didClose to LSP (VS Code pattern)
+            DocumentManager.on("documentRefreshed", async (event, doc) => {
+                // When a document is refreshed from disk, treat it as a close/reopen
+                const uri = getFileUri(doc);
+                if (openDocuments.has(uri)) {
+                    try {
+                        await lspConnector.execPeer('sendNotification', {
+                            serverId: SERVER_ID,
+                            method: 'textDocument/didClose',
+                            params: { textDocument: { uri: uri } }
+                        });
+                        openDocuments.delete(uri);
+                        documentVersions.delete(uri);
+                    } catch (err) {
+                        console.warn("[TypeScript] didClose error:", err.message || err);
+                    }
                 }
             });
 
@@ -403,7 +502,7 @@ define(function (require, exports, module) {
             CodeHintManager.registerHintProvider(hintProvider, SUPPORTED_LANGUAGES, 10);
 
             initialized = true;
-            console.log("[TypeScript] Ready!");
+            console.error("[TypeScript] Ready!");
 
         } catch (err) {
             console.warn("[TypeScript] Init failed:", err.message || err);
@@ -440,8 +539,12 @@ define(function (require, exports, module) {
             // Stop the server
             await lspConnector.execPeer('stopServer', { serverId: SERVER_ID });
 
+            // Clear document tracking state
+            openDocuments.clear();
+            documentVersions.clear();
+
             initialized = false;
-            console.log("[TypeScript] Shut down");
+            console.error("[TypeScript] Shut down");
         } catch (err) {
             console.warn("[TypeScript] Shutdown error:", err.message || err);
         }
@@ -462,6 +565,9 @@ define(function (require, exports, module) {
     // Handle project changes
     ProjectManager.on("projectOpen", function () {
         if (initialized) {
+            // Clear document tracking state before restart
+            openDocuments.clear();
+            documentVersions.clear();
             // Restart server for new project
             shutdown().then(() => {
                 initialize();
