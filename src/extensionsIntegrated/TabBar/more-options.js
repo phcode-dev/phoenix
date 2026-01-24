@@ -35,7 +35,6 @@ define(function (require, exports, module) {
     // these are Tab bar specific commands for the context menu
     // not added in the Commands.js as Tab bar is not a core module but an extension
     // read init function
-    const TABBAR_CLOSE_SAVED_TABS = "tabbar.closeSavedTabs";
     const TABBAR_CLOSE_ALL = "tabbar.closeAllTabs";
 
     // command IDs from working files - we reuse it here with different labels
@@ -102,17 +101,6 @@ define(function (require, exports, module) {
         }
     }
 
-    // **Close Saved Tabs**
-    // closes all saved tabs (not dirty) in the pane
-    function handleCloseSavedTabs() {
-        const workingSet = _getWorkingSet(_currentTabContext.paneId);
-        if (workingSet && workingSet.length !== 0) {
-            // filter out dirty tabs, only close the saved ones
-            const savedTabs = workingSet.filter(entry => !entry.isDirty);
-            _closeFiles(savedTabs, _currentTabContext.paneId);
-        }
-    }
-
     /**
      * this function is called from Tabbar/main.js when a tab is right clicked
      * it is responsible to show the context menu and also set the currentTabContext
@@ -137,14 +125,12 @@ define(function (require, exports, module) {
      */
     function init() {
         // these are the tab bar specific commands
-        CommandManager.register(Strings.CLOSE_SAVED_TABS, TABBAR_CLOSE_SAVED_TABS, handleCloseSavedTabs);
         CommandManager.register(Strings.CLOSE_ALL_TABS, TABBAR_CLOSE_ALL, handleCloseAllTabs);
 
         const menu = Menus.registerContextMenu("tabbar-context-menu");
         menu.addMenuItem(Commands.FILE_CLOSE);
         menu.addMenuItem(FILE_CLOSE_ABOVE);  // updated label will be : "Close Tabs to the Left"
         menu.addMenuItem(FILE_CLOSE_BELOW);  // updated label will be : "Close Tabs to the Right"
-        menu.addMenuItem(TABBAR_CLOSE_SAVED_TABS);
         menu.addMenuItem(TABBAR_CLOSE_ALL);
         menu.addMenuDivider();
         menu.addMenuItem(Commands.FILE_PIN);
