@@ -70,12 +70,12 @@ define(function (require, exports, module) {
             });
         }
 
-        // Pin/Unpin logic: to hide the option when its not applicable
+        // Pin/Unpin logic: update label based on current state
         const contextFile = WorkingSetView.getContext();
         if (contextFile) {
             const isPinned = MainViewManager.isPathPinned(MainViewManager.ACTIVE_PANE, contextFile.fullPath);
-            CommandManager.get(Commands.FILE_PIN).setEnabled(!isPinned);
-            CommandManager.get(Commands.FILE_UNPIN).setEnabled(isPinned);
+            const pinCommand = CommandManager.get(Commands.FILE_PIN);
+            pinCommand.setName(isPinned ? Strings.CMD_FILE_UNPIN : Strings.CMD_FILE_PIN);
         }
     }
 
@@ -329,8 +329,7 @@ define(function (require, exports, module) {
             subMenu.addMenuItem(Commands.NAVIGATE_OPEN_IN_DEFAULT_APP);
         }
         workingset_cmenu.addMenuDivider();
-        workingset_cmenu.addMenuItem(Commands.FILE_PIN, null, null, null, { hideWhenCommandDisabled: true });
-        workingset_cmenu.addMenuItem(Commands.FILE_UNPIN, null, null, null, { hideWhenCommandDisabled: true });
+        workingset_cmenu.addMenuItem(Commands.FILE_PIN);
         workingset_cmenu.addMenuDivider();
         workingset_cmenu.addMenuItem(Commands.FILE_COPY);
         workingset_cmenu.addMenuItem(Commands.FILE_COPY_PATH);

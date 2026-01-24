@@ -2003,31 +2003,33 @@ define(function (require, exports, module) {
     }
 
     /**
-     * we call this function when the user selects the 'Pin' option from the context menu
-     * so we pin the file. the pinned file is displayed before the normal files in the working set and tab bar
-     * we also prevent the pinned files from being closed during bulk close operations
-     * @param {{file: File, paneId: string}} commandData - the file to pin and paneId,
-     *                         if unavailable we use the current file and active pane
+     * Toggles the pin state of a file. Pinned files are displayed before normal files
+     * in the working set and tab bar, and are protected from bulk close operations.
+     * @param {{file: File, paneId: string, forcePin: boolean, forceUnpin: boolean}} commandData
+     *        - file: the file to pin/unpin (defaults to currently viewed file)
+     *        - paneId: the pane ID (defaults to active pane)
+     *        - forcePin: if true, always pins
+     *        - forceUnpin: if true, always unpins
+     *        - if neither forcePin nor forceUnpin, toggles based on current state
      */
     function handleFilePin(commandData = {}) {
         const file = commandData.file || MainViewManager.getCurrentlyViewedFile();
         const paneId = commandData.paneId || MainViewManager.ACTIVE_PANE;
 
         if (file) {
-            MainViewManager.pinFile(paneId, file);
-        }
-    }
-
-    /**
-     * this unpins the file so it goes back to normal behavior in the working set and tab bar
-     * @param {{file: File, paneId: string}} commandData - read the JSDoc for handleFilePin
-     */
-    function handleFileUnpin(commandData = {}) {
-        const file = commandData.file || MainViewManager.getCurrentlyViewedFile();
-        const paneId = commandData.paneId || MainViewManager.ACTIVE_PANE;
-
-        if (file) {
-            MainViewManager.unpinFile(paneId, file);
+            if (commandData.forcePin) {
+                MainViewManager.pinFile(paneId, file);
+            } else if (commandData.forceUnpin) {
+                MainViewManager.unpinFile(paneId, file);
+            } else {
+                // Toggle based on current state
+                const isPinned = MainViewManager.isPathPinned(paneId, file.fullPath);
+                if (isPinned) {
+                    MainViewManager.unpinFile(paneId, file);
+                } else {
+                    MainViewManager.pinFile(paneId, file);
+                }
+            }
         }
     }
 
@@ -2410,7 +2412,6 @@ define(function (require, exports, module) {
     CommandManager.register(Strings.CMD_FILE_RENAME,                 Commands.FILE_RENAME,                    handleFileRename);
     CommandManager.register(Strings.CMD_FILE_DELETE,                 Commands.FILE_DELETE,                    handleFileDelete);
     CommandManager.register(Strings.CMD_FILE_PIN,                    Commands.FILE_PIN,                       handleFilePin);
-    CommandManager.register(Strings.CMD_FILE_UNPIN,                  Commands.FILE_UNPIN,                     handleFileUnpin);
 
     // Close Commands
     CommandManager.register(Strings.CMD_FILE_CLOSE,                  Commands.FILE_CLOSE,                     handleFileClose);

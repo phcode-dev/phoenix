@@ -320,12 +320,7 @@ define(function (require, exports, module) {
                 // if the prev file is not pinned, we unpin this file too!
                 if (!MainViewManager.isPathPinned(paneId, prevFilePath)) {
                     const fileObj = FileSystem.getFileForPath(draggedPath);
-
-                    // we consciously enable the unpin command here, because if the tab is pinned,
-                    // the unpin command will be disabled by default as the last context menu item
-                    // and the FILE_UNPIN command will not execute
-                    CommandManager.get(Commands.FILE_UNPIN).setEnabled(true);
-                    CommandManager.execute(Commands.FILE_UNPIN, { file: fileObj, paneId: paneId });
+                    CommandManager.execute(Commands.FILE_PIN, { file: fileObj, paneId: paneId, forceUnpin: true });
                 }
             }
 
@@ -341,10 +336,7 @@ define(function (require, exports, module) {
                     // if the next file is pinned, we pin this file too!
                     if (MainViewManager.isPathPinned(paneId, nextFilePath)) {
                         const fileObj = FileSystem.getFileForPath(draggedPath);
-
-                        // we consciously enable the pin command here, same reason as above
-                        CommandManager.get(Commands.FILE_PIN).setEnabled(true);
-                        CommandManager.execute(Commands.FILE_PIN, { file: fileObj, paneId: paneId });
+                        CommandManager.execute(Commands.FILE_PIN, { file: fileObj, paneId: paneId, forcePin: true });
                     }
                 }
             }

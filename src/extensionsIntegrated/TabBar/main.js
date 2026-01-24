@@ -519,16 +519,11 @@ define(function (require, exports, module) {
                 CommandManager.execute(Commands.FILE_CLOSE, { file: fileObj, paneId: paneId }); // close the file
             }
 
-            // check if the clicked element is the pin icon, if yes then we need to unpin it
+            // check if the clicked element is the pin icon, if yes then we toggle pin state
             if ($(event.target).hasClass("fa-thumbtack") || $(event.target).closest(".tab-pin").length) {
                 event.preventDefault();
                 event.stopPropagation();
-
-                // we consciously enable the unpin command here, because if the tab is pinned,
-                // the unpin command will be disabled by default as the last context menu item
-                // and the user will not be able to unpin the tab
-                CommandManager.get(Commands.FILE_UNPIN).setEnabled(true);
-                CommandManager.execute(Commands.FILE_UNPIN, { file: fileObj, paneId: paneId });
+                CommandManager.execute(Commands.FILE_PIN, { file: fileObj, paneId: paneId });
             }
         });
 

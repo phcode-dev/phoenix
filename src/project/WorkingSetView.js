@@ -804,8 +804,7 @@ define(function (require, exports, module) {
                         const prevFilePath = workingSet[newIndex - 1].fullPath;
 
                         if (!MainViewManager.isPathPinned(sourceView.paneId, prevFilePath)) {
-                            CommandManager.get(Commands.FILE_UNPIN).setEnabled(true);
-                            CommandManager.execute(Commands.FILE_UNPIN, { file: sourceFile, paneId: sourceView.paneId });
+                            CommandManager.execute(Commands.FILE_PIN, { file: sourceFile, paneId: sourceView.paneId, forceUnpin: true });
                         }
                     }
 
@@ -819,8 +818,7 @@ define(function (require, exports, module) {
 
                             // if the next file is pinned, pin this file too
                             if (MainViewManager.isPathPinned(sourceView.paneId, nextFilePath)) {
-                                CommandManager.get(Commands.FILE_PIN).setEnabled(true);
-                                CommandManager.execute(Commands.FILE_PIN, { file: sourceFile, paneId: sourceView.paneId });
+                                CommandManager.execute(Commands.FILE_PIN, { file: sourceFile, paneId: sourceView.paneId, forcePin: true });
                             }
                         }
                     }

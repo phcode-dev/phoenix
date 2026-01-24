@@ -85,11 +85,8 @@ define(function (require, exports, module) {
     /** Closes files from list */
     exports.FILE_CLOSE_LIST             = "file.close_list";            // DocumentCommandHandlers.js   handleFileCloseList()
 
-    /** Pins the selected file */
+    /** Toggles the pinned state of the selected file */
     exports.FILE_PIN                    = "file.pin";                   // DocumentCommandHandlers.js   handleFilePin()
-
-    /** Unpins the selected file */
-    exports.FILE_UNPIN                  = "file.unpin";                 // DocumentCommandHandlers.js   handleFileUnpin()
 
     /** Reopens last closed file */
     exports.FILE_REOPEN_CLOSED          = "file.reopen_closed";         // DocumentCommandHandlers.js   handleReopenClosed()

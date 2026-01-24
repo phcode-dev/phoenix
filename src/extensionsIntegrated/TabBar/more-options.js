@@ -50,14 +50,14 @@ define(function (require, exports, module) {
      * so we only show the relevant options
      */
     function _updateMenuItems() {
-        // PIN/UNPIN logic
+        // PIN/UNPIN logic: update label based on current state
         const isPinned = MainViewManager.isPathPinned(
             _currentTabContext.paneId,
             _currentTabContext.filePath
         );
 
-        CommandManager.get(Commands.FILE_PIN).setEnabled(!isPinned);
-        CommandManager.get(Commands.FILE_UNPIN).setEnabled(isPinned);
+        const pinCommand = CommandManager.get(Commands.FILE_PIN);
+        pinCommand.setName(isPinned ? Strings.CMD_FILE_UNPIN : Strings.CMD_FILE_PIN);
     }
 
     // gets the working set (list of open files) for the given pane
@@ -168,8 +168,7 @@ define(function (require, exports, module) {
         menu.addMenuItem(TABBAR_CLOSE_SAVED_TABS);
         menu.addMenuItem(TABBAR_CLOSE_ALL);
         menu.addMenuDivider();
-        menu.addMenuItem(Commands.FILE_PIN, null, null, null, { hideWhenCommandDisabled: true });
-        menu.addMenuItem(Commands.FILE_UNPIN, null, null, null, { hideWhenCommandDisabled: true });
+        menu.addMenuItem(Commands.FILE_PIN);
         menu.addMenuDivider();
         menu.addMenuItem(Commands.FILE_RENAME);
         menu.addMenuItem(Commands.FILE_DELETE);
