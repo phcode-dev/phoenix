@@ -502,6 +502,7 @@ define({
     "CLOSE_ALL_TABS": "Close All Tabs",
     "CLOSE_SAVED_TABS": "Close Saved Tabs",
     "CLOSE_TAB_TOOLTIP": "Close Tab",
+    "UNPIN_TAB_TOOLTIP": "Unpin Tab",
 
     // CodeInspection: errors/warnings
     "ERRORS_NO_FILE": "No File Open",

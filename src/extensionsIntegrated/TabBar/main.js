@@ -544,6 +544,20 @@ define(function (require, exports, module) {
             $(this).attr("title", closeTabTooltip);
         });
 
+        // add listener for tab pin icon to show the tooltip along with the keybinding
+        $(document).on("mouseenter", ".phoenix-tab-bar .tab-pin", function () {
+            const pinBindings = KeyBindingManager.getKeyBindings(Commands.FILE_PIN);
+            const pinShortcut = pinBindings.length > 0
+                ? KeyBindingManager.formatKeyDescriptor(pinBindings[pinBindings.length - 1].displayKey)
+                : "";
+
+            const unpinTabTooltip = pinShortcut
+                ? `${Strings.UNPIN_TAB_TOOLTIP} (${pinShortcut})`
+                : Strings.UNPIN_TAB_TOOLTIP;
+
+            $(this).attr("title", unpinTabTooltip);
+        });
+
         // open tab on mousedown event
         $(document).on("mousedown", ".phoenix-tab-bar .tab", function (event) {
             if ($(event.target).hasClass("fa-times") || $(event.target).closest(".tab-close").length) {
