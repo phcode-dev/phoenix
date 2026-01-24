@@ -22,15 +22,11 @@
  * TypeScript/JavaScript Language Support Extension
  *
  * This extension provides language support for TypeScript and JavaScript files
- * using the typescript-language-server via the pluggable LSP infrastructure.
+ * using vtsls (Vue TypeScript Language Server) via the pluggable LSP infrastructure.
  *
  * Features:
  * - Code completions (IntelliSense)
  * - Diagnostics (errors and warnings)
- *
- * Prerequisites:
- * - typescript-language-server must be installed globally:
- *   npm install -g typescript-language-server typescript
  */
 
 define(function (require, exports, module) {
@@ -372,15 +368,13 @@ define(function (require, exports, module) {
         console.error("[TypeScript] Initializing...");
 
         try {
-            // Try to create connector, handle case where it already exists
-            console.error("[TypeScript] Creating NodeConnector...");
-            try {
+            // Reuse existing connector or create new one
+            if (!lspConnector) {
+                console.error("[TypeScript] Creating NodeConnector...");
                 lspConnector = NodeConnector.createNodeConnector(LSP_CONNECTOR_ID, {});
                 console.error("[TypeScript] NodeConnector created");
-            } catch (connErr) {
-                // Connector might already be registered from a previous load
-                console.error("[TypeScript] Connector already exists, creating unique one");
-                lspConnector = NodeConnector.createNodeConnector(LSP_CONNECTOR_ID + "-" + Date.now(), {});
+            } else {
+                console.error("[TypeScript] Reusing existing NodeConnector");
             }
 
             // Verify LSP connector is working with a timeout
@@ -506,8 +500,6 @@ define(function (require, exports, module) {
 
         } catch (err) {
             console.warn("[TypeScript] Init failed:", err.message || err);
-            console.warn("[TypeScript] Make sure typescript-language-server is installed:");
-            console.warn("[TypeScript]   npm install -g typescript-language-server typescript");
             initialized = false;
             lspConnector = null;
         }
