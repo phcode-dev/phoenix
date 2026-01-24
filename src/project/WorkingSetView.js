@@ -1223,6 +1223,21 @@ define(function (require, exports, module) {
         if ($fileStatusIcon) {
             ViewUtils.toggleClass($fileStatusIcon, "can-close", canClose && !isPinned);
             ViewUtils.toggleClass($fileStatusIcon, "pinned", isPinned);
+
+            // Update icon content based on state
+            if (isPinned) {
+                // Show thumbtack for pinned files
+                if ($fileStatusIcon.find(".fa-thumbtack").length === 0) {
+                    $fileStatusIcon.html("<i class='fa-solid fa-thumbtack'></i>");
+                }
+            } else if (canClose) {
+                // Show close icon for unpinned files on hover
+                if ($fileStatusIcon.find(".fa-times").length === 0) {
+                    $fileStatusIcon.html("<i class='fa-solid fa-times'></i>");
+                }
+            } else {
+                $fileStatusIcon.empty();
+            }
         }
 
         // Handle dirty indicator on RIGHT side
