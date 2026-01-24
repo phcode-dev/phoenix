@@ -60,18 +60,24 @@ define(function (require, exports, module) {
             i;
 
         for (i = start; i < end; i++) {
-            files.push(workingSetList[i]);
+            // ignore pinned files
+            if (!MainViewManager.isPathPinned(MainViewManager.ACTIVE_PANE, workingSetList[i].fullPath)) {
+                files.push(workingSetList[i]);
+            }
         }
 
         CommandManager.execute(Commands.FILE_CLOSE_LIST, {fileList: files});
     }
 
     /**
-     * Handle Close All - closes all files in the active pane
+     * Handle Close All - closes all files in the active pane (except pinned files)
      */
     function handleCloseAll() {
         let workingSetList = MainViewManager.getWorkingSet(MainViewManager.ACTIVE_PANE);
-        CommandManager.execute(Commands.FILE_CLOSE_LIST, {fileList: workingSetList});
+        let unpinnedFiles = workingSetList.filter(function(file) {
+            return !MainViewManager.isPathPinned(MainViewManager.ACTIVE_PANE, file.fullPath);
+        });
+        CommandManager.execute(Commands.FILE_CLOSE_LIST, {fileList: unpinnedFiles});
     }
 
     /**
