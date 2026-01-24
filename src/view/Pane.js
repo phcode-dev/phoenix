@@ -554,9 +554,9 @@ define(function (require, exports, module) {
             return false;
         }
 
-        // we just remove the file path from the pinned paths set
-        // here we don't need to reorder the view list, the file can stay in its current position
+        // remove the file path from the pinned paths set and reorder so it moves after pinned files
         this._pinnedPaths.delete(path);
+        this._reorderViewListForPinning();
         return true;
     };
 
