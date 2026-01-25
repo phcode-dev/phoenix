@@ -64,17 +64,26 @@ define(function (require, exports, module) {
         closeBelowCmd.setName(Strings.CLOSE_TABS_TO_THE_RIGHT);
         closeAllCmd.setName(Strings.CLOSE_ALL_TABS);
 
-        // Enable/disable Close Left/Right based on tab position
+        // Enable/disable Close Left/Right/All based on tab position and pinned files
+        const workingSetList = MainViewManager.getWorkingSet(_currentTabContext.paneId);
         const targetIndex = MainViewManager.findInWorkingSet(
             _currentTabContext.paneId,
             _currentTabContext.filePath
         );
-        const workingSetListSize = MainViewManager.getWorkingSetSize(_currentTabContext.paneId);
+        const lastIndex = workingSetList.length - 1;
 
-        // disable "Close Tabs to the Left" if this is the first tab
-        closeAboveCmd.setEnabled(targetIndex > 0);
-        // disable "Close Tabs to the Right" if this is the last tab
-        closeBelowCmd.setEnabled(targetIndex < workingSetListSize - 1);
+        // we disable the bulk closing menu items if there are no files to close
+        // for 'Close Tabs to the Left', if the first tab is selected or all tabs to the left are pinned
+        // for 'Close Tabs to the Right', if the last tab is selected or all tabs to the right are pinned
+        // for 'Close All Tabs', if all tabs are pinned
+        const isPrevTabPinned = targetIndex > 0 &&
+            MainViewManager.isPathPinned(_currentTabContext.paneId, workingSetList[targetIndex - 1].fullPath);
+        const isLastTabPinned = lastIndex >= 0 &&
+            MainViewManager.isPathPinned(_currentTabContext.paneId, workingSetList[lastIndex].fullPath);
+
+        closeAboveCmd.setEnabled(targetIndex > 0 && !isPrevTabPinned);
+        closeBelowCmd.setEnabled(targetIndex < lastIndex && !isLastTabPinned);
+        closeAllCmd.setEnabled(!isLastTabPinned);
     }
 
     /**

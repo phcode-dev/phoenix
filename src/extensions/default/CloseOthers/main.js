@@ -92,20 +92,22 @@ define(function (require, exports, module) {
         CommandManager.get(closeAll).setName(Strings.CMD_FILE_CLOSE_ALL);
 
         if (file) {
-            var targetIndex  = MainViewManager.findInWorkingSet(MainViewManager.ACTIVE_PANE, file.fullPath),
-                workingSetListSize = MainViewManager.getWorkingSetSize(MainViewManager.ACTIVE_PANE);
+            let workingSetList = MainViewManager.getWorkingSet(MainViewManager.ACTIVE_PANE),
+                targetIndex = MainViewManager.findInWorkingSet(MainViewManager.ACTIVE_PANE, file.fullPath),
+                lastIndex = workingSetList.length - 1;
 
-            if (targetIndex === workingSetListSize - 1) { // hide "Close Others Below" if the last file in Working Files is selected
-                CommandManager.get(closeBelow).setEnabled(false);
-            } else {
-                CommandManager.get(closeBelow).setEnabled(true);
-            }
+            // we disable the bulk closing menu items if there are no files to close
+            // so for "Close Above", if the first file is selected or all files above are pinned
+            // for "Close Below", if the last file is selected or all files below are pinned
+            // for "Close All", if all files are pinned
+            let isPrevFilePinned = targetIndex > 0 &&
+                MainViewManager.isPathPinned(MainViewManager.ACTIVE_PANE, workingSetList[targetIndex - 1].fullPath);
+            let isLastFilePinned = lastIndex >= 0 &&
+                MainViewManager.isPathPinned(MainViewManager.ACTIVE_PANE, workingSetList[lastIndex].fullPath);
 
-            if (targetIndex === 0) { // hide "Close Others Above" if the first file in Working Files is selected
-                CommandManager.get(closeAbove).setEnabled(false);
-            } else {
-                CommandManager.get(closeAbove).setEnabled(true);
-            }
+            CommandManager.get(closeAbove).setEnabled(targetIndex > 0 && !isPrevFilePinned);
+            CommandManager.get(closeBelow).setEnabled(targetIndex < lastIndex && !isLastFilePinned);
+            CommandManager.get(closeAll).setEnabled(!isLastFilePinned);
         }
     }
 
