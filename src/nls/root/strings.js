@@ -502,6 +502,7 @@ define({
     "CLOSE_ALL_TABS": "Close All Tabs",
     "CLOSE_SAVED_TABS": "Close Saved Tabs",
     "CLOSE_TAB_TOOLTIP": "Close Tab",
+    "UNPIN_TAB_TOOLTIP": "Unpin Tab",
 
     // CodeInspection: errors/warnings
     "ERRORS_NO_FILE": "No File Open",
@@ -565,6 +566,8 @@ define({
     "CMD_PROJECT_SETTINGS": "Project Settings\u2026",
     "CMD_FILE_RENAME": "Rename",
     "CMD_FILE_DELETE": "Delete",
+    "CMD_FILE_PIN": "Pin",
+    "CMD_FILE_UNPIN": "Unpin",
     "CMD_INSTALL_EXTENSION": "Install Extension\u2026",
     "CMD_EXTENSION_MANAGER": "Extension Manager\u2026",
     "CMD_FILE_REFRESH": "Refresh File Tree",

@@ -32,7 +32,8 @@ define(function (require, exports, module) {
         Menus           = require("command/Menus"),
         Strings         = require("strings"),
         MainViewManager = require("view/MainViewManager"),
-        CommandManager  = require("command/CommandManager");
+        CommandManager  = require("command/CommandManager"),
+        WorkingSetView  = require("project/WorkingSetView");
 
     /**
      * Disables menu items present in items if enabled is true.
@@ -67,6 +68,14 @@ define(function (require, exports, module) {
                     Commands.NAVIGATE_OPEN_IN_TERMINAL, Commands.NAVIGATE_OPEN_IN_POWERSHELL,
                     Commands.NAVIGATE_OPEN_IN_DEFAULT_APP]);
             });
+        }
+
+        // Pin/Unpin logic: update label based on current state
+        const contextFile = WorkingSetView.getContext();
+        if (contextFile) {
+            const isPinned = MainViewManager.isPathPinned(MainViewManager.ACTIVE_PANE, contextFile.fullPath);
+            const pinCommand = CommandManager.get(Commands.FILE_PIN);
+            pinCommand.setName(isPinned ? Strings.CMD_FILE_UNPIN : Strings.CMD_FILE_PIN);
         }
     }
 
@@ -319,6 +328,8 @@ define(function (require, exports, module) {
             }
             subMenu.addMenuItem(Commands.NAVIGATE_OPEN_IN_DEFAULT_APP);
         }
+        workingset_cmenu.addMenuDivider();
+        workingset_cmenu.addMenuItem(Commands.FILE_PIN);
         workingset_cmenu.addMenuDivider();
         workingset_cmenu.addMenuItem(Commands.FILE_COPY);
         workingset_cmenu.addMenuItem(Commands.FILE_COPY_PATH);

@@ -123,6 +123,12 @@ Closes all open files
 Closes files from list
 
 **Kind**: global variable  
+<a name="FILE_PIN"></a>
+
+## FILE\_PIN
+Toggles the pinned state of the selected file
+
+**Kind**: global variable  
 <a name="FILE_REOPEN_CLOSED"></a>
 
 ## FILE\_REOPEN\_CLOSED

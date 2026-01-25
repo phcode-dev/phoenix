@@ -906,25 +906,25 @@ a, img {
         &-close-btn {
             position: relative;
             display: none;
-            height: 16px;
-            width: 16px;
+            height: 18px;
+            width: 18px;
             float: right;
             margin-top: -2px;
 
-            &:before {
+            i {
                 color: rgba(0, 0, 0, 0.5);
             }
 
-            &:hover:before {
+            &:hover i {
                 color: rgba(0, 0, 0, 0.8);
             }
 
             .dark & {
-                &:before {
+                i {
                     color: rgba(255, 255, 255, 0.5);
                 }
 
-                &:hover:before {
+                &:hover i {
                     color: rgba(255, 255, 255, 0.8);
                 }
             }
@@ -1425,7 +1425,7 @@ a, img {
         display: block;
         height: 16px;
         line-height: 15px;
-        margin-left: 18px;
+        margin-left: 21px;
         padding: 3px 0 3px 0;
 
         cursor: default;
@@ -1442,6 +1442,7 @@ a, img {
     .extension, .directory {
         color: @project-panel-text-2;
     }
+
 }
 
 
@@ -1600,33 +1601,40 @@ a, img {
 }
 
 .file-status-icon {
-    margin: 0 0 0 8px;
     position: absolute;
-    left: 0;
-    top: 0;
+    left: 8px;
+    top: 3px;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.5);
 
-    &.dirty:before,
-    &.can-close:before {
-        .unicode-icon-container;
-        color: rgba(255, 255, 255, 0.5);
-    }
-
-    &.dirty:before {
-        content: "\2022";
-        line-height: 1em;
-    }
-
-    &.can-close:before {
-        content: "\00D7";
-        line-height: 1.1em;
-    }
-
-    &.can-close:hover:before {
+    &:hover {
         color: rgba(255, 255, 255, 0.7);
     }
 
-    &.can-close:active:before {
+    &:active {
         color: rgba(255, 255, 255, 0.3);
+    }
+
+    &.pinned {
+        font-size: 9px;
+    }
+}
+
+.working-set-dirty-indicator {
+    position: absolute;
+    right: 10px;
+    top: 0;
+
+    &:before {
+        .unicode-icon-container;
+        content: "\2022";
+        color: rgba(255, 255, 255, 0.5);
+        line-height: 1em;
     }
 }
 

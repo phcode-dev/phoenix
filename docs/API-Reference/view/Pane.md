@@ -22,6 +22,9 @@ const Pane = brackets.getModule("view/Pane")
     * [.ITEM_NOT_FOUND](#Pane+ITEM_NOT_FOUND)
     * [.ITEM_FOUND_NO_SORT](#Pane+ITEM_FOUND_NO_SORT)
     * [.ITEM_FOUND_NEEDS_SORT](#Pane+ITEM_FOUND_NEEDS_SORT)
+    * [.pinPath(path)](#Pane+pinPath) ⇒ <code>boolean</code>
+    * [.unpinPath(path)](#Pane+unpinPath) ⇒ <code>boolean</code>
+    * [.isPathPinned(path)](#Pane+isPathPinned) ⇒ <code>boolean</code>
     * [.mergeFrom(other)](#Pane+mergeFrom)
     * [.destroy()](#Pane+destroy)
     * [.getViewList()](#Pane+getViewList) ⇒ <code>Array.&lt;File&gt;</code>
@@ -143,6 +146,42 @@ and the workingset needs to be resorted
 
 **Kind**: instance constant of [<code>Pane</code>](#Pane)  
 **See**: [reorderItem](#Pane+reorderItem)  
+<a name="Pane+pinPath"></a>
+
+### pane.pinPath(path) ⇒ <code>boolean</code>
+this pins a file path
+
+**Kind**: instance method of [<code>Pane</code>](#Pane)  
+**Returns**: <code>boolean</code> - true if the file was pinned, false if it was already pinned or not in the view list  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| path | <code>string</code> | the full path of the file to pin |
+
+<a name="Pane+unpinPath"></a>
+
+### pane.unpinPath(path) ⇒ <code>boolean</code>
+this unpins a file path.
+
+**Kind**: instance method of [<code>Pane</code>](#Pane)  
+**Returns**: <code>boolean</code> - true if the file was unpinned, false if it wasn't pinned  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| path | <code>string</code> | the full path of the file to unpin |
+
+<a name="Pane+isPathPinned"></a>
+
+### pane.isPathPinned(path) ⇒ <code>boolean</code>
+checks if a file path is pinned
+
+**Kind**: instance method of [<code>Pane</code>](#Pane)  
+**Returns**: <code>boolean</code> - true if the file is pinned false otherwise  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| path | <code>string</code> | the full path of the file |
+
 <a name="Pane+mergeFrom"></a>
 
 ### pane.mergeFrom(other)

@@ -25,93 +25,65 @@
 define(function (require, exports, module) {
     const CommandManager = require("command/CommandManager");
     const Commands = require("command/Commands");
-    const FileSystem = require("filesystem/FileSystem");
+    const MainViewManager = require("view/MainViewManager");
     const Menus = require("command/Menus");
     const Strings = require("strings");
 
-    const Global = require("./global");
-
-    // these are Tab bar specific commands for the context menu
-    // not added in the Commands.js as Tab bar is not a core module but an extension
-    // read init function
-    const TABBAR_CLOSE_TABS_LEFT = "tabbar.closeTabsLeft";
-    const TABBAR_CLOSE_TABS_RIGHT = "tabbar.closeTabsRight";
-    const TABBAR_CLOSE_SAVED_TABS = "tabbar.closeSavedTabs";
-    const TABBAR_CLOSE_ALL = "tabbar.closeAllTabs";
+    // command IDs from working files - we reuse it here with different labels
+    // Close Others Above = Close Tabs to the Left
+    // Close Others Below = Close Tabs to the Right
+    // Close All (in pane) = Close All Tabs
+    const FILE_CLOSE_ABOVE = "file.close_above";
+    const FILE_CLOSE_BELOW = "file.close_below";
+    const FILE_CLOSE_ALL = "file.close_all_in_pane";
 
     // stores the context of the right-clicked tab (which file, which pane)
     // this is set inside the showMoreOptionsContextMenu. read that func for more details
     let _currentTabContext = { filePath: null, paneId: null };
 
-    // gets the working set (list of open files) for the given pane
-    function _getWorkingSet(paneId) {
-        return paneId === "first-pane" ? Global.firstPaneWorkingSet : Global.secondPaneWorkingSet;
-    }
+    /**
+     * this function is called before the context menu is shown
+     * it updates the menu items based on the current tab context
+     * so we only show the relevant options
+     */
+    function _updateMenuItems() {
+        // PIN/UNPIN logic: update label based on current state
+        const isPinned = MainViewManager.isPathPinned(
+            _currentTabContext.paneId,
+            _currentTabContext.filePath
+        );
 
-    // closes files from right to left to avoid index shifts during iteration
-    function _closeFiles(files, paneId) {
-        for (let i = files.length - 1; i >= 0; i--) {
-            const fileObj = FileSystem.getFileForPath(files[i].path);
-            CommandManager.execute(Commands.FILE_CLOSE, { file: fileObj, paneId: paneId });
-        }
-    }
+        const pinCommand = CommandManager.get(Commands.FILE_PIN);
+        pinCommand.setName(isPinned ? Strings.CMD_FILE_UNPIN : Strings.CMD_FILE_PIN);
 
-    // executes a command with the right-clicked tab's file as the target
-    function _executeWithFileContext(commandId, options = {}) {
-        if (_currentTabContext.filePath) {
-            // we need to get the file object from the file path, as the commandManager expects the file object
-            const fileObj = FileSystem.getFileForPath(_currentTabContext.filePath);
-            CommandManager.execute(commandId, { file: fileObj, ...options });
-        }
-    }
+        // update Close Above/Below/All labels for TabBar context
+        const closeAboveCmd = CommandManager.get(FILE_CLOSE_ABOVE);
+        const closeBelowCmd = CommandManager.get(FILE_CLOSE_BELOW);
+        const closeAllCmd = CommandManager.get(FILE_CLOSE_ALL);
+        closeAboveCmd.setName(Strings.CLOSE_TABS_TO_THE_LEFT);
+        closeBelowCmd.setName(Strings.CLOSE_TABS_TO_THE_RIGHT);
+        closeAllCmd.setName(Strings.CLOSE_ALL_TABS);
 
-    // **Close All Tabs**
-    // closes all tabs in the pane where the tab was right-clicked
-    function handleCloseAllTabs() {
-        const workingSet = _getWorkingSet(_currentTabContext.paneId);
-        if (workingSet && workingSet.length !== 0) {
-            // close everything in the pane
-            _closeFiles(workingSet, _currentTabContext.paneId);
-        }
-    }
+        // Enable/disable Close Left/Right/All based on tab position and pinned files
+        const workingSetList = MainViewManager.getWorkingSet(_currentTabContext.paneId);
+        const targetIndex = MainViewManager.findInWorkingSet(
+            _currentTabContext.paneId,
+            _currentTabContext.filePath
+        );
+        const lastIndex = workingSetList.length - 1;
 
-    // **Close Saved Tabs**
-    // closes all saved tabs (not dirty) in the pane
-    function handleCloseSavedTabs() {
-        const workingSet = _getWorkingSet(_currentTabContext.paneId);
-        if (workingSet && workingSet.length !== 0) {
-            // filter out dirty tabs, only close the saved ones
-            const savedTabs = workingSet.filter(entry => !entry.isDirty);
-            _closeFiles(savedTabs, _currentTabContext.paneId);
-        }
-    }
+        // we disable the bulk closing menu items if there are no files to close
+        // for 'Close Tabs to the Left', if the first tab is selected or all tabs to the left are pinned
+        // for 'Close Tabs to the Right', if the last tab is selected or all tabs to the right are pinned
+        // for 'Close All Tabs', if all tabs are pinned
+        const isPrevTabPinned = targetIndex > 0 &&
+            MainViewManager.isPathPinned(_currentTabContext.paneId, workingSetList[targetIndex - 1].fullPath);
+        const isLastTabPinned = lastIndex >= 0 &&
+            MainViewManager.isPathPinned(_currentTabContext.paneId, workingSetList[lastIndex].fullPath);
 
-    // **Close Tabs to the Left**
-    // closes all tabs to the left of the right-clicked tab
-    function handleCloseTabsToTheLeft() {
-        const workingSet = _getWorkingSet(_currentTabContext.paneId);
-        if (!workingSet) { return; }
-
-        // find where the right-clicked tab is in the list
-        const currentIndex = workingSet.findIndex(entry => entry.path === _currentTabContext.filePath);
-        if (currentIndex > 0) {
-            // slice from start to currentIndex (not including currentIndex)
-            _closeFiles(workingSet.slice(0, currentIndex), _currentTabContext.paneId);
-        }
-    }
-
-    // **Close Tabs to the Right**
-    // closes all tabs to the right of the right-clicked tab
-    function handleCloseTabsToTheRight() {
-        const workingSet = _getWorkingSet(_currentTabContext.paneId);
-        if (!workingSet) { return; }
-
-        // find where the right-clicked tab is in the list
-        const currentIndex = workingSet.findIndex(entry => entry.path === _currentTabContext.filePath);
-        if (currentIndex !== -1 && currentIndex < workingSet.length - 1) {
-            // slice from currentIndex+1 to end
-            _closeFiles(workingSet.slice(currentIndex + 1), _currentTabContext.paneId);
-        }
+        closeAboveCmd.setEnabled(targetIndex > 0 && !isPrevTabPinned);
+        closeBelowCmd.setEnabled(targetIndex < lastIndex && !isLastTabPinned);
+        closeAllCmd.setEnabled(!isLastTabPinned);
     }
 
     /**
@@ -137,25 +109,24 @@ define(function (require, exports, module) {
      * this registers the context menu and add the menu items inside it
      */
     function init() {
-        // these are the tab bar specific commands
-        CommandManager.register(Strings.CLOSE_TABS_TO_THE_LEFT, TABBAR_CLOSE_TABS_LEFT, handleCloseTabsToTheLeft);
-        CommandManager.register(Strings.CLOSE_TABS_TO_THE_RIGHT, TABBAR_CLOSE_TABS_RIGHT, handleCloseTabsToTheRight);
-        CommandManager.register(Strings.CLOSE_SAVED_TABS, TABBAR_CLOSE_SAVED_TABS, handleCloseSavedTabs);
-        CommandManager.register(Strings.CLOSE_ALL_TABS, TABBAR_CLOSE_ALL, handleCloseAllTabs);
-
-        // these commands already exist for working files, just reusing them
+        // Use commands from CloseOthers extension with TabBar-specific labels (via setName in _updateMenuItems)
         const menu = Menus.registerContextMenu("tabbar-context-menu");
         menu.addMenuItem(Commands.FILE_CLOSE);
-        menu.addMenuItem(TABBAR_CLOSE_TABS_LEFT);
-        menu.addMenuItem(TABBAR_CLOSE_TABS_RIGHT);
-        menu.addMenuItem(TABBAR_CLOSE_SAVED_TABS);
-        menu.addMenuItem(TABBAR_CLOSE_ALL);
+        menu.addMenuItem(FILE_CLOSE_ABOVE);  // updated label: "Close Tabs to the Left"
+        menu.addMenuItem(FILE_CLOSE_BELOW);  // updated label: "Close Tabs to the Right"
+        menu.addMenuItem(FILE_CLOSE_ALL);    // updated label: "Close All Tabs"
+        menu.addMenuDivider();
+        menu.addMenuItem(Commands.FILE_PIN);
         menu.addMenuDivider();
         menu.addMenuItem(Commands.FILE_RENAME);
         menu.addMenuItem(Commands.FILE_DELETE);
         menu.addMenuItem(Commands.NAVIGATE_SHOW_IN_FILE_TREE);
         menu.addMenuDivider();
         menu.addMenuItem(Commands.FILE_REOPEN_CLOSED);
+
+        // _updateMenuItems function disables the button which are not needed for the current tab
+        // and those items are then hidden by the menu system automatically because of the hideWhenCommandDisabled flag
+        menu.on("beforeContextMenuOpen", _updateMenuItems);
     }
 
     module.exports = {
