@@ -250,6 +250,8 @@ define(function (require, exports, module) {
             $headerCloseBtn = $header.find(".pane-header-close-btn"),
             $content = $el.find(".pane-content");
 
+        $headerCloseBtn.html("<i class='fa-solid fa-times'></i>");
+
         $el.on("focusin.pane", function (e) {
             self._lastFocusedElement = e.target;
         });
