@@ -42,6 +42,7 @@ define(function (require, exports, module) {
         FileViewController    = require("project/FileViewController"),
         ViewUtils             = require("utils/ViewUtils"),
         KeyEvent              = require("utils/KeyEvent"),
+        KeyBindingManager     = require("command/KeyBindingManager"),
         paneListTemplate      = require("text!htmlContent/working-set.html"),
         Strings               = require("strings"),
         _                     = require("thirdparty/lodash"),
@@ -1651,6 +1652,34 @@ define(function (require, exports, module) {
             var view = _views[paneId];
             delete _views[view.paneId];
             view.destroy();
+        });
+
+        // Add tooltip on hover for file status icon (pin/close)
+        $(document).on("mouseenter", "#working-set-list-container .file-status-icon", function () {
+            const $icon = $(this);
+            const isPinned = $icon.hasClass("pinned");
+
+            if (isPinned) {
+                // Show "Unpin File" tooltip
+                const pinBindings = KeyBindingManager.getKeyBindings(Commands.FILE_PIN);
+                const pinShortcut = pinBindings.length > 0
+                    ? KeyBindingManager.formatKeyDescriptor(pinBindings[pinBindings.length - 1].displayKey)
+                    : "";
+                const tooltip = pinShortcut
+                    ? `${Strings.CMD_FILE_UNPIN} (${pinShortcut})`
+                    : Strings.CMD_FILE_UNPIN;
+                $icon.attr("title", tooltip);
+            } else if ($icon.hasClass("can-close")) {
+                // Show "Close File" tooltip
+                const closeBindings = KeyBindingManager.getKeyBindings(Commands.FILE_CLOSE);
+                const closeShortcut = closeBindings.length > 0
+                    ? KeyBindingManager.formatKeyDescriptor(closeBindings[closeBindings.length - 1].displayKey)
+                    : "";
+                const tooltip = closeShortcut
+                    ? `${Strings.CMD_FILE_CLOSE} (${closeShortcut})`
+                    : Strings.CMD_FILE_CLOSE;
+                $icon.attr("title", tooltip);
+            }
         });
     });
 
