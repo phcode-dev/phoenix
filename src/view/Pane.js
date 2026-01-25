@@ -908,9 +908,17 @@ define(function (require, exports, module) {
      * @param {Object=} inPlace record with inPlace add data (index, indexRequested). Used internally
      */
     Pane.prototype._addToViewList = function (file, inPlace) {
-        if (inPlace && inPlace.indexRequested) {
+        if (inPlace && inPlace.indexRequested && inPlace.index !== undefined) {
             // If specified, insert into the workingset at this 0-based index
             this._viewList.splice(inPlace.index, 0, file);
+        } else if (inPlace && inPlace.indexRequested) {
+            // Index requested but not specified (e.g., flip between panes) - insert after pinned files
+            let insertIndex = 0;
+            while (insertIndex < this._viewList.length &&
+                   this._pinnedPaths.has(this._viewList[insertIndex].fullPath)) {
+                insertIndex++;
+            }
+            this._viewList.splice(insertIndex, 0, file);
         } else {
             // If no index is specified, just add the file to the end of the workingset.
             this._viewList.push(file);
