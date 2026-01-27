@@ -206,10 +206,14 @@ import {set, entries, createStore} from './thirdparty/idb-keyval.js';
                 storageNodeConnector
                     .execPeer("putItem", {key, value: valueToStore})
                     .catch(_reportPutItemError);
-                // this is an in-memory tauri store that takes care of multi window case, since we have a single
-                // instance, all windows share this and can reconstruct the full view from the dumb file + this map
-                // when the editor boots up instead of having to write the dump file frequently.
-                window.__TAURI__.invoke('put_item', { key, value: JSON.stringify(valueToStore) });
+                // this is an in-memory tauri/electron store that takes care of multi window case, since we have a
+                // single instance, all windows share this and can reconstruct the full view from the dump file + this
+                // map when the editor boots up instead of having to write the dump file frequently.
+                if(window.__TAURI__) {
+                    window.__TAURI__.invoke('put_item', { key, value: JSON.stringify(valueToStore) });
+                } else if(window.__ELECTRON__) {
+                    window.electronAPI.putItem(key, JSON.stringify(valueToStore));
+                }
             }
             if(window.debugMode || isBrowser) {
                 // in debug mode, we write to browser storage in tauri and browser builds for eazy debug of storage.
@@ -291,13 +295,18 @@ import {set, entries, createStore} from './thirdparty/idb-keyval.js';
             return;
         }
         if(isDesktop){
-            async function mergeTauriInMemoryStorage() {
-                // The tauri storeage is mainly used in multi window case, where if there are 2+ windows, each window
-                // is till live and has not commited the dump file to disc(they only do that on exit or 30 every secs).
+            async function mergeNativeInMemoryStorage() {
+                // The native storage is mainly used in multi window case, where if there are 2+ windows, each window
+                // is still live and has not committed the dump file to disc (they only do that on exit or every 30 secs).
                 // so the dump file may be stale after window._tauriStorageRestorePromise in the case.
-                // we merge the local memory cache maintained at tauri rust side to address this.
+                // we merge the local memory cache maintained at tauri/electron side to address this.
                 try {
-                    const map = await window.__TAURI__.invoke('get_all_items') || {};
+                    let map = {};
+                    if(window.__TAURI__) {
+                        map = await window.__TAURI__.invoke('get_all_items') || {};
+                    } else if(window.__ELECTRON__) {
+                        map = await window.electronAPI.getAllItems() || {};
+                    }
                     for(const key of Object.keys(map)){
                         cache[key] = JSON.parse(map[key]);
                     }
@@ -317,7 +326,7 @@ import {set, entries, createStore} from './thirdparty/idb-keyval.js';
                     }
                 })
                 .catch(console.error)
-                .finally(mergeTauriInMemoryStorage);
+                .finally(mergeNativeInMemoryStorage);
             return;
         }
         // Use browser default storage- IndexedDB
@@ -342,8 +351,10 @@ import {set, entries, createStore} from './thirdparty/idb-keyval.js';
             // do things to do that are critical to user experience here
             // We try to set window zoom as early as possible to prevent zoom flicker
             const zoomFactor = PhStore.getItem(_PHSTORE_BOOT_DESKTOP_ZOOM_SCALE_KEY) || 1;
-            if(Phoenix.isNativeApp){
+            if(window.__TAURI__){
                 window.__TAURI__.tauri.invoke("zoom_window", {scaleFactor: zoomFactor});
+            } else if(window.__ELECTRON__) {
+                window.electronAPI.zoomWindow(zoomFactor);
             }
         });
     /**

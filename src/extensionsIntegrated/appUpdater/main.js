@@ -517,10 +517,11 @@ define(function (require, exports, module) {
 
     let updateInstalledDialogShown = false, updateFailedDialogShown = false;
     AppInit.appReady(function () {
-        if(!Phoenix.isNativeApp || Phoenix.isTestWindow) {
+        if(!window.__TAURI__ || Phoenix.isTestWindow) {
             // app updates are only for desktop builds
             return;
         }
+        // todo electron edge for app updater
         if (brackets.platform === "mac") {
             // in mac, the `update.app.tar.gz` is downloaded, and only extracted on app quit.
             // we do this only in mac as the `.app` file is extracted only at app quit and deleted

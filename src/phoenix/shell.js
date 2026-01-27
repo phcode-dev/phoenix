@@ -537,7 +537,12 @@ Phoenix.app = {
         if(scaleFactor < .1 || scaleFactor > 2) {
             throw new Error("zoomWebView scale factor should be between .1 and 2");
         }
-        return window.__TAURI__.tauri.invoke("zoom_window", {scaleFactor: scaleFactor});
+        if(window.__TAURI__) {
+            return window.__TAURI__.tauri.invoke("zoom_window", {scaleFactor: scaleFactor});
+        }
+        if(window.__ELECTRON__) {
+            return window.electronAPI.zoomWindow(scaleFactor);
+        }
     },
     _openUrlInBrowserWin: function (url, browser) {
         // private API for internal use only. May be removed at any time.
