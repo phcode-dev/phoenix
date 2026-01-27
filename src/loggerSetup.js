@@ -32,6 +32,7 @@
         "https://dev.phcode.dev", // dev url
         "https://staging.phcode.dev" // staging url
     ];
+    const nativeEnvName = window.__TAURI__ ? "tauri" : (window.__ELECTRON__ ? "electron" : "");
     let isBugsnagLoggableURL = false; // to test bugsnag in dev builds, set this to true
     for(let loggableURL of loggableURLS){
         if(window.location.href.startsWith(loggableURL)){
@@ -256,7 +257,7 @@
         context = 'mobile';
     }
     if(Phoenix.isNativeApp) {
-        context = `tauri-${context}`;
+        context = `${nativeEnvName}-${context}`;
     }
     if(Phoenix.browser.isMobile || Phoenix.browser.isTablet) {
         let device = 'unknownDevice';
@@ -298,12 +299,14 @@
         Bugsnag.start({
             apiKey: '94ef94f4daf871ca0f2fc912c6d4764d',
             context: context,
-            appType: Phoenix.browser && Phoenix.isNativeApp ? "tauri" : "browser",
+            appType: nativeEnvName || "browser",
             collectUserIp: false,
             appVersion: AppConfig.version,
             enabledReleaseStages: [ 'development', 'production', 'staging',
-                'tauri-development', 'tauri-production', 'tauri-staging'],
-            releaseStage: window.__TAURI__ ? "tauri-" + AppConfig.config.bugsnagEnv : AppConfig.config.bugsnagEnv,
+                'tauri-development', 'tauri-production', 'tauri-staging',
+                'electron-development', 'electron-production', 'electron-staging'],
+            releaseStage: window.__IS_NATIVE_SHELL__ ?
+                `${nativeEnvName}-${AppConfig.config.bugsnagEnv}` : AppConfig.config.bugsnagEnv,
             // https://docs.bugsnag.com/platforms/javascript/#logging-breadcrumbs
             // breadcrumbs is disabled as it seems a bit intrusive in Pheonix even-though it might help with debugging.
             // only manual explicit privacy ready breadcrumbs are allowed

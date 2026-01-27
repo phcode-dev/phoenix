@@ -44,7 +44,7 @@ initVFS();
 const MAX_ALLOWED_TAURI_WINDOWS = 30;
 const CLI_ARGS_QUERY_PARAM = 'CLI_ARGS';
 const CLI_CWD_QUERY_PARAM = 'CLI_CWD';
-let cliArgs, cliCWD, singleInstanceCLIHandler, quitTimeAppUpdateHandler;
+let cliArgs, cliCWD, singleInstanceCLIHandler, quitTimeAppUpdateHandler, closeHandlerCb;
 const PHOENIX_WINDOW_PREFIX = 'phcode-';
 const PHOENIX_EXTENSION_WINDOW_PREFIX = 'extn-';
 
@@ -136,6 +136,21 @@ Phoenix.app = {
             throw new Error("toggle_devtools is not supported in browsers");
         }
         return window.__TAURI__.invoke("toggle_devtools", {});
+    },
+    onCloseWindowRequested: function (_closeHandlerCb) {
+        if(typeof _closeHandlerCb !== 'function'){
+            throw new Error("onCloseWindowRequested callback must be a function!");
+        }
+        if(closeHandlerCb){
+            throw new Error("onCloseWindowRequested can only be registered once!");
+        }
+        closeHandlerCb = _closeHandlerCb;
+        window.__TAURI__.window.appWindow.onCloseRequested((event)=>{
+            const shouldClose = closeHandlerCb();
+            if(!shouldClose){
+                event.preventDefault();
+            }
+        });
     },
     closeWindow: async function (forceClose) {
         if(!Phoenix.isNativeApp){

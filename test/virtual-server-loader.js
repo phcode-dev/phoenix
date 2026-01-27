@@ -37,7 +37,7 @@ function getRoute(){
     return `${basePath}/phoenix/vfs`;
 }
 
-if(!window.__TAURI__) {
+if(!window.__IS_NATIVE_SHELL__) {
     window.fsServerUrl = window.location.origin + getRoute() + "/";
 }
 
@@ -52,7 +52,7 @@ function serverInstall() {
 /**
  * Register the nohost service worker, passing `route` or other options.
  */
-if ('serviceWorker' in navigator && !window.__TAURI__) {
+if ('serviceWorker' in navigator && !window.__IS_NATIVE_SHELL__) {
     console.log(window.location.href);
 
     const wb = new Workbox(`virtual-server-test.js?route=${getRoute()}`);

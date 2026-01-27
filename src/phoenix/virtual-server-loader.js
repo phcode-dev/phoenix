@@ -56,7 +56,7 @@ function getRoute(){
     return `phoenix/vfs`;
 }
 
-if(!window.__TAURI__) {
+if(!window.__IS_NATIVE_SHELL__) {
     window.fsServerUrl = _getBaseURL() + getRoute() + "/";
 }
 
@@ -86,7 +86,7 @@ async function shouldUpdate() {
 /**
  * Register Phoenix PWA and nohost web server service worker, passing `route` or other options.
  */
-if (!window.__TAURI__ && _isServiceWorkerLoaderPage() && 'serviceWorker' in navigator) {
+if (!window.__IS_NATIVE_SHELL__ && _isServiceWorkerLoaderPage() && 'serviceWorker' in navigator) {
     logger.leaveTrail("Service worker loader: Loading  from page..." + window.location.href);
     // We cannot realistically change the url of the service worker without causing major problems in service worker
     // load. We will have to unregister and load a new service worker and there is no way to stop the already running

@@ -178,7 +178,7 @@ function _attachSettingBtnEventListeners() {
 function _openURLInTauri(url) {
     // in tauri, the <a> tag will not open a browser window. So we have to use phcode apis to do it.
     // else, the browser itself will open the url. so we dont have to do this in normal browsers.
-    if(window.top.__TAURI__) {
+    if(window.top.__IS_NATIVE_SHELL__) {
         window.top.Phoenix.app.openURLInDefaultBrowser(url);
     }
 }

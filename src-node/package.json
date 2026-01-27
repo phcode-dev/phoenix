@@ -19,7 +19,7 @@
     },
     "IMPORTANT!!": "Adding things here will bloat up the package size",
     "dependencies": {
-        "@phcode/fs": "^4.0.1",
+        "@phcode/fs": "^4.0.2",
         "open": "^10.1.0",
         "npm": "10.1.0",
         "ws": "^8.17.1",

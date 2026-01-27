@@ -2253,15 +2253,13 @@ define(function (require, exports, module) {
         }
     }
     function attachTauriUnloadHandler() {
-        window.__TAURI__.window.appWindow.onCloseRequested((event)=>{
+        Phoenix.app.onCloseWindowRequested(()=>{
             _forceQuitIfNeeded();
             if(closeInProgress){
-                event.preventDefault();
-                return;
+                return false;
             }
             closeInProgress = true;
             PreferencesManager.setViewState("windowClosingTime", new Date().getTime());
-            event.preventDefault();
             _handleWindowGoingAway(null, closeSuccess=>{
                 console.log('close success: ', closeSuccess);
                 exitWaitPromises.push(_safeFlushDB());
@@ -2277,6 +2275,7 @@ define(function (require, exports, module) {
                 console.log('close fail: ', closeFail);
                 closeInProgress = false;
             });
+            return false;
         });
     }
 

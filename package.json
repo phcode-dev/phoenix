@@ -94,7 +94,7 @@
         "@floating-ui/dom": "^0.5.4",
         "@fortawesome/fontawesome-free": "^6.1.2",
         "@highlightjs/cdn-assets": "^11.5.1",
-        "@phcode/fs": "^4.0.1",
+        "@phcode/fs": "^4.0.2",
         "@phcode/language-support": "^1.1.0",
         "@pixelbrackets/gfm-stylesheet": "^1.1.0",
         "@prettier/plugin-php": "^0.22.2",
