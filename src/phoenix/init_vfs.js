@@ -39,6 +39,18 @@ let extensionDIR,
     tempDIR,
     userProjectsDir;
 
+function _getNativeAssetUrl(fullFilePath) {
+    if(window.__TAURI__) {
+        if(fullFilePath.startsWith(tauriAssetServeDir)){
+            const platformPath = fs.getTauriPlatformPath(fullFilePath)
+                .replace(/\\/g, "/"); // windows style paths to unix style c:\x\y to c:/x/y
+            return decodeURIComponent(window.__TAURI__.tauri.convertFileSrc(platformPath));
+        }
+        return null;
+    }
+    return null;
+}
+
 function _setupVFS(fsLib, pathLib){
     Phoenix.VFS = {
         getRootDir: () => '/fs/',
@@ -129,12 +141,7 @@ function _setupVFS(fsLib, pathLib){
         },
         getVirtualServingURLForPath: function (fullPath) {
             if(Phoenix.isNativeApp) {
-                if(fullPath.startsWith(tauriAssetServeDir)){
-                    const platformPath = fs.getTauriPlatformPath(fullPath)
-                        .replace(/\\/g, "/"); // windows style paths to unix style c:\x\y to c:/x/y
-                    return decodeURIComponent(window.__TAURI__.tauri.convertFileSrc(platformPath));
-                }
-                return null;
+                return _getNativeAssetUrl(fullPath);
             }
             return window.fsServerUrl.slice(0, -1) + fullPath;
         },
@@ -275,9 +282,7 @@ async function setupAppSupportAndExtensionsDir() {
             appSupportDIR = `${appSupportDIR}/`;
         }
         tauriAssetServeDir = `${appSupportDIR}assets/`;
-        tauriAssetServeBaseURL = decodeURIComponent(window.__TAURI__.tauri.convertFileSrc(
-            fs.getTauriPlatformPath(tauriAssetServeDir)))
-            .replace(/\\/g, "/"); // windows style paths to unix style c:\x\y to c:/x/y
+        tauriAssetServeBaseURL = _getNativeAssetUrl(tauriAssetServeDir);
         extensionDIR = `${tauriAssetServeDir}extensions/`;
         // in tauri, the /fs/ folder is not a requirement for boot, so we won't fait for it.
         // also this creates wired indexed db lock bugs in tauri where the boot leads to a blank screen.
