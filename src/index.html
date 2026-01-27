@@ -78,6 +78,9 @@
                 "\n\nYou will now be redirected to phcode.dev.");
             window.location = "https://phcode.dev";
         }
+        if(window.electronAPI) {
+            window.__ELECTRON__ = true;
+        }
         if(location.href.startsWith("tauri://") || location.href.startsWith('https://tauri.localhost')){
             const errorMessage = `You should use custom protocol phtauri:// instead of tauri protocol ${location.href} .`;
             alert(errorMessage);
@@ -94,20 +97,21 @@
             const isSpecRunnerWindow = window.location.pathname.endsWith("/SpecRunner.html");
             return isTestPhoenixWindow || isSpecRunnerWindow;
         }
-        let canAccessTauri = false;
+        let canAccessNativeShell = false;
         try {
             // This is to allow phoenix live previews in phoenix desktop editor so that we can
             // develop phoenix inside phoenix.
             // This will throw an error if the live preview iframe and parent are cross-origin which is case in phcode
-            canAccessTauri = window.top.window.__TAURI__;
-            canAccessTauri = true;
+            canAccessNativeShell = window.top.window.__TAURI__;
+            canAccessNativeShell = window.top.window.electronAPI;
+            canAccessNativeShell = true;
         } catch (e) {
             // Cross-origin, exception caught, isSameOrigin remains false
         }
 
         // In Mac !! the window.__TAURI__ object is present in iframes, even if it doesnt works. so we are forced
         // to use if(window.parent.window !== window) instead of if(!window.__TAURI__) here.
-        if(canAccessTauri && window.parent.window !== window && window.top.window.__TAURI__) {
+        if(canAccessNativeShell && window.parent.window !== window && window.top.window.__TAURI__) {
             // This is only intended to be used for in tests where phoenix is loaded inside iframes.
             // this means that we are loaded in an iframe in the specrunner. Tauri doesnt expose tauri APIs
             // in its iframes, so we directly use the top most windows tauri api object for tests to run properly.
@@ -163,6 +167,58 @@
             }
             // fs special handling end
         }
+        // linux electron api iframe injection for tests
+        if(canAccessNativeShell && window.parent.window !== window && window.top.window.__ELECTRON__) {
+            // This is only intended to be used for in tests where phoenix is loaded inside iframes.
+            // this means that we are loaded in an iframe in the specrunner. Tauri doesnt expose tauri APIs
+            // in its iframes, so we directly use the top most windows tauri api object for tests to run properly.
+            console.warn("Phoenix is loaded in iframe, attempting to use electron APIs from window.top.electronAPI");
+            window.electronAPI = window.top.window.electronAPI;
+        }
+        if(window.__TAURI__ || window.__ELECTRON__) {
+            window.__IS_NATIVE_SHELL__ = true;
+        }
+        // Common function to process boot vars results for both Tauri and Electron
+        function _processBootVarsResults(results, pathSep, LOCALSTORAGE_KEY, bootStartTime) {
+            // results array: [appName, documentDir, appLocalDir, tempDir, homeDir]
+            const idx = {appName: 0, docDir: 1, appLocal: 2, temp: 3, home: 4};
+
+            window._tauriBootVars.appname = results[idx.appName].value;
+
+            if(results[idx.docDir].status === "fulfilled"){
+                window._tauriBootVars.documentDir = results[idx.docDir].value;
+            } else if(results[idx.home] && results[idx.home].status === "fulfilled"){
+                // some linux distros may not have Documents folder. so we use the home folder
+                // https://github.com/phcode-dev/phoenix/issues/1729
+                window._tauriBootVars.documentDir = results[idx.home].value;
+            } else if(results[idx.appLocal].status === "fulfilled"){
+                console.error("Unable to determine user documents dir, defaulting to app data dir as document dir:",
+                    results[idx.docDir].reason, "home folder error: ", results[idx.home]?.reason);
+                window._tauriBootVars.documentDir = results[idx.appLocal].value;
+            } else {
+                alert("Could not resolve user documents directory. \nPhoenix Code cannot start.");
+            }
+
+            if(results[idx.appLocal].status === "fulfilled") {
+                window._tauriBootVars.appLocalDir = results[idx.appLocal].value;
+            } else {
+                alert("Could not resolve Application Data directory. \nPhoenix Code cannot start.");
+            }
+
+            // For tests, documents dir is localAppDataDir/testDocuments to keep user documents garbage free for tests
+            // Also In github actions, the tauri get doc dir call gets stuck indefinitely
+            if(_isTestWindow()){
+                if(!window._tauriBootVars.documentDir.endsWith(pathSep)){
+                    window._tauriBootVars.documentDir = window._tauriBootVars.documentDir + pathSep;
+                }
+                window._tauriBootVars.documentDir = `${window._tauriBootVars.documentDir}testDocuments${pathSep}`;
+            }
+
+            window._tauriBootVars.appLocalDir = results[idx.appLocal].value;
+            window._tauriBootVars.tempDir = results[idx.temp].value;
+            window._tauriBootVars.bootstrapTime = Date.now() - bootStartTime;
+            localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(window._tauriBootVars));
+        }
         if(window.__TAURI__) {
             function setupTauriBootVars() {
                 // this is used by storage.js (window.PhStore) to restore our persistent storage layer in tauri.
@@ -201,45 +257,63 @@
                 window._tauriBootVarsPromise = Promise.allSettled([appNamePromise, documentDirPromise,
                     appLocalDirPromise, tempDirPromise, homeDirPromise])
                     .then((results) => {
-                        window._tauriBootVars.appname = results[0].value;
-
-                        if(results[1].status === "fulfilled"){
-                            window._tauriBootVars.documentDir = results[1].value;
-                        } else if(results[4].status === "fulfilled"){
-                            // some linux distros may not have Documents folder. so we use the home folder
-                            // https://github.com/phcode-dev/phoenix/issues/1729
-                            window._tauriBootVars.documentDir = results[4].value;
-                        } else if(results[2].status === "fulfilled"){
-                            console.error("Unable to determine user documents dir, defaulting to app data dir as document dir:",
-                                results[1].reason, "home folder error: ", results[4].reason);
-                            window._tauriBootVars.documentDir = results[2].value;
-                        } else {
-                            alert("Could not resolve user documents directory. \nPhoenix Code cannot start.");
-                        }
-
-                        if(results[2].status === "fulfilled") {
-                            window._tauriBootVars.appLocalDir = results[2].value;
-                        } else {
-                            alert("Could not resolve Application Data directory. \nPhoenix Code cannot start.");
-                        }
-
-                        // For tests, documents dir is localAppDataDir/testDocuments to keep user documents garbage free for tests
-                        // Also In github actions, the tauri get doc dir call gets stuck indefinitely
-                        if(_isTestWindow()){
-                            if(!window._tauriBootVars.documentDir.endsWith(window.__TAURI__.path.sep)){
-                                window._tauriBootVars.documentDir = window._tauriBootVars.documentDir + window.__TAURI__.path.sep;
-                            }
-                            window._tauriBootVars.documentDir = `${window._tauriBootVars.documentDir}testDocuments${window.__TAURI__.path.sep}`;
-                        }
-                        //Documents dir special case for tests
-
-                        window._tauriBootVars.appLocalDir = results[2].value;
-                        window._tauriBootVars.tempDir = results[3].value;
-                        window._tauriBootVars.bootstrapTime = Date.now() - tauriBootStartTime;
-                        localStorage.setItem(TAURI_BOOT_VARS_LOCALSTORAGE_KEY, JSON.stringify(window._tauriBootVars));
+                        _processBootVarsResults(results, window.__TAURI__.path.sep, TAURI_BOOT_VARS_LOCALSTORAGE_KEY, tauriBootStartTime);
                     });
             }
             setupTauriBootVars();
+        }
+        if(window.__ELECTRON__) {
+            function setupElectronBootVars() {
+                // this is used by storage.js (window.PhStore) to restore our persistent storage layer in electron.
+                window._tauriStorageRestorePromise = window.electronFSAPI.appLocalDataDir()
+                    .then(appDataDir => {
+                        const sep = window.electronFSAPI.path.sep;
+                        const storagePath = `${appDataDir}${appDataDir.endsWith(sep) ? "" : sep}storageDB${sep}storageDBDump.json`;
+                        return window.electronFSAPI.fsReadFile(storagePath);
+                    })
+                    .then(data => {
+                        if(data && data.__fsError) {
+                            throw new Error(data.message);
+                        }
+                        return data;
+                    })
+                    .catch(err => {
+                        console.error("First boot detected or Failed to init storage from cache." +
+                            " If first boot, ignore this error", err);
+                    });
+                // increase this version number if you are modifying any boot vars
+                const TAURI_BOOT_VARS_LOCALSTORAGE_KEY = "tauriBootVarsV1";
+                const tauriBootVarsStr = localStorage.getItem(TAURI_BOOT_VARS_LOCALSTORAGE_KEY);
+                if(tauriBootVarsStr) {
+                    try{
+                        window._tauriBootVars = JSON.parse(tauriBootVarsStr);
+                        window._tauriBootVarsPromise = Promise.resolve("Resolved from localstorage.");
+                    } catch (e) {
+                        console.error("Error getting boot vars from localstorage. Falling back to make electron bootstrap calls.", e);
+                    }
+                }
+                const appNamePromise = window.electronAppAPI.getAppName();
+                // for running tests, the user document dir is set to app data dir as we dont want to
+                // corrupt user documents dir for tests
+                let documentDirPromise, homeDirPromise;
+                if(_isTestWindow()){
+                    documentDirPromise = window.electronFSAPI.appLocalDataDir(); // appdata/testDocuments will be appended below
+                } else {
+                    documentDirPromise = window.electronFSAPI.documentDir();
+                    homeDirPromise = window.electronFSAPI.homeDir();
+                }
+
+                const appLocalDirPromise = window.electronFSAPI.appLocalDataDir();
+                const tempDirPromise = window.electronFSAPI.tempDir();
+                window._tauriBootVars = {};
+                const tauriBootStartTime = Date.now();
+                window._tauriBootVarsPromise = Promise.allSettled([appNamePromise, documentDirPromise,
+                    appLocalDirPromise, tempDirPromise, homeDirPromise])
+                    .then((results) => {
+                        _processBootVarsResults(results, window.electronFSAPI.path.sep, TAURI_BOOT_VARS_LOCALSTORAGE_KEY, tauriBootStartTime);
+                    });
+            }
+            setupElectronBootVars();
         }
 
         // environment setup for boot. do not move out of index html!!
@@ -290,6 +364,7 @@
                     isDeskTop: !_mobileAndTabletCheck() && !_mobileCheck(),
                     isChromeOS: /CrOS/.test(navigator.userAgent),
                     isTauri: !!window.__TAURI__,
+                    isElectron: !!window.__ELECTRON__,
                     mobile: {
                         isAndroid: (navigator.userAgent.match(/Android/i) !== null),
                         isIos: (navigator.userAgent.match(/iPhone|iPad|iPod/i) !== null),
@@ -370,7 +445,7 @@
                     'https://create.phcode.dev': true
                 }
             };
-            window.Phoenix.isNativeApp = window.Phoenix.browser.isTauri;
+            window.Phoenix.isNativeApp = window.__IS_NATIVE_SHELL__;
             window.Phoenix.TRUSTED_ORIGINS[location.origin] = true;
             Phoenix.isSupportedBrowser = Phoenix.isNativeApp ||
                 (Phoenix.browser.isDeskTop && ("serviceWorker" in navigator));
@@ -667,11 +742,11 @@
         _resetCacheIfNeeded();
 
         function _addOrRemoveSplashScreenIfNeeded() {
-            if(!window.__TAURI__) {
+            if(!window.__IS_NATIVE_SHELL__) {
                 document.getElementById('phoenix-loading-splash-screen-overlay').classList.remove('forced-hidden')
             }
-            if(window.testEnvironment || window.__TAURI__){
-                // tauri means local builds and, it loads up pretty fast, so splash screen
+            if(window.testEnvironment || window.__IS_NATIVE_SHELL__){
+                // tauri means local builds and, it loads up pretty fast, so no splash screen
                 document.getElementById('phoenix-loading-splash-screen-overlay').remove();
                 window.splashScreenPresent = false;
             }

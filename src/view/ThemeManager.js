@@ -399,7 +399,7 @@ define(function (require, exports, module) {
         let deferred         = new $.Deferred();
 
         const  themeName = options.name || options.theme.title,
-            themeFolder = window.__TAURI__ ?
+            themeFolder = window.__IS_NATIVE_SHELL__ ?
                 brackets.app.getApplicationSupportDirectory() + `/assets/extensions/user/${themeName}/` :
                 brackets.app.getApplicationSupportDirectory() + `/extensions/user/${themeName}/`;
 

@@ -135,14 +135,16 @@ define(function (require, exports, module) {
         _sendStorageMetrics();
     }
 
+    const envName = window.__TAURI__ ? "tauri-" : (window.__ELECTRON__ ? "electron-" : "");
+
     let bugsnagPerformanceInited = false;
     function _initBugsnagPerformance() {
         bugsnagPerformanceInited = true;
         BugsnagPerformance.start({
             apiKey: '94ef94f4daf871ca0f2fc912c6d4764d',
             appVersion: AppConfig.version,
-            releaseStage: window.__TAURI__ ?
-                `tauri-${AppConfig.config.bugsnagEnv}-${Phoenix.platform}` : AppConfig.config.bugsnagEnv,
+            releaseStage: window.__IS_NATIVE_SHELL__ ?
+                `${envName}${AppConfig.config.bugsnagEnv}-${Phoenix.platform}` : AppConfig.config.bugsnagEnv,
             autoInstrumentRouteChanges: false,
             autoInstrumentNetworkRequests: false,
             autoInstrumentFullPageLoads: false
