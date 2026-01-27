@@ -45,6 +45,12 @@
       throw new Error(errorMessage);
     }
     console.warn('Make sure to run this following command before starting tests : npm run build ');
+    if(window.electronAppAPI) {
+      window.__ELECTRON__ = true;
+    }
+    if(window.__TAURI__ || window.__ELECTRON__) {
+      window.__IS_NATIVE_SHELL__ = true;
+    }
     if(window.__TAURI__) {
       window.testRunnerLogToConsole = function (...args) {
         const message = args.join(' ');
@@ -59,6 +65,17 @@
         });
       }
       testRunnerLogToConsole(`Tauri test reporters attached.`);
+    }
+    if(window.__ELECTRON__) {
+      window.testRunnerLogToConsole = function (...args) {
+        const message = args.join(' ');
+        window.electronAppAPI.consoleLog(message);
+      };
+      window.testRunnerErrorToConsole = function (...args) {
+        const message = args.join(' ');
+        window.electronAppAPI.consoleLog(`ERROR: ${message}`);
+      }
+      testRunnerLogToConsole(`Electron test reporters attached.`);
     }
 
     // in playwright tests, testRunnerLogToConsole is injected by playwright runners
@@ -143,6 +160,52 @@
       }
       setupTauriBootVars();
     }
+    if(window.__ELECTRON__) {
+      function setupElectronBootVars() {
+        // this is used by storage.js (window.PhStore) to restore our persistent storage layer in electron.
+        window._tauriStorageRestorePromise = window.electronFSAPI.appLocalDataDir()
+                .then(appDataDir => {
+                  const sep = window.electronFSAPI.path.sep;
+                  const storagePath = `${appDataDir}${appDataDir.endsWith(sep) ? "" : sep}storageDB${sep}storageDBDump.json`;
+                  return window.electronFSAPI.fsReadFile(storagePath);
+                })
+                .then(data => {
+                  if(data && data.__fsError) {
+                    throw new Error(data.message);
+                  }
+                  return data;
+                })
+                .catch(err => {
+                  console.error("First boot detected or Failed to init storage from cache." +
+                          " If first boot, ignore this error", err);
+                });
+        const appNamePromise = window.electronAppAPI.getAppName();
+        // for running tests, the user document dir is set to app data dir as we dont want to
+        // corrupt user documents dir for tests
+        const documentDirPromise = window.electronFSAPI.appLocalDataDir();
+        const appLocalDirPromise = window.electronFSAPI.appLocalDataDir();
+        const tempDirPromise = window.electronFSAPI.tempDir();
+        window._tauriBootVars = {};
+        const tauriBootStartTime = Date.now();
+        window._tauriBootVarsPromise = Promise.all([appNamePromise, documentDirPromise,
+          appLocalDirPromise, tempDirPromise])
+                .then((results) => {
+                  window._tauriBootVars.appname = results[0];
+                  // For tests, documents dir is localAppDataDir/documents to keep user documents garbage free for tests
+                  window._tauriBootVars.documentDir = results[1];
+                  const sep = window.electronFSAPI.path.sep;
+                  if(!window._tauriBootVars.documentDir.endsWith(sep)){
+                    window._tauriBootVars.documentDir = window._tauriBootVars.documentDir + sep;
+                  }
+                  window._tauriBootVars.documentDir = `${window._tauriBootVars.documentDir}documents${sep}`;
+                  //Documents dir special case for tests
+                  window._tauriBootVars.appLocalDir = results[2];
+                  window._tauriBootVars.tempDir = results[3];
+                  window._tauriBootVars.bootstrapTime = Date.now() - tauriBootStartTime;
+                });
+      }
+      setupElectronBootVars();
+    }
   </script>
 
   <!-- Import the phoenix browser virtual file system -->
@@ -211,6 +274,7 @@
           isDeskTop: !_mobileAndTabletCheck() && !_mobileCheck(),
           isChromeOS: /CrOS/.test(navigator.userAgent),
           isTauri: !!window.__TAURI__,
+          isElectron: !!window.__ELECTRON__,
           mobile: {
             isAndroid: (navigator.userAgent.match(/Android/i) !== null),
             isIos: (navigator.userAgent.match(/iPhone|iPad|iPod/i) !== null),
@@ -290,7 +354,7 @@
           'https://create.phcode.dev': true
         }
       };
-      window.Phoenix.isNativeApp = window.Phoenix.browser.isTauri;
+      window.Phoenix.isNativeApp = window.__IS_NATIVE_SHELL__;
       window.Phoenix.TRUSTED_ORIGINS[location.origin] = true;
       Phoenix.isSupportedBrowser = Phoenix.isNativeApp ||
               (Phoenix.browser.isDeskTop && ("serviceWorker" in navigator));

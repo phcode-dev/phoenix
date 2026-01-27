@@ -78,7 +78,7 @@
                 "\n\nYou will now be redirected to phcode.dev.");
             window.location = "https://phcode.dev";
         }
-        if(window.electronAPI) {
+        if(window.electronAppAPI) {
             window.__ELECTRON__ = true;
         }
         if(location.href.startsWith("tauri://") || location.href.startsWith('https://tauri.localhost')){
@@ -103,7 +103,7 @@
             // develop phoenix inside phoenix.
             // This will throw an error if the live preview iframe and parent are cross-origin which is case in phcode
             canAccessNativeShell = window.top.window.__TAURI__;
-            canAccessNativeShell = window.top.window.electronAPI;
+            canAccessNativeShell = window.top.window.electronAppAPI;
             canAccessNativeShell = true;
         } catch (e) {
             // Cross-origin, exception caught, isSameOrigin remains false
@@ -167,13 +167,14 @@
             }
             // fs special handling end
         }
-        // linux electron api iframe injection for tests
+        // electron api iframe injection for tests
         if(canAccessNativeShell && window.parent.window !== window && window.top.window.__ELECTRON__) {
             // This is only intended to be used for in tests where phoenix is loaded inside iframes.
-            // this means that we are loaded in an iframe in the specrunner. Tauri doesnt expose tauri APIs
-            // in its iframes, so we directly use the top most windows tauri api object for tests to run properly.
-            console.warn("Phoenix is loaded in iframe, attempting to use electron APIs from window.top.electronAPI");
-            window.electronAPI = window.top.window.electronAPI;
+            // this means that we are loaded in an iframe in the specrunner. Electron doesnt expose APIs
+            // in its iframes, so we directly use the top most windows electron api objects for tests to run properly.
+            console.warn("Phoenix is loaded in iframe, attempting to use electron APIs from window.top");
+            window.electronAppAPI = window.top.window.electronAppAPI;
+            window.electronFSAPI = window.top.window.electronFSAPI;
         }
         if(window.__TAURI__ || window.__ELECTRON__) {
             window.__IS_NATIVE_SHELL__ = true;
