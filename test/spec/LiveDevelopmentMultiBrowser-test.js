@@ -92,7 +92,7 @@ define(function (require, exports, module) {
                 // we have to popout a new window and cant use the embedded iframe for live preview integ tests
                 // as Firefox sandbox prevents service worker access from nexted iframes.
                 // In tauri, we use node server, so this limitation doesn't apply in tauri, and we stick to iframes.
-                const useWindowInsteadOfIframe = (Phoenix.browser.desktop.isFirefox && !window.__TAURI__);
+                const useWindowInsteadOfIframe = Phoenix.browser.desktop.isFirefox;
                 testWindow = await SpecRunnerUtils.createTestWindowAndRun({
                     forceReload: false, useWindowInsteadOfIframe
                 });

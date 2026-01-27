@@ -48,6 +48,7 @@ function _getNativeAssetUrl(fullFilePath) {
         }
         return null;
     }
+    // todo electron
     return null;
 }
 
