@@ -48,7 +48,13 @@ function _getNativeAssetUrl(fullFilePath) {
         }
         return null;
     }
-    // todo electron
+    if(window.__ELECTRON__) {
+        if(fullFilePath.startsWith(tauriAssetServeDir)){
+            const platformPath = fs.getTauriPlatformPath(fullFilePath);
+            return window.electronAPI.convertToAssetURL(platformPath);
+        }
+        return null;
+    }
     return null;
 }
 

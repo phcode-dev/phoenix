@@ -194,6 +194,17 @@ define(function (require, exports, module) {
         });
     }
 
+    function _sendNativeGAEvent(analyticsID, customUserID, events=[]) {
+        if(window.__TAURI__){
+            return _sendTauriGAEvent(analyticsID, customUserID, events=[]);
+        }
+        if(window.__ELECTRON__){
+            // todo electron send event to metrics window with electron
+            return;
+        }
+        console.error("Metrics send event failed. Unknown native platform");
+    }
+
     let tauriGAEvents = new Map();
 
     function _sendGaEvent(eventAct, category, label, count) {
@@ -216,7 +227,7 @@ define(function (require, exports, module) {
 
     const TAURI_GA_EVENT_QUEUE_INTERVAL = 3000;
     function _sendQueuedTauriGAEvents() {
-        _sendTauriGAEvent(brackets.config.googleAnalyticsIDDesktop, userID, Array.from(tauriGAEvents.values()));
+        _sendNativeGAEvent(brackets.config.googleAnalyticsIDDesktop, userID, Array.from(tauriGAEvents.values()));
         tauriGAEvents.clear();
     }
 
@@ -227,7 +238,7 @@ define(function (require, exports, module) {
             // https urls and not the tauri custom protocol urls. So we have a hidden window that loads ga from a
             // http(s) page which is usually `https://phcode.dev/desktop-metrics.html` or
             // "http://localhost:8000/src/metrics.html" for live dev builds in tauri.
-            _sendTauriGAEvent(brackets.config.googleAnalyticsIDDesktop, userID);
+            _sendNativeGAEvent(brackets.config.googleAnalyticsIDDesktop, userID);
             setInterval(_sendQueuedTauriGAEvents, TAURI_GA_EVENT_QUEUE_INTERVAL);
             return;
         }
