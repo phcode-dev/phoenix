@@ -136,7 +136,12 @@ Phoenix.app = {
         if(!Phoenix.isNativeApp){
             throw new Error("getProcessID is not supported in browsers");
         }
-        return window.__TAURI__.invoke("get_process_id");
+        if(window.__TAURI__){
+            return window.__TAURI__.invoke("get_process_id");
+        }
+        if(window.__ELECTRON__){
+            return window.electronAPI.getProcessId();
+        }
     },
     registerQuitTimeAppUpdateHandler: function (handler) {
         if(!Phoenix.isNativeApp){
@@ -148,7 +153,12 @@ Phoenix.app = {
         if(!Phoenix.isNativeApp){
             throw new Error("toggle_devtools is not supported in browsers");
         }
-        return window.__TAURI__.invoke("toggle_devtools", {});
+        if(window.__TAURI__){
+            return window.__TAURI__.invoke("toggle_devtools", {});
+        }
+        if(window.__ELECTRON__){
+            return window.electronAPI.toggleDevTools();
+        }
     },
     onCloseWindowRequested: function (_closeHandlerCb) {
         if(typeof _closeHandlerCb !== 'function'){
@@ -158,12 +168,22 @@ Phoenix.app = {
             throw new Error("onCloseWindowRequested can only be registered once!");
         }
         closeHandlerCb = _closeHandlerCb;
-        window.__TAURI__.window.appWindow.onCloseRequested((event)=>{
-            const shouldClose = closeHandlerCb();
-            if(!shouldClose){
-                event.preventDefault();
-            }
-        });
+        if(window.__TAURI__){
+            window.__TAURI__.window.appWindow.onCloseRequested((event)=>{
+                const shouldClose = closeHandlerCb();
+                if(!shouldClose){
+                    event.preventDefault();
+                }
+            });
+        } else if(window.__ELECTRON__){
+            window.electronAPI.registerCloseHandler();
+            window.electronAPI.onCloseRequested(()=>{
+                const shouldClose = closeHandlerCb();
+                if(shouldClose){
+                    window.electronAPI.allowClose();
+                }
+            });
+        }
     },
     closeWindow: async function (forceClose) {
         if(!Phoenix.isNativeApp){
@@ -252,8 +272,13 @@ Phoenix.app = {
             };
         }
         cliArgs = null;
-        cliCWD = await window.__TAURI__.invoke("get_current_working_dir");
-        cliArgs = await window.__TAURI__.invoke('_get_commandline_args');
+        if(window.__TAURI__){
+            cliCWD = await window.__TAURI__.invoke("get_current_working_dir");
+            cliArgs = await window.__TAURI__.invoke('_get_commandline_args');
+        } else if(window.__ELECTRON__){
+            cliCWD = await window.electronAPI.getCwd();
+            cliArgs = await window.electronAppAPI.getCliArgs();
+        }
         return {
             cwd: cliCWD,
             args: cliArgs
@@ -316,37 +341,49 @@ Phoenix.app = {
         }
     },
     clipboardReadText: function () {
-        if(Phoenix.isNativeApp){
+        if(window.__TAURI__){
             return window.__TAURI__.clipboard.readText();
-        } else if(window.navigator && window.navigator.clipboard){
+        }
+        if(window.__ELECTRON__){
+            return window.electronAPI.clipboardReadText();
+        }
+        if(window.navigator && window.navigator.clipboard){
             return window.navigator.clipboard.readText();
         }
         return Promise.reject(new Error("clipboardReadText: Not supported."));
     },
     clipboardReadFiles: function () {
         return new Promise((resolve, reject)=>{
-            if(Phoenix.isNativeApp){
-                window.__TAURI__.tauri.invoke('_get_clipboard_files')
-                    .then(files =>{
-                        if(!files){
-                            resolve(files);
-                            return;
-                        }
-                        const vfsPaths = [];
-                        for(let platformPath of files) {
-                            vfsPaths.push(Phoenix.VFS.getTauriVirtualPath(platformPath));
-                        }
-                        resolve(vfsPaths);
-                    }).catch(reject);
+            let filesPromise;
+            if(window.__TAURI__){
+                filesPromise = window.__TAURI__.tauri.invoke('_get_clipboard_files');
+            } else if(window.__ELECTRON__){
+                filesPromise = window.electronAPI.clipboardReadFiles();
             } else {
                 resolve();
+                return;
             }
+            filesPromise.then(files =>{
+                if(!files){
+                    resolve(files);
+                    return;
+                }
+                const vfsPaths = [];
+                for(let platformPath of files) {
+                    vfsPaths.push(Phoenix.VFS.getTauriVirtualPath(platformPath));
+                }
+                resolve(vfsPaths);
+            }).catch(reject);
         });
     },
     copyToClipboard: function (textToCopy) {
-        if(Phoenix.isNativeApp){
+        if(window.__TAURI__){
             return window.__TAURI__.clipboard.writeText(textToCopy);
-        } else if(window.navigator && window.navigator.clipboard){
+        }
+        if(window.__ELECTRON__){
+            return window.electronAPI.clipboardWriteText(textToCopy);
+        }
+        if(window.navigator && window.navigator.clipboard){
             return window.navigator.clipboard.writeText(textToCopy);
         }
         const textArea = document.createElement("textarea");
@@ -362,7 +399,12 @@ Phoenix.app = {
             // use browser full screen api in browsers.
             return Promise.resolve(!!document.fullscreenElement);
         }
-        return window.__TAURI__.window.appWindow.isFullscreen();
+        if(window.__TAURI__){
+            return window.__TAURI__.window.appWindow.isFullscreen();
+        }
+        if(window.__ELECTRON__){
+            return window.electronAPI.isFullscreen();
+        }
     },
     setFullscreen: function (enable) {
         if(!Phoenix.isNativeApp) {
@@ -370,12 +412,17 @@ Phoenix.app = {
             if (enable) {
                 return document.documentElement.requestFullscreen();
             } else if (document.exitFullscreen) {
-                return  document.exitFullscreen();
+                return document.exitFullscreen();
             } else {
                 return Promise.resolve();
             }
         }
-        return window.__TAURI__.window.appWindow.setFullscreen(enable);
+        if(window.__TAURI__){
+            return window.__TAURI__.window.appWindow.setFullscreen(enable);
+        }
+        if(window.__ELECTRON__){
+            return window.electronAPI.setFullscreen(enable);
+        }
     },
     getDisplayLocation: function (fullVFSPath) {
         // reruns a user-friendly location that can be shown to the user to make some sense of the virtual file path.
@@ -420,46 +467,61 @@ Phoenix.app = {
             throw new Error("Please specify a path to move to trash");
         }
         if(!fullVFSPath.startsWith(Phoenix.VFS.getTauriDir())) {
-            throw new Error("moveToTrash only works with tauri paths, but got: "+ fullVFSPath);
+            throw new Error("moveToTrash only works with native paths, but got: "+ fullVFSPath);
         }
         const platformPath = Phoenix.fs.getTauriPlatformPath(fullVFSPath);
-        return window.__TAURI__.invoke('move_to_trash', { deletePath: platformPath });
+        if(window.__TAURI__){
+            return window.__TAURI__.invoke('move_to_trash', { deletePath: platformPath });
+        }
+        if(window.__ELECTRON__){
+            return window.electronAPI.moveToTrash(platformPath);
+        }
     },
     setWindowTitle: async function (title) {
         window.document.title = title;
-        if(Phoenix.isNativeApp) {
+        if(window.__TAURI__) {
             await window.__TAURI__.window.appWindow.setTitle(title);
+        } else if(window.__ELECTRON__) {
+            await window.electronAPI.setWindowTitle(title);
         }
     },
     getWindowTitle: async function () {
-        if(Phoenix.isNativeApp) {
+        if(window.__TAURI__) {
             return window.__TAURI__.window.appWindow.title();
+        }
+        if(window.__ELECTRON__) {
+            return window.electronAPI.getWindowTitle();
         }
         return window.document.title;
     },
     openPathInFileBrowser: function (fullVFSPath){
         return new Promise((resolve, reject)=>{
-            if(!window.__TAURI__ ||
+            if(!Phoenix.isNativeApp ||
                 !fullVFSPath.startsWith(Phoenix.VFS.getTauriDir())) {
-                reject("openPathInFileBrowser is only currently supported in Native builds for tauri paths!");
+                reject("openPathInFileBrowser is only currently supported in Native builds for native paths!");
                 return;
             }
             if(fullVFSPath.toLowerCase().startsWith("http://")
                 || fullVFSPath.toLowerCase().startsWith("https://")
                 || fullVFSPath.toLowerCase().startsWith("file://")) {
-                reject("Please use openPathInFileBrowser API to open URLs");
+                reject("Please use openURLInDefaultBrowser API to open URLs");
                 return;
             }
             const platformPath = Phoenix.fs.getTauriPlatformPath(fullVFSPath);
-            window.__TAURI__.tauri
-                .invoke('show_in_folder', {path: platformPath})
-                .then(resolve)
-                .catch(reject);
+            if(window.__TAURI__){
+                window.__TAURI__.tauri
+                    .invoke('show_in_folder', {path: platformPath})
+                    .then(resolve)
+                    .catch(reject);
+            } else if(window.__ELECTRON__){
+                window.electronAPI.showInFolder(platformPath);
+                resolve();
+            }
         });
     },
     openURLInDefaultBrowser: function (url, tabIdentifier='_blank'){
         return new Promise((resolve, reject)=>{
-            if(!window.__TAURI__) {
+            if(!Phoenix.isNativeApp) {
                 resolve(window.open(url, tabIdentifier, 'noopener,noreferrer'));
                 return;
             }
@@ -467,9 +529,15 @@ Phoenix.app = {
                 reject("openURLInDefaultBrowser: URL should be http or https, but was " + url);
                 return;
             }
-            window.__TAURI__.shell.open(url)
-                .then(resolve)
-                .catch(reject);
+            if(window.__TAURI__){
+                window.__TAURI__.shell.open(url)
+                    .then(resolve)
+                    .catch(reject);
+            } else if(window.__ELECTRON__){
+                window.electronAPI.openExternal(url)
+                    .then(resolve)
+                    .catch(reject);
+            }
         });
     },
     /**
@@ -537,17 +605,21 @@ Phoenix.app = {
         return windowCount;
     },
     /**
-     * Returns the operating system CPU architecture for which the tauri app was compiled. Possible values are
-     * 'x86', 'x86_64', 'arm', 'aarch64', 'mips', 'mips64', 'powerpc', 'powerpc64', 'riscv64', 's390x', 'sparc64'.
+     * Returns the operating system CPU architecture for which the app was compiled. Possible values are
+     * 'x86', 'x86_64', 'arm', 'aarch64', 'arm64', 'ia32', 'x64', etc.
      * @return {Promise<string>}
      */
     getPlatformArch: async function () {
         if(!Phoenix.isNativeApp) {
-            // there is no primary window concept in browsers. all are primary for now.
             console.error("getPlatformArch is not supported in browsers!");
-            return true;
+            return null;
         }
-        return window.__TAURI__.os.arch();
+        if(window.__TAURI__){
+            return window.__TAURI__.os.arch();
+        }
+        if(window.__ELECTRON__){
+            return window.electronAPI.getPlatformArch();
+        }
     },
     openNewPhoenixEditorWindow: async function (preferredWidth, preferredHeight, _cliArgsArray, _cwd) {
         const phoenixURL = new URL(location.href);
@@ -594,7 +666,12 @@ Phoenix.app = {
         if(Phoenix.platform !== "win") {
             throw new Error("_openUrlInBrowserWin is only supported in windows");
         }
-        return window.__TAURI__.invoke('_open_url_in_browser_win', { url, browser });
+        if(window.__TAURI__){
+            return window.__TAURI__.invoke('_open_url_in_browser_win', { url, browser });
+        }
+        if(window.__ELECTRON__){
+            return window.electronAPI.openUrlInBrowserWin(url, browser);
+        }
     },
     getApplicationSupportDirectory: Phoenix.VFS.getAppSupportDir,
     getExtensionsDirectory: Phoenix.VFS.getExtensionDir,
