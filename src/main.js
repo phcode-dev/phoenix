@@ -225,7 +225,8 @@ function confirmReload(title, message) {
     });
     copyButton.textContent = 'Copy Error';
     getHelpButton.textContent = 'Get Help';
-    reloadButton.textContent = 'Restart App';
+    // In native apps, we can't reload because AES trust ring won't survive - must quit and restart manually
+    reloadButton.textContent = Phoenix.isNativeApp ? 'Quit App' : 'Restart App';
     // Styling for visibility
     // Define common styles for buttons
     const buttonStyles = {
@@ -303,7 +304,7 @@ function confirmReload(title, message) {
     return new Promise(resolve =>{
         reloadButton.onclick = function() {
             resolve(true);
-            reloadButton.textContent = 'Reloading...';
+            reloadButton.textContent = Phoenix.isNativeApp ? 'Quitting...' : 'Reloading...';
             reloadButton.style.color = 'darkgray';
             reloadButton.style.backgroundColor = 'grey';
         };
@@ -311,6 +312,14 @@ function confirmReload(title, message) {
 }
 
 function resetCacheAndRestart() {
+    // In native apps, we can't reload because AES trust ring won't survive - must quit
+    if (Phoenix.isNativeApp) {
+        // wait for 3 seconds for bugsnag to send report, then quit
+        setTimeout(() => {
+            Phoenix.app.closeWindow(true); // force close
+        }, 1000);
+        return;
+    }
     // try a cache reset
     if(window._resetCacheIfNeeded){
         window._resetCacheIfNeeded(true)
@@ -341,7 +350,9 @@ async function _recoverOnFailure(err) {
         'Critical error when loading brackets. Trying to reload again.');
     const restartedOnce = sessionStorage.getItem(SESSION_RESTART_ONCE_DUE_TO_CRITICAL_ERROR);
     let shouldRestart;
-    if(!restartedOnce){
+    // In native apps, we can't auto-restart because the AES trust ring won't survive a reload
+    // without proper dismantling. Always show confirmation dialog for native apps.
+    if(!restartedOnce && !Phoenix.isNativeApp){
         sessionStorage.setItem(SESSION_RESTART_ONCE_DUE_TO_CRITICAL_ERROR, "true");
         shouldRestart = true;
     } else {
