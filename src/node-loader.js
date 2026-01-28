@@ -767,6 +767,20 @@ function nodeLoader() {
                 }
             });
 
+            window.electronAppAPI.onProcessError((eventInstanceId, err) => {
+                if (eventInstanceId !== instanceId) {
+                    return;
+                }
+                window.isNodeTerminated = true;
+                window.isNodeReady = false;
+                nodeTerminationResolve();
+                console.error(`PhNode: command error: "${err.message}"`);
+                if (!resolved) {
+                    logger.reportError(err, `PhNode failed to start!`);
+                    reject("PhNode: closed - Terminated.");
+                }
+            });
+
             window.electronAppAPI.onProcessStdout((eventInstanceId, line) => {
                 if (eventInstanceId !== instanceId) {
                     return;
