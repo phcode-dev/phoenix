@@ -242,7 +242,9 @@ let copyThirdPartyLibs = series(
     // jasmine-reporters
     copyFiles.bind(copyFiles, ['node_modules/jasmine-reporters/src/**/*'],
         'test/thirdparty/jasmine-reporters/'),
-    copyLicence.bind(copyLicence, 'node_modules/jasmine-reporters/LICENSE', 'jasmine-reporters')
+    copyLicence.bind(copyLicence, 'node_modules/jasmine-reporters/LICENSE', 'jasmine-reporters'),
+    // lmdb
+    copyLicence.bind(copyLicence, 'node_modules/lmdb/LICENSE', 'lmdb')
 
 );
 
